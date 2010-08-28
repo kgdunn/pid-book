@@ -1,0 +1,9 @@
+* Remove all newpages
+* Add :alt: tags
+* Remove all links to stats4.eng.mcmaster.ca
+* Remove fixed paths from all figure generators (including SVG export commands)
+* Put source code in a thin box-outline in PDF output
+
+
+Split the files before Sphinx compiles them to pickle/HTML
+Link suffix working

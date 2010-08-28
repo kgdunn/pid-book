@@ -1,0 +1,4 @@
+wingdbstub.* 
+_build/*
+.*\.pyc
+
