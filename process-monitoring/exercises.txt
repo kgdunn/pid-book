@@ -1,0 +1,38 @@
+* Is it fair to say that a control chart is like an on-line version of a confidence interval?  Explain your answer.
+
+* Detection system: show effect of larger sample size; delayed detection
+
+* Data with outliers and missing values (boards data set?)
+    - develop limits
+    - monitor Shewhart chart (raw and subgrouped)
+    - monitor with CUSUM
+    - monitor with EWMA (MA vs EWMA)
+    
+* Relationship between Shewhart and Cpk
+
+* Batch yields (300 values)
+    - Shewhart charts for groups of 5 runs
+    - How to estimate sigma
+
+* See exercises in your pencil notes
+
+* Reading: http://en.wikipedia.org/wiki/The_Toyota_Way The Toyota Way
+
+* Monitoring of a different sort: http://singularityhub.com/2009/03/20/body-20-continuous-monitoring-of-the-human-body/
+
+* You will calculate in the assignment that a shift of :math:`1.5\sigma` from process center will introduce only 3.4 defects per million.  This shift would reduce your |Cpk| from 2.0 to 1.5.
+
+* Show how EWMA chart can detect changes in variance also
+
+
+..	EWMA monitoring 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	In the class we showed how the EWMA is able to predict one step into the future, which for slow moving processes is a really helpful feature.
+
+	The following measurements of BOD (biochemical oxygen demand) 
+
+	Complete the following table, then show the values from your table on the accompanying plot: use circles to show the actual measurements, and use squares to show the EWMA one-step ahead predictions.
+
+
+	EMPTY FIGURE to plot in, students to hand in this page

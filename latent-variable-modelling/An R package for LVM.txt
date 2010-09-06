@@ -1,0 +1,17 @@
+R multivariate package
+=======================
+
+SPE, T2 limits 
+PCA and PLS with missing data, kernel, NIPALS, SVD, or EIG
+SCaling by default
+Proper score and loadings plot
+Contributions 
+
+
+Q2 calculation
+=======================
+
+Must show the correct result for a matrix of only random numbers
+Must show the correct result for a full factorial (orthogonal X), unreplicated
+Must match when a PCA and PLS model are constructed with known number of LV's
+Must match when in PLS we have an |X| space of given dimension and a |Y| space of given dimension and the link between them is established artificially.  How many components are appropriate?

@@ -1,0 +1,12 @@
+Grapher equations:
+
+1/
+z=\frac{\sin \left( x^{2}+2xy+3y^{2} \right)}{0.1+r^{2}}+\left( x^{2}+2xy+5y^{2} \right)\cdot \frac{\exp \left( 1-r^{2} \right)}{2},\; r=\sqrt{x^{2}+y^{2}}
+
+Case 2/ Nice cliff, close the optimum
+z=\frac{\sin \left( x^{2}+y^{2} \right)}{0.1+r^{2}}+\left( x^{2}+x+y^{2} \right)\cdot \frac{\exp \left( 1-r+x^{0.2} \right)}{2},\; r=\sqrt{x^{2}+y^{2}}
+
+Case 3/ Typical COST shape where optimum is not parallel to axes
+z=1.6x+1.0y-0.46x^{2}-1.2y^{2}+0.8xy+3
+
+
