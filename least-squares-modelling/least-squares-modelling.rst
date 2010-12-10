@@ -61,6 +61,9 @@ This section begins a new part of the course: we start considering more than one
 
 The final 2 sections of the course, design and analysis of experiments, and latent variable models,  will build on the least squares model we learn about here.
 
+.. index::
+	pair: usage examples; Least squares models
+
 Usage examples
 ==============
 
@@ -88,7 +91,10 @@ What you will be able to do after this section
 	#. The relationship between correlation, covariance and variance
 	#. Introduction to bivariate least squares (the linear relationship between 2 variables).
 	#. We will also discuss the short-sighted idiom that is often repeated: *correlation does not imply causation* and complete it by understanding that *correlation is a necessary, but not sufficient, condition for causality*.  We will take a look at an example of correlation and understand that it is impossible to imply causality without doing intentional experimentation.
-
+	
+.. index::
+	pair: references and readings; Least squares models
+	
 References and readings
 =======================
 
@@ -98,10 +104,10 @@ References and readings
 - Hogg and Ledolter, *Engineering Statistics*
 - Montgomery and Runger, *Applied Statistics and Probability for Engineers*  
 - Birkes and Dodge: *Alternative Methods of Regression*, 1993.
-- Efron, Hastie, Johnstone and Tibshirani, `Least angle regression <http://www.jstor.org/stable/3448465>`_, *The Annals of Statistics*, **32**, p 407-451, 2004, 
-- 600-level students: Box, G.E.P.,  `Use and abuse of regression <http://www.jstor.org/stable/1266635>`_, *Technometrics*, **8** (4), 625-629, 1966.
-- 600-level students: Chatterjee, S. and A.S. Hadi, `Influential observations, high leverage points, and outliers in linear regression <http://www.jstor.org/stable/2245477>`_, *Statistical Science*, **1** (3), 379-416, 1986.
-- 600-level students: Cleveland, W.S. `Robust locally weighted regression and smoothing scatterplots <http://www.jstor.org/stable/2286407>`_, *Journal of the American Statistical Association*, **74** (368), p. 829-836, 1979.
+- Efron, Hastie, Johnstone and Tibshirani, `Least Angle Regression <http://www.jstor.org/stable/3448465>`_, *The Annals of Statistics*, **32**, p 407-451, 2004, 
+- 600-level students: Box, G.E.P.,  `Use and Abuse of Regression <http://www.jstor.org/stable/1266635>`_, *Technometrics*, **8** (4), 625-629, 1966.
+- 600-level students: Chatterjee, S. and A.S. Hadi, `Influential Observations, High Leverage Points, and Outliers in Linear Regression <http://www.jstor.org/stable/2245477>`_, *Statistical Science*, **1** (3), 379-416, 1986.
+- 600-level students: Cleveland, W.S. `Robust Locally Weighted Regression and Smoothing Scatterplots <http://www.jstor.org/stable/2286407>`_, *Journal of the American Statistical Association*, **74** (368), p. 829-836, 1979.
 
 Covariance
 ===========
@@ -1839,3 +1845,282 @@ The above example was inspired from an example in `ASA Statistics Computing and 
 	The variable selection problem is ...
 
 	We will start off by saying that variable selection is a topic that is widely and actively researched. 
+
+.. index::
+	pair: exercises; Least squares models
+
+Exercises
+=========
+
+.. question::
+
+	Use the `distillation column data set <http://stats4.eng.mcmaster.ca/wiki/Data_sets#Distillation_tower>`_ and choose any two variables, one for |x| and one as |y|.  Then fit the following models by least squares in any software package you prefer:
+
+		-	:math:`y_i = b_0 + b_1 x_i`
+		-	:math:`y_i = b_0 + b_1 (x_i - \bar{x})` (what does the :math:`b_0` coefficient represent in this case?)
+		-	:math:`(y_i - \bar{y}) = b_0 + b_1 (x_i - \bar{x})`
+	
+		Prove to yourself that centering the |x| and |y| variables gives the same model for the 3 cases in terms of the :math:`b_1` slope coefficient, standard errors and other model outputs.
+
+.. answer::
+
+	Once you have created an ``x`` and ``y`` variable in R, compare the output from these 3 models:
+	
+	.. code-block:: s
+	
+		# Model 1
+		summary(lm(y ~ x))
+		
+		# Model 2
+		x.mc <- x - mean(x)
+		summary(lm(y ~ x.mc))
+		
+		# Model 3
+		y.mc <- y - mean(y)
+		summary(lm(y.mc ~ x.mc))		
+		
+.. question::
+
+	For a :math:`x_{\text{new}}` value and the linear model :math:`y = b_0 + b_1 x` the prediction interval for :math:`\hat{y}_\text{new}` is:
+
+		.. math::
+			\hat{y}_i \pm c_t \sqrt{V\{\hat{y}_i\}}
+		
+		where :math:`c_t` is the critical t-value, for example at the 95% confidence level.
+	
+	Use the `distillation column data set <http://stats4.eng.mcmaster.ca/wiki/Data_sets#Distillation_tower>`_ and with |y| as ``VapourPressure`` (units are kPa) and |x| as ``TempC2`` (units of degrees Farenheit) fit a linear model.  Calculate the prediction interval for vapour pressure at these 3 temperatures: 430, 480, 520 °F.  The source code to question 1 in the `take-home midterm solution <http://stats4.eng.mcmaster.ca/wiki/Take-home_midterm_-_2010_-_Solution>`_ will be helpful.
+	
+.. answer::
+
+	The prediction interval is dependent on the value of :math:`x_\text{new, i}` used to make the prediction.  For this model, :math:`S_E = 2.989` kPa, :math:`n=253`,  :math:`\sum_j{(x_j - \bar{x})^2} = 86999.6`, and :math:`\bar{x} = 480.82`.
+	
+	.. math::
+	
+		\mathcal{V}\left(\hat{y}_\text{new,i}\right) = S_E^2 \left(1 + \dfrac{1}{n} + \dfrac{\left(x_\text{new}-\bar{x}\right)^2}{ \sum_j{(x_j - \bar{x})^2}} \right)
+	
+	Calculating this term manually, or using the ``predict(model, newdata=..., int="p")`` function in R gives the 95% prediction interval:
+	
+		*	:math:`x_\text{new} = 430` °F: :math:`\hat{y}_\text{new} = 53.49 \pm 11.97`, or [47.50, 59.47]
+		*   :math:`x_\text{new} = 480` °F: :math:`\hat{y}_\text{new} = 36.92 \pm 11.80`, or [31.02, 42.82]
+		*	:math:`x_\text{new} = 520` °F: :math:`\hat{y}_\text{new} = 23.67 \pm 11.90`, or [17.72, 29.62]
+		
+	.. figure:: images/distillation-prediction-interval.png
+		:align: center
+		:width: 750px
+		:scale: 50%
+		
+	.. literalinclude:: code/distillation-column-questions.R
+		:language: s
+		:lines: 1-25,30-33
+	
+.. question::
+
+	 Refit the distillation model from the previous question with a transformed temperature variable.  Use :math:`1/T` instead of the actual temperature.
+
+		-	Does the model fit improve?
+		-	Are the residuals more normally distributed with the untransformed or transformed temperature variable?
+		-	How do you interpret the slope coefficient for the transformed temperature variable?
+		-	Use the model to compute the predicted vapour pressure at a temperature of 480 °F, and also calculate the corresponding prediction interval at that new temperature.
+
+.. answer::
+
+	-	Using the ``model.inv <- lm(VapourPressure ~ I(1/TempC2))`` instruction, one obtains the model summary below.  The model fit has improved slightly: the standard error is 2.88 kPa, reduced from 2.99 kPa.
+
+		.. code-block:: text
+		
+			Call:
+			lm(formula = VapourPressure ~ I(1/TempC2))
+
+			Residuals:
+			     Min       1Q   Median       3Q      Max 
+			-5.35815 -2.27855 -0.08518  1.95057 13.38436 
+
+			Coefficients:
+			             Estimate Std. Error t value Pr(>|t|)    
+			(Intercept)  -120.760      4.604  -26.23   <2e-16 ***
+			I(1/TempC2) 75571.306   2208.631   34.22   <2e-16 ***
+			---
+			Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
+
+			Residual standard error: 2.88 on 251 degrees of freedom
+			Multiple R-squared: 0.8235,	Adjusted R-squared: 0.8228 
+			F-statistic:  1171 on 1 and 251 DF,  p-value: < 2.2e-16
+			
+	-	The residuals have roughly the same distribution as before, maybe a little more normal on the left tail, but hardly noticeable.
+	
+		.. figure:: images/distillation-prediction-qqplots.png
+			:align: center
+			:width: 750px
+			:scale: 80%
+			
+	-	The slope coefficient of 75571 has units of ``kPa.°F``, indicating that each one unit *decrease* in temperature results in an *increase* in vapour pressure.  Since division is not additive, the change in vapour pressure when decreasing 10 degrees from 430 °F is a different decrease to that when temperature is 530 °F.  The interpretation of transformed variables in linear models is often a lot harder.  The easiest interpretation is to show a plot of 1/T against vapour pressure.
+	
+		.. figure:: images/distillation-prediction-inverted-temperature.png
+			:align: center
+			:width: 750px
+			:scale: 40%
+		
+	-	The predicted vapour pressure at 480 °F is 36.68 kPa :math:`\pm 11.37`, or within the range [31.0 to 42.4] with 95% confidence, very similar to the prediction interval from question 2.
+		
+	Code added from question 2 to complete this question:
+	
+	.. literalinclude:: code/distillation-column-questions.R
+		:language: s
+		:lines: 36-39,43-45,48-56,60-63
+		
+
+.. question::
+
+	Again, for the distillation model, use the data from 2000 and 2001 to build the model (the first column in the data set contains the dates). Then use the remaining data to test the model.  Use |x| = ``TempC2`` and |y| = ``VapourPressure`` in your model.
+
+		-	Calculate the RMSEP for the testing data.  How does it compare to the standard error from the model?
+		-	Now use the ``influencePlot(...)`` function from the ``car`` library, to highlight the influential observations in the model building data (2000 and 2001).  Show your plot with observation labels (observation numbers are OK).  See part 5 of the `R tutorial <http://stats4.eng.mcmaster.ca/wiki/R_tutorial>`_ for some help.
+		-	Explain how the points you selected are influential on the model?
+		-	Remove these influential points, and refit the model on the training data.  How has the model's slope and standard error changed?
+		-	Recalculate the RMSEP for the testing data; how has it changed?
+
+.. answer::
+
+	-	The testing data starts at index 160.  The code at the end of this question shows how RMSEP was calculated as 4.18 kPa, as compared to the standard error from the model building data (observations 1 to 159) of 2.679 kPa.  This indicates the predictions on totally new data have greater error that those observations used to build the model - an expected result.
+	
+	-	The influence plot from the model building data is given below.
+	
+		.. figure:: images/distillation-influence-plot.png
+			:align: center
+			:width: 750px
+			:scale: 45%
+			
+	-	The points considered as influential would be 38 and 84, which have both high leverage and high discrepancy.  Points 53 and 101 would also be considered influential: they have high leverage, though moderately sized residuals.  The other points marked in red have a large Cook's D value, however, their leverage is low, so it is unlikely that their removal will change the plot and its interpretation by very much.
+	
+	-	The points selected for removal are [38, 53, 84, 101].  The model was rebuilt and the slope coefficient changed from -0.368 to -0.358, while the standard error decreased from 2.679 to 2.455.  So their removal has decreased the size of the confidence intervals (before: :math:`-0.395 \leq \beta_T \leq - 0.342`, and after: :math:`-0.385 \leq \beta_T \leq -0.332`), however the slope coefficient is roughly comparable to that from before.  
+
+	-	The RMSEP has reduced from 4.18kPa to 3.92 kPa, a smallish reduction, given the range of the |y| variable.  
+	
+	.. literalinclude:: code/distillation-column-questions.R
+		:language: s
+		:lines: 1-3,8,66-89,93-94,96-108
+	
+.. question::
+
+	The `Kappa number data set <http://stats4.eng.mcmaster.ca/wiki/Data_sets#Kappa_number>`_ was used in the `take-home midterm <http://stats4.eng.mcmaster.ca/wiki/Take-home_midterm_-_2010_-_Solution>`_ to construct a Shewhart chart.  In the class notes on `Process Monitoring <http://stats4.eng.mcmaster.ca/wiki/Process_monitoring>`_ there was a section called "Mistakes to avoid" which warns that the subgroups for a Shewhart chart must be independent to satisfy the assumptions used to derived the Shewhart limits. If the subgroups are not independent, then it will increase the type I (false alarm) rate.
+
+	This is no different to the independence required for least squares models. Use the autocorrelation tool to determine a subgroup size for the Kappa variable that will satisfy the Shewhart chart assumptions.  Show your autocorrelation plot and interpret it as well.
+	
+.. answer::
+
+	The autocorrelation plot shows significant lags up to lag 3, or even 4.  So subsampling the vector with every 4th or 5th element should yield independent samples.  The autocorrelation with every 5th observation confirms this.  You could also use every 6th, 7th, *etc* observation.  Using every 30th observation though is not too useful, since it would lead to a long delay before the control chart showed any problems.
+
+	.. figure:: images/kappa-number-autocorrelation.png
+		:align: center
+		:width: 750px
+		:scale: 50%
+
+	The ACF plot indicates that there is significant reappearance of correlation around lags 9 to 15.  It wasn't required for you to identify why for this assignment, but usually this would be related to a recycle stream that reenters a reactor, or due to an oscillation in a control loop.
+	
+	You can also verify the autocorrelation by plotting scatterplots of the vector against itself.  The first plot below shows what an ACF coefficient of 1.0 means, while the second plot shows what it means to use a lag offset of 1 position.  The correlation value = :math:`\sqrt{R^2}` is shown on each plot.  Compare that value shown to the y-axis of the ACF plots.
+	
+	.. figure:: images/kappa-number-autocorrelation-scatterplots.png
+		:align: center
+		:width: 900px
+		:scale: 100%
+		
+	.. literalinclude:: code/kappa-number-autocorrelation.R
+	       :language: s
+	       :lines: 1-9,13-15,21-37
+		
+.. question::
+
+	You presume the yield from your lab-scale bioreactor, :math:`y`, is a function of reactor temperature, batch duration, impeller speed and reactor type (one with with baffles and one without).  You have collected these data from various experiments.
+	
+	.. tabularcolumns:: |C|p{5em}|C|C|C|
+
+	.. csv-table:: 
+	   :header: Temp = :math:`T` [°C], Duration = :math:`d` [minutes], Speed = :math:`s` [RPM], Baffles = :math:`b` [Yes/No], Yield = :math:`y` [g]
+	   :widths: 30, 30, 30, 30, 30
+
+			82,      260,  4300,       No,      51
+			90,      260,  3700,       Yes,     30
+			88,      260,  4200,       Yes,     40
+			86,      260,  3300,       Yes,     28
+			80,      260,  4300,       No,      49
+			78,      260,  4300,       Yes,     49
+			82,      260,  3900,       Yes,     44
+			83,      260,  4300,       No,      59
+			64,      260,  4300,       No,      60
+			73,      260,  4400,       No,      59
+			60,      260,  4400,       No,      57
+			60,      260,  4400,       No,      62
+			101,     260,  4400,       No,      42
+			92,      260,  4900,       Yes,     38
+
+
+	-	Use software to fit a linear model that predicts the yield from these variables (the data set is available from `the course website <http://stats4.eng.mcmaster.ca/wiki/Data_sets#Bioreactor_yields>`_).  See part 5 of the `R tutorial <http://stats4.eng.mcmaster.ca/wiki/R_tutorial>`_ for building linear models with integer variables in R.
+	-	Chemical engineering students in the class: interpret the meaning of each effect in the model.  If you are using R, then the ``confint(...)`` function will be helpful as well. Show plots of each |x| variable in the model against yield.  Use a box plot for the baffles indicator variable.
+	-	Now calculate the :math:`\mathbf{X}^T\mathbf{X}` and :math:`\mathbf{X}^T\mathbf{y}` matrices; include a column in the :math:`\mathbf{X}` matrix for the intercept. Since you haven't mean centered the data to create these matrices, it would be misleading to try interpret them.
+	-	Calculate the least squares model estimates from these two matrices.  See part 4 of the `R tutorial <http://stats4.eng.mcmaster.ca/wiki/R_tutorial>`_ for doing matrix operations in R, but you might prefer to use MATLAB for this step.  Either way, you should get the same answer here as in the first part of this question.
+
+.. answer::
+
+	-	After importing the data, just make sure the ``baffles`` variable is imported as a factor.  Then build the model as usual.  The computer output below shows the linear model's coefficients.
+	
+		.. literalinclude:: code/bioreactor-yields-problem.R
+			:language: s
+			:lines: 17-45
+			
+	-	The confidence intervals for each variable is significant at the 95% level.  The duration variable must be omitted from the model, because it has no variation.  While it might affect the yield, there is no variability in this data set to assess that.  
+	
+		* :math:`0.00034 \leq b_\text{speed} \leq 0.017`: a 100rpm increase in impeller speed serves to increase yield by 0.87g on average, keeping all other variables constant
+		* :math:`-15.9 \leq b_\text{baffles} \leq -2.30`: the use of baffles decreases yield, on average, by 9.1g, keeping all other variables constant
+		* :math:`-0.74 \leq b_\text{temp} \leq -0.21`: each one degree increase in temperature lowers yield by 0.47g on average, keeping all other variables constant
+		* We cannot say anything about the effect of batch duration
+		
+		The plots are not shown here, they can be drawn with ``plot(bio)`` to obtain a scatterplot matrix of plots.
+		
+	-	For the model :math:`y = b_0  + b_\text{speed}x_\text{speed} + b_\text{baffles}x_\text{baffles} + b_\text{temp}x_\text{temp}` let the coefficient vector be :math:`\mathrm{b} = [b_0, b_\text{speed},  b_\text{baffles}, b_\text{temp}]`, then we can write down the following X matrix to estimate it:
+	
+		.. math::
+			\mathrm{X} = \begin{bmatrix}
+							1 &  4300 & 0 & 82  \\
+							1 &  3700 & 1 & 90  \\
+							1 &  4200 & 1 & 88  \\
+							1 &  3300 & 1 & 86  \\
+							1 &  4300 & 0 & 80  \\
+							1 &  4300 & 1 & 78  \\
+							1 &  3900 & 1 & 82  \\
+							1 &  4300 & 0 & 83  \\
+							1 &  4300 & 0 & 64  \\
+							1 &  4400 & 0 & 73  \\
+							1 &  4400 & 0 & 60  \\
+							1 &  4400 & 0 & 60  \\
+							1 &  4400 & 0 & 101 \\
+							1 &  4900 & 1 & 92  
+						\end{bmatrix}
+						
+		You can obtain the above :math:`\mathrm{X}` matrix in R using the ``model.matrix(model)`` function.  The :math:`\mathrm{X}^T\mathrm{X}` and :math:`\mathrm{X}^T\mathrm{y}` matrices are:
+		
+		.. math::
+			\mathrm{X}^T\mathrm{X} = \begin{bmatrix}
+							14      &   59100      &    6  &  1119 \\
+							59100   & 251330000    & 24300 & 4714700 \\
+							6       & 24300        & 6     & 516     \\
+							1119    & 4714700      & 516   & 91351 
+						\end{bmatrix}  
+			\qquad \text{and} \qquad 
+			\mathrm{X}^T\mathrm{y} = \begin{bmatrix}
+							668 \\
+							2849600 \\
+							229 \\
+							52082
+						\end{bmatrix}
+						
+	-	Using these matrices to solve for :math:`\mathrm{b}`
+	
+	 	.. math::
+			\mathrm{b} = \left(\mathrm{X}^T\mathrm{X} \right)^{-1}\mathrm{X}^T\mathrm{y} =  \begin{bmatrix} 52.48 \\ 0.00871 \\ -9.09 \\ -0.471 \end{bmatrix}
+			
+		
+		This result matches the results from R.  Note however that R, like most decent software packages, will not solve for the inverse of :math:`\left(\mathrm{X}^T\mathrm{X} \right)^{-1}` directly to compute :math:`\mathrm{b}`; instead it uses the `QR decomposition <http://en.wikipedia.org/wiki/QR_decomposition>`_.
+		
+		.. literalinclude:: code/bioreactor-yields-problem.R
+			:language: s
+			:lines: 46- 	

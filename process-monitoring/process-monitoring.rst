@@ -30,6 +30,9 @@ In the context of the rest of the course: in the first section we learned about 
 
 This section is the last section where we deal with univariate data; after this section we start to use and deal with 2 or more variables.  
 
+.. index::
+	pair: usage examples; Process monitoring
+	
 Usage examples
 ==============
 
@@ -47,15 +50,18 @@ What we will cover
   :width: 750px 
   :scale: 60%
 
+.. index::
+	pair: references and readings; Process monitoring
+
 References and readings
 =======================
 
 Some references to refer to:
 	
-#. **Recommended**: Box, Hunter and Hunter, *Statistics for experimenters*, Chapter 14 (2nd edition)
-#. **Recommended**: Montgomery and Runger, *Applied statistics and probability for engineers*
-#. Hogg and Ledolter, *Engineering statistics*
-#. MacGregor, John F. "`Using on-line process data to improve quality: Challenges for statisticians <http://dx.doi.org/10.1111/j.1751-5823.1997.tb00311.x>`_", *International Statistical Review*, **65**, p 309-323, 1997.
+#. **Recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, Chapter 14 (2nd edition)
+#. **Recommended**: Montgomery and Runger, *Applied Statistics and Probability for Engineers*
+#. Hogg and Ledolter, *Engineering Statistics*
+#. Macgregor, John F. "`Using On-Line Process Data to Improve Quality: Challenges for Statisticians <http://dx.doi.org/10.1111/j.1751-5823.1997.tb00311.x>`_", *International Statistical Review*, **65**, p 309-323, 1997.
 #. Bisgaard, S., *`The Quality Detective: A Case Study <http://dx.doi.org/10.1098/rsta.1989.0006>`_*, Philosophical Transactions of the Royal Society-A, **327**, p 499-511, 1989.
 #. Rocke, D.M., Robust Control Charts, *Technometrics*, **31** (2), p 173 - 184, 1989. (`McMaster on-campus access <http://www.jstor.org/pss/1268815>`_)
 
@@ -70,7 +76,6 @@ Some references to refer to:
 .. Box, G.E.P., Comparisons, Absolute Values, and How I Got to Go to the Folies Bergeres, Quality Engineering, 14(1), p167-169, 2001.
 
 .. p 669 of Devore: see also Technometrics, 1989, p173-184, by David M Rocke
-
 
 Concepts
 ========
@@ -95,6 +100,9 @@ In order to achieve this high level of final product quality, our systems should
 
 Notice here that process monitoring is not intended to be automatic feedback control.  It has the same principles of quantifying unusual operation (errors), but the intention with process monitoring is that our process adjustments are **infrequent**, usually **manual**, and take place due to **special causes**.
 
+.. index::
+	single: control charts
+	
 Control charts
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -149,6 +157,9 @@ Every book on statistical quality control gives a slightly different viewpoint, 
 In this course we will take "in-control" to mean that the behaviour of the process is stable over time.  Note though, that in-control does not mean the variable of interest meets the required specifications - all that "in control" means is that there are no **special causes** in the data.  A special cause, or an assignable cause is an event that occurs to move the process, or destabilize it.  Process monitoring charts aim to detect these events.
 
 .. Note:: Our objective: quickly detect abnormal variation, and fix it by finding the root cause.  In this section we look at the "detection" problem.  Diagnosis and process adjustment are two separate steps that follow.
+
+.. index::
+	pair: Shewhart chart; Process monitoring
 
 Shewhart chart
 ==============
@@ -247,14 +258,6 @@ The data below represent the average of the :math:`n=5` samples from each bale, 
 
 The overall average is :math:`\Bar{\Bar{x}} = 238.8` and :math:`\bar{S} = 9.28`.  Calculate the lower and upper control limits for this Shewhart chart.  Were there any points in the phase I data (training phase) that exceeded these limits?
 
-.. only:: studentlatex
-
-	- LCL =
-	- UCL =
-	-
-	
-.. only:: inst
-		
 	- LCL = :math:`238.8 - 3 \cdot \dfrac{9.28}{(0.94)(\sqrt{5})} = 225.6`
 	- UCL = :math:`238.8 + 3 \cdot \dfrac{9.28}{(0.94)(\sqrt{5})} = 252.0`
 	- The sample with value of 253 exceeds these limits.  If this point is excluded and the limits recomputed, the new LCL = 224 and UCL = 252 (the new :math:`\Bar{\Bar{x}} = 238.0` and :math:`\bar{S} = 9.68`)
@@ -307,11 +310,7 @@ There are 2 ways to assess performance:
 
 	The run length is changed when the process level shifts.  What is the ARL if the process has shifted up by :math:`0.75\sigma`?
 	
-	.. only:: studentlatex
-
-		ARL = 
-		
-	.. only:: inst
+	*Answer*
 	
 		ARL = 1/(1-0.9332) = 15 samples
 
@@ -349,6 +348,9 @@ Shewhart chart limits were calculated with the assumption of **independent subgr
 Using Shewhart charts on **highly correlated quality variables**, usually on your final product measurement, can increase your type II (consumer's risk) dramatically.  We will come back to this very important topic in the last section of the course on multivariate data analysis.
 
 
+.. index::
+	pair: CUSUM chart; Process monitoring
+
 CUSUM charts
 ==============
 
@@ -382,6 +384,10 @@ The process is considered in control as long as all points are within the arms o
 Once the process has been investigated the CUSUM value, :math:`S_t` is often reset to zero; though other resetting strategies exist. A tabular version of the CUSUM chart also exists, but these days the charts are entirely automated in software.
 
 .. todo:: MUCH LESS FOCUS on the V-mask, more on how it is currently done
+
+.. index::
+	single: exponentially weighted moving average chart
+	pair: EWMA chart; Process monitoring
 
 EWMA charts
 ==============
@@ -491,6 +497,10 @@ You may encounter other charts in practice:
 
 	*	The *exponentially weight moving variance* (EWMV) chart is an excellent chart for monitoring for an increase in product variability. Like the :math:`\lambda` from an EWMA chart, the EWMV also has a sliding parameter that can balance current information and historical information to trade-off sensitivity.  More information is available in the paper by MacGregor, J.F. and Harris, T.J., "The Exponentially Weighted Moving Variance", *Journal of Quality Technology*, **25**, p 106-118, 1993.
 
+.. index::
+	pair: process capability; Process monitoring
+	single: capability, process
+	
 Process capability
 ===================
 
@@ -524,20 +534,9 @@ The PCR is often called the process width.  Let's see why by taking a look at a 
 
 The diagram is from a process with mean of 80 and where LSL=65 and USL=95.  These specification are fixed, set by our production guidelines.  If the process variation :math:`\sigma = 10`, then this implies that PCR=0.5.  Assuming further that the our production is centered at the mean of 80, we can calculate how much defective product is produced in the shaded region of the plot.  Assuming a normal distribution:
 
-.. only:: studentlatex
+	-	:math:`z` for LSL = (65 - 80)/10 = -1.5
 
-	-	z for LSL =
-	
-	-	z for USL =
-	
-	-	Shaded area probability =
-	 
-	
-.. only:: inst
-
-	-	z for LSL = (65 - 80)/10 = -1.5
-
-	-	z for USL = (95 - 80)/10 = 1.5
+	-	:math:`z` for USL = (95 - 80)/10 = 1.5
 
 	-	Shaded area probability = ``pnorm(-1.5) + (1-pnorm(1.5))`` = 13.4% of production is out of the specification limits.
 
@@ -550,6 +549,9 @@ Contrast this to the case where PCR = 2.0 for the same system.  To achieve that 
 
 .. Note:: You will probably come across the terminology C\ :sub:`p`, especially when dealing with 6 sigma programs.  This is the same as PCR for a centered process.
 
+.. index::
+	pair: uncentered process capability; Process monitoring
+	single: capability, process
 
 Uncentered processes
 ~~~~~~~~~~~~~~~~~~~~
@@ -568,6 +570,9 @@ It is the |Cpk| value that is requested by your customer.  Values of 1.3 are usu
 You will calculate in the assignment that a shift of :math:`1.5\sigma` from process center will introduce only 3.4 defects per million.  This shift would reduce your |Cpk| from 2.0 to 1.5.
 
 .. Note:: It must be emphasized that |Cpk| and C\ :sub:`p` numbers are only useful for a process which is stable.  Furthermore the assumptions of normally distributed samples is also required to interpret the |Cpk| results.
+
+.. index::
+	pair: industrial practice; Process monitoring
 
 Industrial practice
 ===================
@@ -650,8 +655,139 @@ Summary
 
 Montgomery and Runger list 5 reasons why control charts are widely used.  After this section of the course you should understand the following about control charts and process monitoring:
 
-	#.	These tools are proven to improve productivity (i.e. to reduce scrap and rework, as described above), and to increase process throughtput.
+	#.	These tools are proven to improve productivity (i.e. to reduce scrap and rework, as described above), and to increase process throughput.
 	#.	They detect defective production, consistent with the concept of "doing it right the first time", a mantra that you will increasingly hear in the manufacturing workplace.
 	#.	A control chart with good limits will prevent over-control of the process.  Operators are trained not to make process adjustments unless there is a signal from the chart.
 	#.	The patterns generated by the plots often help determine what went wrong - providing some diagnostic value to the operators.  We will see a more formal tool for process diagnosis though in the last section, using multivariate data methods.
 	#.	Control charts are required to judge if a process is stable over time.  A stable process allows us to calculate our process capability, which is a tremendously important metric for consumers.
+
+.. index::
+	pair: exercises; Process monitoring
+
+Exercises
+=========
+
+.. question::
+
+	Is it fair to say that a control chart is like an online version of a confidence interval?  Explain your answer.
+
+.. answer::
+
+	This question is likely to generate a wide range of answers.  No surprise, since there are strong feelings on this point in the `quality control literature <http://filebox.vt.edu/users/bwoodall/2000%20JQT%20Controversies%20and%20Contradictions.pdf>`_ as well.  The confusion stems from the fact that if you are in phase I, then no, a control chart is not a confidence interval, but in phase II, then you can argue that confidence intervals have many similarities to control charts.
+
+	But, in general, I feel the above statement is incorrect.  Even in phase II a monitoring chart is not really like an on-line confidence interval.  Mainly because a monitoring chart is intended to check for *system stability*, and to alarm quickly if the system moves away from the assumed distribution (usually a normal distribution).  The monitoring limits are calculated to provide the required alarm level (the ARL).  A confidence interval, on the other hand, defines the limits within which we expect to find the true population mean with a certain degree of confidence (e.g. 95% probability that the true mean lies within the limits), when we use a particular data set.
+
+	The similarity comes from the way the monitoring chart's limits are calculated: by using the concept of a confidence interval.  But a monitoring chart's limits can and *should be adjusted* up or down to improve your type I and II error levels, while for a confidence interval, the only way to alter the limits is to take a different sample size, take a new sample of data, and choose a different level of confidence.  But doing this, will still only find you bounds within which you expect the population mean to lie.  A monitoring chart's bounds are only there to signal when things are not the same any more.
+
+.. question::
+
+    Use the `batch yields data <http://stats4.eng.mcmaster.ca/wiki/Data_sets#Batch_yields>`_ from last week's assignment and construct a control chart using the 300 yield values.  Use a subgroup of size 5.  Report your target value, lower control limit and upper control limit, showing the calculations you made.  I recommend that you write your code so that you can reuse it for the next question and for the mid-term take-home exam.
+
+.. answer::
+
+	Please see the code below.  The Shewhart chart's parameters are as below, with plots generated from the R code.
+
+	-	Target = 80.4
+	-	Lower control limit at 3 standard deviations = 71.1
+	-	Upper control limit at 3 standard deviations = 89.6
+
+	.. figure:: images/batch-yields-monitoring.png
+		:align: center
+		:width: 750px
+
+	.. literalinclude:: code/batch-yields-monitoring-assignment4-2010.R
+	       :language: s
+	       :lines: 1-29, 32-
+
+
+.. question::
+
+    The `boards data <http://stats4.eng.mcmaster.ca/wiki/Data_sets#Board_thickness>`_ on the course website are from a line which cuts spruce, pine and fir (SPF) to produce general quality lumber that you could purchase at Rona, Home Depot, etc.  The price that a saw mill receives for its lumber is strongly dependent on how accurate the cut is made.  Use the data for the 2 by 6 boards (each row is one board) and develop a monitoring system using these steps.
+
+    	a) Plot all the data.  
+    	b) Now assume that boards 1 to 500 are the phase I data; identify any boards in this subset that appear to be unusual (where the board thickness is not consistent with most of the other operation)
+    	c) Remove those unusual boards from the phase I data. Calculate the Shewhart monitoring limits and show the phase I data with these limits.  Note: choose a subgroup size of 7 boards.
+    	d) Test the Shewhart chart on boards 501 to 2000, the phase II data.  Show the plot and calculate the type I error rate (:math:`\alpha`) from the phase II data; assuming of course that all the phase II data are from in-control operation.
+    	e) Calculate the ARL and look at the chart to see if the number looks about right. Use the time information in the raw data and your ARL value to calculate how many minutes between a false alarm.  Will the operators be happy with this?
+    	f) Describe how you might calculate the consumer's risk (:math:`\beta`).
+    	g) How would you monitor if the saws are slowly going out of alignment? 
+
+.. answer::
+
+	This questions answers are derived in the source code (at the end).
+
+	#.	A plot of the raw data:
+
+		.. figure:: images/boards-monitoring-raw-data.png
+			:width: 750px
+			:align: center
+	#.	A plot of just the phase I data shows no particular outliers.  Most people found a few outliers, that's OK - remember it is a subjective test, and if this were a process you were responsible for, then you would know more clearly what an outlier was.  For me though, I didn't think any of these points were particularly unusual.
+
+		.. figure:: images/boards-monitoring-find-outliers-phase1.png
+			:width: 750px
+			:align: center
+		
+	#.	The initial Shewhart parameters found were:
+	
+		-	UCL = 1701
+		-	Target = 1676
+		-	LCL	= 1652
+	
+		When plotting these limits on the phase I data, there was only one subgroup that was found outside the limits (the first subgroup).  This subgroup is removed and the limits recalculated.  (For this case there was only one, very moderate, subgroup outside the limits - the new limits are basically the same).  The new limits
+	
+		-	UCL = 1700
+		-	Target = 1676
+		- 	LCL = 1651
+	
+		A Shewhart chart of all the phase 1 data (including outliers, to highlight them) is shown here.  The limits were the final limits, after iteratively removing the first unusual subgroup	.  The code contains all the calculation steps.
+	
+		.. figure:: images/boards-monitoring-Shewhart-phase1.png
+			:width: 750px
+			:align: center
+	
+	#.	Using these parameters on the phase II data generates the following plot:
+
+		.. figure:: images/boards-monitoring-Shewhart-phase2.png
+			:width: 750px
+			:align: center
+		
+		Assuming the subgroups in phase II are all in control, the :math:`\alpha` value is sum of the points outside the limits, divided by the total number of subgroups in phase II = 9/214 = 4.2%.  This is much greater than the theoretically expected :math:`\alpha` of 0.27%.
+	
+		Notice though there is a group of points all on one side of the target line.  According to the Western Electric rules, a group of more than 8 points on one side of the target line is highly improbable and an alarm should be raised.  This indicates that these phase II testing data are likely not from in-control operation.
+
+	#.	The ARL = :math:`1/\alpha = 1/0.042` = 23.8; i.e. 1 subgroup in every 24 will lie outside the control limits, even if that subgroup is from in-control operation.  That number looks about right from the above phase II chart, although, most of the outliers seem to occur in the last half of the chart (see answer to part 4).  The data set comes from about 5 hours and 15 minutes (315 minutes) of operation; during this time there were 286 subgroups that would have been shown on a real Shewhart chart.  With an ARL of 24 subgroups, there would be about 12 (286/24) false alarms over these 315 minutes.  In other words a false alarm about once every 26 minutes.  This is much too high for practical use.  Either the limits must be made wider, or this data really is not from in-control operation.
+
+		
+	#.	To calculate the consumer's risk (:math:`\beta`) we require a period of data where we know the blades have shifted, so that the board thickness has been increased or decreased to a new level (mean operating point).   Using that out of control, or unstable data, we calculate Shewhart subgroups as usual, and count the number of data points falling within the current LCL and UCL.  A count of those in control subgroups divided by the total number of these out of control subgroups would be an estimate of :math:`\beta`.
+
+	#.	As the blades go out of alignment, the variability in the thickness values increases.  Two ways to monitor this are
+
+		-	To plot the subgroup standard deviation over time.  I have added the nonparametric regression lines against time on the plot to highlight how the variability increases over time.  This indicates to me that this data probably was not from in control operation.  This is the reality in most processes: we are never sure that the data are from in-control operation; it is always trial and error.
+	
+		-	Use a CUSUM chart.
+	
+		-	A more sensitive monitoring chart for this would be the exponentially weighted moving variance.  See the course notes for details on this.
+
+		.. figure:: images/boards-monitoring-subgroup-standard-deviation.png
+			:width: 750px
+			:align: center
+		
+
+	.. literalinclude:: code/boards-monitoring-assignment4-2010.R
+	       :language: s
+	       :lines: 1-8, 12,14-15,19-20,22-57,61-65,67-69,73-77,79-101,105-106
+
+.. question::
+
+	Your process with Cpk of 2.0 experiences a drift of :math:`1.5\sigma` away from the current process operating point towards the closest specification limit.  What is the new Cpk value; how many defects per million items did you have before the drift?  And after the drift?
+
+.. answer::
+
+	The new Cpk value is 1.5.  The number of defects per million items at Cpk = 2.0 is 0.00098 (essentially no defects), while at Cpk = 1.5 it is 3.4 defects per million items.  You only have to consider one-side of the distribution, since Cpk is by definition for an uncentered process, and deals with the side closest to the specification limits.
+
+	.. code-block:: s
+
+		Cpk <- 1.5
+		n.sigma.distance <- 3 * Cpk
+		defects.per.million <- pnorm(-n.sigma.distance, mean=0, sd=1) * 1E6
+	

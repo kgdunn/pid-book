@@ -620,9 +620,9 @@ Checking for normality: using a qq-plot
 
 Often we are not sure if a sample of data can be assumed to be normally distributed.  This section shows you how to assess if data are normally distributed, or not. 
 
-	Before we look at this method, we need to introduce the concept of the inverse cumulative distribution function (inverse CDF).  Recall the **cumulative distribution** is the area underneath the distribution function, :math:`p(x)`, which goes from :math:`-\infty` to :math:`x`.  For example, the area from :math:`-\infty` to :math:`x=-1` is about 15%, as we showed earlier, and we use the ``pnorm()`` function in R to calculate that.  
+Before we look at this method, we need to introduce the concept of the inverse cumulative distribution function (inverse CDF).  Recall the **cumulative distribution** is the area underneath the distribution function, :math:`p(x)`, which goes from :math:`-\infty` to :math:`x`.  For example, the area from :math:`-\infty` to :math:`x=-1` is about 15%, as we showed earlier, and we use the ``pnorm()`` function in R to calculate that.  
 	
-	Now the **inverse cumulative distribution** is used when we know the area, but want to get back to the value along the :math:`x-\text{axis}`.  For example, below which value of :math:`x` does 95% of the area lie for a standardized normal distribution?  Answer: :math:`z=1.64`.  In R we use the ``qnorm(0.95, mean=0, sd=1)`` to calculate these values.  The ``q`` stands for `quantile <http://en.wikipedia.org/wiki/Quantile>`_, because we give it the quantile at it returns the x-value: e.g. ``qnorm(0.5)`` gives 0.0.
+Now the **inverse cumulative distribution** is used when we know the area, but want to get back to the value along the :math:`x-\text{axis}`.  For example, below which value of :math:`x` does 95% of the area lie for a standardized normal distribution?  Answer: :math:`z=1.64`.  In R we use the ``qnorm(0.95, mean=0, sd=1)`` to calculate these values.  The ``q`` stands for `quantile <http://en.wikipedia.org/wiki/Quantile>`_, because we give it the quantile at it returns the x-value: e.g. ``qnorm(0.5)`` gives 0.0.
 
 .. figure:: images/show-pnorm-and-qnorm.png
 	:scale: 70%
@@ -631,9 +631,9 @@ Often we are not sure if a sample of data can be assumed to be normally distribu
 		
 On to checking for normality.  We approach this problem by first constructing quantities that we would expect for truly normally distributed data.  Then, secondly, we construct the same quantities for the actual data.  A plot of these 2 quantities against each other will reveal if the data are normal, or not.
 
-*  Imagine we have :math:`N` observations which are normally distributed.  Sort the data from smallest to largest.  The first data point should be the :math:`(1/N \times 100)` percentile, the next data point is the :math:`(2/N \times 100)/N` percentile, the middle, sorted data point is the 50th percentile, :math:`(1/2 \times 100)`, and the last, sorted data point is the :math:`(N/N \times 100)` percentile.
+*	Imagine we have :math:`N` observations which are normally distributed.  Sort the data from smallest to largest.  The first data point should be the :math:`(1/N \times 100)` percentile, the next data point is the :math:`(2/N \times 100)/N` percentile, the middle, sorted data point is the 50th percentile, :math:`(1/2 \times 100)`, and the last, sorted data point is the :math:`(N/N \times 100)` percentile.
 
-  The middle, sorted data point has a :math:`z`-value on the standardized scale of 0.0, which we known from using ``qnorm(0.5)``, from the inverse cumulative distribution function.  By definition, 50% of the data should lie below this point. The first data point will be at ``qnorm(1/N)``, the second at ``qnorm(2/N)``, and so on.  In general, the :math:`i^\text{th}` sorted point should be at ``qnorm((i-0.5)/N)``, for values of :math:`i = 1, 2, \ldots, N`.  We subtract off 0.5 to account for the fact that ``qnorm(1.0) = Inf``.  So we construct this vector of theoretically expected quantities from the inverse cumulative distribution function.
+	The middle, sorted data point has a :math:`z`-value on the standardized scale of 0.0, which we known from using ``qnorm(0.5)``, from the inverse cumulative distribution function.  By definition, 50% of the data should lie below this point. The first data point will be at ``qnorm(1/N)``, the second at ``qnorm(2/N)``, and so on.  In general, the :math:`i^\text{th}` sorted point should be at ``qnorm((i-0.5)/N)``, for values of :math:`i = 1, 2, \ldots, N`.  We subtract off 0.5 to account for the fact that ``qnorm(1.0) = Inf``.  So we construct this vector of theoretically expected quantities from the inverse cumulative distribution function.
 	
 	.. code-block:: s
 	
@@ -643,13 +643,13 @@ On to checking for normality.  We approach this problem by first constructing qu
 		theoretical.quantity <- qnorm(P)
 		[1] -1.64 -1.04 -0.674 -0.385 -0.126  0.125  0.385  0.6744 1.036  1.64
 
-*  We also construct the actual quantities for the data.  First, standardize the data by subtracting off the mean and dividing by the standard deviation.  Here is an example of 10 batch yields (see actual values below).  The mean yield is 80.0 and the standard deviation is 8.35.  The standardized yields are shown by subtracting off the mean and dividing by the standard deviation.  Then the standardized values are sorted.  Compare them to the theoretical quantities.
+*	We also construct the actual quantities for the data.  First, standardize the data by subtracting off the mean and dividing by the standard deviation.  Here is an example of 10 batch yields (see actual values below).  The mean yield is 80.0 and the standard deviation is 8.35.  The standardized yields are shown by subtracting off the mean and dividing by the standard deviation.  Then the standardized values are sorted.  Compare them to the theoretical quantities.
 
 	.. code-block:: s
 
 		yields = c(86.2, 85.7, 71.9, 95.3, 77.1, 71.4, 68.9, 78.9, 86.9, 78.4)
 		mean.yield = mean(yields)		# 80.0
-	 	sd.yield = sd(yields)			# 8.35
+		sd.yield = sd(yields)			# 8.35
 	
 		yields.z = (yields - mean.yield)/sd.yield
 		[1] 0.734  0.674 -0.978  1.82 -0.35 -1.04 -1.34 -0.140  0.818 -0.200
@@ -660,7 +660,7 @@ On to checking for normality.  We approach this problem by first constructing qu
 		theoretical.quantity  # numbers are rounded in the printed output
 		[1] -1.64 -1.04 -0.674 -0.385 -0.126  0.125  0.385  0.6744 1.036  1.64
 	
-*  The final step is to plot this data in a suitable way.  If the sampled quantities match the theoretical quantities, then a scatter plot of these numbers should form a 45 degree line.  
+*	The final step is to plot this data in a suitable way.  If the sampled quantities match the theoretical quantities, then a scatter plot of these numbers should form a 45 degree line.  
 
 	.. code-block:: s
 		
@@ -1444,7 +1444,6 @@ The advantage of the paired test is that any systematic error in our measurement
 .. This example illustrates:
 .. todo:: example showing loss of DOF (boys shoes example in BHH2). particularly, show the plots (p98 on BHH2- edition 1)
 
-
 .. index::
 	pair: exercises; Univariate data
 	
@@ -1484,7 +1483,7 @@ Exercises
 
 .. answer::
 
-	.. literalinclude:: code/question2a-assignment2-2010.R
+	.. literalinclude:: code/soy-salt-content.R
 	   :language: s
 	   :lines: 1-11,13,15-
 
@@ -1521,7 +1520,7 @@ Exercises
 
 	The same few samples appear to be outliers in most of the variables.
 
-	.. literalinclude:: code/question2c-assignment2-2010.R
+	.. literalinclude:: code/raw-materials-univariate-checks.R
 	   :lines: 1-27
 	   :language: s
 
@@ -1561,7 +1560,7 @@ Exercises
 
 	These are the data, and the code to plot the results.  The temperature for the last decade trended higher than the average for the prior 3 decades, 1971 to 2000.
  
-	.. literalinclude:: code/question3-assignment2-2010.R
+	.. literalinclude:: code/hamilton-weather-data.R
 		:language: s
 		:lines: 1-7,9-11,13,15-17
 
@@ -1580,7 +1579,7 @@ Exercises
 	
 .. answer:: 
 
-	.. literalinclude:: code/question4-assignment2-2010.R
+	.. literalinclude:: code/website-visits-univariate.R
 		:language: s
 		:lines: 1-19
 
@@ -1608,7 +1607,7 @@ Exercises
 
 .. answer:: 
 
-	.. literalinclude:: code/question5-assignment2-2010.R
+	.. literalinclude:: code/ammonia-in-wastewater.R
 		:language: s
 
 	An appropriate distribution appears to be the normal distribution, however the right hand side tail (upper tail) is slightly heavier (outside the given limits) than would be found on the normal distribution.  Assuming the 	data are normal, we can calculate the distribution's parameters as :math:`\bar{x} = \hat{\mu} = 36.1` and :math:`s= \hat{\sigma} = 8.52`.
@@ -1647,7 +1646,7 @@ Exercises
 	
 .. answer::  
 
-	.. literalinclude:: code/question6-assignment2-2010.R
+	.. literalinclude:: code/polymer-bale-samples.R
 		:language: s
 	
 	-	Sample average = 20
@@ -1713,7 +1712,7 @@ Exercises
 
 .. question::
 
-    One aspect of your job responsibility is to reduce energy consumption on the plant floor.  You ask the electrical supplier for the energy requirements (W.h) for running a particular light fixture for 24 hours.  They won't give you the raw data, only their histogram when they tested randomly selected bulbs (see the data and code below).
+    One aspect of your job responsibility is to reduce energy consumption on the plant floor.  You ask the electrical supplier for the energy requirements (W.h) for running a particular light fixture for 24 hours.  They won't give you the raw data, only their histogram when they tested randomly selected bulbs (see the data and code below). 
 
 	.. code-block:: s
 
@@ -1733,7 +1732,7 @@ Exercises
 
 	-   The mean and standard deviation can be estimated as shown in the code below.  The estimates are: the mean energy usage is **4127 W.hours**, and the standard deviation is **79 W.hours**.  This corresponds very closely to the raw data I used to generate the assignment question (mean of actual data = 4125, sd of actual data = 77.2).
 
-	    .. literalinclude:: code/Assignment3/bulb-energy-assignment3-2010.R
+	    .. literalinclude:: code/bulb-energy-assignment3-2010.R
 	       :language: s
 	       :lines: 13-17
 
@@ -1813,9 +1812,8 @@ Exercises
 
 	To get full grade for this question you just had to report the z-values and its corresponding risk; confidence intervals were not required.
 
-	.. literalinclude:: code/Assignment3/brittleness-comparison-assignment3-2010.R
+	.. literalinclude:: code/brittleness-comparison-assignment3-2010.R
 	       :language: s
-	       :lines: 1-32,35,37-75
 	
 	**Using pairing**
 	
@@ -1825,7 +1823,7 @@ Exercises
 
 	In the case of TK104 and TK105 the difference might seem surprising - take a look back at the box plots and how much they overlap.   However a paired test cannot be judged by a box plot, because it looks at the case-by-case difference, not the overall between group difference.  A better plot with which to confirm the really large |z|-value for the TK105 and TK107 difference is the plot of the differences.
 
-	.. literalinclude:: code/Assignment3/brittleness-paired-comparison-assignment3-2010.R
+	.. literalinclude:: code/brittleness-paired-comparison-assignment3-2010.R
 	       :language: s
 	       :lines: 1-36
 
@@ -1874,7 +1872,7 @@ Exercises
 
 	-   The code was modified to generate the matrix of z-value results in the comments below.  The largest difference is between Sunday and Wednesday, and the smallest difference is between Monday and Tuesday.
 
-	.. literalinclude:: code/Assignment3/website-differences-assignment3-2010.R
+	.. literalinclude:: code/website-differences-assignment3-2010.R
 	       :language: s
 	       :lines: 32-43,46,48-54,74-
        
@@ -1924,7 +1922,7 @@ Exercises
 
 .. answer::
 
-	.. literalinclude:: code/Assignment3/t-distribution-normal-comparison-assignment3-2010.R
+	.. literalinclude:: code/t-distribution-normal-comparison-assignment3-2010.R
 	       :language: s
 	       :lines: 1-3,7-14
 

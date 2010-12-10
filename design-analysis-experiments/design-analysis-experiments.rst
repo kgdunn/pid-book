@@ -158,8 +158,6 @@
 	2. Optimization
 	3. Robustness
 
-
-
 In context
 ===========
 
@@ -169,8 +167,11 @@ We will use the tools of `least squares modelling <http://stats4.eng.mcmaster.ca
 
 In the final section of the course on latent variables we will take a look at learning more about our systems when the condition of independence between variables, required for designed experiments, is not met.  But for now we can use least squares and simpler tools, as designed experiments are intentionally orthogonal (independent).
 
-.. rubric:: Usage examples
-
+.. index::
+	pair: usage examples; Design of experiments
+	
+Usage examples
+==============
 
 The material in this section is used whenever you need to perturb and learn more about a system.
 
@@ -190,8 +191,11 @@ What you will be able to do after this section
 	:align: center
 	:scale: 90%
 
+.. index::
+	pair: references and readings; Design of experiments
+
 References and readings
-~~~~~~~~~~~~~~~~~~~~~~~~
+========================
 
 - **Strongly recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, chapters 5 and 6 with topics from chapters 11, 12, 13 and 15.
 - `A web tutorial on designed experiments <http://www.chemometrics.se/index.php?option=com_content&task=view&id=18&Itemid=27>`_
@@ -1990,3 +1994,426 @@ You may not always need a mixture design for recipe experiments if you are only 
 	-	**T**: is the temperature at which the blend is extruded.
 	
 In this case **A** and **B** are the factors investigated in the recipe, in addition to temperature **T**. One could run a mixture design at high temperature and low temperature, but the results from a full factorial in factors **A**, **B** and **T** would give similar results.
+
+
+.. index::
+	pair: exercises; Design of experiments
+	
+Exercises
+==========
+
+.. question::
+
+	These readings are to illustrate the profound effect that designed experiments have had in some areas.  
+
+		*	`Application of statistical design of experiments methods in drug discovery <http://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_ and `using DOE for high-throughput screening to locate new drug compounds <http://dx.doi.org/10.1016/1359-6446(96)10025-8>`_.
+		*	High traffic websites offer a unique opportunity to perform testing and optimization.  This is because each visitor to the site is independent of the others (randomized), and these tests can be run in parallel.  Read more in this `brief writeup <http://youtube-global.blogspot.com/2009/08/look-inside-1024-recipe-multivariate.html>`_ on how Google uses testing tools to optimize YouTube, one of their web properties.  Unfortunately they use the term "multivariate" incorrectly - a better term is "multi-variable"; nevertheless, the number of factors and combinations to be tested is large. Its well known that fractional factorial methods are used to analyze these data.
+		*	See three chemical engineering examples of factorial designs in Box, Hunter, and Hunter: Chapter 11 (1st edition), or page 173 to 183 in the second edition.
+
+.. question::
+
+	Your family runs a small business selling low dollar value products over the web.  They want to improve sales.  There is a known effect from the day of the week, so to avoid that effect they run the following designed experiment every Tuesday for the past eight weeks.  The first factor of interest is whether to provide free shipping over $30 or over $50.  The second factor is whether or not the purchaser must first create a profile (user name, password, address, etc) before completing the transaction.  The purchaser can still complete their transaction without creating a profile.
+
+		These are the data collected:
+
+		.. tabularcolumns:: |l|C|p{10em}|C|
+	
+		.. csv-table:: 
+		   :header: Date, Free shipping over ..., Profile required before transaction, Total sales made that day
+		   :widths: 10, 30, 30, 30
+
+				05 January 2010,	$30, Yes, $ 3275
+				12 January 2010,	$50,  No, $ 3594     
+				19 January 2010,	$50,  No, $ 3626     
+				26 January 2010,	$30,  No, $ 3438     
+				02 February 2010,	$50, Yes, $ 2439
+				09 February 2010,	$30,  No, $ 3562     
+				16 February 2010,	$30, Yes, $ 2965
+				23 February 2010,	$50, Yes, $ 2571
+			
+		#.	Calculate the average response from replicate experiments to calculate the 4 corner points.
+		#.	Calculate and interpret the main effects in the design.
+		#.	Show the interaction plot for the 2 factors.
+		#.	We will show in the next class how to calculate confidence intervals for each effect, but would you say there is an interaction effect here?  How would you interpret the interaction (whether there is one or not)?
+		#.	What is the recommendation to increase sales?
+		#.	Calculate the main effects and interactions by hand using a least squares model.  You may confirm your result using software, but your answer should not just be the computer software output.
+	
+.. answer::
+
+	#.	This is a :math:`2^2` factorial system with a replicate at each point.  We had not covered replicates in class at the time you had to do this assignment.  So you should average the replicate points and then calculate the main effects and other terms for this system.  You will get the same result if you analyze it as two separate factorials and then average the results - it's just more work that way though.
+
+	#.	The experiment results in standard form with 4 corner points:
+
+			+------------+-----------+-------------------------------------------------------+
+			| A          | B         |  Average sales                                        |
+			+============+===========+=======================================================+
+			| |-|        | |-|       | :math:`\tfrac{1}{2}\left(3438+3562\right) = \$ 3,500` |
+			+------------+-----------+-------------------------------------------------------+
+			| |+|        | |-|       | :math:`\tfrac{1}{2}\left(3594+3626\right) = \$ 3,610` |
+			+------------+-----------+-------------------------------------------------------+
+			| |-|        | |+|       | :math:`\tfrac{1}{2}\left(3275+2965\right) = \$ 3,120` |
+			+------------+-----------+-------------------------------------------------------+
+			| |+|        | |+|       | :math:`\tfrac{1}{2}\left(2439+2571\right) = \$ 2,505` |
+			+------------+-----------+-------------------------------------------------------+
+
+		where **A** = free shipping over $30 (low level) and $50 (high level), and let **B** = -1 if no profile is required, or +1 if a profile is required before completing the transaction.
+
+		-	The main effect for free shipping (**A**) is = :math:`\tfrac{1}{2}(3610 - 3500 + 2505 - 3120) = \dfrac{-505}{2} = -252.50`
+	
+			This indicates that sales decrease by $252.50, on average, when going from free shipping over $30 to $50.  One might expect, within reason, that higher sales are made when the free shipping value is higher (people add purchases so they reach the free shipping limit).  That is shown by the very small effect of $50 when no profile is required.  However when a profile is required, we see the opposite: a drop in sales!
+		
+		-	The main effect of creating a profile (**B**) :math:`\tfrac{1}{2}(3120 - 3500 + 2505 - 3610) = \dfrac{-1485}{2} = -742.50` 
+	
+			Indicating that sales drop by $742.50 on average when requiring a profile before completing the transaction vs not requiring a profile.  The drop in sales is less when offering free shipping over $30 than when free shipping is for $50 or more in purchases.
+	
+		Not required for this question, but one of the best ways to visualize a small factorial, or a subset of a larger factorial, is with a cube plot:
+	
+		.. figure:: images/assignment-6-two-levels-two-variables-no-analysis.png
+			:alt:	images/assignment-6-two-levels-two-variables-no-analysis.svg
+			:align: center
+			:width: 500px
+			:scale: 80%
+		
+	#.	The interaction plot which visually shows the main effects described above is:
+
+		.. figure:: images/assignment-6-two-level-line-plot-with-interaction.png
+			:alt:	images/assignment-6-two-level-line-plot-with-interaction.svg
+			:align: center
+			:width: 500px
+			:scale: 80%
+
+	#.	The interaction term can be calculated in two ways, both giving the same answer.  Only one way is shown here:
+
+			-	**A** at high **B**: -$615.00
+			-	**A** at low **B**: $ 110.00
+			-	**AB** interaction = :math:`\tfrac{1}{2}\left(-615 - 110\right) = \dfrac{-725}{2} =  - 362.50`
+		
+		This interaction term is larger than one of the main effects, so I would judge this to be important.  Also, it is roughly 10% of the :math:`y_i =` daily sales values, so it is definitely important.
+	
+		In part 1 we showed the main effect of requiring a profile is to decrease sales.  The strong negative interaction term here indicates that sales are even further reduced when free shipping is over $50, rather than $30.  Maybe it's because customers "give up" making their purchase when free shipping is at a higher amount *and*  they need to create a profile - perhaps they figure this isn't worth it.  If they get free shipping over $30, the penalty of creating a profile is not as great anymore. This last effect might be considered counterintuitive - but I'm not an expert on why people buy stuff.  
+	
+		In general, an interaction term indicates that the usual main effects are increased or decreased more or less than they would have been when acting on their own.
+		
+	#.	Sales can be definitely increased by not requiring the user to create a profile before completing the transaction (creating a profile is a strong deterrent to increasing sales, whether free shipping over $30 or $50 is offered).  The effect of free shipping when not requiring a profile is small.  The raw data for the case when no profile was required (below), show slightly higher sales when free shipping over $50 is required.  Further experimentation to assess if this is significant or not would be required.
+
+		.. tabularcolumns:: |l|C|p{10em}|C|
+
+		.. csv-table:: 
+		   :header: Date, Free shipping over ..., Profile required before transaction, Total sales made that day
+		   :widths: 10, 30, 30, 30
+
+				12 January 2010,	$50,  No, $ 3594     
+				19 January 2010,	$50,  No, $ 3626     
+				26 January 2010,	$30,  No, $ 3438     
+				09 February 2010,	$30,  No, $ 3562     
+		
+
+	#.	A least squares model can be calculated from the average of each replicate.  Then there are 4 observations and 4 unknowns.  Using the design matrix, in standard order, we can set up the following least squares model:
+
+		.. math::
+	
+			\mathbf{y} &= \mathbf{X}\mathbf{b} + \mathbf{e} \\
+			\begin{bmatrix}  y_1 \\ y_2 \\ y_3 \\ y_4 \end{bmatrix} &=
+			\begin{bmatrix}  1 & -1 & -1 & +1 \\
+			                 1 & +1 & -1 & -1 \\
+							 1 & -1 & +1 & -1 \\
+							 1 & +1 & +1 & +1
+			\end{bmatrix}
+			\begin{bmatrix} b_0 \\ b_\mathbf{A} \\ b_\mathbf{A} \\ b_\mathbf{AB} \end{bmatrix} + \begin{bmatrix}  e_1 \\ e_2 \\ e_3 \\ e_4 \end{bmatrix} \\
+			\begin{bmatrix}  3500 \\ 3610 \\ 3120 \\ 2505 \end{bmatrix} &=
+			\begin{bmatrix}  1 & -1 & -1 & +1 \\
+			                 1 & +1 & -1 & -1 \\
+							 1 & -1 & +1 & -1 \\
+							 1 & +1 & +1 & +1
+			\end{bmatrix}
+			\begin{bmatrix} b_0 \\ b_\mathbf{A} \\ b_\mathbf{A} \\ b_\mathbf{AB} \end{bmatrix} + \begin{bmatrix}  e_1 \\ e_2 \\ e_3 \\ e_4 \end{bmatrix}
+		
+		.. math::
+	
+			\mathbf{b} &= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y}\\
+			\mathbf{b} &= \left(\begin{matrix}  
+							 4 & 0 & 0 & 0 \\
+							 0 & 4 & 0 & 0 \\
+							 0 & 0 & 4 & 0 \\
+							 0 & 0 & 0 & 4
+			\end{matrix}\right)^{-1}
+			\begin{bmatrix}  + 3500 + 3610 + 3120 + 2505 \\ -3500 + 3610 - 3120 + 2505 \\ -3500 - 3610 + 3120 + 2505 \\ + 3500 - 3610 - 3120 + 2505 \end{bmatrix} \\
+			\mathbf{b} &= \begin{bmatrix}  
+							 \tfrac{1}{4} & 0 & 0 & 0 \\
+							 0 & \tfrac{1}{4} & 0 & 0 \\
+							 0 & 0 &\tfrac{1}{4} & 0 \\
+							 0 & 0 & 0 & \tfrac{1}{4}
+			\end{bmatrix}
+			\begin{bmatrix}  12735 \\ -505 \\ -1485 \\ -725 \end{bmatrix} \\
+			\begin{bmatrix} b_0 \\ b_\mathbf{A} \\ b_\mathbf{A} \\ b_\mathbf{AB} \end{bmatrix} &= \begin{bmatrix}  3184 \\ -126  \\ -371 \\ -181 \end{bmatrix}
+		
+		
+		The final model is :math:`y = 3184 - 126 x_\mathrm{A} - 371 x_\mathrm{B} - 181 x_\mathrm{AB}`.
+	
+		Compare the values in the :math:`\mathbf{X}^T\mathbf{y}` vector to the calculations for the main effects and interactions to see the similarity.  The least squares model parameters are half the size of the main effects and interactions reported above, because of how the parameters are interpreted in the least squares model.
+	
+		Particularly the effect of requiring a profile, :math:`x_B`, is to reduce sales by :math:`2 \times $371 = $ 742`.
+
+.. question::
+	
+	More reading: 
+	
+	#.	See `part 4 of the DOE tutorial on this website <http://www.chemometrics.se/index.php?option=com_content&task=view&id=18&Itemid=27>`_ which analyzes data from a 3-factor factorial.
+	
+	#.	It is worth reading this paper by Bisgaard to see how the same tools shown in these notes were used to solve a real industrial problem: designed experiments, autocorrelation plots, data visualization, and quality control charts.  Also he describes how the very real pressure from managers, time-constraints and interactions with team-members impacted the work.
+
+		"`The Quality Detective: A Case Study <http://dx.doi.org/10.1098/rsta.1989.0006>`_" (and discussion), *Philosophical Transactions of the Royal Society A*, **327**, 499-511, 1989.
+		
+	#.	George Box, The R. A. Fisher Memorial Lecture, 1988, "Quality Improvement - An expanding domain for the application of scientific method", *Philosophical Transactions of the Royal Society - A*, **327**: pages 617-630, 1989. `McMaster on-campus link <http://dx.doi.org/10.1098/rsta.1989.0017>`_.
+	
+.. question::
+
+	.. note::	This is a tutorial-type question: all the sub-questions build on each other.  All questions deal with a hypothetical bioreactor system, and we are investigating four factors: 
+
+		*	**A** = feed rate: slow or medium
+		*	**B** = initial inoculant size (300g or 700g)
+		*	**C** = feed substrate concentration (40 g/L or 60 g/L)
+		*	**D** = dissolved oxygen set-point (4mg/L or 6 mg/L) 
+
+	The 16 experiments from a full factorial, :math:`2^4`, were randomly run, and the yields from the bioreactor, :math:`y`, are reported here in standard order:  y = [60, 59, 63, 61, 69, 61, 94, 93, 56, 63, 70, 65, 44, 45, 78, 77].
+
+	#.	Calculate the 15 main effects and interactions and the intercept, using computer software.
+
+	#.	Use either a qq-plot (normal probability plot) or a Pareto-plot to identify the significant effects.  What would be your advice to your colleagues to improve the yield?
+		
+	#.	Refit the model using only the significant terms identified in the second question.  
+
+		-	Explain why you don't actually have to recalculate the least squares model parameters.
+		-	Compute the standard error and confirm that the effects are indeed significant at the 95% level.
+
+	#.	Write down the exact settings for **A**, **B**, **C**, and **D** you would provide to the graduate student running a half-fraction in 8 runs for this system.
+
+	#.	Before the half-fraction experiments are even run you can calculate which variables will be confounded (aliased) with each other.  Report the confounding pattern for these main effects and for these two-factor interactions.  Your answer should be in this format:
+
+		-	Generator = 
+		-	Defining relationship = 
+		-	Confounding pattern:
+
+			*	:math:`\widehat{\beta}_\mathbf{A} \rightarrow` 
+			*	:math:`\widehat{\beta}_\mathbf{B} \rightarrow` 
+			*	:math:`\widehat{\beta}_\mathbf{C} \rightarrow` 
+			*	:math:`\widehat{\beta}_\mathbf{D} \rightarrow` 
+			*	:math:`\widehat{\beta}_\mathbf{AB} \rightarrow`
+			*	:math:`\widehat{\beta}_\mathbf{AC} \rightarrow`
+			*	:math:`\widehat{\beta}_\mathbf{AD} \rightarrow`
+			*	:math:`\widehat{\beta}_\mathbf{BC} \rightarrow`
+			*	:math:`\widehat{\beta}_\mathbf{BD} \rightarrow`
+			*	:math:`\widehat{\beta}_\mathbf{CD} \rightarrow`
+
+
+	#.	Now use the 8 yield values corresponding to your half fraction, and calculate as many parameters (intercept, main effects, interactions) as you can.
+
+		-	Report their numeric values.
+		-	Compare your parameters from this half-fraction (8 runs) to those from the full factorial (16 runs).  Was much lost by running the half fraction?
+		
+.. answer::
+
+	#.	Using the computer code (at the end of the question), we found the complete model for all effects and interaction as:
+
+		.. math::
+
+			\hat{y} &= 66 - 0.6 x_A + 9 x_B + 4 x_C - 3.9 x_D - 0.5 x_Ax_B - 0.5 x_Ax_C + 0.9 x_Ax_D + 6.4 x_Bx_C + 1.3 x_Bx_D - 5.3 x_Cx_D\\
+			        &+ 1.1 x_Ax_Bx_C - 1.2 x_Ax_Bx_D + 0.3 x_Ax_Cx_D - 0.1x_Bx_Cx_D + 0.1 x_Ax_Bx_Cx_D
+		
+	#.	The Pareto plot and the qq-plot show the same important main effects: **B**, **C**, **D** and these two-factor interactions: **BC** and **CD**.
+
+		The advice to improve yield would be to:
+
+			*	**A**: use either the slow or medium feedrate, whichever has the better process economics
+			*	**B**: operate with the larger inoculant size: 700g
+			*	**C**: use a higher feed concentration 60 g/L
+			*	**D**: use the lower dissolved oxygen set point of 4 mg/L
+			*	**BC**: in this case the **BC** interaction works in our favour (high :math:`\times` high)
+			*	**CD**: the **CD** interaction also works in our favour, since -5.3 :math:`\times` (+1) :math:`\times` (-1) leads to an increased yield.
+
+		At these conditions the expected yield is in the region of 93 to 94% (runs 7 and 8 from the standard order).
+
+		.. figure:: images/bioreactor-pareto-plot.png
+			:alt:	bioreactor-case.R
+			:align: center
+			:width: 600px
+			:scale: 60%
+			
+	#.	The model does not have to be refitted because the columns in matrix :math:`\mathbf{X}` are orthogonal, meaning that the coefficient estimates do not depend on the levels of any other variables.
+
+		By dropping out the insignificant coefficients and keeping only the 5 parameters from the Pareto plus the intercept, we have 6 parameters, 16 data points, so 10 degrees of freedom.  The residual vector is found from :math:`\mathbf{e} = \mathbf{y} - \hat{\mathbf{y}}`, where :math:`\hat{\mathbf{y}} = \underbrace{\mathbf{X}_{\text{sub}}}_{16 \times 6}  \underbrace{\mathbf{b}_\text{sub}}_{6 \times 1}`.
+
+		The subset matrix of :math:`\mathbf{X}_{\text{sub}}` is found by sub-sampling from the full :math:`16 \times 16` matrix; similarly for the coefficient vector :math:`\mathbf{b}`.  From this we can calculate:
+
+		-	The standard error is :math:`S_E = 3.1`, which is pretty tight, considering the ranges of y-values in the data set
+		-	The critical :math:`t`-value for the 95% confidence level = 2.23
+		-	The standard error for the parameters in the model is given by :math:`\left(\mathbf{X}^T\mathbf{X}\right)^{-1}S_E^2`.  We can use this form because apart from the intercept column, each column is centered around zero.  So :math:`S_E(b_i) = \sqrt{\dfrac{3.1^2}{16}}` = 0.78.
+		-	The confidence intervals for each of the significant effects are:
+
+			.. math::
+
+				\begin{array}{rcl}
+					7.3 \leq &\beta_B &\leq 10.7 \\
+					2.3 \leq &\beta_C &\leq 5.7\\
+					-5.6 \leq &\beta_D &\leq -2.1\\
+					4.6 \leq &\beta_{BC} &\leq 8.1\\
+					-7.0 \leq &\beta_{CD} &\leq -3.5
+				\end{array}
+				
+	#.	A half-fraction of a :math:`2^4` factorial has 8 experiments.  We can generate the levels for 3 of the factors, **A**, **B** and **C** from a full factorial in these 8 runs.  The generating term for the fourth factor **D** is best set to the highest level of confounding, the **ABC** term.  
+
+		Using that concept, we would ask the graduate student to run these 8 experiments in *random order*:
+
+		.. tabularcolumns:: |l|c|c|c|c|c|
+
+		+-----------+---------------+-----------------+--------------------+-----------------+
+		| Experiment| Feed rate     | Inoculant size  | Feed concentration | DO set point    |
+		+===========+===============+=================+====================+=================+
+		| 1         | Slow          | 300g            | 40 g/L             | 4 mg/L          |
+		+-----------+---------------+-----------------+--------------------+-----------------+
+		| 2         | Medium        | 300g            | 40 g/L             | 6 mg/L          |
+		+-----------+---------------+-----------------+--------------------+-----------------+
+		| 3         | Slow          | 700g            | 40 g/L             | 6 mg/L          |
+		+-----------+---------------+-----------------+--------------------+-----------------+
+		| 4         | Medium        | 700g            | 40 g/L             | 4 mg/L          |
+		+-----------+---------------+-----------------+--------------------+-----------------+
+		| 5         | Slow          | 300g            | 60 g/L             | 6 mg/L          |
+		+-----------+---------------+-----------------+--------------------+-----------------+
+		| 6         | Medium        | 300g            | 60 g/L             | 4 mg/L          |
+		+-----------+---------------+-----------------+--------------------+-----------------+
+		| 7         | Slow          | 700g            | 60 g/L             | 4 mg/L          |
+		+-----------+---------------+-----------------+--------------------+-----------------+
+		| 8         | Medium        | 700g            | 60 g/L             | 6 mg/L          |
+		+-----------+---------------+-----------------+--------------------+-----------------+
+
+	#.	-	Generator = **D = ABC**
+		-	Defining relationship =  **I = ABCD**
+		-	Confounding pattern:
+
+			*	:math:`\widehat{\beta}_\mathbf{A} \rightarrow` **A + BCD**
+			*	:math:`\widehat{\beta}_\mathbf{B} \rightarrow` **B + ACD**
+			*	:math:`\widehat{\beta}_\mathbf{C} \rightarrow` **C + ABD**
+			*	:math:`\widehat{\beta}_\mathbf{D} \rightarrow` **D + ABC**
+			*	:math:`\widehat{\beta}_\mathbf{AB} \rightarrow` **AB + CD**
+			*	:math:`\widehat{\beta}_\mathbf{AC} \rightarrow` **AC + BD**
+			*	:math:`\widehat{\beta}_\mathbf{AD} \rightarrow` **AD + BC**
+			*	:math:`\widehat{\beta}_\mathbf{BC} \rightarrow` **BC + AD**
+			*	:math:`\widehat{\beta}_\mathbf{BD} \rightarrow` **BD + AC**
+			*	:math:`\widehat{\beta}_\mathbf{CD} \rightarrow` **CD + AB**
+
+	#.	Selecting the rows from the full factorial design which correspond to the 8 runs from the half factorial we get :math:`y = [60, 63, 70, 61, 44, 61, 94, 77]` corresponding to the table order in question 5.
+
+		Then forming the :math:`\mathbf{X}` matrix from the table in question 5 we solve for the parameters as follows:
+
+		-	:math:`\widehat{b}_0 = 66.25 \rightarrow` **I + ABCD**
+		-	:math:`\widehat{b}_\mathbf{A} = -0.75 \rightarrow` **A + BCD** (previous estimate for **A**  was -0.625)
+		-	:math:`\widehat{b}_\mathbf{B} = 9.25 \rightarrow` **B + ACD** (previous estimate for **B**  was 9.9)
+		-	:math:`\widehat{b}_\mathbf{C} = 2.75 \rightarrow` **C + ABD** (previous estimate for **C**  was 4.0)
+		-	:math:`\widehat{b}_\mathbf{D} = -2.75 \rightarrow` **D + ABC** (previous estimate for **A**  was -3.9)
+		-	:math:`\widehat{b}_\mathbf{AB} = -5.75 \rightarrow` **AB + CD** (previous estimate for **AB**  was insignificant, while **CD** was -5.25)
+		-	:math:`\widehat{b}_\mathbf{AC} = 0.75 \rightarrow` **AC + BD** (previous estimates for both **AC** and **BD**  were insignificant)
+		-	:math:`\widehat{b}_\mathbf{AD} = 7.25 \rightarrow` **AD + BC** (previous estimate for **AD**  was insignificant, while **BC** was 6.4)
+
+		You can verify for yourself that each coefficient from the half fraction is just the sum of the effects estimated from the full factorial.  For example, :math:`\widehat{b}_\mathbf{AD} = 7.25 \rightarrow` **AD + BC** = 0.875 + 6.375 = 7.25.
+
+		So these estimates from the half-fraction are comparable to the estimates from the full fraction.
+	
+	**Computer code for all questions**
+
+	.. literalinclude:: code/bioreactor-case.R
+			:language: s
+			:lines: 23-64,66-68,70-
+			
+			
+.. question::
+
+	In the previous question you had data from a complete :math:`2^4` factorial system.  Then you also ran a half-fraction of experiments. 
+
+		*	What was the resolution of the half-fraction?
+		*	Factor **C** was found to be an important variable from the half-fraction; it had a significant coefficient in the linear model, but it was aliased with **ABD**.  Obviously in this problem, the foldover set of experiments to run would be the *other half-fraction*.  But we showed in class a way to de-alias a main effect.  Use that method to show that the other 8 experiments to de-alias factor **C** would just be the other 8 experiment not included in your first half-fraction.
+		*	What is the projectivity of the half-fraction used in the last question?
+		*	What does this mean in light of the fact that factor **A** was shown to be unimportant?
+
+.. question::
+
+	Your group is developing a new product, but have been struggling to get the product's stability, measured in days, to the level required.  You are aiming for a stability value of 50 days or more.  Four factors have been considered:
+
+	*	**A** = monomer concentration:	30% or 50%
+	*	**B** = acid concentration: low or high
+	*	**C** = catalyst level:	2% or 3%
+	*	**D** = temperature: 393K or 423K
+
+	These eight experiments have been run so far:
+
+	.. tabularcolumns:: |l|l||c|c|c|c|c|
+
+	+-----------+-------+---------------+-----------------+-----------------+-----------------+-----------------+
+	| Experiment| Order | A             | B               | C               | D               | Stability       |
+	+===========+=======+===============+=================+=================+=================+=================+
+	| 1         | 5     | |-|           | |-|             | |-|             | |-|             | 40              |
+	+-----------+-------+---------------+-----------------+-----------------+-----------------+-----------------+
+	| 2         | 6     | |+|           | |-|             | |-|             | |+|             | 27              |
+	+-----------+-------+---------------+-----------------+-----------------+-----------------+-----------------+
+	| 3         | 1     | |-|           | |+|             | |-|             | |+|             | 35              |
+	+-----------+-------+---------------+-----------------+-----------------+-----------------+-----------------+
+	| 4         | 4     | |+|           | |+|             | |-|             | |-|             | 21              |
+	+-----------+-------+---------------+-----------------+-----------------+-----------------+-----------------+
+	| 5         | 2     | |-|           | |-|             | |+|             | |+|             | 39              |
+	+-----------+-------+---------------+-----------------+-----------------+-----------------+-----------------+
+	| 6         | 7     | |+|           | |-|             | |+|             | |-|             | 27              |
+	+-----------+-------+---------------+-----------------+-----------------+-----------------+-----------------+
+	| 7         | 3     | |-|           | |+|             | |+|             | |-|             | 27              |
+	+-----------+-------+---------------+-----------------+-----------------+-----------------+-----------------+
+	| 8         | 8     | |+|           | |+|             | |+|             | |+|             | 20              |
+	+-----------+-------+---------------+-----------------+-----------------+-----------------+-----------------+
+
+	Where would you run the next experiment to try get the stability above 50 or greater?
+
+.. question::
+	
+	The following diagram shows data from a central composite design. The factors were run at their standard levels, and there were 4 runs at the center point.  
+
+	*	Calculate the parameters for a suitable quadratic model in these factors.  Show your matrices for :math:`\mathbf{X}` and :math:`\mathbf{y}`.  
+	*	Draw a response surface plot of **A** *vs* **B** over a suitably wide range beyond the experimental region.  
+	*	Where would you move **A** and **B** if your objective is to increase the response value?
+
+	.. figure:: images/central-composite-question.png
+		:align: center
+		:width: 500px
+		:scale: 60%
+		:alt:	images/central-composite-question.svg
+
+	You might feel more comfortable setting up the problem in MATLAB.  You can use the `contour plot <http://www.mathworks.com/access/helpdesk/help/techdoc/creating_plots/f10-2524.html>`_ functions in MATLAB to visualize the results.
+
+	If you are using R, you can use the ``rbind(...)`` or ``cbind(...)`` functions to build up your :math:`\mathbf{X}` matrix row-by-row or column-by-column.  The equivalent of meshgrid in R is the ``expand.grid(...)`` function.  I will add some notes to the `R tutorial <http://stats4.eng.mcmaster.ca/wiki/R_tutorial>`_ that show how to generate surface plots in R.
+
+.. question::
+
+	A full :math:`2^3` factorial was run as shown:
+
+	.. tabularcolumns:: |l|c|c|c|c||c|
+
+	+-----------+---------------+-----------------+-----------------+
+	| Experiment| A             | B               | C               |
+	+===========+===============+=================+=================+
+	| 1         | 30%           | 232             | Larry           |
+	+-----------+---------------+-----------------+-----------------+
+	| 2         | 50%           | 232             | Larry           |
+	+-----------+---------------+-----------------+-----------------+
+	| 3         | 30%           | 412             | Larry           |
+	+-----------+---------------+-----------------+-----------------+
+	| 4         | 50%           | 412             | Larry           |
+	+-----------+---------------+-----------------+-----------------+
+	| 5         | 30%           | 232             | Terry           |
+	+-----------+---------------+-----------------+-----------------+
+	| 6         | 50%           | 232             | Terry           |
+	+-----------+---------------+-----------------+-----------------+
+	| 7         | 30%           | 412             | Terry           |
+	+-----------+---------------+-----------------+-----------------+
+	| 8         | 50%           | 412             | Terry           |
+	+-----------+---------------+-----------------+-----------------+
+
+	*	What would be the D-optimal objective function value for the usual full :math:`2^3` factorial model?
+	*	If instead experiment 2 was run at (A,B,C) = (45%, 200, Larry), and experiment 3 run at (A, B, C) = (35%, 400, Larry); what would be the D-optimal objective function value?
+	*	What is the ratio between the two objective function values?
+
