@@ -31,8 +31,9 @@ sys.path.append(os.getcwd())
 extensions = ['sphinx.ext.todo', 'sphinx.ext.pngmath', 'sphinx.ext.ifconfig']
 # Custom extensions
 sys.path.append(os.path.abspath(os.getcwd()))
-extensions.append('ucomment-extension')
-html_translator_class = 'ucomment-extension.ucomment_html_translator'
+extensions.append('q-and-a')
+#extensions.append('ucomment-extension')
+#html_translator_class = 'ucomment-extension.ucomment_html_translator'
 
 
 # Add any paths that contain templates here, relative to this directory.

@@ -1,19 +1,13 @@
 In context
 ==========
 
-In the context of the rest of the course: this is the first class in the course.  **Why**?  Every engineer has heard the phrase *"plot your data"* but seldom are we shown what appropriate plots look like.
+This is the first chapter in the book. **Why**?  Every engineer has heard the phrase *"plot your data"* but seldom are we shown what appropriate plots look like.
 
-Subsection
-~~~~~~~~~~~
-
-Lalala
-
-Subsubsection
-^^^^^^^^^^^^^^^^
-  
-In this class we consider quantitative plots (plots that show numbers).  We cover different plots that will help you effectively learn more from your data.
+In this section we consider quantitative plots -- plots that show numbers.  We cover different plots that will help you effectively learn more from your data.
 We end with a list of tips for effective data visualization.
 
+.. index::
+	pair: usage examples; Data visualization
 
 Usage examples
 ==============
@@ -29,7 +23,7 @@ The material in this section is used when you must learn more about your system 
 	
 	* *Manager*:  how can we effectively summarize the (a) number and (b) types of defects on our 17 aluminium grades for the last 12 months?
 	
-	* *Yourself*: we have 24 different measurements against time (5 readings per minute, over 300 minutes) for each batch of methadone we produce; how can we visualize these 36,000 data points?
+	* *Yourself*: we have 24 different measurements against time (5 readings per minute, over 300 minutes) for each batch we produce; how can we visualize these 36,000 data points?
 
 
 What we will cover
@@ -39,37 +33,44 @@ What we will cover
 	:alt:	images/visualization-subject-mapping.xmind
 	:width: 750px
 	:align: center
-	:scale: 75%
+	:scale: 75
+
+.. index::
+	pair: references and readings; Data visualization
 
 References and readings
 =======================
 
-#. Edward Tufte, *Envisioning information*, Graphics Press, 1990. (10th printing in 2005)
-#. Edward Tufte, *The visual display of quantitative information*, Graphics Press, 2001.
-#. Edward Tufte, *Visual explanations: Images and Quantities, Evidence and Narrative*, 2nd edition, Graphics Press, 1997.
-#. Stephen Few, *Show me the numbers*, Analytics Press, 2004.
-#. William Cleveland, *Visualizing data*, Hobart Press; 1st edition, 1993.
-#. William Cleveland, *The elements of graphing data*, Hobart Press; 2nd edition, 1994.
-#. Su, `It's easy to produce chartjunk using Microsoft Excel 2007 but hard to make good graphs <http://dx.doi.org/10.1016/j.csda.2008.03.007>`_, *Computational Statistics and Data Analysis*, **52** (10), 4594-4601, 2008.
+#. Edward Tufte, *Envisioning Information*, Graphics Press, 1990. (10th printing in 2005)
+#. Edward Tufte, *The Visual Display of Quantitative Information*, Graphics Press, 2001.
+#. Edward Tufte, *VisuAl Explanations: Images and Quantities, Evidence and Narrative*, 2nd edition, Graphics Press, 1997.
+#. Stephen Few, *Show Me the Numbers*, Analytics Press, 2004.
+#. William Cleveland, *Visualizing Data*, Hobart Press; 1st edition, 1993.
+#. William Cleveland, *The ElemenTs of Graphing Data*, Hobart Press; 2nd edition, 1994.
+#. Su, `It's Easy to Produce Chartjunk Using Microsoft Excel 2007 but Hard to Make Good Graphs <http://dx.doi.org/10.1016/j.csda.2008.03.007>`_, *Computational Statistics and Data Analysis*, **52** (10), 4594-4601, 2008.
+
+.. index::
+	pair: time-series plots; Data visualization
 
 Time-series plots
 =================
-We start off considering a plot most often seen in Engineering applications: the time-series plot.  It is a 2-dimensional plot where one axis, the time-axis, shows graduations at an appropriate scale (seconds, minutes, weeks, quarters, years), while the other axis shows the data.  Usually the time-axis is displayed horizontally, but this is not a requirement: some interesting analysis can be done with time running vertically.  The time-series plot is a univariate plot (shows only one variable).
+
+We start off considering a plot most often seen in engineering applications: the time-series plot.  It is a 2-dimensional plot where one axis, the time-axis, shows graduations at an appropriate scale (seconds, minutes, weeks, quarters, years), while the other axis shows the data.  Usually the time-axis is displayed horizontally, but this is not a requirement: some interesting analysis can be done with time running vertically.  The time-series plot is a univariate plot (shows only one variable).
 
 Many statistical packages will call this a line plot, as it can be used quite generally to display any sort of sequence, whether it is along time, or some other ordering.  They are excellent plots for visualizing long sequences of data.  They tell a visual story along the sequence axis and the human brain is incredibly adept at absorbing this high density of data,  locating patterns in the data such as sinusoids, spikes, outliers, and separating noise from signal.
 
 Here are some tips for effective plots:
 
-1. The software should have horizontal and vertical zooming ability.  Once zoomed in, there must be tools to scroll up, down, left and right.
+1.	The software should have horizontal and vertical zooming ability.  Once zoomed in, there must be tools to scroll up, down, left and right.
 
-2. Always label the x-axis appropriately with (time) units that make sense.  This plot, found on the internet, shows a computer's temperature with time.  There are several problems with the plot, but the key issue here is the x-axis.  This plot is probably the result of poor default settings in the software; but as you will see, bad defaults are very common in most software packages.  They waste your time when you have to repeatedly modify the charts.  Good software will sensibly re-label the time-based axis as you do this.
+2.	Always label the x-axis appropriately with (time) units that make sense.  This plot, found on the internet, shows a computer's temperature with time.  There are several problems with the plot, but the key issue here is the x-axis.  This plot is probably the result of poor default settings in the software; but as you will see, bad defaults are very common in most software packages.  They waste your time when you have to repeatedly modify the charts.  Good software will sensibly re-label the time-based axis as you do this.
 
 	.. figure:: images/CPU-temperature_-_from_www_aw_org_on_26_Dec_2009.png
 		:width: 750px
 		:align: center
 		:scale: 50%
 	
-3. When plotting more than one trajectory against time, it is helpful if the lines do not cross and jumble.  This allows you to clearly see the correlation.  The use of a second x-axis is helpful, but when plotting 3 or more trajectories that are in the same numeric range, rather use several parallel axes as shown later.  
+3.	When plotting more than one trajectory against time, it is helpful if the lines do not cross and jumble.  This allows you to clearly see the correlation.  The use of a second x-axis is helpful, but when plotting 3 or more trajectories that are in the same numeric range, rather use several parallel axes as shown later.  
 
 	Even using differently coloured lines and/or markers may work in selected instances, but this still leads to a clutter of lines and markers.  The  chart here shows this principle, drawn using the default settings from Apple iWork's Numbers (2009).
 
@@ -86,7 +87,7 @@ Here are some tips for effective plots:
 	.. figure:: images/3_correlated_variables_-_better.png
 		:width: 750px
 
-4. Continuing on with the previous point, the next step is to use `sparklines <http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR>`_ to represent the sequence of data.
+4.	Continuing on with the previous point, the next step is to use `sparklines <http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR>`_ to represent the sequence of data.
 
          .. figure:: images/3-correlated-variables-as-sparklines.png
             :scale: 25%
@@ -95,14 +96,17 @@ Sparklines are small graphics that carry a high density of information.  The hum
 
 Some further tips:
 
-- When plotting money values over time (e.g. sales of polymer composite over the past 10 years), adjust for inflation effects by dividing through by the consumer price index, or an appropriate factor.  Distortions due to the time value of money can be very misleading as this example of car sales shows: http://www.duke.edu/~rnau/411infla.htm.   A Canadian inflation calculator is available from the Bank of Canada: http://www.bankofcanada.ca/en/rates/inflation_calc.html
+-	When plotting money values over time (e.g. sales of polymer composite over the past 10 years), adjust for inflation effects by dividing through by the consumer price index, or an appropriate factor.  Distortions due to the time value of money can be very misleading as this example of car sales shows: http://www.duke.edu/~rnau/411infla.htm.   A Canadian inflation calculator is available from the Bank of Canada: http://www.bankofcanada.ca/en/rates/inflation_calc.html
 
-- If you ever get the feeling "why are we being shown so little", then you must request more data before and after the time period or current sequence shown. A typical example is with stock-price data (see example figure of Apple's stock). There are numerous graphical "lies" in magazines and reports where the plot shows a drastic change in trend, however in the context of prior data, that trend is a small aberration.  Again, this brings into play the brain's remarkable power to discern signal from noise, but to do this our brains require context. 
+-	If you ever get the feeling "why are we being shown so little", then you must request more data before and after the time period or current sequence shown. A typical example is with stock-price data (see example figure of Apple's stock). There are numerous graphical "lies" in magazines and reports where the plot shows a drastic change in trend, however in the context of prior data, that trend is a small aberration.  Again, this brings into play the brain's remarkable power to discern signal from noise, but to do this our brains require context. 
 
 	.. figure:: images/AAPL-stock-prices.png
 		:width: 750px
 		:scale: 100%
 		:align: center
+		
+.. index::
+	pair: bar plots; Data visualization
 
 Bar plots
 =========
@@ -114,9 +118,9 @@ The bar plot is another univariate plot on a two dimensional axis.  The axes are
 
 Some advice related to bar plots:
 
-- Use a bar plot when there are many categories, and interpretation of the plot does not differ if the category axis is reshuffled.  (It might be easier to interpret the plot with a particular ordering, however the interpretation won't be different with a different ordering).
+-	Use a bar plot when there are many categories, and interpretation of the plot does not differ if the category axis is reshuffled.  (It might be easier to interpret the plot with a particular ordering, however the interpretation won't be different with a different ordering).
 
-- A time-series plot is more appropriate than a bar plot when there is a time based ordering to the categories, because usually you want to imply some sort of trend with time-ordered data. 
+-	A time-series plot is more appropriate than a bar plot when there is a time based ordering to the categories, because usually you want to imply some sort of trend with time-ordered data. 
 
 	.. figure:: images/quarterly-profit-barplot-vs-lineplot.png
 		:alt:	images/quarterly-profit-barplot.R
@@ -124,7 +128,7 @@ Some advice related to bar plots:
 		:align: center
 		:scale: 100%
 
-- Bar plots can be wasteful as each data point is repeated several times:
+-	Bar plots can be wasteful as each data point is repeated several times:
 
 	#. left edge (line) of each bar
 	#. right edge (line) of each bar
@@ -142,7 +146,7 @@ Some advice related to bar plots:
 		\text{Maximize data ink ratio} &= \frac{\text{total ink for data}}{\text{total ink for graphics}}     \\
 		                              &= 1 - \text{proportion of ink that can be erased without loss of data information}
 
-- Rather use a table for a handful of data points:
+-	Rather use a table for a handful of data points:
 
     .. figure:: images/profit-by-region.png
 		:alt:	images/profit-by-region.numbers
@@ -150,7 +154,7 @@ Some advice related to bar plots:
 		:align: center
 		:scale: 100%
 
-- Don't use cross-hatching, textures, or unusual shading in the plots: this creates distracting visual vibrations.
+-	Don't use cross-hatching, textures, or unusual shading in the plots: this creates distracting visual vibrations.
 
 	.. figure:: images/hatched-barplot.png
 		:alt:	images/hatched-barplot.R
@@ -162,19 +166,22 @@ Some advice related to bar plots:
   Stack bar plots are OK, they show breakdowns quite nicely, even though one has to read the accompanying text carefully to make sure the break down is what you think it is.  Never underestimate the audience's intelligence.
   - My preference is to avoid stacked bar plots.  I'm never sure, until I read the text carefully, or the plot annotations, whether the bars represent a cumulative amount or an incremental amount.  Is the blue region showing 25% or 15%?
 
-- Use horizontal bars if:
+-	Use horizontal bars if:
 
 	- there is a some ordering to the categories (it is often easier to read these from top-to-bottom), or
 	- the labels do not fit side-by-side: don't make the reader have to rotate the page to interpret the plot, rotate the plot for the reader.
 	
-- You can place the labels inside the bars.
+-	You can place the labels inside the bars.
 
-- You should start the non-category axis at zero: the bar's area shows the magnitude.  Starting bars at a non-zero value distorts the meaning.
+-	You should start the non-category axis at zero: the bar's area shows the magnitude.  Starting bars at a non-zero value distorts the meaning.
 
 .. 
   Exception to starting at zero: todo Few, p 189 (ranges)
 
 
+.. index::
+	pair: box plots; Data visualization
+	
 Box plots
 ==========
 
@@ -190,7 +197,7 @@ The box plot shows the so-called *five-number summary* of a univariate data seri
 
 The 25th percentile is the value below which 25 percent of the observations in the sample are found. The distance from the 3rd to the 1st quartile is also known as the interquartile range (IQR) and represents the data's spread, similar to the standard deviation.
 
-The following data are thickness measurements of 2-by-6 boards, taken at 6 locations around the edge.  Here is a sample of the measurements, and a summary of the first hundred boards:
+The following data are thickness measurements of 2-by-6 boards, taken at 6 locations around the edge.  Here is a sample of the measurements, and a summary of the first hundred boards created in ``R``:
 
 .. code-block:: text
 
@@ -229,7 +236,9 @@ Variations for the box plot are possible:
 - outliers shown as dots, where an outlier is most commonly defined as any point 1.5 IQR distance units above and below the median (the upper and lower hinges).
 - using the 2% and 95% percentile rather than the upper and lower hinge values.
 
-
+.. index::
+	pair: scatter plots; Data visualization
+	
 Relational graphs: scatter plots
 =================================
 
@@ -256,32 +265,34 @@ You will see this in industrial settings as well.  Next time you go into the con
 
 	Assume that if you can understand the plot, so will your audience.
 
-	
+
 Further improvements can be made to your scatter plots:
 
-- Extend the frames only as far as your data
-    
-    .. figure:: images/scatterplot-figures-with-regression-lines.png
+-	Extend the frames only as far as your data
+	
+	.. figure:: images/scatterplot-figures-with-regression-lines.png
 	    :width: 750px
 
-- One can add box plots and histograms to the side of the axes to aide interpretation
+-	One can add box plots and histograms to the side of the axes to aide interpretation
 
-    .. figure:: images/scatterplot-with-histograms-updated.png
-      :width: 750px
-      :align: left
-      :scale: 55%
+	.. figure:: images/scatterplot-with-histograms-updated.png
+		:width: 750px
+		:align: left
+		:scale: 55%
 
 - Add a third variable to the plot by adjusting the marker size and add a fourth variable with the use of colour:
-	
+
     .. _reference-to-use-of-colour:
 
-
-    .. figure:: images/scatterplot-with-2-extra-dimensions.png
-      :width: 750px
+	.. figure:: images/scatterplot-with-2-extra-dimensions.png
+		:width: 750px
 
 
     This example, from `http://gapminder.org <http://graphs.gapminder.org/world/#$majorMode=chart$is;shi=t;ly=2003;lb=f;il=t;fs=11;al=30;stl=t;st=t;nsl=t;se=t$wst;tts=C$ts;sp=6;ti=2007$zpv;v=0$inc_x;mmid=XCOORDS;iid=phAwcNAVuyj1jiMAkmq1iMg;by=ind$inc_y;mmid=YCOORDS;iid=phAwcNAVuyj0TAlJeCEzcGQ;by=ind$inc_s;uniValue=30;iid=phAwcNAVuyj0XOoBL_n5tAQ;by=ind$inc_c;uniValue=255;gid=CATID0;iid=phAwcNAVuyj2tPLxKvvnNPA;by=ind$map_x;scale=log;dataMin=194;dataMax=96846$map_y;scale=log;dataMin=0.855;dataMax=8.7$map_s;sma=49;smi=1.85$map_c;scale=lin$cd;bd=0$inds=>`_, shows data as of 2007 for income per person against fertility.  The size of each data point is proportional to the country's population and the marker colour shows life expectancy at birth (years).  The GapMinder website allows you to "play" the graph over time, effectively adding a 5th dimension to the 2D plot.  Use the hyperlink above to see how richer countries move towards lower fertility and higher income over time.
 
+.. index::
+	pair: tables; Data visualization
+		
 Tables 
 ======
 
@@ -289,43 +300,46 @@ The table is an efficient format for comparative data analysis on categorical ob
 
 The following examples demonstrate this:
 
-* Compare monthly payments for buying or leasing various cars (categories).  The first two columns are being compared; the other columns contain additional, secondary information.
+*	Compare monthly payments for buying or leasing various cars (categories).  The first two columns are being compared; the other columns contain additional, secondary information.
 
 	.. figure:: images/table-car-payments.png
 		:alt:	images/table-examples.numbers
 		:align: center
 		:scale: 75%
 
-* Compare defect types (number of defects) for different product grades (categories):
+*	Compare defect types (number of defects) for different product grades (categories):
 
 	.. figure:: images/table-defect-counts.png
 		:alt:	images/table-examples.numbers
 		:align: center
 		:scale: 50%
 
-  This particular table raises more questions:
-  
-  - Which defects cost us the most money? 
-  - Which defects occur most frequently?  The table does not contain any information about production rate.  For example, if there are 1850 lots of grade A4636 (first row) produced, then defect A occurs at a rate of 37/1850 = 1/50.  And if 250 lots of grade A2610 (last row) were produced, then again, defect A occurs at a rate of 1/50.  Redrawing the table on a production rate basis would be useful if we are making changes to the process and want to target the most problematic defect.
-  - If we are comparing a type of defect over different grades, then we are now comparing down the table, instead of across the table.  In this case, the fraction of defects for each grade would be a more useful quantity to display.
-  - If we are comparing defects within a grade, then we are comparing across the table.  Here again, the fraction of each defect type, weighted according to the cost of that defect, would be more appropriate.
+	This particular table raises more questions:
+
+	-	Which defects cost us the most money? 
+	-	Which defects occur most frequently?  The table does not contain any information about production rate.  For example, if there are 1850 lots of grade A4636 (first row) produced, then defect A occurs at a rate of 37/1850 = 1/50.  And if 250 lots of grade A2610 (last row) were produced, then again, defect A occurs at a rate of 1/50.  Redrawing the table on a production rate basis would be useful if we are making changes to the process and want to target the most problematic defect.
+	-	If we are comparing a type of defect over different grades, then we are now comparing down the table, instead of across the table.  In this case, the fraction of defects for each grade would be a more useful quantity to display.
+	-	If we are comparing defects within a grade, then we are comparing across the table.  Here again, the fraction of each defect type, weighted according to the cost of that defect, would be more appropriate.
 
 
 Three common pitfalls to avoid:
 
-#. Using pie charts when tables will do:
+#.	Using pie charts when tables will do
+
 	Pie charts are tempting when we want to graphically breakdown a quantity into components.  I myself have erroneously used them (here is an example on a website that I helped with: http://macc.mcmaster.ca/graduate-students/where-do-they-work).  We won't go into details here, but I strongly suggest you read the convincing evidence of Stephen Few in: *"Save the pies for dessert"*, http://www.perceptualedge.com/articles/08-21-07.pdf  The key problem is that the human eye cannot adequately decode angles, however we have no problem with linear data.
 	
-#. Arbitrary ordering along the first column; usually alphabetically or in time order:
+#.	Arbitrary ordering along the first column; usually alphabetically or in time order
+
 	Listing the car types alphabetically is trivial: rather list them by some other 3rd criterion of interest: perhaps minimum down payment required, or typical lease duration, or total amount of interest paid on the loan.  That way you get some extra context to the table for free.
 	
-#. Using excessive grid lines:
+#.	Using excessive grid lines
+
 	Tabular data should avoid vertical grid lines, except when the columns are so close that mistakes will be made.  The human eye will use the visual white space between the numbers to create its own columns.
 	
- .. figure:: images/table-grid-comparison.png
-    :scale: 65%
+	.. figure:: images/table-grid-comparison.png
+		:scale: 65%
 
-To wrap up this section is a demonstration of tabular data in a different format, based on an idea of Tufte in *The visual display of quantitative information*, page 158.  Here we compare the corrosion resistance and roughness of a steel surface for two different types of coatings, A and B. 
+To wrap up this section is a demonstration of tabular data in a different format, based on an idea of Tufte in *THe Visual Display of Quantitative Information*, page 158.  Here we compare the corrosion resistance and roughness of a steel surface for two different types of coatings, A and B. 
 
 A layout that you expect to see in a standard engineering report:
 
@@ -361,69 +375,149 @@ Topics of aesthetics and style
 
 We won't cover these in the course, however Tufte's books contain remarkable examples that discuss effective use of colour for good contrast, varying line widths, and graph layout (use more horizontal than vertical - an aspect ratio of about 1.4 to 2.0; and flow the graphics into the location in the text where discussed).
 
-Data frames 
-===========
+Data frames (axes)
+===================
 
 Frames are the basic containers that surround the data and give context to our numbers.  Here are some tips:
 
-#. Use round numbers
-#. Generally tighten the axes as much as possible, except ...
-#. When showing comparison plots: then all axes must have the same minima and maxima (see the exercise regarding the Economist figure).
- 
+#.	Use round numbers
+#.	Generally tighten the axes as much as possible, except ...
+#.	When showing comparison plots: then all axes must have the same minima and maxima (see the exercise regarding the :ref:`Economist figure <economist-question>`).
+
+.. index::
+	pair: colour; Data visualization
 
 Colour
 ======
 
-Colour is very effective in all graphical charts, however you must bear in mind that your readers might be colour-blind, or the document might be read from a gray-scale print out.  
+Colour is very effective in all graphical charts, however you must bear in mind that your readers might be colour-blind, or the document might be read from a grayscale print out.  
 
-Note also that a standard colour progression does *not* exist.  We often see dark blues and purples representing low numbers and reds the higher numbers, with greens, yellows, and orange in between.  Also, there are several such colour schemes - there isn't a universal standard.  The only safest colour progression is the gray-scale axis, ranging from blacks to white at each extreme: this satisfies both colour-blind readers and users of your gray-scale printed output.
+Note also that a standard colour progression does *not* exist.  We often see dark blues and purples representing low numbers and reds the higher numbers, with greens, yellows, and orange in between.  Also, there are several such colour schemes - there isn't a universal standard.  The only safest colour progression is the grayscale axis, ranging from blacks to white at each extreme: this satisfies both colour-blind readers and users of your grayscale printed output.
 
 See the :ref:`section on scatter plots <reference-to-use-of-colour>` for an example of the effective use of colour.
-
 
 General summary: revealing complex data graphically
 ======================================================
 
 One cannot provide generic advice that applies in every instance.  These tips are useful though in most cases:
 
-- If the question you want answered is to understand causality, then show causality (the most effective way is with bivariate scatter plots).  If trying to answer a question with alternatives: show comparisons (with tiles of plots, or a simple table).
+-	If the question you want answered is to understand causality, then show causality (the most effective way is with bivariate scatter plots).  If trying to answer a question with alternatives: show comparisons (with tiles of plots, or a simple table).
 
-- Words and graphics belong together: add labels to plots for outliers and explain interesting points; add equations and even small summary tables on top of your plots.  Remember a graph should be like a paragraph of text, not necessarily just a graphical display of numbers which are discussed later on.
+-	Words and graphics belong together: add labels to plots for outliers and explain interesting points; add equations and even small summary tables on top of your plots.  Remember a graph should be like a paragraph of text, not necessarily just a graphical display of numbers which are discussed later on.
  
-- Avoid obscure coding on the graph: don't label points as "A", "B", "C", .... and then put a legend: "A: grade TK133", "B: grade RT231", "C: grade TK134".  Just put the labels directly on the plot.
+-	Avoid obscure coding on the graph: don't label points as "A", "B", "C", .... and then put a legend: "A: grade TK133", "B: grade RT231", "C: grade TK134".  Just put the labels directly on the plot.
 
-- Do not assume your audience is ignorant and won't understand a complex plot.  Conversely, don't try to enliven a plot with decorations and unnecessary graphics (flip through a copy of almost any weekly news magazine to examples of this sort of embellishment).  As Tufte mentions more than once in his books: "*If the statistics are boring, then you've got the wrong numbers.*".  The graph should stand on its own.
+-	Do not assume your audience is ignorant and won't understand a complex plot.  Conversely, don't try to enliven a plot with decorations and unnecessary graphics (flip through a copy of almost any weekly news magazine to examples of this sort of embellishment).  As Tufte mentions more than once in his books: "*If the statistics are boring, then you've got the wrong numbers.*".  The graph should stand on its own.
 
-- When the graphics involve money and time, make sure you adjust the money for inflation.
+-	When the graphics involve money and time, make sure you adjust the money for inflation.
 
-- Maximize the data-ink ratio = (ink for data) / (total ink for graphics).  Maximizing this ratio, within reason, means you should (a) eliminate non-data ink and (b) erase redundant data-ink.
+-	Maximize the data-ink ratio = (ink for data) / (total ink for graphics).  Maximizing this ratio, within reason, means you should (a) eliminate non-data ink and (b) erase redundant data-ink.
 
-- Maximize data density: humans can interpret data displays of 250 data points per linear inch, and 625 data points per square inch.
+-	Maximize data density: humans can interpret data displays of 250 data points per linear inch, and 625 data points per square inch.
 	
+	
+.. index::
+	pair: exercises; Data visualization
+
 Exercises 
 =========
 
-- The following graphics were shown in the print issue of *The Economist* in the 28 November 2009 issue, page 85. The article attempts to argue that there are enough similarities between Japan's stagnant economic experience in the 1990's (known as "Japan's Lost Decade"), and the current experience in the "rich world" western countries to give their policymakers pause for concern.  You can read the full article here: http://www.economist.com/businessfinance/displaystory.cfm?story_id=14973163.  What problems do you notice with the graphics?
+.. question::
 
-  .. figure:: images/economist-figure-story-id-14973163.png
-     :align: center
-     :scale: 40%
+	.. _economist-question:
+	
+	The following graphics were shown in the print issue of *The Economist* in the 28 November 2009 issue, page 85. The article attempts to argue that there are enough similarities between Japan's stagnant economic experience in the 1990's (known as "Japan's Lost Decade"), and the current experience in the "rich world" western countries to give their policymakers pause for concern.  You can `read the full article here <http://www.economist.com/node/14973163?story_id=14973163>`_.  What problems do you notice with the graphics?
 
-- The figure here is a screen shot from a 2009 report on the Federal Reserve Bank of Dallas' website about the difficulty of forecasting inflation rates (http://www.dallasfed.org/research/eclett/2009/el0905.html).   Redraw the figure so that the chart's message is more clearly conveyed.
+	.. figure:: images/economist-figure-story-id-14973163.png
+		:align: center
+		:scale: 40%
+		
+.. answer::
 
-  .. figure:: images/Federal_Reserve_Bank_of_Dallas_-_Inflation_forecasting.png
-     :align: center
-     :scale: 50%
+	There are several problems with this graphical comparison, but the main concerns are with showing time trends as bar plots, and the alignment of the time trends.  
+	
+	- The purpose of the plot is to show the similarities between Japan in the 1990's to the current trends (2000's) in Britain and USA.  The data from 2000 onwards for Japan is therefore irrelevant in this case.
+	- The data are time-based: a bar-plot is a poor choice to show time-based trends.
+	- Notice the symmetry above and below the zero line: in colours: "light blue + grey = dark blue", i.e. "General government balance + Net capital inflow = Private financial balance".  Given this constraint, only 2 of the 3 variables are required.  As I'm not an economics expert, I have no idea which 2 of the 3 would be most relevant.
+	- The data for Japan from the 1990's should be shown on the same plot for USA and Britain for the 2000's, since that was the purpose - to show a comparison between Japan's experience and the USA/Britain experience. One way to do this: plot three lines on a time-series chart: one for each of Japan, Britain and USA for "General government balance".  The have a second plot, similar to the first, showing the "Private financial balance".
+	
+	Minor problems are:
 
-- This figure is a screen shot from a `Toronto Star article <http://www.yourhome.ca/homes/realestate/article/742160--mortgage-rate-roulette>`_ about mortgage payments as a function of the interest rate.  Redraw the same information in a more suitable form.
+	- The colour scheme is poor: four different shades of blue are used (two background shades, and two of the time-based parameters)
+	- The use of stacked bar plots is almost always problematic: the user is never sure if the bars are cumulative or additive, unless they know the subject matter or read the accompanying text.	
 
-  .. figure:: images/Toronto-Star-Mortgage-Rates.png
-      :align: center
+.. question::
 
-- Using the `Website traffic data set <http://stats4.eng.mcmaster.ca/wiki/Datasets#Website_traffic>`_ from the course website, create a chart that shows the variation in website traffic for each day of the week.  Use the same data set to describe any time-based trends that are apparent.
+	This figure is a screen shot from a `Toronto Star article <http://www.yourhome.ca/homes/realestate/article/742160--mortgage-rate-roulette>`_ about mortgage payments as a function of the interest rate.  Redraw the same information in a more suitable form.
+
+	.. figure:: images/Toronto-Star-Mortgage-Rates.png
+		:align: center
+
+	The data from this article are needlessly embellished with a picture of a house, a $20,000 bill and a stake in the ground.  
+
+	A simple annotated table will show the data well enough.  A bar chart, horizontally or vertically aligned is not suitable.
+
+	.. figure:: images/mortgage-repayment-table.png
+	    :align: center
+
+	Several people prefer using a scatter plot.  I never thought of that, but it also works to show the straight line relationship between interest rate and the monthly payment.  I suppose the advantage of that is that you can see (a) the relationship is linear, which is should be, and (b) you can visually interpolate the monthly payment given any interest rate between 2 and 5%.
+
+	A key point though: the mortgage amount and the amortization rate must be shown with the plot or table.  The cost of the house and the downpayment are actually irrelevant.  You are paying interest on the mortgage amount, where :math:`\text{mortgage amount} = \text{cost of the house} + \text{mortgage insurance} - \text{downpayment}`.  The table or the plot will change if either of those two variables change.  Your monthly payment is higher for shorter amortization periods, and for larger mortgage amounts.
+
+
+.. question::
+
+	Using the `Website traffic data set <http://stats4.eng.mcmaster.ca/wiki/Datasets#Website_traffic>`_ from the course website
+
+	#.	Create a chart that shows the variation in website traffic for each day of the week.  
+	#.	Use the same data set to describe any time-based trends that are apparent.
+
+.. answer::
+
+	#.	A boxplot is an effective way to summarize and compare the data for each day of the week. 
+
+		.. code-block:: s
+
+		    web <- read.csv('http://stats4.eng.mcmaster.ca/datasets/website-traffic.csv')
+
+		    # Re-order the factors in this order
+		    day.names <- c("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday","Thursday", "Friday" )
+		    days <- factor(web$DayOfWeek, level=day.names)
+		    boxplot(web$Visits ~ days)
+
+		.. figure:: images/website-traffic-boxplot.png
+		   :width: 500px
+
+		The boxplot shows:
+
+			- Much less website traffic on Saturdays and Sundays, especially Sunday which has less spread than Saturday.
+			- Visits increase during the weekday, peaking on Wednesday and then dropping down by Friday.
+			- This is a website of academic interest, so these trends are expected.
+	
+	#.	A time-series plot of the data shows increased visits in September and October, and declining visits in November and December.  This coincides with the phases of the academic term.  Some people use a plot of the total number of visits within each month, which shows this effect in a nice way. 
+
+	  .. figure:: images/website-traffic-sequence-and-timeseries.png
+	      :width: 750px
+	      :align: center
+
+	The best way to draw the time-series plot is to use proper time-based labelling on the x-axis, but we won't cover that in this course.  If you are interested, read up about the ``xts`` package (`see part 2 of the R tutorial <http://stats4.eng.mcmaster.ca/wiki/R_tutorial/Part_2>`_) and it's plot command.  See how it is used in the code below::
+
+		web <- read.csv('http://stats4.eng.mcmaster.ca/datasets/website-traffic.csv')
+
+		layout(matrix(c(1,2), 1, 2))
+		plot(web$Visits, type="o")
+
+		# A better plot using the xts library
+		library(xts)
+		date.order <- as.Date(web$MonthDay, format=" %B %d")
+		web.visits <- xts(web$Visits, order.by=date.order)
+		plot(web.visits, major.format="%b")
+
 
 .. todo:: scatter plot example
 .. todo:: spectral data example
 .. todo:: batch data example
 
-- Enrichment exercise: Watch `this 20 minute video <http://www.ted.com/index.php/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen.html>`_ that shows how a 2-dimensional plot comes alive to show 5 dimensions of data.
+..	question::
+
+	*Enrichment*: Watch `this 20 minute video <http://www.ted.com/index.php/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen.html>`_ that shows how a 2-dimensional plot comes alive to show 5 dimensions of data.
