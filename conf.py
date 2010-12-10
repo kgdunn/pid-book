@@ -100,6 +100,10 @@ pygments_style = 'sphinx'
 #modindex_common_prefix = []
 
 # These substitutions apply to every RST file
+rst_prolog = """
+.. meta:: 
+   :http-equiv=X-UA-Compatible: IE=EmulateIE7
+"""
 
 rst_epilog = """
 .. |x| replace:: :math:`\mathrm{x}`
