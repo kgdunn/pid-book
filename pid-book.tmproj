@@ -20,9 +20,11 @@
 			<key>filename</key>
 			<string>conf.py</string>
 			<key>lastUsed</key>
-			<date>2010-12-10T15:10:37Z</date>
+			<date>2010-12-10T16:06:20Z</date>
 		</dict>
 		<dict>
+			<key>expanded</key>
+			<true/>
 			<key>name</key>
 			<string>data-visualization</string>
 			<key>regexFolderFilter</key>

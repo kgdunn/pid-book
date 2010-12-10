@@ -394,27 +394,11 @@ What we will cover
 References and readings
 ========================
 
-These readings cover a variety of topics in the area of latent variable methods:
-
-* **About PCA**: Svante Wold, Kim Esbensen, Paul Geladi: "`Principal component analysis <http://dx.doi.org/10.1016/0169-7439(87)80084-9>`_", *Chemometrics and Intelligent Laboratory Systems*, **2**, 37-52, 1987.
-
-* **About PLS**: Svante Wold, Michael Sjöström, Lennart Eriksson: "`PLS-regression: a basic tool of chemometrics <http://dx.doi.org/10.1016/S0169-7439(01)00155-1>`_", *Chemometrics and Intelligent Laboratory Systems*, **58**, 109-130, 2001.
-
-* **On PLS**: S. Wold, S. Hellberg, T. Lundstedt, M. Sjöström and H. Wold, "`PLS modeling with latent variables in two or more dimensions <http://stats4.eng.mcmaster.ca/papers/Wold_-_PLS_modeling_with_latent_variables_in_two_or_more_dimensions.pdf>`_", Frankfurt PLS meeting, 1987.
-
-* **Another PLS paper**: Paul Geladi and Bruce Kowalski, "`Partial least-squares regression: a tutorial <http://dx.doi.org/10.1016/0003-2670(86)80028-9>`_", *Analytica Chimica Acta*, **185**, 1-17, 1986.
+These readings cover a variety of topics in the area of latent variable methods: 
 
 * **General**: John MacGregor, Honglu Yu, Salvador García-Muñoz, Jesus Flores-Cerrillo, "`Data-based latent variable methods for process analysis, monitoring and control <http://dx.doi.org/10.1016/j.compchemeng.2005.02.007>`_". *Computers and Chemical Engineering*, **29**, 1217-1223, 2005.
 
 * **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold:  "Multivariate and Megavariate Data Analysis" (Parts I and II): chapters 1 to 8 of Part I are particularly relevant to this course.
-
-* **Process monitoring**: John MacGregor and Theodora Kourti "`Statistical process control of multivariate processes <http://dx.doi.org/10.1016/0967-0661(95)00014-L>`_", *Control Engineering Practice*, **3**, p 403-414, 1995.
-
-* **Process monitoring**: J.V. Kresta, T.E. Marlin, and J.F. MacGregor "`Multivariate statistical monitoring of process operating performance <http://dx.doi.org/10.1002/cjce.5450690105>`_", *Canadian Journal of Chemical Engineering*, **69**, 35-47, 1991.
-
-* **Contribution plots**: P Miller, RE Swanson, CE Heckler, "Contribution plots: a missing link in multivariate quality control, *Applied Mathematics and Computer Science*, *8* (4), 775-792, 1998.
-
-* **Soft sensors**: J.V. Kresta, T.E. Marlin, and J.F. MacGregor, "`Development of inferential process models using PLS <http://dx.doi.org/10.1016/0098-1354(93)E0006-U>`_". *Computers and Chemical Engineering*, **18**, 597-611, 1994.
 
 .. Others:
 

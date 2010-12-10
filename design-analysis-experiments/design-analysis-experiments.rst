@@ -163,7 +163,7 @@ In context
 
 This section is a totally different approach to learning and understanding about (chemical engineering) systems than what you have seen in other courses.  Firstly, we use an empirical (non-theoretical) model to describe the system.  Secondly, we learn how to intentionally manipulate/perturb the system to learn more about it.
 
-We will use the tools of `least squares modelling <http://stats4.eng.mcmaster.ca/wiki/Least_squares_modelling>`_, `visualization <http://stats4.eng.mcmaster.ca/wiki/Visualizing_data>`_ and `univariate statistics <http://stats4.eng.mcmaster.ca/wiki/Review_of_univariate_statistics>`_ that we learned about earlier in the course.  We use these tools to analyze and interpret the data from our experiments.
+We will use the tools of :ref:`least squares modelling <SECTION-least-squares-modelling>`, :ref:`visualization <SECTION-data-visualization>` and :ref:`univariate statistics <SECTION-univariate-review>` that we learned about earlier in the course.  We use these tools to analyze and interpret the data from our experiments.
 
 In the final section of the course on latent variables we will take a look at learning more about our systems when the condition of independence between variables, required for designed experiments, is not met.  But for now we can use least squares and simpler tools, as designed experiments are intentionally orthogonal (independent).
 
@@ -268,7 +268,7 @@ So we can perform several runs (experiments) at level A, and then some runs at l
 Recap of group-to-group differences 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We have already seen in the `univariate statistics section <http://stats4.eng.mcmaster.ca/wiki/Review_of_univariate_statistics>`_ how to analyze this sort of data.  We first calculate a pooled variance, then a :math:`z`-value, and finally a confidence interval based on this :math:`z`.
+We have already seen in the `univariate statistics section <SECTION-univariate-review>`_ how to analyze this sort of data.  We first calculate a pooled variance, then a :math:`z`-value, and finally a confidence interval based on this :math:`z`.
 
 .. math::
 	s_P^2 &= \frac{(n_A -1) s_A^2 + (n_B-1)s_B^2}{n_A - 1 + n_B - 1}\\
@@ -315,7 +315,7 @@ where :math:`d_i` is an indicator variable.  For example :math:`d_i = 0` when us
 	group_difference(TK104, TK105)  # See Q4 in assignment 3 for this function
 	lm_difference(TK104, TK105)
 	
-Use this function in the same way you did in `question 4 of assignment 3 <http://stats4.eng.mcmaster.ca/wiki/Assignment_3_-_2010_-_Solution>`_.  For example, you will find that comparing TK104 and TK107 that :math:`z = 1.4056`, and the confidence interval was: :math:`-21.4 \leq \mu_{107} - \mu_{104}\leq 119`.  Similarly when coding :math:`d_i = 0` for reactor TK104 and :math:`d_i = 1` for reactor TK107, we get the least squares confidence interval: :math:`-21.4 \leq g \leq 119`.  This is a little surprising at first, because the first method first creates a pooled variance, calculates a :math:`z`-value and then a confidence interval.  The least squares method just builds a single linear model, and calculates the confidence interval using the model's standard error.
+Use this function in the same way you did in :ref:`the CO2 question from the least squares section <univariate-CO2-question>`.  For example, you will find that comparing TK104 and TK107 that :math:`z = 1.4056`, and the confidence interval was: :math:`-21.4 \leq \mu_{107} - \mu_{104}\leq 119`.  Similarly when coding :math:`d_i = 0` for reactor TK104 and :math:`d_i = 1` for reactor TK107, we get the least squares confidence interval: :math:`-21.4 \leq g \leq 119`.  This is a little surprising at first, because the first method first creates a pooled variance, calculates a :math:`z`-value and then a confidence interval.  The least squares method just builds a single linear model, and calculates the confidence interval using the model's standard error.
 
 .. _DOE-randomization:
 
