@@ -40,6 +40,9 @@ html_translator_class = 'ucomment-extension.ucomment_html_translator'
 ucomment = {}
 ucomment['django_application_path'] = '/home/kevindunn/webapps/pid_connectmv_com/pidbook/ucommentapp/'
 
+# MathJax settings:
+mathjax_path = ' '
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
