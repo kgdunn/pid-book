@@ -141,37 +141,6 @@ rst_epilog = """
 .. |xdb| replace:: :math:`\Bar{\Bar{x}}`
 """
 
-# -- Options for ucomments -----------------------------------------------------
-
-# Don't remove this line
-ucomment = {}
-
-# NOTE: There are two options for the configuration settings.  Chose only one
-#       option and comment the other options.
-
-#  1.   Edit these setting to point to your Django app, which contains
-#       all the other settings required to process the document files, and
-#       also to run the web-based Django app.   In this example the
-#       application is called "book".
-ucomment['django_application_path'] = '/var/django-projects/PID/book'
-
-
-#  2.   Edit these settings and comment out the settings above.
-
-# Which character is used to identify major sections within a chapter
-ucomment['section_div'] = '!'
-# How many consecutive characters do we look for to consider it a divider?
-ucomment['min_length_div'] = 3
-
-# TODO(KGD): complete the text for these settings still
-#ucomment['toc_doc'] = 'abc'
-#conf['media_dir']
-#html_class
-#skip_nodes_in_master_doc
-#skip_nodes_in
-#root_node_length
-
-
 # -- Options for HTML output ---------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  Major themes that come with
