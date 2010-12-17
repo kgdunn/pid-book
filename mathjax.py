@@ -55,8 +55,9 @@ def html_visit_displaymath(self, node):
 
 def builder_inited(app):
     if not app.config.mathjax_path:
-        raise ExtensionError('mathjax_path config value must be set for the '
-                             'mathjax extension to work')
+        #raise ExtensionError('mathjax_path config value must be set for the '
+        #                     'mathjax extension to work')
+        app.config.mathjax_path = 'http://mathjax.connectmv.com/MathJax.js'
     app.add_javascript(app.config.mathjax_path)
 
 def setup(app):

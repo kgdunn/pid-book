@@ -32,16 +32,17 @@ extensions = ['sphinx.ext.todo', 'sphinx.ext.pngmath', 'sphinx.ext.ifconfig']
 # Custom extensions
 sys.path.append(os.path.abspath(os.getcwd()))
 extensions.append('q-and-a')
-extensions.append('mathjax')
-extensions.append('ucomment-extension')
-html_translator_class = 'ucomment-extension.ucomment_html_translator'
+if os.path.exists('ucomment-extension'):
+    extensions.append('ucomment-extension')
+    html_translator_class = 'ucomment-extension.ucomment_html_translator'
 
 # Point to your Django application, which contains all the other settings required.
 ucomment = {}
 ucomment['django_application_path'] = '/home/kevindunn/webapps/pid_connectmv_com/pidbook/ucommentapp/'
 
 # MathJax settings:
-mathjax_path = ' '
+extensions.append('mathjax')
+#mathjax_path = ' '
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
