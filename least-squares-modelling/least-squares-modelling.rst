@@ -4,6 +4,12 @@
 	~~~~~
 	^^^^^
 	-----
+	
+	Linear regression in Python:
+	
+	>>> from scipy.stats import linregress
+	>>> slope, intercept, r, prob, stderr = linregress(a, b)
+	
 
 .. Plots to draw
 
@@ -349,7 +355,7 @@ The least squares model postulates that there is a linear relationship between m
 		\mathcal{E}\left\{\mathrm{y}\right\} &= \beta_0 + \beta_1 \mathrm{x} \\
 		\mathrm{y} &= \beta_0 + \beta_1 \mathrm{x} + \epsilon 
 		
-The :math:`\beta_0`, :math:`\beta_1` and :math:`\epsilon` terms are *population* parameters, which are unknown (cf. `section 2 <http://stats4.eng.mcmaster.ca/wiki/Review_of_univariate_statistics>`_ on univariate statistics).  The :math:`\epsilon` term represents any unmodelled components of the linear model, measurement error, and is simply called *the error* term.  Notice that the error is not due to :math:`x` - we will return to this point later.  Also, if there is no relationship between |x| and |y| then :math:`\beta_1 = 0`.
+The :math:`\beta_0`, :math:`\beta_1` and :math:`\epsilon` terms are *population* parameters, which are unknown (see the :ref`section on univariate statistics <univariate-popultion>`).  The :math:`\epsilon` term represents any unmodelled components of the linear model, measurement error, and is simply called *the error* term.  Notice that the error is not due to :math:`x` - we will return to this point later.  Also, if there is no relationship between |x| and |y| then :math:`\beta_1 = 0`.
 
 We develop **a particular method** (there are others) to estimate these parameters; these estimates are defined as :math:`b_0 = \hat{\beta_0}`, :math:`b_1 = \hat{\beta_1}` and :math:`e = \hat{\epsilon}`.  Using this new nomenclature we can write, for a particular observation :math:`i`:
 
@@ -803,7 +809,7 @@ Furthermore, our derivation for the confidence intervals of |b0| and |b1| requir
 Back to deriving confidence intervals for :math:`\beta_0` and :math:`\beta_1`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Recall from our discussions on `confidence intervals in section 2 <http://stats4.eng.mcmaster.ca/wiki/Review_of_univariate_statistics>`_ of the course that we need to know the mean and variance of the population from which |b0| and |b1| come.  Specifically:
+Recall from our discussions on :ref:`confidence intervals <univariate-confidence-intervals>` of the course that we need to know the mean and variance of the population from which |b0| and |b1| come.  Specifically:
 
 .. math::
 
@@ -1694,7 +1700,7 @@ For example:
 
 .. code-block:: s
 
-	> data <- read.csv('http://stats4.eng.mcmaster.ca/datasets/distillation-tower.csv')
+	> data <- read.csv('http://datasets.connectmv.com/file/distillation-tower.csv')
 	
 	# Using ordinary least squares
 	# -----------------------------
@@ -1793,7 +1799,7 @@ How do we quantify this predictive performance?  A common way is to calculate th
 
 The units of RMSEP and RMSEE are the same as the units of the |y|-variable.
 
-In the `latent variable <http://stats4.eng.mcmaster.ca/wiki/Latent_variable_methods:_PCA,_PCR,_and_applications>`_ section of the course we will introduce the concept of cross-validation to test a model.  Cross-validation uses the model training data to simulate the testing process.  So it is not as desirable as having a fresh testing data set, but it works well in many cases.  Cross-validation can be equally well applied to least squares models. We will revisit this topic later.
+In the :ref:`latent variable modelling <SECTION-latent-variable-modelling>` section of the course we will introduce the concept of cross-validation to test a model.  Cross-validation uses the model training data to simulate the testing process.  So it is not as desirable as having a fresh testing data set, but it works well in many cases.  Cross-validation can be equally well applied to least squares models. We will revisit this topic later.
 
 .. TODO: cf the book by Esbensen for other methods
 
@@ -1854,7 +1860,7 @@ Exercises
 
 .. question::
 
-	Use the `distillation column data set <http://stats4.eng.mcmaster.ca/wiki/Data_sets#Distillation_tower>`_ and choose any two variables, one for |x| and one as |y|.  Then fit the following models by least squares in any software package you prefer:
+	Use the `distillation column data set <http://datasets.connectmv.com/info/distillation-tower>`_ and choose any two variables, one for |x| and one as |y|.  Then fit the following models by least squares in any software package you prefer:
 
 		-	:math:`y_i = b_0 + b_1 x_i`
 		-	:math:`y_i = b_0 + b_1 (x_i - \bar{x})` (what does the :math:`b_0` coefficient represent in this case?)
@@ -1888,7 +1894,7 @@ Exercises
 		
 		where :math:`c_t` is the critical t-value, for example at the 95% confidence level.
 	
-	Use the `distillation column data set <http://stats4.eng.mcmaster.ca/wiki/Data_sets#Distillation_tower>`_ and with |y| as ``VapourPressure`` (units are kPa) and |x| as ``TempC2`` (units of degrees Farenheit) fit a linear model.  Calculate the prediction interval for vapour pressure at these 3 temperatures: 430, 480, 520 °F.  The source code to question 1 in the `take-home midterm solution <http://stats4.eng.mcmaster.ca/wiki/Take-home_midterm_-_2010_-_Solution>`_ will be helpful.
+	Use the `distillation column data set <http://datasets.connectmv.com/info/distillation-tower>`_ and with |y| as ``VapourPressure`` (units are kPa) and |x| as ``TempC2`` (units of degrees Farenheit) fit a linear model.  Calculate the prediction interval for vapour pressure at these 3 temperatures: 430, 480, 520 °F.
 	
 .. answer::
 
@@ -1974,7 +1980,7 @@ Exercises
 	Again, for the distillation model, use the data from 2000 and 2001 to build the model (the first column in the data set contains the dates). Then use the remaining data to test the model.  Use |x| = ``TempC2`` and |y| = ``VapourPressure`` in your model.
 
 		-	Calculate the RMSEP for the testing data.  How does it compare to the standard error from the model?
-		-	Now use the ``influencePlot(...)`` function from the ``car`` library, to highlight the influential observations in the model building data (2000 and 2001).  Show your plot with observation labels (observation numbers are OK).  See part 5 of the `R tutorial <http://stats4.eng.mcmaster.ca/wiki/R_tutorial>`_ for some help.
+		-	Now use the ``influencePlot(...)`` function from the ``car`` library, to highlight the influential observations in the model building data (2000 and 2001).  Show your plot with observation labels (observation numbers are OK).  See part 5 of the `R tutorial <http://connectmv.com/tutorials/R_tutorial>`_ for some help.
 		-	Explain how the points you selected are influential on the model?
 		-	Remove these influential points, and refit the model on the training data.  How has the model's slope and standard error changed?
 		-	Recalculate the RMSEP for the testing data; how has it changed?
@@ -2002,7 +2008,7 @@ Exercises
 	
 .. question::
 
-	The `Kappa number data set <http://stats4.eng.mcmaster.ca/wiki/Data_sets#Kappa_number>`_ was used in the `take-home midterm <http://stats4.eng.mcmaster.ca/wiki/Take-home_midterm_-_2010_-_Solution>`_ to construct a Shewhart chart.  In the class notes on `Process Monitoring <http://stats4.eng.mcmaster.ca/wiki/Process_monitoring>`_ there was a section called "Mistakes to avoid" which warns that the subgroups for a Shewhart chart must be independent to satisfy the assumptions used to derived the Shewhart limits. If the subgroups are not independent, then it will increase the type I (false alarm) rate.
+	The `Kappa number data set <http://datasets.connectmv.com/info/kappa_number>`_ was used in the `take-home midterm <http://stats4.eng.mcmaster.ca/wiki/Take-home_midterm_-_2010_-_Solution>`_ to construct a Shewhart chart.  The :ref:`"Mistakes to avoid" <monitoring-mistakes-to-avoid>` section, under Process Monitoring, warns that the subgroups for a Shewhart chart must be independent to satisfy the assumptions used to derived the Shewhart limits. If the subgroups are not independent, then it will increase the type I (false alarm) rate.
 
 	This is no different to the independence required for least squares models. Use the autocorrelation tool to determine a subgroup size for the Kappa variable that will satisfy the Shewhart chart assumptions.  Show your autocorrelation plot and interpret it as well.
 	
@@ -2054,10 +2060,10 @@ Exercises
 			92,      260,  4900,       Yes,     38
 
 
-	-	Use software to fit a linear model that predicts the yield from these variables (the data set is available from `the course website <http://stats4.eng.mcmaster.ca/wiki/Data_sets#Bioreactor_yields>`_).  See part 5 of the `R tutorial <http://stats4.eng.mcmaster.ca/wiki/R_tutorial>`_ for building linear models with integer variables in R.
+	-	Use software to fit a linear model that predicts the yield from these variables (the `data set is available from the website <http://datasets.connectmv.com/info/bioreactor_yields>`_).  See part 5 of the `R tutorial <http://connectmv.com/tutorials/R_tutorial>`_ for building linear models with integer variables in R.
 	-	Chemical engineering students in the class: interpret the meaning of each effect in the model.  If you are using R, then the ``confint(...)`` function will be helpful as well. Show plots of each |x| variable in the model against yield.  Use a box plot for the baffles indicator variable.
 	-	Now calculate the :math:`\mathbf{X}^T\mathbf{X}` and :math:`\mathbf{X}^T\mathbf{y}` matrices; include a column in the :math:`\mathbf{X}` matrix for the intercept. Since you haven't mean centered the data to create these matrices, it would be misleading to try interpret them.
-	-	Calculate the least squares model estimates from these two matrices.  See part 4 of the `R tutorial <http://stats4.eng.mcmaster.ca/wiki/R_tutorial>`_ for doing matrix operations in R, but you might prefer to use MATLAB for this step.  Either way, you should get the same answer here as in the first part of this question.
+	-	Calculate the least squares model estimates from these two matrices.  See part 4 of the `R tutorial <http://connectmv.com/tutorials/R_tutorial>`_ for doing matrix operations in R, but you might prefer to use MATLAB for this step.  Either way, you should get the same answer here as in the first part of this question.
 
 .. answer::
 

@@ -2,16 +2,19 @@
 
 	Which variables should you use, and how many observations do you require?
 
+.. index::
+	pair: references and readings; Principal component analysis (PCA)
+
 References and readings
 ========================
 
 These readings cover a variety of topics in the area of latent variable methods:
 
-* **About PCA**: Svante Wold, Kim Esbensen, Paul Geladi: "`Principal component analysis <http://dx.doi.org/10.1016/0169-7439(87)80084-9>`_", *Chemometrics and Intelligent Laboratory Systems*, **2**, 37-52, 1987.
+* **About PCA**: Svante Wold, Kim Esbensen, Paul Geladi: "`Principal Component Analysis <http://dx.doi.org/10.1016/0169-7439(87)80084-9>`_", *Chemometrics and Intelligent Laboratory Systems*, **2**, 37-52, 1987.
 
 * **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold:  "Multivariate and Megavariate Data Analysis" (Parts I and II).
 
-* **Contribution plots**: P Miller, RE Swanson, CE Heckler, "Contribution plots: a missing link in multivariate quality control, *Applied Mathematics and Computer Science*, *8* (4), 775-792, 1998.
+* **Contribution plots**: P Miller, RE Swanson, CE Heckler, "Contribution Plots: a Missing Link in Multivariate Quality Control, *Applied Mathematics and Computer Science*, *8* (4), 775-792, 1998.
 
 .. index::
 	pair: PCA; Latent variable modelling
@@ -415,7 +418,7 @@ When investigating score plots we look for *clustering*, *outliers*, time-based 
 
 **Clustering**
 
-We usually start by looking at the :math:`(\mathbf{t}_1, \mathbf{t}_2)` scatterplot of the scores, the two directions of greatest variation in the data. As just previously explained, observations in the rows of |X| that are similar will fall close to each other, i.e. they cluster together, in these score plots.  Here is an example of a score plot, calculated from data from a fluidized catalytic cracking (FCC) process [Taken from the thesis of Carol Slama (McMaster University, p 78, 1991)].
+We usually start by looking at the :math:`(\mathbf{t}_1, \mathbf{t}_2)` scatterplot of the scores, the two directions of greatest variation in the data. As just previously explained, observations in the rows of |X| that are similar will fall close to each other, i.e. they cluster together, in these score plots.  Here is an example of a score plot, calculated from data from a fluidized catalytic cracking (FCC) process [Taken from the Masters thesis of Carol Slama (McMaster University, p 78, 1991)].
 	
 .. figure:: images/slama-thesis-screenshot-score-plot.png
 	:alt:	images/slama-thesis-screenshot-score-plot.png
@@ -620,7 +623,7 @@ The variance of a matrix |X| is taken as the sum of squares of every element in 
 Example: spectral data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A data set, `available on the course website <http://stats4.eng.mcmaster.ca/wiki/Data_sets#Tablet_spectral_data:_NIR>`_, contains data on 460 tablets, measured at 650 different wavelengths.
+A data set, `available on the book website <http://datasets.connectmv.com/info/tablet-spectral-data>`_, contains data on 460 tablets, measured at 650 different wavelengths.
 
 .. figure:: images/pharma-spectra.png
 	:alt:	images/pharma-spectra.py
@@ -1235,7 +1238,7 @@ Room temperature data
 
 * :math:`N = 144`
 * :math:`K = 4` + 1 column containing the date and time at which the 4 temperatures were recorded
-* Web address: http://stats4.eng.mcmaster.ca/datasets/room-temperature.csv
+* Web address: http://datasets.connectmv.com/info/room-temperature
 * Description: Temperature measurements from 4 corners of a room
 
 .. figure:: images/room-temperature-plots.png
@@ -1287,7 +1290,7 @@ Food texture data set
 
 * :math:`N = 50`
 * :math:`K = 5` + 1 column containing the labels for each batch
-* Web address: http://stats4.eng.mcmaster.ca/datasets/food-texture.csv
+* Web address: http://datasets.connectmv.com/info/food-texture
 * Description: Data from a food manufacturer making a pastry product.  Each row contains the 5 quality attributes of a batch of product.
 
 #.	Fit a PCA model; use auto-fit (cross-validation feature) to calculate the number of components.
@@ -1305,7 +1308,7 @@ This data set has become a classic data set when learning about multivariate dat
 * :math:`N=16` countries in the European area
 * :math:`K=20` food items
 * Missing data: yes
-* Web address: http://stats4.eng.mcmaster.ca/datasets/food-consumption.csv
+* Web address: http://datasets.connectmv.com/info/food-consumption
 * Description: The data table lists for each country the relative consumption of certain food items, such as tea, jam, coffee, yoghurt, and others.
 
 .. figure:: images/food-consumption.png
@@ -1335,7 +1338,7 @@ Silicon wafer thickness
 
 * :math:`N=184`
 * :math:`K=9`
-* Web address: http://stats4.eng.mcmaster.ca/datasets/silicon-wafer-thickness.csv
+* Web address: http://datasets.connectmv.com/info/silicon-wafer-thickness
 * Description: These are nine thickness measurements recorded from various batches of silicon wafers.  One wafer is removed from each batch and the thickness of the wafer is measured at the nine locations, as shown in the illustration. 
 
 .. figure:: images/silicon-wafer-thickness-locations.png
@@ -1371,7 +1374,7 @@ The data available has:
 
 * :math:`N = 24`
 * :math:`K = 6` + 1 designation of process outcome.
-* Web address: http://stats4.eng.mcmaster.ca/datasets/raw-material-characterization.csv
+* Web address: http://datasets.connectmv.com/info/raw-material-characterization
 * Description: 3 of the 6 measurements are size values for the plastic pellets, while the other 3 are the outputs from thermogravimetric analysis (TGA), differential scanning calorimetry (DSC) and thermomechanical analysis (TMA), measured in a laboratory. These 6 measurements are thought to adequately characterize the raw material. Also provided is a designation ``Adequate`` or ``Poor`` that reflects the process engineer's opinion of the yield from that lot of materials.
 
 Import the data, and set the ``Outcome`` variable as a secondary identifier for each observation, as shown in the illustration below.  The observation's primary identifier is its batch number.
@@ -1403,7 +1406,7 @@ Principal properties of surfactants
 * :math:`K=19`
 * :math:`M=4`
 * Missing data: yes
-* Web address: http://stats4.eng.mcmaster.ca/datasets/surfactants.csv
+* Web address: http://datasets.connectmv.com/info/surfactants
 * Description: These 38 non-ionic surfactants, ingredients for making a detergent, were characterized (described) by taking 19 measurements (the other 4 columns will be used in a future study).  The first purpose of this data set was to understand how these 19 properties are related to each other, and to find a representative sub-sample from the rows in |X| which could be selected for further study.
 
 #.	Import the data, making sure you exclude the ``YDet``, ``YConc``, ``YTemp``, and ``YTox`` variables.  Build a PCA model on the 19 columns in remaining in |X|.

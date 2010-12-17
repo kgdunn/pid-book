@@ -1,4 +1,4 @@
-kappa <- read.csv('http://stats4.eng.mcmaster.ca/datasets/kappa-number.csv')
+kappa <- read.csv('http://datasets.connectmv.com/file/kappa-number.csv')
 summary(kappa)
 attach(kappa)
 N = length(Kappa)
@@ -7,7 +7,7 @@ n.jumps = 5
 sub = seq(1, N, n.jumps)
 Kappa.sub <- Kappa[sub]
 
-bitmap('/Users/kevindunn/Statistics course/Course notes/Assignments/Assignment 5/images/kappa-number-autocorrelation.png', type="png256", width=14, height=14, res=300, pointsize=14)
+bitmap('../images/kappa-number-autocorrelation.png', type="png256", width=14, height=14, res=300, pointsize=14)
 par(mar=c(4.2, 4.2, 3.5, 0.5))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=1.8, cex.main=1.8, cex.sub=1.8, cex.axis=1.8 )
 layout(matrix(seq(1, 2),2, 1))
@@ -15,7 +15,7 @@ acf(kappa, 50, main="Autocorrelation for the Kappa number variable", xlab="")
 acf(Kappa.sub, 50, main="Autocorrelation of subsampled Kappa number vector")
 dev.off()
 
-bitmap('/Users/kevindunn/Statistics course/Course notes/Assignments/Assignment 5/images/kappa-number-autocorrelation-scatterplots.png', type="png256", width=20, height=20/n.jumps, res=300, pointsize=14)
+bitmap('../images/kappa-number-autocorrelation-scatterplots.png', type="png256", width=20, height=20/n.jumps, res=300, pointsize=14)
 par(mar=c(4.2, 5, 3.5, 0.5))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=1.5, cex.main=1.5, cex.sub=1.8, cex.axis=1.8 )
 

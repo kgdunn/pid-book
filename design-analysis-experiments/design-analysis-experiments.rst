@@ -4,6 +4,28 @@
 	^^^^^
 	-----
 	
+	DOE RSM with colour:
+	
+	
+	>>> import numpy as N
+	>>> import pylab as pl
+	>>> def z_func(x,y):
+	((return (1-x+x**3+y**5)*N.exp(-(x**2+y**2 ...
+	...
+	>>> x = N.arange(-3.0,3.0,0.025)
+	>>> y = N.arange(-3.0,3.0,0.025)
+	>>> X,Y = pl.meshgrid(x, y)
+	>>> Z = z_func(X, Y)
+	>>> im = pl.imshow(Z,interpolation=’bilinear’,/
+	(cmap=pl.cm.Spectral ...
+	>>> cset = pl.contour(Z,N.arange(-1.2,1.6,0.2),/
+	(linewidths=2,cmap=pl.cm.hot ...
+	>>> pl.clabel(cset,inline=True,fmt=’%1.1f’,/
+	(fontsize=10 ...
+	>>> pl.colorbar(im)
+	>>> pl.axis(’off’)
+	>>> pl.title(’$z=(1-x+xˆ3+yˆ5) eˆ-(xˆ2+yˆ2)$’	
+	
 	TODO: discuss use of an external data set for S_E
 	
 	DOE is a way to bring an out of control process back into control.  See the comment by Vining (top right, p152) in the  Bisgaard articles http://dx.doi.org/10.1080/08982110701826721
@@ -199,21 +221,21 @@ References and readings
 
 - **Strongly recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, chapters 5 and 6 with topics from chapters 11, 12, 13 and 15.
 - `A web tutorial on designed experiments <http://www.chemometrics.se/index.php?option=com_content&task=view&id=18&Itemid=27>`_
-- `Must a process be in statistical control before conducting designed experiments <http://dx.doi.org/10.1080/08982110701826721>`_, an article by Søren Bisgaard, with discussion (`1 <http://dx.doi.org/10.1080/08982110701866198>`_, `2 <http://dx.doi.org/10.1080/08982110801894892>`_, `3 <http://dx.doi.org/10.1080/08982110801890148>`_, `4 <http://dx.doi.org/10.1080/08982110801924509>`_, and `5 <http://dx.doi.org/10.1080/08982110801894900>`_ and a `rejoinder <http://dx.doi.org/10.1080/08982110801973118>`_), 
+- Søren Bisgaard: `Must a process be in statistical control before conducting designed experiments <http://dx.doi.org/10.1080/08982110701826721>`_, with discussion (`part 1 <http://dx.doi.org/10.1080/08982110701866198>`_, `part 2 <http://dx.doi.org/10.1080/08982110801894892>`_, `part 3 <http://dx.doi.org/10.1080/08982110801890148>`_, `part 4 <http://dx.doi.org/10.1080/08982110801924509>`_, `part 5 <http://dx.doi.org/10.1080/08982110801894900>`_ and a `rejoinder <http://dx.doi.org/10.1080/08982110801973118>`_), 
 - George Box and  J. Stuart Hunter: "`The 2^{k-p} Fractional Factorial Designs - Part I <http://www.jstor.org/stable/1266725>`_", *Technometrics*, **3**, 311-351, 1961.
 - George Box and  J. Stuart Hunter: "`The 2^{k-p} Fractional Factorial Designs - Part II <http://www.jstor.org/stable/1266553>`_", *Technometrics*, **3**, 449 - 458, 1961.
-- George Box: `Evolutionary operation: A method for increasing industrial productivity <http://www.jstor.org/stable/2985505>`_", *Journal of the Royal Statistical Society* (Applied Statistics), **6**, 81 - 101, 1957.
+- George Box: `Evolutionary operation: A Method for Increasing Industrial Productivity <http://www.jstor.org/stable/2985505>`_", *Journal of the Royal Statistical Society* (Applied Statistics), **6**, 81 - 101, 1957.
 - William G. Hunter and J. R. Kittrell, "`Evolutionary Operation: A Review <http://www.jstor.org/stable/1266686>`_", *Technometrics*, **8**, 389-397, 1966.
-- Heather Tye: "`Application of statistical design of experiments methods in drug discovery <http://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_", *Drug Discovery Today*, **9**, 485-491, 2004.
+- Heather Tye: "`Application of Statistical Design of Experiments Methods in Drug Discovery <http://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_", *Drug Discovery Today*, **9**, 485-491, 2004.
 
 .. OTHER REFERENCES
 
-	Design of experiments in chemical engineering : a practical guide, Lazić, Živorad R., Wiley-VCH, 2004. THODE Bookstacks, TP 155 .L34 2004
+	Design of Experiments in Chemical Engineering: A Practical Guide, Lazić, Živorad R., Wiley-VCH, 2004. THODE Bookstacks, TP 155 .L34 2004
 
 Acknowledgements
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-These notes are heavily based on the book by Box, Hunter and Hunter and the 4C3/6C3 course notes of Dr. John MacGregor, who taught this course at McMaster University for many years.
+These notes are based on the book by Box, Hunter and Hunter and the 4C3/6C3 course notes of Dr. John MacGregor (used with permission), who taught this course at McMaster University for many years.
 
 Background
 ===========
@@ -309,7 +331,7 @@ where :math:`d_i` is an indicator variable.  For example :math:`d_i = 0` when us
 	return(list(summary(model), confint(model)))
 	}
 	
-	brittle <- read.csv('http://stats4.eng.mcmaster.ca/datasets/brittleness-index.csv')
+	brittle <- read.csv('http://datasets.connectmv.com/file/brittleness-index.csv')
 	attach(brittle)
 
 	group_difference(TK104, TK105)  # See Q4 in assignment 3 for this function
@@ -324,7 +346,7 @@ The importance of randomization
 
 We require that the experiments be performed in random order to avoid any unmeasured, and uncontrolled disturbances from impacting the system.
 
-The concept of randomization was elegantly described in an example by Fisher in Chapter 2 of his book, *Statistical Methods for Research Workers*, (see the `course reference list <http://stats4.eng.mcmaster.ca/wiki/Suggested_readings>`_).  A lady claims that she can taste the difference between a cup of tea where the milk has been added after the tea, or the tea added to the milk.  By setting up :math:`N` cups of tea which either contain the milk first (M) or the tea first (T), the lady is asked to taste these :math:`N` cups and make her assessment.  Fisher shows that if the experiments are performed in random order that the actual set of decisions made by the lady are just one of many possible outcomes.  He calculates all possibilities (we show how below), and then calculates the probability of the lady's actual set of decisions being due to chance alone.
+The concept of randomization was elegantly described in an example by Fisher in Chapter 2 of his book, *Statistical Methods for Research Workers*.  A lady claims that she can taste the difference between a cup of tea where the milk has been added after the tea, or the tea added to the milk.  By setting up :math:`N` cups of tea which either contain the milk first (M) or the tea first (T), the lady is asked to taste these :math:`N` cups and make her assessment.  Fisher shows that if the experiments are performed in random order that the actual set of decisions made by the lady are just one of many possible outcomes.  He calculates all possibilities (we show how below), and then calculates the probability of the lady's actual set of decisions being due to chance alone.
 
 Let's take a look at a more engineering oriented example.  In assignment 3 we considered the brittleness of a material made in either TK104 or in TK107.  The same raw materials were charged to each reactor.  So in effect, we are testing the difference due to using reactor TK104 or reactor TK107.  Let's call them case A and case B so the notation is more general.  We collected 20 brittleness values from TK104, and 23 values from TK107.  I will only use the first 8 values from TK104 and the first 9 values from TK107 (you will see why soon):
 
@@ -472,7 +494,7 @@ The following surface plot illustrates the main effects on the yield variable ov
 		:width: 750px
 		:scale: 50
 
-There is an alternative way to visualize these main effects shown below.  Use this method when you don't have computer software to draw the surfaces.  (We saw this earlier in the `visualization section <http://stats4.eng.mcmaster.ca/wiki/Visualizing_data>`_ of the course).  It is called an interaction plot, which we discuss more in the next section.
+There is an alternative way to visualize these main effects shown below.  Use this method when you don't have computer software to draw the surfaces.  (We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>` of the course).  It is called an interaction plot, which we discuss more in the next section.
 
 	.. figure:: images/factorial-two-level-line-plot.png
 		:align: center
@@ -829,7 +851,7 @@ So for an experiment with :math:`n` runs, and where we have coded our :math:`\ma
 			\end{bmatrix}
 			\begin{bmatrix} b_0 \\ b_A \\ b_B \\ b_{C} \\ b_{AB} \\ b_{AC} \\ b_{BC} \\ b_{ABC} \end{bmatrix} + \mathrm{e}
 			
-		Note that the center point runs do not change the orthogonality of :math:`\mathrm{X}`, however, as we expect after having studied the `least squares modelling <http://stats4.eng.mcmaster.ca/wiki/Least_squares_modelling>`_ section, that additional runs decrease the variance of the model parameters, :math:`\mathcal{V}(\mathrm{b})`.  In this can there are :math:`n=2^3+3 = 11` runs, so the standard error is decreased to :math:`S_E^2 = \dfrac{\mathrm{e}^T\mathrm{e}}{11 - 8}`, but the center points do not further reduce the variance of the parameters in :math:`\sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`, since the denominator is still :math:`2^k` (**except for the intercept term**, whose variance is reduced by the center points).
+		Note that the center point runs do not change the orthogonality of :math:`\mathrm{X}`, however, as we expect after having studied the :ref:`least squares modelling <SECTION-least-squares-modelling>` section, that additional runs decrease the variance of the model parameters, :math:`\mathcal{V}(\mathrm{b})`.  In this can there are :math:`n=2^3+3 = 11` runs, so the standard error is decreased to :math:`S_E^2 = \dfrac{\mathrm{e}^T\mathrm{e}}{11 - 8}`, but the center points do not further reduce the variance of the parameters in :math:`\sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`, since the denominator is still :math:`2^k` (**except for the intercept term**, whose variance is reduced by the center points).
 	
 Once we obtain the standard error for our system and calculate the variance of the parameters, we can multiply it by the critical :math:`t`-value at the desired confidence level in order to calculate the confidence limit.  However, it is customary to just report the standard error next to the coefficients, so that the user can use their own level of confidence.  For example:
 
@@ -853,7 +875,7 @@ An example for a :math:`2^3` factorial would be that the 7 coefficients, not inc
 
 	y_i = b_0 + b_A x_A + b_B x_B + b_{C}x_C + b_{AB}x_{AB} + b_{AC}x_{AC} +  b_{BC}x_{BC} +  b_{ABC}x_{ABC}
 	
-A normal probability plot is a non-linear transformation of the data so that the s-shape of the cumulative normal distribution appears as a straight line.  We used this idea in the section on `univariate statistics <http://stats4.eng.mcmaster.ca/wiki/Review_of_univariate_statistics>`_ where a qq-plot was constructed to assess normality.  Another way to visualize this concept is to draw vertical divisions on the normal distribution curve, to create :math:`2^k-1` sections of equal area.  One effect is expected per division.
+A normal probability plot is a non-linear transformation of the data so that the s-shape of the cumulative normal distribution appears as a straight line.  We used this idea in the section on :ref:`univariate statistics <SECTION-univariate-review>` where a qq-plot was constructed to assess normality.  Another way to visualize this concept is to draw vertical divisions on the normal distribution curve, to create :math:`2^k-1` sections of equal area.  One effect is expected per division.
 
 .. TODO: illustration of normal distribution division
 
@@ -1831,7 +1853,7 @@ Because every experimental run is a run that is expected to produce saleable pro
 
 Some examples of the success of EVOP and a review paper are in these readings:
 
-- George Box: `Evolutionary operation: A method for increasing industrial productivity <http://www.jstor.org/stable/2985505>`_", *Journal of the Royal Statistical Society* (Applied Statistics), **6**, 81 - 101, 1957.
+- George Box: `Evolutionary Operation: A Method for Increasing Industrial Productivity <http://www.jstor.org/stable/2985505>`_", *Journal of the Royal Statistical Society* (Applied Statistics), **6**, 81 - 101, 1957.
 - William G. Hunter and J. R. Kittrell, "`Evolutionary Operation: A Review <http://www.jstor.org/stable/1266686>`_", *Technometrics*, **8**, 389-397, 1966.
 
 Current day examples of EVOP do not appear in the scientific literature much, because this methodology is now so well established.
@@ -1923,7 +1945,7 @@ Unfortunately, these 5 runs do not form an orthogonal (independent) :math:`\math
 
 It is easy to find experiments that obey the constraints for 2-factor cases: run them on the corner points.  But for 3 or more factors the constraints form planes that cut through a cube.  We then use "optimal" designs to determine where to place our experiments.  A D-optimal design works well for constraint-handling because it finds the experimental points that would minimize the loss of orthogonality (i.e. they try to achieve the most orthogonal design possible).  A compact way of stating this is to maximize the determinant of :math:`\mathbf{X}^T\mathbf{X}`, which is why it is called D-optimal (it maximizes the determinant).
 
-These designs are generated by a computer using iterative algorithms. See the readings in the :ref:`section on optimal designs <DOE-optimial-designs>` for more information.
+These designs are generated by a computer using iterative algorithms. See the D-optimal reference in the :ref:`section on optimal designs <DOE-optimial-designs>` for more information.
 
 .. _DOE-optimial-designs:
 
@@ -1970,7 +1992,6 @@ The algorithms used to find the subset of experiments to run are called candidat
 
 * St. John and Draper: "`D-Optimality for Regression Designs: A Review <http://www.jstor.org/stable/1267995>`_", *Technometrics*, **17**, 15-, 1975.
 
-
 Mixture designs
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -2006,7 +2027,7 @@ Exercises
 
 	These readings are to illustrate the profound effect that designed experiments have had in some areas.  
 
-		*	`Application of statistical design of experiments methods in drug discovery <http://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_ and `using DOE for high-throughput screening to locate new drug compounds <http://dx.doi.org/10.1016/1359-6446(96)10025-8>`_.
+		*	`Application of Statistical Design of Experiments Methods in Drug Discovery <http://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_ and `using DOE for high-throughput screening to locate new drug compounds <http://dx.doi.org/10.1016/1359-6446(96)10025-8>`_.
 		*	High traffic websites offer a unique opportunity to perform testing and optimization.  This is because each visitor to the site is independent of the others (randomized), and these tests can be run in parallel.  Read more in this `brief writeup <http://youtube-global.blogspot.com/2009/08/look-inside-1024-recipe-multivariate.html>`_ on how Google uses testing tools to optimize YouTube, one of their web properties.  Unfortunately they use the term "multivariate" incorrectly - a better term is "multi-variable"; nevertheless, the number of factors and combinations to be tested is large. Its well known that fractional factorial methods are used to analyze these data.
 		*	See three chemical engineering examples of factorial designs in Box, Hunter, and Hunter: Chapter 11 (1st edition), or page 173 to 183 in the second edition.
 
@@ -2156,7 +2177,7 @@ Exercises
 
 .. question::
 	
-	More reading: 
+	More readings: 
 	
 	#.	See `part 4 of the DOE tutorial on this website <http://www.chemometrics.se/index.php?option=com_content&task=view&id=18&Itemid=27>`_ which analyzes data from a 3-factor factorial.
 	
@@ -2164,7 +2185,7 @@ Exercises
 
 		"`The Quality Detective: A Case Study <http://dx.doi.org/10.1098/rsta.1989.0006>`_" (and discussion), *Philosophical Transactions of the Royal Society A*, **327**, 499-511, 1989.
 		
-	#.	George Box, The R. A. Fisher Memorial Lecture, 1988, "Quality Improvement - An expanding domain for the application of scientific method", *Philosophical Transactions of the Royal Society - A*, **327**: pages 617-630, 1989. `McMaster on-campus link <http://dx.doi.org/10.1098/rsta.1989.0017>`_.
+	#.	George Box, The R. A. Fisher Memorial Lecture, 1988, "`Quality Improvement - An Expanding Domain for the Application of Scientific Method <http://dx.doi.org/10.1098/rsta.1989.0017>`_", *Philosophical Transactions of the Royal Society - A*, **327**: pages 617-630, 1989.
 	
 .. question::
 
@@ -2385,7 +2406,7 @@ Exercises
 
 	You might feel more comfortable setting up the problem in MATLAB.  You can use the `contour plot <http://www.mathworks.com/access/helpdesk/help/techdoc/creating_plots/f10-2524.html>`_ functions in MATLAB to visualize the results.
 
-	If you are using R, you can use the ``rbind(...)`` or ``cbind(...)`` functions to build up your :math:`\mathbf{X}` matrix row-by-row or column-by-column.  The equivalent of meshgrid in R is the ``expand.grid(...)`` function.  I will add some notes to the `R tutorial <http://stats4.eng.mcmaster.ca/wiki/R_tutorial>`_ that show how to generate surface plots in R.
+	If you are using R, you can use the ``rbind(...)`` or ``cbind(...)`` functions to build up your :math:`\mathbf{X}` matrix row-by-row or column-by-column.  The equivalent of meshgrid in R is the ``expand.grid(...)`` function.  Please see the `R tutorial <http://connectmv.com/tutorials/R_tutorial>`_ that shows how to generate surface plots in R.
 
 .. question::
 

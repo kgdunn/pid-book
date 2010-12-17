@@ -1,4 +1,4 @@
-spectra <- read.csv('http://stats4.eng.mcmaster.ca/datasets/tablet-spectra.csv', header=FALSE)
+spectra <- read.csv('http://datasets.connectmv.com/file/tablet-spectra.csv', header=FALSE)
 K <- ncol(spectra)
 spectra <- spectra[,2:K]
 model.pca <- prcomp(spectra, scale=TRUE)

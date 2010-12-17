@@ -39,7 +39,7 @@ text(rm.P[6,1], rm.P[6,2], colnames(X)[6], pos=1)
 abline(h=0, v=0)
 dev.off()
 
-bitmap('/Users/kevindunn/Statistics course/Course notes/Latent-variable-modelling/images/unsupervised-classification-process.png', type="png256", width=15, height=15/2, res=300, pointsize=14)
+bitmap('../images/unsupervised-classification-process.png', type="png256", width=15, height=15/2, res=300, pointsize=14)
 layout(matrix(c(1,2), 1, 2))
 par(mar=c(4.5, 4.5, 4.5, 0.5))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=1.5, cex.main=1.5, cex.sub=1.5, cex.axis=1.5)

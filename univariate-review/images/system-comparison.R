@@ -1,11 +1,11 @@
-data <-read.csv('/Users/kevindunn/Statistics course/Course notes/Univariate data analysis/images/system-comparison.csv', header=TRUE)
+data <-read.csv('system-comparison.csv', header=TRUE)
 summary(data)
 
 A <- data$obs[data$method==data$method[1]]
 B <- data$obs[data$method==data$method[11]]
 
 
-bitmap('/Users/kevindunn/Statistics course/Course notes/Univariate data analysis/images/system-comparison-boxplot-plots.png', type="png256", width=12, height=7, res=250, pointsize=14) 
+bitmap('system-comparison-boxplot-plots.png', type="png256", width=12, height=7, res=250, pointsize=14) 
 limits <- range(data$obs)
 layout(matrix(c(1, 1:3), 1, 4))
 boxplot(data$obs ~ data$method, cex.lab=1.8, cex.main=1.8, lwd=2, cex.sub=1.8, cex.axis=1.8, ylim=limits, main="Batch yield (%) for two trials")
@@ -16,7 +16,7 @@ abline(h=mean(B))
 dev.off()
 
 
-bitmap('/Users/kevindunn/Statistics course/Course notes/Univariate data analysis/images/system-comparison-boxplot-plots-obvious.png', type="png256", width=12, height=7, res=250, pointsize=14) 
+bitmap('system-comparison-boxplot-plots-obvious.png', type="png256", width=12, height=7, res=250, pointsize=14) 
 data$obs[data$method==data$method[1]] <- data$obs[data$method==data$method[1]] - 12
 data$obs[data$method==data$method[11]] <- data$obs[data$method==data$method[11]] + 4
 limits <- range(data$obs)
@@ -60,15 +60,15 @@ sd(B)
 # range(A.hist.sim) 
 # write.csv(round(A.hist.sim,2), '/Users/kevindunn/Statistics course/Course notes/Univariate data analysis/images/system-comparison-historical-data.csv', quote=FALSE, row.names=FALSE)
 
-A.hist <- read.csv('/Users/kevindunn/Statistics course/Course notes/Univariate data analysis/images/system-comparison-historical-data.csv', header=FALSE)
-#A.hist <- read.csv('http://stats4.eng.mcmaster.ca/datasets/batch-yields.csv', header=FALSE)
+A.hist <- read.csv('system-comparison-historical-data.csv', header=FALSE)
+#A.hist <- read.csv('http://datasets.connectmv.com/file/batch-yields.csv', header=FALSE)
 A.hist <- A.hist$V1
 N = length(A.hist)
 
 #library(nlme)
 #acf(A.hist)
 
-#bitmap('/Users/kevindunn/Statistics course/Course notes/Univariate data analysis/images/system-comparison-sequence-plot.png', type="png256", width=10, height=7, res=250, pointsize=14) 
+#bitmap('system-comparison-sequence-plot.png', type="png256", width=10, height=7, res=250, pointsize=14) 
 plot(c(A.hist, B), xlab="300 samples from A, 10 samples of B", ylab="Yield (%)", main="", cex.lab=1.5, cex.main=1.8, lwd=3, cex.sub=1.8, cex.axis=1.8)
 abline(v=length(A.hist))
 text(length(A.hist)/2, 98, "A", cex=2)
@@ -76,7 +76,7 @@ text(length(A.hist)+length(B), 98, "B", cex=2)
 dev.off()
 
 
-#bitmap('/Users/kevindunn/Statistics course/Course notes/Univariate data analysis/images/system-comparison-autocorrelation-scatterplot.png',type="png256", width=10, height=7, res=250, pointsize=14) 
+#bitmap('system-comparison-autocorrelation-scatterplot.png',type="png256", width=10, height=7, res=250, pointsize=14) 
 plot(A.hist[1:N-1], A.hist[2:N], xlab="x[k]", ylab="x[k+1]", main="Autocorrelation between successive values of batch yield", cex.lab=1.5, cex.main=1.8, lwd=3, cex.sub=1.8, cex.axis=1.8)
 lines(lowess(A.hist[1:N-1], A.hist[2:N]))
 dev.off()
@@ -104,7 +104,7 @@ for (i in 1:(N-delta-delta+1))
 difference = mean(B)-mean(A)
 maxrange = max(ceiling(abs(A.hist.means.diffs)))
 
-#bitmap('/Users/kevindunn/Statistics course/Course notes/Univariate data analysis/images/system-comparison-dotplot-grouped.png', type="png256", width=12, height=7, res=300, pointsize=14) 
+#bitmap('system-comparison-dotplot-grouped.png', type="png256", width=12, height=7, res=300, pointsize=14) 
 dotPlot(A.hist.means.diffs, xlab="Difference between means of 2 adjacent groups (10 batches per group)", xlim=c(-maxrange, maxrange))
 lines(x=c(difference, difference), y=c(0,0.35))
 arrows(difference, 0.2, difference+1.6, 0.2, code=2)

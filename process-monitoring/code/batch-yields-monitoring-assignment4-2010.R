@@ -1,4 +1,4 @@
-batch <- read.csv('http://stats4.eng.mcmaster.ca/datasets/batch-yields.csv')
+batch <- read.csv('http://datasets.connectmv.com/file/batch-yields.csv')
 summary(batch)  # make sure we have the expected data
 attach(batch)
 
@@ -27,7 +27,7 @@ LCL <-  target - 3 * sigma.estimate/sqrt(N.sub)
 UCL <- target + 3 * sigma.estimate/sqrt(N.sub)
 c(LCL, target, UCL)
 
-bitmap('/Users/kevindunn/Statistics course/Course notes/Assignments/Assignment 4/images/batch-yields-monitoring.png', type="png256", width=10, height=7, res=300, pointsize=14)
+bitmap('../images/batch-yields-monitoring.png', type="png256", width=10, height=7, res=300, pointsize=14)
 par(mar=c(4.2, 4.2, 1.2, 0.2))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 plot(subgroup.xbar, ylim=c(LCL-5, UCL+5), ylab="Subgroup means", main="Shewhart chart")
 abline(h=target, col="green")

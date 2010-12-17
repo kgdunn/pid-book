@@ -1,9 +1,9 @@
-cheese <- read.csv('http://stats4.eng.mcmaster.ca/datasets/cheddar-cheese.csv')
+cheese <- read.csv('http://datasets.connectmv.com/file/cheddar-cheese.csv')
 library(car)
 
 # Scatter plot matrix
 # -----------------------
-bitmap('/Users/kevindunn/Statistics course/Course notes/Latent-variable-modelling/images/cheese-plots.png', type="png256", width=6, height=6, res=300, pointsize=14)
+bitmap('../images/cheese-plots.png', type="png256", width=6, height=6, res=300, pointsize=14)
 par(mar=c(1.5, 1.5, 1.5, 0.5))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=1.5, cex.main=1.5, cex.sub=1.5, cex.axis=1.5)
 scatterplot.matrix(cheese[,2:5], col=c(1,1,1))

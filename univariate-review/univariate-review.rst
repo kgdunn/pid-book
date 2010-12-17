@@ -35,6 +35,19 @@ In context
 
 This section is an introduction to the area of data analysis.  We cover concepts from univariate data analysis, specifically the concepts shown in the pictorial outline below. This section is only a *review of these concepts*; for a more comprehensive treatment, please consult an introductory statistics textbook (see the recommended readings further down).
 
+.. glossary::
+
+	environment
+	   A structure where information about all documents under the root is
+	   saved, and used for cross-referencing.  The environment is pickled
+	   after the parsing stage, so that successive runs only need to read
+	   and parse new and changed documents.
+
+	source directory
+	   The directory which, including its subdirectories, contains all
+	   source files for one Sphinx project.
+
+
 .. index::
 	pair: usage examples; Univariate data
 	
@@ -272,6 +285,8 @@ Some nomenclature
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We review here a couple of concepts that you should have seen in prior statistical work.
+
+.. _univariate-popultion:
 
 **Population**
 	A large collection of observations that *might* occur; a set of *potential* measurements.  Some texts consider an infinite collection of observations, but a large number of observations is good enough.  We will use capital :math:`N` in this section to denote the population size.
@@ -872,6 +887,9 @@ Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{
     > dpois(x, lambda=6)    # Note: R calls the Poisson parameter 'lambda'
 	[1] 0.0025 0.0149 0.0892 0.161 0.0413 0.001
 	
+	
+.. _univariate-confidence-intervals:
+
 Confidence Intervals
 ====================
 
@@ -1516,7 +1534,7 @@ Exercises
 
 		- How many variables in the data set?
 		- How many observations?
-		- The data are properties of a powder.  Plot each variable, one at a time, and locate any outliers.  Students using R will benefit from `part 2 of the tutorial <http://stats4eng.connectmv.com/wiki/R_tutorial>`_ (see the use of the ``identify`` function).
+		- The data are properties of a powder.  Plot each variable, one at a time, and locate any outliers.  Students using R will benefit from `part 2 of the tutorial <http://connectmv.com/tutorials/R_tutorial>`_ (see the use of the ``identify`` function).
 		
 .. answer::
 

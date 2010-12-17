@@ -14,7 +14,7 @@
 # write.csv(r, 'bioreactor-yields.csv', row.names=F)
 
 #rm(list = ls())
-bio <- read.csv('http://stats4.eng.mcmaster.ca/datasets/bioreactor-yields.csv')
+bio <- read.csv('http://datasets.connectmv.com/file/bioreactor-yields.csv')
 attach(bio)
 summary(bio)
 is.factor(baffles)

@@ -1,13 +1,16 @@
+.. index::
+	pair: references and readings; Projection to latent structures (PLS)
+	
 References and readings
 ========================
 
 These readings cover a variety of topics in the area of latent variable methods:
 
-* **About PLS**: Svante Wold, Michael Sjöström, Lennart Eriksson: "`PLS-regression: a basic tool of chemometrics <http://dx.doi.org/10.1016/S0169-7439(01)00155-1>`_", *Chemometrics and Intelligent Laboratory Systems*, **58**, 109-130, 2001.
+* **About PLS**: Svante Wold, Michael Sjöström, Lennart Eriksson: "`PLS-regression: A Basic Tool of Chemometrics <http://dx.doi.org/10.1016/S0169-7439(01)00155-1>`_", *Chemometrics and Intelligent Laboratory Systems*, **58**, 109-130, 2001.
 
-* **On PLS**: S. Wold, S. Hellberg, T. Lundstedt, M. Sjöström and H. Wold, "`PLS modeling with latent variables in two or more dimensions <http://stats4.eng.mcmaster.ca/papers/Wold_-_PLS_modeling_with_latent_variables_in_two_or_more_dimensions.pdf>`_", Frankfurt PLS meeting, 1987.
+* **On PLS**: S. Wold, S. Hellberg, T. Lundstedt, M. Sjöström and H. Wold, "`PLS Modeling With Latent Variables in Two or More Dimensions", Frankfurt PLS meeting, 1987 (*available on request, by email to papers@connectmv.com*)
 
-* **Another PLS paper**: Paul Geladi and Bruce Kowalski, "`Partial least-squares regression: a tutorial <http://dx.doi.org/10.1016/0003-2670(86)80028-9>`_", *Analytica Chimica Acta*, **185**, 1-17, 1986.
+* **Another PLS paper**: Paul Geladi and Bruce Kowalski, "`Partial Least-Squares Regression: A Tutorial <http://dx.doi.org/10.1016/0003-2670(86)80028-9>`_", *Analytica Chimica Acta*, **185**, 1-17, 1986.
 
 * **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold:  "Multivariate and Megavariate Data Analysis" (Parts I and II).
 
@@ -655,7 +658,7 @@ The taste of cheddar cheese
 * :math:`N=30`
 * :math:`K=3`
 * :math:`M=1`
-* Web address: http://stats4.eng.mcmaster.ca/datasets/cheddar-cheese.csv
+* Web address: http://datasets.connectmv.com/info/cheddar-cheese
 * Description: This very simple case study considers the taste of mature cheddar cheese.  There are 3 measurements taken on each cheese: lactic acid, acetic acid and :math:`\text{H}_2\text{S}`. 
 
 
@@ -712,7 +715,7 @@ The data are from the :ref:`plastic pellets troubleshooting example <LVM-process
 
 * :math:`N = 24`
 * :math:`K = 6 + 1` designation of process outcome.
-* Web address: http://stats4.eng.mcmaster.ca/datasets/raw-material-characterization-with-binary-outcome.xls  (this is an Excel data file)
+* Web address: http://datasets.connectmv.com/info/raw-material-characterization
 * Description: 3 of the 6 measurements are size values for the plastic pellets, while the other 3 are the outputs from thermogravimetric analysis (TGA), differential scanning calorimetry (DSC) and thermomechanical analysis (TMA), measured in a laboratory. These 6 measurements are thought to adequately characterize the raw material. Also provided is a designation ``Adequate`` or ``Poor`` that reflects the process engineer's opinion of the yield from that lot of materials.
 
 #.	Build a PCA model on all seven variables, including the 0-1 process outcome variable in the |X| space.  Previously we omitted that variable from the model, this time include it.
@@ -729,7 +732,7 @@ Predicting final quality from on-line process data: LDPE system
 * :math:`N = 54`
 * :math:`K = 14`
 * :math:`K = 5`
-* Web address: http://stats4.eng.mcmaster.ca/datasets/LDPE.csv
+* Web address: http://datasets.connectmv.com/info/LDPE
 * Description: Fourteen process measurements are taken on a reactor
 
 
@@ -752,7 +755,7 @@ Principal properties of surfactants (continued)
 * :math:`K=19`
 * :math:`M=4`
 * Missing data: yes
-* Web address: http://stats4.eng.mcmaster.ca/datasets/surfactants.csv
+* Web address: http://datasets.connectmv.com/info/surfactants
 * Description: These 38 non-ionic surfactants, ingredients for making a detergent, were characterized (described) by taking 19 measurements.  4 columns will be used in a future study).  The first purpose of this data set was to understand how these 19 properties are related to each other, and to find a representative sub-sample from the rows in |X| which could be selected for further study.
 
 An earlier exercise had you build a PCA model on the 19 properties of the 38 surfactants; then 10 of the surfactants were chosen and studied in depth to calculate their washing efficiency:

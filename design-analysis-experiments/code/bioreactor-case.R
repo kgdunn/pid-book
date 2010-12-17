@@ -62,7 +62,7 @@ b.mod = b.mod[idx]
 labels=colnames(X)[2:N]
 labels.mod = labels[idx]
 
-bitmap('/Users/kevindunn/Statistics course/Course notes/Assignments/Assignment 7/images/bioreactor-pareto-plot.png', type="png256", width=8, height=8, res=300, pointsize=14)
+bitmap('../images/bioreactor-pareto-plot.png', type="png256", width=8, height=8, res=300, pointsize=14)
 library(lattice)
 barchart(as.matrix(b.mod), ylab = "Effect", xlab="Magnitude of effect", 
          scales=list(y=list(labels=labels.mod)), col=0)

@@ -1,4 +1,4 @@
-temps<- read.csv('http://stats4.eng.mcmaster.ca/datasets/room-temperature.csv')
+temps<- read.csv('http://datasets.connectmv.com/file/room-temperature.csv')
 temps
 
 X <- data.frame(x1=temps$FrontLeft, x2=temps$FrontRight, x3=temps$BackLeft)

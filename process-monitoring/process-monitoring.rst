@@ -337,6 +337,7 @@ Extensions to the basic Shewhart chart
 
 	It is perhaps a counterintuitive result that increasing the subgroup size, :math:`n`, leads to a more sensitive detection system for shifts in the mean, because the control limits are pulled in tighter.  However, the larger :math:`n` also means that it will take longer to see the detection signal.  So there is a trade-off between subgroup size and the run length (time to detection of a signal).
 
+.. _monitoring-mistakes-to-avoid:
 
 Mistakes to avoid
 ~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,4 +1,4 @@
-dist <- read.csv('http://stats4.eng.mcmaster.ca/datasets/distillation-tower.csv')
+dist <- read.csv('http://datasets.connectmv.com/file/distillation-tower.csv')
 X <- as.matrix(dist[,2:28])
 X.mean <- apply(X, 2, mean, na.rm=TRUE)
 X.mc <- sweep(X, 2, X.mean)
@@ -10,6 +10,6 @@ ev$sum <- sum(ev$values)
 K <- 10
 library(lattice)
 
-bitmap('/Users/kevindunn/Statistics course/Course notes/Latent variable modelling/images/eigenvalue-scree-plot.png', type="png256", width=10, height=5, res=300, pointsize=14)
+bitmap('../images/eigenvalue-scree-plot.png', type="png256", width=10, height=5, res=300, pointsize=14)
 barchart(as.matrix(ev$values[1:K] / ev$sum * 100), horizontal=FALSE, col=0, ylab=list(label="Proportion of variance explained (%)", cex=1.5), xlab=list(label="Component number", cex=1.5), scales=list(x=list(labels=seq(1,K), cex=1.5), y=list(cex=1.5))  )
 dev.off()

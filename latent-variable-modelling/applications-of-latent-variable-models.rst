@@ -4,21 +4,21 @@
 References and readings
 ========================
 
-* **Process monitoring**: John MacGregor and Theodora Kourti "`Statistical process control of multivariate processes <http://dx.doi.org/10.1016/0967-0661(95)00014-L>`_", *Control Engineering Practice*, **3**, p 403-414, 1995.
+* **Process monitoring**: John MacGregor and Theodora Kourti "`Statistical Process Control of Multivariate Processes <http://dx.doi.org/10.1016/0967-0661(95)00014-L>`_", *Control Engineering Practice*, **3**, p 403-414, 1995.
 
-* **Process monitoring**: J.V. Kresta, T.E. Marlin, and J.F. MacGregor "`Multivariate statistical monitoring of process operating performance <http://dx.doi.org/10.1002/cjce.5450690105>`_", *Canadian Journal of Chemical Engineering*, **69**, 35-47, 1991.
+* **Process monitoring**: J.V. Kresta, T.E. Marlin, and J.F. MacGregor "`Multivariate Statistical Monitoring of Process Operating Performance <http://dx.doi.org/10.1002/cjce.5450690105>`_", *Canadian Journal of Chemical Engineering*, **69**, 35-47, 1991.
 
-* **Contribution plots**: P Miller, RE Swanson, CE Heckler, "Contribution plots: a missing link in multivariate quality control, *Applied Mathematics and Computer Science*, *8* (4), 775-792, 1998.
+* **Contribution plots**: P Miller, RE Swanson, CE Heckler, "Contribution Plots: a Missing Link in Multivariate Quality Control, *Applied Mathematics and Computer Science*, *8* (4), 775-792, 1998.
 
-* **Soft sensors**: J.V. Kresta, T.E. Marlin, and J.F. MacGregor, "`Development of inferential process models using PLS <http://dx.doi.org/10.1016/0098-1354(93)E0006-U>`_". *Computers and Chemical Engineering*, **18**, 597-611, 1994.
+* **Soft sensors**: J.V. Kresta, T.E. Marlin, and J.F. MacGregor, "`Development of Inferential Process Models Using PLS <http://dx.doi.org/10.1016/0098-1354(93)E0006-U>`_". *Computers and Chemical Engineering*, **18**, 597-611, 1994.
 
-* **Industrial applications**: Ivan Miletic, Shannon Quinn, Michael Dudzic, Vit Vaculik and Marc Champagne, "`An industrial perspective on implementing on-line applications of multivariate statistics <http://dx.doi.org/10.1016/j.jprocont.2004.02.001>`_", *Journal of Process Control*,  **14**, p. 821-836, 2004.
+* **Industrial applications**: Ivan Miletic, Shannon Quinn, Michael Dudzic, Vit Vaculik and Marc Champagne, "`An Industrial Perspective on Implementing On-Line Applications of Multivariate Statistics <http://dx.doi.org/10.1016/j.jprocont.2004.02.001>`_", *Journal of Process Control*,  **14**, p. 821-836, 2004.
 
-* **Batch modelling and monitoring**: S. Wold, N. Kettaneh-Wold, J.F. MacGregor, K.G. Dunn, "`Batch process modeling and MSPC <http://dx.doi.org/10.1016/B978-044452701-1.00108-3>`_". *Comprehensive Chemometrics*, **2**, 163-197, 2009. 
+* **Batch modelling and monitoring**: S. Wold, N. Kettaneh-Wold, J.F. MacGregor, K.G. Dunn, "`Batch Process Modeling and MSPC <http://dx.doi.org/10.1016/B978-044452701-1.00108-3>`_". *Comprehensive Chemometrics*, **2**, 163-197, 2009. 
 
-* **Image analysis**: M. Bharati, and J.F. MacGregor "`Multivariate image analysis for real time process monitoring and control <http://dx.doi.org/10.1021/ie980334l>`_", *Industrial and Engineering Chemistry Research*, **37**, 4715-4724, 1998
+* **Image analysis**: M. Bharati, and J.F. MacGregor "`Multivariate Image Analysis for Real Time Process Monitoring and Control <http://dx.doi.org/10.1021/ie980334l>`_", *Industrial and Engineering Chemistry Research*, **37**, 4715-4724, 1998
 
-* Many other applications of latent variables are described here: http://macc.mcmaster.ca/research/publications
+.. * Many other applications of latent variables are described here: http://macc.mcmaster.ca/research/publications
 
 
 Improved process understanding
@@ -438,7 +438,7 @@ We have considered this data set twice before.  In fact, you have already built 
 * :math:`N = 24`
 * :math:`K = 6` 
 * :math:`G = 2`: two groups, ``Adequate`` or ``Poor``
-* Web address: http://stats4.eng.mcmaster.ca/datasets/raw-material-characterization-with-binary-outcome.xls  (this is an Excel data file)
+* Web address: http://datasets.connectmv.com/info/raw-material-characterization
 * Description: The designation of ``Adequate`` or ``Poor`` reflects the process engineer's opinion of the yield from that lot of materials.
 
 #.	Build a PCA model only on the data from the ``Adequate`` group using :math:`K=6` variables.  
@@ -462,7 +462,7 @@ Chemical analysis of 3 groups
 * :math:`K = 18` 
 * :math:`M = 3`
 * :math:`G = 3`: three groups, ``F``, ``S`` and ``C``.
-* Web address: http://stats4.eng.mcmaster.ca/datasets/classification-problem.xls  (this is an Excel data file)
+* Web address: 
 * Description: There are 9 chemical compositions taken on samples: Fe, Cu, P, Mn, V, Co, Zn, Cr, and Ca.  These are repeated to give :math:`K=18` columns, but the repeats use a different measurement technique.  There are three types of samples (categories), labelled as  ``F``, ``S`` and ``C``.
 
 Please exclude the 3 last columns (``YF``, ``YS`` and ``YC``) for all the PCA models.
@@ -666,11 +666,7 @@ Kamyr digester case study
 *	:math:`N = 301`
 *	:math:`K = 21` 
 *	:math:`M = 1` 
-*	Web address: 
-
-		*	http://stats4.eng.mcmaster.ca/datasets/kamyr-digester.csv  (use the CSV file in R for question 1)
-		*	http://stats4.eng.mcmaster.ca/datasets/kamyr-digester.xls 
-
+*	Web address: http://datasets.connectmv.com/info/kamyr-digester
 *	Description: A digester is an piece of equipment in paper making processes that cooks the woods chips for several hours.  This cooking processes softens the chips using an alkali medium, known as liquor  The process is operated in counter-current, with wood chips flowing one direction and leaving as pulp, and the fresh liquor (alkali medium) entering at the opposite end of the digester.  The key quality characteristic in the process is the Kappa number, a measure of the whiteness of the paper (bleachability of the pulp)
 	
 	Several of the variables in the data set have already been lagged based on process knowledge.  For example, ``ChipMass-4`` indicates that the chip mass feed rate has been lagged by 4 hours (approximately the residence time in the digester).  Other variables with a numeric ending have also been lagged by 1, 2 or 4 hours.

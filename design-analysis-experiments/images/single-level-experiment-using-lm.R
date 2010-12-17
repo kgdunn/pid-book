@@ -42,7 +42,7 @@ return(list(summary(model), confint(model)))
 }
 
 
-brittle <- read.csv('http://stats4.eng.mcmaster.ca/datasets/brittleness-index.csv')
+brittle <- read.csv('http://datasets.connectmv.com/file/brittleness-index.csv')
 attach(brittle)  # Now we can access the variables directly, without $ symbols
 
 group_difference(TK104, TK105)

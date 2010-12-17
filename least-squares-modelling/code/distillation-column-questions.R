@@ -1,4 +1,4 @@
-dist <- read.csv('http://stats4.eng.mcmaster.ca/datasets/distillation-tower.csv')
+dist <- read.csv('http://datasets.connectmv.com/file/distillation-tower.csv')
 attach(dist)
 model <- lm(VapourPressure ~ TempC2)
 summary(model)
@@ -24,7 +24,7 @@ y.hat
 # 3 23.66819 17.71756 29.61883
 y.hat[,3] - y.hat[,2]
 
-bitmap('/Users/kevindunn/Statistics course/Course notes/Assignments/Assignment 5/images/distillation-prediction-interval.png', type="png256", width=7, height=7, res=300, pointsize=14)
+bitmap('../images/distillation-prediction-interval.png', type="png256", width=7, height=7, res=300, pointsize=14)
 par(mar=c(4.2, 4.2, 3.5, 0.5))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=1.5, cex.main=1.5, cex.sub=1.5, cex.axis=1.5)
 plot(TempC2, VapourPressure, ylim = c(17, 65), main="Visualizing the prediction intervals")
@@ -37,7 +37,7 @@ dev.off()
 model.inv <- lm(VapourPressure ~ I(1/TempC2))
 summary(model.inv)
 
-bitmap('/Users/kevindunn/Statistics course/Course notes/Assignments/Assignment 5/images/distillation-prediction-inverted-temperature.png', type="png256", width=7, height=7, res=300, pointsize=14)
+bitmap('../images/distillation-prediction-inverted-temperature.png', type="png256", width=7, height=7, res=300, pointsize=14)
 par(mar=c(4.2, 4.2, 0.5, 0.5))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=1.5, cex.main=1.5, cex.sub=1.5, cex.axis=1.5 )
 plot(1/TempC2, VapourPressure, xlab="1/TempC2 [1/degF]", ylab="Vapour pressure [kPa]")
@@ -54,7 +54,7 @@ y.hat
 # 2 36.67978 30.99621 42.36334
 # 3 24.56899 18.84305 30.29493
 
-bitmap('/Users/kevindunn/Statistics course/Course notes/Assignments/Assignment 5/images/distillation-prediction-qqplots.png', type="png256", width=14, height=7, res=300, pointsize=14)
+bitmap('../images/distillation-prediction-qqplots.png', type="png256", width=14, height=7, res=300, pointsize=14)
 par(mar=c(4.2, 4.2, 3.5, 0.5))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=1.5, cex.main=1.5, cex.sub=1.5, cex.axis=1.5)
 layout(matrix(c(1,2), 1, 2))
@@ -87,7 +87,7 @@ c(RMSEP, SE)
 
 # Find influential observations and remove them
 #-----------------------------------------------
-bitmap('/Users/kevindunn/Statistics course/Course notes/Assignments/Assignment 5/images/distillation-influence-plot.png', type="png256", width=7, height=7, res=300, pointsize=14)
+bitmap('../images/distillation-influence-plot.png', type="png256", width=7, height=7, res=300, pointsize=14)
 par(mar=c(4.2, 4.2, 0.5, 0.5))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=1.5, cex.main=1.5, cex.sub=1.5, cex.axis=1.5)
 library(car)

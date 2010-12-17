@@ -1,4 +1,4 @@
-boards <- read.csv('http://stats4.eng.mcmaster.ca/datasets/board-thickness.csv')
+boards <- read.csv('http://datasets.connectmv.com/file/board-thickness.csv')
 attach(boards)
 
 N.raw <- length(Thickness)  # Total number of boards
@@ -6,14 +6,14 @@ N.sub <- 7                  # subgroup size
 N.phase1 <- 500             # number of phase 1 raw data points
 
 # a) Plot all the data.  
-bitmap('/Users/kevindunn/Statistics course/Course notes/Assignments/Assignment 4/images/boards-monitoring-raw-data.png', type="png256", width=10, height=5, res=300, pointsize=14)
+bitmap('../images/boards-monitoring-raw-data.png', type="png256", width=10, height=5, res=300, pointsize=14)
 par(mar=c(4.2, 4.2, 1.2, 0.2))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=1.5, cex.main=1.8, cex.sub=1.8, cex.axis=1.8)
 plot(Thickness, type="p", main="Thickness: all data")
 dev.off()
 
 # b) Now assume that boards 1 to 500 are the phase I data; identify unusual boards
-bitmap('/Users/kevindunn/Statistics course/Course notes/Assignments/Assignment 4/images/boards-monitoring-find-outliers-phase1.png', type="png256", width=10, height=5, res=300, pointsize=14)
+bitmap('../images/boards-monitoring-find-outliers-phase1.png', type="png256", width=10, height=5, res=300, pointsize=14)
 par(mar=c(4.2, 4.2, 1.2, 0.2))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=1.5, cex.main=1.8, cex.sub=1.8, cex.axis=1.8)
 plot(Thickness[1:N.phase1], type="p", main="Phase 1 raw data", ylab="Thickness")
@@ -55,7 +55,7 @@ UCL <- target + 3 * sigma.estimate/sqrt(N.sub)
 round(c(LCL, target, UCL), 0)
 # Limits are pretty much the same: not surprising.
 
-bitmap('/Users/kevindunn/Statistics course/Course notes/Assignments/Assignment 4/images/boards-monitoring-Shewhart-phase1.png', type="png256", width=10, height=5, res=300, pointsize=14)
+bitmap('../images/boards-monitoring-Shewhart-phase1.png', type="png256", width=10, height=5, res=300, pointsize=14)
 par(mar=c(4.2, 4.2, 1.9, 0.2))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=1.5, cex.main=1.8, cex.sub=1.8, cex.axis=1.8)
 phase1.data <- subgroup.xbar[1:phase1.end]
@@ -67,7 +67,7 @@ dev.off()
 
 # d) Test the Shewhart chart on boards 501 to 2000, the phase II data.  
 #    Show the plot and calculate the type I error rate (alpha) from the phase II data.
-bitmap('/Users/kevindunn/Statistics course/Course notes/Assignments/Assignment 4/images/boards-monitoring-Shewhart-phase2.png', type="png256", width=10, height=5, res=300, pointsize=14)
+bitmap('../images/boards-monitoring-Shewhart-phase2.png', type="png256", width=10, height=5, res=300, pointsize=14)
 par(mar=c(4.2, 4.2, 1.9, 0.2))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=1.5, cex.main=1.8, cex.sub=1.8, cex.axis=1.8)
 phase2.data <- subgroup.xbar[(phase1.end+1):length(subgroup.xbar)]
@@ -99,7 +99,7 @@ c(num.minutes.production, production.rate, N.raw/N.sub, minutes.between.false.al
 
 # g) How would you monitor if the saws are slowly going out of alignment? 
 #    Show the increase in variance over time with a nonparametric smooth of subgroup standard deviation
-bitmap('/Users/kevindunn/Statistics course/Course notes/Assignments/Assignment 4/images/boards-monitoring-subgroup-standard-deviation.png', type="png256", width=10, height=5, res=300, pointsize=14)
+bitmap('../images/boards-monitoring-subgroup-standard-deviation.png', type="png256", width=10, height=5, res=300, pointsize=14)
 par(mar=c(4.2, 4.2, 1.9, 0.2))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=1.5, cex.main=1.8, cex.sub=1.8, cex.axis=1.8)
 plot(subgroup.sd, type="p", ylab="Subgroup standard deviation", main="Slow increase in subgroup variability over the day")
