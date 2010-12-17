@@ -5,13 +5,13 @@ year <- seq(2000, 2008)
 snow.long.average = 161.8
 temp.long.average = 7.6
 
-bitmap('/Users/kevindunn/transfer/Stats-course/Course notes/Assignments/Assignment 2/images/snowfall-data.png', type="png256", width=12, height=7, res=250, pointsize=14) 
+bitmap('../images/snowfall-data.png', type="png256", width=12, height=7, res=250, pointsize=14) 
 plot(year, snow, xlab="Year", ylab="Snowfall (cm)", type="b")
 abline(h=snow.long.average, col = "gray40")
 text(2006, snow.long.average-5, "Total annual snowfall, averaged over 1971 to 2000 data")
 dev.off()
 
-bitmap('/Users/kevindunn/transfer/Stats-course/Course notes/Assignments/Assignment 2/images/temperature-data.png', type="png256", width=12, height=7, res=250, pointsize=14) 
+bitmap('../images/temperature-data.png', type="png256", width=12, height=7, res=250, pointsize=14) 
 plot(year, temp, xlab="Year", ylab="Average annual temperature (°C)", type="b")
 abline(h=temp.long.average, col = "gray40")
 text(2006, temp.long.average-0.1, "Average annual temperature, averaged over 1971 to 2000 data")

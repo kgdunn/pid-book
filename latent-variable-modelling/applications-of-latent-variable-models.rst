@@ -34,7 +34,7 @@ In the example shown here the company was interested in how their product perfor
 
 .. figure:: images/process-understanding.png
 	:alt:	images/process-understanding.key
-	:scale: 80%
+	:scale: 80
 	:width: 750px
 	:align: center
 
@@ -61,7 +61,7 @@ We already saw a troubleshooting example in the section on :ref:`interpreting sc
 
 	.. figure:: images/troubleshooting-a-process.png
 		:alt:	images/troubleshooting-a-process.svg
-		:scale: 45%
+		:scale: 45
 		:width: 500px
 		:align: center	
 
@@ -81,7 +81,7 @@ The score plot (left) and loadings plot (right) help isolate potential reasons f
 
 .. figure:: images/process-troubleshooting.png
 	:alt:	images/process-troubleshooting.R
-	:scale: 100%
+	:scale: 100
 	:width: 750px
 	:align: center
 
@@ -119,7 +119,7 @@ The scores and loadings plot are repeated here again:
 
 .. figure:: images/pca-on-food-texture-scores-and-loadings.png
 	:alt:	images/pca-on-food-texture-data.R
-	:scale: 80%
+	:scale: 80
 	:width: 750px
 	:align: center
 		
@@ -162,7 +162,7 @@ Consider the case of these two variables, called :math:`x_1` and :math:`x_2`, sh
 
 .. figure:: images/two-axis-monitoring-plot.png
 	:alt:	images/two-axis-monitoring-plot.py
-	:scale: 90%
+	:scale: 90
 	:width: 750px
 	:align: center
 
@@ -239,7 +239,7 @@ The following illustration shows how we deal with an image, such as the one take
 
 .. figure:: images/image-unfolding.jpg
 	:alt:	images/image-unfolding.jpg
-	:scale: 55%
+	:scale: 55
 	:width: 750px
 	:align: center
 
@@ -247,7 +247,7 @@ In the unfolded matrix we have :math:`IJ` rows and 3 columns.  In other words, e
 
 .. figure:: images/lumber-example-combine.png
 	:alt:	images/lumber-example-combine.py
-	:scale: 100%
+	:scale: 100
 	:width: 750px
 	:align: center
 	
@@ -287,7 +287,7 @@ Classification is a statistical tool used to predict whether a sample (a new obs
 	
 	.. figure:: images/12leadECG.jpg
 		:alt:	http://upload.wikimedia.org/wikipedia/commons/b/bd/12leadECG.jpg
-		:scale: 85%
+		:scale: 85
 		:width: 750px
 		:align: center
 
@@ -334,7 +334,7 @@ There are two types of misclassification possible:
 
 	.. figure:: images/classification-in-the-score-space.png
 		:alt:	images/classification-in-the-score-space.svg
-		:scale: 60%
+		:scale: 60
 		:width: 600px
 		:align: center
 
@@ -344,7 +344,7 @@ In the next example below, which has :ref:`been covered before <LVM-using-indica
 
 .. figure:: images/unsupervised-classification-process.png
 	:alt:	images/process-troubleshooting.R
-	:scale: 80%
+	:scale: 80
 	:width: 750px
 	:align: center
 	
@@ -378,7 +378,7 @@ If one knows which group each observation belongs to, then an improved classific
 
 .. figure:: images/SIMCA-classification.png
 	:alt:	images/SIMCA-classification.svg
-	:scale: 70%
+	:scale: 70
 	:width: 750px
 	:align: center
 
@@ -399,7 +399,7 @@ This is exactly the premise of PLS-DA, projection to latent structures for discr
 
 .. figure:: images/PLSDA-classification.png
 	:alt:	images/PLSDA-classification.svg
-	:scale: 80%
+	:scale: 80
 	:width: 750px
 	:align: center
 
@@ -414,7 +414,7 @@ Using a PLS-DA classification model:
 		
 		.. figure:: images/PLSDA-classification-observed-vs-predicted.png
 			:alt:	images/PLSDA-classification-observed-vs-predicted.svg
-			:scale: 60%
+			:scale: 60
 			:width: 600px
 			:align: center
 		
@@ -518,7 +518,7 @@ Since we measure :math:`x` and :math:`d`, we might use them to predict :math:`y`
 
 .. figure:: images/incorporating-lags-of-Y.png
 	:alt:	images/incorporating-lags-of-Y.svg
-	:scale: 35%
+	:scale: 35
 	:width: 750px
 	:align: center
 
@@ -526,7 +526,7 @@ Lagging introduces time-dependency among the columns in |X|.  How many lags shou
 
 .. figure:: images/kappa-number-autocorrelation.png
 	:alt:	images/kamyr-modelling.R
-	:scale: 60%
+	:scale: 60
 	:width: 750px
 	:align: center
 
@@ -535,7 +535,7 @@ The autocorrelation function shows significant lags up to the 3rd sample in the 
 
 .. figure:: images/plot-PLS-lags.png
 	:alt:	images/plot-PLS-lags.R
-	:scale: 50%
+	:scale: 50
 	:width: 750px
 	:align: center
 
@@ -543,7 +543,7 @@ We can also lag the |X| variables.  Consider the case where a single |x| variabl
 
 .. figure:: images/incorporating-lags-of-X.png
 	:alt:	images/incorporating-lags-of-X.svg
-	:scale: 50%
+	:scale: 50
 	:width: 750px
 	:align: center
 
@@ -553,7 +553,7 @@ We can see from the weights that the |x|-variable has the greatest relationship 
 
 .. figure:: images/plot-PLS-lags-x-y.png
 	:alt:	images/kamyr-modelling.R
-	:scale: 60%
+	:scale: 60
 	:width: 750px
 	:align: center
 
@@ -614,7 +614,7 @@ So a summary of points we can learn from this example and apply in general:
 	
 		.. figure:: images/LDPE-wstar-c-scatterplot.png
 			:alt:	images/LDPE-wstar-c-scatterplot.R
-			:scale: 80%
+			:scale: 80
 			:width: 750px
 			:align: center
 			

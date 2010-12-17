@@ -29,7 +29,7 @@ group_difference <- function(groupA, groupB)
 return(list(z, t.critical, LB, UB))
 }
 
-website <- read.csv('http://stats4.eng.mcmaster.ca/datasets/website-traffic.csv')
+website <- read.csv('http://datasets.connectmv.com/info/website-traffic.csv')
 attach(website)
 
 visits.Mon <- Visits[DayOfWeek=="Monday"]
@@ -41,7 +41,7 @@ visits.Sat <- Visits[DayOfWeek=="Saturday"]
 visits.Sun <- Visits[DayOfWeek=="Sunday"]
 
 # Look at a boxplot of the data from Friday and Saturday
-bitmap('/Users/kevindunn/Statistics course/Course notes/Assignments/Assignment 3/images/website-boxplot.png', type="png256", width=7, height=7, res=250, pointsize=14) 
+bitmap('../images/website-boxplot.png', type="png256", width=7, height=7, res=250, pointsize=14) 
 par(mar=c(4.2, 4.2, 0.2, 0.2))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 boxplot(visits.Fri, visits.Sat, names=c("Friday", "Saturday"), ylab="Number of visits", cex.lab=1.5, cex.main=1.8, cex.sub=1.8, cex.axis=1.8)
 dev.off()

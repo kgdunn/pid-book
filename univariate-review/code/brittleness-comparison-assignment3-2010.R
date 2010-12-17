@@ -26,7 +26,7 @@ group_difference <- function(groupA, groupB)
 return(list(z, t.critical, LB, UB))
 }
 
-brittle <- read.csv('http://stats4.eng.mcmaster.ca/datasets/brittleness-index.csv')
+brittle <- read.csv('http://datasets.connectmv.com/file/brittleness-index.csv')
 attach(brittle)  # Now we can access the variables directly, without $ symbols
 
 # Let's start though by plotting boxplots of the data

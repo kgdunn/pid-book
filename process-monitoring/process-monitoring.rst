@@ -48,7 +48,7 @@ What we will cover
 
 .. figure:: images/control-charts-section-mapping.png
   :width: 750px 
-  :scale: 60%
+  :scale: 60
 
 .. index::
 	pair: references and readings; Process monitoring
@@ -63,7 +63,7 @@ Some references to refer to:
 #. Hogg and Ledolter, *Engineering Statistics*
 #. Macgregor, John F. "`Using On-Line Process Data to Improve Quality: Challenges for Statisticians <http://dx.doi.org/10.1111/j.1751-5823.1997.tb00311.x>`_", *International Statistical Review*, **65**, p 309-323, 1997.
 #. Bisgaard, S., *`The Quality Detective: A Case Study <http://dx.doi.org/10.1098/rsta.1989.0006>`_*, Philosophical Transactions of the Royal Society-A, **327**, p 499-511, 1989.
-#. Rocke, D.M., Robust Control Charts, *Technometrics*, **31** (2), p 173 - 184, 1989. (`McMaster on-campus access <http://www.jstor.org/pss/1268815>`_)
+#. Rocke, D.M., `Robust Control Charts <http://www.jstor.org/pss/1268815>`_, *Technometrics*, **31** (2), p 173 - 184, 1989.
 
 .. Box, The R. A. Fisher Memorial Lecture, 1988- Quality Improvement- An Expanding Domain for the Application of Scientific Method, Phil. Trans. R. Soc. Lond. A February 24, 1989 327:617-630, [http://dx.doi.org/10.1098/rsta.1989.0017 DOI]
 .. (Not available): Box critique of Taguchi methods: http://dx.doi.org/10.1002/qre.4680040207
@@ -85,7 +85,7 @@ Concepts that you must be familiar with by the end of this section:
 .. figure:: images/control-chart-concepts.png
 	:width: 600px
 	:align: center
-	:scale: 70%
+	:scale: 70
 
 So what is process monitoring?
 ===============================
@@ -119,7 +119,7 @@ Here is an example that shows these properties.
 
 .. figure:: images/demo-of-monitoring-chart.png
 	:width: 750px
-	:scale: 80%
+	:scale: 80
 
 General approach
 ~~~~~~~~~~~~~~~~~~~~
@@ -178,7 +178,7 @@ Define the variable of interest as |x|, and assume that we have samples of |x| a
 .. figure:: images/explain-Shewhart-data-source.png
 	:width: 750px
 	:align: center
-	:scale: 70%
+	:scale: 70
 
 So by taking subgroups of size :math:`n` values, we now have a new variable, :math:`\bar{x}` and we will define a shorthand symbol for its standard deviation: :math:`\sigma_{\bar{X}} = \sigma/\sqrt{n}`.  Writing a |z|-value for :math:`\bar{x}`, and its associated confidence interval for :math:`\mu` is now easy after studying the previous section of the course:
 
@@ -211,7 +211,7 @@ The next hurdle is :math:`\sigma`.  We do not show it in this course, but for a 
 
 .. figure:: images/table-for-an-values.png
 	:width: 500px
-	:scale: 80%
+	:scale: 80
 	
 .. table code
 	{| class="wikitable center"
@@ -289,14 +289,14 @@ There are 2 ways to assess performance:
 	.. figure:: images/show-shift-beta-error.png
 		:width: 500px
 		:align: center
-		:scale: 90%
+		:scale: 90
 	
 	.. todo  How did Devore calculate these numbers: see p 667 of his book - it doesn't make sense to me.  See my attempt in "show-shift-typeII-error.R"
 	
 	.. figure:: images/type-II-error-shift.png
 		:width: 500px
 		:align: center
-		:scale: 90%
+		:scale: 90
 
 	The table here shows that :math:`\beta` is a function of the amount by which the process shifts = :math:`\Delta`, where :math:`\Delta=1` implies the process has shifted up by :math:`1\sigma`.  The table was calculated for :math:`n=4` and used critical limits of :math:`\pm 3 \sigma_{\bar{X}}`.
 
@@ -399,7 +399,7 @@ As an introduction to the exponentially weighted moving average (EWMA) chart, co
 .. figure:: images/explain-moving-average-data-source.png
 	:width: 750px
 	:align: center
-	:scale: 70%
+	:scale: 70
 
 The MA chart plots values of :math:`x_t`, calculated from groups of size :math:`n`, with equal weight for each of the :math:`n` most recent raw data.
 
@@ -450,7 +450,7 @@ From the above discussion and the weights shown for the 4 different charts, it s
 .. figure:: images/explain-weights.png
 	:width: 750px
 	:align: center
-	:scale: 75%
+	:scale: 75
 	
 The upper and lower control limits for the EWMA plot are plotted in the same way as the Shewhart limits:
 
@@ -530,7 +530,7 @@ The PCR is often called the process width.  Let's see why by taking a look at a 
 .. figure:: images/explain-PCR-half.png
 	:width: 750px
 	:align: center
-	:scale: 80%
+	:scale: 80
 
 The diagram is from a process with mean of 80 and where LSL=65 and USL=95.  These specification are fixed, set by our production guidelines.  If the process variation :math:`\sigma = 10`, then this implies that PCR=0.5.  Assuming further that the our production is centered at the mean of 80, we can calculate how much defective product is produced in the shaded region of the plot.  Assuming a normal distribution:
 
@@ -545,7 +545,7 @@ Contrast this to the case where PCR = 2.0 for the same system.  To achieve that 
 .. figure:: images/explain-PCR-two.png
 	:width: 750px
 	:align: center
-	:scale: 80%
+	:scale: 80
 
 .. Note:: You will probably come across the terminology C\ :sub:`p`, especially when dealing with 6 sigma programs.  This is the same as PCR for a centered process.
 
@@ -633,14 +633,14 @@ The computer screenshot shows the monitoring system, called Caster SOS (Stable O
 .. figure:: images/Dofasco-monitoring-chart.png
 	:width: 750px
 	:align: center
-	:scale: 100%
+	:scale: 100
 	
 The economics of control charting cannot be overstated. The ArcelorMittal example above was introduced around 1997.  The calculations required by this system are complex - however the computer performs them in near real-time, allowing the operators to take corrective action within a few seconds.  The data show a significant reduction in breakouts since 1997 (*used with permission of Dr. John MacGregor*).  The economic savings and increased productivity is in the millions of dollars per year, as each breakout costs around $200,000 to $500,000 due to process shutdowns and/or equipment damage.
 
 .. figure:: images/breakouts-dofasco-economics.png
 	:width: 750px
 	:align: center
-	:scale: 80%
+	:scale: 80
 
 .. FUTURE: Agnico-Eagle monitoring 
 .. FUTURE: show how a scatter plot can be used
@@ -681,7 +681,7 @@ Exercises
 
 .. question::
 
-    Use the `batch yields data <http://stats4.eng.mcmaster.ca/wiki/Data_sets#Batch_yields>`_ from last week's assignment and construct a control chart using the 300 yield values.  Use a subgroup of size 5.  Report your target value, lower control limit and upper control limit, showing the calculations you made.  I recommend that you write your code so that you can reuse it for the next question and for the mid-term take-home exam.
+    Use the `batch yields data <http://datasets.connectmv.com/info/batch-yields>`_ and construct a control chart using the 300 yield values.  Use a subgroup of size 5.  Report your target value, lower control limit and upper control limit, showing the calculations you made.  I recommend that you write your code so that you can reuse it for the next question and for the mid-term take-home exam.
 
 .. answer::
 
@@ -702,7 +702,7 @@ Exercises
 
 .. question::
 
-    The `boards data <http://stats4.eng.mcmaster.ca/wiki/Data_sets#Board_thickness>`_ on the course website are from a line which cuts spruce, pine and fir (SPF) to produce general quality lumber that you could purchase at Rona, Home Depot, etc.  The price that a saw mill receives for its lumber is strongly dependent on how accurate the cut is made.  Use the data for the 2 by 6 boards (each row is one board) and develop a monitoring system using these steps.
+    The `boards data <http://datasets.connectmv.com/info/board-thickness>`_ on the course website are from a line which cuts spruce, pine and fir (SPF) to produce general quality lumber that you could purchase at Rona, Home Depot, etc.  The price that a saw mill receives for its lumber is strongly dependent on how accurate the cut is made.  Use the data for the 2 by 6 boards (each row is one board) and develop a monitoring system using these steps.
 
     	a) Plot all the data.  
     	b) Now assume that boards 1 to 500 are the phase I data; identify any boards in this subset that appear to be unusual (where the board thickness is not consistent with most of the other operation)

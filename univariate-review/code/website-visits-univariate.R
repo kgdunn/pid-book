@@ -1,4 +1,4 @@
-web <- read.csv('http://stats4.eng.mcmaster.ca/datasets/website-traffic.csv')
+web <- read.csv('http://datasets.connectmv.com/info/website-traffic.csv')
 summary(web)
 
 # Check for normality: use a qq-plot

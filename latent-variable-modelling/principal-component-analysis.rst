@@ -29,14 +29,14 @@ Which variables should you use, and how many observations do you require? We add
 .. figure:: images/X-matrix.png
 	:alt:	images/X-matrix.svg
 	:align: center
-	:scale: 35%
+	:scale: 35
 	:width: 400px
 
 Consider the case of 2 variables, :math:`K=2` (left) and :math:`K=3` variables (right) for the room thermometers example :ref:`from earlier <LVM-room-temperature-example>`:
 
 .. figure:: images/temperature-2d-and-3d-plot.png
 	:alt:	images/temperature-data-combine.py
-	:scale: 100%
+	:scale: 100
 	:width: 750px
 	:align: center
 
@@ -53,7 +53,7 @@ We refer to a :math:`K`-dimensional space when referring to the data in |X|.  We
 .. figure:: images/geometric-PCA-1-and-2-swarm-with-mean.png
 	:alt: 	images/geometric-interpretation-of-PCA.svg
 	:width: 900px
-	:scale: 100%
+	:scale: 100
 	:align: center
 
 The raw data in the cloud swarm show how the 3 variables move together.  The first step in PCA is to move the data to the center of the coordinate system.  This is called mean-centering and removes the arbitrary bias humans use when taking measurements.  We also scale the data, usually to unit-variance.  This removes the fact that the variables are in different units of measurement.  Additional discussion on centering and scaling is :ref:`in the section on data preprocessing <LVM-preprocessing>`.
@@ -65,7 +65,7 @@ The best-fit line is drawn through the swarm of points.  The more correlated the
 .. figure:: images/geometric-PCA-3-and-4-centered-with-first-component.png
 	:alt: 	images/geometric-interpretation-of-PCA.svg
 	:width: 900px
-	:scale: 100%
+	:scale: 100
 	:align: center
 
 When the direction of the best-fit line is found we can mark the location of each observation along the line.  We find the 90 degree projection of each observation onto the line (see the next illustration).  The distance from the origin to this projected point along the line is called the *score*.  Each observation gets its own score value.  When we say the best-fit line is in the direction of maximum variance, what we are saying is that the variance of these scores will be maximal. (There is one score for each observation, so there are :math:`N` score values; the variance of these :math:`N` values is at a maximum).  Notice that some score values will be positive and others negative.  
@@ -78,7 +78,7 @@ After we have added this best-fit line to the data, we have calculated the first
 .. figure:: images/geometric-PCA-5-and-6-first-component-with-projections-and-second-component.png
 	:alt: 	images/geometric-interpretation-of-PCA.svg
 	:width: 900px
-	:scale: 100%
+	:scale: 100
 	:align: center
 
 This first component is fixed and we now add a second component to the system.  We find the second component so that it is perpendicular to the first component's direction.  Notice that this vector also starts at the origin, and can point in any direction as long as it remains perpendicular to the first component.  We keep rotating that vector around until we find the direction that gives the greatest variance in the score values when projected on this new direction vector.
@@ -86,7 +86,7 @@ This first component is fixed and we now add a second component to the system.  
 .. figure:: images/geometric-PCA-7-and-8-second-component-and-both-components.png
 	:alt: 	images/geometric-interpretation-of-PCA.svg
 	:width: 900px
-	:scale: 100%
+	:scale: 100
 	:align: center
 
 What that means is that once we have settled on a direction for the second component, we calculate the scores values by perpendicularly projecting each observation towards this second direction vector.  The score values for the second component are the locations along this line.  As before, there will be some positive and some negative score values.  This completes our second component:
@@ -116,7 +116,7 @@ We briefly review here what that means.  Let :math:`\mathbf{x}'_i` be a row from
 	:alt:	images/component-along-a-vector.svg
 	:align: center
 	:width: 500px
-	:scale: 50%
+	:scale: 50
 
 Recall from geometry that the cosine of an angle in a right-angled triangle is the ratio of the adjacent side to the hypotenuse. But the cosine of an angle is also used to define the  dot-product.  Mathematically:
 
@@ -167,7 +167,7 @@ Returning back to our illustration with a single component, the best estimate of
 .. figure:: images/prediction-along-a-vector.png
 	:alt:	images/prediction-along-a-vector.svg
 	:align: center
-	:scale: 50%
+	:scale: 50
 	:width: 500px
 
 So if the magnitude of :math:`\hat{\mathbf{x}}_i` is :math:`t_i` in the direction of |p1| (which is a unit vector), then mathematically we can write:
@@ -272,7 +272,7 @@ A scatter plot matrix of these :math:`K = 5` measurements is shown for the :math
 
 .. figure:: images/pca-on-food-texture-scatterplot-matrix.png
 	:alt:	images/pca-on-food-texture-data.R
-	:scale: 100%
+	:scale: 100
 	:width: 750px
 	:align: center
 
@@ -284,7 +284,7 @@ The first step with PCA is to center and scale the data.  The boxplots show how 
 
 .. figure:: images/pca-on-food-texture-centering-and-scaling.png
 	:alt:	images/pca-on-food-texture-data.R
-	:scale: 100%
+	:scale: 100
 	:width: 750px
 	:align: center
 
@@ -318,7 +318,7 @@ We will discuss how to determine the number of components to use :ref:`in a futu
 
 .. figure:: images/pca-on-food-texture-pc1-loadings.png
 	:alt:	images/pca-on-food-texture-data.R
-	:scale: 60%
+	:scale: 60
 	:width: 750px
 	:align: center
 
@@ -338,7 +338,7 @@ Let's examine the score values calculated.  As shown above, the scores are linea
 
 .. figure:: images/pca-on-food-texture-pc1-scores.png
 	:alt:	images/pca-on-food-texture-data.R
-	:scale: 80%
+	:scale: 80
 	:width: 750px
 	:align: center
 	
@@ -356,7 +356,7 @@ The second loading vector is shown below in the figure.
 
 .. figure:: images/pca-on-food-texture-pc2-loadings.png
 	:alt:	images/pca-on-food-texture-data.R
-	:scale: 55%
+	:scale: 55
 	:width: 750px
 	:align: center
 
@@ -368,7 +368,7 @@ Because this component is orthogonal to the first component, we can be sure that
 
 .. figure:: images/pca-on-food-texture-scores-and-loadings.png
 	:alt:	images/pca-on-food-texture-data.R
-	:scale: 90%
+	:scale: 90
 	:width: 750px
 	:align: center
 
@@ -393,7 +393,7 @@ The score value for an observation, for say the first component, is the distance
 
 .. figure:: images/geometric-PCA-5-first-component-with-projections.png
 	:alt:	images/geometric-interpretation-of-PCA.svg
-	:scale: 34%
+	:scale: 34
 	:width: 750px
 	:align: center
 
@@ -419,7 +419,7 @@ We usually start by looking at the :math:`(\mathbf{t}_1, \mathbf{t}_2)` scatterp
 	
 .. figure:: images/slama-thesis-screenshot-score-plot.png
 	:alt:	images/slama-thesis-screenshot-score-plot.png
-	:scale: 52%
+	:scale: 52
 	:width: 750px
 	:align: center
 		
@@ -440,7 +440,7 @@ As an example from the :ref:`food texture data <LVM-food-texture-example>` from 
 
 .. figure:: images/pca-on-food-texture-score-t1-contribution-for-obs-33.png
 	:alt:	images/pca-on-food-texture-data.R
-	:scale: 55%
+	:scale: 55
 	:width: 750px
 	:align: center
 
@@ -476,7 +476,7 @@ Recall that the loadings plots are a plot of the direction vectors that define t
 
 .. figure:: images/geometric-PCA-8-noth-components-with-plane.png
 	:alt:	images/geometric-interpretation-of-PCA.svg
-	:scale: 40%
+	:scale: 40
 	:width: 750px
 	:align: center
 
@@ -486,7 +486,7 @@ Let's consider another visual example where two variables, :math:`x_1` and :math
 
 .. figure:: images/two-variable-geometric-interpretation-of-loadings.png
 	:alt:	images/two-variable-geometric-interpretation-of-loadings.svg
-	:scale: 50%
+	:scale: 50
 	:width: 750px
 	:align: center
 
@@ -503,7 +503,7 @@ Another issue to consider is the case when one has many highly correlated variab
 
 .. figure:: images/temperatures-first-loading.png
 	:alt:	images/temperature-data.R
-	:scale: 75%
+	:scale: 75
 	:width: 750px
 	:align: center
 
@@ -547,7 +547,7 @@ This shows that each observation (row in |X|) can be split into two portions: a 
 
 .. figure:: images/SPE-illustration.png
 	:alt:	images/SPE-illustration.svg
-	:scale: 100%
+	:scale: 100
 	:width: 750px
 	:align: center
 
@@ -574,7 +574,7 @@ Looking back at the room-temperature example: if we fit a model with one compone
 
 .. figure:: images/temperatures-SPE-after-one-PC.png
 	:alt:	images/temperature-data.R
-	:scale: 80%
+	:scale: 80
 	:width: 750px
 	:align: center
 
@@ -582,7 +582,7 @@ Using the raw data for this example, repeated below, can you explain all of the 
 
 .. figure:: images/room-temperature-plots.png
 	:alt:	images/room-temperature-plots.py
-	:scale: 90%
+	:scale: 90
 	:width: 700px
 	:align: center
 
@@ -596,7 +596,7 @@ Using the residual matrix :math:`\mathbf{E} = \mathbf{X} - \mathbf{T} \mathbf{P}
 
 .. figure:: images/column-residuals-PCA.png
 	:alt:	images/column-residuals-PCA.svg
-	:scale: 100%
+	:scale: 100
 	:width: 750px
 	:align: center
 
@@ -624,7 +624,7 @@ A data set, `available on the course website <http://stats4.eng.mcmaster.ca/wiki
 
 .. figure:: images/pharma-spectra.png
 	:alt:	images/pharma-spectra.py
-	:scale: 95%
+	:scale: 95
 	:width: 750px
 	:align: center
 	
@@ -647,7 +647,7 @@ Let's visually show what the :math:`R^2` values are for each column.  Shown belo
 
 .. figure:: images/spectral-data-R2-per-variable.png
 	:alt:	images/spectral-data.R
-	:scale: 80%
+	:scale: 80
 	:width: 750px
 	:align: center
 
@@ -655,7 +655,7 @@ Finally, we can show the SPE plot for each observation. These SPE values for eac
 
 .. figure:: images/spectral-data-SPE-per-tablet.png
 	:alt:	images/spectral-data.R
-	:scale: 80%
+	:scale: 80
 	:width: 750px
 	:align: center
 
@@ -678,7 +678,7 @@ where the :math:`s_a^2` values are constants, and are the variances of each comp
 
 	.. figure:: images/spectral-data-T2-lineplot.png
 		:alt:	images/spectral-data.R
-		:scale: 80%
+		:scale: 80
 		:width: 750px
 		:align: center
 
@@ -693,7 +693,7 @@ where the :math:`s_a^2` values are constants, and are the variances of each comp
 
 .. figure:: images/spectral-data-t1-t2-scoreplot.png
 	:alt:	images/spectral-data.R
-	:scale: 80%
+	:scale: 80
 	:width: 750px
 	:align: center
 
@@ -816,7 +816,7 @@ From this we learn that:
 		.. figure:: images/eigenvalue-scree-plot.png
 			:alt:	images/eigenvalue-scree-plot.R
 			:align: center
-			:scale: 70%
+			:scale: 70
 			:width: 700px
 
 The general approach to using the eigenvalue decomposition would be:
@@ -1013,7 +1013,7 @@ We summarize various properties of the PCA model, most have been described in th
 	
 		.. figure:: images/decomposition-of-PCA-X-matrix.png
 			:alt:	images/decomposition-of-PCA-X-matrix.svg
-			:scale: 75%
+			:scale: 75
 			:width: 750px
 			:align: center
 	
@@ -1035,7 +1035,7 @@ Visualization topic: Linking and Brushing
 
 .. figure:: images/brushing-illustration.png
 	:alt:	images/brushing-illustration.R
-	:scale: 50%
+	:scale: 50
 	:width: 750px
 	:align: center
 
@@ -1066,7 +1066,7 @@ We will show the algorithm here for the :math:`a^\text{th}` component, where :ma
 
 	.. figure:: images/NIPALS-iterations-PCA-columns.png
 		:alt:	images/NIPALS-iterations-PCA.svg
-		:scale: 35%
+		:scale: 35
 		:width: 750px
 		:align: center
 
@@ -1086,7 +1086,7 @@ We will show the algorithm here for the :math:`a^\text{th}` component, where :ma
 
 	.. figure:: images/NIPALS-iterations-PCA-rows.png
 		:alt:	images/NIPALS-iterations-PCA.svg
-		:scale: 35%
+		:scale: 35
 		:width: 750px
 		:align: center
 
@@ -1115,7 +1115,7 @@ There are 3 missing observations (open circles), but despite this, the regressio
 
 .. figure:: images/NIPALS-with-missing-values.png
 	:alt:	images/NIPALS-with-missing-values.svg
-	:scale: 50%
+	:scale: 50
 	:width: 750px
 	:align: center
 
@@ -1164,7 +1164,7 @@ The :math:`Q^2_A` behaves exactly as :math:`R^2`, but with two important differe
 
 .. figure:: images/barplot-for-R2-and-Q2.png
 	:alt:	images/barplot-for-R2-and-Q2.R
-	:scale: 100%
+	:scale: 100
 	:width: 750px
 	:align: center
 
@@ -1197,7 +1197,7 @@ But sometimes we would like to know, as in the figure below, what are the contri
 
 .. figure:: images/contribution-plots-in-the-scores.png
 	:alt:	images/contribution-plots-in-the-scores.svg
-	:scale: 100%
+	:scale: 100
 	:width: 750px
 	:align: center
 
@@ -1214,7 +1214,7 @@ Sometimes these variables are imported into the computer software, but *not used
 
 .. figure:: images/process-troubleshooting.png
 	:alt:	images/process-troubleshooting.R
-	:scale: 100%
+	:scale: 100
 	:width: 750px
 	:align: center
 	
@@ -1240,7 +1240,7 @@ Room temperature data
 
 .. figure:: images/room-temperature-plots.png
 	:alt:	images/room-temperature-plots.R
-	:scale: 60%
+	:scale: 60
 	:width: 750px
 	:align: center
 
@@ -1270,7 +1270,7 @@ Now we use the concept of brushing to interrogate and learn from the model.
 
 .. figure:: images/3d-example-empty.png
 	:alt:	images/3d-example.R
-	:scale: 50%
+	:scale: 50
 	:width: 750px
 	:align: center
 
@@ -1310,7 +1310,7 @@ This data set has become a classic data set when learning about multivariate dat
 
 .. figure:: images/food-consumption.png
 	:alt:	images/food-consumption.numbers
-	:scale: 100%
+	:scale: 100
 	:width: 750px
 	:align: center
 
@@ -1340,7 +1340,7 @@ Silicon wafer thickness
 
 .. figure:: images/silicon-wafer-thickness-locations.png
 	:alt:	images/silicon-wafer-thickness-locations.svg
-	:scale: 50%
+	:scale: 50
 	:width: 500px
 	:align: center
 
@@ -1378,7 +1378,7 @@ Import the data, and set the ``Outcome`` variable as a secondary identifier for 
 
 .. figure:: images/raw-material-characterization.png
 	:alt:	Screenshot from software
-	:scale: 80%
+	:scale: 80
 	:width: 750px
 	:align: center
 

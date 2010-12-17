@@ -189,7 +189,7 @@ What you will be able to do after this section
 .. figure:: images/DOE-section-mapping.png
 	:width: 750px 
 	:align: center
-	:scale: 90%
+	:scale: 90
 
 .. index::
 	pair: references and readings; Design of experiments
@@ -347,7 +347,7 @@ So for each of the 24310 realizations we calculate the difference of the average
 .. figure:: images/single-experiment-randomization.png
 	:align: center
 	:width: 750px
-	:scale: 90%
+	:scale: 90
 
 Recall that independence is required to calculate the :math:`z`-value for the average difference and compare it against the t-distribution.  By randomizing our experiments, we are able to guarantee that the results we obtain from using t-distributions are appropriate.  Without randomization, these z-values and confidence intervals may be misleading.
 
@@ -367,7 +367,7 @@ The base operating point is 346K with a feed substrate concentration of 1.5 g/L 
 .. figure:: images/COST-contours.png
 	:align: center
 	:width: 700px
-	:scale: 80%
+	:scale: 80
 	
 	
 .. FUTURE: use a curved surface like figure (c) on page 445 of BHH2
@@ -445,7 +445,7 @@ Let's take a look at the mechanics by using an example where the yield, |y|, is 
 	.. figure:: images/factorial-two-levels-two-variables-no-analysis.png
 		:align: center
 		:width: 750px
-		:scale: 50%
+		:scale: 50
 		
 .. _DOE-two-level-factorials-main-effects:
 		
@@ -461,7 +461,7 @@ We can perform a similar calculation for the main effect of substrate concentrat
 	.. figure:: images/factorial-two-levels-two-variables-with-analysis.png
 		:align: center
 		:width: 750px
-		:scale: 60%
+		:scale: 60
 
 This visual summary is a very effective method of seeing how the system responds to the two variables. We can see the gradients in the system and the likely region where we can perform additional experiments.
 
@@ -470,14 +470,14 @@ The following surface plot illustrates the main effects on the yield variable ov
 	.. figure:: images/factorial-two-level-surface-example-cropped.png
 		:align: center
 		:width: 750px
-		:scale: 50%
+		:scale: 50
 
 There is an alternative way to visualize these main effects shown below.  Use this method when you don't have computer software to draw the surfaces.  (We saw this earlier in the `visualization section <http://stats4.eng.mcmaster.ca/wiki/Visualizing_data>`_ of the course).  It is called an interaction plot, which we discuss more in the next section.
 
 	.. figure:: images/factorial-two-level-line-plot.png
 		:align: center
 		:width: 750px
-		:scale: 80%
+		:scale: 80
 
 Analysis of a factorial design: interaction effects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -491,7 +491,7 @@ Let's use a **different system** here to illustrate interaction effects, but sti
 	.. figure:: images/factorial-two-level-with-interactions.png
 		:align: center
 		:width: 550px
-		:scale: 85%
+		:scale: 85
 		
 	.. tabularcolumns:: |l|c|c||c|
 	
@@ -528,7 +528,7 @@ The data may also be visualized using an interaction plot:
 .. figure:: images/factorial-two-level-line-plot-with-interaction.png
 	:align: center
 	:width: 600px
-	:scale: 100%
+	:scale: 100
 
 The lack of parallel lines is a clear indication of interaction.  The temperature effect is stronger at high levels of :math:`S`, and the effect of :math:`S` on yield is also greater at high levels of temperature.  What is missing is an interaction term, given by the product of temperature and substrate.  We represent this as  :math:`T \times S`, and call it temperature-substrate interaction term.   
 
@@ -639,7 +639,7 @@ Some things to note are (1) the orthogonality of :math:`\mathbf{X}^T\mathbf{X}` 
 	.. figure:: images/factorial-two-levels-two-variables-with-analysis.png
 		:align: center
 		:width: 750px
-		:scale: 50%
+		:scale: 50
 
 Finally we return to the system with high interaction.  Defining the base line operation at :math:`T` = 395K, and :math:`S` = (1.25+0.5)/2 g/L, you can prove to yourself that its model is:
 
@@ -654,7 +654,7 @@ Finally, out of interest, we show the non-linear surface used to generate the ex
 	.. figure:: images/factorial-two-level-surface-with-interaction-cropped.png
 		:align: center
 		:width: 750px
-		:scale: 50%
+		:scale: 50
 	
 	
 Example: design and analysis of a 3-factor experiment
@@ -750,7 +750,7 @@ A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to esti
 .. figure:: images/pareto-plot-full-fraction.png
 	:align: center
 	:width: 800px
-	:scale: 50%
+	:scale: 50
 
 The reason why we can compare the coefficients this way, which is not normally the case with least squares models, is that we have both centered and scaled the factor-variables.  If the centering is at typical baseline operation, and the range spanned by each factor is that expected over the operating region, then we can fairly compare each factor's influence on the response.  The coefficient represents the effect on :math:`y` of a one-unit change in the factor, i.e. a change over half its operating range.
 
@@ -881,7 +881,7 @@ A normal probability plot is a non-linear transformation of the data so that the
 	
 .. figure:: images/normal-probability-signifcant-effects.png
 	:align: center
-	:scale: 50%
+	:scale: 50
 	:width: 800px
 		
 
@@ -904,7 +904,7 @@ Finally, we end this section on factorials by illustrating their efficiency.  Co
 	.. figure:: images/comparison-of-variances.png
 		:align: center
 		:width: 750px
-		:scale: 70%
+		:scale: 70
 	
 	.. tabularcolumns:: |l|l|
 	
@@ -971,7 +971,7 @@ Consider the case with 3 factors in our experiment.  If there is a disturbance, 
 
 .. figure:: images/blocking-factorial-3-factors.png
 	:align: center
-	:scale: 40%
+	:scale: 40
 	:width: 800px
 	
 .. tabularcolumns:: |c||c|c|c||c|c|c||c||c|
@@ -1052,7 +1052,7 @@ So this is our designed experiment for 3 factors, but it only requires 4 experim
 
 .. figure:: images/half-fraction-in-3-factors.png
 	:align: center
-	:scale: 35%
+	:scale: 35
 	:width: 800px
 
 What have we lost by running only half the factorial?  Let's write out the full design and matrix of all interactions, then construct the :math:`\mathrm{X}` matrix for the least squares model.
@@ -1200,7 +1200,7 @@ So we see that we can always complete our half-fraction by creating a complement
 
 .. figure:: images/complementary-half-fraction-in-3-factors.png
 	:align: center
-	:scale: 35%
+	:scale: 35
 	:width: 500px
 	:alt:	complementary-half-fraction-in-3-factors.svg
 
@@ -1517,7 +1517,7 @@ How do you assess which main effects are important?  There are eight data points
 .. figure:: images/pareto-plot.png
 	:align: center
 	:width: 800px
-	:scale: 37%
+	:scale: 37
 	:alt:	images/pareto-plot.R
 	
 Significant effects would be **A**, **C** and **G**.  The next largest effect, **E**, though fairly small, could be due to the main effect **E** or due to the **AC** interaction, because recall the confounding pattern for main effect was :math:`\widehat{\beta}_{\mathbf{E}} \rightarrow` **E + AC + BG + DF**.
@@ -1557,7 +1557,7 @@ Consider the diagram here, where a half fraction in factors **A**, **B** and **C
 .. figure:: images/projectivity-of-a-half-fraction-in-3-factors.png
 	:align: center
 	:width: 800px
-	:scale: 50%
+	:scale: 50
 	:alt:	images/projectivity-of-a-half-fraction-in-3-factors.svg
 
 On analyzing the data, the experimenter discovers that factor **C** does not actually have an impact on response :math:`y`.  This means the **C** dimension could have been removed from the experiment, and is illustrated by projecting the **A** and **B** factors forward, removing factor **C**.  Notice that this is now a full factorial in factors **A** and **B**.  The same situation would hold if either factor **B** or factor **A** were found to be unimportant.  Furthermore if two factors are found to be unimportant, then this corresponds to 2 replicate experiments in 1 factor.
@@ -1585,7 +1585,7 @@ We first consider just the effect of a single factor, :math:`x_1` as it relates 
 .. figure:: images/steepest-ascent-univariately-corrected.png
 	:alt: steepest-ascent-univariately.svg
 	:align: center
-	:scale: 70%
+	:scale: 70
 	:width: 750px
 
 We start at the point marked :math:`i=0` as our initial baseline (cp=center point).  We run a 2-level experiment, above and below this baseline at :math:`-1` and :math:`+1`, in coded units of :math:`x_1`, and obtain the corresponding response values of :math:`y_{0,-}` and :math:`y_{0,+}`.  From this we can estimate a best-fit straight line and move in the direction that increases :math:`y` (the sloping tangential line, also called the *path of steepest ascent*).  Make a move of step-size = :math:`\gamma_1` units along :math:`x_1` and measure the response, recorded as :math:`y_1`.  The response variable increased, so keep going in this direction.
@@ -1643,7 +1643,7 @@ The interaction term is small, indicating the response surface is mostly linear 
 .. figure:: images/RSM-base-case-combined.*
 	:align: center
 	:width: 900px
-	:scale: 100%
+	:scale: 100
 	:alt:	RSM-base-case.py
 
 
@@ -1732,7 +1732,7 @@ We will not go into detail in this course about central composite designs, other
 .. figure:: images/central-composite-design.png
 	:align: center
 	:width: 900px
-	:scale: 50%
+	:scale: 50
 	:alt:	central-composite-design.svg
 
 So a central composite design layout was created for the above example and the experiments run, randomly, at the 4 axial points.  The four response values were :math:`y_{13} = 720`, :math:`y_{14} = 699`, :math:`y_{15} = 610`, and :math:`y_{16} = 663`.  This allows us to estimate a model with quadratic terms in it: :math:`y = b_0 + b_T x_T + b_S x_S + b_{TS} x_T x_S + b_{TT} x_T^2 + b_{SS} x_S^2`.  The parameters in this model are found in the usual way, using a least-squares model.
@@ -1916,7 +1916,7 @@ A simple bioreactor example for 2 factors is shown: at high temperatures and hig
 .. figure:: images/two-factors-with-constraint.png
 	:align: center
 	:width: 500px
-	:scale: 45%
+	:scale: 45
 	:alt:	images/two-factors-with-constraint.svg
 
 Unfortunately, these 5 runs do not form an orthogonal (independent) :math:`\mathbf{X}` matrix anymore.  We have lost orthogonality.  We have also reduced the space (or volume when we have 3 or more factors) spanned by the factorial design.
@@ -1981,7 +1981,7 @@ A mixture design is required when the factors being varied add up to 100% to for
 .. figure:: images/mixture-design.png
 	:align: center
 	:width: 500px
-	:scale: 100%
+	:scale: 100
 	:alt:	images/mixture-design.svg
 
 In the above figure on the right, the shaded region represents a constraint that cannot be operated in.  A D-optimal algorithm must then be used to select experiments in the remaining region.  The example is for finding the lowest cost mixture for a fruit punch, while still meeting certain taste requirements (e.g. watermelon juice is cheap, but has little taste).  The constraint represents a region where the acidity is too high.  
@@ -2072,7 +2072,7 @@ Exercises
 			:alt:	images/assignment-6-two-levels-two-variables-no-analysis.svg
 			:align: center
 			:width: 500px
-			:scale: 80%
+			:scale: 80
 		
 	#.	The interaction plot which visually shows the main effects described above is:
 
@@ -2080,7 +2080,7 @@ Exercises
 			:alt:	images/assignment-6-two-level-line-plot-with-interaction.svg
 			:align: center
 			:width: 500px
-			:scale: 80%
+			:scale: 80
 
 	#.	The interaction term can be calculated in two ways, both giving the same answer.  Only one way is shown here:
 
@@ -2237,7 +2237,7 @@ Exercises
 			:alt:	bioreactor-case.R
 			:align: center
 			:width: 600px
-			:scale: 60%
+			:scale: 60
 			
 	#.	The model does not have to be refitted because the columns in matrix :math:`\mathbf{X}` are orthogonal, meaning that the coefficient estimates do not depend on the levels of any other variables.
 
@@ -2380,7 +2380,7 @@ Exercises
 	.. figure:: images/central-composite-question.png
 		:align: center
 		:width: 500px
-		:scale: 60%
+		:scale: 60
 		:alt:	images/central-composite-question.svg
 
 	You might feel more comfortable setting up the problem in MATLAB.  You can use the `contour plot <http://www.mathworks.com/access/helpdesk/help/techdoc/creating_plots/f10-2524.html>`_ functions in MATLAB to visualize the results.

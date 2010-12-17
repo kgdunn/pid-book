@@ -82,7 +82,7 @@ What you will be able to do after this section
 
 .. figure:: images/least-squares-section-mapping.png
   :width: 750px 
-  :scale: 90%
+  :scale: 90
 
 .. Notes
 	Specifically, we cover the technical topics of:
@@ -166,7 +166,7 @@ Given these numbers we can simplify the ideal gas law to: :math:`p=\beta_1 T`, w
 	
 .. figure:: images/table-of-cylinder-data.png
 	:width: 750px
-	:scale: 67%
+	:scale: 67
 	
 The formal definition for covariance between any two variables is given by equation :eq:`definition-covariance`.  Use this to calculate the covariance between temperature and pressure.
 
@@ -257,7 +257,7 @@ Study the plots below to get a feeling for the correlation value and its interpr
 .. figure:: images/correlation-calculation.png
 	:width: 750px
 	:align: center
-	:scale: 87%
+	:scale: 87
 
 Some definitions
 ================
@@ -364,7 +364,7 @@ The error values, :math:`e_i`, are expected to be non-zero for practical cases. 
 .. figure:: images/least-squares-picture.png
 	:width: 600px
 	:align: center
-	:scale: 71%
+	:scale: 71
 	
 
 Minimizing errors as an objective
@@ -404,14 +404,14 @@ Let's continue our example of the gas cylinder.  In this case we know that :math
 .. figure:: images/cylinder-case-study-objective.png
 	:width: 600px
 	:align: center
-	:scale: 60%
+	:scale: 60
 
 In the case where we have both |b0| and |b1|  varying we can construct a grid function and tabulate the objective function values at all points in the grid.  The objective function shape has a bowl shape in general, and a unique minimum can always be found (because the objective function is convex).
 
 .. figure:: images/least-squares-objective-function-annotated.png
 	:width: 750px
 	:align: center
-	:scale: 70%
+	:scale: 70
 	
 The above figure shows the general nature of the least-squares objective function where the two horizontal axes are for |b0| and |b1|, while the vertical axis represents the least squares objective function :math:`f(b_0, b_1)`.
 
@@ -485,7 +485,7 @@ Calculate the least squares estimates for the model :math:`y = b_0 + b_1 x` from
 	
 .. figure:: images/regression-exercise.png
 	:align: center
-	:scale: 56%
+	:scale: 56
 	
 ..	Raw data
 	{| class="wikitable" style="text-align: center; margin-left:auto; margin-right:auto;"  border="1"
@@ -525,7 +525,7 @@ Calculate the least squares estimates for the model :math:`y = b_0 + b_1 x` from
 .. figure:: images/show-anscombe-problem-1.png
 	:align: center
 	:width: 500px
-	:scale: 60%
+	:scale: 60
 	
 To calculate the least squares model in R:
 
@@ -593,7 +593,7 @@ Using the accompanying figure, we see that geometrically, at any fixed value of 
 .. figure:: images/ANOVA-graphically.png
 	:width: 600px
 	:align: center
-	:scale: 60%
+	:scale: 60
 
 It is convenient to write these sums of squares (variances) in table form, called an Analysis of Variance (ANOVA) table:
 
@@ -784,7 +784,7 @@ Furthermore, our derivation for the confidence intervals of |b0| and |b1| requir
 	.. figure:: images/constant-error-variance.png
 		:width: 500px
 		:align: center
-		:scale: 60%
+		:scale: 60
 	
 #.	The errors are normally distributed: :math:`e_i \sim \mathcal{N}(0, \sigma_\epsilon^2)`.  This also implies that :math:`y_i \sim \mathcal{N}(\beta_0 + \beta_1x_i, \sigma_\epsilon^2)` from the first linearity assumption.
 
@@ -922,7 +922,7 @@ Use that :math:`S_E` value to calculate the confidence intervals for :math:`\bet
 	.. figure:: images/show-anscome-solution-unmarked.png
 		:width: 750px
 		:align: center
-		:scale: 40%
+		:scale: 40
 
 .. only:: inst
 
@@ -959,7 +959,7 @@ Use that :math:`S_E` value to calculate the confidence intervals for :math:`\bet
 	.. figure:: images/show-anscome-solution-marked.png
 		:width: 750px
 		:align: center
-		:scale: 70%
+		:scale: 70
 
 In many cases the confidence interval for the intercept is not of any value because the data for |x| is so far away from zero, or the true value of the intercept is not of real concern.
 
@@ -977,7 +977,7 @@ We might expect the error is related to the average size of the residuals.  Afte
 .. figure:: images/residual-plots.png
 	:width: 750px
 	:align: center
-	:scale: 80%
+	:scale: 80
 
 A typical histogram of the residuals looks as shown above: it is always centered around zero, and appears to be normally distributed.  So we could expect to write our prediction error as :math:`\hat{y}_\text{new} = \left(b_0 + b_1 x_\text{new}\right) \pm c \cdot S_E`, where :math:`c` is the number of standard deviations around the average residual, for example we could have set :math:`c=2`, approximating the 95% confidence limit.
 
@@ -1038,7 +1038,7 @@ Let's understand the interpretation of :math:`\mathcal{V}\{\hat{y}_i\} = S_E^2 \
 	.. figure:: images/show-anscome-solution-with-yhat-bounds.png
 		:width: 750px
 		:align: center
-		:scale: 59%
+		:scale: 59
 
 Interpretation of software output
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1128,7 +1128,7 @@ The simple example shown here builds a model that predicts the price of a used v
 .. figure:: images/non-normal-errors-outliers.png
 	:align: center
 	:width: 750px
-	:scale: 70%
+	:scale: 70
 
 The group of outliers were due to 10 observations a certain class of vehicle (Cadillac convertibles) that distort the model.  We can remove these observations, which limits our model to be useful only for other vehicle types, but we gain a smaller standard error and a tighter confidence interval.  These residuals are still very non-normal though.
 
@@ -1146,7 +1146,7 @@ In the next fictitious example the |y|-variable is non-linearly related to the |
 .. figure:: images/non-normal-errors-transformation-required.png
 	:align: center
 	:width: 750px
-	:scale: 70%
+	:scale: 70
 	
 More discussion about transformations of the data is given in the section on :ref:`model linearity <LS-model-linearity>`.
 
@@ -1165,7 +1165,7 @@ To detect this problem you should plot:
 This problem reveals itself by showing a fan shape across the plot; an example is shown below.
 
 .. figure:: images/residual-pattern-non-contant-error.png
-	:scale: 60%
+	:scale: 60
 	:align: center
 	:width: 750px
 
@@ -1232,7 +1232,7 @@ Before launching into various transformations or non-linear least squares models
 	.. figure:: images/nonlinear-linear-region.png
 		:align: center
 		:width: 500px
-		:scale: 70%
+		:scale: 70
 			
 How can we detect when the linear model is not sufficient anymore?  While a qq-plot might hint at problems, better plots are the same two plots for detecting non-constant error variance:
 
@@ -1498,7 +1498,7 @@ Let's take a look at the case where :math:`y = b_1x_1 + b_2x_2`.  We can plot th
 	.. figure:: images/least-squares-two-x-variables.png
 		:width: 500px
 		:align: center
-		:scale: 70%
+		:scale: 70
 
 The points are used to fit the plane by minimizing the sum of square distances shown from each point to the plane.  The interpretation of the slope coefficients for :math:`b_1` and :math:`b_2` is **not the same** as for the case with just a single |x| variable.  
 
@@ -1521,7 +1521,7 @@ Now that we have introduced multiple linear regression to expand our models, we 
 	..	figure:: images/Mixing_-_flusso_assiale_e_radiale.jpg
 		:width: 500px
 		:align: center
-		:scale: 40%
+		:scale: 40
 	
 		Axial and radial blades; figure from Wikipedia (http://en.wikipedia.org/wiki/Impeller)
 	
@@ -1537,7 +1537,7 @@ where :math:`d_i = 0` if an axial impeller was used, or :math:`d_i = 1` if a rad
 .. figure:: images/least-squares-dummy-variable-and-intercept.png
 	:width: 500px
 	:align: center
-	:scale: 62%
+	:scale: 62
 
 The :math:`\gamma` parameter, estimated by :math:`g`, is the difference in intercept when changing impellers.  Note that the lines are parallel.  
 
@@ -1562,7 +1562,7 @@ Integer variables are also called dummy variables or indicator variables.  Reall
 .. figure:: images/least-squares-two-x-variables-one-integer.png
 	:width: 500px
 	:align: center
-	:scale: 62%
+	:scale: 62
 	
 We have to introduce additional terms in the model if we have integer variables with more than 2 levels. In general, if there are :math:`p`-levels, then we must include :math:`p-1` new terms.  For example, if we wish to test the effect of :math:`y` = yield achieved from the raw material supplier in Spain, India, or Vietnam, we could code:
 
@@ -1590,7 +1590,7 @@ Background
 
 .. figure:: images/influence-of-outliers.png
 	:width: 750px
-	:scale: 100%
+	:scale: 100
 	:align: center
 	
 	
@@ -1618,7 +1618,7 @@ The average hat value can be calculated theoretically.  While it is common to pl
 
 	.. figure:: images/hatvalue-of-outliers.png
 		:width: 750px
-		:scale: 100%
+		:scale: 100
 		:align: center
 		
 	
@@ -1635,7 +1635,7 @@ Where :math:`e_i` is the residual for the :math:`i^\text{th}` point, as usual, b
 
 	.. figure:: images/studentized-residuals.png
 		:width: 750px
-		:scale: 100%
+		:scale: 100
 		:align: center
 
 This figure illustrates how the square point in model A and B is highly discrepant, while in model C it does not have a high discrepancy.
@@ -1658,7 +1658,7 @@ The values of :math:`D_i` are conveniently calculated in R using the ``cooks.dis
 
 	.. figure:: images/cooks-distance.png
 		:width: 750px
-		:scale: 100%
+		:scale: 100
 		:align: center
 		
 
@@ -1765,7 +1765,7 @@ We could naively assume that we just code our |y| variable as 0 or 1 (pass/fail)
 A logistic model however accounts for the nature of the y-variable by creating a function, called a logistic function, which is bounded between 0 and 1.  In fact you are already familiar with such a function: the cumulative probability of the normal distribution does exactly this.
 
 	.. figure:: images/logistic-regression-function.png
-		:scale: 50%
+		:scale: 50
 		:width: 500px
 		:align: center
 
@@ -1820,7 +1820,7 @@ The thick line represents the slope coefficient (:math:`-0.0059`) using all the 
 	.. figure:: images/bootstrap-example.png
 		:align: center
 		:width: 750px
-		:scale: 90%
+		:scale: 90
 
 Bootstrapping gives us an indication of that, as shown in the other plot.  The original data set had 14 observations.  What bootstrapping does is to randomly select 14 rows from the original data, allowing for duplicate selection. These selected rows are used to build a least squares model, and the slope coefficient is recorded.  Then another 14 random rows are selected and this process is repeated ``R`` times (in this case ``R=1000``).  On some of these occasions the outlier points will be included, and other times they will be excluded.  A histogram of the 1000 computed slope coefficients is shown here.  This histograms gives as an additional indication of the uncertainty of the slope coefficient.  For completeness the confidence interval at the 95% level for :math:`\beta_1` is calculated here, and also superimposed on the histogram.
 
@@ -1907,7 +1907,7 @@ Exercises
 	.. figure:: images/distillation-prediction-interval.png
 		:align: center
 		:width: 750px
-		:scale: 50%
+		:scale: 50
 		
 	.. literalinclude:: code/distillation-column-questions.R
 		:language: s
@@ -1951,14 +1951,14 @@ Exercises
 		.. figure:: images/distillation-prediction-qqplots.png
 			:align: center
 			:width: 750px
-			:scale: 80%
+			:scale: 80
 			
 	-	The slope coefficient of 75571 has units of ``kPa.°F``, indicating that each one unit *decrease* in temperature results in an *increase* in vapour pressure.  Since division is not additive, the change in vapour pressure when decreasing 10 degrees from 430 °F is a different decrease to that when temperature is 530 °F.  The interpretation of transformed variables in linear models is often a lot harder.  The easiest interpretation is to show a plot of 1/T against vapour pressure.
 	
 		.. figure:: images/distillation-prediction-inverted-temperature.png
 			:align: center
 			:width: 750px
-			:scale: 40%
+			:scale: 40
 		
 	-	The predicted vapour pressure at 480 °F is 36.68 kPa :math:`\pm 11.37`, or within the range [31.0 to 42.4] with 95% confidence, very similar to the prediction interval from question 2.
 		
@@ -1988,7 +1988,7 @@ Exercises
 		.. figure:: images/distillation-influence-plot.png
 			:align: center
 			:width: 750px
-			:scale: 45%
+			:scale: 45
 			
 	-	The points considered as influential would be 38 and 84, which have both high leverage and high discrepancy.  Points 53 and 101 would also be considered influential: they have high leverage, though moderately sized residuals.  The other points marked in red have a large Cook's D value, however, their leverage is low, so it is unlikely that their removal will change the plot and its interpretation by very much.
 	
@@ -2013,7 +2013,7 @@ Exercises
 	.. figure:: images/kappa-number-autocorrelation.png
 		:align: center
 		:width: 750px
-		:scale: 50%
+		:scale: 50
 
 	The ACF plot indicates that there is significant reappearance of correlation around lags 9 to 15.  It wasn't required for you to identify why for this assignment, but usually this would be related to a recycle stream that reenters a reactor, or due to an oscillation in a control loop.
 	
@@ -2022,7 +2022,7 @@ Exercises
 	.. figure:: images/kappa-number-autocorrelation-scatterplots.png
 		:align: center
 		:width: 900px
-		:scale: 100%
+		:scale: 100
 		
 	.. literalinclude:: code/kappa-number-autocorrelation.R
 	       :language: s

@@ -1,4 +1,4 @@
-rm <- read.csv('http://stats4.eng.mcmaster.ca/datasets/raw-material-properties.csv')
+rm <- read.csv('http://datasets.connectmv.com/info/raw-material-properties.csv')
 
 ncol(rm)    # 7 columns
 nrow(rm)    # 36 rows

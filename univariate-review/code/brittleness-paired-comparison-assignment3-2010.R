@@ -1,4 +1,4 @@
-brittle <- read.csv('http://stats4.eng.mcmaster.ca/datasets/brittleness-index.csv')
+brittle <- read.csv('http://datasets.connectmv.com/file/brittleness-index.csv')
 attach(brittle)  
 
 # Calculates the paired difference

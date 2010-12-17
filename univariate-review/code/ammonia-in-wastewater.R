@@ -1,4 +1,4 @@
-nh4 <- read.csv('http://stats4.eng.mcmaster.ca/datasets/ammonia.csv')
+nh4 <- read.csv('http://datasets.connectmv.com/file/ammonia.csv')
 attach(nh4)
 summary(Ammonia)              # just to check we've got the right data
 #    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 

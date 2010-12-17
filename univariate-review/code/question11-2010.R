@@ -1,4 +1,4 @@
-hurricane <- read.csv('http://stats4.eng.mcmaster.ca/datasets/atlantic-hurricanes.csv')
+hurricane <- read.csv('http://datasets.connectmv.com/file/atlantic-hurricanes.csv')
 nrow(hurricane)                             # 87 hurricanes in the data set
 
 # We will do this manually.  You can use other R packages to do this

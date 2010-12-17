@@ -386,7 +386,7 @@ What we will cover
 .. figure:: images/latent-variable-modelling-section-mapping.png
 	:width: 750px 
 	:align: center
-	:scale: 90%
+	:scale: 90
 	
 .. index::
 	pair: references and readings; Latent variable modelling
@@ -446,7 +446,7 @@ If we have to represent this data as a single matrix, called |X|, we would have 
 	.. figure:: images/X-matrix-long-and-thin.png
 		:alt:	images/X-matrix-long-and-thin.svg
 		:align: center
-		:scale: 18%
+		:scale: 18
 		:width: 400px
 
 These data sets from the 1950's frequently had many more rows than columns, because it was expensive and time-consuming to measure additional columns.  The choice of which columns to measure was carefully thought out, so that they didn't unnecessarily duplicate the same measurement.  As a result:
@@ -466,7 +466,7 @@ These data sets meet all the assumptions required to use the above-mentioned too
 	
 	.. figure:: images/pharma-spectra.png
 		:alt:	images/pharma-spectra.py
-		:scale: 70%
+		:scale: 70
 		:width: 750px
 		:align: center
 
@@ -482,7 +482,7 @@ These data sets meet all the assumptions required to use the above-mentioned too
 	
 	.. figure:: images/Distillation_column_correlation.png
 		:alt:	images/Distillation_column_correlation.svg
-		:scale: 45%
+		:scale: 45
 		:width: 500px
 		:align: center
 
@@ -496,7 +496,7 @@ These data sets meet all the assumptions required to use the above-mentioned too
 	
 	.. figure:: images/X-and-Y-matrices.png
 		:alt:	images/X-and-Y-matrices.svg
-		:scale: 30%
+		:scale: 30
 		:width: 500px
 		:align: center
 
@@ -506,7 +506,7 @@ These data sets meet all the assumptions required to use the above-mentioned too
 	
 	.. figure:: images/image-data.png
 		:alt:	images/image-data.svg
-		:scale: 30%
+		:scale: 30
 		:width: 500px
 		:align: center
 		
@@ -518,7 +518,7 @@ These data sets meet all the assumptions required to use the above-mentioned too
 	
 	.. figure:: images/Batch-data-layers-into-the-page.png
 		:alt:	images/Batch-data-layers-into-the-page.svg
-		:scale: 50%
+		:scale: 50
 		:width: 750px
 		:align: center
 		
@@ -560,7 +560,7 @@ Issues faced with engineering data
 
 .. OMIT FOR NOW
 		:alt:	images/Missing-data.png
-		:scale: 50%
+		:scale: 50
 		:width: 750px
 		:align: center
 
@@ -605,7 +605,7 @@ Imagine the room you are in has 4 temperature probes that sample and record the 
 
 .. figure:: images/room-temperature-plots.png
 	:alt:	images/room-temperature-plots.py
-	:scale: 80%
+	:scale: 80
 	:width: 700px
 	:align: center
 	
@@ -649,7 +649,7 @@ We can visualize the data from this system in several ways, but we will simply s
 
 .. figure:: images/room-temperature-plots-combine.png
 	:alt:	images/room-temperature-plots-combine.py
-	:scale: 100%
+	:scale: 100
 	:width: 750px
 	:align: center
 
@@ -666,7 +666,7 @@ Wood boards (for example 2 by 4 boards) are measured for thickness at 6 location
 
 	.. figure:: images/board_measurement_locations.png
 		:alt:	images/board_measurement_locations.svg
-		:scale: 50%
+		:scale: 50
 		:width: 500px
 		:align: center
 
@@ -680,7 +680,7 @@ The plots of these different thicknesses are
 
 .. figure:: images/board-thickness-2d-and-3d-plot.png
 	:alt:	images/board-thickness-data-combine.py
-	:scale: 70%
+	:scale: 70
 	:width: 750px
 	:align: center
 
@@ -713,7 +713,10 @@ What values would be suitable for the weights?  One option might be that:
 .. math::	
 		t_1 &= \begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}\begin{bmatrix} 1/2 \\ 1/2 \\ 0 \end{bmatrix} = \dfrac{x_1}{2} + \dfrac{x_2}{2} + 0 \\
 		t_2 &= \begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}\begin{bmatrix} 0 \\ 0 \\ \,1\, \end{bmatrix} = 0 + 0 + x_3
-		\intertext{or more compactly:}
+		
+or more compactly:
+
+.. math::
 		\mathbf{t}' = \begin{bmatrix} t_1 & t_2 \end{bmatrix} &=
 		\begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix} 
 		\begin{bmatrix}  0.5 & 0 \\ 0.5 & 0 \\ 0  & 1  \end{bmatrix} =

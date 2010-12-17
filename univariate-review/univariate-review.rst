@@ -33,7 +33,7 @@
 In context
 ==========
 
-In the context of the rest of the course: this class is an introduction to the area of data analysis.  We cover concepts from univariate data analysis, specifically the concepts shown in the pictorial outline below. This section is only a *review of these concepts*; for a more comprehensive treatment, please consult an introductory statistics textbook (see the recommended readings further down).
+This section is an introduction to the area of data analysis.  We cover concepts from univariate data analysis, specifically the concepts shown in the pictorial outline below. This section is only a *review of these concepts*; for a more comprehensive treatment, please consult an introductory statistics textbook (see the recommended readings further down).
 
 .. index::
 	pair: usage examples; Univariate data
@@ -41,7 +41,7 @@ In the context of the rest of the course: this class is an introduction to the a
 Usage examples
 ==============
 
-The material in this section is used whenever you want to learn more about a variable in your data set:
+The material in this section is used whenever you want to learn more about a single variable in your data set:
 
 	- *Co-worker*: Here are the yields from a batch system for the last 3 years (1256 data points)
 		
@@ -60,7 +60,7 @@ What we will cover
 .. figure:: images/Univariate-section-mapping.png
   :width: 750px 
   :align: center
-  :scale: 70%
+  :scale: 70
 
 .. index::
 	pair: references and readings; Univariate data
@@ -68,12 +68,12 @@ What we will cover
 References and readings
 =======================
 
-Any standard statistics text book will cover the topics from this part of the course in much greater depth than these notes. Some that you might refer to before the class:
+Any standard statistics text book will cover the topics from this part of the book in much greater depth than these notes. Some that you might refer to before the class:
 	
-#. **Recommended**: Box, Hunter and Hunter, *Statistics for experimenters*, Chapter 2 (both 1st and 2nd edition)
-#. Hodges and Lehmann, *Basic concepts of probability and statistics*
-#. Hogg and Ledolter, *Engineering statistics*
-#. Montgomery and Runger, *Applied statistics and probability for engineers*
+#. **Recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, Chapter 2 (both 1st and 2nd edition)
+#. Hodges and Lehmann, *Basic Concepts of Probability and Statistics*
+#. Hogg and Ledolter, *Engineering Statistics*
+#. Montgomery and Runger, *Applied Statistics and Probability for Engineers*
 
 Concepts
 ========
@@ -82,7 +82,7 @@ Concepts that you must be familiar with by the end of this section:
 
 .. figure:: images/section-concepts.png
   :align: center
-  :scale: 60%
+  :scale: 60
 
 .. index::
 	single: variability
@@ -90,10 +90,10 @@ Concepts that you must be familiar with by the end of this section:
 Variability
 ===========
 
-Life is pretty boring without variability, and this course would be unnecessary if things did not naturally vary.
+Life is pretty boring without variability, and this book, and almost all the field of statistics would be unnecessary if things did not naturally vary.
 
 .. figure:: images/variation-none.png
-		:scale: 60%
+		:scale: 60
 		:align: center
 		
 Fortunately, we have plenty of variability in our recorded data:
@@ -105,7 +105,7 @@ Fortunately, we have plenty of variability in our recorded data:
 		- pieces of plant equipment break down, wear out and are replaced
 		
 	.. figure:: images/variation-spikes.png
-		:scale: 50%
+		:scale: 50
 		:align: center
 	
 	- Feedback control systems introduce variability in your process, in order to reduce variability in another part of the process (think of what a feedback control system does)
@@ -114,13 +114,13 @@ Fortunately, we have plenty of variability in our recorded data:
 	- Measurement and sampling variability: sensor drift, spikes, noise, recalibration shifts, errors in our sample analysis
 	
 	.. figure:: images/variation-more.png
-		:scale: 50%
+		:scale: 50
 		:align: center	
 	
 	- Other unknown sources, often called "*error*" (note that the word *error* in statistics does not have the usual negative connotation from English).  These errors are all sources of variation which our imperfect knowledge of physics cannot account for.
 	
 	.. figure:: images/variation-some.png
-		:scale: 50%
+		:scale: 50
 		:align: center
 	
 All this variability, although a good opportunity to keep us process engineers employed, comes at a price as described next.
@@ -128,7 +128,7 @@ All this variability, although a good opportunity to keep us process engineers e
 .. index::
 	single: variability; cost of
 	
-Enrichment: The high cost of variability in your final product
+The high cost of variability in your final product
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 **Assertion**
@@ -150,10 +150,12 @@ In addition to the risk of decreasing your market share (see the above 3 points)
 
 #. Off-specification products: must be reworked, disposed of, or sold at a loss or much lower profit.  These costs are ultimately passed onto your customers, costing you money.
  
-Note: the above discussion assumes that you are able to quantify product quality with one or more univariate quality metrics and that these metrics are independent of each other.  Quality is almost always a multivariate attribute of the product.  We discuss multivariate methods in the last section of this course.
+Note: the above discussion assumes that you are able to quantify product quality with one or more univariate quality metrics and that these metrics are independent of each other.  Quality is almost always a multivariate attribute of the product.  We :ref:`discuss multivariate methods <SECTION-latent-variable-modelling>` later in this book.
 
-Enrichment: The high cost of variability in your raw materials
+The high cost of variability in your raw materials
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. TODO: Add a feedforward arrow to the diagram
 
 Turning the above discussion around, with you on the receiving end of highly variable raw materials:
 
@@ -162,21 +164,21 @@ Turning the above discussion around, with you on the receiving end of highly var
 	.. figure:: images/feedback-control-variance-reduction-reduced-svg.png
 		:width: 750px
 		:align: center
-		:scale: 50%
+		:scale: 50
 	
 - If you do take feedback or feed-forward corrective control: you have to incur additional cost, since you have to process materials that are not to specification: this will require energy and time, reducing your profit due to the supplier's raw material variability.
 
 Dealing with variability
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-So, how do we make progress despite this variability?  This whole course, and all of statistical data analysis, is about variability:
+So, how do we make progress despite this variability?  This whole book, and all of statistical data analysis, is about variability:
 
-- in the :ref:`first section <data-visualization-chapter>` of the course we gave some hints how to plot graphics that **show the variability** in our process clearly
-- in this second section of the course we learn how to **quantify variability** and then **compare variability**
-- section 3 considers how to construct monitoring charts to **track variability**
-- the 4th section shows how we can learn **variation in one variable might affect another variable**
-- in section 5 we intentionally **introduce variation** into our process to learn more about the process (e.g. so that we can optimize our process for improved profitability); and
-- in the final section we learn how to deal with **multiple variables**, simultaneously extracting information from the data to understand how variability affects the process.
+- in the :ref:`data visualization section <SECTION-data-visualization>` we gave some hints how to plot graphics that **show the variability** in our process clearly
+- in this section we learn how to **quantify variability** and then **compare variability**
+- later we consider how to :ref:`construct monitoring charts <SECTION-process-monitoring>` to **track variability**
+- in the section on :ref:`least squares modelling <SECTION-least-squares-modelling>` we learn how **variation in one variable might affect another variable**
+- with :ref:`designed experiments <SECTION-design-analysis-experiments>` we intentionally **introduce variation** into our process to learn more about the process (e.g. so that we can optimize our process for improved profitability); and
+- and in the :ref:`latent variable modelling <SECTION-latent-variable-modelling>` section we learn how to deal with **multiple variables**, simultaneously extracting information from the data to understand how variability affects the process.
 
 .. index::
 	single: histograms
@@ -188,13 +190,13 @@ A histogram is a summary of the variation in a measured variable.  It shows the 
 
 .. figure:: images/histogram-children-by-gender.png
    	:width: 750px
-	:scale: 40%
+	:scale: 40
 
 The category bins can be derived from a continuous variable.  Here is an example showing the mass of cartons of 1 kg of flour.  The continuous variable, mass, is divided into equal-size bins that cover the range of the available data.   Notice how the packaging system has to overfill each carton so that the vast majority of packages weight over 1 kg (what is the mean package mass?).  If the variability in the packaging system could be reduced, then the histogram can be shifted to the left reducing overfill.
 
 .. figure:: images/histogram-package-mass.png
 	:width: 750px
-	:scale: 60%
+	:scale: 60
 	:align: center
 
 Plot histograms for the following:
@@ -263,7 +265,7 @@ A relative frequency is sometimes preferred:
 
 .. figure:: images/frequency-histogram.png
 	:width: 750px
-	:scale: 60%
+	:scale: 60
 	:align: center
 	
 Some nomenclature
@@ -391,7 +393,7 @@ Systems that have binary outcomes (pass/fail; yes/no) must obey the probability 
 .. figure:: images/histogram-70-30.png
 	:align: center
 	:width: 750px
-	:scale: 45%
+	:scale: 45
 
 If the each observation is independent of the other, then:
 
@@ -436,7 +438,7 @@ The probability distribution for an event with 4 possible outcomes is shown belo
 
 .. figure:: images/histogram-4-cuts.png
 	:align: center
-	:scale: 55%
+	:scale: 55
 	:width: 750px
 
 You can simulate uniformly distributed random numbers in most software packages.  As an example, to generate 50 uniformly distributed random *integers* between values of 2 and 10, inclusive::
@@ -465,12 +467,12 @@ Normal distribution
 Central limit theorem 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The limit theorem plays a central role in the theory of probability and in the derivation of the normal distribution.  We don't prove this theorem in this course, but we only use the result that the average of a sequence of values from any distribution will approach the normal distribution, provided the original distribution has finite variance.
+The limit theorem plays a central role in the theory of probability and in the derivation of the normal distribution.  We don't prove this theorem here, but we only use the result that the average of a sequence of values from any distribution will approach the normal distribution, provided the original distribution has finite variance.
 	
 .. figure:: images/CLT-derivation.png
 	:width: 750px
 	:align: center
-	:scale: 65%
+	:scale: 65
 	
 The only assumption we require for the central limit theorem is that the samples used to compute the average are independent.  In particular, we **do not** require the original data to be normally distributed.  The average produced from these data will be be more nearly normal though.
 
@@ -479,7 +481,7 @@ Imagine a case where we are throwing dice.  The following distributions are obta
 .. figure:: images/simulate-CLT.png
 	:width: 750px
 	:align: center
-	:scale: 70%
+	:scale: 70
 
 As one sees from the above figures, the distribution from these averages quickly takes the shape of the so-called *normal distribution*.  As :math:`M` increases, the y-axis starts to form a peak.  
 
@@ -521,7 +523,7 @@ We frequently violate this assumption of independence in both engineering work a
 		
  	.. figure:: images/simulate-independence.png
 		:align: center
-		:scale: 90%
+		:scale: 90
 		
 - We need a highly reliable pressure release system.  Manufacturer A sells a system that fails 1 in every 100 occasions, and manufacturer B sells a system that fails 3 times in every 1000 occasions.  What is
 	
@@ -598,7 +600,7 @@ In software packages we can set the mean and standard deviation (as shown above 
 	
 What is the value that you should use for the ``mean`` and ``standard deviation``?  It depends on the context.  Imagine our values of :math:`x_i` come from the normal distribution, with mean of 34.2 and variance of 55.  Then we could write :math:`x \sim \mathcal{N}(34.2, 55)`, which is short-hand notation of saying the same thing.  The equivalent :math:`z`-values for these :math:`x` data would be: :math:`z_i = \dfrac{x_i - 34.2}{\sqrt{55}}`.   This transformation **does not** change the distribution of the original :math:`x`, it only changes the parameters of the distribution.  Now :math:`z` is distributed according to the normal distribution as :math:`z \sim \mathcal{N}(0.0, 1.0)`.  What are the units of :math:`z` if :math:`x` were measured in kg, for example?
 
-This is a common statistical technique, to standardize a variable, which we will see several times in the course.  Standardization takes our variable from :math:`x \sim \mathcal{N}(\text{some mean}, \text{some variance})` and converts it to :math:`z \sim \mathcal{N}(0.0, 1.0)`.  Standardization allows us to straightforwardly compare 2 variables that may have different means and spreads. 
+This is a common statistical technique, to standardize a variable, which we will see several times.  Standardization takes our variable from :math:`x \sim \mathcal{N}(\text{some mean}, \text{some variance})` and converts it to :math:`z \sim \mathcal{N}(0.0, 1.0)`.  Standardization allows us to straightforwardly compare 2 variables that may have different means and spreads. 
 
 Enrichment (strongly suggested): consult a statistical table found in most statistical textbooks for the normal distribution.  Make sure you can firstly understand how to read the table, should you need to do so in the future.  Secondly, duplicate a few entries in the table using R.  Then complete these small exercises using both the tables and R.
 
@@ -625,7 +627,7 @@ Before we look at this method, we need to introduce the concept of the inverse c
 Now the **inverse cumulative distribution** is used when we know the area, but want to get back to the value along the :math:`x-\text{axis}`.  For example, below which value of :math:`x` does 95% of the area lie for a standardized normal distribution?  Answer: :math:`z=1.64`.  In R we use the ``qnorm(0.95, mean=0, sd=1)`` to calculate these values.  The ``q`` stands for `quantile <http://en.wikipedia.org/wiki/Quantile>`_, because we give it the quantile at it returns the x-value: e.g. ``qnorm(0.5)`` gives 0.0.
 
 .. figure:: images/show-pnorm-and-qnorm.png
-	:scale: 70%
+	:scale: 70
 	:width: 750px
 	:align: center
 		
@@ -669,7 +671,7 @@ On to checking for normality.  We approach this problem by first constructing qu
 	.. figure:: images/qqplot-derivation.png
 		:align: center
 		:width: 750px
-		:scale: 50%
+		:scale: 50
 
 A ready-made function already exists in R that runs the calculations and shows a scatter plot.  The 45 degree line is added using the ``qqline(...data...)`` function.
 
@@ -681,13 +683,13 @@ A ready-made function already exists in R that runs the calculations and shows a
 	.. figure:: images/qqplot-from-R.png
 		:align: center
 		:width: 750px
-		:scale: 50%
+		:scale: 50
 	
 The R plot rescales the Y-axis (sample quantiles) back to the original units to make interpretation easier.  We expect some departure from the 45 degree line due to the fact that these are only a sample of data.  However, large deviation indicates the data are not normally distributed.  An error region can be superimposed around the 45 degree line, but this is not discussed here (see enrichment topics).
 
-The qq-plot, quantile-quantile plot, shows the quantiles of 2 distributions against each other.  In fact, we can use the horizontal axis for any distribution, it need not be the theoretical normal distribution.  We might be interested if our data follow an F-distribution (not covered in the course), then we could use the quantiles for that theoretical distribution on the horizontal axis.
+The qq-plot, quantile-quantile plot, shows the quantiles of 2 distributions against each other.  In fact, we can use the horizontal axis for any distribution, it need not be the theoretical normal distribution.  We might be interested if our data follow an `F-distribution <http://en.wikipedia.org/wiki/F-distribution>`_ (not covered in this book), then we could use the quantiles for that theoretical distribution on the horizontal axis.
 
-**Enrichment topics (600-level students)**
+**Enrichment topics**
 
 #. Add the ``car`` library to R (see the *Package Installer* menu option) and use the ``qq.plot(yields)`` function to see the error bars for the yield data.
 
@@ -715,7 +717,7 @@ Suppose we have a quantity of interest for a process, such as the daily profit p
 .. figure:: images/t-distribution-derivation.png
 	:width: 750px
 	:align: center
-	:scale: 65%
+	:scale: 65
 
 we can make the following statements:
 
@@ -728,7 +730,7 @@ we can make the following statements:
 .. figure:: images/t-distribution-comparison.png
 	:width: 750px
 	:align: center
-	:scale: 65%
+	:scale: 65
 
 ..  
 	From Box, Hunter and Hunter, 1st edition, p 50-51
@@ -845,7 +847,7 @@ Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{
 .. figure:: images/poisson-distribution.png
 	:width: 600px
 	:align: center
-	:scale: 50%
+	:scale: 50
 	
 :math:`p(x)` expresses the probability that there will be :math:`x` occurrences (must be an integer) of this rare event in the same interval of time or unit area as :math:`\eta` was measured.
 
@@ -1022,7 +1024,7 @@ Either we want to confirm things are statistically the same, or confirm they hav
  
 .. figure:: images/system-comparison-boxplot-plots.png
 	:width: 750px
-	:scale: 60%
+	:scale: 60
 	:align: center
 
 .. wikicode for table:
@@ -1066,7 +1068,7 @@ Either we want to confirm things are statistically the same, or confirm they hav
 
 .. figure:: images/system-comparison-wikitable.png
 	:align: center
-	:scale: 75%
+	:scale: 75
 
 
 	
@@ -1079,7 +1081,7 @@ Comparison to a long-term reference set
 
 We can compare the past 10 runs from system B with the 10 runs from system A.  The average difference between these runs is :math:`\bar{x}_B - \bar{x}_A = 82.93 - 79.89 = 3.04` units of improved yield.  Now, if we have a long-term reference data set available, we can compare if any 10 historical, sequential runs, followed by another 10 historical, sequential runs had a difference that was this great.  If not, then we know that system B leads to a definite improvement, not likely to be caused by chance alone.
 
-	#. Imagine that we have have 300 historical data points from this system, tabulated in time order: yield from batch 1, 2, 3 ...  (the data appear on the `course website <http://stats4.eng.mcmaster.ca/wiki/Datasets#Batch_yields>`_).
+	#. Imagine that we have have 300 historical data points from this system, tabulated in time order: yield from batch 1, 2, 3 ...  (the data appear on the `book website <http://datasets.connectmv.com/info/batch-yields>`_).
 	#. Calculate the average yields from batches 1 to 10. Then calculate the average yield from batches 11 to 20.  Notice that this is exactly like the experiment we performed when we acquired data for system.  Two groups of 10 batches, with the groups formed from sequential batches.
 	#. Now subtract these two averages: (group average 11 to 20) minus (group average 1 to 10).
 	#. Repeat steps 2 and 3, but use batches 2 to 11 and 12 to 21.  Repeat until all historical batch data are used up and the plot below can be drawn from these difference values.
@@ -1087,7 +1089,7 @@ We can compare the past 10 runs from system B with the 10 runs from system A.  T
 	.. figure:: images/system-comparison-dotplot-grouped.png
 		:width: 750px
 		:align: center
-		:scale: 100%
+		:scale: 100
 	
 The vertical line at 3.04 is the difference value recorded between system B and system A.   From this we can see that historically, there were 31 out of 281 batches (11% of historical data) that had a difference value of 3.04 or greater.  So there is a 11% probability that system B was better than system A purely by chance, and not due to any technical superiority.  Given this information, we can now judge, if the improved control system will be economically viable and judge, based on internal company criteria, if this is a suitable investment.
 
@@ -1115,7 +1117,7 @@ We can visualize this autocorrelation by plotting the values of :math:`x[k]` aga
 .. figure:: images/system-comparison-autocorrelation-scatterplot.png
 	:width: 600px
 	:align: center
-	:scale: 95%
+	:scale: 95
 
 Comparison when a reference set is not available
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1181,7 +1183,7 @@ Discuss whether these experiments lead to independent data or not, and how we mi
 		.. figure:: images/sheet-coating-application.png
 			:width: 600px
 			:align: center
-			:scale: 50%
+			:scale: 50
 		
 		Some problems with this approach:
 		
@@ -1277,7 +1279,7 @@ We interpret this number in the summary section, but let's finally look at what 
 
 The sample variance from each system was :math:`s_A^2 = 6.81^2` and :math:`s_B^2 = 6.70^2`, and in this case it happened that :math:`n_A = n_B = 10`, although the sample sizes do not necessarily have to be the same.
 
-If the variances are comparable (there is a test for that, see below), then we can calculate a pooled variance, :math:`s_P^2`, which is a weighted sum of the sampled variances:
+If the variances are comparable (there is a :ref:`test for that below <univariate-pooled-variance>`), then we can calculate a pooled variance, :math:`s_P^2`, which is a weighted sum of the sampled variances:
 
 .. math:: 
 	:label: pooled-variance
@@ -1304,7 +1306,7 @@ As an aside: we used a normal distribution for the external :math:`\sigma` and a
 
 The results from this section were achieved by only using the 20 experimental runs, no external data.  However, it made some strong assumptions: 
 
-	- The variances of the two samples are comparable, and can therefore be pooled to provide an estimate of :math:`\sigma` 
+	- The variances of the two samples are comparable, and can :ref:`therefore be pooled <univariate-pooled-variance>` to provide an estimate of :math:`\sigma` 
 	- The usual assumption of independence within each sample is made (which we know not to be true for many practical engineering cases)
 	- The assumption of independence between the samples is also made (this is more likely to be true, because the first runs to acquire data for A are not likely to affect the runs for system B)
 	- Each sample, A and B, is assumed to be normally distributed
@@ -1330,7 +1332,7 @@ The other two methods mainly use the experimental data, and provide essentially 
 Other confidence intervals
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Enrichment**: There are several other confidence intervals that you might come across in your career.  Rather than cover all of them in this course, we merely mention them here.  Chances are you won't remember all the details even if we do cover them (even I look these things up).  What is important is that you understand *how* to interpret a confidence interval.   Hopefully the previous discussion achieved that.
+**Enrichment**: There are several other confidence intervals that you might come across in your career.  Rather than cover all of them in this book, we merely mention them here.  Chances are you won't remember all the details even if we do cover them (even I look these things up).  What is important is that you understand *how* to interpret a confidence interval.   Hopefully the previous discussion achieved that.
 
 Confidence interval for the variance
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1346,11 +1348,16 @@ This confidence interval finds a region in which the normal distribution's varia
 - :math:`1-\alpha`: is the level of confidence, usually 95%, so :math:`\alpha = 0.05` in that case.
 
 	.. todo:: give some R code still
+	
+.. _univariate-pooled-variance:
+
+.. index::
+	single: pool variances
 
 Confidence interval for the ratio of two variances
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-One way to test if two variances, from two different *normal distributions* are equal is to construct the ratio: :math:`\dfrac{s^2_1}{s^2_2}`.  We can construct a confidence interval, and if this interval does contains the value of 1.0, then we can assume the two population variances are similar.
+One way to test whether we can pool (combine) two variances, taken from two different *normal distributions*, is to construct the ratio: :math:`\dfrac{s^2_1}{s^2_2}`.  We can construct a confidence interval, and if this interval contains the value of 1.0, then we have no evidence to presume they are different (i.e. we can assume the two population variances are similar).
 
 .. math::
 	:nowrap:
@@ -1369,7 +1376,6 @@ Sometimes we measure the proportion of successes (passes). For example, if we ta
 
 Incidentally, it is this confidence interval that is used in polls to judge the proportion of people that prefer a political party.  One can run this confidence interval backwards and ask: how many independent people do I need to poll to achieve a population proportion that lies within a range of :math:`\pm 2\%`, 19 times out of 20?  The answer actually is function of the poll result!  But the worst case scenario is a split-poll, and that requires 2400 respondents.
 
-
 .. Hypothesis tests; test of significance
 	=======================================
 
@@ -1381,14 +1387,8 @@ Incidentally, it is this confidence interval that is used in polls to judge the 
 
 	 455K to 495K. So then you go perform a hypothesis test to verify if 500K is reasonable.  Your hypothesis is that 500K is not unusual.  The alternative hypothesis is that 500K is unusual.
 
-
-
-
 	  What is the significance level?  How do you get to a test statistic?
-
-
 	  You must present strong evidence to 
-
 
 	reject that statement (hypothesis), otherwise it is accepted; sometimes we are prone to say this with a double-negative: "*there is no evidence to show that the melting point is not 472K*". 
 
@@ -1402,6 +1402,10 @@ Incidentally, it is this confidence interval that is used in polls to judge the 
 	
 		.. todo:: how does this level change our answer as it varies?
 
+.. _univariate-paired-tests:
+
+.. index::
+	pair: paired tests; Univariate data
 
 Paired tests
 ============
@@ -1489,7 +1493,7 @@ Exercises
 
 	.. figure:: images/soy-salt-content.png
 		:width: 400px
-		:scale: 50%
+		:scale: 50
 	
 	Note that the units of spread are the same as the variable being quantified.  The IQR is 240 mg salt/15 mL serving.  The standard deviation (202 mg salt/15 mL serving), and MAD (193 mg salt/15 mL serving), are 2 other ways to quantify the spread of the data.   Note that the IQR, for normally distributed data, will only be consistent if you divide the result by 1.349.  Read the help for the ``IQR`` function in R for more details.  Note from the code how the IQR is a *distance* between two points.
 
@@ -1508,11 +1512,11 @@ Exercises
 
 .. question::
 
-	Use the data set on `Raw materials <http://stats4.eng.mcmaster.ca/wiki/Data_sets#Raw_material_properties>`_.
+	Use the data set on `raw materials <http://datasets.connectmv.com/info/raw-material-properties>`_.
 
 		- How many variables in the data set?
 		- How many observations?
-		- The data are properties of a powder.  Plot each variable, one at a time, and locate any outliers.  Students using R for the course will benefit from `part 2 of the tutorial <http://stats4.eng.mcmaster.ca/wiki/R_tutorial>`_ (see the use of the ``identify`` function).
+		- The data are properties of a powder.  Plot each variable, one at a time, and locate any outliers.  Students using R will benefit from `part 2 of the tutorial <http://stats4eng.connectmv.com/wiki/R_tutorial>`_ (see the use of the ``identify`` function).
 		
 .. answer::
 
@@ -1526,22 +1530,22 @@ Exercises
 
 	.. figure:: images/size1.png
 		:width: 300px
-		:scale: 50%
+		:scale: 50
 	.. figure:: images/size2.png
 		:width: 300px
-		:scale: 50%
+		:scale: 50
 	.. figure:: images/size3.png
 		:width: 300px
-		:scale: 50%
+		:scale: 50
 	.. figure:: images/density1.png
 		:width: 300px
-		:scale: 50%
+		:scale: 50
 	.. figure:: images/density2.png
 		:width: 300px
-		:scale: 50%
+		:scale: 50
 	.. figure:: images/density3.png
 		:width: 300px
-		:scale: 50%
+		:scale: 50
 	
 
 .. question::
@@ -1567,15 +1571,15 @@ Exercises
 
 	.. figure:: images/snowfall-data.png
 		:width: 750px
-		:scale: 75%
+		:scale: 75
 	
 	.. figure:: images/temperature-data.png
 		:width: 750px
-		:scale: 75%
+		:scale: 75
 	
 .. question::
 
-	Does the number of visits in the `Website traffic <http://stats4.eng.mcmaster.ca/wiki/Data_sets#Website_traffic>`_ data set follow a normal distribution?  If so, what are the parameters for the distribution?  What is the likelihood that you will have between 10 and 30 visits to the website?
+	Does the number of visits in the `website traffic <http://datasets.connectmv.com/info/website-traffic>`_ data set follow a normal distribution?  If so, what are the parameters for the distribution?  What is the likelihood that you will have between 10 and 30 visits to the website?
 	
 .. answer:: 
 
@@ -1593,7 +1597,7 @@ Exercises
 
 .. question::
 
-	The ammonia concentration in your wastewater treatment plant is measured every 6 hours.  The data for one year are available from the `course website <http://stats4.eng.mcmaster.ca/wiki/Data_sets#Ammonia>`_. 
+	The ammonia concentration in your wastewater treatment plant is measured every 6 hours.  The data for one year are available from the `dataset website <http://datasets.connectmv.com/info/ammonia>`_. 
 
 	#. What appears to be a suitable distribution?  
 	#. Estimate values for the distribution's parameters.
@@ -1674,8 +1678,12 @@ Exercises
 	.. math::
 	
 		\text{LB} &= \bar{x} - c_n \dfrac{\sigma}{\sqrt{n}} \\
-		\text{UB} &= \bar{x} + c_n \dfrac{\sigma}{\sqrt{n}}\\
-		\intertext{Subtracting and setting equal to 60 cP:}
+		\text{UB} &= \bar{x} + c_n \dfrac{\sigma}{\sqrt{n}}
+	
+	Subtracting and setting equal to 60 cP:
+	
+	.. math::
+	
 		\text{UB} - \text{LB} &= 60 = 2 c_n \cdot \dfrac{\sigma}{\sqrt{n}} \\
 		n &= \left( \dfrac{(2)(1.96)(40)}{60}\right)^2 \\
 		n &\approx 7 \text{~samples}
@@ -1773,7 +1781,7 @@ Exercises
 
     A major aim of many engineers is/will be to reduce the carbon footprint of their company's high-profile products. Next week your boss wants you to evaluate a new raw material that requires 2.6 :math:`\dfrac{\text{kg CO}_2}{\text{kg product}}` less than the current material, but the final product's brittleness must be the same as achieved with the current raw material.  This is a large reduction in :math:`\text{CO}_2`, given your current production capacity of 51,700 kg of product per year.  Manpower and physical constraints prevent you from running a randomized test, similar to what we discussed in class; you don't have a suitable database of historical data either.
 
-    One idea you come up with is to use to your advantage the fact that your production line has three parallel reactors, TK104, TK105, and TK107.  They were installed at the same time, they have the same geometry, the same instrumentation, *etc*; you have pretty much thought about every factor that might vary between them, and are confident the 3 reactors are identical. Typical production schedules split the raw material between the 3 reactors.  Data `on the course website <http://stats4.eng.mcmaster.ca/wiki/Data_sets#Brittleness_index>`_ contain the brittleness values from the three reactors for the past few runs on the current raw material.
+    One idea you come up with is to use to your advantage the fact that your production line has three parallel reactors, TK104, TK105, and TK107.  They were installed at the same time, they have the same geometry, the same instrumentation, *etc*; you have pretty much thought about every factor that might vary between them, and are confident the 3 reactors are identical. Typical production schedules split the raw material between the 3 reactors.  Data `on the book website <http://datasets.connectmv.com/info/brittleness-index>`_ contain the brittleness values from the three reactors for the past few runs on the current raw material.
 
     #.	Which two reactors would you pick to run your comparative trial on next week?
 
@@ -1783,16 +1791,16 @@ Exercises
 
 	The purpose of this question is to compare two system.  There are two ways: either compare one group to another group, or to have paired tests.  We could consider this a paired test, because the material is run in both reactors at the same conditions.  In this answer we compare reactor I to reactor J as groups.  Our answer will be to run experiments in the reactors that show the smallest difference.
 
-	.. note:: This question also has missing data, denote as ``NA`` in R.  Most real data sets that you deal with will have missing data.  From now on in the course you are expect to deal with them.  For example, the degrees of freedom will be reduced because of the missing data.  Use this solution to see how to write code in R that deals with missing values.
+	.. note:: This question also has missing data, denote as ``NA`` in R.  Most real data sets that you deal with will have missing data and the questions will expect to deal with them.  For example, the degrees of freedom will be reduced because of the missing data.  Use this solution to see how to write code in R that deals with missing values.
 
 	We can start by looking at the data.  A boxplot is a reasonable way to compare both the location and spread of the brittleness values from each reactor.
 
 	.. figure:: images/brittleness-boxplot.png
 	    :width: 750px
 	    :align: center
-	    :scale: 60%
+	    :scale: 60
 
-	The standard way to test for differences between two groups of samples is given in the class notes as `equation 6 <http://stats4.eng.mcmaster.ca/wiki/Review_of_univariate_statistics#equation-zvalue-for-difference>`_ and as described in class on 25 January, it is derived as coming from the normal distribution with mean of :math:`\mu_A - \mu_B` and the standard deviation as shown in the denominator.
+	The standard way to test for differences between two groups of samples is given by equation :eq:`zvalue-for-difference` - it is derived as coming from the normal distribution with mean of :math:`\mu_A - \mu_B` and the standard deviation as shown in the denominator.
 
 	.. math::
 	    z = \frac{(\bar{x}_B - \bar{x}_A) - (\mu_B - \mu_A)}{\sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}}
@@ -1801,7 +1809,7 @@ Exercises
 
 	So we can calculate the :math:`z`-value, and the corresponding probability for each pair of reactor differences using the code below.  
 
-	But the next problem we face is that we don't know the value of :math:`\sigma`. We can estimate it however, by pooling the variances of the two groups. Strictly speaking we should do a check for comparable variances before pooling them, however we did not cover this too much in the course - see the class notes for the equation to do this.
+	But the next problem we face is that we don't know the value of :math:`\sigma`. We can estimate it however, by pooling the variances of the two groups. Strictly speaking we should do a check for comparable variances before pooling them - described :ref:`in a previous section <univariate-pooled-variance>`.
 
 	When we use the pooled variance now, then the assumption that the |z|-value follows the normal distribution is not correct anymore; it follows the t-distribution, with the pooled number of degrees of freedom.  Once we have the |z|-value we can calculate the probability of finding a |z|-value of at least that big.  Anything beyond that is the risk that we are wrong.
 
@@ -1820,9 +1828,9 @@ Exercises
 	
 	**Using pairing**
 	
-	Pairing assumes that each reactor was run with the same material, except that the material was split into thirds: one third for each reactor.  As describe at the end of the `section on univariate statistics <http://stats4.eng.mcmaster.ca/wiki/Review_of_univariate_statistics>`_, the paired test relies on calculating the difference in brittleness, then calculating the z-value of the average difference.  Contrast this to question 4 where we calculated the difference of the averages.
+	Pairing assumes that each reactor was run with the same material, except that the material was split into thirds: one third for each reactor.  As described in the `section on paired tests <univariate-paired-tests>`_, we rely on calculating the difference in brittleness, then calculating the z-value of the average difference.  Contrast this to the unpaired tests, where we calculated the difference of the averages.
 
-	The code below shows how the paired differences are evaluated for each of the 3 combinations.  The paired test highlights the similarity between TK105 and TK107, the same as the unpaired test in question 4.  However the paired test shows much more clearly how different tanks TK104 and TK105 are, and especially TK104 and TK107.  
+	The code below shows how the paired differences are evaluated for each of the 3 combinations.  The paired test highlights the similarity between TK105 and TK107, the same as the unpaired test.  However the paired test shows much more clearly how different tanks TK104 and TK105 are, and especially TK104 and TK107.  
 
 	In the case of TK104 and TK105 the difference might seem surprising - take a look back at the box plots and how much they overlap.   However a paired test cannot be judged by a box plot, because it looks at the case-by-case difference, not the overall between group difference.  A better plot with which to confirm the really large |z|-value for the TK105 and TK107 difference is the plot of the differences.
 
@@ -1844,7 +1852,7 @@ Exercises
 
 .. question::
 
-	Use the `website traffic data <http://stats4.eng.mcmaster.ca/datasets/website-traffic.csv>`_ again from the course website:
+	Use the `website traffic data <http://datasets.connectmv.com/info/website-traffic>`_ from the dataset website:
 
 	- Write down, symbolically, the z-value for the difference in average visits on a Friday and Saturday.
 	- Estimate a suitable value for the variance and justify your choice.
@@ -1856,9 +1864,9 @@ Exercises
 		
 .. answer::
 
-	-   Let our variable of interest be the difference between the average of the 2 groups: :math:`\bar{x}_{\text{Fri}} - \bar{x}_{\text{Sat}}`.  This variable will be distributed normally (why? - see the course notes) according to :math:`\bar{x}_{\text{Fri}} - \bar{x}_{\text{Sat}} \sim \mathcal{N}\left(\mu_{\text{Fri}}-\mu_{\text{Sat}}, \sigma^2_{\text{diff}}\right)`.  So the z-value for this variable is: :math:`z = \dfrac{(\bar{x}_{\text{Fri}} - \bar{x}_{\text{Sat}}) - (\mu_{\text{Fri}}-\mu_{\text{Sat}}) }{\sigma_{\text{diff}}}`
+	-   Let our variable of interest be the difference between the average of the 2 groups: :math:`\bar{x}_{\text{Fri}} - \bar{x}_{\text{Sat}}`.  This variable will be distributed normally (why? - see the notes) according to :math:`\bar{x}_{\text{Fri}} - \bar{x}_{\text{Sat}} \sim \mathcal{N}\left(\mu_{\text{Fri}}-\mu_{\text{Sat}}, \sigma^2_{\text{diff}}\right)`.  So the z-value for this variable is: :math:`z = \dfrac{(\bar{x}_{\text{Fri}} - \bar{x}_{\text{Sat}}) - (\mu_{\text{Fri}}-\mu_{\text{Sat}}) }{\sigma_{\text{diff}}}`
 
-	-   The variance of the difference, :math:`\sigma^2_{\text{diff}} = \sigma^2\left(\dfrac{1}{n_{\text{Fri}}} + \dfrac{1}{n_{\text{Sat}}} \right)`, where :math:`\sigma^2` is the variance of the number of visits to the website on Friday and Saturday.  Since we don't know that value, we can estimate it from pooling the 2 variances of each group.  We should calculate first that these variances are comparable (they are; but this is not required for this course).
+	-   The variance of the difference, :math:`\sigma^2_{\text{diff}} = \sigma^2\left(\dfrac{1}{n_{\text{Fri}}} + \dfrac{1}{n_{\text{Sat}}} \right)`, where :math:`\sigma^2` is the variance of the number of visits to the website on Friday and Saturday.  Since we don't know that value, we can estimate it from pooling the 2 variances of each group.  We should calculate first that these variances are comparable (they are; but you :ref:`should confirm this yourself <univariate-pooled-variance>`).
 
 	.. math::
 	   \sigma^2 \approx s_P^2 &= \frac{(n_{\text{Fri}} -1) s_{\text{Fri}}^2 + (n_{\text{Sat}}-1)s_{\text{Sat}}^2}{n_{\text{Fri}} - 1 + n_{\text{Sat}} - 1} \\
@@ -1906,7 +1914,7 @@ Exercises
 	.. figure:: images/BOD-comparison-plot.png
 	    :width: 750px
 	    :align: center
-	    :scale: 60%
+	    :scale: 60
 
 	Now let's look at the analytical answer.  As before, using the code from question 4, we can calculate :math:`z = 1.86 = \dfrac{6.27}{3.375}` (where :math:`s_p^2 = 62.7`), with a probability of 96.1% that we will have a value smaller than this (risk = 3.9% that we are wrong).  A confidence interval would be :math:`-0.77 <  \mu_{\text{M}} - \mu_{\text{D}}< 13.3`.  And it is at this point that you should realize the problem, even if you didn't plot your data.  The fact that the confidence interval only just includes zero is what worries me; if the two methods were roughly equivalent, then the interval should span zero with rough symmetry. But this is too close.
 
