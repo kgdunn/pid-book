@@ -100,6 +100,8 @@ Concepts that you must be familiar with by the end of this section:
 .. index::
 	single: variability
 	
+.. _univariate-about-variability:
+
 Variability
 ===========
 
@@ -286,7 +288,7 @@ Some nomenclature
 
 We review here a couple of concepts that you should have seen in prior statistical work.
 
-.. _univariate-popultion:
+.. _univariate-population:
 
 **Population**
 	A large collection of observations that *might* occur; a set of *potential* measurements.  Some texts consider an infinite collection of observations, but a large number of observations is good enough.  We will use capital :math:`N` in this section to denote the population size.
@@ -332,6 +334,8 @@ We review here a couple of concepts that you should have seen in prior statistic
 		mean(x)
 	
 	This is only one of several statistics that describes your data: if you told your customer that the average density of your liquid product was 1.421 g/L, and nothing further, the customer might believe that some lots of the same product could have a density of 0.824 g/L, or 2.519 g/L.  We need information in addition to the mean: the spread.
+
+.. _univariate-variance:
 
 **Variance (spread)**
 
@@ -399,6 +403,7 @@ For each of the distributions we will:
 #. learn when to use that distribution with examples
 #. know what the parameters of the distribution are
 
+.. _univariate-binary-distribution:
 
 Binary (Bernoulli distribution)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

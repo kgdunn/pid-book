@@ -26,7 +26,7 @@
 In context
 ==========
 
-In the context of the rest of the course: in the first section we learned about :ref:`visualizing data <data-visualization-chapter>`, then we moved on to reviewing :ref:`univariate statistics <univariate-review-chapter>`.  This section combines those two areas, showing how to create a system that monitors any process, using graphical tools, to enable you to rapidly detect problems.  The next logical step after detection is to diagnose the problem, but we will cover diagnosis in a later section (multivariate data analysis).
+In the first section we learned about :ref:`visualizing data <SECTION-data-visualization>`, then we moved on to reviewing :ref:`univariate statistics <SECTION-univariate-review>`.  This section combines those two areas, showing how to create a system that monitors any process, using graphical tools, to enable you to rapidly detect problems.  The next logical step after detection is to diagnose the problem, but we will cover diagnosis in the section on :ref:`latent variable models <SECTION-latent-variable-modelling>`.
 
 This section is the last section where we deal with univariate data; after this section we start to use and deal with 2 or more variables.  
 
@@ -140,7 +140,7 @@ Note that we don't have to monitor variables that are measured only from on-line
 
 	..	SLIDE: organoleptic properties, Particle size distribution
 
-Discuss one of these unit operations with your neighbour in the class.  Which variables would you monitor?
+Discuss one of these unit operations with your colleague.  Which variables would you monitor?
 
 - Waste water treatment process
 - Tablet/pharmaceutical manufacturing
@@ -154,7 +154,7 @@ In-control vs out-of-control
 
 Every book on statistical quality control gives a slightly different viewpoint, or uses different terminology for what is statistical process control.
 
-In this course we will take "in-control" to mean that the behaviour of the process is stable over time.  Note though, that in-control does not mean the variable of interest meets the required specifications - all that "in control" means is that there are no **special causes** in the data.  A special cause, or an assignable cause is an event that occurs to move the process, or destabilize it.  Process monitoring charts aim to detect these events.
+In this book we will take "in-control" to mean that the behaviour of the process is stable over time.  Note though, that in-control does not mean the variable of interest meets the required specifications - all that "in control" means is that there are no **special causes** in the data.  A special cause, or an assignable cause is an event that occurs to move the process, or destabilize it.  Process monitoring charts aim to detect these events.
 
 .. Note:: Our objective: quickly detect abnormal variation, and fix it by finding the root cause.  In this section we look at the "detection" problem.  Diagnosis and process adjustment are two separate steps that follow.
 
@@ -180,7 +180,7 @@ Define the variable of interest as |x|, and assume that we have samples of |x| a
 	:align: center
 	:scale: 70
 
-So by taking subgroups of size :math:`n` values, we now have a new variable, :math:`\bar{x}` and we will define a shorthand symbol for its standard deviation: :math:`\sigma_{\bar{X}} = \sigma/\sqrt{n}`.  Writing a |z|-value for :math:`\bar{x}`, and its associated confidence interval for :math:`\mu` is now easy after studying the previous section of the course:
+So by taking subgroups of size :math:`n` values, we now have a new variable, :math:`\bar{x}` and we will define a shorthand symbol for its standard deviation: :math:`\sigma_{\bar{X}} = \sigma/\sqrt{n}`.  Writing a |z|-value for :math:`\bar{x}`, and its associated confidence interval for :math:`\mu` is now easy after studying :ref:`the previous section <univariate-confidence-intervals>` of the book:
 
 .. math::
 	z = \dfrac{\bar{x} - \mu}{\sigma_{\bar{X}}}
@@ -207,7 +207,7 @@ The derivation in equation :eq:`shewhart-theoretical` requires knowing the popul
 
 The latter assumption is reasonable, so create a new variable |xdb| :math:`= \dfrac{1}{K} \displaystyle \sum_{k=1}^{K}{ \bar{x}_k}`, where :math:`K` is the number of :math:`\bar{x}` samples we have available to build the control chart (phase 1 data).  Alternatively, just set |xdb| to the desired target value for :math:`x`.  Note that |xdb| is sometimes called the  *grand mean* in control chart textbooks.
 
-The next hurdle is :math:`\sigma`.  We do not show it in this course, but for a subgroup of :math:`n` samples, an unbiased estimator of :math:`\sigma` is given by :math:`\dfrac{\bar{S}}{a_n}`.  Now :math:`\bar{S} =  \dfrac{1}{K} \displaystyle \sum_{k=1}^{K}{s_k}` (simply the average standard deviation calculated from :math:`K` subgroups).  Values for :math:`a_n` are looked up from a table and depend on the number of samples we use within each subgroup.
+The next hurdle is :math:`\sigma`.  We do not show it here, but for a subgroup of :math:`n` samples, an unbiased estimator of :math:`\sigma` is given by :math:`\dfrac{\bar{S}}{a_n}`.  Now :math:`\bar{S} =  \dfrac{1}{K} \displaystyle \sum_{k=1}^{K}{s_k}` (simply the average standard deviation calculated from :math:`K` subgroups).  Values for :math:`a_n` are looked up from a table and depend on the number of samples we use within each subgroup.
 
 .. figure:: images/table-for-an-values.png
 	:width: 500px
@@ -346,7 +346,7 @@ Imagine you are monitoring an aspect of the final product's quality, e.g. viscos
 
 Shewhart chart limits were calculated with the assumption of **independent subgroups** (e.g. subgroup :math:`i` has no effect on subgroup :math:`i+1`).  For a process with mild autocorrelation, the act of creating subgroups, with :math:`n` samples in each group, removes most, if not all, of the relationship between subgroups.  However processes with heavy autocorrelation (slow moving processes sampled at a high rate, for example), will have LCL and UCL calculated from equation :eq:`shewhart-limits` that will raise false alarms too frequently.  In these cases you can widen the limits, or remove the autocorrelation from the signal.  More on this in the section on exponentially weighted moving average (EWMA) charts.
 
-Using Shewhart charts on **highly correlated quality variables**, usually on your final product measurement, can increase your type II (consumer's risk) dramatically.  We will come back to this very important topic in the last section of the course on multivariate data analysis.
+Using Shewhart charts on **highly correlated quality variables**, usually on your final product measurement, can increase your type II (consumer's risk) dramatically.  We will come back to this very important topic in the section on :ref:`latent variable models <SECTION-latent-variable-modelling>`.
 
 
 .. index::
@@ -494,7 +494,7 @@ You may encounter other charts in practice:
 	
 	*	The *R chart* was a precursor for the *S chart*, where the *R* stands for range, the subgroup's maximum minus minimum.  It was used when charting was done manually, as standard deviations were tedious to calculate by hand.
 	
-	*	The *np chart* and *p chart* are used when monitoring the proportion of defective items using a pass/fail criterion.  In the former case the sample size taken is constant, while in the latter the proportion of defective items is monitored.  These charts are derived using the binomial distribution (see section 2 of the course notes). 
+	*	The *np chart* and *p chart* are used when monitoring the proportion of defective items using a pass/fail criterion.  In the former case the sample size taken is constant, while in the latter the proportion of defective items is monitored.  These charts are derived using the binomial distribution.
 
 	*	The *exponentially weight moving variance* (EWMV) chart is an excellent chart for monitoring for an increase in product variability. Like the :math:`\lambda` from an EWMA chart, the EWMV also has a sliding parameter that can balance current information and historical information to trade-off sensitivity.  More information is available in the paper by MacGregor, J.F. and Harris, T.J., "The Exponentially Weighted Moving Variance", *Journal of Quality Technology*, **25**, p 106-118, 1993.
 
@@ -568,7 +568,7 @@ The |xdb| term would be the process target from a Shewhart chart, or simply the 
 
 It is the |Cpk| value that is requested by your customer.  Values of 1.3 are usually a minimum requirement, while 1.67 and higher are requested for safety and other critical applications.  A value of |Cpk| :math:`\geq 2.0` is termed a six-sigma process, because the distance from the current operating point, |xdb|, to the closest specification is at least :math:`6\sigma` units.
 
-You will calculate in the assignment that a shift of :math:`1.5\sigma` from process center will introduce only 3.4 defects per million.  This shift would reduce your |Cpk| from 2.0 to 1.5.
+You can calculate that a shift of :math:`1.5\sigma` from process center will introduce only 3.4 defects per million.  This shift would reduce your |Cpk| from 2.0 to 1.5.
 
 .. Note:: It must be emphasized that |Cpk| and C\ :sub:`p` numbers are only useful for a process which is stable.  Furthermore the assumptions of normally distributed samples is also required to interpret the |Cpk| results.
 
@@ -578,7 +578,7 @@ You will calculate in the assignment that a shift of :math:`1.5\sigma` from proc
 Industrial practice
 ===================
 
-This section of the course is only intended to give an overview of the concepts of process monitoring.  As you move into an industrial environment you will find there are many such systems already in place.  Higher levels of management track statistics from a different point of view, often summarizing data from an entire plant, geographic region, or country.  The techniques learned in this course, while focusing mainly on unit operations, are equally applicable though.
+This section of the book is only intended to give an overview of the concepts of process monitoring.  As you move into an industrial environment you will find there are many such systems already in place.  Higher levels of management track statistics from a different point of view, often summarizing data from an entire plant, geographic region, or country.  The techniques learned in this book, while focusing mainly on unit operations, are equally applicable though.
 
 You may come across systems called dashboards, which are often part of ERP (enterprise resource planning) systems.  These dashboards are supposed to monitor the pulse of a company and are tracked like any other control chart discussed above.  Another area is called business intelligence (BI) systems.  These typically track sales and other financial information.  And yet another acronym is the KPI, key performance indicator, which is a summary variable, such as profit per hour, or energy cost per unit of production.  These are often monitored and acted on by site managers on a daily or weekly basis.
 
@@ -586,7 +586,7 @@ But at the unit operation and plant level, you will likely find the hardest part
 
 It is critical that your control chart display the quantity as close to real-time as possible.  It is almost as if the monetary value of the information in a chart decays exponentially from the time an event occurs.  It is also much harder to diagnose and correct those problems.
 
-You will also realize that good operator training is time-consuming; operators keep moving to new units or plants, so frequent re-training is required.  Concepts from the :ref:`data visualization <data-visualization-chapter>` section of the course are helpful to minimize training effort - make sure the online plots contain the right level of information, without clutter.
+You will also realize that good operator training is time-consuming; operators keep moving to new units or plants, so frequent re-training is required.  Concepts from the :ref:`data visualization <SECTION-data-visualization>` section are helpful to minimize training effort - make sure the online plots contain the right level of information, without clutter.
 
 Another side effect of the large quantities of data are that you will have to work with IT groups to manipulate large chunks of data on dedicated networks, separate from the rest of the plant.  The last thing you want to be responsible for is clogging the company network with your data.  The concept of a "production" network in parallel to the "company" network is now common in most industries.
 
@@ -600,14 +600,14 @@ Here is some general guidance; feel free to adjust the steps as required for you
 	#. Import the data and just plot it.  Do you see any time trends, outliers, spikes, missing data gaps?
 	#. Locate any regions of data which are from generally stable operation.  Remove spikes and outliers that will bias your control limits calculations.  In other words, find regions of common-cause operation.
 	#. Estimate limits that you would expect to contain this stable region of operation just by looking at the plots.
-	#. Then calculate preliminary control limits (UCL, LCL), using the formula shown in in this part of the course.
+	#. Then calculate preliminary control limits (UCL, LCL), using the formula shown in this section.
 	#. Test your chart on **new, unused** data.  This new data should contain both common and special cause operation.
 	#. How does your chart work?  Quantify the type I and II error. Adjust the limits and control chart parameters (e.g. :math:`\lambda`) if necessary.  You may even have to resort to a different variable to plot.
 	#. Run the chart on your desktop computer for a couple of days.  When you detect an unusual event, go and check with the process operators and verify the event.  Would they have reacted to it, had they known about it?  Or, would this have been a false alarm?  You may need to refine your limits, or the value you are plotting again.
 	#. Remember that this form of control charting is not an expert system - it will not diagnose problems: you have to use your head by looking at patterns in the chart, and use knowledge of other process events.
 	#. Demonstrate the system to your colleagues and manager.  But show them economic estimates of the value of early detection.  They are usually not interested in the plots alone.
-	#. Installation and operator training will take time.  This assumes of course that you have real-time data acquisition systems and real-time processing systems in place - most companies do.
-	#. Listen to your operators for what they want to see.  Use principles of :ref:`good data visualization <data-visualization-chapter>` to reduce unnecessary information.  Make your plots interactive - if you click on an unusual point it should "drill-down" and give you more information and historical context.
+	#. Installation and operator training will take time.  This assumes that you have real-time data acquisition systems and real-time processing systems in place - most companies do.
+	#. Listen to your operators for what they want to see.  Use principles of :ref:`good data visualization <SECTION-data-visualization>` to reduce unnecessary information.  Make your plots interactive - if you click on an unusual point it should "drill-down" and give you more information and historical context.
 	#. Future monitoring charts are easier to get going, once the first system is in place.
 
 .. Workflow for what happens with a new observation, once you have the monitoring settings
@@ -627,9 +627,9 @@ Industrial case study
 ArcelorMittal (Dofasco)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ArcelorMittal's steel mill in Hamilton, Ontario, (formerly called Dofasco) has used multivariate process monitoring tools in many areas of their plant for decades now.  One of their most successful applications is that applied to their casting operation.  In this section we just focus on the application; the sort of multivariate calculations used by Dofasco are discussed in the last part of the course. 
+ArcelorMittal's steel mill in Hamilton, Ontario, (formerly called Dofasco) has used multivariate process monitoring tools in many areas of their plant for decades now.  One of their most successful applications is that applied to their casting operation.  In this section we just focus on the application; the sort of multivariate calculations used by Dofasco are discussed :ref:`later on <SECTION-latent-variable-modelling>`.
 
-The computer screenshot shows the monitoring system, called Caster SOS (Stable Operation Supervisor), which is followed by the operators.  There are several charts on the screen: two charts, called "Stability Index 1" and "Stability Index 2", are one-sided monitoring charts.  Notice the warning limits and the action limits.  We will cover what they are plotting in a later section of the course.  In the middle is a two-sided chart.  A wealth of information is presented on the screen - their design was heavily influenced and iterated on several times, by the *operators*.  The screen shot is used with permission of Dr. John MacGregor. 
+The computer screenshot shows the monitoring system, called Caster SOS (Stable Operation Supervisor), which is followed by the operators.  There are several charts on the screen: two charts, called "Stability Index 1" and "Stability Index 2", are one-sided monitoring charts.  Notice the warning limits and the action limits.  We will cover what they are plotting in a later section of the book.  In the middle is a two-sided chart.  A wealth of information is presented on the screen - their design was heavily influenced and iterated on several times, by the *operators*.  The screen shot is used with permission of Dr. John MacGregor. 
 
 .. figure:: images/Dofasco-monitoring-chart.png
 	:width: 750px
@@ -654,7 +654,7 @@ The economics of control charting cannot be overstated. The ArcelorMittal exampl
 Summary
 ==========
 
-Montgomery and Runger list 5 reasons why control charts are widely used.  After this section of the course you should understand the following about control charts and process monitoring:
+Montgomery and Runger list 5 reasons why control charts are widely used.  After this section of the book you should understand the following about control charts and process monitoring:
 
 	#.	These tools are proven to improve productivity (i.e. to reduce scrap and rework, as described above), and to increase process throughput.
 	#.	They detect defective production, consistent with the concept of "doing it right the first time", a mantra that you will increasingly hear in the manufacturing workplace.
@@ -670,7 +670,7 @@ Exercises
 
 .. question::
 
-	Is it fair to say that a control chart is like an online version of a confidence interval?  Explain your answer.
+	Is it fair to say that a control chart is like an online version of a :ref:`confidence interval <univariate-confidence-intervals>`?  Explain your answer.
 
 .. answer::
 
@@ -703,12 +703,12 @@ Exercises
 
 .. question::
 
-    The `boards data <http://datasets.connectmv.com/info/board-thickness>`_ on the course website are from a line which cuts spruce, pine and fir (SPF) to produce general quality lumber that you could purchase at Rona, Home Depot, etc.  The price that a saw mill receives for its lumber is strongly dependent on how accurate the cut is made.  Use the data for the 2 by 6 boards (each row is one board) and develop a monitoring system using these steps.
+    The `boards data <http://datasets.connectmv.com/info/board-thickness>`_ on the website are from a line which cuts spruce, pine and fir (SPF) to produce general quality lumber that you could purchase at Rona, Home Depot, etc.  The price that a saw mill receives for its lumber is strongly dependent on how accurate the cut is made.  Use the data for the 2 by 6 boards (each row is one board) and develop a monitoring system using these steps.
 
     	a) Plot all the data.  
     	b) Now assume that boards 1 to 500 are the phase I data; identify any boards in this subset that appear to be unusual (where the board thickness is not consistent with most of the other operation)
     	c) Remove those unusual boards from the phase I data. Calculate the Shewhart monitoring limits and show the phase I data with these limits.  Note: choose a subgroup size of 7 boards.
-    	d) Test the Shewhart chart on boards 501 to 2000, the phase II data.  Show the plot and calculate the type I error rate (:math:`\alpha`) from the phase II data; assuming of course that all the phase II data are from in-control operation.
+    	d) Test the Shewhart chart on boards 501 to 2000, the phase II data.  Show the plot and calculate the type I error rate (:math:`\alpha`) from the phase II data; assuming, of course, that all the phase II data are from in-control operation.
     	e) Calculate the ARL and look at the chart to see if the number looks about right. Use the time information in the raw data and your ARL value to calculate how many minutes between a false alarm.  Will the operators be happy with this?
     	f) Describe how you might calculate the consumer's risk (:math:`\beta`).
     	g) How would you monitor if the saws are slowly going out of alignment? 
@@ -767,7 +767,7 @@ Exercises
 	
 		-	Use a CUSUM chart.
 	
-		-	A more sensitive monitoring chart for this would be the exponentially weighted moving variance.  See the course notes for details on this.
+		-	A more sensitive monitoring chart for this would be the exponentially weighted moving variance: MacGregor, J.F. and Harris, T.J., "The Exponentially Weighted Moving Variance", *Journal of Quality Technology*, **25**, p 106-118, 1993.
 
 		.. figure:: images/boards-monitoring-subgroup-standard-deviation.png
 			:width: 750px

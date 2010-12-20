@@ -20,7 +20,7 @@
 	Transformation: more systematic discussion; see BHH2, p 322
 	Linear models: go into details also how to calculate confidence intervals and prediction intervals for MLR
 	Show the spinning plane for highly correlated X's
-	Include the influecePlot in the course notes (PDF): you have it in the slides, but not here
+	Include the influecePlot in the notes (PDF): you have it in the slides, but not here
 	
 	Be clearer on what a CI for the MLR or OLS terms mean (i.e. it shows when a term is necessary; can be used to free up DOF)  Show examples and how to interpret them.
 	
@@ -63,9 +63,9 @@
 In context
 ==========
 
-This section begins a new part of the course: we start considering more than one variable at a time.  However, you will see the tools of confidence intervals and visualization from the previous sections coming into play so that we can interpret our least squares models both analytically and visually.
+This section begins a new part of the book: we start considering more than one variable at a time.  However, you will see the tools of confidence intervals and visualization from the previous sections coming into play so that we can interpret our least squares models both analytically and visually.
 
-The final 2 sections of the course, design and analysis of experiments, and latent variable models,  will build on the least squares model we learn about here.
+The final sections on design and analysis of experiments, and latent variable models will build on the least squares model we learn about here.
 
 .. index::
 	pair: usage examples; Least squares models
@@ -111,14 +111,14 @@ References and readings
 - Montgomery and Runger, *Applied Statistics and Probability for Engineers*  
 - Birkes and Dodge: *Alternative Methods of Regression*, 1993.
 - Efron, Hastie, Johnstone and Tibshirani, `Least Angle Regression <http://www.jstor.org/stable/3448465>`_, *The Annals of Statistics*, **32**, p 407-451, 2004, 
-- 600-level students: Box, G.E.P.,  `Use and Abuse of Regression <http://www.jstor.org/stable/1266635>`_, *Technometrics*, **8** (4), 625-629, 1966.
-- 600-level students: Chatterjee, S. and A.S. Hadi, `Influential Observations, High Leverage Points, and Outliers in Linear Regression <http://www.jstor.org/stable/2245477>`_, *Statistical Science*, **1** (3), 379-416, 1986.
-- 600-level students: Cleveland, W.S. `Robust Locally Weighted Regression and Smoothing Scatterplots <http://www.jstor.org/stable/2286407>`_, *Journal of the American Statistical Association*, **74** (368), p. 829-836, 1979.
+- Box, G.E.P.,  `Use and Abuse of Regression <http://www.jstor.org/stable/1266635>`_, *Technometrics*, **8** (4), 625-629, 1966.
+- Chatterjee, S. and A.S. Hadi, `Influential Observations, High Leverage Points, and Outliers in Linear Regression <http://www.jstor.org/stable/2245477>`_, *Statistical Science*, **1** (3), 379-416, 1986.
+- Cleveland, W.S. `Robust Locally Weighted Regression and Smoothing Scatterplots <http://www.jstor.org/stable/2286407>`_, *Journal of the American Statistical Association*, **74** (368), p. 829-836, 1979.
 
 Covariance
 ===========
 
-Coming into this course, you probably have an intuitive sense for what it means when two things are correlated. We will get to correlation next, but we start by first looking at covariance.  Let's take a look at an example to formalize this, and to see how we can learn from data.
+You probably have an intuitive sense for what it means when two things are correlated. We will get to correlation next, but we start by first looking at covariance.  Let's take a look at an example to formalize this, and to see how we can learn from data.
 
 Consider these measurements from a gas cylinder; temperature (K) and pressure (kPa).  We know the ideal gas law applies under moderate condition: :math:`pV = nRT`.
 
@@ -228,7 +228,7 @@ In your own time calculate a rough numeric value and give the units of covarianc
 
 	\vspace{4cm}
 	
-One last point is that the covariance of a variable with itself is the variance: :math:`\text{Cov}\left\{x, x\right\} = \mathcal{V}(x) = \mathcal{E}\left\{ (x - \bar{x}) (x - \bar{x})\right\}`, a definition we saw earlier in the course.  Notice in particular that the variance of a centered vector is the same as the variance of an uncentered vector.  The means you can shift the raw data in :math:`x` and :math:`y` up or down and still get the same covariance number.
+One last point is that the covariance of a variable with itself is the variance: :math:`\text{Cov}\left\{x, x\right\} = \mathcal{V}(x) = \mathcal{E}\left\{ (x - \bar{x}) (x - \bar{x})\right\}`, a definition :ref:`we saw earlier <univariate-variance>`.  Notice in particular that the variance of a centered vector is the same as the variance of an uncentered vector.  The means you can shift the raw data in :math:`x` and :math:`y` up or down and still get the same covariance number.
 
 **Aside**: The above point explains the difference in R with what we calculated earlier.  In R, the variance function for a vector ``x`` is internally called as ``cov(x, x)``.  Since R returns the unbiased variance, it divides through by :math:`n-1`.
 
@@ -296,7 +296,7 @@ Be sure that you can derive (and interpret!) these relationships yourself:
 Nonparametric modelling
 ===========================
 
-.. Note:: This is an *enrichment topic*; required for 600-level students.
+.. Note:: This is an *enrichment topic*.
 
 Nonparametric modelling is a general model where the relationship between |x| and |y| is of the form: :math:`y = f(x) + \varepsilon`, but the function (model), :math:`f(x)` is left unspecified.  The model is usually a smooth function.
 
@@ -421,7 +421,7 @@ In the case where we have both |b0| and |b1|  varying we can construct a grid fu
 	
 The above figure shows the general nature of the least-squares objective function where the two horizontal axes are for |b0| and |b1|, while the vertical axis represents the least squares objective function :math:`f(b_0, b_1)`.
 
-The plot highlights the quadratic nature of the objective function.  To find the minimum analytically we start with equation :eq:`define-2-LS-optimization` and take partial derivatives with respect to :math:`b_0` and :math:`b_1`, and set those equations to zero.  These two equations in two unknowns, are a requirement of optimality (cf. any course on optimization theory, e.g 4G3).  You can take the second derivative to confirm that the optimum is indeed a minimum.
+The plot highlights the quadratic nature of the objective function.  To find the minimum analytically we start with equation :eq:`define-2-LS-optimization` and take partial derivatives with respect to :math:`b_0` and :math:`b_1`, and set those equations to zero.  These two equations in two unknowns, are a requirement of optimality (cf. any book on optimization theory).  You can take the second derivative to confirm that the optimum is indeed a minimum.
 
 .. math::
 	:label: define-2-LS-b0-b1-partials
@@ -575,7 +575,7 @@ In order to perform the second step we need to make a few assumptions about the 
 The variance breakdown
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Recall from the second section of the course we showed that variance is what makes our data interesting.  Without variance (i.e. just flat lines) we would have nothing to do.  The analysis of variance is just a tool to show how much variability in the y-variable is explained by:
+Recall that :ref:`variability <univariate-about-variability>` is what makes our data interesting.  Without variance (i.e. just flat lines) we would have nothing to do.  The analysis of variance is just a tool to show how much variability in the y-variable is explained by:
 
  	#. Doing nothing (no model: implies :math:`\hat{y} = \bar{y}`)
  	#. The model (:math:`\hat{y}_i = b_0 + b_1 x_i`)
@@ -767,7 +767,7 @@ Confidence intervals for the model coefficients |b0| and |b1|
 
 Up to this point we have made no assumptions about the data.  In fact we can calculate the model estimates, |b0| and |b1| as well as predictions from the model without any assumptions on the data.  It is only when we need additional information such as confidence intervals for the coefficients and prediction error estimates that we must make assumptions.
 
-Recall the |b1| coefficient represents the average effect on |y| of changing the |x|-variable by 1 unit.  If you are estimating reaction rates (kinetics) from a linear least squares model, a standard step in the reactor design course, you would want a measure of confidence of your coefficient.  For example, if you calculate the reaction rate as :math:`k = 0.81 \text{~s}^{-1}` you would benefit from knowing whether the 95% confidence interval was :math:`k = 0.81 \pm 0.26 \text{~s}^{-1}` or :math:`k = 0.81 \pm 0.68 \text{~s}^{-1}`.  A point estimate of the least square model is satisfactory, but the confidence interval information is more desirable to interpret and use the model.
+Recall the |b1| coefficient represents the average effect on |y| of changing the |x|-variable by 1 unit.  If you are estimating reaction rates (kinetics) from a linear least squares model, a standard step in reactor design, you would want a measure of confidence of your coefficient.  For example, if you calculate the reaction rate as :math:`k = 0.81 \text{~s}^{-1}` you would benefit from knowing whether the 95% confidence interval was :math:`k = 0.81 \pm 0.26 \text{~s}^{-1}` or :math:`k = 0.81 \pm 0.68 \text{~s}^{-1}`.  A point estimate of the least square model is satisfactory, but the confidence interval information is more desirable to interpret and use the model.
 
 
 .. _LS-assumptions:
@@ -809,7 +809,7 @@ Furthermore, our derivation for the confidence intervals of |b0| and |b1| requir
 Back to deriving confidence intervals for :math:`\beta_0` and :math:`\beta_1`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Recall from our discussions on :ref:`confidence intervals <univariate-confidence-intervals>` of the course that we need to know the mean and variance of the population from which |b0| and |b1| come.  Specifically:
+Recall from our discussions on :ref:`confidence intervals <univariate-confidence-intervals>` that we need to know the mean and variance of the population from which |b0| and |b1| come.  Specifically:
 
 .. math::
 
@@ -1175,7 +1175,7 @@ This problem reveals itself by showing a fan shape across the plot; an example i
 	:align: center
 	:width: 750px
 
-To counteract this problem one can use weighted least squares, with smaller weights on the high-variance observations (i.e. apply a weight inversely proportional to the variance).  Weighted least squares minimizes: :math:`f(\mathrm{b}) = \sum_i^n{(w_ie_i)^2}`, with different weights, :math:`w_i` for each error term. We do not cover weighted-least squares in the course though.  More on this topic can be found in the book by Draper and Smith (p 224 to 229, 3rd edition).
+To counteract this problem one can use weighted least squares, with smaller weights on the high-variance observations (i.e. apply a weight inversely proportional to the variance).  Weighted least squares minimizes: :math:`f(\mathrm{b}) = \sum_i^n{(w_ie_i)^2}`, with different weights, :math:`w_i` for each error term. We do not cover weighted-least squares in this book.  More on this topic can be found in the book by Draper and Smith (p 224 to 229, 3rd edition).
 
 .. _LS-autocorrelation-test:
 
@@ -1217,7 +1217,7 @@ Linearity of the model (incorrect model specification)
 
 Recall that the linear model is just a tool to either learn more about our data, or to make predictions.  Many cases of practical interest are from systems where the general theory is either unknown, or too complex, or known to be non-linear.  
 
-Certain cases of non-linearity can be dealt with by simple transformations of the raw data: use a **non-linear transformation** of the raw data and then build a *linear model* as usual.  An alternative method which fits the non-linear function by least squares is too complex and specialized to cover properly in this course.  Again the book by Draper and Smith (Chapter 24, 3rd edition), may be consulted if this topic is of further interest to you.  Let's take a look at a few examples.
+Certain cases of non-linearity can be dealt with by simple transformations of the raw data: use a **non-linear transformation** of the raw data and then build a *linear model* as usual.  An alternative method which fits the non-linear function, using concepts of optimization, by minimizing the sum of squares is covered in a section on non-linear regression.  Again the book by Draper and Smith (Chapter 24, 3rd edition), may be consulted if this topic is of further interest to you.  Let's take a look at a few examples.
 
 We saw earlier a case where a square-root transformation of the |y| variable made the residuals more normally distributed.  There is in fact a sequence of transformations that can be tried to modify the distribution of a single variable: :math:`x_\text{transformed} \leftarrow x^p_\text{original}`.
 		
@@ -1253,7 +1253,7 @@ Here we show both plots for the example just prior (where we used a linear model
 
 Transformations are considered successful once the residuals appear to have no more structure in them.  Also bear in mind that structure in the residuals might indicate the model is missing an additional explanatory variable (see the section on :ref:`multiple linear regression <LS-multiple-X-MLR>`).
 
-Another type of plot to diagnose non-linearity present in the linear model is called a *component-plus-residual plot* or a *partial-residual plot*.  This is an advanced topic not covered in this course.
+Another type of plot to diagnose non-linearity present in the linear model is called a *component-plus-residual plot* or a *partial-residual plot*.  This is an advanced topic not covered here.
 
 .. Also see:  http://www.apsnet.org/education/advancedplantpath/topics/RModules/doc1/05_Nonlinear_regression.html
 
@@ -1673,12 +1673,12 @@ The values of :math:`D_i` are conveniently calculated in R using the ``cooks.dis
 
 .. _LS-multiple-X-MLR:
 
-Topics not covered in this course
+Topics not covered in this book
 ==========================================
 
 .. note:: Enrichment
 
-	These topics are not covered in our course, but might be of interest to you later on.  I provide a small introduction to each topic, showing what their purpose is, together with some examples.  
+	These topics are not covered in depth in this book, but might be of interest to you.  I provide a small introduction to each topic, showing what their purpose is, together with some examples.  
 
 Robust least squares models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1799,7 +1799,7 @@ How do we quantify this predictive performance?  A common way is to calculate th
 
 The units of RMSEP and RMSEE are the same as the units of the |y|-variable.
 
-In the :ref:`latent variable modelling <SECTION-latent-variable-modelling>` section of the course we will introduce the concept of cross-validation to test a model.  Cross-validation uses the model training data to simulate the testing process.  So it is not as desirable as having a fresh testing data set, but it works well in many cases.  Cross-validation can be equally well applied to least squares models. We will revisit this topic later.
+In the :ref:`latent variable modelling <SECTION-latent-variable-modelling>` section of the book we will introduce the concept of cross-validation to test a model.  Cross-validation uses the model training data to simulate the testing process.  So it is not as desirable as having a fresh testing data set, but it works well in many cases.  Cross-validation can be equally well applied to least squares models. We will revisit this topic later.
 
 .. TODO: cf the book by Esbensen for other methods
 
@@ -2061,7 +2061,7 @@ Exercises
 
 
 	-	Use software to fit a linear model that predicts the yield from these variables (the `data set is available from the website <http://datasets.connectmv.com/info/bioreactor_yields>`_).  See part 5 of the `R tutorial <http://connectmv.com/tutorials/R_tutorial>`_ for building linear models with integer variables in R.
-	-	Chemical engineering students in the class: interpret the meaning of each effect in the model.  If you are using R, then the ``confint(...)`` function will be helpful as well. Show plots of each |x| variable in the model against yield.  Use a box plot for the baffles indicator variable.
+	-	Interpret the meaning of each effect in the model.  If you are using R, then the ``confint(...)`` function will be helpful as well. Show plots of each |x| variable in the model against yield.  Use a box plot for the baffles indicator variable.
 	-	Now calculate the :math:`\mathbf{X}^T\mathbf{X}` and :math:`\mathbf{X}^T\mathbf{y}` matrices; include a column in the :math:`\mathbf{X}` matrix for the intercept. Since you haven't mean centered the data to create these matrices, it would be misleading to try interpret them.
 	-	Calculate the least squares model estimates from these two matrices.  See part 4 of the `R tutorial <http://connectmv.com/tutorials/R_tutorial>`_ for doing matrix operations in R, but you might prefer to use MATLAB for this step.  Either way, you should get the same answer here as in the first part of this question.
 
