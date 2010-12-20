@@ -8,25 +8,25 @@
 			<key>filename</key>
 			<string>q-and-a.py</string>
 			<key>lastUsed</key>
-			<date>2010-12-10T02:00:01Z</date>
+			<date>2010-12-17T16:30:31Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>contents.rst</string>
 			<key>lastUsed</key>
-			<date>2010-12-11T00:08:26Z</date>
+			<date>2010-12-17T21:53:41Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>_build/latex/PID.tex</string>
 			<key>lastUsed</key>
-			<date>2010-12-11T00:08:31Z</date>
+			<date>2010-12-17T20:43:15Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>conf.py</string>
 			<key>lastUsed</key>
-			<date>2010-12-11T00:08:27Z</date>
+			<date>2010-12-17T20:00:12Z</date>
 		</dict>
 		<dict>
 			<key>expanded</key>
@@ -96,6 +96,6 @@
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{239, 60}, {1201, 818}}</string>
+	<string>{{239, 192}, {1201, 686}}</string>
 </dict>
 </plist>

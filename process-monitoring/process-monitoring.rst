@@ -792,3 +792,124 @@ Exercises
 		n.sigma.distance <- 3 * Cpk
 		defects.per.million <- pnorm(-n.sigma.distance, mean=0, sd=1) * 1E6
 	
+.. question::
+
+	Which type of monitoring chart would be appropriate to detect unusual spikes (outliers) in your production process?
+	
+.. answer::
+
+	A Shewhart chart has no memory, and is suited to detecting unusual spikes in your production.  CUSUM and EWMA charts have memory, and while they would pick up this spike, they would also create a long duration of false alarms after that.  So those charts are much less appropriate.
+	
+.. question::
+
+	A tank uses small air bubbles to keep solid particles in suspension.  If too much air is blown into the tank, then excessive foaming occurs; if too little air is blown into the tank the particles sink and drop out of suspension.  Which monitoring chart would you use to ensure the airflow is always near target?
+
+	.. figure:: images/tank-suspension.png
+		:scale: 70%
+		:align: center
+		:width: 400px
+		
+.. answer::
+
+	A CUSUM chart would be a suitable chart to monitor that the airflow is near target.  While a Shewhart chart is also intended to monitor the location of a variable, it has a much larger run length for detecting small shifts.  An EWMA chart with small :math:`\lambda` (long memory) would approximate a CUSUM chart, and so would also be suitable.
+
+.. question::
+
+	Do you think a Shewhart chart would be suitable for monitoring the closing price of a stock on the stock market?  Please explain your answer if you agree, or describe an alternative if you disagree.
+	
+.. answer::
+
+	No, a Shewhart chart is not suitable for monitoring stock prices.  Stock prices are volatile variables (not stable), so there is no sense in monitoring their location.  Hopefully the stock is moving up, which it should on average, but the point is that stock prices are not stable.  Nor are stock prices independent day-to-day.
+	
+		So what aspect of a stock price is stable?  The difference between the opening and closing price of a stock is remarkably stationary.  Monitoring the day-to-day change in a stock price would work.  Since you aren't expected to know this fact, any reasonable answer that attempts to monitor a *stable* substitute for the price will be accepted.  E.g. another alternative is to remove the linear up or down trend from a stock price and monitor the residuals. 
+		
+		There are many alternatives; if this sort of thing interests you, you might find the area called `technical analysis <http://en.wikipedia.org/wiki/Technical_analysis>`_ worth investigating.  An EWMA chart is widely used in this sort of analysis.
+	
+	
+.. question::
+
+	Describe how a control chart could be used to prevent over-control of a batch-to-batch process.  (A batch-to-batch process is one where a batch of materials is processed, followed by another batch, and so on).
+
+.. answer::
+
+	Over-control of any process takes place when too much corrective action is applied.  Using the language of feedback control, your gain is the right sign, but the magnitude is too large. Batch processes are often subject to this phenomenon: e.g. the operator reduces the set-point temperature for the next batch, because the current batch produced product with a viscosity that was too high.  But then the next batch has a viscosity that is too low, so the operator increases the temperature set-point for the following batch.  This constant switching is known as over-control (the operator is the feedback controller and his/her gain is too high, i.e. they are over-reacting).
+		
+	A control chart such as a Shewhart chart would help the operator: if the previous batch was within the limits, then s/he should not take any corrective action.  Only take action when the viscosity value is outside the limits.  An EWMA chart would additionally provide a one-step ahead prediction, which is an advantage.
+	
+.. question::
+
+	You need to construct a Shewhart chart.  You go to your company's database and extract data from 10 periods of time lasting 6 hours each.  Each time period is taken approximately 1 month apart so that you get a representative data set that covers roughly 1 year of process operation.  You choose these time periods so that you are confident each one was from in control operation.  Putting these 10 periods of data together, you get one long vector that now represents your phase I data.
+
+		-	There are 8900 samples of data in this phase I data vector.
+		-	You form subgroups: there are 4 samples per subgroup and 2225 subgroups.
+		-	You calculate the mean within each subgroup (i.e. 2225 means).  The mean of those 2225 means is 714.
+		-	The standard deviation within each subgroup is calculated; the mean of those 2225 standard deviations is 98.
+
+	#.	Give an unbiased estimate of the process standard deviation? 
+
+	#.	Calculate lower and upper control limits for operation at :math:`\pm 3` of these standard deviations from target.  These are called the action limits.
+
+	#.	Operators like warning limits on their charts, so they don't have to wait until an action limit alarm occurs.  Discussions with the operators indicate that lines at 590 and 820 might be good warning limits.  What percentage of in control operation will lie inside the proposed warning limit region?
+	
+.. answer::
+
+	#.	An unbiased estimate of the process standard deviation is :math:`\hat{\sigma} = \dfrac{\bar{S}}{a_n} = \dfrac{98}{0.921} = \mathrm{106.4}`, since the subgroup size is :math:`n=4`.
+	#.	Using the data provided in the question:
+
+		.. math::
+
+			\text{UCL} &= \bar{\bar{x}} + 3 \dfrac{\bar{S}}{a_n \sqrt{n}} = 714 + 3 \times \dfrac{98}{0.921 \times 2 } = \mathrm{874} \\
+			\text{LCL} &= \bar{\bar{x}} - 3 \dfrac{\bar{S}}{a_n \sqrt{n}} = 714 - 3 \times \dfrac{98}{0.921 \times 2 } = \mathrm{554}
+
+	#.	Since Shewhart charts assume a normal distribution in their derivation, we can use the same principle to calculate a :math:`z`-value, and the fraction of the area under the distribution.  But you have to be careful here: which standard deviation do you use to calculate the :math:`z`-value?   You should use the subgroup's standard deviation, not the process standard deviation. The Shewhart chart shows the subgroup averages, so the values of 590 and 820 refer to the subgroup values.
+
+	If that explanation doesn't make sense, think of the central limit theorem: the mean of a group of samples, :math:`\bar{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`, where :math:`\sigma^2` is the process variance, and :math:`\sigma^2/n` is the subgroup variance of :math:`\bar{x}`.
+
+	.. math::
+		z_{\text{low}}  &= \dfrac{x_\text{low} - \bar{\bar{x}}}{\hat{\sigma}/\sqrt{n}} = \dfrac{590 - 714}{106.4/\sqrt{4}} = -2.33 \\
+		z_{\text{high}} &= \dfrac{x_\text{high} - \bar{\bar{x}}}{\hat{\sigma}/\sqrt{n}} =\dfrac{820 - 714}{106.4/\sqrt{4}} = +2.00
+
+	The area below -2.33 is ``pnorm(-2.33) = 0.009903076``, though I will accept any value around 1%, eyeballed from the printed tables.  The area below +2.00 is 97.73%, which was on the tables already.  So the total amount of normal operation within the warning limits is 97.73-1.00 = **96.7%**.
+
+	The asymmetry in their chosen warning limits might be because a violation of the lower bound is more serious than the upper bound.
+	
+.. question::
+
+	A bagging system fills bags with a target weight of 37.4 grams and the lower specification limit is 35.0 grams.  Assume the bagging system fills the bags with a standard deviation of 0.8 grams:
+
+	#.	What is the current Cpk of the process? 
+	#.	To what target weight would you have to set the bagging system to obtain Cpk=1.3? 
+	#.	How can you adjust the Cpk to 1.3 without adjusting the target weight (i.e. keep the target weight at 37.4 grams)?
+
+.. answer::
+
+	#.	Recall the Cpk is defined relative to the closest specification limit.  So in this case it must be due to the lower limit. Cpk = :math:`\dfrac{\bar{\bar{x}} - LSL}{3\sigma} = \dfrac{37.4 - 35.0}{3 \times 0.8} = \mathrm{1.0}` 
+	#.	To obtain Cpk = 1.3 we solve the above equation for :math:`\bar{\bar{x}} = 1.3 \times 3 \times 0.8 + 35.0 = \mathrm{38.12}` grams.
+	#.	Changing the lower specification limit is not an option to raise Cpk, because the bags are sold as containing 35.0 grams of snackfood. Changing the specification limit is in general an artificial way of changing Cpk.  The only practical way to improve Cpk is to decrease the process variance (e.g. using better equipment with tighter control).  The new :math:`\sigma = \dfrac{37.4 - 35.0}{3 \times 1.3} = \mathrm{0.615}` grams.
+	
+.. question::
+
+	Plastic sheets are manufactured on your blown film line.  The Cp value is 1.7.  You sell the plastic sheets to your customers with specification of 2 mm :math:`\pm` 0.4 mm.
+
+		#.	List three important assumptions you must make to interpret the Cp value.
+		#.	What is the theoretical process standard deviation, :math:`\sigma`?
+		#.	What would be the Shewhart chart limits for this system using subgroups of size :math:`n=4`?
+		#.	Illustrate your answer from part 2 and 3 of this question on a diagram of the normal distribution.
+
+.. answer::
+
+	#.	The notes show that Cp values require us to assume that (a) the process values follow a normal distribution, the process was centered when the data were collected, and (c) that the process was stable (use a monitoring chart to verify this last assumption).
+	#.	The range from the lower to the upper specification limit is 0.8 mm, which spans 6 standard deviations.  Given the Cp value of 1.7, the process standard deviation must have been :math:`\sigma = \dfrac{0.8}{1.7 \times 6} = \mathrm{0.0784}` mm.
+	#.	This time we have the process standard deviation, so there is no need to estimate it from historical phase I data (remember the assumption that Cp and Cpk value are calculated from stable process operation?).  The Shewhart control limits would be: :math:`\bar{\bar{x}} \pm 3 \times \dfrac{\sigma}{\sqrt{n}} = 2 \pm 3 \times 0.0784 / 2`.  The LCL = 1.88 mm and the UCL = 2.12 mm.
+	#.	An illustration is shown here with the USL, LSL, LCL and UCL, and target values.  This question merely required you to show the LCL and UCL within the LSL and USL, on any normal distribution curve.  However, for illustration, I have added to the diagram the distribution for the Shewhart chart (thicker line) and distribution for the raw process data (thinner line).  
+
+	.. figure:: images/plastic-sheet-control-specification-limits.png
+		:scale: 80%
+		:align: center
+		:width: 600px
+
+	The R code used to generate this figure:
+
+		literalinclude:: code/plastic-sheet-control-specification-limits.R
+			:language: s
+			:lines: 3-44

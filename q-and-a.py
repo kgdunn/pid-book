@@ -24,7 +24,7 @@ class Question_Answer(Directive):
             q_number = env.new_serialno(env.docname) + 1
             title = nodes.rubric('', 'Question %d' % q_number)
         elif self.name == 'answer':
-            title = nodes.emphasis('', 'Answer')  # Add a new paragraph here first!
+            title = nodes.emphasis('', 'Solution')  # Add a new paragraph here first!
         node = question_answer()
         node.document = self.state.document
         node.line = self.lineno

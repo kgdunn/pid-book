@@ -2130,3 +2130,139 @@ Exercises
 		.. literalinclude:: code/bioreactor-yields-problem.R
 			:language: s
 			:lines: 46- 	
+			
+.. question::
+
+	In the section on comparing differences between two groups we used, without proof, the fact that: 
+
+	.. math::
+
+		\mathcal{V}\left\{\bar{x}_B - \bar{x}_A\right\} = \mathcal{V}\left\{\bar{x}_B\right\} + \mathcal{V}\left\{\bar{x}_A\right\}
+
+	Prove this statement, and clearly explain all steps in your proof.
+	
+.. answer::
+
+	I don't normally concentrate on proofs in the book, unless they show something interesting, or are used over and over.  This short mathematical statement fits both criteria.
+
+	The important point with this proof is that :math:`\bar{x}_A` and :math:`\bar{x}_B` are the variables, not :math:`x`.  These variables come from a normal distribution (Central limit theorem), as long as we assume independent sampling: :math:`\bar{x}_A \sim \mathcal{N} \left(\mu; \sigma^2/n_A\right)`, and similarly for :math:`\bar{x}_B`.
+
+	.. math::
+
+		\mathcal{V}\left\{\bar{x}_B - \bar{x}_A\right\}	&= \mathcal{V}\left\{\bar{x}_B + \left(-\bar{x}_A\right) \right\} \\
+														&= \mathcal{V}\left\{\bar{x}_B \right\} + 2\text{Cov}\left\{\bar{x}_B, \left(-\bar{x}_A\right)\right\} + \mathcal{V}\left\{-\bar{x}_A \right\} \\
+														&= \mathcal{V}\left\{\bar{x}_B \right\} + 0 + \left(-1\right)^2\mathcal{V}\left\{\bar{x}_A \right\} \\
+														&= \mathcal{V}\left\{\bar{x}_B\right\} + \mathcal{V}\left\{\bar{x}_A\right\}
+
+	The second line is a result shown earlier. The third line requires that we assume the between-group means :math:`\bar{x}_B` and :math:`\bar{x}_A` are independent, and so they are uncorrelated (their covariance is zero).  This was one of the key assumptions when we studied between-group differences; and is one assumption that is often true in many real cases.
+	
+.. question::
+
+	The production of low density polyethylene is carried out in long, thin pipes at high temperature and pressure (1.5 kilometres long, 50mm in diameter, 500 K, 2500 atmospheres).  One quality measurement of the LDPE is its melt index.  Laboratory measurements of the melt index can take between 2 to 4 hours.  Being able to predict this melt index, in real time, allows for faster adjustment to process upsets, reducing the product's variability.  There are many variables that are predictive of the melt index, but in this example we only use a temperature measurement that is measured along the reactor's length.
+
+	These are the data of temperature (K) and melt index (units of melt index are "grams per 10 minutes").
+
+	.. Previous table
+		======================= ======================                           
+		Temperature = :math:`T` Melt index = :math:`m`                          
+		----------------------- ----------------------                      
+		(Kelvin)       			(g per 10 mins)                             
+		======================= ======================                      
+		     441       			  9.3                                       
+		     453       			  6.6                                       
+		     461       			  6.6                                       
+		     470       			  7.0                                       
+		     478       			  6.1                                       
+		     481       			  3.5                                       
+		     483       			  2.2                                       
+		     485       			  3.6                                       
+		     499       			  2.9                                       
+		     500       			  3.6                                       
+		     506       			  4.2                                       
+		     516       			  3.5                                       
+		======================= ======================
+
+	=============================================  === === === === === === === === === === === === 
+	**Temperature** = :math:`T` [Kelvin]           441 453 461 470 478 481 483 485 499 500 506 516 
+	---------------------------------------------  --- --- --- --- --- --- --- --- --- --- --- --- 
+	**Melt index** = :math:`m`  [g per 10 mins]    9.3 6.6 6.6 7.0 6.1 3.5 2.2 3.6 2.9 3.6 4.2 3.5 
+	=============================================  === === === === === === === === === === === === 
+
+
+	The following calculations have already been performed:
+
+		* Number of samples, :math:`n = 12`
+		* Average temperature = :math:`\bar{T} = 481` K
+		* Average melt index, :math:`\bar{m} = 4.925` g per 10 minutes.
+		* The summed product, :math:`\sum_i{\left(T_i-\bar{T}\right)\left(m_i - \bar{m}\right)} = -422.1`
+		* The sum of squares, :math:`\sum_i{\left(T_i-\bar{T}\right)^2} = 5469.0`
+
+	#.	Use this information to build a predictive linear model for melt index from the reactor temperature.
+	#.	What is the model's standard error and how do you interpret it in the context of this model?  You might find the following software software output helpful, but it is not required to answer the question.
+
+		.. code-block:: text
+
+			Call:
+			lm(formula = Melt.Index ~ Temperature)
+
+			Residuals:
+			    Min      1Q  Median      3Q     Max 
+			-2.5771 -0.7372  0.1300  1.2035  1.2811 
+
+			Coefficients:
+			            Estimate Std. Error t value Pr(>|t|)    
+			(Intercept) --------    8.60936   4.885 0.000637
+			Temperature --------    0.01788  -4.317 0.001519
+
+			Residual standard error: 1.322 on 10 degrees of freedom
+			Multiple R-squared: 0.6508,	Adjusted R-squared: 0.6159 
+			F-statistic: 18.64 on 1 and 10 DF,  p-value: 0.001519
+
+	#.	Quote a confidence interval for the slope coefficient in the model and describe what it means.  Again, you may use the above software output to help answer your question.
+	
+.. answer::
+
+	#.	The simplest linear predictive model possible is :math:`m = \beta_0 + \beta_1 T + \varepsilon`, predicting the melt index from temperature.  Once we find estimates for these coefficients we write: :math:`m = b_0 + b_1 T + e`.  And one way to calculate these coefficients is by least squares.  In the class notes we showed that for a variable :math:`x` used to predict a variable :math:`y` that:
+
+	.. math::
+
+		b_0 &= \bar{\mathrm{y}} - b_1\bar{\mathrm{x}} \\
+		b_1 &= \dfrac{ \sum_i{\left(x_i - \bar{\mathrm{x}}\right)\left(y_i - \bar{\mathrm{y}}\right) } }{ \sum_i{\left( x_i - \bar{\mathrm{x}}\right)^2} }
+
+	Using the pre-calculated values, and that in our case :math:`T = x`, and that :math:`m = y`
+
+	.. math::
+
+		b_1 &= \dfrac{ -422.1 }{ 5469.0 } = - 0.0772 \frac{\text{g per 10 minutes}}{K}\\ 
+		b_0 &= 4.925 + 0.0772 \times 481 = 42.0 \text{g per 10 minutes}
+
+	A predictive model of melt flow is: :math:`\hat{m} = 42.0 - 0.0772 \times T`
+
+	#.	The standard error, :math:`S_E` can be read directly from the software output as 1.322 g per 10 minutes.  If you like, you could also have calculated it by hand, using the above predictive model, calculating residuals (:math:`e_i = m_i - \hat{m}_i`), from which the standard error is :math:`\sqrt{\dfrac{\sum_i^n{e_i^2}}{n-k}}`, where :math:`n=12` and :math:`k=2` (there are 2 parameters in the model).  However I recommend you always use the software output and avoid these tedious hand calculations.
+
+	The interpretation of the standard error for this model is that the approximate prediction error of melt index has a standard deviation of 1.322 grams per 10 minutes (if the residuals are normally distributed).
+
+	#.	The slope coefficient estimate, :math:`b_1` has standard error of 0.01788 (from the software output), or it could be calculated as :math:`S_E^2(b_1) = \dfrac{S_E^2}{\sum_j{\left( T_j - \bar{T} \right)^2}} = \dfrac{1.322^2}{5469.0} = 0.01788^2 = 3.19 \times 10^{-4}`.
+
+	From this we can construct the confidence interval for the actual slope coefficient, :math:`\beta_1`.  I have used the 95% confidence level, but you could use any level you prefer.  The degrees of freedom to use for the :math:`t`-distribution are :math:`n-k = 12 -2 = 10`.
+
+	.. math::
+
+		\begin{array}{rcccl} 
+			- c_t                			&\leq& \dfrac{b_1 - \beta_1}{S_E(b_1)} &\leq &  +c_t\\
+			b_1 - c_t S_E(b_1)   			&\leq& \beta_1                         &\leq&	b_1 + c_t S_E(b_1) \\
+			-0.0772 - 2.23 \times 0.01788	&\leq& \beta_1                         &\leq&	-0.0772 + 2.23 \times 0.01788 \\
+			-0.117							&\leq& \beta_1                         &\leq&	-0.037
+		\end{array}
+
+	You may also have chosen to answer at the 99% confidence level:
+
+	.. math::
+
+		\begin{array}{rcccl} 
+			b_1 - c_t S_E(b_1)   			&\leq& \beta_1                         &\leq&	b_1 + c_t S_E(b_1) \\
+			-0.0772 - 3.17 \times 0.01788	&\leq& \beta_1                         &\leq&	-0.0772 + 3.17 \times 0.01788 \\
+			-0.134							&\leq& \beta_1                         &\leq&	-0.0205
+		\end{array}
+
+	This shows, at which ever confidence level (95% or 99%), the range within which we can expect to find the true slope coefficient.  This slope represents the magnitude by which the melt index changes, on average, for a one degree change in temperature.  If we plan to manipulate the melt index using temperature, then this range will help us estimate an upper and lower bound for the effort required to adjust the melt index.

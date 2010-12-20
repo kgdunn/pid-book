@@ -1960,3 +1960,221 @@ Exercises
 	    :align: center
     
 	The above source code and figure output shows that the t-distribution starts being indistinguishable from the normal distribution after about 35 to 40 degrees of freedom.  This means that when we deal with large sample sizes (over 40 or 50 samples), then we can use critical values from the normal distribution rather than the t-distribution.  Furthermore, it indicates that our estimate of the variance is a pretty good estimate of the population variance for largish sample sizes.
+
+.. question::
+
+	A food production facility fills bags with potato chips.  The advertised bag weight is 35.0 grams.   But, the current bagging system is set to fill bags with a mean weight of 37.4 grams, and this done so that only 1% of bags have a weight of 35.0 grams or less.  
+
+		-	Back-calculate the standard deviation of the bag weights, assuming a normal distribution.
+		-	Out of 1000 customers, how many are lucky enough to get 40.0 grams or more of potato chips in their bags?
+
+.. answer::
+
+	-	Calculate the z-value and find which fraction of :math:`z` falls at or below 1% of the probability area.  From the tables this is -2.326.
+
+		Then solve for :math:`\sigma`:
+
+		.. math::
+			z &= \dfrac{35 - 37.4}{\sigma} = -2.326 \\
+			\sigma &= \dfrac{35-37.4}{-2.326} = \mathrm{1.03} \text{~grams }
+
+	-	Probability of 40.0 grams of more is the area above the corresponding :math:`z`-value:
+
+		.. math::
+			z &>	\dfrac{40- 37.4}{1.03} \\
+			z &> 2.52
+
+		The exact answer is ``(1 - pnorm(2.52))*1000 = 5.86``, though using tables you could use the value corresponding to :math:`z=2.5`, which is 99.38%, which is the area below that z-value.  The area above it is 0.62%, corresponding to 6.2 people. Either 5, 6 or 7 people is an acceptable answer, depending on your rounding error.
+	
+.. question::
+
+You are a new engineer at a pharmaceutical company. One of the steps in the flowsheet is to blend three powders for a tablet: the excipient (an inactive magnesium stearate base), a binder, and the active ingredient.  The mixing process is tracked using a wireless near infrared (NIR) probe embedded in a V-blender.  The mixer is stopped when the NIR spectra become stable.  A new supplier of magnesium stearate is being considered that will save $ 294,000 per year.
+
+..	figure:: images/V-Blender.png
+	:width: 500px
+	:align: center
+	:scale: 40%
+	
+	Figure from Wikipedia (http://en.wikipedia.org/wiki/Industrial_mixer)
+
+The 15 most recent runs with the current magnesium stearate supplier had an average mixing time of 2715 seconds, and a standard deviation of 390 seconds.  So far you have run 6 batches from the new supplier, and the average mixing time of these runs is 3115 seconds with a standard deviation of 452 seconds.  Your manager is not happy with these results so far - this extra mixing time will actually cost you more money via lost production.  
+
+The manager wants to revert back to the original supplier, but is leaving the decision up to you; what would be your advice?  Show all calculations and describe any additional assumptions, if required.
+
+.. answer::
+
+	This question, similar to most real statistical problems, is open-ended.  This problem considers whether a significant difference has occurred.  And in many cases, even though there is significant difference, it has to be weighed up whether there is a *practical* difference as well, together with the potential of saving money (increased profit).
+
+	You should always state any assumptions you make, compute a confidence interval for the difference and interpret it.  
+
+	The decision is one of whether the new material leads to a significant difference in the mixing time.  It is desirable, from a production point of view, that the new mixing time is shorter, or at least the same.  Some notation:
+
+	.. math::
+		\begin{array}{rclrcl}
+			\hat{\mu}_\text{Before} 	= \bar{x}_B &=& 2715 	&\qquad\qquad \hat{\mu}_\text{After} 	= \bar{x}_A &=& 3115\\
+			\hat{\sigma}_\text{Before} 	= s_B &=& 390			&\qquad\qquad \hat{\sigma}_\text{After} = s_A &=& 452\\
+			n_B 						&=& 15 					&\qquad\qquad n_A 						&=& 6
+		\end{array}
+	
+	Assumptions required to compare the two groups:
+
+		*	The individual samples within each group were taken independently, so that we can invoke the central limit theorem and assume these means and standard deviation are normal distributed.
+		*	Assume the individual samples within each group are from a normal distribution as well.
+		*	Assume that we can pool the variances, i.e. :math:`\sigma_\text{Before}` and :math:`\sigma_\text{After}` are from comparable distributions.
+		*	Using the pooled variance implies that the :math:`z`-value follows the :math:`t`-distribution.
+		*	The mean of each group (before and after) is independent of the other (very likely true).
+		*	No other factors were changed, other than the raw material (we can only hope, though in practice this is often not true, and a paired test would eliminate any differences like this).
+
+	Calculating the pooled variance:
+
+	.. math::
+		s_P^2 &= \dfrac{(n_A -1) s_A^2 + (n_B-1)s_B^2}{n_A - 1 + n_B - 1} \\
+		      & = \dfrac{(6-1) 452^2 + (15-1)390^2}{6 - 1 + 15 - 1} \\
+		      & = 165837
+	
+	Computing the z-value for this difference:
+
+	.. math::	
+		z &= \dfrac{(\bar{x}_B - \bar{x}_A) - (\mu_B - \mu_A)}{\sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}}\\
+		z &= \dfrac{(2715 - 3115) - (\mu_B - \mu_A)}{\sqrt{165837 \left(\frac{1}{6} + \frac{1}{15}\right)}} \\
+		z &= \dfrac{-400 - (\mu_B - \mu_A)}{196.7} = -2.03 \qquad \text{on the hypothesis that}\qquad \mu_B = \mu_A
+
+
+	The probability of obtaining this value of :math:`z` can be found using the :math:`t`-distribution at 6 + 15 - 2 = 19 degrees of freedom (because the standard deviation is an estimate, not a population value).  Using tables, a value of 0.025, or 2.5% is found (in R, it would be ``pt(-2.03, df=19) = 0.0283``, or 2.83%).  At this point one can argue either way that the new excipient leads to longer times, though I would be inclined to say that this probability is too small to be due to chance alone.  Therefore there is a significant difference, and we should revert back to the previous excipient.  Factors such as operators, and other process conditions could have affected the 6 new runs.
+
+	Alternatively, and this is the way I prefer to look at these sort of questions, is to create a confidence interval.  At the 95% level, the value of :math:`c_t` in the equation below, using 19 degrees of freedom is ``qt(0.975, df=19) = 2.09`` (any value close to this from the tables is acceptable):
+
+		.. math::
+			\begin{array}{rcccl} 
+				-c_t &\leq& z	&\leq & +c_t \\
+				(\bar{x}_B - \bar{x}_A) - c_t \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}	&\leq& \mu_B - \mu_A	&\leq &  (\bar{x}_B - \bar{x}_A) + c_t \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}\\
+				-400 - 2.09 \sqrt{165837 \left(\frac{1}{6} + \frac{1}{15}\right)} 	&\leq& \mu_B - \mu_A	&\leq& -400 + 2.09 \sqrt{165837 \left(\frac{1}{6} + \frac{1}{15}\right)} \\
+				-400 - 412	&\leq& \mu_B - \mu_A	&\leq&   -400 + 412 \\
+				-812		&\leq& \mu_B - \mu_A	&\leq&   12 
+			\end{array}
+
+	The interpretation of this confidence interval is that there is no difference between the current and new magnesium stearate excipient.  The immediate response to your manager could be "*keep using the new excipient*". 
+
+	However, the confidence interval's asymmetry should give you pause, certainly from a practical point of view (this is why I prefer the confidence interval - you get a better interpretation of the result). The 12 seconds by which it overlaps zero is so short when compared to average mixing times of around 3000 seconds, with standard deviations of 400 seconds.  The practical recommendation is that the new excipient has longer mixing times, so "*revert to using the previous excipient*".
+
+	One other aspect of this problem that might bother you is the low number of runs (batches) used.  Let's take a look at how sensitive the confidence interval is to that.  Assume that we perform one extra run with the new excipient (:math:`n_A = 7` now), and assume the pooled variance, :math:`s_p^2 = 165837` remains the same with this new run.  The new confidence interval is:
+
+	.. math::
+		\begin{array}{rcccl} 
+			(\bar{x}_B - \bar{x}_A) - c_t \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}	&\leq& \mu_B - \mu_A	&\leq &  (\bar{x}_B - \bar{x}_A) + c_t \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}\\
+			(\bar{x}_B - \bar{x}_A)- 2.09 \sqrt{165837 \left(\frac{1}{7} + \frac{1}{15}\right)} 	&\leq& \mu_B - \mu_A	&\leq& (\bar{x}_B - \bar{x}_A)  + 2.09 \sqrt{165837 \left(\frac{1}{7} + \frac{1}{15}\right)} \\
+			(\bar{x}_B - \bar{x}_A)  - 390	&\leq& \mu_B - \mu_A	&\leq&   (\bar{x}_B - \bar{x}_A) + 390 
+		\end{array}
+
+	So comparing this :math:`\pm 390` with 7 runs, to the :math:`\pm 412` with 6 runs, shows that the confidence interval shrinks in quite a bit, much more than the 12 second overlap of zero.  Of course we don't know what the new :math:`\bar{x}_B - \bar{x}_A` will be with 7 runs, so my recommendation would be to perform at least one more run with the new excipient, but I suspect that the new run would show there to be a significant difference, and statistically confirm that we should "*revert to using the previous excipient*".
+	
+.. question::
+
+	List an advantage of using a paired test over an unpaired test.  Give an example, not from the notes, that illustrates your answer.
+
+.. answer::
+
+	One primary advantage of pairing is that any systematic difference between the two groups (A and B) is eliminated.  For example, a bias in the measurement will cancel out when calculating the pairs of differences.  Any example is suitable as an answer: e.g. laboratory miscalibration; an offset in an on-line sensor, *etc*.
+
+	Other advantages are that the raw data do not need to be normally distributed, only the paired differences.  
+
+	Another advantage is that randomization of the trials is required in the unpaired case (often a costly extra expense), whereas in the paired case, we only need to be sure the pairs are independent of each other (that's much easier to assume, and often true).  For example testing drug A and B on a person, some time apart.  The pairs are run on the same person, but each person in the drug trial is independent of the other.
+
+.. question::
+
+	An *unpaired* test to distinguish between group A and group B was performed with 18 runs: 9 samples for group A and 9 samples for group B.  The pooled variance was 86 units. 
+
+	Also, a *paired* test on group A and group B was performed with 9 runs. After calculating the paired differences, the variance of these differences was found to be 79 units.  
+
+	Discuss, in the context of this example, an advantage of paired tests over unpaired tests.  Assume 95% confidence intervals, and that the true result was one of "no significant difference between method A and method B".  Give numeric values from this example to substantiate your answer.
+
+.. answer::
+
+	One advantage of the paired test is that often a fewer number of samples are required to obtain a more sensitive result than when analyzing the data as from two distinct, unpaired groups.
+
+	Construct the confidence interval for both cases, substitute in these values and then compare the confidence intervals.  The equations for both confidence intervals are derived directly from the :math:`z`-value appearing in the class notes.
+
+	**Unpaired case**:
+
+	.. math::
+
+		\begin{array}{rcccl} 
+			  - c_t                                              &\leq& \dfrac{(\bar{x}_B - \bar{x}_A) - (\mu_B - \mu_A)}{\sqrt{s_P^2 \left(\dfrac{1}{n_A} + \dfrac{1}{n_B}\right)}} &\leq &  +c_t\\
+			(\bar{x}_B - \bar{x}_A)  - c_t \sqrt{s_P^2 \left(\dfrac{1}{n_A} + \dfrac{1}{n_B}\right)}  &\leq&  \mu_B - \mu_A &\leq& (\bar{x}_B - \bar{x}_A) + c_t \sqrt{s_P^2 \left(\dfrac{1}{n_A} + \dfrac{1}{n_B}\right)} \\
+		   	(\bar{x}_B - \bar{x}_A)  - 2.12 \times \sqrt{86 \left(\dfrac{1}{9} + \dfrac{1}{9}\right)}  &\leq&  \mu_B - \mu_A &\leq& (\bar{x}_B - \bar{x}_A) + 2.12 \times \sqrt{86 \left(\dfrac{1}{9} + \dfrac{1}{9}\right)} \\
+			(\bar{x}_B - \bar{x}_A)  - 9.27  &\leq&  \mu_B - \mu_A &\leq& (\bar{x}_B - \bar{x}_A) + 9.27 \\
+		\end{array}
+
+	The :math:`c_t` value for the unpaired case is from the t-distribution with 16 degrees of freedom, a value of around 2.12.
+
+	**Paired case**:
+
+	In this case the vector of differences is :math:`w`, and by the central limit theorem it is distributed as :math:`w \sim \mathcal{N}\left( \mu_{B-A} , \sigma_w^2/n \right)`, but we use the estimated variance, :math:`s_w^2` instead.
+
+		.. math::
+
+			\begin{array}{rcccl} 
+				  - c_t               						&\leq& \dfrac{\bar{w} - \mu_{B-A}}{s_w / \sqrt{n}} 	&\leq &  +c_t\\
+				\\
+				\bar{w} - c_t \dfrac{s_w}{\sqrt{n}}			&\leq& \mu_w 									&\leq &  \bar{w} + c_t \dfrac{s_w}{\sqrt{n}} \\
+				\bar{w} - 2.3 \dfrac{\sqrt{79}}{\sqrt{9}}	&\leq& \mu_w 									&\leq &  \bar{w} + 2.3 \dfrac{\sqrt{79}}{\sqrt{9}} \\
+				\bar{w} - 6.81								&\leq& \mu_w 				&\leq&  \bar{w} + 6.81
+			\end{array}
+
+	The :math:`c_t` value for the paired case is from the t-distribution with 8 degrees of freedom, a value of around 2.3.
+
+	The key result of this question is that the confidence interval for the paired case is tighter (narrower) than the confidence interval from the unpaired case.  Given that the true result was one of no significant difference, it implies that :math:`\mu_A = \mu_B` and that :math:`\mu_w = 0`.  The tighter confidence interval comes purely from the fact that the standard deviation used for the paired case is smaller, :math:`\sqrt{\dfrac{79}{9}}` *vs* the :math:`\sqrt{86 \left(\dfrac{1}{9} + \dfrac{1}{9}\right)}` from the unpaired case.  This is not due to the variances, since :math:`\sqrt{86} \approx \sqrt{79}`, i.e. (9.27 vs 8.88), but rather due to the fact that that unpaired standard deviation is multiplied by :math:`\sqrt{2/9}`, while the paired standard deviation is multiplied by :math:`\sqrt{1/9}`.
+
+	So while the :math:`c_t` value for the paired case is actually larger (widening the confidence interval due to the fewer degrees of freedom), the overall effect is  that the paired confidence interval is narrower than the unpaired confidence interval. This result holds for most cases of paired and unpaired studies, though not always.
+	
+.. question::
+
+	You are convinced that a different impeller (mixing blade) shape for your tank will lead to faster, i.e. shorter, mixing times.  The choices are either an axial blade or a radial blade. 
+
+	..	figure:: images/Mixing_-_flusso_assiale_e_radiale.jpg
+		:width: 500px
+		:align: center
+		:scale: 40%
+
+		Axial and radial blades; figure from Wikipedia (http://en.wikipedia.org/wiki/Impeller)
+
+	Before obtaining approval to run some experiments, your team wants you to explain how you will interpret the experimental data. Your reply is that you will calculate the average mixing time from each blade type and then calculate a confidence interval for the difference.  A team member asks you what the following 95% confidence intervals would mean:
+
+		#.	:math:`-453 \text{~seconds} \leq \mu_{\text{Axial}} - \mu_{\text{Radial}} \leq 390 \text{~seconds}`
+		#.	:math:`-21 \text{~seconds} \leq \mu_{\text{Axial}} - \mu_{\text{Radial}} \leq 187 \text{~seconds}`
+
+	For both cases (a) explain what the confidence interval means in the context of this experiment, and (b) whether the recommendation would be to use radial or axial impellers to get the shortest mixing time.
+
+	\3. Now assume the result from your experimental test was :math:`-21 \text{~seconds} \leq \mu_{\text{Axial}} - \mu_{\text{Radial}} \leq 187 \text{~seconds}`; how can you make the confidence interval narrower?
+
+.. answer::
+
+	#.	This confidence interval spans zero, and nearly symmetrically.  This implies the population difference is likely zero, while the symmetry implies their is no preference either way: the difference in mixing times is as low as -453 seconds or as high as 390 seconds. The recommendation is that either the axial or radial impeller could be used, with no expected long-term difference.  Use the cheaper impeller; or use the axial impeller if the costs are the same (only because of the very slight imbalance in the CI).  Note that there is a 5% chance that the confidence interval does not contain the true difference.
+
+	#.	This confidence interval also spans zero, so there is **no statistical difference** between the two impellers.  However the CI does not span zero symmetrically.  The asymmetry of the interval makes me much less comfortable recommending that there is no **practical difference** between the impellers.  It often happens in these cases that by removing a single data point that the confidence interval does not span zero anymore. In this case I would recommend either impeller, but if there is no cost difference, I would prefer the radial impeller, as it might have shorter mixing times, especially if the confidence interval quoted here is only due to one observation.  A careful review of the raw data would be useful in this case.
+
+	#.	The confidence interval can be made narrower in 2 ways (as long as the sample mean and sample standard deviation remain stable):
+
+		-	Use more data points, :math:`n` in both groups.
+		-	Choose a lower degree of confidence, e.g. 90%  instead of 95%, which is really just an artificial reduction of the interval.
+
+		One can also reduce the interval by shrinking the standard deviation, but that's usually not a practical possibility.  You cannot perform a paired test, as you only have one mixing tank.
+
+	.. sidebar:: Interpreting confidence intervals
+
+		Recall the definition of the confidence interval is subtle: it says 95% of the time, the upper and lower bounds of the confidence interval contain the true value of the parameter; it does *not* say there is a 95% probability the true value of the parameter lies inside the bounds.  That last part is incorrect because it implies the true value of the parameter can vary, which it can't: the true parameter value is fixed, only the bounds change.  
+		
+.. question::
+
+	The enrichment paper by PJ Rousseeuw, "`Tutorial to Robust Statistics <http://dx.doi.org/10.1002/cem.1180050103>`_`", *Journal of Chemometrics*, **5**, 1-20, 1991 discusses the breakdown point of a statistic.  Describe what the breakdown point is, and give two examples: one with a low breakdown point, and one with a high breakdown point.  Use a vector of numbers to help illustrate your answer.
+
+
+	*Solution*
+
+	PJ Rousseeuw defines the breakdown point on page 3 of his paper as "... the smallest fraction of the observations that have to be replaced to make the estimator unbounded. In this definition one can choose which observations are replaced, as well as the magnitude of the outliers, in the least favourable way".
+
+	A statistic with a low breakdown point is the mean, of the :math:`n` values used to calculate the mean, only 1 needs to be replaced to make the estimator unbounded; i.e. its breakdown point is :math:`1/n`.  The median though has a breakdown point of 50%, as one would have to replace 50% of the :math:`n` data points in the vector before the estimator becomes unbounded.
+
+	Use this vector of data as an example: :math:`[2, 6, 1, 9151616, -4, 2]`.  The mean is 1525270, while the median is 2.
+
+	

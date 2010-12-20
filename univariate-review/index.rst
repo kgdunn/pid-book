@@ -1,7 +1,7 @@
 .. _SECTION-univariate-review:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Review of Univariate Statistics
+Univariate Data Analysis
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 .. toctree::
