@@ -43,10 +43,8 @@ class Question_Answer(Directive):
             out.append(self.add_content())
 
         elif self.name == 'answer':
-            if 'q_and_a_override' in self.state.document.settings.env.config:
-                override = self.state.document.settings.env.config.q_and_a_override
-            else:
-                override = False
+            # Default value is False (i.e. we obey the 'fullinclude' option)
+            override = self.state.document.settings.env.config.q_and_a_override
             if not self.options.has_key('fullinclude') or override:
                 # If the option wasn't given, or if the 'instructor_override'
                 # flag is True

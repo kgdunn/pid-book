@@ -435,7 +435,7 @@ Exercises
 	#.	List any 2 interesting features in these data.
 
 .. answer::
-	:fullinclude: no
+	:fullinclude: no 
 	:short: Time-series and sparkline
 
 	#.	The plots are a time-series plot and a sparkline.  The sparkline shows exactly the same data, just a more compact form (without the labelling on the axes).
@@ -497,6 +497,7 @@ Exercises
 	#.	Use the same data set to describe any time-based trends that are apparent.
 
 .. answer::
+	:fullinclude: no 
 
 	#.	A boxplot is an effective way to summarize and compare the data for each day of the week. 
 
@@ -538,9 +539,22 @@ Exercises
 		plot(web.visits, major.format="%b")
 
 
-.. todo:: scatter plot example
+.. todo:: another scatter plot example
 .. todo:: spectral data example
 .. todo:: batch data example
+
+.. question::
+
+	.. figure:: images/kidnappings-question.png
+		:scale: 30
+		:align: center
+
+	#.	What type of plot is shown here?
+	#.	Describe the phenomenon displayed.
+	#.	Which plot type asks you to draw a cause and effect relationship?
+	#.	Use rough values from the given plot to construct an approximate example of the plot you proposed in part 3.
+	#.	What advantage is there to the plot given here, over the type in your answer to part 3.
+	
 
 ..	question:: 
 
