@@ -217,7 +217,7 @@ The 25th percentile is the value below which 25 percent of the observations in t
 
 The following data are thickness measurements of 2-by-6 boards, taken at 6 locations around the edge.  Here is a sample of the measurements, and a summary of the first hundred boards (created in ``R``):
 
-.. code-block:: S
+.. code-block:: text
 
 	    Pos1 Pos2 Pos3 Pos4 Pos5 Pos6
 	1   1761 1739 1758 1677 1684 1692
@@ -502,7 +502,7 @@ Exercises
 	A simple annotated table will show the data well enough.  A bar chart, horizontally or vertically aligned is not suitable.
 
 	.. figure:: images/mortgage-repayment-table.png
-	    :align: center
+		:align: center
 		:scale: 60
 
 	Some people have suggested using a scatter plot - I never thought of that, but it works.  It shows a straight line relationship between interest rate and the monthly payment.  I suppose the advantage of that plot is that you can see (a) the relationship is linear, which is should be, and (b) you can visually *interpolate* the monthly payment given any interest rate between 2 and 5%.
