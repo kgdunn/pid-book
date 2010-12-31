@@ -682,7 +682,7 @@ Exercises
 
 .. question::
 
-    Use the `batch yields data <http://datasets.connectmv.com/info/batch-yields>`_ and construct a control chart using the 300 yield values.  Use a subgroup of size 5.  Report your target value, lower control limit and upper control limit, showing the calculations you made.  I recommend that you write your code so that you can reuse it for the next question and for the mid-term take-home exam.
+    Use the `batch yields data <http://datasets.connectmv.com/info/batch-yields>`_ and construct a control chart using the 300 yield values.  Use a subgroup of size 5.  Report your target value, lower control limit and upper control limit, showing the calculations you made.  I recommend that you write your code so that you can reuse it for other questions.
 
 .. answer::
 

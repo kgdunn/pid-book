@@ -2336,7 +2336,7 @@ For a distillation column, it is well known that the column temperature directly
 
 	For this question I recommended that you should be able to reproduce R's output yourself.  The code below calculates these same values. 
 
-	.. literalinclude:: code/Take-home-midterm/distillation-least-squares.R
+	.. literalinclude:: code/distillation-least-squares.R
 	       :language: s
 	       :lines: 1-67,70-82
 

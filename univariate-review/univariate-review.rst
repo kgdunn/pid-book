@@ -391,7 +391,7 @@ We review here a couple of concepts that you should have seen in prior statistic
 
 		mad(x)
 
-	Enrichment reading (mandatory for 600-level students): read pages *1 to 8* of "Tutorial to Robust Statistics", Rousseeuw, PJ, *Journal of Chemometrics*, **5**, 1-20, 1991. `Link to the paper <http://dx.doi.org/10.1002/cem.1180050103>`_.
+	Enrichment reading: read pages *1 to 8* of "Tutorial to Robust Statistics", Rousseeuw, PJ, *Journal of Chemometrics*, **5**, 1-20, 1991. `Link to the paper <http://dx.doi.org/10.1002/cem.1180050103>`_.
 
 
 Distributions
@@ -515,7 +515,7 @@ The assumption of independence is widely used in statistical work and is a condi
 
 .. note:: The assumption of independence means the the samples we have in front of us are *randomly* taken from a population.  If two samples are independent, there is no possible relationship between them.
 
-We frequently violate this assumption of independence in both engineering work and other data samples.  Discuss these examples with your classmates:
+We frequently violate this assumption of independence in both engineering work and other data samples.  Discuss these examples with a colleague:
 
 - A questionnaire is given to students. What happens if students discuss the questionnaire prior to handing it in?
 
@@ -848,10 +848,6 @@ Here are 9 sampled values:  ``23, 19, 17, 18, 24, 26, 21, 14, 18``. The sample a
 	
 Poisson distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. note::
-
-	This section is for enrichment for 400-level, but mandatory for 600-level students (self-study).
 
 The Poisson distribution is useful to characterize rare events (number of cell divisions in a small time unit), system failures and breakdowns, or number of flaws on a product (contaminations per cubic millimetre).  These are events that have a very small probability of occurring within a given time interval or unit area (e.g. pump failure probability per minute = 0.000002), but there are many opportunities for the event to possibly occur (e.g. the pump runs continuously, but there are many minutes in the day).  A key assumption is that the events must be independent.  If one pump breaks down, then the other pumps must not be affected; if one flaw is produced per unit area of the product, then other flaws that appear on the product must be independent of the first flaw.
 
@@ -1372,10 +1368,11 @@ This confidence interval finds a region in which the normal distribution's varia
 
 	.. todo:: give some R code still
 	
-.. _univariate-pooled-variance:
 
 .. index::
 	single: pool variances
+	
+.. _univariate-pooled-variance:
 
 Confidence interval for the ratio of two variances
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1425,15 +1422,17 @@ Incidentally, it is this confidence interval that is used in polls to judge the 
 	
 		.. todo:: how does this level change our answer as it varies?
 
-.. _univariate-paired-tests:
+
 
 .. index::
 	pair: paired tests; Univariate data
+	
+.. _univariate-paired-tests:
 
 Paired tests
 ============
 
-.. todo:: verify this section against other notes.
+.. Verify this section against other notes.
 
 A paired test is a test that is run twice on the same object or batch of materials.  You might see the nomenclature of "two treatments" being used in the literature.  For example: 
 
@@ -1466,7 +1465,7 @@ The advantage of the paired test is that any systematic error in our measurement
 			
 		The value of :math:`c_t` is taken from the :math:`t`-distribution with :math:`n-1` degrees of freedom at the level of confidence required (use the ``qt(...)`` function in R to obtain the values of :math:`c_t`).
 
-	#.	The loss in degrees of freedom can be seen when we use exactly the same data and treat the problem as one where we have :math:`n_A` and :math:`n_B` samples in groups A and B and want to test for a difference between :math:`\mu_A` and :math:`\mu_B`.  600-level students are encouraged to try this out.  There are more degrees of freedom, :math:`n_A + n_B - 2` in fact when we use the :math:`t`-distribution with the pooled variance from equation :eq:`pooled-variance`.  Compare this to the case just described above where there are :math:`n` degrees of freedom.
+	#.	The loss in degrees of freedom can be seen when we use exactly the same data and treat the problem as one where we have :math:`n_A` and :math:`n_B` samples in groups A and B and want to test for a difference between :math:`\mu_A` and :math:`\mu_B`.  You are encouraged to try this out.  There are more degrees of freedom, :math:`n_A + n_B - 2` in fact when we use the :math:`t`-distribution with the pooled variance from equation :eq:`pooled-variance`.  Compare this to the case just described above where there are :math:`n` degrees of freedom.
 	
 .. This example illustrates:
 .. todo:: example showing loss of DOF (boys shoes example in BHH2). particularly, show the plots (p98 on BHH2- edition 1)
@@ -1528,7 +1527,7 @@ Exercises
 
 .. answer::
 
-	In the example on salt content we saw how easily the mean is influenced by unusual data points.  Take any group of people anywhere in the world, and there will always be a few who earn lots of money (not everyone can be the CEO, especially of a bank!).  Also, since no one earns negative income, the distribution piles up at the left, with fewer people on the right. This implies that the mean will lie above the median, since 50% of the histogram area must lie below the median, by definition. One student pointed out that low income earners are less likely to file tax returns, so they are underrepresented in the data.
+	In the example on salt content we saw how easily the mean is influenced by unusual data points.  Take any group of people anywhere in the world, and there will always be a few who earn lots of money (not everyone can be the CEO, especially of a bank!).  Also, since no one earns negative income, the distribution piles up at the left, with fewer people on the right. This implies that the mean will lie above the median, since 50% of the histogram area must lie below the median, by definition. A previous student pointed out that low income earners are less likely to file tax returns, so they are underrepresented in the data.
 
 	Even though the median is a more fair way of reporting income, and robust to unusual earners (many low, very few super-rich), I would prefer if Statistics Canada released a histogram - that would tell a lot more - even just the the MAD, or IQR would be informative.  It was surprising that Hamilton showed higher median earnings per family than Toronto. I infer from this that there are more low income earners in Toronto and Canada than in Hamilton, but without the histograms it is hard to be sure.  Also, I wasn't able to find exactly what StatsCan means by a family - did they include single people as a "family"?  Maybe there are more, wealthy singles in Toronto, but they are aren't included in the numbers.  The median income per person would be a useful statistic to help judge that.
 
@@ -1539,7 +1538,7 @@ Exercises
 
 		- How many variables in the data set?
 		- How many observations?
-		- The data are properties of a powder.  Plot each variable, one at a time, and locate any outliers.  Students using R will benefit from `the R tutorial <http://connectmv.com/tutorials/r-tutorial>`_ (see the use of the ``identify`` function).
+		- The data are properties of a powder.  Plot each variable, one at a time, and locate any outliers.  R-users will benefit from `the R tutorial <http://connectmv.com/tutorials/r-tutorial>`_ (see the use of the ``identify`` function).
 		
 .. answer::
 
@@ -1851,7 +1850,7 @@ Exercises
 	
 	**Using pairing**
 	
-	Pairing assumes that each reactor was run with the same material, except that the material was split into thirds: one third for each reactor.  As described in the `section on paired tests <univariate-paired-tests>`_, we rely on calculating the difference in brittleness, then calculating the z-value of the average difference.  Contrast this to the unpaired tests, where we calculated the difference of the averages.
+	Pairing assumes that each reactor was run with the same material, except that the material was split into thirds: one third for each reactor.  As described in the :ref:`section on paired tests <univariate-paired-tests>` we rely on calculating the difference in brittleness, then calculating the z-value of the average difference.  Contrast this to the unpaired tests, where we calculated the difference of the averages.
 
 	The code below shows how the paired differences are evaluated for each of the 3 combinations.  The paired test highlights the similarity between TK105 and TK107, the same as the unpaired test.  However the paired test shows much more clearly how different tanks TK104 and TK105 are, and especially TK104 and TK107.  
 

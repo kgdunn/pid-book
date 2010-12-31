@@ -6,6 +6,7 @@ Process Improvement using Data
 
 	data-visualization/index
 	univariate-review/index
+	process-monitoring/index
    
 
 .. PLS section also include PCR
