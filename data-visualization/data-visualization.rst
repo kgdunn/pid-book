@@ -435,6 +435,8 @@ Exercises
 	#.	List any 2 interesting features in these data.
 
 .. answer::
+	:fullinclude: no
+	:short: Time-series and sparkline
 
 	#.	The plots are a time-series plot and a sparkline.  The sparkline shows exactly the same data, just a more compact form (without the labelling on the axes).
 	
@@ -540,7 +542,7 @@ Exercises
 .. todo:: spectral data example
 .. todo:: batch data example
 
-..	question::
+..	question:: 
 
 	*Enrichment*: 
 	

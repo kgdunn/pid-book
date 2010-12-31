@@ -2269,7 +2269,7 @@ Exercises
 
 .. question::
 
-For a distillation column, it is well known that the column temperature directly influences the purity of the product, and this is used in fact for feedback control, to achieve the desired product purity.  Use the `distillation data set <http://datasets.connectmv.com/info/distillation-tower>`_ , and build a least squares model that predicts ``VapourPressure`` from the temperature measurement, ``TempC2``.  Report the following values:
+	For a distillation column, it is well known that the column temperature directly influences the purity of the product, and this is used in fact for feedback control, to achieve the desired product purity.  Use the `distillation data set <http://datasets.connectmv.com/info/distillation-tower>`_ , and build a least squares model that predicts ``VapourPressure`` from the temperature measurement, ``TempC2``.  Report the following values:
 
 	#.	the slope coefficient, and describe what it means in terms of your objective to control the process with a feedback loop
 	#.	the interquartile range and median of the model's residuals

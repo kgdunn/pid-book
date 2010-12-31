@@ -36,6 +36,8 @@ extensions = ['sphinx.ext.todo', 'sphinx.ext.pngmath', 'sphinx.ext.ifconfig']
 # Custom extensions
 
 extensions.append('q-and-a')
+q_and_a_override = False     # False for the student and website version, and True for the instructor version
+
 if os.path.exists('ucomment-extension'):
     extensions.append('ucomment-extension')
     html_translator_class = 'ucomment-extension.ucomment_html_translator'
