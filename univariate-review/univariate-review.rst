@@ -391,7 +391,7 @@ We review here a couple of concepts that you should have seen in prior statistic
 
 		mad(x)
 
-	Enrichment reading: read pages *1 to 8* of "Tutorial to Robust Statistics", Rousseeuw, PJ, *Journal of Chemometrics*, **5**, 1-20, 1991. `Link to the paper <http://dx.doi.org/10.1002/cem.1180050103>`_.
+	Enrichment reading: read pages *1 to 8* of "`Tutorial to Robust Statistics <http://dx.doi.org/10.1002/cem.1180050103>`_", Rousseeuw, PJ, *Journal of Chemometrics*, **5**, 1-20, 1991.
 
 
 Distributions
@@ -1159,7 +1159,7 @@ The usual approach for assessing if the difference between :math:`\bar{x}_B - \b
 					\mathcal{V}\left\{\bar{x}_A\right\} = \frac{\sigma^2_A}{n_A} &\qquad\qquad & \mathcal{V}\left\{\bar{x}_B\right\} = \frac{\sigma^2_B}{n_B}
 				\end{alignat*}
 	
-	#.  Assuming independence again, but this time between groups, the means of each sample group would be independent as well, i.e. :math:`\bar{x}_A` and :math:`\bar{x}_B` are independent.  This implies that (as you will prove to yourself in the assignment):
+	#.  Assuming independence again, but this time between groups, the means of each sample group would be independent as well, i.e. :math:`\bar{x}_A` and :math:`\bar{x}_B` are independent.  This implies that:
 	
 		.. math::
 		   :label: add-variance
@@ -1615,7 +1615,7 @@ Exercises
 		-	Standard deviation of the number of visits = 8.3 visits
 		-	Probability that there are between 10 and 30 visits to the site each day: 75.3%
 		
-	We should use the t-distribution to answer the last part, but at this stage we had not yet looked at the t-distribution.  However, the large number of observations (214) means the t-distribution is no different than the normal distribution (see Assignment 3).
+	We should use the t-distribution to answer the last part, but at this stage we had not yet looked at the t-distribution.  However, the large number of observations (214) means the t-distribution is no different than the normal distribution.
 
 .. question::
 
@@ -1737,7 +1737,7 @@ Exercises
 		- use 95% confidence intervals
 		- assume we know the population standard deviation, so we use the normal distribution to calculate :math:`c_n` as ``qnorm(1-0.05/2)`` in R.
 	
-	Solving for |n| at these values, similar to the approach in assignment 2, gives: :math:`n = \left(\dfrac{2(1.96)(\hat{\sigma}_{\text{BOD}})}{2}\right)^2 = (1.96 \times 4)^2 \sim 62`.  This large number of samples makes sense: compare the range (2 mg/L) to the standard deviation of 4 mg/L: you have to take a large number of samples to get your precision up when you have so much noise in your signal.
+	Solving for |n| at these values gives: :math:`n = \left(\dfrac{2(1.96)(\hat{\sigma}_{\text{BOD}})}{2}\right)^2 = (1.96 \times 4)^2 \sim 62`.  This large number of samples makes sense: compare the range (2 mg/L) to the standard deviation of 4 mg/L: you have to take a large number of samples to get your precision up when you have so much noise in your signal.
 
 
 .. question::
@@ -1754,13 +1754,14 @@ Exercises
 	.. figure:: images/bulb-energy-barplot.png
 		:width: 500px
 		:align: center
+		:scale: 50
 
 	- Calculate an estimate of the mean and standard deviation, even though you don't have the original data.
 	- What is a confidence interval for the mean at 95% probability, stating and testing any assumptions you need to make.
 
 .. answer::
 
-	-   The mean and standard deviation can be estimated as shown in the code below.  The estimates are: the mean energy usage is **4127 W.hours**, and the standard deviation is **79 W.hours**.  This corresponds very closely to the raw data I used to generate the assignment question (mean of actual data = 4125, sd of actual data = 77.2).
+	-   The mean and standard deviation can be estimated as shown in the code below.  The estimates are: the mean energy usage is **4127 W.hours**, and the standard deviation is **79 W.hours**.  This corresponds very closely to the raw data I used to generate this question (mean of actual data = 4125, sd of actual data = 77.2).
 
 	    .. literalinclude:: code/bulb-energy-assignment3-2010.R
 	       :language: s
@@ -1997,7 +1998,7 @@ You are a new engineer at a pharmaceutical company. One of the steps in the flow
 ..	figure:: images/V-Blender.png
 	:width: 500px
 	:align: center
-	:scale: 40%
+	:scale: 40
 	
 	Figure from Wikipedia (http://en.wikipedia.org/wiki/Industrial_mixer)
 
@@ -2138,7 +2139,7 @@ The manager wants to revert back to the original supplier, but is leaving the de
 	..	figure:: images/Mixing_-_flusso_assiale_e_radiale.jpg
 		:width: 500px
 		:align: center
-		:scale: 40%
+		:scale: 40
 
 		Axial and radial blades; figure from Wikipedia (http://en.wikipedia.org/wiki/Impeller)
 
@@ -2170,7 +2171,7 @@ The manager wants to revert back to the original supplier, but is leaving the de
 		
 .. question::
 
-	The enrichment paper by PJ Rousseeuw, "`Tutorial to Robust Statistics <http://dx.doi.org/10.1002/cem.1180050103>`_`", *Journal of Chemometrics*, **5**, 1-20, 1991 discusses the breakdown point of a statistic.  Describe what the breakdown point is, and give two examples: one with a low breakdown point, and one with a high breakdown point.  Use a vector of numbers to help illustrate your answer.
+	The enrichment paper by PJ Rousseeuw, "`Tutorial to Robust Statistics <http://dx.doi.org/10.1002/cem.1180050103>`_", *Journal of Chemometrics*, **5**, 1-20, 1991 discusses the breakdown point of a statistic.  Describe what the breakdown point is, and give two examples: one with a low breakdown point, and one with a high breakdown point.  Use a vector of numbers to help illustrate your answer.
 
 
 	*Solution*

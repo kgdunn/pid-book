@@ -62,7 +62,7 @@ Some references to refer to:
 #. **Recommended**: Montgomery and Runger, *Applied Statistics and Probability for Engineers*
 #. Hogg and Ledolter, *Engineering Statistics*
 #. Macgregor, John F. "`Using On-Line Process Data to Improve Quality: Challenges for Statisticians <http://dx.doi.org/10.1111/j.1751-5823.1997.tb00311.x>`_", *International Statistical Review*, **65**, p 309-323, 1997.
-#. Bisgaard, S., *`The Quality Detective: A Case Study <http://dx.doi.org/10.1098/rsta.1989.0006>`_*, Philosophical Transactions of the Royal Society-A, **327**, p 499-511, 1989.
+#. Bisgaard, S., "`The Quality Detective: A Case Study <http://dx.doi.org/10.1098/rsta.1989.0006>`_", Philosophical Transactions of the Royal Society-A, **327**, p 499-511, 1989.
 #. Rocke, D.M., `Robust Control Charts <http://www.jstor.org/pss/1268815>`_, *Technometrics*, **31** (2), p 173 - 184, 1989.
 
 .. Box, The R. A. Fisher Memorial Lecture, 1988- Quality Improvement- An Expanding Domain for the Application of Scientific Method, Phil. Trans. R. Soc. Lond. A February 24, 1989 327:617-630, [http://dx.doi.org/10.1098/rsta.1989.0017 DOI]
@@ -92,7 +92,7 @@ So what is process monitoring?
 
 Most industries have now realized that product quality is not an option.  There was historical thinking that quality is equivalent of "gold-plating" your product, but that has mostly fallen away.  Product quality is not a cost-benefit trade-off: it is always beneficial to you in the long-term to improve your product quality, and to your customers as well.
 
-As we spoke about in the `univariate review section <univariate-review-chapter>`, good quality products (low variability) actually boost your profits by lowering costs.  You have lower costs when you *do not* have to scrap off-specification product, or have to rework bad product.  You have increased long-term sales with more loyal customers and improved brand reputation.  
+As we spoke about in the :ref:`univariate review section <univariate-review-chapter>`, good quality products (low variability) actually boost your profits by lowering costs.  You have lower costs when you *do not* have to scrap off-specification product, or have to rework bad product.  You have increased long-term sales with more loyal customers and improved brand reputation.  
 
 An example that most people in North America can relate to is the rise in Asian car manufacturers' market share, at the expense American manufacturers' market share.  The market has the perception that Asian cars are more reliable than American cars and resale rates certainly reflect that. That is an illustration of how variability in your product can benefit you.
 
@@ -772,6 +772,7 @@ Exercises
 		.. figure:: images/boards-monitoring-subgroup-standard-deviation.png
 			:width: 750px
 			:align: center
+			:scale: 80
 		
 
 	.. literalinclude:: code/boards-monitoring-assignment4-2010.R
@@ -805,7 +806,7 @@ Exercises
 	A tank uses small air bubbles to keep solid particles in suspension.  If too much air is blown into the tank, then excessive foaming occurs; if too little air is blown into the tank the particles sink and drop out of suspension.  Which monitoring chart would you use to ensure the airflow is always near target?
 
 	.. figure:: images/tank-suspension.png
-		:scale: 70%
+		:scale: 70
 		:align: center
 		:width: 400px
 		
@@ -904,13 +905,13 @@ Exercises
 	#.	An illustration is shown here with the USL, LSL, LCL and UCL, and target values.  This question merely required you to show the LCL and UCL within the LSL and USL, on any normal distribution curve.  However, for illustration, I have added to the diagram the distribution for the Shewhart chart (thicker line) and distribution for the raw process data (thinner line).  
 
 	.. figure:: images/plastic-sheet-control-specification-limits.png
-		:scale: 80%
+		:scale: 80
 		:align: center
 		:width: 600px
 
 	The R code used to generate this figure:
 
-		literalinclude:: code/plastic-sheet-control-specification-limits.R
+	.. literalinclude:: code/plastic-sheet-control-specification-limits.R
 			:language: s
 			:lines: 3-44
 			

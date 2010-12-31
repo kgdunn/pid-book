@@ -29,7 +29,7 @@ group_difference <- function(groupA, groupB)
 return(list(z, t.critical, LB, UB))
 }
 
-website <- read.csv('http://datasets.connectmv.com/info/website-traffic.csv')
+website <- read.csv('http://datasets.connectmv.com/file/website-traffic.csv')
 attach(website)
 
 visits.Mon <- Visits[DayOfWeek=="Monday"]
