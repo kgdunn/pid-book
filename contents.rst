@@ -5,8 +5,6 @@ Process Improvement using Data
 .. toctree::
 
 	data-visualization/index
-	
-   
 
 .. PLS section also include PCR
 

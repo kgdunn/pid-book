@@ -124,7 +124,7 @@ pygments_style = 'sphinx'
 
 # These substitutions apply to every RST file
 rst_prolog = """
-.. meta:: 
+.. meta::
    :http-equiv=X-UA-Compatible: IE=EmulateIE7
 """
 
@@ -320,7 +320,7 @@ _PREAMBLE = r"""
 \makeatother
 
 \makeatletter
-\renewcommand{\releasename}{Version}  
+\renewcommand{\releasename}{Version}
 \renewcommand{\maketitle}{%
   \begin{titlepage}%
     \let\footnotesize\small
@@ -340,7 +340,7 @@ _PREAMBLE = r"""
     \fi
     \begin{flushright}%
       \sphinxlogo%
-      {\rm\Huge\py@HeaderFamily \@title \par}%      
+      {\rm\Huge\py@HeaderFamily \@title \par}%
       \vfill
       {\LARGE\py@HeaderFamily \@author \par}
       \vfill\vfill
@@ -372,17 +372,17 @@ _PREAMBLE = r"""
   \renewcommand{\footrulewidth}{0.4pt}
 }
 
-\makeatletter 
+\makeatletter
   % Use \pagestyle{normal} as the primary pagestyle for text.
-  \fancypagestyle{normal}{ 
-    \fancyhf{} 
-    \fancyfoot[LE,RO]{{\py@HeaderFamily\thepage}} 
-    \fancyfoot[LO]{{\py@HeaderFamily\nouppercase{\rightmark}}} 
-    \fancyfoot[RE]{{\py@HeaderFamily\nouppercase{\leftmark}}} 
+  \fancypagestyle{normal}{
+    \fancyhf{}
+    \fancyfoot[LE,RO]{{\py@HeaderFamily\thepage}}
+    \fancyfoot[LO]{{\py@HeaderFamily\nouppercase{\rightmark}}}
+    \fancyfoot[RE]{{\py@HeaderFamily\nouppercase{\leftmark}}}
     \fancyhead[LE,RO]{{\py@HeaderFamily \@title}} % previously: \py@HeaderFamily \@title, \py@release
-    \renewcommand{\headrulewidth}{0.4pt} 
-    \renewcommand{\footrulewidth}{0.4pt} 
-  } 
+    \renewcommand{\headrulewidth}{0.4pt}
+    \renewcommand{\footrulewidth}{0.4pt}
+  }
   % Update the plain style so we get the page number & footer line,
   % but not a chapter or section title.  This is to keep the first
   % page of a chapter and the blank page between chapters `clean.'
@@ -437,14 +437,14 @@ latex_elements = {
      'pointsize': '11pt',         # font size ('10pt', '11pt' or '12pt')
      'fontpkg': '\\usepackage{palatino}',
      'preamble': _PREAMBLE,
-     'fncychap': '\\usepackage[Glenn]{fncychap}',  # Bjarne (default), Lenny” (OK), “Glenn” (nice), “Conny” and “Rejne”,  
+     'fncychap': '\\usepackage[Glenn]{fncychap}',  # Bjarne (default), Lenny” (OK), “Glenn” (nice), “Conny” and “Rejne”,
      'tableofcontents': _TABLE_OF_CONTENTS,
      'footer': '',                # Additional footer content (before the indices), default empty.
      'inputenc': '\\usepackage[utf8]{inputenc}', # default
      'fontenc': '\\usepackage[T1]{fontenc}',     # default
      'maketitle': '\\maketitle',                  # default
      'printindex': '\\printindex',              # override to generate index differently or append some content after the index
-     'releasename': '', 
+     'releasename': '',
 #     'docclass' 'classoptions' 'title' 'date' 'release' 'author' 'logo' 'releasename' 'makeindex' 'shorthandoff'
 }
 
