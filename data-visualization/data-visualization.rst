@@ -18,8 +18,6 @@ The material in this section is used when you must learn more about your system 
 		* understand more about the time-trends in the data?
 		* efficiently summarize the batch yields?
 		
-	* *Life insurer*: which plot would help me understand the relationship between a person's background education and their life expectancy, given data on 3,500 staff at a large bank?
-	
 	* *Manager*:  how can we effectively summarize the (a) number and (b) types of defects on our 17 aluminium grades for the last 12 months?
 	
 	* *Yourself*: we have 24 different measurements against time (5 readings per minute, over 300 minutes) for each batch we produce; how can we visualize these 36,000 data points?
@@ -32,7 +30,7 @@ What we will cover
 	:alt:	images/visualization-subject-mapping.xmind
 	:width: 750px
 	:align: center
-	:scale: 75
+	:scale: 60
 
 References and readings
 =======================
@@ -62,7 +60,12 @@ Here are some tips for effective plots:
 
 1.	The software should have horizontal and vertical zooming ability.  Once zoomed in, there must be tools to scroll up, down, left and right.
 
-2.	Always label the x-axis appropriately with (time) units that make sense.  This plot, found on the internet, shows a computer's temperature with time.  There are several problems with the plot, but the key issue here is the x-axis.  This plot is probably the result of poor default settings in the software; but as you will see, bad defaults are very common in most software packages.  They waste your time when you have to repeatedly modify the charts.  Good software will sensibly re-label the time-based axis as you do this.
+2.	Always label the x-axis appropriately with (time) units that make sense.  
+
+
+	:ref:`This plot <visualization-bad-labels>`, found on the internet, shows a computer's temperature with time.  There are several problems with the plot, but the key issue here is the x-axis.  This plot is probably the result of poor default settings in the software; but as you will see, bad defaults are very common in most software packages.  They waste your time when you have to repeatedly modify the charts.  Good software will sensibly re-label the time-based axis as you do this.
+	
+	.. _visualization-bad-labels:
 
 	.. figure:: images/CPU-temperature_-_from_www_aw_org_on_26_Dec_2009.png
 		:width: 750px

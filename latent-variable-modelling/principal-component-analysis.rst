@@ -2,11 +2,12 @@
 
 	Which variables should you use, and how many observations do you require?
 
-.. index::
-	pair: references and readings; Principal component analysis (PCA)
 
 References and readings
 ========================
+
+.. index::
+	pair: references and readings; Principal component analysis (PCA)
 
 These readings cover a variety of topics in the area of latent variable methods:
 
@@ -16,11 +17,11 @@ These readings cover a variety of topics in the area of latent variable methods:
 
 * **Contribution plots**: P Miller, RE Swanson, CE Heckler, "Contribution Plots: a Missing Link in Multivariate Quality Control, *Applied Mathematics and Computer Science*, *8* (4), 775-792, 1998.
 
-.. index::
-	pair: PCA; Latent variable modelling
-
 Principal component analysis (PCA)
 =====================================
+
+.. index::
+	pair: PCA; Latent variable modelling
 
 Visualizing multivariate data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -382,13 +383,13 @@ Use these two plots to characterize what values the 5 measurements would have be
 	* sample 35:	
 	* sample 42:
 
-.. index::
-	pair: interpret score plot; Latent variable modelling
-
 .. _LVM-interpreting-scores:
 
 Interpreting score plots
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. index::
+	pair: interpret score plot; Latent variable modelling
 
 Before summarizing some points about how to interpret a score plot, let's quickly repeat what a score value is.  There is one score value for each observation (row) in the data set, so there are are :math:`N` score values for the first component, another :math:`N` for the second component, and so on.
 
@@ -467,14 +468,14 @@ Plotting any two score variables on a scatter plot provides good insight into th
 * A contribution plot can be used to investigate which of the original variables in |X| are most related with a score.  This provides a more precise indication of exactly why a score is at its given position.
 * Original observations in |X| that are similar to each other will be similar in the score plot, while observations much further apart are dissimilar.  This comes from the way the scores are computed: they are found so that span the greatest variance possible.  But it is much easier to detect this similarity in an :math:`A`-dimensional space than the original :math:`K`-dimensional space.
 
-.. index::
-	pair: interpret loadings plot; Latent variable modelling
-
 .. _LVM-interpreting-loadings:
 
 Interpreting loading plots
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	pair: interpret loadings plot; Latent variable modelling
+	
 Recall that the loadings plots are a plot of the direction vectors that define the model.  Returning back to a previous illustration:
 
 .. figure:: images/geometric-PCA-8-noth-components-with-plane.png
@@ -1225,12 +1226,12 @@ If the variable is included in the model then it is centered and scaled (preproc
 
 Interpreting these sort of variables in a loading plot is also no different; strong correlations with this variable are interpreted in the usual way.
 
-.. index::
-	pair: exercises; PCA
-
 Exercises
 =========
 
+.. index::
+	pair: exercises; PCA
+	
 We will use the following exercises in class; please work in groups of 2 people.   Each exercise introduces a new topic or highlights some interesting aspect of PCA.
 
 Room temperature data

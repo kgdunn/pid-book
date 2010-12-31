@@ -258,6 +258,9 @@ latex_documents = [
 # the title page.
 #latex_logo = None
 
+# If true, add page references after internal references. This is very useful for printed copies of the manual. Default is False.
+latex_show_pagerefs = True
+
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.
 latex_use_parts = False
