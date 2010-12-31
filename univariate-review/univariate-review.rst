@@ -54,6 +54,19 @@ The material in this section is used whenever you want to learn more about a sin
 	
 	- *Potential customer*: what is the 95% confidence interval for the density of your powder ingredient, measured using a helium pycnometer?
 
+References and readings
+=======================
+
+.. index::
+	pair: references and readings; Univariate data
+
+Any standard statistics text book will cover the topics from this part of the book in much greater depth than these notes. Some that you might refer to:
+	
+#. **Recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, Chapter 2.
+#. Hodges and Lehmann, *Basic Concepts of Probability and Statistics*
+#. Hogg and Ledolter, *Engineering Statistics*
+#. Montgomery and Runger, *Applied Statistics and Probability for Engineers*
+
 What we will cover
 ==================
 
@@ -61,19 +74,6 @@ What we will cover
   :width: 750px 
   :align: center
   :scale: 70
-
-References and readings
-=======================
-
-.. index::
-	pair: references and readings; Univariate data
-
-Any standard statistics text book will cover the topics from this part of the book in much greater depth than these notes. Some that you might refer to before the class:
-	
-#. **Recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, Chapter 2 (both 1st and 2nd edition)
-#. Hodges and Lehmann, *Basic Concepts of Probability and Statistics*
-#. Hogg and Ledolter, *Engineering Statistics*
-#. Montgomery and Runger, *Applied Statistics and Probability for Engineers*
 
 Concepts
 ========
@@ -281,8 +281,8 @@ We review here a couple of concepts that you should have seen in prior statistic
 **Population**
 	A large collection of observations that *might* occur; a set of *potential* measurements.  Some texts consider an infinite collection of observations, but a large number of observations is good enough.  We will use capital :math:`N` in this section to denote the population size.
 	
-.. figure:: images/batch-yields.png
-	:align: center
+.. image:: images/batch-yields.png
+	:scale: 60
 
 **Sample**
 	A collection of observations that have *actually* occurred; a set of *existing* measurements.  We will use lowercase :math:`n` in this section to denote the sample size.
@@ -559,6 +559,7 @@ Formal definition for the normal distribution
 .. figure:: images/normal-distribution-standardized.png
 	:width: 750px
 	:align: center
+	:scale: 80
 	
 - :math:`x` is the variable of interest
 - :math:`p(x)` is the probability of obtaining that value of :math:`x`
@@ -1644,18 +1645,17 @@ Exercises
 
 	              *Additional information*: I use a group of samples and calculate the mean, :math:`\bar{x}`, then I take another group of samples and calculate another :math:`\bar{x}`, and so on.  Those values of :math:`\bar{x}` are not going to be the same, but they should be similar.  In other words, the :math:`\bar{x}` also has a distribution.  So this question asks what that distribution is, and what its parameters are.
 
-		- Construct an interval, symbolically, that will contain, with 95% certainty (probability), the population mean of the viscosity.  We didn't get to cover this in class, but read point 3 under the section *t-distribution* in the notes.  
+		- Construct an interval, symbolically, that will contain, with 95% certainty (probability), the population mean of the viscosity.
 
-	              *Additional information*: To answer this part, you should move everything to :math:`z`-coordinates first.  Then you need to find the points :math:`-c` and :math:`+c` in the following diagram that mark the boundary for a 95% of the total area under the distribution.  This region is an interval that will contain, with 95% certainty, the population mean of the viscosity, :math:`\mu`.  Write your answer in form: :math:`\text{LB} < \mu < \text{UB}`.
+			*Additional information*: To answer this part, you should move everything to :math:`z`-coordinates first.  Then you need to find the points :math:`-c` and :math:`+c` in the following diagram that mark the boundary for a 95% of the total area under the distribution.  This region is an interval that will contain, with 95% certainty, the population mean of the viscosity, :math:`\mu`.  Write your answer in form: :math:`\text{LB} < \mu < \text{UB}`.
 
-	                 .. figure:: images/show-confidence-interval.png
-	                     :width: 500px
+			.. figure:: images/show-confidence-interval.png
+				:width: 500px
+				:scale: 50
 
 		- Now assume that for some hypothetical reason we know the standard deviation of the bale's viscosity is :math:`\sigma=3.5` units, calculate the population mean's interval numerically.
 
-	              *Additional information*: In this part you are just finding the values of :math:`\text{LB}` and :math:`\text{UB}`
-
-		Note: we will interpret this interval, called a confidence interval, in the next class.
+			*Additional information*: In this part you are just finding the values of :math:`\text{LB}` and :math:`\text{UB}`
 	
 .. answer::  
 
@@ -1789,7 +1789,7 @@ Exercises
 
 	.. _univariate-CO2-question:
 
-    A major aim of many engineers is/will be to reduce the carbon footprint of their company's high-profile products. Next week your boss wants you to evaluate a new raw material that requires 2.6 :math:`\dfrac{\text{kg CO}_2}{\text{kg product}}` less than the current material, but the final product's brittleness must be the same as achieved with the current raw material.  This is a large reduction in :math:`\text{CO}_2`, given your current production capacity of 51,700 kg of product per year.  Manpower and physical constraints prevent you from running a randomized test, similar to what we discussed in class; you don't have a suitable database of historical data either.
+    A major aim of many engineers is/will be to reduce the carbon footprint of their company's high-profile products. Next week your boss wants you to evaluate a new raw material that requires 2.6 :math:`\dfrac{\text{kg CO}_2}{\text{kg product}}` less than the current material, but the final product's brittleness must be the same as achieved with the current raw material.  This is a large reduction in :math:`\text{CO}_2`, given your current production capacity of 51,700 kg of product per year.  Manpower and physical constraints prevent you from running a randomized test; you don't have a suitable database of historical data either.
 
     One idea you come up with is to use to your advantage the fact that your production line has three parallel reactors, TK104, TK105, and TK107.  They were installed at the same time, they have the same geometry, the same instrumentation, *etc*; you have pretty much thought about every factor that might vary between them, and are confident the 3 reactors are identical. Typical production schedules split the raw material between the 3 reactors.  Data `on the book website <http://datasets.connectmv.com/info/brittleness-index>`_ contain the brittleness values from the three reactors for the past few runs on the current raw material.
 
@@ -1808,7 +1808,7 @@ Exercises
 	.. figure:: images/brittleness-boxplot.png
 	    :width: 750px
 	    :align: center
-	    :scale: 60
+	    :scale: 50
 
 	The standard way to test for differences between two groups of samples is given by equation :eq:`zvalue-for-difference` - it is derived as coming from the normal distribution with mean of :math:`\mu_A - \mu_B` and the standard deviation as shown in the denominator.
 
@@ -2084,7 +2084,7 @@ Exercises
 
 	One advantage of the paired test is that often a fewer number of samples are required to obtain a more sensitive result than when analyzing the data as from two distinct, unpaired groups.
 
-	Construct the confidence interval for both cases, substitute in these values and then compare the confidence intervals.  The equations for both confidence intervals are derived directly from the :math:`z`-value appearing in the class notes.
+	Construct the confidence interval for both cases, substitute in these values and then compare the confidence intervals.  The equations for both confidence intervals are derived directly from the :math:`z`-value.
 
 	**Unpaired case**:
 
