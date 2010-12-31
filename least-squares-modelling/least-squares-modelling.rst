@@ -355,7 +355,7 @@ The least squares model postulates that there is a linear relationship between m
 		\mathcal{E}\left\{\mathrm{y}\right\} &= \beta_0 + \beta_1 \mathrm{x} \\
 		\mathrm{y} &= \beta_0 + \beta_1 \mathrm{x} + \epsilon 
 		
-The :math:`\beta_0`, :math:`\beta_1` and :math:`\epsilon` terms are *population* parameters, which are unknown (see the :ref`section on univariate statistics <univariate-popultion>`).  The :math:`\epsilon` term represents any unmodelled components of the linear model, measurement error, and is simply called *the error* term.  Notice that the error is not due to :math:`x` - we will return to this point later.  Also, if there is no relationship between |x| and |y| then :math:`\beta_1 = 0`.
+The :math:`\beta_0`, :math:`\beta_1` and :math:`\epsilon` terms are *population* parameters, which are unknown (see the :ref:`section on univariate statistics <univariate-population>`).  The :math:`\epsilon` term represents any unmodelled components of the linear model, measurement error, and is simply called *the error* term.  Notice that the error is not due to :math:`x` - we will return to this point later.  Also, if there is no relationship between |x| and |y| then :math:`\beta_1 = 0`.
 
 We develop **a particular method** (there are others) to estimate these parameters; these estimates are defined as :math:`b_0 = \hat{\beta_0}`, :math:`b_1 = \hat{\beta_1}` and :math:`e = \hat{\epsilon}`.  Using this new nomenclature we can write, for a particular observation :math:`i`:
 
@@ -468,7 +468,7 @@ Divide the first line through by :math:`n` (the number of data pairs we are usin
 
 #. What does it mean that :math:`\sum_i{(x_i e_i)} = \mathrm{x}^T\mathrm{e} = 0`:
 
-		-	The residuals are uncorrelated with the input variables, :math:`\mathrm{x}`.  There is no information in the residuals that is in the :math:`\mathrm{x}`'s.
+		-	The residuals are uncorrelated with the input variables, :math:`\mathrm{x}`.  There is no information in the residuals that is in :math:`\mathrm{x}`.
 		
 #. What does it mean that :math:`\sum_i{(\hat{y}_i e_i)} =  \mathrm{\hat{y}}^T\mathrm{e} = 0`
 

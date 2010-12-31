@@ -290,7 +290,7 @@ So we can perform several runs (experiments) at level A, and then some runs at l
 Recap of group-to-group differences 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We have already seen in the `univariate statistics section <SECTION-univariate-review>`_ how to analyze this sort of data.  We first calculate a pooled variance, then a :math:`z`-value, and finally a confidence interval based on this :math:`z`.
+We have already seen in the :ref:`univariate statistics section <SECTION-univariate-review>` how to analyze this sort of data.  We first calculate a pooled variance, then a :math:`z`-value, and finally a confidence interval based on this :math:`z`.
 
 .. math::
 	s_P^2 &= \frac{(n_A -1) s_A^2 + (n_B-1)s_B^2}{n_A - 1 + n_B - 1}\\
