@@ -67,12 +67,12 @@ This section begins a new part of the book: we start considering more than one v
 
 The final sections on design and analysis of experiments, and latent variable models will build on the least squares model we learn about here.
 
-.. index::
-	pair: usage examples; Least squares models
-
 Usage examples
 ==============
 
+.. index::
+	pair: usage examples; Least squares models
+	
 The material in this section is used whenever you need to interpret and quantify the relationship between two or more variables.
 
 	- *Colleague*: How does yield from the lactic acid batch fermentation relate to the purity of sucrose?
@@ -98,11 +98,11 @@ What you will be able to do after this section
 	#. Introduction to bivariate least squares (the linear relationship between 2 variables).
 	#. We will also discuss the short-sighted idiom that is often repeated: *correlation does not imply causation* and complete it by understanding that *correlation is a necessary, but not sufficient, condition for causality*.  We will take a look at an example of correlation and understand that it is impossible to imply causality without doing intentional experimentation.
 	
-.. index::
-	pair: references and readings; Least squares models
-	
 References and readings
 =======================
+
+.. index::
+	pair: references and readings; Least squares models
 
 - **Recommended**: Fox, *Applied Regression Analysis and Generalized Linear Models*
 - **Recommended**: Draper and Smith, *Applied Regression Analysis*
@@ -1852,11 +1852,12 @@ The above example was inspired from an example in `ASA Statistics Computing and 
 
 	We will start off by saying that variable selection is a topic that is widely and actively researched. 
 
-.. index::
-	pair: exercises; Least squares models
 
 Exercises
 =========
+
+.. index::
+	pair: exercises; Least squares models
 
 .. question::
 

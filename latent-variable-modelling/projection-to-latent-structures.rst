@@ -1,8 +1,8 @@
-.. index::
-	pair: references and readings; Projection to latent structures (PLS)
-	
 References and readings
 ========================
+
+.. index::
+	pair: references and readings; Projection to latent structures (PLS)
 
 These readings cover a variety of topics in the area of latent variable methods:
 

@@ -189,11 +189,11 @@ We will use the tools of :ref:`least squares modelling <SECTION-least-squares-mo
 
 In the final section of the course on latent variables we will take a look at learning more about our systems when the condition of independence between variables, required for designed experiments, is not met.  But for now we can use least squares and simpler tools, as designed experiments are intentionally orthogonal (independent).
 
-.. index::
-	pair: usage examples; Design of experiments
-	
 Usage examples
 ==============
+
+.. index::
+	pair: usage examples; Design of experiments
 
 The material in this section is used whenever you need to perturb and learn more about a system.
 
@@ -213,11 +213,11 @@ What you will be able to do after this section
 	:align: center
 	:scale: 90
 
-.. index::
-	pair: references and readings; Design of experiments
-
 References and readings
 ========================
+
+.. index::
+	pair: references and readings; Design of experiments
 
 - **Strongly recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, chapters 5 and 6 with topics from chapters 11, 12, 13 and 15.
 - `A web tutorial on designed experiments <http://www.chemometrics.se/index.php?option=com_content&task=view&id=18&Itemid=27>`_
@@ -2016,12 +2016,11 @@ You may not always need a mixture design for recipe experiments if you are only 
 	
 In this case **A** and **B** are the factors investigated in the recipe, in addition to temperature **T**. One could run a mixture design at high temperature and low temperature, but the results from a full factorial in factors **A**, **B** and **T** would give similar results.
 
+Exercises
+==========
 
 .. index::
 	pair: exercises; Design of experiments
-	
-Exercises
-==========
 
 .. question::
 

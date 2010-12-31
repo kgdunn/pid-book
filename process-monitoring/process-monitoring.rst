@@ -30,11 +30,11 @@ In the first section we learned about :ref:`visualizing data <SECTION-data-visua
 
 This section is the last section where we deal with univariate data; after this section we start to use and deal with 2 or more variables.  
 
-.. index::
-	pair: usage examples; Process monitoring
-	
 Usage examples
 ==============
+
+.. index::
+	pair: usage examples; Process monitoring
 
 The material in this section is used whenever you need to rapidly detect problems.  It has tangible application in many areas - in fact, you have likely encountered these monitoring charts in areas such as a hospital (monitoring patients), stock market charts (intraday trading), or in a processing/manufacturing facility.
 
@@ -50,11 +50,11 @@ What we will cover
   :width: 750px 
   :scale: 60
 
-.. index::
-	pair: references and readings; Process monitoring
-
 References and readings
 =======================
+
+.. index::
+	pair: references and readings; Process monitoring
 
 Some references to refer to:
 	
@@ -100,11 +100,11 @@ In order to achieve this high level of final product quality, our systems should
 
 Notice here that process monitoring is not intended to be automatic feedback control.  It has the same principles of quantifying unusual operation (errors), but the intention with process monitoring is that our process adjustments are **infrequent**, usually **manual**, and take place due to **special causes**.
 
-.. index::
-	single: control charts
-	
 Control charts
 ~~~~~~~~~~~~~~~~~~~~
+
+.. index::
+	single: control charts
 
 We use control charts to display and detect this unusual variability. A control chart is a display of one value (variable), against time.  These time-based plots also show some additional information: usually a target value, and one or more limits lines are superimposed on the plot.  The plots are most useful when displayed in real-time, or close to real-time.  There are various technical ways to express what a control chart does exactly, but a general definition is that a control chart helps you detect outliers and other unusual behaviour.
 
@@ -158,11 +158,11 @@ In this book we will take "in-control" to mean that the behaviour of the process
 
 .. Note:: Our objective: quickly detect abnormal variation, and fix it by finding the root cause.  In this section we look at the "detection" problem.  Diagnosis and process adjustment are two separate steps that follow.
 
-.. index::
-	pair: Shewhart chart; Process monitoring
-
 Shewhart chart
 ==============
+
+.. index::
+	pair: Shewhart chart; Process monitoring
 
 .. For the mean: p174 to p186 of Barnes.  KGD: what does "Barnes" refer to?
 
@@ -349,11 +349,11 @@ Shewhart chart limits were calculated with the assumption of **independent subgr
 Using Shewhart charts on **highly correlated quality variables**, usually on your final product measurement, can increase your type II (consumer's risk) dramatically.  We will come back to this very important topic in the section on :ref:`latent variable models <SECTION-latent-variable-modelling>`.
 
 
-.. index::
-	pair: CUSUM chart; Process monitoring
-
 CUSUM charts
 ==============
+
+.. index::
+	pair: CUSUM chart; Process monitoring
 
 The Shewhart chart is not too sensitive to detecting shifts in the mean.  Depending on the subgroup size, :math:`n`, we showed that it can take several consecutive samples before a warning or action limit is triggered. The cumulative sum (CUSUM) chart allows more rapid detection of these shifts away from a target value, :math:`T`.
 
@@ -386,12 +386,13 @@ Once the process has been investigated the CUSUM value, :math:`S_t` is often res
 
 .. todo:: MUCH LESS FOCUS on the V-mask, more on how it is currently done
 
-.. index::
-	single: exponentially weighted moving average chart
-	pair: EWMA chart; Process monitoring
 
 EWMA charts
 ==============
+
+.. index::
+	single: exponentially weighted moving average chart
+	pair: EWMA chart; Process monitoring
 
 The two previous charts highlight the 2 extremes of control chart.  On the one hand, a Shewhart chart assumes each subgroup sample is independent (unrelated) to the next - implying there is no "memory" in the chart.  On the other hand, a CUSUM chart has an infinite memory, back to the time the chart was started at :math:`t=0` (see equation :eq:`CUSUM-derivation`).
 
@@ -498,13 +499,14 @@ You may encounter other charts in practice:
 
 	*	The *exponentially weight moving variance* (EWMV) chart is an excellent chart for monitoring for an increase in product variability. Like the :math:`\lambda` from an EWMA chart, the EWMV also has a sliding parameter that can balance current information and historical information to trade-off sensitivity.  More information is available in the paper by MacGregor, J.F. and Harris, T.J., "The Exponentially Weighted Moving Variance", *Journal of Quality Technology*, **25**, p 106-118, 1993.
 
-.. index::
-	pair: process capability; Process monitoring
-	single: capability, process
 	
 Process capability
 ===================
 
+.. index::
+	pair: process capability; Process monitoring
+	single: capability, process
+	
 .. Note:: This section is not about a particular control chart, but is relevant to the topic of process monitoring.
 
 Centered processes
@@ -550,12 +552,12 @@ Contrast this to the case where PCR = 2.0 for the same system.  To achieve that 
 
 .. Note:: You will probably come across the terminology C\ :sub:`p`, especially when dealing with 6 sigma programs.  This is the same as PCR for a centered process.
 
+Uncentered processes
+~~~~~~~~~~~~~~~~~~~~
+
 .. index::
 	pair: uncentered process capability; Process monitoring
 	single: capability, process
-
-Uncentered processes
-~~~~~~~~~~~~~~~~~~~~
 
 Processes are not very often centered between their upper and lower specification limits.  So a measure of process capability for an uncentered processes is defined:
 
@@ -572,11 +574,11 @@ You can calculate that a shift of :math:`1.5\sigma` from process center will int
 
 .. Note:: It must be emphasized that |Cpk| and C\ :sub:`p` numbers are only useful for a process which is stable.  Furthermore the assumptions of normally distributed samples is also required to interpret the |Cpk| results.
 
-.. index::
-	pair: industrial practice; Process monitoring
-
 Industrial practice
 ===================
+
+.. index::
+	pair: industrial practice; Process monitoring
 
 This section of the book is only intended to give an overview of the concepts of process monitoring.  As you move into an industrial environment you will find there are many such systems already in place.  Higher levels of management track statistics from a different point of view, often summarizing data from an entire plant, geographic region, or country.  The techniques learned in this book, while focusing mainly on unit operations, are equally applicable though.
 
@@ -662,12 +664,13 @@ Montgomery and Runger list 5 reasons why control charts are widely used.  After 
 	#.	The patterns generated by the plots often help determine what went wrong - providing some diagnostic value to the operators.  We will see a more formal tool for process diagnosis though in the last section, using multivariate data methods.
 	#.	Control charts are required to judge if a process is stable over time.  A stable process allows us to calculate our process capability, which is a tremendously important metric for consumers.
 
-.. index::
-	pair: exercises; Process monitoring
 
 Exercises
 =========
 
+.. index::
+	pair: exercises; Process monitoring
+	
 .. question::
 
 	Is it fair to say that a control chart is like an online version of a :ref:`confidence interval <univariate-confidence-intervals>`?  Explain your answer.

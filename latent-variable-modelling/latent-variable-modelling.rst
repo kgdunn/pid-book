@@ -388,11 +388,11 @@ What we will cover
 	:align: center
 	:scale: 90
 	
-.. index::
-	pair: references and readings; Latent variable modelling
-
 References and readings
 ========================
+
+.. index::
+	pair: references and readings; Latent variable modelling
 
 These readings cover a variety of topics in the area of latent variable methods: 
 
@@ -579,11 +579,12 @@ Issues faced with engineering data
 
 Latent variable methods are a suitable tool that meet these requirements.
 
-.. index::
-	single: latent variable, what is a
 
 What is a latent variable?
 ===================================================
+
+.. index::
+	single: latent variable, what is a
 
 We will take a look at what a latent variable is conceptually, geometrically, and mathematically.
 
