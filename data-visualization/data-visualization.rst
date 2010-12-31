@@ -343,7 +343,7 @@ Three common pitfalls to avoid:
 	.. figure:: images/table-grid-comparison.png
 		:scale: 65
 
-To wrap up this section is a demonstration of tabular data in a different format, based on an idea of Tufte in *THe Visual Display of Quantitative Information*, page 158.  Here we compare the corrosion resistance and roughness of a steel surface for two different types of coatings, A and B.
+To wrap up this section is a demonstration of tabular data in a different format, based on an idea of Tufte in *The Visual Display of Quantitative Information*, page 158.  Here we compare the corrosion resistance and roughness of a steel surface for two different types of coatings, A and B. 
 
 A layout that you expect to see in a standard engineering report:
 
