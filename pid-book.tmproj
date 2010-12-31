@@ -8,7 +8,7 @@
 			<key>filename</key>
 			<string>q-and-a.py</string>
 			<key>lastUsed</key>
-			<date>2010-12-17T16:30:31Z</date>
+			<date>2010-12-20T10:07:10Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -96,6 +96,6 @@
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{239, 192}, {1201, 686}}</string>
+	<string>{{239, 60}, {1201, 818}}</string>
 </dict>
 </plist>

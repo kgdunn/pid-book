@@ -1207,7 +1207,7 @@ Another test for autocorrelation is the Durbin-Watson test.  For more on this te
 
 .. Box and Newbold describe a case where the lack of independence lead to serious mis-interpretation:  J Royal Statist. Soc. Series A, v134, p229-240, 1971
 .. Also see: /Users/kevindunn/Statistics course/Course notes/Correlation, covariance and least squares/images/autocorrelated-data-problem.R
-             where I try to reproduce this problem.
+..             where I try to reproduce this problem.
 
 
 .. _LS-model-linearity:
@@ -1980,7 +1980,7 @@ Exercises
 	Again, for the distillation model, use the data from 2000 and 2001 to build the model (the first column in the data set contains the dates). Then use the remaining data to test the model.  Use |x| = ``TempC2`` and |y| = ``VapourPressure`` in your model.
 
 		-	Calculate the RMSEP for the testing data.  How does it compare to the standard error from the model?
-		-	Now use the ``influencePlot(...)`` function from the ``car`` library, to highlight the influential observations in the model building data (2000 and 2001).  Show your plot with observation labels (observation numbers are OK).  See part 5 of the `R tutorial <http://connectmv.com/tutorials/R_tutorial>`_ for some help.
+		-	Now use the ``influencePlot(...)`` function from the ``car`` library, to highlight the influential observations in the model building data (2000 and 2001).  Show your plot with observation labels (observation numbers are OK).  See part 5 of the `R tutorial <http://connectmv.com/tutorials/r-tutorial>`_ for some help.
 		-	Explain how the points you selected are influential on the model?
 		-	Remove these influential points, and refit the model on the training data.  How has the model's slope and standard error changed?
 		-	Recalculate the RMSEP for the testing data; how has it changed?
@@ -2008,7 +2008,7 @@ Exercises
 	
 .. question::
 
-	The `Kappa number data set <http://datasets.connectmv.com/info/kappa_number>`_ was used in the `take-home midterm <http://stats4.eng.mcmaster.ca/wiki/Take-home_midterm_-_2010_-_Solution>`_ to construct a Shewhart chart.  The :ref:`"Mistakes to avoid" <monitoring-mistakes-to-avoid>` section, under Process Monitoring, warns that the subgroups for a Shewhart chart must be independent to satisfy the assumptions used to derived the Shewhart limits. If the subgroups are not independent, then it will increase the type I (false alarm) rate.
+	The `Kappa number data set <http://datasets.connectmv.com/info/kappa_number>`_ was used in an :ref:`earlier question <monitoring-kappa-number-question>` to construct a Shewhart chart.  The :ref:`"Mistakes to avoid" <monitoring-mistakes-to-avoid>` section (Process Monitoring), warns that the subgroups for a Shewhart chart must be independent to satisfy the assumptions used to derived the Shewhart limits. If the subgroups are not independent, then it will increase the type I (false alarm) rate.
 
 	This is no different to the independence required for least squares models. Use the autocorrelation tool to determine a subgroup size for the Kappa variable that will satisfy the Shewhart chart assumptions.  Show your autocorrelation plot and interpret it as well.
 	
@@ -2060,10 +2060,10 @@ Exercises
 			92,      260,  4900,       Yes,     38
 
 
-	-	Use software to fit a linear model that predicts the yield from these variables (the `data set is available from the website <http://datasets.connectmv.com/info/bioreactor_yields>`_).  See part 5 of the `R tutorial <http://connectmv.com/tutorials/R_tutorial>`_ for building linear models with integer variables in R.
+	-	Use software to fit a linear model that predicts the yield from these variables (the `data set is available from the website <http://datasets.connectmv.com/info/bioreactor_yields>`_).  See the `R tutorial <http://connectmv.com/tutorials/r-tutorial>`_ for building linear models with integer variables in R.
 	-	Interpret the meaning of each effect in the model.  If you are using R, then the ``confint(...)`` function will be helpful as well. Show plots of each |x| variable in the model against yield.  Use a box plot for the baffles indicator variable.
 	-	Now calculate the :math:`\mathbf{X}^T\mathbf{X}` and :math:`\mathbf{X}^T\mathbf{y}` matrices; include a column in the :math:`\mathbf{X}` matrix for the intercept. Since you haven't mean centered the data to create these matrices, it would be misleading to try interpret them.
-	-	Calculate the least squares model estimates from these two matrices.  See part 4 of the `R tutorial <http://connectmv.com/tutorials/R_tutorial>`_ for doing matrix operations in R, but you might prefer to use MATLAB for this step.  Either way, you should get the same answer here as in the first part of this question.
+	-	Calculate the least squares model estimates from these two matrices.  See the `R tutorial <http://connectmv.com/tutorials/r-tutorial>`_ for doing matrix operations in R, but you might prefer to use MATLAB for this step.  Either way, you should get the same answer here as in the first part of this question.
 
 .. answer::
 
@@ -2266,3 +2266,78 @@ Exercises
 		\end{array}
 
 	This shows, at which ever confidence level (95% or 99%), the range within which we can expect to find the true slope coefficient.  This slope represents the magnitude by which the melt index changes, on average, for a one degree change in temperature.  If we plan to manipulate the melt index using temperature, then this range will help us estimate an upper and lower bound for the effort required to adjust the melt index.
+
+.. question::
+
+For a distillation column, it is well known that the column temperature directly influences the purity of the product, and this is used in fact for feedback control, to achieve the desired product purity.  Use the `distillation data set <http://datasets.connectmv.com/info/distillation-tower>`_ , and build a least squares model that predicts ``VapourPressure`` from the temperature measurement, ``TempC2``.  Report the following values:
+
+	#.	the slope coefficient, and describe what it means in terms of your objective to control the process with a feedback loop
+	#.	the interquartile range and median of the model's residuals
+	#.	the model's standard error
+	#.	a confidence interval for the slope coefficient, and its interpretation.
+
+	You may use any computer package to build the model and read these values off the computer output.  
+
+.. answer::
+
+	The solution to this question can be almost entirely solved using R, though any other language could be used.  These commands, with the output that follows, were used:
+
+		.. code-block:: text
+
+			> distillation <- read.csv('http://datasets.connectmv.com/file/distillation-tower.csv')
+			> model <- lm(distillation$VapourPressure ~ distillation$TempC2)
+			> summary(model)
+
+			Call:
+			lm(formula = distillation$VapourPressure ~ distillation$TempC2)
+
+			Residuals:
+			     Min       1Q   Median       3Q      Max 
+			-5.59621 -2.37597  0.06674  2.00212 14.18660 
+
+			Coefficients:
+			                     Estimate Std. Error t value Pr(>|t|)    
+			(Intercept)         195.96141    4.87669   40.18   <2e-16 ***
+			distillation$TempC2  -0.33133    0.01013  -32.69   <2e-16 ***
+			---
+			Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+
+			Residual standard error: 2.989 on 251 degrees of freedom
+			Multiple R-squared: 0.8098,	Adjusted R-squared: 0.8091 
+			F-statistic:  1069 on 1 and 251 DF,  p-value: < 2.2e-16
+
+
+	#.	This predictive model allows us to achieve better control of the vapour pressure, because we can predict it from temperature (measured in real-time), rather than wait several hours for the laboratory vapour pressure value. The slope coefficient is -0.331, and since no units were given, I can't expect any in your solution; however one should report the units, which is this case would be units of pressure divided by units temperature (e.g. psi/K).  What this means, in terms of feedback control of the vapour pressure is that we must decrease the temperature to raise the vapour pressure.  This is important when tuning the feedback control loop in 2 ways: (a) firstly, the the sign of the gain in the feedback controller (i.e. negative gain) must be the same as the process gain to achieve a stable feedback loop, (b) the magnitude of the slope provides an estimate of how sensitive the vapour pressure is to temperature.  For example: do we have to add a large amount of energy into the distillation column to achieve a smallish reduction in vapour pressure?  The answer of course depends heavily on the units, which I omitted to provide.
+
+	#.	These are reported in the above software output: (a) the residual IQR is 2.00 - (-2.38) = 4.38 units of vapour pressure, while (b) the median residual is close to zero, as expected.
+
+	#.	The model's standard error is 2.989 in the output, or around 3.00 units of vapour pressure.
+
+	#.	The slope coefficient's confidence interval can be calculated from its :math:`z`-value = :math:`\dfrac{b_1 - \beta_1}{S_E(b_1)}`; but we require the standard error of the slope coefficient, which is :math:`S_E(b_1) = 0.01013` from the software output.  The value for :math:`c_t = 1.969` from the :math:`t`-distribution at the 95% confidence level, with :math:`n-k = 253 - 2 = 251` degrees of freedom (a normal distribution would work equally well in this case).
+
+		.. math::
+
+			\begin{array}{rcccl} 
+				- c_t                			&\leq& \dfrac{b_1 - \beta_1}{S_E(b_1)} &\leq &  +c_t\\
+				-0.33133 - 1.969 \times 0.01013	&\leq& \beta_1                         &\leq&	-0.33133 + 1.969 \times 0.01013 \\
+				-0.35							&\leq& \beta_1                         &\leq&	-0.31
+			\end{array}
+
+		This shows, at the 95% confidence level, the range within which we can expect to find the true slope coefficient. This range is remarkably narrow; i.e. our feedback controller gain is unlikely to change on either extreme.  So we can likely design our control loop at the center point, and be sure it will work over the entire range of expected operation.  Please also cross reference the solutions to question 2.4 in the written midterm to correctly understand what a confidence interval is.
+
+		If you used 99% confidence levels, the answer should be: :math:`-0.358 \leq \beta_1 \leq -0.305`.
+
+		I have illustrated the actual slope (thick, solid line) at the upper and lower bounds of the slope coefficient (thin, dashed lines) in the accompanying figure.  Not required for this question, but added nevertheless, are the prediction intervals for :math:`\hat{y}_i`, which we will discuss in the class on 22 February 2010.
+
+		.. figure:: images/distillation-least-squares.png
+			:align: center
+			:width: 750px
+			:scale: 90%
+
+	For this question I recommended that you should be able to reproduce R's output yourself.  The code below calculates these same values. 
+
+	.. literalinclude:: code/Take-home-midterm/distillation-least-squares.R
+	       :language: s
+	       :lines: 1-67,70-82
+
+	

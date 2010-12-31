@@ -913,3 +913,83 @@ Exercises
 		literalinclude:: code/plastic-sheet-control-specification-limits.R
 			:language: s
 			:lines: 3-44
+			
+.. question::
+
+	You will come across these terms in the workplace. Investigate one of these topics, using the Wikipedia link below to kick-start your research.  Write a paragraph that (a) describes what your topic is and (b) how it can be used when you start working in a company after you graduate, or how you can use it now if you are currently working.
+
+		- `Lean manufacturing <http://en.wikipedia.org/wiki/Lean_manufacturing>`_
+		- `Six sigma <http://en.wikipedia.org/wiki/Six_Sigma>`_ and the DMAIC cycle.  See the `list of companies <http://en.wikipedia.org/wiki/List_of_Six_Sigma_companies>`_ that use six sigma tools.
+		- `Kaizen <http://en.wikipedia.org/wiki/Kaizen>`_ (a component of `The Toyota Way <http://en.wikipedia.org/wiki/The_Toyota_Way>`_)
+		- `Genchi Genbutsu <http://en.wikipedia.org/wiki/Genchi_Genbutsu>`_  (also a component of `The Toyota Way <http://en.wikipedia.org/wiki/The_Toyota_Way>`_)
+
+		In early 2010 Toyota experienced some of its worst press coverage on this very topic.  `Here is an article <http://www.reuters.com/article/idUSTRE6161RV20100207>`_ in case you missed it.
+
+.. _monitoring-kappa-number-question:
+
+.. question::
+
+	The Kappa number is a widely used measurement in the pulp and paper industry.  It can be measured on-line, and indicates the severity of chemical treatment that must be applied to a wood pulp to obtain a given level of whiteness (i.e. the pulp's bleachability).  Data on the `website <http://datasets.connectmv.com/info/kappa-number>`_ contain the Kappa values from a pulp mill.  Use the first 2000 data points to construct a Shewhart monitoring chart for the Kappa number.  You may use any subgroup size you like.  Then use the remaining data as your phase II (testing) data.  Does the chart perform as expected?
+
+.. answer::
+
+	The intention of this question is for you to experience the process of iteratively calculating limits from phase I data and applying them to phase 2 data.
+
+	The raw data for the entire data set looks as follows.  There are already regions in the phase II data that we expect to not be from normal operation (around 2500 and 2900)
+
+	.. figure:: images/Kappa-raw-data.png
+		:align: center
+		:width: 750px
+	
+	I used subgroups of size 6 for the figures in this answer, however, the code below is very general, and you can regenerate the plots if you chose a different subgroup size.  Just change one of the lines near the top. 
+
+	The upper and lower control limits are calculated, and with a subgroup size of :math:`n=6`, there are 333 subgroups and the limits are: UCL = 18.26, target = 21.73, and UCL = 25.21.  This is illustrated on the phase I data here:
+
+	.. figure:: images/Kappa-phaseI-first-round.png
+		:align: center
+		:width: 750px
+	
+	Next we remove the subgroups which lie outside the limits.  Please try using he R code to see how to do it automatically.  The new limits, after removing the subgroups beyond the limits from the first round are: LCL = 18.24, target = 21.71 and UCL = 25.18.  They barely changed.  But the updated plot with subgroups removed is now shown below.  There is no need to perform another round of pruning.  Only if you used a subgroup size of 4 would you need to do a third round.  You could also have just shifted the limits to a different level, for example, to :math:`\pm 4` standard deviations.  We can do this if we have enough process knowledge to understand the implication of it, in terms of profit.
+
+	.. figure:: images/Kappa-phaseI-second-round.png
+		:align: center
+		:width: 750px
+
+	Now apply these control limits to the phase II data.  The plot is shown below:
+
+	.. figure:: images/Kappa-phaseII-testing.png
+		:align: center
+		:width: 750px
+	
+	The limits identify 2 prolonged periods of unusual operation at sequence point 80 and 140.  If we apply the Western Electric rules, we see a third unusual region around sequence step 220.  A few other alarms are scattered in the phase II data.  About 7% of the subgroups lie outside these control limits, so these phase II data are definitely not from in-control operation; which we expected from the raw data plot at the start of this question.
+
+	The code for all the calculation steps is provided here:
+
+	.. literalinclude:: code/Kappa-number-monitoring.R
+	       :language: s
+	       :lines: 18-32,36-40,42-80,84-89,91-108,112-117,119-136,140-145,147-151,155-160,162-
+
+.. question::
+
+	In this section we showed how one can monitor any variable in a process.  Modern instrumentation though capture a wider variety of data.  It is common to measure point values, e.g. temperature, pressure, concentration and other hard-to-measure values.  But it is increasingly common to measure spectral data. These spectral data are a vector of numbers instead of a single number.  
+	
+	Below is an example from a pharmaceutical process: a complete spectrum can be acquired many times per minute, and it gives a complete chemical fingerprint or signature of the system.  There are 460 spectra in figure below; they could have come, for example, from a process where they are measured 5 seconds apart. It is common to find fibre optic probes embedded into pipelines and reactors to monitor the progress of a reaction or mixing.
+
+	Write a few bullet points how you might monitor a process where a spectrum (a vector) is your data source, and not a "traditional" single point measurement, like a temperature value.
+
+	.. /Users/kevindunn/ConnectMV/Datasets/Spectral data set - NIR/plot_spectra.py
+
+	.. figure:: images/pharma-spectra.png
+		:width: 750px
+		:align: center
+
+.. answer::
+
+	A complete spectrum (vector) of values is obtained with every observation.  To monitor a process using one of the charts learned about so far (Shewhart, CUSUM, or EWMA chart) we have to reduce this vector down to a single number.  Any of these methods will do:
+
+	-	Use a single point at a particular wavelength in the spectrum (e.g. the peak at 1200 nm or 1675 nm).
+	-	Use a weighted sum of a region of the spectrum, or the integrated area under a region in the spectrum (these 2 approaches are similar/equivalent)
+	-	Use the spectrum to predict a certain property of interest, and then monitor that property instead.  One group gave a nice example: use the spectrum to predict the colour of cookies (i.e. how well baked they are).
+
+	Later on we will learn about :ref:`multivariate monitoring methods <LVM-monitoring>`.
+	

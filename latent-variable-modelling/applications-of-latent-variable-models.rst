@@ -152,6 +152,7 @@ Soft sensors using latent variables will almost always be PLS models.  So far in
 
 It is an indication that the predictive models need to be updated if the SPE and/or |T2| values are consistently above the limits.  This is a real advantage over using an MLR-based model, which has no such consistency checks.
 
+.. _LVM-monitoring:
 
 Process monitoring using latent variable methods
 ====================================================================================

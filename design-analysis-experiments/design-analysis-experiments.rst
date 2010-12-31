@@ -2406,7 +2406,7 @@ Exercises
 
 	You might feel more comfortable setting up the problem in MATLAB.  You can use the `contour plot <http://www.mathworks.com/access/helpdesk/help/techdoc/creating_plots/f10-2524.html>`_ functions in MATLAB to visualize the results.
 
-	If you are using R, you can use the ``rbind(...)`` or ``cbind(...)`` functions to build up your :math:`\mathbf{X}` matrix row-by-row or column-by-column.  The equivalent of meshgrid in R is the ``expand.grid(...)`` function.  Please see the `R tutorial <http://connectmv.com/tutorials/R_tutorial>`_ that shows how to generate surface plots in R.
+	If you are using R, you can use the ``rbind(...)`` or ``cbind(...)`` functions to build up your :math:`\mathbf{X}` matrix row-by-row or column-by-column.  The equivalent of meshgrid in R is the ``expand.grid(...)`` function.  Please see the `R tutorial <http://connectmv.com/tutorials/r-tutorial>`_ that shows how to generate surface plots in R.
 
 .. question::
 
