@@ -35,24 +35,11 @@ In context
 
 This section is an introduction to the area of data analysis.  We cover concepts from univariate data analysis, specifically the concepts shown in the pictorial outline below. This section is only a *review of these concepts*; for a more comprehensive treatment, please consult an introductory statistics textbook (see the recommended readings further down).
 
-.. glossary::
-
-	environment
-	   A structure where information about all documents under the root is
-	   saved, and used for cross-referencing.  The environment is pickled
-	   after the parsing stage, so that successive runs only need to read
-	   and parse new and changed documents.
-
-	source directory
-	   The directory which, including its subdirectories, contains all
-	   source files for one Sphinx project.
-
+Usage examples
+==============
 
 .. index::
 	pair: usage examples; Univariate data
-	
-Usage examples
-==============
 
 The material in this section is used whenever you want to learn more about a single variable in your data set:
 
@@ -75,11 +62,11 @@ What we will cover
   :align: center
   :scale: 70
 
-.. index::
-	pair: references and readings; Univariate data
-	
 References and readings
 =======================
+
+.. index::
+	pair: references and readings; Univariate data
 
 Any standard statistics text book will cover the topics from this part of the book in much greater depth than these notes. Some that you might refer to before the class:
 	
@@ -97,13 +84,13 @@ Concepts that you must be familiar with by the end of this section:
   :align: center
   :scale: 60
 
-.. index::
-	single: variability
-	
 .. _univariate-about-variability:
 
 Variability
 ===========
+
+.. index::
+	single: variability
 
 Life is pretty boring without variability, and this book, and almost all the field of statistics would be unnecessary if things did not naturally vary.
 
@@ -139,12 +126,12 @@ Fortunately, we have plenty of variability in our recorded data:
 		:align: center
 	
 All this variability, although a good opportunity to keep us process engineers employed, comes at a price as described next.
-
-.. index::
-	single: variability; cost of
 	
 The high cost of variability in your final product
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. index::
+	single: variability; cost of
 	
 **Assertion**
 	Customers expect both uniformity and low cost when they buy your product.  Variability defeats both objectives. 
@@ -195,11 +182,12 @@ So, how do we make progress despite this variability?  This whole book, and all 
 - with :ref:`designed experiments <SECTION-design-analysis-experiments>` we intentionally **introduce variation** into our process to learn more about the process (e.g. so that we can optimize our process for improved profitability); and
 - and in the :ref:`latent variable modelling <SECTION-latent-variable-modelling>` section we learn how to deal with **multiple variables**, simultaneously extracting information from the data to understand how variability affects the process.
 
-.. index::
-	single: histograms
 	
 Histograms, probability and distributions
 =========================================
+
+.. index::
+	single: variability; cost of
 
 A histogram is a summary of the variation in a measured variable.  It shows the *number* of samples that occur in a *category*: this is called a **frequency distribution**.  For example: number of children born, categorized against their gender: male or female.
 
@@ -1367,15 +1355,15 @@ This confidence interval finds a region in which the normal distribution's varia
 - :math:`1-\alpha`: is the level of confidence, usually 95%, so :math:`\alpha = 0.05` in that case.
 
 	.. todo:: give some R code still
-	
 
-.. index::
-	single: pool variances
-	
 .. _univariate-pooled-variance:
 
 Confidence interval for the ratio of two variances
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+.. index::
+	single: variability; cost of
 
 One way to test whether we can pool (combine) two variances, taken from two different *normal distributions*, is to construct the ratio: :math:`\dfrac{s^2_1}{s^2_2}`.  We can construct a confidence interval, and if this interval contains the value of 1.0, then we have no evidence to presume they are different (i.e. we can assume the two population variances are similar).
 
@@ -1422,15 +1410,14 @@ Incidentally, it is this confidence interval that is used in polls to judge the 
 	
 		.. todo:: how does this level change our answer as it varies?
 
-
-
-.. index::
-	pair: paired tests; Univariate data
-	
 .. _univariate-paired-tests:
 
 Paired tests
 ============
+
+
+.. index::
+	single: variability; cost of
 
 .. Verify this section against other notes.
 
@@ -1469,12 +1456,12 @@ The advantage of the paired test is that any systematic error in our measurement
 	
 .. This example illustrates:
 .. todo:: example showing loss of DOF (boys shoes example in BHH2). particularly, show the plots (p98 on BHH2- edition 1)
-
-.. index::
-	pair: exercises; Univariate data
 	
 Exercises
 ==========
+
+.. index::
+	single: variability; cost of
 
 .. question::
 

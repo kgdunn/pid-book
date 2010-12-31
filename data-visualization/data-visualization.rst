@@ -3,14 +3,13 @@ In context
 
 This is the first chapter in the book. **Why**?  Every engineer has heard the phrase *"plot your data"* but seldom are we shown what appropriate plots look like.
 
-In this section we consider quantitative plots -- plots that show numbers.  We cover different plots that will help you effectively learn more from your data.
-We end with a list of tips for effective data visualization.
-
-.. index::
-	pair: usage examples; Data visualization
+In this section we consider quantitative plots -- plots that show numbers.  We cover different plots that will help you effectively learn more from your data. We end with a list of tips for effective data visualization.
 
 Usage examples
 ==============
+
+.. index::
+	pair: usage examples; Data visualization
     
 The material in this section is used when you must learn more about your system from the data:
 
@@ -35,11 +34,11 @@ What we will cover
 	:align: center
 	:scale: 75
 
-.. index::
-	pair: references and readings; Data visualization
-
 References and readings
 =======================
+
+.. index::
+	pair: references and readings; Data visualization
 
 #. Edward Tufte, *Envisioning Information*, Graphics Press, 1990. (10th printing in 2005)
 #. Edward Tufte, *The Visual Display of Quantitative Information*, Graphics Press, 2001.
@@ -49,11 +48,11 @@ References and readings
 #. William Cleveland, *The Elements of Graphing Data*, Hobart Press; 2nd edition, 1994.
 #. Su, `It's Easy to Produce Chartjunk Using Microsoft Excel 2007 but Hard to Make Good Graphs <http://dx.doi.org/10.1016/j.csda.2008.03.007>`_, *Computational Statistics and Data Analysis*, **52** (10), 4594-4601, 2008.
 
-.. index::
-	pair: time-series plots; Data visualization
-
 Time-series plots
 =================
+
+.. index::
+	pair: time-series plots; Data visualization
 
 We start off considering a plot most often seen in engineering applications: the time-series plot.  It is a 2-dimensional plot where one axis, the time-axis, shows graduations at an appropriate scale (seconds, minutes, weeks, quarters, years), while the other axis shows the data.  Usually the time-axis is displayed horizontally, but this is not a requirement: some interesting analysis can be done with time running vertically.  The time-series plot is a univariate plot (shows only one variable).
 
@@ -105,11 +104,11 @@ Some further tips:
 		:scale: 100
 		:align: center
 		
-.. index::
-	pair: bar plots; Data visualization
-
 Bar plots
 =========
+
+.. index::
+	pair: bar plots; Data visualization
 
 The bar plot is another univariate plot on a two dimensional axis.  The axes are not called x- or y-axes with bar plots, instead, one axis is called the category axis, while the other axis shows the value of each bar.
 
@@ -179,11 +178,11 @@ Some advice related to bar plots:
   Exception to starting at zero: todo Few, p 189 (ranges)
 
 
-.. index::
-	pair: box plots; Data visualization
-	
 Box plots
 ==========
+
+.. index::
+	pair: box plots; Data visualization
 
 Box plots are an efficient summary of one variable (univariate chart), but can also be used effectively to compare like variables that are in the same units of measurements. 
 
@@ -237,12 +236,13 @@ Variations for the box plot are possible:
 - using the 2% and 95% percentile rather than the upper and lower hinge values.
 
 
-.. index::
-	pair: scatter plots; Data visualization
 
 Relational graphs: scatter plots
 ================================
 
+.. index::
+	pair: scatter plots; Data visualization
+	
 This is a plot many people are comfortable with using.  It helps one understand the relationship between two variables - a bivariate plot - as opposed to the previous charts that are univariate.  A scatter plot is a collection of points shown inside a box formed by 2 axes, at 90 degrees to each other.  The marker's position is located at the intersection of the values shown on the horizontal (x) axis and vertical (y) axis.
 
 The unspoken intention of a scatter plot is usually to ask the reader to draw a causal relationship between the two variables.  However, not all scatter plots show causal phenomenon.
@@ -291,11 +291,11 @@ Further improvements can be made to your scatter plots:
 
     This example, from `http://gapminder.org <http://graphs.gapminder.org/world/#$majorMode=chart$is;shi=t;ly=2003;lb=f;il=t;fs=11;al=30;stl=t;st=t;nsl=t;se=t$wst;tts=C$ts;sp=6;ti=2007$zpv;v=0$inc_x;mmid=XCOORDS;iid=phAwcNAVuyj1jiMAkmq1iMg;by=ind$inc_y;mmid=YCOORDS;iid=phAwcNAVuyj0TAlJeCEzcGQ;by=ind$inc_s;uniValue=30;iid=phAwcNAVuyj0XOoBL_n5tAQ;by=ind$inc_c;uniValue=255;gid=CATID0;iid=phAwcNAVuyj2tPLxKvvnNPA;by=ind$map_x;scale=log;dataMin=194;dataMax=96846$map_y;scale=log;dataMin=0.855;dataMax=8.7$map_s;sma=49;smi=1.85$map_c;scale=lin$cd;bd=0$inds=>`_, shows data as of 2007 for income per person against fertility.  The size of each data point is proportional to the country's population and the marker colour shows life expectancy at birth (years).  The GapMinder website allows you to "play" the graph over time, effectively adding a 5th dimension to the 2D plot.  Use the hyperlink above to see how richer countries move towards lower fertility and higher income over time.
 
-.. index::
-	pair: tables; Data visualization
-		
 Tables 
 ======
+
+.. index::
+	pair: tables; Data visualization
 
 The table is an efficient format for comparative data analysis on categorical objects.  Usually the items being compared are placed in a column, while the categorical objects are in the rows.   The quantitative value is then placed in the intersection of the row and column: called the *cell*.
 
@@ -385,12 +385,13 @@ Frames are the basic containers that surround the data and give context to our n
 #.	Generally tighten the axes as much as possible, except ...
 #.	When showing comparison plots: then all axes must have the same minima and maxima (see the exercise regarding the :ref:`Economist figure <economist-question>`).
 
-.. index::
-	pair: colour; Data visualization
 
 Colour
 ======
 
+.. index::
+	pair: colour; Data visualization
+	
 Colour is very effective in all graphical charts, however you must bear in mind that your readers might be colour-blind, or the document might be read from a grayscale print out.  
 
 Note also that a standard colour progression does *not* exist.  We often see dark blues and purples representing low numbers and reds the higher numbers, with greens, yellows, and orange in between.  Also, there are several such colour schemes - there isn't a universal standard.  The only safest colour progression is the grayscale axis, ranging from blacks to white at each extreme: this satisfies both colour-blind readers and users of your grayscale printed output.
@@ -415,13 +416,12 @@ One cannot provide generic advice that applies in every instance.  These tips ar
 -	Maximize the data-ink ratio = (ink for data) / (total ink for graphics).  Maximizing this ratio, within reason, means you should (a) eliminate non-data ink and (b) erase redundant data-ink.
 
 -	Maximize data density: humans can interpret data displays of 250 data points per linear inch, and 625 data points per square inch.
-	
-	
-.. index::
-	pair: exercises; Data visualization
 
 Exercises 
 =========
+
+.. index::
+	pair: exercises; Data visualization
 
 .. question::
 
