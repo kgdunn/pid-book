@@ -19,18 +19,23 @@ class Question_Answer(Directive):
     option_spec = {}
     def run(self):
         env = self.state.document.settings.env
-        if self.name == 'question':
-            # self.src is the full name of the file we are dealing with
-            q_number = env.new_serialno(env.docname) + 1
-            title = nodes.rubric('', 'Question %d' % q_number)
-        elif self.name == 'answer':
-            title = nodes.emphasis('', 'Solution')  # Add a new paragraph here first!
         node = question_answer()
         node.document = self.state.document
         node.line = self.lineno
         self.state.nested_parse(self.content, self.content_offset,
                                 node, match_titles=1)
-        return [title, node]
+        out = []
+        if self.name == 'question':
+            # self.src is the full name of the file we are dealing with
+            q_number = env.new_serialno(env.docname) + 1
+            out.append(nodes.rubric('', 'Question %d' % q_number))
+        elif self.name == 'answer':
+            # Add a new paragraph here first!
+            out.append(nodes.paragraph('', ''))
+            out.append(nodes.emphasis('', 'Solution'))
+            out.append(nodes.paragraph('', ''))
+        out.append(node)
+        return out
 
 def process_question_nodes(app, doctree, docname):
     ns = app.config.__dict__.copy()
