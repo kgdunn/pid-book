@@ -187,7 +187,7 @@ Histograms, probability and distributions
 =========================================
 
 .. index::
-	single: variability; cost of
+	single: histograms
 
 A histogram is a summary of the variation in a measured variable.  It shows the *number* of samples that occur in a *category*: this is called a **frequency distribution**.  For example: number of children born, categorized against their gender: male or female.
 
@@ -1364,7 +1364,7 @@ Confidence interval for the ratio of two variances
 
 
 .. index::
-	single: variability; cost of
+	single: pool variances
 
 One way to test whether we can pool (combine) two variances, taken from two different *normal distributions*, is to construct the ratio: :math:`\dfrac{s^2_1}{s^2_2}`.  We can construct a confidence interval, and if this interval contains the value of 1.0, then we have no evidence to presume they are different (i.e. we can assume the two population variances are similar).
 
@@ -1416,9 +1416,8 @@ Incidentally, it is this confidence interval that is used in polls to judge the 
 Paired tests
 ============
 
-
 .. index::
-	single: variability; cost of
+	pair: paired tests; Univariate data
 
 .. Verify this section against other notes.
 
@@ -1462,7 +1461,7 @@ Exercises
 ==========
 
 .. index::
-	single: variability; cost of
+	pair: exercises; Univariate data
 
 .. question::
 
