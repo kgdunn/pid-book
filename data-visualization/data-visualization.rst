@@ -205,7 +205,7 @@ Box plots
 
 Box plots are an efficient summary of one variable (univariate chart), but can also be used effectively to compare like variables that are in the same units of measurements.
 
-The box plot shows the so-called *five-number summary* of a univariate data series:
+The box plot shows the so-called *five-number summary* of a univariate data series: 
 
 - minimum sample value
 - 25th `percentile <http://en.wikipedia.org/wiki/Percentile>`_ (1st `quartile <http://en.wikipedia.org/wiki/Quartile>`_)
@@ -453,7 +453,7 @@ Exercises
 
 .. answer::
 	:fullinclude: no 
-	:short: Time-series and sparkline
+	:short: Time-series and sparkline.
 
 	#.	The plots are a time-series plot and a sparkline.  The sparkline shows exactly the same data, just a more compact form (without the labelling on the axes).
 
@@ -474,6 +474,7 @@ Exercises
 		:scale: 40
 
 .. answer::
+	:fullinclude: no 
 
 	There are several problems with this graphical comparison, but the main concerns are with showing time trends as bar plots, and the alignment of the time trends.
 
@@ -496,7 +497,8 @@ Exercises
 		:scale: 80
 
 .. answer::
-
+	:fullinclude: no 
+	
 	The data from this article are needlessly embellished with a picture of a house, a $20,000 bill and a stake in the ground.
 
 	A simple annotated table will show the data well enough.  A bar chart, horizontally or vertically aligned is not suitable.
