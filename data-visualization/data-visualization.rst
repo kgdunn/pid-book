@@ -469,7 +469,7 @@ Exercises
 
 	The following graphics were shown in the print issue of *The Economist* in the 28 November 2009 issue, page 85. The article attempts to argue that there are enough similarities between Japan's stagnant economic experience in the 1990's (known as "Japan's Lost Decade"), and the current experience in the "rich world" western countries to give their policymakers pause for concern.  You can `read the full article here <http://www.economist.com/node/14973163?story_id=14973163>`_.  What problems do you notice with the graphics?
 
-	.. figure:: images/economist-figure-story-id-14973163.png
+	.. image:: images/economist-figure-story-id-14973163.png
 		:align: center
 		:scale: 40
 
@@ -492,7 +492,7 @@ Exercises
 
 	This figure is a screen shot from a `Toronto Star article <http://www.yourhome.ca/homes/realestate/article/742160--mortgage-rate-roulette>`_ about mortgage payments as a function of the interest rate.  Redraw the same information in a more suitable form.
 
-	.. figure:: images/Toronto-Star-Mortgage-Rates.png
+	.. image:: images/Toronto-Star-Mortgage-Rates.png
 		:align: center
 		:scale: 80
 
@@ -503,7 +503,7 @@ Exercises
 
 	A simple annotated table will show the data well enough.  A bar chart, horizontally or vertically aligned is not suitable.
 
-	.. figure:: images/mortgage-repayment-table.png
+	.. image:: images/mortgage-repayment-table.png
 		:align: center
 		:scale: 60
 
@@ -545,7 +545,7 @@ Exercises
 
 	#.	A time-series plot of the data shows increased visits in September and October, and declining visits in November and December.  This coincides with the phases of the academic term.  Some people use a plot of the total number of visits within each month, which shows this effect in a nice way.
 
-		.. figure:: images/website-traffic-sequence-and-timeseries.png
+		.. image:: images/website-traffic-sequence-and-timeseries.png
 			:width: 750px
 			:align: center
 
@@ -569,9 +569,8 @@ Exercises
 
 .. question::
 
-	.. figure:: images/kidnappings-question.png
+	.. image:: images/kidnappings-question.png
 		:scale: 30
-		:align: center
 
 	#.	What type of plot is shown here?
 	#.	Describe the phenomenon displayed.
