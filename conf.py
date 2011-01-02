@@ -13,30 +13,41 @@
 # From Sphinx
 import sys, os
 sys.path.append(os.getcwd())
+needs_sphinx = '1.0'  # If your documentation needs a minimal Sphinx version, state it here.
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.append(os.path.abspath('.'))
 
-# -- General configuration -----------------------------------------------------
+# General configuration for PID 
+# =============================
 
-# If your documentation needs a minimal Sphinx version, state it here.
-#needs_sphinx = '1.0'
-
-# Add any Sphinx extension module names here, as strings. They can be extensions
-# coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
+# These two are mutually exclusive !
+website_version = True
+instructor_version = False
 
 
 # Sphinx extensions
-extensions = ['sphinx.ext.todo', 'sphinx.ext.pngmath', 'sphinx.ext.ifconfig']
+# =================
+extensions = ['sphinx.ext.todo', 'sphinx.ext.pngmath', ]
+extensions.append('sphinx.ext.ifconfig')  # used infrequently (mainly in univariate section to leave blank gaps; replace with Sphinx extension eventually)
 
 # Sphinx contrib extensions
+# -------------------------
+# Spelling extension?
 
 # Custom extensions
-
+# -------------------------
 extensions.append('q-and-a')
-q_and_a_override = False     # False for the student and website version, and True for the instructor version
+if website_version:
+    q_and_a_override = False    # False for the student and website version, 
+    tags.add('studentlatex')
+if instructor_version:
+    q_and_a_override = True     # True for the instructor version
+    tags.add('inst')
+    if website_version:
+        raise Exception('You cannot have both the website and instructor version')
 
 if os.path.exists('ucomment-extension'):
     extensions.append('ucomment-extension')
@@ -46,7 +57,7 @@ if os.path.exists('ucomment-extension'):
 ucomment = {}
 ucomment['django_application_path'] = '/home/kevindunn/webapps/pid_connectmv_com/pidbook/ucommentapp/'
 
-# MathJax settings:
+# MathJax extension:
 extensions.append('mathjax')
 
 # Add any paths that contain templates here, relative to this directory.
