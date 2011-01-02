@@ -89,10 +89,7 @@ Concepts that you must be familiar with by the end of this section:
 Variability
 ===========
 
-.. index::
-	single: variability
-
-Life is pretty boring without variability, and this book, and almost all the field of statistics would be unnecessary if things did not naturally vary.
+Life is pretty boring without :index:`variability`, and this book, and almost all the field of statistics would be unnecessary if things did not naturally vary.
 
 .. figure:: images/variation-none.png
 		:scale: 60
@@ -109,11 +106,8 @@ Fortunately, we have plenty of variability in our recorded data:
 	.. figure:: images/variation-spikes.png
 		:scale: 50
 		:align: center
-		
-	.. index::
-		single: feedback control
 	
-	- Feedback control systems introduce variability in your process, in order to reduce variability in another part of the process (think of what a feedback control system does)
+	- Feedback control systems introduce variability in your process, in order to reduce variability in another part of the process (think of what a :index:`feedback control` system does)
 		
 	- Operating staff: introduce variability into a process
 	- Measurement and sampling variability: sensor drift, spikes, noise, recalibration shifts, errors in our sample analysis
@@ -171,6 +165,12 @@ The high cost of variability in your raw materials
 
 .. TODO: Add a feedforward arrow to the diagram
 
+.. index::
+	single: variability; in raw materials
+	
+.. index::
+	single: raw material variability
+
 Turning the above discussion around, with you on the receiving end of highly variable raw materials:
 
 - If you do not implement any sort of process control system, then any variability in your raw materials is manifest as variability in your final product.
@@ -219,20 +219,20 @@ Plot histograms for the following:
 
 .. raw:: latex
 
-	\vspace{3cm}
+	\vspace{1cm}
 		
 - The numbers thrown from a 6-sided die:
 
 .. raw:: latex
 
-	\vspace{3cm}
+	\vspace{1cm}
 
 
 - The bacterial count per cubic inch, in packages of meat product shipped over the last year from your meat processing facility:
 
 .. raw:: latex
 
-	\vspace{3cm}
+	\vspace{1cm}
 
 .. - seeds with the same size later become plants of different heights and yield of fruit
 .. - people born in the same year have lives of different duration due to environmental, genetic, health and societal factors
@@ -675,14 +675,14 @@ Enrichment (strongly suggested): consult a statistical table found in most stati
 
 	.. raw:: latex
 
-		\vspace{3.5cm}
+		\vspace{1cm}
 
 
 #. Assume :math:`x` is the yield for a batch process, with mean of 85% and variance of 16.  What proportion of batch yield values lie between 70 and 95% ?
 
 	.. raw:: latex
 
-		\vspace{3cm}
+		\vspace{1cm}
 
 Checking for normality: using a qq-plot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -867,7 +867,7 @@ Here are 9 sampled values:  ``23, 19, 17, 18, 24, 26, 21, 14, 18``. The sample a
 	
 		.. raw:: latex
 
-			\vspace{3cm}
+			\vspace{1cm}
 	
 		.. only:: inst
 		
@@ -879,7 +879,7 @@ Here are 9 sampled values:  ``23, 19, 17, 18, 24, 26, 21, 14, 18``. The sample a
 	
 		.. raw:: latex
 
-			\vspace{5cm}
+			\vspace{1cm}
 	
 		.. only:: inst
 
@@ -889,7 +889,7 @@ Here are 9 sampled values:  ``23, 19, 17, 18, 24, 26, 21, 14, 18``. The sample a
 
 	.. raw:: latex
 
-		\vspace{2cm}
+		\vspace{1cm}
 
 	.. only:: inst
 	
