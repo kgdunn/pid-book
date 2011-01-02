@@ -13,8 +13,8 @@
 bin.centers <- c(4025, 4075, 4125, 4175, 4225, 4275, 4325, 4375)
 bin.counts <- c(4, 19, 14,  5,  4,  1,  2,  1)
 N <- 50
-e.mean.estimate <- sum(bin.centers * bin.counts)/N                                   # 4127
-e.sd.estimate <- sqrt(sum(bin.counts*(bin.centers - e.mean.estimate)^2)/(N-1))  # 78.86956
+e.mean.est <- sum(bin.centers * bin.counts)/N                        # 4127
+e.sd.est <- sqrt(sum(bin.counts*(bin.centers - e.mean.est)^2)/(N-1)) # 78.9
 
 
 bitmap('../images/bulb-energy-barplot.png', type="png256", width=7, height=7, res=250, pointsize=14) 

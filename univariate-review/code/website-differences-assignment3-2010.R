@@ -43,7 +43,8 @@ visits.Sun <- Visits[DayOfWeek=="Sunday"]
 # Look at a boxplot of the data from Friday and Saturday
 bitmap('../images/website-boxplot.png', type="png256", width=7, height=7, res=250, pointsize=14) 
 par(mar=c(4.2, 4.2, 0.2, 0.2))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
-boxplot(visits.Fri, visits.Sat, names=c("Friday", "Saturday"), ylab="Number of visits", cex.lab=1.5, cex.main=1.8, cex.sub=1.8, cex.axis=1.8)
+boxplot(visits.Fri, visits.Sat, names=c("Friday", "Saturday"), ylab="Number of visits", 
+        cex.lab=1.5, cex.main=1.8, cex.sub=1.8, cex.axis=1.8)
 dev.off()
 
 # Use the "group_difference" function from question 4

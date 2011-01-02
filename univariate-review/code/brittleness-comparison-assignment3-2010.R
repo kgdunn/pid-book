@@ -26,12 +26,12 @@ group_difference <- function(groupA, groupB)
 return(list(z, t.critical, LB, UB))
 }
 
-brittle <- read.csv('http://datasets.connectmv.com/file/brittleness-index.csv')
+brittle <- read.csv('http://datasets.connectmv.com/file/brittleness-index.csv') 
 attach(brittle)  # Now we can access the variables directly, without $ symbols
 
 # Let's start though by plotting boxplots of the data
 bitmap('../images/brittleness-boxplot.png', type="png256", width=7, height=7, res=250, pointsize=14) 
-par(mar=c(4.2, 4.2, 0.2, 0.2))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
+par(mar=c(4.2, 4.2, 0.2, 0.2))  # (bottom, left, top, right); 
 boxplot(brittle, ylab="Brittleness index", cex.lab=1.5, cex.main=1.8, cex.sub=1.8, cex.axis=1.8)
 dev.off()
 

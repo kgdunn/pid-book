@@ -354,6 +354,8 @@ We review here a couple of concepts that you should have seen in prior statistic
 
 	* 4024, 5152, 2314, 6360, 4915, 9552, 2415, 6402, 6261
 	* 4, 61, 12, 64, 4024, 52, -8, 67, 104, 24
+	
+.. _univariate-median:
 
 **Median (location)**
 
@@ -718,7 +720,7 @@ The qq-plot, quantile-quantile plot, shows the quantiles of 2 distributions agai
 		t.quantiles <- quantile(rand.t, quantiles)
 		plot(t.quantiles, norm.quantiles)
 
-t-distribution
+:math:`t`-distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Suppose we have a quantity of interest for a process, such as the daily profit per kilogram of raw material, or the viscosity of the final product.  After using the methods just described to check for normality, we might be reasonably certain that the data follow a normal distribution.  So assuming the quantity is distributed as :math:`\mathcal{N}(\mu, \sigma^2)` **and** by taking independent samples, as shown here in the figure,
@@ -751,8 +753,8 @@ we can make the following statements:
 
 .. todo:: see p 295 of Devore here for in-class example
 
-Calculating the t-distribution
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Calculating the :math:`t`-distribution
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - In R we use the function ``dt(x=..., df=...)`` to give us the values of the probability density values, :math:`p(x)`, of the :math:`t`-distribution (compare this to the ``dnorm(x, mean=..., sd=...)`` function for the normal distribution).
 
@@ -761,8 +763,8 @@ Calculating the t-distribution
 - And similarly to the ``qnorm`` function which returns the ordinate for a given area under the normal distribution, the function ``qt(0.8267, df=8)`` returns 0.9999857, close enough to 1.0, which is the inverse of the previous example.
 
 
-Using the t-distribution
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Using the :math:`t`-distribution
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 There is no practical engineering sense is showing the formula for the :math:`t`-distribution, `look it up in a reference <http://en.wikipedia.org/wiki/Student%27s_t-distribution>`_ if you are interested.  But in R, we use the ``dt(x, df=...)`` function to give us the values of the :math:`t`-distribution for a given value of :math:`x` which has been computed with ``df`` degrees of freedom.  We use the :math:`t`-distribution in calculations related to a sample *mean*, and it is the sample mean that is used as the :math:`x` value in the distribution.  This is why the distribution is only a function of the degrees of freedom.
 
@@ -1245,7 +1247,7 @@ But, because we do not always have a large and relevant body of data available, 
 			(\bar{x}_B - \bar{x}_A) - c_n \sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}  &\qquad<\qquad& \mu_B - \mu_A &\qquad<\qquad& (\bar{x}_B - \bar{x}_A) + c_n \sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}
 		\end{alignat*}
 	
-	.. todo:: this is a one-sided t-test: why is the CI symmetric?
+	.. todo:: this is a one-sided :math:`t`-test: why is the CI symmetric?
 	
 .. AS BEFORE, DO NOT use confidence limits here.  Perhaps if you rework the example to be one where we test for no-difference, then a CI would work nicely.
 
@@ -1463,7 +1465,7 @@ Exercises
 .. index::
 	pair: exercises; Univariate data
 
-.. question::
+.. question::	
 
 	Recall that :math:`\mu = \mathcal{E}(x) = \dfrac{1}{N}\sum{x}` and :math:`\mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} = \sigma^2 = \dfrac{1}{N}\sum{(x-\mu)^2}`. 
 
@@ -1471,6 +1473,8 @@ Exercises
 	#. What is the expected variance of a fair 6-sided die?
 	
 .. answer::
+	:fullinclude: no 
+	:short: 3.5; 2.92
 
 	Often the mean and standard deviation of a uniform distribution are not actual values from the distribution, however the definitions for them hold:
 
@@ -1486,15 +1490,15 @@ Exercises
 
 .. question::
 
-	Characterizing a distribution: 
-
-	#.	Compute the mean, median, standard deviation and MAD for salt content for the various soy sauces given `in this report <http://beta.images.theglobeandmail.com/archive/00245/Read_the_report_245543a.pdf>`_ (page 41) as described in the the article from the `Globe and Mail <http://www.theglobeandmail.com/life/health/salt-variation-between-brands-raises-call-for-cuts/article1299117/>`_ on 24 September 2009.  Plot a boxplot of the data and report the interquartile range (IQR). Comment on the 3 measures of spread you have calculated: standard deviation, MAD, and interquartile range.
+	Characterizing a distribution: Compute the mean, median, standard deviation and MAD for salt content for the various soy sauces given `in this report <http://beta.images.theglobeandmail.com/archive/00245/Read_the_report_245543a.pdf>`_ (page 41) as described in the the article from the `Globe and Mail <http://www.theglobeandmail.com/life/health/salt-variation-between-brands-raises-call-for-cuts/article1299117/>`_ on 24 September 2009.  Plot a boxplot of the data and report the interquartile range (IQR). Comment on the 3 measures of spread you have calculated: standard deviation, MAD, and interquartile range.
 	
-		The raw data are::
+	The raw data are given below in units of milligrams of salt per 15 mL serving::
 		
 			[460, 520, 580, 700, 760, 770, 890, 910, 920, 940, 960, 1060, 1100]
 
 .. answer::
+	:fullinclude: no 
+	:short: IQR = 240 mg salt/15 mL serving
 
 	.. literalinclude:: code/soy-salt-content.R
 	   :language: s
@@ -1514,10 +1518,9 @@ Exercises
 
 .. answer::
 
-	In the example on salt content we saw how easily the mean is influenced by unusual data points.  Take any group of people anywhere in the world, and there will always be a few who earn lots of money (not everyone can be the CEO, especially of a bank!).  Also, since no one earns negative income, the distribution piles up at the left, with fewer people on the right. This implies that the mean will lie above the median, since 50% of the histogram area must lie below the median, by definition. A previous student pointed out that low income earners are less likely to file tax returns, so they are underrepresented in the data.
+	We described how easily the :ref:`mean is influenced by unusual data points <univariate-median>`.  Take any group of people anywhere in the world, and there will always be a few who earn lots of money (not everyone can be the CEO, especially of a bank!).  Also, since no one earns negative income, the distribution piles up at the left, with fewer people on the right. This implies that the mean will lie above the median, since 50% of the histogram area must lie below the median, by definition. A previous student pointed out that low income earners are less likely to file tax returns, so they are underrepresented in the data.
 
-	Even though the median is a more fair way of reporting income, and robust to unusual earners (many low, very few super-rich), I would prefer if Statistics Canada released a histogram - that would tell a lot more - even just the the MAD, or IQR would be informative.  It was surprising that Hamilton showed higher median earnings per family than Toronto. I infer from this that there are more low income earners in Toronto and Canada than in Hamilton, but without the histograms it is hard to be sure.  Also, I wasn't able to find exactly what StatsCan means by a family - did they include single people as a "family"?  Maybe there are more, wealthy singles in Toronto, but they are aren't included in the numbers.  The median income per person would be a useful statistic to help judge that.
-
+	Even though the median is a more fair way of reporting income, and robust to unusual earners (many low income earners, very few super-rich), I would prefer if Statistics Canada released a histogram - that would tell a lot more - even just the the MAD, or IQR would be informative.  It was surprising that Hamilton showed higher median earnings per family than Toronto. I infer from this that there are more low income earners in Toronto and Canada than in Hamilton, but without the histograms it is hard to be sure.  Also, I wasn't able to find exactly what StatsCan means by a family - did they include single people as a "family"?  Maybe there are more, wealthy singles in Toronto, but they are aren't included in the numbers.  The median income *per person* would be a useful statistic to help judge that.
 
 .. question::
 
@@ -1539,22 +1542,22 @@ Exercises
 
 	.. figure:: images/size1.png
 		:width: 300px
-		:scale: 50
+		:scale: 40
 	.. figure:: images/size2.png
 		:width: 300px
-		:scale: 50
+		:scale: 40
 	.. figure:: images/size3.png
 		:width: 300px
-		:scale: 50
+		:scale: 40
 	.. figure:: images/density1.png
 		:width: 300px
-		:scale: 50
+		:scale: 40
 	.. figure:: images/density2.png
 		:width: 300px
-		:scale: 50
+		:scale: 40
 	.. figure:: images/density3.png
 		:width: 300px
-		:scale: 50
+		:scale: 40
 	
 
 .. question::
@@ -1562,14 +1565,16 @@ Exercises
 	Use the section on `Historical data <http://www.climate.weatheroffice.ec.gc.ca/climateData/canada_e.html>`_ from Environment Canada's website and use the ``Customized Search`` option to obtain data for the ``HAMILTON A`` station from 2000 to 2009.  Use the settings as ``Year=2000``, and ``Data interval=Monthly`` and request the data for 2000, then click ``Next year`` to go to 2001 and so on. 
 
 		-	For each year from 2000 to 2009, get the total snowfall and the average of the ``Mean temp`` over the whole year (the sums and averages are reported at the bottom of the table).
-
-				.. Snow:     170.9, 94.1, 138.0, 166.2, 175.8, 218.4, 56.6, 182.4, 243.2,   avg=161.8
-				.. MeanTemp: 7.6,   8.8,  8.8,   7.3,   7.7,   8.2,   9.1 , 8.2,  7.7
 		-	Plot these 2 variables against time
 		-	Now retrieve the long-term averages for these data `from a different section of their website <http://www.climate.weatheroffice.ec.gc.ca/climate_normals/index_e.html>`_ (use the same location, ``HAMILTON A``, and check that the data range is 1971 to 2000).  Superimpose the long-term average as a horizontal line on your previous plot.
-		-	Note: the purpose of this exercise is more for you to become comfortable with web-based data retrieval, which is common in most companies.
+		-	**Note**: the purpose of this exercise is more for you to become comfortable with web-based data retrieval, which is common in most companies.
+		-	**Note**: please use any other city for this question if you prefer.
 
 .. answer::
+	:fullinclude: no 
+		
+	.. Snow:     170.9, 94.1, 138.0, 166.2, 175.8, 218.4, 56.6, 182.4, 243.2,   avg=161.8
+	.. MeanTemp: 7.6,   8.8,  8.8,   7.3,   7.7,   8.2,   9.1 , 8.2,  7.7
 
 	These are the data, and the code to plot the results.  The temperature for the last decade trended higher than the average for the prior 3 decades, 1971 to 2000.
  
@@ -1591,7 +1596,9 @@ Exercises
 	Does the number of visits in the `website traffic <http://datasets.connectmv.com/info/website-traffic>`_ data set follow a normal distribution?  If so, what are the parameters for the distribution?  What is the likelihood that you will have between 10 and 30 visits to the website?
 	
 .. answer:: 
-
+	:fullinclude: no 
+	:short: These data are normally distributed according to the qq-plot.
+	
 	.. literalinclude:: code/website-visits-univariate.R
 		:language: s
 		:lines: 1-19
@@ -1602,7 +1609,7 @@ Exercises
 		-	Standard deviation of the number of visits = 8.3 visits
 		-	Probability that there are between 10 and 30 visits to the site each day: 75.3%
 		
-	We should use the t-distribution to answer the last part, but at this stage we had not yet looked at the t-distribution.  However, the large number of observations (214) means the t-distribution is no different than the normal distribution.
+	We should use the :math:`t`-distribution to answer the last part, but at this stage we had not yet looked at the :math:`t`-distribution.  However, the large number of observations (214) means the :math:`t`-distribution is no different than the normal distribution.
 
 .. question::
 
@@ -1619,11 +1626,12 @@ Exercises
 	.. could use "fitdistr" in R in the MASS package?
 
 .. answer:: 
+	:fullinclude: no 
 
 	.. literalinclude:: code/ammonia-in-wastewater.R
 		:language: s
 
-	An appropriate distribution appears to be the normal distribution, however the right hand side tail (upper tail) is slightly heavier (outside the given limits) than would be found on the normal distribution.  Assuming the 	data are normal, we can calculate the distribution's parameters as :math:`\bar{x} = \hat{\mu} = 36.1` and :math:`s= \hat{\sigma} = 8.52`.
+	An appropriate distribution appears to be the normal distribution, however the right hand side tail (upper tail) is slightly heavier (outside the given limits) than would be found on the normal distribution.  Assuming the data are normal, we can calculate the distribution's parameters as :math:`\bar{x} = \hat{\mu} = 36.1` and :math:`s= \hat{\sigma} = 8.52`.
 
 	The fact that the data are not independent is not an issue.  To calculate estimates of the parameter's distribution (the mean and standard deviation) we do not need to assume independence.  One way to see this: if I randomly reorder the data, I will still get the same value for the mean and standard deviation.  The assumption of independence is required for the central limit theorem, but we have not used that theorem here.
 
@@ -1632,7 +1640,7 @@ Exercises
 		- when using only the data: 4.5% (see code above)
 		- when using the estimated parameters of the distribution: 5.1% (see code above)
 	
-	We should use the t-distribution to answer the last part, but at this stage we had not yet looked at the t-distribution.  However, the large number of observations (1440) means the t-distribution is no different than the normal distribution.
+	We should use the :math:`t`-distribution to answer the last part, but at this stage we had not yet looked at the :math:`t`-distribution.  However, the large number of observations (1440) means the :math:`t`-distribution is no different than the normal distribution.
 
 .. question::
 
@@ -1657,6 +1665,8 @@ Exercises
 			*Additional information*: In this part you are just finding the values of :math:`\text{LB}` and :math:`\text{UB}`
 	
 .. answer::  
+	:fullinclude: no 
+	:short: Average = 20, standard deviation = 3.81
 
 	.. literalinclude:: code/polymer-bale-samples.R
 		:language: s
@@ -1680,6 +1690,8 @@ Exercises
 	You are responsible for the quality of maple syrup produced at your plant.  Historical data show that the standard deviation of the syrup viscosity is 40 cP.  How many lab samples of syrup must you measure so that an estimate of the syrup's long-term average viscosity is inside a **range** of 60 cP, 95% of the time.  This question is like the previous one: except this time you are given the range of the interval :math:`\text{UB}\,-\,\text{LB}`, and you need to find :math:`n`.
 	
 .. answer::
+	:fullinclude: no 
+	:short: 7 samples
 
 	We can write the range symbolically as:
 	
@@ -1701,6 +1713,7 @@ Exercises
 	A new wastewater treatment plant is being commissioned and part of the commissioning report requires a statement of the confidence interval of the `biochemical oxygen demand (BOD) <http://en.wikipedia.org/wiki/Biochemical_oxygen_demand>`_.  How many samples must you send to the lab to be sure the true BOD is within a range of 2 mg/L, centered about the sample average?  If there isn't enough information given here, specify your own numbers and assumptions and work with them to answer the question.
 
 .. answer::
+	:fullinclude: no 
 
 	The objective is to calculate |n|, the number of samples.  Let :math:`\bar{x}` be the average of these |n| samples, and this will be distributed according to the normal distribution with mean and standard deviation as shown below, if the samples are taken independently (which may not be possible in practice!):
 
@@ -1746,6 +1759,8 @@ Exercises
 	- What is a confidence interval for the mean at 95% probability, stating and testing any assumptions you need to make.
 
 .. answer::
+	:fullinclude: no 
+	:short: mean = 4127, standard deviation = 77.2
 
 	-   The mean and standard deviation can be estimated as shown in the code below.  The estimates are: the mean energy usage is **4127 W.hours**, and the standard deviation is **79 W.hours**.  This corresponds very closely to the raw data I used to generate this question (mean of actual data = 4125, sd of actual data = 77.2).
 
@@ -1753,9 +1768,9 @@ Exercises
 	       :language: s
 	       :lines: 13-17
 
-	-   Strictly speaking we cannot calculate a confidence interval for the mean, as the data are not normally distributed.  We can see that there is a heavy tail to the right hand side.  Why do we require the data to be normally distributed?  To create the confidence interval we have to use an estimate of the standard deviation, and then use the t-distribution to estimate the confidence interval bounds.  However, the t-distribution requires that we assume the raw data come from a normal distribution.
+	-   Strictly speaking we cannot calculate a confidence interval for the mean, as the data are not normally distributed.  We can see that there is a heavy tail to the right hand side.  Why do we require the data to be normally distributed?  To create the confidence interval we have to use an estimate of the standard deviation, and then use the :math:`t`-distribution to estimate the confidence interval bounds.  However, the :math:`t`-distribution requires that we assume the raw data come from a normal distribution.
 
-	    But if we do calculate the confidence interval, we have to use the t-distribution at the 95% cumulative area, with 50 - 1 = 49 degrees of freedom.  In R: ``qt(0.025, df=49)`` gives :math:`-c_t = -2.009575`. Using our estimates of :math:`s=79` and :math:`\bar{x} = 4127`
+	    But if we do calculate the confidence interval, we have to use the :math:`t`-distribution at the 95% cumulative area, with 50 - 1 = 49 degrees of freedom.  In R: ``qt(0.025, df=49)`` gives :math:`-c_t = -2.009575`. Using our estimates of :math:`s=79` and :math:`\bar{x} = 4127`
     
 	    .. math::
     
@@ -1780,8 +1795,9 @@ Exercises
 		\end{array}
 
 .. answer::
-
-	This question aims for you to prove to yourself that the t-distribution is **wider (more broad)** than the normal distribution.  The 90% region spanned by the t-distribution with 12 degrees of freedom has upper and lower limits at ``qt((1-0.9)/2, df=12)``, i.e. from **-1.782** to **1.782**.  The equivalent 90% region spanned by the normal distribution is ``qnorm((1-0.9)/2)``, spanning from **z=-1.64** to **z=1.64**.  Everything else in the center of the 2 inequalities is the same, so we only need to compare :math:`c_t` and :math:`c_n`.
+	:fullinclude: no 
+	
+	This question aims for you to prove to yourself that the :math:`t`-distribution is **wider (more broad)** than the normal distribution.  The 90% region spanned by the :math:`t`-distribution with 12 degrees of freedom has upper and lower limits at ``qt((1-0.9)/2, df=12)``, i.e. from **-1.782** to **1.782**.  The equivalent 90% region spanned by the normal distribution is ``qnorm((1-0.9)/2)``, spanning from **z=-1.64** to **z=1.64**.  Everything else in the center of the 2 inequalities is the same, so we only need to compare :math:`c_t` and :math:`c_n`.
 
 
 .. question::
@@ -1790,15 +1806,16 @@ Exercises
 
     A major aim of many engineers is/will be to reduce the carbon footprint of their company's high-profile products. Next week your boss wants you to evaluate a new raw material that requires 2.6 :math:`\dfrac{\text{kg CO}_2}{\text{kg product}}` less than the current material, but the final product's brittleness must be the same as achieved with the current raw material.  This is a large reduction in :math:`\text{CO}_2`, given your current production capacity of 51,700 kg of product per year.  Manpower and physical constraints prevent you from running a randomized test; you don't have a suitable database of historical data either.
 
-    One idea you come up with is to use to your advantage the fact that your production line has three parallel reactors, TK104, TK105, and TK107.  They were installed at the same time, they have the same geometry, the same instrumentation, *etc*; you have pretty much thought about every factor that might vary between them, and are confident the 3 reactors are identical. Typical production schedules split the raw material between the 3 reactors.  Data `on the book website <http://datasets.connectmv.com/info/brittleness-index>`_ contain the brittleness values from the three reactors for the past few runs on the current raw material.
+    One idea you come up with is to use to your advantage the fact that your production line has three parallel reactors, TK104, TK105, and TK107.  They were installed at the same time, they have the same geometry, the same instrumentation, *etc*; you have pretty much thought about every factor that might vary between them, and are confident the 3 reactors are identical. Typical production schedules split the raw material between the 3 reactors.  Data `on the website <http://datasets.connectmv.com/info/brittleness-index>`_ contain the brittleness values from the three reactors for the past few runs on the current raw material.
 
     #.	Which two reactors would you pick to run your comparative trial on next week?
-
 	#.	Repeat your calculations assuming pairing.
 
 .. answer::
-
-	The purpose of this question is to compare two system.  There are two ways: either compare one group to another group, or to have paired tests.  We could consider this a paired test, because the material is run in both reactors at the same conditions.  In this answer we compare reactor I to reactor J as groups.  Our answer will be to run experiments in the reactors that show the smallest difference.
+	:fullinclude: no 
+	:short: You can do an ordinary test of differences, or a paired test.  Also note that there are missing data which reduce the degrees of freedom.
+	
+		The purpose of this question is to compare two system.  There are two ways: either compare one group to another group, or to have paired tests.  We could consider this a paired test, because the material is run in both reactors at the same conditions.  In this answer we compare reactor I to reactor J as groups.  Our answer will be to run experiments in the reactors that show the smallest difference.
 
 	.. note:: This question also has missing data, denote as ``NA`` in R.  Most real data sets that you deal with will have missing data and the questions will expect to deal with them.  For example, the degrees of freedom will be reduced because of the missing data.  Use this solution to see how to write code in R that deals with missing values.
 
@@ -1820,7 +1837,7 @@ Exercises
 
 	But the next problem we face is that we don't know the value of :math:`\sigma`. We can estimate it however, by pooling the variances of the two groups. Strictly speaking we should do a check for comparable variances before pooling them - described :ref:`in a previous section <univariate-pooled-variance>`.
 
-	When we use the pooled variance now, then the assumption that the |z|-value follows the normal distribution is not correct anymore; it follows the t-distribution, with the pooled number of degrees of freedom.  Once we have the |z|-value we can calculate the probability of finding a |z|-value of at least that big.  Anything beyond that is the risk that we are wrong.
+	When we use the pooled variance now, then the assumption that the |z|-value follows the normal distribution is not correct anymore; it follows the :math:`t`-distribution, with the pooled number of degrees of freedom.  Once we have the |z|-value we can calculate the probability of finding a |z|-value of at least that big.  Anything beyond that is the risk that we are wrong.
 
 	We can also expand the |z| value into a confidence interval at a given confidence level.  We do this in the code at the 95% level (see ``LB`` and ``UB`` terms).
 
@@ -1830,12 +1847,12 @@ Exercises
     
 	While all three reactors have confidence intervals that span zero at the 95% level, notice how the interval gives us a feel for the degree of difference.  Clearly **reactors TK105 and TK107 are the most similar**, however all 3 are statistically equivalent from a confidence interval point of view. Contrast this to using a hypothesis test, which you may have encountered in other statistical courses.  A hypothesis test just tells you  "yes" or "no"; a confidence interval gives a much better engineering feel for the degree of difference.  Also see the solution to question 6 that highlights another advantage of confidence intervals.
 
-	To get full grade for this question you just had to report the z-values and its corresponding risk; confidence intervals were not required.
+	A full solution to this question require you report the z-values and its corresponding risk.
 
 	.. literalinclude:: code/brittleness-comparison-assignment3-2010.R
 	       :language: s
 	
-	**Using pairing**
+	**Using a paired test**
 	
 	Pairing assumes that each reactor was run with the same material, except that the material was split into thirds: one third for each reactor.  As described in the :ref:`section on paired tests <univariate-paired-tests>` we rely on calculating the difference in brittleness, then calculating the z-value of the average difference.  Contrast this to the unpaired tests, where we calculated the difference of the averages.
 
@@ -1872,7 +1889,7 @@ Exercises
 		:width: 750px
 		
 .. answer::
-
+	
 	-   Let our variable of interest be the difference between the average of the 2 groups: :math:`\bar{x}_{\text{Fri}} - \bar{x}_{\text{Sat}}`.  This variable will be distributed normally (why? - see the notes) according to :math:`\bar{x}_{\text{Fri}} - \bar{x}_{\text{Sat}} \sim \mathcal{N}\left(\mu_{\text{Fri}}-\mu_{\text{Sat}}, \sigma^2_{\text{diff}}\right)`.  So the z-value for this variable is: :math:`z = \dfrac{(\bar{x}_{\text{Fri}} - \bar{x}_{\text{Sat}}) - (\mu_{\text{Fri}}-\mu_{\text{Sat}}) }{\sigma_{\text{diff}}}`
 
 	-   The variance of the difference, :math:`\sigma^2_{\text{diff}} = \sigma^2\left(\dfrac{1}{n_{\text{Fri}}} + \dfrac{1}{n_{\text{Sat}}} \right)`, where :math:`\sigma^2` is the variance of the number of visits to the website on Friday and Saturday.  Since we don't know that value, we can estimate it from pooling the 2 variances of each group.  We should calculate first that these variances are comparable (they are; but you :ref:`should confirm this yourself <univariate-pooled-variance>`).
@@ -1888,13 +1905,13 @@ Exercises
 
 	        z = \dfrac{20.77 - 15.27}{47.09 \left(\dfrac{1}{30} + \dfrac{1}{30} \right)} = 3.1
     
-	    But since we used an estimated variance, we cannot say that |z| comes from the normal distribution anymore.  It now follows the t-distribution with 58 degrees of freedom (which is still comparable to the normal distribution - see question 7 below).  The corresponding probability that :math:`z<3.1` is 99.85%, using the t-distribution with 58 degrees of freedom.  This difference is significant; there is a very small probability that this difference is due to chance alone.
+	    But since we used an estimated variance, we cannot say that |z| comes from the normal distribution anymore.  It now follows the :math:`t`-distribution with 58 degrees of freedom (which is still comparable to the normal distribution - see question 7 below).  The corresponding probability that :math:`z<3.1` is 99.85%, using the :math:`t`-distribution with 58 degrees of freedom.  This difference is significant; there is a very small probability that this difference is due to chance alone.
 
 	-   The code was modified to generate the matrix of z-value results in the comments below.  The largest difference is between Sunday and Wednesday, and the smallest difference is between Monday and Tuesday.
 
 	.. literalinclude:: code/website-differences-assignment3-2010.R
 	       :language: s
-	       :lines: 32-43,46,48-54,74-
+	       :lines: 32-54,75-
        
 .. question::
 
@@ -1917,8 +1934,9 @@ Exercises
 	=============== =================
 
 .. answer::
+	:fullinclude: no 
 
-	The temptation is to jump into the code and calculate the t-values and averages differences (:math:`\bar{x}_D = 16.4`, and :math:`\bar{x}_M = 22.6`).  But start with a plot of the data, specifically a plot of the differences between the two methods.  The immediate problem you see is that average difference of 6.2 between the methods is strongly influenced by a single observation (the second one).  In general, the dilution method always produced a smaller result than the manometric method.  We expect to see that in our analytical results.
+	The temptation is to jump into the code and calculate the :math:`t`-values and averages differences (:math:`\bar{x}_D = 16.4`, and :math:`\bar{x}_M = 22.6`).  But start with a plot of the data, specifically a plot of the differences between the two methods.  The immediate problem you see is that average difference of 6.2 between the methods is strongly influenced by a single observation (the second one).  In general, the dilution method always produced a smaller result than the manometric method.  We expect to see that in our analytical results.
 
 	.. figure:: images/BOD-comparison-plot.png
 	    :width: 750px
@@ -1933,11 +1951,11 @@ Exercises
 
 .. question::
 
-	Plot the cumulative probability function for the normal distribution and the t-distribution on the same plot.  
+	Plot the cumulative probability function for the normal distribution and the :math:`t`-distribution on the same plot.  
 
-		- Use 6 degrees of freedom for t-distribution.  
+		- Use 6 degrees of freedom for :math:`t`-distribution.  
 		- Repeat the plot for a larger number of degrees of freedom.  
-		- At which point is the t-distribution indistinguishable from the normal distribution?  
+		- At which point is the :math:`t`-distribution indistinguishable from the normal distribution?  
 		- What is the practical implication of this result?
 
 .. answer::
@@ -1950,7 +1968,7 @@ Exercises
 	    :width: 750px
 	    :align: center
     
-	The above source code and figure output shows that the t-distribution starts being indistinguishable from the normal distribution after about 35 to 40 degrees of freedom.  This means that when we deal with large sample sizes (over 40 or 50 samples), then we can use critical values from the normal distribution rather than the t-distribution.  Furthermore, it indicates that our estimate of the variance is a pretty good estimate of the population variance for largish sample sizes.
+	The above source code and figure output shows that the :math:`t`-distribution starts being indistinguishable from the normal distribution after about 35 to 40 degrees of freedom.  This means that when we deal with large sample sizes (over 40 or 50 samples), then we can use critical values from the normal distribution rather than the :math:`t`-distribution.  Furthermore, it indicates that our estimate of the variance is a pretty good estimate of the population variance for largish sample sizes.
 
 .. question::
 
@@ -1960,6 +1978,8 @@ Exercises
 		-	Out of 1000 customers, how many are lucky enough to get 40.0 grams or more of potato chips in their bags?
 
 .. answer::
+	:fullinclude: no 
+	:short: standard deviation = 1.03 grams
 
 	-	Calculate the z-value and find which fraction of :math:`z` falls at or below 1% of the probability area.  From the tables this is -2.326.
 
@@ -1993,6 +2013,8 @@ Exercises
 	The manager wants to revert back to the original supplier, but is leaving the decision up to you; what would be your advice?  Show all calculations and describe any additional assumptions, if required.
 
 .. answer::
+	:fullinclude: no 
+	:short: This problem is open-ended: pay attention to having a significant difference vs a practical difference.
 
 	This question, similar to most real statistical problems, is open-ended.  This problem considers whether a significant difference has occurred.  And in many cases, even though there is significant difference, it has to be weighed up whether there is a *practical* difference as well, together with the potential of saving money (increased profit).
 
@@ -2064,7 +2086,8 @@ Exercises
 	List an advantage of using a paired test over an unpaired test.  Give an example, not from the notes, that illustrates your answer.
 
 .. answer::
-
+	:fullinclude: no 
+	
 	One primary advantage of pairing is that any systematic difference between the two groups (A and B) is eliminated.  For example, a bias in the measurement will cancel out when calculating the pairs of differences.  Any example is suitable as an answer: e.g. laboratory miscalibration; an offset in an on-line sensor, *etc*.
 
 	Other advantages are that the raw data do not need to be normally distributed, only the paired differences.  
@@ -2080,6 +2103,7 @@ Exercises
 	Discuss, in the context of this example, an advantage of paired tests over unpaired tests.  Assume 95% confidence intervals, and that the true result was one of "no significant difference between method A and method B".  Give numeric values from this example to substantiate your answer.
 
 .. answer::
+	:fullinclude: no 
 
 	One advantage of the paired test is that often a fewer number of samples are required to obtain a more sensitive result than when analyzing the data as from two distinct, unpaired groups.
 
@@ -2096,7 +2120,7 @@ Exercises
 			(\bar{x}_B - \bar{x}_A)  - 9.27  &\leq&  \mu_B - \mu_A &\leq& (\bar{x}_B - \bar{x}_A) + 9.27 \\
 		\end{array}
 
-	The :math:`c_t` value for the unpaired case is from the t-distribution with 16 degrees of freedom, a value of around 2.12.
+	The :math:`c_t` value for the unpaired case is from the :math:`t`-distribution with 16 degrees of freedom, a value of around 2.12.
 
 	**Paired case**:
 
@@ -2112,7 +2136,7 @@ Exercises
 				\bar{w} - 6.81								&\leq& \mu_w 				&\leq&  \bar{w} + 6.81
 			\end{array}
 
-	The :math:`c_t` value for the paired case is from the t-distribution with 8 degrees of freedom, a value of around 2.3.
+	The :math:`c_t` value for the paired case is from the :math:`t`-distribution with 8 degrees of freedom, a value of around 2.3.
 
 	The key result of this question is that the confidence interval for the paired case is tighter (narrower) than the confidence interval from the unpaired case.  Given that the true result was one of no significant difference, it implies that :math:`\mu_A = \mu_B` and that :math:`\mu_w = 0`.  The tighter confidence interval comes purely from the fact that the standard deviation used for the paired case is smaller, :math:`\sqrt{\dfrac{79}{9}}` *vs* the :math:`\sqrt{86 \left(\dfrac{1}{9} + \dfrac{1}{9}\right)}` from the unpaired case.  This is not due to the variances, since :math:`\sqrt{86} \approx \sqrt{79}`, i.e. (9.27 vs 8.88), but rather due to the fact that that unpaired standard deviation is multiplied by :math:`\sqrt{2/9}`, while the paired standard deviation is multiplied by :math:`\sqrt{1/9}`.
 
@@ -2139,6 +2163,7 @@ Exercises
 	\3. Now assume the result from your experimental test was :math:`-21 \text{~seconds} \leq \mu_{\text{Axial}} - \mu_{\text{Radial}} \leq 187 \text{~seconds}`; how can you make the confidence interval narrower?
 
 .. answer::
+	:fullinclude: no 
 
 	#.	This confidence interval spans zero, and nearly symmetrically.  This implies the population difference is likely zero, while the symmetry implies their is no preference either way: the difference in mixing times is as low as -453 seconds or as high as 390 seconds. The recommendation is that either the axial or radial impeller could be used, with no expected long-term difference.  Use the cheaper impeller; or use the axial impeller if the costs are the same (only because of the very slight imbalance in the CI).  Note that there is a 5% chance that the confidence interval does not contain the true difference.
 
@@ -2160,7 +2185,7 @@ Exercises
 	The enrichment paper by PJ Rousseeuw, "`Tutorial to Robust Statistics <http://dx.doi.org/10.1002/cem.1180050103>`_", *Journal of Chemometrics*, **5**, 1-20, 1991 discusses the breakdown point of a statistic.  Describe what the breakdown point is, and give two examples: one with a low breakdown point, and one with a high breakdown point.  Use a vector of numbers to help illustrate your answer.
 
 
-	*Solution*
+.. answer::
 
 	PJ Rousseeuw defines the breakdown point on page 3 of his paper as "... the smallest fraction of the observations that have to be replaced to make the estimator unbounded. In this definition one can choose which observations are replaced, as well as the magnitude of the outliers, in the least favourable way".
 
