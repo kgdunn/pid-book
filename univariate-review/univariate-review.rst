@@ -949,7 +949,7 @@ Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{
 	
 .. _univariate-confidence-intervals:
 
-Confidence Intervals
+Confidence intervals
 ====================
 
 .. See code in yield-exercise.R for the R source code
