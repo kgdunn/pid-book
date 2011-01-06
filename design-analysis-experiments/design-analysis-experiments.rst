@@ -2059,6 +2059,7 @@ Exercises
 		#.	Calculate the main effects and interactions by hand using a least squares model.  You may confirm your result using software, but your answer should not just be the computer software output.
 	
 .. answer::
+	:fullinclude: no 
 
 	#.	This is a :math:`2^2` factorial system with a replicate at each point.  We had not covered replicates in class at the time you had to do this assignment.  So you should average the replicate points and then calculate the main effects and other terms for this system.  You will get the same result if you analyze it as two separate factorials and then average the results - it's just more work that way though.
 
@@ -2232,6 +2233,7 @@ Exercises
 		-	Compare your parameters from this half-fraction (8 runs) to those from the full factorial (16 runs).  Was much lost by running the half fraction?
 		
 .. answer::
+	:fullinclude: no 
 
 	#.	Using the computer code (at the end of the question), we found the complete model for all effects and interaction as:
 

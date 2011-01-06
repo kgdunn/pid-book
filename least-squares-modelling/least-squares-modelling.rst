@@ -1898,7 +1898,8 @@ Exercises
 	Use the `distillation column data set <http://datasets.connectmv.com/info/distillation-tower>`_ and with |y| as ``VapourPressure`` (units are kPa) and |x| as ``TempC2`` (units of degrees Farenheit) fit a linear model.  Calculate the prediction interval for vapour pressure at these 3 temperatures: 430, 480, 520 °F.
 	
 .. answer::
-
+	:fullinclude: no 
+	
 	The prediction interval is dependent on the value of :math:`x_\text{new, i}` used to make the prediction.  For this model, :math:`S_E = 2.989` kPa, :math:`n=253`,  :math:`\sum_j{(x_j - \bar{x})^2} = 86999.6`, and :math:`\bar{x} = 480.82`.
 	
 	.. math::
@@ -1987,6 +1988,8 @@ Exercises
 		-	Recalculate the RMSEP for the testing data; how has it changed?
 
 .. answer::
+	:fullinclude: no 
+	:short: RMSEP = 4.18 kPa; standard error = 2.68 kPa.
 
 	-	The testing data starts at index 160.  The code at the end of this question shows how RMSEP was calculated as 4.18 kPa, as compared to the standard error from the model building data (observations 1 to 159) of 2.679 kPa.  This indicates the predictions on totally new data have greater error that those observations used to build the model - an expected result.
 	
@@ -2014,6 +2017,7 @@ Exercises
 	This is no different to the independence required for least squares models. Use the autocorrelation tool to determine a subgroup size for the Kappa variable that will satisfy the Shewhart chart assumptions.  Show your autocorrelation plot and interpret it as well.
 	
 .. answer::
+	:fullinclude: no 
 
 	The autocorrelation plot shows significant lags up to lag 3, or even 4.  So subsampling the vector with every 4th or 5th element should yield independent samples.  The autocorrelation with every 5th observation confirms this.  You could also use every 6th, 7th, *etc* observation.  Using every 30th observation though is not too useful, since it would lead to a long delay before the control chart showed any problems.
 
@@ -2067,6 +2071,7 @@ Exercises
 	-	Calculate the least squares model estimates from these two matrices.  See the `R tutorial <http://connectmv.com/tutorials/r-tutorial>`_ for doing matrix operations in R, but you might prefer to use MATLAB for this step.  Either way, you should get the same answer here as in the first part of this question.
 
 .. answer::
+	:fullinclude: no 
 
 	-	After importing the data, just make sure the ``baffles`` variable is imported as a factor.  Then build the model as usual.  The computer output below shows the linear model's coefficients.
 	
@@ -2143,6 +2148,7 @@ Exercises
 	Prove this statement, and clearly explain all steps in your proof.
 	
 .. answer::
+	:fullinclude: no 
 
 	I don't normally concentrate on proofs in the book, unless they show something interesting, or are used over and over.  This short mathematical statement fits both criteria.
 
@@ -2222,6 +2228,8 @@ Exercises
 	#.	Quote a confidence interval for the slope coefficient in the model and describe what it means.  Again, you may use the above software output to help answer your question.
 	
 .. answer::
+	:fullinclude: no 
+	:short: m = 42.0 - 0.0772 T
 
 	#.	The simplest linear predictive model possible is :math:`m = \beta_0 + \beta_1 T + \varepsilon`, predicting the melt index from temperature.  Once we find estimates for these coefficients we write: :math:`m = b_0 + b_1 T + e`.  And one way to calculate these coefficients is by least squares.  In the class notes we showed that for a variable :math:`x` used to predict a variable :math:`y` that:
 
@@ -2280,6 +2288,7 @@ Exercises
 	You may use any computer package to build the model and read these values off the computer output.  
 
 .. answer::
+	
 
 	The solution to this question can be almost entirely solved using R, though any other language could be used.  These commands, with the output that follows, were used:
 

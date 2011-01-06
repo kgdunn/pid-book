@@ -676,6 +676,7 @@ Exercises
 	Is it fair to say that a control chart is like an online version of a :ref:`confidence interval <univariate-confidence-intervals>`?  Explain your answer.
 
 .. answer::
+	:fullinclude: no 
 
 	This question is likely to generate a wide range of answers.  No surprise, since there are strong feelings on this point in the `quality control literature <http://filebox.vt.edu/users/bwoodall/2000%20JQT%20Controversies%20and%20Contradictions.pdf>`_ as well.  The confusion stems from the fact that if you are in phase I, then no, a control chart is not a confidence interval, but in phase II, then you can argue that confidence intervals have many similarities to control charts.
 
@@ -689,6 +690,7 @@ Exercises
 
 .. answer::
 
+
 	Please see the code below.  The Shewhart chart's parameters are as below, with plots generated from the R code.
 
 	-	Target = 80.4
@@ -698,6 +700,7 @@ Exercises
 	.. figure:: images/batch-yields-monitoring.png
 		:align: center
 		:width: 750px
+		:scale: 60
 
 	.. literalinclude:: code/batch-yields-monitoring-assignment4-2010.R
 	       :language: s
@@ -717,6 +720,8 @@ Exercises
     	g) How would you monitor if the saws are slowly going out of alignment? 
 
 .. answer::
+	:fullinclude: no 
+	:short: Time-series and sparkline.
 
 	This questions answers are derived in the source code (at the end).
 
@@ -787,6 +792,8 @@ Exercises
 	Your process with Cpk of 2.0 experiences a drift of :math:`1.5\sigma` away from the current process operating point towards the closest specification limit.  What is the new Cpk value; how many defects per million items did you have before the drift?  And after the drift?
 
 .. answer::
+	:fullinclude: no 
+	:short: The new Cpk value is 1.5.
 
 	The new Cpk value is 1.5.  The number of defects per million items at Cpk = 2.0 is 0.00098 (essentially no defects), while at Cpk = 1.5 it is 3.4 defects per million items.  You only have to consider one-side of the distribution, since Cpk is by definition for an uncentered process, and deals with the side closest to the specification limits.
 
@@ -814,7 +821,8 @@ Exercises
 		:width: 400px
 		
 .. answer::
-
+	:fullinclude: no 
+	
 	A CUSUM chart would be a suitable chart to monitor that the airflow is near target.  While a Shewhart chart is also intended to monitor the location of a variable, it has a much larger run length for detecting small shifts.  An EWMA chart with small :math:`\lambda` (long memory) would approximate a CUSUM chart, and so would also be suitable.
 
 .. question::
@@ -822,6 +830,7 @@ Exercises
 	Do you think a Shewhart chart would be suitable for monitoring the closing price of a stock on the stock market?  Please explain your answer if you agree, or describe an alternative if you disagree.
 	
 .. answer::
+	:fullinclude: no 
 
 	No, a Shewhart chart is not suitable for monitoring stock prices.  Stock prices are volatile variables (not stable), so there is no sense in monitoring their location.  Hopefully the stock is moving up, which it should on average, but the point is that stock prices are not stable.  Nor are stock prices independent day-to-day.
 	
@@ -835,7 +844,9 @@ Exercises
 	Describe how a control chart could be used to prevent over-control of a batch-to-batch process.  (A batch-to-batch process is one where a batch of materials is processed, followed by another batch, and so on).
 
 .. answer::
-
+	:fullinclude: no 
+	:short: A Shewhart or an EWMA chart could be used. How?
+	
 	Over-control of any process takes place when too much corrective action is applied.  Using the language of feedback control, your gain is the right sign, but the magnitude is too large. Batch processes are often subject to this phenomenon: e.g. the operator reduces the set-point temperature for the next batch, because the current batch produced product with a viscosity that was too high.  But then the next batch has a viscosity that is too low, so the operator increases the temperature set-point for the following batch.  This constant switching is known as over-control (the operator is the feedback controller and his/her gain is too high, i.e. they are over-reacting).
 		
 	A control chart such as a Shewhart chart would help the operator: if the previous batch was within the limits, then s/he should not take any corrective action.  Only take action when the viscosity value is outside the limits.  An EWMA chart would additionally provide a one-step ahead prediction, which is an advantage.
@@ -856,7 +867,9 @@ Exercises
 	#.	Operators like warning limits on their charts, so they don't have to wait until an action limit alarm occurs.  Discussions with the operators indicate that lines at 590 and 820 might be good warning limits.  What percentage of in control operation will lie inside the proposed warning limit region?
 	
 .. answer::
-
+	:fullinclude: no 
+	:short: Unbiased estimate of the process standard deviation = 106.4; UCL = 874; LCL = 554.
+	
 	#.	An unbiased estimate of the process standard deviation is :math:`\hat{\sigma} = \dfrac{\bar{S}}{a_n} = \dfrac{98}{0.921} = \mathrm{106.4}`, since the subgroup size is :math:`n=4`.
 	#.	Using the data provided in the question:
 
@@ -886,6 +899,8 @@ Exercises
 	#.	How can you adjust the Cpk to 1.3 without adjusting the target weight (i.e. keep the target weight at 37.4 grams)?
 
 .. answer::
+	:fullinclude: no 
+	:short: Current Cpk = 1.0
 
 	#.	Recall the Cpk is defined relative to the closest specification limit.  So in this case it must be due to the lower limit. Cpk = :math:`\dfrac{\bar{\bar{x}} - LSL}{3\sigma} = \dfrac{37.4 - 35.0}{3 \times 0.8} = \mathrm{1.0}` 
 	#.	To obtain Cpk = 1.3 we solve the above equation for :math:`\bar{\bar{x}} = 1.3 \times 3 \times 0.8 + 35.0 = \mathrm{38.12}` grams.
@@ -901,7 +916,8 @@ Exercises
 		#.	Illustrate your answer from part 2 and 3 of this question on a diagram of the normal distribution.
 
 .. answer::
-
+	:fullinclude: no 
+	
 	#.	The notes show that Cp values require us to assume that (a) the process values follow a normal distribution, the process was centered when the data were collected, and (c) that the process was stable (use a monitoring chart to verify this last assumption).
 	#.	The range from the lower to the upper specification limit is 0.8 mm, which spans 6 standard deviations.  Given the Cp value of 1.7, the process standard deviation must have been :math:`\sigma = \dfrac{0.8}{1.7 \times 6} = \mathrm{0.0784}` mm.
 	#.	This time we have the process standard deviation, so there is no need to estimate it from historical phase I data (remember the assumption that Cp and Cpk value are calculated from stable process operation?).  The Shewhart control limits would be: :math:`\bar{\bar{x}} \pm 3 \times \dfrac{\sigma}{\sqrt{n}} = 2 \pm 3 \times 0.0784 / 2`.  The LCL = 1.88 mm and the UCL = 2.12 mm.
@@ -936,6 +952,8 @@ Exercises
 	The Kappa number is a widely used measurement in the pulp and paper industry.  It can be measured on-line, and indicates the severity of chemical treatment that must be applied to a wood pulp to obtain a given level of whiteness (i.e. the pulp's bleachability).  Data on the `website <http://datasets.connectmv.com/info/kappa-number>`_ contain the Kappa values from a pulp mill.  Use the first 2000 data points to construct a Shewhart monitoring chart for the Kappa number.  You may use any subgroup size you like.  Then use the remaining data as your phase II (testing) data.  Does the chart perform as expected?
 
 .. answer::
+	:fullinclude: no 
+	:short: The intention of this question is for you to experience the process of iteratively calculating limits from phase I data and applying them to phase 2 data.	
 
 	The intention of this question is for you to experience the process of iteratively calculating limits from phase I data and applying them to phase 2 data.
 
@@ -988,6 +1006,7 @@ Exercises
 		:align: center
 
 .. answer::
+	:fullinclude: no 
 
 	A complete spectrum (vector) of values is obtained with every observation.  To monitor a process using one of the charts learned about so far (Shewhart, CUSUM, or EWMA chart) we have to reduce this vector down to a single number.  Any of these methods will do:
 
