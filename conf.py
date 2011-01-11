@@ -55,7 +55,12 @@ if os.path.exists('ucomment-extension.py'):
 
 # Point to your Django application, which contains all the other settings required.
 ucomment = {}
-ucomment['django_application_path'] = '/home/kevindunn/webapps/pid_connectmv_com/pidbook/ucommentapp/'
+if os.path.exists('/home/kevindunn/webapps/pid_connectmv_com/pidbook/ucommentapp/'):
+    ucomment['django_application_path'] = '/home/kevindunn/webapps/pid_connectmv_com/pidbook/ucommentapp/'
+elif os.path.exists('/home/kevindunn/django-projects/pidbook/ucommentapp/'):
+    ucomment['django_application_path'] = '/home/kevindunn/django-projects/pidbook/ucommentapp/'
+else
+    raise Exception('ucommentapp: django path is invalid')
 
 # MathJax extension:
 extensions.append('mathjax')
