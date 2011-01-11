@@ -4,31 +4,31 @@
 	~~~~~
 	^^^^^
 	-----
-	
+
 	Linear regression in Python:
-	
+
 	>>> from scipy.stats import linregress
 	>>> slope, intercept, r, prob, stderr = linregress(a, b)
-	
+
 
 .. Plots to draw
 
 	Cylinder temp and pressure and humidity
-	
+
 .. TO ADD LATER ON
 
 	Transformation: more systematic discussion; see BHH2, p 322
 	Linear models: go into details also how to calculate confidence intervals and prediction intervals for MLR
 	Show the spinning plane for highly correlated X's
 	Include the influecePlot in the notes (PDF): you have it in the slides, but not here
-	
+
 	Be clearer on what a CI for the MLR or OLS terms mean (i.e. it shows when a term is necessary; can be used to free up DOF)  Show examples and how to interpret them.
-	
-	
+
+
 .. Case studies to consider
 
 	Cigarette: http://www.amstat.org/publications/jse/v2n1/datasets.mcintyre.html
-	Car sales: http://www.amstat.org/publications/jse/v16n3/datasets.kuiper.html 
+	Car sales: http://www.amstat.org/publications/jse/v16n3/datasets.kuiper.html
 
 .. Enrichment topics
 
@@ -59,7 +59,7 @@
 			- resolve the optimization problem
 			- interpretation of coefficients
 			- errors on the coefficients
-			
+
 In context
 ==========
 
@@ -72,13 +72,13 @@ Usage examples
 
 .. index::
 	pair: usage examples; Least squares models
-	
+
 The material in this section is used whenever you need to interpret and quantify the relationship between two or more variables.
 
 	- *Colleague*: How does yield from the lactic acid batch fermentation relate to the purity of sucrose?
  	- *You*: The yield can be predicted from sucrose purity with an error of plus/minus 8\%
  	- *Colleague*: And how about the relationship between yield and glucose purity?
- 	- *You*: Over the range of our historical data, there is no discernible relationship.	
+ 	- *You*: Over the range of our historical data, there is no discernible relationship.
 	- *Engineer 1*: The theoretical equation for the melt index is non-linearly related to the viscosity
 	- *Engineer 2*: The linear model does not show any evidence of that, but the model's prediction ability does improve slightly when we use a non-linear transformation in the least squares model.
 
@@ -87,7 +87,7 @@ What you will be able to do after this section
 =================================================
 
 .. figure:: images/least-squares-section-mapping.png
-  :width: 750px 
+  :width: 750px
   :scale: 90
 
 .. Notes
@@ -97,7 +97,7 @@ What you will be able to do after this section
 	#. The relationship between correlation, covariance and variance
 	#. Introduction to bivariate least squares (the linear relationship between 2 variables).
 	#. We will also discuss the short-sighted idiom that is often repeated: *correlation does not imply causation* and complete it by understanding that *correlation is a necessary, but not sufficient, condition for causality*.  We will take a look at an example of correlation and understand that it is impossible to imply causality without doing intentional experimentation.
-	
+
 References and readings
 =======================
 
@@ -108,9 +108,9 @@ References and readings
 - **Recommended**: Draper and Smith, *Applied Regression Analysis*
 - Box, Hunter and Hunter, *Statistics for Experimenters*, selected portions of Chapter 10 (2nd edition)
 - Hogg and Ledolter, *Engineering Statistics*
-- Montgomery and Runger, *Applied Statistics and Probability for Engineers*  
+- Montgomery and Runger, *Applied Statistics and Probability for Engineers*
 - Birkes and Dodge: *Alternative Methods of Regression*, 1993.
-- Efron, Hastie, Johnstone and Tibshirani, `Least Angle Regression <http://www.jstor.org/stable/3448465>`_, *The Annals of Statistics*, **32**, p 407-451, 2004, 
+- Efron, Hastie, Johnstone and Tibshirani, `Least Angle Regression <http://www.jstor.org/stable/3448465>`_, *The Annals of Statistics*, **32**, p 407-451, 2004,
 - Box, G.E.P.,  `Use and Abuse of Regression <http://www.jstor.org/stable/1266635>`_, *Technometrics*, **8** (4), 625-629, 1966.
 - Chatterjee, S. and A.S. Hadi, `Influential Observations, High Leverage Points, and Outliers in Linear Regression <http://www.jstor.org/stable/2245477>`_, *Statistical Science*, **1** (3), 379-416, 1986.
 - Cleveland, W.S. `Robust Locally Weighted Regression and Smoothing Scatterplots <http://www.jstor.org/stable/2286407>`_, *Journal of the American Statistical Association*, **74** (368), p. 829-836, 1979.
@@ -163,57 +163,57 @@ Given these numbers we can simplify the ideal gas law to: :math:`p=\beta_1 T`, w
 	|-
 	|'''Variance''' || 1320 || 43267 || 8.1
 	|}
-	
+
 .. code-block:: text
 
 	T <- c(273, 285, 297, 309, 321, 333, 345, 357, 369, 381)
 	p <- c(1600, 1670, 1730, 1830, 1880, 1920, 2000, 2100, 2170, 2200)
 	h <- c(42, 48, 45, 49, 41, 46, 48, 48, 45, 49)
-	
+
 .. figure:: images/table-of-cylinder-data.png
 	:width: 750px
 	:scale: 67
-	
+
 The formal definition for covariance between any two variables is given by equation :eq:`definition-covariance`.  Use this to calculate the covariance between temperature and pressure.
 
 .. math::
 	:label: definition-covariance
-	
+
 		\text{Cov}\left\{x, y\right\} = \mathcal{E}\left\{ (x - \bar{x}) (y - \bar{y})\right\} \qquad \text{where} \qquad \mathcal{E}\left\{ z \right\} = \bar{z}
-		
+
 Break the problem into steps:
 
-	- First calculate deviation variables (they are called this because they are now the deviations from the mean): :math:`T - \bar{T}` and :math:`p - \bar{p}`.  Subtracting off the mean from each vector just centers their frame of reference to zero.  For example, if we had measured the temperature in degrees Celsius, the covariance value would **not** have been affected. 
+	- First calculate deviation variables (they are called this because they are now the deviations from the mean): :math:`T - \bar{T}` and :math:`p - \bar{p}`.  Subtracting off the mean from each vector just centers their frame of reference to zero.  For example, if we had measured the temperature in degrees Celsius, the covariance value would **not** have been affected.
 	- Next multiply the corresponding elements of these two vectors to calculate a new vector :math:`(T - \bar{T}) (p - \bar{p})`.
-	
+
 		.. code-block:: s
-		
+
 			> T.centered <- T - mean(T)
 			> p.centered <- p - mean(p)
-			> product <- T.centered * p.centered    
+			> product <- T.centered * p.centered
 			# Note that R does element-by-element multiplication in the above line
 			> product
 			 [1] 16740 10080  5400  1440   180    60  1620  5700 10920 15660
-		
+
 	- The expected value of this product can be estimated in R with: ``mean(product)``, which gives ``6780``.
 	- Use the ``cov(T, p)`` function in R gives ``7533.333``.  Why the difference?  Well :math:`6780 \times \dfrac{N}{N-1}= 7533.33`, indicating that R divides by :math:`N-1` rather than :math:`N`.  This inconsistency is explained below, but does not really matter for large values of :math:`N`.
 	- The units of covariance between temperature and pressure is [K.kPa].
-	
+
 Similarly the covariance between temperature and humidity is 202.
 
 	.. code-block:: text
-	
+
 		> p.centered <- p - mean(p)
 		> h.centered <- h - mean(h)
-		> product <- h.centered * p.centered    
+		> product <- h.centered * p.centered
 		> product
 		 [1] 1271 -456  198 -232  153   -1  171  361 -286  841
 		> mean(product)
-	
+
 In your own time calculate a rough numeric value and give the units of covariance for these cases:
 
 	===================================================  ===================================================
-	:math:`x`                                            :math:`y` 
+	:math:`x`                                            :math:`y`
 	===================================================  ===================================================
 	:math:`x` = age of married partner 1                 :math:`y` = age of married partner 2
 	:math:`x` = gas pressure                             :math:`y` = gas volume at a fixed temperature
@@ -221,13 +221,13 @@ In your own time calculate a rough numeric value and give the units of covarianc
 	:math:`x` = hours worked per week                    :math:`y` = weekly take home pay
 	:math:`x` = cigarettes smoked per month              :math:`y` = age at death
 	===================================================  ===================================================
-	
+
 	Also describe what an outlier observation would mean in these cases.
-	
+
 .. raw:: latex
 
 	\vspace{4cm}
-	
+
 One last point is that the covariance of a variable with itself is the variance: :math:`\text{Cov}\left\{x, x\right\} = \mathcal{V}(x) = \mathcal{E}\left\{ (x - \bar{x}) (x - \bar{x})\right\}`, a definition :ref:`we saw earlier <univariate-variance>`.  Notice in particular that the variance of a centered vector is the same as the variance of an uncentered vector.  The means you can shift the raw data in :math:`x` and :math:`y` up or down and still get the same covariance number.
 
 **Aside**: The above point explains the difference in R with what we calculated earlier.  In R, the variance function for a vector ``x`` is internally called as ``cov(x, x)``.  Since R returns the unbiased variance, it divides through by :math:`n-1`.
@@ -244,9 +244,9 @@ The variance and covariance are units dependent - you get a very different covar
 
 .. math::
 	:label: definition-correlation
-	
+
 		r(x, y) = \dfrac{\mathcal{E}\left\{ (x - \bar{x}) (y - \bar{y})\right\}}{\sqrt{\mathcal{V}\left\{x\right\}\mathcal{V}\left\{y\right\}}} = \dfrac{\text{Cov}\left\{x, y\right\}}{\sqrt{\mathcal{V}\left\{x\right\}\mathcal{V}\left\{y\right\}}}
-		
+
 It takes the covariance value and divides through by the units of :math:`x` and of :math:`y` to obtain a dimensionless result.  The values of :math:`r(x,y)` range from -1 to +1.
 
 So returning back to our example of the gas cylinder, the correlation between temperature and pressure, and temperature and humidity can be calculated now as:
@@ -289,7 +289,7 @@ Be sure that you can derive (and interpret!) these relationships yourself:
 	                              &= \mathcal{E}\{ \left( (x-\bar{x}) + (y-\bar{y}) \right)^2 \} \\
 	                              &= \mathcal{E}\{ (x-\bar{x})^2 + 2(x-\bar{x})(y-\bar{y}) + (y-\bar{y})^2 \}\\
 	                              &= \mathcal{E}\{ (x-\bar{x})^2 \} + 2\mathcal{E}\{(x-\bar{x})(y-\bar{y})\} + \mathcal{E}\{(y-\bar{y})^2 \} \\
-	                              &= \mathcal{V}\{ x \}             + 2\text{Cov}\{x,y\} + \mathcal{V}\{ y \} 
+	                              &= \mathcal{V}\{ x \}             + 2\text{Cov}\{x,y\} + \mathcal{V}\{ y \}
 
 
 
@@ -300,7 +300,7 @@ Nonparametric modelling
 
 Nonparametric modelling is a general model where the relationship between |x| and |y| is of the form: :math:`y = f(x) + \varepsilon`, but the function (model), :math:`f(x)` is left unspecified.  The model is usually a smooth function.
 
-Consider the example of plotting Prestige (the Pineo-Porter prestige score) against Income, from the 1971 Canadian census.  A snippet of the data is given by: 
+Consider the example of plotting Prestige (the Pineo-Porter prestige score) against Income, from the 1971 Canadian census.  A snippet of the data is given by:
 
 .. code-block:: s
 
@@ -316,7 +316,7 @@ Consider the example of plotting Prestige (the Pineo-Porter prestige score) agai
 	MASONS                      6.60   5959  0.52     36.2   8782   bc
 	HOUSE.PAINTERS              7.81   4549  2.46     29.9   8785   bc
 
-The plot on the left is the raw data, while on the right is the raw data with the nonparametric model (line) superimposed. The smoothed line is the nonparametric function, :math:`f(x)`, referred to above, and |x| = Income ($), and |y| = Prestige.  
+The plot on the left is the raw data, while on the right is the raw data with the nonparametric model (line) superimposed. The smoothed line is the nonparametric function, :math:`f(x)`, referred to above, and |x| = Income ($), and |y| = Prestige.
 
 
 .. figure:: images/nonparametric-plots.png
@@ -326,7 +326,7 @@ The plot on the left is the raw data, while on the right is the raw data with th
 For bivariate cases, the nonparametric model is often called a *scatterplot smoother*.  There are several methods to calculate the model; one way is by locally weighted scatterplot smoother (LOESS), described as follows.  Inside a fixed window along the x-axis:
 
 - collect the |x|- and |y|-values inside this window
-- calculate a fitted |y|-value, but use a weighted least squares procedure, with weights that peaks at the center of the window and declines towards the edges, 
+- calculate a fitted |y|-value, but use a weighted least squares procedure, with weights that peaks at the center of the window and declines towards the edges,
 - record that average |y|-value against the window's center (|x|-value)
 - slide the window along the |x| axis and repeat
 
@@ -335,7 +335,7 @@ The *model* is the collection of these |x|- and |y|-values.  This is why it is c
 Bivariate least squares
 ===========================
 
-The general linear least squares model is a very useful tool (in the right circumstances), and it is the workhorse for a number of algorithms in data analysis. 
+The general linear least squares model is a very useful tool (in the right circumstances), and it is the workhorse for a number of algorithms in data analysis.
 
 This part covers the relationship between two variables only: |x| and |y|.  In the next part on general least squares we will consider more than two variables and use matrix notation.  But we start off slowly here, looking carefully at the details for relating two variables first.
 
@@ -349,34 +349,34 @@ We will follow these steps:
 
 The least squares model postulates that there is a linear relationship between measurements in vector |x| and |y| of the form:
 
-.. math:: 
+.. math::
 	:label: define-2-LS
-	
+
 		\mathcal{E}\left\{\mathrm{y}\right\} &= \beta_0 + \beta_1 \mathrm{x} \\
-		\mathrm{y} &= \beta_0 + \beta_1 \mathrm{x} + \epsilon 
-		
+		\mathrm{y} &= \beta_0 + \beta_1 \mathrm{x} + \epsilon
+
 The :math:`\beta_0`, :math:`\beta_1` and :math:`\epsilon` terms are *population* parameters, which are unknown (see the :ref:`section on univariate statistics <univariate-population>`).  The :math:`\epsilon` term represents any unmodelled components of the linear model, measurement error, and is simply called *the error* term.  Notice that the error is not due to :math:`x` - we will return to this point later.  Also, if there is no relationship between |x| and |y| then :math:`\beta_1 = 0`.
 
 We develop **a particular method** (there are others) to estimate these parameters; these estimates are defined as :math:`b_0 = \hat{\beta_0}`, :math:`b_1 = \hat{\beta_1}` and :math:`e = \hat{\epsilon}`.  Using this new nomenclature we can write, for a particular observation :math:`i`:
 
 .. math::
 	:label: define-2-LS-i
-	
+
 		y_i &= b_0 + b_1 x_i + e_i \\
 		\hat{y}_i &= b_0 + b_1 x_i
-		
+
 The error values, :math:`e_i`, are expected to be non-zero for practical cases.  Presuming we have calculated estimates |b0| and |b1| we can use the model with a new x-observation, :math:`x_i`, and predict its corresponding :math:`\hat{y}_i`.  All this new nomenclature is illustrated in the figure.
 
 .. figure:: images/least-squares-picture.png
 	:width: 600px
 	:align: center
 	:scale: 71
-	
+
 
 Minimizing errors as an objective
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Our immediate aim however is to calculate |b0| and |b1|  from the :math:`n` pairs of data collected: :math:`(x_i, y_i)`.  
+Our immediate aim however is to calculate |b0| and |b1|  from the :math:`n` pairs of data collected: :math:`(x_i, y_i)`.
 
 Here are some approaches to making the :math:`e_i\,` values small, in some way.
 
@@ -401,7 +401,7 @@ The least squares problem can be posed as an unconstrained optimization problem:
 
 .. math::
 	:label: define-2-LS-optimization
-	
+
 		\min_{\displaystyle b_0, b_1} f(b_0, b_1) &= \sum_{i=1}^{n}{(e_i)^2} \\
 												  &= \sum_{i=1}^{n}{\left(y_i - b_0 - b_1 x_i\right)^2}
 
@@ -418,14 +418,14 @@ In the case where we have both |b0| and |b1|  varying we can construct a grid fu
 	:width: 750px
 	:align: center
 	:scale: 70
-	
+
 The above figure shows the general nature of the least-squares objective function where the two horizontal axes are for |b0| and |b1|, while the vertical axis represents the least squares objective function :math:`f(b_0, b_1)`.
 
 The plot highlights the quadratic nature of the objective function.  To find the minimum analytically we start with equation :eq:`define-2-LS-optimization` and take partial derivatives with respect to :math:`b_0` and :math:`b_1`, and set those equations to zero.  These two equations in two unknowns, are a requirement of optimality (cf. any book on optimization theory).  You can take the second derivative to confirm that the optimum is indeed a minimum.
 
 .. math::
 	:label: define-2-LS-b0-b1-partials
-	
+
 	\dfrac{\partial f(b_0, b_1)}{\partial{b_0}} &= -2 \sum_i^{n}{(y_i -  b_0 - b_1 x_i)} = 0 \\
  	\dfrac{\partial f(b_0, b_1)}{\partial{b_1}} &= -2 \sum_i^{n}{(x_i)(y_i -  b_0 - b_1 x_i)} = 0\\
 
@@ -433,21 +433,21 @@ Divide the first line through by :math:`n` (the number of data pairs we are usin
 
 .. math::
 	:label: define-2-LS-b0-b1-result
-	
+
 	b_0 &= \bar{\mathrm{y}} - b_1\bar{\mathrm{x}} \\
 	b_1 &= \dfrac{ \sum_i{\left(x_i - \bar{\mathrm{x}}\right)\left(y_i - \bar{\mathrm{y}}\right) } }{ \sum_i{\left( x_i - \bar{\mathrm{x}}\right)^2} }
-	
+
 
 **Remarks**:
 
 #.	The first part of equation :eq:`define-2-LS-b0-b1-partials` shows :math:`\sum_i{e_i} = 0`.
 
 #.	The first part of equation :eq:`define-2-LS-b0-b1-result` shows that the straight line equation passes through the mean of the data :math:`(\bar{\mathrm{x}}, \bar{\mathrm{y}})` without error.
-	
+
 #.	From second part of equation :eq:`define-2-LS-b0-b1-partials` prove to yourself that :math:`\sum_i{(x_i e_i)} = 0`.
 
 #.	Also prove and interpret that :math:`\sum_i{(\hat{y}_i e_i)} = 0`.
-	
+
 #.	Notice that the parameter estimate for |b0| depends on the value of |b1|: we say the estimates are correlated - you cannot estimate them independently.
 
 **Questions**:
@@ -455,29 +455,29 @@ Divide the first line through by :math:`n` (the number of data pairs we are usin
 #. What units does parameter estimate :math:`b_1` have?
 
 		-	The units of :math:`\mathrm{y}` divided by the units of :math:`\mathrm{x}`.
-	
+
 #. Recall the temperature and pressure example (start of this section).  Let  :math:`\hat{p}_i = b_0 + b_1 T_i`:
 
 	#.	What is the interpretation of coefficient :math:`b_1`?
-			
+
 				-	A one Kelvin increase in temperature is associated, on average, with an increase of :math:`b_1` kPa in pressure.
-			
+
  	#.	What is the interpretation of coefficient :math:`b_0`?
-		
+
 				-	It is the expected pressure when temperature is zero.  Note: often the data used to build the model are not close to zero, so this interpretation may have no meaning.
 
 #. What does it mean that :math:`\sum_i{(x_i e_i)} = \mathrm{x}^T\mathrm{e} = 0`:
 
 		-	The residuals are uncorrelated with the input variables, :math:`\mathrm{x}`.  There is no information in the residuals that is in :math:`\mathrm{x}`.
-		
+
 #. What does it mean that :math:`\sum_i{(\hat{y}_i e_i)} =  \mathrm{\hat{y}}^T\mathrm{e} = 0`
 
 		-	The fitted values are uncorrelated with the residuals.
-		
+
 #. How could the denominator term for :math:`b_1` equal zero?  And what would that mean?
 
 	This shows that as long as there is variation in the x-data that we will obtain a solution.
-	
+
 .. _class-example:
 
 Example
@@ -485,54 +485,54 @@ Example
 
 Calculate the least squares estimates for the model :math:`y = b_0 + b_1 x` from the given data.  Also calculate the predicted value of :math:`\hat{y}_i` when :math:`x_i = 5.5`
 
-	-	:math:`b_0 =` 
+	-	:math:`b_0 =`
 	-	:math:`b_1 =`
 	-	When :math:`x_i = 5`, then :math:`\hat{y}_i =`
-	
+
 .. figure:: images/regression-exercise.png
 	:align: center
 	:scale: 56
-	
+
 ..	Raw data
 	{| class="wikitable" style="text-align: center; margin-left:auto; margin-right:auto;"  border="1"
 	|-
-	! :math:`x_1\,` 
-	! :math:`y_1\,` 
+	! :math:`x_1\,`
+	! :math:`y_1\,`
 	|-
-	| 10.0 ||  8.04 
-	|-              
-	|  8.0 ||  6.95 
-	|-              
-	| 13.0 ||  7.58 
-	|-              
-	|  9.0 ||  8.81 
-	|-              
-	| 11.0 ||  8.33 
-	|-              
-	| 14.0 ||  9.96 
-	|-              
-	|  6.0 ||  7.24 
-	|-              
-	|  4.0 ||  4.26 
-	|-              
-	| 12.0 || 10.84 
-	|-              
-	|  7.0 ||  4.82 
-	|-              
-	|  5.0 ||  5.68 
+	| 10.0 ||  8.04
 	|-
-	| colspan="2" align="left"| 
-	* :math:`\bar{x}_1= 9.0` 
+	|  8.0 ||  6.95
+	|-
+	| 13.0 ||  7.58
+	|-
+	|  9.0 ||  8.81
+	|-
+	| 11.0 ||  8.33
+	|-
+	| 14.0 ||  9.96
+	|-
+	|  6.0 ||  7.24
+	|-
+	|  4.0 ||  4.26
+	|-
+	| 12.0 || 10.84
+	|-
+	|  7.0 ||  4.82
+	|-
+	|  5.0 ||  5.68
+	|-
+	| colspan="2" align="left"|
+	* :math:`\bar{x}_1= 9.0`
 	* :math:`\bar{y}_1= 7.5`
 	* :math:`\sum_i{\left(x_i - \bar{\mathrm{x}}_1\right)\left(y_i - \bar{\mathrm{y}}_1\right) }= 55.0`
 	* :math:`\sum_i{\left( x_i - \bar{\mathrm{x}}_1\right)^2} = 110`
 	|}
-		
+
 .. figure:: images/show-anscombe-problem-1.png
 	:align: center
 	:width: 500px
 	:scale: 60
-	
+
 To calculate the least squares model in R:
 
 .. code-block:: s
@@ -540,12 +540,12 @@ To calculate the least squares model in R:
 	> x <- c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5)
 	> y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68)
 	> lm(y ~ x)  # "The linear model, where y is described by x"
-	
+
 	Call:
 	lm(formula = y ~ x)
 
 	Coefficients:
-	(Intercept)            x  
+	(Intercept)            x
 	     3.0001       0.5001
 
 
@@ -557,8 +557,8 @@ To calculate the least squares model in R:
 
 		.. math::
 			:label:define-2-LS-modified
-	
-				\mathrm{y} &= \beta_0 + \beta_1 (\mathrm{x} -\bar{\mathrm{x}}) + \epsilon 
+
+				\mathrm{y} &= \beta_0 + \beta_1 (\mathrm{x} -\bar{\mathrm{x}}) + \epsilon
 
 
 Least squares model analysis
@@ -588,7 +588,7 @@ These 3 components must add up to the total variance.  By definition, the varian
 
 Using the accompanying figure, we see that geometrically, at any fixed value of :math:`x_i`, that any |y| value above or below the least squares line, :math:`y_i`, would obey the distance relationship:
 
-.. math::	
+.. math::
 		\begin{array}{lrcl}
 		\text{Distance relationship:}   & (y_i - \bar{\mathrm{y}})         &=& (\hat{y}_i - \bar{\mathrm{y}}) + (y_i - \hat{y}_i) \\
 		\text{Squaring:}                & (y_i - \bar{\mathrm{y}})^2       &=& (\hat{y}_i - \bar{\mathrm{y}})^2 + 2(\hat{y}_i - \bar{\mathrm{y}})(y_i - \hat{y}_i) + (y_i - \hat{y}_i)^2 \\
@@ -603,15 +603,15 @@ Using the accompanying figure, we see that geometrically, at any fixed value of 
 
 It is convenient to write these sums of squares (variances) in table form, called an Analysis of Variance (ANOVA) table:
 
-	=================== ======================================== ======================================== ======= ======================================== 
+	=================== ======================================== ======================================== ======= ========================================
 	Type of variance    Distance                                 Degrees of freedom                       SSQ     Mean square
-	=================== ======================================== ======================================== ======= ======================================== 
+	=================== ======================================== ======================================== ======= ========================================
 	Regression          :math:`\hat{y}_i - \bar{\mathrm{y}}`     :math:`k` (k=2 in the examples so far)   RegSS   :math:`\text{RegSS}/k`
 	------------------- ---------------------------------------- ---------------------------------------- ------- ----------------------------------------
 	Error               :math:`y_i - \hat{y}_i`                  :math:`n-k`                              RSS     :math:`\text{RSS}/(n-k)`
 	------------------- ---------------------------------------- ---------------------------------------- ------- ----------------------------------------
 	Total               :math:`y_i - \bar{\mathrm{y}}`           :math:`n`                                TSS     :math:`\text{TSS}/n`
-	=================== ======================================== ======================================== ======= ======================================== 
+	=================== ======================================== ======================================== ======= ========================================
 
 ..	Original table in wiki form
 
@@ -653,9 +653,9 @@ It is convenient to write these sums of squares (variances) in table form, calle
 Judging the standard error
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The term :math:`S_E^2 = \text{RSS}/(n-k)` is one way of quantifying the model's performance.  The value :math:`S_E = \sqrt{\text{RSS}/(n-k)} = \sqrt{(e^Te)/(n-k)}` is called the standard error.  It is really just the standard deviation of the error term, accounting correctly for the degrees of freedom.  
+The term :math:`S_E^2 = \text{RSS}/(n-k)` is one way of quantifying the model's performance.  The value :math:`S_E = \sqrt{\text{RSS}/(n-k)} = \sqrt{(e^Te)/(n-k)}` is called the standard error.  It is really just the standard deviation of the error term, accounting correctly for the degrees of freedom.
 
-*Example*: Assume we have a model for predicting batch yield in kilograms from |x| = raw material purity, what does it mean for the standard error to be 3.4 kg? 
+*Example*: Assume we have a model for predicting batch yield in kilograms from |x| = raw material purity, what does it mean for the standard error to be 3.4 kg?
 
 *Answer*: Recall if the assumption of normally distributed errors is correct, then this value of 3.4 kg indicates that about two thirds of the yield predictions will lie within :math:`\pm 3.4` kg, and that 95% of the yield predictions will lie within :math:`\pm 2 \times 3.4` kg.  We will quantify the prediction interval more precisely, but the standard error is a good approximation for the error of |y|.
 
@@ -669,7 +669,7 @@ For each of these cases:
 
 Do the following:
 
- 	- draw a generic plot 
+ 	- draw a generic plot
 	- create an ANOVA table with fake values
  	- write down the value of the ratio :math:`\dfrac{\text{RegSS}}{\text{TSS}}`
 	- interpret what this ratio means: :math:`F_0 = \dfrac{\text{mean square of regression}}{\text{mean square of residuals}}`
@@ -680,7 +680,7 @@ Do the following:
 
 From this exercise we learn that:
 
--	The null model (:math:`y_i = e_i`) has ratio :math:`\dfrac{\text{RegSS}}{\text{TSS}} = 0`.  
+-	The null model (:math:`y_i = e_i`) has ratio :math:`\dfrac{\text{RegSS}}{\text{TSS}} = 0`.
 -	Models where the fit is perfect have a ratio :math:`\dfrac{\text{RegSS}}{\text{TSS}} = 1`.  This number is called :math:`R^2`, and we will see why it is called that next.
 
 
@@ -698,7 +698,7 @@ From this exercise we learn that:
 						 			&= \mathcal{E}\{(b_0 + b_1 \mathrm{x} + e)^2\} \\
 						 			&= \mathcal{E}\{(b_0 + b_1 \mathrm{x} + e)^2\} \\
 						 			&= \mathcal{V}\{b_0 + b_1 \mathrm{x}\} + \mathcal{V}\{e\} + 2\text{Cov}\{b_0 + b_1 \mathrm{x}, e\}
-					
+
 	Since the covariance between the predicted |y| value and the residuals is zero (we proved that earlier with :math:`\mathrm{\hat{y}}^T\mathrm{e} = 0`), we have:
 
 	.. math::
@@ -715,7 +715,7 @@ Derivation of :math:`R^2`
 	.. figure:: images/angle-between-two-vectors.png
 		:width: 400px
 		:align: center
-	
+
 	Recall, perhaps from your second year math course, that the cosine of the angle between any two vectors, :math:`a` and :math:`b` is related to the vector dot product
 
 	.. math::
@@ -730,20 +730,20 @@ The nomenclature :math:`R^2` comes from the fact that it is the square of the co
 .. math::
 
 	r(x, y) = \dfrac{\mathcal{E}\left\{ (x - \bar{x}) (y - \bar{y})\right\}}{\sqrt{\mathcal{V}\left\{x\right\}\mathcal{V}\left\{y\right\}}} = \dfrac{\text{Cov}\left\{x, y\right\}}{\sqrt{\mathcal{V}\left\{x\right\}\mathcal{V}\left\{y\right\}}}
-	
+
 and can range in value from -1 to +1.  The :math:`R^2` ranges from 0 to +1, and is just the square of :math:`r(x,y)`. :math:`R^2` is just a way to tell how far we are between predicting a flat line (no variation) and the extreme of being able to predict the model building data :math:`(y_i)` exactly.
 
-The :math:`R^2` value is likely well known to anyone that has encountered least squares before.    This number must be interpreted with caution.  It is most widely **abused** as a way to measure "*how good is my model*".  
+The :math:`R^2` value is likely well known to anyone that has encountered least squares before.    This number must be interpreted with caution.  It is most widely **abused** as a way to measure "*how good is my model*".
 
 These two common examples illustrate the abuse:
 
-	#.	"the :math:`R^2` value is really high, 90%, this is a good model". 
+	#.	"the :math:`R^2` value is really high, 90%, this is a good model".
 	#.	"Wow, that's a really low :math:`R^2`, this model can't be right - it's no good".
 
 How **good** a model is *for a particular purpose* is almost never related to the :math:`R^2` value.  The goodness of a model is better assessed by:
 
 - your engineering judgment: does the interpretation of model parameters make sense?
-- use testing data to verify the model's predictive performance, 
+- use testing data to verify the model's predictive performance,
 - using cross-validation tools (we will see this topic later on).
 
 We will see later on that :math:`R^2` can be arbitrarily inflated by adding terms to the linear model.  So sometimes you will see the adjusted :math:`R^2` used to account for this:
@@ -757,7 +757,7 @@ where :math:`k=2` for the case of estimating a model :math:`y_i = b_0 + b_1 x_i`
 .. raw:: latex
 
 	\vspace{2cm}
-	
+
 
 
 Confidence intervals for the model coefficients |b0| and |b1|
@@ -791,18 +791,18 @@ Furthermore, our derivation for the confidence intervals of |b0| and |b1| requir
 		:width: 500px
 		:align: center
 		:scale: 60
-	
+
 #.	The errors are normally distributed: :math:`e_i \sim \mathcal{N}(0, \sigma_\epsilon^2)`.  This also implies that :math:`y_i \sim \mathcal{N}(\beta_0 + \beta_1x_i, \sigma_\epsilon^2)` from the first linearity assumption.
 
 #.	Each error is independent of the other.  This assumption is often violated in cases where the observations are taken in time order on slow moving processes (e.g. if you have a positive error now, your next sample is also likely to have a positive error).   The autocorrelation problem.
 
-#.	In addition to the fact that the |x| values are fixed, we also assume they are independent of the error.  Of course if the |x| value is fixed (i.e. measured without error), then it is already independent of the error.   
+#.	In addition to the fact that the |x| values are fixed, we also assume they are independent of the error.  Of course if the |x| value is fixed (i.e. measured without error), then it is already independent of the error.
 
 	- When the |x| values are not fixed, there are cases where the error gets larger as |x| gets smaller/larger.
-	
+
 #.	All :math:`y_i` values are independent of each other.  This again is violated in cases where the data are collected in time order and the :math:`y_i` values are autocorrelated.
 
-**Note**: derivation of the model's coefficients do not require these assumptions, only the derivation of the coefficient's confidence intervals require this.  
+**Note**: derivation of the model's coefficients do not require these assumptions, only the derivation of the coefficient's confidence intervals require this.
 
 .. _CI-for-model-parameters:
 
@@ -816,7 +816,7 @@ Recall from our discussions on :ref:`confidence intervals <univariate-confidence
 	\begin{array}{lcr}
 		b_0 \sim \mathcal{N}(\beta_0, \mathcal{V}\{\beta_0\}) &\qquad\text{and}\qquad& b_1 \sim \mathcal{N}(\beta_1,\mathcal{V}\{\beta_1\})
 	\end{array}
-	
+
 Once we know those parameters, we can create a :math:`z`-value for |b0| and |b1|, and then calculate the confidence interval for :math:`\beta_0` and :math:`\beta_1`.  So our quest now is to calculate :math:`\mathcal{V}\{\beta_0\}` and :math:`\mathcal{V}\{\beta_1\}`, and we will use the 6 assumptions we made in the previous part.
 
 Start from equation :eq:`define-2-LS-b0-b1-result`, where we showed earlier that:
@@ -836,8 +836,8 @@ So we can write:
 .. math::
 
         b_1 &= m_1y_1 + m_2y_2 + \ldots + m_Ny_N \\
-        \mathcal{E}\{b_1\} &= \mathcal{E}\{m_1y_1\} + \mathcal{E}\{m_2y_2\} + \ldots + \mathcal{E}\{m_Ny_N\} \\ 
-        \mathcal{V}\{b_1\} &= m_1^2\mathcal{V}\{y_1\} + m_2^2 \mathcal{V}\{y_2\} + \ldots + m_N^2\mathcal{V}\{y_N\} \\ 
+        \mathcal{E}\{b_1\} &= \mathcal{E}\{m_1y_1\} + \mathcal{E}\{m_2y_2\} + \ldots + \mathcal{E}\{m_Ny_N\} \\
+        \mathcal{V}\{b_1\} &= m_1^2\mathcal{V}\{y_1\} + m_2^2 \mathcal{V}\{y_2\} + \ldots + m_N^2\mathcal{V}\{y_N\} \\
         \mathcal{V}\{b_1\} &= \sum_i{ \left( \dfrac{x_i - \bar{\mathrm{x}}}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}} \right)^2   } \mathcal{V}\{y_i\} \\
         \mathcal{V}\{b_1\} &= \dfrac{\mathcal{V}\{y_i\}}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}}
 
@@ -847,15 +847,15 @@ So we can write:
 
 	.. only:: studentlatex
 
-		- 
-		-
+		- By ...
+		- By ...
 
 	.. only:: inst
 
 		- Use samples that are far from the mean of the |x|-data.
 		- Use more samples.
 
-#.	What do we use for the numerator term :math:`\mathcal{V}\{y_i\}`?  
+#.	What do we use for the numerator term :math:`\mathcal{V}\{y_i\}`?
 
 	* This term represents the variance of the :math:`y_i` values at a given point :math:`x_i`.  If (a) there is no evidence of lack-of-fit, and (b) if |y| has the same error at all levels of |x|, then we can write that :math:`\mathcal{V}\{y_i\}` = :math:`\mathcal{V}\{e_i\}  = \dfrac{\sum{e_i^2}}{n-k}`, where :math:`n` is the number of data points used, and :math:`k` is the number of coefficients estimated (2 in this case).  The :math:`n-k` quantity is the degrees of freedom.
 
@@ -879,18 +879,18 @@ For convenience we will define some short-hand notation, which is common in leas
 	S_E^2 &= \mathcal{V}\{e_i\}  = \mathcal{V}\{y_i\} = \dfrac{\sum{e_i^2}}{n-k} \qquad\qquad \text{or~~} S_E = \sqrt{ \dfrac{\sum{e_i^2}}{n-k} }\\
 	S_E^2(b_0) &= \mathcal{V}\{b_0\} = \left(\dfrac{1}{N} + \dfrac{\bar{\mathrm{x}}^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}} \right)S_E^2\\
 	S_E^2(b_1) &= \mathcal{V}\{b_1\} = \dfrac{S_E^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}}
-	
+
 You will see that :math:`S_E` is an estimate of the standard deviation of the error (residuals), while :math:`S_E(b_0)` and :math:`S_E(b_1)` are the standard deviations of estimates for |b0| and |b1| respectively.
 
 Now it is straight forward to construct **confidence intervals for the least squares model parameters**.  You will also realize that we have to use the :math:`t`-distribution, because we are using an estimate of the variance.
 
 .. math::
 	:label: least-squares-CI
-	
-	\begin{array}{rccclrcccl} 
+
+	\begin{array}{rccclrcccl}
 		- c_t                &\leq& \dfrac{b_0 - \beta_0}{S_E(b_0)} &\leq &  +c_t               &\qquad- c_t                &\leq& \dfrac{b_1 - \beta_1}{S_E(b_1)} &\leq &  +c_t\\
 		b_0 - c_t S_E(b_0)   &\leq& \beta_0                         &\leq&	b_0 + c_t S_E(b_0)  &\qquad b_1 - c_t S_E(b_1)   &\leq& \beta_1                         &\leq&	b_1 + c_t S_E(b_1)
-	\end{array}	
+	\end{array}
 
 Example
 --------
@@ -900,7 +900,7 @@ Returning :ref:`back to the example <class-example>`, we can now calculate the c
 .. code-block:: s
 
 	# Assume you have calculated "b0" and "b1" already using vectors "x" and "y"
-	
+
 	> predictions <- b0 + x*b1
 	> predictions
 	[1]  8.001  7.000  9.501  7.501  8.501  10.001  6.00  5.000  9.001  6.500  5.501
@@ -913,18 +913,18 @@ Use that :math:`S_E` value to calculate the confidence intervals for :math:`\bet
 
 .. only:: studentlatex
 
-	- Confidence interval for :math:`\beta_0` and :math:`\beta_1`: 
-	
-		.. math:: 
-		
-			\begin{array}{rccclrcccl} 
+	- Confidence interval for :math:`\beta_0` and :math:`\beta_1`:
+
+		.. math::
+
+			\begin{array}{rccclrcccl}
 				- c_t                &\leq& \dfrac{b_0 - \beta_0}{S_E(b_0)} &\leq &  +c_t \qquad\qquad - c_t                &\leq& \dfrac{b_1 - \beta_1}{S_E(b_1)} &\leq &  +c_t             \\
 				   &\leq& \beta_0                         &\leq&                           \qquad\qquad	                          &\leq& \beta_1                         &\leq&
 			\end{array}
-			
+
 
 	- Also use the accompanying plot of the data to illustrate what these confidence intervals imply.
-	
+
 	.. figure:: images/show-anscome-solution-unmarked.png
 		:width: 750px
 		:align: center
@@ -934,34 +934,34 @@ Use that :math:`S_E` value to calculate the confidence intervals for :math:`\bet
 
 	First calculate the :math:`S_E` value and the standard errors for the |b0| and |b1|.  Substitute these into the equation for the confidence interval and solve as shown below.
 
-	.. math:: 
+	.. math::
 		S_E & = 1.237 \\
 		S_E^2(b_1) &= \dfrac{S_E^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}} = \dfrac{1.237^2}{110} = 0.0139\\
 		S_E^2(b_0) &= \left(\dfrac{1}{N} + \dfrac{\bar{\mathrm{x}}^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}} \right)S_E^2 = \left(\dfrac{1}{11} + \dfrac{9^2}{110} \right)1.237^2 = 1.266
-		
+
 	The confidence interval for :math:`\beta_0`:
-	
-	.. math:: 
-	
-		\begin{array}{rccclrcccl} 
+
+	.. math::
+
+		\begin{array}{rccclrcccl}
 			- c_t                &\leq& \dfrac{b_0 - \beta_0}{S_E(b_0)} &\leq &  +c_t               \\
 			3.0 - 2.26 \times \sqrt{1.266}  &\leq& \beta_0   &\leq&	3.0 + 2.26 \times \sqrt{1.266}   \\
-			0.457 &\leq& \beta_0   &\leq&	5.54 
+			0.457 &\leq& \beta_0   &\leq&	5.54
 		\end{array}
-		
-	
+
+
 	The confidence interval for :math:`\beta_1`:
-	
+
 	.. math::
-	
-		\begin{array}{rccclrcccl} 
+
+		\begin{array}{rccclrcccl}
 			- c_t                &\leq& \dfrac{b_1 - \beta_1}{S_E(b_1)} &\leq &  +c_t               \\
 			0.5 - 2.26 \times \sqrt{0.0139}   &\leq& \beta_1                         &\leq& 0.5 + 2.26 \times \sqrt{0.0139}\\
 			0.233  &\leq& \beta_1                         &\leq& 0.767	\\
 		\end{array}
-		
+
 	The plot below shows the effect of varying the slope parameters from the lower bound to the upper bound.  Notice that the slope always passes through the mean of the data :math:`(\bar{x}, \bar{y})`.
-	
+
 	.. figure:: images/show-anscome-solution-marked.png
 		:width: 750px
 		:align: center
@@ -978,7 +978,7 @@ Apart from understanding the error in the model's coefficient, we also would lik
 A naive first attempt
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-We might expect the error is related to the average size of the residuals.  After all, :ref:`our assumptions we made earlier <LS-assumptions>` showed the standard error of the residuals as the standard error of the |y|: :math:`S_E^2 = \mathcal{V}\left\{e_i\right\} = \mathcal{V}\left\{y_i\right\} = \dfrac{\sum{e_i^2}}{n-k}`.  
+We might expect the error is related to the average size of the residuals.  After all, :ref:`our assumptions we made earlier <LS-assumptions>` showed the standard error of the residuals as the standard error of the |y|: :math:`S_E^2 = \mathcal{V}\left\{e_i\right\} = \mathcal{V}\left\{y_i\right\} = \dfrac{\sum{e_i^2}}{n-k}`.
 
 .. figure:: images/residual-plots.png
 	:width: 750px
@@ -991,27 +991,27 @@ But there is something wrong with that error estimate.  It says that our predict
 
 A better attempt to construct prediction intervals for the least squares model
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-           
+
 .. Note:: A good reference for this section is Draper and Smith, *Applied Regression Analysis*, page 79.
 
 .. As is Devore, Probability and statistics for engineering and the sciences, page 506
 
-The derivation is similar to that for |b1|.  We require an estimate for the variance of the predicted |y| at at given value of |x|.  Let's fix our |x| value at :math:`x_*` and since :math:`b_0 = \bar{\mathrm{y}} - b_1 \bar{\mathrm{x}}`, we can write the prediction at this fixed |x| value as :math:`\hat{y}_* = \bar{\mathrm{y}} - b_1(x_* - \bar{\mathrm{x}})`. 
- 
+The derivation is similar to that for |b1|.  We require an estimate for the variance of the predicted |y| at at given value of |x|.  Let's fix our |x| value at :math:`x_*` and since :math:`b_0 = \bar{\mathrm{y}} - b_1 \bar{\mathrm{x}}`, we can write the prediction at this fixed |x| value as :math:`\hat{y}_* = \bar{\mathrm{y}} - b_1(x_* - \bar{\mathrm{x}})`.
+
 .. math::
 
         \mathcal{V}\{y_*\} &= \mathcal{V}\{\bar{\mathrm{y}}\} + \mathcal{V}\{b_1(x_* - \bar{\mathrm{x}})\} + 2 \text{Cov}\{\bar{\mathrm{y}}, b_1(x_* - \bar{\mathrm{x}})\} \\
         \mathcal{V}\{y_*\} &= \dfrac{S_E^2}{n} + (x_* - \bar{\mathrm{x}})^2 S_E^2(b_1)
 
 You may read the reference texts for the interesting derivation of this variance.  However, this is only the variance of the average predicted value of |y|.  In other words, it is the variance we expect if we repeatedly brought in observations at :math:`x_*`.  The prediction error of an individual observation, :math:`x_i`, and its corresponding prediction, :math:`\hat{y}_i`, is inflated slightly further:
-                                                         
+
 :math:`\mathcal{V}\{\hat{y}_i\} = S_E^2\left(1 + \dfrac{1}{n} + \dfrac{(x_i - \bar{\mathrm{x}})^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}}\right)`.
 
 We may construct a prediction interval in the standard manner, assuming that :math:`\hat{y}_i \sim \mathcal{N}\left( \overline{\hat{y}_i}, \mathcal{V}\{\hat{y}_i\} \right)`.  We will use an estimate of this variance since we do not know the population variance.  This requires we use the :math:`t`-distribution with :math:`n-k` degrees of freedom, at a given degree of confidence, e.g. 95%.
 
 .. math::
 
-    \begin{array}{rcccl} 
+    \begin{array}{rcccl}
         -c_t &<& \dfrac{\hat{y}_i - \overline{\hat{y}_i}}{\sqrt{V\{\hat{y}_i\}}} &<& +c_t \\
         \hat{y}_i -c_t \sqrt{V\{\hat{y}_i\}} &<& \overline{\hat{y}_i} &<& \hat{y}_i + c_t \sqrt{V\{\hat{y}_i\}}
     \end{array}
@@ -1023,24 +1023,24 @@ Implications of the prediction error of a new |y|
 
 Let's understand the interpretation of :math:`\mathcal{V}\{\hat{y}_i\} = S_E^2 \left(1 + \dfrac{1}{n} + \dfrac{(x_i - \bar{\mathrm{x}})^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}}\right)` as the variance of the predicted :math:`\hat{y}_i` at the given value of :math:`x_i`. Using the previous example where we calculated the least squares line, now:
 
-#.	Let :math:`x_\text{new} = \bar{\mathrm{x}}`, the center point of our data.  Write down the upper and lower value of the prediction bounds for the corresponding :math:`\hat{y}`, given that :math:`c_t = 2.26` at the 95% confidence level. 
+#.	Let :math:`x_\text{new} = \bar{\mathrm{x}}`, the center point of our data.  Write down the upper and lower value of the prediction bounds for the corresponding :math:`\hat{y}`, given that :math:`c_t = 2.26` at the 95% confidence level.
 
 	.. only:: studentlatex
 
-		- The LB = :math:`\hat{y}_i - c_t \sqrt{V\{\hat{y}_i\}}` = 
+		- The LB = :math:`\hat{y}_i - c_t \sqrt{V\{\hat{y}_i\}}` =
 		- The UB = :math:`\hat{y}_i + c_t \sqrt{V\{\hat{y}_i\}}` =
 		- What do you notice that is special about these bounds at the point :math:`x_\text{new} = \bar{\mathrm{x}}`?
-		
+
 	.. only:: inst
-	
+
 		- The LB = :math:`\hat{y}_i - c_t \sqrt{V\{\hat{y}_i\}} = 7.5 - 2.26 \times (1.236)^2 \times \sqrt{\left(1+\dfrac{1}{11} + \dfrac{(\bar{\mathrm{x}} - \bar{\mathrm{x}})^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}}\right)} = 7.5 - 2.26 \times 1.527 \times 1.044 = 7.50 - 3.60`
 		- The UB = :math:`\hat{y}_i + c_t \sqrt{V\{\hat{y}_i\}} = 7.5 + 2.26 \times (1.236)^2 \times \sqrt{\left(1+\dfrac{1}{11} + \dfrac{(\bar{\mathrm{x}} - \bar{\mathrm{x}})^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}}\right)} = 7.5 + 2.26 \times 1.527 \times 1.044 = 11.1`
 
-	
-#.	Now move left and right, away from :math:`\bar{\mathrm{x}}`, and mark the confidence intervals.  What general shape do they have?  
+
+#.	Now move left and right, away from :math:`\bar{\mathrm{x}}`, and mark the confidence intervals.  What general shape do they have?
 
 	-	The confidence intervals have a quadratic shape due to the square term under the square root.  The smallest prediction error occurs at the center of the model, and expands progressively wider as one moves away from the model center.  This is illustrated in the figure and makes intuitive sense as well.
-	
+
 	.. figure:: images/show-anscome-solution-with-yhat-bounds.png
 		:width: 750px
 		:align: center
@@ -1051,7 +1051,7 @@ Interpretation of software output
 
 To complete this section we show how to interpret the output from computer software packages.  Most packages have very standardized output, and you should make sure that whatever package you use, that you can interpret the estimates of the parameters, their confidence regions and get a feeling for the model's performance.
 
-The following output is obtained in R for the :ref:`example <class-example>` we have been using in this section.  
+The following output is obtained in R for the :ref:`example <class-example>` we have been using in this section.
 
 .. code-block:: text
 
@@ -1059,25 +1059,25 @@ The following output is obtained in R for the :ref:`example <class-example>` we 
 	> y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68)
 	> model <- lm(y ~ x)    # "The linear model, where y is described by x"
 	> summary(model)
-	
+
 	Call:
 	lm(formula = y ~ x)
 
 	Residuals:
-	     Min       1Q   Median       3Q      Max 
-	-1.92127 -0.45577 -0.04136  0.70941  1.83882 
+	     Min       1Q   Median       3Q      Max
+	-1.92127 -0.45577 -0.04136  0.70941  1.83882
 
 	Coefficients:
-	            Estimate Std. Error t value Pr(>|t|)   
-	(Intercept)   3.0001     1.1247   2.667  0.02573 * 
+	            Estimate Std. Error t value Pr(>|t|)
+	(Intercept)   3.0001     1.1247   2.667  0.02573 *
 	x             0.5001     0.1179   4.241  0.00217 **
 	---
-	Signif. codes:  0 `***' 0.001 `**' 0.01 `*' 0.05 `.' 0.1 ` ' 1 
+	Signif. codes:  0 `***' 0.001 `**' 0.01 `*' 0.05 `.' 0.1 ` ' 1
 
 	Residual standard error: 1.237 on 9 degrees of freedom
-	Multiple R-squared: 0.6665,	Adjusted R-squared: 0.6295 
+	Multiple R-squared: 0.6665,	Adjusted R-squared: 0.6295
 	F-statistic: 17.99 on 1 and 9 DF,  p-value: 0.002170
-	
+
 Make sure you can calculate from the equations given in the notes the following values.
 
 	- The intercept term |b0| = 3.0001.
@@ -1124,12 +1124,12 @@ This is one of the easiest assumptions to verify: use a qq-plot to assess the di
 	qq.plot(resid(model))     # uses raw residuals
 
 If the residuals appear non-normal, then attempt the following:
-	
+
 	-	Remove the outlying observation(s) in the tails, but only after careful investigation
 	-	Use a suitable transformation of the y-variable
 	-	add additional terms
 
-The simple example shown here builds a model that predicts the price of a used vehicle using only the mileage as an explanatory variable.  
+The simple example shown here builds a model that predicts the price of a used vehicle using only the mileage as an explanatory variable.
 
 .. figure:: images/non-normal-errors-outliers.png
 	:align: center
@@ -1139,7 +1139,7 @@ The simple example shown here builds a model that predicts the price of a used v
 The group of outliers were due to 10 observations a certain class of vehicle (Cadillac convertibles) that distort the model.  We can remove these observations, which limits our model to be useful only for other vehicle types, but we gain a smaller standard error and a tighter confidence interval.  These residuals are still very non-normal though.
 
 .. math::
-	
+
 	\begin{array}{rcccl}
 		\text{Before}: \qquad & b_1 = -0.173 & \qquad -0.255 \leq \beta_1 \leq -0.0898 &\qquad S_E = \text{\$} 9789\\
 		\text{After}:  \qquad & b_1 = -0.155 & \qquad -0.230 \leq \beta_1 \leq -0.0807 &\qquad S_E = \text{\$} 8655
@@ -1153,7 +1153,7 @@ In the next fictitious example the |y|-variable is non-linearly related to the |
 	:align: center
 	:width: 750px
 	:scale: 70
-	
+
 More discussion about transformations of the data is given in the section on :ref:`model linearity <LS-model-linearity>`.
 
 Non-constant error variance
@@ -1193,7 +1193,7 @@ If you suspect that there may be lack of independence, use plots of the residual
 .. figure:: images/residual-pattern-unmodelled-dynamics.png
 	:width: 750px
 	:align: center
-	
+
 One way around the autocorrelation is to subsample - use only every :math:`k^\text{th}` sample, where :math:`k` is a certain number of gaps between the points.  How do we know how many gaps to leave?  Use the `autocorrelation function <http://en.wikipedia.org/wiki/Autocorrelation>`_ to determine how many samples.  You can use the ``acf(...)`` function in R, which will show how many significant lags there are between observations.  Calculating the autocorrelation accurately requires a large data set, which is a requirement anyway if you need to subsample your data to obtain independence.
 
 Here are some examples of the autocorrelation plot: in the first case you would have to leave at least 16 samples between each sub-sample, while the second and third cases require a gap of 1 sample.
@@ -1215,16 +1215,16 @@ Another test for autocorrelation is the Durbin-Watson test.  For more on this te
 Linearity of the model (incorrect model specification)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Recall that the linear model is just a tool to either learn more about our data, or to make predictions.  Many cases of practical interest are from systems where the general theory is either unknown, or too complex, or known to be non-linear.  
+Recall that the linear model is just a tool to either learn more about our data, or to make predictions.  Many cases of practical interest are from systems where the general theory is either unknown, or too complex, or known to be non-linear.
 
 Certain cases of non-linearity can be dealt with by simple transformations of the raw data: use a **non-linear transformation** of the raw data and then build a *linear model* as usual.  An alternative method which fits the non-linear function, using concepts of optimization, by minimizing the sum of squares is covered in a section on non-linear regression.  Again the book by Draper and Smith (Chapter 24, 3rd edition), may be consulted if this topic is of further interest to you.  Let's take a look at a few examples.
 
 We saw earlier a case where a square-root transformation of the |y| variable made the residuals more normally distributed.  There is in fact a sequence of transformations that can be tried to modify the distribution of a single variable: :math:`x_\text{transformed} \leftarrow x^p_\text{original}`.
-		
+
 	* When :math:`p` goes from 1 up to 1.5, 1.75, 2.0, *etc*, it compresses small values of :math:`x` and inflates larger values.
 	* When :math:`p` goes down from 1, 0.5 (:math:`\sqrt{x}`), 0.25, -0.5, -1.0 (:math:`1/x`), -1.5, -2.0, *etc*, it compresses large values of :math:`x` and inflates smaller values.
 	* The case of :math:`\log(x)` approximates :math:`p=0` in terms of the severity of the transformation.
-	
+
 In other instances we may know from first-principles theory, or some other means what the expected relationship is between an |x| and |y| variable.
 
 	*	In a distillation column the temperature, :math:`T` is inversely proportional to the logarithm of the vapour pressure, :math:`P`.  So fit a linear model, :math:`y = b_0 + b_1x` where :math:`x \leftarrow 1/T` and where :math:`y \leftarrow P`.  The slope coefficient will have a different interpretation and a different set of units as compared to the case when predicting vapour pressure directly from temperature.
@@ -1232,19 +1232,19 @@ In other instances we may know from first-principles theory, or some other means
 	*	If :math:`y = \dfrac{1}{p+qx}`, then invert both sides and estimate the model :math:`y = b_0 + b_1 x` where :math:`b_0 \leftarrow p`, :math:`b_1 \leftarrow q` and :math:`y\leftarrow 1/y`
 	*	There are plenty of other examples, some classic cases being the non-linear models that arise during reactor design and biological growth rate models.  With some ingenuity (taking logs, inverting the equation), these can often be simplified into linear models.
 	*	Some cases cannot be linearized and are best estimated by non-linear least squares methods.  However, a make-shift approach which works quite well for simple cases is to perform a grid search.  For example imagine the equation to fit is :math:`y = \beta_1\left(1-e^{-\beta_2 x} \right)`, and you are given some data pairs :math:`(x_i, y_i)`.  Then for example, create a set of trial values :math:`\beta_1 = [10, 20, 30, 40, 50]` and :math:`\beta_2 = [0.0, 0.2, 0.4, 0.8]`.  Build up a grid for each combination of :math:`\beta_1` and :math:`\beta_2` and calculate the sum of squares objective function for each point in the grid.  By trial-and-error you can converge to an approximate value of :math:`\beta_1` and :math:`\beta_2` that best fit the data.  You can then calculate :math:`S_E`, but not the confidence intervals for :math:`\beta_1` and :math:`\beta_2`.
-	
+
 Before launching into various transformations or non-linear least squares models, bear in mind that the linear model may be useful over the region of interest.  In the case below, we might only be concerned with using the model over the region shown, even though the system under observation behaves non-linearly over a wider region of operation.
 
 	.. figure:: images/nonlinear-linear-region.png
 		:align: center
 		:width: 500px
 		:scale: 70
-			
+
 How can we detect when the linear model is not sufficient anymore?  While a qq-plot might hint at problems, better plots are the same two plots for detecting non-constant error variance:
 
 	-	the predicted values of |y| (on the x-axis) against the residuals (y-axis)
 	-	the |x| values against the residuals (y-axis)
-	
+
 Here we show both plots for the example just prior (where we used a linear model for a smaller sub-region).  The last two plots look the same, because the predicted :math:`\hat{\mathrm{y}}` values are just a linear transformation of the |x| values.
 
 	.. figure:: images/nonlinear-detection.png
@@ -1263,18 +1263,18 @@ Summary of steps to build and investigate a linear model
 #.	Plot the data to assess model structure and degree of correlation between the |x| and |y| variable.
 
 	.. code-block:: s
-		
+
 		plot(x, y)              # plot the raw data
 		lines(lowess(x,y))      # superimpose non-parametric smoother to see the correlation
-		
+
 #.	Fit the model and examine the printed output.
 
 	.. code-block:: s
-	
+
 		model <- lm(y ~ x)      # fit the model: "y as described by variable x"
 		summary(model)
 		confint(model)
-	
+
 	- Investigate the model's standard error, how does it compare to the range of the |y| variable?
 	- Calculate the confidence intervals for the model parameters and interpret them.
 
@@ -1285,7 +1285,7 @@ Summary of steps to build and investigate a linear model
 		plot(x, y)
 		lines(lowess(x,y))        # show the smoother
 		abline(model, col="red")  # and show the least squares model
-		
+
 #.	Plot a normal probability plot, or a qq-plot, of the residuals.  Are they normally distributed?  If not, investigate if a transformation of the |y| variable might improve them.  But also see the additional plots on checking for non-linearity and missing terms.
 
 	.. code-block:: s
@@ -1300,7 +1300,7 @@ Summary of steps to build and investigate a linear model
 
 		plot(x, resid(model))
 		abline(h=0, col="red")
-		
+
 #.	Plot the residuals in time (sequence) order. We expect to see no particular trends in the data.  If there are patterns in the plot, assess whether autocorrelation is present in the |y| variable (use the ``acf(y)`` function in R).  If so, you might have to sub-sample the data, or resort to proper time-series analysis tools.
 
 	.. code-block:: s
@@ -1320,7 +1320,7 @@ Summary of steps to build and investigate a linear model
 		abline(h=0, col="red")
 
 #.	Plot the predictions of |y| against the actual values of |y|.  We expect the data to fall around a 45 degree line.
-		
+
 	.. code-block:: s
 
 		plot(y, predict(model))
@@ -1332,8 +1332,8 @@ Summary of steps to build and investigate a linear model
 .. Notes for this section
 
 	p 288 of Hogg and Ledolter:
-	
-	1.	Plot residuals (y) against fitted values(x): 
+
+	1.	Plot residuals (y) against fitted values(x):
 	2.	Outliers should be investigated - they are often the most interesting points
 	3.	Increase in variance in residuals vs fitted values
 	4.	Residuals in sequence (trends?)
@@ -1370,13 +1370,13 @@ First some motivating examples:
 	-	A relationship exists between :math:`x_1` = reactant concentration and :math:`x_2` = temperature with respect to :math:`y` = reaction rate.  We already have a linear model between :math:`y = b_0 + b_1x_1`, but we want to improve our understanding of the system by learning about the temperature effect, :math:`x_2`.
 	-	We want to predict melt index in our reactor from the reactor temperature, but we know that the feed flow and pressure are also good explanatory variables.  How do these additional variables improve the predictions?
 	-	We know that the quality of our plastic product is a function of the mixing time, and also the mixing tank in which the raw materials are blended.  How do we incorporate the concept of a mixing tank indicator in our model?
-	
+
 ..	- Ian Nichols example
-..	- Case study/Example: http://www.amstat.org/publications/jse/v16n3/datasets.kuiper.html 
+..	- Case study/Example: http://www.amstat.org/publications/jse/v16n3/datasets.kuiper.html
 ..	- Show that R2 increases when adding a new variable to the equation (also see p105 of Fox)
 	- Consider summarizing p223-225 of Fox here regarding t- and F-tests
 	- Add Q5.11 from assignment 3 here to show how adding terms increases R2
-	
+
 Multiple linear regression: notation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1387,26 +1387,26 @@ To help the discussion below it is useful to omit the least squares model's inte
 	y_i &= b_0 + b_1 x_i \\
 	\bar{y} &= b_0 + b_1 \bar{x} \\
 	y_i - \bar{y} &= 0 +b_1(x_i - \bar{x}) \qquad \text{by subtracting the previous lines from each other}
-	
+
 This indicates that if we fit a model where the |x| and |y| vectors are first mean-centered, i.e. let :math:`x = x_\text{original} - \text{mean}\left(x_\text{original} \right)` and :math:`y = y_\text{original} - \text{mean}\left(y_\text{original} \right)`, then we still estimate the same slope for :math:`b_1`, but the intercept term is zero.  All we gain from this is simplification of the subsequent analysis.  Of course, if you need to know what :math:`b_0` was, you can use the fact that :math:`b_0 = \bar{y} - b_1 \bar{x}`.  Nothing else changes: the :math:`R^2, S_E, S_E(b_1)` and all other model interpretations remain the same.  You will prove this to yourself in the assignment.
 
 In the rest of the this section we will omit the model's intercept term, since it can always be recovered afterwards.
-	
+
 The general linear model is given by:
 
 .. math::
 	y_i &= \beta_1 x_1 + \beta_2x_2 + \ldots + \beta_kx_k + \epsilon_i \\
 	y_i &= [x_1, x_2, \ldots, x_k] \begin{bmatrix} \beta_1 \\ \beta_2 \\ \vdots \\ \beta_k \end{bmatrix} + \epsilon_i \\
 	y_i &= \underbrace{\mathit{x}^T}_{(1 \times k)} \underbrace{\beta}_{(k \times 1)} + \,\epsilon_i
-	
+
 And writing the last equation |n| times over for each observation in the data:
 
 .. math::
 	        \begin{bmatrix} y_1\\ y_2\\ \vdots \\ y_n \end{bmatrix} &=
-	        \begin{bmatrix} x_{1,1} & x_{1,2} & \ldots & x_{1,k}\\ 
-	                        x_{2,1} & x_{2,2} & \ldots & x_{2,k}\\ 
+	        \begin{bmatrix} x_{1,1} & x_{1,2} & \ldots & x_{1,k}\\
+	                        x_{2,1} & x_{2,2} & \ldots & x_{2,k}\\
 	                        \vdots  & \vdots  & \ddots & \vdots\\
-	                        x_{n,1} & x_{n,2} & \ldots & x_{n,k}\\ 
+	                        x_{n,1} & x_{n,2} & \ldots & x_{n,k}\\
 	        \end{bmatrix}
 	        \begin{bmatrix} b_1 \\ b_2 \\ \vdots \\ b_k \end{bmatrix} +
 	        \begin{bmatrix} e_1\\ e_2\\ \vdots \\ e_n \end{bmatrix}\\
@@ -1435,19 +1435,19 @@ Taking partial derivative with respect to the entries in :math:`\mathbf{b}` and 
 
 Three important relationships are now noted:
 
-#. :math:`\mathcal{E}\{\mathbf{b}\} = \mathbf{\beta}` 
+#. :math:`\mathcal{E}\{\mathbf{b}\} = \mathbf{\beta}`
 #. :math:`\mathcal{V}\{\mathbf{b}\} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1} S_E^2`
 #. An estimate of the standard error is given by: :math:`\sigma_e \approx S_E = \sqrt{\dfrac{\mathbf{e}^T\mathbf{e}}{n-k}}`, where :math:`k` is the number of parameters estimated in the model and :math:`n` is the number of observations.
 
-These relationships imply that our estimates of the model parameters are unbiased (the first line), and that the variability of our parameters is related to the :math:`\mathbf{X}^T\mathbf{X}` matrix and the model's standard error, :math:`S_E`.  
+These relationships imply that our estimates of the model parameters are unbiased (the first line), and that the variability of our parameters is related to the :math:`\mathbf{X}^T\mathbf{X}` matrix and the model's standard error, :math:`S_E`.
 
 Going back to the single variable case we showed in the section where we derived :ref:`confidence intervals <CI-for-model-parameters>` for :math:`b_0` and :math:`b_1`  that:
 
 	.. math::
 		\mathcal{V}\{b_1\} = \dfrac{S_E^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}}
-		
-Notice that our matrix definition gives exactly the same result, remembering the |x| variables have already been centered in the matrix form.  Also recall that the variability of these estimated parameters can be reduced by (a) taking more samples, thereby increasing the denominator size, and (b) by including observations away from the center of the model.  
-	
+
+Notice that our matrix definition gives exactly the same result, remembering the |x| variables have already been centered in the matrix form.  Also recall that the variability of these estimated parameters can be reduced by (a) taking more samples, thereby increasing the denominator size, and (b) by including observations away from the center of the model.
+
 Example
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1464,14 +1464,14 @@ After mean centering the data we have that :math:`x_1 = [-4.5, -2.5, -1.5 , 1.5 
 
 The :math:`\mathbf{X}^T\mathbf{X}` and :math:`\mathbf{X}^T\mathbf{y}` matrices can then be calculated as:
 
-.. math:: 
+.. math::
 
 	\begin{array}{lr}
 		\mathbf{X}^T\mathbf{X} = \begin{bmatrix} 55.5 &   -57.0 \\-57.0  & 62\end{bmatrix}
 	&\qquad\qquad
 		\mathbf{X}^T\mathbf{y} = \begin{bmatrix} 36.5 \\ -36.0 \end{bmatrix}
-	\end{array}	 
-	
+	\end{array}
+
 Notice what these matrices imply (remembering that the vectors in the matrices have been centered).  The :math:`\mathbf{X}^T\mathbf{X}` matrix is a scaled version of the covariance matrix of :math:`\mathbf{X}`.  The diagonal terms show how strongly the variable is correlated with itself, which is the variance, and always a positive number.  The off-diagonal terms are symmetrical, and represent the strength of the relationship between, in this case, :math:`x_1` and :math:`x_2`. What would the off-diagonal terms be for uncorrelated variables?
 
 The inverse of the :math:`\mathbf{X}^T\mathbf{X}` matrix is particularly important - it is related to the standard error for the model parameters - as in: :math:`\mathcal{V}\{\mathbf{b}\} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1} S_E^2`.
@@ -1482,12 +1482,12 @@ The inverse of the :math:`\mathbf{X}^T\mathbf{X}` matrix is particularly importa
 		\left(\mathbf{X}^T\mathbf{X}\right)^{-1}= \begin{bmatrix} 0.323 & 0.297 \\ 0.297 & 0.289 \end{bmatrix}
 	\end{array}
 
-The non-zero off-diagonal elements indicate that the variance of the :math:`b_1` coefficient is related to the variance of the :math:`b_2` coefficient as well. 
+The non-zero off-diagonal elements indicate that the variance of the :math:`b_1` coefficient is related to the variance of the :math:`b_2` coefficient as well.
 
 For two variables, the general relationship is that:
 
 .. math::
-	
+
 	\mathcal{V}\left(b_1\right) &= \dfrac{1}{1-r^2_{12}} \times \dfrac{S_E^2}{\sum{x_1^2}} \\
 	\mathcal{V}\left(b_2\right) &= \dfrac{1}{1-r^2_{12}} \times \dfrac{S_E^2}{\sum{x_2^2}}
 
@@ -1506,13 +1506,13 @@ Let's take a look at the case where :math:`y = b_1x_1 + b_2x_2`.  We can plot th
 		:align: center
 		:scale: 70
 
-The points are used to fit the plane by minimizing the sum of square distances shown from each point to the plane.  The interpretation of the slope coefficients for :math:`b_1` and :math:`b_2` is **not the same** as for the case with just a single |x| variable.  
+The points are used to fit the plane by minimizing the sum of square distances shown from each point to the plane.  The interpretation of the slope coefficients for :math:`b_1` and :math:`b_2` is **not the same** as for the case with just a single |x| variable.
 
 When we have multiple |x| variables, then the value of coefficient :math:`b_1` is the average change we would expect in :math:`\mathbf{y}` for a one unit change in :math:`{x}_1` provided we hold :math:`{x}_2` fixed.  It is the last part that is new:  we must assume that other |x| variables are fixed.
 
 For example: :math:`y = b_T T + b_S S = -0.52 T + 3.2 S`, where :math:`T` is reactor temperature in Kelvin, and :math:`S` is substrate concentration in g/L, and :math:`y` is yield in :math:`\mu\text{g}`, for a fixed reactor system. The :math:`b_T = -0.52 \mu\text{g}/\text{K}` coefficient is the decrease in yield for every 1 Kelvin increase in temperature, holding the substrate concentration fixed.
 
-This is a good point to introduce some terminology you might have come across.   Imagine you have a model where :math:`{y}` is the used vehicle price and :math:`{x}_1` is the mileage on the odometer (we expect that :math:`b_1` will be negative) and :math:`{x}_2` is the number of doors on the car.  You might hear the phrase: "the effect of the number of doors, controlling for mileage, is not significant".  The part "controlling for ..." indicates that the controlled variable has been added to regression model, and its effect is accounted for.  In other words, for two vehicles with the same mileage, the coefficient :math:`b_2` indicates whether the second hand price increases or decreases as the number of doors on the car changes (e.g. a 2-door vs a 4-door car). 
+This is a good point to introduce some terminology you might have come across.   Imagine you have a model where :math:`{y}` is the used vehicle price and :math:`{x}_1` is the mileage on the odometer (we expect that :math:`b_1` will be negative) and :math:`{x}_2` is the number of doors on the car.  You might hear the phrase: "the effect of the number of doors, controlling for mileage, is not significant".  The part "controlling for ..." indicates that the controlled variable has been added to regression model, and its effect is accounted for.  In other words, for two vehicles with the same mileage, the coefficient :math:`b_2` indicates whether the second hand price increases or decreases as the number of doors on the car changes (e.g. a 2-door vs a 4-door car).
 
 In the prior example, we could say: the effect of substrate concentration on yield, controlling for temperature, is to increase the yield by 3.2 :math:`\mu\text{g}` for every increase in 1 g/L of substrate concentration.
 
@@ -1523,21 +1523,21 @@ Now that we have introduced multiple linear regression to expand our models, we 
 
 	-	We want to predict yield, but want to indicate whether a radial or axial impeller was used in the reactor and learn whether it has any effect on yield.
 	-	Use an indicator variable to show if the raw material came from the supplier in Spain, India, or Vietnam and interpret its effect on yield.
-	
+
 	..	figure:: images/Mixing_-_flusso_assiale_e_radiale.jpg
 		:width: 500px
 		:align: center
 		:scale: 40
-	
+
 		Axial and radial blades; figure from Wikipedia (http://en.wikipedia.org/wiki/Impeller)
-	
+
 We will start with the simplest case, using the example of the radial or axial impeller.  We wish to understand the effect on yield, :math:`y [\mu\text{g}]`, as a function of the impeller type, and impeller speed, :math:`x`.
 
 .. math::
-	
+
 	y &= \beta_0 + \beta_1x + \gamma d + \varepsilon \\
 	y &= b_0 + b_1 x + g d_i + e_i \\
-	
+
 where :math:`d_i = 0` if an axial impeller was used, or :math:`d_i = 1` if a radial impeller was used.  All other least squares assumptions hold, particularly that the variance of :math:`y_i` is unrelated to the value of :math:`d_i`.  For the initial illustration, assume that :math:`\beta_1 = 0`, then geometrically, what is happening here is shown below:
 
 .. figure:: images/least-squares-dummy-variable-and-intercept.png
@@ -1545,22 +1545,22 @@ where :math:`d_i = 0` if an axial impeller was used, or :math:`d_i = 1` if a rad
 	:align: center
 	:scale: 62
 
-The :math:`\gamma` parameter, estimated by :math:`g`, is the difference in intercept when changing impellers.  Note that the lines are parallel.  
+The :math:`\gamma` parameter, estimated by :math:`g`, is the difference in intercept when changing impellers.  Note that the lines are parallel.
 
-.. math:: 
+.. math::
 	\begin{array}{ll}
 		\text{Axial impellers:} \qquad &\qquad y = b_0 + 0 \\
-		\text{Radial impellers:} \qquad &\qquad y = b_0 + g 
+		\text{Radial impellers:} \qquad &\qquad y = b_0 + g
 	\end{array}
 
-Now if :math:`\beta_1 \neq 0`, then the horizontal lines in the above figure are tilted, but still parallel to each other. Nothing else is new here, other than the structure of the variable used for :math:`d_i`.  The interpretation of its coefficient, :math:`g`, is the same as with any other coefficient.  In this particular example, had :math:`g = -56 \mu\text{g}`, it would indicate that the average decrease in yield is 56 :math:`\mu\text{g}` when using a radial impeller.  
+Now if :math:`\beta_1 \neq 0`, then the horizontal lines in the above figure are tilted, but still parallel to each other. Nothing else is new here, other than the structure of the variable used for :math:`d_i`.  The interpretation of its coefficient, :math:`g`, is the same as with any other coefficient.  In this particular example, had :math:`g = -56 \mu\text{g}`, it would indicate that the average decrease in yield is 56 :math:`\mu\text{g}` when using a radial impeller.
 
 The rest of the analysis tools for least squares models can be used quite powerfully. For example, this 95% confidence interval for the impeller variable
 
-.. math:: 
+.. math::
 
 	-32 \mu\text{g} \leq \gamma \leq 21 \mu\text{g}
-	
+
 would indicate the impeller type has no significant effect on the yield amount.
 
 Integer variables are also called dummy variables or indicator variables.  Really what is happening here is the same concept as for multiple linear regression, the equation of a plane is being estimated.  Even though we only use the equation of the plane at integer values of :math:`d`, but the underlying plane is actually continuous.
@@ -1569,7 +1569,7 @@ Integer variables are also called dummy variables or indicator variables.  Reall
 	:width: 500px
 	:align: center
 	:scale: 62
-	
+
 We have to introduce additional terms in the model if we have integer variables with more than 2 levels. In general, if there are :math:`p`-levels, then we must include :math:`p-1` new terms.  For example, if we wish to test the effect of :math:`y` = yield achieved from the raw material supplier in Spain, India, or Vietnam, we could code:
 
 	- Spain: :math:`d_{i1} = 0` and :math:`d_{i2} = 0`
@@ -1577,17 +1577,17 @@ We have to introduce additional terms in the model if we have integer variables 
 	- Vietnam: :math:`d_{i1} = 0` and :math:`d_{i2} = 1`.
 
 and solve for the least squares model: :math:`y = \beta_0 + \beta_1x_1 + \ldots + \beta_k x_k + \gamma_1 d_1 + \gamma_2 d_2 + \varepsilon`, where :math:`\gamma_1` is the effect of the Indian supplier, holding all other terms constant;  :math:`\gamma_2` is the incremental effect of the Vietnamese supplier in addition to the Indian supplier.  Because of this somewhat confusing interpretation of the coefficients, sometimes people will use an extra degree of freedom, but introduce :math:`p` new terms for the :math:`p` levels of the integer variable.
-	
+
 	- Spain: :math:`d_{i1} = 1` and :math:`d_{i2} = 0` and :math:`d_{i3} = 0`
 	- India: :math:`d_{i1} = 0` and :math:`d_{i2} = 1` and :math:`d_{i3} = 0`
 	- Vietnam: :math:`d_{i1} = 0` and :math:`d_{i2} = 0` and :math:`d_{i3} = 1`
-	
+
 and :math:`y = \beta_0 + \beta_1x_1 + \ldots + \beta_k x_k + \gamma_1 d_1 + \gamma_2 d_2 + \gamma_3 d_3 + \varepsilon`, where the coefficients are more easily interpretable.
 
 Outliers: discrepancy, leverage, and influence of the observations
 ==========================================================================================
 
-Unusual observations will influence the model parameters and also influence the analysis from the model (standard errors and confidence intervals).  In this section we will examine how these outliers influence the model.  
+Unusual observations will influence the model parameters and also influence the analysis from the model (standard errors and confidence intervals).  In this section we will examine how these outliers influence the model.
 
 Outliers are in many cases the most interesting data in a data table.  They indicate whether there was a problem with the data recording system, they indicate sometimes when the system is operating really well, though more likely, they occur when the system is operating under poor conditions.  Nevertheless, outliers should be carefully studied for (a) why they occurred and (b) whether they should be retained in the model.
 
@@ -1598,8 +1598,8 @@ Background
 	:width: 750px
 	:scale: 100
 	:align: center
-	
-	
+
+
 A discrepancy is a data point that is unusual *in the context of the least squares model*, as shown in the first figure here.  On its own, from the perspective of either |x| or |y| alone, the square point is not unusual.  But it is unusual in the context of the least squares model.  When that square point is removed, the updated least squares line (dashed line) is obtained.  This square point clearly has little influence on the model, even though it is discrepant.
 
 The discrepant square point in model B has much more influence on the model.  Given that the objective function aims to minimize the sum of squares of the deviations, it is not surprising that the slope is pulled towards this discrepant point.  Removing that point gives a different estimate of the slope and intercept.
@@ -1610,14 +1610,14 @@ Can we quantify how much *influence* these *discrepancies* have on the model; an
 
 	.. math::
 		\text{Leverage} \times \text{Discrepancy}  = \text{Influence on the model}
-		
+
 Leverage
 ~~~~~~~~~~~~~~
 
 Leverage measures how much each observation contributes to the model's prediction of :math:`\hat{y}_i`.  It is also called the hat value, :math:`h_i`, and simply measures how far away the data point is from the center of the model, but it takes the model's correlation into account:
 
 	.. math::
-	
+
 		h_i &= \dfrac{1}{n} + \dfrac{\left(x_i -\bar{x}\right)^2}{\sum_{j=1}^{n}{\left(x_j -\bar{x}\right)^2}} \qquad \text{and}\qquad \bar{h} = \dfrac{k}{n}  \qquad \text{and}\qquad \dfrac{1}{n} \leq h_i \leq 1.0
 
 The average hat value can be calculated theoretically.  While it is common to plot lines at 2 and 3 times the average hat value, always plot your data and judge for yourself what a large leverage means.  Also notice that smallest hat value is always positive and greater or equal to :math:`1/n`, while the largest hat value possible is 1.0.  The hat values for models B and C are the same, and are shown below.  The last point has very high leverage.
@@ -1626,17 +1626,17 @@ The average hat value can be calculated theoretically.  While it is common to pl
 		:width: 750px
 		:scale: 100
 		:align: center
-		
-	
+
+
 Discrepancy
 ~~~~~~~~~~~~~~
 
 Discrepancy can be measured by the residual distance.  However the residual is not a complete measure of discrepancy.  We can imagine cases where the point has such high leverage that it drags the enter model towards it, leaving it only with a small residual.  One way then to isolate these points is to divide the residual by :math:`1-\text{leverage} = 1 - h_i`.  So we introduce a new way to quantify the residuals here, called *studentized residuals*:
 
-	.. math:: 
-	
+	.. math::
+
 		e_i^* = \dfrac{e_i}{S_{E(-i)}\sqrt{1-h_i}}
-	
+
 Where :math:`e_i` is the residual for the :math:`i^\text{th}` point, as usual, but :math:`S_{E(-i)}` is the standard error of the model when deleting the :math:`i^\text{th}` point and refitting the model. This studentized residual accounts for the fact that high leverage observations pull the model towards themselves.  In practice the model is not recalculated by omitting each point one at a time; use the ``rstudent( lm(y~x) )`` function in R to compute the studentized residuals from a given model.
 
 	.. figure:: images/studentized-residuals.png
@@ -1655,7 +1655,7 @@ The influence of each data point can be quantified by seeing how much the model 
 One such measure is called *Cook's statistic*, usually called :math:`D_i`, and ofter referred to just as *Cook's D*.  Conceptually, it can be viewed as the change in the model coefficients when omitting an observation, however it is much more convenient to calculate it as follows:
 
 	.. math::
-		
+
 		D_i = \dfrac{e_i^2}{k \times \frac{1}{n}\sum{e_i^2}} \times \dfrac{h_i}{1-h_i}
 
 where :math:`\frac{1}{n}\sum{e_i^2}` is called the mean square error of the model (the average square error).  It is easy to see here now why influence is the product of discrepancy and leverage.
@@ -1666,9 +1666,9 @@ The values of :math:`D_i` are conveniently calculated in R using the ``cooks.dis
 		:width: 750px
 		:scale: 100
 		:align: center
-		
 
-		
+
+
 .. THRESHOLD FOR COOK'S D.  BUBBLE PLOT.
 
 .. _LS-multiple-X-MLR:
@@ -1678,14 +1678,14 @@ Topics not covered in this book
 
 .. note:: Enrichment
 
-	These topics are not covered in depth in this book, but might be of interest to you.  I provide a small introduction to each topic, showing what their purpose is, together with some examples.  
+	These topics are not covered in depth in this book, but might be of interest to you.  I provide a small introduction to each topic, showing what their purpose is, together with some examples.
 
 Robust least squares models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Outliers are often the most interesting observations and are usually the points from which we learn the most about the system.  A manual step where we review the outliers and their influence should always done for any important model.  For example, inspection of the residual plots as described in the preceding sections.
 
-However, the ability to build a linear model that is not heavily influenced by outliers might be of interest in certain cases. 
+However, the ability to build a linear model that is not heavily influenced by outliers might be of interest in certain cases.
 
 * The model is built automatically and is not reviewed by a human (e.g. as an intermediate step in a data-mining procedure).
 * The human reviewer is not skilled to know which plots to inspect for influential and discrepant observations, or may not know how to interpret these plots.
@@ -1694,62 +1694,62 @@ Some criticism of robust methods are that there are too many different robust me
 
 If you would like to read up some more, a nice introduction targeted at engineering readers is given in PJ Rousseeuw's "Tutorial to Robust Statistics", *Journal of Chemometrics*, **5**, 1-20, 1991. `Link to the paper <http://dx.doi.org/10.1002/cem.1180050103>`_.
 
-In R the various efforts of international researchers is being consolidated.  The ``robustbase`` package provides basic functionality that is now well established in the field; use that package if you want to assemble various robust tools yourself.  On the other hand, a more comprehensive package called ``robust`` is also available which provides robust tools that you should use if you are not too concerned with the details of implementation.  
+In R the various efforts of international researchers is being consolidated.  The ``robustbase`` package provides basic functionality that is now well established in the field; use that package if you want to assemble various robust tools yourself.  On the other hand, a more comprehensive package called ``robust`` is also available which provides robust tools that you should use if you are not too concerned with the details of implementation.
 
 For example:
 
 .. code-block:: s
 
 	> data <- read.csv('http://datasets.connectmv.com/file/distillation-tower.csv')
-	
+
 	# Using ordinary least squares
 	# -----------------------------
 	> summary(lm(data$VapourPressure ~ data$TempC2))
-	
+
 	Call:
 	lm(formula = data$VapourPressure ~ data$TempC2)
 
 	Residuals:
-	     Min       1Q   Median       3Q      Max 
-	-5.59621 -2.37597  0.06674  2.00212 14.18660 
+	     Min       1Q   Median       3Q      Max
+	-5.59621 -2.37597  0.06674  2.00212 14.18660
 
 	Coefficients:
-	             Estimate Std. Error t value Pr(>|t|)    
+	             Estimate Std. Error t value Pr(>|t|)
 	(Intercept) 195.96141    4.87669   40.18   <2e-16 ***
 	data$TempC2  -0.33133    0.01013  -32.69   <2e-16 ***
 	---
-	Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+	Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 	Residual standard error: 2.989 on 251 degrees of freedom
-	Multiple R-squared: 0.8098,	Adjusted R-squared: 0.8091 
+	Multiple R-squared: 0.8098,	Adjusted R-squared: 0.8091
 	F-statistic:  1069 on 1 and 251 DF,  p-value: < 2.2e-16
-	
+
 	# Use robust least squares (with automatic selection of robust method)
 	# --------------------------------------------------------------------
 	> library(robust)
 	> summary(lmRob(data$VapourPressure ~ data$TempC2))
-	
+
 	Call: lmRob(formula = data$VapourPressure ~ data$TempC2)
 
 	Residuals:
-	       Min         1Q     Median         3Q        Max 
-	-5.2631296 -1.9805384  0.1677174  2.1565730 15.8846460 
+	       Min         1Q     Median         3Q        Max
+	-5.2631296 -1.9805384  0.1677174  2.1565730 15.8846460
 
 	Coefficients:
-	            Value        Std. Error   t value      Pr(>|t|)    
+	            Value        Std. Error   t value      Pr(>|t|)
 	(Intercept) 179.48579886   4.92870640  36.41641120   0.00000000
 	data$TempC2  -0.29776778   0.01021412 -29.15256677   0.00000000
 
 	Residual standard error: 2.791 on 251 degrees of freedom
-	Multiple R-Squared: 0.636099 
+	Multiple R-Squared: 0.636099
 
 	Test for Bias:
 	            statistic     p-value
 	M-estimate   7.962583 0.018661525
 	LS-estimate 12.336592 0.002094802
-	
-	
-.. - Least angle least squares (regression) 
+
+
+.. - Least angle least squares (regression)
 .. see the Efron paper mentioned above
 .. also note the rlm() function in MASS
 
@@ -1787,7 +1787,7 @@ The gold standard is always to have a testing data set available to quantify how
 
 	*	Use observation 1, 3, 5, 7, ... 729 to build the least squares model; then use observation 2, 4, 6, 8, ... 730 to test the model.
 	*	Use observations 1 to 365 (data from 2006) to build the model, and then use observations 366 to 730 (data from 2007) to test the model.
-	
+
 In both cases, the testing data has no influence on the model parameters.  However the first case is not representative of how the model will be used in the future.  The results from the first case are likely to give over-optimistic results, while the second case represents the intended use of the model more closely, and will have more honest results.  Find out sooner, rather than later, that the model's long-term performance is not what you expect.  It may be that you have to keep rebuilding the model every 3 months, updating the model with the most recent data, in order to maintain it's predictive performance.
 
 How do we quantify this predictive performance?  A common way is to calculate the root mean square of the prediction error (RMSEP), this is exactly like the :ref:`standard error <standard-error-section>` that we saw earlier for regression models.  Assuming the errors are centered at zero and follow a normal distribution, this can be interpreted to be the standard deviation of the prediction residuals.  It is important the RMSEP be calculated only from new, unseen testing data.  By contrast, you might see the term RMSEE (root mean square error of estimation), which is the RMSEP, but calculated from the training (model-building) data.  The RMSEE :math:`\approx S_E` = standard error; the small difference being due to the denominator used.
@@ -1795,7 +1795,7 @@ How do we quantify this predictive performance?  A common way is to calculate th
 .. math::
 
 	\text{RMSEP} = \sqrt{\dfrac{1}{n}\sum_{i}^{n}{\left(y_{\text{new}, i} - \hat{y}_{\text{new}, i}\right)^2}} \\
-	
+
 
 The units of RMSEP and RMSEE are the same as the units of the |y|-variable.
 
@@ -1803,7 +1803,7 @@ In the :ref:`latent variable modelling <SECTION-latent-variable-modelling>` sect
 
 .. TODO: cf the book by Esbensen for other methods
 
-Bootstrapping 
+Bootstrapping
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Bootstrapping is an extremely useful tool when theoretical techniques to estimate confidence intervals and uncertainty are not available to us.
@@ -1813,13 +1813,13 @@ Let's give an example where bootstrapping is strictly not required, but is defin
 In the preceding section we derived this confidence interval for :math:`\beta_1` in equation :eq:`least-squares-CI`, repeated here:
 
 	.. math::
-	
-		\begin{array}{rcccl} 
+
+		\begin{array}{rcccl}
 			- c_t                  &\leq& \dfrac{b_1 - \beta_1}{S_E(b_1)} &\leq &  +c_t\\
 			  b_1 - c_t S_E(b_1)   &\leq& \beta_1                         &\leq&	b_1 + c_t S_E(b_1)
 		\end{array}
 
-Visualize this confidence in the context of the following example where |x| is the dose of radiation administered (rads) to rats, and |y| is the survival percentage of a batch of rats.  The plot below shows the data and the least square slope coefficient (notice the |y| variable is ``log(survival)``). 
+Visualize this confidence in the context of the following example where |x| is the dose of radiation administered (rads) to rats, and |y| is the survival percentage of a batch of rats.  The plot below shows the data and the least square slope coefficient (notice the |y| variable is ``log(survival)``).
 
 The thick line represents the slope coefficient (:math:`-0.0059`) using all the data.  Clearly the unusual point number 13 has some influence on that coefficient.  Eliminating it and refitting the model makes the slope coefficient more steep (:math:`-0.0078`), which could change our interpretation of the model. This raises the question though: what happens to the slope coefficient when we eliminate other points in the training data?  How sensitive are our model parameters to the data themselves?
 
@@ -1832,7 +1832,7 @@ Bootstrapping gives us an indication of that, as shown in the other plot.  The o
 
 .. math::
 
-	\begin{array}{rcccl} 
+	\begin{array}{rcccl}
 		- c_t                  					&\leq& \dfrac{b_1 - \beta_1}{S_E(b_1)} &\leq &  +c_t\\
 		  -0.005915 - 2.1788 \times 0.001047  	&\leq& \beta_1   &\leq&	-0.005915 + 2.1788 \times 0.001047 \\
 		  -0.0082 								&\leq& \beta_1   &\leq& -0.0036
@@ -1850,7 +1850,7 @@ The above example was inspired from an example in `ASA Statistics Computing and 
 
 	The variable selection problem is ...
 
-	We will start off by saying that variable selection is a topic that is widely and actively researched. 
+	We will start off by saying that variable selection is a topic that is widely and actively researched.
 
 
 Exercises
@@ -1866,61 +1866,61 @@ Exercises
 		-	:math:`y_i = b_0 + b_1 x_i`
 		-	:math:`y_i = b_0 + b_1 (x_i - \bar{x})` (what does the :math:`b_0` coefficient represent in this case?)
 		-	:math:`(y_i - \bar{y}) = b_0 + b_1 (x_i - \bar{x})`
-	
+
 		Prove to yourself that centering the |x| and |y| variables gives the same model for the 3 cases in terms of the :math:`b_1` slope coefficient, standard errors and other model outputs.
 
 .. answer::
 
 	Once you have created an ``x`` and ``y`` variable in R, compare the output from these 3 models:
-	
+
 	.. code-block:: s
-	
+
 		# Model 1
 		summary(lm(y ~ x))
-		
+
 		# Model 2
 		x.mc <- x - mean(x)
 		summary(lm(y ~ x.mc))
-		
+
 		# Model 3
 		y.mc <- y - mean(y)
-		summary(lm(y.mc ~ x.mc))		
-		
+		summary(lm(y.mc ~ x.mc))
+
 .. question::
 
 	For a :math:`x_{\text{new}}` value and the linear model :math:`y = b_0 + b_1 x` the prediction interval for :math:`\hat{y}_\text{new}` is:
 
 		.. math::
 			\hat{y}_i \pm c_t \sqrt{V\{\hat{y}_i\}}
-		
+
 		where :math:`c_t` is the critical t-value, for example at the 95% confidence level.
-	
+
 	Use the `distillation column data set <http://datasets.connectmv.com/info/distillation-tower>`_ and with |y| as ``VapourPressure`` (units are kPa) and |x| as ``TempC2`` (units of degrees Farenheit) fit a linear model.  Calculate the prediction interval for vapour pressure at these 3 temperatures: 430, 480, 520 °F.
-	
+
 .. answer::
-	:fullinclude: no 
-	
+	:fullinclude: no
+
 	The prediction interval is dependent on the value of :math:`x_\text{new, i}` used to make the prediction.  For this model, :math:`S_E = 2.989` kPa, :math:`n=253`,  :math:`\sum_j{(x_j - \bar{x})^2} = 86999.6`, and :math:`\bar{x} = 480.82`.
-	
+
 	.. math::
-	
+
 		\mathcal{V}\left(\hat{y}_\text{new,i}\right) = S_E^2 \left(1 + \dfrac{1}{n} + \dfrac{\left(x_\text{new}-\bar{x}\right)^2}{ \sum_j{(x_j - \bar{x})^2}} \right)
-	
+
 	Calculating this term manually, or using the ``predict(model, newdata=..., int="p")`` function in R gives the 95% prediction interval:
-	
+
 		*	:math:`x_\text{new} = 430` °F: :math:`\hat{y}_\text{new} = 53.49 \pm 11.97`, or [47.50, 59.47]
 		*   :math:`x_\text{new} = 480` °F: :math:`\hat{y}_\text{new} = 36.92 \pm 11.80`, or [31.02, 42.82]
 		*	:math:`x_\text{new} = 520` °F: :math:`\hat{y}_\text{new} = 23.67 \pm 11.90`, or [17.72, 29.62]
-		
+
 	.. figure:: images/distillation-prediction-interval.png
 		:align: center
 		:width: 750px
 		:scale: 50
-		
+
 	.. literalinclude:: code/distillation-column-questions.R
 		:language: s
 		:lines: 1-25,30-33
-	
+
 .. question::
 
 	 Refit the distillation model from the previous question with a transformed temperature variable.  Use :math:`1/T` instead of the actual temperature.
@@ -1935,47 +1935,47 @@ Exercises
 	-	Using the ``model.inv <- lm(VapourPressure ~ I(1/TempC2))`` instruction, one obtains the model summary below.  The model fit has improved slightly: the standard error is 2.88 kPa, reduced from 2.99 kPa.
 
 		.. code-block:: text
-		
+
 			Call:
 			lm(formula = VapourPressure ~ I(1/TempC2))
 
 			Residuals:
-			     Min       1Q   Median       3Q      Max 
-			-5.35815 -2.27855 -0.08518  1.95057 13.38436 
+			     Min       1Q   Median       3Q      Max
+			-5.35815 -2.27855 -0.08518  1.95057 13.38436
 
 			Coefficients:
-			             Estimate Std. Error t value Pr(>|t|)    
+			             Estimate Std. Error t value Pr(>|t|)
 			(Intercept)  -120.760      4.604  -26.23   <2e-16 ***
 			I(1/TempC2) 75571.306   2208.631   34.22   <2e-16 ***
 			---
-			Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
+			Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 			Residual standard error: 2.88 on 251 degrees of freedom
-			Multiple R-squared: 0.8235,	Adjusted R-squared: 0.8228 
+			Multiple R-squared: 0.8235,	Adjusted R-squared: 0.8228
 			F-statistic:  1171 on 1 and 251 DF,  p-value: < 2.2e-16
-			
+
 	-	The residuals have roughly the same distribution as before, maybe a little more normal on the left tail, but hardly noticeable.
-	
+
 		.. figure:: images/distillation-prediction-qqplots.png
 			:align: center
 			:width: 750px
 			:scale: 80
-			
+
 	-	The slope coefficient of 75571 has units of ``kPa.°F``, indicating that each one unit *decrease* in temperature results in an *increase* in vapour pressure.  Since division is not additive, the change in vapour pressure when decreasing 10 degrees from 430 °F is a different decrease to that when temperature is 530 °F.  The interpretation of transformed variables in linear models is often a lot harder.  The easiest interpretation is to show a plot of 1/T against vapour pressure.
-	
+
 		.. figure:: images/distillation-prediction-inverted-temperature.png
 			:align: center
 			:width: 750px
 			:scale: 40
-		
+
 	-	The predicted vapour pressure at 480 °F is 36.68 kPa :math:`\pm 11.37`, or within the range [31.0 to 42.4] with 95% confidence, very similar to the prediction interval from question 2.
-		
+
 	Code added from question 2 to complete this question:
-	
+
 	.. literalinclude:: code/distillation-column-questions.R
 		:language: s
 		:lines: 36-39,43-45,48-56,60-63
-		
+
 
 .. question::
 
@@ -1988,36 +1988,36 @@ Exercises
 		-	Recalculate the RMSEP for the testing data; how has it changed?
 
 .. answer::
-	:fullinclude: no 
+	:fullinclude: no
 	:short: RMSEP = 4.18 kPa; standard error = 2.68 kPa.
 
 	-	The testing data starts at index 160.  The code at the end of this question shows how RMSEP was calculated as 4.18 kPa, as compared to the standard error from the model building data (observations 1 to 159) of 2.679 kPa.  This indicates the predictions on totally new data have greater error that those observations used to build the model - an expected result.
-	
+
 	-	The influence plot from the model building data is given below.
-	
+
 		.. figure:: images/distillation-influence-plot.png
 			:align: center
 			:width: 750px
 			:scale: 45
-			
-	-	The points considered as influential would be 38 and 84, which have both high leverage and high discrepancy.  Points 53 and 101 would also be considered influential: they have high leverage, though moderately sized residuals.  The other points marked in red have a large Cook's D value, however, their leverage is low, so it is unlikely that their removal will change the plot and its interpretation by very much.
-	
-	-	The points selected for removal are [38, 53, 84, 101].  The model was rebuilt and the slope coefficient changed from -0.368 to -0.358, while the standard error decreased from 2.679 to 2.455.  So their removal has decreased the size of the confidence intervals (before: :math:`-0.395 \leq \beta_T \leq - 0.342`, and after: :math:`-0.385 \leq \beta_T \leq -0.332`), however the slope coefficient is roughly comparable to that from before.  
 
-	-	The RMSEP has reduced from 4.18kPa to 3.92 kPa, a smallish reduction, given the range of the |y| variable.  
-	
+	-	The points considered as influential would be 38 and 84, which have both high leverage and high discrepancy.  Points 53 and 101 would also be considered influential: they have high leverage, though moderately sized residuals.  The other points marked in red have a large Cook's D value, however, their leverage is low, so it is unlikely that their removal will change the plot and its interpretation by very much.
+
+	-	The points selected for removal are [38, 53, 84, 101].  The model was rebuilt and the slope coefficient changed from -0.368 to -0.358, while the standard error decreased from 2.679 to 2.455.  So their removal has decreased the size of the confidence intervals (before: :math:`-0.395 \leq \beta_T \leq - 0.342`, and after: :math:`-0.385 \leq \beta_T \leq -0.332`), however the slope coefficient is roughly comparable to that from before.
+
+	-	The RMSEP has reduced from 4.18kPa to 3.92 kPa, a smallish reduction, given the range of the |y| variable.
+
 	.. literalinclude:: code/distillation-column-questions.R
 		:language: s
 		:lines: 1-3,8,66-89,93-94,96-108
-	
+
 .. question::
 
 	The `Kappa number data set <http://datasets.connectmv.com/info/kappa_number>`_ was used in an :ref:`earlier question <monitoring-kappa-number-question>` to construct a Shewhart chart.  The :ref:`"Mistakes to avoid" <monitoring-mistakes-to-avoid>` section (Process Monitoring), warns that the subgroups for a Shewhart chart must be independent to satisfy the assumptions used to derived the Shewhart limits. If the subgroups are not independent, then it will increase the type I (false alarm) rate.
 
 	This is no different to the independence required for least squares models. Use the autocorrelation tool to determine a subgroup size for the Kappa variable that will satisfy the Shewhart chart assumptions.  Show your autocorrelation plot and interpret it as well.
-	
+
 .. answer::
-	:fullinclude: no 
+	:fullinclude: no
 
 	The autocorrelation plot shows significant lags up to lag 3, or even 4.  So subsampling the vector with every 4th or 5th element should yield independent samples.  The autocorrelation with every 5th observation confirms this.  You could also use every 6th, 7th, *etc* observation.  Using every 30th observation though is not too useful, since it would lead to a long delay before the control chart showed any problems.
 
@@ -2027,25 +2027,25 @@ Exercises
 		:scale: 50
 
 	The ACF plot indicates that there is significant reappearance of correlation around lags 9 to 15.  It wasn't required for you to identify why for this assignment, but usually this would be related to a recycle stream that reenters a reactor, or due to an oscillation in a control loop.
-	
+
 	You can also verify the autocorrelation by plotting scatterplots of the vector against itself.  The first plot below shows what an ACF coefficient of 1.0 means, while the second plot shows what it means to use a lag offset of 1 position.  The correlation value = :math:`\sqrt{R^2}` is shown on each plot.  Compare that value shown to the y-axis of the ACF plots.
-	
+
 	.. figure:: images/kappa-number-autocorrelation-scatterplots.png
 		:align: center
 		:width: 900px
 		:scale: 100
-		
+
 	.. literalinclude:: code/kappa-number-autocorrelation.R
 	       :language: s
 	       :lines: 1-9,13-15,21-37
-		
+
 .. question::
 
 	You presume the yield from your lab-scale bioreactor, :math:`y`, is a function of reactor temperature, batch duration, impeller speed and reactor type (one with with baffles and one without).  You have collected these data from various experiments.
-	
+
 	.. tabularcolumns:: |C|p{5em}|C|C|C|
 
-	.. csv-table:: 
+	.. csv-table::
 	   :header: Temp = :math:`T` [°C], Duration = :math:`d` [minutes], Speed = :math:`s` [RPM], Baffles = :math:`b` [Yes/No], Yield = :math:`y` [g]
 	   :widths: 30, 30, 30, 30, 30
 
@@ -2071,25 +2071,25 @@ Exercises
 	-	Calculate the least squares model estimates from these two matrices.  See the `R tutorial <http://connectmv.com/tutorials/r-tutorial>`_ for doing matrix operations in R, but you might prefer to use MATLAB for this step.  Either way, you should get the same answer here as in the first part of this question.
 
 .. answer::
-	:fullinclude: no 
+	:fullinclude: no
 
 	-	After importing the data, just make sure the ``baffles`` variable is imported as a factor.  Then build the model as usual.  The computer output below shows the linear model's coefficients.
-	
+
 		.. literalinclude:: code/bioreactor-yields-problem.R
 			:language: s
 			:lines: 17-45
-			
-	-	The confidence intervals for each variable is significant at the 95% level.  The duration variable must be omitted from the model, because it has no variation.  While it might affect the yield, there is no variability in this data set to assess that.  
-	
+
+	-	The confidence intervals for each variable is significant at the 95% level.  The duration variable must be omitted from the model, because it has no variation.  While it might affect the yield, there is no variability in this data set to assess that.
+
 		* :math:`0.00034 \leq b_\text{speed} \leq 0.017`: a 100rpm increase in impeller speed serves to increase yield by 0.87g on average, keeping all other variables constant
 		* :math:`-15.9 \leq b_\text{baffles} \leq -2.30`: the use of baffles decreases yield, on average, by 9.1g, keeping all other variables constant
 		* :math:`-0.74 \leq b_\text{temp} \leq -0.21`: each one degree increase in temperature lowers yield by 0.47g on average, keeping all other variables constant
 		* We cannot say anything about the effect of batch duration
-		
+
 		The plots are not shown here, they can be drawn with ``plot(bio)`` to obtain a scatterplot matrix of plots.
-		
+
 	-	For the model :math:`y = b_0  + b_\text{speed}x_\text{speed} + b_\text{baffles}x_\text{baffles} + b_\text{temp}x_\text{temp}` let the coefficient vector be :math:`\mathrm{b} = [b_0, b_\text{speed},  b_\text{baffles}, b_\text{temp}]`, then we can write down the following X matrix to estimate it:
-	
+
 		.. math::
 			\mathrm{X} = \begin{bmatrix}
 							1 &  4300 & 0 & 82  \\
@@ -2105,50 +2105,50 @@ Exercises
 							1 &  4400 & 0 & 60  \\
 							1 &  4400 & 0 & 60  \\
 							1 &  4400 & 0 & 101 \\
-							1 &  4900 & 1 & 92  
+							1 &  4900 & 1 & 92
 						\end{bmatrix}
-						
+
 		You can obtain the above :math:`\mathrm{X}` matrix in R using the ``model.matrix(model)`` function.  The :math:`\mathrm{X}^T\mathrm{X}` and :math:`\mathrm{X}^T\mathrm{y}` matrices are:
-		
+
 		.. math::
 			\mathrm{X}^T\mathrm{X} = \begin{bmatrix}
 							14      &   59100      &    6  &  1119 \\
 							59100   & 251330000    & 24300 & 4714700 \\
 							6       & 24300        & 6     & 516     \\
-							1119    & 4714700      & 516   & 91351 
-						\end{bmatrix}  
-			\qquad \text{and} \qquad 
+							1119    & 4714700      & 516   & 91351
+						\end{bmatrix}
+			\qquad \text{and} \qquad
 			\mathrm{X}^T\mathrm{y} = \begin{bmatrix}
 							668 \\
 							2849600 \\
 							229 \\
 							52082
 						\end{bmatrix}
-						
+
 	-	Using these matrices to solve for :math:`\mathrm{b}`
-	
+
 	 	.. math::
 			\mathrm{b} = \left(\mathrm{X}^T\mathrm{X} \right)^{-1}\mathrm{X}^T\mathrm{y} =  \begin{bmatrix} 52.48 \\ 0.00871 \\ -9.09 \\ -0.471 \end{bmatrix}
-			
-		
+
+
 		This result matches the results from R.  Note however that R, like most decent software packages, will not solve for the inverse of :math:`\left(\mathrm{X}^T\mathrm{X} \right)^{-1}` directly to compute :math:`\mathrm{b}`; instead it uses the `QR decomposition <http://en.wikipedia.org/wiki/QR_decomposition>`_.
-		
+
 		.. literalinclude:: code/bioreactor-yields-problem.R
 			:language: s
-			:lines: 46- 	
-			
+			:lines: 46-
+
 .. question::
 
-	In the section on comparing differences between two groups we used, without proof, the fact that: 
+	In the section on comparing differences between two groups we used, without proof, the fact that:
 
 	.. math::
 
 		\mathcal{V}\left\{\bar{x}_B - \bar{x}_A\right\} = \mathcal{V}\left\{\bar{x}_B\right\} + \mathcal{V}\left\{\bar{x}_A\right\}
 
 	Prove this statement, and clearly explain all steps in your proof.
-	
+
 .. answer::
-	:fullinclude: no 
+	:fullinclude: no
 
 	I don't normally concentrate on proofs in the book, unless they show something interesting, or are used over and over.  This short mathematical statement fits both criteria.
 
@@ -2162,7 +2162,7 @@ Exercises
 														&= \mathcal{V}\left\{\bar{x}_B\right\} + \mathcal{V}\left\{\bar{x}_A\right\}
 
 	The second line is a result shown earlier. The third line requires that we assume the between-group means :math:`\bar{x}_B` and :math:`\bar{x}_A` are independent, and so they are uncorrelated (their covariance is zero).  This was one of the key assumptions when we studied between-group differences; and is one assumption that is often true in many real cases.
-	
+
 .. question::
 
 	The production of low density polyethylene is carried out in long, thin pipes at high temperature and pressure (1.5 kilometres long, 50mm in diameter, 500 K, 2500 atmospheres).  One quality measurement of the LDPE is its melt index.  Laboratory measurements of the melt index can take between 2 to 4 hours.  Being able to predict this melt index, in real time, allows for faster adjustment to process upsets, reducing the product's variability.  There are many variables that are predictive of the melt index, but in this example we only use a temperature measurement that is measured along the reactor's length.
@@ -2170,30 +2170,30 @@ Exercises
 	These are the data of temperature (K) and melt index (units of melt index are "grams per 10 minutes").
 
 	.. Previous table
-		======================= ======================                           
-		Temperature = :math:`T` Melt index = :math:`m`                          
-		----------------------- ----------------------                      
-		(Kelvin)       			(g per 10 mins)                             
-		======================= ======================                      
-		     441       			  9.3                                       
-		     453       			  6.6                                       
-		     461       			  6.6                                       
-		     470       			  7.0                                       
-		     478       			  6.1                                       
-		     481       			  3.5                                       
-		     483       			  2.2                                       
-		     485       			  3.6                                       
-		     499       			  2.9                                       
-		     500       			  3.6                                       
-		     506       			  4.2                                       
-		     516       			  3.5                                       
+		======================= ======================
+		Temperature = :math:`T` Melt index = :math:`m`
+		----------------------- ----------------------
+		(Kelvin)       			(g per 10 mins)
+		======================= ======================
+		     441       			  9.3
+		     453       			  6.6
+		     461       			  6.6
+		     470       			  7.0
+		     478       			  6.1
+		     481       			  3.5
+		     483       			  2.2
+		     485       			  3.6
+		     499       			  2.9
+		     500       			  3.6
+		     506       			  4.2
+		     516       			  3.5
 		======================= ======================
 
-	=============================================  === === === === === === === === === === === === 
-	**Temperature** = :math:`T` [Kelvin]           441 453 461 470 478 481 483 485 499 500 506 516 
-	---------------------------------------------  --- --- --- --- --- --- --- --- --- --- --- --- 
-	**Melt index** = :math:`m`  [g per 10 mins]    9.3 6.6 6.6 7.0 6.1 3.5 2.2 3.6 2.9 3.6 4.2 3.5 
-	=============================================  === === === === === === === === === === === === 
+	=============================================  === === === === === === === === === === === ===
+	**Temperature** = :math:`T` [Kelvin]           441 453 461 470 478 481 483 485 499 500 506 516
+	---------------------------------------------  --- --- --- --- --- --- --- --- --- --- --- ---
+	**Melt index** = :math:`m`  [g per 10 mins]    9.3 6.6 6.6 7.0 6.1 3.5 2.2 3.6 2.9 3.6 4.2 3.5
+	=============================================  === === === === === === === === === === === ===
 
 
 	The following calculations have already been performed:
@@ -2213,22 +2213,22 @@ Exercises
 			lm(formula = Melt.Index ~ Temperature)
 
 			Residuals:
-			    Min      1Q  Median      3Q     Max 
-			-2.5771 -0.7372  0.1300  1.2035  1.2811 
+			    Min      1Q  Median      3Q     Max
+			-2.5771 -0.7372  0.1300  1.2035  1.2811
 
 			Coefficients:
-			            Estimate Std. Error t value Pr(>|t|)    
+			            Estimate Std. Error t value Pr(>|t|)
 			(Intercept) --------    8.60936   4.885 0.000637
 			Temperature --------    0.01788  -4.317 0.001519
 
 			Residual standard error: 1.322 on 10 degrees of freedom
-			Multiple R-squared: 0.6508,	Adjusted R-squared: 0.6159 
+			Multiple R-squared: 0.6508,	Adjusted R-squared: 0.6159
 			F-statistic: 18.64 on 1 and 10 DF,  p-value: 0.001519
 
 	#.	Quote a confidence interval for the slope coefficient in the model and describe what it means.  Again, you may use the above software output to help answer your question.
-	
+
 .. answer::
-	:fullinclude: no 
+	:fullinclude: no
 	:short: m = 42.0 - 0.0772 T
 
 	#.	The simplest linear predictive model possible is :math:`m = \beta_0 + \beta_1 T + \varepsilon`, predicting the melt index from temperature.  Once we find estimates for these coefficients we write: :math:`m = b_0 + b_1 T + e`.  And one way to calculate these coefficients is by least squares.  In the class notes we showed that for a variable :math:`x` used to predict a variable :math:`y` that:
@@ -2242,7 +2242,7 @@ Exercises
 
 	.. math::
 
-		b_1 &= \dfrac{ -422.1 }{ 5469.0 } = - 0.0772 \frac{\text{g per 10 minutes}}{K}\\ 
+		b_1 &= \dfrac{ -422.1 }{ 5469.0 } = - 0.0772 \frac{\text{g per 10 minutes}}{K}\\
 		b_0 &= 4.925 + 0.0772 \times 481 = 42.0 \text{g per 10 minutes}
 
 	A predictive model of melt flow is: :math:`\hat{m} = 42.0 - 0.0772 \times T`
@@ -2257,7 +2257,7 @@ Exercises
 
 	.. math::
 
-		\begin{array}{rcccl} 
+		\begin{array}{rcccl}
 			- c_t                			&\leq& \dfrac{b_1 - \beta_1}{S_E(b_1)} &\leq &  +c_t\\
 			b_1 - c_t S_E(b_1)   			&\leq& \beta_1                         &\leq&	b_1 + c_t S_E(b_1) \\
 			-0.0772 - 2.23 \times 0.01788	&\leq& \beta_1                         &\leq&	-0.0772 + 2.23 \times 0.01788 \\
@@ -2268,7 +2268,7 @@ Exercises
 
 	.. math::
 
-		\begin{array}{rcccl} 
+		\begin{array}{rcccl}
 			b_1 - c_t S_E(b_1)   			&\leq& \beta_1                         &\leq&	b_1 + c_t S_E(b_1) \\
 			-0.0772 - 3.17 \times 0.01788	&\leq& \beta_1                         &\leq&	-0.0772 + 3.17 \times 0.01788 \\
 			-0.134							&\leq& \beta_1                         &\leq&	-0.0205
@@ -2285,10 +2285,10 @@ Exercises
 	#.	the model's standard error
 	#.	a confidence interval for the slope coefficient, and its interpretation.
 
-	You may use any computer package to build the model and read these values off the computer output.  
+	You may use any computer package to build the model and read these values off the computer output.
 
 .. answer::
-	
+
 
 	The solution to this question can be almost entirely solved using R, though any other language could be used.  These commands, with the output that follows, were used:
 
@@ -2302,18 +2302,18 @@ Exercises
 			lm(formula = distillation$VapourPressure ~ distillation$TempC2)
 
 			Residuals:
-			     Min       1Q   Median       3Q      Max 
-			-5.59621 -2.37597  0.06674  2.00212 14.18660 
+			     Min       1Q   Median       3Q      Max
+			-5.59621 -2.37597  0.06674  2.00212 14.18660
 
 			Coefficients:
-			                     Estimate Std. Error t value Pr(>|t|)    
+			                     Estimate Std. Error t value Pr(>|t|)
 			(Intercept)         195.96141    4.87669   40.18   <2e-16 ***
 			distillation$TempC2  -0.33133    0.01013  -32.69   <2e-16 ***
 			---
-			Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+			Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 			Residual standard error: 2.989 on 251 degrees of freedom
-			Multiple R-squared: 0.8098,	Adjusted R-squared: 0.8091 
+			Multiple R-squared: 0.8098,	Adjusted R-squared: 0.8091
 			F-statistic:  1069 on 1 and 251 DF,  p-value: < 2.2e-16
 
 
@@ -2327,7 +2327,7 @@ Exercises
 
 		.. math::
 
-			\begin{array}{rcccl} 
+			\begin{array}{rcccl}
 				- c_t                			&\leq& \dfrac{b_1 - \beta_1}{S_E(b_1)} &\leq &  +c_t\\
 				-0.33133 - 1.969 \times 0.01013	&\leq& \beta_1                         &\leq&	-0.33133 + 1.969 \times 0.01013 \\
 				-0.35							&\leq& \beta_1                         &\leq&	-0.31
@@ -2344,10 +2344,9 @@ Exercises
 			:width: 750px
 			:scale: 90%
 
-	For this question I recommended that you should be able to reproduce R's output yourself.  The code below calculates these same values. 
+	For this question I recommended that you should be able to reproduce R's output yourself.  The code below calculates these same values.
 
 	.. literalinclude:: code/distillation-least-squares.R
 	       :language: s
 	       :lines: 1-67,70-82
 
-	
