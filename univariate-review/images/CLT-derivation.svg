@@ -13,7 +13,7 @@
    height="744.09448"
    id="svg2"
    version="1.1"
-   inkscape:version="0.47 r22583"
+   inkscape:version="0.48.0 r9654"
    sodipodi:docname="CLT-derivation.svg"
    inkscape:export-filename="/Users/kevindunn/Statistics course/Course notes/Univariate data analysis/images/CLT-derivation.png"
    inkscape:export-xdpi="300"
@@ -48,8 +48,8 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.91793492"
-     inkscape:cx="526.18109"
+     inkscape:zoom="1"
+     inkscape:cx="666.70604"
      inkscape:cy="573"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -67,7 +67,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -85,9 +85,10 @@
        y="370.36218"
        ry="18" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:2.38856339;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none;marker-end:url(#Arrow1Mend)"
-       d="m 272.50925,479.36218 295.34624,0"
-       id="path3590" />
+       style="fill:none;stroke:#000000;stroke-width:1.78732431;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none;marker-end:url(#Arrow1Mend)"
+       d="m 272.50925,479.36218 145.57788,0"
+       id="path3590"
+       inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
@@ -130,18 +131,17 @@
        id="text4143"
        y="508.31094"
        x="283.66934"
-       style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Monospace;-inkscape-font-specification:Monospace"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Monospace;-inkscape-font-specification:Monospace"
        xml:space="preserve"><tspan
          sodipodi:role="line"
-         id="tspan4151"
-         x="283.66934"
-         y="508.31094">Take independent </tspan><tspan
+         id="tspan3013">Take </tspan><tspan
          sodipodi:role="line"
-         id="tspan4153"
-         x="283.66934"
-         y="543.31091">samples</tspan></text>
+         id="tspan3015">independent </tspan><tspan
+         sodipodi:role="line"
+         id="tspan3017">samples</tspan></text>
     <g
-       id="g5127">
+       id="g5127"
+       transform="translate(-165.13269,1.7188782)">
       <text
          xml:space="preserve"
          style="font-size:40px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:'Times New Roman, Italic'"
@@ -220,5 +220,48 @@
          id="tspan4185"
          x="774.07812"
          y="130.00819" /></text>
+    <path
+       inkscape:connector-curvature="0"
+       id="path3793"
+       d="m 723.50925,479.36218 139.26163,0"
+       style="fill:none;stroke:#000000;stroke-width:1.74812055;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none;marker-end:url(#Arrow1Mend)" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Monospace;-inkscape-font-specification:Monospace"
+       x="723.66931"
+       y="508.31094"
+       id="text3795"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3803"
+         x="723.66931"
+         y="508.31094">Calculate the </tspan><tspan
+         sodipodi:role="line"
+         id="tspan3805"
+         x="723.66931"
+         y="533.31091">average</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:'Times New Roman, Italic'"
+       x="821.28125"
+       y="542.60217"
+       id="text3809"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3845"
+         x="821.28125"
+         y="542.60217">x </tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3847"
+       y="660.05518"
+       x="657.60107"
+       style="font-size:50.78282166px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Times New Roman;-inkscape-font-specification:'Times New Roman,'"
+       xml:space="preserve"
+       transform="scale(1.2480804,0.80123044)"><tspan
+         sodipodi:role="line"
+         id="tspan3853"
+         x="657.60107"
+         y="660.05518">-</tspan></text>
   </g>
 </svg>

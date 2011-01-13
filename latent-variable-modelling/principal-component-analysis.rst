@@ -1174,7 +1174,9 @@ The :math:`Q^2_A` behaves exactly as :math:`R^2`, but with two important differe
 
 This is for a real data set, so the actual cut off for the number of components could be either :math:`A =2` or :math:`A=3`, depending on what the 3rd component shows to the user and how interested they are in that component.  Likely the 4th component, while boosting the :math:`R^2` value from 66% to 75%, is not really fitting any systematic variation.  The :math:`Q^2` value drops from 32% to 25% when going from component 3 to 4.  The fifth component shows :math:`Q^2` increasing again.  Whether this is fitting actual variability in the data or noise is for the modeller to determine, by investigating that 5th component.  These plots show that for this data set we would use between 2 and 5 components, but not more.
 
-Cross-validation, as this example shows is never a precise answer to the number of components that should be retained.  Many studies try to find the "true" or "best" number of components. I consider this fruitless; each data set means something different to the modeller. The number of components to use should be judged by the relevance of each component.  Use cross-validation as guide, and always look at a few extra components and step back a few components; then make a judgement that is relevant to your intended use of the model.
+Cross-validation, as this example shows is never a precise answer to the number of components that should be retained when trying to learn more about a dataset.  Many studies try to find the "true" or "best" number of components. I consider this fruitless; each data set means something different to the modeller. The number of components to use should be judged by the relevance of each component.  Use cross-validation as guide, and always look at a few extra components and step back a few components; then make a judgement that is relevant to your intended use of the model.
+
+However, cross-validation is useful for predictive models, such as PLS, so we avoid overfitting components.
 
 Contribution plots
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

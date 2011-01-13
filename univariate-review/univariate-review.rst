@@ -109,8 +109,8 @@ Fortunately, we have plenty of variability in our recorded data:
 	
 	- Feedback control systems introduce variability in your process, in order to reduce variability in another part of the process (think of what a :index:`feedback control` system does)
 		
-	- Operating staff: introduce variability into a process
-	- Measurement and sampling variability: sensor drift, spikes, noise, recalibration shifts, errors in our sample analysis
+	- Operating staff: introduce variability into a process in feedback manner (i.e. they react to process upsets) or in a feedforward manner, for example, to preemptively act on the process to counteract a known disturbance.
+	- Measurement and sampling variability: sensor drift, spikes, noise, recalibration shifts, errors in our sample analysis.
 	
 	.. figure:: images/variation-more.png
 		:scale: 50
@@ -144,19 +144,21 @@ Three broad outcomes are possible when you sell a variable product:
 
 #. Your brand is diminished: your products, even though good/acceptable will be considered with suspicion in the future.
 
-	An extreme example was with the food poisoning and deaths that occurred due to the listeriosis outbreak at Maple Leaf Foods in 2008.  The bacterial count in food products is always non-zero, however there are established tolerance limits which were exceeded during this outbreak.
+	An extreme example was the food poisoning and deaths that occurred due to the listeriosis outbreak at Maple Leaf Foods, Canada in 2008.  The bacterial count in food products is always non-zero, however there are established tolerance limits which were exceeded during this outbreak.
+	
+	Another example was the inadvertent acceleration that occurred in some Toyota car models in 2010. It is still uncertain whether this was driver error or manufacturer error.
 
 In addition to the risk of decreasing your market share (see the above 3 points), variability in your product also has these costs:
 
 .. index::
 	single: inspection costs
 
-#. Inspection costs: to mitigate the above risks you must inspect your product before you ship it to your customers.  It is prohibitively expensive and inefficient to test every product (known as "*inspecting quality into your product*").  A production line with low variability on the other hand, does not require us to inspect every product.
+#.	Inspection costs: to mitigate the above risks you must inspect your product before you ship it to your customers.  It is prohibitively expensive and inefficient to test every product (known as "*inspecting quality into your product*").  A production line with low variability on the other hand, does not require us to inspect every product.
 
-.. index::
-	single: off-specification product
+	.. index::
+		single: off-specification product
 	
-#. Off-specification products: must be reworked, disposed of, or sold at a loss or much lower profit.  These costs are ultimately passed onto your customers, costing you money.
+#.	Off-specification products: must be reworked, disposed of, or sold at a loss or much lower profit.  These costs are ultimately passed onto your customers, costing you money.
  
 Note: the above discussion assumes that you are able to quantify product quality with one or more univariate quality metrics and that these metrics are independent of each other.  Quality is almost always a multivariate attribute of the product.  We :ref:`discuss multivariate methods <SECTION-latent-variable-modelling>` later in this book.
 
@@ -173,14 +175,14 @@ The high cost of variability in your raw materials
 
 Turning the above discussion around, with you on the receiving end of highly variable raw materials:
 
-- If you do not implement any sort of process control system, then any variability in your raw materials is manifest as variability in your final product.
+- If you do not implement any sort of process control system, then any variability in your raw materials is manifest as variability in your final product.  This usually shows up in proportion: higher variability in the inputs results in higher variability in the product quality.
 
 	.. figure:: images/feedback-control-variance-reduction-reduced-svg.png
 		:width: 750px
 		:align: center
 		:scale: 50
 	
-- If you do take feedback or feed-forward corrective control: you have to incur additional cost, since you have to process materials that are not to specification: this will require energy and time, reducing your profit due to the supplier's raw material variability.
+- If you do take feedback or feed-forward corrective control: you have to incur additional cost, since you have to process materials that are not to specification: this will require energy and time, reducing your profit due to the supplier's raw material variability.  Feedback control to a given set point can be seen as *introducing* additional variation into a process to counteract other sources of variation.  This is done with the hope of reducing the output variability.  
 
 Dealing with variability
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -199,6 +201,8 @@ Histograms, probability and distributions
 =========================================
 
 .. index:: histograms, frequency distribution
+
+The :ref:`previous section <univariate-about-variability>` has hopefully convinced you that variation in a process is inevitable.  This section aims to show how we can visualize and quantify variability.
 
 A histogram is a summary of the variation in a measured variable.  It shows the *number* of samples that occur in a *category*: this is called a **frequency distribution**.  For example: number of children born, categorized against their gender: male or female.
 
@@ -259,7 +263,7 @@ Steps to creating a frequency distribution, illustrated with the 3 examples
 	#. Decide on a resolution for the measurement axis
 	
 		- Example A: acceptable/unacceptable (1/0) code for the metal's appearance, or perhaps use a scale from 1 to 4 that grades the metal's appearance
-		- Example B: batch yield is measured in 2% increments: reported either as 78, 80, 82, 84%, etc
+		- Example B: batch yield is measured in 2% increments: reported either as 78, 80, 82, 84%, *etc*.
 		- Example C: temperature is measured to a 0.1 K precision, but we can report the values in bins of 5K
 	
 	#. Report the number of observations in the sample or population that fall within each bin (resolution step):
@@ -291,32 +295,29 @@ Some nomenclature
 
 We review here a couple of concepts that you should have seen in prior statistical work.
 
+..
+
 .. _univariate-population:
 
 **Population**
-
-	.. index:: population
 	
-	A large collection of observations that *might* occur; a set of *potential* measurements.  Some texts consider an infinite collection of observations, but a large number of observations is good enough.  We will use capital :math:`N` in this section to denote the population size.
+	A large collection of observations that *might* occur; a set of *potential* measurements.  Some texts consider an infinite collection of observations, but a large number of observations is good enough.  We will use capital :math:`N` in this section to denote the :index:`population` size.
 	
-.. image:: images/batch-yields.png
-	:scale: 60
-
 **Sample**
-
-	.. index:: sample
 	
-	A collection of observations that have *actually* occurred; a set of *existing* measurements.  We will use lowercase :math:`n` in this section to denote the sample size.
+	A collection of observations that have *actually* occurred; a set of *existing* measurements.  We will use lowercase :math:`n` in this section to denote the :index:`sample` size.
 	
-	In engineering applications where we have plenty of data, we can characterize the population from all available data.  *Example*: the viscosity of the polymer product, from all batches over the last 5 years (about 1 batch per day), is an excellent surrogate for the population viscosity.  Once we have characterized those measurements, future viscosity values will likely follow that same.
+	.. image:: images/batch-yields.png
+		:scale: 60
+		:align: center
+	
+	In engineering applications where we have plenty of data, we can characterize the population from all available data.  The figure here shows the viscosity of a polymer product, from all batches produced from the last 5 years (about 1 batch per day), is an excellent surrogate for the population viscosity.  Once we have characterized these samples, future viscosity values will likely follow that same pattern, provided the process continues to operate in a similar manner.
 
 **Probability**
-
-	.. index:: probability 
 	
-	The area under a plot of relative frequency distribution is equal to 1.  Probability is then a fraction of the area under the curve.
+	The area under a plot of relative frequency distribution is equal to 1.  :index:`Probability` is then a fraction of the area under the curve.
 	
-	Draw on your histograms from earlier:
+	Superimpose on your histograms drawn earlier:
 	
 	- The probability of a test grades less than 80%
 	- The probability that the number thrown from a 6-sided die is less than or equal to 2
@@ -353,15 +354,15 @@ We review here a couple of concepts that you should have seen in prior statistic
 		x <- rnorm(50)   # a vector of 50 normally distributed random numbers
 		mean(x)
 	
-	This is only one of several statistics that describes your data: if you told your customer that the average density of your liquid product was 1.421 g/L, and nothing further, the customer might believe that some lots of the same product could have a density of 0.824 g/L, or 2.519 g/L.  We need information in addition to the mean: the spread.
+	This is only one of several statistics that describes your data: if you told your customer that the average density of your liquid product was 1.421 g/L, and nothing further, the customer might assume that some lots of the same product could have a density of 0.824 g/L, or 2.519 g/L.  We need information in addition to the mean to quantify the distribution of values: *the spread*.
 
 .. _univariate-variance:
 
 **Variance (spread)**
 
-	.. index:: variance, measure of spread, spread
+	.. index:: spread
 
-	A measure of spread, or variance, is useful to quantify your distribution.  
+	A :index:`measure of spread`, or :index:`variance`, is useful to quantify your distribution.  
 
 	.. math::
 		:nowrap:
@@ -377,27 +378,25 @@ We review here a couple of concepts that you should have seen in prior statistic
 
 		sd(x)     # for standard deviation
 		var(x)    # for variance
-
-..	Comment here on DOF
+		
+	The square root of variance, called the :index:`standard deviation` is a more useful measure of spread to engineers: it is easier to visualize on a histogram as it has the same units of the variable. 
 
 	**Degrees of freedom**: The denominator in the sample variance calculation, :math:`n-1`, is called the degrees of freedom.  We have one fewer than :math:`n` degrees of freedom, because there is a constraint that the sum of the deviations around :math:`\bar{x}` must add up to zero.  This constraint is from the definition of the mean.  However, if we knew what the sample mean was without having to estimate it, then we could subtract each :math:`x_i` from that value, and our degrees of freedom would be :math:`n`.
 
 **Outliers**
 
-	.. index:: outlier
-
-	Outliers are hard to define precisely, but an acceptable definition is that an outlier is a point that is unusual, given the context of the surrounding data, as the following 2 sequences of numbers show. The 4024 is an outlier in the second sequence, but not in the first.
+	Outliers are hard to define precisely, but an acceptable definition is that an :index:`outlier` is a point that is unusual, given the context of the surrounding data. The following 2 sequences of numbers show that the same number, 4024 that appears in the first sequence, has become an outlier in the second sequence. It is an outlier based on the surrounding context.
 
 	* 4024, 5152, 2314, 6360, 4915, 9552, 2415, 6402, 6261
 	* 4, 61, 12, 64, 4024, 52, -8, 67, 104, 24
+	
+.. TODO: KGD: add a multivariate outlier illustration here
 	
 .. _univariate-median:
 
 **Median (location)**
 
-	.. index:: median, location
-
-	The median is an alternative measure of location.  It is a sample statistic, not a population statistic, and is computed by sorting the data and taking the middle value (or average of the middle 2 values, for even :math:`n`). It is also called a robust statistic, because it is insensitive (robust) to outliers in the data.  
+	The :index:`median` is an alternative measure of :index:`location`.  It is a sample statistic, not a population statistic, and is computed by sorting the data and taking the middle value (or average of the middle 2 values, for even :math:`n`). It is also called a robust statistic, because it is insensitive (robust) to outliers in the data.  
 
 	.. note::	
 	
@@ -406,12 +405,12 @@ We review here a couple of concepts that you should have seen in prior statistic
 	.. code-block:: s
 
 		median(x)
+		
+	Governments will report the median income of regions in a country, rather than the mean, to avoid influencing the value with the few very high earners and the many low earners.  The median income per person is a more fair measure of location in this case.
 
 **Median absolute deviation, MAD (spread)**
 
-	.. index:: MAD, median absolute deviation, spread
-
-	A robust measure of spread is the MAD, *median absolute deviation*.   The name is descriptive of how the MAD is computed:
+	A robust measure of :index:`spread` is the :index:`MAD`, the :index:`median absolute deviation`.   The name is descriptive of how the MAD is computed:
 
 	.. math::
 	
@@ -425,7 +424,7 @@ We review here a couple of concepts that you should have seen in prior statistic
 		
 	.. index:: robust statistics
 
-	Enrichment reading: read pages *1 to 8* of "`Tutorial to Robust Statistics <http://dx.doi.org/10.1002/cem.1180050103>`_", Rousseeuw, PJ, *Journal of Chemometrics*, **5**, 1-20, 1991.
+	Enrichment reading: read pages *1 to 8* of "`Tutorial to Robust Statistics <http://dx.doi.org/10.1002/cem.1180050103>`_", PJ Rousseeuw, *Journal of Chemometrics*, **5**, 1-20, 1991.
 
 
 Distributions
@@ -488,9 +487,7 @@ You work in a company that produces tablets.  The machine creates acceptable, un
 Uniform distribution
 ~~~~~~~~~~~~~~~~~~~~
 
-.. index:: uniform distribution
-
-A uniform distribution arises when an observation is the outcome, where each possibility is equally as likely to occur as all the others.  The classic example are dice: each face of a die is equally as likely to show up as any of the others.  This is a discrete, uniform distribution.
+A :index:`uniform distribution` arises when an observation's value is equally as likely to occur as all the other recorded values.  The classic example are dice: each face of a die is equally as likely to show up as any of the others.  This forms a discrete, uniform distribution.
 
 The probability distribution for an event with 4 possible outcomes that are uniformly distributed is shown below:
 
@@ -527,7 +524,7 @@ Normal distribution
 Central limit theorem 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The limit theorem plays a central role in the theory of probability and in the derivation of the normal distribution.  We don't prove this theorem here, but we only use the result that the average of a sequence of values from any distribution will approach the normal distribution, provided the original distribution has finite variance.
+The limit theorem plays a central role in the theory of probability and in the derivation of the normal distribution.  We don't prove this theorem here, but we only use the result that the average of a sequence of values *from any distribution* will approach the normal distribution, provided the original distribution has finite variance.
 	
 .. figure:: images/CLT-derivation.png
 	:width: 750px
@@ -557,31 +554,31 @@ The assumption of independence is widely used in statistical work and is a condi
 
 .. note:: The assumption of independence means the the samples we have in front of us are *randomly* taken from a population.  If two samples are independent, there is no possible relationship between them.
 
-We frequently violate this assumption of independence in both engineering work and other data samples.  Discuss these examples with a colleague:
+We frequently violate this assumption of independence in engineering applications.  Think about these examples for a while:
 
-- A questionnaire is given to students. What happens if students discuss the questionnaire prior to handing it in?
+- A questionnaire is given to a group of people. What happens if they discuss the questionnaire in sub-groups prior to handing it in?
 
  	.. only:: inst	
 		
-		We are not going to receive :math:`n` independent answers.
+		We are not going to receive :math:`n` independent answers, rather we will receive as many independent opinions as there are sub-groups.
 		
-- The snowfall, recorded in inches, for the last 30 days.
+- The rainfall amount, recorded in centimetres, over the last 30 days.
 
 	.. only:: inst
 	
-		These data are not independent - if it snows today, it can likely snow tomorrow.  These data are not useful as a sample of typical snowfall, however they are useful for complaining about the weather.
+		These data are not independent - if it rains today, it can likely rain tomorrow as the weather usually stays around for some days.  These data are not useful as a sample of typical rainfall, however they are useful for complaining about the weather.  Think about the case if we had considered rainfall in hourly intervals, rather than daily intervals.
 		
-- Snowfall, recorded on 3 January for every year since 1976: independent or not? 
+- The snowfall, recorded on 3 January for every year since 1976: independent or not? 
 
 	.. only:: inst
 	
 		These sampled data will be independent. 
 		
-- The impurity values in the last 10 batches of product produced.    Which of the 3 time sequences shown is independent?
+- The impurity values in the last 100 batches of product produced is shown here.    Which of the 3 time sequences has independent values?
 
  	.. only:: inst
 
-		In chemical processes there is often a transfer from batch-to-batch: we usually use the same lot of raw materials for successive batches, the batch reactor may not have be cleaned properly between each run, and so on.  It is very likely that two successive batches (:math:`k` and :math:`k+1`) are somewhat related, and less likely that batch :math:`k` and :math:`k+2` are related.  In the figure below, can you see which sequence of values are independent?
+		In chemical processes there is often a transfer from batch-to-batch: we usually use the same lot of raw materials for successive batches, the batch reactor may not have be cleaned properly between each run, and so on.  It is very likely that two successive batches (:math:`k` and :math:`k+1`) are somewhat related, and less likely that batch :math:`k` and :math:`k+2` are related.  In the figure below, can you tell which sequence of values are independent?
 		
  	.. figure:: images/simulate-independence.png
 		:align: center
@@ -620,7 +617,7 @@ Formal definition for the normal distribution
 - :math:`x` is the variable of interest
 - :math:`p(x)` is the probability of obtaining that value of :math:`x`
 - :math:`\mu` is the population average for variable :math:`x`
-- :math:`\sigma` is the population standard deviation for variable :math:`x`, and is a positive quantity.
+- :math:`\sigma` is the population standard deviation for variable :math:`x`, and is always a positive quantity.
 
 #. What is the maximum value of :math:`p(x)` and where does it occur, using the formula above?
 #. What happens to the shape of :math:`p(x)` as :math:`\sigma` gets larger ?
@@ -663,13 +660,13 @@ In software packages we can set the mean and standard deviation (as shown above 
 
 	z_i = \frac{x_i - \text{mean}}{\text{standard deviation}}
 	
-What is the value that you should use for the ``mean`` and ``standard deviation``?  It depends on the context.  Imagine our values of :math:`x_i` come from the normal distribution, with mean of 34.2 and variance of 55.  Then we could write :math:`x \sim \mathcal{N}(34.2, 55)`, which is short-hand notation of saying the same thing.  The equivalent :math:`z`-values for these :math:`x` data would be: :math:`z_i = \dfrac{x_i - 34.2}{\sqrt{55}}`.   This transformation **does not** change the distribution of the original :math:`x`, it only changes the parameters of the distribution.  Now :math:`z` is distributed according to the normal distribution as :math:`z \sim \mathcal{N}(0.0, 1.0)`.  What are the units of :math:`z` if :math:`x` were measured in kg, for example?
+What is the value that you should use for the ``mean`` and ``standard deviation``?  It depends on the context.  Imagine our values of :math:`x_i` come from the normal distribution, with mean of 34.2 and variance of 55.  Then we could write :math:`x \sim \mathcal{N}(34.2, 55)`, which is short-hand notation of saying the same thing.  The equivalent :math:`z`-values for these :math:`x` data would be: :math:`z_i = \dfrac{x_i - 34.2}{\sqrt{55}}`.   This transformation **does not** change the distribution of the original :math:`x`, it only changes the parameters of the distribution.  Now :math:`z` is distributed according to the normal distribution as :math:`z \sim \mathcal{N}(0.0, 1.0)`.  
 
-.. index:: stardardized variable
+*	What are the units of :math:`z` if :math:`x` were measured in kg, for example?
 
-This is a common statistical technique, to standardize a variable, which we will see several times.  Standardization takes our variable from :math:`x \sim \mathcal{N}(\text{some mean}, \text{some variance})` and converts it to :math:`z \sim \mathcal{N}(0.0, 1.0)`.  Standardization allows us to straightforwardly compare 2 variables that may have different means and spreads. 
+This is a common statistical technique, to :index:`standardize a variable`, which we will see several times.  Standardization takes our variable from :math:`x \sim \mathcal{N}(\text{some mean}, \text{some variance})` and converts it to :math:`z \sim \mathcal{N}(0.0, 1.0)`.  Standardization allows us to straightforwardly compare 2 variables that may have different means and spreads. 
 
-Enrichment (strongly suggested): consult a statistical table found in most statistical textbooks for the normal distribution.  Make sure you can firstly understand how to read the table, should you need to do so in the future.  Secondly, duplicate a few entries in the table using R.  Then complete these small exercises using both the tables and R.
+Consult a statistical table found in most statistical textbooks for the normal distribution.  Make sure you can firstly understand how to read the table, should you need to do so in the future.  Secondly, duplicate a few entries in the table using R.  Then complete these small exercises firstly by estimating what the answer should be, then use both the tables and R to get a more accurate estimate.
 
 #. Assume :math:`x`, the measurement of biological activity for a drug, is normally distributed with mean of 26.2 and standard deviation of 9.2.  What is the probability of obtaining an activity reading less than or equal to 30.0?
 
@@ -678,7 +675,7 @@ Enrichment (strongly suggested): consult a statistical table found in most stati
 		\vspace{1cm}
 
 
-#. Assume :math:`x` is the yield for a batch process, with mean of 85% and variance of 16.  What proportion of batch yield values lie between 70 and 95% ?
+#. Assume :math:`x` is the yield for a batch process, with mean of 85 g/L and variance of 16 g/L.  What proportion of batch yield values lie between 70 and 95 g/L?
 
 	.. raw:: latex
 
@@ -696,11 +693,11 @@ Often we are not sure if a sample of data can be assumed to be normally distribu
 
 .. index:: cumulative distribution
 
-Before we look at this method, we need to introduce the concept of the inverse cumulative distribution function (inverse CDF).  Recall the **cumulative distribution** is the area underneath the distribution function, :math:`p(x)`, which goes from :math:`-\infty` to :math:`x`.  For example, the area from :math:`-\infty` to :math:`x=-1` is about 15%, as we showed earlier, and we use the ``pnorm()`` function in R to calculate that.  
+Before we look at this method, we need to introduce the concept of the inverse cumulative distribution function (inverse CDF).  Recall the **cumulative distribution** is the area underneath the distribution function, :math:`p(z)`, which goes from :math:`-\infty` to :math:`z`.  For example, the area from :math:`-\infty` to :math:`z=-1` is about 15%, as we showed earlier, and we use the ``pnorm()`` function in R to calculate that.  
 	
 .. index:: inverse cumulative distribution
 
-Now the **inverse cumulative distribution** is used when we know the area, but want to get back to the value along the :math:`x-\text{axis}`.  For example, below which value of :math:`x` does 95% of the area lie for a standardized normal distribution?  Answer: :math:`z=1.64`.  In R we use the ``qnorm(0.95, mean=0, sd=1)`` to calculate these values.  The ``q`` stands for `quantile <http://en.wikipedia.org/wiki/Quantile>`_, because we give it the quantile at it returns the x-value: e.g. ``qnorm(0.5)`` gives 0.0.
+Now the **inverse cumulative distribution** is used when we know the area, but want to get back to the value along the :math:`z-\text{axis}`.  For example, below which value of :math:`z` does 95% of the area lie for a standardized normal distribution?  Answer: :math:`z=1.64`.  In R we use the ``qnorm(0.95, mean=0, sd=1)`` to calculate these values.  The ``q`` stands for `quantile <http://en.wikipedia.org/wiki/Quantile>`_, because we give it the quantile at it returns the z-value: e.g. ``qnorm(0.5)`` gives 0.0.
 
 .. figure:: images/show-pnorm-and-qnorm.png
 	:scale: 70
@@ -709,9 +706,9 @@ Now the **inverse cumulative distribution** is used when we know the area, but w
 		
 On to checking for normality.  We approach this problem by first constructing quantities that we would expect for truly normally distributed data.  Then, secondly, we construct the same quantities for the actual data.  A plot of these 2 quantities against each other will reveal if the data are normal, or not.
 
-#.	Imagine we have :math:`N` observations which are normally distributed.  Sort the data from smallest to largest.  The first data point should be the :math:`(1/N \times 100)` percentile, the next data point is the :math:`(2/N \times 100)/N` percentile, the middle, sorted data point is the 50th percentile, :math:`(1/2 \times 100)`, and the last, sorted data point is the :math:`(N/N \times 100)` percentile.
+#.	Imagine we have :math:`N` observations which are normally distributed.  Sort the data from smallest to largest.  The first data point should be the :math:`(1/N \times 100)` quantile, the next data point is the :math:`(2/N \times 100)` quantile, the middle, sorted data point is the 50th quantile, :math:`(1/2 \times 100)`, and the last, sorted data point is the :math:`(N/N \times 100)` quantile.
 
-	The middle, sorted data point has a :math:`z`-value on the standardized scale of 0.0, which we known from using ``qnorm(0.5)``, from the inverse cumulative distribution function.  By definition, 50% of the data should lie below this point. The first data point will be at ``qnorm(1/N)``, the second at ``qnorm(2/N)``, and so on.  In general, the :math:`i^\text{th}` sorted point should be at ``qnorm((i-0.5)/N)``, for values of :math:`i = 1, 2, \ldots, N`.  We subtract off 0.5 to account for the fact that ``qnorm(1.0) = Inf``.  So we construct this vector of theoretically expected quantities from the inverse cumulative distribution function.
+	The middle, sorted data point has a :math:`z`-value on the standardized scale of 0.0, which we know from using ``qnorm(0.5)``, from the inverse cumulative distribution function.  By definition, 50% of the data should lie below this point. The first data point will be at ``qnorm(1/N)``, the second at ``qnorm(2/N)``, and so on.  In general, the :math:`i^\text{th}` sorted point should be at ``qnorm((i-0.5)/N)``, for values of :math:`i = 1, 2, \ldots, N`.  We subtract off 0.5 to account for the fact that ``qnorm(1.0) = Inf``.  So we construct this vector of theoretically expected quantities from the inverse cumulative distribution function.
 	
 	.. code-block:: s
 	
@@ -721,18 +718,18 @@ On to checking for normality.  We approach this problem by first constructing qu
 		theoretical.quantity <- qnorm(P)
 		[1] -1.64 -1.04 -0.674 -0.385 -0.126  0.125  0.385  0.6744 1.036  1.64
 
-#.	We also construct the actual quantities for the data.  First, standardize the data by subtracting off the mean and dividing by the standard deviation.  Here is an example of 10 batch yields (see actual values below).  The mean yield is 80.0 and the standard deviation is 8.35.  The standardized yields are shown by subtracting off the mean and dividing by the standard deviation.  Then the standardized values are sorted.  Compare them to the theoretical quantities.
+#.	We also construct the actual quantiles from the sampled data.  First, standardize the data by subtracting off the mean and dividing by the standard deviation.  Here is an example of 10 batch yields (see actual values below).  The mean yield is 80.0 and the standard deviation is 8.35.  The standardized yields are shown by subtracting off the mean and dividing by the standard deviation.  Then the standardized values are sorted.  Compare them to the theoretical quantities.
 
 	.. code-block:: s
 
-		yields = c(86.2, 85.7, 71.9, 95.3, 77.1, 71.4, 68.9, 78.9, 86.9, 78.4)
-		mean.yield = mean(yields)		# 80.0
-		sd.yield = sd(yields)			# 8.35
+		yields <- c(86.2, 85.7, 71.9, 95.3, 77.1, 71.4, 68.9, 78.9, 86.9, 78.4)
+		mean.yield <- mean(yields)		# 80.0
+		sd.yield <- sd(yields)			# 8.35
 	
-		yields.z = (yields - mean.yield)/sd.yield
+		yields.z <- (yields - mean.yield)/sd.yield
 		[1] 0.734  0.674 -0.978  1.82 -0.35 -1.04 -1.34 -0.140  0.818 -0.200
 	
-		yields.z.sorted = sort(yields.z)
+		yields.z.sorted <- sort(yields.z)
 		[1] -1.34 -1.04 -0.978 -0.355 -0.200 -0.140  0.674  0.734  0.818  1.82
 		
 		theoretical.quantity  # numbers are rounded in the printed output
@@ -765,12 +762,12 @@ The R plot rescales the Y-axis (sample quantiles) back to the original units to 
 
 The qq-plot, :index:`quantile-quantile plot`, shows the quantiles of 2 distributions against each other.  In fact, we can use the horizontal axis for any distribution, it need not be the theoretical normal distribution.  We might be interested if our data follow an `F-distribution <http://en.wikipedia.org/wiki/F-distribution>`_ (not covered in this book), then we could use the quantiles for that theoretical distribution on the horizontal axis.
 
-#. Add the ``car`` library to R (see the *Package Installer* menu option) and use the ``qq.plot(yields)`` function to see the error bars for the yield data.
+#. Add the ``car`` library to R (see the *Package Installer* menu option) and use the ``qqPlot(yields)`` function to see the error bars for the yield data.
 
 	.. code-block:: s
 
 		library(car)		# Install the car library before running this command
-		qq.plot(yields)		# Draws a qq-plot with error lines
+		qqPlot(yields)		# Draws a qq-plot with error lines
 
 #. We can use the qq-plot to compare any 2 *samples of data*, even if they have different values of :math:`N`, by calculating the quantiles for each sample at different step quantiles (e.g. 1, 2, 3, 4, 5, 10, 15, .... 95, 96, 97, 98, 99), then plot the qq-plot for the two samples.  You can calculate quantiles for any sample of data using the ``quantile`` function in R.  The simple example below shows how to compare the qq-plot for 1000 normal distribution samples against 2000 :math:`t`-distribution samples
 
@@ -1469,7 +1466,7 @@ One way to test whether we can pool (combine) two variances, taken from two diff
 			  F_{1-\alpha/2, \nu_1, \nu_2}\dfrac{s_1^2}{s_2^2} &\qquad<\qquad& \dfrac{\sigma_1^2}{\sigma_2^2} &\qquad<\qquad& F_{\alpha/2, \nu_1, \nu_2}\dfrac{s_1^2}{s_2^2}
 		\end{alignat*}
 
-Where :math:`F_{1-\alpha/2, \nu_1, \nu_2}` and :math:`F_{\alpha/2, \nu_1, \nu_2}` are values from the F-distribution using :math:`\nu_1` degrees of freedom for estimating :math:`s_1` and :math:`\nu_2` degrees of freedom for estimating :math:`s_2`.  The values of F can be calculated in R using ``qf(alpha/2, df1=..., df2=...)``, and :math:`\alpha` is the level of confidence, usually :math:`\alpha = 0.05`.
+Where :math:`F_{1-\alpha/2, \nu_1, \nu_2}` and :math:`F_{\alpha/2, \nu_1, \nu_2}` are values from the :math:`F`-distribution using :math:`\nu_1` degrees of freedom for estimating :math:`s_1` and :math:`\nu_2` degrees of freedom for estimating :math:`s_2`.  The values of :math:`F` can be calculated in R using ``qf(alpha/2, df1=..., df2=...)``, and :math:`\alpha` is the level of confidence, usually :math:`\alpha = 0.05`.
 
 
 Confidence interval for proportions: the binomial proportion confidence interval

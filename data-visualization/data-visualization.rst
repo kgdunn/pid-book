@@ -442,7 +442,7 @@ Exercises
 
 .. question::
 
-	The data shown here are the number of visits to a university website for a particular statistics course.  There are 90 students in the, however the site is also publicly available.
+	The data shown here are the number of visits to a university website for a particular statistics course.  There are 90 students in the class, however the site is also publicly available.
 
 	.. figure:: images/course-website-visits.png
 		:align: center

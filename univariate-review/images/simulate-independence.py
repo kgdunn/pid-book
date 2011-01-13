@@ -26,9 +26,6 @@ random_walk3[0] = targetY
 for k in np.arange(start=1, stop=N, step=1):
     random_walk3[k] = phi*random_walk3[k-1] + (1-phi)*shocks[k]
 
-
-outpath = '/Users/kevindunn/Statistics course/Course notes/Univariate data analysis/images/'
-
 fig = plt.figure(figsize=(10, 5)) #, dpi=None, facecolor=None, edgecolor=None, frameon=False, subplotpars=None)bplotpars=None)
 h_ax1 = fig.add_subplot(3, 1, 1)
 h_ax1.plot(random_walk1[0:N], color='k')
@@ -47,7 +44,7 @@ h_ax3.set_ylabel('Sample 3', fontsize=14)
 
 
 
-fig.savefig(outpath + 'simulate-independence.png', dpi=96, facecolor='w', edgecolor='w',
+fig.savefig('simulate-independence.png', dpi=96, facecolor='w', edgecolor='w',
         orientation='portrait', papertype=None, format=None,
         transparent=True)
 
