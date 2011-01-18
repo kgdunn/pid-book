@@ -597,7 +597,7 @@ We frequently violate this assumption of independence in engineering application
 	
 .. See Hodges and Lehmann (1970): there is a whole Chapter devoted to it.
 
-.. See: http://www.rsscse.org.uk/ts/gtb/contents.html: article on Teaching Independence
+.. See: http://www.rsscse.org.uk/ts/gtb/contents.html: article on Teaching Independence; see PDF file in Readings directory.
 
 
 		
@@ -1173,7 +1173,7 @@ Comparison to a long-term reference set
 .. index:: 
 	single: long-term reference set
 
-We can compare the past 10 runs from system B with the 10 runs from system A.  The average difference between these runs is :math:`\bar{x}_B - \bar{x}_A = 82.93 - 79.89 = 3.04` units of improved yield.  Now, if we have a long-term reference data set available, we can compare if any 10 historical, sequential runs, followed by another 10 historical, sequential runs had a difference that was this great.  If not, then we know that system B leads to a definite improvement, not likely to be caused by chance alone.
+Continuing the above example we can compare the past 10 runs from system B with the 10 runs from system A.  The average difference between these runs is :math:`\bar{x}_B - \bar{x}_A = 82.93 - 79.89 = 3.04` units of improved yield.  Now, if we have a long-term reference data set available, we can compare if any 10 historical, sequential runs, followed by another 10 historical, sequential runs had a difference that was this great.  If not, then we know that system B leads to a definite improvement, not likely to be caused by chance alone.
 
 	#. Imagine that we have have 300 historical data points from this system, tabulated in time order: yield from batch 1, 2, 3 ...  (the data appear on the `website <http://datasets.connectmv.com/info/batch-yields>`_).
 	#. Calculate the average yields from batches 1 to 10. Then calculate the average yield from batches 11 to 20.  Notice that this is exactly like the experiment we performed when we acquired data for system.  Two groups of 10 batches, with the groups formed from sequential batches.
@@ -1191,7 +1191,7 @@ Notice that no assumption of independence or any form of distributions was requi
 
 So to summarize: we can use a historical data set if it is relevant.  And there are no assumptions of independence or shape of the distribution.
 
-In fact, for this example, the data were not independent, they were autocorrelated.  There was a relationship from one batch to the next: :math:`x[k] = \phi x[k-1] + a[k]`, with :math:`\phi = -0.3`, and  :math:`a[k] \sim \mathcal{N}\left(\mu=0, \sigma^2=6.7^2\right)`.
+In fact, for this example, the data were not independent, they were autocorrelated.  There was a relationship from one batch to the next: :math:`x[k] = \phi x[k-1] + a[k]`, with :math:`\phi = -0.3`, and  :math:`a[k] \sim \mathcal{N}\left(\mu=0, \sigma^2=6.7^2\right)`.  You can create your own set of autocorrelated data using this R code:
 
 .. code-block:: s
 
@@ -1202,7 +1202,7 @@ In fact, for this example, the data were not independent, they were autocorrelat
 	A.historical <- numeric(N)   # create a vector of zeros
 	for (k in 2:N)
 	{
-		A.historical[k] <- phi*(A.historical[k-1]) + rnorm(1, mean=0, sd=spread)
+	   A.historical[k] <- phi*(A.historical[k-1]) + rnorm(1, mean=0, sd=spread)
 	}
 	A.historical <- A.historical + location
 
@@ -1211,7 +1211,7 @@ We can visualize this :index:`autocorrelation` by plotting the values of :math:`
 .. figure:: images/system-comparison-autocorrelation-scatterplot.png
 	:width: 600px
 	:align: center
-	:scale: 95
+	:scale: 80
 
 Comparison when a reference set is not available
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1654,6 +1654,10 @@ Exercises
 
 .. question::
 
+	Write a few *bullet point* notes on the purpose of feedback control, and its effect on variability of process quality.
+
+.. question::
+
 	Use the section on `Historical data <http://www.climate.weatheroffice.ec.gc.ca/climateData/canada_e.html>`_ from Environment Canada's website and use the ``Customized Search`` option to obtain data for the ``HAMILTON A`` station from 2000 to 2009.  Use the settings as ``Year=2000``, and ``Data interval=Monthly`` and request the data for 2000, then click ``Next year`` to go to 2001 and so on. 
 
 		-	For each year from 2000 to 2009, get the total snowfall and the average of the ``Mean temp`` over the whole year (the sums and averages are reported at the bottom of the table).
@@ -1712,8 +1716,8 @@ Exercises
 	#. What if I told you that these values are not independent.  How does it affect your answer?
 	#. What is the probability of having an ammonia concentration greater than 50 mg/L when:
 
-		- you use only the data (do not use any estimated parameters)
-		- you use the estimated parameters for the distribution?
+		- you use only the data (do not use any estimated statistics)
+		- you use the estimated statistics for the distribution?
 
 	.. could use "fitdistr" in R in the MASS package?
 
@@ -1730,7 +1734,7 @@ Exercises
 	The probability of having an ammonia concentration greater than 50 mg/L:
 
 		- when using only the data: 4.5% (see code above)
-		- when using the estimated parameters of the distribution: 5.1% (see code above)
+		- when using the estimated statistics of the distribution: 5.1% (see code above)
 	
 	We should use the :math:`t`-distribution to answer the last part, but at this stage we had not yet looked at the :math:`t`-distribution.  However, the large number of observations (1440) means the :math:`t`-distribution is no different than the normal distribution.
 
@@ -1830,6 +1834,16 @@ Exercises
 	
 	Solving for |n| at these values gives: :math:`n = \left(\dfrac{2(1.96)(\hat{\sigma}_{\text{BOD}})}{2}\right)^2 = (1.96 \times 4)^2 \sim 62`.  This large number of samples makes sense: compare the range (2 mg/L) to the standard deviation of 4 mg/L: you have to take a large number of samples to get your precision up when you have so much noise in your signal.
 
+
+.. question::
+	
+	One of the question we posed at the start of this chapter was: "`Here are the yields <http://datasets.connectmv.com/info/batch-yields>`_ from a batch bioreactor system for the last 3 years (300 data points; we run a new batch about every 3 to 4 days).
+
+	#.	What sort of distribution do the yield data have?
+	#.	A recorded yield value was less than 60%, what are the chances of that occurring?  Express your answer as: *there's a 1 in :math:`X` chance* of it occurring.
+	#.	Which assumptions do you have to make for the second part of this question?
+	
+	.. From assignment 2, 2011
 
 .. question::
 

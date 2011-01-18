@@ -1,4 +1,4 @@
-bitmap('/Users/kevindunn/Statistics course/Course notes/Univariate data analysis/images/show-pDIST-and-qDIST.png', type="png256", width=10, height=7, res=300, pointsize=14)
+bitmap('show-pDIST-and-qDIST.png', type="png256", width=10, height=7, res=300, pointsize=14)
 
 z <- seq(-4, 4, 0.01)
 cumulative.norm = pnorm(z)
@@ -20,7 +20,7 @@ text(2,0.6, "qDIST(...)", cex=1.5)
 dev.off()
 
 
-bitmap('/Users/kevindunn/Statistics course/Course notes/Univariate data analysis/images/show-dDIST.png', type="png256", width=10, height=7, res=300, pointsize=14)
+bitmap('show-dDIST.png', type="png256", width=10, height=7, res=300, pointsize=14)
 
 x <- seq(-4, 4, 0.01)
 d.norm = dnorm(x)

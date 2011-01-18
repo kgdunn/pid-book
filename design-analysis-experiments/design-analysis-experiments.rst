@@ -16,7 +16,7 @@
 	>>> y = N.arange(-3.0,3.0,0.025)
 	>>> X,Y = pl.meshgrid(x, y)
 	>>> Z = z_func(X, Y)
-	>>> im = pl.imshow(Z,interpolation=’bilinear’,/
+	>>> im = pl.imshow(Z,interpolation='bilinear',/
 	(cmap=pl.cm.Spectral ...
 	>>> cset = pl.contour(Z,N.arange(-1.2,1.6,0.2),/
 	(linewidths=2,cmap=pl.cm.hot ...

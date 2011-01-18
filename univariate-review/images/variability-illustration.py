@@ -37,7 +37,6 @@ number = np.median(spike_walk)
 for k in np.arange(start=flat_line, stop=flat_line+N/10, step=1):
 	spike_walk[k] = number
 
-outpath = '/Users/kevindunn/Statistics course/Course notes/Univariate data analysis/images/'
 
 fig = plt.figure(figsize=(8, 3)) #, dpi=None, facecolor=None, edgecolor=None, frameon=False, subplotpars=None)
 
@@ -46,7 +45,7 @@ h_ax1.axhline(y=targetY, xmin=0, xmax=N, linewidth=2, color='k')
 h_ax1.axis([0, N, targetY-100, targetY+100])
 h_ax1.set_title('No variability', fontsize=16)
 
-fig.savefig(outpath + 'variation-none.png', dpi=96, facecolor='w', edgecolor='w',
+fig.savefig('variation-none.png', dpi=96, facecolor='w', edgecolor='w',
         orientation='portrait', papertype=None, format=None,
         transparent=True)
 
@@ -54,7 +53,7 @@ fig = plt.figure(figsize=(8, 3)) #figsize=(8, 15), dpi=None, facecolor=None, edg
 h_ax2 = fig.add_subplot(1, 1, 1)
 h_ax2.plot(avg_thickness[0:N], color='k')
 h_ax2.set_title('Some variation', fontsize=16)
-fig.savefig(outpath + 'variation-some.png', dpi=96, facecolor='w', edgecolor='w',
+fig.savefig('variation-some.png', dpi=96, facecolor='w', edgecolor='w',
         orientation='portrait', papertype=None, format=None,
         transparent=True)
 
@@ -63,7 +62,7 @@ h_ax3 = fig.add_subplot(1, 1, 1)
 h_ax3.plot(random_walk[0:N], color='k')
 h_ax3.set_title('A bit more variation', fontsize=16)
 
-fig.savefig(outpath + 'variation-more.png', dpi=96, facecolor='w', edgecolor='w',
+fig.savefig('variation-more.png', dpi=96, facecolor='w', edgecolor='w',
          orientation='portrait', papertype=None, format=None,
          transparent=True)
 
@@ -72,10 +71,10 @@ h_ax4 = fig.add_subplot(1, 1, 1)
 h_ax4.plot(spike_walk[0:N], color='k')
 h_ax4.set_title('More variation, spikes and other real phenomena', fontsize=16)
 
-fig.savefig(outpath + 'variation-spikes.png', dpi=96, facecolor='w', edgecolor='w',
+fig.savefig('variation-spikes.png', dpi=96, facecolor='w', edgecolor='w',
         orientation='portrait', papertype=None, format=None,
         transparent=True)
 
-np.savetxt(outpath + 'spike_walk-numpy-python.dat', spike_walk)
+np.savetxt('spike_walk-numpy-python.csv', spike_walk)
 plt.close()
  

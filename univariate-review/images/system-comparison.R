@@ -3,7 +3,7 @@ summary(data)
 
 A <- data$obs[data$method==data$method[1]]
 B <- data$obs[data$method==data$method[11]]
-
+B
 
 bitmap('system-comparison-boxplot-plots.png', type="png256", width=12, height=7, res=250, pointsize=14) 
 limits <- range(data$obs)
@@ -68,7 +68,7 @@ N = length(A.hist)
 #library(nlme)
 #acf(A.hist)
 
-#bitmap('system-comparison-sequence-plot.png', type="png256", width=10, height=7, res=250, pointsize=14) 
+bitmap('system-comparison-sequence-plot.png', type="png256", width=10, height=7, res=250, pointsize=14) 
 plot(c(A.hist, B), xlab="300 samples from A, 10 samples of B", ylab="Yield (%)", main="", cex.lab=1.5, cex.main=1.8, lwd=3, cex.sub=1.8, cex.axis=1.8)
 abline(v=length(A.hist))
 text(length(A.hist)/2, 98, "A", cex=2)
@@ -76,8 +76,8 @@ text(length(A.hist)+length(B), 98, "B", cex=2)
 dev.off()
 
 
-#bitmap('system-comparison-autocorrelation-scatterplot.png',type="png256", width=10, height=7, res=250, pointsize=14) 
-plot(A.hist[1:N-1], A.hist[2:N], xlab="x[k]", ylab="x[k+1]", main="Autocorrelation between successive values of batch yield", cex.lab=1.5, cex.main=1.8, lwd=3, cex.sub=1.8, cex.axis=1.8)
+bitmap('system-comparison-autocorrelation-scatterplot.png',type="png256", width=10, height=7, res=250, pointsize=14) 
+plot(A.hist[1:N-1], A.hist[2:N], xlab="x[k]", ylab="x[k+1]", main="Autocorrelation between successive values of batch yield", cex.lab=1.2, cex.main=1.2, lwd=3, cex.sub=1.2, cex.axis=1.2)
 lines(lowess(A.hist[1:N-1], A.hist[2:N]))
 dev.off()
 
