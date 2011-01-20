@@ -865,9 +865,9 @@ Exercises
 
 	No, a Shewhart chart is not suitable for monitoring stock prices.  Stock prices are volatile variables (not stable), so there is no sense in monitoring their location.  Hopefully the stock is moving up, which it should on average, but the point is that stock prices are not stable.  Nor are stock prices independent day-to-day.
 	
-		So what aspect of a stock price is stable?  The difference between the opening and closing price of a stock is remarkably stationary.  Monitoring the day-to-day change in a stock price would work.  Since you aren't expected to know this fact, any reasonable answer that attempts to monitor a *stable* substitute for the price will be accepted.  E.g. another alternative is to remove the linear up or down trend from a stock price and monitor the residuals. 
+	So what aspect of a stock price is stable?  The difference between the opening and closing price of a stock is remarkably stationary.  Monitoring the day-to-day change in a stock price would work.  Since you aren't expected to know this fact, any reasonable answer that attempts to monitor a *stable* substitute for the price will be accepted.  E.g. another alternative is to remove the linear up or down trend from a stock price and monitor the residuals. 
 		
-		There are many alternatives; if this sort of thing interests you, you might find the area called `technical analysis <http://en.wikipedia.org/wiki/Technical_analysis>`_ worth investigating.  An EWMA chart is widely used in this sort of analysis.
+	There are many alternatives; if this sort of thing interests you, you might find the area called `technical analysis <http://en.wikipedia.org/wiki/Technical_analysis>`_ worth investigating.  An EWMA chart is widely used in this sort of analysis.
 	
 	
 .. question::
