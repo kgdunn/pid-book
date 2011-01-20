@@ -6,7 +6,6 @@
 	^^^^^
 	-----
 	
-
 .. MIT courseware: http://ocw.mit.edu/OcwWeb/Mechanical-Engineering/2-830JSpring-2008/VideoLectures/index.htm	
 		
 .. TODO list of plots
@@ -26,12 +25,12 @@
 In context
 ==========
 
-In the first section we learned about :ref:`visualizing data <SECTION-data-visualization>`, then we moved on to reviewing :ref:`univariate statistics <SECTION-univariate-review>`.  This section combines those two areas, showing how to create a system that monitors any process, using graphical tools, to enable you to rapidly detect problems.  The next logical step after detection is to diagnose the problem, but we will cover diagnosis in the section on :ref:`latent variable models <SECTION-latent-variable-modelling>`.
+In the first section we learned about :ref:`visualizing data <SECTION-data-visualization>`, then we moved on to reviewing :ref:`univariate statistics <SECTION-univariate-review>`.  This section combines those two areas, showing how to create a system that monitors a single, univariate, value from any process.  We do this using graphical tools, to enable anyone to rapidly detect a problem by visual analysis.  The next logical step after detection is to diagnose the problem, but we will cover diagnosis in the section on :ref:`latent variable models <SECTION-latent-variable-modelling>`.
 
 This section is the last section where we deal with univariate data; after this section we start to use and deal with 2 or more variables.  
 
 Usage examples
----------------
+~~~~~~~~~~~~~~~
 
 .. index::
 	pair: usage examples; Process monitoring
@@ -39,21 +38,21 @@ Usage examples
 The material in this section is used whenever you need to rapidly detect problems.  It has tangible application in many areas - in fact, you have likely encountered these monitoring charts in areas such as a hospital (monitoring patients), stock market charts (intraday trading), or in a processing/manufacturing facility.
 
 	- *Co-worker*: We need a system to ensure an important dimension on our product is stable and consistent.
-	- *Yourself*: In addition to that, we need to rapidly detect if one of the manufacturing robots have moved out of alignment and our product has become too thick, or too thin.
+	- *Yourself*: We know that as the position of a manufacturing robot moves out of alignment that our produce starts becoming inconsistent; more variable. How can we quickly detect this slow drift?
 	- *Manager*: the hourly average profit, and process throughput is important to the head-office; can we create a system for them to track that?
 	- *Potential customer*: what is your process capability - we are looking for a new supplier that can provide low variability raw material for us with |Cpk| of at least 1.6, preferably higher.
 	
 **Note**: process monitoring is mostly *reactive* and not *proactive*. So it is suited to *incremental* process improvement, which is typical of most improvements.
 
 What we will cover
--------------------
+~~~~~~~~~~~~~~~~~~~~
 
 .. image:: images/control-charts-section-mapping.png
   :width: 750px 
   :scale: 60
 
 References and readings
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. index::
 	pair: references and readings; Process monitoring
@@ -63,7 +62,7 @@ Some references to refer to:
 #.	**Recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, Chapter 14 (2nd edition)
 #.	**Recommended**: Montgomery and Runger, *Applied Statistics and Probability for Engineers*.
 #.	Hogg and Ledolter, *Engineering Statistics*.
-#.	Macgregor, John F. "`Using On-Line Process Data to Improve Quality: Challenges for Statisticians <http://dx.doi.org/10.1111/j.1751-5823.1997.tb00311.x>`_", *International Statistical Review*, **65**, p 309-323, 1997.
+#.	John F. Macgregor. "`Using On-Line Process Data to Improve Quality: Challenges for Statisticians <http://dx.doi.org/10.1111/j.1751-5823.1997.tb00311.x>`_", *International Statistical Review*, **65**, p 309-323, 1997.
 #.	Bisgaard, S., "`The Quality Detective: A Case Study <http://dx.doi.org/10.1098/rsta.1989.0006>`_", Philosophical Transactions of the Royal Society-A, **327**, p 499-511, 1989.
 #.	Rocke, D.M., `Robust Control Charts <http://www.jstor.org/pss/1268815>`_, *Technometrics*, **31** (2), p 173 - 184, 1989.
 
@@ -80,11 +79,11 @@ Some references to refer to:
 .. p 669 of Devore: see also Technometrics, 1989, p173-184, by David M Rocke
 
 Concepts
------------
+~~~~~~~~~~~~~~~
 
 Concepts that you must be familiar with by the end of this section: 
 
-.. images:: images/control-chart-concepts.png
+.. image:: images/control-chart-concepts.png
 	:width: 600px
 	:align: center
 	:scale: 70
@@ -92,34 +91,35 @@ Concepts that you must be familiar with by the end of this section:
 So what is process monitoring?
 ===============================
 
-Most industries have now realized that product quality is not an option.  There was historical thinking that quality is equivalent of "gold-plating" your product, but that has mostly fallen away.  Product quality is not a cost-benefit trade-off: it is always beneficial to you in the long-term to improve your product quality, and to your customers as well.
+Most industries have now realized that product quality is not an option.  There was historical thinking that quality is equivalent of "gold-plating" your product, but that has mostly fallen away.  Product quality is not a cost-benefit trade-off: it is always beneficial to you in the long-term to improve your :index:`product quality`, and for your customers as well.
 
-As we spoke about in the :ref:`univariate review section <univariate-review-chapter>`, good quality products (low variability) actually boost your profits by lowering costs.  You have lower costs when you *do not* have to scrap off-specification product, or have to rework bad product.  You have increased long-term sales with more loyal customers and improved brand reputation.  
+As we spoke about in the :ref:`univariate review section <SECTION-univariate-review>`, good quality products (low variability) actually boost your profits by lowering costs.  You have lower costs when you *do not* have to scrap off-specification product, or have to rework bad product.  You have increased long-term sales with more loyal customers and improved brand reputation.  
 
-An example that most people in North America can relate to is the rise in Asian car manufacturers' market share, at the expense American manufacturers' market share.  The market has the perception that Asian cars are more reliable than American cars and resale rates certainly reflect that. That is an illustration of how variability in your product can benefit you.
+An example that most people in North America can relate to is the rise in Asian car manufacturers' market share, at the expense American manufacturers' market share.  The market has the perception that Asian cars are more reliable than American cars and resale rates certainly reflect that (though that perception is starting to change in 2010 and 2011). That is an illustration of how variability in your product can benefit you.
 
-In order to achieve this high level of final product quality, our systems should be producing low variability product at every step of the manufacturing process.  Rather than wait till the end of the process to discover poor quality product, we should be monitoring, in real-time, the intermediate parts of our process.  When we discover unusual variability the lofty aim is to make (permanent) process adjustments to avoid that variability from ever occurring again.
+In order to achieve this high level of final product quality, our systems should be producing low variability product at every step of the manufacturing process.  Rather than wait till the end of the process to *discover* poor quality product, we should be monitoring, in real-time, the intermediate parts of our process.  When we discover unusual variability the lofty aim is to make (permanent) process adjustments to avoid that variability from ever occurring again.
 
-Notice here that process monitoring is not intended to be automatic feedback control.  It has the same principles of quantifying unusual operation (errors), but the intention with process monitoring is that our process adjustments are **infrequent**, usually **manual**, and take place due to **special causes**.
+Notice here that process monitoring is not intended to be automatic feedback control.  It has the same principles of quantifying unusual operation (errors), but the intention with process monitoring is:
+
+*	that our process adjustments are **infrequent**, 
+*	adjustments are usually **manual**, 
+*	and take place due to **special causes**.
 
 Control charts
 ~~~~~~~~~~~~~~~~~~~~
 
-.. index::
-	single: control charts
-
-We use control charts to display and detect this unusual variability. A control chart is a display of one value (variable), against time.  These time-based plots also show some additional information: usually a target value, and one or more limits lines are superimposed on the plot.  The plots are most useful when displayed in real-time, or close to real-time.  There are various technical ways to express what a control chart does exactly, but a general definition is that a control chart helps you detect outliers and other unusual behaviour.
+We use :index:`control charts` to display and detect this unusual variability. A control chart is a display of one value (variable), against time, or in sequence order.  These time-based plots also show some additional information: usually a target value, and one or more limits lines are superimposed on the plot.  The plots are most useful when displayed in real-time, or close to real-time.  There are various technical ways to express what a control chart does exactly, but a general definition is that a control chart helps you detect outliers and other unusual behaviour.
 
 The key points are:
 
-	- it is most often a time-series plot, or some sort of sequence
-	- a target value may be shown (for some plots, e.g. those that monitor variance, the target is implied to be small, or even zero)
-	- one or more limit lines are shown,
-	- they are displayed in real-time, or pretty close to real-time
+	-	it is most often a time-series plot, or some sort of sequence,
+	-	a target value may be shown (for some plots, e.g. those that monitor variance, the target is implied to be small, or even zero),
+	-	one or more limit lines are shown,
+	-	they are displayed in real-time, or pretty close to real-time.
 
 Here is an example that shows these properties.
 
-.. figure:: images/demo-of-monitoring-chart.png
+.. image:: images/demo-of-monitoring-chart.png
 	:width: 750px
 	:scale: 80
 
@@ -128,17 +128,22 @@ General approach
 
 Generally, one applies the concept of control charts in 2 phases.  You will see the terminology sometimes called:
 
-	* **Phase I**: building and testing the control chart from off-line data that you have collected.  This phase is very iterative, and you will spend most of your time here.
-	* **Phase II**: Using the control chart, on new, unseen data.  This phase is most often implemented with computer hardware and software for real-time display of the charts.
+.. index:: Phase 1 (control charts)
+
+*	**Phase I**: building and testing the control chart from off-line data that you have collected.  This phase is very iterative, and you will spend most of your time here.
+
+.. index:: Phase 2 (control charts)
+
+*	**Phase II**: Using the control chart, on new, unseen data.  This phase is most often implemented with computer hardware and software for real-time display of the charts.
 
 What should we monitor?
 ========================
 
 Any variable can be monitored.  However, the purpose of process monitoring is so that you can **react early** to bad, or unusual operation.  This implies we should monitor variables that are available in near real-time; they are more suitable than variables that take a long time to acquire (e.g. laboratory measurements).  We shouldn't have to wait to the end of the production line to find our process was out of statistical control.  
 
-These intermediate system variables are (a) available much more frequently and without delay, (b) are more precise, (c) are usually more meaningful to the operating staff than final quality variables from the lab, and (d) contain the "fingerprint" of the fault, helping the engineers with diagnosis and process adjustment.
+These intermediate variables measured from the process are (a) available much more frequently and without delay, (b) are more precise, (c) are usually more meaningful to the operating staff than final quality variables from the lab, and (d) contain the "fingerprint" of the fault, helping the engineers with diagnosis and process adjustment (see *Macgregor, 1997*)
 
-Note that we don't have to monitor variables that are measured only from on-line sensors.  The variable could be a calculation made from the on-line measurements.  For example, an energy balance could be calculated from various thermocouples on the process and the degree of mismatch in the energy balance could be critical to quality - so monitor the mismatch, rather than the temperatures.
+Note that we don't have to monitor variables that are measured only from on-line sensors.  The variable could be a calculation made from the on-line measurements.  For example, an energy balance could be calculated from various thermocouples on the process and the degree of mismatch in the energy balance could be critical to quality.  For example, the mismatch could indicate an unexpected source of heat into or out of the process - so monitor that mismatch, rather than the raw temperature data.
 
 	..	SLIDE: organoleptic properties, Particle size distribution
 
@@ -156,28 +161,25 @@ In-control vs out-of-control
 
 Every book on statistical quality control gives a slightly different viewpoint, or uses different terminology for what is statistical process control.
 
-In this book we will take "in-control" to mean that the behaviour of the process is stable over time.  Note though, that in-control does not mean the variable of interest meets the required specifications - all that "in control" means is that there are no **special causes** in the data.  A special cause, or an assignable cause is an event that occurs to move the process, or destabilize it.  Process monitoring charts aim to detect these events.
+In this book we will take "in-control" to mean that the behaviour of the process is stable over time.  Note though, that in-control does not mean the variable of interest meets the specifications required by the customer, or set by the plant personnel.  All that "in control" means is that there are no **special causes** in the data.  A special cause, or an assignable cause is an event that occurs to move the process, or destabilize it.  Process monitoring charts aim to detect these events.
 
-.. Note:: Our objective: quickly detect abnormal variation, and fix it by finding the root cause.  In this section we look at the "detection" problem.  Diagnosis and process adjustment are two separate steps that follow.
+.. note:: Our objective: quickly detect abnormal variation, and fix it by finding the root cause.  In this section we look at the "detection" problem.  Diagnosis and process adjustment are two separate steps that follow.
 
 Shewhart chart
 ==============
 
-.. index::
-	pair: Shewhart chart; Process monitoring
-
 .. For the mean: p174 to p186 of Barnes.  KGD: what does "Barnes" refer to?
 
-A Shewhart chart, named after Walter Shewhart from Bell Telephone and Western Electric, is to monitor that a process variable remains on target and within given upper and lower limits. It is a monitoring chart for *location*.  It answers the question whether the variable's location is stable over time.
+A :index:`Shewhart chart <pair: Shewhart chart; Process monitoring>`, named after Walter Shewhart from Bell Telephone and Western Electric, is to monitor that a process variable remains on target and within given upper and lower limits. It is a monitoring chart for *location*.  It answers the question whether the variable's :index:`location <single: location (process monitoring)>` is stable over time.
 
 The defining characteristics are: a target, upper and lower control limits (UCL and LCL).  These action limits are defined so that no action is required as long as the variable plotted remains within the limits.
 
 Derivation
 ~~~~~~~~~~~~~
 
-Define the variable of interest as |x|, and assume that we have samples of |x| available in sequence order.  No assumption is made regarding the distribution of |x|.  The average of :math:`n` of these |x|-values is defined as :math:`\bar{x}`, which from the Central limit theorem we know will be more normally distributed with unknown population mean :math:`\mu` and unknown population variance :math:`\sigma^2/n`.  The figure below shows the case for :math:`n=5`.
+Define the variable of interest as :math:`x`, and assume that we have samples of :math:`x` available in sequence order.  No assumption is made regarding the distribution of :math:`x`.  The average of :math:`n` of these :math:`x`-values is defined as :math:`\bar{x}`, which from the Central limit theorem we know will be more normally distributed with unknown population mean :math:`\mu` and unknown population variance :math:`\sigma^2/n`, where :math:`\mu` and :math:`\sigma` refer to the distribution that samples of :math:`x` came from. The figure below shows the case for :math:`n=5`.
 
-.. figure:: images/explain-Shewhart-data-source.png
+.. image:: images/explain-Shewhart-data-source.png
 	:width: 750px
 	:align: center
 	:scale: 70
@@ -198,14 +200,14 @@ Assuming we know :math:`\sigma_{\bar{X}}`, which we usually do not in practice, 
 		\text{LCL}                                           &\leq&  \mu                                                 &\leq& \text{UCL}
 	\end{array}
 
-The total area between that lower and upper bound spans 99.73% of the area (in R: ``pnorm(+3) - pnorm(-3)`` gives 0.9973).  So it is highly unlikely, a chance of 1 in 370 that a data point, :math:`\bar{x}`, calculated from a subgroup of :math:`n` raw |x|-values, will lie outside these bounds.
+The total area between that lower and upper bound spans 99.73% of the area (in R: ``pnorm(+3) - pnorm(-3)`` gives 0.9973).  So it is highly unlikely, a chance of 1 in 370 that a data point, :math:`\bar{x}`, calculated from a subgroup of :math:`n` raw :math:`x`-values, will lie outside these bounds.
 
 .. Explain-shewhart.png
 
 Using estimated parameters instead
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The derivation in equation :eq:`shewhart-theoretical` requires knowing the population variance, :math:`\sigma`, and assuming that our target for |x| is :math:`\mu`.  
+The derivation in equation :eq:`shewhart-theoretical` requires knowing the population variance, :math:`\sigma`, and assuming that our target for :math:`x` is :math:`\mu`.  
 
 The latter assumption is reasonable, so create a new variable |xdb| :math:`= \dfrac{1}{K} \displaystyle \sum_{k=1}^{K}{ \bar{x}_k}`, where :math:`K` is the number of :math:`\bar{x}` samples we have available to build the control chart (phase 1 data).  Alternatively, just set |xdb| to the desired target value for :math:`x`.  Note that |xdb| is sometimes called the  *grand mean* in control chart textbooks.
 

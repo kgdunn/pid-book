@@ -44,7 +44,7 @@ Consider the case of 2 variables, :math:`K=2` (left) and :math:`K=3` variables (
 	:width: 750px
 	:align: center
 
-Each point in the plot represents one *object*, also called an *observation*.  There are about 150 observations in each plot here.  We sometimes call these plots *data swarms*, but they are really just ordinary scatterplots that we saw at the :ref:`start of these notes <data-visualization-chapter>`. Notice how the variables are correlated with each other, there is a definite trend.  If we want to explain this trend, we could draw a line through the cloud swarm that *best explains* the data.   This line now represents our best estimate of what the data points are describing.
+Each point in the plot represents one *object*, also called an *observation*.  There are about 150 observations in each plot here.  We sometimes call these plots *data swarms*, but they are really just ordinary scatterplots that we saw at the :ref:`start of these notes <SECTION-data-visualization>`. Notice how the variables are correlated with each other, there is a definite trend.  If we want to explain this trend, we could draw a line through the cloud swarm that *best explains* the data.   This line now represents our best estimate of what the data points are describing.
 
 
 .. _LVM-PCA-geometric-interpretation:
@@ -458,7 +458,7 @@ Any time-based or sequence-order trends in the raw data will be reflected in the
 
 **Colour-coding**
 
-Plotting any two score variables on a scatter plot provides good insight into the relationship between those independent variables.  Additional information can be provided by colour-coding the points on the plot by some other, 3rd variable of interest.  For example, a binary colour scheme could denote success of failure of each observation.  A continuous 3rd variable can be implied using a varying colour scheme, going from reds to oranges to yellows to greens and then blue, together with an accompanying legend. For example profitability of operation at that point, or some other process variable, or the size of the residual error (SPE) - we will also explain this SPE more thoroughly in the section on interpreting :ref:`SPE plots <LVM-interpreting-SPE-residuals>`.  A 4th dimension could be inferred by plotting smaller or larger points.  We saw an example of this in the first section on :ref:`visualizing data <data-visualization-chapter>`.
+Plotting any two score variables on a scatter plot provides good insight into the relationship between those independent variables.  Additional information can be provided by colour-coding the points on the plot by some other, 3rd variable of interest.  For example, a binary colour scheme could denote success of failure of each observation.  A continuous 3rd variable can be implied using a varying colour scheme, going from reds to oranges to yellows to greens and then blue, together with an accompanying legend. For example profitability of operation at that point, or some other process variable, or the size of the residual error (SPE) - we will also explain this SPE more thoroughly in the section on interpreting :ref:`SPE plots <LVM-interpreting-SPE-residuals>`.  A 4th dimension could be inferred by plotting smaller or larger points.  We saw an example of this in the first section on :ref:`visualizing data <SECTION-data-visualization>`.
 
 **Summary**
 
@@ -604,7 +604,7 @@ Using the residual matrix :math:`\mathbf{E} = \mathbf{X} - \mathbf{T} \mathbf{P}
 	:width: 750px
 	:align: center
 
-As we showed in the section on :ref:`least squares modelling <least-squares-modelling-chapter>`, the :math:`R^2` number is merely the ratio between the variance we can explain with the model over the total variance we started off with.  Using the notation in the previous illustration:
+As we showed in the section on :ref:`least squares modelling <SECTION-least-squares-modelling>`, the :math:`R^2` number is merely the ratio between the variance we can explain with the model over the total variance we started off with.  Using the notation in the previous illustration:
 
 .. math::
 	R^2_k = \dfrac{\text{Var}(\widehat{\mathbf{x}}_k)}{\text{Var}(\mathbf{x}_k)} = \dfrac{\text{Var}(\mathbf{x}_k - \mathbf{e}_k)}{\text{Var}(\mathbf{x}_k)}
@@ -761,7 +761,7 @@ There are a number of possibilities for data preprocessing.  We mainly discuss c
 
 	Centering moves the coordinate system to a new reference point, usually the origin of the coordinate system in :math:`K` variables (i.e. in :math:`K`-dimensional space).  Mean centering is effective and commonly used: after mean centering the mean of every column in |Xraw| will be exactly 0.0.
 
-	But as we learned in the section on :ref:`univariate data analysis <univariate-review-chapter>`, the mean has a low resistance to outliers: any large outlier will distort the value of the mean.  So users often resort to trimming their data and then mean centering.  In this regard, centering each column around its median is a better choice.  It is my preference to do this as it avoids the trimming step, and simultaneously highlights the outliers.
+	But as we learned in the section on :ref:`univariate data analysis <SECTION-univariate-review>`, the mean has a low resistance to outliers: any large outlier will distort the value of the mean.  So users often resort to trimming their data and then mean centering.  In this regard, centering each column around its median is a better choice.  It is my preference to do this as it avoids the trimming step, and simultaneously highlights the outliers.
 	
 **Scaling**
 

@@ -424,15 +424,15 @@ There are five main areas where engineers use large quantities of data.
 		
 	#.	**Improving, optimizing and controlling processes**
 	
-		We have already introduced the concept of :ref:`designed experiments and response surface methods <design-analysis-experiments-chapter>` in this course.  These are excellent tools to intentionally manipulate your process so that you can find a more optimal operating point, or even develop a new product.  We will show how latent variable tools can be used on a large historical data set to improve process operation, and to move to a new operating point.  There are also tools for latent variable control of processes, but we won't go into detail on this topic. 
+		We have already introduced the concept of :ref:`designed experiments and response surface methods <SECTION-design-analysis-experiments>` in this course.  These are excellent tools to intentionally manipulate your process so that you can find a more optimal operating point, or even develop a new product.  We will show how latent variable tools can be used on a large historical data set to improve process operation, and to move to a new operating point.  There are also tools for latent variable control of processes, but we won't go into detail on this topic. 
 		
 	#.	**Predictive modelling** (inferential sensors)
 	
-		The section on :ref:`least squares modelling <least-squares-modelling-chapter>` provided you with a tool for making predictions. We will show some powerful examples of how a "difficult-to-measure" variable can be predicted in real-time, using other easy-to-obtain process data.  Least squares modelling is a good tool, but it lacks some of the advantages that latent variable methods provide, such as the ability to handle highly collinear data, and data with missing values. 
+		The section on :ref:`least squares modelling <SECTION-least-squares-modelling>` provided you with a tool for making predictions. We will show some powerful examples of how a "difficult-to-measure" variable can be predicted in real-time, using other easy-to-obtain process data.  Least squares modelling is a good tool, but it lacks some of the advantages that latent variable methods provide, such as the ability to handle highly collinear data, and data with missing values. 
 	
 	#.	**Process monitoring**
 	
-		Once a process is running, we require monitoring tools to ensure that it maintains and stays at optimal performance.  We have already considered :ref:`process monitoring charts <process-monitoring-chapter>` for univariate process monitoring.  In this section we extend that concept to monitoring multiple variables.
+		Once a process is running, we require monitoring tools to ensure that it maintains and stays at optimal performance.  We have already considered :ref:`process monitoring charts <SECTION-process-monitoring>` for univariate process monitoring.  In this section we extend that concept to monitoring multiple variables.
 		
 The types of data engineers deal with now
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
