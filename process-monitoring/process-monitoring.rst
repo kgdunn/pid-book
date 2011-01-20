@@ -216,7 +216,7 @@ The derivation in equation :eq:`shewhart-theoretical` requires knowing the popul
 
 .. index:: ! Phase 1 (control charts)
 
-Let's take a look at phase, the step where we are building the control chart's limits from historical data.  Create a new variable |xdb| :math:`= \dfrac{1}{K} \displaystyle \sum_{k=1}^{K}{ \overline{x}_k}`, where :math:`K` is the number of :math:`\overline{x}` samples we have available to build the control chart, called the :index:`phase 1 <single: Phase 1 (control charts)>` data.  Alternatively, just set |xdb| to the desired target value for :math:`x`.  Note that |xdb| is sometimes called the  *grand mean* in control chart textbooks.
+Let's take a look at phase, the step where we are building the control chart's limits from historical data.  Create a new variable |xdb| :math:`= \frac{1}{K} \displaystyle \sum_{k=1}^{K}{ \overline{x}_k}`, where :math:`K` is the number of :math:`\overline{x}` samples we have available to build the control chart, called the :index:`phase 1 <single: Phase 1 (control charts)>` data.  Alternatively, just set |xdb| to the desired target value for :math:`x`.  Note that |xdb| is sometimes called the  *grand mean* in control chart textbooks.
 
 The next hurdle is :math:`\sigma`.  We do not show it here, but for a subgroup of :math:`n` samples, an unbiased estimator of :math:`\sigma` is given by :math:`\frac{\overline{S}}{a_n}`.  Now :math:`\overline{S} =  \frac{1}{K} \displaystyle \sum_{k=1}^{K}{s_k}` (simply the average standard deviation calculated from :math:`K` subgroups).  Values for :math:`a_n` are found from a table and depend on the number of samples we use within each subgroup.
 
@@ -724,7 +724,6 @@ Exercises
 
 .. answer::
 
-
 	Please see the code below.  The Shewhart chart's parameters are as below, with plots generated from the R code.
 
 	-	Target = 80.4
@@ -755,7 +754,6 @@ Exercises
 
 .. answer::
 	:fullinclude: no 
-	:short: Time-series and sparkline.
 
 	This questions answers are derived in the source code (at the end).
 
@@ -864,7 +862,6 @@ Exercises
 	Do you think a Shewhart chart would be suitable for monitoring the closing price of a stock on the stock market?  Please explain your answer if you agree, or describe an alternative if you disagree.
 	
 .. answer::
-	:fullinclude: no 
 
 	No, a Shewhart chart is not suitable for monitoring stock prices.  Stock prices are volatile variables (not stable), so there is no sense in monitoring their location.  Hopefully the stock is moving up, which it should on average, but the point is that stock prices are not stable.  Nor are stock prices independent day-to-day.
 	
@@ -878,8 +875,6 @@ Exercises
 	Describe how a control chart could be used to prevent over-control of a batch-to-batch process.  (A batch-to-batch process is one where a batch of materials is processed, followed by another batch, and so on).
 
 .. answer::
-	:fullinclude: no 
-	:short: A Shewhart or an EWMA chart could be used. How?
 	
 	Over-control of any process takes place when too much corrective action is applied.  Using the language of feedback control, your gain is the right sign, but the magnitude is too large. Batch processes are often subject to this phenomenon: e.g. the operator reduces the set-point temperature for the next batch, because the current batch produced product with a viscosity that was too high.  But then the next batch has a viscosity that is too low, so the operator increases the temperature set-point for the following batch.  This constant switching is known as over-control (the operator is the feedback controller and his/her gain is too high, i.e. they are over-reacting).
 		
@@ -926,6 +921,55 @@ Exercises
 	
 .. question::
 
+	.. From the final exam, 2010
+
+	If an exponentially weighted moving average (EWMA) chart can be made to approximate either a CUSUM or a Shewhart chart by adjusting the value of :math:`\lambda`, what is an advantage of the EWMA chart over the other two?  Describe a specific situation where you can benefit from this.
+		
+.. answer::
+	:fullinclude: no 
+	
+	The EWMA chart not only provides control limits for monitoring a process, it also provides a one-step-ahead prediction of the variable being monitored. This is particularly beneficial as the EWMA chart's prediction can be used to adjust process conditions, should the prediction show the process heading towards, or outside, the control limits.  This means that changes to the process are only made if they are required.  This is extremely important on slow-moving processes, which are prone to overly aggressive control.
+		
+.. question::
+
+	.. From the final exam, 2010
+
+	The most recent estimate of the process capability ratio for a key quality variable was 1.30, and the average quality value was 64.0.  Your process operates closer to the lower specification limit of 56.0. The upper specification limit is 93.0.
+
+	What are the two parameters of the system you could adjust, and by how much, to achieve a capability ratio of 1.67, required by recent safety regulations.  Assume you can adjust these parameters independently.
+	
+.. answer::
+	:fullinclude: no 
+		
+	The process capability ratio for an uncentered process, :math:`\text{PCR}_\text{k}`, is given by: 
+	
+	.. math::
+		\text{PCR}_\text{k} = \min \left( \frac{\text{Upper specification limit} - \overline{\overline{x}}}{3\sigma};  \frac{\overline{\overline{x}} - \text{Lower specification limit}}{3\sigma} \right)
+		
+	The two adjustable parameters are :math:`\overline{\overline{x}}`, the process target (operating point) and :math:`\sigma`, the process variance.  The current process standard deviation is:
+	
+	.. math::
+		1.30 &= \frac{64.0 - 56.0}{3\sigma} \\
+		\sigma &= \frac{64.0 - 56.0}{3 \times 1.30} = 2.05
+	
+	*	Adjusting the *operating point* (we would expect to move the operating point away from the LSL):
+	
+		.. math::
+			1.67 &= \frac{\overline{\overline{x}} - 56.0}{3 \times 2.05}\\
+			\overline{\overline{x}} &= 56.0 + 1.67 \times 3 \times 2.05  = 66.3
+			
+		So the operating point increases from 64.0 to 66.3 to obtain a higher capability ratio.
+		
+	*	Adjusting the *process variance* (we would expect to have to decrease the process variance, keeping the operating point fixed):
+	
+		.. math::
+			1.67 &= \frac{64.0 - 56.0}{3 \times \sigma}\\
+			\sigma &= \frac{64.0 - 56.0}{3 \times 1.67} = 1.60
+
+		Decrease the process standard deviation from 2.05 to 1.60.
+	
+.. question::
+
 	A bagging system fills bags with a target weight of 37.4 grams and the lower specification limit is 35.0 grams.  Assume the bagging system fills the bags with a standard deviation of 0.8 grams:
 
 	#.	What is the current Cpk of the process? 
@@ -968,6 +1012,31 @@ Exercises
 			:language: s
 			:lines: 3-44
 			
+.. question::
+
+	.. Final exam, 2010
+	
+	The following charts show the weight of feed entering your reactor.  The variation in product quality leaving the reactor was unacceptably high during this period of time.  
+
+	.. figure:: images/monitoring-chart-cycling.png
+		:alt:	images/monitoring-chart-cycling.R
+		:scale: 90%
+		:width: 750px
+		:align: center	
+
+	#.	What can your group of process engineers learn about the problem, using the time-series plot (100 consecutive measurements, taken 1 minute apart).  	
+	#.	Why is this variability not seen in the Shewhart chart?
+	#.	Using concepts described elsewhere in this book, why might this sort of input to the reactor have an effect on the quality of the product leaving the reactor?
+
+.. answer::
+	:fullinclude: no 
+
+	#.	The time-series plot shows a cyclical, almost saw-tooth, pattern in the weight of feed entering.  I would investigate the feeding equipment to see what is leading to these fluctuations in the feed weight.  Perhaps some rotary device is responsible for the periodic variation.
+
+	#.	The variability is not seen in the Shewhart control chart.  The Shewhart chart used subgroups of size 5 (20 Shewhart samples for 100 time-series samples).  These fluctuations obviously cancel out when calculating the Shewhart subgroups (a limitation of the Shewhart chart).
+
+	#.	As engineers we are aiming for stability in our processes; stability in the raw material characteristics, stability in how we operate the process over time and minimizing as many disturbances as possible.  If we can do this, it will lead to greatly improved consistency in our products (low output variability).  Having this sort of input to the reactor means we have to provide apply (feedback) control to counteract it.  In this case the feedback control may not have been effective to eliminate the feed variation, or the feedback control itself caused other disruptions to the process quality.
+				
 .. question::
 
 	You will come across these terms in the workplace. Investigate one of these topics, using the Wikipedia link below to kick-start your research.  Write a paragraph that (a) describes what your topic is and (b) how it can be used when you start working in a company after you graduate, or how you can use it now if you are currently working.
