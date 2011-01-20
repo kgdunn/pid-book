@@ -24,8 +24,8 @@ needs_sphinx = '1.0'  # If your documentation needs a minimal Sphinx version, st
 # =============================
 
 # These two are mutually exclusive !
-website_version = True
-instructor_version = False
+website_version = False
+instructor_version = True
 
 
 # Sphinx extensions

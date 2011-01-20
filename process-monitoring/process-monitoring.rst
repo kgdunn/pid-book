@@ -172,7 +172,7 @@ Shewhart chart
 
 A :index:`Shewhart chart <pair: Shewhart chart; Process monitoring>`, named after Walter Shewhart from Bell Telephone and Western Electric, is to monitor that a process variable remains on target and within given upper and lower limits. It is a monitoring chart for *location*.  It answers the question whether the variable's :index:`location <single: location (process monitoring)>` is stable over time.
 
-The defining characteristics are: a target, upper and lower control limits (UCL and LCL).  These action limits are defined so that no action is required as long as the variable plotted remains within the limits.
+The defining characteristics are: a target, upper and lower control limits (:index:`UCL <single: upper control limit>` and :index:`LCL <single: lower control limit`).  These action limits are defined so that no action is required as long as the variable plotted remains within the limits.
 
 Derivation using theoretical parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -218,7 +218,7 @@ The derivation in equation :eq:`shewhart-theoretical` requires knowing the popul
 
 .. index:: ! Phase 1 (control charts)
 
-Let's take a look at phase, the step where we are building the control chart's limits from historical data.  Create a new variable |xdb| :math:`= \dfrac{1}{K} \displaystyle \sum_{k=1}^{K}{ \overline{x}_k}`, where :math:`K` is the number of :math:`\overline{x}` samples we have available to build the control chart, called the :index:`phase 1` data.  Alternatively, just set |xdb| to the desired target value for :math:`x`.  Note that |xdb| is sometimes called the  *grand mean* in control chart textbooks.
+Let's take a look at phase, the step where we are building the control chart's limits from historical data.  Create a new variable |xdb| :math:`= \dfrac{1}{K} \displaystyle \sum_{k=1}^{K}{ \overline{x}_k}`, where :math:`K` is the number of :math:`\overline{x}` samples we have available to build the control chart, called the :index:`phase 1 <single: Phase 1 (control charts)>` data.  Alternatively, just set |xdb| to the desired target value for :math:`x`.  Note that |xdb| is sometimes called the  *grand mean* in control chart textbooks.
 
 The next hurdle is :math:`\sigma`.  We do not show it here, but for a subgroup of :math:`n` samples, an unbiased estimator of :math:`\sigma` is given by :math:`\frac{\overline{S}}{a_n}`.  Now :math:`\overline{S} =  \frac{1}{K} \displaystyle \sum_{k=1}^{K}{s_k}` (simply the average standard deviation calculated from :math:`K` subgroups).  Values for :math:`a_n` are found from a table and depend on the number of samples we use within each subgroup.
 
@@ -303,7 +303,7 @@ You make a **type II error** when your sample really is abnormal, but falls with
 
 *Synonyms* for a **type II error**: false negative (used mainly for testing of diseases), consumer's risk (used for acceptance sampling)
 
-To quantify the probability :math:`\beta`, make an assumption that the new, abnormal sample comes from a distribution which has shifted its location from :math:`\mu` to :math:`\mu + \Delta\sigma` (e.g. :math:`\Delta` can be positive or negative).  Now, what is the probability this new sample, which come from the shifted distribution, will fall within the existing LCL and UCL? This figure show the probability is :math:`\beta = 1 - \text{the shaded area}`.
+To quantify the probability :math:`\beta`, recall that a Shewhart chart is for monitoring location, so we make an assumption that the new, abnormal sample comes from a distribution which has shifted its location from :math:`\mu` to :math:`\mu + \Delta\sigma` (e.g. :math:`\Delta` can be positive or negative).  Now, what is the probability this new sample, which come from the shifted distribution, will fall within the existing LCL and UCL? This figure show the probability is :math:`\beta = 1 - \text{the shaded area}`.
 
 .. figure:: images/show-shift-beta-error.png
 	:width: 500px
@@ -312,47 +312,53 @@ To quantify the probability :math:`\beta`, make an assumption that the new, abno
 
 .. todo  How did Devore calculate these numbers: see p 667 of his book - it doesn't make sense to me.  See my attempt in "show-shift-typeII-error.R"
 
-.. figure:: images/type-II-error-shift.png
-	:width: 500px
-	:align: center
-	:scale: 90
+
+==============================  ====== ====== ====== ====== ====== ====== 
+:math:`\Delta`                  0.25   0.50   0.75   1.00   1.50   2.00   
+------------------------------  ------ ------ ------ ------ ------ ------ 
+:math:`\beta` when :math:`n=4`  0.9936 0.9772 0.9332 0.8413 0.5000 0.1587
+==============================  ====== ====== ====== ====== ====== ====== 
+
+..	
+	.. figure:: images/type-II-error-shift.png
+		:width: 500px
+		:align: center
+		:scale: 90
 
 The table here shows that :math:`\beta` is a function of the amount by which the process shifts = :math:`\Delta`, where :math:`\Delta=1` implies the process has shifted up by :math:`1\sigma`.  The table was calculated for :math:`n=4` and used critical limits of :math:`\pm 3 \sigma_{\overline{X}}`.
 
-The key point you should note from the table is that a Shewhart chart is not good at detecting a change in the level of a variable.  Even a moderate shift of :math:`0.75\sigma` units :math:`(\Delta=0.75)` will only be detected around 6.7% of the time (100-93.3%) when :math:`n=4`.  We will discuss CUSUM charts as a way to overcome this issue next.
+The key point you should note from the table is that a Shewhart chart is *not good* (it is slow) at detecting a change in the location (level) of a variable.  This is surprising given the intention of the plot is to monitor the variable's location.  Even a moderate shift of :math:`0.75\sigma` units :math:`(\Delta=0.75)` will only be detected around 6.7% of the time (100-93.3%) when :math:`n=4`.  We will discuss :ref:`CUSUM charts <monitoring-CUSUM-charts>` and the Western Electric rules, next, as a way to overcome this issue.
 
-It is straightforward to see how the type I (:math:`\alpha`) error rate can be adjusted - simply move the LCL and UCL up and down, as required.  
+It is straightforward to see how the type I, :math:`\alpha`, error rate can be adjusted - simply move the LCL and UCL up and down, as required, to achieve your desired error rates.  There is nothing wrong in arbitrarily shifting these limits - :ref:`more on this later <monitoring-adjust-limits>`.
 
 However what happens to the type II error rate as the LCL and UCL bounds are shifted?  Imagine the case where you want to have :math:`\alpha \rightarrow 0`.  As you make the UCL higher and higher, the value for :math:`\alpha` drops, but the value for :math:`\beta` will also increase!  **You cannot simultaneously have low type I and type II error**.
 
 .. rubric:: 2. Using the average run length (ARL)
 
-The ARL is defined as the average number of sequential samples we expect before seeing an out-of-bounds, or out-of-control signal.  This is given by the inverse of :math:`\alpha`, as ARL = :math:`\frac{1}{\alpha}`.  Recall for the theoretical distribution we had :math:`\alpha = 0.0027`, so the ARL = 370.  Thus we expect a run of 370 samples before we get an out-of-control signal.
+The :index:`average run length` (ARL) is defined as the average number of sequential samples we expect before seeing an out-of-bounds, or out-of-control signal.  This is given by the inverse of :math:`\alpha`, as ARL = :math:`\frac{1}{\alpha}`.  Recall for the theoretical distribution we had :math:`\alpha = 0.0027`, so the ARL = 370.  Thus we expect a run of 370 samples before we get an out-of-control signal.
 
-The run length is changed when the process level shifts.  What is the ARL if the process has shifted up by :math:`0.75\sigma`?
-	
-	*Answer*
-	
-		ARL = 1/(1-0.9332) = 15 samples
+The run length changes if the process level shifts up or down.  What is the ARL if the process has shifted up by :math:`0.75\sigma`, if subgroup size is :math:`n=4`?  The ARL = 1/(1-0.9332) = 15 samples, indicating it will take, on average, 15 samples on the Shewhart chart to detect a process shift of :math:`0.75\sigma`.
 
 Extensions to the basic Shewhart chart
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*	What are the **Western Electric rules**?  We saw above how the ARL is only decreased by a small amount if a true shift in the process mean occurs, from :math:`\mu` to :math:`\mu + \Delta\sigma`. The Western Electric (then known as AT&T) rules are an attempt to more rapidly detect a process shift, by raising an alarm when these *improbable* events occur:
+*	The :index:`Western Electric rules`:  we saw above how the ARL is only decreased by a small amount if a true shift in the process mean occurs, from :math:`\mu` to :math:`\mu + \Delta\sigma`. The Western Electric (then known as AT&T) rules are an attempt to more rapidly detect a process shift, by raising an alarm when these *improbable* events occur:
 
 	#. 2 out of 3 points lie beyond :math:`2\sigma` on the same side of the centre line
 	#. 4 out of 5 points lie beyond :math:`1\sigma` on the same side of the centre line
 	#. 8 successive points lie on the same side of the center line
 	
-	However, an alternative chart, the CUSUM chart is more effective at detecting a shift in the mean.  Notice also that the theoretical ARL (:math:`1/\alpha`) is reduced by using these rules in addition to the LCL and UCL.
+	However, an alternative chart, the CUSUM chart is more effective at detecting a shift in the mean.  Notice also that the theoretical ARL, :math:`1/\alpha`, is reduced by using these rules in addition to the LCL and UCL.
 
 *	**Adding robustness**: the phase I derivation of a control chart is iterative.  If you find a point that violates the LCL and UCL limits, then the approach is to remove that point, and recompute the LCL and UCL values.  That is because the LCL and UCL limits would have been biased up or down by these points.
 
-	This iterative approach can be tiresome with data that has spikes, missing values, outliers, and other problems typical of data pulled from a process historian (database). Robust control charts are procedures to calculate the limits so the LCL and UCL are resistant to the effect of outliers. For example, a robust procedure might use the medians and MAD instead of the mean and standard deviation.  An examination of various robust procedures, especially that of the interquartile range, is given by the paper in the reading list by Rocke, *Robust Control Charts*.
+	This iterative approach can be tiresome with data that has spikes, missing values, outliers, and other problems typical of data pulled from a process database (:index:`historian <single: data historian>`. Robust control charts are procedures to calculate the limits so the LCL and UCL are resistant to the effect of outliers. For example, a robust procedure might use the medians and MAD instead of the mean and standard deviation.  An examination of various robust procedures, especially that of the interquartile range, is given in the paper by Rocke, *Robust Control Charts*.
 
 	*Note*: do not use robust methods to calculate the values plotted on the charts, only use robust methods to calculate the chart limits!
 	
 *	**Warning limits**: it is common to see warning limits on a control chart at :math:`\pm 2 \sigma`, while the :math:`\pm 3\sigma` limits are called the action limits.  Real-time computer systems usually use a colour scheme to distinguish between the warning state and the action state.  For example, the chart background changes between green, orange or red depending on the state of the current observation plotted.
+
+.. _monitoring-adjust-limits:
 
 *	**Adjusting the limits**: The :math:`\pm 3\sigma` limits are not set in stone.  Depending on the degree to which the source data obey the assumptions, and the frequency with which spikes and outliers contaminate your data, you may need to adjust your limits, usually wider, to avoid frequent false alarms.  Nothing makes a control chart more useless to operators than frequent false alarms ("`crying wolf <http://en.wikipedia.org/wiki/The_Boy_Who_Cried_Wolf>`_").
 
@@ -367,8 +373,9 @@ Imagine you are monitoring an aspect of the final product's quality, e.g. viscos
 
 Shewhart chart limits were calculated with the assumption of **independent subgroups** (e.g. subgroup :math:`i` has no effect on subgroup :math:`i+1`).  For a process with mild autocorrelation, the act of creating subgroups, with :math:`n` samples in each group, removes most, if not all, of the relationship between subgroups.  However processes with heavy autocorrelation (slow moving processes sampled at a high rate, for example), will have LCL and UCL calculated from equation :eq:`shewhart-limits` that will raise false alarms too frequently.  In these cases you can widen the limits, or remove the autocorrelation from the signal.  More on this in the section on exponentially weighted moving average (EWMA) charts.
 
-Using Shewhart charts on **highly correlated quality variables**, usually on your final product measurement, can increase your type II (consumer's risk) dramatically.  We will come back to this very important topic in the section on :ref:`latent variable models <SECTION-latent-variable-modelling>`.
+Using Shewhart charts on two or more **highly correlated quality variables**, usually on your final product measurement, can increase your type II (consumer's risk) dramatically.  We will come back to this very important topic in the section on :ref:`latent variable models <SECTION-latent-variable-modelling>`.
 
+.. _monitoring-CUSUM-charts:
 
 CUSUM charts
 ==============
@@ -387,19 +394,20 @@ The Shewhart chart is not too sensitive to detecting shifts in the mean.  Depend
 	\\
 	\text{In general}\qquad S_t &= S_{t-1} + (x_t - T) 
 	
+.. figure:: images/explain-CUSUM.png
+	:alt:	images/explain-CUSUM.R
+	:width: 750px
+	:align: center
+	
 Values of :math:`S_t` for an in-control process are really just random errors, with mean of zero.  The long-term sum of :math:`S_t` is also zero, as the positive and negative errors keep cancelling out.
 
 So imagine a CUSUM chart where at some time point the process mean shifts up by :math:`\Delta` units, causing future values of :math:`x_t` to be :math:`x_t + \Delta` instead.  Now the summation in the last equation of :eq:`CUSUM-derivation` has an extra :math:`\Delta` term added at each step to :math:`S_t`.  Every point will build up an accumulation of :math:`\Delta`, which shows up as a positive or negative slope in the CUSUM chart. 
 
-.. figure:: images/explain-CUSUM.png
-	:width: 750px
-	:align: center
-
-The CUSUM chart is extremely sensitive to small changes.  The chart is drawn for a process where the mean is :math:`\mu=20`, and :math:`\sigma=3`.  A small shift of 0.4*3 = 1.2 units (i.e from 20 to 21.2) occurs at :math:`t=150`.  This shift is imperceptible (see the 3rd row in the figure).  The CUSUM chart rapidly picks up the shift by showing a consistent slope.
+The CUSUM chart is extremely sensitive to small changes.  The example chart is shown here for a process where the mean is :math:`\mu=20`, and :math:`\sigma=3`.  A small shift of :math:`0.4 \times 3 = 1.2` units (i.e from 20 to 21.2) occurs at :math:`t=150`.  This shift is almost imperceptible in the raw data (see the 3rd row in the figure).  However, the CUSUM chart rapidly picks up the shift by showing a consistent rising slope.
 
 This figure also shows how the CUSUM chart is used with the 2 masks.  Notice that there are no lower and upper bounds for :math:`S_t`.  A process that is on target will show a "wondering" value of S, moving up and down.  In fact, as the second row shows, a surprising amount of movement up and down occurs even when the process is in control.
 
-What is of interest is a persistent change in slope.  The angle of the superimposed V-mask is the control limit: the narrower the mouth of the mask, the more sensitive the CUSUM chart is to deviations from the target.  Both the type I and II error are set by the angle of the V and the leading distance (the distance from the short vertical line to the apex of the V).
+What is of interest however is a persistent change in slope.  The angle of the superimposed V-mask is the control limit: the narrower the mouth of the mask, the more sensitive the CUSUM chart is to deviations from the target.  Both the type I and II error are set by the angle of the V and the leading distance (the distance from the short vertical line to the apex of the V).
 
 The process is considered in control as long as all points are within the arms of the V shape.   The mask in the second row of the plot shows "in control" behaviour, while the mask in the fourth row detects the process mean has shifted, and an alarm should be raised.
 
@@ -412,10 +420,10 @@ EWMA charts
 ==============
 
 .. index::
-	single: exponentially weighted moving average chart
+	single: exponentially weighted moving average
 	pair: EWMA chart; Process monitoring
 
-The two previous charts highlight the 2 extremes of control chart.  On the one hand, a Shewhart chart assumes each subgroup sample is independent (unrelated) to the next - implying there is no "memory" in the chart.  On the other hand, a CUSUM chart has an infinite memory, back to the time the chart was started at :math:`t=0` (see equation :eq:`CUSUM-derivation`).
+The two previous charts highlight the 2 extremes of control charts.  On the one hand, a Shewhart chart assumes each subgroup sample is independent (unrelated) to the next - implying there is no "memory" in the chart.  On the other hand, a CUSUM chart has an infinite memory, back to the time the chart was started at :math:`t=0` (see equation :eq:`CUSUM-derivation`).
 
 As an introduction to the exponentially weighted moving average (EWMA) chart, consider first a moving average (MA) chart, which is used just like a Shewhart chart, except the samples that make up the subgroup are calculated using a moving window of width :math:`n`.
 
@@ -437,10 +445,14 @@ Define the process target as :math:`T`.
 .. math:: 
 	:label: ewma-derivation-1
 	
-		\begin{array}{lcrclcl}
-			x_t = \text{new data}\qquad\qquad	&& \hat{x}_t     &=& \hat{x}_{t-1} + \lambda e_{t-1}	\qquad\qquad	& \text{where~} e_t = x_t - \hat{x}_t \\
-			\text{Shifting one step:}			&& \hat{x}_{t+1} &=& \hat{x}_{t}   + \lambda e_{t}    \\
+		\begin{array}{lcrcl}
+			\text{Let}  \qquad\qquad && x_t           &=& \text{new data measurement}\\
+			\text{Let}  \qquad\qquad && e_t           &=& x_t - \hat{x}_t \\
+									 && \hat{x}_t     &=& \hat{x}_{t-1} + \lambda e_{t-1}	\qquad\qquad	 \\
+			\text{Shifting one step:}&& \hat{x}_{t+1} &=& \hat{x}_{t}   + \lambda e_{t}    \\
 		\end{array}
+
+The reason for the :math:`^` above the :math:`x_t`, as in :math:`\hat{x}_t`, is that :math:`\hat{x}_t` is a prediction of the measured :math:`x_t` value.  
 		
 To start the EWMA sequence we define the value for :math:`\hat{x}_0 = T`, and :math:`e_0 = 0`, so that :math:`\hat{x}_1 = T`.  An alternative way of writing the above equation is:
 
@@ -453,7 +465,7 @@ To start the EWMA sequence we define the value for :math:`\hat{x}_0 = T`, and :m
 											&& \hat{x}_{t+1} &=& \left(1-\lambda \right)\hat{x}_{t}   + \lambda x_t  \\
 		\end{array}
 
-That last line shows the one-step-ahead prediction for :math:`x` at time :math:`t+1` is a weighted sum of two components: the predicted value and the measured value, weighted to add up to 1.  The plot below shows visually what happens as the weight of :math:`\lambda` is changed.  In this data a step increase in the raw data of 3 units occurs at :math:`t=150`; the process mean is :math:`\mu=20` and the raw data :math:`\sigma = 3`.  The plots show the one-step-ahead prediction value from equation :eq:`ewma-derivation-2`, :math:`\hat{x}_{t+1}` = EWMA value plotted.
+That last line shows the one-step-ahead prediction for :math:`x` at time :math:`t+1` is a weighted sum of two components: the predicted value and the measured value, weighted to add up to 1.  The plot below shows visually what happens as the weight of :math:`\lambda` is changed.  In this example a shift of :math:`\Delta = 1\sigma = 3` units occurs at :math:`t=150`.  Prior to that the process mean is :math:`\mu=20` and the raw data has :math:`\sigma = 3`.  The EWMA plots show the one-step-ahead prediction value from equation :eq:`ewma-derivation-2`, :math:`\hat{x}_{t+1}` = EWMA value plotted.
 
 .. figure:: images/explain-EWMA.png
 	:width: 750px
@@ -466,11 +478,11 @@ As :math:`\lambda` gets smaller, the chart is smoother, because as equation :eq:
 	\hat{x}_{t+1} &= \sum_{i=0}^{i=t}{w_i x_i} = w_0x_0 + w_1x_1 + w_2x_2 + \ldots \\
 	\text{where the weights are:} \qquad w_i &= \lambda (1-\lambda)^{t-i}
 
-which shows that the one-step-ahead prediction is a just a weighted sum of the raw measurements, with weights declining in time.  In the next figure, we show the weights for the 4 control charts studied so far.
+which shows that the one-step-ahead prediction is a just a weighted sum of the raw measurements, with weights declining in time.  In the next figure, we show a comparison of the weights used in 4 different control charts studied so far.
 
 From the above discussion and the weights shown for the 4 different charts, it should be clear now how an EWMA chart is a tradeoff between a  Shewhart chart and a CUSUM chart.  As :math:`\lambda \rightarrow 1`, the EWMA chart behaves more as a Shewhart chart, giving only weight to the most recent observation.  While as :math:`\lambda \rightarrow 0` the EWMA chart starts to have an infinite memory (like a CUSUM chart).
 
-.. figure:: images/explain-weights.png
+.. image:: images/explain-weights.png
 	:width: 750px
 	:align: center
 	:scale: 75
@@ -484,7 +496,7 @@ The upper and lower control limits for the EWMA plot are plotted in the same way
 		 \text{LCL} = \overline{\overline{x}} - 3 \cdot \sigma_{\text{Shewhart}}\sqrt{\frac{\lambda}{2-\lambda}} &&  &&  \text{UCL} = \overline{\overline{x}} + 3 \cdot \sigma_{\text{Shewhart}} \sqrt{\frac{\lambda}{2-\lambda}}
 	\end{array} 
 
-where :math:`\sigma_{\text{Shewhart}}` represents the standard deviation as used on the Shewhart chart.  Actually one neat implementation is to show both the Shewhart and EWMA plot on the same chart, with both sets of limits.  The EWMA value plotted is actually the one-step ahead prediction of the next :math:`x`-value, which can be informative for slow-moving processes.
+where :math:`\sigma_{\text{Shewhart}}` represents the standard deviation as calculated for the Shewhart chart.  Actually one neat implementation is to show both the Shewhart and EWMA plot on the same chart, with both sets of limits.  The EWMA value plotted is actually the one-step ahead prediction of the next :math:`x`-value, which can be informative for slow-moving processes.
 
 The R code here shows one way of calculating the EWMA values for a vector of data.  Once you have pasted this function into R, use it as ``ewma(x, lambda=..., target=...)``.
 
@@ -512,13 +524,13 @@ Other charts
 
 You may encounter other charts in practice:
 
-	*	The *S chart* is for monitoring the subgroup standard deviation.  Take the group of :math:`n` samples and show their standard deviation on a Shewhart-type chart.  The limits for the chart are calculated using similar correction factors as were used in the derivation for the standard :math:`\overline{x}` Shewhart chart.  This chart has a LCL :math:`\geq 0`.
+	*	The *S chart* is for monitoring the subgroup's standard deviation.  Take the group of :math:`n` samples and show their standard deviation on a Shewhart-type chart.  The limits for the chart are calculated using similar correction factors as were used in the derivation for the standard :math:`\overline{x}` Shewhart chart.  This chart has a LCL :math:`\geq 0`.
 	
 	*	The *R chart* was a precursor for the *S chart*, where the *R* stands for range, the subgroup's maximum minus minimum.  It was used when charting was done manually, as standard deviations were tedious to calculate by hand.
 	
 	*	The *np chart* and *p chart* are used when monitoring the proportion of defective items using a pass/fail criterion.  In the former case the sample size taken is constant, while in the latter the proportion of defective items is monitored.  These charts are derived using the binomial distribution.
 
-	*	The *exponentially weight moving variance* (EWMV) chart is an excellent chart for monitoring for an increase in product variability. Like the :math:`\lambda` from an EWMA chart, the EWMV also has a sliding parameter that can balance current information and historical information to trade-off sensitivity.  More information is available in the paper by MacGregor, J.F. and Harris, T.J., "The Exponentially Weighted Moving Variance", *Journal of Quality Technology*, **25**, p 106-118, 1993.
+	*	The *exponentially weight moving variance* (EWMV) chart is an excellent chart for monitoring for an increase in product variability. Like the :math:`\lambda` from an EWMA chart, the EWMV also has a sliding parameter that can balance current information and historical information to trade-off sensitivity.  More information is available in the paper by J.F. MacGregor, and T.J. Harris, "The Exponentially Weighted Moving Variance", *Journal of Quality Technology*, **25**, p 106-118, 1993.
 
 	
 Process capability
@@ -534,14 +546,14 @@ Centered processes
 ~~~~~~~~~~~~~~~~~~~~
 
 
-Purchasers of your product will require a process capability ratio (PCR) for each of the quality attributes of your product.  For example, your plastic product is characterized by its Mooney viscosity and melting point.  A PCR value can be calculated for both properties, using the definition below:
+Purchasers of your product will require a :index:`process capability ratio` (PCR) for each of the quality attributes of your product.  For example, your plastic product is characterized by its Mooney viscosity and melting point.  A PCR value can be calculated for both properties, using the definition below:
 
 .. math::
 	:label: process-capability-ratio-centered
 	
-	\text{PCR} &= \frac{\text{Upper specification limit} - \text{Lower specification limit}}{6\sigma}
+	\text{PCR} &= \frac{\text{Upper specification limit} - \text{Lower specification limit}}{6\sigma} &= \frac{\text{USL} - \text{LSL}}{6\sigma}
 	
-Since the population standard deviation, :math:`\sigma`, is not known, an estimate of it is used.  Note that the lower specification limit (LSL) and upper specification limit (USL) are **not the same** as the lower control limit (LCL) and upper control limit (UCL) as where calculated for the Shewhart chart.  The LSL and USL are the tolerance limits required by your customers, or from your internal specifications.  
+Since the population standard deviation, :math:`\sigma`, is not known, an estimate of it is used.  Note that the :index:`lower specification limit` (LSL) and :index:`upper specification limit` (USL) are **not the same** as the lower control limit (LCL) and upper control limit (UCL) as where calculated for the Shewhart chart.  The LSL and USL are the tolerance limits required by your customers, or from your internal specifications.  
 
 Interpretation of the PCR:
 	
