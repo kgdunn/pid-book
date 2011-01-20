@@ -59,6 +59,8 @@ if os.path.exists('/home/kevindunn/webapps/pid_connectmv_com/pidbook/ucommentapp
     ucomment['django_application_path'] = '/home/kevindunn/webapps/pid_connectmv_com/pidbook/ucommentapp/'
 elif os.path.exists('/home/kevindunn/django-projects/pidbook/ucommentapp/'):
     ucomment['django_application_path'] = '/home/kevindunn/django-projects/pidbook/ucommentapp/'
+elif os.path.exists('/Users/kevindunn/ConnectMV/pid-book/'):
+    ucomment['django_application_path'] = 'abc'
 else:
     raise Exception('ucommentapp: django path is invalid')
 

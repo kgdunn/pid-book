@@ -31,39 +31,41 @@ In the first section we learned about :ref:`visualizing data <SECTION-data-visua
 This section is the last section where we deal with univariate data; after this section we start to use and deal with 2 or more variables.  
 
 Usage examples
-==============
+---------------
 
 .. index::
 	pair: usage examples; Process monitoring
 
 The material in this section is used whenever you need to rapidly detect problems.  It has tangible application in many areas - in fact, you have likely encountered these monitoring charts in areas such as a hospital (monitoring patients), stock market charts (intraday trading), or in a processing/manufacturing facility.
 
-	- *Co-worker*: We need a tailored system to ensure the thickness of our boards is stable
-	- *Yourself*: In addition to that, we need to rapidly detect if one of the saws has moved out of alignment and the boards have become too thick, or too thin.
+	- *Co-worker*: We need a system to ensure an important dimension on our product is stable and consistent.
+	- *Yourself*: In addition to that, we need to rapidly detect if one of the manufacturing robots have moved out of alignment and our product has become too thick, or too thin.
 	- *Manager*: the hourly average profit, and process throughput is important to the head-office; can we create a system for them to track that?
 	- *Potential customer*: what is your process capability - we are looking for a new supplier that can provide low variability raw material for us with |Cpk| of at least 1.6, preferably higher.
 	
-What we will cover
-==================
+**Note**: process monitoring is mostly *reactive* and not *proactive*. So it is suited to *incremental* process improvement, which is typical of most improvements.
 
-.. figure:: images/control-charts-section-mapping.png
+What we will cover
+-------------------
+
+.. image:: images/control-charts-section-mapping.png
   :width: 750px 
   :scale: 60
 
 References and readings
-=======================
+------------------------
 
 .. index::
 	pair: references and readings; Process monitoring
 
 Some references to refer to:
 	
-#. **Recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, Chapter 14 (2nd edition)
-#. **Recommended**: Montgomery and Runger, *Applied Statistics and Probability for Engineers*
-#. Hogg and Ledolter, *Engineering Statistics*
-#. Macgregor, John F. "`Using On-Line Process Data to Improve Quality: Challenges for Statisticians <http://dx.doi.org/10.1111/j.1751-5823.1997.tb00311.x>`_", *International Statistical Review*, **65**, p 309-323, 1997.
-#. Bisgaard, S., "`The Quality Detective: A Case Study <http://dx.doi.org/10.1098/rsta.1989.0006>`_", Philosophical Transactions of the Royal Society-A, **327**, p 499-511, 1989.
-#. Rocke, D.M., `Robust Control Charts <http://www.jstor.org/pss/1268815>`_, *Technometrics*, **31** (2), p 173 - 184, 1989.
+#.	**Recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, Chapter 14 (2nd edition)
+#.	**Recommended**: Montgomery and Runger, *Applied Statistics and Probability for Engineers*.
+#.	Hogg and Ledolter, *Engineering Statistics*.
+#.	Macgregor, John F. "`Using On-Line Process Data to Improve Quality: Challenges for Statisticians <http://dx.doi.org/10.1111/j.1751-5823.1997.tb00311.x>`_", *International Statistical Review*, **65**, p 309-323, 1997.
+#.	Bisgaard, S., "`The Quality Detective: A Case Study <http://dx.doi.org/10.1098/rsta.1989.0006>`_", Philosophical Transactions of the Royal Society-A, **327**, p 499-511, 1989.
+#.	Rocke, D.M., `Robust Control Charts <http://www.jstor.org/pss/1268815>`_, *Technometrics*, **31** (2), p 173 - 184, 1989.
 
 .. Box, The R. A. Fisher Memorial Lecture, 1988- Quality Improvement- An Expanding Domain for the Application of Scientific Method, Phil. Trans. R. Soc. Lond. A February 24, 1989 327:617-630, [http://dx.doi.org/10.1098/rsta.1989.0017 DOI]
 .. (Not available): Box critique of Taguchi methods: http://dx.doi.org/10.1002/qre.4680040207
@@ -78,11 +80,11 @@ Some references to refer to:
 .. p 669 of Devore: see also Technometrics, 1989, p173-184, by David M Rocke
 
 Concepts
-========
+-----------
 
 Concepts that you must be familiar with by the end of this section: 
 
-.. figure:: images/control-chart-concepts.png
+.. images:: images/control-chart-concepts.png
 	:width: 600px
 	:align: center
 	:scale: 70
@@ -1001,7 +1003,7 @@ Exercises
 
 	.. /Users/kevindunn/ConnectMV/Datasets/Spectral data set - NIR/plot_spectra.py
 
-	.. figure:: images/pharma-spectra.png
+	.. figure:: images/pharma-spectra.jpg
 		:width: 750px
 		:align: center
 
