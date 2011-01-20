@@ -49,7 +49,7 @@ What we will cover
 
 .. image:: images/control-charts-section-mapping.png
   :width: 750px 
-  :scale: 60
+  :scale: 50
 
 References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -172,7 +172,7 @@ Shewhart chart
 
 A :index:`Shewhart chart <pair: Shewhart chart; Process monitoring>`, named after Walter Shewhart from Bell Telephone and Western Electric, is to monitor that a process variable remains on target and within given upper and lower limits. It is a monitoring chart for *location*.  It answers the question whether the variable's :index:`location <single: location (process monitoring)>` is stable over time.
 
-The defining characteristics are: a target, upper and lower control limits (:index:`UCL <single: upper control limit>` and :index:`LCL <single: lower control limit`).  These action limits are defined so that no action is required as long as the variable plotted remains within the limits.
+The defining characteristics are: a target, upper and lower control limits (:index:`UCL <single: upper control limit>` and :index:`LCL <single: lower control limit>`).  These action limits are defined so that no action is required as long as the variable plotted remains within the limits.
 
 Derivation using theoretical parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -440,6 +440,12 @@ The MA chart plots values of :math:`x_t`, calculated from groups of size :math:`
 
 The EWMA is similar to the MA, but with different weights; heavier weights for more recent observations, tailing off exponentially to very small weights further back.  Let's take a look at a derivation. 
 
+.. figure:: images/explain-EWMA.png
+	:width: 750px
+	:align: center
+	:scale: 95
+	
+
 Define the process target as :math:`T`.
 
 .. math:: 
@@ -452,7 +458,7 @@ Define the process target as :math:`T`.
 			\text{Shifting one step:}&& \hat{x}_{t+1} &=& \hat{x}_{t}   + \lambda e_{t}    \\
 		\end{array}
 
-The reason for the :math:`^` above the :math:`x_t`, as in :math:`\hat{x}_t`, is that :math:`\hat{x}_t` is a prediction of the measured :math:`x_t` value.  
+The reason for the :math:`\wedge` above the :math:`x_t`, as in :math:`\hat{x}_t`, is that :math:`\hat{x}_t` is a prediction of the measured :math:`x_t` value.  
 		
 To start the EWMA sequence we define the value for :math:`\hat{x}_0 = T`, and :math:`e_0 = 0`, so that :math:`\hat{x}_1 = T`.  An alternative way of writing the above equation is:
 
@@ -466,10 +472,6 @@ To start the EWMA sequence we define the value for :math:`\hat{x}_0 = T`, and :m
 		\end{array}
 
 That last line shows the one-step-ahead prediction for :math:`x` at time :math:`t+1` is a weighted sum of two components: the predicted value and the measured value, weighted to add up to 1.  The plot below shows visually what happens as the weight of :math:`\lambda` is changed.  In this example a shift of :math:`\Delta = 1\sigma = 3` units occurs at :math:`t=150`.  Prior to that the process mean is :math:`\mu=20` and the raw data has :math:`\sigma = 3`.  The EWMA plots show the one-step-ahead prediction value from equation :eq:`ewma-derivation-2`, :math:`\hat{x}_{t+1}` = EWMA value plotted.
-
-.. figure:: images/explain-EWMA.png
-	:width: 750px
-	:align: center
 
 As :math:`\lambda` gets smaller, the chart is smoother, because as equation :eq:`ewma-derivation-2` shows, less of the current data (:math:`x_t`) is used, and more historical data (:math:`\hat{x}_{t}`) is used (i.e. the "memory" of the EWMA statistic is increased).  To see why :math:`\hat{x}_{t}` represents historical data, you can recursively substitute and show that:
 
@@ -538,20 +540,21 @@ Process capability
 
 .. index::
 	pair: process capability; Process monitoring
-	single: capability, process
+	single: capability of a process
 	
 .. Note:: This section is not about a particular control chart, but is relevant to the topic of process monitoring.
 
 Centered processes
 ~~~~~~~~~~~~~~~~~~~~
 
+.. index:: Cp
 
 Purchasers of your product will require a :index:`process capability ratio` (PCR) for each of the quality attributes of your product.  For example, your plastic product is characterized by its Mooney viscosity and melting point.  A PCR value can be calculated for both properties, using the definition below:
 
 .. math::
 	:label: process-capability-ratio-centered
 	
-	\text{PCR} &= \frac{\text{Upper specification limit} - \text{Lower specification limit}}{6\sigma} &= \frac{\text{USL} - \text{LSL}}{6\sigma}
+	\text{PCR} = \frac{\text{Upper specification limit} - \text{Lower specification limit}}{6\sigma} = \frac{\text{USL} - \text{LSL}}{6\sigma}
 	
 Since the population standard deviation, :math:`\sigma`, is not known, an estimate of it is used.  Note that the :index:`lower specification limit` (LSL) and :index:`upper specification limit` (USL) are **not the same** as the lower control limit (LCL) and upper control limit (UCL) as where calculated for the Shewhart chart.  The LSL and USL are the tolerance limits required by your customers, or from your internal specifications.  
 
@@ -561,14 +564,14 @@ Interpretation of the PCR:
 	* assumes the process is centered (i.e. your long term mean is halfway between the upper and lower specification limits)
 	* assumes the PCR value was calculated when the process was stable
 
-The PCR is often called the process width.  Let's see why by taking a look at a process with PCR=0.5 and then PCR=2.0.  In the first case :math:`\text{USL} - \text{LSL} = 3\sigma`.  Since the interpretation of PCR assumes a centered process, we can draw a diagram as shown below:
+The PCR is often called the :index:`process width`.  Let's see why by taking a look at a process with PCR=0.5 and then PCR=2.0.  In the first case :math:`\text{USL} - \text{LSL} = 3\sigma`.  Since the interpretation of PCR assumes a :index:`centered process`, we can draw a diagram as shown below:
 
 .. figure:: images/explain-PCR-half.png
 	:width: 750px
 	:align: center
 	:scale: 80
 
-The diagram is from a process with mean of 80 and where LSL=65 and USL=95.  These specification are fixed, set by our production guidelines.  If the process variation :math:`\sigma = 10`, then this implies that PCR=0.5.  Assuming further that the our production is centered at the mean of 80, we can calculate how much defective product is produced in the shaded region of the plot.  Assuming a normal distribution:
+The diagram is from a process with mean of 80 and where LSL=65 and USL=95.  These specification are fixed, set by our production guidelines.  If the process variation is :math:`\sigma = 10`, then this implies that PCR=0.5.  Assuming further that the our production is centered at the mean of 80, we can calculate how much defective product is produced in the shaded region of the plot.  Assuming a normal distribution:
 
 	-	:math:`z` for LSL = (65 - 80)/10 = -1.5
 
@@ -589,8 +592,9 @@ Uncentered processes
 ~~~~~~~~~~~~~~~~~~~~
 
 .. index::
-	pair: uncentered process capability; Process monitoring
-	single: capability, process
+	single: uncentered process capability; Process monitoring
+	single: capability of a process
+	single: Cpk
 
 Processes are not very often centered between their upper and lower specification limits.  So a measure of process capability for an uncentered processes is defined:
 
@@ -599,9 +603,9 @@ Processes are not very often centered between their upper and lower specificatio
 
 		\text{PCR}_\text{k} = \text{C}_\text{pk} = \min \left( \frac{\text{Upper specification limit} - \overline{\overline{x}}}{3\sigma};  \frac{\overline{\overline{x}} - \text{Lower specification limit}}{3\sigma} \right)
 		
-The |xdb| term would be the process target from a Shewhart chart, or simply the actual operating point.  Notice that |Cpk| is a one-sided ratio, only the side closest to the specification is reported.  So even an excellent process with C\ :sub:`p` = 2.0 that is running off-center will have a lower |Cpk|.
+The |xdb| term would be the process target from a Shewhart chart, or simply the actual average operating point.  Notice that |Cpk| is a one-sided ratio, only the side closest to the specification is reported.  So even an excellent process with C\ :sub:`p` = 2.0 that is running off-center will have a lower |Cpk|.
 
-It is the |Cpk| value that is requested by your customer.  Values of 1.3 are usually a minimum requirement, while 1.67 and higher are requested for safety and other critical applications.  A value of |Cpk| :math:`\geq 2.0` is termed a six-sigma process, because the distance from the current operating point, |xdb|, to the closest specification is at least :math:`6\sigma` units.
+It is the |Cpk| value that is requested by your customer.  Values of 1.3 are usually a minimum requirement, while 1.67 and higher are requested for health and safety-critical applications.  A value of |Cpk| :math:`\geq 2.0` is termed a six-sigma process, because the distance from the current operating point, |xdb|, to the closest specification is at least :math:`6\sigma` units.
 
 You can calculate that a shift of :math:`1.5\sigma` from process center will introduce only 3.4 defects per million.  This shift would reduce your |Cpk| from 2.0 to 1.5.
 
@@ -613,35 +617,35 @@ Industrial practice
 .. index::
 	pair: industrial practice; Process monitoring
 
-This section of the book is only intended to give an overview of the concepts of process monitoring.  As you move into an industrial environment you will find there are many such systems already in place.  Higher levels of management track statistics from a different point of view, often summarizing data from an entire plant, geographic region, or country.  The techniques learned in this book, while focusing mainly on unit operations, are equally applicable though.
+This preceding section of the book is only intended to give an overview of the concepts of process monitoring.  As you move into an industrial environment you will find there are many such systems already in place.  Higher levels of management track statistics from a different point of view, often summarizing data from an entire plant, geographic region, or country.  The techniques learned in this book, while focusing mainly on unit operations, are equally applicable though.
 
-You may come across systems called dashboards, which are often part of ERP (enterprise resource planning) systems.  These dashboards are supposed to monitor the pulse of a company and are tracked like any other control chart discussed above.  Another area is called business intelligence (BI) systems.  These typically track sales and other financial information.  And yet another acronym is the KPI, key performance indicator, which is a summary variable, such as profit per hour, or energy cost per unit of production.  These are often monitored and acted on by site managers on a daily or weekly basis.
+You may come across systems called dashboards, which are often part of :index:`enterprise resource planning` (ERP) systems.  These dashboards are supposed to monitor the pulse of a company and are tracked like any other control chart discussed above.  Another area is called :index:`business intelligence` (BI) systems.  These typically track sales and other financial information.  And yet another acronym is the :index:`KPI`, :index:`key performance indicator`, which is a summary variable, such as profit per hour, or energy cost per unit of production.  These are often monitored and acted on by site managers on a daily or weekly basis.
 
-But at the unit operation and plant level, you will likely find the hardest part of getting a control chart going is the part where you need to access the data.  Getting the data out of most historical systems is not easy, though it has improved quite a bit in the last few years.
+But at the unit operation and plant level, you will likely find the hardest part of getting a control chart implemented is the part where you need to access the data.  Getting data out of most database systems is not easy, though it has improved quite a bit in the last few years.
 
-It is critical that your control chart display the quantity as close to real-time as possible.  It is almost as if the monetary value of the information in a chart decays exponentially from the time an event occurs.  It is also much harder to diagnose and correct those problems.
+It is critical that your control chart display the quantity as close to real-time as possible.  It is almost as if the monetary value of the information in a control chart decays exponentially from the time an event occurs.  It is hard to diagnose and correct a problem detected yesterday, and harder still if the problem occurred last week.
 
-You will also realize that good operator training is time-consuming; operators keep moving to new units or plants, so frequent re-training is required.  Concepts from the :ref:`data visualization <SECTION-data-visualization>` section are helpful to minimize training effort - make sure the online plots contain the right level of information, without clutter.
+You will also realize that good operator training to interpret and act on the control chart is time-consuming; operators keep moving to new units or plants, so frequent re-training is required.  Concepts from the :ref:`data visualization <SECTION-data-visualization>` section are helpful to minimize training effort - make sure the online plots contain the right level of information, without clutter, so they can be acted on appropriately.
 
-Another side effect of the large quantities of data are that you will have to work with IT groups to manipulate large chunks of data on dedicated networks, separate from the rest of the plant.  The last thing you want to be responsible for is clogging the company network with your data.  The concept of a "production" network in parallel to the "company" network is now common in most industries.
+Another side effect of large quantities of data are that you will have to work with IT groups to manipulate large chunks of data on dedicated networks, separate from the rest of the plant.  The last thing you want to be responsible for is clogging the company network with your data. Most industries now have a "production" network running in parallel to the "company" network.  The production network carries real-time data, images from cameras and so forth, while the company network carries email and web traffic.
 
 Workflow to implement a monitoring chart in an industrial setting
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is some general guidance; feel free to adjust the steps as required for your unique situation.
 
-	#. Identify the variable(s) to monitor.  Make sure the variables show different, uncorrelated phenomena.
+	#. Identify the variable(s) to monitor.  Make sure each variables show different, uncorrelated phenomena.
 	#. Retrieve historical data from your computer systems, or lab data, or paper records.
 	#. Import the data and just plot it.  Do you see any time trends, outliers, spikes, missing data gaps?
 	#. Locate any regions of data which are from generally stable operation.  Remove spikes and outliers that will bias your control limits calculations.  In other words, find regions of common-cause operation.
 	#. Estimate limits that you would expect to contain this stable region of operation just by looking at the plots.
-	#. Then calculate preliminary control limits (UCL, LCL), using the formula shown in this section.
+	#. Then calculate preliminary control limits (UCL, LCL), using the formula shown in this section.  They agree with limits in the previous step.
 	#. Test your chart on **new, unused** data.  This new data should contain both common and special cause operation.
-	#. How does your chart work?  Quantify the type I and II error. Adjust the limits and control chart parameters (e.g. :math:`\lambda`) if necessary.  You may even have to resort to a different variable to plot.
+	#. How does your chart work?  Quantify the type I error using a testing data set that contains only common cause data.  Quantify type II error from a testing data set containing known problems. Adjust the limits and control chart parameters (e.g. :math:`\lambda`) if necessary.  You may even have to resort to a different variable, or a different control chart.
 	#. Run the chart on your desktop computer for a couple of days.  When you detect an unusual event, go and check with the process operators and verify the event.  Would they have reacted to it, had they known about it?  Or, would this have been a false alarm?  You may need to refine your limits, or the value you are plotting again.
-	#. Remember that this form of control charting is not an expert system - it will not diagnose problems: you have to use your head by looking at patterns in the chart, and use knowledge of other process events.
-	#. Demonstrate the system to your colleagues and manager.  But show them economic estimates of the value of early detection.  They are usually not interested in the plots alone.
-	#. Installation and operator training will take time.  This assumes that you have real-time data acquisition systems and real-time processing systems in place - most companies do.
+	#. Remember that this form of control charting is not an expert system - it will not diagnose problems: you have to use your engineering knowledge by looking at patterns in the chart, and use knowledge of other process events.
+	#. Demonstrate the system to your colleagues and manager.  But show them economic estimates of the value of early detection.  They are usually not interested in the plots alone, so convert the statistics into monetary values.
+	#. Installation and operator training will take time.  This assumes that you have real-time data acquisition systems and real-time processing systems in place - most companies do.  You will have to work with your company's IT staff to get this implemented.
 	#. Listen to your operators for what they want to see.  Use principles of :ref:`good data visualization <SECTION-data-visualization>` to reduce unnecessary information.  Make your plots interactive - if you click on an unusual point it should "drill-down" and give you more information and historical context.
 	#. Future monitoring charts are easier to get going, once the first system is in place.
 
@@ -662,16 +666,16 @@ Industrial case study
 ArcelorMittal (Dofasco)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ArcelorMittal's steel mill in Hamilton, Ontario, (formerly called Dofasco) has used multivariate process monitoring tools in many areas of their plant for decades now.  One of their most successful applications is that applied to their casting operation.  In this section we just focus on the application; the sort of multivariate calculations used by Dofasco are discussed :ref:`later on <SECTION-latent-variable-modelling>`.
+ArcelorMittal's steel mill in Hamilton, Ontario, (formerly called Dofasco) has used multivariate process monitoring tools in many areas of their plant for decades now.  One of their most successful applications is that applied to their casting operation.  In this section we just focus on the application; the sort of multivariate calculations used by this system are discussed :ref:`later on <SECTION-latent-variable-modelling>`.
 
-The computer screenshot shows the monitoring system, called Caster SOS (Stable Operation Supervisor), which is followed by the operators.  There are several charts on the screen: two charts, called "Stability Index 1" and "Stability Index 2", are one-sided monitoring charts.  Notice the warning limits and the action limits.  We will cover what they are plotting in a later section of the book.  In the middle is a two-sided chart.  A wealth of information is presented on the screen - their design was heavily influenced and iterated on several times, by the *operators*.  The screen shot is used with permission of Dr. John MacGregor. 
+The computer screenshot shows the monitoring system, called Caster SOS (Stable Operation Supervisor), which is followed by the operators. There are several charts on the screen: two charts, called "Stability Index 1" and "Stability Index 2", are one-sided monitoring charts. Notice the warning limits and the action limits. In the middle is a two-sided chart. A wealth of information is presented on the screen - their design was heavily influenced and iterated on several times, working with the *operators*. The screen shot is used with permission of Dr. John MacGregor. 
 
 .. figure:: images/Dofasco-monitoring-chart.png
 	:width: 750px
 	:align: center
 	:scale: 100
 	
-The economics of control charting cannot be overstated. The ArcelorMittal example above was introduced around 1997.  The calculations required by this system are complex - however the computer performs them in near real-time, allowing the operators to take corrective action within a few seconds.  The data show a significant reduction in breakouts since 1997 (*used with permission of Dr. John MacGregor*).  The economic savings and increased productivity is in the millions of dollars per year, as each breakout costs around $200,000 to $500,000 due to process shutdowns and/or equipment damage.
+The economics of control charting cannot be overstated. The ArcelorMittal example above was introduced around 1997.  The calculations required by this system are complex - however the computer systems performs them in near real-time, allowing the operators to take corrective action within a few seconds.  The data show a significant reduction in breakouts since 1997 (*used with permission of Dr. John MacGregor*).  The economic savings and increased productivity is in the millions of dollars per year, as each breakout costs around $200,000 to $500,000 due to process shutdowns and/or equipment damage.
 
 .. figure:: images/breakouts-dofasco-economics.png
 	:width: 750px
@@ -693,9 +697,9 @@ Montgomery and Runger list 5 reasons why control charts are widely used.  After 
 
 	#.	These tools are proven to improve productivity (i.e. to reduce scrap and rework, as described above), and to increase process throughput.
 	#.	They detect defective production, consistent with the concept of "doing it right the first time", a mantra that you will increasingly hear in the manufacturing workplace.
-	#.	A control chart with good limits will prevent over-control of the process.  Operators are trained not to make process adjustments unless there is a signal from the chart.
-	#.	The patterns generated by the plots often help determine what went wrong - providing some diagnostic value to the operators.  We will see a more formal tool for process diagnosis though in the last section, using multivariate data methods.
-	#.	Control charts are required to judge if a process is stable over time.  A stable process allows us to calculate our process capability, which is a tremendously important metric for consumers.
+	#.	A control chart with good limits will prevent over-control of the process.  Operators are trained not to make process adjustments unless there is a clear warning or alarm from the chart.
+	#.	The patterns generated by the plots often help determine what went wrong, providing some diagnostic value to the operators.  We will see a more formal tool for process diagnosis though in the latent variable section.
+	#.	Control charts are required to judge if a process is stable over time.  A stable process allows us to calculate our process capability, which is an important metric for your customers.
 
 
 Exercises

@@ -43,7 +43,7 @@ UCL <- target + 3 * sigma.estimate/sqrt(N.sub)
 round(c(LCL, target, UCL), 0)
 
 
-# But there is one point outside the limits; happens to be the first one, so take a code short-cut
+# But there is 1 point outside the limits; happens to be the first one: take a short-cut
 phase1.start = 2
 phase1.end = floor(N.phase1/N.sub)
 
@@ -87,14 +87,14 @@ alpha.expected = 0.27/100
 #    use the ARL and calculate how many minutes between a false alarm.  
 #    Will the operators be happy this?
 
-ARL = ceiling(1/alpha.calculated)                         # On average, you will have about 1 in 24 
-                                                          # subgroups giving a false alarm
-                                                          # units = [subgroups per false alarm]
-num.minutes.production = 15 + 60 + 4*60                   # Or use some other approximation 
-production.rate = (N.raw/N.sub) / num.minutes.production  # [subgroups per minute]: i.e. how often 
-                                                          # a new subgroup is shown on the screen
-minutes.between.false.alarm = ARL / production.rate       # [subgroups per false alarm]/[subgroups per minute]
-                                                          # [minutes/false alarm]    
+ARL = ceiling(1/alpha.calculated)                # On average, you will have about 1 in 24 
+                                                 # subgroups giving a false alarm
+                                                 # units = [subgroups per false alarm]
+n.mins = 15 + 60 + 4*60                          # Or use some other approximation 
+product.rate = (N.raw/N.sub) / n.mins            # [subgroups per minute]: i.e. how often 
+                                                 # a new subgroup is shown on the screen
+minutes.between.false.alarm = ARL / product.rate # [subgroups per false alarm]/[subgroups per minute]
+                                                 # = [minutes/false alarm]    
 c(num.minutes.production, production.rate, N.raw/N.sub, minutes.between.false.alarm)
 
 # g) How would you monitor if the saws are slowly going out of alignment? 
