@@ -1654,7 +1654,7 @@ Exercises
 
 .. question::
 
-	Write a few *bullet point* notes on the purpose of feedback control, and its effect on variability of process quality.
+	Write a few notes on the purpose of feedback control, and its effect on variability of process quality.
 
 .. question::
 
@@ -1803,6 +1803,35 @@ Exercises
 		\text{UB} - \text{LB} &= 60 = 2 c_n \cdot \dfrac{\sigma}{\sqrt{n}} \\
 		n &= \left( \dfrac{(2)(1.96)(40)}{60}\right)^2 \\
 		n &\approx 7 \text{~samples}
+
+.. question::
+
+	Your manager is asking for the average viscosity of a product that you produce in a batch process.  Recorded below are the 12 most recent values, taken from consecutive batches.  State any assumptions, and clearly show the calculations which are required to estimate a 95% confidence interval for the mean.  Interpret that confidence interval for your manager, who is not sure what a confidence interval is.
+
+	.. math::
+		\text{Raw data:} &\qquad [13.7,\, 14.9,\, 15.7,\, 16.1,\, 14.7,\, 15.2,\, 13.9,\, 13.9,\, 15.0,\, 13.0,\, 16.7,\, 13.2] \\
+		\text{Mean:} &\qquad 14.67 \\
+		\text{Standard deviation:} &\qquad 1.16 
+
+.. answer::
+
+	The confidence interval for a mean requires the assumption that the individual numbers are taken from a normal distribution, and they are sampled independently (no sample has an effect on the others).  Under these assumptions we can calculate a |z|-value for the sampled mean, :math:`\overline{x}`, and construct upper and lower bounds reflecting the probability of sampling that |z|-value.
+	
+	.. math::
+		\begin{array}{rcccl}
+		-c_n &\leq& \dfrac{\overline{x} - \mu}{\sigma/\sqrt{n}} &\leq& c_n \\
+		\end{array}
+		
+	Since we don't know the value of :math:`\sigma`, we use the sampled value, :math:`s=1.16`.  But this means our |z|-value is no longer normally distributed, rather it is :math:`t`-distributed.  The limits, :math:`\pm c_t` that contain 95% of the area under the |t|-distribution, with 11 degrees of freedom, are 2.20 (or any close approximation from the tables provided).  From this we get the confidence interval:
+	
+	.. math::
+		\begin{array}{rcccl}
+			-c_t &\leq& \dfrac{\overline{x} - \mu}{s / \sqrt{n}} &\leq& c_t \\
+			14.67 - \dfrac{2.20 \times 1.16}{\sqrt{12}} &\leq& \mu &\leq& 14.67 + \dfrac{2.20 \times 1.16}{\sqrt{12}} \\
+			13.93 &\leq& \mu &\leq& 15.41
+		\end{array}
+	
+	This confidence interval means that we have 95% confidence that the true average viscosity lies within these bounds.  If we took 100 groups of 12 samples, then the limits calculated from 95 of those groups are expected to contain the true mean.  It is **incorrect** to say that there is 95% probability the true mean lies within these bounds; the true mean is fixed, there is no probability associated with it.
 
 .. question::
 
@@ -2018,7 +2047,19 @@ Exercises
 	.. literalinclude:: code/website-differences-assignment3-2010.R
 	       :language: s
 	       :lines: 32-54,75-
-       
+
+.. question::
+
+	You plan to run a series of 22 experiments to measure the economic advantage, if any, of switching to a corn-based raw material, rather than using your current sugar-based material. You can only run one experiment per day, and there is a high cost to change between raw material dispensing systems.  Describe two important precautions you would implement when running these experiments, so you can be certain your results will be accurate.
+
+.. answer::
+
+	Two important precautions one has to take are:
+
+	#.	Keep all disturbance factors as constant as possible.
+	#.	Randomize the order of the experiments, despite the cost, to obtain independent experimental measurements. Randomization is the insurance we pay to ensure the results are not confounded by unmeasured disturbances.
+
+     
 .. question::
 
     There are two analytical techniques for measuring BOD (see question 1).  You wish to evaluate the two testing procedures, so that you can select the test which has lower cost, and fastest turn-around time, but without a compromise in accuracy.  Is there a difference in accuracy between the two methods?  Are you happy with this answer?   These are the data:

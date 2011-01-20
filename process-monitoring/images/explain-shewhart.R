@@ -11,7 +11,7 @@ raw <- dnorm(steps, mean=base.mean, sd=base.sd)
 raw.sample <- dnorm(steps, mean=base.mean, sd=base.sd/sqrt(N))
 
 
-bitmap('/Users/kevindunn/transfer/Stats-course/Course notes/Control charts/images/explain-shewhart.png', type="png256", width=10, height=7, res=300, pointsize=14)
+bitmap('explain-shewhart.png', type="png256", width=10, height=7, res=300, pointsize=14)
 
 plot(steps, raw.sample, lwd=2, type="l", xlab="x", ylab="Probability density", cex.lab=1.5, cex.main=1.8, cex.sub=1.8, cex.axis=1.8)
 lines(steps, raw)
