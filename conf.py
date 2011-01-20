@@ -172,7 +172,7 @@ rst_epilog = """
 .. |K| replace:: :math:`K`
 .. |M| replace:: :math:`M`
 .. |Cpk| replace:: C\ :sub:`pk`
-.. |xdb| replace:: :math:`\Bar{\Bar{x}}`
+.. |xdb| replace:: :math:`\overline{\overline{x}}`
 """
 
 # -- Options for HTML output ---------------------------------------------------

@@ -174,48 +174,64 @@ A :index:`Shewhart chart <pair: Shewhart chart; Process monitoring>`, named afte
 
 The defining characteristics are: a target, upper and lower control limits (UCL and LCL).  These action limits are defined so that no action is required as long as the variable plotted remains within the limits.
 
-Derivation
-~~~~~~~~~~~~~
+Derivation using theoretical parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Define the variable of interest as :math:`x`, and assume that we have samples of :math:`x` available in sequence order.  No assumption is made regarding the distribution of :math:`x`.  The average of :math:`n` of these :math:`x`-values is defined as :math:`\bar{x}`, which from the Central limit theorem we know will be more normally distributed with unknown population mean :math:`\mu` and unknown population variance :math:`\sigma^2/n`, where :math:`\mu` and :math:`\sigma` refer to the distribution that samples of :math:`x` came from. The figure below shows the case for :math:`n=5`.
+Define the variable of interest as :math:`x`, and assume that we have samples of :math:`x` available in sequence order.  No assumption is made regarding the distribution of :math:`x`.  The average of :math:`n` of these :math:`x`-values is defined as :math:`\overline{x}`, which from the Central limit theorem we know will be more normally distributed with unknown population mean :math:`\mu` and unknown population variance :math:`\sigma^2/n`, where :math:`\mu` and :math:`\sigma` refer to the distribution that samples of :math:`x` came from. The figure below shows the case for :math:`n=5`.
 
 .. image:: images/explain-Shewhart-data-source.png
 	:width: 750px
 	:align: center
 	:scale: 70
 
-So by taking subgroups of size :math:`n` values, we now have a new variable, :math:`\bar{x}` and we will define a shorthand symbol for its standard deviation: :math:`\sigma_{\bar{X}} = \sigma/\sqrt{n}`.  Writing a |z|-value for :math:`\bar{x}`, and its associated confidence interval for :math:`\mu` is now easy after studying :ref:`the previous section <univariate-confidence-intervals>` of the book:
+So by taking subgroups of size :math:`n` values, we now have a new variable, :math:`\overline{x}` and we will define a shorthand symbol for its standard deviation: :math:`\sigma_{\overline{X}} = \sigma/\sqrt{n}`.  Writing a :math:`z`-value for :math:`\overline{x}`, and its associated confidence interval for :math:`\mu` is now easy after studying :ref:`the section on confidence intervals<univariate-confidence-intervals>`:
 
 .. math::
-	z = \dfrac{\bar{x} - \mu}{\sigma_{\bar{X}}}
 
-Assuming we know :math:`\sigma_{\bar{X}}`, which we usually do not in practice, we can invoke the normal distribution and calculate the probability of finding a value of |z| between :math:`c_n = -3` to :math:`c_n = +3`:
+	z = \frac{\displaystyle \overline{x} - \mu}{\displaystyle \sigma_{\overline{X}}}
+
+Assuming we know :math:`\sigma_{\overline{X}}`, which we usually do not in practice, we can invoke the normal distribution and calculate the probability of finding a value of :math:`z` between :math:`c_n = -3` to :math:`c_n = +3`:
 
 .. math::
 	:label: shewhart-theoretical
 	
 	\begin{array}{rcccl} 
-		  - c_n                                              &\leq& \dfrac{\bar{x} - \mu}{\sigma_{\bar{X}}} &  +c_n\\ \\
-		\bar{x}  - c_n\sigma_{\bar{X}}                       &\leq&  \mu                                                 &\leq& \bar{x}  + c_n\sigma_{\bar{X}} \\ \\
+		  - c_n                                              &\leq& \dfrac{\overline{x} - \mu}{\sigma_{\overline{X}}} &  +c_n\\ \\
+		\overline{x}  - c_n\sigma_{\overline{X}}                       &\leq&  \mu                                                 &\leq& \overline{x}  + c_n\sigma_{\overline{X}} \\ \\
 		\text{LCL}                                           &\leq&  \mu                                                 &\leq& \text{UCL}
 	\end{array}
 
-The total area between that lower and upper bound spans 99.73% of the area (in R: ``pnorm(+3) - pnorm(-3)`` gives 0.9973).  So it is highly unlikely, a chance of 1 in 370 that a data point, :math:`\bar{x}`, calculated from a subgroup of :math:`n` raw :math:`x`-values, will lie outside these bounds.
+The reason for :math:`c_n = \pm 3` is that the total area between that lower and upper bound spans 99.73% of the area (in R: ``pnorm(+3) - pnorm(-3)`` gives 0.9973).  So it is highly unlikely, a chance of 1 in 370 that a data point, :math:`\overline{x}`, calculated from a subgroup of :math:`n` raw :math:`x`-values, will lie outside these bounds.
 
-.. Explain-shewhart.png
+The following illustration should help connect the concept of the raw data's distribution, to the distribution of the subgroups:
+
+.. figure:: images/explain-shewhart.png
+	:alt:	images/explain-shewhart.R
+	:scale: 70
+	:width: 750px
+	:align: center
 
 Using estimated parameters instead
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The derivation in equation :eq:`shewhart-theoretical` requires knowing the population variance, :math:`\sigma`, and assuming that our target for :math:`x` is :math:`\mu`.  
+The derivation in equation :eq:`shewhart-theoretical` requires knowing the population variance, :math:`\sigma`, and assuming that our target for :math:`x` is :math:`\mu`.  The latter assumption is reasonable, but we will estimate a value for :math:`\sigma` instead, using the data.
 
-The latter assumption is reasonable, so create a new variable |xdb| :math:`= \dfrac{1}{K} \displaystyle \sum_{k=1}^{K}{ \bar{x}_k}`, where :math:`K` is the number of :math:`\bar{x}` samples we have available to build the control chart (phase 1 data).  Alternatively, just set |xdb| to the desired target value for :math:`x`.  Note that |xdb| is sometimes called the  *grand mean* in control chart textbooks.
+.. index:: ! Phase 1 (control charts)
 
-The next hurdle is :math:`\sigma`.  We do not show it here, but for a subgroup of :math:`n` samples, an unbiased estimator of :math:`\sigma` is given by :math:`\dfrac{\bar{S}}{a_n}`.  Now :math:`\bar{S} =  \dfrac{1}{K} \displaystyle \sum_{k=1}^{K}{s_k}` (simply the average standard deviation calculated from :math:`K` subgroups).  Values for :math:`a_n` are looked up from a table and depend on the number of samples we use within each subgroup.
+Let's take a look at phase, the step where we are building the control chart's limits from historical data.  Create a new variable |xdb| :math:`= \dfrac{1}{K} \displaystyle \sum_{k=1}^{K}{ \overline{x}_k}`, where :math:`K` is the number of :math:`\overline{x}` samples we have available to build the control chart, called the :index:`phase 1` data.  Alternatively, just set |xdb| to the desired target value for :math:`x`.  Note that |xdb| is sometimes called the  *grand mean* in control chart textbooks.
 
-.. figure:: images/table-for-an-values.png
-	:width: 500px
-	:scale: 80
+The next hurdle is :math:`\sigma`.  We do not show it here, but for a subgroup of :math:`n` samples, an unbiased estimator of :math:`\sigma` is given by :math:`\frac{\overline{S}}{a_n}`.  Now :math:`\overline{S} =  \frac{1}{K} \displaystyle \sum_{k=1}^{K}{s_k}` (simply the average standard deviation calculated from :math:`K` subgroups).  Values for :math:`a_n` are found from a table and depend on the number of samples we use within each subgroup.
+
+===========  ====== ====== ====== ====== ====== ====== ====== =============== 
+:math:`n`    2      3      4      5      6      7      8      :math:`\infty`
+-----------  ------ ------ ------ ------ ------ ------ ------ --------------- 
+:math:`a_n`  0.793  0.886  0.921  0.940  0.952  0.959  0.965  1.0
+===========  ====== ====== ====== ====== ====== ====== ====== =============== 
+
+..
+	.. figure:: images/table-for-an-values.png
+		:width: 500px
+		:scale: 80
 	
 .. table code
 	{| class="wikitable center"
@@ -245,74 +261,75 @@ Now that we have an unbiased estimator for the standard deviation from these :ma
 	:label: shewhart-limits
 	
 	\begin{array}{rcccl} 
-		 \text{LCL} = \Bar{\Bar{x}} - 3 \cdot \dfrac{\bar{S}}{a_n\sqrt{n}} &&  &&  \text{UCL} = \Bar{\Bar{x}} + 3 \cdot \dfrac{\bar{S}}{a_n\sqrt{n}} 
+		 \text{LCL} = \overline{\overline{x}} - 3 \cdot \frac{\overline{S}}{a_n\sqrt{n}} &&  &&  \text{UCL} = \overline{\overline{x}} + 3 \cdot \frac{\overline{S}}{a_n\sqrt{n}} 
 	\end{array}
 
-Example
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. rubric:: Example
 
-Bales of rubber are being produced, with every 10th bale automatically removed from the line.  Five measurements of colour are made on the bale, using calibrated digital cameras under standard lighting conditions. The rubber compound is used for medical devices, so it needs to have the correct whiteness (colour).  The average of the 5 colour measurements is to be plotted on a Shewhart chart.  So we have a new data point appearing on the monitoring chart after every 10th bale.  
+Bales of rubber are being produced, with every 10th bale automatically removed from the line for testing.  Five measurements of colour are made on that bale, using calibrated digital cameras under standard lighting conditions. The rubber compound is used for medical devices, so it needs to have the correct whiteness (colour).  The average of the 5 colour measurements is to be plotted on a Shewhart chart.  So we have a new data point appearing on the monitoring chart after every 10th bale.  
 
-In the above example the raw data are the bale's colour.  There are :math:`n = 5` values in each subgroup.  Collect say :math:`K=20` samples of normal operating data, these are bales that are considered to be from stable operation. No special process events occurred while collecting the data.
+In the above example the raw data are the bale's colour.  There are :math:`n = 5` values in each subgroup.  Collect say :math:`K=20` samples of normal operating data, these are bales that are considered to be from stable operation. No special process events occurred while collecting these data.
 
 The data below represent the average of the :math:`n=5` samples from each bale, there are :math:`K=20` subgroups.
 
 .. math::
- 	\bar{x} = [245, 239, 239, 241, 241, 241, 238, 238, 236, 248, 233, 236, 246, 253, 227, 231, 237, 228, 239, 240]
+ 	\overline{x} = [245, 239, 239, 241, 241, 241, 238, 238, 236, 248, 233, 236, 246, 253, 227, 231, 237, 228, 239, 240]
 
-The overall average is :math:`\Bar{\Bar{x}} = 238.8` and :math:`\bar{S} = 9.28`.  Calculate the lower and upper control limits for this Shewhart chart.  Were there any points in the phase I data (training phase) that exceeded these limits?
+The overall average is :math:`\overline{\overline{x}} = 238.8` and :math:`\overline{S} = 9.28`.  Calculate the lower and upper control limits for this Shewhart chart.  Were there any points in the phase I data (training phase) that exceeded these limits?
 
-	- LCL = :math:`238.8 - 3 \cdot \dfrac{9.28}{(0.94)(\sqrt{5})} = 225.6`
-	- UCL = :math:`238.8 + 3 \cdot \dfrac{9.28}{(0.94)(\sqrt{5})} = 252.0`
-	- The sample with value of 253 exceeds these limits.  If this point is excluded and the limits recomputed, the new LCL = 224 and UCL = 252 (the new :math:`\Bar{\Bar{x}} = 238.0` and :math:`\bar{S} = 9.68`)
+	-	LCL = :math:`238.8 - 3 \cdot \frac{9.28}{(0.94)(\sqrt{5})} = 225.6`
+	-	UCL = :math:`238.8 + 3 \cdot \frac{9.28}{(0.94)(\sqrt{5})} = 252.0`
+	-	The sample with value of 253 exceeds these limits.  
+	-	This point should be excluded and the limits recomputed: the new :math:`\overline{\overline{x}} = 238.0` and :math:`\overline{S} = 9.68` and the new LCL = 224 and UCL = 252
 	
 .. todo: show chart in class
-	
-	
-.. todo:  use explain-shewhart.R still
-
+		
 .. todo: in the future, describe more clearly the difference between phase I and phase II.  Students were asking a lot of questions around this.
 
 Assessing the chart's performance
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There are 2 ways to assess performance:
+There are 2 ways to :index:`assess performance of any control chart <single: control chart assessment>`, in particular here we discuss the Shewhart chart:
 
-#.	Error probability.  We define two types of errors, Type I and Type II, which are a function of the lower and upper control limits (LCL and UCL).
+.. rubric:: 1. Error probability.  
 
-	You make a **type I error** when your sample is typical of normal operation, yet, it falls outside the UCL or LCL limits.  We showed in the theoretical derivation that the area covered by the upper and lower control limits is 99.73%.  The probability of making a type I error, usually denoted as :math:`\alpha` is then 100 - 99.73 = 0.27%.
-	
-	*Synonyms* for a **type I error**: false alarm, false positive (used mainly for testing of diseases), producer's risk (used for acceptance sampling)
-	
-	You make a **type II error** when your sample really is abnormal, but falls within the the UCL and LCL limits.  This error rate is denoted by :math:`\beta`, and it is a function of the degree of abnormality, which we derive next.
-	
-	*Synonyms* for a **type II error**: false negative (used mainly for testing of diseases), consumer's risk (used for acceptance sampling)
-	
-	To quantify the probability of :math:`\beta`, make an assumption that the new, abnormal sample comes from a distribution which has shifted its location from :math:`\mu` to :math:`\mu + \Delta\sigma` (e.g. :math:`\Delta` can be positive or negative).  Now, what is the probability this new sample, which come from the shifted distribution, will fall within the existing LCL and UCL? This figure show the probability is :math:`\beta = 1 - \text{the shaded area}`.
+We define two types of errors, Type I and Type II, which are a function of the lower and upper control limits (LCL and UCL).
 
-	.. figure:: images/show-shift-beta-error.png
-		:width: 500px
-		:align: center
-		:scale: 90
-	
-	.. todo  How did Devore calculate these numbers: see p 667 of his book - it doesn't make sense to me.  See my attempt in "show-shift-typeII-error.R"
-	
-	.. figure:: images/type-II-error-shift.png
-		:width: 500px
-		:align: center
-		:scale: 90
+You make a **type I error** when your sample is typical of normal operation, yet, it falls outside the UCL or LCL limits.  We showed in the theoretical derivation that the area covered by the upper and lower control limits is 99.73%.  The probability of making a type I error, usually denoted as :math:`\alpha` is then 100 - 99.73 = 0.27%.
 
-	The table here shows that :math:`\beta` is a function of the amount by which the process shifts = :math:`\Delta`, where :math:`\Delta=1` implies the process has shifted up by :math:`1\sigma`.  The table was calculated for :math:`n=4` and used critical limits of :math:`\pm 3 \sigma_{\bar{X}}`.
+*Synonyms* for a **type I error**: false alarm, false positive (used mainly for testing of diseases), producer's risk (used for acceptance sampling)
 
-	The key point you should note from the table is that a Shewhart chart is not good at detecting a change in the level of a variable.  Even a moderate shift of :math:`0.75\sigma` units :math:`(\Delta=0.75)` will only be detected around 6.7% of the time (100-93.3%) when :math:`n=4`.  We will discuss CUSUM charts as a way to overcome this issue next.
-	
-	It is straightforward to see how the type I (:math:`\alpha`) error rate can be adjusted - simply move the LCL and UCL up and down, as required.  
-	
-	However what happens to the type II error rate as the LCL and UCL bounds are shifted?  Imagine the case where you want to have :math:`\alpha \rightarrow 0`.  As you make the UCL higher and higher, the value for :math:`\alpha` drops, but the value for :math:`\beta` will also increase!  **You cannot simultaneously have low type I and type II error**.
+You make a **type II error** when your sample really is abnormal, but falls within the the UCL and LCL limits.  This error rate is denoted by :math:`\beta`, and it is a function of the degree of abnormality, which we derive next.
 
-#. 	The **average run length (ARL)** is defined as the average number of sequential samples we expect before seeing an out-of-bounds, or out-of-control signal.  This is given by the inverse of :math:`\alpha`, as ARL = :math:`\frac{1}{\alpha}`.  Recall for the theoretical distribution we had :math:`\alpha = 0.0027`, so the ARL = 370.  Thus we expect a run of 370 samples before we get an out-of-control signal.
+*Synonyms* for a **type II error**: false negative (used mainly for testing of diseases), consumer's risk (used for acceptance sampling)
 
-	The run length is changed when the process level shifts.  What is the ARL if the process has shifted up by :math:`0.75\sigma`?
+To quantify the probability :math:`\beta`, make an assumption that the new, abnormal sample comes from a distribution which has shifted its location from :math:`\mu` to :math:`\mu + \Delta\sigma` (e.g. :math:`\Delta` can be positive or negative).  Now, what is the probability this new sample, which come from the shifted distribution, will fall within the existing LCL and UCL? This figure show the probability is :math:`\beta = 1 - \text{the shaded area}`.
+
+.. figure:: images/show-shift-beta-error.png
+	:width: 500px
+	:align: center
+	:scale: 90
+
+.. todo  How did Devore calculate these numbers: see p 667 of his book - it doesn't make sense to me.  See my attempt in "show-shift-typeII-error.R"
+
+.. figure:: images/type-II-error-shift.png
+	:width: 500px
+	:align: center
+	:scale: 90
+
+The table here shows that :math:`\beta` is a function of the amount by which the process shifts = :math:`\Delta`, where :math:`\Delta=1` implies the process has shifted up by :math:`1\sigma`.  The table was calculated for :math:`n=4` and used critical limits of :math:`\pm 3 \sigma_{\overline{X}}`.
+
+The key point you should note from the table is that a Shewhart chart is not good at detecting a change in the level of a variable.  Even a moderate shift of :math:`0.75\sigma` units :math:`(\Delta=0.75)` will only be detected around 6.7% of the time (100-93.3%) when :math:`n=4`.  We will discuss CUSUM charts as a way to overcome this issue next.
+
+It is straightforward to see how the type I (:math:`\alpha`) error rate can be adjusted - simply move the LCL and UCL up and down, as required.  
+
+However what happens to the type II error rate as the LCL and UCL bounds are shifted?  Imagine the case where you want to have :math:`\alpha \rightarrow 0`.  As you make the UCL higher and higher, the value for :math:`\alpha` drops, but the value for :math:`\beta` will also increase!  **You cannot simultaneously have low type I and type II error**.
+
+.. rubric:: 2. Using the average run length (ARL)
+
+The ARL is defined as the average number of sequential samples we expect before seeing an out-of-bounds, or out-of-control signal.  This is given by the inverse of :math:`\alpha`, as ARL = :math:`\frac{1}{\alpha}`.  Recall for the theoretical distribution we had :math:`\alpha = 0.0027`, so the ARL = 370.  Thus we expect a run of 370 samples before we get an out-of-control signal.
+
+The run length is changed when the process level shifts.  What is the ARL if the process has shifted up by :math:`0.75\sigma`?
 	
 	*Answer*
 	
@@ -411,7 +428,7 @@ The MA chart plots values of :math:`x_t`, calculated from groups of size :math:`
 
 .. math::	
 	
-	\bar{x}_t = \dfrac{1}{n}x_{t-1} + \dfrac{1}{n}x_{t-2} + \ldots + \dfrac{1}{n}x_{t-n}
+	\overline{x}_t = \frac{1}{n}x_{t-1} + \frac{1}{n}x_{t-2} + \ldots + \frac{1}{n}x_{t-n}
 
 The EWMA is similar to the MA, but with different weights; heavier weights for more recent observations, tailing off exponentially to very small weights further back.  Let's take a look at a derivation. 
 
@@ -464,7 +481,7 @@ The upper and lower control limits for the EWMA plot are plotted in the same way
 	:label: ewma-limits
 	
 	\begin{array}{rcccl} 
-		 \text{LCL} = \Bar{\Bar{x}} - 3 \cdot \sigma_{\text{Shewhart}}\sqrt{\dfrac{\lambda}{2-\lambda}} &&  &&  \text{UCL} = \Bar{\Bar{x}} + 3 \cdot \sigma_{\text{Shewhart}} \sqrt{\dfrac{\lambda}{2-\lambda}}
+		 \text{LCL} = \overline{\overline{x}} - 3 \cdot \sigma_{\text{Shewhart}}\sqrt{\frac{\lambda}{2-\lambda}} &&  &&  \text{UCL} = \overline{\overline{x}} + 3 \cdot \sigma_{\text{Shewhart}} \sqrt{\frac{\lambda}{2-\lambda}}
 	\end{array} 
 
 where :math:`\sigma_{\text{Shewhart}}` represents the standard deviation as used on the Shewhart chart.  Actually one neat implementation is to show both the Shewhart and EWMA plot on the same chart, with both sets of limits.  The EWMA value plotted is actually the one-step ahead prediction of the next :math:`x`-value, which can be informative for slow-moving processes.
@@ -495,7 +512,7 @@ Other charts
 
 You may encounter other charts in practice:
 
-	*	The *S chart* is for monitoring the subgroup standard deviation.  Take the group of :math:`n` samples and show their standard deviation on a Shewhart-type chart.  The limits for the chart are calculated using similar correction factors as were used in the derivation for the standard :math:`\bar{x}` Shewhart chart.  This chart has a LCL :math:`\geq 0`.
+	*	The *S chart* is for monitoring the subgroup standard deviation.  Take the group of :math:`n` samples and show their standard deviation on a Shewhart-type chart.  The limits for the chart are calculated using similar correction factors as were used in the derivation for the standard :math:`\overline{x}` Shewhart chart.  This chart has a LCL :math:`\geq 0`.
 	
 	*	The *R chart* was a precursor for the *S chart*, where the *R* stands for range, the subgroup's maximum minus minimum.  It was used when charting was done manually, as standard deviations were tedious to calculate by hand.
 	
@@ -522,7 +539,7 @@ Purchasers of your product will require a process capability ratio (PCR) for eac
 .. math::
 	:label: process-capability-ratio-centered
 	
-	\text{PCR} &= \dfrac{\text{Upper specification limit} - \text{Lower specification limit}}{6\sigma}
+	\text{PCR} &= \frac{\text{Upper specification limit} - \text{Lower specification limit}}{6\sigma}
 	
 Since the population standard deviation, :math:`\sigma`, is not known, an estimate of it is used.  Note that the lower specification limit (LSL) and upper specification limit (USL) are **not the same** as the lower control limit (LCL) and upper control limit (UCL) as where calculated for the Shewhart chart.  The LSL and USL are the tolerance limits required by your customers, or from your internal specifications.  
 
@@ -568,7 +585,7 @@ Processes are not very often centered between their upper and lower specificatio
 .. math::
 	:label: process-capability-ratio-uncentered
 
-		\text{PCR}_\text{k} = \text{C}_\text{pk} = \min \left( \dfrac{\text{Upper specification limit} - \Bar{\Bar{x}}}{3\sigma};  \dfrac{\Bar{\Bar{x}} - \text{Lower specification limit}}{3\sigma} \right)
+		\text{PCR}_\text{k} = \text{C}_\text{pk} = \min \left( \frac{\text{Upper specification limit} - \overline{\overline{x}}}{3\sigma};  \frac{\overline{\overline{x}} - \text{Lower specification limit}}{3\sigma} \right)
 		
 The |xdb| term would be the process target from a Shewhart chart, or simply the actual operating point.  Notice that |Cpk| is a one-sided ratio, only the side closest to the specification is reported.  So even an excellent process with C\ :sub:`p` = 2.0 that is running off-center will have a lower |Cpk|.
 
@@ -874,21 +891,21 @@ Exercises
 	:fullinclude: no 
 	:short: Unbiased estimate of the process standard deviation = 106.4; UCL = 874; LCL = 554.
 	
-	#.	An unbiased estimate of the process standard deviation is :math:`\hat{\sigma} = \dfrac{\bar{S}}{a_n} = \dfrac{98}{0.921} = \mathrm{106.4}`, since the subgroup size is :math:`n=4`.
+	#.	An unbiased estimate of the process standard deviation is :math:`\hat{\sigma} = \frac{\overline{S}}{a_n} = \frac{98}{0.921} = \mathrm{106.4}`, since the subgroup size is :math:`n=4`.
 	#.	Using the data provided in the question:
 
 		.. math::
 
-			\text{UCL} &= \bar{\bar{x}} + 3 \dfrac{\bar{S}}{a_n \sqrt{n}} = 714 + 3 \times \dfrac{98}{0.921 \times 2 } = \mathrm{874} \\
-			\text{LCL} &= \bar{\bar{x}} - 3 \dfrac{\bar{S}}{a_n \sqrt{n}} = 714 - 3 \times \dfrac{98}{0.921 \times 2 } = \mathrm{554}
+			\text{UCL} &= \overline{\overline{x}} + 3 \frac{\overline{S}}{a_n \sqrt{n}} = 714 + 3 \times \frac{98}{0.921 \times 2 } = \mathrm{874} \\
+			\text{LCL} &= \overline{\overline{x}} - 3 \frac{\overline{S}}{a_n \sqrt{n}} = 714 - 3 \times \frac{98}{0.921 \times 2 } = \mathrm{554}
 
 	#.	Since Shewhart charts assume a normal distribution in their derivation, we can use the same principle to calculate a :math:`z`-value, and the fraction of the area under the distribution.  But you have to be careful here: which standard deviation do you use to calculate the :math:`z`-value?   You should use the subgroup's standard deviation, not the process standard deviation. The Shewhart chart shows the subgroup averages, so the values of 590 and 820 refer to the subgroup values.
 
-	If that explanation doesn't make sense, think of the central limit theorem: the mean of a group of samples, :math:`\bar{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`, where :math:`\sigma^2` is the process variance, and :math:`\sigma^2/n` is the subgroup variance of :math:`\bar{x}`.
+	If that explanation doesn't make sense, think of the central limit theorem: the mean of a group of samples, :math:`\overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`, where :math:`\sigma^2` is the process variance, and :math:`\sigma^2/n` is the subgroup variance of :math:`\overline{x}`.
 
 	.. math::
-		z_{\text{low}}  &= \dfrac{x_\text{low} - \bar{\bar{x}}}{\hat{\sigma}/\sqrt{n}} = \dfrac{590 - 714}{106.4/\sqrt{4}} = -2.33 \\
-		z_{\text{high}} &= \dfrac{x_\text{high} - \bar{\bar{x}}}{\hat{\sigma}/\sqrt{n}} =\dfrac{820 - 714}{106.4/\sqrt{4}} = +2.00
+		z_{\text{low}}  &= \frac{x_\text{low} - \overline{\overline{x}}}{\hat{\sigma}/\sqrt{n}} = \frac{590 - 714}{106.4/\sqrt{4}} = -2.33 \\
+		z_{\text{high}} &= \frac{x_\text{high} - \overline{\overline{x}}}{\hat{\sigma}/\sqrt{n}} =\frac{820 - 714}{106.4/\sqrt{4}} = +2.00
 
 	The area below -2.33 is ``pnorm(-2.33) = 0.009903076``, though I will accept any value around 1%, eyeballed from the printed tables.  The area below +2.00 is 97.73%, which was on the tables already.  So the total amount of normal operation within the warning limits is 97.73-1.00 = **96.7%**.
 
@@ -906,9 +923,9 @@ Exercises
 	:fullinclude: no 
 	:short: Current Cpk = 1.0
 
-	#.	Recall the Cpk is defined relative to the closest specification limit.  So in this case it must be due to the lower limit. Cpk = :math:`\dfrac{\bar{\bar{x}} - LSL}{3\sigma} = \dfrac{37.4 - 35.0}{3 \times 0.8} = \mathrm{1.0}` 
-	#.	To obtain Cpk = 1.3 we solve the above equation for :math:`\bar{\bar{x}} = 1.3 \times 3 \times 0.8 + 35.0 = \mathrm{38.12}` grams.
-	#.	Changing the lower specification limit is not an option to raise Cpk, because the bags are sold as containing 35.0 grams of snackfood. Changing the specification limit is in general an artificial way of changing Cpk.  The only practical way to improve Cpk is to decrease the process variance (e.g. using better equipment with tighter control).  The new :math:`\sigma = \dfrac{37.4 - 35.0}{3 \times 1.3} = \mathrm{0.615}` grams.
+	#.	Recall the Cpk is defined relative to the closest specification limit.  So in this case it must be due to the lower limit. Cpk = :math:`\frac{\overline{\overline{x}} - LSL}{3\sigma} = \frac{37.4 - 35.0}{3 \times 0.8} = \mathrm{1.0}` 
+	#.	To obtain Cpk = 1.3 we solve the above equation for :math:`\overline{\overline{x}} = 1.3 \times 3 \times 0.8 + 35.0 = \mathrm{38.12}` grams.
+	#.	Changing the lower specification limit is not an option to raise Cpk, because the bags are sold as containing 35.0 grams of snackfood. Changing the specification limit is in general an artificial way of changing Cpk.  The only practical way to improve Cpk is to decrease the process variance (e.g. using better equipment with tighter control).  The new :math:`\sigma = \frac{37.4 - 35.0}{3 \times 1.3} = \mathrm{0.615}` grams.
 	
 .. question::
 
@@ -923,8 +940,8 @@ Exercises
 	:fullinclude: no 
 	
 	#.	The notes show that Cp values require us to assume that (a) the process values follow a normal distribution, the process was centered when the data were collected, and (c) that the process was stable (use a monitoring chart to verify this last assumption).
-	#.	The range from the lower to the upper specification limit is 0.8 mm, which spans 6 standard deviations.  Given the Cp value of 1.7, the process standard deviation must have been :math:`\sigma = \dfrac{0.8}{1.7 \times 6} = \mathrm{0.0784}` mm.
-	#.	This time we have the process standard deviation, so there is no need to estimate it from historical phase I data (remember the assumption that Cp and Cpk value are calculated from stable process operation?).  The Shewhart control limits would be: :math:`\bar{\bar{x}} \pm 3 \times \dfrac{\sigma}{\sqrt{n}} = 2 \pm 3 \times 0.0784 / 2`.  The LCL = 1.88 mm and the UCL = 2.12 mm.
+	#.	The range from the lower to the upper specification limit is 0.8 mm, which spans 6 standard deviations.  Given the Cp value of 1.7, the process standard deviation must have been :math:`\sigma = \frac{0.8}{1.7 \times 6} = \mathrm{0.0784}` mm.
+	#.	This time we have the process standard deviation, so there is no need to estimate it from historical phase I data (remember the assumption that Cp and Cpk value are calculated from stable process operation?).  The Shewhart control limits would be: :math:`\overline{\overline{x}} \pm 3 \times \frac{\sigma}{\sqrt{n}} = 2 \pm 3 \times 0.0784 / 2`.  The LCL = 1.88 mm and the UCL = 2.12 mm.
 	#.	An illustration is shown here with the USL, LSL, LCL and UCL, and target values.  This question merely required you to show the LCL and UCL within the LSL and USL, on any normal distribution curve.  However, for illustration, I have added to the diagram the distribution for the Shewhart chart (thicker line) and distribution for the raw process data (thinner line).  
 
 	.. figure:: images/plastic-sheet-control-specification-limits.png
