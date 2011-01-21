@@ -218,7 +218,7 @@ The derivation in equation :eq:`shewhart-theoretical` requires knowing the popul
 
 Let's take a look at phase, the step where we are building the control chart's limits from historical data.  Create a new variable |xdb| :math:`= \frac{1}{K} \displaystyle \sum_{k=1}^{K}{ \overline{x}_k}`, where :math:`K` is the number of :math:`\overline{x}` samples we have available to build the control chart, called the :index:`phase 1 <single: Phase 1 (control charts)>` data.  Alternatively, just set |xdb| to the desired target value for :math:`x`.  Note that |xdb| is sometimes called the  *grand mean* in control chart textbooks.
 
-The next hurdle is :math:`\sigma`.  We do not show it here, but for a subgroup of :math:`n` samples, an unbiased estimator of :math:`\sigma` is given by :math:`\frac{\overline{S}}{a_n}`.  Now :math:`\overline{S} =  \frac{1}{K} \displaystyle \sum_{k=1}^{K}{s_k}` (simply the average standard deviation calculated from :math:`K` subgroups).  Values for :math:`a_n` are found from a table and depend on the number of samples we use within each subgroup.
+The next hurdle is :math:`\sigma`.  We do not show it here, but for a subgroup of :math:`n` samples, an unbiased estimator of :math:`\sigma` is given by :math:`\frac{\displaystyle \overline{S}}{a_n}`.  Now :math:`\overline{S} =  \frac{\displaystyle 1}{K} \displaystyle \sum_{k=1}^{K}{s_k}` (simply the average standard deviation calculated from :math:`K` subgroups).  Values for :math:`a_n` are found from a table and depend on the number of samples we use within each subgroup.
 
 ===========  ====== ====== ====== ====== ====== ====== ====== =============== 
 :math:`n`    2      3      4      5      6      7      8      :math:`\infty`
@@ -259,7 +259,7 @@ Now that we have an unbiased estimator for the standard deviation from these :ma
 	:label: shewhart-limits
 	
 	\begin{array}{rcccl} 
-		 \text{LCL} = \overline{\overline{x}} - 3 \cdot \frac{\overline{S}}{a_n\sqrt{n}} &&  &&  \text{UCL} = \overline{\overline{x}} + 3 \cdot \frac{\overline{S}}{a_n\sqrt{n}} 
+		 \text{LCL} = \overline{\overline{x}} - 3 \cdot \frac{\displaystyle \overline{S}}{a_n\sqrt{n}} &&  &&  \text{UCL} = \overline{\overline{x}} + 3 \cdot \frac{\displaystyle \overline{S}}{a_n\sqrt{n}} 
 	\end{array}
 
 .. rubric:: Example
@@ -275,10 +275,10 @@ The data below represent the average of the :math:`n=5` samples from each bale, 
 
 The overall average is :math:`\overline{\overline{x}} = 238.8` and :math:`\overline{S} = 9.28`.  Calculate the lower and upper control limits for this Shewhart chart.  Were there any points in the phase I data (training phase) that exceeded these limits?
 
-	-	LCL = :math:`238.8 - 3 \cdot \frac{9.28}{(0.94)(\sqrt{5})} = 225.6`
-	-	UCL = :math:`238.8 + 3 \cdot \frac{9.28}{(0.94)(\sqrt{5})} = 252.0`
-	-	The sample with value of 253 exceeds these limits.  
-	-	This point should be excluded and the limits recomputed: the new :math:`\overline{\overline{x}} = 238.0` and :math:`\overline{S} = 9.68` and the new LCL = 224 and UCL = 252
+	-	LCL = :math:`238.8 - 3 \cdot \frac{9.28}{(0.94)(\sqrt{5})}` = 225.6
+	-	UCL = :math:`238.8 + 3 \cdot \frac{9.28}{(0.94)(\sqrt{5})}` = 252.0
+	-	The sample with value of 253 exceeds the calculated upper control limit.  
+	-	That point should be excluded and the limits recomputed: the new :math:`\overline{\overline{x}} = 238.0` and :math:`\overline{S} = 9.68` and the new LCL = 224 and UCL = 252
 	
 .. todo: show chart in class
 		
@@ -493,7 +493,7 @@ The upper and lower control limits for the EWMA plot are plotted in the same way
 	:label: ewma-limits
 	
 	\begin{array}{rcccl} 
-		 \text{LCL} = \overline{\overline{x}} - 3 \cdot \sigma_{\text{Shewhart}}\sqrt{\frac{\lambda}{2-\lambda}} &&  &&  \text{UCL} = \overline{\overline{x}} + 3 \cdot \sigma_{\text{Shewhart}} \sqrt{\frac{\lambda}{2-\lambda}}
+		 \text{LCL} = \overline{\overline{x}} - 3 \cdot \sigma_{\text{Shewhart}}\sqrt{\frac{\displaystyle \lambda}{2-\lambda}} &&  &&  \text{UCL} = \overline{\overline{x}} + 3 \cdot \sigma_{\text{Shewhart}} \sqrt{\frac{\displaystyle \lambda}{2-\lambda}}
 	\end{array} 
 
 where :math:`\sigma_{\text{Shewhart}}` represents the standard deviation as calculated for the Shewhart chart.  Actually one neat implementation is to show both the Shewhart and EWMA plot on the same chart, with both sets of limits.  The EWMA value plotted is actually the one-step ahead prediction of the next :math:`x`-value, which can be informative for slow-moving processes.
@@ -714,7 +714,7 @@ Exercises
 
 	This question is likely to generate a wide range of answers.  No surprise, since there are strong feelings on this point in the `quality control literature <http://filebox.vt.edu/users/bwoodall/2000%20JQT%20Controversies%20and%20Contradictions.pdf>`_ as well.  The confusion stems from the fact that if you are in phase I, then no, a control chart is not a confidence interval, but in phase II, then you can argue that confidence intervals have many similarities to control charts.
 
-	But, in general, I feel the above statement is incorrect.  Even in phase II a monitoring chart is not really like an on-line confidence interval.  Mainly because a monitoring chart is intended to check for *system stability*, and to alarm quickly if the system moves away from the assumed distribution (usually a normal distribution).  The monitoring limits are calculated to provide the required alarm level (the ARL).  A confidence interval, on the other hand, defines the limits within which we expect to find the true population mean with a certain degree of confidence (e.g. 95% probability that the true mean lies within the limits), when we use a particular data set.
+	But, in general, I feel the above statement is incorrect.  Even in phase II a monitoring chart is not really like an on-line confidence interval.  Mainly because a monitoring chart is intended to check for *system stability*, and to alarm quickly if the system moves away from the assumed distribution (usually a normal distribution).  The monitoring limits are calculated to provide the required alarm level (the ARL).  A confidence interval, on the other hand, defines the limits within which we expect to find the true population mean with a certain degree of confidence when we use a given sample of data.
 
 	The similarity comes from the way the monitoring chart's limits are calculated: by using the concept of a confidence interval.  But a monitoring chart's limits can and *should be adjusted* up or down to improve your type I and II error levels, while for a confidence interval, the only way to alter the limits is to take a different sample size, take a new sample of data, and choose a different level of confidence.  But doing this, will still only find you bounds within which you expect the population mean to lie.  A monitoring chart's bounds are only there to signal when things are not the same any more.
 
@@ -1115,7 +1115,7 @@ Exercises
 
 	-	Use a single point at a particular wavelength in the spectrum (e.g. the peak at 1200 nm or 1675 nm).
 	-	Use a weighted sum of a region of the spectrum, or the integrated area under a region in the spectrum (these 2 approaches are similar/equivalent)
-	-	Use the spectrum to predict a certain property of interest, and then monitor that property instead.  One group gave a nice example: use the spectrum to predict the colour of cookies (i.e. how well baked they are).
+	-	Use the spectrum to predict a certain property of interest, and then monitor that property instead.  For example: use the spectrum to predict the colour of cookies (i.e. how well baked they are) and monitor the "well-bakedness" characteristic.
 
 	Later on we will learn about :ref:`multivariate monitoring methods <LVM-monitoring>`.
 	
