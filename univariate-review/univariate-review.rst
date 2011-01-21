@@ -1814,7 +1814,8 @@ Exercises
 		\text{Standard deviation:} &\qquad 1.16 
 
 .. answer::
-
+	:fullinclude: no 
+	
 	The confidence interval for a mean requires the assumption that the individual numbers are taken from a normal distribution, and they are sampled independently (no sample has an effect on the others).  Under these assumptions we can calculate a :math:`z`-value for the sampled mean, :math:`\overline{x}`, and construct upper and lower bounds reflecting the probability of sampling that :math:`z`-value.
 	
 	.. math::
@@ -2053,6 +2054,7 @@ Exercises
 	You plan to run a series of 22 experiments to measure the economic advantage, if any, of switching to a corn-based raw material, rather than using your current sugar-based material. You can only run one experiment per day, and there is a high cost to change between raw material dispensing systems.  Describe two important precautions you would implement when running these experiments, so you can be certain your results will be accurate.
 
 .. answer::
+	:fullinclude: no 
 
 	Two important precautions one has to take are:
 
