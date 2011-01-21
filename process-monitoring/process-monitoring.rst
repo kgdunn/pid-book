@@ -340,7 +340,7 @@ The run length changes if the process level shifts up or down.  What is the ARL 
 Extensions to the basic Shewhart chart
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*	The :index:`Western Electric rules`:  we saw above how the ARL is only decreased by a small amount if a true shift in the process mean occurs, from :math:`\mu` to :math:`\mu + \Delta\sigma`. The Western Electric (then known as AT&T) rules are an attempt to more rapidly detect a process shift, by raising an alarm when these *improbable* events occur:
+*	The :index:`Western Electric rules`:  we saw above how the ARL is only decreased by a small amount if a true shift in the process mean occurs, from :math:`\mu` to :math:`\mu + \Delta\sigma`. The **Western Electric rules** are an attempt to more rapidly detect a process shift, by raising an alarm when these *improbable* events occur:
 
 	#. 2 out of 3 points lie beyond :math:`2\sigma` on the same side of the centre line
 	#. 4 out of 5 points lie beyond :math:`1\sigma` on the same side of the centre line

@@ -2064,7 +2064,7 @@ Exercises
      
 .. question::
 
-    There are two analytical techniques for measuring BOD (see question 1).  You wish to evaluate the two testing procedures, so that you can select the test which has lower cost, and fastest turn-around time, but without a compromise in accuracy.  Is there a difference in accuracy between the two methods?  Are you happy with this answer?   These are the data:
+    There are two analytical techniques for measuring BOD.  You wish to evaluate the two testing procedures, so that you can select the test which has lower cost, and fastest turn-around time, but without a compromise in accuracy.  Is there a difference in accuracy between the two methods?  Are you happy with this answer?   These are the data:
 
 	=============== =================
 	Dilution method Manometric method
@@ -2092,7 +2092,7 @@ Exercises
 	    :align: center
 	    :scale: 60
 
-	Now let's look at the analytical answer.  As before, using the code from question 4, we can calculate :math:`z = 1.86 = \dfrac{6.27}{3.375}` (where :math:`s_p^2 = 62.7`), with a probability of 96.1% that we will have a value smaller than this (risk = 3.9% that we are wrong).  A confidence interval would be :math:`-0.77 <  \mu_{\text{M}} - \mu_{\text{D}}< 13.3`.  And it is at this point that you should realize the problem, even if you didn't plot your data.  The fact that the confidence interval only just includes zero is what worries me; if the two methods were roughly equivalent, then the interval should span zero with rough symmetry. But this is too close.
+	Now let's look at the analytical answer.  As before, we can calculate :math:`z = 1.86 = \dfrac{6.27}{3.375}` (where :math:`s_p^2 = 62.7`), with a probability of 96.1% that we will have a value smaller than this (risk = 3.9% that we are wrong).  A confidence interval would be :math:`-0.77 <  \mu_{\text{M}} - \mu_{\text{D}}< 13.3`.  And it is at this point that you should realize the problem, even if you didn't plot your data.  The fact that the confidence interval only just includes zero is what should raise concern; if the two methods were roughly equivalent, then the interval should span zero with rough symmetry. But this is too close.
 
 	So omitting the second point and repeating the analysis gives: calculate :math:`z = 3.24 = \dfrac{9.20}{2.84}` (where :math:`s_p^2 = 40.4`), with a probability of 99.8% that we will have a value smaller than this (risk = 0.2% that we are wrong).  A confidence interval would be :math:`3.2 <  \mu_{\text{M}} - \mu_{\text{D}}< 15.2`; this is a result that is much more aligned with the plotted data.
 

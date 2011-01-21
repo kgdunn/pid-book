@@ -55,6 +55,7 @@ class Question_Answer(Directive):
                 out.append(nodes.paragraph('', ''))
                 out.append(self.add_content())
             elif self.options.get('short', ''):
+                out.append(nodes.paragraph('', ''))
                 out.append(nodes.emphasis('', 'Short answer'))
                 out.append(nodes.Text(': ' + self.options.get('short')))
 
