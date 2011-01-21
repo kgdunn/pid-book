@@ -1815,14 +1815,14 @@ Exercises
 
 .. answer::
 
-	The confidence interval for a mean requires the assumption that the individual numbers are taken from a normal distribution, and they are sampled independently (no sample has an effect on the others).  Under these assumptions we can calculate a |z|-value for the sampled mean, :math:`\overline{x}`, and construct upper and lower bounds reflecting the probability of sampling that |z|-value.
+	The confidence interval for a mean requires the assumption that the individual numbers are taken from a normal distribution, and they are sampled independently (no sample has an effect on the others).  Under these assumptions we can calculate a :math:`z`-value for the sampled mean, :math:`\overline{x}`, and construct upper and lower bounds reflecting the probability of sampling that :math:`z`-value.
 	
 	.. math::
 		\begin{array}{rcccl}
 		-c_n &\leq& \dfrac{\overline{x} - \mu}{\sigma/\sqrt{n}} &\leq& c_n \\
 		\end{array}
 		
-	Since we don't know the value of :math:`\sigma`, we use the sampled value, :math:`s=1.16`.  But this means our |z|-value is no longer normally distributed, rather it is :math:`t`-distributed.  The limits, :math:`\pm c_t` that contain 95% of the area under the |t|-distribution, with 11 degrees of freedom, are 2.20 (or any close approximation from the tables provided).  From this we get the confidence interval:
+	Since we don't know the value of :math:`\sigma`, we use the sampled value, :math:`s=1.16`.  But this means our :math:`z`-value is no longer normally distributed, rather it is :math:`t`-distributed.  The limits, :math:`\pm c_t` that contain 95% of the area under the :math:`t`-distribution, with 11 degrees of freedom, are 2.20 (or any close approximation from the tables provided).  From this we get the confidence interval:
 	
 	.. math::
 		\begin{array}{rcccl}
@@ -1840,12 +1840,12 @@ Exercises
 .. answer::
 	:fullinclude: no 
 
-	The objective is to calculate |n|, the number of samples.  Let :math:`\overline{x}` be the average of these |n| samples, and this will be distributed according to the normal distribution with mean and standard deviation as shown below, if the samples are taken independently (which may not be possible in practice!):
+	The objective is to calculate :math:`n`, the number of samples.  Let :math:`\overline{x}` be the average of these :math:`n` samples, and this will be distributed according to the normal distribution with mean and standard deviation as shown below, if the samples are taken independently (which may not be possible in practice!):
 
 	.. math::
 		z = \dfrac{\overline{x}_{\text{BOD}} - \mu_{\text{BOD}}}{\sigma_{\text{BOD}}}
 	
-	The value of |z| will lie within this confidence interval:
+	The value of :math:`z` will lie within this confidence interval:
 
 	.. math::
 	
@@ -1861,7 +1861,7 @@ Exercises
 		- use 95% confidence intervals
 		- assume we know the population standard deviation, so we use the normal distribution to calculate :math:`c_n` as ``qnorm(1-0.05/2)`` in R.
 	
-	Solving for |n| at these values gives: :math:`n = \left(\dfrac{2(1.96)(\hat{\sigma}_{\text{BOD}})}{2}\right)^2 = (1.96 \times 4)^2 \sim 62`.  This large number of samples makes sense: compare the range (2 mg/L) to the standard deviation of 4 mg/L: you have to take a large number of samples to get your precision up when you have so much noise in your signal.
+	Solving for :math:`n` at these values gives: :math:`n = \left(\dfrac{2(1.96)(\hat{\sigma}_{\text{BOD}})}{2}\right)^2 = (1.96 \times 4)^2 \sim 62`.  This large number of samples makes sense: compare the range (2 mg/L) to the standard deviation of 4 mg/L: you have to take a large number of samples to get your precision up when you have so much noise in your signal.
 
 
 .. question::
@@ -1966,19 +1966,19 @@ Exercises
 	.. math::
 	    z = \frac{(\overline{x}_B - \overline{x}_A) - (\mu_B - \mu_A)}{\sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}}
 
-	Assuming the two *population* means are identical, the |z|-value is a direct estimate of the probability with which that assumption is wrong.  A |z|-value around zero indicates that the assumption was true, a large or small |z|-value indicates that the assumption was wrong.
+	Assuming the two *population* means are identical, the :math:`z`-value is a direct estimate of the probability with which that assumption is wrong.  A :math:`z`-value around zero indicates that the assumption was true, a large or small :math:`z`-value indicates that the assumption was wrong.
 
 	So we can calculate the :math:`z`-value, and the corresponding probability for each pair of reactor differences using the code below.  
 
 	But the next problem we face is that we don't know the value of :math:`\sigma`. We can estimate it however, by pooling the variances of the two groups. Strictly speaking we should do a check for comparable variances before pooling them - described :ref:`in a previous section <univariate-pooled-variance>`.
 
-	When we use the pooled variance now, then the assumption that the |z|-value follows the normal distribution is not correct anymore; it follows the :math:`t`-distribution, with the pooled number of degrees of freedom.  Once we have the |z|-value we can calculate the probability of finding a |z|-value of at least that big.  Anything beyond that is the risk that we are wrong.
+	When we use the pooled variance now, then the assumption that the :math:`z`-value follows the normal distribution is not correct anymore; it follows the :math:`t`-distribution, with the pooled number of degrees of freedom.  Once we have the :math:`z`-value we can calculate the probability of finding a :math:`z`-value of at least that big.  Anything beyond that is the risk that we are wrong.
 
-	We can also expand the |z| value into a confidence interval at a given confidence level.  We do this in the code at the 95% level (see ``LB`` and ``UB`` terms).
+	We can also expand the :math:`z` value into a confidence interval at a given confidence level.  We do this in the code at the 95% level (see ``LB`` and ``UB`` terms).
 
-	    -   :math:`\mu_{104} - \mu_{105}`: |z| = 1.25; risk we are wrong: 89.1%; CI: :math:`-31.4 \leq \mu_{104} - \mu_{105} \leq 134`
-	    -   :math:`\mu_{104} - \mu_{107}`: |z| = 1.41; risk we are wrong: 91.6%; CI  :math:`-21.4 \leq \mu_{104} - \mu_{107} \leq 120`
-	    -   :math:`\mu_{105} - \mu_{107}`: |z| = -0.0532; risk we are wrong: 52.1% and :math:`-81.8 \leq \mu_{105} - \mu_{107} \leq 77.6` (note that the minimum risk is 50%; the risk is not 47.8%)
+	    -   :math:`\mu_{104} - \mu_{105}`: :math:`z` = 1.25; risk we are wrong: 89.1%; CI: :math:`-31.4 \leq \mu_{104} - \mu_{105} \leq 134`
+	    -   :math:`\mu_{104} - \mu_{107}`: :math:`z` = 1.41; risk we are wrong: 91.6%; CI  :math:`-21.4 \leq \mu_{104} - \mu_{107} \leq 120`
+	    -   :math:`\mu_{105} - \mu_{107}`: :math:`z` = -0.0532; risk we are wrong: 52.1% and :math:`-81.8 \leq \mu_{105} - \mu_{107} \leq 77.6` (note that the minimum risk is 50%; the risk is not 47.8%)
     
 	While all three reactors have confidence intervals that span zero at the 95% level, notice how the interval gives us a feel for the degree of difference.  Clearly **reactors TK105 and TK107 are the most similar**, however all 3 are statistically equivalent from a confidence interval point of view. Contrast this to using a hypothesis test, which you may have encountered in other statistical courses.  A hypothesis test just tells you  "yes" or "no"; a confidence interval gives a much better engineering feel for the degree of difference.  Also see the solution to question 6 that highlights another advantage of confidence intervals.
 
@@ -1993,7 +1993,7 @@ Exercises
 
 	The code below shows how the paired differences are evaluated for each of the 3 combinations.  The paired test highlights the similarity between TK105 and TK107, the same as the unpaired test.  However the paired test shows much more clearly how different tanks TK104 and TK105 are, and especially TK104 and TK107.  
 
-	In the case of TK104 and TK105 the difference might seem surprising - take a look back at the box plots and how much they overlap.   However a paired test cannot be judged by a box plot, because it looks at the case-by-case difference, not the overall between group difference.  A better plot with which to confirm the really large |z|-value for the TK105 and TK107 difference is the plot of the differences.
+	In the case of TK104 and TK105 the difference might seem surprising - take a look back at the box plots and how much they overlap.   However a paired test cannot be judged by a box plot, because it looks at the case-by-case difference, not the overall between group difference.  A better plot with which to confirm the really large :math:`z`-value for the TK105 and TK107 difference is the plot of the differences.
 
 	.. literalinclude:: code/brittleness-paired-comparison-assignment3-2010.R
 	       :language: s
@@ -2040,7 +2040,7 @@ Exercises
 
 	        z = \dfrac{20.77 - 15.27}{47.09 \left(\dfrac{1}{30} + \dfrac{1}{30} \right)} = 3.1
     
-	    But since we used an estimated variance, we cannot say that |z| comes from the normal distribution anymore.  It now follows the :math:`t`-distribution with 58 degrees of freedom (which is still comparable to the normal distribution - see question 7 below).  The corresponding probability that :math:`z<3.1` is 99.85%, using the :math:`t`-distribution with 58 degrees of freedom.  This difference is significant; there is a very small probability that this difference is due to chance alone.
+	    But since we used an estimated variance, we cannot say that :math:`z` comes from the normal distribution anymore.  It now follows the :math:`t`-distribution with 58 degrees of freedom (which is still comparable to the normal distribution - see question 7 below).  The corresponding probability that :math:`z<3.1` is 99.85%, using the :math:`t`-distribution with 58 degrees of freedom.  This difference is significant; there is a very small probability that this difference is due to chance alone.
 
 	-   The code was modified to generate the matrix of z-value results in the comments below.  The largest difference is between Sunday and Wednesday, and the smallest difference is between Monday and Tuesday.
 

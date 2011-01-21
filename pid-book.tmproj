@@ -115,7 +115,7 @@
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>169</integer>
+			<integer>127</integer>
 			<key>selectFrom</key>
 			<dict>
 				<key>column</key>
@@ -131,10 +131,41 @@
 				<integer>184</integer>
 			</dict>
 		</dict>
+		<key>univariate-review/univariate-review.rst</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>558</integer>
+				<key>line</key>
+				<integer>1934</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>459</integer>
+			<key>firstVisibleLine</key>
+			<integer>1905</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>1922</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>558</integer>
+				<key>line</key>
+				<integer>1934</integer>
+			</dict>
+		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
 		<string>process-monitoring/process-monitoring.rst</string>
+		<string>univariate-review/univariate-review.rst</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
