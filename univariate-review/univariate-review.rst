@@ -346,7 +346,7 @@ We review here a couple of concepts that you should have seen in prior statistic
 
 			\begin{alignat*}{2}
 				\text{Population mean:} &\qquad&  \mathcal{E}\left\{x \right\} = \mu &= \frac{1}{N}\sum{x} \\
-				\text{Sample mean:}     &\qquad&                            \bar{x}  &= \frac{1}{n}\sum_{i=1}^{n}{x_i}
+				\text{Sample mean:}     &\qquad&                       \overline{x}  &= \frac{1}{n}\sum_{i=1}^{n}{x_i}
 			\end{alignat*}
 		
 	.. code-block:: s
@@ -369,7 +369,7 @@ We review here a couple of concepts that you should have seen in prior statistic
 
 	   	\begin{alignat*}{2}
 	      	\text{Population variance}: &\qquad& \mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} = \sigma^2 &= \frac{1}{N}\sum{(x-\mu)^2} \\
-			\text{Sample variance}:     &\qquad&                                                                             s^2  &= \frac{1}{n-1}\sum_{i=1}^{n}{(x_i - \bar{x})^2}
+			\text{Sample variance}:     &\qquad&                                                                             s^2  &= \frac{1}{n-1}\sum_{i=1}^{n}{(x_i - \overline{x})^2}
 		\end{alignat*}
 
 	Dividing by :math:`n-1` makes the variance statistic, :math:`s^2`, an unbiased estimator of the population variance, :math:`\sigma^2`.  However, in most engineering data sets our value for :math:`n` is large, so using a divisor of :math:`n`, which you might come across in computer software or other texts, rather than :math:`n-1` as shown here, has little difference.
@@ -381,7 +381,7 @@ We review here a couple of concepts that you should have seen in prior statistic
 		
 	The square root of variance, called the :index:`standard deviation` is a more useful measure of spread to engineers: it is easier to visualize on a histogram as it has the same units of the variable. 
 
-	**Degrees of freedom**: The denominator in the sample variance calculation, :math:`n-1`, is called the degrees of freedom.  We have one fewer than :math:`n` degrees of freedom, because there is a constraint that the sum of the deviations around :math:`\bar{x}` must add up to zero.  This constraint is from the definition of the mean.  However, if we knew what the sample mean was without having to estimate it, then we could subtract each :math:`x_i` from that value, and our degrees of freedom would be :math:`n`.
+	**Degrees of freedom**: The denominator in the sample variance calculation, :math:`n-1`, is called the degrees of freedom.  We have one fewer than :math:`n` degrees of freedom, because there is a constraint that the sum of the deviations around :math:`\overline{x}` must add up to zero.  This constraint is from the definition of the mean.  However, if we knew what the sample mean was without having to estimate it, then we could subtract each :math:`x_i` from that value, and our degrees of freedom would be :math:`n`.
 
 **Outliers**
 
@@ -794,10 +794,10 @@ Suppose we have a quantity of interest for a process, such as the daily profit p
 
 we can make the following statements:
 
-#. An estimate of the population mean is given by :math:`\bar{x} = \displaystyle  \dfrac{1}{n}  \sum_i^{i=n}{x_i}\qquad\qquad` (*this is not new*)
-#. The estimated population variance is :math:`s^2 =\displaystyle  \frac{1}{n-1}\sum_i^{i=n}{(x_i - \bar{x})^2}\qquad\qquad` (*we've seen this already*)
-#. This is new: the estimated mean, :math:`\bar{x}`, is also normally distributed with mean of :math:`\mu` and variance of :math:`\sigma^2/n`; mathematically: :math:`\displaystyle \bar{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`.  What does this mean and why are we interested in this?  It says that repeated estimates of the mean will be an accurate (unbiased) estimate of the population mean, and interestingly, the variance of that estimate is decreased by using a greater number of samples, :math:`n`, to estimate that mean.  This makes intuitive sense: the more **independent** samples of data we have, the lower the error (variance) in our estimate.
-#. Create a new variable :math:`z = \dfrac{\bar{x} - \mu}{s/\sqrt{n}}`, which subtracts off the population mean from our estimate of the mean, and divide through by the variance for :math:`\bar{x}`.  If our estimate of the population mean, :math:`\bar{x}`, is accurate, then the numerator is close to zero.  Dividing through by :math:`s/\sqrt{n}` firstly makes the :math:`z` variable dimensionless, and secondly, scales :math:`z` up or down according to the certainty we have in our estimate of :math:`\bar{x}`.  This new variable :math:`z` is distributed according to the :math:`t`-distribution.  We say that :math:`z` follows the :math:`t`-distribution with :math:`n-1` degrees of freedom, where the degrees of freedom refer to those from the calculating the standard deviation.
+#. An estimate of the population mean is given by :math:`\overline{x} = \displaystyle  \dfrac{1}{n}  \sum_i^{i=n}{x_i}\qquad\qquad` (*this is not new*)
+#. The estimated population variance is :math:`s^2 =\displaystyle  \frac{1}{n-1}\sum_i^{i=n}{(x_i - \overline{x})^2}\qquad\qquad` (*we've seen this already*)
+#. This is new: the estimated mean, :math:`\overline{x}`, is also normally distributed with mean of :math:`\mu` and variance of :math:`\sigma^2/n`; mathematically: :math:`\displaystyle \overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`.  What does this mean and why are we interested in this?  It says that repeated estimates of the mean will be an accurate (unbiased) estimate of the population mean, and interestingly, the variance of that estimate is decreased by using a greater number of samples, :math:`n`, to estimate that mean.  This makes intuitive sense: the more **independent** samples of data we have, the lower the error (variance) in our estimate.
+#. Create a new variable :math:`z = \dfrac{\overline{x} - \mu}{s/\sqrt{n}}`, which subtracts off the population mean from our estimate of the mean, and divide through by the variance for :math:`\overline{x}`.  If our estimate of the population mean, :math:`\overline{x}`, is accurate, then the numerator is close to zero.  Dividing through by :math:`s/\sqrt{n}` firstly makes the :math:`z` variable dimensionless, and secondly, scales :math:`z` up or down according to the certainty we have in our estimate of :math:`\overline{x}`.  This new variable :math:`z` is distributed according to the :math:`t`-distribution.  We say that :math:`z` follows the :math:`t`-distribution with :math:`n-1` degrees of freedom, where the degrees of freedom refer to those from the calculating the standard deviation.
 #. Note that the new variable :math:`z` only requires we know the population mean (:math:`\mu`), not the population variance; rather we use our estimate of the variance :math:`s/\sqrt{n}` in place of the population variance.
 
 .. figure:: images/t-distribution-comparison.png
@@ -850,7 +850,7 @@ Here are 9 sampled values:  ``23, 19, 17, 18, 24, 26, 21, 14, 18``. The sample a
 
 	.. only:: inst
 	
-		The interval is :math:`\displaystyle \bar{x}  - c_n\frac{\sigma}{\sqrt{n}} < \mu < \bar{x}  + c_n\frac{\sigma}{\sqrt{n}}`.  The values of :math:`c_n` are ``qnorm(1 - 0.05/2) = 1.95996``.  So there is 95% chance that the interval :math:`\pm \ 2.286` contains :math:`\mu` (2.286 = 3.5/sqrt(9)*1.95996).
+		The interval is :math:`\displaystyle \overline{x}  - c_n\frac{\sigma}{\sqrt{n}} < \mu < \overline{x}  + c_n\frac{\sigma}{\sqrt{n}}`.  The values of :math:`c_n` are ``qnorm(1 - 0.05/2) = 1.95996``.  So there is 95% chance that the interval :math:`\pm \ 2.286` contains :math:`\mu` (2.286 = 3.5/sqrt(9)*1.95996).
 	
 #. Now construct the :math:`z`-value for the sample average.  
 
@@ -880,7 +880,7 @@ Here are 9 sampled values:  ``23, 19, 17, 18, 24, 26, 21, 14, 18``. The sample a
 	
 		.. only:: inst
 
-			The interval is :math:`\displaystyle \bar{x}  - c_t\frac{s}{\sqrt{n}} < \mu < \bar{x}  + c_t\frac{s}{\sqrt{n}}`. The values of :math:`c_t` are :math:`\pm` ``qt(1 - 0.05/2, df=8) = 2.306004``.  So there is 95% chance that the interval :math:`\pm \ 2.929` contains :math:`\mu` (2.929 = 3.81/sqrt(9)*2.306).
+			The interval is :math:`\displaystyle \overline{x}  - c_t\frac{s}{\sqrt{n}} < \mu < \overline{x}  + c_t\frac{s}{\sqrt{n}}`. The values of :math:`c_t` are :math:`\pm` ``qt(1 - 0.05/2, df=8) = 2.306004``.  So there is 95% chance that the interval :math:`\pm \ 2.929` contains :math:`\mu` (2.929 = 3.81/sqrt(9)*2.306).
 		
 #. Compare the answers for parts 3 and 4 of the above questions. What is the advantage of the interval calculated in part 4?
 
@@ -895,7 +895,7 @@ Here are 9 sampled values:  ``23, 19, 17, 18, 24, 26, 21, 14, 18``. The sample a
 .. sum((x-20) * (x-20)) = 116, DOF=8, s^2 = 116/8 = 14.5, s=3.81.  Distribution is normal, mean=\mu, stddev=3.5/sqrt(9) = (3.5^2)/9 = 2.286
 .. s/sqrt(n) = 3.81/sqrt(9) = 1.27
 
-.. The value of :math:`\bar{x}` is not normally distributed, it is :math:`t`distributed.  This means that if we had to repeatedly calculate :math:`\bar{x}`, those averages would follow a :math:`t`distribution, even though the source values, :math:`x_i` are normally distributed. 
+.. The value of :math:`\overline{x}` is not normally distributed, it is :math:`t`distributed.  This means that if we had to repeatedly calculate :math:`\overline{x}`, those averages would follow a :math:`t`distribution, even though the source values, :math:`x_i` are normally distributed. 
 
 .. another example
 	
@@ -963,7 +963,7 @@ So far we have calculated point estimates of parameters, called statistics.  In 
 
 But a confidence interval conveys a similar concept, in a useful manner.  It gives an estimate of the location and spread and uncertainty associated with that parameter (e.g. impurity level in this case).
 
-Let's return to the previous viscosity example, where we had the 9 viscosity measurements ``23, 19, 17, 18, 24, 26, 21, 14, 18``. The sample average was :math:`\bar{x} = 20.0` and the standard deviation was :math:`s = 3.81`.  The :math:`z`-value (also called a deviate) is: :math:`z = \dfrac{\bar{x} - \mu}{s/\sqrt{n}}`.  And we showed this was distributed according to the :math:`t`-distribution with 8 degrees of freedom.  
+Let's return to the previous viscosity example, where we had the 9 viscosity measurements ``23, 19, 17, 18, 24, 26, 21, 14, 18``. The sample average was :math:`\overline{x} = 20.0` and the standard deviation was :math:`s = 3.81`.  The :math:`z`-value (also called a deviate) is: :math:`z = \dfrac{\overline{x} - \mu}{s/\sqrt{n}}`.  And we showed this was distributed according to the :math:`t`-distribution with 8 degrees of freedom.  
 
 Calculating a confidence interval requires we find a range within which that :math:`z`-value occurs.  Most often we are interested in symmetrical confidence intervals, so the procedure is:
 
@@ -971,8 +971,8 @@ Calculating a confidence interval requires we find a range within which that :ma
 		:label: CI-mean-variance-unknown
 		
 		\begin{array}{rcccl} 
-			  - c_t                                              &\leq& \displaystyle \frac{\bar{x} - \mu}{s/\sqrt{n}} &\leq &  +c_t\\
-			\bar{x}  - c_t \dfrac{s}{\sqrt{n}}                   &\leq&  \mu                                                 &\leq& \bar{x}  + c_t\dfrac{s}{\sqrt{n}} \\
+			  - c_t                                              &\leq& \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}} &\leq &  +c_t\\
+			\overline{x}  - c_t \dfrac{s}{\sqrt{n}}                   &\leq&  \mu                                                 &\leq& \overline{x}  + c_t\dfrac{s}{\sqrt{n}} \\
 			  \text{LB}                                          &\leq&  \mu                                                 &\leq& \text{UB}
 		\end{array}
 	
@@ -984,11 +984,11 @@ Interpreting the confidence interval
 .. index:: 
 	single: confidence interval; interpreting
 
--	The expression in :eq:`CI-mean-variance-unknown` **does not** mean that :math:`\bar{x}` lies in the interval from LB (lower-bound) to UB (upper-bound).  It would be incorrect to say that the viscosity is 20 units and lies inside the range of 17.1 to 22.9 with a 95% probability.
+-	The expression in :eq:`CI-mean-variance-unknown` **does not** mean that :math:`\overline{x}` lies in the interval from LB (lower-bound) to UB (upper-bound).  It would be incorrect to say that the viscosity is 20 units and lies inside the range of 17.1 to 22.9 with a 95% probability.
 	
--	What the expression in :eq:`CI-mean-variance-unknown` **does mean**  is that :math:`\mu` lies in this interval.  The confidence interval is a range of possible values for :math:`\mu`, not for :math:`\bar{x}`.  Confidence intervals are for parameters, not for statistics.
+-	What the expression in :eq:`CI-mean-variance-unknown` **does mean**  is that :math:`\mu` lies in this interval.  The confidence interval is a range of possible values for :math:`\mu`, not for :math:`\overline{x}`.  Confidence intervals are for parameters, not for statistics.
 	
--	Notice that the upper and lower bounds are a function of the data sample used to calculate :math:`\bar{x}` and the number of points, :math:`n`.  If we take a different sample of data, we will get different bounds.
+-	Notice that the upper and lower bounds are a function of the data sample used to calculate :math:`\overline{x}` and the number of points, :math:`n`.  If we take a different sample of data, we will get different bounds.
 	
 -	What does the level of confidence mean?  It is the probability that the true population viscosity, :math:`\mu` is in the given range.  At 95% confidence, it means that 5% of the time the interval *will not contain* the true mean.  So if we collected 20 sets of samples, 19 times out of 20 the confidence interval range will contain the true mean, but one of those 20 confidence intervals is expected to not contain the true mean.
 
@@ -1052,21 +1052,21 @@ Interpreting the confidence interval
 Confidence interval for the mean from a normal distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The aim here is to calculate the confidence interval for :math:`\bar{x}`, given a sample of :math:`n` independent points, taken from the normal distribution.  Be sure to check those two assumptions before going ahead.
+The aim here is to calculate the confidence interval for :math:`\overline{x}`, given a sample of :math:`n` independent points, taken from the normal distribution.  Be sure to check those two assumptions before going ahead.
 
 There are 2 cases: one where you know the population variance (unlikely), and one where you do (the usual case).  Knowing the population variance, :math:`\sigma` is uncommon.  Our processes move around, in other words the population level, :math:`\mu` varies, so the variance about this mean is also not constant.  It is safer to use the confidence interval for the case when you do not know the variance, as it is a more conservative (i.e. wider) interval. 
 
 Variance is known
 ^^^^^^^^^^^^^^^^^^^
 
-When the variance is known, the confidence interval is given by :eq:`CI-mean-variance-known` below, derived from this :math:`z`-deviate:  :math:`z = \dfrac{\bar{x} - \mu}{\sigma/\sqrt{n}}`:
+When the variance is known, the confidence interval is given by :eq:`CI-mean-variance-known` below, derived from this :math:`z`-deviate:  :math:`z = \dfrac{\overline{x} - \mu}{\sigma/\sqrt{n}}`:
 
 .. math::
 		:label: CI-mean-variance-known
 		
 		\begin{array}{rcccl} 
-			  - c_n                                              &\leq& \displaystyle \frac{\bar{x} - \mu}{\sigma/\sqrt{n}}  &\leq &  +c_n\\
-			\bar{x}  - c_n \dfrac{\sigma}{\sqrt{n}}              &\leq&  \mu                                                 &\leq& \bar{x}  + c_n\dfrac{\sigma}{\sqrt{n}} \\
+			  - c_n                                              &\leq& \displaystyle \frac{\overline{x} - \mu}{\sigma/\sqrt{n}}  &\leq &  +c_n\\
+			\overline{x}  - c_n \dfrac{\sigma}{\sqrt{n}}              &\leq&  \mu                                                 &\leq& \overline{x}  + c_n\dfrac{\sigma}{\sqrt{n}} \\
 			  \text{LB}                                          &\leq&  \mu                                                 &\leq& \text{UB}
 		\end{array}
 
@@ -1078,14 +1078,14 @@ Variance is unknown
 .. index::
 	single: confidence interval; unknown variance
 
-In the more realistic case when the variance is unknown we use equation :eq:`CI-mean-variance-unknown`, repeated here below.  This is derived from the :math:`z`-deviate: :math:`z = \dfrac{\bar{x} - \mu}{s/\sqrt{n}}`:
+In the more realistic case when the variance is unknown we use equation :eq:`CI-mean-variance-unknown`, repeated here below.  This is derived from the :math:`z`-deviate: :math:`z = \dfrac{\overline{x} - \mu}{s/\sqrt{n}}`:
 
 .. math::
 	:label: CI-mean-variance-unknown-again
 		
 	\begin{array}{rcccl} 
-		  - c_t                                              &\leq& \displaystyle \frac{\bar{x} - \mu}{s/\sqrt{n}} &\leq &  +c_t\\
-		\bar{x}  - c_t \dfrac{s}{\sqrt{n}}                   &\leq&  \mu                                                 &\leq& \bar{x}  + c_t\dfrac{s}{\sqrt{n}} \\
+		  - c_t                                              &\leq& \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}} &\leq &  +c_t\\
+		\overline{x}  - c_t \dfrac{s}{\sqrt{n}}                   &\leq&  \mu                                                 &\leq& \overline{x}  + c_t\dfrac{s}{\sqrt{n}} \\
 		  \text{LB}                                          &\leq&  \mu                                                 &\leq& \text{UB}
 	\end{array}
 		
@@ -1173,7 +1173,7 @@ Comparison to a long-term reference set
 .. index:: 
 	single: long-term reference set
 
-Continuing the above example we can compare the past 10 runs from system B with the 10 runs from system A.  The average difference between these runs is :math:`\bar{x}_B - \bar{x}_A = 82.93 - 79.89 = 3.04` units of improved yield.  Now, if we have a long-term reference data set available, we can compare if any 10 historical, sequential runs, followed by another 10 historical, sequential runs had a difference that was this great.  If not, then we know that system B leads to a definite improvement, not likely to be caused by chance alone.
+Continuing the above example we can compare the past 10 runs from system B with the 10 runs from system A.  The average difference between these runs is :math:`\overline{x}_B - \overline{x}_A = 82.93 - 79.89 = 3.04` units of improved yield.  Now, if we have a long-term reference data set available, we can compare if any 10 historical, sequential runs, followed by another 10 historical, sequential runs had a difference that was this great.  If not, then we know that system B leads to a definite improvement, not likely to be caused by chance alone.
 
 	#. Imagine that we have have 300 historical data points from this system, tabulated in time order: yield from batch 1, 2, 3 ...  (the data appear on the `website <http://datasets.connectmv.com/info/batch-yields>`_).
 	#. Calculate the average yields from batches 1 to 10. Then calculate the average yield from batches 11 to 20.  Notice that this is exactly like the experiment we performed when we acquired data for system.  Two groups of 10 batches, with the groups formed from sequential batches.
@@ -1220,7 +1220,7 @@ A reference data set may not always be available, only the data from the 20 expe
 
 How could the assumption of independence (random sampling) be made more realistically?  How is the :index:`lack of independence <single: independence; lack of>` detrimental?  We show below that the assumption of independence is made twice: the samples within group A and B must be independent; furthermore, the samples between the groups should be independent. But first we have to understand why the assumption of independence is required, by understanding the usual approach for estimating if differences are significant or not.
 
-The usual approach for assessing if the difference between :math:`\bar{x}_B - \bar{x}_A` is significant follows this approach:
+The usual approach for assessing if the difference between :math:`\overline{x}_B - \overline{x}_A` is significant follows this approach:
 
 	#.  Assume the data for sample A and sample B are normally distributed (we can verify that as shown in the section on the normal distribution - using qq-plots) 
 	#.  Assume the data for sample A and sample B have the same population variance, :math:`\sigma_A = \sigma_B = \sigma` (there is a test for this, see the next section)
@@ -1231,24 +1231,24 @@ The usual approach for assessing if the difference between :math:`\bar{x}_B - \b
 			:nowrap:
 
 				\begin{alignat*}{2}
-					\mathcal{V}\left\{\bar{x}_A\right\} = \frac{\sigma^2_A}{n_A} &\qquad\qquad & \mathcal{V}\left\{\bar{x}_B\right\} = \frac{\sigma^2_B}{n_B}
+					\mathcal{V}\left\{\overline{x}_A\right\} = \frac{\sigma^2_A}{n_A} &\qquad\qquad & \mathcal{V}\left\{\overline{x}_B\right\} = \frac{\sigma^2_B}{n_B}
 				\end{alignat*}
 	
-	#.  Assuming independence again, but this time between groups, the means of each sample group would be independent as well, i.e. :math:`\bar{x}_A` and :math:`\bar{x}_B` are independent.  This implies that:
+	#.  Assuming independence again, but this time between groups, the means of each sample group would be independent as well, i.e. :math:`\overline{x}_A` and :math:`\overline{x}_B` are independent.  This implies that:
 	
 		.. math::
 		   :label: add-variance
 		
-					\mathcal{V}\left\{\bar{x}_B - \bar{x}_A\right\} = \frac{\sigma^2}{n_A} + \frac{\sigma^2}{n_B} = \sigma^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)
+					\mathcal{V}\left\{\overline{x}_B - \overline{x}_A\right\} = \frac{\sigma^2}{n_A} + \frac{\sigma^2}{n_B} = \sigma^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)
 			
-	#. Using the central limit theorem, even if the samples in A and the samples in B are non-normal, the sample averages :math:`\bar{x}_A` and :math:`\bar{x}_B` will be much more normal, even for small sample sizes.  So the difference between these means will also be more normal: :math:`\bar{x}_B - \bar{x}_A`.  Now express this difference in the form of a :math:`z`-deviate:
+	#. Using the central limit theorem, even if the samples in A and the samples in B are non-normal, the sample averages :math:`\overline{x}_A` and :math:`\overline{x}_B` will be much more normal, even for small sample sizes.  So the difference between these means will also be more normal: :math:`\overline{x}_B - \overline{x}_A`.  Now express this difference in the form of a :math:`z`-deviate:
 	
 		.. math::
 			:label: zvalue-for-difference
 
-			z = \frac{(\bar{x}_B - \bar{x}_A) - (\mu_B - \mu_A)}{\sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}}
+			z = \frac{(\overline{x}_B - \overline{x}_A) - (\mu_B - \mu_A)}{\sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}}
 				
-	 We could ask, what is the probability of seeing a :math:`z` value from equation :eq:`zvalue-for-difference` of that magnitude?  Recall that this :math:`z`-value is the equivalent of :math:`\bar{x}_B - \bar{x}_A`, expressed in deviation form, and we are interested if this difference is due to chance.  So we should ask, what is the probability of getting a value of :math:`z` **greater** than this? 
+	 We could ask, what is the probability of seeing a :math:`z` value from equation :eq:`zvalue-for-difference` of that magnitude?  Recall that this :math:`z`-value is the equivalent of :math:`\overline{x}_B - \overline{x}_A`, expressed in deviation form, and we are interested if this difference is due to chance.  So we should ask, what is the probability of getting a value of :math:`z` **greater** than this? 
 		
 	 The only question remains is what is a suitable value for :math:`\sigma`?  As we have seen before, when we have a large enough reference set, then we can use the value of :math:`\sigma` from the historical data, called an *external estimate*.  Or we can use an *internal estimate* of spread; both approaches are discussed below.
 	
@@ -1259,7 +1259,7 @@ The usual approach for assessing if the difference between :math:`\bar{x}_B - \b
 					:nowrap:
 
 						\begin{alignat*}{4}
-							(\bar{x}_B - \bar{x}_A) - c_n \sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}  &\qquad<\qquad& \mu_B - \mu_A &\qquad<\qquad& (\bar{x}_B - \bar{x}_A) + c_n \sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}
+							(\overline{x}_B - \overline{x}_A) - c_n \sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}  &\qquad<\qquad& \mu_B - \mu_A &\qquad<\qquad& (\overline{x}_B - \overline{x}_A) + c_n \sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}
 						\end{alignat*}
 
 
@@ -1285,7 +1285,7 @@ Discuss whether these experiments lead to :index:`independent data <single: inde
 			
 		-	Even so, this may still be inadequate, because what if the packaging sheet selected has overly high or low hydrophobicity (i.e. it is not representative of regular packaging sheets).  What should be done is that random packaging sheets should be selected, and they should be selected across different lots from the sheet supplier (sheets within one lot are likely to be more similar than between lots).  Then on each sheet we randomly apply coatings A and B, in random order.
 		
-		-	It is tempting to apply coating A and B to one half of the various sheets and measure the *difference* between the moisture repelling values from each half.  It is tempting because this approach would cancel out any base variation within the sheet.  Then we can go on to assess if this difference is significant.  There is nothing wrong with this methodology, however, there is a different, specific test for paired data (see the last section of these notes).  If you use the above test, you violate the assumption in step 5, which requires that :math:`\bar{x}_A` and :math:`\bar{x}_B` be independent.  Values within group A and B are independent, but not their sample averages (because you cannot calculate :math:`\bar{x}_A` and :math:`\bar{x}_B` independently - recall the analogy with selecting lottery tickets).
+		-	It is tempting to apply coating A and B to one half of the various sheets and measure the *difference* between the moisture repelling values from each half.  It is tempting because this approach would cancel out any base variation within the sheet.  Then we can go on to assess if this difference is significant.  There is nothing wrong with this methodology, however, there is a different, specific test for paired data (see the last section of these notes).  If you use the above test, you violate the assumption in step 5, which requires that :math:`\overline{x}_A` and :math:`\overline{x}_B` be independent.  Values within group A and B are independent, but not their sample averages (because you cannot calculate :math:`\overline{x}_A` and :math:`\overline{x}_B` independently - recall the analogy with selecting lottery tickets).
 	
 	b)	We are testing an alternative, cheaper raw material in our process, but want to be sure our product's final properties are unaffected.  Our raw material dispensing system will need to be modified to dispense material B.  This requires the production line to be shut down for 15 hours while the new dispenser, lent from the supplier, is installed.  The new supplier has given us 8 representative batches of their new material to test, and each test will take 3 hours.  We are inclined to run these 8 batches over the weekend: set up the dispenser on Friday night (15 hours), run the tests from Saturday noon to Sunday noon, then return the line back to normal for Monday's shift.  How might we violate the assumptions required by the data analysis steps above when we compare 8 batches of material A (collected on Thursday and Friday) to the 8 batches from material B?  What might we do to avoid these problems?
 	
@@ -1328,7 +1328,7 @@ But, because we do not always have a large and relevant body of data available, 
 	.. math::
 	
 		\begin{alignat*}{4}
-			(\bar{x}_B - \bar{x}_A) - c_n \sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}  &\qquad<\qquad& \mu_B - \mu_A &\qquad<\qquad& (\bar{x}_B - \bar{x}_A) + c_n \sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}
+			(\overline{x}_B - \overline{x}_A) - c_n \sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}  &\qquad<\qquad& \mu_B - \mu_A &\qquad<\qquad& (\overline{x}_B - \overline{x}_A) + c_n \sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}
 		\end{alignat*}
 	
 	.. todo:: this is a one-sided :math:`t`-test: why is the CI symmetric?
@@ -1359,7 +1359,7 @@ Check the probability of obtaining the :math:`z`-value in :eq:`zvalue-for-differ
 	:nowrap:
 	
 	\begin{alignat*}{2}
-	    z &= \dfrac{(\bar{x}_B - \bar{x}_A) - (\mu_B - \mu_A)}{\sqrt{\sigma^2 \left( \dfrac{1}{n_A} + \dfrac{1}{n_B}\right)}} \\
+	    z &= \dfrac{(\overline{x}_B - \overline{x}_A) - (\mu_B - \mu_A)}{\sqrt{\sigma^2 \left( \dfrac{1}{n_A} + \dfrac{1}{n_B}\right)}} \\
 		z &= \dfrac{(82.93-79.89) - (\mu_B - \mu_A)}{\displaystyle \sqrt{6.61^2 \left(\displaystyle \frac{1}{10} + \frac{1}{10}\right)}} \\
 		z &= \dfrac{3.04 - 0}{2.956} = 1.03
 	\end{alignat*}
@@ -1387,7 +1387,7 @@ Now using this value of :math:`s_P` instead of :math:`\sigma` in :eq:`zvalue-for
 .. math::
  
 
-	z &= \frac{(\bar{x}_B - \bar{x}_A) - (\mu_B - \mu_A)}{\sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}} \\
+	z &= \frac{(\overline{x}_B - \overline{x}_A) - (\mu_B - \mu_A)}{\sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}} \\
 	  &= \frac{(82.93 - 79.89) - (\mu_B - \mu_A)}{\sqrt{s_P^2 \left(\displaystyle \frac{1}{10} + \frac{1}{10}\right)}} \\
 	  &= \frac{3.04 - 0}{\sqrt{45.63 \times 2/10}} \\
 	  &= 1.01
@@ -1529,20 +1529,20 @@ The advantage of the paired test is that any :index:`systematic error` in our me
 
 	#.	Calculate the :math:`n` differences: :math:`w_1 = x_{B,1} - x_{A,1}; w_2 = x_{B,2} - x_{A,2}, \ldots` to create the sample of values :math:`w = [w_1, w_2, \ldots, w_n]`
 	#.	Assume these values, :math:`w`, are independent, because they are taken on independent objects (people, base packages, sheets of paper, *etc*)
-	#.	Calculate the mean, :math:`\bar{w}` and the standard deviation, :math:`s_w`, of these :math:`n` difference values.  
-	#.	What do we need to assume about the population from which :math:`w` comes?  Nothing.  We are not interested in the :math:`w` values, we are interested in :math:`\bar{w}`. OK, so what distribution would values of :math:`\bar{w}` come from?  By the central limit theorem, the :math:`\bar{w}` values should be normally distributed.  What are the population parameters?  We will say :math:`\bar{w} \sim \mathcal{N}\left(\mu_w, \sigma_w^2/n \right)`, where :math:`\mu_w = \mu_{A-B}`.
+	#.	Calculate the mean, :math:`\overline{w}` and the standard deviation, :math:`s_w`, of these :math:`n` difference values.  
+	#.	What do we need to assume about the population from which :math:`w` comes?  Nothing.  We are not interested in the :math:`w` values, we are interested in :math:`\overline{w}`. OK, so what distribution would values of :math:`\overline{w}` come from?  By the central limit theorem, the :math:`\overline{w}` values should be normally distributed.  What are the population parameters?  We will say :math:`\overline{w} \sim \mathcal{N}\left(\mu_w, \sigma_w^2/n \right)`, where :math:`\mu_w = \mu_{A-B}`.
 	
 	#.	Now calculate the :math:`z`-value, but use the sample standard deviation, instead of the population standard deviation.
 	
 		.. math::			
-			z = \frac{\bar{w} - \mu_w}{s_w / \sqrt{n}}
+			z = \frac{\overline{w} - \mu_w}{s_w / \sqrt{n}}
 			
 	#.	Because we have used the sample standard deviation, :math:`s_w`, we have to resort to the :math:`t`-distribution with :math:`n-1` degrees of freedom.
 	
 	#.	We can calculate a confidence interval, below, and if this interval includes zero, then the change from treatment A to treatment B had no effect.
 
 		.. math::		
-			\bar{w} - c_t \frac{s_w}{\sqrt{n}} < \mu_w < \bar{w} + c_t \frac{s_w}{\sqrt{n}}
+			\overline{w} - c_t \frac{s_w}{\sqrt{n}} < \mu_w < \overline{w} + c_t \frac{s_w}{\sqrt{n}}
 			
 		The value of :math:`c_t` is taken from the :math:`t`-distribution with :math:`n-1` degrees of freedom at the level of confidence required (use the ``qt(...)`` function in R to obtain the values of :math:`c_t`).
 
@@ -1727,7 +1727,7 @@ Exercises
 	.. literalinclude:: code/ammonia-in-wastewater.R
 		:language: s
 
-	An appropriate distribution appears to be the normal distribution, however the right hand side tail (upper tail) is slightly heavier (outside the given limits) than would be found on the normal distribution.  Assuming the data are normal, we can calculate the distribution's parameters as :math:`\bar{x} = \hat{\mu} = 36.1` and :math:`s= \hat{\sigma} = 8.52`.
+	An appropriate distribution appears to be the normal distribution, however the right hand side tail (upper tail) is slightly heavier (outside the given limits) than would be found on the normal distribution.  Assuming the data are normal, we can calculate the distribution's parameters as :math:`\overline{x} = \hat{\mu} = 36.1` and :math:`s= \hat{\sigma} = 8.52`.
 
 	The fact that the data are not independent is not an issue.  To calculate estimates of the parameter's distribution (the mean and standard deviation) we do not need to assume independence.  One way to see this: if I randomly reorder the data, I will still get the same value for the mean and standard deviation.  The assumption of independence is required for the central limit theorem, but we have not used that theorem here.
 
@@ -1744,9 +1744,9 @@ Exercises
 
 		- The sample average
 		- An estimate of the standard deviation
-		- What is the distribution of the sample average, :math:`\bar{x}`? What are the parameters of that distribution?
+		- What is the distribution of the sample average, :math:`\overline{x}`? What are the parameters of that distribution?
 
-	              *Additional information*: I use a group of samples and calculate the mean, :math:`\bar{x}`, then I take another group of samples and calculate another :math:`\bar{x}`, and so on.  Those values of :math:`\bar{x}` are not going to be the same, but they should be similar.  In other words, the :math:`\bar{x}` also has a distribution.  So this question asks what that distribution is, and what its parameters are.
+	              *Additional information*: I use a group of samples and calculate the mean, :math:`\overline{x}`, then I take another group of samples and calculate another :math:`\overline{x}`, and so on.  Those values of :math:`\overline{x}` are not going to be the same, but they should be similar.  In other words, the :math:`\overline{x}` also has a distribution.  So this question asks what that distribution is, and what its parameters are.
 
 		- Construct an interval, symbolically, that will contain, with 95% certainty (probability), the population mean of the viscosity.
 
@@ -1769,13 +1769,13 @@ Exercises
 	
 	-	Sample average = 20
 	-	Sample standard deviation = 3.81
-	-	By the central limit theorem, and if the samples are taken independently, the mean, :math:`\bar{x} \sim \mathcal{N}\left(\mu, \sigma/\sqrt{n}\right)`
-	-	The z-value for :math:`\bar{x}` can be constructed as :math:`z = \dfrac{\bar{x} - \mu}{\sigma/\sqrt{n}}`.  An interval within which we can find :math:`\mu` with 95\% certainty is given below where :math:`c_n` is found from the normal distribution, and in R: ``qnorm(0.975) = 1.959964``, approximately 1.96.
+	-	By the central limit theorem, and if the samples are taken independently, the mean, :math:`\overline{x} \sim \mathcal{N}\left(\mu, \sigma/\sqrt{n}\right)`
+	-	The z-value for :math:`\overline{x}` can be constructed as :math:`z = \dfrac{\overline{x} - \mu}{\sigma/\sqrt{n}}`.  An interval within which we can find :math:`\mu` with 95\% certainty is given below where :math:`c_n` is found from the normal distribution, and in R: ``qnorm(0.975) = 1.959964``, approximately 1.96.
 
 	.. math::
 		\begin{array}{rcccl} 
-			  - c_n                                              &\leq& \displaystyle \frac{\bar{x} - \mu}{\sigma/\sqrt{n}} &\leq &  +c_n\\
-			\bar{x}  - c_n \dfrac{\sigma}{\sqrt{n}}              &\leq&  \mu                                                &\leq& \bar{x}  + c_n\dfrac{\sigma}{\sqrt{n}} \\
+			  - c_n                                              &\leq& \displaystyle \frac{\overline{x} - \mu}{\sigma/\sqrt{n}} &\leq &  +c_n\\
+			\overline{x}  - c_n \dfrac{\sigma}{\sqrt{n}}              &\leq&  \mu                                                &\leq& \overline{x}  + c_n\dfrac{\sigma}{\sqrt{n}} \\
 			  \text{LB}                                          &\leq&  \mu                                                 &\leq& \text{UB}
 		\end{array}
 		
@@ -1793,8 +1793,8 @@ Exercises
 	
 	.. math::
 	
-		\text{LB} &= \bar{x} - c_n \dfrac{\sigma}{\sqrt{n}} \\
-		\text{UB} &= \bar{x} + c_n \dfrac{\sigma}{\sqrt{n}}
+		\text{LB} &= \overline{x} - c_n \dfrac{\sigma}{\sqrt{n}} \\
+		\text{UB} &= \overline{x} + c_n \dfrac{\sigma}{\sqrt{n}}
 	
 	Subtracting and setting equal to 60 cP:
 	
@@ -1840,18 +1840,18 @@ Exercises
 .. answer::
 	:fullinclude: no 
 
-	The objective is to calculate |n|, the number of samples.  Let :math:`\bar{x}` be the average of these |n| samples, and this will be distributed according to the normal distribution with mean and standard deviation as shown below, if the samples are taken independently (which may not be possible in practice!):
+	The objective is to calculate |n|, the number of samples.  Let :math:`\overline{x}` be the average of these |n| samples, and this will be distributed according to the normal distribution with mean and standard deviation as shown below, if the samples are taken independently (which may not be possible in practice!):
 
 	.. math::
-		z = \dfrac{\bar{x}_{\text{BOD}} - \mu_{\text{BOD}}}{\sigma_{\text{BOD}}}
+		z = \dfrac{\overline{x}_{\text{BOD}} - \mu_{\text{BOD}}}{\sigma_{\text{BOD}}}
 	
 	The value of |z| will lie within this confidence interval:
 
 	.. math::
 	
 			\begin{array}{rcccl} 
-			  - c_n                                                             &\leq& \dfrac{\bar{x}_{\text{BOD}} - \mu_{\text{BOD}}}{\sigma_{\text{BOD}}/\sqrt{n}}    &\leq&  +c_n \\
-			\bar{x}_{\text{BOD}}  - c_n \dfrac{\sigma_{\text{BOD}}}{\sqrt{n}}   &\leq& \mu_{\text{BOD}}                                                                 &\leq& \bar{x}_{\text{BOD}}  + c_n\dfrac{\sigma_{\text{BOD}}}{\sqrt{n}} \\
+			  - c_n                                                             &\leq& \dfrac{\overline{x}_{\text{BOD}} - \mu_{\text{BOD}}}{\sigma_{\text{BOD}}/\sqrt{n}}    &\leq&  +c_n \\
+			\overline{x}_{\text{BOD}}  - c_n \dfrac{\sigma_{\text{BOD}}}{\sqrt{n}}   &\leq& \mu_{\text{BOD}}                                                                 &\leq& \overline{x}_{\text{BOD}}  + c_n\dfrac{\sigma_{\text{BOD}}}{\sqrt{n}} \\
 			  \text{LB}                                                         &\leq& \mu_{\text{BOD}}                                                                 &\leq& \text{UB}
 			\end{array}
 
@@ -1905,13 +1905,13 @@ Exercises
 
 	-   Strictly speaking we cannot calculate a confidence interval for the mean, as the data are not normally distributed.  We can see that there is a heavy tail to the right hand side.  Why do we require the data to be normally distributed?  To create the confidence interval we have to use an estimate of the standard deviation, and then use the :math:`t`-distribution to estimate the confidence interval bounds.  However, the :math:`t`-distribution requires that we assume the raw data come from a normal distribution.
 
-	    But if we do calculate the confidence interval, we have to use the :math:`t`-distribution at the 95% cumulative area, with 50 - 1 = 49 degrees of freedom.  In R: ``qt(0.025, df=49)`` gives :math:`-c_t = -2.009575`. Using our estimates of :math:`s=79` and :math:`\bar{x} = 4127`
+	    But if we do calculate the confidence interval, we have to use the :math:`t`-distribution at the 95% cumulative area, with 50 - 1 = 49 degrees of freedom.  In R: ``qt(0.025, df=49)`` gives :math:`-c_t = -2.009575`. Using our estimates of :math:`s=79` and :math:`\overline{x} = 4127`
     
 	    .. math::
     
 	        \begin{array}{rcccl} 
-	    		  - c_t                                              &\leq& \displaystyle \frac{\bar{x} - \mu}{s/\sqrt{n}} &\leq &  +c_t\\
-	    		\bar{x}  - c_t \dfrac{s}{\sqrt{n}}                   &\leq&  \mu                                                 &\leq& \bar{x}  + c_t\dfrac{s}{\sqrt{n}} \\
+	    		  - c_t                                              &\leq& \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}} &\leq &  +c_t\\
+	    		\overline{x}  - c_t \dfrac{s}{\sqrt{n}}                   &\leq&  \mu                                                 &\leq& \overline{x}  + c_t\dfrac{s}{\sqrt{n}} \\
 	    		4127 - 2.01 \times \dfrac{79}{7}                     &\leq&  \mu                                                 &\leq& 4127 + 2.01 \times \dfrac{79}{7}\\
 	    		4104                                                 &\leq&  \mu                                                 &\leq& 4150
 	    	\end{array}
@@ -1925,8 +1925,8 @@ Exercises
 	.. math::
 
 		\begin{array}{rcccl} 
-			  - c_n &\leq& \displaystyle \frac{\bar{x} - \mu}{\sigma/\sqrt{n}}  &\leq &  c_n\\ \\
-			  - c_t &\leq& \displaystyle \frac{\bar{x} - \mu}{s/\sqrt{n}}  &\leq &  c_t
+			  - c_n &\leq& \displaystyle \frac{\overline{x} - \mu}{\sigma/\sqrt{n}}  &\leq &  c_n\\ \\
+			  - c_t &\leq& \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}}  &\leq &  c_t
 		\end{array}
 
 .. answer::
@@ -1964,7 +1964,7 @@ Exercises
 	The standard way to test for differences between two groups of samples is given by equation :eq:`zvalue-for-difference` - it is derived as coming from the normal distribution with mean of :math:`\mu_A - \mu_B` and the standard deviation as shown in the denominator.
 
 	.. math::
-	    z = \frac{(\bar{x}_B - \bar{x}_A) - (\mu_B - \mu_A)}{\sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}}
+	    z = \frac{(\overline{x}_B - \overline{x}_A) - (\mu_B - \mu_A)}{\sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}}
 
 	Assuming the two *population* means are identical, the |z|-value is a direct estimate of the probability with which that assumption is wrong.  A |z|-value around zero indicates that the assumption was true, a large or small |z|-value indicates that the assumption was wrong.
 
@@ -2025,7 +2025,7 @@ Exercises
 		
 .. answer::
 	
-	-   Let our variable of interest be the difference between the average of the 2 groups: :math:`\bar{x}_{\text{Fri}} - \bar{x}_{\text{Sat}}`.  This variable will be distributed normally (why? - see the notes) according to :math:`\bar{x}_{\text{Fri}} - \bar{x}_{\text{Sat}} \sim \mathcal{N}\left(\mu_{\text{Fri}}-\mu_{\text{Sat}}, \sigma^2_{\text{diff}}\right)`.  So the z-value for this variable is: :math:`z = \dfrac{(\bar{x}_{\text{Fri}} - \bar{x}_{\text{Sat}}) - (\mu_{\text{Fri}}-\mu_{\text{Sat}}) }{\sigma_{\text{diff}}}`
+	-   Let our variable of interest be the difference between the average of the 2 groups: :math:`\overline{x}_{\text{Fri}} - \overline{x}_{\text{Sat}}`.  This variable will be distributed normally (why? - see the notes) according to :math:`\overline{x}_{\text{Fri}} - \overline{x}_{\text{Sat}} \sim \mathcal{N}\left(\mu_{\text{Fri}}-\mu_{\text{Sat}}, \sigma^2_{\text{diff}}\right)`.  So the z-value for this variable is: :math:`z = \dfrac{(\overline{x}_{\text{Fri}} - \overline{x}_{\text{Sat}}) - (\mu_{\text{Fri}}-\mu_{\text{Sat}}) }{\sigma_{\text{diff}}}`
 
 	-   The variance of the difference, :math:`\sigma^2_{\text{diff}} = \sigma^2\left(\dfrac{1}{n_{\text{Fri}}} + \dfrac{1}{n_{\text{Sat}}} \right)`, where :math:`\sigma^2` is the variance of the number of visits to the website on Friday and Saturday.  Since we don't know that value, we can estimate it from pooling the 2 variances of each group.  We should calculate first that these variances are comparable (they are; but you :ref:`should confirm this yourself <univariate-pooled-variance>`).
 
@@ -2083,7 +2083,7 @@ Exercises
 .. answer::
 	:fullinclude: no 
 
-	The temptation is to jump into the code and calculate the :math:`t`-values and averages differences (:math:`\bar{x}_D = 16.4`, and :math:`\bar{x}_M = 22.6`).  But start with a plot of the data, specifically a plot of the differences between the two methods.  The immediate problem you see is that average difference of 6.2 between the methods is strongly influenced by a single observation (the second one).  In general, the dilution method always produced a smaller result than the manometric method.  We expect to see that in our analytical results.
+	The temptation is to jump into the code and calculate the :math:`t`-values and averages differences (:math:`\overline{x}_D = 16.4`, and :math:`\overline{x}_M = 22.6`).  But start with a plot of the data, specifically a plot of the differences between the two methods.  The immediate problem you see is that average difference of 6.2 between the methods is strongly influenced by a single observation (the second one).  In general, the dilution method always produced a smaller result than the manometric method.  We expect to see that in our analytical results.
 
 	.. figure:: images/BOD-comparison-plot.png
 	    :width: 750px
@@ -2174,7 +2174,7 @@ Exercises
 
 	.. math::
 		\begin{array}{rclrcl}
-			\hat{\mu}_\text{Before} 	= \bar{x}_B &=& 2715 	&\qquad\qquad \hat{\mu}_\text{After} 	= \bar{x}_A &=& 3115\\
+			\hat{\mu}_\text{Before} 	= \overline{x}_B &=& 2715 	&\qquad\qquad \hat{\mu}_\text{After} 	= \overline{x}_A &=& 3115\\
 			\hat{\sigma}_\text{Before} 	= s_B &=& 390			&\qquad\qquad \hat{\sigma}_\text{After} = s_A &=& 452\\
 			n_B 						&=& 15 					&\qquad\qquad n_A 						&=& 6
 		\end{array}
@@ -2198,7 +2198,7 @@ Exercises
 	Computing the z-value for this difference:
 
 	.. math::	
-		z &= \dfrac{(\bar{x}_B - \bar{x}_A) - (\mu_B - \mu_A)}{\sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}}\\
+		z &= \dfrac{(\overline{x}_B - \overline{x}_A) - (\mu_B - \mu_A)}{\sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}}\\
 		z &= \dfrac{(2715 - 3115) - (\mu_B - \mu_A)}{\sqrt{165837 \left(\frac{1}{6} + \frac{1}{15}\right)}} \\
 		z &= \dfrac{-400 - (\mu_B - \mu_A)}{196.7} = -2.03 \qquad \text{on the hypothesis that}\qquad \mu_B = \mu_A
 
@@ -2210,7 +2210,7 @@ Exercises
 		.. math::
 			\begin{array}{rcccl} 
 				-c_t &\leq& z	&\leq & +c_t \\
-				(\bar{x}_B - \bar{x}_A) - c_t \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}	&\leq& \mu_B - \mu_A	&\leq &  (\bar{x}_B - \bar{x}_A) + c_t \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}\\
+				(\overline{x}_B - \overline{x}_A) - c_t \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}	&\leq& \mu_B - \mu_A	&\leq &  (\overline{x}_B - \overline{x}_A) + c_t \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}\\
 				-400 - 2.09 \sqrt{165837 \left(\frac{1}{6} + \frac{1}{15}\right)} 	&\leq& \mu_B - \mu_A	&\leq& -400 + 2.09 \sqrt{165837 \left(\frac{1}{6} + \frac{1}{15}\right)} \\
 				-400 - 412	&\leq& \mu_B - \mu_A	&\leq&   -400 + 412 \\
 				-812		&\leq& \mu_B - \mu_A	&\leq&   12 
@@ -2224,12 +2224,12 @@ Exercises
 
 	.. math::
 		\begin{array}{rcccl} 
-			(\bar{x}_B - \bar{x}_A) - c_t \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}	&\leq& \mu_B - \mu_A	&\leq &  (\bar{x}_B - \bar{x}_A) + c_t \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}\\
-			(\bar{x}_B - \bar{x}_A)- 2.09 \sqrt{165837 \left(\frac{1}{7} + \frac{1}{15}\right)} 	&\leq& \mu_B - \mu_A	&\leq& (\bar{x}_B - \bar{x}_A)  + 2.09 \sqrt{165837 \left(\frac{1}{7} + \frac{1}{15}\right)} \\
-			(\bar{x}_B - \bar{x}_A)  - 390	&\leq& \mu_B - \mu_A	&\leq&   (\bar{x}_B - \bar{x}_A) + 390 
+			(\overline{x}_B - \overline{x}_A) - c_t \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}	&\leq& \mu_B - \mu_A	&\leq &  (\overline{x}_B - \overline{x}_A) + c_t \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}\\
+			(\overline{x}_B - \overline{x}_A)- 2.09 \sqrt{165837 \left(\frac{1}{7} + \frac{1}{15}\right)} 	&\leq& \mu_B - \mu_A	&\leq& (\overline{x}_B - \overline{x}_A)  + 2.09 \sqrt{165837 \left(\frac{1}{7} + \frac{1}{15}\right)} \\
+			(\overline{x}_B - \overline{x}_A)  - 390	&\leq& \mu_B - \mu_A	&\leq&   (\overline{x}_B - \overline{x}_A) + 390 
 		\end{array}
 
-	So comparing this :math:`\pm 390` with 7 runs, to the :math:`\pm 412` with 6 runs, shows that the confidence interval shrinks in quite a bit, much more than the 12 second overlap of zero.  Of course we don't know what the new :math:`\bar{x}_B - \bar{x}_A` will be with 7 runs, so my recommendation would be to perform at least one more run with the new excipient, but I suspect that the new run would show there to be a significant difference, and statistically confirm that we should "*revert to using the previous excipient*".
+	So comparing this :math:`\pm 390` with 7 runs, to the :math:`\pm 412` with 6 runs, shows that the confidence interval shrinks in quite a bit, much more than the 12 second overlap of zero.  Of course we don't know what the new :math:`\overline{x}_B - \overline{x}_A` will be with 7 runs, so my recommendation would be to perform at least one more run with the new excipient, but I suspect that the new run would show there to be a significant difference, and statistically confirm that we should "*revert to using the previous excipient*".
 	
 .. question::
 
@@ -2264,10 +2264,10 @@ Exercises
 	.. math::
 
 		\begin{array}{rcccl} 
-			  - c_t                                              &\leq& \dfrac{(\bar{x}_B - \bar{x}_A) - (\mu_B - \mu_A)}{\sqrt{s_P^2 \left(\dfrac{1}{n_A} + \dfrac{1}{n_B}\right)}} &\leq &  +c_t\\
-			(\bar{x}_B - \bar{x}_A)  - c_t \sqrt{s_P^2 \left(\dfrac{1}{n_A} + \dfrac{1}{n_B}\right)}  &\leq&  \mu_B - \mu_A &\leq& (\bar{x}_B - \bar{x}_A) + c_t \sqrt{s_P^2 \left(\dfrac{1}{n_A} + \dfrac{1}{n_B}\right)} \\
-		   	(\bar{x}_B - \bar{x}_A)  - 2.12 \times \sqrt{86 \left(\dfrac{1}{9} + \dfrac{1}{9}\right)}  &\leq&  \mu_B - \mu_A &\leq& (\bar{x}_B - \bar{x}_A) + 2.12 \times \sqrt{86 \left(\dfrac{1}{9} + \dfrac{1}{9}\right)} \\
-			(\bar{x}_B - \bar{x}_A)  - 9.27  &\leq&  \mu_B - \mu_A &\leq& (\bar{x}_B - \bar{x}_A) + 9.27 \\
+			  - c_t                                              &\leq& \dfrac{(\overline{x}_B - \overline{x}_A) - (\mu_B - \mu_A)}{\sqrt{s_P^2 \left(\dfrac{1}{n_A} + \dfrac{1}{n_B}\right)}} &\leq &  +c_t\\
+			(\overline{x}_B - \overline{x}_A)  - c_t \sqrt{s_P^2 \left(\dfrac{1}{n_A} + \dfrac{1}{n_B}\right)}  &\leq&  \mu_B - \mu_A &\leq& (\overline{x}_B - \overline{x}_A) + c_t \sqrt{s_P^2 \left(\dfrac{1}{n_A} + \dfrac{1}{n_B}\right)} \\
+		   	(\overline{x}_B - \overline{x}_A)  - 2.12 \times \sqrt{86 \left(\dfrac{1}{9} + \dfrac{1}{9}\right)}  &\leq&  \mu_B - \mu_A &\leq& (\overline{x}_B - \overline{x}_A) + 2.12 \times \sqrt{86 \left(\dfrac{1}{9} + \dfrac{1}{9}\right)} \\
+			(\overline{x}_B - \overline{x}_A)  - 9.27  &\leq&  \mu_B - \mu_A &\leq& (\overline{x}_B - \overline{x}_A) + 9.27 \\
 		\end{array}
 
 	The :math:`c_t` value for the unpaired case is from the :math:`t`-distribution with 16 degrees of freedom, a value of around 2.12.
@@ -2279,11 +2279,11 @@ Exercises
 		.. math::
 
 			\begin{array}{rcccl} 
-				  - c_t               						&\leq& \dfrac{\bar{w} - \mu_{B-A}}{s_w / \sqrt{n}} 	&\leq &  +c_t\\
+				  - c_t               						&\leq& \dfrac{\overline{w} - \mu_{B-A}}{s_w / \sqrt{n}} 	&\leq &  +c_t\\
 				\\
-				\bar{w} - c_t \dfrac{s_w}{\sqrt{n}}			&\leq& \mu_w 									&\leq &  \bar{w} + c_t \dfrac{s_w}{\sqrt{n}} \\
-				\bar{w} - 2.3 \dfrac{\sqrt{79}}{\sqrt{9}}	&\leq& \mu_w 									&\leq &  \bar{w} + 2.3 \dfrac{\sqrt{79}}{\sqrt{9}} \\
-				\bar{w} - 6.81								&\leq& \mu_w 				&\leq&  \bar{w} + 6.81
+				\overline{w} - c_t \dfrac{s_w}{\sqrt{n}}			&\leq& \mu_w 									&\leq &  \overline{w} + c_t \dfrac{s_w}{\sqrt{n}} \\
+				\overline{w} - 2.3 \dfrac{\sqrt{79}}{\sqrt{9}}	&\leq& \mu_w 									&\leq &  \overline{w} + 2.3 \dfrac{\sqrt{79}}{\sqrt{9}} \\
+				\overline{w} - 6.81								&\leq& \mu_w 				&\leq&  \overline{w} + 6.81
 			\end{array}
 
 	The :math:`c_t` value for the paired case is from the :math:`t`-distribution with 8 degrees of freedom, a value of around 2.3.
