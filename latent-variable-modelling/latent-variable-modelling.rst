@@ -502,7 +502,7 @@ These data sets meet all the assumptions required to use the above-mentioned too
 
 **3D data sets and higher dimensions**	
 
-	These data tables are becoming very common, especially in the past 10 years.  The illustration shows the data structure for a single image, taken at a point in time.  There are 6 wavelengths, and the spatial directions (top-to-bottom and left-to-right) are often called the :math:`x` and :math:`y` directions.  This example might have come from a relatively simply camera recording a red, green and blue wavelength, as well as two near infrared wavelengths and an ultraviolet wavelength.  An good digital camera will record 3 wavelengths.
+	These data tables are becoming very common, especially in the past 10 years.  The illustration shows the data structure for a single image, taken at a point in time.  There are 6 wavelengths, and the spatial directions (top-to-bottom and left-to-right) are often called the :math:`x` and :math:`y` directions.  This example might have come from a relatively simple camera recording a red, green and blue wavelength, as well as two near infrared wavelengths and an ultraviolet wavelength.  An good digital camera will record 3 wavelengths.
 	
 	.. figure:: images/image-data.png
 		:alt:	images/image-data.svg
