@@ -114,6 +114,8 @@ Mathematical derivation for PCA
 
 Geometrically, when finding the best-fit line for the swarm of points, our objective was to minimize the error, i.e. the residual distances from each point to the best-fit line is the smallest possible.  This is also mathematically equivalent to maximizing the variance of the scores, :math:`\mathbf{t}_a`.
 
+..	See Normal Cliff, Analyzing Multivariate Data, 1987, p 295 to 300
+
 We briefly review here what that means.  Let :math:`\mathbf{x}'_i` be a row from our data, so :math:`\mathbf{x}'_i` is a :math:`1 \times K` vector.  We defined the score value for this observation as the distance from the origin, along the direction vector, |p1|, to the perpendicular projection onto |p1|.   This is illustrated below, where the score value for observation :math:`\mathbf{x}_i` has a value of :math:`t_{i,1}`.
 
 .. figure:: images/component-along-a-vector.png
@@ -804,7 +806,7 @@ The maximum value must occur when the partial derivatives with respect to :math:
 										\mathbf{0} &= (\mathbf{X}' \mathbf{X} - \lambda_1 I_{K\times K}) \mathbf{p}_1 \\
 										\mathbf{X}' \mathbf{X}\mathbf{p}_1  &= \lambda_1 \mathbf{p}_1
 
-which is just the eigenvalue equation, indicating that :math:`\mathbf{p}_1` is the eigenvector of :math:`\mathbf{X}' \mathbf{X}` and :math:`\lambda_1` is the eigenvalue. One can show that :math:`\lambda_1 = \mathbf{t}'_1 \mathbf{t}_1`, the variance of the first component.
+which is just the eigenvalue equation, indicating that :math:`\mathbf{p}_1` is the eigenvector of :math:`\mathbf{X}' \mathbf{X}` and :math:`\lambda_1` is the eigenvalue. One can show that :math:`\lambda_1 = \mathbf{t}'_1 \mathbf{t}_1`, which is proportional to the variance of the first component.
 
 In a similar manner we can calculate the second eigenvalue, but this time we add the additional constraint that :math:`\mathbf{p}_1 \perp \mathbf{p}_2`.  This eventually leads to :math:`\mathbf{X}' \mathbf{X}\mathbf{p}_2 = \lambda_2 \mathbf{p}_2`.  
 
@@ -813,9 +815,9 @@ From this we learn that:
 	* The loadings are the eigenvalues of :math:`\mathbf{X}'\mathbf{X}`.
 	* Sorting the eigenvalues in order from largest to smallest gives the order of the corresponding eigenvectors, the loadings.
 	* We know from the theory of eigenvalues that if there are distinct eigenvalues, then their eigenvectors are linearly independent (orthogonal).
-	* We also know the eigenvalues of :math:`\mathbf{X}'\mathbf{X}` must be real values and positive; this matches with the interpretation that the eigenvalues are the variance of each score vector.
-	* Also, the sum of the eigenvalues must add up to sum of the diagonal entries of :math:`\mathbf{X}'\mathbf{X}`, which represents of the total variance of the :math:`\mathbf{X}` matrix.
-	  So plotting the eigenvalues is equivalent to showing the proportion of variance explained.  This is not necessarily a good way to judge the number of components to use, but it is a rough guide.  Use a Pareto plot of the eigenvalues (though in the context of eigenvalue problems, this plot is called a Scree plot).
+	* We also know the eigenvalues of :math:`\mathbf{X}'\mathbf{X}` must be real values and positive; this matches with the interpretation that the eigenvalues are proportional to the variance of each score vector.
+	* Also, the sum of the eigenvalues must add up to sum of the diagonal entries of :math:`\mathbf{X}'\mathbf{X}`, which represents of the total variance of the :math:`\mathbf{X}` matrix, if all eigenvectors are extracted.
+	  So plotting the eigenvalues is equivalent to showing the proportion of variance explained in :math:`\mathbf{X}`.  This is not necessarily a good way to judge the number of components to use, but it is a rough guide.  Use a Pareto plot of the eigenvalues (though in the context of eigenvalue problems, this plot is called a Scree plot).
 
 		.. figure:: images/eigenvalue-scree-plot.png
 			:alt:	images/eigenvalue-scree-plot.R
@@ -1111,7 +1113,7 @@ We will show the algorithm here for the :math:`a^\text{th}` component, where :ma
 	
 	This is called *deflation*, and nicely shows why each component is orthogonal to the other.  Each subsequent component is only seeing variation remaining after removing all the others; there is no possibility that two components can explain the same type of variability.
 	
-	After deflation we go back to step 1 and repeat the entire process for the next component.  Just before accepting the new component we can use cross-validation (described next) to decide whether to keep that component or not.
+	After deflation we go back to step 1 and repeat the entire process for the next component.  Just before accepting the new component we can use a test, such as a randomization test, or :ref:`cross-validation <LVM-PCA-cross-validation>`, to decide whether to keep that component or not.
 	
 The final reason for outlining the NIPALS algorithm is to show one way in which data can be handled.  All that step 2 and step 4 are doing is a series of regressions.  Let's take step 2 to illustrate, but the same idea holds for step 4.  In step 2, we were regression columns from |X| onto the score :math:`\mathbf{t}_a`.  We can visualize this for a hypothetical system with :math:`N = 15` observations, below.
 
@@ -1132,8 +1134,6 @@ Determining the number of components by cross-validation
 .. Review the ICS-L newsgroup postings around September 2009.
 
 .. Check Q2 values: in ProMV they keep increasing, never decreasing.
-
-
 
 Cross-validation is a general tool that helps to avoid over-fitting - it can be applied to any model.  As we add successive components to a model we are increasing the size of the model, |A|, and we are explaining the model-building data, |X|, better and better.  The model's :math:`R^2` value will increase with every component.  As the following equation shows, the variance of the :math:`\widehat{\mathbf{X}}` matrix increases with every component, while the residual variance in matrix :math:`\mathbf{E}` must decrease.
 
@@ -1177,6 +1177,85 @@ This is for a real data set, so the actual cut off for the number of components 
 Cross-validation, as this example shows is never a precise answer to the number of components that should be retained when trying to learn more about a dataset.  Many studies try to find the "true" or "best" number of components. I consider this fruitless; each data set means something different to the modeller. The number of components to use should be judged by the relevance of each component.  Use cross-validation as guide, and always look at a few extra components and step back a few components; then make a judgement that is relevant to your intended use of the model.
 
 However, cross-validation is useful for predictive models, such as PLS, so we avoid overfitting components.
+
+.. _LVM-PCA-randomization:
+
+Determining the number of components by randomization 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*	Concept of randomization is not new: Fisher's example of 5!6! playing cards for randomization of A/B fertilizer testing
+*	The key is contrast a particular (statistical) outcome against a large body of data which could have only occurred by pure chance.  We then calculate a risk value -- the risk of accepting the statistical outcome relative to the data occurring by chance.  
+*	In many cases our statistical outcome is clearly different to the randomized body of data <IMAGE OF histogram with a line to the far right>
+*	In other cases it is clear the statistical outcome is quite similar to what could have occurred from chance alone.
+*	There is obviously a transitionary area where the data analyst/modeller must make an informed decision.  However, transferring the statistical value to a risk value is more interpretable in many cases, and can be understood even by non-experts (colleagues, managers and so forth, who are not statistically trained.)
+  
+*	Any statistic can be used: t's covariance with u (PLS objective function)
+*	Eigenvalue in PCA?  
+
+*	PCA models?
+*	Multiblock methods?
+*	Batch data?
+*	Does it work well for DOE data (the usual shortcoming for Q2 calculations)
+*	Use a robust correlation estimate to guard against outliers in score correlations
+	*	http://www.eric.ed.gov/ERICWebPortal/search/detailmini.jsp?_nfpb=true&_&ERICExtSearch_SearchValue_0=ED201658&ERICExtSearch_SearchType_0=no&accno=ED201658
+	*	http://www.jstor.org/pss/2349088
+	*	``covRob`` function in ``robust`` package in R
+	*	http://www.unt.edu/benchmarks/archives/2001/december01/rss.htm
+
+*	Risk metric more interpretably for automated model fitting (quite common nowadays)
+*	Helpful to see the risk metric on a per-component basis, even if it is not used to determine the number of components.
+
+*	Drawbacks: for dataset with large N, large K (batch datasets) the model rebuilding with :math:`G` in the order of 50 to 500 can be substantial.  Contrast this to cross validation where the number of groups typically used is :math:`G = 7`.   Fortunately, this model rebuilding can be trivially parallelized, which is attractive on multicore CPUs, common on desktop computers.
+
+PLS models
+^^^^^^^^^^^^^^^^
+
+*	Statistic used: correlation between the :math:`t`-score and the :math:`u`-score
+*	Details:
+
+	#.	Deflate the |X| and |Y| matrices from the previous component (for the first component, this would just be the data after preprocessing)
+	#.	Calculate the current component, called :math:`a`: we are going to test whether this :math:`a^\text{th}` additional component is significant or not
+	#.	Calculate the correlation between the :math:`t_a` and the :math:`u_a` score vectors: it is a number between 0 and 1, because these scores are positively correlated.
+	#.	Repeat a certain number, say :math:`G=1000` times:
+		
+		*	randomize the rows in |X|, but not in |Y| (these are the same |X| and |Y| matrices that were just used to calculate the :math:`t_a` and the :math:`u_a` score vectors)
+		*	fit a PLS component to calculate the :math:`t_{a,g}` and the :math:`u_{a,g}` score vectors, where :math:`g = 1, 2, \ldots, G`
+		*	calculate the :math:`G` correlation values, in the same was as was done in step 3.
+	
+	#.	Use the reference :math:`t_a` vs :math:`u_a` correlation, call it :math:`S_0`, and compare it to the :math:`G` other randomized correlation values, called :math:`S_1, S_2, \ldots, S_g, \ldots, S_G`.  Determine whether or not to retain this :math:`a^\text{th}` component by assessing the risk.  
+	
+	One way to assess the risk that provides a clear signal whether or not to retain the component is to use a risk count of violations. We use two factors to make up the risk evaluation: the number of randomization trials that exceed the base statistic under test (:math:`S_0`), and the strength of the correlation, which is related to the PLS objective function.
+	
+		*	Let risk = \frac{\text{number of}\,\,S_g\,\,\text{values exceeding}\,\,S_0}{G}
+		
+			*	If risk :math:`\geq 0.08`, then ``points = points + 2``, as there is a high risk, one in 12 chance, we are accepting a component that should not be accepted.
+		
+			*	or, if :math:`0.03 \leq \text{risk} < 0.08` then ``points = points + 1``  (moderately risky to accept this component) 
+		
+			*	or, if :math:`0.01 \leq \text{risk} < 0.03` then we accept the component without accumulating any points, however, but we might still add some points if the correlation, :math:`S_0` is small (see next step). 
+			
+			*	finally, if :math:`risk \leq 0.01` then accept the component unconditionally, since the risk is very low.  
+			
+			
+				..	I'm reluctant to implement this: more complexity, hard to justify (ad hoc)
+				
+					In addition, remove 1.0 risk points, or fewer if currently less than 1.0, from the current risk count.  The reason is that sometimes we just cumulate half points (below) over several components, leading to early termination.See for example, the ISO_brightness.mat data file (Wiklund et al, 2007, J. Chemometrics paper DOI:10.1002/cem.1086)
+		
+		*	Note that :math:`S_0` represents the correlation between :math:`t_a` and the :math:`u_a`, which is nothing more than a scaled version of the objective function of the PLS model, which each component is trying to maximize, subject to certain constraints.  We accumulate risk based on the strength of this correlation as follows:
+		
+			*	If :math:`S_0 \geq 0.50`, then we do not augment our risk, as this is a strong correlation
+		
+			*	Or, if :math:`0.35 \leq S_0 < 0.50`, then ``points = points + 0.5`` (weak correlation between :math:`t_a` and :math:`u_a`)
+		
+			*	Or, if :math:`S_0 \leq 0.35` then ``points = points + 1.0`` (very weak correlation between :math:`t_a` and :math:`u_a`)
+
+		We stop adding components when the total risk points *accumulated on the current and all previous components* equals or exceeds 2.0.  We revert to the component where we had a risk points of 1.0 or less and stop adding components.
+		
+	#.	Once we decide to accept this :math:`a^\text{th}` component then we deflate the |X| and |Y| matrices; increment the value of :math:`a` by one and repeat the process to decide whether the next component is significant.
+
+
+Fitting :math:`G=1000` models can be prohibitive on some data sets, however this can be easily mitigated as follows.  Fit :math:`G=200` permutations; if the risk is between 0.5% and 10%, then fit the greater number, say :math:`G=1000` permutations.  Risk values outside this range will not likely change by using more permutations.  The numbers of :math:`G=200` (fast) and :math:`G=1000` (slow) are just an example, and should obviously be adjusted in proportion to the size of the dataset.
+
 
 Contribution plots
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

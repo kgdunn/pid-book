@@ -139,7 +139,7 @@ What should we monitor?
 
 Any variable can be monitored.  However, the purpose of process monitoring is so that you can **react early** to bad, or unusual operation.  This implies we should monitor variables that are available in near real-time; they are more suitable than variables that take a long time to acquire (e.g. laboratory measurements).  We shouldn't have to wait to the end of the production line to find our process was out of statistical control.  
 
-These intermediate variables measured from the process are (a) available much more frequently and without delay, (b) are more precise, (c) are usually more meaningful to the operating staff than final quality variables from the lab, and (d) contain the "fingerprint" of the fault, helping the engineers with diagnosis and process adjustment (see *Macgregor, 1997*)
+These intermediate variables measured from the process are (a) available much more frequently and without delay, (b) are more precise, (c) are usually more meaningful to the operating staff than final quality variables from the lab, and (d) contain the "fingerprint" of the fault, helping the engineers with diagnosis and process adjustment (see *MacGregor, 1997*)
 
 Note that we don't have to monitor variables that are measured only from on-line sensors.  The variable could be a calculation made from the on-line measurements.  For example, an energy balance could be calculated from various thermocouples on the process and the degree of mismatch in the energy balance could be critical to quality.  For example, the mismatch could indicate an unexpected source of heat into or out of the process - so monitor that mismatch, rather than the raw temperature data.
 
@@ -159,7 +159,7 @@ In-control vs out-of-control
 
 Every book on statistical quality control gives a slightly different viewpoint, or uses different terminology for what is statistical process control.
 
-In this book we will take "in-control" to mean that the behaviour of the process is stable over time.  Note though, that in-control does not mean the variable of interest meets the specifications required by the customer, or set by the plant personnel.  All that "in control" means is that there are no **special causes** in the data.  A special cause, or an assignable cause is an event that occurs to move the process, or destabilize it.  Process monitoring charts aim to detect these events.
+In this book we will take "in-control" to mean that the behaviour of the process is stable over time.  Note though, that in-control *does not* mean the variable of interest meets the specifications required by the customer, or set by the plant personnel.  All that "in control" means is that there are no **special causes** in the data.  A :index:`special cause`, or an :index:`assignable cause` is an event that occurs to move the process, or destabilize it.  Process monitoring charts aim to detect these events.
 
 .. note:: Our objective: quickly detect abnormal variation, and fix it by finding the root cause.  In this section we look at the "detection" problem.  Diagnosis and process adjustment are two separate steps that follow.
 
@@ -182,7 +182,7 @@ Define the variable of interest as :math:`x`, and assume that we have samples of
 	:align: center
 	:scale: 70
 
-So by taking subgroups of size :math:`n` values, we now have a new variable, :math:`\overline{x}` and we will define a shorthand symbol for its standard deviation: :math:`\sigma_{\overline{X}} = \sigma/\sqrt{n}`.  Writing a :math:`z`-value for :math:`\overline{x}`, and its associated confidence interval for :math:`\mu` is now easy after studying :ref:`the section on confidence intervals<univariate-confidence-intervals>`:
+So by taking :index:`subgroups <single: subgroups (control charts)>` of size :math:`n` values, we now have a new variable, :math:`\overline{x}` and we will define a shorthand symbol for its standard deviation: :math:`\sigma_{\overline{X}} = \sigma/\sqrt{n}`.  Writing a :math:`z`-value for :math:`\overline{x}`, and its associated confidence interval for :math:`\mu` is now easy after studying :ref:`the section on confidence intervals<univariate-confidence-intervals>`:
 
 .. math::
 
@@ -216,42 +216,23 @@ The derivation in equation :eq:`shewhart-theoretical` requires knowing the popul
 
 .. index:: ! Phase 1 (control charts)
 
-Let's take a look at phase, the step where we are building the control chart's limits from historical data.  Create a new variable |xdb| :math:`= \frac{1}{K} \displaystyle \sum_{k=1}^{K}{ \overline{x}_k}`, where :math:`K` is the number of :math:`\overline{x}` samples we have available to build the control chart, called the :index:`phase 1 <single: Phase 1 (control charts)>` data.  Alternatively, just set |xdb| to the desired target value for :math:`x`.  Note that |xdb| is sometimes called the  *grand mean* in control chart textbooks.
+Let's take a look at phase I, the step where we are building the control chart's limits from historical data.  Create a new variable |xdb| :math:`= \frac{1}{K} \displaystyle \sum_{k=1}^{K}{ \overline{x}_k}`, where :math:`K` is the number of :math:`\overline{x}` samples we have available to build the control chart, called the :index:`phase 1 <single: Phase 1 (control charts)>` data.  Alternatively, just set |xdb| to the desired target value for :math:`x`.  Note that |xdb| is sometimes called the  *grand mean* in control chart textbooks.
 
-The next hurdle is :math:`\sigma`.  We do not show it here, but for a subgroup of :math:`n` samples, an unbiased estimator of :math:`\sigma` is given by :math:`\frac{\displaystyle \overline{S}}{a_n}`.  Now :math:`\overline{S} =  \frac{\displaystyle 1}{K} \displaystyle \sum_{k=1}^{K}{s_k}` (simply the average standard deviation calculated from :math:`K` subgroups).  Values for :math:`a_n` are found from a table and depend on the number of samples we use within each subgroup.
+The next hurdle is :math:`\sigma`.  Define :math:`s_k` to be the standard deviation of the :math:`n` values in each subgroup.  We do not show it here, but for a subgroup of :math:`n` samples, an unbiased estimator of :math:`\sigma` is given by :math:`\displaystyle \frac{\overline{S}}{a_n}`, where :math:`\overline{S} =  \displaystyle \frac{1}{K} \displaystyle \sum_{k=1}^{K}{s_k}` is simply the average standard deviation calculated from :math:`K` subgroups.  Values for :math:`a_n` are looked up from a table, or using the formula below, and depend on the number of samples we use within each subgroup.
 
-===========  ====== ====== ====== ====== ====== ====== ====== =============== 
-:math:`n`    2      3      4      5      6      7      8      :math:`\infty`
------------  ------ ------ ------ ------ ------ ------ ------ --------------- 
-:math:`a_n`  0.793  0.886  0.921  0.940  0.952  0.959  0.965  1.0
-===========  ====== ====== ====== ====== ====== ====== ====== =============== 
+===========  ====== ====== ====== ====== ====== ====== ====== ====== ======
+:math:`n`    2      3      4      5      6      7      8      10     15
+-----------  ------ ------ ------ ------ ------ ------ ------ ------ ------
+:math:`a_n`  0.7979 0.8862 0.9213 0.9400 0.9515 0.9594 0.9650 0.9727 0.9823
+===========  ====== ====== ====== ====== ====== ====== ====== ====== ======
 
-..
-	.. figure:: images/table-for-an-values.png
-		:width: 500px
-		:scale: 80
-	
-.. table code
-	{| class="wikitable center"
-	|-
-	| <math>n</math>
-	|2
-	|3
-	|4
-	|5
-	|6
-	|7
-	|8
-	|-
-	| <math>a_n</math>
-	| 0.793
-	| 0.886
-	| 0.921
-	| 0.940
-	| 0.952
-	| 0.959
-	| 0.965
-	|}
+..	See Devore, page 683
+
+More generally, using the :math:`\Gamma(...)` function, for example ``gamma(...)`` in R, or MATLAB, you can reproduce the above :math:`a_n` values.
+
+.. math::
+
+	a_n = \frac{\sqrt{2}\Gamma(n/2)}{\sqrt{n-1}\Gamma((n-1)/2)}
 
 Now that we have an unbiased estimator for the standard deviation from these :math:`K` subgroups, we can write down suitable lower and upper control limits for the Shewhart chart:
 
@@ -259,7 +240,7 @@ Now that we have an unbiased estimator for the standard deviation from these :ma
 	:label: shewhart-limits
 	
 	\begin{array}{rcccl} 
-		 \text{LCL} = \overline{\overline{x}} - 3 \cdot \frac{\displaystyle \overline{S}}{a_n\sqrt{n}} &&  &&  \text{UCL} = \overline{\overline{x}} + 3 \cdot \frac{\displaystyle \overline{S}}{a_n\sqrt{n}} 
+		 \text{LCL} = \overline{\overline{x}} - 3 \cdot \frac{\overline{S}}{a_n\sqrt{n}} &&  &&  \text{UCL} = \overline{\overline{x}} + 3 \cdot \frac{\overline{S}}{a_n\sqrt{n}} 
 	\end{array}
 
 .. rubric:: Example
@@ -275,9 +256,9 @@ The data below represent the average of the :math:`n=5` samples from each bale, 
 
 The overall average is :math:`\overline{\overline{x}} = 238.8` and :math:`\overline{S} = 9.28`.  Calculate the lower and upper control limits for this Shewhart chart.  Were there any points in the phase I data (training phase) that exceeded these limits?
 
-	-	LCL = :math:`238.8 - 3 \cdot \frac{9.28}{(0.94)(\sqrt{5})}` = 225.6
-	-	UCL = :math:`238.8 + 3 \cdot \frac{9.28}{(0.94)(\sqrt{5})}` = 252.0
-	-	The sample with value of 253 exceeds the calculated upper control limit.  
+	-	LCL = :math:`238.8 - 3 \cdot \displaystyle \frac{9.28}{(0.94)(\sqrt{5})}` = 225.6
+	-	UCL = :math:`238.8 + 3 \cdot \displaystyle \frac{9.28}{(0.94)(\sqrt{5})}` = 252.0
+	-	The group with :math:`\overline{x}` = 253 exceeds the calculated upper control limit.  
 	-	That point should be excluded and the limits recomputed: the new :math:`\overline{\overline{x}} = 238.0` and :math:`\overline{S} = 9.68` and the new LCL = 224 and UCL = 252
 	
 .. todo: show chart in class
@@ -360,7 +341,7 @@ Extensions to the basic Shewhart chart
 
 *	**Adjusting the limits**: The :math:`\pm 3\sigma` limits are not set in stone.  Depending on the degree to which the source data obey the assumptions, and the frequency with which spikes and outliers contaminate your data, you may need to adjust your limits, usually wider, to avoid frequent false alarms.  Nothing makes a control chart more useless to operators than frequent false alarms ("`crying wolf <http://en.wikipedia.org/wiki/The_Boy_Who_Cried_Wolf>`_").
 
-	It is perhaps a counterintuitive result that increasing the subgroup size, :math:`n`, leads to a more sensitive detection system for shifts in the mean, because the control limits are pulled in tighter.  However, the larger :math:`n` also means that it will take longer to see the detection signal.  So there is a trade-off between subgroup size and the run length (time to detection of a signal).
+*	**Changing the subgroup size**: It is perhaps a counterintuitive result that increasing the subgroup size, :math:`n`, leads to a more sensitive detection system for shifts in the mean, because the control limits are pulled in tighter.  However, the larger :math:`n` also means that it will take longer to see the detection signal.  So there is a trade-off between subgroup size and the run length (time to detection of a signal).
 
 .. _monitoring-mistakes-to-avoid:
 
@@ -378,10 +359,7 @@ Using Shewhart charts on two or more **highly correlated quality variables**, us
 CUSUM charts
 ==============
 
-.. index::
-	pair: CUSUM chart; Process monitoring
-
-The Shewhart chart is not too sensitive to detecting shifts in the mean.  Depending on the subgroup size, :math:`n`, we showed that it can take several consecutive samples before a warning or action limit is triggered. The cumulative sum (CUSUM) chart allows more rapid detection of these shifts away from a target value, :math:`T`.
+The Shewhart chart is not too sensitive to detecting shifts in the mean.  Depending on the subgroup size, :math:`n`, we showed that it can take several consecutive samples before a warning or action limit is triggered. The cumulative sum chart, or :index:`CUSUM chart <pair: CUSUM chart; Process monitoring>`, allows more rapid detection of these shifts away from a target value, :math:`T`.
 
 .. math::
 	:label: CUSUM-derivation
@@ -411,7 +389,7 @@ The process is considered in control as long as all points are within the arms o
 
 Once the process has been investigated the CUSUM value, :math:`S_t` is often reset to zero; though other resetting strategies exist. A tabular version of the CUSUM chart also exists, but these days the charts are entirely automated in software.
 
-.. todo:: MUCH LESS FOCUS on the V-mask, more on how it is currently done
+.. TODO(KGD): MUCH LESS FOCUS on the V-mask, more on how it is currently done
 
 
 EWMA charts

@@ -97,33 +97,34 @@ Life is pretty boring without :index:`variability`, and this book, and almost al
 		
 Fortunately, we have plenty of variability in our recorded data:
 
-	- Raw material properties are not constant
-	- Production disturbances:
+	-	Raw material properties are not constant
+	
+	-	Production disturbances:
 	
 		- external conditions change (ambient temperature, humidity)
 		- pieces of plant equipment break down, wear out and are replaced
 		
-	.. figure:: images/variation-spikes.png
-		:scale: 50
-		:align: center
+		.. figure:: images/variation-spikes.png
+			:scale: 50
+			:align: center
 	
-	- Feedback control systems introduce variability in your process, in order to reduce variability in another part of the process (think of what a :index:`feedback control` system does)
+	-	Feedback control systems introduce variability in your process, in order to reduce variability in another part of the process (think of what a :index:`feedback control` system does)
+	
+		..	See Marlin textbook, p 880 and p222 for illustrations and concepts
 		
-	- Operating staff: introduce variability into a process in feedback manner (i.e. they react to process upsets) or in a feedforward manner, for example, to preemptively act on the process to counteract a known disturbance.
-	- Measurement and sampling variability: sensor drift, spikes, noise, recalibration shifts, errors in our sample analysis.
+	-	Operating staff: introduce variability into a process in feedback manner (i.e. they react to process upsets) or in a feedforward manner, for example, to preemptively act on the process to counteract a known disturbance.
 	
-	.. figure:: images/variation-more.png
-		:scale: 50
-		:align: center	
+	-	Measurement and sampling variability: sensor drift, spikes, noise, recalibration shifts, errors in our sample analysis.
+	
+		.. figure:: images/variation-more.png
+			:scale: 50
+			:align: center	
 		
-	.. index::
-		single: error, statistical
+	-	Other unknown sources, often called "*error*" (note that the word :index:`error <single: error, statistical` in statistics does not have the usual negative connotation from English).  These errors are all sources of variation which our imperfect knowledge of physics cannot account for.
 	
-	- Other unknown sources, often called "*error*" (note that the word *error* in statistics does not have the usual negative connotation from English).  These errors are all sources of variation which our imperfect knowledge of physics cannot account for.
-	
-	.. figure:: images/variation-some.png
-		:scale: 50
-		:align: center
+		.. figure:: images/variation-some.png
+			:scale: 50
+			:align: center
 	
 All this variability, although a good opportunity to keep us process engineers employed, comes at a price as described next.
 	
@@ -2064,7 +2065,10 @@ Exercises
      
 .. question::
 
-    There are two analytical techniques for measuring BOD.  You wish to evaluate the two testing procedures, so that you can select the test which has lower cost, and fastest turn-around time, but without a compromise in accuracy.  Is there a difference in accuracy between the two methods?  Are you happy with this answer?   These are the data:
+    There are two analytical techniques for measuring BOD.  You wish to evaluate the two testing procedures, so that you can select the test which has lower cost, and fastest turn-around time, but without a compromise in accuracy.  The table contains the results of the each test, performed on a sample that was split in half. 
+
+	#.	Is there a *statistical* difference in accuracy between the two methods? 
+	#.	Review the raw data and answer whether there is a practical difference in accuracy.
 
 	=============== =================
 	Dilution method Manometric method
