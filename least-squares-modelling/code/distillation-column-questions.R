@@ -59,8 +59,8 @@ par(mar=c(4.2, 4.2, 3.5, 0.5))  # (bottom, left, top, right); defaults are par(m
 par(cex.lab=1.5, cex.main=1.5, cex.sub=1.5, cex.axis=1.5)
 layout(matrix(c(1,2), 1, 2))
 library(car)
-qq.plot(model, main="Model with temperature", col=c(1, 1))
-qq.plot(model.inv, main="Model with inverted temperature",col=c(1, 1))
+qqPlot(model, main="Model with temperature", col=c(1, 1))
+qqPlot(model.inv, main="Model with inverted temperature",col=c(1, 1))
 dev.off()
 
 # Training and testing

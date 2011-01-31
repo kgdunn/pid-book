@@ -126,11 +126,11 @@ General approach
 
 Generally, one applies the concept of control charts in 2 phases.  You will see the terminology sometimes called:
 
-.. index:: Phase 1 (control charts)
+.. index:: phase 1 (control charts)
 
 *	**Phase I**: building and testing the control chart from off-line data that you have collected.  This phase is very iterative, and you will spend most of your time here.
 
-.. index:: Phase 2 (control charts)
+.. index:: phase 2 (control charts)
 
 *	**Phase II**: Using the control chart, on new, unseen data.  This phase is most often implemented with computer hardware and software for real-time display of the charts.
 
@@ -214,9 +214,9 @@ Using estimated parameters instead
 
 The derivation in equation :eq:`shewhart-theoretical` requires knowing the population variance, :math:`\sigma`, and assuming that our target for :math:`x` is :math:`\mu`.  The latter assumption is reasonable, but we will estimate a value for :math:`\sigma` instead, using the data.
 
-.. index:: ! Phase 1 (control charts)
+.. index:: ! phase 1 (control charts)
 
-Let's take a look at phase I, the step where we are building the control chart's limits from historical data.  Create a new variable |xdb| :math:`= \frac{1}{K} \displaystyle \sum_{k=1}^{K}{ \overline{x}_k}`, where :math:`K` is the number of :math:`\overline{x}` samples we have available to build the control chart, called the :index:`phase 1 <single: Phase 1 (control charts)>` data.  Alternatively, just set |xdb| to the desired target value for :math:`x`.  Note that |xdb| is sometimes called the  *grand mean* in control chart textbooks.
+Let's take a look at phase I, the step where we are building the control chart's limits from historical data.  Create a new variable |xdb| :math:`= \frac{1}{K} \displaystyle \sum_{k=1}^{K}{ \overline{x}_k}`, where :math:`K` is the number of :math:`\overline{x}` samples we have available to build the control chart, called the :index:`phase 1 <single: phase 1 (control charts)>` data.  Alternatively, just set |xdb| to the desired target value for :math:`x`.  Note that |xdb| is sometimes called the  *grand mean* in control chart textbooks.
 
 The next hurdle is :math:`\sigma`.  Define :math:`s_k` to be the standard deviation of the :math:`n` values in each subgroup.  We do not show it here, but for a subgroup of :math:`n` samples, an unbiased estimator of :math:`\sigma` is given by :math:`\displaystyle \frac{\overline{S}}{a_n}`, where :math:`\overline{S} =  \displaystyle \frac{1}{K} \displaystyle \sum_{k=1}^{K}{s_k}` is simply the average standard deviation calculated from :math:`K` subgroups.  Values for :math:`a_n` are looked up from a table, or using the formula below, and depend on the number of samples we use within each subgroup.
 
