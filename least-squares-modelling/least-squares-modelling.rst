@@ -1948,7 +1948,6 @@ Exercises
 	Use the `distillation column data set <http://datasets.connectmv.com/info/distillation-tower>`_ and with |y| as ``VapourPressure`` (units are kPa) and |x| as ``TempC2`` (units of degrees Farenheit) fit a linear model.  Calculate the prediction interval for vapour pressure at these 3 temperatures: 430, 480, 520 °F.
 
 .. answer::
-	:fullinclude: no
 
 	The prediction interval is dependent on the value of :math:`x_\text{new, i}` used to make the prediction.  For this model, :math:`S_E = 2.989` kPa, :math:`n=253`,  :math:`\sum_j{(x_j - \bar{x})^2} = 86999.6`, and :math:`\bar{x} = 480.82`.
 
@@ -2020,7 +2019,6 @@ Exercises
 
 	-	The predicted vapour pressure at 480 °F is 36.68 kPa :math:`\pm 11.37`, or within the range [31.0 to 42.4] with 95% confidence, very similar to the prediction interval from question 2.
 
-	Code added from question 2 to complete this question:
 
 	.. literalinclude:: code/distillation-column-questions.R
 		:language: s
@@ -2341,33 +2339,33 @@ Exercises
 	You may use any computer package to build the model and read these values off the computer output.
 
 .. answer::
-
+	:fullinclude: no
 
 	The solution to this question can be almost entirely solved using R, though any other language could be used.  These commands, with the output that follows, were used:
 
-		.. code-block:: text
+	.. code-block:: text
 
-			> distillation <- read.csv('http://datasets.connectmv.com/file/distillation-tower.csv')
-			> model <- lm(distillation$VapourPressure ~ distillation$TempC2)
-			> summary(model)
+		> distillation <- read.csv('http://datasets.connectmv.com/file/distillation-tower.csv')
+		> model <- lm(distillation$VapourPressure ~ distillation$TempC2)
+		> summary(model)
 
-			Call:
-			lm(formula = distillation$VapourPressure ~ distillation$TempC2)
+		Call:
+		lm(formula = distillation$VapourPressure ~ distillation$TempC2)
 
-			Residuals:
-			     Min       1Q   Median       3Q      Max
-			-5.59621 -2.37597  0.06674  2.00212 14.18660
+		Residuals:
+		     Min       1Q   Median       3Q      Max
+		-5.59621 -2.37597  0.06674  2.00212 14.18660
 
-			Coefficients:
-			                     Estimate Std. Error t value Pr(>|t|)
-			(Intercept)         195.96141    4.87669   40.18   <2e-16 ***
-			distillation$TempC2  -0.33133    0.01013  -32.69   <2e-16 ***
-			---
-			Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+		Coefficients:
+		                     Estimate Std. Error t value Pr(>|t|)
+		(Intercept)         195.96141    4.87669   40.18   <2e-16 ***
+		distillation$TempC2  -0.33133    0.01013  -32.69   <2e-16 ***
+		---
+		Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-			Residual standard error: 2.989 on 251 degrees of freedom
-			Multiple R-squared: 0.8098,	Adjusted R-squared: 0.8091
-			F-statistic:  1069 on 1 and 251 DF,  p-value: < 2.2e-16
+		Residual standard error: 2.989 on 251 degrees of freedom
+		Multiple R-squared: 0.8098,	Adjusted R-squared: 0.8091
+		F-statistic:  1069 on 1 and 251 DF,  p-value: < 2.2e-16
 
 
 	#.	This predictive model allows us to achieve better control of the vapour pressure, because we can predict it from temperature (measured in real-time), rather than wait several hours for the laboratory vapour pressure value. The slope coefficient is -0.331, and since no units were given, I can't expect any in your solution; however one should report the units, which is this case would be units of pressure divided by units temperature (e.g. psi/K).  What this means, in terms of feedback control of the vapour pressure is that we must decrease the temperature to raise the vapour pressure.  This is important when tuning the feedback control loop in 2 ways: (a) firstly, the the sign of the gain in the feedback controller (i.e. negative gain) must be the same as the process gain to achieve a stable feedback loop, (b) the magnitude of the slope provides an estimate of how sensitive the vapour pressure is to temperature.  For example: do we have to add a large amount of energy into the distillation column to achieve a smallish reduction in vapour pressure?  The answer depends heavily on the units, which I omitted to provide.
@@ -2390,14 +2388,14 @@ Exercises
 
 		If you used 99% confidence levels, the answer should be: :math:`-0.358 \leq \beta_1 \leq -0.305`.
 
-		I have illustrated the actual slope (thick, solid line) at the upper and lower bounds of the slope coefficient (thin, dashed lines) in the accompanying figure.  Not required for this question, but added nevertheless, are the prediction intervals for :math:`\hat{y}_i`, which we will discuss in the class on 22 February 2010.
+		We have illustrated the actual slope (thick, solid line) at the upper and lower bounds of the slope coefficient (thin, dashed lines) in the accompanying figure.  Not required for this question, but added nevertheless, are the prediction intervals for :math:`\hat{y}_i`.
 
 		.. figure:: images/distillation-least-squares.png
 			:align: center
 			:width: 750px
 			:scale: 90%
 
-	For this question I recommended that you should be able to reproduce R's output yourself.  The code below calculates these same values.
+	I recommended that you reproduce R's output yourself.  The code below calculates these same values.
 
 	.. literalinclude:: code/distillation-least-squares.R
 	       :language: s
