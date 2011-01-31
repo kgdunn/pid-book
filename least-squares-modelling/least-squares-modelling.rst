@@ -350,7 +350,9 @@ The *model* is the collection of these |x|- and |y|-values.  This is why it is c
 Least squares models with a single x-variable
 ====================================================
 
-The general linear :index:`least squares model` is a very useful tool (in the right circumstances), and it is the workhorse for a number of algorithms in data analysis.
+.. index:: ! least squares models 
+
+The general linear least squares model is a very useful tool (in the right circumstances), and it is the workhorse for a number of algorithms in data analysis.
 
 This part covers the relationship between two variables only: |x| and |y|.  In the next part on general least squares we will consider more than two variables and use matrix notation.  But we start off slowly here, looking carefully at the details for relating two variables first.
 

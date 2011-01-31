@@ -69,7 +69,7 @@ References and readings
 
 .. UMetrics book: review chapter on (M)SPC
 .. MacGregors 1997 paper on MSPC
-.. * Controversy between control charts and hypothesis tests, Woodall, Woodall, W. Controversies and Contradictions in Statistical Process Control, JQT, 32(4), 341-350, 2000 ([http://filebox.vt.edu/users/bwoodall/ Link])
+.. * Controversy between monitoring charts and hypothesis tests, Woodall, Woodall, W. Controversies and Contradictions in Statistical Process Control, JQT, 32(4), 341-350, 2000 ([http://filebox.vt.edu/users/bwoodall/ Link])
 .. EWMA paper by Hunter
 .. EWMV paper by MacGregor?
 .. Box, G.E.P., Comparisons, Absolute Values, and How I Got to Go to the Folies Bergeres, Quality Engineering, 14(1), p167-169, 2001.
@@ -103,10 +103,10 @@ Notice here that process monitoring is not intended to be automatic feedback con
 *	adjustments are usually **manual**, 
 *	and take place due to **special causes**.
 
-Control charts
+Monitoring charts
 ~~~~~~~~~~~~~~~~~~~~
 
-We use :index:`control charts` to display and detect this unusual variability. A control chart is a display of one value (variable), against time, or in sequence order.  These time-based plots also show some additional information: usually a target value, and one or more limits lines are superimposed on the plot.  The plots are most useful when displayed in real-time, or close to real-time.  There are various technical ways to express what a control chart does exactly, but a general definition is that a control chart helps you detect outliers and other unusual behaviour.
+We use :index:`monitoring charts`, also called :index:`control charts` to display and detect this unusual variability. A monitoring chart is a display of one value (variable), against time, or in sequence order.  These time-based plots also show some additional information: usually a target value, and one or more limits lines are superimposed on the plot.  The plots are most useful when displayed in real-time, or close to real-time.  There are various technical ways to express what a monitoring chart does exactly, but a general definition is that a monitoring chart helps you detect outliers and other unusual behaviour.
 
 The key points are:
 
@@ -124,15 +124,15 @@ Here is an example that shows these properties.
 General approach
 ~~~~~~~~~~~~~~~~~~~~
 
-Generally, one applies the concept of control charts in 2 phases.  You will see the terminology sometimes called:
+Generally, one applies the concept of monitoring charts in 2 phases.  You will see the terminology sometimes called:
 
-.. index:: phase 1 (control charts)
+.. index:: phase 1 (monitoring charts)
 
-*	**Phase I**: building and testing the control chart from off-line data that you have collected.  This phase is very iterative, and you will spend most of your time here.
+*	**Phase I**: building and testing the chart from off-line data that you have collected.  This phase is very iterative, and you will spend most of your time here.
 
-.. index:: phase 2 (control charts)
+.. index:: phase 2 (monitoring charts)
 
-*	**Phase II**: Using the control chart, on new, unseen data.  This phase is most often implemented with computer hardware and software for real-time display of the charts.
+*	**Phase II**: Using the monitoring chart, on new, unseen data.  This phase is most often implemented with computer hardware and software for real-time display of the charts.
 
 What should we monitor?
 ========================
@@ -182,7 +182,7 @@ Define the variable of interest as :math:`x`, and assume that we have samples of
 	:align: center
 	:scale: 70
 
-So by taking :index:`subgroups <single: subgroups (control charts)>` of size :math:`n` values, we now have a new variable, :math:`\overline{x}` and we will define a shorthand symbol for its standard deviation: :math:`\sigma_{\overline{X}} = \sigma/\sqrt{n}`.  Writing a :math:`z`-value for :math:`\overline{x}`, and its associated confidence interval for :math:`\mu` is now easy after studying :ref:`the section on confidence intervals<univariate-confidence-intervals>`:
+So by taking :index:`subgroups <single: subgroups (monitoring charts)>` of size :math:`n` values, we now have a new variable, :math:`\overline{x}` and we will define a shorthand symbol for its standard deviation: :math:`\sigma_{\overline{X}} = \sigma/\sqrt{n}`.  Writing a :math:`z`-value for :math:`\overline{x}`, and its associated confidence interval for :math:`\mu` is now easy after studying :ref:`the section on confidence intervals<univariate-confidence-intervals>`:
 
 .. math::
 
@@ -214,9 +214,9 @@ Using estimated parameters instead
 
 The derivation in equation :eq:`shewhart-theoretical` requires knowing the population variance, :math:`\sigma`, and assuming that our target for :math:`x` is :math:`\mu`.  The latter assumption is reasonable, but we will estimate a value for :math:`\sigma` instead, using the data.
 
-.. index:: ! phase 1 (control charts)
+.. index:: ! phase 1 (monitoring charts)
 
-Let's take a look at phase I, the step where we are building the control chart's limits from historical data.  Create a new variable |xdb| :math:`= \frac{1}{K} \displaystyle \sum_{k=1}^{K}{ \overline{x}_k}`, where :math:`K` is the number of :math:`\overline{x}` samples we have available to build the control chart, called the :index:`phase 1 <single: phase 1 (control charts)>` data.  Alternatively, just set |xdb| to the desired target value for :math:`x`.  Note that |xdb| is sometimes called the  *grand mean* in control chart textbooks.
+Let's take a look at phase I, the step where we are building the monitoring chart's limits from historical data.  Create a new variable |xdb| :math:`= \frac{1}{K} \displaystyle \sum_{k=1}^{K}{ \overline{x}_k}`, where :math:`K` is the number of :math:`\overline{x}` samples we have available to build the monitoring chart, called the :index:`phase 1 <single: phase 1 (monitoring charts)>` data.  Alternatively, just set |xdb| to the desired target value for :math:`x`.  Note that |xdb| is sometimes called the  *grand mean*.
 
 The next hurdle is :math:`\sigma`.  Define :math:`s_k` to be the standard deviation of the :math:`n` values in each subgroup.  We do not show it here, but for a subgroup of :math:`n` samples, an unbiased estimator of :math:`\sigma` is given by :math:`\displaystyle \frac{\overline{S}}{a_n}`, where :math:`\overline{S} =  \displaystyle \frac{1}{K} \displaystyle \sum_{k=1}^{K}{s_k}` is simply the average standard deviation calculated from :math:`K` subgroups.  Values for :math:`a_n` are looked up from a table, or using the formula below, and depend on the number of samples we use within each subgroup.
 
@@ -268,7 +268,7 @@ The overall average is :math:`\overline{\overline{x}} = 238.8` and :math:`\overl
 Assessing the chart's performance
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There are 2 ways to :index:`assess performance of any control chart <single: control chart assessment>`, in particular here we discuss the Shewhart chart:
+There are 2 ways to :index:`assess performance of any monitoring <single: monitoring chart assessment>`, in particular here we discuss the Shewhart chart:
 
 .. rubric:: 1. Error probability.  
 
@@ -336,17 +336,17 @@ Extensions to the basic Shewhart chart
 	
 	However, an alternative chart, the CUSUM chart is more effective at detecting a shift in the mean.  Notice also that the theoretical ARL, :math:`1/\alpha`, is reduced by using these rules in addition to the LCL and UCL.
 
-*	**Adding robustness**: the phase I derivation of a control chart is iterative.  If you find a point that violates the LCL and UCL limits, then the approach is to remove that point, and recompute the LCL and UCL values.  That is because the LCL and UCL limits would have been biased up or down by these points.
+*	**Adding robustness**: the phase I derivation of a monitoring chart is iterative.  If you find a point that violates the LCL and UCL limits, then the approach is to remove that point, and recompute the LCL and UCL values.  That is because the LCL and UCL limits would have been biased up or down by these points.
 
-	This iterative approach can be tiresome with data that has spikes, missing values, outliers, and other problems typical of data pulled from a process database (:index:`historian <single: data historian>`. Robust control charts are procedures to calculate the limits so the LCL and UCL are resistant to the effect of outliers. For example, a robust procedure might use the medians and MAD instead of the mean and standard deviation.  An examination of various robust procedures, especially that of the interquartile range, is given in the paper by Rocke, *Robust Control Charts*.
+	This iterative approach can be tiresome with data that has spikes, missing values, outliers, and other problems typical of data pulled from a process database (:index:`historian <single: data historian>`. Robust monitoring charts are procedures to calculate the limits so the LCL and UCL are resistant to the effect of outliers. For example, a robust procedure might use the medians and MAD instead of the mean and standard deviation.  An examination of various robust procedures, especially that of the interquartile range, is given in the paper by Rocke, *Robust Control Charts*.
 
 	*Note*: do not use robust methods to calculate the values plotted on the charts, only use robust methods to calculate the chart limits!
 	
-*	**Warning limits**: it is common to see warning limits on a control chart at :math:`\pm 2 \sigma`, while the :math:`\pm 3\sigma` limits are called the action limits.  Real-time computer systems usually use a colour scheme to distinguish between the warning state and the action state.  For example, the chart background changes between green, orange or red depending on the state of the current observation plotted.
+*	**Warning limits**: it is common to see warning limits on a monitoring chart at :math:`\pm 2 \sigma`, while the :math:`\pm 3\sigma` limits are called the action limits.  Real-time computer systems usually use a colour scheme to distinguish between the warning state and the action state.  For example, the chart background changes between green, orange or red depending on the state of the current observation plotted.
 
 .. _monitoring-adjust-limits:
 
-*	**Adjusting the limits**: The :math:`\pm 3\sigma` limits are not set in stone.  Depending on the degree to which the source data obey the assumptions, and the frequency with which spikes and outliers contaminate your data, you may need to adjust your limits, usually wider, to avoid frequent false alarms.  Nothing makes a control chart more useless to operators than frequent false alarms ("`crying wolf <http://en.wikipedia.org/wiki/The_Boy_Who_Cried_Wolf>`_").
+*	**Adjusting the limits**: The :math:`\pm 3\sigma` limits are not set in stone.  Depending on the degree to which the source data obey the assumptions, and the frequency with which spikes and outliers contaminate your data, you may need to adjust your limits, usually wider, to avoid frequent false alarms.  Nothing makes a monitoring chart more useless to operators than frequent false alarms ("`crying wolf <http://en.wikipedia.org/wiki/The_Boy_Who_Cried_Wolf>`_").
 
 *	**Changing the subgroup size**: It is perhaps a counterintuitive result that increasing the subgroup size, :math:`n`, leads to a more sensitive detection system for shifts in the mean, because the control limits are pulled in tighter.  However, the larger :math:`n` also means that it will take longer to see the detection signal.  So there is a trade-off between subgroup size and the run length (time to detection of a signal).
 
@@ -355,7 +355,7 @@ Extensions to the basic Shewhart chart
 Mistakes to avoid
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Imagine you are monitoring an aspect of the final product's quality, e.g. viscosity, and you have a product specification that requires that viscosity to be within, say 40 to 60 cP.  It is a mistake to place those **specification limits** on the control chart.  It is also a mistake to use the required specification limits instead of the LCL and UCL.  The control chart is to detect abnormal variation in the process, not to inspect for quality specifications.  You can certainly have another chart for that, but the process monitoring chart's limits are intended to monitor process stability, and these Shewhart limits are calculated differently.
+Imagine you are monitoring an aspect of the final product's quality, e.g. viscosity, and you have a product specification that requires that viscosity to be within, say 40 to 60 cP.  It is a mistake to place those **specification limits** on the monitoring chart.  It is also a mistake to use the required specification limits instead of the LCL and UCL.  The monitoring chart is to detect abnormal variation in the process, not to inspect for quality specifications.  You can certainly have another chart for that, but the process monitoring chart's limits are intended to monitor process stability, and these Shewhart limits are calculated differently.
 
 Shewhart chart limits were calculated with the assumption of **independent subgroups** (e.g. subgroup :math:`i` has no effect on subgroup :math:`i+1`).  For a process with mild autocorrelation, the act of creating subgroups, with :math:`n` samples in each group, removes most, if not all, of the relationship between subgroups.  However processes with heavy autocorrelation (slow moving processes sampled at a high rate, for example), will have LCL and UCL calculated from equation :eq:`shewhart-limits` that will raise false alarms too frequently.  In these cases you can widen the limits, or remove the autocorrelation from the signal.  More on this in the section on exponentially weighted moving average (EWMA) charts.
 
@@ -406,7 +406,7 @@ EWMA charts
 	single: exponentially weighted moving average
 	pair: EWMA chart; Process monitoring
 
-The two previous charts highlight the 2 extremes of control charts.  On the one hand, a Shewhart chart assumes each subgroup sample is independent (unrelated) to the next - implying there is no "memory" in the chart.  On the other hand, a CUSUM chart has an infinite memory, back to the time the chart was started at :math:`t=0` (see equation :eq:`CUSUM-derivation`).
+The two previous charts highlight the 2 extremes of monitoring charts.  On the one hand, a Shewhart chart assumes each subgroup sample is independent (unrelated) to the next - implying there is no "memory" in the chart.  On the other hand, a CUSUM chart has an infinite memory, back to the time the chart was started at :math:`t=0` (see equation :eq:`CUSUM-derivation`).
 
 As an introduction to the exponentially weighted moving average (EWMA) chart, consider first a moving average (MA) chart, which is used just like a Shewhart chart, except the samples that make up the subgroup are calculated using a moving window of width :math:`n`.
 
@@ -463,7 +463,7 @@ As :math:`\lambda` gets smaller, the chart is smoother, because as equation :eq:
 	\hat{x}_{t+1} &= \sum_{i=0}^{i=t}{w_i x_i} = w_0x_0 + w_1x_1 + w_2x_2 + \ldots \\
 	\text{where the weights are:} \qquad w_i &= \lambda (1-\lambda)^{t-i}
 
-which shows that the one-step-ahead prediction is a just a weighted sum of the raw measurements, with weights declining in time.  In the next figure, we show a comparison of the weights used in 4 different control charts studied so far.
+which shows that the one-step-ahead prediction is a just a weighted sum of the raw measurements, with weights declining in time.  In the next figure, we show a comparison of the weights used in 4 different monitoring charts studied so far.
 
 From the above discussion and the weights shown for the 4 different charts, it should be clear now how an EWMA chart is a tradeoff between a  Shewhart chart and a CUSUM chart.  As :math:`\lambda \rightarrow 1`, the EWMA chart behaves more as a Shewhart chart, giving only weight to the most recent observation.  While as :math:`\lambda \rightarrow 0` the EWMA chart starts to have an infinite memory (like a CUSUM chart).
 
@@ -525,7 +525,7 @@ Process capability
 	pair: process capability; Process monitoring
 	single: capability of a process
 	
-.. Note:: This section is not about a particular control chart, but is relevant to the topic of process monitoring.
+.. Note:: This section is not about a particular monitoring chart, but is relevant to the topic of process monitoring.
 
 Centered processes
 ~~~~~~~~~~~~~~~~~~~~
@@ -602,13 +602,13 @@ Industrial practice
 
 This preceding section of the book is only intended to give an overview of the concepts of process monitoring.  As you move into an industrial environment you will find there are many such systems already in place.  Higher levels of management track statistics from a different point of view, often summarizing data from an entire plant, geographic region, or country.  The techniques learned in this book, while focusing mainly on unit operations, are equally applicable though.
 
-You may come across systems called dashboards, which are often part of :index:`enterprise resource planning` (ERP) systems.  These dashboards are supposed to monitor the pulse of a company and are tracked like any other control chart discussed above.  Another area is called :index:`business intelligence` (BI) systems.  These typically track sales and other financial information.  And yet another acronym is the :index:`KPI`, :index:`key performance indicator`, which is a summary variable, such as profit per hour, or energy cost per unit of production.  These are often monitored and acted on by site managers on a daily or weekly basis.
+You may come across systems called dashboards, which are often part of :index:`enterprise resource planning` (ERP) systems.  These dashboards are supposed to monitor the pulse of a company and are tracked like any other monitoring chart discussed above.  Another area is called :index:`business intelligence` (BI) systems.  These typically track sales and other financial information.  And yet another acronym is the :index:`KPI`, :index:`key performance indicator`, which is a summary variable, such as profit per hour, or energy cost per unit of production.  These are often monitored and acted on by site managers on a daily or weekly basis.
 
-But at the unit operation and plant level, you will likely find the hardest part of getting a control chart implemented is the part where you need to access the data.  Getting data out of most database systems is not easy, though it has improved quite a bit in the last few years.
+But at the unit operation and plant level, you will likely find the hardest part of getting a monitoring chart implemented is the part where you need to access the data.  Getting data out of most database systems is not easy, though it has improved quite a bit in the last few years.
 
-It is critical that your control chart display the quantity as close to real-time as possible.  It is almost as if the monetary value of the information in a control chart decays exponentially from the time an event occurs.  It is hard to diagnose and correct a problem detected yesterday, and harder still if the problem occurred last week.
+It is critical that your monitoring chart display the quantity as close to real-time as possible.  It is almost as if the monetary value of the information in a monitoring chart decays exponentially from the time an event occurs.  It is hard to diagnose and correct a problem detected yesterday, and harder still if the problem occurred last week.
 
-You will also realize that good operator training to interpret and act on the control chart is time-consuming; operators keep moving to new units or plants, so frequent re-training is required.  Concepts from the :ref:`data visualization <SECTION-data-visualization>` section are helpful to minimize training effort - make sure the online plots contain the right level of information, without clutter, so they can be acted on appropriately.
+You will also realize that good operator training to interpret and act on the monitoring chart is time-consuming; operators keep moving to new units or plants, so frequent re-training is required.  Concepts from the :ref:`data visualization <SECTION-data-visualization>` section are helpful to minimize training effort - make sure the online plots contain the right level of information, without clutter, so they can be acted on appropriately.
 
 Another side effect of large quantities of data are that you will have to work with IT groups to manipulate large chunks of data on dedicated networks, separate from the rest of the plant.  The last thing you want to be responsible for is clogging the company network with your data. Most industries now have a "production" network running in parallel to the "company" network.  The production network carries real-time data, images from cameras and so forth, while the company network carries email and web traffic.
 
@@ -624,9 +624,9 @@ Here is some general guidance; feel free to adjust the steps as required for you
 	#. Estimate limits that you would expect to contain this stable region of operation just by looking at the plots.
 	#. Then calculate preliminary control limits (UCL, LCL), using the formula shown in this section.  They agree with limits in the previous step.
 	#. Test your chart on **new, unused** data.  This new data should contain both common and special cause operation.
-	#. How does your chart work?  Quantify the type I error using a testing data set that contains only common cause data.  Quantify type II error from a testing data set containing known problems. Adjust the limits and control chart parameters (e.g. :math:`\lambda`) if necessary.  You may even have to resort to a different variable, or a different control chart.
+	#. How does your chart work?  Quantify the type I error using a testing data set that contains only common cause data.  Quantify type II error from a testing data set containing known problems. Adjust the limits and monitoring chart parameters (e.g. :math:`\lambda`) if necessary.  You may even have to resort to a different variable, or a different chart.
 	#. Run the chart on your desktop computer for a couple of days.  When you detect an unusual event, go and check with the process operators and verify the event.  Would they have reacted to it, had they known about it?  Or, would this have been a false alarm?  You may need to refine your limits, or the value you are plotting again.
-	#. Remember that this form of control charting is not an expert system - it will not diagnose problems: you have to use your engineering knowledge by looking at patterns in the chart, and use knowledge of other process events.
+	#. Remember that this form of charting is not an expert system - it will not diagnose problems: you have to use your engineering knowledge by looking at patterns in the chart, and use knowledge of other process events.
 	#. Demonstrate the system to your colleagues and manager.  But show them economic estimates of the value of early detection.  They are usually not interested in the plots alone, so convert the statistics into monetary values.
 	#. Installation and operator training will take time.  This assumes that you have real-time data acquisition systems and real-time processing systems in place - most companies do.  You will have to work with your company's IT staff to get this implemented.
 	#. Listen to your operators for what they want to see.  Use principles of :ref:`good data visualization <SECTION-data-visualization>` to reduce unnecessary information.  Make your plots interactive - if you click on an unusual point it should "drill-down" and give you more information and historical context.
@@ -658,7 +658,7 @@ The computer screenshot shows the monitoring system, called Caster SOS (Stable O
 	:align: center
 	:scale: 100
 	
-The economics of control charting cannot be overstated. The ArcelorMittal example above was introduced around 1997.  The calculations required by this system are complex - however the computer systems performs them in near real-time, allowing the operators to take corrective action within a few seconds.  The data show a significant reduction in breakouts since 1997 (*used with permission of Dr. John MacGregor*).  The economic savings and increased productivity is in the millions of dollars per year, as each breakout costs around $200,000 to $500,000 due to process shutdowns and/or equipment damage.
+The economics of monitoring charts cannot be overstated. The ArcelorMittal example above was introduced around 1997.  The calculations required by this system are complex - however the computer systems performs them in near real-time, allowing the operators to take corrective action within a few seconds.  The data show a significant reduction in breakouts since 1997 (*used with permission of Dr. John MacGregor*).  The economic savings and increased productivity is in the millions of dollars per year, as each breakout costs around $200,000 to $500,000 due to process shutdowns and/or equipment damage.
 
 .. figure:: images/breakouts-dofasco-economics.png
 	:width: 750px
@@ -669,20 +669,20 @@ The economics of control charting cannot be overstated. The ArcelorMittal exampl
 .. FUTURE: show how a scatter plot can be used
 .. FUTURE: show how a spectral plot can be used (or a distribution, e.g. size distribution)
 
-.. Software for control charts
+.. Software for monitoring charts
 
 	* Quality control charts in R: http://cran.r-project.org/web/packages/qcc/
 
 Summary
 ==========
 
-Montgomery and Runger list 5 reasons why control charts are widely used.  After this section of the book you should understand the following about control charts and process monitoring:
+Montgomery and Runger list 5 reasons why monitoring charts are widely used.  After this section of the book you should understand the following about the charts and process monitoring:
 
 	#.	These tools are proven to improve productivity (i.e. to reduce scrap and rework, as described above), and to increase process throughput.
 	#.	They detect defective production, consistent with the concept of "doing it right the first time", a mantra that you will increasingly hear in the manufacturing workplace.
-	#.	A control chart with good limits will prevent over-control of the process.  Operators are trained not to make process adjustments unless there is a clear warning or alarm from the chart.
+	#.	A monitoring chart with good limits will prevent over-control of the process.  Operators are trained not to make process adjustments unless there is a clear warning or alarm from the chart.
 	#.	The patterns generated by the plots often help determine what went wrong, providing some diagnostic value to the operators.  We will see a more formal tool for process diagnosis though in the latent variable section.
-	#.	Control charts are required to judge if a process is stable over time.  A stable process allows us to calculate our process capability, which is an important metric for your customers.
+	#.	Monitoring charts are required to judge if a process is stable over time.  A stable process allows us to calculate our process capability, which is an important metric for your customers.
 
 Exercises
 =========
@@ -692,12 +692,12 @@ Exercises
 	
 .. question::
 
-	Is it fair to say that a control chart is like an online version of a :ref:`confidence interval <univariate-confidence-intervals>`?  Explain your answer.
+	Is it fair to say that a monitoring chart is like an online version of a :ref:`confidence interval <univariate-confidence-intervals>`?  Explain your answer.
 
 .. answer::
 	:fullinclude: no 
 
-	This question is likely to generate a wide range of answers.  No surprise, since there are strong feelings on this point in the `quality control literature <http://filebox.vt.edu/users/bwoodall/2000%20JQT%20Controversies%20and%20Contradictions.pdf>`_ as well.  The confusion stems from the fact that if you are in phase I, then no, a control chart is not a confidence interval, but in phase II, then you can argue that confidence intervals have many similarities to control charts.
+	This question is likely to generate a wide range of answers.  No surprise, since there are strong feelings on this point in the `quality control literature <http://filebox.vt.edu/users/bwoodall/2000%20JQT%20Controversies%20and%20Contradictions.pdf>`_ as well.  The confusion stems from the fact that if you are in phase I, then no, a monitoring chart is not a confidence interval, but in phase II, then you can argue that confidence intervals have many similarities to monitoring charts.
 
 	But, in general, I feel the above statement is incorrect.  Even in phase II a monitoring chart is not really like an on-line confidence interval.  Mainly because a monitoring chart is intended to check for *system stability*, and to alarm quickly if the system moves away from the assumed distribution (usually a normal distribution).  The monitoring limits are calculated to provide the required alarm level (the ARL).  A confidence interval, on the other hand, defines the limits within which we expect to find the true population mean with a certain degree of confidence when we use a given sample of data.
 
@@ -705,7 +705,7 @@ Exercises
 
 .. question::
 
-    Use the `batch yields data <http://datasets.connectmv.com/info/batch-yields>`_ and construct a control chart using the 300 yield values.  Use a subgroup of size 5.  Report your target value, lower control limit and upper control limit, showing the calculations you made.  I recommend that you write your code so that you can reuse it for other questions.
+    Use the `batch yields data <http://datasets.connectmv.com/info/batch-yields>`_ and construct a monitoring chart using the 300 yield values.  Use a subgroup of size 5.  Report your target value, lower control limit and upper control limit, showing the calculations you made.  I recommend that you write your code so that you can reuse it for other questions.
 
 .. answer::
 
@@ -857,13 +857,13 @@ Exercises
 	
 .. question::
 
-	Describe how a control chart could be used to prevent over-control of a batch-to-batch process.  (A batch-to-batch process is one where a batch of materials is processed, followed by another batch, and so on).
+	Describe how a monitoring chart could be used to prevent over-control of a batch-to-batch process.  (A batch-to-batch process is one where a batch of materials is processed, followed by another batch, and so on).
 
 .. answer::
 	
 	Over-control of any process takes place when too much corrective action is applied.  Using the language of feedback control, your gain is the right sign, but the magnitude is too large. Batch processes are often subject to this phenomenon: e.g. the operator reduces the set-point temperature for the next batch, because the current batch produced product with a viscosity that was too high.  But then the next batch has a viscosity that is too low, so the operator increases the temperature set-point for the following batch.  This constant switching is known as over-control (the operator is the feedback controller and his/her gain is too high, i.e. they are over-reacting).
 		
-	A control chart such as a Shewhart chart would help the operator: if the previous batch was within the limits, then s/he should not take any corrective action.  Only take action when the viscosity value is outside the limits.  An EWMA chart would additionally provide a one-step ahead prediction, which is an advantage.
+	A monitoring chart such as a Shewhart chart would help the operator: if the previous batch was within the limits, then s/he should not take any corrective action.  Only take action when the viscosity value is outside the limits.  An EWMA chart would additionally provide a one-step ahead prediction, which is an advantage.
 	
 .. question::
 
@@ -1018,7 +1018,7 @@ Exercises
 
 	#.	The time-series plot shows a cyclical, almost saw-tooth, pattern in the weight of feed entering.  I would investigate the feeding equipment to see what is leading to these fluctuations in the feed weight.  Perhaps some rotary device is responsible for the periodic variation.
 
-	#.	The variability is not seen in the Shewhart control chart.  The Shewhart chart used subgroups of size 5 (20 Shewhart samples for 100 time-series samples).  These fluctuations obviously cancel out when calculating the Shewhart subgroups (a limitation of the Shewhart chart).
+	#.	The variability is not seen in the Shewhart monitoring chart.  The Shewhart chart used subgroups of size 5 (20 Shewhart samples for 100 time-series samples).  These fluctuations obviously cancel out when calculating the Shewhart subgroups (a limitation of the Shewhart chart).
 
 	#.	As engineers we are aiming for stability in our processes; stability in the raw material characteristics, stability in how we operate the process over time and minimizing as many disturbances as possible.  If we can do this, it will lead to greatly improved consistency in our products (low output variability).  Having this sort of input to the reactor means we have to provide apply (feedback) control to counteract it.  In this case the feedback control may not have been effective to eliminate the feed variation, or the feedback control itself caused other disruptions to the process quality.
 				
