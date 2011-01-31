@@ -123,4 +123,4 @@ for label in ax.get_yticklabels():
 ax.axis([680, 1900, 2, 7])
 ax.grid(False)
 
-fig.savefig('pharma-spectra', dpi=300, facecolor='w', edgecolor='w', orientation='portrait', papertype=None, format=None, transparent=True)
+fig.savefig('pharma-spectra.png', dpi=150, facecolor='w', edgecolor='w', orientation='portrait', papertype=None, format=None, transparent=True)

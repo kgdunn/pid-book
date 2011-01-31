@@ -1460,14 +1460,16 @@ Confidence interval for the ratio of two variances
 
 One way to test whether we can pool (combine) two variances, taken from two different *normal distributions*, is to construct the ratio: :math:`\dfrac{s^2_1}{s^2_2}`.  We can construct a confidence interval, and if this interval contains the value of 1.0, then we have no evidence to presume they are different (i.e. we can assume the two population variances are similar).
 
-.. math::
+.. math::	
 	:nowrap:
 
 		\begin{alignat*}{4}
-			  F_{1-\alpha/2, \nu_1, \nu_2}\dfrac{s_1^2}{s_2^2} &\qquad<\qquad& \dfrac{\sigma_1^2}{\sigma_2^2} &\qquad<\qquad& F_{\alpha/2, \nu_1, \nu_2}\dfrac{s_1^2}{s_2^2}
+			  F_{\alpha/2, \nu_1, \nu_2}\dfrac{s_2^2}{s_1^2} &\qquad<\qquad& \dfrac{\sigma_2^2}{\sigma_1^2} &\qquad<\qquad& F_{1-\alpha/2, \nu_1, \nu_2}\dfrac{s_2^2}{s_1^2}
 		\end{alignat*}
 
-Where :math:`F_{1-\alpha/2, \nu_1, \nu_2}` and :math:`F_{\alpha/2, \nu_1, \nu_2}` are values from the :math:`F`-distribution using :math:`\nu_1` degrees of freedom for estimating :math:`s_1` and :math:`\nu_2` degrees of freedom for estimating :math:`s_2`.  The values of :math:`F` can be calculated in R using ``qf(alpha/2, df1=..., df2=...)``, and :math:`\alpha` is the level of confidence, usually :math:`\alpha = 0.05`.
+where we use :math:`F_{\alpha/2, \nu_1, \nu_2}` to mean the point along the cumulative :math:`F`-distribution which has area of :math:`\alpha/2` using :math:`\nu_1` degrees of freedom for estimating :math:`s_1` and :math:`\nu_2` degrees of freedom for estimating :math:`s_2`.  For example, in R, the value of :math:`F_{0.05/2, 10, 20}` can be found from ``qf(0.025, 10, 20)`` as 0.2925.  The point along the cumulative :math:`F`-distribution which has area of :math:`1-\alpha/2` is denoted as :math:`F_{1-\alpha/2, \nu_1, \nu_2}`,  and :math:`\alpha` is the level of confidence, usually :math:`\alpha = 0.05` to denote a 95% confidence level.
+
+.. Source: Devore, Probability and Statistics, 5th edition, p.392-395
 
 
 Confidence interval for proportions: the binomial proportion confidence interval
@@ -1621,7 +1623,7 @@ Exercises
 
 		- How many variables in the data set?
 		- How many observations?
-		- The data are properties of a powder.  Plot each variable, one at a time, and locate any outliers.  R-users will benefit from `the R tutorial <http://connectmv.com/tutorials/r-tutorial>`_ (see the use of the ``identify`` function).
+		- The data are properties of a powder.  Plot each variable, one at a time, and locate any outliers.  R-users will benefit from `the R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ (see the use of the ``identify`` function).
 		
 .. answer::
 
@@ -2155,14 +2157,14 @@ Exercises
 	
 .. question::
 
-	You are a new engineer at a pharmaceutical company. One of the steps in the flowsheet is to blend three powders for a tablet: the excipient (an inactive magnesium stearate base), a binder, and the active ingredient.  The mixing process is tracked using a wireless near infrared (NIR) probe embedded in a V-blender.  The mixer is stopped when the NIR spectra become stable.  A new supplier of magnesium stearate is being considered that will save $ 294,000 per year.
+	A common unit operation in the pharmaceutical area is to uniformly blend powders for tablets.  In this question we consider blending an excipient (an inactive magnesium stearate base), a binder, and the active ingredient.  The mixing process is tracked using a wireless near infrared (NIR) probe embedded in a V-blender.  The mixer is stopped when the NIR spectra become stable.  A new supplier of magnesium stearate is being considered that will save $ 294,000 per year.
 
 	..	figure:: images/V-Blender.png
 		:width: 500px
 		:align: center
 		:scale: 40
 	
-		Figure from Wikipedia (http://en.wikipedia.org/wiki/Industrial_mixer)
+		Illustration from Wikipedia (http://en.wikipedia.org/wiki/Industrial_mixer)
 
 	The 15 most recent runs with the current magnesium stearate supplier had an average mixing time of 2715 seconds, and a standard deviation of 390 seconds.  So far you have run 6 batches from the new supplier, and the average mixing time of these runs is 3115 seconds with a standard deviation of 452 seconds.  Your manager is not happy with these results so far - this extra mixing time will actually cost you more money via lost production.  
 

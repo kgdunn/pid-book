@@ -24,8 +24,8 @@ needs_sphinx = '1.0'  # If your documentation needs a minimal Sphinx version, st
 # =============================
 
 # These two are mutually exclusive !
-website_version = True
-instructor_version = False
+website_version = False
+instructor_version = True
 
 
 # Sphinx extensions
@@ -167,6 +167,7 @@ rst_epilog = """
 .. |U| replace:: :math:`\mathbf{U}`
 .. |Y| replace:: :math:`\mathbf{Y}`
 .. |W| replace:: :math:`\mathbf{W}`
+.. |Z| replace:: :math:`\mathbf{Z}`
 .. |Q2| replace:: :math:`Q^2`
 .. |A| replace:: :math:`A`
 .. |K| replace:: :math:`K`

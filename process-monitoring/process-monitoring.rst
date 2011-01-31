@@ -284,12 +284,19 @@ You make a **type II error** when your sample really is abnormal, but falls with
 
 To quantify the probability :math:`\beta`, recall that a Shewhart chart is for monitoring location, so we make an assumption that the new, abnormal sample comes from a distribution which has shifted its location from :math:`\mu` to :math:`\mu + \Delta\sigma` (e.g. :math:`\Delta` can be positive or negative).  Now, what is the probability this new sample, which come from the shifted distribution, will fall within the existing LCL and UCL? This figure shows the probability is :math:`\beta = 1 - \text{the shaded area}`.
 
+.. math::
+
+	\alpha &= Pr\left(\overline{x}\,\,\text{is in control, but lies outside the limits}\right)\\
+	\beta &= Pr\left(\overline{x}\,\,\text{is not in control, but lies inside the limits}\right)
+
 .. figure:: images/show-shift-beta-error.png
 	:width: 500px
 	:align: center
 	:scale: 90
 
 .. todo  How did Devore calculate these numbers: see p 667 of his book - it doesn't make sense to me.  See my attempt in "show-shift-typeII-error.R"
+
+..	See Montgomery and Runger, Second edition, p 313, for a possible derivation
 
 
 ==============================  ====== ====== ====== ====== ====== ====== 

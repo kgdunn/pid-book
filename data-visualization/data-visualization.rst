@@ -549,7 +549,7 @@ Exercises
 			:width: 750px
 			:align: center
 
-	The best way to draw the time-series plot is to use proper time-based labelling on the x-axis, but we won't cover that topic here.  If you are interested, read up about the ``xts`` package (`see the R tutorial <http://connectmv.com/tutorials/r-tutorial>`_) and it's plot command.  See how it is used in the code below::
+	The best way to draw the time-series plot is to use proper time-based labelling on the x-axis, but we won't cover that topic here.  If you are interested, read up about the ``xts`` package (`see the R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_) and it's plot command.  See how it is used in the code below::
 
 		web <- read.csv('http://datasets.connectmv.com/file/website-traffic.csv')
 

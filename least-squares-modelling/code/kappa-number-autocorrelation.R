@@ -32,7 +32,8 @@ for (jump in 0:n.jumps){
     
     correl = cor(Kappa[seq(jump+1, N)], Kappa[seq(1, N-jump)])
     correl = round(correl, 2)
-    text(10, 35, paste("Correlation = ", substitute(correl, list(correl=correl)), "", sep=""), 
+    text(10, 35, 
+         paste("Correlation = ", substitute(correl, list(correl=correl)), "", sep=""), 
          pos=4, cex=1.3)
 }
 dev.off()

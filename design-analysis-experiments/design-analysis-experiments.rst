@@ -185,9 +185,9 @@ In context
 
 This section is a totally different approach to learning and understanding about (chemical engineering) systems than what you have seen in other courses.  Firstly, we use an empirical (non-theoretical) model to describe the system.  Secondly, we learn how to intentionally manipulate/perturb the system to learn more about it.
 
-We will use the tools of :ref:`least squares modelling <SECTION-least-squares-modelling>`, :ref:`visualization <SECTION-data-visualization>` and :ref:`univariate statistics <SECTION-univariate-review>` that we learned about earlier in the course.  We use these tools to analyze and interpret the data from our experiments.
+We will use the tools of :ref:`least squares modelling <SECTION-least-squares-modelling>`, :ref:`visualization <SECTION-data-visualization>` and :ref:`univariate statistics <SECTION-univariate-review>` that we learned about earlier.  We use these tools to analyze and interpret the data from our experiments.
 
-In the final section of the course on latent variables we will take a look at learning more about our systems when the condition of independence between variables, required for designed experiments, is not met.  But for now we can use least squares and simpler tools, as designed experiments are intentionally orthogonal (independent).
+In the next section, on latent variables, we will take a look at learning more about our systems when the condition of independence between variables, required for designed experiments, is not met.  But for now we can use least squares and simpler tools, as designed experiments are intentionally orthogonal (independent).
 
 Usage examples
 ==============
@@ -494,7 +494,7 @@ The following surface plot illustrates the main effects on the yield variable ov
 		:width: 750px
 		:scale: 50
 
-There is an alternative way to visualize these main effects shown below.  Use this method when you don't have computer software to draw the surfaces.  (We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>` of the course).  It is called an interaction plot, which we discuss more in the next section.
+There is an alternative way to visualize these main effects shown below.  Use this method when you don't have computer software to draw the surfaces.  (We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>`).  It is called an interaction plot, which we discuss more in the next section.
 
 	.. figure:: images/factorial-two-level-line-plot.png
 		:align: center
@@ -951,7 +951,7 @@ Summary so far
 	-	These coefficients have the lowest variability possible: :math:`(\mathrm{X}^T\mathrm{X})^{-1}S_E^2`
 	-	We have uncorrelated estimates of the slope coefficients in the model.  That is we can be sure the value of the coefficient is unrelated to the other values.  
 	
--	However, we still need to take the usual care in *interpreting* the coefficients.  The usual precaution, using the example below, is that the temperature coefficient :math:`b_T` is the effect of a one degree change, holding all other variables constant.  That's not possible of course if :math:`b_{TS}`, the interaction between :math:`T` and :math:`S`, is significant: we cannot hold it constant while changing :math:`b_T`.
+-	However, we still need to take the usual care in *interpreting* the coefficients.  The usual precaution, using the example below, is that the temperature coefficient :math:`b_T` is the effect of a one degree change, holding all other variables constant.  That's not possible if :math:`b_{TS}`, the interaction between :math:`T` and :math:`S`, is significant: we cannot hold it constant while changing :math:`b_T`.
 		
 	.. math:: y = b_0 + b_T x_T + b_S x_S + b_{TS} x_Tx_S + e
 	
@@ -1019,7 +1019,7 @@ Consider the case with 3 factors in our experiment.  If there is a disturbance, 
 +-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
 
 
-Of course if the raw material has a significant effect on the response variable, then we will not be able to tell whether it was due to the :math:`A \times B \times C` interaction, or due to the material, since :math:`\hat{\beta}_{ABC} \rightarrow \underbrace{\text{ABC interaction}}_{\text{expected to be small}} + \text{raw material effect}`.
+If the raw material has a significant effect on the response variable, then we will not be able to tell whether it was due to the :math:`A \times B \times C` interaction, or due to the material, since :math:`\hat{\beta}_{ABC} \rightarrow \underbrace{\text{ABC interaction}}_{\text{expected to be small}} + \text{raw material effect}`.
 
 But the small loss due to this confusion of effects, is the gain that we can still estimate the main effects and two-factor interactions without bias, provided the effect of the disturbance is constant.  Let :math:`\widetilde{y}_i` denote a :math:`y` response from the first batch of materials and let :math:`\mathring{y}_i` denote a response from the second batch.  
 
@@ -1446,7 +1446,7 @@ So this section is concerned with the trade-offs as we go from a full factorial 
 	
 *Notes*
 
-#.	It is tedious and error prone to calculate the aliasing structure by hand, so computer software is useful in this case.   For example, for the :math:`2^{7-4}` system can be created in  R by first loading the ``BHH2`` package, then using the command ``ffDesMatrix(k=7, gen=list(c(4,1,2), c(5,1,3), c(6,2,3), c(7,1,2,3)))``.  See the R-tutorial on the course website for more details.
+#.	It is tedious and error prone to calculate the aliasing structure by hand, so computer software is useful in this case.   For example, for the :math:`2^{7-4}` system can be created in  R by first loading the ``BHH2`` package, then using the command ``ffDesMatrix(k=7, gen=list(c(4,1,2), c(5,1,3), c(6,2,3), c(7,1,2,3)))``.  See the `R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ for more details.
 #.	The choice of generators is not unique and other choices may lead to a different, more preferable confounding pattern.  But it is often easier to use the letters **A, B, C**, *etc*, then just assign the factors to the letters to achieve the least-worst confounding.
 #.	In general, a :math:`2^{k-p}` factorial design is produced by :math:`p` generators and has a defining relationship of :math:`2^p` words.
 
@@ -1497,7 +1497,7 @@ A saturated design can be likened to a well trained doctor asking you specific q
 
 A saturated design is a resolution III design.  These designs allows you to determine the main effects with the smallest number of experiments.
 
-Saturated designs are of course most suited for screening, and should always be run when you are investigating a new system with many factors.  If there is a strong interaction present in such a system then it will be confounded with a main effect, so some caution is required. 
+Saturated designs are most suited for screening, and should always be run when you are investigating a new system with many factors.  If there is a strong interaction present in such a system then it will be confounded with a main effect, so some caution is required. 
 
 
 Let's continue with the example of a :math:`2^{7-4}_{\text{III}}` experiment introduced in the section on :ref:`highly fractionated designs <DOE-highly-fractionated-designs>`.  We had a system with seven factors, called **ABCDEFG**.  We ran the 8 experiments at the levels in the table (repeated again below) and obtained the corresponding values of :math:`y`.
@@ -1598,7 +1598,7 @@ Initially, when we are far away from the optimum, we will use factorial experime
 
 .. TODO: RSM overview figure here with COST approach superimposed
 
-Notice how it is a *sequential* approach.  RSM then is a tool the describes how we should run these sequential experiments.  At the start of this :ref:`section on designed experiments <DOE-COST-approach>` we showed how sequential experimentation (COST) leads to sub-optimal solutions.  Why are we advocating sequential experimentation now?   The difference is of course that here we use sequential experiments by changing *multiple factors simultaneously*, and not changing one factor at a time.
+Notice how it is a *sequential* approach.  RSM then is a tool the describes how we should run these sequential experiments.  At the start of this :ref:`section on designed experiments <DOE-COST-approach>` we showed how sequential experimentation (COST) leads to sub-optimal solutions.  Why are we advocating sequential experimentation now?   The difference is that here we use sequential experiments by changing *multiple factors simultaneously*, and not changing one factor at a time.
 
 .. rubric:: RSM concept for a single variable: COST approach
 
@@ -1749,7 +1749,7 @@ This is a good indication that there is curvature in the response surface.  The 
 
 .. rubric:: Adding higher-order terms using central composite designs
 
-We will not go into detail in this course about central composite designs, other than to show what they look like for the case of 2 and 3 variables.  The axial points are placed :math:`\sqrt{2} = 1.4` steps away from the center for 2 factors, and 1.7 units away when there are :math:`k=3` factors.  Rules for higher numbers of factors are found in all textbooks that cover central composite designs.
+We will not go into detail about central composite designs, other than to show what they look like for the case of 2 and 3 variables.  The axial points are placed :math:`\sqrt{2} = 1.4` steps away from the center for 2 factors, and 1.7 units away when there are :math:`k=3` factors.  Rules for higher numbers of factors are found in all textbooks that cover central composite designs.
 
 .. figure:: images/central-composite-design.png
 	:align: center
@@ -1952,7 +1952,7 @@ These designs are generated by a computer using iterative algorithms. See the D-
 Optimal designs
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you delve into the modern literature on experimental methods you will rapidly come across the concept of an *optimal* design.  This begs the question, what is sub-optimal about the factorial designs we have focussed on in the course?
+If you delve into the modern literature on experimental methods you will rapidly come across the concept of an *optimal* design.  This begs the question, what is sub-optimal about the factorial designs we have focussed on so far?
 
 A full factorial design spans the maximal space possible for the :math:`k` factors. From least squares modelling we know that large deviations from the model center reduces the variance of the parameter estimates.  Furthermore, a factorial ensures the factors are moved independently, allowing us to estimate their effects independently as well.  These are all "optimal" aspects of a factorial.
 
@@ -2407,7 +2407,7 @@ Exercises
 
 	You might feel more comfortable setting up the problem in MATLAB.  You can use the `contour plot <http://www.mathworks.com/access/helpdesk/help/techdoc/creating_plots/f10-2524.html>`_ functions in MATLAB to visualize the results.
 
-	If you are using R, you can use the ``rbind(...)`` or ``cbind(...)`` functions to build up your :math:`\mathbf{X}` matrix row-by-row or column-by-column.  The equivalent of meshgrid in R is the ``expand.grid(...)`` function.  Please see the `R tutorial <http://connectmv.com/tutorials/r-tutorial>`_ that shows how to generate surface plots in R.
+	If you are using R, you can use the ``rbind(...)`` or ``cbind(...)`` functions to build up your :math:`\mathbf{X}` matrix row-by-row or column-by-column.  The equivalent of meshgrid in R is the ``expand.grid(...)`` function.  Please see the `R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ that shows how to generate surface plots in R.
 
 .. question::
 

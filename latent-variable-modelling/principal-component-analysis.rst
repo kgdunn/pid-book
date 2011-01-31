@@ -702,6 +702,10 @@ where the :math:`s_a^2` values are constants, and are the variances of each comp
 	:scale: 80
 	:width: 750px
 	:align: center
+	
+	
+.. Take a look at Anderson, 1958 (An introduction to multivariate statistical analysis).  Paper by MacGregor (http://dx.doi.org/10.1002/aic.690400509) cites this as the distribution for T2, with F as 2 and 48 DOF (2=because PC1 and PC2, and 48 = 50-2, where N=50 and A=2).
+	
 
 .. The PCA model as a way to extract information from noise
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1194,6 +1198,7 @@ Determining the number of components by randomization
 
 *	PCA models?
 *	Multiblock methods?
+*	PLS-DA models? DOI:  10.1007/s11306-007-0099-6  (also see other paper by Westerhuis on this topic)
 *	Batch data?
 *	Does it work well for DOE data (the usual shortcoming for Q2 calculations)
 *	Use a robust correlation estimate to guard against outliers in score correlations

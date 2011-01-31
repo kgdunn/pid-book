@@ -12,7 +12,7 @@ target <- base.mean
 data <- rnorm(N, base.mean, base.sd)
 
 
-bitmap('/Users/kevindunn/transfer/Stats-course/Course notes/Control charts/images/explain-CUSUM.png', type="png256", width=20, height=25, res=300, pointsize=14)
+bitmap('explain-CUSUM.png', type="png256", width=20, height=25, res=300, pointsize=14)
 
 m <- t(matrix(seq(1,4), 1, 4))
 layout(m)
