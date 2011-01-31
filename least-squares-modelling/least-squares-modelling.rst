@@ -2393,7 +2393,7 @@ Exercises
 		.. figure:: images/distillation-least-squares.png
 			:align: center
 			:width: 750px
-			:scale: 90%
+			:scale: 60
 
 	I recommended that you reproduce R's output yourself.  The code below calculates these same values.
 
