@@ -351,7 +351,7 @@ Least squares models with a single x-variable
 ====================================================
 
 .. index:: 
-	:pair:	main description; Least squares models 
+	pair:	main description; Least squares models 
 
 The general linear least squares model is a very useful tool (in the right circumstances), and it is the workhorse for a number of algorithms in data analysis.
 
