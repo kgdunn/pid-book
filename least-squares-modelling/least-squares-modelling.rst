@@ -350,7 +350,8 @@ The *model* is the collection of these |x|- and |y|-values.  This is why it is c
 Least squares models with a single x-variable
 ====================================================
 
-.. index:: ! least squares models 
+.. index:: 
+	:pair:	main description; Least squares models 
 
 The general linear least squares model is a very useful tool (in the right circumstances), and it is the workhorse for a number of algorithms in data analysis.
 
