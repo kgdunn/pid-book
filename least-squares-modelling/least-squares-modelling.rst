@@ -270,44 +270,54 @@ Study the plots below to get a feeling for the correlation value and its interpr
 	:width: 750px
 	:align: center
 	:scale: 87
+	
+	
+.. See article by Brillinger: John Tukey and the correlation coefficient (included as a PDF in the repo)
 
 Some definitions
 ================
 
 Be sure that you can derive (and interpret!) these relationships yourself:
 
-	- :math:`\mathcal{E}\{x\} = \overline{x}`
-	- :math:`\mathcal{E}\{x+y\} = \mathcal{E}\{x\} + \mathcal{E}\{y\} = \overline{x} + \overline{y}`
-	- :math:`\mathcal{V}\{x\} = \mathcal{E}\{(x-\overline{x})^2\}`
-	- :math:`\mathcal{V}\{cx\} = c^2\mathcal{V}\{x\}`
-	- :math:`\text{Cov}\{x,y\} = \mathcal{E}\{(x-\overline{x})(y-\overline{y})\}` which we take as the definition for covariance
-	- :math:`\mathcal{V}\{x+x\} = 2\mathcal{V}\{x\} + 2\text{Cov}\{x,x\} = 4\mathcal{V}\{x\}`
-	- :math:`\text{Cov}\{x,y\} = \mathcal{E}\{xy\} - \mathcal{E}\{x\}\mathcal{E}\{y\}`
+	-	:math:`\mathcal{E}\{x\} = \overline{x}`
+	
+	-	:math:`\mathcal{E}\{x+y\} = \mathcal{E}\{x\} + \mathcal{E}\{y\} = \overline{x} + \overline{y}`
+	
+	-	:math:`\mathcal{V}\{x\} = \mathcal{E}\{(x-\overline{x})^2\}`
+	
+	-	:math:`\mathcal{V}\{cx\} = c^2\mathcal{V}\{x\}`
+	
+	-	:math:`\text{Cov}\{x,y\} = \mathcal{E}\{(x-\overline{x})(y-\overline{y})\}` which we take as the definition for covariance
+	
+	-	:math:`\mathcal{V}\{x+x\} = 2\mathcal{V}\{x\} + 2\text{Cov}\{x,x\} = 4\mathcal{V}\{x\}`
+	
+	-	:math:`\text{Cov}\{x,y\} = \mathcal{E}\{xy\} - \mathcal{E}\{x\}\mathcal{E}\{y\}`
+	
+	-	:math:`\text{Cov}\{x,c\} = 0`
+	
+	-	:math:`\text{Cov}\{x+a, y+b\} = \text{Cov}\{x,y\}`
+	
+	-	:math:`\text{Cov}\{ax, by\} = ab \cdot \text{Cov}\{x,y\}`
 
-	- :math:`\text{Cov}\{x,c\} = 0`
-	- :math:`\text{Cov}\{x+a, y+b\} = \text{Cov}\{x,y\}`
-	- :math:`\text{Cov}\{ax, by\} = ab \cdot \text{Cov}\{x,y\}`
+	-	:math:`\mathcal{V}\{x+y\} \neq \mathcal{V}\{x\} + \mathcal{V}\{y\}`, which is counter to what might be expected.
+	
+	-	Rather:
+	
+		.. math::
 
-	- :math:`\mathcal{V}\{x+y\} \neq \mathcal{V}\{x\} + \mathcal{V}\{y\}`, which is counter to what might be expected
-	- Rather:
-.. math::
-
-	\mathcal{V}\{x+y\}	&= \mathcal{E}\{ \left(  x+y-\overline{x}-\overline{y} \right)^2 \}  \\
-						&= \mathcal{E}\{ \left( (x-\overline{x}) + (y-\overline{y}) \right)^2 \} \\
-						&= \mathcal{E}\{ (x-\overline{x})^2 + 2(x-\overline{x})(y-\overline{y}) + (y-\overline{y})^2 \}\\
-						&= \mathcal{E}\{ (x-\overline{x})^2 \} + 2\mathcal{E}\{(x-\overline{x})(y-\overline{y})\} + \mathcal{E}\{(y-\overline{y})^2 \} \\
-						&= \mathcal{V}\{ x \}             + 2\text{Cov}\{x,y\} + \mathcal{V}\{ y \}
-
-
+			\mathcal{V}\{x+y\}	&= \mathcal{E}\{ \left(  x+y-\overline{x}-\overline{y} \right)^2 \}  \\
+								&= \mathcal{E}\{ \left( (x-\overline{x}) + (y-\overline{y}) \right)^2 \} \\
+								&= \mathcal{E}\{ (x-\overline{x})^2 + 2(x-\overline{x})(y-\overline{y}) + (y-\overline{y})^2 \}\\
+								&= \mathcal{E}\{ (x-\overline{x})^2 \} + 2\mathcal{E}\{(x-\overline{x})(y-\overline{y})\} + \mathcal{E}\{(y-\overline{y})^2 \} \\
+								&= \mathcal{V}\{ x \}             + 2\text{Cov}\{x,y\} + \mathcal{V}\{ y \}\\
+			\mathcal{V}\{x+y\}	&= \mathcal{V}\{x\} + \mathcal{V}\{y\}`, \qquad\text{only if $x$ and $y$ are independent}
 
 Nonparametric modelling
 ===========================
 
 .. Note:: This is an *enrichment topic*.
 
-.. index:: nonparametric modelling
-
-Nonparametric modelling is a general model where the relationship between |x| and |y| is of the form: :math:`y = f(x) + \varepsilon`, but the function (model), :math:`f(x)` is left unspecified.  The model is usually a smooth function.
+:index:`Nonparametric modelling <single:nonparametric modelling>` is a general model where the relationship between |x| and |y| is of the form: :math:`y = f(x) + \varepsilon`, but the function (model), :math:`f(x)` is left unspecified.  The model is usually a smooth function.
 
 Consider the example of plotting Prestige (the Pineo-Porter prestige score) against Income, from the 1971 Canadian census.  A snippet of the data is given by:
 
