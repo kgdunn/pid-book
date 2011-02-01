@@ -2164,7 +2164,7 @@ Exercises
 		:align: center
 		:scale: 40
 	
-		Illustration from Wikipedia (http://en.wikipedia.org/wiki/Industrial_mixer)
+		Illustration from `Wikipedia <http://en.wikipedia.org/wiki/Industrial_mixer>`_
 
 	The 15 most recent runs with the current magnesium stearate supplier had an average mixing time of 2715 seconds, and a standard deviation of 390 seconds.  So far you have run 6 batches from the new supplier, and the average mixing time of these runs is 3115 seconds with a standard deviation of 452 seconds.  Your manager is not happy with these results so far - this extra mixing time will actually cost you more money via lost production.  
 
@@ -2309,7 +2309,7 @@ Exercises
 		:align: center
 		:scale: 40
 
-		Axial and radial blades; figure from Wikipedia (http://en.wikipedia.org/wiki/Impeller)
+		Axial and radial blades; figure `from Wikipedia <http://en.wikipedia.org/wiki/Impeller>`_
 
 	Before obtaining approval to run some experiments, your team wants you to explain how you will interpret the experimental data. Your reply is that you will calculate the average mixing time from each blade type and then calculate a confidence interval for the difference.  A team member asks you what the following 95% confidence intervals would mean:
 

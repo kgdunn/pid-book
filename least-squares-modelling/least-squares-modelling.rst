@@ -65,7 +65,7 @@ In context
 
 This section begins a new part: we start considering more than one variable at a time.  However, you will see the tools of confidence intervals and visualization from the previous sections coming into play so that we can interpret our least squares models both analytically and visually.
 
-The final sections on design and analysis of experiments, and latent variable models will build on the least squares model we learn about here.
+The following sections, on design and analysis of experiments and latent variable models, will build on the least squares model we learn about here.
 
 Usage examples
 ~~~~~~~~~~~~~~~
@@ -75,18 +75,49 @@ Usage examples
 
 The material in this section is used whenever you need to interpret and quantify the relationship between two or more variables.
 
-	- *Colleague*: How does yield from the lactic acid batch fermentation relate to the purity of sucrose?
- 	- *You*: The yield can be predicted from sucrose purity with an error of plus/minus 8\%
- 	- *Colleague*: And how about the relationship between yield and glucose purity?
- 	- *You*: Over the range of our historical data, there is no discernible relationship.
-	- *Engineer 1*: The theoretical equation for the melt index is non-linearly related to the viscosity
-	- *Engineer 2*: The linear model does not show any evidence of that, but the model's prediction ability does improve slightly when we use a non-linear transformation in the least squares model.
+	-	*Colleague*: How does yield from the lactic acid batch fermentation relate to the purity of sucrose?
+	
+		*You*: The yield can be predicted from sucrose purity with an error of plus/minus 8%
+		
+		*Colleague*: And how about the relationship between yield and glucose purity?
+		
+		*You*: Over the range of our historical data, there is no discernible relationship.
+		
+	-	*Engineer 1*: The theoretical equation for the melt index is non-linearly related to the viscosity
+	
+		*Engineer 2*: The linear model does not show any evidence of that, but the model's prediction ability does improve slightly when we use a non-linear transformation in the least squares model.
 
+
+References and readings
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. index::
+	pair: references and readings; Least squares models
+
+-	**Recommended**: John Fox, *Applied Regression Analysis and Generalized Linear Models*
+
+-	**Recommended**: N.R. Draper and H. Smith, *Applied Regression Analysis*
+
+-	Box, Hunter and Hunter, *Statistics for Experimenters*, selected portions of Chapter 10 (2nd edition)
+
+-	Hogg and Ledolter, *Engineering Statistics*
+
+-	Montgomery and Runger, *Applied Statistics and Probability for Engineers*
+
+-	Birkes and Dodge: *Alternative Methods of Regression*, 1993.
+
+-	G.E.P. Box, `Use and Abuse of Regression <http://www.jstor.org/stable/1266635>`_, *Technometrics*, **8** (4), 625-629, 1966.
+
+-	W.S. Cleveland, `Robust Locally Weighted Regression and Smoothing Scatterplots <http://www.jstor.org/stable/2286407>`_, *Journal of the American Statistical Association*, **74** (368), p. 829-836, 1979.
+
+..	Efron, Hastie, Johnstone and Tibshirani, `Least Angle Regression <http://www.jstor.org/stable/3448465>`_, *The Annals of Statistics*, **32**, p 407-451, 2004.
+
+..	S. Chatterjee and A. S. Hadi, `Influential Observations, High Leverage Points, and Outliers in Linear Regression <http://www.jstor.org/stable/2245477>`_, *Statistical Science*, **1** (3), 379-416, 1986.
 
 What you will be able to do after this section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. figure:: images/least-squares-section-mapping.png
+.. image:: images/least-squares-section-mapping.png
   :width: 750px
   :scale: 90
 
@@ -97,45 +128,19 @@ What you will be able to do after this section
 	#. The relationship between correlation, covariance and variance
 	#. Introduction to bivariate least squares (the linear relationship between 2 variables).
 	#. We will also discuss the short-sighted idiom that is often repeated: *correlation does not imply causation* and complete it by understanding that *correlation is a necessary, but not sufficient, condition for causality*.  We will take a look at an example of correlation and understand that it is impossible to imply causality without doing intentional experimentation.
-
-References and readings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. index::
-	pair: references and readings; Least squares models
-
--	**Recommended**: Fox, *Applied Regression Analysis and Generalized Linear Models*
-
--	**Recommended**: Draper and Smith, *Applied Regression Analysis*
-
--	Box, Hunter and Hunter, *Statistics for Experimenters*, selected portions of Chapter 10 (2nd edition)
-
--	Hogg and Ledolter, *Engineering Statistics*
-
--	Montgomery and Runger, *Applied Statistics and Probability for Engineers*
-
--	Birkes and Dodge: *Alternative Methods of Regression*, 1993.
-
--	Efron, Hastie, Johnstone and Tibshirani, `Least Angle Regression <http://www.jstor.org/stable/3448465>`_, *The Annals of Statistics*, **32**, p 407-451, 2004.
-
--	G.E.P. Box, `Use and Abuse of Regression <http://www.jstor.org/stable/1266635>`_, *Technometrics*, **8** (4), 625-629, 1966.
-
--	S. Chatterjee and A. S. Hadi, `Influential Observations, High Leverage Points, and Outliers in Linear Regression <http://www.jstor.org/stable/2245477>`_, *Statistical Science*, **1** (3), 379-416, 1986.
-
--	W.S. Cleveland, `Robust Locally Weighted Regression and Smoothing Scatterplots <http://www.jstor.org/stable/2286407>`_, *Journal of the American Statistical Association*, **74** (368), p. 829-836, 1979.
-
+	
 Covariance
 ===========
 
 You probably have an intuitive sense for what it means when two things are correlated. We will get to correlation next, but we start by first looking at :index:`covariance`.  Let's take a look at an example to formalize this, and to see how we can learn from data.
 
-Consider these measurements from a gas cylinder; temperature (K) and pressure (kPa).  We know the ideal gas law applies under moderate condition: :math:`pV = nRT`.
+Consider the measurements from a gas cylinder; temperature (K) and pressure (kPa).  We know the ideal gas law applies under moderate condition: :math:`pV = nRT`.
 
 	-	Fixed volume, :math:`V = 20 \times 10^{-3} \text{m}^3` = 20 L
 	-	Moles of gas, :math:`n = 14.1` mols of chlorine gas, molar mass = 70.9 g/mol, so this is 1 kg of gas
 	-	Gas constant, :math:`R = 8.314` J/(mol.K)
 
-Given these numbers we can simplify the ideal gas law to: :math:`p=\beta_1 T`, where :math:`\beta_1 = \dfrac{nR}{V} > 0`.  These data are collected:
+Given these numbers, we can simplify the ideal gas law to: :math:`p=\beta_1 T`, where :math:`\beta_1 = \dfrac{nR}{V} > 0`.  These data are collected:
 
 .. wikitable
 
@@ -175,49 +180,39 @@ Given these numbers we can simplify the ideal gas law to: :math:`p=\beta_1 T`, w
 
 .. code-block:: text
 
-	T <- c(273, 285, 297, 309, 321, 333, 345, 357, 369, 381)
-	p <- c(1600, 1670, 1730, 1830, 1880, 1920, 2000, 2100, 2170, 2200)
-	h <- c(42, 48, 45, 49, 41, 46, 48, 48, 45, 49)
+	temp <- c(273, 285, 297, 309, 321, 333, 345, 357, 369, 381)
+	pres <- c(1600, 1670, 1730, 1830, 1880, 1920, 2000, 2100, 2170, 2200)
+	humidity <- c(42, 48, 45, 49, 41, 46, 48, 48, 45, 49)
 
 .. figure:: images/table-of-cylinder-data.png
 	:width: 750px
 	:scale: 67
 
-The formal definition for covariance between any two variables is given by equation :eq:`definition-covariance`.  Use this to calculate the covariance between temperature and pressure.
+The formal definition for covariance between any two variables is:
 
 .. math::
 	:label: definition-covariance
 
-		\text{Cov}\left\{x, y\right\} = \mathcal{E}\left\{ (x - \bar{x}) (y - \bar{y})\right\} \qquad \text{where} \qquad \mathcal{E}\left\{ z \right\} = \bar{z}
+		\text{Cov}\left\{x, y\right\} = \mathcal{E}\left\{ (x - \overline{x}) (y - \overline{y})\right\} \qquad \text{where} \qquad \mathcal{E}\left\{ z \right\} = \overline{z}
 
-Break the problem into steps:
+Use this to calculate the covariance between temperature and pressure by breaking the problem into steps:
 
-	- First calculate :index:`deviation variables` (they are called this because they are now the deviations from the mean): :math:`T - \bar{T}` and :math:`p - \bar{p}`.  Subtracting off the mean from each vector just centers their frame of reference to zero.  For example, if we had measured the temperature in degrees Celsius, the covariance value would **not** have been affected.
-	- Next multiply the corresponding elements of these two vectors to calculate a new vector :math:`(T - \bar{T}) (p - \bar{p})`.
+	-	First calculate :index:`deviation variables`.  They are called this because they are now the deviations from the mean: :math:`T - \overline{T}` and :math:`p - \overline{p}`.  Subtracting off the mean from each vector just centers their frame of reference to zero.
+	
+	-	Next multiply the two vectors, element-by-element, to calculate a new vector :math:`(T - \overline{T}) (p - \overline{p})`.
 
 		.. code-block:: s
 
-			> T.centered <- T - mean(T)
-			> p.centered <- p - mean(p)
-			> product <- T.centered * p.centered
-			# Note that R does element-by-element multiplication in the above line
+			> temp.centered <- temp - mean(temp)
+			> pres.centered <- pres - mean(pres)
+			> product <- temp.centered * pres.centered
+			# R does element-by-element multiplication in the above line
 			> product
 			 [1] 16740 10080  5400  1440   180    60  1620  5700 10920 15660
 
-	- The expected value of this product can be estimated in R with: ``mean(product)``, which gives ``6780``.
-	- Use the ``cov(T, p)`` function in R gives ``7533.333``.  Why the difference?  Well :math:`6780 \times \dfrac{N}{N-1}= 7533.33`, indicating that R divides by :math:`N-1` rather than :math:`N`.  This inconsistency is explained below, but does not really matter for large values of :math:`N`.
-	- The units of covariance between temperature and pressure is [K.kPa].
+	-	The expected value of this product can be estimated by using the average, or any other suitable measure of location.  In this case ``mean(product)`` in R gives 6780.  This is the covariance value.
 
-Similarly the covariance between temperature and humidity is 202.
-
-	.. code-block:: text
-
-		> p.centered <- p - mean(p)
-		> h.centered <- h - mean(h)
-		> product <- h.centered * p.centered
-		> product
-		 [1] 1271 -456  198 -232  153   -1  171  361 -286  841
-		> mean(product)
+	-	More specifically, we should provide the units as well:  the covariance between temperature and pressure is 6780 [K.kPa] in this example.  Similarly the covariance between temperature and humidity is 202 [K.%].
 
 In your own time calculate a rough numeric value and give the units of covariance for these cases:
 
@@ -235,11 +230,13 @@ In your own time calculate a rough numeric value and give the units of covarianc
 
 .. raw:: latex
 
-	\vspace{4cm}
+	\vspace{3cm}
 
-One last point is that the covariance of a variable with itself is the variance: :math:`\text{Cov}\left\{x, x\right\} = \mathcal{V}(x) = \mathcal{E}\left\{ (x - \bar{x}) (x - \bar{x})\right\}`, a definition :ref:`we saw earlier <univariate-variance>`.  Notice in particular that the variance of a centered vector is the same as the variance of an uncentered vector.  The means you can shift the raw data in :math:`x` and :math:`y` up or down and still get the same covariance number.
+One last point is that the covariance of a variable with itself is the variance: :math:`\text{Cov}\left\{x, x\right\} = \mathcal{V}(x) = \mathcal{E}\left\{ (x - \overline{x}) (x - \overline{x})\right\}`, a definition :ref:`we saw earlier <univariate-variance>`.  
 
-**Aside**: The above point explains the difference in R with what we calculated earlier.  In R, the variance function for a vector ``x`` is internally called as ``cov(x, x)``.  Since R returns the unbiased variance, it divides through by :math:`n-1`.
+Using the ``cov(temp, pres)`` function in R gives ``7533.333``, while we calculated 6780. The difference comes from :math:`6780 \times \dfrac{N}{N-1}= 7533.33`, indicating that R divides by :math:`N-1` rather than :math:`N`.  This is because the variance function in R for a vector ``x`` is internally called as ``cov(x, x)``.  Since R returns the unbiased variance, it divides through by :math:`N-1`.  This inconsistency does not really matter for large values of :math:`N`.
+
+Note that deviation variables are *not affected* by a shift in the raw data of :math:`x` or :math:`y`. For example, measuring temperature in Celsius or Kelvin has no effect on the covariance number; but measuring it in Celsius vs Fahrenheit does change the covariance value.
 
 .. Another point to note: recall from geometry that the length of a vector, :math:`x`, is calculated from the sum of squares of the elements in vector :math:`x`, and then taking the square root of the sum.  Mathematically the sum of squares is can be written as: math:`x^Tx`.  For a vector :math:`x` that is centered, this corresponds
 
@@ -249,22 +246,22 @@ One last point is that the covariance of a variable with itself is the variance:
 Correlation
 ===========
 
-The variance and covariance are units dependent - you get a very different covariance when calculating in grams vs kilograms.  The :index:`correlation` on the other hand removes the effect of scaling.  It is defined as:
+The variance and covariance values are units dependent.  For example, you get a very different covariance when calculating it using grams vs kilograms.  The :index:`correlation` on the other hand removes the effect of scaling, or from arbitrary unit changes.  It is defined as:
 
 .. math::
 	:label: definition-correlation
 
-		r(x, y) = \dfrac{\mathcal{E}\left\{ (x - \bar{x}) (y - \bar{y})\right\}}{\sqrt{\mathcal{V}\left\{x\right\}\mathcal{V}\left\{y\right\}}} = \dfrac{\text{Cov}\left\{x, y\right\}}{\sqrt{\mathcal{V}\left\{x\right\}\mathcal{V}\left\{y\right\}}}
+		\text{Correlation}\,\,=\,\,r(x, y) = \dfrac{\mathcal{E}\left\{ (x - \overline{x}) (y - \overline{y})\right\}}{\sqrt{\mathcal{V}\left\{x\right\}\mathcal{V}\left\{y\right\}}} = \dfrac{\text{Cov}\left\{x, y\right\}}{\sqrt{\mathcal{V}\left\{x\right\}\mathcal{V}\left\{y\right\}}}
 
-It takes the covariance value and divides through by the units of :math:`x` and of :math:`y` to obtain a dimensionless result.  The values of :math:`r(x,y)` range from -1 to +1.
+It takes the covariance value and divides through by the units of :math:`x` and of :math:`y` to obtain a dimensionless result.  The values of :math:`r(x,y)` range from :math:`-1` to :math:`+1`.  Also note that :math:`r(x,y) = r(y,x)`.
 
 So returning back to our example of the gas cylinder, the correlation between temperature and pressure, and temperature and humidity can be calculated now as:
 
 .. code-block:: text
 
-	> cor(T, p)
+	> cor(temp, pres)
 	[1] 0.9968355
-	> cor(T, h)
+	> cor(temp, humidity)
 	[1] 0.3803919
 
 Study the plots below to get a feeling for the correlation value and its interpretation:
@@ -279,11 +276,11 @@ Some definitions
 
 Be sure that you can derive (and interpret!) these relationships yourself:
 
-	- :math:`\mathcal{E}\{x\} = \bar{x}`
-	- :math:`\mathcal{E}\{x+y\} = \mathcal{E}\{x\} + \mathcal{E}\{y\} = \bar{x} + \bar{y}`
-	- :math:`\mathcal{V}\{x\} = \mathcal{E}\{(x-\bar{x})^2\}`
+	- :math:`\mathcal{E}\{x\} = \overline{x}`
+	- :math:`\mathcal{E}\{x+y\} = \mathcal{E}\{x\} + \mathcal{E}\{y\} = \overline{x} + \overline{y}`
+	- :math:`\mathcal{V}\{x\} = \mathcal{E}\{(x-\overline{x})^2\}`
 	- :math:`\mathcal{V}\{cx\} = c^2\mathcal{V}\{x\}`
-	- :math:`\text{Cov}\{x,y\} = \mathcal{E}\{(x-\bar{x})(y-\bar{y})\}` which we take as the definition for covariance
+	- :math:`\text{Cov}\{x,y\} = \mathcal{E}\{(x-\overline{x})(y-\overline{y})\}` which we take as the definition for covariance
 	- :math:`\mathcal{V}\{x+x\} = 2\mathcal{V}\{x\} + 2\text{Cov}\{x,x\} = 4\mathcal{V}\{x\}`
 	- :math:`\text{Cov}\{x,y\} = \mathcal{E}\{xy\} - \mathcal{E}\{x\}\mathcal{E}\{y\}`
 
@@ -295,10 +292,10 @@ Be sure that you can derive (and interpret!) these relationships yourself:
 	- Rather:
 .. math::
 
-	\mathcal{V}\{x+y\}	&= \mathcal{E}\{ \left(  x+y-\bar{x}-\bar{y} \right)^2 \}  \\
-						&= \mathcal{E}\{ \left( (x-\bar{x}) + (y-\bar{y}) \right)^2 \} \\
-						&= \mathcal{E}\{ (x-\bar{x})^2 + 2(x-\bar{x})(y-\bar{y}) + (y-\bar{y})^2 \}\\
-						&= \mathcal{E}\{ (x-\bar{x})^2 \} + 2\mathcal{E}\{(x-\bar{x})(y-\bar{y})\} + \mathcal{E}\{(y-\bar{y})^2 \} \\
+	\mathcal{V}\{x+y\}	&= \mathcal{E}\{ \left(  x+y-\overline{x}-\overline{y} \right)^2 \}  \\
+						&= \mathcal{E}\{ \left( (x-\overline{x}) + (y-\overline{y}) \right)^2 \} \\
+						&= \mathcal{E}\{ (x-\overline{x})^2 + 2(x-\overline{x})(y-\overline{y}) + (y-\overline{y})^2 \}\\
+						&= \mathcal{E}\{ (x-\overline{x})^2 \} + 2\mathcal{E}\{(x-\overline{x})(y-\overline{y})\} + \mathcal{E}\{(y-\overline{y})^2 \} \\
 						&= \mathcal{V}\{ x \}             + 2\text{Cov}\{x,y\} + \mathcal{V}\{ y \}
 
 
@@ -455,15 +452,15 @@ Divide the first line through by :math:`n` (the number of data pairs we are usin
 .. math::
 	:label: define-2-LS-b0-b1-result
 
-	b_0 &= \bar{\mathrm{y}} - b_1\bar{\mathrm{x}} \\
-	b_1 &= \dfrac{ \sum_i{\left(x_i - \bar{\mathrm{x}}\right)\left(y_i - \bar{\mathrm{y}}\right) } }{ \sum_i{\left( x_i - \bar{\mathrm{x}}\right)^2} }
+	b_0 &= \overline{\mathrm{y}} - b_1\overline{\mathrm{x}} \\
+	b_1 &= \dfrac{ \sum_i{\left(x_i - \overline{\mathrm{x}}\right)\left(y_i - \overline{\mathrm{y}}\right) } }{ \sum_i{\left( x_i - \overline{\mathrm{x}}\right)^2} }
 
 
 **Remarks**:
 
 #.	The first part of equation :eq:`define-2-LS-b0-b1-partials` shows :math:`\sum_i{e_i} = 0`.
 
-#.	The first part of equation :eq:`define-2-LS-b0-b1-result` shows that the straight line equation passes through the mean of the data :math:`(\bar{\mathrm{x}}, \bar{\mathrm{y}})` without error.
+#.	The first part of equation :eq:`define-2-LS-b0-b1-result` shows that the straight line equation passes through the mean of the data :math:`(\overline{\mathrm{x}}, \overline{\mathrm{y}})` without error.
 
 #.	From second part of equation :eq:`define-2-LS-b0-b1-partials` prove to yourself that :math:`\sum_i{(x_i e_i)} = 0`.
 
@@ -543,10 +540,10 @@ Calculate the least squares estimates for the model :math:`y = b_0 + b_1 x` from
 	|  5.0 ||  5.68
 	|-
 	| colspan="2" align="left"|
-	* :math:`\bar{x}_1= 9.0`
-	* :math:`\bar{y}_1= 7.5`
-	* :math:`\sum_i{\left(x_i - \bar{\mathrm{x}}_1\right)\left(y_i - \bar{\mathrm{y}}_1\right) }= 55.0`
-	* :math:`\sum_i{\left( x_i - \bar{\mathrm{x}}_1\right)^2} = 110`
+	* :math:`\overline{x}_1= 9.0`
+	* :math:`\overline{y}_1= 7.5`
+	* :math:`\sum_i{\left(x_i - \overline{\mathrm{x}}_1\right)\left(y_i - \overline{\mathrm{y}}_1\right) }= 55.0`
+	* :math:`\sum_i{\left( x_i - \overline{\mathrm{x}}_1\right)^2} = 110`
 	|}
 
 .. figure:: images/show-anscombe-problem-1.png
@@ -579,7 +576,7 @@ To calculate the least squares model in R:
 		.. math::
 			:label:define-2-LS-modified
 
-				\mathrm{y} &= \beta_0 + \beta_1 (\mathrm{x} -\bar{\mathrm{x}}) + \epsilon
+				\mathrm{y} &= \beta_0 + \beta_1 (\mathrm{x} -\overline{\mathrm{x}}) + \epsilon
 
 
 Least squares model analysis
@@ -598,7 +595,7 @@ The variance breakdown
 
 Recall that :ref:`variability <univariate-about-variability>` is what makes our data interesting.  Without variance (i.e. just flat lines) we would have nothing to do.  The :index:`analysis of variance` is just a tool to show how much variability in the y-variable is explained by:
 
- 	#.	Doing nothing (no model: implies :math:`\hat{y} = \bar{y}`)
+ 	#.	Doing nothing (no model: implies :math:`\hat{y} = \overline{y}`)
  	#.	The model (:math:`\hat{y}_i = b_0 + b_1 x_i`)
  	#.	How much variance is left over in the errors, :math:`e_i`
 
@@ -612,9 +609,9 @@ Using the accompanying figure, we see that geometrically, at any fixed value of 
 .. math::
 
 		\begin{array}{lrcl}
-		\text{Distance relationship:}   & (y_i - \bar{\mathrm{y}})         &=& (\hat{y}_i - \bar{\mathrm{y}}) + (y_i - \hat{y}_i) \\
-		\text{Squaring:}                & (y_i - \bar{\mathrm{y}})^2       &=& (\hat{y}_i - \bar{\mathrm{y}})^2 + 2(\hat{y}_i - \bar{\mathrm{y}})(y_i - \hat{y}_i) + (y_i - \hat{y}_i)^2 \\
-		\text{Summing and simplifying:} & \sum{(y_i - \bar{\mathrm{y}})^2} &=& \sum{(\hat{y}_i - \bar{\mathrm{y}})^2} + \sum{(y_i - \hat{y}_i)^2} \\
+		\text{Distance relationship:}   & (y_i - \overline{\mathrm{y}})         &=& (\hat{y}_i - \overline{\mathrm{y}}) + (y_i - \hat{y}_i) \\
+		\text{Squaring:}                & (y_i - \overline{\mathrm{y}})^2       &=& (\hat{y}_i - \overline{\mathrm{y}})^2 + 2(\hat{y}_i - \overline{\mathrm{y}})(y_i - \hat{y}_i) + (y_i - \hat{y}_i)^2 \\
+		\text{Summing and simplifying:} & \sum{(y_i - \overline{\mathrm{y}})^2} &=& \sum{(\hat{y}_i - \overline{\mathrm{y}})^2} + \sum{(y_i - \hat{y}_i)^2} \\
 		                                & \text{Total sum of squares (TSS)} &=& \text{Regression SS (RegSS)} + \text{Residual SS (RSS)}
 	\end{array}
 
@@ -625,15 +622,15 @@ Using the accompanying figure, we see that geometrically, at any fixed value of 
 
 It is convenient to write these sums of squares (variances) in table form, called an Analysis of Variance (:index:`ANOVA`) table:
 
-	=================== ======================================== ======================================== ======= ========================================
-	Type of variance    Distance                                 Degrees of freedom                       SSQ     Mean square
-	=================== ======================================== ======================================== ======= ========================================
-	Regression          :math:`\hat{y}_i - \bar{\mathrm{y}}`     :math:`k` (k=2 in the examples so far)   RegSS   :math:`\text{RegSS}/k`
-	------------------- ---------------------------------------- ---------------------------------------- ------- ----------------------------------------
-	Error               :math:`y_i - \hat{y}_i`                  :math:`n-k`                              RSS     :math:`\text{RSS}/(n-k)`
-	------------------- ---------------------------------------- ---------------------------------------- ------- ----------------------------------------
-	Total               :math:`y_i - \bar{\mathrm{y}}`           :math:`n`                                TSS     :math:`\text{TSS}/n`
-	=================== ======================================== ======================================== ======= ========================================
+	=================== ========================================= ======================================== ======= ========================================
+	Type of variance    Distance                                  Degrees of freedom                       SSQ     Mean square
+	=================== ========================================= ======================================== ======= ========================================
+	Regression          :math:`\hat{y}_i - \overline{\mathrm{y}}` :math:`k` (k=2 in the examples so far)   RegSS   :math:`\text{RegSS}/k`
+	------------------- ----------------------------------------- ---------------------------------------- ------- ----------------------------------------
+	Error               :math:`y_i - \hat{y}_i`                   :math:`n-k`                              RSS     :math:`\text{RSS}/(n-k)`
+	------------------- ----------------------------------------- ---------------------------------------- ------- ----------------------------------------
+	Total               :math:`y_i - \overline{\mathrm{y}}`       :math:`n`                                TSS     :math:`\text{TSS}/n`
+	=================== ========================================= ======================================== ======= ========================================
 
 ..	Original table in wiki form
 
@@ -646,7 +643,7 @@ It is convenient to write these sums of squares (variances) in table form, calle
 		! Mean square
 		|-
 		| Regression
-		| :math:`\hat{y}_i - \bar{\mathrm{y}}`
+		| :math:`\hat{y}_i - \overline{\mathrm{y}}`
 		| :math:`k` (k=2 in the examples so far)
 		| RegSS
 		| :math:`RegSS/k`
@@ -663,7 +660,7 @@ It is convenient to write these sums of squares (variances) in table form, calle
 		|
 		|-
 		| Total
-		| :math:`y_i - \bar{\mathrm{y}}`
+		| :math:`y_i - \overline{\mathrm{y}}`
 		| :math:`n`
 		| TSS
 		| :math:`TSS/n`
@@ -715,8 +712,8 @@ From this exercise we learn that:
 
 	.. math::
 
-		\mathcal{V}\{\mathrm{y}\} 	&= \mathcal{E}\{(\mathrm{y}-\bar{\mathrm{y}})^2\} \\
-						 			&= \mathcal{E}\{(b_0 + b_1 \mathrm{x} + e - \bar{\mathrm{y}})^2\} \\
+		\mathcal{V}\{\mathrm{y}\} 	&= \mathcal{E}\{(\mathrm{y}-\overline{\mathrm{y}})^2\} \\
+						 			&= \mathcal{E}\{(b_0 + b_1 \mathrm{x} + e - \overline{\mathrm{y}})^2\} \\
 						 			&= \mathcal{E}\{(b_0 + b_1 \mathrm{x} + e)^2\} \\
 						 			&= \mathcal{E}\{(b_0 + b_1 \mathrm{x} + e)^2\} \\
 						 			&= \mathcal{V}\{b_0 + b_1 \mathrm{x}\} + \mathcal{V}\{e\} + 2\text{Cov}\{b_0 + b_1 \mathrm{x}, e\}
@@ -746,15 +743,15 @@ Derivation of :math:`R^2`
 	
 		\cos \theta_{ab} = \dfrac{a^Tb}{\|a\| \|b\|}
 
-As introduced by example in the previous part, :math:`R^2 = \dfrac{\text{RegSS}}{\text{TSS}} = \dfrac{\sum_i{ \left(\hat{y}_i - \bar{\mathrm{y}}\right)^2}}{\sum_i{ \left(y_i - \bar{\mathrm{y}}\right)^2}}`: simply the ratio between the variance we can explain with the model (RegSS) and the total variance we started off with (TSS).  :math:`R^2 = 1-\dfrac{\text{RSS}}{\text{TSS}}`, based on the fact that TSS = RegSS + RSS.
+As introduced by example in the previous part, :math:`R^2 = \dfrac{\text{RegSS}}{\text{TSS}} = \dfrac{\sum_i{ \left(\hat{y}_i - \overline{\mathrm{y}}\right)^2}}{\sum_i{ \left(y_i - \overline{\mathrm{y}}\right)^2}}`: simply the ratio between the variance we can explain with the model (RegSS) and the total variance we started off with (TSS).  :math:`R^2 = 1-\dfrac{\text{RSS}}{\text{TSS}}`, based on the fact that TSS = RegSS + RSS.
 
-From the above ratios it is straightforward to see that if :math:`R^2 = 0`, it requires that :math:`\hat{y}_i = \bar{\mathrm{y}}`: we are predicting just a flat line, the mean of the |y| data.  On the other extreme, an :math:`R^2 = 1` implies that :math:`\hat{y}_i = y_i`, we have perfect predictions for every data point.
+From the above ratios it is straightforward to see that if :math:`R^2 = 0`, it requires that :math:`\hat{y}_i = \overline{\mathrm{y}}`: we are predicting just a flat line, the mean of the |y| data.  On the other extreme, an :math:`R^2 = 1` implies that :math:`\hat{y}_i = y_i`, we have perfect predictions for every data point.
 
 The nomenclature :math:`R^2` comes from the fact that it is the square of the correlation between |x| and |y|.  Recall from the :ref:`correlation section <LS-correlation-section>` that
 
 .. math::
 
-	r(x, y) = \dfrac{\mathcal{E}\left\{ (x - \bar{x}) (y - \bar{y})\right\}}{\sqrt{\mathcal{V}\left\{x\right\}\mathcal{V}\left\{y\right\}}} = \dfrac{\text{Cov}\left\{x, y\right\}}{\sqrt{\mathcal{V}\left\{x\right\}\mathcal{V}\left\{y\right\}}}
+	r(x, y) = \dfrac{\mathcal{E}\left\{ (x - \overline{x}) (y - \overline{y})\right\}}{\sqrt{\mathcal{V}\left\{x\right\}\mathcal{V}\left\{y\right\}}} = \dfrac{\text{Cov}\left\{x, y\right\}}{\sqrt{\mathcal{V}\left\{x\right\}\mathcal{V}\left\{y\right\}}}
 
 and can range in value from -1 to +1.  The :math:`R^2` ranges from 0 to +1, and is just the square of :math:`r(x,y)`. :math:`R^2` is just a way to tell how far we are between predicting a flat line (no variation) and the extreme of being able to predict the model building data :math:`(y_i)` exactly.
 
@@ -845,9 +842,9 @@ Start from equation :eq:`define-2-LS-b0-b1-result`, where we showed earlier that
 .. math::
 
 	\begin{array}{rclrcl}
-		b_0 &=& \bar{\mathrm{y}} - b_1\bar{\mathrm{x}}  \\ \\
-    	b_1 &=& \dfrac{ \sum_i{\left(x_i - \bar{\mathrm{x}}\right)\left(y_i - \bar{\mathrm{y}}\right) } }{ \sum_i{\left( x_i - \bar{\mathrm{x}}\right)^2}}\\ \\
-    	b_1 &=& \sum{m_iy_i} &\text{where} \qquad m_i &=& \dfrac{x_i - \bar{\mathrm{x}}}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}}
+		b_0 &=& \overline{\mathrm{y}} - b_1\overline{\mathrm{x}}  \\ \\
+    	b_1 &=& \dfrac{ \sum_i{\left(x_i - \overline{\mathrm{x}}\right)\left(y_i - \overline{\mathrm{y}}\right) } }{ \sum_i{\left( x_i - \overline{\mathrm{x}}\right)^2}}\\ \\
+    	b_1 &=& \sum{m_iy_i} &\text{where} \qquad m_i &=& \dfrac{x_i - \overline{\mathrm{x}}}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}
 	\end{array}
 
 That last form of expressing :math:`b_1` shows that every data point contributes a small amount to the coefficient :math:`b_1`. But notice how it is broken into 2 pieces: each term in the sum has a component due to :math:`m_i` and one due to :math:`y_i`.  The :math:`m_i` term is a function of the x-data only, and since we assume the x's are measured without error, that term has no error.  The :math:`y_i` component is the only part that has error.
@@ -859,8 +856,8 @@ So we can write:
         b_1 &= m_1y_1 + m_2y_2 + \ldots + m_Ny_N \\
         \mathcal{E}\{b_1\} &= \mathcal{E}\{m_1y_1\} + \mathcal{E}\{m_2y_2\} + \ldots + \mathcal{E}\{m_Ny_N\} \\
         \mathcal{V}\{b_1\} &= m_1^2\mathcal{V}\{y_1\} + m_2^2 \mathcal{V}\{y_2\} + \ldots + m_N^2\mathcal{V}\{y_N\} \\
-        \mathcal{V}\{b_1\} &= \sum_i{ \left( \dfrac{x_i - \bar{\mathrm{x}}}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}} \right)^2   } \mathcal{V}\{y_i\} \\
-        \mathcal{V}\{b_1\} &= \dfrac{\mathcal{V}\{y_i\}}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}}
+        \mathcal{V}\{b_1\} &= \sum_i{ \left( \dfrac{x_i - \overline{\mathrm{x}}}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \right)^2   } \mathcal{V}\{y_i\} \\
+        \mathcal{V}\{b_1\} &= \dfrac{\mathcal{V}\{y_i\}}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}
 
 **Questions**:
 
@@ -880,18 +877,18 @@ So we can write:
 
 	* This term represents the variance of the :math:`y_i` values at a given point :math:`x_i`.  If (a) there is no evidence of lack-of-fit, and (b) if |y| has the same error at all levels of |x|, then we can write that :math:`\mathcal{V}\{y_i\}` = :math:`\mathcal{V}\{e_i\}  = \dfrac{\sum{e_i^2}}{n-k}`, where :math:`n` is the number of data points used, and :math:`k` is the number of coefficients estimated (2 in this case).  The :math:`n-k` quantity is the degrees of freedom.
 
-Now for the variance of :math:`b_0 = \bar{\mathrm{y}} - b_1 \bar{\mathrm{x}}`.  The only terms with error are :math:`b_1`, and :math:`\bar{\mathrm{y}}`.  So we can derive that:
+Now for the variance of :math:`b_0 = \overline{\mathrm{y}} - b_1 \overline{\mathrm{x}}`.  The only terms with error are :math:`b_1`, and :math:`\overline{\mathrm{y}}`.  So we can derive that:
 
 .. math::
 
-	\mathcal{V}\{b_0\} = \left(\dfrac{1}{N} + \dfrac{\bar{\mathrm{x}}^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}} \right)\mathcal{V}\{y_i\}
+	\mathcal{V}\{b_0\} = \left(\dfrac{1}{N} + \dfrac{\overline{\mathrm{x}}^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \right)\mathcal{V}\{y_i\}
 
 **Summary of important equations**
 
 .. math::
 
-	\mathcal{V}\{\beta_0\} \approx \mathcal{V}\{b_0\} &= \left(\dfrac{1}{N} + \dfrac{\bar{\mathrm{x}}^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}} \right)\mathcal{V}\{y_i\} \\ \\
-	\mathcal{V}\{\beta_1\} \approx \mathcal{V}\{b_1\} &= \dfrac{\mathcal{V}\{y_i\}}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}} \\ \\
+	\mathcal{V}\{\beta_0\} \approx \mathcal{V}\{b_0\} &= \left(\dfrac{1}{N} + \dfrac{\overline{\mathrm{x}}^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \right)\mathcal{V}\{y_i\} \\ \\
+	\mathcal{V}\{\beta_1\} \approx \mathcal{V}\{b_1\} &= \dfrac{\mathcal{V}\{y_i\}}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \\ \\
 	\text{where}\qquad \mathcal{V}\{y_i\} &= \mathcal{V}\{e_i\}  = \dfrac{\sum{e_i^2}}{n-k}, \text{~if there is no lack-of-fit and the y's are independent of each other}.
 
 For convenience we will define some short-hand notation, which is common in least squares:
@@ -899,8 +896,8 @@ For convenience we will define some short-hand notation, which is common in leas
 .. math::
 
 	S_E^2 &= \mathcal{V}\{e_i\}  = \mathcal{V}\{y_i\} = \dfrac{\sum{e_i^2}}{n-k} \qquad\qquad \text{or~~} S_E = \sqrt{ \dfrac{\sum{e_i^2}}{n-k} }\\
-	S_E^2(b_0) &= \mathcal{V}\{b_0\} = \left(\dfrac{1}{N} + \dfrac{\bar{\mathrm{x}}^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}} \right)S_E^2\\
-	S_E^2(b_1) &= \mathcal{V}\{b_1\} = \dfrac{S_E^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}}
+	S_E^2(b_0) &= \mathcal{V}\{b_0\} = \left(\dfrac{1}{N} + \dfrac{\overline{\mathrm{x}}^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \right)S_E^2\\
+	S_E^2(b_1) &= \mathcal{V}\{b_1\} = \dfrac{S_E^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}
 
 You will see that :math:`S_E` is an estimate of the standard deviation of the error (residuals), while :math:`S_E(b_0)` and :math:`S_E(b_1)` are the standard deviations of estimates for |b0| and |b1| respectively.
 
@@ -959,8 +956,8 @@ Use that :math:`S_E` value to calculate the confidence intervals for :math:`\bet
 	.. math::
 	
 		S_E & = 1.237 \\
-		S_E^2(b_1) &= \dfrac{S_E^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}} = \dfrac{1.237^2}{110} = 0.0139\\
-		S_E^2(b_0) &= \left(\dfrac{1}{N} + \dfrac{\bar{\mathrm{x}}^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}} \right)S_E^2 = \left(\dfrac{1}{11} + \dfrac{9^2}{110} \right)1.237^2 = 1.266
+		S_E^2(b_1) &= \dfrac{S_E^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} = \dfrac{1.237^2}{110} = 0.0139\\
+		S_E^2(b_0) &= \left(\dfrac{1}{N} + \dfrac{\overline{\mathrm{x}}^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \right)S_E^2 = \left(\dfrac{1}{11} + \dfrac{9^2}{110} \right)1.237^2 = 1.266
 
 	The confidence interval for :math:`\beta_0`:
 
@@ -983,7 +980,7 @@ Use that :math:`S_E` value to calculate the confidence intervals for :math:`\bet
 			0.233  &\leq& \beta_1                         &\leq& 0.767	\\
 		\end{array}
 
-	The plot below shows the effect of varying the slope parameters from the lower bound to the upper bound.  Notice that the slope always passes through the mean of the data :math:`(\bar{x}, \bar{y})`.
+	The plot below shows the effect of varying the slope parameters from the lower bound to the upper bound.  Notice that the slope always passes through the mean of the data :math:`(\overline{x}, \overline{y})`.
 
 	.. figure:: images/show-anscome-solution-marked.png
 		:width: 750px
@@ -1019,16 +1016,16 @@ A better attempt to construct prediction intervals for the least squares model
 
 .. As is Devore, Probability and statistics for engineering and the sciences, page 506
 
-The derivation is similar to that for |b1|.  We require an estimate for the variance of the predicted |y| at at given value of |x|.  Let's fix our |x| value at :math:`x_*` and since :math:`b_0 = \bar{\mathrm{y}} - b_1 \bar{\mathrm{x}}`, we can write the prediction at this fixed |x| value as :math:`\hat{y}_* = \bar{\mathrm{y}} - b_1(x_* - \bar{\mathrm{x}})`.
+The derivation is similar to that for |b1|.  We require an estimate for the variance of the predicted |y| at at given value of |x|.  Let's fix our |x| value at :math:`x_*` and since :math:`b_0 = \overline{\mathrm{y}} - b_1 \overline{\mathrm{x}}`, we can write the prediction at this fixed |x| value as :math:`\hat{y}_* = \overline{\mathrm{y}} - b_1(x_* - \overline{\mathrm{x}})`.
 
 .. math::
 
-        \mathcal{V}\{y_*\} &= \mathcal{V}\{\bar{\mathrm{y}}\} + \mathcal{V}\{b_1(x_* - \bar{\mathrm{x}})\} + 2 \text{Cov}\{\bar{\mathrm{y}}, b_1(x_* - \bar{\mathrm{x}})\} \\
-        \mathcal{V}\{y_*\} &= \dfrac{S_E^2}{n} + (x_* - \bar{\mathrm{x}})^2 S_E^2(b_1)
+        \mathcal{V}\{y_*\} &= \mathcal{V}\{\overline{\mathrm{y}}\} + \mathcal{V}\{b_1(x_* - \overline{\mathrm{x}})\} + 2 \text{Cov}\{\overline{\mathrm{y}}, b_1(x_* - \overline{\mathrm{x}})\} \\
+        \mathcal{V}\{y_*\} &= \dfrac{S_E^2}{n} + (x_* - \overline{\mathrm{x}})^2 S_E^2(b_1)
 
 You may read the reference texts for the interesting derivation of this variance.  However, this is only the variance of the average predicted value of |y|.  In other words, it is the variance we expect if we repeatedly brought in observations at :math:`x_*`.  The prediction error of an individual observation, :math:`x_i`, and its corresponding prediction, :math:`\hat{y}_i`, is inflated slightly further:
 
-:math:`\mathcal{V}\{\hat{y}_i\} = S_E^2\left(1 + \dfrac{1}{n} + \dfrac{(x_i - \bar{\mathrm{x}})^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}}\right)`.
+:math:`\mathcal{V}\{\hat{y}_i\} = S_E^2\left(1 + \dfrac{1}{n} + \dfrac{(x_i - \overline{\mathrm{x}})^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}\right)`.
 
 We may construct a prediction interval in the standard manner, assuming that :math:`\hat{y}_i \sim \mathcal{N}\left( \overline{\hat{y}_i}, \mathcal{V}\{\hat{y}_i\} \right)`.  We will use an estimate of this variance since we do not know the population variance.  This requires we use the :math:`t`-distribution with :math:`n-k` degrees of freedom, at a given degree of confidence, e.g. 95%.
 
@@ -1044,23 +1041,23 @@ This is a prediction interval for a new prediction, :math:`\hat{y}_i` from a new
 Implications of the prediction error of a new |y|
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Let's understand the interpretation of :math:`\mathcal{V}\{\hat{y}_i\} = S_E^2 \left(1 + \dfrac{1}{n} + \dfrac{(x_i - \bar{\mathrm{x}})^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}}\right)` as the variance of the predicted :math:`\hat{y}_i` at the given value of :math:`x_i`. Using the previous example where we calculated the least squares line, now:
+Let's understand the interpretation of :math:`\mathcal{V}\{\hat{y}_i\} = S_E^2 \left(1 + \dfrac{1}{n} + \dfrac{(x_i - \overline{\mathrm{x}})^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}\right)` as the variance of the predicted :math:`\hat{y}_i` at the given value of :math:`x_i`. Using the previous example where we calculated the least squares line, now:
 
-#.	Let :math:`x_\text{new} = \bar{\mathrm{x}}`, the center point of our data.  Write down the upper and lower value of the prediction bounds for the corresponding :math:`\hat{y}`, given that :math:`c_t = 2.26` at the 95% confidence level.
+#.	Let :math:`x_\text{new} = \overline{\mathrm{x}}`, the center point of our data.  Write down the upper and lower value of the prediction bounds for the corresponding :math:`\hat{y}`, given that :math:`c_t = 2.26` at the 95% confidence level.
 
 	.. only:: studentlatex
 
 		- The LB = :math:`\hat{y}_i - c_t \sqrt{V\{\hat{y}_i\}}` =
 		- The UB = :math:`\hat{y}_i + c_t \sqrt{V\{\hat{y}_i\}}` =
-		- What do you notice that is special about these bounds at the point :math:`x_\text{new} = \bar{\mathrm{x}}`?
+		- What do you notice that is special about these bounds at the point :math:`x_\text{new} = \overline{\mathrm{x}}`?
 
 	.. only:: inst
 
-		- The LB = :math:`\hat{y}_i - c_t \sqrt{V\{\hat{y}_i\}} = 7.5 - 2.26 \times (1.236)^2 \times \sqrt{\left(1+\dfrac{1}{11} + \dfrac{(\bar{\mathrm{x}} - \bar{\mathrm{x}})^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}}\right)} = 7.5 - 2.26 \times 1.527 \times 1.044 = 7.50 - 3.60`
-		- The UB = :math:`\hat{y}_i + c_t \sqrt{V\{\hat{y}_i\}} = 7.5 + 2.26 \times (1.236)^2 \times \sqrt{\left(1+\dfrac{1}{11} + \dfrac{(\bar{\mathrm{x}} - \bar{\mathrm{x}})^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}}\right)} = 7.5 + 2.26 \times 1.527 \times 1.044 = 11.1`
+		- The LB = :math:`\hat{y}_i - c_t \sqrt{V\{\hat{y}_i\}} = 7.5 - 2.26 \times (1.236)^2 \times \sqrt{\left(1+\dfrac{1}{11} + \dfrac{(\overline{\mathrm{x}} - \overline{\mathrm{x}})^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}\right)} = 7.5 - 2.26 \times 1.527 \times 1.044 = 7.50 - 3.60`
+		- The UB = :math:`\hat{y}_i + c_t \sqrt{V\{\hat{y}_i\}} = 7.5 + 2.26 \times (1.236)^2 \times \sqrt{\left(1+\dfrac{1}{11} + \dfrac{(\overline{\mathrm{x}} - \overline{\mathrm{x}})^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}\right)} = 7.5 + 2.26 \times 1.527 \times 1.044 = 11.1`
 
 
-#.	Now move left and right, away from :math:`\bar{\mathrm{x}}`, and mark the confidence intervals.  What general shape do they have?
+#.	Now move left and right, away from :math:`\overline{\mathrm{x}}`, and mark the confidence intervals.  What general shape do they have?
 
 	-	The confidence intervals have a quadratic shape due to the square term under the square root.  The smallest prediction error occurs at the center of the model, and expands progressively wider as one moves away from the model center.  This is illustrated in the figure and makes intuitive sense as well.
 
@@ -1416,10 +1413,10 @@ To help the discussion below it is useful to omit the least squares model's inte
 .. math::
 
 	y_i &= b_0 + b_1 x_i \\
-	\bar{y} &= b_0 + b_1 \bar{x} \\
-	y_i - \bar{y} &= 0 +b_1(x_i - \bar{x}) \qquad \text{by subtracting the previous lines from each other}
+	\overline{y} &= b_0 + b_1 \overline{x} \\
+	y_i - \overline{y} &= 0 +b_1(x_i - \overline{x}) \qquad \text{by subtracting the previous lines from each other}
 
-This indicates that if we fit a model where the |x| and |y| vectors are first mean-centered, i.e. let :math:`x = x_\text{original} - \text{mean}\left(x_\text{original} \right)` and :math:`y = y_\text{original} - \text{mean}\left(y_\text{original} \right)`, then we still estimate the same slope for :math:`b_1`, but the intercept term is zero.  All we gain from this is simplification of the subsequent analysis.  Of course, if you need to know what :math:`b_0` was, you can use the fact that :math:`b_0 = \bar{y} - b_1 \bar{x}`.  Nothing else changes: the :math:`R^2, S_E, S_E(b_1)` and all other model interpretations remain the same.  You will prove this to yourself in the assignment.
+This indicates that if we fit a model where the |x| and |y| vectors are first mean-centered, i.e. let :math:`x = x_\text{original} - \text{mean}\left(x_\text{original} \right)` and :math:`y = y_\text{original} - \text{mean}\left(y_\text{original} \right)`, then we still estimate the same slope for :math:`b_1`, but the intercept term is zero.  All we gain from this is simplification of the subsequent analysis.  Of course, if you need to know what :math:`b_0` was, you can use the fact that :math:`b_0 = \overline{y} - b_1 \overline{x}`.  Nothing else changes: the :math:`R^2, S_E, S_E(b_1)` and all other model interpretations remain the same.  You will prove this to yourself in the assignment.
 
 In the rest of the this section we will omit the model's intercept term, since it can always be recovered afterwards.
 
@@ -1479,7 +1476,7 @@ Going back to the single variable case we showed in the section where we derived
 
 	.. math::
 
-		\mathcal{V}\{b_1\} = \dfrac{S_E^2}{\sum_j{\left( x_j - \bar{\mathrm{x}} \right)^2}}
+		\mathcal{V}\{b_1\} = \dfrac{S_E^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}
 
 Notice that our matrix definition gives exactly the same result, remembering the |x| variables have already been centered in the matrix form.  Also recall that the variability of these estimated parameters can be reduced by (a) taking more samples, thereby increasing the denominator size, and (b) by including observations away from the center of the model.
 
@@ -1662,7 +1659,7 @@ Leverage measures how much each observation contributes to the model's predictio
 
 	.. math::
 
-		h_i &= \dfrac{1}{n} + \dfrac{\left(x_i -\bar{x}\right)^2}{\sum_{j=1}^{n}{\left(x_j -\bar{x}\right)^2}} \qquad \text{and}\qquad \bar{h} = \dfrac{k}{n}  \qquad \text{and}\qquad \dfrac{1}{n} \leq h_i \leq 1.0
+		h_i &= \dfrac{1}{n} + \dfrac{\left(x_i -\overline{x}\right)^2}{\sum_{j=1}^{n}{\left(x_j -\overline{x}\right)^2}} \qquad \text{and}\qquad \overline{h} = \dfrac{k}{n}  \qquad \text{and}\qquad \dfrac{1}{n} \leq h_i \leq 1.0
 
 The average hat value can be calculated theoretically.  While it is common to plot lines at 2 and 3 times the average hat value, always plot your data and judge for yourself what a large leverage means.  Also notice that smallest hat value is always positive and greater or equal to :math:`1/n`, while the largest hat value possible is 1.0.  The hat values for models B and C are the same, and are shown below.  The last point has very high leverage.
 
@@ -1913,8 +1910,8 @@ Exercises
 	Use the `distillation column data set <http://datasets.connectmv.com/info/distillation-tower>`_ and choose any two variables, one for |x| and one as |y|.  Then fit the following models by least squares in any software package you prefer:
 
 		-	:math:`y_i = b_0 + b_1 x_i`
-		-	:math:`y_i = b_0 + b_1 (x_i - \bar{x})` (what does the :math:`b_0` coefficient represent in this case?)
-		-	:math:`(y_i - \bar{y}) = b_0 + b_1 (x_i - \bar{x})`
+		-	:math:`y_i = b_0 + b_1 (x_i - \overline{x})` (what does the :math:`b_0` coefficient represent in this case?)
+		-	:math:`(y_i - \overline{y}) = b_0 + b_1 (x_i - \overline{x})`
 
 		Prove to yourself that centering the |x| and |y| variables gives the same model for the 3 cases in terms of the :math:`b_1` slope coefficient, standard errors and other model outputs.
 
@@ -1949,11 +1946,11 @@ Exercises
 
 .. answer::
 
-	The prediction interval is dependent on the value of :math:`x_\text{new, i}` used to make the prediction.  For this model, :math:`S_E = 2.989` kPa, :math:`n=253`,  :math:`\sum_j{(x_j - \bar{x})^2} = 86999.6`, and :math:`\bar{x} = 480.82`.
+	The prediction interval is dependent on the value of :math:`x_\text{new, i}` used to make the prediction.  For this model, :math:`S_E = 2.989` kPa, :math:`n=253`,  :math:`\sum_j{(x_j - \overline{x})^2} = 86999.6`, and :math:`\overline{x} = 480.82`.
 
 	.. math::
 
-		\mathcal{V}\left(\hat{y}_\text{new,i}\right) = S_E^2 \left(1 + \dfrac{1}{n} + \dfrac{\left(x_\text{new}-\bar{x}\right)^2}{ \sum_j{(x_j - \bar{x})^2}} \right)
+		\mathcal{V}\left(\hat{y}_\text{new,i}\right) = S_E^2 \left(1 + \dfrac{1}{n} + \dfrac{\left(x_\text{new}-\overline{x}\right)^2}{ \sum_j{(x_j - \overline{x})^2}} \right)
 
 	Calculating this term manually, or using the ``predict(model, newdata=..., int="p")`` function in R gives the 95% prediction interval:
 
@@ -2194,7 +2191,7 @@ Exercises
 
 	.. math::
 
-		\mathcal{V}\left\{\bar{x}_B - \bar{x}_A\right\} = \mathcal{V}\left\{\bar{x}_B\right\} + \mathcal{V}\left\{\bar{x}_A\right\}
+		\mathcal{V}\left\{\overline{x}_B - \overline{x}_A\right\} = \mathcal{V}\left\{\overline{x}_B\right\} + \mathcal{V}\left\{\overline{x}_A\right\}
 
 	Prove this statement, and clearly explain all steps in your proof.
 
@@ -2203,16 +2200,16 @@ Exercises
 
 	I don't normally concentrate on proofs in the book, unless they show something interesting, or are used over and over.  This short mathematical statement fits both criteria.
 
-	The important point with this proof is that :math:`\bar{x}_A` and :math:`\bar{x}_B` are the variables, not :math:`x`.  These variables come from a normal distribution (Central limit theorem), as long as we assume independent sampling: :math:`\bar{x}_A \sim \mathcal{N} \left(\mu; \sigma^2/n_A\right)`, and similarly for :math:`\bar{x}_B`.
+	The important point with this proof is that :math:`\overline{x}_A` and :math:`\overline{x}_B` are the variables, not :math:`x`.  These variables come from a normal distribution (Central limit theorem), as long as we assume independent sampling: :math:`\overline{x}_A \sim \mathcal{N} \left(\mu; \sigma^2/n_A\right)`, and similarly for :math:`\overline{x}_B`.
 
 	.. math::
 
-		\mathcal{V}\left\{\bar{x}_B - \bar{x}_A\right\}	&= \mathcal{V}\left\{\bar{x}_B + \left(-\bar{x}_A\right) \right\} \\
-														&= \mathcal{V}\left\{\bar{x}_B \right\} + 2\text{Cov}\left\{\bar{x}_B, \left(-\bar{x}_A\right)\right\} + \mathcal{V}\left\{-\bar{x}_A \right\} \\
-														&= \mathcal{V}\left\{\bar{x}_B \right\} + 0 + \left(-1\right)^2\mathcal{V}\left\{\bar{x}_A \right\} \\
-														&= \mathcal{V}\left\{\bar{x}_B\right\} + \mathcal{V}\left\{\bar{x}_A\right\}
+		\mathcal{V}\left\{\overline{x}_B - \overline{x}_A\right\}	&= \mathcal{V}\left\{\overline{x}_B + \left(-\overline{x}_A\right) \right\} \\
+														&= \mathcal{V}\left\{\overline{x}_B \right\} + 2\text{Cov}\left\{\overline{x}_B, \left(-\overline{x}_A\right)\right\} + \mathcal{V}\left\{-\overline{x}_A \right\} \\
+														&= \mathcal{V}\left\{\overline{x}_B \right\} + 0 + \left(-1\right)^2\mathcal{V}\left\{\overline{x}_A \right\} \\
+														&= \mathcal{V}\left\{\overline{x}_B\right\} + \mathcal{V}\left\{\overline{x}_A\right\}
 
-	The second line is a result shown earlier. The third line requires that we assume the between-group means :math:`\bar{x}_B` and :math:`\bar{x}_A` are independent, and so they are uncorrelated (their covariance is zero).  This was one of the key assumptions when we studied between-group differences; and is one assumption that is often true in many real cases.
+	The second line is a result shown earlier. The third line requires that we assume the between-group means :math:`\overline{x}_B` and :math:`\overline{x}_A` are independent, and so they are uncorrelated (their covariance is zero).  This was one of the key assumptions when we studied between-group differences; and is one assumption that is often true in many real cases.
 
 .. question::
 
@@ -2250,10 +2247,10 @@ Exercises
 	The following calculations have already been performed:
 
 		* Number of samples, :math:`n = 12`
-		* Average temperature = :math:`\bar{T} = 481` K
-		* Average melt index, :math:`\bar{m} = 4.925` g per 10 minutes.
-		* The summed product, :math:`\sum_i{\left(T_i-\bar{T}\right)\left(m_i - \bar{m}\right)} = -422.1`
-		* The sum of squares, :math:`\sum_i{\left(T_i-\bar{T}\right)^2} = 5469.0`
+		* Average temperature = :math:`\overline{T} = 481` K
+		* Average melt index, :math:`\overline{m} = 4.925` g per 10 minutes.
+		* The summed product, :math:`\sum_i{\left(T_i-\overline{T}\right)\left(m_i - \overline{m}\right)} = -422.1`
+		* The sum of squares, :math:`\sum_i{\left(T_i-\overline{T}\right)^2} = 5469.0`
 
 	#.	Use this information to build a predictive linear model for melt index from the reactor temperature.
 	#.	What is the model's standard error and how do you interpret it in the context of this model?  You might find the following software software output helpful, but it is not required to answer the question.
@@ -2286,8 +2283,8 @@ Exercises
 
 	.. math::
 
-		b_0 &= \bar{\mathrm{y}} - b_1\bar{\mathrm{x}} \\
-		b_1 &= \dfrac{ \sum_i{\left(x_i - \bar{\mathrm{x}}\right)\left(y_i - \bar{\mathrm{y}}\right) } }{ \sum_i{\left( x_i - \bar{\mathrm{x}}\right)^2} }
+		b_0 &= \overline{\mathrm{y}} - b_1\overline{\mathrm{x}} \\
+		b_1 &= \dfrac{ \sum_i{\left(x_i - \overline{\mathrm{x}}\right)\left(y_i - \overline{\mathrm{y}}\right) } }{ \sum_i{\left( x_i - \overline{\mathrm{x}}\right)^2} }
 
 	Using the pre-calculated values, and that in our case :math:`T = x`, and that :math:`m = y`
 
@@ -2302,7 +2299,7 @@ Exercises
 
 	The interpretation of the standard error for this model is that the approximate prediction error of melt index has a standard deviation of 1.322 grams per 10 minutes (if the residuals are normally distributed).
 
-	#.	The slope coefficient estimate, :math:`b_1` has standard error of 0.01788 (from the software output), or it could be calculated as :math:`S_E^2(b_1) = \dfrac{S_E^2}{\sum_j{\left( T_j - \bar{T} \right)^2}} = \dfrac{1.322^2}{5469.0} = 0.01788^2 = 3.19 \times 10^{-4}`.
+	#.	The slope coefficient estimate, :math:`b_1` has standard error of 0.01788 (from the software output), or it could be calculated as :math:`S_E^2(b_1) = \dfrac{S_E^2}{\sum_j{\left( T_j - \overline{T} \right)^2}} = \dfrac{1.322^2}{5469.0} = 0.01788^2 = 3.19 \times 10^{-4}`.
 
 	From this we can construct the confidence interval for the actual slope coefficient, :math:`\beta_1`.  I have used the 95% confidence level, but you could use any level you prefer.  The degrees of freedom to use for the :math:`t`-distribution are :math:`n-k = 12 -2 = 10`.
 
