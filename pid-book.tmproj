@@ -34,7 +34,7 @@
 			<key>filename</key>
 			<string>conf.py</string>
 			<key>lastUsed</key>
-			<date>2011-01-31T20:38:15Z</date>
+			<date>2011-02-01T16:00:20Z</date>
 		</dict>
 		<dict>
 			<key>expanded</key>
@@ -101,24 +101,39 @@
 	<integer>229</integer>
 	<key>metaData</key>
 	<dict>
+		<key>conf.py</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>5</integer>
+				<key>line</key>
+				<integer>152</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>147</integer>
+		</dict>
 		<key>least-squares-modelling/least-squares-modelling.rst</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>63</integer>
 				<key>line</key>
-				<integer>0</integer>
+				<integer>319</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>353</integer>
+			<integer>324</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
 		<string>least-squares-modelling/least-squares-modelling.rst</string>
+		<string>conf.py</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
