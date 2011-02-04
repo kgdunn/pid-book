@@ -129,6 +129,8 @@ What you will be able to do after this section
 	#. Introduction to bivariate least squares (the linear relationship between 2 variables).
 	#. We will also discuss the short-sighted idiom that is often repeated: *correlation does not imply causation* and complete it by understanding that *correlation is a necessary, but not sufficient, condition for causality*.  We will take a look at an example of correlation and understand that it is impossible to imply causality without doing intentional experimentation.
 	
+.. _LS-covariance:	
+
 Covariance
 ===========
 
@@ -362,7 +364,7 @@ Least squares models with a single x-variable
 
 The general linear least squares model is a very useful tool (in the right circumstances), and it is the workhorse for a number of algorithms in data analysis.
 
-This part covers the relationship between two variables only: |x| and |y|.  In the next part on general least squares we will consider more than two variables and use matrix notation.  But we start off slowly here, looking carefully at the details for relating two variables first.
+This part covers the relationship between two variables only: |x| and |y|.  In the next part on general least squares we will consider more than two variables and use matrix notation.  But we start off slowly here, looking first at the details for relating two variables.
 
 We will follow these steps:
 
@@ -384,9 +386,9 @@ The least squares model postulates that there is a linear relationship between m
 		\mathcal{E}\left\{\mathrm{y}\right\} &= \beta_0 + \beta_1 \mathrm{x} \\
 		\mathrm{y} &= \beta_0 + \beta_1 \mathrm{x} + \epsilon
 
-The :math:`\beta_0`, :math:`\beta_1` and :math:`\epsilon` terms are *population* parameters, which are unknown (see the :ref:`section on univariate statistics <univariate-population>`).  The :math:`\epsilon` term represents any unmodelled components of the linear model, measurement error, and is simply called *the error* term.  Notice that the error is not due to :math:`x` - we will return to this point later.  Also, if there is no relationship between |x| and |y| then :math:`\beta_1 = 0`.
+The :math:`\beta_0`, :math:`\beta_1` and :math:`\epsilon` terms are *population* parameters, which are unknown (see the :ref:`section on univariate statistics <univariate-population>`).  The :math:`\epsilon` term represents any unmodelled components of the linear model, measurement error, and is simply called *the error* term.  Notice that the error is not due to :math:`x`; we will return to this point in the section on :ref:`least squares assumptions <LS-assumptions>`.  Also, if there is no relationship between |x| and |y| then :math:`\beta_1 = 0`.
 
-We develop **a particular method** (there are others) to estimate these parameters; these estimates are defined as :math:`b_0 = \hat{\beta_0}`, :math:`b_1 = \hat{\beta_1}` and :math:`e = \hat{\epsilon}`.  Using this new nomenclature we can write, for a particular observation :math:`i`:
+We develop **a particular method** (there are others) to estimate these parameters; these estimates are defined as :math:`b_0 = \hat{\beta_0}`, :math:`b_1 = \hat{\beta_1}` and :math:`e = \hat{\epsilon}`.  Using this new nomenclature we can write, for a given observation :math:`i`:
 
 .. math::
 	:label: define-2-LS-i
@@ -394,7 +396,7 @@ We develop **a particular method** (there are others) to estimate these paramete
 		y_i &= b_0 + b_1 x_i + e_i \\
 		\hat{y}_i &= b_0 + b_1 x_i
 
-The error values, :math:`e_i`, are expected to be non-zero for practical cases.  Presuming we have calculated estimates |b0| and |b1| we can use the model with a new x-observation, :math:`x_i`, and predict its corresponding :math:`\hat{y}_i`.  All this new nomenclature is illustrated in the figure.
+Presuming we have calculated estimates |b0| and |b1| we can use the model with a new x-observation, :math:`x_i`, and predict its corresponding :math:`\hat{y}_i`.  The error value, :math:`e_i`, is generally non-zero indicating out prediction estimate of :math:`\hat{y}_i` is not exact. All this new nomenclature is illustrated in the figure.
 
 .. figure:: images/least-squares-picture.png
 	:width: 600px
@@ -406,7 +408,7 @@ Minimizing errors as an objective
 
 Our immediate aim however is to calculate |b0| and |b1|  from the :math:`n` pairs of data collected: :math:`(x_i, y_i)`.
 
-Here are some approaches to making the :math:`e_i\,` values small, in some way.
+Here are some approaches, usually called objective functions, to making the :math:`e_i\,` values small, in some way.
 
  	#.	:math:`\sum_{i=1}^{n}{(e_i)^2}`
 	#.	:math:`\sum_{i=1}^{n}{(e_i)^4}`
@@ -414,18 +416,18 @@ Here are some approaches to making the :math:`e_i\,` values small, in some way.
 	#.	:math:`\sum_{i=1}^{n}{\|e_i\|}` is an alternative, known as least absolute deviations or :math:`l`-1 norm problem
 	#.	*least median of squared error* model, which a robust form of least squares.
 
-All of these are good alternatives, however the traditional least squares model has the lowest possible variance for |b0| and |b1| when certain additional :ref:`assumptions are met <LS-assumptions>`.  The low variance of these parameter estimates is very desirable, for both model interpretation and using the model.
+All of these are good alternatives, however the traditional least squares model, the first objective function listed, has the lowest possible variance for |b0| and |b1| when certain additional :ref:`assumptions are met <LS-assumptions>`.  The low variance of these parameter estimates is very desirable, for both model interpretation and using the model.
 
-Other reasons for so much focus on the least squares alternative is because it is computationally tractable by hand and very fast on computers, and it is easy to prove various properties.  The other forms take much longer to calculate, almost always have to be done on a computer, may have multiple solutions, the solutions change dramatically given small deviations in the data (unstable, high variance solutions), and the mathematical proofs are difficult.  Also the interpretation of the sum of squares of the errors is that it penalizes deviations quadratically: large deviations much more than the smaller deviations.
+Other reasons for so much focus on the least squares alternative is because it is computationally tractable by hand and very fast on computers, and it is easy to prove various mathematical properties.  The other forms take much longer to calculate, almost always have to be done on a computer, may have multiple solutions, the solutions change dramatically given small deviations in the data (unstable, high variance solutions), and the mathematical proofs are difficult.  Also the interpretation of the least squares objective function is suitable in many situations: it penalizes deviations quadratically; i.e. large deviations much more than the smaller deviations.
 
-You can read more about these alternatives in the Birkes and Dodge reference above: *Alternative Methods of Regression*.
+You can read more about least squares alternatives in the Birkes and Dodge reference: `Alternative Methods of Regression <http://books.google.com/books?id=kF4L6eblK6wC&lpg=PP1&ots=7EKF9MF2sc&dq=Alternative%20Methods%20of%20Regression&pg=PP1#v=onepage&q&f=false>`_
 
 Solving the least squares problem and interpreting the model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Having settled on the least squares objective function, let's construct the problem as an optimization problem and understand it's characteristics.
 
-The least squares problem can be posed as an unconstrained optimization problem:
+The least squares problem can be posed as an :index:`unconstrained optimization` problem:
 
 .. math::
 	:label: define-2-LS-optimization
@@ -433,14 +435,14 @@ The least squares problem can be posed as an unconstrained optimization problem:
 		\min_{\displaystyle b_0, b_1} f(b_0, b_1) &= \sum_{i=1}^{n}{(e_i)^2} \\
 												  &= \sum_{i=1}^{n}{\left(y_i - b_0 - b_1 x_i\right)^2}
 
-Let's continue our example of the gas cylinder.  In this case we know that :math:`\beta_0 = 0` from theoretical principles.  So we can solve the above problem by trial and error.  We expect :math:`b_1 \approx \beta_1 = \dfrac{nR}{V} = \dfrac{(14.1 \text{~mol})(8.314 \text{~J/(mol.K)})}{20 \times 10^{-3} \text{m}^3} = 5.861 \text{~kPa/K}`.  So constructing equally spaced points between 5.0 and 6.5 we can calculate the objective function value and plot it against trial estimates of :math:`b_1`.
+Continuing our example of the gas cylinder.  In this case we know that :math:`\beta_0 = 0` from theoretical principles.  So we can solve the above problem by trial and error fir |b1|.  We expect :math:`b_1 \approx \beta_1 = \dfrac{nR}{V} = \dfrac{(14.1 \text{~mol})(8.314 \text{~J/(mol.K)})}{20 \times 10^{-3} \text{m}^3} = 5.861 \text{~kPa/K}`.  So construct equally spaced points of :math:`5.0 \leq b_1 \leq 6.5`, set :math:`b_0 = 0` and calculate the objective function using the :math:`(x_i, y_i)` data points recorded earlier.
 
 .. image:: images/cylinder-case-study-objective.png
 	:width: 600px
 	:align: center
 	:scale: 40
 
-In the case where we have both |b0| and |b1|  varying we can construct a grid function and tabulate the objective function values at all points in the grid.  The objective function shape has a bowl shape in general, and a unique minimum can always be found (because the objective function is convex).
+For the case where we have both |b0| and |b1|  varying we can construct a grid and tabulate the objective function values at all points on the grid.  The least squares objective function will always be shaped like a bowl, and a unique minimum  always be found, because the objective function is :index:`convex <single: convex (least squares)>`.
 
 .. image:: images/least-squares-objective-function-annotated.png
 	:width: 750px
@@ -449,7 +451,7 @@ In the case where we have both |b0| and |b1|  varying we can construct a grid fu
 
 The above figure shows the general nature of the :index:`least-squares objective function` where the two horizontal axes are for |b0| and |b1|, while the vertical axis represents the least squares objective function :math:`f(b_0, b_1)`.
 
-The plot highlights the quadratic nature of the objective function.  To find the minimum analytically we start with equation :eq:`define-2-LS-optimization` and take partial derivatives with respect to :math:`b_0` and :math:`b_1`, and set those equations to zero.  These two equations in two unknowns, are a requirement of optimality (cf. any book on optimization theory).  You can take the second derivative to confirm that the optimum is indeed a minimum.
+The illustration highlights the quadratic nature of the objective function.  To find the minimum analytically we start with equation :eq:`define-2-LS-optimization` and take partial derivatives with respect to :math:`b_0` and :math:`b_1`, and set those equations to zero.  This is a required condition at any optimal point -- see any reference on optimization theory.  
 
 .. math::
 	:label: define-2-LS-b0-b1-partials
@@ -457,7 +459,7 @@ The plot highlights the quadratic nature of the objective function.  To find the
 	\dfrac{\partial f(b_0, b_1)}{\partial{b_0}} &= -2 \sum_i^{n}{(y_i -  b_0 - b_1 x_i)} = 0 \\
  	\dfrac{\partial f(b_0, b_1)}{\partial{b_1}} &= -2 \sum_i^{n}{(x_i)(y_i -  b_0 - b_1 x_i)} = 0\\
 
-Divide the first line through by :math:`n` (the number of data pairs we are using to estimate the parameters) and solve that equation for |b0|.  Then substitute that into the second line to solve for |b1|.  The parameters that provide the least squares optimum for :math:`f(b_0, b_1)` are:
+Now divide the first line through by :math:`n` (the number of data pairs we are using to estimate the parameters) and solve that equation for |b0|.  Then substitute that into the second line to solve for |b1|.  From this we obtain the parameters that provide the least squares optimum for :math:`f(b_0, b_1)`:
 
 .. math::
 	:label: define-2-LS-b0-b1-result
@@ -466,7 +468,7 @@ Divide the first line through by :math:`n` (the number of data pairs we are usin
 	b_1 &= \dfrac{ \sum_i{\left(x_i - \overline{\mathrm{x}}\right)\left(y_i - \overline{\mathrm{y}}\right) } }{ \sum_i{\left( x_i - \overline{\mathrm{x}}\right)^2} }
 
 
-**Remarks**:
+**Verify for yourself that**:
 
 #.	The first part of equation :eq:`define-2-LS-b0-b1-partials` shows :math:`\sum_i{e_i} = 0`.
 
@@ -474,17 +476,17 @@ Divide the first line through by :math:`n` (the number of data pairs we are usin
 
 #.	From second part of equation :eq:`define-2-LS-b0-b1-partials` prove to yourself that :math:`\sum_i{(x_i e_i)} = 0`.
 
-#.	Also prove and interpret that :math:`\sum_i{(\hat{y}_i e_i)} = 0`.
+#.	Also prove and *interpret* that :math:`\sum_i{(\hat{y}_i e_i)} = 0`.
 
 #.	Notice that the parameter estimate for |b0| depends on the value of |b1|: we say the estimates are correlated - you cannot estimate them independently.
 
-**Questions**:
+#.	You can also take the second derivative to confirm that the optimum is indeed a minimum.
 
-#.	What units does parameter estimate :math:`b_1` have?
+**Remarks**:
 
-		-	The units of :math:`\mathrm{y}` divided by the units of :math:`\mathrm{x}`.
+#.	What units does parameter estimate :math:`b_1` have? The units of :math:`\mathrm{y}` divided by the units of :math:`\mathrm{x}`.
 
-#.	Recall the temperature and pressure example (start of this section).  Let  :math:`\hat{p}_i = b_0 + b_1 T_i`:
+#.	Recall the :ref:`temperature and pressure example <LS-covariance>`: let  :math:`\hat{p}_i = b_0 + b_1 T_i`:
 
 	#.	What is the interpretation of coefficient :math:`b_1`?
 
@@ -511,15 +513,22 @@ Divide the first line through by :math:`n` (the number of data pairs we are usin
 Example
 ~~~~~~~~
 
-Calculate the least squares estimates for the model :math:`y = b_0 + b_1 x` from the given data.  Also calculate the predicted value of :math:`\hat{y}_i` when :math:`x_i = 5.5`
+We will refer back to this example several times.  Calculate the least squares estimates for the model :math:`y = b_0 + b_1 x` from the given data.  Also calculate the predicted value of :math:`\hat{y}_i` when :math:`x_i = 5.5`
 
 	-	:math:`b_0 =`
 	-	:math:`b_1 =`
 	-	When :math:`x_i = 5`, then :math:`\hat{y}_i =`
 
-.. figure:: images/regression-exercise.png
-	:align: center
-	:scale: 40
+=========== ==== ==== ==== ==== ==== ==== ==== ==== ===== ==== ====
+:math:`x`   10.0 8.0  13.0 9.0  11.0 14.0 6.0  4.0  12.0  7.0  5.0
+----------- ---- ---- ---- ---- ---- ---- ---- ---- ----- ---- ----
+:math:`y`   8.04 6.95 7.58 8.81 8.33 9.96 7.24 4.26 10.84 4.82 5.68
+=========== ==== ==== ==== ==== ==== ==== ==== ==== ===== ==== ====
+
+..
+	.. figure:: images/regression-exercise.png
+		:align: center
+		:scale: 40
 
 ..	Raw data
 	{| class="wikitable" style="text-align: center; margin-left:auto; margin-right:auto;"  border="1"
@@ -559,7 +568,7 @@ Calculate the least squares estimates for the model :math:`y = b_0 + b_1 x` from
 .. figure:: images/show-anscombe-problem-1.png
 	:align: center
 	:width: 500px
-	:scale: 60
+	:scale: 50
 
 To calculate the least squares model in R:
 
