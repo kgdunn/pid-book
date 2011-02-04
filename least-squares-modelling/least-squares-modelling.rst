@@ -604,34 +604,38 @@ Least squares model analysis
 Once we have fitted the |b0| and |b1| terms using the data and the equations from :eq:`define-2-LS-b0-b1-result`, it is of interest to know how well the model performed.  That is what this section is about.  In particular:
 
 #.	Analysis of variance: breakdown the data's variability into components
+
 #.	Confidence intervals for the model coefficients, :math:`b_0` and :math:`b_1`
+
 #.	Prediction error estimates for the y-variable
 
-In order to perform the second step we need to make a few assumptions about the data, and if the data follow those assumptions, then we can derive confidence intervals for the model parameters in the third part.
+#.	We will also take a look at the interpretation of the software output.
+
+In order to perform the second part we need to make a few assumptions about the data, and if the data follow those assumptions, then we can derive confidence intervals for the model parameters in the third part.
 
 The variance breakdown
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Recall that :ref:`variability <univariate-about-variability>` is what makes our data interesting.  Without variance (i.e. just flat lines) we would have nothing to do.  The :index:`analysis of variance` is just a tool to show how much variability in the y-variable is explained by:
 
- 	#.	Doing nothing (no model: implies :math:`\hat{y} = \overline{y}`)
+ 	#.	Doing nothing (no model: this implies :math:`\hat{y} = \overline{y}`)
  	#.	The model (:math:`\hat{y}_i = b_0 + b_1 x_i`)
  	#.	How much variance is left over in the errors, :math:`e_i`
 
-These 3 components must add up to the total variance.  By definition, the variance is computed about a mean, so the variance of no model (i.e. the "doing nothing" case) is zero.  So the total variance in |y| is just the sum of the other two variances: the model's variance, and the error variance.  We show this next.
+These 3 components must add up to the total variance.  By definition, the variance is computed about a mean, so the variance of no model (i.e. the "doing nothing" case) is zero.  So the total variance in vector |y| is just the sum of the other two variances: the model's variance, and the error variance.  We show this next.
 
 .. The variance breakdown: graphically
 .. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Using the accompanying figure, we see that geometrically, at any fixed value of :math:`x_i`, that any |y| value above or below the least squares line, :math:`y_i`, would obey the distance relationship:
+Using the accompanying figure, we see that geometrically, at any fixed value of :math:`x_i`, that any |y| value above or below the least squares line, call it :math:`y_i` and shown with a circle, would obey the distance relationship:
 
 .. math::
 
 		\begin{array}{lrcl}
-		\text{Distance relationship:}   & (y_i - \overline{\mathrm{y}})         &=& (\hat{y}_i - \overline{\mathrm{y}}) + (y_i - \hat{y}_i) \\
-		\text{Squaring:}                & (y_i - \overline{\mathrm{y}})^2       &=& (\hat{y}_i - \overline{\mathrm{y}})^2 + 2(\hat{y}_i - \overline{\mathrm{y}})(y_i - \hat{y}_i) + (y_i - \hat{y}_i)^2 \\
-		\text{Summing and simplifying:} & \sum{(y_i - \overline{\mathrm{y}})^2} &=& \sum{(\hat{y}_i - \overline{\mathrm{y}})^2} + \sum{(y_i - \hat{y}_i)^2} \\
-		                                & \text{Total sum of squares (TSS)} &=& \text{Regression SS (RegSS)} + \text{Residual SS (RSS)}
+		\text{Distance relationship:} & (y_i - \overline{\mathrm{y}})         &=& (\hat{y}_i - \overline{\mathrm{y}}) + (y_i - \hat{y}_i) \\
+		\text{Squaring:}              & (y_i - \overline{\mathrm{y}})^2       &=& (\hat{y}_i - \overline{\mathrm{y}})^2 + 2(\hat{y}_i - \overline{\mathrm{y}})(y_i - \hat{y}_i) + (y_i - \hat{y}_i)^2 \\
+		\text{Sum and simplify:}      & \sum{(y_i - \overline{\mathrm{y}})^2} &=& \sum{(\hat{y}_i - \overline{\mathrm{y}})^2} + \sum{(y_i - \hat{y}_i)^2} \\
+		                              & \text{Total sum of squares (TSS)} &=& \text{Regression SS (RegSS)} + \text{Residual SS (RSS)}
 	\end{array}
 
 .. image:: images/ANOVA-graphically.png
@@ -641,15 +645,15 @@ Using the accompanying figure, we see that geometrically, at any fixed value of 
 
 It is convenient to write these sums of squares (variances) in table form, called an Analysis of Variance (:index:`ANOVA`) table:
 
-	=================== ========================================= ======================================== ======= ========================================
-	Type of variance    Distance                                  Degrees of freedom                       SSQ     Mean square
-	=================== ========================================= ======================================== ======= ========================================
-	Regression          :math:`\hat{y}_i - \overline{\mathrm{y}}` :math:`k` (k=2 in the examples so far)   RegSS   :math:`\text{RegSS}/k`
-	------------------- ----------------------------------------- ---------------------------------------- ------- ----------------------------------------
-	Error               :math:`y_i - \hat{y}_i`                   :math:`n-k`                              RSS     :math:`\text{RSS}/(n-k)`
-	------------------- ----------------------------------------- ---------------------------------------- ------- ----------------------------------------
-	Total               :math:`y_i - \overline{\mathrm{y}}`       :math:`n`                                TSS     :math:`\text{TSS}/n`
-	=================== ========================================= ======================================== ======= ========================================
+	=================== ========================================= ================================================ ======= ========================================
+	Type of variance    Distance                                  Degrees of freedom                               SSQ     Mean square
+	=================== ========================================= ================================================ ======= ========================================
+	Regression          :math:`\hat{y}_i - \overline{\mathrm{y}}` :math:`k` (:math:`k=2` in the examples so far)   RegSS   :math:`\text{RegSS}/k`
+	------------------- ----------------------------------------- ------------------------------------------------ ------- ----------------------------------------
+	Error               :math:`y_i - \hat{y}_i`                   :math:`n-k`                                      RSS     :math:`\text{RSS}/(n-k)`
+	------------------- ----------------------------------------- ------------------------------------------------ ------- ----------------------------------------
+	Total               :math:`y_i - \overline{\mathrm{y}}`       :math:`n`                                        TSS     :math:`\text{TSS}/n`
+	=================== ========================================= ================================================ ======= ========================================
 
 ..	Original table in wiki form
 
@@ -693,17 +697,17 @@ Judging the standard error
 
 The term :math:`S_E^2 = \text{RSS}/(n-k)` is one way of quantifying the model's performance.  The value :math:`S_E = \sqrt{\text{RSS}/(n-k)} = \sqrt{(e^Te)/(n-k)}` is called the :index:`standard error`.  It is really just the standard deviation of the error term, accounting correctly for the degrees of freedom.
 
-*Example*: Assume we have a model for predicting batch yield in kilograms from |x| = raw material purity, what does it mean for the standard error to be 3.4 kg?
+*Example*: Assume we have a model for predicting batch yield in kilograms from |x| = raw material purity, what does a standard error of 3.4 kg imply?
 
 *Answer*: Recall if the assumption of normally distributed errors is correct, then this value of 3.4 kg indicates that about two thirds of the yield predictions will lie within :math:`\pm 3.4` kg, and that 95% of the yield predictions will lie within :math:`\pm 2 \times 3.4` kg.  We will quantify the prediction interval more precisely, but the standard error is a good approximation for the error of |y|.
 
 Exercise
 ^^^^^^^^^
 
-For each of these cases:
+For two extreme cases:
 
-#. :math:`y_i = e_i`, i.e. where :math:`b_0 = 0` and :math:`b_1 = 0`
-#. :math:`y_i = b_0 + b_1 x_i + e_i`, for any values of :math:`b_0` and :math:`b_1`, and the models fits the data perfectly
+#. :math:`y_i = e_i`, i.e. where :math:`b_0 = 0` and :math:`b_1 = 0`.  In other words, our :math:`y_i` measurements are just random noise.
+#. :math:`y_i = b_0 + b_1 x_i + e_i`, for any values of :math:`b_0` and :math:`b_1`, that model fits the data perfectly, with no residuals.
 
 Do the following:
 
@@ -762,7 +766,7 @@ Derivation of :math:`R^2`
 	
 		\cos \theta_{ab} = \dfrac{a^Tb}{\|a\| \|b\|}
 
-As introduced by example in the previous part, :math:`R^2 = \dfrac{\text{RegSS}}{\text{TSS}} = \dfrac{\sum_i{ \left(\hat{y}_i - \overline{\mathrm{y}}\right)^2}}{\sum_i{ \left(y_i - \overline{\mathrm{y}}\right)^2}}`: simply the ratio between the variance we can explain with the model (RegSS) and the total variance we started off with (TSS).  :math:`R^2 = 1-\dfrac{\text{RSS}}{\text{TSS}}`, based on the fact that TSS = RegSS + RSS.
+As introduced by example in the previous part, :math:`R^2 = \dfrac{\text{RegSS}}{\text{TSS}} = \dfrac{\sum_i{ \left(\hat{y}_i - \overline{\mathrm{y}}\right)^2}}{\sum_i{ \left(y_i - \overline{\mathrm{y}}\right)^2}}`: simply the ratio between the variance we can explain with the model (RegSS) and the total variance we started off with (TSS). We can also write that :math:`R^2 = 1-\dfrac{\text{RSS}}{\text{TSS}}`, based on the fact that TSS = RegSS + RSS.
 
 From the above ratios it is straightforward to see that if :math:`R^2 = 0`, it requires that :math:`\hat{y}_i = \overline{\mathrm{y}}`: we are predicting just a flat line, the mean of the |y| data.  On the other extreme, an :math:`R^2 = 1` implies that :math:`\hat{y}_i = y_i`, we have perfect predictions for every data point.
 
@@ -772,28 +776,28 @@ The nomenclature :math:`R^2` comes from the fact that it is the square of the co
 
 	r(x, y) = \dfrac{\mathcal{E}\left\{ (x - \overline{x}) (y - \overline{y})\right\}}{\sqrt{\mathcal{V}\left\{x\right\}\mathcal{V}\left\{y\right\}}} = \dfrac{\text{Cov}\left\{x, y\right\}}{\sqrt{\mathcal{V}\left\{x\right\}\mathcal{V}\left\{y\right\}}}
 
-and can range in value from -1 to +1.  The :math:`R^2` ranges from 0 to +1, and is just the square of :math:`r(x,y)`. :math:`R^2` is just a way to tell how far we are between predicting a flat line (no variation) and the extreme of being able to predict the model building data :math:`(y_i)` exactly.
+and can range in value from :math:`-1` to :math:`+1`.  The :math:`R^2` ranges from 0 to +1, and is the square of :math:`r(x,y)`. :math:`R^2` is just a way to tell how far we are between predicting a flat line (no variation) and the extreme of being able to predict the model building data, :math:`y_i`, exactly.
 
 The :math:`R^2` value is likely well known to anyone that has encountered least squares before. This number must be interpreted with caution. It is most widely **abused** as a way to measure "*how good is my model*".
 
-These two common examples illustrate the abuse:
+These two common examples illustrate the abuse.  You likely have said or heard something like this before:
 
-	#.	"the :math:`R^2` value is really high, 90%, this is a good model".
+	#.	"the :math:`R^2` value is really high, 90%, so this is a good model".
 	#.	"Wow, that's a really low :math:`R^2`, this model can't be right - it's no good".
 
 How **good** a model is *for a particular purpose* is almost never related to the :math:`R^2` value.  The goodness of a model is better assessed by:
 
-- your engineering judgment: does the interpretation of model parameters make sense?
+- your engineering judgment: does the *interpretation* of model parameters make sense?
 - use testing data to verify the model's predictive performance,
 - using cross-validation tools (we will see this topic later on).
 
-We will see later on that :math:`R^2` can be arbitrarily inflated by adding terms to the linear model.  So sometimes you will see the adjusted :math:`R^2` used to account for this:
+We will see later on that :math:`R^2` can be arbitrarily increased by adding terms to the linear model, as we will see in the section on :ref:`multiple linear regression (MLR) <LS-multiple-X-MLR>`.  So sometimes you will see the adjusted :math:`R^2` used to account for the :math:`k` terms used in the model:
 
 .. math::
 
 	R^2_\text{adj} = 1 - \dfrac{\text{RSS}/(n-k)}{\text{TSS}/(n-1)}
 
-where :math:`k=2` for the case of estimating a model :math:`y_i = b_0 + b_1 x_i` as there are 2 parameters.
+where :math:`k=2` for the case of estimating a model :math:`y_i = b_0 + b_1 x_i`, as there are 2 parameters.
 
 
 Confidence intervals for the model coefficients |b0| and |b1|
@@ -803,7 +807,7 @@ Confidence intervals for the model coefficients |b0| and |b1|
 
 Up to this point we have made no assumptions about the data.  In fact we can calculate the model estimates, |b0| and |b1| as well as predictions from the model without any assumptions on the data.  It is only when we need additional information such as :index:`confidence intervals <single: confidence intervals (least squares)>` for the coefficients and prediction error estimates that we must make assumptions.
 
-Recall the |b1| coefficient represents the average effect on |y| of changing the |x|-variable by 1 unit.  If you are estimating reaction rates (kinetics) from a linear least squares model, a standard step in reactor design, you would want a measure of confidence of your coefficient.  For example, if you calculate the reaction rate as :math:`k = 0.81 \text{~s}^{-1}` you would benefit from knowing whether the 95% confidence interval was :math:`k = 0.81 \pm 0.26 \text{~s}^{-1}` or :math:`k = 0.81 \pm 0.68 \text{~s}^{-1}`. Point estimates of the least squares model parameters are satisfactory, but the confidence interval information is richer to interpret.
+Recall the |b1| coefficient represents the average effect on |y| when changing the |x|-variable by 1 unit. Let's say you are estimating a reaction rate (kinetics) from a linear least squares model, a standard step in reactor design, you would want a measure of confidence of your coefficient.  For example, if you calculate the reaction rate as :math:`k = b_1 = 0.81 \text{~s}^{-1}` you would benefit from knowing whether the 95% confidence interval was :math:`k = 0.81 \pm 0.26 \text{~s}^{-1}` or :math:`k = 0.81 \pm 0.68 \text{~s}^{-1}`.  In the latter case it is doubtful whether the reaction rate is of practical significance. Point estimates of the least squares model parameters are satisfactory, but the confidence interval information is richer to interpret.
 
 We first take a look at some assumptions in least squares modelling, then return to deriving the confidence interval.
 
@@ -812,26 +816,28 @@ We first take a look at some assumptions in least squares modelling, then return
 Assumptions required for analysis of the least squares model
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Recall that the population (true) model is :math:`y_i = \beta_0 + \beta_1 x_i + \epsilon_i` and let :math:`b_0` and :math:`b_1` be our estimates of the model's coefficients, and :math:`\mathrm{e}` be the estimate of the true error :math:`\epsilon`.  Note we are assuming imperfect knowledge of the :math:`y_i` by lumping all errors in :math:`e_i`: measurement error, structural error (we are not sure the process follows a linear structure), inherent randomness, and so on.
+Recall that the population (true) model is :math:`y_i = \beta_0 + \beta_1 x_i + \epsilon_i` and :math:`b_0` and :math:`b_1` are our estimates of the model's coefficients, and :math:`\mathrm{e}` be the estimate of the true error :math:`\epsilon`.  Note we are assuming imperfect knowledge of the :math:`y_i` by lumping all errors into :math:`e_i`.  For example, measurement error, structural error (we are not sure the process follows a linear structure), inherent randomness, and so on.
 
-Furthermore, our derivation for the confidence intervals of |b0| and |b1| requires that we assume:
+Furthermore, our derivation for the :index:`confidence intervals <single: confidence intervals (least squares)` of |b0| and |b1| requires that we assume:
 
-#.	Linearity of the model, and that the values of |x| are fixed (have no error).  This implies that the error in :math:`\epsilon` is the error of |y|, since the :math:`\beta_0 + \beta_1 \mathrm{x}` terms are fixed.
+#.	Linearity of the model, and that the values of |x| are fixed (have no error).  This implies that the error captured by :math:`\epsilon` is the error of |y|, since the :math:`\beta_0 + \beta_1 \mathrm{x}` terms are fixed.
 
 	-	In an engineering situation this would mean that your |x| variable has much less uncertainty than the |y| variable; and is often true in many situations.
 
 #.	The variance of |y| is the same (constant) at all values of |x|, known as the constant error variance assumption.
 
-	-	The variability of |y| can be non-constant in several practical cases (e.g. our measurement accuracy deteriorates at extreme conditions of |x|).
+	-	The variability of |y| can be non-constant in several practical cases (e.g. our measurement accuracy deteriorates at extreme high and low levels of |x|).
 
 	.. figure:: images/constant-error-variance.png
 		:width: 500px
 		:align: center
 		:scale: 60
+		
+	Illustration of the constant error variance assumption and the normally distributed error assumption.
 
 #.	The errors are normally distributed: :math:`e_i \sim \mathcal{N}(0, \sigma_\epsilon^2)`.  This also implies that :math:`y_i \sim \mathcal{N}(\beta_0 + \beta_1x_i, \sigma_\epsilon^2)` from the first linearity assumption.
 
-#.	Each error is independent of the other.  This assumption is often violated in cases where the observations are taken in time order on slow moving processes (e.g. if you have a positive error now, your next sample is also likely to have a positive error).   The autocorrelation problem.
+#.	Each error is independent of the other.  This assumption is often violated in cases where the observations are taken in time order on slow moving processes (e.g. if you have a positive error now, your next sample is also likely to have a positive error).  We will have more to say about this later when we check for independence with an :ref:`autocorrelation test <LS-autocorrelation-test>`.
 
 #.	In addition to the fact that the |x| values are fixed, we also assume they are independent of the error.  If the |x| value is fixed (i.e. measured without error), then it is already independent of the error.
 
@@ -839,7 +845,9 @@ Furthermore, our derivation for the confidence intervals of |b0| and |b1| requir
 
 #.	All :math:`y_i` values are independent of each other.  This again is violated in cases where the data are collected in time order and the :math:`y_i` values are autocorrelated.
 
-**Note**: derivation of the model's coefficients do not require these assumptions, only the derivation of the coefficient's confidence intervals require this.
+.. note:: Derivation of the model's coefficients do not require these assumptions, only the derivation of the coefficient's confidence intervals require this.  
+
+Also, if we want to interpret the model's :math:`S_E` as the estimated standard deviation of the residuals, then it helps if the residuals are normally distributed.
 
 .. _LS-CI-for-model-parameters:
 
@@ -1392,6 +1400,7 @@ Summary of steps to build and investigate a linear model
 	Leverage, outliers, influence and discrepancy
 	- Chatterjee and Hadi paper (see PDF)
 
+.. _LS-multiple-X-MLR:
 
 More than one variable: multiple linear regression (MLR)
 ================================================================================
@@ -1731,7 +1740,6 @@ The values of :math:`D_i` are conveniently calculated in R using the ``cooks.dis
 
 .. THRESHOLD FOR COOK'S D.  BUBBLE PLOT.
 
-.. _LS-multiple-X-MLR:
 
 Enrichment topics
 ==========================================
