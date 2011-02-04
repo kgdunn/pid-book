@@ -1803,7 +1803,7 @@ For example:
 	M-estimate   7.962583 0.018661525
 	LS-estimate 12.336592 0.002094802
 
-In this example the two models perform similarly in terms on their :math:`S_`, :math:`b_0` and :math:`b_1` values, as well as confidence intervals for them.
+In this example the two models perform similarly in terms on their :math:`S_E`, :math:`b_0` and :math:`b_1` values, as well as confidence intervals for them.
 
 .. - Least angle least squares (regression)
 .. see the Efron paper mentioned above
