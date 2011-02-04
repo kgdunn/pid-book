@@ -63,7 +63,7 @@ References and readings
 
 #.	Hogg and Ledolter, *Engineering Statistics*.
 
-#.	Hunter, J.S. "`The exponentially weighted moving average <http://asq.org/qic/display-item/index.pl?item=5536>`_", *Journal of Quality Technology*, **18**(4) p 203 - 210, 1986.
+#.	Hunter, J.S. "`The Exponentially Weighted Moving Average <http://asq.org/qic/display-item/index.pl?item=5536>`_", *Journal of Quality Technology*, **18** (4) p 203 - 210, 1986.
 
 #.	Macgregor, J.F. "`Using On-Line Process Data to Improve Quality: Challenges for Statisticians <http://dx.doi.org/10.1111/j.1751-5823.1997.tb00311.x>`_", *International Statistical Review*, **65**, p 309-323, 1997.
 
