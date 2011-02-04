@@ -7,7 +7,8 @@ References and readings
 ========================
 
 .. index::
-	pair: references and readings; Principal component analysis (PCA)
+	pair: references and readings; principal component analysis
+	see: PCA; principal component analysis
 
 These readings cover a variety of topics in the area of latent variable methods:
 
@@ -21,7 +22,7 @@ Principal component analysis (PCA)
 =====================================
 
 .. index::
-	pair: PCA; Latent variable modelling
+	pair: principal component analysis; latent variable modelling
 
 Visualizing multivariate data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -391,7 +392,7 @@ Interpreting score plots
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. index::
-	pair: interpret score plot; Latent variable modelling
+	pair: interpret score plot; latent variable modelling
 
 Before summarizing some points about how to interpret a score plot, let's quickly repeat what a score value is.  There is one score value for each observation (row) in the data set, so there are are :math:`N` score values for the first component, another :math:`N` for the second component, and so on.
 
@@ -476,7 +477,7 @@ Interpreting loading plots
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. index::
-	pair: interpret loadings plot; Latent variable modelling
+	pair: interpret loadings plot; latent variable modelling
 	
 Recall that the loadings plots are a plot of the direction vectors that define the model.  Returning back to a previous illustration:
 
@@ -1316,7 +1317,7 @@ Exercises
 =========
 
 .. index::
-	pair: exercises; PCA
+	pair: exercises; latent variable modelling
 	
 We will use the following exercises in class; please work in groups of 2 people.   Each exercise introduces a new topic or highlights some interesting aspect of PCA.
 

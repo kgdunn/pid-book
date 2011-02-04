@@ -120,7 +120,7 @@ Fortunately, we have plenty of variability in our recorded data:
 			:scale: 50
 			:align: center	
 		
-	-	Other unknown sources, often called "*error*" (note that the word :index:`error <single: error, statistical` in statistics does not have the usual negative connotation from English).  These errors are all sources of variation which our imperfect knowledge of physics cannot account for.
+	-	Other unknown sources, often called "*error*" (note that the word :index:`error <single: error, statistical>` in statistics does not have the usual negative connotation from English).  These errors are all sources of variation which our imperfect knowledge of physics cannot account for.
 	
 		.. figure:: images/variation-some.png
 			:scale: 50
@@ -326,21 +326,18 @@ We review here a couple of concepts that you should have seen in prior statistic
 
 **Parameter**
 
-	.. index:: population parameter
+	.. index:: 
+		pair: population; parameter
 
 	A parameter is a value that describes the population's **distribution** in some way.  For example, the population mean.
 	
 **Statistic**
-
-	.. index:: statistic
 	
-	A statistic is an estimate of one of the population's parameters.
+	A :index:`statistic` is an estimate of one of the population's parameters.
 
 **Mean (location)**
-
-	.. index:: mean, average, location
 	
-	The mean (average) is a measure of location (position) of the distribution.  For each measurement, :math:`x_i`, in your sample
+	The :index:`mean` (:index:`average`) is a measure of :index:`location` (position) of the distribution.  For each measurement, :math:`x_i`, in your sample
 
 	.. math::
 		:nowrap:

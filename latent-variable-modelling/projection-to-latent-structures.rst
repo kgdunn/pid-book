@@ -2,7 +2,9 @@ References and readings
 ========================
 
 .. index::
-	pair: references and readings; Projection to latent structures (PLS)
+	pair: references and readings; projection to latent structures
+	see: PLS; projection to latent structures
+	see: partial least squares; projection to latent structures
 
 These readings cover a variety of topics in the area of latent variable methods:
 

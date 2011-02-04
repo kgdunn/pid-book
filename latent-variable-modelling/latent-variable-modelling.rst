@@ -392,7 +392,7 @@ References and readings
 ========================
 
 .. index::
-	pair: references and readings; Latent variable modelling
+	pair: references and readings; latent variable modelling
 
 These readings cover a variety of topics in the area of latent variable methods: 
 
@@ -584,7 +584,7 @@ What is a latent variable?
 ===================================================
 
 .. index::
-	single: latent variable, what is a
+	pair: latent variable modelling; what is a latent variable
 
 We will take a look at what a latent variable is conceptually, geometrically, and mathematically.
 

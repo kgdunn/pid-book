@@ -366,7 +366,7 @@ Mistakes to avoid
 
 Imagine you are monitoring an aspect of the final product's quality, e.g. viscosity, and you have a product specification that requires that viscosity to be within, say 40 to 60 cP.  It is a mistake to place those **specification limits** on the monitoring chart.  It is also a mistake to use the required specification limits instead of the LCL and UCL.  The monitoring chart is to detect abnormal variation in the process, not to inspect for quality specifications.  You can certainly have another chart for that, but the process monitoring chart's limits are intended to monitor process stability, and these Shewhart limits are calculated differently.
 
-Shewhart chart limits were calculated with the assumption of **independent subgroups** (e.g. subgroup :math:`i` has no effect on subgroup :math:`i+1`).  For a process with mild autocorrelation, the act of creating subgroups, with :math:`n` samples in each group, removes most, if not all, of the relationship between subgroups.  However processes with heavy autocorrelation (slow moving processes sampled at a high rate, for example), will have LCL and UCL calculated from equation :eq:`shewhart-limits` that will raise false alarms too frequently.  In these cases you can widen the limits, or remove the autocorrelation from the signal.  More on this in the section on exponentially weighted moving average (EWMA) charts.
+Shewhart chart limits were calculated with the assumption of **independent subgroups** (e.g. subgroup :math:`i` has no effect on subgroup :math:`i+1`).  For a process with mild autocorrelation, the act of creating subgroups, with :math:`n` samples in each group, removes most, if not all, of the relationship between subgroups.  However processes with heavy autocorrelation (slow moving processes sampled at a high rate, for example), will have LCL and UCL calculated from equation :eq:`shewhart-limits` that will raise false alarms too frequently.  In these cases you can widen the limits, or remove the autocorrelation from the signal.  More on this in the section on :ref:`exponentially weighted moving average (EWMA) charts <monitoring-EWMA>`.
 
 Using Shewhart charts on two or more **highly correlated quality variables**, usually on your final product measurement, can increase your type II (consumer's risk) dramatically.  We will come back to this very important topic in the section on :ref:`latent variable models <SECTION-latent-variable-modelling>`.
 
@@ -375,7 +375,7 @@ Using Shewhart charts on two or more **highly correlated quality variables**, us
 CUSUM charts
 ==============
 
-The Shewhart chart is not too sensitive to detecting shifts in the mean.  Depending on the subgroup size, :math:`n`, we showed that it can take several consecutive samples before a warning or action limit is triggered. The cumulative sum chart, or :index:`CUSUM chart <pair: CUSUM chart; Process monitoring>`, allows more rapid detection of these shifts away from a target value, :math:`T`.
+The Shewhart chart is not too sensitive to detecting shifts in the mean.  Depending on the subgroup size, :math:`n`, we showed that it can take several consecutive samples before a warning or action limit is triggered. The cumulative sum chart, or :index:`CUSUM chart <pair: CUSUM; Process monitoring>`, allows more rapid detection of these shifts away from a target value, :math:`T`.
 
 .. math::
 	:label: CUSUM-derivation
@@ -407,17 +407,18 @@ Once the process has been investigated the CUSUM value, :math:`S_t` is often res
 
 .. TODO(KGD): MUCH LESS FOCUS on the V-mask, more on how it is currently done
 
+.. _monitoring-EWMA:
 
 EWMA charts
 ==============
 
 .. index::
-	single: exponentially weighted moving average
-	pair: EWMA chart; Process monitoring
+	see: exponentially weighted moving average; EWMA
+	pair: EWMA; Process monitoring
 
 The two previous charts highlight the 2 extremes of monitoring charts.  On the one hand, a Shewhart chart assumes each subgroup sample is independent (unrelated) to the next - implying there is no "memory" in the chart.  On the other hand, a CUSUM chart has an infinite memory, back to the time the chart was started at :math:`t=0` (see equation :eq:`CUSUM-derivation`).
 
-As an introduction to the exponentially weighted moving average (EWMA) chart, consider first a moving average (MA) chart, which is used just like a Shewhart chart, except the samples that make up the subgroup are calculated using a moving window of width :math:`n`.
+As an introduction to the exponentially weighted moving average (EWMA) chart, consider first a :index:`moving average` (MA) chart, which is used just like a Shewhart chart, except the samples that make up the subgroup are calculated using a moving window of width :math:`n`.
 
 .. figure:: images/explain-moving-average-data-source.png
 	:width: 750px
@@ -436,7 +437,6 @@ The EWMA is similar to the MA, but with different weights; heavier weights for m
 	:width: 750px
 	:align: center
 	:scale: 95
-	
 
 Define the process target as :math:`T`.
 
@@ -611,7 +611,7 @@ Industrial practice
 
 This preceding section of the book is only intended to give an overview of the concepts of process monitoring.  As you move into an industrial environment you will find there are many such systems already in place.  Higher levels of management track statistics from a different point of view, often summarizing data from an entire plant, geographic region, or country.  The techniques learned in this book, while focusing mainly on unit operations, are equally applicable though.
 
-You may come across systems called dashboards, which are often part of :index:`enterprise resource planning` (ERP) systems.  These dashboards are supposed to monitor the pulse of a company and are tracked like any other monitoring chart discussed above.  Another area is called :index:`business intelligence` (BI) systems.  These typically track sales and other financial information.  And yet another acronym is the :index:`KPI`, :index:`key performance indicator`, which is a summary variable, such as profit per hour, or energy cost per unit of production.  These are often monitored and acted on by site managers on a daily or weekly basis.
+You may come across systems called dashboards, which are often part of :index:`enterprise resource planning` (ERP) systems.  These dashboards are supposed to monitor the pulse of a company and are tracked like any other monitoring chart discussed above.  Another area is called :index:`business intelligence` (BI) systems.  These typically track sales and other financial information.  And yet another acronym is the :index:`KPI <see: KPI; key performance indicator>`, :index:`key performance indicator`, which is a summary variable, such as profit per hour, or energy cost per unit of production.  These are often monitored and acted on by site managers on a daily or weekly basis.
 
 But at the unit operation and plant level, you will likely find the hardest part of getting a monitoring chart implemented is the part where you need to access the data.  Getting data out of most database systems is not easy, though it has improved quite a bit in the last few years.
 

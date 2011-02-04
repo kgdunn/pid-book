@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>least-squares-modelling/least-squares-modelling.rst</string>
+	<string>univariate-review/univariate-review.rst</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -16,25 +16,25 @@
 			<key>filename</key>
 			<string>contents.rst</string>
 			<key>lastUsed</key>
-			<date>2011-01-31T20:54:44Z</date>
+			<date>2011-02-04T15:27:19Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>_build/latex/PID.tex</string>
 			<key>lastUsed</key>
-			<date>2011-01-31T20:44:13Z</date>
+			<date>2011-02-04T02:29:26Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>preface.tex</string>
 			<key>lastUsed</key>
-			<date>2011-01-02T18:27:53Z</date>
+			<date>2011-02-04T02:29:24Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>conf.py</string>
 			<key>lastUsed</key>
-			<date>2011-02-01T16:00:20Z</date>
+			<date>2011-02-04T15:27:16Z</date>
 		</dict>
 		<dict>
 			<key>expanded</key>
@@ -101,43 +101,28 @@
 	<integer>229</integer>
 	<key>metaData</key>
 	<dict>
-		<key>conf.py</key>
+		<key>univariate-review/univariate-review.rst</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>5</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>152</integer>
+				<integer>338</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>147</integer>
-		</dict>
-		<key>least-squares-modelling/least-squares-modelling.rst</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>63</integer>
-				<key>line</key>
-				<integer>319</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>324</integer>
+			<integer>312</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>least-squares-modelling/least-squares-modelling.rst</string>
-		<string>conf.py</string>
+		<string>univariate-review/univariate-review.rst</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{239, 60}, {1201, 818}}</string>
+	<string>{{242, 60}, {1198, 818}}</string>
 </dict>
 </plist>

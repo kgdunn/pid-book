@@ -71,7 +71,7 @@ Usage examples
 ~~~~~~~~~~~~~~~
 
 .. index::
-	pair: usage examples; Least squares models
+	pair: usage examples; least squares
 
 The material in this section is used whenever you need to interpret and quantify the relationship between two or more variables.
 
@@ -92,7 +92,7 @@ References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. index::
-	pair: references and readings; Least squares models
+	pair: references and readings; least squares
 
 -	**Recommended**: John Fox, *Applied Regression Analysis and Generalized Linear Models*
 
@@ -360,7 +360,7 @@ Least squares models with a single x-variable
 ====================================================
 
 .. index:: 
-	pair:	main description; Least squares models 
+	pair:	derivation; least squares
 
 The general linear least squares model is a very useful tool (in the right circumstances), and it is the workhorse for a number of algorithms in data analysis.
 
@@ -442,14 +442,14 @@ Continuing our example of the gas cylinder.  In this case we know that :math:`\b
 	:align: center
 	:scale: 40
 
-For the case where we have both |b0| and |b1|  varying we can construct a grid and tabulate the objective function values at all points on the grid.  The least squares objective function will always be shaped like a bowl, and a unique minimum  always be found, because the objective function is :index:`convex <single: convex (least squares)>`.
+For the case where we have both |b0| and |b1|  varying we can construct a grid and tabulate the objective function values at all points on the grid.  The least squares objective function will always be shaped like a bowl, and a unique minimum  always be found, because the objective function is :index:`convex <pair: convex optimization; least squares>`.
 
 .. image:: images/least-squares-objective-function-annotated.png
 	:width: 750px
 	:align: center
 	:scale: 50
 
-The above figure shows the general nature of the :index:`least-squares objective function` where the two horizontal axes are for |b0| and |b1|, while the vertical axis represents the least squares objective function :math:`f(b_0, b_1)`.
+The above figure shows the general nature of the :index:`least-squares objective function <pair: objective function; least squares>` where the two horizontal axes are for |b0| and |b1|, while the vertical axis represents the least squares objective function :math:`f(b_0, b_1)`.
 
 The illustration highlights the quadratic nature of the objective function.  To find the minimum analytically we start with equation :eq:`define-2-LS-optimization` and take partial derivatives with respect to :math:`b_0` and :math:`b_1`, and set those equations to zero.  This is a required condition at any optimal point -- see any reference on optimization theory.  
 
@@ -805,7 +805,7 @@ Confidence intervals for the model coefficients |b0| and |b1|
 
 .. Note:: A good reference for this section is the book by Fox (Chapter 6), and the book by Draper and Smith.
 
-Up to this point we have made no assumptions about the data.  In fact we can calculate the model estimates, |b0| and |b1| as well as predictions from the model without any assumptions on the data.  It is only when we need additional information such as :index:`confidence intervals <single: confidence intervals (least squares)>` for the coefficients and prediction error estimates that we must make assumptions.
+Up to this point we have made no assumptions about the data.  In fact we can calculate the model estimates, |b0| and |b1| as well as predictions from the model without any assumptions on the data.  It is only when we need additional information such as :index:`confidence intervals <pair: confidence interval; least squares>` for the coefficients and prediction error estimates that we must make assumptions.
 
 Recall the |b1| coefficient represents the average effect on |y| when changing the |x|-variable by 1 unit. Let's say you are estimating a reaction rate (kinetics) from a linear least squares model, a standard step in reactor design, you would want a measure of confidence of your coefficient.  For example, if you calculate the reaction rate as :math:`k = b_1 = 0.81 \text{~s}^{-1}` you would benefit from knowing whether the 95% confidence interval was :math:`k = 0.81 \pm 0.26 \text{~s}^{-1}` or :math:`k = 0.81 \pm 0.68 \text{~s}^{-1}`.  In the latter case it is doubtful whether the reaction rate is of practical significance. Point estimates of the least squares model parameters are satisfactory, but the confidence interval information is richer to interpret.
 
@@ -816,9 +816,12 @@ We first take a look at some assumptions in least squares modelling, then return
 Assumptions required for analysis of the least squares model
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. index::
+	pair: least squares; assumptions for
+
 Recall that the population (true) model is :math:`y_i = \beta_0 + \beta_1 x_i + \epsilon_i` and :math:`b_0` and :math:`b_1` are our estimates of the model's coefficients, and :math:`\mathrm{e}` be the estimate of the true error :math:`\epsilon`.  Note we are assuming imperfect knowledge of the :math:`y_i` by lumping all errors into :math:`e_i`.  For example, measurement error, structural error (we are not sure the process follows a linear structure), inherent randomness, and so on.
 
-Furthermore, our derivation for the :index:`confidence intervals <single: confidence intervals (least squares)` of |b0| and |b1| requires that we assume:
+Furthermore, our derivation for the confidence intervals of |b0| and |b1| requires that we assume:
 
 #.	Linearity of the model, and that the values of |x| are fixed (have no error).  This implies that the error captured by :math:`\epsilon` is the error of |y|, since the :math:`\beta_0 + \beta_1 \mathrm{x}` terms are fixed.
 
@@ -1289,6 +1292,9 @@ Another type of plot to diagnose non-linearity present in the linear model is ca
 Summary of steps to build and investigate a linear model
 ==========================================================
 
+.. index::
+	pair: summary of steps; least squares
+
 #.	Plot the data to assess model structure and degree of correlation between the |x| and |y| variable.
 
 	.. code-block:: s
@@ -1387,7 +1393,8 @@ Summary of steps to build and investigate a linear model
 More than one variable: multiple linear regression (MLR)
 ================================================================================
 
-.. index:: multiple linear regression (MLR)
+.. index:: 
+	pair: multiple linear regression (MLR); least squares
 
 We now move to including more than one explanatory |x| variable in the linear model.  We will:
 
@@ -1561,7 +1568,8 @@ In the prior example, we could say: the effect of substrate concentration on yie
 Integer (dummy, indicator) variables in the model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. index:: integer variables in least squares
+.. index:: 
+	pair: integer variables; least squares
 
 Now that we have introduced multiple linear regression to expand our models, we also consider these sort of cases:
 
@@ -1632,7 +1640,8 @@ and :math:`y = \beta_0 + \beta_1x_1 + \ldots + \beta_k x_k + \gamma_1 d_1 + \gam
 Outliers: discrepancy, leverage, and influence of the observations
 ==========================================================================================
 
-.. index:: outliers (least squares)
+.. index:: 
+	pair: outliers; least squares
 
 Unusual observations will influence the model parameters and also influence the analysis from the model (standard errors and confidence intervals).  In this section we will examine how these outliers influence the model.
 
@@ -1662,7 +1671,8 @@ Can we quantify how much *influence* these *discrepancies* have on the model; an
 Leverage
 ~~~~~~~~~~~~~~
 
-.. index:: leverage (least squares)
+.. index:: 
+	pair: leverage; least squares
 
 Leverage measures how much each observation contributes to the model's prediction of :math:`\hat{y}_i`.  It is also called the hat value, :math:`h_i`, and simply measures how far away the data point is from the center of the model, but it takes the model's correlation into account:
 
@@ -1681,7 +1691,7 @@ The average hat value can be calculated theoretically.  While it is common to pl
 Discrepancy
 ~~~~~~~~~~~~~~
 
-Discrepancy can be measured by the residual distance.  However the residual is not a complete measure of :index:`discrepancy <single: discrepancy (least squares)>`.  We can imagine cases where the point has such high leverage that it drags the enter model towards it, leaving it only with a small residual.  One way then to isolate these points is to divide the residual by :math:`1-\text{leverage} = 1 - h_i`.  So we introduce a new way to quantify the residuals here, called *studentized residuals*:
+Discrepancy can be measured by the residual distance.  However the residual is not a complete measure of :index:`discrepancy <pair: discrepancy; least squares>`.  We can imagine cases where the point has such high leverage that it drags the enter model towards it, leaving it only with a small residual.  One way then to isolate these points is to divide the residual by :math:`1-\text{leverage} = 1 - h_i`.  So we introduce a new way to quantify the residuals here, called *studentized residuals*:
 
 	.. math::
 
@@ -1701,7 +1711,7 @@ This figure illustrates how the square point in model A and B is highly discrepa
 Influence
 ~~~~~~~~~~~~~~
 
-The :index:`influence <single: influence (least squares)>` of each data point can be quantified by seeing how much the model changes when we omit that data point.  The influence of a point is a combination its leverage and its discrepancy.  In model A, the square point had large discrepancy but low leverage, so its influence on the model parameters (slope and intercept) was small.  For model C, the square point had high leverage, but low discrepancy, so again the change in the slope and intercept of the model was small.  However model B had both large discrepancy and high leverage, so its influence is large.
+The :index:`influence <pair: influence; least squares>` of each data point can be quantified by seeing how much the model changes when we omit that data point.  The influence of a point is a combination its leverage and its discrepancy.  In model A, the square point had large discrepancy but low leverage, so its influence on the model parameters (slope and intercept) was small.  For model C, the square point had high leverage, but low discrepancy, so again the change in the slope and intercept of the model was small.  However model B had both large discrepancy and high leverage, so its influence is large.
 
 .. index:: Cook's D-statistic
 
@@ -1737,7 +1747,7 @@ Robust least squares models
 
 .. index:: robust least squares
 
-Outliers are often the most interesting observations and are usually the points from which we learn the most about the system.  A manual step where we review the :index:`outliers <single: outliers (least squares)>` and their influence should always done for any important model.  For example, inspection of the residual plots as described in the preceding sections.
+Outliers are often the most interesting observations and are usually the points from which we learn the most about the system.  A manual step where we review the :index:`outliers <pair: outliers; least squares>` and their influence should always done for any important model.  For example, inspection of the residual plots as described in the preceding sections.
 
 However, the ability to build a linear model that is not heavily influenced by outliers might be of interest in certain cases.
 
@@ -1930,7 +1940,7 @@ Exercises
 =========
 
 .. index::
-	pair: exercises; Least squares models
+	pair: exercises; least squares
 
 .. question::
 
