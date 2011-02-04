@@ -58,14 +58,22 @@ References and readings
 	pair: references and readings; Process monitoring
 
 #.	**Recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, Chapter 14 (2nd edition)
+
 #.	**Recommended**: Montgomery and Runger, *Applied Statistics and Probability for Engineers*.
+
 #.	Hogg and Ledolter, *Engineering Statistics*.
-#.	J.S. Hunter, "`The exponentially weighted moving average <http://asq.org/qic/display-item/index.pl?item=5536>`_", *Journal of Quality Technology*, **18**(4) p 203 - 210, 1986.
-#.	John F. Macgregor. "`Using On-Line Process Data to Improve Quality: Challenges for Statisticians <http://dx.doi.org/10.1111/j.1751-5823.1997.tb00311.x>`_", *International Statistical Review*, **65**, p 309-323, 1997.
+
+#.	Hunter, J.S. "`The exponentially weighted moving average <http://asq.org/qic/display-item/index.pl?item=5536>`_", *Journal of Quality Technology*, **18**(4) p 203 - 210, 1986.
+
+#.	Macgregor, J.F. "`Using On-Line Process Data to Improve Quality: Challenges for Statisticians <http://dx.doi.org/10.1111/j.1751-5823.1997.tb00311.x>`_", *International Statistical Review*, **65**, p 309-323, 1997.
+
 #.	Bisgaard, S., "`The Quality Detective: A Case Study <http://dx.doi.org/10.1098/rsta.1989.0006>`_", Philosophical Transactions of the Royal Society-A, **327**, p 499-511, 1989.
+
 #.	Rocke, D.M., `Robust Control Charts <http://www.jstor.org/pss/1268815>`_, *Technometrics*, **31** (2), p 173 - 184, 1989.
 
-.. Box, The R. A. Fisher Memorial Lecture, 1988- Quality Improvement- An Expanding Domain for the Application of Scientific Method, Phil. Trans. R. Soc. Lond. A February 24, 1989 327:617-630, [http://dx.doi.org/10.1098/rsta.1989.0017 DOI]
+.. 
+	Box, The R. A. Fisher Memorial Lecture, 1988- Quality Improvement- An Expanding Domain for the Application of Scientific Method, Phil. Trans. R. Soc. Lond. A February 24, 1989 327:617-630, [http://dx.doi.org/10.1098/rsta.1989.0017 DOI]
+	
 .. (Not available): Box critique of Taguchi methods: http://dx.doi.org/10.1002/qre.4680040207
 
 .. UMetrics book: review chapter on (M)SPC

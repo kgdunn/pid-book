@@ -681,6 +681,9 @@ Consult a statistical table found in most statistical textbooks for the normal d
 	.. raw:: latex
 
 		\vspace{1cm}
+		
+		
+.. _univariate-check-for-normality-qqplot:
 
 Checking for normality: using a qq-plot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
