@@ -27,7 +27,7 @@ for (i in 1:N)
 }
 
 
-bitmap('/Users/kevindunn/Statistics course/Course notes/Control charts/images/explain-weights.png', type="png256", width=9, height=7, res=300, pointsize=14)
+bitmap('explain-weights-for-process-monitoring.png', type="png256", width=9, height=7, res=300, pointsize=14)
 
 par(mfrow=c(2,2))
 stick(shewhart, main=(expression(paste("Shewhart weights"))), ylim=c(0, 1), xaxt="n",  ylab="", xlab="")

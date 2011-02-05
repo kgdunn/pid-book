@@ -476,7 +476,8 @@ which shows that the one-step-ahead prediction is a just a weighted sum of the r
 
 From the above discussion and the weights shown for the 4 different charts, it should be clear now how an EWMA chart is a tradeoff between a  Shewhart chart and a CUSUM chart.  As :math:`\lambda \rightarrow 1`, the EWMA chart behaves more as a Shewhart chart, giving only weight to the most recent observation.  While as :math:`\lambda \rightarrow 0` the EWMA chart starts to have an infinite memory (like a CUSUM chart).
 
-.. image:: images/explain-weights.png
+.. image:: images/explain-weights-for-process-monitoring.png
+	:alt: images/explain-weights-for-process-monitoring.R
 	:width: 750px
 	:align: center
 	:scale: 65
