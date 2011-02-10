@@ -241,7 +241,7 @@ More generally, using the :math:`\Gamma(...)` function, for example ``gamma(...)
 
 .. math::
 
-	a_n = \frac{\sqrt{2}\Gamma(n/2)}{\sqrt{n-1}\Gamma((n-1)/2)}
+	a_n = \frac{\sqrt{2}\,\,\Gamma(n/2)}{\sqrt{n-1}\,\,\Gamma((n-1)/2)}
 
 Now that we have an unbiased estimator for the standard deviation from these :math:`K` subgroups, we can write down suitable lower and upper control limits for the Shewhart chart:
 
@@ -501,8 +501,7 @@ The R code here shows one way of calculating the EWMA values for a vector of dat
 	    N <- length(x)
 	    y <- numeric(N)
 	    y[1] = target
-	    for (k in 2:N)
-	    {
+	    for (k in 2:N){
 	        error = x[k-1] - y[k-1]
 	        y[k] = y[k-1] + lambda*error
 	    }

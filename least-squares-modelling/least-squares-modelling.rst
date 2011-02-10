@@ -218,15 +218,16 @@ Use this to calculate the covariance between temperature and pressure by breakin
 
 In your own time calculate a rough numeric value and give the units of covariance for these cases:
 
-	===================================================  ===================================================
-	:math:`x`                                            :math:`y`
-	===================================================  ===================================================
-	:math:`x` = age of married partner 1                 :math:`y` = age of married partner 2
-	:math:`x` = gas pressure                             :math:`y` = gas volume at a fixed temperature
-	:math:`x` = mid term mark                            :math:`y` = final exam mark
-	:math:`x` = hours worked per week                    :math:`y` = weekly take home pay
-	:math:`x` = cigarettes smoked per month              :math:`y` = age at death
-	===================================================  ===================================================
+	========================================================== ===================================================
+	:math:`x`                                                  :math:`y`
+	========================================================== ===================================================
+	:math:`x` = age of married partner 1                       :math:`y` = age of married partner 2
+	:math:`x` = gas pressure                                   :math:`y` = gas volume at a fixed temperature
+	:math:`x` = mid term mark                                  :math:`y` = final exam mark
+	:math:`x` = hours worked per week                          :math:`y` = weekly take home pay
+	:math:`x` = cigarettes smoked per month                    :math:`y` = age at death
+	:math:`x` = temperature on top tray of distillation column :math:`y` = top product purity
+	========================================================== ===================================================
 
 	Also describe what an outlier observation would mean in these cases.
 
@@ -1919,7 +1920,7 @@ For completeness the confidence interval at the 95% level for :math:`\beta_1` is
 		  -0.0082 								&\leq& \beta_1   &\leq& -0.0036
 	\end{array}
 
-This confidence interval, together with the bootstrapped values of :math:`b_1` give us additional insight when when make an interpretation of :math:`b_1`.  
+This confidence interval, together with the bootstrapped values of :math:`b_1` give us additional insight when when making our interpretation of :math:`b_1`.  
 
 By now you should also be wondering whether you can bootstrap the confidence interval bounds!  That's left as exercise for interested readers. The above example was inspired from an example in `ASA Statistics Computing and Graphics <http://stat-computing.org/newsletter/>`_, **13** (1), 2002.
 
