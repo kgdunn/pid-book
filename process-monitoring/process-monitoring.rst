@@ -203,9 +203,9 @@ Assuming we know :math:`\sigma_{\overline{X}}`, which we usually do not in pract
 	:label: shewhart-theoretical
 	
 	\begin{array}{rcccl} 
-		  - c_n                                              &\leq& \dfrac{\overline{x} - \mu}{\sigma_{\overline{X}}} &  +c_n\\ \\
-		\overline{x}  - c_n\sigma_{\overline{X}}                       &\leq&  \mu                                                 &\leq& \overline{x}  + c_n\sigma_{\overline{X}} \\ \\
-		\text{LCL}                                           &\leq&  \mu                                                 &\leq& \text{UCL}
+		  - c_n                                              &\leq& \dfrac{\overline{x} - \mu}{\sigma_{\overline{X}}} &\leq&  +c_n\\ \\
+		\overline{x}  - c_n\sigma_{\overline{X}}             &\leq&  \mu                                              &\leq& \overline{x}  + c_n\sigma_{\overline{X}} \\ \\
+		\text{LCL}                                           &\leq&  \mu                                              &\leq& \text{UCL}
 	\end{array}
 
 The reason for :math:`c_n = \pm 3` is that the total area between that lower and upper bound spans 99.73% of the area (in R: ``pnorm(+3) - pnorm(-3)`` gives 0.9973).  So it is highly unlikely, a chance of 1 in 370 that a data point, :math:`\overline{x}`, calculated from a subgroup of :math:`n` raw :math:`x`-values, will lie outside these bounds.
@@ -332,7 +332,6 @@ However what happens to the type II error rate as the LCL and UCL bounds are shi
 
 The :index:`average run length` (ARL) is defined as the average number of sequential samples we expect before seeing an out-of-bounds, or out-of-control signal.  This is given by the inverse of :math:`\alpha`, as ARL = :math:`\frac{1}{\alpha}`.  Recall for the theoretical distribution we had :math:`\alpha = 0.0027`, so the ARL = 370.  Thus we expect a run of 370 samples before we get an out-of-control signal.
 
-The run length changes if the process level shifts up or down.  What is the ARL if the process has shifted up by :math:`0.75\sigma`, if subgroup size is :math:`n=4`?  The ARL = 1/(1-0.9332) = 15 samples, indicating it will take, on average, 15 samples on the Shewhart chart to detect a process shift of :math:`0.75\sigma`.
 
 Extensions to the basic Shewhart chart
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
