@@ -230,6 +230,7 @@ References and readings
 - George Box: `Evolutionary operation: A Method for Increasing Industrial Productivity <http://www.jstor.org/stable/2985505>`_", *Journal of the Royal Statistical Society* (Applied Statistics), **6**, 81 - 101, 1957.
 - William G. Hunter and J. R. Kittrell, "`Evolutionary Operation: A Review <http://www.jstor.org/stable/1266686>`_", *Technometrics*, **8**, 389-397, 1966.
 - Heather Tye: "`Application of Statistical Design of Experiments Methods in Drug Discovery <http://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_", *Drug Discovery Today*, **9**, 485-491, 2004.
+- R.A. Fisher, `Statistical Methods, Experimental Design and Scientific Inference <http://www.amazon.com/Statistical-Methods-Experimental-Scientific-Inference/dp/0198522290>`_, Oxford Science Publications, 2003.
 
 .. OTHER REFERENCES
 
@@ -259,13 +260,19 @@ It is only by intentional manipulation of our systems that we learn from them.  
 	
 Designed experiments are the only way we can be sure that these correlated events are causal.  You often hear people repeat the (incomplete) phrase that "*correlation does not imply causality*".  That is half-true.  The other half of the phrase is however: "*correlation is a necessary, but not sufficient, condition for causality*". 
 
-Here's another example from Box's book: consider the negative slope least squares model between pressure and yield.  As pressure increases, the yield drops.  It is true that they are correlated (that is exactly what a least squares model is intended for: quantifying correlation).  However the true mechanism might rather be that pressure is increased to remove frothing that occurs in the reactor.  Higher frothing occurs when there is an impurity in the raw material, so operators increase reactor pressure when they see frothing (i.e. high impurity).  However, it is the high impurity that actually causes the lower yield.
+Here's another example from Box's book: consider the negative slope least squares model between pressure and yield.  As pressure increases, the yield drops.  It is true that they are correlated, as that is exactly what a least squares model is intended for: to quantify correlation.  However the true mechanism is rather that pressure is increased to remove frothing that occurs in the reactor.  Higher frothing occurs when there is an impurity in the raw material, so operators increase reactor pressure when they see frothing (i.e. high impurity).  However, it is the high impurity that actually causes the lower yield.
 
-..	TODO: show figure on page 494 of BHH(v1) here
+.. figure:: images/yield-pressure-impurity-correlation.png
+	:alt:	images/yield-pressure-impurity-correlation.svg
+	:scale: 100
+	:width: 750px
+	:align: center
+	
+Figure adapted from Box, Hunter and Hunter, chapter 14, 1st edition.
 
-So the true effect of pressure on yield is non-existent, it is only appears in the data because of the operating policy.  That is why happenstance data cannot be relied on to imply cause-and-effect.   An experiment in which the pressure is changed from low to high, performed on the same batch of raw materials, will quickly reveal that there is no causal effect between pressure and yield.  Furthermore, experiments should be performed in random order, further breaking any relationship with other non-causal factors.  Only the truly causal effect will remain in experimental data, correlated effects will be broken (show up as having close to zero correlation).
+So the true effect of pressure on yield is non-existent, it is only appears in the data because of the operating policy.  That is why happenstance data cannot be relied on to imply cause-and-effect.   An experiment in which the pressure is changed from low to high, performed on the same batch of raw materials (i.e. at constant impurity level), will quickly reveal that there is no causal relationship effect between pressure and yield.  Furthermore, experiments should be performed in random order, further breaking any relationship with other non-causal factors.  Only the truly causal effect will remain in experimental data, *correlated* effects will be broken: they show up as having close to zero correlation in the DOE data.
 
-In summary, do not rely on anecdotal "evidence" from colleagues - always question the system and always try to perturb the system intentionally.  In practice you won't always be allowed to move the system, so we will talk about response surface methods and evolutionary operation at the end of this section.
+In summary, do not rely on anecdotal "evidence" from colleagues - always question the system and always try to perturb the system intentionally.  In practice you won't always be allowed to move the system too drastically, so we will discuss response surface methods and evolutionary operation at the end of this section which can be implemented on-line in production processes.
 
 We will show that experiments are the most efficient way to extract information about a system: i.e. the most information in the fewest number of changes.  So it is always worthwhile to experiment.
 
@@ -273,41 +280,43 @@ We will show that experiments are the most efficient way to extract information 
 Experiments with a single variable at two levels
 ======================================================
 
-
 This is the simplest type of experiment.  It involves an outcome variable, |y|, and one input variable, |x|.  The |x| variable could be continuous (e.g. temperature), or discrete (e.g. a yes/no, on/off, A/B) type variable.  Some examples:
 
 	*	Has the reaction yield increased when using catalyst A or B?
+	
 	*	Does the concrete's strength improve when adding a particular binder or not?
+	
 	*	Does the plastic's stretchability improve when extruded at lower or higher temperatures?
 	
-So we can perform several runs (experiments) at level A, and then some runs at level B.  In each both cases we strive to hold all other disturbance variables constant so we pick up only the A to B effect.  Disturbances are any variables that might affect |y|, but for whatever reason, we don't wish to quantify.  If we cannot control the disturbance, then at least we can using blocking (:ref:`more about blocking later <DOE-blocking-section>`) and pairing.
+So we can perform several runs (experiments) at level A, and then some runs at level B.  In both cases we strive to hold all other disturbance variables constant so we pick up only the A to B effect.  Disturbances are any variables that might affect |y|, but for whatever reason, we don't wish to quantify.  If we cannot control the disturbance, then at least we can using :ref:`blocking <DOE-blocking-section>` and pairing.
 
 
 Recap of group-to-group differences 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We have already seen in the :ref:`univariate statistics section <SECTION-univariate-review>` how to analyze this sort of data.  We first calculate a pooled variance, then a :math:`z`-value, and finally a confidence interval based on this :math:`z`.
+We have already seen in the :ref:`univariate statistics section <univariate-group-to-group-differences-no-reference-set>` how to analyze this sort of data.  We first calculate a pooled variance, then a :math:`z`-value, and finally a confidence interval based on this :math:`z`.  Please refer back to that section to review the important assumptions we have to make to arrive at this equation.
 
 .. math::
 	s_P^2 &= \frac{(n_A -1) s_A^2 + (n_B-1)s_B^2}{n_A - 1 + n_B - 1}\\
 	z &= \frac{(\bar{x}_B - \bar{x}_A) - (\mu_B - \mu_A)}{\sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}} \\
 
 	\begin{array}{rcccl}  
+		-c_t &\leq& \mu_B - \mu_A &\leq & c_t\\
 		(\bar{x}_B - \bar{x}_A) - c_t \times \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)} &\leq& \mu_B - \mu_A &\leq & (\bar{x}_B - \bar{x}_A) + c_t  \times \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}
 	\end{array}
 
-We consider the effect of changing from condition A to condition B to be a significant effect when this confidence interval does not span zero.  
+We consider the effect of changing from condition A to condition B to be a *statistically* significant effect when this confidence interval does not span zero.  However, the width of this interval and how symmetrically it spans zeros can cause us to come to a different, *practical* conclusion.  In other words, we override the narrow statistical conclusion based on the richer information we can infer from the confidence interval's width and the process's variance.
 
 Using linear least squares models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There's another interesting way that you can analyze this problem and get the identical result.  Using the ideas from the last class with a least squares model of the form:
+There's another interesting way that you can analyze data from an A vs B set of tests and get the identical result.  Use a least squares model of the form:
 
 .. math::
 
 	y_i = b_0 + g d_i
 	
-where :math:`d_i` is an indicator variable.  For example :math:`d_i = 0` when using condition A, and :math:`d_i=1` for condition B, and :math:`y_i` is the response variable.  Build this linear model and then examine the confidence interval for the coefficient :math:`g`.  Here's a small function that takes the |y| values from experiments under condition A, and the values under condition B and calculates the model.
+where :math:`d_i` is an indicator variable.  For example :math:`d_i = 0` when using condition A, and :math:`d_i=1` for condition B, and :math:`y_i` is the response variable.  Build this linear model and then examine the *confidence interval* for the coefficient :math:`g`.  Here's a small R function that takes the :math:`y` values from experiments under condition A, and the values under condition B and calculates the least squares model.
 
 .. code-block:: s
 
@@ -317,34 +326,34 @@ where :math:`d_i` is an indicator variable.  For example :math:`d_i = 0` when us
 
 	    y.A <- groupA[!is.na(groupA)]
 	    y.B <- groupB[!is.na(groupB)]
-		x.A <- numeric(length(y.A))
-		x.B <- numeric(length(y.B)) + 1
-		y <- c(y.A, y.B)
-		x <- c(x.A, x.B)
-		x <- factor(x, levels=c("0", "1"), labels=c("A", "B"))
+	    x.A <- numeric(length(y.A))
+	    x.B <- numeric(length(y.B)) + 1
+	    y <- c(y.A, y.B)
+	    x <- c(x.A, x.B)
+	    x <- factor(x, levels=c("0", "1"), labels=c("A", "B"))
 
-		model <- lm(y ~ x)
-	return(list(summary(model), confint(model)))
+	    model <- lm(y ~ x)
+	    return(list(summary(model), confint(model)))
 	}
 	
 	brittle <- read.csv('http://datasets.connectmv.com/file/brittleness-index.csv')
-	attach(brittle)
 
-	group_difference(TK104, TK105)  # See Q4 in assignment 3 for this function
-	lm_difference(TK104, TK105)
+	# We developed the "group_difference" function in the Univariate section
+	group_difference(brittle$TK104, brittle$TK107)  
+	lm_difference(brittle$TK104, brittle$TK107)
 	
-Use this function in the same way you did in :ref:`the CO2 question from the least squares section <univariate-CO2-question>`.  For example, you will find that comparing TK104 and TK107 that :math:`z = 1.4056`, and the confidence interval was: :math:`-21.4 \leq \mu_{107} - \mu_{104}\leq 119`.  Similarly when coding :math:`d_i = 0` for reactor TK104 and :math:`d_i = 1` for reactor TK107, we get the least squares confidence interval: :math:`-21.4 \leq g \leq 119`.  This is a little surprising at first, because the first method first creates a pooled variance, calculates a :math:`z`-value and then a confidence interval.  The least squares method just builds a single linear model, and calculates the confidence interval using the model's standard error.
+Use this function in the same way you did in :ref:`the carbon dioxide exercise in the univariate section <univariate-CO2-question>`.  For example, you will find that comparing TK104 and TK107 that :math:`z = 1.4056`, and the confidence interval is: :math:`-21.4 \leq \mu_{107} - \mu_{104}\leq 119`.  Similarly when coding :math:`d_i = 0` for reactor TK104 and :math:`d_i = 1` for reactor TK107, we get the least squares confidence interval: :math:`-21.4 \leq g \leq 119`.  This is a little surprising, because the first method creates a pooled variance, calculates a :math:`z`-value and then a confidence interval.  The least squares method just builds a linear model, then calculates the confidence interval using the model's standard error.
 
 .. _DOE-randomization:
 
 The importance of randomization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We require that the experiments be performed in random order to avoid any unmeasured, and uncontrolled disturbances from impacting the system.
+We :ref:`emphasized in a previous section <univariate-group-to-group-differences-no-reference-set>` that experiments must be performed in random order to avoid any unmeasured, and uncontrolled disturbances from impacting the system.
 
-The concept of randomization was elegantly described in an example by Fisher in Chapter 2 of his book, *Statistical Methods for Research Workers*.  A lady claims that she can taste the difference between a cup of tea where the milk has been added after the tea, or the tea added to the milk.  By setting up :math:`N` cups of tea which either contain the milk first (M) or the tea first (T), the lady is asked to taste these :math:`N` cups and make her assessment.  Fisher shows that if the experiments are performed in random order that the actual set of decisions made by the lady are just one of many possible outcomes.  He calculates all possibilities (we show how below), and then calculates the probability of the lady's actual set of decisions being due to chance alone.
+The concept of randomization was elegantly described in an example by Fisher in Chapter 2 of *The Design of Experiments* part of his book referenced above. A lady claims that she can taste the difference between a cup of tea where the milk has been added after the tea, or the tea added to the milk.  By setting up :math:`N` cups of tea which either contain the milk first (M) or the tea first (T), the lady is asked to taste these :math:`N` cups and make her assessment.  Fisher shows that if the experiments are performed in random order that the actual set of decisions made by the lady are just one of many possible outcomes.  He calculates all possibilities (we show how below), and then calculates the probability of the lady's actual set of decisions being due to chance alone.
 
-Let's take a look at a more engineering oriented example.  In assignment 3 we considered the brittleness of a material made in either TK104 or in TK107.  The same raw materials were charged to each reactor.  So in effect, we are testing the difference due to using reactor TK104 or reactor TK107.  Let's call them case A and case B so the notation is more general.  We collected 20 brittleness values from TK104, and 23 values from TK107.  I will only use the first 8 values from TK104 and the first 9 values from TK107 (you will see why soon):
+Let's take a look at a more engineering oriented example.  We :ref:`previously considered <univariate-CO2-question>` the brittleness of a material made in either TK104 or in TK107.  The same raw materials were charged to each reactor.  So in effect, we are testing the difference due to using reactor TK104 or reactor TK107.  Let's call them case A and case B so the notation is more general.  We collected 20 brittleness values from TK104, and 23 values from TK107.  We will only use the first 8 values from TK104 and the first 9 values from TK107 (you will see why soon):
 
 .. tabularcolumns:: |l|lllllllll|
 
@@ -358,27 +367,33 @@ Fisher's insight was to create one long vector of these outcomes (length of vect
 
 Only one of the 24310 sequences will correspond to the actual data printed in the above table, while all the other realizations are possible, they are fictitious.  We do this, because the null hypothesis is that there is no difference between A and B.  Values in the table could have come from either system.
 
-So for each of the 24310 realizations we calculate the difference of the averages between A and B, :math:`\bar{y}_A - \bar{y}_B`, and plot a histogram of these differences. I have shown this below, together with a vertical line showing the actual realization in the table.  There are 4956 permutations that had a greater difference than the one actually realized, i.e. 79.6% of the other combinations had a smaller value.  The corresponding :math:`z`-value is 0.8435, and the probability of obtaining that value, using the :math:`t`-distribution with :math:`n_A + n_B - 2` degrees of freedom is 79.3%.  See how close they agree?
+So for each of the 24310 realizations we calculate the difference of the averages between A and B, :math:`\bar{y}_A - \bar{y}_B`, and plot a histogram of these differences. I have shown this below, together with a vertical line showing the actual realization in the table.  There are 4956 permutations that had a greater difference than the one actually realized, i.e. 79.6% of the other combinations had a smaller value.  
 
-..	/Users/kevindunn/Statistics course/Course notes/Design of experiments/images/alternative-randomization.py
+Had we used a formal test of differences where we pool the variances, we will find a :math:`z`-value of 0.8435, and the probability of obtaining that value, using the :math:`t`-distribution with :math:`n_A + n_B - 2` degrees of freedom is 79.3%.  See how close they agree?  
+
 ..  Future improvement: superimpose the t-distribution on top of the histogram (scaled).  E.g. see BHH(v1) page 97
 .. figure:: images/single-experiment-randomization.png
 	:align: center
 	:width: 750px
 	:scale: 90
 
-Recall that independence is required to calculate the :math:`z`-value for the average difference and compare it against the t-distribution.  By randomizing our experiments, we are able to guarantee that the results we obtain from using t-distributions are appropriate.  Without randomization, these z-values and confidence intervals may be misleading.
+Recall that independence is required to calculate the :math:`z`-value for the average difference and compare it against the :math:`t`-distribution.  By randomizing our experiments, we are able to guarantee that the results we obtain from using :math:`t`-distributions are appropriate.  Without randomization, these :math:`z`-values and confidence intervals may be misleading.
 
-Another reason is that formulating all random combinations and then calculating all the average differences as shown here is intractable.  Even on my relatively snappy computer it would take 3.4 years to calculate all possible combinations for question 4 in assignment 3: 20 values from group A and 23 values from group B. [It took 122 seconds to calculate a million of them, and 960,566,918,220 combinations would take more than 3 years].
+The reason we prefer using the :math:`t`-distribution approach over randomization is that formulating all random combinations and then calculating all the average differences as shown here is intractable.  Even on my relatively snappy computer it would take 3.4 years to calculate all possible combinations for the complete data set: 20 values from group A and 23 values from group B. [It took 122 seconds to calculate a million of them, and the full set of 960,566,918,220 combinations would take more than 3 years].
 
 .. _DOE-COST-approach:
 
 Changing one variable at a single time (COST)
 ==============================================
 
-How do we go about running our experiments when there is more than one variable present that affects our outcome, |y|?
+How do we go about running our experiments when there is more than one variable present that affects our outcome, :math:`y`?  In this section we describe **how not to do it**.
 
-You will often come across the thinking that we should change one variable at a time.  Consider a bioreactor where we are looking at producing a particular enzyme.  The yield is known to be affected by the dissolved oxygen level, agitation rate, reaction duration, feed substrate concentration and type, and reactor temperature, amongst other variables.  For illustration purposes let's assume that temperature and feed substrate concentration are chosen, as they have the greatest effect on yield.
+You will often come across the thinking that we should change one variable at a time:
+
+	*	Something goes wrong with a recipe: e.g the pancakes are not as fluffy as normal, or the muffins don't rise as much as they should.  You are convinced it is the new brand of all-purpose flour you recently bought.  You change only the flour the next time you make pancakes to check your hypothesis.
+	University computer labs
+
+  Consider a bioreactor where we are looking at producing a particular enzyme.  The yield is known to be affected by the dissolved oxygen level, agitation rate, reaction duration, feed substrate concentration and type, and reactor temperature, amongst other variables.  For illustration purposes let's assume that temperature and feed substrate concentration are chosen, as they have the greatest effect on yield.
 
 The base operating point is 346K with a feed substrate concentration of 1.5 g/L (point marked with a circle) and a yield in the region of 63%.
 

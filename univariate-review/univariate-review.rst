@@ -1214,6 +1214,8 @@ We can visualize this :index:`autocorrelation` by plotting the values of :math:`
 	:align: center
 	:scale: 80
 
+.. _univariate-group-to-group-differences-no-reference-set:
+
 Comparison when a reference set is not available
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1223,7 +1225,7 @@ How could the assumption of independence (random sampling) be made more realisti
 
 The usual approach for assessing if the difference between :math:`\overline{x}_B - \overline{x}_A` is significant follows this approach:
 
-	#.  Assume the data for sample A and sample B are normally distributed (we can verify that as shown in the section on the normal distribution - using q-q plots) 
+	#.  Assume the data for sample A and sample B have been independently sampled from their respective populations.
 	#.  Assume the data for sample A and sample B have the same population variance, :math:`\sigma_A = \sigma_B = \sigma` (there is a test for this, see the next section)
 	#.  Let the sample A have population mean :math:`\mu_A` and sample B have population mean :math:`\mu_B`
 	#.  From the central limit theorem (this is where the assumption of independence of the samples within each group comes), we know that:

@@ -2,7 +2,7 @@
 # Box, Hunter and Hunter, Chapter 4, p 97:
 
 import numpy as np
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import time as time
 
 def xuniqueCombinations(items, n):
@@ -76,13 +76,14 @@ if __name__ == '__main__':
     print "Fraction = ", 
     print sum(np.array(diffs)>actual_diff) / (len(diffs)+0.0)
     
-    # from matplotlib.figure import Figure
-    # fig = Figure(figsize=(5, 2.5))
-    # rect = [0.2, 0.20, 0.80, 0.80]  # Left, bottom, width, height
-    # ax = fig.add_subplot(111, frame_on=False)
-    # ax.hist(diffs,  bins=50, facecolor='none')
-    # ax.axvline(actual_diff, c="red")
-    # from matplotlib.backends.backend_agg import FigureCanvasAgg
-    # canvas=FigureCanvasAgg(fig)
-    # fig.savefig('single-experiment-randomization-some.png', dpi=300, facecolor='w', edgecolor='w', orientation='portrait', papertype=None, format=None, transparent=True)
-    # 
+    from matplotlib.figure import Figure
+    fig = Figure(figsize=(5, 2.5))
+    rect = [0.2, 0.20, 0.80, 0.80]  # Left, bottom, width, height
+    ax = fig.add_subplot(111, frame_on=False)
+    ax.hist(diffs,  bins=50, facecolor='none')
+    ax.axvline(actual_diff, c="red")
+    from matplotlib.backends.backend_agg import FigureCanvasAgg
+    canvas=FigureCanvasAgg(fig)
+    fig.savefig('single-experiment-randomization-somess.png', dpi=300, facecolor='w', edgecolor='w', 
+                orientation='portrait', papertype=None, format=None, transparent=True)
+    

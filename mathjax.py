@@ -58,6 +58,7 @@ def builder_inited(app):
         #raise ExtensionError('mathjax_path config value must be set for the '
         #                     'mathjax extension to work')
         app.config.mathjax_path = 'http://mathjax.connectmv.com/MathJax.js'
+        app.config.mathjax_path = '/Users/kevindunn/compile_area/mathjax/MathJax.js'
     app.add_javascript(app.config.mathjax_path)
 
 def setup(app):
