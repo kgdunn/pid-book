@@ -185,7 +185,7 @@
 In context
 ===========
 
-This section is a totally different approach to learning and understanding about (chemical engineering) systems than what you have seen in other courses.  Firstly, we use an empirical (non-theoretical) model to describe the system.  Secondly, we learn how to intentionally manipulate/perturb the system to learn more about it.
+This section is a totally different approach to learning and understanding about (chemical engineering) systems than what you have seen in other courses.  Firstly, we use an empirical (non-theoretical) model to describe the system.  Secondly, we learn what is the best way to intentionally manipulate/perturb the system to learn more about it.
 
 We will use the tools of :ref:`least squares modelling <SECTION-least-squares-modelling>`, :ref:`visualization <SECTION-data-visualization>` and :ref:`univariate statistics <SECTION-univariate-review>` that we learned about earlier.  We use these tools to analyze and interpret the data from our experiments.
 
@@ -203,6 +203,7 @@ The material in this section is used whenever you need to perturb and learn more
  	- *You*: Our initial screening experiments reduced the list down to 3 factors of interest.  Now how do we run the rest of the experiments?
  	- *Manager*: Two years ago someone collected these experimental data for the effectiveness of a new catalyst.  What can you make of this data, and where should we operate the reactor to get optimal yields?
 	- *Colleague*: The current operating conditions give us good yield, but they are quite unstable.  Small changes in the feed flowrate can quickly lead to an unsafe spike in the temperature and pressure.  How can we locate other operating conditions that give similar yield values, but are less sensitive to feedrate variability.
+	- *Colleague*: We would like to run experiments by varying temperature and pressure, but operating at both high temperature and pressure is unsafe.  How do we plan such an experiment?
 
 .. TODO: more questions/answers here
 	
@@ -223,9 +224,9 @@ References and readings
 
 - **Strongly recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, chapters 5 and 6 with topics from chapters 11, 12, 13 and 15.
 - `A web tutorial on designed experiments <http://www.chemometrics.se/index.php?option=com_content&task=view&id=18&Itemid=27>`_
-- Søren Bisgaard: `Must a process be in statistical control before conducting designed experiments <http://dx.doi.org/10.1080/08982110701826721>`_, with discussion (`part 1 <http://dx.doi.org/10.1080/08982110701866198>`_, `part 2 <http://dx.doi.org/10.1080/08982110801894892>`_, `part 3 <http://dx.doi.org/10.1080/08982110801890148>`_, `part 4 <http://dx.doi.org/10.1080/08982110801924509>`_, `part 5 <http://dx.doi.org/10.1080/08982110801894900>`_ and a `rejoinder <http://dx.doi.org/10.1080/08982110801973118>`_), 
-- George Box and  J. Stuart Hunter: "`The 2^{k-p} Fractional Factorial Designs - Part I <http://www.jstor.org/stable/1266725>`_", *Technometrics*, **3**, 311-351, 1961.
-- George Box and  J. Stuart Hunter: "`The 2^{k-p} Fractional Factorial Designs - Part II <http://www.jstor.org/stable/1266553>`_", *Technometrics*, **3**, 449 - 458, 1961.
+- Søren Bisgaard: `Must a Process Be in Statistical Control Before Conducting Designed Experiments <http://dx.doi.org/10.1080/08982110701826721>`_, with discussion (`part 1 <http://dx.doi.org/10.1080/08982110701866198>`_, `part 2 <http://dx.doi.org/10.1080/08982110801894892>`_, `part 3 <http://dx.doi.org/10.1080/08982110801890148>`_, `part 4 <http://dx.doi.org/10.1080/08982110801924509>`_, `part 5 <http://dx.doi.org/10.1080/08982110801894900>`_ and a `rejoinder <http://dx.doi.org/10.1080/08982110801973118>`_), 
+- George Box and  J. Stuart Hunter: "The :math:`2^{k-p}` Fractional Factorial Designs - Part I" (`link <http://www.jstor.org/stable/1266725>`_), *Technometrics*, **3**, 311-351, 1961.
+- George Box and  J. Stuart Hunter: "The :math:`2^{k-p}` Fractional Factorial Designs - Part II" (`link <http://www.jstor.org/stable/1266553>`_), *Technometrics*, **3**, 449 - 458, 1961.
 - George Box: `Evolutionary operation: A Method for Increasing Industrial Productivity <http://www.jstor.org/stable/2985505>`_", *Journal of the Royal Statistical Society* (Applied Statistics), **6**, 81 - 101, 1957.
 - William G. Hunter and J. R. Kittrell, "`Evolutionary Operation: A Review <http://www.jstor.org/stable/1266686>`_", *Technometrics*, **8**, 389-397, 1966.
 - Heather Tye: "`Application of Statistical Design of Experiments Methods in Drug Discovery <http://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_", *Drug Discovery Today*, **9**, 485-491, 2004.
@@ -234,11 +235,6 @@ References and readings
 
 	Design of Experiments in Chemical Engineering: A Practical Guide, Lazić, Živorad R., Wiley-VCH, 2004. THODE Bookstacks, TP 155 .L34 2004
 
-Acknowledgements
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-These notes are based on the book by Box, Hunter and Hunter and the 4C3/6C3 course notes of Dr. John MacGregor (used with permission), who taught this course at McMaster University for many years.
-
 Background
 ===========
 
@@ -246,22 +242,20 @@ Learning about systems is important.  We strive for this increased knowledge bec
 
 	*	Make a conjecture (hypothesis), which we believe is true.
 	*	If it is true, we expect certain consequences. 
-	*	Experiment and collect data - are the consequences visible in the data?
-	*	If so, it may lead to another hypothesis.  If not, we formulate an alternative hypothesis.  Or perhaps it is not so clear cut: we see the consequence, but not to the extent expected.  Perhaps modifications are required in the experimental conditions.
+	*	Experiment and collect data - are the consequences we expected visible in the data?
+	*	If so, it may lead to the next hypothesis.  If not, we formulate an alternative hypothesis.  Or perhaps it is not so clear cut: we see the consequence, but not to the extent expected.  Perhaps modifications are required in the experimental conditions.
 
-And so we go about learning.  An example: we expect that compounds A and B should combine in the presence of catalyst C to form product D.  An initial experiment shows very little D present.  Then several conditions (e.g temperature, reaction duration, and pressure) are investigated in a structured experiment to improve the yield of product D, and the iterations continue.
+And so we go about learning.  An example: we expect that compounds A and B should combine in the presence of catalyst C to form product D.  An initial experiment shows very little D present.  Then several conditions (e.g temperature, reaction duration, and pressure) are investigated in a structured experiment to improve the yield of product D. The iterations continue until we find the most economically profitable operating point.
 
-
-.. 	\vspace{5cm}
-	
 	
 Correlation and causality
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 It is only by intentional manipulation of our systems that we learn from them.  Collecting happenstance (everyday) operating data does not always help, because it is confounded by other events that occur at the same time.  Everyday data is limited by:
 
-	*	Feedback control systems which keep the region of operation to a small zone - better yields or improved operation might exist beyond the bound wherein we currently operate.
-	*	Other factors are always affecting the system.  The operator mistakenly adjusts the temperature set point to 480K instead of 470K.  The yield value at the end of the shift is 3% higher.  This "experiment" of sorts enters the collection of anecdotes that operators and engineers like to tell each other, and soon it becomes accepted.  However, it might have been a lower impurity in the raw materials, the new pump that was installed the previous day, improved controller tuning by another team of engineers, or any other event(s).
+	*	Feedback control systems which keep the region of operation to a small zone - better yields or improved operation might exist beyond the bounds created by our automatic control systems.
+	
+	*	Other factors are always affecting the system.  The operator mistakenly adjusts the temperature set point to 480K instead of 470K.  The conversion value at the end of the shift is 3% higher.  This "experiment" of sorts enters the collection of anecdotes that operators and engineers like to tell each other, and soon it becomes "accepted" that temperature can be used to improve conversion.  However, it might have been a lower impurity in the raw materials, the new pump that was installed the previous day, improved controller tuning by another team of engineers, or any other event(s).
 	
 Designed experiments are the only way we can be sure that these correlated events are causal.  You often hear people repeat the (incomplete) phrase that "*correlation does not imply causality*".  That is half-true.  The other half of the phrase is however: "*correlation is a necessary, but not sufficient, condition for causality*". 
 
@@ -2031,7 +2025,7 @@ Exercises
 		*	`Application of Statistical Design of Experiments Methods in Drug Discovery <http://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_ and `using DOE for high-throughput screening to locate new drug compounds <http://dx.doi.org/10.1016/1359-6446(96)10025-8>`_.
 		*	High traffic websites offer a unique opportunity to perform testing and optimization.  This is because each visitor to the site is independent of the others (randomized), and these tests can be run in parallel.  Read more in this `brief writeup <http://youtube-global.blogspot.com/2009/08/look-inside-1024-recipe-multivariate.html>`_ on how Google uses testing tools to optimize YouTube, one of their web properties.  Unfortunately they use the term "multivariate" incorrectly - a better term is "multi-variable"; nevertheless, the number of factors and combinations to be tested is large. Its well known that fractional factorial methods are used to analyze these data.
 		*	See three chemical engineering examples of factorial designs in Box, Hunter, and Hunter: Chapter 11 (1st edition), or page 173 to 183 in the second edition.
-
+		
 .. question::
 
 	Your family runs a small business selling low dollar value products over the web.  They want to improve sales.  There is a known effect from the day of the week, so to avoid that effect they run the following designed experiment every Tuesday for the past eight weeks.  The first factor of interest is whether to provide free shipping over $30 or over $50.  The second factor is whether or not the purchaser must first create a profile (user name, password, address, etc) before completing the transaction.  The purchaser can still complete their transaction without creating a profile.
@@ -2202,7 +2196,7 @@ Exercises
 
 	#.	Calculate the 15 main effects and interactions and the intercept, using computer software.
 
-	#.	Use either a qq-plot (normal probability plot) or a Pareto-plot to identify the significant effects.  What would be your advice to your colleagues to improve the yield?
+	#.	Use a Pareto-plot to identify the significant effects.  What would be your advice to your colleagues to improve the yield?
 		
 	#.	Refit the model using only the significant terms identified in the second question.  
 
@@ -2233,6 +2227,11 @@ Exercises
 
 		-	Report their numeric values.
 		-	Compare your parameters from this half-fraction (8 runs) to those from the full factorial (16 runs).  Was much lost by running the half fraction?
+		-	What was the resolution of the half-fraction?
+		-	What is the projectivity of this half-fraction?		
+		-	Factor **C** was found to be an important variable from the half-fraction; it had a significant coefficient in the linear model, but it was aliased with **ABD**.  Obviously in this problem, the foldover set of experiments to run would be the *other half-fraction*.  But we showed a way to de-alias a main effect.  Use that method to show that the other 8 experiments to de-alias factor **C** would just be the other 8 experiment not included in your first half-fraction.
+		-	What is the projectivity of this half-fraction?
+			*	What does this mean in light of the fact that factor **A** was shown to be unimportant?
 		
 .. answer::
 	:fullinclude: no 
@@ -2244,7 +2243,7 @@ Exercises
 			\hat{y} &= 66 - 0.6 x_A + 9 x_B + 4 x_C - 3.9 x_D - 0.5 x_Ax_B - 0.5 x_Ax_C + 0.9 x_Ax_D + 6.4 x_Bx_C + 1.3 x_Bx_D - 5.3 x_Cx_D\\
 			        &+ 1.1 x_Ax_Bx_C - 1.2 x_Ax_Bx_D + 0.3 x_Ax_Cx_D - 0.1x_Bx_Cx_D + 0.1 x_Ax_Bx_Cx_D
 		
-	#.	The Pareto plot and the qq-plot show the same important main effects: **B**, **C**, **D** and these two-factor interactions: **BC** and **CD**.
+	#.	The Pareto plot shows the important main effects are **B**, **C**, **D** and these two-factor interactions: **BC** and **CD**.
 
 		The advice to improve yield would be to:
 
@@ -2348,16 +2347,6 @@ Exercises
 			:language: s
 			:lines: 23-64,66-68,70-
 			
-			
-.. question::
-
-	In the previous question you had data from a complete :math:`2^4` factorial system.  Then you also ran a half-fraction of experiments. 
-
-		*	What was the resolution of the half-fraction?
-		*	Factor **C** was found to be an important variable from the half-fraction; it had a significant coefficient in the linear model, but it was aliased with **ABD**.  Obviously in this problem, the foldover set of experiments to run would be the *other half-fraction*.  But we showed in class a way to de-alias a main effect.  Use that method to show that the other 8 experiments to de-alias factor **C** would just be the other 8 experiment not included in your first half-fraction.
-		*	What is the projectivity of the half-fraction used in the last question?
-		*	What does this mean in light of the fact that factor **A** was shown to be unimportant?
-
 .. question::
 
 	Your group is developing a new product, but have been struggling to get the product's stability, measured in days, to the level required.  You are aiming for a stability value of 50 days or more.  Four factors have been considered:
@@ -2440,4 +2429,70 @@ Exercises
 	*	What would be the D-optimal objective function value for the usual full :math:`2^3` factorial model?
 	*	If instead experiment 2 was run at (A,B,C) = (45%, 200, Larry), and experiment 3 run at (A, B, C) = (35%, 400, Larry); what would be the D-optimal objective function value?
 	*	What is the ratio between the two objective function values?
+
+.. question::
+
+	In your start-up company you are investigating treatment options for reducing the contamination level of soil that has been soaked with hydrocarbon products.  You have two different heaps of contaminated soil from two different sites. You expect your treatment method to work on any soil type though.
+	
+	Your limited line of credit allows only 9 experiments, even though you have identified at least 6 factors which you expect to have an effect on the treatment.  
+	
+	#.	Write out the set of experiments that you believe will allow you to learn the most relevant information, given your limited budget.  Explain your thinking, and present your answer with 7 columns: 6 columns showing the settings for the 6 factors and one column for the heap from which the test sample should be taken.  There should be 9 rows in your table.  
+	
+	#.	What is the projectivity and resolution of your design?
+
+
+.. answer::
+	:fullinclude: no 
+	
+	
+	* fractional factorial in 6 factors
+	* 1 additional blocking factor
+	* 2^{7-4} design most appropriate
+	* D=AB, E=AC, F=BD, G=ABC=ABCDEF (also valid)
+	* Resolution = 3
+	* Projectivity = 2
+	* run 9: could be omitted to save money; run as the first trial to figure out how to run experiments; or run as a centerpoint : use 50%/50% blend of two heaps, or run as a replicate after the 8 experiments, or use run 9 in case one of the experiments gave an unexpected value
+	
+	
+.. question::
+
+	A factorial experiment was run to investigate the settings that minimize the production of an unwanted side product.  The two factors being investigated are called **A** and **B**  for simplicity, but are:
+
+		* **A** = reaction temperature: low level was 420 K, and high level was 440 K
+		* **B** = amount of surfactant: low level was 10 kg, high level was 12 kg
+
+	A full factorial experiment was run, randomly, on the same batch of raw materials, in the same reactor.  The system was run on two different days though, and the operator on day 2 was a different person.  The recorded amount, in grams, of the side product was:
+
+	.. tabularcolumns:: |c|c||c|c|c||c|
+
+	+-----------+------------+--------------+------------+------------+---------------------+
+	| Experiment| Run order  | Day          |  **A**     | **B**      | Side product formed |
+	+===========+============+==============+============+============+=====================+
+	| 1         | 2          | 1            |  420 K     | 10 kg      | 89 g                |
+	+-----------+------------+--------------+------------+------------+---------------------+
+	| 2         | 4          | 2            |  440 K     | 10 kg      | 268 g               |
+	+-----------+------------+--------------+------------+------------+---------------------+
+	| 3         | 5          | 2            |  420 K     | 12 kg      | 179 g               |
+	+-----------+------------+--------------+------------+------------+---------------------+
+	| 4         |  3         | 1            |  440 K     | 12 kg      | 448 g               |
+	+-----------+------------+--------------+------------+------------+---------------------+
+	| 5         | 1          | 1            |  430 K     | 11 kg      | 196 g               |
+	+-----------+------------+--------------+------------+------------+---------------------+
+	| 6         | 6          | 2            |  430 K     | 11 kg      | 215 g               |
+	+-----------+------------+--------------+------------+------------+---------------------+
+
+
+	#.	What might have been the reason(s) for including experiments 5 and 6?
+
+	#.	Was the blocking for a potential day-to-day effect implemented correctly in the design?  Please show your calculations.
+
+	#.	Write out a model that will predict the amount of side product formed.  The model should use coded values of **A** and **B**.   Also write out the :math:`\mathbf{X}` matrix and :math:`\mathbf{y}` vector that can be used to estimate the model coefficients using the equation :math:`\mathbf{b} = \left(\mathbf{X'X}\right)^{-1}\mathbf{X'y}`.
+
+	#.	Solve for the coefficients of your linear model, either by using :math:`\mathbf{b} = \left(\mathbf{X'X}\right)^{-1}\mathbf{X'y}` directly, or by some other method. 
+
+	#.	Assuming the blocking for the day-to-day effect was implemented correctly, does your model show whether this was an important effect on the response or not?  Explain your answer.
+
+	#.	You have permission to run two further experiments to find an operating point that reduces the unwanted side product.  Where would you place your next two runs, and show how you select these values.  Please give your answer in the original units of **A** and **B**.
+
+	#.	As you move along the response surface, performing new experiments to approach the optimum, how do you know when you are reaching an optimum? How does your experimental strategy change? Please give specific details, and any model equations that might help illustrate your answer.
 
