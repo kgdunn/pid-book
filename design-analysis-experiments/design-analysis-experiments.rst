@@ -28,6 +28,8 @@
 	
 	TODO: discuss use of an external data set for S_E
 	
+	ADD: If you keep the 2 factor interactions you must keep the main effects also.  See Fox textbook for why.
+	
 	DOE is a way to bring an out of control process back into control.  See the comment by Vining (top right, p152) in the  Bisgaard articles http://dx.doi.org/10.1080/08982110701826721
 	
 	Investigate the .. sectnum:: directive in ReST
@@ -758,7 +760,7 @@ When there are no replicate points, then the number of factors to estimate from 
 
 The standard error can be estimated if complete replicates are available.  However, a complete replicate is onerous, because a complete replicate implies the entire experiment is repeated: system setup, running the experiment and measuring the result. Taking two samples from the same experiment is not a replicate, that is only an estimate of the measurement error (analytical error).  Furthermore, there are better ways to spend our experimental budget than running replicate experiments - see the section on :ref:`screening designs <DOE-saturated-screening-designs>` later on.
 
-There are 3 ways we can determine if a main effect or interaction is significant.
+There are 2 main ways we can determine if a main effect or interaction is significant.
 
 .. _DOE-Pareto-plot:
 
@@ -862,49 +864,49 @@ Once we obtain the standard error for our system and calculate the variance of t
 		
 So even though the temperature effect's confidence interval would be :math:`11.5 - c_t \times 0.707 \leq \beta_T \leq 11.5 + c_t \times 0.707`, it is clear from the above representation that the temperature effect is significant in this example, while the catalyst effect is not.
 
-.. TODO: discuss use of an external data set
+.. OMIT: this can be confusing and misleading
 
-Normal probability plots
-^^^^^^^^^^^^^^^^^^^^^^^^^
+	Normal probability plots
+	^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If the hypothesis that there is no causal effect from the :math:`k` factors on the response is true, then the :math:`2^k-1` parameter estimates, not counting the intercept, should be normally distributed.  That is from the central limit theorem, and the fact that estimated coefficients are linear combinations of the response variable.
+	If the hypothesis that there is no causal effect from the :math:`k` factors on the response is true, then the :math:`2^k-1` parameter estimates, not counting the intercept, should be normally distributed.  That is from the central limit theorem, and the fact that estimated coefficients are linear combinations of the response variable.
 
-An example for a :math:`2^3` factorial would be that the 7 coefficients, not including :math:`b_0`, in this linear model would be normally distributed:
+	An example for a :math:`2^3` factorial would be that the 7 coefficients, not including :math:`b_0`, in this linear model would be normally distributed:
 
-.. math::
+	.. math::
 
-	y_i = b_0 + b_A x_A + b_B x_B + b_{C}x_C + b_{AB}x_{AB} + b_{AC}x_{AC} +  b_{BC}x_{BC} +  b_{ABC}x_{ABC}
+		y_i = b_0 + b_A x_A + b_B x_B + b_{C}x_C + b_{AB}x_{AB} + b_{AC}x_{AC} +  b_{BC}x_{BC} +  b_{ABC}x_{ABC}
 	
-A normal probability plot is a non-linear transformation of the data so that the s-shape of the cumulative normal distribution appears as a straight line.  We used this idea in the section on :ref:`univariate statistics <SECTION-univariate-review>` where a qq-plot was constructed to assess normality.  Another way to visualize this concept is to draw vertical divisions on the normal distribution curve, to create :math:`2^k-1` sections of equal area.  One effect is expected per division.
+	A normal probability plot is a non-linear transformation of the data so that the s-shape of the cumulative normal distribution appears as a straight line.  We used this idea in the section on :ref:`univariate statistics <SECTION-univariate-review>` where a qq-plot was constructed to assess normality.  Another way to visualize this concept is to draw vertical divisions on the normal distribution curve, to create :math:`2^k-1` sections of equal area.  One effect is expected per division.
 
-.. TODO: illustration of normal distribution division
+	.. TODO: illustration of normal distribution division
 
-.. code-block:: s
+	.. code-block:: s
 
-	k = 4
- 	n = 2^k - 1
-	index <- seq(1, n)
-	p <- (index - 0.5) / n
-	theoretical.quantity <- qnorm(p)
+		k = 4
+	 	n = 2^k - 1
+		index <- seq(1, n)
+		p <- (index - 0.5) / n
+		theoretical.quantity <- qnorm(p)
 	
-	labels = c('A', 'B',    'C',   'D', 'AB',  'AC', 'AD',   'BC', 'BD',   'CD', 
-	            'ABC',  'ABD',  'ACD',  'BCD',  'ABCD')
-	b      = c( -4,  12, -1.125, -2.75,  0.5, 0.375,  0.0, -0.625, 2.25, -0.125, 
-	           -0.375,   0.25, -0.125, -0.375,  -0.125)
+		labels = c('A', 'B',    'C',   'D', 'AB',  'AC', 'AD',   'BC', 'BD',   'CD', 
+		            'ABC',  'ABD',  'ACD',  'BCD',  'ABCD')
+		b      = c( -4,  12, -1.125, -2.75,  0.5, 0.375,  0.0, -0.625, 2.25, -0.125, 
+		           -0.375,   0.25, -0.125, -0.375,  -0.125)
 
-	b.sort = sort(b)
+		b.sort = sort(b)
 
-	plot(theoretical.quantity, b.sort)
-	qqline(b.sort)
+		plot(theoretical.quantity, b.sort)
+		qqline(b.sort)
 
-	# Or more simply: use the qq.plot function:
-	library(car)
-	qq.plot(b, labels=labels)
+		# Or more simply: use the qq.plot function:
+		library(car)
+		qq.plot(b, labels=labels)
 	
-.. figure:: images/normal-probability-signifcant-effects.png
-	:align: center
-	:scale: 50
-	:width: 800px
+	.. figure:: images/normal-probability-signifcant-effects.png
+		:align: center
+		:scale: 50
+		:width: 800px
 		
 
 Refitting the model after removing non-significant effects

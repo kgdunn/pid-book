@@ -682,10 +682,10 @@ Consult a statistical table found in most statistical textbooks for the normal d
 		
 .. _univariate-check-for-normality-qqplot:
 
-Checking for normality: using a qq-plot
+Checking for normality: using a q-q plot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. index:: qq-plot
+.. index:: q-q plot
 
 .. index::
 	single: normal distribution; check if
@@ -761,16 +761,16 @@ A ready-made function already exists in R that runs the calculations and shows a
 	
 The R plot rescales the Y-axis (sample quantiles) back to the original units to make interpretation easier.  We expect some departure from the 45 degree line due to the fact that these are only a sample of data.  However, large deviation indicates the data are not normally distributed.  An error region can be superimposed around the 45 degree line, but this is not discussed here.
 
-The qq-plot, :index:`quantile-quantile plot`, shows the quantiles of 2 distributions against each other.  In fact, we can use the horizontal axis for any distribution, it need not be the theoretical normal distribution.  We might be interested if our data follow an `F-distribution <http://en.wikipedia.org/wiki/F-distribution>`_ (not covered in this book), then we could use the quantiles for that theoretical distribution on the horizontal axis.
+The q-q plot, :index:`quantile-quantile plot`, shows the quantiles of 2 distributions against each other.  In fact, we can use the horizontal axis for any distribution, it need not be the theoretical normal distribution.  We might be interested if our data follow an `F-distribution <http://en.wikipedia.org/wiki/F-distribution>`_ (not covered in this book), then we could use the quantiles for that theoretical distribution on the horizontal axis.
 
 #. Add the ``car`` library to R (see the *Package Installer* menu option) and use the ``qqPlot(yields)`` function to see the error bars for the yield data.
 
 	.. code-block:: s
 
 		library(car)		# Install the car library before running this command
-		qqPlot(yields)		# Draws a qq-plot with error lines
+		qqPlot(yields)		# Draws a q-q plot with error lines
 
-#. We can use the qq-plot to compare any 2 *samples of data*, even if they have different values of :math:`N`, by calculating the quantiles for each sample at different step quantiles (e.g. 1, 2, 3, 4, 5, 10, 15, .... 95, 96, 97, 98, 99), then plot the qq-plot for the two samples.  You can calculate quantiles for any sample of data using the ``quantile`` function in R.  The simple example below shows how to compare the qq-plot for 1000 normal distribution samples against 2000 :math:`t`-distribution samples
+#. We can use the q-q plot to compare any 2 *samples of data*, even if they have different values of :math:`N`, by calculating the quantiles for each sample at different step quantiles (e.g. 1, 2, 3, 4, 5, 10, 15, .... 95, 96, 97, 98, 99), then plot the q-q plot for the two samples.  You can calculate quantiles for any sample of data using the ``quantile`` function in R.  The simple example below shows how to compare the q-q plot for 1000 normal distribution samples against 2000 :math:`t`-distribution samples
 
 	.. code-block:: s
 	
@@ -1223,7 +1223,7 @@ How could the assumption of independence (random sampling) be made more realisti
 
 The usual approach for assessing if the difference between :math:`\overline{x}_B - \overline{x}_A` is significant follows this approach:
 
-	#.  Assume the data for sample A and sample B are normally distributed (we can verify that as shown in the section on the normal distribution - using qq-plots) 
+	#.  Assume the data for sample A and sample B are normally distributed (we can verify that as shown in the section on the normal distribution - using q-q plots) 
 	#.  Assume the data for sample A and sample B have the same population variance, :math:`\sigma_A = \sigma_B = \sigma` (there is a test for this, see the next section)
 	#.  Let the sample A have population mean :math:`\mu_A` and sample B have population mean :math:`\mu_B`
 	#.  From the central limit theorem (this is where the assumption of independence of the samples within each group comes), we know that:
@@ -1696,7 +1696,7 @@ Exercises
 	
 .. answer:: 
 	:fullinclude: no 
-	:short: These data are normally distributed according to the qq-plot.
+	:short: These data are normally distributed according to the q-q plot.
 	
 	.. literalinclude:: code/website-visits-univariate.R
 		:language: s

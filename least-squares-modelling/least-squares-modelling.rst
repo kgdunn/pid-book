@@ -1134,7 +1134,7 @@ The assumption of normally distributed errors
 
 We look for normally distributed errors because if they are non-normal, then the standard error, :math:`S_E` and the other variances that depend on :math:`S_E`, such as :math:`\mathcal{V}(b_1)`, could be inflated, and their interpretation could be in doubt.  This might, for example, lead us to infer that a slope coefficient is not important when it actually is.
 
-This is one of the easiest assumptions to verify: use a :ref:`qq-plot <univariate-check-for-normality-qqplot>` to assess the distribution of the residuals.  Do *not* plot the residuals in sequence or some other order to verify normality - it is extremely difficult to see that.  A qq-plot highlights very clearly when tails from the residuals are too heavy.  A histogram may also be used, but for real data sets, the choice of bin width can dramatically distort the interpretation - rather use a qq-plot.  Some code for R:
+This is one of the easiest assumptions to verify: use a :ref:`q-q plot <univariate-check-for-normality-qqplot>` to assess the distribution of the residuals.  Do *not* plot the residuals in sequence or some other order to verify normality - it is extremely difficult to see that.  A q-q plot highlights very clearly when tails from the residuals are too heavy.  A histogram may also be used, but for real data sets, the choice of bin width can dramatically distort the interpretation - rather use a q-q plot.  Some code for R:
 
 .. code-block:: s
 
@@ -1273,7 +1273,7 @@ Before launching into various :index:`transformations` or non-linear least squar
 		:width: 500px
 		:scale: 50
 
-How can we detect when the linear model is not sufficient anymore?  While a qq-plot might hint at problems, better plots are the same two plots for detecting :ref:`non-constant error variance <LS-non-constant-error-variance>`:
+How can we detect when the linear model is not sufficient anymore?  While a q-q plot might hint at problems, better plots are the same two plots for detecting :ref:`non-constant error variance <LS-non-constant-error-variance>`:
 
 	-	the predicted values of |y| (on the x-axis) against the residuals (y-axis)
 	-	the |x| values against the residuals (y-axis)
@@ -1322,7 +1322,7 @@ Summary of steps to build and investigate a linear model
 		lines(lowess(x,y))        # show the smoother
 		abline(model, col="red")  # and show the least squares model
 
-#.	Plot a normal probability plot, or a qq-plot, of the residuals.  Are they normally distributed?  If not, investigate if a transformation of the |y| variable might improve them.  But also see the additional plots on checking for non-linearity and consider adding extra explanatory variables.
+#.	Plot a normal probability plot, or a q-q plot, of the residuals.  Are they normally distributed?  If not, investigate if a transformation of the |y| variable might improve them.  But also see the additional plots on checking for non-linearity and consider adding extra explanatory variables.
 
 	.. code-block:: s
 
