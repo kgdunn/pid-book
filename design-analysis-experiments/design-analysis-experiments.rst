@@ -716,12 +716,12 @@ Example: design and analysis of a 3-factor experiment
 
 This example should be done by yourself.  It is based on question 19 in the exercises for Chapter 5 in Box, Hunter, and Hunter (2nd edition).
 
-The data are from a plastics molding factory which must treat its waste before discharge.  The :math:`y` variable represents the average amount of pollutant discharged (lb) in a day, while the 3 factors that were varied were:
+The data are from a plastics molding factory which must treat its waste before discharge.  The :math:`y` variable represents the average amount of pollutant discharged [lb per day], while the 3 factors that were varied were:
 
  	-	:math:`C`: the chemical compound added (A or B)
 	-	:math:`T`: the treatment temperature (72°F or 100°F)
 	-	:math:`S`: the stirring speed (200 rpm or 400 rpm)
-	-	:math:`y`: the amount of pollutant discharged [lb]
+	-	:math:`y`: the amount of pollutant discharged [lb per day]
 
 	.. tabularcolumns:: |l|l||c|c|c||c|
 
@@ -749,30 +749,22 @@ The data are from a plastics molding factory which must treat its waste before d
 
 #.	Draw a geometric figure that illustrates the data from this experiment.
 
-	.. raw:: latex
-
-		\vspace{3cm}
-		
-	
 #.	Calculate the main effect for each factor by hand.
 
-	.. raw:: latex
+	*	:math:`C` effect = 6.25
+	*	:math:`T` effect = 0.75
+	*	:math:`S` effect = -7.25
 
-		\vspace{5cm}
-		
-#.	Calculate the three two-factor interactions by hand, and the single 3 factor interaction.
+#.	Calculate the 3 two-factor interactions (2fi) by hand, and the single 3 factor interaction (3fi).
 
-	.. raw:: latex
+	*	:math:`CT` effect = -0.25
+	*	:math:`TS` effect = -0.25
+	*	:math:`CS` effect = 6.75
+	*	:math:`CTS` effect = -0.25
 
-		\vspace{5cm}
-		
 #.	Compute the main effects and interactions using matrix algebra and a least squares model.
 	
-	.. raw:: latex
-
-		\vspace{15cm}
-		
-#.	Use computer software outside of class to build the following model and verify that:
+#.	Use computer software to build the following model and verify that:
 
 	.. math:: 
 	
@@ -780,15 +772,18 @@ The data are from a plastics molding factory which must treat its waste before d
 
 Learning notes:
 
-	*	The chemical compound could be coded either as (A = -1, B = +1), or (A = +1, B = -1).  The interpretation of the :math:`x_C` coefficient is the same, regardless of the coding.
- 	*	Even just the tabulation of the raw data gives us some interpretation of the results.  Why?  Since the variables are manipulated independently, we can just look at the relationship of each factor to :math:`y`, without considering the others.   It is expected that the chemical compound and speed have a strong effect on :math:`y`, but particularly the chemical :math:`\times` speed interaction.  You get this last interpretation by writing out the full :math:`\mathrm{X}` design matrix.
+	*	The chemical compound could be coded either as (A = :math:`-1`, B = :math:`+1`), or (A = :math:`+1`, B = :math:`-1`).  The interpretation of the :math:`x_C` coefficient is the same, regardless of the coding.
+	
+ 	*	Just the tabulation of the raw data gives us some interpretation of the results.  Why?  Since the variables are manipulated independently, we can just look at the relationship of each factor to :math:`y`, without considering the others.   It is expected that the chemical compound and speed have a strong effect on :math:`y`, but we can also see the **chemical** :math:`\times` **speed** interaction.  You get this last interpretation by writing out the full :math:`\mathbf{X}` design matrix.
 
 Assessing significance of main effects and interactions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-When there are no replicate points, then the number of factors to estimate from a full factorial is :math:`2^k` from the :math:`2^k` observations.  So there are no degrees of freedom left to calculate the standard error, nor to calculate the confidence intervals for the main effects and interaction terms.
+When there are no :index:`replicate points <pair: replicates; experiments>`, then the number of factors to estimate from a full factorial is :math:`2^k` from the :math:`2^k` observations.  So there are no degrees of freedom left to calculate the standard error, nor to calculate the confidence intervals for the main effects and interaction terms.
 
-The standard error can be estimated if complete replicates are available.  However, a complete replicate is onerous, because a complete replicate implies the entire experiment is repeated: system setup, running the experiment and measuring the result. Taking two samples from the same experiment is not a replicate, that is only an estimate of the measurement error (analytical error).  Furthermore, there are better ways to spend our experimental budget than running replicate experiments - see the section on :ref:`screening designs <DOE-saturated-screening-designs>` later on.
+The standard error can be estimated if complete replicates are available.  However, a complete replicate is onerous, because a complete replicate implies the entire experiment is repeated: system setup, running the experiment and measuring the result. Taking two samples from one actual experiment and measuring :math:`y` twice is not a true replicate, that is only an estimate of the measurement error and analytical error.  
+
+Furthermore, there are better ways to spend our experimental budget than running complete replicate experiments - see the section on :ref:`screening designs <DOE-saturated-screening-designs>` later on.  Only later in the overall experimental procedure should we run replicate experiments as a verification step and to assess the statistical significance of effects.
 
 There are 2 main ways we can determine if a main effect or interaction is significant.
 
@@ -797,16 +792,16 @@ There are 2 main ways we can determine if a main effect or interaction is signif
 Pareto-plot
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. Note:: This is a make-shift approach that is only applicable if the factor variables are centered and scaled.
+.. Note:: This is a make-shift approach that is only applicable if all the factors are centered and scaled.
 
-A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to estimate.  Once these parameters have been calculated, for example, by using a :ref:`least squares model <DOE-analysis-by-least-squares>`, then plot the absolute value of the model coefficients in sorted order: from largest magnitude to smallest, ignoring the intercept term.  Significant coefficients are established by visual judgement - establishing a cut-off value by contrasting to small coefficients.
+A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to estimate.  Once these parameters have been calculated, for example, by using a :ref:`least squares model <DOE-analysis-by-least-squares>`, then plot the absolute value of the model coefficients in sorted order: from largest magnitude to smallest, ignoring the intercept term.  Significant coefficients are established by visual judgement - establishing a visual cut-off by contrasting to small coefficients to the larger ones.
 
 .. figure:: images/pareto-plot-full-fraction.png
 	:align: center
 	:width: 800px
 	:scale: 50
 
-The reason why we can compare the coefficients this way, which is not normally the case with least squares models, is that we have both centered and scaled the factor-variables.  If the centering is at typical baseline operation, and the range spanned by each factor is that expected over the operating region, then we can fairly compare each factor's influence on the response.  The coefficient represents the effect on :math:`y` of a one-unit change in the factor, i.e. a change over half its operating range.
+The reason why we can compare the coefficients this way, which is not normally the case with least squares models, is that we have both centered and scaled the factor-variables.  If the centering is at typical baseline operation, and the range spanned by each factor is that expected over the typical operating range, then we can fairly compare each coefficient in the bar plot. Each bar represents the influence of that term on :math:`y` for a one-unit change in the factor, i.e. a change over half its operating range.
 
 Obviously if the factors are not scaled appropriately, then this method will be error prone.   However, the approximate guidance is accurate, especially when you do not have a computer, or if additional information required by the other methods (discussed below) is not available.  It is also the only way to estimate the effects for :ref:`highly fractionated and saturated designs <DOE-saturated-screening-designs>`.
 
@@ -830,18 +825,13 @@ The standard error can be calculated in a similar manner if more than one duplic
 
 	In these notes we quantify the effect as the change in response over *half the range* of the factor.  For example, if the centerpoint is 400K, the lower level is 375K, and the upper level is 425K, then an effect of ``"-5"`` represents a reduction in :math:`y` of 5 units for every increase in 25K in :math:`x`.
 	
-	
 	We use this representation because it corresponds with the results calculated from least-squares software.  Putting the matrix of -1 and 1 as :math:`\mathrm{X}` into the software, and the corresponding vector of responses, :math:`\mathrm{y}`, will calculate these effects as :math:`\mathrm{b} = \left(\mathrm{X}^T\mathrm{X}\right)^{-1}\mathrm{X}\mathrm{y}`.
-	
 	
 	Other textbooks, specifically Box, Hunter and Hunter will report effects that are double ours.  This is because they consider the effect to be the change from the lower level to the upper level (double the distance).  The advantage of this representation is that binary factors (catalyst A or B; agitator on or off) can be readily interpreted.  While in our system, the effect would be a little harder to describe.
 	
-	
 	The advantage of our methodology though is that the results calculated by hand would be the same as that from any computer software with respect to the magnitude of the coefficients and the standard errors; particularly in the case of duplicate runs and experiments with center points.
 	
-	
 	Remember: our effects are half those reported in Box, Hunter, and Hunter, and some other text books; our standard error would also be half of theirs.  The conclusions drawn will always be the same, as long as one is consistent.
-		
 		
 Once :math:`S_E` has been calculated, we can calculate the standard error for each model coefficient, and then confidence intervals can be constructed for each main effect and interaction.  And, because the model matrix is orthogonal, the confidence interval for each effect is independent of the other.  This is because the general confidence interval is :math:`\mathcal{V}\left(\mathrm{b}\right) = \left(\mathrm{X}^T\mathrm{X}\right)^{-1}S_E^2`, and the off-diagonal elements in :math:`\mathrm{X}^T\mathrm{X}` are zero.
 
