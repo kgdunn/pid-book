@@ -43,9 +43,9 @@
 	I've noticed with the questions students are asking that they haven't understood what blocking is for, and how to generate expt with it.
 	Maybe include several examples in the text to justify why blocking is required and the thought process behind it.
 	Blocking: 4 batches in a 8 run experiment: use the example of /Users/kevindunn/Statistics course/Administrative/2010-handin/DOE project/Howard and Booker - 4C3 mini project.doc
-	Remove using a normal probablity plot for significance of effects
+	DONE: Remove using a normal probability plot for significance of effects.  I don't recall why I wanted to do this though: confusing interpretation, or perhaps q-q plots can misleading values?
 	
-	Add some notes about factors that are uncontrollable, but still interesting: e.g. outside air humidity;  add it to your |X| matrix and even though not orthogonal, can still be understood in the model.
+	Add some notes about factors that are uncontrollable, but still interesting: e.g. outside air humidity;  add it to your :math:`\mathbf{X}` matrix and even though not orthogonal, can still be understood in the model.
 	
 	Look at the book (PDF format) of Brereton_-_Chemometrics_-_Data_analysis_for_the_laboratory_and_chemical_plant.pdf.  It has a whole section on designs.  Particularly the section on response surfaces and CCDs.
 	
@@ -280,7 +280,7 @@ We will show that experiments are the most efficient way to extract information 
 Experiments with a single variable at two levels
 ======================================================
 
-This is the simplest type of experiment.  It involves an outcome variable, |y|, and one input variable, |x|.  The |x| variable could be continuous (e.g. temperature), or discrete (e.g. a yes/no, on/off, A/B) type variable.  Some examples:
+This is the simplest type of experiment.  It involves an outcome variable, :math:`y`, and one input variable, :math:`x`.  The :math:`x` variable could be continuous (e.g. temperature), or discrete (e.g. a yes/no, on/off, A/B) type variable.  Some examples:
 
 	*	Has the reaction yield increased when using catalyst A or B?
 	
@@ -288,7 +288,7 @@ This is the simplest type of experiment.  It involves an outcome variable, |y|, 
 	
 	*	Does the plastic's stretchability improve when extruded at lower or higher temperatures?
 	
-So we can perform several runs (experiments) at level A, and then some runs at level B.  In both cases we strive to hold all other disturbance variables constant so we pick up only the A to B effect.  Disturbances are any variables that might affect |y|, but for whatever reason, we don't wish to quantify.  If we cannot control the disturbance, then at least we can using :ref:`blocking <DOE-blocking-section>` and pairing.
+So we can perform several runs (experiments) at level A, and then some runs at level B.  In both cases we strive to hold all other disturbance variables constant so we pick up only the A to B effect.  Disturbances are any variables that might affect :math:`y`, but for whatever reason, we don't wish to quantify.  If we cannot control the disturbance, then at least we can using :ref:`blocking <DOE-blocking-section>` and pairing.
 
 
 Recap of group-to-group differences 
@@ -391,21 +391,23 @@ How do we go about running our experiments when there is more than one variable 
 You will often come across the thinking that we should change one variable at a time:
 
 	*	Something goes wrong with a recipe: e.g the pancakes are not as fluffy as normal, or the muffins don't rise as much as they should.  You are convinced it is the new brand of all-purpose flour you recently bought.  You change only the flour the next time you make pancakes to check your hypothesis.
-	University computer labs
+	
+	*	University labs are notorious for asking you to change one variable at a time.  The reason is that these labs intend that you learn what the effect of a single variable is on some other variable (e.g. change temperature in a distillation column to improve product purity).  The labs teach you that this is good scientific procedure.  However, when we want to *optimize and improve* a process we should not be changing one variable at a time.
+	
+		.. COST is good to learn about the direction of the effect between 2 variables, but not for optimizing a process.
 
-  Consider a bioreactor where we are looking at producing a particular enzyme.  The yield is known to be affected by the dissolved oxygen level, agitation rate, reaction duration, feed substrate concentration and type, and reactor temperature, amongst other variables.  For illustration purposes let's assume that temperature and feed substrate concentration are chosen, as they have the greatest effect on yield.
+  Consider a bioreactor where we are looking at producing a particular enzyme.  The yield is known to be affected by these 7 variables: dissolved oxygen level, agitation rate, reaction duration, feed substrate concentration and type, and reactor temperature. For illustration purposes let's assume that temperature and feed substrate concentration are chosen, as they have the greatest effect on yield.
 
 The base operating point is 346K with a feed substrate concentration of 1.5 g/L (point marked with a circle) and a yield in the region of 63%.
 
 .. figure:: images/COST-contours.png
 	:align: center
 	:width: 700px
-	:scale: 80
-	
+	:scale: 80	
 	
 .. FUTURE: use a curved surface like figure (c) on page 445 of BHH2
 
-At this point we start investigating the effect of temperature and move to a higher temperature, 356K, marked as point 1, but the yield decreases.  So we go the other direction and try temperatures at 338K, 330K and 322K. We are happy that the yields are increasing, but batch 4 shows a slightly lower yield.  So we figure that we've reached a plateau in terms of the temperature variable. Our manager is pretty satisfied because we've boosted yield from 63% to around 67%.  But these 4 runs have cost us around $10,000 in equipment time and manpower costs.  
+At this point we start to investigate the effect of temperature.  We decide to move up by 10 degrees to 356K, marked as point 1.  After running the experiment we record a lower yield value than our starting point.  So we go in the other direction and try temperatures at 338K, 330K and 322K. We are happy that the yields are increasing, but batch 4 shows a slightly lower yield.  So we figure that we've reached a plateau in terms of the temperature variable. Our manager is pretty satisfied because we've boosted yield from 63% to around 67%.  These 4 runs have cost us around $10,000 in equipment time and manpower costs so far.
 
 So we get approval now to run 4 more batches, and we decide to change the substrate feed concentration. But we're going to do this at the best temperature found so far, 330K at point 3.  Our intuition tells us that higher feed concentrations should boost yield, so we try 1.75 g/L.  Surprisingly that lowers the yield.  There's likely something we don't understand about the reaction mechanism.  Anyhow, we try the other direction, down to 1.25 g/L, and we see a yield increase.  We decide to keep going, down to 1.0 g/L, and finally to 0.75 g/L. We see very little change between these last two runs and we believe we have reached another plateau.  Also our budget of 8 experimental runs is exhausted.
 
@@ -420,13 +422,19 @@ Designed experiments, on the other hand, provide an efficient mechanism to learn
 Factorial designs: using two levels for two or more factors
 ==============================================================
 
-We move now to changing more than one variable at a time.  Most often we have multiple factors that affect our response variable, |y|.  In this section we consider the case when these factors are at two levels.  Some examples: low and high pH, catalyst A or B, mixing system A or B, long time or short time.  We use factorial designs because:
+In this section we learn how, and why we should change more than one variable at a time.  We will use factorial designs because:
 	
 	-	we can visually interpret these designs, and see where to run future experiments
-	-	these designs require relatively few experiments 
-	-	they are often the building block for more complex designs
 	
-Let's take a look at the mechanics by using an example where the yield, |y|, is affected by two factors: temperature, :math:`T`, and substrate concentration, :math:`S`.  The range over which they will be varied is given in the table.
+	-	these designs require relatively few experiments 
+	
+	-	they are often a building block for more complex designs
+
+Most often we have two or more factors that affect our response variable, :math:`y`.  In this section we consider the case when these factors are at two levels.  Some examples: operate at low and high pH, long operating times or short times, use catalyst A or B, use mixing system A or B.  The general guidance is to choose the low and high values at the extreme levels of normal operation.  It is not wise to use the lowest and highest values that each factor could possibly have: that will likely be too extreme.
+	
+Let's take a look at the mechanics of factorial designs by using an example where the conversion, :math:`y`, is affected by two factors: temperature, :math:`T`, and substrate concentration, :math:`S`.  
+
+The range over which they will be varied is given in the table.  This range was identified by the process operators as being sufficient to actually show a difference in the conversion, but not so large as to move the system to a totally different operating regime (that's because we will fit a linear model to the data).
 
 	.. tabularcolumns:: |l|c|c|
 
@@ -440,29 +448,29 @@ Let's take a look at the mechanics by using an example where the yield, |y|, is 
 
 #.	Write down the factors that will be varied: :math:`T`, and :math:`S`.
 
-#.	Write down the coded runs in standard order, also called *Yates order*, which alternates the first variable the fastest and the last variable the slowest.  By convention we start all runs at the low levels and finish off with the runs at the high levels. There will be :math:`2^k` runs, where :math:`k` is the number of variables in the design, and the :math:`2` refers to the number of levels for each factor.  In this case :math:`2^2 = 4` experiments (runs).  **We perform the actual experiments in random order though**.
+#.	Write down the coded runs in standard order, also called :index:`Yates order`, which alternates the sign of the first variable the fastest and the last variable the slowest.  By convention we start all runs at their low levels and finish off with all factors at their high levels. There will be :math:`2^k` runs, where :math:`k` is the number of variables in the design, and the :math:`2` refers to the number of levels for each factor.  In this case :math:`2^2 = 4` experiments (runs).  **We perform the actual experiments in random order though**, but always write the table in this standard order.
 
 	.. tabularcolumns:: |c|c|c|c|
 
-	+-----------+-------+---------------+-----------------+
-	| Experiment| Order | :math:`T` [K] | :math:`S` [g/L] |
-	+===========+=======+===============+=================+
-	| 1         | 3     | |-|           | |-|             |
-	+-----------+-------+---------------+-----------------+
-	| 2         | 2     | |+|           | |-|             |
-	+-----------+-------+---------------+-----------------+
-	| 3         | 4     | |-|           | |+|             |
-	+-----------+-------+---------------+-----------------+
-	| 4         | 1     | |+|           | |+|             |
-	+-----------+-------+---------------+-----------------+
+	+-----------+---------------+-----------------+
+	| Experiment| :math:`T` [K] | :math:`S` [g/L] |
+	+===========+===============+=================+
+	| 1         | |-|           | |-|             |
+	+-----------+---------------+-----------------+
+	| 2         | |+|           | |-|             |
+	+-----------+---------------+-----------------+
+	| 3         | |-|           | |+|             |
+	+-----------+---------------+-----------------+
+	| 4         | |+|           | |+|             |
+	+-----------+---------------+-----------------+
 
 
-#.	Complete the table with an additional column for the response variable.  The response variable could be a categorical variable (e.g. pass, fail), or could be a quantitative value; |y| = yield in this case, measured as a percentage.
+#.	Add an additional column to the table for the response variable.  The response variable is a quantitative value, :math:`y` = conversion in this case, measured as a percentage. 
 
 	.. tabularcolumns:: |c|c|c|c||c|
 	
 	+-----------+-------+---------------+-----------------+--------------+
-	| Experiment| Order | :math:`T` [K] | :math:`S` [g/L] | :math:`y` [%]|
+	| Experiment|Order *| :math:`T` [K] | :math:`S` [g/L] | :math:`y` [%]|
 	+===========+=======+===============+=================+==============+
 	| 1         | 3     | |-|           | |-|             |  69          |
 	+-----------+-------+---------------+-----------------+--------------+
@@ -472,11 +480,13 @@ Let's take a look at the mechanics by using an example where the yield, |y|, is 
 	+-----------+-------+---------------+-----------------+--------------+
 	| 4         | 1     | |+|           | |+|             |  53          |
 	+-----------+-------+---------------+-----------------+--------------+
+	
+	:math:`\ast` Experiments were performed in random order, in this case we happened to run experiment 4 first experiment 3 was run last.
 
 #.	For simple systems you can visualize the design and results as shown here.  This is known as a *cube plot*.
 
-	.. figure:: images/factorial-two-levels-two-variables-no-analysis.png
-		:align: center
+	.. image:: images/factorial-two-levels-two-variables-no-analysis.png
+		:align: left
 		:width: 750px
 		:scale: 50
 		
@@ -485,44 +495,50 @@ Let's take a look at the mechanics by using an example where the yield, |y|, is 
 Analysis of a factorial design: main effects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The first step is to calculate the main effect of each variable.  The effects are considered, by convention, to be the difference from the high level to the low level.
+The first step is to calculate the :index:`main effect` of each variable.  The effects are considered, by convention, to be the difference from the high level to the low level.  So the interpretation of a main effect is by how much the outcome, :math:`y` is adjusted when changing the variable.
 
-Consider the first two runs where :math:`S` is at the |-| level.  The only change is in the temperature, so the temperature effect is :math:`\Delta T_{S-} = 60-69 = -9\%` per (354-338)K, i.e. -9% per 16K.  Runs 3 and 4 have :math:`S` at the |+| level.  Again, the only change is in the temperature: :math:`\Delta T_{S+} = 53-64 = -11\%` per 16K. So we now have two temperature effects, and the average of them is a -10% change in yield per 16K change in temperature.
+Consider the two runs where :math:`S` is at the |-| level, experiments 1 and 2.  The only change between these two runs is the temperature, so the temperature effect is :math:`\Delta T_{S-} = 60-69 = -9\%` per (354-338)K, i.e. -9% change in the conversion outcome per 16K change in the temperature.  
 
-We can perform a similar calculation for the main effect of substrate concentration, :math:`S`.  :math:`\Delta S_{T-} = 64-69 = -5\%` per 0.5g/L, while :math:`\Delta S_{T+} = 53-60 = -7\%` per 0.5g/L.  So the average main effect for :math:`S` is a -6% change in yield for every 0.5 g/L change in substrate concentration. A graphical method is developed below:
+Runs 3 and 4 have :math:`S` at the |+| level.  Again, the only change is in the temperature: :math:`\Delta T_{S+} = 53-64 = -11\%` per 16K. So we now have two temperature effects, and the average of them is a -10% change in conversion per 16K change in temperature.
 
-	.. figure:: images/factorial-two-levels-two-variables-with-analysis.png
-		:align: center
+We can perform a similar calculation for the main effect of substrate concentration, :math:`S` by comparing experiments 1 and 3.  :math:`\Delta S_{T-} = 64-69 = -5\%` per 0.5g/L, while experiments 2 and 4 give :math:`\Delta S_{T+} = 53-60 = -7\%` per 0.5g/L.  So the average main effect for :math:`S` is a :math:`-6\%` change in conversion for every 0.5 g/L change in substrate concentration. A graphical method is developed below which you should use:
+
+	.. image:: images/factorial-two-levels-two-variables-with-analysis.png
+		:align: left
 		:width: 750px
 		:scale: 60
 
-This visual summary is a very effective method of seeing how the system responds to the two variables. We can see the gradients in the system and the likely region where we can perform additional experiments.
+This visual summary is a very effective method of seeing how the system responds to the two variables. We can see the gradients in the system and the likely region where we can perform the next experiments to improve the bioreactor's conversion.
 
-The following surface plot illustrates the main effects on the yield variable over the region spanned by the factorial.
+The following surface plot illustrates the true, but unknown surface, from which our measurements are taken: notice the slight curvature on the edges of each face.  The main effects estimated above are a linear approximation of the conversion over the region spanned by the factorial.
 
-	.. figure:: images/factorial-two-level-surface-example-cropped.png
-		:align: center
+	.. image:: images/factorial-two-level-surface-example-cropped.png
+		:align: left
 		:width: 750px
 		:scale: 50
 
-There is an alternative way to visualize these main effects shown below.  Use this method when you don't have computer software to draw the surfaces.  (We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>`).  It is called an interaction plot, which we discuss more in the next section.
+There is an alternative way to visualize these main effects.  Use this method when you don't have computer software to draw the surfaces.  (We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>`).  It is called an :index:`interaction plot`, which we discuss more in the next section.
 
-	.. figure:: images/factorial-two-level-line-plot.png
-		:align: center
+	.. image:: images/factorial-two-level-line-plot.png
+		:align: left
 		:width: 750px
 		:scale: 80
+		
+.. _DOE-two-level-factorials-interaction-effects:	
 
 Analysis of a factorial design: interaction effects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We expect in many real systems that the main effect of temperature, :math:`T`, for example, is different at other levels of substrate concentration, :math:`S`.  It is quite plausible for a bioreactor system that the main temperature effect on yield is much greater, if the substrate concentration, :math:`S` is also high.  While at low values of :math:`S`, the temperature effect is smaller.  
+We expect in many real systems that the main effect of temperature, :math:`T`, for example, is different at other levels of substrate concentration, :math:`S`.  It is quite plausible for a bioreactor system that the main temperature effect on conversion is much greater, if the substrate concentration, :math:`S` is also high.  While at low values of :math:`S`, the temperature effect is smaller.  
 
-We call this **interaction**.  The effect of one |x| variable is not constant at different levels of the other |x| variables.
+.. index:: interaction effects
 
-Let's use a **different system** here to illustrate interaction effects, but still using :math:`T` and :math:`S` as the variables being changed, and keeping the response variable as :math:`y` = yield.
+We call this **interaction**, when the effect of one factor is not constant at different levels of the other factors.
 
-	.. figure:: images/factorial-two-level-with-interactions.png
-		:align: center
+Let's use a *different system* here to illustrate interaction effects, but still using :math:`T` and :math:`S` as the variables being changed, and keeping the response variable as :math:`y` = conversion, shown by the contour lines.
+
+	.. image:: images/factorial-two-level-with-interactions.png
+		:align: left
 		:width: 550px
 		:scale: 85
 		
@@ -540,13 +556,13 @@ Let's use a **different system** here to illustrate interaction effects, but sti
 	| 4         | |+|  (400K)   | |+| (1.25 g/L)  |  89          |
 	+-----------+---------------+-----------------+--------------+
 
-The main effect of temperature is: 
+The main effect of temperature for this system is: 
 		
 		-	:math:`\Delta T_{S-} = 79 - 77 = 2\%` per 10K
 		-	:math:`\Delta T_{S+} = 89 - 81 = 8\%` per 10K
 		-	the average temperature main effect is: 5% per 10 K
 		
-Notice how different the main effect is at the low and high level of :math:`S`.  So the average of the two is an incomplete description of the system.  There is some other effect in the system  that we have not captured.
+Notice how different the main effect is at the low and high level of :math:`S`.  So the average of the two is an incomplete description of the system.  There is some other aspect to the system that we have not captured.
 
 Similarly, the main effect of substrate concentration is:
 	
@@ -556,32 +572,32 @@ Similarly, the main effect of substrate concentration is:
 
 ..	TODO: Draw in Inkscape, the geometrica analysis of the main effects, and the interaction plot for this system: annotated with T effect at low S, T effect at high S, S effect at low T, S effect at high T
 
-The data may also be visualized using an interaction plot:
+The data may also be visualized using an *interaction plot*:
 
 .. figure:: images/factorial-two-level-line-plot-with-interaction.png
 	:align: center
 	:width: 600px
 	:scale: 100
 
-The lack of parallel lines is a clear indication of interaction.  The temperature effect is stronger at high levels of :math:`S`, and the effect of :math:`S` on yield is also greater at high levels of temperature.  What is missing is an interaction term, given by the product of temperature and substrate.  We represent this as  :math:`T \times S`, and call it temperature-substrate interaction term.   
+The lack of parallel lines is a clear indication of interaction.  The temperature effect is stronger at high levels of :math:`S`, and the effect of :math:`S` on conversion is also greater at high levels of temperature.  What is missing is an interaction term, given by the product of temperature and substrate.  We represent this as  :math:`T \times S`, and call it temperature-substrate interaction term.   
 
-This interaction term should be zero for systems with no interaction.  Such systems will have roughly the same effect of :math:`T` at low and high values of :math:`S`: for example a +8 change in yield when going from :math:`T_{-}` to :math:`T_{+}` at low :math:`S` and at high :math:`S`.  So a good way to quantify interaction is then by how different these two effect terms are.  The interaction must be symmetrical, as shown below:
+This interaction term should be zero for systems with no interaction, which implies the lines are parallel in the interaction plot.  Such systems will have roughly the same effect of :math:`T` at low and high values of :math:`S`.  So then, a good way to quantify interaction is by how different the main effect terms are at the high and low levels of the other factor in the interaction.  The interaction must also be symmetrical:
 
 :math:`T` interaction with :math:`S`:  
 
-	-	Change in yield due to :math:`T` at high :math:`S`: +8
-	-	Change in yield due to :math:`T` at low :math:`S`: +2
-	-	The half difference: [+8 - (+2)]/2 = **3**
+	-	Change in conversion due to :math:`T` at high :math:`S`: :math:`+8`
+	-	Change in conversion due to :math:`T` at low :math:`S`: :math:`+2`
+	-	The half difference: :math:`[+8 - (+2)]/2 = \bf{3}`
 	
 :math:`S` interaction with :math:`T`:
 
-	-	Change in yield due to :math:`S` at high :math:`T`: +10
-	-	Change in yield due to :math:`S` at low :math:`T`: +4
-	-	The half difference: [+10 - (+4)]/2 = **3**
+	-	Change in conversion due to :math:`S` at high :math:`T`: :math:`+10`
+	-	Change in conversion due to :math:`S` at low :math:`T`: :math:`+4`
+	-	The half difference: :math:`[+10 - (+4)]/2 = \bf{3}`
 
-A large positive interaction term indicates that temperature and substrate concentration will increase yield by a greater amount when both :math:`T` and :math:`S` are high.  Similarly, these two terms will rapidly reduce yield when they both are low.
+A large, positive interaction term indicates that temperature and substrate concentration will increase conversion by a greater amount when both :math:`T` and :math:`S` are high.  Similarly, these two terms will rapidly reduce conversion when they both are low.
 
-We will get a much better appreciation for interpreting main effect and interaction effect in the next section, where we consider the analysis in the form of a linear model.
+We will get a much better appreciation for interpreting main effect and interaction effect in the next section, where we consider the analysis in the form of a linear, least squares model.
 
 .. TODO: quantify and describe more completely what the interaction means
 
@@ -597,9 +613,9 @@ Let's review the original system (the one with little interaction) and analyze t
 
 	+-----------+---------------+-----------------+--------------+
 	| Experiment| :math:`T` [K] | :math:`S` [g/L] | :math:`y` [%]|
-	+-----------+---------------+-----------------+--------------+
-	| Baseline  | 346 K         | 1.50            |  63          |
 	+===========+===============+=================+==============+
+	| Baseline  | **346 K**     | **1.50**        |              |
+	+-----------+---------------+-----------------+--------------+
 	| 1         | |-|  (338K)   | |-| (1.25 g/L)  |  69          |
 	+-----------+---------------+-----------------+--------------+
 	| 2         | |+|  (354K)   | |-| (1.25 g/L)  |  60          |
@@ -614,15 +630,16 @@ It is standard practice to represent the data from DOE runs in a centered and sc
 	*	:math:`T_{-} = \dfrac{338 - 346}{(354-338)/2} = \dfrac{-8}{8} = -1`
 	*	:math:`S_{-} = \dfrac{1.25 - 1.50}{(1.75 - 1.25)/2} = \dfrac{-0.25}{0.25} = -1`
 
-Similarly, :math:`T_{+} = +1` and :math:`S_{+} = +1`.  While the center points would be :math:`T_{0} = 0` and :math:`S_{0} = 0`.
+Similarly, :math:`T_{+} = +1` and :math:`S_{+} = +1`.  While the center points (baseline experiment) would be :math:`T_{0} = 0` and :math:`S_{0} = 0`.
 
 So we will propose a least squares model, that describes this system:
 
 .. math::
 
-	y = \beta_0 + \beta_Tx_T + \beta_S x_S + \beta_{TS} x_Tx_S + \varepsilon
+	\text{Population model}: \qquad\qquad &y = \beta_0 + \beta_Tx_T + \beta_S x_S + \beta_{TS} x_Tx_S + \varepsilon\\
+	\text{Sample model}: \qquad\qquad     &y = b_0 + b_Tx_T + b_S x_S + b_{TS} x_Tx_S + e\\
 	
-We have 4 parameters to estimate and 4 data points.  This means when we fit the model to the data we will have no residual error.  If we had replicate experiments we would have degrees of freedom to estimate the error, but more on that later.  Writing the above equation for the least squares model for each observation:
+We have 4 parameters to estimate and 4 data points.  This means when we fit the model to the data we will have no residual error, since there are no degrees of freedom left.  If we had replicate experiments we would have degrees of freedom to estimate the error, but more on that later.  Writing the above equation for each observation:
 
 .. math::
 
@@ -661,41 +678,45 @@ We have 4 parameters to estimate and 4 data points.  This means when we fit the 
 	
 Some things to note are (1) the orthogonality of :math:`\mathbf{X}^T\mathbf{X}` and (2) the interpretation of these coefficients.
 
-#.	Note how the :math:`\mathbf{X}^T\mathbf{X}` has zeros on the off-diagonals.  This confirms, algebraically, what we knew intuitively.  The change we made in :math:`T` was independent of the changes we made in :math:`S`.  This means that we can separately calculate the slope coefficients in the model.
+#.	Note how the :math:`\mathbf{X}^T\mathbf{X}` has zeros on the off-diagonals.  This confirms, algebraically, what we knew intuitively.  The change we made in temperature, :math:`T`, was independent of the changes we made in substrate concentration, :math:`S`.  This means that we can separately calculat *and interpret* the slope coefficients in the model.
 
-#.	What is the interpretation of, for example, :math:`b_T = -5`?  Recall that it is the effect of increasing the temperature by **1 unit**.  In this case the :math:`x_T` variable has been  normalized, but this slope coefficient represents the effect of changing :math:`x_T` from 0 to 1, which in the original variables is a change from 346 to 354K, i.e. an 8K increase in temperature.  It could equally well represent the effect of changing :math:`x_T` from -1 to 0 (a change from 338K to 346K).
+#.	What is the interpretation of, for example, :math:`b_T = -5`?  Recall that it is the effect of increasing the temperature by **1 unit**.  In this case the :math:`x_T` variable has been  normalized, but this slope coefficient represents the effect of changing :math:`x_T` from 0 to 1, which in the original variables is a change from 346 to 354K, i.e. an 8K increase in temperature.  It equally well represents the effect of changing :math:`x_T` from -1 to 0: a change from 338K to 346K decreases conversion by 5%.
 
-	Similarly, the slope coefficient for :math:`b_S = -3` represents the change in :math:`S` from 1.50 g/L to 1.75 g/L.
+	Similarly, the slope coefficient for :math:`b_S = -3` represents the expected decrease in conversion when :math:`S` is increased from 1.50 g/L to 1.75 g/L.
 
-	Now contrast these numbers with those in the :ref:`previous analysis <DOE-two-level-factorials-main-effects>`, done graphically and repeated below.  They are the same, as long as we are careful to interpret them as the change over half the range.
+	Now contrast these numbers with those in the :ref:`graphical analysis done previously <DOE-two-level-factorials-main-effects>` and repeated below.  They are the same, as long as we are careful to interpret them as the change over **half the range**.
 	
-	.. figure:: images/factorial-two-levels-two-variables-with-analysis.png
-		:align: center
+	.. image:: images/factorial-two-levels-two-variables-with-analysis.png
+		:align: left
 		:width: 750px
 		:scale: 50
 
-Finally we return to the system with high interaction.  Defining the base line operation at :math:`T` = 395K, and :math:`S` = (1.25+0.5)/2 g/L, you can prove to yourself that its model is:
+	The 61.5 term in the least squares model is the expected conversion at the baseline conditions.  Notice from the least squares equations how it is just the average of the 4 experimental values, even though we did not actually perform an experiment at the center.
+		
+Let's return to the :ref:`system with high interaction <DOE-two-level-factorials-interaction-effects>` where the four outcome values in standard order were 
+77, 79, 81 and 89. Defining the baseline operation as :math:`T` = 395K, and :math:`S` = 1.5 g/L, you should prove to yourself that its least squares model is:
 
 	.. math::
 	
 		y = 81.5 + 2.5 x_T + 3.5 x_S + 1.5 x_T x_S
 		
-The interaction term can now be readily interpreted: it is the additional increase in yield seen when both temperature and :math:`S` are at their high level.  If :math:`T` is at the high level and :math:`S` is at the low level, then the least squares model shows that yield is expected at 81.5 + 2.5 - 3.5 -1.5 = 79.  So the interaction term has *decreased* yield by an additional 1.5 units.
+The interaction term can now be readily interpreted: it is the additional increase in conversion seen when both temperature and :math:`S` are at their high level.  If :math:`T` is at the high level and :math:`S` is at the low level, then the least squares model shows that conversion is expected at 81.5 + 2.5 - 3.5 -1.5 = 79.  So the interaction term has *decreased* conversion by 1.5 units.
 
-Finally, out of interest, we show the non-linear surface used to generate the experimental data for the interacting system.  In practice we never know what this surface looks like, but we estimate it with the least squares plane which appears below the non-linear surface. The corners of the box are experimental corners.	
+Finally, out of interest, the non-linear surface that was used to generate the experimental data for the interacting system is coloured in the illustration.  In practice we never know what this surface looks like, but we estimate it with the least squares plane which appears below the non-linear surface as black and white grids. The corners of the box are outer levels at which we ran the factorial experiments.
 	
-	.. figure:: images/factorial-two-level-surface-with-interaction-cropped.png
-		:align: center
+	.. image:: images/factorial-two-level-surface-with-interaction-cropped.png
+		:align: left
 		:width: 750px
 		:scale: 50
 	
+The corner points are exact with the nonlinear surface, because we have used the 4 values to estimate 4 model parameters.  There are no degrees of freedom left and the model's residuals are therefore zero.  Obviously the linear model will be less accurate away from the corner points when the true system is nonlinear, but it is a useful model over the region in which we will use it later in the :ref:`section on response surface methods <DOE-RSM>`.
 	
 Example: design and analysis of a 3-factor experiment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This example will be performed in-class on the board.  The example is based on question 19 in the exercises for Chapter 5 in  Box, Hunter, and Hunter (2nd edition).
+This example should be done by yourself.  It is based on question 19 in the exercises for Chapter 5 in Box, Hunter, and Hunter (2nd edition).
 
-The data are from a plastics molding factory which must treat its waste before discharge.  The |y| variable represents the average amount of pollutant discharged (lb) in a day, while the 3 factors that were varied were:
+The data are from a plastics molding factory which must treat its waste before discharge.  The :math:`y` variable represents the average amount of pollutant discharged (lb) in a day, while the 3 factors that were varied were:
 
  	-	:math:`C`: the chemical compound added (A or B)
 	-	:math:`T`: the treatment temperature (72°F or 100°F)
@@ -760,7 +781,7 @@ The data are from a plastics molding factory which must treat its waste before d
 Learning notes:
 
 	*	The chemical compound could be coded either as (A = -1, B = +1), or (A = +1, B = -1).  The interpretation of the :math:`x_C` coefficient is the same, regardless of the coding.
- 	*	Even just the tabulation of the raw data gives us some interpretation of the results.  Why?  Since the variables are manipulated independently, we can just look at the relationship of each factor to |y|, without considering the others.   It is expected that the chemical compound and speed have a strong effect on :math:`y`, but particularly the chemical :math:`\times` speed interaction.  You get this last interpretation by writing out the full :math:`\mathrm{X}` design matrix.
+ 	*	Even just the tabulation of the raw data gives us some interpretation of the results.  Why?  Since the variables are manipulated independently, we can just look at the relationship of each factor to :math:`y`, without considering the others.   It is expected that the chemical compound and speed have a strong effect on :math:`y`, but particularly the chemical :math:`\times` speed interaction.  You get this last interpretation by writing out the full :math:`\mathrm{X}` design matrix.
 
 Assessing significance of main effects and interactions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -807,7 +828,7 @@ The standard error can be calculated in a similar manner if more than one duplic
 	
 .. sidebar:: A note about standard errors and magnitude of effects
 
-	In these notes we quantify the effect as the change in response over *half the range* of the factor.  For example, if the centerpoint is 400K, the lower level is 375K, and the upper level is 425K, then an effect of ``"-5"`` represents a reduction in |y| of 5 units for every increase in 25K in |x|.
+	In these notes we quantify the effect as the change in response over *half the range* of the factor.  For example, if the centerpoint is 400K, the lower level is 375K, and the upper level is 425K, then an effect of ``"-5"`` represents a reduction in :math:`y` of 5 units for every increase in 25K in :math:`x`.
 	
 	
 	We use this representation because it corresponds with the results calculated from least-squares software.  Putting the matrix of -1 and 1 as :math:`\mathrm{X}` into the software, and the corresponding vector of responses, :math:`\mathrm{y}`, will calculate these effects as :math:`\mathrm{b} = \left(\mathrm{X}^T\mathrm{X}\right)^{-1}\mathrm{X}\mathrm{y}`.
@@ -970,7 +991,7 @@ Summary so far
 	
 -	Factorial designs use the collected data much more efficiently than one-at-a-time experimentation.  As shown in :ref:`the preceding section <DOE-COST-vs-factorial-efficiency>`, the estimated variance is halved when using a factorial design than from a COST approach.
 	
--		A small or zero effect from an |x| variable to the |y| response variable implies the |y| is insensitive to that |x|.  This is desirable in some situations - it means we can adjust that :math:`x` without affecting :math:`y`, sometimes said as "*the* :math:`y` *is robust to changes in* :math:`x`".
+-		A small or zero effect from an :math:`x` variable to the :math:`y` response variable implies the :math:`y` is insensitive to that :math:`x`.  This is desirable in some situations - it means we can adjust that :math:`x` without affecting :math:`y`, sometimes said as "*the* :math:`y` *is robust to changes in* :math:`x`".
 
 
 .. _DOE-blocking-section:
@@ -1600,6 +1621,8 @@ This projectivity of factorials holds in general for a larger number of factors.
 
 .. TODO: point out how blocking can be visualized as projectivity: in a 2 factor system (A and B) you have enough material only for 2 runs at a time.  So you block on the AB interaction.  But you can visualize that as a 3-factor factorial now, but run as a half-fraction, i.e. a 2^3_{III} design (show the cube with open and closed circles).  This design has projectivity of 2 = 3-1, meaning a full 2^2 factorial is embedded in the design.  If factor C (the blocking variable) has no effect on y, then you recover your full 2^2 factorial.  That's why we typically block on the highest interaction possible.
 
+.. _DOE-RSM:
+
 Response surface methods
 ==========================
 
@@ -1625,7 +1648,7 @@ We start at the point marked :math:`i=0` as our initial baseline (cp=center poin
 
 Make another step-size, this time of :math:`\gamma_2` units in the direction that increases :math:`y`.  We measure the response, :math:`y_2`, and are still increasing.  Encouraged by this, we take another step of size :math:`\gamma_3`.  The step-sizes, :math:`\gamma_i` should be of a size that is big enough to cause a change in the response in a reasonable number of experiments, but not so big as to miss an optimum.
 
-Our next value of :math:`y_3` is about the same size as :math:`y_2`, indicating that we have plateaued.  At this point we can take some exploratory steps and refit the tangential line (which now has a slope in the opposite direction).  Or we can just use the accumulated points :math:`y = [y_{0-}, y_{0+}, y_1, y_2, y_3]` and their corresponding |x|-values to fit a non-linear curve.  Either way, we can then estimate a different step-size :math:`\gamma_4` that will bring us closer to the optimum.
+Our next value of :math:`y_3` is about the same size as :math:`y_2`, indicating that we have plateaued.  At this point we can take some exploratory steps and refit the tangential line (which now has a slope in the opposite direction).  Or we can just use the accumulated points :math:`y = [y_{0-}, y_{0+}, y_1, y_2, y_3]` and their corresponding :math:`x`-values to fit a non-linear curve.  Either way, we can then estimate a different step-size :math:`\gamma_4` that will bring us closer to the optimum.
 
 This univariate example is in fact what experimenters do when using the :ref:`COST approach <DOE-COST-approach>` described earlier.  We have:
 

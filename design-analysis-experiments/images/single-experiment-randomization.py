@@ -84,6 +84,6 @@ if __name__ == '__main__':
     ax.axvline(actual_diff, c="red")
     from matplotlib.backends.backend_agg import FigureCanvasAgg
     canvas=FigureCanvasAgg(fig)
-    fig.savefig('single-experiment-randomization-somess.png', dpi=300, facecolor='w', edgecolor='w', 
+    fig.savefig('single-experiment-randomization-some.png', dpi=300, facecolor='w', edgecolor='w', 
                 orientation='portrait', papertype=None, format=None, transparent=True)
     

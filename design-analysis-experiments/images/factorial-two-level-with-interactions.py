@@ -50,7 +50,7 @@ rect = [0.2, 0.15, 0.70, 0.75]  # Left, bottom, width, height
 ax = fig.add_axes(rect, frame_on=True)
 levels = np.array([10, 20, 30, 40, 50, 60, 70, 80, 90, 95])
 
-CS = ax.contour(X, Y, Z, colors='k')
+CS = ax.contour(X, Y, Z, colors='#444444', linestyles='dotted',)
 ax.clabel(CS, inline=1, fontsize=10, fmt='%1.0f')
 #ax.set_title('Theoretical yield profiles', fontsize=16)
 ax.set_xlabel('Temperature [K]', fontsize=12)

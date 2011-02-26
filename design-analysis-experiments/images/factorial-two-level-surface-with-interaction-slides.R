@@ -64,7 +64,7 @@ g.linear.no.interaction$y[which.max(g.linear.no.interaction$y)] = zmax
 g.linear$y[which.max(g.linear$y)] = zmax
 
 library(lattice)
-png(file="/Users/kevindunn/Statistics course/Course notes/Design of experiments/images/factorial-two-level-surface-with-interaction-slides.png", height = 1500, width = 1200, res=300, bg="transparent")
+png(file="factorial-two-level-surface-with-interaction-slides.png", height = 1500, width = 1200, res=300, bg="transparent")
 par.set <-  list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
 print(wireframe(y ~ x1*x2,
         data = g.linear,
@@ -80,14 +80,14 @@ print(wireframe(y ~ x1*x2,
         par.settings = par.set,
         xlab="Temperature, T [K]",
         ylab=paste("Subtrate \n concentration\n S [g/L]"),
-        zlab="Yield",
+        zlab=list("Conversion", rot=90),
         alpha.regions = 0.2,
         #screen = list(z = 0, x = 45, y =45),
         )
 )
 dev.off()
 
-png(file="/Users/kevindunn/Statistics course/Course notes/Design of experiments/images/factorial-two-level-surface-without-interaction-slides.png", height = 1500, width = 1200, res=300, bg="transparent")
+png(file="factorial-two-level-surface-without-interaction-slides.png", height = 1500, width = 1200, res=300, bg="transparent")
 par.set <-  list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
 print(wireframe(y ~ x1*x2,
         data = g.linear.no.interaction,
@@ -103,7 +103,7 @@ print(wireframe(y ~ x1*x2,
         par.settings = par.set,
         xlab="Temperature, T [K]",
         ylab=paste("Subtrate \n concentration\n S [g/L]"),
-        zlab="Yield",
+        zlab=list("Conversion", rot=90),
         alpha.regions = 0.2,
         #screen = list(z = 0, x = 45, y =45),
         )

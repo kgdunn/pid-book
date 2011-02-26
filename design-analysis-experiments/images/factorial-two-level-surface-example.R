@@ -1,4 +1,3 @@
-
 surface <- function(x1,x2){
     x1off = 320
     x1scale = 20
@@ -8,13 +7,13 @@ surface <- function(x1,x2){
     x2scale = 1
     x2s = (x2 - x2off)/x2scale
     
-    z = 18*x1s + 10*x2s- 7*x1s^2 - 4*x2s^2 - 7.5*x1s*x2s + 60 
+    z = 18*x1s + 10*x2s + 60.5  - 7*x1s^2 - 4*x2s^2 - 7.5*x1s*x2s 
 }
 
 Xoff = 320     # offset for X
 Xscale = 20.0
 
-N = 50  # resolution of surface
+N = 15  # resolution of surface
 x1 <- seq((338-Xoff)/Xscale, (354-Xoff)/Xscale ,length=N)*Xscale + Xoff
 x2 <- seq(1.25 , 1.75, length=N)
 g <- expand.grid(x1=x1, x2=x2)
@@ -29,12 +28,12 @@ g$y[which.min(g$y)] = zmin
 g$y[which.max(g$y)] = zmax
 
 library(lattice)
-#png(file="/Users/kevindunn/Statistics course/Course notes/Design of experiments/images/factorial-two-level-surface-example.png", height = 1500, width = 1200, res=300, bg="transparent")
+png(file="factorial-two-level-surface-example.png", height = 1500, width = 1500, res=300, bg="transparent")
 
 par.set <-  list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
 print(wireframe(y ~ x1*x2,
         data = g,
-        shade=TRUE,
+        shade= FALSE,
         scales=list(arrows=FALSE,
                     distance=c(2,2,1.5),
                     rot=c(30),
@@ -46,9 +45,9 @@ print(wireframe(y ~ x1*x2,
         par.settings = par.set,
         xlab="Temperature, T [K]",
         ylab=paste("Subtrate \n concentration\n S [g/L]"),
-        zlab="Yield",
+        zlab=list("Conversion", rot=90),
 )
 )
 dev.off()
 
-Then manually crop the PNG output file
+# Then manually crop the PNG output file

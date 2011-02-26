@@ -26,7 +26,7 @@ surface.linear <- function(x1,x2){
 Xoff = 360     # offset for X
 Xscale = 20.0
 
-N = 10 # resolution of surface
+N = 50 # resolution of surface
 xlo = 390
 xhi = 400
 xmid = 395
@@ -53,12 +53,12 @@ g.actual$y[which.min(g.actual$y)] = zmin
 #g$y[which.max(g$y)] = zmax
 
 library(lattice)
-png(file="/Users/kevindunn/Statistics course/Course notes/Design of experiments/images/factorial-two-level-surface-with-interaction.png", height = 1500, width = 1200, res=300, bg="transparent")
+png(file="factorial-two-level-surface-with-interaction.png", height = 1500, width = 1200, res=300, bg="transparent")
 layout(matrix(c(1,2), 1, 2))
 par.set <-  list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
 print(wireframe(y ~ x1*x2,
         data = g.linear,
-        shade=TRUE,
+        shade=FALSE,
         scales=list(arrows=FALSE,
                     distance=c(2,2.5,1),
                     rot=c(0),
@@ -70,8 +70,8 @@ print(wireframe(y ~ x1*x2,
         par.settings = par.set,
         xlab="Temperature, T [K]",
         ylab=paste("Subtrate \n concentration\n S [g/L]"),
-        zlab="Yield",
-        alpha.regions = 0.2,
+        zlab=list("Conversion", rot=90),
+        alpha.regions = 1,
         #screen = list(z = 0, x = 45, y =45),
         )
 )
@@ -81,19 +81,20 @@ print(wireframe(y ~ x1*x2,
         scales=list(arrows=FALSE,
                     distance=c(2,2.5,1),
                     rot=c(0),
-                    x=list(draw=TRUE, at=xlabels, labels=as.character(xlabels), cex=1, rot=-45),
-                    y=list(draw=TRUE, at=ylabels, labels=as.character(ylabels), cex=1, rot=30),
-                    z=list(draw=TRUE, at=zlabels, labels=as.character(zlabels), cex=1)
+                    x=list(draw=FALSE, at=xlabels, labels=as.character(xlabels), cex=1, rot=-45),
+                    y=list(draw=FALSE, at=ylabels, labels=as.character(ylabels), cex=1, rot=30),
+                    z=list(draw=FALSE, at=zlabels, labels=as.character(zlabels), cex=1)
                     ),
         aspect = c(0.9, 0.5),  # y/x and z/x
         par.settings = par.set,
-        xlab="Temperature, T [K]",
-        ylab=paste("Subtrate \n concentration\n S [g/L]"),
-        zlab="Yield",
+        xlab="",
+        ylab="",
+        zlab="",
+        alpha = 0.7,
         #screen = list(z = 0, x = 45, y =45),
 )
 )
 dev.off()
 
 
-Then manually crop the PNG output file
+#Then manually crop the PNG output file
