@@ -1414,9 +1414,9 @@ So this section is concerned with the trade-offs as we go from a full factorial 
 
 	-	What would be the generators and defining relation for this :math:`2^{7-4} = 8` run experiment and what is the aliasing structure?
 	
-		#.	Assign **A**, **B**, ... **G** as the 7 factor names.  Since there are 8 runs, start by writing out **A**, **B**, and **C** in the usual factorial layout for these 8 runs. 
+		#.	Assign **A**, **B**, ... **G** as the 7 factor names.  Since there are 8 runs, start by writing out the first 3 factors, **A**, **B**, and **C**, in the usual full factorial layout for these :math:`2^3 = 8` runs. 
 	
-		#.	Next we assign the remaining factors to the highest-possible interaction terms from these 3 factors.  We have to assign 4 more factors, so pick the 4 interaction terms that we are least interested in.  In this particular example, we have to use all (saturate) the interaction terms.
+		#.	Next we assign the remaining factors to the highest-possible interaction terms from these 3 factors.  Since we've already assigned **A**, **B** and **C** we only have to assign the other 4 factors, **D**, **E**, **F**, and **G**.  Pick the 4 interaction terms that we are least interested in.  In this particular example, we have to use all (saturate) the interaction terms.
 	
 			*	**D = AB**
 			*	**E = AC**
@@ -1445,28 +1445,31 @@ So this section is concerned with the trade-offs as we go from a full factorial 
 			| 8         | |+|        | |+|       |  |+|       |  |+|       |  |+|       |  |+|       |  |+|       |  63.7      |
 			+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
 		
+			Record the experimental results for :math:`y` in the last column.
 		
-		#.	So the generators are **I = ABD**, **I = ACE**, **I = BCF** and **G = ABCG**.  The generators such as **ABD** and **ACE** are called *"words"*.  The *defining relationship* is a sequence of words which are all equal to **I**. The defining relation is found from the product of all generator combinations, then simplified to be written as **I = ....**.  
+		#.	So the 4 generators we used are **I = ABD**, **I = ACE**, **I = BCF** and **G = ABCG**.  The generators such as **ABD** and **ACE** are called *"words"*.  
+		
+		#.	The *defining relationship* is a sequence of :index:`words <pair: words; experiments>` which are all equal to **I**. The :index:`defining relation <pair: defining relationship; experiments>` is found from the product of all possible generator combinations, and then simplified to be written as **I = ....**.  
 	
-		#.	Calculate the defining relation by forming all combinations of the generators.  The rule is that a :math:`2^{k-p}` factorial design is produced by :math:`p` generators and has a defining relationship of :math:`2^p` words.  So there should be :math:`2^4 = 16` words in our defining relation.
+			The rule is that a :math:`2^{k-p}` factorial design is produced by :math:`p` generators and has a defining relationship of :math:`2^p` words.  So in this example there are :math:`2^4 = 16` words in our defining relation.  They are:
 
-			-	Intercept:	**I**
-			-	Generators:	 **I = ABD = ACE = BCF = ABCG**
-			-	Two combinations of generators:	**I = BDCE = ACDF = CDG = ABEF = BEG = AFG**
-			-	Three combinations of generators:	**I = DEF = ADEG = CEFG = BDFG**
-			-	Four combinations of generators: **I = ABCDEFG**
+			-	Intercept:	**I** [1]
+			-	Generators:	 **I = ABD = ACE = BCF = ABCG** [2,3,4,5]
+			-	Two combinations of generators:	**I = BDCE = ACDF = CDG = ABEF = BEG = AFG** [6 to 11]
+			-	Three combinations of generators:	**I = DEF = ADEG = CEFG = BDFG** [12 to 15]
+			-	Four combinations of generators: **I = ABCDEFG** [16]
 
-			So the defining relationship consists of the 16 words: **I = ABD = ACE = BCF = ABCG = BCDE = ACDF = CDG = ABEF = BEG = AFG = DEF = ADEG = CEFG = BDFG = ABCDEFG**. The shortest word has 3 letters.
+			The 16 words in the defining relationship are written as: **I = ABD = ACE = BCF = ABCG = BCDE = ACDF = CDG = ABEF = BEG = AFG = DEF = ADEG = CEFG = BDFG = ABCDEFG**. The shortest length word has 3 letters.
 
-		#.	The aliasing for the main effects can be calculated by multiplying the defining relationship by the effect.  Let's take **A** as an example, below, and multiply it by the defining relation:
+		#.	The aliasing or confounding pattern for any desired effect can be calculated by multiplying the defining relationship by that effect.  Let's take **A** as an example, below, and multiply it by the 16 words in the defining relation:
 
 			**AI = BD = CE = ABCF = BCG = ABDCE = CDF = ACDG = BEF = ABEG = FG = ADEF = DEG = ACEFG = ABDFG = BCDEFG**
 		
-			:math:`\widehat{\beta}_A \rightarrow` A + BD + CE + ABCF + BCG + ABCDE + CDF + ACDG + BEF + ABEG + FG + ADEF + DEG + ACEFG + ABDFG + BCDEFG.
+			:math:`\widehat{\beta}_A \rightarrow` A + **BD** + **CE** + ABCF + BCG + ABCDE + CDF + ACDG + BEF + ABEG + **FG** + ADEF + DEG + ACEFG + ABDFG + BCDEFG.
 
-			So by performing 8 runs instead of the full :math:`2^7`, we confound the main effects with a large number of 2-factor and higher interaction terms.  In particular, the main effect of **A** is confounded here with the **BD**, **CE** and **FG** two-factor interactions.  The higher-order interaction confounding is usually not of interest.
+			So by performing 8 runs instead of the full :math:`2^7`, we confound the main effects with a large number of 2-factor and higher interaction terms.  In particular, the main effect of **A** is confounded here with the **BD**, **CE** and **FG** two-factor interactions.  Any 3 and higher-order interaction confounding is usually not of interest.
 		
-			Repeat this for all main effects.  Listed below are all the aliases for the main effects, reporting only the two-factor interactions.  The bold sections below indicate the confounding that was intentionally created.
+			Listed below are all the aliases for the main effects, reporting only the two-factor interactions.  The bold sections indicate the confounding that was intentionally created when we set up the design.
 
 			-	:math:`\widehat{\beta}_0` = ABCDEFG
 			-	:math:`\widehat{\beta}_{\mathbf{A}} \rightarrow` A + BD + CE + FG
@@ -1477,7 +1480,7 @@ So this section is concerned with the trade-offs as we go from a full factorial 
 			-	:math:`\widehat{\beta}_{\mathbf{F}} \rightarrow` **F + BC** + AG + DE
 			-	:math:`\widehat{\beta}_{\mathbf{G}} \rightarrow` G + CD + BE + AF
 
-		#.	If this confounding pattern is not suitable, for example, you expect interaction **BG** to be important but also main effect **E**, then choose a different set of generators before running the experiment.  Or more simply, assign your variables (temperature, pressure, pH, agitation, *etc*) to different letters of **A**, **B**, *etc* to obtain a more desirable confounding relationship.
+		#.	If this confounding pattern is not suitable, for example, if you expect interaction **BG** to be important but also main effect **E**, then choose a different set of generators before running the experiment.  Or more simply, reassign your variables (temperature, pressure, pH, agitation, *etc*) to different letters of **A**, **B**, *etc* to obtain a more desirable confounding relationship.
 
 *Example 2*
 
@@ -1500,43 +1503,47 @@ So this section is concerned with the trade-offs as we go from a full factorial 
 
 	Next we can calculate all aliases of the main effects.  So for **A = IA = BCE = BDF = ABCDG = CDH = ACDEF = DEG = ... = BCDEFGH**, indicating that A will be confounded with **BCE + BDF + ABCDG + ...**.  In this example none of the main effects have been aliased with two-factor interactions.  The aliasing is only with 3-factor and higher interaction terms.
 	
-*Notes*
+.. rubric:: Summary
 
 #.	It is tedious and error prone to calculate the aliasing structure by hand, so computer software is useful in this case.   For example, for the :math:`2^{7-4}` system can be created in  R by first loading the ``BHH2`` package, then using the command ``ffDesMatrix(k=7, gen=list(c(4,1,2), c(5,1,3), c(6,2,3), c(7,1,2,3)))``.  See the `R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ for more details.
-#.	The choice of generators is not unique and other choices may lead to a different, more preferable confounding pattern.  But it is often easier to use the letters **A, B, C**, *etc*, then just assign the factors to the letters to achieve the least-worst confounding.
+
+#.	The choice of generators is not unique and other choices may lead to a different, more preferable confounding pattern.  But it is often easier to use the letters **A, B, C**, *etc*, then just reassign the factors to the letters to achieve the "least-worst" confounding.
+
 #.	In general, a :math:`2^{k-p}` factorial design is produced by :math:`p` generators and has a defining relationship of :math:`2^p` words.
+
+There is a quick way to calculate if main effects will be confounded with 2fi or 3fi without having to go through the process shown in this section.  This is described next when we look at design resolution.
 
 Design Resolution
 ~~~~~~~~~~~~~~~~~~~
 
-The resolution index of a design is given by the length of the shortest word in the defining relation.  We write the resolution as a subscript to the factorial design.  Some examples:
+The :index:`resolution <pair: design resolution; experiments>` of a design is given by the length of the shortest word in the defining relation.  We normally write the resolution as a subscript to the factorial design.  Some examples:
 
-	#.	The :math:`2^{7-4}` *example 1* in the previous section had the shortest word length of 3 characters, so this would be a :math:`2^{7-4}_\text{III}` design.  Main effects were confounded with 2-factor interactions.
+	#.	The :math:`2^{7-4}` *example 1* in the previous section had  the shortest word of 3 characters, so this would be called a :math:`2^{7-4}_\text{III}` design.  Main effects were confounded with 2-factor interactions.
 	#.	The :math:`2^{8-5}` *example 2* had as the shortest word length of 4 characters, so this would be a :math:`2^{8-5}_\text{IV}` design.  Main effects were confounded with 3-factor interactions.
-	#.	Finally, imagine the case of :math:`2^{5-1}`, in other words a half-fraction design.  The first four factors are written in the standard factorial, but the fifth factor is generated from **E = ABCD**.  So its defining relation is  **I = ABCDE**, where the shortest word is 5 characters - it is a :math:`2^{5-1}_{\text{V}}` design.  You can show that main effects will be confounded with 4-factor interactions.
+	#.	Finally, imagine the case of :math:`2^{5-1}`, in other words a half-fraction design.  The first four factors are written in the standard factorial, but the fifth factor is generated from **E = ABCD**.  So its defining relation is  **I = ABCDE**, where the shortest word is 5 characters - it is a :math:`2^{5-1}_{\text{V}}` design.  You can verify for yourself that main effects will be confounded with 4-factor interactions in this design.
 	
-You can consider the resolution of a design to be an indication of how clearly the effects can be separated in a design.  The higher the resolution, the lower the degree of confounding, which is valuable.  Within reason, aim for a higher resolution design given your experimental budget, but also accept a lower resolution, at least initially, in order to test for more factors.  We will discuss this further in the section on :ref:`screening designs <DOE-saturated-screening-designs>`.
+You can consider the resolution of a design to be an indication of how clearly the effects can be separated in a design.  The higher the resolution, the lower the degree of confounding, which is valuable.  Within reason, always aim for a higher resolution design given your experimental budget, but also accept a lower resolution, at least initially, in order to test for more factors.  We will discuss this further in the section on :ref:`screening designs <DOE-saturated-screening-designs>`.
 
-You can interpret the resolution index as follows: let main effects = 1, two-factor interactions = 2, three-factor interactions = 3, *etc*.  Then subtract this number from the resolution index to show how that effect is aliased.  Consider a resolution IV design, since 4-1=3, it indicates that main effects are aliased with 3-factor interactions, but not with two-factor interactions; and 4-2 = 2 indicates that two-factor interactions are aliased with each other.  Here is a summary:
+You can interpret the resolution index as follows: let main effects = 1, two-factor interactions = 2, three-factor interactions = 3, *etc*.  Then subtract this number from the resolution index to show how that effect is aliased.  Consider a resolution IV design, since :math:`4-1=3`, it indicates that main effects are aliased with 3fi, but not with two-factor interactions; and :math:`4-2 = 2` indicates that 2fi are aliased with each other.  Here is a summary:
 
 Resolution III designs 
 	-	Are excellent for initial screening: to separate out the important factors from the many potential factors
 	-	Main effects are not confounded with each other 
-	-	Main effects are aliased with two-factor interactions (3 - 1 = 2)
-	-	Two-factor interactions are aliased with each other (3 - 2 = 1)
+	-	Main effects are aliased with two-factor interactions (:math:`3 - 1 = 2`)
+	-	Two-factor interactions are aliased with each other (:math:`3 - 2 = 1`)
 
 Resolution IV designs
 	-	Most useful for characterizing (learning about and understanding) a system, since:
 	-	Main effects are not confounded with each other 
-	-	Main effects are not aliased with two-factor interactions either (4-1=3)
-	-	Two-factor interactions are still aliased with each other though (4-2=2)
+	-	Main effects are not aliased with two-factor interactions either (:math:`4-1=3`)
+	-	Two-factor interactions are still aliased with each other though (:math:`4-2=2`)
 	
 Resolution V designs 
 	-	For optimizing a process, learning about complex effects, and developing high-accuracy models, since:
 	-	Main effects are not confounded with each other
 	-	Main effects are not aliased with two-factor interactions 
-	-	Two-factor interactions are now not aliased with each other 
-	-	But two-factor interactions are aliased with three-factor interactions (5-2=3)
+	-	Two-factor interactions are not aliased with each other either
+	-	But two-factor interactions are aliased with three-factor interactions (:math:`5-2=3`)
 	
 The above guidance about using resolution IV and V designs for characterization and optimization is general - there are many cases where a satisfactory optimization can be performed with a resolution IV experiment.
 
@@ -1549,14 +1556,11 @@ Refer to a table such as shown on page 272 of Box, Hunter and Hunter (2nd editio
 Saturated designs for screening
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A saturated design can be likened to a well trained doctor asking you specific questions and recommending specific diagnostic tests to identify a disease or problem.  On the other hand, if you sit there and repeat to the doctor all your symptoms, you may or may not get an accurate diagnosis.  Designed experiments, like visiting this doctor, shortens the time required to identify the major effects in a system, and to do so accurately.
+A :index:`saturated design <pair: saturated design; experiments>` can be likened to a well trained doctor asking you a few, but very specific, questions to identify a disease or problem.  On the other hand, if you sit there just tell the doctor all your symptoms, you may or may not get an accurate diagnosis.  Designed experiments, like visiting this doctor, shortens the time required to identify the major effects in a system, and to do so accurately.
 
-A saturated design is a resolution III design.  These designs allows you to determine the main effects with the smallest number of experiments.
+Saturated designs are most suited for screening, and should always be run when you are investigating a new system with many factors.  These designs are usually of resolution III and allow you to determine the main effects with the smallest number of experiments.
 
-Saturated designs are most suited for screening, and should always be run when you are investigating a new system with many factors.  If there is a strong interaction present in such a system then it will be confounded with a main effect, so some caution is required. 
-
-
-Let's continue with the example of a :math:`2^{7-4}_{\text{III}}` experiment introduced in the section on :ref:`highly fractionated designs <DOE-highly-fractionated-designs>`.  We had a system with seven factors, called **ABCDEFG**.  We ran the 8 experiments at the levels in the table (repeated again below) and obtained the corresponding values of :math:`y`.
+For example, a :math:`2^{7-4}_{\text{III}}` factorial introduced in the section on :ref:`highly fractionated designs <DOE-highly-fractionated-designs>` will screen 7 factors in 8 experiments. Once you have run the 8 experiments you can quickly tell which subset of the 7 factors are actually important, and spend the rest of your budget on clearly understanding these effects and their interactions.  Let's see how by continuing the previous example, repeated again below with the corresponding values of :math:`y`.
 
 	.. tabularcolumns:: |c||c|c|c||c|c|c|c|c|
 
@@ -1581,49 +1585,48 @@ Let's continue with the example of a :math:`2^{7-4}_{\text{III}}` experiment int
 	+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
 
 
-Now use a least squares model to estimate the coefficients in the model:
+Use a least squares model to estimate the coefficients in the model:
 
 .. math::
 	\mathbf{y} &= \mathbf{Xb} \\
 	\mathbf{b} &= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}\mathbf{y}
 
-where :math:`\mathbf{b} = [b_0, b_\mathbf{A}, b_\mathbf{B}, b_\mathbf{C}, b_\mathbf{D}, b_\mathbf{E}, b_\mathbf{F}, b_\mathbf{G}]`.  The matrix :math:`\mathbf{X}` is derived from the preceding table, but with an added column of 1's for the intercept term.  Note that :math:`\mathbf{X}^T\mathbf{X}` matrix is diagonal.  The solution is :math:`\mathbf{b} = [70.7, -2.3, 0.1, -2.8, -0.4, 0.5, -0.4, -1.7]`. 
-	
-	
-How do you assess which main effects are important?  There are eight data points and eight parameters, so there are no degrees of freedom and the residuals are all zero.  In this case you have to use a :ref:`Pareto plot <DOE-Pareto-plot>`, which requires that your variables have been suitably scaled in order to judge importance of the main effects.  The Pareto plot would be given as shown below (doesn't include the intercept term).
+where :math:`\mathbf{b} = [b_0, b_A, b_B, b_C, b_D, b_E, b_F, b_G]`.  The matrix :math:`\mathbf{X}` is derived from the preceding table, but with an added column of 1's for the intercept term.  Notice that the :math:`\mathbf{X}^T\mathbf{X}` matrix will be diagonal.  It is straightforward to calculate the  solution vector (by hand!) as :math:`\mathbf{b} = [70.7, -2.3, 0.1, -2.8, -0.4, 0.5, -0.4, -1.7]`. 
 
-.. figure:: images/pareto-plot.png
-	:align: center
+How do you assess which main effects are important?  There are eight data points and eight parameters, so there are no degrees of freedom and the residuals are all zero.  In this case you have to use a :ref:`Pareto plot <DOE-Pareto-plot>`, which requires that your variables have been suitably scaled in order to judge importance of the main effects.  The Pareto plot would be given as shown below, and as usual, it does not include the intercept term.
+
+.. image:: images/pareto-plot.png
+	:align: left
 	:width: 800px
 	:scale: 37
 	:alt:	images/pareto-plot.R
 	
 Significant effects would be **A**, **C** and **G**.  The next largest effect, **E**, though fairly small, could be due to the main effect **E** or due to the **AC** interaction, because recall the confounding pattern for main effect was :math:`\widehat{\beta}_{\mathbf{E}} \rightarrow` **E + AC + BG + DF**.
 
-The factor **B** is definitely not important to the response variable in this system and can be excluded in future experiments, as could **F** and **D**.  Future experiments could focus on the **A**, **C** and **G** factors and their interactions.
+The factor **B** is definitely not important to the response variable in this system and can be excluded in future experiments, as could **F** and **D**.  Future experiments should focus on the **A**, **C** and **G** factors and their interactions.  We show how to use these existing experiments, but add a few new ones in the next section on design foldover and by understanding projectivity.
 
-A final note on screening designs is a mention of Plackett and Burman designs.  These designs can sometimes be of greater use than a highly fractionated design.  A fractional factorial must have :math:`2^{k-p}` runs, for integers :math:`k` and :math:`p`: i.e. either :math:`4, 8, 16, 32, 64, 128, \ldots` runs.  Plackett and Burman designs are screening designs that can be run in any multiple of 4 greater or equal to 12:, i.e. :math:`12, 16, 20, 24, \ldots` runs.  The Box, Hunter, and Hunter book has more information in Chapter 7, but another interesting paper on these topic is by Box and Bisgaard: "`What can you find out from 12 experimental runs? <http://cqpi.engr.wisc.edu/system/files/r088.pdf>`_", which shows how to screen for 11 factors in 12 experiments.
+A side note on screening designs is a mention of :index:`Plackett and Burman designs <pair: Plackett-Burman designs; experiments>`.  These designs can sometimes be of greater use than a highly fractionated design.  A fractional factorial must have :math:`2^{k-p}` runs, for integers :math:`k` and :math:`p`: i.e. either :math:`4, 8, 16, 32, 64, 128, \ldots` runs.  Plackett-Burman designs are screening designs that can be run in any multiple of 4 greater or equal to 12:, i.e. :math:`12, 16, 20, 24, \ldots` runs.  The Box, Hunter, and Hunter book has more information in Chapter 7, but another interesting paper on these topic is by Box and Bisgaard: "`What can you find out from 12 experimental runs? <http://cqpi.engr.wisc.edu/system/files/r088.pdf>`_", which shows how to screen for 11 factors in 12 experiments.
 
 Design foldover
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Experiments are not a one-shot operation.  They are almost always sequential, as we learn more and more about our system.  Once the first experiments are complete there will always be additional questions.  In this section we consider two common questions that arise after a fraction has been run.  
+Experiments are not a one-shot operation.  They are almost always sequential, as we learn more and more about our system.  Once the first screening experiments are complete there will always be additional questions.  In this section we consider two common questions that arise after a fraction has been run.  
 
-*Switching the sign of one factor*
+*Dealias a single main effect* (switch sign of one factor)
 
-In the previous example we had a :math:`2^{7-4}_{\text{III}}` system with generators **D=AB**, **E=AC**, **F=BC**, and **G=ABC**.  Effect **C** was the largest effect.  But we cannot be sure it was large due to factor **C** alone - it might have been one of the interactions it is aliased with.  We would like to do some additional experiments so that **C** becomes unconfounded with any two-factor interactions (currently it is confounded with AE + BF + DG).  
+In the previous example we had a :math:`2^{7-4}_{\text{III}}` system with generators **D=AB**, **E=AC**, **F=BC**, and **G=ABC**.  Effect **C** was the largest effect.  But we cannot be sure it was large due to factor **C** alone - it might have been one of the interactions it is aliased with.  We would like to do some additional experiments so that **C** becomes unconfounded with any two-factor interactions (currently it is confounded with **AE** + **BF** + **DG**).  
 
-Run another 8 experiments, but this time just change the sign of **C** to **-C**.  Now the generators are **D=AB**, **E=-AC**, **F=-BC**, and **G=-ABC**.  This is just another :math:`2^{7-4}_{\text{III}}` design.  You can calculate the aliasing pattern, but in particular the aliasing pattern for effect **C**  will be :math:`\widehat{\beta}_{\mathbf{C}} \rightarrow` C - AE - BF - DG.  So it is now estimated without any confounding from two-factor interactions when putting all 16 runs together. Also, any two-factor interactions involving **C** are removed from the other main effects.  For example, confounding due to **CE** will be removed from main effect **A**, and **CF** will be removed from main effect **B**. 
+Run another 8 experiments, but this time just change the sign of **C** to **-C**.  Now the generators are **D=AB**, **E=-AC**, **F=-BC**, and **G=-ABC**.  This is just another :math:`2^{7-4}_{\text{III}}` design.  You can calculate the aliasing pattern, but in particular the aliasing pattern for effect **C**  will be :math:`\widehat{\beta}_{\mathbf{C}} \rightarrow` **C** - **AE** - **BF** - **DG**.  So it is now estimated without any confounding from two-factor interactions when putting all 16 runs together. Also, any two-factor interactions involving **C** are removed from the other main effects.  For example, confounding due to **CE** will be removed from main effect **A**, and **CF** will be removed from main effect **B**. 
 
-**In general**: switching the sign of one factor will de-alias that factor's main effect, and all its associated two-factor interactions.  In the above example, we will have an unconfounded estimate of **C** and unconfounded estimates of the 2-factor interactions involving **C**, i.e. **AC**, **BC**, **CD**, **CE**, **CF** and **CG** after analyzing the 8 + 8 experiments.
+**In general**: switching the sign of one factor will de-alias that factor's main effect, and all its associated two-factor interactions.  In the above example, we will have an unconfounded estimate of **C** and unconfounded estimates of the 2-factor interactions involving **C**, i.e. **AC**, **BC**, **CD**, **CE**, **CF** and **CG** after analyzing the 8 + 8 experiments together.
 
-*Switching all the signs*
+*Increase design resolution* (switching all signs)
 
 One can improve the aliasing structure of a design when switching all the signs of all factors from the first fraction.
 
-In the :math:`2^{7-4}_\text{III}` example, we ran 8 experiments.  If we now run another 8 experiments with all the signs switched, then these 8+8 experiments would be equivalent to a :math:`2^{7-3}_\text{IV}` design. This means that all the main effects can now be estimated without confounding from two-factor interactions.  However, the two-factor interactions are still confounded with themselves.  
+In the :math:`2^{7-4}_\text{III}` example, we ran 8 experiments.  If we now run another 8 experiments with all the signs switched, then these 8+8 experiments would be equivalent to a :math:`2^{7-3}_\text{IV}` design. This resolution IV design means that all the main effects can now be estimated without confounding from any two-factor interactions.  However, the two-factor interactions are still confounded with themselves.  
 
-This is a good strategy in general: run the first fraction of runs to assess the main effects; it serves as a good checkpoint as well to provide feedback to colleagues.  Then if we perform another set of runs we know that we are doing them in a way that captures the most additional information, and with the least confounding.
+This is a good strategy in general: run the first fraction of runs to assess the main effects; it serves as a good checkpoint as well to provide feedback to colleagues and get approval/budget to run the next set of experiments.  Then if we perform another set of runs we know that we are doing them in a way that captures the most additional information, and with the least confounding.
 
 Projectivity 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1640,7 +1643,7 @@ Consider the diagram here, where a half fraction in factors **A**, **B** and **C
 
 On analyzing the data, the experimenter discovers that factor **C** does not actually have an impact on response :math:`y`.  This means the **C** dimension could have been removed from the experiment, and is illustrated by projecting the **A** and **B** factors forward, removing factor **C**.  Notice that this is now a full factorial in factors **A** and **B**.  The same situation would hold if either factor **B** or factor **A** were found to be unimportant.  Furthermore if two factors are found to be unimportant, then this corresponds to 2 replicate experiments in 1 factor.
 
-This projectivity of factorials holds in general for a larger number of factors.  The above example, actually a :math:`2^{3-1}_\text{III}` experiment, was a case of projectivity = 2.  In general, projectivity = :math:`P` = resolution - 1.  So if you have a resolution IV fractional factorial, then it has projectivity = :math:`P = 4 - 1`, implying that it contains a full factorial in 3 factors.  So a :math:`2^{6-2}_\text{IV}` (16 runs) system with 6 factors, contains a full factorial using a combination of any 3 factors; if any 3 factors were found unimportant, then a replicated full factorial exists in the remaining 3 factors.
+This projectivity of factorials holds in general for a larger number of factors.  The above example, actually a :math:`2^{3-1}_\text{III}` experiment, was a case of projectivity = 2.  In general, projectivity = :math:`P` = resolution :math:`-` 1.  So if you have a resolution IV fractional factorial, then it has projectivity = :math:`P = 4 - 1`, implying that it contains a full factorial in 3 factors.  So a :math:`2^{6-2}_\text{IV}` (16 runs) system with 6 factors, contains an embedded full factorial using a combination of any 3 factors; if any 3 factors were found unimportant, then a replicated full factorial exists in the remaining 3 factors.
 
 
 .. TODO: point out how blocking can be visualized as projectivity: in a 2 factor system (A and B) you have enough material only for 2 runs at a time.  So you block on the AB interaction.  But you can visualize that as a 3-factor factorial now, but run as a half-fraction, i.e. a 2^3_{III} design (show the cube with open and closed circles).  This design has projectivity of 2 = 3-1, meaning a full 2^2 factorial is embedded in the design.  If factor C (the blocking variable) has no effect on y, then you recover your full 2^2 factorial.  That's why we typically block on the highest interaction possible.
