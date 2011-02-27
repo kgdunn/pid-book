@@ -266,11 +266,11 @@ Designed experiments are the only way we can be sure that these correlated event
 
 Here's another example from Box's book: consider the negative slope least squares model between pressure and yield.  As pressure increases, the yield drops.  It is true that they are correlated, as that is exactly what a least squares model is intended for: to quantify correlation.  However the true mechanism is rather that pressure is increased to remove frothing that occurs in the reactor.  Higher frothing occurs when there is an impurity in the raw material, so operators increase reactor pressure when they see frothing (i.e. high impurity).  However, it is the high impurity that actually causes the lower yield.
 
-.. figure:: images/yield-pressure-impurity-correlation.png
+.. image:: images/yield-pressure-impurity-correlation.png
 	:alt:	images/yield-pressure-impurity-correlation.svg
-	:scale: 100
+	:scale: 50
 	:width: 750px
-	:align: center
+	:align: left
 	
 Figure adapted from Box, Hunter and Hunter, chapter 14, 1st edition.
 
@@ -2563,15 +2563,14 @@ Exercises
 	
 	#.	What is the projectivity and resolution of your design?
 
-
 .. answer::
 	:fullinclude: no 
 	
 	
 	* fractional factorial in 6 factors
 	* 1 additional blocking factor
-	* 2^{7-4} design most appropriate
-	* D=AB, E=AC, F=BD, G=ABC=ABCDEF (also valid)
+	* :math:`2^{7-4}` design most appropriate
+	* **D=AB**, **E=AC**, **F=BD**, **G=ABC=ABCDEF** (also valid)
 	* Resolution = 3
 	* Projectivity = 2
 	* run 9: could be omitted to save money; run as the first trial to figure out how to run experiments; or run as a centerpoint : use 50%/50% blend of two heaps, or run as a replicate after the 8 experiments, or use run 9 in case one of the experiments gave an unexpected value
