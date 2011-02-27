@@ -181,6 +181,10 @@
 	1. Screening	
 	2. Optimization
 	3. Robustness
+	
+	
+.. index::
+   see: Design of experiments; experiments
 
 In context
 ===========
@@ -195,7 +199,7 @@ Usage examples
 ==============
 
 .. index::
-	pair: usage examples; Design of experiments
+	pair: usage examples; experiments
 
 The material in this section is used whenever you need to perturb and learn more about a system.
 
@@ -220,7 +224,7 @@ References and readings
 ========================
 
 .. index::
-	pair: references and readings; Design of experiments
+	pair: references and readings; experiments
 
 - **Strongly recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, chapters 5 and 6 with topics from chapters 11, 12, 13 and 15.
 - `A web tutorial on designed experiments <http://www.chemometrics.se/index.php?option=com_content&task=view&id=18&Itemid=27>`_
@@ -985,7 +989,9 @@ Summary so far
 	
 -	However, we still need to take the usual care in *interpreting* the coefficients.  The usual precaution, using the example below, is that the temperature coefficient :math:`b_T` is the effect of a one degree change, holding all other variables constant.  That's not possible if :math:`b_{TS}`, the interaction between :math:`T` and :math:`S`, is significant: we cannot hold the :math:`TS` constant while changing :math:`b_T`.
 		
-	.. math:: y = b_0 + b_T x_T + b_S x_S + b_{TS} x_Tx_S + e
+	.. math:: 
+	
+		y = b_0 + b_T x_T + b_S x_S + b_{TS} x_Tx_S + e
 	
 	So *we cannot interpret the main effects separately from the interaction effects*, when we have significant interaction terms in the model.   Also, if you conclude the interaction term is significant, then you must also include all main factors that make up that interaction term in the model.
 		
@@ -1004,13 +1010,13 @@ Blocking and confounding for disturbances
 Characterization of disturbances
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It is virtually impossible that external disturbances will have no effect on our response.  Operators, ambient conditions, physical equipment, lab analyses, and time-dependent effects (catalyst deactivation, fouling), will impact the response.  This is why it is crucial to :ref:`randomize <DOE-randomization>` the order of experiments: so that these **unknown, unmeasurable, and uncontrollable** disturbances cannot systematically affect the response.
+External disturbances will always have an effect on our response variable, :math:`y`.  Operators, ambient conditions, physical equipment, lab analyses, and time-dependent effects (catalyst deactivation, fouling), will impact the response.  This is why it is crucial to :ref:`randomize <DOE-randomization>` the order of experiments: so that these **unknown, unmeasurable, and uncontrollable** disturbances cannot systematically affect the response.
 
-However, certain disturbances are **known, or controllable, or measurable**.  For these cases we perform pairing and blocking.  We have already discussed pairing in the univariate section: pairing is when two experiments are run on the same subject and we analyze the differences in the response, rather than the actual response value.  If the effect of the disturbance has the same magnitude on both experiments, then that disturbance will cancel out when calculating the difference.
+However, certain disturbances are **known, or controllable, or measurable**.  For these cases we perform pairing and blocking.  We have already discussed pairing in the univariate section: pairing is when two experiments are run on the same subject and we analyze the differences in the two response values, rather than the actual response values.  If the effect of the disturbance has the same magnitude on both experiments, then that disturbance will cancel out when calculating the difference. The magnitude of the disturbance is expected to be different between paired experiments, but is expected to be the same within the two values of the pair.
 
 Blocking is slightly different: blocking is a special way of running the experiment so that the disturbance actually does affect the response, but we construct the experiment so that this effect is not misleading.
 
-Finally, a disturbance can be characterized as a **controlled disturbance**, in which case it isn't a disturbance anymore, as it is held constant for all experiments, and it's effect cancels out.  But it might be important to investigate later, especially if the system is operated later on when this disturbance is at a different level.
+Finally, a disturbance can be characterized as a **controlled disturbance**, in which case it isn't a disturbance anymore, as it is held constant for all experiments, and its effect cancels out.  But it might be important to investigate  the controlled disturbance, especially if the system is operated later on when this disturbance is at a different level.
 
 .. _DOE-Blocking-and-confounding:
 
@@ -1019,16 +1025,24 @@ Blocking and confounding
 
 It is extremely common for known, or controllable or measurable factors to have an effect on the response.  However these disturbance factors might not be of interest to us during the experiment. Cases are:
 
-	-	*Known and measurable, not controllable*: Process operator A is known to achieve a slightly better response, on average, than operator B.  However both operators must be used to complete the experiments.
-	-	*Known, but not measurable nor controllable*: There is not enough material to perform all :math:`2^3` runs, there is only enough for 4 runs.  The impurity in either the first batch A, or the second batch B will be different, and either increase or decrease the response variable.
-	-	*Known, measurable and controllable*: Reactor vessel A and B lead to slightly different responses, however, to complete the experiments on time, both reactors must be used, so this disturbance, while controllable in general, is not controlled during the experiment.
+	-	*Known and measurable, not controlled*: Reactor vessel A is known to achieve a slightly better response, on average, than reactor B.  However both reactors must be used to complete the experiments in the short time available.
 	
-Consider the case with 3 factors in our experiment.  If there is a disturbance, such as not enough material for all runs, then split the 8 experiments so the disturbance has the least effect on the results.  Usually this means we choose to *confound*  (confuse) the effect of the disturbance with an effect that is expected to be the least significant.  For example, the :math:`A \times B \times C` interaction term is almost always going to be small for many systems, so split the runs that the first 4 are run at the low level of :math:`ABC` and the other four at the high level, as illustrated.  Each block is run randomly: two random sets of 4 experiments.
+	-	*Known, but not measurable nor controlled*: There is not enough material to perform all :math:`2^3` runs, there is only enough for 4 runs.  The impurity in either the first batch A for 4 experiments, or the second batch B for the other 4 runs will be different, and might either increase or decrease the response variable (we don't know the effect it will have).
+	
+	-	*Known, measurable and controlled*: Reactor vessel A and B have a known, measurable effect on the output, :math:`y`.  To control for this effect we all experiments in either reactor A or B, to prevent the reactor effect from :index:`confounding` (confusing) our results.
+	
+In this section then we will deal with disturbances that are known, but their effect may or may not be measurable.  We will also assume that we cannot control that disturbance, but we would like to minimize its effect.
 
-.. figure:: images/blocking-factorial-3-factors.png
-	:align: center
-	:scale: 40
-	:width: 800px
+For example, if we don't have enough material for all :math:`2^3` runs, but only enough for 4 runs, the question is how to arrange the 2 sets of 4 runs so that the known, by unmeasurable disturbance from the impurity has the least effect on our results and interpretation of the 3 factors.
+	
+Our approach is to intentionally *confound*  the effect of the disturbance with an effect that is expected to be the least significant.  The :math:`A \times B \times C` interaction term is almost always going to be small for many systems, so we will split the runs that the first 4 are run at the low level of :math:`ABC` and the other four at the high level, as illustrated below. 
+
+Each group of 4 runs is called a *block* and the process of creating these 2 blocks is called :index:`blocking <pair: blocking; experiments>`.  The experiments within each block must be run randomly.
+
+.. image:: images/blocking-factorial-3-factors.png
+	:align: left
+	:scale: 50
+	:width: 500px
 	
 .. tabularcolumns:: |c||c|c|c||c|c|c||c||c|
 
@@ -1053,9 +1067,11 @@ Consider the case with 3 factors in our experiment.  If there is a disturbance, 
 +-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
 
 
-If the raw material has a significant effect on the response variable, then we will not be able to tell whether it was due to the :math:`A \times B \times C` interaction, or due to the material, since :math:`\hat{\beta}_{ABC} \rightarrow \underbrace{\text{ABC interaction}}_{\text{expected to be small}} + \text{raw material effect}`.
+If the raw material has a significant effect on the response variable, then we will not be able to tell whether it was due to the :math:`A \times B \times C` interaction, or due to the raw material, since :math:`\hat{\beta}_{ABC} \rightarrow \underbrace{\text{ABC interaction}}_{\text{expected to be small}} + \text{raw material effect}`.
 
-But the small loss due to this confusion of effects, is the gain that we can still estimate the main effects and two-factor interactions without bias, provided the effect of the disturbance is constant.  Let :math:`\widetilde{y}_i` denote a :math:`y` response from the first batch of materials and let :math:`\mathring{y}_i` denote a response from the second batch.  
+But the small loss due to this confusion of effects, is the gain that we can still estimate the main effects and two-factor interactions without bias, provided the effect of the disturbance is constant.  Let's see how we get this result by denoting :math:`\widetilde{y}_i` as a :math:`y` response from the first batch of materials and let :math:`\mathring{y}_i` denote a response from the second batch.
+
+Using the least squares equations you can show for yourself that:
 
 	.. math::
 	
@@ -1065,29 +1081,33 @@ But the small loss due to this confusion of effects, is the gain that we can sti
 		\hat{\beta}_{AB} &= +\widetilde{y}_1 - \mathring{y}_2 - \mathring{y}_3 + \widetilde{y}_4 + \mathring{y}_5 - \widetilde{y}_6 - \widetilde{y}_7 + \mathring{y}_8\\
 		\hat{\beta}_{AC} &= \\
 		\hat{\beta}_{BC} &= \\
+		\hat{\beta}_{ABC} &= \\
 		
-Imagine for example that the :math:`y` response was increased by :math:`g` units for batch 1 experiments, and increased by :math:`h` units for batch 2 experiments.  You can prove to yourself that these biases will cancel out for all main effects and all two-factor interactions.
+Imagine now the :math:`y` response was increased by :math:`g` units for the batch 1 experiments, and increased by :math:`h` units for batch 2 experiments.  You can prove to yourself that these biases will cancel out for all main effects and all two-factor interactions.  The three factor interaction of :math:`\hat{\beta}_{ABC}` will however be heavily confounded.
 
-Another way to view this problem is that the first batch of materials and the second batch of materials can be represented by a new variable, called :math:`D` with value of :math:`D_{-} =` batch 1 and :math:`D_{+} =` batch 2.  We will see later how can consider this new factor to be generated from the other three: **D = ABC**.
+Another way to view this problem is that the first batch of materials and the second batch of materials can be represented by a new variable, called :math:`D` with value of :math:`D_{-} =` batch 1 and :math:`D_{+} =` batch 2.  We will show next that we must consider this new factor to be generated from the other three: **D = ABC**.
 
-We will also address the case when there are more than two blocks in the next section on the :ref:`use of generators <DOE-generators>`.
+We will also address the case when there are more than two blocks in the next section on the :ref:`use of generators <DOE-generators>`.  For example, what should we do if we have to run a :math:`2^3` factorial but with only enough material for 2 experiments at a time?
+
+.. DOE-fractional-factorials:
 
 Fractional factorial designs
 ===========================================
 
-When there are many factors, then the :math:`2^k` runs required for a full factorial can quickly become large.  You are responsible for a cell-culture bioreactor at a pharmaceutical company and there is a drive to minimize the production of a destructive by-product.  Variables known to be related with this by-product are: the temperature profile (:math:`T_{-}`: a fast initial ramp then constant temperature or :math:`T_{+}` a slow increase over time), the dissolved oxygen, the agitation rate, pH, substrate type.  These five factors, at two levels, require :math:`2^5 = 32` runs.  It would take almost a year to collect the data at 10 days per culture. 
+When there are many factors that we have identified as being potentially important, then the :math:`2^k` runs required for a full factorial can quickly become large and too costly to implement.
 
-Furthermore, we are probably interested in only the 5 main effects and 10 two-factor interactions.  The remaining 10 three-factor interactions, 5 four-factor interactions, a single five-factor interaction are likely not too important, at least initially.
+For example, you are responsible for a cell-culture bioreactor at a pharmaceutical company and there is a drive to minimize the production of an inhibiting  by-product.  Variables known to be related with this by-product are: the temperature profile (:math:`T_{-}`: a fast initial ramp then constant temperature or :math:`T_{+}` a slow ramp over time), the dissolved oxygen, the agitation rate, pH, substrate type.  These five factors, at two levels, require :math:`2^5 = 32` runs.  It would take almost a year to collect the data when each experiment requires 10 days (typically in this industry), and parallel reactors are not available.
 
-Running a half fraction, or quarter fraction, of the full set still allows us to estimate the main effects and two factor interactions in many cases, at the expense of confounding the higher interactions.  For many real systems it is these main effects that are mostly of interest. In this section we show how to construct and analyze these fractional factorials, which are tremendously useful when screening many variables - especially for a first-pass at experimenting on a new system.
+Furthermore, we are probably interested in only the 5 main effects and 10 two-factor interactions.  The remaining 10 three-factor interactions, 5 four-factor interactions, a single five-factor interaction are likely not too important, at least initially.  A full factorial would estimate 32 effects, even if we likely only interested in at most 16 of them (5 + 10 + 1 intercept).
 
+Running a half fraction, or quarter fraction, of the full set will allow us to estimate the main effects and two-factor interactions (2fi) in many cases, at the expense of confounding the higher interactions.  For many real systems it is these main effects that are mostly of interest. In this section we show how to construct and analyze these :index:`fractional factorials <pair: fractional factorial; experiments>`, which are tremendously useful when :index:`screening <pair: screening designs; experiments>` many variables - especially for a first-pass at experimenting on a new system.
 
 .. _DOE-half-fractions:
 
 Half fractions
 ~~~~~~~~~~~~~~~~~~
 
-A half fraction has :math:`\frac{1}{2}2^k = 2^{k-1}` runs. But which runs do we omit? Let's use an example of a :math:`2^3` full factorial.  A half-fraction would have 4 runs. Since 4 runs can be represented by a :math:`2^2` factorial, write down the usual :math:`2^2` factorial for 2 factors (**A** and **B**), then construct the :math:`3^\text{rd}` factor as the product of the first two (**C** = **AB**).
+A half fraction has :math:`\frac{1}{2}2^k = 2^{k-1}` runs. But which runs do we omit? Let's use an example of a :math:`2^3` full factorial.  A half-fraction would have 4 runs. Since 4 runs can be represented by a :math:`2^2` factorial, we start by writing down the usual :math:`2^2` factorial for 2 factors (**A** and **B**), then construct the :math:`3^\text{rd}` factor as the product of the first two (**C** = **AB**).
 
 
 .. tabularcolumns:: |c||c|c|c|
@@ -1104,34 +1124,32 @@ A half fraction has :math:`\frac{1}{2}2^k = 2^{k-1}` runs. But which runs do we 
 | 4         | |+|        | |+|       |  |+|       |
 +-----------+------------+-----------+------------+
 
-So this is our designed experiment for 3 factors, but it only requires 4 experiments as shown by the open points:
+So this is our designed experiment for 3 factors, but it only requires 4 experiments as shown by the open points.  The experiments given by the solid points are not run.
 
-.. figure:: images/half-fraction-in-3-factors.png
-	:align: center
+.. image:: images/half-fraction-in-3-factors.png
+	:align: left
 	:scale: 35
-	:width: 800px
+	:width: 500px
 
 What have we lost by running only half the factorial?  Let's write out the full design and matrix of all interactions, then construct the :math:`\mathbf{X}` matrix for the least squares model.
 
 .. tabularcolumns:: |c||c|c|c||c|c|c|c|c|
 
-+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
-| Experiment| A          | B         |  C         |  AB        |  AC        |  BC        |  ABC       |  Intercept |
-+===========+============+===========+============+============+============+============+============+============+
-| 1         | |-|        | |-|       |  |+|       |  |+|       |  |-|       |  |-|       |  |+|       |  |+|       |
-+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
-| 2         | |+|        | |-|       |  |-|       |  |-|       |  |-|       |  |+|       |  |+|       |  |+|       |
-+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
-| 3         | |-|        | |+|       |  |-|       |  |-|       |  |+|       |  |-|       |  |+|       |  |+|       |
-+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
-| 4         | |+|        | |+|       |  |+|       |  |+|       |  |+|       |  |+|       |  |+|       |  |+|       |
-+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
+=========== ============ =========== ============ ============ ============ ============ ============ ============
+Experiment  A            B           C            AB           AC           BC           ABC          Intercept 
+=========== ============ =========== ============ ============ ============ ============ ============ ============
+ 1          |-|          |-|         |+|          |+|          |-|          |-|          |+|          |+|       
+ 2          |+|          |-|         |-|          |-|          |-|          |+|          |+|          |+|       
+ 3          |-|          |+|         |-|          |-|          |+|          |-|          |+|          |+|       
+ 4          |+|          |+|         |+|          |+|          |+|          |+|          |+|          |+|       
+=========== ============ =========== ============ ============ ============ ============ ============ ============
 
-Before even constructing the :math:`\mathbf{X}`-matrix, you can see that **A=BC**, and that **B=AC** and **C=AB** (which was intentional), and **I=ABC**.  The X-matrix for the least squares model would be:
+Before even constructing the :math:`\mathbf{X}`-matrix, you can see that **A=BC**, and that **B=AC** and **C=AB** (this last association was intentional), and **I=ABC**.  The least squares model would be:
 
 .. math::
 
 	\mathbf{y} &= \mathbf{X} \mathbf{b} + \mathbf{e}\\
+	       y_i &=  b_0 + b_A x_A + b_B x_B + b_C x_C + b_{AB} x_{AB} + b_{AC} x_{AC} + b_{BC} x_{BC} + b_{ABC} x_{ABC} + e_i\\
 	\begin{bmatrix} y_1\\ y_2\\ y_3 \\ y_4 \end{bmatrix} &=
 	\begin{bmatrix} 1 & -1 & -1 & +1 & +1 & -1 & -1 & +1\\ 
 					1 & +1 & -1 & -1 & -1 & -1 & +1 & +1\\
@@ -1141,11 +1159,12 @@ Before even constructing the :math:`\mathbf{X}`-matrix, you can see that **A=BC*
 	\begin{bmatrix} b_0 \\ b_A \\ b_B \\ b_{C} \\ b_{AB} \\ b_{AC} \\ b_{BC} \\ b_{ABC} \end{bmatrix} + 
 	\begin{bmatrix} e_1\\ e_2\\ e_3 \\ e_4 \end{bmatrix}
 
-The :math:`\mathbf{X}` matrix is not orthogonal anymore, so the least squares model cannot be solved by inverting the :math:`\mathbf{X}^T\mathbf{X}` matrix. (Also note this system is underdetermined: more unknowns than equations, though the problem in this case is actually only the collinearity).
+The :math:`\mathbf{X}` matrix is not orthogonal anymore, so the least squares model cannot be solved by inverting the :math:`\mathbf{X}^T\mathbf{X}` matrix. Also note this system is underdetermined as there are more unknowns than equations.  But notice that 4 of the columns are the same as the other 4 (we have perfect collinearity between 4 pairs of columns).
 
-We must reformulate the model to obtain independent columns.  The above system of equations is rewritten as:
+We can reformulate the model to obtain independent columns, where there are now 4 equations and 4 unknowns:
 
 .. math::
+
 	\mathbf{y} &= \mathbf{X} \mathbf{b} + \mathbf{e}\\
 	\begin{bmatrix} y_1\\ y_2\\ y_3 \\ y_4 \end{bmatrix} &=
 	\begin{bmatrix} 1 & -1 & -1 & +1  \\ 
@@ -1158,14 +1177,18 @@ We must reformulate the model to obtain independent columns.  The above system o
 
 Writing it this way clearly shows how the main effects and two-factor interactions are *confounded*. 
 
-	-	:math:`\widehat{\beta}_A \rightarrow` **A + BC** (the :math:`\beta_A` term will be an estimate of main effect **A** and the **BC** interaction)
-	-	:math:`\widehat{\beta}_B \rightarrow` **B + AC**
-	-	:math:`\widehat{\beta}_C \rightarrow` **C + AB**
 	-	:math:`\widehat{\beta}_0 \rightarrow` **I + ABC**
+	
+	-	:math:`\widehat{\beta}_A \rightarrow` **A + BC** : this implies :math:`\beta_A` estimates the **A** main effect and the **BC** interaction
+	
+	-	:math:`\widehat{\beta}_B \rightarrow` **B + AC**
+	
+	-	:math:`\widehat{\beta}_C \rightarrow` **C + AB**
+	
 	
 We cannot separate the effect of the **BC** interaction from the main effect **A**: the least-squares coefficient is a sum of both these effects.  Similarly for the other pairs.  This is what we have lost by running a half-fraction.
 
-We use the terminology that **A** is an *alias* for **BC**, similarly that **B** is an alias for **AC**, *etc*, because we cannot separate these aliased effects.
+We introduce the terminology that **A** is an :index:`alias <pair: aliasing; experiments>` for **BC**, similarly that **B** is an alias for **AC**, *etc*, because we cannot separate these aliased effects.
 
 .. This last :math:`k^\text{th}` factor will be confounded with one of the 2-factor interaction???
 
@@ -1174,65 +1197,62 @@ We use the terminology that **A** is an *alias* for **BC**, similarly that **B**
 Generators and defining relationships
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Calculating which main effects and two-factor interactions will be confounded (known as the confounding pattern) can be tedious for larger values of :math:`k`.  Here we introduce a nice way to calculate the confounding pattern.
+Calculating which main effects and two-factor interactions will be confounded with each other, called the :index:`confounding pattern`, can be tedious for larger values of :math:`k`.  Here we introduce an easy way to calculate the confounding pattern.
 
 Recall for the half-fraction of a :math:`2^k` factorial that the first  :math:`k-1` main factors are written down, then the final :math:`k^\text{th}` factor is *generated* from the product of the previous :math:`k-1` factors.  Consider the case of a :math:`2^4` half fraction with factors **A**, **B**, **C** and **D**.  We write a :math:`2^3` factorial in factors **A**, **B**, and **C**, then set 
 
 .. centered:: **D = ABC**
 
-This is the *generating relation* for the design.  Some rules we use when working with these letters are that **A** :math:`\times` **A = I**, **B** :math:`\times` **B = I**, **I** :math:`\times` **I = I**.  So in this case **ABC** :math:`\times` **D** =  **ABC** :math:`\times` **ABC = AABBCC = I I I = I = ABCD**.
+This is called the *generating relation* for the design.  Some rules when working with this notation are that  **A** :math:`\times` **A = I**, **B** :math:`\times` **B = I**, **I** :math:`\times` **I = I**. So for example,  **D** =  **ABC** can by multiplied on both sides by **D** to get **D** :math:`\times` **D** = **ABC** :math:`\times` **D**, which gives **I** = **ABCD**.  Another way to get this same result: **ABC** :math:`\times` **D** =  **ABC** :math:`\times` **ABC = AABBCC = I I I = I = ABCD**.
 
+
+.. index::
+	pair: generating relationship; experiments
+	pair: defining relationship; experiments
+	
 This last part, **I = ABCD**, is called the *defining relation* for this design.  The defining relationship is the product of all generator combinations, then simplified to be written as **I = ....**.  In this case there is just one generator, so the defining relationship is the generator.  We will discuss this again later.
 
 .. centered:: **I = ABCD**
 
-Now the effects which are aliased (confounded) with each other can be found quickly by multiplying the effect by the defining relationship: **A** :math:`\times` **I = A** :math:`\times` **ABCD = BCD**, indicating that for a :math:`2^{4-1}` half fraction that the main effect of **A** is aliased with the 3-factor interaction **BCD**.   What is the aliasing for these effects:
+Now the effects which are aliased (confounded) with each other can be found quickly by multiplying the effect by the defining relationship.  For example, if we wanted to know what the main effect **A** would be confounded with in this :math:`2^{4-1}` half fraction we should multiply **A** by the defining relationship as in 
 
-	-	The **B** main effect is aliased with:
-	
-		.. IB = ACD
+.. centered:: **A** :math:`\times` **I = A** :math:`\times` **ABCD = BCD**
+
+indicating that **A** is aliased with the 3-factor interaction **BCD**.   What is the aliasing for these effects:
+
+	-	What is main effect **B** aliased with? (*Answer*: **ACD**)
 		
-	-	The **AC** two-factor interaction is aliased with: 
-	
-		.. IAC = BD
+	-	What is the 2fi **AC** aliased with? (*Answer*: **BD**)
 
-**An example**: 
+**Another example**: 
 
 	Returning back to the :math:`2^{3-1}` half fraction in the :ref:`previous section <DOE-half-fractions>`, use the defining relation to verify the aliasing of main-effects and two-factor interactions derived earlier by hand.
 
-		-	Defining relationship: 
-	
-			.. I = ABC
+		-	What is the defining relationship?
 		
-		-	**A** is aliased with:
+		-	Aliasing for **A**? (*Answer*: **BC**)
 	
-			.. AI = BC
+		-	Aliasing for **B**? (*Answer*: **AC**)
 		
-		-	**B** is aliased with:
-	
-			.. BI = AC
+		-	Aliasing for **C**? (*Answer*: **AB**: recall this is how we generated that half fraction)
 		
-		-	**C** is aliased with:
+		-	Aliasing for the intercept term, **I**? (*Answer*: **ABC**)
 	
-			.. CI = AB
-		
-		-	**I** is aliased with:
-	
-**Another example**: 
+**Yet another example**: 
 
 	Which aliasing (confounding) would occur if you decided for a :math:`2^{4-1}` design to generate the half-fraction by using the 2-factor interaction term **AC** rather than the 3-factor interaction term **ABC**.
 
-		-	Defining relationship: **D = AC**, so **I = ACD**
-		-	Aliasing for **A**: 
-		-	Aliasing for **B**: 
-		-	Aliasing for **C**: 
+		-	What is the defining relationship?
+		-	Aliasing for **A**? (*Answer*: **CD**)
+		-	Aliasing for **B**? (*Answer*: **ABCD**)
+		-	Aliasing for **C**? (*Answer*: **AD**)
 		
-	Why is this a poorer choice than using **D = ABC** to generate the half-fraction?
+	Why is this a poorer choice than using **D = ABC** to generate the half-fraction? *Answer*: the main effects of **A** and **C** are aliased with 2fi which could be important.  Had we generated the design with the usual 3fi term, **ABC**, the main effects would only be aliased with three-factor interactions (3fi).
 
-Generating the other half-fraction
+Generating the complementary half-fraction
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let's say that a half fraction for a :math:`2^3` factorial was run.  The defining relation is **I = ABC**, so factor **C** is aliased with the 2-factor interaction **AB**.  Now if these 4 runs produce promising results, you might seek approval to complete the factorial and run the other half fraction.  The defining relation for the complementary half-fraction is **I = -ABC**, or equivalently **IC = C = -AB**.
+Let's say that a half fraction for a :math:`2^3` factorial was run.  The defining relation was **I = ABC**, so factor **C** was aliased with the 2fi **AB**.  Now if these 4 runs produce promising results, you might seek approval to complete the factorial and run the other half fraction. This will remove the aliasing when you now analyze all 8 data points together. The defining relation for the complementary half-fraction is **I = -ABC**, or equivalently **IC = C = -AB**.
 
 Let's return to the table in the :ref:`previous section <DOE-half-fractions>` and generate the other 4 runs:
 
@@ -1250,12 +1270,12 @@ Let's return to the table in the :ref:`previous section <DOE-half-fractions>` an
 | 8         | |+|        | |+|       |  |-|       |
 +-----------+------------+-----------+------------+
 
-After running these 4 experiments in random order we have a complete set of 8 runs.  Now the main effects and two-factor interactions can be calculated without aliasing because we are back to a full factorial in :math:`2^3` runs.
+After running these 4 experiments (in random order of course) we have a complete set of 8 runs.  Now the main effects and two-factor interactions can be calculated without aliasing because we are back to the usual full factorial in :math:`2^3` runs.
 
 So we see that we can always complete our half-fraction by creating a complementary fraction.  This complimentary fraction is found by flipping the sign on the generating factor.  For example, changing the sign from **C** to **-C**.  See the illustration.
 
-.. figure:: images/complementary-half-fraction-in-3-factors.png
-	:align: center
+.. image:: images/complementary-half-fraction-in-3-factors.png
+	:align: left
 	:scale: 35
 	:width: 500px
 	:alt:	complementary-half-fraction-in-3-factors.svg
@@ -1265,13 +1285,11 @@ So we see that we can always complete our half-fraction by creating a complement
 Generators: to determine confounding due to blocking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Generators are also great for determining the blocking pattern. In the previous section we completed the half-fraction by running the complementary half-fraction.  But an unintended disturbance could have been introduced (the first half-fraction may have been performed by operator 1, while the second half-fraction by operator 2).  
+Generators are also great for determining the blocking pattern. Recall the case described earlier where we only had enough material to run two sets of 4 experiments to complete our :math:`2^3` full factorial. An unintended disturbance could have been introduced by running the first half-fraction on different materials to the second half-fraction.  We :ref:`intentionally decided <DOE-Blocking-and-confounding>` to confound the two blocks of experiments with the 3-factor interaction, **ABC**.  So if there is an effect due to the blocks (i.e. the raw materials) or if there truly was a 3-factor interaction, it will show up as a significant coefficient for :math:`b_{ABC}`.
 
-But notice how, like in the :ref:`previous blocking example <DOE-Blocking-and-confounding>`, we intentionally decided to confound the block (operator 1 or 2) with the 3-factor interaction, **ABC**.  So if there is an effect due to the blocks (i.e. the operators) or truly a 3-factor interaction, it will show up as a significant coefficient for :math:`b_{ABC}`.
+So *in general* when running a :math:`2^k` factorial in two blocks you should create a :math:`2^{k-1}` half fraction to run as the first block, and then run the other block on the complementary half-fraction.  You should always confound your block effect on the highest possible interaction term.  Then block 1 runs will have that highest interaction term with all positive signs, and block 2 will have all negative signs for that interaction.
 
-So *in general*, for a block effect that has 2 levels, first construct a :math:`2^{k-1}` half-fraction, then assign the :math:`k^\text{th}` variable to the highest possible interaction to get the best possible confounding.
-
-Here are some generators for common cases with 2 blocks:
+Here are the block generators you can use when splitting a :math:`2^k` factorial in 2 blocks:
 
 .. tabularcolumns:: |c||c|c|c|
 
@@ -1382,80 +1400,84 @@ The purpose of a fractionated design is to reduce the number of experiments when
 	- :math:`2^{6-3}` fractional factorial with **6 factors**, or a
 	- :math:`2^{7-4}` fractional factorial with **7 factors**.
 	
-At the early stages of our work we might prefer screening many factors, :math:`k`, accepting a very complex confounding pattern, because we are uncertain which factors actually affect our response.  Later, as we are optimizing our process, particularly as we approach an optimum, then the 2 factor and perhaps 3-factor interactions are more dominant.  So investigating and calculating these effects more accurately and more precisely becomes important and we have to use full factorials.  But by then we have hopefully identified much fewer factors :math:`k` than what we started off with.  
+At the early stages of our work we might prefer to screen many factors, :math:`k`, accepting a very complex confounding pattern, because we are uncertain which factors actually affect our response.  Later, as we are optimizing our process, particularly as we approach an optimum, then the 2 factor and perhaps 3-factor interactions are more dominant.  So investigating and calculating these effects more accurately and more precisely becomes important and we have to use full factorials.  But by then we have hopefully identified much fewer factors :math:`k` than what we started off with.  
 
 So this section is concerned with the trade-offs as we go from a full factorial with :math:`2^k` runs to a highly fractionated factorial, :math:`2^{k-p}`.
 
 *Example 1* 
 
-	You have identified 7 factors that affect your response.  What is the smallest number of runs that can be performed to screen for the main effects?  A :math:`2^{7-p}` fractional factorial would have 64 (:math:`p=1`), 32 (:math:`p=2`), 16 (:math:`p=3`), or 8 (:math:`p=4`) runs.  The last case is the smallest number that can be used to estimate the intercept and 7 main effects (8 data points, 8 unknowns).
-
-	What would be the generators and defining relation for this :math:`2^{7-4} = 8` run experiment and what is the aliasing structure?
+	You have identified 7 factors that affect your response.  
 	
-	#.	Assign **A**, **B**, ... **G** as the 7 factor names.  Since there are 8 runs, start by writing out **A**, **B**, and **C** in the usual factorial layout for these 8 runs. 
+	-	What is the smallest number of runs that can be performed to screen for the main effects?   
 	
-	#.	Next we assign the remaining factors to the highest-possible interaction terms from these 3 factors.  We have to assign 4 more factors, so pick the 4 interaction terms that we are least interested in.  In this particular example, we have to use all (saturate) the interaction terms.
+		A :math:`2^{7-p}` fractional factorial would have 64 (:math:`p=1`), 32 (:math:`p=2`), 16 (:math:`p=3`), or 8 (:math:`p=4`) runs.  The last case is the smallest number that can be used to estimate the intercept and 7 main effects (8 data points, 8 unknowns).
+
+	-	What would be the generators and defining relation for this :math:`2^{7-4} = 8` run experiment and what is the aliasing structure?
 	
-		*	**D = AB**
-		*	**E = AC**
-		*	**F = BC**
-		*	**G = ABC**
+		#.	Assign **A**, **B**, ... **G** as the 7 factor names.  Since there are 8 runs, start by writing out **A**, **B**, and **C** in the usual factorial layout for these 8 runs. 
+	
+		#.	Next we assign the remaining factors to the highest-possible interaction terms from these 3 factors.  We have to assign 4 more factors, so pick the 4 interaction terms that we are least interested in.  In this particular example, we have to use all (saturate) the interaction terms.
+	
+			*	**D = AB**
+			*	**E = AC**
+			*	**F = BC**
+			*	**G = ABC**
 
-		.. tabularcolumns:: |c||c|c|c||c|c|c|c|c|
+			.. tabularcolumns:: |c||c|c|c||c|c|c|c|c|
 
-		+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
-		| Experiment| A          | B         |  C         |  D=AB      |  E=AC      |  F=BC      |  G=ABC     | :math:`y`  |
-		+===========+============+===========+============+============+============+============+============+============+
-		| 1         | |-|        | |-|       |  |-|       |  |+|       |  |+|       |  |+|       |  |-|       |  77.1      |
-		+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
-		| 2         | |+|        | |-|       |  |-|       |  |-|       |  |-|       |  |+|       |  |+|       |  68.9      |
-		+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
-		| 3         | |-|        | |+|       |  |-|       |  |-|       |  |+|       |  |-|       |  |+|       |  75.5      |
-		+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
-		| 4         | |+|        | |+|       |  |-|       |  |+|       |  |-|       |  |-|       |  |-|       |  72.5      |
-		+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
-		| 5         | |-|        | |-|       |  |+|       |  |+|       |  |-|       |  |-|       |  |+|       |  67.9      |
-		+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
-		| 6         | |+|        | |-|       |  |+|       |  |-|       |  |+|       |  |-|       |  |-|       |  68.5      |
-		+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
-		| 7         | |-|        | |+|       |  |+|       |  |-|       |  |-|       |  |+|       |  |-|       |  71.5      |
-		+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
-		| 8         | |+|        | |+|       |  |+|       |  |+|       |  |+|       |  |+|       |  |+|       |  63.7      |
-		+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
+			+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
+			| Experiment| A          | B         |  C         |  D=AB      |  E=AC      |  F=BC      |  G=ABC     | :math:`y`  |
+			+===========+============+===========+============+============+============+============+============+============+
+			| 1         | |-|        | |-|       |  |-|       |  |+|       |  |+|       |  |+|       |  |-|       |  77.1      |
+			+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
+			| 2         | |+|        | |-|       |  |-|       |  |-|       |  |-|       |  |+|       |  |+|       |  68.9      |
+			+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
+			| 3         | |-|        | |+|       |  |-|       |  |-|       |  |+|       |  |-|       |  |+|       |  75.5      |
+			+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
+			| 4         | |+|        | |+|       |  |-|       |  |+|       |  |-|       |  |-|       |  |-|       |  72.5      |
+			+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
+			| 5         | |-|        | |-|       |  |+|       |  |+|       |  |-|       |  |-|       |  |+|       |  67.9      |
+			+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
+			| 6         | |+|        | |-|       |  |+|       |  |-|       |  |+|       |  |-|       |  |-|       |  68.5      |
+			+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
+			| 7         | |-|        | |+|       |  |+|       |  |-|       |  |-|       |  |+|       |  |-|       |  71.5      |
+			+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
+			| 8         | |+|        | |+|       |  |+|       |  |+|       |  |+|       |  |+|       |  |+|       |  63.7      |
+			+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
 		
 		
-	#.	So the generators are **I = ABD**, **I = ACE**, **I = BCF** and **G = ABCG**.  The generators such as **ABD** and **ACE** are called *"words"*.  The *defining relationship* is a sequence of words which are all equal to **I**. The defining relation is found from the product of all generator combinations, then simplified to be written as **I = ....**.  
+		#.	So the generators are **I = ABD**, **I = ACE**, **I = BCF** and **G = ABCG**.  The generators such as **ABD** and **ACE** are called *"words"*.  The *defining relationship* is a sequence of words which are all equal to **I**. The defining relation is found from the product of all generator combinations, then simplified to be written as **I = ....**.  
 	
-	#.	Calculate the defining relation by forming all combinations of the generators.  The rule is that a :math:`2^{k-p}` factorial design is produced by :math:`p` generators and has a defining relationship of :math:`2^p` words.  So there should be :math:`2^4 = 16` words in our defining relation.
+		#.	Calculate the defining relation by forming all combinations of the generators.  The rule is that a :math:`2^{k-p}` factorial design is produced by :math:`p` generators and has a defining relationship of :math:`2^p` words.  So there should be :math:`2^4 = 16` words in our defining relation.
 
-		-	Intercept:	**I**
-		-	Generators:	 **I = ABD = ACE = BCF = ABCG**
-		-	Two combinations of generators:	**I = BDCE = ACDF = CDG = ABEF = BEG = AFG**
-		-	Three combinations of generators:	**I = DEF = ADEG = CEFG = BDFG**
-		-	Four combinations of generators: **I = ABCDEFG**
+			-	Intercept:	**I**
+			-	Generators:	 **I = ABD = ACE = BCF = ABCG**
+			-	Two combinations of generators:	**I = BDCE = ACDF = CDG = ABEF = BEG = AFG**
+			-	Three combinations of generators:	**I = DEF = ADEG = CEFG = BDFG**
+			-	Four combinations of generators: **I = ABCDEFG**
 
-		So the defining relationship consists of the 16 words: **I = ABD = ACE = BCF = ABCG = BCDE = ACDF = CDG = ABEF = BEG = AFG = DEF = ADEG = CEFG = BDFG = ABCDEFG**. The shortest word has 3 letters.
+			So the defining relationship consists of the 16 words: **I = ABD = ACE = BCF = ABCG = BCDE = ACDF = CDG = ABEF = BEG = AFG = DEF = ADEG = CEFG = BDFG = ABCDEFG**. The shortest word has 3 letters.
 
-	#.	The aliasing for the main effects can be calculated by multiplying the defining relationship by the effect.  Let's take **A** as an example, below, and multiply it by the defining relation:
+		#.	The aliasing for the main effects can be calculated by multiplying the defining relationship by the effect.  Let's take **A** as an example, below, and multiply it by the defining relation:
 
-		**AI = BD = CE = ABCF = BCG = ABDCE = CDF = ACDG = BEF = ABEG = FG = ADEF = DEG = ACEFG = ABDFG = BCDEFG**
+			**AI = BD = CE = ABCF = BCG = ABDCE = CDF = ACDG = BEF = ABEG = FG = ADEF = DEG = ACEFG = ABDFG = BCDEFG**
 		
-		:math:`\widehat{\beta}_A \rightarrow` A + BD + CE + ABCF + BCG + ABCDE + CDF + ACDG + BEF + ABEG + FG + ADEF + DEG + ACEFG + ABDFG + BCDEFG.
+			:math:`\widehat{\beta}_A \rightarrow` A + BD + CE + ABCF + BCG + ABCDE + CDF + ACDG + BEF + ABEG + FG + ADEF + DEG + ACEFG + ABDFG + BCDEFG.
 
-		So by performing 8 runs instead of the full :math:`2^7`, we confound the main effects with a large number of 2-factor and higher interaction terms.  In particular, the main effect of **A** is confounded here with the **BD**, **CE** and **FG** two-factor interactions.  The higher-order interaction confounding is usually not of interest.
+			So by performing 8 runs instead of the full :math:`2^7`, we confound the main effects with a large number of 2-factor and higher interaction terms.  In particular, the main effect of **A** is confounded here with the **BD**, **CE** and **FG** two-factor interactions.  The higher-order interaction confounding is usually not of interest.
 		
-		Repeat this for all main effects.  Listed below are all the aliases for the main effects, reporting only the two-factor interactions.  The bold sections below indicate the confounding that was intentionally created.
+			Repeat this for all main effects.  Listed below are all the aliases for the main effects, reporting only the two-factor interactions.  The bold sections below indicate the confounding that was intentionally created.
 
-		-	:math:`\widehat{\beta}_0` = ABCDEFG
-		-	:math:`\widehat{\beta}_{\mathbf{A}} \rightarrow` A + BD + CE + FG
-		-	:math:`\widehat{\beta}_{\mathbf{B}} \rightarrow` B + AD + CF + EG 
-		-	:math:`\widehat{\beta}_{\mathbf{C}} \rightarrow` C + AE + BF + DG
-		-	:math:`\widehat{\beta}_{\mathbf{D}} \rightarrow` **D + AB** + CG + EF
-		-	:math:`\widehat{\beta}_{\mathbf{E}} \rightarrow` **E + AC** + BG + DF
-		-	:math:`\widehat{\beta}_{\mathbf{F}} \rightarrow` **F + BC** + AG + DE
-		-	:math:`\widehat{\beta}_{\mathbf{G}} \rightarrow` G + CD + BE + AF
+			-	:math:`\widehat{\beta}_0` = ABCDEFG
+			-	:math:`\widehat{\beta}_{\mathbf{A}} \rightarrow` A + BD + CE + FG
+			-	:math:`\widehat{\beta}_{\mathbf{B}} \rightarrow` B + AD + CF + EG 
+			-	:math:`\widehat{\beta}_{\mathbf{C}} \rightarrow` C + AE + BF + DG
+			-	:math:`\widehat{\beta}_{\mathbf{D}} \rightarrow` **D + AB** + CG + EF
+			-	:math:`\widehat{\beta}_{\mathbf{E}} \rightarrow` **E + AC** + BG + DF
+			-	:math:`\widehat{\beta}_{\mathbf{F}} \rightarrow` **F + BC** + AG + DE
+			-	:math:`\widehat{\beta}_{\mathbf{G}} \rightarrow` G + CD + BE + AF
 
-	#.	If this confounding pattern is not suitable, for example, you expect interaction **BG** to be important but also main effect **E**, then choose a different set of generators before running the experiment.  Or more simply, assign your variables (temperature, pressure, pH, agitation, *etc*) to different letters of **A**, **B**, *etc* to obtain a more desirable confounding relationship.
+		#.	If this confounding pattern is not suitable, for example, you expect interaction **BG** to be important but also main effect **E**, then choose a different set of generators before running the experiment.  Or more simply, assign your variables (temperature, pressure, pH, agitation, *etc*) to different letters of **A**, **B**, *etc* to obtain a more desirable confounding relationship.
 
 *Example 2*
 
@@ -1837,7 +1859,7 @@ The general approach for response surface modelling
 	
 #.	One can make several sequential steps, e.g. 25% in the move direction, then 40%, then 60%, *etc*, until the response starts to level off, or if you become certain you have entered a different operating mode of the process. 
 
-#.	At this point you repeat the factorial experiment from step 1, making the last best response value your new baseline.  This is also a good point to reintroduce factors that you may have omitted earlier.  Also, you may have a binary factor; investigate the effect of alternating it's sign at this point.  These additional factorial experiments should also include center points.
+#.	At this point you repeat the factorial experiment from step 1, making the last best response value your new baseline.  This is also a good point to reintroduce factors that you may have omitted earlier.  Also, you may have a binary factor; investigate the effect of alternating its sign at this point.  These additional factorial experiments should also include center points.
 
 #.	Repeat steps 1 through 5 until the linear model estimate starts to show evidence of curvature, or that the interaction terms start to dominate the main effects.  
 
@@ -2056,14 +2078,14 @@ Exercises
 ==========
 
 .. index::
-	pair: exercises; Design of experiments
+	pair: exercises; experiments
 
 .. question::
 
 	These readings are to illustrate the profound effect that designed experiments have had in some areas.  
 
 		*	`Application of Statistical Design of Experiments Methods in Drug Discovery <http://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_ and `using DOE for high-throughput screening to locate new drug compounds <http://dx.doi.org/10.1016/1359-6446(96)10025-8>`_.
-		*	High traffic websites offer a unique opportunity to perform testing and optimization.  This is because each visitor to the site is independent of the others (randomized), and these tests can be run in parallel.  Read more in this `brief writeup <http://youtube-global.blogspot.com/2009/08/look-inside-1024-recipe-multivariate.html>`_ on how Google uses testing tools to optimize YouTube, one of their web properties.  Unfortunately they use the term "multivariate" incorrectly - a better term is "multi-variable"; nevertheless, the number of factors and combinations to be tested is large. Its well known that fractional factorial methods are used to analyze these data.
+		*	High traffic websites offer a unique opportunity to perform testing and optimization.  This is because each visitor to the site is independent of the others (randomized), and these tests can be run in parallel.  Read more in this `brief writeup <http://youtube-global.blogspot.com/2009/08/look-inside-1024-recipe-multivariate.html>`_ on how Google uses testing tools to optimize YouTube, one of their web properties.  Unfortunately they use the term "multivariate" incorrectly - a better term is "multi-variable"; nevertheless, the number of factors and combinations to be tested is large. It's well known that fractional factorial methods are used to analyze these data.
 		*	See three chemical engineering examples of factorial designs in Box, Hunter, and Hunter: Chapter 11 (1st edition), or page 173 to 183 in the second edition.
 		
 .. question::
