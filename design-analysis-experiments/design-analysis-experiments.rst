@@ -805,7 +805,7 @@ Pareto-plot
 A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to estimate.  Once these parameters have been calculated, for example, by using a :ref:`least squares model <DOE-analysis-by-least-squares>`, then plot the absolute value of the model coefficients in sorted order: from largest magnitude to smallest, ignoring the intercept term.  Significant coefficients are established by visual judgement - establishing a visual cut-off by contrasting to small coefficients to the larger ones.
 
 .. image:: images/pareto-plot-full-fraction.png
-	:align: center
+	:align: left
 	:width: 800px
 	:scale: 50
 	
@@ -1742,9 +1742,10 @@ The interaction term is small, indicating the response surface is mostly linear 
 
 .. image:: images/RSM-base-case-with-first-factorial-notes.png
 	:alt:	RSM-base-case.py
+	:align: left
 	:scale: 80
 	:width: 750px
-	:align: left
+	
 
 To improve our profit in the optimal way we move along our estimated model's surface, in the direction of steepest ascent.  This direction is found by taking partial derivatives of the model function, ignoring the interaction term, since it is so small.
 
@@ -1853,8 +1854,8 @@ We will not go into detail about :index:`central composite designs`, other than 
 
 The :index:`axial points <pair: axial points; experiments>` are placed :math:`\sqrt{2} = 1.4` coded units away from the center for a 2 factor system, and 1.7 units away for a :math:`k=3` factor system.  Rules for higher numbers of factors, and the reasoning behind the 1.4 and 1.7 unit step size can be found, for example in the textbook by Box, Hunter and Hunter.
 
-.. figure:: images/central-composite-design.png
-	:align: center
+.. image:: images/central-composite-design.png
+	:align: left
 	:width: 900px
 	:scale: 50
 	:alt:	central-composite-design.svg
