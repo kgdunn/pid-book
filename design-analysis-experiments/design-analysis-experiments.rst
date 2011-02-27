@@ -298,11 +298,11 @@ We have already seen in the :ref:`univariate statistics section <univariate-grou
 
 .. math::
 	s_P^2 &= \frac{(n_A -1) s_A^2 + (n_B-1)s_B^2}{n_A - 1 + n_B - 1}\\
-	z &= \frac{(\bar{x}_B - \bar{x}_A) - (\mu_B - \mu_A)}{\sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}} \\
+	z &= \frac{(\overline{x}_B - \overline{x}_A) - (\mu_B - \mu_A)}{\sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}} \\
 
 	\begin{array}{rcccl}  
 		-c_t &\leq& \mu_B - \mu_A &\leq & c_t\\
-		(\bar{x}_B - \bar{x}_A) - c_t \times \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)} &\leq& \mu_B - \mu_A &\leq & (\bar{x}_B - \bar{x}_A) + c_t  \times \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}
+		(\overline{x}_B - \overline{x}_A) - c_t \times \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)} &\leq& \mu_B - \mu_A &\leq & (\overline{x}_B - \overline{x}_A) + c_t  \times \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}
 	\end{array}
 
 We consider the effect of changing from condition A to condition B to be a *statistically* significant effect when this confidence interval does not span zero.  However, the width of this interval and how symmetrically it spans zeros can cause us to come to a different, *practical* conclusion.  In other words, we override the narrow statistical conclusion based on the richer information we can infer from the confidence interval's width and the process's variance.
@@ -367,7 +367,7 @@ Fisher's insight was to create one long vector of these outcomes (length of vect
 
 Only one of the 24310 sequences will correspond to the actual data printed in the above table, while all the other realizations are possible, they are fictitious.  We do this, because the null hypothesis is that there is no difference between A and B.  Values in the table could have come from either system.
 
-So for each of the 24310 realizations we calculate the difference of the averages between A and B, :math:`\bar{y}_A - \bar{y}_B`, and plot a histogram of these differences. I have shown this below, together with a vertical line showing the actual realization in the table.  There are 4956 permutations that had a greater difference than the one actually realized, i.e. 79.6% of the other combinations had a smaller value.  
+So for each of the 24310 realizations we calculate the difference of the averages between A and B, :math:`\overline{y}_A - \overline{y}_B`, and plot a histogram of these differences. I have shown this below, together with a vertical line showing the actual realization in the table.  There are 4956 permutations that had a greater difference than the one actually realized, i.e. 79.6% of the other combinations had a smaller value.  
 
 Had we used a formal test of differences where we pool the variances, we will find a :math:`z`-value of 0.8435, and the probability of obtaining that value, using the :math:`t`-distribution with :math:`n_A + n_B - 2` degrees of freedom is 79.3%.  See how close they agree?  
 
@@ -718,9 +718,9 @@ This example should be done by yourself.  It is based on question 19 in the exer
 
 The data are from a plastics molding factory which must treat its waste before discharge.  The :math:`y` variable represents the average amount of pollutant discharged [lb per day], while the 3 factors that were varied were:
 
- 	-	:math:`C`: the chemical compound added (A or B)
-	-	:math:`T`: the treatment temperature (72°F or 100°F)
-	-	:math:`S`: the stirring speed (200 rpm or 400 rpm)
+ 	-	:math:`C`: the chemical compound added [A or B]
+	-	:math:`T`: the treatment temperature [72°F or 100°F]
+	-	:math:`S`: the stirring speed [200 rpm or 400 rpm]
 	-	:math:`y`: the amount of pollutant discharged [lb per day]
 
 	.. tabularcolumns:: |l|l||c|c|c||c|
@@ -751,16 +751,16 @@ The data are from a plastics molding factory which must treat its waste before d
 
 #.	Calculate the main effect for each factor by hand.
 
-	*	:math:`C` effect = 6.25
-	*	:math:`T` effect = 0.75
-	*	:math:`S` effect = -7.25
+	*	:math:`C` effect = :math:`6.25`
+	*	:math:`T` effect = :math:`0.75`
+	*	:math:`S` effect = :math:`-7.25`
 
 #.	Calculate the 3 two-factor interactions (2fi) by hand, and the single 3 factor interaction (3fi).
 
-	*	:math:`CT` effect = -0.25
-	*	:math:`TS` effect = -0.25
-	*	:math:`CS` effect = 6.75
-	*	:math:`CTS` effect = -0.25
+	*	:math:`CT` effect = :math:`-0.25`
+	*	:math:`TS` effect = :math:`-0.25`
+	*	:math:`CS` effect = :math:`6.75`
+	*	:math:`CTS` effect = :math:`-0.25`
 
 #.	Compute the main effects and interactions using matrix algebra and a least squares model.
 	
@@ -809,40 +809,46 @@ Obviously if the factors are not scaled appropriately, then this method will be 
 Standard error: from replicate runs, or from an external data set
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If a duplicate run exists at every combination of the factorial, then the standard error can be estimated as follows:
+.. note:: It is often better to spend your experimental budget screening for additional factors than for replicating experiments.
 
-	-	Let :math:`y_{i,1}` and :math:`y_{i,2}` be the two response values for the :math:`i^\text{th}` run, where :math:`i=1, 2, ... 2^k`
-	-	The mean response for the :math:`i^\text{th}` run is :math:`\bar{y}_i = 0.5y_{i,1} + 0.5y_{i,2}`
+But, if a duplicate run exists at every combination of the factorial, then the standard error can be estimated as follows:
+
+	-	Let :math:`y_{i,1}` and :math:`y_{i,2}` be the two response values for each of the :math:`i^\text{th}` runs, where :math:`i=1, 2, ..., 2^k`
+	-	The mean response for the :math:`i^\text{th}` run is :math:`\overline{y}_i = 0.5y_{i,1} + 0.5y_{i,2}`
 	-	Denote the difference between them as :math:`d_i = y_{i,2} - y_{i,1}`, or the other way around - it doesn't matter.
-	-	The variance can be estimated with a single degree of freedom as :math:`s_i^2 = \dfrac{(y_{i,1} - \bar{y}_i)^2 + (y_{i,2} - \bar{y}_i)^2}{1}`
+	-	The variance can be estimated with a single degree of freedom as :math:`s_i^2 = \dfrac{(y_{i,1} - \overline{y}_i)^2 + (y_{i,2} - \overline{y}_i)^2}{1}`
 	-	The variance can also be written as :math:`s_i^2 = d_i^2/2`
 	-	Now we can pool the variances for the :math:`2^k` runs to estimate :math:`\hat{\sigma}^2 = S_E^2 = \dfrac{1}{2}\displaystyle\sum_i^{2^k}{d_i^2}`
 	-	This estimated standard error is :math:`t`-distributed with :math:`2^k` degrees of freedom.
 
-The standard error can be calculated in a similar manner if more than one duplicate run is performed, however it is often better to spend your experimental budget adding additional factors than replicating runs.  So rather run a :math:`2^4` factorial for 4 factors than a :math:`2^3` factorial twice; or as we will see later - one can screen five or more factors with :math:`2^4` runs.
+The standard error can be calculated in a similar manner if more than one duplicate run is performed.  So rather run a :math:`2^4` factorial for 4 factors than a :math:`2^3` factorial twice; or as we will see later - one can screen five or more factors with :math:`2^4` runs.
 	
 .. sidebar:: A note about standard errors and magnitude of effects
 
 	In these notes we quantify the effect as the change in response over *half the range* of the factor.  For example, if the centerpoint is 400K, the lower level is 375K, and the upper level is 425K, then an effect of ``"-5"`` represents a reduction in :math:`y` of 5 units for every increase in 25K in :math:`x`.
 	
-	We use this representation because it corresponds with the results calculated from least-squares software.  Putting the matrix of -1 and 1 as :math:`\mathrm{X}` into the software, and the corresponding vector of responses, :math:`\mathrm{y}`, will calculate these effects as :math:`\mathrm{b} = \left(\mathrm{X}^T\mathrm{X}\right)^{-1}\mathrm{X}\mathrm{y}`.
 	
-	Other textbooks, specifically Box, Hunter and Hunter will report effects that are double ours.  This is because they consider the effect to be the change from the lower level to the upper level (double the distance).  The advantage of this representation is that binary factors (catalyst A or B; agitator on or off) can be readily interpreted.  While in our system, the effect would be a little harder to describe.
+	We use this representation because it corresponds with the results calculated from least-squares software.  Putting the matrix of :math:`-1` and :math:`+1` entries as :math:`\mathbf{X}` into the software, and the corresponding vector of responses, :math:`y`, will calculate these effects as :math:`\mathbf{b} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}\mathbf{y}`.
+	
+	
+	Other textbooks, specifically Box, Hunter and Hunter will report effects that are double ours.  This is because they consider the effect to be the change from the lower level to the upper level (double the distance).  The advantage of their representation is that binary factors (catalyst A or B; agitator on or off) can be readily interpreted.  While in our notation, the effect is a little harder to describe (simply double it!).
+	
 	
 	The advantage of our methodology though is that the results calculated by hand would be the same as that from any computer software with respect to the magnitude of the coefficients and the standard errors; particularly in the case of duplicate runs and experiments with center points.
 	
+	
 	Remember: our effects are half those reported in Box, Hunter, and Hunter, and some other text books; our standard error would also be half of theirs.  The conclusions drawn will always be the same, as long as one is consistent.
 		
-Once :math:`S_E` has been calculated, we can calculate the standard error for each model coefficient, and then confidence intervals can be constructed for each main effect and interaction.  And, because the model matrix is orthogonal, the confidence interval for each effect is independent of the other.  This is because the general confidence interval is :math:`\mathcal{V}\left(\mathrm{b}\right) = \left(\mathrm{X}^T\mathrm{X}\right)^{-1}S_E^2`, and the off-diagonal elements in :math:`\mathrm{X}^T\mathrm{X}` are zero.
+Once :math:`S_E` has been calculated, we can calculate the standard error for each model coefficient, and then confidence intervals can be constructed for each main effect and interaction.  And, because the model matrix is orthogonal, the confidence interval for each effect is independent of the other.  This is because the general confidence interval is :math:`\mathcal{V}\left(\mathbf{b}\right) = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}S_E^2`, and the off-diagonal elements in :math:`\mathbf{X}^T\mathbf{X}` are zero.
 
-So for an experiment with :math:`n` runs, and where we have coded our :math:`\mathrm{X}` matrix to contain -1 and +1 elements, and when the :math:`\mathrm{X}` matrix is orthogonal, then the standard error for coefficient :math:`b_i` is :math:`S_E(b_i) = \sqrt{\mathcal{V}\left(b_i\right)} = \sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`.  
+So for an experiment with :math:`n` runs, and where we have coded our :math:`\mathbf{X}` matrix to contain :math:`-1` and :math:`+1` elements, and when the :math:`\mathbf{X}` matrix is orthogonal, then the standard error for coefficient :math:`b_i` is :math:`S_E(b_i) = \sqrt{\mathcal{V}\left(b_i\right)} = \sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`.  Some examples:
 
 	*	A :math:`2^3` factorial where every combination has been repeated will have :math:`n=16` runs, so the standard error for each coefficient will be the same, at :math:`S_E(b_i) = \sqrt{\dfrac{S_E^2}{16}} = \dfrac{S_E}{4}`.  
 	*	A :math:`2^3` factorial with 3 additional runs at the center point would have a least squares representation of:
 	
 		.. math::
 		
-			\mathrm{y} &= \mathrm{X} \mathrm{b} + \mathrm{e}\\
+			\mathbf{y} &= \mathbf{X} \mathbf{b} + \mathbf{e}\\
 			\begin{bmatrix} y_1\\ y_2\\ y_3 \\ y_4 \\ y_5 \\ y_6 \\ y_7 \\ y_8 \\ y_{c,1} \\ y_{c,2} \\ y_{c,3}\end{bmatrix} &=
 			\begin{bmatrix} 1 & A_{-} & B_{-} & C_{-} & A_{-}B_{-} & A_{-}C_{-} & B_{-}C_{-} & A_{-}B_{-}C_{-}\\ 
 							1 & A_{+} & B_{-} & C_{-} & A_{+}B_{-} & A_{+}C_{-} & B_{-}C_{-} & A_{+}B_{-}C_{-}\\
@@ -858,7 +864,7 @@ So for an experiment with :math:`n` runs, and where we have coded our :math:`\ma
 			\end{bmatrix}
 			\begin{bmatrix} b_0 \\ b_A \\ b_B \\ b_{C} \\ b_{AB} \\ b_{AC} \\ b_{BC} \\ b_{ABC} \end{bmatrix} +
 			\begin{bmatrix} e_1\\ e_2\\ e_3 \\ e_4 \\ e_5 \\ e_6 \\ e_7 \\ e_8 \\ e_{c,1} \\ e_{c,2} \\ e_{c,3} \end{bmatrix}\\
-			\mathrm{y} & = 
+			\mathbf{y} & = 
 			\begin{bmatrix} 1 & -1 & -1 & -1 & +1 & +1 & +1 & -1\\ 
 							1 & +1 & -1 & -1 & -1 & -1 & +1 & +1\\
 							1 & -1 & +1 & -1 & -1 & +1 & -1 & +1\\
@@ -871,9 +877,9 @@ So for an experiment with :math:`n` runs, and where we have coded our :math:`\ma
 							1 &  0 &  0 &  0 &  0 &  0 &  0 &  0\\
 							1 &  0 &  0 &  0 &  0 &  0 &  0 &  0
 			\end{bmatrix}
-			\begin{bmatrix} b_0 \\ b_A \\ b_B \\ b_{C} \\ b_{AB} \\ b_{AC} \\ b_{BC} \\ b_{ABC} \end{bmatrix} + \mathrm{e}
+			\begin{bmatrix} b_0 \\ b_A \\ b_B \\ b_{C} \\ b_{AB} \\ b_{AC} \\ b_{BC} \\ b_{ABC} \end{bmatrix} + \mathbf{e}
 			
-		Note that the center point runs do not change the orthogonality of :math:`\mathrm{X}`, however, as we expect after having studied the :ref:`least squares modelling <SECTION-least-squares-modelling>` section, that additional runs decrease the variance of the model parameters, :math:`\mathcal{V}(\mathrm{b})`.  In this can there are :math:`n=2^3+3 = 11` runs, so the standard error is decreased to :math:`S_E^2 = \dfrac{\mathrm{e}^T\mathrm{e}}{11 - 8}`, but the center points do not further reduce the variance of the parameters in :math:`\sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`, since the denominator is still :math:`2^k` (**except for the intercept term**, whose variance is reduced by the center points).
+		Note that the center point runs do not change the orthogonality of :math:`\mathbf{X}`, however, as we expect after having studied the :ref:`least squares modelling <SECTION-least-squares-modelling>` section, that additional runs decrease the variance of the model parameters, :math:`\mathcal{V}(\mathbf{b})`.  In this can there are :math:`n=2^3+3 = 11` runs, so the standard error is decreased to :math:`S_E^2 = \dfrac{\mathbf{e}^T\mathbf{e}}{11 - 8}`, but the center points do not further reduce the variance of the parameters in :math:`\sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`, since the denominator is still :math:`2^k` (**except for the intercept term**, whose variance is reduced by the center points).
 	
 Once we obtain the standard error for our system and calculate the variance of the parameters, we can multiply it by the critical :math:`t`-value at the desired confidence level in order to calculate the confidence limit.  However, it is customary to just report the standard error next to the coefficients, so that the user can use their own level of confidence.  For example:
 
@@ -932,9 +938,9 @@ So even though the temperature effect's confidence interval would be :math:`11.5
 Refitting the model after removing non-significant effects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-So after having established which effects are significant, we can exclude the non-significant effects and increase the degrees of freedom.  (We do not have to recalculate the model parameters - why?).  The residuals will be non-zero, so we can then estimate the standard error, and apply all the tools from least squares modelling to assess the residuals.  Plots of the residuals in experimental order, against fitted values, qq-plots, and all the other assessment tools from earlier are used as usual.
+So after having established which effects are significant, we can exclude the non-significant effects and increase the degrees of freedom.  (We do not have to recalculate the model parameters - why?).  The residuals will be non-zero now, so we can then estimate the standard error, and apply all the tools from least squares modelling to assess the residuals.  Plots of the residuals in experimental order, against fitted values, q-q plots, and all the other assessment tools from earlier are used as usual.
 
-Continuing the above example, where a :math:`2^4` factorial was run, and the response values, in standard order were :math:`y = [71, 61, 90, 82, 68, 61, 87, 80, 61, 50, 89, 83, 59, 51, 85, 78]`. The significant effects were from **A**, **B**, **D**, and **BD**. Now omitting the non-significant effects, there are only 5 parameters to estimate, including the intercept, so the standard error is :math:`S_E^2 = \dfrac{39}{16-5} = 3.54`, with 11 degrees of freedom.  The :math:`S_E(b_i)` value for all coefficients, except the intercept, is :math:`\sqrt{\dfrac{S_E^2}{16}} = 0.471`, and the critical :math:`t`-value at the 95% level is ``qt(0.975, df=11)`` = 2.2. So the confidence intervals can be calculated to confirm that these are indeed significant effects.
+Continuing the above example, where a :math:`2^4` factorial was run, and the response values, in standard order were :math:`y = [71, 61, 90, 82, 68, 61, 87, 80, 61, 50, 89, 83, 59, 51, 85, 78]`. The significant effects were from **A**, **B**, **D**, and **BD**. Now omitting the non-significant effects, there are only 5 parameters to estimate, including the intercept, so the standard error is :math:`S_E^2 = \dfrac{39}{16-5} = 3.54`, with 11 degrees of freedom.  The :math:`S_E(b_i)` value for all coefficients, except the intercept, is :math:`\sqrt{\dfrac{S_E^2}{16}} = 0.471`, and the critical :math:`t`-value at the 95% level is ``qt(0.975, df=11)`` = 2.2. So the confidence intervals can be calculated to confirm that these are indeed significant effects by calculating their confidence interval.
 
 There is some circular reasoning here: postulate that one or more effects are zero, increase the degrees of freedom by removing those parameters in order to confirm the remaining effects are significant.  So some general advice is to first exclude effects which are definitely small, and retain medium size effects in the model until you can confirm they are not-significant.
 
@@ -970,7 +976,7 @@ Summary so far
 -	The factorial experimental design is intentionally constructed so that each factor is independent of the others.  There are :math:`2^k` experiments for :math:`k` factors.
 
 	-	This implies the :math:`\mathbf{X}^T\mathbf{X}` matrix is easily constructed (a diagonal matrix, with a value of :math:`2^k` for each diagonal entry).
-	-	These coefficients have the lowest variability possible: :math:`(\mathrm{X}^T\mathrm{X})^{-1}S_E^2`
+	-	These coefficients have the lowest variability possible: :math:`(\mathbf{X}^T\mathbf{X})^{-1}S_E^2`
 	-	We have uncorrelated estimates of the slope coefficients in the model.  That is we can be sure the value of the coefficient is unrelated to the other values.  
 	
 -	However, we still need to take the usual care in *interpreting* the coefficients.  The usual precaution, using the example below, is that the temperature coefficient :math:`b_T` is the effect of a one degree change, holding all other variables constant.  That's not possible if :math:`b_{TS}`, the interaction between :math:`T` and :math:`S`, is significant: we cannot hold it constant while changing :math:`b_T`.
@@ -1099,7 +1105,7 @@ So this is our designed experiment for 3 factors, but it only requires 4 experim
 	:scale: 35
 	:width: 800px
 
-What have we lost by running only half the factorial?  Let's write out the full design and matrix of all interactions, then construct the :math:`\mathrm{X}` matrix for the least squares model.
+What have we lost by running only half the factorial?  Let's write out the full design and matrix of all interactions, then construct the :math:`\mathbf{X}` matrix for the least squares model.
 
 .. tabularcolumns:: |c||c|c|c||c|c|c|c|c|
 
@@ -1115,11 +1121,11 @@ What have we lost by running only half the factorial?  Let's write out the full 
 | 4         | |+|        | |+|       |  |+|       |  |+|       |  |+|       |  |+|       |  |+|       |  |+|       |
 +-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
 
-Before even constructing the X-matrix, you can see that **A=BC**, and that **B=AC** and **C=AB** (which was intentional), and **I=ABC**.  The X-matrix for the least squares model would be:
+Before even constructing the :math:`\mathbf{X}`-matrix, you can see that **A=BC**, and that **B=AC** and **C=AB** (which was intentional), and **I=ABC**.  The X-matrix for the least squares model would be:
 
 .. math::
 
-	\mathrm{y} &= \mathrm{X} \mathrm{b} + \mathrm{e}\\
+	\mathbf{y} &= \mathbf{X} \mathbf{b} + \mathbf{e}\\
 	\begin{bmatrix} y_1\\ y_2\\ y_3 \\ y_4 \end{bmatrix} &=
 	\begin{bmatrix} 1 & -1 & -1 & +1 & +1 & -1 & -1 & +1\\ 
 					1 & +1 & -1 & -1 & -1 & -1 & +1 & +1\\
@@ -1129,12 +1135,12 @@ Before even constructing the X-matrix, you can see that **A=BC**, and that **B=A
 	\begin{bmatrix} b_0 \\ b_A \\ b_B \\ b_{C} \\ b_{AB} \\ b_{AC} \\ b_{BC} \\ b_{ABC} \end{bmatrix} + 
 	\begin{bmatrix} e_1\\ e_2\\ e_3 \\ e_4 \end{bmatrix}
 
-The :math:`\mathrm{X}` matrix is not orthogonal anymore, so the least squares model cannot be solved by inverting the :math:`\mathrm{X}^T\mathrm{X}` matrix. (Also note this system is underdetermined: more unknowns than equations, though the problem in this case is actually only the collinearity).
+The :math:`\mathbf{X}` matrix is not orthogonal anymore, so the least squares model cannot be solved by inverting the :math:`\mathbf{X}^T\mathbf{X}` matrix. (Also note this system is underdetermined: more unknowns than equations, though the problem in this case is actually only the collinearity).
 
 We must reformulate the model to obtain independent columns.  The above system of equations is rewritten as:
 
 .. math::
-	\mathrm{y} &= \mathrm{X} \mathrm{b} + \mathrm{e}\\
+	\mathbf{y} &= \mathbf{X} \mathbf{b} + \mathbf{e}\\
 	\begin{bmatrix} y_1\\ y_2\\ y_3 \\ y_4 \end{bmatrix} &=
 	\begin{bmatrix} 1 & -1 & -1 & +1  \\ 
 					1 & +1 & -1 & -1  \\
@@ -1550,10 +1556,10 @@ Let's continue with the example of a :math:`2^{7-4}_{\text{III}}` experiment int
 Now use a least squares model to estimate the coefficients in the model:
 
 .. math::
-	\mathrm{y} &= \mathrm{Xb} \\
-	\mathrm{b} &= \left(\mathrm{X}^T\mathrm{X}\right)^{-1}\mathrm{X}\mathrm{y}
+	\mathbf{y} &= \mathbf{Xb} \\
+	\mathbf{b} &= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}\mathbf{y}
 
-where :math:`\mathrm{b} = [b_0, b_\mathbf{A}, b_\mathbf{B}, b_\mathbf{C}, b_\mathbf{D}, b_\mathbf{E}, b_\mathbf{F}, b_\mathbf{G}]`.  The matrix :math:`\mathrm{X}` is derived from the preceding table, but with an added column of 1's for the intercept term.  Note that :math:`\mathrm{X}^T\mathrm{X}` matrix is diagonal.  The solution is :math:`\mathrm{b} = [70.7, -2.3, 0.1, -2.8, -0.4, 0.5, -0.4, -1.7]`. 
+where :math:`\mathbf{b} = [b_0, b_\mathbf{A}, b_\mathbf{B}, b_\mathbf{C}, b_\mathbf{D}, b_\mathbf{E}, b_\mathbf{F}, b_\mathbf{G}]`.  The matrix :math:`\mathbf{X}` is derived from the preceding table, but with an added column of 1's for the intercept term.  Note that :math:`\mathbf{X}^T\mathbf{X}` matrix is diagonal.  The solution is :math:`\mathbf{b} = [70.7, -2.3, 0.1, -2.8, -0.4, 0.5, -0.4, -1.7]`. 
 	
 	
 How do you assess which main effects are important?  There are eight data points and eight parameters, so there are no degrees of freedom and the residuals are all zero.  In this case you have to use a :ref:`Pareto plot <DOE-Pareto-plot>`, which requires that your variables have been suitably scaled in order to judge importance of the main effects.  The Pareto plot would be given as shown below (doesn't include the intercept term).
@@ -1784,7 +1790,7 @@ We will not go into detail about central composite designs, other than to show w
 So a central composite design layout was created for the above example and the experiments run, randomly, at the 4 axial points.  The four response values were :math:`y_{13} = 720`, :math:`y_{14} = 699`, :math:`y_{15} = 610`, and :math:`y_{16} = 663`.  This allows us to estimate a model with quadratic terms in it: :math:`y = b_0 + b_T x_T + b_S x_S + b_{TS} x_T x_S + b_{TT} x_T^2 + b_{SS} x_S^2`.  The parameters in this model are found in the usual way, using a least-squares model.
 
 	.. math:: 
-		\mathrm{y} &= \mathrm{X} \mathrm{b} + \mathrm{e}\\
+		\mathbf{y} &= \mathbf{X} \mathbf{b} + \mathbf{e}\\
 		\begin{bmatrix} y_8\\ y_9\\ y_{10} \\ y_{11} \\ y_{6} \\ y_{13} \\ y_{14} \\ y_{15} \\ y_{16} \end{bmatrix} &=
 		\begin{bmatrix} 1 & -1 & -1 & +1 & +1 & +1\\ 
 						1 & +1 & -1 & -1 & +1 & +1\\
@@ -1796,7 +1802,7 @@ So a central composite design layout was created for the above example and the e
 						1 & 0  & 1.41&  0 &  0 &  2\\
 						1 &-1.41&   0&  0 &  2 &  0
 		\end{bmatrix}
-		\begin{bmatrix} b_0 \\ b_T \\ b_S \\ b_{TS} \\ b_{TT} \\ b_{SS} \end{bmatrix} + \mathrm{e}
+		\begin{bmatrix} b_0 \\ b_T \\ b_S \\ b_{TS} \\ b_{TT} \\ b_{SS} \end{bmatrix} + \mathbf{e}
 		
 Which solves for: :math:`y = 688 + 12.9x_T -39.1x_S -2.3 x_T x_S -4.2 x_T^2 -12.2 x_S^2`.  The quadratic effects are clearly significant, which prevented us from successfully using a linear model (projecting out to point 12) previously.
 
@@ -1939,7 +1945,7 @@ Experiments with mistakes, missing values, or belatedly discovered constraints
 
 Many real experiments do not go smoothly.  Once the experimenter has established their :math:`-1` and :math:`+1` levels for each variable, they invert that out to real units.  For example, if temperature was scaled as :math:`T = \dfrac{T_\text{actual} - 450\text{K}}{\text{25K}}`, then :math:`T = -1` corresponds to 425K and :math:`T= +1` corresponds to 475K.
 
-But if the operator mistakenly sets the temperature to :math:`T_\text{actual} = 465K`, then it doesn't quite reach the +1 level required.  This is not a wasted experiment.  Simply code this as :math:`T = \dfrac{465 - 450}{25} = 0.6`, and enter that value in the least squares model for matrix :math:`\mathbf{X}`.  Then proceed to calculate the model parameters using the standard least squares equations.  Note that the columns in the X-matrix will not be orthogonal anymore, so :math:`\mathrm{X}^T\mathrm{X}` will not be a diagonal matrix, but it will be almost diagonal.
+But if the operator mistakenly sets the temperature to :math:`T_\text{actual} = 465K`, then it doesn't quite reach the +1 level required.  This is not a wasted experiment.  Simply code this as :math:`T = \dfrac{465 - 450}{25} = 0.6`, and enter that value in the least squares model for matrix :math:`\mathbf{X}`.  Then proceed to calculate the model parameters using the standard least squares equations.  Note that the columns in the X-matrix will not be orthogonal anymore, so :math:`\mathbf{X}^T\mathbf{X}` will not be a diagonal matrix, but it will be almost diagonal.
 
 Similarly, it might be discovered that temperature cannot be set to 475K when the other factor, for example concentration, is also at its high level.  This might be due to physical or safety constraints. On the other hand, :math:`T=475K` can be used when concentration is at its low level.  This case is the same as described above: set the temperature to the closest possible value for that experiment, and then analyze the data using a least squares model. The case when the constraint is known ahead of time is :ref:`dealt with later on <DOE-handling-constraints>`, but in this case, the constraint was discovered just as the run was to be performed.
 
