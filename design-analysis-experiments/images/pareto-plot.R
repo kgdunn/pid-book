@@ -79,6 +79,7 @@ labels.mod = labels[idx]
 bitmap('pareto-plot-full-fraction.png', type="png256", width=7, height=7, res=300, pointsize=14)
 par(mar=c(4.2, 4.2, 0.5, 0.5))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 
-barchart(as.matrix(b.mod), ylab = list("Effect", cex=1.5), xlab=list("Magnitude of effect", cex=1.5), scales=list(cex=1.5,y=list(labels=labels.mod))) #, col=0)
-
+barchart(as.matrix(b.mod), ylab = list("Effect", cex=1.5), 
+        xlab=list("Magnitude of effect", cex=1.5), col=0,
+        scales=list(cex=1.5,y=list(labels=labels.mod))) 
 dev.off()
