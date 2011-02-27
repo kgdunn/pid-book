@@ -581,7 +581,7 @@ The data may also be visualized using an *interaction plot*:
 
 The lack of parallel lines is a clear indication of interaction.  The temperature effect is stronger at high levels of :math:`S`, and the effect of :math:`S` on conversion is also greater at high levels of temperature.  What is missing is an interaction term, given by the product of temperature and substrate.  We represent this as  :math:`T \times S`, and call it temperature-substrate interaction term.   
 
-This interaction term should be zero for systems with no interaction, which implies the lines are parallel in the interaction plot.  Such systems will have roughly the same effect of :math:`T` at low and high values of :math:`S`.  So then, a good way to quantify interaction is by how different the main effect terms are at the high and low levels of the other factor in the interaction.  The interaction must also be symmetrical:
+This interaction term should be zero for systems with no interaction, which implies the lines are parallel in the interaction plot.  Such systems will have roughly the same effect of :math:`T` at both low and high values of :math:`S` (and in between).  So then, a good way to quantify interaction is by how different the main effect terms are at the high and low levels of the other factor in the interaction.  The interaction must also be symmetrical, since if :math:`T` interacts with :math:`S`, then :math:`S` interacts with :math:`T` by the same amount.
 
 :math:`T` interaction with :math:`S`:  
 
@@ -796,10 +796,12 @@ Pareto-plot
 
 A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to estimate.  Once these parameters have been calculated, for example, by using a :ref:`least squares model <DOE-analysis-by-least-squares>`, then plot the absolute value of the model coefficients in sorted order: from largest magnitude to smallest, ignoring the intercept term.  Significant coefficients are established by visual judgement - establishing a visual cut-off by contrasting to small coefficients to the larger ones.
 
-.. figure:: images/pareto-plot-full-fraction.png
+.. image:: images/pareto-plot-full-fraction.png
 	:align: center
 	:width: 800px
 	:scale: 50
+	
+In the above example we would interpret that factors **A**, **C** and **D**, as well as the interactions of **AC** and **AD** have a significant and causal effect on the response variable, :math:`y`. The main effect of **B** on the response :math:`y` is small - at least over the range that **B** was used in the experiment. Factor **B** can be omitted from future experimentation in this region, though it might be necessary to include it again if the system is operated at a very different point.
 
 The reason why we can compare the coefficients this way, which is not normally the case with least squares models, is that we have both centered and scaled the factor-variables.  If the centering is at typical baseline operation, and the range spanned by each factor is that expected over the typical operating range, then we can fairly compare each coefficient in the bar plot. Each bar represents the influence of that term on :math:`y` for a one-unit change in the factor, i.e. a change over half its operating range.
 
@@ -938,7 +940,7 @@ So even though the temperature effect's confidence interval would be :math:`11.5
 Refitting the model after removing non-significant effects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-So after having established which effects are significant, we can exclude the non-significant effects and increase the degrees of freedom.  (We do not have to recalculate the model parameters - why?).  The residuals will be non-zero now, so we can then estimate the standard error, and apply all the tools from least squares modelling to assess the residuals.  Plots of the residuals in experimental order, against fitted values, q-q plots, and all the other assessment tools from earlier are used as usual.
+So after having established which effects are significant, we can exclude the non-significant effects and increase the degrees of freedom.  (We do not have to recalculate the model parameters - why?).  The residuals will be non-zero now, so we can then estimate the standard error, and apply all the tools from least squares modelling to assess the residuals.  Plots of the residuals in experimental order, against fitted values, q-q plots, and all the other assessment tools from earlier are used, as usual.
 
 Continuing the above example, where a :math:`2^4` factorial was run, and the response values, in standard order were :math:`y = [71, 61, 90, 82, 68, 61, 87, 80, 61, 50, 89, 83, 59, 51, 85, 78]`. The significant effects were from **A**, **B**, **D**, and **BD**. Now omitting the non-significant effects, there are only 5 parameters to estimate, including the intercept, so the standard error is :math:`S_E^2 = \dfrac{39}{16-5} = 3.54`, with 11 degrees of freedom.  The :math:`S_E(b_i)` value for all coefficients, except the intercept, is :math:`\sqrt{\dfrac{S_E^2}{16}} = 0.471`, and the critical :math:`t`-value at the 95% level is ``qt(0.975, df=11)`` = 2.2. So the confidence intervals can be calculated to confirm that these are indeed significant effects by calculating their confidence interval.
 
@@ -959,6 +961,8 @@ Finally, we end this section on factorials by illustrating their efficiency.  Co
 	.. tabularcolumns:: |l|l|
 	
 	+--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
+	| COST approach                                                            | Fractional factorial approach                                                                                  |
+	+==========================================================================+================================================================================================================+
 	| The main effect of :math:`T` is :math:`b_T = y_2 - y_1`                  | The main effect is :math:`b_T = 0.5(y_2 - y_1) + 0.5(y_4 - y_3)`                                               |
 	+--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
 	| Then the variance is :math:`\mathcal{V}(b_T) = \sigma_y^2 + \sigma_y^2`  | The variance here is :math:`\mathcal{V}(b_T) = 0.25(\sigma_y^2 + \sigma_y^2) + 0.25(\sigma_y^2 + \sigma_y^2)`  |
@@ -979,11 +983,13 @@ Summary so far
 	-	These coefficients have the lowest variability possible: :math:`(\mathbf{X}^T\mathbf{X})^{-1}S_E^2`
 	-	We have uncorrelated estimates of the slope coefficients in the model.  That is we can be sure the value of the coefficient is unrelated to the other values.  
 	
--	However, we still need to take the usual care in *interpreting* the coefficients.  The usual precaution, using the example below, is that the temperature coefficient :math:`b_T` is the effect of a one degree change, holding all other variables constant.  That's not possible if :math:`b_{TS}`, the interaction between :math:`T` and :math:`S`, is significant: we cannot hold it constant while changing :math:`b_T`.
+-	However, we still need to take the usual care in *interpreting* the coefficients.  The usual precaution, using the example below, is that the temperature coefficient :math:`b_T` is the effect of a one degree change, holding all other variables constant.  That's not possible if :math:`b_{TS}`, the interaction between :math:`T` and :math:`S`, is significant: we cannot hold the :math:`TS` constant while changing :math:`b_T`.
 		
 	.. math:: y = b_0 + b_T x_T + b_S x_S + b_{TS} x_Tx_S + e
 	
-	So *we cannot interpret the main effects separately from the interaction effects*, when we have significant interaction terms in the model.  For another example see Box, Hunter, and Hunter (2nd ed), page 185.
+	So *we cannot interpret the main effects separately from the interaction effects*, when we have significant interaction terms in the model.   Also, if you conclude the interaction term is significant, then you must also include all main factors that make up that interaction term in the model.
+		
+	For another example, with interpretation of it, please see Box, Hunter, and Hunter (2nd ed), page 185.
 	
 -	Factorial designs use the collected data much more efficiently than one-at-a-time experimentation.  As shown in :ref:`the preceding section <DOE-COST-vs-factorial-efficiency>`, the estimated variance is halved when using a factorial design than from a COST approach.
 	
