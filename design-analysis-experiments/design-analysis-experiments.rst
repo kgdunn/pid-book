@@ -1653,17 +1653,17 @@ This projectivity of factorials holds in general for a larger number of factors.
 Response surface methods
 ==========================
 
-The purpose of response surface methods (RSM) is to optimize a process or system.  RSM is a way to explore the effect of operating conditions (the factors) on the response variable, :math:`y`.  As we map out the unknown response surface of :math:`y`, we move our process as close as possible towards the optimum, taking into account any constraints.  
+The purpose of :index:`response surface methods <pair: response surface methods; experiments>` (RSM) is to optimize a process or system.  RSM is a way to explore the effect of operating conditions (the factors) on the response variable, :math:`y`.  As we map out the unknown response surface of :math:`y`, we move our process as close as possible towards the optimum, taking into account any constraints.  
 
 Initially, when we are far away from the optimum, we will use factorial experiments.  As we approach the optimum then these factorials are replaced with better designs that more closely approximate conditions at the optimum.
 
 .. TODO: RSM overview figure here with COST approach superimposed
 
-Notice how it is a *sequential* approach.  RSM then is a tool the describes how we should run these sequential experiments.  At the start of this :ref:`section on designed experiments <DOE-COST-approach>` we showed how sequential experimentation (COST) leads to sub-optimal solutions.  Why are we advocating sequential experimentation now?   The difference is that here we use sequential experiments by changing *multiple factors simultaneously*, and not changing one factor at a time.
+Notice how it is a *sequential* approach.  RSM then is a tool the describes how we should run these sequential sets of experiments. At the start of this :ref:`section on designed experiments <DOE-COST-approach>` we showed how sequential experimentation (COST) leads to sub-optimal solutions.  Why are we advocating sequential experimentation now?   The difference is that here we use sequential experiments by changing *multiple factors simultaneously*, and not changing only one factor at a time.
 
 .. rubric:: RSM concept for a single variable: COST approach
 
-We first consider just the effect of a single factor, :math:`x_1` as it relates to our response, :math:`y`.  The system is unconstrained.
+We will however first consider just the effect of a single factor, :math:`x_1` as it relates to our response, :math:`y`. This is to illustrate the general response surface process.
 
 .. figure:: images/steepest-ascent-univariately-corrected.png
 	:alt: steepest-ascent-univariately.svg
@@ -1671,11 +1671,11 @@ We first consider just the effect of a single factor, :math:`x_1` as it relates 
 	:scale: 70
 	:width: 750px
 
-We start at the point marked :math:`i=0` as our initial baseline (cp=center point).  We run a 2-level experiment, above and below this baseline at :math:`-1` and :math:`+1`, in coded units of :math:`x_1`, and obtain the corresponding response values of :math:`y_{0,-}` and :math:`y_{0,+}`.  From this we can estimate a best-fit straight line and move in the direction that increases :math:`y` (the sloping tangential line, also called the *path of steepest ascent*).  Make a move of step-size = :math:`\gamma_1` units along :math:`x_1` and measure the response, recorded as :math:`y_1`.  The response variable increased, so keep going in this direction.
+We start at the point marked :math:`i=0` as our initial baseline (cp=center point).  We run a 2-level experiment, above and below this baseline at :math:`-1` and :math:`+1`, in coded units of :math:`x_1`, and obtain the corresponding response values of :math:`y_{0,-}` and :math:`y_{0,+}`.  From this we can estimate a best-fit straight line and move in the direction that increases :math:`y`. The sloping tangential line, also called the *path of steepest ascent*.  Make a move of step-size = :math:`\gamma_1` units along :math:`x_1` and measure the response, recorded as :math:`y_1`.  The response variable increased, so we keep going in this direction.
 
 Make another step-size, this time of :math:`\gamma_2` units in the direction that increases :math:`y`.  We measure the response, :math:`y_2`, and are still increasing.  Encouraged by this, we take another step of size :math:`\gamma_3`.  The step-sizes, :math:`\gamma_i` should be of a size that is big enough to cause a change in the response in a reasonable number of experiments, but not so big as to miss an optimum.
 
-Our next value of :math:`y_3` is about the same size as :math:`y_2`, indicating that we have plateaued.  At this point we can take some exploratory steps and refit the tangential line (which now has a slope in the opposite direction).  Or we can just use the accumulated points :math:`y = [y_{0-}, y_{0+}, y_1, y_2, y_3]` and their corresponding :math:`x`-values to fit a non-linear curve.  Either way, we can then estimate a different step-size :math:`\gamma_4` that will bring us closer to the optimum.
+Our next value of :math:`y_3` is about the same size as :math:`y_2`, indicating that we have plateaued.  At this point we can take some exploratory steps and refit the tangential line (which now has a slope in the opposite direction).  Or we can just use the accumulated points :math:`y = [y_{0-},\,\, y_{0+},\,\, y_1,\,\, y_2,\,\, y_3]` and their corresponding :math:`x`-values to fit a non-linear curve.  Either way, we can then estimate a different step-size :math:`\gamma_4` that will bring us closer to the optimum.
 
 This univariate example is in fact what experimenters do when using the :ref:`COST approach <DOE-COST-approach>` described earlier.  We have:
 
@@ -1683,36 +1683,40 @@ This univariate example is in fact what experimenters do when using the :ref:`CO
 * refit the model once we plateau
 * repeat
 
-This approach works well if there is a single factor. But with most systems there are multiple factors that affect the response.  We show next how the exact same idea is used, only we change multiple variables at a time to find the optimum on the response surface.
+This approach works well if there really is only a single factor that affects the response. But with most systems there are multiple factors that affect the response.  We show next how the exact same idea is used, only we change multiple variables at a time to find the optimum on the response surface.
 
-Response surface example for a 2-variable system
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Response surface optimization via a 2-variable system example
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We consider a new system here where two factors, temperature **T**, and substrate concentration **S** are known to affect the yield from a bioreactor.  But in this example we are not just interested in yield, but actually the total profit from the system.  This profit takes into account energy costs, raw materials costs and other relevant factors.  The illustrations in this section show the contours of profit in light grey, but in practice these are obviously unknown.
+This example considers a new system here where two factors, temperature **T**, and substrate concentration **S** are known to affect the yield from a bioreactor.  But in this example we are not just interested in yield, but actually the total profit from the system.  This profit takes into account energy costs, raw materials costs and other relevant factors.  The illustrations in this section show the contours of profit in light grey, but in practice these are obviously unknown.
 
-We currently operate at these baseline conditions:
+We currently operate at this baseline condition:
 
 	*	**T** = 325 K
 	*	**S** = 0.75 g/L
-	*	Profit = $407
+	*	Profit = $407 per day
 
-We have establish a factorial around this baseline, where the range of temperature is :math:`\Delta_T = 10` K, and :math:`\Delta_S = 0.5` g/L.  The results from the full factorial are in the table here:
+We start by creating a full factorial around this baseline by choosing :math:`\Delta_T = 10` K, and :math:`\Delta_S = 0.5` g/L based on our knowledge that  these are sufficiently large changes to show an actual difference in the response value, but not too large so as to move to a totally different form of operation in the bioreactor.
 
-.. tabularcolumns:: |c||c|c|c|
+The results from the full factorial are in the table here:
 
-+-----------+------------+-----------+------------+
-| Experiment| T          | S         |  Profit    |
-+===========+============+===========+============+
-| 1         | |-|        | |-|       |  193       |
-+-----------+------------+-----------+------------+
-| 2         | |+|        | |-|       |  310       |
-+-----------+------------+-----------+------------+
-| 3         | |-|        | |+|       |  468       |
-+-----------+------------+-----------+------------+
-| 4         | |+|        | |+|       |  571       |
-+-----------+------------+-----------+------------+
+.. tabularcolumns:: |c||c|c||c|c||c|
 
-Clearly the promising direction to maximize profit is towards the upper-left corner.  A linear model of the system from the factorial data is:
++-----------+------------+-----------+------------+-----------+------------+
+| Experiment| T (actual) | S (actual)| T (coded)  | S (coded) |  Profit    |
++===========+============+===========+============+===========+============+
+| Baseline  | 325 K      | 0.75 g/L  | 0          | 0         |  407       |
++-----------+------------+-----------+------------+-----------+------------+
+| 1         | 320 K      | 0.50 g/L  | |-|        | |-|       |  193       |
++-----------+------------+-----------+------------+-----------+------------+
+| 2         | 330 K      | 0.50 g/L  | |+|        | |-|       |  310       |
++-----------+------------+-----------+------------+-----------+------------+
+| 3         | 320 K      | 1.0 g/L   | |-|        | |+|       |  468       |
++-----------+------------+-----------+------------+-----------+------------+
+| 4         | 330 K      | 1.0 g/L   | |+|        | |+|       |  571       |
++-----------+------------+-----------+------------+-----------+------------+
+
+Clearly the promising direction to maximize profit is to operate at higher temperatures and higher substrate concentrations.  But how much much higher and in what ratio should we increase :math:`T` and :math:`S`?  These answers are found by building a linear model of the system from the factorial data:
 
 .. math::
 
@@ -1720,7 +1724,9 @@ Clearly the promising direction to maximize profit is towards the upper-left cor
 	\hat{y} &= 385.6 + 55 x_T + 134 x_S - 3.75 x_T x_S 
 		
 where :math:`\dfrac{x_{T,\text{actual}} - \text{center}_T}{\Delta_T / 2} = \dfrac{x_{T,\text{actual}} - 325}{5}` and similarly,  :math:`x_S = \dfrac{x_{S,\text{actual}} - 0.75}{0.25}`.
-		 
+
+The model shows that we can expect an increase of $55/day of profit for a unit increase in :math:`x_T` (coded units).  In real-world units that would require increasing temperature by :math:`\Delta_T /2` = 5K to achieve that goal.  Similarly, we can increase :math:`S` by :math:`\Delta_S/2 = 0.5/2` = 0.25 g/L to achieve a $134 per day profit increase.
+
 The interaction term is small, indicating the response surface is mostly linear in this region.  The illustration shows the model's contours (straight, green lines).  Notice that the model contours are a good approximation to the actual contours (light grey), which are unknown in practice.
 
 .. figure:: images/RSM-base-case-combined.*
