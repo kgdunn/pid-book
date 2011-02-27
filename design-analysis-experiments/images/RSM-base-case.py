@@ -98,13 +98,59 @@ from matplotlib.figure import Figure
 matplotlib.rcParams['xtick.direction'] = 'out'
 matplotlib.rcParams['ytick.direction'] = 'out'
 
+# ------------------------------
+# Added code to get an additional figure in the notes
+fig = Figure(figsize=(5, 5))
+rect = [0.15, 0.1, 0.80, 0.82]  # Left, bottom, width, height
+ax = fig.add_axes(rect, frame_on=True)
+levels = np.array([0, 100, 200, 300, 400, 500, 600, 700]) #30, 40, 50, 55, 60, 65, 68, 70, 71, 71.5, 72, 73, 75, 76])
+CS = ax.contour(X1, X2, Z, colors='#444444', levels=levels, linestyles='dotted',)
+ax.clabel(CS, inline=1, fontsize=10, fmt='%1.0f' )
+ax.set_title('Contours of profit per day ($)', fontsize=16)
+ax.set_xlabel('Temperature [K]', fontsize=16)
+ax.set_ylabel('Substrate concentration [g/L]', fontsize=16)
+
+factorial = np.array([320, 330, 0.5, 1.0])
+t_lo, t_hi, s_lo, s_hi = factorial
+ax.text(325, 0.75, "    Baseline", horizontalalignment='left', verticalalignment='center')
+baseline = factorial_response([t_lo, t_hi], [s_lo, s_hi])
+std_order = [baseline[0,0], baseline[0,1], baseline[1,0], baseline[1,1]]
+plot_factorial(t_lo, t_hi, s_lo, s_hi, ax=ax, add_centerpoint=True, label_points=['1', '2', '3', '4'])
+model = two_factor_model(std_order)
+
+
+# Fit a local model and show contours for local factorial
+# These are constant for the next steps
+range_T = t_hi - t_lo
+range_S = s_hi - s_lo
+
+# What is our starting point?
+prev_T = start_T = (t_hi + t_lo)/2.0
+prev_S = start_S = (s_hi + s_lo)/2.0
+T_low_local, T_high_local = -1.9, +1.8
+S_low_local, S_high_local = -1.8, +1.8
+x1 = np.arange(T_low_local, T_high_local, step=(T_high_local-T_low_local)/(r+0.0))
+x2 = np.arange(S_low_local, S_high_local, step=(S_high_local-S_low_local)/(r+0.0))
+X1, X2 = np.meshgrid(x1, x2)
+model[3] = 0  # force interaction term to zero
+b = np.append(model, [0, 0])  # no quadratic terms for this model
+Z = surface_with_model(X1, X2, b)
+#levels = np.array([575, 600, 625, 650, 700, 720, 730, 740])
+CS = ax.contour((X1*range_T/2+start_T), (X2*range_S/2+start_S), Z, colors="#007700", levels=[0, 100, 200, 300, 400, 500, 600])
+ax.clabel(CS, inline=1, fontsize=10, fmt='%1.0f' )
+
+ax.set_xlim([T_low, 335])
+ax.set_ylim([S_low, 1.25])
+save_figure('RSM-base-case-with-first-factorial-notes.png', fig)
+# -------------------- end: additional figure code
+
 fig = Figure(figsize=(5.5, 8))  # Use (8, 5.5) for slide aspect ratio
 rect = [0.15, 0.1, 0.80, 0.85]  # Left, bottom, width, height
 ax = fig.add_axes(rect, frame_on=True)
 levels = np.array([0, 100, 200, 300, 400, 500, 550, 600, 650, 700, 725, 740]) #30, 40, 50, 55, 60, 65, 68, 70, 71, 71.5, 72, 73, 75, 76])
 CS = ax.contour(X1, X2, Z, colors='#444444', levels=levels, linestyles='dotted',)
 ax.clabel(CS, inline=1, fontsize=10, fmt='%1.0f' )
-ax.set_title('Contours of profit per kilogram ($)', fontsize=16)
+ax.set_title('Contours of profit per day ($)', fontsize=16)
 ax.set_xlabel('Temperature [K]', fontsize=16)
 ax.set_ylabel('Substrate concentration [g/L]', fontsize=16)
 
@@ -119,6 +165,8 @@ model = two_factor_model(std_order)
 ax.set_xlim([T_low, T_high])
 ax.set_ylim([S_low, S_high])
 save_figure('RSM-base-case-with-first-factorial.png', fig)
+
+
 
 # These are constant for the next steps
 range_T = t_hi - t_lo

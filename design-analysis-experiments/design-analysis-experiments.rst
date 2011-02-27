@@ -1725,9 +1725,75 @@ Clearly the promising direction to maximize profit is to operate at higher tempe
 		
 where :math:`\dfrac{x_{T,\text{actual}} - \text{center}_T}{\Delta_T / 2} = \dfrac{x_{T,\text{actual}} - 325}{5}` and similarly,  :math:`x_S = \dfrac{x_{S,\text{actual}} - 0.75}{0.25}`.
 
-The model shows that we can expect an increase of $55/day of profit for a unit increase in :math:`x_T` (coded units).  In real-world units that would require increasing temperature by :math:`\Delta_T /2` = 5K to achieve that goal.  Similarly, we can increase :math:`S` by :math:`\Delta_S/2 = 0.5/2` = 0.25 g/L to achieve a $134 per day profit increase.
+The model shows that we can expect an increase of $55/day of profit for a unit increase in :math:`x_T` (coded units).  In real-world units that would require increasing temperature by :math:`\Delta x_{T,\text{actual}} = (1) \times \Delta_T /2` = 5K to achieve that goal.  That scaling factor comes from the coding we used:
+
+.. math::
+
+	x_T &= \displaystyle \frac{x_{T,\text{actual}} - \text{center}_T}{\Delta_T / 2} \\
+	\Delta x_T &= \displaystyle \frac{\Delta x_{T,\text{actual}}}{\Delta_T / 2} 
+
+Similarly, we can increase :math:`S` by :math:`\Delta_S/2 = 0.5/2` = 0.25 g/L to achieve a $134 per day profit increase.
 
 The interaction term is small, indicating the response surface is mostly linear in this region.  The illustration shows the model's contours (straight, green lines).  Notice that the model contours are a good approximation to the actual contours (light grey), which are unknown in practice.
+
+.. image:: images/RSM-base-case-with-first-factorial-notes.png
+	:alt:	RSM-base-case.py
+	:scale: 80
+	:width: 750px
+	:align: left
+
+To improve our profit in the optimal way we move along our estimated model's surface, in the direction of steepest ascent.  This direction is found by taking partial derivatives of the model function, ignoring the interaction term, since it is so small.
+
+.. math::
+		\dfrac{\partial \hat{y}}{\partial x_T} = b_T = 55  \qquad \qquad & \dfrac{\partial \hat{y}}{\partial x_S} = b_S = 134
+		
+This says for every :math:`b_T = 55` coded units that we move by in :math:`x_T` we should also move :math:`x_S` by :math:`b_S = 134` coded units.  The simplest way to do this is just to pick a move size in one of the variables, then change the move size of the other one.
+
+So we will choose to increase :math:`\Delta x_T = 1` coded unit, which means:
+
+.. math::
+
+                                        \Delta x_T &= 1 \\
+                        \Delta x_{T,\text{actual}} &= 5 \,\text{K} \\
+	                                    \Delta x_S &= \frac{134}{55} \Delta x_T \\
+	\text{but we know that}\qquad\qquad \Delta x_S &= \frac{x_{S,\text{actual}}}{\Delta_S / 2} \\
+	                    \Delta x_{S,\text{actual}} &= \frac{134}{55} \times 1 \times \Delta_S / 2 \\
+	                    \Delta x_{S,\text{actual}} &= \frac{134}{55} \times 1 \times 0.5 / 2  = \bf{0.61}\,\,\text{g/L}\\
+
+	*	:math:`T_5 = T_\text{baseline} + \Delta x_{T,\text{actual}}` = 325 + 5 = 330 K
+	*	:math:`S_5 = S_\text{baseline} + \Delta x_{S,\text{actual}}` = 0.75 + 0.61` = 1.36 g/L
+	
+So when we run the next experiment at these conditions and calculate the daily profit as = :math:`y_5 =` $ 669, improving quite substantially from the  baseline case.
+	
+We decide to make another move, in the same direction of steepest ascent (the same vector).  We decide to move the temperature up 5K, although we could have used a different step size:
+
+	*	:math:`T_6 = T_5 + \Delta x_{T,\text{actual}} = 330 + 5` = 335K
+	*	:math:`S_6 = S_5 + \Delta x_{S,\text{actual}}` = 1.36 + 0.61` = 1.97` g/L
+
+Again, we determine profit = :math:`y_6 =` $ 688.  It is still increasing, but not by nearly as much.  Perhaps we are starting to level off.  However, we still decide to move temperature up by another 5 K and the substrate concentration in the required ratio:
+	
+	*	:math:`T_7 = T_6 + \Delta x_{T,\text{actual}} = 335 + 5` = 340K
+	*	:math:`S_7 = S_6 + \Delta x_{S,\text{actual}}` = 1.97 + 0.61` = 2.58` g/L
+
+The profit at this point is :math:`y_7 =` $ 463.  We have gone too far.  So we return back to our *last best point*, because the surface has obviously changed, and we should refit our model with a new factorial in this neighbourhood:
+
+.. tabularcolumns:: |c||c|c||c|c||c|
+
++-----------+------------+-----------+------------+--------------+------------+
+| Experiment| T (actual) | S (actual)| T          | S            |  Profit    |
++===========+============+===========+============+==============+============+
+| 6         | 335 K      | 1.97 g/L  | 0          | 0            |  688       |
++-----------+------------+-----------+------------+--------------+------------+
+| 8         | 331 K      | 1.77 g/L  | |-|        | |-|          |  694       |
++-----------+------------+-----------+------------+--------------+------------+
+| 9         | 339 K      | 2.17 g/L  | |+|        | |-|          |  725       |
++-----------+------------+-----------+------------+--------------+------------+
+| 10        | 331 K      | 1.77 g/L  | |-|        | |+|          |  620       |
++-----------+------------+-----------+------------+--------------+------------+
+| 11        | 339 K      | 2.17 g/L  | |+|        | |+|          |  642       |
++-----------+------------+-----------+------------+--------------+------------+
+
+This time we have deciding to slightly smaller ranges in the factorial :math:`\Delta_T = 8 = (339 - 331)` K and :math:`\Delta_S = 0.4 = (2.17 - 1.77)` g/L so that we can move more slowly along the surface.
 
 .. figure:: images/RSM-base-case-combined.*
 	:align: center
@@ -1735,62 +1801,16 @@ The interaction term is small, indicating the response surface is mostly linear 
 	:scale: 100
 	:alt:	RSM-base-case.py
 
-
-Now we move along our estimated model's surface, in the direction of steepest ascent.  This direction is found by taking partial derivatives of the model function, ignoring the interaction term, as it is so small.
-
-.. math::
-		\dfrac{\partial \hat{y}}{\partial x_T} = b_T = 55  \qquad \qquad & \dfrac{\partial \hat{y}}{\partial x_S} = b_S = 134
-
-This direction is perpendicular to the straight line contours.  To move along this direction we simple move :math:`b_T` units along the :math:`x_T` direction, and :math:`b_S` units along the :math:`x_S` direction.  Note however these are in coded units.  A full step requires:
-
-	* moving :math:`T` up by :math:`b_T \times \Delta_T/2 = 55 \times 10 / 2 = 275` K
-	* moving :math:`S` up by :math:`b_S \times \Delta_S/2 = 134 \times 0.5 / 2 = 33.5` g/L
-	
-Neither of these are feasible sized moves in the context of our experimental system.  In practice we decide to move one of the factors, and then just move all the others in the same ratio.  So let's move temperature up by 5K from the baseline conditions.  The move ratio is :math:`\gamma = \tfrac{5}{275}`.
-
-	* :math:`T_5 = T_\text{baseline} + 275 \gamma = 325 + 275 \times \tfrac{5}{275} = 330` K
-	* :math:`S_5 =T_\text{baseline} + 33.5 \gamma = 0.75 + 33.5 \times \tfrac{5}{275} = 1.36` g/L
-	* When we run the next experiment and determine profit = :math:`y_5 =` $ 669.  So we've made good gains in the profit, relative to the baseline case.
-	
-We decide to make another move, in the same direction of steepest ascent.  Again move the temperature by 5K (we could have used a different step size):
-
-	* :math:`T_6 = T_5 + 275 \gamma = 335` K
-	* :math:`S_6 = S_5 + 33.5 \gamma = 1.36 + 33.5 \times \tfrac{5}{275} = 1.97` g/L
-	* Determine profit = :math:`y_6 =` $ 688.  It is still increasing, but not by nearly as much.  Perhaps we are starting to level off.
-	
-However, we still decide to move up by another 5 K:
-	
-	* :math:`T_7 = T_6 + 5 = 340` K
-	* :math:`S_7 = 1.97 + 33.5 \times \tfrac{5}{275} = 2.58` g/L
-	* Determine profit = :math:`y_7 =` $ 463.  We have gone too far.
-	
-So we return back to our last best point, because the surface has obviously changed, and we should refit our model.  Run a new factorial in this neighbourhood:
-
-.. tabularcolumns:: |c||c|c|c|
-
-+-----------+------------+--------------+------------+
-| Experiment| T          | S            |  Profit    |
-+===========+============+==============+============+
-| 8         | |-|        | |-|          |  694       |
-+-----------+------------+--------------+------------+
-| 9         | |+|        | |-|          |  725       |
-+-----------+------------+--------------+------------+
-| 10        | |-|        | |+|          |  620       |
-+-----------+------------+--------------+------------+
-| 11        | |+|        | |+|          |  642       |
-+-----------+------------+--------------+------------+
-| 6         | 0  (335 K) | 0 (1.97 g/L) |  688       |
-+-----------+------------+--------------+------------+
-
-This time we decide to let :math:`\Delta_T = 8 = (339 - 331)` K and :math:`\Delta_S = 0.4 = (2.17 - 1.77)` g/L.
-
-The promising direction seems to be increasing temperature but decreasing the substrate concentration.  A linear model from this factorial data is:
+A least squares model from the 4 factorial points (experiments 8, 9, 10, 11, run in random order), seems to show that the promising direction now is to increase temperature but decrease the substrate concentration.
 
 .. math::
 		\hat{y} &= b_0 + b_T x_T + b_S x_S + b_{TS} x_T x_S \\
 		\hat{y} &= 670 + 13 x_T - 39 x_S - 2.4 x_T x_S
 
-As before we take a step in the direction of steepest ascent of :math:`b_T` units along the :math:`x_T` direction and :math:`b_S` units along the :math:`x_S` direction.  A full step requires moving
+As before we take a step in the direction of steepest ascent of :math:`b_T` units along the :math:`x_T` direction and :math:`b_S` units along the :math:`x_S` direction.  
+
+
+
 
 	* :math:`T` up by :math:`b_T \times \Delta_T/2 = 13 \times 8 / 2 = 52` K
 	* :math:`S` up by :math:`b_S \times \Delta_S/2 = -39 \times 0.4 / 2 = -7.8` g/L
@@ -1893,7 +1913,7 @@ The general approach for response surface modelling
 	
 	.. TODO: figure here showing RSM trade-offs: two contours superimposed
 
-**Notes**
+.. rubric:: Summary
 
 	#.	In the previous sections we used factorials and fractional factorials for screening the important factors.  When we move to process optimization,  we are assuming that we have already identified the important variables.  In fact, we might find that variables that were previously important, appear unimportant as we approach the optimum.  Conversely, variables that might have been dropped out earlier, become important at the optimum.
 	
@@ -1901,9 +1921,9 @@ The general approach for response surface modelling
 	
 	#.	Many software packages provide tools that help with an RSM study.  If you would like to use R in your work, we highly recommend the ``rsm`` package in R.  You can read more about the package from `this article <http://www.jstatsoft.org/v32/i07>`_ in the Journal of Statistical Software (**32**, October 2009).
 	
-**References**
+.. rubric:: References
 
-*	A good book on this topic is by Myers and Montgomery: "`Response Surface Methodology: Process and product optimization using designed experiments <http://en.wikipedia.org/wiki/Special:BookSources/0470174463#Canada>`_".
+*	A good book on response surface methods is by Myers and Montgomery: "`Response Surface Methodology: Process and product optimization using designed experiments <http://en.wikipedia.org/wiki/Special:BookSources/0470174463#Canada>`_".
 *	A review paper citing many examples of RSM in the chemical and engineering industries is by William Hill and William Hunter: "`A Review of Response Surface Methodology: A Literature Survey <http://www.jstor.org/stable/1266632>`_", *Technometrics*, **8**, 571-590 , 1966. 
 *	An excellent overview with worked examples is given by Davies in Chapter 11 of the revised second edition of "`The design and analysis of industrial experiments <http://en.wikipedia.org/wiki/Special:BookSources/0582460530#Canada>`_"
 
@@ -1912,11 +1932,11 @@ The general approach for response surface modelling
 Evolutionary operation
 ===========================
 
-Evolutionary operation (EVOP) is a tool to help maintain the full-scale process at its optimum.  Since the process is not constant, the optimum will gradually move away from its current operating point.  Chemical processes drift due to things such as heat-exchanger fouling, build-up inside reactors and tubing, catalyst deactivation, and other slowly varying disturbances in the system.
+Evolutionary operation (EVOP) is a tool to help maintain a full-scale process at its optimum.  Since the process is not constant, the optimum will gradually move away from its current operating point.  Chemical processes drift due to things such as heat-exchanger fouling, build-up inside reactors and tubing, catalyst deactivation, and other slowly varying disturbances in the system.
 
 EVOP is an iterative hunt for the process optimum by making small perturbations to the system.  Similar to response surface methods, once every iteration is completed, the process is moved towards the optimum.  The model used to determine the move direction and levels of next operation are from full or fractional factorials, or designs that estimate curvature, like the central composite design.
 
-Because every experimental run is a run that is expected to produce saleable product (we don't want off-specification product), the range of the factors used must be small.  Replicate runs are also made to separate the signal from noise, because the optimum region is usually flat.
+Because every experimental run is a run that is expected to produce saleable product (we don't want off-specification product), the range over which each factor is varied must be small.  Replicate runs are also made to separate the signal from noise, because the optimum region is usually flat.
 
 Some examples of the success of EVOP and a review paper are in these readings:
 
@@ -1940,13 +1960,15 @@ General approach for experimentation in industry
 
 We complete this section with some guidance for experimentation in general.  The main point is that experiments are never run in one go.  You will always have more questions after the first round.  Box, Hunter and Hunter provide two pieces of guidance on this:
 
-	#.	The best time to run an experiment is after the experiment. You will discover things from the previous experiment that you wish you had considered.  
+	#.	The best time to run an experiment is after the experiment. You will discover things from the previous experiment that you wish you had considered the first time around.
 	#.	For the above reason, do not spend more than 20% to 25% of your time and budget on your first group of experiments.  Keep some time aside to add more experiments and learn more about the system.
 
 The **first phase** is usually *screening*.  Screening designs are used when developing new products and tremendous uncertainty exists; or sometimes when a system is operating so poorly that one receives the go-ahead to manipulate the operating conditions wide enough to potentially upset the process, but learn from it.
 
 	-	The ranges for each factor may also be uncertain; this is a perfect opportunity to identify suitable ranges for each factor.
-	-	You also learn how to run the experiment on this system, as the operating protocol isn't always certain ahead of time.
+	
+	-	You also learn how to run the experiment on this system, as the operating protocol isn't always certain ahead of time. It is advisable to choose your first experiment to be the center point, since the first experiment will often "fail" for a variety of reasons (you discover that you need more equipment midway, you realize the protocol isn't sufficient, *etc*). Since the center point is not required to analyze the data, it worth using that first run to learn about your system. If successful though, that center point run can be included in the least squares model.
+	
 	-	Include as many factors into as few runs as possible.  Use a saturated, resolution III design, or a Plackett and Burham design.
 	
 	-	Main effects will be extremely confounded, but this is a preliminary investigation to isolate the important effects.
@@ -1960,13 +1982,11 @@ The **second phase** is to add *sequential experiments* to the previous experime
 The **third phase** is to start *optimizing* by exploring the response surface using the important variables discovered in the prior phases.
 
 	-	Use full or half-fraction factorials to estimate the direction of steepest ascent or descent.
-	-	Once you reach the optimum, then second order effects and curvature must be estimated in the model to assess the direction of the optimum.
+	-	Once you reach the optimum, then second order effects and curvature must be added to assess the direction of the optimum.
 	
 The **fourth phase** is to *maintain the process optimum* using the concepts of evolutionary operation (EVOP). 
 
-	-	Since the process is not static, the optimum will shift in time, as raw materials change, fouling and catalyst deactivation, and other slow moving disturbances take effect.
-	-	Always hunt for the optimum using tools such as evolutionary operation.
-
+	-	An EVOP program should always be in place on a process, because raw materials change, fouling and catalyst deactivation take place, and other slow moving disturbances have an effect.  You should be always hunting for the process optimum.
 
 
 Extended topics related to designed experiments
@@ -1975,12 +1995,14 @@ Extended topics related to designed experiments
 .. p 414 Esbensen
 .. Objectives of Trygg p 2 and p5 of wikipedia article
 
+This section is just an overview  of some interesting topics, together with references to guide you to more information.
+
 Experiments with mistakes, missing values, or belatedly discovered constraints
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. BHH1: p 503
 
-Many real experiments do not go smoothly.  Once the experimenter has established their :math:`-1` and :math:`+1` levels for each variable, they invert that out to real units.  For example, if temperature was scaled as :math:`T = \dfrac{T_\text{actual} - 450\text{K}}{\text{25K}}`, then :math:`T = -1` corresponds to 425K and :math:`T= +1` corresponds to 475K.
+Many real experiments do not go smoothly.  Once the experimenter has established their :math:`-1` and :math:`+1` levels for each variable, they back that out to real units.  For example, if temperature was scaled as :math:`T = \dfrac{T_\text{actual} - 450\text{K}}{\text{25K}}`, then :math:`T = -1` corresponds to 425K and :math:`T= +1` corresponds to 475K.
 
 But if the operator mistakenly sets the temperature to :math:`T_\text{actual} = 465K`, then it doesn't quite reach the +1 level required.  This is not a wasted experiment.  Simply code this as :math:`T = \dfrac{465 - 450}{25} = 0.6`, and enter that value in the least squares model for matrix :math:`\mathbf{X}`.  Then proceed to calculate the model parameters using the standard least squares equations.  Note that the columns in the X-matrix will not be orthogonal anymore, so :math:`\mathbf{X}^T\mathbf{X}` will not be a diagonal matrix, but it will be almost diagonal.
 
@@ -1988,9 +2010,11 @@ Similarly, it might be discovered that temperature cannot be set to 475K when th
 
 Also see the section on :ref:`optimal designs <DOE-optimial-designs>` for how one can add one or more additional experiments to fix an existing bad set of experiments.
 
-The other case that happens occasionally is that samples are lost, or the final response value is missing for some reason.  Not everything is lost: recall the main effects for a full :math:`2^k` factorial are estimated :math:`k` times at each combination of the factors.  If one or more experiments have missing :math:`y` values, you can still estimate these main effects, and sometimes the interaction parameters by hand.  Furthermore, analyzing the data in a least squares model will be an undetermined system: more unknowns than equations.  You could choose to drop out higher-order interaction terms to reduce the equations to a square system: as many unknowns as equations.  Then proceed to analyze the results from the least squares model as usual.  There are actually slightly more sophisticated ways of dealing with this problem, as described by Norman Draper in "`Missing Values in Response Surface Designs <http://www.jstor.org/stable/1266729>`_", *Technometrics*, **3**, 389-398, 1961.
+The other case that happens occasionally is that samples are lost, or the final response value is missing for some reason.  Not everything is lost: recall the main effects for a full :math:`2^k` factorial are estimated :math:`k` times at :ref:`each combination of the factors <DOE-COST-vs-factorial-efficiency>`.  
 
-The above discussion illustrates clearly our preference for using the least squares model: whether the experimental design was executed accurately or not: the least squares model always helps.
+If one or more experiments have missing :math:`y` values, you can still estimate these main effects, and sometimes the interaction parameters by hand.  Furthermore, analyzing the data in a least squares model will be an undetermined system: more unknowns than equations.  You could choose to drop out higher-order interaction terms to reduce the equations to a square system: as many unknowns as equations.  Then proceed to analyze the results from the least squares model as usual.  There are actually slightly more sophisticated ways of dealing with this problem, as described by Norman Draper in "`Missing Values in Response Surface Designs <http://www.jstor.org/stable/1266729>`_", *Technometrics*, **3**, 389-398, 1961.
+
+The above discussion illustrates clearly our preference for using the least squares model: whether the experimental design was executed accurately or not: the least squares model always works, whereas the :ref:`short cut tools <DOE-two-level-factorials>` developed for perfectly executed experiments will fail.
 
 
 .. _DOE-handling-constraints:
@@ -2010,9 +2034,9 @@ A simple bioreactor example for 2 factors is shown: at high temperatures and hig
 
 Unfortunately, these 5 runs do not form an orthogonal (independent) :math:`\mathbf{X}` matrix anymore.  We have lost orthogonality.  We have also reduced the space (or volume when we have 3 or more factors) spanned by the factorial design.
 
-It is easy to find experiments that obey the constraints for 2-factor cases: run them on the corner points.  But for 3 or more factors the constraints form planes that cut through a cube.  We then use "optimal" designs to determine where to place our experiments.  A D-optimal design works well for constraint-handling because it finds the experimental points that would minimize the loss of orthogonality (i.e. they try to achieve the most orthogonal design possible).  A compact way of stating this is to maximize the determinant of :math:`\mathbf{X}^T\mathbf{X}`, which is why it is called D-optimal (it maximizes the determinant).
+It is easy to find experiments that obey the constraints for 2-factor cases: run them on the corner points.  But for 3 or more factors the constraints form planes that cut through a cube.  We then use :ref:`optimal designs <DOE-optimial-designs>` to determine where to place our experiments.  A D-optimal design works well for constraint-handling because it finds the experimental points that would minimize the loss of orthogonality (i.e. they try to achieve the most orthogonal design possible).  A compact way of stating this is to maximize the determinant of :math:`\mathbf{X}^T\mathbf{X}`, which is why it is called D-optimal (it maximizes the determinant).
 
-These designs are generated by a computer using iterative algorithms. See the D-optimal reference in the :ref:`section on optimal designs <DOE-optimial-designs>` for more information.
+These designs are generated by a computer, using iterative algorithms. See the D-optimal reference in the :ref:`section on optimal designs <DOE-optimial-designs>` for more information.
 
 .. _DOE-optimial-designs:
 
@@ -2029,35 +2053,43 @@ All an optimal design does is select the experimental points by optimizing some 
 
  	- The design region is a cube with a diagonal slice cut-off on two corner due to constraints.  What is the design that spans the maximum volume of the remaining cube?
 
-	- The experimenter wishes to estimate a non-standard model, e.g. :math:`y = b_0 + b_\mathrm{A}x_\mathrm{A} + b_\mathrm{AB}x_\mathrm{AB} + b_\mathrm{B}x_\mathrm{B} + b_\mathrm{AB}\exp^{-\tfrac{a_1x_\mathrm{A}+a_2}{b_1x_\mathrm{B}+b_2}}` for fixed values of :math:`a_1, a_2, b_1` and :math:`b_2`.
+	- The experimenter wishes to estimate a non-standard model, e.g. :math:`y = b_0 + b_\mathrm{A}x_\mathrm{A} + b_\mathrm{AB}x_\mathrm{AB} + b_\mathrm{B}x_\mathrm{B} + b_\mathrm{AB}\exp^{-\tfrac{dx_\mathrm{A}+e}{fx_\mathrm{B}+g}}` for fixed values of :math:`d, e, f` and :math:`g`.
 		
-	-	For a central composite design, or even a factorial design with constraints, where the experimenter needs to run a smaller number of experiments than required for the full design.
+	-	For a central composite design, or even a factorial design with constraints, find a smaller number of experiments than required for the full design, e.g. say 14 experiments (a number that is not a power of 2).
 	
 	-	The user might want to investigate more than 2 levels in each factor.
 	
-	-	The experimenter has already run :math:`n` experiments, but wants to add one or more additional experiments to improve  the parameter estimates (decrease the variance of the parameters).  In the case of a D-optimal design, it would find which additional experiment(s) would most increase the determinant of the :math:`\mathbf{X}^T\mathbf{X}` matrix.
+	-	The experimenter has already run :math:`n` experiments, but wants to add one or more additional experiments to improve the parameter estimates, i.e. decrease the variance of the parameters.  In the case of a D-optimal design, this would find which additional experiment(s) would most increase the determinant of the :math:`\mathbf{X}^T\mathbf{X}` matrix.
 	
 The general approach with optimal designs is 
 
-	#. The user specifies the model (i.e. the parameters).
-	#. The computer finds all possible combinations of factor levels that satisfy the constraints, including center-points.  These are now called the *candidate points* or candidate set. The user can often supplement this set with extra experiments they would like to run.
-	#. The user specifies the number of experiments they would actually like to run.
-	#. The computer algorithm finds the required number of runs that optimizes the chosen criterion. 
+	#.	The user specifies the model (i.e. the parameters).
+	
+	#.	The computer finds all possible combinations of factor levels that satisfy the constraints, including center-points.  These are now called the *candidate points* or :index:`candidate set <pair: candidate set; optimal designs>`, represented as a long list of all possible experiments. The user can add extra experiments they would like to run to this list.
+	
+	#.	The user specifies a small number of experiments they would actually like to run.
+	
+	#.	The computer algorithm finds this required number of runs by picking entries from the list so that those few runs optimize the chosen criterion. 
 
 The most common optimality criteria are:
 
 	-	A-optimal designs minimize the average variance of the parameters, i.e. minimizes :math:`\text{trace}\left\{(\mathbf{X}^T\mathbf{X})^{-1}\right\}`
+	
 	-	D-optimal designs minimize the general variance of the parameters, i.e. maximize :math:`\text{det}\left(\mathbf{X}^T\mathbf{X}\right)` 
+	
 	-	G-optimal designs minimize the maximum variance of the predictions
+	
 	-	V-optimal designs minimize the average variance of the predictions
 	
 It must be pointed out that a full factorial design, :math:`2^k` is already A-, D- G- and V-optimal.  Also notice that for optimal designs the user must specify the model required.  This is actually no different to factorial and central composite designs, where the model is implicit in the design.
 
-The algorithms used to find the subset of experiments to run are called candidate exchange algorithms.  They bring a new trial combination into the set, calculate the objective value for the criterion, and then iterate until the candidate set provides the best objective function value.
+The algorithms used to find the subset of experiments to run are called candidate exchange algorithms.  They are usually just a brute force evaluation of the objective function by trying all possible combinations.  They bring a new trial combination into the set, calculate the objective value for the criterion, and then iterate until the final candidate set provides the best objective function value.
 
 **Readings**
 
 * St. John and Draper: "`D-Optimality for Regression Designs: A Review <http://www.jstor.org/stable/1267995>`_", *Technometrics*, **17**, 15-, 1975.
+
+.. _DOE-mixture-designs:
 
 Mixture designs
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2074,14 +2106,16 @@ A mixture design is required when the factors being varied add up to 100% to for
 
 In the above figure on the right, the shaded region represents a constraint that cannot be operated in.  A D-optimal algorithm must then be used to select experiments in the remaining region.  The example is for finding the lowest cost mixture for a fruit punch, while still meeting certain taste requirements (e.g. watermelon juice is cheap, but has little taste).  The constraint represents a region where the acidity is too high.  
 
-You may not always need a mixture design for recipe experiments if you are only changing a small amount of ingredient, and your factors include only a subset of the ingredients.  For example, you are investigating the properties of a new polymer blend, made with ingredients:
+.. Clean this up and make it clearer
 
-	-	**A**: 25% or 30%
-	-	**B**: 1% or 2%
-	-	**C** and **D** make up the rest of the recipe in a consistent 40/60 ratio.
-	-	**T**: is the temperature at which the blend is extruded.
+	You may not always need a mixture design for recipe experiments if you are only changing a small amount of ingredient, and your factors include only a subset of the ingredients.  For example, you are investigating the properties of a new polymer blend, made with ingredients:
+
+		-	**A**: 25% or 30%
+		-	**B**: 1% or 2%
+		-	**C** and **D** make up the rest of the recipe in a consistent 40/60 ratio
+		-	**T**: is the temperature at which the blend is extruded, either high or low
 	
-In this case **A** and **B** are the factors investigated in the recipe, in addition to temperature **T**. One could run a mixture design at high temperature and low temperature, but the results from a full factorial in factors **A**, **B** and **T** would give similar results.
+	In this case **A** and **B** are the factors being investigated in the recipe, in addition to temperature **T**. The results from a full factorial in factors **A**, **B** and **T** (i.e. a :math:`2^3` factorial) would give similar results to a mixture design at high temperature and low temperature, but 
 
 Exercises
 ==========
