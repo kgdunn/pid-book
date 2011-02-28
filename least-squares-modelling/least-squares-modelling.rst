@@ -1345,7 +1345,7 @@ Summary of steps to build and investigate a linear model
 		abline(h=0, col="red")
 		lines(lowess(resid(model), f=0.2))   # use a shorter smoothing span
 
-#.	Plot the residuals against the fitted-values.  By definition of the least-squares model, the covariance between the residuals and the fitted values is zero.  You can verify that :math:`e^T\hat{y} = \sum_i^n{e_i\hat{y}_i} = 0`.  A fan-shape to the residuals indicates the residual variance is not constant over the range of data: you will have to use weighted least squares to counteract that.  It is better to use :ref:`studentized residuals <LS-studentized-residuals>`, rather than the actual residuals, since the actual residuals can show non-constant variance even though the errors have constant error.
+#.	Plot the residuals against the fitted-values.  By definition of the least-squares model, the covariance between the residuals and the fitted values is zero.  You can verify that :math:`e^T\hat{y} = \sum_i^n{e_i\hat{y}_i} = 0`.  A fan-shape to the residuals indicates the residual variance is not constant over the range of data: you will have to use weighted least squares to counteract that.  It is better to use :ref:`studentized residuals <LS-studentized-residuals>`, rather than the actual residuals, since the actual residuals can show non-constant variance even though the errors have constant variance.
 
 	.. That last line was from Fox's notes; cross reference it still
 

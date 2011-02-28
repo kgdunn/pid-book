@@ -2362,8 +2362,7 @@ Exercises
 			*	What does this mean in light of the fact that factor **A** was shown to be unimportant?
 		
 .. answer::
-	:fullinclude: no 
-
+	
 	#.	Using the computer code (at the end of the question), we found the complete model for all effects and interaction as:
 
 		.. math::

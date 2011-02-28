@@ -3,38 +3,38 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>latent-variable-modelling/applications-of-latent-variable-models.rst</string>
+	<string>design-analysis-experiments/design-analysis-experiments.rst</string>
 	<key>documents</key>
 	<array>
 		<dict>
 			<key>filename</key>
 			<string>q-and-a.py</string>
 			<key>lastUsed</key>
-			<date>2011-01-31T20:50:49Z</date>
+			<date>2011-02-27T20:37:20Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>contents.rst</string>
 			<key>lastUsed</key>
-			<date>2011-02-04T15:27:19Z</date>
+			<date>2011-02-28T00:27:43Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>_build/latex/PID.tex</string>
 			<key>lastUsed</key>
-			<date>2011-02-04T02:29:26Z</date>
+			<date>2011-02-27T22:30:09Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>preface.tex</string>
 			<key>lastUsed</key>
-			<date>2011-02-06T18:25:49Z</date>
+			<date>2011-02-25T20:10:53Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>conf.py</string>
 			<key>lastUsed</key>
-			<date>2011-02-18T16:21:50Z</date>
+			<date>2011-02-28T00:27:44Z</date>
 		</dict>
 		<dict>
 			<key>expanded</key>
@@ -101,100 +101,24 @@
 	<integer>229</integer>
 	<key>metaData</key>
 	<dict>
-		<key>latent-variable-modelling/applications-of-latent-variable-models.rst</key>
+		<key>design-analysis-experiments/design-analysis-experiments.rst</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>126</integer>
+				<integer>27</integer>
 				<key>line</key>
-				<integer>12</integer>
+				<integer>2471</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>latent-variable-modelling/latent-variable-modelling.rst</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>603</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>585</integer>
-		</dict>
-		<key>latent-variable-modelling/projection-to-latent-structures.rst</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>11</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>process-monitoring/process-monitoring.rst</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>190</integer>
-				<key>line</key>
-				<integer>630</integer>
-			</dict>
-			<key>columnSelection</key>
-			<false/>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>616</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>184</integer>
-				<key>line</key>
-				<integer>630</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>190</integer>
-				<key>line</key>
-				<integer>630</integer>
-			</dict>
-		</dict>
-		<key>univariate-review/univariate-review.rst</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>179</integer>
-				<key>line</key>
-				<integer>668</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>304</integer>
-			<key>firstVisibleLine</key>
-			<integer>664</integer>
+			<integer>2466</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>univariate-review/univariate-review.rst</string>
-		<string>process-monitoring/process-monitoring.rst</string>
-		<string>latent-variable-modelling/latent-variable-modelling.rst</string>
-		<string>latent-variable-modelling/projection-to-latent-structures.rst</string>
-		<string>latent-variable-modelling/applications-of-latent-variable-models.rst</string>
+		<string>design-analysis-experiments/design-analysis-experiments.rst</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
