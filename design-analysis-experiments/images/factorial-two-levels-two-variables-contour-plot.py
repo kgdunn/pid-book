@@ -44,12 +44,13 @@ Z = +18*((X-Xoff)/Xscale) + 10*Y - 7*(X-Xoff)/Xscale*(X-Xoff)/Xscale - 4*Y*Y - 7
 
 fig=plt.figure(figsize=(7,5))
 levels = np.array([10, 20, 30, 40, 50, 60, 65, 68, 70, 71, 71.5, 74, 76, 77])
+levels = np.array([10, 20, 30, 40, 50, 60, 65, 68, 70, 71, 71.5, 74, 76, 77])
 
-CS = plt.contour(X, Y, Z, levels, colors='k')
+CS = plt.contour(X, Y, Z, colors='#444444', levels=levels, linestyles='dotted',)
 plt.clabel(CS, inline=1, fontsize=10, fmt='%1.0f' )
-plt.title('Theoretical yield profiles', fontsize=16)
-plt.xlabel('Temperature [K]', fontsize=16)
-plt.ylabel('Substrate concentration [g/L]', fontsize=16)
+plt.xlabel('Temperature [K]', fontsize=14)
+plt.ylabel('Substrate concentration [g/L]', fontsize=14)
+plt.text(352, 0.08, 'Theoretical yield profiles (unknown)', fontsize=10)
 
 #from matplotlib.backends.backend_agg import FigureCanvasAgg
 #canvas=FigureCanvasAgg(fig)

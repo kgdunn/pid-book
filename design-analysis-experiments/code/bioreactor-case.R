@@ -39,21 +39,11 @@ b = solve(XtX) %*% Xty
 b
 #               [,1]
 # one         66.125
-# x1          -0.625
 # x2           9.000
 # x3           4.000
 # x4          -3.875
-# x1*x2       -0.500
-# x1*x3       -0.500
-# x1*x4        0.875
 # x2*x3        6.375
-# x2*x4        1.250
 # x3*x4       -5.250
-# x1*x2*x3     1.125
-# x1*x2*x4    -1.250
-# x1*x3*x4     0.250
-# x2*x3*x4    -0.125
-# x1*x2*x3*x4  0.125
 
 N = length(b)
 b.mod = abs(b[2:N])
@@ -62,7 +52,8 @@ b.mod = b.mod[idx]
 labels=colnames(X)[2:N]
 labels.mod = labels[idx]
 
-bitmap('../images/bioreactor-pareto-plot.png', type="png256", width=8, height=8, res=300, pointsize=14)
+bitmap('../images/bioreactor-pareto-plot.png', type="png256", width=8, 
+        height=8, res=300, pointsize=14)
 library(lattice)
 barchart(as.matrix(b.mod), ylab = "Effect", xlab="Magnitude of effect", 
          scales=list(y=list(labels=labels.mod)), col=0)
@@ -120,4 +111,3 @@ y <- y[rows]
 XtX <- t(X) %*% X
 Xty <- t(X) %*% y
 b = solve(XtX) %*% Xty
-b

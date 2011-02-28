@@ -961,26 +961,26 @@ Variance of estimates from the COST approach vs factorial approach
 
 Finally, we end this section on factorials by illustrating their efficiency.  Contrast the two cases: COST and the full factorial approach.  For this analysis we define the main effect simply as the difference between the high and low value (normally we divide through by 2, but the results still hold).  Define the variance of the measured :math:`y` value as :math:`\sigma_y^2`.
 
-	.. figure:: images/comparison-of-variances.png
-		:align: center
+	.. image:: images/comparison-of-variances.png
+		:align: left
 		:width: 750px
 		:scale: 70
 	
 	.. tabularcolumns:: |l|l|
 	
-	+--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
-	| COST approach                                                            | Fractional factorial approach                                                                                  |
-	+==========================================================================+================================================================================================================+
-	| The main effect of :math:`T` is :math:`b_T = y_2 - y_1`                  | The main effect is :math:`b_T = 0.5(y_2 - y_1) + 0.5(y_4 - y_3)`                                               |
-	+--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
-	| Then the variance is :math:`\mathcal{V}(b_T) = \sigma_y^2 + \sigma_y^2`  | The variance here is :math:`\mathcal{V}(b_T) = 0.25(\sigma_y^2 + \sigma_y^2) + 0.25(\sigma_y^2 + \sigma_y^2)`  |
-	+--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
-	| So :math:`\mathcal{V}(b_T) = 2\sigma_y^2`                                | And :math:`\mathcal{V}(b_T) = \sigma_y^2`                                                                      |
-	+--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
+| COST approach                                                            | Fractional factorial approach                                                                                  |
++==========================================================================+================================================================================================================+
+| The main effect of :math:`T` is :math:`b_T = y_2 - y_1`                  | The main effect is :math:`b_T = 0.5(y_2 - y_1) + 0.5(y_4 - y_3)`                                               |
++--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
+| The variance is :math:`\mathcal{V}(b_T) = \sigma_y^2 + \sigma_y^2`       | The variance is :math:`\mathcal{V}(b_T) = 0.25(\sigma_y^2 + \sigma_y^2) + 0.25(\sigma_y^2 + \sigma_y^2)`       |
++--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
+| So :math:`\mathcal{V}(b_T) = 2\sigma_y^2`                                | And :math:`\mathcal{V}(b_T) = \sigma_y^2`                                                                      |
++--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
 
-	Not only does the factorial experiment estimate the effects with much greater precision (lower variance), but the COST approach cannot estimate the effect of interactions, which is incredibly important, especially as systems approach optima which are on ridges - see the contour plots earlier in this section for an example.
-	
-	Factorial designs make each experimental observation work twice.
+Not only does the factorial experiment estimate the effects with much greater precision (lower variance), but the COST approach cannot estimate the effect of interactions, which is incredibly important, especially as systems approach optima which are on ridges - see the contour plots earlier in this section for an example.
+
+Factorial designs make each experimental observation work twice.
 	
 Summary so far
 ~~~~~~~~~~~~~~~~~
@@ -2163,7 +2163,7 @@ Exercises
 		.. tabularcolumns:: |l|C|p{10em}|C|
 	
 		.. csv-table:: 
-		   :header: Date, Free shipping over ..., Profile required before transaction, Total sales made that day
+		   :header: Date, Free shipping over ..., Profile required before transaction, Total sales made
 		   :widths: 10, 30, 30, 30
 
 				05 January 2010,	$30, Yes, $ 3275
@@ -2469,11 +2469,11 @@ Exercises
 
 		So these estimates from the half-fraction are comparable to the estimates from the full fraction.
 	
-	**Computer code for all questions**
+	**R code for this question**
 
 	.. literalinclude:: code/bioreactor-case.R
 			:language: s
-			:lines: 23-64,66-68,70-
+			:lines: 23-
 			
 .. question::
 
