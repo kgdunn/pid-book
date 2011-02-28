@@ -795,9 +795,13 @@ Furthermore, there are better ways to spend our experimental budget than running
 
 There are 2 main ways we can determine if a main effect or interaction is significant.
 
+.. raw:: latex
+
+	\newpage
+
 .. _DOE-Pareto-plot:
 
-Pareto-plot
+Pareto plot
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. Note:: This is a make-shift approach that is only applicable if all the factors are centered and scaled.
