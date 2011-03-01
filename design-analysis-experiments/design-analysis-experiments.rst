@@ -1555,9 +1555,15 @@ Resolution V designs
 	
 The above guidance about using resolution IV and V designs for characterization and optimization is general - there are many cases where a satisfactory optimization can be performed with a resolution IV experiment.
 
-Refer to a table such as shown on page 272 of Box, Hunter and Hunter (2nd edition), or page 410 of the first edition, to visualize the trade-off between design resolution, number of factors, number of runs required and the aliasing pattern.
+Use this table to visualize the trade-off between design resolution, number of factors (:math:`k`), the number of runs required, and the aliasing pattern.
 
-.. TODO: insert figure from BHH, p 272 here
+.. figure:: images/BHH-DOE-grid.png
+	:alt:	images/BHH-DOE-grid.svg
+	:scale: 80
+	:width: 550px
+	:align: left
+
+Adapted from Box, Hunter and Hunter (2nd edition, p 272), and (1st edition, p 410).
 
 .. _DOE-saturated-screening-designs:
 
