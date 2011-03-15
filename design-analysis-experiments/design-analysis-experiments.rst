@@ -2654,7 +2654,7 @@ Exercises
 	+-----------+------------+--------------+------------+------------+---------------------+
 	| 3         | 5          | 2            |  420 K     | 12 kg      | 179 g               |
 	+-----------+------------+--------------+------------+------------+---------------------+
-	| 4         |  3         | 1            |  440 K     | 12 kg      | 448 g               |
+	| 4         | 3          | 1            |  440 K     | 12 kg      | 448 g               |
 	+-----------+------------+--------------+------------+------------+---------------------+
 	| 5         | 1          | 1            |  430 K     | 11 kg      | 196 g               |
 	+-----------+------------+--------------+------------+------------+---------------------+
@@ -2676,3 +2676,63 @@ Exercises
 
 	#.	As you move along the response surface, performing new experiments to approach the optimum, how do you know when you are reaching an optimum? How does your experimental strategy change? Please give specific details, and any model equations that might help illustrate your answer.
 
+.. answer::
+
+	#.	Experiments 5 and 6 from the standard order might have been included as baseline experiments, since they appear at the center point for factors **A** and **B**.
+	
+		These two runs give 2 degrees of freedom as well, which helps with estimating confidence intervals on the least squares parameters.
+		
+		Also, since one of them was performed first, it could have been used to establish the experimental workflow. In other words, the experiment was used to see how to run the experiment the first time.  If things go horribly wrong, then this data point can just be discarded.  If we had started with a corner of the factorial, we would have had to repeat that experiment if it failed, or had a duplicate experiment at the one corner, but not the others.
+		
+		Finally, it could also have been used to assess the effect of the operators, since runs 5 and 6 are identical, though in this case runs 5 and 6 are on different days, so it could be the day-to-day being measured here.
+		
+	#.	Yes.  If we consider the day effect to be a new factor, **C**, then we could runs 1 to 4 as a half fraction in 3 factors.  The least disruptive generator would be **C = AB**.  Using this we can see that runs 1 and 4 should be run on one day, and runs 2 and 3 on the next day: this is what was done.  The center points can be run on either day, and in this case one was run on each day.
+	
+		Using this generator confounds the interaction effect, **AB** with the day-to-day (and operator-to-operator) effect.  We can never clear up that confounding with this set of experiments.
+	
+	#.	The model would have the form:
+	
+		.. math::
+		
+			y = b_0 + b_A x_A + b_B x_B + b_{AB}x_{AB} + e
+			
+		The matrices and vectors to solves this least squares model are:
+		
+		.. math::
+		
+			.. math::
+
+				\begin{bmatrix} y_1\\ y_2\\ y_3 \\ y_4 \\ y_5 \\ y_6 \end{bmatrix} &=
+				\begin{bmatrix} 1 & -1 & -1 & +1\\ 
+				                1 & +1 & -1 & -1\\
+				                1 & -1 & +1 & -1\\
+				                1 & +1 & +1 & +1\\
+				                1 & 0  & 0  &  0\\
+				                1 & 0  & 0  &  0\\
+				\end{bmatrix}
+				\begin{bmatrix} b_0 \\ b_T \\ b_S \\ b_{TS} \end{bmatrix} +
+				\begin{bmatrix} e_1\\ e_2\\ e_3 \\ e_4 \end{bmatrix}\\
+				\begin{bmatrix} 69\\ 60\\ 64\\ 53 \end{bmatrix} &=
+				\begin{bmatrix} 1 & -1 & -1 & +1\\ 
+				                1 & +1 & -1 & -1\\
+				                1 & -1 & +1 & -1\\
+				                1 & +1 & +1 & +1\\
+				\end{bmatrix}
+				\begin{bmatrix} b_0 \\ b_T \\ b_S \\ b_{TS} \end{bmatrix} +
+				\begin{bmatrix} e_1\\ e_2\\ e_3 \\ e_4 \end{bmatrix}\\
+				\mathbf{y} &= \mathbf{X} \mathbf{b} + \mathbf{e} \\
+				\mathbf{X}^T\mathbf{X} &=
+				\begin{bmatrix} 4   & 0   & 0   & 0\\ 
+				                0   & 4   & 0   & 0\\
+				                0   & 0   & 4   & 0\\
+				                0   & 0   & 0   & 4
+				\end{bmatrix} \\
+				\mathbf{X}^T\mathbf{y} &= \begin{bmatrix} 246 \\ -20 \\ -12 \\ -2\end{bmatrix}\\
+				\mathbf{b} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y} &= 
+				\begin{bmatrix} 1/4 & 0   & 0   & 0\\ 
+				                0   & 1/4 & 0   & 0\\
+				                0   & 0   & 1/4 & 0\\
+				                0   & 0   & 0   & 1/4
+				\end{bmatrix}
+				\begin{bmatrix} 246 \\ -20 \\ -12 \\ -2\end{bmatrix}=
+				\begin{bmatrix} 61.5 \\ -5 \\ -3 \\ -0.5 \end{bmatrix}\\
