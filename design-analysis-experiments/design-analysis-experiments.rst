@@ -229,8 +229,8 @@ References and readings
 -	**Strongly recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, chapters 5 and 6 with topics from chapters 11, 12, 13 and 15.
 -	`A web tutorial on designed experiments <http://www.chemometrics.se/index.php?option=com_content&task=view&id=18&Itemid=27>`_
 -	Søren Bisgaard: `Must a Process Be in Statistical Control Before Conducting Designed Experiments <http://dx.doi.org/10.1080/08982110701826721>`_, with discussion (`part 1 <http://dx.doi.org/10.1080/08982110701866198>`_, `part 2 <http://dx.doi.org/10.1080/08982110801894892>`_, `part 3 <http://dx.doi.org/10.1080/08982110801890148>`_, `part 4 <http://dx.doi.org/10.1080/08982110801924509>`_, `part 5 <http://dx.doi.org/10.1080/08982110801894900>`_ and a `rejoinder <http://dx.doi.org/10.1080/08982110801973118>`_), 
--	George Box and  J. Stuart Hunter: "The :math:`2^{k-p}` Fractional Factorial Designs - Part I" (`link <http://www.jstor.org/stable/1266725>`_), *Technometrics*, **3**, 311-351, 1961.
--	George Box and  J. Stuart Hunter: "The :math:`2^{k-p}` Fractional Factorial Designs - Part II" (`link <http://www.jstor.org/stable/1266553>`_), *Technometrics*, **3**, 449 - 458, 1961.
+-	George Box and  J. Stuart Hunter: "The :math:`2^{k-p}` `Fractional Factorial Designs - Part I <http://www.jstor.org/stable/1266725>`_", *Technometrics*, **3**, 311-351, 1961.
+-	George Box and  J. Stuart Hunter: "The :math:`2^{k-p}` `Fractional Factorial Designs - Part II <http://www.jstor.org/stable/1266553>`_", *Technometrics*, **3**, 449 - 458, 1961.
 -	George Box: `Evolutionary Operation: A Method for Increasing Industrial Productivity <http://www.jstor.org/stable/2985505>`_", *Journal of the Royal Statistical Society* (Applied Statistics), **6**, 81 - 101, 1957.
 -	William G. Hunter and J. R. Kittrell, "`Evolutionary Operation: A Review <http://www.jstor.org/stable/1266686>`_", *Technometrics*, **8**, 389-397, 1966.
 -	Heather Tye: "`Application of Statistical Design of Experiments Methods in Drug Discovery <http://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_", *Drug Discovery Today*, **9**, 485-491, 2004.
@@ -805,18 +805,20 @@ The data are from a plastics molding factory which must treat its waste before d
 
 #.	Compute the main effects and interactions using matrix algebra and a least squares model.
 
-	\begin{bmatrix} 5\\30\\6\\33\\4\\3\\5\\4 \end{bmatrix} &=
-	\begin{bmatrix} +1 & -1 & -1 & -1 & +1 & +1 & +1 & -1\\ 
-	                +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1\\
-	                +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1\\
-	                +1 & +1 & +1 & -1 & +1 & -1 & -1 & -1\\
-	                +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1\\
-	                +1 & +1 & -1 & +1 & -1 & +1 & -1 & -1\\
-	                +1 & -1 & +1 & +1 & -1 & -1 & +1 & -1\\
-	                +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1\\
-	\end{bmatrix}
-	\begin{bmatrix} b_0 \\ b_C \\ b_T \\ b_{S} \\ b_{CT} \\ b_{CS} \\ b_{TS} \\ b_{CTS}  \end{bmatrix} \\
-	\mathbf{y} &= \mathbf{X} \mathbf{b} 
+	.. math::
+
+		\begin{bmatrix} 5\\30\\6\\33\\4\\3\\5\\4 \end{bmatrix} &=
+		\begin{bmatrix} +1 & -1 & -1 & -1 & +1 & +1 & +1 & -1\\ 
+		                +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1\\
+		                +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1\\
+		                +1 & +1 & +1 & -1 & +1 & -1 & -1 & -1\\
+		                +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1\\
+		                +1 & +1 & -1 & +1 & -1 & +1 & -1 & -1\\
+		                +1 & -1 & +1 & +1 & -1 & -1 & +1 & -1\\
+		                +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1\\
+		\end{bmatrix}
+		\begin{bmatrix} b_0 \\ b_C \\ b_T \\ b_{S} \\ b_{CT} \\ b_{CS} \\ b_{TS} \\ b_{CTS}  \end{bmatrix} \\
+		\mathbf{y} &= \mathbf{X} \mathbf{b} 
 	
 #.	Use computer software to build the following model and verify that:
 
@@ -1602,6 +1604,8 @@ Resolution V designs
 The above guidance about using resolution IV and V designs for characterization and optimization is general - there are many cases where a satisfactory optimization can be performed with a resolution IV experiment.
 
 Use this table to visualize the trade-off between design resolution, number of factors (:math:`k`), the number of runs required, and the aliasing pattern.
+
+.. _DOE_design_trade_off_BHH_272:
 
 .. figure:: images/BHH-DOE-grid.png
 	:alt:	images/BHH-DOE-grid.svg
@@ -2581,6 +2585,7 @@ Exercises
 
 	If you are using R, you can use the ``rbind(...)`` or ``cbind(...)`` functions to build up your :math:`\mathbf{X}` matrix row-by-row or column-by-column.  The equivalent of meshgrid in R is the ``expand.grid(...)`` function.  Please see the `R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ that shows how to generate surface plots in R.
 
+
 .. question::
 
 	A full :math:`2^3` factorial was run as shown:
@@ -2611,6 +2616,18 @@ Exercises
 	*	If instead experiment 2 was run at (A,B,C) = (45%, 200, Larry), and experiment 3 run at (A, B, C) = (35%, 400, Larry); what would be the D-optimal objective function value?
 	*	What is the ratio between the two objective function values?
 
+.. answer::
+
+	*	The D-optimal objective function is to maximize the determinant of the design matrix, i.e. :math:`\text{det}\left(\mathbf{X}^T\mathbf{X}\right)`.
+	
+		Since this is a full factorial in 3 factors, with all runs perfectly at the :math:`-1` and :math:`+1` levels, then the determinant is the product of the diagonal entries and is :math:`8^8 = 16777216`.  In MATLAB, this would be ``det(eye(8) * 8)``.
+		
+	*	Assuming the columns in :math:`\mathbf{X}` are in the order of [intercept, **A**, **B**, **C**, **AB**, **AC**, **BC**, **ABC**], then row 2 in matrix :math:`\mathbf{X}` would be :math:`[1, 0.5, -1.35, -1, -0.675, -0.5, 1.35, 0.675]` and row 3 would be :math:`[1, -0.5, 0.867, -1, -0.4333, 0.5, -0.867, 0.4333]`
+	
+		The determinant with these two rows replaced in now :math:`6.402 \times 10^6`.
+	
+	*	The ratio is :math:`\frac{6.402 \times 10^6}{16777216} = 0.38`, a fairly large reduction in the objective.
+
 .. question::
 
 	In your start-up company you are investigating treatment options for reducing the contamination level of soil that has been soaked with hydrocarbon products.  You have two different heaps of contaminated soil from two different sites. You expect your treatment method to work on any soil type though.
@@ -2622,17 +2639,49 @@ Exercises
 	#.	What is the projectivity and resolution of your design?
 
 .. answer::
-	:fullinclude: no 
+
+	#.	When given a constraint on the number of experiments, we would like to examine the highest number of factors, but with the lowest tradeoff in the associated resolution.  
 	
+		There are 6 factors to examine.  As stated, we would like our treatment method to work on *any* contaminated soil sample, however we have testing soil only from 2 sites.  This is a blocking variable, since we might expect differences due to the site where the soil came from, but we want it to have the least possible effect on our results.
 	
-	* fractional factorial in 6 factors
-	* 1 additional blocking factor
-	* :math:`2^{7-4}` design most appropriate
-	* **D=AB**, **E=AC**, **F=BD**, **G=ABC=ABCDEF** (also valid)
-	* Resolution = 3
-	* Projectivity = 2
-	* run 9: could be omitted to save money; run as the first trial to figure out how to run experiments; or run as a centerpoint : use 50%/50% blend of two heaps, or run as a replicate after the 8 experiments, or use run 9 in case one of the experiments gave an unexpected value
+		An alternative way to view this problem is to assume that soil is an extra factor in the experiment, but when choosing the generators, we will associate it with the highest level of confounding possible.  This latter interpretation makes it easier to use the table in the notes.
 	
+		Using the :ref:`table in the notes <DOE_design_trade_off_BHH_272>`, and looking down the column with 7 factors, we are constrained to the cell with 8 experiments, since the next cell down has 16 experiments, which is too many.  So a :math:`2^{7-4}_\text{III}` design would be most appropriate.
+	
+		We would write out our usual :math:`2^3` full factorial, then assign **D=AB**, **E=AC**, **F=BC** and **G=ABC**. We will let that last factor be the heap of soil factor, as it has the highest level of confounding.
+	
+		We can run a 9th experiment.  In this case, I would put all variables at the center point (if they are continuous), and use a 50/50 blend of the two soil samples.  Also, I would run this experiment first, to iron out any experimental protocol issues that I will didn't think of; rather discover them on this first run, which can be discarded in the analysis later on.  
+	
+		Alternatively, if I'm confident with my experimental procedure, I can choose to do experiment 9 last, if at all, as a replicate of any interesting previous experiment that gives an unexpected (good or bad) result.
+	
+		A table for the experiments would be:
+	
+		.. tabularcolumns:: |c||c|c|c||c|c|c|c|c| 
+	
+		+-----------+------------+-----------+------------+------------+------------+------------+------------+
+		| Experiment| A          | B         |  C         |  D=AB      |  E=AC      |  F=BC      |  G=ABC     |
+		+===========+============+===========+============+============+============+============+============+
+		| 1         | |-|        | |-|       |  |-|       |  |+|       |  |+|       |  |+|       |  Heap 1    |
+		+-----------+------------+-----------+------------+------------+------------+------------+------------+
+		| 2         | |+|        | |-|       |  |-|       |  |-|       |  |-|       |  |+|       |  Heap 2    |
+		+-----------+------------+-----------+------------+------------+------------+------------+------------+
+		| 3         | |-|        | |+|       |  |-|       |  |-|       |  |+|       |  |-|       |  Heap 2    |
+		+-----------+------------+-----------+------------+------------+------------+------------+------------+
+		| 4         | |+|        | |+|       |  |-|       |  |+|       |  |-|       |  |-|       |  Heap 1    |
+		+-----------+------------+-----------+------------+------------+------------+------------+------------+
+		| 5         | |-|        | |-|       |  |+|       |  |+|       |  |-|       |  |-|       |  Heap 2    |
+		+-----------+------------+-----------+------------+------------+------------+------------+------------+
+		| 6         | |+|        | |-|       |  |+|       |  |-|       |  |+|       |  |-|       |  Heap 1    |
+		+-----------+------------+-----------+------------+------------+------------+------------+------------+
+		| 7         | |-|        | |+|       |  |+|       |  |-|       |  |-|       |  |+|       |  Heap 1    |
+		+-----------+------------+-----------+------------+------------+------------+------------+------------+
+		| 8         | |+|        | |+|       |  |+|       |  |+|       |  |+|       |  |+|       |  Heap 2    |
+		+-----------+------------+-----------+------------+------------+------------+------------+------------+
+		| 9         | 0          | 0         |  0         |  0         |  0         |  0         |  50/50     |
+		+-----------+------------+-----------+------------+------------+------------+------------+------------+
+	
+	#.	The design has resolution = :math:`R = 3`, from the table in the notes.  The projectivity is :math:`R-1 = 2`.
+
 	
 .. question::
 
@@ -2661,7 +2710,6 @@ Exercises
 	| 6         | 6          | 2            |  430 K     | 11 kg      | 215 g               |
 	+-----------+------------+--------------+------------+------------+---------------------+
 
-
 	#.	What might have been the reason(s) for including experiments 5 and 6?
 
 	#.	Was the blocking for a potential day-to-day effect implemented correctly in the design?  Please show your calculations.
@@ -2679,28 +2727,26 @@ Exercises
 .. answer::
 
 	#.	Experiments 5 and 6 from the standard order might have been included as baseline experiments, since they appear at the center point for factors **A** and **B**.
-	
+
 		These two runs give 2 degrees of freedom as well, which helps with estimating confidence intervals on the least squares parameters.
-		
-		Also, since one of them was performed first, it could have been used to establish the experimental workflow. In other words, the experiment was used to see how to run the experiment the first time.  If things go horribly wrong, then this data point can just be discarded.  If we had started with a corner of the factorial, we would have had to repeat that experiment if it failed, or had a duplicate experiment at the one corner, but not the others.
-		
+
+		Also, since one of them was performed first, it could have been used to establish the experimental workflow. In other words, the experiment was used to see how to run the experiment the first time.  If things go horribly wrong, then this data point can just be discarded.  If we had started with a corner of the factorial, we would have had to repeat that experiment if it failed, or if it succeeded, had a duplicate experiment at the one corner but not the others.
+
 		Finally, it could also have been used to assess the effect of the operators, since runs 5 and 6 are identical, though in this case runs 5 and 6 are on different days, so it could be the day-to-day being measured here.
-		
+
 	#.	Yes.  If we consider the day effect to be a new factor, **C**, then we could runs 1 to 4 as a half fraction in 3 factors.  The least disruptive generator would be **C = AB**.  Using this we can see that runs 1 and 4 should be run on one day, and runs 2 and 3 on the next day: this is what was done.  The center points can be run on either day, and in this case one was run on each day.
-	
+
 		Using this generator confounds the interaction effect, **AB** with the day-to-day (and operator-to-operator) effect.  We can never clear up that confounding with this set of experiments.
-	
+
 	#.	The model would have the form:
-	
+
 		.. math::
-		
+
 			y = b_0 + b_A x_A + b_B x_B + b_{AB}x_{AB} + e
-			
+
 		The matrices and vectors to solves this least squares model are:
-		
+
 		.. math::
-		
-			.. math::
 
 				\begin{bmatrix} y_1\\ y_2\\ y_3 \\ y_4 \\ y_5 \\ y_6 \end{bmatrix} &=
 				\begin{bmatrix} 1 & -1 & -1 & +1\\ 
@@ -2710,29 +2756,55 @@ Exercises
 				                1 & 0  & 0  &  0\\
 				                1 & 0  & 0  &  0\\
 				\end{bmatrix}
-				\begin{bmatrix} b_0 \\ b_T \\ b_S \\ b_{TS} \end{bmatrix} +
-				\begin{bmatrix} e_1\\ e_2\\ e_3 \\ e_4 \end{bmatrix}\\
-				\begin{bmatrix} 69\\ 60\\ 64\\ 53 \end{bmatrix} &=
+				\begin{bmatrix} b_0 \\ b_A \\ b_B \\ b_{AB} \end{bmatrix} +
+				\begin{bmatrix} e_1\\ e_2\\ e_3 \\ e_4 \\ e_5 \\ e_6 \end{bmatrix}\\
+				\begin{bmatrix} 89\\ 268\\ 179\\ 448 \\ 196 \\ 215 \end{bmatrix} &=
 				\begin{bmatrix} 1 & -1 & -1 & +1\\ 
 				                1 & +1 & -1 & -1\\
 				                1 & -1 & +1 & -1\\
 				                1 & +1 & +1 & +1\\
+				                1 & 0  & 0  &  0\\
+				                1 & 0  & 0  &  0\\
 				\end{bmatrix}
-				\begin{bmatrix} b_0 \\ b_T \\ b_S \\ b_{TS} \end{bmatrix} +
-				\begin{bmatrix} e_1\\ e_2\\ e_3 \\ e_4 \end{bmatrix}\\
-				\mathbf{y} &= \mathbf{X} \mathbf{b} + \mathbf{e} \\
-				\mathbf{X}^T\mathbf{X} &=
-				\begin{bmatrix} 4   & 0   & 0   & 0\\ 
-				                0   & 4   & 0   & 0\\
-				                0   & 0   & 4   & 0\\
-				                0   & 0   & 0   & 4
-				\end{bmatrix} \\
-				\mathbf{X}^T\mathbf{y} &= \begin{bmatrix} 246 \\ -20 \\ -12 \\ -2\end{bmatrix}\\
-				\mathbf{b} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y} &= 
-				\begin{bmatrix} 1/4 & 0   & 0   & 0\\ 
-				                0   & 1/4 & 0   & 0\\
-				                0   & 0   & 1/4 & 0\\
-				                0   & 0   & 0   & 1/4
-				\end{bmatrix}
-				\begin{bmatrix} 246 \\ -20 \\ -12 \\ -2\end{bmatrix}=
-				\begin{bmatrix} 61.5 \\ -5 \\ -3 \\ -0.5 \end{bmatrix}\\
+				\begin{bmatrix}  b_0 \\ b_A \\ b_B \\ b_{AB} \end{bmatrix} +
+				\begin{bmatrix} e_1\\ e_2\\ e_3 \\ e_4 \\ e_5 \\ e_6\end{bmatrix}\\
+				\mathbf{y} &= \mathbf{X} \mathbf{b} + \mathbf{e}
+
+	#.	Using the above matrices we can calculate :math:`\mathbf{b} = \left(\mathbf{X'X}\right)^{-1}\mathbf{X'y}`, even by hand!
+
+		.. math::
+
+			\mathbf{X'X} & = \begin{bmatrix} 6 & 0 & 0 & 0 \\ 0 & 4 & 0 & 0 \\ 0 & 0 & 4 & 0 \\ 0 & 0 & 0 & 4 \end{bmatrix} \\
+			\mathbf{X'y} & = \begin{bmatrix} 89 + 268 + 179 + 448 + 196 + 215 \\
+											-89 + 268 - 179 + 448 \\
+											-89 - 268 + 179 + 448 \\
+											+89 - 268 - 179 + 448  \end{bmatrix}  =
+							\begin{bmatrix} 1395 \\  448 \\ 270 \\ 90 \end{bmatrix} \\
+			\mathbf{b}  & = \left(\mathbf{X'X}\right)^{-1}\mathbf{X'y} = \begin{bmatrix} 232.5 \\ 112 \\ 67.5 \\  22.5 \end{bmatrix}
+
+	#.	The above least squares solution shows the two main effects are large: 112 and 67.5 for a one unit change (coded units).  Relative to these two, the interaction term of :math:`b_{AB} = 22.5` is small. This implies the day-to-day effect (which is confounded with the operator effect) is small.
+
+	#.	A new run in **A** and **B** would be at *lower* values of **A** and **B**, since we want to reduce the side product.  We will make a move from the baseline point by reducing factor **A** by 1 unit, and then ratio that with the necessary change in **B** to go down the direction of steepest descent:
+
+		.. math::
+
+		                                        \Delta x_A &= -1 \\
+		                        \Delta x_{A,\text{actual}} &= -10 \,\text{K} \\
+			                                    \Delta x_B &= \frac{b_B}{b_A} \Delta x_A = \frac{67.5}{112} \Delta x_A \\
+			\text{but we know that}\qquad\qquad \Delta x_B &= \frac{x_{B,\text{actual}}}{\Delta_B / 2} \\
+			                    \Delta x_{B,\text{actual}} &= \frac{b_B}{b_A} \Delta x_A \times \Delta_B / 2 \,\,\text{by equating previous 2 lines}  \\
+			                    \Delta x_{B,\text{actual}} &= \frac{67.5}{112} \times (-1) \times 2 \text{kg} / 2\\
+			                    \Delta x_{B,\text{actual}} &= \bf{-0.60}\,\,\text{kg}\\
+
+		Note that :math:`\Delta_B \neq \Delta x_B`.  The former is the range for factor **B**, the latter is the amount by which we change factor **B** from the baseline. So the new settings for the next experiment would be at:
+
+		*	**A** = ``430  - 10`` = 420 K
+		*	**B** = :math:`11 - 0.60` = 10.4 kg
+
+	#.	An optimum is present in a factorial experiment if you notice that:
+
+		*	interaction terms start to become large,
+		*	the center point in the factorial has higher/lower values than any of the corner points (remember that with an optimum you are the peak or the valley)
+		*	curvature terms, i.e. quadratic terms, in the model are larger than the main effect.
+
+		The experimental strategy changes by included axial points into the factorial design, allowing one to calculate the quadratic terms in the model, such as a :math:`b_{AA} x_A^2` term for the quadratic effect of factor **A**.
