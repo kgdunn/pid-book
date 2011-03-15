@@ -276,7 +276,7 @@ Here's another example from Box's book: consider the negative slope least square
 	:width: 750px
 	:align: left
 	
-Figure adapted from Box, Hunter and Hunter, chapter 14, 1st edition.
+Figure adapted from Box, Hunter and Hunter, chapter 14 (1\ :sup:`st` ed) or chapter 10 (2\ :sup:`nd` ed).
 
 So the true effect of pressure on yield is non-existent, it is only appears in the data because of the operating policy.  That is why happenstance data cannot be relied on to imply cause-and-effect.   An experiment in which the pressure is changed from low to high, performed on the same batch of raw materials (i.e. at constant impurity level), will quickly reveal that there is no causal relationship effect between pressure and yield.  Furthermore, experiments should be performed in random order, further breaking any relationship with other non-causal factors.  Only the truly causal effect will remain in experimental data, *correlated* effects will be broken: they show up as having close to zero correlation in the DOE data.
 
@@ -404,7 +404,7 @@ You will often come across the thinking that we should change one variable at a 
 	
 		.. COST is good to learn about the direction of the effect between 2 variables, but not for optimizing a process.
 
-  Consider a bioreactor where we are looking at producing a particular enzyme.  The yield is known to be affected by these 7 variables: dissolved oxygen level, agitation rate, reaction duration, feed substrate concentration and type, and reactor temperature. For illustration purposes let's assume that temperature and feed substrate concentration are chosen, as they have the greatest effect on yield.
+Consider a bioreactor where we are producing a particular enzyme.  The yield is known to be affected by these 7 variables: dissolved oxygen level, agitation rate, reaction duration, feed substrate concentration and type, and reactor temperature. For illustration purposes let's assume that temperature and feed substrate concentration are chosen, as they have the greatest effect on yield.
 
 The base operating point is 346K with a feed substrate concentration of 1.5 g/L (point marked with a circle) and a yield in the region of 63%.
 
@@ -423,7 +423,9 @@ So our final operating point chosen is marked on the plot with a hexagon, at 330
 
 However the problem with this approach is that it leaves undiscovered value behind.  Changing one variable at a single time (COST) leads you into thinking you've reached the optimum, when all you've done in fact is trap yourself at a sub-optimal solution.
 
-Designed experiments, on the other hand, provide an efficient mechanism to learn about a system, often in fewer runs, and avoid misleading conclusions, such as from the COST approach.
+Furthermore, notice that we would have got a completely different outcome had we decided to first change substrate concentration, :math:`S` and then change temperature, :math:`T`.  We would have likely landed closer to the optimum.  This is very unsatisfactory: we cannot use methods to optimize our processes that depend on the order of experiments!
+
+Designed experiments, on the other hand, provide an efficient mechanism to learn about a system, often in fewer runs, and avoid misleading conclusions, such as from the COST approach. Designed experiments are always run in random order -- as we will presently see -- and we will get the same result, no matter the order.
 
 .. _DOE-two-level-factorials:
 
@@ -438,7 +440,7 @@ In this section we learn how, and why we should change more than one variable at
 	
 	-	they are often a building block for more complex designs
 
-Most often we have two or more factors that affect our response variable, :math:`y`.  In this section we consider the case when these factors are at two levels.  Some examples: operate at low and high pH, long operating times or short times, use catalyst A or B, use mixing system A or B.  The general guidance is to choose the low and high values at the extreme levels of normal operation.  It is not wise to use the lowest and highest values that each factor could possibly have: that will likely be too extreme.
+Most often we have two or more factors that affect our response variable, :math:`y`.  In this section we consider the case when these factors are at two levels.  Some examples: operate at low and high pH, long operating times or short times, use catalyst A or B, use mixing system A or B.  The general guidance is to choose the low and high values at the edges of normal operation.  It is not wise to use the lowest and highest values that each factor could possibly have: that will likely be too extreme.
 	
 Let's take a look at the mechanics of factorial designs by using an example where the conversion, :math:`y`, is affected by two factors: temperature, :math:`T`, and substrate concentration, :math:`S`.  
 
@@ -489,7 +491,7 @@ The range over which they will be varied is given in the table.  This range was 
 	| 4         | 1     | |+|           | |+|             |  53          |
 	+-----------+-------+---------------+-----------------+--------------+
 	
-	:math:`\ast` Experiments were performed in random order, in this case we happened to run experiment 4 first experiment 3 was run last.
+	:math:`\ast` Experiments were performed in random order, in this case we happened to run experiment 4 first, and experiment 3 was run last.
 
 #.	For simple systems you can visualize the design and results as shown here.  This is known as a *cube plot*.
 
@@ -753,24 +755,68 @@ The data are from a plastics molding factory which must treat its waste before d
 	| 8         | 8     | B             | 100             | 400             | 4               |
 	+-----------+-------+---------------+-----------------+-----------------+-----------------+
 
-..	TODO: complete this section
-
 #.	Draw a geometric figure that illustrates the data from this experiment.
 
 #.	Calculate the main effect for each factor by hand.
 
-	*	:math:`C` effect = :math:`6.25`
-	*	:math:`T` effect = :math:`0.75`
-	*	:math:`S` effect = :math:`-7.25`
+	*	**C effect**: There are 4 estimates of :math:`C = \displaystyle \frac{(+25) + (+27) + (-1) + (-1)}{4} = \frac{50}{4} = \bf{12.5}`
+	*	**T effect**: There are 4 estimates of :math:`T = \displaystyle \frac{(+1) + (+3) + (+1) + (+1)}{4} = \frac{6}{4} = \bf{1.5}`
+	*	**S effect**: There are 4 estimates of :math:`S = \displaystyle \frac{(-27) + (-1) + (-29) + (-1)}{4} = \frac{58}{4} = \bf{-14.5}`
 
-#.	Calculate the 3 two-factor interactions (2fi) by hand, and the single 3 factor interaction (3fi).
+#.	Calculate the 3 two-factor interactions (2fi) by hand
 
-	*	:math:`CT` effect = :math:`-0.25`
-	*	:math:`TS` effect = :math:`-0.25`
-	*	:math:`CS` effect = :math:`6.75`
-	*	:math:`CTS` effect = :math:`-0.25`
+	*	**CT interaction**: There are 2 estimates of :math:`CT`.  Recall that interactions are calculated as the half difference going from high to low.  Consider the change in :math:`C` when
+
+		-	:math:`T_\text{high}` (at :math:`S` high) = 4 - 5 = -1
+		-	:math:`T_\text{low}` (at :math:`S` high) = 3 - 4 = -1
+		-	First estimate = [(-1) - (-1)]/2 = 0
+		-	:math:`T_\text{high}` (at :math:`S` low) = 33 - 6 = +27
+		-	:math:`T_\text{low}` (at :math:`S` low) = 30 - 5 = +25
+		-	Second estimate = [(+27) - (+25)]/2 = +1
+	
+		-	Average **CT** interaction = (0 + 1)/2 = **0.5**
+		-	You can interchange :math:`C` and :math:`T` and still get the same result.
+
+	*	**CS interaction**: There are 2 estimates of :math:`CS`.   Consider the change in :math:`C` when
+
+			-	:math:`S_\text{high}` (at :math:`T` high) = 4 - 5 = -1
+			-	:math:`S_\text{low}` (at :math:`T` high) = 33 - 6 = +27
+			-	First estimate = [(-1) - (+27)]/2 = -14
+			-	:math:`S_\text{high}` (at :math:`T` low) = 3 - 4 = -1
+			-	:math:`S_\text{low}` (at :math:`T` low) = 30 - 5 = +25
+			-	Second estimate = [(-1) - (+25)]/2 = -13
+
+			-	Average **CS** interaction = (-13 - 14)/2 = **-13.5**
+			-	You can interchange :math:`C` and :math:`S` and still get the same result.	
+		
+	*	**ST interaction**: There are 2 estimates of :math:`ST`: (-1 + 0)/2 = **-0.5**, calculate in the same way as above.
+
+#.	Calculate the single 3 factor interaction (3fi).
+	
+	There is only a single estimate of :math:`CTS`:
+
+		-	:math:`CT` effect at high :math:`S` = 0
+		-	:math:`CT` effect at low :math:`S` = +1
+		-	:math:`CTS` interaction = ((0) - (+1)) / 2 = **-0.5**
+
+		-	You can calculate this also by considering the :math:`CS` effect at the two level of :math:`T`
+		-	Or, you can calculate this by considering the :math:`ST` effect at the two level of :math:`C`.
+		-	All 3 approaches give the same result.
 
 #.	Compute the main effects and interactions using matrix algebra and a least squares model.
+
+	\begin{bmatrix} 5\\30\\6\\33\\4\\3\\5\\4 \end{bmatrix} &=
+	\begin{bmatrix} +1 & -1 & -1 & -1 & +1 & +1 & +1 & -1\\ 
+	                +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1\\
+	                +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1\\
+	                +1 & +1 & +1 & -1 & +1 & -1 & -1 & -1\\
+	                +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1\\
+	                +1 & +1 & -1 & +1 & -1 & +1 & -1 & -1\\
+	                +1 & -1 & +1 & +1 & -1 & -1 & +1 & -1\\
+	                +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1\\
+	\end{bmatrix}
+	\begin{bmatrix} b_0 \\ b_C \\ b_T \\ b_{S} \\ b_{CT} \\ b_{CS} \\ b_{TS} \\ b_{CTS}  \end{bmatrix} \\
+	\mathbf{y} &= \mathbf{X} \mathbf{b} 
 	
 #.	Use computer software to build the following model and verify that:
 
@@ -1521,7 +1567,7 @@ So this section is concerned with the trade-offs as we go from a full factorial 
 
 There is a quick way to calculate if main effects will be confounded with 2fi or 3fi without having to go through the process shown in this section.  This is described next when we look at design resolution.
 
-Design Resolution
+Design resolution
 ~~~~~~~~~~~~~~~~~~~
 
 The :index:`resolution <pair: design resolution; experiments>` of a design is given by the length of the shortest word in the defining relation.  We normally write the resolution as a subscript to the factorial design.  Some examples:
@@ -2365,10 +2411,8 @@ Exercises
 		-	Report their numeric values.
 		-	Compare your parameters from this half-fraction (8 runs) to those from the full factorial (16 runs).  Was much lost by running the half fraction?
 		-	What was the resolution of the half-fraction?
-		-	What is the projectivity of this half-fraction?		
+		-	What is the projectivity of this half-fraction? And what does this mean in light of the fact that factor **A** was shown to be unimportant?
 		-	Factor **C** was found to be an important variable from the half-fraction; it had a significant coefficient in the linear model, but it was aliased with **ABD**.  Obviously in this problem, the foldover set of experiments to run would be the *other half-fraction*.  But we showed a way to de-alias a main effect.  Use that method to show that the other 8 experiments to de-alias factor **C** would just be the other 8 experiment not included in your first half-fraction.
-		-	What is the projectivity of this half-fraction?
-			*	What does this mean in light of the fact that factor **A** was shown to be unimportant?
 		
 .. answer::
 	:fullinclude: no 

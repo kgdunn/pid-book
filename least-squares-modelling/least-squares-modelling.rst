@@ -1500,7 +1500,7 @@ Notice that our matrix definition, :math:`\mathcal{V}\{\mathbf{b}\} = \left( \ma
 
 .. rubric:: Example
 
-Let :math:`x_1 = [1, 3, 4, 8, 8, 9]`, and :math:`x_2 = [9, 7, 5, 3, 1, 2]`, and :math:`y = [3, 5, 6, 8, 7, 10]`.  By inspection, the :math:`x_1` and :math:`x_2` variables are negatively correlated, and the :math:`x_1` and :math:`y` variables are positively correlated (also positive covariance).  Refer to the definition of covariance in equation :eq:`definition-covariance`.
+Let :math:`x_1 = [1, 3, 4, 7, 9, 9]`, and :math:`x_2 = [9, 9, 6, 3, 1, 2]`, and :math:`y = [3, 5, 6, 8, 7, 10]`.  By inspection, the :math:`x_1` and :math:`x_2` variables are negatively correlated, and the :math:`x_1` and :math:`y` variables are positively correlated (also positive covariance).  Refer to the definition of covariance in equation :eq:`definition-covariance`.
 
 After mean centering the data we have that :math:`x_1 = [-4.5, -2.5, -1.5 , 1.5 , 3.5,  3.5]`, and :math:`x_2 = [4,  4,  1, -2, -4, -3]` and :math:`y = [-3.5, -1.5, -0.5,  1.5,  0.5,  3.5]`.  So in matrix form:
 
@@ -1551,10 +1551,10 @@ Interpretation of the model coefficients
 
 Let's take a look at the case where :math:`y = b_1x_1 + b_2x_2`.  We can plot this on a 3D plot, with axes of :math:`x_1`, :math:`x_2` and :math:`y`:
 
-	.. image:: images/least-squares-two-x-variables.png
-		:width: 500px
-		:align: center
-		:scale: 55
+.. image:: images/least-squares-two-x-variables.png
+	:width: 500px
+	:align: left
+	:scale: 55
 
 The points are used to fit the plane by minimizing the sum of square distances shown by vertical lines from each point to the plane.  The interpretation of the slope coefficients for :math:`b_1` and :math:`b_2` is **not the same** as for the case with just a single |x| variable.
 

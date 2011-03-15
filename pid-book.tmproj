@@ -3,20 +3,20 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>design-analysis-experiments/design-analysis-experiments.rst</string>
+	<string>conf.py</string>
 	<key>documents</key>
 	<array>
 		<dict>
 			<key>filename</key>
 			<string>q-and-a.py</string>
 			<key>lastUsed</key>
-			<date>2011-02-27T20:37:20Z</date>
+			<date>2011-03-02T17:01:50Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>contents.rst</string>
 			<key>lastUsed</key>
-			<date>2011-02-28T18:07:16Z</date>
+			<date>2011-03-07T14:38:49Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -34,7 +34,9 @@
 			<key>filename</key>
 			<string>conf.py</string>
 			<key>lastUsed</key>
-			<date>2011-02-28T18:07:17Z</date>
+			<date>2011-03-14T03:07:52Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>expanded</key>
@@ -101,24 +103,40 @@
 	<integer>229</integer>
 	<key>metaData</key>
 	<dict>
-		<key>design-analysis-experiments/design-analysis-experiments.rst</key>
+		<key>conf.py</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>339</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>793</integer>
+				<integer>155</integer>
 			</dict>
+			<key>columnSelection</key>
+			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>784</integer>
+			<integer>148</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>26</integer>
+				<key>line</key>
+				<integer>156</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>155</integer>
+			</dict>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>design-analysis-experiments/design-analysis-experiments.rst</string>
+		<string>conf.py</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>

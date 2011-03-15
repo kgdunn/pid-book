@@ -1875,7 +1875,7 @@ Exercises
 	One of the question we posed at the start of this chapter was: "`Here are the yields <http://datasets.connectmv.com/info/batch-yields>`_ from a batch bioreactor system for the last 3 years (300 data points; we run a new batch about every 3 to 4 days).
 
 	#.	What sort of distribution do the yield data have?
-	#.	A recorded yield value was less than 60%, what are the chances of that occurring?  Express your answer as: *there's a 1 in :math:`X` chance* of it occurring.
+	#.	A recorded yield value was less than 60%, what are the chances of that occurring?  Express your answer as: *there's a 1 in n chance* of it occurring.
 	#.	Which assumptions do you have to make for the second part of this question?
 	
 	.. From assignment 2, 2011
@@ -1943,13 +1943,14 @@ Exercises
 
 .. question::
 
-	.. _univariate-CO2-question:
-
     A major aim of many engineers is/will be to reduce the carbon footprint of their company's high-profile products. Next week your boss wants you to evaluate a new raw material that requires 2.6 :math:`\dfrac{\text{kg CO}_2}{\text{kg product}}` less than the current material, but the final product's brittleness must be the same as achieved with the current raw material.  This is a large reduction in :math:`\text{CO}_2`, given your current production capacity of 51,700 kg of product per year.  Manpower and physical constraints prevent you from running a randomized test; you don't have a suitable database of historical data either.
 
+	.. _univariate-CO2-question:
+	
     One idea you come up with is to use to your advantage the fact that your production line has three parallel reactors, TK104, TK105, and TK107.  They were installed at the same time, they have the same geometry, the same instrumentation, *etc*; you have pretty much thought about every factor that might vary between them, and are confident the 3 reactors are identical. Typical production schedules split the raw material between the 3 reactors.  Data `on the website <http://datasets.connectmv.com/info/brittleness-index>`_ contain the brittleness values from the three reactors for the past few runs on the current raw material.
 
-    #.	Which two reactors would you pick to run your comparative trial on next week?
+	#.	Which two reactors would you pick to run your comparative trial on next week?
+	
 	#.	Repeat your calculations assuming pairing.
 
 .. answer::

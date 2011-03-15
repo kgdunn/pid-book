@@ -13,7 +13,7 @@ summary(model1)
 summary(model.rm)
 
 
-bitmap('/Users/kevindunn/Statistics course/Course notes/Correlation, covariance and least squares/images/influence-of-outliers.png', type="png256", width=16, height=16/3, res=300, pointsize=14)
+bitmap('influence-of-outliers.png', type="png256", width=16, height=16/3, res=300, pointsize=14)
 layout(matrix(c(1,2,3), 1, 3))
 par(mar=c(4.2, 5, 1.5, 0.5))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=1.7, cex.main=1.8, cex.sub=1.8, cex.axis=1.8)
@@ -46,7 +46,7 @@ abline(coef(model.rm), lwd=2, lty=2)
 legend(x=10, y=20, legend=c("Model using all data", "Model omitting square point"), col=c("black", "black"), lty=c(1, 2), lwd=c(2, 2))
 dev.off()
 
-bitmap('/Users/kevindunn/Statistics course/Course notes/Correlation, covariance and least squares/images/hatvalue-of-outliers.png', type="png256", width=16, height=16/3, res=300, pointsize=14)
+bitmap('hatvalue-of-outliers.png', type="png256", width=16, height=16/3, res=300, pointsize=14)
 layout(matrix(c(1,2), 1, 2))
 par(mar=c(4.2, 5, 1.5, 0.5))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=1.7, cex.main=1.8, cex.sub=1.8, cex.axis=1.8)
@@ -81,7 +81,7 @@ text(x, y=hbar3*3, expression(3 %*% bar(h)), pos=1)
 dev.off()
 
 
-bitmap('/Users/kevindunn/Statistics course/Course notes/Correlation, covariance and least squares/images/studentized-residuals.png', type="png256", width=16, height=16/3, res=300, pointsize=14)
+bitmap('studentized-residuals.png', type="png256", width=16, height=16/3, res=300, pointsize=14)
 layout(matrix(c(1,2,3), 1, 3))
 par(mar=c(4.2, 5, 1.5, 0.5))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=1.7, cex.main=1.8, cex.sub=1.8, cex.axis=1.8)
@@ -102,7 +102,7 @@ points(N+1, rs3[N+1], pch=22, cex=1.5, lwd=2)
 dev.off()
 
 
-bitmap('/Users/kevindunn/Statistics course/Course notes/Correlation, covariance and least squares/images/cooks-distance.png', type="png256", width=16, height=16/3, res=300, pointsize=14)
+bitmap('cooks-distance.png', type="png256", width=16, height=16/3, res=300, pointsize=14)
 layout(matrix(c(1,2,3), 1, 3))
 par(mar=c(4.2, 5, 1.5, 0.5))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=1.7, cex.main=1.8, cex.sub=1.8, cex.axis=1.8)
