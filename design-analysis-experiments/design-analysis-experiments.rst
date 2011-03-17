@@ -824,7 +824,7 @@ The data are from a plastics molding factory which must treat its waste before d
 
 	.. math:: 
 	
-		y = 11.25 + 6.25x_C + 0.75x_T -7.25x_S + 0.25 x_{CT} -6.75 x_{CS} -0.25 x_{TS} - 0.25 x_{CTS}
+		y = 11.25 + 6.25x_C + 0.75x_T -7.25x_S + 0.25 x_C x_T -6.75 x_C x_S -0.25 x_T x_S - 0.25 x_C x_T x_S
 
 Learning notes:
 
@@ -1503,7 +1503,7 @@ So this section is concerned with the trade-offs as we go from a full factorial 
 		
 			Record the experimental results for :math:`y` in the last column.
 		
-		#.	So the 4 generators we used are **I = ABD**, **I = ACE**, **I = BCF** and **G = ABCG**.  The generators such as **ABD** and **ACE** are called *"words"*.  
+		#.	So the 4 generators we used are **I = ABD**, **I = ACE**, **I = BCF** and **I = ABCG**.  The generators such as **ABD** and **ACE** are called *"words"*.  
 		
 		#.	The *defining relationship* is a sequence of :index:`words <pair: words; experiments>` which are all equal to **I**. The :index:`defining relation <pair: defining relationship; experiments>` is found from the product of all possible generator combinations, and then simplified to be written as **I = ....**.  
 	
