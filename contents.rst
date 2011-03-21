@@ -5,7 +5,7 @@ Process Improvement using Data
 
 .. toctree::
 
-	latent-variable-modelling/index
+	design-analysis-experiments/index
 
 .. PLS section also include PCR
 	
@@ -13,6 +13,6 @@ Process Improvement using Data
 	univariate-review/index
 	process-monitoring/index
 	least-squares-modelling/index
-	design-analysis-experiments/index
 	
+	latent-variable-modelling/index
 	

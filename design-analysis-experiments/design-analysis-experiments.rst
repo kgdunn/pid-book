@@ -4,6 +4,8 @@
 	^^^^^
 	-----
 	
+	On Yates (factorial) analysis: http://www.itl.nist.gov/div898/handbook/eda/section3/eda35i.htm
+	
 	DOE RSM with colour:
 	
 	
@@ -797,10 +799,10 @@ The data are from a plastics molding factory which must treat its waste before d
 
 		-	:math:`CT` effect at high :math:`S` = 0
 		-	:math:`CT` effect at low :math:`S` = +1
-		-	:math:`CTS` interaction = ((0) - (+1)) / 2 = **-0.5**
+		-	:math:`CTS` interaction = [(0) - (+1)] / 2 = **-0.5**
 
-		-	You can calculate this also by considering the :math:`CS` effect at the two level of :math:`T`
-		-	Or, you can calculate this by considering the :math:`ST` effect at the two level of :math:`C`.
+		-	You can calculate this also by considering the :math:`CS` effect at the two levels of :math:`T`
+		-	Or, you can calculate this by considering the :math:`ST` effect at the two levels of :math:`C`.
 		-	All 3 approaches give the same result.
 
 #.	Compute the main effects and interactions using matrix algebra and a least squares model.
@@ -1607,7 +1609,7 @@ Use this table to visualize the trade-off between design resolution, number of f
 
 .. _DOE_design_trade_off_BHH_272:
 
-.. figure:: images/BHH-DOE-grid.png
+.. image:: images/BHH-DOE-grid.png
 	:alt:	images/BHH-DOE-grid.svg
 	:scale: 80
 	:width: 550px
@@ -1619,6 +1621,8 @@ Adapted from Box, Hunter and Hunter (2nd edition, p 272), and (1st edition, p 41
 
 Saturated designs for screening
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. TODO: you don't really described at all what a saturated design is
 
 A :index:`saturated design <pair: saturated design; experiments>` can be likened to a well trained doctor asking you a few, but very specific, questions to identify a disease or problem.  On the other hand, if you sit there just tell the doctor all your symptoms, you may or may not get an accurate diagnosis.  Designed experiments, like visiting this doctor, shortens the time required to identify the major effects in a system, and to do so accurately.
 
@@ -2808,3 +2812,4 @@ Exercises
 		*	curvature terms, i.e. quadratic terms, in the model are larger than the main effect.
 
 		The experimental strategy changes by included axial points into the factorial design, allowing one to calculate the quadratic terms in the model, such as a :math:`b_{AA} x_A^2` term for the quadratic effect of factor **A**.
+		

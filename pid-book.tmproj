@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>currentDocument</key>
+	<string>design-analysis-experiments/design-analysis-experiments.rst</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -14,7 +16,7 @@
 			<key>filename</key>
 			<string>contents.rst</string>
 			<key>lastUsed</key>
-			<date>2011-03-15T21:28:25Z</date>
+			<date>2011-03-18T00:40:57Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -41,8 +43,6 @@
 			<date>2011-03-15T15:06:08Z</date>
 		</dict>
 		<dict>
-			<key>expanded</key>
-			<true/>
 			<key>name</key>
 			<string>data-visualization</string>
 			<key>regexFolderFilter</key>
@@ -71,8 +71,6 @@
 			<string>latent-variable-modelling</string>
 		</dict>
 		<dict>
-			<key>expanded</key>
-			<true/>
 			<key>name</key>
 			<string>least-squares-modelling</string>
 			<key>regexFolderFilter</key>
@@ -81,8 +79,6 @@
 			<string>least-squares-modelling</string>
 		</dict>
 		<dict>
-			<key>expanded</key>
-			<true/>
 			<key>name</key>
 			<string>process-monitoring</string>
 			<key>regexFolderFilter</key>
@@ -91,8 +87,6 @@
 			<string>process-monitoring</string>
 		</dict>
 		<dict>
-			<key>expanded</key>
-			<true/>
 			<key>name</key>
 			<string>univariate-review</string>
 			<key>regexFolderFilter</key>
@@ -104,7 +98,71 @@
 	<key>fileHierarchyDrawerWidth</key>
 	<integer>229</integer>
 	<key>metaData</key>
-	<dict/>
+	<dict>
+		<key>contents.rst</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>32</integer>
+				<key>line</key>
+				<integer>7</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>design-analysis-experiments/design-analysis-experiments.rst</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>28</integer>
+				<key>line</key>
+				<integer>1621</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>1598</integer>
+		</dict>
+		<key>latent-variable-modelling/applications-of-latent-variable-models.rst</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>101</integer>
+				<key>line</key>
+				<integer>10</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>latent-variable-modelling/latent-variable-modelling.rst</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>603</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+	</dict>
+	<key>openDocuments</key>
+	<array>
+		<string>contents.rst</string>
+		<string>latent-variable-modelling/latent-variable-modelling.rst</string>
+		<string>latent-variable-modelling/applications-of-latent-variable-models.rst</string>
+		<string>design-analysis-experiments/design-analysis-experiments.rst</string>
+	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
