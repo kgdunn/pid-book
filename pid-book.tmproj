@@ -16,13 +16,13 @@
 			<key>filename</key>
 			<string>contents.rst</string>
 			<key>lastUsed</key>
-			<date>2011-03-18T00:40:57Z</date>
+			<date>2011-03-20T22:30:07Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>drafts.rst</string>
 			<key>lastUsed</key>
-			<date>2011-03-15T23:43:23Z</date>
+			<date>2011-03-20T22:32:15Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -40,7 +40,7 @@
 			<key>filename</key>
 			<string>conf.py</string>
 			<key>lastUsed</key>
-			<date>2011-03-15T15:06:08Z</date>
+			<date>2011-03-21T19:19:15Z</date>
 		</dict>
 		<dict>
 			<key>name</key>
@@ -99,12 +99,26 @@
 	<integer>229</integer>
 	<key>metaData</key>
 	<dict>
+		<key>conf.py</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>25</integer>
+				<key>line</key>
+				<integer>27</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
 		<key>contents.rst</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>32</integer>
+				<integer>34</integer>
 				<key>line</key>
 				<integer>7</integer>
 			</dict>
@@ -118,14 +132,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>28</integer>
+				<integer>77</integer>
 				<key>line</key>
-				<integer>1621</integer>
+				<integer>1826</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>1598</integer>
+			<integer>1821</integer>
 		</dict>
 		<key>latent-variable-modelling/applications-of-latent-variable-models.rst</key>
 		<dict>
@@ -162,6 +176,7 @@
 		<string>latent-variable-modelling/latent-variable-modelling.rst</string>
 		<string>latent-variable-modelling/applications-of-latent-variable-models.rst</string>
 		<string>design-analysis-experiments/design-analysis-experiments.rst</string>
+		<string>conf.py</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>

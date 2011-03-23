@@ -1835,20 +1835,20 @@ So we will choose to increase :math:`\Delta x_T = 1` coded unit, which means:
 	                    \Delta x_{S,\text{actual}} &= \frac{134}{55} \times 1 \times \Delta_S / 2\,\, \text{by equating previous 2 lines} \\
 	                    \Delta x_{S,\text{actual}} &= \frac{134}{55} \times 1 \times 0.5 / 2  = \bf{0.61}\,\,\text{g/L}\\
 
-*	:math:`T_5 = T_\text{baseline} + \Delta x_{T,\text{actual}}` = 325 + 5 = 330 K
-*	:math:`S_5 = S_\text{baseline} + \Delta x_{S,\text{actual}}` = 0.75 + 0.61` = 1.36 g/L
+*	:math:`T_5 = T_\text{baseline} + \Delta x_{T,\text{actual}} = 325 + 5 = 330` K
+*	:math:`S_5 = S_\text{baseline} + \Delta x_{S,\text{actual}} = 0.75 + 0.6` = 1.36`` g/L
 	
 So when we run the next experiment at these conditions. The daily profit is :math:`y_5 =` $ 669, improving quite substantially from the  baseline case.
 	
 We decide to make another move, in the same direction of steepest ascent, i.e. along the vector that points in the :math:`\frac{134}{55}` direction.  We  move the temperature up 5K, although we could have used a larger or smaller step size if we wanted:
 
-	*	:math:`T_6 = T_5 + \Delta x_{T,\text{actual}} = 330 + 5` = 335K
-	*	:math:`S_6 = S_5 + \Delta x_{S,\text{actual}}` = 1.36 + 0.61` = 1.97 g/L
+	*	:math:`T_6 = T_5 + \Delta x_{T,\text{actual}} = 330 + 5 = 335` K
+	*	:math:`S_6 = S_5 + \Delta x_{S,\text{actual}} = 1.36 + 0.61 = 1.97` g/L
 
 Again, we determine profit at :math:`y_6 =` $ 688.  It is still increasing, but not by nearly as much.  Perhaps we are starting to level off.  However, we still decide to move temperature up by another 5 K and increase the substrate concentration in the required ratio:
 	
-	*	:math:`T_7 = T_6 + \Delta x_{T,\text{actual}}` = 335 + 5 = 340K
-	*	:math:`S_7 = S_6 + \Delta x_{S,\text{actual}}` = 1.97 + 0.61 = 2.58 g/L
+	*	:math:`T_7 = T_6 + \Delta x_{T,\text{actual}} = 335 + 5 = 340` K
+	*	:math:`S_7 = S_6 + \Delta x_{S,\text{actual}} = 1.97 + 0.61 = 2.58` g/L
 
 The profit at this point is :math:`y_7 =` $ 463.  We have gone too far as profit has dropped off.  So we return back to our *last best point*, because the surface has obviously changed, and we should refit our model with a new factorial in this neighbourhood:
 
