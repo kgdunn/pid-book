@@ -1657,7 +1657,7 @@ Use a least squares model to estimate the coefficients in the model:
 
 .. math::
 	\mathbf{y} &= \mathbf{Xb} \\
-	\mathbf{b} &= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}\mathbf{y}
+	\mathbf{b} &= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y}
 
 where :math:`\mathbf{b} = [b_0, b_A, b_B, b_C, b_D, b_E, b_F, b_G]`.  The matrix :math:`\mathbf{X}` is derived from the preceding table, but with an added column of 1's for the intercept term.  Notice that the :math:`\mathbf{X}^T\mathbf{X}` matrix will be diagonal.  It is straightforward to calculate the  solution vector (by hand!) as :math:`\mathbf{b} = [70.7, -2.3, 0.1, -2.8, -0.4, 0.5, -0.4, -1.7]`. 
 
