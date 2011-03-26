@@ -438,11 +438,11 @@ There are five main areas where engineers use large quantities of data.
 The types of data engineers deal with now
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When industrial manufacturing and chemical engineering started to develop around the 1920's to 1950's, data collected from a process were, at most, just a handful of columns.
+When industrial manufacturing and chemical engineering started to develop around the 1920's to 1950's, data collected from a process were, at most, just a handful of columns.  These data were collected manually and often at considerable expense.
 
-The "classical" tools required to visualize and processes these datasets are :ref:`scatter plots <visualization_scatter_plots>`, :ref:`time-series plots <visualization_time_series>`, :ref:`Shewhart charts <monitoring_shewhart_chart>` and :ref:`EWMA charts <monitoring-EWMA>` for process monitoring, and :ref:`multiple linear regression <LS-multiple-X-MLR>` (MLR) least-squares models; all the tools which we have already learned about so far.
+The "classical" tools required to visualize and understand these datasets are :ref:`scatter plots <visualization_scatter_plots>`, :ref:`time-series plots <visualization_time_series>`, :ref:`Shewhart charts <monitoring_shewhart_chart>` and :ref:`EWMA charts <monitoring-EWMA>` for process monitoring, and :ref:`multiple linear regression <LS-multiple-X-MLR>` (MLR) least-squares models; all the tools which we have already learned about so far.
 
-If we have to represent this data as a single matrix, called |X|, we would have each row in |X| containing values from an *object* of some sort.  These rows, or *observations* could be a collection of measurements at a particular point in time, various properties of a final product, or a raw material from a supplier.  The columns in |X| are the values recorded for each observation.  We call these the *variables*. 
+We will represent any data set as a matrix, called |X|, where each row in |X| contains values taken from an *object* of some sort. These rows, or *observations* could be a collection of measurements at a particular point in time, various properties on a sample of final product, or a sample of raw material from a supplier. The columns in |X| are the values recorded for each observation.  We call these the *variables* and there are :math:`K` of them.
 
 	.. figure:: images/X-matrix-long-and-thin.png
 		:alt:	images/X-matrix-long-and-thin.svg
@@ -452,32 +452,32 @@ If we have to represent this data as a single matrix, called |X|, we would have 
 
 These data sets from the 1950's frequently had many more rows than columns, because it was expensive and time-consuming to measure additional columns.  The choice of which columns to measure was carefully thought out, so that they didn't unnecessarily duplicate the same measurement.  As a result:
 
-	* the columns of X were often independent
+	* the columns of X were often independent, with little or no overlapping information
 	* the variables were measured in a controlled environment, with a low amount of error
 
-These data sets meet all the assumptions required to use the above-mentioned tools, especially least squares modelling.  Data sets that engineers currently deal with though can be of any configuration with both large and small :math:`N` and large and small :math:`K`, but more likely we have many columns for each observation.
+These data sets meet all the assumptions required to use the so-called "classical" tools, especially least squares modelling.  Data sets that engineers currently deal with though can be of any configuration with both large and small :math:`N` and large and small :math:`K`, but more likely we have many columns for each observation.
 
 **Small N and small K**
 
-	These cases are mostly for when we have expensive measurements, and they are hard to obtain frequently.  Methods to visualize and analyze these data will work well: scatterplots, linear regression, *etc*.
+	These cases are mostly for when we have expensive measurements, and they are hard to obtain frequently.  Classical methods to visualize and analyze these data always work well: scatterplots, linear regression, *etc*.
 	
 **Small N and large K**
 
-	This case is common for laboratory instrumentation, particularly spectroscopic devices. In the recent past it was hard to obtain frequent measurements, but advances now allow for routine collection of large quantities of data.  This is especially true with near-infrared probes embedded at-line.  These probes record a spectral response at around 1000 to 2000 different wavelengths each second.  The data are represented in |X| using one wavelength per column and each sample appears in a row. The illustration here shows data from :math:`N=460` samples, with data recorded every 2 nm (:math:`K=650`).
+	This case is common for laboratory instrumentation, particularly spectroscopic devices. In recent years we are routinely collecting large quantities of data.  A typical example is with near-infrared probes embedded at-line.  These probes record a spectral response at around 1000 to 2000 different wavelengths.  The data are represented in |X| using one wavelength per column and each sample appears in a row. The illustration here shows data from :math:`N=460` samples, with data recorded every 2 nm (:math:`K=650`).
 	
-	.. figure:: images/pharma-spectra.png
+	.. image:: images/pharma-spectra.png
 		:alt:	images/pharma-spectra.py
 		:scale: 70
 		:width: 750px
 		:align: center
 
-	Obviously not all the columns in this matrix are important; some regions are more useful than others, and columns immediately adjacent to each other are extremely similar.
+	Obviously not all the columns in this matrix are important; some regions are more useful than others, and columns immediately adjacent to each other are extremely similar (non-independent).
 	
-	Notable here is that regression methods cannot deal with this case when :math:`K > N`, since we are then estimating more unknowns than we have data for.
+	An ordinary least squares regression model, where we would like to predict some :math:`y`-variable from these spectral data, cannot be calculated when :math:`K>N`, since we are then estimating more unknowns than we have observations for. A common strategy used to deal with non-independence is to select only a few columns (wavelengths in the spectral example) so that :math:`K < N`. The choice of columns is subjective, so a better approach is required, such as :ref:`projection to latent structures <LVM_PLS>`.
 	
 **Large N and small K**
 
-	This was the most common case in the past, and still holds for many situation today; except that both :math:`N` and :math:`K` have increased.  A current-day refinery would record one or two observations each second on around 2000 to 5000 variables (called tags); generating in the region of 50 to 100 Mb of data per second.
+	A current-day chemical refinery easily records about 2 observations (rows) per second on around 2000 to 5000 variables (called tags); generating in the region of 50 to 100 Mb of data per second.
 	
 	For example, a modest size distillation column would have about 35 temperature measurements, 5 to 10 flow rates, 10 or so pressure measurements, and then about 5 more measurements derived from these recorded values.
 	
@@ -486,36 +486,42 @@ These data sets meet all the assumptions required to use the above-mentioned too
 		:scale: 45
 		:width: 500px
 		:align: center
+		
+	An `industrial distillation example <http://datasets.connectmv.com/info/distillation-tower>`_ is given on the data set website with :math:`K=27`, from a small column in Canada.
 
 **N approximately equal to K**
 	
-	The case of squarish matrices is obtained in systems where the variables are computed, obtained from laboratory robotics, or there just happen to be as roughly the same number of attributes as samples.
+	The case of squarish matrices mostly occurs by chance: we just happen to have roughly the same number of variables as observations.
 
 **X and Y matrices**
 
-	This situation arises when we would like to predict one or more variables from another group of variables.  We have already seen this data structure in the least squares section where :math:`M = 1`, but more generally we would like to predict several values from the same data in |X|.  We will investigate this data structure in-depth in the sections on PCR and PLS.
+	This situation arises when we would like to predict one or more variables from another group of variables.  We have already seen this data structure in the :ref:`least squares section <LS-multiple-X-MLR>` where :math:`M = 1`, but more generally we would like to predict several :math:`y`-values from the same data in |X|.  
 	
-	.. figure:: images/X-and-Y-matrices.png
+	
+	.. image:: images/X-and-Y-matrices.png
 		:alt:	images/X-and-Y-matrices.svg
 		:scale: 30
 		:width: 500px
 		:align: center
+		
+	The "classical" solution to this problem is to build and maintain :math:`M` different least squares models. We will see in the section on  :ref:`projection to latent structures <LVM_PLS>` that we can build a single regression model. The sections on :ref:`principal component regression <LVM_PCR>` also investigates the above data structure, but for single :math:`y`-variables.	
 
 **3D data sets and higher dimensions**	
 
-	These data tables are becoming very common, especially in the past 10 years.  The illustration shows the data structure for a single image, taken at a point in time.  There are 6 wavelengths, and the spatial directions (top-to-bottom and left-to-right) are often called the :math:`x` and :math:`y` directions.  This example might have come from a relatively simple camera recording a red, green and blue wavelength, as well as two near infrared wavelengths and an ultraviolet wavelength.  An good digital camera will record 3 wavelengths.
+	These data tables are becoming very common, especially since 2000 onwards. A typical example is for image data from digital cameras. In this illustration a single image is taken at a point in time. The camera records the response at 6 different wavelengths, and the :math:`x-y` spatial directions (top-to-bottom and left-to-right). These values are recorded in a 3D data cube.
 	
-	.. figure:: images/image-data.png
+	
+	.. image:: images/image-data.png
 		:alt:	images/image-data.svg
 		:scale: 30
 		:width: 500px
 		:align: center
 		
-	A fourth dimension can be added if we record images over time.  Such systems generate between 1 and 5 Mb of data per second.  As with the spectral data set mentioned earlier, these camera systems generate large quantities of redundant data, because neighbouring pixels, both in time and spatially, are so similar.	
+	A fourth dimension can be added to this data if we start recording images over time. Such systems generate between 1 and 5 Mb of data per second.  As with the spectral data set mentioned earlier, these camera systems generate large quantities of redundant data, because neighbouring pixels, both in time and spatially, are so similar. It is a case of high noise and little real information.
 
 **Batch data sets**	
 
-	Batch systems are common with high-value products: pharmaceuticals, fine-chemicals, and polymers.  The :math:`Z` matrix below contains data that describes how the batch is prepared and also contains data that is constant over the duration of the whole batch.  The :math:`X` matrix contains the recorded values for each variable over the duration of the batch.  For example, temperature ramp-up and ramp-down, flow rates of coolant, agitator speeds and so on. The final product properties, recorded at the end of the batch, are collected in matrix :math:`Y`.
+	Batch systems are common with high-value products: pharmaceuticals, fine-chemicals, and polymers.  The |Z| matrix below contains data that describes how the batch is prepared and also contains data that is constant over the duration of the whole batch.  The |X| matrix contains the recorded values for each variable over the duration of the batch.  For example, temperature ramp-up and ramp-down, flow rates of coolant, agitator speeds and so on. The final product properties, recorded at the end of the batch, are collected in matrix |Y|.
 	
 	.. figure:: images/Batch-data-layers-into-the-page.png
 		:alt:	images/Batch-data-layers-into-the-page.svg
@@ -523,11 +529,19 @@ These data sets meet all the assumptions required to use the above-mentioned too
 		:width: 750px
 		:align: center
 		
+	An example of batch trajectory data, in matrix |X|, where there are 4 variables, recorded at 80 times points, on about 20 batches is shown here:
+	
+	.. image:: images/aligned-trajectories-many-batches-yeast.png
+		:scale: 50
+		:width: 550px
+		:align: center
+
+	
+		
 **Data fusion**	
 
-	This is a recent buzz-word that simply means we collect and use data from multiple sources. Imagine the batch system above: we already have data in :math:`Z` recorded by manual entry, data in :math:`X` recorded by sensors on the process, and then :math:`Y`, typically from lab measurements.  We might even have a near infrared probe in the reactor that provides a complete spectrum (a vector) at each point in time.  The process of combining these data sets together is called data fusion.
-		
-		
+	This is a recent buzz-word that simply means we collect and use data from multiple sources. Imagine the batch system above: we already have data in |Z| recorded by manual entry, data in |X| recorded by sensors on the process, and then |Y|, typically from lab measurements.  We might even have a near infrared probe in the reactor that provides a complete spectrum (a vector) at each point in time.  The process of combining these data sets together is called data fusion. Each data set is often referred to as a :index:`block <single: block (data set)>`. We prefer to use the term :index:`multiblock` data analysis when dealing with combined data sets.
+
 Issues faced with engineering data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

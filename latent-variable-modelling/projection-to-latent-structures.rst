@@ -18,7 +18,7 @@ These readings cover a variety of topics in the area of latent variable methods:
 
 *	**General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold: "Multivariate and Megavariate Data Analysis" (`Part I <http://books.google.com/books?id=B-1NNMLLoo8C&lpg=PP1&pg=PP1#v=onepage&q&f=false>`_ and `Part II <http://books.google.com/books?id=2CHrDa-kBSYC&lpg=PP1&pg=PP1#v=onepage&q&f=false>`_).
 
-.. _LVM-PCR:
+.. _LVM_PCR:
  
 Principal component regression (PCR)
 =====================================
@@ -173,6 +173,8 @@ One of the main applications in engineering for PCR is in the use of software se
 	available to create PLS models. The SIMCA-P software by Umetrics
 	was used in this work.
 	
+.. _LVM_PLS:
+
 Projection to Latent Structures (PLS)
 ========================================================
 
@@ -184,7 +186,7 @@ PLS can be used for process monitoring and for optimizing the performance of a p
 
 However, PLS is most commonly used for prediction.  And this is also a good way to introduce PLS.  In (chemical) engineering processes we use it to develop software sensors (also known as inferential sensors) that predict time-consuming lab measurement in real-time, using the on-line data from our processes.  In laboratories we use spectral data (e.g. NIR spectra) to predict the composition of a liquid; this is known as the calibration problem; once calibrated with samples of known composition we can predict the composition of future samples.
 
-So for predictive uses, a PLS model is very similar to :ref:`principal component regression <LVM-PCR>` (PCR) models.  And PCR models were a big improvement over using multiple linear regression (MLR).  In brief, PCR was shown to have these advantages:
+So for predictive uses, a PLS model is very similar to :ref:`principal component regression <LVM_PCR>` (PCR) models.  And PCR models were a big improvement over using multiple linear regression (MLR).  In brief, PCR was shown to have these advantages:
 
 * It handles the correlation among variables in |X| by building a PCA model first, then using those orthogonal scores, |T|, instead of |X| in an ordinary multiple linear regression.  This prevents us from having to resort to variable selection.
 * It extracts these scores |T| even if there are missing values in |X|.
