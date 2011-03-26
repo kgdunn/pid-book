@@ -376,7 +376,7 @@
 In context
 ===========
 
-This final section of the course considers the important area of latent variable modelling.  These models have been shown, about 20 to 30 years ago, to be very powerful tools in dealing with the very data that (chemical) engineers face frequently.  Our main goal of this section is to show how one can extract value from these data.  But we first introduce the concept of a latent variable, and specifically the principal component analysis (PCA) model: the cornerstone of all latent variable models.  Then we consider different ways to use our databases for interesting applications such as troubleshooting, soft-sensors, process monitoring, and new product development.
+This section considers the important area of latent variable modelling.  These models have been shown, about 20 to 30 years ago, to be very powerful tools in dealing with the very data that (chemical) engineers face frequently.  Our main goal of this section is to show how one can extract value from these data.  But we first introduce the concept of a latent variable, and specifically the principal component analysis (PCA) model: the cornerstone of all latent variable models.  Then we consider different ways to use our databases for interesting applications such as troubleshooting, soft-sensors, process monitoring, and new product development.
 
 .. TODO: more questions/answers here
 
@@ -398,7 +398,8 @@ These readings cover a variety of topics in the area of latent variable methods:
 
 * **General**: John MacGregor, Honglu Yu, Salvador García-Muñoz, Jesus Flores-Cerrillo, "`Data-Based Latent Variable Methods for Process Analysis, Monitoring and Control <http://dx.doi.org/10.1016/j.compchemeng.2005.02.007>`_". *Computers and Chemical Engineering*, **29**, 1217-1223, 2005.
 
-* **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold:  "Multivariate and Megavariate Data Analysis" (Parts I and II): chapters 1 to 8 of Part I are particularly relevant to this course.
+* **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold: "Multivariate and Megavariate Data Analysis" (`Part I <http://books.google.com/books?id=B-1NNMLLoo8C&lpg=PP1&pg=PP1#v=onepage&q&f=false>`_ and `Part II <http://books.google.com/books?id=2CHrDa-kBSYC&lpg=PP1&pg=PP1#v=onepage&q&f=false>`_).
+
 
 .. Others:
 
@@ -424,7 +425,7 @@ There are five main areas where engineers use large quantities of data.
 		
 	#.	**Improving, optimizing and controlling processes**
 	
-		We have already introduced the concept of :ref:`designed experiments and response surface methods <SECTION-design-analysis-experiments>` in this course.  These are excellent tools to intentionally manipulate your process so that you can find a more optimal operating point, or even develop a new product.  We will show how latent variable tools can be used on a large historical data set to improve process operation, and to move to a new operating point.  There are also tools for latent variable control of processes, but we won't go into detail on this topic. 
+		We have already introduced the concept of :ref:`designed experiments and response surface methods <SECTION-design-analysis-experiments>`.  These are excellent tools to intentionally manipulate your process so that you can find a more optimal operating point, or even develop a new product.  We will show how latent variable tools can be used on a large historical data set to improve process operation, and to move to a new operating point.  There are also tools for applying process control in the latent variable space.
 		
 	#.	**Predictive modelling** (inferential sensors)
 	
@@ -439,7 +440,7 @@ The types of data engineers deal with now
 
 When industrial manufacturing and chemical engineering started to develop around the 1920's to 1950's, data collected from a process were, at most, just a handful of columns.
 
-The tools required to visualize and processes these datasets are scatter plots, time-series plots, Shewhart charts and EWMA charts for process monitoring, and multiple linear regression (MLR) least-squares models; all the tools which we have already learned about in this course.
+The "classical" tools required to visualize and processes these datasets are :ref:`scatter plots <visualization_scatter_plots>`, :ref:`time-series plots <visualization_time_series>`, :ref:`Shewhart charts <monitoring_shewhart_chart>` and :ref:`EWMA charts <monitoring-EWMA>` for process monitoring, and :ref:`multiple linear regression <LS-multiple-X-MLR>` (MLR) least-squares models; all the tools which we have already learned about so far.
 
 If we have to represent this data as a single matrix, called |X|, we would have each row in |X| containing values from an *object* of some sort.  These rows, or *observations* could be a collection of measurements at a particular point in time, various properties of a final product, or a raw material from a supplier.  The columns in |X| are the values recorded for each observation.  We call these the *variables*. 
 

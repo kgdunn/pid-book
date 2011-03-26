@@ -33,7 +33,7 @@ Usage examples
 ~~~~~~~~~~~~~~~
 
 .. index::
-	pair: usage examples; Process monitoring
+	pair: usage examples; process monitoring
 
 The material in this section is used whenever you need to rapidly detect problems.  It has tangible application in many areas - in fact, you have likely encountered these monitoring charts in areas such as a hospital (monitoring patients), stock market charts (intraday trading), or in a processing/manufacturing facility.
 
@@ -55,7 +55,7 @@ References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. index::
-	pair: references and readings; Process monitoring
+	pair: references and readings; process monitoring
 
 #.	**Recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, Chapter 14 (2nd edition)
 
@@ -168,16 +168,18 @@ In-control vs out-of-control
 
 Every book on statistical quality control gives a slightly different viewpoint, or uses different terminology for what is statistical process control.
 
-In this book we will take "in-control" to mean that the behaviour of the process is stable over time.  Note though, that in-control *does not* mean the variable of interest meets the specifications required by the customer, or set by the plant personnel.  All that "in control" means is that there are no **special causes** in the data.  A :index:`special cause`, or an :index:`assignable cause` is an event that occurs to move the process, or destabilize it.  Process monitoring charts aim to detect these events.
+In this book we will take "in-control" to mean that the behaviour of the process is stable over time.  Note though, that in-control *does not* mean the variable of interest meets the specifications required by the customer, or set by the plant personnel.  All that "in control" means is that there are no **special causes** in the data.  A :index:`special cause`, or an :index:`assignable cause` is an event that occurs to move the process, or destabilize it.  Process monitoring charts aim to detect these events.  The opposite of "special cause" operation is :index:`common cause` operation.
 
 .. note:: Our objective: quickly detect abnormal variation, and fix it by finding the root cause.  In this section we look at the "detection" problem.  Diagnosis and process adjustment are two separate steps that follow.
+
+.. _monitoring_shewhart_chart:
 
 Shewhart chart
 ==============
 
 .. For the mean: p174 to p186 of Barnes.  KGD: what does "Barnes" refer to?
 
-A :index:`Shewhart chart <pair: Shewhart chart; Process monitoring>`, named after Walter Shewhart from Bell Telephone and Western Electric, is to monitor that a process variable remains on target and within given upper and lower limits. It is a monitoring chart for *location*.  It answers the question whether the variable's :index:`location <single: location (process monitoring)>` is stable over time.
+A :index:`Shewhart chart <pair: Shewhart chart; process monitoring>`, named after Walter Shewhart from Bell Telephone and Western Electric, is to monitor that a process variable remains on target and within given upper and lower limits. It is a monitoring chart for *location*.  It answers the question whether the variable's :index:`location <single: location (process monitoring)>` is stable over time.
 
 The defining characteristics are: a target, upper and lower control limits (:index:`UCL <single: upper control limit>` and :index:`LCL <single: lower control limit>`).  These action limits are defined so that no action is required as long as the variable plotted remains within the limits.
 
@@ -374,7 +376,7 @@ Using Shewhart charts on two or more **highly correlated quality variables**, us
 CUSUM charts
 ==============
 
-The Shewhart chart is not too sensitive to detecting shifts in the mean.  Depending on the subgroup size, :math:`n`, we showed that it can take several consecutive samples before a warning or action limit is triggered. The cumulative sum chart, or :index:`CUSUM chart <pair: CUSUM; Process monitoring>`, allows more rapid detection of these shifts away from a target value, :math:`T`.
+The Shewhart chart is not too sensitive to detecting shifts in the mean.  Depending on the subgroup size, :math:`n`, we showed that it can take several consecutive samples before a warning or action limit is triggered. The cumulative sum chart, or :index:`CUSUM chart <pair: CUSUM; process monitoring>`, allows more rapid detection of these shifts away from a target value, :math:`T`.
 
 .. math::
 	:label: CUSUM-derivation
@@ -413,7 +415,7 @@ EWMA charts
 
 .. index::
 	see: exponentially weighted moving average; EWMA
-	pair: EWMA; Process monitoring
+	pair: EWMA; process monitoring
 
 The two previous charts highlight the 2 extremes of monitoring charts.  On the one hand, a Shewhart chart assumes each subgroup sample is independent (unrelated) to the next - implying there is no "memory" in the chart.  On the other hand, a CUSUM chart has an infinite memory, back to the time the chart was started at :math:`t=0` (see equation :eq:`CUSUM-derivation`).
 
@@ -530,7 +532,7 @@ Process capability
 ===================
 
 .. index::
-	pair: process capability; Process monitoring
+	pair: process capability; process monitoring
 	single: capability of a process
 	
 .. Note:: This section is not about a particular monitoring chart, but is relevant to the topic of process monitoring.
@@ -583,7 +585,7 @@ Uncentered processes
 ~~~~~~~~~~~~~~~~~~~~
 
 .. index::
-	single: uncentered process capability; Process monitoring
+	single: uncentered process capability; process monitoring
 	single: capability of a process
 	single: Cpk
 
@@ -606,7 +608,7 @@ Industrial practice
 ===================
 
 .. index::
-	pair: industrial practice; Process monitoring
+	pair: industrial practice; process monitoring
 
 This preceding section of the book is only intended to give an overview of the concepts of process monitoring.  As you move into an industrial environment you will find there are many such systems already in place.  Higher levels of management track statistics from a different point of view, often summarizing data from an entire plant, geographic region, or country.  The techniques learned in this book, while focusing mainly on unit operations, are equally applicable though.
 
@@ -696,7 +698,7 @@ Exercises
 =========
 
 .. index::
-	pair: exercises; Process monitoring
+	pair: exercises; process monitoring
 	
 .. question::
 

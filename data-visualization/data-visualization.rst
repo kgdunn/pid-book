@@ -8,9 +8,6 @@ In this section we consider quantitative plots -- plots that show numbers.  We c
 Usage examples
 ==============
 
-.. index::
-	pair: usage examples; Data visualization
-
 The material in this section is used when you must learn more about your system from the data:
 
 	* *Co-worker*: Here are the yields from a batch system for the last 3 years (1256 data points), can you help me:
@@ -36,7 +33,7 @@ References and readings
 =======================
 
 .. index::
-	pair: references and readings; Data visualization
+	pair: references and readings; visualization
 
 #. Edward Tufte, *Envisioning Information*, Graphics Press, 1990. (10th printing in 2005)
 #. Edward Tufte, *The Visual Display of Quantitative Information*, Graphics Press, 2001.
@@ -46,13 +43,12 @@ References and readings
 #. William Cleveland, *The Elements of Graphing Data*, Hobart Press; 2nd edition, 1994.
 #. Su, `It's Easy to Produce Chartjunk Using Microsoft Excel 2007 but Hard to Make Good Graphs <http://dx.doi.org/10.1016/j.csda.2008.03.007>`_, *Computational Statistics and Data Analysis*, **52** (10), 4594-4601, 2008.
 
+.. _visualization_time_series:
+
 Time-series plots
 =================
 
-.. index::
-	pair: time-series plots; Data visualization
-
-We start off considering a plot most often seen in engineering applications: the time-series plot.  It is a 2-dimensional plot where one axis, the time-axis, shows graduations at an appropriate scale (seconds, minutes, weeks, quarters, years), while the other axis shows the data.  Usually the time-axis is displayed horizontally, but this is not a requirement: some interesting analysis can be done with time running vertically.  The time-series plot is a univariate plot (shows only one variable).
+We start off considering a plot most often seen in engineering applications: the :index:`time-series plot <pair: time-series plots; visualization>`.  It is a 2-dimensional plot where one axis, the time-axis, shows graduations at an appropriate scale (seconds, minutes, weeks, quarters, years), while the other axis shows the data.  Usually the time-axis is displayed horizontally, but this is not a requirement: some interesting analysis can be done with time running vertically.  The time-series plot is a univariate plot (shows only one variable).
 
 Many statistical packages will call this a line plot, as it can be used quite generally to display any sort of sequence, whether it is along time, or some other ordering.  They are excellent plots for visualizing long sequences of data.  They tell a visual story along the sequence axis and the human brain is incredibly adept at absorbing this high density of data,  locating patterns in the data such as sinusoids, spikes, outliers, and separating noise from signal.
 
@@ -100,10 +96,7 @@ Here are some tips for effective plots:
 		.. figure:: images/3-correlated-variables-as-sparklines.png
 			:scale: 30
 
-.. index::
-	single: sparklines
-
-Sparklines are small graphics that carry a high density of information.  The human eye is easily capable of absorbing about 250 dots (points) per linear inch and 650 points per square inch.  These lines convey the same amount of information as the previous plots, and are easy to consume on handheld devices such as iPhones, cellphones, and tablet computing devices which are common in chemical plants and other engineering facilities.  Read more about them from `this hyperlink <http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR>`_.
+Sparklines are small graphics that carry a high density of information.  The human eye is easily capable of absorbing about 250 dots (points) per linear inch and 650 points per square inch.  These :index:`sparklines` convey the same amount of information as the previous plots, and are easy to consume on handheld devices such as iPhones, cellphones, and tablet computing devices which are common in chemical plants and other engineering facilities.  Read more about them from `this hyperlink <http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR>`_.
 
 Some further tips:
 
@@ -113,23 +106,15 @@ Some further tips:
 
 	.. _visualization-apple-stock:
 
-	.. figure:: images/AAPL-stock-prices.png
+	.. image:: images/AAPL-stock-prices.png
 		:width: 750px
 		:scale: 80
 		:align: center
 
-.. raw:: latex
-	
-	\clearpage
-
-
 Bar plots
 =========
 
-.. index::
-	pair: bar plots; Data visualization
-
-The bar plot is another univariate plot on a two dimensional axis.  The axes are not called x- or y-axes with bar plots, instead, one axis is called the category axis, while the other axis shows the value of each bar.
+The :index:`bar plot <pair: bar plot; visualization>` is another univariate plot on a two dimensional axis.  The axes are not called x- or y-axes with bar plots, instead, one axis is called the category axis, while the other axis shows the value of each bar.
 
 .. image:: images/bar-plot-example-expenses.png
    :scale: 60
@@ -200,10 +185,7 @@ Some advice related to bar plots:
 Box plots
 ==========
 
-.. index::
-	pair: box plots; Data visualization
-
-Box plots are an efficient summary of one variable (univariate chart), but can also be used effectively to compare like variables that are in the same units of measurements.
+:index:`Box plots <pair: box plot; visualization>` are an efficient summary of one variable (univariate chart), but can also be used effectively to compare like variables that are in the same units of measurements.
 
 The box plot shows the so-called *five-number summary* of a univariate data series: 
 
@@ -241,7 +223,7 @@ The following data are thickness measurements of 2-by-6 boards, taken at 6 locat
     3rd Qu.:1705   3rd Qu.:1688   3rd Qu.:1696   3rd Qu.:1693   3rd Qu.:1685   3rd Qu.:1695
     Max.   :1822   Max.   :1762   Max.   :1763   Max.   :1788   Max.   :1741   Max.   :1765
 
-The following boxplot is a graphical summary of these numbers.
+The following box plot is a graphical summary of these numbers.
 
 .. _visualization-boxplot-example:
 
@@ -256,14 +238,12 @@ Variations for the box plot are possible:
 - outliers shown as dots, where an outlier is most commonly defined as any point 1.5 IQR distance units above and below the median (the upper and lower hinges).
 - using the 2% and 95% percentile rather than the upper and lower hinge values.
 
+.. _visualization_scatter_plots:
 
 Relational graphs: scatter plots
 ================================
-
-.. index::
-	pair: scatter plots; Data visualization
 	
-This is a plot many people are comfortable with using.  It helps one understand the relationship between two variables - a bivariate plot - as opposed to the previous charts that are univariate.  A scatter plot is a collection of points shown inside a box formed by 2 axes, at 90 degrees to each other.  The marker's position is located at the intersection of the values shown on the horizontal (x) axis and vertical (y) axis.
+This is a plot many people are comfortable using.  It helps one understand the relationship between two variables - a bivariate plot - as opposed to the previous charts that are univariate.  A :index:`scatter plot <index: scatter plot; visualization>` is a collection of points shown inside a box formed by 2 axes, at 90 degrees to each other.  The marker's position is located at the intersection of the values shown on the horizontal (x) axis and vertical (y) axis.
 
 The unspoken intention of a scatter plot is usually to ask the reader to draw a causal relationship between the two variables.  However, not all scatter plots actually show causal phenomenon.
 
@@ -315,9 +295,10 @@ Tables
 ======
 
 .. index::
-	pair: tables; Data visualization
+   pair: data table; visualization
+   see: table; data table
 
-The table is an efficient format for comparative data analysis on categorical objects.  Usually the items being compared are placed in a column, while the categorical objects are in the rows.   The quantitative value is then placed in the intersection of the row and column: called the *cell*.  The following examples demonstrate this.
+The data table  is an efficient format for comparative data analysis on categorical objects.  Usually the items being compared are placed in a column, while the categorical objects are in the rows.   The quantitative value is then placed in the intersection of the row and column: called the *cell*.  The following examples demonstrate this.
 
 *	Compare monthly payments for buying or leasing various cars (categories).  The first two columns are being compared; the other columns contain additional, secondary information.
 
@@ -406,10 +387,7 @@ Frames are the basic containers that surround the data and give context to our n
 Colour
 ======
 
-.. index::
-	pair: colour; Data visualization
-	
-Colour is very effective in all graphical charts, however you must bear in mind that your readers might be colour-blind, or the document might be read from a grayscale print out.  
+:index:`Colour <pair: colour; visualization>` is very effective in all graphical charts, however you must bear in mind that your readers might be colour-blind, or the document might be read from a grayscale print out.  
 
 Note also that a standard colour progression does *not* exist.  We often see dark blues and purples representing low numbers and reds the higher numbers, with greens, yellows, and orange in between.  Also, there are several such colour schemes - there isn't a universal standard.  The only safest colour progression is the grayscale axis, ranging from blacks to white at each extreme: this satisfies both colour-blind readers and users of your grayscale printed output.
 
@@ -438,7 +416,7 @@ Exercises
 =========
 
 .. index::
-	pair: exercises; Data visualization
+	pair: exercises; visualization
 
 .. question::
 
