@@ -35,7 +35,7 @@ bitmap('spectral-data-R2-per-variable.png', type="png256", width=15, height=6.66
 par(mar=c(4.5, 4.5, 0.5, 0.5))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=2, cex.main=2, cex.sub=2, cex.axis=2)
 wavelengths=seq(600, 1898, 2)
-plot(wavelengths, R2.k.a, col='darkgreen', type='l', lwd=a*2, ylim=c(0,1), ylab="R2 for each variable", xlab="Wavelengths")
+plot(wavelengths, R2.k.a, col='darkgreen', type='l', lwd=a*2, ylim=c(0,1), ylab="R2 for each variable (wavelength)", xlab="Wavelengths")
 
 # A = 2
 #------

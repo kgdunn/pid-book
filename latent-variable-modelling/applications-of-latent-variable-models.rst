@@ -491,6 +491,9 @@ Please exclude the 3 last columns (``YF``, ``YS`` and ``YC``) for all the PCA mo
 Modelling time series data with latent variables models
 ========================================================================
 
+.. NOTE: there is a placeholder for lagging in the PCA section
+.. NOTE: I think the illustration for lagging is incorrect.
+
 This section provides some points regarding analysis of time series data using latent variable methods.
 
 Consider first what we mean by time series data.  Any engineering system can be modelled as an unknown box with inputs and outputs.  The vector of system inputs, given by :math:`\mathbf{x}(t)`, leads to a response in one or more outputs, :math:`\mathbf{y}(t)`.  The aim of this system is to learn more about the process using the measured inputs and outputs.  The branch of statistics that deals rigorously with these sort of models is called **time series analysis**.  Time series models are widely used in engineering and economics for forecasting and control of complex systems.  Time series modelling also addresses issues of correct experimental design to adequately create process inputs the excite (perturb) the process output.

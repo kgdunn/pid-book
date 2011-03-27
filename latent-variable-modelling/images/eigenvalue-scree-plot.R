@@ -10,6 +10,10 @@ ev$sum <- sum(ev$values)
 K <- 10
 library(lattice)
 
-bitmap('../images/eigenvalue-scree-plot.png', type="png256", width=10, height=5, res=300, pointsize=14)
-barchart(as.matrix(ev$values[1:K] / ev$sum * 100), horizontal=FALSE, col=0, ylab=list(label="Proportion of variance explained (%)", cex=1.5), xlab=list(label="Component number", cex=1.5), scales=list(x=list(labels=seq(1,K), cex=1.5), y=list(cex=1.5))  )
+bitmap('eigenvalue-scree-plot.png', type="png256", width=10, height=5, res=300, pointsize=14)
+barchart(as.matrix(ev$values[1:K] / ev$sum * 100), horizontal=FALSE, 
+        col=0, ylab=list(label="Proportion of variance explained (%)", cex=1.5), 
+        xlab=list(label="Component number", cex=1.5), 
+        scales=list(x=list(labels=seq(1,K), cex=1.5), y=list(cex=1.5)),
+        main=list("Pareto plot (scree plot) of eigenvalues", cex=1.5))
 dev.off()
