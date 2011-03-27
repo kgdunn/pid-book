@@ -305,7 +305,7 @@ We will discuss how to determine the number of components to use :ref:`in a futu
 This plot shows the first component.  All variables, except for hardness have large values in :math:`\mathbf{p}_1`.  If we write out the equation for :math:`t_1` for an observation :math:`i`:
 
 .. math::
-	t_{1,i} = 0.46 \,\, x_\text{oil} - 0.47 \,\, x_\text{density} + 0.53 \,\, x_\text{crispy} - 0.50 \,\, x_\text{fracture}  + 0.15 \,\, x_\text{hardness}
+	t_{i,1} = 0.46 \,\, x_\text{oil} - 0.47 \,\, x_\text{density} + 0.53 \,\, x_\text{crispy} - 0.50 \,\, x_\text{fracture}  + 0.15 \,\, x_\text{hardness}
 	:label: LVM_t1_food_texture_
 
 Once we have centered and scaled the data, remember that a negative :math:`x`-value is a value below the average, and that a positive :math:`x`-value lies above the average.
@@ -345,23 +345,6 @@ This direction is aligned mainly with the hardness variable: all other variables
 
 Because this component is orthogonal to the first component, we can be sure that this hardness variation is independent of the first component.  One valuable way to interpret and use this information is that you can adjust the variables in :math:`\mathbf{p}_2`, i.e. the process conditions that affect the pastry's hardness, without affecting the other pastry properties, i.e the variables described in :math:`\mathbf{p}_1`.
 
-.. MOVE THIS SECTION ELSEWHERE
-
-**Combined loadings and scores** 
-
-.. figure:: images/pca-on-food-texture-scores-and-loadings.png
-	:alt:	images/pca-on-food-texture-data.R
-	:scale: 90
-	:width: 750px
-	:align: center
-
-Use these two plots to characterize what values the 5 measurements would have been for these observations:
-
-	* sample 8:	
-	* sample 20:	
-	* sample 35:	
-	* sample 42:
-
 .. _LVM_interpreting_scores:
 
 Interpreting score plots
@@ -383,16 +366,15 @@ The score value for an observation, for say the first component, is the distance
 We used :ref:`geometric concepts in another section <LVM-mathematical-geometric-derivation>` that showed we can write: :math:`\mathbf{T} = \mathbf{X}\mathbf{P}` to get all the scores value in one go.  In this section we are plotting values from the columns of :math:`\mathbf{T}`.  In particular, for a single observation, for the :math:`a^\text{th}` component:
 
 .. math:: 
-	t_{i,a} = x_{i,1} p_{1,a} + x_{i,2} p_{2,a} + \ldots + x_{i,k} p_{k,a} + \ldots + x_{i,K} p_{K,a}
+	t_{i,a} = x_{i,1}\,\, p_{1,a} + x_{i,2}\,\, p_{2,a} + \ldots + x_{i,k}\,\, p_{k,a} + \ldots + x_{i,K}\,\, p_{K,a}
 
-The first score explains the greatest variation in the data; it is considered the most important score from that point of view, at least when we look at a data set for the first time.  (After that we may find other scores that are more interesting).  Then we look at the second score, which explains the next greatest amount of variation in the data, then the third score, and so on.  Most often we will plot:
+The first score vector, :math:`\mathbf{t}_1`,explains the greatest variation in the data; it is considered the most important score from that point of view, at least when we look at a data set for the first time.  (After that we may find other scores that are more interesting).  Then we look at the second score, which explains the next greatest amount of variation in the data, then the third score, and so on.  Most often we will plot:
 
-	* Time-series plots of the scores, or sequence order plots, depending on how the rows of |X| are ordered.
-	* Scatter plots of one score against another score
+	*	time-series plots of the scores, or sequence order plots, depending on how the rows of |X| are ordered
 	
-An important point with PCA is that because the matrix |P| is orthonormal (see the :ref:`later section on PCA properties <LVM-PCA-properties>`), any relationships that were present in |X| are still present in :math:`\mathbf{T}`.  We can see this quite easily using the previous equation. Imagine two observations taken from a process at different points in time.  It would be quite hard to identify those similar points by looking at the :math:`K` columns of raw data, especially when the two rows are not close to each other.  But with PCA, these two similar rows are multiplied by the same coefficients in |P| and will therefore give similar values of :math:`t`.  We can more easily identify these similarities in the smaller number of :math:`A` score variables.
-
-So when we examine plots of the scores, the points which are geometrically close to each other are from similar process operation.  (Aside: note though that if there are :math:`A=3` scores, for example, the points must be close for all 3 score values).
+	*	scatter plots of one score against another score
+	
+An important point with PCA is that because the matrix |P| is orthonormal (see the :ref:`later section on PCA properties <LVM-PCA-properties>`), any relationships that were present in |X| are still present in :math:`\mathbf{T}`.  We can see this quite easily using the previous equation. Imagine two observations taken from a process at different points in time.  It would be quite hard to identify those similar points by looking at the :math:`K` columns of raw data, especially when the two rows are not close to each other.  But with PCA, these two similar rows are multiplied by the same coefficients in |P| and will therefore give similar values of :math:`t`. So score plots allow us to rapidly locate similar observations.
 
 When investigating score plots we look for *clustering*, *outliers*, time-based *patterns*.  We can also colour-code our plots to be more informative.  Let's take a look at each of these.
 
@@ -400,85 +382,100 @@ When investigating score plots we look for *clustering*, *outliers*, time-based 
 
 We usually start by looking at the :math:`(\mathbf{t}_1, \mathbf{t}_2)` scatterplot of the scores, the two directions of greatest variation in the data. As just previously explained, observations in the rows of |X| that are similar will fall close to each other, i.e. they cluster together, in these score plots.  Here is an example of a score plot, calculated from data from a fluidized catalytic cracking (FCC) process [Taken from the Masters thesis of Carol Slama (McMaster University, p 78, 1991)].
 	
-.. figure:: images/slama-thesis-screenshot-score-plot.png
+.. _LVM_slama_thesis_screenshot_:
+
+.. image:: images/slama-thesis-screenshot-score-plot.png
 	:alt:	images/slama-thesis-screenshot-score-plot.png
 	:scale: 52
 	:width: 750px
 	:align: center
-		
+
+
 It shows how the process was operating in region A, then moved to region B and finally region C. This provides a 2-dimensional window into the movements from the :math:`K=147` original variables.
 
 **Outliers**
 
-Outliers are readily detected in a score plot, and using the equation below we can see why.  Recall that the data in |X| have been centered and scaled, so the x-value for a variable that is operating at the mean level will be roughtly zero.  An observation that is at the mean value for all :math:`K` variables will have a score vector of :math:`\mathbf{t}_i = [0, 0, \ldots, 0]`.  An observation where many of the variables have values far from their average level is called a multivariate outlier.  It will have score values that are far from zero, and will land on the outer edges of the score plots.  
+Outliers are readily detected in a score plot, and using the equation below we can see why.  Recall that the data in |X| have been centered and scaled, so the :math:`x`-value for a variable that is operating at the mean level will be roughtly zero.  An observation that is at the mean value for all :math:`K` variables will have a score vector of :math:`\mathbf{t}_i = [0, 0, \ldots, 0]`.  An observation where many of the variables have values far from their average level is called a multivariate outlier.  It will have one or more score values that are far from zero, and will show up on the outer edges of the score scatterplots.  
 
 Sometimes all it takes is for one variable, :math:`x_{i,k}` to be far away from its average to cause :math:`t_{i,a}` to be large:
 
 .. math:: 
-	t_{i,a} = x_{i,1} p_{1,a} + x_{i,2} p_{2,a} + \ldots + x_{i,k} p_{k,a} + \ldots + x_{i,K} p_{K,a} 
+	t_{i,a} = x_{i,1}\,\, p_{1,a} + x_{i,2} \,\, p_{2,a} + \ldots + x_{i,k} \,\, p_{k,a} + \ldots + x_{i,K} \,\, p_{K,a} 
 	
-But usually it is a combination of more than one x-variable.  There are :math:`K` terms in this equation, each of which *contribute* to the score value.  A bar plot of each of these :math:`K` terms, :math:`x_{i,k} p_{k,a}`, is called a contribution plot.  It shows which variable(s) most contribute to the large score value.
+But usually it is a combination of more than one :math:`x`-variable.  There are :math:`K` terms in this equation, each of which *contribute* to the score value.  A bar plot of each of these :math:`K` terms, :math:`x_{i,k} \,\, p_{k,a}`, is called a contribution plot.  It shows which variable(s) most contribute to the large score value.
 
-As an example from the :ref:`food texture data <LVM_food_texture_example>` from earlier, we saw that observation 33 had a large negative value for :math:`\mathbf{t}_1 = -4.2`.  The :math:`K=5` terms that contribute to this value are illustrated here:
+As an example from the :ref:`food texture data <LVM_food_texture_example>` from earlier, we saw that observation 33 had a large negative :math:`\mathbf{t}_1` value.  From equation :eq:`LVM_t1_food_texture_`:
 
-.. figure:: images/pca-on-food-texture-score-t1-contribution-for-obs-33.png
+.. math::
+
+	t_{33,1} &= 0.46 \,\, x_\text{oil} - 0.47 \,\, x_\text{density} + 0.53 \,\, x_\text{crispy} - 0.50 \,\, x_\text{fracture}  + 0.15 \,\, x_\text{hardness}\\
+	t_{33,1} &= 0.46 \times -1.069 - 0.47 \times +2.148 + 0.53 \times  -2.546 - 0.50 \times 2.221 + 0.15 \times -1.162\\
+	t_{33,1} &= -4.2
+	
+The :math:`K=5` terms that contribute to this value are illustrated as a bar plot, where the sum of the bar heights add up to :math:`-4.2`:
+
+.. image:: images/pca-on-food-texture-score-t1-contribution-for-obs-33.png
 	:alt:	images/pca-on-food-texture-data.R
 	:scale: 55
 	:width: 750px
 	:align: center
-
+	
 This gives a more accurate indication of exactly how the low :math:`t_i` value was achieved. Previously we had said that pastry 33 was denser than the other pastries, and had a higher fracture angle; now we can see the relative contributions from each variable more clearly.
 
-In the figure from the FCC process (in the preceding subsection on *Clustering*), the cluster marked C was far from the origin, relative to the other observations.  This indicates problematic process behaviour around that time.  Normal process operation is expected to be in the center of the score plot.  These outlying observations can be investigated as to why they are unusual by constructing contribution plots for a few of the points in cluster C.
+In the figure from the FCC process (in the :ref:`preceding subsection on clustering <LVM_slama_thesis_screenshot_>`), the cluster marked C was far from the origin, relative to the other observations.  This indicates problematic process behaviour around that time.  Normal process operation is expected to be in the center of the score plot.  These outlying observations can be investigated as to why they are unusual by constructing contribution bar plots for a few of the points in cluster C.
 
 **Time-based or sequence-based trends**
 
-Any time-based or sequence-order trends in the raw data will be reflected in the scores also.  Visual observation of each score vector may show interesting phenomena such as oscillations, spikes or other patterns of interest.  As just described, contribution plots can be used to see which of the original variables in |X| are most related with these phenomena.
+Any strong and consistent time-based or sequence-order trends in the raw data will be reflected in the scores also.  Visual observation of each score vector may show interesting phenomena such as oscillations, spikes or other patterns of interest.  As just described, contribution plots can be used to see which of the original variables in |X| are most related with these phenomena.
 
 **Colour-coding**
 
-Plotting any two score variables on a scatter plot provides good insight into the relationship between those independent variables.  Additional information can be provided by colour-coding the points on the plot by some other, 3rd variable of interest.  For example, a binary colour scheme could denote success of failure of each observation.  A continuous 3rd variable can be implied using a varying colour scheme, going from reds to oranges to yellows to greens and then blue, together with an accompanying legend. For example profitability of operation at that point, or some other process variable, or the size of the residual error (SPE) - we will also explain this SPE more thoroughly in the section on interpreting :ref:`SPE plots <LVM-interpreting-SPE-residuals>`.  A 4th dimension could be inferred by plotting smaller or larger points.  We saw an example of this in the first section on :ref:`visualizing data <SECTION-data-visualization>`.
+Plotting any two score variables on a scatter plot provides good insight into the relationship between those independent variables.  Additional information can be provided by :ref:`colour-coding the points on the plot <reference_to_use_of_colour>` by some other, 3rd variable of interest.  For example, a binary colour scheme could denote success of failure of each observation. 
+
+A continuous 3rd variable can be implied using a varying colour scheme, going from reds to oranges to yellows to greens and then blue, together with an accompanying legend. For example profitability of operation at that point, or some other process variable. A 4th dimension could be inferred by plotting smaller or larger points.  We saw an example of these :ref:`high-density visualizations <reference_to_use_of_colour>` earlier.
 
 **Summary**
 
-* Points close the average appear at the origin of the score plot.  
-* Scores further out are either outliers or naturally extreme observations.  
-* We can infer why a point is at the outer edge of the score plot by cross-referencing with the loadings.  This is because the scores are a linear combination of the data in |X| as given by the coefficients in |P|.  
-* A contribution plot can be used to investigate which of the original variables in |X| are most related with a score.  This provides a more precise indication of exactly why a score is at its given position.
-* Original observations in |X| that are similar to each other will be similar in the score plot, while observations much further apart are dissimilar.  This comes from the way the scores are computed: they are found so that span the greatest variance possible.  But it is much easier to detect this similarity in an :math:`A`-dimensional space than the original :math:`K`-dimensional space.
+*	Points close the average appear at the origin of the score plot.
+
+*	Scores further out are either outliers or naturally extreme observations.
+
+*	We can infer, *in general*, why a point is at the outer edge of a score plot by cross-referencing with the loadings.  This is because the scores are a linear combination of the data in |X| as given by the coefficients in |P|.
+
+*	We can *determine exactly why* a point is at the outer edge of a score plot by constructing a contribution plot to see which of the original variables in |X| are most related with a particular score.  This provides a more precise indication of exactly why a score is at its given position.
+
+*	Original observations in |X| that are similar to each other will be similar in the score plot, while observations much further apart are dissimilar.  This comes from the way the scores are computed: they are found so that span the greatest variance possible.  But it is much easier to detect this similarity in an :math:`A`-dimensional space than the original :math:`K`-dimensional space.
 
 .. _LVM-interpreting-loadings:
 
 Interpreting loading plots
 ====================================
-
-.. index::
-	pair: interpret loadings plot; latent variable modelling
 	
-Recall that the loadings plots are a plot of the direction vectors that define the model.  Returning back to a previous illustration:
+Recall that the :index:`loadings plot <pair: loadings plot, interpretation of; latent variable modelling>` is a plot of the direction vectors that define the model.  Returning back to a previous illustration:
 
-.. figure:: images/geometric-PCA-8-noth-components-with-plane.png
+.. image:: images/geometric-PCA-8-noth-components-with-plane.png
 	:alt:	images/geometric-interpretation-of-PCA.svg
 	:scale: 40
 	:width: 750px
 	:align: center
 
-In this system the first component is oriented primarily in the :math:`x_2` direction, with smaller amounts in the other directions. A loadings plot would show a large coefficient (negative or positive) for the :math:`x_2` variable and smaller coefficients for the others. Imagine this were the only component in the model, i.e. it is a one-component model.  We would then correctly conclude the other variables measured have little importance in understanding the variability in the system.  Say these 3 variables represented the quality of our product, and we had been getting complaints about the variability of it.  This model indicates we should focus on whatever aspect causes in variance in :math:`x_2`, rather than other variables.
+In this system the first component, :math:`\mathbf{p}_1`, is oriented primarily in the :math:`x_2` direction, with smaller amounts in the other directions. A loadings plot would show a large coefficient (negative or positive) for the :math:`x_2` variable and smaller coefficients for the others. Imagine this were the only component in the model, i.e. it is a one-component model.  We would then correctly conclude the other variables measured have little importance or relevance in understanding the total variability in the system.  Say these 3 variables represented the quality of our product, and we had been getting complaints about the variability of it.  This model indicates we should focus on whatever aspect causes in variance in :math:`x_2`, rather than other variables.
 
-Let's consider another visual example where two variables, :math:`x_1` and :math:`x_2`, are the predominant directions in which the observations vary; the :math:`x_3` variable is only "noise".
+Let's consider another visual example where two variables, :math:`x_1` and :math:`x_2`, are the predominant directions in which the observations vary; the :math:`x_3` variable is only "noise". Further, let the relationship between :math:`x_1` and :math:`x_2` have a negative correlation.
 
-.. figure:: images/two-variable-geometric-interpretation-of-loadings.png
+.. image:: images/two-variable-geometric-interpretation-of-loadings.png
 	:alt:	images/two-variable-geometric-interpretation-of-loadings.svg
 	:scale: 50
 	:width: 750px
 	:align: center
 
-The loading vector has roughly equal weight in the :math:`+x_1` direction as it has in the :math:`-x_2` direction.  The direction could be represented as :math:`p_1 = [+1,\, -1,\, 0]`, or rescaled as a unit vector:  :math:`p_1 = [+0.707,\, -0.707,\, 0]`.
+A model of such a system would have a loading vector with roughly equal weight in the :math:`+x_1` direction as it has in the :math:`-x_2` direction.  The direction could be represented as :math:`p_1 = [+1,\, -1,\, 0]`, or rescaled as a unit vector:  :math:`p_1 = [+0.707,\, -0.707,\, 0]`. An equivalent representation, with exactly the same interpretation, could be :math:`p_1 = [-0.707,\, +0.707,\, 0]`.
 
 This illustrates two points: 
 
-	* Variables which have little contribution to a direction have almost zero weight in that loading.  
-	* Strongly correlated variables, will have approximately the same weight value when they are positively correlated. In a loadings plot of :math:`p_i` vs :math:`p_j` they will appear near each other, while negatively correlated variables will appear diagonally opposite each other.
+	*	Variables which have little contribution to a direction have almost zero weight in that loading.  
+	*	Strongly correlated variables, will have approximately the same weight value when they are positively correlated. In a loadings plot of :math:`p_i` vs :math:`p_j` they will appear near each other, while negatively correlated variables will appear diagonally opposite each other.
+	*	Signs of the loading variables are useful to compare within a direction vector; but these vectors can be rotated by 180° and still have the same interpretation.
 	
 This is why they are called loadings: the show how the original variables load, (contribute), to creating the component.
 	
@@ -490,12 +487,35 @@ Another issue to consider is the case when one has many highly correlated variab
 	:width: 750px
 	:align: center
 
-Notice how the model spreads the weights out evenly over all the correlated variables.  Each variable is individually important. The model could well have assigned a weight of 1.0 to one of the variables and 0.0 to the others; or 0.707  to one variable and 0.707 to another.   This is a common feature in latent variable models: variables which have roughly equal influence on defining a direction are correlated with each other and will have equal numeric weights.
+Notice how the model spreads the weights out evenly over all the correlated variables.  Each variable is individually important. The model could well have assigned a weight of 1.0 to one of the variables and 0.0 to the others. This is a common feature in latent variable models: variables which have roughly equal influence on defining a direction are correlated with each other and will have roughly equal numeric weights.
 
 Finally, one way to locate unimportant variables in the model is by finding which variables which have small weights in all components.  These variables can generally be removed, as they show no correlation to any of the components or with other variables.
 
-.. Combining loading and score plots
-.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Interpreting loadings and scores together
+==========================================
+
+It is helpful to visualize any two score vectors, e.g. :math:`\mathbf{t}_1` *vs* :math:`\mathbf{t}_2`, in a scatterplot: the :math:`N` points in the scatterplot are the projection of the raw data onto the model plane described by the two loadings vectors, :math:`\mathbf{p}_1` and :math:`\mathbf{p}_2`.  
+
+Any two loadings can also be shown in a scatterplot and interpreted by recalling that each loading direction is orthogonal and independent of the other direction.
+
+.. image:: images/pca-on-food-texture-scores-and-loadings.png
+	:alt:	images/pca-on-food-texture-data.R
+	:scale: 90
+	:width: 750px
+	:align: center
+	
+Side-by-side, these 2 plots very helpfully characterize all the observations in the data set.  Recall observation 33 had a large, negative :math:`t_1` value.  It had an above average fracture angle, an above average density, a below average crispiness value of 7, and below average oil level of 15.5.
+
+It is no coincidence that we can mentally superimpose these two plots and come to exactly the same conclusions, using only the plots.  This result comes from the fact that the scores (left) are just a linear combination of the raw data, with weighting given by the loadings (right).
+
+Use these two plots to characterize what values the 5 measurements would have been for these observations:
+
+	* sample 8:	
+	* sample 20:
+	* sample 35:
+	* sample 42:
 
 .. _LVM_geometric_predictions:
 
@@ -575,10 +595,10 @@ Residuals for each observation: the square prediction error
 We have already introduced the :ref:`squared prediction error geometrically <LVM_geometric_predictions>`. We showed in that section that the residual distance from the actual observation to the model plane is given by:
 
 .. math:: 
-	\mathbf{e}'_{i,A} 	&= \mathbf{x}'_i - \widehat{\mathbf{x}}'_{i,A} \\
-	\mathbf{e}'_{i,A} 	&= \mathbf{x}'_i - \mathbf{t}'_i \mathbf{P}'
+	\mathbf{e}'_{i,A} &= \mathbf{x}'_i - \widehat{\mathbf{x}}'_{i,A} \\
+	\mathbf{e}'_{i,A} &= \mathbf{x}'_i - \mathbf{t}'_i \mathbf{P}'
 
-Turning this equation around we have:
+Turning this last equation around we have:
 	
 .. math:: 
 	\mathbf{x}'_i &= \mathbf{t}'_i \mathbf{P}' + \mathbf{e}'_{i,A} \\
@@ -590,7 +610,7 @@ Or in general, for the whole data set
 	\mathbf{X} &= \mathbf{T} \mathbf{P}' + \mathbf{E} =  \widehat{\mathbf{X}} + \mathbf{E} \\
 		(N \times K) &= (N \times A)(A \times K)  + (N \times K) 
 
-This shows that each observation (row in |X|) can be split into two portions: a vector on-the-plane and a vector perpendicular to the plane, :math:`\mathbf{e}'_{i,A}`.  This residual vector can be summarized into a single number, a distance value called SPE.  For the :math:`i^\text{th}` observation: :math:`\text{SPE}_i = \sqrt{\mathbf{e}'_i \mathbf{e}_i}`.
+This shows that each observation (row in |X|) can be split and interpreted in two portions: a vector on-the-plane, :math:`\mathbf{t}'_i \mathbf{P}' `, and a vector perpendicular to the plane, :math:`\mathbf{e}'_{i,A}`.  This residual portion, a vector, can be reduced to a single number, a distance value called SPE, as :ref:`previously described <LVM_geometric_predictions>`.
 
 .. figure:: images/SPE-illustration.png
 	:alt:	images/SPE-illustration.svg

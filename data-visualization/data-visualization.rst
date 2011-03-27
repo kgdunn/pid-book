@@ -283,7 +283,7 @@ Further improvements can be made to your scatter plots:
 
 - Add a third variable to the plot by adjusting the marker size and add a fourth variable with the use of colour:
 
-    .. _reference-to-use-of-colour:
+    .. _reference_to_use_of_colour:
 
 	.. image:: images/scatterplot-with-2-extra-dimensions.png
 		:scale: 80
@@ -391,7 +391,7 @@ Colour
 
 Note also that a standard colour progression does *not* exist.  We often see dark blues and purples representing low numbers and reds the higher numbers, with greens, yellows, and orange in between.  Also, there are several such colour schemes - there isn't a universal standard.  The only safest colour progression is the grayscale axis, ranging from blacks to white at each extreme: this satisfies both colour-blind readers and users of your grayscale printed output.
 
-See the :ref:`section on scatter plots <reference-to-use-of-colour>` for an example of the effective use of colour.
+See the :ref:`section on scatter plots <reference_to_use_of_colour>` for an example of the effective use of colour.
 
 General summary: revealing complex data graphically
 ======================================================
