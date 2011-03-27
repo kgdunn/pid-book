@@ -325,7 +325,7 @@ Let's examine the score values calculated.  As shown in equation :eq:`LVM_t1_foo
 	
 The samples appear to be evenly spread, some high and some low on the :math:`t_1` scale.  Sample 33 has a :math:`t_1` value of -4.2, indicating it was much denser than the other pastries, and had a high fracture angle (it could be bent more than others).  In fact, if we `refer to the raw data <http://datasets.connectmv.com/info/food-texture>`_ we can confirm these findings: :math:`\mathbf{x}_{i=33} = [15.5, \,\, 3125, \,\, 7, \,\, 33, \,\, 92]`.  Also refer back to the scatterplot matrix and mark the point which has density of 3125, and fracture angle of 33.  This pastry also has a low oil percentage (15.5%) and low crispy value (7).
 
-We can also investigate sample 36, with a :math:`t_1` value of 3.6.  The raw data again confirm that this pastry follows the trends of other, high :math:`t_1` value pastries.  It has a high oil level, low density, high crispiness, and a low fracture angle: :math:`x_{36} = [21.2, 2570, 14, 13, 105]`.  Locate again on the scatterplot matrices the point where oil level is 21.2 and the crispiness is 14.  Also mark the point where density = 2570 and the fracture value = 13.
+We can also investigate sample 36, with a :math:`t_1` value of 3.6.  The raw data again confirm that this pastry follows the trends of other, high :math:`t_1` value pastries.  It has a high oil level, low density, high crispiness, and a low fracture angle: :math:`x_{36} = [21.2, \,\, 2570, \,\, 14, \,\, 13, \,\, 105]`.  Locate again on the scatterplot matrices sample 36 where oil level is 21.2 and the crispiness is 14.  Also mark the point where density = 2570 and the fracture value = 13 for this sample.
 
 We note here that this component explains 61% of the original variability in the data.  It's hard to say whether this is high or low, because we are unsure of the degree of error in the raw data, but the point is that a single variable summarizes about 60% of the variability from all 5 columns of raw data.
 
@@ -333,17 +333,19 @@ We note here that this component explains 61% of the original variability in the
 
 **Loadings:** :math:`\,\mathbf{p}_2`
 
-The second loading vector is shown below in the figure.
+The second loading vector is shown as a bar plot:
 
-.. figure:: images/pca-on-food-texture-pc2-loadings.png
+.. image:: images/pca-on-food-texture-pc2-loadings.png
 	:alt:	images/pca-on-food-texture-data.R
 	:scale: 55
 	:width: 750px
 	:align: center
 
-This direction is aligned mainly with the hardness variable. A high :math:`t_2` value is straightforward to interpret: it would imply the pastry has a high value on the hardness scale.  Also, this component explains an additional 26% of the variability in the dataset. 
+This direction is aligned mainly with the hardness variable: all other variables have a small coefficient in :math:`\mathbf{p}_2`. A high :math:`t_2` value is straightforward to interpret: it would imply the pastry has a high value on the hardness scale.  Also, this component explains an additional 26% of the variability in the dataset. 
 
-Because this component is orthogonal to the first component, we can be sure that this hardness variation is independent of the other variables.  One valuable way to interpret and use this information is that you can adjust the process conditions that affect the pastry's hardness without affecting the other pastry properties.
+Because this component is orthogonal to the first component, we can be sure that this hardness variation is independent of the first component.  One valuable way to interpret and use this information is that you can adjust the variables in :math:`\mathbf{p}_2`, i.e. the process conditions that affect the pastry's hardness, without affecting the other pastry properties, i.e the variables described in :math:`\mathbf{p}_1`.
+
+.. MOVE THIS SECTION ELSEWHERE
 
 **Combined loadings and scores** 
 
