@@ -617,7 +617,7 @@ Your overall health is a latent variable.  But there isn't a single measurement 
 
 In this example, your *health* is a latent, or hidden variable.  If we had a sensor for health, we could measure and use that variable, but since we don't, we use other measurements which all contribute in some way to assessing health.
 
-.. _LVM-room-temperature-example:
+.. _LVM_room_temperature_example:
 
 Room temperature
 ~~~~~~~~~~~~~~~~~~~~~~~~

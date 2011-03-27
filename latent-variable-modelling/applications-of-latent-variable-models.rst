@@ -48,7 +48,7 @@ From this single figure the company learned that:
 
 It it is not shown here, but the competitor's product points are close to the model plane (low SPE values), so this comparison is valid.  This analysis was tremendously insightful, and easier to complete on this single plot, rather than plots of the original variables.
 
-.. _LVM-troubleshooting:
+.. _LVM_troubleshooting:
 
 Troubleshooting process problems
 ==========================================

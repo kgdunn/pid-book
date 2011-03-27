@@ -358,7 +358,7 @@ The second important difference is that we don't actually look at the :math:`\ma
 How the PLS model is calculated
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This section assumes that you are comfortable with the :ref:`NIPALS algorithm for calculating a PCA model <LVM-PCA-NIPALS-algorithm>` from |X|.  The NIPALS algorithm proceeds in exactly the same way for PLS, except we iterate through both blocks of |X| and |Y|.
+This section assumes that you are comfortable with the :ref:`NIPALS algorithm for calculating a PCA model <LVM_PCA_NIPALS_algorithm>` from |X|.  The NIPALS algorithm proceeds in exactly the same way for PLS, except we iterate through both blocks of |X| and |Y|.
 
 .. figure:: images/NIPALS-iterations-PLS.png
 	:alt:	images/NIPALS-iterations-PLS.svg
