@@ -500,7 +500,7 @@ Exercises
 .. answer::
 	:fullinclude: no 
 
-	#.	A boxplot is an effective way to summarize and compare the data for each day of the week.
+	#.	A box plot is an effective way to summarize and compare the data for each day of the week.
 
 		.. code-block:: s
 
@@ -515,7 +515,7 @@ Exercises
 			:width: 500px
 			:scale: 60
 
-		The boxplot shows:
+		The box plot shows:
 
 			- Much less website traffic on Saturdays and Sundays, especially Sunday which has less spread than Saturday.
 			- Visits increase during the weekday, peaking on Wednesday and then dropping down by Friday.

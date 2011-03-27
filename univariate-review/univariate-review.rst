@@ -1587,7 +1587,7 @@ Exercises
 
 .. question::
 
-	Characterizing a distribution: Compute the mean, median, standard deviation and MAD for salt content for the various soy sauces given `in this report <http://beta.images.theglobeandmail.com/archive/00245/Read_the_report_245543a.pdf>`_ (page 41) as described in the the article from the `Globe and Mail <http://www.theglobeandmail.com/life/health/salt-variation-between-brands-raises-call-for-cuts/article1299117/>`_ on 24 September 2009.  Plot a boxplot of the data and report the interquartile range (IQR). Comment on the 3 measures of spread you have calculated: standard deviation, MAD, and interquartile range.
+	Characterizing a distribution: Compute the mean, median, standard deviation and MAD for salt content for the various soy sauces given `in this report <http://beta.images.theglobeandmail.com/archive/00245/Read_the_report_245543a.pdf>`_ (page 41) as described in the the article from the `Globe and Mail <http://www.theglobeandmail.com/life/health/salt-variation-between-brands-raises-call-for-cuts/article1299117/>`_ on 24 September 2009.  Plot a box plot of the data and report the interquartile range (IQR). Comment on the 3 measures of spread you have calculated: standard deviation, MAD, and interquartile range.
 	
 	The raw data are given below in units of milligrams of salt per 15 mL serving::
 		
@@ -1629,7 +1629,7 @@ Exercises
 		
 .. answer::
 
-	See the code below that generates the plots.   Outliers were identified by visual inspection of these plots.  Recall an outlier is an unusual/interesting point, and a function of the surrounding data.  You can use a boxplot to locate *preliminary* outliers, but recognize that you are leaving the computer to determine what is unusual.  Automated outlier detection systems work moderately well, but there is no substitute (yet!) for visual inspection of the data.
+	See the code below that generates the plots.   Outliers were identified by visual inspection of these plots.  Recall an outlier is an unusual/interesting point, and a function of the surrounding data.  You can use a box plot to locate *preliminary* outliers, but recognize that you are leaving the computer to determine what is unusual.  Automated outlier detection systems work moderately well, but there is no substitute (yet!) for visual inspection of the data.
 
 	The same few samples appear to be outliers in most of the variables.
 
@@ -1961,7 +1961,7 @@ Exercises
 
 	.. note:: This question also has missing data, denote as ``NA`` in R.  Most real data sets that you deal with will have missing data and the questions will expect to deal with them.  For example, the degrees of freedom will be reduced because of the missing data.  Use this solution to see how to write code in R that deals with missing values.
 
-	We can start by looking at the data.  A boxplot is a reasonable way to compare both the location and spread of the brittleness values from each reactor.
+	We can start by looking at the data.  A box plot is a reasonable way to compare both the location and spread of the brittleness values from each reactor.
 
 	.. figure:: images/brittleness-boxplot.png
 	    :width: 750px

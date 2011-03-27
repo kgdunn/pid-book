@@ -223,14 +223,14 @@ So the loading vector for this example points in the direction :math:`\mathbf{p}
 
 What would be the entries in the |p1| loading vector if we had 6 thermometers? (*Ans* = 0.41; in general, for :math:`K` thermometers, :math:`1/\sqrt{K}`).
 
-This is very useful, because now instead of dealing with :math:`K` thermometers we can reduce the columns of data down to just a single, average temperature. This isn't a particularly interesting case though; you would have likely done this anyway as an engineer facing this problem.  But the next example will illustrate a more realistic case.
+This is very useful, because now instead of dealing with :math:`K` thermometers we can reduce the columns of data down to just a single, average temperature. This isn't a particularly interesting case though; you would have likely done this anyway as an engineer facing this problem.  But the next :ref:`food texture example <LVM_food_texture_example>` will illustrate a more realistic case.
 
 .. _LVM_food_texture_example:
 
 Food texture example
 ====================================
 
-Let's take a look at an example to consolidate and extend the ideas introduced so far.  This data set is from a food manufacturer making a pastry product.  Each sample (row) in the data set is taken from a batch of product where 5 quality attributes are measured:
+Let's take a look at an example to consolidate and extend the ideas introduced so far.  This `data set is from a food manufacturer <http://datasets.connectmv.com/info/food-texture>`_ making a pastry product.  Each sample (row) in the data set is taken from a batch of product where 5 quality attributes are measured:
 
 	#.	Percentage oil in the pastry
 	#.	The product's density (the higher the number, the more dense the product)
@@ -250,7 +250,7 @@ We can get by with this visualization of the data because :math:`K` is small in 
 
 **Preprocessing the data**
 
-The first step with PCA is to center and scale the data.  The boxplots show how the raw data are located at different levels and have arbitrary units.  
+The first step with PCA is to center and scale the data.  The box plots show how the raw data are located at different levels and have arbitrary units.  
 
 .. figure:: images/pca-on-food-texture-centering-and-scaling.png
 	:alt:	images/pca-on-food-texture-data.R
@@ -258,25 +258,34 @@ The first step with PCA is to center and scale the data.  The boxplots show how 
 	:width: 750px
 	:align: center
 
-Centering removes any bias terms from the data by subtracting the mean value from each column in the matrix |X|. For the :math:`k^\text{th}` column: :math:`\mathbf{x}_{k,\text{center}} = \mathbf{x}_{k,\text{raw}} - \text{mean}\left(\mathbf{x}_{k,\text{raw}}\right)`
+Centering removes any bias terms from the data by subtracting the mean value from each column in the matrix |X|. For the :math:`k^\text{th}` column:
 
-Scaling removes the fact that the raw data could be in diverse units: :math:`\mathbf{x}_{k} = \dfrac{\mathbf{x}_{k,\text{center}}}{ \text{standard deviation}\left(\mathbf{x}_{k,\text{center}}\right) }`
+.. math::
 
-Then each column :math:`\mathbf{x}_{k}` is collected back to form matrix |X|.  This preprocessing is so common it is called autoscaling: center each column to zero mean and then scale it to have unit variance.  After this preprocessing each column will have a mean of 0.0 and a variance of 1.0.  (Note the boxplots don't quite show this final result, because they use the median instead of the mean, and show the interquartile range instead of the standard deviation).
+ 	\mathbf{x}_{k,\text{center}} = \mathbf{x}_{k,\text{raw}} - \text{mean}\left(\mathbf{x}_{k,\text{raw}}\right)
+
+Scaling removes the fact that the raw data could be in diverse units: 
+
+.. math::
+
+	\mathbf{x}_{k} = \dfrac{\mathbf{x}_{k,\text{center}}}{ \text{standard deviation}\left(\mathbf{x}_{k,\text{center}}\right) }
+
+Then each column :math:`\mathbf{x}_{k}` is collected back to form matrix |X|.  This preprocessing is so common it is called :index:`autoscaling`: center each column to zero mean and then scale it to have unit variance.  After this preprocessing each column will have a mean of 0.0 and a variance of 1.0.  (Note the box plots don't quite show this final result, because they use the median instead of the mean, and show the interquartile range instead of the standard deviation).
 
 Centering and scaling does not alter the overall interpretation of the data: if two variables were strongly correlated before preprocessing they will still be strongly correlated after preprocessing.
 
-For reference, the mean and standard deviation of each variable is recorded here:
+For reference, the mean and standard deviation of each variable is recorded below.  In the next column we show the raw data for observation 33, the raw data after centering, and the raw data after centering and scaling:
 
 .. csv-table:: 
-   :header: Variable, Mean, Standard deviation
-   :widths: 30, 30, 30
+   :header: Variable, Mean, Standard deviation, Raw data for observation 33, Obs 33 after centering, Obs 33 after autoscaling
+   :widths: 30, 30, 30, 30, 30, 30
 
-	Oil,      17.2,      1.59
-	Density,  2857.6,  124.5
-	Crispy,   11.52,     1.78
-	Fracture, 20.86,     5.47
-	Hardness,  128.18,   31.13
+	Oil,      17.2,      1.59, 15.5, -1.702, -1.069
+	Density,  2857.6,  124.5,  3125, 267.4,  2.148  
+	Crispy,   11.52,     1.78, 7, -4.52, -2.546 
+	Fracture, 20.86,     5.47, 33,  12.14,  2.221
+	Hardness,  128.18,   31.13, 92, -36.18, -1.162
+	
 
 **Loadings:** :math:`\,\mathbf{p}_1`
 
