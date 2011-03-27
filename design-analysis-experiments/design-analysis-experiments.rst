@@ -32,6 +32,24 @@
 	
 	ADD: If you keep the 2 factor interactions you must keep the main effects also.  See Fox textbook for why.
 	
+		Email to Dr. Hrymak on 27 March 2011 about this topic
+	
+		This Minitab write-up should help the student: http://www.minitab.com/en-US/support/answers/answer.aspx?log=0&id=559&langType=1033
+
+		That write-up, and text books on general linear models always suggest to keep the main effect in the model when estimating the interaction.  They never explain why though.  I've still not found a satisfactory explanation for myself.
+
+		Take this example: y_actual = 10 + 2xA - 1xB + 12 xA xB and construct a full factorial at the usual -1 and +1 levels for xA and xB.
+
+		A least squares model with 4 points and 4 parameters (b0, bA, bB, bAB) recovers that model exactly.  A least squares model with only two columns in X (one for the intercept and one for the interaction) gets similar estimates for b0=10.5 and bAB=11.5, and has 2 degrees of freedom.  We haven't lost anything, nor has the prediction ability of the model deteriorated by any amount. Let xA = +1 and xB = -1:
+		* y_hat  = 10.5 + (11.5)(+1)(-1) = -1
+		* y_actual = 10 + (2)(+1) - 1(-1) + (12)(+1)(-1) = +1
+
+		Things change a bit when y_actual = 10 + 4xA - 2xB + 23 xA xB.  When you estimate and use a model without main effects you can get good estimates of the model parameters (y = 10 + 23 xA xB), but poor estimates when you use the model on new data: let xA = +1 and xB = -1:
+		* y_hat  = 10 + (23)(+1)(-1) = -13
+		* y_actual = 10 + (4)(+1) - 2(-1) + (23)(+1)(-1) = -7
+
+		So at what point is it worth including main effects or leaving them out while retaining their interactions? This is the only reason I can think of for retaining main effects and their interactions.  We never really know the true model, and if we use the model without main effects at corner points that conflict with the interactions, we can get poor predictions.  After all, that's why we are building these models: to optimize and improve the process later on.
+	
 	DOE is a way to bring an out of control process back into control.  See the comment by Vining (top right, p152) in the  Bisgaard articles http://dx.doi.org/10.1080/08982110701826721
 	
 	Investigate the .. sectnum:: directive in ReST
