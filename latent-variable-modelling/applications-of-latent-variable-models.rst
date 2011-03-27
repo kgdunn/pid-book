@@ -148,7 +148,7 @@ Other interesting examples use camera images to predict hard-to-measure values. 
 
 Once validated, a soft sensor can also reduce costs of a process by allowing for rapid feedback control of the inferred property, so that less off-specification product is produced.  They also often have the side-effect that reduced lab sampling is required; this saves on manpower costs.
 
-Soft sensors using latent variables will almost always be PLS models.  So far in the course we have only learned about predictive PCR models.  The approach to build and use a soft sensor is exactly as described in :ref:`the section on PCR <LVM-PCR>`.  Once the model has been built, it can be applied in real-time. The |T2| and SPE value for each new observation is checked for consistency with the model before a prediction is made.  Contribution plots are used to diagnose unusual observations.  
+Soft sensors using latent variables will almost always be PLS models.  So far in the course we have only learned about predictive PCR models.  The approach to build and use a soft sensor is exactly as described in :ref:`the section on PCR <LVM_PCR>`.  Once the model has been built, it can be applied in real-time. The |T2| and SPE value for each new observation is checked for consistency with the model before a prediction is made.  Contribution plots are used to diagnose unusual observations.  
 
 It is an indication that the predictive models need to be updated if the SPE and/or |T2| values are consistently above the limits.  This is a real advantage over using an MLR-based model, which has no such consistency checks.
 

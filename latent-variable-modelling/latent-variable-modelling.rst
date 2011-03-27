@@ -536,8 +536,6 @@ These data sets meet all the assumptions required to use the so-called "classica
 		:width: 550px
 		:align: center
 
-	
-		
 **Data fusion**	
 
 	This is a recent buzz-word that simply means we collect and use data from multiple sources. Imagine the batch system above: we already have data in |Z| recorded by manual entry, data in |X| recorded by sensors on the process, and then |Y|, typically from lab measurements.  We might even have a near infrared probe in the reactor that provides a complete spectrum (a vector) at each point in time.  The process of combining these data sets together is called data fusion. Each data set is often referred to as a :index:`block <single: block (data set)>`. We prefer to use the term :index:`multiblock` data analysis when dealing with combined data sets.
@@ -547,31 +545,37 @@ Issues faced with engineering data
 
 **Size of the data**
 
-	The most outstanding feature of the above data sets is their large size, both in terms of the number of rows and columns.  This is primarily because data acquisition and data storage is very cheap.
+	The most outstanding feature of the above data sets is their large size, both in terms of the number of rows and columns.  This is primarily because data acquisition and data storage has become cheap.
 	
-	The number of rows isn't too big of a deal: we can sub-sample the data, use parallel processors on our computers or distributed computing (a.k.a. cloud computing) to deal with this.  The bigger problem is the number of columns in the data arrays.  A data set with :math:`K` columns can be visualized using :math:`K(K-1)/2` pairs of scatterplots;  this is manageable for :math:`K < 8`, but the quadratic number of combinations prevents us from using scatterplot matrices to visualize this data, especially when :math:`K>10`.
+	The number of rows isn't too big of a deal: we can sub-sample the data, use parallel processors on our computers or distributed computing (a.k.a. cloud computing) to deal with this.  The bigger problem is the number of columns in the data arrays.  A data set with :math:`K` columns can be visualized using :math:`K(K-1)/2` pairs of scatterplots;  this is manageable for :math:`K < 8`, but the quadratic number of combinations prevents us from using scatterplot matrices to visualize this data, especially when :math:`K>10`. 
+	
+	The need here is for a toll that deals with large :math:`K`.
 	
 **Lack of independence**
 
-	The lack of independence is a big factor - it is problematic for example with MLR where the :math:`\mathbf{X}'\mathbf{X}` becomes singular as the data become more dependent. Sometimes we can make our data more independent by selecting a reduced number of columns, but this requires good knowledge of the system being investigated, is time-consuming, and we risk omitting important variables.  
+	The lack of independence is a big factor in modern data sets - it is problematic for example with MLR where the :math:`\mathbf{X}'\mathbf{X}` becomes singular as the data become more dependent. Sometimes we can make our data more independent by selecting a reduced number of columns, but this requires good knowledge of the system being investigated, is time-consuming, and we risk omitting important variables.  
 	
 **Low signal to noise ratio**
 
-	Engineering systems are usually kept as stable as possible: the ideal being a flat line.  Data from such systems have very little signal and high noise.  Even though we might record 50 Mb per second from various sensors, computer systems can, and actually do, "throw away" much of the data.  This is not advisable from a multivariate data analysis perspective, but the reasoning behind it is hard to fault: much of the data we collect is not very informative. A lot of it is just from constant operation, noise, slow drift or error.  This everyday, routine data is also called happenstance data.
+	Engineering systems are usually kept as stable as possible: the ideal being a flat line.  Data from such systems have very little signal and high noise.  Even though we might record 50 Mb per second from various sensors, computer systems can, and actually do, "throw away" much of the data.  This is not advisable from a multivariate data analysis perspective, but the reasoning behind it is hard to fault: much of the data we collect is not very informative. A lot of it is just from constant operation, noise, slow drift or error.  
+	
+	Finding the interesting signals in these routine data (also known as happenstance data), is a challenge.
 		
 **Non-causal data**
 
 	This happenstance data is also non-causal.  The opposite case is when one runs a designed experiment; this intentionally adds variability into a process, allowing us to conclude cause-and-effect relationships, if we properly block and randomize.  
 	
-	But happenstance data just allows us to draw inference based on correlation effects.  Since correlation is a prerequisite for causality, we can often learn a good deal from the correlation patterns in the data.  Then we use our engineering knowledge to validate any correlations, and we can go on to truly verify causality with a randomized designed experiment, if it is an important effect.
+	But happenstance data just allows us to draw inference based on correlation effects. Since correlation is a prerequisite for causality, we can often learn a good deal from the correlation patterns in the data. Then we use our engineering knowledge to validate any correlations, and we can go on to truly verify causality with a randomized designed experiment, if it is an important effect to verify.
 	
 **Errors in the data**
 
-	Tools, such as least squares analysis, assume the recorded data has no error.  But most engineering systems have error in their measurements, some of it quite large.  
+	Tools, such as least squares analysis, assume the recorded data has no error. But most engineering systems have error in their measurements, some of it quite large, since much of the data is collected by automated systems under non-ideal conditions.  
+	
+	So we require tools that relax the assumption that measurements have no error.
 	
 **Missing data**
 
-	Missing data are very common in engineering applications.  Sensors go off-line, are damaged, or it is simply not possible to record all the variables (attributes) on each observation.
+	Missing data are very common in engineering applications.  Sensors go off-line, are damaged, or it is simply not possible to record all the variables (attributes) on each observation. Classical approaches are to throw away rows or columns with incomplete information, which might be acceptable when we have large quantities of data, but could lead to omitting important information in many cases.
 
 .. OMIT FOR NOW
 		:alt:	images/Missing-data.png
@@ -579,9 +583,10 @@ Issues faced with engineering data
 		:width: 750px
 		:align: center
 
-**Unaligned data**
+.. OMIT FOR NOW
+	**Unaligned data**
 
-	Increasingly common, especially with data fusion and batch systems, is that we have to pre-align the data.  Not every batch will have the same duration, since they are run according to a recipe that is not time-based (e.g. ramp up the temperature until it reaches 425K).  
+		Increasingly common, especially with multidimensional data blocks and batch systems, is that we have to pre-align the data.  Not every dimension in these data cubes have the same number of entries.....
 
 **In conclusion**, we require methods that:
 
@@ -606,7 +611,7 @@ We will take a look at what a latent variable is conceptually, geometrically, an
 Your health
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Your overall health is important.  But there isn't a single measurement of "*health*" that can be measured - it is a rather abstract concept.  Instead we measure physical properties from our bodies, such as blood pressure, cholesterol level, weight, various distances (waist, hips, chest), blood sugar, temperature, and a variety of other measurements.  These separate measurements can be used by a trained person to judge your health.  
+Your overall health is a latent variable.  But there isn't a single measurement of "*health*" that can be measured - it is a rather abstract concept.  Instead we measure physical properties from our bodies, such as blood pressure, cholesterol level, weight, various distances (waist, hips, chest), blood sugar, temperature, and a variety of other measurements.  These separate measurements can be used by a trained person to judge your health, based on their experience of seeing these values from a variety of healthy and healthy patients.
 
 In this example, your *health* is a latent, or hidden variable.  If we had a sensor for health, we could measure and use that variable, but since we don't, we use other measurements which all contribute in some way to assessing health.
 
@@ -642,12 +647,11 @@ In table form, the first few measurements are:
 
 The general up and down fluctuations are due to the daily change in the room's temperature.  The single, physical phenomenon being recorded in these four measurements is just the variation in room temperature.   
 
-If we added two more thermometers in the middle of the room (left and right hand side), we would expect these new measurements to show the same pattern as the other four. In that regard we can add as many thermometers as we like to the room, but we won't be recording some new, independent piece of information with each thermometer.  There is only one true variable that drives all the temperature readings up and down: it is a latent variable.  
+If we added two more thermometers in the middle of the room, we would expect these new measurements to show the same pattern as the other four. In that regard we can add as many thermometers as we like to the room, but we won't be recording some new, independent piece of information with each thermometer.  There is only one true variable that drives all the temperature readings up and down: it is a latent variable.  
 
 Notice that we don't necessarily have to know what *causes* the latent variable to move up and down (it could be the amount of sunlight on the building; it could be the air-conditioner's settings).  All we know is that these temperature measurements just reflect the underlying phenomenon that drives the up-and-down movements in temperature; they are *correlated* with the latent variable.
 
-.. Notice also the sharp spike recorded at the back-left corner of the room could be due to an error in the temperature sensor.  And the front part of the room showed a dip, maybe because the door was left open for an extended period; but not long enough to affect the other temperature readings.   These two events go against the general trend of the data, so we expect these periods of time to *stand out* in some way, so that we can detect them.  We will come back to this.
-
+Notice also the sharp spike recorded at the back-left corner of the room could be due to an error in the temperature sensor.  And the front part of the room showed a dip, maybe because the door was left open for an extended period; but not long enough to affect the other temperature readings.   These two events go against the general trend of the data, so we expect these periods of time to *stand out* in some way, so that we can detect them. 
 
 **Mathematically**
 
@@ -671,77 +675,88 @@ We can visualize the data from this system in several ways, but we will simply s
 
 The 3 plots show the same set of data, just from different points of view.  Each observation is a single dot, the location of which is determined by the recorded values of temperature, :math:`x_1, x_2` and :math:`x_3`.  We will use this representation in the next section again.
 
-Thickness of wood boards
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Note how correlated the data appear: forming a diagonal line across the cube's interior, with a few outliers (described above) that don't obey this trend.
 
-Wood boards (for example 2 by 4 boards) are measured for thickness at 6 locations prior to leaving the lumber mill (see the illustration).  Three important quality variables are derived from these 6 measurements:
+.. OMIT FOR NOW
 
-	* :math:`x_1` = average tail thickness: average of thickness 1 and 4
-	* :math:`x_2` = average feed thickness: average of thickness 3 and 6
-	* :math:`x_3` = average taper: average of thickness 1, 2 and 3 subtracted from average thickness 4, 5, and 6
+	Thickness of wood boards
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	.. figure:: images/board_measurement_locations.png
-		:alt:	images/board_measurement_locations.svg
-		:scale: 50
-		:width: 500px
+	Wood boards (for example 2 by 4 boards) are measured for thickness at 6 locations prior to leaving the lumber mill (see the illustration).  Three important quality variables are derived from these 6 measurements:
+
+		* :math:`x_1` = average tail thickness: average of thickness 1 and 4
+		* :math:`x_2` = average feed thickness: average of thickness 3 and 6
+		* :math:`x_3` = average taper: average of thickness 1, 2 and 3 subtracted from average thickness 4, 5, and 6
+
+		.. figure:: images/board_measurement_locations.png
+			:alt:	images/board_measurement_locations.svg
+			:scale: 50
+			:width: 500px
+			:align: center
+
+
+	Imagine that we have data from 100 boards, so we could represent this raw data a matrix where each row are the 3 measurements from one board.
+
+	.. math:: 
+		\underbrace{\mathbf{X}_\text{raw}}_{100 \times 3}
+	
+	The plots of these different thicknesses are 
+
+	.. figure:: images/board-thickness-2d-and-3d-plot.png
+		:alt:	images/board-thickness-data-combine.py
+		:scale: 70
+		:width: 750px
 		:align: center
 
+	It is not surprising that the feed and tail thickness are related to each other.  They are expected to have a positive correlation, because if the board is thicker, it will be thick at all locations.  The taper measurement is unrelated to the boards thickness, since it doesn't matter if the board is thick or thin: it can still be tapered.
 
-Imagine that we have data from 100 boards, so we could represent this raw data a matrix where each row are the 3 measurements from one board.
+	So there are two latent variables in this system: 
 
-.. math:: 
-	\underbrace{\mathbf{X}_\text{raw}}_{100 \times 3}
+		#.	The fact that the entire board is thicker or thinner is captured by the feed and tail thickness measurements.   These measurements are correlated with whatever physical phenomenon causes that average thickness to increase or decrease (e.g. spacing of the saw blades).
+		#.	The third measurement, taper of the board, is capturing a different phenomenon in the system; possibly caused by how much the blades are skewed out of alignment.  
 	
-The plots of these different thicknesses are 
+		.. But unless we perform an experiment where we change the saw alignment and measure the taper, we won't be sure that this is a causal relationship. 
 
-.. figure:: images/board-thickness-2d-and-3d-plot.png
-	:alt:	images/board-thickness-data-combine.py
-	:scale: 70
-	:width: 750px
-	:align: center
+	The main points from this section so far:
 
-It is not surprising that the feed and tail thickness are related to each other.  They are expected to have a positive correlation, because if the board is thicker, it will be thick at all locations.  The taper measurement is unrelated to the boards thickness, since it doesn't matter if the board is thick or thin: it can still be tapered.
+		*	Latent variables capture, in some way, an underlying phenomenon in the system being investigated.
+		*	The actual measurements we take on the system are *correlated* with the latent variable.
+		*	Latent variables that are unrelated to to each other are said to be independent, or orthogonal to each other.
 
-So there are two latent variables in this system: 
+	Latent variable modelling is concerned with how we can reduce the number of values we measure on each observation, but still retain the important features.  In this example of the board thickness, we could use an average of the feed and tail measurements as one of the summary variables, called :math:`t_1`.  And since the taper is independent of thickness, we would retain a second latent variable, called :math:`t_2`, that captures the taper measurement.
 
-	#.	The fact that the entire board is thicker or thinner is captured by the feed and tail thickness measurements.   These measurements are correlated with whatever physical phenomenon causes that average thickness to increase or decrease (e.g. spacing of the saw blades).
-	#.	The third measurement, taper of the board, is capturing a different phenomenon in the system; possibly caused by how much the blades are skewed out of alignment.  
+		.. math::
 	
-	.. But unless we perform an experiment where we change the saw alignment and measure the taper, we won't be sure that this is a causal relationship. 
+			t_1 &= \begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}\begin{bmatrix} p_{1,1} \\ p_{2,1} \\ p_{3,1} \end{bmatrix} = x_1 p_{1,1} + x_2 p_{2,1} + x_3 p_{3,1}  \\
+			t_2 &= \begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}\begin{bmatrix} p_{1,2} \\ p_{2,2} \\ p_{3,2} \end{bmatrix} = x_1 p_{1,2} + x_2 p_{2,2} + x_3 p_{3,2}
 
-The main points from this section so far:
+	So using the measurements from each board, :math:`\begin{bmatrix} x_1, & x_2, & x_3 \end{bmatrix}` we obtain two derived values, :math:`\begin{bmatrix} t_1, & t_2 \end{bmatrix}`.  These two values are intended to capture the essence of the original measurements.  The weights :math:`p_{k,a}` are selected so that we meet that objective.
 
-	*	Latent variables capture, in some way, an underlying phenomenon in the system being investigated.
-	*	The actual measurements we take on the system are *correlated* with the latent variable.
-	*	Latent variables that are unrelated to to each other are said to be independent, or orthogonal to each other.
+	What values would be suitable for the weights?  One option might be that:
 
-Latent variable modelling is concerned with how we can reduce the number of values we measure on each observation, but still retain the important features.  In this example of the board thickness, we could use an average of the feed and tail measurements as one of the summary variables, called :math:`t_1`.  And since the taper is independent of thickness, we would retain a second latent variable, called :math:`t_2`, that captures the taper measurement.
+	.. math::	
+			t_1 &= \begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}\begin{bmatrix} 1/2 \\ 1/2 \\ 0 \end{bmatrix} = \dfrac{x_1}{2} + \dfrac{x_2}{2} + 0 \\
+			t_2 &= \begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}\begin{bmatrix} 0 \\ 0 \\ \,1\, \end{bmatrix} = 0 + 0 + x_3
+		
+	or more compactly:
 
 	.. math::
+			\mathbf{t}' = \begin{bmatrix} t_1 & t_2 \end{bmatrix} &=
+			\begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix} 
+			\begin{bmatrix}  0.5 & 0 \\ 0.5 & 0 \\ 0  & 1  \end{bmatrix} =
+			\begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}
+			\begin{bmatrix} p_{1,1} & p_{1,2}\\ p_{2,1} & p_{2,2} \\ p_{3,1} & p_{3,2} \end{bmatrix} =
+			 \underbrace{\mathbf{x}_\text{raw}}_{1 \times 3} \underbrace{\mathbf{P}}_{3 \times 2} = \underbrace{\begin{bmatrix} t_1 & t_2 \end{bmatrix}}_{1 \times 2}
+		
+	The matrix |P| can now be used to take any vector of board measurements, represented as vector :math:`\mathbf{x}`, and calculate a summary vector, |t|, from it.
+
+.. BACK TO NORMAL
+
+The main points from this section are:
+
+	*	Latent variables capture, in some way, an underlying phenomenon in the system being investigated.
+	*	After calculating the latent variables in a system, we can use these fewer number of variables, instead of the :math:`K` columns of raw data. This is because the actual measurements are *correlated* with the latent variable.
 	
-		t_1 &= \begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}\begin{bmatrix} p_{1,1} \\ p_{2,1} \\ p_{3,1} \end{bmatrix} = x_1 p_{1,1} + x_2 p_{2,1} + x_3 p_{3,1}  \\
-		t_2 &= \begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}\begin{bmatrix} p_{1,2} \\ p_{2,2} \\ p_{3,2} \end{bmatrix} = x_1 p_{1,2} + x_2 p_{2,2} + x_3 p_{3,2}
-
-So using the measurements from each board, :math:`\begin{bmatrix} x_1, & x_2, & x_3 \end{bmatrix}` we obtain two derived values, :math:`\begin{bmatrix} t_1, & t_2 \end{bmatrix}`.  These two values are intended to capture the essence of the original measurements.  The weights :math:`p_{k,a}` are selected so that we meet that objective.
-
-What values would be suitable for the weights?  One option might be that:
-
-.. math::	
-		t_1 &= \begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}\begin{bmatrix} 1/2 \\ 1/2 \\ 0 \end{bmatrix} = \dfrac{x_1}{2} + \dfrac{x_2}{2} + 0 \\
-		t_2 &= \begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}\begin{bmatrix} 0 \\ 0 \\ \,1\, \end{bmatrix} = 0 + 0 + x_3
-		
-or more compactly:
-
-.. math::
-		\mathbf{t}' = \begin{bmatrix} t_1 & t_2 \end{bmatrix} &=
-		\begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix} 
-		\begin{bmatrix}  0.5 & 0 \\ 0.5 & 0 \\ 0  & 1  \end{bmatrix} =
-		\begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}
-		\begin{bmatrix} p_{1,1} & p_{1,2}\\ p_{2,1} & p_{2,2} \\ p_{3,1} & p_{3,2} \end{bmatrix} =
-		 \underbrace{\mathbf{x}_\text{raw}}_{1 \times 3} \underbrace{\mathbf{P}}_{3 \times 2} = \underbrace{\begin{bmatrix} t_1 & t_2 \end{bmatrix}}_{1 \times 2}
-		
-The matrix |P| can now be used to take any vector of board measurements, represented as vector :math:`\mathbf{x}`, and calculate a summary vector, |t|, from it.
-
-At this stage you likely have more questions, such as "*how did you know to calculate 2 latent variables*" and "*how were the values in* |P| *chosen*", and "*how do we know this is a good summary of the original data*"?
+The examples given so far showed what a single latent variables is. In practice we usually obtain several latent variables for a data array.  At this stage you likely have more questions, such as "*how many latent variables are there in a matrix*" and "*how are the values in* |P| *chosen*", and "*how do we know these latent variables are a good summary of the original data*"?
 
 We address these issues more formally in the next section on :ref:`principal component analysis <SECTION-PCA>`.
