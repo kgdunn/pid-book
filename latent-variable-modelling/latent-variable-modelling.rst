@@ -663,6 +663,8 @@ If we wanted to summarize the events taking place in the room we might just use 
 
 and suitable values for each of the weights are :math:`p_{1,1} = p_{2,1} = p_{3,1} = p_{4,1} = 1/4`.
 
+.. _LVM_linear_combination:
+
 Mathematically the correct way to say this is that :math:`t_1` is a *linear combination* of the raw measurements (:math:`x_1, x_2, x_3` and :math:`x_4`) given by the weights (:math:`p_{1,1}, p_{2,1}, p_{3,1}, p_{4,1}`).
 
 **Geometrically**

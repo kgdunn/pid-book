@@ -108,7 +108,7 @@ After we have added this best-fit line to the data, we have calculated the first
 	:scale: 100
 	:align: center
 
-This first principal component is fixed and we now add a second component to the system.  We find the second component so that it is perpendicular to the first component's direction.  Notice that this vector also starts at the origin, and can point in any direction as long as it remains perpendicular to the first component.  We keep rotating that vector around until we find the direction that gives the greatest variance in the score values when projected on this new direction vector.
+This first principal component is fixed and we now add a second component to the system.  We find the second component so that it is perpendicular to the first component's direction.  Notice that this vector also starts at the origin, and can point in any direction as long as it remains perpendicular to the first component.  We keep rotating the second component's direction vector around until we find a direction that gives the greatest variance in the score values when projected on this new direction vector.
 
 .. figure:: images/geometric-PCA-7-and-8-second-component-and-both-components.png
 	:alt: 	images/geometric-interpretation-of-PCA.svg
@@ -119,13 +119,15 @@ This first principal component is fixed and we now add a second component to the
 What that means is that once we have settled on a direction for the second component, we calculate the scores values by perpendicularly projecting each observation towards this second direction vector.  The score values for the second component are the locations along this line.  As before, there will be some positive and some negative score values.  This completes our second component:
 
 	* This second direction vector, called :math:`\mathbf{p}_2`, is also a :math:`K \times 1` vector.  It is a unit vector that points in the direction of next-greatest variation.
-	* The scores, collected in the vector called :math:`\mathbf{t}_2` are found by taking a perpendicular projection from each observation onto the :math:`\mathbf{p}_2` vector.
 	
-Notice that the |p1| and :math:`\mathbf{p}_2` vectors jointly define a plane.  This plane is the *latent variable model* with two components.  With one component the latent variable model is just a line, with two components, the model is a plane, and with 3 or more components, the model is defined by a hyperplane.  We will use the letter :math:`a` to identify the number of components.  The PCA model is said to have :math:`A` components, where :math:`a = 1, 2, 3, \ldots A`.
+	* The scores (distances), collected in the vector called :math:`\mathbf{t}_2`, are found by taking a perpendicular projection from each observation onto the :math:`\mathbf{p}_2` vector.
+	
+Notice that the |p1| and :math:`\mathbf{p}_2` vectors jointly define a plane.  This plane is the *latent variable model* with two components.  With one component the latent variable model is just a line, with two components, the model is a plane, and with 3 or more components, the model is defined by a hyperplane.  We will use the letter :math:`a` to identify the number of components.  The PCA model is said to have :math:`A` components, or :math:`A` latent variables, where :math:`a = 1, 2, 3, \ldots A`.
 
-This hyperplane is really just the best approximation we can make of the original data.  The perpendicular distance from each point onto the plane is called the *residual distance*.  So what a principal component model does is break down our raw data into two parts:
+This hyperplane is really just the best approximation we can make of the original data.  The perpendicular distance from each point onto the plane is called the *residual distance* or *residual error*.  So what a principal component model does is break down our raw data into two parts:
 
  	#.	a latent variable model (given by vectors :math:`\mathbf{p}` and :math:`\mathbf{t}`), and 
+
  	#.	a residual error.
 
 A principal component model is one type of latent variable model.  A PCA model is computed in such a way that the latent variables are oriented in the *direction that gives greatest variance* of the scores.   There are other latent variable models, but they are computed with different objectives.
@@ -135,11 +137,11 @@ A principal component model is one type of latent variable model.  A PCA model i
 Mathematical derivation for PCA
 ====================================
 
-Geometrically, when finding the best-fit line for the swarm of points, our objective was to minimize the error, i.e. the residual distances from each point to the best-fit line is the smallest possible.  This is also mathematically equivalent to maximizing the variance of the scores, :math:`\mathbf{t}_a`.
+Geometrically, when finding the *best-fit line* for the swarm of points, our objective was to minimize the error, i.e. the residual distances from each point to the best-fit line is the smallest possible.  This is also mathematically equivalent to maximizing the variance of the scores, :math:`\mathbf{t}_a`.
 
 ..	See Normal Cliff, Analyzing Multivariate Data, 1987, p 295 to 300
 
-We briefly review here what that means.  Let :math:`\mathbf{x}'_i` be a row from our data, so :math:`\mathbf{x}'_i` is a :math:`1 \times K` vector.  We defined the score value for this observation as the distance from the origin, along the direction vector, |p1|, to the perpendicular projection onto |p1|.   This is illustrated below, where the score value for observation :math:`\mathbf{x}_i` has a value of :math:`t_{i,1}`.
+We briefly review here what that means. Let :math:`\mathbf{x}'_i` be a row from our data, so :math:`\mathbf{x}'_i` is a :math:`1 \times K` vector. We defined the score value for this observation as the distance from the origin, along the direction vector, |p1|, to the point where we find the perpendicular projection onto |p1|. This is illustrated below, where the score value for observation :math:`\mathbf{x}_i` has a value of :math:`t_{i,1}`.
 
 .. figure:: images/component-along-a-vector.png
 	:alt:	images/component-along-a-vector.svg
@@ -147,7 +149,7 @@ We briefly review here what that means.  Let :math:`\mathbf{x}'_i` be a row from
 	:width: 500px
 	:scale: 50
 
-Recall from geometry that the cosine of an angle in a right-angled triangle is the ratio of the adjacent side to the hypotenuse. But the cosine of an angle is also used to define the  dot-product.  Mathematically:
+Recall from geometry that the cosine of an angle in a right-angled triangle is the ratio of the adjacent side to the hypotenuse. But the cosine of an angle is also used in linear algebra to define the dot-product. Mathematically:
 
 .. math::	
 	\cos \theta = \dfrac{\text{adjacent length}}{\text{hypotenuse}} = \dfrac{t_{i,1}}{\| \mathbf{x}_i\|} \qquad &\text{and also} \qquad \cos \theta = \dfrac{\mathbf{x}'_i \mathbf{p}_1}{\|\mathbf{x}_i\| \|\mathbf{p}_1\|} \\
@@ -157,96 +159,32 @@ Recall from geometry that the cosine of an angle in a right-angled triangle is t
 		
 where :math:`\| \cdot \|` indicates the length of the enclosed vector, and the length of the direction vector, |p1| is 1.0, by definition.
 
-This is exactly the definition of a linear combination:
+Note that :math:`t_{i,1} = \mathbf{x}'_i \mathbf{p}_1` represents a :ref:`linear combination <LVM_linear_combination>`
 
 .. math:: 
 	t_{i,1} = x_{i,1} p_{1,1} + x_{i,2} p_{2,1} + \ldots + x_{i,k} p_{k,1}  + \ldots + x_{i,K} p_{K,1}
 
-The score value for the :math:`i^\text{th}` observation along the first component, :math:`t_{i,1}`, is a linear combination of the data, :math:`\mathbf{x}_i` and the direction vector |p1|.  This is the score value for the first component.
+So :math:`t_{i,1}` is the score value for the :math:`i^\text{th}` observation along the first component, and is a linear combination of the :math:`i^\text{th}` row of data, :math:`\mathbf{x}_i` and the direction vector |p1|.  Notice that there are :math:`K` terms in the linear combination: each of the :math:`K` variables *contributes* to the overall score.
 
 We can calculate the second score value for the :math:`i^\text{th}` observation in a similar way:
 
 .. math:: 
 	t_{i,2} = x_{i,1} p_{1,2} + x_{i,2} p_{2,2} + \ldots + x_{i,k} p_{k,1}  + \ldots + x_{i,K} p_{K,2}
 
-And so on, for the third and subsequent components.  In matrix form we write more compactly for the :math:`i^\text{th}` observation that:
+And so on, for the third and subsequent components.  We can compactly write in matrix form for the :math:`i^\text{th}` observation that:
 
 .. math::
 	\mathbf{t}'_i &= \mathbf{x}'_i \mathbf{P} \\
 	(1 \times A)   &= (1 \times K)(K \times A)
 
-This is exactly what we derived earlier in the example with the 4 thermometers in the room, and the case of the thickness of the boards.
+which calculates all :math:`A` score values for that observation in one go. This is exactly what we :ref:`derived earlier <LVM_linear_combination>` in the example with the 4 thermometers in the room.
 
-Finally, for an entire matrix of data, |X|, we have that:
+Finally, for an entire matrix of data, |X|, we can calculate all scores, for all observations:
 
 .. math::
 	\mathbf{T}   &= \mathbf{X} \mathbf{P} \\
 	(N \times A) &= (N \times K)(K \times A)
 	:label: LVM-score-values
-
-.. _LVM-geometric-predictions:
-
-Predicted values for each observation
-======================================
-
-An interesting aspect of a PCA model is that it provides an estimate of each observation in the data set.  Recall the latent variable model was oriented to create the best-fit plane to the data.  This plane was oriented to minimize the error, which implies the best estimate of each observation is its *perpendicular projection* onto the model plane.
-
-Returning back to our illustration with a single component, the best estimate of observation :math:`\mathbf{x}_i` is the point along the direction vector, |p1|, where the original observation is projected.  Recall that the distance along that direction vector was :math:`t_{i,1}`, but the actual point along |p1| is a vector, and it is our best estimate of the original observation.  We will call that estimate :math:`\hat{\mathbf{x}}_{i,1}`, indicating that it is an estimate of :math:`\mathbf{x}_i` along the first component.
-
-.. figure:: images/prediction-along-a-vector.png
-	:alt:	images/prediction-along-a-vector.svg
-	:align: center
-	:scale: 50
-	:width: 500px
-
-So if the magnitude of :math:`\hat{\mathbf{x}}_i` is :math:`t_i` in the direction of |p1| (which is a unit vector), then mathematically we can write:
-
-.. math::
-	\widehat{\mathbf{x}}_{i,1}' &= t_{i,1} \mathbf{p}'_1 \\
-	(1 \times K) &= (1 \times 1)(1 \times K)
-		
-This is the best prediction of the original observation using one component.  If we use a second component, then our estimate improves:
-
-.. math::
-	\widehat{\mathbf{x}}_{i,2}' &= t_{i,1} \mathbf{p}'_1 + t_{i,2} \mathbf{p}'_2 \\
-	(1 \times K) &= (1 \times K) + (1 \times K)
-
-With multiple components, we write:
-
-.. math::
-	\widehat{\mathbf{x}}_{i,A}' &= \begin{bmatrix}t_{i,1} & t_{i,2}, \,\ldots, \, t_{i,A} \end{bmatrix} \mathbf{P}'\\
-	\widehat{\mathbf{x}}_{i,A}' &= \mathbf{t}'_i \mathbf{P}'\\
-	(1 \times K) &= (1 \times A) (A \times K)
-
-This is interesting: :math:`\hat{\mathbf{x}}_{i,A}` is a prediction of every variable in the :math:`i^\text{th}` observation.  We only require the score values for that :math:`i^\text{th}` observation in order to get this prediction.  We multiply the scores :math:`\mathbf{t}_i` by the direction vectors in matrix |P| to get the prediction.  
-
-.. TODO: image here showing vector arms
-
-We can write the preceding equation in a way that handles the entire matrix |X|:
-
-.. math:: 
-	\widehat{\mathbf{X}} &= \mathbf{T}\mathbf{P}'\\
-	(N \times K) &= (N \times A) (A \times K)
-	:label: LVM-X-hat-prediction-PCA
-
-Once we have the predicted value for an observation, we are also interested in the residual vector between the actual and predicted observation:
-
-.. math::
-	\mathbf{e}'_{i,A} &= \mathbf{x}'_i - \widehat{\mathbf{x}}'_{i,A} \\
-	(1 \times K) &= (1 \times K) - (1 \times K)
-
-.. You can add this to the above, but it doesn't advance the concepts for this particular section.  Rather leave it out for now.		
-	\mathbf{e}_{i,A}'  &= \mathbf{x}'_i - \mathbf{t}'_i \mathbf{P}' \\
-					   &= \mathbf{x}'_i - \mathbf{x}'_i \mathbf{P} \mathbf{P}' \\
-					   &= \mathbf{x}'_i \left(I_{K \times K} - \mathbf{P} \mathbf{P}' \right)
-
-The residual *distance* is the sum of squares of this residual, then we take the square root to form a distance.  Technically the *squared prediction error* (SPE) is just the sum of squares for each observation, but often we refer to the square root of this quantity as the SPE as well.  Some software packages will scale the root of the SPE by some value; you will see this referred to as the DModX, distance to the model plane for |X|. 
-
-.. math::
-	\text{SPE}_i &= \sqrt{\mathbf{e}'_{i,A} \mathbf{e}_{i,A}} \\
-	(1 \times 1) &= (1 \times K)(K \times 1)
-	
-where :math:`\mathbf{e}_{i,A}` is the residual vector of the :math:`i^\text{th}` observation using :math:`A` components.
 
 More about the direction vectors (loadings)
 =============================================
@@ -408,7 +346,7 @@ Use these two plots to characterize what values the 5 measurements would have be
 	* sample 35:	
 	* sample 42:
 
-.. _LVM-interpreting-scores:
+.. _LVM_interpreting_scores:
 
 Interpreting score plots
 ====================================
@@ -543,6 +481,70 @@ Finally, one way to locate unimportant variables in the model is by finding whic
 .. Combining loading and score plots
 .. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. _LVM_geometric_predictions:
+
+Predicted values for each observation
+======================================
+
+An interesting aspect of a PCA model is that it provides an estimate of each observation in the data set.  Recall the latent variable model was oriented to create the best-fit plane to the data.  This plane was oriented to minimize the errors, which implies the best estimate of each observation is its *perpendicular projection* onto the model plane.
+
+Referring to the illustration and assume we have a PCA model with a single component, the best estimate of observation :math:`\mathbf{x}_i` is the point along the direction vector, |p1|, where the original observation is projected.  Recall that the distance along that direction vector was :math:`t_{i,1}`, but the actual point along |p1| is a vector, and it is our best estimate of the original observation.  We will call that estimate :math:`\widehat{\mathbf{x}}_{i,1}`, indicating that it is an estimate of :math:`\mathbf{x}_i` along the first component.
+
+.. image:: images/prediction-along-a-vector.png
+	:alt:	images/prediction-along-a-vector.svg
+	:align: center
+	:scale: 50
+	:width: 500px
+
+Since :math:`\widehat{\mathbf{x}}_{i,1}` is a vector, we can write it as the product of a magnitude value and a direction vector. The magnitude of :math:`\widehat{\mathbf{x}}_i` is :math:`t_i` in the direction of |p1|, which is a unit vector, then mathematically we can write:
+
+.. math::
+	\widehat{\mathbf{x}}_{i,1}' &= t_{i,1} \,\,\mathbf{p}'_1 \\
+	(1 \times K) &= (1 \times 1)(1 \times K)
+		
+This is the best prediction of the original observation using one component.  If we added a second component to our model, then our estimate improves:
+
+.. math::
+	\widehat{\mathbf{x}}_{i,2}' &= t_{i,1}\,\, \mathbf{p}'_1 + t_{i,2}\,\, \mathbf{p}'_2 \\
+	(1 \times K) &= (1 \times K) + (1 \times K)
+
+With multiple components, we write:
+
+.. math::
+	\widehat{\mathbf{x}}_{i,A}' &= \begin{bmatrix}t_{i,1} & t_{i,2}, \,\,\ldots, \,\, t_{i,A} \end{bmatrix} \mathbf{P}'\\
+	\widehat{\mathbf{x}}_{i,A}' &= \mathbf{t}'_i \, \mathbf{P}'\\
+	(1 \times K) &= (1 \times A) (A \times K)
+
+This is interesting: :math:`\widehat{\mathbf{x}}_{i,A}` is a prediction of every variable in the :math:`i^\text{th}` observation.  We only require the score values for that :math:`i^\text{th}` observation in order to get this prediction.  We multiply the scores :math:`\mathbf{t}_i` by the direction vectors in matrix |P| to get the prediction.  
+
+.. TODO: image here showing vector arms
+
+The preceding equation can be written in a way that handles the entire matrix |X|:
+
+.. math:: 
+	\widehat{\mathbf{X}} &= \mathbf{T}\mathbf{P}'\\
+	(N \times K) &= (N \times A) (A \times K)
+	:label: LVM-X-hat-prediction-PCA
+
+Once we have the predicted value for an observation, we are also interested in the residual vector between the actual and predicted observation:
+
+.. math::
+	\mathbf{e}'_{i,A} &= \mathbf{x}'_i - \widehat{\mathbf{x}}'_{i,A} \\
+	(1 \times K) &= (1 \times K) - (1 \times K)
+
+.. You can add this to the above, but it doesn't advance the concepts for this particular section.  Rather leave it out for now.		
+	\mathbf{e}_{i,A}'  &= \mathbf{x}'_i - \mathbf{t}'_i \mathbf{P}' \\
+					   &= \mathbf{x}'_i - \mathbf{x}'_i \mathbf{P} \mathbf{P}' \\
+					   &= \mathbf{x}'_i \left(I_{K \times K} - \mathbf{P} \mathbf{P}' \right)
+
+The residual *length* or *distance* is the sum of squares of this residual, then we take the square root to form a distance.  Technically the *squared prediction error* (SPE) is just the sum of squares for each observation, but often we refer to the square root of this quantity as the SPE as well.  Some software packages will scale the root of the SPE by some value; you will see this referred to as the DModX, distance to the model plane for |X|. 
+
+.. math::
+	\text{SPE}_i &= \sqrt{\mathbf{e}'_{i,A} \mathbf{e}_{i,A}} \\
+	(1 \times 1) &= (1 \times K)(K \times 1)
+	
+where :math:`\mathbf{e}_{i,A}` is the residual vector of the :math:`i^\text{th}` observation using :math:`A` components.
+
 
 Interpreting the residuals
 ====================================
@@ -554,7 +556,7 @@ We consider three types of residuals: residuals within each row of |X|, called s
 Residuals for each observation: the square prediction error
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We have already introduced the :ref:`squared prediction error geometrically <LVM-geometric-predictions>`. We showed in that section that the residual distance from the actual observation to the model plane is given by:
+We have already introduced the :ref:`squared prediction error geometrically <LVM_geometric_predictions>`. We showed in that section that the residual distance from the actual observation to the model plane is given by:
 
 .. math:: 
 	\mathbf{e}'_{i,A} 	&= \mathbf{x}'_i - \widehat{\mathbf{x}}'_{i,A} \\
@@ -586,7 +588,7 @@ The most convenient way to visualize these SPE values is as sequence plot, or a 
 
 If we find an observation that has a large squared prediction error, i.e. the observation is far off the model plane, then we say this observation is *inconsistent with the model*.  For example, if you have data from a chemical process, taken over several days, your first 300 observations show SPE values below the limit.  Then on the 4th day you notice a persistent trend upwards in SPE values: this indicates that those observations are inconsistent with the model.
 
-We would like to know why, specifically which variable(s) in |X|, are most related with this deviation off the model plane.  As we did in the section on :ref:`interpreting scores <LVM-interpreting-scores>`, we can generate a contribution plot.
+We would like to know why, specifically which variable(s) in |X|, are most related with this deviation off the model plane.  As we did in the section on :ref:`interpreting scores <LVM_interpreting_scores>`, we can generate a contribution plot.
 
 .. math:: 
 	\mathbf{e}'_{i,A} 	&= \mathbf{x}'_i - \widehat{\mathbf{x}}'_{i,A}
@@ -615,7 +617,7 @@ Using the raw data for this example, repeated below, can you explain all of the 
 	:width: 700px
 	:align: center
 
-Finally, the SPE value is a complete summary of the residual vector.  As such, it is sometimes used to colour-code  score plots, as we mentioned back in the section on :ref:`score plots <LVM-interpreting-scores>`.   Another interesting way people sometimes display SPE is to plot a 3D data cloud, with :math:`\mathbf{t}_1` and :math:`\mathbf{t}_2` against the SPE on the third axis.  This gives a fairly complete picture of the major dimensions in the model: the explained variation on-the-plane, and the residual distance off-the-plane.
+Finally, the SPE value is a complete summary of the residual vector.  As such, it is sometimes used to colour-code  score plots, as we mentioned back in the section on :ref:`score plots <LVM_interpreting_scores>`.   Another interesting way people sometimes display SPE is to plot a 3D data cloud, with :math:`\mathbf{t}_1` and :math:`\mathbf{t}_2` against the SPE on the third axis.  This gives a fairly complete picture of the major dimensions in the model: the explained variation on-the-plane, and the residual distance off-the-plane.
 
 
 Residuals for each column (:math:`R^2` for each column in |X|)
@@ -950,7 +952,7 @@ As mentioned previously there are 3 major steps to building a PCA model for engi
 	#.	Building the latent variable model
 	#.	Testing the model, including testing for the number of components to use
 
-This last step of testing, interpreting and using the model is where one will spend the most time.  Preparing the data can be time-consuming the first time, but generally the first two steps are less time-consuming.  In this section we investigate how to determine the number of components that should be used in the model and how to use an existing PCA model.  The issue of interpreting a model has been addressed in the section on :ref:`interpreting scores <LVM-interpreting-scores>` and :ref:`interpreting loadings <LVM-interpreting-loadings>`.
+This last step of testing, interpreting and using the model is where one will spend the most time.  Preparing the data can be time-consuming the first time, but generally the first two steps are less time-consuming.  In this section we investigate how to determine the number of components that should be used in the model and how to use an existing PCA model.  The issue of interpreting a model has been addressed in the section on :ref:`interpreting scores <LVM_interpreting_scores>` and :ref:`interpreting loadings <LVM-interpreting-loadings>`.
 
 .. _LVM-number-of-components:
 

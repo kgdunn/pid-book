@@ -329,7 +329,7 @@ Interpreting the scores in PLS
 
 Like in PCA, our |T| scores in PLS are a summary of the data from *both* blocks.  The reason for saying that, even though there are two sets of scores, |T| and |U|, for each of |X| and |Y| respectively, is that they have maximal covariance.  We can interpret one set of them.  In this regard, the |T| scores are more readily interpretable, since they are always available.  The |U| scores are not available until |Y| is known.  We have the |U| scores during model-building, but when we use the model on new data (e.g. when making predictions using PLS), then we only have the |T| scores.  We will revisit this point again :ref:`later on <LVM-PLS-on-new-data>`.
 
-The scores for PLS are interpreted in exactly the :ref:`same way as for PCA <LVM-interpreting-scores>`.  Particularly, we look for clusters, outliers and interesting patterns in the line plots of the scores.
+The scores for PLS are interpreted in exactly the :ref:`same way as for PCA <LVM_interpreting_scores>`.  Particularly, we look for clusters, outliers and interesting patterns in the line plots of the scores.
 
 The only difference that must be remembered is that these scores have a different orientation to the PCA scores.  As illustrated below, the PCA scores are found so that only explain the variance in |X|; the PLS scores are calculated so that they also explain |Y| and have a maximum relationship between |X| and |Y|.  Most time these directions will be close together.
 

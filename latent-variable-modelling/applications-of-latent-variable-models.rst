@@ -53,7 +53,7 @@ It it is not shown here, but the competitor's product points are close to the mo
 Troubleshooting process problems
 ==========================================
 
-We already saw a troubleshooting example in the section on :ref:`interpreting scores <LVM-interpreting-scores>`.  In general, troubleshooting with latent variable methods uses this flow:
+We already saw a troubleshooting example in the section on :ref:`interpreting scores <LVM_interpreting_scores>`.  In general, troubleshooting with latent variable methods uses this flow:
 
 #.	Collect data from all relevant parts of the process: do not exclude variables that you think might be unimportant; often the problems are due to the most unexpected sources.  Include information on operators, weather, equipment age (e.g. days since pump replacement), raw material properties being processed at that time, raw material supplier (indicator variable).  Because the PCA model disregards unimportant or noisy variables, these can later be pruned out, but they should be kept in for the initial analysis.  (Note: this does not mean the uninformative variables are not important - they might only be uninformative during the period of data under observation).
 
@@ -221,7 +221,7 @@ The phase II workflow, when we now wish to apply this quality chart on-line, is 
 
 The usual phase II approach when an alarm is raised is to investigate the variable that raised the alarm, and use your engineering knowledge of the process to understand why it was raised.  When using scores, SPE and |T2|, we actually have a bit more information, but the approach is the same: use your engineering knowledge, in conjunction with the relevant contribution plot.
 
-	*	A score variable, e.g. :math:`t_a` raised the alarm.  We :ref:`derived earlier <LVM-interpreting-scores>` that the contribution to each score was :math:`t_{\text{new},a} = x_{\text{new},1} p_{1,a} + x_{\text{new},2} p_{2,a} + \ldots + x_{\text{new},k} p_{k,a} + \ldots + x_{\text{new},K} p_{K,a}`.  It indicates which of the original :math:`K` variables contributed most to the very high or very low score value.
+	*	A score variable, e.g. :math:`t_a` raised the alarm.  We :ref:`derived earlier <LVM_interpreting_scores>` that the contribution to each score was :math:`t_{\text{new},a} = x_{\text{new},1} p_{1,a} + x_{\text{new},2} p_{2,a} + \ldots + x_{\text{new},k} p_{k,a} + \ldots + x_{\text{new},K} p_{K,a}`.  It indicates which of the original :math:`K` variables contributed most to the very high or very low score value.
 		
 	*	SPE alarm.  The contribution to SPE for a new observation was derived in an :ref:`earlier section <LVM-interpreting-SPE-residuals>` as well; it is conveniently shown using a barplot of the :math:`K` elements in the vector below.  These are the variables most associated with the broken correlation structure.
 
