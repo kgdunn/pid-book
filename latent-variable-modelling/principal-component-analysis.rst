@@ -620,9 +620,9 @@ This shows that each observation (row in |X|) can be split and interpreted in tw
 
 An observation in |X| that has :math:`\text{SPE}_i = 0` is exactly on the plane and follows the model structure exactly; this is the smallest SPE value possible.  For a given data set we have a distribution of SPE values.  We can calculate a confidence limit below which we expect to find a certain fraction of the data, e.g. a 95% confidence limit.  We won't go into how this limit is derived, suffice to say that most software packages will compute it and show it.
 
-The most convenient way to visualize these SPE values is as sequence plot, or a line plot, where the y-axis has a lower limit of 0.0, and the 95% and/or 99% SPE limit is also shown.  Remember that we would expect 5 out of 100 points to naturally fall above the 95% limit.
+The most convenient way to visualize these SPE values is as a sequence plot, or a line plot, where the :math:`y`-axis has a lower limit of 0.0, and the 95% and/or 99% SPE limit is also shown.  Remember that we would expect 5 out of 100 points to naturally fall above the 95% limit.
 
-If we find an observation that has a large squared prediction error, i.e. the observation is far off the model plane, then we say this observation is *inconsistent with the model*.  For example, if you have data from a chemical process, taken over several days, your first 300 observations show SPE values below the limit.  Then on the 4th day you notice a persistent trend upwards in SPE values: this indicates that those observations are inconsistent with the model.
+If we find an observation that has a large squared prediction error, i.e. the observation is far off the model plane, then we say this observation is *inconsistent with the model*.  For example, if you have data from a chemical process, taken over several days, your first 300 observations show SPE values below the limit.  Then on the 4th day you notice a persistent trend upwards in SPE values: this indicates that those observations are inconsistent with the model, indicating a problem with the process, as reflected in the data captured during that time.
 
 We would like to know why, specifically which variable(s) in |X|, are most related with this deviation off the model plane.  As we did in the section on :ref:`interpreting scores <LVM_interpreting_scores>`, we can generate a contribution plot.
 
@@ -635,25 +635,25 @@ Dropping the :math:`A` subscript for convenience we can write the :math:`1 \time
 	\mathbf{e}'_{i} 	&= \mathbf{x}'_i - \widehat{\mathbf{x}}'_{i} \\
 	(1 \times K)		&= \begin{bmatrix}(x_{i,1} - \hat{x}_{i,1}) & (x_{i,2} - \hat{x}_{i,2}) & \ldots & (x_{i,k} - \hat{x}_{i,k}) &  \ldots & (x_{i,K} - \hat{x}_{i,K})\end{bmatrix}
 
-The SPE is just the sum of the squares of these :math:`K` terms, so a residual contribution plot, shown as a bar chart of these :math:`K` terms, indicates which of the original :math:`K` variable(s) are most associated with the deviation off the model plane.  We say that the *correlation structure among these variables has been broken*. This is because PCA provides a model of the correlation structure in the data table.  When an observation has a large residual, then that observation is said to break the correlation structure.
+The SPE is just the sum of the squares of these :math:`K` terms, so a residual contribution plot, most conveniently shown as a bar chart of these :math:`K` terms, indicates which of the original :math:`K` variable(s) are most associated with the deviation off the model plane.  We say that the *correlation structure among these variables has been broken*. This is because PCA provides a model of the correlation structure in the data table.  When an observation has a large residual, then that observation is said to break the correlation structure, and is inconsistent with the model.
 
-Looking back at the room-temperature example: if we fit a model with one component, then the residual distance, shown with the 95% limit, appears as follows:
+Looking back at the :ref:`room-temperature example <LVM-room-temperature-example>`: if we fit a model with one component, then the residual distance, shown with the 95% limit, appears as follows:
 
-.. figure:: images/temperatures-SPE-after-one-PC.png
+.. image:: images/temperatures-SPE-after-one-PC.png
 	:alt:	images/temperature-data.R
 	:scale: 80
 	:width: 750px
 	:align: center
 
-Using the raw data for this example, repeated below, can you explain all of the unusual points in the SPE plot?
+Using the `raw data for this example <http://datasets.connectmv.com/info/room-temperature>`_, shown below, can you explain why we see those unusual points in the SPE plot around time 50 to 60?
 
-.. figure:: images/room-temperature-plots.png
+.. image:: images/room-temperature-plots.png
 	:alt:	images/room-temperature-plots.py
 	:scale: 90
 	:width: 700px
 	:align: center
 
-Finally, the SPE value is a complete summary of the residual vector.  As such, it is sometimes used to colour-code  score plots, as we mentioned back in the section on :ref:`score plots <LVM_interpreting_scores>`.   Another interesting way people sometimes display SPE is to plot a 3D data cloud, with :math:`\mathbf{t}_1` and :math:`\mathbf{t}_2` against the SPE on the third axis.  This gives a fairly complete picture of the major dimensions in the model: the explained variation on-the-plane, and the residual distance off-the-plane.
+Finally, the SPE value is a complete summary of the residual vector.  As such, it is sometimes used to colour-code  score plots, as we mentioned back in the section on :ref:`score plots <LVM_interpreting_scores>`.   Another interesting way people sometimes display SPE is to plot a 3D data cloud, with :math:`\mathbf{t}_1` and :math:`\mathbf{t}_2`, and use the SPE values on the third axis.  This gives a fairly complete picture of the major dimensions in the model: the explained variation on-the-plane, given by :math:`\mathbf{t}_1` and :math:`\mathbf{t}_2`, and the residual distance off-the-plane, summarized by SPE.
 
 
 Residuals for each column (:math:`R^2` for each column in |X|)
@@ -661,13 +661,15 @@ Residuals for each column (:math:`R^2` for each column in |X|)
 
 Using the residual matrix :math:`\mathbf{E} = \mathbf{X} - \mathbf{T} \mathbf{P}' = \mathbf{X} - \widehat{\mathbf{X}}`, we can calculate the residuals for each column in the original matrix.  This gives an indication of how well the PCA model describes the data from that column.
 
-.. figure:: images/column-residuals-PCA.png
+.. image:: images/column-residuals-PCA.png
 	:alt:	images/column-residuals-PCA.svg
 	:scale: 100
 	:width: 750px
 	:align: center
 
-As we showed in the section on :ref:`least squares modelling <SECTION-least-squares-modelling>`, the :math:`R^2` number is merely the ratio between the variance we can explain with the model over the total variance we started off with.  Using the notation in the previous illustration:
+In the section on :ref:`least squares modelling <SECTION-least-squares-modelling>`, the :math:`R^2` number was shown to be
+
+s merely the ratio between the variance we can explain with the model over the total variance we started off with.  Using the notation in the previous illustration:
 
 .. math::
 	R^2_k = \dfrac{\text{Var}(\widehat{\mathbf{x}}_k)}{\text{Var}(\mathbf{x}_k)} = \dfrac{\text{Var}(\mathbf{x}_k - \mathbf{e}_k)}{\text{Var}(\mathbf{x}_k)}
