@@ -23,23 +23,24 @@ Principal Component Analysis
 
 .. _SECTION-PLS:
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Projection to Latent Structures 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+..
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	Projection to Latent Structures 
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-.. toctree::
-   :maxdepth: 2
+	.. toctree::
+	   :maxdepth: 2
 
-   projection-to-latent-structures 
+	   projection-to-latent-structures 
 
-.. _SECTION-LVM-applications:
+	.. _SECTION-LVM-applications:
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Applications of Latent Variable Models
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	Applications of Latent Variable Models
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-.. toctree::
-   :maxdepth: 2
+	.. toctree::
+	   :maxdepth: 2
 
-   applications-of-latent-variable-models
+	   applications-of-latent-variable-models
 

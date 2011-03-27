@@ -276,7 +276,7 @@ Centering and scaling does not alter the overall interpretation of the data: if 
 
 For reference, the mean and standard deviation of each variable is recorded below.  In the last 3 columns we show the raw data for observation 33, the raw data after centering, and the raw data after centering and scaling:
 
-.. tabularcolumns:: |l||l|l||l|l||l|
+.. tabularcolumns:: |l||l|l||r|r|r|
 
 .. csv-table:: 
    :header: Variable, Mean, Standard deviation, Raw data, After centering, After autoscaling
@@ -287,7 +287,6 @@ For reference, the mean and standard deviation of each variable is recorded belo
 	Crispy,   11.52,     1.78, 7, -4.52, -2.546 
 	Fracture, 20.86,     5.47, 33,  12.14, +2.221
 	Hardness,  128.18,   31.13, 92, -36.18, -1.162
-	
 
 **Loadings:** :math:`\,\mathbf{p}_1`
 
@@ -297,7 +296,7 @@ We will discuss how to determine the number of components to use :ref:`in a futu
 	\mathbf{p}_1 = \begin{bmatrix} +0.46 \\  -0.47 \\ +0.53 \\ -0.50 \\ +0.15 \end{bmatrix} \qquad \text{and} \qquad 
 	\mathbf{p}_2 = \begin{bmatrix} -0.37 \\  +0.36 \\ +0.20 \\ -0.22 \\ +0.80 \end{bmatrix}
 
-.. figure:: images/pca-on-food-texture-pc1-loadings.png
+.. image:: images/pca-on-food-texture-pc1-loadings.png
 	:alt:	images/pca-on-food-texture-data.R
 	:scale: 60
 	:width: 750px
@@ -306,24 +305,25 @@ We will discuss how to determine the number of components to use :ref:`in a futu
 This plot shows the first component.  All variables, except for hardness have large values in :math:`\mathbf{p}_1`.  If we write out the equation for :math:`t_1` for an observation :math:`i`:
 
 .. math::
-	t_{1,i} = 0.46 x_\text{oil} - 0.47 x_\text{density} + 0.53 x_\text{crispy} - 0.50 x_\text{fracture}  + 0.15 x_\text{hardness}
+	t_{1,i} = 0.46 \,\, x_\text{oil} - 0.47 \,\, x_\text{density} + 0.53 \,\, x_\text{crispy} - 0.50 \,\, x_\text{fracture}  + 0.15 \,\, x_\text{hardness}
+	:label: LVM_t1_food_texture_
 
 Once we have centered and scaled the data, remember that a negative :math:`x`-value is a value below the average, and that a positive :math:`x`-value lies above the average.
 
-For a pastry product to have a high :math:`t_1` value would require it to have some combination of above-average oil level, low density, and/or be crispy and/or only have a small angle by which it can be bent before it fractures, i.e. low fracturability.  So pastry observations with high :math:`t_1` values sound like they are brittle, flaky and light.  Conversely, a product with low :math:`t_1` value would have the opposite sort of conditions: it would be a heavier, more chewy pastry (higher fracture angle) and less crispy.
+For a pastry product to have a high :math:`t_1` value would require it to have some combination of above-average oil level, low density, and/or be more crispy and/or only have a small angle by which it can be bent before it fractures, i.e. low fracturability.  So pastry observations with high :math:`t_1` values sound like they are brittle, flaky and light.  Conversely, a product with low :math:`t_1` value would have the opposite sort of conditions: it would be a heavier, more chewy pastry (higher fracture angle) and less crispy.
 
 
 **Scores:** :math:`\,\mathbf{t}_1`
 
-Let's examine the score values calculated.  As shown above, the scores are linear combinations of the data, :math:`\mathbf{x}`, given by the weights in the loadings matrix, |P|.  For the first component, :math:`\mathbf{t}_1 = \mathbf{X} \mathbf{p}_1`.  The plot here shows the values in vector :math:`\mathbf{t}_1` (an :math:`N \times 1` vector):
+Let's examine the score values calculated.  As shown in equation :eq:`LVM_t1_food_texture_`, the score value is a linear combination of the data, :math:`\mathbf{x}`, given by the weights in the loadings matrix, |P|.  For the first component, :math:`\mathbf{t}_1 = \mathbf{X} \mathbf{p}_1`.  The plot here shows the values in vector :math:`\mathbf{t}_1` (an :math:`N \times 1` vector):
 
-.. figure:: images/pca-on-food-texture-pc1-scores.png
+.. image:: images/pca-on-food-texture-pc1-scores.png
 	:alt:	images/pca-on-food-texture-data.R
 	:scale: 80
 	:width: 750px
 	:align: center
 	
-The samples appear to be evenly spread, some high and some low on the :math:`t_1` scale.  Sample 33 has a :math:`t_1` value of -4.2, indicating it was much denser than the other pastries, and had a high fracture angle (it could be bent more than others).  In fact, if we refer to the raw data (available on the course website) we can confirm these findings: :math:`\mathbf{x}_{i=33} = [15.5, 3125, 7, 33, 92]`.  Refer back to the scatterplot matrix and mark the point which has density of 3125, and fracture angle of 33.  This pastry also has a low oil percentage (15.5%) and low crispy value (7).
+The samples appear to be evenly spread, some high and some low on the :math:`t_1` scale.  Sample 33 has a :math:`t_1` value of -4.2, indicating it was much denser than the other pastries, and had a high fracture angle (it could be bent more than others).  In fact, if we `refer to the raw data <http://datasets.connectmv.com/info/food-texture>`_ we can confirm these findings: :math:`\mathbf{x}_{i=33} = [15.5, \,\, 3125, \,\, 7, \,\, 33, \,\, 92]`.  Also refer back to the scatterplot matrix and mark the point which has density of 3125, and fracture angle of 33.  This pastry also has a low oil percentage (15.5%) and low crispy value (7).
 
 We can also investigate sample 36, with a :math:`t_1` value of 3.6.  The raw data again confirm that this pastry follows the trends of other, high :math:`t_1` value pastries.  It has a high oil level, low density, high crispiness, and a low fracture angle: :math:`x_{36} = [21.2, 2570, 14, 13, 105]`.  Locate again on the scatterplot matrices the point where oil level is 21.2 and the crispiness is 14.  Also mark the point where density = 2570 and the fracture value = 13.
 
