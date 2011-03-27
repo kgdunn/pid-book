@@ -14,18 +14,15 @@ These readings cover a variety of topics in the area of latent variable methods:
 
 * **About PCA**: Svante Wold, Kim Esbensen, Paul Geladi: "`Principal Component Analysis <http://dx.doi.org/10.1016/0169-7439(87)80084-9>`_", *Chemometrics and Intelligent Laboratory Systems*, **2**, 37-52, 1987.
 
-* **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold:  "Multivariate and Megavariate Data Analysis" (Parts I and II).
+* **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold:  "Multivariate and Megavariate Data Analysis" (`Part I <http://books.google.com/books?id=B-1NNMLLoo8C&lpg=PP1&pg=PP1#v=onepage&q&f=false>`_ and `Part II <http://books.google.com/books?id=2CHrDa-kBSYC&lpg=PP1&pg=PP1#v=onepage&q&f=false>`_).
 
-* **Contribution plots**: P Miller, RE Swanson, CE Heckler, "Contribution Plots: a Missing Link in Multivariate Quality Control, *Applied Mathematics and Computer Science*, *8* (4), 775-792, 1998.
+.. OMIT FOR NOW
 
-Principal component analysis (PCA)
-=====================================
+	*	**Contribution plots**: P Miller, RE Swanson, CE Heckler, "Contribution Plots: a Missing Link in Multivariate Quality Control, *Applied Mathematics and Computer Science*, *8* (4), 775-792, 1998.
 
-.. index::
-	pair: principal component analysis; latent variable modelling
 
 Visualizing multivariate data
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+====================================
 
 Principal component analysis considers a single matrix of data, called |X|.  Each row in |X| contains values that represent an *object* of some sort.  We usually call this an *observation*. The observations in |X| could be a collection of measurements from a chemical process at a particular point in time, various properties of a final product, or a raw material from a supplier.  The columns in |X| are the values recorded for each observation.  We call these the *variables*. 
 
@@ -51,7 +48,11 @@ Each point in the plot represents one *object*, also called an *observation*.  T
 .. _LVM-PCA-geometric-interpretation:
 
 Geometric explanation of PCA
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+====================================
+
+
+.. index::
+	pair: principal component analysis; latent variable modelling
 
 We refer to a :math:`K`-dimensional space when referring to the data in |X|.  We will start by looking at the geometric interpretation of PCA when |X| has 3 columns, in other words a 3-dimensional space, using measurements: :math:`[x_1, x_2, x_3]`.
 
@@ -111,7 +112,7 @@ A principal component model is one type of latent variable model.  A PCA model i
 .. _LVM-mathematical-geometric-derivation:
 
 Mathematical derivation for PCA
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+====================================
 
 Geometrically, when finding the best-fit line for the swarm of points, our objective was to minimize the error, i.e. the residual distances from each point to the best-fit line is the smallest possible.  This is also mathematically equivalent to maximizing the variance of the scores, :math:`\mathbf{t}_a`.
 
@@ -165,7 +166,7 @@ Finally, for an entire matrix of data, |X|, we have that:
 .. _LVM-geometric-predictions:
 
 Predicted values for each observation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+======================================
 
 An interesting aspect of a PCA model is that it provides an estimate of each observation in the data set.  Recall the latent variable model was oriented to create the best-fit plane to the data.  This plane was oriented to minimize the error, which implies the best estimate of each observation is its *perpendicular projection* onto the model plane.
 
@@ -227,7 +228,7 @@ The residual *distance* is the sum of squares of this residual, then we take the
 where :math:`\mathbf{e}_{i,A}` is the residual vector of the :math:`i^\text{th}` observation using :math:`A` components.
 
 More about the direction vectors (loadings)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=============================================
 
 The direction vectors |p1|, :math:`\mathbf{p}_2` and so on, are each :math:`K \times 1` unit vectors.  These are vectors in the original coordinate space (the :math:`K`-dimensional real-world) where the observations are recorded.
 
@@ -265,7 +266,7 @@ This is very useful, because now instead of dealing with :math:`K` thermometers 
 .. _LVM-food-texture-example:
 
 Food texture example
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+====================================
 
 Let's take a look at an example to consolidate and extend the ideas introduced so far.  This data set is from a food manufacturer making a pastry product.  Each sample (row) in the data set is taken from a batch of product where 5 quality attributes are measured:
 
@@ -389,7 +390,7 @@ Use these two plots to characterize what values the 5 measurements would have be
 .. _LVM-interpreting-scores:
 
 Interpreting score plots
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+====================================
 
 .. index::
 	pair: interpret score plot; latent variable modelling
@@ -474,7 +475,7 @@ Plotting any two score variables on a scatter plot provides good insight into th
 .. _LVM-interpreting-loadings:
 
 Interpreting loading plots
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+====================================
 
 .. index::
 	pair: interpret loadings plot; latent variable modelling
@@ -523,14 +524,14 @@ Finally, one way to locate unimportant variables in the model is by finding whic
 
 
 Interpreting the residuals
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+====================================
 
 We consider three types of residuals: residuals within each row of |X|, called squared prediction errors (SPE); residuals for each column of |X|, called :math:`R^2_k` for each column, and finally residuals for the entire matrix |X|, usually just called :math:`R^2` for the model.
 
 .. _LVM-interpreting-SPE-residuals:
 
 Residuals for each observation: the square prediction error
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We have already introduced the :ref:`squared prediction error geometrically <LVM-geometric-predictions>`. We showed in that section that the residual distance from the actual observation to the model plane is given by:
 
@@ -597,7 +598,7 @@ Finally, the SPE value is a complete summary of the residual vector.  As such, i
 
 
 Residuals for each column (:math:`R^2` for each column in |X|)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Using the residual matrix :math:`\mathbf{E} = \mathbf{X} - \mathbf{T} \mathbf{P}' = \mathbf{X} - \widehat{\mathbf{X}}`, we can calculate the residuals for each column in the original matrix.  This gives an indication of how well the PCA model describes the data from that column.
 
@@ -615,7 +616,7 @@ As we showed in the section on :ref:`least squares modelling <SECTION-least-squa
 The :math:`R^2_k` value for each variable will increase with every component that is added to the model.  The minimum value is 0.0 when there are no components, and the maximum value is 1.0, when the maximum number of components have been added.  This latter extreme is usually not reached, because such a model would be fitting the noise inherent in :math:`\mathbf{x}_k` as well.
 
 Residuals for the whole matrix X (:math:`R^2` for |X|)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Finally, we can calculate an :math:`R^2` value for the entire matrix |X|.  This is the ratio between the variance of |X| we can explain with the model over the ratio of variance initially present in |X|.
 
@@ -625,7 +626,7 @@ Finally, we can calculate an :math:`R^2` value for the entire matrix |X|.  This 
 The variance of a matrix |X| is taken as the sum of squares of every element in |X|.  The example in the next section illustrates how to interpret these residuals.  The smallest value of  :math:`R^2` value is :math:`R^2_{a=0} = 0.0` when there are no components.  After the first component is added we can calculate :math:`R^2_{a=1}`.  Then after fitting a second component we get :math:`R^2_{a=2}`.  Since each component is extracting new information from |X|, we know that :math:`R^2_{a=0} > R^2_{a=1} > R^2_{a=2} > \ldots > R^2_{a=A} = 1.0`.
 
 Example: spectral data
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+====================================
 
 A data set, `available on the book website <http://datasets.connectmv.com/info/tablet-spectral-data>`_, contains data on 460 tablets, measured at 650 different wavelengths.
 
@@ -669,7 +670,7 @@ Finally, we can show the SPE plot for each observation. These SPE values for eac
 .. _LVM-Hotellings-T2:
 
 Hotelling's |T2|
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+====================================
 
 The final quantity from a PCA model that we need to consider is called Hotelling's |T2| value.  Some PCA models will have many components, :math:`A`, so an initial screening of these components using score scatterplots will require reviewing :math:`A(A-1)/2` scatterplots.  The |T2| value for the :math:`i^\text{th}` observation is defined as:
 
@@ -725,7 +726,7 @@ where the :math:`s_a^2` values are constants, and are the variances of each comp
 .. _LVM-preprocessing:
 
 Preprocessing the data before building a model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+==================================================
 
 There are 3 major steps to building a PCA model for engineering applications: 
 
@@ -784,14 +785,14 @@ There are a number of possibilities for data preprocessing.  We mainly discuss c
 .. _LVM-algorithms-for-PCA:
 
 Algorithms to build a PCA model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+====================================
 
 The different algorithms used to build a PCA model provide a different insight into the model's structure and how to interpret it.  These algorithms are a reflection of how PCA has been used in different disciplines: PCA is called by different names in each areas.
 
 .. _LVM-eigenvalue-decomposition:
 
 Eigenvalue decomposition
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. Note:: The purpose of this section is not the theoretical details, but rather the interesting interpretation of the PCA model that we obtain from an eigenvalue decomposition.
 
@@ -854,7 +855,7 @@ The general approach to using the eigenvalue decomposition would be:
 However, we should note that calculating the PCA model using an eigenvalue algorithms is usually not recommended, since it calculates all eigenvectors (loadings), even though only the first few will be used.  The maximum number of components possible is :math:`A_\text{max} = \min(N, K)`.  The eigenvalue algorithm cannot handle missing data.
 	
 Singular value decomposition
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. TODO: Provide additional insight here on how this is equivalent to rotation, scaling, rotation: break down the data into these 3 SVD components
 
@@ -874,7 +875,7 @@ Like the eigenvalue method, the SVD method calculates all principal components p
 
 
 Non-linear iterative partial least-squares (NIPALS)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The NIPALS algorithm is a sequential method of computing the principal components.  The calculation may be terminated early, when the user deems that enough components have been computed.
 
@@ -888,11 +889,8 @@ We won't go through the algorithm here, but only mention a few points of interes
 	*	It is used by most software packages, especially those that handle missing data.
 	*	Of interest: it is well known that Google used this algorithm for their first search engine (`called PageRank <http://ilpubs.stanford.edu:8090/422/>`_).
 	
-Kernel methods for PCA
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Still to come.
-
+.. Kernel methods for PCA
+.. ^^^^^^^^^^^^^^^^^^^^^^
 
 ..	We will also mention here, but not go into the details of kernel algorithms.  For example, when we have long and narrow |X| matrix of size :math:`N \times K` we can calculate a kernel matrix, :math:`\mathbf{X}'\mathbf{X}` which then has size :math:`K \times K`.  This is a much, much smaller matrix to work with than the original :math:`N \times N` matrix.  The eigenvalue decomposition on :math:`\mathbf{X}'\mathbf{X}` will yield eigenvectors which are just the loadings :math:`\mathbf{P}`.  Once we have the loadings, then we can calculate the scores: :math:`\mathbf{T}=\mathbf{X}\mathbf{P}`.
 
@@ -923,7 +921,7 @@ Still to come.
 
 
 Testing the model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+====================================
 
 As mentioned previously there are 3 major steps to building a PCA model for engineering applications: 
 
@@ -936,7 +934,7 @@ This last step of testing, interpreting and using the model is where one will sp
 .. _LVM-number-of-components:
 
 How many components to use in the model
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ..	Any recorded values we have from a system, in |X|, can be broken down into 2 parts: the data structure that is systematic, :math:`\mathbf{TP}'`, and an error component, :math:`\textbf{E}`.
 
@@ -951,7 +949,7 @@ Still to come.
 .. _LVM-using-a-PCA-model:
 
 Using an existing PCA model
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In this section we outline the workflow required to use an existing PCA model.  What this means is that you have already calculated the model and validated its usefulness.  Now you would like to use the model on a new observation, which we call :math:`\mathbf{x}_{\text{new, raw}}`.
 
@@ -998,7 +996,7 @@ The above outline is for the case when there is no missing data in a new observa
 .. _LVM-PCA-properties:
 
 Some properties of PCA models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+====================================
 
 ..	Show the 3D to 2D projection
 
@@ -1037,7 +1035,7 @@ We summarize various properties of the PCA model, most have been described in th
 *	Notice that some score values are positive and others negative.  Each loading direction, :math:`\mathbf{p}_a`, must point in the direction that best explains the data; but this direction is not unique, since :math:`-\mathbf{p}_a` also meets this criterion.  If we did select :math:`-\mathbf{p}_a` as the direction, then the scores would just be :math:`-\mathbf{t}_a` instead.  This does not matter too much, because :math:`(-\mathbf{t}_a)(-\mathbf{p}'_a) = \mathbf{t}_a \mathbf{p}'_a`, which is used to calculate the predicted |X| and the residuals.  But this phenomena can lead to a confusing situation for newcomers when different computer packages give different-looking loading plots and score plots for the same data set.  
 
 Visualization topic: Linking and Brushing
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+===========================================
 
 *Linking* is when the same data point(s), are highlighted in two or more plots.  This is used to highlight outliers or interesting points in a multivariate data set.  The points could be highlighted in terms of colour and/or shape.
 
@@ -1057,7 +1055,7 @@ We will use this concept extensively in the software package to learn from and i
 .. _LVM-PCA-NIPALS-algorithm:
 
 Calculating the principal components model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+============================================
 
 While we learned in an earlier class that the PCA model can be calculated with either the eigenvalue or the singular value decomposition, most computer packages will use the NIPALS algorithm.  The non-linear iterative partial least squares algorithm has the two main advantages of being able to handle missing data and calculating the components sequentially.
 
@@ -1134,7 +1132,7 @@ There are 3 missing observations (open circles), but despite this, the regressio
 .. _LVM-PCA-cross-validation:
 
 Determining the number of components by cross-validation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================
 
 .. Review the ICS-L newsgroup postings around September 2009.
 
@@ -1186,7 +1184,7 @@ However, cross-validation is useful for predictive models, such as PLS, so we av
 .. _LVM-PCA-randomization:
 
 Determining the number of components by randomization 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================
 
 *	Concept of randomization is not new: Fisher's example of 5!6! playing cards for randomization of A/B fertilizer testing
 *	The key is contrast a particular (statistical) outcome against a large body of data which could have only occurred by pure chance.  We then calculate a risk value -- the risk of accepting the statistical outcome relative to the data occurring by chance.  
@@ -1214,7 +1212,7 @@ Determining the number of components by randomization
 *	Drawbacks: for dataset with large N, large K (batch datasets) the model rebuilding with :math:`G` in the order of 50 to 500 can be substantial.  Contrast this to cross validation where the number of groups typically used is :math:`G = 7`.   Fortunately, this model rebuilding can be trivially parallelized, which is attractive on multicore CPUs, common on desktop computers.
 
 PLS models
-^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 *	Statistic used: correlation between the :math:`t`-score and the :math:`u`-score
 *	Details:
@@ -1264,7 +1262,7 @@ Fitting :math:`G=1000` models can be prohibitive on some data sets, however this
 
 
 Contribution plots
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+====================================
 
 We have previously seen how contribution plots are constructed for a score value, for the SPE and for |T2|.  We breakdown the value, such as SPE, into its individual terms, one from each variable.  Then we plot these |K| contribution values as a bar chart. 
 
@@ -1297,7 +1295,7 @@ The calculation procedure is actually the same in all cases: for a group of poin
 .. _LVM-using-indicator-variables:
 
 Using indicator variables
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+====================================
 
 Indicator variables, also called dummy variables, are most often a binary variable that indicates the presence or absences of a certain effect.  For example, a variable that shows if reactor A or reactor B was used.  Its value is either a 0 or a 1 in the data matrix |X|.  It is quite valid to include these sort of variables in a principal component analysis model.
 
