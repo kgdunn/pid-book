@@ -655,7 +655,6 @@ Using the `raw data for this example <http://datasets.connectmv.com/info/room-te
 
 Finally, the SPE value is a complete summary of the residual vector.  As such, it is sometimes used to colour-code  score plots, as we mentioned back in the section on :ref:`score plots <LVM_interpreting_scores>`.   Another interesting way people sometimes display SPE is to plot a 3D data cloud, with :math:`\mathbf{t}_1` and :math:`\mathbf{t}_2`, and use the SPE values on the third axis.  This gives a fairly complete picture of the major dimensions in the model: the explained variation on-the-plane, given by :math:`\mathbf{t}_1` and :math:`\mathbf{t}_2`, and the residual distance off-the-plane, summarized by SPE.
 
-
 Residuals for each column (:math:`R^2` for each column in |X|)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -667,14 +666,14 @@ Using the residual matrix :math:`\mathbf{E} = \mathbf{X} - \mathbf{T} \mathbf{P}
 	:width: 750px
 	:align: center
 
-In the section on :ref:`least squares modelling <SECTION-least-squares-modelling>`, the :math:`R^2` number was shown to be
-
-s merely the ratio between the variance we can explain with the model over the total variance we started off with.  Using the notation in the previous illustration:
+In the section on :ref:`least squares modelling <SECTION-least-squares-modelling>`, the :math:`R^2` number was shown to be the ratio between the variance remaining in the residuals over the total variances we started off with, subtracted from 1.0.  Using the notation in the previous illustration:
 
 .. math::
-	R^2_k = \dfrac{\text{Var}(\widehat{\mathbf{x}}_k)}{\text{Var}(\mathbf{x}_k)} = \dfrac{\text{Var}(\mathbf{x}_k - \mathbf{e}_k)}{\text{Var}(\mathbf{x}_k)}
+	R^2_k = 1 - \dfrac{\text{Var}(\mathbf{x}_k - \widehat{\mathbf{x}}_k)}{\text{Var}(\mathbf{x}_k)} = 1 -  \dfrac{\text{Var}(\mathbf{e}_k)}{\text{Var}(\mathbf{x}_k)}
 
-The :math:`R^2_k` value for each variable will increase with every component that is added to the model.  The minimum value is 0.0 when there are no components, and the maximum value is 1.0, when the maximum number of components have been added.  This latter extreme is usually not reached, because such a model would be fitting the noise inherent in :math:`\mathbf{x}_k` as well.
+The :math:`R^2_k` value for each variable will increase with every component that is added to the model.  The minimum value is 0.0 when there are no components (since :math:`\widehat{\mathbf{x}}_k = \mathbf{0}`), and the maximum value is 1.0, when the maximum number of components have been added (and :math:`\widehat{\mathbf{x}}_k = \mathbf{x}_k`, or :math:`\mathbf{e}_k = \mathbf{0}`).  This latter extreme is usually not reached, because such a model would be fitting the noise inherent in :math:`\mathbf{x}_k` as well.
+
+The :math:`R^2` values for each column can be visualized as a bar plot for dissimilar variables (chemical process data), or as a line plot if there are many similar variables that have a logical left-to-right relationship, such as the case with :ref:`spectral variables <lvm_spectral_data_example>` (wavelengths).
 
 Residuals for the whole matrix X (:math:`R^2` for |X|)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -682,9 +681,11 @@ Residuals for the whole matrix X (:math:`R^2` for |X|)
 Finally, we can calculate an :math:`R^2` value for the entire matrix |X|.  This is the ratio between the variance of |X| we can explain with the model over the ratio of variance initially present in |X|.
 
 .. math::
-	R^2 = \dfrac{\text{Var}(\widehat{\mathbf{X}})}{\text{Var}(\mathbf{X})} = \dfrac{\text{Var}(\mathbf{X} - \mathbf{E})}{\text{Var}(\mathbf{X})}
+	R^2 = 1 - \dfrac{\text{Var}(\mathbf{X} - \widehat{\mathbf{X}})}{\text{Var}(\mathbf{X})} = 1 - \dfrac{\text{Var}(\mathbf{E})}{\text{Var}(\mathbf{X})}
 
-The variance of a matrix |X| is taken as the sum of squares of every element in |X|.  The example in the next section illustrates how to interpret these residuals.  The smallest value of  :math:`R^2` value is :math:`R^2_{a=0} = 0.0` when there are no components.  After the first component is added we can calculate :math:`R^2_{a=1}`.  Then after fitting a second component we get :math:`R^2_{a=2}`.  Since each component is extracting new information from |X|, we know that :math:`R^2_{a=0} > R^2_{a=1} > R^2_{a=2} > \ldots > R^2_{a=A} = 1.0`.
+The variance of a general matrix, :math:`\mathbf{G}`, is taken as the sum of squares of every element in :math:`\mathbf{G}`.  The example in the next section illustrates how to interpret these residuals.  The smallest value of  :math:`R^2` value is :math:`R^2_{a=0} = 0.0` when there are no components.  After the first component is added we can calculate :math:`R^2_{a=1}`.  Then after fitting a second component we get :math:`R^2_{a=2}`.  Since each component is extracting new information from |X|, we know that :math:`R^2_{a=0} > R^2_{a=1} > R^2_{a=2} > \ldots > R^2_{a=A} = 1.0`.
+
+.. _lvm_spectral_data_example:
 
 Example: spectral data
 ====================================
