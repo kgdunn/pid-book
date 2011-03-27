@@ -2,7 +2,6 @@
 
 	Which variables should you use, and how many observations do you require?
 
-
 References and readings
 ========================
 
@@ -14,19 +13,30 @@ These readings cover a variety of topics in the area of latent variable methods:
 
 * **About PCA**: Svante Wold, Kim Esbensen, Paul Geladi: "`Principal Component Analysis <http://dx.doi.org/10.1016/0169-7439(87)80084-9>`_", *Chemometrics and Intelligent Laboratory Systems*, **2**, 37-52, 1987.
 
-* **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold:  "Multivariate and Megavariate Data Analysis" (`Part I <http://books.google.com/books?id=B-1NNMLLoo8C&lpg=PP1&pg=PP1#v=onepage&q&f=false>`_ and `Part II <http://books.google.com/books?id=2CHrDa-kBSYC&lpg=PP1&pg=PP1#v=onepage&q&f=false>`_).
+* **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold:  "Multivariate and Megavariate Data Analysis" (Part I `contains a chapter on PCA <http://books.google.com/books?id=B-1NNMLLoo8C&lpg=PP1&pg=PP1#v=onepage&q&f=false>`_).
 
 .. OMIT FOR NOW
 
 	*	**Contribution plots**: P Miller, RE Swanson, CE Heckler, "Contribution Plots: a Missing Link in Multivariate Quality Control, *Applied Mathematics and Computer Science*, *8* (4), 775-792, 1998.
 
 
+Introduction
+===============
+
+Principal component analysis, PCA, builds a model for a matrix of data.
+
+A model is always an approximation of the system from where the data came.  The objectives for which we use that model :ref:`can be varied <LVM_extracting_value_from_data>`. 
+
+In this section we will start by visualizing the data as well as consider a simplified, geometric view of what a PCA model look like.  A mathematical analysis of PCA is also required to get a deeper understanding of PCA, so we go into some detail on that point, however it can be skipped on first reading.
+
+The first part of this section emphasizes the general interpretation of a PCA model, since this is a required step that any modeller will have to perform. We leave to the :ref:`second half of this section <LVM_preprocessing>` the important details of how to preprocess the raw data, how to actually calculate the PCA model, and how to validate and test it.  This "reverse" order may be unsatisfying for some, but it helpful to see how to use the model first, before going into details on its calculation.
+
 Visualizing multivariate data
 ====================================
 
-Principal component analysis considers a single matrix of data, called |X|.  Each row in |X| contains values that represent an *object* of some sort.  We usually call this an *observation*. The observations in |X| could be a collection of measurements from a chemical process at a particular point in time, various properties of a final product, or a raw material from a supplier.  The columns in |X| are the values recorded for each observation.  We call these the *variables*. 
+The data, collected in a matrix |X|, contains rows that represent an *object* of some sort.  We usually call each row an *observation*. The observations in |X| could be a collection of measurements from a chemical process at a particular point in time, various properties of a final product, or properties from a sample of raw material.  The columns in |X| are the values recorded for each observation.  We call these the *variables*. 
 
-Which variables should you use, and how many observations do you require? We address this issue later.  For now though we consider that you have your data organized in this manner:
+Which variables should you use, and how many observations do you require? We address this issue later. For now though we consider that you have your data organized in this manner:
 
 .. figure:: images/X-matrix.png
 	:alt:	images/X-matrix.svg
@@ -42,14 +52,22 @@ Consider the case of 2 variables, :math:`K=2` (left) and :math:`K=3` variables (
 	:width: 750px
 	:align: center
 
-Each point in the plot represents one *object*, also called an *observation*.  There are about 150 observations in each plot here.  We sometimes call these plots *data swarms*, but they are really just ordinary scatterplots that we saw at the :ref:`start of these notes <SECTION-data-visualization>`. Notice how the variables are correlated with each other, there is a definite trend.  If we want to explain this trend, we could draw a line through the cloud swarm that *best explains* the data.   This line now represents our best estimate of what the data points are describing.
+Each point in the plot represents one *object*, also called an *observation*.  There are about 150 observations in each plot here.  We sometimes call these plots *data swarms*, but they are really just ordinary scatterplots that we saw in the :ref:`visualization section <SECTION-data-visualization>`. Notice how the variables are correlated with each other, there is a definite trend.  If we want to explain this trend, we could draw a line through the cloud swarm that *best explains* the data.   This line now represents our best summary and estimate of what the data points are describing. If we wanted to describe that relationship to our colleagues we could just give them the equation of the best-fit line.
 
+.. _LVM_visualization_scatterplot_matrix:
 
-.. _LVM-PCA-geometric-interpretation:
+Another effective way to visualize small multivariate data sets is to use a scatterplot matrix. Below is an example for :math:`K = 5` measurements on :math:`N=50` observations. Scatterplot matrices require :math:`K(K-1)/2` plots and can be enhanced with univariate histograms (on the diagonal plots), and linear regressions and loess smoothers on the off-diagonals to indicate the level of correlation between any two variables.
+
+.. image:: images/pca-on-food-texture-scatterplot-matrix.png
+	:alt:	images/pca-on-food-texture-data.R
+	:scale: 100
+	:width: 750px
+	:align: center
+
+.. _LVM_PCA_geometric_interpretation:
 
 Geometric explanation of PCA
 ====================================
-
 
 .. index::
 	pair: principal component analysis; latent variable modelling
@@ -62,13 +80,13 @@ We refer to a :math:`K`-dimensional space when referring to the data in |X|.  We
 	:scale: 100
 	:align: center
 
-The raw data in the cloud swarm show how the 3 variables move together.  The first step in PCA is to move the data to the center of the coordinate system.  This is called mean-centering and removes the arbitrary bias humans use when taking measurements.  We also scale the data, usually to unit-variance.  This removes the fact that the variables are in different units of measurement.  Additional discussion on centering and scaling is :ref:`in the section on data preprocessing <LVM-preprocessing>`.
+The raw data in the cloud swarm show how the 3 variables move together.  The first step in PCA is to move the data to the center of the coordinate system.  This is called mean-centering and removes the arbitrary bias from measurements that we don't wish to model.  We also scale the data, usually to unit-variance.  This removes the fact that the variables are in different units of measurement.  Additional discussion on centering and scaling is :ref:`in the section on data preprocessing <LVM_preprocessing>`.
 
 After centering and scaling we have moved our raw data to the center of the coordinate system and each variable has equal scaling.
 
-The best-fit line is drawn through the swarm of points.  The more correlated the original data, the better this line will explain the actual values of the observed measurements. This best-fit line will *best explain* all the observations with minimum residual error.   Another, but equivalent, way of expressing this is that the line goes in the direction of *maximum variance of the projections onto the line*.  Let's take a look at what that phase means.
+The best-fit line is drawn through the swarm of points.  The more correlated the original data, the better this line will explain the actual values of the observed measurements. This best-fit line will *best explain* all the observations with minimum residual error.   Another, but equivalent, way of expressing this is that the line goes in the direction of *maximum variance of the projections onto the line*.  Let's take a look at what that phrase means.
 
-.. figure:: images/geometric-PCA-3-and-4-centered-with-first-component.png
+.. image:: images/geometric-PCA-3-and-4-centered-with-first-component.png
 	:alt: 	images/geometric-interpretation-of-PCA.svg
 	:width: 900px
 	:scale: 100
@@ -76,18 +94,21 @@ The best-fit line is drawn through the swarm of points.  The more correlated the
 
 When the direction of the best-fit line is found we can mark the location of each observation along the line.  We find the 90 degree projection of each observation onto the line (see the next illustration).  The distance from the origin to this projected point along the line is called the *score*.  Each observation gets its own score value.  When we say the best-fit line is in the direction of maximum variance, what we are saying is that the variance of these scores will be maximal. (There is one score for each observation, so there are :math:`N` score values; the variance of these :math:`N` values is at a maximum).  Notice that some score values will be positive and others negative.  
 
-After we have added this best-fit line to the data, we have calculated the first principal component.  Each principal component consists of two parts:
+After we have added this best-fit line to the data, we have calculated the first principal component, also called the first latent variable.  Each principal component consists of two parts:
 
 	*	The direction vector that defines the best-fit line.  This is a :math:`K`-dimensional vector that tells us which direction that best-fit line points, in the :math:`K`-dimensional coordinate system.  We call this direction vector |p1|, it is a :math:`K \times 1` vector.  This vector starts at the origin and moves along the best-fit line.  Since vectors have both magnitude and direction, we chose to rescale this vector so that it has magnitude of exactly 1, making it a unit-vector.
+	
 	*	The collection of :math:`N` score values along this line.  We call this our score vector, :math:`\mathbf{t}_1`, and it is an :math:`N \times 1` vector.
+	
+	*	The subscript of "1" emphasizes that this is the first latent variable.
 
-.. figure:: images/geometric-PCA-5-and-6-first-component-with-projections-and-second-component.png
+.. image:: images/geometric-PCA-5-and-6-first-component-with-projections-and-second-component.png
 	:alt: 	images/geometric-interpretation-of-PCA.svg
 	:width: 900px
 	:scale: 100
 	:align: center
 
-This first component is fixed and we now add a second component to the system.  We find the second component so that it is perpendicular to the first component's direction.  Notice that this vector also starts at the origin, and can point in any direction as long as it remains perpendicular to the first component.  We keep rotating that vector around until we find the direction that gives the greatest variance in the score values when projected on this new direction vector.
+This first principal component is fixed and we now add a second component to the system.  We find the second component so that it is perpendicular to the first component's direction.  Notice that this vector also starts at the origin, and can point in any direction as long as it remains perpendicular to the first component.  We keep rotating that vector around until we find the direction that gives the greatest variance in the score values when projected on this new direction vector.
 
 .. figure:: images/geometric-PCA-7-and-8-second-component-and-both-components.png
 	:alt: 	images/geometric-interpretation-of-PCA.svg
@@ -397,7 +418,7 @@ Interpreting score plots
 
 Before summarizing some points about how to interpret a score plot, let's quickly repeat what a score value is.  There is one score value for each observation (row) in the data set, so there are are :math:`N` score values for the first component, another :math:`N` for the second component, and so on.
 
-The score value for an observation, for say the first component, is the distance from the origin, along the direction (loading vector) of the first component, up to the point where that observation projects onto the direction vector.  We repeat :ref:`an earlier figure here <LVM-PCA-geometric-interpretation>`, which shows the projected values for 2 of the observations.
+The score value for an observation, for say the first component, is the distance from the origin, along the direction (loading vector) of the first component, up to the point where that observation projects onto the direction vector.  We repeat :ref:`an earlier figure here <LVM_PCA_geometric_interpretation>`, which shows the projected values for 2 of the observations.
 
 .. figure:: images/geometric-PCA-5-first-component-with-projections.png
 	:alt:	images/geometric-interpretation-of-PCA.svg
@@ -723,17 +744,16 @@ where the :math:`s_a^2` values are constants, and are the variances of each comp
 	- data = information + error
 
 
-.. _LVM-preprocessing:
+.. _LVM_preprocessing:
 
 Preprocessing the data before building a model
 ==================================================
 
-There are 3 major steps to building a PCA model for engineering applications: 
+The previous sections of this chapter considered the interpretation of a PCA latent variable model.  From this section onwards we return to filling important gaps in our knowledge:  
 
 	#.	Preprocessing the data 
-	#.	Building the latent variable model
-	#.	Testing the model, including testing for the number of components to use
-
+	#.	Building the latent variable model in the :ref:`algorithms section <LVM-algorithms-for-PCA>`
+	#.	:ref:`Testing the model <LVM_testing_PCA_models>`, including testing for the number of components to use
 
 There are a number of possibilities for data preprocessing.  We mainly discuss centering and scaling in this section, but outline a few other tools first. These steps are usually univariate, i.e. they are applied separately to each column in the raw data matrix |Xraw|.  We call the matrix of preprocessed data |X|, this is the matrix that is then presented to the algorithm to build the PCA model.  PCA algorithms seldom work on the raw data.
 
@@ -919,6 +939,7 @@ We won't go through the algorithm here, but only mention a few points of interes
 	Dayal and MacGregor, J Chemo 1997: deflate only one
 	
 
+.. _LVM_testing_PCA_models:
 
 Testing the model
 ====================================
