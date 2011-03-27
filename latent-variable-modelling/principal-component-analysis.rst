@@ -274,16 +274,18 @@ Then each column :math:`\mathbf{x}_{k}` is collected back to form matrix |X|.  T
 
 Centering and scaling does not alter the overall interpretation of the data: if two variables were strongly correlated before preprocessing they will still be strongly correlated after preprocessing.
 
-For reference, the mean and standard deviation of each variable is recorded below.  In the next column we show the raw data for observation 33, the raw data after centering, and the raw data after centering and scaling:
+For reference, the mean and standard deviation of each variable is recorded below.  In the last 3 columns we show the raw data for observation 33, the raw data after centering, and the raw data after centering and scaling:
+
+.. tabularcolumns:: |l||l|l||l|l||l|
 
 .. csv-table:: 
-   :header: Variable, Mean, Standard deviation, Raw data for observation 33, Obs 33 after centering, Obs 33 after autoscaling
+   :header: Variable, Mean, Standard deviation, Raw data, After centering, After autoscaling
    :widths: 30, 30, 30, 30, 30, 30
 
 	Oil,      17.2,      1.59, 15.5, -1.702, -1.069
-	Density,  2857.6,  124.5,  3125, 267.4,  2.148  
+	Density,  2857.6,  124.5,  3125, 267.4, +2.148  
 	Crispy,   11.52,     1.78, 7, -4.52, -2.546 
-	Fracture, 20.86,     5.47, 33,  12.14,  2.221
+	Fracture, 20.86,     5.47, 33,  12.14, +2.221
 	Hardness,  128.18,   31.13, 92, -36.18, -1.162
 	
 
@@ -301,7 +303,7 @@ We will discuss how to determine the number of components to use :ref:`in a futu
 	:width: 750px
 	:align: center
 
-This plot shows the first component.  All variables, except for hardness have large weights.  If we write out the equation for :math:`t_1` for an observation :math:`i`:
+This plot shows the first component.  All variables, except for hardness have large values in :math:`\mathbf{p}_1`.  If we write out the equation for :math:`t_1` for an observation :math:`i`:
 
 .. math::
 	t_{1,i} = 0.46 x_\text{oil} - 0.47 x_\text{density} + 0.53 x_\text{crispy} - 0.50 x_\text{fracture}  + 0.15 x_\text{hardness}
