@@ -191,12 +191,12 @@ More about the direction vectors (loadings)
 
 The direction vectors |p1|, :math:`\mathbf{p}_2` and so on, are each :math:`K \times 1` unit vectors.  These are vectors in the original coordinate space (the :math:`K`-dimensional real-world) where the observations are recorded.
 
-But these direction vectors are also our link to the latent-variable coordinate system.  These direction vectors create a (hyper)plane that is embedded inside the :math:`K`-dimensional space.  You will see the terminology of *loadings* - this is just another name for these direction vectors:
+But these direction vectors are also our link to the latent-variable coordinate system.  These direction vectors create a (hyper)plane that is embedded inside the :math:`K`-dimensional space of the :math:`K` original variables.  You will see the terminology of *loadings* - this is just another name for these direction vectors:
 
 .. math::
 	\text{Loadings, a $K \times A$ matrix:}\qquad\qquad \mathbf{P} = \begin{bmatrix} \mathbf{p}_1 & \mathbf{p}_2 & \ldots & \mathbf{p}_A \end{bmatrix}
 
-Once this hyperplane is mapped out, then we start to consider how each of the observations lie on this hyperplane. We start to be more and more interested in this reduced dimensional plane, because it is an :math:`A`-dimensional plane, where :math:`A` is often much smaller than :math:`K`.  Returning back to the case of the thermometers in a room.  We had 4 thermometers (:math:`K=4`), but only one latent variable, :math:`A=1`.  Rather than concern ourself with the original 4 measurements, we only focus on the single column of score values.
+Once this hyperplane is mapped out, then we start to consider how each of the observations lie on this hyperplane. We start to be more and more interested in this reduced dimensional plane, because it is an :math:`A`-dimensional plane, where :math:`A` is often much smaller than :math:`K`.  Returning back to the case of the thermometers in a room: we had 4 thermometers (:math:`K=4`), but only one latent variable, :math:`A=1`.  Rather than concern ourself with the original 4 measurements, we only focus on the single column of score values, since this single variables is the best summary possible of the 4 original variables.
 
 How do we get the score value(s): we just use equation :eq:`LVM-score-values` and multiply the data by the loadings vectors.  That equation, repeated here:
 
@@ -213,16 +213,19 @@ Let's return to the :ref:`example of the 4 temperatures <LVM-room-temperature-ex
 
 So the loading vector for this example points in the direction :math:`\mathbf{p}'_1 = [0.25, 0.25, 0.25, 0.25]`.  This isn't a unit vector though; but we can make it one:
 
-	* Current magnitude of vector = :math:`\sqrt{0.25^2 + 0.25^2 + 0.25^2 + 0.25^2} = 0.50`
-	* Divide current vector by current magnitude: :math:`\mathbf{p}_1 = \dfrac{1}{0.5} \cdot [0.25, 0.25, 0.25, 0.25]`
-	* New unit vector = :math:`\mathbf{p}_1 = [0.5, 0.5, 0.5, 0.5]`
-	* Check new magnitude = :math:`\sqrt{0.5^2 + 0.5^2 + 0.5^2 + 0.5^2} = 1.0`
+	*	Current magnitude of vector = :math:`\sqrt{0.25^2 + 0.25^2 + 0.25^2 + 0.25^2} = 0.50`
+	
+	*	Divide the vector by current magnitude: :math:`\mathbf{p}_1 = \dfrac{1}{0.5} \cdot [0.25, 0.25, 0.25, 0.25]`
+	
+	*	New, unit vector = :math:`\mathbf{p}_1 = [0.5, 0.5, 0.5, 0.5]`
+	
+	*	Check new magnitude = :math:`\sqrt{0.5^2 + 0.5^2 + 0.5^2 + 0.5^2} = 1.0`
 
-What would be the elements of the |p1| loading vector if we have 6 thermometers? (*Ans* = 0.41; in general, for :math:`K` thermometers, :math:`1/\sqrt{K}`).
+What would be the entries in the |p1| loading vector if we had 6 thermometers? (*Ans* = 0.41; in general, for :math:`K` thermometers, :math:`1/\sqrt{K}`).
 
 This is very useful, because now instead of dealing with :math:`K` thermometers we can reduce the columns of data down to just a single, average temperature. This isn't a particularly interesting case though; you would have likely done this anyway as an engineer facing this problem.  But the next example will illustrate a more realistic case.
 
-.. _LVM-food-texture-example:
+.. _LVM_food_texture_example:
 
 Food texture example
 ====================================
@@ -403,7 +406,7 @@ Sometimes all it takes is for one variable, :math:`x_{i,k}` to be far away from 
 	
 But usually it is a combination of more than one x-variable.  There are :math:`K` terms in this equation, each of which *contribute* to the score value.  A bar plot of each of these :math:`K` terms, :math:`x_{i,k} p_{k,a}`, is called a contribution plot.  It shows which variable(s) most contribute to the large score value.
 
-As an example from the :ref:`food texture data <LVM-food-texture-example>` from earlier, we saw that observation 33 had a large negative value for :math:`\mathbf{t}_1 = -4.2`.  The :math:`K=5` terms that contribute to this value are illustrated here:
+As an example from the :ref:`food texture data <LVM_food_texture_example>` from earlier, we saw that observation 33 had a large negative value for :math:`\mathbf{t}_1 = -4.2`.  The :math:`K=5` terms that contribute to this value are illustrated here:
 
 .. figure:: images/pca-on-food-texture-score-t1-contribution-for-obs-33.png
 	:alt:	images/pca-on-food-texture-data.R

@@ -107,7 +107,7 @@ Optimizing: new operating point and/or new product development
 
 .. Mention latent variable control of processes (MacGregor et al paper 2005 has a section on this)
 
-This application area is rapidly growing in importance. Fortunately it is fairly straightforward to get an impression of how powerful this tool is.  Let's return back to the :ref:`food texture example considered previously <LVM-food-texture-example>`, where data from a biscuit/pastry product was considered.  These 5 measurements were used:
+This application area is rapidly growing in importance. Fortunately it is fairly straightforward to get an impression of how powerful this tool is.  Let's return back to the :ref:`food texture example considered previously <LVM_food_texture_example>`, where data from a biscuit/pastry product was considered.  These 5 measurements were used:
 
 	#.	Percentage oil in the pastry
 	#.	The product's density (the higher the number, the more dense the product)
