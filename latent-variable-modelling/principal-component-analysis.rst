@@ -835,7 +835,7 @@ There are a number of possibilities for data preprocessing.  We mainly discuss c
 
 **Centering**
 
-	:index:`Centering` moves the coordinate system to a new reference point, usually the origin of the coordinate system in :math:`K` variables (i.e. in :math:`K`-dimensional space).  Mean centering is effective and commonly used: after mean centering the mean of every column in |Xraw| will be exactly 0.0. An example of mean centering was given in the :ref:`food texture example <LVM_food_texture_example>`.
+	:index:`Centering <single: centering>` moves the coordinate system to a new reference point, usually the origin of the coordinate system in :math:`K` variables (i.e. in :math:`K`-dimensional space).  Mean centering is effective and commonly used: after mean centering the mean of every column in |Xraw| will be exactly 0.0. An example of mean centering was given in the :ref:`food texture example <LVM_food_texture_example>`.
 
 	As we learned in the section on :ref:`univariate data analysis <SECTION-univariate-review>`, the mean has a low resistance to outliers: any large outlier will distort the value of the mean.  So users often resort to trimming their data and then mean centering.  In this regard, centering each column around its median is a better choice.  We recommend :index:`median centering <single: centering, about median>` as it avoids the trimming step, and simultaneously highlights any outliers.
 	
@@ -843,7 +843,7 @@ There are a number of possibilities for data preprocessing.  We mainly discuss c
 	
 **Scaling**
 
-	:index:`Scaling` is an important important step in latent variable modelling. Scaling can be seen as a way of assigning weights, or relative importance, to each column in |Xraw|.  If we don't know much about our data, then it is common to assign an equal weight to each column.  We can do this by simply dividing each column by its standard deviation.  After this scaling each column will have variance (and standard deviation) of exactly 1.0.  This allows each column an equal opportunity of contributing to the model.
+	:index:`Scaling <single: scaling>` is an important important step in latent variable modelling. Scaling can be seen as a way of assigning weights, or relative importance, to each column in |Xraw|.  If we don't know much about our data, then it is common to assign an equal weight to each column.  We can do this by simply dividing each column by its standard deviation.  After this scaling each column will have variance (and standard deviation) of exactly 1.0.  This allows each column an equal opportunity of contributing to the model.
 
 	This sort of scaling is called unit-variance scaling.  When combined with mean centering you will see the terminology that the data have been :index:`autoscaled`.  
 
@@ -1132,7 +1132,7 @@ How many components to use in the model using cross-validation
 
 .. Check Q2 values: in ProMV they keep increasing, never decreasing.
 
-:index:`Cross-validation` is a general tool that helps to avoid over-fitting - it can be applied to any model, not just latent variable models.
+:index:`Cross-validation <single: cross-validation>` is a general tool that helps to avoid over-fitting - it can be applied to any model, not just latent variable models.
 
 As we add successive components to a model we are increasing the size of the model, |A|, and we are explaining the model-building data, |X|, better and better. (The equivalent in least squares models would be to add additional :math:`\mathbf{X}`-variable terms to the model.) The model's :math:`R^2` value will increase with every component.  As the following equation shows, the variance of the :math:`\widehat{\mathbf{X}}` matrix increases with every component, while the residual variance in matrix :math:`\mathbf{E}` must decrease.
 

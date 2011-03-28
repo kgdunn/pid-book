@@ -515,7 +515,7 @@ These data sets meet all the assumptions required to use the so-called "classica
 	
 	.. image:: images/image-data.png
 		:alt:	images/image-data.svg
-		:scale: 30
+		:scale: 25
 		:width: 500px
 		:align: center
 		
@@ -527,14 +527,14 @@ These data sets meet all the assumptions required to use the so-called "classica
 	
 	.. figure:: images/Batch-data-layers-into-the-page.png
 		:alt:	images/Batch-data-layers-into-the-page.svg
-		:scale: 50
+		:scale: 40
 		:width: 750px
 		:align: center
 		
 	An example of batch trajectory data, in matrix |X|, where there are 4 variables, recorded at 80 times points, on about 20 batches is shown here:
 	
 	.. image:: images/aligned-trajectories-many-batches-yeast.png
-		:scale: 50
+		:scale: 40
 		:width: 550px
 		:align: center
 
@@ -628,7 +628,7 @@ Imagine the room you are in has 4 temperature probes that sample and record the 
 
 .. figure:: images/room-temperature-plots.png
 	:alt:	images/room-temperature-plots.py
-	:scale: 80
+	:scale: 70
 	:width: 700px
 	:align: center
 	
