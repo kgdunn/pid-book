@@ -59,6 +59,10 @@ Consider the case of 2 variables, :math:`K=2` (left) and :math:`K=3` variables (
 
 Each point in the plot represents one *object*, also called an *observation*.  There are about 150 observations in each plot here.  We sometimes call these plots *data swarms*, but they are really just ordinary scatterplots that we saw in the :ref:`visualization section <SECTION-data-visualization>`. Notice how the variables are correlated with each other, there is a definite trend.  If we want to explain this trend, we could draw a line through the cloud swarm that *best explains* the data.   This line now represents our best summary and estimate of what the data points are describing. If we wanted to describe that relationship to our colleagues we could just give them the equation of the best-fit line.
 
+.. raw:: latex
+
+	\par
+
 .. _LVM_visualization_scatterplot_matrix:
 
 Another effective way to visualize small multivariate data sets is to use a scatterplot matrix. Below is an example for :math:`K = 5` measurements on :math:`N=50` observations. Scatterplot matrices require :math:`K(K-1)/2` plots and can be enhanced with univariate histograms (on the diagonal plots), and linear regressions and loess smoothers on the off-diagonals to indicate the level of correlation between any two variables.
@@ -697,7 +701,7 @@ A data set, `available on the dataset website <http://datasets.connectmv.com/inf
 
 .. image:: images/pharma-spectra.png
 	:alt:	images/pharma-spectra.py
-	:scale: 95
+	:scale: 80
 	:width: 750px
 	:align: center
 	
@@ -707,7 +711,7 @@ This R code will calculate principal components for this data:
 
 	# Read large data file
 	spectra <- read.csv('http://datasets.connectmv.com/file/tablet-spectra.csv', 
-	                       header=FALSE)
+	                     header=FALSE)
 	model.pca <- prcomp(spectra[,2:651], scale=TRUE)
 	summary(model.pca)
 	Importance of components:
@@ -716,13 +720,13 @@ This R code will calculate principal components for this data:
 	Proportion of Variance  0.737  0.185 0.0199 0.0165 ...
 	Cumulative Proportion   0.737  0.922 0.9420 0.9585
 
-T :math:`R^2_a` (``Cumulative Proportion``) values shows the first component explains 73.7% of the variability in |X|, the second explains an additional 18.5% for a cumulative total of 94.2%, and the third component explains an additional 1.99%.  These three components together explain 94.2% of all the variation in |X|.  This means we have reduced |X| from a :math:`460 \times 650` matrix to a :math:`460 \times 3` matrix of scores, |T|, and a :math:`650 \times 3` matrix of loadings, |P|.  This is a large reduction in data size, with a minimal loss of information.
+The :math:`R^2_a` (``Cumulative Proportion``) values shows the first component explains 73.7% of the variability in |X|, the second explains an additional 18.5% for a cumulative total of 94.2%, and the third component explains an additional 1.99%.  These three components together explain 94.2% of all the variation in |X|.  This means we have reduced |X| from a :math:`460 \times 650` matrix to a :math:`460 \times 3` matrix of scores, |T|, and a :math:`650 \times 3` matrix of loadings, |P|.  This is a large reduction in data size, with a minimal loss of information.
 
 Let's visually show what the :math:`R^2` values are for each column.  Shown below are these values for the first 3 components.  The first component (green, thin line) explains certain regions of the spectra very well, particularly the region around 1100nm.  Wavelengths beyond 1800 nm are not well explained at all.  The second component is primarily responsible for explaining additional variability in the 700 to 1100nm region.  The third component only seems to explain the additional variability from 1700 to 1800nm.  Fitting a fourth component is only going to start fitting the noisy regions of the spectrum on the very right. For these data we could use 2 components for most applications, or perhaps 3 if the region between 1700 and 1800nm was also important.
 
 .. image:: images/spectral-data-R2-per-variable.png
 	:alt:	images/spectral-data.R
-	:scale: 80
+	:scale: 75
 	:width: 750px
 	:align: center
 
@@ -751,7 +755,7 @@ where the :math:`s_a^2` values are constants, and are the variances of each comp
 *	An observation that projects onto the model's center (usually the observation where every value is at the mean), has :math:`T^2 = 0`.
 *	The |T2| statistic is distributed according to the :math:`F`-distribution and is calculated by the multivariate software package being used.  For example, we can calculate the 95% confidence limit for |T2|, below which we expect, under normal conditions, to locate 95% of the observations.
 
-	.. figure:: images/spectral-data-T2-lineplot.png
+	.. image:: images/spectral-data-T2-lineplot.png
 		:alt:	images/spectral-data.R
 		:scale: 80
 		:width: 750px
@@ -766,7 +770,7 @@ where the :math:`s_a^2` values are constants, and are the variances of each comp
 	
 *	The same principle holds for :math:`A>2`, except the ellipse is called a hyper-ellipse (think of a rugby-ball shaped object for :math:`A=3`).  The general interpretation is that if a point is within this ellipse, then it is also below the |T2| limit, if |T2| were to be plotted on a line.
 
-.. figure:: images/spectral-data-t1-t2-scoreplot.png
+.. image:: images/spectral-data-t1-t2-scoreplot.png
 	:alt:	images/spectral-data.R
 	:scale: 80
 	:width: 750px
