@@ -67,7 +67,7 @@
 	Enhance the support on the other correlated illustration.  Show numerically how small changes in highly correlated X's can lead to a rotated plane (and illustrate it: add the slope coefficient to the illustration)
 
 	.. TODO: contribution plot here: add text
-	Link to foods data on course website
+
 	Mark points, in black, in pastry example which are used in the notes (e.g. 33, 36, 44)
 	.. TODO lagging picture here
 	.. page 30 of pencil notes

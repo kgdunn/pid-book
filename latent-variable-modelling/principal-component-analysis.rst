@@ -1471,11 +1471,11 @@ Food consumption data set
 
 This data set has become a classic data set when learning about multivariate data analysis.  It consists of 
 
-* :math:`N=16` countries in the European area
-* :math:`K=20` food items
-* Missing data: yes
-* Web address: http://datasets.connectmv.com/info/food-consumption
-* Description: The data table lists for each country the relative consumption of certain food items, such as tea, jam, coffee, yoghurt, and others.
+*	:math:`N=16` countries in the European area
+*	:math:`K=20` food items
+*	Missing data: yes
+*	Web address: http://datasets.connectmv.com/info/food-consumption
+*	Description: The data table lists for each country the relative consumption of certain food items, such as tea, jam, coffee, yoghurt, and others.
 
 .. image:: images/food-consumption.png
 	:alt:	images/food-consumption.numbers
@@ -1483,11 +1483,16 @@ This data set has become a classic data set when learning about multivariate dat
 	:width: 750px
 	:align: center
 
-#.	Fit a PCA model to the data; use cross-validation to determine the number of components.
+#.	Fit a PCA model to the data using 2 components.
+
 #.	Plot a loadings plot of :math:`p_1` against :math:`p_2`.  Which are the important variables in the first component? And the second component?
-#.	Since each column represents food consumption, how would you interpret a country will a high (positive or negative) :math:`t_1` value?  Find countries that meet this criterion.   Verify that this country does indeed have this interpretation (*hint*: use a contribution plot to help you).
-#.	Now plot SPE after 2 components (don't plot the default SPE, make sure it is the SPE only after two components).  Please use the contribution tool to interpret any interesting outliers.
-#.	Now plot SPE after 3 components.  What has happened to the observations you identified in the previous question?  Investigate the loadings plot for the third component now (as a bar plot)  and see which variables are heavily loaded in the 3rd component.
+
+#.	Since each column represents food consumption, how would you interpret a country with a high (positive or negative) :math:`t_1` value?  Find countries that meet this criterion.   Verify that this country does indeed have this interpretation (*hint*: use a contribution plot and examine the raw data in the table).
+
+#.	Now plot SPE after 2 components (don't plot the default SPE, make sure it is the SPE only after two components).  Use a contribution plot to interpret any interesting outliers.
+
+#.	Now add a third component and plot SPE after 3 components.  What has happened to the observations you identified in the previous question?  Investigate the loadings plot for the third component now (as a bar plot)  and see which variables are heavily loaded in the 3rd component.
+
 #.	Also plot the :math:`R^2` values for each variable, after two components, and after 3 components.  Which variables are modelled by the 3rd component?  Does this match with your interpretation of the loadings bar plot in the previous question?
 #.	Now plot a score plot of the 3rd component against the 1st component.  Generate a contribution plot in the score from the interesting observation(s) you selected in part 4.  Does this match up with your interpretation of what the 3rd component is modelling?
 
@@ -1511,14 +1516,22 @@ Silicon wafer thickness
 	:align: center
 
 #.	Build a PCA model on all the data.
+
 #.	Plot the scores for the first two components.  What do you notice?  Investigate the outliers, and the raw data for each of these unusual observations.  What do you conclude about those observations?
+
 #.	Exclude the unusual observations and refit the model.  
-#.	Now plot the scores plot again; do things look better?  Record the :math:`R^2` and :math:`Q^2` values for the first three components.  Are the :math:`R^2` and :math:`Q^2` values close to each other; what does this mean?
+
+#.	Now plot the scores plot again; do things look better?  Record the :math:`R^2` and :math:`Q^2` values (from cross-validation) for the first three components.  Are the :math:`R^2` and :math:`Q^2` values close to each other; what does this mean?
+
 #.	Plot a loadings plot for the first component.  What is your interpretation of :math:`p_1`?  Given the :math:`R^2` and :math:`Q^2` values for this first component (previous question), what is your interpretation about the variability in this process?
+
 #.	And the interpretation of :math:`p_2`?  From a quality control perspective, if you could remove the variability due to :math:`p_2`, how much of the variability would you be removing from the process?
+
 #.	Also plot the corresponding time series plot for :math:`t_1`.  What do you notice in the sequence of score values?
+
 #.	Repeat the above question for the second component.
-#.	Finally, plot both the :math:`t_1` and :math:`t_2` values on the same plot, but in time-order, to see the smaller variance that :math:`t_2` explains.
+
+#.	Finally, plot both the :math:`t_1` and :math:`t_2` series overlaid on the same plot, in time-order, to see the smaller variance that :math:`t_2` explains.
 
 What we learned:
 
@@ -1535,10 +1548,13 @@ Recent trends show that the yield of your company's flagship product is declinin
 
 The data available has:
 
-* :math:`N = 24`
-* :math:`K = 6` + 1 designation of process outcome.
-* Web address: http://datasets.connectmv.com/info/raw-material-characterization
-* Description: 3 of the 6 measurements are size values for the plastic pellets, while the other 3 are the outputs from thermogravimetric analysis (TGA), differential scanning calorimetry (DSC) and thermomechanical analysis (TMA), measured in a laboratory. These 6 measurements are thought to adequately characterize the raw material. Also provided is a designation ``Adequate`` or ``Poor`` that reflects the process engineer's opinion of the yield from that lot of materials.
+*	:math:`N = 24`
+
+*	:math:`K = 6` + 1 designation of process outcome
+
+*	Web address: http://datasets.connectmv.com/info/raw-material-characterization
+
+*	Description: 3 of the 6 measurements are size values for the plastic pellets, while the other 3 are the outputs from thermogravimetric analysis (TGA), differential scanning calorimetry (DSC) and thermomechanical analysis (TMA), measured in a laboratory. These 6 measurements are thought to adequately characterize the raw material. Also provided is a designation ``Adequate`` or ``Poor`` that reflects the process engineer's opinion of the yield from that lot of materials.
 
 Import the data, and set the ``Outcome`` variable as a secondary identifier for each observation, as shown in the illustration below.  The observation's primary identifier is its batch number.
 
@@ -1548,33 +1564,38 @@ Import the data, and set the ``Outcome`` variable as a secondary identifier for 
 	:width: 750px
 	:align: center
 
-#. Build a latent variable model for all observations and use auto-fit to determine the number of components. 
-#. Interpret component 1, 2 and 3 separately (using the loadings bar plot).
-#. Now plot the score plot for components 1 and 2, and colour code the score plot with the ``Outcome`` variable.  Interpret why observations with ``Poor`` outcome are at their locations in the score plot (use a contribution plot). 
-#. What would be your recommendations to your manager to get more of your batches classified as ``Adequate`` rather than ``Poor``?
+#.	Build a latent variable model for all observations and use auto-fit to determine the number of components. If your software does not have and auto-fit features (cross-validation), then use a Pareto plot of the eigenvalues to decide on the number of components.
 
-What we learned so far:
+#.	Interpret component 1, 2 and 3 separately (using the loadings bar plot).
 
-* How to use an indicator variable in the model to learn more from our score plot.
-* How to build a data set, and bring in new observations as testing data.
+#.	Now plot the score plot for components 1 and 2, and colour code the score plot with the ``Outcome`` variable.  Interpret why observations with ``Poor`` outcome are at their locations in the score plot (use a contribution plot). 
 
-#. Now build a model only on the observations marked as ``Adequate`` in the Outcome variable.
-#. Re-interpret the loadings plot for :math:`p_1` and :math:`p_2`.  Is there a substantial difference between this new loadings plot and the previous one?
+#.	What would be your recommendations to your manager to get more of your batches classified as ``Adequate`` rather than ``Poor``?
+
+#.	Now build a model only on the observations marked as ``Adequate`` in the Outcome variable.
+
+#.	Re-interpret the loadings plot for :math:`p_1` and :math:`p_2`.  Is there a substantial difference between this new loadings plot and the previous one?
+
+What we learned:
+
+*	How to use an indicator variable in the model to learn more from our score plot.
+
+*	How to build a data set, and bring in new observations as testing data.
 
 
-Principal properties of surfactants
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-* :math:`N=38`
-* :math:`K=19`
-* :math:`M=4`
-* Missing data: yes
-* Web address: http://datasets.connectmv.com/info/surfactants
-* Description: These 38 non-ionic surfactants, ingredients for making a detergent, were characterized (described) by taking 19 measurements (the other 4 columns will be used in a future study).  The first purpose of this data set was to understand how these 19 properties are related to each other, and to find a representative sub-sample from the rows in |X| which could be selected for further study.
-
-#.	Import the data, making sure you exclude the ``YDet``, ``YConc``, ``YTemp``, and ``YTox`` variables.  Build a PCA model on the 19 columns in remaining in |X|.
-#.	Study the first two components.  What do you notice in the score plot?  Investigate this feature that seems interesting and try to explain why it occurs.
-#.	Exclude the cluster (they were related to surfactants which were too lipophilic) for the rest of the study.
-#.	Rebuild the model.  
-#.	Since the purpose of the original data set was to find a smaller group of samples that are representative of all surfactants, which samples would you select for further study and why?
-#.	Save the :math:`t_1` *vs* :math:`t_2` score plot to a figure (e.g. BMP) and mark these samples on it to show your colleagues/manager.
+.. Principal properties of surfactants
+.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. 
+.. * :math:`N=38`
+.. * :math:`K=19`
+.. * :math:`M=4`
+.. * Missing data: yes
+.. * Web address: http://datasets.connectmv.com/info/surfactants
+.. * Description: These 38 non-ionic surfactants, ingredients for making a detergent, were characterized (described) by taking 19 measurements (the other 4 columns will be used in a future study).  The first purpose of this data set was to understand how these 19 properties are related to each other, and to find a representative sub-sample from the rows in |X| which could be selected for further study.
+.. 
+.. #.	Import the data, making sure you *exclude* the ``YDet``, ``YConc``, ``YTemp``, and ``YTox`` variables.  Build a PCA model on the 19 columns in remaining in |X|.
+.. #.	Study the first two components.  What do you notice in the score plot?  Investigate this feature that seems interesting and try to explain why it occurs.
+.. #.	Exclude the cluster (they were related to surfactants which were too lipophilic) for the rest of the study.
+.. #.	Rebuild the model.  
+.. #.	Since the purpose of the original data set was to find a smaller group of samples that are representative of all surfactants, which samples would you select for further study and why?
+.. #.	Save the :math:`t_1` *vs* :math:`t_2` score plot to a figure (e.g. BMP) and mark these samples on it to show your colleagues/manager.

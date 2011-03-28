@@ -148,7 +148,7 @@ Other interesting examples use camera images to predict hard-to-measure values. 
 
 Once validated, a soft sensor can also reduce costs of a process by allowing for rapid feedback control of the inferred property, so that less off-specification product is produced.  They also often have the side-effect that reduced lab sampling is required; this saves on manpower costs.
 
-Soft sensors using latent variables will almost always be PLS models.  So far in the course we have only learned about predictive PCR models.  The approach to build and use a soft sensor is exactly as described in :ref:`the section on PCR <LVM_PCR>`.  Once the model has been built, it can be applied in real-time. The |T2| and SPE value for each new observation is checked for consistency with the model before a prediction is made.  Contribution plots are used to diagnose unusual observations.  
+Soft sensors using latent variables will almost always be PLS models.  So far we have only learned about predictive PCR models.  The approach to build and use a soft sensor is exactly as described in :ref:`the section on PCR <LVM_PCR>`.  Once the model has been built, it can be applied in real-time. The |T2| and SPE value for each new observation is checked for consistency with the model before a prediction is made.  Contribution plots are used to diagnose unusual observations.  
 
 It is an indication that the predictive models need to be updated if the SPE and/or |T2| values are consistently above the limits.  This is a real advantage over using an MLR-based model, which has no such consistency checks.
 
@@ -526,7 +526,7 @@ Since we measure :math:`x` and :math:`d`, we might use them to predict :math:`y`
 	:width: 750px
 	:align: center
 
-Lagging introduces time-dependency among the columns in |X|.  How many lags should we include for the |Y| variable?  The autocorrelation function can offer some insight.  We learned about this function :ref:`earlier in the course <LS-autocorrelation-test>`.  It is a plot of how :math:`y(t)` is associated with :math:`y(t-k)`.  Below we show the autocorrelation for the Kappa number, the |y|-variable from a system that we will consider in more detail shortly.
+Lagging introduces time-dependency among the columns in |X|.  How many lags should we include for the |Y| variable?  The :ref:`autocorrelation function <LS-autocorrelation-test>` can offer some insight. It is a plot of how :math:`y(t)` is associated with :math:`y(t-k)`.  Below we show the autocorrelation for the Kappa number, the |y|-variable from a system that we will consider in more detail shortly.
 
 .. figure:: images/kappa-number-autocorrelation.png
 	:alt:	images/kamyr-modelling.R
@@ -684,7 +684,7 @@ Kamyr digester case study
 	*	Plot a coefficient plot also; does this match the interpretation from the loadings plot?
 	*	Plot an observed against predicted plot to determine how the model performs.  Plot this data also as two superimposed time-series plots.
 
-#.	The data on the course website was pre-lagged.  However the ``UCZAA`` and ``ChipRate`` variables were "unlagged" and their numeric ending stripped off.  Add various levels of lags to these variables and refit the PLS predictive model.  
+#.	The data on the website was pre-lagged.  However the ``UCZAA`` and ``ChipRate`` variables were "unlagged" and their numeric ending stripped off.  Add various levels of lags to these variables and refit the PLS predictive model.  
 
 	*	How many lags, at most, are required for each of these |X| variables?  
 	*	Add these lags and rebuild the model.  Does the model's predictive performance improve?
