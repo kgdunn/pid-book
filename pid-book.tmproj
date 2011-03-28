@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>design-analysis-experiments/design-analysis-experiments.rst</string>
+	<string>latent-variable-modelling/principal-component-analysis.rst</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -16,7 +16,7 @@
 			<key>filename</key>
 			<string>contents.rst</string>
 			<key>lastUsed</key>
-			<date>2011-03-20T22:30:07Z</date>
+			<date>2011-03-27T00:16:10Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -40,9 +40,11 @@
 			<key>filename</key>
 			<string>conf.py</string>
 			<key>lastUsed</key>
-			<date>2011-03-21T19:19:15Z</date>
+			<date>2011-03-27T21:17:59Z</date>
 		</dict>
 		<dict>
+			<key>expanded</key>
+			<true/>
 			<key>name</key>
 			<string>data-visualization</string>
 			<key>regexFolderFilter</key>
@@ -71,6 +73,8 @@
 			<string>latent-variable-modelling</string>
 		</dict>
 		<dict>
+			<key>expanded</key>
+			<true/>
 			<key>name</key>
 			<string>least-squares-modelling</string>
 			<key>regexFolderFilter</key>
@@ -79,6 +83,8 @@
 			<string>least-squares-modelling</string>
 		</dict>
 		<dict>
+			<key>expanded</key>
+			<true/>
 			<key>name</key>
 			<string>process-monitoring</string>
 			<key>regexFolderFilter</key>
@@ -87,6 +93,8 @@
 			<string>process-monitoring</string>
 		</dict>
 		<dict>
+			<key>expanded</key>
+			<true/>
 			<key>name</key>
 			<string>univariate-review</string>
 			<key>regexFolderFilter</key>
@@ -99,104 +107,43 @@
 	<integer>229</integer>
 	<key>metaData</key>
 	<dict>
-		<key>conf.py</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>25</integer>
-				<key>line</key>
-				<integer>27</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>contents.rst</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>34</integer>
-				<key>line</key>
-				<integer>7</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>design-analysis-experiments/design-analysis-experiments.rst</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>52</integer>
-				<key>line</key>
-				<integer>740</integer>
-			</dict>
-			<key>columnSelection</key>
-			<false/>
-			<key>firstVisibleColumn</key>
-			<integer>155</integer>
-			<key>firstVisibleLine</key>
-			<integer>723</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>50</integer>
-				<key>line</key>
-				<integer>740</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>52</integer>
-				<key>line</key>
-				<integer>740</integer>
-			</dict>
-		</dict>
-		<key>latent-variable-modelling/applications-of-latent-variable-models.rst</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>101</integer>
-				<key>line</key>
-				<integer>10</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
 		<key>latent-variable-modelling/latent-variable-modelling.rst</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>11</integer>
+				<key>line</key>
+				<integer>376</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>354</integer>
+		</dict>
+		<key>latent-variable-modelling/principal-component-analysis.rst</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
 				<integer>0</integer>
 				<key>line</key>
-				<integer>603</integer>
+				<integer>0</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>747</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>contents.rst</string>
+		<string>latent-variable-modelling/principal-component-analysis.rst</string>
 		<string>latent-variable-modelling/latent-variable-modelling.rst</string>
-		<string>latent-variable-modelling/applications-of-latent-variable-models.rst</string>
-		<string>design-analysis-experiments/design-analysis-experiments.rst</string>
-		<string>conf.py</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{239, 132}, {1201, 746}}</string>
+	<string>{{239, 60}, {1201, 818}}</string>
 </dict>
 </plist>
