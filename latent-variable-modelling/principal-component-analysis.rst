@@ -455,7 +455,7 @@ A continuous 3rd variable can be implied using a varying colour scheme, going fr
 
 *	Original observations in |X| that are similar to each other will be similar in the score plot, while observations much further apart are dissimilar.  This comes from the way the scores are computed: they are found so that span the greatest variance possible.  But it is much easier to detect this similarity in an :math:`A`-dimensional space than the original :math:`K`-dimensional space.
 
-.. _LVM-interpreting-loadings:
+.. _LVM_interpreting_loadings:
 
 Interpreting loading plots
 ====================================
@@ -1070,7 +1070,7 @@ As mentioned previously there are 3 major steps to building a PCA model for engi
 	#.	Building the latent variable model
 	#.	Testing the model, including testing for the number of components to use
 
-The last step of testing, interpreting and using the model is where one will spend the most time.  Preparing the data can be time-consuming the first time, but generally the first two steps are less time-consuming.  In this section we investigate how to determine the number of components that should be used in the model and how to use an existing latent variable model.  The issue of interpreting a model has been addressed in the section on :ref:`interpreting scores <LVM_interpreting_scores>` and :ref:`interpreting loadings <LVM-interpreting-loadings>`.
+The last step of testing, interpreting and using the model is where one will spend the most time.  Preparing the data can be time-consuming the first time, but generally the first two steps are less time-consuming.  In this section we investigate how to determine the number of components that should be used in the model and how to use an existing latent variable model.  The issue of interpreting a model has been addressed in the section on :ref:`interpreting scores <LVM_interpreting_scores>` and :ref:`interpreting loadings <LVM_interpreting_loadings>`.
 	
 .. _LVM-using-a-PCA-model:
 

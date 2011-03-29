@@ -130,6 +130,8 @@ Here is an example that shows these properties.
 	:width: 750px
 	:scale: 80
 
+.. _monitoring_general_approach:
+
 General approach
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -622,7 +624,7 @@ You will also realize that good operator training to interpret and act on the mo
 
 Another side effect of large quantities of data are that you will have to work with IT groups to manipulate large chunks of data on dedicated networks, separate from the rest of the plant.  The last thing you want to be responsible for is clogging the company network with your data. Most industries now have a "production" network running in parallel to the "company" network.  The production network carries real-time data, images from cameras and so forth, while the company network carries email and web traffic.
 
-Workflow to implement a monitoring chart in an industrial setting
+Approach to implement a monitoring chart in an industrial setting
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is some general guidance; feel free to adjust the steps as required for your unique situation.
@@ -1112,5 +1114,5 @@ Exercises
 	-	Use a weighted sum of a region of the spectrum, or the integrated area under a region in the spectrum (these 2 approaches are similar/equivalent)
 	-	Use the spectrum to predict a certain property of interest, and then monitor that property instead.  For example: use the spectrum to predict the colour of cookies (i.e. how well baked they are) and monitor the "well-bakedness" characteristic.
 
-	Later on we will learn about :ref:`multivariate monitoring methods <LVM-monitoring>`.
+	Later on we will learn about :ref:`multivariate monitoring methods <LVM_monitoring>`.
 	
