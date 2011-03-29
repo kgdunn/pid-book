@@ -116,7 +116,7 @@ M = np.dot(X.T, X) / (N-1)
 h_ax = [0, 0]
 # Plots the single time-series strip charts for each x variable
 if True:
-    fig = Figure(figsize=(15, 5))
+    fig = Figure(figsize=(15, 10))
     
     # Plot the individual time-series plots
     h_ax = [None, None]
@@ -128,8 +128,8 @@ if True:
             spine.set_color('none') # don't draw spine
     ax.xaxis.set_major_formatter(mpl.ticker.NullFormatter())
     shift = 0.0
-    h_x1 = ax.plot(np.arange(N)+shift, X[:, 0], 'k-o', ms=4)
-    ax.set_ylabel('$x_1', fontsize=16)
+    h_x1 = ax.plot(np.arange(N)+shift, X[:, 0], 'k-o', ms=8, linewidth=2)
+    ax.set_ylabel('$x_1$', fontsize=26)
     
     ax.plot([0, N], [limit_hi[0], limit_hi[0]], 'r--', linewidth=2)
     ax.plot([0, N], [limit_lo[0], limit_lo[0]], 'r--', linewidth=2)
@@ -140,8 +140,8 @@ if True:
     for loc, spine in ax.spines.iteritems():
         if loc in ['top', 'bottom', 'right']:
             spine.set_color('none') # don't draw spine
-    h_x2 = ax.plot(np.arange(N)+shift, X[:, 1], 'k-o', ms=4)
-    ax.set_ylabel('$x_2$', fontsize=16)    
+    h_x2 = ax.plot(np.arange(N)+shift, X[:, 1], 'k-o', ms=8, linewidth=2)
+    ax.set_ylabel('$x_2$', fontsize=26)    
     ax.plot([0, N], [limit_hi[1], limit_hi[1]], 'r--', linewidth=2)
     ax.plot([0, N], [limit_lo[1], limit_lo[1]], 'r--', linewidth=2)
     ax.axis([0, N, limit_lo[1]-delta, limit_hi[1]+delta])
