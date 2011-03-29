@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>univariate-review/univariate-review.rst</string>
+	<string>latent-variable-modelling/images/spinning-cube-using-temperatures.R</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -16,35 +16,27 @@
 			<key>filename</key>
 			<string>contents.rst</string>
 			<key>lastUsed</key>
-			<date>2011-03-27T00:16:10Z</date>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>drafts.rst</string>
-			<key>lastUsed</key>
-			<date>2011-03-20T22:32:15Z</date>
+			<date>2011-03-29T17:00:00Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>_build/latex/PID.tex</string>
 			<key>lastUsed</key>
-			<date>2011-03-15T21:28:24Z</date>
+			<date>2011-03-29T16:59:58Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>preface.tex</string>
 			<key>lastUsed</key>
-			<date>2011-02-25T20:10:53Z</date>
+			<date>2011-03-29T16:03:53Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>conf.py</string>
 			<key>lastUsed</key>
-			<date>2011-03-27T21:17:59Z</date>
+			<date>2011-03-29T16:03:41Z</date>
 		</dict>
 		<dict>
-			<key>expanded</key>
-			<true/>
 			<key>name</key>
 			<string>data-visualization</string>
 			<key>regexFolderFilter</key>
@@ -53,8 +45,6 @@
 			<string>data-visualization</string>
 		</dict>
 		<dict>
-			<key>expanded</key>
-			<true/>
 			<key>name</key>
 			<string>design-analysis-experiments</string>
 			<key>regexFolderFilter</key>
@@ -107,130 +97,39 @@
 	<integer>229</integer>
 	<key>metaData</key>
 	<dict>
-		<key>latent-variable-modelling/index.rst</key>
+		<key>latent-variable-modelling/images/spinning-cube-using-temperatures.R</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>28</integer>
+				<integer>24</integer>
 				<key>line</key>
-				<integer>0</integer>
+				<integer>25</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
-		</dict>
-		<key>latent-variable-modelling/latent-variable-modelling.rst</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>109</integer>
-				<key>line</key>
-				<integer>429</integer>
-			</dict>
-			<key>columnSelection</key>
-			<false/>
-			<key>firstVisibleColumn</key>
-			<integer>149</integer>
-			<key>firstVisibleLine</key>
-			<integer>410</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>101</integer>
-				<key>line</key>
-				<integer>429</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>109</integer>
-				<key>line</key>
-				<integer>429</integer>
-			</dict>
-		</dict>
-		<key>latent-variable-modelling/principal-component-analysis.rst</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>0</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>747</integer>
 		</dict>
 		<key>latent-variable-modelling/projection-to-latent-structures.rst</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>60</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>6</integer>
+				<integer>632</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>least-squares-modelling/least-squares-modelling.rst</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>64</integer>
-				<key>line</key>
-				<integer>1877</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>607</integer>
-			<key>firstVisibleLine</key>
-			<integer>1866</integer>
-		</dict>
-		<key>process-monitoring/process-monitoring.rst</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>427</integer>
-				<key>line</key>
-				<integer>661</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>648</integer>
-		</dict>
-		<key>univariate-review/univariate-review.rst</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>79</integer>
-				<key>line</key>
-				<integer>197</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>174</integer>
+			<integer>608</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>latent-variable-modelling/principal-component-analysis.rst</string>
-		<string>latent-variable-modelling/latent-variable-modelling.rst</string>
-		<string>least-squares-modelling/least-squares-modelling.rst</string>
-		<string>process-monitoring/process-monitoring.rst</string>
-		<string>univariate-review/univariate-review.rst</string>
 		<string>latent-variable-modelling/projection-to-latent-structures.rst</string>
-		<string>latent-variable-modelling/index.rst</string>
+		<string>latent-variable-modelling/images/spinning-cube-using-temperatures.R</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>

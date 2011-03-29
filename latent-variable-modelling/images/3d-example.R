@@ -44,7 +44,7 @@ cube <- function(angle){
 
 X <- data.frame(x1=NA, x2=NA, x3=NA)
 # Show the data cube, at an angle of 30 degrees
-bitmap('/Users/kevindunn/Statistics course/Course notes/Latent-variable-modelling/images/3d-example-empty.png', type="png256", width=5, height=5, res=600, pointsize=14)
+bitmap('3d-example-empty.png', type="png256", width=5, height=5, res=600, pointsize=14)
 cube(30)
 dev.off()
 

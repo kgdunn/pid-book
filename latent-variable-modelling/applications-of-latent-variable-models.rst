@@ -96,7 +96,6 @@ The score plot (left) and loadings plot (right) help isolate potential reasons f
 We can investigate *specific* batches and look at the contribution of each variable to the score values.  Let's look at the contributions for batch 8 for both the :math:`t_1` and :math:`t_2` scores.
 
 .. math::
-	:nowrap:
 	
 	\begin{array}{rcccccccccccc}
 	         t_{8,a=1} &=& x_{\text{s5}} \,\, p_{\text{s5},1} &+& x_{\text{s10}} \,\, p_{\text{s10},1} &+& x_{\text{s15}} \,\, p_{\text{s15},1} &+& x_{\text{TGA}} \,\, p_{\text{TGA},1} &+& x_{\text{DSC}} \,\, p_{\text{DSC},1} &+& x_{\text{TMA}} \,\, p_{\text{TMA},1}\\
@@ -110,7 +109,7 @@ Batch 8 is at its location in the score plot due to the low values of the 3 size
 Batch 22 on the other hand had very low values of TGA and TMA, even though its size values were below average. Let's take a look at the :math:`t_2` value for batch 22 to see where we get this interpretation:
 
 .. math::
-	:nowrap:
+	
 	
 	\begin{array}{rcccccccccccc}
 		t_{22,a=2} &=& x_{\text{s5}} \,\, p_{\text{s5},2} &+& x_{\text{s10}} \,\, p_{\text{s10},2} &+& x_{\text{s15}} \,\, p_{\text{s15},2} &+& x_{\text{TGA}} \,\, p_{\text{TGA},2} &+& x_{\text{DSC}} \,\, p_{\text{DSC},2} &+& x_{\text{TMA}} \,\, p_{\text{TMA},2} \\

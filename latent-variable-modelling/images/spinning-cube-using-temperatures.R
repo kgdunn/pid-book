@@ -1,13 +1,13 @@
-temps <- read.csv('/Users/kevindunn/Statistics course/Course notes/Latent variable modelling/images/room-temperature.csv', header=FALSE)
+temps<- read.csv('http://datasets.connectmv.com/file/room-temperature.csv')
 summary(temps)
 plot(temps)
-X <- data.frame(x1=temps$V1, x2=temps$V2, x3=temps$V3)
+X <- data.frame(x1=temps$FrontLeft, x2=temps$FrontRight, x3=temps$BackLeft)
 
 library(lattice)
 # http://www.springer.com/statistics/computanional+statistics/book/978-0-387-75968-5
 
 grouper = c(numeric(length=50)+1, numeric(length=10)+2, numeric(length=144-50-10)+1)
-grouper[106] = 3
+grouper[131] = 3
 
 cube <- function(angle){
     # Plot a rotating cube of these thicknesses
@@ -21,7 +21,7 @@ cube <- function(angle){
                  type="p",
                  groups = grouper,
                  pch=20,
-                 col=c("black", "blue", "red"),
+                 col=c("black", "blue", "blue"),   # <--- last one was red, but we don't have that data point anymore
                  main="",
                  screen = list(z = angle, x = -70, y = 0),                
                  par.settings = list(axis.line = list(col = "transparent")), # causes cube to zoom in and out: clip = list(panel = "off")
