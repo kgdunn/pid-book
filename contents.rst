@@ -12,7 +12,4 @@ Process Improvement using Data
 	design-analysis-experiments/index
 	latent-variable-modelling/index
 
-.. PLS section also include PCR
-	
-	
-	
+.. Sections omitted:

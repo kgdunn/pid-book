@@ -1389,7 +1389,7 @@ Summary of steps to build and investigate a linear model
 	Leverage, outliers, influence and discrepancy
 	- Chatterjee and Hadi paper (see PDF)
 
-.. _LS-multiple-X-MLR:
+.. _LS_multiple_X_MLR:
 
 More than one variable: multiple linear regression (MLR)
 ================================================================================
