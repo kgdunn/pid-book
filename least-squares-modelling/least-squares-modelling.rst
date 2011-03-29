@@ -792,7 +792,7 @@ How **good** a model is *for a particular purpose* is almost never related to th
 - use testing data to verify the model's predictive performance,
 - using cross-validation tools (we will see this topic later on).
 
-We will see later on that :math:`R^2` can be arbitrarily increased by adding terms to the linear model, as we will see in the section on :ref:`multiple linear regression (MLR) <LS-multiple-X-MLR>`.  So sometimes you will see the adjusted :math:`R^2` used to account for the :math:`k` terms used in the model:
+We will see later on that :math:`R^2` can be arbitrarily increased by adding terms to the linear model, as we will see in the section on :ref:`multiple linear regression (MLR) <LS_multiple_X_MLR>`.  So sometimes you will see the adjusted :math:`R^2` used to account for the :math:`k` terms used in the model:
 
 .. math::
 
@@ -1149,7 +1149,7 @@ If the residuals appear non-normal, then attempt the following:
 	
 	-	Use a suitable transformation of the y-variable
 	
-	-	Add :ref:`additional terms to the least squares model <LS-multiple-X-MLR>`
+	-	Add :ref:`additional terms to the least squares model <LS_multiple_X_MLR>`
 
 The simple example shown here builds a model that predicts the price of a used vehicle using only the mileage as an explanatory variable.
 
@@ -1284,7 +1284,7 @@ Here we show both plots for the example just prior (where we used a linear model
 		:align: center
 		:width: 750px
 
-Transformations are considered successful once the residuals appear to have no more structure in them.  Also bear in mind that structure in the residuals might indicate the model is missing an additional explanatory variable (see the section on :ref:`multiple linear regression <LS-multiple-X-MLR>`).
+Transformations are considered successful once the residuals appear to have no more structure in them.  Also bear in mind that structure in the residuals might indicate the model is missing an additional explanatory variable (see the section on :ref:`multiple linear regression <LS_multiple_X_MLR>`).
 
 Another type of plot to diagnose non-linearity present in the linear model is called a *component-plus-residual plot* or a *partial-residual plot*.  This is an advanced topic not covered here, but well covered in the Fox reference.
 
