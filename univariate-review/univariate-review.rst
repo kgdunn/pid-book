@@ -161,7 +161,7 @@ In addition to the risk of decreasing your market share (see the above 3 points)
 	
 #.	Off-specification products: must be reworked, disposed of, or sold at a loss or much lower profit.  These costs are ultimately passed onto your customers, costing you money.
  
-Note: the above discussion assumes that you are able to quantify product quality with one or more univariate quality metrics and that these metrics are independent of each other.  Quality is almost always a multivariate attribute of the product.  We :ref:`discuss multivariate methods <SECTION-latent-variable-modelling>` later in this book.
+Note: the above discussion assumes that you are able to quantify product quality with one or more univariate quality metrics and that these metrics are independent of each other.  Quality is almost always a multivariate attribute of the product.  We :ref:`discuss multivariate methods <SECTION_latent_variable_modelling>` later in this book.
 
 The high cost of variability in your raw materials
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -195,7 +195,7 @@ So, how do we make progress despite this variability?  This whole book, and all 
 - later we consider how to :ref:`construct monitoring charts <SECTION-process-monitoring>` to **track variability**
 - in the section on :ref:`least squares modelling <SECTION-least-squares-modelling>` we learn how **variation in one variable might affect another variable**
 - with :ref:`designed experiments <SECTION-design-analysis-experiments>` we intentionally **introduce variation** into our process to learn more about the process (e.g. so that we can optimize our process for improved profitability); and
-- and in the :ref:`latent variable modelling <SECTION-latent-variable-modelling>` section we learn how to deal with **multiple variables**, simultaneously extracting information from the data to understand how variability affects the process.
+- and in the :ref:`latent variable modelling <SECTION_latent_variable_modelling>` section we learn how to deal with **multiple variables**, simultaneously extracting information from the data to understand how variability affects the process.
 
 	
 Histograms, probability and distributions

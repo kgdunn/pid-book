@@ -1875,7 +1875,7 @@ How do we quantify this predictive performance?  A common way is to calculate th
 
 The units of RMSEP and RMSEE are the same as the units of the |y|-variable.
 
-In the :ref:`latent variable modelling <SECTION-latent-variable-modelling>` section of the book we will introduce the concept of :index:`cross-validation` to test a model.  Cross-validation uses the model training data to simulate the testing process.  So it is not as desirable as having a fresh testing data set, but it works well in many cases.  Cross-validation can be equally well applied to least squares models. We will revisit this topic later.
+In the :ref:`latent variable modelling <SECTION_latent_variable_modelling>` section of the book we will introduce the concept of :index:`cross-validation` to test a model.  Cross-validation uses the model training data to simulate the testing process.  So it is not as desirable as having a fresh testing data set, but it works well in many cases.  Cross-validation can be equally well applied to least squares models. We will revisit this topic later.
 
 .. TODO: cf the book by Esbensen for other methods
 

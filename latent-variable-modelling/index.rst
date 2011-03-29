@@ -1,4 +1,4 @@
-.. _SECTION-latent-variable-modelling:
+.. _SECTION_latent_variable_modelling:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Latent Variable Modelling
@@ -9,38 +9,36 @@ Latent Variable Modelling
 
    latent-variable-modelling
 
-.. _SECTION-PCA:
+.. _SECTION_PCA:
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Principal Component Analysis
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Latent Variable Methods for a Single Block (PCA)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 .. toctree::
    :maxdepth: 2
 
    principal-component-analysis
 
-.. _SECTION-PLS:
+.. _SECTION_PLS:
 
-..
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	Projection to Latent Structures 
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Latent Variable Methods for Two Blocks (PCR and PLS)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-	.. toctree::
-	   :maxdepth: 2
+.. toctree::
+   :maxdepth: 2
 
-	   projection-to-latent-structures 
+   projection-to-latent-structures 
 
-	.. _SECTION-LVM-applications:
+.. _SECTION_LVM_applications:
 
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	Applications of Latent Variable Models
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Applications of Latent Variable Models
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-	.. toctree::
-	   :maxdepth: 2
+.. toctree::
+   :maxdepth: 2
 
-	   applications-of-latent-variable-models
+   applications-of-latent-variable-models
 

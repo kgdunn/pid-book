@@ -763,4 +763,4 @@ The main points from this section are:
 	
 The examples given so far showed what a single latent variables is. In practice we usually obtain several latent variables for a data array.  At this stage you likely have more questions, such as "*how many latent variables are there in a matrix*" and "*how are the values in* |P| *chosen*", and "*how do we know these latent variables are a good summary of the original data*"?
 
-We address these issues more formally in the next section on :ref:`principal component analysis <SECTION-PCA>`.
+We address these issues more formally in the next section on :ref:`principal component analysis <SECTION_PCA>`.

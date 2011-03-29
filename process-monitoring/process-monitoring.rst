@@ -25,7 +25,7 @@
 In context
 ==========
 
-In the first section we learned about :ref:`visualizing data <SECTION-data-visualization>`, then we moved on to reviewing :ref:`univariate statistics <SECTION-univariate-review>`.  This section combines those two areas, showing how to create a system that monitors a single, univariate, value from any process.  We do this using graphical tools, to enable anyone to rapidly detect a problem by visual analysis.  The next logical step after detection is to diagnose the problem, but we will cover diagnosis in the section on :ref:`latent variable models <SECTION-latent-variable-modelling>`.
+In the first section we learned about :ref:`visualizing data <SECTION-data-visualization>`, then we moved on to reviewing :ref:`univariate statistics <SECTION-univariate-review>`.  This section combines those two areas, showing how to create a system that monitors a single, univariate, value from any process.  We do this using graphical tools, to enable anyone to rapidly detect a problem by visual analysis.  The next logical step after detection is to diagnose the problem, but we will cover diagnosis in the section on :ref:`latent variable models <SECTION_latent_variable_modelling>`.
 
 This section is the last section where we deal with univariate data; after this section we start to use and deal with 2 or more variables.  
 
@@ -369,7 +369,7 @@ Imagine you are monitoring an aspect of the final product's quality, e.g. viscos
 
 Shewhart chart limits were calculated with the assumption of **independent subgroups** (e.g. subgroup :math:`i` has no effect on subgroup :math:`i+1`).  For a process with mild autocorrelation, the act of creating subgroups, with :math:`n` samples in each group, removes most, if not all, of the relationship between subgroups.  However processes with heavy autocorrelation (slow moving processes sampled at a high rate, for example), will have LCL and UCL calculated from equation :eq:`shewhart-limits` that will raise false alarms too frequently.  In these cases you can widen the limits, or remove the autocorrelation from the signal.  More on this in the section on :ref:`exponentially weighted moving average (EWMA) charts <monitoring-EWMA>`.
 
-Using Shewhart charts on two or more **highly correlated quality variables**, usually on your final product measurement, can increase your type II (consumer's risk) dramatically.  We will come back to this very important topic in the section on :ref:`latent variable models <SECTION-latent-variable-modelling>`.
+Using Shewhart charts on two or more **highly correlated quality variables**, usually on your final product measurement, can increase your type II (consumer's risk) dramatically.  We will come back to this very important topic in the section on :ref:`latent variable models <SECTION_latent_variable_modelling>`.
 
 .. _monitoring-CUSUM-charts:
 
@@ -659,7 +659,7 @@ Industrial case study
 ArcelorMittal (Dofasco)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ArcelorMittal's steel mill in Hamilton, Ontario, (formerly called Dofasco) has used multivariate process monitoring tools in many areas of their plant for decades now.  One of their most successful applications is that applied to their casting operation.  In this section we just focus on the application; the sort of multivariate calculations used by this system are discussed :ref:`later on <SECTION-latent-variable-modelling>`.
+ArcelorMittal's steel mill in Hamilton, Ontario, (formerly called Dofasco) has used multivariate process monitoring tools in many areas of their plant for decades now.  One of their most successful applications is that applied to their casting operation.  In this section we just focus on the application; the sort of multivariate calculations used by this system are discussed :ref:`later on <SECTION_latent_variable_modelling>`.
 
 The computer screenshot shows the monitoring system, called Caster SOS (Stable Operation Supervisor), which is followed by the operators. There are several charts on the screen: two charts, called "Stability Index 1" and "Stability Index 2", are one-sided monitoring charts. Notice the warning limits and the action limits. In the middle is a two-sided chart. A wealth of information is presented on the screen - their design was heavily influenced and iterated on several times, working with the *operators*. The screen shot is used with permission of Dr. John MacGregor. 
 
