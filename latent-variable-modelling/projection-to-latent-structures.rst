@@ -509,8 +509,9 @@ After reading about the :ref:`NIPALS algorithm for PLS <LVM_PLS_calculation>` yo
 The problem comes once we deflate.  The :math:`\mathbf{w}_2` vector is calculated from the deflated matrix :math:`\mathbf{X}_{a=2}`, so  interpreting these scores is a quite a bit harder.
 
 .. math::
-	\mathbf{t}_2 &= \mathbf{X}_2 \mathbf{w}_2 &= \left(\mathbf{X}_1 - \mathbf{t}_1 \mathbf{p}'_1 \right) \mathbf{w}_2 \\
-	                                          &= \left(\mathbf{X}_1 - \mathbf{X}_1 \mathbf{w}_1 \mathbf{p}_1 \right) \mathbf{w}_2
+
+	\mathbf{t}_2 = \mathbf{X}_2 \mathbf{w}_2 &= \left(\mathbf{X}_1 - \mathbf{t}_1 \mathbf{p}'_1 \right) \mathbf{w}_2 \\
+	                                         &= \left(\mathbf{X}_1 - \mathbf{X}_1 \mathbf{w}_1 \mathbf{p}_1 \right) \mathbf{w}_2
 
 The :math:`\mathbf{w}_2` is not really giving us insight into the relationships between the score, :math:`\mathbf{t}_2`, and the data, :math:`\mathbf{X}`, but rather between the score and the *deflated* data, :math:`\mathbf{X}_2`.  
 
