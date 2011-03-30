@@ -29,7 +29,7 @@ In :ref:`multiple linear regression <LS_multiple_X_MLR>` we have two matrices (b
 
 In the section on :ref:`factorial experiments <DOE-two-level-factorials>` we intentionally set our process to generate a matrix :math:`\mathbf{X}` that has independent columns.  This means that each column is orthogonal to the others, you cannot express one column in terms of the other, and it results in a diagonal :math:`\mathbf{X'X}` matrix.
 
-On most data sets though the columns in |X| are correlated.  Correlated columns are not too serious if they are mildly correlated.  But the illustration here shows the problem with strongly correlated variables, in this example :math:`x_1` and :math:`x_2` are strongly, positively correlated. Both variables are used to create a predictive model for :math:`y`.  The model plane, :math:`\hat{y}=b_0 + b_1x_1 + b_2x_2` is found so that it minimizes the residual error. There is a unique minimum for the sum of squares of the residual error (i.e. the objective function).  But very small changes in the raw data in these cases will lead to almost no change in the objective function, but will show large fluctuations in the solution for :math:`\mathbf{b}`.  This can be visualized in this illustration.
+On most data sets though the columns in |X| are correlated.  Correlated columns are not too serious if they are mildly correlated.  But the illustration here shows the problem with strongly correlated variables, in this example :math:`x_1` and :math:`x_2` are strongly, positively correlated. Both variables are used to create a predictive model for :math:`y`. The model plane, :math:`\hat{y}=b_0 + b_1x_1 + b_2x_2` is found so that it minimizes the residual error. There is a unique minimum for the sum of squares of the residual error (i.e. the objective function). But very small changes in the raw :math:`x`-data lead to almost no change in the objective function, but will show large fluctuations in the solution for :math:`\mathbf{b}` as the plane rotates around the axis of correlation. This can be visualized in this illustration.
 
 .. figure:: images/correlated-x-variables.png
 	:alt:	images/correlated-x-variables.svg
@@ -37,13 +37,19 @@ On most data sets though the columns in |X| are correlated.  Correlated columns 
 	:width: 750px
 	:align: center
 
-The plane will rotate around the axial, dashed line if we make small changes in the raw data.  At each new rotation we will get very different values of :math:`b_1` and :math:`b_2`, but the objective function's minimum value does not change very much.  This phenomena shows up in the least squares solution as wide confidence intervals for the coefficients, since the off-diagonal elements in :math:`\mathbf{X'X}` will be large. This has important consequences when you are trying to learn about your process from this model: you have to use caution.  A model with low or uncorrelated variables is well-supported by the data, and cannot be arbitrarily rotated.
+The plane will rotate around the axial, dashed line if we make small changes in the raw data.  At each new rotation we will get very different values of :math:`b_1` and :math:`b_2`, even changing in sign(!), but the objective function's minimum value does not change very much.  This phenomena shows up in the least squares solution as wide confidence intervals for the coefficients, since the off-diagonal elements in :math:`\mathbf{X'X}` will be large. This has important consequences when you are trying to learn about your process from this model: you have to use caution. A model with low or uncorrelated variables is well-supported by the data, and cannot be arbitrarily rotated.
 
-The common "solution" to this problem of collinearity is to revert to variable selection.  The modeller selects a subset of uncorrelated columns from |X| rather than using the full matrix.  When :math:`K` is large, then this becomes a large computational burden.
+The common "solution" to this problem of collinearity is to revert to variable selection. In the above example the modeller would select either :math:`x_1` or :math:`x_2`. In general, the modeller must select a subset of uncorrelated columns from the :math:`K` columns in |X| rather than using the full matrix.  When :math:`K` is large, then this becomes a large computational burden. Further, it is not clear what the trade-offs are, and how many columns should be in the subset.  When is a correlation too large to be problematic?
 
-We face another problem with MLR: the assumption that the variables in |X| are measured without error, which we know to be untrue in many practical engineering situations.  Furthermore, MLR cannot handle missing data. 
+We face another problem with MLR: the assumption that the variables in |X| are measured without error, which we know to be untrue in many practical engineering situations and is exactly what leads to the instability of the rotating plane. Furthermore, MLR cannot handle missing data. To summarize, the shortcomings of multiple linear regression are that:
 
-The main idea with principal component regression is to replace the many columns in |X| with their uncorrelated score vectors from PCA. 
+*	it cannot handle strongly correlated columns in |X|
+*	it assumes |X| is noise-free, which it almost never is in practice
+*	cannot handle missing values in |X|
+*	MLR requires that :math:`N > K`, which can be impractical in many circumstances, which leads to 
+*	variable selection to meet the :math:`N > K` requirement, and to gain independence between columns of |X|, but that selection process is non-obvious, and may lead to suboptimal predictions.
+
+The main idea with principal component regression is to replace the :math:`K` columns in |X| with their uncorrelated :math:`A` score vectors from PCA. 
 
 .. figure:: images/PCR-data-structure-compared-to-MLR.png
 	:alt:	images/PCR-data-structure-compared-to-MLR.svg
@@ -51,49 +57,51 @@ The main idea with principal component regression is to replace the many columns
 	:width: 750px
 	:align: center
 
-In other words, we replace the :math:`N \times K` matrix of raw data with a smaller :math:`N \times A` matrix of data that summarizes the original |X| matrix.  Then we relate these scores to the |y| variable.  Mathematically it is a two-step process:
+In other words, we replace the :math:`N \times K` matrix of raw data with a smaller :math:`N \times A` matrix of data that summarizes the original |X| matrix. Then we relate these :math:`A` scores to the |y| variable.  Mathematically it is a two-step process:
 
 .. math::
-	1.&\qquad \mathbf{T} = \mathbf{XP}\\
+	1.&\qquad \mathbf{T} = \mathbf{XP} \qquad \text{from the PCA model}\\
 	2.&\qquad \widehat{\mathbf{y}} = \mathbf{Tb} \qquad \text{and can be solved as}\qquad \mathbf{b} = \left(\mathbf{T'T}\right)^{-1}\mathbf{T'y}
+
+.. _PCR_advantages_over_MLR:
 
 This has a number of advantages:
 
-#.	The columns in |T|, the scores from PCA, are orthogonal to each other.
+#.	The columns in |T|, the scores from PCA, are orthogonal to each other, obtaining independence for the least-squares step.
 
-#.	These scores can be calculated even if there are missing data in |X|.
+#.	These |T| scores can be calculated even if there are missing data in |X|.
 
-#.	We have removed the assumption of errors in X, since :math:`\widehat{\mathbf{X}} = \mathbf{TP' + E}`.  We have replaced it with the assumption that there is no error in |T|, a more realistic assumption, since PCA separates the noise from the systematic variation in |X|.  The :math:`\mathbf{T}`'s are expected to have much less noise than the  :math:`\mathbf{X}`'s.
+#.	We have reduced the assumption of errors in |X|, since :math:`\widehat{\mathbf{X}} = \mathbf{TP' + E}`.  We have replaced it with the assumption that there is no error in |T|, a more realistic assumption, since PCA separates the noise from the systematic variation in |X|.  The :math:`\mathbf{T}\text{'s}` are expected to have much less noise than the  :math:`\mathbf{X}\text{'s}`.
 
 #.	The relationship of each score column in |T| to vector |y| can be interpreted independently of each other.
 
-#.	Using MLR requires that :math:`N > K`, but with PCR this changes to :math:`N > A`; an assumption that is easily met for short and wide |X| matrices with many correlated columns.
+#.	Using MLR requires that :math:`N > K`, but with PCR this changes to :math:`N > A`; an assumption that is more easily met for short and wide |X| matrices with many correlated columns.
 
-#.	There is much less need to resort to selecting variables in |X|; the general approach is to use the entire |X| matrix to fit the PCA model.  We actually use the correlated columns in |X| to stabilize the PCA solution, much in the same way that extra data improves the estimate of a mean (recall the central limit theorem).
+#.	There is much less need to resort to selecting variables from |X|; the general approach is to use the entire |X| matrix to fit the PCA model.  We actually use the correlated columns in |X| to stabilize the PCA solution, much in the same way that extra data improves the estimate of a mean (recall the central limit theorem).
 
-#.	But by far one of the greatest advantages of MLR though is the free consistency check that one gets on the raw data, which you don't have for MLR.  Always check the SPE and Hotelling's |T2| value for an observation in |X| in the first step. If SPE is close to the model plane, and |T2| is within the range of the previous |T2| values, then the prediction from the second step should be reasonable.
+#.	But by far one of the greatest advantages of MLR though is the free consistency check that one gets on the raw data, which you don't have for MLR.  Always check the SPE and Hotelling's |T2| value for a new observation during the first step. If SPE is close to the model plane, and |T2| is within the range of the previous |T2| values, then the prediction from the second step should be reasonable.
 
-Illustrated as follows we see the misleading strategy that is regularly seen with MLR.  The modeller has build a least squares model relating :math:`x_1` and :math:`x_2` to :math:`y`, over the given ranges of :math:`x`. The closed circles represent the actual data, while the open circles are the projections of the :math:`x_1` and :math:`x_2` values on that plane. The predictive model works adequately.
+Illustrated as follows we see the misleading strategy that is regularly seen with MLR.  The modeller has build a least squares model relating :math:`x_1` and :math:`x_2` to :math:`y`, over the given ranges of :math:`x`. The closed circles represent the actual data, while the open circles are the projections of the :math:`x_1` and :math:`x_2` values on the :math:`x_1 - x_2` plane. The predictive model works adequately.
 
-.. figure:: images/correlated-x-variables-related-to-y.png
+.. image:: images/correlated-x-variables-related-to-y.png
 	:alt:	images/correlated-x-variables-related-to-y.svg
 	:scale: 60%
 	:width: 750px
 	:align: center
 
-But the misleading strategy often used by engineers is to say that the model is valid as long as :math:`-5 \leq x_1 \leq +6` and :math:`-2 \leq x_2 \leq +1`.  If the engineer wants to use the model at the points marked with \*, the results will be uncertain, even though those marked points obey the given constraints.  The problem is that the engineer has not taken the correlation between the variables into account.  With PCR we would immediately detect this: the points marked as * would have a large SPE values, indicating they are not consistent with the model.
+But the misleading strategy often used by engineers is to say that the model is valid as long as :math:`-5 \leq x_1 \leq +6` and :math:`-2 \leq x_2 \leq +1`.  If the engineer wants to use the model at the points marked with \*, the results will be uncertain, even though those marked points obey the given constraints.  The problem is that the engineer has not taken the correlation between the variables into account.  With PCR we would immediately detect this: the points marked as * would have large SPE values from the PCA step, indicating they are not consistent with the model.
 
 Here then is the procedure for **building** a principal component regression model.
 
 #.	Collect the |X| and |y| data required for the model.
 
-#.	Build a PCA model on the data in |X|, fitting :math:`A` components. We usually set :math:`A` by cross-validation, but often components beyond this will be useful.  Iterate back to this point after the initial model to assess if :math:`A` should be increased.
+#.	Build a PCA model on the data in |X|, fitting :math:`A` components. We usually set :math:`A` by cross-validation, but often components beyond this will be useful.  Iterate back to this point after the initial model to assess if :math:`A` should be changed.
 
 #.	Examine the SPE and |T2| plots from the PCA model to ensure the model is not biased by unusual outliers.
 
 #.	Use the columns in |T| from PCA as your data source for the usual multiple linear regression model (i.e. they are now the |X|-variables in an MLR model).
 
-#.	Solve for the MLR model parameters, :math:`\mathbf{b} = \left(\mathbf{T'T}\right)^{-1}\mathbf{T'y}`, an :math:`A \times 1` vector.
+#.	Solve for the MLR model parameters, :math:`\mathbf{b} = \left(\mathbf{T'T}\right)^{-1}\mathbf{T'y}`, an :math:`A \times 1` vector, with each coefficient entry in :math:`\mathbf{b}` corresponding to each score.
 
 **Using** the principal component regression model for a new observation:
 
@@ -111,13 +119,15 @@ Here then is the procedure for **building** a principal component regression mod
 
 #.	And the Hotelling's |T2| value for the new observation: :math:`T^2_\text{new} = \displaystyle \sum_{a=1}^{a=A}{\left(\dfrac{t_{\text{new},a}}{s_a}\right)^2}`.
 
-#.	Before calculating the prediction from the PCR model, first check the :math:`\text{SPE}_\text{new}` and :math:`T^2_\text{new}` value against their 95% or 99% limits.  If the new observation is below these limits, then go on to calculate the prediction: :math:`\widehat{y}_\text{new} = \mathbf{t}'_\text{new}\mathbf{b}`.
+#.	Before calculating the prediction from the PCR model, first check if the :math:`\text{SPE}_\text{new}` and :math:`T^2_\text{new}` values are below their 95% or 99% limits.  If the new observation is below these limits, then go on to calculate the prediction: :math:`\widehat{y}_\text{new} = \mathbf{t}'_\text{new}\mathbf{b}`, where :math:`\mathbf{b}` was from the 
 
-#.	If either of the limits is exceeded, then one should investigate the contributions to SPE, |T2| or the individuals scores to see why the new observation is unusual.
+#.	If either of the :math:`\text{SPE}` or :math:`T^2` limits were exceeded, then one should investigate the contributions to SPE, |T2| or the individuals scores to see why the new observation is unusual.
 
-Multiple linear regression, though relatively simpler to implement, has no such consistency check on the new observation's x-values.  It simply calculates a direct prediction for :math:`\widehat{y}_\text{new}`.
+	Predictions of math:`\widehat{y}_\text{new}` when a point is above either limit, especially the SPE limit, are not to be trusted.
 
-One of the main applications in engineering for PCR is in the use of software sensors, also called :ref:`inferential sensors <LVM_inferential_sensors>`.
+Multiple linear regression, though relatively simpler to implement, has no such consistency check on the new observation's :math:`x`-values.  It simply calculates a direct prediction for :math:`\widehat{y}_\text{new}`, no matter what the values are in :math:`\mathbf{x}_{\text{new}}`.
+
+One of the main applications in engineering for PCR is in the use of software sensors, also called :ref:`inferential sensors <LVM_inferential_sensors>`. The method of PLS has some distinct advantages over PCR, so we prefer to use that method instead, as described next.
 	
 ..	* page 52 of pencil notes
 
@@ -198,23 +208,27 @@ Introduction to Projection to Latent Structures (PLS)
 
 Projection to Latent Structures (PLS) is the first step we will take to extending latent variable methods to using more than one block of data.  In the PLS method we divide our variables (columns) into two blocks: called |X| and |Y|.  
 
-Learning how to choose which variables go in each block will become apparent later, but for now you may use the rule of thumb that says |X| takes the variables which are always available when using the model.  Both |X| and |Y| must be available when building the model, but later, when using the model, only |X| is required.  As you can guess, one of the major uses of PLS is for predicting variables in |Y| using variables in |X|, but this is not its only purpose as a model.
+Learning how to choose which variables go in each block will become apparent later, but for now you may use the rule of thumb that says |X| takes the variables which are always available when using the model, while |Y| takes the variables that are *not always available*. Both |X| and |Y| must be available when building the model, but later, when using the model, only |X| is required.  As you can guess, one of the major uses of PLS is for predicting variables in |Y| using variables in |X|, but this is not its only purpose as a model. It is a very good model for process understanding and troubleshooting.
 
 PLS can be used for process monitoring and for optimizing the performance of a process.  It is also widely used for new product development, or for improving existing products.  In all these cases the |Y| block most often contains the outcome, or quality properties.
 
 However, PLS is most commonly used for prediction.  And this is also a good way to introduce PLS.  In (chemical) engineering processes we use it to develop software sensors (also known as inferential sensors) that predict time-consuming lab measurement in real-time, using the on-line data from our processes.  In laboratories we use spectral data (e.g. NIR spectra) to predict the composition of a liquid; this is known as the calibration problem; once calibrated with samples of known composition we can predict the composition of future samples.
 
-So for predictive uses, a PLS model is very similar to :ref:`principal component regression <LVM_PCR>` (PCR) models.  And PCR models were a big improvement over using multiple linear regression (MLR).  In brief, PCR was shown to have these advantages:
+So for predictive uses, a PLS model is very similar to :ref:`principal component regression <LVM_PCR>` (PCR) models.  And PCR models were a big improvement over using multiple linear regression (MLR).  In brief, :ref:`PCR was shown to have these advantages <PCR_advantages_over_MLR>`:
 
-* It handles the correlation among variables in |X| by building a PCA model first, then using those orthogonal scores, |T|, instead of |X| in an ordinary multiple linear regression.  This prevents us from having to resort to variable selection.
-* It extracts these scores |T| even if there are missing values in |X|.
-* We reduce, but don't remove, the severity of the assumption in MLR that the predictor's, |T| in this case, are noise-free.  This is because the PCA scores are less noisy than the raw data |X|.
-* With MLR we require that :math:`N > K` (number of observations is greater than the number of variables), but with PCR this is reduced to :math:`N > A`, and since :math:`A<<K` this requirement is often true, especially for spectral data sets.
-* We get the great benefit of a consistency check on the raw data, using SPE and |T2| from PCA, before moving to the second prediction step.
+*	It handles the correlation among variables in |X| by building a PCA model first, then using those orthogonal scores, |T|, instead of |X| in an ordinary multiple linear regression.  This prevents us from having to resort to variable selection.
+
+*	It extracts these scores |T| even if there are missing values in |X|.
+
+*	We reduce, but don't remove, the severity of the assumption in MLR that the predictor's, |T| in this case, are noise-free.  This is because the PCA scores are less noisy than the raw data |X|.
+
+*	With MLR we require that :math:`N > K` (number of observations is greater than the number of variables), but with PCR this is reduced to :math:`N > A`, and since :math:`A \ll K` this requirement is often true, especially for spectral data sets.
+
+*	We get the great benefit of a consistency check on the raw data, using SPE and |T2| from PCA, before moving to the second prediction step.
 
 An important point is that PCR is a two-step process:
 
-.. figure:: images/PCR-data-structure-compared-to-MLR.png
+.. image:: images/PCR-data-structure-compared-to-MLR.png
 	:alt:	images/PCR-data-structure-compared-to-MLR.svg
 	:scale: 100%
 	:width: 750px
@@ -223,20 +237,25 @@ An important point is that PCR is a two-step process:
 In other words, we replace the :math:`N \times K` matrix of raw data with a smaller :math:`N \times A` matrix of data that summarizes the original |X| matrix.  Then we relate these scores to the |y| variable.  Mathematically it is a two-step process:
 
 .. math::
+
 	1.&\qquad \mathbf{T} = \mathbf{XP}\\
 	2.&\qquad \widehat{\mathbf{y}} = \mathbf{Tb} \qquad \text{and can be solved as}\qquad \mathbf{b} = \left(\mathbf{T'T}\right)^{-1}\mathbf{T'y}
 
 The PLS model goes a bit further and introduces some additional advantages over PCR:
 
-* A single PLS model can be built for multiple, correlated |Y| variables.  The eliminates having to build |M| PCR models, one for each column in |Y|.
-* The PLS model directly assumes that there is error in |X| and |Y|.  We will return to this important point of an |X|-space model later on.
-* PLS is more efficient than PCR in two ways: with PCR, one or more of the score columns in |T| may only have a small correlation with |Y|, so these scores are needlessly calculated.  Or as is more common, we have to extract many PCA components, going beyond the level of what would normally be calculated (essentially overfitting the PCA model), in order to capture sufficient predictive columns in |T|.  This augments the size of the PCR model, and makes interpretation harder, which is already strained by the two-step modelling required for PCR.
+*	A single PLS model can be built for multiple, correlated |Y| variables.  The eliminates having to build |M| PCR models, one for each column in |Y|.
 
-Like PCR, PLS also extracts sequential components, but it does so, simultaneously using the data in |X| and |Y|. So it can be seen to be very similar to PCR, but that it calculates the model in one go.  From the last point just mentioned, it is not surprising that PLS often requires fewer components than PCR to achieve the same level of prediction.  In fact when compared to several regression methods, MLR, ridge regression and PCR, a PLS model is often the most "compact" model.
+*	The PLS model directly assumes that there is error in |X| and |Y|.  We will return to this important point of an |X|-space model later on.
+
+.. LINK BACK TO THE X-space model discussion !!!
+
+*	PLS is more efficient than PCR in two ways: with PCR, one or more of the score columns in |T| may only have a small correlation with |Y|, so these scores are needlessly calculated.  Or as is more common, we have to extract many PCA components, going beyond the level of what would normally be calculated (essentially over fitting the PCA model), in order to capture sufficient predictive columns in |T|.  This augments the size of the PCR model, and makes interpretation harder, which is already strained by the two-step modelling required for PCR.
+
+Similar to PCA, the basis for PCR, we have that PLS also extracts sequential components, but it does so using the data in both |X| *and* |Y|. So it can be seen to be very similar to PCR, but that it calculates the model in one go.  From the last point just mentioned, it is not surprising that PLS often requires fewer components than PCR to achieve the same level of prediction.  In fact when compared to several regression methods, MLR, ridge regression and PCR, a PLS model is often the most "compact" model.
 
 We will get into the details shortly, but as a starting approximation, you can visualize PLS as a method that extracts a single set of scores, |T|, from both |X| and |Y| simultaneously.
 
-.. figure:: images/PLS-data-structure.png
+.. image:: images/PLS-data-structure.png
 	:alt:	images/PLS-data-structure.svg
 	:scale: 50%
 	:width: 750px
@@ -416,6 +435,9 @@ This is one round of the NIPALS algorithm.  We iterate through these 4 arrow ste
 
 .. Research topic: if we deflate |X| using the u's, predicted from |Y| and |c|, then how does the second component look?  Can we calculate all the |P| loadings after NIPALS has completed all components? 
 
+
+.. TO ADD: discussion of the X-space model, the loadings. We assume the X's are measured in error X= TP' + E, so we have a model for the X's.
+.. LINK back to the start of PLS, where we mention this X-space model.
 
 Then we deflate.  Deflation removes variability already explained from :math:`\mathbf{X}_a` and :math:`\mathbf{Y}_a`.  Deflation proceeds as follows:
 
