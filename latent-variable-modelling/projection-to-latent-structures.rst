@@ -31,7 +31,7 @@ In the section on :ref:`factorial experiments <DOE-two-level-factorials>` we int
 
 On most data sets though the columns in |X| are correlated.  Correlated columns are not too serious if they are mildly correlated.  But the illustration here shows the problem with strongly correlated variables, in this example :math:`x_1` and :math:`x_2` are strongly, positively correlated. Both variables are used to create a predictive model for :math:`y`. The model plane, :math:`\hat{y}=b_0 + b_1x_1 + b_2x_2` is found so that it minimizes the residual error. There is a unique minimum for the sum of squares of the residual error (i.e. the objective function). But very small changes in the raw :math:`x`-data lead to almost no change in the objective function, but will show large fluctuations in the solution for :math:`\mathbf{b}` as the plane rotates around the axis of correlation. This can be visualized in this illustration.
 
-.. figure:: images/correlated-x-variables.png
+.. image:: images/correlated-x-variables.png
 	:alt:	images/correlated-x-variables.svg
 	:scale: 50%
 	:width: 750px
@@ -44,14 +44,18 @@ The common "solution" to this problem of collinearity is to revert to variable s
 We face another problem with MLR: the assumption that the variables in |X| are measured without error, which we know to be untrue in many practical engineering situations and is exactly what leads to the instability of the rotating plane. Furthermore, MLR cannot handle missing data. To summarize, the shortcomings of multiple linear regression are that:
 
 *	it cannot handle strongly correlated columns in |X|
+
 *	it assumes |X| is noise-free, which it almost never is in practice
+
 *	cannot handle missing values in |X|
+
 *	MLR requires that :math:`N > K`, which can be impractical in many circumstances, which leads to 
+
 *	variable selection to meet the :math:`N > K` requirement, and to gain independence between columns of |X|, but that selection process is non-obvious, and may lead to suboptimal predictions.
 
 The main idea with principal component regression is to replace the :math:`K` columns in |X| with their uncorrelated :math:`A` score vectors from PCA. 
 
-.. figure:: images/PCR-data-structure-compared-to-MLR.png
+.. image:: images/PCR-data-structure-compared-to-MLR.png
 	:alt:	images/PCR-data-structure-compared-to-MLR.svg
 	:scale: 100%
 	:width: 750px
@@ -60,6 +64,7 @@ The main idea with principal component regression is to replace the :math:`K` co
 In other words, we replace the :math:`N \times K` matrix of raw data with a smaller :math:`N \times A` matrix of data that summarizes the original |X| matrix. Then we relate these :math:`A` scores to the |y| variable.  Mathematically it is a two-step process:
 
 .. math::
+
 	1.&\qquad \mathbf{T} = \mathbf{XP} \qquad \text{from the PCA model}\\
 	2.&\qquad \widehat{\mathbf{y}} = \mathbf{Tb} \qquad \text{and can be solved as}\qquad \mathbf{b} = \left(\mathbf{T'T}\right)^{-1}\mathbf{T'y}
 
@@ -268,26 +273,29 @@ From an engineering point of view this is quite a satisfying interpretation.  Af
 A conceptual explanation of PLS
 ===================================
 
-Now that you are comfortable with the concept of a latent variable using PCA and PCR, you can interpret PLS as a latent variable model, but one that has a different objective function.  In PCA the objective function was to calculate each latent variable so that it best explains the available variance in :math:`\mathbf{X}_a`.  In case you are wondering what the subscript |A| refers to: it is the matrix :math:`\mathbf{X}` before extracting the :math:`a^\text{th}` component.
+Now that you are comfortable with the concept of a latent variable using PCA and PCR, you can interpret PLS as a latent variable model, but one that has a different objective function.  In PCA the objective function was to calculate each latent variable so that it best explains the available variance in :math:`\mathbf{X}_a`, where the subscript |A| refers to the matrix :math:`\mathbf{X}` *before* extracting the :math:`a^\text{th}` component.
 
 In PLS, we also find these latent variables, but we find them so they best explain :math:`\mathbf{X}_a` and best explain :math:`\mathbf{Y}_a`, and so that these latent variables have the strongest possible relationship between :math:`\mathbf{X}_a` and :math:`\mathbf{Y}_a`.
 
 In other words, there are three simultaneous objectives with PLS:
 
 	#. The best explanation of the |X|-space.
+	
 	#. The best explanation of the |Y|-space.
+	
 	#. The greatest relationship between the |X|- and |Y|-space.
 
-.. _LVM-PLS-mathematical-interpretation:
+.. _LVM_PLS_mathematical_interpretation:
 
 A mathematical/statistical interpretation of PLS 
 ====================================================
 
-We will get back to the :ref:`mathematical details later on <LVM-PLS-calculation>`, but we will consider our conceptual explanation above in terms of mathematical symbols.
+We will get back to the :ref:`mathematical details later on <LVM_PLS_calculation>`, but we will consider our conceptual explanation above in terms of mathematical symbols.
 
-In PCA, the objective was to best explain |X|.  To do this we calculated scores, |T|, and loadings |P|, so that each component, :math:`\mathbf{t}_a`, had the greatest variance, while keeping the loading direction, :math:`\mathbf{p}_a`, constrained to a unit vector.
+In PCA, the objective was to best explain :math:`\mathbf{X}_a`.  To do this we calculated scores, |T|, and loadings |P|, so that each component, :math:`\mathbf{t}_a`, had the greatest variance, while keeping the loading direction, :math:`\mathbf{p}_a`, constrained to a unit vector.
 
 .. math::
+
 	\max : \mathbf{t}'_a \mathbf{t}_a \qquad \text{subject to}\quad \mathbf{p}'_a \mathbf{p}_a = 1.0
 
 The above was shown to be a concise mathematical way to state that these scores and loadings best explain |X|; no other loading direction will have greater variance of :math:`\mathbf{t}'_a`.  (The scores have mean of zero, so their variance is proportional to :math:`\mathbf{t}'_a \mathbf{t}_a`).
@@ -295,56 +303,62 @@ The above was shown to be a concise mathematical way to state that these scores 
 For PCA, for the :math:`a^\text{th}` component, we can calculate the scores as follows (we are projecting the values in :math:`\mathbf{X}_a` onto the loading direction :math:`\mathbf{p}_a`):
 
 .. math::
+
 	\mathbf{t}_a &= \mathbf{X}_a \mathbf{p}_a
 	
 
 Now let's look at PLS.  Earlier we said that PLS extracts a single set of scores, |T|, from |X| and |Y| simultaneously.  That wasn't quite true, but it is still an accurate statement!  PLS actually extracts two sets of scores, one set for |X| and another set for |Y|.  We write these scores for each space as:
 
 .. math::
-	\begin{array}{rcl}
+
+	\begin{align*}
 	\mathbf{t}_a &= \mathbf{X}_a \mathbf{w}_a \qquad &\text{for the $\mathbf{X}$-space} \\
 	\mathbf{u}_a &= \mathbf{Y}_a \mathbf{c}_a \qquad &\text{for the $\mathbf{Y}$-space}
-	\end{array}
+	\end{align*}
 	
-The objective of PLS is to extract these scores so that they have *maximal covariance*.  Let's take a look at this.  Covariance was shown to be:
+The objective of PLS is to extract these scores so that they have *maximal covariance*.  Let's take a look at this.  :ref:`Covariance was shown <LS_covariance>` to be:
 	
 .. math::
+
 	\text{Cov}\left(\mathbf{t}_a, \mathbf{u}_a\right) = \mathcal{E}\left\{ (\mathbf{t}_a - \overline{\mathbf{t}}_a) (\mathbf{u}_a - \overline{\mathbf{u}}_a)\right\} 
 	
 Using the fact that these scores have mean of zero, the covariance is proportional (with a constant scaling factor of :math:`N`) to :math:`\mathbf{t}'_a \mathbf{u}_a`.  So in summary, each component in PLS is maximizing that covariance, or the dot product: :math:`\mathbf{t}'_a \mathbf{u}_a`.
 
-Now covariance is a hard number to interpret; about all we can say with a covariance number is that the larger it is, the greater the relationship, or *correlation*, between two vectors. So it is actually more informative to consider the correlation of :math:`\mathbf{t}'_a` with :math:`\mathbf{u}_a`.
+Now covariance is a hard number to interpret; about all we can say with a covariance number is that the larger it is, the greater the relationship, or *correlation*, between two vectors. So it is actually more informative to rewrite covariance in terms of :ref:`correlations <LS_correlation>` and variances:
 
 .. math::
+
 	\text{Cov}\left(\mathbf{t}_a, \mathbf{u}_a\right) &= \text{Correlation}\left(\mathbf{t}_a, \mathbf{u}_a\right) \times \sqrt{\text{Var}\left(\mathbf{t}_a\right)}\times \sqrt{\text{Var}\left(\mathbf{u}_a\right)} \\
 	\text{Cov}\left(\mathbf{t}_a, \mathbf{u}_a\right) &= \text{Correlation}\left(\mathbf{t}_a, \mathbf{u}_a\right) \times \sqrt{\mathbf{t}'_a \mathbf{t}_a}  \times \sqrt{\mathbf{u}'_a \mathbf{u}_a} \\
 
 As this shows then, maximizing the covariance between :math:`\mathbf{t}'_a` and :math:`\mathbf{u}_a` is actually maximizing the 3 simultaneous objectives mentioned earlier:
 
 	#. The best explanation of the |X|-space: given by :math:`\mathbf{t}'_a \mathbf{t}_a`
+	
 	#. The best explanation of the |Y|-space. given by :math:`\mathbf{u}'_a \mathbf{u}_a`
+	
 	#. The greatest relationship between the |X|- and |Y|-space: given by :math:`\text{correlation}\left(\mathbf{t}_a, \mathbf{u}_a\right)`
 
 These scores, :math:`\mathbf{t}'_a` and :math:`\mathbf{u}_a`, are found subject to the constraints that :math:`\mathbf{\mathbf{w}'_a \mathbf{w}_a} = 1.0` and :math:`\mathbf{\mathbf{c}'_a \mathbf{c}_a} = 1.0`.  This is similar to PCA, where the loadings :math:`\mathbf{p}_a` were constrained to unit length.  In PLS we constrain the loadings for |X|, called :math:`\mathbf{w}_a`, and the loadings for |Y|, called :math:`\mathbf{c}_a`, to unit length.
 
 The above is a description of one variant of PLS, `known as SIMPLS <http://dx.doi.org/10.1016/0169-7439(93)85002-X>`_ (simple PLS).  
 
-.. _LVM-PLS-geometric-interpretation:
+.. _LVM_PLS_geometric_interpretation:
 
 A geometric interpretation of PLS 
 ===================================
 
-:ref:`As we did with PCA <LVM_PCA_geometric_interpretation>`, let's take a geometric look at the PLS model space.  In the illustration below we happen to have :math:`K=3` variables in |X|, and :math:`M=3` variables in |Y|.  Once the data are centered and scaled we have just shifted our coordinate system to the origin.  Notice that there is one dot in |X| for each dot in |Y|.  Each dot represents the row from the corresponding |X| and |Y| matrix.
+:ref:`As we did with PCA <LVM_PCA_geometric_interpretation>`, let's take a geometric look at the PLS model space.  In the illustration below we happen to have :math:`K=3` variables in |X|, and :math:`M=3` variables in |Y|. (In general :math:`K \neq M`, but :math:`K=M=3` make explanation in the figures easier.)  Once the data are centered and scaled we have just shifted our coordinate system to the origin.  Notice that there is one dot in |X| for each dot in |Y|.  Each dot represents a row from the corresponding |X| and |Y| matrix.
 
-.. figure:: images/geometric-interpretation-of-PLS-step1.png
+.. image:: images/geometric-interpretation-of-PLS-step1.png
 	:alt:	images/geometric-interpretation-of-PLS.svg
 	:scale: 100%
 	:width: 750px
 	:align: center
 
-We assume here that you understand how the scores are the perpendicular projection of each data point onto direction vector (if not, please review the :ref:`relevant section <LVM_PCA_geometric_interpretation>` in the PCA notes).  In PLS though, the direction vectors, :math:`\mathbf{w}_1` and :math:`\mathbf{c}_1`, are found and each observation is projected onto the direction.  The point at which each observation lands is called the |X|-space score, :math:`t_i`, or the |Y|-space score, :math:`u_i`.  These scores are found so that the covariance between the :math:`t`-values and :math:`u`-values is maximized.
+We assume here that you understand how the scores are the perpendicular projection of each data point onto each direction vector (if not, please review the :ref:`relevant section <LVM_PCA_geometric_interpretation>` in the PCA notes). In PLS though, the direction vectors, :math:`\mathbf{w}_1` and :math:`\mathbf{c}_1`, are found and each observation is projected onto the direction.  The point at which each observation lands is called the |X|-space score, :math:`t_i`, or the |Y|-space score, :math:`u_i`.  These scores are found so that the covariance between the :math:`t`-values and :math:`u`-values is maximized.
 
-.. figure:: images/geometric-interpretation-of-PLS-step3.png
+.. image:: images/geometric-interpretation-of-PLS-step3.png
 	:alt:	images/geometric-interpretation-of-PLS.svg
 	:scale: 100%
 	:width: 750px
@@ -354,7 +368,7 @@ As :ref:`explained above <LVM-PLS-conceptual-interpretation>`, this means that t
 
 The second component is then found so that it is orthogonal to the first component in the |X| space (the second component is not necessarily orthogonal in the |Y|-space, though it often is close to orthogonal).
 
-.. figure:: images/geometric-interpretation-of-PLS-step4.png
+.. image:: images/geometric-interpretation-of-PLS-step4.png
 	:alt:	images/geometric-interpretation-of-PLS.svg
 	:scale: 90%
 	:width: 750px
@@ -364,13 +378,13 @@ The second component is then found so that it is orthogonal to the first compone
 Interpreting the scores in PLS
 ===================================
 
-Like in PCA, our |T| scores in PLS are a summary of the data from *both* blocks.  The reason for saying that, even though there are two sets of scores, |T| and |U|, for each of |X| and |Y| respectively, is that they have maximal covariance.  We can interpret one set of them.  In this regard, the |T| scores are more readily interpretable, since they are always available.  The |U| scores are not available until |Y| is known.  We have the |U| scores during model-building, but when we use the model on new data (e.g. when making predictions using PLS), then we only have the |T| scores.  
+Like in PCA, our scores in PLS are a summary of the data from *both* blocks.  The reason for saying that, even though there are two sets of scores, |T| and |U|, for each of |X| and |Y| respectively, is that they have maximal covariance.  We can interpret one set of them.  In this regard, the |T| scores are more readily interpretable, since they are always available.  The |U| scores are not available until |Y| is known.  We have the |U| scores during model-building, but when we use the model on new data (e.g. when making predictions using PLS), then we only have the |T| scores.  
 
 The scores for PLS are interpreted in exactly the :ref:`same way as for PCA <LVM_interpreting_scores>`.  Particularly, we look for clusters, outliers and interesting patterns in the line plots of the scores.
 
-The only difference that must be remembered is that these scores have a different orientation to the PCA scores.  As illustrated below, the PCA scores are found so that only explain the variance in |X|; the PLS scores are calculated so that they also explain |Y| and have a maximum relationship between |X| and |Y|.  Most time these directions will be close together.
+The only difference that must be remembered is that these scores have a different orientation to the PCA scores.  As illustrated below, the PCA scores are found so that they only explain the variance in |X|; the PLS scores are calculated so that they also explain |Y| and have a maximum relationship between |X| and |Y|.  Most time these directions will be close together, but not identical.
 
-.. figure:: images/geometric-comparison-PCA-PLS.png
+.. image:: images/geometric-comparison-PCA-PLS.png
 	:alt:	images/geometric-comparison-PCA-PLS.svg
 	:scale: 60%
 	:width: 750px
@@ -390,7 +404,7 @@ This agrees again with our (engineering) intuition that the |X| and |Y| variable
 The second important difference is that we don't actually look at the :math:`\mathbf{w}` vectors directly, we consider rather what is called a :math:`\mathbf{w*}` vector (w-star).  The |w*| vectors show the effect of each of the original variables, in undeflated form, rather that using the :math:`\mathbf{w}` vectors which are the deflated vectors.  This is explained next.
 
 
-.. _LVM-PLS-calculation:
+.. _LVM_PLS_calculation:
 
 How the PLS model is calculated
 ===================================
@@ -485,7 +499,7 @@ The algorithm repeats all over again using the deflated matrices for the subsequ
 What is the difference between |W| and |W*|?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-After reading about the :ref:`NIPALS algorithm for PLS <LVM-PLS-calculation>` you should be aware that we deflate the |X| matrix after every component is extracted.  This means that :math:`\mathbf{w}_1` are the weights that best predict the :math:`\mathbf{t}_1` score values, our summary of the data in :math:`\mathbf{X}_{a=1}` (the preprocessed raw data).  Mathematically we can write the following, dropping the subscript for :math:`\mathbf{X}_{a=1}`, since that is just our preprocessed data.
+After reading about the :ref:`NIPALS algorithm for PLS <LVM_PLS_calculation>` you should be aware that we deflate the |X| matrix after every component is extracted.  This means that :math:`\mathbf{w}_1` are the weights that best predict the :math:`\mathbf{t}_1` score values, our summary of the data in :math:`\mathbf{X}_{a=1}` (the preprocessed raw data).  Mathematically we can write the following, dropping the subscript for :math:`\mathbf{X}_{a=1}`, since that is just our preprocessed data.
 
 .. math::
 	\mathbf{t}_1 &= \mathbf{X}_{a=1} \mathbf{w}_1 = \mathbf{X} \mathbf{w}_1 
@@ -581,7 +595,7 @@ These :math:`R^2` values help us understand which components best explain differ
 .. What is the difference between |W| and |P|?
 .. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. 
-.. This question is best answered by first reading the subsection above called ":ref:`How do I use a PLS model on new data <LVM-PLS-on-new-data>`".  After that, please read the description of deflation in the section on the :ref:`NIPALS algorithm for PLS <LVM-PLS-calculation>`.
+.. This question is best answered by first reading the subsection above called ":ref:`How do I use a PLS model on new data <LVM-PLS-on-new-data>`".  After that, please read the description of deflation in the section on the :ref:`NIPALS algorithm for PLS <LVM_PLS_calculation>`.
 
 .. Comparison to MLR (using R)
 .. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

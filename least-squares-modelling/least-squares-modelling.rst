@@ -129,7 +129,7 @@ What you will be able to do after this section
 	#. Introduction to bivariate least squares (the linear relationship between 2 variables).
 	#. We will also discuss the short-sighted idiom that is often repeated: *correlation does not imply causation* and complete it by understanding that *correlation is a necessary, but not sufficient, condition for causality*.  We will take a look at an example of correlation and understand that it is impossible to imply causality without doing intentional experimentation.
 	
-.. _LS-covariance:	
+.. _LS_covariance:	
 
 Covariance
 ===========
@@ -244,7 +244,7 @@ Note that deviation variables are *not affected* by a shift in the raw data of :
 .. Another point to note: recall from geometry that the length of a vector, :math:`x`, is calculated from the sum of squares of the elements in vector :math:`x`, and then taking the square root of the sum.  Mathematically the sum of squares is can be written as: math:`x^Tx`.  For a vector :math:`x` that is centered, this corresponds
 
 
-.. _LS-correlation-section:
+.. _LS_correlation:
 
 Correlation
 ===========
@@ -487,7 +487,7 @@ Now divide the first line through by :math:`n` (the number of data pairs we are 
 
 #.	What units does parameter estimate :math:`b_1` have? The units of :math:`\mathrm{y}` divided by the units of :math:`\mathrm{x}`.
 
-#.	Recall the :ref:`temperature and pressure example <LS-covariance>`: let  :math:`\hat{p}_i = b_0 + b_1 T_i`:
+#.	Recall the :ref:`temperature and pressure example <LS_covariance>`: let  :math:`\hat{p}_i = b_0 + b_1 T_i`:
 
 	#.	What is the interpretation of coefficient :math:`b_1`?
 
@@ -771,7 +771,7 @@ As introduced by example in the previous part, :math:`R^2 = \dfrac{\text{RegSS}}
 
 From the above ratios it is straightforward to see that if :math:`R^2 = 0`, it requires that :math:`\hat{y}_i = \overline{\mathrm{y}}`: we are predicting just a flat line, the mean of the |y| data.  On the other extreme, an :math:`R^2 = 1` implies that :math:`\hat{y}_i = y_i`, we have perfect predictions for every data point.
 
-The nomenclature :math:`R^2` comes from the fact that it is the square of the correlation between |x| and |y|.  Recall from the :ref:`correlation section <LS-correlation-section>` that
+The nomenclature :math:`R^2` comes from the fact that it is the square of the correlation between |x| and |y|.  Recall from the :ref:`correlation section <LS_correlation>` that
 
 .. math::
 
