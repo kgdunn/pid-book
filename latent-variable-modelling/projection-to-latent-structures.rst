@@ -310,6 +310,7 @@ For PCA, for the :math:`a^\text{th}` component, we can calculate the scores as f
 Now let's look at PLS.  Earlier we said that PLS extracts a single set of scores, |T|, from |X| and |Y| simultaneously.  That wasn't quite true, but it is still an accurate statement!  PLS actually extracts two sets of scores, one set for |X| and another set for |Y|.  We write these scores for each space as:
 
 .. math::
+	:nowrap:
 
 	\begin{align*}
 	\mathbf{t}_a &= \mathbf{X}_a \mathbf{w}_a \qquad &\text{for the $\mathbf{X}$-space} \\
@@ -397,12 +398,13 @@ Interpreting the loadings in PLS
 
 We tend to refer to the PLS loadings, :math:`\mathbf{w}_a`, as weights; this is for reasons that will be explained soon.
 
-There are two important difference though when plotting them.  The first is that we superimpose the loadings plots for the |X| and |Y| space simultaneously.  This is very powerful, because we not only see the relationship between the |X| variables (from the :math:`\mathbf{w}` vectors), we also see the relationship between the |Y| variables (from the :math:`\mathbf{c}` vectors), and even more usefully, the relationship between all these variables.
+There are two important differences though when plotting the weights. The first is that we superimpose the loadings plots for the |X| and |Y| space simultaneously. This is very powerful, because we not only see the relationship between the |X| variables (from the :math:`\mathbf{w}` vectors), we also see the relationship between the |Y| variables (from the :math:`\mathbf{c}` vectors), and even more usefully, the relationship between all these variables.
 
-This agrees again with our (engineering) intuition that the |X| and |Y| variables are from the same system, they have just been, some what arbitrarily, put into different blocks.  The variables in |Y| could just have easily been in |X|, but they are usually not available at a high enough rate, or at a low enough cost.  So it makes sense to consider the :math:`\mathbf{w}_a` and :math:`\mathbf{c}_a` weights simultaneously.
+This agrees again with our (engineering) intuition that the |X| and |Y| variables are from the same system; they have been, somewhat arbitrarily, put into different blocks. The variables in |Y| could just have easily been in |X|, but they are usually not available due to time delays, expense of measuring them frequently, *etc*. So it makes sense to consider the :math:`\mathbf{w}_a` and :math:`\mathbf{c}_a` weights simultaneously.
 
-The second important difference is that we don't actually look at the :math:`\mathbf{w}` vectors directly, we consider rather what is called a :math:`\mathbf{w*}` vector (w-star).  The |w*| vectors show the effect of each of the original variables, in undeflated form, rather that using the :math:`\mathbf{w}` vectors which are the deflated vectors.  This is explained next.
+The second important difference is that we don't actually look at the :math:`\mathbf{w}` vectors directly, we consider rather what is called the :math:`\mathbf{r}` vector, though much of the literature refers to it as the :math:`\mathbf{w*}` vector (w-star). The reason for the change of notation from existing literature is that :math:`\mathbf{w*}` is confusingly similar to the multiplication operator (e.g. :math:`\mathbf{w*c}`: is frequently confused by newcomers, whereas :math:`\mathbf{r:c}` would be cleaner).  The :math:`\mathbf{w*}` notation gets especially messy when adding other superscript and subscript elements to it. Further, some of the newer literature on PLS, particularly SIMPLS, uses the :math:`\mathbf{r}` notation.
 
+The :math:`\mathbf{r}` vectors show the effect of each of the original variables, in undeflated form, rather that using the :math:`\mathbf{w}` vectors which are the deflated vectors.  This is explained next.
 
 .. _LVM_PLS_calculation:
 
@@ -417,15 +419,15 @@ This section assumes that you are comfortable with the :ref:`NIPALS algorithm fo
 	:width: 750px
 	:align: center
 
-The algorithm starts by selecting a column from :math:`\mathbf{Y}_a` as our estimate for :math:`\mathbf{u}_a`.  The :math:`\mathbf{X}_a` and  :math:`\mathbf{Y}_a` matrices are just the preprocessed version of the raw data when :math:`a=1`. 
+The algorithm starts by selecting a column from :math:`\mathbf{Y}_a` as our initial estimate for :math:`\mathbf{u}_a`. The :math:`\mathbf{X}_a` and  :math:`\mathbf{Y}_a` matrices are just the preprocessed version of the raw data when :math:`a=1`. 
 
    **Arrow 1**
-      Perform |K| regressions, regressing each column from :math:`\mathbf{X}_a` onto the vector :math:`\mathbf{u}_a`.  The slope coefficients are stored as the entries in :math:`\mathbf{w}_a`. Columns in :math:`\mathbf{X}_a` which are strongly correlated with :math:`\mathbf{u}_a` will have large weights in :math:`\mathbf{w}_a`, while unrelated columns will have small, close to zero, weights.  We can perform these regression in one go:
+      Perform |K| regressions, regressing each column from :math:`\mathbf{X}_a` onto the vector :math:`\mathbf{u}_a`. The slope coefficients from the regressions are stored as the entries in :math:`\mathbf{w}_a`. Columns in :math:`\mathbf{X}_a` which are strongly correlated with :math:`\mathbf{u}_a` will have large weights in :math:`\mathbf{w}_a`, while unrelated columns will have small, close to zero, weights. We can perform these regression in one go:
 
       .. math::
 			\mathbf{w}_a = \dfrac{1}{\mathbf{u}'_a\mathbf{u}_a} \cdot \mathbf{X}'_a\mathbf{u}_a
 		
-      Normalize the weight vector to unit length: :math:`\mathbf{w}_a = \dfrac{1}{\sqrt{\mathbf{w}'_a}\mathbf{w}_a} \cdot \mathbf{w}_a`.
+      Normalize the weight vector to unit length: :math:`\mathbf{w}_a = \dfrac{\mathbf{w}_a}{\sqrt{\mathbf{w}'_a \mathbf{w}_a}}`.
 
    **Arrow 2**
       Regress every row in :math:`\mathbf{X}_a` onto the weight vector.  The slope coefficients are stored as entries in :math:`\mathbf{t}_a`.  This means that rows in :math:`\mathbf{X}_a` that have a similar pattern to that described by the weight vector will have large values in :math:`\mathbf{t}_a`.  Observations that are totally different to :math:`\mathbf{w}_a` will have near-zero score values.  These :math:`N` regressions can be performed in one go:
@@ -434,18 +436,18 @@ The algorithm starts by selecting a column from :math:`\mathbf{Y}_a` as our esti
 			\mathbf{t}_a = \dfrac{1}{\mathbf{w}'_a\mathbf{w}_a} \cdot \mathbf{X}_a\mathbf{w}_a
 
    **Arrow 3**
-      Regress every column in :math:`\mathbf{Y}_a` onto this score vector now.  The slope coefficients are stored in :math:`\mathbf{c}`.   We can calculate all |M| slope coefficients:
+      Regress every column in :math:`\mathbf{Y}_a` onto this score vector now.  The slope coefficients are stored in :math:`\mathbf{c}_a`.   We can calculate all |M| slope coefficients:
 
       .. math::
 			\mathbf{c}_a = \dfrac{1}{\mathbf{t}'_a\mathbf{t}_a} \cdot \mathbf{Y}'_a\mathbf{t}_a
 			
    **Arrow 4**
-      And finally, regress each of the :math:`N` rows in :math:`\mathbf{Y}_a` onto this weight vector, :math:`\mathbf{c}_a`.  Observations in :math:`\mathbf{Y}_a` that are strongly related to :math:`\mathbf{c}_a` will have large positive or negative slope coefficients in vector :math:`\mathbf{u}`:
+      Finally, regress each of the :math:`N` rows in :math:`\mathbf{Y}_a` onto this weight vector, :math:`\mathbf{c}_a`.  Observations in :math:`\mathbf{Y}_a` that are strongly related to :math:`\mathbf{c}_a` will have large positive or negative slope coefficients in vector :math:`\mathbf{u}_a`:
 
       .. math::
 		\mathbf{u}_a = \dfrac{1}{\mathbf{c}'_a\mathbf{c}_a} \cdot \mathbf{Y}_a\mathbf{c}_a
 
-This is one round of the NIPALS algorithm.  We iterate through these 4 arrow steps until the :math:`\mathbf{u}_a` vector does not change much.  On convergence, we store these 4 vectors: :math:`\mathbf{w}_a, \mathbf{t}_a, \mathbf{c}_a`, and :math:`\mathbf{u}_a`.
+This is one round of the NIPALS algorithm.  We iterate through these 4 arrow steps until the :math:`\mathbf{u}_a` vector does not change much.  On convergence, we store these 4 vectors: :math:`\mathbf{w}_a, \mathbf{t}_a, \mathbf{c}_a`, and :math:`\mathbf{u}_a`, which jointly define the :math:`a^{\text{th}}` component.
 
 .. Research topic: if we deflate |X| using the u's, predicted from |Y| and |c|, then how does the second component look?  Can we calculate all the |P| loadings after NIPALS has completed all components? 
 
@@ -456,15 +458,15 @@ This is one round of the NIPALS algorithm.  We iterate through these 4 arrow ste
 Then we deflate.  Deflation removes variability already explained from :math:`\mathbf{X}_a` and :math:`\mathbf{Y}_a`.  Deflation proceeds as follows:
 
    **Step 1: Calculate a loadings vector for the X space**
-      We calculate the loadings for the |X| space, called :math:`\mathbf{p}_a`, using the |X|-space scores: :math:`\mathbf{p}_a = \dfrac{1}{\mathbf{t}'_a\mathbf{t}_a} \cdot \mathbf{X}'_a\mathbf{t}_a`. This loadings vector is actually just a regression of every column in :math:`\mathbf{X}_a` onto the scores, :math:`\mathbf{t}_a` (in this regression the |x|-variable is the score vector, and the |y| variable is the column from :math:`\mathbf{X}_a`).
+      We calculate the loadings for the |X| space, called :math:`\mathbf{p}_a`, using the |X|-space scores: :math:`\mathbf{p}_a = \dfrac{1}{\mathbf{t}'_a\mathbf{t}_a} \cdot \mathbf{X}'_a\mathbf{t}_a`. This loading vector contains the regression slope of every column in :math:`\mathbf{X}_a` onto the scores, :math:`\mathbf{t}_a`. In this regression the |x|-variable is the score vector, and the |y| variable is the column from :math:`\mathbf{X}_a`. If we want to use this regression model in the usual least squares way, we would need a score vector (our |x|-variable) and predict the column from :math:`\mathbf{X}_a` as our |y|-variable.
 
       If this is your first time reading through the notes, you should probably skip ahead to the next step in deflation.  Come back to this section after reading about how to use a PLS model on new data, then it will make more sense.
 
-      Because it is a regression, it means that if we have a vector of scores, :math:`\mathbf{t}_a`, in the future, we can predict each column in :math:`\mathbf{X}_a` using the slope coefficients in :math:`\mathbf{p}_a`.  So for the :math:`k^\text{th}` column, our prediction of column :math:`\mathbf{X}_k` is the product of the slope coefficient, :math:`p_{k,a}`, and the score vector, :math:`\mathbf{t}_a`.  Or, we can simply predict the entire matrix in one operation: :math:`\widehat{\mathbf{X}} = \mathbf{t}_a\mathbf{p}'_a`.
+      Because it is a regression, it means that if we have a vector of scores, :math:`\mathbf{t}_a`, in the future, we can predict each column in :math:`\mathbf{X}_a` using the corresponding slope coefficient in :math:`\mathbf{p}_a`.  So for the :math:`k^\text{th}` column, our prediction of column :math:`\mathbf{X}_k` is the product of the slope coefficient, :math:`p_{k,a}`, and the score vector, :math:`\mathbf{t}_a`.  Or, we can simply predict the entire matrix in one operation: :math:`\widehat{\mathbf{X}} = \mathbf{t}_a\mathbf{p}'_a`.
 
-      Notice that the loading vector :math:`\mathbf{p}_a` was calculated *after* convergence of the 4-arrow steps.  In other words, these regression coefficients in :math:`\mathbf{p}_a` are not really part of the PLS model, they are merely calculated to later predict the values in the |X|-space.  But why can't we use the :math:`\mathbf{w}_a` vectors to predict the :math:`\mathbf{X}_a` matrix?  Because after all, in arrow step 1 we were regressing columns of :math:`\mathbf{X}_a` onto :math:`\mathbf{u}_a` in order to calculate regression coefficients :math:`\mathbf{w}_a`.  That would imply that a good prediction of :math:`\mathbf{X}_a` would be :math:`\widehat{\mathbf{X}} = \mathbf{u}_a \mathbf{w}'_a`.
+      Notice that the loading vector :math:`\mathbf{p}_a` was calculated *after* convergence of the 4-arrow steps.  In other words, these regression coefficients in :math:`\mathbf{p}_a` are not really part of the PLS model, they are merely calculated to later predict the values in the |X|-space.  But why can't we use the :math:`\mathbf{w}_a` vectors to predict the :math:`\mathbf{X}_a` matrix?  Because after all, in arrow step 1 we were regressing columns of :math:`\mathbf{X}_a` onto :math:`\mathbf{u}_a` in order to calculate regression coefficients :math:`\mathbf{w}_a`.  That would imply that a good prediction of :math:`\mathbf{X}_a` would be :math:`\widehat{\mathbf{X}}_a = \mathbf{u}_a \mathbf{w}'_a`.
 
-      OK, but that means we require the scores :math:`\mathbf{u}_a`.  How can we calculate these?  We get them from :math:`\mathbf{u}_a = \dfrac{1}{\mathbf{c}'_a\mathbf{c}_a} \cdot \mathbf{Y}_a\mathbf{c}_a`.  And there's the problem: the values in :math:`\mathbf{Y}_a` are not available when the PLS model is being used in the future, on new data.  In the future we will only have the new values of :math:`\mathbf{X}`.  This is why we would rather predict :math:`\mathbf{X}_a` using the :math:`\mathbf{t}_a` scores, since those scores are available in the future from new values of :math:`\mathbf{X}`.
+      That would require us to know the scores :math:`\mathbf{u}_a`.  How can we calculate these?  We get them from :math:`\mathbf{u}_a = \dfrac{1}{\mathbf{c}'_a\mathbf{c}_a} \cdot \mathbf{Y}_a\mathbf{c}_a`.  And there's the problem: the values in :math:`\mathbf{Y}_a` are not available when the PLS model is being used in the future, on new data.  In the future we will only have the new values of :math:`\mathbf{X}`.  This is why we would rather predict :math:`\mathbf{X}_a` using the :math:`\mathbf{t}_a` scores, since those :math:`\mathbf{t}`-scores are available in the future when we apply the model to new data.
 
       This whole discussion might also leave you asking why we even bother to have predictions of the :math:`\mathbf{X}`.  We do this primarily to ensure orthogonality among the |t|-scores, by removing everything from :math:`\mathbf{X}_a` that those scores explain (see the next deflation step).
 
@@ -478,7 +480,7 @@ Then we deflate.  Deflation removes variability already explained from :math:`\m
           \mathbf{E}_a &= \mathbf{X}_a - \widehat{\mathbf{X}}_a = \mathbf{X}_a - \mathbf{t}_a \mathbf{p}'_a  \\
           \mathbf{X}_{a+1} &= \mathbf{E}_a
 
-      For the first component, the :math:`\mathbf{X}_{a=1}` matrix contains the preprocessed raw data.  By convention, :math:`\mathbf{E}_{a=0}` is the residual matrix *before*  fitting the first component and is just the same matrix as :math:`\mathbf{X}_{a=1}`.
+      For the first component, the :math:`\mathbf{X}_{a=1}` matrix contains the preprocessed raw |Y|-data.  By convention, :math:`\mathbf{E}_{a=0}` is the residual matrix *before*  fitting the first component and is just the same matrix as :math:`\mathbf{X}_{a=1}`, i.e. the data used to fit the first component.
 
       We also remove any variance explained from :math:`\mathbf{Y}_a`:
 
@@ -489,53 +491,51 @@ Then we deflate.  Deflation removes variability already explained from :math:`\m
 
       For the first component, the :math:`\mathbf{Y}_{a=1}` matrix contains the preprocessed raw data.  By convention, :math:`\mathbf{F}_{a=0}` is the residual matrix *before*  fitting the first component and is just the same matrix as :math:`\mathbf{Y}_{a=1}`.
 
-      Notice how in both deflation steps we only use the scores, :math:`\mathbf{t}_a`, to deflate.  The scores, :math:`\mathbf{u}_a`, are not used.
+      Notice how in both deflation steps we only use the scores, :math:`\mathbf{t}_a`, to deflate.  The scores, :math:`\mathbf{u}_a`, are not used for the reason described above: when applying the PLS model to new data in the future, we won't have the actual |y|-values, which means we also don't know the :math:`\mathbf{u}_a` values.
 
 The algorithm repeats all over again using the deflated matrices for the subsequent iterations.
 
 
-.. _LVM-PLS-W-and-Wstar: 
+.. _LVM_PLS_W_and_R: 
 
-What is the difference between |W| and |W*|?
+What is the difference between |W| and |R|?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-After reading about the :ref:`NIPALS algorithm for PLS <LVM_PLS_calculation>` you should be aware that we deflate the |X| matrix after every component is extracted.  This means that :math:`\mathbf{w}_1` are the weights that best predict the :math:`\mathbf{t}_1` score values, our summary of the data in :math:`\mathbf{X}_{a=1}` (the preprocessed raw data).  Mathematically we can write the following, dropping the subscript for :math:`\mathbf{X}_{a=1}`, since that is just our preprocessed data.
+After reading about the :ref:`NIPALS algorithm for PLS <LVM_PLS_calculation>` you should be aware that we deflate the |X| matrix after every component is extracted.  This means that :math:`\mathbf{w}_1` are the weights that best predict the :math:`\mathbf{t}_1` score values, our summary of the data in :math:`\mathbf{X}_{a=1}` (the preprocessed raw data).  Mathematically we can write the following:
 
 .. math::
-	\mathbf{t}_1 &= \mathbf{X}_{a=1} \mathbf{w}_1 = \mathbf{X} \mathbf{w}_1 
+	\mathbf{t}_1 &= \mathbf{X}_{a=1} \mathbf{w}_1 = \mathbf{X}_1 \mathbf{w}_1 
 
 The problem comes once we deflate.  The :math:`\mathbf{w}_2` vector is calculated from the deflated matrix :math:`\mathbf{X}_{a=2}`, so  interpreting these scores is a quite a bit harder.
 
 .. math::
-	\mathbf{t}_2 &= \mathbf{X}_{a=2} \mathbf{w}_2 = \left(\mathbf{X} - \mathbf{t}_1 \mathbf{p}_1 \right) \mathbf{w}_2 
+	\mathbf{t}_2 &= \mathbf{X}_2 \mathbf{w}_2 &= \left(\mathbf{X}_1 - \mathbf{t}_1 \mathbf{p}'_1 \right) \mathbf{w}_2 \\
+	                                          &= \left(\mathbf{X}_1 - \mathbf{X}_1 \mathbf{w}_1 \mathbf{p}_1 \right) \mathbf{w}_2
 
-The :math:`\mathbf{w}_2` is not really giving us insight into the relationships between the score, :math:`\mathbf{t}_2`, and the data, :math:`\mathbf{X}`, but rather between the score and the *deflated* data, :math:`\mathbf{X}_{a=2}`.  
+The :math:`\mathbf{w}_2` is not really giving us insight into the relationships between the score, :math:`\mathbf{t}_2`, and the data, :math:`\mathbf{X}`, but rather between the score and the *deflated* data, :math:`\mathbf{X}_2`.  
 
 Ideally we would like a set of vectors we can interpret directly; something like:
 
 .. math::
-	\mathbf{t}_a &= \mathbf{X} \mathbf{w*}_a
+	\mathbf{t}_a &= \mathbf{X} \mathbf{r}_a
 	
-One can show, using repeated substitution, that a matrix |W*|, whose columns contain :math:`\mathbf{w*}_a`, can be found from: :math:`\mathbf{W*} = \mathbf{W}\left(\mathbf{P}'\mathbf{W}\right)^{-1}`.  The first column, :math:`\mathbf{w*}_1 = \mathbf{w}_1`.
+One can show, using repeated substitution, that a matrix |R|, whose columns contain :math:`\mathbf{r}_a`, can be found from: :math:`\mathbf{R} = \mathbf{W}\left(\mathbf{P}'\mathbf{W}\right)^{-1}`.  The first column, :math:`\mathbf{r}_1 = \mathbf{w}_1`.
 
-In the SIMPLS algorithm mentioned earlier, the |W*| matrix is called :math:`\mathbf{R}`, a slightly better notation that doesn't confuse the asterisk for multiplication.  Unfortunately |W*| is so well entrenched in computer software that it is unlikely to change.
-
-So our preference is to rather interpret the |W*| weights than the |W| weights when interpreting the relationships in a PLS model.
-
+So our preference is to interpret the |R| weights (often called :math:`\mathbf{W}^*` in some literature), rather than the |W| weights when investigating the relationships in a PLS model.
 
 Variability explained with each component
 =========================================
 
-We can calculate :math:`R^2`-like values, since PLS explains both the |X|-space and the |Y|-space.  We use the :math:`\mathbf{E}_a` matrix to calculate the cumulative variance explained for the |X|-space.  
+We can calculate :math:`R^2` values, since PLS explains both the |X|-space and the |Y|-space.  We use the :math:`\mathbf{E}_a` matrix to calculate the cumulative variance explained for the |X|-space.  
 
 .. math::
 	R^2_{\mathbf{X}, a, \text{cum}} = 1 - \dfrac{\text{Var}(\mathbf{E}_a)}{\text{Var}(\mathbf{X}_{a=1})}
 	
 Before the first component is extracted we have :math:`R^2_{\mathbf{X}, a=0} = 0.0`, since :math:`\mathbf{E}_{a=0} = \mathbf{X}_{a=1}`.  After the second component, the residuals, :math:`\mathbf{E}_{a=1}`, will have decreased, so :math:`R^2_{\mathbf{X}, a}` would have increased.
 
-We can construct similar :math:`R^2` values for the |Y|-space using :math:`\mathbf{Y}_a` and :math:`\mathbf{F}_a` matrices.  Furthermore, we construct in an analogous manner the :math:`R^2` values for each column of :math:`\mathbf{X}_a` and :math:`\mathbf{Y}_a`.  
+We can construct similar :math:`R^2` values for the |Y|-space using the :math:`\mathbf{Y}_a` and :math:`\mathbf{F}_a` matrices.  Furthermore, we construct in an analogous manner the :math:`R^2` values for each column of :math:`\mathbf{X}_a` and :math:`\mathbf{Y}_a`, exactly as :ref:`we did for PCA <LVM_PCA_R2_values>`.
 
-These :math:`R^2` values help us understand which components best explain different sources of variation.  Bar plots of the :math:`R^2` values for each column in |X| and |Y|, after a certain number of |A| components are one the best ways to visualize this information.
+These :math:`R^2` values help us understand which components best explain different sources of variation.  Bar plots of the :math:`R^2` values for each column in |X| and |Y|, after a certain number of |A| components are one of the best ways to visualize this information.
 
 
 .. Common questions about PLS models
@@ -619,37 +619,39 @@ These :math:`R^2` values help us understand which components best explain differ
 Coefficient plots in PLS
 =========================================
 
-After building an initial PLS model one of the most informative plots to investigate are plots of the :math:`\mathbf{w*c}` vectors: using either bar plots or scatter plots.  These plots show the relationship between variables in |X|, between variables in |Y|, as well as the latent variable relationship between these two spaces.  The number of latent variables, |A|, is much smaller number than the original variables, :math:`K + M`, effectively compressing the data into a small number of informative plots.
+After building an initial PLS model one of the most informative plots to investigate are plots of the :math:`\mathbf{r:c}` vectors: using either bar plots or scatter plots.  (The notation :math:`\mathbf{r:c}` implies we superimpose a plot of :math:`\mathbf{r}` on a plot of :math:`\mathbf{c}`.) These plots show the relationship between variables in |X|, between variables in |Y|, as well as the latent variable relationship between these two spaces.  The number of latent variables, |A|, is much smaller number than the original variables, :math:`K + M`, effectively compressing the data into a small number of informative plots.
 
-There are models where the number of components is of moderate size, around |A| = 4 to 8, and there are several combinations of :math:`\mathbf{w*c}` plots to view.  If we truly want to understand how all the |X| and |Y| variables are related, then we must spend time investigating all these plots.  However, the coefficient plot can be very useful if one wants to learn how the |X| variables are related to the |Y| variables using *all* |A| *components*.
+There are models where the number of components is of moderate size, around |A| = 4 to 8, in which case there are several combinations of :math:`\mathbf{r:c}` plots to view.  If we truly want to understand how all the |X| and |Y| variables are related, then we must spend time investigating all these plots.  However, the coefficient plot can be a useful compromise if one wants to learn, in a single plot,how the |X| variables are related to the |Y| variables using *all* |A| *components*.
 
 .. sidebar:: Caution using the coefficients
 	:class:	caution
 	
 	It is not recommended that PLS be implemented in practice as described here.  In other words, do not try make PLS like multiple linear regression and go directly from the |X|'s to the |Y|'s using :math:`\widehat{\mathbf{y}}'_\text{new} = \mathbf{x}'_\text{new} \boldsymbol{\beta}`.
 	
-	Instead, one of the major benefits of a PLS model is that we first calculate the scores, then check |T2| and SPE second.  If these are below the limits, then thirdly we go ahead and calculate the predictions of |Y|.  Direct calculation of |Y| bypasses this helpful information.  Furthermore, using the :math:`\boldsymbol{\beta}` coefficients directly means that we cannot handle missing data. 
+	Instead, one of the major benefits of a PLS model is that we first calculate the scores, then verify |T2| and SPE are below their critical limits, e.g. 95% limits.  If so, then we go ahead and calculate the predictions of |Y|.  Direct calculation of |Y| bypasses this helpful information.  Furthermore, using the :math:`\boldsymbol{\beta}` coefficients directly means that we cannot handle missing data. 
 	
 	*Only use the coefficients to learn about your system*.  Do not use them for prediction.
 
 The coefficient plot is derived as follows.  First preprocess the new observation, :math:`\mathbf{x}_\text{new,raw}`, to obtain :math:`\mathbf{x}_\text{new}`.
 
-	*	Project the new observation onto the model to get scores: :math:`\mathbf{t}'_\text{new} = \mathbf{x}'_\text{new} \mathbf{W*}`
-	*	Calculate the predicted :math:`\widehat{\mathbf{y}}'_\text{new} = \mathbf{t}'_\text{new} \mathbf{C}'` 
+	*	Project the new observation onto the model to get scores: :math:`\mathbf{t}'_\text{new} = \mathbf{x}'_\text{new} \mathbf{R}`.
+	
+	*	Calculate the predicted :math:`\widehat{\mathbf{y}}'_\text{new} = \mathbf{t}'_\text{new} \mathbf{C}'` using these scores.
+	
 	*	Now combine these steps: 
 	
 		.. math::
 			\begin{array}{rcl}
 			    \widehat{\mathbf{y}}'_\text{new} &=& \mathbf{t}'_\text{new} \mathbf{C}' \\
-			    \widehat{\mathbf{y}}'_\text{new} &=& \mathbf{x}'_\text{new} \mathbf{W*} \mathbf{C}' \\
+			    \widehat{\mathbf{y}}'_\text{new} &=& \mathbf{x}'_\text{new} \mathbf{R} \mathbf{C}' \\
 			    \widehat{\mathbf{y}}'_\text{new} &=& \mathbf{x}'_\text{new} \boldsymbol{\beta}
 			\end{array}
 		
 		where the matrix :math:`\boldsymbol{\beta}` is a :math:`K \times M` matrix: each column in :math:`\boldsymbol{\beta}` contains the regression coefficients for all |K| of the |X| variables, showing how they are related to each of the |M| |Y|-variables.  
 		
-From this derivation we see these regression coefficients are a function of *all* the latent variables in the model, since :math:`\mathbf{W*} = \mathbf{W}\left(\mathbf{P}'\mathbf{W}\right)^{-1}` as shown in :ref:`an earlier section of these notes <LVM-PLS-W-and-Wstar>`.
+From this derivation we see these regression coefficients are a function of *all* the latent variables in the model, since :math:`\mathbf{R} = \mathbf{W}\left(\mathbf{P}'\mathbf{W}\right)^{-1}` as shown in :ref:`an earlier section of these notes <LVM_PLS_W_and_R>`.
 
-In the example below there were :math:`A=6` components, and :math:`K=14` and :math:`M=5`.  Investigating all 6 of the  :math:`\mathbf{w*c}` vectors is informative, but the coefficient plot provides an efficient way to understand how the |X| variables are related to this particular |Y| variable across all the components in the model.
+In the example below there were :math:`A=6` components, and :math:`K=14` and :math:`M=5`.  Investigating all 6 of the  :math:`\mathbf{r:c}` vectors is informative, but the coefficient plot provides an efficient way to understand how the |X| variables are related to this particular |Y| variable across all the components in the model.
 
 .. figure:: images/coefficient-plot-LDPE-A-is-6.png
 	:alt:	images/coefficient-plot-LDPE.R
@@ -667,30 +669,30 @@ The coefficient plots from PLS-DA models (:ref:`supervised classification <LVM-s
 
 .. Variable importance to projection (VIP): See: http://dx.doi.org/10.1137/0905052 - this paper has no mention of VIP (despite what ProSensus software says)
 
-.. _LVM-DOE-data:
+.. _LVM_DOE_data:
 
 Analysis of designed experiments using PLS models
 ==================================================
 
 .. NOTE: you already have some of these ideas in the section "LVM-preprocessing": combine them; cross reference them?
 
-Data from a designed experiment, particularly factorial experiments, will have independent columns in |X|.  These data tables are adequately analyzed using multiple linear regression (MLR) least squares models.  
+Data from a designed experiment, particularly factorial experiments, will have independent columns in |X|.  These data tables are adequately analyzed using :ref`multiple linear regression <LS_multiple_X_MLR>` (MLR) least squares models.  
 
-These data are also well suited to analysis with PLS.  Since factorial models also support interaction terms, these additional interactions should be added to the |X| matrix.  For example, a full factorial design with variables **A**, **B** and **C** also supports the **AB**, **AC**, **BC** and **ABC** interactions.  These four columns should be added to the |X| matrix so that the loadings for these variables are also estimated.  If a central composite design, or some other design that supports quadratic terms has been performed, then these columns should also be added to |X|, e.g.: :math:`\text{\textbf{A}}^2`, :math:`\text{\textbf{B}}^2` and :math:`\text{\textbf{C}}^2`.
+These factorial and fractional factorial data are also well suited to analysis with PLS.  Since factorial models support interaction terms, these additional interactions should be added to the |X| matrix.  For example, a full factorial design with variables **A**, **B** and **C** will also support the **AB**, **AC**, **BC** and **ABC** interactions.  These four columns should be added to the |X| matrix so that the loadings for these variables are also estimated.  If a :ref:`central composite design <DOE_central_composite_designs>`, or some other design that supports quadratic terms has been performed, then these columns should also be added to |X|, e.g.: :math:`\text{\textbf{A}}^2`, :math:`\text{\textbf{B}}^2` and :math:`\text{\textbf{C}}^2`.
 
-The PLS loadings plots from analyzing these DOE data are interpreted in the usual manner; and the coefficient plot is also helpful if :math:`A>2`.  
+The PLS loadings plots from analyzing these DOE data are interpreted in the usual manner; and the coefficient plot is informative if :math:`A>2`.
 
 .. EXAMPLE: Carlos' thesis.
 
 There are some other advantages of using and interpreting a PLS model built from DOE data, rather than using the MLR approach:
 
-	*	If *additional data* (not the main factors) are captured during the experiments, particularly measurable disturbances, then these additional columns can, and should, be included in |X|.  These additional columns will remove some of the orthogonality in |X|, but this is why a PLS model would be more suitable.
+	*	If *additional data* (not the main factors) are captured during the experiments, particularly measurable disturbances, then these additional columns can, and should, be included in |X|. These extra data are called covariates in other software packages. These additional columns will remove some of the orthogonality in |X|, but this is why a PLS model would be more suitable.
 	
 	*	If multiple |Y| measurements were recored as the response, and particularly if these |Y| variables are correlated, then a PLS model would be better suited than building |K| separate MLR models.  A good example is where the response variable from the experiment is a complete spectrum of measurements, such as from a NIR probe.
 	
-One other point to note when analyzing DOE data with PLS is that the |Q2| values are often very small.  This makes intuitive sense: if the factorial levels are suitably spaced, then each experiment is at a point in the process that provides new information.  It is unlikely that cross-validation, when leaving out one or more experiments, is able to accurately predict each corner in the factorial.
+One other point to note when analyzing DOE data with PLS is that the |Q2| values from cross-validation are often very small.  This makes intuitive sense: if the factorial levels are suitably spaced, then each experiment is at a point in the process that provides new information.  It is unlikely that cross-validation, when leaving out one or more experiments, is able to accurately predict each corner in the factorial.
 
-Lastly, models built from DOE data allow a much stronger interpretation of the loading vectors, :math:`\mathbf{W*C}`.  This time we can infer cause-and-effect behaviour; normally in PLS models the best we can say is that the variables in |X| and |Y| are correlated.  Experimental studies that are run correctly will break happenstance correlation structures; so if any correlation that is present, then this truly is causal in nature.
+Lastly, models built from DOE data allow a much stronger interpretation of the loading vectors, :math:`\mathbf{R:C}`.  This time we can infer cause-and-effect behaviour; normally in PLS models the best we can say is that the variables in |X| and |Y| are correlated.  Experimental studies that are run in a factorial manner will break happenstance correlation structures; so if any correlation that is present, then this truly is causal in nature.
 
 .. ALSO, with DOE data we have A=1 usually;  why is this?  Try it with some data sets to verify; particularly interpret w1 and p1.
 
@@ -710,11 +712,15 @@ Exercises
 The taste of cheddar cheese
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* :math:`N=30`
-* :math:`K=3`
-* :math:`M=1`
-* Web address: http://datasets.connectmv.com/info/cheddar-cheese
-* Description: This very simple case study considers the taste of mature cheddar cheese.  There are 3 measurements taken on each cheese: lactic acid, acetic acid and :math:`\text{H}_2\text{S}`. 
+*	:math:`N=30`
+
+*	:math:`K=3`
+
+*	:math:`M=1`
+
+*	`Link to dataset website <http://datasets.connectmv.com/info/cheddar-cheese>>`_
+
+*	Description: This very simple case study considers the taste of mature cheddar cheese.  There are 3 measurements taken on each cheese: lactic acid, acetic acid and :math:`\text{H}_2\text{S}`. 
 
 
 #.	Import the data into ``R``: ``cheese <- read.csv('cheddar-cheese.csv')``
@@ -723,7 +729,7 @@ The taste of cheddar cheese
 
 	* ``library(car)``
 	
-	* ``scatterplot.matrix(cheese[,2:5])``
+	* ``scatterplotMatrix(cheese[,2:5])``
 	
 	.. figure:: images/cheese-plots.png
 		:alt:	images/cheese-plots.R
@@ -737,9 +743,9 @@ The taste of cheddar cheese
 
 #.	Build a PCA model now to verify your answers.
 
-#.	Before building the PLS model, how many components would you expect?  And what would the weights look like (:math:`\mathbf{w*}_1`, and :math:`\mathbf{c}_1`)?
+#.	Before building the PLS model, how many components would you expect?  And what would the weights look like (:math:`\mathbf{r}_1`, and :math:`\mathbf{c}_1`)?
 
-#.	Build a PLS model and plot the :math:`\mathbf{w*c}_1` bar plot. Interpret it.
+#.	Build a PLS model and plot the :math:`\mathbf{r:c}_1` bar plot. Interpret it.
 
 #.	Now plot the SPE plot; these are the SPE values for the projections onto the |X|-space.  Any outliers apparent?
 
@@ -747,7 +753,7 @@ The taste of cheddar cheese
 
 	*	``model.lm <- lm(cheese$Taste ~ cheese$Acetic + cheese$H2S + cheese$Lactic)``
 	
-	*	Report each coefficient :math:`\pm 2 S_E(b_i)`.  Which coefficients does ``R`` find important?
+	*	Report each coefficient :math:`\pm 2 S_E(b_i)`.  Which coefficients does ``R`` find significant in MLR?
 	
 		.. math::
 			\beta_\text{Acetic} &= \qquad \qquad \pm \\
@@ -758,21 +764,21 @@ The taste of cheddar cheese
 	
 	*	Compare this to the PLS model's :math:`R^2_y` value.
 	
-#.	Now build a PCR model in ``R`` using firstly 1 component, then using 2 components.  Again calculate the standard error and :math:`R^2_y` values.
+#.	Now build a PCR model in ``R`` using only 1 component, then using 2 components.  Again calculate the standard error and :math:`R^2_y` values.
 
 	*	``model.pca <- prcomp(cheese[,2:4], scale=TRUE)``
 	
 	*	``T <- model.pca$x``
 	
-	*	``model.pcr.1 <- lm(cheese$Taste ~ T[,1])``
+	*	``model.pcr.1 <- lm(cheese$Taste ~ T[,1]) # one component`` 
 	
-	*	``model.pcr.2 <- lm(cheese$Taste ~ T[,1:2])``
+	*	``model.pcr.2 <- lm(cheese$Taste ~ T[,1:2]) # two components``
 
 #.	Plot the observed |y| values against the predicted |y| values for the PLS model.
 
 #.	PLS models do not have a standard error, since the degrees of freedom are not as easily defined.  But you can calculate the RMSEE (root mean square error of estimation) = :math:`\sqrt{\dfrac{\mathbf{e}'\mathbf{e}}{N}}`.  Compare the RMSEE values for all the models just built.
 
-Obviously the best way to test the models is to retain a certain amount of testing data (e.g. 10 observations), then calculate the root mean square error of prediction (RMSEP) on those testing data.  I will leave this for you to do outside class.
+Obviously the best way to test the model is to retain a certain amount of testing data (e.g. 10 observations), then calculate the root mean square error of prediction (RMSEP) on those testing data.
 
 
 Comparing the loadings from a PCA model to a PLS model
@@ -782,15 +788,22 @@ PLS explains both the |X| and |Y| spaces, as well as building a predictive model
 
 The data are from the :ref:`plastic pellets troubleshooting example <LVM-process-troubleshooting-plastic-pellets>`.  
 
-* :math:`N = 24`
-* :math:`K = 6 + 1` designation of process outcome.
-* Web address: http://datasets.connectmv.com/info/raw-material-characterization
-* Description: 3 of the 6 measurements are size values for the plastic pellets, while the other 3 are the outputs from thermogravimetric analysis (TGA), differential scanning calorimetry (DSC) and thermomechanical analysis (TMA), measured in a laboratory. These 6 measurements are thought to adequately characterize the raw material. Also provided is a designation ``Adequate`` or ``Poor`` that reflects the process engineer's opinion of the yield from that lot of materials.
+*	:math:`N = 24`
+
+*	:math:`K = 6 + 1` designation of process outcome.
+
+*	`Link to dataset website <http://datasets.connectmv.com/info/raw-material-characterization>`_
+
+*	Description: 3 of the 6 measurements are size values for the plastic pellets, while the other 3 are the outputs from thermogravimetric analysis (TGA), differential scanning calorimetry (DSC) and thermomechanical analysis (TMA), measured in a laboratory. These 6 measurements are thought to adequately characterize the raw material. Also provided is a designation ``Adequate`` or ``Poor`` that reflects the process engineer's opinion of the yield from that lot of materials.
 
 #.	Build a PCA model on all seven variables, including the 0-1 process outcome variable in the |X| space.  Previously we omitted that variable from the model, this time include it.
+
 #.	How do the loadings look for the first, second and third components?  
-#.	Now build a PLS model, where the |Y|-variable is the 0-1 process outcome variable.  In the previous PCA model the loadings were oriented in the directions of greatest variance.  For the PLS model the loadings must be oriented so that they *also* explain the |Y| variable and the relationship between |X| and |Y|.  
+
+#.	Now build a PLS model, where the |Y|-variable is the 0-1 process outcome variable.  In the previous PCA model the loadings were oriented in the directions of greatest variance.  For the PLS model the loadings must be oriented so that they *also* explain the |Y| variable and the relationship between |X| and |Y|.  Interpret the PLS loadings in light of this fact.
+
 #.	How many components were required by cross-validation for the PLS model?
+
 #.	Explain why the PLS loadings are different to the PCA loadings.
 
 .. _LVM-LDPE-case-study:
@@ -798,57 +811,66 @@ The data are from the :ref:`plastic pellets troubleshooting example <LVM-process
 Predicting final quality from on-line process data: LDPE system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* :math:`N = 54`
-* :math:`K = 14`
-* :math:`K = 5`
-* Web address: http://datasets.connectmv.com/info/LDPE
-* Description: Fourteen process measurements are taken on a reactor
+* 	:math:`N = 54`
 
+* 	:math:`K = 14`
 
-#.	Build a PCA model on the 14 |X|-variables and the first 49 observations.
-#.	Build a PCA model on the 5 |Y|-variables: ``Conv``, ``Mn``, ``Mw``, ``LCB``, and ``SCB``.  Use only the first 49 observations
-#.	Build a PLS model relating the |X| variables to the |Y| variables (using :math:`N=49`).  How many components are required for each of these 3 models?
+* 	:math:`K = 5`
+
+*	`Link to dataset website <http://datasets.connectmv.com/info/LDPE>`_ and description of the data.
+
+#.	Build a PCA model on the 14 |X|-variables and the first 50 observations.
+
+#.	Build a PCA model on the 5 |Y|-variables: ``Conv``, ``Mn``, ``Mw``, ``LCB``, and ``SCB``.  Use only the first 50 observations
+
+#.	Build a PLS model relating the |X| variables to the |Y| variables (using :math:`N=50`).  How many components are required for each of these 3 models?
+
 #.	Compare the loadings plot from PCA on the |Y| space to the weights plot (:math:`\mathbf{c}_1` vs :math:`\mathbf{c}_2`) from the PLS model.
+
 #.	What is the :math:`R^2_X` (not for |Y|) for the first few components?
+
 #.	Now let's look at the interpretation between the |X| and |Y| space.  Which plot would you use?
 	
 	*	Which variable(s) in |X| are strongly related to the conversion of the product (``Conv``)?  In other words, as an engineer, which of the 14 |X| variables would you consider adjusting to improve conversion.
+	
 	*	Would these adjustments affect any other quality variables? How would they affect the other quality variables?
+	
 	*	How would you adjust the quality variable called ``Mw`` (the weight average molecular weight)?
 
-
-Principal properties of surfactants (continued)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-* :math:`N=38`
-* :math:`K=19`
-* :math:`M=4`
-* Missing data: yes
-* Web address: http://datasets.connectmv.com/info/surfactants
-* Description: These 38 non-ionic surfactants, ingredients for making a detergent, were characterized (described) by taking 19 measurements.  4 columns will be used in a future study).  The first purpose of this data set was to understand how these 19 properties are related to each other, and to find a representative sub-sample from the rows in |X| which could be selected for further study.
-
-An earlier exercise had you build a PCA model on the 19 properties of the 38 surfactants; then 10 of the surfactants were chosen and studied in depth to calculate their washing efficiency:
-
-	*	``YDet``: the percentage soil removed from clothes
-	*	``YConc``: the optimal concentration required when using that surfactant 
-	*	``YTemp``: the optimal washing temperature required when using that surfactant
-	*	``YTox``: the surfactant's toxicity
-
-#.	Write down the number of PCA components required to model only the |X| data (this was from a previous exercise).
-#.	Build a *PCA model* on these 4 |Y| variables first.
-#.	What is the dimensionality of the |Y|-space?
-#.	What are the relationships between these four variables?
-#.	Now build a PLS model on the 10 observations: the |X|-space will have 10 rows and 19 columns, while the |Y| space will have 10 rows and 4 columns.  You should build this from the previous model, using the ``New model as ...`` feature in the software.
-#.	Answer these questions:
-	
-	* What portion of the variance for |X| and |Y| do the first 3 components explain?
-	* Which variables are well/poorly explained in |X|? 
-	* And for |Y|?
-	
-#.	Plot the scores for the |X|-space against the scores for the |Y|-space.  What can you say about the covariance (correlation) between these scores?
-#.	Now repeat this plot for the other two components.
-#.	Next consider the weights plot: plot :math:`\mathbf{c}_1` for the |Y| space; compare it against :math:`\mathbf{p}_1` from the PCA on the |Y|-variables.
-#.	Also plot :math:`\mathbf{w*}_1` and :math:`\mathbf{w*}_2` as bar plots.  Compare these two weight vectors against the PCA loadings vectors that you built earlier.
+.. BLEND PCA QUESTION IN HERE
+.. 
+.. Principal properties of surfactants (continued)
+.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. 
+.. * :math:`N=38`
+.. * :math:`K=19`
+.. * :math:`M=4`
+.. * Missing data: yes
+.. * Web address: http://datasets.connectmv.com/info/surfactants
+.. * Description: These 38 non-ionic surfactants, ingredients for making a detergent, were characterized (described) by taking 19 measurements.  4 columns will be used in a future study).  The first purpose of this data set was to understand how these 19 properties are related to each other, and to find a representative sub-sample from the rows in |X| which could be selected for further study.
+.. 
+.. An earlier exercise had you build a PCA model on the 19 properties of the 38 surfactants; then 10 of the surfactants were chosen and studied in depth to calculate their washing efficiency:
+.. 
+.. 	*	``YDet``: the percentage soil removed from clothes
+.. 	*	``YConc``: the optimal concentration required when using that surfactant 
+.. 	*	``YTemp``: the optimal washing temperature required when using that surfactant
+.. 	*	``YTox``: the surfactant's toxicity
+.. 
+.. #.	Write down the number of PCA components required to model only the |X| data (this was from a previous exercise).
+.. #.	Build a *PCA model* on these 4 |Y| variables first.
+.. #.	What is the dimensionality of the |Y|-space?
+.. #.	What are the relationships between these four variables?
+.. #.	Now build a PLS model on the 10 observations: the |X|-space will have 10 rows and 19 columns, while the |Y| space will have 10 rows and 4 columns.  You should build this from the previous model, using the ``New model as ...`` feature in the software.
+.. #.	Answer these questions:
+.. 	
+.. 	* What portion of the variance for |X| and |Y| do the first 3 components explain?
+.. 	* Which variables are well/poorly explained in |X|? 
+.. 	* And for |Y|?
+.. 	
+.. #.	Plot the scores for the |X|-space against the scores for the |Y|-space.  What can you say about the covariance (correlation) between these scores?
+.. #.	Now repeat this plot for the other two components.
+.. #.	Next consider the weights plot: plot :math:`\mathbf{c}_1` for the |Y| space; compare it against :math:`\mathbf{p}_1` from the PCA on the |Y|-variables.
+.. #.	Also plot :math:`\mathbf{r}_1` and :math:`\mathbf{r}_2` as bar plots.  Compare these two weight vectors against the PCA loadings vectors that you built earlier.
 
 
 

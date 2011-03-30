@@ -162,8 +162,7 @@ rst_epilog = """
 .. |P| replace:: :math:`\mathbf{P}`
 .. |p1| replace:: :math:`\mathbf{p}_1`
 .. |T2| replace:: :math:`T^2`
-.. |W*| replace:: :math:`\mathbf{W*}`
-.. |w*| replace:: :math:`\mathbf{w*}`
+.. |R| replace:: :math:`\mathbf{R}`
 .. |U| replace:: :math:`\mathbf{U}`
 .. |Y| replace:: :math:`\mathbf{Y}`
 .. |W| replace:: :math:`\mathbf{W}`

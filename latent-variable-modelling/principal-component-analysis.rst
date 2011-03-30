@@ -662,6 +662,8 @@ Using the `raw data for this example <http://datasets.connectmv.com/info/room-te
 
 Finally, the SPE value is a complete summary of the residual vector.  As such, it is sometimes used to colour-code  score plots, as we mentioned back in the section on :ref:`score plots <LVM_interpreting_scores>`.   Another interesting way people sometimes display SPE is to plot a 3D data cloud, with :math:`\mathbf{t}_1` and :math:`\mathbf{t}_2`, and use the SPE values on the third axis.  This gives a fairly complete picture of the major dimensions in the model: the explained variation on-the-plane, given by :math:`\mathbf{t}_1` and :math:`\mathbf{t}_2`, and the residual distance off-the-plane, summarized by SPE.
 
+.. _LVM_PCA_R2_values:
+
 Residuals for each column (:math:`R^2` for each column in |X|)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -944,7 +946,7 @@ Like the eigenvalue method, the SVD method calculates all principal components p
 Non-linear iterative partial least-squares (NIPALS)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. Add MATLAB, R and Python code 
+.. ADD arrow diagram, with numeric labels next to arrows, as in the PLS section.
 
 The non-linear iterative partial least squares (NIPALS) algorithm is a sequential method of computing the principal components.  The calculation may be terminated early, when the user deems that enough components have been computed. Most computer packages tend to use the NIPALS algorithm as it has two main advantages: it handles missing data and calculates the components sequentially.
 

@@ -1930,9 +1930,12 @@ The factorial's center point can be predicted from :math:`(x_T, x_S) = (0, 0)`, 
 
 So when the measured center point value is quite different from the predicted center point in the linear model, then that is a good indication there is :index:`curvature <pair: curvature; response surface>` in the response surface.  The way to accommodate for that is to add quadratic terms to the estimate model.
 
+
 **Adding higher-order terms using central composite designs**
 
-We will not go into detail about :index:`central composite designs`, other than to show what they look like for the case of 2 and 3 variables. These designs take an existing orthogonal factorial and augment it will axial points.  This is great, because we can start off with an ordinary factorial and always come back later to add the terms to account for nonlinearity.
+.. _DOE_central_composite_designs:
+
+We will not go into too much detail about :index:`central composite designs`, other than to show what they look like for the case of 2 and 3 variables. These designs take an existing orthogonal factorial and augment it will axial points.  This is great, because we can start off with an ordinary factorial and always come back later to add the terms to account for nonlinearity.
 
 The :index:`axial points <pair: axial points; experiments>` are placed :math:`\sqrt{2} = 1.4` coded units away from the center for a 2 factor system, and 1.7 units away for a :math:`k=3` factor system.  Rules for higher numbers of factors, and the reasoning behind the 1.4 and 1.7 unit step size can be found, for example in the textbook by Box, Hunter and Hunter.
 
