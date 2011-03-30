@@ -44,7 +44,7 @@ def get_ellipse_coordinates(s_h, s_v, T2_limit_alpha, n_points=100):
 np.random.seed(16)
 N = 50
 K = 2
-sigma = 3.0
+sigma = int(3)
 alpha = scipy.stats.norm.cdf(sigma) #0.99
 
 # Note: you must set alpha to match sigma;  e.g. (alpha=0.95, sigma=2)
