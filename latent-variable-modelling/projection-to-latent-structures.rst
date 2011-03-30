@@ -718,7 +718,7 @@ The taste of cheddar cheese
 
 *	:math:`M=1`
 
-*	`Link to dataset website <http://datasets.connectmv.com/info/cheddar-cheese>>`_
+*	`Link to cheese data <http://datasets.connectmv.com/info/cheddar-cheese>`_
 
 *	Description: This very simple case study considers the taste of mature cheddar cheese.  There are 3 measurements taken on each cheese: lactic acid, acetic acid and :math:`\text{H}_2\text{S}`. 
 
@@ -790,9 +790,9 @@ The data are from the :ref:`plastic pellets troubleshooting example <LVM-process
 
 *	:math:`N = 24`
 
-*	:math:`K = 6 + 1` designation of process outcome.
+*	:math:`K = 6 + 1` designation of process outcome
 
-*	`Link to dataset website <http://datasets.connectmv.com/info/raw-material-characterization>`_
+*	`Link to raw materials data <http://datasets.connectmv.com/info/raw-material-characterization>`_
 
 *	Description: 3 of the 6 measurements are size values for the plastic pellets, while the other 3 are the outputs from thermogravimetric analysis (TGA), differential scanning calorimetry (DSC) and thermomechanical analysis (TMA), measured in a laboratory. These 6 measurements are thought to adequately characterize the raw material. Also provided is a designation ``Adequate`` or ``Poor`` that reflects the process engineer's opinion of the yield from that lot of materials.
 
