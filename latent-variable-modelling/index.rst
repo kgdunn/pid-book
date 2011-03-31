@@ -12,7 +12,7 @@ Latent Variable Modelling
 .. _SECTION_PCA:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Latent Variable Methods for a Single Block (PCA)
+PCA: Latent Variable Methods for a Single Block
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 .. toctree::
@@ -23,7 +23,7 @@ Latent Variable Methods for a Single Block (PCA)
 .. _SECTION_PLS:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Latent Variable Methods for Two Blocks (PCR and PLS)
+PCR and PLS: Latent Variable Methods for Two Blocks
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 .. toctree::

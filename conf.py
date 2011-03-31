@@ -82,7 +82,7 @@ master_doc = 'contents'
 # General information about the project.
 project = u'Process Improvement using Data'
 copyright = u'2011, Kevin Dunn'
-today_fmt = '%B %Y'
+today_fmt = '%d %B %Y'
 
 # Emits warnings for all missing references.
 nitpicky = False
