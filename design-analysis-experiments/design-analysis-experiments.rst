@@ -4,6 +4,9 @@
 	^^^^^
 	-----
 	
+	Add the newish Box RSM book to the reference list
+	
+	
 	On Yates (factorial) analysis: http://www.itl.nist.gov/div898/handbook/eda/section3/eda35i.htm
 	
 	DOE RSM with colour:
@@ -1738,6 +1741,9 @@ This projectivity of factorials holds in general for a larger number of factors.
 
 Response surface methods
 ==========================
+
+
+.. Add this somewhere appropriate: http://xkcd.com/605/   .... on extrapolation
 
 The purpose of :index:`response surface methods <pair: response surface methods; experiments>` (RSM) is to optimize a process or system.  RSM is a way to explore the effect of operating conditions (the factors) on the response variable, :math:`y`.  As we map out the unknown response surface of :math:`y`, we move our process as close as possible towards the optimum, taking into account any constraints.  
 

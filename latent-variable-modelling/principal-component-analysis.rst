@@ -6,6 +6,7 @@
 	
 	*	Gabriel, K. R. (1971). The biplot graphical display of matrices with applications to principal component analysis. Biometrika, 58, 453–467.
 	*	Gabriel, K. R. and Odoroff, C. L. (1990). Biplots in biomedical research. Statistics in Medicine, 9, 469–485.
+	*	J.C. Gower and D.J. Hand. Biplots. Number 54 in Monographs on Statistics and Applied Probability. Chapman and Hall, London, UK, 1996.
 
 References and readings
 ========================
