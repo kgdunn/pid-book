@@ -4,8 +4,56 @@
 	^^^^^
 	-----
 	
-	Add the newish Box RSM book to the reference list
+	Comment on binary factors:
 	
+		*	can be add/don't add variables
+		*	catalyst 1 vs 2
+		*	add eggs before milk, or milk before eggs
+		*	use the middle oven rack, lower over rack
+		*	reactor 1 vs reactor 2
+		*	operator 1 vs operator 2
+	
+	Add the newish Box RSM book to the reference list.
+	
+	Add reference to the RSM overview article: Myers et al., "Response Surface Methodology: A Retrospective and Literature Survey", Journal of Quality Technology, 36(1), 2004, 53-77.
+	
+	RSM: fit models, until there is evidence the model is not valid anymore. Evidence: predictions from model don't match what you actually get from the experiment (within experimental/measurements error: found from repeats).
+	
+	RSM: emphasize the expts should not be done so far outside range. typically use +/- 2 units, whereas +/- 3 units should be quite an extrapolation.
+	     Show the extrapolation cartoon from xkcd.com
+	RSM: emphasize that if 2fi are significant relative to main effects then you cannot climb steepest path of ascent by taking partial (linear) derivatives. Use a contour plot to show surface and estimate next point based on contour plot.
+	RSM: as every new point becomes available: update the model (not necessarily the number of terms in the model), but refit the model parameters and
+	     see how much they change by. This also gives you extra degrees of freedom.
+	RSM: explain what the partial derivatives are doing: fitting a tangent plane to the nonlinear surface: if there are non-linearities then you cannot
+	     use this tangent plane method anymore. Use contour plots from MATLAB or software to visualize the surface and place next point manually.
+	RSM: emphasize that CCD can be implemented one axial point at a time and boot strap model. You may not have to complete all CCD axial points to get a reasonable model.
+	
+	RSM: what happens if you omit the interaction: e.g. y = 61.9 - 1.225 xA + 1.025 xB + 1.38 xA xB.
+	     if you optimize A and B, ignoring the AB interaction?  Serious misinterpretation of direction?
+	
+	RSM: if you have a saddle (in a 2 or 3-factor system): good strategy is to augment the factorial with 2 more experiments to one side of the factorial (left, right, top, bottom, front, back, etc). Fit quadratic model in that direction and draw surface plot. Get a better idea of where to go next. See "Ashley Sebastian, Mondise Sithole, Udit Gupta" take-home exam, Q4.
+
+	
+	RSM: why it's better than just a random scatter of points: you learn about the shape of the response surface and the impact of the main factors on the surface. Once you've found an optimum you can be certain that it's the best in the neighbourhood where you are.
+	RSM: may not have to always complete a fractional factorial to a full factorial if there is aliasing. E.g. A, B, C=AB. Let all terms be significant. Unsure if C and/or AB is important. So to remove confounding: let's say we see the coefficient for the aliased AB=C maximizes y when C is run at the + level.  So run only the next 2 of the remaining 4 experiments: those 2 at the + level of C. Now you have 6 runs, so you can estimate A, B, C, AB and either AC or BC. The ABC cannot be estimated. E.g. Ryan McBride and Stuart Young's DOE RSM Q4 in 2011.
+	RSM: systematic methodology: motivated by the fact that you will learn something about your system (important main effects, interactions) *and* optimize the process simultaneously. Whereas a process that is nonlinear and "optimized" by trial and error: leads to nothing learned and always a suboptimal operating point.
+	
+	
+	Choice of range of factors:
+		- not too wide so you straddle optimum and get erroneous interpretation of effect (you see negative or +ve slope, but really it is quadratic)
+		- not too narrow so that you get no effect showing: you are within the range of the noise of y
+		- slightly greater than common cause operation's variation: to see an effect
+		- 15 to 25% of the full range of possible operation, taking constraints between factors into account
+		- binary factors: if too different, it can invoke totally different operating mechanism from one factor to another, implying you are really study two different systems altogether, and a unified model from a single experiment not appropriate.  However this will often show in a factorial as the binary factor having the strongest effect.  Analyze the experiments of each binary setting separately.
+		
+	Must include:
+		- Cannot rank factors C > B > AB > etc based on the absolute coefficient size... It's dependent on the levels chosen
+		- e.g cannot say factor A has greater effect than factor B, unless factors cover the full range of typical/usual operation
+		- i.e. ranking factors is dependent on the ranges chosen for those factors
+		
+	Disturbances and randomimization:
+		- e.g. testing fitness improvement: during experiment you are getting naturally fitter
+		- e.g. testing laptop battery performance.  But use of battery over and over is going to gradually make it worse (e.g. car tests: wear and tear increase over duration of test).  Slowly varying distrbances accounted for by randomization so they show up as noise.  Worse thing to do is run the experiments in Yates order: that will confound this disturbance with the last, slowest-varying factor in table.
 	
 	On Yates (factorial) analysis: http://www.itl.nist.gov/div898/handbook/eda/section3/eda35i.htm
 	
@@ -865,10 +913,6 @@ The standard error can be estimated if complete replicates are available.  Howev
 Furthermore, there are better ways to spend our experimental budget than running complete replicate experiments - see the section on :ref:`screening designs <DOE-saturated-screening-designs>` later on.  Only later in the overall experimental procedure should we run replicate experiments as a verification step and to assess the statistical significance of effects.
 
 There are 2 main ways we can determine if a main effect or interaction is significant.
-
-.. raw:: latex
-
-	\newpage
 
 .. _DOE-Pareto-plot:
 
@@ -1927,6 +1971,8 @@ One must realize that as one approaches an optimum we will find:
 	-	The response variable remains roughly constant for two consecutive jumps, because one has jumped over the optimum.
 	
 	-	The response variable decreases, sometimes very rapidly, because we have overshot the optimum.
+	
+	-	The presence of curvature can also be inferred when interaction terms are similar or larger in magnitude than the main effect terms.
 
 An optimum therefore exhibits curvature, so a model that only has linear terms in it will not be suitable to use to find the direction of steepest ascent along the *true response surface*.  We must add terms that account for this curvature.
 
@@ -1934,7 +1980,7 @@ An optimum therefore exhibits curvature, so a model that only has linear terms i
 
 The factorial's center point can be predicted from :math:`(x_T, x_S) = (0, 0)`, and is just the intercept term.  In the last factorial, the predicted center point was  :math:`\hat{y}_\text{cp}` = $670; yet the actual center point from run 6 showed a profit of $ 688.  This is a difference of $18, which is substantial when compared to the main effects' coefficients, particularly of temperature.
 
-So when the measured center point value is quite different from the predicted center point in the linear model, then that is a good indication there is :index:`curvature <pair: curvature; response surface>` in the response surface.  The way to accommodate for that is to add quadratic terms to the estimate model.
+So when the measured center point value is quite different from the predicted center point in the linear model, then that is a good indication there is :index:`curvature <pair: curvature; response surface>` in the response surface. The way to accommodate for that is to add quadratic terms to the estimate model.
 
 
 **Adding higher-order terms using central composite designs**

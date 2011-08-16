@@ -618,7 +618,7 @@ Or in general, for the whole data set
 	\mathbf{X} &= \mathbf{T} \mathbf{P}' + \mathbf{E} =  \widehat{\mathbf{X}} + \mathbf{E} \\
 		(N \times K) &= (N \times A)(A \times K)  + (N \times K) 
 
-This shows that each observation (row in |X|) can be split and interpreted in two portions: a vector on-the-plane, :math:`\mathbf{t}'_i \mathbf{P}' `, and a vector perpendicular to the plane, :math:`\mathbf{e}'_{i,A}`.  This residual portion, a vector, can be reduced to a single number, a distance value called SPE, as :ref:`previously described <LVM_geometric_predictions>`.
+This shows that each observation (row in |X|) can be split and interpreted in two portions: a vector on-the-plane, :math:`\mathbf{t}'_i \mathbf{P}'`, and a vector perpendicular to the plane, :math:`\mathbf{e}'_{i,A}`.  This residual portion, a vector, can be reduced to a single number, a distance value called SPE, as :ref:`previously described <LVM_geometric_predictions>`.
 
 .. figure:: images/SPE-illustration.png
 	:alt:	images/SPE-illustration.svg

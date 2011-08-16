@@ -1015,7 +1015,7 @@ But there is something wrong with that error estimate.  It says that our predict
 
 .. CHECK THIS STILL
 
-This estimate is however a reasonable guess for the prediction interval when you only know the model's :math:`S_E` and don't have access to a computer to calculate the proper prediction interval, shown next.
+This estimate is however a reasonable guess for the prediction interval when you only know the model's :math:`S_E` and don't have access to a calculator or computer to calculate the proper prediction interval, shown next.
 
 A better attempt to construct prediction intervals for the least squares model
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1575,6 +1575,9 @@ Integer (dummy, indicator) variables in the model
 Now that we have introduced multiple linear regression to expand our models, we also consider these sort of cases:
 
 	-	We want to predict yield, but want to indicate whether a radial or axial impeller was used in the reactor and learn whether it has any effect on yield.
+	
+	-	Is there an important difference when we add the catalyst first and then the reactants, or the reactants followed by the catalyst?
+	
 	-	Use an indicator variable to show if the raw material came from the supplier in Spain, India, or Vietnam and interpret the effect of supplier on yield.
 
 	..	figure:: images/Mixing_-_flusso_assiale_e_radiale.jpg
