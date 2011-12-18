@@ -739,7 +739,7 @@ Exercises
 
 .. question::
 
-    The `boards data <http://datasets.connectmv.com/info/board-thickness>`_ on the website are from a line which cuts spruce, pine and fir (SPF) to produce general quality lumber that you could purchase at Rona, Home Depot, etc.  The price that a saw mill receives for its lumber is strongly dependent on how accurate the cut is made.  Use the data for the 2 by 6 boards (each row is one board) and develop a monitoring system using these steps.
+    The `boards data <http://datasets.connectmv.com/info/six-point-board-thickness>`_ on the website are from a line which cuts spruce, pine and fir (SPF) to produce general quality lumber that you could purchase at Rona, Home Depot, etc.  The price that a saw mill receives for its lumber is strongly dependent on how accurate the cut is made.  Use the data for the 2 by 6 boards (each row is one board) and develop a monitoring system using these steps.
 
     	a) Plot all the data.  
     	b) Now assume that boards 1 to 500 are the phase I data; identify any boards in this subset that appear to be unusual (where the board thickness is not consistent with most of the other operation)
@@ -1043,7 +1043,7 @@ Exercises
 		- `Kaizen <http://en.wikipedia.org/wiki/Kaizen>`_ (a component of `The Toyota Way <http://en.wikipedia.org/wiki/The_Toyota_Way>`_)
 		- `Genchi Genbutsu <http://en.wikipedia.org/wiki/Genchi_Genbutsu>`_  (also a component of `The Toyota Way <http://en.wikipedia.org/wiki/The_Toyota_Way>`_)
 
-		In early 2010 Toyota experienced some of its worst press coverage on this very topic.  `Here is an article <http://www.reuters.com/article/idUSTRE6161RV20100207>`_ in case you missed it.
+		In early 2010 Toyota experienced some of its worst press coverage on this very topic.  `Here is an article <http://www.reuters.com/article/2010/02/07/us-toyota-us-manufacturers-analysis-idUSTRE6161RV20100207>`_ in case you missed it.
 
 .. _monitoring-kappa-number-question:
 

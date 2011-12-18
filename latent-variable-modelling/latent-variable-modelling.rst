@@ -383,7 +383,7 @@ This section considers the important area of latent variable modelling.  These m
 What we will cover
 ~~~~~~~~~~~~~~~~~~
 
-.. figure:: ../figures/mindmaps/latent-variable-modelling-section-mapping.png
+.. figure:: ../figures/mindmaps/latent-variable-modelling-simple.png
 	:width: 750px 
 	:align: center
 	:scale: 90

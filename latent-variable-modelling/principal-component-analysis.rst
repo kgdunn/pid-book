@@ -44,16 +44,16 @@ The data, collected in a matrix |X|, contains rows that represent an *object* of
 
 Which variables should you use, and how many observations do you require? We address this issue later. For now though we consider that you have your data organized in this manner:
 
-.. figure:: images/X-matrix.png
-	:alt:	images/X-matrix.svg
+.. figure:: ../figures/data-types/X-matrix.png
+	:alt:	../figures/data-types/X-matrix.svg
 	:align: center
 	:scale: 35
 	:width: 400px
 
 Consider the case of 2 variables, :math:`K=2` (left) and :math:`K=3` variables (right) for the room thermometers example :ref:`from earlier <LVM_room_temperature_example>`:
 
-.. figure:: images/temperature-2d-and-3d-plot.png
-	:alt:	images/temperature-data-combine.py
+.. figure:: ../figures/examples/room-temperature/temperature-2d-and-3d-plot.png
+	:alt:	../figures/examples/room-temperature/temperature-data-combine.py
 	:scale: 100
 	:width: 750px
 	:align: center
@@ -68,8 +68,8 @@ Each point in the plot represents one *object*, also called an *observation*.  T
 
 Another effective way to visualize small multivariate data sets is to use a scatterplot matrix. Below is an example for :math:`K = 5` measurements on :math:`N=50` observations. Scatterplot matrices require :math:`K(K-1)/2` plots and can be enhanced with univariate histograms (on the diagonal plots), and linear regressions and loess smoothers on the off-diagonals to indicate the level of correlation between any two variables.
 
-.. image:: images/pca-on-food-texture-scatterplot-matrix.png
-	:alt:	images/pca-on-food-texture-data.R
+.. image:: ../figures/examples/food-texture/pca-on-food-texture-scatterplot-matrix.png
+	:alt:	../figures/examples/food-texture/pca-on-food-texture-data.R
 	:scale: 100
 	:width: 750px
 	:align: center
@@ -84,8 +84,8 @@ Geometric explanation of PCA
 
 We refer to a :math:`K`-dimensional space when referring to the data in |X|.  We will start by looking at the geometric interpretation of PCA when |X| has 3 columns, in other words a 3-dimensional space, using measurements: :math:`[x_1, x_2, x_3]`.
 
-.. figure:: images/geometric-PCA-1-and-2-swarm-with-mean.png
-	:alt: 	images/geometric-interpretation-of-PCA.svg
+.. figure:: ../figures/pca/geometric-PCA-1-and-2-swarm-with-mean.png
+	:alt: 	../figures/pca/geometric-interpretation-of-PCA.svg
 	:width: 900px
 	:scale: 100
 	:align: center
@@ -96,8 +96,8 @@ After centering and scaling we have moved our raw data to the center of the coor
 
 The best-fit line is drawn through the swarm of points.  The more correlated the original data, the better this line will explain the actual values of the observed measurements. This best-fit line will *best explain* all the observations with minimum residual error.   Another, but equivalent, way of expressing this is that the line goes in the direction of *maximum variance of the projections onto the line*.  Let's take a look at what that phrase means.
 
-.. image:: images/geometric-PCA-3-and-4-centered-with-first-component.png
-	:alt: 	images/geometric-interpretation-of-PCA.svg
+.. image:: ../figures/pca/geometric-PCA-3-and-4-centered-with-first-component.png
+	:alt: 	../figures/pca/geometric-interpretation-of-PCA.svg
 	:width: 900px
 	:scale: 100
 	:align: center
@@ -112,16 +112,16 @@ After we have added this best-fit line to the data, we have calculated the first
 	
 	*	The subscript of "1" emphasizes that this is the first latent variable.
 
-.. image:: images/geometric-PCA-5-and-6-first-component-with-projections-and-second-component.png
-	:alt: 	images/geometric-interpretation-of-PCA.svg
+.. image:: ../figures/pca/geometric-PCA-5-and-6-first-component-with-projections-and-second-component.png
+	:alt: 	../figures/pca/geometric-interpretation-of-PCA.svg
 	:width: 900px
 	:scale: 100
 	:align: center
 
 This first principal component is fixed and we now add a second component to the system.  We find the second component so that it is perpendicular to the first component's direction.  Notice that this vector also starts at the origin, and can point in any direction as long as it remains perpendicular to the first component.  We keep rotating the second component's direction vector around until we find a direction that gives the greatest variance in the score values when projected on this new direction vector.
 
-.. figure:: images/geometric-PCA-7-and-8-second-component-and-both-components.png
-	:alt: 	images/geometric-interpretation-of-PCA.svg
+.. figure:: ../figures/pca/geometric-PCA-7-and-8-second-component-and-both-components.png
+	:alt: 	../figures/pca/geometric-interpretation-of-PCA.svg
 	:width: 900px
 	:scale: 100
 	:align: center
@@ -153,8 +153,8 @@ Geometrically, when finding the *best-fit line* for the swarm of points, our obj
 
 We briefly review here what that means. Let :math:`\mathbf{x}'_i` be a row from our data, so :math:`\mathbf{x}'_i` is a :math:`1 \times K` vector. We defined the score value for this observation as the distance from the origin, along the direction vector, |p1|, to the point where we find the perpendicular projection onto |p1|. This is illustrated below, where the score value for observation :math:`\mathbf{x}_i` has a value of :math:`t_{i,1}`.
 
-.. figure:: images/component-along-a-vector.png
-	:alt:	images/component-along-a-vector.svg
+.. figure:: ../figures/pca/component-along-a-vector.png
+	:alt:	../figures/pca/component-along-a-vector.svg
 	:align: center
 	:width: 500px
 	:scale: 50
@@ -250,8 +250,8 @@ Let's take a look at an example to consolidate and extend the ideas introduced s
 	
 A scatter plot matrix of these :math:`K = 5` measurements is shown for the :math:`N=50` observations.
 
-.. figure:: images/pca-on-food-texture-scatterplot-matrix.png
-	:alt:	images/pca-on-food-texture-data.R
+.. figure:: ../figures/examples/food-texture/pca-on-food-texture-scatterplot-matrix.png
+	:alt:	../figures/examples/food-texture/pca-on-food-texture-data.R
 	:scale: 100
 	:width: 750px
 	:align: center
@@ -262,8 +262,8 @@ We can get by with this visualization of the data because :math:`K` is small in 
 
 The first step with PCA is to center and scale the data.  The box plots show how the raw data are located at different levels and have arbitrary units.  
 
-.. figure:: images/pca-on-food-texture-centering-and-scaling.png
-	:alt:	images/pca-on-food-texture-data.R
+.. figure:: ../figures/examples/food-texture/pca-on-food-texture-centering-and-scaling.png
+	:alt:	../figures/examples/food-texture/pca-on-food-texture-data.R
 	:scale: 100
 	:width: 750px
 	:align: center
@@ -306,8 +306,8 @@ We will discuss how to determine the number of components to use :ref:`in a futu
 	\mathbf{p}_1 = \begin{bmatrix} +0.46 \\  -0.47 \\ +0.53 \\ -0.50 \\ +0.15 \end{bmatrix} \qquad \text{and} \qquad 
 	\mathbf{p}_2 = \begin{bmatrix} -0.37 \\  +0.36 \\ +0.20 \\ -0.22 \\ +0.80 \end{bmatrix}
 
-.. image:: images/pca-on-food-texture-pc1-loadings.png
-	:alt:	images/pca-on-food-texture-data.R
+.. image:: ../figures/examples/food-texture/pca-on-food-texture-pc1-loadings.png
+	:alt:	../figures/examples/food-texture/pca-on-food-texture-data.R
 	:scale: 60
 	:width: 750px
 	:align: center
@@ -327,8 +327,8 @@ For a pastry product to have a high :math:`t_1` value would require it to have s
 
 Let's examine the score values calculated.  As shown in equation :eq:`LVM_t1_food_texture_`, the score value is a linear combination of the data, :math:`\mathbf{x}`, given by the weights in the loadings matrix, |P|.  For the first component, :math:`\mathbf{t}_1 = \mathbf{X} \mathbf{p}_1`.  The plot here shows the values in vector :math:`\mathbf{t}_1` (an :math:`N \times 1` vector):
 
-.. image:: images/pca-on-food-texture-pc1-scores.png
-	:alt:	images/pca-on-food-texture-data.R
+.. image:: ../figures/examples/food-texture/pca-on-food-texture-pc1-scores.png
+	:alt:	../figures/examples/food-texture/pca-on-food-texture-data.R
 	:scale: 80
 	:width: 750px
 	:align: center
@@ -345,8 +345,8 @@ We note here that this component explains 61% of the original variability in the
 
 The second loading vector is shown as a bar plot:
 
-.. image:: images/pca-on-food-texture-pc2-loadings.png
-	:alt:	images/pca-on-food-texture-data.R
+.. image:: ../figures/examples/food-texture/pca-on-food-texture-pc2-loadings.png
+	:alt:	../figures/examples/food-texture/pca-on-food-texture-data.R
 	:scale: 55
 	:width: 750px
 	:align: center
@@ -367,8 +367,8 @@ Before summarizing some points about how to interpret a score plot, let's quickl
 
 The score value for an observation, for say the first component, is the distance from the origin, along the direction (loading vector) of the first component, up to the point where that observation projects onto the direction vector.  We repeat :ref:`an earlier figure here <LVM_PCA_geometric_interpretation>`, which shows the projected values for 2 of the observations.
 
-.. figure:: images/geometric-PCA-5-first-component-with-projections.png
-	:alt:	images/geometric-interpretation-of-PCA.svg
+.. figure:: ../figures/pca/geometric-PCA-5-first-component-with-projections.png
+	:alt:	../figures/pca/geometric-interpretation-of-PCA.svg
 	:scale: 34
 	:width: 750px
 	:align: center
@@ -394,8 +394,8 @@ We usually start by looking at the :math:`(\mathbf{t}_1, \mathbf{t}_2)` scatterp
 	
 .. _LVM_slama_thesis_screenshot_:
 
-.. image:: images/slama-thesis-screenshot-score-plot.png
-	:alt:	images/slama-thesis-screenshot-score-plot.png
+.. image:: ../figures/examples/refinery-troubleshooting/Slama-refinery-flowsheet.png
+	:alt:	Screenshot from thesis; used with permission (see gmail email on 16 December 2011)
 	:scale: 52
 	:width: 750px
 	:align: center
@@ -424,8 +424,8 @@ As an example from the :ref:`food texture data <LVM_food_texture_example>` from 
 	
 The :math:`K=5` terms that contribute to this value are illustrated as a bar plot, where the sum of the bar heights add up to :math:`-4.2`:
 
-.. image:: images/pca-on-food-texture-score-t1-contribution-for-obs-33.png
-	:alt:	images/pca-on-food-texture-data.R
+.. image:: ../figures/examples/food-texture/pca-on-food-texture-score-t1-contribution-for-obs-33.png
+	:alt:	../figures/examples/food-texture/pca-on-food-texture-data.R
 	:scale: 55
 	:width: 750px
 	:align: center
@@ -463,8 +463,8 @@ Interpreting loading plots
 	
 Recall that the :index:`loadings plot <pair: loadings plot, interpretation of; latent variable modelling>` is a plot of the direction vectors that define the model.  Returning back to a previous illustration:
 
-.. image:: images/geometric-PCA-8-noth-components-with-plane.png
-	:alt:	images/geometric-interpretation-of-PCA.svg
+.. image:: ../figures/pca/geometric-PCA-8-both-components-with-plane.png
+	:alt:	../figures/pca/geometric-interpretation-of-PCA.svg
 	:scale: 40
 	:width: 750px
 	:align: center
@@ -473,8 +473,8 @@ In this system the first component, :math:`\mathbf{p}_1`, is oriented primarily 
 
 Let's consider another visual example where two variables, :math:`x_1` and :math:`x_2`, are the predominant directions in which the observations vary; the :math:`x_3` variable is only "noise". Further, let the relationship between :math:`x_1` and :math:`x_2` have a negative correlation.
 
-.. image:: images/two-variable-geometric-interpretation-of-loadings.png
-	:alt:	images/two-variable-geometric-interpretation-of-loadings.svg
+.. image:: ../figures/pca/two-variable-geometric-interpretation-of-loadings.png
+	:alt:	../figures/pca/two-variable-geometric-interpretation-of-loadings.svg
 	:scale: 50
 	:width: 750px
 	:align: center
@@ -491,8 +491,8 @@ This is why they are called loadings: the show how the original variables load, 
 	
 Another issue to consider is the case when one has many highly correlated variables.  Consider the :ref:`room temperature example <LVM_room_temperature_example>` where the four temperatures are highly correlated with each other.  The first component from the PCA model is shown here:
 
-.. figure:: images/temperatures-first-loading.png
-	:alt:	images/temperature-data.R
+.. figure:: ../figures/examples/room-temperature/temperatures-first-loading.png
+	:alt:	../figures/examples/room-temperature/temperature-data.R
 	:scale: 75
 	:width: 750px
 	:align: center
@@ -508,8 +508,8 @@ It is helpful to visualize any two score vectors, e.g. :math:`\mathbf{t}_1` *vs*
 
 Any two loadings can also be shown in a scatterplot and interpreted by recalling that each loading direction is orthogonal and independent of the other direction.
 
-.. image:: images/pca-on-food-texture-scores-and-loadings.png
-	:alt:	images/pca-on-food-texture-data.R
+.. image:: ../figures/examples/food-texture/pca-on-food-texture-scores-and-loadings.png
+	:alt:	../figures/examples/food-texture/pca-on-food-texture-data.R
 	:scale: 90
 	:width: 750px
 	:align: center
@@ -534,8 +534,8 @@ An interesting aspect of a PCA model is that it provides an estimate of each obs
 
 Referring to the illustration and assume we have a PCA model with a single component, the best estimate of observation :math:`\mathbf{x}_i` is the point along the direction vector, |p1|, where the original observation is projected.  Recall that the distance along that direction vector was :math:`t_{i,1}`, but the actual point along |p1| is a vector, and it is our best estimate of the original observation.  We will call that estimate :math:`\widehat{\mathbf{x}}_{i,1}`, indicating that it is an estimate of :math:`\mathbf{x}_i` along the first component.
 
-.. image:: images/prediction-along-a-vector.png
-	:alt:	images/prediction-along-a-vector.svg
+.. image:: ../figures/pca/prediction-along-a-vector.png
+	:alt:	../figures/pca/prediction-along-a-vector.svg
 	:align: center
 	:scale: 50
 	:width: 500px
@@ -620,8 +620,8 @@ Or in general, for the whole data set
 
 This shows that each observation (row in |X|) can be split and interpreted in two portions: a vector on-the-plane, :math:`\mathbf{t}'_i \mathbf{P}'`, and a vector perpendicular to the plane, :math:`\mathbf{e}'_{i,A}`.  This residual portion, a vector, can be reduced to a single number, a distance value called SPE, as :ref:`previously described <LVM_geometric_predictions>`.
 
-.. figure:: images/SPE-illustration.png
-	:alt:	images/SPE-illustration.svg
+.. figure:: ../figures/pca/SPE-illustration.png
+	:alt:	../figures/pca/SPE-illustration.svg
 	:scale: 100
 	:width: 750px
 	:align: center
@@ -647,16 +647,16 @@ The SPE is just the sum of the squares of these :math:`K` terms, so a residual c
 
 Looking back at the :ref:`room-temperature example <LVM_room_temperature_example>`: if we fit a model with one component, then the residual distance, shown with the 95% limit, appears as follows:
 
-.. image:: images/temperatures-SPE-after-one-PC.png
-	:alt:	images/temperature-data.R
+.. image:: ../figures/examples/room-temperature/temperatures-SPE-after-one-PC.png
+	:alt:	../figures/examples/room-temperature/temperature-data.R
 	:scale: 80
 	:width: 750px
 	:align: center
 
 Using the `raw data for this example <http://datasets.connectmv.com/info/room-temperature>`_, shown below, can you explain why we see those unusual points in the SPE plot around time 50 to 60?
 
-.. image:: images/room-temperature-plots.png
-	:alt:	images/room-temperature-plots.py
+.. image:: ../figures/examples/room-temperature/room-temperature-plots.png
+	:alt:	../figures/examples/room-temperature/room-temperature-plots.py
 	:scale: 90
 	:width: 700px
 	:align: center
@@ -670,8 +670,8 @@ Residuals for each column (:math:`R^2` for each column in |X|)
 
 Using the residual matrix :math:`\mathbf{E} = \mathbf{X} - \mathbf{T} \mathbf{P}' = \mathbf{X} - \widehat{\mathbf{X}}`, we can calculate the residuals for each column in the original matrix.  This gives an indication of how well the PCA model describes the data from that column.
 
-.. image:: images/column-residuals-PCA.png
-	:alt:	images/column-residuals-PCA.svg
+.. image:: ../figures/pca/column-residuals-PCA.png
+	:alt:	../figures/pca/column-residuals-PCA.svg
 	:scale: 100
 	:width: 750px
 	:align: center
@@ -702,8 +702,8 @@ Example: spectral data
 
 A data set, `available on the dataset website <http://datasets.connectmv.com/info/tablet-spectra>`_, contains data on 460 tablets, measured at 650 different wavelengths.
 
-.. image:: images/pharma-spectra.png
-	:alt:	images/pharma-spectra.py
+.. image:: ../figures/examples/tablet-spectra/pharma-spectra.png
+	:alt:	../figures/examples/tablet-spectra/pharma-spectra.py
 	:scale: 80
 	:width: 750px
 	:align: center
@@ -727,16 +727,16 @@ The :math:`R^2_a` (``Cumulative Proportion``) values shows the first component e
 
 Let's visually show what the :math:`R^2` values are for each column.  Shown below are these values for the first 3 components.  The first component (green, thin line) explains certain regions of the spectra very well, particularly the region around 1100nm.  Wavelengths beyond 1800 nm are not well explained at all.  The second component is primarily responsible for explaining additional variability in the 700 to 1100nm region.  The third component only seems to explain the additional variability from 1700 to 1800nm.  Fitting a fourth component is only going to start fitting the noisy regions of the spectrum on the very right. For these data we could use 2 components for most applications, or perhaps 3 if the region between 1700 and 1800nm was also important.
 
-.. image:: images/spectral-data-R2-per-variable.png
-	:alt:	images/spectral-data.R
+.. image:: ../figures/examples/tablet-spectra/spectral-data-R2-per-variable.png
+	:alt:	../figures/examples/tablet-spectra/spectral-data.R
 	:scale: 75
 	:width: 750px
 	:align: center
 
 Finally, we can show the SPE plot for each observation. SPE values for each tablet become smaller and smaller as each successive component is added.  Since each new component explains additional variance, the size of SPE must decrease. There don't appear to be any major outliers off the model's plane after the first component.
 
-.. image:: images/spectral-data-SPE-per-tablet.png
-	:alt:	images/spectral-data.R
+.. image:: ../figures/examples/tablet-spectra/spectral-data-SPE-per-tablet.png
+	:alt:	../figures/examples/tablet-spectra/spectral-data.R
 	:scale: 80
 	:width: 750px
 	:align: center
@@ -758,8 +758,8 @@ where the :math:`s_a^2` values are constants, and are the variances of each comp
 *	An observation that projects onto the model's center (usually the observation where every value is at the mean), has :math:`T^2 = 0`.
 *	The |T2| statistic is distributed according to the :math:`F`-distribution and is calculated by the multivariate software package being used.  For example, we can calculate the 95% confidence limit for |T2|, below which we expect, under normal conditions, to locate 95% of the observations.
 
-	.. image:: images/spectral-data-T2-lineplot.png
-		:alt:	images/spectral-data.R
+	.. image:: ../figures/examples/tablet-spectra/spectral-data-T2-lineplot.png
+		:alt:	../figures/examples/tablet-spectra/spectral-data.R
 		:scale: 80
 		:width: 750px
 		:align: center
@@ -773,8 +773,8 @@ where the :math:`s_a^2` values are constants, and are the variances of each comp
 	
 *	The same principle holds for :math:`A>2`, except the ellipse is called a hyper-ellipse (think of a rugby-ball shaped object for :math:`A=3`).  The general interpretation is that if a point is within this ellipse, then it is also below the |T2| limit, if |T2| were to be plotted on a line.
 
-.. image:: images/spectral-data-t1-t2-scoreplot.png
-	:alt:	images/spectral-data.R
+.. image:: ../figures/examples/tablet-spectra/spectral-data-t1-t2-scoreplot.png
+	:alt:	../figures/examples/tablet-spectra/spectral-data.R
 	:scale: 80
 	:width: 750px
 	:align: center
@@ -904,8 +904,8 @@ From this we learn that:
 	
 	*	Also, the sum of the eigenvalues must add up to sum of the diagonal entries of :math:`\mathbf{X}'\mathbf{X}`, which represents of the total variance of the :math:`\mathbf{X}` matrix, if all eigenvectors are extracted. So plotting the eigenvalues is equivalent to showing the proportion of variance explained in :math:`\mathbf{X}` by each component.  This is not necessarily a good way to judge the number of components to use, but it is a rough guide: use a Pareto plot of the eigenvalues (though in the context of eigenvalue problems, this plot is called a :index:`scree plot`).
 
-		.. image:: images/eigenvalue-scree-plot.png
-			:alt:	images/eigenvalue-scree-plot.R
+		.. image:: ../figures/pca/eigenvalue-scree-plot.png
+			:alt:	../figures/pca/eigenvalue-scree-plot.R
 			:align: center
 			:scale: 70
 			:width: 700px
@@ -959,10 +959,10 @@ We will show the algorithm here for the :math:`a^\text{th}` component, where :ma
 
 #.	The NIPALS algorithm starts by arbitrarily creating an initial column for :math:`\mathbf{t}_a`.  You can use a column of random numbers, or some people use a column from the |X| matrix; anything can be used as long as it is not a column of zeros.
 
-#.	Then we take every column in |X|, call it :math:`\mathbf{x}_k`, and regress it onto this initial column :math:`\mathbf{t}_a`;  store the regression coefficient as the entry in :math:`p_{k,a}`.  What this means, and it is illustrated below, is that we perform an ordinary least squares regression (:math:`\mathbf{y} = \boldsymbol{\beta} \mathbf{x}`), except our |x|-variable is this column of :math:`\mathbf{t}_a` values, and our |y|-variable is the particular column from |X|, i.e. :math:`\mathbf{x}_k`.
+#.	Then we take every column in |X|, call it :math:`\mathbf{X}_k`, and regress it onto this initial column :math:`\mathbf{t}_a`;  store the regression coefficient as the entry in :math:`p_{k,a}`.  What this means, and it is illustrated below, is that we perform an ordinary least squares regression (:math:`\mathbf{y} = \boldsymbol{\beta} \mathbf{x}`), except our |x|-variable is this column of :math:`\mathbf{t}_a` values, and our |y|-variable is the particular column from |X|.
 
-	.. image:: images/NIPALS-iterations-PCA-columns.png
-		:alt:	images/NIPALS-iterations-PCA.svg
+	.. image:: ../figures/pca/NIPALS-iterations-columns.png
+		:alt:	../figures/pca/NIPALS-iterations-PCA.svg
 		:scale: 35
 		:width: 750px
 		:align: center
@@ -970,7 +970,7 @@ We will show the algorithm here for the :math:`a^\text{th}` component, where :ma
 	For ordinary least squares, you will remember that the solution for this regression problem is :math:`\widehat{\boldsymbol\beta} = \dfrac{\mathbf{x'y}}{\mathbf{x'x}}`.  Using our notation, this means:
 
 	.. math::
-		p_{k,a} = \dfrac{\mathbf{t}'_a \mathbf{x}_k}{\mathbf{t}'_a\mathbf{t}_a}
+		p_{k,a} = \dfrac{\mathbf{t}'_a \mathbf{X}_k}{\mathbf{t}'_a\mathbf{t}_a}
 
 	This is repeated for each column in |X| until we fill the entire vector :math:`\mathbf{p}_k`. This is shown in the illustration where each column from |X| is regressed, one at a time, on :math:`\mathbf{t}_a`, to calculate the loading entry, :math:`p_{k,a}`   In practice we don't do this one column at time; we can regress all columns in |X| in go: :math:`\mathbf{p}'_a = \dfrac{1}{\mathbf{t}'_a\mathbf{t}_a} \cdot \mathbf{t}'_a \mathbf{X}_a`, where :math:`\mathbf{t}_a` is an :math:`N \times 1` column vector, and :math:`\mathbf{X}_a` is an :math:`N \times K` matrix, explained more clearly in step 6.
 
@@ -981,8 +981,8 @@ We will show the algorithm here for the :math:`a^\text{th}` component, where :ma
 
 #.	The next step is to regress every row in |X| onto this normalized loadings vector.  As illustrated below, in our linear regression the rows in |X| are our |y|-variable each time, while the loadings vector is our |x|-variable.  The regression coefficient becomes the score value for that :math:`i^\text{th}` row:
 
-	.. image:: images/NIPALS-iterations-PCA-rows.png
-		:alt:	images/NIPALS-iterations-PCA.svg
+	.. image:: ../figures/pca/NIPALS-iterations-rows.png
+		:alt:	../figures/pca/NIPALS-iterations-PCA.svg
 		:scale: 35
 		:width: 750px
 		:align: center
@@ -1010,8 +1010,8 @@ The final reason for outlining the NIPALS algorithm is to show one way in which 
 
 There are 3 missing observations (open circles), but despite this, the regression's slope can still be adequately determined.  The slope is unlikely to change by very much if we did have the missing values.  In practice though we have no idea where these open circles would fall, but the principle is the same: we calculate the slope coefficient just ignoring any missing entries.
 
-.. image:: images/NIPALS-with-missing-values.png
-	:alt:	images/NIPALS-with-missing-values.svg
+.. image:: ../figures/pca/NIPALS-with-missing-values.png
+	:alt:	../figures/pca/NIPALS-with-missing-values.svg
 	:scale: 50
 	:width: 750px
 	:align: center
@@ -1150,11 +1150,11 @@ As we add successive components to a model we are increasing the size of the mod
 
 This holds for any model where the :math:`\widehat{\mathbf{X}}` and :math:`\mathbf{E}` matrices are completely orthogonal to each other: :math:`\widehat{\mathbf{X}}'\mathbf{E} = \mathbf{0}` (a matrix of zeros), such as in PCA, PLS and least squares models.
 
-.. Also see "images/testing-orthogonality-of-Xhat-and-E.R" for a quick test of this
+.. Also see "../figures/pca/testing-orthogonality-of-Xhat-and-E.R" for a quick test of this
 
 There comes a point for any real data set where the number of components, |A| = the number of columns in :math:`\mathbf{T}` and :math:`\mathbf{P}`, extracts all systematic variance from :math:`\mathbf{X}`, leaving unstructured residual variance in :math:`\mathbf{E}`.  Fitting any further components will start to fit this noise, and unstructured variance, in :math:`\mathbf{E}`.
 
-Cross-validation for multivariate data sets was described by Svante Wold in his paper on `Cross-validatory estimation of the number of components in factor and principal components models <http://www.jstor.org/stable/1267639>`_, in *Technometrics*, **20**, 397-405, 1978.  
+Cross-validation for multivariate data sets was described by Svante Wold in his paper on `Cross-validatory estimation of the number of components in factor and principal components models <http://www.jstor.org/pss/1267639>`_, in *Technometrics*, **20**, 397-405, 1978.  
 
 The general idea is to divide the matrix |X| into :math:`G` groups of rows.  These rows should be selected randomly, but are often selected in order: row 1 goes in group 1, row 2 goes in group 2, and so on.  We can collect the rows belonging to the first group into a new matrix called :math:`\mathbf{X}_{(1)}`, and leave behind all the other rows from all other groups, which we will call group :math:`\mathbf{X}_{(-1)}`.  So in general, for the :math:`g^\text{th}` group, we can split matrix |X| into :math:`\mathbf{X}_{(g)}` and :math:`\mathbf{X}_{(-g)}`.
 
@@ -1172,8 +1172,8 @@ We also calculate the usual PCA model on all the rows of |X| using |A| component
 	
 The :math:`Q^2_A` behaves exactly as :math:`R^2`, but with two important differences.  Like :math:`R^2`, it is a number less than 1.0 that indicates how well the testing data, in this case testing data that was generated by the cross-validation procedure, are explained by the model.  The first difference is that :math:`Q^2_A` is always less than the :math:`R^2` value.  The other difference is that :math:`Q^2_A` will not keep increasing with each successive component, it will, after a certain number of components, start to decrease.  This decrease in :math:`Q^2_A` indicates the new component just added is not systematic: it is unable to explain the cross-validated testing data.  We often see plots such as this one:
 
-.. figure:: images/barplot-for-R2-and-Q2.png
-	:alt:	images/barplot-for-R2-and-Q2.R
+.. figure:: ../figures/pca/barplot-for-R2-and-Q2.png
+	:alt:	../figures/pca/barplot-for-R2-and-Q2.R
 	:scale: 100
 	:width: 750px
 	:align: center
@@ -1289,8 +1289,8 @@ We summarize various properties of the PCA model, most have been described in th
 		
 	In general we can illustrate this:
 	
-		.. image:: images/decomposition-of-PCA-X-matrix.png
-			:alt:	images/decomposition-of-PCA-X-matrix.svg
+		.. image:: ../figures/pca/decomposition-of-PCA-X-matrix.png
+			:alt:	../figures/pca/decomposition-of-PCA-X-matrix.svg
 			:scale: 75
 			:width: 750px
 			:align: center
@@ -1339,8 +1339,8 @@ The other point to mention here is that contributions are calculated *from* one 
 
 But sometimes we would like to know, as in the figure below, what are the contribution from one point to another.  And these start and end points need not be an actual point; for a group of points we can use a suitable average of the points in the cluster.  So there are point-to-point, point-to-group, group-to-point, and group-to-group contributions in the scores.
 
-.. image:: images/contribution-plots-in-the-scores.png
-	:alt:	images/contribution-plots-in-the-scores.svg
+.. image:: ../figures/concepts/contributions/contribution-plots-in-the-scores.png
+	:alt:	../figures/concepts/contributions/contribution-plots-in-the-scores.svg
 	:scale: 100
 	:width: 750px
 	:align: center
@@ -1356,8 +1356,8 @@ Using indicator variables
 
 Sometimes these variables are imported into the computer software, but *not used in the model*.  They are only used in the display of results, where the indicator variable is shown in a different colour or with a different marker shape. We will see :ref:`an example of this for process troubleshooting <LVM_troubleshooting>`, to help isolate causes for poor yield from a process:
 
-.. figure:: images/process-troubleshooting.png
-	:alt:	images/process-troubleshooting.R
+.. figure:: ../figures/examples/raw-material-outcome/process-troubleshooting.png
+	:alt:	../figures/examples/raw-material-outcome/process-troubleshooting.R
 	:scale: 100
 	:width: 750px
 	:align: center
@@ -1373,10 +1373,10 @@ Visualization topic: linking and brushing
 
 :index:`Linking <pair: linking; latent variable modelling>` is when the same data point(s), are highlighted in two or more plots.  This is used to highlight outliers or interesting points in a multivariate data set.  The points could be highlighted in terms of colour and/or shape.
 
-:index:`Brushing <pair: brushing; latent variable modelling>` is the same as linking, except it is done in real-time as the user moves a mouse over a plot.  This concept was described by Becker and Cleveland in their original article called `Brushing Scatterplots <http://www.jstor.org/stable/1269768>`_, *Technometrics*, **29**, 127-142, 1987.
+:index:`Brushing <pair: brushing; latent variable modelling>` is the same as linking, except it is done in real-time as the user moves a mouse over a plot.  This concept was described by Becker and Cleveland in their original article called `Brushing Scatterplots <http://www.jstor.org/pss/1269768>`_, *Technometrics*, **29**, 127-142, 1987.
 
-.. image:: images/brushing-illustration.png
-	:alt:	images/brushing-illustration.R
+.. image:: ../figures/visualization/brushing-illustration.png
+	:alt:	../figures/visualization/brushing-illustration.R
 	:scale: 50
 	:width: 750px
 	:align: center
@@ -1401,8 +1401,8 @@ Room temperature data
 * Web address: http://datasets.connectmv.com/info/room-temperature
 * Description: Temperature measurements from 4 corners of a room
 
-.. image:: images/room-temperature-plots.png
-	:alt:	images/room-temperature-plots.R
+.. image:: ../figures/examples/room-temperature/room-temperature-plots.png
+	:alt:	../figures/examples/room-temperature/room-temperature-plots.R
 	:scale: 80
 	:width: 750px
 	:align: center
@@ -1441,8 +1441,8 @@ Now use the :ref:`concept of brushing <LVM_linking_brushing>` to interrogate and
 
 #.	Describe how a 3-D scatter plot would look with :math:`t_1` and :math:`t_2` as the :math:`(x,y)` axes, and SPE as the :math:`z`-axis.
 
-.. image:: images/3d-example-empty.png
-	:alt:	images/3d-example.R
+.. image:: ../figures/examples/room-temperature/3d-example-empty.png
+	:alt:	../figures/examples/room-temperature//3d-example.R
 	:scale: 50
 	:width: 750px
 	:align: center
@@ -1484,8 +1484,8 @@ This data set has become a classic data set when learning about multivariate dat
 *	Web address: http://datasets.connectmv.com/info/food-consumption
 *	Description: The data table lists for each country the relative consumption of certain food items, such as tea, jam, coffee, yoghurt, and others.
 
-.. image:: images/food-consumption.png
-	:alt:	images/food-consumption.numbers
+.. image:: ../figures/examples/food-consumption/food-consumption.png
+	:alt:	../figures/examples/food-consumption/food-consumption.numbers
 	:scale: 100
 	:width: 750px
 	:align: center
@@ -1516,8 +1516,8 @@ Silicon wafer thickness
 * Web address: http://datasets.connectmv.com/info/silicon-wafer-thickness
 * Description: These are nine thickness measurements recorded from various batches of silicon wafers.  One wafer is removed from each batch and the thickness of the wafer is measured at the nine locations, as shown in the illustration. 
 
-.. figure:: images/silicon-wafer-thickness-locations.png
-	:alt:	images/silicon-wafer-thickness-locations.svg
+.. figure:: ../figures/examples/silicon-wafer-thickness/silicon-wafer-thickness-locations.png
+	:alt:	../figures/examples/silicon-wafer-thickness/silicon-wafer-thickness-locations.svg
 	:scale: 50
 	:width: 500px
 	:align: center
@@ -1565,7 +1565,7 @@ The data available has:
 
 Import the data, and set the ``Outcome`` variable as a secondary identifier for each observation, as shown in the illustration below.  The observation's primary identifier is its batch number.
 
-.. figure:: images/raw-material-characterization.png
+.. figure:: ../figures/examples/raw-material-outcome/raw-material-characterization.png
 	:alt:	Screenshot from software
 	:scale: 80
 	:width: 750px

@@ -1663,11 +1663,11 @@ Exercises
 
 .. question::
 
-	Use the section on `Historical data <http://www.climate.weatheroffice.ec.gc.ca/climateData/canada_e.html>`_ from Environment Canada's website and use the ``Customized Search`` option to obtain data for the ``HAMILTON A`` station from 2000 to 2009.  Use the settings as ``Year=2000``, and ``Data interval=Monthly`` and request the data for 2000, then click ``Next year`` to go to 2001 and so on. 
+	Use the section on `Historical data <http://climate.weatheroffice.gc.ca/climateData/canada_e.html>`_ from Environment Canada's website and use the ``Customized Search`` option to obtain data for the ``HAMILTON A`` station from 2000 to 2009.  Use the settings as ``Year=2000``, and ``Data interval=Monthly`` and request the data for 2000, then click ``Next year`` to go to 2001 and so on. 
 
 		-	For each year from 2000 to 2009, get the total snowfall and the average of the ``Mean temp`` over the whole year (the sums and averages are reported at the bottom of the table).
 		-	Plot these 2 variables against time
-		-	Now retrieve the long-term averages for these data `from a different section of their website <http://www.climate.weatheroffice.ec.gc.ca/climate_normals/index_e.html>`_ (use the same location, ``HAMILTON A``, and check that the data range is 1971 to 2000).  Superimpose the long-term average as a horizontal line on your previous plot.
+		-	Now retrieve the long-term averages for these data `from a different section of their website <http://climate.weatheroffice.gc.ca/climate_normals/index_e.html>`_ (use the same location, ``HAMILTON A``, and check that the data range is 1971 to 2000).  Superimpose the long-term average as a horizontal line on your previous plot.
 		-	**Note**: the purpose of this exercise is more for you to become comfortable with web-based data retrieval, which is common in most companies.
 		-	**Note**: please use any other city for this question if you prefer.
 

@@ -180,8 +180,8 @@ Any variable can be monitored using control charts, as we saw in the earlier sec
 
 Consider the case of two variables, called :math:`x_1` and :math:`x_2`, shown on the right, on the two horizontal axes. These could be time-oriented data, or just measurements from various sequential batches of material. The main point is that each variable's :math:`3\sigma` Shewhart control limits indicate that all observations are within control.  It may not be apparent, but these two variables are negatively correlated with each other: as :math:`x_1` increases, the :math:`x_2` value decreases.
 
-.. figure:: images/two-axis-monitoring-plot.png
-	:alt:	images/two-axis-monitoring-plot.py
+.. figure:: ../figures/monitoring/two-axis-monitoring-plot.png
+	:alt:	../figures/monitoring/two-axis-monitoring-plot.py
 	:scale: 90
 	:width: 750px
 	:align: center
@@ -267,16 +267,16 @@ This section just gives a impression how 3-D and higher dimensional data sets ar
 
 The following illustration shows how we deal with an image, such as the one taken from a colour camera.  Imagine we have :math:`I` rows and :math:`J` columns of pixels, on 3 layers (red, green and blue wavelengths).  Each entry in this array is an intensity value, a number between 0 and 255.  For example, a pure red pixel is has the following 3 intensity values in layer 1, 2 and 3: (255, 0, 0), because layer 1 contains the intensity of the red wavelengths.  A pure blue pixel would be (0, 0, 255), while a pure green pixel would be (0, 255, 0) and a pure white pixel is (255, 255, 255).  In other words, each pixel is represented as a triplet of 3 intensity values.
 
-.. image:: images/image-unfolding.jpg
-	:alt:	images/image-unfolding.jpg
+.. image:: ../figures/image/image-unfolding.jpg
+	:alt:	../figures/image/image-unfolding.jpg
 	:scale: 55
 	:width: 750px
 	:align: center
 
 In the unfolded matrix we have :math:`IJ` rows and 3 columns.  In other words, each pixel in the image is represented in its own row.  A digital image with 768 rows and 1024 columns, would therefore be unfolded into a matrix with 786,432 rows and 3 columns.  If we perform PCA on this matrix we can calculate score values and SPE values: one per pixel.  Those scores can be refolded back into the original shape of the image.  It is useful to visualize those scores and SPE values in this way.
 
-.. figure:: images/lumber-example-combine.png
-	:alt:	images/lumber-example-combine.py
+.. figure:: ../figures/examples/lumber-images/lumber-example-combine.png
+	:alt:	../figures/examples/lumber-images/lumber-example-combine.py
 	:scale: 100
 	:width: 750px
 	:align: center

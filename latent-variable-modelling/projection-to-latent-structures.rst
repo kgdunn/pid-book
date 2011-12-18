@@ -31,8 +31,8 @@ In the section on :ref:`factorial experiments <DOE-two-level-factorials>` we int
 
 On most data sets though the columns in |X| are correlated.  Correlated columns are not too serious if they are mildly correlated.  But the illustration here shows the problem with strongly correlated variables, in this example :math:`x_1` and :math:`x_2` are strongly, positively correlated. Both variables are used to create a predictive model for :math:`y`. The model plane, :math:`\hat{y}=b_0 + b_1x_1 + b_2x_2` is found so that it minimizes the residual error. There is a unique minimum for the sum of squares of the residual error (i.e. the objective function). But very small changes in the raw :math:`x`-data lead to almost no change in the objective function, but will show large fluctuations in the solution for :math:`\mathbf{b}` as the plane rotates around the axis of correlation. This can be visualized in this illustration.
 
-.. image:: images/correlated-x-variables.png
-	:alt:	images/correlated-x-variables.svg
+.. image:: ../figures/pls/correlated-x-variables.png
+	:alt:	../figures/pls/correlated-x-variables.svg
 	:scale: 50%
 	:width: 750px
 	:align: center
@@ -55,8 +55,8 @@ We face another problem with MLR: the assumption that the variables in |X| are m
 
 The main idea with principal component regression is to replace the :math:`K` columns in |X| with their uncorrelated :math:`A` score vectors from PCA. 
 
-.. image:: images/PCR-data-structure-compared-to-MLR.png
-	:alt:	images/PCR-data-structure-compared-to-MLR.svg
+.. image:: ../figures/pls/PCR-data-structure-compared-to-MLR.png
+	:alt:	../figures/pls/PCR-data-structure-compared-to-MLR.svg
 	:scale: 100%
 	:width: 750px
 	:align: center
@@ -88,8 +88,8 @@ This has a number of advantages:
 
 Illustrated as follows we see the misleading strategy that is regularly seen with MLR.  The modeller has build a least squares model relating :math:`x_1` and :math:`x_2` to :math:`y`, over the given ranges of :math:`x`. The closed circles represent the actual data, while the open circles are the projections of the :math:`x_1` and :math:`x_2` values on the :math:`x_1 - x_2` plane. The predictive model works adequately.
 
-.. image:: images/correlated-x-variables-related-to-y.png
-	:alt:	images/correlated-x-variables-related-to-y.svg
+.. image:: ../figures/pls/correlated-x-variables-related-to-y.png
+	:alt:	../figures/pls/correlated-x-variables-related-to-y.svg
 	:scale: 60%
 	:width: 750px
 	:align: center
@@ -233,8 +233,8 @@ So for predictive uses, a PLS model is very similar to :ref:`principal component
 
 An important point is that PCR is a two-step process:
 
-.. image:: images/PCR-data-structure-compared-to-MLR.png
-	:alt:	images/PCR-data-structure-compared-to-MLR.svg
+.. image:: ../figures/pls/PCR-data-structure-compared-to-MLR.png
+	:alt:	../figures/pls/PCR-data-structure-compared-to-MLR.svg
 	:scale: 100%
 	:width: 750px
 	:align: center
@@ -260,8 +260,8 @@ Similar to PCA, the basis for PCR, we have that PLS also extracts sequential com
 
 We will get into the details shortly, but as a starting approximation, you can visualize PLS as a method that extracts a single set of scores, |T|, from both |X| and |Y| simultaneously.
 
-.. image:: images/PLS-data-structure.png
-	:alt:	images/PLS-data-structure.svg
+.. image:: ../figures/pls/PLS-data-structure.png
+	:alt:	../figures/pls/PLS-data-structure.svg
 	:scale: 50%
 	:width: 750px
 	:align: center
@@ -351,16 +351,16 @@ A geometric interpretation of PLS
 
 :ref:`As we did with PCA <LVM_PCA_geometric_interpretation>`, let's take a geometric look at the PLS model space.  In the illustration below we happen to have :math:`K=3` variables in |X|, and :math:`M=3` variables in |Y|. (In general :math:`K \neq M`, but :math:`K=M=3` make explanation in the figures easier.)  Once the data are centered and scaled we have just shifted our coordinate system to the origin.  Notice that there is one dot in |X| for each dot in |Y|.  Each dot represents a row from the corresponding |X| and |Y| matrix.
 
-.. image:: images/geometric-interpretation-of-PLS-step1.png
-	:alt:	images/geometric-interpretation-of-PLS.svg
+.. image:: ../figures/pls/geometric-interpretation-of-PLS-step1.png
+	:alt:	../figures/pls/geometric-interpretation-of-PLS.svg
 	:scale: 100%
 	:width: 750px
 	:align: center
 
 We assume here that you understand how the scores are the perpendicular projection of each data point onto each direction vector (if not, please review the :ref:`relevant section <LVM_PCA_geometric_interpretation>` in the PCA notes). In PLS though, the direction vectors, :math:`\mathbf{w}_1` and :math:`\mathbf{c}_1`, are found and each observation is projected onto the direction.  The point at which each observation lands is called the |X|-space score, :math:`t_i`, or the |Y|-space score, :math:`u_i`.  These scores are found so that the covariance between the :math:`t`-values and :math:`u`-values is maximized.
 
-.. image:: images/geometric-interpretation-of-PLS-step3.png
-	:alt:	images/geometric-interpretation-of-PLS.svg
+.. image:: ../figures/pls/geometric-interpretation-of-PLS-step3.png
+	:alt:	../figures/pls/geometric-interpretation-of-PLS.svg
 	:scale: 100%
 	:width: 750px
 	:align: center
@@ -369,8 +369,8 @@ As :ref:`explained above <LVM-PLS-conceptual-interpretation>`, this means that t
 
 The second component is then found so that it is orthogonal to the first component in the |X| space (the second component is not necessarily orthogonal in the |Y|-space, though it often is close to orthogonal).
 
-.. image:: images/geometric-interpretation-of-PLS-step4.png
-	:alt:	images/geometric-interpretation-of-PLS.svg
+.. image:: ../figures/pls/geometric-interpretation-of-PLS-step4.png
+	:alt:	../figures/pls/geometric-interpretation-of-PLS.svg
 	:scale: 90%
 	:width: 750px
 	:align: center
@@ -385,8 +385,8 @@ The scores for PLS are interpreted in exactly the :ref:`same way as for PCA <LVM
 
 The only difference that must be remembered is that these scores have a different orientation to the PCA scores.  As illustrated below, the PCA scores are found so that they only explain the variance in |X|; the PLS scores are calculated so that they also explain |Y| and have a maximum relationship between |X| and |Y|.  Most time these directions will be close together, but not identical.
 
-.. image:: images/geometric-comparison-PCA-PLS.png
-	:alt:	images/geometric-comparison-PCA-PLS.svg
+.. image:: ../figures/pls/geometric-comparison-PCA-PLS.png
+	:alt:	../figures/pls/geometric-comparison-PCA-PLS.svg
 	:scale: 60%
 	:width: 750px
 	:align: center
@@ -413,8 +413,8 @@ How the PLS model is calculated
 
 This section assumes that you are comfortable with the :ref:`NIPALS algorithm for calculating a PCA model <LVM_PCA_NIPALS_algorithm>` from |X|.  The NIPALS algorithm proceeds in exactly the same way for PLS, except we iterate through both blocks of |X| and |Y|.
 
-.. figure:: images/NIPALS-iterations-PLS.png
-	:alt:	images/NIPALS-iterations-PLS.svg
+.. figure:: ../figures/pls/NIPALS-iterations-PLS.png
+	:alt:	../figures/pls/NIPALS-iterations-PLS.svg
 	:scale: 75%
 	:width: 750px
 	:align: center
@@ -654,8 +654,8 @@ From this derivation we see these regression coefficients are a function of *all
 
 In the example below there were :math:`A=6` components, and :math:`K=14` and :math:`M=5`.  Investigating all 6 of the  :math:`\mathbf{r:c}` vectors is informative, but the coefficient plot provides an efficient way to understand how the |X| variables are related to this particular |Y| variable across all the components in the model.
 
-.. figure:: images/coefficient-plot-LDPE-A-is-6.png
-	:alt:	images/coefficient-plot-LDPE.R
+.. figure:: ../figures/pls/coefficient-plot-LDPE-A-is-6.png
+	:alt:	../figures/pls/coefficient-plot-LDPE.R
 	:scale: 70%
 	:width: 750px
 	:align: center
@@ -732,8 +732,8 @@ The taste of cheddar cheese
 	
 	* ``scatterplotMatrix(cheese[,2:5])``
 	
-	.. figure:: images/cheese-plots.png
-		:alt:	images/cheese-plots.R
+	.. figure:: ../figures/examples/cheese/cheese-plots.png
+		:alt:	../figures/examples/cheese/cheese-plots.R
 		:scale: 60%
 		:width: 750px
 		:align: center

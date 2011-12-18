@@ -175,6 +175,9 @@ rst_epilog = """
 .. |xdb| replace:: :math:`\overline{\overline{x}}`
 """
 
+
+linkcheck_ignore = [r'http://dx.doi.org/', 'http://www.jstor.org/pss/', 'http://books.google.com/']
+
 # -- Options for HTML output ---------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  Major themes that come with

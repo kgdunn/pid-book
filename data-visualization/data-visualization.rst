@@ -100,7 +100,7 @@ Sparklines are small graphics that carry a high density of information.  The hum
 
 Some further tips:
 
--	When plotting money values over time (e.g. sales of polymer composite over the past 10 years), adjust for inflation effects by dividing through by the consumer price index, or an appropriate factor.  Distortions due to the time value of money can be very misleading as this `example of car sales shows <http://www.duke.edu/~rnau/411infla.htm>`_.   A `Canadian inflation calculator <http://www.bankofcanada.ca/en/rates/inflation_calc.html>`_ is available from the Bank of Canada.
+-	When plotting money values over time (e.g. sales of polymer composite over the past 10 years), adjust for inflation effects by dividing through by the consumer price index, or an appropriate factor.  Distortions due to the time value of money can be very misleading as this `example of car sales shows <http://www.duke.edu/~rnau/411infla.htm>`_.   A `Canadian inflation calculator <http://www.bankofcanada.ca/rates/related/inflation-calculator>`_ is available from the Bank of Canada.
 
 -	If you ever get the feeling "why are we being shown so little", then you must request more data before and after the time period or current sequence shown. A typical example is with stock-price data (see :ref:`example figure of Apple's stock <visualization-apple-stock>`). There are numerous graphical "lies" in magazines and reports where the plot shows a drastic change in trend, however in the context of prior data, that trend is a small aberration.  Again, this brings into play the brain's remarkable power to discern signal from noise, but to do this our brains require context.
 
@@ -601,5 +601,5 @@ Exercises
 
 	*Enrichment*:
 
-	*	Watch `this 20 minute video <http://www.ted.com/index.php/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen.html>`_ that shows how a 2-dimensional plot comes alive to show 5 dimensions of data.  What are the 5 dimensions?
+	*	Watch `this 20 minute video <http://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen.html>`_ that shows how a 2-dimensional plot comes alive to show 5 dimensions of data.  What are the 5 dimensions?
 	*	A condensed version from this, `4 minute YouTube video <http://www.youtube.com/v/jbkSRLYSojo>`_ shows Hans Rosling giving a new perspective on the same data.  This `Economist article <http://www.economist.com/node/17663585>`_ has some interesting background on Dr. Rosling, as does this page, `giving a selection of his work <http://www.economist.com/node/21013330>`_.

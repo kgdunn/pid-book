@@ -300,14 +300,14 @@ References and readings
 -	**Strongly recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, chapters 5 and 6 with topics from chapters 11, 12, 13 and 15.
 -	`A web tutorial on designed experiments <http://www.chemometrics.se/index.php?option=com_content&task=view&id=18&Itemid=27>`_
 -	Søren Bisgaard: `Must a Process Be in Statistical Control Before Conducting Designed Experiments <http://dx.doi.org/10.1080/08982110701826721>`_, with discussion (`part 1 <http://dx.doi.org/10.1080/08982110701866198>`_, `part 2 <http://dx.doi.org/10.1080/08982110801894892>`_, `part 3 <http://dx.doi.org/10.1080/08982110801890148>`_, `part 4 <http://dx.doi.org/10.1080/08982110801924509>`_, `part 5 <http://dx.doi.org/10.1080/08982110801894900>`_ and a `rejoinder <http://dx.doi.org/10.1080/08982110801973118>`_), 
--	George Box and  J. Stuart Hunter: "The :math:`2^{k-p}` `Fractional Factorial Designs - Part I <http://www.jstor.org/stable/1266725>`_", *Technometrics*, **3**, 311-351, 1961.
--	George Box and  J. Stuart Hunter: "The :math:`2^{k-p}` `Fractional Factorial Designs - Part II <http://www.jstor.org/stable/1266553>`_", *Technometrics*, **3**, 449 - 458, 1961.
--	George Box: `Evolutionary Operation: A Method for Increasing Industrial Productivity <http://www.jstor.org/stable/2985505>`_", *Journal of the Royal Statistical Society* (Applied Statistics), **6**, 81 - 101, 1957.
--	William G. Hunter and J. R. Kittrell, "`Evolutionary Operation: A Review <http://www.jstor.org/stable/1266686>`_", *Technometrics*, **8**, 389-397, 1966.
+-	George Box and  J. Stuart Hunter: "The :math:`2^{k-p}` `Fractional Factorial Designs - Part I <http://www.jstor.org/pss/1266725>`_", *Technometrics*, **3**, 311-351, 1961.
+-	George Box and  J. Stuart Hunter: "The :math:`2^{k-p}` `Fractional Factorial Designs - Part II <http://www.jstor.org/pss/1266553>`_", *Technometrics*, **3**, 449 - 458, 1961.
+-	George Box: `Evolutionary Operation: A Method for Increasing Industrial Productivity <http://www.jstor.org/pss/2985505>`_", *Journal of the Royal Statistical Society* (Applied Statistics), **6**, 81 - 101, 1957.
+-	William G. Hunter and J. R. Kittrell, "`Evolutionary Operation: A Review <http://www.jstor.org/pss/1266686>`_", *Technometrics*, **8**, 389-397, 1966.
 -	Heather Tye: "`Application of Statistical Design of Experiments Methods in Drug Discovery <http://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_", *Drug Discovery Today*, **9**, 485-491, 2004.
 - R.A. Fisher, `Statistical Methods, Experimental Design and Scientific Inference <http://www.amazon.com/Statistical-Methods-Experimental-Scientific-Inference/dp/0198522290>`_, Oxford Science Publications, 2003.
 -	Myers and Montgomery: "`Response Surface Methodology: Process and product optimization using designed experiments <http://en.wikipedia.org/wiki/Special:BookSources/0470174463#Canada>`_".
--	Hill and Hunter: "`A Review of Response Surface Methodology: A Literature Survey <http://www.jstor.org/stable/1266632>`_", *Technometrics*, **8**, 571-590 , 1966. 
+-	Hill and Hunter: "`A Review of Response Surface Methodology: A Literature Survey <http://www.jstor.org/pss/1266632>`_", *Technometrics*, **8**, 571-590 , 1966. 
 -	Davies, "`The design and analysis of industrial experiments <http://en.wikipedia.org/wiki/Special:BookSources/0582460530#Canada>`_", chapter 11, revised second edition.
 -	Živorad Lazić, "Design of Experiments in Chemical Engineering: A Practical Guide", Wiley-VCH, 2004.
 
@@ -2084,7 +2084,7 @@ The general approach for response surface modelling
 .. rubric:: References
 
 *	A good book on response surface methods is by Myers and Montgomery: "`Response Surface Methodology: Process and product optimization using designed experiments <http://en.wikipedia.org/wiki/Special:BookSources/0470174463#Canada>`_".
-*	A review paper citing many examples of RSM in the chemical and engineering industries is by William Hill and William Hunter: "`A Review of Response Surface Methodology: A Literature Survey <http://www.jstor.org/stable/1266632>`_", *Technometrics*, **8**, 571-590 , 1966. 
+*	A review paper citing many examples of RSM in the chemical and engineering industries is by William Hill and William Hunter: "`A Review of Response Surface Methodology: A Literature Survey <http://www.jstor.org/pss/1266632>`_", *Technometrics*, **8**, 571-590 , 1966. 
 *	An excellent overview with worked examples is given by Davies in Chapter 11 of the revised second edition of "`The design and analysis of industrial experiments <http://en.wikipedia.org/wiki/Special:BookSources/0582460530#Canada>`_"
 
 .. _DOE-EVOP:
@@ -2100,8 +2100,8 @@ Because every experimental run is a run that is expected to produce saleable pro
 
 Some examples of the success of EVOP and a review paper are in these readings:
 
-- George Box: `Evolutionary Operation: A Method for Increasing Industrial Productivity <http://www.jstor.org/stable/2985505>`_", *Journal of the Royal Statistical Society* (Applied Statistics), **6**, 81 - 101, 1957.
-- William G. Hunter and J. R. Kittrell, "`Evolutionary Operation: A Review <http://www.jstor.org/stable/1266686>`_", *Technometrics*, **8**, 389-397, 1966.
+- George Box: `Evolutionary Operation: A Method for Increasing Industrial Productivity <http://www.jstor.org/pss/2985505>`_", *Journal of the Royal Statistical Society* (Applied Statistics), **6**, 81 - 101, 1957.
+- William G. Hunter and J. R. Kittrell, "`Evolutionary Operation: A Review <http://www.jstor.org/pss/1266686>`_", *Technometrics*, **8**, 389-397, 1966.
 
 Current day examples of EVOP do not appear in the scientific literature much, because this methodology is now so well established.
 
@@ -2172,7 +2172,7 @@ Also see the section on :ref:`optimal designs <DOE-optimial-designs>` for how on
 
 The other case that happens occasionally is that samples are lost, or the final response value is missing for some reason.  Not everything is lost: recall the main effects for a full :math:`2^k` factorial are estimated :math:`k` times at :ref:`each combination of the factors <DOE-COST-vs-factorial-efficiency>`.  
 
-If one or more experiments have missing :math:`y` values, you can still estimate these main effects, and sometimes the interaction parameters by hand.  Furthermore, analyzing the data in a least squares model will be an undetermined system: more unknowns than equations.  You could choose to drop out higher-order interaction terms to reduce the equations to a square system: as many unknowns as equations.  Then proceed to analyze the results from the least squares model as usual.  There are actually slightly more sophisticated ways of dealing with this problem, as described by Norman Draper in "`Missing Values in Response Surface Designs <http://www.jstor.org/stable/1266729>`_", *Technometrics*, **3**, 389-398, 1961.
+If one or more experiments have missing :math:`y` values, you can still estimate these main effects, and sometimes the interaction parameters by hand.  Furthermore, analyzing the data in a least squares model will be an undetermined system: more unknowns than equations.  You could choose to drop out higher-order interaction terms to reduce the equations to a square system: as many unknowns as equations.  Then proceed to analyze the results from the least squares model as usual.  There are actually slightly more sophisticated ways of dealing with this problem, as described by Norman Draper in "`Missing Values in Response Surface Designs <http://www.jstor.org/pss/1266729>`_", *Technometrics*, **3**, 389-398, 1961.
 
 The above discussion illustrates clearly our preference for using the least squares model: whether the experimental design was executed accurately or not: the least squares model always works, whereas the :ref:`short cut tools <DOE-two-level-factorials>` developed for perfectly executed experiments will fail.
 
@@ -2247,7 +2247,7 @@ The algorithms used to find the subset of experiments to run are called candidat
 
 **Readings**
 
-* St. John and Draper: "`D-Optimality for Regression Designs: A Review <http://www.jstor.org/stable/1267995>`_", *Technometrics*, **17**, 15-, 1975.
+* St. John and Draper: "`D-Optimality for Regression Designs: A Review <http://www.jstor.org/pss/1267995>`_", *Technometrics*, **17**, 15-, 1975.
 
 .. _DOE-mixture-designs:
 

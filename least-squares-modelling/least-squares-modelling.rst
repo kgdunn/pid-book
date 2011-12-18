@@ -106,13 +106,13 @@ References and readings
 
 -	Birkes and Dodge: *Alternative Methods of Regression*, 1993.
 
--	G.E.P. Box, `Use and Abuse of Regression <http://www.jstor.org/stable/1266635>`_, *Technometrics*, **8** (4), 625-629, 1966.
+-	G.E.P. Box, `Use and Abuse of Regression <http://www.jstor.org/pss/1266635>`_, *Technometrics*, **8** (4), 625-629, 1966.
 
--	W.S. Cleveland, `Robust Locally Weighted Regression and Smoothing Scatterplots <http://www.jstor.org/stable/2286407>`_, *Journal of the American Statistical Association*, **74** (368), p. 829-836, 1979.
+-	W.S. Cleveland, `Robust Locally Weighted Regression and Smoothing Scatterplots <http://www.jstor.org/pss/2286407>`_, *Journal of the American Statistical Association*, **74** (368), p. 829-836, 1979.
 
-..	Efron, Hastie, Johnstone and Tibshirani, `Least Angle Regression <http://www.jstor.org/stable/3448465>`_, *The Annals of Statistics*, **32**, p 407-451, 2004.
+..	Efron, Hastie, Johnstone and Tibshirani, `Least Angle Regression <http://www.jstor.org/pss/3448465>`_, *The Annals of Statistics*, **32**, p 407-451, 2004.
 
-..	S. Chatterjee and A. S. Hadi, `Influential Observations, High Leverage Points, and Outliers in Linear Regression <http://www.jstor.org/stable/2245477>`_, *Statistical Science*, **1** (3), 379-416, 1986.
+..	S. Chatterjee and A. S. Hadi, `Influential Observations, High Leverage Points, and Outliers in Linear Regression <http://www.jstor.org/pss/2245477>`_, *Statistical Science*, **1** (3), 379-416, 1986.
 
 What you will be able to do after this section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1480,7 +1480,7 @@ As with the simple least squares model, :math:`y = b_0 + b_1 x`, we aim to minim
 		                  &= \mathbf{y}^T\mathbf{y} - 2 \mathbf{y}^T\mathbf{X}\mathbf{b} + \mathbf{b}\mathbf{X}^T\mathbf{X}\mathbf{b}
 		\end{array}
 
-Taking partial derivatives with respect to the entries in :math:`\mathbf{b}` and setting the result equal to a vector of zeros, you can prove to yourself that :math:`\mathbf{b} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1}\mathbf{X}^T\mathbf{y}`.  You might find the `Matrix Cookbook <http://matrixcookbook.com/>`_ useful in solving these equations and optimization problems.
+Taking partial derivatives with respect to the entries in :math:`\mathbf{b}` and setting the result equal to a vector of zeros, you can prove to yourself that :math:`\mathbf{b} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1}\mathbf{X}^T\mathbf{y}`.  You might find the `Matrix Cookbook <http://www.google.ca/search?q=The+Matrix+Cookbook/>`_ useful in solving these equations and optimization problems.
 
 Three important relationships are now noted:
 
@@ -1585,7 +1585,7 @@ Now that we have introduced multiple linear regression to expand our models, we 
 		:align: center
 		:scale: 40
 
-	Axial and radial blades; figure from `Wikipedia <http://en.wikipedia.org/wiki/Impelle>`_
+	Axial and radial blades; figure from `Wikipedia <http://en.wikipedia.org/wiki/Impeller>`_
 
 We will start with the simplest case, using the example of the radial or axial impeller.  We wish to understand the effect on yield, :math:`y [\mu\text{g}]`, as a function of the impeller type, and impeller speed, :math:`x`.
 
@@ -2098,7 +2098,7 @@ Exercises
 
 .. question::
 
-	The `Kappa number data set <http://datasets.connectmv.com/info/kappa_number>`_ was used in an :ref:`earlier question <monitoring-kappa-number-question>` to construct a Shewhart chart.  The :ref:`"Mistakes to avoid" <monitoring-mistakes-to-avoid>` section (Process Monitoring), warns that the subgroups for a Shewhart chart must be independent to satisfy the assumptions used to derived the Shewhart limits. If the subgroups are not independent, then it will increase the type I (false alarm) rate.
+	The `Kappa number data set <http://datasets.connectmv.com/info/kappa-number>`_ was used in an :ref:`earlier question <monitoring-kappa-number-question>` to construct a Shewhart chart.  The :ref:`"Mistakes to avoid" <monitoring-mistakes-to-avoid>` section (Process Monitoring), warns that the subgroups for a Shewhart chart must be independent to satisfy the assumptions used to derived the Shewhart limits. If the subgroups are not independent, then it will increase the type I (false alarm) rate.
 
 	This is no different to the independence required for least squares models. Use the autocorrelation tool to determine a subgroup size for the Kappa variable that will satisfy the Shewhart chart assumptions.  Show your autocorrelation plot and interpret it as well.
 
@@ -2151,7 +2151,7 @@ Exercises
 			92,      260,  4900,       Yes,     38
 
 
-	-	Use software to fit a linear model that predicts the yield from these variables (the `data set is available from the website <http://datasets.connectmv.com/info/bioreactor_yields>`_).  See the `R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ for building linear models with integer variables in R.
+	-	Use software to fit a linear model that predicts the yield from these variables (the `data set is available from the website <http://datasets.connectmv.com/info/bioreactor-yields>`_).  See the `R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ for building linear models with integer variables in R.
 	-	Interpret the meaning of each effect in the model.  If you are using R, then the ``confint(...)`` function will be helpful as well. Show plots of each |x| variable in the model against yield.  Use a box plot for the baffles indicator variable.
 	-	Now calculate the :math:`\mathbf{X}^T\mathbf{X}` and :math:`\mathbf{X}^T\mathbf{y}` matrices; include a column in the :math:`\mathbf{X}` matrix for the intercept. Since you haven't mean centered the data to create these matrices, it would be misleading to try interpret them.
 	-	Calculate the least squares model estimates from these two matrices.  See the `R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ for doing matrix operations in R, but you might prefer to use MATLAB for this step.  Either way, you should get the same answer here as in the first part of this question.
