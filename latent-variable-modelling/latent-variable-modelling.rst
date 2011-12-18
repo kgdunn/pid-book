@@ -383,7 +383,7 @@ This section considers the important area of latent variable modelling.  These m
 What we will cover
 ~~~~~~~~~~~~~~~~~~
 
-.. figure:: images/latent-variable-modelling-section-mapping.png
+.. figure:: ../figures/mindmaps/latent-variable-modelling-section-mapping.png
 	:width: 750px 
 	:align: center
 	:scale: 90
@@ -395,6 +395,8 @@ References and readings
 	pair: references and readings; latent variable modelling
 
 These readings cover a variety of topics in the area of latent variable methods: 
+
+* **General**: A collection of important latent variable publications are collected at http://literature.connectmv.com
 
 * **General**: John MacGregor, Honglu Yu, Salvador García-Muñoz, Jesus Flores-Cerrillo, "`Data-Based Latent Variable Methods for Process Analysis, Monitoring and Control <http://dx.doi.org/10.1016/j.compchemeng.2005.02.007>`_". *Computers and Chemical Engineering*, **29**, 1217-1223, 2005.
 
@@ -446,8 +448,8 @@ The "classical" tools required to visualize and understand these datasets are :r
 
 We will represent any data set as a matrix, called |X|, where each row in |X| contains values taken from an *object* of some sort. These rows, or *observations* could be a collection of measurements at a particular point in time, various properties on a sample of final product, or a sample of raw material from a supplier. The columns in |X| are the values recorded for each observation.  We call these the *variables* and there are :math:`K` of them.
 
-	.. figure:: images/X-matrix-long-and-thin.png  % moved to Figures/data-types
-		:alt:	images/X-matrix-long-and-thin.svg
+	.. figure:: ../figures/data-types/X-matrix-long-and-thin.png
+		:alt:	../figures/data-types/X-matrix-long-and-thin.svg
 		:align: center
 		:scale: 18
 		:width: 400px
@@ -467,8 +469,8 @@ These data sets meet all the assumptions required to use the so-called "classica
 
 	This case is common for laboratory instrumentation, particularly spectroscopic devices. In recent years we are routinely collecting large quantities of data.  A typical example is with near-infrared probes embedded at-line.  These probes record a spectral response at around 1000 to 2000 different wavelengths.  The data are represented in |X| using one wavelength per column and each sample appears in a row. The illustration here shows data from :math:`N=460` samples, with data recorded every 2 nm (:math:`K=650`).
 	
-	.. image:: images/pharma-spectra.png  % moved to Figures/data-types
-		:alt:	images/pharma-spectra.py
+	.. image:: ../figures/examples/tablet-spectra/pharma-spectra.png
+		:alt:	../figures/examples/tablet-spectra/pharma-spectra.py
 		:scale: 70
 		:width: 750px
 		:align: center
@@ -483,8 +485,8 @@ These data sets meet all the assumptions required to use the so-called "classica
 	
 	For example, a modest size distillation column would have about 35 temperature measurements, 5 to 10 flow rates, 10 or so pressure measurements, and then about 5 more measurements derived from these recorded values.
 	 
-	.. figure:: images/Distillation_column_correlation.png  % moved to Figures/examples/distillation
-		:alt:	images/Distillation_column_correlation.svg
+	.. figure:: ../figures/examples/distillation/Distillation_column_correlation.png
+		:alt:	../figures/examples/distillation/Distillation_column_correlation.svg
 		:scale: 45
 		:width: 500px
 		:align: center
@@ -500,8 +502,8 @@ These data sets meet all the assumptions required to use the so-called "classica
 	This situation arises when we would like to predict one or more variables from another group of variables.  We have already seen this data structure in the :ref:`least squares section <LS_multiple_X_MLR>` where :math:`M = 1`, but more generally we would like to predict several :math:`y`-values from the same data in |X|.  
 	
 	
-	.. image:: images/X-and-Y-matrices.png  % moved to Figures/data-types
-		:alt:	images/X-and-Y-matrices.svg
+	.. image:: ../figures/data-types/X-and-Y-matrices.png
+		:alt:	../figures/data-types/X-and-Y-matrices.svg
 		:scale: 30
 		:width: 500px
 		:align: center
@@ -513,8 +515,8 @@ These data sets meet all the assumptions required to use the so-called "classica
 	These data tables are becoming very common, especially since 2000 onwards. A typical example is for image data from digital cameras. In this illustration a single image is taken at a point in time. The camera records the response at 6 different wavelengths, and the :math:`x-y` spatial directions (top-to-bottom and left-to-right). These values are recorded in a 3D data cube.
 	
 	
-	.. image:: images/image-data.png  % moved to Figures/data-types
-		:alt:	images/image-data.svg
+	.. image:: ../figures/data-types/image-data.png
+		:alt:	../figures/data-types/image-data.svg
 		:scale: 25
 		:width: 500px
 		:align: center
@@ -525,18 +527,20 @@ These data sets meet all the assumptions required to use the so-called "classica
 
 	Batch systems are common with high-value products: pharmaceuticals, fine-chemicals, and polymers.  The |Z| matrix below contains data that describes how the batch is prepared and also contains data that is constant over the duration of the whole batch.  The |X| matrix contains the recorded values for each variable over the duration of the batch.  For example, temperature ramp-up and ramp-down, flow rates of coolant, agitator speeds and so on. The final product properties, recorded at the end of the batch, are collected in matrix |Y|.
 	
-	.. figure:: images/Batch-data-layers-into-the-page.png % moved to Figures/batch/
-		:alt:	images/Batch-data-layers-into-the-page.svg
+	.. figure:: ../figures/batch/Batch-data-layers-into-the-page.png
+		:alt:	../figures/batch/Batch-data-layers-into-the-page.svg
 		:scale: 40
 		:width: 750px
 		:align: center
 		
 	An example of batch trajectory data, in matrix |X|, where there are 4 variables, recorded at 80 times points, on about 20 batches is shown here:
 	
-	.. image:: images/aligned-trajectories-many-batches-yeast.png
+	.. image:: ../figures/batch/aligned-trajectories-many-batches-yeast.png
 		:scale: 40
 		:width: 550px
 		:align: center
+		
+	.. Figure just a screen grab from the Yeast case study
 
 **Data fusion**	
 
@@ -580,10 +584,12 @@ Issues faced with engineering data
 	Missing data are very common in engineering applications.  Sensors go off-line, are damaged, or it is simply not possible to record all the variables (attributes) on each observation. Classical approaches are to throw away rows or columns with incomplete information, which might be acceptable when we have large quantities of data, but could lead to omitting important information in many cases.
 
 .. OMIT FOR NOW
-		:alt:	images/missing-data.png % moved to Figures/data-types
+		:alt:	../figures/data-types/missing-data.png
 		:scale: 50
 		:width: 750px
 		:align: center
+		
+		.. Figure is just screen grab
 
 .. OMIT FOR NOW
 	**Unaligned data**
@@ -626,8 +632,8 @@ Room temperature
 
 Imagine the room you are in has 4 temperature probes that sample and record the local temperature every 30 minutes.  Here is an example of what the four measurements might look like over 3 days.
 
-.. figure:: images/room-temperature-plots.png
-	:alt:	images/room-temperature-plots.py
+.. figure:: ../figures/examples/room-temperature/room-temperature-plots.png
+	:alt:	../figures/examples/room-temperature/room-temperature-plots.py
 	:scale: 70
 	:width: 700px
 	:align: center
@@ -671,8 +677,8 @@ Mathematically the correct way to say this is that :math:`t_1` is a *linear comb
 
 We can visualize the data from this system in several ways, but we will simply show a 3-D representation of the first 3 temperatures: :math:`x_1, x_2, x_3`.
 
-.. figure:: images/room-temperature-plots-combine.png
-	:alt:	images/room-temperature-plots-combine.py
+.. figure:: ../figures/examples/room-temperature/room-temperature-plots-combine.png
+	:alt:	../figures/examples/room-temperature/room-temperature-plots-combine.py
 	:scale: 100
 	:width: 750px
 	:align: center
@@ -692,8 +698,8 @@ Note how correlated the data appear: forming a diagonal line across the cube's i
 		* :math:`x_2` = average feed thickness: average of thickness 3 and 6
 		* :math:`x_3` = average taper: average of thickness 1, 2 and 3 subtracted from average thickness 4, 5, and 6
 
-		.. figure:: images/board_measurement_locations.png
-			:alt:	images/board_measurement_locations.svg
+		.. figure:: ../figures/examples/board-thickness//board_measurement_locations.png
+			:alt:	../figures/examples/board-thickness//board_measurement_locations.svg
 			:scale: 50
 			:width: 500px
 			:align: center
@@ -706,8 +712,8 @@ Note how correlated the data appear: forming a diagonal line across the cube's i
 	
 	The plots of these different thicknesses are 
 
-	.. figure:: images/board-thickness-2d-and-3d-plot.png
-		:alt:	images/board-thickness-data-combine.py
+	.. figure:: ../figures/examples/board-thickness/board-thickness-2d-and-3d-plot.png
+		:alt:	../figures/examples/board-thickness/board-thickness-data-combine.py
 		:scale: 70
 		:width: 750px
 		:align: center

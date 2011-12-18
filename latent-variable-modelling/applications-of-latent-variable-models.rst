@@ -32,13 +32,14 @@ There are :math:`A` loadings and score plots. In many cases this is far fewer th
 
 In the example shown here the company was interested in how their product performed against that of their competitor.  Six variables called A to F were measured on all the product samples, (codes are used, because the actual variables measured are proprietary). The loadings for these 6 variables are labelled below, while the remaining points are the scores. The scores have been scaled and superimposed on the loadings plot, to create what is called a :index:`biplot`. The square, green points were the competitor's product, while the smaller purple squares were their own product.  
 
-.. figure:: images/process-understanding.png
-	:alt:	images/process-understanding.key
+.. figure:: ../figures/examples/competitor-product/competitor-product.png
+	:alt:	process-understanding.key
 	:scale: 80
 	:width: 750px
 	:align: center
 	
-.. This figure was from an earlier project on plastic pellets (around 2006?)
+.. This figure was from an earlier project on plastic pellets (around 2006?).
+.. The keynote presentation was used to disguise the original variable names.
 
 From this single figure the company learned that:
 
@@ -67,8 +68,8 @@ We already saw a troubleshooting example in the section on :ref:`interpreting sc
 
 #.	Structure the data so that the majority of the data is from normal, common-cause operation. The reason is that the PCA model plane should be oriented in the directions of normal operation.  The rest of the |X| matrix should be from when the problem occurs and develops.  
 
-	.. figure:: images/troubleshooting-a-process.png
-		:alt:	images/troubleshooting-a-process.svg
+	.. figure:: ../figures/concepts/troubleshooting/troubleshooting-a-process.png
+		:alt:	../figures/concepts/troubleshooting/troubleshooting-a-process.svg
 		:scale: 45
 		:width: 500px
 		:align: center	
@@ -87,8 +88,8 @@ Here is an example where the yield of a company's product was declining. They su
 
 The score plot (left) and loadings plot (right) help isolate potential reasons for the reduced yield.  Batches with reduced yield have high, positive :math:`t_2` values and low, negative :math:`t_1` values.  What factors lead to batches having score values with this combination of :math:`t_1` and :math:`t_2`?  It would take batches with a combination of low values of TGA and TMA, and/or above average size5, size10 and size15 levels, and/or high DSC values to get these sort of score values.  These would be the *generally expected* trends, based on an interpretation of the scores and loadings.
 
-.. image:: images/process-troubleshooting.png
-	:alt:	images/process-troubleshooting.R
+.. image:: ../figures/examples/raw-material-outcome/process-troubleshooting.png
+	:alt:	../figures/examples/raw-material-outcome/process-troubleshooting.R
 	:scale: 100
 	:width: 750px
 	:align: center
@@ -133,8 +134,8 @@ This application area is rapidly growing in importance. Fortunately it is fairly
 
 The scores and loadings plot are repeated here again:
 
-.. figure:: images/pca-on-food-texture-scores-and-loadings.png
-	:alt:	images/pca-on-food-texture-data.R
+.. figure:: ../figures/examples/food-texture/pca-on-food-texture-scores-and-loadings.png
+	:alt:	../figures/examples/food-texture//pca-on-food-texture-data.R
 	:scale: 80
 	:width: 750px
 	:align: center

@@ -286,7 +286,7 @@ The material in this section is used whenever you need to perturb and learn more
 What you will be able to do after this section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. figure:: images/DOE-section-mapping.png
+.. figure:: ../figures/mindmaps/DOE-section-mapping.png
 	:width: 750px 
 	:align: center
 	:scale: 90
@@ -341,8 +341,8 @@ Designed experiments are the only way we can be sure that these correlated event
 
 Here's another example from Box's book: consider the negative slope least squares model between pressure and yield.  As pressure increases, the yield drops.  It is true that they are correlated, as that is exactly what a least squares model is intended for: to quantify correlation.  However the true mechanism is rather that pressure is increased to remove frothing that occurs in the reactor.  Higher frothing occurs when there is an impurity in the raw material, so operators increase reactor pressure when they see frothing (i.e. high impurity).  However, it is the high impurity that actually causes the lower yield.
 
-.. image:: images/yield-pressure-impurity-correlation.png
-	:alt:	images/yield-pressure-impurity-correlation.svg
+.. image:: ../figures/doe/yield-pressure-impurity-correlation.png
+	:alt:	../figures/doe/yield-pressure-impurity-correlation.svg
 	:scale: 50
 	:width: 750px
 	:align: left
@@ -451,7 +451,7 @@ So for each of the 24310 realizations we calculate the difference of the average
 Had we used a formal test of differences where we pool the variances, we will find a :math:`z`-value of 0.8435, and the probability of obtaining that value, using the :math:`t`-distribution with :math:`n_A + n_B - 2` degrees of freedom is 79.3%.  See how close they agree?  
 
 ..  Future improvement: superimpose the t-distribution on top of the histogram (scaled).  E.g. see BHH(v1) page 97
-.. figure:: images/single-experiment-randomization.png
+.. figure:: ../figures/doe/single-experiment-randomization.png
 	:align: center
 	:width: 750px
 	:scale: 90
@@ -479,7 +479,7 @@ Consider a bioreactor where we are producing a particular enzyme.  The yield is 
 
 The base operating point is 346K with a feed substrate concentration of 1.5 g/L (point marked with a circle) and a yield in the region of 63%.
 
-.. figure:: images/COST-contours.png
+.. figure:: ../figures/doe/COST-contours.png
 	:align: center
 	:width: 700px
 	:scale: 80	
@@ -566,7 +566,7 @@ The range over which they will be varied is given in the table.  This range was 
 
 #.	For simple systems you can visualize the design and results as shown here.  This is known as a *cube plot*.
 
-	.. image:: images/factorial-two-levels-two-variables-no-analysis.png
+	.. image:: ../figures/doe/factorial-two-levels-two-variables-no-analysis.png
 		:align: left
 		:width: 750px
 		:scale: 50
@@ -584,7 +584,7 @@ Runs 3 and 4 have :math:`S` at the |+| level.  Again, the only change is in the 
 
 We can perform a similar calculation for the main effect of substrate concentration, :math:`S` by comparing experiments 1 and 3.  :math:`\Delta S_{T-} = 64-69 = -5\%` per 0.5g/L, while experiments 2 and 4 give :math:`\Delta S_{T+} = 53-60 = -7\%` per 0.5g/L.  So the average main effect for :math:`S` is a :math:`-6\%` change in conversion for every 0.5 g/L change in substrate concentration. A graphical method is developed below which you should use:
 
-	.. image:: images/factorial-two-levels-two-variables-with-analysis.png
+	.. image:: ../figures/doe/factorial-two-levels-two-variables-with-analysis.png
 		:align: left
 		:width: 750px
 		:scale: 60
@@ -593,14 +593,14 @@ This visual summary is a very effective method of seeing how the system responds
 
 The following surface plot illustrates the true, but unknown surface, from which our measurements are taken: notice the slight curvature on the edges of each face.  The main effects estimated above are a linear approximation of the conversion over the region spanned by the factorial.
 
-	.. image:: images/factorial-two-level-surface-example-cropped.png
+	.. image:: ../figures/doe/factorial-two-level-surface-example-cropped.png
 		:align: left
 		:width: 750px
 		:scale: 50
 
 There is an alternative way to visualize these main effects.  Use this method when you don't have computer software to draw the surfaces.  (We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>`).  It is called an :index:`interaction plot`, which we discuss more in the next section.
 
-	.. image:: images/factorial-two-level-line-plot.png
+	.. image:: ../figures/doe/factorial-two-level-line-plot.png
 		:align: left
 		:width: 750px
 		:scale: 80
@@ -618,7 +618,7 @@ We call this **interaction**, when the effect of one factor is not constant at d
 
 Let's use a *different system* here to illustrate interaction effects, but still using :math:`T` and :math:`S` as the variables being changed, and keeping the response variable as :math:`y` = conversion, shown by the contour lines.
 
-	.. image:: images/factorial-two-level-with-interactions.png
+	.. image:: ../figures/doe/factorial-two-level-with-interactions.png
 		:align: left
 		:width: 550px
 		:scale: 85
@@ -655,7 +655,7 @@ Similarly, the main effect of substrate concentration is:
 
 The data may also be visualized using an *interaction plot*:
 
-.. figure:: images/factorial-two-level-line-plot-with-interaction.png
+.. figure:: ../figures/doe/factorial-two-level-line-plot-with-interaction.png
 	:align: center
 	:width: 600px
 	:scale: 100
@@ -767,7 +767,7 @@ Some things to note are (1) the orthogonality of :math:`\mathbf{X}^T\mathbf{X}` 
 
 	Now contrast these numbers with those in the :ref:`graphical analysis done previously <DOE-two-level-factorials-main-effects>` and repeated below.  They are the same, as long as we are careful to interpret them as the change over **half the range**.
 	
-	.. image:: images/factorial-two-levels-two-variables-with-analysis.png
+	.. image:: ../figures/doe/factorial-two-levels-two-variables-with-analysis.png
 		:align: left
 		:width: 750px
 		:scale: 50
@@ -785,7 +785,7 @@ The interaction term can now be readily interpreted: it is the additional increa
 
 Finally, out of interest, the non-linear surface that was used to generate the experimental data for the interacting system is coloured in the illustration.  In practice we never know what this surface looks like, but we estimate it with the least squares plane which appears below the non-linear surface as black and white grids. The corners of the box are outer levels at which we ran the factorial experiments.
 	
-	.. image:: images/factorial-two-level-surface-with-interaction-cropped.png
+	.. image:: ../figures/doe/factorial-two-level-surface-with-interaction-cropped.png
 		:align: left
 		:width: 750px
 		:scale: 50
@@ -923,7 +923,7 @@ Pareto plot
 
 A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to estimate.  Once these parameters have been calculated, for example, by using a :ref:`least squares model <DOE-analysis-by-least-squares>`, then plot the absolute value of the model coefficients in sorted order: from largest magnitude to smallest, ignoring the intercept term.  Significant coefficients are established by visual judgement - establishing a visual cut-off by contrasting to small coefficients to the larger ones.
 
-.. image:: images/pareto-plot-full-fraction.png
+.. image:: ../figures/doe/pareto-plot-full-fraction.png
 	:align: left
 	:width: 800px
 	:scale: 50
@@ -1058,7 +1058,7 @@ So even though the temperature effect's confidence interval would be :math:`11.5
 		library(car)
 		qq.plot(b, labels=labels)
 	
-	.. figure:: images/normal-probability-signifcant-effects.png
+	.. figure:: ../figures/doe/normal-probability-signifcant-effects.png
 		:align: center
 		:scale: 50
 		:width: 800px
@@ -1080,7 +1080,7 @@ Variance of estimates from the COST approach vs factorial approach
 
 Finally, we end this section on factorials by illustrating their efficiency.  Contrast the two cases: COST and the full factorial approach.  For this analysis we define the main effect simply as the difference between the high and low value (normally we divide through by 2, but the results still hold).  Define the variance of the measured :math:`y` value as :math:`\sigma_y^2`.
 
-	.. image:: images/comparison-of-variances.png
+	.. image:: ../figures/doe/comparison-of-variances.png
 		:align: left
 		:width: 750px
 		:scale: 70
@@ -1162,7 +1162,7 @@ Our approach is to intentionally *confound*  the effect of the disturbance with 
 
 Each group of 4 runs is called a *block* and the process of creating these 2 blocks is called :index:`blocking <pair: blocking; experiments>`.  The experiments within each block must be run randomly.
 
-.. image:: images/blocking-factorial-3-factors.png
+.. image:: ../figures/doe/blocking-factorial-3-factors.png
 	:align: left
 	:scale: 50
 	:width: 500px
@@ -1249,7 +1249,7 @@ A half fraction has :math:`\frac{1}{2}2^k = 2^{k-1}` runs. But which runs do we 
 
 So this is our designed experiment for 3 factors, but it only requires 4 experiments as shown by the open points.  The experiments given by the solid points are not run.
 
-.. image:: images/half-fraction-in-3-factors.png
+.. image:: ../figures/doe/half-fraction-in-3-factors.png
 	:align: left
 	:scale: 35
 	:width: 500px
@@ -1397,7 +1397,7 @@ After running these 4 experiments (in random order of course) we have a complete
 
 So we see that we can always complete our half-fraction by creating a complementary fraction.  This complimentary fraction is found by flipping the sign on the generating factor.  For example, changing the sign from **C** to **-C**.  See the illustration.
 
-.. image:: images/complementary-half-fraction-in-3-factors.png
+.. image:: ../figures/doe/complementary-half-fraction-in-3-factors.png
 	:align: left
 	:scale: 35
 	:width: 500px
@@ -1674,8 +1674,8 @@ Use this table to visualize the trade-off between design resolution, number of f
 
 .. _DOE_design_trade_off_BHH_272:
 
-.. image:: images/BHH-DOE-grid.png
-	:alt:	images/BHH-DOE-grid.svg
+.. image:: ../figures/doe/DOE-trade-off-table.png
+	:alt:	../figures/doe/DOE-trade-off-table.svg
 	:scale: 80
 	:width: 550px
 	:align: left
@@ -1728,11 +1728,11 @@ where :math:`\mathbf{b} = [b_0, b_A, b_B, b_C, b_D, b_E, b_F, b_G]`.  The matrix
 
 How do you assess which main effects are important?  There are eight data points and eight parameters, so there are no degrees of freedom and the residuals are all zero.  In this case you have to use a :ref:`Pareto plot <DOE-Pareto-plot>`, which requires that your variables have been suitably scaled in order to judge importance of the main effects.  The Pareto plot would be given as shown below, and as usual, it does not include the intercept term.
 
-.. image:: images/pareto-plot.png
+.. image:: ../figures/doe/pareto-plot.png
 	:align: left
 	:width: 800px
 	:scale: 37
-	:alt:	images/pareto-plot.R
+	:alt:	../figures/doe/pareto-plot.R
 	
 Significant effects would be **A**, **C** and **G**.  The next largest effect, **E**, though fairly small, could be due to the main effect **E** or due to the **AC** interaction, because recall the confounding pattern for main effect was :math:`\widehat{\beta}_{\mathbf{E}} \rightarrow` **E + AC + BG + DF**.
 
@@ -1768,11 +1768,11 @@ A final observation for this section is how fractional factorials will collapse 
 
 Consider the diagram here, where a half fraction in factors **A**, **B** and **C** was run (4 experiments) at the closed points.  
 
-.. figure:: images/projectivity-of-a-half-fraction-in-3-factors.png
+.. figure:: ../figures/doe/projectivity-of-a-half-fraction-in-3-factors.png
 	:align: center
 	:width: 800px
 	:scale: 50
-	:alt:	images/projectivity-of-a-half-fraction-in-3-factors.svg
+	:alt:	../figures/doe/projectivity-of-a-half-fraction-in-3-factors.svg
 
 On analyzing the data, the experimenter discovers that factor **C** does not actually have an impact on response :math:`y`.  This means the **C** dimension could have been removed from the experiment, and is illustrated by projecting the **A** and **B** factors forward, removing factor **C**.  Notice that this is now a full factorial in factors **A** and **B**.  The same situation would hold if either factor **B** or factor **A** were found to be unimportant.  Furthermore if two factors are found to be unimportant, then this corresponds to 2 replicate experiments in 1 factor.
 
@@ -1801,7 +1801,7 @@ Notice how it is a *sequential* approach.  RSM then is a tool the describes how 
 
 We will however first consider just the effect of a single factor, :math:`x_1` as it relates to our response, :math:`y`. This is to illustrate the general response surface process.
 
-.. figure:: images/steepest-ascent-univariately-corrected.png
+.. figure:: ../figures/doe/steepest-ascent-univariately-corrected.png
 	:alt: steepest-ascent-univariately.svg
 	:align: center
 	:scale: 70
@@ -1872,7 +1872,7 @@ Similarly, we can increase :math:`S` by :math:`\Delta x_S = \text{1 unit} = 1 \t
 
 The interaction term is small, indicating the response surface is mostly linear in this region.  The illustration shows the model's contours (straight, green lines).  Notice that the model contours are a good approximation to the actual contours (dotted, light grey), which are unknown in practice.
 
-.. image:: images/RSM-base-case-with-first-factorial-notes.png
+.. image:: ../figures/doe/RSM-base-case-with-first-factorial-notes.png
 	:alt:	RSM-base-case.py
 	:align: left
 	:scale: 80
@@ -1938,7 +1938,7 @@ The profit at this point is :math:`y_7 =` $ 463.  We have gone too far as profit
 
 This time we have deciding to slightly smaller ranges in the factorial :math:`\Delta_T = 8 = (339 - 331)` K and :math:`\Delta_S = 0.4 = (2.17 - 1.77)` g/L so that we can move more slowly along the surface.
 
-.. figure:: images/RSM-base-case-combined.*
+.. figure:: ../figures/doe/RSM-base-case-combined.*
 	:align: center
 	:width: 900px
 	:scale: 100
@@ -1991,7 +1991,7 @@ We will not go into too much detail about :index:`central composite designs`, ot
 
 The :index:`axial points <pair: axial points; experiments>` are placed :math:`\sqrt{2} = 1.4` coded units away from the center for a 2 factor system, and 1.7 units away for a :math:`k=3` factor system.  Rules for higher numbers of factors, and the reasoning behind the 1.4 and 1.7 unit step size can be found, for example in the textbook by Box, Hunter and Hunter.
 
-.. image:: images/central-composite-design.png
+.. image:: ../figures/doe/central-composite-design.png
 	:align: left
 	:width: 900px
 	:scale: 50
@@ -2186,11 +2186,11 @@ Most engineering systems have limits of performance, either by design or from a 
 
 A simple bioreactor example for 2 factors is shown: at high temperatures and high substrate concentrations we risk activating a different, undesirable side-reaction.  The shaded region represents the constraint where we may not operate.  We could for example replace the :math:`(T_{+}, C_{+})` experiment with two others, and then analyze these 5 runs using least squares.
 
-.. figure:: images/two-factors-with-constraint.png
+.. figure:: ../figures/doe/two-factors-with-constraint.png
 	:align: center
 	:width: 500px
 	:scale: 45
-	:alt:	images/two-factors-with-constraint.svg
+	:alt:	../figures/doe/two-factors-with-constraint.svg
 
 Unfortunately, these 5 runs do not form an orthogonal (independent) :math:`\mathbf{X}` matrix anymore.  We have lost orthogonality.  We have also reduced the space (or volume when we have 3 or more factors) spanned by the factorial design.
 
@@ -2258,11 +2258,11 @@ The area of mixture designs is incredibly important for optimizing recipes, part
 
 A mixture design is required when the factors being varied add up to 100% to form a mixture.  Then these factors cannot be adjusted in an independent, factorial-like manner, since their proportion in the recipe must add to 100%: :math:`\sum_i x_i = 1`.  These designs result in triangular patterns (called simplexes).  The experimental points at the 3 vertices are for pure components :math:`x_A, x_B`, or :math:`x_C`.  Points along the sides represent a 2-component mixture, and points in the interior represent a 3-component blend.
 
-.. figure:: images/mixture-design.png
+.. figure:: ../figures/doe/mixture-design.png
 	:align: center
 	:width: 500px
 	:scale: 100
-	:alt:	images/mixture-design.svg
+	:alt:	../figures/doe/mixture-design.svg
 
 In the above figure on the right, the shaded region represents a constraint that cannot be operated in.  A D-optimal algorithm must then be used to select experiments in the remaining region.  The example is for finding the lowest cost mixture for a fruit punch, while still meeting certain taste requirements (e.g. watermelon juice is cheap, but has little taste).  The constraint represents a region where the acidity is too high.  
 
@@ -2349,16 +2349,16 @@ Exercises
 	
 		Not required for this question, but one of the best ways to visualize a small factorial, or a subset of a larger factorial, is with a cube plot:
 	
-		.. figure:: images/assignment-6-two-levels-two-variables-no-analysis.png
-			:alt:	images/assignment-6-two-levels-two-variables-no-analysis.svg
+		.. figure:: ../figures/doe/assignment-6-two-levels-two-variables-no-analysis.png
+			:alt:	../figures/doe/assignment-6-two-levels-two-variables-no-analysis.svg
 			:align: center
 			:width: 500px
 			:scale: 80
 		
 	#.	The interaction plot which visually shows the main effects described above is:
 
-		.. figure:: images/assignment-6-two-level-line-plot-with-interaction.png
-			:alt:	images/assignment-6-two-level-line-plot-with-interaction.svg
+		.. figure:: ../figures/doe/assignment-6-two-level-line-plot-with-interaction.png
+			:alt:	../figures/doe/assignment-6-two-level-line-plot-with-interaction.svg
 			:align: center
 			:width: 500px
 			:scale: 80
@@ -2518,7 +2518,7 @@ Exercises
 
 		At these conditions the expected yield is in the region of 93 to 94% (runs 7 and 8 from the standard order).
 
-		.. figure:: images/bioreactor-pareto-plot.png
+		.. figure:: ../figures/doe/bioreactor-pareto-plot.png
 			:alt:	bioreactor-case.R
 			:align: center
 			:width: 600px
@@ -2605,7 +2605,7 @@ Exercises
 	
 	**R code for this question**
 
-	.. literalinclude:: code/bioreactor-case.R
+	.. literalinclude:: ../figures/doe/bioreactor-case.R
 			:language: s
 			:lines: 23-
 			
@@ -2652,11 +2652,11 @@ Exercises
 	*	Draw a response surface plot of **A** *vs* **B** over a suitably wide range beyond the experimental region.  
 	*	Where would you move **A** and **B** if your objective is to increase the response value?
 
-	.. figure:: images/central-composite-question.png
+	.. figure:: ../figures/doe/central-composite-question.png
 		:align: center
 		:width: 500px
 		:scale: 60
-		:alt:	images/central-composite-question.svg
+		:alt:	../figures/doe/central-composite-question.svg
 
 	You might feel more comfortable setting up the problem in MATLAB.  You can use the `contour plot <http://www.mathworks.com/access/helpdesk/help/techdoc/creating_plots/f10-2524.html>`_ functions in MATLAB to visualize the results.
 
