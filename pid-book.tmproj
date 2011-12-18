@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>design-analysis-experiments/design-analysis-experiments.rst</string>
+	<string>process-monitoring/process-monitoring.rst</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -16,7 +16,7 @@
 			<key>filename</key>
 			<string>contents.rst</string>
 			<key>lastUsed</key>
-			<date>2011-04-13T15:31:27Z</date>
+			<date>2011-12-18T17:37:51Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -28,13 +28,13 @@
 			<key>filename</key>
 			<string>preface.tex</string>
 			<key>lastUsed</key>
-			<date>2011-04-25T15:56:17Z</date>
+			<date>2011-12-18T17:13:41Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>conf.py</string>
 			<key>lastUsed</key>
-			<date>2011-03-31T01:54:05Z</date>
+			<date>2011-12-18T17:15:34Z</date>
 		</dict>
 		<dict>
 			<key>name</key>
@@ -45,8 +45,6 @@
 			<string>data-visualization</string>
 		</dict>
 		<dict>
-			<key>expanded</key>
-			<true/>
 			<key>name</key>
 			<string>design-analysis-experiments</string>
 			<key>regexFolderFilter</key>
@@ -55,8 +53,6 @@
 			<string>design-analysis-experiments</string>
 		</dict>
 		<dict>
-			<key>expanded</key>
-			<true/>
 			<key>name</key>
 			<string>latent-variable-modelling</string>
 			<key>regexFolderFilter</key>
@@ -65,8 +61,6 @@
 			<string>latent-variable-modelling</string>
 		</dict>
 		<dict>
-			<key>expanded</key>
-			<true/>
 			<key>name</key>
 			<string>least-squares-modelling</string>
 			<key>regexFolderFilter</key>
@@ -75,6 +69,8 @@
 			<string>least-squares-modelling</string>
 		</dict>
 		<dict>
+			<key>expanded</key>
+			<true/>
 			<key>name</key>
 			<string>process-monitoring</string>
 			<key>regexFolderFilter</key>
@@ -97,14 +93,14 @@
 	<integer>229</integer>
 	<key>metaData</key>
 	<dict>
-		<key>design-analysis-experiments/design-analysis-experiments.rst</key>
+		<key>contents.rst</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>222</integer>
+				<integer>25</integer>
 				<key>line</key>
-				<integer>19</integer>
+				<integer>7</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -139,12 +135,26 @@
 			<key>firstVisibleLine</key>
 			<integer>4</integer>
 		</dict>
+		<key>process-monitoring/process-monitoring.rst</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>39</integer>
+				<key>line</key>
+				<integer>674</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>659</integer>
+		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
 		<string>preface.tex</string>
-		<string>design-analysis-experiments/design-analysis-experiments.rst</string>
-		<string>least-squares-modelling/least-squares-modelling.rst</string>
+		<string>contents.rst</string>
+		<string>process-monitoring/process-monitoring.rst</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>

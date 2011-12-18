@@ -47,7 +47,7 @@ The material in this section is used whenever you need to rapidly detect problem
 What we will cover
 ~~~~~~~~~~~~~~~~~~~~
 
-.. image:: ../figures/mindmaps/control-charts-section-mapping.png
+.. image:: ../figures/mindmaps/process-monitoring-section-mapping.png
   :width: 750px 
   :scale: 50
 
@@ -90,7 +90,7 @@ Concepts
 
 Concepts that you must be familiar with by the end of this section: 
 
-.. image:: ../figures/mindmaps/control-chart-concepts.png
+.. image:: ../figures/mindmaps/process-monitoring-concepts.png
 	:width: 600px
 	:align: center
 	:scale: 55
@@ -665,14 +665,14 @@ ArcelorMittal's steel mill in Hamilton, Ontario, (formerly called Dofasco) has u
 
 The computer screenshot shows the monitoring system, called Caster SOS (Stable Operation Supervisor), which is followed by the operators. There are several charts on the screen: two charts, called "Stability Index 1" and "Stability Index 2", are one-sided monitoring charts. Notice the warning limits and the action limits. In the middle is a two-sided chart. A wealth of information is presented on the screen - their design was heavily influenced and iterated on several times, working with the *operators*. The screen shot is used with permission of Dr. John MacGregor. 
 
-.. figure:: ../figures/monitoring/Dofasco-monitoring-chart.png
+.. figure:: ../figures/examples/Dofasco/Dofasco-monitoring-chart.png
 	:width: 750px
 	:align: center
 	:scale: 100
 	
 The economics of monitoring charts cannot be overstated. The ArcelorMittal example above was introduced around 1997.  The calculations required by this system are complex - however the computer systems performs them in near real-time, allowing the operators to take corrective action within a few seconds.  The data show a significant reduction in breakouts since 1997 (*used with permission of Dr. John MacGregor*).  The economic savings and increased productivity is in the millions of dollars per year, as each breakout costs around $200,000 to $500,000 due to process shutdowns and/or equipment damage.
 
-.. figure:: ../figures/monitoring/breakouts-dofasco-economics.png
+.. figure:: ../figures/examples/Dofasco/breakouts-dofasco-economics.png
 	:width: 750px
 	:align: center
 	:scale: 80
