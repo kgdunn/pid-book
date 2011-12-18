@@ -396,7 +396,7 @@ We usually start by looking at the :math:`(\mathbf{t}_1, \mathbf{t}_2)` scatterp
 
 .. image:: ../figures/examples/refinery-troubleshooting/score-plot.png
 	:alt:	Screenshot from thesis; used with permission (see gmail email on 16 December 2011)
-	:scale: 52
+	:scale: 50
 	:width: 750px
 	:align: center
 
