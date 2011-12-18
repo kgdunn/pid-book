@@ -23,8 +23,8 @@ The material in this section is used when you must learn more about your system 
 What we will cover
 ==================
 
-.. figure:: images/visualization-subject-mapping.png
-	:alt:	images/visualization-subject-mapping.xmind
+.. figure:: ../figures/visualization/visualization-subject-mapping.png
+	:alt:	../figures/visualization/visualization-subject-mapping.xmind
 	:width: 750px
 	:align: center
 	:scale: 60
@@ -60,7 +60,7 @@ Here are some tips for effective plots:
 
 	.. _visualization-bad-labels:
 
-	.. image:: images/CPU-temperature_-_from_www_aw_org_on_26_Dec_2009.png
+	.. image:: ../figures/visualization/CPU-temperature_-_from_www_aw_org_on_26_Dec_2009.png
 		:width: 750px
 		:align: center
 		:scale: 50
@@ -72,28 +72,28 @@ Here are some tips for effective plots:
 
 	.. _visualization-cluttered-trajectories:
 
-	.. image:: images/3_correlated_variables_-_badly_displayed_in_Numbers.png
+	.. image:: ../figures/visualization/3_correlated_variables_-_badly_displayed_in_Numbers.png
 		:width: 750px
 
 	As shown here, even using differently coloured lines and/or markers may work in selected instances, but this still leads to a clutter of lines and markers. The chart here shows this principle, created with the default settings from Apple iWork's *Numbers* (2009).
 
 	Using different markers, improving the axis labelling and tightening up the axis ranges, and thinning out the ink improves the chart slightly.  This took about 3 minutes extra in the software, because I had not used the software before and had to find the settings.
 
-	.. figure:: images/3_correlated_variables_-_slightly_better.png
+	.. figure:: ../figures/visualization/3_correlated_variables_-_slightly_better.png
 		:width: 750px
 
 	This final example with parallel axes, is greatly improved, but took about 10 minutes to assemble, and would likely take a similar amount of time to format in MATLAB, Excel, Python or other packages.  The results are clearer to interpret: variables "Type A" and "Type B" move up and down together, while variable "Type C" moves in the opposite direction.  Note how the y-axis for "Type C" is rescaled to start from its minimum value, rather than a value of zero.  One should always use "tight" limits on the y-axis
 
 	.. _visualization-cleaned-trajectories:
 
-	.. image:: images/3_correlated_variables_-_better.png
+	.. image:: ../figures/visualization/3_correlated_variables_-_better.png
 		:width: 750px
 
 4.	Continuing on with the some data, a much improved visualization technique is to use sparklines to represent the sequence of data.
 
 		.. _visualization-sparkline-trajectories:
 
-		.. figure:: images/3-correlated-variables-as-sparklines.png
+		.. figure:: ../figures/visualization/3-correlated-variables-as-sparklines.png
 			:scale: 30
 
 Sparklines are small graphics that carry a high density of information.  The human eye is easily capable of absorbing about 250 dots (points) per linear inch and 650 points per square inch.  These :index:`sparklines` convey the same amount of information as the previous plots, and are easy to consume on handheld devices such as iPhones, cellphones, and tablet computing devices which are common in chemical plants and other engineering facilities.  Read more about them from `this hyperlink <http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR>`_.
@@ -106,7 +106,7 @@ Some further tips:
 
 	.. _visualization-apple-stock:
 
-	.. image:: images/AAPL-stock-prices.png
+	.. image:: ../figures/visualization/AAPL-stock-prices.png
 		:width: 750px
 		:scale: 80
 		:align: center
@@ -116,7 +116,7 @@ Bar plots
 
 The :index:`bar plot <pair: bar plot; visualization>` is another univariate plot on a two dimensional axis.  The axes are not called x- or y-axes with bar plots, instead, one axis is called the category axis, while the other axis shows the value of each bar.
 
-.. image:: images/bar-plot-example-expenses.png
+.. image:: ../figures/visualization/bar-plot-example-expenses.png
    :scale: 60
 
 Some advice related to bar plots:
@@ -125,8 +125,8 @@ Some advice related to bar plots:
 
 -	A time-series plot is more appropriate than a bar plot when there is a time based ordering to the categories, because usually you want to imply some sort of trend with time-ordered data.
 
-	.. image:: images/quarterly-profit-barplot-vs-lineplot.png
-		:alt:	images/quarterly-profit-barplot.R
+	.. image:: ../figures/visualization/quarterly-profit-barplot-vs-lineplot.png
+		:alt:	../figures/visualization/quarterly-profit-barplot.R
 		:width: 750px
 		:align: center
 		:scale: 100
@@ -151,16 +151,16 @@ Some advice related to bar plots:
 
 -	Rather use a table for a handful of data points:
 
-    .. image:: images/profit-by-region.png
-		:alt:	images/profit-by-region.numbers
+    .. image:: ../figures/visualization/profit-by-region.png
+		:alt:	../figures/visualization/profit-by-region.numbers
 		:width: 750px
 		:align: center
 		:scale: 100
 
 -	Don't use cross-hatching, textures, or unusual shading in the plots: this creates distracting visual vibrations.
 
-	.. image:: images/hatched-barplot.png
-		:alt:	images/hatched-barplot.R
+	.. image:: ../figures/visualization/hatched-barplot.png
+		:alt:	../figures/visualization/hatched-barplot.R
 		:width: 600px
 		:align: center
 		:scale: 45
@@ -227,7 +227,7 @@ The following box plot is a graphical summary of these numbers.
 
 .. _visualization-boxplot-example:
 
-.. image:: images/boxplot-for-two-by-six-100-boards.png
+.. image:: ../figures/visualization/boxplot-for-two-by-six-100-boards.png
 	:align: left
 	:width: 700px
 	:scale: 55
@@ -247,7 +247,7 @@ This is a plot many people are comfortable using.  It helps one understand the r
 
 The unspoken intention of a scatter plot is usually to ask the reader to draw a causal relationship between the two variables.  However, not all scatter plots actually show causal phenomenon.
 
-.. image:: images/scatterplot-figures.png
+.. image:: ../figures/visualization/scatterplot-figures.png
 	:width: 750px
 	:scale: 80
 
@@ -271,13 +271,13 @@ Further improvements can be made to your scatter plots:
 
 -	Extend the frames only as far as your data
 
-	.. image:: images/scatterplot-figures-with-regression-lines.png
+	.. image:: ../figures/visualization/scatterplot-figures-with-regression-lines.png
 		:width: 750px
 		:scale: 75
 
 -	One can add box plots and histograms to the side of the axes to aide interpretation
 
-	.. image:: images/scatterplot-with-histograms-updated.png
+	.. image:: ../figures/visualization/scatterplot-with-histograms-updated.png
 		:width: 750px
 		:scale: 42
 
@@ -285,7 +285,7 @@ Further improvements can be made to your scatter plots:
 
     .. _reference_to_use_of_colour:
 
-	.. image:: images/scatterplot-with-2-extra-dimensions.png
+	.. image:: ../figures/visualization/scatterplot-with-2-extra-dimensions.png
 		:scale: 80
 
 
@@ -302,15 +302,15 @@ The data table  is an efficient format for comparative data analysis on categori
 
 *	Compare monthly payments for buying or leasing various cars (categories).  The first two columns are being compared; the other columns contain additional, secondary information.
 
-	.. figure:: images/table-car-payments.png
-		:alt:	images/table-examples.numbers
+	.. figure:: ../figures/visualization/table-car-payments.png
+		:alt:	../figures/visualization/table-examples.numbers
 		:align: center
 		:scale: 75
 
 *	Compare defect types (number of defects) for different product grades (categories):
 
-	.. figure:: images/table-defect-counts.png
-		:alt:	images/table-examples.numbers
+	.. figure:: ../figures/visualization/table-defect-counts.png
+		:alt:	../figures/visualization/table-examples.numbers
 		:align: center
 		:scale: 50
 
@@ -336,7 +336,7 @@ Three common pitfalls to avoid:
 
 	Tabular data should avoid vertical grid lines, except when the columns are so close that mistakes will be made.  The human eye will use the visual white space between the numbers to create its own columns.
 
-	.. image:: images/table-grid-comparison.png
+	.. image:: ../figures/visualization/table-grid-comparison.png
 		:scale: 65
 
 To wrap up this section is a demonstration of tabular data in a different format, based on an idea of Tufte in *The Visual Display of Quantitative Information*, page 158.  Here we compare the corrosion resistance and roughness of a steel surface for two different types of coatings, A and B. 
@@ -363,7 +363,7 @@ A layout that you expect to see in a standard engineering report:
 
 And the layout advocated by Tufte:
 
-	.. image:: images/tables-recast-as-plots-both.png
+	.. image:: ../figures/visualization/tables-recast-as-plots-both.png
 	   :width: 750px
 	   :scale: 75
 
@@ -422,7 +422,7 @@ Exercises
 
 	The data shown here are the number of visits to a university website for a particular statistics course.  There are 90 students in the class, however the site is also publicly available.
 
-	.. figure:: images/course-website-visits.png
+	.. figure:: ../figures/visualization/course-website-visits.png
 		:align: center
 		:width: 750px
 
@@ -447,7 +447,7 @@ Exercises
 
 	The following graphics were shown in the print issue of *The Economist* in the 28 November 2009 issue, page 85. The article attempts to argue that there are enough similarities between Japan's stagnant economic experience in the 1990's (known as "Japan's Lost Decade"), and the current experience in the "rich world" western countries to give their policymakers pause for concern.  You can `read the full article here <http://www.economist.com/node/14973163?story_id=14973163>`_.  What problems do you notice with the graphics?
 
-	.. image:: images/economist-figure-story-id-14973163.png
+	.. image:: ../figures/visualization/economist-figure-story-id-14973163.png
 		:align: center
 		:scale: 40
 
@@ -470,7 +470,7 @@ Exercises
 
 	This figure is a screen shot from a `Toronto Star article <http://www.yourhome.ca/homes/realestate/article/742160--mortgage-rate-roulette>`_ about mortgage payments as a function of the interest rate.  Redraw the same information in a more suitable form.
 
-	.. image:: images/Toronto-Star-Mortgage-Rates.png
+	.. image:: ../figures/visualization/Toronto-Star-Mortgage-Rates.png
 		:align: center
 		:scale: 80
 
@@ -481,7 +481,7 @@ Exercises
 
 	A simple annotated table will show the data well enough.  A bar chart, horizontally or vertically aligned is not suitable.
 
-	.. image:: images/mortgage-repayment-table.png
+	.. image:: ../figures/visualization/mortgage-repayment-table.png
 		:align: center
 		:scale: 60
 
@@ -511,7 +511,7 @@ Exercises
 		    days <- factor(web$DayOfWeek, level=day.names)
 		    boxplot(web$Visits ~ days)
 
-		.. figure:: images/website-traffic-boxplot.png
+		.. figure:: ../figures/visualization/website-traffic-boxplot.png
 			:width: 500px
 			:scale: 60
 
@@ -523,7 +523,7 @@ Exercises
 
 	#.	A time-series plot of the data shows increased visits in September and October, and declining visits in November and December.  This coincides with the phases of the academic term.  Some people use a plot of the total number of visits within each month, which shows this effect in a nice way.
 
-		.. image:: images/website-traffic-sequence-and-timeseries.png
+		.. image:: ../figures/visualization/website-traffic-sequence-and-timeseries.png
 			:width: 750px
 			:align: center
 
@@ -549,7 +549,7 @@ Exercises
 
 	.. See the higher resolution PNG file version also
 	
-	.. image:: images/kidnappings-question.jpg
+	.. image:: ../figures/visualization/kidnappings-question.jpg
 		:scale: 30
 
 	#.	What type of plot is shown here?
@@ -573,8 +573,8 @@ Exercises
 		.. literalinclude:: code/kidnappings.R
 		       :language: s	
 	
-		.. figure:: images/kidnap-mobile.jpg
-			:alt:	code/kidnappings.R
+		.. figure:: ../figures/visualization/kidnap-mobile.jpg
+			:alt:	../figures/visualization/kidnappings.R
 			:scale: 60
 			:width: 500px
 			:align: center

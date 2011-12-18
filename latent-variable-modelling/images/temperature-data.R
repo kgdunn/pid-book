@@ -65,11 +65,18 @@ plot(SPE.A, type='b', main="SPE after using 2 LVs", ylab="SPE", xlab="Time order
 abline(h=reasonable.limit.95, col='red')
 dev.off()
 
+bitmap('temperatures-LV-1-scores.png', type="png256", width=10, height=3., res=300, pointsize=14)
+par(mar=c(3.0, 4.2, 3.0, 0.5))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
+par(cex.lab=1.3, cex.main=1.5, cex.sub=1.5, cex.axis=1.5)
+plot(-temps.T[,1], type='l', main="First latent variable: score", ylab="t1", xlab="Time order", ylim=c(-4,4))
+grid()
+dev.off()
+
 A = 2
 bitmap('temperatures-LV-2-scores.png', type="png256", width=10, height=3., res=300, pointsize=14)
 par(mar=c(3.0, 4.2, 3.0, 0.5))  # (bottom, left, top, right); defaults are par(mar=c(5, 4, 4, 2) + 0.1)
 par(cex.lab=1.3, cex.main=1.5, cex.sub=1.5, cex.axis=1.5)
-plot(temps.T[,A], type='b', main="Second latent variable: score", ylab="t2", xlab="Time order", ylim=c(-2,3.5))
+plot(temps.T[,A], type='l', main="Second latent variable: score", ylab="t2", xlab="Time order", ylim=c(-2,3.5))
 grid()
 dev.off()
 

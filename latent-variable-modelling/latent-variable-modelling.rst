@@ -446,7 +446,7 @@ The "classical" tools required to visualize and understand these datasets are :r
 
 We will represent any data set as a matrix, called |X|, where each row in |X| contains values taken from an *object* of some sort. These rows, or *observations* could be a collection of measurements at a particular point in time, various properties on a sample of final product, or a sample of raw material from a supplier. The columns in |X| are the values recorded for each observation.  We call these the *variables* and there are :math:`K` of them.
 
-	.. figure:: images/X-matrix-long-and-thin.png
+	.. figure:: images/X-matrix-long-and-thin.png  % moved to Figures/data-types
 		:alt:	images/X-matrix-long-and-thin.svg
 		:align: center
 		:scale: 18
@@ -467,7 +467,7 @@ These data sets meet all the assumptions required to use the so-called "classica
 
 	This case is common for laboratory instrumentation, particularly spectroscopic devices. In recent years we are routinely collecting large quantities of data.  A typical example is with near-infrared probes embedded at-line.  These probes record a spectral response at around 1000 to 2000 different wavelengths.  The data are represented in |X| using one wavelength per column and each sample appears in a row. The illustration here shows data from :math:`N=460` samples, with data recorded every 2 nm (:math:`K=650`).
 	
-	.. image:: images/pharma-spectra.png
+	.. image:: images/pharma-spectra.png  % moved to Figures/data-types
 		:alt:	images/pharma-spectra.py
 		:scale: 70
 		:width: 750px
@@ -482,8 +482,8 @@ These data sets meet all the assumptions required to use the so-called "classica
 	A current-day chemical refinery easily records about 2 observations (rows) per second on around 2000 to 5000 variables (called tags); generating in the region of 50 to 100 Mb of data per second.
 	
 	For example, a modest size distillation column would have about 35 temperature measurements, 5 to 10 flow rates, 10 or so pressure measurements, and then about 5 more measurements derived from these recorded values.
-	
-	.. figure:: images/Distillation_column_correlation.png
+	 
+	.. figure:: images/Distillation_column_correlation.png  % moved to Figures/examples/distillation
 		:alt:	images/Distillation_column_correlation.svg
 		:scale: 45
 		:width: 500px
@@ -500,7 +500,7 @@ These data sets meet all the assumptions required to use the so-called "classica
 	This situation arises when we would like to predict one or more variables from another group of variables.  We have already seen this data structure in the :ref:`least squares section <LS_multiple_X_MLR>` where :math:`M = 1`, but more generally we would like to predict several :math:`y`-values from the same data in |X|.  
 	
 	
-	.. image:: images/X-and-Y-matrices.png
+	.. image:: images/X-and-Y-matrices.png  % moved to Figures/data-types
 		:alt:	images/X-and-Y-matrices.svg
 		:scale: 30
 		:width: 500px
@@ -513,7 +513,7 @@ These data sets meet all the assumptions required to use the so-called "classica
 	These data tables are becoming very common, especially since 2000 onwards. A typical example is for image data from digital cameras. In this illustration a single image is taken at a point in time. The camera records the response at 6 different wavelengths, and the :math:`x-y` spatial directions (top-to-bottom and left-to-right). These values are recorded in a 3D data cube.
 	
 	
-	.. image:: images/image-data.png
+	.. image:: images/image-data.png  % moved to Figures/data-types
 		:alt:	images/image-data.svg
 		:scale: 25
 		:width: 500px
@@ -525,7 +525,7 @@ These data sets meet all the assumptions required to use the so-called "classica
 
 	Batch systems are common with high-value products: pharmaceuticals, fine-chemicals, and polymers.  The |Z| matrix below contains data that describes how the batch is prepared and also contains data that is constant over the duration of the whole batch.  The |X| matrix contains the recorded values for each variable over the duration of the batch.  For example, temperature ramp-up and ramp-down, flow rates of coolant, agitator speeds and so on. The final product properties, recorded at the end of the batch, are collected in matrix |Y|.
 	
-	.. figure:: images/Batch-data-layers-into-the-page.png
+	.. figure:: images/Batch-data-layers-into-the-page.png % moved to Figures/batch/
 		:alt:	images/Batch-data-layers-into-the-page.svg
 		:scale: 40
 		:width: 750px
@@ -580,7 +580,7 @@ Issues faced with engineering data
 	Missing data are very common in engineering applications.  Sensors go off-line, are damaged, or it is simply not possible to record all the variables (attributes) on each observation. Classical approaches are to throw away rows or columns with incomplete information, which might be acceptable when we have large quantities of data, but could lead to omitting important information in many cases.
 
 .. OMIT FOR NOW
-		:alt:	images/Missing-data.png
+		:alt:	images/missing-data.png % moved to Figures/data-types
 		:scale: 50
 		:width: 750px
 		:align: center
