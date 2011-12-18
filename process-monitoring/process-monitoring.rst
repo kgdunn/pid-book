@@ -47,7 +47,7 @@ The material in this section is used whenever you need to rapidly detect problem
 What we will cover
 ~~~~~~~~~~~~~~~~~~~~
 
-.. image:: images/control-charts-section-mapping.png
+.. image:: ../figures/mindmaps/control-charts-section-mapping.png
   :width: 750px 
   :scale: 50
 
@@ -90,7 +90,7 @@ Concepts
 
 Concepts that you must be familiar with by the end of this section: 
 
-.. image:: images/control-chart-concepts.png
+.. image:: ../figures/mindmaps/control-chart-concepts.png
 	:width: 600px
 	:align: center
 	:scale: 55
@@ -126,7 +126,7 @@ The key points are:
 
 Here is an example that shows these properties.
 
-.. image:: images/demo-of-monitoring-chart.png
+.. image:: ../figures/monitoring/demo-of-monitoring-chart.png
 	:width: 750px
 	:scale: 80
 
@@ -190,7 +190,7 @@ Derivation using theoretical parameters
 
 Define the variable of interest as :math:`x`, and assume that we have samples of :math:`x` available in sequence order.  No assumption is made regarding the distribution of :math:`x`.  The average of :math:`n` of these :math:`x`-values is defined as :math:`\overline{x}`, which from the Central limit theorem we know will be more normally distributed with unknown population mean :math:`\mu` and unknown population variance :math:`\sigma^2/n`, where :math:`\mu` and :math:`\sigma` refer to the distribution that samples of :math:`x` came from. The figure below shows the case for :math:`n=5`.
 
-.. image:: images/explain-Shewhart-data-source.png
+.. image:: ../figures/monitoring/explain-Shewhart-data-source.png
 	:width: 750px
 	:align: center
 	:scale: 70
@@ -216,8 +216,8 @@ The reason for :math:`c_n = \pm 3` is that the total area between that lower and
 
 The following illustration should help connect the concept of the raw data's distribution to the distribution of the subgroups:
 
-.. figure:: images/explain-shewhart.png
-	:alt:	images/explain-shewhart.R
+.. figure:: ../figures/monitoring/explain-shewhart.png
+	:alt:	../figures/monitoring/explain-shewhart.R
 	:scale: 70
 	:width: 750px
 	:align: center
@@ -302,7 +302,7 @@ To quantify the probability :math:`\beta`, recall that a Shewhart chart is for m
 	\alpha &= Pr\left(\overline{x}\,\,\text{is in control, but lies outside the limits}\right)\\
 	\beta &= Pr\left(\overline{x}\,\,\text{is not in control, but lies inside the limits}\right)
 
-.. figure:: images/show-shift-beta-error.png
+.. figure:: ../figures/monitoring/show-shift-beta-error.png
 	:width: 500px
 	:align: center
 	:scale: 90
@@ -319,7 +319,7 @@ To quantify the probability :math:`\beta`, recall that a Shewhart chart is for m
 ==============================  ====== ====== ====== ====== ====== ====== 
 
 ..	
-	.. figure:: images/type-II-error-shift.png
+	.. figure:: ../figures/monitoring/type-II-error-shift.png
 		:width: 500px
 		:align: center
 		:scale: 90
@@ -389,8 +389,8 @@ The Shewhart chart is not too sensitive to detecting shifts in the mean.  Depend
 	\\
 	\text{In general}\qquad S_t &= S_{t-1} + (x_t - T) 
 	
-.. figure:: images/explain-CUSUM.png
-	:alt:	images/explain-CUSUM.R
+.. figure:: ../figures/monitoring/explain-CUSUM.png
+	:alt:	../figures/monitoring/explain-CUSUM.R
 	:width: 750px
 	:align: center
 	
@@ -423,7 +423,7 @@ The two previous charts highlight the 2 extremes of monitoring charts.  On the o
 
 As an introduction to the exponentially weighted moving average (EWMA) chart, consider first a :index:`moving average` (MA) chart, which is used just like a Shewhart chart, except the samples that make up the subgroup are calculated using a moving window of width :math:`n`.
 
-.. figure:: images/explain-moving-average-data-source.png
+.. figure:: ../figures/monitoring/explain-moving-average-data-source.png
 	:width: 750px
 	:align: center
 	:scale: 70
@@ -436,7 +436,7 @@ The MA chart plots values of :math:`x_t`, calculated from groups of size :math:`
 
 The EWMA is similar to the MA, but with different weights; heavier weights for more recent observations, tailing off exponentially to very small weights further back.  Let's take a look at a derivation. 
 
-.. figure:: images/explain-EWMA.png
+.. figure:: ../figures/monitoring/explain-EWMA.png
 	:width: 750px
 	:align: center
 	:scale: 95
@@ -479,8 +479,8 @@ which shows that the one-step-ahead prediction is a just a weighted sum of the r
 
 From the above discussion and the weights shown for the 4 different charts, it should be clear now how an EWMA chart is a tradeoff between a  Shewhart chart and a CUSUM chart.  As :math:`\lambda \rightarrow 1`, the EWMA chart behaves more as a Shewhart chart, giving only weight to the most recent observation.  While as :math:`\lambda \rightarrow 0` the EWMA chart starts to have an infinite memory (like a CUSUM chart).
 
-.. image:: images/explain-weights-for-process-monitoring.png
-	:alt: images/explain-weights-for-process-monitoring.R
+.. image:: ../figures/monitoring/explain-weights-for-process-monitoring.png
+	:alt: ../figures/monitoring/explain-weights-for-process-monitoring.R
 	:width: 750px
 	:align: center
 	:scale: 65
@@ -561,7 +561,7 @@ Interpretation of the PCR:
 
 The PCR is often called the :index:`process width`.  Let's see why by taking a look at a process with PCR=0.5 and then PCR=2.0.  In the first case :math:`\text{USL} - \text{LSL} = 3\sigma`.  Since the interpretation of PCR assumes a :index:`centered process`, we can draw a diagram as shown below:
 
-.. figure:: images/explain-PCR-half.png
+.. figure:: ../figures/monitoring/explain-PCR-half.png
 	:width: 750px
 	:align: center
 	:scale: 80
@@ -576,7 +576,7 @@ The diagram is from a process with mean of 80 and where LSL=65 and USL=95.  Thes
 
 Contrast this to the case where PCR = 2.0 for the same system.  To achieve that level of process capability, using the *same upper and lower specifications* we have to  reduce the standard deviation by a factor of 4, down to :math:`\sigma = 2.5`.   The figure below illustrates that almost no off-specification product is produced for a centered process at PCR = 2.0.  There is a width of :math:`12 \sigma` units from the LSL to the USL, giving the process ample room to move. 
 
-.. figure:: images/explain-PCR-two.png
+.. figure:: ../figures/monitoring/explain-PCR-two.png
 	:width: 750px
 	:align: center
 	:scale: 80
@@ -665,14 +665,14 @@ ArcelorMittal's steel mill in Hamilton, Ontario, (formerly called Dofasco) has u
 
 The computer screenshot shows the monitoring system, called Caster SOS (Stable Operation Supervisor), which is followed by the operators. There are several charts on the screen: two charts, called "Stability Index 1" and "Stability Index 2", are one-sided monitoring charts. Notice the warning limits and the action limits. In the middle is a two-sided chart. A wealth of information is presented on the screen - their design was heavily influenced and iterated on several times, working with the *operators*. The screen shot is used with permission of Dr. John MacGregor. 
 
-.. figure:: images/Dofasco-monitoring-chart.png
+.. figure:: ../figures/monitoring/Dofasco-monitoring-chart.png
 	:width: 750px
 	:align: center
 	:scale: 100
 	
 The economics of monitoring charts cannot be overstated. The ArcelorMittal example above was introduced around 1997.  The calculations required by this system are complex - however the computer systems performs them in near real-time, allowing the operators to take corrective action within a few seconds.  The data show a significant reduction in breakouts since 1997 (*used with permission of Dr. John MacGregor*).  The economic savings and increased productivity is in the millions of dollars per year, as each breakout costs around $200,000 to $500,000 due to process shutdowns and/or equipment damage.
 
-.. figure:: images/breakouts-dofasco-economics.png
+.. figure:: ../figures/monitoring/breakouts-dofasco-economics.png
 	:width: 750px
 	:align: center
 	:scale: 80
@@ -727,12 +727,12 @@ Exercises
 	-	Lower control limit at 3 standard deviations = 71.1
 	-	Upper control limit at 3 standard deviations = 89.6
 
-	.. figure:: images/batch-yields-monitoring.png
+	.. figure:: ../figures/monitoring/batch-yields-monitoring.png
 		:align: center
 		:width: 750px
 		:scale: 60
 
-	.. literalinclude:: code/batch-yields-monitoring-assignment4-2010.R
+	.. literalinclude:: ../figures/monitoring/batch-yields-monitoring-assignment4-2010.R
 	       :language: s
 	       :lines: 1-29, 32-
 
@@ -756,12 +756,12 @@ Exercises
 
 	#.	A plot of the raw data:
 
-		.. figure:: images/boards-monitoring-raw-data.png
+		.. figure:: ../figures/monitoring/boards-monitoring-raw-data.png
 			:width: 750px
 			:align: center
 	#.	A plot of just the phase I data shows no particular outliers.  Most people found a few outliers, that's OK - remember it is a subjective test, and if this were a process you were responsible for, then you would know more clearly what an outlier was.  For me though, I didn't think any of these points were particularly unusual.
 
-		.. figure:: images/boards-monitoring-find-outliers-phase1.png
+		.. figure:: ../figures/monitoring/boards-monitoring-find-outliers-phase1.png
 			:width: 750px
 			:align: center
 		
@@ -779,13 +779,13 @@ Exercises
 	
 		A Shewhart chart of all the phase 1 data (including outliers, to highlight them) is shown here.  The limits were the final limits, after iteratively removing the first unusual subgroup	.  The code contains all the calculation steps.
 	
-		.. figure:: images/boards-monitoring-Shewhart-phase1.png
+		.. figure:: ../figures/monitoring/boards-monitoring-Shewhart-phase1.png
 			:width: 750px
 			:align: center
 	
 	#.	Using these parameters on the phase II data generates the following plot:
 
-		.. figure:: images/boards-monitoring-Shewhart-phase2.png
+		.. figure:: ../figures/monitoring/boards-monitoring-Shewhart-phase2.png
 			:width: 750px
 			:align: center
 		
@@ -806,13 +806,13 @@ Exercises
 	
 		-	A more sensitive monitoring chart for this would be the exponentially weighted moving variance: MacGregor, J.F. and Harris, T.J., "The Exponentially Weighted Moving Variance", *Journal of Quality Technology*, **25**, p 106-118, 1993.
 
-		.. figure:: images/boards-monitoring-subgroup-standard-deviation.png
+		.. figure:: ../figures/monitoring/boards-monitoring-subgroup-standard-deviation.png
 			:width: 750px
 			:align: center
 			:scale: 80
 		
 
-	.. literalinclude:: code/boards-monitoring-assignment4-2010.R
+	.. literalinclude:: ../figures/monitoring/boards-monitoring-assignment4-2010.R
 	       :language: s
 	       :lines: 1-8, 12,14-15,19-20,22-57,61-65,67-69,73-77,79-101,105-106
 
@@ -844,7 +844,7 @@ Exercises
 
 	A tank uses small air bubbles to keep solid particles in suspension.  If too much air is blown into the tank, then excessive foaming occurs; if too little air is blown into the tank the particles sink and drop out of suspension.  Which monitoring chart would you use to ensure the airflow is always near target?
 
-	.. figure:: images/tank-suspension.png
+	.. figure:: ../figures/monitoring/tank-suspension.png
 		:scale: 70
 		:align: center
 		:width: 400px
@@ -998,14 +998,14 @@ Exercises
 	#.	This time we have the process standard deviation, so there is no need to estimate it from historical phase I data (remember the assumption that Cp and Cpk value are calculated from stable process operation?).  The Shewhart control limits would be: :math:`\overline{\overline{x}} \pm 3 \times \frac{\sigma}{\sqrt{n}} = 2 \pm 3 \times 0.0784 / 2`.  The LCL = 1.88 mm and the UCL = 2.12 mm.
 	#.	An illustration is shown here with the USL, LSL, LCL and UCL, and target values.  This question merely required you to show the LCL and UCL within the LSL and USL, on any normal distribution curve.  However, for illustration, I have added to the diagram the distribution for the Shewhart chart (thicker line) and distribution for the raw process data (thinner line).  
 
-	.. figure:: images/plastic-sheet-control-specification-limits.png
+	.. figure:: ../figures/monitoring/plastic-sheet-control-specification-limits.png
 		:scale: 80
 		:align: center
 		:width: 600px
 
 	The R code used to generate this figure:
 
-	.. literalinclude:: code/plastic-sheet-control-specification-limits.R
+	.. literalinclude:: ../figures/monitoring/plastic-sheet-control-specification-limits.R
 			:language: s
 			:lines: 3-44
 			
@@ -1015,8 +1015,8 @@ Exercises
 	
 	The following charts show the weight of feed entering your reactor.  The variation in product quality leaving the reactor was unacceptably high during this period of time.  
 
-	.. figure:: images/monitoring-chart-cycling.png
-		:alt:	images/monitoring-chart-cycling.R
+	.. figure:: ../figures/monitoring/monitoring-chart-cycling.png
+		:alt:	../figures/monitoring/monitoring-chart-cycling.R
 		:scale: 90%
 		:width: 750px
 		:align: center	
@@ -1059,7 +1059,7 @@ Exercises
 
 	The raw data for the entire data set looks as follows.  There are already regions in the phase II data that we expect to not be from normal operation (around 2500 and 2900)
 
-	.. figure:: images/Kappa-raw-data.png
+	.. figure:: ../figures/monitoring/Kappa-raw-data.png
 		:align: center
 		:width: 750px
 	
@@ -1067,19 +1067,19 @@ Exercises
 
 	The upper and lower control limits are calculated, and with a subgroup size of :math:`n=6`, there are 333 subgroups and the limits are: UCL = 18.26, target = 21.73, and UCL = 25.21.  This is illustrated on the phase I data here:
 
-	.. figure:: images/Kappa-phaseI-first-round.png
+	.. figure:: ../figures/monitoring/Kappa-phaseI-first-round.png
 		:align: center
 		:width: 750px
 	
 	Next we remove the subgroups which lie outside the limits.  Please try using he R code to see how to do it automatically.  The new limits, after removing the subgroups beyond the limits from the first round are: LCL = 18.24, target = 21.71 and UCL = 25.18.  They barely changed.  But the updated plot with subgroups removed is now shown below.  There is no need to perform another round of pruning.  Only if you used a subgroup size of 4 would you need to do a third round.  You could also have just shifted the limits to a different level, for example, to :math:`\pm 4` standard deviations.  We can do this if we have enough process knowledge to understand the implication of it, in terms of profit.
 
-	.. figure:: images/Kappa-phaseI-second-round.png
+	.. figure:: ../figures/monitoring/Kappa-phaseI-second-round.png
 		:align: center
 		:width: 750px
 
 	Now apply these control limits to the phase II data.  The plot is shown below:
 
-	.. figure:: images/Kappa-phaseII-testing.png
+	.. figure:: ../figures/monitoring/Kappa-phaseII-testing.png
 		:align: center
 		:width: 750px
 	
@@ -1087,7 +1087,7 @@ Exercises
 
 	The code for all the calculation steps is provided here:
 
-	.. literalinclude:: code/Kappa-number-monitoring.R
+	.. literalinclude:: ../figures/monitoring/Kappa-number-monitoring.R
 	       :language: s
 	       :lines: 18-32,36-40,42-80,84-89,91-108,112-117,119-136,140-145,147-151,155-160,162-
 
@@ -1101,7 +1101,7 @@ Exercises
 
 	.. /Users/kevindunn/ConnectMV/Datasets/Spectral data set - NIR/plot_spectra.py
 
-	.. figure:: images/pharma-spectra.jpg
+	.. figure:: ../figures/monitoring/pharma-spectra.jpg
 		:width: 750px
 		:align: center
 

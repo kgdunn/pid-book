@@ -70,7 +70,7 @@ Any standard statistics text book will cover the topics from this part of the bo
 What we will cover
 ==================
 
-.. figure:: ../figures/univariate/Univariate-section-mapping.png
+.. figure:: ../figures/mindmaps/univariate-section-mapping.png
   :width: 750px 
   :align: center
   :scale: 65
@@ -80,7 +80,7 @@ Concepts
 
 Concepts that you must be familiar with by the end of this section: 
 
-.. figure:: ../figures/univariate/section-concepts.png
+.. figure:: ../figures/mindmaps/univariate-section-concepts.png
   :align: center
   :scale: 60
 
@@ -91,7 +91,7 @@ Variability
 
 Life is pretty boring without :index:`variability`, and this book, and almost all the field of statistics would be unnecessary if things did not naturally vary.
 
-.. figure:: ../figures/univariate/variation-none.png
+.. figure:: ../figures/concepts/variation/variation-none.png
 		:scale: 60
 		:align: center
 		
@@ -104,7 +104,7 @@ Fortunately, we have plenty of variability in our recorded data:
 		- external conditions change (ambient temperature, humidity)
 		- pieces of plant equipment break down, wear out and are replaced
 		
-		.. figure:: ../figures/univariate/variation-spikes.png
+		.. figure:: ../figures/concepts/variation/variation-spikes.png
 			:scale: 50
 			:align: center
 	
@@ -116,13 +116,13 @@ Fortunately, we have plenty of variability in our recorded data:
 	
 	-	Measurement and sampling variability: sensor drift, spikes, noise, recalibration shifts, errors in our sample analysis.
 	
-		.. figure:: ../figures/univariate/variation-more.png
+		.. figure:: ../figures/concepts/variation/variation-more.png
 			:scale: 50
 			:align: center	
 		
 	-	Other unknown sources, often called "*error*" (note that the word :index:`error <single: error, statistical>` in statistics does not have the usual negative connotation from English).  These errors are all sources of variation which our imperfect knowledge of physics cannot account for.
 	
-		.. figure:: ../figures/univariate/variation-some.png
+		.. figure:: ../figures/concepts/variation/variation-some.png
 			:scale: 50
 			:align: center
 	
@@ -178,7 +178,7 @@ Turning the above discussion around, with you on the receiving end of highly var
 
 - If you do not implement any sort of process control system, then any variability in your raw materials is manifest as variability in your final product.  This usually shows up in proportion: higher variability in the inputs results in higher variability in the product quality.
 
-	.. figure:: ../figures/univariate/feedback-control-variance-reduction-reduced-svg.png
+	.. figure:: ../figures/concepts/variation/feedback-control-variance-reduction-reduced.png
 		:width: 750px
 		:align: center
 		:scale: 50
