@@ -70,7 +70,7 @@ Any standard statistics text book will cover the topics from this part of the bo
 What we will cover
 ==================
 
-.. figure:: images/Univariate-section-mapping.png
+.. figure:: ../figures/univariate/Univariate-section-mapping.png
   :width: 750px 
   :align: center
   :scale: 65
@@ -80,7 +80,7 @@ Concepts
 
 Concepts that you must be familiar with by the end of this section: 
 
-.. figure:: images/section-concepts.png
+.. figure:: ../figures/univariate/section-concepts.png
   :align: center
   :scale: 60
 
@@ -91,7 +91,7 @@ Variability
 
 Life is pretty boring without :index:`variability`, and this book, and almost all the field of statistics would be unnecessary if things did not naturally vary.
 
-.. figure:: images/variation-none.png
+.. figure:: ../figures/univariate/variation-none.png
 		:scale: 60
 		:align: center
 		
@@ -104,7 +104,7 @@ Fortunately, we have plenty of variability in our recorded data:
 		- external conditions change (ambient temperature, humidity)
 		- pieces of plant equipment break down, wear out and are replaced
 		
-		.. figure:: images/variation-spikes.png
+		.. figure:: ../figures/univariate/variation-spikes.png
 			:scale: 50
 			:align: center
 	
@@ -116,13 +116,13 @@ Fortunately, we have plenty of variability in our recorded data:
 	
 	-	Measurement and sampling variability: sensor drift, spikes, noise, recalibration shifts, errors in our sample analysis.
 	
-		.. figure:: images/variation-more.png
+		.. figure:: ../figures/univariate/variation-more.png
 			:scale: 50
 			:align: center	
 		
 	-	Other unknown sources, often called "*error*" (note that the word :index:`error <single: error, statistical>` in statistics does not have the usual negative connotation from English).  These errors are all sources of variation which our imperfect knowledge of physics cannot account for.
 	
-		.. figure:: images/variation-some.png
+		.. figure:: ../figures/univariate/variation-some.png
 			:scale: 50
 			:align: center
 	
@@ -178,7 +178,7 @@ Turning the above discussion around, with you on the receiving end of highly var
 
 - If you do not implement any sort of process control system, then any variability in your raw materials is manifest as variability in your final product.  This usually shows up in proportion: higher variability in the inputs results in higher variability in the product quality.
 
-	.. figure:: images/feedback-control-variance-reduction-reduced-svg.png
+	.. figure:: ../figures/univariate/feedback-control-variance-reduction-reduced-svg.png
 		:width: 750px
 		:align: center
 		:scale: 50
@@ -207,13 +207,13 @@ The :ref:`previous section <univariate-about-variability>` has hopefully convinc
 
 A histogram is a summary of the variation in a measured variable.  It shows the *number* of samples that occur in a *category*: this is called a **frequency distribution**.  For example: number of children born, categorized against their gender: male or female.
 
-.. figure:: images/histogram-children-by-gender.png
+.. figure:: ../figures/univariate/histogram-children-by-gender.png
    	:width: 750px
 	:scale: 40
 
 The category bins can be derived from a continuous variable.  Here is an example showing the mass of cartons of 1 kg of flour.  The continuous variable, mass, is divided into equal-size bins that cover the range of the available data.   Notice how the packaging system has to overfill each carton so that the vast majority of packages weight over 1 kg (what is the mean package mass?).  If the variability in the packaging system could be reduced, then the histogram can be shifted to the left reducing overfill.
 
-.. figure:: images/histogram-package-mass.png
+.. figure:: ../figures/univariate/histogram-package-mass.png
 	:width: 750px
 	:scale: 60
 	:align: center
@@ -286,7 +286,7 @@ A relative frequency is sometimes preferred:
 - if :math:`N` is large enough, then the relative frequency histogram starts to resemble the population's distribution
 - the area under the histogram is equal to 1, and related to probability
 
-.. figure:: images/frequency-histogram.png
+.. figure:: ../figures/univariate/frequency-histogram.png
 	:width: 750px
 	:scale: 60
 	:align: center
@@ -308,7 +308,7 @@ We review here a couple of concepts that you should have seen in prior statistic
 	
 	A collection of observations that have *actually* occurred; a set of *existing* measurements.  We will use lowercase :math:`n` in this section to denote the :index:`sample` size.
 	
-	.. image:: images/batch-yields.png
+	.. image:: ../figures/univariate/batch-yields.png
 		:scale: 60
 		:align: center
 	
@@ -443,7 +443,7 @@ Binary (Bernoulli distribution)
 
 Systems that have binary outcomes (pass/fail; yes/no) must obey the probability principle that: :math:`p(\text{pass}) + p(\text{fail}) = 1`.  For example, a histogram for a system that produces 70% acceptable product looks like:
 
-.. figure:: images/histogram-70-30.png
+.. figure:: ../figures/univariate/histogram-70-30.png
 	:align: center
 	:width: 750px
 	:scale: 45
@@ -489,7 +489,7 @@ A :index:`uniform distribution` arises when an observation's value is equally as
 
 The probability distribution for an event with 4 possible outcomes that are uniformly distributed is shown below:
 
-.. figure:: images/histogram-4-cuts.png
+.. figure:: ../figures/univariate/histogram-4-cuts.png
 	:align: center
 	:scale: 55
 	:width: 750px
@@ -524,7 +524,7 @@ Central limit theorem
 
 The limit theorem plays a central role in the theory of probability and in the derivation of the normal distribution.  We don't prove this theorem here, but we only use the result that the average of a sequence of values *from any distribution* will approach the normal distribution, provided the original distribution has finite variance.
 	
-.. figure:: images/CLT-derivation.png
+.. figure:: ../figures/univariate/CLT-derivation.png
 	:width: 750px
 	:align: center
 	:scale: 65
@@ -533,7 +533,7 @@ The only assumption we require for the central limit theorem is that the samples
 
 Imagine a case where we are throwing dice.  The following distributions are obtained when we throw a die :math:`M` times and we plot the distribution of the *average* of these :math:`M` throws.
 
-.. figure:: images/simulate-CLT.png
+.. figure:: ../figures/univariate/simulate-CLT.png
 	:width: 750px
 	:align: center
 	:scale: 70
@@ -578,7 +578,7 @@ We frequently violate this assumption of independence in engineering application
 
 		In chemical processes there is often a transfer from batch-to-batch: we usually use the same lot of raw materials for successive batches, the batch reactor may not have be cleaned properly between each run, and so on.  It is very likely that two successive batches (:math:`k` and :math:`k+1`) are somewhat related, and less likely that batch :math:`k` and :math:`k+2` are related.  In the figure below, can you tell which sequence of values are independent?
 		
- 	.. figure:: images/simulate-independence.png
+ 	.. figure:: ../figures/univariate/simulate-independence.png
 		:align: center
 		:scale: 90
 		
@@ -607,7 +607,7 @@ Formal definition for the normal distribution
 
 .. math:: p(x) = \dfrac{1}{\sqrt{2\pi \sigma^2}}e^{-\dfrac{\left(x-\mu\right)^2}{2\sigma^2}}
 	
-.. figure:: images/normal-distribution-standardized.png
+.. figure:: ../figures/univariate/normal-distribution-standardized.png
 	:width: 750px
 	:align: center
 	:scale: 80
@@ -700,7 +700,7 @@ Before we look at this method, we need to introduce the concept of the inverse c
 
 Now the **inverse cumulative distribution** is used when we know the area, but want to get back to the value along the :math:`z-\text{axis}`.  For example, below which value of :math:`z` does 95% of the area lie for a standardized normal distribution?  Answer: :math:`z=1.64`.  In R we use the ``qnorm(0.95, mean=0, sd=1)`` to calculate these values.  The ``q`` stands for `quantile <http://en.wikipedia.org/wiki/Quantile>`_, because we give it the quantile at it returns the z-value: e.g. ``qnorm(0.5)`` gives 0.0.
 
-.. figure:: images/show-pnorm-and-qnorm.png
+.. figure:: ../figures/univariate/show-pnorm-and-qnorm.png
 	:scale: 70
 	:width: 750px
 	:align: center
@@ -742,7 +742,7 @@ On to checking for normality.  We approach this problem by first constructing qu
 		
 		plot(theoretical.quantity, yields.z.sorted, type="p")
 		
-	.. figure:: images/qqplot-derivation.png
+	.. figure:: ../figures/univariate/qqplot-derivation.png
 		:align: center
 		:width: 750px
 		:scale: 50
@@ -754,7 +754,7 @@ A ready-made function already exists in R that runs the calculations and shows a
 		qqnorm(yields)
 		qqline(yields)
 
-	.. figure:: images/qqplot-from-R.png
+	.. figure:: ../figures/univariate/qqplot-from-R.png
 		:align: center
 		:width: 750px
 		:scale: 50
@@ -788,7 +788,7 @@ The q-q plot, :index:`quantile-quantile plot`, shows the quantiles of 2 distribu
 
 Suppose we have a quantity of interest for a process, such as the daily profit per kilogram of raw material, or the viscosity of the final product.  After using the methods just described to check for normality, we might be reasonably certain that the data follow a normal distribution.  So assuming the quantity is distributed as :math:`\mathcal{N}(\mu, \sigma^2)` **and** by taking independent samples, as shown here in the figure,
 
-.. figure:: images/t-distribution-derivation.png
+.. figure:: ../figures/univariate/t-distribution-derivation.png
 	:width: 750px
 	:align: center
 	:scale: 65
@@ -801,7 +801,7 @@ we can make the following statements:
 #. Create a new variable :math:`z = \dfrac{\overline{x} - \mu}{s/\sqrt{n}}`, which subtracts off the population mean from our estimate of the mean, and divide through by the variance for :math:`\overline{x}`.  If our estimate of the population mean, :math:`\overline{x}`, is accurate, then the numerator is close to zero.  Dividing through by :math:`s/\sqrt{n}` firstly makes the :math:`z` variable dimensionless, and secondly, scales :math:`z` up or down according to the certainty we have in our estimate of :math:`\overline{x}`.  This new variable :math:`z` is distributed according to the :math:`t`-distribution.  We say that :math:`z` follows the :math:`t`-distribution with :math:`n-1` degrees of freedom, where the degrees of freedom refer to those from the calculating the standard deviation.
 #. Note that the new variable :math:`z` only requires we know the population mean (:math:`\mu`), not the population variance; rather we use our estimate of the variance :math:`s/\sqrt{n}` in place of the population variance.
 
-.. figure:: images/t-distribution-comparison.png
+.. figure:: ../figures/univariate/t-distribution-comparison.png
 	:width: 750px
 	:align: center
 	:scale: 65
@@ -916,7 +916,7 @@ There are two important properties:
 
 Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{e^{-\eta}\eta^{x}}{x!}`, with a plot as shown for :math:`\eta = 4`.  Please note the lines are only guides, the probability is only defined at the integer values marked with a circle.  
 
-.. figure:: images/poisson-distribution.png
+.. figure:: ../figures/univariate/poisson-distribution.png
 	:width: 600px
 	:align: center
 	:scale: 50
@@ -1116,7 +1116,7 @@ Either we want to confirm things are statistically the same, or confirm they hav
 
 *Example*: A process operator needs to verify that a new form of feedback control on the batch reactor leads to improved yields.  Yields under the current control system, A, are compared with yields under the new system, B.  The last ten runs with system A are compared to 10 sequential runs with system B.  The data are shown in the table, and shown in graphical form as well.  (Note that the box plot uses the median, while the plots on the right show the mean.)  
  
-.. figure:: images/system-comparison-boxplot-plots.png
+.. figure:: ../figures/univariate/system-comparison-boxplot-plots.png
 	:width: 750px
 	:scale: 60
 	:align: center
@@ -1160,7 +1160,7 @@ Either we want to confirm things are statistically the same, or confirm they hav
 	| colspan="2" |Standard deviation  || 6.81|| || colspan="2" | Standard deviation || 6.70
 	|}
 
-.. figure:: images/system-comparison-wikitable.png
+.. figure:: ../figures/univariate/system-comparison-wikitable.png
 	:align: center
 	:scale: 75
 
@@ -1181,7 +1181,7 @@ Continuing the above example we can compare the past 10 runs from system B with 
 	#. Now subtract these two averages: (group average 11 to 20) minus (group average 1 to 10).
 	#. Repeat steps 2 and 3, but use batches 2 to 11 and 12 to 21.  Repeat until all historical batch data are used up and the plot below can be drawn from these difference values.
 	
-	.. figure:: images/system-comparison-dotplot-grouped.png
+	.. figure:: ../figures/univariate/system-comparison-dotplot-grouped.png
 		:width: 750px
 		:align: center
 		:scale: 100
@@ -1209,7 +1209,7 @@ In fact, for this example, the data were not independent, they were autocorrelat
 
 We can visualize this :index:`autocorrelation` by plotting the values of :math:`x[k]` against :math:`x[k+1]`:
 
-.. figure:: images/system-comparison-autocorrelation-scatterplot.png
+.. figure:: ../figures/univariate/system-comparison-autocorrelation-scatterplot.png
 	:width: 600px
 	:align: center
 	:scale: 80
@@ -1277,7 +1277,7 @@ Discuss whether these experiments lead to :index:`independent data <single: inde
 
 	a)	We are testing a new coating to repel moisture.  The coating is applied to packaging sheets that are already hydrophobic, however this coating enhances the moisture barrier property of the sheet.  In the lab, we take a large packaging sheet and divide it into 16 blocks.  We coat the sheet as shown in the figure and then use the :math:`n_A=8` and :math:`n_B=8` data points to determine if coating B is better than coating A.
 	
-		.. figure:: images/sheet-coating-application.png
+		.. figure:: ../figures/univariate/sheet-coating-application.png
 			:width: 600px
 			:align: center
 			:scale: 50
@@ -1597,11 +1597,11 @@ Exercises
 	:fullinclude: no 
 	:short: IQR = 240 mg salt/15 mL serving
 
-	.. literalinclude:: code/soy-salt-content.R
+	.. literalinclude:: ../figures/univariate/soy-salt-content.R
 	   :language: s
 	   :lines: 1-11,13,15-
 
-	.. figure:: images/soy-salt-content.png
+	.. figure:: ../figures/univariate/soy-salt-content.png
 		:width: 400px
 		:scale: 50
 	
@@ -1633,26 +1633,26 @@ Exercises
 
 	The same few samples appear to be outliers in most of the variables.
 
-	.. literalinclude:: code/raw-materials-univariate-checks.R
+	.. literalinclude:: ../figures/univariate/raw-materials-univariate-checks.R
 	   :lines: 1-27
 	   :language: s
 
-	.. figure:: images/size1.png
+	.. figure:: ../figures/univariate/size1.png
 		:width: 300px
 		:scale: 40
-	.. figure:: images/size2.png
+	.. figure:: ../figures/univariate/size2.png
 		:width: 300px
 		:scale: 40
-	.. figure:: images/size3.png
+	.. figure:: ../figures/univariate/size3.png
 		:width: 300px
 		:scale: 40
-	.. figure:: images/density1.png
+	.. figure:: ../figures/univariate/density1.png
 		:width: 300px
 		:scale: 40
-	.. figure:: images/density2.png
+	.. figure:: ../figures/univariate/density2.png
 		:width: 300px
 		:scale: 40
-	.. figure:: images/density3.png
+	.. figure:: ../figures/univariate/density3.png
 		:width: 300px
 		:scale: 40
 	
@@ -1679,16 +1679,16 @@ Exercises
 
 	These are the data, and the code to plot the results.  The temperature for the last decade trended higher than the average for the prior 3 decades, 1971 to 2000.
  
-	.. literalinclude:: code/hamilton-weather-data.R
+	.. literalinclude:: ../figures/univariate/hamilton-weather-data.R
 		:language: s
 		:lines: 1-7,9-11,13,15-17
 
 
-	.. figure:: images/snowfall-data.png
+	.. figure:: ../figures/univariate/snowfall-data.png
 		:width: 750px
 		:scale: 75
 	
-	.. figure:: images/temperature-data.png
+	.. figure:: ../figures/univariate/temperature-data.png
 		:width: 750px
 		:scale: 75
 	
@@ -1700,7 +1700,7 @@ Exercises
 	:fullinclude: no 
 	:short: These data are normally distributed according to the q-q plot.
 	
-	.. literalinclude:: code/website-visits-univariate.R
+	.. literalinclude:: ../figures/univariate/website-visits-univariate.R
 		:language: s
 		:lines: 1-19
 
@@ -1729,7 +1729,7 @@ Exercises
 .. answer:: 
 	:fullinclude: no 
 
-	.. literalinclude:: code/ammonia-in-wastewater.R
+	.. literalinclude:: ../figures/univariate/ammonia-in-wastewater.R
 		:language: s
 
 	An appropriate distribution appears to be the normal distribution, however the right hand side tail (upper tail) is slightly heavier (outside the given limits) than would be found on the normal distribution.  Assuming the data are normal, we can calculate the distribution's parameters as :math:`\overline{x} = \hat{\mu} = 36.1` and :math:`s= \hat{\sigma} = 8.52`.
@@ -1757,7 +1757,7 @@ Exercises
 
 			*Additional information*: To answer this part, you should move everything to :math:`z`-coordinates first.  Then you need to find the points :math:`-c` and :math:`+c` in the following diagram that mark the boundary for a 95% of the total area under the distribution.  This region is an interval that will contain, with 95% certainty, the population mean of the viscosity, :math:`\mu`.  Write your answer in form: :math:`\text{LB} < \mu < \text{UB}`.
 
-			.. figure:: images/show-confidence-interval.png
+			.. figure:: ../figures/univariate/show-confidence-interval.png
 				:width: 500px
 				:scale: 50
 
@@ -1769,7 +1769,7 @@ Exercises
 	:fullinclude: no 
 	:short: Average = 20, standard deviation = 3.81
 
-	.. literalinclude:: code/polymer-bale-samples.R
+	.. literalinclude:: ../figures/univariate/polymer-bale-samples.R
 		:language: s
 	
 	-	Sample average = 20
@@ -1891,7 +1891,7 @@ Exercises
 		> barplot(bin.counts, names.arg=bin.centers, ylab="Number of bulbs (N=50)", 
 		     xlab="Energy required over 24 hours (W.h)", col="White", ylim=c(0,20))
 	
-	.. figure:: images/bulb-energy-barplot.png
+	.. figure:: ../figures/univariate/bulb-energy-barplot.png
 		:width: 500px
 		:align: center
 		:scale: 50
@@ -1905,7 +1905,7 @@ Exercises
 
 	-   The mean and standard deviation can be estimated as shown in the code below.  The estimates are: the mean energy usage is **4127 W.hours**, and the standard deviation is **79 W.hours**.  This corresponds very closely to the raw data I used to generate this question (mean of actual data = 4125, sd of actual data = 77.2).
 
-	    .. literalinclude:: code/bulb-energy-assignment3-2010.R
+	    .. literalinclude:: ../figures/univariate/bulb-energy-assignment3-2010.R
 	       :language: s
 	       :lines: 13-17
 
@@ -1963,7 +1963,7 @@ Exercises
 
 	We can start by looking at the data.  A box plot is a reasonable way to compare both the location and spread of the brittleness values from each reactor.
 
-	.. figure:: images/brittleness-boxplot.png
+	.. figure:: ../figures/univariate/brittleness-boxplot.png
 	    :width: 750px
 	    :align: center
 	    :scale: 50
@@ -1991,7 +1991,7 @@ Exercises
 
 	A full solution to this question require you report the z-values and its corresponding risk.
 
-	.. literalinclude:: code/brittleness-comparison-assignment3-2010.R
+	.. literalinclude:: ../figures/univariate/brittleness-comparison-assignment3-2010.R
 	       :language: s
 	
 	**Using a paired test**
@@ -2002,7 +2002,7 @@ Exercises
 
 	In the case of TK104 and TK105 the difference might seem surprising - take a look back at the box plots and how much they overlap.   However a paired test cannot be judged by a box plot, because it looks at the case-by-case difference, not the overall between group difference.  A better plot with which to confirm the really large :math:`z`-value for the TK105 and TK107 difference is the plot of the differences.
 
-	.. literalinclude:: code/brittleness-paired-comparison-assignment3-2010.R
+	.. literalinclude:: ../figures/univariate/brittleness-paired-comparison-assignment3-2010.R
 	       :language: s
 	       :lines: 1-36
 
@@ -2027,7 +2027,7 @@ Exercises
 	- What is the probability of obtaining a z-value of this magnitude or smaller?  Would you say the difference is significant?
 	- Pick any other 2 days that you would find interesting to compare and repeat your analysis.
 
-	.. figure:: images/Website-traffic-TS.png
+	.. figure:: ../figures/univariate/Website-traffic-TS.png
 		:width: 750px
 		
 .. answer::
@@ -2051,7 +2051,7 @@ Exercises
 
 	-   The code was modified to generate the matrix of z-value results in the comments below.  The largest difference is between Sunday and Wednesday, and the smallest difference is between Monday and Tuesday.
 
-	.. literalinclude:: code/website-differences-assignment3-2010.R
+	.. literalinclude:: ../figures/univariate/website-differences-assignment3-2010.R
 	       :language: s
 	       :lines: 32-54,75-
 
@@ -2096,7 +2096,7 @@ Exercises
 
 	The temptation is to jump into the code and calculate the :math:`t`-values and averages differences (:math:`\overline{x}_D = 16.4`, and :math:`\overline{x}_M = 22.6`).  But start with a plot of the data, specifically a plot of the differences between the two methods.  The immediate problem you see is that average difference of 6.2 between the methods is strongly influenced by a single observation (the second one).  In general, the dilution method always produced a smaller result than the manometric method.  We expect to see that in our analytical results.
 
-	.. figure:: images/BOD-comparison-plot.png
+	.. figure:: ../figures/univariate/BOD-comparison-plot.png
 	    :width: 750px
 	    :align: center
 	    :scale: 60
@@ -2118,10 +2118,10 @@ Exercises
 
 .. answer::
 
-	.. literalinclude:: code/t-distribution-normal-comparison-assignment3-2010.R
+	.. literalinclude:: ../figures/univariate/t-distribution-normal-comparison-assignment3-2010.R
 	       :language: s
 
-	.. figure:: images/normal-t-comparison.png
+	.. figure:: ../figures/univariate/normal-t-comparison.png
 	    :width: 750px
 	    :align: center
     
@@ -2162,7 +2162,7 @@ Exercises
 
 	A common unit operation in the pharmaceutical area is to uniformly blend powders for tablets.  In this question we consider blending an excipient (an inactive magnesium stearate base), a binder, and the active ingredient.  The mixing process is tracked using a wireless near infrared (NIR) probe embedded in a V-blender.  The mixer is stopped when the NIR spectra become stable.  A new supplier of magnesium stearate is being considered that will save $ 294,000 per year.
 
-	..	figure:: images/V-Blender.png
+	..	figure:: ../figures/univariate/V-Blender.png
 		:width: 500px
 		:align: center
 		:scale: 40
@@ -2307,7 +2307,7 @@ Exercises
 
 	You are convinced that a different impeller (mixing blade) shape for your tank will lead to faster, i.e. shorter, mixing times.  The choices are either an axial blade or a radial blade. 
 
-	..	figure:: images/Mixing_-_flusso_assiale_e_radiale.jpg
+	..	figure:: ../figures/univariate/Mixing_-_flusso_assiale_e_radiale.jpg
 		:width: 500px
 		:align: center
 		:scale: 40
