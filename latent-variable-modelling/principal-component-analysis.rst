@@ -394,7 +394,7 @@ We usually start by looking at the :math:`(\mathbf{t}_1, \mathbf{t}_2)` scatterp
 	
 .. _LVM_slama_thesis_screenshot_:
 
-.. image:: ../figures/examples/refinery-troubleshooting/Slama-refinery-flowsheet.png
+.. image:: ../figures/examples/refinery-troubleshooting/score-plot.png
 	:alt:	Screenshot from thesis; used with permission (see gmail email on 16 December 2011)
 	:scale: 52
 	:width: 750px

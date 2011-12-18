@@ -147,7 +147,6 @@ rst_prolog = """
 """
 
 rst_epilog = """
-.. |figures| replace:: /Users/kevindunn/ConnectMV/Figures
 .. |x| replace:: :math:`\mathrm{x}`
 .. |y| replace:: :math:`\mathrm{y}`
 .. |z| replace:: :math:`\mathrm{z}`
