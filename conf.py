@@ -79,9 +79,13 @@ source_suffix = '.rst'
 # The master toctree document.
 master_doc = 'contents'
 
+# TODO: put the year automatically in the copyright statement using datetime.now()
+
 # General information about the project.
+import datetime
+the_year = str(datetime.datetime.now().year)
 project = u'Process Improvement using Data'
-copyright = u'2011, Kevin Dunn'
+copyright = the_year + u'Kevin Dunn, ConnectMV Inc.'
 today_fmt = '%d %B %Y'
 
 # Emits warnings for all missing references.
@@ -271,7 +275,7 @@ html_link_suffix = ''
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual], toctree only).
 latex_documents = [
-  ('contents', 'PID.tex', 'Process Improvement using Data', u'Kevin Dunn', 'manual', True),
+  ('contents', 'PID.tex', 'Process Improvement using Data', u'Kevin Dunn, ConnectMV Inc.', 'manual', True),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -485,7 +489,7 @@ latex_elements = {
 epub_title = 'Process Improvement using Data'
 epub_author = u'Kevin Dunn'
 epub_publisher = u'ConnectMV, Inc.'
-epub_copyright = u'2011, ConnectMV, Inc.'
+epub_copyright = the_year + u'ConnectMV, Inc.'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.
