@@ -13,4 +13,4 @@ Process Improvement using Data
 	latent-variable-modelling/index
 
 .. Sections omitted:
-
+	
