@@ -1673,7 +1673,36 @@ Exercises
 
 	*	Feedback control allows us to move the process operation closer to targets, without less likelihood of deviation outside these limits.  (In the next section on process monitoring we will learn how to track and quantify this).
 
-WEATHER QUESTION HERE
+.. question::
+
+	Use the section on `Historical data <http://climate.weatheroffice.gc.ca/climateData/canada_e.html>`_ from Environment Canada's website and use the ``Customized Search`` option to obtain data for the ``HAMILTON A`` station from 2000 to 2009.  Use the settings as ``Year=2000``, and ``Data interval=Monthly`` and request the data for 2000, then click ``Next year`` to go to 2001 and so on. 
+
+		-	For each year from 2000 to 2009, get the total snowfall and the average of the ``Mean temp`` over the whole year (the sums and averages are reported at the bottom of the table).
+		-	Plot these 2 variables against time
+		-	Now retrieve the long-term averages for these data `from a different section of their website <http://climate.weatheroffice.gc.ca/climate_normals/index_e.html>`_ (use the same location, ``HAMILTON A``, and check that the data range is 1971 to 2000).  Superimpose the long-term average as a horizontal line on your previous plot.
+		-	**Note**: the purpose of this exercise is more for you to become comfortable with web-based data retrieval, which is common in most companies.
+		-	**Note**: please use any other city for this question if you prefer.
+
+.. answer::
+	:fullinclude: no 
+		
+	.. Snow:     170.9, 94.1, 138.0, 166.2, 175.8, 218.4, 56.6, 182.4, 243.2,   avg=161.8
+	.. MeanTemp: 7.6,   8.8,  8.8,   7.3,   7.7,   8.2,   9.1 , 8.2,  7.7
+
+	These are the data, and the code to plot the results.  The temperature for the last decade trended higher than the average for the prior 3 decades, 1971 to 2000.
+ 
+	.. literalinclude:: ../figures/univariate/hamilton-weather-data.R
+		:language: s
+		:lines: 1-7,9-11,13,15-17
+
+
+	.. image:: ../figures/univariate/snowfall-data.png
+		:width: 750px
+		:scale: 75
+	
+	.. image:: ../figures/univariate/temperature-data.png
+		:width: 750px
+		:scale: 75
 	
 .. question::
 
@@ -1696,7 +1725,38 @@ WEATHER QUESTION HERE
 	We should use the :math:`t`-distribution to answer the last part, but at this stage we had not yet looked at the :math:`t`-distribution.  However, the large number of observations (214) means the :math:`t`-distribution is no different than the normal distribution.
 
 
-AMMONIA QUESTION HERE
+.. question::
+
+	The ammonia concentration in your wastewater treatment plant is measured every 6 hours.  The data for one year are available from the `dataset website <http://datasets.connectmv.com/info/ammonia>`_. 
+
+	#.	Use a visualization plot to hypothesize from which distribution the data might come. Which distribution do you think is most likely? Once you've decided on a distribution, use a qq-plot to test your decision.
+	#.	Estimate location and spread statistics assuming the data are from a normal distribution. You can investigate using the ``fitdistr`` function in R, in the MASS package.
+	#.	What if you were told the measured values are not independent. How does it affect your answer?
+	#.	What is the probability of having an ammonia concentration greater than 40 mg/L when:
+
+		- you may use only the data (do not use *any* estimated statistics)
+		- you use the estimated statistics for the distribution?
+	
+		**Note**: Answer this entire question using computer software to calculate values from the normal distribution. But also make sure you can answer the last part of the question by hand, (when given the mean and variance), and using a table of normal distributions.
+
+.. answer::
+	:fullinclude: no 
+	
+	.. literalinclude:: ../figures/univariate/ammonia-in-wastewater.R
+		:language: s
+	
+	#.	When plotting a histogram, it seems that an appropriate distribution might be the normal distribution. A qq-plot shows it it mostly normal, apart from the right hand side tail (upper tail) which is slightly heavier, outside the given limits,  than would be found on the normal distribution. 
+	
+	#.	Assuming the data are normal, we can calculate the distribution's parameters as :math:`\overline{x} = \hat{\mu} = 36.1` and :math:`s= \hat{\sigma} = 8.52`.
+	
+	#.	The fact that the data are not independent is not an issue.  To calculate estimates of the parameter's distribution (the mean and standard deviation) we do not need to assume independence.  One way to see this: if I randomly reorder the data, I will still get the same value for the mean and standard deviation.  The assumption of independence is required for the central limit theorem, but we have not used that theorem here.
+		
+	#.	The probability of having an ammonia concentration greater than 40 mg/L:
+		
+		-	When counting the fraction of the samples greater than 40 mg/L (i.e. we only use the data themselves): **3.44%** (see code)
+		-	When using the estimated values of the mean and standard deviation from the normal distribution, we can calculate a :math:`z`-value, then find the area under the normal distribution corresponding to this :math:`z`: **3.23%** (see code)
+		
+			*Note*: We should use actually be using the :math:`t`-distribution, since we used *an estimate* of the population variance and not the true population variance to calculate :math:`z`. However, since the degrees of freedom, :math:`n-1 = 1439`, are so large, there is no practical difference in our answer.
 
 .. question::
 
@@ -2355,3 +2415,38 @@ AMMONIA QUESTION HERE
 		Calculating the average of those 10 means, let's call that :math:`\overline{\overline{x}}`, shows a value close to 6.5, the theoretical mean.
 
 		Calculating the variance of those 10 means shows a number around 0.00119167, as expected.
+
+.. question::
+	
+	One of the questions we posed at the start of this chapter was: "`Here are the yields <http://datasets.connectmv.com/info/batch-yields>`_ from a batch bioreactor system for the last 3 years (300 data points; we run a new batch about every 3 to 4 days).
+
+	#.	What sort of distribution do the yield data have?
+	#.	A recorded yield value today was less than 60%, what are the chances of that occurring?  Express your answer as: *there's a 1 in x chance* of it occurring.
+	#.	Which assumptions do you have to make for the second part of this question?
+	
+	.. From assignment 2, 2011
+
+.. answer::
+
+	#.	Assume the 300 data points represent an entire population. Plot a ``qqPlot(...)`` using the ``car`` package:
+
+		.. figure:: ../figures/univariate/batch-yields-qqplot.png
+			:alt:	../figures/univariate/batch-yields.R
+			:scale: 60
+			:width: 500px
+			:align: center  
+
+		The data appear to follow a normal distribution, based on the visual test of this qq-plot.
+
+	#.	We need to find the probability that the yield, :math:`Y`, is less than or equal to 60, stated as :math:`P(Y\le 60)`. If we assume :math:`Y \sim \mathcal{N}(\mu,\sigma^{2})` then we first need to find the :math:`z`-value bound corresponding to 60, and then find the probability of finding values below, or equal to that bound.
+
+		.. math::
+
+			z_\text{bound} = \frac{y-\mu}{\sigma} = \frac{60-80.353}{6.597} = -3.085
+
+		In this data set of 300 numbers there are zero entries below this limit.  But using the distribution's fit, we can calculate the probability as ``pnorm(-3.085)``, which is :math:`\approx 0.001`.  This is equivalent to saying that there is a *1 in 1000 chance* of achieving a yield less than 60\%.
+
+	#.	We only had to assume the data are normally distributed - we did not need the data to be independent - in order to use the estimated parameters from the distribution to calculate the probability.
+	
+		.. literalinclude:: ../figures/univariate/batch-yields.R
+			:language: s
