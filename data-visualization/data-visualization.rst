@@ -1,3 +1,8 @@
+.. todo:: another scatter plot question
+.. todo:: spectral data question
+.. todo:: batch data question
+
+
 In context
 ==========
 
@@ -225,7 +230,7 @@ The following data are thickness measurements of 2-by-6 boards, taken at 6 locat
 
 The following box plot is a graphical summary of these numbers.
 
-.. _visualization-boxplot-example:
+.. _visualization_boxplot_example:
 
 .. image:: ../figures/visualization/boxplot-for-two-by-six-100-boards.png
 	:align: left
@@ -494,12 +499,16 @@ Exercises
 
 	Using the `Website traffic data set <http://datasets.connectmv.com/info/website-traffic>`_
 
-	#.	Create a chart that shows the variation in website traffic for each day of the week.
+	#.	Create a chart that shows the *variability* in website traffic for each day of the week.
 	#.	Use the same data set to describe any time-based trends that are apparent.
 
 .. answer::
 	:fullinclude: no 
 
+
+	#.	A suitable chart for displaying variability on a per-day basis is the boxplot, one box for each day of the week.  This allows you to see *between-day* variation when comparing the boxes side by side, and get an impression of the *variability within* each variable, by examining how the box's horizontal lines are spread out (25th, 50th and 75th percentiles).
+	
+	
 	#.	A box plot is an effective way to summarize and compare the data for each day of the week.
 
 		.. code-block:: s
@@ -519,11 +528,12 @@ Exercises
 
 			- Much less website traffic on Saturdays and Sundays, especially Sunday which has less spread than Saturday.
 			- Visits increase during the weekday, peaking on Wednesday and then dropping down by Friday.
+			- All week days seem to have about the same level of spread, except Friday, which is more variable.  
 			- This is a website of academic interest, so these trends are expected.
 
-	#.	A time-series plot of the data shows increased visits in September and October, and declining visits in November and December. This coincides with the phases of the academic term. Some people use a plot of the total number of visits within each month, which shows this effect in a nice way.
-
-		.. image:: ../figures/visualization/website-traffic-sequence-and-timeseries.png
+	#.	A time-series plot of the data shows increased visits in September and October, and declining visits in November and December. This coincides with the phases of the academic term. A plot of the total number of visits within each month will show this effect clearly. The lowest number of visits were recorded in late June and July. 
+	
+		.. image:: ../figures/visualization/website-traffic-timeseries.jpg
 			:width: 750px
 			:align: center
 
@@ -539,11 +549,6 @@ Exercises
 		date.order <- as.Date(web$MonthDay, format=" %B %d")
 		web.visits <- xts(web$Visits, order.by=date.order)
 		plot(web.visits, major.format="%b")
-
-
-.. todo:: another scatter plot example
-.. todo:: spectral data example
-.. todo:: batch data example
 
 .. question::
 
@@ -631,6 +636,27 @@ Exercises
 	
 		*	First load the library: ``library(YaleToolkit)``
 		*	Then see the help for the function: ``help(sparklines)`` to see how to generate your sparklines
+
+..	question::
+
+	Load the `six point board thickness <http://datasets.connectmv.com/info/six-point-board-thickness>`_ dataset, available from datasets website.
+
+	#.	Plot a boxplot of the first 100 rows of data to match the figure in the course notes (page 9 in the PDF version).
+	#.	Explain why the thick center line in the box plot is not symmetrical with the outer edges of the box.
+
+..	answer::
+
+	#.	The following code will load the data, and plot a boxplot on the first 100 rows:
+	
+		.. image:: ../figures/visualization/boxplot-for-two-by-six-100-boards.png
+			:align: center
+			:width: 500px
+			:scale: 55
+
+		.. literalinclude:: ../figures/visualization/boxplot-for-boards.R
+			:language: s	
+
+	#.	The thick center line on each boxplot is the median (50th percentile) of that variable.  The top and bottom edges of the box are the 25th and 75th percentile, respectively.  If the data are from a symmetric distribution, such as the :math:`t` or normal distribution, then the median should be approximately centered with respect to those 2 percentiles.  The fact that it is not, especially for position 1, indicates the data are *skewed* either to the left (median is closer to upper edge) or the the right (median closer to the lower edge).
 
 ..	question:: 
 

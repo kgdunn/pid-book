@@ -1,5 +1,7 @@
 .. To cover in the class
 
+
+
 	variability
 	histograms
 	long-term: probability
@@ -25,10 +27,9 @@
 .. To Do
 
 	* see p 295 of Devore here for in-class example
-	* Put "paired" tests under the main section of testing for differences
-	
+	* Put "paired" tests under the main section of testing for differences	
 	* Explain more clearly when a paired test is required vs a test of differences
-	* 
+	* Show the curves for normal and t-distribution as a table
 	
 In context
 ==========
@@ -1661,36 +1662,18 @@ Exercises
 
 	Write a few notes on the purpose of feedback control, and its effect on variability of process quality.
 
-.. question::
-
-	Use the section on `Historical data <http://climate.weatheroffice.gc.ca/climateData/canada_e.html>`_ from Environment Canada's website and use the ``Customized Search`` option to obtain data for the ``HAMILTON A`` station from 2000 to 2009.  Use the settings as ``Year=2000``, and ``Data interval=Monthly`` and request the data for 2000, then click ``Next year`` to go to 2001 and so on. 
-
-		-	For each year from 2000 to 2009, get the total snowfall and the average of the ``Mean temp`` over the whole year (the sums and averages are reported at the bottom of the table).
-		-	Plot these 2 variables against time
-		-	Now retrieve the long-term averages for these data `from a different section of their website <http://climate.weatheroffice.gc.ca/climate_normals/index_e.html>`_ (use the same location, ``HAMILTON A``, and check that the data range is 1971 to 2000).  Superimpose the long-term average as a horizontal line on your previous plot.
-		-	**Note**: the purpose of this exercise is more for you to become comfortable with web-based data retrieval, which is common in most companies.
-		-	**Note**: please use any other city for this question if you prefer.
-
 .. answer::
-	:fullinclude: no 
-		
-	.. Snow:     170.9, 94.1, 138.0, 166.2, 175.8, 218.4, 56.6, 182.4, 243.2,   avg=161.8
-	.. MeanTemp: 7.6,   8.8,  8.8,   7.3,   7.7,   8.2,   9.1 , 8.2,  7.7
+	:fullinclude: no
 
-	These are the data, and the code to plot the results.  The temperature for the last decade trended higher than the average for the prior 3 decades, 1971 to 2000.
- 
-	.. literalinclude:: ../figures/univariate/hamilton-weather-data.R
-		:language: s
-		:lines: 1-7,9-11,13,15-17
+	*	Purpose is to keep the process close to a desired set point (or mean).
 
+	*	Sometimes used to maintain the process variability within a desired tolerance limit (or standard deviation).
 
-	.. figure:: ../figures/univariate/snowfall-data.png
-		:width: 750px
-		:scale: 75
-	
-	.. figure:: ../figures/univariate/temperature-data.png
-		:width: 750px
-		:scale: 75
+	*	Lowers the variability of the process outputs (i.e., narrow the distribution) by actually introducing *greater* variability into the process, to counteract external variation in the the process inputs.  For example, variation from the raw materials, or ambient conditions, such as seasonal temperature are process inputs.
+
+	*	Feedback control allows us to move the process operation closer to targets, without less likelihood of deviation outside these limits.  (In the next section on process monitoring we will learn how to track and quantify this).
+
+WEATHER QUESTION HERE
 	
 .. question::
 
@@ -1712,36 +1695,8 @@ Exercises
 		
 	We should use the :math:`t`-distribution to answer the last part, but at this stage we had not yet looked at the :math:`t`-distribution.  However, the large number of observations (214) means the :math:`t`-distribution is no different than the normal distribution.
 
-.. question::
 
-	The ammonia concentration in your wastewater treatment plant is measured every 6 hours.  The data for one year are available from the `dataset website <http://datasets.connectmv.com/info/ammonia>`_. 
-
-	#. What appears to be a suitable distribution?  
-	#. Estimate values for the distribution's parameters.
-	#. What if I told you that these values are not independent.  How does it affect your answer?
-	#. What is the probability of having an ammonia concentration greater than 50 mg/L when:
-
-		- you use only the data (do not use any estimated statistics)
-		- you use the estimated statistics for the distribution?
-
-	.. could use "fitdistr" in R in the MASS package?
-
-.. answer:: 
-	:fullinclude: no 
-
-	.. literalinclude:: ../figures/univariate/ammonia-in-wastewater.R
-		:language: s
-
-	An appropriate distribution appears to be the normal distribution, however the right hand side tail (upper tail) is slightly heavier (outside the given limits) than would be found on the normal distribution.  Assuming the data are normal, we can calculate the distribution's parameters as :math:`\overline{x} = \hat{\mu} = 36.1` and :math:`s= \hat{\sigma} = 8.52`.
-
-	The fact that the data are not independent is not an issue.  To calculate estimates of the parameter's distribution (the mean and standard deviation) we do not need to assume independence.  One way to see this: if I randomly reorder the data, I will still get the same value for the mean and standard deviation.  The assumption of independence is required for the central limit theorem, but we have not used that theorem here.
-
-	The probability of having an ammonia concentration greater than 50 mg/L:
-
-		- when using only the data: 4.5% (see code above)
-		- when using the estimated statistics of the distribution: 5.1% (see code above)
-	
-	We should use the :math:`t`-distribution to answer the last part, but at this stage we had not yet looked at the :math:`t`-distribution.  However, the large number of observations (1440) means the :math:`t`-distribution is no different than the normal distribution.
+AMMONIA QUESTION HERE
 
 .. question::
 
@@ -2354,4 +2309,49 @@ Exercises
 
 	Use this vector of data as an example: :math:`[2, 6, 1, 9151616, -4, 2]`.  The mean is 1525270, while the median is 2.
 
-	
+
+.. question::
+
+	Recall that :math:`\mu = \mathcal{E}(x) = \frac{1}{N}\sum{x}` and :math:`\mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} = \sigma^2 = \frac{1}{N}\sum{(x-\mu)^2}`. 
+
+		#.	What is the expected value thrown of a fair, 12-sided dice?
+		#.	What is the expected variance of a fair, 12-sided dice?
+		#.	Simulate 10,000 throws in a software package (R, MATLAB, or Python) from this dice and see if your answers match those above. Record the average value from the 10,000 throws, call that average :math:`\overline{x}`.
+		#.	Repeat the simulation 10 times, calculating the average value of all the dice throws. Calculate the mean and standard deviation of the 10 :math:`\overline{x}` values and *comment* whether the results match the theoretically expected values.
+
+.. answer::
+
+	The objective of this question is to recall basic probability rules.
+
+	#.  Each value on the dice is equally probable, so the expected value thrown will be:
+
+		.. math::
+			\mathcal{E}(X) = \sum_{i=1}^{12}x_{i}P(x_{i}) = P(x) \sum_{i=1}^{12} x_{i} = \frac{1}{12} \left( 1 + 2 + \cdots + 12 \right) = \bf{6.5}
+		
+		This value is the population mean, :math:`\mu`.
+
+	#.  Continuing the notation from the above question we can derive the expected variance as,
+
+		.. math::
+			\mathcal{V}(X) &= \frac{1}{N}\sum_i^{12}{(x_i - \mu)^2} = \frac{1}{12} \cdot \left[ (1 - 6.5)^2 + (2 - 6.5)^2 + \ldots + (12 - 6.5)^2 \right] \approx \bf{11.9167}
+
+	#.	Simulating 10,000 throws corresponds to 10,000 independent and mutually exclusive random events, each with an outcome between 1 and 12. The sample mean and variance from my sample was calculated using this code in R:
+
+		.. math::
+
+			\overline{x} &= 6.5219\\
+			s^2 &= 12.03732
+		
+		.. literalinclude:: ../figures/univariate/simulate-dice.R
+			:language: s
+
+	#.	Repeating the above simulation 10 times (i.e. 10 independent experiments) produces 10 different estimates of :math:`\mu` and :math:`\sigma^2`. Note, your answer should be slightly different, and different each time you run the simulation. 
+
+		.. literalinclude:: ../figures/univariate/simulate-dice-CLT.R
+			:language: s
+
+		Note that each :math:`\overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n \right)`, where :math:`n = 10000`.  We know what :math:`\sigma^2` is in this case: it is our theoretical value of **11.92**, calculated earlier, and for :math:`n=10000` samples, our theoretical expectation is that :math:`\overline{x} \sim \mathcal{N}\left(6.5, 0.00119167\right)`.
+
+		Calculating the average of those 10 means, let's call that :math:`\overline{\overline{x}}`, shows a value close to 6.5, the theoretical mean.
+
+		Calculating the variance of those 10 means shows a number around 0.00119167, as expected.
