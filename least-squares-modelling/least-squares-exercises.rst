@@ -1131,7 +1131,7 @@ Exercises
 
 	The concrete mixture is prepared with a polymer additive. The mixture is placed in a mold and filled to the top. The mold is inverted and removed. The height of the mold minus the height of the remaining concrete pile is called the "slump". 
 
-	.. figure:: images/types_of_concrete_slump.jpg
+	.. figure:: ../figures/least-squares/concrete-slump-test.jpg
 		:alt:	http://en.wikipedia.org/wiki/File:Types_of_concrete_slump.jpg
 		:width: 650px
 		:align: center
