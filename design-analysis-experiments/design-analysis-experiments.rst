@@ -122,7 +122,7 @@
 	
 	Add that you cannot remove main effects if their interactions are used in the model.  See Fox book on this point also.
 	
-	Remove the use of the qq-plot to assess significance: misleading.  See how Minitab draws its line of significance.  
+	Remove the use of the q-q plot to assess significance: misleading.  See how Minitab draws its line of significance.  
 	Rather use standardized error (effect / SE), if there are degrees of freedom available.
 
 	RSM: show how you decide when to switch to CCD designs.
@@ -1032,7 +1032,7 @@ So even though the temperature effect's confidence interval would be :math:`11.5
 
 		y_i = b_0 + b_A x_A + b_B x_B + b_{C}x_C + b_{AB}x_{AB} + b_{AC}x_{AC} +  b_{BC}x_{BC} +  b_{ABC}x_{ABC}
 	
-	A normal probability plot is a non-linear transformation of the data so that the s-shape of the cumulative normal distribution appears as a straight line.  We used this idea in the section on :ref:`univariate statistics <SECTION-univariate-review>` where a qq-plot was constructed to assess normality.  Another way to visualize this concept is to draw vertical divisions on the normal distribution curve, to create :math:`2^k-1` sections of equal area.  One effect is expected per division.
+	A normal probability plot is a non-linear transformation of the data so that the s-shape of the cumulative normal distribution appears as a straight line.  We used this idea in the section on :ref:`univariate statistics <SECTION-univariate-review>` where a q-q plot was constructed to assess normality.  Another way to visualize this concept is to draw vertical divisions on the normal distribution curve, to create :math:`2^k-1` sections of equal area.  One effect is expected per division.
 
 	.. TODO: illustration of normal distribution division
 
@@ -1054,9 +1054,9 @@ So even though the temperature effect's confidence interval would be :math:`11.5
 		plot(theoretical.quantity, b.sort)
 		qqline(b.sort)
 
-		# Or more simply: use the qq.plot function:
+		# Or more simply: use the qqPlot function:
 		library(car)
-		qq.plot(b, labels=labels)
+		qqPlot(b, labels=labels)
 	
 	.. figure:: ../figures/doe/normal-probability-signifcant-effects.png
 		:align: center
@@ -2885,4 +2885,394 @@ Exercises
 		*	curvature terms, i.e. quadratic terms, in the model are larger than the main effect.
 
 		The experimental strategy changes by included axial points into the factorial design, allowing one to calculate the quadratic terms in the model, such as a :math:`b_{AA} x_A^2` term for the quadratic effect of factor **A**.
+
+.. question::
+
+	*Adapted from Box, Hunter and Hunter*
+	
+	A liquid polymer formulation is being made that is applied as a polish to wood surfaces.  The group responsible for the product have identified 3 elements to the formulation that have an effect of the liquid polish's final quality attributes (FQAs: this acronym is becoming a standard in most companies these days).
+
+	*	**A**: amount of reactive monomer in the recipe (10% at the low level and 30% at the high level)
+	*	**B**: the amount of chain length regulator (1% at the low level and 4% at the high level)
+	*	**C**: the type of chain length regulator (regulator P at the :math:`-` level or regulator Q at the :math:`+` level)
+
+	In class we have focused on the case where our :math:`y`-variable is continuous, but it could also be *descriptive*.  In this question we also see what happens when we have more than one :math:`y`-variable.
+
+	*	:math:`y_1` = Milky appearance: either *Yes* or *No*
+	*	:math:`y_2` = Viscous: either *Yes* or *No*
+	*	:math:`y_3` = Yellow colour: either *No* or *Slightly*
+
+	The following table captures the 8 experiments in standard order, although the experiments were run in a randomized order.
+
+	.. tabularcolumns:: |l||c|c|c||c|c|c|
+
+	+-----------+------------+-----------+------------+------------+------------+------------+
+	| Experiment| A          | B         |  C         | :math:`y_1`| :math:`y_2`| :math:`y_3`|
+	+===========+============+===========+============+============+============+============+
+	| 1         | |-|        | |-|       |  P         |  Yes       |  Yes       |  No        |
+	+-----------+------------+-----------+------------+------------+------------+------------+
+	| 2         | |+|        | |-|       |  P         |  No        |  Yes       |  No        |
+	+-----------+------------+-----------+------------+------------+------------+------------+
+	| 3         | |-|        | |+|       |  P         |  Yes       |  No        |  No        |
+	+-----------+------------+-----------+------------+------------+------------+------------+
+	| 4         | |+|        | |+|       |  P         |  No        |  No        |  No        |
+	+-----------+------------+-----------+------------+------------+------------+------------+
+	| 5         | |-|        | |-|       |  Q         |  Yes       |  Yes       |  No        |
+	+-----------+------------+-----------+------------+------------+------------+------------+
+	| 6         | |+|        | |-|       |  Q         |  No        |  Yes       |  Slightly  |
+	+-----------+------------+-----------+------------+------------+------------+------------+
+	| 7         | |-|        | |+|       |  Q         |  Yes       |  No        |  No        |
+	+-----------+------------+-----------+------------+------------+------------+------------+
+	| 8         | |+|        | |+|       |  Q         |  No        |  No        |  Slightly  |
+	+-----------+------------+-----------+------------+------------+------------+------------+
+
+	#.	What is the cause of a milky appearance?  
+	#.	What causes a more viscous product?
+	#.	What is the cause of a slight yellow appearance?
+	#.	Which conditions would you use to create a product was *not* milky, was of low viscosity, and had no yellowness?
+	#.	Which conditions would you use to create a product was *not* milky, was of low viscosity, and had some yellowness?
+
+.. answer::
+
+	Tables are often frowned on by people, but the reality is they are sometimes one of the best forms of visualizing data.  In this example we see:
+
+	#.	The milky appearance is caused by low levels of **A** = amount of reactive monomer (10% in this recipe), since milky appearance is correlated with that column.
+
+	#.	A more viscous product is caused by low levels of **B** = amount of chain length regulator (1% in this recipe), since the change in signs in **B** match the viscous column.
+
+	#.	The yellow appearance is due to an interaction: in this case only when using chain length regulator Q *and* when using high levels of reactive monomer in the recipe (30%) do we see the yellow appearance.
+
+	#.	Such a product can be obtained by using
+
+		*	**A** = high amount of reactive monomer in the recipe (30%)
+		*	**B** = high amounts of chain length regulator (4%)
+		*	**C** = use chain length regulator P
+	
+		These correspond to conditions in experiment 4.
+	
+	#.	Such a product can be obtained by using
+
+		*	**A** = high amount of reactive monomer in the recipe (30%)
+		*	**B** = high amounts of chain length regulator (4%)
+		*	**C** = use chain length regulator Q
+
+		These correspond to conditions in experiment 8.
+
+	In all these questions we can conclusively state there is cause and effect, since we see repeated changes in the factors (holding the other variables and disturbances constant) and the corresponding effects in the 3 :math:`y`-variables.
+
+.. question::
+
+	Using a :math:`2^3` factorial design in 3 variables (**A** = temperature, **B** = pH and **C** = agitation rate), the conversion, :math:`y`, from a chemical reaction was recorded.
+
+	+-----------+------------+-----------+------------+------------+
+	| Experiment| A          | B         |  C         | :math:`y`  |
+	+===========+============+===========+============+============+
+	| 1         | |-|        | |-|       |  |-|       |  72        |
+	+-----------+------------+-----------+------------+------------+
+	| 2         | |+|        | |-|       |  |-|       |  73        |
+	+-----------+------------+-----------+------------+------------+
+	| 3         | |-|        | |+|       |  |-|       |  66        |
+	+-----------+------------+-----------+------------+------------+
+	| 4         | |+|        | |+|       |  |-|       |  87        |
+	+-----------+------------+-----------+------------+------------+
+	| 5         | |-|        | |-|       |  |+|       |  70        |
+	+-----------+------------+-----------+------------+------------+
+	| 6         | |+|        | |-|       |  |+|       |  73        |
+	+-----------+------------+-----------+------------+------------+
+	| 7         | |-|        | |+|       |  |+|       |  67        |
+	+-----------+------------+-----------+------------+------------+
+	| 8         | |+|        | |+|       |  |+|       |  87        |
+	+-----------+------------+-----------+------------+------------+
+
+	*	**A** = :math:`\displaystyle \frac{\text{temperature} - 150\text{°C}}{10\text{°C}}`
+	*	**B** = :math:`\displaystyle \frac{\text{pH} - 7.5}{0.5}`
+	*	**C** = :math:`\displaystyle \frac{\text{agitation rate} - 50 \text{rpm}}{5 \text{rpm}}`
+
+	#.	Show a cube plot for the recorded data.
+	#.	Estimate the main effects and interactions by hand.
+	#.	Interpret any results from part 2.
+	#.	Show that a least squares model for the full factorial agrees with the effects and interactions calculated by hand.
+	#.	Approximately, at what conditions (given in real-world units), would you run the next experiment to improve conversion.  Give your settings in coded units, then unscale and uncenter them to get real-world units.
+
+.. answer::
+
+	#.	A cube plot for the data from these 8 runs is:
+
+		.. image:: ../figures/doe/chemical-reaction-cube-plot-3-factor-system.png
+			:alt:	../figures/doe/chemical-reaction-cube-plot-3-factor-system.svg
+			:scale: 44
+			:width: 550px
+			:align: center
+
+	#.	The main effects and interactions are:
+
+		*	**A effect**: There are 4 estimates of :math:`A = \displaystyle \frac{(73-72) + (87-66) + (73-70) + (87-67)}{4} = \frac{45}{4} = \bf{11.25}`
+		*	**B effect**: There are 4 estimates of :math:`B = \displaystyle \frac{(66-72) + (87-73) + (67-70) + (87-73)}{4} = \frac{19}{4} = \bf{4.75}`
+		*	**C effect**: Again 4 estimates of :math:`C = \displaystyle \frac{(70-72) + (73-73) + (67-66) + (87-87)}{4} = \frac{-1}{4} = \bf{-0.25}`
+		*	**AB interaction**: There are 2 estimates of :math:`AB`.  Recall that interactions are calculated as the half difference going from high to low.  Consider the change in :math:`A` when
+	
+			-	:math:`B_\text{high}` (at :math:`C` high) = 87 - 67 = 20
+			-	:math:`B_\text{low}` (at :math:`C` high) = 73-70 = 3
+			-	First estimate = [(20) - (3)]/2 = 8.5
+			-	:math:`B_\text{high}` (at :math:`C` low) = 87 - 66 = 21
+			-	:math:`B_\text{low}` (at :math:`C` low) = 73 - 72 = +1
+			-	Second estimate = [(21) - (1)]/2 = 10
+			-	Average **AB** interaction = (8.5 + 10)/2 = **9.25**
+			-	You can interchange :math:`A` and :math:`B` and still get the same result.
+
+		*	**AC interaction**: There are 2 estimates of :math:`AC`.   Consider the change in :math:`C` when
+
+			-	:math:`A_\text{high}` (at :math:`B` high) = 87 - 87 = 0
+			-	:math:`A_\text{low}` (at :math:`B` high) = 67 - 66 = 1
+			-	First estimate = [(0) - (+1)]/2 = -0.5
+			-	:math:`A_\text{high}` (at :math:`B` low) = 73 - 73 = 0
+			-	:math:`A_\text{low}` (at :math:`B` low) = 70 - 72 = -2
+			-	Second estimate = [(0) - (-2)]/2 = 1
+			-	Average **AC** interaction = (-0.5 + 1)/2 = **0.25**
+			-	You can interchange :math:`A` and :math:`C` and still get the same result.	
+
+		*	**BC interaction**: There are 2 estimates of :math:`BC`: 0 (at high **A**) and 1.5 (at low **A**), giving an average BC interaction of **0.75**.
+	
+		*	**ABC interaction**: There is only a single estimate: 
+
+			-	:math:`AB` effect at high :math:`C` = 8.5
+			-	:math:`AB` effect at low :math:`C` = 10
+			-	:math:`ABC` interaction = [(8.5) - (10)] / 2 = **-0.75**
+
+			-	You can calculate this also by considering the :math:`AC` effect at the two levels of :math:`B`
+			-	Or, you can calculate this by considering the :math:`BC` effect at the two levels of :math:`A`.
+			-	All 3 approaches give the same result.
+
+	#.	These results show that temperature, **A**, has by far the greatest effect on the conversion: an increase in conversion of 11.25 % for every 10 °C increase in temperature. The agitation rate, **C**, has a negligible effect and the effect of pH, **B**, is between the two: an expected 4.75% increase for every 0.5 units of increased pH.
+
+		There are no interactions between agitation rate (the **BC** and **AC** interactions are both small), so we can safely drop the agitation, factor **C**, from future consideration in this system.
+	
+		There is however an interaction between temperature and pH, the **AB** interaction.  This shows that conversion is further increased when both these factors are operated at their high levels.
+	
+	
+	#.	A least squares model was found by solving for :math:`\mathbf{b} = \left(\mathbf{X}'\mathbf{X}\right)^{-1}\mathbf{X}'\mathbf{y}`, where
+
+		.. math::
+
+			\begin{bmatrix} 72\\73\\66\\87\\70\\73\\67\\87 \end{bmatrix} &=
+			\begin{bmatrix} +1 & -1 & -1 & -1 & +1 & +1 & +1 & -1\\ 
+			                +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1\\
+			                +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1\\
+			                +1 & +1 & +1 & -1 & +1 & -1 & -1 & -1\\
+			                +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1\\
+			                +1 & +1 & -1 & +1 & -1 & +1 & -1 & -1\\
+			                +1 & -1 & +1 & +1 & -1 & -1 & +1 & -1\\
+			                +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1\\
+			\end{bmatrix}
+			\begin{bmatrix} b_0 \\ b_A \\ b_B \\ b_{C} \\ b_{AB} \\ b_{AC} \\ b_{BC} \\ b_{ABC}  \end{bmatrix} \\
+			\mathbf{y} &= \mathbf{X} \mathbf{b} 
+	
+
+		which solved for :math:`\mathbf{b}` gives the expected model:
+	
+		.. math::
+
+				y = 74.4 + 5.625 x_A + 2.375 x_B -0.125 x_C + 4.625 x_A x_B + 0.125 x_A x_C + 0.375 x_B x_C - 0.375 x_A x_B x_C
+			
+		that agrees with the hand-calculations (where the effects are double those from the least squares model).
+	
+	#.	The experiments can be run at any level of agitation, so it makes sense to use the current midpoint of 50 rpm.  We are then left with selecting **A** and **B**.
+
+		Since we want to increase conversion, we would want to go in any direction that has higher levels of **A** and **B**. I would tentatively select **A** = 1.5 and **B** as 1.5 in coded units. I used the following MATLAB code and figure to help my decision (we will see how to select the new point more formally in the section on :ref:`response surface methods<DOE-RSM>`).
+	
+		.. literalinclude:: ../figures/doe/chemical_reaction_contours.m
+			:language: matlab
 		
+		.. image:: ../figures/doe/chemical-reaction-contours.png
+			:alt:	../figures/doe/chemical_reaction_contours.m
+			:scale: 60
+			:width: 550px
+			:align: center
+	
+		In real-world units these points correspond to:
+	
+		*	:math:`A_\text{actual} = 1.5 \times 10 \text{°C} + 150 \text{°C}` = 165 °C.
+		*	:math:`B_\text{actual} = 1.5 \times 0.5 \text{°C} + 7.5 \text{°C}` = 8.25 pH units.
+	
+.. question::
+
+	#.	Why do we block groups of experiments?
+	#.	Write a :math:`2^3` factorial design in two blocks of 4 runs, so that no main effect or 2 factor interaction is confounded with block differences.
+
+.. answer::
+
+	#.	When performing experiments in groups, for example, half the experiments are run on day one and the others on day 2, we must block the experiments we choose to run on each day, to avoid inadvertently introducing a new effect, a day-to-day effect in the model.  In other words, we must choose in a careful way the half group of runs we place on day 1 and day 2.
+
+		Blocking applies in many other cases: sometimes we have to use two batches of raw materials to do an experiment, because there is not enough for the full factorial.  We must block to prevent the effect of raw materials to affect our :math:`y`-variable.  
+	
+		Or to run the experiments efficiently in a short time, we choose to do them in parallel in two different reactors.  Here we must block against the reactor effect.
+	
+	#.	For a :math:`2^3` system we have factors **A**, **B** and **C**.  To avoid the main effect being confounded with any 2 factor interactions we must assign the blocks to the highest interaction, i.e. the **ABC** interaction.
+
+		Writing out the design in standard order:
+
+		+-----------+------------+-----------+------------+------------+
+		| Experiment| A          | B         |  C         | ABC        |
+		+===========+============+===========+============+============+
+		| 1         | |-|        | |-|       |  |-|       |  |-|       |
+		+-----------+------------+-----------+------------+------------+
+		| 2         | |+|        | |-|       |  |-|       |  |+|       |
+		+-----------+------------+-----------+------------+------------+
+		| 3         | |-|        | |+|       |  |-|       |  |+|       |
+		+-----------+------------+-----------+------------+------------+
+		| 4         | |+|        | |+|       |  |-|       |  |-|       |
+		+-----------+------------+-----------+------------+------------+
+		| 5         | |-|        | |-|       |  |+|       |  |+|       |
+		+-----------+------------+-----------+------------+------------+
+		| 6         | |+|        | |-|       |  |+|       |  |-|       |
+		+-----------+------------+-----------+------------+------------+
+		| 7         | |-|        | |+|       |  |+|       |  |-|       |
+		+-----------+------------+-----------+------------+------------+
+		| 8         | |+|        | |+|       |  |+|       |  |+|       |
+		+-----------+------------+-----------+------------+------------+
+
+		This table indicates we should do all experiments in column **ABC** with a |-| in one block, and the experiments with a |+| should be done in the second block.  The main effects will not be confounded with any 2-factor interactions in this case.
+	
+		Another way you can interpret blocking is as follows.  Consider the block to be a new factor in your experiment, call it factor **D**, where **D** at the low level corresponds to experiments in the first block, and **D** at the high level would be experiments in the second block.  
+	
+		But we can only run 8 experiments, so we now use the table in the course notes (derived from page 272 in Box, Hunter and Hunter, 2nd edition), and see the layout that will cause least disruption is to assign **D = ABC**.  This gives the same experimental layout above.
+
+.. question::
+
+	.. note:: This question requires using fractional factorials. You may have to read ahead in the notes to answer all the parts of this question.
+
+	Factors related to the shrinkage of plastic film, produced in an injection molding device, are being investigated.  The following factors have been identified by the engineer responsible:
+
+	*	**A** = mold temperature
+	*	**B** = moisture content
+	*	**C** = holding pressure
+	*	**D** = cavity thickness
+	*	**E** = booster pressure
+	*	**F** = cycle time
+	*	**G** = gate size
+
+	+-----------+-----+-----+-----+-----+-----+-----+-----+------------+
+	| Experiment| A   | B   | C   | D   | E   | F   | G   | :math:`y`  |
+	+===========+=====+=====+=====+=====+=====+=====+=====+============+
+	| 1         | |-| | |-| | |-| | |+| | |+| | |+| | |-| |  14.0      |
+	+-----------+-----+-----+-----+-----+-----+-----+-----+------------+
+	| 2         | |+| | |-| | |-| | |-| | |-| | |+| | |+| |  16.8      |
+	+-----------+-----+-----+-----+-----+-----+-----+-----+------------+
+	| 3         | |-| | |+| | |-| | |-| | |+| | |-| | |+| |  15.0      |
+	+-----------+-----+-----+-----+-----+-----+-----+-----+------------+
+	| 4         | |+| | |+| | |-| | |+| | |-| | |-| | |-| |  15.4      |
+	+-----------+-----+-----+-----+-----+-----+-----+-----+------------+
+	| 5         | |-| | |-| | |+| | |+| | |-| | |-| | |+| |  27.6      |
+	+-----------+-----+-----+-----+-----+-----+-----+-----+------------+
+	| 6         | |+| | |-| | |+| | |-| | |+| | |-| | |-| |  24.0      |
+	+-----------+-----+-----+-----+-----+-----+-----+-----+------------+
+	| 7         | |-| | |+| | |+| | |-| | |-| | |+| | |-| |  27.4      |
+	+-----------+-----+-----+-----+-----+-----+-----+-----+------------+
+	| 8         | |+| | |+| | |+| | |+| | |+| | |+| | |+| |  22.6      |
+	+-----------+-----+-----+-----+-----+-----+-----+-----+------------+
+
+	You can obtain a copy of this data set if you install the ``BsMD`` package in R.  Then use the following commands:
+
+	.. code-block:: s
+
+		library(BsMD)
+		data(BM93.e3.data)
+	
+		# Use only a subset of the original experiments
+		X <- BM93.e3.data[1:8, 2:10] 
+
+	#.	How many experiments would have been required for a full factorial experiment?
+
+	#.	What type of fractional factorial is this (i.e. is it a half fraction, quarter fraction ...)?
+
+	#.	Identify all the generators used to create this design. A table, such as on page 272 in Box, Hunter and Hunter, 2nd edition will help.
+
+	#.	Write out the complete defining relationship.
+
+	#.	What is the resolution of this design?
+
+	#.	Use a least squares approach to calculate a model that fits these 8 experiments.
+
+	#.	What effects would you judge to be significant in this system?  The engineer will accept your advice and disregard the other factors, and spend the rest of the experimental budget only on the factors deemed significant.
+
+	#.	What are these effects aliased with (use your defining relationship to find this).
+
+	#.	Why is in necessary to know the confounding pattern for a fractional factorial design.
+
+.. answer::
+
+	#.	There are 7 factors in this experiment, so a full factorial would require :math:`2^7 = 128` experiments.
+
+	#.	This is a one-eighth fraction, 8/128 = 1/8.
+
+	#.	Since the are 7 factors in 8 runs, the :ref:`DOE tradeoff table <DOE_design_trade_off_BHH_272>` indicates the possible generators are **D = AB**, **E = AC**, **F = BC** and **G = ABC**. However, that doesn't mean the experiments were generated with exactly those factors. For example, these experiments could have interchanged the **A** and **B** columns, in which case factors **E** and **F** would be different.
+
+		However, when checking the columns in our table against these generators we see that the experiments were derived from exactly these same generators.  It is customary to record the generators in the form **I = ...**, so our generators are:
+	
+		*	**I = ABD**
+		*	**I = ACE**
+		*	**I = BCF**
+		*	**I = ABCG**.
+	
+	#.	The defining relationship is the product of all possible generator combinations.  Since there are 4 generators, there are :math:`2^4` words in the defining relationship. A similar example in the course notes shows that the defining relationship is:
+
+		**I = ABD = ACE = BCF = ABCG = BCDE = ACDF = CDG = ABEF = BEG = AFG = DEF = ADEG = CEFG = BDFG = ABCDEFG**
+	
+	#.	It is a resolution III design, by noting the shortest word in the defining relationship is of length 3 (and verified in the table above).
+
+	#.	The least squares model would be found by setting |-| = :math:`-1` and |+| = :math:`+1` in the table above as the :math:`\mathbf{X}` matrix, and adding an additional column of 1's to account for the intercept.  This gives a total of 8 columns in the matrix.  The :math:`\mathbf{X}^T\mathbf{X}` will be diagonal, with 8's on the diagonal.  The :math:`\mathbf{y}` vector is just the table of results above.  
+
+		From this we calculate :math:`\mathbf{b} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1} \mathbf{X}^T\mathbf{y}` (MATLAB and R code is given at the end).
+	
+		.. math::
+	
+			y = 20.35 -0.65 x_A -0.25 x_B + 5.05 x_C -0.45 x_E -1.45 x_F -0.15 x_G - 0.15x_H
+		
+	#.	From this we judge effect **C**, **E** and to a smaller extent, effect **A**, to be significant. 
+
+	#.	However, these main effects are aliased with:
+
+		-	**C** (multiply **C** by every word in the defining relationship)
+	
+				*	**CABD = ABCD**
+				*	**CACE = AE**
+				*	**CBCF = BF**
+				*	**CABCG = ABG**
+				*	**CBCDE = BDE**
+				*	**CACDF = ADF**
+				*	**CCDG = DG** 
+				*	**CABEF = ABCEF**
+				*	**CBEG = CBEG**
+				*	**CAFG = ACFG**
+				*	**CDEF = CDEF**
+				*	**CADEG = ACDEG**
+				*	**CCEFG = EFG**
+				*	**CBDFG = BCDFG**
+				*	**CABCDEFG = ABDEFG**
+		
+		-	**E** (reporting only the 2 factor interactions)
+	
+			*	**AC**
+			*	**BG**
+			*	**DF**
+		
+		-	**A** (reporting only the 2 factor interactions)
+
+				*	**BD**
+				*	**CE**
+				*	**FG**
+
+	#.	It is necessary to know the confounding pattern because it helps to interpret the coefficients.  For example, we see that factor **C** is aliased with the **AE** interaction, and we also see that factors **A** and **E** are important.  We cannot be sure though if that large coefficient for **C** is due purely to **C**, or if it is also due to the **AE** interaction.
+
+		The only way we can uncouple that coefficient is by performing additional, *foldover* experiments.
+		
+	The R code for this question are given below, and also code to draw the Pareto plot to determine the most important coefficients.
+	
+		.. literalinclude:: ../figures/doe/fractional-factorial-question.R
+			:language: s
+			    
+		.. image:: ../figures/doe/fractional-factorial-question.png
+			:alt:	../figures/doe/fractional-factorial-question.R
+			:scale: 60
+			:width: 550px
+			:align: center
