@@ -8,3 +8,4 @@ Least Squares Modelling
    :maxdepth: 2
 
    least-squares-modelling
+   least-squares-exercises
