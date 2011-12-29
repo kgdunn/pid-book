@@ -1833,6 +1833,8 @@ Exercises
 		\text{Mean:} &\qquad 14.67 \\
 		\text{Standard deviation:} &\qquad 1.16 
 
+	Ensure you can also complete the question by hand, using statistical tables.
+
 .. answer::
 	:fullinclude: no 
 	
@@ -2067,8 +2069,8 @@ Exercises
 	-   The code was modified to generate the matrix of z-value results in the comments below.  The largest difference is between Sunday and Wednesday, and the smallest difference is between Monday and Tuesday.
 
 	.. literalinclude:: ../figures/univariate/website-differences-assignment3-2010.R
-	       :language: s
-	       :lines: 32-54,75-
+		:language: s
+		:lines: 32-54,75-
 
 .. question::
 
@@ -2077,12 +2079,16 @@ Exercises
 .. answer::
 	:fullinclude: no 
 
-	Two important precautions one has to take are:
+	Some important precautions one has to take are:
 
-	#.	Keep all disturbance factors as constant as possible.
-	#.	Randomize the order of the experiments, despite the cost, to obtain independent experimental measurements. Randomization is the insurance we pay to ensure the results are not confounded by unmeasured disturbances.
+	#.	Keep all disturbance factors as constant as possible: e.g. use the same staff for all experiments (*Corn* and *Sugar*), keep other variables on the process as constant as possible.
+	
+	#.	Randomize the **order** of the experiments, despite the cost, to obtain independent experimental measurements.  For example, if you cannot use the same staff for all experiments, then the experiment order must be randomization. Do not, for example, use group A staff to run the *Corn* experiments and group B staff to run the *Sugar* experiments.
 
-     
+		Randomization is expensive and inconvenient, but is the insurance we pay to ensure the results are not confounded by unmeasured disturbances.
+
+	#.	Use representative lots of corn- and sugar-based materials. You don't want to run all your experiments on one batch of corn or sugar.  What if the batch of corn-based material was an unusual in some way and showed no difference, when really there is a long-term difference? Or the opposite could have occurred as well.
+
 .. question::
 
     There are two analytical techniques for measuring BOD.  You wish to evaluate the two testing procedures, so that you can select the test which has lower cost, and fastest turn-around time, but without a compromise in accuracy.  The table contains the results of the each test, performed on a sample that was split in half. 
@@ -2450,3 +2456,129 @@ Exercises
 	
 		.. literalinclude:: ../figures/univariate/batch-yields.R
 			:language: s
+
+.. question::
+
+	#.	At the 95% confidence level, for a sample size of 7, compare and comment on the upper and lower bounds of the confidence interval that you would calculate if:
+
+		a)	you know the population standard deviation
+		b)	you have to estimate it for the sample.
+
+		Assume that the calculated standard deviation from the sample, :math:`s` matches the population :math:`\sigma = 4.19`.
+
+	#.	As a follow up, overlay the probability distribution curves for the normal and :math:`t`-distribution that you would use for a sample of data of size :math:`n=7`.
+
+	#.	Repeat part of this question, using larger sample sizes.  At which point does the difference between the :math:`t`- and normal distributions become *practically* indistinguishable? 
+	
+	#.	What is the implication of this?
+
+.. answer::
+	
+	#.	This question aims for you to prove to yourself that the :math:`t`-distribution is **wider (more broad)** than the normal distribution, and as a result, the confidence interval is wider as well.  This is because we are less certain of the data's spread when using the estimated variance.
+	
+		The confidence intervals are:
+	
+		.. math::
+
+			\begin{array}{rcccl} 
+				  - c_n &\leq& \displaystyle \frac{\overline{x} - \mu}{\sigma/\sqrt{n}}  &\leq &  c_n\\ \\
+				  - c_t &\leq& \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}}  &\leq &  c_t
+			\end{array}	
+	
+		The 95% region spanned by the :math:`t`-distribution with 6 degrees of freedom has upper and lower limits at :math:`c_t = \pm` ``qt((1-0.95)/2, df=6)``, i.e. from **-2.45** to **2.45**.  The equivalent 95% region spanned by the normal distribution is :math:`c_n = \pm` ``qnorm((1-0.95)/2)``, spanning from **z=-1.96** to **z=1.96**.  Everything else in the center of the 2 inequalities is the same, so we only need to compare :math:`c_t` and :math:`c_n`.
+	
+	#.	The question asked to overlay the probability distributions (not cumulative probability distributions):
+
+		.. image:: ../figures/univariate/overlaid-distributions-normal-and-t.jpg
+			:alt:	../figures/univariate/overlaid-distributions-normal-and-t.R
+			:scale: 50
+			:width: 750px
+			:align: center
+		
+		where the above figure was generated with the R-code:
+	
+		.. literalinclude:: ../figures/univariate/overlaid-distributions-normal-and-t.R
+			:language: s	
+
+	#.	Repeated use of the above code, but changing :math:`n`, shows that little *practical* difference between the distributions with as few as :math:`n=20` samples.  After :math:`n=40` and especially :math:`n=60`, there is almost no *theoretical* difference between them.
+
+	#.	This implies that when we do any analysis of large samples of data, say :math:`n>50`, and if those data are independently sampled, then we can just use the normal distribution's critical value (e.g. the :math:`\pm 1.96` value for 95% confidence, which you now know from memory), instead of looking up the :math:`t`-distribution's values.
+
+		Since the wider values from the :math:`t`-distribution reflect our uncertainty in using an *estimate of the variance*, rather than the population variance, this result indicates that our estimated variances are a good estimate of the population variance for largish sample sizes.
+
+.. question::
+
+	Engineering data often violate the assumption of independence. In this question you will create (simulate) sequences of autocorrelated data, i.e. data that lack independence, and investigate how lack of independence affects our results. 
+	
+	The simplest form of autocorrelation is what is called lag-1 autocorrelation, when the series of values, :math:`x_k` is correlated with itself only 1 step back in time, :math:`x_{k-1}`:
+
+	.. math::
+
+		x_k = \phi x_{k-1} + a_k
+	
+	The :math:`a_k` value is a random error and for this question let :math:`a_k \sim \mathcal{N}\left(\mu=0, \sigma^2 = 25.0 \right)`. 
+	
+	Create 3 sequences of autocorrelated data with:
+
+		A:	:math:`\qquad \phi = +0.7` (positively correlated)
+	
+		B:	:math:`\qquad \phi = 0.0` (uncorrelated data)
+	
+		C: 	:math:`\qquad \phi = -0.6` (negatively correlated)
+
+	For case A, B and C perform the following analysis. Repeat the following 1000 times (let :math:`i = 1, 2, \ldots, 1000`):
+	
+		*	Create a vector of 100 autocorrelated :math:`x` values using the above formula, using the current level of :math:`\phi`
+		*	Calculate the mean of these 100 values, call it :math:`\overline{x}_i` and store the result
+		
+	At this point you have 1000 :math:`\overline{x}_i` values for case A, another 1000 :math:`\overline{x}_i` values for case B, and similarly for case C. Now answer these questions:
+	
+	#.	Assuming independence, which is obviously not correct for 2 of the 3 cases, nevertheless, from which population should :math:`\overline{x}` be from, and what are the 2 parameters of that population?
+	#.	Now, using your 1000 simulated means, estimate those two population parameters.
+	#.	Compare your estimates to the theoretical values.
+
+	Comment on the results, and the implication of this regarding tests of significance (i.e. statistical tests to see if a significant change occurred or not).
+
+.. answer::
+
+	.. See BHH, 2nd edition. p 60.
+
+	We expect that case B should match the theoretical case the closest, since data from case B are truly independent, since the autocorrelation parameter is zero.  We expect case A and C datasets, which violate that assumption of independence, to be biased one way or another. This question aims to see **how** they are biased.
+
+	.. literalinclude:: ../figures/univariate/variance-inflation.R
+		:language: s
+	
+	You should be able to reproduce the results I have below, because the above code uses the ``set.seed(...)`` function, which forces R to generate random numbers in the same order on my computer as yours (as long as we all use the same version of R).
+	
+	*	Case A:	``0.50000000, 0.00428291,   1.65963302``
+	*	Case B:	``0.50000000, 0.001565456,  0.509676562``
+	*	Case C:	``0.50000000, 0.0004381761, 0.3217627596``
+
+	The first output is the same for all 3 cases: this is the theoretical standard deviation of the distribution from which the :math:`\overline{x}_i` values come: :math:`\overline{x}_i \sim \mathcal{N}\left(\mu, \sigma^2/N \right)`, where :math:`N=100`, the number of points in the autocorrelated sequence.  This result comes from the central limit theorem, which tells us that :math:`\overline{x}_i` should be normally distributed, with the same mean as our individual :math:`x`-values, but have smaller variance.  That variance is :math:`\sigma^2/N`, where :math:`\sigma` is the variance of the distribution from which we took the raw :math:`x` values.  That theoretical variance value is :math:`25/100`, or theoretical standard deviation of :math:`\sqrt{25/100} = \bf{0.5}`.
+
+	But, the central limit theorem only has one *crucial* assumption: that those raw :math:`x` values are independent.  We intentionally violated this assumption for case A and C.  
+
+	We use the 1000 simulated values of :math:`\overline{x}_i` and calculate the average of the 1000 :math:`\overline{x}_i` values and the standard deviation of the 1000 :math:`\overline{x}_i` values.  Those are the second and third values reported above.  
+
+	We see in all cases that the mean of the 1000 values nearly matches 0.0.  If you run the simulations again, with a different seed, you will see it above zero, and sometimes below zero for all 3 cases.  So we can conclude that lack of independence *does not* affect the estimated mean.
+
+	The major disagreement is in the variance though.  Case B matches the theoretical variance; data that are positively correlated have an inflated standard deviation, 1.66; data that are negatively correlated have a deflated standard deviation, 0.32 when :math:`\phi=-0.6`.
+
+	This is problematic for the following reason.  When doing a test of significance, we construct a confidence interval:
+
+	.. math::
+		
+			\begin{array}{rcccl} 
+				- c_t                                   &\leq& \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}} &\leq &  +c_t\\
+				\overline{x} - c_t \dfrac{s}{\sqrt{n}}  &\leq& \mu                                                 &\leq& \overline{x} + c_t\dfrac{s}{\sqrt{n}} \\
+				\text{LB}                               &\leq& \mu                                                 &\leq& \text{UB}
+			\end{array}
+
+	We use an estimated standard deviation, :math:`s`, whether that is found from pooling the variances or found separately (it doesn't really matter), but the main problem is that :math:`s` is not accurate when the data are not independent:
+
+	*	For positive correlations (quite common in industrial data): our confidence interval will be too wide, likely spanning zero, indicating no statistical difference, when in fact there might be one.
+	*	For negative correlations (less common, but still seen in practice): our confidence interval will be too narrow, more likely to indicate there is a difference.
+
+	The main purpose of this question is for you to see how use to understand what happens when a key assumption is violated. There are cases when an assumption is violated, but it doesn't affect the result too much.
+	
+	In this particular example there is a known theoretical relationship between :math:`\phi` and the inflated/deflated variance that can be derived (with some difficulty). But in most situations the affect of violating assumptions is too difficult to derive mathematically, so we use computer power to do the work for us: but then we still have to spend time thinking and interpreting the results.
