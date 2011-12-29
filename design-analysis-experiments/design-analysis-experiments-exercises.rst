@@ -997,3 +997,4 @@ Exercises
 			:scale: 60
 			:width: 550px
 			:align: center
+

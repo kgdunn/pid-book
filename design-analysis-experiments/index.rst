@@ -8,3 +8,4 @@ Design and Analysis of Experiments
    :maxdepth: 2
 
    design-analysis-experiments
+   design-analysis-experiments-exercises
