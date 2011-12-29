@@ -1549,6 +1549,8 @@ where :math:`r^2_{12}` represents the correlation between variable :math:`x_1` a
 Interpretation of the model coefficients
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. _MLR_coefficient_interpretation:
+
 Let's take a look at the case where :math:`y = b_1x_1 + b_2x_2`.  We can plot this on a 3D plot, with axes of :math:`x_1`, :math:`x_2` and :math:`y`:
 
 .. image:: ../figures/least-squares/least-squares-two-x-variables.png
