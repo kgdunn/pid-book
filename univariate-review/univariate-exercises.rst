@@ -949,6 +949,8 @@ Exercises
 
 .. question::
 
+	.. _lack_of_independence_question:
+	
 	Engineering data often violate the assumption of independence. In this question you will create (simulate) sequences of autocorrelated data, i.e. data that lack independence, and investigate how lack of independence affects our results. 
 	
 	The simplest form of autocorrelation is what is called lag-1 autocorrelation, when the series of values, :math:`x_k` is correlated with itself only 1 step back in time, :math:`x_{k-1}`:

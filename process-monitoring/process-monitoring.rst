@@ -839,20 +839,81 @@ Exercises
 .. answer::
 
 	A Shewhart chart has no memory, and is suited to detecting unusual spikes in your production.  CUSUM and EWMA charts have memory, and while they would pick up this spike, they would also create a long duration of false alarms after that.  So those charts are much less appropriate.
-	
+
 .. question::
 
-	A tank uses small air bubbles to keep solid particles in suspension.  If too much air is blown into the tank, then excessive foaming occurs; if too little air is blown into the tank the particles sink and drop out of suspension.  Which monitoring chart would you use to ensure the airflow is always near target?
+	A tank uses small air bubbles to keep solid particles in suspension. If too much air is blown into the tank, then excessive foaming and loss of valuable solid product occurs; if too little air is blown into the tank the particles sink and drop out of suspension. 
 
 	.. figure:: ../figures/monitoring/tank-suspension.png
-		:scale: 70
+		:scale: 60
 		:align: center
 		:width: 400px
-		
+
+	#.	Which monitoring chart would you use to ensure the airflow is always near target?
+
+	#.	Use the `aeration rate dataset <http://datasets.connectmv.com/info/aeration-rate>`_ from the website and plot the raw data (total litres of air added in a 1 minute period). Are you able to detect any problems?
+
+	#.	Construct the chart you described in part 1, and show it's performance on all the data. Make any necessary assumptions to construct the chart.
+
+	#.	At what point in time are you able to detect the problem, using this chart?
+
+	#.	Construct a Shewhart chart, choosing appropriate data for phase I, and calculate the Shewhart limits. Then use the entire dataset as if it were phase II data.
+
+		*	Show this phase II Shewhart chart.
+		*	Compare the Shewhart chart's performance to the chart in part 3 of this question.
+
 .. answer::
-	:fullinclude: no 
+
+	*Solution based on work by Ryan and Stuart (2011 class)*
+
+	#.	A CUSUM chart would be a suitable chart to monitor that the airflow is near target. While a Shewhart chart is also intended to monitor the location of a variable, it has a much larger run length for detecting small shifts. An EWMA chart with small :math:`\lambda` (long memory) would approximate a CUSUM chart, and so would also be suitable
+
+	#.	The aeration rate dataset is depicted below:
+
+		.. figure:: ../figures/monitoring/aeration-rate-raw-data.png
+			:alt:	images/airflow-monitoring.R
+			:scale: 100
+			:width: 750px
+			:align: center
+
+		It is very difficult to assess problems from the raw data plot. There might be a slight upward shift around 300 and 500 minutes.
+
+	#.	Assumptions for the CUSUM chart:
+
+		*	We will plot the CUSUM chart on raw data, though you could use subgroups if you wanted to.
+		*	The target value can be the mean (24.17) of all the data, or more robustly, use the median (24.1), especially if we expect problems with the raw data (true of almost every real data set).
 	
-	A CUSUM chart would be a suitable chart to monitor that the airflow is near target.  While a Shewhart chart is also intended to monitor the location of a variable, it has a much larger run length for detecting small shifts.  An EWMA chart with small :math:`\lambda` (long memory) would approximate a CUSUM chart, and so would also be suitable.
+	#.	The CUSUM chart, using the median as target value showed a problem starting to occur around :math:`t=300`. So we recalculated the median, using only data from 0 to :math:`t=200`, to avoid biasing the target value. Using this median instead, 23.95, we get the following CUSUM chart:
+	
+		.. figure:: ../figures/monitoring/aeration-CUSUM.png
+			:alt:	images/airflow-monitoring.R
+			:scale: 100
+			:width: 750px
+			:align: center
+
+	#.	The revised CUSUM chart suggests that the error occurs around 275 min, as evidenced by the steep positive slope thereafter. It should be noted that the CUSUM chart begins to bear a positive slope around 200 min, but this initial increase in the cumulative error would likely not be diagnosable (i.e. using a V-mask).
+
+		.. literalinclude:: ../figures/monitoring/aeration-rate-monitoring.R
+			:language: s
+	
+	#.	Using the iterative Shewhart code from the previous question, we used
+
+	 	*	Phase I was taken far enough away from the suspected error: 0 - 200 min
+	 	*	Subgroup size of :math:`n=5`
+		*	:math:`\bar{\bar{x}} = 23.9`
+		*	:math:`\bar{S} = 1.28`
+		*	:math:`a_n = 0.940`
+		*	LCL = :math:`23.9 - 3\cdot\frac{1.28}{0.940\sqrt{5}}= 22.1`
+		*	UCL = :math:`23.9 + 3\cdot\frac{1.28}{0.940\sqrt{5}}= 25.8`
+	
+	The Shewhart chart applied to the entire dataset is shown below. In contrast to the CUSUM chart, the Shewhart chart is unable to detect the problem in the aeration rate. Unlike the CUSUM chart, which has infinite memory, the Shewhart chart has no memory and cannot adequately assess the location of the monitored variable in relation to its specified target. Instead, the Shewhart chart merely monitors aeration rate with respect to the control limits for the process. Since the aeration rate does not exceed the control limits for the process (i.e. process remains in control), the Shewhart chart does not detect any abnormalities. 
+
+		.. figure:: ../figures/monitoring/aeration-Shewhart-chart.png
+			:scale: 100
+			:width: 750px
+			:align: center
+	
+	If you used the Western Electric rules, in addition to the Shewhart chart limits, you would have picked up a consecutive sequence of 8 points on one side of the target around :math:`t=350`.
 
 .. question::
 
@@ -1115,4 +1176,98 @@ Exercises
 	-	Use the spectrum to predict a certain property of interest, and then monitor that property instead.  For example: use the spectrum to predict the colour of cookies (i.e. how well baked they are) and monitor the "well-bakedness" characteristic.
 
 	Later on we will learn about :ref:`multivariate monitoring methods <LVM_monitoring>`.
+
+.. question::
+
+	.. Advanced question
+
+	The carbon dioxide measurement is available from a `gas-fired furnace <http://datasets.connectmv.com/info/gas-furnace>`_. These data are from phase I operation.
+
+	#.	Calculate the Shewhart chart upper and lower control limits that you would use during phase II with a subgroup size of :math:`n=6`. 
+	#.	Is this a useful monitoring chart?  What is going in this data?  
+	#.	How can you fix the problem?
+
+.. answer:: 
+
+	*Solution based on work by Ryan and Stuart (2011 class)*
+
+	First a plot of the raw data will be useful:
+
+	.. figure:: ../figures/monitoring/CO2-raw-data.png
+		:scale: 75
+		:width: 750px
+		:align: center
+
+	#.	Assuming that the CO\ :sub:`2` data set is from phase I operation, the control limits were calculated as follows:
+
+		*	Assume subgroups are independent
+		*	:math:`\bar{\bar{x}} =\frac{1}{K}\sum\limits_{k=1}^K\bar{x}_k= 53.5`\
+		*	:math:`\bar{S} =\frac{1}{K}\sum\limits_{k=1}^K s_k= 1.10`
+		*	:math:`a_n =0.952` 
+		*	LCL = :math:`53.5 -3 \cdot\frac{1.10}{0.952\sqrt{6}} = 53.5`
+		*	UCL = :math:`53.5 +3 \cdot\frac{1.10}{0.952\sqrt{6}} = 54.0`
+
+	#.	The Shewhart chart using a subgroup of size 6 is not a useful monitoring chart. There are too many false alarms, which will cause the operators to just ignore the chart. The problem is that the first assumption of independence is not correct and has a detrimental effect, as shown in :ref:`a previous question <lack_of_independence_question>`. 
+
+		.. figure:: ../figures/monitoring/CO2-phaseI-first-round.png
+			:scale: 75
+			:width: 750px
+			:align: center
+
+	#.	One approach to fixing the problem is to subsample the data, i.e. only use every :math:`k^\text{th}` data point as the raw data, e.g. :math:`k=10`, and then form subgroups from that sampled data.
+
+		Another is to use a larger subgroup size. Use the `autocorrelation function <http://en.wikipedia.org/wiki/Autocorrelation>`_, and the corresponding ``acf(...)`` function in R to verify the degree of relationship. Using this function we can see the raw data are unrelated after the 17th lag, so we could use subgroups of that size. However, even then we see the Shewhart chart showing frequent violation, though fewer than before.
+
+		Yet another alternative is to use an EWMA chart, which takes the autocorrelation into account. However, the EWMA chart limits are found from the assumption that the subgroup means (or raw data, if subgroup size is 1), are independent.
+
+		So we are finally left with the conclusion that perhaps there data really are not from in control operation, or, if they are, we must manually adjust the limits to be wider.
+
+	.. literalinclude:: ../figures/monitoring/CO2-question.R
+		:language: s
+
+.. question::
+
+	The percentage yield from a batch reactor, and the purity of the feedstock are available as the `Batch yield and purity <http://datasets.connectmv.com/info/batch-yield-and-purity>`_ data set. Assume these data are from phase I operation and calculate the Shewhart chart upper and lower control limits that you would use during phase II. Use a subgroup size of :math:`n=3`.
+
+	#.	What is phase I?
+	#.	What is phase II?
+	#.	Show your calculations for the upper and lower control limits for the Shewhart chart on the *yield value*.
+	#.	Show a plot of the Shewhart chart on these phase I data.
+
+.. answer:: 
+
+	*Solution based on work by Ryan, Stuart and Mudassir (2011 class)*
 	
+	#.	Phase 1 is the period from which historical data is taken that is known to be "in control". From this data, upper and lower control limits can be established for the monitored variable that contain a specified percent of all in control data.
+
+	#.	Phase 2 is the period during which new, unseen data is collected by process monitoring in real-time. This data can be compared with the limits calculated from the "in control" data.
+
+	#.	Assuming the dataset was derived from phase I operation, the batch yield data was grouped into subgroups of size 3. However, since the total number of data points (N=241) is not a multiple of three, the data set was truncated to the closest multiple of 3, i.e. :math:`N_{new} = 240`, by removing the last data point. Subsequently, the mean and standard deviation were calculated for each of the 80 subgroups. From this data, the lower and upper control limits were calculated as follows:
+
+		.. math::	
+
+			\overline{\overline{x}} &= \frac{1}{80}\sum\limits_{k=1}^{80}\overline{x}_k = \bf{75.3}\\
+			\overline{S}			&= \frac{1}{80}\sum\limits_{k=1}^{80}s_k = \bf{5.32}\\
+			\text{LCL}				&= \overline{\overline{x}} - 3\cdot\frac{\overline{S}}{a_n\sqrt{n}} = \bf{64.9}\\
+			\text{UCL}				&= \overline{\overline{x}} + 3\cdot\frac{\overline{S}}{a_n\sqrt{n}} = \bf{85.7}\\
+			\text{using}\,\,a_n		&=  0.886\qquad \text{for a subgroup size of 3}\\
+			\text{and}\,\,\overline{\overline{x}} &= 75.3
+
+		Noticing that the mean for subgroup 42, :math:`\overline{x}_{42}=63.3`, falls below this LCL, the control limits were recalculated excluding this subgroup from phase I data (see R-code). Following this adjustment, the new control limits were calculated to be:
+
+		*	LCL = 65.0
+		*	UCL = 85.8
+
+	#.	Shewhart charts for both rounds of the yield data (before and after removing the outlier):
+
+		.. figure:: ../figures/monitoring/batch-yield-phaseI-round-1-Yield.png
+			:width: 750px
+			:align: center
+
+		.. figure:: ../figures/monitoring/batch-yield-phaseI-round-2-Yield.png
+			:scale: 100
+			:width: 750px
+			:align: center
+
+	.. literalinclude:: ../figures/monitoring/batch-yield-and-purity-recursive.R
+		:language: s

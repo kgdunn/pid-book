@@ -51,12 +51,12 @@ class Question_Answer(Directive):
                 self.options['fullinclude'] = True
             if self.options['fullinclude']:
                 out.append(nodes.paragraph('', ''))
-                out.append(nodes.emphasis('', 'Solution'))
+                out.append(nodes.strong('', 'Solution'))
                 out.append(nodes.paragraph('', ''))
                 out.append(self.add_content())
             elif self.options.get('short', ''):
                 out.append(nodes.paragraph('', ''))
-                out.append(nodes.emphasis('', 'Short answer'))
+                out.append(nodes.strong('', 'Short answer'))
                 out.append(nodes.Text(': ' + self.options.get('short')))
 
         return out
