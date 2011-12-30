@@ -49,9 +49,9 @@ The material in this section is used whenever you want to learn more about a sin
 		
 	- *Yourself*: We have historical failure rate data of the pumps in a section of the process. What is the probability that 3 pumps will fail this month?
 	
-	- *Manager*: does reactor 1 have better final product purity than reactor 2?
+	- *Manager*: does reactor 1 have better final product purity, on average, than reactor 2?
 	
-	- *Potential customer*: what is the 95% confidence interval for the density of your powder ingredient?
+	- *Colleague*: what does the 95% confidence interval for the density of our powder ingredient really mean?
 
 References and readings
 =======================
@@ -69,20 +69,29 @@ Any standard statistics text book will cover the topics from this part of the bo
 What we will cover
 ==================
 
-.. figure:: ../figures/mindmaps/univariate-section-mapping.png
+.. image:: ../figures/mindmaps/univariate-section-mapping.png
   :width: 750px 
   :align: center
-  :scale: 65
+  :scale: 92
 
-Concepts
-========
+.. Concepts
+.. ========
+.. 
+.. Concepts that you must be familiar with by the end of this section:
+.. 
+.. .. tabularcolumns:: LLL
+.. 
+.. .. csv-table:: 
+..    :widths: 10, 10, 10
+.. 
+.. 	, independence, outliers
+.. 	"frequency histogram", probability, variation
+.. 	"cumulative distribution", median, MAD
+.. 	population, sample, error
+.. 	"Central limit theorem", parameter, statistic
+.. 	"confidence interval", outlier, "paired test"
 
-Concepts that you must be familiar with by the end of this section: 
-
-.. figure:: ../figures/mindmaps/univariate-section-concepts.png
-  :align: center
-  :scale: 60
-
+	
 .. _univariate-about-variability:
 
 Variability
@@ -90,40 +99,41 @@ Variability
 
 Life is pretty boring without :index:`variability`, and this book, and almost all the field of statistics would be unnecessary if things did not naturally vary.
 
-.. figure:: ../figures/concepts/variation/variation-none.png
+.. image:: ../figures/concepts/variation/variation-none.png
 		:scale: 60
 		:align: center
 		
-Fortunately, we have plenty of variability in our recorded data:
+Fortunately, we have plenty of variability in the recorded data from our processes and systems:
 
 	-	Raw material properties are not constant
 	
+	-	Unknown sources, often called "*error*" (note that the word :index:`error <single: error, statistical>` in statistics does not have the usual negative connotation from English). These errors are all sources of variation which our imperfect knowledge of physics cannot account for.
+	
+		.. image:: ../figures/concepts/variation/variation-some.png
+			:scale: 50
+			:align: center
+			
+	-	Measurement and sampling variability: sensor drift, spikes, noise, recalibration shifts, errors in our sample analysis.
+
+		.. image:: ../figures/concepts/variation/variation-more.png
+			:scale: 50
+			:align: center
+
 	-	Production disturbances:
 	
 		- external conditions change (ambient temperature, humidity)
 		- pieces of plant equipment break down, wear out and are replaced
 		
-		.. figure:: ../figures/concepts/variation/variation-spikes.png
+		.. image:: ../figures/concepts/variation/variation-spikes.png
 			:scale: 50
 			:align: center
 	
-	-	Feedback control systems introduce variability in your process, in order to reduce variability in another part of the process (think of what a :index:`feedback control` system does)
+	-	:index:`Feedback control <single: feedback control>` systems introduce variability in your process, in order to reduce variability in another part of the process (think of what a :ref:`feedback control system <univariate_feedback_and_variability>` does)
 	
 		..	See Marlin textbook, p 880 and p222 for illustrations and concepts
 		
 	-	Operating staff: introduce variability into a process in feedback manner (i.e. they react to process upsets) or in a feedforward manner, for example, to preemptively act on the process to counteract a known disturbance.
 	
-	-	Measurement and sampling variability: sensor drift, spikes, noise, recalibration shifts, errors in our sample analysis.
-	
-		.. figure:: ../figures/concepts/variation/variation-more.png
-			:scale: 50
-			:align: center	
-		
-	-	Other unknown sources, often called "*error*" (note that the word :index:`error <single: error, statistical>` in statistics does not have the usual negative connotation from English). These errors are all sources of variation which our imperfect knowledge of physics cannot account for.
-	
-		.. figure:: ../figures/concepts/variation/variation-some.png
-			:scale: 50
-			:align: center
 	
 All this variability, although a good opportunity to keep us process engineers employed, comes at a price as described next.
 	
@@ -136,31 +146,33 @@ The high cost of variability in your final product
 **Assertion**
 	Customers expect both uniformity and low cost when they buy your product. Variability defeats both objectives. 
 	
-Three broad outcomes are possible when you sell a variable product:
+Three broad outcomes are possible when you sell a highly variable product:
 
 #. The customer may be totally unable to use your product for the intended purpose. Imagine a food ingredient such as fresh milk, or a polymer with viscosity that is too high, or a motor oil with unsuitable properties that causes engine failure.
 
-#. Your product leads to poor performance.  The user must compensate for the poor properties through additional cost: more energy will be required to work with a polymer whose melting point is higher than expected, longer reaction times will be required if the catalyst is not on specification.
+#. Your product leads to poor performance.  The user must compensate for the poor properties through additional cost: more energy will be required to work with a polymer whose melting point is higher than expected, longer reaction times will be required if the catalyst purity is not at specification.
 
-#. Your brand is diminished: your products, even though good/acceptable will be considered with suspicion in the future.
+#. Your brand is diminished: your products, even though acceptable will be considered with suspicion in the future.
 
-	An extreme example was the food poisoning and deaths that occurred due to the listeriosis outbreak at Maple Leaf Foods, Canada in 2008. The bacterial count in food products is always non-zero, however there are established tolerance limits which were exceeded during this outbreak.
+	An extreme example was the food poisoning and deaths that occurred due to the listeriosis outbreak at Maple Leaf Foods, Canada in 2008. The bacterial count in food products is always non-zero, however the established tolerance limits were exceeded during this outbreak.
 	
-	Another example was the inadvertent acceleration that occurred in some Toyota car models in 2010. It is still uncertain whether this was driver error or manufacturer error.
+	Another example was the inadvertent acceleration that occurred in some Toyota car models in 2010. It is still uncertain whether this was manufacturer error or driver error.
 
 In addition to the risk of decreasing your market share (see the above 3 points), variability in your product also has these costs:
 
 .. index::
 	single: inspection costs
 
-#.	Inspection costs: to mitigate the above risks you must inspect your product before you ship it to your customers. It is prohibitively expensive and inefficient to test every product (known as "*inspecting quality into your product*"). A production line with low variability on the other hand, does not require us to inspect every product.
+#.	Inspection costs: to mitigate the above risks you must inspect your product before you ship it to your customers. It is prohibitively expensive and inefficient to test every product (known as "*inspecting quality into your product*"). A production line with low variability on the other hand, does not require us to inspect every product downstream of production.
+
+	The pharmaceutical industry is well known to be inefficient in this respect, with terms such as "100% inspection" and even "200% inspection".
 
 	.. index::
 		single: off-specification product
 	
 #.	Off-specification products: must be reworked, disposed of, or sold at a loss or much lower profit. These costs are ultimately passed onto your customers, costing you money.
  
-Note: the above discussion assumes that you are able to quantify product quality with one or more univariate quality metrics and that these metrics are independent of each other. Quality is almost always a multivariate attribute of the product. We :ref:`discuss multivariate methods <SECTION_latent_variable_modelling>` later in this book.
+Note: the above discussion assumes that you are able to quantify product quality with one or more univariate quality metrics and that these metrics are independent of each other. Quality is almost always a multivariate attribute of the product. We will :ref:`discuss the use of multivariate methods <SECTION_latent_variable_modelling>` to judge product quality later.
 
 The high cost of variability in your raw materials
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -172,17 +184,21 @@ The high cost of variability in your raw materials
 	
 .. index::
 	single: raw material variability
-
-Turning the above discussion around, with you on the receiving end of highly variable raw materials:
-
-- If you do not implement any sort of process control system, then any variability in your raw materials is manifest as variability in your final product. This usually shows up in proportion: higher variability in the inputs results in higher variability in the product quality.
-
-	.. figure:: ../figures/concepts/variation/feedback-control-variance-reduction-reduced.png
-		:width: 750px
-		:align: center
-		:scale: 50
 	
-- If you do take feedback or feed-forward corrective control: you have to incur additional cost, since you have to process materials that are not to specification: this will require energy and time, reducing your profit due to the supplier's raw material variability. Feedback control to a given set point can be seen as *introducing* additional variation into a process to counteract other sources of variation. This is done with the hope of reducing the output variability. 
+.. _univariate_feedback_and_variability:
+
+Turning the above discussion around, with you on the receiving end of a highly variable raw material:
+
+-	If you do not implement any sort of process control system, then any variability in these raw materials is manifest as variability in your final product. This usually shows up in proportion: higher variability in the inputs results in higher variability in the product quality.
+
+	.. image:: ../figures/concepts/variation/feedback-control-variance-reduction-reduced.png
+		:align: center
+		:width: 750px
+		:scale: 50
+
+-	Even if you do take feedback or feed-forward corrective control: you have to incur additional cost, since you have to process materials that are not to specification: this will require energy and/or time, reducing your profit due to the supplier's raw material variability.
+
+	*Note*: Feedback control around a given set point can be seen as *introducing* additional variation into a process to counteract other sources of variation (called *disturbances* in the process control lingo). This is done with the hope of reducing the output variability. 
 
 Dealing with variability
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -197,7 +213,7 @@ So, how do we make progress despite this variability?  This whole book, and all 
 - and in the :ref:`latent variable modelling <SECTION_latent_variable_modelling>` section we learn how to deal with **multiple variables**, simultaneously extracting information from the data to understand how variability affects the process.
 
 	
-Histograms, probability and distributions
+Histograms and probability distributions
 =========================================
 
 .. index:: histograms, frequency distribution
@@ -206,13 +222,14 @@ The :ref:`previous section <univariate-about-variability>` has hopefully convinc
 
 A histogram is a summary of the variation in a measured variable. It shows the *number* of samples that occur in a *category*: this is called a **frequency distribution**. For example: number of children born, categorized against their gender: male or female.
 
-.. figure:: ../figures/univariate/histogram-children-by-gender.png
+.. image:: ../figures/univariate/histogram-children-by-gender.png
    	:width: 750px
 	:scale: 40
+	:align: center
 
 The category bins can be derived from a continuous variable. Here is an example showing the mass of cartons of 1 kg of flour. The continuous variable, mass, is divided into equal-size bins that cover the range of the available data.  Notice how the packaging system has to overfill each carton so that the vast majority of packages weight over 1 kg (what is the mean package mass?). If the variability in the packaging system could be reduced, then the histogram can be shifted to the left reducing overfill.
 
-.. figure:: ../figures/univariate/histogram-package-mass.png
+.. image:: ../figures/univariate/histogram-package-mass.png
 	:width: 750px
 	:scale: 60
 	:align: center
@@ -285,7 +302,7 @@ A relative frequency is sometimes preferred:
 - if :math:`N` is large enough, then the relative frequency histogram starts to resemble the population's distribution
 - the area under the histogram is equal to 1, and related to probability
 
-.. figure:: ../figures/univariate/frequency-histogram.png
+.. image:: ../figures/univariate/frequency-histogram.png
 	:width: 750px
 	:scale: 60
 	:align: center
@@ -442,7 +459,7 @@ Binary (Bernoulli distribution)
 
 Systems that have binary outcomes (pass/fail; yes/no) must obey the probability principle that: :math:`p(\text{pass}) + p(\text{fail}) = 1`. For example, a histogram for a system that produces 70% acceptable product looks like:
 
-.. figure:: ../figures/univariate/histogram-70-30.png
+.. image:: ../figures/univariate/histogram-70-30.png
 	:align: center
 	:width: 750px
 	:scale: 45
@@ -488,7 +505,7 @@ A :index:`uniform distribution` arises when an observation's value is equally as
 
 The probability distribution for an event with 4 possible outcomes that are uniformly distributed is shown below:
 
-.. figure:: ../figures/univariate/histogram-4-cuts.png
+.. image:: ../figures/univariate/histogram-4-cuts.png
 	:align: center
 	:scale: 55
 	:width: 750px
@@ -523,7 +540,7 @@ Central limit theorem
 
 The limit theorem plays a central role in the theory of probability and in the derivation of the normal distribution. We don't prove this theorem here, but we only use the result that the average of a sequence of values *from any distribution* will approach the normal distribution, provided the original distribution has finite variance.
 	
-.. figure:: ../figures/univariate/CLT-derivation.png
+.. image:: ../figures/univariate/CLT-derivation.png
 	:width: 750px
 	:align: center
 	:scale: 65
@@ -532,7 +549,7 @@ The only assumption we require for the central limit theorem is that the samples
 
 Imagine a case where we are throwing dice. The following distributions are obtained when we throw a die :math:`M` times and we plot the distribution of the *average* of these :math:`M` throws.
 
-.. figure:: ../figures/univariate/simulate-CLT.png
+.. image:: ../figures/univariate/simulate-CLT.png
 	:width: 750px
 	:align: center
 	:scale: 70
@@ -577,7 +594,7 @@ We frequently violate this assumption of independence in engineering application
 
 		In chemical processes there is often a transfer from batch-to-batch: we usually use the same lot of raw materials for successive batches, the batch reactor may not have be cleaned properly between each run, and so on. It is very likely that two successive batches (:math:`k` and :math:`k+1`) are somewhat related, and less likely that batch :math:`k` and :math:`k+2` are related. In the figure below, can you tell which sequence of values are independent?
 		
- 	.. figure:: ../figures/univariate/simulate-independence.png
+ 	.. image:: ../figures/univariate/simulate-independence.png
 		:align: center
 		:scale: 90
 		
@@ -606,7 +623,7 @@ Formal definition for the normal distribution
 
 .. math:: p(x) = \dfrac{1}{\sqrt{2\pi \sigma^2}}e^{-\dfrac{\left(x-\mu\right)^2}{2\sigma^2}}
 	
-.. figure:: ../figures/univariate/normal-distribution-standardized.png
+.. image:: ../figures/univariate/normal-distribution-standardized.png
 	:width: 750px
 	:align: center
 	:scale: 80
@@ -699,7 +716,7 @@ Before we look at this method, we need to introduce the concept of the inverse c
 
 Now the **inverse cumulative distribution** is used when we know the area, but want to get back to the value along the :math:`z-\text{axis}`. For example, below which value of :math:`z` does 95% of the area lie for a standardized normal distribution?  Answer: :math:`z=1.64`. In R we use the ``qnorm(0.95, mean=0, sd=1)`` to calculate these values. The ``q`` stands for `quantile <http://en.wikipedia.org/wiki/Quantile>`_, because we give it the quantile at it returns the z-value: e.g. ``qnorm(0.5)`` gives 0.0.
 
-.. figure:: ../figures/univariate/show-pnorm-and-qnorm.png
+.. image:: ../figures/univariate/show-pnorm-and-qnorm.png
 	:scale: 70
 	:width: 750px
 	:align: center
@@ -741,22 +758,22 @@ On to checking for normality. We approach this problem by first constructing qua
 		
 		plot(theoretical.quantity, yields.z.sorted, type="p")
 		
-	.. figure:: ../figures/univariate/qqplot-derivation.png
+	.. image:: ../figures/univariate/qqplot-derivation.png
 		:align: center
 		:width: 750px
 		:scale: 50
 
 A ready-made function already exists in R that runs the calculations and shows a scatter plot. The 45 degree line is added using the ``qqline(...data...)`` function.
 
-	.. code-block:: s
-		
-		qqnorm(yields)
-		qqline(yields)
+.. code-block:: s
+	
+	qqnorm(yields)
+	qqline(yields)
 
-	.. figure:: ../figures/univariate/qqplot-from-R.png
-		:align: center
-		:width: 750px
-		:scale: 50
+.. image:: ../figures/univariate/qqplot-from-R.png
+	:align: center
+	:width: 750px
+	:scale: 50
 	
 The R plot rescales the Y-axis (sample quantiles) back to the original units to make interpretation easier. We expect some departure from the 45 degree line due to the fact that these are only a sample of data. However, large deviation indicates the data are not normally distributed. An error region can be superimposed around the 45 degree line, but this is not discussed here.
 
@@ -787,7 +804,7 @@ The q-q plot, :index:`quantile-quantile plot`, shows the quantiles of 2 distribu
 
 Suppose we have a quantity of interest for a process, such as the daily profit per kilogram of raw material, or the viscosity of the final product. After using the methods just described to check for normality, we might be reasonably certain that the data follow a normal distribution. So assuming the quantity is distributed as :math:`\mathcal{N}(\mu, \sigma^2)` **and** by taking independent samples, as shown here in the figure,
 
-.. figure:: ../figures/univariate/t-distribution-derivation.png
+.. image:: ../figures/univariate/t-distribution-derivation.png
 	:width: 750px
 	:align: center
 	:scale: 65
@@ -800,7 +817,7 @@ we can make the following statements:
 #. Create a new variable :math:`z = \dfrac{\overline{x} - \mu}{s/\sqrt{n}}`, which subtracts off the population mean from our estimate of the mean, and divide through by the variance for :math:`\overline{x}`. If our estimate of the population mean, :math:`\overline{x}`, is accurate, then the numerator is close to zero. Dividing through by :math:`s/\sqrt{n}` firstly makes the :math:`z` variable dimensionless, and secondly, scales :math:`z` up or down according to the certainty we have in our estimate of :math:`\overline{x}`. This new variable :math:`z` is distributed according to the :math:`t`-distribution. We say that :math:`z` follows the :math:`t`-distribution with :math:`n-1` degrees of freedom, where the degrees of freedom refer to those from the calculating the standard deviation.
 #. Note that the new variable :math:`z` only requires we know the population mean (:math:`\mu`), not the population variance; rather we use our estimate of the variance :math:`s/\sqrt{n}` in place of the population variance.
 
-.. figure:: ../figures/univariate/t-distribution-comparison.png
+.. image:: ../figures/univariate/t-distribution-comparison.png
 	:width: 750px
 	:align: center
 	:scale: 65
@@ -915,7 +932,7 @@ There are two important properties:
 
 Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{e^{-\eta}\eta^{x}}{x!}`, with a plot as shown for :math:`\eta = 4`. Please note the lines are only guides, the probability is only defined at the integer values marked with a circle. 
 
-.. figure:: ../figures/univariate/poisson-distribution.png
+.. image:: ../figures/univariate/poisson-distribution.png
 	:width: 600px
 	:align: center
 	:scale: 50
@@ -1115,7 +1132,7 @@ Either we want to confirm things are statistically the same, or confirm they hav
 
 *Example*: A process operator needs to verify that a new form of feedback control on the batch reactor leads to improved yields. Yields under the current control system, A, are compared with yields under the new system, B. The last ten runs with system A are compared to 10 sequential runs with system B. The data are shown in the table, and shown in graphical form as well. (Note that the box plot uses the median, while the plots on the right show the mean.)  
  
-.. figure:: ../figures/univariate/system-comparison-boxplot-plots.png
+.. image:: ../figures/univariate/system-comparison-boxplot-plots.png
 	:width: 750px
 	:scale: 60
 	:align: center
@@ -1159,7 +1176,7 @@ Either we want to confirm things are statistically the same, or confirm they hav
 	| colspan="2" |Standard deviation  || 6.81|| || colspan="2" | Standard deviation || 6.70
 	|}
 
-.. figure:: ../figures/univariate/system-comparison-wikitable.png
+.. image:: ../figures/univariate/system-comparison-wikitable.png
 	:align: center
 	:scale: 75
 
@@ -1180,7 +1197,7 @@ Continuing the above example we can compare the past 10 runs from system B with 
 	#. Now subtract these two averages: (group average 11 to 20) minus (group average 1 to 10).
 	#. Repeat steps 2 and 3, but use batches 2 to 11 and 12 to 21. Repeat until all historical batch data are used up and the plot below can be drawn from these difference values.
 	
-	.. figure:: ../figures/univariate/system-comparison-dotplot-grouped.png
+	.. image:: ../figures/univariate/system-comparison-dotplot-grouped.png
 		:width: 750px
 		:align: center
 		:scale: 100
@@ -1208,7 +1225,7 @@ In fact, for this example, the data were not independent, they were autocorrelat
 
 We can visualize this :index:`autocorrelation` by plotting the values of :math:`x[k]` against :math:`x[k+1]`:
 
-.. figure:: ../figures/univariate/system-comparison-autocorrelation-scatterplot.png
+.. image:: ../figures/univariate/system-comparison-autocorrelation-scatterplot.png
 	:width: 600px
 	:align: center
 	:scale: 80
@@ -1276,7 +1293,7 @@ Discuss whether these experiments lead to :index:`independent data <single: inde
 
 	a)	We are testing a new coating to repel moisture. The coating is applied to packaging sheets that are already hydrophobic, however this coating enhances the moisture barrier property of the sheet. In the lab, we take a large packaging sheet and divide it into 16 blocks. We coat the sheet as shown in the figure and then use the :math:`n_A=8` and :math:`n_B=8` data points to determine if coating B is better than coating A.
 	
-		.. figure:: ../figures/univariate/sheet-coating-application.png
+		.. image:: ../figures/univariate/sheet-coating-application.png
 			:width: 600px
 			:align: center
 			:scale: 50
