@@ -40,7 +40,7 @@ Usage examples
 ==============
 
 .. index::
-	pair: usage examples; Univariate data
+	pair: usage examples; univariate data
 
 The material in this section is used whenever you want to learn more about a single variable in your data set:
 
@@ -59,7 +59,7 @@ References and readings
 =======================
 
 .. index::
-	pair: references and readings; Univariate data
+	pair: references and readings; univariate data
 
 Any standard statistics text book will cover the topics from this part of the book in much greater depth than these notes. Some that you might refer to:
 	

@@ -2,7 +2,7 @@ Exercises
 ==========
 
 .. index::
-	pair: exercises; Univariate data
+	pair: exercises; univariate data
 
 .. question::	
 
