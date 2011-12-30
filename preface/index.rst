@@ -1,7 +1,11 @@
 .. raw:: latex
 
 	\pagestyle{plain}
-
+	\makeatletter
+	\renewcommand{\py@noticestart@tip}{\py@heavybox}
+	\renewcommand{\py@noticeend@tip}{\py@endheavybox}
+	\makeatother
+	
 .. rubric:: Preface
 
 .. Disclaimer re Index
@@ -25,7 +29,7 @@
 .. 
 .. Distribution: PDF, web-files for off-line reading in your browser; ebook (e.g. iPad); or printed dead-tree version available on-demand. The printed version is available in hard-cover and soft-cover, and all profits are used to pay for the website hosting.
 
-This book is a preliminary draft on how to improve processes using the large quantities of data that are routinely collected from process systems.
+This book is a **preliminary draft** on how to improve processes using the large quantities of data that are routinely collected from process systems.
 
 We cover :ref:`data visualization <SECTION-data-visualization>` first, since most data analysis studies start by plotting the data. This is an extremely brief introduction to this topic, only illustrating the most basic plots required for this book. Please consult the references in this chapter for more exciting plots that provide insight to your data.
 
@@ -39,23 +43,22 @@ The next major section covers :ref:`designed experiments <SECTION-design-analysi
 
 The final major section is on :ref:`latent variable modelling <SECTION_latent_variable_modelling>` where we learn how to deal with multiple variables and extracting information from them. This section is divided in several chapters (PCA, PLS, and applications), and is definitely the most crude section of this book. This section will be improved in the near future.
 
-Being a predominantly electronic book, we resort to many hyperlinks in the text. We recommend a good PDF reader that allows forward and back navigation of links. 
+Being a predominantly electronic book, we resort to many hyperlinks in the text. We recommend a good PDF reader that allows forward and back navigation of links. However, we have ensured that a printed copy can be navigated just as easily, especially if you use the table of content and index for cross referencing.
 
-.. raw:: latex
+**Updates**: This book is continually updated; there isn't a fixed edition. You might have an incomplete, or older draft of the document. The latest version of the document is always available at http://pid.connectmv.com
 
-	\newpage
+.. tip:: **Copyright and Your Rights**
 
-**Copyright and Your Rights**
 
 	This book is unusual in that it is not available from a publisher. You may download it electronically, use it for yourself, or share it with anyone.
 
-	The copyright to the book is held by ConnectMV, Inc. but it licensed to you under the very permissive `Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0) <http://creativecommons.org/licenses/by-sa/3.0/>`_  license.
+	The copyright to the book is held by ConnectMV, Inc. but it licensed to you under the permissive `Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0) <http://creativecommons.org/licenses/by-sa/3.0/>`_  license.
 
 	In particular, you are free :
 
 	*	**to share** - to copy, distribute and transmit the work
 	*	**to adapt** - but you must distribute the new result under the same or similar license to this one
-	*	**to commercialize** - you \emph{are allowed} to create commercial applications based on this work 
+	*	**to commercialize** - you *are allowed* to create commercial applications based on this work 
 	*	**attribution** - but you must attribute the work as follows:
 
 		*	*Using selected portions*: "Portions of this work are the copyright of ConnectMV"
@@ -66,17 +69,18 @@ Being a predominantly electronic book, we resort to many hyperlinks in the text.
 		*	Please tell us if you find errors in these notes, or have suggestions for improvements
 		*	Please email to ask permission if you would like changes to the above terms and conditions.
 
-	improve@connectmv.com
+	.. centered:: improve@connectmv.com
 
 	Thanks, Kevin.
 
-**Updates**
-
-This book is continually updated; there isn't a fixed edition. You might have an incomplete, or older draft of the document. The latest version of the document is always available at http://pid.connectmv.com
-
 .. raw:: latex
 
+	\makeatletter
+	\renewcommand{\py@noticestart@tip}{\py@lightbox}
+	\renewcommand{\py@noticeend@tip}{\py@endlightbox}
+	\makeatother
 	\clearpage
 	\setcounter{page}{1}
 	\pagenumbering{arabic}
 	\pagestyle{normal}
+
