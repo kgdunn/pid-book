@@ -662,7 +662,7 @@ In the example below there were :math:`A=6` components, and :math:`K=14` and :ma
 	
 In this example the ``Tin``, ``z2``, ``Tcin2`` and ``Tmax2``, ``Fi2``, ``Fi1``, ``Tmax1``, and ``Press`` variables are all related to conversion, the |y| variable.  This does not imply a cause and effect relationships, rather it just shows they are strongly correlated.
 
-The coefficient plots from PLS-DA models (:ref:`supervised classification <LVM-supervised-classification-PLSDA>`) can be particularly informative if there are many components.  It shows which variables in |X| are important in discriminating (predicting) the particular class.  To see this, one plots the coefficients from the relevant class column in :math:`\boldsymbol{\beta}`.
+.. The coefficient plots from PLS-DA models (:ref:`supervised classification <LVM-supervised-classification-PLSDA>`) can be particularly informative if there are many components.  It shows which variables in |X| are important in discriminating (predicting) the particular class.  To see this, one plots the coefficients from the relevant class column in :math:`\boldsymbol{\beta}`.
 
 .. MENTION HERE HOW PCA, with A=K is exactly MLR.
 

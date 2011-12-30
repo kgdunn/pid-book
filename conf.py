@@ -285,7 +285,7 @@ latex_documents = [
 # If true, add page references after internal references. This is very useful for printed copies of the manual. Default is False.
 latex_show_pagerefs = False
 
-latex_additional_files = ['preface.tex']
+latex_additional_files = [ ] #'preface.tex'
 
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.
@@ -301,6 +301,9 @@ _TABLE_OF_CONTENTS = r"""
 %\small\normalsize                                       % Change font sizes down and back up to active the line spacing
                                                         % See page 47 in the LaTeX manual for this trick
 %\setcounter{tocdepth}{2}
+%\thispagestyle{empty}
+%\newpage
+\pagenumbering{roman}
 \tableofcontents
 %\renewcommand{\baselinestretch}{1.00}                   % Use 1.25 line spacing
 %\small\normalsize                                       % Change font sizes down and back up to active the line spacing
@@ -308,11 +311,12 @@ _TABLE_OF_CONTENTS = r"""
 % ==== END OF CUSTOMIZED TOC ====
 
 % ==== START CUSTOMIZED PREFACE ====
-
-\cleardoublepage
-  \pagenumbering{roman}
-  \include{preface}
-  \pagenumbering{arabic}
+   
+  % We've not put the preface in using RST
+  %\cleardoublepage
+  %\pagenumbering{roman}
+  %\input{preface.tex}
+  %\pagenumbering{arabic}
 % ==== END CUSTOMIZED PREFACE ====
 """
 

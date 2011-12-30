@@ -1124,9 +1124,6 @@ Exercises
 		
 .. question::
 
-	Question 1 [1]
-	==============
-
 	A concrete slump test is used to test for the fluidity, or workability, of concrete. It's a crude, but quick test often used to measure the effect of polymer additives that are mixed with the concrete to improve workability.
 
 	The concrete mixture is prepared with a polymer additive. The mixture is placed in a mold and filled to the top. The mold is inverted and removed. The height of the mold minus the height of the remaining concrete pile is called the "slump". 
@@ -1188,3 +1185,131 @@ Exercises
 
 
 	Note that this approach works only if your coding has a one unit difference between the two levels. For example, you can code :math:`A = 17` and :math:`B = 18` and still get the same result. Usually though :math:`A=0` and :math:`B=1` or the :math:`A = 1` and :math:`B = 2` coding is the most natural, but all 3 of these codings would give the same confidence interval (the intercept changes though).
+
+.. question::
+
+	Some data were collected from tests where the compressive strength, :math:`x`, used to form concrete was measured, as well as the intrinsic permeability of the product, :math:`y`. There were 16 data points collected. The mean :math:`x`-value was :math:`\overline{x} = 3.1` and the variance of the :math:`x`-values was 1.52. The average :math:`y`-value was 40.9.  The estimated covariance between :math:`x` and :math:`y` was :math:`-5.5`.
+
+	The least squares estimate of the slope and intercept was: :math:`y = 52.1 - 3.6 x`.
+	
+	#.	What is the expected permeability when the compressive strength is at 5.8 units?
+	
+	#.	Calculate the 95% confidence interval for the slope if the standard error from the model was 4.5 units.  Is the slope coefficient statistically significant?
+
+	#.	Provide a rough estimate of the 95% prediction interval when the compressive strength is at 5.8 units (same level as for part 1). What assumptions did you make to provide this estimate?
+	
+	#.	Now provide a more accurate, calculated 95% prediction confidence interval for the previous part.
+
+.. answer::
+
+	#.	It is :math:`\hat{y} = 52.1 - 3.6(5.8) = 31.22`
+	
+	#.	From the definition:
+	
+		.. math::
+		
+			S_E^2(b_i)	&= \dfrac{S_E^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \\
+						&= \dfrac{4.5^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} 
+						
+		We need the denominator term, which can be found by back-calculation:
+		
+		.. math::
+		
+			\mathcal{V}(x) = 1.52 &= \frac{\sum_j{(x_j - \overline{\mathrm{x}})^2}}{n-1} \\
+			\sum_j{(x_j - \overline{\mathrm{x}})^2} &= 1.52 \times (16-1) = 22.8
+			
+		So the 95% confidence interval for the slope, :math:`b_i`:
+		
+		.. math::
+		
+			b_i &\pm c_t S_E(b_i) \\
+			-3.6 &\pm 2.14 \sqrt{\dfrac{4.5^2}{22.8}}\\
+			-3.6 &\pm 2.02
+	
+		where :math:`c_t = 2.14` from the :math:`t`-distribution with :math:`n-k = 16-2` degrees of freedom.
+		
+		Since this confidence interval *does not* span zero, we conclude the slope coefficient is statistically significant.
+		
+	#.	A rough estimate would be at :math:`\hat{y} \pm 2 S_E`, in other words, :math:`31.2 \pm 9.0`, which is :math:`[22.2, 40.2]`
+	
+	#.	A more accurate prediction interval is given by :math:`\hat{y}_i \pm c_t \sqrt{V\{\hat{y}_i\}}`, where:
+	
+		.. math::
+	
+		    V\{\hat{y}_i\} &= S_E^2 \left(1 + \dfrac{1}{n} + \dfrac{(x_i - \overline{\mathrm{x}})^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}\right)\\
+						   &= 4.5^2 \left(1 + \dfrac{1}{16} + \dfrac{(5.8 - 3.1)^2}{22.8}\right)\\
+						   &= 27.99	
+		
+		and represents the variance of the predicted :math:`\hat{y}_i` at the given value of :math:`x_i = 5.8`. 
+		
+		The confidence interval, or prediction interval for this :math:`\hat{y}_i` is :math:`\pm c_t \sqrt{V\{\hat{y}_i\}} = \pm 2.14 \sqrt{27.99} = \pm 11.3`,  a bit larger than the rough estimate above.
+
+.. question::
+
+	A simple linear model relating reactor temperature to polymer viscosity is desirable, because measuring viscosity online, in real time is far too costly, and inaccurate.  Temperature, on the other hand, is quick and inexpensive.  This is the concept of *soft sensors*, also known as *inferential sensors*.
+
+	Data were collected from a rented online viscosity unit and a least squares model build:
+
+	.. math::
+
+		\hat{v} = 1977 - 3.75 T
+
+	where the viscosity, :math:`v`, is measured in Pa.s (Pascal seconds) and the temperature is in Kelvin.  A reasonably linear trend was observed over the 86 data points collected.  Temperature values were taken over the range of normal operation: 430 to 480 K and the raw temperature data had a sample standard deviation of 8.2 K.
+
+	The output from a certain commercial software package was:
+
+	.. code-block:: text
+
+		                    Analysis of Variance         
+		---------------------------------------------------------
+		                                    Sum of           Mean 
+		Source                   DF        Squares         Square 
+		Model                     2         9532.7        4766.35 
+		Error                    84         9963.7          118.6
+		Total                    86        19496.4                
+		Root MSE              XXXXX    
+		R-Square              XXXXX
+
+
+	#.	Which is the causal direction: does a change in viscosity cause a change in temperature, or does a change in temperature cause a change in viscosity?
+
+	#.	Calculate the ``Root MSE``, what we have called standard error, :math:`S_E` in this course.
+
+	#.	What is the :math:`R^2` value that would have been reported in the above output?
+
+	#.	What is the interpretation of the slope coefficient, -3.75, and what are its units?
+
+	#.	What is the viscosity prediction at 430K?  And at 480K?
+
+	#.	In the future you plan to use this model to adjust temperature, in order to meet a certain viscosity target.  To do that you must be sure the change in temperature will lead to the desired change in viscosity. 
+
+	 	What is the 95% confidence interval for the slope coefficient, *and interpret* this confidence interval in the context of how you plan to use this model.
+
+	#.	The standard error features prominently in all derivations related to least squares.  Provide an interpretation of it and be specific in any assumption(s) you require to make this interpretation.
+
+.. answer::
+
+	#.	The causal direction is that a change in temperature causes a change in viscosity.
+
+	#.	The ``Root MSE``  :math:`= S_E = \displaystyle \sqrt{\frac{\sum{e_i^2}}{n-k}} = \sqrt{\frac{\displaystyle 9963.7}{84}} = \bf{10.9}` Pa.s.
+
+	#.	:math:`R^2 = \displaystyle \frac{\text{RegSS}}{\text{TSS}} = \frac{9532.7}{19496.4} = \bf{0.49}`
+
+	#.	The slope coefficient is :math:`-3.75 \frac{\text{Pa.s}}{\text{}K}` and implies that the viscosity is expected to decrease by 3.75 Pa.s for every one degree increase in temperature.
+
+	#.	The viscosity prediction at 430K is :math:`1977 - 3.75 \times 430 = \bf{364.5}` Pa.s and is :math:`\bf{177}` Pa.s at 480 K.
+
+	#.	The confidence interval is
+
+		.. math::
+
+			b_1   & \pm c_t S_E(b_1)\\
+			-3.75 & \pm 1.98\displaystyle \frac{S_E^2}{\sum_{j}{\left(x_j - \overline{x}\right)^2}} \\
+			-3.75 & \pm 1.98\frac{10.9}{697}\\
+			-3.75 & \pm 0.031
+
+		where :math:`\displaystyle \frac{\left(x_j - \overline{x}\right)^2}{n-1} = 8.2`, so one can solve for :math:`\displaystyle \left(x_j - \overline{x}\right)^2` (though any reasonable value/attempt to get this value should be acceptable) and :math:`c_t = 1.98`, using :math:`n-k` degrees of freedom at 95% confidence.
+
+		*Interpretation*: this interval is extremely narrow, i.e. our slope estimate is precise. We can be sure that any change made to the temperature in our system will have the desired effect on viscosity in the feedback control system.
+
+	#.	The standard error, :math:`S_E = 10.9` Pa.s is interpreted as the amount of spread in the residuals.  In addition, if we assume the residuals to be normally distributed (easily confirmed with a q-q plot) and independent.  If that is true, then :math:`S_E` is the one-sigma standard deviation for the residuals and we can say 95% of the residuals are expected within a range of :math:`\pm 2 S_E`.

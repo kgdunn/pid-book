@@ -3,13 +3,18 @@ Process Improvement using Data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+
+.. toctree::
+   :hidden:
+
+   preface/index
+
 .. toctree::
 
-	temp/index
+	temp2/index
 
 .. Sections omitted:
-
-   	data-visualization/index
+	data-visualization/index
 	univariate-review/index	
 	process-monitoring/index
 	least-squares-modelling/index

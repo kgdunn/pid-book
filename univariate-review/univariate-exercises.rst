@@ -299,7 +299,7 @@ Exercises
 
 .. question::
 
-	A new wastewater treatment plant is being commissioned and part of the commissioning report requires a statement of the confidence interval of the `biochemical oxygen demand (BOD) <http://en.wikipedia.org/wiki/Biochemical_oxygen_demand>`_.  How many samples must you send to the lab to be sure the true BOD is within a range of 2 mg/L, centered about the sample average?  If there isn't enough information given here, specify your own numbers and assumptions and work with them to answer the question.
+	A new wastewater treatment plant is being commissioned and part of the commissioning report requires a statement of the confidence interval of the `biochemical oxygen demand (BOD) <http://en.wikipedia.org/wiki/Biochemical_oxygen_demand>`__.  How many samples must you send to the lab to be sure the true BOD is within a range of 2 mg/L, centered about the sample average?  If there isn't enough information given here, specify your own numbers and assumptions and work with them to answer the question.
 
 .. answer::
 	:fullinclude: no 
@@ -629,7 +629,7 @@ Exercises
 		:align: center
 		:scale: 40
 	
-		Illustration from `Wikipedia <http://en.wikipedia.org/wiki/Industrial_mixer>`_
+		Illustration from `Wikipedia <http://en.wikipedia.org/wiki/Industrial_mixer>`__
 
 	The 15 most recent runs with the current magnesium stearate supplier had an average mixing time of 2715 seconds, and a standard deviation of 390 seconds.  So far you have run 6 batches from the new supplier, and the average mixing time of these runs is 3115 seconds with a standard deviation of 452 seconds.  Your manager is not happy with these results so far - this extra mixing time will actually cost you more money via lost production.  
 
@@ -774,7 +774,7 @@ Exercises
 		:align: center
 		:scale: 40
 
-		Axial and radial blades; figure `from Wikipedia <http://en.wikipedia.org/wiki/Impeller>`_
+		Axial and radial blades; figure `from Wikipedia <http://en.wikipedia.org/wiki/Impeller>`__
 
 	Before obtaining approval to run some experiments, your team wants you to explain how you will interpret the experimental data. Your reply is that you will calculate the average mixing time from each blade type and then calculate a confidence interval for the difference.  A team member asks you what the following 95% confidence intervals would mean:
 
@@ -805,17 +805,24 @@ Exercises
 		
 .. question::
 
-	The paper by PJ Rousseeuw, "`Tutorial to Robust Statistics <http://dx.doi.org/10.1002/cem.1180050103>`_", *Journal of Chemometrics*, **5**, 1-20, 1991 discusses the breakdown point of a statistic.  Describe what the breakdown point is, and give two examples: one with a low breakdown point, and one with a high breakdown point.  Use a vector of numbers to help illustrate your answer.
-
+	The paper by PJ Rousseeuw, "`Tutorial to Robust Statistics <http://dx.doi.org/10.1002/cem.1180050103>`_", *Journal of Chemometrics*, **5**, 1-20, 1991 discusses the breakdown point of a statistic. 
+	
+	#.	Describe what the breakdown point is, and give two examples: one with a low breakdown point, and one with a high breakdown point.  Use a vector of numbers to help illustrate your answer.
+	
+	#.	What is an advantage of using robust methods over their "classical" counterparts?
 
 .. answer::
 
-	PJ Rousseeuw defines the breakdown point on page 3 of his paper as "... the smallest fraction of the observations that have to be replaced to make the estimator unbounded. In this definition one can choose which observations are replaced, as well as the magnitude of the outliers, in the least favourable way".
+	#.	PJ Rousseeuw defines the breakdown point on page 3 of his paper as "... the smallest fraction of the observations that have to be replaced to make the estimator unbounded. In this definition one can choose which observations are replaced, as well as the magnitude of the outliers, in the least favourable way".
 
-	A statistic with a low breakdown point is the mean, of the :math:`n` values used to calculate the mean, only 1 needs to be replaced to make the estimator unbounded; i.e. its breakdown point is :math:`1/n`.  The median though has a breakdown point of 50%, as one would have to replace 50% of the :math:`n` data points in the vector before the estimator becomes unbounded.
+		A statistic with a low breakdown point is the mean, of the :math:`n` values used to calculate the mean, only 1 needs to be replaced to make the estimator unbounded; i.e. its breakdown point is :math:`1/n`.  The median though has a breakdown point of 50%, as one would have to replace 50% of the :math:`n` data points in the vector before the estimator becomes unbounded.
 
-	Use this vector of data as an example: :math:`[2, 6, 1, 9151616, -4, 2]`.  The mean is 1525270, while the median is 2.
+		Use this vector of data as an example: :math:`[2, 6, 1, 9151616, -4, 2]`.  The mean is 1525270, while the median is 2.
+		
+	#.	
+		*	Robust methods are insensitive to outliers, which is useful when we need a measure of location or spread that is calculated in an automated way.  It is increasingly prevalent to skip out the "human" step that might have detected the outlier, but our datasets are getting so large that we can't possibly visualize or look for outliers manually anymore.
 
+		*	As described in the above paper by Rousseeuw, robust methods also emphasize outliers. Their "lack of sensitivity to outliers" can also be considered an advantage.
 
 .. question::
 
@@ -1025,3 +1032,162 @@ Exercises
 	The main purpose of this question is for you to see how use to understand what happens when a key assumption is violated. There are cases when an assumption is violated, but it doesn't affect the result too much.
 	
 	In this particular example there is a known theoretical relationship between :math:`\phi` and the inflated/deflated variance that can be derived (with some difficulty). But in most situations the affect of violating assumptions is too difficult to derive mathematically, so we use computer power to do the work for us: but then we still have to spend time thinking and interpreting the results.
+
+.. question::
+
+	A concrete slump test is used to test for the fluidity, or workability, of concrete.  It's a crude, but quick test often used to measure the effect of polymer additives that are mixed with the concrete to improve workability.
+	
+	The concrete mixture is prepared with a polymer additive. The mixture is placed in a mold and filled to the top.  The mold is inverted and removed.  The height of the mold minus the height of the remaining concrete pile is called the "slump". 
+	
+	.. image:: ../figures/least-squares/concrete-slump-test.jpg
+		:alt:	http://en.wikipedia.org/wiki/File:Types_of_concrete_slump.jpg
+		:scale: 70
+		:width: 750px
+		:align: center
+
+	*Illustration from* `Wikipedia <http://en.wikipedia.org/wiki/File:Types_of_concrete_slump.jpg>`__
+			
+	Your company provides the polymer additive, and you are developing an improved polymer formulation, call it B, that hopefully provides the same slump values as your existing polymer, call it A.  Formulation B costs less money than A, but you don't want to upset, or loose, customers by varying the slump value too much.
+	
+	#.	You have a single day to run your tests (experiments).  Preparation, mixing times, measurement and clean up take 1 hour, only allowing you to run 10 experiments. Describe all precautions, and why you take these precautions, when planning and executing your experiment.  Be very specific in your answer (use bullet points).
+
+	#.	The following slump values were recorded over the course of the day:
+
+		==========  ================
+		Additive	Slump value [cm]
+		==========  ================
+		A           5.2            
+		A           3.3            
+		B           5.8            
+		A           4.6            
+		B           6.3            
+		A           5.8            
+		A           4.1            
+		B           6.0            
+		B           5.5            
+		B           4.5            
+		==========  ================
+		
+		What is your conclusion on the performance of the new polymer formulation (system B)?  Your conclusion must either be "send the polymer engineers back to the lab" or "let's start making formulation B for our customers". Explain your choice clearly.
+		
+		To help you, :math:`\overline{x}_A = 4.6` and :math:`s_A = 0.97`.  For system B: :math:`\overline{x}_B = 5.62` and :math:`s_B = 0.69`.
+		
+		*Note*: In your answer you must be clear on which assumptions you are using and, where necessary, why you need to make those assumptions.
+	
+	#.	Describe the circumstances under which you would rather use a paired test for differences between polymer A and B.
+	
+	#.	What are the advantage(s) of the paired test over the unpaired test?  
+
+	#.	Clearly explain which assumptions are used for paired tests, and why they are likely to be true in this case?
+	
+	#.	The slump tests were actually performed in a paired manner, where pairing was performed based on the cement supplier.  Five different cement suppliers were used:
+	
+		==========  =======================  =======================
+		Supplier    Slump value [cm] from A  Slump value [cm] from B
+		==========  =======================  =======================
+		1           5.2                      5.8
+		2           3.3                      4.5
+		3           4.6                      6.0
+		4           5.8                      5.5
+		5           4.1                      6.2
+		==========  =======================  =======================
+
+		Use these data, and provide, if necessary, an updated recommendation to your manager.
+	
+**Solution**
+
+	#.	The basic rule is to control what you can and randomize against what you cannot. You should have mentioned some of these items:
+	
+		*	Control: clean equipment thoroughly between runs.
+		*	Control: other factors that might affect the slump: temperature, humidity.
+		*	Control: ensure the same person prepares all mixtures, or randomize the allocation of people if you have to use more than 1 person.  Don't let person 1 prepare all the A mixtures and person 2 the B mixtures.
+		*	Control: mixing times and how the mixture is created could have an effect.  This should ideally be done by the same person.
+		*	Randomize the order of all the A and B experiments: don't run all the A's, then all the B's, as that will confound with other factors. For example, even though temperature might vary during the day, if we randomize the run order, then we prevent temperature from affecting the results.
+		*	Use raw materials (cement, binder, other ingredients) from all possible suppliers.  And the supplier raw materials should be representative.
+
+	#.	We will initially assume that :math:`\mu_A = \mu_B`, in other words, the outcome is "let's start making formulation B for our customers". We will construct a confidence interval for the difference, :math:`\mu_B - \mu_A` and interpret that CI.
+	
+		*	Assume the slump values within each group are independent, which will be true if we take the precautions above.  We do this because then we can use the central limit theorem (CLT) to state :math:`\overline{x}_A \sim \mathcal{N}\left(\mu_A, \sigma_A^2/n_A \right)` and that :math:`\overline{x}_B \sim \mathcal{N}\left(\mu_B, \sigma_B^2/n_B \right)`.
+		
+		*	Note: we don't require the samples within each group to be normally distributed.
+		
+		*	Assume the variances are the same: :math:`\sigma_A^2 = \sigma_B^2 = \sigma^2`: this is required to simplify the next step.
+		
+		*	Assume the :math:`\overline{x}_A` and :math:`\overline{x}_B` means are independent.  This allows us to calculate a variance value,
+			:math:`\mathcal{V} \left\{\overline{x}_B - \overline{x}_A \right\}` from which we can create a :math:`z`-value for :math:`\mu_B - \mu_A`:
+			
+			.. math::
+					
+					z = \frac{\left(\overline{x}_B - \overline{x}_A \right) - \left(\mu_B - \mu_A\right)}{\sqrt{\mathcal{V} \left\{\overline{x}_B - \overline{x}_A \right\}}}
+					
+			That denominator variance can be written as: 
+			
+			.. math::
+			
+				\mathcal{V} \left\{\overline{x}_B - \overline{x}_A\right\} &= \mathcal{V} \left\{\overline{x}_B \right\} + \mathcal{V} \left\{\overline{x}_A\right\}\\
+					&= \sigma^2\left(\frac{1}{n_B} + \frac{1}{n_A} \right)
+					
+			using our previous assumption that the variances are equal. We can verify this with an :math:`F`-test, but won't do it here.
+	
+			Because we do not have an external estimate of the variance, :math:`\sigma^2`, available, we must assume a good estimate for it can be found by  pooling the estimated variances of the group A and B samples (which requires our equal variance assumption from earlier).
+			
+			.. math::
+			
+				s_P^2 &= \frac{4s_A^2 + 4s_B^2}{4 + 4} \\
+				s_P^2 &= \frac{4(0.97)^2 + 4(0.69)^2}{4 + 4} = 0.709\\
+				
+			This pooling also gives us 8 degrees of freedom for the :math:`t`-distribution, which is how the :math:`z`-value is distributed.  
+			
+			Using that :math:`z`-value and filling our assumed difference of zero for the true means, we can construct a 95% confidence interval:
+			
+			.. math::
+					
+				\begin{array}{rcccl} 
+					-c_t &\leq& z	&\leq & +c_t \\
+					(\overline{x}_B - \overline{x}_A) - c_t \sqrt{s_P^2 \left(\frac{1}{n_B} + \frac{1}{n_A}\right)}	&\leq& \mu_B - \mu_A	&\leq &  (\overline{x}_B - \overline{x}_A) + c_t \sqrt{s_P^2 \left(\frac{1}{n_B} + \frac{1}{n_A}\right)}\\
+					1.02 - 2.3 \sqrt{0.709 \left(\frac{1}{5} + \frac{1}{5}\right)} 	&\leq& \mu_B - \mu_A	&\leq& 1.02 + 2.3 \sqrt{0.709 \left(\frac{1}{5} + \frac{1}{5}\right)} \\
+					-0.21	&\leq& \mu_B - \mu_A	&\leq&   2.2
+				\end{array}
+				
+			The statistical conclusion is that there is **no difference between formulation A and B**, since the CI spans zero.  However, the practical interpretation is that the CI only just contains zero, and this should cause us to stop, and really consider the risk of the statistical conclusion.
+			
+			If one of the data points were in error just slightly, or if we ran a single additional experiment, it is quite possible the CI will *not span zero* anymore.  In my mind, this risk is too great, and we risk upsetting the customers. 
+			
+			So my conclusion would be to "send the polymer engineers back to the lab" and have them improve their formulation until that CI spans zero more symmetrically.
+				
+	#.	A paired test should be used when there is something is common *within* pairs of samples in group A and B, but that commonality does not extend between the pairs.  Some examples though you could have mentioned:
+	
+		Pairing is appropriate: person 1 mixes polymer for test A and B; person 2 mixes polymer for test A and B (but with different time and agitation level that person 2); person 3 mixes ... *etc*
+		Pairing *not* appropriate: person 1 mixes all the polymer A samples; person 2 mixes all the polymer B samples (pairing won't fix this, and even the unpaired results will be inaccurate - see precautions mentioned above).
+		Pairing appropriate: you only have enough cement and raw materials to create the concrete mixture for 2 samples: one for A and one for B.  You repeat this 5 times, each time using a different supplier's raw materials.
+	
+		In other words, pairing is appropriate when there is something the prevents the :math:`\overline{x}_A` and :math:`\overline{x}_B` quantities from being independent. 
+
+	#.	The one advantage of the paired test is that it will cancel out any effect that is common between the pairs (whether that effect actually affects the slump value or not).  Pairing is a way to guard against *potential effect*.
+	
+		This makes the test more sensitive to the difference actually being tested for (formulation A vs B) and prevents confounding from the effect we are not testing for (suppliers' raw material).  
+		
+		Unpaired tests, but with randomization will only prevent us from being misled, however that supplier effect is still present in the 10 experimental values.  The 5 difference values used in the paired tests will be free from that effect.
+
+	#.	Pairing requires/assumes that the paired objects have something in common (e.g. a common bias due to the cement raw material). This common bias will be cancelled out once we calculate the difference in measurements.
+	
+		*	The difference values calculated, :math:`w_i`, are assumed to be independent. This is likely true in this case because each raw material supplier is different (unrelated) to the other.
+	
+		*	If the differences are independent, then the central limit theorem can be safely assumed so that the average of these differences, :math:`\overline{w} \sim \mathcal{N}\left(\mu_w, \sigma_w^2/n \right)`.
+
+	#.	The 5 difference values are :math:`w_i = \left[ 0.6,\,\, 1.2,\,\, 1.4,\,\, -0.3, \,\, 2.1  \right]` and the average difference value is :math:`\overline{w} = 1` and its estimated variance is :math:`s_w^2 = 0.815`.
+
+		Create the :math:`z`-value against the :math:`t`-distribution with 4 degrees of freedom (:math:`c_t = 2.78`), at the 95% confidence level, and unpack it into a confidence interval.
+	
+		.. math::
+	
+			\begin{array}{rcccl} 
+				-c_t &\leq& z	&\leq & +c_t \\
+				\overline{w} - c_t \sqrt{\frac{s^2}{n}}      &\leq& \mu_w       &\leq &  \overline{w} + c_t \sqrt{\frac{s^2}{n}}\\
+				1 - 2.78 \sqrt{\frac{0.815}{4}}              &\leq& \mu_w       &\leq &  1 + 2.78 \sqrt{\frac{0.815}{4}}\\
+				-0.12                                        &\leq& \mu_w       &\leq &  2.12
+			\end{array}
+		
+		The interpretation is that the true difference in slump, :math:`\mu_w`, when accounting for variation from the cement raw material, is again not statistically significant, at the 95% confidence level.
+	
+		Practically though, there is a bit of a risk, due to the imbalance (asymmetry) in the confidence interval. It would be reluctant to hinge my company's profitability on this result, especially with the fact that there are only 4 experiments.   So my personal conclusion would be to still "send the polymer engineers back to the lab".

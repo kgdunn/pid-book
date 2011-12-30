@@ -998,3 +998,210 @@ Exercises
 			:width: 550px
 			:align: center
 
+.. question::
+	
+	One of the experiment projects investigated by a previous student of this course was understanding effects related to the preparation of uncooked, breaded chicken strips.
+
+	The student investigated these 3 factors in a full factorial design :math:`^\ast`:
+
+	*	**D** = duration: low level at 15 minutes; and high level = 22 minutes.
+	*	**R** = position of oven rack: low level = use middle rack; high level = use low oven rack (this coding, *though unusual*, was used because the lower rack applies more heat to the food).
+	*	**P** = preheated oven or not: low level = short preheat (30 seconds); high level = complete preheating.
+
+	:math:`^\ast` The student actually investigated 4 factors, but found the effect of oven temperature to be negligible!
+
+	The response variable was :math:`y` = taste, the average of several tasters, with higher values being more desirable.
+
+		.. tabularcolumns:: |c||c|c|c|c|c|
+
+		+----------------+--------+-------+--------+-------+
+		| Experiment     | **D**  | **R** | **P**  | Taste |
+		+================+========+=======+========+=======+
+		|   1            |  |-|   |  |-|  |   |-|  |  3    |
+		+----------------+--------+-------+--------+-------+
+		|   2            |  |+|   |  |-|  |   |-|  |  9    |
+		+----------------+--------+-------+--------+-------+
+		|   3            |  |-|   |  |+|  |   |-|  |  3    |
+		+----------------+--------+-------+--------+-------+	
+		|   4            |  |+|   |  |+|  |   |-|  |  7    |
+		+----------------+--------+-------+--------+-------+	
+		|   5            |  |-|   |  |-|  |   |+|  |  3    |
+		+----------------+--------+-------+--------+-------+	
+		|   6            |  |+|   |  |-|  |   |+|  |  10   |
+		+----------------+--------+-------+--------+-------+	
+		|   7            |  |-|   |  |+|  |   |+|  | 4     |
+		+----------------+--------+-------+--------+-------+	
+		|   8            |  |+|   |  |+|  |   |+|  | 7     |
+		+----------------+--------+-------+--------+-------+	
+
+	A full factorial model, using the usual coding, was calculated from these 8 experiments:
+
+	.. math::
+
+		y = 5.75 + 2.5 x_\text{D} - 0.5 x_\text{R} + 0.25 x_\text{P} -0.75 x_\text{D} x_\text{R} -0.0 x_\text{D} x_\text{P} -0.0 x_\text{R} x_\text{P} -0.25 x_\text{D} x_\text{R} x_\text{P}
+
+	#.	What is the physical interpretation of the :math:`+2.5 x_\text{D}` term in the model?
+
+	#.	From the above table, at what real-world conditions should you run the system to get the highest taste level? 
+
+	#.	Does your previous answer match the above model equation?  Explain, in particular, how the non-zero *two factor* interaction term affects taste, and whether the interaction term reinforces the taste response variable, or counteracts it, when the settings you identified in part 2 are used.
+
+	#.	If you decided to investigate this system, but only had time to run 4 experiments, write out the fractional factorial table that would use factors **D** and **R** as your main effects and confound factor **P** on the **DR** interaction.
+
+		Now add to your table the response column for taste, extracting the relevant experiments from the above table.
+
+		Next, write out the model equation and estimate the 4 model parameters from your reduced set of experiments. Compare and comment on your model coefficients, relative to the full model equation from all 8 experiments.
+
+.. answer::
+
+	#.	(22-15)/2 increase in cooking time results in a 2.5 taste level increase.
+	
+	#.	22 minutes, middle over rack, with preheating.
+	
+	#.	Yes: the **D+** and **P+** levels both have positive coefficients, while the **R-** level has a negative coefficient.  The **DR** interaction has a negative coefficient. This actually reinforced (improves) the taste, because **D** = |+| and **R** = |-|, so the the **DR** term *adds* the taste value. This term also makes physical sense: if **D** = |+| and **R** = |+|, then the taste deteriorates, likely to the food being overcooked. Similarly, if **D** = |-| and **R** = |-|, then the chicken is undercooked.
+	
+	#.	The table, in standard order has :math:`y=3,9,3,7` and the model is :math:`y = 5.5 + 2.5 x_D - 0.5 x_R - 0.5 x_P`. The **D** and **R** coefficients are the same, only the **P** coefficient = **P**:math:`_\text{original}` + **DR**:math:`_\text{original}` :math:`= +0.25 - 0.75 = -0.5`, due to the aliasing, which is expected.
+
+.. Raw data: see 2011 DOE project "Heydari-Cook-chicken.pdf"
+
+.. question::
+	
+	Your company is developing a microgel-hydrogel composite, used for controlled drug delivery with a magnetic field. A previous employee did the experimental work but she has since left the company. You have been asked to analyze the existing experimental data.
+	
+	*	Response variable: :math:`y` = sodium fluorescein (SF) released [mg], per gram of gel
+	
+	*	The data collected, in the original units:
+	
+		.. tabularcolumns:: |c|c||c|c||c|
+
+		+-----------+-------+----------------------------+----------------------------+------------+
+		| Experiment| Order | **M** = microgel weight [%]| **H** = hydrogel weight [%]| :math:`y`  |
+		+===========+=======+============================+============================+============+
+		| 1         | 4     |  4                         |  10                        | 119        |
+		+-----------+-------+----------------------------+----------------------------+------------+
+		| 2         | 1     |  8                         |  10                        | 93         |
+		+-----------+-------+----------------------------+----------------------------+------------+
+		| 3         | 6     |  4                         |  16                        | 154        |
+		+-----------+-------+----------------------------+----------------------------+------------+
+		| 4         | 3     |  8                         |  16                        | 89         |
+		+-----------+-------+----------------------------+----------------------------+------------+
+		| 5         | 2     |  6                         |  13                        | 85         |
+		+-----------+-------+----------------------------+----------------------------+------------+
+		| 6         | 5     |  6                         |  13                        | 88         |
+		+-----------+-------+----------------------------+----------------------------+------------+
+		| 7         | 9     |  3.2                       |  13                        | 125        |
+		+-----------+-------+----------------------------+----------------------------+------------+
+		| 8         | 7     |  8.8                       |  13                        | 111        |
+		+-----------+-------+----------------------------+----------------------------+------------+
+		| 9         | 10    |  6                         |  17.2                      | 136        |
+		+-----------+-------+----------------------------+----------------------------+------------+
+		| 10        | 8     |  6                         |  8.8                       | 98         |
+		+-----------+-------+----------------------------+----------------------------+------------+
+	
+	#.	What was likely the reason the experimenter added experiments 5 and 6?
+	
+	#.	Why might the experimenter have added experiments 7, 8, 9 and 10 after the first six?  Provide a rough sketch of the design, and all necessary calculations to justify your answer.
+	
+	#.	What is the name of the type of experimental design chosen by the employee for *all 10 experiments in the table*?
+	
+	#.	Using these data, you wish to estimate a nonlinear approximation of the response surface using a model with quadratic terms. Write out the equation of such a model that can be calculated from these 10 experiments (*also read the next question*).
+	
+	#.	Write out
+	 	
+		*	the :math:`\mathbf{X}` matrix,
+		*	the corresponding symbolic entries in :math:`\mathbf{b}` 
+		*	and the :math:`\mathbf{y}` vector
+		
+		that you would use to solve the equation :math:`\mathbf{b} = \left(\mathbf{X}^T \mathbf{X} \right)^{-1} \mathbf{X}^T \mathbf{y}` to obtain the parameter estimates of the model you proposed in the previous part. You must use data from all 10 experiments.
+		
+	#.	How many degrees of freedom will be available to estimate the standard error and confidence intervals?
+		
+.. answer::
+
+	#.	These are centerpoint (baseline) runs. They may have been run for some of the following reasons:
+	
+		*	To give degrees of freedom for calculating the standard error and then confidence intervals for the slopes.
+		
+		*	Trial runs, though they were not done first, so that's unlikely.
+		
+		*	To obtain baseline values for later response surface optimization.
+		
+		*	To test the factorial model.
+		
+		*	To assess repeatability at the center point.
+		
+		*	There might be one or more days that elapsed between the runs, so this assesses the robustness of the model over time
+		
+		*	To test for curvature: if the average of the centerpoints, 87, is very different from the model's intercept, :math:`b_0 = 0.25(119+93+154+89) = 114`, as it is in this case, then there is evidence of curvature.
+		
+	#.	It's clear that there is evidence of curvature, also, it it is feasible the employee was wanting to optimize the response variable. In that case, she would likely use response surface techniques of climbing the path of steepest ascent.
+	
+		In this model, the presence of curvature at the center point has already been shown. Also a quick calculation from the 4 corner points shows a significant 2 factor interaction. 
+		
+		Using response surface methods in with only the linear terms will be misleading in this case. That's why the employee decided to add the extra experiments; they are the axial experiments to support quadratic terms.
+		
+	#.	Central composite design, with the full factorial experiment, in two factors.
+	
+	#.	:math:`y = b_0 + b_M x_M + b_H x_H + b_{MH}x_M x_H  b_{MM} x_A^2 + b_{HH}x_B^2`
+	
+	#.	X has 10 rows and 6 columns to support the 6 terms in the above model. The last for points have :math:`\pm \sqrt(2)` and :math:`2` terms in those rows.
+	
+	#.	There 4 degrees of freedom (10 observations, 6 parameters)
+
+.. question::
+	
+	Biological drugs are rapidly growing in importance in the treatment of certain diseases, such as cancers and arthritis, since they are designed to target very specific sites in the human body. This can result in treating diseases with minimal side effects. Such drugs differ from traditional drugs in the way they are manufactured -- they are produced during the complex reactions that take place in live cell culture. The cells are grown in lab-scale bioreactors, harvested, purified and packaged.
+	
+	These processes are plagued by low yields which makes these treatments very costly. Your group has run an initial set of experiments to learn more about the system and find better operating conditions to boost the yield. The following factors were chosen in the usual factorial manner:
+
+	*	**G** = glucose substrate choice: a binary factor, either **Gm** at the low level code or **Gp** at the high level.
+	*	**A** = agitation level: low level = 10 rpm and high level = 20 rpm, but can only be set at integer values.
+	*	**T** = growth temperature: 30°C at the low level, or 36°C at the high level, and can only be set at integer values in the future, with a maximum value of 40°C.
+	*	**C** = starting culture concentration: low level = 1100 and high level = 1400, and can only be adjusted in multiples of 50 units and within a range of 1000 to 2000 units.
+
+	A fractional factorial in 8 runs at the above settings, created by aliasing **C = GAT**, gave the following model in coded units:
+	
+	.. math::
+	
+		y = 24 + 3 x_\text{G} - 1.0 x_\text{A} + 4.0 x_\text{T} - 0.2 x_\text{G} x_\text{A} - 0.79 x_\text{G} x_\text{T} - 0.25 x_\text{A} x_\text{T} + 3.5 x_\text{G} x_\text{A} x_\text{T}
+		
+	The aim is to find the next experiment that will improve the yield, measured in milligrams, the most.
+	
+	#.	What settings might have been used for the *baseline conditions* for this factorial experiment?
+	
+	#.	What is the resolution of this design?
+	
+	#.	Using the method of steepest ascent, state all reasonable assumptions you need to find the experimental conditions for **all 4 factors** for the next experiment. Give these 4 conditions in both the real-world units, as well as in the usual coded units of the experiment. Note however that your manager has seen that temperature has a strong effect on yield, and he has requested the next experiment be run at 40°C.
+	
+	#.	Report the expected yield at these proposed experimental conditions.
+
+.. answer::
+
+	#.	Baseline conditions are at **G** = **Gm** or **Gp** (either would work), **A** at 15 rpm, **T** at 30°C, and **C** at 1250 concentration units.
+	
+	#.	It is a four factor experiment, with 8 runs; from the table, for the given aliasing, it is a resolution IV design.
+	
+	#.	We assume that we can ignore all 2fi and 3fi - i.e. that they are small. Specifically, this implies that the 3.5 coefficient is for **C** and not for the product of :math:`x_\text{G} x_\text{A} x_\text{T}`
+	
+		
+		*	Fix temperature at 40°C, implying that :math:`T^\text{(next)} = 40`°C and :math:`x_\text{T}^\text{(next)} = \frac{40-33}{3} = 2.33`.
+		*	Factor **G** must be run at the highest level possible, i.e. **G = Gp**
+		*	Factor **A** must be run at a lower level, specifically :math:`\Delta A = -0.25 \times 2.33 = -0.583`, or a deviation of -2.9 rpm from the baseline.  Since we have to use integer values, that implies :math:`A^\text{(next)} = 12` rpm and :math:`x_\text{A}^\text{(next)} = \frac{12-15}{5} = -0.6`.
+		*	Factor **C** must be run at a higher level, specifically :math:`\Delta C = 3.5/4 \times 2.33 = 2.04`, or a deviation of +306 in actual units from the baseline.  Since we have to round to the closest 50, that implies :math:`C^\text{(next)} = 1550` rpm and :math:`x_\text{C}^\text{(next)} = \frac{1550-1250}{150} = +2`.
+		
+	#.	The predicted yield can be found by substituting the coded values into the model equation, choosing to either use or ignore the small interactions:
+	
+		With the interactions:
+
+		.. math::
+
+			\begin{array}{rcl}
+				y &=& 24 + 3 (+1) - 1.0 (-0.6) + 4.0 (2.33) - 0.2 (+1)(-0.6) - 0.79 (+1)(2.33) - 0.25(-0.6)(2.33) + 3.5 (+2) \\
+				y &=& {\bf 42.3}
+			\end{array}	
+
+		Without interactions:
+		
+		.. math::
+			
+			y = 24 + 3 (+1) - 1.0 (-0.6) + 4.0 (2.33) + 3.5 (+2) = 43.9

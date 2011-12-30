@@ -43,7 +43,7 @@ References and readings
 #. Edward Tufte, *Envisioning Information*, Graphics Press, 1990. (10th printing in 2005)
 #. Edward Tufte, *The Visual Display of Quantitative Information*, Graphics Press, 2001.
 #. Edward Tufte, *Visual Explanations: Images and Quantities, Evidence and Narrative*, 2nd edition, Graphics Press, 1997.
-#. Stephen Few, *Show Me the Numbers*, Analytics Press, 2004.
+#. Stephen Few, *Show Me the Numbers* and *Now You See It: Simple Visualization Techniques for Quantitative Analysis*; both from Analytics Press.
 #. William Cleveland, *Visualizing Data*, Hobart Press; 1st edition, 1993.
 #. William Cleveland, *The Elements of Graphing Data*, Hobart Press; 2nd edition, 1994.
 #. Su, `It's Easy to Produce Chartjunk Using Microsoft Excel 2007 but Hard to Make Good Graphs <http://dx.doi.org/10.1016/j.csda.2008.03.007>`_, *Computational Statistics and Data Analysis*, **52** (10), 4594-4601, 2008.

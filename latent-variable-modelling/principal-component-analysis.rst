@@ -1352,7 +1352,14 @@ The calculation procedure is actually the same in all cases: for a group of poin
 Using indicator variables
 ====================================
 
-:index:`Indicator variables <single: indicator variable>`, also called :index:`dummy variables <seealso: indicator variable>`, are most often binary variables that indicate the presence or absence of a certain effect. For example, a variable that shows if reactor A or reactor B was used. Its value is either a 0 or a 1 in the data matrix |X|. It's valid to include these sort of variables in a principal component analysis model where they are used and interpreted as any other continuous variable.
+.. index::
+	single: indicator variable
+	
+.. index::
+	single: dummy variable
+	seealso: dummy variable; indicator variable
+
+Indicator variables, also called indicator variables, are most often binary variables that indicate the presence or absence of a certain effect. For example, a variable that shows if reactor A or reactor B was used. Its value is either a 0 or a 1 in the data matrix |X|. It's valid to include these sort of variables in a principal component analysis model where they are used and interpreted as any other continuous variable.
 
 Sometimes these variables are imported into the computer software, but *not used in the model*.  They are only used in the display of results, where the indicator variable is shown in a different colour or with a different marker shape. We will see :ref:`an example of this for process troubleshooting <LVM_troubleshooting>`, to help isolate causes for poor yield from a process:
 
