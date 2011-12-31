@@ -858,7 +858,7 @@ Also, if we want to interpret the model's :math:`S_E` as the estimated standard 
 Confidence intervals for :math:`\beta_0` and :math:`\beta_1`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Recall from our discussions on :ref:`confidence intervals <univariate-confidence-intervals>` that we need to know the mean and variance of the population from which |b0| and |b1| come.  Specifically for the least squares case:
+Recall from our discussions on :ref:`confidence intervals <univariate_confidence_intervals>` that we need to know the mean and variance of the population from which |b0| and |b1| come.  Specifically for the least squares case:
 
 .. math::
 
@@ -1134,7 +1134,7 @@ The assumption of normally distributed errors
 
 We look for normally distributed errors because if they are non-normal, then the standard error, :math:`S_E` and the other variances that depend on :math:`S_E`, such as :math:`\mathcal{V}(b_1)`, could be inflated, and their interpretation could be in doubt.  This might, for example, lead us to infer that a slope coefficient is not important when it actually is.
 
-This is one of the easiest assumptions to verify: use a :ref:`q-q plot <univariate-check-for-normality-qqplot>` to assess the distribution of the residuals.  Do *not* plot the residuals in sequence or some other order to verify normality - it is extremely difficult to see that.  A q-q plot highlights very clearly when tails from the residuals are too heavy.  A histogram may also be used, but for real data sets, the choice of bin width can dramatically distort the interpretation - rather use a q-q plot.  Some code for R:
+This is one of the easiest assumptions to verify: use a :ref:`q-q plot <univariate_check_for_normality_qqplot>` to assess the distribution of the residuals.  Do *not* plot the residuals in sequence or some other order to verify normality - it is extremely difficult to see that.  A q-q plot highlights very clearly when tails from the residuals are too heavy.  A histogram may also be used, but for real data sets, the choice of bin width can dramatically distort the interpretation - rather use a q-q plot.  Some code for R:
 
 .. code-block:: s
 

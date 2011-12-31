@@ -195,7 +195,7 @@ Define the variable of interest as :math:`x`, and assume that we have samples of
 	:align: center
 	:scale: 70
 
-So by taking :index:`subgroups <single: subgroups (monitoring charts)>` of size :math:`n` values, we now have a new variable, :math:`\overline{x}` and we will define a shorthand symbol for its standard deviation: :math:`\sigma_{\overline{X}} = \sigma/\sqrt{n}`.  Writing a :math:`z`-value for :math:`\overline{x}`, and its associated confidence interval for :math:`\mu` is now easy after studying :ref:`the section on confidence intervals<univariate-confidence-intervals>`:
+So by taking :index:`subgroups <single: subgroups (monitoring charts)>` of size :math:`n` values, we now have a new variable, :math:`\overline{x}` and we will define a shorthand symbol for its standard deviation: :math:`\sigma_{\overline{X}} = \sigma/\sqrt{n}`.  Writing a :math:`z`-value for :math:`\overline{x}`, and its associated confidence interval for :math:`\mu` is now easy after studying :ref:`the section on confidence intervals<univariate_confidence_intervals>`:
 
 .. math::
 
@@ -704,7 +704,7 @@ Exercises
 	
 .. question::
 
-	Is it fair to say that a monitoring chart is like an online version of a :ref:`confidence interval <univariate-confidence-intervals>`?  Explain your answer.
+	Is it fair to say that a monitoring chart is like an online version of a :ref:`confidence interval <univariate_confidence_intervals>`?  Explain your answer.
 
 .. answer::
 	:fullinclude: no 

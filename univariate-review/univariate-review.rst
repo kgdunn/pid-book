@@ -673,7 +673,7 @@ To calculate the point on the curve :math:`p(x)` we use the ``dnorm(...)`` funct
 		> dnorm(-1, mean=0, sd=1)    # gives value of p(x = -1) when mu=0, sigma=1
 		[1] 0.2419707
 
-It is more useful to calculate the area under :math:`p(x)` from :math:`x=-\infty` to a particular point :math:`x`. This is called the cumulative distribution, and is discussed more fully in :ref:`the next section <univariate-check-for-normality-qqplot>`.
+It is more useful to calculate the area under :math:`p(x)` from :math:`x=-\infty` to a particular point :math:`x`. This is called the cumulative distribution, and is discussed more fully in :ref:`the next section <univariate_check_for_normality_qqplot>`.
 
 	.. code-block:: s
 	
@@ -706,7 +706,7 @@ Consult a statistical table found in most statistical textbooks for the normal d
 
 #.	Assume :math:`x` is the yield for a batch process, with mean of 85 g/L and variance of 16 g/L. What proportion of batch yield values lie between 70 and 95 g/L?
 
-.. _univariate-check-for-normality-qqplot:
+.. _univariate_check_for_normality_qqplot:
 
 Checking for normality: using a q-q plot
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -816,9 +816,9 @@ We introduce the concept of confidence intervals here as a straightforward appli
 
 Suppose we have a quantity of interest from a process, such as the daily profit. We have many measurements of this profit, and we can easily calculate the **average** profit. But we know that if we take a different data set of profit values and calculate the average, we will get a similar, but different average. The question we want an answer to is:
 
-	What is the range within which the true (population) average value lies?  E.g. give a range for the true daily profit per kilogram of raw material.
+	What is the range within which the true (population) average value lies?  E.g. give a range for the true daily profit.
 	
-This range is called a confidence interval. We will use an example to show how to calculate this range.
+This range is called a :index:`confidence interval`, and we study them :ref:`in more depth later on <univariate_confidence_intervals>`. We will use an example to show how to calculate this range.
 
 Let's take :math:`n` values of this daily profit value, let's say :math:`n=5`.
 
@@ -884,51 +884,63 @@ Let's take :math:`n` values of this daily profit value, let's say :math:`n=5`.
 
 	Notice that the lower and upper bounds are a function of the known sample mean, :math:`\overline{x}`, the values for :math:`c_n` which we chose, the known sample size, :math:`n`, and the unknown population standard deviation, :math:`\sigma`.
 	
-	So to estimate our bounds we must know the value of this population standard deviation. This is not very likely. (I can't think of any practical cases where we know the population standard deviation, but not the population mean, which is the quantity we are constructing this range for.)
+	So to estimate our bounds we must know the value of this population standard deviation. This is not very likely, (I can't think of any practical cases where we know the population standard deviation, but not the population mean, which is the quantity we are constructing this range for), however there is an example in :ref:`the next section <univariate_confidence_interval_t_distribution>`.
 	
-	This is why the :math:`t`-distribution is required.
-
+	The :math:`t`-distribution is required to remove this impractical requirement of knowing the population standard deviation.
 
 :math:`t`-distribution
 =======================
 
 .. index:: t-distribution
 
-Suppose we have a quantity of interest from a process, such as the daily profit per kilogram of raw material. We have several measurements of this profit, and we can easily calculate the average profit per kilogram. But we know that if we take a different data set for the daily profit and calculate the average, we will get a similar, but different value. The question we want an answer to is:
+Suppose we have a quantity of interest from a process, such as the daily profit. In the preceding section we started to answer the useful and important question: 
 
-	What is the range within which the true average value lies?  E.g. the range for the true daily profit per kilogram of raw material.
+	What is the range within which the true average value lies?  E.g. the range for the true daily profit.
 	
-We require the :math:`t`-distribution to answer this important question. This same question is exactly the same as constructing and interpreting a :index:`confidence interval`, which we look at in more detail :ref:`later on <univariate-confidence-intervals>`.
+But we got stuck, because the lower and upper bounds we calculated for the true average, :math:`\mu` were a function of the unknown population standard deviation, :math:`\sigma`. Repeating :eq:`CI-mean-variance-known`:
 
-The :math:`t`-distribution principle is shown below. We require that quantity that we are measuring to come from a normal distribution: :math:`\mathcal{N}(\mu, \sigma^2)`; it is easy to verify this using the q-q plot method, just described above. Next, we must be sure these measurements, :math:`x_i` are independent.
+.. math::
+
+		\begin{array}{rcccl} 
+			  - c_n                                      &\leq& \displaystyle \frac{\overline{x} - \mu}{\sigma/\sqrt{n}} &\leq &  +c_n\\
+			\overline{x}  - c_n \dfrac{\sigma}{\sqrt{n}} &\leq&  \mu                                                     &\leq& \overline{x}  + c_n\dfrac{\sigma}{\sqrt{n}} \\
+			  \text{LB}                                  &\leq&  \mu                                                     &\leq& \text{UB}
+		\end{array}
+
+which we derived by using the fact that :math:`\frac{\overline{x} - \mu}{\sigma/\sqrt{n}}` is normally distributed.
+
+An obvious way out of our dilemma is to replace :math:`\sigma` by the sample standard deviation, :math:`s`, which is exactly what we will do, however, the quantity :math:`\frac{\overline{x} - \mu}{s/\sqrt{n}}` is not normally distributed, but is :math:`t`-distributed. Before we look at the details, it is helpful to see how similar in appearance the :math:`t` and normal distribution are: the :math:`t`-distribution peaks slightly lower than the normal distribution, but it has broader tails. The total area under both curves illustrated here is 1.0.
+
+.. image:: ../figures/univariate/t-distribution-comparison.png
+	:width: 750px
+	:align: center
+	:scale: 100
+
+There is one other requirement we have to observe to use the :math:`t`-distribution: the values that we sample, :math:`x_i` must come from a normal distribution (carefully note that in the previous section we didn't have this restriction!). Fortunately it is easy to check this requirement: just use the :ref:`q-q plot method described earlier <univariate_check_for_normality_qqplot>`. Another requirement, which we have before, was that we must be sure these measurements, :math:`x_i` are independent.
 
 .. image:: ../figures/univariate/t-distribution-derivation.png
 	:width: 750px
 	:align: center
 	:scale: 65
 
-We can make the following statements:
+So given our :math:`n` samples, which are independent, and from a normal distribution, we can now say: 
 
-#.	An estimate of the population mean is given by :math:`\overline{x} = \displaystyle  \dfrac{1}{n}  \sum_i^{i=n}{x_i}\qquad\qquad` (we :ref:`saw this before <univariate_calculate_mean>`)
+.. math::
+	:label: distribution-for-sample-average
 
-#.	The estimated population variance is :math:`s^2 =\displaystyle  \frac{1}{n-1}\sum_i^{i=n}{(x_i - \overline{x})^2}\qquad\qquad` (we also :ref:`saw this before <univariate_calculate_variance>`)
+	\frac{\overline{x} - \mu}{s/\sqrt{n}} \sim t_{n-1}
 
-#.	This is new: the estimated mean, :math:`\overline{x}`, is a value that is also normally distributed with mean of :math:`\mu` and variance of :math:`\sigma^2/n`; mathematically: :math:`\displaystyle \overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`. 
+Compare this to the previous case where our :math:`n` samples are independent, and we happen to know, by some unusual way, what their standard deviation is, :math:`\sigma`:
 
-	This important results helps answer our question above. It says that repeated estimates of the mean will be an accurate, unbiased estimate of the population mean, and interestingly, the variance of that estimate is decreased by using a greater number of samples, :math:`n`, to estimate that mean. This makes intuitive sense: the more **independent** samples of data we have, the better our estimate (better implies lower error, or lower variance).
+.. math::
 
-#.	Create a new variable :math:`z = \dfrac{\overline{x} - \mu}{s/\sqrt{n}}`, which subtracts off the unknown population mean from our estimate of the mean, and divide through by the standard deviation for :math:`\overline{x}`. If our estimate of the population mean, :math:`\overline{x}`, is accurate, then the numerator is close to zero. Dividing through by :math:`s/\sqrt{n}` firstly makes the :math:`z` variable dimensionless, and secondly, scales :math:`z` up or down according to the certainty (or error) we have in our estimate of :math:`\overline{x}`. 
+	\frac{\overline{x} - \mu}{\sigma/\sqrt{n}} \sim \mathcal{N} \left(0, 1\right)
 
-	This new variable :math:`z` is known to be distributed according to the :math:`t`-distribution. We say that :math:`z` follows the :math:`t`-distribution with :math:`n-1` degrees of freedom, where the degrees of freedom refer to those from the calculating the estimated standard deviation, :math:`s`
+So the more practical and useful case where :math:`z  = \frac{\overline{x} - \mu}{s/\sqrt{n}} \sim t_{n-1}` can now be used to construct an interval for :math:`\mu`. We say that :math:`z` follows the :math:`t`-distribution with :math:`n-1` degrees of freedom, where the degrees of freedom refer to those from the calculating the estimated standard deviation, :math:`s`. 
+ 
+Note that the new variable :math:`z` only requires we know the population mean (:math:`\mu`), not the population standard deviation; rather we use our estimate of the standard deviation :math:`s/\sqrt{n}` in place of the population standard deviation.
 
-#.	Note that the new variable :math:`z` only requires we know the population mean (:math:`\mu`), not the population variance; rather we use our estimate of the variance :math:`s/\sqrt{n}` in place of the population variance.
-
-The :math:`t` and normal distribution are very similar in appearance: the :math:`t`-distribution peaks slightly lower than the normal distribution, but it has broader tails. The total area under both curves illustrated here is 1.0.
-
-.. image:: ../figures/univariate/t-distribution-comparison.png
-	:width: 750px
-	:align: center
-	:scale: 65
+We will come back to :eq:`distribution-for-sample-average` in a minute; let's first look at how we can calculate values from the :math:`t`-distribution in computer software.
 
 .. 
 	From Box, Hunter and Hunter, 1st edition, p 50-51
@@ -945,23 +957,44 @@ Calculating the :math:`t`-distribution
 
 -	In R we use the function ``dt(x=..., df=...)`` to give us the values of the probability density values, :math:`p(x)`, of the :math:`t`-distribution (compare this to the ``dnorm(x, mean=..., sd=...)`` function for the normal distribution).
 
--	The cumulative area from :math:`-\infty` to :math:`x` under the probability density curve gives us the probability that values less than or equal to :math:`x` could be observed. It is calculated in R using ``pt(q=..., df=...)``. For example, ``pt(1.0, df=8)`` is 0.8267. Compare this to the R function for the normal distribution: ``pnorm(1.0, mean=0, sd=1)`` which returns 0.8413.
+	For example ``dt(x=0, df=8)`` returns 0.386699, while the same ordinate under the standard normal distribution, ``dnorm(x=0)`` gives 0.3989423, proving the :math:`t`-distribution has a lower peak than the normal distribution. 
+
+-	The cumulative area from :math:`-\infty` to :math:`x` under the probability density curve gives us the probability that values less than or equal to :math:`x` could be observed. It is calculated in R using ``pt(q=..., df=...)``. For example, ``pt(1.0, df=8)`` is 0.8267. Compare this to the R function for the standard normal distribution: ``pnorm(1.0, mean=0, sd=1)`` which returns 0.8413.
 
 -	And similarly to the ``qnorm`` function which returns the ordinate for a given area under the normal distribution, the function ``qt(0.8267, df=8)`` returns 0.9999857, close enough to 1.0, which is the inverse of the previous example.
 
 
-Using the :math:`t`-distribution
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. _univariate_confidence_interval_t_distribution:
 
-The mathematical definition of the :math:`t`-distribution can be `looked up in a reference <http://en.wikipedia.org/wiki/Student%27s_t-distribution>`_ if you are interested, since there isn't too much practical engineering sense is showing it. Rather we will look at the major application of the distribution for calculating a range within which the true average (i.e. population average) value lies.
+Using the :math:`t`-distribution to calculate our confidence interval
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ..  But in R, we use the ``dt(x, df=...)`` function to give us the values of the :math:`t`-distribution for a given value of :math:`x` which has been computed with ``df`` degrees of freedom. We use the :math:`t`-distribution in calculations related to a sample *mean*, and it is the sample mean that we use as the :math:`z` value, on the :math:`x`-axis in the distribution. This is why the distribution is only a function of the degrees of freedom.
 
-Let's use an example of a large cube of polymer composite produced on our process. Calculating the viscosity of this polymer is a destructive laboratory test. Using 9 independent samples taken from this polymer cube, we measure each sample's viscosity in the lab. We would like to estimate the entire cube's average viscosity, which is easily done by taking the average of the 9 viscosity values.
+Returning back to :eq:`distribution-for-sample-average` we stated that
 
-But if we repeat this process with a different set of 9 samples we will get a different average viscosity. So we recognize the average of a sample of data, is itself just a single sample of the population's average. What is more helpful is to have **a range**, given by a lower and upper bound, that we can say the true population mean lies within.
+.. math::
 
-Let's see how we can calculate that from the 9 sampled values: ``23, 19, 17, 18, 24, 26, 21, 14, 18``. 
+	\frac{\overline{x} - \mu}{s/\sqrt{n}} \sim t_{n-1}
+	
+We can plot the :math:`t`-distribution for a given value of :math:`n-1`, the degrees of freedom. Then we can locate vertical lines on the :math:`x`-axis at :math:`-c_t` and :math:`+c_t` so that they area between the verticals covers say 95% of the total distribution's area. The subscript :math:`t` refers to the fact that these are critical values from the :math:`t`-distribution.
+
+Then we write:
+
+.. math::
+		:label: CI-mean-variance-unknown
+		
+		\begin{array}{rcccl} 
+			  - c_t                                  &\leq& \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}} &\leq &  +c_t\\
+			\overline{x}  - c_t \dfrac{s}{\sqrt{n}}  &\leq&  \mu                                                &\leq& \overline{x}  + c_t\dfrac{s}{\sqrt{n}} \\
+			  \text{LB}                              &\leq&  \mu                                                &\leq& \text{UB}
+		\end{array}
+
+Now all the terms in the lower and upper bound are known, or easily calculated.
+
+So we finish this section off with an example. We produce large cubes of polymer product on our process. We would like to estimate the cube's average viscosity, but measuring the viscosity is a destructive laboratory test. So using 9 independent samples taken from this polymer cube, we get the 9 lab values viscosity: ``23, 19, 17, 18, 24, 26, 21, 14, 18``. 
+
+If we repeat this process with a different set of 9 samples we will get a different average viscosity. So we recognize the average of a sample of data, is itself just a single sample of the population's average. What is more helpful is to have **a range**, given by a lower and upper bound, that we can say the true population mean lies within.
 
 #.	The average of these nine values is :math:`\overline{x} = 20` units.
 
@@ -969,54 +1002,51 @@ Let's see how we can calculate that from the 9 sampled values: ``23, 19, 17, 18,
 
 		:math:`\overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n \right)`
 		
+		This also requires the assumption that the samples are independent estimates of the population viscosity.
+		
+#.	What is the distribution of the sample average?  What are the parameters of that distribution?
+
+		The sample average is normally distributed as :math:`\mathcal{N}\left(\mu, \sigma^2/n \right)`
+		
 #.	Assume, for some reason, that we know the population viscosity standard deviation is :math:`\sigma=3.5` units. Calculate a lower and upper bound for :math:`\mu`:
 
-		Using the above d
+		The interval is calculated using :eq:`CI-mean-variance-known`:
+		
+		.. math::
+		
+			\text{LB} &= \overline{x} - c_n \dfrac{\sigma}{\sqrt{n}} \\
+			          &= 20 - 1.95996 \dfrac{3.5}{\sqrt{9}} \\
+			          &= 20 - 2.286 = 17.4 \\
+			\text{UB} &= 20 + 2.286 = 22.3
 
-
-
-#.	We can confirm these 9 samples are normally distributed by using a q-q plot (not shown). This is the first requirement to use the :math:`t`-distribution.
-
-#.	Assume the samples are independent estimates of the population viscosity (the second requirement to use the :math:`t`-distribution).
+#.	We can confirm these 9 samples are normally distributed by using a q-q plot (not shown). This is an important requirement to use the :math:`t`-distribution.
 
 #.	Calculate an estimate of the standard deviation.
 
 		:math:`s = 3.81`
 	
-#.	What is the distribution of the sample average?  What are the parameters of that distribution?
+#.	Now construct the :math:`z`-value for the sample average and from what distribution does this :math:`z` come from?
 
-		The sample average is normally distributed as :math:`\mathcal{N}\left(\mu, \sigma^2/n \right)`
-	
-#.	Construct an interval, symbolically, that will contain the population mean of the viscosity. 
+		It comes the :math:`t`-distribution with :math:`n-1 = 8` degrees of freedom, and is given by :math:`z = \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}}`
 
+#.	Construct an interval, symbolically, that will contain the population mean of the viscosity. Also calculate the lower and upper bounds of the interval assuming the internal to span 95\% of the area of this distribution.
 
-
-, with 95% certainty (probability),
-
-Now assume that for some hypothetical reason we know the standard deviation of the bale's viscosity is :math:`\sigma=3.5` units. Using a computer, calculate the population mean's interval numerically.
-
-	The interval is :math:`\displaystyle \overline{x}  - c_n\frac{\sigma}{\sqrt{n}} < \mu < \overline{x}  + c_n\frac{\sigma}{\sqrt{n}}`. The values of :math:`c_n` are ``qnorm(1 - 0.05/2) = 1.95996``. So there is 95% chance that the interval :math:`\pm \ 2.286` contains :math:`\mu` (2.286 = 3.5/sqrt(9)*1.95996).
-	
-#.	Now construct the :math:`z`-value for the sample average. 
-
-	-	What distribution does this :math:`z`-value follow?  Be specific in your answer.
-	
-		It follows the :math:`t`-distribution with 8 degrees of freedom.
+		The interval is calculated using :eq:`CI-mean-variance-unknown`:
 		
-	-	Calculate the lower and upper bounds of the interval that spans 95\% of the area of this distribution.
-	
-		From the R software::
+		.. math::
 		
-			qt(0.025, df=8)  # also check qt(0.975, df=8)
+			\text{LB} &= \overline{x}  - c_t \dfrac{s}{\sqrt{n}} \\
+			          &= 20 - 2.306004 \dfrac{3.81}{\sqrt{9}} \\
+			          &= 20 - 2.929 = 17.1 \\
+			\text{UB} &= 20 + 2.929 = 22.9
+
+		using from the R software that ``qt(0.025, df=8)`` and ``qt(0.975, df=8)`` 
 			
-	-	Substitute the :math:`z`-value, symbolically, into this interval. What is the interval for the population mean?
-	
-		The interval is :math:`\displaystyle \overline{x}  - c_t\frac{s}{\sqrt{n}} < \mu < \overline{x}  + c_t\frac{s}{\sqrt{n}}`. The values of :math:`c_t` are :math:`\pm` ``qt(1 - 0.05/2, df=8) = 2.306004``. So there is 95% chance that the interval :math:`\pm \ 2.929` contains :math:`\mu` (2.929 = 3.81/sqrt(9)*2.306).
-		
-#.	Compare the answers for parts 3 and 4 of the above questions. What is the advantage of the interval calculated in part 4?
+Comparing the answers for parts 4 and 8 shows the interval, for the same level of 95% certainty, is wider when we have to estimate the standard deviation. This makes sense: the standard deviation is an estimate (meaning there is error in that estimate) of the true standard deviation. That uncertainty must propagate, leading to a wider interval within which we expect to locate the true population viscosity, :math:`\mu`.
 
-	The interval calculation in part 3 requires knowledge of the standard deviation, which is not always available. The confidence interval when we use the estimate of the standard deviation, :math:`s` is often wider, because the :math:`c_t` value is bigger, indicating our lower certainty in using an estimate of :math:`\sigma`.
-	
+We will interpret confidence intervals in more detail a :ref:`little later on <univariate_confidence_intervals>`.
+
+
 .. sum((x-20) * (x-20)) = 116, DOF=8, s^2 = 116/8 = 14.5, s=3.81. Distribution is normal, mean=\mu, stddev=3.5/sqrt(9) = (3.5^2)/9 = 2.286
 .. s/sqrt(n) = 3.81/sqrt(9) = 1.27
 
@@ -1068,14 +1098,16 @@ Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{
     > dpois(x, lambda=6)    # Note: R calls the Poisson parameter 'lambda'
 	[1] 0.0025 0.0149 0.0892 0.161 0.0413 0.001
 
-.. _univariate-confidence-intervals:
+.. _univariate_confidence_intervals:
 
 Confidence intervals
 ====================
 
 .. See code in yield-exercise.R for the R source code
 
-So far we have calculated point estimates of parameters, called statistics. In the last section in the :math:`t`-distribution we already calculated a :index:`confidence interval`. In this section we formalize the idea, starting with an example.
+.. index:: ! confidence interval
+
+So far we have calculated point estimates of parameters, called statistics. In the last section in the :math:`t`-distribution we already calculated a confidence interval. In this section we formalize the idea, starting with an example.
 
 *Example*: a new customer is evaluating your product, they would like a confidence interval for the impurity level in your sulphuric acid. You can tell them: "*the range from 429ppm to 673ppm contains the true impurity level with 95% confidence*". This is a compact representation of the impurity level. You could have told your potential customer that
 
@@ -1090,7 +1122,7 @@ Let's return to the previous viscosity example, where we had the 9 viscosity mea
 Calculating a confidence interval requires we find a range within which that :math:`z`-value occurs. Most often we are interested in symmetrical confidence intervals, so the procedure is:
 
 .. math::
-		:label: CI-mean-variance-unknown
+		
 		
 		\begin{array}{rcccl} 
 			  - c_t                                              &\leq& \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}} &\leq &  +c_t\\
@@ -1152,10 +1184,10 @@ There are 2 cases: one where you know the population variance (unlikely), and on
 Variance is known
 ^^^^^^^^^^^^^^^^^^^
 
-When the variance is known, the confidence interval is given by :eq:`CI-mean-variance-known` below, derived from this :math:`z`-deviate:  :math:`z = \dfrac{\overline{x} - \mu}{\sigma/\sqrt{n}}`:
+When the variance is known, the confidence interval is given by :eq:`CI-mean-variance-known-again` below, derived from this :math:`z`-deviate:  :math:`z = \dfrac{\overline{x} - \mu}{\sigma/\sqrt{n}}`:
 
 .. math::
-		:label: CI-mean-variance-known
+		:label: CI-mean-variance-known-again
 		
 		\begin{array}{rcccl} 
 			  - c_n                                      &\leq& \displaystyle \frac{\overline{x} - \mu}{\sigma/\sqrt{n}} &\leq &  +c_n\\
@@ -1187,7 +1219,7 @@ The values of :math:`c_t` are ``qt(1 - 0.05/2, df=...)`` when we use the 95% con
 Comparison
 ^^^^^^^^^^
 
-If we have the fortunate case where our estimated variance, :math:`s^2`, is equal to the population variance, :math:`\sigma^2`, then we can compare the 2 intervals in equations :eq:`CI-mean-variance-known` and :eq:`CI-mean-variance-unknown-again`. The only difference would be the value of the :math:`c_n` from the normal distribution and :math:`c_t` from the :math:`t`-distribution. For typical values used as confidence levels, 90% to 99.9%, values of :math:`c_t > c_n` for any degrees of freedom. 
+If we have the fortunate case where our estimated variance, :math:`s^2`, is equal to the population variance, :math:`\sigma^2`, then we can compare the 2 intervals in equations :eq:`CI-mean-variance-known-again` and :eq:`CI-mean-variance-unknown-again`. The only difference would be the value of the :math:`c_n` from the normal distribution and :math:`c_t` from the :math:`t`-distribution. For typical values used as confidence levels, 90% to 99.9%, values of :math:`c_t > c_n` for any degrees of freedom. 
 
 This implies the confidence limits are wider for the case when the variance is unknown, leading to more conservative results, reflecting our uncertainty of the variance parameters.
 
