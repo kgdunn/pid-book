@@ -107,7 +107,7 @@ Fortunately, we have plenty of variability in the recorded data from our process
 
 	-	Raw material properties are not constant
 	
-	-	Unknown sources, often called "*error*" (note that the word :index:`error <single: error, statistical>` in statistics does not have the usual negative connotation from English). These errors are all sources of variation which our imperfect knowledge of physics cannot account for.
+	-	Unknown sources, often called "*error*" (note that the word :index:`error <single: error; statistical>` in statistics does not have the usual negative connotation from English). These errors are all sources of variation which our imperfect knowledge of physics cannot account for.
 	
 		.. image:: ../figures/concepts/variation/variation-some.png
 			:scale: 50
@@ -545,16 +545,20 @@ Before introducing the normal distribution, we first look at two important conce
 Central limit theorem 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The :index:`Central limit theorem` plays a central role in the theory of probability and in the derivation of the normal distribution. We don't prove this theorem here, but we only use the result that the average of a sequence of values *from any distribution* will approach the normal distribution, provided the original distribution has finite variance. This condition is true for almost all systems of practical interest.
+The :index:`Central limit theorem` plays an important role in the theory of probability and in the derivation of the normal distribution. We don't prove this theorem here, but we only use the result:
+
+	The average of a sequence of values *from any distribution* will approach the normal distribution, provided the original distribution has finite variance. 
+
+The condition of finite variance is true for almost all systems of practical interest.
 	
 .. image:: ../figures/univariate/CLT-derivation.png
 	:width: 750px
 	:align: center
 	:scale: 65
 	
-The only assumption we require for the central limit theorem is that the samples used to compute the average are independent. In particular, we **do not** require the original data to be normally distributed. The average produced from these data will be be more nearly normal though.
+The critical requirement for the central limit theorem to be true, is that the samples used to compute the average are independent. In particular, we **do not** require the original data to be normally distributed. The average produced from these samples will be be more nearly normal though.
 
-Imagine a case where we are throwing dice. The following distributions are obtained when we throw a die :math:`M` times and we plot the distribution of the *average* of these :math:`M` throws.
+Imagine a case where we are throwing dice. The distributions, shown below, are obtained when we throw a die :math:`M` times and we plot the distribution of the *average* of these :math:`M` throws.
 
 .. image:: ../figures/univariate/simulate-CLT.png
 	:width: 750px
@@ -563,46 +567,51 @@ Imagine a case where we are throwing dice. The following distributions are obtai
 
 As one sees from the above figures, the distribution from these averages quickly takes the shape of the so-called *normal distribution*. As :math:`M` increases, the y-axis starts to form a peak. 
 
-What is the engineering significance of this averaging process (which is really just a weighted summation)?  Many of the quantities we measure are bulk properties. We can conceptually imagine that the bulk property measured is the combination of the same property, measured on smaller and smaller components. Even if the measurement on the smaller component is not normally distributed, the bulk property will be much more normally distributed.
-
+What is the engineering significance of this averaging process (which is really just a weighted summ)?  Many of the quantities we measure are bulk properties, such as viscosity, density, or particle size. We can conceptually imagine that the bulk property measured is the combination of the same property, measured on smaller and smaller components. Even if the value measured on the smaller component is not normally distributed, the bulk property will be as if it came from a normal distribution.
 
 Independence 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The assumption of :index:`independence` is widely used in statistical work and is a condition for using the central limit theorem. 
 
-.. note:: The assumption of independence means the the samples we have in front of us are *randomly* taken from a population. If two samples are independent, there is no possible relationship between them.
+.. note:: The assumption of independence means the the samples we have in front of us are *randomly taken* from a population. If two samples are independent, there is no possible relationship between them.
 
 We frequently violate this assumption of independence in engineering applications. Think about these examples for a while:
 
 -	A questionnaire is given to a group of people. What happens if they discuss the questionnaire in sub-groups prior to handing it in?
 
-	We are not going to receive :math:`n` independent answers, rather we will receive as many independent opinions as there are sub-groups.
+		We are not going to receive :math:`n` independent answers, rather we will receive as many independent opinions as there are sub-groups.
 		
--	The rainfall amount, recorded in centimetres, over the last 30 days.
+-	The rainfall amount, recorded every day, over the last 30 days.
 
-	These data are not independent - if it rains today, it can likely rain tomorrow as the weather usually stays around for some days. These data are not useful as a sample of typical rainfall, however they are useful for complaining about the weather. Think about the case if we had considered rainfall in hourly intervals, rather than daily intervals.
+		These data are not independent - if it rains today, it can likely rain tomorrow as the weather usually stays around for some days. These data are not useful as a sample of typical rainfall, however they are useful for complaining about the weather. Think about the case if we had considered rainfall in hourly intervals, rather than daily intervals.
 		
 -	The snowfall, recorded on 3 January for every year since 1976: independent or not? 
 
-	These sampled data will be independent. 
+		These sampled data will be independent.
 		
--	The impurity values in the last 100 batches of product produced is shown here.   Which of the 3 time sequences has independent values?
+-	The impurity values in the last 100 batches of product produced is shown below. Which of the 3 time sequences has independent values?
+	
+		Sequence 2 (sequence 1 is positively correlated, while sequence 3 is negatively correlated).
 
- 	In chemical processes there is often a transfer from batch-to-batch: we usually use the same lot of raw materials for successive batches, the batch reactor may not have be cleaned properly between each run, and so on. It is very likely that two successive batches (:math:`k` and :math:`k+1`) are somewhat related, and less likely that batch :math:`k` and :math:`k+2` are related. In the figure below, can you tell which sequence of values are independent?
-		
- 	.. image:: ../figures/univariate/simulate-independence.png
+	.. image:: ../figures/univariate/simulate-independence.png
 		:align: center
 		:scale: 90
-		
+
+	In chemical processes there is often a transfer from batch-to-batch: we usually use the same lot of raw materials for successive batches, the batch reactor may not have be cleaned properly between each run, and so on. It is very likely that two successive batches (:math:`k` and :math:`k+1`) are somewhat related, and less likely that batch :math:`k` and :math:`k+2` are related. In the figure below, can you tell which sequence of values are independent?
+
 -	We need a highly reliable pressure release system. Manufacturer A sells a system that fails 1 in every 100 occasions, and manufacturer B sells a system that fails 3 times in every 1000 occasions. What is
 
-	-	:math:`p(\text{A}_\text{fails}) =` 
-	-	:math:`p(\text{B}_\text{fails}) =` 
-	-	:math:`p(\text{both A and B fail}) =` 
-	-	For the previous question, what does it mean for system A to be totally independent of system B?
+		-	:math:`p(\text{A}_\text{fails}) = 1/100` 
+		-	:math:`p(\text{B}_\text{fails}) = 3/1000` 
+		-	:math:`p(\text{both A and B fail}) = \frac{1}{100} \cdot \frac{3}{1000} = 3 \times 10^{-5}`, but only if system A and B are totally independent.
+		-	For the previous question, what does it mean for system A to be totally independent of system B?
 	
-		It means the 2 systems must be installed in parallel, so that there is no interaction between them at all.
+				It means the 2 systems must be installed in parallel, so that there is no interaction between them at all.
+				
+		-	How would this probability change if A and B were not independent?
+		
+				The probability of both failing will increase.
 	
 .. See Hodges and Lehmann (1970): there is a whole Chapter devoted to it.
 
@@ -623,15 +632,21 @@ Formal definition for the normal distribution
 	:scale: 80
 
 -	:math:`x` is the variable of interest
+
 -	:math:`p(x)` is the probability of obtaining that value of :math:`x`
--	:math:`\mu` is the population average for variable :math:`x`
--	:math:`\sigma` is the population standard deviation for variable :math:`x`, and is always a positive quantity.
+
+-	:math:`\mu` is the population average for the distribution (first parameter)
+
+-	:math:`\sigma` is the population standard deviation for the distribution, and is always a positive quantity (second parameter)
 
 Some questions: 
 
 #.	What is the maximum value of :math:`p(x)` and where does it occur, using the formula above?
+
 #.	What happens to the shape of :math:`p(x)` as :math:`\sigma` gets larger ?
+
 #.	What happens to the shape of :math:`p(x)` as :math:`\sigma \rightarrow 0` ?
+
 #.	Fill out this table:
 
 	.. csv-table:: 
@@ -644,39 +659,51 @@ Some questions:
 		
 Some useful points:
 
-	-	:math:`\sigma` is the distance from the mean to the point of inflection
-	-	the area from :math:`-\sigma` to :math:`\sigma` is about 70% (68.3% exactly) of the distribution, with about 15% outside the :math:`\pm \sigma` tails
-	-	the tail area outside :math:`\pm 2\sigma` is about 5% (2.275 outside each tail)
+	-	The total area from :math:`x=-\infty` to :math:`x=+\infty` is 1.0 (we cannot calculate the integral of :math:`p(x)` analytically)
 
-How can you calculate these in R?
+	-	:math:`\sigma` is the distance from the mean, :math:`\mu`, to the point of inflection
+	
+	-	The normal distribution only required two parameters to describe it: :math:`\mu` and :math:`\sigma`
+	
+	-	The area from :math:`x= -\sigma` to :math:`x = \sigma` is about 70% (68.3% exactly) of the distribution. So we have a probability of about 15% of seeing an :math:`x` value greater than :math:`x = \sigma`, and also 15% of :math:`x < \sigma`
+	
+	-	The :index:`tail <single: tail, in a histogram>` area outside :math:`\pm 2\sigma` is about 5% (2.275 outside each tail)
+
+To calculate the point on the curve :math:`p(x)` we use the ``dnorm(...)`` function in R. It requires you specify the two parameters:
 
 	.. code-block:: s
 
 		> dnorm(-1, mean=0, sd=1)    # gives value of p(x = -1) when mu=0, sigma=1
 		[1] 0.2419707
-		
+
+It is more useful to calculate the area under :math:`p(x)` from :math:`x=-\infty` to a particular point :math:`x`. This is called the cumulative distribution, and is discussed more fully in :ref:`the next section <univariate-check-for-normality-qqplot>`.
+
+	.. code-block:: s
+	
 		> pnorm(-1, mean=0, sd=1)    # gives area from -inf to -1, for mu=0, sigma=1
 		[1] 0.1586553
-		
 		> pnorm(1, mean=0, sd=1)     # gives area from -inf to +1, for mu=0, sigma=1
 		[1] 0.8413447
-		
 		> pnorm(3, mean=0, sd=3)     # spread is wider, but fractional area the same
 		[1] 0.8413447
 
-In software packages we can set the mean and standard deviation (as shown above in the source code output) and get area of the normal distribution. However, you might still find yourself having to refer to tables of cumulative area in the normal distribution, instead of using the ``pnorm()`` function. If you page to the appendix of most statistical texts you will find these tables. Since the tables cannot be produced for all combinations of mean and standard deviation, they use a standard form.
+You might still find yourself having to refer to tables of cumulative area under the normal distribution, instead of using the ``pnorm()`` function (for example in a test or exam). If you look at the appendix of most statistical texts you will find these tables, and there is one :ref:`at the end of this chapter <univariate_statistical_tables>`. Since these tables cannot be produced for all combinations of mean and standard deviation parameters, they use what is called *standard form*.
 
 .. math::
 
 	z_i = \frac{x_i - \text{mean}}{\text{standard deviation}}
 	
-What is the value that you should use for the ``mean`` and ``standard deviation``?  It depends on the context. Imagine our values of :math:`x_i` come from the normal distribution, with mean of 34.2 and variance of 55. Then we could write :math:`x \sim \mathcal{N}(34.2, 55)`, which is short-hand notation of saying the same thing. The equivalent :math:`z`-values for these :math:`x` data would be: :math:`z_i = \dfrac{x_i - 34.2}{\sqrt{55}}`.  This transformation **does not** change the distribution of the original :math:`x`, it only changes the parameters of the distribution. Now :math:`z` is distributed according to the normal distribution as :math:`z \sim \mathcal{N}(0.0, 1.0)`. 
+The values of the mean and standard deviation are either the population parameters, if known, or use the best estimate of the mean and standard deviation from the sampled data. 
 
-*	What are the units of :math:`z` if :math:`x` were measured in kg, for example?
+For example, if our values of :math:`x_i` come from a normal distribution with mean of 34.2 and variance of 55. Then we could write :math:`x \sim \mathcal{N}(34.2, 55)`, which is short-hand notation of saying the same thing. The equivalent :math:`z`-values for these :math:`x` data would be: :math:`z_i = \dfrac{x_i - 34.2}{\sqrt{55}}`. 
 
-This is a common statistical technique, to :index:`standardize a variable`, which we will see several times. Standardization takes our variable from :math:`x \sim \mathcal{N}(\text{some mean}, \text{some variance})` and converts it to :math:`z \sim \mathcal{N}(0.0, 1.0)`. Standardization allows us to straightforwardly compare 2 variables that may have different means and spreads. 
+This transformation to standard form **does not change the distribution** of the original :math:`x`, it only changes the parameters of the distribution. You can easily prove to yourself that :math:`z` is normally distributed as :math:`z \sim \mathcal{N}(0.0, 1.0)`. So statistical tables only report the area under the distribution of this :math:`z` value.
 
-Consult a statistical table found in most statistical textbooks for the normal distribution. Make sure you can firstly understand how to read the table, should you need to do so in the future. Secondly, duplicate a few entries in the table using R. Then complete these small exercises firstly by estimating what the answer should be, then use both the tables and R to get a more accurate estimate.
+This is a common statistical technique, to :index:`standardize a variable`, which we will see several times. Standardization takes our variable from :math:`x \sim \mathcal{N}(\text{some mean}, \text{some variance})` and converts it to :math:`z \sim \mathcal{N}(0.0, 1.0)`. It is just as easy to go backwards, from a given :math:`z`-value and return back to our original :math:`x`-value.
+
+The units of :math:`z` are dimensionless, no matter what the original units of :math:`x` were. Standardization also allows us to straightforwardly compare 2 variables that may have different means and spreads. For example if our company has two reactors at different locations, producing the same product. We can standardize a variable of interest, e.g. viscosity, from both reactors and then proceed to use the standardized variables to compare performance.
+
+Consult a statistical table found in most statistical textbooks for the normal distribution, such as the one found at the :ref:`end of this chapter <univariate_statistical_tables>`. Make sure you can firstly understand how to read the table. Secondly, duplicate a few entries in the table using R. Then complete these small exercises by estimating what the rough answer should be, then use both the tables and R to get a more accurate estimate.
 
 #.	Assume :math:`x`, the measurement of biological activity for a drug, is normally distributed with mean of 26.2 and standard deviation of 9.2. What is the probability of obtaining an activity reading less than or equal to 30.0?
 
@@ -692,24 +719,24 @@ Checking for normality: using a q-q plot
 .. index::
 	single: normal distribution; check if
 
-Often we are not sure if a sample of data can be assumed to be normally distributed. This section shows you how to assess if data are normally distributed, or not. 
+Often we are not sure if a sample of data can be assumed to be normally distributed. This section shows you how to judge if data are normally distributed, or not. 
 
 Before we look at this method, we need to introduce the concept of the inverse :index:`cumulative distribution` function (inverse CDF). Recall the **cumulative distribution** is the area underneath the distribution function, :math:`p(z)`, which goes from :math:`-\infty` to :math:`z`. For example, the area from :math:`-\infty` to :math:`z=-1` is about 15%, as we showed earlier, and we use the ``pnorm()`` function in R to calculate that. 
 	
 .. index:: inverse cumulative distribution
 
-Now the **inverse cumulative distribution** is used when we know the area, but want to get back to the value along the :math:`z-\text{axis}`. For example, below which value of :math:`z` does 95% of the area lie for a standardized normal distribution?  Answer: :math:`z=1.64`. In R we use the ``qnorm(0.95, mean=0, sd=1)`` to calculate these values. The ``q`` stands for `quantile <http://en.wikipedia.org/wiki/Quantile>`_, because we give it the quantile at it returns the z-value: e.g. ``qnorm(0.5)`` gives 0.0.
+Now the **inverse cumulative distribution** is used when we know the area, but want to get back to the value along the :math:`z-\text{axis}`. For example, below which value of :math:`z` does 95% of the area lie for a standardized normal distribution?  Answer: :math:`z=1.64`. In R we use the ``qnorm(0.95, mean=0, sd=1)`` to calculate these values. The ``q`` stands for `quantile <http://en.wikipedia.org/wiki/Quantile>`_, because we give it the quantile and it returns the :math:`z`-value: e.g. ``qnorm(0.5)`` gives 0.0.
 
 .. image:: ../figures/univariate/show-pnorm-and-qnorm.png
 	:scale: 70
 	:width: 750px
 	:align: center
 		
-On to checking for normality. We approach this problem by first constructing quantities that we would expect for truly normally distributed data. Then, secondly, we construct the same quantities for the actual data. A plot of these 2 quantities against each other will reveal if the data are normal, or not.
+On to checking for normality. We approach this problem by first constructing some quantities that we would expect for truly normally distributed. Then, secondly, we construct the same quantities for the actual data. A plot of these 2 quantities against each other will reveal if the data are normal, or not.
 
 #.	Imagine we have :math:`N` observations which are normally distributed. Sort the data from smallest to largest. The first data point should be the :math:`(1/N \times 100)` quantile, the next data point is the :math:`(2/N \times 100)` quantile, the middle, sorted data point is the 50th quantile, :math:`(1/2 \times 100)`, and the last, sorted data point is the :math:`(N/N \times 100)` quantile.
 
-	The middle, sorted data point has a :math:`z`-value on the standardized scale of 0.0, which we know from using ``qnorm(0.5)``, from the inverse cumulative distribution function. By definition, 50% of the data should lie below this point. The first data point will be at ``qnorm(1/N)``, the second at ``qnorm(2/N)``, and so on. In general, the :math:`i^\text{th}` sorted point should be at ``qnorm((i-0.5)/N)``, for values of :math:`i = 1, 2, \ldots, N`. We subtract off 0.5 to account for the fact that ``qnorm(1.0) = Inf``. So we construct this vector of theoretically expected quantities from the inverse cumulative distribution function.
+	The middle, sorted data point from this truly normal distribution must have a :math:`z`-value on the standardized scale of 0.0 (we can test that by using ``qnorm(0.5)``). By definition, 50% of the data should lie below this mid point. The first data point will be at ``qnorm(1/N)``, the second at ``qnorm(2/N)``, the middle data point at ``qnorm(0.5)``, and so on. In general, the :math:`i^\text{th}` sorted point should be at ``qnorm((i-0.5)/N)``, for values of :math:`i = 1, 2, \ldots, N`. We subtract off 0.5 by convention to account for the fact that ``qnorm(1.0) = Inf``. So we construct this vector of theoretically expected quantities from the inverse cumulative distribution function.
 	
 	.. code-block:: s
 	
@@ -719,7 +746,7 @@ On to checking for normality. We approach this problem by first constructing qua
 		theoretical.quantity <- qnorm(P)
 		[1] -1.64 -1.04 -0.674 -0.385 -0.126  0.125  0.385  0.6744 1.036  1.64
 
-#.	We also construct the actual quantiles from the sampled data. First, standardize the data by subtracting off the mean and dividing by the standard deviation. Here is an example of 10 batch yields (see actual values below). The mean yield is 80.0 and the standard deviation is 8.35. The standardized yields are shown by subtracting off the mean and dividing by the standard deviation. Then the standardized values are sorted. Compare them to the theoretical quantities.
+#.	We also construct the actual quantiles from the sampled data. First, standardize the sampled data by subtracting off its mean and dividing by its standard deviation. Here is an example of 10 batch yields (see actual values below). The mean yield is 80.0 and the standard deviation is 8.35. The standardized yields are shown by subtracting off the mean and dividing by the standard deviation. Then the standardized values are sorted. Compare them to the theoretical quantities.
 
 	.. code-block:: s
 
@@ -747,44 +774,50 @@ On to checking for normality. We approach this problem by first constructing qua
 		:width: 750px
 		:scale: 50
 
-A ready-made function already exists in R that runs the calculations and shows a scatter plot. The 45 degree line is added using the ``qqline(...data...)`` function.
+A built-in function exists in R that runs the above calculations and shows a scatter plot. The 45 degree line is added using the ``qqline(...data...)`` function. However, a better function that adds a confidence limit envelope is included in the ``car`` library (see the *Package Installer* menu option for adding libraries from the internet). 
 
 .. code-block:: s
 	
 	qqnorm(yields)
 	qqline(yields)
+	
+	# or, using the ``car`` library
+	library(car)
+	qqPlot(yields)
 
 .. image:: ../figures/univariate/qqplot-from-R.png
 	:align: center
 	:width: 750px
-	:scale: 50
+	:scale: 100
 	
-The R plot rescales the Y-axis (sample quantiles) back to the original units to make interpretation easier. We expect some departure from the 45 degree line due to the fact that these are only a sample of data. However, large deviation indicates the data are not normally distributed. An error region can be superimposed around the 45 degree line, but this is not discussed here.
+The R plot rescales the :math:`y`-axis (sample quantiles) back to the original units to make interpretation easier. We expect some departure from the 45 degree line due to the fact that these are only a sample of data. However, large deviation indicates the data are not normally distributed. An error region, or confidence envelope, may be superimposed around the 45 degree line.
 
-The q-q plot, :index:`quantile-quantile plot`, shows the quantiles of 2 distributions against each other. In fact, we can use the horizontal axis for any distribution, it need not be the theoretical normal distribution. We might be interested if our data follow an `F-distribution <http://en.wikipedia.org/wiki/F-distribution>`_ (not covered in this book), then we could use the quantiles for that theoretical distribution on the horizontal axis.
+The q-q plot, :index:`quantile-quantile plot`, shows the quantiles of 2 distributions against each other. In fact, we can use the horizontal axis for any distribution, it need not be the theoretical normal distribution. We might be interested if our data follow an :math:`F`-distribution then we could use the quantiles for that theoretical distribution on the horizontal axis.
 
-#. Add the ``car`` library to R (see the *Package Installer* menu option) and use the ``qqPlot(yields)`` function to see the error bars for the yield data.
-
-	.. code-block:: s
-
-		library(car)		# Install the car library before running this command
-		qqPlot(yields)		# Draws a q-q plot with error lines
-
-#. We can use the q-q plot to compare any 2 *samples of data*, even if they have different values of :math:`N`, by calculating the quantiles for each sample at different step quantiles (e.g. 1, 2, 3, 4, 5, 10, 15, .... 95, 96, 97, 98, 99), then plot the q-q plot for the two samples. You can calculate quantiles for any sample of data using the ``quantile`` function in R. The simple example below shows how to compare the q-q plot for 1000 normal distribution samples against 2000 :math:`t`-distribution samples
+We can use the q-q plot to compare any 2 *samples of data*, even if they have different values of :math:`N`, by calculating the quantiles for each sample at different step quantiles (e.g. 1, 2, 3, 4, 5, 10, 15, .... 95, 96, 97, 98, 99), then plot the q-q plot for the two samples. You can calculate quantiles for any sample of data using the ``quantile`` function in R. The simple example below shows how to compare the q-q plot for 1000 normal distribution samples against 2000 :math:`F`-distribution samples. Even though the histogram of the :math:`F`-distribution samples looks normal to the eye, the q-q plot quickly confirms it is definitely not normal, particularly, that the right-tail is too heavy.
 
 	.. code-block:: s
 	
-		rand.norm <- rnorm(1000)
-		rand.t <- rt(2000, df=3)   # Use heavy tails
+		rand.norm <- rnorm(1000)            # 1000 normal values
+		rand.f <- rf(2000, df1=200, df=150) # 2000 values from F-distribution
+		hist(rand.f)                        # looks sort of normally distributed
 		quantiles <- c(1, 2, 3, 4, seq(5, 95, 5), 96, 97, 98, 99)/100
 		norm.quantiles <- quantile(rand.norm, quantiles)
-		t.quantiles <- quantile(rand.t, quantiles)
-		plot(t.quantiles, norm.quantiles)
+		f.quantiles <- quantile(rand.f, quantiles)
+		plot(f.quantiles, norm.quantiles)   # proves it isn't
+		library(car)
+		qqPlot(rand.f, distribution="norm") # also proves it isn't
+		
+.. image:: ../figures/univariate/qqplot-comparison.png
+	:alt:   ../figures/univariate/qqplot-comparison.R
+	:align: center
+	:width: 750px
+
 
 :math:`t`-distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. index:: :math:`t`-distribution
+.. index:: t-distribution
 
 Suppose we have a quantity of interest for a process, such as the daily profit per kilogram of raw material, or the viscosity of the final product. After using the methods just described to check for normality, we might be reasonably certain that the data follow a normal distribution. So assuming the quantity is distributed as :math:`\mathcal{N}(\mu, \sigma^2)` **and** by taking independent samples, as shown here in the figure,
 
@@ -1503,3 +1536,14 @@ The advantage of the paired test is that any :index:`systematic error` in our me
 	
 .. This example illustrates:
 .. todo:: example showing loss of DOF (boys shoes example in BHH2). particularly, show the plots (p98 on BHH2- edition 1)
+
+
+.. _univariate_statistical_tables:
+
+Statistical tables for the normal- and :math:`t`-distribution
+============================================================================
+
+.. image:: ../figures/univariate/Statistical-tables/Statistical-tables.*
+	:scale: 110
+	:align: center
+
