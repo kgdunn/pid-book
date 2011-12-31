@@ -20,18 +20,9 @@ needs_sphinx = '1.0'  # If your documentation needs a minimal Sphinx version, st
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.append(os.path.abspath('.'))
 
-# General configuration for PID
-# =============================
-
-# These two are mutually exclusive !
-website_version = False
-instructor_version = True
-
-
 # Sphinx extensions
 # =================
 extensions = ['sphinx.ext.todo', 'sphinx.ext.pngmath', ]
-extensions.append('sphinx.ext.ifconfig')  # used infrequently (mainly in univariate section to leave blank gaps; replace with Sphinx extension eventually)
 
 # Sphinx contrib extensions
 # -------------------------
@@ -40,14 +31,6 @@ extensions.append('sphinx.ext.ifconfig')  # used infrequently (mainly in univari
 # Custom extensions
 # -------------------------
 extensions.append('q-and-a')
-if website_version:
-    q_and_a_override = False    # False for the student and website version,
-    tags.add('studentlatex')
-if instructor_version:
-    q_and_a_override = True     # True for the instructor version
-    tags.add('inst')
-    if website_version:
-        raise Exception('You cannot have both the website and instructor version')
 
 if os.path.exists('ucomment-extension.py'):
     extensions.append('ucomment-extension')

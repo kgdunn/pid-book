@@ -511,12 +511,12 @@ The histogram for an event with 4 possible outcomes that are uniformly distribut
 
 .. image:: ../figures/univariate/histogram-4-cuts.png
 	:align: center
-	:scale: 55
+	:scale: 50
 	:width: 750px
 
-You can simulate uniformly distributed random numbers in most software packages. As an example, to generate 50 uniformly distributed random *integers* between values of 2 and 10, inclusive:
+You can simulate uniformly distributed random numbers in most software packages. As an example, to generate 50 uniformly distributed random *integers* between 2 and 10, inclusive:
 
-	**R**::
+	**R**:
 
 		.. code-block:: s
 
@@ -545,7 +545,7 @@ Before introducing the normal distribution, we first look at two important conce
 Central limit theorem 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The :index:`Central limit theorem` plays a central role in the theory of probability and in the derivation of the normal distribution. We don't prove this theorem here, but we only use the result that the average of a sequence of values *from any distribution* will approach the normal distribution, provided the original distribution has finite variance.
+The :index:`Central limit theorem` plays a central role in the theory of probability and in the derivation of the normal distribution. We don't prove this theorem here, but we only use the result that the average of a sequence of values *from any distribution* will approach the normal distribution, provided the original distribution has finite variance. This condition is true for almost all systems of practical interest.
 	
 .. image:: ../figures/univariate/CLT-derivation.png
 	:width: 750px
@@ -966,23 +966,12 @@ Interpreting the confidence interval
 	
 -	Notice that the upper and lower bounds are a function of the data sample used to calculate :math:`\overline{x}` and the number of points, :math:`n`. If we take a different sample of data, we will get different bounds.
 	
--	What does the level of confidence mean?  It is the probability that the true population viscosity, :math:`\mu` is in the given range. At 95% confidence, it means that 5% of the time the interval *will not contain* the true mean. So if we collected 20 sets of samples, 19 times out of 20 the confidence interval range will contain the true mean, but one of those 20 confidence intervals is expected to not contain the true mean.
+-	What does the level of confidence mean?  
+
+		It is the probability that the true population viscosity, :math:`\mu` is in the given range. At 95% confidence, it means that 5% of the time the interval *will not contain* the true mean. So if we collected 20 sets of samples, 19 times out of 20 the confidence interval range will contain the true mean, but one of those 20 confidence intervals is expected to not contain the true mean.
 
 -	What happens if the level of confidence changes?  Calculate the viscosity confidence intervals for 90%, 95%, 99%.
 
-	.. only:: studentlatex
-
-
-		.. csv-table:: 
-			   :header: Confidence, LB, UB
-			   :widths: 33, 33, 33
-
-				90%, 
-				95%, 17.1, 22.9
-				99%, 
-
-	.. only:: inst
-	
 		.. csv-table:: 
 		   :header: Confidence, LB, UB
 		   :widths: 33, 33, 33
@@ -993,19 +982,19 @@ Interpreting the confidence interval
 			
 		As the confidence value is increased, our interval widens, indicating that we have a more reliable region, but it is less precise.
 			
-..	show the confidence ranges, like BHH, p114 (1st edition)
+..	TODO: show the confidence ranges, like BHH, p114 (1st edition)
 
 -	What happens if the level of confidence is 100%?
 
-	The confidence interval is then infinite. We are 100% certain this infinite range contains the population mean, however this is not a useful interval.
+		The confidence interval is then infinite. We are 100% certain this infinite range contains the population mean, however this is not a useful interval.
 
 -	What happens if we increase the value of :math:`n`?
 
-	As the value of :math:`n` increases, the confidence interval decreases.
+		As the value of :math:`n` increases, the confidence interval decreases.
 		
 -	Returning to the case above, where at the 95% level we found the confidence interval was :math:`[17.1; 22.9]` for the bale's viscosity. What if we were to analyze the bale thoroughly, and found the population viscosity to be 23.2. What is the probability of that occurring?
 
-	Less than 5% of the time.
+		Less than 5% of the time.
 
 Confidence interval for the mean from a normal distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1023,9 +1012,9 @@ When the variance is known, the confidence interval is given by :eq:`CI-mean-var
 		:label: CI-mean-variance-known
 		
 		\begin{array}{rcccl} 
-			  - c_n                                              &\leq& \displaystyle \frac{\overline{x} - \mu}{\sigma/\sqrt{n}}  &\leq &  +c_n\\
-			\overline{x}  - c_n \dfrac{\sigma}{\sqrt{n}}              &\leq&  \mu                                                 &\leq& \overline{x}  + c_n\dfrac{\sigma}{\sqrt{n}} \\
-			  \text{LB}                                          &\leq&  \mu                                                 &\leq& \text{UB}
+			  - c_n                                      &\leq& \displaystyle \frac{\overline{x} - \mu}{\sigma/\sqrt{n}} &\leq &  +c_n\\
+			\overline{x}  - c_n \dfrac{\sigma}{\sqrt{n}} &\leq&  \mu                                                     &\leq& \overline{x}  + c_n\dfrac{\sigma}{\sqrt{n}} \\
+			  \text{LB}                                  &\leq&  \mu                                                     &\leq& \text{UB}
 		\end{array}
 
 The values of :math:`c_n` are ``qnorm(1 - 0.05/2) = 1.96`` when we use the 95% confidence interval (2.5% in each tail). 
