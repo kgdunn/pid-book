@@ -218,7 +218,7 @@ Histograms and probability distributions
 
 .. index:: histograms, frequency distribution
 
-The :ref:`previous section <univariate-about-variability>` has hopefully convinced you that variation in a process is inevitable. This section aims to show how we can visualize and quantify variability.
+The :ref:`previous section <univariate-about-variability>` has hopefully convinced you that variation in a process is inevitable. This section aims to show how we can visualize and quantify variability in a recorded vector of data.
 
 A histogram is a summary of the variation in a measured variable. It shows the *number* of samples that occur in a *category*: this is called a **frequency distribution**. For example: number of children born, categorized against their gender: male or female.
 
@@ -226,8 +226,10 @@ A histogram is a summary of the variation in a measured variable. It shows the *
    	:width: 750px
 	:scale: 40
 	:align: center
+	
+The raw data in the above example was a vector of consisted of 2739 text entries, with 1420 of them as ``Male`` and 1319 of them as ``Female``. In this case ``Female`` and ``Male`` represent the two categories.
 
-The category bins can be derived from a continuous variable. Here is an example showing the mass of cartons of 1 kg of flour. The continuous variable, mass, is divided into equal-size bins that cover the range of the available data.  Notice how the packaging system has to overfill each carton so that the vast majority of packages weight over 1 kg (what is the mean package mass?). If the variability in the packaging system could be reduced, then the histogram can be shifted to the left reducing overfill.
+Histograms make sense for categorical variables, but a histogram can also be derived from a continuous variable. Here is an example showing the mass of cartons of 1 kg of flour. The continuous variable, mass, is divided into equal-size bins that cover the range of the available data.  Notice how the packaging system has to overfill each carton so that the vast majority of packages weigh over 1 kg (what is the average package mass?). If the variability in the packaging system could be reduced, then the histogram can be shifted to the left, thereby reducing overfill.
 
 .. image:: ../figures/univariate/histogram-package-mass.png
 	:width: 750px
@@ -236,71 +238,61 @@ The category bins can be derived from a continuous variable. Here is an example 
 
 Plot histograms for the following:
 
-- The grades for this class for a really easy test:
-
-.. raw:: latex
-
-	\vspace{1cm}
-		
-- The numbers thrown from a 6-sided die:
-
-.. raw:: latex
-
-	\vspace{1cm}
-
-
-- The bacterial count per cubic inch, in packages of meat product shipped over the last year from your meat processing facility:
-
-.. raw:: latex
-
-	\vspace{1cm}
+-	The grades for a class for a really easy test
+-	The numbers thrown from a 6-sided die
+-	The annual income for people in your country
 
 .. - seeds with the same size later become plants of different heights and yield of fruit
 .. - people born in the same year have lives of different duration due to environmental, genetic, health and societal factors
 .. - games such as poker, roulette, lotteries, dice
 .. - analytical measurements taken in a laboratory, even by the same person or computerized process have different outcomes
+.. - weight of corn seeds (average is 200mg)
 
-In preparing the above histograms, what have you implicitly inferred about time-scales?  These histograms show the long-term probabilities of the process under consideration. This is why  *concepts of chance and random phenomena* can be use to described a deterministic process. Probabilities describe long-term expectations:
+In preparing the above histograms, what have you implicitly inferred about time-scales? These histograms show the long-term distribution (probabilities) of the system being considered. This is why *concepts of chance and random phenomena* can be use to described systems and processes. Probabilities describe our long-term expectations:
 
-- The long-term sex ratio at birth 1.06:1 (boy:girl) is expected in Canada; but a newly pregnant mother would not know the sex.
-- The long-term data from a process shows an 85% yield from our batch reactor; but tomorrow it could be 59% and the day after that 86%.
-- Canadian life tables from 2002 (`Statistics Canada website <http://www.statcan.gc.ca/bsolc/olc-cel/olc-cel?catno=84-537-XIE&lang=eng>`_) show that females have a 98.86% chance of reaching age 30 and a 77.5% chance of reaching age 75; but people die at different ages due to different causes.
-- We know that a fair die has a 16.67% chance of showing a 4 when thrown, but we cannot predict the value of the next throw.
+-	The long-term sex ratio at birth 1.06:1 (boy:girl) is expected in Canada; but a newly pregnant mother would not know the sex.
+-	The long-term data from a process shows an 85% yield from our batch reactor; but tomorrow it could be 59% and the day after that 86%.
+-	Canadian life tables from 2002 (`Statistics Canada website <http://www.statcan.gc.ca/bsolc/olc-cel/olc-cel?catno=84-537-XIE&lang=eng>`_) show that females have a 98.86% chance of reaching age 30 and a 77.5% chance of reaching age 75; but people die at different ages due to different causes.
+-	We know that a fair die has a 16.67% chance of showing a 4 when thrown, but we cannot predict the value of the next throw.
 
 Even if we have complete mechanistic knowledge of our process, the concepts from probability and statistics are useful to summarize and communicate information about past behaviour, and the expected future behaviour. 
 
-Steps to creating a frequency distribution, illustrated with the 3 examples
+Steps to creating a frequency distribution, illustrated with 4 examples:
 
-	#. Decide what you are measuring:
+	#.	Decide what you are measuring:
 	
-		- Example A: acceptable or unacceptable metal appearance (yes/no, or categories of defects: none, low, medium, high)
-		- Example B: yield from the batch reactor (somewhat continuous - quantized due to rounding)
-		- Example C: daily ambient temperature, in Kelvin (continuous)
+		A.	acceptable or unacceptable metal appearance: yes/no
+		B.	number of defects on a metal sheet: none, low, medium, high
+		C.	yield from the batch reactor: somewhat continuous - quantized due to rounding to the closest integer
+		D.	daily ambient temperature, in Kelvin: continuous values
 	
-	#. Decide on a resolution for the measurement axis
+	#.	Decide on a resolution for the measurement axis:
 	
-		- Example A: acceptable/unacceptable (1/0) code for the metal's appearance, or perhaps use a scale from 1 to 4 that grades the metal's appearance
-		- Example B: batch yield is measured in 2% increments: reported either as 78, 80, 82, 84%, *etc*.
-		- Example C: temperature is measured to a 0.1 K precision, but we can report the values in bins of 5K
+		A.	acceptable/unacceptable (1/0) code for the metal's appearance
+		B.	use a scale from 1 to 4 that grades the metal's appearance
+		C.	batch yield is measured in 1% increments, reported either as 78, 79, 80, 81%, *etc*.
+		D.	temperature is measured to a 0.05 K precision, but we can report the values in bins of 5K
 	
-	#. Report the number of observations in the sample or population that fall within each bin (resolution step):
+	#.	Report the number of observations in the sample or population that fall within each bin (resolution step):
 	
-		- number of metal pieces with appearance level "acceptable" and "unacceptable", or number of pieces with appearance level 1, 2, 3, 4
-		- number of batches with yield inside each bin level
-		- number of temperature values inside each bin level
+		A.	number of metal pieces with appearance level "acceptable" and "unacceptable"
+		B.	number of pieces with defect level 1, 2, 3, 4
+		C.	number of batches with yield inside each bin level
+		D.	number of temperature values inside each bin level
 		
-	#. Plot the number of observations in category as a bar plot. If you plot the number of observations divided by the total number of observations, :math:`N`, then you are plotting the **relative frequency**.
+	#.	Plot the number of observations in category as a bar plot. If you plot the number of observations divided by the total number of observations, :math:`N`, then you are plotting the **relative frequency**.
 	
-.. index:: relative frequency
+.. TODO: show the above plots
+
 .. index:: 
 	single: frequency, relative
 
-A relative frequency is sometimes preferred:
+A :index:`relative frequency`, also called :index:`density`, is sometimes preferred:
 
-- we do not need to report the total number of observations, :math:`N`
-- it can be compared to other distributions
-- if :math:`N` is large enough, then the relative frequency histogram starts to resemble the population's distribution
-- the area under the histogram is equal to 1, and related to probability
+-	we do not need to report the total number of observations, :math:`N`
+-	it can be compared to other distributions
+-	if :math:`N` is large enough, then the relative frequency histogram starts to resemble the population's distribution
+-	the area under the histogram is equal to 1, and related to probability
 
 .. image:: ../figures/univariate/frequency-histogram.png
 	:width: 750px
@@ -310,35 +302,47 @@ A relative frequency is sometimes preferred:
 Some nomenclature
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We review here a couple of concepts that you should have seen in prior statistical work.
-
-..
+We review a couple of concepts that you should have seen in prior statistical work.
 
 .. _univariate-population:
 
+.. raw:: latex
+
+	\\
+
 **Population**
 	
-	A large collection of observations that *might* occur; a set of *potential* measurements. Some texts consider an infinite collection of observations, but a large number of observations is good enough. We will use capital :math:`N` in this section to denote the :index:`population` size.
-	
+	A large collection of observations that *might* occur; a set of *potential* measurements. Some texts consider an infinite collection of observations, but a large number of observations is good enough. 
+
+.. We will use capital :math:`N` in this section to denote the :index:`population` size. WE USUALLY USE "N" as the sample size
+.. We will use lowercase :math:`n` in this section to denote the :index:`sample` size.
+
 **Sample**
+
+	A collection of observations that have *actually* occurred; a set of *existing* measurements that we have recorded in some way, usually electronically.
 	
-	A collection of observations that have *actually* occurred; a set of *existing* measurements. We will use lowercase :math:`n` in this section to denote the :index:`sample` size.
-	
+	.. index:: 
+		single: sample
+
 	.. image:: ../figures/univariate/batch-yields.png
 		:scale: 60
 		:align: center
 	
-	In engineering applications where we have plenty of data, we can characterize the population from all available data. The figure here shows the viscosity of a polymer product, from all batches produced from the last 5 years (about 1 batch per day), is an excellent surrogate for the population viscosity. Once we have characterized these samples, future viscosity values will likely follow that same pattern, provided the process continues to operate in a similar manner.
+	In engineering applications where we have plenty of data, we can characterize the population from all available data. The figure here shows the viscosity of a motor oil, from all batches produced in the last 5 years (about 1 batch per day). These 1825 data points, though technically a *sample* as  excellent surrogate for the *population* viscosity because they come from such a long duration. Once we have characterized these samples, future viscosity values will likely follow that same distribution, provided the process continues to operate in a similar manner.
+
+**Distribution**
+
+	Distributions are used to provide a much smaller summary of many data points. Histograms, discussed above, are one way of visualizing a distribution. We will look at various distributions :ref:`in the next section <univariate_distributions>`.
 
 **Probability**
 	
-	The area under a plot of relative frequency distribution is equal to 1. :index:`Probability` is then a fraction of the area under the curve.
+	The area under a plot of relative frequency distribution is equal to 1. :index:`Probability` is then the fraction of the area under the frequency distribution curve (also called density curve).
 	
 	Superimpose on your histograms drawn earlier:
 	
-	- The probability of a test grades less than 80%
-	- The probability that the number thrown from a 6-sided die is less than or equal to 2
-	- The bacterial count per cubic inch, in packages of meat product shipped over the last year is greater that 10,000.
+	-	The probability of a test grades less than 80%
+	-	The probability that the number thrown from a 6-sided die is less than or equal to 2
+	-	The probability of someone's income exceeding $50,000
 
 **Parameter**
 
@@ -349,26 +353,28 @@ We review here a couple of concepts that you should have seen in prior statistic
 	
 **Statistic**
 	
-	A :index:`statistic` is an estimate of one of the population's parameters.
+	A :index:`statistic` is an estimate of a population parameter.
 
 **Mean (location)**
 	
-	The :index:`mean` (:index:`average`) is a measure of :index:`location` (position) of the distribution. For each measurement, :math:`x_i`, in your sample
+	The :index:`mean`, or :index:`average`, is a measure of :index:`location` of the distribution. For each measurement, :math:`x_i`, in your sample
 
 	.. math::
 		:nowrap:
 
 			\begin{alignat*}{2}
-				\text{Population mean:} &\qquad&  \mathcal{E}\left\{x \right\} = \mu &= \frac{1}{N}\sum{x} \\
-				\text{Sample mean:}     &\qquad&                       \overline{x}  &= \frac{1}{n}\sum_{i=1}^{n}{x_i}
+				\text{population mean:} &\qquad&  \mathcal{E}\left\{x \right\} = \mu &= \frac{1}{N}\sum{x} \\
+				\text{sample mean:}     &\qquad&                       \overline{x}  &= \frac{1}{n}\sum_{i=1}^{n}{x_i}
 			\end{alignat*}
+			
+	where :math:`N` represents the entire population, and :math:`n` are the number of entries in the sample.
 		
 	.. code-block:: s
 
 		x <- rnorm(50)   # a vector of 50 normally distributed random numbers
 		mean(x)
 	
-	This is only one of several statistics that describes your data: if you told your customer that the average density of your liquid product was 1.421 g/L, and nothing further, the customer might assume that some lots of the same product could have a density of 0.824 g/L, or 2.519 g/L. We need information in addition to the mean to quantify the distribution of values: *the spread*.
+	This is one of several statistics that describes your data: if you told your customer that the average density of your liquid product was 1.421 g/L, and nothing further, the customer might assume that some lots of the same product could have a density of 0.824 g/L, or 2.519 g/L. We need information in addition to the mean to quantify the distribution of values: *the spread*.
 
 .. _univariate-variance:
 
@@ -393,36 +399,38 @@ We review here a couple of concepts that you should have seen in prior statistic
 		sd(x)     # for standard deviation
 		var(x)    # for variance
 		
-	The square root of variance, called the :index:`standard deviation` is a more useful measure of spread to engineers: it is easier to visualize on a histogram as it has the same units of the variable. 
+	The square root of variance, called the :index:`standard deviation` is a more useful measure of spread to engineers: it is easier to visualize on a histogram and has the advantage of being in the same units of the variable.
 
 	**Degrees of freedom**: The denominator in the sample variance calculation, :math:`n-1`, is called the degrees of freedom. We have one fewer than :math:`n` degrees of freedom, because there is a constraint that the sum of the deviations around :math:`\overline{x}` must add up to zero. This constraint is from the definition of the mean. However, if we knew what the sample mean was without having to estimate it, then we could subtract each :math:`x_i` from that value, and our degrees of freedom would be :math:`n`.
 
 **Outliers**
 
-	Outliers are hard to define precisely, but an acceptable definition is that an :index:`outlier` is a point that is unusual, given the context of the surrounding data. The following 2 sequences of numbers show that the same number, 4024 that appears in the first sequence, has become an outlier in the second sequence. It is an outlier based on the surrounding context.
+	Outliers are hard to define precisely, but an acceptable definition is that an :index:`outlier` is a point that is unusual, given the context of the surrounding data. The following 2 sequences of numbers show the number 4024 that appears in the first sequence, has become an outlier in the second sequence. It is an outlier based on the surrounding context.
 
 	* 4024, 5152, 2314, 6360, 4915, 9552, 2415, 6402, 6261
 	* 4, 61, 12, 64, 4024, 52, -8, 67, 104, 24
 	
-.. TODO: KGD: add a multivariate outlier illustration here
+.. TODO: add a multivariate outlier illustration here
 	
 .. _univariate-median:
 
-**Median (location)**
+.. index:: robust statistics
+
+**Median (robust measure of location)**
 
 	The :index:`median` is an alternative measure of :index:`location`. It is a sample statistic, not a population statistic, and is computed by sorting the data and taking the middle value (or average of the middle 2 values, for even :math:`n`). It is also called a robust statistic, because it is insensitive (robust) to outliers in the data. 
 
 	.. note::	
 	
-		The median is the most robust estimator of the sample location: it has a breakdown of 50%, which means that 50% of the data need to be replaced with unusual values before the median breaks down as a suitable estimate. The mean on the other hand has a breakdown value of :math:`1/n`, as only one of the data points needs to be unusual to cause the mean to be a poor estimate.
+		The median is the most robust estimator of the sample location: it has a breakdown of 50%, which means that just under 50% of the data need to be replaced with unusual values before the median breaks down as a suitable estimate. The mean on the other hand has a breakdown value of :math:`1/n`, as only one of the data points needs to be unusual to cause the mean to be a poor estimate.
 
 	.. code-block:: s
 
 		median(x)
 		
-	Governments will report the median income of regions in a country, rather than the mean, to avoid influencing the value with the few very high earners and the many low earners. The median income per person is a more fair measure of location in this case.
+	Governments will report the median income, rather than the mean, to avoid influencing the value with the few very high earners and the many low earners. The median income per person is a more fair measure of location in this case.
 
-**Median absolute deviation, MAD (spread)**
+**Median absolute deviation, MAD (robust measure of spread)**
 
 	A robust measure of :index:`spread` is the :index:`MAD`, the :index:`median absolute deviation`.  The name is descriptive of how the MAD is computed:
 
@@ -430,25 +438,25 @@ We review here a couple of concepts that you should have seen in prior statistic
 	
 			\text{mad}\left\{ x_i \right\} = c \cdot \text{median}\left\{ \| x_i - \text{median}\left\{ x_i \right\}  \|  \right\} \qquad\qquad \text{where}\qquad c = 1.4826
 
-	The constant :math:`c` makes the MAD consistent with the standard deviation when the observations :math:`x` are normally distributed. The MAD has a breakdown point of 50%, because like the median, we can replace half the data with outliers before the estimate becomes unbounded.
+	The constant :math:`c` makes the MAD consistent with the standard deviation when the observations :math:`x_i` are normally distributed. The MAD has a :index:`breakdown point` of 50%, because like the median, we can replace just under half the data with outliers before the estimate becomes unbounded.
 
 	.. code-block:: s
 
 		mad(x)
-		
-	.. index:: robust statistics
 
 	Enrichment reading: read pages *1 to 8* of "`Tutorial to Robust Statistics <http://dx.doi.org/10.1002/cem.1180050103>`_", PJ Rousseeuw, *Journal of Chemometrics*, **5**, 1-20, 1991.
 
+
+.. _univariate_distributions:
 
 Distributions
 ===============
 
 For each of the distributions we will:
 
-#. show a typical plot of the probability function :math:`p(x)` against the variable's value :math:`x`
-#. learn when to use that distribution with examples
-#. know what the parameters of the distribution are
+#.	show a typical plot of the probability function :math:`p(x)` against the variable's value :math:`x`
+#.	learn when to use that distribution (we will show some examples)
+#.	know what the parameters of the distribution are
 
 .. _univariate-binary-distribution:
 
@@ -457,7 +465,9 @@ Binary (Bernoulli distribution)
 
 .. index:: binary distribution, Bernoulli distribution
 
-Systems that have binary outcomes (pass/fail; yes/no) must obey the probability principle that: :math:`p(\text{pass}) + p(\text{fail}) = 1`. For example, a histogram for a system that produces 70% acceptable product looks like:
+Systems that have binary outcomes (pass/fail; yes/no) must obey the probability principle that: :math:`p(\text{pass}) + p(\text{fail}) = 1`. A Bernoulli distribution only has one parameter, :math:`p_1`, the probability of observing event 1. The probability of the other event, :math:`p_2 = 1 - p_1`. 
+
+An example: a histogram for a system that produces 70% acceptable product, :math:`p(\text{pass}) = 0.7`, could look like:
 
 .. image:: ../figures/univariate/histogram-70-30.png
 	:align: center
@@ -466,79 +476,76 @@ Systems that have binary outcomes (pass/fail; yes/no) must obey the probability 
 
 If the each observation is independent of the other, then:
 
-	- For the above system where :math:`p(\text{pass}) = 0.7`, what is probability of seeing the following outcome: **pass**, **pass**, **pass** (3 times in a row)?
+	-	For the above system where :math:`p(\text{pass}) = 0.7`, what is probability of seeing the following outcome: **pass**, **pass**, **pass** (3 times in a row)?
 
-		.. only:: inst
+		:math:`(0.7)(0.7)(0.7) = 0.343`, about one third
 
-			:math:`(0.7)(0.7)(0.7) = 0.343`, about one third of 3-element sequences
+	-	What is the probability of seeing the sequence: **pass**, **fail**, **pass**, **fail**, **pass**, **fail**?
 
-	- What is the probability of seeing the sequence: **pass**, **fail**, **pass**, **fail**, **pass**, **fail**?
+		:math:`(0.7)(0.3)(0.7)(0.3)(0.7)(0.3) = 0.0093`, less than 1%
 
-		.. only:: inst
+Another example: you work in a company that produces tablets. The machine creates acceptable, unbroken tablets 97% of the time, so :math:`p_\text{acceptable} = 0.97`, so :math:`p_\text{defective} = 0.03`.
 
-			:math:`(0.7)(0.3)(0.7)(0.3)(0.7)(0.3) = 0.0093`, less than 1% of 6-element sequences
+	-	In a future batch of 850,000 tablets, how many tablets are expected to be defective? (Most companies will call this quantify this as "the cost of waste".)
 	
-You work in a company that produces tablets. The machine creates acceptable, unbroken tablets 97% of the time.
-
-	- In a batch of 144 tablets, how many tablets are unacceptable?
-	
-		.. only:: inst
-
-			:math:`144 \times (1-0.97) = 4.32`, or about 5 per batch
+		:math:`850000 \times (1-0.97) = 25,500` tablets per batch
 		
-	- You take a random sample of :math:`n` tablets; what is the chance that all :math:`n` tablets are acceptable:
+	-	You take a random sample of :math:`n` tablets from a large population of :math:`N` tablets. What is the chance that **all** :math:`n` tablets are acceptable if :math:`p` is the Bernoulli population parameter of finding acceptable tablets:
 	
-		=========== ========= ========
-		Sample size p=97%     p=95%
-		=========== ========= ========
-		n=10
-		n=50
-		n=100
-		=========== ========= ========
+		===================== ================== =================
+		Sample size           :math:`p` = 97%    :math:`p` = 95%
+		===================== ================== =================
+		:math:`n=10`
+		:math:`n=50`
+		:math:`n=100`
+		===================== ================== =================
 		
-	- Repeat the question above for a machine that creates acceptable tablets 95% of the time. Are you surprised by the difference in the answers?
+	-	Are you surprised by the large difference in the number of defective tablets for only a small increase in :math:`p`?
 	
 Uniform distribution
 ~~~~~~~~~~~~~~~~~~~~
 
 A :index:`uniform distribution` arises when an observation's value is equally as likely to occur as all the other recorded values. The classic example are dice: each face of a die is equally as likely to show up as any of the others. This forms a discrete, uniform distribution.
 
-The probability distribution for an event with 4 possible outcomes that are uniformly distributed is shown below:
+The histogram for an event with 4 possible outcomes that are uniformly distributed is shown below. Notice that the sample histogram will not necessarily have equal bar heights for all categories (bins).
 
 .. image:: ../figures/univariate/histogram-4-cuts.png
 	:align: center
 	:scale: 55
 	:width: 750px
 
-You can simulate uniformly distributed random numbers in most software packages. As an example, to generate 50 uniformly distributed random *integers* between values of 2 and 10, inclusive::
+You can simulate uniformly distributed random numbers in most software packages. As an example, to generate 50 uniformly distributed random *integers* between values of 2 and 10, inclusive:
+
+	**R**::
+
+		.. code-block:: s
 
 			x <- as.integer(runif(50, 2, 11))
 
-.. Other codes		
 	**MATLAB/Octave**:
 	
 		.. code-block:: matlab
 
-			round(rand(50, 1) * 8 + 2) 
-		
+			round(rand(50, 1) * (10 - 2) + 2) 
+
 	**Python**:
-		
+
 		.. code-block:: python
-		
+
 			import numpy as np
-			(np.random.rand(50, 1) * 8 + 2).round()
+			(np.random.rand(50, 1) * (10 - 2) + 2).round()
 
 A continuous, uniform distribution arises when there is equal probability of every measurement occurring within a given lower- and upper-bound. This sort of phenomena is not often found in practice. Usually, continuous measurements follow some other distribution, of which we will discuss the normal and :math:`t`-distribution next.
 
 Normal distribution
 ~~~~~~~~~~~~~~~~~~~
 
-.. index:: normal distribution 
+Before introducing the normal distribution, we first look at two important concepts: the Central limit theorem, and the concept of independence.
 
 Central limit theorem 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The limit theorem plays a central role in the theory of probability and in the derivation of the normal distribution. We don't prove this theorem here, but we only use the result that the average of a sequence of values *from any distribution* will approach the normal distribution, provided the original distribution has finite variance.
+The :index:`Central limit theorem` plays a central role in the theory of probability and in the derivation of the normal distribution. We don't prove this theorem here, but we only use the result that the average of a sequence of values *from any distribution* will approach the normal distribution, provided the original distribution has finite variance.
 	
 .. image:: ../figures/univariate/CLT-derivation.png
 	:width: 750px
@@ -562,59 +569,46 @@ What is the engineering significance of this averaging process (which is really 
 Independence 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. index:: independence
-
-The assumption of independence is widely used in statistical work and is a condition for using the central limit theorem. 
+The assumption of :index:`independence` is widely used in statistical work and is a condition for using the central limit theorem. 
 
 .. note:: The assumption of independence means the the samples we have in front of us are *randomly* taken from a population. If two samples are independent, there is no possible relationship between them.
 
 We frequently violate this assumption of independence in engineering applications. Think about these examples for a while:
 
-- A questionnaire is given to a group of people. What happens if they discuss the questionnaire in sub-groups prior to handing it in?
+-	A questionnaire is given to a group of people. What happens if they discuss the questionnaire in sub-groups prior to handing it in?
 
- 	.. only:: inst	
+	We are not going to receive :math:`n` independent answers, rather we will receive as many independent opinions as there are sub-groups.
 		
-		We are not going to receive :math:`n` independent answers, rather we will receive as many independent opinions as there are sub-groups.
+-	The rainfall amount, recorded in centimetres, over the last 30 days.
+
+	These data are not independent - if it rains today, it can likely rain tomorrow as the weather usually stays around for some days. These data are not useful as a sample of typical rainfall, however they are useful for complaining about the weather. Think about the case if we had considered rainfall in hourly intervals, rather than daily intervals.
 		
-- The rainfall amount, recorded in centimetres, over the last 30 days.
+-	The snowfall, recorded on 3 January for every year since 1976: independent or not? 
 
-	.. only:: inst
-	
-		These data are not independent - if it rains today, it can likely rain tomorrow as the weather usually stays around for some days. These data are not useful as a sample of typical rainfall, however they are useful for complaining about the weather. Think about the case if we had considered rainfall in hourly intervals, rather than daily intervals.
+	These sampled data will be independent. 
 		
-- The snowfall, recorded on 3 January for every year since 1976: independent or not? 
+-	The impurity values in the last 100 batches of product produced is shown here.   Which of the 3 time sequences has independent values?
 
-	.. only:: inst
-	
-		These sampled data will be independent. 
-		
-- The impurity values in the last 100 batches of product produced is shown here.   Which of the 3 time sequences has independent values?
-
- 	.. only:: inst
-
-		In chemical processes there is often a transfer from batch-to-batch: we usually use the same lot of raw materials for successive batches, the batch reactor may not have be cleaned properly between each run, and so on. It is very likely that two successive batches (:math:`k` and :math:`k+1`) are somewhat related, and less likely that batch :math:`k` and :math:`k+2` are related. In the figure below, can you tell which sequence of values are independent?
+ 	In chemical processes there is often a transfer from batch-to-batch: we usually use the same lot of raw materials for successive batches, the batch reactor may not have be cleaned properly between each run, and so on. It is very likely that two successive batches (:math:`k` and :math:`k+1`) are somewhat related, and less likely that batch :math:`k` and :math:`k+2` are related. In the figure below, can you tell which sequence of values are independent?
 		
  	.. image:: ../figures/univariate/simulate-independence.png
 		:align: center
 		:scale: 90
 		
-- We need a highly reliable pressure release system. Manufacturer A sells a system that fails 1 in every 100 occasions, and manufacturer B sells a system that fails 3 times in every 1000 occasions. What is
+-	We need a highly reliable pressure release system. Manufacturer A sells a system that fails 1 in every 100 occasions, and manufacturer B sells a system that fails 3 times in every 1000 occasions. What is
+
+	-	:math:`p(\text{A}_\text{fails}) =` 
+	-	:math:`p(\text{B}_\text{fails}) =` 
+	-	:math:`p(\text{both A and B fail}) =` 
+	-	For the previous question, what does it mean for system A to be totally independent of system B?
 	
-	- :math:`p(\text{A}_\text{fails}) =` 
-	- :math:`p(\text{B}_\text{fails}) =` 
-	- :math:`p(\text{both A and B fail}) =` 
-	- For the previous question, what does it mean for system A to be totally independent of system B?
-	
-		.. only:: inst
-		
-			It means the 2 systems must be installed in parallel, so that there is no interaction between them at all.
+		It means the 2 systems must be installed in parallel, so that there is no interaction between them at all.
 	
 .. See Hodges and Lehmann (1970): there is a whole Chapter devoted to it.
 
 .. See: http://www.rsscse.org.uk/ts/gtb/contents.html: article on Teaching Independence; see PDF file in Readings directory.
 
 
-		
 Formal definition for the normal distribution
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -627,16 +621,18 @@ Formal definition for the normal distribution
 	:width: 750px
 	:align: center
 	:scale: 80
-	
-- :math:`x` is the variable of interest
-- :math:`p(x)` is the probability of obtaining that value of :math:`x`
-- :math:`\mu` is the population average for variable :math:`x`
-- :math:`\sigma` is the population standard deviation for variable :math:`x`, and is always a positive quantity.
 
-#. What is the maximum value of :math:`p(x)` and where does it occur, using the formula above?
-#. What happens to the shape of :math:`p(x)` as :math:`\sigma` gets larger ?
-#. What happens to the shape of :math:`p(x)` as :math:`\sigma \rightarrow 0` ?
-#. Fill out this table:
+-	:math:`x` is the variable of interest
+-	:math:`p(x)` is the probability of obtaining that value of :math:`x`
+-	:math:`\mu` is the population average for variable :math:`x`
+-	:math:`\sigma` is the population standard deviation for variable :math:`x`, and is always a positive quantity.
+
+Some questions: 
+
+#.	What is the maximum value of :math:`p(x)` and where does it occur, using the formula above?
+#.	What happens to the shape of :math:`p(x)` as :math:`\sigma` gets larger ?
+#.	What happens to the shape of :math:`p(x)` as :math:`\sigma \rightarrow 0` ?
+#.	Fill out this table:
 
 	.. csv-table:: 
 	   :header: :math:`\\mu`, :math:`\\sigma`, :math:`x`, :math:`p(x)`
@@ -648,9 +644,9 @@ Formal definition for the normal distribution
 		
 Some useful points:
 
-	- :math:`\sigma` is the distance from the mean to the point of inflection
-	- the area from :math:`-\sigma` to :math:`\sigma` is about 70% (68.3% exactly) of the distribution, with about 15% outside the :math:`\pm \sigma` tails
-	- the tail area outside :math:`\pm 2\sigma` is about 5% (2.275 outside each tail)
+	-	:math:`\sigma` is the distance from the mean to the point of inflection
+	-	the area from :math:`-\sigma` to :math:`\sigma` is about 70% (68.3% exactly) of the distribution, with about 15% outside the :math:`\pm \sigma` tails
+	-	the tail area outside :math:`\pm 2\sigma` is about 5% (2.275 outside each tail)
 
 How can you calculate these in R?
 
@@ -682,20 +678,10 @@ This is a common statistical technique, to :index:`standardize a variable`, whic
 
 Consult a statistical table found in most statistical textbooks for the normal distribution. Make sure you can firstly understand how to read the table, should you need to do so in the future. Secondly, duplicate a few entries in the table using R. Then complete these small exercises firstly by estimating what the answer should be, then use both the tables and R to get a more accurate estimate.
 
-#. Assume :math:`x`, the measurement of biological activity for a drug, is normally distributed with mean of 26.2 and standard deviation of 9.2. What is the probability of obtaining an activity reading less than or equal to 30.0?
+#.	Assume :math:`x`, the measurement of biological activity for a drug, is normally distributed with mean of 26.2 and standard deviation of 9.2. What is the probability of obtaining an activity reading less than or equal to 30.0?
 
-	.. raw:: latex
+#.	Assume :math:`x` is the yield for a batch process, with mean of 85 g/L and variance of 16 g/L. What proportion of batch yield values lie between 70 and 95 g/L?
 
-		\vspace{1cm}
-
-
-#. Assume :math:`x` is the yield for a batch process, with mean of 85 g/L and variance of 16 g/L. What proportion of batch yield values lie between 70 and 95 g/L?
-
-	.. raw:: latex
-
-		\vspace{1cm}
-		
-		
 .. _univariate-check-for-normality-qqplot:
 
 Checking for normality: using a q-q plot
@@ -708,9 +694,7 @@ Checking for normality: using a q-q plot
 
 Often we are not sure if a sample of data can be assumed to be normally distributed. This section shows you how to assess if data are normally distributed, or not. 
 
-.. index:: cumulative distribution
-
-Before we look at this method, we need to introduce the concept of the inverse cumulative distribution function (inverse CDF). Recall the **cumulative distribution** is the area underneath the distribution function, :math:`p(z)`, which goes from :math:`-\infty` to :math:`z`. For example, the area from :math:`-\infty` to :math:`z=-1` is about 15%, as we showed earlier, and we use the ``pnorm()`` function in R to calculate that. 
+Before we look at this method, we need to introduce the concept of the inverse :index:`cumulative distribution` function (inverse CDF). Recall the **cumulative distribution** is the area underneath the distribution function, :math:`p(z)`, which goes from :math:`-\infty` to :math:`z`. For example, the area from :math:`-\infty` to :math:`z=-1` is about 15%, as we showed earlier, and we use the ``pnorm()`` function in R to calculate that. 
 	
 .. index:: inverse cumulative distribution
 
@@ -800,7 +784,7 @@ The q-q plot, :index:`quantile-quantile plot`, shows the quantiles of 2 distribu
 :math:`t`-distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. index:: t-distribution
+.. index:: :math:`t`-distribution
 
 Suppose we have a quantity of interest for a process, such as the daily profit per kilogram of raw material, or the viscosity of the final product. After using the methods just described to check for normality, we might be reasonably certain that the data follow a normal distribution. So assuming the quantity is distributed as :math:`\mathcal{N}(\mu, \sigma^2)` **and** by taking independent samples, as shown here in the figure,
 
@@ -811,11 +795,15 @@ Suppose we have a quantity of interest for a process, such as the daily profit p
 
 we can make the following statements:
 
-#. An estimate of the population mean is given by :math:`\overline{x} = \displaystyle  \dfrac{1}{n}  \sum_i^{i=n}{x_i}\qquad\qquad` (*this is not new*)
-#. The estimated population variance is :math:`s^2 =\displaystyle  \frac{1}{n-1}\sum_i^{i=n}{(x_i - \overline{x})^2}\qquad\qquad` (*we've seen this already*)
-#. This is new: the estimated mean, :math:`\overline{x}`, is also normally distributed with mean of :math:`\mu` and variance of :math:`\sigma^2/n`; mathematically: :math:`\displaystyle \overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`. What does this mean and why are we interested in this?  It says that repeated estimates of the mean will be an accurate (unbiased) estimate of the population mean, and interestingly, the variance of that estimate is decreased by using a greater number of samples, :math:`n`, to estimate that mean. This makes intuitive sense: the more **independent** samples of data we have, the lower the error (variance) in our estimate.
-#. Create a new variable :math:`z = \dfrac{\overline{x} - \mu}{s/\sqrt{n}}`, which subtracts off the population mean from our estimate of the mean, and divide through by the variance for :math:`\overline{x}`. If our estimate of the population mean, :math:`\overline{x}`, is accurate, then the numerator is close to zero. Dividing through by :math:`s/\sqrt{n}` firstly makes the :math:`z` variable dimensionless, and secondly, scales :math:`z` up or down according to the certainty we have in our estimate of :math:`\overline{x}`. This new variable :math:`z` is distributed according to the :math:`t`-distribution. We say that :math:`z` follows the :math:`t`-distribution with :math:`n-1` degrees of freedom, where the degrees of freedom refer to those from the calculating the standard deviation.
-#. Note that the new variable :math:`z` only requires we know the population mean (:math:`\mu`), not the population variance; rather we use our estimate of the variance :math:`s/\sqrt{n}` in place of the population variance.
+#.	An estimate of the population mean is given by :math:`\overline{x} = \displaystyle  \dfrac{1}{n}  \sum_i^{i=n}{x_i}\qquad\qquad` (*this is not new*)
+
+#.	The estimated population variance is :math:`s^2 =\displaystyle  \frac{1}{n-1}\sum_i^{i=n}{(x_i - \overline{x})^2}\qquad\qquad` (*we've seen this already*)
+
+#.	This is new: the estimated mean, :math:`\overline{x}`, is also normally distributed with mean of :math:`\mu` and variance of :math:`\sigma^2/n`; mathematically: :math:`\displaystyle \overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`. What does this mean and why are we interested in this?  It says that repeated estimates of the mean will be an accurate (unbiased) estimate of the population mean, and interestingly, the variance of that estimate is decreased by using a greater number of samples, :math:`n`, to estimate that mean. This makes intuitive sense: the more **independent** samples of data we have, the lower the error (variance) in our estimate.
+
+#.	Create a new variable :math:`z = \dfrac{\overline{x} - \mu}{s/\sqrt{n}}`, which subtracts off the population mean from our estimate of the mean, and divide through by the variance for :math:`\overline{x}`. If our estimate of the population mean, :math:`\overline{x}`, is accurate, then the numerator is close to zero. Dividing through by :math:`s/\sqrt{n}` firstly makes the :math:`z` variable dimensionless, and secondly, scales :math:`z` up or down according to the certainty we have in our estimate of :math:`\overline{x}`. This new variable :math:`z` is distributed according to the :math:`t`-distribution. We say that :math:`z` follows the :math:`t`-distribution with :math:`n-1` degrees of freedom, where the degrees of freedom refer to those from the calculating the standard deviation.
+
+#.	Note that the new variable :math:`z` only requires we know the population mean (:math:`\mu`), not the population variance; rather we use our estimate of the variance :math:`s/\sqrt{n}` in place of the population variance.
 
 .. image:: ../figures/univariate/t-distribution-comparison.png
 	:width: 750px
@@ -830,16 +818,16 @@ we can make the following statements:
 	#. the variance estimate, :math:`s` is distributed independently of :math:`y`
 	#. the quantity :math:`s^2` is calculated from normally and independently distributed observations having variance :math:`\sigma^2`.
 
-.. todo:: see p 295 of Devore here for in-class example
+.. TODO: see p 295 of Devore here for in-class example
 
 Calculating the :math:`t`-distribution
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- In R we use the function ``dt(x=..., df=...)`` to give us the values of the probability density values, :math:`p(x)`, of the :math:`t`-distribution (compare this to the ``dnorm(x, mean=..., sd=...)`` function for the normal distribution).
+-	In R we use the function ``dt(x=..., df=...)`` to give us the values of the probability density values, :math:`p(x)`, of the :math:`t`-distribution (compare this to the ``dnorm(x, mean=..., sd=...)`` function for the normal distribution).
 
-- The cumulative area from :math:`-\infty` to :math:`x` under the probability density curve gives us the probability that values less than or equal to :math:`x` could be observed. It is calculated in R using ``pt(q=..., df=...)``. For example, ``pt(1.0, df=8)`` is 0.8267. Compare this to the R function for the normal distribution: ``pnorm(1.0, mean=0, sd=1)`` which returns 0.8413.
+-	The cumulative area from :math:`-\infty` to :math:`x` under the probability density curve gives us the probability that values less than or equal to :math:`x` could be observed. It is calculated in R using ``pt(q=..., df=...)``. For example, ``pt(1.0, df=8)`` is 0.8267. Compare this to the R function for the normal distribution: ``pnorm(1.0, mean=0, sd=1)`` which returns 0.8413.
 
-- And similarly to the ``qnorm`` function which returns the ordinate for a given area under the normal distribution, the function ``qt(0.8267, df=8)`` returns 0.9999857, close enough to 1.0, which is the inverse of the previous example.
+-	And similarly to the ``qnorm`` function which returns the ordinate for a given area under the normal distribution, the function ``qt(0.8267, df=8)`` returns 0.9999857, close enough to 1.0, which is the inverse of the previous example.
 
 
 Using the :math:`t`-distribution
@@ -851,63 +839,37 @@ Let's return to our viscosity example. We take a large bale of polymer composite
 
 Here are 9 sampled values:  ``23, 19, 17, 18, 24, 26, 21, 14, 18``. The sample average is 20 units.
 
-#. Calculate an estimate of the standard deviation.
+#.	Calculate an estimate of the standard deviation.
 
-	.. only:: inst
-
-		:math:`s = 3.81`
+	:math:`s = 3.81`
 	
-#. What is the distribution of the sample average?  What are the parameters of that distribution?
+#.	What is the distribution of the sample average?  What are the parameters of that distribution?
 
-	.. only:: inst
-
-		The sample average is normally distributed as :math:`\mathcal{N}\left(\mu, \sigma^2/n \right)`
+	The sample average is normally distributed as :math:`\mathcal{N}\left(\mu, \sigma^2/n \right)`
 	
-#. Construct an interval, symbolically, that will contain, with 95% certainty (probability), the population mean of the viscosity. Now assume that for some hypothetical reason we know the standard deviation of the bale's viscosity is :math:`\sigma=3.5` units. Using a computer, calculate the population mean's interval numerically.
+#.	Construct an interval, symbolically, that will contain, with 95% certainty (probability), the population mean of the viscosity. Now assume that for some hypothetical reason we know the standard deviation of the bale's viscosity is :math:`\sigma=3.5` units. Using a computer, calculate the population mean's interval numerically.
 
-	.. only:: inst
+	The interval is :math:`\displaystyle \overline{x}  - c_n\frac{\sigma}{\sqrt{n}} < \mu < \overline{x}  + c_n\frac{\sigma}{\sqrt{n}}`. The values of :math:`c_n` are ``qnorm(1 - 0.05/2) = 1.95996``. So there is 95% chance that the interval :math:`\pm \ 2.286` contains :math:`\mu` (2.286 = 3.5/sqrt(9)*1.95996).
 	
-		The interval is :math:`\displaystyle \overline{x}  - c_n\frac{\sigma}{\sqrt{n}} < \mu < \overline{x}  + c_n\frac{\sigma}{\sqrt{n}}`. The values of :math:`c_n` are ``qnorm(1 - 0.05/2) = 1.95996``. So there is 95% chance that the interval :math:`\pm \ 2.286` contains :math:`\mu` (2.286 = 3.5/sqrt(9)*1.95996).
-	
-#. Now construct the :math:`z`-value for the sample average. 
+#.	Now construct the :math:`z`-value for the sample average. 
 
-	- What distribution does this :math:`z`-value follow?  Be specific in your answer.
+	-	What distribution does this :math:`z`-value follow?  Be specific in your answer.
 	
-		.. only:: inst
-
-			It follows the :math:`t`-distribution with 8 degrees of freedom.
+		It follows the :math:`t`-distribution with 8 degrees of freedom.
 		
-	- Calculate the lower and upper bounds of the interval that spans 95\% of the area of this distribution.
+	-	Calculate the lower and upper bounds of the interval that spans 95\% of the area of this distribution.
 	
-		.. raw:: latex
-
-			\vspace{1cm}
-	
-		.. only:: inst
+		From the R software::
 		
-			From the R software::
-		
-				qt(0.025, df=8)  # also check qt(0.975, df=8)
+			qt(0.025, df=8)  # also check qt(0.975, df=8)
 			
-	- Substitute the :math:`z`-value, symbolically, into this interval. What is the interval for the population mean?
+	-	Substitute the :math:`z`-value, symbolically, into this interval. What is the interval for the population mean?
 	
-		.. raw:: latex
-
-			\vspace{1cm}
-	
-		.. only:: inst
-
-			The interval is :math:`\displaystyle \overline{x}  - c_t\frac{s}{\sqrt{n}} < \mu < \overline{x}  + c_t\frac{s}{\sqrt{n}}`. The values of :math:`c_t` are :math:`\pm` ``qt(1 - 0.05/2, df=8) = 2.306004``. So there is 95% chance that the interval :math:`\pm \ 2.929` contains :math:`\mu` (2.929 = 3.81/sqrt(9)*2.306).
+		The interval is :math:`\displaystyle \overline{x}  - c_t\frac{s}{\sqrt{n}} < \mu < \overline{x}  + c_t\frac{s}{\sqrt{n}}`. The values of :math:`c_t` are :math:`\pm` ``qt(1 - 0.05/2, df=8) = 2.306004``. So there is 95% chance that the interval :math:`\pm \ 2.929` contains :math:`\mu` (2.929 = 3.81/sqrt(9)*2.306).
 		
-#. Compare the answers for parts 3 and 4 of the above questions. What is the advantage of the interval calculated in part 4?
+#.	Compare the answers for parts 3 and 4 of the above questions. What is the advantage of the interval calculated in part 4?
 
-	.. raw:: latex
-
-		\vspace{1cm}
-
-	.. only:: inst
-	
-		The interval calculation in part 3 requires knowledge of the standard deviation, which is not always available. The confidence interval when we use the estimate of the standard deviation, :math:`s` is often wider, because the :math:`c_t` value is bigger, indicating our lower certainty in using an estimate of :math:`\sigma`.
+	The interval calculation in part 3 requires knowledge of the standard deviation, which is not always available. The confidence interval when we use the estimate of the standard deviation, :math:`s` is often wider, because the :math:`c_t` value is bigger, indicating our lower certainty in using an estimate of :math:`\sigma`.
 	
 .. sum((x-20) * (x-20)) = 116, DOF=8, s^2 = 116/8 = 14.5, s=3.81. Distribution is normal, mean=\mu, stddev=3.5/sqrt(9) = (3.5^2)/9 = 2.286
 .. s/sqrt(n) = 3.81/sqrt(9) = 1.27
@@ -919,16 +881,16 @@ Here are 9 sampled values:  ``23, 19, 17, 18, 24, 26, 21, 14, 18``. The sample a
 Poisson distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. index:: Poisson distribution, rare events, system failures
+.. index:: rare events, system failures
 
-The Poisson distribution is useful to characterize rare events (number of cell divisions in a small time unit), system failures and breakdowns, or number of flaws on a product (contaminations per cubic millimetre). These are events that have a very small probability of occurring within a given time interval or unit area (e.g. pump failure probability per minute = 0.000002), but there are many opportunities for the event to possibly occur (e.g. the pump runs continuously, but there are many minutes in the day). A key assumption is that the events must be independent. If one pump breaks down, then the other pumps must not be affected; if one flaw is produced per unit area of the product, then other flaws that appear on the product must be independent of the first flaw.
+The :index:`Poisson distribution` is useful to characterize rare events (number of cell divisions in a small time unit), system failures and breakdowns, or number of flaws on a product (contaminations per cubic millimetre). These are events that have a very small probability of occurring within a given time interval or unit area (e.g. pump failure probability per minute = 0.000002), but there are many opportunities for the event to possibly occur (e.g. the pump runs continuously, but there are many minutes in the day). A key assumption is that the events must be independent. If one pump breaks down, then the other pumps must not be affected; if one flaw is produced per unit area of the product, then other flaws that appear on the product must be independent of the first flaw.
 
 Let :math:`n` = number of opportunities for the event to occur. If this is a time-based system, then it would be the number of minutes the pump is running. If it were an area/volume based system, then it might be the number of square inches or cubic millimetres of the product. Let :math:`p` = probability of the event occurring: e.g. :math:`p = 0.000002` chance per minute of failure, or :math:`p = 0.002` of a flaw being produced per square inch.  The rate at which the event occurs is then given by :math:`\eta = np` and is a count of events per unit time or per unit area. A value for :math:`p` can be found using historical data.
 
 There are two important properties:
 
-#. The mean of the distribution is the rate at which the unusual events occur = :math:`\eta = np`
-#. The variance of the distribution is also :math:`\eta`. This property is particularly interesting - state in your own words what this implies.
+#.	The mean of the distribution is the rate at which the unusual events occur = :math:`\eta = np`
+#.	The variance of the distribution is also :math:`\eta`. This property is particularly interesting - state in your own words what this implies.
 
 Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{e^{-\eta}\eta^{x}}{x!}`, with a plot as shown for :math:`\eta = 4`. Please note the lines are only guides, the probability is only defined at the integer values marked with a circle. 
 
@@ -959,8 +921,7 @@ Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{
     > x <- c(0, 1, 3, 6, 10, 15)
     > dpois(x, lambda=6)    # Note: R calls the Poisson parameter 'lambda'
 	[1] 0.0025 0.0149 0.0892 0.161 0.0413 0.001
-	
-	
+
 .. _univariate-confidence-intervals:
 
 Confidence intervals
@@ -968,9 +929,7 @@ Confidence intervals
 
 .. See code in yield-exercise.R for the R source code
 
-.. index:: confidence interval
-
-So far we have calculated point estimates of parameters, called statistics. In the last section in the :math:`t`-distribution we already calculated a confidence interval. In this section we formalize the idea, starting with an example.
+So far we have calculated point estimates of parameters, called statistics. In the last section in the :math:`t`-distribution we already calculated a :index:`confidence interval`. In this section we formalize the idea, starting with an example.
 
 *Example*: a new customer is evaluating your product, they would like a confidence interval for the impurity level in your sulphuric acid. You can tell them: "*the range from 429ppm to 673ppm contains the true impurity level with 95% confidence*". This is a compact representation of the impurity level. You could have told your potential customer that
 
@@ -1038,33 +997,15 @@ Interpreting the confidence interval
 
 -	What happens if the level of confidence is 100%?
 
-	.. only:: studentlatex
-	
-		.. raw:: latex
-	
-			\vspace{1cm}
-
-	.. only:: inst
-	
-		The confidence interval is then infinite. We are 100% certain this infinite range contains the population mean, however this is not a useful interval.
+	The confidence interval is then infinite. We are 100% certain this infinite range contains the population mean, however this is not a useful interval.
 
 -	What happens if we increase the value of :math:`n`?
 
-	.. only:: studentlatex
-
-		.. raw:: latex
-
-			\vspace{1cm}
-
-	.. only:: inst
-
-		As the value of :math:`n` increases, the confidence interval decreases.
+	As the value of :math:`n` increases, the confidence interval decreases.
 		
 -	Returning to the case above, where at the 95% level we found the confidence interval was :math:`[17.1; 22.9]` for the bale's viscosity. What if we were to analyze the bale thoroughly, and found the population viscosity to be 23.2. What is the probability of that occurring?
 
-	.. only:: inst
-
-		Less than 5% of the time.
+	Less than 5% of the time.
 
 Confidence interval for the mean from a normal distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1109,7 +1050,7 @@ In the more realistic case when the variance is unknown we use equation :eq:`CI-
 The values of :math:`c_t` are ``qt(1 - 0.05/2, df=...)`` when we use the 95% confidence interval (2.5% in each tail). This :math:`z`-deviate is distributed according to the :math:`t`-distribution, since we have additional uncertainty when using the variance estimate, :math:`s^2`, instead of the population variance, :math:`\sigma^2`.
 
 Comparison
-^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^
 
 If we have the fortunate case where our estimated variance, :math:`s^2`, is equal to the population variance, :math:`\sigma^2`, then we can compare the 2 intervals in equations :eq:`CI-mean-variance-known` and :eq:`CI-mean-variance-unknown-again`. The only difference would be the value of the :math:`c_n` from the normal distribution and :math:`c_t` from the :math:`t`-distribution. For typical values used as confidence levels, 90% to 99.9%, values of :math:`c_t > c_n` for any degrees of freedom. 
 
@@ -1192,15 +1133,18 @@ Comparison to a long-term reference set
 
 Continuing the above example we can compare the past 10 runs from system B with the 10 runs from system A. The average difference between these runs is :math:`\overline{x}_B - \overline{x}_A = 82.93 - 79.89 = 3.04` units of improved yield. Now, if we have a long-term reference data set available, we can compare if any 10 historical, sequential runs, followed by another 10 historical, sequential runs had a difference that was this great. If not, then we know that system B leads to a definite improvement, not likely to be caused by chance alone.
 
-	#. Imagine that we have have 300 historical data points from this system, tabulated in time order: yield from batch 1, 2, 3 ... (the data appear on the `website <http://datasets.connectmv.com/info/batch-yields>`_).
-	#. Calculate the average yields from batches 1 to 10. Then calculate the average yield from batches 11 to 20. Notice that this is exactly like the experiment we performed when we acquired data for system. Two groups of 10 batches, with the groups formed from sequential batches.
-	#. Now subtract these two averages: (group average 11 to 20) minus (group average 1 to 10).
-	#. Repeat steps 2 and 3, but use batches 2 to 11 and 12 to 21. Repeat until all historical batch data are used up and the plot below can be drawn from these difference values.
+	#.	Imagine that we have have 300 historical data points from this system, tabulated in time order: yield from batch 1, 2, 3 ... (the data appear on the `website <http://datasets.connectmv.com/info/batch-yields>`_).
 	
-	.. image:: ../figures/univariate/system-comparison-dotplot-grouped.png
-		:width: 750px
-		:align: center
-		:scale: 100
+	#.	Calculate the average yields from batches 1 to 10. Then calculate the average yield from batches 11 to 20. Notice that this is exactly like the experiment we performed when we acquired data for system. Two groups of 10 batches, with the groups formed from sequential batches.
+	
+	#.	Now subtract these two averages: (group average 11 to 20) minus (group average 1 to 10).
+	
+	#.	Repeat steps 2 and 3, but use batches 2 to 11 and 12 to 21. Repeat until all historical batch data are used up and the plot below can be drawn from these difference values.
+	
+		.. image:: ../figures/univariate/system-comparison-dotplot-grouped.png
+			:width: 750px
+			:align: center
+			:scale: 100
 	
 The vertical line at 3.04 is the difference value recorded between system B and system A.  From this we can see that historically, there were 31 out of 281 batches (11% of historical data) that had a difference value of 3.04 or greater. So there is a 11% probability that system B was better than system A purely by chance, and not due to any technical superiority. Given this information, we can now judge, if the improved control system will be economically viable and judge, based on internal company criteria, if this is a suitable investment.
 
@@ -1241,10 +1185,13 @@ How could the assumption of independence (random sampling) be made more realisti
 
 The usual approach for assessing if the difference between :math:`\overline{x}_B - \overline{x}_A` is significant follows this approach:
 
-	#. Assume the data for sample A and sample B have been independently sampled from their respective populations.
-	#. Assume the data for sample A and sample B have the same population variance, :math:`\sigma_A = \sigma_B = \sigma` (there is a test for this, see the next section)
-	#. Let the sample A have population mean :math:`\mu_A` and sample B have population mean :math:`\mu_B`
-	#. From the central limit theorem (this is where the assumption of independence of the samples within each group comes), we know that:
+	#.	Assume the data for sample A and sample B have been independently sampled from their respective populations.
+	
+	#.	Assume the data for sample A and sample B have the same population variance, :math:`\sigma_A = \sigma_B = \sigma` (there is a test for this, see the next section)
+	
+	#.	Let the sample A have population mean :math:`\mu_A` and sample B have population mean :math:`\mu_B`
+	
+	#.	From the central limit theorem (this is where the assumption of independence of the samples within each group comes), we know that:
 
 		.. math::
 			:nowrap:
@@ -1253,23 +1200,23 @@ The usual approach for assessing if the difference between :math:`\overline{x}_B
 					\mathcal{V}\left\{\overline{x}_A\right\} = \frac{\sigma^2_A}{n_A} &\qquad\qquad & \mathcal{V}\left\{\overline{x}_B\right\} = \frac{\sigma^2_B}{n_B}
 				\end{alignat*}
 	
-	#. Assuming independence again, but this time between groups, the means of each sample group would be independent as well, i.e. :math:`\overline{x}_A` and :math:`\overline{x}_B` are independent. This implies that:
+	#.	Assuming independence again, but this time between groups, the means of each sample group would be independent as well, i.e. :math:`\overline{x}_A` and :math:`\overline{x}_B` are independent. This implies that:
 	
 		.. math::
 		   :label: add-variance
 		
 					\mathcal{V}\left\{\overline{x}_B - \overline{x}_A\right\} = \frac{\sigma^2}{n_A} + \frac{\sigma^2}{n_B} = \sigma^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)
 			
-	#. Using the central limit theorem, even if the samples in A and the samples in B are non-normal, the sample averages :math:`\overline{x}_A` and :math:`\overline{x}_B` will be much more normal, even for small sample sizes. So the difference between these means will also be more normal: :math:`\overline{x}_B - \overline{x}_A`. Now express this difference in the form of a :math:`z`-deviate:
+	#.	Using the central limit theorem, even if the samples in A and the samples in B are non-normal, the sample averages :math:`\overline{x}_A` and :math:`\overline{x}_B` will be much more normal, even for small sample sizes. So the difference between these means will also be more normal: :math:`\overline{x}_B - \overline{x}_A`. Now express this difference in the form of a :math:`z`-deviate:
 	
 		.. math::
 			:label: zvalue-for-difference
 
 			z = \frac{(\overline{x}_B - \overline{x}_A) - (\mu_B - \mu_A)}{\sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}}
 				
-	 We could ask, what is the probability of seeing a :math:`z` value from equation :eq:`zvalue-for-difference` of that magnitude?  Recall that this :math:`z`-value is the equivalent of :math:`\overline{x}_B - \overline{x}_A`, expressed in deviation form, and we are interested if this difference is due to chance. So we should ask, what is the probability of getting a value of :math:`z` **greater** than this? 
+	 	We could ask, what is the probability of seeing a :math:`z` value from equation :eq:`zvalue-for-difference` of that magnitude?  Recall that this :math:`z`-value is the equivalent of :math:`\overline{x}_B - \overline{x}_A`, expressed in deviation form, and we are interested if this difference is due to chance. So we should ask, what is the probability of getting a value of :math:`z` **greater** than this? 
 		
-	 The only question remains is what is a suitable value for :math:`\sigma`?  As we have seen before, when we have a large enough reference set, then we can use the value of :math:`\sigma` from the historical data, called an *external estimate*. Or we can use an *internal estimate* of spread; both approaches are discussed below.
+		The only question remains is what is a suitable value for :math:`\sigma`?  As we have seen before, when we have a large enough reference set, then we can use the value of :math:`\sigma` from the historical data, called an *external estimate*. Or we can use an *internal estimate* of spread; both approaches are discussed below.
 	
 
 ..	ON USING CONFIDENCE INTERVAL  #. A confidence limit for :math:`z` can be formed, and if this limit includes zero, then we have some evidence that there may not be long term improvement, i.e. we have some evidence that :math:`\mu_B - \mu_A` may be zero. 
@@ -1308,28 +1255,20 @@ Discuss whether these experiments lead to :index:`independent data <single: inde
 	
 	b)	We are testing an alternative, cheaper raw material in our process, but want to be sure our product's final properties are unaffected. Our raw material dispensing system will need to be modified to dispense material B. This requires the production line to be shut down for 15 hours while the new dispenser, lent from the supplier, is installed. The new supplier has given us 8 representative batches of their new material to test, and each test will take 3 hours. We are inclined to run these 8 batches over the weekend: set up the dispenser on Friday night (15 hours), run the tests from Saturday noon to Sunday noon, then return the line back to normal for Monday's shift. How might we violate the assumptions required by the data analysis steps above when we compare 8 batches of material A (collected on Thursday and Friday) to the 8 batches from material B?  What might we do to avoid these problems?
 	
-		- The 8 tests are run sequentially, so **any changes** in conditions between these 8 runs and the 8 runs from material A will be confounded (confused) in the results. List some actual scenarios how confounding between the weekday and weekend experiments occur:
+		-	The 8 tests are run sequentially, so **any changes** in conditions between these 8 runs and the 8 runs from material A will be confounded (confused) in the results. List some actual scenarios how confounding between the weekday and weekend experiments occur:
 	
-			.. only:: studentlatex
-		
-				- 
-				-
-				-
-				-
+			-	For example, the staff running the equipment on the weekend are likely not the same staff that run the equipment on weekdays. 
 			
-			.. only:: inst
-		
-				- For example, the staff running the equipment on the weekend are likely not the same staff that run the equipment on weekdays. 
-				- The change in the dispenser may have inadvertently modified other parts of the process, and in fact the dispenser itself might be related to product quality. 
-				- The samples from the tests will be collected and only analyzed in the lab on Monday, whereas the samples from material A are normally analyzed on the same day - that waiting period may degrade the sample. 
+			-	The change in the dispenser may have inadvertently modified other parts of the process, and in fact the dispenser itself might be related to product quality. 
+			
+			-	The samples from the tests will be collected and only analyzed in the lab on Monday, whereas the samples from material A are normally analyzed on the same day - that waiting period may degrade the sample. 
 			
 		 This confounding with all these other, potential factors means that we will not be able to determine whether material B caused a true difference, or whether it was due to the other conditions.
 		
-		- It is certainly expensive and impractical to randomize the runs in this case. Randomization would mean we randomly run the 16 tests, with the A and B chosen in random order, e.g. ``A B A B A A B B A A B B B A B A``. This particular randomization sequence would require changing the dispenser 9 times. 
-		
-			
-		- One suboptimal sequence of running the system is ``A A A A B B B B A A A A B B B B``. This requires changing the dispenser 4 times (one extra change to get the system back to material A). We run each (``A A A A B B B B``) sequence on two different weekends, changing the operating staff between the two groups of 8 runs, making sure the sample analysis follows the usual protocols, and so on, then we reduced the chance of confounding the results. 
-		
+		-	It is certainly expensive and impractical to randomize the runs in this case. Randomization would mean we randomly run the 16 tests, with the A and B chosen in random order, e.g. ``A B A B A A B B A A B B B A B A``. This particular randomization sequence would require changing the dispenser 9 times. 
+
+		-	One suboptimal sequence of running the system is ``A A A A B B B B A A A A B B B B``. This requires changing the dispenser 4 times (one extra change to get the system back to material A). We run each (``A A A A B B B B``) sequence on two different weekends, changing the operating staff between the two groups of 8 runs, making sure the sample analysis follows the usual protocols, and so on, then we reduced the chance of confounding the results. 
+
 Randomization might be expensive and time-consuming in some studies, but it is the insurance we require to avoid being misled. These two examples demonstrate this principle: **block what you can and randomize what you cannot**. We will review these concepts again in the :ref:`design and analysis of experiments section <SECTION-design-analysis-experiments>`. If the change being tested is expected to improve the process, then we must follow these precautions to avoid a process upgrade/modification  that does not lead to the expected improvement; or the the converse - a missed opportunity. 
 
 
@@ -1339,8 +1278,6 @@ External and internal estimates of spread
 So to recap the progress so far, we are aiming to test if there is a *significant, long-term difference* between two systems: A and B. We showed the most reliable way to test this difference is to compare it with a body of historical data, with the comparison made in the same way as when the data from system A and B were acquired; this requires no additional assumptions. 
 
 But, because we do not always have a large and relevant body of data available, we can calculate the difference between A and B and test if this difference could have occurred by chance alone. For that we use equation :eq:`zvalue-for-difference`, but we need an estimate of spread.
-
-
 
 .. Then, because we do not always have a large, relevant body of data available, we can calculate the difference between A and B and test if this difference lies in a confidence interval that includes zero. We highlighted several assumptions required to generate this confidence interval, noting that these assumptions are quite demanding.
 
@@ -1353,7 +1290,6 @@ But, because we do not always have a large and relevant body of data available, 
 	.. todo:: this is a one-sided :math:`t`-test: why is the CI symmetric?
 	
 .. AS BEFORE, DO NOT use confidence limits here. Perhaps if you rework the example to be one where we test for no-difference, then a CI would work nicely.
-
 
 **External estimate of spread**
 
@@ -1419,21 +1355,26 @@ As an aside: we used a normal distribution for the external :math:`\sigma` and a
 
 The results from this section were achieved by only using the 20 experimental runs, no external data. However, it made some strong assumptions: 
 
-	- The variances of the two samples are comparable, and can :ref:`therefore be pooled <univariate-pooled-variance>` to provide an estimate of :math:`\sigma` 
-	- The usual assumption of independence within each sample is made (which we know not to be true for many practical engineering cases)
-	- The assumption of independence between the samples is also made (this is more likely to be true, because the first runs to acquire data for A are not likely to affect the runs for system B)
-	- Each sample, A and B, is assumed to be normally distributed
+	-	The variances of the two samples are comparable, and can :ref:`therefore be pooled <univariate-pooled-variance>` to provide an estimate of :math:`\sigma`
+	 
+	-	The usual assumption of independence within each sample is made (which we know not to be true for many practical engineering cases)
+	
+	-	The assumption of independence between the samples is also made (this is more likely to be true, because the first runs to acquire data for A are not likely to affect the runs for system B)
+	
+	-	Each sample, A and B, is assumed to be normally distributed
 
 Summary
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Let's compare the 3 estimates. Recall our aim is to convince ourself/someone that system B will have better long-term performance than the current system A. 
 
-If we play devil's advocate, our *null hypothesis* is that system B has no effect. Then it is up to us to prove, convincingly, that the change has a systematic, permanent effect. That is what the calculated probabilities represent, the probability of us being wrong. 
+If we play devil's advocate, our *null hypothesis* is that system B has no effect. Then it is up to us to prove, convincingly, that the change has a systematic, permanent effect. That is what the calculated probabilities represent, the probability of us being wrong.
 
-	#. Using only reference data: 11% (about 1 in 10)
-	#. Using the 20 experimental runs, but an external estimate of :math:`\sigma`: 15.2% (about 1 in 7)
-	#. Using the 20 experimental runs only, no external data: 16.3% (about 1 in 6)
+	#.	Using only reference data: 11% (about 1 in 10)
+	
+	#.	Using the 20 experimental runs, but an external estimate of :math:`\sigma`: 15.2% (about 1 in 7)
+	
+	#.	Using the 20 experimental runs only, no external data: 16.3% (about 1 in 6)
 
 The reference data method shows that the trial with 10 experiments of method B could have actually been taken from the historical data with a chance of 11%. A risk adverse company may want this number to be around 5%, or as low as 1% (1 in 100), which essentially guarantees the new system will have better performance. 
 
@@ -1458,12 +1399,12 @@ This confidence interval finds a region in which the normal distribution's varia
 .. math::
 	\left[\frac{(n-1)S^2}{\chi^2_{n-1, \alpha/2}} \quad\text{to}\quad \frac{(n-1)S^2}{\chi^2_{n-1, 1-\alpha/2}} \right]
 
-- :math:`n` is the number of samples
-- :math:`S^2` is the sample variance
-- :math:`\chi^2_{n-1, \alpha/2}` are values from the :math:`\chi^2` distribution with :math:`n-1` and :math:`\alpha/2` degrees of freedom 
-- :math:`1-\alpha`: is the level of confidence, usually 95%, so :math:`\alpha = 0.05` in that case.
+-	:math:`n` is the number of samples
+-	:math:`S^2` is the sample variance
+-	:math:`\chi^2_{n-1, \alpha/2}` are values from the :math:`\chi^2` distribution with :math:`n-1` and :math:`\alpha/2` degrees of freedom 
+-	:math:`1-\alpha`: is the level of confidence, usually 95%, so :math:`\alpha = 0.05` in that case.
 
-	.. todo:: give some R code still
+.. todo: give some R code still
 
 .. _univariate-pooled-variance:
 
@@ -1489,13 +1430,12 @@ where we use :math:`F_{\alpha/2, \nu_1, \nu_2}` to mean the point along the cumu
 
 .. Source: Devore, Probability and Statistics, 5th edition, p.392-395
 
-
 Confidence interval for proportions: the binomial proportion confidence interval
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. index:: 
 	single: confidence interval; for proportions
-	
+
 Sometimes we measure the proportion of successes (passes). For example, if we take a sample of :math:`n` independent items from our production line, and with an inspection system we can judge pass or failure. The proportion of passes is what is important, and we wish to construct a confidence region for the population *proportion*. This allows one to say the population proportion of passes lies between the given range. As in *the proportion of packaged pizzas with 20 or more pepperoni slices is between 86 and 92\%*.
 
 Incidentally, it is this confidence interval that is used in polls to judge the proportion of people that prefer a political party. One can run this confidence interval backwards and ask: how many independent people do I need to poll to achieve a population proportion that lies within a range of :math:`\pm 2\%`, 19 times out of 20?  The answer actually is function of the poll result!  But the worst case scenario is a split-poll, and that requires 2400 respondents.
@@ -1506,8 +1446,6 @@ Incidentally, it is this confidence interval that is used in polls to judge the 
 	A confidence interval gives an engineer a sense of the precision of a parameter from a distribution. The engineer can then use their judgement to determine if that confidence interval is important to them or not. For example, knowing that your plastic product has a melting point of 455K to 495K, with 95% probability, can be used by your customer, e.g. 3M, to judge whether that product is suitable in their extruders. 
 
 	A hypothesis test, or test of significance as it is also known, is use to make a statement, and then verify that statement. For example, 3M could say, we tried 8 samples of your plastic, and the average melting point for the 8 samples was 500K. Is that normal?  You product specification says your melting point is in the range 455K to 495K, with 95% probability. 
-
-
 
 	 455K to 495K. So then you go perform a hypothesis test to verify if 500K is reasonable. Your hypothesis is that 500K is not unusual. The alternative hypothesis is that 500K is unusual.
 
@@ -1538,9 +1476,11 @@ Paired tests
 
 A :index:`paired test` is a test that is run twice on the same object or batch of materials. You might see the nomenclature of "two treatments" being used in the literature. For example: 
 
-	- A drug trial is run in two parts: each person randomly receives a placebo or the drug, then 3 weeks later they receive the opposite, for another 3 weeks. Tests are run at 3 weeks and 6 weeks and the difference in the test result is recorded.
-	- We are testing two different additives, A and B, where the additive is applied to a base package. Several base packages are received from a supplier, supposedly uniform. Split that base package into 2 parts, and run additive A and B on each half. Measure the outcome variable and record the difference.
-	- We are testing a new coating to repel moisture. The coating is applied to randomly selected sheets in a pattern [AB] or [BA] (the pattern choice is made randomly). We measure the repellent property value and record the difference.
+	-	A drug trial is run in two parts: each person randomly receives a placebo or the drug, then 3 weeks later they receive the opposite, for another 3 weeks. Tests are run at 3 weeks and 6 weeks and the difference in the test result is recorded.
+	
+	-	We are testing two different additives, A and B, where the additive is applied to a base package. Several base packages are received from a supplier, supposedly uniform. Split that base package into 2 parts, and run additive A and B on each half. Measure the outcome variable and record the difference.
+	
+	-	We are testing a new coating to repel moisture. The coating is applied to randomly selected sheets in a pattern [AB] or [BA] (the pattern choice is made randomly). We measure the repellent property value and record the difference.
 	
 .. Is this really a paired test? A new polymer is tested for surgical gloves. Physicians are randomly assigned a glove with the new polymer on one hand and the current polymer on the other hand. There is no visual difference.
 
@@ -1549,8 +1489,11 @@ In each case we have a table of :math:`n` samples recording the difference value
 The advantage of the paired test is that any :index:`systematic error` in our measurement system, what ever it might be, is removed as long as that error is consistent. Say for example we are measuring blood pressure, and the automated blood pressure device has a bias of +10 mmHg. This systematic error will cancel out when we subtract the 2 test readings. The disadvantage of the paired test is that we loose degrees of freedom. Let's see how:
 
 	#.	Calculate the :math:`n` differences: :math:`w_1 = x_{B,1} - x_{A,1}; w_2 = x_{B,2} - x_{A,2}, \ldots` to create the sample of values :math:`w = [w_1, w_2, \ldots, w_n]`
+	
 	#.	Assume these values, :math:`w`, are independent, because they are taken on independent objects (people, base packages, sheets of paper, *etc*)
+	
 	#.	Calculate the mean, :math:`\overline{w}` and the standard deviation, :math:`s_w`, of these :math:`n` difference values. 
+	
 	#.	What do we need to assume about the population from which :math:`w` comes?  Nothing. We are not interested in the :math:`w` values, we are interested in :math:`\overline{w}`. OK, so what distribution would values of :math:`\overline{w}` come from?  By the central limit theorem, the :math:`\overline{w}` values should be normally distributed. What are the population parameters?  We will say :math:`\overline{w} \sim \mathcal{N}\left(\mu_w, \sigma_w^2/n \right)`, where :math:`\mu_w = \mu_{A-B}`.
 	
 	#.	Now calculate the :math:`z`-value, but use the sample standard deviation, instead of the population standard deviation.

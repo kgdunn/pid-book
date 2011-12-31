@@ -2,6 +2,7 @@
 .. todo:: spectral data question
 .. todo:: batch data question
 
+.. todo:: add to slides: http://www.r-bloggers.com/one-liners-which-make-me-love-r-make-your-data-dance-hans-rosling-style-with-googlevis-rstats/
 
 In context
 ==========
