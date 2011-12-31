@@ -714,9 +714,8 @@ Consult a statistical table found in most statistical textbooks for the normal d
 Checking for normality: using a q-q plot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. index:: q-q plot
-
-.. index::
+.. index:: 
+	single: quantile-quantile plot (q-q plot)
 	single: normal distribution; check if
 
 Often we are not sure if a sample of data can be assumed to be normally distributed. This section shows you how to judge if data are normally distributed, or not. 
@@ -792,7 +791,7 @@ A built-in function exists in R that runs the above calculations and shows a sca
 	
 The R plot rescales the :math:`y`-axis (sample quantiles) back to the original units to make interpretation easier. We expect some departure from the 45 degree line due to the fact that these are only a sample of data. However, large deviation indicates the data are not normally distributed. An error region, or confidence envelope, may be superimposed around the 45 degree line.
 
-The q-q plot, :index:`quantile-quantile plot`, shows the quantiles of 2 distributions against each other. In fact, we can use the horizontal axis for any distribution, it need not be the theoretical normal distribution. We might be interested if our data follow an :math:`F`-distribution then we could use the quantiles for that theoretical distribution on the horizontal axis.
+The q-q plot, quantile-quantile plot, shows the quantiles of 2 distributions against each other. In fact, we can use the horizontal axis for any distribution, it need not be the theoretical normal distribution. We might be interested if our data follow an :math:`F`-distribution then we could use the quantiles for that theoretical distribution on the horizontal axis.
 
 We can use the q-q plot to compare any 2 *samples of data*, even if they have different values of :math:`N`, by calculating the quantiles for each sample at different step quantiles (e.g. 1, 2, 3, 4, 5, 10, 15, .... 95, 96, 97, 98, 99), then plot the q-q plot for the two samples. You can calculate quantiles for any sample of data using the ``quantile`` function in R. The simple example below shows how to compare the q-q plot for 1000 normal distribution samples against 2000 :math:`F`-distribution samples. Even though the histogram of the :math:`F`-distribution samples looks normal to the eye, the q-q plot quickly confirms it is definitely not normal, particularly, that the right-tail is too heavy.
 
@@ -1439,7 +1438,7 @@ Confidence interval for the ratio of two variances
 .. index:: 
 	single: confidence interval; ratio of variances
 
-One way to test whether we can pool (combine) two variances, taken from two different *normal distributions*, is to construct the ratio: :math:`\dfrac{s^2_1}{s^2_2}`. We can construct a confidence interval, and if this interval contains the value of 1.0, then we have no evidence to presume they are different (i.e. we can assume the two population variances are similar).
+One way to test whether we can pool (combine) two variances, taken from two different normal distributions, is to construct the ratio: :math:`\dfrac{s^2_1}{s^2_2}`. We can construct a confidence interval, and if this interval contains the value of 1.0, then we have no evidence to presume they are different (i.e. we can assume the two population variances are similar).
 
 .. math::	
 	:nowrap:
@@ -1542,6 +1541,11 @@ The advantage of the paired test is that any :index:`systematic error` in our me
 
 Statistical tables for the normal- and :math:`t`-distribution
 ============================================================================
+
+.. index::
+	single: statistical tables
+	single: normal distribution; table for
+	single: t-distribution; table for
 
 .. image:: ../figures/univariate/Statistical-tables/Statistical-tables.*
 	:scale: 110
