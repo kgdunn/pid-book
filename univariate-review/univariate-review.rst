@@ -332,7 +332,7 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 **Distribution**
 
-	Distributions are used to provide a much smaller summary of many data points. Histograms, discussed above, are one way of visualizing a distribution. We will look at various distributions :ref:`in the next section <univariate_distributions>`.
+	Distributions are used to provide a much smaller summary of many data points. Histograms, discussed above, are one way of visualizing a distribution. We will look at various distributions in the next section.
 
 **Probability**
 	
@@ -357,6 +357,8 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 **Mean (location)**
 	
+	.. _univariate_calculate_mean:
+	
 	The :index:`mean`, or :index:`average`, is a measure of :index:`location` of the distribution. For each measurement, :math:`x_i`, in your sample
 
 	.. math::
@@ -380,9 +382,9 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 **Variance (spread)**
 
-	.. index:: spread
+	.. _univariate_calculate_variance:
 
-	A :index:`measure of spread`, or :index:`variance`, is useful to quantify your distribution. 
+	A measure of :index:`spread`, or :index:`variance`, is useful to quantify your distribution. 
 
 	.. math::
 		:nowrap:
@@ -447,21 +449,16 @@ We review a couple of concepts that you should have seen in prior statistical wo
 	Enrichment reading: read pages *1 to 8* of "`Tutorial to Robust Statistics <http://dx.doi.org/10.1002/cem.1180050103>`_", PJ Rousseeuw, *Journal of Chemometrics*, **5**, 1-20, 1991.
 
 
-.. _univariate_distributions:
+.. For each of the distributions:
+.. #.	show a typical plot of the probability function :math:`p(x)` against the variable's value :math:`x`
+.. #.	learn when to use that distribution (we will show some examples)
+.. #.	know what the parameters of the distribution are
 
-Distributions
-===============
 
-For each of the distributions we will:
+.. _univariate_binary_distribution:
 
-#.	show a typical plot of the probability function :math:`p(x)` against the variable's value :math:`x`
-#.	learn when to use that distribution (we will show some examples)
-#.	know what the parameters of the distribution are
-
-.. _univariate-binary-distribution:
-
-Binary (Bernoulli distribution)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Binary (Bernoulli) distribution
+================================
 
 .. index:: binary distribution, Bernoulli distribution
 
@@ -503,7 +500,7 @@ Another example: you work in a company that produces tablets. The machine create
 	-	Are you surprised by the large difference in the number of defective tablets for only a small increase in :math:`p`?
 	
 Uniform distribution
-~~~~~~~~~~~~~~~~~~~~
+=====================
 
 A :index:`uniform distribution` arises when an observation's value is equally as likely to occur as all the other recorded values. The classic example are dice: each face of a die is equally as likely to show up as any of the others. This forms a discrete, uniform distribution.
 
@@ -538,12 +535,12 @@ You can simulate uniformly distributed random numbers in most software packages.
 A continuous, uniform distribution arises when there is equal probability of every measurement occurring within a given lower- and upper-bound. This sort of phenomena is not often found in practice. Usually, continuous measurements follow some other distribution, of which we will discuss the normal and :math:`t`-distribution next.
 
 Normal distribution
-~~~~~~~~~~~~~~~~~~~
+====================
 
 Before introducing the normal distribution, we first look at two important concepts: the Central limit theorem, and the concept of independence.
 
 Central limit theorem 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~
 
 The :index:`Central limit theorem` plays an important role in the theory of probability and in the derivation of the normal distribution. We don't prove this theorem here, but we only use the result:
 
@@ -570,7 +567,7 @@ As one sees from the above figures, the distribution from these averages quickly
 What is the engineering significance of this averaging process (which is really just a weighted summ)?  Many of the quantities we measure are bulk properties, such as viscosity, density, or particle size. We can conceptually imagine that the bulk property measured is the combination of the same property, measured on smaller and smaller components. Even if the value measured on the smaller component is not normally distributed, the bulk property will be as if it came from a normal distribution.
 
 Independence 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~
 
 The assumption of :index:`independence` is widely used in statistical work and is a condition for using the central limit theorem. 
 
@@ -619,7 +616,7 @@ We frequently violate this assumption of independence in engineering application
 
 
 Formal definition for the normal distribution
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. index:: 
 	single: normal distribution; formal definition
@@ -697,7 +694,7 @@ The values of the mean and standard deviation are either the population paramete
 
 For example, if our values of :math:`x_i` come from a normal distribution with mean of 34.2 and variance of 55. Then we could write :math:`x \sim \mathcal{N}(34.2, 55)`, which is short-hand notation of saying the same thing. The equivalent :math:`z`-values for these :math:`x` data would be: :math:`z_i = \dfrac{x_i - 34.2}{\sqrt{55}}`. 
 
-This transformation to standard form **does not change the distribution** of the original :math:`x`, it only changes the parameters of the distribution. You can easily prove to yourself that :math:`z` is normally distributed as :math:`z \sim \mathcal{N}(0.0, 1.0)`. So statistical tables only report the area under the distribution of this :math:`z` value.
+This transformation to standard form **does not change the distribution** of the original :math:`x`, it only changes the parameters of the distribution. You can easily prove to yourself that :math:`z` is normally distributed as :math:`z \sim \mathcal{N}(0.0, 1.0)`. So statistical tables only report the area under the distribution of a :math:`z` value with mean of zero, and unit variance..
 
 This is a common statistical technique, to :index:`standardize a variable`, which we will see several times. Standardization takes our variable from :math:`x \sim \mathcal{N}(\text{some mean}, \text{some variance})` and converts it to :math:`z \sim \mathcal{N}(0.0, 1.0)`. It is just as easy to go backwards, from a given :math:`z`-value and return back to our original :math:`x`-value.
 
@@ -712,7 +709,7 @@ Consult a statistical table found in most statistical textbooks for the normal d
 .. _univariate-check-for-normality-qqplot:
 
 Checking for normality: using a q-q plot
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. index:: 
 	single: quantile-quantile plot (q-q plot)
@@ -812,30 +809,121 @@ We can use the q-q plot to compare any 2 *samples of data*, even if they have di
 	:align: center
 	:width: 750px
 
+Introduction to confidence intervals from the normal distribution
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We introduce the concept of confidence intervals here as a straightforward application of the normal distribution, Central limit theorem, and standardization.
+
+Suppose we have a quantity of interest from a process, such as the daily profit. We have many measurements of this profit, and we can easily calculate the **average** profit. But we know that if we take a different data set of profit values and calculate the average, we will get a similar, but different average. The question we want an answer to is:
+
+	What is the range within which the true (population) average value lies?  E.g. give a range for the true daily profit per kilogram of raw material.
+	
+This range is called a confidence interval. We will use an example to show how to calculate this range.
+
+Let's take :math:`n` values of this daily profit value, let's say :math:`n=5`.
+
+#.	An estimate of the population mean is given by :math:`\overline{x} = \displaystyle  \dfrac{1}{n}  \sum_i^{i=n}{x_i}\qquad\qquad` (we :ref:`saw this before <univariate_calculate_mean>`)
+
+#.	The estimated population variance is :math:`s^2 =\displaystyle  \frac{1}{n-1}\sum_i^{i=n}{(x_i - \overline{x})^2}\qquad` (we also :ref:`saw this before <univariate_calculate_variance>`)
+
+#.	This is new: the estimated mean, :math:`\overline{x}`, is a value that is also normally distributed with mean of :math:`\mu` and variance of :math:`\sigma^2/n`, with only one requirement: that each of the :math:`x_i` values are independent of each other. 
+
+	Mathematically we write: :math:`\displaystyle \overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`.
+
+	This important results helps answer our question above. It says that repeated estimates of the mean will be an accurate, unbiased estimate of the population mean, and interestingly, the variance of that estimate is decreased by using a greater number of samples, :math:`n`, to estimate that mean. This makes intuitive sense: the more **independent** samples of data we have, the better our estimate (better implies lower error, or lower variance).
+	
+	We can illustrate this result as shown here:
+	
+	.. image:: ../figures/univariate/explain-confidence-interval.png
+		:alt:	../figures/univariate/explain-confidence-interval.R
+		:scale: 80
+		:width: 750px
+		:align: center
+
+	The true population (but unknown to us) profit value is $700.
+
+	-	The 5 samples come from the distribution given by the thinner line: :math:`\displaystyle x \sim \mathcal{N}\left(\mu, \sigma^2\right)`
+	-	The :math:`\overline{x}` average comes from the distribution given by the thicker line: :math:`\displaystyle \overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`.
+	
+#.	If we were to create :math:`z` values for each :math:`x_i` raw sample point, we would write:
+
+	.. math::
+	
+		z_i = \frac{x_i - \mu}{\sigma}
+		
+#.	The :math:`z`-value for :math:`\overline{x}` would be:
+
+	.. math::
+	
+		z = \dfrac{\overline{x} - \mu}{\sigma / \sqrt{n}}
+
+	which subtracts off the unknown population mean from our estimate of the mean, and divides through by the standard deviation for :math:`\overline{x}`.
+	
+	We can illustrate this as:
+	
+	.. image:: ../figures/univariate/explain-confidence-interval-normalized.png
+		:alt:	../figures/univariate/explain-confidence-interval.R
+		:scale: 80
+		:width: 750px
+		:align: center
+	
+#.	Using the known normal distribution for :math:`\displaystyle \overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`, we can find the vertical, dashed red lines shown in the previous figure, that contain 95% of the area under the distribution for :math:`\overline{x}`.
+
+#.	These vertical lines are symmetrical about 0, and we will call them :math:`-c_n` and :math:`+c_n`, where the subscript :math:`n` refers to the fact that they are from the normal distribution (it doesn't refer to the :math:`n` samples). From the preceding section on q-q plots we can calculate the :math:`c_n` value from R using: ``qnorm(1 - 0.05/2)``, so that there is 2.5% area in each tail.
+
+#.	Finally, we construct an interval for the true population mean, :math:`\mu`, using the standard form:
+
+	.. math::
+			:label: CI-mean-variance-known
+
+			\begin{array}{rcccl} 
+				  - c_n                                      &\leq& \displaystyle \frac{\overline{x} - \mu}{\sigma/\sqrt{n}} &\leq &  +c_n\\
+				\overline{x}  - c_n \dfrac{\sigma}{\sqrt{n}} &\leq&  \mu                                                     &\leq& \overline{x}  + c_n\dfrac{\sigma}{\sqrt{n}} \\
+				  \text{LB}                                  &\leq&  \mu                                                     &\leq& \text{UB}
+			\end{array}
+
+	Notice that the lower and upper bounds are a function of the known sample mean, :math:`\overline{x}`, the values for :math:`c_n` which we chose, the known sample size, :math:`n`, and the unknown population standard deviation, :math:`\sigma`.
+	
+	So to estimate our bounds we must know the value of this population standard deviation. This is not very likely. (I can't think of any practical cases where we know the population standard deviation, but not the population mean, which is the quantity we are constructing this range for.)
+	
+	This is why the :math:`t`-distribution is required.
+
 
 :math:`t`-distribution
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=======================
 
 .. index:: t-distribution
 
-Suppose we have a quantity of interest for a process, such as the daily profit per kilogram of raw material, or the viscosity of the final product. After using the methods just described to check for normality, we might be reasonably certain that the data follow a normal distribution. So assuming the quantity is distributed as :math:`\mathcal{N}(\mu, \sigma^2)` **and** by taking independent samples, as shown here in the figure,
+Suppose we have a quantity of interest from a process, such as the daily profit per kilogram of raw material. We have several measurements of this profit, and we can easily calculate the average profit per kilogram. But we know that if we take a different data set for the daily profit and calculate the average, we will get a similar, but different value. The question we want an answer to is:
+
+	What is the range within which the true average value lies?  E.g. the range for the true daily profit per kilogram of raw material.
+	
+We require the :math:`t`-distribution to answer this important question. This same question is exactly the same as constructing and interpreting a :index:`confidence interval`, which we look at in more detail :ref:`later on <univariate-confidence-intervals>`.
+
+The :math:`t`-distribution principle is shown below. We require that quantity that we are measuring to come from a normal distribution: :math:`\mathcal{N}(\mu, \sigma^2)`; it is easy to verify this using the q-q plot method, just described above. Next, we must be sure these measurements, :math:`x_i` are independent.
 
 .. image:: ../figures/univariate/t-distribution-derivation.png
 	:width: 750px
 	:align: center
 	:scale: 65
 
-we can make the following statements:
+We can make the following statements:
 
-#.	An estimate of the population mean is given by :math:`\overline{x} = \displaystyle  \dfrac{1}{n}  \sum_i^{i=n}{x_i}\qquad\qquad` (*this is not new*)
+#.	An estimate of the population mean is given by :math:`\overline{x} = \displaystyle  \dfrac{1}{n}  \sum_i^{i=n}{x_i}\qquad\qquad` (we :ref:`saw this before <univariate_calculate_mean>`)
 
-#.	The estimated population variance is :math:`s^2 =\displaystyle  \frac{1}{n-1}\sum_i^{i=n}{(x_i - \overline{x})^2}\qquad\qquad` (*we've seen this already*)
+#.	The estimated population variance is :math:`s^2 =\displaystyle  \frac{1}{n-1}\sum_i^{i=n}{(x_i - \overline{x})^2}\qquad\qquad` (we also :ref:`saw this before <univariate_calculate_variance>`)
 
-#.	This is new: the estimated mean, :math:`\overline{x}`, is also normally distributed with mean of :math:`\mu` and variance of :math:`\sigma^2/n`; mathematically: :math:`\displaystyle \overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`. What does this mean and why are we interested in this?  It says that repeated estimates of the mean will be an accurate (unbiased) estimate of the population mean, and interestingly, the variance of that estimate is decreased by using a greater number of samples, :math:`n`, to estimate that mean. This makes intuitive sense: the more **independent** samples of data we have, the lower the error (variance) in our estimate.
+#.	This is new: the estimated mean, :math:`\overline{x}`, is a value that is also normally distributed with mean of :math:`\mu` and variance of :math:`\sigma^2/n`; mathematically: :math:`\displaystyle \overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`. 
 
-#.	Create a new variable :math:`z = \dfrac{\overline{x} - \mu}{s/\sqrt{n}}`, which subtracts off the population mean from our estimate of the mean, and divide through by the variance for :math:`\overline{x}`. If our estimate of the population mean, :math:`\overline{x}`, is accurate, then the numerator is close to zero. Dividing through by :math:`s/\sqrt{n}` firstly makes the :math:`z` variable dimensionless, and secondly, scales :math:`z` up or down according to the certainty we have in our estimate of :math:`\overline{x}`. This new variable :math:`z` is distributed according to the :math:`t`-distribution. We say that :math:`z` follows the :math:`t`-distribution with :math:`n-1` degrees of freedom, where the degrees of freedom refer to those from the calculating the standard deviation.
+	This important results helps answer our question above. It says that repeated estimates of the mean will be an accurate, unbiased estimate of the population mean, and interestingly, the variance of that estimate is decreased by using a greater number of samples, :math:`n`, to estimate that mean. This makes intuitive sense: the more **independent** samples of data we have, the better our estimate (better implies lower error, or lower variance).
+
+#.	Create a new variable :math:`z = \dfrac{\overline{x} - \mu}{s/\sqrt{n}}`, which subtracts off the unknown population mean from our estimate of the mean, and divide through by the standard deviation for :math:`\overline{x}`. If our estimate of the population mean, :math:`\overline{x}`, is accurate, then the numerator is close to zero. Dividing through by :math:`s/\sqrt{n}` firstly makes the :math:`z` variable dimensionless, and secondly, scales :math:`z` up or down according to the certainty (or error) we have in our estimate of :math:`\overline{x}`. 
+
+	This new variable :math:`z` is known to be distributed according to the :math:`t`-distribution. We say that :math:`z` follows the :math:`t`-distribution with :math:`n-1` degrees of freedom, where the degrees of freedom refer to those from the calculating the estimated standard deviation, :math:`s`
 
 #.	Note that the new variable :math:`z` only requires we know the population mean (:math:`\mu`), not the population variance; rather we use our estimate of the variance :math:`s/\sqrt{n}` in place of the population variance.
+
+The :math:`t` and normal distribution are very similar in appearance: the :math:`t`-distribution peaks slightly lower than the normal distribution, but it has broader tails. The total area under both curves illustrated here is 1.0.
 
 .. image:: ../figures/univariate/t-distribution-comparison.png
 	:width: 750px
@@ -853,7 +941,7 @@ we can make the following statements:
 .. TODO: see p 295 of Devore here for in-class example
 
 Calculating the :math:`t`-distribution
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -	In R we use the function ``dt(x=..., df=...)`` to give us the values of the probability density values, :math:`p(x)`, of the :math:`t`-distribution (compare this to the ``dnorm(x, mean=..., sd=...)`` function for the normal distribution).
 
@@ -863,23 +951,49 @@ Calculating the :math:`t`-distribution
 
 
 Using the :math:`t`-distribution
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There is no practical engineering sense is showing the formal definition of the :math:`t`-distribution, `look it up in a reference <http://en.wikipedia.org/wiki/Student%27s_t-distribution>`_ if you are interested. But in R, we use the ``dt(x, df=...)`` function to give us the values of the :math:`t`-distribution for a given value of :math:`x` which has been computed with ``df`` degrees of freedom. We use the :math:`t`-distribution in calculations related to a sample *mean*, and it is the sample mean that is used as the :math:`x` value in the distribution. This is why the distribution is only a function of the degrees of freedom.
+The mathematical definition of the :math:`t`-distribution can be `looked up in a reference <http://en.wikipedia.org/wiki/Student%27s_t-distribution>`_ if you are interested, since there isn't too much practical engineering sense is showing it. Rather we will look at the major application of the distribution for calculating a range within which the true average (i.e. population average) value lies.
 
-Let's return to our viscosity example. We take a large bale of polymer composite from our line and using good sampling techniques, we take 9 independent samples from the bale and measure the viscosity in the lab for each sample. These samples are independent estimates of the population (bale) viscosity. We will believe these samples follow a normal distribution (we could confirm this in practice by running tests and verifying the samples are normally distributed). 
+..  But in R, we use the ``dt(x, df=...)`` function to give us the values of the :math:`t`-distribution for a given value of :math:`x` which has been computed with ``df`` degrees of freedom. We use the :math:`t`-distribution in calculations related to a sample *mean*, and it is the sample mean that we use as the :math:`z` value, on the :math:`x`-axis in the distribution. This is why the distribution is only a function of the degrees of freedom.
 
-Here are 9 sampled values:  ``23, 19, 17, 18, 24, 26, 21, 14, 18``. The sample average is 20 units.
+Let's use an example of a large cube of polymer composite produced on our process. Calculating the viscosity of this polymer is a destructive laboratory test. Using 9 independent samples taken from this polymer cube, we measure each sample's viscosity in the lab. We would like to estimate the entire cube's average viscosity, which is easily done by taking the average of the 9 viscosity values.
+
+But if we repeat this process with a different set of 9 samples we will get a different average viscosity. So we recognize the average of a sample of data, is itself just a single sample of the population's average. What is more helpful is to have **a range**, given by a lower and upper bound, that we can say the true population mean lies within.
+
+Let's see how we can calculate that from the 9 sampled values: ``23, 19, 17, 18, 24, 26, 21, 14, 18``. 
+
+#.	The average of these nine values is :math:`\overline{x} = 20` units.
+
+#.	Using the Central limit theorem, what is the distribution from which :math:`\overline{x}` comes?
+
+		:math:`\overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n \right)`
+		
+#.	Assume, for some reason, that we know the population viscosity standard deviation is :math:`\sigma=3.5` units. Calculate a lower and upper bound for :math:`\mu`:
+
+		Using the above d
+
+
+
+#.	We can confirm these 9 samples are normally distributed by using a q-q plot (not shown). This is the first requirement to use the :math:`t`-distribution.
+
+#.	Assume the samples are independent estimates of the population viscosity (the second requirement to use the :math:`t`-distribution).
 
 #.	Calculate an estimate of the standard deviation.
 
-	:math:`s = 3.81`
+		:math:`s = 3.81`
 	
 #.	What is the distribution of the sample average?  What are the parameters of that distribution?
 
-	The sample average is normally distributed as :math:`\mathcal{N}\left(\mu, \sigma^2/n \right)`
+		The sample average is normally distributed as :math:`\mathcal{N}\left(\mu, \sigma^2/n \right)`
 	
-#.	Construct an interval, symbolically, that will contain, with 95% certainty (probability), the population mean of the viscosity. Now assume that for some hypothetical reason we know the standard deviation of the bale's viscosity is :math:`\sigma=3.5` units. Using a computer, calculate the population mean's interval numerically.
+#.	Construct an interval, symbolically, that will contain the population mean of the viscosity. 
+
+
+
+, with 95% certainty (probability),
+
+Now assume that for some hypothetical reason we know the standard deviation of the bale's viscosity is :math:`\sigma=3.5` units. Using a computer, calculate the population mean's interval numerically.
 
 	The interval is :math:`\displaystyle \overline{x}  - c_n\frac{\sigma}{\sqrt{n}} < \mu < \overline{x}  + c_n\frac{\sigma}{\sqrt{n}}`. The values of :math:`c_n` are ``qnorm(1 - 0.05/2) = 1.95996``. So there is 95% chance that the interval :math:`\pm \ 2.286` contains :math:`\mu` (2.286 = 3.5/sqrt(9)*1.95996).
 	
@@ -911,7 +1025,7 @@ Here are 9 sampled values:  ``23, 19, 17, 18, 24, 26, 21, 14, 18``. The sample a
 .. another example
 	
 Poisson distribution
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=======================
 
 .. index:: rare events, system failures
 
