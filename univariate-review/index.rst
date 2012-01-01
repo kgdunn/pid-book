@@ -8,4 +8,4 @@ Univariate Data Analysis
    :maxdepth: 2
 
    univariate-review
-..   univariate-exercises
+   univariate-exercises

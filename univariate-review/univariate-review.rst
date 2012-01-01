@@ -336,7 +336,7 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 **Probability**
 	
-	The area under a plot of relative frequency distribution is equal to 1. :index:`Probability` is then the fraction of the area under the frequency distribution curve (also called density curve).
+	The area under a plot of relative frequency distribution is equal to 1. :index:`Probability <single: probability>` is then the fraction of the area under the frequency distribution curve (also called density curve).
 	
 	Superimpose on your histograms drawn earlier:
 	
@@ -434,7 +434,7 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 **Median absolute deviation, MAD (robust measure of spread)**
 
-	A robust measure of :index:`spread` is the :index:`MAD`, the :index:`median absolute deviation`.  The name is descriptive of how the MAD is computed:
+	A robust measure of :index:`spread` is the :index:`MAD`, the :index:`median absolute deviation <see: median absolute deviation; MAD>`.  The name is descriptive of how the MAD is computed:
 
 	.. math::
 	
@@ -1105,7 +1105,7 @@ Confidence intervals
 
 .. See code in yield-exercise.R for the R source code
 
-.. index:: ! confidence interval
+.. index:: confidence interval
 
 So far we have calculated point estimates of parameters, called statistics. In the last section in the :math:`t`-distribution we already calculated a confidence interval. In this section we formalize the idea, starting with an example.
 
@@ -1125,9 +1125,9 @@ Calculating a confidence interval requires we find a range within which that :ma
 		
 		
 		\begin{array}{rcccl} 
-			  - c_t                                              &\leq& \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}} &\leq &  +c_t\\
-			\overline{x}  - c_t \dfrac{s}{\sqrt{n}}                   &\leq&  \mu                                                 &\leq& \overline{x}  + c_t\dfrac{s}{\sqrt{n}} \\
-			  \text{LB}                                          &\leq&  \mu                                                 &\leq& \text{UB}
+			  - c_t                                  &\leq& \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}} &\leq &  +c_t\\
+			\overline{x}  - c_t \dfrac{s}{\sqrt{n}}  &\leq&  \mu                                                &\leq& \overline{x}  + c_t\dfrac{s}{\sqrt{n}} \\
+			  \text{LB}                              &\leq&  \mu                                                &\leq& \text{UB}
 		\end{array}
 	
 The values of :math:`c_t` are ``qt(1 - 0.05/2, df=8) = 2.306004`` when we used the 95% confidence interval (2.5% in each tail). We calculated that LB = 20.0 - 2.92 = 17.1 and that UB = 20.0 + 2.92 = 22.9.  
@@ -1225,7 +1225,6 @@ This implies the confidence limits are wider for the case when the variance is u
 
 .. Plot these in R to verify:  plot(seq(0,1,0.01), qt(seq(0,1,0.01), df=2)); lines(seq(0,1,0.01), qnorm(seq(0,1,0.01)))
 
-	
 Testing for differences and similarity
 ========================================
 

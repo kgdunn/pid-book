@@ -4,7 +4,7 @@ Exercises
 .. index::
 	pair: exercises; univariate data
 
-.. question::	
+.. question::
 
 	Recall that :math:`\mu = \mathcal{E}(x) = \dfrac{1}{N}\sum{x}` and :math:`\mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} = \sigma^2 = \dfrac{1}{N}\sum{(x-\mu)^2}`. 
 
@@ -29,7 +29,7 @@ Exercises
 
 .. question::
 
-	Characterizing a distribution: Compute the mean, median, standard deviation and MAD for salt content for the various soy sauces given `in this report <http://beta.images.theglobeandmail.com/archive/00245/Read_the_report_245543a.pdf>`_ (page 41) as described in the the article from the `Globe and Mail <http://www.theglobeandmail.com/life/health/salt-variation-between-brands-raises-call-for-cuts/article1299117/>`_ on 24 September 2009.  Plot a box plot of the data and report the interquartile range (IQR). Comment on the 3 measures of spread you have calculated: standard deviation, MAD, and interquartile range.
+	Characterizing a distribution: Compute the mean, median, standard deviation and MAD for salt content for the various soy sauces given `in this report <http://beta.images.theglobeandmail.com/archive/00245/Read_the_report_245543a.pdf>`_ (page 41) as described in the the article from the `Globe and Mail <http://www.theglobeandmail.com/life/health/salt-variation-between-brands-raises-call-for-cuts/article1299117/>`_ on 24 September 2009. Plot a box plot of the data and report the interquartile range (IQR). Comment on the 3 measures of spread you have calculated: standard deviation, MAD, and interquartile range.
 	
 	The raw data are given below in units of milligrams of salt per 15 mL serving::
 		
@@ -47,19 +47,19 @@ Exercises
 		:width: 400px
 		:scale: 50
 	
-	Note that the units of spread are the same as the variable being quantified.  The IQR is 240 mg salt/15 mL serving.  The standard deviation (202 mg salt/15 mL serving), and MAD (193 mg salt/15 mL serving), are 2 other ways to quantify the spread of the data.   Note that the IQR, for normally distributed data, will only be consistent if you divide the result by 1.349.  Read the help for the ``IQR`` function in R for more details.  Note from the code how the IQR is a *distance* between two points.
+	Note that the units of spread are the same as the variable being quantified. The IQR is 240 mg salt/15 mL serving. The standard deviation (202 mg salt/15 mL serving), and MAD (193 mg salt/15 mL serving), are 2 other ways to quantify the spread of the data.  Note that the IQR, for normally distributed data, will only be consistent if you divide the result by 1.349. Read the help for the ``IQR`` function in R for more details. Note from the code how the IQR is a *distance* between two points.
 
-	In this example the numbers are mostly in agreement, because there are no major outliers.  The MAD and IQR are two robust methods of quantifying spread, while the standard deviation is extremely sensitive to outliers - due to the squaring of residuals about the mean.   You can verify this by replacing one of the values and recalculating the numbers.
+	In this example the numbers are mostly in agreement, because there are no major outliers. The MAD and IQR are two robust methods of quantifying spread, while the standard deviation is extremely sensitive to outliers - due to the squaring of residuals about the mean.  You can verify this by replacing one of the values and recalculating the numbers.
 
 .. question::
 
-	Give a reason why Statistics Canada reports the median income when reporting income by geographic area.  Where would you expect the mean to lie, relative to the median?  Use `this table <http://www40.statcan.gc.ca/l01/cst01/famil107a-eng.htm>`_ to look up the income for Hamilton.  How does it compare to Toronto?  And all of Canada?
+	Give a reason why Statistics Canada reports the median income when reporting income by geographic area. Where would you expect the mean to lie, relative to the median?  Use `this table <http://www40.statcan.gc.ca/l01/cst01/famil107a-eng.htm>`_ to look up the income for Hamilton. How does it compare to Toronto?  And all of Canada?
 
 .. answer::
 
-	We described how easily the :ref:`mean is influenced by unusual data points <univariate-median>`.  Take any group of people anywhere in the world, and there will always be a few who earn lots of money (not everyone can be the CEO, especially of a bank!).  Also, since no one earns negative income, the distribution piles up at the left, with fewer people on the right. This implies that the mean will lie above the median, since 50% of the histogram area must lie below the median, by definition. A previous student pointed out that low income earners are less likely to file tax returns, so they are underrepresented in the data.
+	We described how easily the :ref:`mean is influenced by unusual data points <univariate-median>`. Take any group of people anywhere in the world, and there will always be a few who earn lots of money (not everyone can be the CEO, especially of a bank!). Also, since no one earns negative income, the distribution piles up at the left, with fewer people on the right. This implies that the mean will lie above the median, since 50% of the histogram area must lie below the median, by definition. A previous student pointed out that low income earners are less likely to file tax returns, so they are underrepresented in the data.
 
-	Even though the median is a more fair way of reporting income, and :index:`robust <single: robustness; example>` to unusual earners (many low income earners, very few super-rich), I would prefer if Statistics Canada released a histogram - that would tell a lot more - even just the the MAD, or IQR would be informative.  It was surprising that Hamilton showed higher median earnings per family than Toronto. I infer from this that there are more low income earners in Toronto and Canada than in Hamilton, but without the histograms it is hard to be sure.  Also, I wasn't able to find exactly what StatsCan means by a family - did they include single people as a "family"?  Maybe there are more, wealthy singles in Toronto, but they are aren't included in the numbers.  The median income *per person* would be a useful statistic to help judge that.
+	Even though the median is a more fair way of reporting income, and :index:`robust <single: robustness; example>` to unusual earners (many low income earners, very few super-rich), I would prefer if Statistics Canada released a histogram - that would tell a lot more - even just the the MAD, or IQR would be informative. It was surprising that Hamilton showed higher median earnings per family than Toronto. I infer from this that there are more low income earners in Toronto and Canada than in Hamilton, but without the histograms it is hard to be sure. Also, I wasn't able to find exactly what StatsCan means by a family - did they include single people as a "family"?  Maybe there are more, wealthy singles in Toronto, but they are aren't included in the numbers. The median income *per person* would be a useful statistic to help judge that.
 
 .. question::
 
@@ -67,11 +67,11 @@ Exercises
 
 		- How many variables in the data set?
 		- How many observations?
-		- The data are properties of a powder.  Plot each variable, one at a time, and locate any outliers.  R-users will benefit from `the R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ (see the use of the ``identify`` function).
+		- The data are properties of a powder. Plot each variable, one at a time, and locate any outliers. R-users will benefit from `the R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ (see the use of the ``identify`` function).
 		
 .. answer::
 
-	See the code below that generates the plots.   Outliers were identified by visual inspection of these plots.  Recall an outlier is an unusual/interesting point, and a function of the surrounding data.  You can use a box plot to locate *preliminary* outliers, but recognize that you are leaving the computer to determine what is unusual.  Automated outlier detection systems work moderately well, but there is no substitute (yet!) for visual inspection of the data.
+	See the code below that generates the plots.  Outliers were identified by visual inspection of these plots. Recall an outlier is an unusual/interesting point, and a function of the surrounding data. You can use a box plot to locate *preliminary* outliers, but recognize that you are leaving the computer to determine what is unusual. Automated outlier detection systems work moderately well, but there is no substitute (yet!) for visual inspection of the data.
 
 	The same few samples appear to be outliers in most of the variables.
 
@@ -110,17 +110,17 @@ Exercises
 
 	*	Sometimes used to maintain the process variability within a desired tolerance limit (or standard deviation).
 
-	*	Lowers the variability of the process outputs (i.e., narrow the distribution) by actually introducing *greater* variability into the process, to counteract external variation in the the process inputs.  For example, variation from the raw materials, or ambient conditions, such as seasonal temperature are process inputs.
+	*	Lowers the variability of the process outputs (i.e., narrow the distribution) by actually introducing *greater* variability into the process, to counteract external variation in the the process inputs. For example, variation from the raw materials, or ambient conditions, such as seasonal temperature are process inputs.
 
-	*	Feedback control allows us to move the process operation closer to targets, without less likelihood of deviation outside these limits.  (In the next section on process monitoring we will learn how to track and quantify this).
+	*	Feedback control allows us to move the process operation closer to targets, without less likelihood of deviation outside these limits. (In the next section on process monitoring we will learn how to track and quantify this).
 
 .. question::
 
-	Use the section on `Historical data <http://climate.weatheroffice.gc.ca/climateData/canada_e.html>`_ from Environment Canada's website and use the ``Customized Search`` option to obtain data for the ``HAMILTON A`` station from 2000 to 2009.  Use the settings as ``Year=2000``, and ``Data interval=Monthly`` and request the data for 2000, then click ``Next year`` to go to 2001 and so on. 
+	Use the section on `Historical data <http://climate.weatheroffice.gc.ca/climateData/canada_e.html>`_ from Environment Canada's website and use the ``Customized Search`` option to obtain data for the ``HAMILTON A`` station from 2000 to 2009. Use the settings as ``Year=2000``, and ``Data interval=Monthly`` and request the data for 2000, then click ``Next year`` to go to 2001 and so on. 
 
 		-	For each year from 2000 to 2009, get the total snowfall and the average of the ``Mean temp`` over the whole year (the sums and averages are reported at the bottom of the table).
 		-	Plot these 2 variables against time
-		-	Now retrieve the long-term averages for these data `from a different section of their website <http://climate.weatheroffice.gc.ca/climate_normals/index_e.html>`_ (use the same location, ``HAMILTON A``, and check that the data range is 1971 to 2000).  Superimpose the long-term average as a horizontal line on your previous plot.
+		-	Now retrieve the long-term averages for these data `from a different section of their website <http://climate.weatheroffice.gc.ca/climate_normals/index_e.html>`_ (use the same location, ``HAMILTON A``, and check that the data range is 1971 to 2000). Superimpose the long-term average as a horizontal line on your previous plot.
 		-	**Note**: the purpose of this exercise is more for you to become comfortable with web-based data retrieval, which is common in most companies.
 		-	**Note**: please use any other city for this question if you prefer.
 
@@ -130,7 +130,7 @@ Exercises
 	.. Snow:     170.9, 94.1, 138.0, 166.2, 175.8, 218.4, 56.6, 182.4, 243.2,   avg=161.8
 	.. MeanTemp: 7.6,   8.8,  8.8,   7.3,   7.7,   8.2,   9.1 , 8.2,  7.7
 
-	These are the data, and the code to plot the results.  The temperature for the last decade trended higher than the average for the prior 3 decades, 1971 to 2000.
+	These are the data, and the code to plot the results. The temperature for the last decade trended higher than the average for the prior 3 decades, 1971 to 2000.
  
 	.. literalinclude:: ../figures/univariate/hamilton-weather-data.R
 		:language: s
@@ -157,18 +157,18 @@ Exercises
 		:language: s
 		:lines: 1-19
 
-	The above source code was used to generate these plots to answer the question.  The data do appear to follow a normal distribution.  This means we can calculate the mean and standard deviation from the data.
+	The above source code was used to generate these plots to answer the question. The data do appear to follow a normal distribution. This means we can calculate the mean and standard deviation from the data.
 
 		-	Mean number of visits = 22 visits
 		-	Standard deviation of the number of visits = 8.3 visits
 		-	Probability that there are between 10 and 30 visits to the site each day: 75.3%
 		
-	We should use the :math:`t`-distribution to answer the last part, but at this stage we had not yet looked at the :math:`t`-distribution.  However, the large number of observations (214) means the :math:`t`-distribution is no different than the normal distribution.
+	We should use the :math:`t`-distribution to answer the last part, but at this stage we had not yet looked at the :math:`t`-distribution. However, the large number of observations (214) means the :math:`t`-distribution is no different than the normal distribution.
 
 
 .. question::
 
-	The ammonia concentration in your wastewater treatment plant is measured every 6 hours.  The data for one year are available from the `dataset website <http://datasets.connectmv.com/info/ammonia>`_. 
+	The ammonia concentration in your wastewater treatment plant is measured every 6 hours. The data for one year are available from the `dataset website <http://datasets.connectmv.com/info/ammonia>`_. 
 
 	#.	Use a visualization plot to hypothesize from which distribution the data might come. Which distribution do you think is most likely? Once you've decided on a distribution, use a qq-plot to test your decision.
 	#.	Estimate location and spread statistics assuming the data are from a normal distribution. You can investigate using the ``fitdistr`` function in R, in the MASS package.
@@ -190,7 +190,7 @@ Exercises
 	
 	#.	Assuming the data are normal, we can calculate the distribution's parameters as :math:`\overline{x} = \hat{\mu} = 36.1` and :math:`s= \hat{\sigma} = 8.52`.
 	
-	#.	The fact that the data are not independent is not an issue.  To calculate estimates of the parameter's distribution (the mean and standard deviation) we do not need to assume independence.  One way to see this: if I randomly reorder the data, I will still get the same value for the mean and standard deviation.  The assumption of independence is required for the central limit theorem, but we have not used that theorem here.
+	#.	The fact that the data are not independent is not an issue. To calculate estimates of the parameter's distribution (the mean and standard deviation) we do not need to assume independence. One way to see this: if I randomly reorder the data, I will still get the same value for the mean and standard deviation. The assumption of independence is required for the central limit theorem, but we have not used that theorem here.
 		
 	#.	The probability of having an ammonia concentration greater than 40 mg/L:
 		
@@ -201,17 +201,17 @@ Exercises
 
 .. question::
 
-	We take a large bale of polymer composite from our production line and using good sampling techniques, we take 9 samples from the bale and measure the viscosity in the lab for each sample. These samples are independent estimates of the population (bale) viscosity. We will believe these samples follow a normal distribution (we could confirm this in practice by running tests and verifying that samples from any bale are normally distributed).  Here are 9 sampled values: ``23, 19, 17, 18, 24, 26, 21, 14, 18``.  
+	We take a large bale of polymer composite from our production line and using good sampling techniques, we take 9 samples from the bale and measure the viscosity in the lab for each sample. These samples are independent estimates of the population (bale) viscosity. We will believe these samples follow a normal distribution (we could confirm this in practice by running tests and verifying that samples from any bale are normally distributed). Here are 9 sampled values: ``23, 19, 17, 18, 24, 26, 21, 14, 18``. 
 
 		- The sample average
 		- An estimate of the standard deviation
 		- What is the distribution of the sample average, :math:`\overline{x}`? What are the parameters of that distribution?
 
-	              *Additional information*: I use a group of samples and calculate the mean, :math:`\overline{x}`, then I take another group of samples and calculate another :math:`\overline{x}`, and so on.  Those values of :math:`\overline{x}` are not going to be the same, but they should be similar.  In other words, the :math:`\overline{x}` also has a distribution.  So this question asks what that distribution is, and what its parameters are.
+	              *Additional information*: I use a group of samples and calculate the mean, :math:`\overline{x}`, then I take another group of samples and calculate another :math:`\overline{x}`, and so on. Those values of :math:`\overline{x}` are not going to be the same, but they should be similar. In other words, the :math:`\overline{x}` also has a distribution. So this question asks what that distribution is, and what its parameters are.
 
 		- Construct an interval, symbolically, that will contain, with 95% certainty (probability), the population mean of the viscosity.
 
-			*Additional information*: To answer this part, you should move everything to :math:`z`-coordinates first.  Then you need to find the points :math:`-c` and :math:`+c` in the following diagram that mark the boundary for a 95% of the total area under the distribution.  This region is an interval that will contain, with 95% certainty, the population mean of the viscosity, :math:`\mu`.  Write your answer in form: :math:`\text{LB} < \mu < \text{UB}`.
+			*Additional information*: To answer this part, you should move everything to :math:`z`-coordinates first. Then you need to find the points :math:`-c` and :math:`+c` in the following diagram that mark the boundary for a 95% of the total area under the distribution. This region is an interval that will contain, with 95% certainty, the population mean of the viscosity, :math:`\mu`. Write your answer in form: :math:`\text{LB} < \mu < \text{UB}`.
 
 			.. figure:: ../figures/univariate/show-confidence-interval.png
 				:width: 500px
@@ -231,7 +231,7 @@ Exercises
 	-	Sample average = 20
 	-	Sample standard deviation = 3.81
 	-	By the central limit theorem, and if the samples are taken independently, the mean, :math:`\overline{x} \sim \mathcal{N}\left(\mu, \sigma/\sqrt{n}\right)`
-	-	The z-value for :math:`\overline{x}` can be constructed as :math:`z = \dfrac{\overline{x} - \mu}{\sigma/\sqrt{n}}`.  An interval within which we can find :math:`\mu` with 95\% certainty is given below where :math:`c_n` is found from the normal distribution, and in R: ``qnorm(0.975) = 1.959964``, approximately 1.96.
+	-	The z-value for :math:`\overline{x}` can be constructed as :math:`z = \dfrac{\overline{x} - \mu}{\sigma/\sqrt{n}}`. An interval within which we can find :math:`\mu` with 95\% certainty is given below where :math:`c_n` is found from the normal distribution, and in R: ``qnorm(0.975) = 1.959964``, approximately 1.96.
 
 	.. math::
 		\begin{array}{rcccl} 
@@ -244,7 +244,7 @@ Exercises
 	
 .. question::
 
-	You are responsible for the quality of maple syrup produced at your plant.  Historical data show that the standard deviation of the syrup viscosity is 40 cP.  How many lab samples of syrup must you measure so that an estimate of the syrup's long-term average viscosity is inside a **range** of 60 cP, 95% of the time.  This question is like the previous one: except this time you are given the range of the interval :math:`\text{UB}\,-\,\text{LB}`, and you need to find :math:`n`.
+	You are responsible for the quality of maple syrup produced at your plant. Historical data show that the standard deviation of the syrup viscosity is 40 cP. How many lab samples of syrup must you measure so that an estimate of the syrup's long-term average viscosity is inside a **range** of 60 cP, 95% of the time. This question is like the previous one: except this time you are given the range of the interval :math:`\text{UB}\,-\,\text{LB}`, and you need to find :math:`n`.
 	
 .. answer::
 	:fullinclude: no 
@@ -267,7 +267,7 @@ Exercises
 
 .. question::
 
-	Your manager is asking for the average viscosity of a product that you produce in a batch process.  Recorded below are the 12 most recent values, taken from consecutive batches.  State any assumptions, and clearly show the calculations which are required to estimate a 95% confidence interval for the mean.  Interpret that confidence interval for your manager, who is not sure what a confidence interval is.
+	Your manager is asking for the average viscosity of a product that you produce in a batch process. Recorded below are the 12 most recent values, taken from consecutive batches. State any assumptions, and clearly show the calculations which are required to estimate a 95% confidence interval for the mean. Interpret that confidence interval for your manager, who is not sure what a confidence interval is.
 
 	.. math::
 		\text{Raw data:} &\qquad [13.7,\, 14.9,\, 15.7,\, 16.1,\, 14.7,\, 15.2,\, 13.9,\, 13.9,\, 15.0,\, 13.0,\, 16.7,\, 13.2] \\
@@ -279,14 +279,14 @@ Exercises
 .. answer::
 	:fullinclude: no 
 	
-	The confidence interval for a mean requires the assumption that the individual numbers are taken from a normal distribution, and they are sampled independently (no sample has an effect on the others).  Under these assumptions we can calculate a :math:`z`-value for the sampled mean, :math:`\overline{x}`, and construct upper and lower bounds reflecting the probability of sampling that :math:`z`-value.
+	The confidence interval for a mean requires the assumption that the individual numbers are taken from a normal distribution, and they are sampled independently (no sample has an effect on the others). Under these assumptions we can calculate a :math:`z`-value for the sampled mean, :math:`\overline{x}`, and construct upper and lower bounds reflecting the probability of sampling that :math:`z`-value.
 	
 	.. math::
 		\begin{array}{rcccl}
 		-c_n &\leq& \dfrac{\overline{x} - \mu}{\sigma/\sqrt{n}} &\leq& c_n \\
 		\end{array}
 		
-	Since we don't know the value of :math:`\sigma`, we use the sampled value, :math:`s=1.16`.  But this means our :math:`z`-value is no longer normally distributed, rather it is :math:`t`-distributed.  The limits, :math:`\pm c_t` that contain 95% of the area under the :math:`t`-distribution, with 11 degrees of freedom, are 2.20 (or any close approximation from the tables provided).  From this we get the confidence interval:
+	Since we don't know the value of :math:`\sigma`, we use the sampled value, :math:`s=1.16`. But this means our :math:`z`-value is no longer normally distributed, rather it is :math:`t`-distributed. The limits, :math:`\pm c_t` that contain 95% of the area under the :math:`t`-distribution, with 11 degrees of freedom, are 2.20 (or any close approximation from the tables provided). From this we get the confidence interval:
 	
 	.. math::
 		\begin{array}{rcccl}
@@ -295,16 +295,16 @@ Exercises
 			13.93 &\leq& \mu &\leq& 15.41
 		\end{array}
 	
-	This confidence interval means that we have 95% confidence that the true average viscosity lies within these bounds.  If we took 100 groups of 12 samples, then the limits calculated from 95 of those groups are expected to contain the true mean.  It is **incorrect** to say that there is 95% probability the true mean lies within these bounds; the true mean is fixed, there is no probability associated with it.
+	This confidence interval means that we have 95% confidence that the true average viscosity lies within these bounds. If we took 100 groups of 12 samples, then the limits calculated from 95 of those groups are expected to contain the true mean. It is **incorrect** to say that there is 95% probability the true mean lies within these bounds; the true mean is fixed, there is no probability associated with it.
 
 .. question::
 
-	A new wastewater treatment plant is being commissioned and part of the commissioning report requires a statement of the confidence interval of the `biochemical oxygen demand (BOD) <http://en.wikipedia.org/wiki/Biochemical_oxygen_demand>`__.  How many samples must you send to the lab to be sure the true BOD is within a range of 2 mg/L, centered about the sample average?  If there isn't enough information given here, specify your own numbers and assumptions and work with them to answer the question.
+	A new wastewater treatment plant is being commissioned and part of the commissioning report requires a statement of the confidence interval of the `biochemical oxygen demand (BOD) <http://en.wikipedia.org/wiki/Biochemical_oxygen_demand>`__. How many samples must you send to the lab to be sure the true BOD is within a range of 2 mg/L, centered about the sample average?  If there isn't enough information given here, specify your own numbers and assumptions and work with them to answer the question.
 
 .. answer::
 	:fullinclude: no 
 
-	The objective is to calculate :math:`n`, the number of samples.  Let :math:`\overline{x}` be the average of these :math:`n` samples, and this will be distributed according to the normal distribution with mean and standard deviation as shown below, if the samples are taken independently (which may not be possible in practice!):
+	The objective is to calculate :math:`n`, the number of samples. Let :math:`\overline{x}` be the average of these :math:`n` samples, and this will be distributed according to the normal distribution with mean and standard deviation as shown below, if the samples are taken independently (which may not be possible in practice!):
 
 	.. math::
 		z = \dfrac{\overline{x}_{\text{BOD}} - \mu_{\text{BOD}}}{\sigma_{\text{BOD}}}
@@ -319,13 +319,13 @@ Exercises
 			  \text{LB}                                                         &\leq& \mu_{\text{BOD}}                                                                 &\leq& \text{UB}
 			\end{array}
 
-	At this point all we know is that UB - LB = 2 mg/L.  These are the rest of the assumptions we have to make: 
+	At this point all we know is that UB - LB = 2 mg/L. These are the rest of the assumptions we have to make: 
 
 		- assume a standard deviation of :math:`\hat{\sigma}_{\text{BOD}}` = 4 mg/L
 		- use 95% confidence intervals
 		- assume we know the population standard deviation, so we use the normal distribution to calculate :math:`c_n` as ``qnorm(1-0.05/2)`` in R.
 	
-	Solving for :math:`n` at these values gives: :math:`n = \left(\dfrac{2(1.96)(\hat{\sigma}_{\text{BOD}})}{2}\right)^2 = (1.96 \times 4)^2 \sim 62`.  This large number of samples makes sense: compare the range (2 mg/L) to the standard deviation of 4 mg/L: you have to take a large number of samples to get your precision up when you have so much noise in your signal.
+	Solving for :math:`n` at these values gives: :math:`n = \left(\dfrac{2(1.96)(\hat{\sigma}_{\text{BOD}})}{2}\right)^2 = (1.96 \times 4)^2 \sim 62`. This large number of samples makes sense: compare the range (2 mg/L) to the standard deviation of 4 mg/L: you have to take a large number of samples to get your precision up when you have so much noise in your signal.
 
 
 .. question::
@@ -340,7 +340,7 @@ Exercises
 
 .. question::
 
-    One aspect of your job responsibility is to reduce energy consumption on the plant floor.  You ask the electrical supplier for the energy requirements (W.h) for running a particular light fixture for 24 hours.  They won't give you the raw data, only their histogram when they tested randomly selected bulbs (see the data and code below). 
+    One aspect of your job responsibility is to reduce energy consumption on the plant floor. You ask the electrical supplier for the energy requirements (W.h) for running a particular light fixture for 24 hours. They won't give you the raw data, only their histogram when they tested randomly selected bulbs (see the data and code below). 
 
 	.. code-block:: s
 
@@ -361,15 +361,15 @@ Exercises
 	:fullinclude: no 
 	:short: mean = 4127, standard deviation = 77.2
 
-	-   The mean and standard deviation can be estimated as shown in the code below.  The estimates are: the mean energy usage is **4127 W.hours**, and the standard deviation is **79 W.hours**.  This corresponds very closely to the raw data I used to generate this question (mean of actual data = 4125, sd of actual data = 77.2).
+	-   The mean and standard deviation can be estimated as shown in the code below. The estimates are: the mean energy usage is **4127 W.hours**, and the standard deviation is **79 W.hours**. This corresponds very closely to the raw data I used to generate this question (mean of actual data = 4125, sd of actual data = 77.2).
 
 	    .. literalinclude:: ../figures/univariate/bulb-energy-assignment3-2010.R
 	       :language: s
 	       :lines: 13-17
 
-	-   Strictly speaking we cannot calculate a confidence interval for the mean, as the data are not normally distributed.  We can see that there is a heavy tail to the right hand side.  Why do we require the data to be normally distributed?  To create the confidence interval we have to use an estimate of the standard deviation, and then use the :math:`t`-distribution to estimate the confidence interval bounds.  However, the :math:`t`-distribution requires that we assume the raw data come from a normal distribution.
+	-   Strictly speaking we cannot calculate a confidence interval for the mean, as the data are not normally distributed. We can see that there is a heavy tail to the right hand side. Why do we require the data to be normally distributed?  To create the confidence interval we have to use an estimate of the standard deviation, and then use the :math:`t`-distribution to estimate the confidence interval bounds. However, the :math:`t`-distribution requires that we assume the raw data come from a normal distribution.
 
-	    But if we do calculate the confidence interval, we have to use the :math:`t`-distribution at the 95% cumulative area, with 50 - 1 = 49 degrees of freedom.  In R: ``qt(0.025, df=49)`` gives :math:`-c_t = -2.009575`. Using our estimates of :math:`s=79` and :math:`\overline{x} = 4127`
+	    But if we do calculate the confidence interval, we have to use the :math:`t`-distribution at the 95% cumulative area, with 50 - 1 = 49 degrees of freedom. In R: ``qt(0.025, df=49)`` gives :math:`-c_t = -2.009575`. Using our estimates of :math:`s=79` and :math:`\overline{x} = 4127`
     
 	    .. math::
     
@@ -384,7 +384,7 @@ Exercises
 
 .. question::
 
-    The confidence interval for the population mean takes one of two forms below, depending on whether we know the variance or not.  At the 90% confidence level, for a sample size of 13, compare and comment on the upper and lower bounds for the two cases.  Assume that :math:`s = \sigma = 3.72`.
+    The confidence interval for the population mean takes one of two forms below, depending on whether we know the variance or not. At the 90% confidence level, for a sample size of 13, compare and comment on the upper and lower bounds for the two cases. Assume that :math:`s = \sigma = 3.72`.
 
 	.. math::
 
@@ -396,16 +396,16 @@ Exercises
 .. answer::
 	:fullinclude: no 
 	
-	This question aims for you to prove to yourself that the :math:`t`-distribution is **wider (more broad)** than the normal distribution.  The 90% region spanned by the :math:`t`-distribution with 12 degrees of freedom has upper and lower limits at ``qt((1-0.9)/2, df=12)``, i.e. from **-1.782** to **1.782**.  The equivalent 90% region spanned by the normal distribution is ``qnorm((1-0.9)/2)``, spanning from **z=-1.64** to **z=1.64**.  Everything else in the center of the 2 inequalities is the same, so we only need to compare :math:`c_t` and :math:`c_n`.
+	This question aims for you to prove to yourself that the :math:`t`-distribution is **wider (more broad)** than the normal distribution. The 90% region spanned by the :math:`t`-distribution with 12 degrees of freedom has upper and lower limits at ``qt((1-0.9)/2, df=12)``, i.e. from **-1.782** to **1.782**. The equivalent 90% region spanned by the normal distribution is ``qnorm((1-0.9)/2)``, spanning from **z=-1.64** to **z=1.64**. Everything else in the center of the 2 inequalities is the same, so we only need to compare :math:`c_t` and :math:`c_n`.
 
 
 .. question::
 
 	.. _univariate-CO2-question:
 
-    A major aim of many engineers is/will be to reduce the carbon footprint of their company's high-profile products. Next week your boss wants you to evaluate a new raw material that requires 2.6 :math:`\dfrac{\text{kg CO}_2}{\text{kg product}}` less than the current material, but the final product's brittleness must be the same as achieved with the current raw material.  This is a large reduction in :math:`\text{CO}_2`, given your current production capacity of 51,700 kg of product per year.  Manpower and physical constraints prevent you from running a randomized test; you don't have a suitable database of historical data either.
+    A major aim of many engineers is/will be to reduce the carbon footprint of their company's high-profile products. Next week your boss wants you to evaluate a new raw material that requires 2.6 :math:`\dfrac{\text{kg CO}_2}{\text{kg product}}` less than the current material, but the final product's brittleness must be the same as achieved with the current raw material. This is a large reduction in :math:`\text{CO}_2`, given your current production capacity of 51,700 kg of product per year. Manpower and physical constraints prevent you from running a randomized test; you don't have a suitable database of historical data either.
 
-    One idea you come up with is to use to your advantage the fact that your production line has three parallel reactors, TK104, TK105, and TK107.  They were installed at the same time, they have the same geometry, the same instrumentation, *etc*; you have pretty much thought about every factor that might vary between them, and are confident the 3 reactors are identical. Typical production schedules split the raw material between the 3 reactors.  Data `on the website <http://datasets.connectmv.com/info/brittleness-index>`_ contain the brittleness values from the three reactors for the past few runs on the current raw material.
+    One idea you come up with is to use to your advantage the fact that your production line has three parallel reactors, TK104, TK105, and TK107. They were installed at the same time, they have the same geometry, the same instrumentation, *etc*; you have pretty much thought about every factor that might vary between them, and are confident the 3 reactors are identical. Typical production schedules split the raw material between the 3 reactors. Data `on the website <http://datasets.connectmv.com/info/brittleness-index>`_ contain the brittleness values from the three reactors for the past few runs on the current raw material.
 
 	#.	Which two reactors would you pick to run your comparative trial on next week?
 	
@@ -413,13 +413,13 @@ Exercises
 
 .. answer::
 	:fullinclude: no 
-	:short: You can do an ordinary test of differences, or a paired test.  Also note that there are missing data which reduce the degrees of freedom.
+	:short: You can do an ordinary test of differences, or a paired test. Also note that there are missing data which reduce the degrees of freedom.
 	
-		The purpose of this question is to compare two system.  There are two ways: either compare one group to another group, or to have paired tests.  We could consider this a paired test, because the material is run in both reactors at the same conditions.  In this answer we compare reactor I to reactor J as groups.  Our answer will be to run experiments in the reactors that show the smallest difference.
+		The purpose of this question is to compare two system. There are two ways: either compare one group to another group, or to have paired tests. We could consider this a paired test, because the material is run in both reactors at the same conditions. In this answer we compare reactor I to reactor J as groups. Our answer will be to run experiments in the reactors that show the smallest difference.
 
-	.. note:: This question also has missing data, denote as ``NA`` in R.  Most real data sets that you deal with will have missing data and the questions will expect to deal with them.  For example, the degrees of freedom will be reduced because of the missing data.  Use this solution to see how to write code in R that deals with missing values.
+	.. note:: This question also has missing data, denote as ``NA`` in R. Most real data sets that you deal with will have missing data and the questions will expect to deal with them. For example, the degrees of freedom will be reduced because of the missing data. Use this solution to see how to write code in R that deals with missing values.
 
-	We can start by looking at the data.  A box plot is a reasonable way to compare both the location and spread of the brittleness values from each reactor.
+	We can start by looking at the data. A box plot is a reasonable way to compare both the location and spread of the brittleness values from each reactor.
 
 	.. figure:: ../figures/univariate/brittleness-boxplot.png
 	    :width: 750px
@@ -431,21 +431,21 @@ Exercises
 	.. math::
 	    z = \frac{(\overline{x}_B - \overline{x}_A) - (\mu_B - \mu_A)}{\sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}}
 
-	Assuming the two *population* means are identical, the :math:`z`-value is a direct estimate of the probability with which that assumption is wrong.  A :math:`z`-value around zero indicates that the assumption was true, a large or small :math:`z`-value indicates that the assumption was wrong.
+	Assuming the two *population* means are identical, the :math:`z`-value is a direct estimate of the probability with which that assumption is wrong. A :math:`z`-value around zero indicates that the assumption was true, a large or small :math:`z`-value indicates that the assumption was wrong.
 
-	So we can calculate the :math:`z`-value, and the corresponding probability for each pair of reactor differences using the code below.  
+	So we can calculate the :math:`z`-value, and the corresponding probability for each pair of reactor differences using the code below. 
 
 	But the next problem we face is that we don't know the value of :math:`\sigma`. We can estimate it however, by pooling the variances of the two groups. Strictly speaking we should do a check for comparable variances before pooling them - described :ref:`in a previous section <univariate-pooled-variance>`.
 
-	When we use the pooled variance now, then the assumption that the :math:`z`-value follows the normal distribution is not correct anymore; it follows the :math:`t`-distribution, with the pooled number of degrees of freedom.  Once we have the :math:`z`-value we can calculate the probability of finding a :math:`z`-value of at least that big.  Anything beyond that is the risk that we are wrong.
+	When we use the pooled variance now, then the assumption that the :math:`z`-value follows the normal distribution is not correct anymore; it follows the :math:`t`-distribution, with the pooled number of degrees of freedom. Once we have the :math:`z`-value we can calculate the probability of finding a :math:`z`-value of at least that big. Anything beyond that is the risk that we are wrong.
 
-	We can also expand the :math:`z` value into a confidence interval at a given confidence level.  We do this in the code at the 95% level (see ``LB`` and ``UB`` terms).
+	We can also expand the :math:`z` value into a confidence interval at a given confidence level. We do this in the code at the 95% level (see ``LB`` and ``UB`` terms).
 
 	    -   :math:`\mu_{104} - \mu_{105}`: :math:`z` = 1.25; risk we are wrong: 89.1%; CI: :math:`-31.4 \leq \mu_{104} - \mu_{105} \leq 134`
 	    -   :math:`\mu_{104} - \mu_{107}`: :math:`z` = 1.41; risk we are wrong: 91.6%; CI  :math:`-21.4 \leq \mu_{104} - \mu_{107} \leq 120`
 	    -   :math:`\mu_{105} - \mu_{107}`: :math:`z` = -0.0532; risk we are wrong: 52.1% and :math:`-81.8 \leq \mu_{105} - \mu_{107} \leq 77.6` (note that the minimum risk is 50%; the risk is not 47.8%)
     
-	While all three reactors have confidence intervals that span zero at the 95% level, notice how the interval gives us a feel for the degree of difference.  Clearly **reactors TK105 and TK107 are the most similar**, however all 3 are statistically equivalent from a confidence interval point of view. Contrast this to using a hypothesis test, which you may have encountered in other statistical courses.  A hypothesis test just tells you  "yes" or "no"; a confidence interval gives a much better engineering feel for the degree of difference.  Also see the solution to question 6 that highlights another advantage of confidence intervals.
+	While all three reactors have confidence intervals that span zero at the 95% level, notice how the interval gives us a feel for the degree of difference. Clearly **reactors TK105 and TK107 are the most similar**, however all 3 are statistically equivalent from a confidence interval point of view. Contrast this to using a hypothesis test, which you may have encountered in other statistical courses. A hypothesis test just tells you  "yes" or "no"; a confidence interval gives a much better engineering feel for the degree of difference.
 
 	A full solution to this question require you report the z-values and its corresponding risk.
 
@@ -454,11 +454,11 @@ Exercises
 	
 	**Using a paired test**
 	
-	Pairing assumes that each reactor was run with the same material, except that the material was split into thirds: one third for each reactor.  As described in the :ref:`section on paired tests <univariate-paired-tests>` we rely on calculating the difference in brittleness, then calculating the z-value of the average difference.  Contrast this to the unpaired tests, where we calculated the difference of the averages.
+	Pairing assumes that each reactor was run with the same material, except that the material was split into thirds: one third for each reactor. As described in the :ref:`section on paired tests <univariate-paired-tests>` we rely on calculating the difference in brittleness, then calculating the z-value of the average difference. Contrast this to the unpaired tests, where we calculated the difference of the averages.
 
-	The code below shows how the paired differences are evaluated for each of the 3 combinations.  The paired test highlights the similarity between TK105 and TK107, the same as the unpaired test.  However the paired test shows much more clearly how different tanks TK104 and TK105 are, and especially TK104 and TK107.  
+	The code below shows how the paired differences are evaluated for each of the 3 combinations. The paired test highlights the similarity between TK105 and TK107, the same as the unpaired test. However the paired test shows much more clearly how different tanks TK104 and TK105 are, and especially TK104 and TK107. 
 
-	In the case of TK104 and TK105 the difference might seem surprising - take a look back at the box plots and how much they overlap.   However a paired test cannot be judged by a box plot, because it looks at the case-by-case difference, not the overall between group difference.  A better plot with which to confirm the really large :math:`z`-value for the TK105 and TK107 difference is the plot of the differences.
+	In the case of TK104 and TK105 the difference might seem surprising - take a look back at the box plots and how much they overlap.  However a paired test cannot be judged by a box plot, because it looks at the case-by-case difference, not the overall between group difference. A better plot with which to confirm the really large :math:`z`-value for the TK105 and TK107 difference is the plot of the differences.
 
 	.. literalinclude:: ../figures/univariate/brittleness-paired-comparison-assignment3-2010.R
 	       :language: s
@@ -490,9 +490,9 @@ Exercises
 		
 .. answer::
 	
-	-   Let our variable of interest be the difference between the average of the 2 groups: :math:`\overline{x}_{\text{Fri}} - \overline{x}_{\text{Sat}}`.  This variable will be distributed normally (why? - see the notes) according to :math:`\overline{x}_{\text{Fri}} - \overline{x}_{\text{Sat}} \sim \mathcal{N}\left(\mu_{\text{Fri}}-\mu_{\text{Sat}}, \sigma^2_{\text{diff}}\right)`.  So the z-value for this variable is: :math:`z = \dfrac{(\overline{x}_{\text{Fri}} - \overline{x}_{\text{Sat}}) - (\mu_{\text{Fri}}-\mu_{\text{Sat}}) }{\sigma_{\text{diff}}}`
+	-   Let our variable of interest be the difference between the average of the 2 groups: :math:`\overline{x}_{\text{Fri}} - \overline{x}_{\text{Sat}}`. This variable will be distributed normally (why? - see the notes) according to :math:`\overline{x}_{\text{Fri}} - \overline{x}_{\text{Sat}} \sim \mathcal{N}\left(\mu_{\text{Fri}}-\mu_{\text{Sat}}, \sigma^2_{\text{diff}}\right)`. So the z-value for this variable is: :math:`z = \dfrac{(\overline{x}_{\text{Fri}} - \overline{x}_{\text{Sat}}) - (\mu_{\text{Fri}}-\mu_{\text{Sat}}) }{\sigma_{\text{diff}}}`
 
-	-   The variance of the difference, :math:`\sigma^2_{\text{diff}} = \sigma^2\left(\dfrac{1}{n_{\text{Fri}}} + \dfrac{1}{n_{\text{Sat}}} \right)`, where :math:`\sigma^2` is the variance of the number of visits to the website on Friday and Saturday.  Since we don't know that value, we can estimate it from pooling the 2 variances of each group.  We should calculate first that these variances are comparable (they are; but you :ref:`should confirm this yourself <univariate-pooled-variance>`).
+	-   The variance of the difference, :math:`\sigma^2_{\text{diff}} = \sigma^2\left(\dfrac{1}{n_{\text{Fri}}} + \dfrac{1}{n_{\text{Sat}}} \right)`, where :math:`\sigma^2` is the variance of the number of visits to the website on Friday and Saturday. Since we don't know that value, we can estimate it from pooling the 2 variances of each group. We should calculate first that these variances are comparable (they are; but you :ref:`should confirm this yourself <univariate-pooled-variance>`).
 
 	.. math::
 	   \sigma^2 \approx s_P^2 &= \frac{(n_{\text{Fri}} -1) s_{\text{Fri}}^2 + (n_{\text{Sat}}-1)s_{\text{Sat}}^2}{n_{\text{Fri}} - 1 + n_{\text{Sat}} - 1} \\
@@ -505,9 +505,9 @@ Exercises
 
 	        z = \dfrac{20.77 - 15.27}{47.09 \left(\dfrac{1}{30} + \dfrac{1}{30} \right)} = 3.1
     
-	    But since we used an estimated variance, we cannot say that :math:`z` comes from the normal distribution anymore.  It now follows the :math:`t`-distribution with 58 degrees of freedom (which is still comparable to the normal distribution - see question 7 below).  The corresponding probability that :math:`z<3.1` is 99.85%, using the :math:`t`-distribution with 58 degrees of freedom.  This difference is significant; there is a very small probability that this difference is due to chance alone.
+	    But since we used an estimated variance, we cannot say that :math:`z` comes from the normal distribution anymore. It now follows the :math:`t`-distribution with 58 degrees of freedom (which is still comparable to the normal distribution - see question 7 below). The corresponding probability that :math:`z<3.1` is 99.85%, using the :math:`t`-distribution with 58 degrees of freedom. This difference is significant; there is a very small probability that this difference is due to chance alone.
 
-	-   The code was modified to generate the matrix of z-value results in the comments below.  The largest difference is between Sunday and Wednesday, and the smallest difference is between Monday and Tuesday.
+	-   The code was modified to generate the matrix of z-value results in the comments below. The largest difference is between Sunday and Wednesday, and the smallest difference is between Monday and Tuesday.
 
 	.. literalinclude:: ../figures/univariate/website-differences-assignment3-2010.R
 		:language: s
@@ -515,7 +515,7 @@ Exercises
 
 .. question::
 
-	You plan to run a series of 22 experiments to measure the economic advantage, if any, of switching to a corn-based raw material, rather than using your current sugar-based material. You can only run one experiment per day, and there is a high cost to change between raw material dispensing systems.  Describe two important precautions you would implement when running these experiments, so you can be certain your results will be accurate.
+	You plan to run a series of 22 experiments to measure the economic advantage, if any, of switching to a corn-based raw material, rather than using your current sugar-based material. You can only run one experiment per day, and there is a high cost to change between raw material dispensing systems. Describe two important precautions you would implement when running these experiments, so you can be certain your results will be accurate.
 
 .. answer::
 	:fullinclude: no 
@@ -524,15 +524,15 @@ Exercises
 
 	#.	Keep all disturbance factors as constant as possible: e.g. use the same staff for all experiments (*Corn* and *Sugar*), keep other variables on the process as constant as possible.
 	
-	#.	Randomize the **order** of the experiments, despite the cost, to obtain independent experimental measurements.  For example, if you cannot use the same staff for all experiments, then the experiment order must be randomization. Do not, for example, use group A staff to run the *Corn* experiments and group B staff to run the *Sugar* experiments.
+	#.	Randomize the **order** of the experiments, despite the cost, to obtain independent experimental measurements. For example, if you cannot use the same staff for all experiments, then the experiment order must be randomization. Do not, for example, use group A staff to run the *Corn* experiments and group B staff to run the *Sugar* experiments.
 
 		Randomization is expensive and inconvenient, but is the insurance we pay to ensure the results are not confounded by unmeasured disturbances.
 
-	#.	Use representative lots of corn- and sugar-based materials. You don't want to run all your experiments on one batch of corn or sugar.  What if the batch of corn-based material was an unusual in some way and showed no difference, when really there is a long-term difference? Or the opposite could have occurred as well.
+	#.	Use representative lots of corn- and sugar-based materials. You don't want to run all your experiments on one batch of corn or sugar. What if the batch of corn-based material was an unusual in some way and showed no difference, when really there is a long-term difference? Or the opposite could have occurred as well.
 
 .. question::
 
-    There are two analytical techniques for measuring BOD.  You wish to evaluate the two testing procedures, so that you can select the test which has lower cost, and fastest turn-around time, but without a compromise in accuracy.  The table contains the results of the each test, performed on a sample that was split in half. 
+    There are two analytical techniques for measuring BOD. You wish to evaluate the two testing procedures, so that you can select the test which has lower cost, and fastest turn-around time, but without a compromise in accuracy. The table contains the results of the each test, performed on a sample that was split in half. 
 
 	#.	Is there a *statistical* difference in accuracy between the two methods? 
 	#.	Review the raw data and answer whether there is a practical difference in accuracy.
@@ -556,25 +556,25 @@ Exercises
 .. answer::
 	:fullinclude: no 
 
-	The temptation is to jump into the code and calculate the :math:`t`-values and averages differences (:math:`\overline{x}_D = 16.4`, and :math:`\overline{x}_M = 22.6`).  But start with a plot of the data, specifically a plot of the differences between the two methods.  The immediate problem you see is that average difference of 6.2 between the methods is strongly influenced by a single observation (the second one).  In general, the dilution method always produced a smaller result than the manometric method.  We expect to see that in our analytical results.
+	The temptation is to jump into the code and calculate the :math:`t`-values and averages differences (:math:`\overline{x}_D = 16.4`, and :math:`\overline{x}_M = 22.6`). But start with a plot of the data, specifically a plot of the differences between the two methods. The immediate problem you see is that average difference of 6.2 between the methods is strongly influenced by a single observation (the second one). In general, the dilution method always produced a smaller result than the manometric method. We expect to see that in our analytical results.
 
 	.. figure:: ../figures/univariate/BOD-comparison-plot.png
 	    :width: 750px
 	    :align: center
 	    :scale: 60
 
-	Now let's look at the analytical answer.  As before, we can calculate :math:`z = 1.86 = \dfrac{6.27}{3.375}` (where :math:`s_p^2 = 62.7`), with a probability of 96.1% that we will have a value smaller than this (risk = 3.9% that we are wrong).  A confidence interval would be :math:`-0.77 <  \mu_{\text{M}} - \mu_{\text{D}}< 13.3`.  And it is at this point that you should realize the problem, even if you didn't plot your data.  The fact that the confidence interval only just includes zero is what should raise concern; if the two methods were roughly equivalent, then the interval should span zero with rough symmetry. But this is too close.
+	Now let's look at the analytical answer. As before, we can calculate :math:`z = 1.86 = \dfrac{6.27}{3.375}` (where :math:`s_p^2 = 62.7`), with a probability of 96.1% that we will have a value smaller than this (risk = 3.9% that we are wrong). A confidence interval would be :math:`-0.77 <  \mu_{\text{M}} - \mu_{\text{D}}< 13.3`. And it is at this point that you should realize the problem, even if you didn't plot your data. The fact that the confidence interval only just includes zero is what should raise concern; if the two methods were roughly equivalent, then the interval should span zero with rough symmetry. But this is too close.
 
-	So omitting the second point and repeating the analysis gives: calculate :math:`z = 3.24 = \dfrac{9.20}{2.84}` (where :math:`s_p^2 = 40.4`), with a probability of 99.8% that we will have a value smaller than this (risk = 0.2% that we are wrong).  A confidence interval would be :math:`3.2 <  \mu_{\text{M}} - \mu_{\text{D}}< 15.2`; this is a result that is much more aligned with the plotted data.
+	So omitting the second point and repeating the analysis gives: calculate :math:`z = 3.24 = \dfrac{9.20}{2.84}` (where :math:`s_p^2 = 40.4`), with a probability of 99.8% that we will have a value smaller than this (risk = 0.2% that we are wrong). A confidence interval would be :math:`3.2 <  \mu_{\text{M}} - \mu_{\text{D}}< 15.2`; this is a result that is much more aligned with the plotted data.
 
-	.. note:: You may have discovered/used the ``t.test(...)`` function in R.  If you know what you are doing with this function, you are welcome to use it; however I'm reluctant to advocate its use at this point, because these exercises are all about understanding what is going on with confidence intervals and calculating them yourself.
+	.. note:: You may have discovered/used the ``t.test(...)`` function in R. If you know what you are doing with this function, you are welcome to use it; however I'm reluctant to advocate its use at this point, because these exercises are all about understanding what is going on with confidence intervals and calculating them yourself.
 
 .. question::
 
-	Plot the cumulative probability function for the normal distribution and the :math:`t`-distribution on the same plot.  
+	Plot the cumulative probability function for the normal distribution and the :math:`t`-distribution on the same plot. 
 
-		- Use 6 degrees of freedom for :math:`t`-distribution.  
-		- Repeat the plot for a larger number of degrees of freedom.  
+		- Use 6 degrees of freedom for :math:`t`-distribution. 
+		- Repeat the plot for a larger number of degrees of freedom. 
 		- At which point is the :math:`t`-distribution indistinguishable from the normal distribution?  
 		- What is the practical implication of this result?
 
@@ -587,15 +587,15 @@ Exercises
 	    :width: 750px
 	    :align: center
     
-	The above source code and figure output shows that the :math:`t`-distribution starts being indistinguishable from the normal distribution after about 35 to 40 degrees of freedom.  This means that when we deal with large sample sizes (over 40 or 50 samples), then we can use critical values from the normal distribution rather than the :math:`t`-distribution.  Furthermore, it indicates that our estimate of the variance is a pretty good estimate of the population variance for largish sample sizes.
+	The above source code and figure output shows that the :math:`t`-distribution starts being indistinguishable from the normal distribution after about 35 to 40 degrees of freedom. This means that when we deal with large sample sizes (over 40 or 50 samples), then we can use critical values from the normal distribution rather than the :math:`t`-distribution. Furthermore, it indicates that our estimate of the variance is a pretty good estimate of the population variance for largish sample sizes.
 	
 .. question::
 
-	Explain why tests of differences are insensitive to unit changes.  If this were not the case, then one could show a significant difference for a weight-loss supplement when measuring waist size in millimetres, yet show no significant difference when measuring in inches!
+	Explain why tests of differences are insensitive to unit changes. If this were not the case, then one could show a significant difference for a weight-loss supplement when measuring waist size in millimetres, yet show no significant difference when measuring in inches!
 
 .. question::
 
-	A food production facility fills bags with potato chips.  The advertised bag weight is 35.0 grams.   But, the current bagging system is set to fill bags with a mean weight of 37.4 grams, and this done so that only 1% of bags have a weight of 35.0 grams or less.  
+	A food production facility fills bags with potato chips. The advertised bag weight is 35.0 grams.  But, the current bagging system is set to fill bags with a mean weight of 37.4 grams, and this done so that only 1% of bags have a weight of 35.0 grams or less. 
 
 		-	Back-calculate the standard deviation of the bag weights, assuming a normal distribution.
 		-	Out of 1000 customers, how many are lucky enough to get 40.0 grams or more of potato chips in their bags?
@@ -604,7 +604,7 @@ Exercises
 	:fullinclude: no 
 	:short: standard deviation = 1.03 grams
 
-	-	Calculate the z-value and find which fraction of :math:`z` falls at or below 1% of the probability area.  From the tables this is -2.326.
+	-	Calculate the z-value and find which fraction of :math:`z` falls at or below 1% of the probability area. From the tables this is -2.326.
 
 		Then solve for :math:`\sigma`:
 
@@ -618,11 +618,11 @@ Exercises
 			z &>	\dfrac{40- 37.4}{1.03} \\
 			z &> 2.52
 
-		The exact answer is ``(1 - pnorm(2.52))*1000 = 5.86``, though using tables you could use the value corresponding to :math:`z=2.5`, which is 99.38%, which is the area below that z-value.  The area above it is 0.62%, corresponding to 6.2 people. Either 5, 6 or 7 people is an acceptable answer, depending on your rounding error.
+		The exact answer is ``(1 - pnorm(2.52))*1000 = 5.86``, though using tables you could use the value corresponding to :math:`z=2.5`, which is 99.38%, which is the area below that z-value. The area above it is 0.62%, corresponding to 6.2 people. Either 5, 6 or 7 people is an acceptable answer, depending on your rounding error.
 	
 .. question::
 
-	A common unit operation in the pharmaceutical area is to uniformly blend powders for tablets.  In this question we consider blending an excipient (an inactive magnesium stearate base), a binder, and the active ingredient.  The mixing process is tracked using a wireless near infrared (NIR) probe embedded in a V-blender.  The mixer is stopped when the NIR spectra become stable.  A new supplier of magnesium stearate is being considered that will save $ 294,000 per year.
+	A common unit operation in the pharmaceutical area is to uniformly blend powders for tablets. In this question we consider blending an excipient (an inactive magnesium stearate base), a binder, and the active ingredient. The mixing process is tracked using a wireless near infrared (NIR) probe embedded in a V-blender. The mixer is stopped when the NIR spectra become stable. A new supplier of magnesium stearate is being considered that will save $ 294,000 per year.
 
 	..	figure:: ../figures/univariate/V-Blender.png
 		:width: 500px
@@ -631,7 +631,7 @@ Exercises
 	
 		Illustration from `Wikipedia <http://en.wikipedia.org/wiki/Industrial_mixer>`__
 
-	The 15 most recent runs with the current magnesium stearate supplier had an average mixing time of 2715 seconds, and a standard deviation of 390 seconds.  So far you have run 6 batches from the new supplier, and the average mixing time of these runs is 3115 seconds with a standard deviation of 452 seconds.  Your manager is not happy with these results so far - this extra mixing time will actually cost you more money via lost production.  
+	The 15 most recent runs with the current magnesium stearate supplier had an average mixing time of 2715 seconds, and a standard deviation of 390 seconds. So far you have run 6 batches from the new supplier, and the average mixing time of these runs is 3115 seconds with a standard deviation of 452 seconds. Your manager is not happy with these results so far - this extra mixing time will actually cost you more money via lost production. 
 
 	The manager wants to revert back to the original supplier, but is leaving the decision up to you; what would be your advice?  Show all calculations and describe any additional assumptions, if required.
 
@@ -639,11 +639,11 @@ Exercises
 	:fullinclude: no 
 	:short: This problem is open-ended: pay attention to having a significant difference vs a practical difference.
 
-	This question, similar to most real statistical problems, is open-ended.  This problem considers whether a significant difference has occurred.  And in many cases, even though there is significant difference, it has to be weighed up whether there is a *practical* difference as well, together with the potential of saving money (increased profit).
+	This question, similar to most real statistical problems, is open-ended. This problem considers whether a significant difference has occurred. And in many cases, even though there is significant difference, it has to be weighed up whether there is a *practical* difference as well, together with the potential of saving money (increased profit).
 
-	You should always state any assumptions you make, compute a confidence interval for the difference and interpret it.  
+	You should always state any assumptions you make, compute a confidence interval for the difference and interpret it. 
 
-	The decision is one of whether the new material leads to a significant difference in the mixing time.  It is desirable, from a production point of view, that the new mixing time is shorter, or at least the same.  Some notation:
+	The decision is one of whether the new material leads to a significant difference in the mixing time. It is desirable, from a production point of view, that the new mixing time is shorter, or at least the same. Some notation:
 
 	.. math::
 		\begin{array}{rclrcl}
@@ -676,9 +676,9 @@ Exercises
 		z &= \dfrac{-400 - (\mu_B - \mu_A)}{196.7} = -2.03 \qquad \text{on the hypothesis that}\qquad \mu_B = \mu_A
 
 
-	The probability of obtaining this value of :math:`z` can be found using the :math:`t`-distribution at 6 + 15 - 2 = 19 degrees of freedom (because the standard deviation is an estimate, not a population value).  Using tables, a value of 0.025, or 2.5% is found (in R, it would be ``pt(-2.03, df=19) = 0.0283``, or 2.83%).  At this point one can argue either way that the new excipient leads to longer times, though I would be inclined to say that this probability is too small to be due to chance alone.  Therefore there is a significant difference, and we should revert back to the previous excipient.  Factors such as operators, and other process conditions could have affected the 6 new runs.
+	The probability of obtaining this value of :math:`z` can be found using the :math:`t`-distribution at 6 + 15 - 2 = 19 degrees of freedom (because the standard deviation is an estimate, not a population value). Using tables, a value of 0.025, or 2.5% is found (in R, it would be ``pt(-2.03, df=19) = 0.0283``, or 2.83%). At this point one can argue either way that the new excipient leads to longer times, though I would be inclined to say that this probability is too small to be due to chance alone. Therefore there is a significant difference, and we should revert back to the previous excipient. Factors such as operators, and other process conditions could have affected the 6 new runs.
 
-	Alternatively, and this is the way I prefer to look at these sort of questions, is to create a confidence interval.  At the 95% level, the value of :math:`c_t` in the equation below, using 19 degrees of freedom is ``qt(0.975, df=19) = 2.09`` (any value close to this from the tables is acceptable):
+	Alternatively, and this is the way I prefer to look at these sort of questions, is to create a confidence interval. At the 95% level, the value of :math:`c_t` in the equation below, using 19 degrees of freedom is ``qt(0.975, df=19) = 2.09`` (any value close to this from the tables is acceptable):
 
 		.. math::
 			\begin{array}{rcccl} 
@@ -689,11 +689,11 @@ Exercises
 				-812		&\leq& \mu_B - \mu_A	&\leq&   12 
 			\end{array}
 
-	The interpretation of this confidence interval is that there is no difference between the current and new magnesium stearate excipient.  The immediate response to your manager could be "*keep using the new excipient*". 
+	The interpretation of this confidence interval is that there is no difference between the current and new magnesium stearate excipient. The immediate response to your manager could be "*keep using the new excipient*". 
 
-	However, the confidence interval's asymmetry should give you pause, certainly from a practical point of view (this is why I prefer the confidence interval - you get a better interpretation of the result). The 12 seconds by which it overlaps zero is so short when compared to average mixing times of around 3000 seconds, with standard deviations of 400 seconds.  The practical recommendation is that the new excipient has longer mixing times, so "*revert to using the previous excipient*".
+	However, the confidence interval's asymmetry should give you pause, certainly from a practical point of view (this is why I prefer the confidence interval - you get a better interpretation of the result). The 12 seconds by which it overlaps zero is so short when compared to average mixing times of around 3000 seconds, with standard deviations of 400 seconds. The practical recommendation is that the new excipient has longer mixing times, so "*revert to using the previous excipient*".
 
-	One other aspect of this problem that might bother you is the low number of runs (batches) used.  Let's take a look at how sensitive the confidence interval is to that.  Assume that we perform one extra run with the new excipient (:math:`n_A = 7` now), and assume the pooled variance, :math:`s_p^2 = 165837` remains the same with this new run.  The new confidence interval is:
+	One other aspect of this problem that might bother you is the low number of runs (batches) used. Let's take a look at how sensitive the confidence interval is to that. Assume that we perform one extra run with the new excipient (:math:`n_A = 7` now), and assume the pooled variance, :math:`s_p^2 = 165837` remains the same with this new run. The new confidence interval is:
 
 	.. math::
 		\begin{array}{rcccl} 
@@ -702,35 +702,35 @@ Exercises
 			(\overline{x}_B - \overline{x}_A)  - 390	&\leq& \mu_B - \mu_A	&\leq&   (\overline{x}_B - \overline{x}_A) + 390 
 		\end{array}
 
-	So comparing this :math:`\pm 390` with 7 runs, to the :math:`\pm 412` with 6 runs, shows that the confidence interval shrinks in quite a bit, much more than the 12 second overlap of zero.  Of course we don't know what the new :math:`\overline{x}_B - \overline{x}_A` will be with 7 runs, so my recommendation would be to perform at least one more run with the new excipient, but I suspect that the new run would show there to be a significant difference, and statistically confirm that we should "*revert to using the previous excipient*".
+	So comparing this :math:`\pm 390` with 7 runs, to the :math:`\pm 412` with 6 runs, shows that the confidence interval shrinks in quite a bit, much more than the 12 second overlap of zero. Of course we don't know what the new :math:`\overline{x}_B - \overline{x}_A` will be with 7 runs, so my recommendation would be to perform at least one more run with the new excipient, but I suspect that the new run would show there to be a significant difference, and statistically confirm that we should "*revert to using the previous excipient*".
 	
 .. question::
 
-	List an advantage of using a paired test over an unpaired test.  Give an example, not from the notes, that illustrates your answer.
+	List an advantage of using a paired test over an unpaired test. Give an example, not from the notes, that illustrates your answer.
 
 .. answer::
 	:fullinclude: no 
 	
-	One primary advantage of pairing is that any systematic difference between the two groups (A and B) is eliminated.  For example, a bias in the measurement will cancel out when calculating the pairs of differences.  Any example is suitable as an answer: e.g. laboratory miscalibration; an offset in an on-line sensor, *etc*.
+	One primary advantage of pairing is that any systematic difference between the two groups (A and B) is eliminated. For example, a bias in the measurement will cancel out when calculating the pairs of differences. Any example is suitable as an answer: e.g. laboratory miscalibration; an offset in an on-line sensor, *etc*.
 
-	Other advantages are that the raw data do not need to be normally distributed, only the paired differences.  
+	Other advantages are that the raw data do not need to be normally distributed, only the paired differences. 
 
-	Another advantage is that randomization of the trials is required in the unpaired case (often a costly extra expense), whereas in the paired case, we only need to be sure the pairs are independent of each other (that's much easier to assume, and often true).  For example testing drug A and B on a person, some time apart.  The pairs are run on the same person, but each person in the drug trial is independent of the other.
+	Another advantage is that randomization of the trials is required in the unpaired case (often a costly extra expense), whereas in the paired case, we only need to be sure the pairs are independent of each other (that's much easier to assume, and often true). For example testing drug A and B on a person, some time apart. The pairs are run on the same person, but each person in the drug trial is independent of the other.
 
 .. question::
 
-	An *unpaired* test to distinguish between group A and group B was performed with 18 runs: 9 samples for group A and 9 samples for group B.  The pooled variance was 86 units. 
+	An *unpaired* test to distinguish between group A and group B was performed with 18 runs: 9 samples for group A and 9 samples for group B. The pooled variance was 86 units. 
 
-	Also, a *paired* test on group A and group B was performed with 9 runs. After calculating the paired differences, the variance of these differences was found to be 79 units.  
+	Also, a *paired* test on group A and group B was performed with 9 runs. After calculating the paired differences, the variance of these differences was found to be 79 units. 
 
-	Discuss, in the context of this example, an advantage of paired tests over unpaired tests.  Assume 95% confidence intervals, and that the true result was one of "no significant difference between method A and method B".  Give numeric values from this example to substantiate your answer.
+	Discuss, in the context of this example, an advantage of paired tests over unpaired tests. Assume 95% confidence intervals, and that the true result was one of "no significant difference between method A and method B". Give numeric values from this example to substantiate your answer.
 
 .. answer::
 	:fullinclude: no 
 
 	One advantage of the paired test is that often a fewer number of samples are required to obtain a more sensitive result than when analyzing the data as from two distinct, unpaired groups.
 
-	Construct the confidence interval for both cases, substitute in these values and then compare the confidence intervals.  The equations for both confidence intervals are derived directly from the :math:`z`-value.
+	Construct the confidence interval for both cases, substitute in these values and then compare the confidence intervals. The equations for both confidence intervals are derived directly from the :math:`z`-value.
 
 	**Unpaired case**:
 
@@ -761,13 +761,13 @@ Exercises
 
 	The :math:`c_t` value for the paired case is from the :math:`t`-distribution with 8 degrees of freedom, a value of around 2.3.
 
-	The key result of this question is that the confidence interval for the paired case is tighter (narrower) than the confidence interval from the unpaired case.  Given that the true result was one of no significant difference, it implies that :math:`\mu_A = \mu_B` and that :math:`\mu_w = 0`.  The tighter confidence interval comes purely from the fact that the standard deviation used for the paired case is smaller, :math:`\sqrt{\dfrac{79}{9}}` *vs* the :math:`\sqrt{86 \left(\dfrac{1}{9} + \dfrac{1}{9}\right)}` from the unpaired case.  This is not due to the variances, since :math:`\sqrt{86} \approx \sqrt{79}`, i.e. (9.27 vs 8.88), but rather due to the fact that that unpaired standard deviation is multiplied by :math:`\sqrt{2/9}`, while the paired standard deviation is multiplied by :math:`\sqrt{1/9}`.
+	The key result of this question is that the confidence interval for the paired case is tighter (narrower) than the confidence interval from the unpaired case. Given that the true result was one of no significant difference, it implies that :math:`\mu_A = \mu_B` and that :math:`\mu_w = 0`. The tighter confidence interval comes purely from the fact that the standard deviation used for the paired case is smaller, :math:`\sqrt{\dfrac{79}{9}}` *vs* the :math:`\sqrt{86 \left(\dfrac{1}{9} + \dfrac{1}{9}\right)}` from the unpaired case. This is not due to the variances, since :math:`\sqrt{86} \approx \sqrt{79}`, i.e. (9.27 vs 8.88), but rather due to the fact that that unpaired standard deviation is multiplied by :math:`\sqrt{2/9}`, while the paired standard deviation is multiplied by :math:`\sqrt{1/9}`.
 
 	So while the :math:`c_t` value for the paired case is actually larger (widening the confidence interval due to the fewer degrees of freedom), the overall effect is  that the paired confidence interval is narrower than the unpaired confidence interval. This result holds for most cases of paired and unpaired studies, though not always.
 	
 .. question::
 
-	You are convinced that a different impeller (mixing blade) shape for your tank will lead to faster, i.e. shorter, mixing times.  The choices are either an axial blade or a radial blade. 
+	You are convinced that a different impeller (mixing blade) shape for your tank will lead to faster, i.e. shorter, mixing times. The choices are either an axial blade or a radial blade. 
 
 	..	figure:: ../figures/univariate/Mixing_-_flusso_assiale_e_radiale.jpg
 		:width: 500px
@@ -776,7 +776,7 @@ Exercises
 
 		Axial and radial blades; figure `from Wikipedia <http://en.wikipedia.org/wiki/Impeller>`__
 
-	Before obtaining approval to run some experiments, your team wants you to explain how you will interpret the experimental data. Your reply is that you will calculate the average mixing time from each blade type and then calculate a confidence interval for the difference.  A team member asks you what the following 95% confidence intervals would mean:
+	Before obtaining approval to run some experiments, your team wants you to explain how you will interpret the experimental data. Your reply is that you will calculate the average mixing time from each blade type and then calculate a confidence interval for the difference. A team member asks you what the following 95% confidence intervals would mean:
 
 		#.	:math:`-453 \text{~seconds} \leq \mu_{\text{Axial}} - \mu_{\text{Radial}} \leq 390 \text{~seconds}`
 		#.	:math:`-21 \text{~seconds} \leq \mu_{\text{Axial}} - \mu_{\text{Radial}} \leq 187 \text{~seconds}`
@@ -788,26 +788,26 @@ Exercises
 .. answer::
 	:fullinclude: no 
 
-	#.	This confidence interval spans zero, and nearly symmetrically.  This implies the population difference is likely zero, while the symmetry implies their is no preference either way: the difference in mixing times is as low as -453 seconds or as high as 390 seconds. The recommendation is that either the axial or radial impeller could be used, with no expected long-term difference.  Use the cheaper impeller; or use the axial impeller if the costs are the same (only because of the very slight imbalance in the CI).  Note that there is a 5% chance that the confidence interval does not contain the true difference.
+	#.	This confidence interval spans zero, and nearly symmetrically. This implies the population difference is likely zero, while the symmetry implies their is no preference either way: the difference in mixing times is as low as -453 seconds or as high as 390 seconds. The recommendation is that either the axial or radial impeller could be used, with no expected long-term difference. Use the cheaper impeller; or use the axial impeller if the costs are the same (only because of the very slight imbalance in the CI). Note that there is a 5% chance that the confidence interval does not contain the true difference.
 
-	#.	This confidence interval also spans zero, so there is **no statistical difference** between the two impellers.  However the CI does not span zero symmetrically.  The asymmetry of the interval makes me much less comfortable recommending that there is no **practical difference** between the impellers.  It often happens in these cases that by removing a single data point that the confidence interval does not span zero anymore. In this case I would recommend either impeller, but if there is no cost difference, I would prefer the radial impeller, as it might have shorter mixing times, especially if the confidence interval quoted here is only due to one observation.  A careful review of the raw data would be useful in this case.
+	#.	This confidence interval also spans zero, so there is **no statistical difference** between the two impellers. However the CI does not span zero symmetrically. The asymmetry of the interval makes me much less comfortable recommending that there is no **practical difference** between the impellers. It often happens in these cases that by removing a single data point that the confidence interval does not span zero anymore. In this case I would recommend either impeller, but if there is no cost difference, I would prefer the radial impeller, as it might have shorter mixing times, especially if the confidence interval quoted here is only due to one observation. A careful review of the raw data would be useful in this case.
 
 	#.	The confidence interval can be made narrower in 2 ways (as long as the sample mean and sample standard deviation remain stable):
 
 		-	Use more data points, :math:`n` in both groups.
 		-	Choose a lower degree of confidence, e.g. 90%  instead of 95%, which is really just an artificial reduction of the interval.
 
-		One can also reduce the interval by shrinking the standard deviation, but that's usually not a practical possibility.  You cannot perform a paired test, as you only have one mixing tank.
+		One can also reduce the interval by shrinking the standard deviation, but that's usually not a practical possibility. You cannot perform a paired test, as you only have one mixing tank.
 
 	.. sidebar:: Interpreting confidence intervals
 
-		Recall the definition of the confidence interval is subtle: it says 95% of the time, the upper and lower bounds of the confidence interval contain the true value of the parameter; it does *not* say there is a 95% probability the true value of the parameter lies inside the bounds.  That last part is incorrect because it implies the true value of the parameter can vary, which it can't: the true parameter value is fixed, only the bounds change.  
+		Recall the definition of the confidence interval is subtle: it says 95% of the time, the upper and lower bounds of the confidence interval contain the true value of the parameter; it does *not* say there is a 95% probability the true value of the parameter lies inside the bounds. That last part is incorrect because it implies the true value of the parameter can vary, which it can't: the true parameter value is fixed, only the bounds change. 
 		
 .. question::
 
 	The paper by PJ Rousseeuw, "`Tutorial to Robust Statistics <http://dx.doi.org/10.1002/cem.1180050103>`_", *Journal of Chemometrics*, **5**, 1-20, 1991 discusses the breakdown point of a statistic. 
 	
-	#.	Describe what the breakdown point is, and give two examples: one with a low breakdown point, and one with a high breakdown point.  Use a vector of numbers to help illustrate your answer.
+	#.	Describe what the breakdown point is, and give two examples: one with a low breakdown point, and one with a high breakdown point. Use a vector of numbers to help illustrate your answer.
 	
 	#.	What is an advantage of using robust methods over their "classical" counterparts?
 
@@ -815,12 +815,12 @@ Exercises
 
 	#.	PJ Rousseeuw defines the breakdown point on page 3 of his paper as "... the smallest fraction of the observations that have to be replaced to make the estimator unbounded. In this definition one can choose which observations are replaced, as well as the magnitude of the outliers, in the least favourable way".
 
-		A statistic with a low breakdown point is the mean, of the :math:`n` values used to calculate the mean, only 1 needs to be replaced to make the estimator unbounded; i.e. its breakdown point is :math:`1/n`.  The median though has a breakdown point of 50%, as one would have to replace 50% of the :math:`n` data points in the vector before the estimator becomes unbounded.
+		A statistic with a low breakdown point is the mean, of the :math:`n` values used to calculate the mean, only 1 needs to be replaced to make the estimator unbounded; i.e. its breakdown point is :math:`1/n`. The median though has a breakdown point of 50%, as one would have to replace 50% of the :math:`n` data points in the vector before the estimator becomes unbounded.
 
-		Use this vector of data as an example: :math:`[2, 6, 1, 9151616, -4, 2]`.  The mean is 1525270, while the median is 2.
+		Use this vector of data as an example: :math:`[2, 6, 1, 9151616, -4, 2]`. The mean is 1525270, while the median is 2.
 		
 	#.	
-		*	Robust methods are insensitive to outliers, which is useful when we need a measure of location or spread that is calculated in an automated way.  It is increasingly prevalent to skip out the "human" step that might have detected the outlier, but our datasets are getting so large that we can't possibly visualize or look for outliers manually anymore.
+		*	Robust methods are insensitive to outliers, which is useful when we need a measure of location or spread that is calculated in an automated way. It is increasingly prevalent to skip out the "human" step that might have detected the outlier, but our datasets are getting so large that we can't possibly visualize or look for outliers manually anymore.
 
 		*	As described in the above paper by Rousseeuw, robust methods also emphasize outliers. Their "lack of sensitivity to outliers" can also be considered an advantage.
 
@@ -837,14 +837,14 @@ Exercises
 
 	The objective of this question is to recall basic probability rules.
 
-	#.  Each value on the dice is equally probable, so the expected value thrown will be:
+	#. Each value on the dice is equally probable, so the expected value thrown will be:
 
 		.. math::
 			\mathcal{E}(X) = \sum_{i=1}^{12}x_{i}P(x_{i}) = P(x) \sum_{i=1}^{12} x_{i} = \frac{1}{12} \left( 1 + 2 + \cdots + 12 \right) = \bf{6.5}
 		
 		This value is the population mean, :math:`\mu`.
 
-	#.  Continuing the notation from the above question we can derive the expected variance as,
+	#. Continuing the notation from the above question we can derive the expected variance as,
 
 		.. math::
 			\mathcal{V}(X) &= \frac{1}{N}\sum_i^{12}{(x_i - \mu)^2} = \frac{1}{12} \cdot \left[ (1 - 6.5)^2 + (2 - 6.5)^2 + \ldots + (12 - 6.5)^2 \right] \approx \bf{11.9167}
@@ -864,7 +864,7 @@ Exercises
 		.. literalinclude:: ../figures/univariate/simulate-dice-CLT.R
 			:language: s
 
-		Note that each :math:`\overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n \right)`, where :math:`n = 10000`.  We know what :math:`\sigma^2` is in this case: it is our theoretical value of **11.92**, calculated earlier, and for :math:`n=10000` samples, our theoretical expectation is that :math:`\overline{x} \sim \mathcal{N}\left(6.5, 0.00119167\right)`.
+		Note that each :math:`\overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n \right)`, where :math:`n = 10000`. We know what :math:`\sigma^2` is in this case: it is our theoretical value of **11.92**, calculated earlier, and for :math:`n=10000` samples, our theoretical expectation is that :math:`\overline{x} \sim \mathcal{N}\left(6.5, 0.00119167\right)`.
 
 		Calculating the average of those 10 means, let's call that :math:`\overline{\overline{x}}`, shows a value close to 6.5, the theoretical mean.
 
@@ -881,6 +881,7 @@ Exercises
 	.. From assignment 2, 2011
 
 .. answer::
+	:fullinclude: no
 
 	#.	Assume the 300 data points represent an entire population. Plot a ``qqPlot(...)`` using the ``car`` package:
 
@@ -898,7 +899,7 @@ Exercises
 
 			z_\text{bound} = \frac{y-\mu}{\sigma} = \frac{60-80.353}{6.597} = -3.085
 
-		In this data set of 300 numbers there are zero entries below this limit.  But using the distribution's fit, we can calculate the probability as ``pnorm(-3.085)``, which is :math:`\approx 0.001`.  This is equivalent to saying that there is a *1 in 1000 chance* of achieving a yield less than 60\%.
+		In this data set of 300 numbers there are zero entries below this limit. But using the distribution's fit, we can calculate the probability as ``pnorm(-3.085)``, which is :math:`\approx 0.001`. This is equivalent to saying that there is a *1 in 1000 chance* of achieving a yield less than 60\%.
 
 	#.	We only had to assume the data are normally distributed - we did not need the data to be independent - in order to use the estimated parameters from the distribution to calculate the probability.
 	
@@ -916,13 +917,14 @@ Exercises
 
 	#.	As a follow up, overlay the probability distribution curves for the normal and :math:`t`-distribution that you would use for a sample of data of size :math:`n=7`.
 
-	#.	Repeat part of this question, using larger sample sizes.  At which point does the difference between the :math:`t`- and normal distributions become *practically* indistinguishable? 
+	#.	Repeat part of this question, using larger sample sizes. At which point does the difference between the :math:`t`- and normal distributions become *practically* indistinguishable? 
 	
 	#.	What is the implication of this?
 
 .. answer::
+	:fullinclude: no
 	
-	#.	This question aims for you to prove to yourself that the :math:`t`-distribution is **wider (more broad)** than the normal distribution, and as a result, the confidence interval is wider as well.  This is because we are less certain of the data's spread when using the estimated variance.
+	#.	This question aims for you to prove to yourself that the :math:`t`-distribution is **wider (more broad)** than the normal distribution, and as a result, the confidence interval is wider as well. This is because we are less certain of the data's spread when using the estimated variance.
 	
 		The confidence intervals are:
 	
@@ -933,7 +935,7 @@ Exercises
 				  - c_t &\leq& \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}}  &\leq &  c_t
 			\end{array}	
 	
-		The 95% region spanned by the :math:`t`-distribution with 6 degrees of freedom has upper and lower limits at :math:`c_t = \pm` ``qt((1-0.95)/2, df=6)``, i.e. from **-2.45** to **2.45**.  The equivalent 95% region spanned by the normal distribution is :math:`c_n = \pm` ``qnorm((1-0.95)/2)``, spanning from **z=-1.96** to **z=1.96**.  Everything else in the center of the 2 inequalities is the same, so we only need to compare :math:`c_t` and :math:`c_n`.
+		The 95% region spanned by the :math:`t`-distribution with 6 degrees of freedom has upper and lower limits at :math:`c_t = \pm` ``qt((1-0.95)/2, df=6)``, i.e. from **-2.45** to **2.45**. The equivalent 95% region spanned by the normal distribution is :math:`c_n = \pm` ``qnorm((1-0.95)/2)``, spanning from **z=-1.96** to **z=1.96**. Everything else in the center of the 2 inequalities is the same, so we only need to compare :math:`c_t` and :math:`c_n`.
 	
 	#.	The question asked to overlay the probability distributions (not cumulative probability distributions):
 
@@ -948,7 +950,7 @@ Exercises
 		.. literalinclude:: ../figures/univariate/overlaid-distributions-normal-and-t.R
 			:language: s	
 
-	#.	Repeated use of the above code, but changing :math:`n`, shows that little *practical* difference between the distributions with as few as :math:`n=20` samples.  After :math:`n=40` and especially :math:`n=60`, there is almost no *theoretical* difference between them.
+	#.	Repeated use of the above code, but changing :math:`n`, shows that little *practical* difference between the distributions with as few as :math:`n=20` samples. After :math:`n=40` and especially :math:`n=60`, there is almost no *theoretical* difference between them.
 
 	#.	This implies that when we do any analysis of large samples of data, say :math:`n>50`, and if those data are independently sampled, then we can just use the normal distribution's critical value (e.g. the :math:`\pm 1.96` value for 95% confidence, which you now know from memory), instead of looking up the :math:`t`-distribution's values.
 
@@ -993,7 +995,7 @@ Exercises
 
 	.. See BHH, 2nd edition. p 60.
 
-	We expect that case B should match the theoretical case the closest, since data from case B are truly independent, since the autocorrelation parameter is zero.  We expect case A and C datasets, which violate that assumption of independence, to be biased one way or another. This question aims to see **how** they are biased.
+	We expect that case B should match the theoretical case the closest, since data from case B are truly independent, since the autocorrelation parameter is zero. We expect case A and C datasets, which violate that assumption of independence, to be biased one way or another. This question aims to see **how** they are biased.
 
 	.. literalinclude:: ../figures/univariate/variance-inflation.R
 		:language: s
@@ -1004,17 +1006,17 @@ Exercises
 	*	Case B:	``0.50000000, 0.001565456,  0.509676562``
 	*	Case C:	``0.50000000, 0.0004381761, 0.3217627596``
 
-	The first output is the same for all 3 cases: this is the theoretical standard deviation of the distribution from which the :math:`\overline{x}_i` values come: :math:`\overline{x}_i \sim \mathcal{N}\left(\mu, \sigma^2/N \right)`, where :math:`N=100`, the number of points in the autocorrelated sequence.  This result comes from the central limit theorem, which tells us that :math:`\overline{x}_i` should be normally distributed, with the same mean as our individual :math:`x`-values, but have smaller variance.  That variance is :math:`\sigma^2/N`, where :math:`\sigma` is the variance of the distribution from which we took the raw :math:`x` values.  That theoretical variance value is :math:`25/100`, or theoretical standard deviation of :math:`\sqrt{25/100} = \bf{0.5}`.
+	The first output is the same for all 3 cases: this is the theoretical standard deviation of the distribution from which the :math:`\overline{x}_i` values come: :math:`\overline{x}_i \sim \mathcal{N}\left(\mu, \sigma^2/N \right)`, where :math:`N=100`, the number of points in the autocorrelated sequence. This result comes from the central limit theorem, which tells us that :math:`\overline{x}_i` should be normally distributed, with the same mean as our individual :math:`x`-values, but have smaller variance. That variance is :math:`\sigma^2/N`, where :math:`\sigma` is the variance of the distribution from which we took the raw :math:`x` values. That theoretical variance value is :math:`25/100`, or theoretical standard deviation of :math:`\sqrt{25/100} = \bf{0.5}`.
 
-	But, the central limit theorem only has one *crucial* assumption: that those raw :math:`x` values are independent.  We intentionally violated this assumption for case A and C.  
+	But, the central limit theorem only has one *crucial* assumption: that those raw :math:`x` values are independent. We intentionally violated this assumption for case A and C. 
 
-	We use the 1000 simulated values of :math:`\overline{x}_i` and calculate the average of the 1000 :math:`\overline{x}_i` values and the standard deviation of the 1000 :math:`\overline{x}_i` values.  Those are the second and third values reported above.  
+	We use the 1000 simulated values of :math:`\overline{x}_i` and calculate the average of the 1000 :math:`\overline{x}_i` values and the standard deviation of the 1000 :math:`\overline{x}_i` values. Those are the second and third values reported above. 
 
-	We see in all cases that the mean of the 1000 values nearly matches 0.0.  If you run the simulations again, with a different seed, you will see it above zero, and sometimes below zero for all 3 cases.  So we can conclude that lack of independence *does not* affect the estimated mean.
+	We see in all cases that the mean of the 1000 values nearly matches 0.0. If you run the simulations again, with a different seed, you will see it above zero, and sometimes below zero for all 3 cases. So we can conclude that lack of independence *does not* affect the estimated mean.
 
-	The major disagreement is in the variance though.  Case B matches the theoretical variance; data that are positively correlated have an inflated standard deviation, 1.66; data that are negatively correlated have a deflated standard deviation, 0.32 when :math:`\phi=-0.6`.
+	The major disagreement is in the variance though. Case B matches the theoretical variance; data that are positively correlated have an inflated standard deviation, 1.66; data that are negatively correlated have a deflated standard deviation, 0.32 when :math:`\phi=-0.6`.
 
-	This is problematic for the following reason.  When doing a test of significance, we construct a confidence interval:
+	This is problematic for the following reason. When doing a test of significance, we construct a confidence interval:
 
 	.. math::
 		
@@ -1035,9 +1037,9 @@ Exercises
 
 .. question::
 
-	A concrete slump test is used to test for the fluidity, or workability, of concrete.  It's a crude, but quick test often used to measure the effect of polymer additives that are mixed with the concrete to improve workability.
+	A concrete slump test is used to test for the fluidity, or workability, of concrete. It's a crude, but quick test often used to measure the effect of polymer additives that are mixed with the concrete to improve workability.
 	
-	The concrete mixture is prepared with a polymer additive. The mixture is placed in a mold and filled to the top.  The mold is inverted and removed.  The height of the mold minus the height of the remaining concrete pile is called the "slump". 
+	The concrete mixture is prepared with a polymer additive. The mixture is placed in a mold and filled to the top. The mold is inverted and removed. The height of the mold minus the height of the remaining concrete pile is called the "slump". 
 	
 	.. image:: ../figures/least-squares/concrete-slump-test.jpg
 		:alt:	http://en.wikipedia.org/wiki/File:Types_of_concrete_slump.jpg
@@ -1047,9 +1049,9 @@ Exercises
 
 	*Illustration from* `Wikipedia <http://en.wikipedia.org/wiki/File:Types_of_concrete_slump.jpg>`__
 			
-	Your company provides the polymer additive, and you are developing an improved polymer formulation, call it B, that hopefully provides the same slump values as your existing polymer, call it A.  Formulation B costs less money than A, but you don't want to upset, or loose, customers by varying the slump value too much.
+	Your company provides the polymer additive, and you are developing an improved polymer formulation, call it B, that hopefully provides the same slump values as your existing polymer, call it A. Formulation B costs less money than A, but you don't want to upset, or loose, customers by varying the slump value too much.
 	
-	#.	You have a single day to run your tests (experiments).  Preparation, mixing times, measurement and clean up take 1 hour, only allowing you to run 10 experiments. Describe all precautions, and why you take these precautions, when planning and executing your experiment.  Be very specific in your answer (use bullet points).
+	#.	You have a single day to run your tests (experiments). Preparation, mixing times, measurement and clean up take 1 hour, only allowing you to run 10 experiments. Describe all precautions, and why you take these precautions, when planning and executing your experiment. Be very specific in your answer (use bullet points).
 
 	#.	The following slump values were recorded over the course of the day:
 
@@ -1070,7 +1072,7 @@ Exercises
 		
 		What is your conclusion on the performance of the new polymer formulation (system B)?  Your conclusion must either be "send the polymer engineers back to the lab" or "let's start making formulation B for our customers". Explain your choice clearly.
 		
-		To help you, :math:`\overline{x}_A = 4.6` and :math:`s_A = 0.97`.  For system B: :math:`\overline{x}_B = 5.62` and :math:`s_B = 0.69`.
+		To help you, :math:`\overline{x}_A = 4.6` and :math:`s_A = 0.97`. For system B: :math:`\overline{x}_B = 5.62` and :math:`s_B = 0.69`.
 		
 		*Note*: In your answer you must be clear on which assumptions you are using and, where necessary, why you need to make those assumptions.
 	
@@ -1080,7 +1082,7 @@ Exercises
 
 	#.	Clearly explain which assumptions are used for paired tests, and why they are likely to be true in this case?
 	
-	#.	The slump tests were actually performed in a paired manner, where pairing was performed based on the cement supplier.  Five different cement suppliers were used:
+	#.	The slump tests were actually performed in a paired manner, where pairing was performed based on the cement supplier. Five different cement suppliers were used:
 	
 		==========  =======================  =======================
 		Supplier    Slump value [cm] from A  Slump value [cm] from B
@@ -1094,26 +1096,27 @@ Exercises
 
 		Use these data, and provide, if necessary, an updated recommendation to your manager.
 	
-**Solution**
-
+.. answer::
+	:fullinclude: no
+	
 	#.	The basic rule is to control what you can and randomize against what you cannot. You should have mentioned some of these items:
 	
 		*	Control: clean equipment thoroughly between runs.
 		*	Control: other factors that might affect the slump: temperature, humidity.
-		*	Control: ensure the same person prepares all mixtures, or randomize the allocation of people if you have to use more than 1 person.  Don't let person 1 prepare all the A mixtures and person 2 the B mixtures.
-		*	Control: mixing times and how the mixture is created could have an effect.  This should ideally be done by the same person.
+		*	Control: ensure the same person prepares all mixtures, or randomize the allocation of people if you have to use more than 1 person. Don't let person 1 prepare all the A mixtures and person 2 the B mixtures.
+		*	Control: mixing times and how the mixture is created could have an effect. This should ideally be done by the same person.
 		*	Randomize the order of all the A and B experiments: don't run all the A's, then all the B's, as that will confound with other factors. For example, even though temperature might vary during the day, if we randomize the run order, then we prevent temperature from affecting the results.
-		*	Use raw materials (cement, binder, other ingredients) from all possible suppliers.  And the supplier raw materials should be representative.
+		*	Use raw materials (cement, binder, other ingredients) from all possible suppliers. And the supplier raw materials should be representative.
 
 	#.	We will initially assume that :math:`\mu_A = \mu_B`, in other words, the outcome is "let's start making formulation B for our customers". We will construct a confidence interval for the difference, :math:`\mu_B - \mu_A` and interpret that CI.
 	
-		*	Assume the slump values within each group are independent, which will be true if we take the precautions above.  We do this because then we can use the central limit theorem (CLT) to state :math:`\overline{x}_A \sim \mathcal{N}\left(\mu_A, \sigma_A^2/n_A \right)` and that :math:`\overline{x}_B \sim \mathcal{N}\left(\mu_B, \sigma_B^2/n_B \right)`.
+		*	Assume the slump values within each group are independent, which will be true if we take the precautions above. We do this because then we can use the central limit theorem (CLT) to state :math:`\overline{x}_A \sim \mathcal{N}\left(\mu_A, \sigma_A^2/n_A \right)` and that :math:`\overline{x}_B \sim \mathcal{N}\left(\mu_B, \sigma_B^2/n_B \right)`.
 		
 		*	Note: we don't require the samples within each group to be normally distributed.
 		
 		*	Assume the variances are the same: :math:`\sigma_A^2 = \sigma_B^2 = \sigma^2`: this is required to simplify the next step.
 		
-		*	Assume the :math:`\overline{x}_A` and :math:`\overline{x}_B` means are independent.  This allows us to calculate a variance value,
+		*	Assume the :math:`\overline{x}_A` and :math:`\overline{x}_B` means are independent. This allows us to calculate a variance value,
 			:math:`\mathcal{V} \left\{\overline{x}_B - \overline{x}_A \right\}` from which we can create a :math:`z`-value for :math:`\mu_B - \mu_A`:
 			
 			.. math::
@@ -1136,7 +1139,7 @@ Exercises
 				s_P^2 &= \frac{4s_A^2 + 4s_B^2}{4 + 4} \\
 				s_P^2 &= \frac{4(0.97)^2 + 4(0.69)^2}{4 + 4} = 0.709\\
 				
-			This pooling also gives us 8 degrees of freedom for the :math:`t`-distribution, which is how the :math:`z`-value is distributed.  
+			This pooling also gives us 8 degrees of freedom for the :math:`t`-distribution, which is how the :math:`z`-value is distributed. 
 			
 			Using that :math:`z`-value and filling our assumed difference of zero for the true means, we can construct a 95% confidence interval:
 			
@@ -1149,25 +1152,25 @@ Exercises
 					-0.21	&\leq& \mu_B - \mu_A	&\leq&   2.2
 				\end{array}
 				
-			The statistical conclusion is that there is **no difference between formulation A and B**, since the CI spans zero.  However, the practical interpretation is that the CI only just contains zero, and this should cause us to stop, and really consider the risk of the statistical conclusion.
+			The statistical conclusion is that there is **no difference between formulation A and B**, since the CI spans zero. However, the practical interpretation is that the CI only just contains zero, and this should cause us to stop, and really consider the risk of the statistical conclusion.
 			
-			If one of the data points were in error just slightly, or if we ran a single additional experiment, it is quite possible the CI will *not span zero* anymore.  In my mind, this risk is too great, and we risk upsetting the customers. 
+			If one of the data points were in error just slightly, or if we ran a single additional experiment, it is quite possible the CI will *not span zero* anymore. In my mind, this risk is too great, and we risk upsetting the customers. 
 			
 			So my conclusion would be to "send the polymer engineers back to the lab" and have them improve their formulation until that CI spans zero more symmetrically.
 				
-	#.	A paired test should be used when there is something is common *within* pairs of samples in group A and B, but that commonality does not extend between the pairs.  Some examples though you could have mentioned:
+	#.	A paired test should be used when there is something is common *within* pairs of samples in group A and B, but that commonality does not extend between the pairs. Some examples though you could have mentioned:
 	
 		Pairing is appropriate: person 1 mixes polymer for test A and B; person 2 mixes polymer for test A and B (but with different time and agitation level that person 2); person 3 mixes ... *etc*
 		Pairing *not* appropriate: person 1 mixes all the polymer A samples; person 2 mixes all the polymer B samples (pairing won't fix this, and even the unpaired results will be inaccurate - see precautions mentioned above).
-		Pairing appropriate: you only have enough cement and raw materials to create the concrete mixture for 2 samples: one for A and one for B.  You repeat this 5 times, each time using a different supplier's raw materials.
+		Pairing appropriate: you only have enough cement and raw materials to create the concrete mixture for 2 samples: one for A and one for B. You repeat this 5 times, each time using a different supplier's raw materials.
 	
 		In other words, pairing is appropriate when there is something the prevents the :math:`\overline{x}_A` and :math:`\overline{x}_B` quantities from being independent. 
 
-	#.	The one advantage of the paired test is that it will cancel out any effect that is common between the pairs (whether that effect actually affects the slump value or not).  Pairing is a way to guard against *potential effect*.
+	#.	The one advantage of the paired test is that it will cancel out any effect that is common between the pairs (whether that effect actually affects the slump value or not). Pairing is a way to guard against *potential effect*.
 	
-		This makes the test more sensitive to the difference actually being tested for (formulation A vs B) and prevents confounding from the effect we are not testing for (suppliers' raw material).  
+		This makes the test more sensitive to the difference actually being tested for (formulation A vs B) and prevents confounding from the effect we are not testing for (suppliers' raw material). 
 		
-		Unpaired tests, but with randomization will only prevent us from being misled, however that supplier effect is still present in the 10 experimental values.  The 5 difference values used in the paired tests will be free from that effect.
+		Unpaired tests, but with randomization will only prevent us from being misled, however that supplier effect is still present in the 10 experimental values. The 5 difference values used in the paired tests will be free from that effect.
 
 	#.	Pairing requires/assumes that the paired objects have something in common (e.g. a common bias due to the cement raw material). This common bias will be cancelled out once we calculate the difference in measurements.
 	
@@ -1190,4 +1193,4 @@ Exercises
 		
 		The interpretation is that the true difference in slump, :math:`\mu_w`, when accounting for variation from the cement raw material, is again not statistically significant, at the 95% confidence level.
 	
-		Practically though, there is a bit of a risk, due to the imbalance (asymmetry) in the confidence interval. It would be reluctant to hinge my company's profitability on this result, especially with the fact that there are only 4 experiments.   So my personal conclusion would be to still "send the polymer engineers back to the lab".
+		Practically though, there is a bit of a risk, due to the imbalance (asymmetry) in the confidence interval. It would be reluctant to hinge my company's profitability on this result, especially with the fact that there are only 4 experiments.  So my personal conclusion would be to still "send the polymer engineers back to the lab".
