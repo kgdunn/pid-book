@@ -35,9 +35,9 @@
 	Interpreting loadings and scores: have to have examples for each type that show what you are referring to: e.g. unimportant variables
 	Preprocessing: add examples also
 	
-	Introduce a discussion about how much variance is captured in each latent variable early on (e.g. in the food texture example).  The students are assuming LV1 explains variable 1.
+	Introduce a discussion about how much variance is captured in each latent variable early on (e.g. in the food texture example). The students are assuming LV1 explains variable 1.
 	
-	When explaining t1p2 + t2p2+ ... : use a time-series example, like the room temperature example with the blip in the oscillations.   See the course email to Richard on 22 April 2010.
+	When explaining t1p2 + t2p2+ ... : use a time-series example, like the room temperature example with the blip in the oscillations.  See the course email to Richard on 22 April 2010.
 	
 	Optimizing process: moving in score space while staying below SPE. Give it as an optimization formulation; example from Jaeckle.
 	
@@ -51,7 +51,7 @@
 	
 	
 	Add the poyurethane example in the learning from data section (http://dx.doi.org/10.1016/S0169-7439(02)00088-6)
-	Discuss ridge regression in the PCR section.  see p 59 of Tibshirani and Friedman
+	Discuss ridge regression in the PCR section. see p 59 of Tibshirani and Friedman
 	PCR contains MLR as special case
 	Discuss about computing the number of components: use the CAMO book for extra help; Joliffe?  Eigenvector?
 	
@@ -62,9 +62,9 @@
 	Add "spectral-data-illustrate-residuals.svg" into the notes.\
 	Add "any other new illustrations not here, but in slides", e.g. geometric-interpretation-of-PCA-Hotellings-T2.png
 	
-	Draw a picture of the geometric interpretation of SPE, showing a 3rd vector off the model plane.  See email to David Gerardi on 29 June 2010.
+	Draw a picture of the geometric interpretation of SPE, showing a 3rd vector off the model plane. See email to David Gerardi on 29 June 2010.
 	
-	Enhance the support on the other correlated illustration.  Show numerically how small changes in highly correlated X's can lead to a rotated plane (and illustrate it: add the slope coefficient to the illustration)
+	Enhance the support on the other correlated illustration. Show numerically how small changes in highly correlated X's can lead to a rotated plane (and illustrate it: add the slope coefficient to the illustration)
 
 	.. TODO: contribution plot here: add text
 
@@ -303,7 +303,7 @@
 			-	Show an example of highly correlated X's: spinning cube
 			-	Show how in the extreme we cannot invert X'X
 	
-	Add in cross-validation: requires a criterion for goodness of fit.  Other criterion possible: median absolute value in E?  (sum of squares, is like minimizing variance).  Apparently Martens and Naes (NIR technology for the Agricultural and Food Industries, "Multivariate calibration by data compression" chapter, 1987), consider leverage corrected mean square error as the X-val criterion.
+	Add in cross-validation: requires a criterion for goodness of fit. Other criterion possible: median absolute value in E?  (sum of squares, is like minimizing variance). Apparently Martens and Naes (NIR technology for the Agricultural and Food Industries, "Multivariate calibration by data compression" chapter, 1987), consider leverage corrected mean square error as the X-val criterion.
 	
 	Cross-validation: explain it clearer; cross-ref the Bro paper on it; show an illustration.
 	
@@ -344,7 +344,7 @@
 	
 	Add notes about overfitting
 	
-	The paper by Helland (Comm. Stat. Simula. 17(2), p581-607, 1988): explains why PLS has A=1 for DOE type data, despite the fact that the X-space is totally orthogonal.  PCR on this sort of data would require A=K, yet PLS achieves the same performance with A=1.  It is to do with when the eigenvalues of X'X are proportional to the identity matrix that PLS has A=1.
+	The paper by Helland (Comm. Stat. Simula. 17(2), p581-607, 1988): explains why PLS has A=1 for DOE type data, despite the fact that the X-space is totally orthogonal. PCR on this sort of data would require A=K, yet PLS achieves the same performance with A=1. It is to do with when the eigenvalues of X'X are proportional to the identity matrix that PLS has A=1.
 		
 	Multiway data sets
 	
@@ -376,7 +376,7 @@
 In context
 ===========
 
-This section considers the important area of latent variable modelling.  These models have been shown, about 20 to 30 years ago, to be very powerful tools in dealing with the very data that (chemical) engineers face frequently.  Our main goal of this section is to show how one can extract value from these data.  But we first introduce the concept of a latent variable, and specifically the principal component analysis (PCA) model: the cornerstone of all latent variable models.  Then we consider different ways to use our databases for interesting applications such as troubleshooting, soft-sensors, process monitoring, and new product development.
+This section considers the important area of latent variable modelling. These models have been shown, about 20 to 30 years ago, to be very powerful tools in dealing with the very data that (chemical) engineers face frequently. Our main goal of this section is to show how one can extract value from these data. But we first introduce the concept of a latent variable, and specifically the principal component analysis (PCA) model: the cornerstone of all latent variable models. Then we consider different ways to use our databases for interesting applications such as troubleshooting, soft-sensors, process monitoring, and new product development.
 
 .. TODO: more questions/answers here
 
@@ -421,32 +421,32 @@ There are five main areas where engineers use large quantities of data.
 
 	#.	**Improved process understanding**
 	
-		This is an implicit goal in any data analysis: either we confirm what we know about the process, or we see something unusual show up and learn from it.  Plots that show, in one go, how a complex set of variables interact and relate to each other are required for this step.
+		This is an implicit goal in any data analysis: either we confirm what we know about the process, or we see something unusual show up and learn from it. Plots that show, in one go, how a complex set of variables interact and relate to each other are required for this step.
 		
 	#.	**Troubleshooting process problems**
 	
-		Troubleshooting occurs after a problem has occurred.  There are many potential sources that could have caused the problem.  Screening tools are required that will help isolate the variables most related to the problem. These variables, combined with our engineering knowledge, are then used to troubleshoot why the problem occurred.
+		Troubleshooting occurs after a problem has occurred. There are many potential sources that could have caused the problem. Screening tools are required that will help isolate the variables most related to the problem. These variables, combined with our engineering knowledge, are then used to troubleshoot why the problem occurred.
 		
 	#.	**Improving, optimizing and controlling processes**
 	
-		We have already introduced the concept of :ref:`designed experiments and response surface methods <SECTION-design-analysis-experiments>`.  These are excellent tools to intentionally manipulate your process so that you can find a more optimal operating point, or even develop a new product.  We will show how latent variable tools can be used on a large historical data set to improve process operation, and to move to a new operating point.  There are also tools for applying process control in the latent variable space.
+		We have already introduced the concept of :ref:`designed experiments and response surface methods <SECTION-design-analysis-experiments>`. These are excellent tools to intentionally manipulate your process so that you can find a more optimal operating point, or even develop a new product. We will show how latent variable tools can be used on a large historical data set to improve process operation, and to move to a new operating point. There are also tools for applying process control in the latent variable space.
 		
 	#.	**Predictive modelling** (inferential sensors)
 	
-		The section on :ref:`least squares modelling <SECTION-least-squares-modelling>` provided you with a tool for making predictions. We will show some powerful examples of how a "difficult-to-measure" variable can be predicted in real-time, using other easy-to-obtain process data.  Least squares modelling is a good tool, but it lacks some of the advantages that latent variable methods provide, such as the ability to handle highly collinear data, and data with missing values. 
+		The section on :ref:`least squares modelling <SECTION-least-squares-modelling>` provided you with a tool for making predictions. We will show some powerful examples of how a "difficult-to-measure" variable can be predicted in real-time, using other easy-to-obtain process data. Least squares modelling is a good tool, but it lacks some of the advantages that latent variable methods provide, such as the ability to handle highly collinear data, and data with missing values. 
 	
 	#.	**Process monitoring**
 	
-		Once a process is running, we require monitoring tools to ensure that it maintains and stays at optimal performance.  We have already considered :ref:`process monitoring charts <SECTION-process-monitoring>` for univariate process monitoring.  In this section we extend that concept to monitoring multiple variables.
+		Once a process is running, we require monitoring tools to ensure that it maintains and stays at optimal performance. We have already considered :ref:`process monitoring charts <SECTION-process-monitoring>` for univariate process monitoring. In this section we extend that concept to monitoring multiple variables.
 		
 The types of data engineers deal with now
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When industrial manufacturing and chemical engineering started to develop around the 1920's to 1950's, data collected from a process were, at most, just a handful of columns.  These data were collected manually and often at considerable expense.
+When industrial manufacturing and chemical engineering started to develop around the 1920's to 1950's, data collected from a process were, at most, just a handful of columns. These data were collected manually and often at considerable expense.
 
 The "classical" tools required to visualize and understand these datasets are :ref:`scatter plots <visualization_scatter_plots>`, :ref:`time-series plots <visualization_time_series>`, :ref:`Shewhart charts <monitoring_shewhart_chart>` and :ref:`EWMA charts <monitoring-EWMA>` for process monitoring, and :ref:`multiple linear regression <LS_multiple_X_MLR>` (MLR) least-squares models; all the tools which we have already learned about so far.
 
-We will represent any data set as a matrix, called |X|, where each row in |X| contains values taken from an *object* of some sort. These rows, or *observations* could be a collection of measurements at a particular point in time, various properties on a sample of final product, or a sample of raw material from a supplier. The columns in |X| are the values recorded for each observation.  We call these the *variables* and there are :math:`K` of them.
+We will represent any data set as a matrix, called |X|, where each row in |X| contains values taken from an *object* of some sort. These rows, or *observations* could be a collection of measurements at a particular point in time, various properties on a sample of final product, or a sample of raw material from a supplier. The columns in |X| are the values recorded for each observation. We call these the *variables* and there are :math:`K` of them.
 
 	.. figure:: ../figures/data-types/X-matrix-long-and-thin.png
 		:alt:	../figures/data-types/X-matrix-long-and-thin.svg
@@ -454,20 +454,20 @@ We will represent any data set as a matrix, called |X|, where each row in |X| co
 		:scale: 18
 		:width: 400px
 
-These data sets from the 1950's frequently had many more rows than columns, because it was expensive and time-consuming to measure additional columns.  The choice of which columns to measure was carefully thought out, so that they didn't unnecessarily duplicate the same measurement.  As a result:
+These data sets from the 1950's frequently had many more rows than columns, because it was expensive and time-consuming to measure additional columns. The choice of which columns to measure was carefully thought out, so that they didn't unnecessarily duplicate the same measurement. As a result:
 
 	* the columns of X were often independent, with little or no overlapping information
 	* the variables were measured in a controlled environment, with a low amount of error
 
-These data sets meet all the assumptions required to use the so-called "classical" tools, especially least squares modelling.  Data sets that engineers currently deal with though can be of any configuration with both large and small :math:`N` and large and small :math:`K`, but more likely we have many columns for each observation.
+These data sets meet all the assumptions required to use the so-called "classical" tools, especially least squares modelling. Data sets that engineers currently deal with though can be of any configuration with both large and small :math:`N` and large and small :math:`K`, but more likely we have many columns for each observation.
 
 **Small N and small K**
 
-	These cases are mostly for when we have expensive measurements, and they are hard to obtain frequently.  Classical methods to visualize and analyze these data always work well: scatterplots, linear regression, *etc*.
+	These cases are mostly for when we have expensive measurements, and they are hard to obtain frequently. Classical methods to visualize and analyze these data always work well: scatterplots, linear regression, *etc*.
 	
 **Small N and large K**
 
-	This case is common for laboratory instrumentation, particularly spectroscopic devices. In recent years we are routinely collecting large quantities of data.  A typical example is with near-infrared probes embedded at-line.  These probes record a spectral response at around 1000 to 2000 different wavelengths.  The data are represented in |X| using one wavelength per column and each sample appears in a row. The illustration here shows data from :math:`N=460` samples, with data recorded every 2 nm (:math:`K=650`).
+	This case is common for laboratory instrumentation, particularly spectroscopic devices. In recent years we are routinely collecting large quantities of data. A typical example is with near-infrared probes embedded at-line. These probes record a spectral response at around 1000 to 2000 different wavelengths. The data are represented in |X| using one wavelength per column and each sample appears in a row. The illustration here shows data from :math:`N=460` samples, with data recorded every 2 nm (:math:`K=650`).
 	
 	.. image:: ../figures/examples/tablet-spectra/pharma-spectra.png
 		:alt:	../figures/examples/tablet-spectra/pharma-spectra.py
@@ -499,7 +499,7 @@ These data sets meet all the assumptions required to use the so-called "classica
 
 **X and Y matrices**
 
-	This situation arises when we would like to predict one or more variables from another group of variables.  We have already seen this data structure in the :ref:`least squares section <LS_multiple_X_MLR>` where :math:`M = 1`, but more generally we would like to predict several :math:`y`-values from the same data in |X|.  
+	This situation arises when we would like to predict one or more variables from another group of variables. We have already seen this data structure in the :ref:`least squares section <LS_multiple_X_MLR>` where :math:`M = 1`, but more generally we would like to predict several :math:`y`-values from the same data in |X|. 
 	
 	
 	.. image:: ../figures/data-types/X-and-Y-matrices.png
@@ -521,11 +521,11 @@ These data sets meet all the assumptions required to use the so-called "classica
 		:width: 500px
 		:align: center
 		
-	A fourth dimension can be added to this data if we start recording images over time. Such systems generate between 1 and 5 Mb of data per second.  As with the spectral data set mentioned earlier, these camera systems generate large quantities of redundant data, because neighbouring pixels, both in time and spatially, are so similar. It is a case of high noise and little real information.
+	A fourth dimension can be added to this data if we start recording images over time. Such systems generate between 1 and 5 Mb of data per second. As with the spectral data set mentioned earlier, these camera systems generate large quantities of redundant data, because neighbouring pixels, both in time and spatially, are so similar. It is a case of high noise and little real information.
 
 **Batch data sets**	
 
-	Batch systems are common with high-value products: pharmaceuticals, fine-chemicals, and polymers.  The |Z| matrix below contains data that describes how the batch is prepared and also contains data that is constant over the duration of the whole batch.  The |X| matrix contains the recorded values for each variable over the duration of the batch.  For example, temperature ramp-up and ramp-down, flow rates of coolant, agitator speeds and so on. The final product properties, recorded at the end of the batch, are collected in matrix |Y|.
+	Batch systems are common with high-value products: pharmaceuticals, fine-chemicals, and polymers. The |Z| matrix below contains data that describes how the batch is prepared and also contains data that is constant over the duration of the whole batch. The |X| matrix contains the recorded values for each variable over the duration of the batch. For example, temperature ramp-up and ramp-down, flow rates of coolant, agitator speeds and so on. The final product properties, recorded at the end of the batch, are collected in matrix |Y|.
 	
 	.. figure:: ../figures/batch/Batch-data-layers-into-the-page.png
 		:alt:	../figures/batch/Batch-data-layers-into-the-page.svg
@@ -539,49 +539,49 @@ These data sets meet all the assumptions required to use the so-called "classica
 		:scale: 40
 		:width: 550px
 		:align: center
-		
+
 	.. Figure just a screen grab from the Yeast case study
 
 **Data fusion**	
 
-	This is a recent buzz-word that simply means we collect and use data from multiple sources. Imagine the batch system above: we already have data in |Z| recorded by manual entry, data in |X| recorded by sensors on the process, and then |Y|, typically from lab measurements.  We might even have a near infrared probe in the reactor that provides a complete spectrum (a vector) at each point in time.  The process of combining these data sets together is called data fusion. Each data set is often referred to as a :index:`block <single: block (data set)>`. We prefer to use the term :index:`multiblock` data analysis when dealing with combined data sets.
+	This is a recent buzz-word that simply means we collect and use data from multiple sources. Imagine the batch system above: we already have data in |Z| recorded by manual entry, data in |X| recorded by sensors on the process, and then |Y|, typically from lab measurements. We might even have a near infrared probe in the reactor that provides a complete spectrum (a vector) at each point in time. The process of combining these data sets together is called data fusion. Each data set is often referred to as a :index:`block <single: block (data set)>`. We prefer to use the term :index:`multiblock` data analysis when dealing with combined data sets.
 
 Issues faced with engineering data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Size of the data**
 
-	The most outstanding feature of the above data sets is their large size, both in terms of the number of rows and columns.  This is primarily because data acquisition and data storage has become cheap.
+	The most outstanding feature of the above data sets is their large size, both in terms of the number of rows and columns. This is primarily because data acquisition and data storage has become cheap.
 	
-	The number of rows isn't too big of a deal: we can sub-sample the data, use parallel processors on our computers or distributed computing (a.k.a. cloud computing) to deal with this.  The bigger problem is the number of columns in the data arrays.  A data set with :math:`K` columns can be visualized using :math:`K(K-1)/2` :ref:`pairs of scatterplots <LVM_visualization_scatterplot_matrix>`;  this is manageable for :math:`K < 8`, but the quadratic number of combinations prevents us from using scatterplot matrices to visualize this data, especially when :math:`K>10`. 
+	The number of rows isn't too big of a deal: we can sub-sample the data, use parallel processors on our computers or distributed computing (a.k.a. cloud computing) to deal with this. The bigger problem is the number of columns in the data arrays. A data set with :math:`K` columns can be visualized using :math:`K(K-1)/2` :ref:`pairs of scatterplots <LVM_visualization_scatterplot_matrix>`;  this is manageable for :math:`K < 8`, but the quadratic number of combinations prevents us from using scatterplot matrices to visualize this data, especially when :math:`K>10`. 
 	
 	The need here is for a toll that deals with large :math:`K`.
 	
 **Lack of independence**
 
-	The lack of independence is a big factor in modern data sets - it is problematic for example with MLR where the :math:`\mathbf{X}'\mathbf{X}` becomes singular as the data become more dependent. Sometimes we can make our data more independent by selecting a reduced number of columns, but this requires good knowledge of the system being investigated, is time-consuming, and we risk omitting important variables.  
+	The lack of independence is a big factor in modern data sets - it is problematic for example with MLR where the :math:`\mathbf{X}'\mathbf{X}` becomes singular as the data become more dependent. Sometimes we can make our data more independent by selecting a reduced number of columns, but this requires good knowledge of the system being investigated, is time-consuming, and we risk omitting important variables. 
 	
 **Low signal to noise ratio**
 
-	Engineering systems are usually kept as stable as possible: the ideal being a flat line.  Data from such systems have very little signal and high noise.  Even though we might record 50 Mb per second from various sensors, computer systems can, and actually do, "throw away" much of the data.  This is not advisable from a multivariate data analysis perspective, but the reasoning behind it is hard to fault: much of the data we collect is not very informative. A lot of it is just from constant operation, noise, slow drift or error.  
+	Engineering systems are usually kept as stable as possible: the ideal being a flat line. Data from such systems have very little signal and high noise. Even though we might record 50 Mb per second from various sensors, computer systems can, and actually do, "throw away" much of the data. This is not advisable from a multivariate data analysis perspective, but the reasoning behind it is hard to fault: much of the data we collect is not very informative. A lot of it is just from constant operation, noise, slow drift or error. 
 	
 	Finding the interesting signals in these routine data (also known as happenstance data), is a challenge.
 		
 **Non-causal data**
 
-	This happenstance data is also non-causal.  The opposite case is when one runs a designed experiment; this intentionally adds variability into a process, allowing us to conclude cause-and-effect relationships, if we properly block and randomize.  
+	This happenstance data is also non-causal. The opposite case is when one runs a designed experiment; this intentionally adds variability into a process, allowing us to conclude cause-and-effect relationships, if we properly block and randomize. 
 	
 	But happenstance data just allows us to draw inference based on correlation effects. Since correlation is a prerequisite for causality, we can often learn a good deal from the correlation patterns in the data. Then we use our engineering knowledge to validate any correlations, and we can go on to truly verify causality with a randomized designed experiment, if it is an important effect to verify.
 	
 **Errors in the data**
 
-	Tools, such as least squares analysis, assume the recorded data has no error. But most engineering systems have error in their measurements, some of it quite large, since much of the data is collected by automated systems under non-ideal conditions.  
+	Tools, such as least squares analysis, assume the recorded data has no error. But most engineering systems have error in their measurements, some of it quite large, since much of the data is collected by automated systems under non-ideal conditions. 
 	
 	So we require tools that relax the assumption that measurements have no error.
 	
 **Missing data**
 
-	Missing data are very common in engineering applications.  Sensors go off-line, are damaged, or it is simply not possible to record all the variables (attributes) on each observation. Classical approaches are to throw away rows or columns with incomplete information, which might be acceptable when we have large quantities of data, but could lead to omitting important information in many cases.
+	Missing data are very common in engineering applications. Sensors go off-line, are damaged, or it is simply not possible to record all the variables (attributes) on each observation. Classical approaches are to throw away rows or columns with incomplete information, which might be acceptable when we have large quantities of data, but could lead to omitting important information in many cases.
 
 .. OMIT FOR NOW
 		:alt:	../figures/data-types/missing-data.png
@@ -594,7 +594,7 @@ Issues faced with engineering data
 .. OMIT FOR NOW
 	**Unaligned data**
 
-		Increasingly common, especially with multidimensional data blocks and batch systems, is that we have to pre-align the data.  Not every dimension in these data cubes have the same number of entries.....
+		Increasingly common, especially with multidimensional data blocks and batch systems, is that we have to pre-align the data. Not every dimension in these data cubes have the same number of entries.....
 
 **In conclusion**, we require methods that:
 
@@ -619,9 +619,9 @@ We will take a look at what a latent variable is conceptually, geometrically, an
 Your health
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Your overall health is a latent variable.  But there isn't a single measurement of "*health*" that can be measured - it is a rather abstract concept.  Instead we measure physical properties from our bodies, such as blood pressure, cholesterol level, weight, various distances (waist, hips, chest), blood sugar, temperature, and a variety of other measurements.  These separate measurements can be used by a trained person to judge your health, based on their experience of seeing these values from a variety of healthy and healthy patients.
+Your overall health is a latent variable. But there isn't a single measurement of "*health*" that can be measured - it is a rather abstract concept. Instead we measure physical properties from our bodies, such as blood pressure, cholesterol level, weight, various distances (waist, hips, chest), blood sugar, temperature, and a variety of other measurements. These separate measurements can be used by a trained person to judge your health, based on their experience of seeing these values from a variety of healthy and healthy patients.
 
-In this example, your *health* is a latent, or hidden variable.  If we had a sensor for health, we could measure and use that variable, but since we don't, we use other measurements which all contribute in some way to assessing health.
+In this example, your *health* is a latent, or hidden variable. If we had a sensor for health, we could measure and use that variable, but since we don't, we use other measurements which all contribute in some way to assessing health.
 
 .. _LVM_room_temperature_example:
 
@@ -630,7 +630,7 @@ Room temperature
 
 **Conceptually**
 
-Imagine the room you are in has 4 temperature probes that sample and record the local temperature every 30 minutes.  Here is an example of what the four measurements might look like over 3 days.
+Imagine the room you are in has 4 temperature probes that sample and record the local temperature every 30 minutes. Here is an example of what the four measurements might look like over 3 days.
 
 .. figure:: ../figures/examples/room-temperature/room-temperature-plots.png
 	:alt:	../figures/examples/room-temperature/room-temperature-plots.py
@@ -653,17 +653,17 @@ In table form, the first few measurements are:
 
 .. Some questions that come to mind are what are fluctuations due to in the data; what is the sharp spike in the 3rd measurement due to; and why is there an unusual dip in the first temperature measurement?
 
-The general up and down fluctuations are due to the daily change in the room's temperature.  The single, physical phenomenon being recorded in these four measurements is just the variation in room temperature.   
+The general up and down fluctuations are due to the daily change in the room's temperature. The single, physical phenomenon being recorded in these four measurements is just the variation in room temperature.  
 
-If we added two more thermometers in the middle of the room, we would expect these new measurements to show the same pattern as the other four. In that regard we can add as many thermometers as we like to the room, but we won't be recording some new, independent piece of information with each thermometer.  There is only one true variable that drives all the temperature readings up and down: it is a latent variable.  
+If we added two more thermometers in the middle of the room, we would expect these new measurements to show the same pattern as the other four. In that regard we can add as many thermometers as we like to the room, but we won't be recording some new, independent piece of information with each thermometer. There is only one true variable that drives all the temperature readings up and down: it is a latent variable. 
 
-Notice that we don't necessarily have to know what *causes* the latent variable to move up and down (it could be the amount of sunlight on the building; it could be the air-conditioner's settings).  All we know is that these temperature measurements just reflect the underlying phenomenon that drives the up-and-down movements in temperature; they are *correlated* with the latent variable.
+Notice that we don't necessarily have to know what *causes* the latent variable to move up and down (it could be the amount of sunlight on the building; it could be the air-conditioner's settings). All we know is that these temperature measurements just reflect the underlying phenomenon that drives the up-and-down movements in temperature; they are *correlated* with the latent variable.
 
-Notice also the sharp spike recorded at the back-left corner of the room could be due to an error in the temperature sensor.  And the front part of the room showed a dip, maybe because the door was left open for an extended period; but not long enough to affect the other temperature readings.   These two events go against the general trend of the data, so we expect these periods of time to *stand out* in some way, so that we can detect them. 
+Notice also the sharp spike recorded at the back-left corner of the room could be due to an error in the temperature sensor. And the front part of the room showed a dip, maybe because the door was left open for an extended period; but not long enough to affect the other temperature readings.  These two events go against the general trend of the data, so we expect these periods of time to *stand out* in some way, so that we can detect them. 
 
 **Mathematically**
 
-If we wanted to summarize the events taking place in the room we might just use the average of the recorded temperatures.  Let's call this new, average variable :math:`t_1`, which summarizes the other four original temperature measurements :math:`x_1, x_2, x_3` and :math:`x_4`.
+If we wanted to summarize the events taking place in the room we might just use the average of the recorded temperatures. Let's call this new, average variable :math:`t_1`, which summarizes the other four original temperature measurements :math:`x_1, x_2, x_3` and :math:`x_4`.
 
 .. math:: t_1 &= \begin{bmatrix} x_1 & x_2 & x_3 & x_4 \end{bmatrix}\begin{bmatrix} p_{1,1} \\ p_{2,1} \\ p_{3,1} \\ p_{4,1} \end{bmatrix} = x_1 p_{1,1} + x_2 p_{2,1} + x_3 p_{3,1} + x_4 p_{4,1} 
 
@@ -683,7 +683,7 @@ We can visualize the data from this system in several ways, but we will simply s
 	:width: 750px
 	:align: center
 
-The 3 plots show the same set of data, just from different points of view.  Each observation is a single dot, the location of which is determined by the recorded values of temperature, :math:`x_1, x_2` and :math:`x_3`.  We will use this representation in the next section again.
+The 3 plots show the same set of data, just from different points of view. Each observation is a single dot, the location of which is determined by the recorded values of temperature, :math:`x_1, x_2` and :math:`x_3`. We will use this representation in the next section again.
 
 Note how correlated the data appear: forming a diagonal line across the cube's interior, with a few outliers (described above) that don't obey this trend.
 
@@ -692,7 +692,7 @@ Note how correlated the data appear: forming a diagonal line across the cube's i
 	Thickness of wood boards
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	Wood boards (for example 2 by 4 boards) are measured for thickness at 6 locations prior to leaving the lumber mill (see the illustration).  Three important quality variables are derived from these 6 measurements:
+	Wood boards (for example 2 by 4 boards) are measured for thickness at 6 locations prior to leaving the lumber mill (see the illustration). Three important quality variables are derived from these 6 measurements:
 
 		* :math:`x_1` = average tail thickness: average of thickness 1 and 4
 		* :math:`x_2` = average feed thickness: average of thickness 3 and 6
@@ -718,12 +718,12 @@ Note how correlated the data appear: forming a diagonal line across the cube's i
 		:width: 750px
 		:align: center
 
-	It is not surprising that the feed and tail thickness are related to each other.  They are expected to have a positive correlation, because if the board is thicker, it will be thick at all locations.  The taper measurement is unrelated to the boards thickness, since it doesn't matter if the board is thick or thin: it can still be tapered.
+	It is not surprising that the feed and tail thickness are related to each other. They are expected to have a positive correlation, because if the board is thicker, it will be thick at all locations. The taper measurement is unrelated to the boards thickness, since it doesn't matter if the board is thick or thin: it can still be tapered.
 
 	So there are two latent variables in this system: 
 
-		#.	The fact that the entire board is thicker or thinner is captured by the feed and tail thickness measurements.   These measurements are correlated with whatever physical phenomenon causes that average thickness to increase or decrease (e.g. spacing of the saw blades).
-		#.	The third measurement, taper of the board, is capturing a different phenomenon in the system; possibly caused by how much the blades are skewed out of alignment.  
+		#.	The fact that the entire board is thicker or thinner is captured by the feed and tail thickness measurements.  These measurements are correlated with whatever physical phenomenon causes that average thickness to increase or decrease (e.g. spacing of the saw blades).
+		#.	The third measurement, taper of the board, is capturing a different phenomenon in the system; possibly caused by how much the blades are skewed out of alignment. 
 	
 		.. But unless we perform an experiment where we change the saw alignment and measure the taper, we won't be sure that this is a causal relationship. 
 
@@ -733,14 +733,14 @@ Note how correlated the data appear: forming a diagonal line across the cube's i
 		*	The actual measurements we take on the system are *correlated* with the latent variable.
 		*	Latent variables that are unrelated to to each other are said to be independent, or orthogonal to each other.
 
-	Latent variable modelling is concerned with how we can reduce the number of values we measure on each observation, but still retain the important features.  In this example of the board thickness, we could use an average of the feed and tail measurements as one of the summary variables, called :math:`t_1`.  And since the taper is independent of thickness, we would retain a second latent variable, called :math:`t_2`, that captures the taper measurement.
+	Latent variable modelling is concerned with how we can reduce the number of values we measure on each observation, but still retain the important features. In this example of the board thickness, we could use an average of the feed and tail measurements as one of the summary variables, called :math:`t_1`. And since the taper is independent of thickness, we would retain a second latent variable, called :math:`t_2`, that captures the taper measurement.
 
 		.. math::
 	
 			t_1 &= \begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}\begin{bmatrix} p_{1,1} \\ p_{2,1} \\ p_{3,1} \end{bmatrix} = x_1 p_{1,1} + x_2 p_{2,1} + x_3 p_{3,1}  \\
 			t_2 &= \begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}\begin{bmatrix} p_{1,2} \\ p_{2,2} \\ p_{3,2} \end{bmatrix} = x_1 p_{1,2} + x_2 p_{2,2} + x_3 p_{3,2}
 
-	So using the measurements from each board, :math:`\begin{bmatrix} x_1, & x_2, & x_3 \end{bmatrix}` we obtain two derived values, :math:`\begin{bmatrix} t_1, & t_2 \end{bmatrix}`.  These two values are intended to capture the essence of the original measurements.  The weights :math:`p_{k,a}` are selected so that we meet that objective.
+	So using the measurements from each board, :math:`\begin{bmatrix} x_1, & x_2, & x_3 \end{bmatrix}` we obtain two derived values, :math:`\begin{bmatrix} t_1, & t_2 \end{bmatrix}`. These two values are intended to capture the essence of the original measurements. The weights :math:`p_{k,a}` are selected so that we meet that objective.
 
 	What values would be suitable for the weights?  One option might be that:
 
@@ -767,6 +767,6 @@ The main points from this section are:
 	*	Latent variables capture, in some way, an underlying phenomenon in the system being investigated.
 	*	After calculating the latent variables in a system, we can use these fewer number of variables, instead of the :math:`K` columns of raw data. This is because the actual measurements are *correlated* with the latent variable.
 	
-The examples given so far showed what a single latent variables is. In practice we usually obtain several latent variables for a data array.  At this stage you likely have more questions, such as "*how many latent variables are there in a matrix*" and "*how are the values in* |P| *chosen*", and "*how do we know these latent variables are a good summary of the original data*"?
+The examples given so far showed what a single latent variables is. In practice we usually obtain several latent variables for a data array. At this stage you likely have more questions, such as "*how many latent variables are there in a matrix*" and "*how are the values in* |P| *chosen*", and "*how do we know these latent variables are a good summary of the original data*"?
 
 We address these issues more formally in the next section on :ref:`principal component analysis <SECTION_PCA>`.

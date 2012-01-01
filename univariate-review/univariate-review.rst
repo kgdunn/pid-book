@@ -29,8 +29,8 @@
 	* Explain more clearly when a paired test is required vs a test of differences
 	* Show the curves for normal and t-distribution as a table
 	
-In context
-==========
+Univariate data analysis in context
+====================================
 
 This section is an introduction to the area of data analysis. We cover concepts from univariate data analysis, specifically the concepts shown in the pictorial outline below. This section is only a *review of these concepts*; for a more comprehensive treatment, please consult an introductory statistics textbook (see the recommended readings further down).
 
