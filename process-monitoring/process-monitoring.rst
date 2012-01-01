@@ -22,8 +22,8 @@
 	Explain how to change Cpk if it is undesireable
 	
 
-In context
-==========
+Process monitoring in context
+==============================
 
 In the first section we learned about :ref:`visualizing data <SECTION-data-visualization>`, then we moved on to reviewing :ref:`univariate statistics <SECTION-univariate-review>`. This section combines those two areas, showing how to create a system that monitors a single, univariate, value from any process. We do this using graphical tools, to enable anyone to rapidly detect a problem by visual analysis. The next logical step after detection is to diagnose the problem, but we will cover diagnosis in the section on :ref:`latent variable models <SECTION_latent_variable_modelling>`.
 
@@ -85,15 +85,15 @@ References and readings
 
 .. p 669 of Devore: see also Technometrics, 1989, p173-184, by David M Rocke
 
-Concepts
-~~~~~~~~~~~~~~~
-
-Concepts that you must be familiar with by the end of this section: 
-
-.. image:: ../figures/mindmaps/process-monitoring-concepts.png
-	:width: 600px
-	:align: center
-	:scale: 55
+.. Concepts
+.. ~~~~~~~~~~~~~~~
+.. 
+.. Concepts that you must be familiar with by the end of this section: 
+.. 
+.. .. image:: ../figures/mindmaps/process-monitoring-concepts.png
+.. 	:width: 600px
+.. 	:align: center
+.. 	:scale: 55
 
 So what is process monitoring?
 ===============================
