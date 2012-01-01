@@ -8,3 +8,4 @@ Visualizing Process Data
    :maxdepth: 2
 
    data-visualization
+   data-visualization-exercises

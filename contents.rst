@@ -9,12 +9,11 @@ Process Improvement using Data
 
 .. toctree::
 
+	data-visualization/index
+
+.. Sections omitted:
 	
 	univariate-review/index	
-	
-	
-.. Sections omitted:
-	data-visualization/index
 	process-monitoring/index
 	least-squares-modelling/index
 	design-analysis-experiments/index
