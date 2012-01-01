@@ -8,4 +8,5 @@ Process Monitoring
    :maxdepth: 2
 
    process-monitoring
+   process-monitoring-exercises
 
