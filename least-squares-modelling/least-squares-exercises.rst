@@ -523,8 +523,7 @@ Exercises
 
 	#.	Use the ``plot(bio)`` function in R, where ``bio`` is the data frame you loaded using the ``read.csv(...)`` function. R notices that ``bio`` is not a single variable, but a group of variables, i.e. a data frame, so it plots what is called a *scatterplot matrix* instead. Describe how the scatterplot matrix agrees with your interpretation of the slopes in parts 1, 2 and 3 of this question.
 
-	Solution
-	--------
+.. answer::
 
 	The R code (below) was used to answer all questions.
 
@@ -588,6 +587,7 @@ Exercises
 	#.	**Advanced**: Switch :math:`x` and :math:`y` around and rebuild your least squares model. Compare the new :math:`R^2` to the previous model's :math:`R^2`. Is this result surprising?  How do interpret this?
 
 .. answer::
+	:fullinclude: no
 
 	#.	Relationship: the data are negatively correlated.
 
@@ -629,7 +629,6 @@ Exercises
 	.. literalinclude:: ../figures/least-squares/CO2-gas-furnace-question.R
 		:language: s
 
-
 .. question::
 
 	.. _thermocouple_LS_question:
@@ -655,6 +654,7 @@ Exercises
 	**Note**: This example explains why we don't use the terminology of *independent* and *dependent* variables in this book. Here the temperature truly is the independent variable, because it causes the voltage difference that we measure. But the voltage reading is the independent variable in the least squares model. The word *independent* is being used in two different senses (its English meaning *vs* its mathematical meaning), and this can be misleading.
 
 .. answer::
+	:fullinclude: no
 
 	#.	The linear model is used to predict temperature given the reading in millivolts. The reason is that in modelling, in general, we specify as :math:`x` the variable(s) we always have available, while :math:`y` is the variable we would like to predict from the :math:`x`.
 
@@ -825,7 +825,6 @@ Exercises
 
 		There is about a 60% correlation between each of the :math:`x`-variables in this model, and in each case the correlation is positive. 
 
-
 	#.	A combined linear regression model is :math:`y = -28.9 + 0.31 x_A + 3.92 x_S + 19.7 x_L` where :math:`x_A` is the log of the acetic acid concentration, :math:`x_S` is the log of the hydrogen sulphide concentration and :math:`x_L` is the lactic acid concentration in the cheese. The confidence intervals for each coefficient are:
 
 		*	:math:`-8.9 \leq b_A \leq  9.4`
@@ -842,7 +841,7 @@ Exercises
 
 		*Other, advanced explanations*:
 
-		Highly correlated :math:`x`-variables are problematic in least squares, because the confidence intervals and slope coefficients are not independent anymore.  This leads to the problem we see above: the acetic acid's effect is shown to be insignificant in the MLR, yet it was significant in the single-variable regression!	  Which model do we believe?
+		Highly correlated :math:`x`-variables are problematic in least squares, because the confidence intervals and slope coefficients are not independent anymore. This leads to the problem we see above: the acetic acid's effect is shown to be insignificant in the MLR, yet it was significant in the single-variable regression!	  Which model do we believe?
 
 		This resolution to this problem is simple: look at the raw data and see how correlated each of the :math:`x`-variables are with each other. One of the shortcomings of least squares is that we must invert :math:`\mathbf{X}'\mathbf{X}`. For highly correlated variables this matrix is unstable in that small changes in the data lead to large changes in the inversion. What we need is a method that handles correlation.
 
@@ -882,6 +881,7 @@ Exercises
 	#.	What would be the predicted yield for an experiment run without baffles, at 4000 rpm impeller speed, run at a reactor temperature of 90 °C?
 
 .. answer::
+	:fullinclude: no
 
 	#.	The full linear model that relates bioreactor yield to 3 factors is:
 
@@ -1017,7 +1017,7 @@ Exercises
 	#.	A linear model between ``z2`` and ``SCB``: :math:`\widehat{\text{SCB}} = 32.23 - 10.6 z_2`
 
 		First start with a plot of the raw data with this regression line superimposed:
-
+		
 		.. image:: ../figures/least-squares/ldpe-z2-SCB-raw-data-identify.jpg
 			:alt:	../figures/least-squares/LDPE-question.R
 			:scale: 45
@@ -1025,13 +1025,12 @@ Exercises
 			:align: center
 
 		which helps when we look at the q-q plot of the Studentized residuals to see the positive and the negative residuals:
-
+		
 		.. image:: ../figures/least-squares/ldpe-z2-SCB-resids-qqplot.png
 			:alt:	../figures/least-squares/LDPE-question.R
 			:scale: 45
 			:width: 550px
 			:align: center
-
 
 		#.	We notice there is no strong evidence of non-normality, however, we can see a trend in the tails on both sides (there are large positive residuals and large negative residuals). The identified points in the two plots help understand which points affect the residual tails.
 
@@ -1188,19 +1187,20 @@ Exercises
 
 .. question::
 
-	Some data were collected from tests where the compressive strength, :math:`x`, used to form concrete was measured, as well as the intrinsic permeability of the product, :math:`y`. There were 16 data points collected. The mean :math:`x`-value was :math:`\overline{x} = 3.1` and the variance of the :math:`x`-values was 1.52. The average :math:`y`-value was 40.9.  The estimated covariance between :math:`x` and :math:`y` was :math:`-5.5`.
+	Some data were collected from tests where the compressive strength, :math:`x`, used to form concrete was measured, as well as the intrinsic permeability of the product, :math:`y`. There were 16 data points collected. The mean :math:`x`-value was :math:`\overline{x} = 3.1` and the variance of the :math:`x`-values was 1.52. The average :math:`y`-value was 40.9. The estimated covariance between :math:`x` and :math:`y` was :math:`-5.5`.
 
 	The least squares estimate of the slope and intercept was: :math:`y = 52.1 - 3.6 x`.
 	
 	#.	What is the expected permeability when the compressive strength is at 5.8 units?
 	
-	#.	Calculate the 95% confidence interval for the slope if the standard error from the model was 4.5 units.  Is the slope coefficient statistically significant?
+	#.	Calculate the 95% confidence interval for the slope if the standard error from the model was 4.5 units. Is the slope coefficient statistically significant?
 
 	#.	Provide a rough estimate of the 95% prediction interval when the compressive strength is at 5.8 units (same level as for part 1). What assumptions did you make to provide this estimate?
 	
 	#.	Now provide a more accurate, calculated 95% prediction confidence interval for the previous part.
 
 .. answer::
+	:fullinclude: no
 
 	#.	It is :math:`\hat{y} = 52.1 - 3.6(5.8) = 31.22`
 	
@@ -1246,7 +1246,7 @@ Exercises
 
 .. question::
 
-	A simple linear model relating reactor temperature to polymer viscosity is desirable, because measuring viscosity online, in real time is far too costly, and inaccurate.  Temperature, on the other hand, is quick and inexpensive.  This is the concept of *soft sensors*, also known as *inferential sensors*.
+	A simple linear model relating reactor temperature to polymer viscosity is desirable, because measuring viscosity online, in real time is far too costly, and inaccurate. Temperature, on the other hand, is quick and inexpensive. This is the concept of *soft sensors*, also known as *inferential sensors*.
 
 	Data were collected from a rented online viscosity unit and a least squares model build:
 
@@ -1254,7 +1254,7 @@ Exercises
 
 		\hat{v} = 1977 - 3.75 T
 
-	where the viscosity, :math:`v`, is measured in Pa.s (Pascal seconds) and the temperature is in Kelvin.  A reasonably linear trend was observed over the 86 data points collected.  Temperature values were taken over the range of normal operation: 430 to 480 K and the raw temperature data had a sample standard deviation of 8.2 K.
+	where the viscosity, :math:`v`, is measured in Pa.s (Pascal seconds) and the temperature is in Kelvin. A reasonably linear trend was observed over the 86 data points collected. Temperature values were taken over the range of normal operation: 430 to 480 K and the raw temperature data had a sample standard deviation of 8.2 K.
 
 	The output from a certain commercial software package was:
 
@@ -1281,11 +1281,11 @@ Exercises
 
 	#.	What is the viscosity prediction at 430K?  And at 480K?
 
-	#.	In the future you plan to use this model to adjust temperature, in order to meet a certain viscosity target.  To do that you must be sure the change in temperature will lead to the desired change in viscosity. 
+	#.	In the future you plan to use this model to adjust temperature, in order to meet a certain viscosity target. To do that you must be sure the change in temperature will lead to the desired change in viscosity. 
 
 	 	What is the 95% confidence interval for the slope coefficient, *and interpret* this confidence interval in the context of how you plan to use this model.
 
-	#.	The standard error features prominently in all derivations related to least squares.  Provide an interpretation of it and be specific in any assumption(s) you require to make this interpretation.
+	#.	The standard error features prominently in all derivations related to least squares. Provide an interpretation of it and be specific in any assumption(s) you require to make this interpretation.
 
 .. answer::
 
@@ -1312,4 +1312,4 @@ Exercises
 
 		*Interpretation*: this interval is extremely narrow, i.e. our slope estimate is precise. We can be sure that any change made to the temperature in our system will have the desired effect on viscosity in the feedback control system.
 
-	#.	The standard error, :math:`S_E = 10.9` Pa.s is interpreted as the amount of spread in the residuals.  In addition, if we assume the residuals to be normally distributed (easily confirmed with a q-q plot) and independent.  If that is true, then :math:`S_E` is the one-sigma standard deviation for the residuals and we can say 95% of the residuals are expected within a range of :math:`\pm 2 S_E`.
+	#.	The standard error, :math:`S_E = 10.9` Pa.s is interpreted as the amount of spread in the residuals. In addition, if we assume the residuals to be normally distributed (easily confirmed with a q-q plot) and independent. If that is true, then :math:`S_E` is the one-sigma standard deviation for the residuals and we can say 95% of the residuals are expected within a range of :math:`\pm 2 S_E`.
