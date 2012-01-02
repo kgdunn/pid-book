@@ -1,4 +1,8 @@
 .. TODO
+
+	Website with DOE problems and R code: http://www.stat.ualberta.ca/~wiens/stat368/stat368.html
+	DOE Textbook: http://users.stat.umn.edu/~gary/Book.html
+
 	=====
 	~~~~~
 	^^^^^
