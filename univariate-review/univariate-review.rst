@@ -483,28 +483,28 @@ If the each observation is independent of the other, then:
 
 Another example: you work in a company that produces tablets. The machine creates acceptable, unbroken tablets 97% of the time, so :math:`p_\text{acceptable} = 0.97`, so :math:`p_\text{defective} = 0.03`.
 
-	-	In a future batch of 850,000 tablets, how many tablets are expected to be defective? (Most companies will call this quantify this as "the cost of waste".)
+	-	In a future batch of 850,000 tablets, how many tablets are expected to be defective? (Most companies will call this quantity "the cost of waste".)
 	
 		:math:`850000 \times (1-0.97) = 25,500` tablets per batch
 		
 	-	You take a random sample of :math:`n` tablets from a large population of :math:`N` tablets. What is the chance that **all** :math:`n` tablets are acceptable if :math:`p` is the Bernoulli population parameter of finding acceptable tablets:
 	
 		===================== ================== =================
-		Sample size           :math:`p` = 97%    :math:`p` = 95%
+		Sample size           :math:`p` = 95%    :math:`p` = 97%
 		===================== ================== =================
 		:math:`n=10`
 		:math:`n=50`
 		:math:`n=100`
 		===================== ================== =================
 		
-	-	Are you surprised by the large difference in the number of defective tablets for only a small increase in :math:`p`?
+	-	Are you surprised by the large reduction in the number of defective tablets for only a small increase in :math:`p`?
 	
 Uniform distribution
 =====================
 
 A :index:`uniform distribution` arises when an observation's value is equally as likely to occur as all the other recorded values. The classic example are dice: each face of a die is equally as likely to show up as any of the others. This forms a discrete, uniform distribution.
 
-The histogram for an event with 4 possible outcomes that are uniformly distributed is shown below. Notice that the sample histogram will not necessarily have equal bar heights for all categories (bins).
+The histogram for an event with 4 possible outcomes that are uniformly distributed is shown below. Notice that the *sample* histogram will not necessarily have equal bar heights for all categories (bins).
 
 .. image:: ../figures/univariate/histogram-4-cuts.png
 	:align: center
@@ -513,23 +513,15 @@ The histogram for an event with 4 possible outcomes that are uniformly distribut
 
 You can simulate uniformly distributed random numbers in most software packages. As an example, to generate 50 uniformly distributed random *integers* between 2 and 10, inclusive:
 
-	**R**:
+	**R**: ``x <- as.integer(runif(50, 2, 11))``
 
-		.. code-block:: s
-
-			x <- as.integer(runif(50, 2, 11))
-
-	**MATLAB/Octave**:
-	
-		.. code-block:: matlab
-
-			round(rand(50, 1) * (10 - 2) + 2) 
+	**MATLAB/Octave**: ``round(rand(50, 1) * (10 - 2) + 2)``
 
 	**Python**:
 
 		.. code-block:: python
 
-			import numpy as np
+			import numpy as np     # requires installing the Numpy library
 			(np.random.rand(50, 1) * (10 - 2) + 2).round()
 
 A continuous, uniform distribution arises when there is equal probability of every measurement occurring within a given lower- and upper-bound. This sort of phenomena is not often found in practice. Usually, continuous measurements follow some other distribution, of which we will discuss the normal and :math:`t`-distribution next.
@@ -549,9 +541,10 @@ The :index:`Central limit theorem` plays an important role in the theory of prob
 The condition of finite variance is true for almost all systems of practical interest.
 	
 .. image:: ../figures/univariate/CLT-derivation.png
+	:alt:	../figures/univariate/CLT-derivation.svg
 	:width: 750px
 	:align: center
-	:scale: 65
+	:scale: 75
 	
 The critical requirement for the central limit theorem to be true, is that the samples used to compute the average are independent. In particular, we **do not** require the original data to be normally distributed. The average produced from these samples will be be more nearly normal though.
 
@@ -564,7 +557,7 @@ Imagine a case where we are throwing dice. The distributions, shown below, are o
 
 As one sees from the above figures, the distribution from these averages quickly takes the shape of the so-called *normal distribution*. As :math:`M` increases, the y-axis starts to form a peak. 
 
-What is the engineering significance of this averaging process (which is really just a weighted summ)?  Many of the quantities we measure are bulk properties, such as viscosity, density, or particle size. We can conceptually imagine that the bulk property measured is the combination of the same property, measured on smaller and smaller components. Even if the value measured on the smaller component is not normally distributed, the bulk property will be as if it came from a normal distribution.
+What is the engineering significance of this averaging process (which is really just a weighted sum)?  Many of the quantities we measure are bulk properties, such as viscosity, density, or particle size. We can conceptually imagine that the bulk property measured is the combination of the same property, measured on smaller and smaller components. Even if the value measured on the smaller component is not normally distributed, the bulk property will be as if it came from a normal distribution.
 
 Independence 
 ~~~~~~~~~~~~~~~~~~~~~
@@ -581,21 +574,21 @@ We frequently violate this assumption of independence in engineering application
 		
 -	The rainfall amount, recorded every day, over the last 30 days.
 
-		These data are not independent - if it rains today, it can likely rain tomorrow as the weather usually stays around for some days. These data are not useful as a sample of typical rainfall, however they are useful for complaining about the weather. Think about the case if we had considered rainfall in hourly intervals, rather than daily intervals.
+		These data are not independent: if it rains today, it can likely rain tomorrow as the weather usually stays around for some days. These data are not useful as a representative sample of typical rainfall, however they are useful for complaining about the weather. Think about the case if we had considered rainfall in hourly intervals, rather than daily intervals.
 		
 -	The snowfall, recorded on 3 January for every year since 1976: independent or not? 
 
 		These sampled data will be independent.
 		
 -	The impurity values in the last 100 batches of product produced is shown below. Which of the 3 time sequences has independent values?
-	
-		Sequence 2 (sequence 1 is positively correlated, while sequence 3 is negatively correlated).
 
+	In chemical processes there is often a transfer from batch-to-batch: we usually use the same lot of raw materials for successive batches, the batch reactor may not have be cleaned properly between each run, and so on. It is very likely that two successive batches (:math:`k` and :math:`k+1`) are somewhat related, and less likely that batch :math:`k` and :math:`k+2` are related. In the figure below, can you tell which sequence of values are independent?
+	
 	.. image:: ../figures/univariate/simulate-independence.png
 		:align: center
 		:scale: 90
-
-	In chemical processes there is often a transfer from batch-to-batch: we usually use the same lot of raw materials for successive batches, the batch reactor may not have be cleaned properly between each run, and so on. It is very likely that two successive batches (:math:`k` and :math:`k+1`) are somewhat related, and less likely that batch :math:`k` and :math:`k+2` are related. In the figure below, can you tell which sequence of values are independent?
+	
+	Sequence 2 (sequence 1 is positively correlated, while sequence 3 is negatively correlated).
 
 -	We need a highly reliable pressure release system. Manufacturer A sells a system that fails 1 in every 100 occasions, and manufacturer B sells a system that fails 3 times in every 1000 occasions. What is
 
@@ -606,9 +599,9 @@ We frequently violate this assumption of independence in engineering application
 	
 				It means the 2 systems must be installed in parallel, so that there is no interaction between them at all.
 				
-		-	How would this probability change if A and B were not independent?
+		-	How would the probability of both A and B failing simultaneously change if A and B were not independent?
 		
-				The probability of both failing will increase.
+				The probability of both failing simultaneously will increase.
 	
 .. See Hodges and Lehmann (1970): there is a whole Chapter devoted to it.
 
@@ -656,13 +649,13 @@ Some questions:
 		
 Some useful points:
 
-	-	The total area from :math:`x=-\infty` to :math:`x=+\infty` is 1.0 (we cannot calculate the integral of :math:`p(x)` analytically)
+	-	The total area from :math:`x=-\infty` to :math:`x=+\infty` is 1.0; we cannot calculate the integral of :math:`p(x)` analytically.
 
 	-	:math:`\sigma` is the distance from the mean, :math:`\mu`, to the point of inflection
 	
-	-	The normal distribution only required two parameters to describe it: :math:`\mu` and :math:`\sigma`
+	-	The normal distribution only requires two parameters to describe it: :math:`\mu` and :math:`\sigma`
 	
-	-	The area from :math:`x= -\sigma` to :math:`x = \sigma` is about 70% (68.3% exactly) of the distribution. So we have a probability of about 15% of seeing an :math:`x` value greater than :math:`x = \sigma`, and also 15% of :math:`x < \sigma`
+	-	The area from :math:`x= -\sigma` to :math:`x = \sigma` is about 70% (68.3% exactly) of the distribution. So we have a probability of about 15% of seeing an :math:`x` value greater than :math:`x = \sigma`, and also 15% of :math:`x < -\sigma`
 	
 	-	The :index:`tail <single: tail, in a histogram>` area outside :math:`\pm 2\sigma` is about 5% (2.275 outside each tail)
 
@@ -690,17 +683,17 @@ You might still find yourself having to refer to tables of cumulative area under
 
 	z_i = \frac{x_i - \text{mean}}{\text{standard deviation}}
 	
-The values of the mean and standard deviation are either the population parameters, if known, or use the best estimate of the mean and standard deviation from the sampled data. 
+The values of the mean and standard deviation are either the population parameters, if known, or using the best estimate of the mean and standard deviation from the sampled data. 
 
-For example, if our values of :math:`x_i` come from a normal distribution with mean of 34.2 and variance of 55. Then we could write :math:`x \sim \mathcal{N}(34.2, 55)`, which is short-hand notation of saying the same thing. The equivalent :math:`z`-values for these :math:`x` data would be: :math:`z_i = \dfrac{x_i - 34.2}{\sqrt{55}}`. 
+For example, if our values of :math:`x_i` come from a normal distribution with mean of 34.2 and variance of 55. Then we could write :math:`x \sim \mathcal{N}(34.2, 55)`, which is short-hand notation of saying the same thing. The equivalent :math:`z`-values for these :math:`x_i` values would be: :math:`z_i = \dfrac{x_i - 34.2}{\sqrt{55}}`. 
 
-This transformation to standard form **does not change the distribution** of the original :math:`x`, it only changes the parameters of the distribution. You can easily prove to yourself that :math:`z` is normally distributed as :math:`z \sim \mathcal{N}(0.0, 1.0)`. So statistical tables only report the area under the distribution of a :math:`z` value with mean of zero, and unit variance..
+This transformation to standard form **does not change the distribution** of the original :math:`x`, it only changes the parameters of the distribution. You can easily prove to yourself that :math:`z` is normally distributed as :math:`z \sim \mathcal{N}(0.0, 1.0)`. So statistical tables only report the area under the distribution of a :math:`z` value with mean of zero, and unit variance.
 
 This is a common statistical technique, to :index:`standardize a variable`, which we will see several times. Standardization takes our variable from :math:`x \sim \mathcal{N}(\text{some mean}, \text{some variance})` and converts it to :math:`z \sim \mathcal{N}(0.0, 1.0)`. It is just as easy to go backwards, from a given :math:`z`-value and return back to our original :math:`x`-value.
 
 The units of :math:`z` are dimensionless, no matter what the original units of :math:`x` were. Standardization also allows us to straightforwardly compare 2 variables that may have different means and spreads. For example if our company has two reactors at different locations, producing the same product. We can standardize a variable of interest, e.g. viscosity, from both reactors and then proceed to use the standardized variables to compare performance.
 
-Consult a statistical table found in most statistical textbooks for the normal distribution, such as the one found at the :ref:`end of this chapter <univariate_statistical_tables>`. Make sure you can firstly understand how to read the table. Secondly, duplicate a few entries in the table using R. Then complete these small exercises by estimating what the rough answer should be, then use both the tables and R to get a more accurate estimate.
+Consult a statistical table found in most statistical textbooks for the normal distribution, such as the one found at the :ref:`end of this chapter <univariate_statistical_tables>`. Make sure you can firstly understand how to read the table. Secondly, duplicate a few entries in the table using R. Complete these small exercises by estimating what the rough answer should be. Use the tables first, then use R to get a more accurate estimate.
 
 #.	Assume :math:`x`, the measurement of biological activity for a drug, is normally distributed with mean of 26.2 and standard deviation of 9.2. What is the probability of obtaining an activity reading less than or equal to 30.0?
 
@@ -715,34 +708,36 @@ Checking for normality: using a q-q plot
 	single: quantile-quantile plot (q-q plot)
 	single: normal distribution; check if
 
-Often we are not sure if a sample of data can be assumed to be normally distributed. This section shows you how to judge if data are normally distributed, or not. 
+Often we are not sure if a sample of data can be assumed to be normally distributed. This section shows you how to test whether the data are normally distributed, or not. 
 
-Before we look at this method, we need to introduce the concept of the inverse :index:`cumulative distribution` function (inverse CDF). Recall the **cumulative distribution** is the area underneath the distribution function, :math:`p(z)`, which goes from :math:`-\infty` to :math:`z`. For example, the area from :math:`-\infty` to :math:`z=-1` is about 15%, as we showed earlier, and we use the ``pnorm()`` function in R to calculate that. 
+Before we look at this method, we need to introduce the concept of the inverse :index:`cumulative distribution` function (inverse CDF). Recall the **cumulative distribution** is the area underneath the distribution function, :math:`p(z)`, which goes from :math:`-\infty` to :math:`z`. For example, the area from :math:`-\infty` to :math:`z=-1` is about 15%, as we showed earlier, and we can use the ``pnorm()`` function in R to verify that. 
 	
 .. index:: inverse cumulative distribution
 
-Now the **inverse cumulative distribution** is used when we know the area, but want to get back to the value along the :math:`z-\text{axis}`. For example, below which value of :math:`z` does 95% of the area lie for a standardized normal distribution?  Answer: :math:`z=1.64`. In R we use the ``qnorm(0.95, mean=0, sd=1)`` to calculate these values. The ``q`` stands for `quantile <http://en.wikipedia.org/wiki/Quantile>`_, because we give it the quantile and it returns the :math:`z`-value: e.g. ``qnorm(0.5)`` gives 0.0.
+Now the **inverse cumulative distribution** is used when we know the area, but want to get back to the value along the :math:`z`-axis. For example, below which value of :math:`z` does 95% of the area lie for a standardized normal distribution?  Answer: :math:`z=1.64`. In R we use the ``qnorm(0.95, mean=0, sd=1)`` to calculate this value. The ``q`` stands for `quantile <http://en.wikipedia.org/wiki/Quantile>`_, because we give it the quantile and it returns the :math:`z`-value: e.g. ``qnorm(0.5)`` gives 0.0.
 
 .. image:: ../figures/univariate/show-pnorm-and-qnorm.png
 	:scale: 70
 	:width: 750px
 	:align: center
 		
-On to checking for normality. We approach this problem by first constructing some quantities that we would expect for truly normally distributed. Then, secondly, we construct the same quantities for the actual data. A plot of these 2 quantities against each other will reveal if the data are normal, or not.
+On to checking for normality. We approach this problem by first constructing some quantities that we would expect for truly normally distributed. Secondly, we construct the same quantities for the actual data. A plot of these 2 quantities against each other will reveal if the data are normal, or not.
 
 #.	Imagine we have :math:`N` observations which are normally distributed. Sort the data from smallest to largest. The first data point should be the :math:`(1/N \times 100)` quantile, the next data point is the :math:`(2/N \times 100)` quantile, the middle, sorted data point is the 50th quantile, :math:`(1/2 \times 100)`, and the last, sorted data point is the :math:`(N/N \times 100)` quantile.
 
-	The middle, sorted data point from this truly normal distribution must have a :math:`z`-value on the standardized scale of 0.0 (we can test that by using ``qnorm(0.5)``). By definition, 50% of the data should lie below this mid point. The first data point will be at ``qnorm(1/N)``, the second at ``qnorm(2/N)``, the middle data point at ``qnorm(0.5)``, and so on. In general, the :math:`i^\text{th}` sorted point should be at ``qnorm((i-0.5)/N)``, for values of :math:`i = 1, 2, \ldots, N`. We subtract off 0.5 by convention to account for the fact that ``qnorm(1.0) = Inf``. So we construct this vector of theoretically expected quantities from the inverse cumulative distribution function.
+	The middle, sorted data point from this truly normal distribution must have a :math:`z`-value on the standardized scale of 0.0 (we can verify that by using ``qnorm(0.5)``). By definition, 50% of the data should lie below this mid point. The first data point will be at ``qnorm(1/N)``, the second at ``qnorm(2/N)``, the middle data point at ``qnorm(0.5)``, and so on. In general, the :math:`i^\text{th}` sorted point should be at ``qnorm((i-0.5)/N)``, for values of :math:`i = 1, 2, \ldots, N`. We subtract off 0.5 by convention to account for the fact that ``qnorm(1.0) = Inf``. So we construct this vector of theoretically expected quantities from the inverse cumulative distribution function.
 	
 	.. code-block:: s
 	
 		N = 10
 		index <- seq(1, N)
 		P <- (index - 0.5) / N
+		P
+		[1] 0.05  0.15  0.25  0.35  0.45  0.55  0.65  0.75  0.85  0.95
 		theoretical.quantity <- qnorm(P)
 		[1] -1.64 -1.04 -0.674 -0.385 -0.126  0.125  0.385  0.6744 1.036  1.64
 
-#.	We also construct the actual quantiles from the sampled data. First, standardize the sampled data by subtracting off its mean and dividing by its standard deviation. Here is an example of 10 batch yields (see actual values below). The mean yield is 80.0 and the standard deviation is 8.35. The standardized yields are shown by subtracting off the mean and dividing by the standard deviation. Then the standardized values are sorted. Compare them to the theoretical quantities.
+#.	We also construct the actual quantiles for the sampled data. First, standardize the sampled data by subtracting off its mean and dividing by its standard deviation. Here is an example of 10 batch yields (see actual values below). The mean yield is 80.0 and the standard deviation is 8.35. The standardized yields are found by subtracting off the mean and dividing by the standard deviation. Then the standardized values are sorted. Compare them to the theoretical quantities.
 
 	.. code-block:: s
 
@@ -770,7 +765,7 @@ On to checking for normality. We approach this problem by first constructing som
 		:width: 750px
 		:scale: 50
 
-A built-in function exists in R that runs the above calculations and shows a scatter plot. The 45 degree line is added using the ``qqline(...data...)`` function. However, a better function that adds a confidence limit envelope is included in the ``car`` library (see the *Package Installer* menu option for adding libraries from the internet). 
+A built-in function exists in R that runs the above calculations and shows a scatter plot. The 45 degree line is added using the ``qqline(...)`` function. However, a better function that adds a confidence limit envelope is included in the ``car`` library (see the *Package Installer* menu in R for adding libraries from the internet). 
 
 .. code-block:: s
 	
@@ -786,11 +781,11 @@ A built-in function exists in R that runs the above calculations and shows a sca
 	:width: 750px
 	:scale: 100
 	
-The R plot rescales the :math:`y`-axis (sample quantiles) back to the original units to make interpretation easier. We expect some departure from the 45 degree line due to the fact that these are only a sample of data. However, large deviation indicates the data are not normally distributed. An error region, or confidence envelope, may be superimposed around the 45 degree line.
+The R plot rescales the :math:`y`-axis (sample quantiles) back to the original units to make interpretation easier. We expect some departure from the 45 degree line due to the fact that these are only a sample of data. However, large deviations indicates the data are not normally distributed. An error region, or confidence envelope, may be superimposed around the 45 degree line.
 
 The q-q plot, quantile-quantile plot, shows the quantiles of 2 distributions against each other. In fact, we can use the horizontal axis for any distribution, it need not be the theoretical normal distribution. We might be interested if our data follow an :math:`F`-distribution then we could use the quantiles for that theoretical distribution on the horizontal axis.
 
-We can use the q-q plot to compare any 2 *samples of data*, even if they have different values of :math:`N`, by calculating the quantiles for each sample at different step quantiles (e.g. 1, 2, 3, 4, 5, 10, 15, .... 95, 96, 97, 98, 99), then plot the q-q plot for the two samples. You can calculate quantiles for any sample of data using the ``quantile`` function in R. The simple example below shows how to compare the q-q plot for 1000 normal distribution samples against 2000 :math:`F`-distribution samples. Even though the histogram of the :math:`F`-distribution samples looks normal to the eye, the q-q plot quickly confirms it is definitely not normal, particularly, that the right-tail is too heavy.
+We can use the q-q plot to compare any 2 *samples of data*, even if they have different values of :math:`N`, by calculating the quantiles for each sample at different step quantiles (e.g. 1, 2, 3, 4, 5, 10, 15, .... 95, 96, 97, 98, 99), then plot the q-q plot for the two samples. You can calculate quantiles for any sample of data using the ``quantile`` function in R. The simple example below shows how to compare the q-q plot for 1000 normal distribution samples against 2000 :math:`F`-distribution samples. 
 
 	.. code-block:: s
 	
@@ -808,15 +803,17 @@ We can use the q-q plot to compare any 2 *samples of data*, even if they have di
 	:alt:   ../figures/univariate/qqplot-comparison.R
 	:align: center
 	:width: 750px
+	
+Even though the histogram of the :math:`F`-distribution samples looks normal to the eye (left), the q-q plot (right) quickly confirms it is definitely not normal, particularly, that the right-tail is too heavy.
 
 Introduction to confidence intervals from the normal distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We introduce the concept of confidence intervals here as a straightforward application of the normal distribution, Central limit theorem, and standardization.
 
-Suppose we have a quantity of interest from a process, such as the daily profit. We have many measurements of this profit, and we can easily calculate the **average** profit. But we know that if we take a different data set of profit values and calculate the average, we will get a similar, but different average. The question we want an answer to is:
+Suppose we have a quantity of interest from a process, such as the daily profit. We have many measurements of this profit, and we can easily calculate the **average** profit. But we know that if we take a different data set of profit values and calculate the average, we will get a similar, but different average. Since we will never know the true population average, the question we want to answer is:
 
-	What is the range within which the true (population) average value lies?  E.g. give a range for the true daily profit.
+	What is the range within which the true (population) average value lies?  E.g. give a range for the true, but unknown, daily profit.
 	
 This range is called a :index:`confidence interval`, and we study them :ref:`in more depth later on <univariate_confidence_intervals>`. We will use an example to show how to calculate this range.
 
@@ -826,11 +823,11 @@ Let's take :math:`n` values of this daily profit value, let's say :math:`n=5`.
 
 #.	The estimated population variance is :math:`s^2 =\displaystyle  \frac{1}{n-1}\sum_i^{i=n}{(x_i - \overline{x})^2}\qquad` (we also :ref:`saw this before <univariate_calculate_variance>`)
 
-#.	This is new: the estimated mean, :math:`\overline{x}`, is a value that is also normally distributed with mean of :math:`\mu` and variance of :math:`\sigma^2/n`, with only one requirement: that each of the :math:`x_i` values are independent of each other. 
+#.	This is new: the estimated mean, :math:`\overline{x}`, is a value that is also normally distributed with mean of :math:`\mu` and variance of :math:`\sigma^2/n`, with only one requirement: this result holds only if each of the :math:`x_i` values are independent of each other.
 
 	Mathematically we write: :math:`\displaystyle \overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`.
 
-	This important results helps answer our question above. It says that repeated estimates of the mean will be an accurate, unbiased estimate of the population mean, and interestingly, the variance of that estimate is decreased by using a greater number of samples, :math:`n`, to estimate that mean. This makes intuitive sense: the more **independent** samples of data we have, the better our estimate (better implies lower error, or lower variance).
+	This important results helps answer our question above. It says that repeated estimates of the mean will be an accurate, unbiased estimate of the population mean, and interestingly, the variance of that estimate is decreased by using a greater number of samples, :math:`n`, to estimate that mean. This makes intuitive sense: the more **independent** samples of data we have, the *better* our estimate ("better" in this case implies lower error, i.e. lower variance).
 	
 	We can illustrate this result as shown here:
 	
@@ -845,7 +842,7 @@ Let's take :math:`n` values of this daily profit value, let's say :math:`n=5`.
 	-	The 5 samples come from the distribution given by the thinner line: :math:`\displaystyle x \sim \mathcal{N}\left(\mu, \sigma^2\right)`
 	-	The :math:`\overline{x}` average comes from the distribution given by the thicker line: :math:`\displaystyle \overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`.
 	
-#.	If we were to create :math:`z` values for each :math:`x_i` raw sample point, we would write:
+#.	Creating :math:`z` values for each :math:`x_i` raw sample point:
 
 	.. math::
 	
@@ -869,7 +866,7 @@ Let's take :math:`n` values of this daily profit value, let's say :math:`n=5`.
 	
 #.	Using the known normal distribution for :math:`\displaystyle \overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`, we can find the vertical, dashed red lines shown in the previous figure, that contain 95% of the area under the distribution for :math:`\overline{x}`.
 
-#.	These vertical lines are symmetrical about 0, and we will call them :math:`-c_n` and :math:`+c_n`, where the subscript :math:`n` refers to the fact that they are from the normal distribution (it doesn't refer to the :math:`n` samples). From the preceding section on q-q plots we can calculate the :math:`c_n` value from R using: ``qnorm(1 - 0.05/2)``, so that there is 2.5% area in each tail.
+#.	These vertical lines are symmetrical about 0, and we will call them :math:`-c_n` and :math:`+c_n`, where the subscript :math:`n` refers to the fact that they are from the normal distribution (it doesn't refer to the :math:`n` samples). From the preceding section on q-q plots we know how to calculate the :math:`c_n` value from R: using ``qnorm(1 - 0.05/2)``, so that there is 2.5% area in each tail.
 
 #.	Finally, we construct an interval for the true population mean, :math:`\mu`, using the standard form:
 
@@ -877,14 +874,15 @@ Let's take :math:`n` values of this daily profit value, let's say :math:`n=5`.
 			:label: CI-mean-variance-known
 
 			\begin{array}{rcccl} 
+				  - c_n                                      &\leq& z                                                        &\leq &  +c_n\\
 				  - c_n                                      &\leq& \displaystyle \frac{\overline{x} - \mu}{\sigma/\sqrt{n}} &\leq &  +c_n\\
 				\overline{x}  - c_n \dfrac{\sigma}{\sqrt{n}} &\leq&  \mu                                                     &\leq& \overline{x}  + c_n\dfrac{\sigma}{\sqrt{n}} \\
 				  \text{LB}                                  &\leq&  \mu                                                     &\leq& \text{UB}
 			\end{array}
 
-	Notice that the lower and upper bounds are a function of the known sample mean, :math:`\overline{x}`, the values for :math:`c_n` which we chose, the known sample size, :math:`n`, and the unknown population standard deviation, :math:`\sigma`.
+	Notice that the lower and upper bound are a function of the known sample mean, :math:`\overline{x}`, the values for :math:`c_n` which we chose, the known sample size, :math:`n`, and the unknown population standard deviation, :math:`\sigma`.
 	
-	So to estimate our bounds we must know the value of this population standard deviation. This is not very likely, (I can't think of any practical cases where we know the population standard deviation, but not the population mean, which is the quantity we are constructing this range for), however there is an example in :ref:`the next section <univariate_confidence_interval_t_distribution>`.
+	So to estimate our bounds we must know the value of this population standard deviation. This is not very likely, (I can't think of any practical cases where we know the population standard deviation, but not the population mean, which is the quantity we are constructing this range for), however there is a hypothetical example in :ref:`the next section <univariate_confidence_interval_t_distribution>` to illustrate the calculations.
 	
 	The :math:`t`-distribution is required to remove this impractical requirement of knowing the population standard deviation.
 
@@ -895,7 +893,7 @@ Let's take :math:`n` values of this daily profit value, let's say :math:`n=5`.
 
 Suppose we have a quantity of interest from a process, such as the daily profit. In the preceding section we started to answer the useful and important question: 
 
-	What is the range within which the true average value lies?  E.g. the range for the true daily profit.
+	What is the range within which the true average value lies?  E.g. the range for the true, but unknown, daily profit.
 	
 But we got stuck, because the lower and upper bounds we calculated for the true average, :math:`\mu` were a function of the unknown population standard deviation, :math:`\sigma`. Repeating :eq:`CI-mean-variance-known`:
 
@@ -916,12 +914,12 @@ An obvious way out of our dilemma is to replace :math:`\sigma` by the sample sta
 	:align: center
 	:scale: 100
 
-There is one other requirement we have to observe to use the :math:`t`-distribution: the values that we sample, :math:`x_i` must come from a normal distribution (carefully note that in the previous section we didn't have this restriction!). Fortunately it is easy to check this requirement: just use the :ref:`q-q plot method described earlier <univariate_check_for_normality_qqplot>`. Another requirement, which we have before, was that we must be sure these measurements, :math:`x_i` are independent.
+There is one other requirement we have to observe to use the :math:`t`-distribution: the values that we sample, :math:`x_i` must come from a normal distribution (carefully note that in the previous section we didn't have this restriction!). Fortunately it is easy to check this requirement: just use the :ref:`q-q plot method described earlier <univariate_check_for_normality_qqplot>`. Another requirement, which we had before, was that we must be sure these measurements, :math:`x_i`, are independent.
 
 .. image:: ../figures/univariate/t-distribution-derivation.png
 	:width: 750px
 	:align: center
-	:scale: 65
+	:scale: 75
 
 So given our :math:`n` samples, which are independent, and from a normal distribution, we can now say: 
 
@@ -930,13 +928,13 @@ So given our :math:`n` samples, which are independent, and from a normal distrib
 
 	\frac{\overline{x} - \mu}{s/\sqrt{n}} \sim t_{n-1}
 
-Compare this to the previous case where our :math:`n` samples are independent, and we happen to know, by some unusual way, what their standard deviation is, :math:`\sigma`:
+Compare this to the previous case where our :math:`n` samples are independent, and we happen to know, by some unusual way, what the population standard deviation is, :math:`\sigma`:
 
 .. math::
 
 	\frac{\overline{x} - \mu}{\sigma/\sqrt{n}} \sim \mathcal{N} \left(0, 1\right)
 
-So the more practical and useful case where :math:`z  = \frac{\overline{x} - \mu}{s/\sqrt{n}} \sim t_{n-1}` can now be used to construct an interval for :math:`\mu`. We say that :math:`z` follows the :math:`t`-distribution with :math:`n-1` degrees of freedom, where the degrees of freedom refer to those from the calculating the estimated standard deviation, :math:`s`. 
+So the more practical and useful case where :math:`z  = \frac{\overline{x} - \mu}{s/\sqrt{n}} \sim t_{n-1}` can now be used to construct an interval for :math:`\mu`. We say that :math:`z` follows the :math:`t`-distribution with :math:`n-1` degrees of freedom, where the degrees of freedom refer to those from the calculating the *estimated* standard deviation, :math:`s`. 
  
 Note that the new variable :math:`z` only requires we know the population mean (:math:`\mu`), not the population standard deviation; rather we use our estimate of the standard deviation :math:`s/\sqrt{n}` in place of the population standard deviation.
 
@@ -985,6 +983,7 @@ Then we write:
 		:label: CI-mean-variance-unknown
 		
 		\begin{array}{rcccl} 
+			  - c_t                                  &\leq& z                                                   &\leq &  +c_t\\
 			  - c_t                                  &\leq& \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}} &\leq &  +c_t\\
 			\overline{x}  - c_t \dfrac{s}{\sqrt{n}}  &\leq&  \mu                                                &\leq& \overline{x}  + c_t\dfrac{s}{\sqrt{n}} \\
 			  \text{LB}                              &\leq&  \mu                                                &\leq& \text{UB}
@@ -992,9 +991,9 @@ Then we write:
 
 Now all the terms in the lower and upper bound are known, or easily calculated.
 
-So we finish this section off with an example. We produce large cubes of polymer product on our process. We would like to estimate the cube's average viscosity, but measuring the viscosity is a destructive laboratory test. So using 9 independent samples taken from this polymer cube, we get the 9 lab values viscosity: ``23, 19, 17, 18, 24, 26, 21, 14, 18``. 
+So we finish this section off with an example. We produce large cubes of polymer product on our process. We would like to estimate the cube's average viscosity, but measuring the viscosity is a destructive laboratory test. So using 9 independent samples taken from this polymer cube, we get the 9 lab values of viscosity: ``23, 19, 17, 18, 24, 26, 21, 14, 18``. 
 
-If we repeat this process with a different set of 9 samples we will get a different average viscosity. So we recognize the average of a sample of data, is itself just a single sample of the population's average. What is more helpful is to have **a range**, given by a lower and upper bound, that we can say the true population mean lies within.
+If we repeat this process with a different set of 9 samples we will get a different average viscosity. So we recognize the average of a sample of data, is itself just a single estimate of the population's average. What is more helpful is to have **a range**, given by a lower and upper bound, that we can say the true population mean lies within.
 
 #.	The average of these nine values is :math:`\overline{x} = 20` units.
 
@@ -1002,24 +1001,24 @@ If we repeat this process with a different set of 9 samples we will get a differ
 
 		:math:`\overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n \right)`
 		
-		This also requires the assumption that the samples are independent estimates of the population viscosity.
+		This also requires the assumption that the samples are independent estimates of the population viscosity. We **don't** have to assume the :math:`x_i` are normally distributed.
 		
 #.	What is the distribution of the sample average?  What are the parameters of that distribution?
 
 		The sample average is normally distributed as :math:`\mathcal{N}\left(\mu, \sigma^2/n \right)`
 		
-#.	Assume, for some reason, that we know the population viscosity standard deviation is :math:`\sigma=3.5` units. Calculate a lower and upper bound for :math:`\mu`:
+#.	Assume, for some hypothetical reason, that we know the population viscosity standard deviation is :math:`\sigma=3.5` units. Calculate a lower and upper bound for :math:`\mu`:
 
 		The interval is calculated using :eq:`CI-mean-variance-known`:
 		
 		.. math::
 		
 			\text{LB} &= \overline{x} - c_n \dfrac{\sigma}{\sqrt{n}} \\
-			          &= 20 - 1.95996 \dfrac{3.5}{\sqrt{9}} \\
-			          &= 20 - 2.286 = 17.4 \\
-			\text{UB} &= 20 + 2.286 = 22.3
+			          &= 20 - 1.95996 \cdot \dfrac{3.5}{\sqrt{9}} \\
+			          &= 20 - 2.286 = {\bf 17.4} \\
+			\text{UB} &= 20 + 2.286 = {\bf 22.3}
 
-#.	We can confirm these 9 samples are normally distributed by using a q-q plot (not shown). This is an important requirement to use the :math:`t`-distribution.
+#.	We can confirm these 9 samples are normally distributed by using a q-q plot (not shown). This is an important requirement to use the :math:`t`-distribution, next.
 
 #.	Calculate an estimate of the standard deviation.
 
@@ -1036,16 +1035,15 @@ If we repeat this process with a different set of 9 samples we will get a differ
 		.. math::
 		
 			\text{LB} &= \overline{x}  - c_t \dfrac{s}{\sqrt{n}} \\
-			          &= 20 - 2.306004 \dfrac{3.81}{\sqrt{9}} \\
+			          &= 20 - 2.306004 \cdot \dfrac{3.81}{\sqrt{9}} \\
 			          &= 20 - 2.929 = 17.1 \\
 			\text{UB} &= 20 + 2.929 = 22.9
 
-		using from the R software that ``qt(0.025, df=8)`` and ``qt(0.975, df=8)`` 
+		using from R that ``qt(0.025, df=8)`` and ``qt(0.975, df=8)``, which gives ``2.306004``
 			
-Comparing the answers for parts 4 and 8 shows the interval, for the same level of 95% certainty, is wider when we have to estimate the standard deviation. This makes sense: the standard deviation is an estimate (meaning there is error in that estimate) of the true standard deviation. That uncertainty must propagate, leading to a wider interval within which we expect to locate the true population viscosity, :math:`\mu`.
+Comparing the answers for parts 4 and 8 we see the interval, for the same level of 95% certainty, is wider when we have to estimate the standard deviation. This makes sense: the standard deviation is an estimate (meaning there is error in that estimate) of the true standard deviation. That uncertainty must propagate, leading to a wider interval within which we expect to locate the true population viscosity, :math:`\mu`.
 
 We will interpret confidence intervals in more detail a :ref:`little later on <univariate_confidence_intervals>`.
-
 
 .. sum((x-20) * (x-20)) = 116, DOF=8, s^2 = 116/8 = 14.5, s=3.81. Distribution is normal, mean=\mu, stddev=3.5/sqrt(9) = (3.5^2)/9 = 2.286
 .. s/sqrt(n) = 3.81/sqrt(9) = 1.27
@@ -1059,13 +1057,13 @@ Poisson distribution
 
 .. index:: rare events, system failures
 
-The :index:`Poisson distribution` is useful to characterize rare events (number of cell divisions in a small time unit), system failures and breakdowns, or number of flaws on a product (contaminations per cubic millimetre). These are events that have a very small probability of occurring within a given time interval or unit area (e.g. pump failure probability per minute = 0.000002), but there are many opportunities for the event to possibly occur (e.g. the pump runs continuously, but there are many minutes in the day). A key assumption is that the events must be independent. If one pump breaks down, then the other pumps must not be affected; if one flaw is produced per unit area of the product, then other flaws that appear on the product must be independent of the first flaw.
+The :index:`Poisson distribution` is useful to characterize rare events (number of cell divisions in a small time unit), system failures and breakdowns, or number of flaws on a product (contaminations per cubic millimetre). These are events that have a very small probability of occurring within a given time interval or unit area (e.g. pump failure probability per minute = 0.000002), but there are many opportunities for the event to possibly occur (e.g. the pump runs continuously). A key assumption is that the events must be independent. If one pump breaks down, then the other pumps must not be affected; if one flaw is produced per unit area of the product, then other flaws that appear on the product must be independent of the first flaw.
 
-Let :math:`n` = number of opportunities for the event to occur. If this is a time-based system, then it would be the number of minutes the pump is running. If it were an area/volume based system, then it might be the number of square inches or cubic millimetres of the product. Let :math:`p` = probability of the event occurring: e.g. :math:`p = 0.000002` chance per minute of failure, or :math:`p = 0.002` of a flaw being produced per square inch.  The rate at which the event occurs is then given by :math:`\eta = np` and is a count of events per unit time or per unit area. A value for :math:`p` can be found using historical data.
+Let :math:`n` = number of opportunities for the event to occur. If this is a time-based system, then it would be the number of minutes the pump is running. If it were an area/volume based system, then it might be the number of square inches or cubic millimetres of the product. Let :math:`p` = probability of the event occurring: e.g. :math:`p = 0.000002` chance per minute of failure, or :math:`p = 0.002` of a flaw being produced per square inch.  The rate at which the event occurs is then given by :math:`\eta = np` and is a count of events per unit time or per unit area. A value for :math:`p` can be found using long-term, historical data.
 
 There are two important properties:
 
-#.	The mean of the distribution is the rate at which the unusual events occur = :math:`\eta = np`
+#.	The mean of the distribution for the rate happens to be the rate at which unusual events occur = :math:`\eta = np`
 #.	The variance of the distribution is also :math:`\eta`. This property is particularly interesting - state in your own words what this implies.
 
 Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{e^{-\eta}\eta^{x}}{x!}`, with a plot as shown for :math:`\eta = 4`. Please note the lines are only guides, the probability is only defined at the integer values marked with a circle. 
@@ -1077,7 +1075,7 @@ Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{
 	
 :math:`p(x)` expresses the probability that there will be :math:`x` occurrences (must be an integer) of this rare event in the same interval of time or unit area as :math:`\eta` was measured.
 
-*Example*: Equipment in a chemical plant can and will fail. Since it is a rare event, let's use the Poisson distribution to model the failure rates. Historical records on a plant show that a particular supplier's pumps are, on average, prone to failure in a month with probability :math:`p = 0.01` (1 in 100 chance of failure each month). There are 50 such pumps in use throughout the plant. *What is the probability that* :math:`x` *pumps will fail this year?*
+*Example*: Equipment in a chemical plant can and will fail. Since it is a rare event, let's use the Poisson distribution to model the failure rates. Historical records on a plant show that a particular supplier's pumps are, on average, prone to failure in a month with probability :math:`p = 0.01` (1 in 100 chance of failure each month). There are 50 such pumps in use throughout the plant. *What is the probability that* either 0, 1, 3, 6, 10, or 15 *pumps will fail this year?* (Create a table)
 
 	:math:`\eta = 12\,\frac{\displaystyle \text{months}}{\displaystyle \text{year}} \times 50\,\text{pumps} \times 0.01\,\frac{\displaystyle\text{failure}}{\displaystyle\text{month}} = 6\,\frac{\displaystyle\text{pump failures}}{\displaystyle\text{year}}`
 
