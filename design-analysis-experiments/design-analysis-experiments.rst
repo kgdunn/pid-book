@@ -370,7 +370,7 @@ This is the simplest type of experiment. It involves an outcome variable, :math:
 	
 	*	Does the plastic's stretchability improve when extruded at lower or higher temperatures?
 	
-So we can perform several runs (experiments) at level A, and then some runs at level B. In both cases we strive to hold all other disturbance variables constant so we pick up only the A to B effect. Disturbances are any variables that might affect :math:`y`, but for whatever reason, we don't wish to quantify. If we cannot control the disturbance, then at least we can using :ref:`blocking <DOE-blocking-section>` and pairing.
+So we can perform several runs (experiments) at level A, and then some runs at level B. In both cases we strive to hold all other disturbance variables constant so we pick up only the A to B effect. Disturbances are any variables that might affect :math:`y`, but for whatever reason, we don't wish to quantify. If we cannot control the disturbance, then at least we can using :ref:`blocking <DOE_blocking_section>` and pairing.
 
 
 Recap of group-to-group differences 
@@ -1128,7 +1128,7 @@ Summary so far
 -		A small or zero effect from an :math:`x` variable to the :math:`y` response variable implies the :math:`y` is insensitive to that :math:`x`. This is desirable in some situations - it means we can adjust that :math:`x` without affecting :math:`y`, sometimes said as "*the* :math:`y` *is robust to changes in* :math:`x`".
 
 
-.. _DOE-blocking-section:
+.. _DOE_blocking_section:
 
 Blocking and confounding for disturbances
 ===========================================

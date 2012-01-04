@@ -435,7 +435,7 @@ Exercises
 
 	So we can calculate the :math:`z`-value, and the corresponding probability for each pair of reactor differences using the code below. 
 
-	But the next problem we face is that we don't know the value of :math:`\sigma`. We can estimate it however, by pooling the variances of the two groups. Strictly speaking we should do a check for comparable variances before pooling them - described :ref:`in a previous section <univariate-pooled-variance>`.
+	But the next problem we face is that we don't know the value of :math:`\sigma`. We can estimate it however, by pooling the variances of the two groups. Strictly speaking we should do a check for comparable variances before pooling them - described :ref:`in a previous section <univariate_pooled_variance>`.
 
 	When we use the pooled variance now, then the assumption that the :math:`z`-value follows the normal distribution is not correct anymore; it follows the :math:`t`-distribution, with the pooled number of degrees of freedom. Once we have the :math:`z`-value we can calculate the probability of finding a :math:`z`-value of at least that big. Anything beyond that is the risk that we are wrong.
 
@@ -454,7 +454,7 @@ Exercises
 	
 	**Using a paired test**
 	
-	Pairing assumes that each reactor was run with the same material, except that the material was split into thirds: one third for each reactor. As described in the :ref:`section on paired tests <univariate-paired-tests>` we rely on calculating the difference in brittleness, then calculating the z-value of the average difference. Contrast this to the unpaired tests, where we calculated the difference of the averages.
+	Pairing assumes that each reactor was run with the same material, except that the material was split into thirds: one third for each reactor. As described in the :ref:`section on paired tests <univariate_paired_tests>` we rely on calculating the difference in brittleness, then calculating the z-value of the average difference. Contrast this to the unpaired tests, where we calculated the difference of the averages.
 
 	The code below shows how the paired differences are evaluated for each of the 3 combinations. The paired test highlights the similarity between TK105 and TK107, the same as the unpaired test. However the paired test shows much more clearly how different tanks TK104 and TK105 are, and especially TK104 and TK107. 
 
@@ -492,7 +492,7 @@ Exercises
 	
 	-   Let our variable of interest be the difference between the average of the 2 groups: :math:`\overline{x}_{\text{Fri}} - \overline{x}_{\text{Sat}}`. This variable will be distributed normally (why? - see the notes) according to :math:`\overline{x}_{\text{Fri}} - \overline{x}_{\text{Sat}} \sim \mathcal{N}\left(\mu_{\text{Fri}}-\mu_{\text{Sat}}, \sigma^2_{\text{diff}}\right)`. So the z-value for this variable is: :math:`z = \dfrac{(\overline{x}_{\text{Fri}} - \overline{x}_{\text{Sat}}) - (\mu_{\text{Fri}}-\mu_{\text{Sat}}) }{\sigma_{\text{diff}}}`
 
-	-   The variance of the difference, :math:`\sigma^2_{\text{diff}} = \sigma^2\left(\dfrac{1}{n_{\text{Fri}}} + \dfrac{1}{n_{\text{Sat}}} \right)`, where :math:`\sigma^2` is the variance of the number of visits to the website on Friday and Saturday. Since we don't know that value, we can estimate it from pooling the 2 variances of each group. We should calculate first that these variances are comparable (they are; but you :ref:`should confirm this yourself <univariate-pooled-variance>`).
+	-   The variance of the difference, :math:`\sigma^2_{\text{diff}} = \sigma^2\left(\dfrac{1}{n_{\text{Fri}}} + \dfrac{1}{n_{\text{Sat}}} \right)`, where :math:`\sigma^2` is the variance of the number of visits to the website on Friday and Saturday. Since we don't know that value, we can estimate it from pooling the 2 variances of each group. We should calculate first that these variances are comparable (they are; but you :ref:`should confirm this yourself <univariate_pooled_variance>`).
 
 	.. math::
 	   \sigma^2 \approx s_P^2 &= \frac{(n_{\text{Fri}} -1) s_{\text{Fri}}^2 + (n_{\text{Sat}}-1)s_{\text{Sat}}^2}{n_{\text{Fri}} - 1 + n_{\text{Sat}} - 1} \\
