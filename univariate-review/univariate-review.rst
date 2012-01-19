@@ -1137,9 +1137,9 @@ Interpreting the confidence interval
 .. index:: 
 	single: confidence interval; interpreting
 
--	The expression in :eq:`CI-mean-variance-unknown-repeated` **does not** mean that :math:`\overline{x}` lies in the interval from LB (lower-bound) to UB (upper-bound). It would be **incorrect** to say that the viscosity is 20 units and lies inside the range of 17.1 to 22.9 with a 95% probability.
-	
--	What the expression in :eq:`CI-mean-variance-unknown-repeated` **does imply**  is that :math:`\mu` lies in this interval. The confidence interval is a range of possible values for :math:`\mu`, not for :math:`\overline{x}`. Confidence intervals are for parameters, not for statistics.
+-	The expression in :eq:`CI-mean-variance-unknown-repeated` should not be interpreted to mean that the viscosity is 20 units and lies inside the LB (lower-bound) to UB (upper-bound) range of 17.1 to 22.9 with a 95% probability. In fact, the sample mean lies exactly at the mid-point of the range with 100% certainty - that is how the range was calculated.
+
+-	What the expression in :eq:`CI-mean-variance-unknown-repeated` **does imply** is that :math:`\mu` lies in this interval. The confidence interval is a range of possible values for :math:`\mu`, not for :math:`\overline{x}`. Confidence intervals are for parameters, not for statistics.
 	
 -	Notice that the upper and lower bounds are a function of the data sample used to calculate :math:`\overline{x}` and the number of points, :math:`n`. If we take a different sample of data, we will get different upper and lower bounds.
 	
