@@ -1015,7 +1015,7 @@ If we repeat this process with a different set of 9 samples we will get a differ
 		
 			\text{LB} &= \overline{x} - c_n \dfrac{\sigma}{\sqrt{n}} \\
 			          &= 20 - 1.95996 \cdot \dfrac{3.5}{\sqrt{9}} \\
-			          &= 20 - 2.286 = {\bf 17.4} \\
+			          &= 20 - 2.286 = {\bf 17.7} \\
 			\text{UB} &= 20 + 2.286 = {\bf 22.3}
 
 #.	We can confirm these 9 samples are normally distributed by using a q-q plot (not shown). This is an important requirement to use the :math:`t`-distribution, next.

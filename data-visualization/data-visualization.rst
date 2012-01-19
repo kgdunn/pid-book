@@ -4,8 +4,8 @@
 
 .. todo:: add to slides: http://www.r-bloggers.com/one-liners-which-make-me-love-r-make-your-data-dance-hans-rosling-style-with-googlevis-rstats/
 
-In context
-==========
+Data visualization in context
+=============================
 
 This is the first chapter in the book. **Why**?  Every engineer has heard the phrase *"plot your data"* but seldom are we shown what appropriate plots look like.
 
