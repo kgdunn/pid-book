@@ -43,7 +43,7 @@ Exercises
 	   :language: s
 	   :lines: 1-11,13,15-
 
-	.. figure:: ../figures/univariate/soy-salt-content.png
+	.. image:: ../figures/univariate/soy-salt-content.png
 		:width: 400px
 		:scale: 50
 	
@@ -79,22 +79,22 @@ Exercises
 	   :lines: 1-27
 	   :language: s
 
-	.. figure:: ../figures/univariate/size1.png
+	.. image:: ../figures/univariate/size1.png
 		:width: 300px
 		:scale: 40
-	.. figure:: ../figures/univariate/size2.png
+	.. image:: ../figures/univariate/size2.png
 		:width: 300px
 		:scale: 40
-	.. figure:: ../figures/univariate/size3.png
+	.. image:: ../figures/univariate/size3.png
 		:width: 300px
 		:scale: 40
-	.. figure:: ../figures/univariate/density1.png
+	.. image:: ../figures/univariate/density1.png
 		:width: 300px
 		:scale: 40
-	.. figure:: ../figures/univariate/density2.png
+	.. image:: ../figures/univariate/density2.png
 		:width: 300px
 		:scale: 40
-	.. figure:: ../figures/univariate/density3.png
+	.. image:: ../figures/univariate/density3.png
 		:width: 300px
 		:scale: 40
 	
@@ -213,7 +213,7 @@ Exercises
 
 			*Additional information*: To answer this part, you should move everything to :math:`z`-coordinates first. Then you need to find the points :math:`-c` and :math:`+c` in the following diagram that mark the boundary for a 95% of the total area under the distribution. This region is an interval that will contain, with 95% certainty, the population mean of the viscosity, :math:`\mu`. Write your answer in form: :math:`\text{LB} < \mu < \text{UB}`.
 
-			.. figure:: ../figures/univariate/show-confidence-interval.png
+			.. image:: ../figures/univariate/show-confidence-interval.png
 				:width: 500px
 				:scale: 50
 
@@ -349,7 +349,7 @@ Exercises
 		> barplot(bin.counts, names.arg=bin.centers, ylab="Number of bulbs (N=50)", 
 		     xlab="Energy required over 24 hours (W.h)", col="White", ylim=c(0,20))
 	
-	.. figure:: ../figures/univariate/bulb-energy-barplot.png
+	.. image:: ../figures/univariate/bulb-energy-barplot.png
 		:width: 500px
 		:align: center
 		:scale: 50
@@ -421,7 +421,7 @@ Exercises
 
 	We can start by looking at the data. A box plot is a reasonable way to compare both the location and spread of the brittleness values from each reactor.
 
-	.. figure:: ../figures/univariate/brittleness-boxplot.png
+	.. image:: ../figures/univariate/brittleness-boxplot.png
 	    :width: 750px
 	    :align: center
 	    :scale: 50
@@ -485,7 +485,7 @@ Exercises
 	- What is the probability of obtaining a z-value of this magnitude or smaller?  Would you say the difference is significant?
 	- Pick any other 2 days that you would find interesting to compare and repeat your analysis.
 
-	.. figure:: ../figures/univariate/Website-traffic-TS.png
+	.. image:: ../figures/univariate/Website-traffic-TS.png
 		:width: 750px
 		
 .. answer::
@@ -558,7 +558,7 @@ Exercises
 
 	The temptation is to jump into the code and calculate the :math:`t`-values and averages differences (:math:`\overline{x}_D = 16.4`, and :math:`\overline{x}_M = 22.6`). But start with a plot of the data, specifically a plot of the differences between the two methods. The immediate problem you see is that average difference of 6.2 between the methods is strongly influenced by a single observation (the second one). In general, the dilution method always produced a smaller result than the manometric method. We expect to see that in our analytical results.
 
-	.. figure:: ../figures/univariate/BOD-comparison-plot.png
+	.. image:: ../figures/univariate/BOD-comparison-plot.png
 	    :width: 750px
 	    :align: center
 	    :scale: 60
@@ -583,7 +583,7 @@ Exercises
 	.. literalinclude:: ../figures/univariate/t-distribution-normal-comparison-assignment3-2010.R
 	       :language: s
 
-	.. figure:: ../figures/univariate/normal-t-comparison.png
+	.. image:: ../figures/univariate/normal-t-comparison.png
 	    :width: 750px
 	    :align: center
     
@@ -885,7 +885,7 @@ Exercises
 
 	#.	Assume the 300 data points represent an entire population. Plot a ``qqPlot(...)`` using the ``car`` package:
 
-		.. figure:: ../figures/univariate/batch-yields-qqplot.png
+		.. image:: ../figures/univariate/batch-yields-qqplot.png
 			:alt:	../figures/univariate/batch-yields.R
 			:scale: 60
 			:width: 500px
@@ -1041,14 +1041,12 @@ Exercises
 	
 	The concrete mixture is prepared with a polymer additive. The mixture is placed in a mold and filled to the top. The mold is inverted and removed. The height of the mold minus the height of the remaining concrete pile is called the "slump". 
 	
-	.. image:: ../figures/least-squares/concrete-slump-test.jpg
-		:alt:	http://en.wikipedia.org/wiki/File:Types_of_concrete_slump.jpg
+	.. image:: ../figures/least-squares/concrete-slump.png
+		:alt:	../figures/least-squares/concrete-slump.svg
 		:scale: 70
 		:width: 750px
 		:align: center
 
-	*Illustration from* `Wikipedia <http://en.wikipedia.org/wiki/File:Types_of_concrete_slump.jpg>`__
-			
 	Your company provides the polymer additive, and you are developing an improved polymer formulation, call it B, that hopefully provides the same slump values as your existing polymer, call it A. Formulation B costs less money than A, but you don't want to upset, or loose, customers by varying the slump value too much.
 	
 	#.	You have a single day to run your tests (experiments). Preparation, mixing times, measurement and clean up take 1 hour, only allowing you to run 10 experiments. Describe all precautions, and why you take these precautions, when planning and executing your experiment. Be very specific in your answer (use bullet points).

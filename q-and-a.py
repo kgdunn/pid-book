@@ -46,7 +46,7 @@ class Question_Answer(Directive):
             # Default value is False (i.e. we obey the 'fullinclude' option)
             override = self.state.document.settings.env.config.q_and_a_override
             if not self.options.has_key('fullinclude') or override:
-                # If the option wasn't given, or if the 'instructor_override'
+                # If the option wasn't given, or if the 'q_and_a_override'
                 # flag is True
                 self.options['fullinclude'] = True
             if self.options['fullinclude']:

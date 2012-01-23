@@ -29,7 +29,7 @@ Exercises
 	-	Lower control limit at 3 standard deviations = 71.1
 	-	Upper control limit at 3 standard deviations = 89.6
 
-	.. figure:: ../figures/monitoring/batch-yields-monitoring.png
+	.. image:: ../figures/monitoring/batch-yields-monitoring.png
 		:align: center
 		:width: 750px
 		:scale: 60
@@ -58,12 +58,12 @@ Exercises
 
 	#.	A plot of the raw data:
 
-		.. figure:: ../figures/monitoring/boards-monitoring-raw-data.png
+		.. image:: ../figures/monitoring/boards-monitoring-raw-data.png
 			:width: 750px
 			:align: center
 	#.	A plot of just the phase I data shows no particular outliers. Most people found a few outliers, that's OK - remember it is a subjective test, and if this were a process you were responsible for, then you would know more clearly what an outlier was. For me though, I didn't think any of these points were particularly unusual.
 
-		.. figure:: ../figures/monitoring/boards-monitoring-find-outliers-phase1.png
+		.. image:: ../figures/monitoring/boards-monitoring-find-outliers-phase1.png
 			:width: 750px
 			:align: center
 		
@@ -81,13 +81,13 @@ Exercises
 	
 		A Shewhart chart of all the phase 1 data (including outliers, to highlight them) is shown here. The limits were the final limits, after iteratively removing the first unusual subgroup	. The code contains all the calculation steps.
 	
-		.. figure:: ../figures/monitoring/boards-monitoring-Shewhart-phase1.png
+		.. image:: ../figures/monitoring/boards-monitoring-Shewhart-phase1.png
 			:width: 750px
 			:align: center
 	
 	#.	Using these parameters on the phase II data generates the following plot:
 
-		.. figure:: ../figures/monitoring/boards-monitoring-Shewhart-phase2.png
+		.. image:: ../figures/monitoring/boards-monitoring-Shewhart-phase2.png
 			:width: 750px
 			:align: center
 		
@@ -108,7 +108,7 @@ Exercises
 	
 		-	A more sensitive monitoring chart for this would be the exponentially weighted moving variance: MacGregor, J.F. and Harris, T.J., "The Exponentially Weighted Moving Variance", *Journal of Quality Technology*, **25**, p 106-118, 1993.
 
-		.. figure:: ../figures/monitoring/boards-monitoring-subgroup-standard-deviation.png
+		.. image:: ../figures/monitoring/boards-monitoring-subgroup-standard-deviation.png
 			:width: 750px
 			:align: center
 			:scale: 80
@@ -146,7 +146,7 @@ Exercises
 
 	A tank uses small air bubbles to keep solid particles in suspension. If too much air is blown into the tank, then excessive foaming and loss of valuable solid product occurs; if too little air is blown into the tank the particles sink and drop out of suspension. 
 
-	.. figure:: ../figures/monitoring/tank-suspension.png
+	.. image:: ../figures/monitoring/tank-suspension.png
 		:scale: 60
 		:align: center
 		:width: 400px
@@ -173,7 +173,7 @@ Exercises
 
 	#.	The aeration rate dataset is depicted below:
 
-		.. figure:: ../figures/monitoring/aeration-rate-raw-data.png
+		.. image:: ../figures/monitoring/aeration-rate-raw-data.png
 			:alt:	images/airflow-monitoring.R
 			:scale: 100
 			:width: 750px
@@ -188,7 +188,7 @@ Exercises
 	
 	#.	The CUSUM chart, using the median as target value showed a problem starting to occur around :math:`t=300`. So we recalculated the median, using only data from 0 to :math:`t=200`, to avoid biasing the target value. Using this median instead, 23.95, we get the following CUSUM chart:
 	
-		.. figure:: ../figures/monitoring/aeration-CUSUM.png
+		.. image:: ../figures/monitoring/aeration-CUSUM.png
 			:alt:	images/airflow-monitoring.R
 			:scale: 100
 			:width: 750px
@@ -211,7 +211,7 @@ Exercises
 	
 	The Shewhart chart applied to the entire dataset is shown below. In contrast to the CUSUM chart, the Shewhart chart is unable to detect the problem in the aeration rate. Unlike the CUSUM chart, which has infinite memory, the Shewhart chart has no memory and cannot adequately assess the location of the monitored variable in relation to its specified target. Instead, the Shewhart chart merely monitors aeration rate with respect to the control limits for the process. Since the aeration rate does not exceed the control limits for the process (i.e. process remains in control), the Shewhart chart does not detect any abnormalities. 
 
-		.. figure:: ../figures/monitoring/aeration-Shewhart-chart.png
+		.. image:: ../figures/monitoring/aeration-Shewhart-chart.png
 			:scale: 100
 			:width: 750px
 			:align: center
@@ -362,7 +362,7 @@ Exercises
 	#.	This time we have the process standard deviation, so there is no need to estimate it from historical phase I data (remember the assumption that Cp and Cpk value are calculated from stable process operation?). The Shewhart control limits would be: :math:`\overline{\overline{x}} \pm 3 \times \frac{\sigma}{\sqrt{n}} = 2 \pm 3 \times 0.0784 / 2`. The LCL = 1.88 mm and the UCL = 2.12 mm.
 	#.	An illustration is shown here with the USL, LSL, LCL and UCL, and target values. This question merely required you to show the LCL and UCL within the LSL and USL, on any normal distribution curve. However, for illustration, I have added to the diagram the distribution for the Shewhart chart (thicker line) and distribution for the raw process data (thinner line). 
 
-	.. figure:: ../figures/monitoring/plastic-sheet-control-specification-limits.png
+	.. image:: ../figures/monitoring/plastic-sheet-control-specification-limits.png
 		:scale: 80
 		:align: center
 		:width: 600px
@@ -379,7 +379,7 @@ Exercises
 	
 	The following charts show the weight of feed entering your reactor. The variation in product quality leaving the reactor was unacceptably high during this period of time. 
 
-	.. figure:: ../figures/monitoring/monitoring-chart-cycling.png
+	.. image:: ../figures/monitoring/monitoring-chart-cycling.png
 		:alt:	../figures/monitoring/monitoring-chart-cycling.R
 		:scale: 90%
 		:width: 750px
@@ -423,7 +423,7 @@ Exercises
 
 	The raw data for the entire data set looks as follows. There are already regions in the phase II data that we expect to not be from normal operation (around 2500 and 2900)
 
-	.. figure:: ../figures/monitoring/Kappa-raw-data.png
+	.. image:: ../figures/monitoring/Kappa-raw-data.png
 		:align: center
 		:width: 750px
 	
@@ -431,19 +431,19 @@ Exercises
 
 	The upper and lower control limits are calculated, and with a subgroup size of :math:`n=6`, there are 333 subgroups and the limits are: UCL = 18.26, target = 21.73, and UCL = 25.21. This is illustrated on the phase I data here:
 
-	.. figure:: ../figures/monitoring/Kappa-phaseI-first-round.png
+	.. image:: ../figures/monitoring/Kappa-phaseI-first-round.png
 		:align: center
 		:width: 750px
 	
 	Next we remove the subgroups which lie outside the limits. Please try using he R code to see how to do it automatically. The new limits, after removing the subgroups beyond the limits from the first round are: LCL = 18.24, target = 21.71 and UCL = 25.18. They barely changed. But the updated plot with subgroups removed is now shown below. There is no need to perform another round of pruning. Only if you used a subgroup size of 4 would you need to do a third round. You could also have just shifted the limits to a different level, for example, to :math:`\pm 4` standard deviations. We can do this if we have enough process knowledge to understand the implication of it, in terms of profit.
 
-	.. figure:: ../figures/monitoring/Kappa-phaseI-second-round.png
+	.. image:: ../figures/monitoring/Kappa-phaseI-second-round.png
 		:align: center
 		:width: 750px
 
 	Now apply these control limits to the phase II data. The plot is shown below:
 
-	.. figure:: ../figures/monitoring/Kappa-phaseII-testing.png
+	.. image:: ../figures/monitoring/Kappa-phaseII-testing.png
 		:align: center
 		:width: 750px
 	
@@ -465,7 +465,7 @@ Exercises
 
 	.. /Users/kevindunn/ConnectMV/Datasets/Spectral data set - NIR/plot_spectra.py
 
-	.. figure:: ../figures/monitoring/pharma-spectra.jpg
+	.. image:: ../figures/monitoring/pharma-spectra.jpg
 		:width: 750px
 		:align: center
 
@@ -496,7 +496,7 @@ Exercises
 
 	First a plot of the raw data will be useful:
 
-	.. figure:: ../figures/monitoring/CO2-raw-data.png
+	.. image:: ../figures/monitoring/CO2-raw-data.png
 		:scale: 75
 		:width: 750px
 		:align: center
@@ -512,7 +512,7 @@ Exercises
 
 	#.	The Shewhart chart using a subgroup of size 6 is not a useful monitoring chart. There are too many false alarms, which will cause the operators to just ignore the chart. The problem is that the first assumption of independence is not correct and has a detrimental effect, as shown in :ref:`a previous question <lack_of_independence_question>`. 
 
-		.. figure:: ../figures/monitoring/CO2-phaseI-first-round.png
+		.. image:: ../figures/monitoring/CO2-phaseI-first-round.png
 			:scale: 75
 			:width: 750px
 			:align: center
@@ -563,11 +563,11 @@ Exercises
 
 	#.	Shewhart charts for both rounds of the yield data (before and after removing the outlier):
 
-		.. figure:: ../figures/monitoring/batch-yield-phaseI-round-1-Yield.png
+		.. image:: ../figures/monitoring/batch-yield-phaseI-round-1-Yield.png
 			:width: 750px
 			:align: center
 
-		.. figure:: ../figures/monitoring/batch-yield-phaseI-round-2-Yield.png
+		.. image:: ../figures/monitoring/batch-yield-phaseI-round-2-Yield.png
 			:scale: 100
 			:width: 750px
 			:align: center

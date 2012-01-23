@@ -57,7 +57,7 @@ Exercises
 		*   :math:`x_\text{new} = 480` °F: :math:`\hat{y}_\text{new} = 36.92 \pm 11.80`, or [31.02, 42.82]
 		*	:math:`x_\text{new} = 520` °F: :math:`\hat{y}_\text{new} = 23.67 \pm 11.90`, or [17.72, 29.62]
 
-	.. figure:: ../figures/least-squares/distillation-prediction-interval.png
+	.. image:: ../figures/least-squares/distillation-prediction-interval.png
 		:align: center
 		:width: 750px
 		:scale: 50
@@ -101,14 +101,14 @@ Exercises
 
 	-	The residuals have roughly the same distribution as before, maybe a little more normal on the left tail, but hardly noticeable.
 
-		.. figure:: ../figures/least-squares/distillation-prediction-qqplots.png
+		.. image:: ../figures/least-squares/distillation-prediction-qqplots.png
 			:align: center
 			:width: 750px
 			:scale: 80
 
 	-	The slope coefficient of 75571 has units of ``kPa.°F``, indicating that each one unit *decrease* in temperature results in an *increase* in vapour pressure. Since division is not additive, the change in vapour pressure when decreasing 10 degrees from 430 °F is a different decrease to that when temperature is 530 °F. The interpretation of transformed variables in linear models is often a lot harder. The easiest interpretation is to show a plot of 1/T against vapour pressure.
 
-		.. figure:: ../figures/least-squares/distillation-prediction-inverted-temperature.png
+		.. image:: ../figures/least-squares/distillation-prediction-inverted-temperature.png
 			:align: center
 			:width: 750px
 			:scale: 40
@@ -139,7 +139,7 @@ Exercises
 
 	-	The influence plot from the model building data is given below.
 
-		.. figure:: ../figures/least-squares/distillation-influence-plot.png
+		.. image:: ../figures/least-squares/distillation-influence-plot.png
 			:align: center
 			:width: 750px
 			:scale: 45
@@ -165,7 +165,7 @@ Exercises
 
 	The autocorrelation plot shows significant lags up to lag 3, or even 4. So subsampling the vector with every 4th or 5th element should yield independent samples. The autocorrelation with every 5th observation confirms this. You could also use every 6th, 7th, *etc* observation. Using every 30th observation though is not too useful, since it would lead to a long delay before the control chart showed any problems.
 
-	.. figure:: ../figures/least-squares/kappa-number-autocorrelation.png
+	.. image:: ../figures/least-squares/kappa-number-autocorrelation.png
 		:align: center
 		:width: 750px
 		:scale: 50
@@ -486,7 +486,7 @@ Exercises
 
 		We have illustrated the actual slope (thick, solid line) at the upper and lower bounds of the slope coefficient (thin, dashed lines) in the accompanying figure. Not required for this question, but added nevertheless, are the prediction intervals for :math:`\hat{y}_i`.
 
-		.. figure:: ../figures/least-squares/distillation-least-squares.png
+		.. image:: ../figures/least-squares/distillation-least-squares.png
 			:align: center
 			:width: 750px
 			:scale: 60
@@ -561,7 +561,7 @@ Exercises
 		*	The yield-baffles relationship is negative, as expected.
 		*	We can't tell anything about the yield-duration relationship, as it doesn't vary in the data we have (there could/should be a relationship, but we can't tell).
 
-		.. figure:: ../figures/least-squares/bioreactor-scatterplot-matrix.png
+		.. image:: ../figures/least-squares/bioreactor-scatterplot-matrix.png
 			:alt:	images/math
 			:scale: 70
 			:width: 750px
@@ -591,7 +591,7 @@ Exercises
 
 	#.	Relationship: the data are negatively correlated.
 
-		.. figure:: ../figures/least-squares/CO2-gas-furnace-raw-data.png
+		.. image:: ../figures/least-squares/CO2-gas-furnace-raw-data.png
 			:alt:	../figures/least-squares/CO2-gas-furnace-question.R
 			:scale: 70
 			:width: 750px
@@ -668,7 +668,7 @@ Exercises
 
 		The temperature prediction at 1.00 mV would be 413.9 K.
 
-		.. figure:: ../figures/least-squares/voltage-linear-model.png
+		.. image:: ../figures/least-squares/voltage-linear-model.png
 			:scale: 60
 			:align: center
 
@@ -1127,12 +1127,10 @@ Exercises
 
 	The concrete mixture is prepared with a polymer additive. The mixture is placed in a mold and filled to the top. The mold is inverted and removed. The height of the mold minus the height of the remaining concrete pile is called the "slump". 
 
-	.. figure:: ../figures/least-squares/concrete-slump-test.jpg
-		:alt:	http://en.wikipedia.org/wiki/File:Types_of_concrete_slump.jpg
+	.. image:: ../figures/least-squares/concrete-slump.png
+		:alt:	../figures/least-squares/concrete-slump.svg
 		:width: 650px
 		:align: center
-
-	*Illustration from* `Wikipedia <http://en.wikipedia.org/wiki/File:Types_of_concrete_slump.jpg>`_
 
 	Your company provides the polymer additive, and you are developing an improved polymer formulation, call it B, that hopefully provides the same slump values as your existing polymer, call it A. Formulation B costs less money than A, but you don't want to upset, or loose, customers by varying the slump value too much.
 

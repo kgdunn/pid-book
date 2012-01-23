@@ -8,7 +8,7 @@ Exercises
 
 	The data shown here are the number of visits to a university website for a particular statistics course. There are 90 students in the class, however the site is also publicly available.
 
-	.. figure:: ../figures/visualization/course-website-visits.png
+	.. image:: ../figures/visualization/course-website-visits.png
 		:align: center
 		:width: 750px
 
@@ -101,7 +101,7 @@ Exercises
 		    days <- factor(web$DayOfWeek, level=day.names)
 		    boxplot(web$Visits ~ days)
 
-		.. figure:: ../figures/visualization/website-traffic-boxplot.png
+		.. image:: ../figures/visualization/website-traffic-boxplot.png
 			:width: 500px
 			:scale: 60
 
@@ -160,7 +160,7 @@ Exercises
 		.. literalinclude:: ../figures/visualization/kidnappings.R
 		       :language: s	
 	
-		.. figure:: ../figures/visualization/kidnap-mobile.jpg
+		.. image:: ../figures/visualization/kidnap-mobile.jpg
 			:alt:	../figures/visualization/kidnappings.R
 			:scale: 60
 			:width: 500px
@@ -197,7 +197,7 @@ Exercises
 		.. literalinclude:: ../figures/examples/room-temperature/room-temperature-plots.R
 		       :language: s
 
-		.. figure:: ../figures/examples/room-temperature/room-temperatures.png
+		.. image:: ../figures/examples/room-temperature/room-temperatures.png
 			:alt:	../figures/examples/room-temperature/room-temperature-plots.R
 			:scale: 100
 			:width: 500px

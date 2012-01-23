@@ -70,7 +70,7 @@ Exercises
 	
 		Not required for this question, but one of the best ways to visualize a small factorial, or a subset of a larger factorial, is with a cube plot:
 	
-		.. figure:: ../figures/doe/assignment-6-two-levels-two-variables-no-analysis.png
+		.. image:: ../figures/doe/assignment-6-two-levels-two-variables-no-analysis.png
 			:alt:	../figures/doe/assignment-6-two-levels-two-variables-no-analysis.svg
 			:align: center
 			:width: 500px
@@ -78,7 +78,7 @@ Exercises
 		
 	#.	The interaction plot which visually shows the main effects described above is:
 
-		.. figure:: ../figures/doe/assignment-6-two-level-line-plot-with-interaction.png
+		.. image:: ../figures/doe/assignment-6-two-level-line-plot-with-interaction.png
 			:alt:	../figures/doe/assignment-6-two-level-line-plot-with-interaction.svg
 			:align: center
 			:width: 500px
@@ -239,7 +239,7 @@ Exercises
 
 		At these conditions the expected yield is in the region of 93 to 94% (runs 7 and 8 from the standard order).
 
-		.. figure:: ../figures/doe/bioreactor-pareto-plot.png
+		.. image:: ../figures/doe/bioreactor-pareto-plot.png
 			:alt:	bioreactor-case.R
 			:align: center
 			:width: 600px
@@ -373,7 +373,7 @@ Exercises
 	*	Draw a response surface plot of **A** *vs* **B** over a suitably wide range beyond the experimental region. 
 	*	Where would you move **A** and **B** if your objective is to increase the response value?
 
-	.. figure:: ../figures/doe/central-composite-question.png
+	.. image:: ../figures/doe/central-composite-question.png
 		:align: center
 		:width: 500px
 		:scale: 60
