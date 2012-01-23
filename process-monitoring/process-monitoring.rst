@@ -19,7 +19,7 @@
 	Show chart for Shewhart example in class
 	Case study: total energy input
 	
-	Explain how to change Cpk if it is undesireable
+	Explain how to change Cpk if it is undesirable
 	
 
 Process monitoring in context
@@ -310,7 +310,7 @@ To quantify the probability :math:`\beta`, recall that a Shewhart chart is for m
 .. todo  How did Devore calculate these numbers: see p 667 of his book - it doesn't make sense to me. See my attempt in "show-shift-typeII-error.R"
 
 ..	See Montgomery and Runger, Second edition, p 313, for a possible derivation
-
+.. \beta = pnorm(3-delta*sqrt(n)) - pnorm(-3 - delta*sqrt(n))
 
 ==============================  ====== ====== ====== ====== ====== ====== 
 :math:`\Delta`                  0.25   0.50   0.75   1.00   1.50   2.00   

@@ -330,7 +330,7 @@ Exercises
 
 .. question::
 	
-	One of the question we posed at the start of this chapter was: "`Here are the yields <http://datasets.connectmv.com/info/batch-yields>`_ from a batch bioreactor system for the last 3 years (300 data points; we run a new batch about every 3 to 4 days).
+	One of the question we posed at the start of this chapter was: `Here are the yields from a batch bioreactor system <http://datasets.connectmv.com/info/batch-yields>`_  for the last 3 years (300 data points; we run a new batch about every 3 to 4 days).
 
 	#.	What sort of distribution do the yield data have?
 	#.	A recorded yield value was less than 60%, what are the chances of that occurring?  Express your answer as: *there's a 1 in n chance* of it occurring.
