@@ -92,7 +92,7 @@ Concepts and acronyms that you must be familiar with by the end of this section:
 	*	Type 1 and type 2 errors
 	*	LCL and UCL
 	*	Target
-	*	C\ :sub:`p` and  C\ :sub:`pk`
+	*	C\ :sub:`p` and |Cpk|
 	*	Outliers
 	*	Real-time implementation of monitoring systems
 
@@ -296,6 +296,8 @@ The overall average is :math:`\overline{\overline{x}} = 238.8` and :math:`\overl
 		
 .. todo: in the future, describe more clearly the difference between phase 1 and phase 2. Students were asking a lot of questions around this.
 
+.. _monitoring_judging_performance:
+
 Judging the chart's performance
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -330,6 +332,8 @@ To quantify the probability :math:`\beta`, recall that a Shewhart chart is for m
 ..	See Montgomery and Runger, Second edition, p 313, for a possible derivation
 .. \beta = pnorm(3-delta*sqrt(n)) - pnorm(-3 - delta*sqrt(n))
 
+.. _monitoring_sluggish_shewhart_chart:
+
 ==============================  ====== ====== ====== ====== ====== ====== 
 :math:`\Delta`                  0.25   0.50   0.75   1.00   1.50   2.00   
 ------------------------------  ------ ------ ------ ------ ------ ------ 
@@ -344,7 +348,7 @@ To quantify the probability :math:`\beta`, recall that a Shewhart chart is for m
 
 The table highlights that :math:`\beta` is a function of the amount by which the process shifts = :math:`\Delta`, where :math:`\Delta=1` implies the process has shifted up by :math:`1\sigma`. The table was calculated for :math:`n=4` and used critical limits of :math:`\pm 3 \sigma_{\overline{X}}`. You can calculate your own values of :math:`\beta` using this line of R code: ``beta <- pnorm(3 - delta*sqrt(n)) - pnorm(-3 - delta*sqrt(n))``
 
-The key point you should note from the table is that a Shewhart chart is *not good* (it is slow) at detecting a change in the location (level) of a variable. This is surprising given the intention of the plot is to monitor the variable's location. Even a moderate shift of :math:`0.75\sigma` units :math:`(\Delta=0.75)` will only be detected around 6.7% of the time (:math:`100-93.3\%`) when :math:`n=4`. We will discuss :ref:`CUSUM charts <monitoring-CUSUM-charts>` and the Western Electric rules, next, as a way to overcome this issue.
+The key point you should note from the table is that a Shewhart chart is *not good* (it is slow) at detecting a change in the location (level) of a variable. This is surprising given the intention of the plot is to monitor the variable's location. Even a moderate shift of :math:`0.75\sigma` units :math:`(\Delta=0.75)` will only be detected around 6.7% of the time (:math:`100-93.3\%`) when :math:`n=4`. We will discuss :ref:`CUSUM charts <monitoring_CUSUM_charts>` and the Western Electric rules, next, as a way to overcome this issue.
 
 It is straightforward to see how the type I, :math:`\alpha`, error rate can be adjusted - simply move the LCL and UCL up and down, as required, to achieve your desired error rates. There is nothing wrong in arbitrarily shifting these limits - :ref:`more on this later <monitoring_adjust_limits>` in the section on adjusting limits.
 
@@ -371,31 +375,33 @@ Extensions to the basic Shewhart chart
 
 	*Note*: do not use robust methods to calculate the values plotted on the charts during phase 2, only use robust methods to calculate the chart limits in phase 1!
 	
-*	**Warning limits**: it is common to see warning limits on a monitoring chart at :math:`\pm 2 \sigma`, while the :math:`\pm 3\sigma` limits are called the action limits. Real-time computer systems usually use a colour scheme to distinguish between the warning state and the action state. For example, the chart background changes between green, orange or red depending on the state of the current observation plotted.
+*	**Warning limits**: it is common to see warning limits on a monitoring chart at :math:`\pm 2 \sigma`, while the :math:`\pm 3\sigma` limits are called the action limits. Real-time computer systems usually use a colour scheme to distinguish between the warning state and the action state. For example, the chart background changes from green, to orange to red as the deviations from target become more severe.
 
 .. _monitoring_adjust_limits:
 
-*	**Adjusting the limits**: The :math:`\pm 3\sigma` limits are not set in stone. Depending on the degree to which the source data obey the assumptions, and the frequency with which spikes and outliers contaminate your data, you may need to adjust your limits, usually wider, to avoid frequent false alarms. Nothing makes a monitoring chart more useless to operators than frequent false alarms ("`crying wolf <http://en.wikipedia.org/wiki/The_Boy_Who_Cried_Wolf>`_").
+*	**Adjusting the limits**: The :math:`\pm 3\sigma` limits are not set in stone. Depending on the degree to which the source data obey the assumptions, and the frequency with which spikes and outliers contaminate your data, you may need to adjust your limits, usually wider, to avoid frequent false alarms. Nothing makes a monitoring chart more useless to operators than frequent false alarms ("`crying wolf <http://en.wikipedia.org/wiki/The_Boy_Who_Cried_Wolf>`_"). However, :ref:`recall that there is no free lunch <monitoring_judging_performance>`: you cannot simultaneously have low type I and type II error.
 
-*	**Changing the subgroup size**: It is perhaps a counterintuitive result that increasing the subgroup size, :math:`n`, leads to a more sensitive detection system for shifts in the mean, because the control limits are pulled in tighter. However, the larger :math:`n` also means that it will take longer to see the detection signal. So there is a trade-off between subgroup size and the run length (time to detection of a signal).
+*	**Changing the subgroup size**: It is perhaps a counterintuitive result that increasing the subgroup size, :math:`n`, leads to a more sensitive detection system for shifts in the mean, because the control limits are pulled in tighter. However, the larger :math:`n` also means that it will take longer to see the detection signal as the subgroup mean is averaged over more raw data points. So there is a trade-off between subgroup size and the run length (time to detection of a signal).
 
 .. _monitoring_mistakes_to_avoid:
 
 Mistakes to avoid
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Imagine you are monitoring an aspect of the final product's quality, e.g. viscosity, and you have a product specification that requires that viscosity to be within, say 40 to 60 cP. It is a mistake to place those **specification limits** on the monitoring chart. It is also a mistake to use the required specification limits instead of the LCL and UCL. The monitoring chart is to detect abnormal variation in the process, not to inspect for quality specifications. You can certainly have another chart for that, but the process monitoring chart's limits are intended to monitor process stability, and these Shewhart limits are calculated differently.
+.. TODO: check if the assumption of independence within each subgroup is required
 
-Shewhart chart limits were calculated with the assumption of **independent subgroups** (e.g. subgroup :math:`i` has no effect on subgroup :math:`i+1`). For a process with mild autocorrelation, the act of creating subgroups, with :math:`n` samples in each group, removes most, if not all, of the relationship between subgroups. However processes with heavy autocorrelation (slow moving processes sampled at a high rate, for example), will have LCL and UCL calculated from equation :eq:`shewhart-limits` that will raise false alarms too frequently. In these cases you can widen the limits, or remove the autocorrelation from the signal. More on this in the section on :ref:`exponentially weighted moving average (EWMA) charts <monitoring_EWMA>`.
+#.	Imagine you are monitoring an aspect of the final product's quality, e.g. viscosity, and you have a product specification that requires that viscosity to be within, say 40 to 60 cP. It is a mistake to place those **specification limits** on the monitoring chart. It is also a mistake to use the required specification limits instead of the LCL and UCL. The monitoring chart is to detect abnormal variation in the process, not to inspect for quality specifications. You can certainly have another chart for that, but the process monitoring chart's limits are intended to monitor process stability, and these Shewhart stability limits are calculated differently.
 
-Using Shewhart charts on two or more **highly correlated quality variables**, usually on your final product measurement, can increase your type II (consumer's risk) dramatically. We will come back to this very important topic in the section on :ref:`latent variable models <SECTION_latent_variable_modelling>`.
+#.	Shewhart chart limits were calculated with the assumption of **independent subgroups** (e.g. subgroup :math:`i` has no effect on subgroup :math:`i+1`). For a process with mild autocorrelation, the act of creating subgroups, with :math:`n` samples in each group, removes most, if not all, of the relationship between subgroups. However processes with heavy autocorrelation (slow moving processes sampled at a high rate, for example), will have LCL and UCL calculated from equation :eq:`shewhart-limits` that will raise false alarms too frequently. In these cases you can widen the limits, or remove the autocorrelation from the signal. More on this in the later section on :ref:`exponentially weighted moving average (EWMA) charts <monitoring_EWMA>`.
 
-.. _monitoring-CUSUM-charts:
+#.	Using Shewhart charts on two or more **highly correlated quality variables**, usually on your final product measurement, can increase your type II (consumer's risk) dramatically. We will come back to this very important topic in the section on :ref:`latent variable models <SECTION_latent_variable_modelling>`.
+
+.. _monitoring_CUSUM_charts:
 
 CUSUM charts
 ==============
 
-The Shewhart chart is not too sensitive to detecting shifts in the mean. Depending on the subgroup size, :math:`n`, we showed that it can take several consecutive samples before a warning or action limit is triggered. The cumulative sum chart, or :index:`CUSUM chart <pair: CUSUM; process monitoring>`, allows more rapid detection of these shifts away from a target value, :math:`T`.
+We :ref:`showed earlier <monitoring_sluggish_shewhart_chart>` that the Shewhart chart is not too sensitive to detecting shifts in the mean. Depending on the subgroup size, :math:`n`, we showed that it can take several consecutive samples before a warning or action limit is triggered. The cumulative sum chart, or :index:`CUSUM chart <pair: CUSUM; process monitoring>`, allows more rapid detection of these shifts away from a target value, :math:`T`.
 
 .. math::
 	:label: CUSUM-derivation
@@ -405,13 +411,15 @@ The Shewhart chart is not too sensitive to detecting shifts in the mean. Dependi
 	S_2 &= (x_0 - T) + (x_1 - T) + (x_2 - T) = S_1 + (x_2 - T) \\
 	\\
 	\text{In general}\qquad S_t &= S_{t-1} + (x_t - T) 
-	
+
+.. TODO: should add Shewhart chart to this to prove its sluggishness
+
 .. image:: ../figures/monitoring/explain-CUSUM.png
 	:alt:	../figures/monitoring/explain-CUSUM.R
 	:width: 750px
 	:align: center
 	
-Values of :math:`S_t` for an in-control process are really just random errors, with mean of zero. The long-term sum of :math:`S_t` is also zero, as the positive and negative errors keep cancelling out.
+Values of :math:`S_t` for an in-control process should really just be random errors, with mean of zero. The long-term sum of :math:`S_t` is also zero, as the positive and negative errors keep cancelling out.
 
 So imagine a CUSUM chart where at some time point the process mean shifts up by :math:`\Delta` units, causing future values of :math:`x_t` to be :math:`x_t + \Delta` instead. Now the summation in the last equation of :eq:`CUSUM-derivation` has an extra :math:`\Delta` term added at each step to :math:`S_t`. Every point will build up an accumulation of :math:`\Delta`, which shows up as a positive or negative slope in the CUSUM chart. 
 
@@ -419,13 +427,13 @@ The CUSUM chart is extremely sensitive to small changes. The example chart is sh
 
 This figure also shows how the CUSUM chart is used with the 2 masks. Notice that there are no lower and upper bounds for :math:`S_t`. A process that is on target will show a "wondering" value of S, moving up and down. In fact, as the second row shows, a surprising amount of movement up and down occurs even when the process is in control.
 
-What is of interest however is a persistent change in slope. The angle of the superimposed V-mask is the control limit: the narrower the mouth of the mask, the more sensitive the CUSUM chart is to deviations from the target. Both the type I and II error are set by the angle of the V and the leading distance (the distance from the short vertical line to the apex of the V).
+What is of interest however is a persistent change in slope in the CUSUM chart. The angle of the superimposed V-mask is the control limit: the narrower the mouth of the mask, the more sensitive the CUSUM chart is to deviations from the target. Both the type I and II error are set by the angle of the V and the leading distance (the distance from the short vertical line to the apex of the V).
 
 The process is considered in control as long as all points are within the arms of the V shape.  The mask in the second row of the plot shows "in control" behaviour, while the mask in the fourth row detects the process mean has shifted, and an alarm should be raised.
 
-Once the process has been investigated the CUSUM value, :math:`S_t` is often reset to zero; though other resetting strategies exist. A tabular version of the CUSUM chart also exists, but these days the charts are entirely automated in software.
+Once the process has been investigated the CUSUM value, :math:`S_t` is often reset to zero; though other resetting strategies exist. A tabular version of the CUSUM chart also exists which tends to be the version used in software systems.
 
-.. TODO(KGD): MUCH LESS FOCUS on the V-mask, more on how it is currently done
+The purpose of this section is not to provide formulas for the V-mask or tabular CUSUM charts, only to explain the CUSUM concept to put the next section in perspective.
 
 .. _monitoring_EWMA:
 
@@ -436,24 +444,26 @@ EWMA charts
 	see: exponentially weighted moving average; EWMA
 	pair: EWMA; process monitoring
 
-The two previous charts highlight the 2 extremes of monitoring charts. On the one hand, a Shewhart chart assumes each subgroup sample is independent (unrelated) to the next - implying there is no "memory" in the chart. On the other hand, a CUSUM chart has an infinite memory, back to the time the chart was started at :math:`t=0` (see equation :eq:`CUSUM-derivation`).
+The two previous charts highlight 2 extremes of monitoring charts. On the one hand, a Shewhart chart assumes each subgroup sample is independent (unrelated) to the next - implying there is no "memory" in the chart. On the other hand, a CUSUM chart has an infinite memory, all the way back to the time the chart was started at :math:`t=0` (see equation :eq:`CUSUM-derivation`).
 
-As an introduction to the exponentially weighted moving average (EWMA) chart, consider first a :index:`moving average` (MA) chart, which is used just like a Shewhart chart, except the samples that make up the subgroup are calculated using a moving window of width :math:`n`.
+As an introduction to the exponentially weighted moving average (EWMA) chart, consider first the simple :index:`moving average` (MA) chart. This chart is used just like a Shewhart chart, except the samples that make up each subgroup are calculated using a moving window of width :math:`n`. The case of :math:`n=5` is shown below.
 
 .. image:: ../figures/monitoring/explain-moving-average-data-source.png
 	:width: 750px
 	:align: center
 	:scale: 70
 
-The MA chart plots values of :math:`x_t`, calculated from groups of size :math:`n`, with equal weight for each of the :math:`n` most recent raw data.
+The MA chart plots values of :math:`\overline{x}_t`, calculated from groups of size :math:`n`, using equal weight for each of the :math:`n` most recent raw data.
 
 .. math::	
 	
 	\overline{x}_t = \frac{1}{n}x_{t-1} + \frac{1}{n}x_{t-2} + \ldots + \frac{1}{n}x_{t-n}
 
-The EWMA is similar to the MA, but with different weights; heavier weights for more recent observations, tailing off exponentially to very small weights further back. Let's take a look at a derivation. 
+The EWMA chart is similar to the MA chart, but uses different weights; heavier weights for more recent observations, tailing off exponentially to very small weights further back in history. Let's take a look at a derivation. 
 
-.. image:: ../figures/monitoring/explain-EWMA.png
+.. todo: Show a Shewhart chart in the second row; use lambda = 0.5 and 0.15 only, then a CUSUM at the bottom
+
+.. figure:: ../figures/monitoring/explain-EWMA.png
 	:width: 750px
 	:align: center
 	:scale: 95
@@ -465,9 +475,9 @@ Define the process target as :math:`T`.
 	
 		\begin{array}{lcrcl}
 			\text{Let}  \qquad\qquad && x_t           &=& \text{new data measurement}\\
-			\text{Let}  \qquad\qquad && e_t           &=& x_t - \hat{x}_t \\
-									 && \hat{x}_t     &=& \hat{x}_{t-1} + \lambda e_{t-1}	\qquad\qquad	 \\
-			\text{Shifting one step:}&& \hat{x}_{t+1} &=& \hat{x}_{t}   + \lambda e_{t}    \\
+			\text{let}  \qquad\qquad && e_t           &=& x_t - \hat{x}_t \\
+			\text{where}			 && \hat{x}_t     &=& \hat{x}_{t-1} + \lambda e_{t-1}	\qquad\qquad	 \\
+			\text{shifting one step:}&& \hat{x}_{t+1} &=& \hat{x}_{t}   + \lambda e_{t}    \\
 		\end{array}
 
 The reason for the :math:`\wedge` above the :math:`x_t`, as in :math:`\hat{x}_t`, is that :math:`\hat{x}_t` is a prediction of the measured :math:`x_t` value. 
@@ -483,9 +493,9 @@ To start the EWMA sequence we define the value for :math:`\hat{x}_0 = T`, and :m
 											&& \hat{x}_{t+1} &=& \left(1-\lambda \right)\hat{x}_{t}   + \lambda x_t  \\
 		\end{array}
 
-That last line shows the one-step-ahead prediction for :math:`x` at time :math:`t+1` is a weighted sum of two components: the predicted value and the measured value, weighted to add up to 1. The plot below shows visually what happens as the weight of :math:`\lambda` is changed. In this example a shift of :math:`\Delta = 1\sigma = 3` units occurs at :math:`t=150`. Prior to that the process mean is :math:`\mu=20` and the raw data has :math:`\sigma = 3`. The EWMA plots show the one-step-ahead prediction value from equation :eq:`ewma-derivation-2`, :math:`\hat{x}_{t+1}` = EWMA value plotted.
+That last line shows the one-step-ahead prediction for :math:`x` at time :math:`t+1` is a weighted sum of two components: the predicted value, :math:`\hat{x}_t`, and the measured value, :math:`x_t`, weighted to add up to 1. The plot below shows visually what happens as the weight of :math:`\lambda` is changed. In this example a shift of :math:`\Delta = 1\sigma = 3` units occurs at :math:`t=150`. Prior to that the process mean is :math:`\mu=20` and the raw data has :math:`\sigma = 3`. The EWMA plots show the one-step-ahead prediction value from equation :eq:`ewma-derivation-2`, :math:`\hat{x}_{t+1}` = EWMA value plotted at time :math:`t`.
 
-As :math:`\lambda` gets smaller, the chart is smoother, because as equation :eq:`ewma-derivation-2` shows, less of the current data (:math:`x_t`) is used, and more historical data (:math:`\hat{x}_{t}`) is used (i.e. the "memory" of the EWMA statistic is increased). To see why :math:`\hat{x}_{t}` represents historical data, you can recursively substitute and show that:
+As :math:`\lambda` gets smaller, the chart is smoother, because as equation :eq:`ewma-derivation-2` shows, less of the current data, :math:`x_t`, is used, and more historical data, :math:`\hat{x}_{t}`, is used. The "memory" of the EWMA statistic is increased. To see why :math:`\hat{x}_{t}` represents historical data, you can recursively substitute and show that:
 
 .. math::
 	
@@ -502,16 +512,16 @@ From the above discussion and the weights shown for the 4 different charts, it s
 	:align: center
 	:scale: 65
 	
-The upper and lower control limits for the EWMA plot are plotted in the same way as the Shewhart limits:
+The upper and lower control limits for the EWMA plot are plotted in the same way as the Shewhart limits, but calculated differently:
 
 .. math::
 	:label: ewma-limits
 	
 	\begin{array}{rcccl} 
-		 \text{LCL} = \overline{\overline{x}} - 3 \cdot \sigma_{\text{Shewhart}}\sqrt{\frac{\displaystyle \lambda}{2-\lambda}} &&  &&  \text{UCL} = \overline{\overline{x}} + 3 \cdot \sigma_{\text{Shewhart}} \sqrt{\frac{\displaystyle \lambda}{2-\lambda}}
+		 \text{LCL} = \overline{\overline{x}} - 3 \cdot \sigma_{\text{Shewhart}}\sqrt{\frac{\displaystyle \lambda}{\displaystyle 2-\lambda}} &&  &&  \text{UCL} = \overline{\overline{x}} + 3 \cdot \sigma_{\text{Shewhart}} \sqrt{\frac{\displaystyle \lambda}{\displaystyle 2-\lambda}}
 	\end{array} 
 
-where :math:`\sigma_{\text{Shewhart}}` represents the standard deviation as calculated for the Shewhart chart. Actually one neat implementation is to show both the Shewhart and EWMA plot on the same chart, with both sets of limits. The EWMA value plotted is actually the one-step ahead prediction of the next :math:`x`-value, which can be informative for slow-moving processes.
+where :math:`\sigma_{\text{Shewhart}}` represents the standard deviation as calculated for the Shewhart chart. Actually one interesting implementation is to show both the Shewhart and EWMA plot on the same chart, with both sets of limits. The EWMA value plotted is actually the one-step ahead prediction of the next :math:`x`-value, which can be informative for slow-moving processes.
 
 The R code here shows one way of calculating the EWMA values for a vector of data. Once you have pasted this function into R, use it as ``ewma(x, lambda=..., target=...)``.
 
@@ -538,7 +548,7 @@ Other charts
 
 You may encounter other charts in practice:
 
-	*	The *S chart* is for monitoring the subgroup's standard deviation. Take the group of :math:`n` samples and show their standard deviation on a Shewhart-type chart. The limits for the chart are calculated using similar correction factors as were used in the derivation for the standard :math:`\overline{x}` Shewhart chart. This chart has a LCL :math:`\geq 0`.
+	*	The *S chart* is for monitoring the subgroup's standard deviation. Take the group of :math:`n` samples and show their standard deviation on a Shewhart-type chart. The limits for the chart are calculated using similar correction factors as were used in the derivation for the :math:`\overline{x}` Shewhart chart. This chart has a LCL :math:`\geq 0`.
 	
 	*	The *R chart* was a precursor for the *S chart*, where the *R* stands for range, the subgroup's maximum minus minimum. It was used when charting was done manually, as standard deviations were tedious to calculate by hand.
 	
@@ -546,7 +556,7 @@ You may encounter other charts in practice:
 
 	*	The *exponentially weight moving variance* (EWMV) chart is an excellent chart for monitoring for an increase in product variability. Like the :math:`\lambda` from an EWMA chart, the EWMV also has a sliding parameter that can balance current information and historical information to trade-off sensitivity. More information is available in the paper by J.F. MacGregor, and T.J. Harris, "The Exponentially Weighted Moving Variance", *Journal of Quality Technology*, **25**, p 106-118, 1993.
 
-	
+
 Process capability
 ===================
 
@@ -561,18 +571,18 @@ Centered processes
 
 .. index:: Cp
 
-Purchasers of your product will require a :index:`process capability ratio` (PCR) for each of the quality attributes of your product. For example, your plastic product is characterized by its Mooney viscosity and melting point. A PCR value can be calculated for both properties, using the definition below:
+Purchasers of your product may request a :index:`process capability ratio` (PCR) for each of the quality attributes of your product. For example, your plastic product is characterized by its Mooney viscosity and melting point. A PCR value can be calculated for either property, using the definition below:
 
 .. math::
 	:label: process-capability-ratio-centered
 	
 	\text{PCR} = \frac{\text{Upper specification limit} - \text{Lower specification limit}}{6\sigma} = \frac{\text{USL} - \text{LSL}}{6\sigma}
 	
-Since the population standard deviation, :math:`\sigma`, is not known, an estimate of it is used. Note that the :index:`lower specification limit` (LSL) and :index:`upper specification limit` (USL) are **not the same** as the lower control limit (LCL) and upper control limit (UCL) as where calculated for the Shewhart chart. The LSL and USL are the tolerance limits required by your customers, or from your internal specifications. 
+Since the population standard deviation, :math:`\sigma`, is not known, an estimate of it is used. Note that the :index:`lower specification limit` (LSL) and :index:`upper specification limit` (USL) are **not the same** as the lower control limit (LCL) and upper control limit (UCL) as where calculated for the Shewhart chart. The LSL and USL are the tolerance limits required by your customers, or set from your internal specifications. 
 
 Interpretation of the PCR:
 	
-	* assumes the property follows a normal distribution
+	* assumes the property of interest follows a normal distribution
 	* assumes the process is centered (i.e. your long term mean is halfway between the upper and lower specification limits)
 	* assumes the PCR value was calculated when the process was stable
 
@@ -585,13 +595,13 @@ The PCR is often called the :index:`process width`. Let's see why by taking a lo
 
 The diagram is from a process with mean of 80 and where LSL=65 and USL=95. These specification are fixed, set by our production guidelines. If the process variation is :math:`\sigma = 10`, then this implies that PCR=0.5. Assuming further that the our production is centered at the mean of 80, we can calculate how much defective product is produced in the shaded region of the plot. Assuming a normal distribution:
 
-	-	:math:`z` for LSL = (65 - 80)/10 = -1.5
+	-	:math:`z` for LSL = :math:`(65 - 80)/10 = -1.5`
 
-	-	:math:`z` for USL = (95 - 80)/10 = 1.5
+	-	:math:`z` for USL = :math:`(95 - 80)/10 = 1.5`
 
 	-	Shaded area probability = ``pnorm(-1.5) + (1-pnorm(1.5))`` = 13.4% of production is out of the specification limits.
 
-Contrast this to the case where PCR = 2.0 for the same system. To achieve that level of process capability, using the *same upper and lower specifications* we have to  reduce the standard deviation by a factor of 4, down to :math:`\sigma = 2.5`.  The figure below illustrates that almost no off-specification product is produced for a centered process at PCR = 2.0. There is a width of :math:`12 \sigma` units from the LSL to the USL, giving the process ample room to move. 
+Contrast this to the case where PCR = 2.0 for the same system. To achieve that level of process capability, using the *same upper and lower specifications* we have to  reduce the standard deviation by a factor of 4, down to :math:`\sigma = 2.5`.  The figure below illustrates that almost no off-specification product is produced for a centered process at PCR = 2.0. There is a width of :math:`12 \sigma` units from the LSL to the USL, giving the process location (mean) ample room to drift left or right without creating additional off-specification product. 
 
 .. image:: ../figures/monitoring/explain-PCR-two.png
 	:width: 750px
@@ -621,7 +631,7 @@ It is the |Cpk| value that is requested by your customer. Values of 1.3 are usua
 
 You can calculate that a shift of :math:`1.5\sigma` from process center will introduce only 3.4 defects per million. This shift would reduce your |Cpk| from 2.0 to 1.5.
 
-.. Note:: It must be emphasized that |Cpk| and C\ :sub:`p` numbers are only useful for a process which is stable. Furthermore the assumptions of normally distributed samples is also required to interpret the |Cpk| results.
+.. Note:: It must be emphasized that |Cpk| and C\ :sub:`p` numbers are only useful for a process which is stable. Furthermore the assumption of normally distributed samples is also required to interpret the |Cpk| value.
 
 Industrial practice
 ===================
@@ -629,37 +639,56 @@ Industrial practice
 .. index::
 	pair: industrial practice; process monitoring
 
-This preceding section of the book is only intended to give an overview of the concepts of process monitoring. As you move into an industrial environment you will find there are many such systems already in place. Higher levels of management track statistics from a different point of view, often summarizing data from an entire plant, geographic region, or country. The techniques learned in this book, while focusing mainly on unit operations, are equally applicable though.
+This preceding section of the book is only intended to give an overview of the concepts of process monitoring. As you move into an industrial environment you will find there are many such systems already in place. Higher levels of management track statistics from a different point of view, often summarizing data from an entire plant, geographic region, or country. The techniques learned in this book, while focusing mainly on unit operations, are equally applicable though to data from a plant, region, or country.
 
-You may come across systems called dashboards, which are often part of :index:`enterprise resource planning` (ERP) systems. These dashboards are supposed to monitor the pulse of a company and are tracked like any other monitoring chart discussed above. Another area is called :index:`business intelligence` (BI) systems. These typically track sales and other financial information. And yet another acronym is the :index:`KPI <see: KPI; key performance indicator>`, :index:`key performance indicator`, which is a summary variable, such as profit per hour, or energy cost per unit of production. These are often monitored and acted on by site managers on a daily or weekly basis.
+You may come across systems called dashboards, which are often part of :index:`enterprise resource planning` (ERP) systems. These dashboards are supposed to monitor the pulse of a company and are tracked like any other monitoring chart discussed above. Another area is called :index:`business intelligence` (BI) systems. These typically track sales and other financial information. 
 
-But at the unit operation and plant level, you will likely find the hardest part of getting a monitoring chart implemented is the part where you need to access the data. Getting data out of most database systems is not easy, though it has improved quite a bit in the last few years.
+Yet another acronym is the :index:`KPI <see: KPI; key performance indicator>`, :index:`key performance indicator`, which is a summary variable, such as profit per hour, or energy cost per unit of production. These are often monitored and acted on by site managers on a daily or weekly basis. Sites in a global company with the lowest KPIs receive the greatest scrutiny.
 
-It is critical that your monitoring chart display the quantity as close to real-time as possible. It is almost as if the monetary value of the information in a monitoring chart decays exponentially from the time an event occurs. It is hard to diagnose and correct a problem detected yesterday, and harder still if the problem occurred last week.
+But at the unit operation and plant level, you will likely find the hardest part of getting a monitoring chart implemented is the part where you need access to the data. Getting data out of most database systems is not easy, though it has improved quite a bit in the last few years.
 
-You will also realize that good operator training to interpret and act on the monitoring chart is time-consuming; operators keep moving to new units or plants, so frequent re-training is required. Concepts from the :ref:`data visualization <SECTION-data-visualization>` section are helpful to minimize training effort - make sure the online plots contain the right level of information, without clutter, so they can be acted on appropriately.
+It is critical that your monitoring chart display the quantity as close to real-time as possible. It is almost as if the monetary value of the information in a monitoring chart decays exponentially from the time an event occurs. It is hard to diagnose and correct a problem detected yesterday, and harder still if the problem occurred last week or month.
 
-Another side effect of large quantities of data are that you will have to work with IT groups to manipulate large chunks of data on dedicated networks, separate from the rest of the plant. The last thing you want to be responsible for is clogging the company network with your data. Most industries now have a "production" network running in parallel to the "company" network. The production network carries real-time data, images from cameras and so forth, while the company network carries email and web traffic.
+You will also realize that good operator training to interpret and act on the monitoring chart is time-consuming; operators are often cycled between different units or plants, so frequent re-training is required. Concepts from the :ref:`data visualization <SECTION-data-visualization>` section are helpful to minimize training effort - make sure the online plots contain the right level of information, without clutter, so they can be acted on accurately.
+
+Another side effect of large quantities of data are that you will have to work with IT groups to manipulate large chunks of data on dedicated networks, separate from the rest of the plant. The last thing you want to be responsible for is clogging the company network with your traffic. Most industries now have a "production" network running in parallel to the "corporate" network. The production network carries real-time data, images from cameras and so forth, while the company network carries office email and web traffic.
 
 Approach to implement a monitoring chart in an industrial setting
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is some general guidance; feel free to adjust the steps as required for your unique situation.
 
-	#. Identify the variable(s) to monitor. Make sure each variables show different, uncorrelated phenomena.
-	#. Retrieve historical data from your computer systems, or lab data, or paper records.
-	#. Import the data and just plot it. Do you see any time trends, outliers, spikes, missing data gaps?
-	#. Locate any regions of data which are from generally stable operation. Remove spikes and outliers that will bias your control limits calculations. In other words, find regions of common-cause operation.
-	#. Estimate limits that you would expect to contain this stable region of operation just by looking at the plots.
-	#. Then calculate preliminary control limits (UCL, LCL), using the formula shown in this section. They agree with limits in the previous step.
-	#. Test your chart on **new, unused** data. This new data should contain both common and special cause operation.
-	#. How does your chart work?  Quantify the type I error using a testing data set that contains only common cause data. Quantify type II error from a testing data set containing known problems. Adjust the limits and monitoring chart parameters (e.g. :math:`\lambda`) if necessary. You may even have to resort to a different variable, or a different chart.
-	#. Run the chart on your desktop computer for a couple of days. When you detect an unusual event, go and check with the process operators and verify the event. Would they have reacted to it, had they known about it?  Or, would this have been a false alarm?  You may need to refine your limits, or the value you are plotting again.
-	#. Remember that this form of charting is not an expert system - it will not diagnose problems: you have to use your engineering knowledge by looking at patterns in the chart, and use knowledge of other process events.
-	#. Demonstrate the system to your colleagues and manager. But show them economic estimates of the value of early detection. They are usually not interested in the plots alone, so convert the statistics into monetary values.
-	#. Installation and operator training will take time. This assumes that you have real-time data acquisition systems and real-time processing systems in place - most companies do. You will have to work with your company's IT staff to get this implemented.
-	#. Listen to your operators for what they want to see. Use principles of :ref:`good data visualization <SECTION-data-visualization>` to reduce unnecessary information. Make your plots interactive - if you click on an unusual point it should "drill-down" and give you more information and historical context.
-	#. Future monitoring charts are easier to get going, once the first system is in place.
+	#.	Identify the variable(s) to monitor. Make sure each variables show different, uncorrelated phenomena to avoid redundancy. If unsure which variables to select, use a :ref:`multivariate monitoring system <LVM_monitoring>`.
+	
+	#.	Retrieve historical data from your computer systems, or lab data, or paper records.
+	
+	#.	Import the data and just plot it. Do you see any time trends, outliers, spikes, missing data gaps? Investigate these (to learn more about your process), but then remove them to create the phase 1 data set.
+	
+	#.	Locate any regions of data which are from generally stable operation. Remove spikes and outliers that will bias your control limits calculations. In other words, find regions of common-cause operation.
+	
+	#.	Split your phase 1 data into say a 60% and 40% split. Set aside 40% of the cleaned portion to use as phase 1 testing data later on. Keep the data from outliers, spikes and unstable process operation aside as another testing data set (to ensure that these problems are actually detectable).
+	
+	#.	Using the cleaned 60% portion, estimate limits that you would expect to contain this stable region of operation just by looking at the plots.
+	
+	#.	On the 60% portion, calculate preliminary control limits (UCL, LCL), using the formulas shown in this section. They should agree with limits in the previous step.
+	
+	#.	How does your chart work? Test your chart on the 40% cleaned portion. These testing data should not raise many alarms. Any alarms raised will be type I errors, so you can quantify your type I error rate from the fraction of false alarms raised.
+	
+	#.	Test your chart on the unusual data you found earlier. You can quantify the type II error by counting the fraction of this bad data that went undetected by your chart. 
+	
+	#.	 Adjust the limits and monitoring chart parameters (e.g. :math:`\lambda`) if necessary, to achieve the required type I and type II balance that is acceptable to your operation staff.  You may even have to resort to using a different chart, or monitoring based on a different variable.
+	
+	#.	Test the chart on your desktop computer for a couple of days. When you detect an unusual event, go and check with the process operators and verify the event. Would they have reacted to it, had they known about it?  Or, would this have been a false alarm?  You may need to refine your limits, or the value you are plotting again.
+	
+	#.	Remember that this form of charting is not an expert system - it will not diagnose problems: you have to use your engineering knowledge by looking at patterns in the chart, and use knowledge of other process events.
+	
+	#.	Demonstrate the system to your colleagues and manager. But show them economic estimates of the value of early detection. They are usually not interested in the plots alone, so convert the statistics into monetary values. For example, dollars saved if we had detected that problem in real-time, rather than waiting till later.
+	
+	#.	Installation and operator training will take time. This assumes that you have real-time data acquisition systems and real-time processing systems in place - most companies do. You will have to work with your company's IT staff to get this implemented.
+	
+	#.	Listen to your operators for what they want to see. Use principles of :ref:`good data visualization <SECTION-data-visualization>` to reduce unnecessary information. Make your plots interactive - if you click on an unusual point it should "drill-down" and give you more details and historical context.
+	
+	#.	Future monitoring charts are easier to get going, once the first system is in place.
 
 .. Workflow for what happens with a new observation, once you have the monitoring settings
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -678,7 +707,7 @@ Industrial case study
 ArcelorMittal (Dofasco)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ArcelorMittal's steel mill in Hamilton, Ontario, (formerly called Dofasco) has used multivariate process monitoring tools in many areas of their plant for decades now. One of their most successful applications is that applied to their casting operation. In this section we just focus on the application; the sort of multivariate calculations used by this system are discussed :ref:`later on <SECTION_latent_variable_modelling>`.
+ArcelorMittal's steel mill in Hamilton, Ontario, (formerly called Dofasco) has used multivariate process monitoring tools in many areas of their plant for decades now. One of their most successful applications is that applied to their casting operation. In this section we only focus on the application; the sort of multivariate calculations used by this system are discussed :ref:`later on <SECTION_latent_variable_modelling>`.
 
 The computer screenshot shows the monitoring system, called Caster SOS (Stable Operation Supervisor), which is followed by the operators. There are several charts on the screen: two charts, called "Stability Index 1" and "Stability Index 2", are one-sided monitoring charts. Notice the warning limits and the action limits. In the middle is a two-sided chart. A wealth of information is presented on the screen - their design was heavily influenced and iterated on several times, working with the *operators*. The screen shot is used with permission of Dr. John MacGregor. 
 
@@ -710,6 +739,6 @@ Montgomery and Runger list 5 reasons why monitoring charts are widely used. Afte
 	#.	These tools are proven to improve productivity (i.e. to reduce scrap and rework, as described above), and to increase process throughput.
 	#.	They detect defective production, consistent with the concept of "doing it right the first time", a mantra that you will increasingly hear in the manufacturing workplace.
 	#.	A monitoring chart with good limits will prevent over-control of the process. Operators are trained not to make process adjustments unless there is a clear warning or alarm from the chart.
-	#.	The patterns generated by the plots often help determine what went wrong, providing some diagnostic value to the operators. We will see a more formal tool for process diagnosis though in the latent variable section.
+	#.	The patterns generated by the plots often help determine what went wrong, providing some diagnostic value to the operators. We will see a more formal tool for process diagnosis though in the :ref:`latent variable section <SECTION_latent_variable_modelling>`.
 	#.	Monitoring charts are required to judge if a process is stable over time. A stable process allows us to calculate our process capability, which is an important metric for your customers.
 
