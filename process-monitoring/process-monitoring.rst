@@ -334,19 +334,13 @@ To quantify the probability :math:`\beta`, recall that a Shewhart chart is for m
 
 .. _monitoring_sluggish_shewhart_chart:
 
+The table highlights that :math:`\beta` is a function of the amount by which the process shifts = :math:`\Delta`, where :math:`\Delta=1` implies the process has shifted up by :math:`1\sigma`. The table was calculated for :math:`n=4` and used critical limits of :math:`\pm 3 \sigma_{\overline{X}}`. You can calculate your own values of :math:`\beta` using this line of R code: ``beta <- pnorm(3 - delta*sqrt(n)) - pnorm(-3 - delta*sqrt(n))``
+
 ==============================  ====== ====== ====== ====== ====== ====== 
 :math:`\Delta`                  0.25   0.50   0.75   1.00   1.50   2.00   
 ------------------------------  ------ ------ ------ ------ ------ ------ 
 :math:`\beta` when :math:`n=4`  0.9936 0.9772 0.9332 0.8413 0.5000 0.1587
-==============================  ====== ====== ====== ====== ====== ====== 
-
-..	
-	.. image:: ../figures/monitoring/type-II-error-shift.png
-		:width: 500px
-		:align: center
-		:scale: 90
-
-The table highlights that :math:`\beta` is a function of the amount by which the process shifts = :math:`\Delta`, where :math:`\Delta=1` implies the process has shifted up by :math:`1\sigma`. The table was calculated for :math:`n=4` and used critical limits of :math:`\pm 3 \sigma_{\overline{X}}`. You can calculate your own values of :math:`\beta` using this line of R code: ``beta <- pnorm(3 - delta*sqrt(n)) - pnorm(-3 - delta*sqrt(n))``
+==============================  ====== ====== ====== ====== ====== ======
 
 The key point you should note from the table is that a Shewhart chart is *not good* (it is slow) at detecting a change in the location (level) of a variable. This is surprising given the intention of the plot is to monitor the variable's location. Even a moderate shift of :math:`0.75\sigma` units :math:`(\Delta=0.75)` will only be detected around 6.7% of the time (:math:`100-93.3\%`) when :math:`n=4`. We will discuss :ref:`CUSUM charts <monitoring_CUSUM_charts>` and the Western Electric rules, next, as a way to overcome this issue.
 
@@ -414,7 +408,7 @@ We :ref:`showed earlier <monitoring_sluggish_shewhart_chart>` that the Shewhart 
 
 .. TODO: should add Shewhart chart to this to prove its sluggishness
 
-.. image:: ../figures/monitoring/explain-CUSUM.png
+.. figure:: ../figures/monitoring/explain-CUSUM.png
 	:alt:	../figures/monitoring/explain-CUSUM.R
 	:width: 750px
 	:align: center
