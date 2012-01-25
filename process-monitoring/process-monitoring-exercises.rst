@@ -11,9 +11,9 @@ Exercises
 .. answer::
 	:fullinclude: no 
 
-	This question is likely to generate a wide range of answers. No surprise, since there are strong feelings on this point in the `quality control literature <http://filebox.vt.edu/users/bwoodall/2000%20JQT%20Controversies%20and%20Contradictions.pdf>`_ as well. The confusion stems from the fact that if you are in phase I, then no, a monitoring chart is not a confidence interval, but in phase II, then you can argue that confidence intervals have many similarities to monitoring charts.
+	This question is likely to generate a wide range of answers. No surprise, since there are strong feelings on this point in the `quality control literature <http://filebox.vt.edu/users/bwoodall/2000%20JQT%20Controversies%20and%20Contradictions.pdf>`_ as well. The confusion stems from the fact that if you are in phase 1, then no, a monitoring chart is not a confidence interval, but in phase 2, then you can argue that confidence intervals have many similarities to monitoring charts.
 
-	But, in general, I feel the above statement is incorrect. Even in phase II a monitoring chart is not really like an on-line confidence interval. Mainly because a monitoring chart is intended to check for *system stability*, and to alarm quickly if the system moves away from the assumed distribution (usually a normal distribution). The monitoring limits are calculated to provide the required alarm level (the ARL). A confidence interval, on the other hand, defines the limits within which we expect to find the true population mean with a certain degree of confidence when we use a given sample of data.
+	But, in general, I feel the above statement is incorrect. Even in phase 2 a monitoring chart is not really like an on-line confidence interval. Mainly because a monitoring chart is intended to check for *system stability*, and to alarm quickly if the system moves away from the assumed distribution (usually a normal distribution). The monitoring limits are calculated to provide the required alarm level (the ARL). A confidence interval, on the other hand, defines the limits within which we expect to find the true population mean with a certain degree of confidence when we use a given sample of data.
 
 	The similarity comes from the way the monitoring chart's limits are calculated: by using the concept of a confidence interval. But a monitoring chart's limits can and *should be adjusted* up or down to improve your type I and II error levels, while for a confidence interval, the only way to alter the limits is to take a different sample size, take a new sample of data, and choose a different level of confidence. But doing this, will still only find you bounds within which you expect the population mean to lie. A monitoring chart's bounds are only there to signal when things are not the same any more.
 
@@ -44,9 +44,9 @@ Exercises
     The `boards data <http://datasets.connectmv.com/info/six-point-board-thickness>`_ on the website are from a line which cuts spruce, pine and fir (SPF) to produce general quality lumber that you could purchase at Rona, Home Depot, etc. The price that a saw mill receives for its lumber is strongly dependent on how accurate the cut is made. Use the data for the 2 by 6 boards (each row is one board) and develop a monitoring system using these steps.
 
     	a) Plot all the data. 
-    	b) Now assume that boards 1 to 500 are the phase I data; identify any boards in this subset that appear to be unusual (where the board thickness is not consistent with most of the other operation)
-    	c) Remove those unusual boards from the phase I data. Calculate the Shewhart monitoring limits and show the phase I data with these limits. Note: choose a subgroup size of 7 boards.
-    	d) Test the Shewhart chart on boards 501 to 2000, the phase II data. Show the plot and calculate the type I error rate (:math:`\alpha`) from the phase II data; assuming, of course, that all the phase II data are from in-control operation.
+    	b) Now assume that boards 1 to 500 are the phase 1 data; identify any boards in this subset that appear to be unusual (where the board thickness is not consistent with most of the other operation)
+    	c) Remove those unusual boards from the phase 1 data. Calculate the Shewhart monitoring limits and show the phase 1 data with these limits. Note: choose a subgroup size of 7 boards.
+    	d) Test the Shewhart chart on boards 501 to 2000, the phase 2 data. Show the plot and calculate the type I error rate (:math:`\alpha`) from the phase 2 data; assuming, of course, that all the phase 2 data are from in-control operation.
     	e) Calculate the ARL and look at the chart to see if the number looks about right. Use the time information in the raw data and your ARL value to calculate how many minutes between a false alarm. Will the operators be happy with this?
     	f) Describe how you might calculate the consumer's risk (:math:`\beta`).
     	g) How would you monitor if the saws are slowly going out of alignment? 
@@ -61,7 +61,7 @@ Exercises
 		.. image:: ../figures/monitoring/boards-monitoring-raw-data.png
 			:width: 750px
 			:align: center
-	#.	A plot of just the phase I data shows no particular outliers. Most people found a few outliers, that's OK - remember it is a subjective test, and if this were a process you were responsible for, then you would know more clearly what an outlier was. For me though, I didn't think any of these points were particularly unusual.
+	#.	A plot of just the phase 1 data shows no particular outliers. Most people found a few outliers, that's OK - remember it is a subjective test, and if this were a process you were responsible for, then you would know more clearly what an outlier was. For me though, I didn't think any of these points were particularly unusual.
 
 		.. image:: ../figures/monitoring/boards-monitoring-find-outliers-phase1.png
 			:width: 750px
@@ -73,7 +73,7 @@ Exercises
 		-	Target = 1676
 		-	LCL	= 1652
 	
-		When plotting these limits on the phase I data, there was only one subgroup that was found outside the limits (the first subgroup). This subgroup is removed and the limits recalculated. (For this case there was only one, very moderate, subgroup outside the limits - the new limits are basically the same). The new limits
+		When plotting these limits on the phase 1 data, there was only one subgroup that was found outside the limits (the first subgroup). This subgroup is removed and the limits recalculated. (For this case there was only one, very moderate, subgroup outside the limits - the new limits are basically the same). The new limits
 	
 		-	UCL = 1700
 		-	Target = 1676
@@ -85,17 +85,17 @@ Exercises
 			:width: 750px
 			:align: center
 	
-	#.	Using these parameters on the phase II data generates the following plot:
+	#.	Using these parameters on the phase 2 data generates the following plot:
 
 		.. image:: ../figures/monitoring/boards-monitoring-Shewhart-phase2.png
 			:width: 750px
 			:align: center
 		
-		Assuming the subgroups in phase II are all in control, the :math:`\alpha` value is sum of the points outside the limits, divided by the total number of subgroups in phase II = 9/214 = 4.2%. This is much greater than the theoretically expected :math:`\alpha` of 0.27%.
+		Assuming the subgroups in phase 2 are all in control, the :math:`\alpha` value is sum of the points outside the limits, divided by the total number of subgroups in phase 2 = 9/214 = 4.2%. This is much greater than the theoretically expected :math:`\alpha` of 0.27%.
 	
-		Notice though there is a group of points all on one side of the target line. According to the Western Electric rules, a group of more than 8 points on one side of the target line is highly improbable and an alarm should be raised. This indicates that these phase II testing data are likely not from in-control operation.
+		Notice though there is a group of points all on one side of the target line. According to the Western Electric rules, a group of more than 8 points on one side of the target line is highly improbable and an alarm should be raised. This indicates that these phase 2 testing data are likely not from in-control operation.
 
-	#.	The ARL = :math:`1/\alpha = 1/0.042` = 23.8; i.e. 1 subgroup in every 24 will lie outside the control limits, even if that subgroup is from in-control operation. That number looks about right from the above phase II chart, although, most of the outliers seem to occur in the last half of the chart (see answer to part 4). The data set comes from about 5 hours and 15 minutes (315 minutes) of operation; during this time there were 286 subgroups that would have been shown on a real Shewhart chart. With an ARL of 24 subgroups, there would be about 12 (286/24) false alarms over these 315 minutes. In other words a false alarm about once every 26 minutes. This is much too high for practical use. Either the limits must be made wider, or this data really is not from in-control operation.
+	#.	The ARL = :math:`1/\alpha = 1/0.042` = 23.8; i.e. 1 subgroup in every 24 will lie outside the control limits, even if that subgroup is from in-control operation. That number looks about right from the above phase 2 chart, although, most of the outliers seem to occur in the last half of the chart (see answer to part 4). The data set comes from about 5 hours and 15 minutes (315 minutes) of operation; during this time there were 286 subgroups that would have been shown on a real Shewhart chart. With an ARL of 24 subgroups, there would be about 12 (286/24) false alarms over these 315 minutes. In other words a false alarm about once every 26 minutes. This is much too high for practical use. Either the limits must be made wider, or this data really is not from in-control operation.
 
 		
 	#.	To calculate the consumer's risk (:math:`\beta`) we require a period of data where we know the blades have shifted, so that the board thickness has been increased or decreased to a new level (mean operating point). Using that out of control, or unstable data, we calculate Shewhart subgroups as usual, and count the number of data points falling within the current LCL and UCL. A count of those in control subgroups divided by the total number of these out of control subgroups would be an estimate of :math:`\beta`.
@@ -159,9 +159,9 @@ Exercises
 
 	#.	At what point in time are you able to detect the problem, using this chart?
 
-	#.	Construct a Shewhart chart, choosing appropriate data for phase I, and calculate the Shewhart limits. Then use the entire dataset as if it were phase II data.
+	#.	Construct a Shewhart chart, choosing appropriate data for phase 1, and calculate the Shewhart limits. Then use the entire dataset as if it were phase 2 data.
 
-		*	Show this phase II Shewhart chart.
+		*	Show this phase 2 Shewhart chart.
 		*	Compare the Shewhart chart's performance to the chart in part 3 of this question.
 
 .. answer::
@@ -243,9 +243,9 @@ Exercises
 	
 .. question::
 
-	You need to construct a Shewhart chart. You go to your company's database and extract data from 10 periods of time lasting 6 hours each. Each time period is taken approximately 1 month apart so that you get a representative data set that covers roughly 1 year of process operation. You choose these time periods so that you are confident each one was from in control operation. Putting these 10 periods of data together, you get one long vector that now represents your phase I data.
+	You need to construct a Shewhart chart. You go to your company's database and extract data from 10 periods of time lasting 6 hours each. Each time period is taken approximately 1 month apart so that you get a representative data set that covers roughly 1 year of process operation. You choose these time periods so that you are confident each one was from in control operation. Putting these 10 periods of data together, you get one long vector that now represents your phase 1 data.
 
-		-	There are 8900 samples of data in this phase I data vector.
+		-	There are 8900 samples of data in this phase 1 data vector.
 		-	You form subgroups: there are 4 samples per subgroup and 2225 subgroups.
 		-	You calculate the mean within each subgroup (i.e. 2225 means). The mean of those 2225 means is 714.
 		-	The standard deviation within each subgroup is calculated; the mean of those 2225 standard deviations is 98.
@@ -359,7 +359,7 @@ Exercises
 	
 	#.	The notes show that Cp values require us to assume that (a) the process values follow a normal distribution, the process was centered when the data were collected, and (c) that the process was stable (use a monitoring chart to verify this last assumption).
 	#.	The range from the lower to the upper specification limit is 0.8 mm, which spans 6 standard deviations. Given the Cp value of 1.7, the process standard deviation must have been :math:`\sigma = \frac{0.8}{1.7 \times 6} = \mathrm{0.0784}` mm.
-	#.	This time we have the process standard deviation, so there is no need to estimate it from historical phase I data (remember the assumption that Cp and Cpk value are calculated from stable process operation?). The Shewhart control limits would be: :math:`\overline{\overline{x}} \pm 3 \times \frac{\sigma}{\sqrt{n}} = 2 \pm 3 \times 0.0784 / 2`. The LCL = 1.88 mm and the UCL = 2.12 mm.
+	#.	This time we have the process standard deviation, so there is no need to estimate it from historical phase 1 data (remember the assumption that Cp and Cpk value are calculated from stable process operation?). The Shewhart control limits would be: :math:`\overline{\overline{x}} \pm 3 \times \frac{\sigma}{\sqrt{n}} = 2 \pm 3 \times 0.0784 / 2`. The LCL = 1.88 mm and the UCL = 2.12 mm.
 	#.	An illustration is shown here with the USL, LSL, LCL and UCL, and target values. This question merely required you to show the LCL and UCL within the LSL and USL, on any normal distribution curve. However, for illustration, I have added to the diagram the distribution for the Shewhart chart (thicker line) and distribution for the raw process data (thinner line). 
 
 	.. image:: ../figures/monitoring/plastic-sheet-control-specification-limits.png
@@ -413,15 +413,15 @@ Exercises
 
 .. question::
 
-	The Kappa number is a widely used measurement in the pulp and paper industry. It can be measured on-line, and indicates the severity of chemical treatment that must be applied to a wood pulp to obtain a given level of whiteness (i.e. the pulp's bleachability). Data on the `website <http://datasets.connectmv.com/info/kappa-number>`_ contain the Kappa values from a pulp mill. Use the first 2000 data points to construct a Shewhart monitoring chart for the Kappa number. You may use any subgroup size you like. Then use the remaining data as your phase II (testing) data. Does the chart perform as expected?
+	The Kappa number is a widely used measurement in the pulp and paper industry. It can be measured on-line, and indicates the severity of chemical treatment that must be applied to a wood pulp to obtain a given level of whiteness (i.e. the pulp's bleachability). Data on the `website <http://datasets.connectmv.com/info/kappa-number>`_ contain the Kappa values from a pulp mill. Use the first 2000 data points to construct a Shewhart monitoring chart for the Kappa number. You may use any subgroup size you like. Then use the remaining data as your phase 2 (testing) data. Does the chart perform as expected?
 
 .. answer::
 	:fullinclude: no 
-	:short: The intention of this question is for you to experience the process of iteratively calculating limits from phase I data and applying them to phase 2 data.	
+	:short: The intention of this question is for you to experience the process of iteratively calculating limits from phase 1 data and applying them to phase 2 data.	
 
-	The intention of this question is for you to experience the process of iteratively calculating limits from phase I data and applying them to phase 2 data.
+	The intention of this question is for you to experience the process of iteratively calculating limits from phase 1 data and applying them to phase 2 data.
 
-	The raw data for the entire data set looks as follows. There are already regions in the phase II data that we expect to not be from normal operation (around 2500 and 2900)
+	The raw data for the entire data set looks as follows. There are already regions in the phase 2 data that we expect to not be from normal operation (around 2500 and 2900)
 
 	.. image:: ../figures/monitoring/Kappa-raw-data.png
 		:align: center
@@ -429,7 +429,7 @@ Exercises
 	
 	I used subgroups of size 6 for the figures in this answer, however, the code below is very general, and you can regenerate the plots if you chose a different subgroup size. Just change one of the lines near the top. 
 
-	The upper and lower control limits are calculated, and with a subgroup size of :math:`n=6`, there are 333 subgroups and the limits are: UCL = 18.26, target = 21.73, and UCL = 25.21. This is illustrated on the phase I data here:
+	The upper and lower control limits are calculated, and with a subgroup size of :math:`n=6`, there are 333 subgroups and the limits are: UCL = 18.26, target = 21.73, and UCL = 25.21. This is illustrated on the phase 1 data here:
 
 	.. image:: ../figures/monitoring/Kappa-phaseI-first-round.png
 		:align: center
@@ -441,13 +441,13 @@ Exercises
 		:align: center
 		:width: 750px
 
-	Now apply these control limits to the phase II data. The plot is shown below:
+	Now apply these control limits to the phase 2 data. The plot is shown below:
 
 	.. image:: ../figures/monitoring/Kappa-phaseII-testing.png
 		:align: center
 		:width: 750px
 	
-	The limits identify 2 prolonged periods of unusual operation at sequence point 80 and 140. If we apply the Western Electric rules, we see a third unusual region around sequence step 220. A few other alarms are scattered in the phase II data. About 7% of the subgroups lie outside these control limits, so these phase II data are definitely not from in-control operation; which we expected from the raw data plot at the start of this question.
+	The limits identify 2 prolonged periods of unusual operation at sequence point 80 and 140. If we apply the Western Electric rules, we see a third unusual region around sequence step 220. A few other alarms are scattered in the phase 2 data. About 7% of the subgroups lie outside these control limits, so these phase 2 data are definitely not from in-control operation; which we expected from the raw data plot at the start of this question.
 
 	The code for all the calculation steps is provided here:
 
@@ -484,9 +484,9 @@ Exercises
 
 	.. Advanced question
 
-	The carbon dioxide measurement is available from a `gas-fired furnace <http://datasets.connectmv.com/info/gas-furnace>`_. These data are from phase I operation.
+	The carbon dioxide measurement is available from a `gas-fired furnace <http://datasets.connectmv.com/info/gas-furnace>`_. These data are from phase 1 operation.
 
-	#.	Calculate the Shewhart chart upper and lower control limits that you would use during phase II with a subgroup size of :math:`n=6`. 
+	#.	Calculate the Shewhart chart upper and lower control limits that you would use during phase 2 with a subgroup size of :math:`n=6`. 
 	#.	Is this a useful monitoring chart? What is going in this data?
 	#.	How can you fix the problem?
 
@@ -501,7 +501,7 @@ Exercises
 		:width: 750px
 		:align: center
 
-	#.	Assuming that the CO\ :sub:`2` data set is from phase I operation, the control limits were calculated as follows:
+	#.	Assuming that the CO\ :sub:`2` data set is from phase 1 operation, the control limits were calculated as follows:
 
 		*	Assume subgroups are independent
 		*	:math:`\bar{\bar{x}} =\frac{1}{K}\sum\limits_{k=1}^K\bar{x}_k= 53.5`\
@@ -530,12 +530,12 @@ Exercises
 
 .. question::
 
-	The percentage yield from a batch reactor, and the purity of the feedstock are available as the `Batch yield and purity <http://datasets.connectmv.com/info/batch-yield-and-purity>`_ data set. Assume these data are from phase I operation and calculate the Shewhart chart upper and lower control limits that you would use during phase II. Use a subgroup size of :math:`n=3`.
+	The percentage yield from a batch reactor, and the purity of the feedstock are available as the `Batch yield and purity <http://datasets.connectmv.com/info/batch-yield-and-purity>`_ data set. Assume these data are from phase 1 operation and calculate the Shewhart chart upper and lower control limits that you would use during phase 2. Use a subgroup size of :math:`n=3`.
 
-	#.	What is phase I?
-	#.	What is phase II?
+	#.	What is phase 1?
+	#.	What is phase 2?
 	#.	Show your calculations for the upper and lower control limits for the Shewhart chart on the *yield value*.
-	#.	Show a plot of the Shewhart chart on these phase I data.
+	#.	Show a plot of the Shewhart chart on these phase 1 data.
 
 .. answer:: 
 
@@ -545,7 +545,7 @@ Exercises
 
 	#.	Phase 2 is the period during which new, unseen data is collected by process monitoring in real-time. This data can be compared with the limits calculated from the "in control" data.
 
-	#.	Assuming the dataset was derived from phase I operation, the batch yield data was grouped into subgroups of size 3. However, since the total number of data points (N=241) is not a multiple of three, the data set was truncated to the closest multiple of 3, i.e. :math:`N_{new} = 240`, by removing the last data point. Subsequently, the mean and standard deviation were calculated for each of the 80 subgroups. From this data, the lower and upper control limits were calculated as follows:
+	#.	Assuming the dataset was derived from phase 1 operation, the batch yield data was grouped into subgroups of size 3. However, since the total number of data points (N=241) is not a multiple of three, the data set was truncated to the closest multiple of 3, i.e. :math:`N_{new} = 240`, by removing the last data point. Subsequently, the mean and standard deviation were calculated for each of the 80 subgroups. From this data, the lower and upper control limits were calculated as follows:
 
 		.. math::	
 
@@ -556,7 +556,7 @@ Exercises
 			\text{using}\,\,a_n		&=  0.886\qquad \text{for a subgroup size of 3}\\
 			\text{and}\,\,\overline{\overline{x}} &= 75.3
 
-		Noticing that the mean for subgroup 42, :math:`\overline{x}_{42}=63.3`, falls below this LCL, the control limits were recalculated excluding this subgroup from phase I data (see R-code). Following this adjustment, the new control limits were calculated to be:
+		Noticing that the mean for subgroup 42, :math:`\overline{x}_{42}=63.3`, falls below this LCL, the control limits were recalculated excluding this subgroup from phase 1 data (see R-code). Following this adjustment, the new control limits were calculated to be:
 
 		*	LCL = 65.0
 		*	UCL = 85.8

@@ -531,6 +531,8 @@ Normal distribution
 
 Before introducing the normal distribution, we first look at two important concepts: the Central limit theorem, and the concept of independence.
 
+.. _central_limit_theorem:
+
 Central limit theorem 
 ~~~~~~~~~~~~~~~~~~~~~
 

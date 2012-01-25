@@ -131,6 +131,8 @@ The key points are:
 
 Here is an example that shows these properties.
 
+.. TODO: show a time-series on the x-axis instead
+
 .. image:: ../figures/monitoring/demo-of-monitoring-chart.png
 	:width: 750px
 	:scale: 100
@@ -144,11 +146,15 @@ Monitoring charts are developed in 2 phases. You will see the terminology of:
 
 .. index:: phase 1 (monitoring charts)
 
-*	**Phase I**: building and testing the chart from historical data that you have collected. This phase is performed off-line, it is very iterative, and you will spend most of your time here. The primary purpose of this phase is to ensure that your chart works as expected based on previous process data.
+*	**Phase 1**: building and testing the chart from historical data that you have collected. This phase is performed off-line, it is very iterative, and you will spend most of your time here. The primary purpose of this phase is to 
+
+	-	find portions of the data that are from stable operation
+	-	use these stable portions to calculate suitable control chart limits
+	-	ensure that your chart works as expected based on historical data
 
 .. index:: phase 2 (monitoring charts)
 
-*	**Phase II**: We use the monitoring chart on new, fresh data from the process. This phase is implemented with computer hardware and software for real-time display of the charts.
+*	**Phase 2**: We use the monitoring chart on new, fresh data from the process. This phase is implemented with computer hardware and software for real-time display of the charts.
 
 What should we monitor?
 ========================
@@ -177,9 +183,9 @@ In-control vs out-of-control
 
 Every book on quality control gives a slightly different viewpoint, or uses different terminology for these terms.
 
-In this book we will take "in-control" to mean that the behaviour of the process is stable over time. Note though, that in-control *does not* mean the variable of interest meets the specifications required by the customer, or set by the plant personnel. All that "in control" means is that there are no **special causes** in the data. A :index:`special cause`, or an :index:`assignable cause` is an event that occurs to move the process, or destabilize it. Process monitoring charts aim to detect these events. The opposite of "special cause" operation is :index:`common cause` operation.
+In this book we will take "in-control" to mean that the behaviour of the process is stable over time. Note though, that in-control *does not* mean the variable of interest meets the specifications required by the customer, or set by the plant personnel. All that "in control" means is that there are no **special causes** in the data, i.e. the process is stable. A :index:`special cause`, or an :index:`assignable cause` is an event that occurs to move the process, or destabilize it. Process monitoring charts aim to detect such events. The opposite of "special cause" operation is :index:`common cause` operation.
 
-.. note:: Our objective: quickly detect abnormal variation, and fix it by finding the root cause. In this section we look at the "detection" problem. Diagnosis and process adjustment are two separate steps that follow.
+.. note:: Our objective: quickly detect abnormal variation, and fix it by finding the root cause. In this section we look at the "detection" problem. Diagnosis and process adjustment are two separate steps that follow detection.
 
 .. _monitoring_shewhart_chart:
 
@@ -188,14 +194,14 @@ Shewhart chart
 
 .. For the mean: p174 to p186 of Barnes. KGD: what does "Barnes" refer to?
 
-A :index:`Shewhart chart <pair: Shewhart chart; process monitoring>`, named after Walter Shewhart from Bell Telephone and Western Electric, is to monitor that a process variable remains on target and within given upper and lower limits. It is a monitoring chart for *location*. It answers the question whether the variable's :index:`location <single: location (process monitoring)>` is stable over time.
+A :index:`Shewhart chart <pair: Shewhart chart; process monitoring>`, named after Walter Shewhart from Bell Telephone and Western Electric, monitors that a process variable remains on target and within given upper and lower limits. It is a monitoring chart for *location*. It answers the question whether the variable's :index:`location <single: location (process monitoring)>` is stable over time.
 
 The defining characteristics are: a target, upper and lower control limits (:index:`UCL <single: upper control limit>` and :index:`LCL <single: lower control limit>`). These action limits are defined so that no action is required as long as the variable plotted remains within the limits.
 
 Derivation using theoretical parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Define the variable of interest as :math:`x`, and assume that we have samples of :math:`x` available in sequence order. No assumption is made regarding the distribution of :math:`x`. The average of :math:`n` of these :math:`x`-values is defined as :math:`\overline{x}`, which from the Central limit theorem we know will be more normally distributed with unknown population mean :math:`\mu` and unknown population variance :math:`\sigma^2/n`, where :math:`\mu` and :math:`\sigma` refer to the distribution that samples of :math:`x` came from. The figure below shows the case for :math:`n=5`.
+Define the variable of interest as :math:`x`, and assume that we have samples of :math:`x` available in sequence order. No assumption is made regarding the distribution of :math:`x`. The average of :math:`n` of these :math:`x`-values is defined as :math:`\overline{x}`, which from the :ref:`Central limit theorem <central_limit_theorem>` we know will be more normally distributed with unknown population mean :math:`\mu` and unknown population variance :math:`\sigma^2/n`, where :math:`\mu` and :math:`\sigma` refer to the distribution that samples of :math:`x` came from. The figure below shows the case for :math:`n=5`.
 
 .. image:: ../figures/monitoring/explain-Shewhart-data-source.png
 	:width: 750px
@@ -221,9 +227,9 @@ Assuming we know :math:`\sigma_{\overline{X}}`, which we usually do not in pract
 
 The reason for :math:`c_n = \pm 3` is that the total area between that lower and upper bound spans 99.73% of the area (in R: ``pnorm(+3) - pnorm(-3)`` gives 0.9973). So it is highly unlikely, a chance of 1 in 370 that a data point, :math:`\overline{x}`, calculated from a subgroup of :math:`n` raw :math:`x`-values, will lie outside these bounds.
 
-The following illustration should help connect the concept of the raw data's distribution to the distribution of the subgroups:
+The following illustration should help connect the concept of the raw data's distribution (happens to have mean of 6 and standard deviation of 2) to the distribution of the subgroups (thicker line):
 
-.. figure:: ../figures/monitoring/explain-shewhart.png
+.. image:: ../figures/monitoring/explain-shewhart.png
 	:alt:	../figures/monitoring/explain-shewhart.R
 	:scale: 70
 	:width: 750px
@@ -236,9 +242,9 @@ The derivation in equation :eq:`shewhart-theoretical` requires knowing the popul
 
 .. index:: ! phase 1 (monitoring charts)
 
-Let's take a look at phase I, the step where we are building the monitoring chart's limits from historical data. Create a new variable |xdb| :math:`= \frac{1}{K} \displaystyle \sum_{k=1}^{K}{ \overline{x}_k}`, where :math:`K` is the number of :math:`\overline{x}` samples we have available to build the monitoring chart, called the :index:`phase 1 <single: phase 1 (monitoring charts)>` data. Alternatively, just set |xdb| to the desired target value for :math:`x`. Note that |xdb| is sometimes called the  *grand mean*.
+Let's take a look at phase 1, the step where we are building the monitoring chart's limits from historical data. Create a new variable |xdb| :math:`= \displaystyle \frac{1}{K} \sum_{k=1}^{K}{ \overline{x}_k}`, where :math:`K` is the number of :math:`\overline{x}` samples we have available to build the monitoring chart, called the :index:`phase 1 <single: phase 1 (monitoring charts)>` data. Note that |xdb| is sometimes called the *grand mean*. Alternatively, just set |xdb| to the desired target value for :math:`x` or use a long portion of stable data to estimate a suitable target
 
-The next hurdle is :math:`\sigma`. Define :math:`s_k` to be the standard deviation of the :math:`n` values in each subgroup. We do not show it here, but for a subgroup of :math:`n` samples, an unbiased estimator of :math:`\sigma` is given by :math:`\displaystyle \frac{\overline{S}}{a_n}`, where :math:`\overline{S} =  \displaystyle \frac{1}{K} \displaystyle \sum_{k=1}^{K}{s_k}` is simply the average standard deviation calculated from :math:`K` subgroups. Values for :math:`a_n` are looked up from a table, or using the formula below, and depend on the number of samples we use within each subgroup.
+The next hurdle is :math:`\sigma`. Define :math:`s_k` to be the standard deviation of the :math:`n` values in the :math:`k^\text{th}` subgroup. We do not show it here, but for a subgroup of :math:`n` samples, an unbiased estimator of :math:`\sigma` is given by :math:`\displaystyle \frac{\overline{S}}{a_n}`, where :math:`\overline{S} =  \displaystyle \frac{1}{K} \displaystyle \sum_{k=1}^{K}{s_k}` is simply the average standard deviation calculated from :math:`K` subgroups. Values for :math:`a_n` are looked up from a table, or using the formula below, and depend on the number of samples we use within each subgroup.
 
 ===========  ====== ====== ====== ====== ====== ====== ====== ====== ======
 :math:`n`    2      3      4      5      6      7      8      10     15
@@ -252,64 +258,69 @@ More generally, using the :math:`\Gamma(...)` function, for example ``gamma(...)
 
 .. math::
 
-	a_n = \frac{\sqrt{2}\,\,\Gamma(n/2)}{\sqrt{n-1}\,\,\Gamma((n-1)/2)}
+	a_n = \frac{\sqrt{2}\,\,\Gamma(n/2)}{\sqrt{n-1}\,\,\Gamma(n/2 - 0.5)}
 
-Now that we have an unbiased estimator for the standard deviation from these :math:`K` subgroups, we can write down suitable lower and upper control limits for the Shewhart chart:
+Now that we have an unbiased estimator for the standard deviation from these :math:`K` subgroups, we can write down suitable :index:`lower <single: lower control limit>` and :index:`upper control limits <single: upper control limit>` for the Shewhart chart:
 
 .. math::
 	:label: shewhart-limits
 	
 	\begin{array}{rcccl} 
-		 \text{LCL} = \overline{\overline{x}} - 3 \cdot \frac{\overline{S}}{a_n\sqrt{n}} &&  &&  \text{UCL} = \overline{\overline{x}} + 3 \cdot \frac{\overline{S}}{a_n\sqrt{n}} 
+		 \text{LCL} = \overline{\overline{x}} - 3 \cdot \frac{\displaystyle \overline{S}}{\displaystyle a_n\sqrt{n}} &&  &&  \text{UCL} = \overline{\overline{x}} + 3 \cdot \frac{\displaystyle \overline{S}}{\displaystyle a_n\sqrt{n}} 
 	\end{array}
+	
+It is highly unlikely that the data chosen to calculate the phase 1 limits actually lie within these calculated LCL and UCLs. Those portions of data not from stable operation, which are outside the limits, should not have been used to calculate these limits. Those unstable data bias the limits to be wider than required.
+
+Exclude these :index:`outlier` data points and recompute the LCL and UCLs. Usually this process is repeated 2 to 3 times. It is wise to investigate the data being excluded to ensure they truly are from unstable operation. If they are from stable operation, then they should not be excluded. These data may be :ref:`violating the assumption of independence <monitoring_mistakes_to_avoid>`. One may consider using wider limits, or use an :ref:`EWMA control chart <monitoring_EWMA>`. 
 
 .. rubric:: Example
 
-Bales of rubber are being produced, with every 10th bale automatically removed from the line for testing. Five measurements of colour are made on that bale, using calibrated digital cameras under standard lighting conditions. The rubber compound is used for medical devices, so it needs to have the correct whiteness (colour). The average of the 5 colour measurements is to be plotted on a Shewhart chart. So we have a new data point appearing on the monitoring chart after every 10th bale. 
+Bales of rubber are being produced, with every 10th bale automatically removed from the line for testing. Measurements of colour intensity are made on 5 sides of that bale, using calibrated digital cameras under controlled lighting conditions. The rubber compound is used for medical devices, so it needs to have the correct whiteness (colour). The average of the 5 colour measurements is to be plotted on a Shewhart chart. So we have a new data point appearing on the monitoring chart after every 10th bale. 
 
-In the above example the raw data are the bale's colour. There are :math:`n = 5` values in each subgroup. Collect say :math:`K=20` samples of normal operating data, these are bales that are considered to be from stable operation. No special process events occurred while collecting these data.
+In the above example the raw data are the bale's colour. There are :math:`n = 5` values in each subgroup. Collect say :math:`K=20` samples of 
+good production bales considered to be from stable operation. No special process events occurred while these bales were manufactured.
 
 The data below represent the average of the :math:`n=5` samples from each bale, there are :math:`K=20` subgroups.
 
 .. math::
  	\overline{x} = [245, 239, 239, 241, 241, 241, 238, 238, 236, 248, 233, 236, 246, 253, 227, 231, 237, 228, 239, 240]
 
-The overall average is :math:`\overline{\overline{x}} = 238.8` and :math:`\overline{S} = 9.28`. Calculate the lower and upper control limits for this Shewhart chart. Were there any points in the phase I data (training phase) that exceeded these limits?
+The overall average is :math:`\overline{\overline{x}} = 238.8` and :math:`\overline{S} = 9.28`. Calculate the lower and upper control limits for this Shewhart chart. Were there any points in the phase 1 data (training phase) that exceeded these limits?
 
-	-	LCL = :math:`238.8 - 3 \cdot \displaystyle \frac{9.28}{(0.94)(\sqrt{5})}` = 225.6
-	-	UCL = :math:`238.8 + 3 \cdot \displaystyle \frac{9.28}{(0.94)(\sqrt{5})}` = 252.0
+	-	LCL = :math:`\overline{\overline{x}} - 3 \cdot \frac{\displaystyle \overline{S}}{\displaystyle a_n\sqrt{n}} = 238.8 - 3 \cdot \displaystyle \frac{9.28}{(0.94)(\sqrt{5})} = 225.6` 
+	-	UCL = :math:`\overline{\overline{x}} + 3 \cdot \frac{\displaystyle \overline{S}}{\displaystyle a_n\sqrt{n}} = 238.8 + 3 \cdot \displaystyle \frac{9.28}{(0.94)(\sqrt{5})} = 252.0` 
 	-	The group with :math:`\overline{x}` = 253 exceeds the calculated upper control limit. 
-	-	That point should be excluded and the limits recomputed: the new :math:`\overline{\overline{x}} = 238.0` and :math:`\overline{S} = 9.68` and the new LCL = 224 and UCL = 252
+	-	That :math:`\overline{x}` point should be excluded and the limits recomputed. You can show the new :math:`\overline{\overline{x}} = 238.0` and :math:`\overline{S} = 9.68` and the new LCL = 224 and UCL = 252.
 	
 .. todo: show chart in class
 		
-.. todo: in the future, describe more clearly the difference between phase I and phase II. Students were asking a lot of questions around this.
+.. todo: in the future, describe more clearly the difference between phase 1 and phase 2. Students were asking a lot of questions around this.
 
-Assessing the chart's performance
+Judging the chart's performance
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There are 2 ways to :index:`assess performance of any monitoring <single: monitoring chart assessment>`, in particular here we discuss the Shewhart chart:
+There are 2 ways to :index:`judge performance of any monitoring <single: monitoring chart assessment>`, in particular here we discuss the Shewhart chart:
 
 .. rubric:: 1. Error probability. 
 
 We define two types of errors, Type I and Type II, which are a function of the lower and upper control limits (LCL and UCL).
 
-You make a **type I error** when your sample is typical of normal operation, yet, it falls outside the UCL or LCL limits. We showed in the theoretical derivation that the area covered by the upper and lower control limits is 99.73%. The probability of making a type I error, usually denoted as :math:`\alpha` is then 100 - 99.73 = 0.27%.
+You make a **type I error** when your sample is typical of normal operation, yet, it falls outside the UCL or LCL limits. We showed in the theoretical derivation that the area covered by the upper and lower control limits is 99.73%. The probability of making a type I error, usually denoted as :math:`\alpha` is then :math:`100 - 99.73 = 0.27\%`.
 
-*Synonyms* for a **type I error**: false alarm, false positive (used mainly for testing of diseases), producer's risk (used for acceptance sampling)
+*Synonyms* for a **type I error**: false alarm, false positive (used mainly for testing of diseases), producer's risk (used for acceptance sampling), false rejection rate, or alpha.
 
 You make a **type II error** when your sample really is abnormal, but falls within the the UCL and LCL limits. This error rate is denoted by :math:`\beta`, and it is a function of the degree of abnormality, which we derive next.
 
-*Synonyms* for a **type II error**: false negative (used mainly for testing of diseases), consumer's risk (used for acceptance sampling)
+*Synonyms* for a **type II error**: false negative (used mainly for testing of diseases), consumer's risk (used for acceptance sampling), false acceptance rate, or beta.
 
 To quantify the probability :math:`\beta`, recall that a Shewhart chart is for monitoring location, so we make an assumption that the new, abnormal sample comes from a distribution which has shifted its location from :math:`\mu` to :math:`\mu + \Delta\sigma` (e.g. :math:`\Delta` can be positive or negative). Now, what is the probability this new sample, which come from the shifted distribution, will fall within the existing LCL and UCL? This figure shows the probability is :math:`\beta = 1 - \text{the shaded area}`.
 
 .. math::
 
-	\alpha &= Pr\left(\overline{x}\,\,\text{is in control, but lies outside the limits}\right)\\
-	\beta &= Pr\left(\overline{x}\,\,\text{is not in control, but lies inside the limits}\right)
+	\alpha &= Pr\left(\overline{x}\,\,\text{is in control, but lies outside the limits}\right) = \text{type I error rate}\\
+	\beta &= Pr\left(\overline{x}\,\,\text{is not in control, but lies inside the limits}\right) = \text{type II error rate}
 
-.. figure:: ../figures/monitoring/show-shift-beta-error.png
+.. image:: ../figures/monitoring/show-shift-beta-error.png
 	:width: 500px
 	:align: center
 	:scale: 90
@@ -326,57 +337,56 @@ To quantify the probability :math:`\beta`, recall that a Shewhart chart is for m
 ==============================  ====== ====== ====== ====== ====== ====== 
 
 ..	
-	.. figure:: ../figures/monitoring/type-II-error-shift.png
+	.. image:: ../figures/monitoring/type-II-error-shift.png
 		:width: 500px
 		:align: center
 		:scale: 90
 
-The table highlights that :math:`\beta` is a function of the amount by which the process shifts = :math:`\Delta`, where :math:`\Delta=1` implies the process has shifted up by :math:`1\sigma`. The table was calculated for :math:`n=4` and used critical limits of :math:`\pm 3 \sigma_{\overline{X}}`.
+The table highlights that :math:`\beta` is a function of the amount by which the process shifts = :math:`\Delta`, where :math:`\Delta=1` implies the process has shifted up by :math:`1\sigma`. The table was calculated for :math:`n=4` and used critical limits of :math:`\pm 3 \sigma_{\overline{X}}`. You can calculate your own values of :math:`\beta` using this line of R code: ``beta <- pnorm(3 - delta*sqrt(n)) - pnorm(-3 - delta*sqrt(n))``
 
-The key point you should note from the table is that a Shewhart chart is *not good* (it is slow) at detecting a change in the location (level) of a variable. This is surprising given the intention of the plot is to monitor the variable's location. Even a moderate shift of :math:`0.75\sigma` units :math:`(\Delta=0.75)` will only be detected around 6.7% of the time (100-93.3%) when :math:`n=4`. We will discuss :ref:`CUSUM charts <monitoring-CUSUM-charts>` and the Western Electric rules, next, as a way to overcome this issue.
+The key point you should note from the table is that a Shewhart chart is *not good* (it is slow) at detecting a change in the location (level) of a variable. This is surprising given the intention of the plot is to monitor the variable's location. Even a moderate shift of :math:`0.75\sigma` units :math:`(\Delta=0.75)` will only be detected around 6.7% of the time (:math:`100-93.3\%`) when :math:`n=4`. We will discuss :ref:`CUSUM charts <monitoring-CUSUM-charts>` and the Western Electric rules, next, as a way to overcome this issue.
 
-It is straightforward to see how the type I, :math:`\alpha`, error rate can be adjusted - simply move the LCL and UCL up and down, as required, to achieve your desired error rates. There is nothing wrong in arbitrarily shifting these limits - :ref:`more on this later <monitoring-adjust-limits>`.
+It is straightforward to see how the type I, :math:`\alpha`, error rate can be adjusted - simply move the LCL and UCL up and down, as required, to achieve your desired error rates. There is nothing wrong in arbitrarily shifting these limits - :ref:`more on this later <monitoring_adjust_limits>` in the section on adjusting limits.
 
-However what happens to the type II error rate as the LCL and UCL bounds are shifted?  Imagine the case where you want to have :math:`\alpha \rightarrow 0`. As you make the UCL higher and higher, the value for :math:`\alpha` drops, but the value for :math:`\beta` will also increase!  **You cannot simultaneously have low type I and type II error**.
+However what happens to the type II error rate as the LCL and UCL bounds are shifted away from the target?  Imagine the case where you want to have :math:`\alpha \rightarrow 0`. As you make the UCL higher and higher, the value for :math:`\alpha` drops, but the value for :math:`\beta` will also increase, since the control limits have become wider!  **You cannot simultaneously have low type I and type II error**.
 
 .. rubric:: 2. Using the average run length (ARL)
 
 The :index:`average run length` (ARL) is defined as the average number of sequential samples we expect before seeing an out-of-bounds, or out-of-control signal. This is given by the inverse of :math:`\alpha`, as ARL = :math:`\frac{1}{\alpha}`. Recall for the theoretical distribution we had :math:`\alpha = 0.0027`, so the ARL = 370. Thus we expect a run of 370 samples before we get an out-of-control signal.
 
-
 Extensions to the basic Shewhart chart
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*	The :index:`Western Electric rules`:  we saw above how the ARL is only decreased by a small amount if a true shift in the process mean occurs, from :math:`\mu` to :math:`\mu + \Delta\sigma`. The **Western Electric rules** are an attempt to more rapidly detect a process shift, by raising an alarm when these *improbable* events occur:
+*	The :index:`Western Electric rules`: we saw above how sluggish the Shewhart chart is in detecting a small shift in the process mean, from :math:`\mu` to :math:`\mu + \Delta\sigma`. The **Western Electric rules** are an attempt to more rapidly detect a process shift, by raising an alarm when these *improbable* events occur:
 
 	#. 2 out of 3 points lie beyond :math:`2\sigma` on the same side of the centre line
 	#. 4 out of 5 points lie beyond :math:`1\sigma` on the same side of the centre line
 	#. 8 successive points lie on the same side of the center line
 	
-	However, an alternative chart, the CUSUM chart is more effective at detecting a shift in the mean. Notice also that the theoretical ARL, :math:`1/\alpha`, is reduced by using these rules in addition to the LCL and UCL.
+	However, an alternative chart, the CUSUM chart is more effective at detecting a shift in the mean. Notice also that the theoretical ARL, :math:`1/\alpha`, is reduced by using these rules in addition to the LCL and UCL bounds.
 
-*	**Adding robustness**: the phase I derivation of a monitoring chart is iterative. If you find a point that violates the LCL and UCL limits, then the approach is to remove that point, and recompute the LCL and UCL values. That is because the LCL and UCL limits would have been biased up or down by these points.
+*	**Adding robustness**: the phase I derivation of a monitoring chart is iterative. If you find a point that violates the LCL and UCL limits, then the approach is to remove that point, and recompute the LCL and UCL values. That is because the LCL and UCL limits would have been biased up or down by these unusual points :math:`\overline{x}_k` points.
 
 	This iterative approach can be tiresome with data that has spikes, missing values, outliers, and other problems typical of data pulled from a process database (:index:`historian <single: data historian>`. Robust monitoring charts are procedures to calculate the limits so the LCL and UCL are resistant to the effect of outliers. For example, a robust procedure might use the medians and MAD instead of the mean and standard deviation. An examination of various robust procedures, especially that of the interquartile range, is given in the paper by D. M. Rocke, `Robust Control Charts <http://dx.doi.org/10.2307/1268815>`_, *Technometrics*, **31** (2), p 173 - 184, 1989.
 
-	*Note*: do not use robust methods to calculate the values plotted on the charts, only use robust methods to calculate the chart limits!
+	*Note*: do not use robust methods to calculate the values plotted on the charts during phase 2, only use robust methods to calculate the chart limits in phase 1!
 	
 *	**Warning limits**: it is common to see warning limits on a monitoring chart at :math:`\pm 2 \sigma`, while the :math:`\pm 3\sigma` limits are called the action limits. Real-time computer systems usually use a colour scheme to distinguish between the warning state and the action state. For example, the chart background changes between green, orange or red depending on the state of the current observation plotted.
 
-.. _monitoring-adjust-limits:
+.. _monitoring_adjust_limits:
 
 *	**Adjusting the limits**: The :math:`\pm 3\sigma` limits are not set in stone. Depending on the degree to which the source data obey the assumptions, and the frequency with which spikes and outliers contaminate your data, you may need to adjust your limits, usually wider, to avoid frequent false alarms. Nothing makes a monitoring chart more useless to operators than frequent false alarms ("`crying wolf <http://en.wikipedia.org/wiki/The_Boy_Who_Cried_Wolf>`_").
 
 *	**Changing the subgroup size**: It is perhaps a counterintuitive result that increasing the subgroup size, :math:`n`, leads to a more sensitive detection system for shifts in the mean, because the control limits are pulled in tighter. However, the larger :math:`n` also means that it will take longer to see the detection signal. So there is a trade-off between subgroup size and the run length (time to detection of a signal).
 
-.. _monitoring-mistakes-to-avoid:
+.. _monitoring_mistakes_to_avoid:
 
 Mistakes to avoid
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Imagine you are monitoring an aspect of the final product's quality, e.g. viscosity, and you have a product specification that requires that viscosity to be within, say 40 to 60 cP. It is a mistake to place those **specification limits** on the monitoring chart. It is also a mistake to use the required specification limits instead of the LCL and UCL. The monitoring chart is to detect abnormal variation in the process, not to inspect for quality specifications. You can certainly have another chart for that, but the process monitoring chart's limits are intended to monitor process stability, and these Shewhart limits are calculated differently.
 
-Shewhart chart limits were calculated with the assumption of **independent subgroups** (e.g. subgroup :math:`i` has no effect on subgroup :math:`i+1`). For a process with mild autocorrelation, the act of creating subgroups, with :math:`n` samples in each group, removes most, if not all, of the relationship between subgroups. However processes with heavy autocorrelation (slow moving processes sampled at a high rate, for example), will have LCL and UCL calculated from equation :eq:`shewhart-limits` that will raise false alarms too frequently. In these cases you can widen the limits, or remove the autocorrelation from the signal. More on this in the section on :ref:`exponentially weighted moving average (EWMA) charts <monitoring-EWMA>`.
+Shewhart chart limits were calculated with the assumption of **independent subgroups** (e.g. subgroup :math:`i` has no effect on subgroup :math:`i+1`). For a process with mild autocorrelation, the act of creating subgroups, with :math:`n` samples in each group, removes most, if not all, of the relationship between subgroups. However processes with heavy autocorrelation (slow moving processes sampled at a high rate, for example), will have LCL and UCL calculated from equation :eq:`shewhart-limits` that will raise false alarms too frequently. In these cases you can widen the limits, or remove the autocorrelation from the signal. More on this in the section on :ref:`exponentially weighted moving average (EWMA) charts <monitoring_EWMA>`.
 
 Using Shewhart charts on two or more **highly correlated quality variables**, usually on your final product measurement, can increase your type II (consumer's risk) dramatically. We will come back to this very important topic in the section on :ref:`latent variable models <SECTION_latent_variable_modelling>`.
 
@@ -396,7 +406,7 @@ The Shewhart chart is not too sensitive to detecting shifts in the mean. Dependi
 	\\
 	\text{In general}\qquad S_t &= S_{t-1} + (x_t - T) 
 	
-.. figure:: ../figures/monitoring/explain-CUSUM.png
+.. image:: ../figures/monitoring/explain-CUSUM.png
 	:alt:	../figures/monitoring/explain-CUSUM.R
 	:width: 750px
 	:align: center
@@ -417,7 +427,7 @@ Once the process has been investigated the CUSUM value, :math:`S_t` is often res
 
 .. TODO(KGD): MUCH LESS FOCUS on the V-mask, more on how it is currently done
 
-.. _monitoring-EWMA:
+.. _monitoring_EWMA:
 
 EWMA charts
 ==============
@@ -430,7 +440,7 @@ The two previous charts highlight the 2 extremes of monitoring charts. On the on
 
 As an introduction to the exponentially weighted moving average (EWMA) chart, consider first a :index:`moving average` (MA) chart, which is used just like a Shewhart chart, except the samples that make up the subgroup are calculated using a moving window of width :math:`n`.
 
-.. figure:: ../figures/monitoring/explain-moving-average-data-source.png
+.. image:: ../figures/monitoring/explain-moving-average-data-source.png
 	:width: 750px
 	:align: center
 	:scale: 70
@@ -443,7 +453,7 @@ The MA chart plots values of :math:`x_t`, calculated from groups of size :math:`
 
 The EWMA is similar to the MA, but with different weights; heavier weights for more recent observations, tailing off exponentially to very small weights further back. Let's take a look at a derivation. 
 
-.. figure:: ../figures/monitoring/explain-EWMA.png
+.. image:: ../figures/monitoring/explain-EWMA.png
 	:width: 750px
 	:align: center
 	:scale: 95
@@ -568,7 +578,7 @@ Interpretation of the PCR:
 
 The PCR is often called the :index:`process width`. Let's see why by taking a look at a process with PCR=0.5 and then PCR=2.0. In the first case :math:`\text{USL} - \text{LSL} = 3\sigma`. Since the interpretation of PCR assumes a :index:`centered process`, we can draw a diagram as shown below:
 
-.. figure:: ../figures/monitoring/explain-PCR-half.png
+.. image:: ../figures/monitoring/explain-PCR-half.png
 	:width: 750px
 	:align: center
 	:scale: 80
@@ -583,7 +593,7 @@ The diagram is from a process with mean of 80 and where LSL=65 and USL=95. These
 
 Contrast this to the case where PCR = 2.0 for the same system. To achieve that level of process capability, using the *same upper and lower specifications* we have to  reduce the standard deviation by a factor of 4, down to :math:`\sigma = 2.5`.  The figure below illustrates that almost no off-specification product is produced for a centered process at PCR = 2.0. There is a width of :math:`12 \sigma` units from the LSL to the USL, giving the process ample room to move. 
 
-.. figure:: ../figures/monitoring/explain-PCR-two.png
+.. image:: ../figures/monitoring/explain-PCR-two.png
 	:width: 750px
 	:align: center
 	:scale: 80
@@ -672,14 +682,14 @@ ArcelorMittal's steel mill in Hamilton, Ontario, (formerly called Dofasco) has u
 
 The computer screenshot shows the monitoring system, called Caster SOS (Stable Operation Supervisor), which is followed by the operators. There are several charts on the screen: two charts, called "Stability Index 1" and "Stability Index 2", are one-sided monitoring charts. Notice the warning limits and the action limits. In the middle is a two-sided chart. A wealth of information is presented on the screen - their design was heavily influenced and iterated on several times, working with the *operators*. The screen shot is used with permission of Dr. John MacGregor. 
 
-.. figure:: ../figures/examples/Dofasco/Dofasco-monitoring-chart.png
+.. image:: ../figures/examples/Dofasco/Dofasco-monitoring-chart.png
 	:width: 750px
 	:align: center
 	:scale: 100
 	
 The economics of monitoring charts cannot be overstated. The ArcelorMittal example above was introduced around 1997. The calculations required by this system are complex - however the computer systems performs them in near real-time, allowing the operators to take corrective action within a few seconds. The data show a significant reduction in breakouts since 1997 (*used with permission of Dr. John MacGregor*). The economic savings and increased productivity is in the millions of dollars per year, as each breakout costs around $200,000 to $500,000 due to process shutdowns and/or equipment damage.
 
-.. figure:: ../figures/examples/Dofasco/breakouts-dofasco-economics.png
+.. image:: ../figures/examples/Dofasco/breakouts-dofasco-economics.png
 	:width: 750px
 	:align: center
 	:scale: 80

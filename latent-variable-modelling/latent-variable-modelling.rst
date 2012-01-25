@@ -444,7 +444,7 @@ The types of data engineers deal with now
 
 When industrial manufacturing and chemical engineering started to develop around the 1920's to 1950's, data collected from a process were, at most, just a handful of columns. These data were collected manually and often at considerable expense.
 
-The "classical" tools required to visualize and understand these datasets are :ref:`scatter plots <visualization_scatter_plots>`, :ref:`time-series plots <visualization_time_series>`, :ref:`Shewhart charts <monitoring_shewhart_chart>` and :ref:`EWMA charts <monitoring-EWMA>` for process monitoring, and :ref:`multiple linear regression <LS_multiple_X_MLR>` (MLR) least-squares models; all the tools which we have already learned about so far.
+The "classical" tools required to visualize and understand these datasets are :ref:`scatter plots <visualization_scatter_plots>`, :ref:`time-series plots <visualization_time_series>`, :ref:`Shewhart charts <monitoring_shewhart_chart>` and :ref:`EWMA charts <monitoring_EWMA>` for process monitoring, and :ref:`multiple linear regression <LS_multiple_X_MLR>` (MLR) least-squares models; all the tools which we have already learned about so far.
 
 We will represent any data set as a matrix, called |X|, where each row in |X| contains values taken from an *object* of some sort. These rows, or *observations* could be a collection of measurements at a particular point in time, various properties on a sample of final product, or a sample of raw material from a supplier. The columns in |X| are the values recorded for each observation. We call these the *variables* and there are :math:`K` of them.
 
