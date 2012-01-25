@@ -31,7 +31,6 @@ extensions = ['sphinx.ext.todo', 'sphinx.ext.pngmath', ]
 # Custom extensions
 # -------------------------
 extensions.append('q-and-a')
-q_and_a_override = True
 
 if os.path.exists('ucomment-extension.py'):
     extensions.append('ucomment-extension')

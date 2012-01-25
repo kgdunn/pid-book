@@ -25,7 +25,9 @@
 Process monitoring in context
 ==============================
 
-In the first section we learned about :ref:`visualizing data <SECTION-data-visualization>`, then we moved on to reviewing :ref:`univariate statistics <SECTION-univariate-review>`. This section combines those two areas, showing how to create a system that monitors a single, univariate, value from any process. We do this using graphical tools, to enable anyone to rapidly detect a problem by visual analysis. The next logical step after detection is to diagnose the problem, but we will cover diagnosis in the section on :ref:`latent variable models <SECTION_latent_variable_modelling>`.
+In the first section we learned about :ref:`visualizing data <SECTION-data-visualization>`, then we moved on to reviewing :ref:`univariate statistics <SECTION-univariate-review>`. This section combines both areas, showing how to create a system that monitors a single, univariate, value from any process. These systems are easily implemented online, and generate great value for companies that use them in day-to-day production. 
+
+Monitoring charts are a graphical tool, enabling anyone to rapidly detect a problem by visual analysis. The next logical step after detection is to diagnose the problem, but we will cover diagnosis in the section on :ref:`latent variable models <SECTION_latent_variable_modelling>`.
 
 This section is the last section where we deal with univariate data; after this section we start to use and deal with 2 or more variables. 
 
@@ -35,21 +37,19 @@ Usage examples
 .. index::
 	pair: usage examples; process monitoring
 
-The material in this section is used whenever you need to rapidly detect problems. It has tangible application in many areas - in fact, you have likely encountered these monitoring charts in areas such as a hospital (monitoring patients), stock market charts (intraday trading), or in a processing/manufacturing facility.
+The material in this section is used whenever you need to rapidly detect problems. It has tangible application in many areas - in fact, you have likely encountered these monitoring charts in areas such as a hospital (monitoring a patient's heart beat), stock market charts (for intraday trading), or in a processing/manufacturing facility (control room computer screens).
 
-	- *Co-worker*: We need a system to ensure an important dimension on our product is stable and consistent.
-	- *Yourself*: We know that as the position of a manufacturing robot moves out of alignment that our produce starts becoming inconsistent; more variable. How can we quickly detect this slow drift?
-	- *Manager*: the hourly average profit, and process throughput is important to the head-office; can we create a system for them to track that?
-	- *Potential customer*: what is your process capability - we are looking for a new supplier that can provide low variability raw material for us with |Cpk| of at least 1.6, preferably higher.
+	-	*Co-worker*: We need a system to ensure an important dimension on our product is stable and consistent over the entire shift.
+	-	*Yourself*: We know that as the position of a manufacturing robot moves out of alignment that our product starts becoming inconsistent; more variable. How can we quickly detect this slow drift?
+	-	*Manager*: the hourly average profit, and process throughput is important to the head-office; can we create a system for them to track that?
+	-	*Potential customer*: what is your process capability - we are looking for a new supplier that can provide a low-variability raw material for us with |Cpk| of at least 1.6, preferably higher.
 	
 **Note**: process monitoring is mostly *reactive* and not *proactive*. So it is suited to *incremental* process improvement, which is typical of most improvements.
 
 What we will cover
 ~~~~~~~~~~~~~~~~~~~~
 
-.. image:: ../figures/mindmaps/process-monitoring-section-mapping.png
-  :width: 750px 
-  :scale: 50
+We will consider 3 main charts after introducing some basic concepts: Shewhart charts, CUSUM charts and EWMA (exponentially weighted moving average) charts. The EWMA chart has an adjustable parameter that captures the behaviour of a Shewhart chart at one extreme and a CUSUM chart at the other extreme.
 
 References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,94 +67,101 @@ References and readings
 
 #.	Macgregor, J.F. "`Using On-Line Process Data to Improve Quality: Challenges for Statisticians <http://dx.doi.org/10.1111/j.1751-5823.1997.tb00311.x>`_", *International Statistical Review*, **65**, p 309-323, 1997.
 
-#.	Bisgaard, S., "`The Quality Detective: A Case Study <http://dx.doi.org/10.1098/rsta.1989.0006>`_", Philosophical Transactions of the Royal Society-A, **327**, p 499-511, 1989.
-
-#.	Rocke, D.M., `Robust Control Charts <http://www.jstor.org/pss/1268815>`_, *Technometrics*, **31** (2), p 173 - 184, 1989.
-
 .. 
 	Box, The R. A. Fisher Memorial Lecture, 1988- Quality Improvement- An Expanding Domain for the Application of Scientific Method, Phil. Trans. R. Soc. Lond. A February 24, 1989 327:617-630, [http://dx.doi.org/10.1098/rsta.1989.0017 DOI]
 	
 .. (Not available): Box critique of Taguchi methods: http://dx.doi.org/10.1002/qre.4680040207
-
+..	Bisgaard, S., "`The Quality Detective: A Case Study <http://dx.doi.org/10.1098/rsta.1989.0006>`_", Philosophical Transactions of the Royal Society-A, **327**, p 499-511, 1989.
 .. UMetrics book: review chapter on (M)SPC
 .. MacGregors 1997 paper on MSPC
 .. * Controversy between monitoring charts and hypothesis tests, Woodall, Woodall, W. Controversies and Contradictions in Statistical Process Control, JQT, 32(4), 341-350, 2000 ([http://filebox.vt.edu/users/bwoodall/ Link])
-.. EWMA paper by Hunter
 .. EWMV paper by MacGregor?
 .. Box, G.E.P., Comparisons, Absolute Values, and How I Got to Go to the Folies Bergeres, Quality Engineering, 14(1), p167-169, 2001.
-
 .. p 669 of Devore: see also Technometrics, 1989, p173-184, by David M Rocke
 
-.. Concepts
-.. ~~~~~~~~~~~~~~~
-.. 
-.. Concepts that you must be familiar with by the end of this section: 
-.. 
-.. .. image:: ../figures/mindmaps/process-monitoring-concepts.png
-.. 	:width: 600px
-.. 	:align: center
-.. 	:scale: 55
+Concepts
+~~~~~~~~~~~~~~~
+
+Concepts and acronyms that you must be familiar with by the end of this section: 
+
+.. OLD image: image: : ../figures/mindmaps/process-monitoring-concepts.png
+
+	*	Shewhart chart, CUSUM chart and EWMA chart
+	*	Phase 1 and phase 2 when building a monitoring system
+	*	False alarms
+	*	Type 1 and type 2 errors
+	*	LCL and UCL
+	*	Target
+	*	C\ :sub:`p` and  C\ :sub:`pk`
+	*	Outliers
+	*	Real-time implementation of monitoring systems
 
 So what is process monitoring?
 ===============================
 
 Most industries have now realized that product quality is not an option. There was historical thinking that quality is equivalent of "gold-plating" your product, but that has mostly fallen away. Product quality is not a cost-benefit trade-off: it is always beneficial to you in the long-term to improve your :index:`product quality`, and for your customers as well.
 
-As we spoke about in the :ref:`univariate review section <SECTION-univariate-review>`, good quality products (low variability) actually boost your profits by lowering costs. You have lower costs when you *do not* have to scrap off-specification product, or have to rework bad product. You have increased long-term sales with more loyal customers and improved brand reputation. 
+As we spoke about in the :ref:`univariate review section <SECTION-univariate-review>`, good quality products (low variability) actually boost your profits by lowering costs. You have lower costs when you *do not* have to scrap off-specification product, or have to rework bad product. You have increased long-term sales with more loyal customers and improved brand reputation as a reliable and consistent supplier.
 
-An example that most people in North America can relate to is the rise in Asian car manufacturers' market share, at the expense American manufacturers' market share. The market has the perception that Asian cars are more reliable than American cars and resale rates certainly reflect that (though that perception is starting to change in 2010 and 2011). That is an illustration of how variability in your product can benefit you.
+An example that most people in North America can relate to is the rise in Asian car manufacturers' market share, at the expense American manufacturers' market share. The market has the perception that Asian cars are more reliable than American cars and resale rates certainly reflect that. The perception has started to change since 2010, as North American manufacturers have become more quality conscious. That is an illustration of how lack of variability in your product can benefit you.
 
-In order to achieve this high level of final product quality, our systems should be producing low variability product at every step of the manufacturing process. Rather than wait till the end of the process to *discover* poor quality product, we should be monitoring, in real-time, the intermediate parts of our process. When we discover unusual variability the lofty aim is to make (permanent) process adjustments to avoid that variability from ever occurring again.
+In order to achieve this high level of final product quality, our systems should be producing low variability product at every step of the manufacturing process. Rather than wait till the end of the process to *discover* poor quality product, we should be monitoring, in real-time, raw materials and the intermediate steps in our process. When we discover unusual variability the lofty aim is to make (permanent) process adjustments to avoid that variability from ever occurring again.
 
-Notice here that process monitoring is not intended to be automatic feedback control. It has the same principles of quantifying unusual operation (errors), but the intention with process monitoring is:
+Notice here that process monitoring is not intended to be automatic feedback control. It has the same principles of quantifying unusual operation (errors), but the intention with *process monitoring* is:
 
-*	that our process adjustments are **infrequent**, 
-*	adjustments are usually **manual**, 
+*	that any process adjustments are **infrequent**, 
+*	these adjustments are made **manually**, 
 *	and take place due to **special causes**.
+
+Automatic :index:`feedback control` is applied continuously by computer systems and makes short-term, temporary changes to the system to keep it at the desired target (setpoint).
+
+Note that process monitoring is often called :index:`statistical process control` (SPC). This can lead to unnecessary confusion with process control, i.e. the design and implementation of feedback control, feedforward control and other automated control systems. We will not use the term SPC.
 
 Monitoring charts
 ~~~~~~~~~~~~~~~~~~~~
 
-We use :index:`monitoring charts`, also called :index:`control charts` to display and detect this unusual variability. A monitoring chart is a display of one value (variable), against time, or in sequence order. These time-based plots also show some additional information: usually a target value, and one or more limits lines are superimposed on the plot. The plots are most useful when displayed in real-time, or close to real-time. There are various technical ways to express what a monitoring chart does exactly, but a general definition is that a monitoring chart helps you detect outliers and other unusual behaviour.
+We use :index:`monitoring charts`, also called :index:`control charts`, to display and detect this unusual variability. A monitoring chart is a display of one value (variable), against time, or in sequence order. These time-based plots also show some additional information: usually a target value, and one or more limits lines are superimposed on the plot. The plots are most useful when displayed in real-time, or close to real-time. There are various technical ways to express what a monitoring chart does exactly, but a general definition is that a monitoring chart helps you detect outliers and other unusual behaviour.
 
 The key points are:
 
 	-	it is most often a time-series plot, or some sort of sequence,
-	-	a target value may be shown (for some plots, e.g. those that monitor variance, the target is implied to be small, or even zero),
+	-	a target value may be shown,
 	-	one or more limit lines are shown,
-	-	they are displayed in real-time, or pretty close to real-time.
+	-	they are displayed and updated in real-time, or as close to real-time as possible.
 
 Here is an example that shows these properties.
 
 .. image:: ../figures/monitoring/demo-of-monitoring-chart.png
 	:width: 750px
-	:scale: 80
+	:scale: 100
 
 .. _monitoring_general_approach:
 
 General approach
 ~~~~~~~~~~~~~~~~~~~~
 
-Generally, one applies the concept of monitoring charts in 2 phases. You will see the terminology sometimes called:
+Monitoring charts are developed in 2 phases. You will see the terminology of:
 
 .. index:: phase 1 (monitoring charts)
 
-*	**Phase I**: building and testing the chart from off-line data that you have collected. This phase is very iterative, and you will spend most of your time here.
+*	**Phase I**: building and testing the chart from historical data that you have collected. This phase is performed off-line, it is very iterative, and you will spend most of your time here. The primary purpose of this phase is to ensure that your chart works as expected based on previous process data.
 
 .. index:: phase 2 (monitoring charts)
 
-*	**Phase II**: Using the monitoring chart, on new, unseen data. This phase is most often implemented with computer hardware and software for real-time display of the charts.
+*	**Phase II**: We use the monitoring chart on new, fresh data from the process. This phase is implemented with computer hardware and software for real-time display of the charts.
 
 What should we monitor?
 ========================
 
-Any variable can be monitored. However, the purpose of process monitoring is so that you can **react early** to bad, or unusual operation. This implies we should monitor variables that are available in near real-time; they are more suitable than variables that take a long time to acquire (e.g. laboratory measurements). We shouldn't have to wait to the end of the production line to find our process was out of statistical control. 
+Any variable can be monitored. However, the purpose of process monitoring is so that you can **react early** to bad, or unusual operation. This implies we should monitor variables as soon as they become available, preferably in real-time. They are more suitable than variables that take a long time to acquire (e.g. laboratory measurements). We shouldn't have to wait to the end of the production line to find our process was out of statistical control. 
+
+Raw material data from your supplier should also be monitored as soon as it is available, e.g. when received by your company, or even earlier - before the supplier ships it to you.
 
 These intermediate variables measured from the process are (a) available much more frequently and without delay, (b) are more precise, (c) are usually more meaningful to the operating staff than final quality variables from the lab, and (d) contain the "fingerprint" of the fault, helping the engineers with diagnosis and process adjustment (see *MacGregor, 1997*)
 
 Note that we don't have to monitor variables that are measured only from on-line sensors. The variable could be a calculation made from the on-line measurements. For example, an energy balance could be calculated from various thermocouples on the process and the degree of mismatch in the energy balance could be critical to quality. For example, the mismatch could indicate an unexpected source of heat into or out of the process - so monitor that mismatch, rather than the raw temperature data.
 
-	..	SLIDE: organoleptic properties, Particle size distribution
+..	SLIDE: organoleptic properties, Particle size distribution
 
 Discuss one of these unit operations with your colleague. Which variables would you monitor?
 
@@ -168,7 +175,7 @@ Discuss one of these unit operations with your colleague. Which variables would 
 In-control vs out-of-control
 =============================
 
-Every book on statistical quality control gives a slightly different viewpoint, or uses different terminology for what is statistical process control.
+Every book on quality control gives a slightly different viewpoint, or uses different terminology for these terms.
 
 In this book we will take "in-control" to mean that the behaviour of the process is stable over time. Note though, that in-control *does not* mean the variable of interest meets the specifications required by the customer, or set by the plant personnel. All that "in control" means is that there are no **special causes** in the data. A :index:`special cause`, or an :index:`assignable cause` is an event that occurs to move the process, or destabilize it. Process monitoring charts aim to detect these events. The opposite of "special cause" operation is :index:`common cause` operation.
 
@@ -350,7 +357,7 @@ Extensions to the basic Shewhart chart
 
 *	**Adding robustness**: the phase I derivation of a monitoring chart is iterative. If you find a point that violates the LCL and UCL limits, then the approach is to remove that point, and recompute the LCL and UCL values. That is because the LCL and UCL limits would have been biased up or down by these points.
 
-	This iterative approach can be tiresome with data that has spikes, missing values, outliers, and other problems typical of data pulled from a process database (:index:`historian <single: data historian>`. Robust monitoring charts are procedures to calculate the limits so the LCL and UCL are resistant to the effect of outliers. For example, a robust procedure might use the medians and MAD instead of the mean and standard deviation. An examination of various robust procedures, especially that of the interquartile range, is given in the paper by Rocke, *Robust Control Charts*.
+	This iterative approach can be tiresome with data that has spikes, missing values, outliers, and other problems typical of data pulled from a process database (:index:`historian <single: data historian>`. Robust monitoring charts are procedures to calculate the limits so the LCL and UCL are resistant to the effect of outliers. For example, a robust procedure might use the medians and MAD instead of the mean and standard deviation. An examination of various robust procedures, especially that of the interquartile range, is given in the paper by D. M. Rocke, `Robust Control Charts <http://dx.doi.org/10.2307/1268815>`_, *Technometrics*, **31** (2), p 173 - 184, 1989.
 
 	*Note*: do not use robust methods to calculate the values plotted on the charts, only use robust methods to calculate the chart limits!
 	
