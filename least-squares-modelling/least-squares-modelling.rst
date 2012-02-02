@@ -75,7 +75,7 @@ Usage examples
 
 The material in this section is used whenever you need to interpret and quantify the relationship between two or more variables.
 
-	-	*Colleague*: How does yield from the lactic acid batch fermentation relate to the purity of sucrose?
+	-	*Colleague*: How is the yield from our lactic acid batch fermentation related to the purity of the sucrose substrate?
 	
 		*You*: The yield can be predicted from sucrose purity with an error of plus/minus 8%
 		
@@ -86,6 +86,8 @@ The material in this section is used whenever you need to interpret and quantify
 	-	*Engineer 1*: The theoretical equation for the melt index is non-linearly related to the viscosity
 	
 		*Engineer 2*: The linear model does not show any evidence of that, but the model's prediction ability does improve slightly when we use a non-linear transformation in the least squares model.
+		
+	-	*HR manager*: We use a least squares regression model to graduate personnel through our pay grades. The model is a function of education level and  number of years of experience. What do the model coefficients mean?
 
 
 References and readings
@@ -93,26 +95,24 @@ References and readings
 
 .. index::
 	pair: references and readings; least squares
+	
+This section is only a simple review of the least squares model. More details may be found in these references.
 
--	**Recommended**: John Fox, *Applied Regression Analysis and Generalized Linear Models*
+-	**Recommended**: John Fox, *Applied Regression Analysis and Generalized Linear Models*, Sage.
 
--	**Recommended**: N.R. Draper and H. Smith, *Applied Regression Analysis*
+-	**Recommended**: N.R. Draper and H. Smith, *Applied Regression Analysis*, Wiley.
 
--	Box, Hunter and Hunter, *Statistics for Experimenters*, selected portions of Chapter 10 (2nd edition)
+-	Box, Hunter and Hunter, *Statistics for Experimenters*, selected portions of Chapter 10 (2nd edition), Wiley.
 
--	Hogg and Ledolter, *Engineering Statistics*
+-	Hogg and Ledolter, *Applied Statistics for Engineers and Physical Scientists*, Prentice Hall.
 
--	Montgomery and Runger, *Applied Statistics and Probability for Engineers*
-
--	Birkes and Dodge: *Alternative Methods of Regression*, 1993.
-
--	G.E.P. Box, `Use and Abuse of Regression <http://www.jstor.org/pss/1266635>`_, *Technometrics*, **8** (4), 625-629, 1966.
-
--	W.S. Cleveland, `Robust Locally Weighted Regression and Smoothing Scatterplots <http://www.jstor.org/pss/2286407>`_, *Journal of the American Statistical Association*, **74** (368), p. 829-836, 1979.
+-	Montgomery and Runger, *Applied Statistics and Probability for Engineers*, Wiley.
 
 ..	Efron, Hastie, Johnstone and Tibshirani, `Least Angle Regression <http://www.jstor.org/pss/3448465>`_, *The Annals of Statistics*, **32**, p 407-451, 2004.
 
 ..	S. Chatterjee and A. S. Hadi, `Influential Observations, High Leverage Points, and Outliers in Linear Regression <http://www.jstor.org/pss/2245477>`_, *Statistical Science*, **1** (3), 379-416, 1986.
+
+.. G.E.P. Box, `Use and Abuse of Regression <http://www.jstor.org/pss/1266635>`_, *Technometrics*, **8** (4), 625-629, 1966.
 
 What you will be able to do after this section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -136,13 +136,13 @@ Covariance
 
 You probably have an intuitive sense for what it means when two things are correlated. We will get to correlation next, but we start by first looking at :index:`covariance`. Let's take a look at an example to formalize this, and to see how we can learn from data.
 
-Consider the measurements from a gas cylinder; temperature (K) and pressure (kPa). We know the ideal gas law applies under moderate condition: :math:`pV = nRT`.
+Consider the measurements from a gas cylinder; temperature (K) and pressure (kPa). We know the ideal gas law applies under moderate conditions: :math:`pV = nRT`.
 
 	-	Fixed volume, :math:`V = 20 \times 10^{-3} \text{m}^3` = 20 L
 	-	Moles of gas, :math:`n = 14.1` mols of chlorine gas, molar mass = 70.9 g/mol, so this is 1 kg of gas
 	-	Gas constant, :math:`R = 8.314` J/(mol.K)
 
-Given these numbers, we can simplify the ideal gas law to: :math:`p=\beta_1 T`, where :math:`\beta_1 = \dfrac{nR}{V} > 0`. These data are collected:
+Given these numbers, we can simplify the ideal gas law to: :math:`p=\beta_1 T`, where :math:`\beta_1 = \dfrac{nR}{V} > 0`. These data are collected from sampling the system:
 
 .. wikitable
 
@@ -186,7 +186,7 @@ Given these numbers, we can simplify the ideal gas law to: :math:`p=\beta_1 T`, 
 	pres <- c(1600, 1670, 1730, 1830, 1880, 1920, 2000, 2100, 2170, 2200)
 	humidity <- c(42, 48, 45, 49, 41, 46, 48, 48, 45, 49)
 
-.. figure:: ../figures/least-squares/table-of-cylinder-data.png
+.. image:: ../figures/least-squares/table-of-cylinder-data.png
 	:width: 750px
 	:scale: 67
 
@@ -223,7 +223,7 @@ In your own time calculate a rough numeric value and give the units of covarianc
 	========================================================== ===================================================
 	:math:`x` = age of married partner 1                       :math:`y` = age of married partner 2
 	:math:`x` = gas pressure                                   :math:`y` = gas volume at a fixed temperature
-	:math:`x` = mid term mark                                  :math:`y` = final exam mark
+	:math:`x` = mid term mark for this course                  :math:`y` = final exam mark
 	:math:`x` = hours worked per week                          :math:`y` = weekly take home pay
 	:math:`x` = cigarettes smoked per month                    :math:`y` = age at death
 	:math:`x` = temperature on top tray of distillation column :math:`y` = top product purity
@@ -231,15 +231,11 @@ In your own time calculate a rough numeric value and give the units of covarianc
 
 	Also describe what an outlier observation would mean in these cases.
 
-.. raw:: latex
-
-	\vspace{3cm}
-
 One last point is that the covariance of a variable with itself is the variance: :math:`\text{Cov}\left\{x, x\right\} = \mathcal{V}(x) = \mathcal{E}\left\{ (x - \overline{x}) (x - \overline{x})\right\}`, a definition :ref:`we saw earlier <univariate-variance>`. 
 
-Using the ``cov(temp, pres)`` function in R gives ``7533.333``, while we calculated 6780. The difference comes from :math:`6780 \times \dfrac{N}{N-1}= 7533.33`, indicating that R divides by :math:`N-1` rather than :math:`N`. This is because the variance function in R for a vector ``x`` is internally called as ``cov(x, x)``. Since R returns the unbiased variance, it divides through by :math:`N-1`. This inconsistency does not really matter for large values of :math:`N`.
+Using the ``cov(temp, pres)`` function in R gives ``7533.333``, while we calculated 6780. The difference comes from :math:`6780 \times \dfrac{N}{N-1}= 7533.33`, indicating that R divides by :math:`N-1` rather than :math:`N`. This is because the variance function in R for a vector ``x`` is internally called as ``cov(x, x)``. Since R returns the unbiased variance, it divides through by :math:`N-1`. This inconsistency does not really matter for large values of :math:`N`, but emphasizes that one should always read the documentation for the software being used.
 
-Note that deviation variables are *not affected* by a shift in the raw data of :math:`x` or :math:`y`. For example, measuring temperature in Celsius or Kelvin has no effect on the covariance number; but measuring it in Celsius vs Fahrenheit does change the covariance value.
+Note that deviation variables are not affected by a *shift* in the raw data of :math:`x` or :math:`y`. For example, measuring temperature in Celsius or Kelvin has no effect on the covariance number; but measuring it in Celsius vs Fahrenheit does change the covariance value.
 
 .. Another point to note: recall from geometry that the length of a vector, :math:`x`, is calculated from the sum of squares of the elements in vector :math:`x`, and then taking the square root of the sum. Mathematically the sum of squares is can be written as: math:`x^Tx`. For a vector :math:`x` that is centered, this corresponds
 
@@ -249,7 +245,7 @@ Note that deviation variables are *not affected* by a shift in the raw data of :
 Correlation
 ===========
 
-The variance and covariance values are units dependent. For example, you get a very different covariance when calculating it using grams vs kilograms. The :index:`correlation` on the other hand removes the effect of scaling, or from arbitrary unit changes. It is defined as:
+The variance and covariance values are units dependent. For example, you get a very different covariance when calculating it using grams vs kilograms. The :index:`correlation` on the other hand removes the effect of scaling and arbitrary unit changes. It is defined as:
 
 .. math::
 	:label: definition-correlation
@@ -267,9 +263,9 @@ So returning back to our example of the gas cylinder, the correlation between te
 	> cor(temp, humidity)
 	[1] 0.3803919
 
-Study the plots below to get a feeling for the correlation value and its interpretation:
+Note that correlation is the same whether we measure temperature in Celsius or Kelvin. Study the plots below to get a feeling for the correlation value and its interpretation:
 
-.. figure:: ../figures/least-squares/correlation-calculation.png
+.. image:: ../figures/least-squares/correlation-calculation.png
 	:width: 750px
 	:align: center
 	:scale: 87
@@ -280,7 +276,7 @@ Study the plots below to get a feeling for the correlation value and its interpr
 Some definitions
 ================
 
-Be sure that you can derive (and interpret!) these relationships yourself:
+Be sure that you can derive (and interpret!) these relationships:
 
 	-	:math:`\mathcal{E}\{x\} = \overline{x}`
 	
@@ -341,7 +337,7 @@ Consider the example of plotting Prestige (the Pineo-Porter prestige score) agai
 The plot on the left is the raw data, while on the right is the raw data with the nonparametric model (line) superimposed. The smoothed line is the nonparametric function, :math:`f(x)`, referred to above, and |x| = Income ($), and |y| = Prestige.
 
 
-.. figure:: ../figures/least-squares/nonparametric-plots.png
+.. image:: ../figures/least-squares/nonparametric-plots.png
 	:width: 750px
 	:align: center
 
@@ -356,6 +352,8 @@ For bivariate cases, the nonparametric model is often called a *scatterplot smoo
 -	slide the window along the |x| axis and repeat
 
 The *model* is the collection of these |x|- and |y|-values. This is why it is called nonparameteric: there are no parameters to quantify the model. For example: if the relationship between the two variables is linear, then a linear smooth is achieved. It is hard to express the relationship between |x| and |y| in written form, so usually these models are shown visually. The nonparametric model is not immune to outliers, but it is resistant to them.
+
+More details can be found in W.S. Cleveland, `Robust Locally Weighted Regression and Smoothing Scatterplots <http://www.jstor.org/pss/2286407>`_, *Journal of the American Statistical Association*, **74** (368), p. 829-836, 1979.
 
 Least squares models with a single x-variable
 ====================================================
@@ -399,7 +397,7 @@ We develop **a particular method** (there are others) to estimate these paramete
 
 Presuming we have calculated estimates |b0| and |b1| we can use the model with a new x-observation, :math:`x_i`, and predict its corresponding :math:`\hat{y}_i`. The error value, :math:`e_i`, is generally non-zero indicating out prediction estimate of :math:`\hat{y}_i` is not exact. All this new nomenclature is illustrated in the figure.
 
-.. figure:: ../figures/least-squares/least-squares-picture.png
+.. image:: ../figures/least-squares/least-squares-picture.png
 	:width: 600px
 	:align: center
 	:scale: 71
@@ -527,7 +525,7 @@ We will refer back to this example several times. Calculate the least squares es
 =========== ==== ==== ==== ==== ==== ==== ==== ==== ===== ==== ====
 
 ..
-	.. figure:: ../figures/least-squares/regression-exercise.png
+	.. image:: ../figures/least-squares/regression-exercise.png
 		:align: center
 		:scale: 40
 
@@ -566,7 +564,7 @@ We will refer back to this example several times. Calculate the least squares es
 	* :math:`\sum_i{\left( x_i - \overline{\mathrm{x}}_1\right)^2} = 110`
 	|}
 
-.. figure:: ../figures/least-squares/show-anscombe-problem-1.png
+.. image:: ../figures/least-squares/show-anscombe-problem-1.png
 	:align: center
 	:width: 500px
 	:scale: 50
@@ -757,7 +755,7 @@ Derivation of :math:`R^2`
 .. index:: R2 (correlation coefficient)
 
 .. To use this derivation you have to work in deviation variables (x-mean(x)) and (y-mean(y)). Too early in the notes to do that.
-	.. figure:: ../figures/least-squares/angle-between-two-vectors.png
+	.. image:: ../figures/least-squares/angle-between-two-vectors.png
 		:width: 400px
 		:align: center
 
@@ -832,7 +830,7 @@ Furthermore, our derivation for the confidence intervals of |b0| and |b1| requir
 
 	-	The variability of |y| can be non-constant in several practical cases (e.g. our measurement accuracy deteriorates at extreme high and low levels of |x|).
 
-	.. figure:: ../figures/least-squares/constant-error-variance.png
+	.. image:: ../figures/least-squares/constant-error-variance.png
 		:width: 500px
 		:align: center
 		:scale: 60
@@ -1061,7 +1059,7 @@ Let's understand the interpretation of :math:`\mathcal{V}\{\hat{y}_i\} = S_E^2 \
 
 	-	The confidence intervals have a quadratic shape due to the square term under the square root. The smallest prediction error will always occur at the center of the model, and expands progressively wider as one moves away from the model center. This is illustrated in the figure and makes intuitive sense as well.
 
-	.. figure:: ../figures/least-squares/show-anscome-solution-with-yhat-bounds.png
+	.. image:: ../figures/least-squares/show-anscome-solution-with-yhat-bounds.png
 		:width: 750px
 		:align: center
 		:scale: 59
@@ -1153,7 +1151,7 @@ If the residuals appear non-normal, then attempt the following:
 
 The simple example shown here builds a model that predicts the price of a used vehicle using only the mileage as an explanatory variable.
 
-.. figure:: ../figures/least-squares/non-normal-errors-outliers.png
+.. image:: ../figures/least-squares/non-normal-errors-outliers.png
 	:align: center
 	:width: 750px
 	:scale: 70
@@ -1173,7 +1171,7 @@ Removing the Cadillac cars from our model indicates that there is more than just
 
 In the next fictitious example the |y|-variable is non-linearly related to the |x|-variable. This non-linearity in the |y| shows up as non-normality in the residuals if only a linear model is used. The residuals become more linearly distributed when using a square root transformation of the |y| before building the linear model.
 
-.. figure:: ../figures/least-squares/non-normal-errors-transformation-required.png
+.. image:: ../figures/least-squares/non-normal-errors-transformation-required.png
 	:align: center
 	:width: 750px
 	:scale: 70
@@ -1197,7 +1195,7 @@ To detect this problem you should plot:
 
 This problem reveals itself by showing a fan shape across the plot; an example is shown below.
 
-.. figure:: ../figures/least-squares/residual-pattern-non-contant-error.png
+.. image:: ../figures/least-squares/residual-pattern-non-contant-error.png
 	:scale: 60
 	:align: center
 	:width: 750px
@@ -1217,7 +1215,7 @@ Treating this problem properly comes under the topic of time-series analysis, fo
 
 If you suspect that there may be lack of independence, use plots of the residuals in time order. Look for patterns such as slow drifts, or rapid criss-crossing of the zero axis.
 
-.. figure:: ../figures/least-squares/residual-pattern-unmodelled-dynamics.png
+.. image:: ../figures/least-squares/residual-pattern-unmodelled-dynamics.png
 	:width: 750px
 	:align: center
 
@@ -1268,7 +1266,7 @@ In other instances we may know from first-principles theory, or some other means
 
 Before launching into various :index:`transformations` or non-linear least squares models, bear in mind that the linear model may be useful over the region of interest. In the case below, we might only be concerned with using the model over the region shown, even though the system under observation is known to behave non-linearly over a wider region of operation.
 
-	.. figure:: ../figures/least-squares/nonlinear-linear-region.png
+	.. image:: ../figures/least-squares/nonlinear-linear-region.png
 		:align: center
 		:width: 500px
 		:scale: 50
@@ -1598,7 +1596,7 @@ We will start with the simplest case, using the example of the radial or axial i
 
 where :math:`d_i = 0` if an axial impeller was used, or :math:`d_i = 1` if a radial impeller was used. All other least squares assumptions hold, particularly that the variance of :math:`y_i` is unrelated to the value of :math:`d_i`. For the initial illustration, assume that :math:`\beta_1 = 0`, then geometrically, what is happening here is shown below:
 
-.. figure:: ../figures/least-squares/least-squares-dummy-variable-and-intercept.png
+.. image:: ../figures/least-squares/least-squares-dummy-variable-and-intercept.png
 	:width: 500px
 	:align: center
 	:scale: 55
@@ -1624,7 +1622,7 @@ which would indicate the impeller type has no significant effect on the yield am
 
 Integer variables are also called dummy variables or indicator variables. Really what is happening here is the same concept as for multiple linear regression, the equation of a plane is being estimated. We only use the equation of the plane at integer values of :math:`d`, but mathematically the underlying plane is actually continuous.
 
-.. figure:: ../figures/least-squares/least-squares-two-x-variables-one-integer.png
+.. image:: ../figures/least-squares/least-squares-two-x-variables-one-integer.png
 	:width: 500px
 	:align: center
 	:scale: 55
@@ -1656,7 +1654,7 @@ Outliers are in many cases the most interesting data in a data table. They indic
 Background
 ~~~~~~~~~~~~~~
 
-.. figure:: ../figures/least-squares/influence-of-outliers.png
+.. image:: ../figures/least-squares/influence-of-outliers.png
 	:width: 750px
 	:scale: 100
 	:align: center
@@ -1688,7 +1686,7 @@ Leverage measures how much each observation contributes to the model's predictio
 
 The average hat value can be calculated theoretically. While it is common to plot lines at 2 and 3 times the average hat value, always plot your data and judge for yourself what a large leverage means. Also notice that smallest hat value is always positive and greater or equal to :math:`1/n`, while the largest hat value possible is 1.0. Continuing the example of models A, B and C: the hat values for models B and C are the same, and are shown below. The last point has very high leverage.
 
-	.. figure:: ../figures/least-squares/hatvalue-of-outliers.png
+	.. image:: ../figures/least-squares/hatvalue-of-outliers.png
 		:width: 750px
 		:scale: 100
 		:align: center
@@ -1733,7 +1731,7 @@ where :math:`\frac{1}{n}\sum{e_i^2}` is called the mean square error of the mode
 
 The values of :math:`D_i` are conveniently calculated in R using the ``cooks.distance(model)`` function. The results for the 3 models are shown below. Interestingly for model C there is a point with even higher influence than the square point. Can you locate that point in the least squares plot?
 
-	.. figure:: ../figures/least-squares/cooks-distance.png
+	.. image:: ../figures/least-squares/cooks-distance.png
 		:width: 750px
 		:scale: 100
 		:align: center
@@ -1848,7 +1846,7 @@ We could naively assume that we just code our |y| variable as 0 or 1 (pass/fail)
 
 A logistic model however accounts for the nature of the y-variable by creating a function, called a logistic function, which is bounded between 0 and 1. In fact you are already familiar with such a function: the cumulative probability of the normal distribution does exactly this.
 
-	.. figure:: ../figures/least-squares/logistic-regression-function.png
+	.. image:: ../figures/least-squares/logistic-regression-function.png
 		:scale: 50
 		:width: 500px
 		:align: center
@@ -1906,7 +1904,7 @@ Visualize this confidence in the context of the following example where |x| is t
 
 The thick line represents the slope coefficient (:math:`-0.0059`) using all the data. Clearly the unusual point number 13 has some influence on that coefficient. Eliminating it and refitting the model makes the slope coefficient more steep (:math:`-0.0078`), which could change our interpretation of the model. This raises the question though: what happens to the slope coefficient when we eliminate other points in the training data?  How sensitive are our model parameters *to the data themselves*?
 
-	.. figure:: ../figures/least-squares/bootstrap-example.png
+	.. image:: ../figures/least-squares/bootstrap-example.png
 		:align: center
 		:width: 750px
 		:scale: 90
