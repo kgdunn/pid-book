@@ -96,8 +96,8 @@ Concepts and acronyms that you must be familiar with by the end of this section:
 	*	Outliers
 	*	Real-time implementation of monitoring systems
 
-So what is process monitoring?
-===============================
+What is process monitoring about?
+===================================
 
 Most industries have now realized that product quality is not an option. There was historical thinking that quality is equivalent of "gold-plating" your product, but that has mostly fallen away. Product quality is not a cost-benefit trade-off: it is always beneficial to you in the long-term to improve your :index:`product quality`, and for your customers as well.
 

@@ -1,33 +1,9 @@
-.. To cover in the class
-
-	variability
-	histograms
-	long-term: probability
-	nomenclature
-	robustness
-	binary
-	uniform
-	normal
-		- CLT
-		- area
-	t-dist
-		- independence
-		- using the t-distribution example
-	Confidence interval and what it means
-
-	Order of section headers
-	
-	=====
-	~~~~~
-	^^^^^
-	-----
-	
-.. To Do
+.. To add
 
 	* see p 295 of Devore here for in-class example
 	* Put "paired" tests under the main section of testing for differences	
 	* Explain more clearly when a paired test is required vs a test of differences
-	* Show the curves for normal and t-distribution as a table
+	* Chi-squared goodness of fit test for normality; also a way to introduce the chi-squared test
 	
 Univariate data analysis in context
 ====================================
