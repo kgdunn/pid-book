@@ -1363,9 +1363,11 @@ The usual approach for assessing if the difference between :math:`\overline{x}_B
 	#.	Assuming independence again, but this time between groups, this implies the average of each sample group is independent, i.e. :math:`\overline{x}_A` and :math:`\overline{x}_B` are independent of each other. This allows us to write:
 	
 		.. math::
-		   :label: add-variance
+		   :label: eq_add_variance_1
 		
 				\mathcal{V}\left\{\overline{x}_B - \overline{x}_A\right\} = \frac{\sigma^2}{n_A} + \frac{\sigma^2}{n_B} = \sigma^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)
+				
+		For a full proof of this result, please see :eq:`eq_add_variance_2`.
 			
 	#.	Using the central limit theorem, even if the samples in A and the samples in B are non-normal, the sample averages :math:`\overline{x}_A` and :math:`\overline{x}_B` will be much more normal, even for small sample sizes. So the difference between these means will also be more normal: :math:`\overline{x}_B - \overline{x}_A`. Now express this difference in the form of a :math:`z`-deviate (:index:`standard form`):
 	

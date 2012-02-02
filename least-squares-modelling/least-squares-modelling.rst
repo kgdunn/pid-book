@@ -303,67 +303,24 @@ Be sure that you can derive (and interpret!) these relationships:
 	-	Rather:
 	
 		.. math::
+			:label: eq_add_variance_2
 
 			\mathcal{V}\{x+y\}	&= \mathcal{E}\{ \left(  x+y-\overline{x}-\overline{y} \right)^2 \}  \\
 								&= \mathcal{E}\{ \left( (x-\overline{x}) + (y-\overline{y}) \right)^2 \} \\
 								&= \mathcal{E}\{ (x-\overline{x})^2 + 2(x-\overline{x})(y-\overline{y}) + (y-\overline{y})^2 \}\\
 								&= \mathcal{E}\{ (x-\overline{x})^2 \} + 2\mathcal{E}\{(x-\overline{x})(y-\overline{y})\} + \mathcal{E}\{(y-\overline{y})^2 \} \\
 								&= \mathcal{V}\{ x \}             + 2\text{Cov}\{x,y\} + \mathcal{V}\{ y \}\\
-			\mathcal{V}\{x+y\}	&= \mathcal{V}\{x\} + \mathcal{V}\{y\}`, \qquad\text{only if $x$ and $y$ are independent}
+			\mathcal{V}\{x+y\}	&= \mathcal{V}\{x\} + \mathcal{V}\{y\}, \qquad\text{only if $x$ and $y$ are independent}
 
-Nonparametric modelling
-===========================
-
-.. Note:: This is an *enrichment topic*.
-
-:index:`Nonparametric modelling <single:nonparametric modelling>` is a general model where the relationship between |x| and |y| is of the form: :math:`y = f(x) + \varepsilon`, but the function (model), :math:`f(x)` is left unspecified. The model is usually a smooth function.
-
-Consider the example of plotting Prestige (the Pineo-Porter prestige score) against Income, from the 1971 Canadian census. A snippet of the data is given by:
-
-.. code-block:: s
-
-	                       education income women prestige census type
-	ECONOMISTS                 14.44   8049 57.31     62.2   2311 prof
-	VOCATIONAL.COUNSELLORS     15.22   9593 34.89     58.3   2391 prof
-	PHYSICIANS                 15.96  25308 10.56     87.2   3111 prof
-	NURSING.AIDES               9.45   3485 76.14     34.9   3135   bc
-	POSTAL.CLERKS              10.07   3739 52.27     37.2   4173   wc
-	TRAVEL.CLERKS              11.43   6259 39.17     35.7   4193   wc
-	BABYSITTERS                 9.46    611 96.53     25.9   6147 <NA>
-	BAKERS                      7.54   4199 33.30     38.9   8213   bc
-	MASONS                      6.60   5959  0.52     36.2   8782   bc
-	HOUSE.PAINTERS              7.81   4549  2.46     29.9   8785   bc
-
-The plot on the left is the raw data, while on the right is the raw data with the nonparametric model (line) superimposed. The smoothed line is the nonparametric function, :math:`f(x)`, referred to above, and |x| = Income ($), and |y| = Prestige.
-
-
-.. image:: ../figures/least-squares/nonparametric-plots.png
-	:width: 750px
-	:align: center
-
-For bivariate cases, the nonparametric model is often called a *scatterplot smoother*. There are several methods to calculate the model; one way is by locally weighted scatterplot smoother (LOESS), described as follows. Inside a fixed window along the x-axis:
-
--	collect the |x|- and |y|-values inside this window
-
--	calculate a fitted |y|-value, but use a weighted least squares procedure, with weights that peaks at the center of the window and declines towards the edges,
-
--	record that average |y|-value against the window's center (|x|-value)
-
--	slide the window along the |x| axis and repeat
-
-The *model* is the collection of these |x|- and |y|-values. This is why it is called nonparameteric: there are no parameters to quantify the model. For example: if the relationship between the two variables is linear, then a linear smooth is achieved. It is hard to express the relationship between |x| and |y| in written form, so usually these models are shown visually. The nonparametric model is not immune to outliers, but it is resistant to them.
-
-More details can be found in W.S. Cleveland, `Robust Locally Weighted Regression and Smoothing Scatterplots <http://www.jstor.org/pss/2286407>`_, *Journal of the American Statistical Association*, **74** (368), p. 829-836, 1979.
-
-Least squares models with a single x-variable
-====================================================
+Least squares models with a single :math:`x`-variable
+======================================================
 
 .. index:: 
 	pair:	derivation; least squares
 
 The general linear least squares model is a very useful tool (in the right circumstances), and it is the workhorse for a number of algorithms in data analysis.
 
-This part covers the relationship between two variables only: |x| and |y|. In the next part on general least squares we will consider more than two variables and use matrix notation. But we start off slowly here, looking first at the details for relating two variables.
+This part covers the relationship between two variables only: :math:`x` and :math:`y`. In a :ref:`later part on general least squares <LS_multiple_X_MLR>` we will consider more than two variables and use matrix notation. But we start off slowly here, looking first at the details for relating two variables.
 
 We will follow these steps:
 
@@ -371,13 +328,13 @@ We will follow these steps:
 
 #.	Building the model
 
-#.	Interpretation of the model parameters and model outputs (coefficients, :math:`R^2`, *etc*)
+#.	Interpretation of the model parameters and model outputs (coefficients, :math:`R^2`, and standard error :math:`S_E`)
 
 #.	Consider the effect of unusual and influential data
 
 #.	Assessment of model residuals
 
-The least squares model postulates that there is a linear relationship between measurements in vector |x| and |y| of the form:
+The least squares model postulates that there is a linear relationship between measurements in vector :math:`x` and vector :math:`y` of the form:
 
 .. math::
 	:label: define-2-LS
@@ -385,9 +342,9 @@ The least squares model postulates that there is a linear relationship between m
 		\mathcal{E}\left\{\mathrm{y}\right\} &= \beta_0 + \beta_1 \mathrm{x} \\
 		\mathrm{y} &= \beta_0 + \beta_1 \mathrm{x} + \epsilon
 
-The :math:`\beta_0`, :math:`\beta_1` and :math:`\epsilon` terms are *population* parameters, which are unknown (see the :ref:`section on univariate statistics <univariate-population>`). The :math:`\epsilon` term represents any unmodelled components of the linear model, measurement error, and is simply called *the error* term. Notice that the error is not due to :math:`x`; we will return to this point in the section on :ref:`least squares assumptions <LS-assumptions>`. Also, if there is no relationship between |x| and |y| then :math:`\beta_1 = 0`.
+The :math:`\beta_0`, :math:`\beta_1` and :math:`\epsilon` terms are *population* parameters, which are unknown (see the :ref:`section on univariate statistics <univariate-population>`). The :math:`\epsilon` term represents any unmodelled components of the linear model, measurement error, and is simply called *the error* term. Notice that the error is not due to :math:`x`, but is the error in fitting :math:`y`; we will return to this point in the section on :ref:`least squares assumptions <LS-assumptions>`. Also, if there is no relationship between :math:`x` and :math:`y` then :math:`\beta_1 = 0`.
 
-We develop **a particular method** (there are others) to estimate these parameters; these estimates are defined as :math:`b_0 = \hat{\beta_0}`, :math:`b_1 = \hat{\beta_1}` and :math:`e = \hat{\epsilon}`. Using this new nomenclature we can write, for a given observation :math:`i`:
+We develop **the least squares method** to estimate these parameters; these estimates are defined as :math:`b_0 = \hat{\beta_0}`, :math:`b_1 = \hat{\beta_1}` and :math:`e = \hat{\epsilon}`. Using this new nomenclature we can write, for a given observation :math:`i`:
 
 .. math::
 	:label: define-2-LS-i
@@ -405,26 +362,26 @@ Presuming we have calculated estimates |b0| and |b1| we can use the model with a
 Minimizing errors as an objective
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Our immediate aim however is to calculate |b0| and |b1|  from the :math:`n` pairs of data collected: :math:`(x_i, y_i)`.
+Our immediate aim however is to calculate the |b0| and |b1| estimates from the :math:`n` pairs of data collected: :math:`(x_i, y_i)`.
 
-Here are some approaches, usually called objective functions, to making the :math:`e_i\,` values small, in some way.
+Here are some valid approaches, usually called objective functions for making the :math:`e_i\,` values small. One could use:
 
- 	#.	:math:`\sum_{i=1}^{n}{(e_i)^2}`
+ 	#.	:math:`\sum_{i=1}^{n}{(e_i)^2}`, which leads to the least squares model
 	#.	:math:`\sum_{i=1}^{n}{(e_i)^4}`
-	#.	sum of perpendicular distances to the line
-	#.	:math:`\sum_{i=1}^{n}{\|e_i\|}` is an alternative, known as least absolute deviations or :math:`l`-1 norm problem
-	#.	*least median of squared error* model, which a robust form of least squares.
+	#.	sum of perpendicular distances to the line :math:`y = b_0 + b_1 x`
+	#.	:math:`\sum_{i=1}^{n}{\|e_i\|}` is known as the least absolute deviations model, or the :math:`l`-1 norm problem
+	#.	*least median of squared error* model, which a robust form of least squares that is far less sensitive to outliers.
 
-All of these are good alternatives, however the traditional least squares model, the first objective function listed, has the lowest possible variance for |b0| and |b1| when certain additional :ref:`assumptions are met <LS-assumptions>`. The low variance of these parameter estimates is very desirable, for both model interpretation and using the model.
+The traditional least squares model, the first objective function listed, has the lowest possible variance for |b0| and |b1| when certain additional :ref:`assumptions are met <LS-assumptions>`. The low variance of these parameter estimates is very desirable, for both model interpretation and using the model. The other objective functions are good alternatives and may useful in many situations, particular the last alternative.
 
-Other reasons for so much focus on the least squares alternative is because it is computationally tractable by hand and very fast on computers, and it is easy to prove various mathematical properties. The other forms take much longer to calculate, almost always have to be done on a computer, may have multiple solutions, the solutions change dramatically given small deviations in the data (unstable, high variance solutions), and the mathematical proofs are difficult. Also the interpretation of the least squares objective function is suitable in many situations: it penalizes deviations quadratically; i.e. large deviations much more than the smaller deviations.
+Other reasons for so much focus on the least squares alternative is because it is computationally tractable by hand and very fast on computers, and it is easy to prove various mathematical properties. The other forms take much longer to calculate, almost always have to be done on a computer, may have multiple solutions, the solutions can change dramatically given small deviations in the data (unstable, high variance solutions), and the mathematical proofs are difficult. Also the interpretation of the least squares objective function is suitable in many situations: it penalizes deviations quadratically; i.e. large deviations much more than the smaller deviations.
 
-You can read more about least squares alternatives in the Birkes and Dodge reference: `Alternative Methods of Regression <http://books.google.com/books?id=kF4L6eblK6wC&lpg=PP1&ots=7EKF9MF2sc&dq=Alternative%20Methods%20of%20Regression&pg=PP1#v=onepage&q&f=false>`_
+You can read more about least squares alternatives in the book by Birkes and Dodge: `Alternative Methods of Regression <http://books.google.com/books?id=kF4L6eblK6wC&lpg=PP1&ots=7EKF9MF2sc&dq=Alternative%20Methods%20of%20Regression&pg=PP1#v=onepage&q&f=false>`_
 
 Solving the least squares problem and interpreting the model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Having settled on the least squares objective function, let's construct the problem as an optimization problem and understand it's characteristics.
+Having settled on the least squares objective function, let's construct the problem as an optimization problem and understand its characteristics.
 
 The least squares problem can be posed as an :index:`unconstrained optimization` problem:
 
@@ -434,14 +391,16 @@ The least squares problem can be posed as an :index:`unconstrained optimization`
 		\min_{\displaystyle b_0, b_1} f(b_0, b_1) &= \sum_{i=1}^{n}{(e_i)^2} \\
 												  &= \sum_{i=1}^{n}{\left(y_i - b_0 - b_1 x_i\right)^2}
 
-Continuing our example of the gas cylinder. In this case we know that :math:`\beta_0 = 0` from theoretical principles. So we can solve the above problem by trial and error fir |b1|. We expect :math:`b_1 \approx \beta_1 = \dfrac{nR}{V} = \dfrac{(14.1 \text{~mol})(8.314 \text{~J/(mol.K)})}{20 \times 10^{-3} \text{m}^3} = 5.861 \text{~kPa/K}`. So construct equally spaced points of :math:`5.0 \leq b_1 \leq 6.5`, set :math:`b_0 = 0` and calculate the objective function using the :math:`(x_i, y_i)` data points recorded earlier.
+Returning to our example of the gas cylinder. In this case we know that :math:`\beta_0 = 0` from theoretical principles. So we can solve the above problem by trial and error for |b1|. We expect :math:`b_1 \approx \beta_1 = \dfrac{nR}{V} = \dfrac{(14.1 \text{~mol})(8.314 \text{~J/(mol.K)})}{20 \times 10^{-3} \text{m}^3} = 5.861 \text{~kPa/K}`. So construct equally spaced points of :math:`5.0 \leq b_1 \leq 6.5`, set :math:`b_0 = 0`. Then calculate the objective function using the :math:`(x_i, y_i)` data points recorded earlier using :eq:`define-2-LS-optimization`.
 
 .. image:: ../figures/least-squares/cylinder-case-study-objective.png
 	:width: 600px
 	:align: center
 	:scale: 40
+	
+We find our best estimate for :math:`b_1` roughly at 5.88, the minimum of our grid search, which is very close to the theoretically expected value of 5.86 kPa/K.
 
-For the case where we have both |b0| and |b1|  varying we can construct a grid and tabulate the objective function values at all points on the grid. The least squares objective function will always be shaped like a bowl, and a unique minimum  always be found, because the objective function is :index:`convex <pair: convex optimization; least squares>`.
+For the case where we have both |b0| and |b1|  varying we can construct a grid and tabulate the objective function values at all points on the grid. The least squares objective function will always be shaped like a bowl for these cases, and a unique minimum  always be found, because the objective function is :index:`convex <pair: convex optimization; least squares>`.
 
 .. image:: ../figures/least-squares/least-squares-objective-function-annotated.png
 	:width: 750px
@@ -450,7 +409,7 @@ For the case where we have both |b0| and |b1|  varying we can construct a grid a
 
 The above figure shows the general nature of the :index:`least-squares objective function <pair: objective function; least squares>` where the two horizontal axes are for |b0| and |b1|, while the vertical axis represents the least squares objective function :math:`f(b_0, b_1)`.
 
-The illustration highlights the quadratic nature of the objective function. To find the minimum analytically we start with equation :eq:`define-2-LS-optimization` and take partial derivatives with respect to :math:`b_0` and :math:`b_1`, and set those equations to zero. This is a required condition at any optimal point -- see any reference on optimization theory. 
+The illustration highlights the quadratic nature of the objective function. To find the minimum analytically we start with equation :eq:`define-2-LS-optimization` and take partial derivatives with respect to :math:`b_0` and :math:`b_1`, and set those equations to zero. This is a required condition at any optimal point (see a reference on optimization theory), and leads to 2 equations in 2 unknowns.
 
 .. math::
 	:label: define-2-LS-b0-b1-partials
@@ -1745,6 +1704,50 @@ Enrichment topics
 
 
 These topics are not covered in depth in this book, but might be of interest to you. I provide a small introduction to each topic, showing what their purpose is, together with some examples.
+
+Nonparametric models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:index:`Nonparametric modelling <single:nonparametric modelling>` is a general model where the relationship between :math:`x` and :math:`y` is of the form: :math:`y = f(x) + \varepsilon`, but the function :math:`f(x)`, i.e. the model, is left unspecified. The model is usually a smooth function.
+
+Consider the example of plotting Prestige (the `Pineo-Porter prestige <http://en.wikipedia.org/wiki/John_Porter_(sociologist)>` score) against Income, from the 1971 Canadian census. A snippet of the data is given by:
+
+.. code-block:: s
+
+	                       education income women prestige census type
+	ECONOMISTS                 14.44   8049 57.31     62.2   2311 prof
+	VOCATIONAL.COUNSELLORS     15.22   9593 34.89     58.3   2391 prof
+	PHYSICIANS                 15.96  25308 10.56     87.2   3111 prof
+	NURSING.AIDES               9.45   3485 76.14     34.9   3135   bc
+	POSTAL.CLERKS              10.07   3739 52.27     37.2   4173   wc
+	TRAVEL.CLERKS              11.43   6259 39.17     35.7   4193   wc
+	BABYSITTERS                 9.46    611 96.53     25.9   6147 <NA>
+	BAKERS                      7.54   4199 33.30     38.9   8213   bc
+	MASONS                      6.60   5959  0.52     36.2   8782   bc
+	HOUSE.PAINTERS              7.81   4549  2.46     29.9   8785   bc
+
+The plot below on the left is the raw data, while on the right is the raw data with the nonparametric model (line) superimposed. The smoothed line is the nonparametric function, :math:`f(x)`, referred to above, and :math:`x` = Income ($), and :math:`y` = Prestige.
+
+.. image:: ../figures/least-squares/nonparametric-plots.png
+	:width: 750px
+	:align: center
+
+For bivariate cases, the nonparametric model is often called a *scatterplot smoother*. There are several methods to calculate the model; one way is by locally weighted scatterplot smoother (LOESS), described as follows. Inside a fixed subregion along the :math:`x`-axis (called the window):
+
+.. TODO: be specific in point 2 below
+
+-	collect the :math:`x`- and :math:`y`-values inside this window
+
+-	calculate a fitted :math:`y`-value, but use a weighted least squares procedure, with weights that peak at the center of the window and declines towards the edges,
+
+-	record that average :math:`y`-value against the window's center (:math:`x`-value)
+
+-	slide the window along the :math:`x` axis and repeat
+
+The *model* is the collection of these :math:`x`- and :math:`y`-values. This is why it is called nonparameteric: there are no parameters to quantify the model. For example: if the relationship between the two variables is linear, then a linear smooth is achieved. It is hard to express the relationship between :math:`x` and :math:`y` in written form, so usually these models are shown visually. The nonparametric model is not immune to outliers, but it is resistant to them.
+
+More details can be found in W.S. Cleveland, `Robust Locally Weighted Regression and Smoothing Scatterplots <http://www.jstor.org/pss/2286407>`_, *Journal of the American Statistical Association*, **74** (368), p. 829-836, 1979.
+
 
 Robust least squares models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
