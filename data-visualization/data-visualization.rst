@@ -229,9 +229,10 @@ The following data are thickness measurements of 2-by-6 boards, taken at 6 locat
     3rd Qu.:1705   3rd Qu.:1688   3rd Qu.:1696   3rd Qu.:1693   3rd Qu.:1685   3rd Qu.:1695
     Max.  :1822   Max.  :1762   Max.  :1763   Max.  :1788   Max.  :1741   Max.  :1765
 
-The following box plot is a graphical summary of these numbers.
 
 .. _visualization_boxplot_example:
+
+The following box plot is a graphical summary of these numbers.
 
 .. image:: ../figures/visualization/boxplot-for-two-by-six-100-boards.png
 	:align: left
