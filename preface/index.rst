@@ -43,11 +43,13 @@ The next major section covers :ref:`designed experiments <SECTION-design-analysi
 
 The final major section is on :ref:`latent variable modelling <SECTION_latent_variable_modelling>` where we learn how to deal with multiple variables and extracting information from them. This section is divided in several chapters (PCA, PLS, and applications), and is definitely the most crude section of this book. This section will be improved in the near future.
 
-Being a predominantly electronic book, we resort to many hyperlinks in the text. We recommend a good PDF reader that allows forward and back navigation of links. However, we have ensured that a printed copy can be navigated just as easily, especially if you use the table of content and index for cross referencing.
+Being a predominantly electronic book, we resort to many hyperlinks in the text. We recommend a good PDF reader that allows forward and back navigation of links. However, we have ensured that a printed copy can be navigated just as easily, especially if you use the table of contents and index for cross referencing.
 
-**Updates**: This book is continually updated; there isn't a fixed edition. You might have an incomplete, or older draft of the document. The latest version of the document is always available at http://pid.connectmv.com
+**Updates**: This book is continually updated; there isn't a fixed edition. You should view it as a wiki. You might currently have an incomplete, or older draft of the document. The latest version of the document is always available at http://pid.connectmv.com
 
-**Acknowledgement**: I would like to thank my students and teaching assistants who over the years have made valuable comments, suggestions and given permission to use their solutions to various questions. Thanks everyone!
+**Acknowledgement**: I would like to thank my students and teaching assistants who over the years have made valuable comments, suggestions and given permission to use their solutions to various questions. Thanks also to instructors at other universities who have used these notes and slides in their courses.
+
+Thanks everyone!
 
 .. tip:: **Copyright and Your Rights**
 
