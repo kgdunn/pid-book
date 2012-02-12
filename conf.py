@@ -306,6 +306,7 @@ _TABLE_OF_CONTENTS = r"""
 _PREAMBLE = r"""
 % ==== BEGIN CUSTOMIZED PREAMBLE ====
 \usepackage{float}
+\usepackage{cancel}  % to get cancelled terms
 
 \usepackage[]{geometry}
 %\geometry{left=1.0in,width=6.5in,top=0.75in,height=9.25in,nohead,footskip=0.5in,portrait}
@@ -401,7 +402,7 @@ _PREAMBLE = r"""
     \fancyfoot[LE,RO]{{\py@HeaderFamily\thepage}}
     \fancyfoot[LO]{{\py@HeaderFamily\nouppercase{\rightmark}}}
     \fancyfoot[RE]{{\py@HeaderFamily\nouppercase{\leftmark}}}
-    \fancyhead[LE,RO]{{\py@HeaderFamily \@title, \py@release}} % previously: \py@HeaderFamily \@title, \py@release
+    \fancyhead[LE,RO]{{\py@HeaderFamily \@title, (\py@release)}} % previously: \py@HeaderFamily \@title, \py@release
     \renewcommand{\headrulewidth}{0.4pt}
     \renewcommand{\footrulewidth}{0.4pt}
   }

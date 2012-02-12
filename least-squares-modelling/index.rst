@@ -1,7 +1,7 @@
 .. _SECTION-least-squares-modelling:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Least Squares Modelling
+Least Squares Modelling Review
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 .. toctree::

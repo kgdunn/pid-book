@@ -428,21 +428,23 @@ Now divide the first line through by :math:`n` (the number of data pairs we are 
 
 **Verify for yourself that**:
 
-#.	The first part of equation :eq:`define-2-LS-b0-b1-partials` shows :math:`\sum_i{e_i} = 0`.
+#.	The first part of equation :eq:`define-2-LS-b0-b1-partials` shows :math:`\sum_i{e_i} = 0`, also implying the average error is zero.
 
 #.	The first part of equation :eq:`define-2-LS-b0-b1-result` shows that the straight line equation passes through the mean of the data :math:`(\overline{\mathrm{x}}, \overline{\mathrm{y}})` without error.
 
-#.	From second part of equation :eq:`define-2-LS-b0-b1-partials` prove to yourself that :math:`\sum_i{(x_i e_i)} = 0`.
+#.	From second part of equation :eq:`define-2-LS-b0-b1-partials` prove to yourself that :math:`\sum_i{(x_i e_i)} = 0`, just another way of saying the dot product of the :math:`x`-data and the error, :math:`x^Te`, is zero.
 
-#.	Also prove and *interpret* that :math:`\sum_i{(\hat{y}_i e_i)} = 0`.
+#.	Also prove and *interpret* that :math:`\sum_i{(\hat{y}_i e_i)} = 0`, the dot product of the predictions and the errors is zero.
 
 #.	Notice that the parameter estimate for |b0| depends on the value of |b1|: we say the estimates are correlated - you cannot estimate them independently.
 
-#.	You can also take the second derivative to confirm that the optimum is indeed a minimum.
+#.	You can also compute the second derivative of the objective function to confirm that the optimum is indeed a minimum.
 
 **Remarks**:
 
-#.	What units does parameter estimate :math:`b_1` have? The units of :math:`\mathrm{y}` divided by the units of :math:`\mathrm{x}`.
+#.	What units does parameter estimate :math:`b_1` have? 
+
+	-	The units of :math:`y` divided by the units of :math:`x`.
 
 #.	Recall the :ref:`temperature and pressure example <LS_covariance>`: let  :math:`\hat{p}_i = b_0 + b_1 T_i`:
 
@@ -454,24 +456,24 @@ Now divide the first line through by :math:`n` (the number of data pairs we are 
 
 		-	It is the expected pressure when temperature is zero. Note: often the data used to build the model are not close to zero, so this interpretation may have no meaning.
 
-#.	What does it mean that :math:`\sum_i{(x_i e_i)} = \mathrm{x}^T\mathrm{e} = 0`:
+#.	What does it mean that :math:`\sum_i{(x_i e_i)} = x^T e = 0` (i.e. the dot product is zero):
 
-	-	The residuals are uncorrelated with the input variables, :math:`\mathrm{x}`. There is no information in the residuals that is in :math:`\mathrm{x}`.
+	-	The residuals are uncorrelated with the input variables, :math:`x`. There is no information in the residuals that is in :math:`x`.
 
-#.	What does it mean that :math:`\sum_i{(\hat{y}_i e_i)} =  \mathrm{\hat{y}}^T\mathrm{e} = 0`
+#.	What does it mean that :math:`\sum_i{(\hat{y}_i e_i)} =  \hat{y}^T e = 0`
 
 		-	The fitted values are uncorrelated with the residuals.
 
 #.	How could the denominator term for :math:`b_1` equal zero?  And what would that mean?
 
-	-	This shows that as long as there is variation in the x-data that we will obtain a solution.
+	-	This shows that as long as there is variation in the :math:`x`-data that we will obtain a solution. We get no solution to the least squares objective if there is no variation in the data.
 
 .. _LS-class-example:
 
 Example
 ~~~~~~~~
 
-We will refer back to this example several times. Calculate the least squares estimates for the model :math:`y = b_0 + b_1 x` from the given data. Also calculate the predicted value of :math:`\hat{y}_i` when :math:`x_i = 5.5`
+We will refer back to the following example several times. Calculate the least squares estimates for the model :math:`y = b_0 + b_1 x` from the given data. Also calculate the predicted value of :math:`\hat{y}_i` when :math:`x_i = 5.5`
 
 	-	:math:`b_0 =`
 	-	:math:`b_1 =`
@@ -523,11 +525,6 @@ We will refer back to this example several times. Calculate the least squares es
 	* :math:`\sum_i{\left( x_i - \overline{\mathrm{x}}_1\right)^2} = 110`
 	|}
 
-.. image:: ../figures/least-squares/show-anscombe-problem-1.png
-	:align: center
-	:width: 500px
-	:scale: 50
-
 To calculate the least squares model in R:
 
 .. code-block:: s
@@ -544,6 +541,10 @@ To calculate the least squares model in R:
 	     3.0001       0.5001
 
 
+.. image:: ../figures/least-squares/show-anscombe-problem-1.png
+	:align: center
+	:width: 500px
+	:scale: 50
 
 ..	Estimating the parameters when the data are centered
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -561,37 +562,37 @@ Least squares model analysis
 
 Once we have fitted the |b0| and |b1| terms using the data and the equations from :eq:`define-2-LS-b0-b1-result`, it is of interest to know how well the model performed. That is what this section is about. In particular:
 
-#.	Analysis of variance: breakdown the data's variability into components
+#.	Analysis of variance: breaking down the data's variability into components
 
 #.	Confidence intervals for the model coefficients, :math:`b_0` and :math:`b_1`
 
-#.	Prediction error estimates for the y-variable
+#.	Prediction error estimates for the :math:`y`-variable
 
 #.	We will also take a look at the interpretation of the software output.
 
-In order to perform the second part we need to make a few assumptions about the data, and if the data follow those assumptions, then we can derive confidence intervals for the model parameters in the third part.
+In order to perform the second part we need to make a few assumptions about the data, and if the data follow those assumptions, then we can derive confidence intervals for the model parameters.
 
 The variance breakdown
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Recall that :ref:`variability <univariate-about-variability>` is what makes our data interesting. Without variance (i.e. just flat lines) we would have nothing to do. The :index:`analysis of variance` is just a tool to show how much variability in the y-variable is explained by:
+Recall that :ref:`variability <univariate-about-variability>` is what makes our data interesting. Without variance (i.e. just flat lines) we would have nothing to do. The :index:`analysis of variance` is just a tool to show how much variability in the :math:`y`-variable is explained by:
 
  	#.	Doing nothing (no model: this implies :math:`\hat{y} = \overline{y}`)
  	#.	The model (:math:`\hat{y}_i = b_0 + b_1 x_i`)
  	#.	How much variance is left over in the errors, :math:`e_i`
 
-These 3 components must add up to the total variance. By definition, the variance is computed about a mean, so the variance of no model (i.e. the "doing nothing" case) is zero. So the total variance in vector |y| is just the sum of the other two variances: the model's variance, and the error variance. We show this next.
+These 3 components must add up to the total variance we started with. By definition, the variance is computed about a mean, so the variance of no model (i.e. the "doing nothing" case) is zero. So the total variance in vector :math:`y` is just the sum of the other two variances: the model's variance, and the error variance. We show this next.
 
 .. The variance breakdown: graphically
 .. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Using the accompanying figure, we see that geometrically, at any fixed value of :math:`x_i`, that any |y| value above or below the least squares line, call it :math:`y_i` and shown with a circle, would obey the distance relationship:
+Using the accompanying figure, we see that geometrically, at any fixed value of :math:`x_i`, that any :math:`y` value above or below the least squares line, call it :math:`y_i` and shown with a circle, must obey the distance relationship:
 
 .. math::
 
 		\begin{array}{lrcl}
 		\text{Distance relationship:} & (y_i - \overline{\mathrm{y}})         &=& (\hat{y}_i - \overline{\mathrm{y}}) + (y_i - \hat{y}_i) \\
-		\text{Squaring:}              & (y_i - \overline{\mathrm{y}})^2       &=& (\hat{y}_i - \overline{\mathrm{y}})^2 + 2(\hat{y}_i - \overline{\mathrm{y}})(y_i - \hat{y}_i) + (y_i - \hat{y}_i)^2 \\
+		\text{Squaring both sides:}   & (y_i - \overline{\mathrm{y}})^2       &=& (\hat{y}_i - \overline{\mathrm{y}})^2 + 2(\hat{y}_i - \overline{\mathrm{y}})(y_i - \hat{y}_i) + (y_i - \hat{y}_i)^2 \\
 		\text{Sum and simplify:}      & \sum{(y_i - \overline{\mathrm{y}})^2} &=& \sum{(\hat{y}_i - \overline{\mathrm{y}})^2} + \sum{(y_i - \hat{y}_i)^2} \\
 		                              & \text{Total sum of squares (TSS)} &=& \text{Regression SS (RegSS)} + \text{Residual SS (RSS)}
 	\end{array}
@@ -601,16 +602,19 @@ Using the accompanying figure, we see that geometrically, at any fixed value of 
 	:align: center
 	:scale: 60
 
+The total sum of squares (TSS) is the total variance in the vector of :math:`y`-data. This broken down into two components: the sum of squares due to regression, :math:`\sum \left(\hat{y}_i - \overline{y}\right)^2`, called RegSS, and the sum of squares of the residuals (RSS), :math:`\sum e_i^2 = e^T e`.
+
+
 It is convenient to write these sums of squares (variances) in table form, called an Analysis of Variance (:index:`ANOVA`) table:
 
 	=================== ========================================= ================================================ ======= ========================================
 	Type of variance    Distance                                  Degrees of freedom                               SSQ     Mean square
 	=================== ========================================= ================================================ ======= ========================================
-	Regression          :math:`\hat{y}_i - \overline{\mathrm{y}}` :math:`k` (:math:`k=2` in the examples so far)   RegSS   :math:`\text{RegSS}/k`
+	Regression          :math:`\hat{y}_i - \overline{y}`          :math:`k` (:math:`k=2` in the examples so far)   RegSS   :math:`\text{RegSS}/k`
 	------------------- ----------------------------------------- ------------------------------------------------ ------- ----------------------------------------
 	Error               :math:`y_i - \hat{y}_i`                   :math:`n-k`                                      RSS     :math:`\text{RSS}/(n-k)`
 	------------------- ----------------------------------------- ------------------------------------------------ ------- ----------------------------------------
-	Total               :math:`y_i - \overline{\mathrm{y}}`       :math:`n`                                        TSS     :math:`\text{TSS}/n`
+	Total               :math:`y_i - \overline{y}`                :math:`n`                                        TSS     :math:`\text{TSS}/n`
 	=================== ========================================= ================================================ ======= ========================================
 
 ..	Original table in wiki form
@@ -650,7 +654,7 @@ It is convenient to write these sums of squares (variances) in table form, calle
 
 .. _standard-error-section:
 
-Judging the standard error
+Interpreting the standard error
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The term :math:`S_E^2 = \text{RSS}/(n-k)` is one way of quantifying the model's performance. The value :math:`S_E = \sqrt{\text{RSS}/(n-k)} = \sqrt{(e^Te)/(n-k)}` is called the :index:`standard error`. It is really just the standard deviation of the error term, accounting correctly for the degrees of freedom.
