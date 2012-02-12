@@ -47,6 +47,8 @@ Being a predominantly electronic book, we resort to many hyperlinks in the text.
 
 **Updates**: This book is continually updated; there isn't a fixed edition. You might have an incomplete, or older draft of the document. The latest version of the document is always available at http://pid.connectmv.com
 
+**Acknowledgement**: I would like to thank my students and teaching assistants who over the years have made valuable comments, suggestions and given permission to use their solutions to various questions. Thanks everyone!
+
 .. tip:: **Copyright and Your Rights**
 
 
