@@ -572,7 +572,7 @@ Purchasers of your product may request a :index:`process capability ratio` (PCR)
 	
 	\text{PCR} = \frac{\text{Upper specification limit} - \text{Lower specification limit}}{6\sigma} = \frac{\text{USL} - \text{LSL}}{6\sigma}
 	
-Since the population standard deviation, :math:`\sigma`, is not known, an estimate of it is used. Note that the :index:`lower specification limit` (LSL) and :index:`upper specification limit` (USL) are **not the same** as the lower control limit (LCL) and upper control limit (UCL) as where calculated for the Shewhart chart. The LSL and USL are the tolerance limits required by your customers, or set from your internal specifications. 
+Since the population standard deviation, :math:`\sigma`, is not known, an estimate of it is used. Note that the :index:`lower specification limit` (LSL) and :index:`upper specification limit` (USL) are **not the same** as the lower control limit (LCL) and upper control limit (UCL) as were calculated for the Shewhart chart. The LSL and USL are the tolerance limits required by your customers, or set from your internal specifications. 
 
 Interpretation of the PCR:
 	
