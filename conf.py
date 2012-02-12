@@ -402,7 +402,8 @@ _PREAMBLE = r"""
     \fancyfoot[LE,RO]{{\py@HeaderFamily\thepage}}
     \fancyfoot[LO]{{\py@HeaderFamily\nouppercase{\rightmark}}}
     \fancyfoot[RE]{{\py@HeaderFamily\nouppercase{\leftmark}}}
-    \fancyhead[LE,RO]{{\py@HeaderFamily \@title, (\py@release)}} % previously: \py@HeaderFamily \@title, \py@release
+    \fancyhead[LE]{{\py@HeaderFamily \@title}} % previously: \py@HeaderFamily \@title, \py@release
+    \fancyhead[RO]{{\py@HeaderFamily \py@release}} % previously: \py@HeaderFamily \@title, \py@release
     \renewcommand{\headrulewidth}{0.4pt}
     \renewcommand{\footrulewidth}{0.4pt}
   }
