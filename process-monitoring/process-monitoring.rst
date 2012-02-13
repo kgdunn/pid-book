@@ -534,7 +534,7 @@ The R code here shows one way of calculating the EWMA values for a vector of dat
 
 
 .. EWMA can detect both changes in level and changes in variance
-.. Todo After introducing concept, show why Shewhart fails with heavy autocorr. Have to increase Shewhart N, or widen the limits.
+.. TODO: After introducing concept, show why Shewhart fails with heavy autocorr. Have to increase Shewhart N, or widen the limits.
 
 
 Other charts

@@ -539,7 +539,7 @@ Exercises
 
 .. answer:: 
 
-	*Solution based on work by Ryan, Stuart and Mudassir (2011 class)*
+	*Solution based on work by Ryan McBride, Stuart Young, and Mudassir Rashid (2011 class)*
 	
 	#.	Phase 1 is the period from which historical data is taken that is known to be "in control". From this data, upper and lower control limits can be established for the monitored variable that contain a specified percent of all in control data.
 

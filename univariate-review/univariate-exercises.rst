@@ -1192,3 +1192,54 @@ Exercises
 		The interpretation is that the true difference in slump, :math:`\mu_w`, when accounting for variation from the cement raw material, is again not statistically significant, at the 95% confidence level.
 	
 		Practically though, there is a bit of a risk, due to the imbalance (asymmetry) in the confidence interval. It would be reluctant to hinge my company's profitability on this result, especially with the fact that there are only 4 experiments.  So my personal conclusion would be to still "send the polymer engineers back to the lab".
+
+.. question::
+
+	.. Assignment 3, 2012
+
+	You are planning a series of experiments to test alternative conditions in a store and see which conditions lead to higher sales.
+
+	Which practical steps would you take to ensure independence in the experimental data, when investigating:
+
+	#.	adjustable halogen lighting: **A** = soft and dim lighting and **B** = brighter lighting
+	#.	alternative shelving: **A** = solid white metal shelves and **B** = commercial stainless steel racking
+
+.. answer::
+
+	*By Cameron DiPietro and Andrew Haines (2012 class)*
+
+	Randomization is expensive and inconvenient; however, the high cost is to ensure that the results attained in each study are not affected by unmeasured disturbances. We also have to take care to control measured disturbances as far as possible.
+
+	#.	To ensure independence when investigating adjustable halogen lighting: A = soft and dim lighting and B = brighter lighting, the following experiments and conditions may be run:
+
+		*	All light fixtures are changed correctly during the swap from A to B and the same scenario from B to A
+		*	Keep prices of all products the same during days with A lighting and days with B lighting
+		*	Do not inform customers of A to B swap or B to A swap in lighting
+		*	Ensure product quality
+		*	Use the same amount of voltage throughout the store for each lighting arrangement
+		*	Keep the store stocked the same for everyday during experiment
+		*	Use random days for each light fixture 
+		*	Maintain the same advertisements for the store during the study
+		*	Do not inform employees of lighting swaps to ensure identical employee to customer relationships
+		*	Compensate for any holiday or unexpected short days of store hours
+		*	Have employees work randomized shifts to ensure no patterns in employees moods during light fixture swaps
+		*	Employees have the same mindset to customers (if a retail business) during both A and B lighting arrangements
+		*	Assume all data from A and B light fixtures have identical population variance
+
+		If lighting A and B are installed simultaneously, then it might be possible to even run different tests during the day, randomly allocated.
+
+	#.	To ensure independence when investigating alternative shelving: A = solid white metal shelves and B = commercial stainless steel racking, the following experiments and conditions may be run:
+
+		*	Shelving size remains the same and in the same location
+		*	Identical product placement on both shelves A and B, if possible
+		*	Being able to control everything other than the variable being studied of shelves
+		*	Distances between shelves identical
+		*	Ensure employees have the same mindset during each customer visit
+		*	Identical number of items per shelf
+		*	Same shelf distances from checkout
+		*	Clean each shelf in the same manner for both A and B
+		*	Keep prices and sales the same throughout the study period
+	
+	Clearly the shelf study cannot be easily implemented, since the logistics of unstocking, removing shelf A, replacing with shelf B and restocking them is extremely costly.
+	
+	One thing to consider in such cases is to run the experiments in two separate stores that are as similar as possible in all other respects (e.g. built in the area with similar profiles of customers, similar store layout, etc.).
