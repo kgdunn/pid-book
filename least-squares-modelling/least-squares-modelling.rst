@@ -1932,7 +1932,7 @@ For completeness the confidence interval at the 95% level for :math:`\beta_1` is
 
 This confidence interval, together with the bootstrapped values of :math:`b_1` give us additional insight when when making our interpretation of :math:`b_1`. 
 
-By now you should also be wondering whether you can bootstrap the confidence interval bounds!  That's left as exercise for interested readers. The above example was inspired from an example in `ASA Statistics Computing and Graphics <http://stat-computing.org/newsletter/>`_, **13** (1), 2002.
+By now you should also be wondering whether you can bootstrap the confidence interval bounds! That's left as exercise for interested readers. The above example was inspired from an example in `ASA Statistics Computing and Graphics <http://stat-computing.org/newsletter/>`_, **13** (1), 2002.
 
 .. Give R example source code for bootstrapping.
 

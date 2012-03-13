@@ -419,7 +419,7 @@ So imagine a CUSUM chart where at some time point the process mean shifts up by 
 
 The CUSUM chart is extremely sensitive to small changes. The example chart is shown here for a process where the mean is :math:`\mu=20`, and :math:`\sigma=3`. A small shift of :math:`0.4 \times 3 = 1.2` units (i.e from 20 to 21.2) occurs at :math:`t=150`. This shift is almost imperceptible in the raw data (see the 3rd row in the figure). However, the CUSUM chart rapidly picks up the shift by showing a consistent rising slope.
 
-This figure also shows how the CUSUM chart is used with the 2 masks. Notice that there are no lower and upper bounds for :math:`S_t`. A process that is on target will show a "wondering" value of S, moving up and down. In fact, as the second row shows, a surprising amount of movement up and down occurs even when the process is in control.
+This figure also shows how the CUSUM chart is used with the 2 masks. Notice that there are no lower and upper bounds for :math:`S_t`. A process that is on target will show a "wandering" value of :math:`S`, moving up and down. In fact, as the second row shows, a surprising amount of movement up and down occurs even when the process is in control.
 
 What is of interest however is a persistent change in slope in the CUSUM chart. The angle of the superimposed V-mask is the control limit: the narrower the mouth of the mask, the more sensitive the CUSUM chart is to deviations from the target. Both the type I and II error are set by the angle of the V and the leading distance (the distance from the short vertical line to the apex of the V).
 

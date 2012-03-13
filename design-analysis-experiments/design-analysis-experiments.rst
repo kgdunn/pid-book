@@ -835,7 +835,7 @@ The data are from a plastics molding factory which must treat its waste before d
 
 	*	**C effect**: There are 4 estimates of :math:`C = \displaystyle \frac{(+25) + (+27) + (-1) + (-1)}{4} = \frac{50}{4} = \bf{12.5}`
 	*	**T effect**: There are 4 estimates of :math:`T = \displaystyle \frac{(+1) + (+3) + (+1) + (+1)}{4} = \frac{6}{4} = \bf{1.5}`
-	*	**S effect**: There are 4 estimates of :math:`S = \displaystyle \frac{(-27) + (-1) + (-29) + (-1)}{4} = \frac{58}{4} = \bf{-14.5}`
+	*	**S effect**: There are 4 estimates of :math:`S = \displaystyle \frac{(-27) + (-1) + (-29) + (-1)}{4} = \frac{-58}{4} = \bf{-14.5}`
 
 #.	Calculate the 3 two-factor interactions (2fi) by hand
 
@@ -1011,7 +1011,7 @@ So for an experiment with :math:`n` runs, and where we have coded our :math:`\ma
 			\end{bmatrix}
 			\begin{bmatrix} b_0 \\ b_A \\ b_B \\ b_{C} \\ b_{AB} \\ b_{AC} \\ b_{BC} \\ b_{ABC} \end{bmatrix} + \mathbf{e}
 			
-		Note that the center point runs do not change the orthogonality of :math:`\mathbf{X}`, however, as we expect after having studied the :ref:`least squares modelling <SECTION-least-squares-modelling>` section, that additional runs decrease the variance of the model parameters, :math:`\mathcal{V}(\mathbf{b})`. In this can there are :math:`n=2^3+3 = 11` runs, so the standard error is decreased to :math:`S_E^2 = \dfrac{\mathbf{e}^T\mathbf{e}}{11 - 8}`, but the center points do not further reduce the variance of the parameters in :math:`\sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`, since the denominator is still :math:`2^k` (**except for the intercept term**, whose variance is reduced by the center points).
+		Note that the center point runs do not change the orthogonality of :math:`\mathbf{X}`, however, as we expect after having studied the :ref:`least squares modelling <SECTION-least-squares-modelling>` section, that additional runs decrease the variance of the model parameters, :math:`\mathcal{V}(\mathbf{b})`. In this case there are :math:`n=2^3+3 = 11` runs, so the standard error is decreased to :math:`S_E^2 = \dfrac{\mathbf{e}^T\mathbf{e}}{11 - 8}`, but the center points do not further reduce the variance of the parameters in :math:`\sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`, since the denominator is still :math:`2^k` (**except for the intercept term**, whose variance is reduced by the center points).
 	
 Once we obtain the standard error for our system and calculate the variance of the parameters, we can multiply it by the critical :math:`t`-value at the desired confidence level in order to calculate the confidence limit. However, it is customary to just report the standard error next to the coefficients, so that the user can use their own level of confidence. For example:
 
