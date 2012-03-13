@@ -32,7 +32,8 @@ extensions = ['sphinx.ext.todo', 'sphinx.ext.pngmath', ]
 # -------------------------
 extensions.append('q-and-a')
 
-q_and_a_override = True
+# Uncomment the next line to create full solutions to the book
+# q_and_a_override = True
 
 if os.path.exists('ucomment-extension.py'):
     extensions.append('ucomment-extension')
