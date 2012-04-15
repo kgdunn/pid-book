@@ -326,9 +326,8 @@ Exercises
 	
 	**R code for this question**
 
-	.. literalinclude:: ../figures/doe/bioreactor-case.R
+	.. literalinclude:: ../figures/doe/bioreactor-case-improved.R
 			:language: s
-			:lines: 23-
 			
 .. question::
 
@@ -925,7 +924,7 @@ Exercises
 
 	#.	There are 7 factors in this experiment, so a full factorial would require :math:`2^7 = 128` experiments.
 
-	#.	This is a one-eighth fraction, 8/128 = 1/8.
+	#.	This is a one-sixteenth fraction, 8/128 = 1/16.
 
 	#.	Since the are 7 factors in 8 runs, the :ref:`DOE tradeoff table <DOE_design_trade_off_BHH_272>` indicates the possible generators are **D = AB**, **E = AC**, **F = BC** and **G = ABC**. However, that doesn't mean the experiments were generated with exactly those factors. For example, these experiments could have interchanged the **A** and **B** columns, in which case factors **E** and **F** would be different.
 
@@ -947,8 +946,8 @@ Exercises
 		From this we calculate :math:`\mathbf{b} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1} \mathbf{X}^T\mathbf{y}` (MATLAB and R code is given at the end).
 	
 		.. math::
-	
-			y = 20.35 -0.65 x_A -0.25 x_B + 5.05 x_C -0.45 x_E -1.45 x_F -0.15 x_G - 0.15x_H
+		
+			y = 20.35 - 0.65 x_A - 0.25 x_B + 5.05 x_C - 0.45 x_D - 1.45 x_E - 0.15 x_F + 0.15x_G
 		
 	#.	From this we judge effect **C**, **E** and to a smaller extent, effect **A**, to be significant. 
 
@@ -1188,7 +1187,7 @@ Exercises
 	#.	We assume that we can ignore all 2fi and 3fi - i.e. that they are small. Specifically, this implies that the 3.5 coefficient is for **C** and not for the product of :math:`x_\text{G} x_\text{A} x_\text{T}`
 	
 		
-		*	Fix temperature at 40°C, implying that :math:`T^\text{(next)} = 40`°C and :math:`x_\text{T}^\text{(next)} = \frac{40-33}{3} = 2.33`.
+		*	Fix temperature at 40°C, implying that :math:`T^\text{(next)} = 40\text{°C}` and :math:`x_\text{T}^\text{(next)} = \frac{40-33}{3} = 2.33`.
 		*	Factor **G** must be run at the highest level possible, i.e. **G = Gp**
 		*	Factor **A** must be run at a lower level, specifically :math:`\Delta A = -0.25 \times 2.33 = -0.583`, or a deviation of -2.9 rpm from the baseline. Since we have to use integer values, that implies :math:`A^\text{(next)} = 12` rpm and :math:`x_\text{A}^\text{(next)} = \frac{12-15}{5} = -0.6`.
 		*	Factor **C** must be run at a higher level, specifically :math:`\Delta C = 3.5/4 \times 2.33 = 2.04`, or a deviation of +306 in actual units from the baseline. Since we have to round to the closest 50, that implies :math:`C^\text{(next)} = 1550` rpm and :math:`x_\text{C}^\text{(next)} = \frac{1550-1250}{150} = +2`.

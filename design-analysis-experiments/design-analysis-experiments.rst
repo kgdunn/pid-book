@@ -8,6 +8,9 @@
 	^^^^^
 	-----
 	
+	
+	From NIST: Rotatability: A design is rotatable if the variance of the predicted response at any point x depends only on the distance of x from the design center point. A design with this property can be rotated around its center point without changing the prediction variance at x. Note: Rotatability is a desirable property for response surface designs (i.e. quadratic model designs). http://www.itl.nist.gov/div898/handbook/pri/section7/pri7.htm#Rotatability
+	
 	Comment on binary factors:
 	
 		*	can be add/don't add variables
@@ -778,13 +781,13 @@ Some things to note are (1) the orthogonality of :math:`\mathbf{X}^T\mathbf{X}` 
 	The 61.5 term in the least squares model is the expected conversion at the baseline conditions. Notice from the least squares equations how it is just the average of the 4 experimental values, even though we did not actually perform an experiment at the center.
 		
 Let's return to the :ref:`system with high interaction <DOE-two-level-factorials-interaction-effects>` where the four outcome values in standard order were 
-77, 79, 81 and 89. Defining the baseline operation as :math:`T` = 395K, and :math:`S` = 1.5 g/L, you should prove to yourself that its least squares model is:
+77, 79, 81 and 89. Looking back, the baseline operation was :math:`T` = 395K, and :math:`S` = \frac{1.25 - 0.5}{2} = 0.875 g/L; you should prove to yourself that the least squares model is:
 
 	.. math::
 	
 		y = 81.5 + 2.5 x_T + 3.5 x_S + 1.5 x_T x_S
 		
-The interaction term can now be readily interpreted: it is the additional increase in conversion seen when both temperature and :math:`S` are at their high level. If :math:`T` is at the high level and :math:`S` is at the low level, then the least squares model shows that conversion is expected at 81.5 + 2.5 - 3.5 -1.5 = 79. So the interaction term has *decreased* conversion by 1.5 units.
+The interaction term can now be readily interpreted: it is the additional increase in conversion seen when both temperature and :math:`S` are at their high level. If :math:`T` is at the high level and :math:`S` is at the low level, then the least squares model shows that conversion is expected at :math:`81.5 + 2.5 - 3.5 - 1.5 = 79`. So the interaction term has *decreased* conversion by 1.5 units.
 
 Finally, out of interest, the non-linear surface that was used to generate the experimental data for the interacting system is coloured in the illustration. In practice we never know what this surface looks like, but we estimate it with the least squares plane which appears below the non-linear surface as black and white grids. The corners of the box are outer levels at which we ran the factorial experiments.
 	
@@ -930,6 +933,8 @@ A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to esti
 	:align: left
 	:width: 800px
 	:scale: 50
+	
+The above example was from a full factorial experiment where the results for :math:`y` in standard order were: :math:`y = \left[45,71,48,65,68,60,80,65,43,100,45,104,75,86,70,96 \right]`.
 	
 In the above example we would interpret that factors **A**, **C** and **D**, as well as the interactions of **AC** and **AD** have a significant and causal effect on the response variable, :math:`y`. The main effect of **B** on the response :math:`y` is small - at least over the range that **B** was used in the experiment. Factor **B** can be omitted from future experimentation in this region, though it might be necessary to include it again if the system is operated at a very different point.
 
@@ -1155,7 +1160,7 @@ It is extremely common for known, or controllable or measurable factors to have 
 	
 	-	*Known, but not measurable nor controlled*: There is not enough material to perform all :math:`2^3` runs, there is only enough for 4 runs. The impurity in either the first batch A for 4 experiments, or the second batch B for the other 4 runs will be different, and might either increase or decrease the response variable (we don't know the effect it will have).
 	
-	-	*Known, measurable and controlled*: Reactor vessel A and B have a known, measurable effect on the output, :math:`y`. To control for this effect we all experiments in either reactor A or B, to prevent the reactor effect from :index:`confounding` (confusing) our results.
+	-	*Known, measurable and controlled*: Reactor vessel A and B have a known, measurable effect on the output, :math:`y`. To control for this effect we perform all experiments in either reactor A or B, to prevent the reactor effect from :index:`confounding` (confusing) our results.
 	
 In this section then we will deal with disturbances that are known, but their effect may or may not be measurable. We will also assume that we cannot control that disturbance, but we would like to minimize its effect.
 
@@ -1656,7 +1661,7 @@ Resolution III designs
 	-	Are excellent for initial screening: to separate out the important factors from the many potential factors
 	-	Main effects are not confounded with each other 
 	-	Main effects are aliased with two-factor interactions (:math:`3 - 1 = 2`)
-	-	Two-factor interactions are aliased with each other (:math:`3 - 2 = 1`)
+	-	Two-factor interactions are aliased with main effects (:math:`3 - 2 = 1`)
 
 Resolution IV designs
 	-	Most useful for characterizing (learning about and understanding) a system, since:
@@ -1673,13 +1678,13 @@ Resolution V designs
 	
 The above guidance about using resolution IV and V designs for characterization and optimization is general - there are many cases where a satisfactory optimization can be performed with a resolution IV experiment.
 
-Use this table to visualize the trade-off between design resolution, number of factors (:math:`k`), the number of runs required, and the aliasing pattern.
+Use the following table to visualize the trade-off between design resolution, number of factors (:math:`k`), the number of runs required, and the aliasing pattern.
 
 .. _DOE_design_trade_off_BHH_272:
 
 .. image:: ../figures/doe/DOE-trade-off-table.png
 	:alt:	../figures/doe/DOE-trade-off-table.svg
-	:scale: 80
+	:scale: 100
 	:width: 550px
 	:align: left
 
@@ -1759,6 +1764,8 @@ Run another 8 experiments, but this time just change the sign of **C** to **-C**
 *Increase design resolution* (switching all signs)
 
 One can improve the aliasing structure of a design when switching all the signs of all factors from the first fraction.
+
+.. Double check this and give an example; e.g. a 2^{5-2} design (a resolution III design) has 8 runs; what are the complementary 8 runs to increase resolution; show what the resolution and defining relationships for the 16 runs become; show the generators for both sets of 8 runs; show the generators for the combined set of 16 runs that would have been used.
 
 In the :math:`2^{7-4}_\text{III}` example, we ran 8 experiments. If we now run another 8 experiments with all the signs switched, then these 8+8 experiments would be equivalent to a :math:`2^{7-3}_\text{IV}` design. This resolution IV design means that all the main effects can now be estimated without confounding from any two-factor interactions. However, the two-factor interactions are still confounded with themselves. 
 
@@ -1860,7 +1867,7 @@ Clearly the promising direction to maximize profit is to operate at higher tempe
 .. math::
 
 	\hat{y} &= b_0 + b_T x_T + b_S x_S + b_{TS} x_T x_S \\
-	\hat{y} &= 385.6 + 55 x_T + 134 x_S - 3.75 x_T x_S 
+	\hat{y} &= 389.8 + 55 x_T + 134 x_S - 3.50 x_T x_S 
 		
 where :math:`x_T = \dfrac{x_{T,\text{actual}} - \text{center}_T}{\Delta_T / 2} = \dfrac{x_{T,\text{actual}} - 325}{5}` and similarly,  :math:`x_S = \dfrac{x_{S,\text{actual}} - 0.75}{0.25}`.
 
@@ -1907,7 +1914,7 @@ So we will choose to increase :math:`\Delta x_T = 1` coded unit, which means:
 	                    \Delta x_{S,\text{actual}} &= \frac{134}{55} \times 1 \times 0.5 / 2  = \bf{0.61}\,\,\text{g/L}\\
 
 *	:math:`T_5 = T_\text{baseline} + \Delta x_{T,\text{actual}} = 325 + 5 = 330` K
-*	:math:`S_5 = S_\text{baseline} + \Delta x_{S,\text{actual}} = 0.75 + 0.6` = 1.36`` g/L
+*	:math:`S_5 = S_\text{baseline} + \Delta x_{S,\text{actual}} = 0.75 + 0.6 = 1.36` g/L
 	
 So when we run the next experiment at these conditions. The daily profit is :math:`y_5 =` $ 669, improving quite substantially from the  baseline case.
 	
@@ -1939,7 +1946,7 @@ The profit at this point is :math:`y_7 =` $ 463. We have gone too far as profit 
 | 11        | 339 K      | 2.17 g/L  | |+|        | |+|          |  642       |
 +-----------+------------+-----------+------------+--------------+------------+
 
-This time we have deciding to slightly smaller ranges in the factorial :math:`\Delta_T = 8 = (339 - 331)` K and :math:`\Delta_S = 0.4 = (2.17 - 1.77)` g/L so that we can move more slowly along the surface.
+This time we have deciding to slightly smaller ranges in the factorial :math:`\text{range}_T = 8 = (339 - 331)` K and :math:`\text{range}_S = 0.4 = (2.17 - 1.77)` g/L so that we can move more slowly along the surface.
 
 .. figure:: ../figures/doe/RSM-base-case-combined.*
 	:align: center
@@ -1951,8 +1958,8 @@ A least squares model from the 4 factorial points (experiments 8, 9, 10, 11, run
 
 .. math::
 		\hat{y} &= b_0 + b_T x_T + b_S x_S + b_{TS} x_T x_S \\
-		\hat{y} &= 670 + 13 x_T - 39 x_S - 2.4 x_T x_S
-		
+		\hat{y} &= 673.8 + 13.25 x_T - 39.25 x_S - 2.25 x_T x_S
+
 As before we take a step in the direction of steepest ascent of :math:`b_T` units along the :math:`x_T` direction and :math:`b_S` units along the :math:`x_S` direction. Again we choose :math:`\Delta x_T = 1` unit, though we must emphasize that we could used a smaller or larger amount, if desired.
 
 .. math::

@@ -576,9 +576,11 @@ Since the population standard deviation, :math:`\sigma`, is not known, an estima
 
 Interpretation of the PCR:
 	
-	* assumes the property of interest follows a normal distribution
-	* assumes the process is centered (i.e. your long term mean is halfway between the upper and lower specification limits)
-	* assumes the PCR value was calculated when the process was stable
+	*	assumes the property of interest follows a normal distribution
+	
+	*	assumes the process is centered (i.e. your long term mean is halfway between the upper and lower specification limits)
+	
+	*	assumes the PCR value was calculated when the process was stable
 
 The PCR is often called the :index:`process width`. Let's see why by taking a look at a process with PCR=0.5 and then PCR=2.0. In the first case :math:`\text{USL} - \text{LSL} = 3\sigma`. Since the interpretation of PCR assumes a :index:`centered process`, we can draw a diagram as shown below:
 

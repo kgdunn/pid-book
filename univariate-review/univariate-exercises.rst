@@ -304,7 +304,7 @@ Exercises
 .. answer::
 	:fullinclude: no 
 
-	The objective is to calculate :math:`n`, the number of samples. Let :math:`\overline{x}` be the average of these :math:`n` samples, and this will be distributed according to the normal distribution with mean and standard deviation as shown below, if the samples are taken independently (which may not be possible in practice!):
+	The objective is to calculate :math:`n`, the number of samples. Let :math:`\overline{x}` be the average of these :math:`n` samples, and this average will be distributed according to the normal distribution with mean and standard deviation as shown below, if the samples are taken independently (which may not be possible in practice!):
 
 	.. math::
 		z = \dfrac{\overline{x}_{\text{BOD}} - \mu_{\text{BOD}}}{\sigma_{\text{BOD}}}
@@ -314,9 +314,9 @@ Exercises
 	.. math::
 	
 			\begin{array}{rcccl} 
-			  - c_n                                                             &\leq& \dfrac{\overline{x}_{\text{BOD}} - \mu_{\text{BOD}}}{\sigma_{\text{BOD}}/\sqrt{n}}    &\leq&  +c_n \\
-			\overline{x}_{\text{BOD}}  - c_n \dfrac{\sigma_{\text{BOD}}}{\sqrt{n}}   &\leq& \mu_{\text{BOD}}                                                                 &\leq& \overline{x}_{\text{BOD}}  + c_n\dfrac{\sigma_{\text{BOD}}}{\sqrt{n}} \\
-			  \text{LB}                                                         &\leq& \mu_{\text{BOD}}                                                                 &\leq& \text{UB}
+			  - c_n                                                                  &\leq& \dfrac{\overline{x}_{\text{BOD}} - \mu_{\text{BOD}}}{\sigma_{\text{BOD}}/\sqrt{n}}    &\leq&  +c_n \\
+			\overline{x}_{\text{BOD}}  - c_n \dfrac{\sigma_{\text{BOD}}}{\sqrt{n}}   &\leq& \mu_{\text{BOD}}                                                                      &\leq& \overline{x}_{\text{BOD}}  + c_n\dfrac{\sigma_{\text{BOD}}}{\sqrt{n}} \\
+			  \text{LB}                                                              &\leq& \mu_{\text{BOD}}                                                                      &\leq& \text{UB}
 			\end{array}
 
 	At this point all we know is that UB - LB = 2 mg/L. These are the rest of the assumptions we have to make: 
