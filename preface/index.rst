@@ -47,7 +47,9 @@ Being a predominantly electronic book, we resort to many hyperlinks in the text.
 
 **Updates**: This book is continually updated; there isn't a fixed edition. You should view it as a wiki. You might currently have an incomplete, or older draft of the document. The latest version of the document is always available at http://pid.connectmv.com
 
-**Acknowledgement**: I would like to thank my students and teaching assistants who over the years have made valuable comments, suggestions and given permission to use their solutions to various questions. Thanks also to instructors at other universities who have used these notes and slides in their courses.
+**Acknowledgement**: I would like to thank my students and teaching assistants who over the years have made valuable comments, suggestions, corrections, and given permission to use their solutions to various questions. Particular thanks to Ian Washington, Ryan McBride, Stuart Young, Mudassir Rashid, Yasser Ghobara, Pedro Castillo, Miles Montgomery, Cameron DiPietro, Andrew Haines, and Krishna Patel. Their contributions are greatly appreciated.
+
+Thanks also to instructors at other universities who have used these notes and slides in their courses.
 
 Thanks everyone!
 
