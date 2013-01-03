@@ -1692,7 +1692,7 @@ Incidentally, it is this confidence interval that is used in polls to judge the 
 Statistical tables for the normal- and :math:`t`-distribution
 ============================================================================
 
-.. image:: ../figures/univariate/Statistical-tables/Statistical-tables.*
+.. image:: ../figures/univariate/Statistical-tables/Statistical-tables.png
 	:scale: 110
 	:align: center
 

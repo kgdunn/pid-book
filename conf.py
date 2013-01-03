@@ -71,7 +71,7 @@ master_doc = 'contents'
 import datetime
 the_year = str(datetime.datetime.now().year)
 project = u'Process Improvement using Data'
-copyright = the_year + u'Kevin Dunn, ConnectMV Inc.'
+copyright = the_year + u'Kevin Dunn, McMaster University'
 today_fmt = '%d %B %Y'
 
 # Emits warnings for all missing references.
@@ -256,12 +256,13 @@ html_link_suffix = ''
 #htmlhelp_basename = ''
 
 
+
 # -- Options for LaTeX output --------------------------------------------------
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual], toctree only).
 latex_documents = [
-  ('contents', 'PID.tex', 'Process Improvement using Data', u'Kevin Dunn, ConnectMV Inc.', 'manual', True),
+  ('contents', 'PID.tex', 'Process Improvement using Data', u'Kevin Dunn, McMaster University', 'manual', True),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

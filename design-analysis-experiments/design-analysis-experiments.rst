@@ -1948,7 +1948,7 @@ The profit at this point is :math:`y_7 =` $ 463. We have gone too far as profit 
 
 This time we have deciding to slightly smaller ranges in the factorial :math:`\text{range}_T = 8 = (339 - 331)` K and :math:`\text{range}_S = 0.4 = (2.17 - 1.77)` g/L so that we can move more slowly along the surface.
 
-.. figure:: ../figures/doe/RSM-base-case-combined.*
+.. figure:: ../figures/doe/RSM-base-case-combined.png
 	:align: center
 	:width: 900px
 	:scale: 100

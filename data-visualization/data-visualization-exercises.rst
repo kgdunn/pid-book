@@ -135,7 +135,7 @@ Exercises
 
 	.. See the higher resolution PNG file version also
 	
-	.. image:: ../figures/visualization/kidnappings-question.*
+	.. image:: ../figures/visualization/kidnappings-question.png
 		:scale: 30
 		:align: center
 

@@ -41,11 +41,11 @@ The next chapter introduces the area of multivariate data. The first natural app
 
 The next major section covers :ref:`designed experiments <SECTION-design-analysis-experiments>` where we intentionally introduce variation into our system to learn more about it. We learn how to use the models from the experiments to optimize our process (e.g. for improved profitability).
 
-The final major section is on :ref:`latent variable modelling <SECTION_latent_variable_modelling>` where we learn how to deal with multiple variables and extracting information from them. This section is divided in several chapters (PCA, PLS, and applications), and is definitely the most crude section of this book. This section will be improved in the near future.
+The final major section is on :ref:`latent variable modelling <SECTION_latent_variable_modelling>` where we learn how to deal with multiple variables and extracting information from them. This section is divided in several chapters (PCA, PLS, and applications), and is definitely the most crude section of this book. This section will be improved in the future.
 
 Being a predominantly electronic book, we resort to many hyperlinks in the text. We recommend a good PDF reader that allows forward and back navigation of links. However, we have ensured that a printed copy can be navigated just as easily, especially if you use the table of contents and index for cross referencing.
 
-**Updates**: This book is continually updated; there isn't a fixed edition. You should view it as a wiki. You might currently have an incomplete, or older draft of the document. The latest version of the document is always available at http://pid.connectmv.com
+**Updates**: This book is continually updated; there isn't a fixed edition. You should view it as a wiki. You might currently have an incomplete, or older draft of the document. The latest version of the document is always available at http://pid.mcmaster.ca
 
 **Acknowledgement**: I would like to thank my students and teaching assistants who over the years have made valuable comments, suggestions, corrections, and given permission to use their solutions to various questions. Particular thanks to Ian Washington, Ryan McBride, Stuart Young, Mudassir Rashid, Yasser Ghobara, Pedro Castillo, Miles Montgomery, Cameron DiPietro, Andrew Haines, and Krishna Patel. Their contributions are greatly appreciated.
 
@@ -58,7 +58,7 @@ Thanks everyone!
 
 	This book is unusual in that it is not available from a publisher. You may download it electronically, use it for yourself, or share it with anyone.
 
-	The copyright to the book is held by ConnectMV, Inc. but it is licensed to you under the permissive `Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0) <http://creativecommons.org/licenses/by-sa/3.0/>`_  license.
+	The copyright to the book is held by Kevin Dunn, but it is licensed to you under the permissive `Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0) <http://creativecommons.org/licenses/by-sa/3.0/>`_  license.
 
 	In particular, you are free :
 
@@ -67,15 +67,15 @@ Thanks everyone!
 	*	**to commercialize** - you *are allowed* to create commercial applications based on this work 
 	*	**attribution** - but you must attribute the work as follows:
 
-		*	*Using selected portions*: "Portions of this work are the copyright of ConnectMV"
-		*	*or if used in its entirety*: "This work is the copyright of ConnectMV"
+		*	*Using selected portions*: "Portions of this work are the copyright of Kevin Dunn"
+		*	*or if used in its entirety*: "This work is the copyright of Kevin Dunn"
 	
 	You don't have to, but it would be nice if you tell us you are using these notes. That way we can let you know of any errors.
 
 		*	Please tell us if you find errors in these notes, or have suggestions for improvements
 		*	Please email to ask permission if you would like changes to the above terms and conditions.
 
-	.. centered:: improve@connectmv.com
+	.. centered:: kevin.dunn@mcmaster.ca
 
 	Thanks, Kevin.
 

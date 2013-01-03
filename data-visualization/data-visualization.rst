@@ -122,7 +122,7 @@ Bar plots
 
 The :index:`bar plot <pair: bar plot; visualization>` is another univariate plot on a two dimensional axis. The axes are not called x- or y-axes with bar plots, instead, one axis is called the category axis, while the other axis shows the value of each bar.
 
-.. image:: ../figures/visualization/bar-plot-example-expenses.png
+.. image:: ../figures/visualization/barplot-example-expenses.png
    :scale: 60
 
 Some advice related to bar plots:

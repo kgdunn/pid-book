@@ -84,8 +84,6 @@ Concepts
 
 Concepts and acronyms that you must be familiar with by the end of this section: 
 
-.. OLD image: image: : ../figures/mindmaps/process-monitoring-concepts.png
-
 	*	Shewhart chart, CUSUM chart and EWMA chart
 	*	Phase 1 and phase 2 when building a monitoring system
 	*	False alarms
@@ -95,6 +93,9 @@ Concepts and acronyms that you must be familiar with by the end of this section:
 	*	C\ :sub:`p` and |Cpk|
 	*	Outliers
 	*	Real-time implementation of monitoring systems
+
+.. OLD image: image: : ../figures/mindmaps/process-monitoring-concepts.png
+
 
 What is process monitoring about?
 ===================================
