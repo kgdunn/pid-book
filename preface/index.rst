@@ -45,7 +45,7 @@ The final major section is on :ref:`latent variable modelling <SECTION_latent_va
 
 Being a predominantly electronic book, we resort to many hyperlinks in the text. We recommend a good PDF reader that allows forward and back navigation of links. However, we have ensured that a printed copy can be navigated just as easily, especially if you use the table of contents and index for cross referencing.
 
-**Updates**: This book is continually updated; there isn't a fixed edition. You should view it as a wiki. You might currently have an incomplete, or older draft of the document. The latest version of the document is always available at http://pid.mcmaster.ca
+**Updates**: This book is continually updated; there isn't a fixed edition. You should view it as a wiki. You might currently have an incomplete, or older draft of the document. The latest version of the document is always available at http://learnche.mcmaster.ca/pid
 
 **Acknowledgement**: I would like to thank my students and teaching assistants who over the years have made valuable comments, suggestions, corrections, and given permission to use their solutions to various questions. Particular thanks to Ian Washington, Ryan McBride, Stuart Young, Mudassir Rashid, Yasser Ghobara, Pedro Castillo, Miles Montgomery, Cameron DiPietro, Andrew Haines, and Krishna Patel. Their contributions are greatly appreciated.
 
