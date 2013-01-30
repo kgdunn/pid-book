@@ -699,7 +699,7 @@ Now the **inverse cumulative distribution** is used when we know the area, but w
 	:width: 750px
 	:align: center
 		
-On to checking for normality. We approach this problem by first constructing some quantities that we would expect for truly normally distributed. Secondly, we construct the same quantities for the actual data. A plot of these 2 quantities against each other will reveal if the data are normal, or not.
+On to checking for normality. We approach this problem by first constructing some quantities that we would expect for truly normally distributed data. Secondly, we construct the same quantities for the actual data. A plot of these 2 quantities against each other will reveal if the data are normal, or not.
 
 #.	Imagine we have :math:`N` observations which are normally distributed. Sort the data from smallest to largest. The first data point should be the :math:`(1/N \times 100)` quantile, the next data point is the :math:`(2/N \times 100)` quantile, the middle, sorted data point is the 50th quantile, :math:`(1/2 \times 100)`, and the last, sorted data point is the :math:`(N/N \times 100)` quantile.
 
