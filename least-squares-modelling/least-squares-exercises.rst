@@ -854,9 +854,9 @@ Exercises
 
 	In this question we will revisit the `bioreactor yield <http://datasets.connectmv.com/info/bioreactor-yields>`_ data set and fit a linear model with all :math:`x`-variables to predict the yield. (This data was also used :ref:`in a previous question <bioreactor_LS_question>`.)
 
-	#.	Provide the interpretation for each coefficient in the model, and also comment on its confidence interval when interpreting it.
+	#.	Provide the interpretation for each coefficient in the model, and also comment on each one's confidence interval when interpreting it.
 
-	#.	Compare the 3 slope coefficient values you just calculated, to those from the last assignment:
+	#.	Compare the 3 slope coefficient values you just calculated, to those from the previous question:
 
 		-	:math:`\hat{y} = 102.5 - 0.69T`, where :math:`T` is tank temperature
 		-	:math:`\hat{y} = -20.3 + 0.016S`, where :math:`S` is impeller speed
@@ -1132,7 +1132,7 @@ Exercises
 		:width: 650px
 		:align: center
 
-	Your company provides the polymer additive, and you are developing an improved polymer formulation, call it B, that hopefully provides the same slump values as your existing polymer, call it A. Formulation B costs less money than A, but you don't want to upset, or loose, customers by varying the slump value too much.
+	Your company provides the polymer additive, and you are developing an improved polymer formulation, call it B, that hopefully provides the same slump values as your existing polymer, call it A. Formulation B costs less money than A, but you don't want to upset, or lose, customers by varying the slump value too much.
 
 	The following slump values were recorded over the course of the day:
 

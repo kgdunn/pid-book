@@ -8,6 +8,54 @@
 	^^^^^
 	-----
 	
+	RSM:
+	 * pay attention to subsequent models. How do the slope coefficients changes from model to model? What are we learning about the system and how it changes in different operating regions
+	
+	* RSM: emphasize 25% range by giving an example: some students thought this was the half-range, so used 50% range actually.
+	
+	* RSM: emphasize that star points must be added to support a quadratic. Cannot just add quadratic terms to the model.
+	
+	
+	From JMP, Bradley Jones, Linked-In, 11 February 2013 : 
+	
+	 I will repost my material on design evaluation below but first I would like to talk about the Design Diagnostics report in JMP. The report provides 4 scalar design summary measures. These all have to do with either the variance of predicted responses or the variance of parameter estimates. These scalars are the D Efficiency, G Efficiency, A Efficiency and Average Variance of Prediction. 
+
+	I will explain what each of these are but first, I need to define some terms. Suppose I have 3 factors F1, F2 and F3. Suppose that I want to fit a model containing the main effects and two-factor interactions of these factors. The factor settings matrix, F, has rows that are the values of F1, F2 and F3 (in vector notation [F1 F2 F3]. Note that JMP always scales continuous factors to lie on the interval between -1 and 1. 
+
+	When you expand the above row to model form you get a vector x that looks like this: 
+	[1 F1 F2 F3 F1*F2 F1*F3 F2*F3]. The 1 is for the intercept of the model and the last three terms are the two factor interactions. 
+
+	The model matrix, X, is composed of all the rows of the factor settings matrix expanded to model form. I call p the number of columns in X and n the number of rows in X. 
+
+	D-Efficiency is defined as 100(det(X'X)^(1/p))/n 
+	The D-Efficiency is one omnibus measure of how precise the estimates of the model coefficients are compared to the theoretically perfect design (which might not exist). 
+
+	The prediction variance relative to the unknown value of the error variance for a given row, x, is x*inverse(X'X)*x' 
+
+	Let maxV be the maximum variance of prediction inside the region of the factors. For the "perfect design" maxV would be p. The G-efficiency is defined as 
+	100p/maxV. It is a measure of how bad the worst case prediction variance is. 
+
+	Call the sum of the diagonal elements of inverse(X'X), sV. For the "perfect design" sV would be p/n 
+	The A-efficiency is 100*n*sV/p. It is another omnibus measure of the precision of the parameter estimates. 
+
+	The Average Variance of Prediction is the the prediction variance integrated over the region of the factors divided by the volume of the region. This is a more balanced measure of the prediction variance than G-Efficiency. 
+
+	None of these "one number summaries" is adequate by itself. The other Design Evaluation tools in JMP provide much more information. 
+
+	Next I will re-post my comments from the other thread about design evaluation.
+	
+	The question is how to use the Design Evaluation outputs in JMP to compare designs. 
+
+	Variance and bias are two fundamental concepts in statistics. In the analysis of designed experiments you look at the estimates of the parameters and make predictions of the response at various factor settings. Whether these estimates and predictions are useful depends on the magnitude of the variance and bias. 
+
+	The uncertainty (noise or variance) in parameter estimates or response predictions is transmitted from noise (random variation) in the measurements and noise in the system or process under investigation. Good designs transmit less noise to the parameters and response predictions than poor designs. The Prediction Variance Profile, Fraction of the Design Space Plot andPrediction Variance Surface show the effect of noise on the response predictions. The Power Analysis and Variance Inflation Factors (VIF) measure the effect of noise on the parameter estimates. Personally, I use the Fraction of Design Space Plot for comparing prediction variance of two designs. For comparing the variance of parameter estimates, I put the Variance Inflation Factors reports for the two designs side-by-side. You want the VIFs to be as close to 1 (perfect) as possible. But VIFs are not scale invariant, so I just compare alternatives rather than making rules on the absolute numbers. This is especially important in mixture design and designs with restrictions on the allowable settings of the factors. 
+
+	The Alias Matrix and the Color Map On Correlations address bias. In DOE a common source pf bias is that the model you use to analyze the data is missing a term. For example in the orthogonal half fraction of the 2x2x2 design, the main effects are each biased by a different two-factor interaction if that interaction effect is not negligible. In JMP you can define a set of Alias Terms that while they are not in your model, you think they might turn out to be active. Each element in the Alias Matrix shows the fraction by which an active alias term will bias the given term in the model. For example, in the design I mention above, the entries in the Alias Matrix are all either 0, 1 or -1. That means that if the true main effect of a factor is 5 and the aliasing two-factor interaction's effect is 4, then the expected parameter estimate will be 5+4 = 9. So, you would think that the main effect was much bigger than it actually is. Obviously, you would like the entries of the Alias Matrix to be zero or as small as possible. The Color Map On Correlations is a cell plot where each cell shows the absolute value of the correlation between two design (or model term) columns. If you are using a white-to-black color scale, you want everything off the diagonal of this plot to be as nearly white as possible. 
+
+	None of these outputs is a one number summary. Choosing between design alternatives represents making trade-offs between the number of runs you are willing to perform, the number of terms in the model you wish to estimate and the number of additional terms that you think might be active but are not willing to spend the extra runs to estimate. Usually increasing the number of runs will lower the variance and can also lower the bias. However, more runs generally cost more.
+	
+	
+	---------------
 	
 	From NIST: Rotatability: A design is rotatable if the variance of the predicted response at any point x depends only on the distance of x from the design center point. A design with this property can be rotated around its center point without changing the prediction variance at x. Note: Rotatability is a desirable property for response surface designs (i.e. quadratic model designs). http://www.itl.nist.gov/div898/handbook/pri/section7/pri7.htm#Rotatability
 	
@@ -355,7 +403,7 @@ Here's another example from Box's book: consider the negative slope least square
 	
 Figure adapted from Box, Hunter and Hunter, chapter 14 (1\ :sup:`st` ed) or chapter 10 (2\ :sup:`nd` ed).
 
-So the true effect of pressure on yield is non-existent, it is only appears in the data because of the operating policy. That is why happenstance data cannot be relied on to imply cause-and-effect.  An experiment in which the pressure is changed from low to high, performed on the same batch of raw materials (i.e. at constant impurity level), will quickly reveal that there is no causal relationship effect between pressure and yield. Furthermore, experiments should be performed in random order, further breaking any relationship with other non-causal factors. Only the truly causal effect will remain in experimental data, *correlated* effects will be broken: they show up as having close to zero correlation in the DOE data.
+So the true effect of pressure on yield is non-existent, it is only appears in the data because of the operating policy. That is why happenstance data cannot be relied on to imply cause-and-effect.  An experiment in which the pressure is changed from low to high, performed on the same batch of raw materials (i.e. at constant impurity level), will quickly reveal that there is no causal relationship between pressure and yield. Furthermore, experiments should be performed in random order, further breaking any relationship with other non-causal factors. Only the truly causal effect will remain in experimental data, *correlated* effects will be broken: they show up as having close to zero correlation in the DOE data.
 
 In summary, do not rely on anecdotal "evidence" from colleagues - always question the system and always try to perturb the system intentionally. In practice you won't always be allowed to move the system too drastically, so we will discuss response surface methods and evolutionary operation at the end of this section which can be implemented on-line in production processes.
 
@@ -1939,9 +1987,9 @@ The profit at this point is :math:`y_7 =` $ 463. We have gone too far as profit 
 +-----------+------------+-----------+------------+--------------+------------+
 | 8         | 331 K      | 1.77 g/L  | |-|        | |-|          |  694       |
 +-----------+------------+-----------+------------+--------------+------------+
-| 9         | 339 K      | 2.17 g/L  | |+|        | |-|          |  725       |
+| 9         | 339 K      | 1.17 g/L  | |+|        | |-|          |  725       |
 +-----------+------------+-----------+------------+--------------+------------+
-| 10        | 331 K      | 1.77 g/L  | |-|        | |+|          |  620       |
+| 10        | 331 K      | 2.17 g/L  | |-|        | |+|          |  620       |
 +-----------+------------+-----------+------------+--------------+------------+
 | 11        | 339 K      | 2.17 g/L  | |+|        | |+|          |  642       |
 +-----------+------------+-----------+------------+--------------+------------+
@@ -1999,7 +2047,7 @@ So when the measured center point value is quite different from the predicted ce
 
 We will not go into too much detail about :index:`central composite designs`, other than to show what they look like for the case of 2 and 3 variables. These designs take an existing orthogonal factorial and augment it will axial points. This is great, because we can start off with an ordinary factorial and always come back later to add the terms to account for nonlinearity.
 
-The :index:`axial points <pair: axial points; experiments>` are placed :math:`\sqrt{2} = 1.4` coded units away from the center for a 2 factor system, and 1.7 units away for a :math:`k=3` factor system. Rules for higher numbers of factors, and the reasoning behind the 1.4 and 1.7 unit step size can be found, for example in the textbook by Box, Hunter and Hunter.
+The :index:`axial points <pair: axial points; experiments>` are placed :math:`4^{0.25} = 1.4` coded units away from the center for a 2 factor system, and :math:`8^{0.25} = 1.7` units away for a :math:`k=3` factor system. Rules for higher numbers of factors, and the reasoning behind the 1.4 and 1.7 unit step size can be found, for example in the textbook by Box, Hunter and Hunter.
 
 .. image:: ../figures/doe/central-composite-design.png
 	:align: left
@@ -2029,7 +2077,7 @@ The four response values were :math:`y_{13} = 720`, :math:`y_{14} = 699`, :math:
 
 Notice how the linear terms estimated previously are the same! The quadratic effects are clearly significant when compared to the other effects, which was what prevented us from successfully using a linear model to project out to point 12 previously.
 
-The final step in the response surface methodology is to plot this model's contour plot and predict where to run the next few experiments. As the solid contour lines in the illustration show, we should run our next experiments roughly at :math:`T` = 343K and :math:`S` = 1.65 g/L where the expected profit is around $735. We get those two values by eye-balling the solid contour lines, drawn from the above non-linear model. You could find this point analytically as well. 
+The final step in the response surface methodology is to plot this model's contour plot and predict where to run the next few experiments. As the solid contour lines in the illustration show, we should run our next experiments roughly at :math:`T` = 343K and :math:`S` = 1.60 g/L where the expected profit is around $736. We get those two values by eye-balling the solid contour lines, drawn from the above non-linear model. You could find this point analytically as well. 
 
 This is not exactly where the true process optimum is, but it is pretty close to it (the temperature of :math:`T` = 343K is just a little lower that where the true optimum is.
 

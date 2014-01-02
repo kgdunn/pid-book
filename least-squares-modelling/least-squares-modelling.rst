@@ -1596,13 +1596,13 @@ We have to introduce additional terms into the model if we have integer variable
 	- India: :math:`d_{i1} = 1` and :math:`d_{i2} = 0`
 	- Vietnam: :math:`d_{i1} = 0` and :math:`d_{i2} = 1`.
 
-and solve for the least squares model: :math:`y = \beta_0 + \beta_1x_1 + \ldots + \beta_k x_k + \gamma_1 d_1 + \gamma_2 d_2 + \varepsilon`, where :math:`\gamma_1` is the effect of the Indian supplier, holding all other terms constant;  :math:`\gamma_2` is the incremental effect of the Vietnamese supplier in addition to the Indian supplier. Because of this somewhat confusing interpretation of the coefficients, sometimes people will rather sacrifice an extra degree of freedom, but introduce :math:`p` new terms for the :math:`p` levels of the integer variable, instead of :math:`p-1` terms.
+and solve for the least squares model: :math:`y = \beta_0 + \beta_1x_1 + \ldots + \beta_k x_k + \gamma_1 d_1 + \gamma_2 d_2 + \varepsilon`, where :math:`\gamma_1` is the effect of the Indian supplier, holding all other terms constant (i.e. it is the incremental effect of India relative to Spain);  :math:`\gamma_2` is the incremental effect of the Vietnamese supplier relative to the base case of the Spanish supplier. Because of this somewhat confusing interpretation of the coefficients, sometimes people will assume they can sacrifice an extra degree of freedom, but introduce :math:`p` new terms for the :math:`p` levels of the integer variable, instead of :math:`p-1` terms.
 
 	- Spain: :math:`d_{i1} = 1` and :math:`d_{i2} = 0` and :math:`d_{i3} = 0`
 	- India: :math:`d_{i1} = 0` and :math:`d_{i2} = 1` and :math:`d_{i3} = 0`
 	- Vietnam: :math:`d_{i1} = 0` and :math:`d_{i2} = 0` and :math:`d_{i3} = 1`
 
-and :math:`y = \beta_0 + \beta_1x_1 + \ldots + \beta_k x_k + \gamma_1 d_1 + \gamma_2 d_2 + \gamma_3 d_3 + \varepsilon`, where the coefficients :math:`\gamma_1, \gamma_2` and :math:`\gamma_3` can now be more easily interpreted.
+and :math:`y = \beta_0 + \beta_1x_1 + \ldots + \beta_k x_k + \gamma_1 d_1 + \gamma_2 d_2 + \gamma_3 d_3 + \varepsilon`, where the coefficients :math:`\gamma_1, \gamma_2` and :math:`\gamma_3` are assumed to be more easily interpreted. However, calculating this model will fail, because there is a built-in perfect linear combination. The :math:`\mathbf{X}^T\mathbf{X}` matrix is not invertible.
 
 Outliers: discrepancy, leverage, and influence of the observations
 ==========================================================================================

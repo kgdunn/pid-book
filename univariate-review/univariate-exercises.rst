@@ -415,7 +415,7 @@ Exercises
 	:fullinclude: no 
 	:short: You can do an ordinary test of differences, or a paired test. Also note that there are missing data which reduce the degrees of freedom.
 	
-		The purpose of this question is to compare two system. There are two ways: either compare one group to another group, or to have paired tests. We could consider this a paired test, because the material is run in both reactors at the same conditions. In this answer we compare reactor I to reactor J as groups. Our answer will be to run experiments in the reactors that show the smallest difference.
+		The purpose of this question is to compare two systems. There are two ways: either compare one group to another group, or to have paired tests. We could consider this a paired test, because the material is run in both reactors at the same conditions. In this answer we compare reactor I to reactor J as groups. Our answer will be to run experiments in the reactors that show the smallest difference.
 
 	.. note:: This question also has missing data, denote as ``NA`` in R. Most real data sets that you deal with will have missing data and the questions will expect to deal with them. For example, the degrees of freedom will be reduced because of the missing data. Use this solution to see how to write code in R that deals with missing values.
 
@@ -447,14 +447,14 @@ Exercises
     
 	While all three reactors have confidence intervals that span zero at the 95% level, notice how the interval gives us a feel for the degree of difference. Clearly **reactors TK105 and TK107 are the most similar**, however all 3 are statistically equivalent from a confidence interval point of view. Contrast this to using a hypothesis test, which you may have encountered in other statistical courses. A hypothesis test just tells you  "yes" or "no"; a confidence interval gives a much better engineering feel for the degree of difference.
 
-	A full solution to this question require you report the z-values and its corresponding risk.
+	A full solution to this question require you report the :math:`z`-values and its corresponding risk.
 
 	.. literalinclude:: ../figures/univariate/brittleness-comparison-assignment3-2010.R
 	       :language: s
 	
 	**Using a paired test**
 	
-	Pairing assumes that each reactor was run with the same material, except that the material was split into thirds: one third for each reactor. As described in the :ref:`section on paired tests <univariate_paired_tests>` we rely on calculating the difference in brittleness, then calculating the z-value of the average difference. Contrast this to the unpaired tests, where we calculated the difference of the averages.
+	Pairing assumes that each reactor was run with the same material, except that the material was split into thirds: one third for each reactor. As described in the :ref:`section on paired tests <univariate_paired_tests>` we rely on calculating the difference in brittleness, then calculating the :math:`z`-value of the average difference. Contrast this to the unpaired tests, where we calculated the difference of the averages.
 
 	The code below shows how the paired differences are evaluated for each of the 3 combinations. The paired test highlights the similarity between TK105 and TK107, the same as the unpaired test. However the paired test shows much more clearly how different tanks TK104 and TK105 are, and especially TK104 and TK107. 
 
@@ -1047,7 +1047,7 @@ Exercises
 		:width: 750px
 		:align: center
 
-	Your company provides the polymer additive, and you are developing an improved polymer formulation, call it B, that hopefully provides the same slump values as your existing polymer, call it A. Formulation B costs less money than A, but you don't want to upset, or loose, customers by varying the slump value too much.
+	Your company provides the polymer additive, and you are developing an improved polymer formulation, call it B, that hopefully provides the same slump values as your existing polymer, call it A. Formulation B costs less money than A, but you don't want to upset, or lose, customers by varying the slump value too much.
 	
 	#.	You have a single day to run your tests (experiments). Preparation, mixing times, measurement and clean up take 1 hour, only allowing you to run 10 experiments. Describe all precautions, and why you take these precautions, when planning and executing your experiment. Be very specific in your answer (use bullet points).
 
