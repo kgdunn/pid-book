@@ -1367,7 +1367,7 @@ The usual approach for assessing if the difference between :math:`\overline{x}_B
 		
 				\mathcal{V}\left\{\overline{x}_B - \overline{x}_A\right\} = \frac{\sigma^2}{n_A} + \frac{\sigma^2}{n_B} = \sigma^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)
 				
-		For a full proof of this result, please see :eq:`eq_add_variance_2`.
+..		For a full proof of this result, please see :eq:`eq_add_variance_2`.
 			
 	#.	Using the central limit theorem, even if the samples in A and the samples in B are non-normal, the sample averages :math:`\overline{x}_A` and :math:`\overline{x}_B` will be much more normal, even for small sample sizes. So the difference between these means will also be more normal: :math:`\overline{x}_B - \overline{x}_A`. Now express this difference in the form of a :math:`z`-deviate (:index:`standard form`):
 	
@@ -1569,7 +1569,7 @@ In each case we have a table of :math:`n` samples recording the **difference val
 
 The advantage of the paired test is that any :index:`systematic error` in our measurement system, what ever it might be, is removed as long as that error is consistent. Say for example we are measuring blood pressure, and the automated blood pressure device has a bias of -5 mmHg. This systematic error will cancel out when we subtract the 2 test readings. In the example of the raw materials and additives: any variation in the raw materials and its (unintended) effect on the outcome variable of interest will be cancelled.
 
-The disadvantage of the paired test is that we loose degrees of freedom. Let's see how:
+The disadvantage of the paired test is that we lose degrees of freedom. Let's see how:
 
 	#.	Calculate the :math:`n` differences: :math:`w_1 = x_{B,1} - x_{A,1}; w_2 = x_{B,2} - x_{A,2}, \ldots` to create the sample of values :math:`\mathbf{w} = [w_1, w_2, \ldots, w_n]`
 	

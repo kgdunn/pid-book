@@ -435,7 +435,7 @@ Exercises
 		:align: center
 		:width: 750px
 	
-	Next we remove the subgroups which lie outside the limits. Please try using he R code to see how to do it automatically. The new limits, after removing the subgroups beyond the limits from the first round are: LCL = 18.24, target = 21.71 and UCL = 25.18. They barely changed. But the updated plot with subgroups removed is now shown below. There is no need to perform another round of pruning. Only if you used a subgroup size of 4 would you need to do a third round. You could also have just shifted the limits to a different level, for example, to :math:`\pm 4` standard deviations. We can do this if we have enough process knowledge to understand the implication of it, in terms of profit.
+	Next we remove the subgroups which lie outside the limits. Please try using the R code to see how to do it automatically. The new limits, after removing the subgroups beyond the limits from the first round are: LCL = 18.24, target = 21.71 and UCL = 25.18. They barely changed. But the updated plot with subgroups removed is now shown below. There is no need to perform another round of pruning. Only if you used a subgroup size of 4 would you need to do a third round. You could also have just shifted the limits to a different level, for example, to :math:`\pm 4` standard deviations. We can do this if we have enough process knowledge to understand the implication of it, in terms of profit.
 
 	.. image:: ../figures/monitoring/Kappa-phaseI-second-round.png
 		:align: center

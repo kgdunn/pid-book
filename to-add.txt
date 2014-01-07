@@ -9,3 +9,13 @@ Enrichment
 ----------
 
 At end of L/S section: nonlinear regression
+
+
+
+
+Index:
+
+Add a line: "Please email me if there is an index entry that you would like to see here"
+
+Index: "randomization"; "random"
+

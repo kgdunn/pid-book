@@ -120,7 +120,7 @@ Some further tips:
 Bar plots
 =========
 
-The :index:`bar plot <pair: bar plot; visualization>` is another univariate plot on a two dimensional axis. The axes are not called x- or y-axes with bar plots, instead, one axis is called the category axis, while the other axis shows the value of each bar.
+The :index:`bar plot <pair: bar plot; visualization>` is another univariate plot on a two dimensional axis. The axes are not called x- or y-axes with bar plots, instead, one axis is called the *category axis*, while the other axis shows the value of each bar, the *value axis*.
 
 .. image:: ../figures/visualization/barplot-example-expenses.png
    :scale: 60
@@ -333,7 +333,7 @@ Three common pitfalls to avoid:
 
 #.	Using pie charts when tables will do
 
-	Pie charts are tempting when we want to graphically breakdown a quantity into components. I have used them erroneously myself (here is an example on a website that I helped with: http://macc.mcmaster.ca/graduate-students/where-do-they-work). We won't go into details here, but I strongly suggest you read the convincing evidence of Stephen Few in: `"Save the pies for dessert" <http://www.perceptualedge.com/articles/08-21-07.pdf>`_. The key problem is that the human eye cannot adequately decode angles, however we have no problem with linear data.
+	Pie charts are tempting when we want to graphically breakdown a quantity into components. I have used them erroneously myself (here is an example on a website that I helped with: http://www.macc.mcmaster.ca/gradstudies.php). We won't go into details here, but I strongly suggest you read the convincing evidence of Stephen Few in: `"Save the pies for dessert" <http://www.perceptualedge.com/articles/08-21-07.pdf>`_. The key problem is that the human eye cannot adequately decode angles, however we have no problem with linear data.
 
 #.	Arbitrary ordering along the first column; usually alphabetically or in time order
 

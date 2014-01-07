@@ -246,6 +246,33 @@ Exercises
 
 	#.	The thick center line on each boxplot is the median (50th percentile) of that variable.  The top and bottom edges of the box are the 25th and 75th percentile, respectively.  If the data are from a symmetric distribution, such as the :math:`t` or normal distribution, then the median should be approximately centered with respect to those 2 percentiles.  The fact that it is not, especially for position 1, indicates the data are *skewed* either to the left (median is closer to upper edge) or the the right (median closer to the lower edge).
 
+.. question::
+
+	What are the names of the axes on a bar plot?
+
+.. question::
+	
+	Which types of features can can the human eye easily pick out of a time series plot?
+
+.. question::
+
+	Describe what the main difference(s) between a bar chart and a histogram are.
+	
+.. answer::
+
+	The solution is taken directly from: http://www.forbes.com/sites/naomirobbins/2012/01/04/a-histogram-is-not-a-bar-chart/
+
+	*	Histograms are used to show distributions of variables while bar charts are used to compare variables.
+	*	Histograms plot quantitative data with ranges of the data grouped into bins or intervals while bar charts plot categorical data.
+	*	Bars can be reordered in bar charts but not in histograms.
+	*	There are no spaces between the bars of a histogram since there are no gaps between the bins. An exception would occur if there were no values in a given bin but in that case the value is zero rather than a space. On the other hand, there are spaces between the variables of a bar chart.
+	*	The bars of bar charts typically have the same width. The widths of the bars in a histogram need not be the same as long as the total area is one hundred percent if percents are used or the total count if counts are used. Therefore, values in bar charts are given by the length of the bar while values in histograms are given by areas.
+
+
+.. question::
+
+	Write out a list of any features that can turn a plot into a poor visualization. Think carefully about plots you encountered in textbooks and scientific publications.
+
 ..	question:: 
 
 	*Enrichment*:
