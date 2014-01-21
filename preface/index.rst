@@ -47,7 +47,7 @@ Being a predominantly electronic book, we resort to many hyperlinks in the text.
 
 **Updates**: This book is continually updated; there isn't a fixed edition. You should view it as a wiki. You might currently have an incomplete, or older draft of the document. The latest version of the document is always available at http://learnche.mcmaster.ca/pid
 
-**Acknowledgements**: I would like to thank my students and teaching assistants who over the years have made valuable comments, suggestions, corrections, and given permission to use their solutions to various questions. Particular thanks to Emily Nichols (2010), Ian Washington (2011), Ryan McBride (2011), Stuart Young (2011), Mudassir Rashid (2011), Yasser Ghobara (2012), Pedro Castillo (2012), Miles Montgomery (2012), Cameron DiPietro (2012), Andrew Haines (2012), Krishna Patel (2012), Xin Yuan (2013), Sean Johnstone (2013), Jervis Pereira (2013). Their contributions are greatly appreciated.
+**Acknowledgements**: I would like to thank my students and teaching assistants who over the years have made valuable comments, suggestions, corrections, and given permission to use their solutions to various questions. Particular thanks to Emily Nichols (2010), Ian Washington (2011), Ryan McBride (2011), Stuart Young (2011), Mudassir Rashid (2011), Yasser Ghobara (2012), Pedro Castillo (2012), Miles Montgomery (2012), Cameron DiPietro (2012), Andrew Haines (2012), Krishna Patel (2012), Xin Yuan (2013), Sean Johnstone (2013), Jervis Pereira (2013), Ghassan Marjaba (2014). *Their contributions are greatly appreciated.*
 
 Thanks also to instructors at other universities who have used these notes and slides in their courses and provided helpful feedback.
 

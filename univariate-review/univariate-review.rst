@@ -447,7 +447,7 @@ An example: a histogram for a system that produces 70% acceptable product, :math
 	:width: 750px
 	:scale: 45
 
-If the each observation is independent of the other, then:
+If each observation is independent of the other, then:
 
 	-	For the above system where :math:`p(\text{pass}) = 0.7`, what is probability of seeing the following outcome: **pass**, **pass**, **pass** (3 times in a row)?
 
@@ -560,7 +560,7 @@ We frequently violate this assumption of independence in engineering application
 		
 -	The impurity values in the last 100 batches of product produced is shown below. Which of the 3 time sequences has independent values?
 
-	In chemical processes there is often a transfer from batch-to-batch: we usually use the same lot of raw materials for successive batches, the batch reactor may not have be cleaned properly between each run, and so on. It is very likely that two successive batches (:math:`k` and :math:`k+1`) are somewhat related, and less likely that batch :math:`k` and :math:`k+2` are related. In the figure below, can you tell which sequence of values are independent?
+	In chemical processes there is often a transfer from batch-to-batch: we usually use the same lot of raw materials for successive batches, the batch reactor may not have been cleaned properly between each run, and so on. It is very likely that two successive batches (:math:`k` and :math:`k+1`) are somewhat related, and less likely that batch :math:`k` and :math:`k+2` are related. In the figure below, can you tell which sequence of values are independent?
 	
 	.. image:: ../figures/univariate/simulate-independence.png
 		:align: center
@@ -568,11 +568,11 @@ We frequently violate this assumption of independence in engineering application
 	
 	Sequence 2 (sequence 1 is positively correlated, while sequence 3 is negatively correlated).
 
--	We need a highly reliable pressure release system. Manufacturer A sells a system that fails 1 in every 100 occasions, and manufacturer B sells a system that fails 3 times in every 1000 occasions. What is
+-	We need a highly reliable pressure release system. Manufacturer A sells a system that fails 1 in every 100 occasions, and manufacturer B sells a system that fails 3 times in every 1000 occasions. Given this information, answer the following:
 
-		-	:math:`p(\text{A}_\text{fails}) = 1/100` 
-		-	:math:`p(\text{B}_\text{fails}) = 3/1000` 
-		-	:math:`p(\text{both A and B fail}) = \frac{1}{100} \cdot \frac{3}{1000} = 3 \times 10^{-5}`, but only if system A and B are totally independent.
+		-	The probability that system A fails: :math:`p(\text{A}_\text{fails}) = 1/100` 
+		-	The probability that system B fails::math:`p(\text{B}_\text{fails}) = 3/1000` 
+		-	The probability that both system A and fail at the same time: :math:`p(\text{both A and B fail}) = \frac{1}{100} \cdot \frac{3}{1000} = 3 \times 10^{-5}`, but only if system A and B are totally independent.
 		-	For the previous question, what does it mean for system A to be totally independent of system B?
 	
 				It means the 2 systems must be installed in parallel, so that there is no interaction between them at all.
@@ -1367,14 +1367,14 @@ The usual approach for assessing if the difference between :math:`\overline{x}_B
 		
 				\mathcal{V}\left\{\overline{x}_B - \overline{x}_A\right\} = \frac{\sigma^2}{n_A} + \frac{\sigma^2}{n_B} = \sigma^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)
 				
-..		For a full proof of this result, please see :eq:`eq_add_variance_2`.
-			
+		..	For a full proof of this result, please see :eq:`eq_add_variance_2`.
+
 	#.	Using the central limit theorem, even if the samples in A and the samples in B are non-normal, the sample averages :math:`\overline{x}_A` and :math:`\overline{x}_B` will be much more normal, even for small sample sizes. So the difference between these means will also be more normal: :math:`\overline{x}_B - \overline{x}_A`. Now express this difference in the form of a :math:`z`-deviate (:index:`standard form`):
-	
+
 		.. math::
 			:label: zvalue-for-difference
 
-			z = \frac{(\overline{x}_B - \overline{x}_A) - (\mu_B - \mu_A)}{\sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}}
+				z = \frac{(\overline{x}_B - \overline{x}_A) - (\mu_B - \mu_A)}{\sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}}
 				
 	 	We could ask, what is the probability of seeing a :math:`z` value from equation :eq:`zvalue-for-difference` of that magnitude?  Recall that this :math:`z`-value is the equivalent of :math:`\overline{x}_B - \overline{x}_A`, expressed in deviation form, and we are interested if this difference is due to chance. So we should ask, what is the probability of getting a value of :math:`z` **greater** than this, or **smaller** that this, depending on the case? 
 		
@@ -1693,6 +1693,6 @@ Statistical tables for the normal- and :math:`t`-distribution
 ============================================================================
 
 .. image:: ../figures/univariate/Statistical-tables/Statistical-tables.png
-	:scale: 110
+	:scale: 95
 	:align: center
 

@@ -71,7 +71,7 @@ Exercises
 		:align: center
 		:scale: 60
 
-	Some people have suggested using a scatter plot - I never thought of that, but it works. It shows a straight line relationship between interest rate and the monthly payment. I suppose the advantage of that plot is that you can see (a) the relationship is linear, which is should be, and (b) you can visually *interpolate* the monthly payment given any interest rate between 2 and 5%.
+	Some people have suggested using a scatter plot - I never thought of that, but it works. It shows a straight line relationship between interest rate and the monthly payment. I suppose the advantage of that plot is that you can see (a) the relationship is linear, which it should be, and (b) you can visually *interpolate* the monthly payment given any interest rate between 2 and 5%.
 
 	A key point though: the mortgage amount and the amortization rate must be shown with the plot or table. The cost of the house and the downpayment are actually irrelevant. You are paying interest on the mortgage amount, where :math:`\text{mortgage amount} = \text{cost of the house} + \text{mortgage insurance} - \text{downpayment}`. The table or the plot will change if either of those two variables change. Your monthly payment is higher for shorter amortization periods, and for larger mortgage amounts.
 
