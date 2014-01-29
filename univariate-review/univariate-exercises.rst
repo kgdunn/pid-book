@@ -654,7 +654,7 @@ Exercises
 	
 	Assumptions required to compare the two groups:
 
-		*	The individual samples within each group were taken independently, so that we can invoke the central limit theorem and assume these means and standard deviation are normal distributed.
+		*	The individual samples within each group were taken independently, so that we can invoke the central limit theorem and assume these means and standard deviation are normally distributed.
 		*	Assume the individual samples within each group are from a normal distribution as well.
 		*	Assume that we can pool the variances, i.e. :math:`\sigma_\text{Before}` and :math:`\sigma_\text{After}` are from comparable distributions.
 		*	Using the pooled variance implies that the :math:`z`-value follows the :math:`t`-distribution.
