@@ -62,7 +62,7 @@ Thanks everyone!
 
 	In particular, you are free :
 
-	*	**to share** - to copy, distribute and transmit the work
+	*	**to share** - to copy, distribute and transmit the work, (which includes printing it)
 	*	**to adapt** - but you must distribute the new result under the same or similar license to this one
 	*	**to commercialize** - you *are allowed* to create commercial applications based on this work 
 	*	**attribution** - but you must attribute the work as follows:
