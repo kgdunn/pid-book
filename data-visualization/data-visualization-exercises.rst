@@ -169,6 +169,7 @@ Exercises
 		plot(web.visits, major.format="%b")
 
 .. question::
+	:copyright_issue: yes
 
 	.. See the higher resolution PNG file version also
 	
@@ -183,6 +184,7 @@ Exercises
 	#.	What advantage is there to the plot given here, over the type in your answer to part 3.
 	
 .. answer::
+	:copyright_issue: yes
 
 	#.	A time-series plot.
 
@@ -285,6 +287,7 @@ Exercises
 
 
 .. question::
+	:copyright_issue: yes
 
 	Consider this plot from the Economist article regarding `"Working hours" <http://www.economist.com/blogs/freeexchange/2013/09/working-hours>`_
 	
@@ -297,6 +300,7 @@ Exercises
 
 .. answer::
 	:fullinclude: no 
+	:copyright_issue: yes
 
 	#.	The message is likely that longer working hours do not translate into greater earnings (measured with GDP) as might be expected. In fact, the opposite holds: longer working hours are correlated with *lower* earnings (we say: "there's a negative correlation between working hours and earnings"). The axes have been scaled to account for purchasing power.
 	
