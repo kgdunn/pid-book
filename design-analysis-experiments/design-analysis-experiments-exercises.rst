@@ -368,10 +368,16 @@ Exercises
 	
 	The following diagram shows data from a central composite design. The factors were run at their standard levels, and there were 4 runs at the center point. 
 
-	*	Calculate the parameters for a suitable quadratic model in these factors. Show your matrices for :math:`\mathbf{X}` and :math:`\mathbf{y}`. 
-	*	Draw a response surface plot of **A** *vs* **B** over a suitably wide range beyond the experimental region. 
-	*	Where would you move **A** and **B** if your objective is to increase the response value?
-
+	#.	Calculate the parameters for a suitable quadratic model in these factors. Show your matrices for :math:`\mathbf{X}` and :math:`\mathbf{y}`. 
+	#.	Draw a response surface plot of **A** *vs* **B** over a suitably wide range beyond the experimental region. 
+	#.	Where would you move **A** and **B** if your objective is to increase the response value? 
+	
+		#.	Report your answer in coded units.
+		#.	Report your answer in real-world units, if the full factorial portion of the experiments were ran at:
+		
+			*	**A** = *stirrer speed*, 200rpm and 340 rpm
+			*	**B** = *stirring time*, 30 minutes and 40 minutes
+			
 	.. image:: ../figures/doe/central-composite-question.png
 		:align: center
 		:width: 500px
@@ -380,7 +386,7 @@ Exercises
 
 	You might feel more comfortable setting up the problem in MATLAB. You can use the `contour plot <http://www.mathworks.com/access/helpdesk/help/techdoc/creating_plots/f10-2524.html>`_ functions in MATLAB to visualize the results.
 
-	If you are using R, you can use the ``rbind(...)`` or ``cbind(...)`` functions to build up your :math:`\mathbf{X}` matrix row-by-row or column-by-column. The equivalent of meshgrid in R is the ``expand.grid(...)`` function. Please see the `R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ that shows how to generate surface plots in R.
+	If you are using R, you can use the ``rbind(...)`` or ``cbind(...)`` functions to build up your :math:`\mathbf{X}` matrix row-by-row or column-by-column. The equivalent of meshgrid in R is the ``expand.grid(...)`` function. Pee the `R code on the course website <http://learnche.mcmaster.ca/4C3/Design_and_analysis_of_experiments_(2014)>`_ that shows how to generate surface plots in R.
 
 
 .. question::
@@ -859,8 +865,6 @@ Exercises
 		But we can only run 8 experiments, so we now use the table in the course notes (derived from page 272 in Box, Hunter and Hunter, 2nd edition), and see the layout that will cause least disruption is to assign **D = ABC**. This gives the same experimental layout above.
 
 .. question::
-
-	.. note:: This question requires using fractional factorials. You may have to read ahead in the notes to answer all the parts of this question.
 
 	Factors related to the shrinkage of plastic film, produced in an injection molding device, are being investigated. The following factors have been identified by the engineer responsible:
 

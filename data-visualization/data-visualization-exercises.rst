@@ -52,6 +52,7 @@ Exercises
 	- The colour scheme is poor: four different shades of blue are used (two background shades, and two of the time-based parameters)
 	- The use of stacked bar plots is almost always problematic: the user is never sure if the bars are cumulative or additive, unless they know the subject matter or read the accompanying text.
 
+
 .. question::
 
 	This figure is a screen shot from a `Toronto Star article <http://www.yourhome.ca/homes/realestate/article/742160--mortgage-rate-roulette>`_ about mortgage payments as a function of the interest rate. Redraw the same information in a more suitable form.
@@ -74,6 +75,38 @@ Exercises
 	Some people have suggested using a scatter plot - I never thought of that, but it works. It shows a straight line relationship between interest rate and the monthly payment. I suppose the advantage of that plot is that you can see (a) the relationship is linear, which it should be, and (b) you can visually *interpolate* the monthly payment given any interest rate between 2 and 5%.
 
 	A key point though: the mortgage amount and the amortization rate must be shown with the plot or table. The cost of the house and the downpayment are actually irrelevant. You are paying interest on the mortgage amount, where :math:`\text{mortgage amount} = \text{cost of the house} + \text{mortgage insurance} - \text{downpayment}`. The table or the plot will change if either of those two variables change. Your monthly payment is higher for shorter amortization periods, and for larger mortgage amounts.
+
+
+.. question::
+
+	This question is an extension to visualizing more than 3 variables. Investigate on your own the term "scatterplot matrix", and draw one for the `Food texture data set <http://datasets.connectmv.com/info/food-texture>`_. See the ``car`` library in R to create an effective scatterplot matrix with the ``scatterplotMatrix`` function.
+
+	Give a couple of bullet-points interpreting the plot.
+
+.. answer::
+
+	A scatterplot matrix can be created using the code below:
+
+	.. image:: ../figures/visualization/scatterplotmatrix-food-data.png
+		:align: left
+		:width: 700px
+		:scale: 100
+	
+	.. literalinclude:: ../figures/visualization/scatterplotmatrix-food-data.R
+		:language: s
+
+	From this plot we see histograms of the 5 univariate distributions on the diagonal plots; the off-diagonal plots are the bivariate correlations between each combination of variable. The trend line (solid light green) shows the linear regression between the two variables. The lower diagonal part of the plot is a 90 degree rotation of the upper diagonal part. Some software packages will just draw either the upper or lower part.
+
+	From these plots we quickly gain an insight into the data:
+
+		*	Most of the 5 variables have a normal-like distribution, except for ``Crispy``, but notice the small notches on the middle histogram: they are equally spaced, indicating the variable is not continuous; it is `quantized <http://en.wikipedia.org/wiki/Quantization_(signal_processing)>`_. The ``Fracture`` variable also displays this quantization.
+		*	There is a strong negative correlation with oiliness and density: oilier pastries are less dense (to be expected). 
+		*	There is a positive correlation with oiliness and crispiness: oilier pastries are more crisp (to be expected).
+		*	There is no relationship between the oiliness and hardness of the pastry.
+		*	There is a negative correlation between density and crispiness (based on the prior relationship with ``Oil``): less dense pastries (e.g. more air in them) and crispier. 
+		*	There is a positive correlation between ``Density`` and ``Fracture``. As described in the dataset file, ``Fracture`` is the angle by which the pastry can be bent, before it breaks; more dense pastries have a higher fracture angle.
+		*	Similarly, a very strong negative correlation between ``Crispy`` and ``Fracture``, indicating the expected effect that very crispy pastries have a low fracture angle.
+		*	The pastry's hardness seems to be uncorrelated to all the other 4 variables.
 
 
 .. question::
@@ -246,19 +279,95 @@ Exercises
 
 	#.	The thick center line on each boxplot is the median (50th percentile) of that variable.  The top and bottom edges of the box are the 25th and 75th percentile, respectively.  If the data are from a symmetric distribution, such as the :math:`t` or normal distribution, then the median should be approximately centered with respect to those 2 percentiles.  The fact that it is not, especially for position 1, indicates the data are *skewed* either to the left (median is closer to upper edge) or the the right (median closer to the lower edge).
 
+
+.. question::
+
+	Consider this plot from the Economist article regarding `"Working hours" <http://www.economist.com/blogs/freeexchange/2013/09/working-hours>`_
+	
+	.. image:: ../figures/visualization/scatterplot-GDP-working-hours.png
+	
+	#.	What is the plot's author trying to convey with this scatter plot? 
+	#.	Do you believe this an effective and complete message (i.e. could you improve it somehow?) 
+	#.	Is there a causal mechanism at play between the two variables? 
+	#.	How would you confirm or disprove the message the plot's author is making?
+
+.. answer::
+	:fullinclude: no 
+
+	#.	The message is likely that longer working hours do not translate into greater earnings (measured with GDP) as might be expected. In fact, the opposite holds: longer working hours are correlated with *lower* earnings (we say: "there's a negative correlation between working hours and earnings"). The axes have been scaled to account for purchasing power.
+	
+	#.	As the original article alludes, there are differences between countries; and given the large number of points on the plot (well over 200) it is safe to assume that there are several points per country, showing the shifts over time. As a result, colour coding, or using different markers to show each country's shift and change over time will provide some additional insight. For example, the line of points stretching from 2200 to 2600 on the x-axis: is that due to one country and in which direction is it moving over time (left or right)? 
+	
+		Some students rightly pointed out that policy shifts occurred during this period; some countries joined the EU, and that may have lead to a change in the plots. So the picture is by no means complete. However, the picture is almost never complete for any data set.
+		
+	#.	This is a tough one to answer. The data are compelling in their lack of scatter. Usually systems with dubious correlations show a high degree of scatter. As before, colour or shaped codes for each country will give a better idea of cause-effect. I suspect this plot shows a strong correlation simply because there are small clusters for each country that are close together, but the negative trend simply comes from a country-to-country difference. 
+	
+		As emphasized before in this course, we can only truly tell causality by doing an experiment. Here there are no major ethical obligations, however it is unlikely that you would be able to convince companies to enforce short vs long working hours so you can observe productivity. The time before the change also takes effect is likely very long.
+		
+		So the answer is yes, maybe there is a causal mechanism here that is plausible (we've often heard that people whose work-life balanced is better are more productive), but we cannot test it explicitly.
+		
+	#.	Also see the prior answer: require experiments over a broad range of employment types and regions, using shorter and longer working hours, and measure the corresponding earnings.
+
+
+.. question::
+
+	In a final exam for a particular course at McMaster University there was an open-ended question. These `data values are the grades <http://datasets.connectmv.com/info/systematic-method>`_ achieved for the answer to that question, broken down by whether the student used a systematic method, or not. No grades were given for using a systematic method; grades were awarded only on answering the question. 
+	
+	A systematic method is any method that assists the student with problem solving (e.g. define the problem, identify knowns/unknowns and assumptions, explore alternatives, plan a strategy, implement the strategy and then check the solution).
+	
+	Draw two box plots next to each other that compare the two approaches to answering the question. Comment on any features you notice in the comparison.
+	
+.. answer::
+	:fullinclude: no 
+
+	Several points are apparent in the box plot:
+	
+	.. image:: ../figures/visualization/boxplot-for-systematic-method-used-2014.png
+		:align: left
+		:width: 700px
+		:scale: 70
+	
+	* students in either category achieved the highest grade possible
+	* the spread (interquartile distance) when using the method is smaller
+	* both box plots show a skew to the lower left tail (compare the median to the first and third quartiles)
+	* we will use a :ref:`confidence interval <univariate-group-to-group-differences-no-reference-set>` in a later chapter to judge whether this difference is statistically significant or not.
+
+
 .. question::
 
 	What are the names of the axes on a bar plot?
 
+.. answer::
+
+	The category axis and value axis.
+
+
 .. question::
 	
 	Which types of features can can the human eye easily pick out of a time series plot?
+	
+.. answer::
+
+	Features such as sinusoids, spikes, gaps (missing values), upward and downward trends are quickly picked out by the human eye, even in a poorly drawn plot.
+
+
+.. question::
+	
+	.. Final exam, 2013
+	
+	Why is the principle of minimizing "data ink" so important in an effective visualization? Give an engineering example of why this important.
+	
+.. answer::
+
+	It reduces the time or work to interpret that plot, by eliminating elements that are non-essential to the plot's interpretation. Situations which are time or safety critical are examples, for example in an operator control room, or medical facility (operating room).
+
 
 .. question::
 
 	Describe what the main difference(s) between a bar chart and a histogram are.
 	
 .. answer::
+	:fullinclude: no 
 
 	The solution is taken directly from: http://www.forbes.com/sites/naomirobbins/2012/01/04/a-histogram-is-not-a-bar-chart/
 
@@ -271,7 +380,15 @@ Exercises
 
 .. question::
 
-	Write out a list of any features that can turn a plot into a poor visualization. Think carefully about plots you encountered in textbooks and scientific publications.
+	Write out a list of any features that can turn a plot into a poor visualization. Think carefully about plots you encountered in textbooks and scientific publications, or the lab reports you might have recently created for a university or college course.
+
+
+.. question::
+
+	Read the short, clearly written article by Stephen Few on the pitfalls of pie charts: `Save the pies for dessert, http://www.perceptualedge.com/articles/08-21-07.pdf <http://www.perceptualedge.com/articles/08-21-07.pdf>`_. The article presents an easy-to-read argument against pie charts that will hopefully convince you.
+	
+	Here's a `great example that proves his point <http://www.cra-arc.gc.ca/nwsrm/t1stts-eng.html>`_ from the Canada Revenue Agency.
+	
 
 ..	question:: 
 

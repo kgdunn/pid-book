@@ -2,6 +2,9 @@
 
 	Website with DOE problems and R code: http://www.stat.ualberta.ca/~wiens/stat368/stat368.html
 	DOE Textbook: http://users.stat.umn.edu/~gary/Book.html
+	
+	Mention that experiments don't have to be done in order. Can be done in parallel (e.g. growing plants).
+	Give code on generating random order 
 
 	=====
 	~~~~~
@@ -975,7 +978,7 @@ Pareto plot
 
 .. Note:: This is a make-shift approach that is only applicable if all the factors are centered and scaled.
 
-A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to estimate. Once these parameters have been calculated, for example, by using a :ref:`least squares model <DOE-analysis-by-least-squares>`, then plot the absolute value of the model coefficients in sorted order: from largest magnitude to smallest, ignoring the intercept term. Significant coefficients are established by visual judgement - establishing a visual cut-off by contrasting to small coefficients to the larger ones.
+A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to estimate. Once these parameters have been calculated, for example, by using a :ref:`least squares model <DOE-analysis-by-least-squares>`, then plot the absolute value of the model coefficients in sorted order: from largest magnitude to smallest, ignoring the intercept term. Significant coefficients are established by visual judgement - establishing a visual cut-off by contrasting the small coefficients to the larger ones.
 
 .. image:: ../figures/doe/pareto-plot-full-fraction.png
 	:align: left
@@ -1715,6 +1718,7 @@ Resolution IV designs
 	-	Most useful for characterizing (learning about and understanding) a system, since:
 	-	Main effects are not confounded with each other 
 	-	Main effects are not aliased with two-factor interactions either (:math:`4-1=3`)
+	-	Main effects are aliased with three-factor interactions though (:math:`4-1=3`)
 	-	Two-factor interactions are still aliased with each other though (:math:`4-2=2`)
 	
 Resolution V designs 
