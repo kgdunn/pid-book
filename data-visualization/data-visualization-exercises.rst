@@ -28,6 +28,7 @@ Exercises
 		-	Some days have more than 90 visits, indicating that students visit the site more than once per day, or due to external visitors to the site.
 
 .. question::
+	:copyright_issue: yes
 
 	.. _economist-question:
 
@@ -39,6 +40,7 @@ Exercises
 
 .. answer::
 	:fullinclude: no 
+	:copyright_issue: yes
 
 	There are several problems with this graphical comparison, but the main concerns are with showing time trends as bar plots, and the alignment of the time trends.
 
@@ -54,6 +56,7 @@ Exercises
 
 
 .. question::
+	:copyright_issue: yes
 
 	This figure is a screen shot from a `Toronto Star article <http://www.yourhome.ca/homes/realestate/article/742160--mortgage-rate-roulette>`_ about mortgage payments as a function of the interest rate. Redraw the same information in a more suitable form.
 
@@ -63,6 +66,7 @@ Exercises
 
 .. answer::
 	:fullinclude: no 
+	:copyright_issue: yes
 	
 	The data from this article are needlessly embellished with a picture of a house, a $20,000 bill and a stake in the ground.
 

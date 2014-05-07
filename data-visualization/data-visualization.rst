@@ -388,7 +388,9 @@ Frames are the basic containers that surround the data and give context to our n
 
 #.	Use round numbers
 #.	Generally tighten the axes as much as possible, except ...
-#.	When showing comparison plots: then all axes must have the same minima and maxima (see the exercise regarding the :ref:`Economist figure <economist-question>`).
+#.	When showing comparison plots: then all axes must have the same minima and maxima
+
+.. TODO: give an example of a bad visualization here that has unequal axes for comparison
 
 
 Colour

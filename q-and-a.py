@@ -21,7 +21,9 @@ class Question_Answer(Directive):
     optional_arguments = 2
     final_argument_whitespace = True
     option_spec = {'fullinclude': boolean_input,  # include answer? "yes" or "no"
-                   'short': directives.unchanged} # short answer?
+                   'short': directives.unchanged, # short answer?
+                   'copyright_issue': boolean_input,
+                  }
 
     def add_content(self):
         node = question_answer()
@@ -35,25 +37,43 @@ class Question_Answer(Directive):
         self.assert_has_content()
         env = self.state.document.settings.env
 
+        # Default value is False (i.e. we obey the 'fullinclude' option)
+        override = self.state.document.settings.env.config.q_and_a_override
+        
         out = []
+        
         if self.name == 'question':
-            # self.src is the full name of the file we are dealing with
-            q_number = env.new_serialno(env.docname) + 1
-            out.append(nodes.rubric('', 'Question %d' % q_number))
-            out.append(self.add_content())
+            
+            # Even include "copyright content" even in "override" mode. Override literally includes everything
+            already_overridden = False
+            if override:
+                q_number = env.new_serialno(env.docname) + 1
+                out.append(nodes.rubric('', 'Question %d' % q_number))
+                out.append(self.add_content())
+                already_overridden = True
+                
+            if self.options.get('copyright_issue'):
+                pass
+            elif not(already_overridden):
+                q_number = env.new_serialno(env.docname) + 1
+                out.append(nodes.rubric('', 'Question %d' % q_number))
+                out.append(self.add_content())
+            
 
         elif self.name == 'answer':
-            # Default value is False (i.e. we obey the 'fullinclude' option)
-            override = self.state.document.settings.env.config.q_and_a_override
+            
             if not self.options.has_key('fullinclude') or override:
                 # If the option wasn't given, or if the 'q_and_a_override'
                 # flag is True
                 self.options['fullinclude'] = True
+
             if self.options['fullinclude']:
                 out.append(nodes.paragraph('', ''))
                 out.append(nodes.strong('', 'Solution'))
                 out.append(nodes.paragraph('', ''))
                 out.append(self.add_content())
+            elif self.options.get('copyright_issue'):
+                pass
             elif self.options.get('short', ''):
                 out.append(nodes.paragraph('', ''))
                 out.append(nodes.strong('', 'Short answer'))
