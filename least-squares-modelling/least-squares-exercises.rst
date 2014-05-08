@@ -1131,6 +1131,8 @@ Exercises
 		:alt:	../figures/least-squares/concrete-slump.svg
 		:width: 650px
 		:align: center
+		
+	Figure `from Wikipedia <https://en.wikipedia.org/wiki/File:Types_of_concrete_slump.jpg>`_
 
 	Your company provides the polymer additive, and you are developing an improved polymer formulation, call it B, that hopefully provides the same slump values as your existing polymer, call it A. Formulation B costs less money than A, but you don't want to upset, or lose, customers by varying the slump value too much.
 
