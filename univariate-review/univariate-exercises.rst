@@ -619,6 +619,86 @@ Exercises
 			z &> 2.52
 
 		The exact answer is ``(1 - pnorm(2.52))*1000 = 5.86``, though using tables you could use the value corresponding to :math:`z=2.5`, which is 99.38%, which is the area below that z-value. The area above it is 0.62%, corresponding to 6.2 people. Either 5, 6 or 7 people is an acceptable answer, depending on your rounding error.
+
+.. question::
+
+.. Assignment 2, 2014
+
+	A food production facility fills bags with potato chips with an advertised bag weight of 50.0 grams. 
+
+	#.	The government's *Weights and Measures Act* requires that at most 1.5% of customers may receive a bag containing less than the advertised weight. At what setting should you put the target fill weight to meet this requirement exactly? The check-weigher on the bagging system shows the long-term standard deviation for weight is about 2.8 grams.
+
+	#.	Out of 100 customers, how many are lucky enough to get 55.0 grams or more of potato chips in their bags?
+	
+.. answer::
+	:fullinclude: no 
+
+	#.	Given that it is a long-term standard deviation, we have :math:`\sigma = 2.8\,\text{grams}`. Calculate the :math:`z`-value and find which fraction of :math:`z` falls at or below 1.5% of the probability area. From the tables this is :math:`z = -2.17` = ``qnorm(0.015)``.
+
+		Then solve for :math:`\mu`:
+
+		.. math::
+			z &= \dfrac{50 - \mu}{2.8} = -2.17 \\
+			\mu &= \mathrm{56.08} \text{~grams}
+			
+		The check weigher should be set at 56.08 grams.
+
+	#.	From the prior answer, we can see many customers will receive a bag with 55.0 grams or more. Probability of 55.0 grams of more is the area area the corresponding :math:`z`-value:
+
+		.. math::
+			z &> \dfrac{55 - 56.08}{2.8} \\
+			z &> -0.385
+
+		The exact answer is ``(1 - pnorm(-0.385))*100 = 64.98``, so around 65 customers out of every 100 (you might have a slightly different number if you used tables to answer your question - make sure you can use the statistical tables to answer this problem too.)
+
+.. question::
+
+.. Assignment 2, 2014
+
+	The following confidence interval is reported by our company for the amount of sulphur dioxide measured in parts per billion (ppb) that we send into the atmosphere.
+
+		.. math::
+				123.6\, \text{ppb} \leq \mu \leq 240.2\, \text{ppb}
+			
+	Only :math:`n=21` raw data points (one data point measured per day) were used to calculate that 90% confidence interval. A :math:`z`-value would have been calculated as an intermediate step to get the final confidence interval, where :math:`z = \displaystyle \frac{\overline{x} - \mu}{s / \sqrt{n}}`.
+
+	#.	What assumptions were made about those 21 raw data points to compute the above confidence interval?
+
+	#.	Which lower and upper critical values would have been used for :math:`z`? That is, which critical values are used before unpacking the final confidence interval as shown above.
+
+	#.	What is the standard deviation, :math:`s`, of the raw data?
+
+	#.	Today's sulphur dioxide reading is 460 ppb and your manager wants to know what's going on; you can quickly calculate the probability of seeing a value of 460 ppb, or greater, to help judge the severity of the pollution. How many days in a 365 calendar-day year are expected to show a sulphur dioxide value of 460 ppb or higher?
+
+	#.	Explain clearly why a wide confidence interval is not desirable, from an environmental perspective.
+
+.. answer::
+
+	#.	The 21 data points are independent and come from *any distribution* of finite variance. 
+
+	#.	From the :math:`t`-distribution at 20 degrees of freedom, with 5% in each tail: :math:`c_t = 1.72` = ``qt(0.95, df=20)``. The :math:`t`-distribution is used because the standard deviation is estimated, rather than being a population deviation.
+
+	#.	The standard deviation may be calculated from:
+
+		.. math::
+	
+			UB - LB = 240.2 - 123.6 = 2 \times c_t \frac{s}{\sqrt{n}} &= (2)(1.72)\frac{s}{\sqrt{n}} \\
+			                                                        s &= \frac{(116)(\sqrt{n})}{(2)(1.72)} \\
+			                                                        s &= 154.5\, \text{ppb}
+
+		Note the very large standard deviation relative to the confidence interval range. This is the reason why so many data points were taken (21), to calculate the average, because the raw data comes from a distribution with such a large variation.
+		
+		An important note here is the large estimated value for the standard deviation and realized it was so wide, that it would imply the distribution produced values with negative sulphur dioxide concentration (which is physically impossible). However, note that when dealing with large samples (21 in this case), the distinction between the normal and the :math:`t`-distribution is minimal. Further, the raw data are not necessarily assumed to be from the normal distribution, they could be from any distribution, including one that is heavy-tailed, such as the `F-distribution <http://en.wikipedia.org/wiki/File:F_distributionPDF.png>`_ (see the yellow and green lines in particular).
+		
+	#.	The probability calculation requires a mean value. Our best guess for the mean is the midpoint of the confidence interval, which is always symmetric about the estimated process mean, :math:`\overline{x} = \displaystyle \frac{240.2-123.6}{2} + 123.6 = 181.9`. Note that this is not the value for :math:`\mu`, since :math:`\mu` is unknown.
+
+		.. math::
+	
+			z = \frac{460 - 181.9}{154.5} = 1.80
+		
+		Probability is ``1 - pt(1.8, df=20)`` = :math:`1 - 0.9565176 = 0.0434824`, or about :math:`0.0434824 \times 365 = 15.9`, or about 16 days in the year (some variation is expected, if you have used a statistical table)
+	
+	#.	A wide confidence interval implies that our sulphur dioxide emissions are extremely variable (the confidence interval bounds are a strong function of the process standard deviation). Some days we are putting more pollution up into the air and balancing it out with lower pollution on other days. Those days with high pollution are more environmentally detrimental.
 	
 .. question::
 
@@ -823,6 +903,26 @@ Exercises
 		*	Robust methods are insensitive to outliers, which is useful when we need a measure of location or spread that is calculated in an automated way. It is increasingly prevalent to skip out the "human" step that might have detected the outlier, but our datasets are getting so large that we can't possibly visualize or look for outliers manually anymore.
 
 		*	As described in the above paper by Rousseeuw, robust methods also emphasize outliers. Their "lack of sensitivity to outliers" can also be considered an advantage.
+
+
+.. question::
+	
+.. Assignment 2, 2014
+	
+	#.	Why are robust statistics, such as the median or MAD, important in the analysis of modern data sets? Explain, using an example, if necessary.
+	
+	#.	What is meant by the break-down point of a robust statistic? Give an example to explain your answer.
+	
+.. answer::
+
+	#.	Data sets you will have to deal with in the workplace are getting larger and larger (lengthwise), and processing them by trimming outliers (see Question 5 later) manually is almost impossible. Robust statistics are a way to summarize such data sets without point-by-point investigation.
+	
+		This is especially true for automatic systems that you will build that need to (a) acquire and (b) process the data to then (c) produce meaningful output. These systems have to be capable of dealing with outliers and missing values.
+		
+	#.	The breakdown point is the number of contaminating data points required before a statistic (estimator) becomes unbounded, i.e. useless. For example, the mean requires only 1 contaminating value, while the median requires 50% + 1 data points before it becomes useless.
+	
+		Consider the sequence :math:`[2, 6, 1, 91511, -4, 2]`. The mean is 15253, while the median is 2, which is a far more useful estimate of the central tendency in the data.
+
 
 .. question::
 
@@ -1037,6 +1137,42 @@ Exercises
 
 .. question::
 
+.. 2011 midterm
+.. Assignment 3, 2014
+	
+	Sulphur dioxide is a byproduct from ore smelting, coal-fired power stations, and other sources.
+
+	These 11 samples of sulphur dioxide, SO\ :sub:`2`, measured in parts per billion [ppb], were taken from our plant.  Environmental regulations require us to report the 90% confidence interval for the mean SO\ :sub:`2` value.
+
+		.. math::
+			180, \,\, 340, \,\,220, \,\,410, \,\,101, \,\,89, \,\,210, \,\,99, \,\,128, \,\,113, \,\,111
+
+	#.	What is the confidence interval that must be reported, given that the sample average of these 11 points is 181.9 ppb and the sample standard deviation is 106.8 ppb?
+	#.	Why might Environment Canada require you to report the confidence interval instead of the mean?
+
+.. answer::
+	:fullinclude: no
+
+	#.	From the central limit theorem, assuming the 11 values are independent, the mean SO\ :sub:`2` value, :math:`\overline{x} \sim \mathcal{N}\left\{\mu, \sigma^2/n \right\}`, where :math:`\mu` and :math:`\sigma` are the distribution from which the raw values come.
+	
+		Using an estimate for :math:`\sigma = \hat{s} = 106.8` we can construct the :math:`z`-value and confidence interval.  :math:`z` will be :math:`t`-distributed with :math:`n-1 = 10` degrees of freedom, so :math:`c_t = 1.81`  At the 90% confidence level we can then write:
+		
+		.. math::
+		
+			\begin{array}{rcccl} 
+				  - c_t                                              &\leq& \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}} &\leq &  +c_t\\
+				\overline{x}  - c_t \dfrac{s}{\sqrt{n}}              &\leq&  \mu                                                &\leq& \overline{x}  + c_t\dfrac{s}{\sqrt{n}} \\
+			     181.9 - 1.81 \times \frac{106.8}{\sqrt{11}}         &\leq&  \mu                                                 &\leq& 181.9 + 1.81 \times \frac{106.8}{\sqrt{11}} \\
+			     123.6 \,\,\text{ppb}                                &\leq&  \mu                                                 &\leq& 240.2 \,\,\text{ppb}
+			\end{array}
+			
+	#.	Environment Canada may require the confidence interval since in addition to providing an estimate of the mean (just the midpoint of the CI), it also provides an *estimate of the spread* -- variability in your process -- if :math:`n` is known, without requiring access to the raw data.  
+	
+		A wide CI gives an indication that you might in fact be polluting too much on some days, and compensating on others, which is not desirable.  The confidence interval's width can also be compared between plants to find the most variable polluters.
+
+
+.. question::
+
 	A concrete slump test is used to test for the fluidity, or workability, of concrete. It's a crude, but quick test often used to measure the effect of polymer additives that are mixed with the concrete to improve workability.
 	
 	The concrete mixture is prepared with a polymer additive. The mixture is placed in a mold and filled to the top. The mold is inverted and removed. The height of the mold minus the height of the remaining concrete pile is called the "slump". 
@@ -1246,3 +1382,13 @@ Exercises
 	Clearly the shelf study cannot be easily implemented, since the logistics of unstocking, removing shelf A, replacing with shelf B and restocking them is extremely costly.
 	
 	One thing to consider in such cases is to run the experiments in two separate stores that are as similar as possible in all other respects (e.g. built in the area with similar profiles of customers, similar store layout, etc.).
+	
+.. question::
+
+.. Assignment 2, 2014
+
+	This question gives you exposure to a large data set.
+	
+	Your manager has asked you to describe the flow rate characteristics of the overhead stream leaving the top of the `distillation column <http://en.wikipedia.org/wiki/Fractionating_column>`_ at your plant. You are able to download one month of data, `available from this website <http://datasets.connectmv.com/info/distillate-flow>`_, from 1 March to 31 March, taken at one minute intervals to answer this question. 
+	
+.. answer: use Ghassan Marjaba's solution (permission given by email in February 2014).

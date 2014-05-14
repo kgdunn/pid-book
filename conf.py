@@ -33,7 +33,7 @@ extensions = ['sphinx.ext.todo', 'sphinx.ext.pngmath', ]
 extensions.append('q-and-a')
 
 # Uncomment the next line to create full solutions to the book (i.e. ``fullinclude`` is ignored)
-q_and_a_override = False
+q_and_a_override = True
 
 if os.path.exists('ucomment-extension.py'):
     extensions.append('ucomment-extension')
@@ -70,7 +70,7 @@ master_doc = 'contents'
 # General information about the project.
 import datetime
 the_year = str(datetime.datetime.now().year)
-project = u'Process Improvement using Data'
+project = u'Process Improvement Using Data'
 copyright = the_year + u'Kevin Dunn, McMaster University'
 today_fmt = '%d %B %Y'
 
@@ -262,7 +262,7 @@ html_link_suffix = ''
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual], toctree only).
 latex_documents = [
-  ('contents', 'PID.tex', 'Process Improvement using Data', u'Kevin Dunn, McMaster University', 'manual', True),
+  ('contents', 'PID.tex', 'Process Improvement Using Data', u'Kevin Dunn, McMaster University', 'manual', True),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -480,10 +480,10 @@ latex_elements = {
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = 'Process Improvement using Data'
+epub_title = 'Process Improvement Using Data'
 epub_author = u'Kevin Dunn'
-epub_publisher = u'ConnectMV, Inc.'
-epub_copyright = the_year + u'ConnectMV, Inc.'
+epub_publisher = u'McMaster University'
+epub_copyright = the_year + u'McMaster University'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.
