@@ -13,6 +13,7 @@ In this section we consider quantitative plots -- plots that show numbers. We co
 
 Usage examples
 ==============
+
 .. AU: I am taking "section" to mean, e.g., "1.2 Usage examples". In the following sentence and elsewhere, I change it to "chapter" if appropriate.
 
 You can use the material in this chapter when you must learn more about your system from the data. For example, you may get these questions:
@@ -42,10 +43,11 @@ References and readings
 .. index::
 	pair: references and readings; visualization
 
+.. AU: Do you have publication dates for the Few books?
+
 #. Edward Tufte, *Envisioning Information*, Graphics Press, 1990. (10th printing in 2005)
 #. Edward Tufte, *The Visual Display of Quantitative Information*, Graphics Press, 2001.
 #. Edward Tufte, *Visual Explanations: Images and Quantities, Evidence and Narrative*, 2nd edition, Graphics Press, 1997.
-.. AU: Do you have publication dates for the Few books?
 #. Stephen Few, *Show Me the Numbers* and *Now You See It: Simple Visualization Techniques for Quantitative Analysis*; both from Analytics Press.
 #. William Cleveland, *Visualizing Data*, 1st edition, Hobart Press, 1993.
 #. William Cleveland, *The Elements of Graphing Data*, 2nd edition, Hobart Press, 1994.
@@ -76,6 +78,7 @@ Here are some tips for effective time-series plots:
 	This plot, found on the Internet, shows a computer's CPU temperature with time. There are several problems with the plot, but the key issue here is the *x*-axis. This plot is probably the result of poor default settings in the software, but as you will start to realize, bad defaults are very common in most software packages. They waste your time when you have to repeatedly modify the charts. Good software will sensibly label the time-based axis for you.
 	
 .. AU: The last sentence in the following paragraph seemed a little convoluted. Please verify edits.
+
 -	When plotting more than one trajectory (a vector of values) against time, it is helpful if the lines do not cross or jumble too much. This allows you to clearly see the relationship with other variables. The use of a second *y*-axis on the right-hand side is helpful when plotting two trajectories, but when plotting three or more trajectories that are in the same numeric range, it is better to use several parallel axes as shown later.
 
 	.. _visualization-cluttered-trajectories:
@@ -84,6 +87,7 @@ Here are some tips for effective time-series plots:
 		:width: 750px
 
 .. AU: The term "here" is ambiguous. In the following paragraph, is "here" referring to the figures above and below?
+
 	As shown in the previous figure, even using differently coloured lines and/or markers may work in selected instances, but this still leads to a clutter of lines and markers. The following chart shows this principle, created with the default settings from Apple iWork's *Numbers* (2009).
 
 	Using different markers, improving the axis labelling, tightening up the axis ranges, and thinning out the ink improves the chart slightly. This took about 3 minutes extra in the software, because I had not used the software before and had to find the settings.
@@ -147,7 +151,8 @@ Here is some advice for bar plots:
     #. The top edge of each bar, just below the number
 	#. The number itself
 
-        .. note::
+
+	.. note::
 
 	    Maximize the data-ink ratio within reason.
 
@@ -326,6 +331,7 @@ The next table compares defect types (number of defects) for different product g
 	-	Which defects occur most frequently?  The table does not contain any information about production rate. For example, if there were 1850 lots of grade A4636 (first row) produced, then defect A occurs at a rate of 37/1850 = 1/50. And if 250 lots of grade A2610 (last row) were produced, then, again, defect A occurs at a rate of 1/50. Redrawing the table on a production-rate basis would be useful if we are making changes to the process and want to target the most problematic defect.
 	
 .. AU: These last two bullets aren't questions, so I turned them into paragraphs.
+
 	If we are comparing a type of defect over different grades, then we are now comparing down the table, instead of across the table. In this case, the fraction of defects for each grade would be a more useful quantity to display.
 	
 	If we are comparing defects within a grade, then we are comparing across the table. Here again, the fraction of each defect type, weighted according to the cost of that defect, would be more appropriate.

@@ -622,7 +622,7 @@ Exercises
 
 .. question::
 
-.. Assignment 2, 2014
+	.. Assignment 2, 2014
 
 	A food production facility fills bags with potato chips with an advertised bag weight of 50.0 grams. 
 
@@ -653,7 +653,7 @@ Exercises
 
 .. question::
 
-.. Assignment 2, 2014
+	.. Assignment 2, 2014
 
 	The following confidence interval is reported by our company for the amount of sulphur dioxide measured in parts per billion (ppb) that we send into the atmosphere.
 
@@ -907,7 +907,7 @@ Exercises
 
 .. question::
 	
-.. Assignment 2, 2014
+	.. Assignment 2, 2014
 	
 	#.	Why are robust statistics, such as the median or MAD, important in the analysis of modern data sets? Explain, using an example, if necessary.
 	
@@ -1137,8 +1137,8 @@ Exercises
 
 .. question::
 
-.. 2011 midterm
-.. Assignment 3, 2014
+	.. 2011 midterm
+	.. Assignment 3, 2014
 	
 	Sulphur dioxide is a byproduct from ore smelting, coal-fired power stations, and other sources.
 
@@ -1385,7 +1385,7 @@ Exercises
 	
 .. question::
 
-.. Assignment 2, 2014
+	.. Assignment 2, 2014
 
 	This question gives you exposure to a large data set.
 	
