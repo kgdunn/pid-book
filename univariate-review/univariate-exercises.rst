@@ -1387,7 +1387,7 @@ Exercises
 
 	.. Assignment 2, 2014
 
-	This question gives you exposure to a large data set.
+	This question gives you exposure to analyzing a larger data set than seen in the preceding questions.
 	
 	Your manager has asked you to describe the flow rate characteristics of the overhead stream leaving the top of the `distillation column <http://en.wikipedia.org/wiki/Fractionating_column>`_ at your plant. You are able to download one month of data, `available from this website <http://datasets.connectmv.com/info/distillate-flow>`_, from 1 March to 31 March, taken at one minute intervals to answer this question. 
 	
