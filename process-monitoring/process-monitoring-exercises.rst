@@ -574,3 +574,7 @@ Exercises
 
 	.. literalinclude:: ../figures/monitoring/batch-yield-and-purity-recursive.R
 		:language: s
+		
+.. question::
+
+	You will hear about 6-sigma processes frequently in your career. What does it mean exactly that a process is "6-sigma capable"? Draw a diagram to help illustrate your answer. 
