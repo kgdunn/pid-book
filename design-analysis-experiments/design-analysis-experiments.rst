@@ -318,11 +318,45 @@
 Design and Analysis of Experiments: in context
 ===============================================
 
-This section is a totally different approach to learning and understanding about (chemical engineering) systems than what you have seen in other courses. Firstly, we use an empirical (non-theoretical) model to describe the system. Secondly, we learn what is the best way to intentionally manipulate/perturb the system to learn more about it.
+This chapter is a totally different approach to learning and understanding about systems, not only (chemical) engineering systems. The systems we could apply this to could be as straightforward as growing plants, or perfecting your favourite recipe at home. Or they may be as complex as the entire production line in a large factory producing multiple products and shipping them to customers.
 
-We will use the tools of :ref:`least squares modelling <SECTION-least-squares-modelling>`, :ref:`visualization <SECTION-data-visualization>` and :ref:`univariate statistics <SECTION-univariate-review>` that we learned about earlier. We use these tools to analyze and interpret the data from our experiments.
+In order to learn about a system we have to disturb it and change it. This is to ensure cause and effect. If we do not intentionally change the system, we are only guessing, or using our intuition. In this chapter we learn what the best way is to intentionally disturb the system to learn more about it.
 
-In the next section, on latent variables, we will take a look at learning more about our systems when the condition of independence between variables, required for designed experiments, is not met. But for now we can use least squares and simpler tools, as designed experiments are intentionally orthogonal (independent).
+When we disturb the system we should be changing several factors. When we make these changes we say that we have "run an experiment". We will use some of the tools of :ref:`least squares modelling <SECTION-least-squares-modelling>`, :ref:`visualization <SECTION-data-visualization>` and :ref:`univariate statistics <SECTION-univariate-review>` that were described in earlier chapters. Where necessary, we will refer back to those earlier sections.
+
+.. In the next section, on latent variables, we will take a look at learning more about our systems when the condition of independence between variables, required for designed experiments, is not met. But for now we can use least squares and simpler tools, as designed experiments are intentionally orthogonal (independent).
+
+Terminology
+===========
+
+There is some specific terminology that is specific to the area of designed experiments.
+
+Every experiment has these two components: 
+
+#.  An :index:`outcome <pair: outcome; experiments>` i.e. the result or the :index:`response <pair: response; experiments>` from an experiment.
+#.  one or more factors; a :index:`factor <pair: factor; experiments>` is the thing you can change to influence the outcome. Factors are also called :index:`variables <pair: variable; experiments>`.
+
+An important aspect about the outcome is that it is always measurable - in some way. In other words, after you finish the experiment, you must have some measurement. 
+
+Let’s use an example of growing plants. The outcome of growing a plant might be the height of the plant, or the average width of the leaves, or number of flowers on the plant. These are numeric measurements, also called quantitative measurements. Qualitative measurements are also possible. For example, perhaps the outcome is the *colour* of the flower: "light red; red; or dark red". A qualitative outcome might also be a description of what happened; for example: *pass* or *fail*.
+
+Another term is :index:`objective <pair: objective; experiments>`, which is when you combine an outcome and the need to adjust that outcome. For example, maximize the height of the plant. Most often we want to maximize or minimize the outcome as our objective. Sometimes though you want the outcome to be *the same* even though you are changing factors. For example, you might want to change a recipe for your favourite pastry to be gluten-free but keep the taste the same as the original recipe. Your outcome is taste; and your objective is "the same".
+
+Every experiment always an outcome. Every experiment does not have to have an objective though. But usually we have an objective in our mind.
+
+Another term we will use is factors. In the plant example, there could have been 3 factors that you changed:
+#.	the amount of water that you give the plant each day
+#.	the amount of fertilizer that you give the plant each week
+#.	using soil type A or soil type B
+
+All experiments must have at least one factor that is changed. We distinguish between two types of factors: continuous factors and :index:`categorical factors <pair: categorical factor; experiments>`.
+
+Continuous factors are quantified numerically, such as using 15 mL of water or 30mL of water to give to the plant each day. Categorical factors take on a limited number of values. For example, soil type A or soil type B could be used to grow the plants. If you were working in the area of marketing, you might try 3 different colours of background in your advertising poster. Those colours are categorical variables in the context of the experiment.
+
+Most experiments will have both continuous categorical factors.
+
+When we perform an experiment we call it a :index:`run <pair: run; experiments>`. If we perform 8 experiments, we can say: "there are 8 runs" in the set of experiments.
+
 
 Usage examples
 ==============
@@ -330,18 +364,17 @@ Usage examples
 .. index::
 	pair: usage examples; experiments
 
-The material in this section is used whenever you need to perturb and learn more about a system.
+Here are some questions you can answer and ideas you can use after you have finished studying this chapter.
 
-	- *Colleague*: We have this list of 8 plausible factors that affect the polymer melt index. How do we narrow down the list to a more manageable size and rank their effect on melt index?
- 	- *You*: Our initial screening experiments reduced the list down to 3 factors of interest. Now how do we run the rest of the experiments?
- 	- *Manager*: Two years ago someone collected these experimental data for the effectiveness of a new catalyst. What can you make of this data, and where should we operate the reactor to get optimal yields?
-	- *Colleague*: The current operating conditions give us good yield, but they are quite unstable. Small changes in the feed flowrate can quickly lead to an unsafe spike in the temperature and pressure. How can we locate other operating conditions that give similar yield values, but are less sensitive to feedrate variability.
+	- *Colleague*: We have this list of 8 plausible factors that affect the polymer melt index (the outcome). How do we narrow down the list to a more manageable size and rank their effect on melt index?
+ 	- *You*: Our initial screening experiments reduced the list down to 3 factors of interest. Now how do we perform the rest of the experiments?
+ 	- *Manager*: Two years ago someone collected these experimental data for the effectiveness of a new chemical to treat water. What interesting results do you see in this data, and where should we operate the system to achieve water quality that meets the required standards?
+	- *Colleague*: The current production settings for our food product gives us good shelf-life, but the energy used is high. How can we locate other settings (factors) that give long shelf-life but reduce the energy consumed?
 	- *Colleague*: We would like to run experiments by varying temperature and pressure, but operating at both high temperature and pressure is unsafe. How do we plan such an experiment?
 
 .. TODO: more questions/answers here
 
-What you will be able to do after this section
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Here's a visual representation of the topics we will cover in this chapter.
 
 .. figure:: ../figures/mindmaps/DOE-section-mapping.png
 	:width: 750px 
@@ -372,17 +405,21 @@ References and readings
 
 	Design of Experiments in Chemical Engineering: A Practical Guide, Lazić, Živorad R., Wiley-VCH, 2004. THODE Bookstacks, TP 155 .L34 2004
 
-Background
-===========
+Why learning about systems is important
+===========================================
 
-Learning about systems is important. We strive for this increased knowledge because it brings us profit, and can help us make products more efficiently. As Box, Hunter and Hunter show in the first chapter of their book, it is an iterative process.
+We strive for increased knowledge because it brings us profit, it can help us make products more efficiently. Once we learn what really happens in our system, we can fix problems and optimize the system, because we have an improved understanding of cause and effect.
+
+As Box, Hunter and Hunter show in the first chapter of their book, it is an iterative process.
 
 	*	Make a conjecture (hypothesis), which we believe is true.
 	*	If it is true, we expect certain consequences. 
 	*	Experiment and collect data - are the consequences we expected visible in the data?
 	*	If so, it may lead to the next hypothesis. If not, we formulate an alternative hypothesis. Or perhaps it is not so clear cut: we see the consequence, but not to the extent expected. Perhaps modifications are required in the experimental conditions.
 
-And so we go about learning. An example: we expect that compounds A and B should combine in the presence of catalyst C to form product D. An initial experiment shows very little D present. Then several conditions (e.g temperature, reaction duration, and pressure) are investigated in a structured experiment to improve the yield of product D. The iterations continue until we find the most economically profitable operating point.
+And so we go about learning. An example: we expect that compounds A and B should combine in the presence of catalyst C to form product D. An initial experiment shows very little of product D is produced. Then several factors (e.g temperature, reaction duration, and pressure) are investigated, using a set of structured experiments to improve the yield of product D. These experiments might show that only temperature and reaction duration are important. Then we go ahead and adjust only those two factors and repeat several more systematic :ref:`response surface <DOE-RSM>` experiments.
+
+The iterations continue until we find the most economically profitable operating point. At each iteration we learn more about our system and how to improve it.
 
 	
 Correlation and causality
