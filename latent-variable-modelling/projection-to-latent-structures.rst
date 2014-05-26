@@ -84,7 +84,7 @@ This has a number of advantages:
 
 #.	There is much less need to resort to selecting variables from |X|; the general approach is to use the entire |X| matrix to fit the PCA model. We actually use the correlated columns in |X| to stabilize the PCA solution, much in the same way that extra data improves the estimate of a mean (recall the central limit theorem).
 
-#.	But by far one of the greatest advantages of MLR though is the free consistency check that one gets on the raw data, which you don't have for MLR. Always check the SPE and Hotelling's |T2| value for a new observation during the first step. If SPE is close to the model plane, and |T2| is within the range of the previous |T2| values, then the prediction from the second step should be reasonable.
+#.	But by far one of the greatest advantages of PCR though is the free consistency check that one gets on the raw data, which you don't have for MLR. Always check the SPE and Hotelling's |T2| value for a new observation during the first step. If SPE is close to the model plane, and |T2| is within the range of the previous |T2| values, then the prediction from the second step should be reasonable.
 
 Illustrated as follows we see the misleading strategy that is regularly seen with MLR. The modeller has build a least squares model relating :math:`x_1` and :math:`x_2` to :math:`y`, over the given ranges of :math:`x`. The closed circles represent the actual data, while the open circles are the projections of the :math:`x_1` and :math:`x_2` values on the :math:`x_1 - x_2` plane. The predictive model works adequately.
 
