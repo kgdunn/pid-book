@@ -958,14 +958,14 @@ We can plot the :math:`t`-distribution for a given value of :math:`n-1`, the deg
 Then we write:
 
 .. math::
-		:label: CI-mean-variance-unknown
-		
-		\begin{array}{rcccl} 
-			  - c_t                                  &\leq& z                                                   &\leq &  +c_t\\
-			  - c_t                                  &\leq& \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}} &\leq &  +c_t\\
-			\overline{x}  - c_t \dfrac{s}{\sqrt{n}}  &\leq&  \mu                                                &\leq& \overline{x}  + c_t\dfrac{s}{\sqrt{n}} \\
-			  \text{LB}                              &\leq&  \mu                                                &\leq& \text{UB}
-		\end{array}
+	:label: CI-mean-variance-unknown
+
+	\begin{array}{rcccl} 
+		  - c_t                                  &\leq& z                                                   &\leq &  +c_t\\
+		  - c_t                                  &\leq& \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}} &\leq &  +c_t\\
+		\overline{x}  - c_t \dfrac{s}{\sqrt{n}}  &\leq&  \mu                                                &\leq& \overline{x}  + c_t\dfrac{s}{\sqrt{n}} \\
+		  \text{LB}                              &\leq&  \mu                                                &\leq& \text{UB}
+	\end{array}
 
 Now all the terms in the lower and upper bound are known, or easily calculated.
 

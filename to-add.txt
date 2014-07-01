@@ -1,3 +1,43 @@
+To do
+------
+
+1. Figures must have captions. To enforce that the caption is on the same page, use ".. figure::" and not .. image.
+  
+   When referencing figures, use :figref: (you will need to create this direction), so that the these figures can be appropriately cross referenced.
+   
+   Take a look at "https://github.com/jterrace/sphinxtr/blob/master/extensions/numsec.py" to get an idea on how to start. An attempt was made before the MOOC,
+   but I ran out of time to get it working.
+   
+2. Right now all cross-referencing is simply by page number. Sometimes pages, sometimes section numbers are more appropriate. This needs to be fixed.
+
+
+
+1. You say in the preface that the book will work as an electronic version or as a printed copy.  With that in mind, how do you want to handle hyperlinks? For example, when you refer to another section with a hyperlink, I could add "(Section 3.2)" after it for the print readers, but if you rearrange the sections, then you have to manually change the section number. Is there a way to add the section number as a live link so it updates automatically? 
+
+1B. Ensure page references are given for links
+
+2. For websites, do you want to add the URL after the hyperlink for the print readers? Otherwise, they would just see highlighted text and not know which website to go to. Another option would be to include the URLs in the References section so as not to clutter up the text. One is example is "Canadian life tables from 2002 (`Statistics Canada website <http://www.statcan.gc.ca/bsolc/olc-cel/olc-cel?catno=84-537-XIE&lang=eng>`_) ". The reader sees only "Statistics Canada website".  
+
+3. *x*-axis  ---> :math:`x`-axis. 
+
+4. make linkcheck
+
+5. -5.5  must be formatted as :math:. 
+
+6. Use \cdot in the units mol.K-1
+
+7. Consistency with |x| and roman and italic x's	
+
+8. HTML publishing:
+* check figure aspect ratio
+* MathJax rendered OK
+* Cross-reference links to sections
+* Links to index OK?
+* Search is reasonable?
+
+
+
+
 Preface
 -------
 
