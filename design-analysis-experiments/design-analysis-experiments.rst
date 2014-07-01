@@ -318,7 +318,7 @@
 Design and Analysis of Experiments: in context
 ===============================================
 
-This chapter is a totally different approach to learning and understanding about systems, not only (chemical) engineering systems. The systems we could apply this to could be as straightforward as growing plants, or perfecting your favourite recipe at home. Or they may be as complex as the entire production line in a large factory producing multiple products and shipping them to customers.
+This chapter will take a totally different approach to learning and understanding about systems, not only (chemical) engineering systems. The systems we could apply this to could be as straightforward as growing plants, or perfecting your favourite recipe at home. Or they may be as complex as the entire production line in a large factory producing multiple products and shipping them to customers.
 
 In order to learn about a system we have to disturb it and change it. This is to ensure cause and effect. If we do not intentionally change the system, we are only guessing, or using our intuition. In this chapter we learn what the best way is to intentionally disturb the system to learn more about it.
 
@@ -364,7 +364,7 @@ Usage examples
 .. index::
 	pair: usage examples; experiments
 
-Here are some questions you can answer and ideas you can use after you have finished studying this chapter.
+Here follow some questions you can answer, and ideas you can use, after you have finished studying this chapter. Consider these scenarios:
 
 	- *Colleague*: We have this list of 8 plausible factors that affect the polymer melt index (the outcome). How do we narrow down the list to a more manageable size and rank their effect on melt index?
  	- *You*: Our initial screening experiments reduced the list down to 3 factors of interest. Now how do we perform the rest of the experiments?
@@ -372,7 +372,7 @@ Here are some questions you can answer and ideas you can use after you have fini
 	- *Colleague*: The current production settings for our food product gives us good shelf-life, but the energy used is high. How can we locate other settings (factors) that give long shelf-life but reduce the energy consumed?
 	- *Colleague*: We would like to run experiments by varying temperature and pressure, but operating at both high temperature and pressure is unsafe. How do we plan such an experiment?
 
-.. TODO: more questions/answers here
+.. TODO: add more questions/answers here
 
 Here's a visual representation of the topics we will cover in this chapter.
 
@@ -387,7 +387,7 @@ References and readings
 .. index::
 	pair: references and readings; experiments
 
--	**Strongly recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, chapters 5 and 6 with topics from chapters 11, 12, 13 and 15.
+-	**Strongly recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, second edition. Chapters 5 and 6 with topics from chapters 11, 12, 13 and 15 are the most heavily used in this chapter.
 -	`A web tutorial on designed experiments <http://www.chemometrics.se/index.php?option=com_content&task=view&id=18&Itemid=27>`_
 -	Søren Bisgaard: `Must a Process Be in Statistical Control Before Conducting Designed Experiments <http://dx.doi.org/10.1080/08982110701826721>`_, with discussion (`part 1 <http://dx.doi.org/10.1080/08982110701866198>`_, `part 2 <http://dx.doi.org/10.1080/08982110801894892>`_, `part 3 <http://dx.doi.org/10.1080/08982110801890148>`_, `part 4 <http://dx.doi.org/10.1080/08982110801924509>`_, `part 5 <http://dx.doi.org/10.1080/08982110801894900>`_ and a `rejoinder <http://dx.doi.org/10.1080/08982110801973118>`_), 
 -	George Box and  J. Stuart Hunter: "The :math:`2^{k-p}` `Fractional Factorial Designs - Part I <http://www.jstor.org/pss/1266725>`_", *Technometrics*, **3**, 311-351, 1961.
@@ -403,14 +403,14 @@ References and readings
 
 .. OTHER REFERENCES
 
-	Design of Experiments in Chemical Engineering: A Practical Guide, Lazić, Živorad R., Wiley-VCH, 2004. THODE Bookstacks, TP 155 .L34 2004
+	The web-based preprint book you have open in your browser tabs.
 
 Why learning about systems is important
 ===========================================
 
-We strive for increased knowledge because it brings us profit, it can help us make products more efficiently. Once we learn what really happens in our system, we can fix problems and optimize the system, because we have an improved understanding of cause and effect.
+We strive for increased knowledge because it brings us a better understanding of our system. That could lead to profit, or it could help us make products more efficiently. Once we learn what really happens in our system, we can fix problems and optimize the system, because we have an improved understanding of cause and effect.
 
-As Box, Hunter and Hunter show in the first chapter of their book, it is an iterative process.
+As Box, Hunter and Hunter show in the first chapter of their book, learning and improving systems is an iterative process.
 
 	*	Make a conjecture (hypothesis), which we believe is true.
 	*	If it is true, we expect certain consequences. 
@@ -425,23 +425,31 @@ The iterations continue until we find the most economically profitable operating
 Correlation and causality
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It is only by intentional manipulation of our systems that we learn from them. Collecting happenstance (everyday) operating data does not always help, because it is confounded by other events that occur at the same time. Everyday data is limited by:
 
-	*	Feedback control systems which keep the region of operation to a small zone - better yields or improved operation might exist beyond the bounds created by our automatic control systems.
+
+It is only by *intentional manipulation* of our systems that we learn from them. Collecting :index:`happenstance data` (everyday) operating data does not always help, because it is confounded by other events that occur at the same time. Everyday, happenstance, data is limited by:
+
+	*	Feedback control systems which keep the region of operation to a small zone - better yields or improved operation might exist beyond the bounds created by our automatic control systems. Due to safety concerns, and efficient manufacturing practices, we introduce automated feedback control systems to prevent deviating too far from a desired region of operation. As a result, data collected from such systems has low information quality.
+	
+		An example would be making eggs for breakfast. If you make eggs the same way each morning (a bit of butter, medium heat for 5 minutes, flip and cook it for 1 minutes, then eat), you will never experience anything different. The egg you make this morning is going to taste very similar to one last year, because of your good control system. That's happenstance data.
+		
+		You must intentionally change the system to perturb it, and then observe it.
 	
 	*	Other factors are always affecting the system. The operator mistakenly adjusts the temperature set point to 480K instead of 470K. The conversion value at the end of the shift is 3% higher. This "experiment" of sorts enters the collection of anecdotes that operators and engineers like to tell each other, and soon it becomes "accepted" that temperature can be used to improve conversion. However, it might have been a lower impurity in the raw materials, the new pump that was installed the previous day, improved controller tuning by another team of engineers, or any other event(s).
 	
-Designed experiments are the only way we can be sure that these correlated events are causal. You often hear people repeat the (incomplete) phrase that "*correlation does not imply causality*". That is half-true. The other half of the phrase is however: "*correlation is a necessary, but not sufficient, condition for causality*". 
+Designed experiments are the only way we can be sure that these correlated events are causal. You often hear people repeat the (incomplete) phrase that "*correlation does not imply causality*". That is half-true: the other half of the phrase is "*correlation is a necessary, but not sufficient, condition for causality*". 
 
-Here's another example from Box's book: consider the negative slope least squares model between pressure and yield. As pressure increases, the yield drops. It is true that they are correlated, as that is exactly what a least squares model is intended for: to quantify correlation. However the true mechanism is rather that pressure is increased to remove frothing that occurs in the reactor. Higher frothing occurs when there is an impurity in the raw material, so operators increase reactor pressure when they see frothing (i.e. high impurity). However, it is the high impurity that actually causes the lower yield.
+Here's another example from Box's book: consider the negative slope least squares model between pressure and yield. As pressure increases, the yield drops. It is true that they are correlated, as that is exactly what a least squares model is intended for: to quantify correlation. However the true mechanism is that pressure is increased to remove the frothing that occurs in the reactor. Higher frothing occurs when there is an impurity in the raw material, so operators increase reactor pressure when they see frothing (i.e. high impurity). However, it is the high impurity that actually causes the lower yield, not the pressure itself.
 
-.. image:: ../figures/doe/yield-pressure-impurity-correlation.png
+.. figure:: ../figures/doe/yield-pressure-impurity-correlation.png
 	:alt:	../figures/doe/yield-pressure-impurity-correlation.svg
 	:scale: 50
 	:width: 750px
 	:align: left
 	
-Figure adapted from Box, Hunter and Hunter, chapter 14 (1\ :sup:`st` ed) or chapter 10 (2\ :sup:`nd` ed).
+	Figure adapted from Box, Hunter and Hunter, chapter 14 (1\ :sup:`st` ed) or chapter 10 (2\ :sup:`nd` ed)*.
+
+
 
 So the true effect of pressure on yield is non-existent, it is only appears in the data because of the operating policy. That is why happenstance data cannot be relied on to imply cause-and-effect.  An experiment in which the pressure is changed from low to high, performed on the same batch of raw materials (i.e. at constant impurity level), will quickly reveal that there is no causal relationship between pressure and yield. Furthermore, experiments should be performed in random order, further breaking any relationship with other non-causal factors. Only the truly causal effect will remain in experimental data, *correlated* effects will be broken: they show up as having close to zero correlation in the DOE data.
 
@@ -1840,15 +1848,20 @@ A side note on screening designs is a mention of :index:`Plackett and Burman des
 Design foldover
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Experiments are not a one-shot operation. They are almost always sequential, as we learn more and more about our system. Once the first screening experiments are complete there will always be additional questions. In this section we consider two common questions that arise after a fraction has been run. 
+Experiments are not a one-shot operation. They are almost always sequential, as we learn more and more about our system. Once the first screening experiments are complete there will always be additional questions. In this section we consider two common questions that arise after an initial set of fractional factorials have been run. 
 
 *Dealias a single main effect* (switch sign of one factor)
 
-In the previous example we had a :math:`2^{7-4}_{\text{III}}` system with generators **D=AB**, **E=AC**, **F=BC**, and **G=ABC**. Effect **C** was the largest effect. But we cannot be sure it was large due to factor **C** alone - it might have been one of the interactions it is aliased with. We would like to do some additional experiments so that **C** becomes unconfounded with any two-factor interactions (currently it is confounded with **AE** + **BF** + **DG**). 
+.. See source code for this section: /Users/kevindunn/Sync/Figures/doe/check_foldover.m
 
-Run another 8 experiments, but this time just change the sign of **C** to **-C**. Now the generators are **D=AB**, **E=-AC**, **F=-BC**, and **G=-ABC**. This is just another :math:`2^{7-4}_{\text{III}}` design. You can calculate the aliasing pattern, but in particular the aliasing pattern for effect **C**  will be :math:`\widehat{\beta}_{\mathbf{C}} \rightarrow` **C** - **AE** - **BF** - **DG**. So it is now estimated without any confounding from two-factor interactions when putting all 16 runs together. Also, any two-factor interactions involving **C** are removed from the other main effects. For example, confounding due to **CE** will be removed from main effect **A**, and **CF** will be removed from main effect **B**. 
+In the previous example we had a :math:`2^{7-4}_{\text{III}}` system with generators **D=AB**, **E=AC**, **F=BC**, and **G=ABC**. Effect **C** was the largest effect. But we cannot be sure it was large due to factor **C** alone: it might have been one of the interactions it is aliased with. The aliasing pattern for effect **C** was: :math:`\widehat{\beta}_{\mathbf{C}} \rightarrow` **C** + **AE** + **BF** + **DG**. For example, we might have reason to believe the **AE** interaction is large. We would like to do some additional experiments so that **C** becomes unconfounded with any two-factor interactions.
 
-**In general**: switching the sign of one factor will de-alias that factor's main effect, and all its associated two-factor interactions. In the above example, we will have an unconfounded estimate of **C** and unconfounded estimates of the 2-factor interactions involving **C**, i.e. **AC**, **BC**, **CD**, **CE**, **CF** and **CG** after analyzing the 8 + 8 experiments together.
+The way we can do this is to run another 8 experiments, but this time just change the sign of **C** to **-C**; in other words, re-run the original 8 experiments where the *only* thing that is changed is to flip the signs on column **C**; the columns which are generated from column **C** should remain as they were. This implies that the generators have become **D=AB**, **E=-AC**, **F=-BC**, and **G=-ABC**. We must emphasize, do not re-create these generated columns from new signs in column **C**. What we have now is another :math:`2^{7-4}_{\text{III}}` design. You can calculate the aliasing pattern for the recent 8 experiments is :math:`\widehat{\beta}_{\mathbf{C}} \rightarrow` **C** - **AE** - **BF** - **DG**. 
+
+Now consider putting all 16 runs together and analyzing the joint results. There are now 16 parameters that can be estimated. Using computer software you can see that factor C will have no confounding with any two-factor interactions. Also, any two-factor interactions involving **C** are removed from the other main effects. For example, factor **A** was originally confounded with **CE** with the first 8 experiments; but that will be removed when analyzing all 16 together. 
+
+So our **general conclusion** is: switching the sign of one factor will de-alias that factor's main effect, and all its associated two-factor interactions when analyzing the two fractional factorials together. In the above example, we will have an unconfounded estimate of **C** and 2-factor interactions involving **C** will be unconfounded with main effects: i.e. **AC**, **BC**, **CD**, **CE**, **CF** and **CG**.
+
 
 *Increase design resolution* (switching all signs)
 

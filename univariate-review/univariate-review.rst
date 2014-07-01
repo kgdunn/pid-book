@@ -951,8 +951,8 @@ Returning back to :eq:`distribution-for-sample-average` we stated that
 
 .. math::
 
-	\frac{\overline{x} - \mu}{s/\sqrt{n}} \sim t_{n-1}
-	
+	\frac{\overline{x} - \mu}{s/\sqrt{n}} &\sim t_{n-1}
+
 We can plot the :math:`t`-distribution for a given value of :math:`n-1`, the degrees of freedom. Then we can locate vertical lines on the :math:`x`-axis at :math:`-c_t` and :math:`+c_t` so that they area between the verticals covers say 95% of the total distribution's area. The subscript :math:`t` refers to the fact that these are critical values from the :math:`t`-distribution.
 
 Then we write:
