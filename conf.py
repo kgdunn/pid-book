@@ -255,7 +255,19 @@ html_link_suffix = ''
 # Output file base name for HTML help builder.
 #htmlhelp_basename = ''
 
+# -- Options for link checking -------------------------------------------------
 
+#A list of regular expressions that match URIs that should not be checked when doing a linkcheck build.
+linkcheck_ignore = [r'http://localhost:\d+/']
+
+# A timeout value, in seconds, for the linkcheck builder. Only works in Python 2.6 and higher. The default is to use Python’s global socket timeout.
+linkcheck_timeout = 20
+
+# The number of worker threads to use when checking links. Default is 5 threads.
+linkcheck_workers = 5
+
+# True or false, whether to check the validity of #anchors in links. Since this requires downloading the whole document, it’s considerably slower when enabled. Default is True.
+linkcheck_anchors = True
 
 # -- Options for LaTeX output --------------------------------------------------
 
@@ -270,13 +282,21 @@ latex_documents = [
 #latex_logo = None
 
 # If true, add page references after internal references. This is very useful for printed copies of the manual. Default is False.
-latex_show_pagerefs = False
+latex_show_pagerefs = True
 
 latex_additional_files = [ ] #'preface.tex'
 
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.
 latex_use_parts = False
+
+# Control whether to display URL addresses. This is very useful for printed copies of the manual. The setting can have the following values:
+# 'no' – do not display URLs (default)
+# 'footnote' – display URLs in footnotes
+# 'inline' – display URLs inline in parentheses
+latex_show_urls = 'footnote'
+
+
 
 #_MAKETITLE = r""" """
 

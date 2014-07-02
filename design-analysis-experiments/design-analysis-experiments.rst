@@ -310,8 +310,15 @@
 	1. Screening	
 	2. Optimization
 	3. Robustness
+
+.. note:: Coursera students
+
+	If you are using this chapter with the `Coursera MOOC <https://www.coursera.org/course/experiments>`_, then we wish to welcome you, and want to let you know that this book is generally part of a larger set of notes. The cross-references in this chapter will point you to other parts, where background knowledge is provided.
 	
+	This chapter was written for engineers originally, but you will see the examples are very general, and can be applied to any other systems.
 	
+	You can safely skip over the section on :ref:`DOE_expts_with_single_variable`; that section is not covered in the MOOC. You can also initially skip the :ref:`DOE_learning_about_systems`, but make sure you come back and read it.
+
 .. index::
    see: Design of experiments; experiments
 
@@ -319,6 +326,7 @@ Design and Analysis of Experiments: in context
 ===============================================
 
 This chapter will take a totally different approach to learning and understanding about systems, not only (chemical) engineering systems. The systems we could apply this to could be as straightforward as growing plants, or perfecting your favourite recipe at home. Or they may be as complex as the entire production line in a large factory producing multiple products and shipping them to customers.
+
 
 In order to learn about a system we have to disturb it and change it. This is to ensure cause and effect. If we do not intentionally change the system, we are only guessing, or using our intuition. In this chapter we learn what the best way is to intentionally disturb the system to learn more about it.
 
@@ -345,6 +353,7 @@ Another term is :index:`objective <pair: objective; experiments>`, which is when
 Every experiment always an outcome. Every experiment does not have to have an objective though. But usually we have an objective in our mind.
 
 Another term we will use is factors. In the plant example, there could have been 3 factors that you changed:
+
 #.	the amount of water that you give the plant each day
 #.	the amount of fertilizer that you give the plant each week
 #.	using soil type A or soil type B
@@ -380,6 +389,8 @@ Here's a visual representation of the topics we will cover in this chapter.
 	:width: 750px 
 	:align: center
 	:scale: 90
+	
+.. _DOE_references:
 
 References and readings
 ========================
@@ -390,56 +401,55 @@ References and readings
 -	**Strongly recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, second edition. Chapters 5 and 6 with topics from chapters 11, 12, 13 and 15 are the most heavily used in this chapter.
 -	`A web tutorial on designed experiments <http://www.chemometrics.se/index.php?option=com_content&task=view&id=18&Itemid=27>`_
 -	Søren Bisgaard: `Must a Process Be in Statistical Control Before Conducting Designed Experiments <http://dx.doi.org/10.1080/08982110701826721>`_, with discussion (`part 1 <http://dx.doi.org/10.1080/08982110701866198>`_, `part 2 <http://dx.doi.org/10.1080/08982110801894892>`_, `part 3 <http://dx.doi.org/10.1080/08982110801890148>`_, `part 4 <http://dx.doi.org/10.1080/08982110801924509>`_, `part 5 <http://dx.doi.org/10.1080/08982110801894900>`_ and a `rejoinder <http://dx.doi.org/10.1080/08982110801973118>`_), 
--	George Box and  J. Stuart Hunter: "The :math:`2^{k-p}` `Fractional Factorial Designs - Part I <http://www.jstor.org/pss/1266725>`_", *Technometrics*, **3**, 311-351, 1961.
--	George Box and  J. Stuart Hunter: "The :math:`2^{k-p}` `Fractional Factorial Designs - Part II <http://www.jstor.org/pss/1266553>`_", *Technometrics*, **3**, 449 - 458, 1961.
+-	George Box and J. Stuart Hunter: "The :math:`2^{k-p}` `Fractional Factorial Designs - Part I <http://www.jstor.org/pss/1266725>`_", *Technometrics*, **3**, 311-351, 1961.
+-	George Box and J. Stuart Hunter: "The :math:`2^{k-p}` `Fractional Factorial Designs - Part II <http://www.jstor.org/pss/1266553>`_", *Technometrics*, **3**, 449 - 458, 1961.
 -	George Box: `Evolutionary Operation: A Method for Increasing Industrial Productivity <http://www.jstor.org/pss/2985505>`_", *Journal of the Royal Statistical Society* (Applied Statistics), **6**, 81 - 101, 1957.
 -	William G. Hunter and J. R. Kittrell, "`Evolutionary Operation: A Review <http://www.jstor.org/pss/1266686>`_", *Technometrics*, **8**, 389-397, 1966.
 -	Heather Tye: "`Application of Statistical Design of Experiments Methods in Drug Discovery <http://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_", *Drug Discovery Today*, **9**, 485-491, 2004.
 - R.A. Fisher, `Statistical Methods, Experimental Design and Scientific Inference <http://www.amazon.com/Statistical-Methods-Experimental-Scientific-Inference/dp/0198522290>`_, Oxford Science Publications, 2003.
--	Myers and Montgomery: "`Response Surface Methodology: Process and product optimization using designed experiments <http://en.wikipedia.org/wiki/Special:BookSources/0470174463#Canada>`_".
+-	Myers and Montgomery: "`Response Surface Methodology: Process and product optimization using designed experiments <http://www.amazon.com/Response-Surface-Methodology-Optimization-Experiments/dp/0470174463>`_".
 -	Hill and Hunter: "`A Review of Response Surface Methodology: A Literature Survey <http://www.jstor.org/pss/1266632>`_", *Technometrics*, **8**, 571-590 , 1966. 
--	Davies, "`The design and analysis of industrial experiments <http://en.wikipedia.org/wiki/Special:BookSources/0582460530#Canada>`_", chapter 11, revised second edition.
--	Živorad Lazić, "Design of Experiments in Chemical Engineering: A Practical Guide", Wiley-VCH, 2004.
+-	Davies, "`The Design and Analysis of Industrial Experiments <http://www.amazon.com/The-design-analysis-industrial-experiments/dp/B0007J7BME>`_", chapter 11, revised second edition.
+
+..	Živorad Lazić, "Design of Experiments in Chemical Engineering: A Practical Guide", Wiley-VCH, 2004.
 
 .. OTHER REFERENCES
 
 	The web-based preprint book you have open in your browser tabs.
 
+.. _DOE_learning_about_systems:
+
 Why learning about systems is important
 ===========================================
 
-We strive for increased knowledge because it brings us a better understanding of our system. That could lead to profit, or it could help us make products more efficiently. Once we learn what really happens in our system, we can fix problems and optimize the system, because we have an improved understanding of cause and effect.
+One of the import reasons why we must experiments is that it brings us increased knowledge and a better understanding of our system. That could lead to profit, or it could help us make products more efficiently. Once we learn what really happens in our system, we can fix problems and optimize the system, because we have an improved understanding of cause and effect.
 
-As Box, Hunter and Hunter show in the first chapter of their book, learning and improving systems is an iterative process.
+As described `in the first reference, the book by Box, Hunter and Hunter <DOE_references>`_, learning from and improving a system is an iterative process. It usually follows this cycle:
 
 	*	Make a conjecture (hypothesis), which we believe is true.
 	*	If it is true, we expect certain consequences. 
-	*	Experiment and collect data - are the consequences we expected visible in the data?
+	*	Experiment and collect data - are the consequences that we expected visible in the data?
 	*	If so, it may lead to the next hypothesis. If not, we formulate an alternative hypothesis. Or perhaps it is not so clear cut: we see the consequence, but not to the extent expected. Perhaps modifications are required in the experimental conditions.
 
-And so we go about learning. An example: we expect that compounds A and B should combine in the presence of catalyst C to form product D. An initial experiment shows very little of product D is produced. Then several factors (e.g temperature, reaction duration, and pressure) are investigated, using a set of structured experiments to improve the yield of product D. These experiments might show that only temperature and reaction duration are important. Then we go ahead and adjust only those two factors and repeat several more systematic :ref:`response surface <DOE-RSM>` experiments.
+And so we go about learning. One of the most frequent reasons we experiment is to fix a problem with our process. This is called troubleshooting. We can list several causes for the problem, change the factors, isolate the problem, and thereby learn more about our system while fixing the problem. 
 
-The iterations continue until we find the most economically profitable operating point. At each iteration we learn more about our system and how to improve it.
+Let's look at an example: we expect that compounds A and B should combine in the presence of a third chemical, C, to form a product D. An initial experiment shows very little of product D is produced. Our goal is to maximize the amount of D. Several factors are considered: temperature, reaction duration, and pressure). Using a set of structured experiments, we can get an initial idea of which factors actually impact the amount of D produced. Perhaps these experiments show that only temperature and reaction duration are important and that pressure has little effect. Then we go ahead and adjust only those two factors, and we keep pressure low (to save money because we can now use a less costly, low pressure reactor). We repeat several more systematic :ref:`response surface <DOE-RSM>` experiments to maximize our production goal.
 
+The iterations continue until we find the most economically profitable operating point. At each iteration we learn more about our system and how to improve it. The key point is this: you must disturb your system, then observe it. This is principle of causality, or *cause-and-effect*.
+
+It is only by *intentional manipulation* of our systems that we learn from them. Collecting :index:`happenstance data` (everyday) operating data does not always help, because it is confounded by other events that occur at the same time. Everyday, happenstance, data is limited by feedback control systems.
+
+Feedback control systems which keep the region of operation to a small zone - better yields or improved operation might exist beyond the bounds created by our automatic control systems. Due to safety concerns, and efficient manufacturing practices, we introduce automated feedback control systems to prevent deviating too far from a desired region of operation. As a result, data collected from such systems has low information quality.
 	
-Correlation and causality
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
-It is only by *intentional manipulation* of our systems that we learn from them. Collecting :index:`happenstance data` (everyday) operating data does not always help, because it is confounded by other events that occur at the same time. Everyday, happenstance, data is limited by:
-
-	*	Feedback control systems which keep the region of operation to a small zone - better yields or improved operation might exist beyond the bounds created by our automatic control systems. Due to safety concerns, and efficient manufacturing practices, we introduce automated feedback control systems to prevent deviating too far from a desired region of operation. As a result, data collected from such systems has low information quality.
-	
-		An example would be making eggs for breakfast. If you make eggs the same way each morning (a bit of butter, medium heat for 5 minutes, flip and cook it for 1 minutes, then eat), you will never experience anything different. The egg you make this morning is going to taste very similar to one last year, because of your good control system. That's happenstance data.
+An example would be making eggs for breakfast. If you make eggs the same way each morning (a bit of butter, medium heat for 5 minutes, flip and cook it for 1 minutes, then eat), you will never experience anything different. The egg you make this morning is going to taste very similar to one last year, because of your good control system. That's happenstance data.
 		
-		You must intentionally change the system to perturb it, and then observe it.
-	
-	*	Other factors are always affecting the system. The operator mistakenly adjusts the temperature set point to 480K instead of 470K. The conversion value at the end of the shift is 3% higher. This "experiment" of sorts enters the collection of anecdotes that operators and engineers like to tell each other, and soon it becomes "accepted" that temperature can be used to improve conversion. However, it might have been a lower impurity in the raw materials, the new pump that was installed the previous day, improved controller tuning by another team of engineers, or any other event(s).
-	
-Designed experiments are the only way we can be sure that these correlated events are causal. You often hear people repeat the (incomplete) phrase that "*correlation does not imply causality*". That is half-true: the other half of the phrase is "*correlation is a necessary, but not sufficient, condition for causality*". 
+You must intentionally change the system to perturb it, and then observe it.
 
-Here's another example from Box's book: consider the negative slope least squares model between pressure and yield. As pressure increases, the yield drops. It is true that they are correlated, as that is exactly what a least squares model is intended for: to quantify correlation. However the true mechanism is that pressure is increased to remove the frothing that occurs in the reactor. Higher frothing occurs when there is an impurity in the raw material, so operators increase reactor pressure when they see frothing (i.e. high impurity). However, it is the high impurity that actually causes the lower yield, not the pressure itself.
+Here's a great example from Box, Hunter and Hunter's book. Consider the negative slope :ref:`relationship between pressure and yield <DOE-yield-pressure-impurity-correlation>`: as pressure increases, the yield drops. A line could be drawn through the points from the happenstance measurements, taken from the process at different times in the past. That line could be from a :ref:`least squares model <SECTION-least-squares-modelling>`. It is true that they are correlated, as that is exactly what a least squares model is intended for: to quantify correlation. 
+
+The true mechanism in this system is that pressure is increased to remove the frothing that occurs in the reactor. Higher frothing occurs when there is an impurity in the raw material, so operators increase reactor pressure when they see frothing (i.e. high impurity). However, it is the high impurity that actually causes the lower yield, not the pressure itself. 
+
+.. _DOE-yield-pressure-impurity-correlation:
 
 .. figure:: ../figures/doe/yield-pressure-impurity-correlation.png
 	:alt:	../figures/doe/yield-pressure-impurity-correlation.svg
@@ -447,16 +457,21 @@ Here's another example from Box's book: consider the negative slope least square
 	:width: 750px
 	:align: left
 	
-	Figure adapted from Box, Hunter and Hunter, chapter 14 (1\ :sup:`st` ed) or chapter 10 (2\ :sup:`nd` ed)*.
+	The relationship between yield, pressure and impurity levels [adapted from Box, Hunter and Hunter, chapter 14 (1\ :sup:`st` ed) or chapter 10 (2\ :sup:`nd` ed)]
 
+Pressure is correlated with the yield, but there is no cause-and-effect relationship between them. The happenstance relationship only appears in the data because of the operating policy, causing them to be correlated, but it is not cause-and-effect. That is why happenstance data cannot be relied on to imply cause-and-effect. An experiment in which the pressure is changed from low to high, performed on the same batch of raw materials (i.e. at constant impurity level), will quickly reveal that there is no causal relationship between pressure and yield.
 
+Here's another problem with using happenstance data: they are not taken in random order. Time-based effects, such as changes in the seasonal or daily temperatures,  will affect a process. We are all well-aware of slow changes: fridges and stoves degrade over time, cars need periodic maintenance. Even our human bodies follow this rule. If we do not randomize the order of experiments, we risk inferring a causal relationship when none actually exists.
 
-So the true effect of pressure on yield is non-existent, it is only appears in the data because of the operating policy. That is why happenstance data cannot be relied on to imply cause-and-effect.  An experiment in which the pressure is changed from low to high, performed on the same batch of raw materials (i.e. at constant impurity level), will quickly reveal that there is no causal relationship between pressure and yield. Furthermore, experiments should be performed in random order, further breaking any relationship with other non-causal factors. Only the truly causal effect will remain in experimental data, *correlated* effects will be broken: they show up as having close to zero correlation in the DOE data.
+.. Other factors are always affecting the system. The operator mistakenly adjusts the temperature set point to 480K instead of 470K. The conversion value at the end of the shift is 3% higher. This "experiment" of sorts enters the collection of anecdotes that operators and engineers like to tell each other, and soon it becomes "accepted" that temperature can be used to improve conversion. However, it might have been a lower impurity in the raw materials, the new pump that was installed the previous day, improved controller tuning by another team of engineers, or any other event(s).
+	
+Designed experiments are the only way we can be sure that these correlated events are causal. You often hear people repeat the (incomplete) phrase that "*correlation does not imply causality*". That is only half-true: the other half of the phrase is "*correlation is a necessary, but not sufficient, condition for causality*". 
 
-In summary, do not rely on anecdotal "evidence" from colleagues - always question the system and always try to perturb the system intentionally. In practice you won't always be allowed to move the system too drastically, so we will discuss response surface methods and evolutionary operation at the end of this section which can be implemented on-line in production processes.
+In summary, do not rely on anecdotal "evidence" from colleagues - always question the system and always try to perturb the system intentionally. In practice you won't always be allowed to move the system too drastically, so we will discuss :ref:`section on response surface methods <DOE-RSM>` and :ref:`evolutionary operation <DOE-EVOP>` at the end of this chapter which can be implemented on-line in production processes.
 
 We will show that experiments are the most efficient way to extract information about a system: i.e. the most information in the fewest number of changes. So it is always worthwhile to experiment.
 
+.. _DOE_expts_with_single_variable:
 
 Experiments with a single variable at two levels
 ======================================================
@@ -467,10 +482,9 @@ This is the simplest type of experiment. It involves an outcome variable, :math:
 	
 	*	Does the concrete's strength improve when adding a particular binder or not?
 	
-	*	Does the plastic's stretchability improve when extruded at lower or higher temperatures?
+	*	Does the plastic's stretchability improve when extruded at various temperatures (a low or high temperature)?
 	
-So we can perform several runs (experiments) at level A, and then some runs at level B. In both cases we strive to hold all other disturbance variables constant so we pick up only the A to B effect. Disturbances are any variables that might affect :math:`y`, but for whatever reason, we don't wish to quantify. If we cannot control the disturbance, then at least we can using :ref:`blocking <DOE_blocking_section>` and pairing.
-
+So we can perform several runs (experiments) at level A, and some runs at level B. These runs are randomized (do not perform all the A runs, then the B runs). We strive to hold all other disturbance variables constant so we pick up only the A to B effect. Disturbances are any variables that might affect :math:`y`, but for whatever reason, we don't wish to quantify. If we cannot control the disturbance, then at least we can using :ref:`blocking <DOE_blocking_section>` and  :ref:`pairing <univariate_paired_tests>` (pairing is the name used when there is one factor in our experiment; blocking is the term used when we have more than one factor).
 
 Recap of group-to-group differences 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -523,7 +537,9 @@ where :math:`d_i` is an indicator variable. For example :math:`d_i = 0` when usi
 	group_difference(brittle$TK104, brittle$TK107)  
 	lm_difference(brittle$TK104, brittle$TK107)
 	
-Use this function in the same way you did in :ref:`the carbon dioxide exercise in the univariate section <univariate-CO2-question>`. For example, you will find that comparing TK104 and TK107 that :math:`z = 1.4056`, and the confidence interval is: :math:`-21.4 \leq \mu_{107} - \mu_{104}\leq 119`. Similarly when coding :math:`d_i = 0` for reactor TK104 and :math:`d_i = 1` for reactor TK107, we get the least squares confidence interval: :math:`-21.4 \leq g \leq 119`. This is a little surprising, because the first method creates a pooled variance, calculates a :math:`z`-value and then a confidence interval. The least squares method just builds a linear model, then calculates the confidence interval using the model's standard error.
+Use this function in the same way you did in :ref:`the carbon dioxide exercise in the univariate section <univariate-CO2-question>`. For example, you will find that comparing TK104 and TK107 that :math:`z = 1.4056`, and the confidence interval is: :math:`-21.4 \leq \mu_{107} - \mu_{104}\leq 119`. Similarly when coding :math:`d_i = 0` for reactor TK104 and :math:`d_i = 1` for reactor TK107, we get the least squares confidence interval for parameter :math:`g`: :math:`-21.4 \leq g \leq 119`. This is a little surprising, because the first method creates a pooled variance, calculates a :math:`z`-value and then a confidence interval. The least squares method builds a linear model, then calculates the confidence interval using the model's standard error.
+
+Both methods give identical results, but found by very different routes.
 
 .. _DOE-randomization:
 
@@ -532,9 +548,9 @@ The importance of randomization
 
 We :ref:`emphasized in a previous section <univariate-group-to-group-differences-no-reference-set>` that experiments must be performed in random order to avoid any unmeasured, and uncontrolled disturbances from impacting the system.
 
-The concept of randomization was elegantly described in an example by Fisher in Chapter 2 of *The Design of Experiments* part of his book referenced above. A lady claims that she can taste the difference between a cup of tea where the milk has been added after the tea, or the tea added to the milk. By setting up :math:`N` cups of tea which either contain the milk first (M) or the tea first (T), the lady is asked to taste these :math:`N` cups and make her assessment. Fisher shows that if the experiments are performed in random order that the actual set of decisions made by the lady are just one of many possible outcomes. He calculates all possibilities (we show how below), and then calculates the probability of the lady's actual set of decisions being due to chance alone.
+The concept of randomization was elegantly described in an example by Fisher in Chapter 2 of his book, :ref:`The Design of Experiments <DOE_references>`, referenced above. A lady claims that she can taste the difference between a cup of tea where the milk has been added after the tea, or the tea added after the milk. By setting up :math:`N` cups of tea which either contain the milk first (M) or the tea first (T), the lady is asked to taste these :math:`N` cups and make her assessment. Fisher shows that if the experiments are performed in random order, the actual set of decisions made by the lady are just one of many possible outcomes. He calculates all possibilities (we show how below), and then he calculates the probability of the lady's actual set of decisions being due to chance alone. If the lady has test score values better than by random chance, then there is a reasonable claim the lady is reliable.
 
-Let's take a look at a more engineering oriented example. We :ref:`previously considered <univariate-CO2-question>` the brittleness of a material made in either TK104 or in TK107. The same raw materials were charged to each reactor. So in effect, we are testing the difference due to using reactor TK104 or reactor TK107. Let's call them case A and case B so the notation is more general. We collected 20 brittleness values from TK104, and 23 values from TK107. We will only use the first 8 values from TK104 and the first 9 values from TK107 (you will see why soon):
+Let's take a look at a more engineering oriented example. We :ref:`previously considered <univariate-CO2-question>` the brittleness of a material made in either TK104 or in TK107. The same raw materials were charged to each reactor. So in effect, we are testing the difference due to using reactor TK104 or reactor TK107. Let's call them case A (TK104) and case B (TK107) so the notation is more general. We collected 20 brittleness values from TK104, and 23 values from TK107. We will only use the first 8 values from TK104 and the first 9 values from TK107 (you will see why soon):
 
 .. tabularcolumns:: |l|lllllllll|
 
@@ -548,19 +564,24 @@ Fisher's insight was to create one long vector of these outcomes (length of vect
 
 Only one of the 24310 sequences will correspond to the actual data printed in the above table, while all the other realizations are possible, they are fictitious. We do this, because the null hypothesis is that there is no difference between A and B. Values in the table could have come from either system.
 
-So for each of the 24310 realizations we calculate the difference of the averages between A and B, :math:`\overline{y}_A - \overline{y}_B`, and plot a histogram of these differences. I have shown this below, together with a vertical line showing the actual realization in the table. There are 4956 permutations that had a greater difference than the one actually realized, i.e. 79.6% of the other combinations had a smaller value. 
+So for each of the 24310 realizations we calculate the difference of the averages between A and B, :math:`\overline{y}_A - \overline{y}_B`, and plot a histogram of these differences. This is :ref:`shown below <DOE-fig-randomization-one-factor>`, together with a vertical line showing the actual realization in the table. There are 4956 permutations that had a greater difference than the one actually realized, i.e. 79.6% of the other combinations had a smaller value. 
 
 Had we used a formal test of differences where we pool the variances, we will find a :math:`z`-value of 0.8435, and the probability of obtaining that value, using the :math:`t`-distribution with :math:`n_A + n_B - 2` degrees of freedom is 79.3%. See how close they agree?  
 
 .. Future improvement: superimpose the t-distribution on top of the histogram (scaled). E.g. see BHH(v1) page 97
+
+.. _DOE-fig-randomization-one-factor:
+
 .. figure:: ../figures/doe/single-experiment-randomization.png
 	:align: center
 	:width: 750px
 	:scale: 90
+	
+	The differences in the averages of A and B for the 24310 realizations. The vertical line represents the difference in the average for the one particular set of numbers we measured in the experiment.
 
 Recall that independence is required to calculate the :math:`z`-value for the average difference and compare it against the :math:`t`-distribution. By randomizing our experiments, we are able to guarantee that the results we obtain from using :math:`t`-distributions are appropriate. Without randomization, these :math:`z`-values and confidence intervals may be misleading.
 
-The reason we prefer using the :math:`t`-distribution approach over randomization is that formulating all random combinations and then calculating all the average differences as shown here is intractable. Even on my relatively snappy computer it would take 3.4 years to calculate all possible combinations for the complete data set: 20 values from group A and 23 values from group B. [It took 122 seconds to calculate a million of them, and the full set of 960,566,918,220 combinations would take more than 3 years].
+The reason we prefer using the :math:`t`-distribution approach over randomization is that formulating all random combinations and then calculating all the average differences as shown here is intractable. Even on my relatively snappy computer it would take 3.4 years to calculate all possible combinations for the complete data set: 20 values from group A and 23 values from group B. [It took 122 seconds to calculate a million of them, so the full set of 960,566,918,220 combinations would take more than 3 years].
 
 .. _DOE-COST-approach:
 
@@ -573,11 +594,13 @@ You will often come across the thinking that we should change one variable at a 
 
 	*	Something goes wrong with a recipe: e.g the pancakes are not as fluffy as normal, or the muffins don't rise as much as they should. You are convinced it is the new brand of all-purpose flour you recently bought. You change only the flour the next time you make pancakes to check your hypothesis.
 	
-	*	University labs are notorious for asking you to change one variable at a time. The reason is that these labs intend that you learn what the effect of a single variable is on some other variable (e.g. change temperature in a distillation column to improve product purity). The labs teach you that this is good scientific procedure. However, when we want to *optimize and improve* a process we should not be changing one variable at a time.
+	*	University labs are notorious for asking you to change one variable at a time. The reason is that these labs intend for you to learn what the effect of a single variable is on some other variable (e.g. change temperature in a distillation column to improve product purity). The labs teach you that this is good scientific procedure, which is fine if your goal is to only initially learn about a system, especially a new system that has never been explored.
 	
-		.. COST is good to learn about the direction of the effect between 2 variables, but not for optimizing a process.
+		However, when you want to *optimize and improve* a process, then a different style of experiments where multiple factors are changed simultaneously is required.
+		
+We have known since the mid 1930's (almost 85 years), due to the work by :ref:`R. A. Fisher, <DOE_references>`, that changing one factor at a time (OFAT) is not an efficient way for experimentation. Note that OFAT is alternative name for COST.
 
-Consider a bioreactor where we are producing a particular enzyme. The yield is known to be affected by these 7 variables: dissolved oxygen level, agitation rate, reaction duration, feed substrate concentration and type, and reactor temperature. For illustration purposes let's assume that temperature and feed substrate concentration are chosen, as they have the greatest effect on yield.
+Consider a bioreactor where we are producing a particular enzyme. The yield is known to be affected by these 6 variables: dissolved oxygen level, agitation rate, reaction duration, feed substrate concentration, substrate type, and reactor temperature. For illustration purposes let's assume that temperature and feed substrate concentration are chosen, as they have the greatest effect on yield. 
 
 The base operating point is 346K with a feed substrate concentration of 1.5 g/L (point marked with a circle) and a yield in the region of 63%.
 
@@ -597,6 +620,8 @@ So our final operating point chosen is marked on the plot with a hexagon, at 330
 However the problem with this approach is that it leaves undiscovered value behind. Changing one variable at a single time (COST) leads you into thinking you've reached the optimum, when all you've done in fact is trap yourself at a sub-optimal solution.
 
 Furthermore, notice that we would have got a completely different outcome had we decided to first change substrate concentration, :math:`S` and then change temperature, :math:`T`. We would have likely landed closer to the optimum. This is very unsatisfactory: we cannot use methods to optimize our processes that depend on the order of experiments!
+
+Notice that we have not yet considered even the effect of the other 4 variables of dissolved oxygen level, agitation rate, reaction duration, and substrate type. While the OFAT (or COST) approach can get you close to the optimum in two variables, you have little to no hope of using this approach successfully with multiply factors.
 
 Designed experiments, on the other hand, provide an efficient mechanism to learn about a system, often in fewer runs, and avoid misleading conclusions, such as from the COST approach. Designed experiments are always run in random order -- as we will presently see -- and we will get the same result, no matter the order.
 
