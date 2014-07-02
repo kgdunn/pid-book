@@ -21,6 +21,8 @@ Process Improvement Using Data
 	least-squares-modelling/index
 	latent-variable-modelling/index
 	
+	design-analysis-experiments-exercises  <--- remember to add this back to the local index.rst
+	
 	
 .. Solution manual
 

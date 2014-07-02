@@ -332,6 +332,8 @@ _PREAMBLE = r"""
 \usepackage{float}
 \usepackage{cancel}  % to get cancelled terms
 \usepackage{upquote} % to avoid quotation marks from being mangled
+\newcommand{\PYGZsq}{TO AVOID ERROR MESSAGE}
+
 
 \usepackage[]{geometry}
 %\geometry{left=1.0in,width=6.5in,top=0.75in,height=9.25in,nohead,footskip=0.5in,portrait}
@@ -486,6 +488,7 @@ latex_elements = {
      'pointsize': '11pt',         # font size ('10pt', '11pt' or '12pt')
      'fontpkg': '\\usepackage{palatino}',
      'preamble': _PREAMBLE,
+     'figure_align': 'H',         # put figures where told
      'fncychap': '\\usepackage[Glenn]{fncychap}',  # Bjarne (default), Lenny” (OK), “Glenn” (nice), “Conny” and “Rejne”,
      'tableofcontents': _TABLE_OF_CONTENTS,
      'footer': '',                # Additional footer content (before the indices), default empty.

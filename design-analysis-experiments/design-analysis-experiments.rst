@@ -424,7 +424,7 @@ Why learning about systems is important
 
 One of the import reasons why we must experiments is that it brings us increased knowledge and a better understanding of our system. That could lead to profit, or it could help us make products more efficiently. Once we learn what really happens in our system, we can fix problems and optimize the system, because we have an improved understanding of cause and effect.
 
-As described `in the first reference, the book by Box, Hunter and Hunter <DOE_references>`_, learning from and improving a system is an iterative process. It usually follows this cycle:
+As described :ref:`in the first reference, the book by Box, Hunter and Hunter <DOE_references>`, learning from and improving a system is an iterative process. It usually follows this cycle:
 
 	*	Make a conjecture (hypothesis), which we believe is true.
 	*	If it is true, we expect certain consequences. 
@@ -590,7 +590,7 @@ Changing one variable at a single time (COST)
 
 How do we go about running our experiments when there is more than one variable present that affects our outcome, :math:`y`?  In this section we describe **how not to do it**.
 
-You will often come across the thinking that we should change one variable at a time:
+You will certainly have seen the recommendation that we must **c**\ hange **o**\ ne **s**\ ingle variable at a **t**\ ime (COST):
 
 	*	Something goes wrong with a recipe: e.g the pancakes are not as fluffy as normal, or the muffins don't rise as much as they should. You are convinced it is the new brand of all-purpose flour you recently bought. You change only the flour the next time you make pancakes to check your hypothesis.
 	
@@ -598,39 +598,42 @@ You will often come across the thinking that we should change one variable at a 
 	
 		However, when you want to *optimize and improve* a process, then a different style of experiments where multiple factors are changed simultaneously is required.
 		
-We have known since the mid 1930's (almost 85 years), due to the work by :ref:`R. A. Fisher, <DOE_references>`, that changing one factor at a time (OFAT) is not an efficient way for experimentation. Note that OFAT is alternative name for COST.
+We have known since the mid 1930's (almost 85 years), due to the work by :ref:`R. A. Fisher, <DOE_references>`, that changing **o**\ ne **f**\ actor **a**\ t a **t**\ ime (OFAT) is not an efficient way for experimentation. Note that OFAT is alternative name for COST.
 
-Consider a bioreactor where we are producing a particular enzyme. The yield is known to be affected by these 6 variables: dissolved oxygen level, agitation rate, reaction duration, feed substrate concentration, substrate type, and reactor temperature. For illustration purposes let's assume that temperature and feed substrate concentration are chosen, as they have the greatest effect on yield. 
+Consider a bioreactor where we are producing a particular enzyme. The yield, our outcome variable, is known to be affected by these 6 variables: dissolved oxygen level, agitation rate, reaction duration, feed substrate concentration, substrate type, and reactor temperature. For illustration purposes let's assume that temperature and feed substrate concentration are chosen, as they have the greatest effect on yield. The goal would be to maximize the yield.
 
-The base operating point is 346K with a feed substrate concentration of 1.5 g/L (point marked with a circle) and a yield in the region of 63%.
+The base operating point is 346K with a feed substrate concentration of 1.5 g/L, marked with a circle :ref:`in the figure <DOE-fig-COST>`. At these conditions we report a yield from the reactor of approximately 63%.
 
+.. _DOE-fig-COST:
 .. figure:: ../figures/doe/COST-contours.png
 	:align: center
 	:width: 700px
 	:scale: 80	
 	
+	A demonstration of the COST (OFAT) approach.
+	
 .. FUTURE: use a curved surface like figure (c) on page 445 of BHH2
 
-At this point we start to investigate the effect of temperature. We decide to move up by 10 degrees to 356K, marked as point 1. After running the experiment we record a lower yield value than our starting point. So we go in the other direction and try temperatures at 338K, 330K and 322K. We are happy that the yields are increasing, but batch 4 shows a slightly lower yield. So we figure that we've reached a plateau in terms of the temperature variable. Our manager is pretty satisfied because we've boosted yield from 63% to around 67%. These 4 runs have cost us around $10,000 in equipment time and manpower costs so far.
+At this point we start to investigate the effect of temperature. We decide to move up by 10 degrees to 356K, marked as point 1. After running the experiment we record a lower yield value than our starting point. So we go in the other direction and try temperatures at 338K, 330K and 322K. We are happy that the yields are increasing, but experiment 4 shows a slightly lower yield. So we figure that we've reached a plateau in terms of the temperature variable. Our manager is pretty satisfied because we've boosted yield from 63% to around 67%. These 4 runs have cost us around $10,000 in equipment time and manpower costs so far.
 
-So we get approval now to run 4 more batches, and we decide to change the substrate feed concentration. But we're going to do this at the best temperature found so far, 330K at point 3. Our intuition tells us that higher feed concentrations should boost yield, so we try 1.75 g/L. Surprisingly that lowers the yield. There's likely something we don't understand about the reaction mechanism. Anyhow, we try the other direction, down to 1.25 g/L, and we see a yield increase. We decide to keep going, down to 1.0 g/L, and finally to 0.75 g/L. We see very little change between these last two runs and we believe we have reached another plateau. Also our budget of 8 experimental runs is exhausted.
+So we get approval now to run 4 more experiments, and we decide to change the substrate feed concentration. But we're going to do this at the best temperature found so far, 330K, at run 3. Our intuition tells us that higher feed concentrations should boost yield, so we try 1.75 g/L. Surprisingly, that experiment lowers the yield. There's likely something we don't understand about the reaction mechanism. Anyhow, we try the other direction, down to 1.25 g/L, and we see a yield increase. We decide to keep going, down to 1.0 g/L, and finally to 0.75 g/L. We see very little change between these last two runs and we believe we have reached another plateau. Also our budget of 8 experimental runs is exhausted.
 
-So our final operating point chosen is marked on the plot with a hexagon, at 330K and 0.75 g/L. We're proud of ourselves because we have boosted our yield from 63% to 67%, and then from 67% to 69.5%. We have also learned something interesting about our process. That the temperature appears to be negatively correlated with yield, and that the substrate concentration is negatively correlated with yield. That last observation was unexpected.
+So our final operating point chosen is marked on the plot with a hexagon, at 330K and 0.75 g/L. We're proud of ourselves because we have boosted our yield from 63% to 67%, and then from 67% to 69.5%. We have also learned something interesting about our process: the temperature appears to be negatively correlated with yield, and the substrate concentration is negatively correlated with yield. An unexpected observation!
 
-However the problem with this approach is that it leaves undiscovered value behind. Changing one variable at a single time (COST) leads you into thinking you've reached the optimum, when all you've done in fact is trap yourself at a sub-optimal solution.
+The problem with this approach is that it leaves undiscovered value behind. Changing one variable at a single time leads you into thinking you've reached the optimum, when all you've done in fact is trap yourself at a sub-optimal solution.
 
 Furthermore, notice that we would have got a completely different outcome had we decided to first change substrate concentration, :math:`S` and then change temperature, :math:`T`. We would have likely landed closer to the optimum. This is very unsatisfactory: we cannot use methods to optimize our processes that depend on the order of experiments!
 
-Notice that we have not yet considered even the effect of the other 4 variables of dissolved oxygen level, agitation rate, reaction duration, and substrate type. While the OFAT (or COST) approach can get you close to the optimum in two variables, you have little to no hope of using this approach successfully with multiply factors.
+Notice that we have not yet considered even the effect of the other 4 variables of dissolved oxygen level, agitation rate, reaction duration, and substrate type. We have sub-optimally optimized the system in 2 dimensions, but there are in fact 6 dimensions. While the OFAT (or COST) approach can get you close to the optimum in two variables, you have little to no hope of using this approach successfully with multiple factors.
 
-Designed experiments, on the other hand, provide an efficient mechanism to learn about a system, often in fewer runs, and avoid misleading conclusions, such as from the COST approach. Designed experiments are always run in random order -- as we will presently see -- and we will get the same result, no matter the order.
+Designed experiments, on the other hand, provide an efficient mechanism to learn about a system, often in fewer runs than the COST approach, and avoid misleading conclusions that might be drawn from the COST approach. Designed experiments are always run in random order -- as we will presently see -- and we will get the same result, no matter the order.
 
 .. _DOE-two-level-factorials:
 
 Factorial designs: using two levels for two or more factors
 ==============================================================
 
-In this section we learn how, and why we should change more than one variable at a time. We will use factorial designs because:
+In this section we learn how, and why, we should change more than one variable at a time. We will use factorial designs because:
 	
 	-	we can visually interpret these designs, and see where to run future experiments
 	
@@ -638,9 +641,10 @@ In this section we learn how, and why we should change more than one variable at
 	
 	-	they are often a building block for more complex designs
 
-Most often we have two or more factors that affect our response variable, :math:`y`. In this section we consider the case when these factors are at two levels. Some examples: operate at low and high pH, long operating times or short times, use catalyst A or B, use mixing system A or B. The general guidance is to choose the low and high values at the edges of normal operation. It is not wise to use the lowest and highest values that each factor could possibly have: that will likely be too extreme.
+Most often we have two or more factors that affect our response variable, :math:`y`. In this section we consider the case when these factors are at two levels. Some examples: operate at low and high pH, long operating times or short times, use catalyst A or B, use mixing system A or B. The general guidance is to choose the low and high values at the edges of normal operation. It is **not** wise to use the minimum and maximum values that each factor could possibly have: as they will likely be too extreme. We will see an example of this in the section on :ref:`saturated designs <DOE-saturated-screening-designs>`.
+
 	
-Let's take a look at the mechanics of factorial designs by using an example where the conversion, :math:`y`, is affected by two factors: temperature, :math:`T`, and substrate concentration, :math:`S`. 
+Let's take a look at the mechanics of factorial designs by using our previous example where the conversion, :math:`y`, is affected by two factors: temperature, :math:`T`, and substrate concentration, :math:`S`. 
 
 The range over which they will be varied is given in the table. This range was identified by the process operators as being sufficient to actually show a difference in the conversion, but not so large as to move the system to a totally different operating regime (that's because we will fit a linear model to the data).
 
@@ -678,7 +682,7 @@ The range over which they will be varied is given in the table. This range was i
 	.. tabularcolumns:: |c|c|c|c||c|
 	
 	+-----------+-------+---------------+-----------------+--------------+
-	| Experiment|Order *| :math:`T` [K] | :math:`S` [g/L] | :math:`y` [%]|
+	| Experiment|Order  | :math:`T` [K] | :math:`S` [g/L] | :math:`y` [%]|
 	+===========+=======+===============+=================+==============+
 	| 1         | 3     | |-|           | |-|             |  69          |
 	+-----------+-------+---------------+-----------------+--------------+
@@ -689,32 +693,39 @@ The range over which they will be varied is given in the table. This range was i
 	| 4         | 1     | |+|           | |+|             |  53          |
 	+-----------+-------+---------------+-----------------+--------------+
 	
-	:math:`\ast` Experiments were performed in random order, in this case we happened to run experiment 4 first, and experiment 3 was run last.
+	Experiments were performed in random order; in this case we happened to run experiment 4 first, and experiment 3 last.
 
-#.	For simple systems you can visualize the design and results as shown here. This is known as a *cube plot*.
+#.	For simple systems you can visualize the design and results :ref:`as shown here <DOE-fig-Cube-plot>`. This is known as a :index:`cube plot`.
 
-	.. image:: ../figures/doe/factorial-two-levels-two-variables-no-analysis.png
+	.. _DOE-fig-Cube-plot:
+	.. figure:: ../figures/doe/factorial-two-levels-two-variables-no-analysis.png
 		:align: left
 		:width: 750px
 		:scale: 50
+		
+		A cube plot, showing the experimental results.
 		
 .. _DOE-two-level-factorials-main-effects:
 		
 Analysis of a factorial design: main effects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The first step is to calculate the :index:`main effect` of each variable. The effects are considered, by convention, to be the difference from the high level to the low level. So the interpretation of a main effect is by how much the outcome, :math:`y` is adjusted when changing the variable.
+The first step is to calculate the :index:`main effect` of each variable. The effects are considered, by convention, to be the difference from the high level to the low level. So the interpretation of a main effect is by how much the outcome, :math:`y`, is adjusted when changing the variable.
 
-Consider the two runs where :math:`S` is at the |-| level, experiments 1 and 2. The only change between these two runs is the temperature, so the temperature effect is :math:`\Delta T_{S-} = 60-69 = -9\%` per (354-338)K, i.e. -9% change in the conversion outcome per 16K change in the temperature. 
+Consider the two runs where :math:`S` is at the |-| level for both experiments 1 and 2. The only change between these two runs is the **temperature**, so the temperature effect is :math:`\Delta T_{S-} = 60-69 = -9\%\,\,\text{per}\,\,(354-338)\text{K}`, i.e. :math:`-9\%` change in the conversion outcome per :math:`+16\text{K}` change in the temperature. 
 
-Runs 3 and 4 have :math:`S` at the |+| level. Again, the only change is in the temperature: :math:`\Delta T_{S+} = 53-64 = -11\%` per 16K. So we now have two temperature effects, and the average of them is a -10% change in conversion per 16K change in temperature.
+Runs 3 and 4 both have :math:`S` at the |+| level. Again, the only change is in the **temperature**: :math:`\Delta T_{S+} = 53-64 = -11\%` per :math:`+16\text{K}`. So we now have two temperature effects, and the average of them is a :math:`-10\%` change in conversion per :math:`+16\text{K}` change in temperature.
 
-We can perform a similar calculation for the main effect of substrate concentration, :math:`S` by comparing experiments 1 and 3. :math:`\Delta S_{T-} = 64-69 = -5\%` per 0.5g/L, while experiments 2 and 4 give :math:`\Delta S_{T+} = 53-60 = -7\%` per 0.5g/L. So the average main effect for :math:`S` is a :math:`-6\%` change in conversion for every 0.5 g/L change in substrate concentration. A graphical method is developed below which you should use:
+We can perform a similar calculation for the main effect of substrate concentration, :math:`S`, by comparing experiments 1 and 3. :math:`\Delta S_{T-} = 64-69 = -5\%\,\,\text{per}\,\,0.5\,\text{g/L}`, while experiments 2 and 4 give :math:`\Delta S_{T+} = 53-60 = -7\%` per :math:`0.5\,\text{g/L}`. So the average main effect for :math:`S` is a :math:`-6\%` change in conversion for every :math:`0.5\,\text{g/L}` change in substrate concentration. A :ref:`graphical method is developed <DOE-fig-Calculate-main-effects>` which you should use when calculating main effects from a cube plot.
 
-	.. image:: ../figures/doe/factorial-two-levels-two-variables-with-analysis.png
-		:align: left
-		:width: 750px
-		:scale: 60
+
+.. _DOE-fig-Calculate-main-effects:
+.. figure:: ../figures/doe/factorial-two-levels-two-variables-with-analysis.png
+	:align: left
+	:width: 750px
+	:scale: 60
+	
+	A cube plot, showing the hand-calculations for the main effects.
 
 This visual summary is a very effective method of seeing how the system responds to the two variables. We can see the gradients in the system and the likely region where we can perform the next experiments to improve the bioreactor's conversion.
 
@@ -725,12 +736,15 @@ The following surface plot illustrates the true, but unknown surface, from which
 		:width: 750px
 		:scale: 50
 
-There is an alternative way to visualize these main effects. Use this method when you don't have computer software to draw the surfaces. (We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>`). It is called an :index:`interaction plot`, which we discuss more in the next section.
+There is an :ref:`alternative way to visualize these main effects <DOE-fig-Interaction-plot-example>`. Use this method when you don't have computer software to draw the surfaces. (We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>`). It is called an :index:`interaction plot`, which we discuss more in the next section.
 
-	.. image:: ../figures/doe/factorial-two-level-line-plot.png
+	.. _DOE-fig-Interaction-plot-example:
+	.. figure:: ../figures/doe/factorial-two-level-line-plot.png
 		:align: left
 		:width: 750px
 		:scale: 80
+		
+		An interaction plot for the example where there is little interaction.
 		
 .. _DOE-two-level-factorials-interaction-effects:	
 
@@ -741,14 +755,26 @@ We expect in many real systems that the main effect of temperature, :math:`T`, f
 
 .. index:: interaction effects
 
-We call this **interaction**, when the effect of one factor is not constant at different levels of the other factors.
+We call this **interaction**, when the effect of one factor is different at different levels of the other factors. Let's give a practical, everyday example: assume your hands are covered with dirt or oil. We know that if you wash your hands with cold water it will take longer to clean them than washing with hot water. So the **A** = temperature of the water has a significant effect on the time taken to clean your hands.  
 
-Let's use a *different system* here to illustrate interaction effects, but still using :math:`T` and :math:`S` as the variables being changed, and keeping the response variable as :math:`y` = conversion, shown by the contour lines.
+Now go back to the case when washing hands with cold water. If you use soap with cold water it will reduce the time taken to clean your hands than if you did not use soap. It is clear that **B** = using soap reduces the time to clean your hands. 
 
-	.. image:: ../figures/doe/factorial-two-level-with-interactions.png
+Now go back to the case when washing hands with hot water. The time taken to clean your hands with hot water and soap is greatly reduced, far faster than any other combination. We say there is an interaction between using soap and the temperature of the water. This is an example of an interaction that works to help us reach the objective faster. 
+
+The effect of warm water enhances the effect of soap. Conversely, the effect is soap is enhanced by using warm water. So symmetry means that if soap interacts with water temperature, then we also know that water temperature interacts with soap.
+
+So in summary, interaction means the effect of one factor depends on the level of the other factor. In this example, that implies the effect of soap is different, depending on if we use cold water or hot water. Interactions are also symmetrical. The soap’s effect is enhanced by warm water. Also, the warm water’s effect is enhanced by soap. 
+
+Let's use a :ref:`different system here to illustrate <DOE-fig-interaction-example-contour-plot>` interaction effects, but still using :math:`T` and :math:`S` as the variables being changed, and keeping the response variable as :math:`y` = conversion, shown by the contour lines.
+
+	.. _DOE-fig-interaction-example-contour-plot:
+	
+	.. figure:: ../figures/doe/factorial-two-level-with-interactions.png
 		:align: left
 		:width: 550px
 		:scale: 85
+
+		A new example, to illustrate the effects of interactions.
 		
 	.. tabularcolumns:: |l|c|c||c|
 	
@@ -778,34 +804,39 @@ Similarly, the main effect of substrate concentration is:
 		-	:math:`\Delta S_{T-} = 89 - 79 = 10\%` per 0.75 g/L
 		-	the average substrate concentration main effect is: 7% per 0.75 g/L
 
-..	TODO: Draw in Inkscape, the geometrica analysis of the main effects, and the interaction plot for this system: annotated with T effect at low S, T effect at high S, S effect at low T, S effect at high T
+.. TODO: Draw in Inkscape, the geometrical analysis of the main effects, and the interaction plot for this system: annotated with T effect at low S, T effect at high S, S effect at low T, S effect at high T
 
-The data may also be visualized using an *interaction plot*:
+The data may also be visualized using an :ref:`interaction plot <DOE-fig-interaction-plot-with-interaction>` again:
 
+.. _DOE-fig-interaction-plot-with-interaction:
 .. figure:: ../figures/doe/factorial-two-level-line-plot-with-interaction.png
 	:align: center
 	:width: 600px
 	:scale: 100
+	
+	An interaction plot for the example where there is significant interaction.
 
 The lack of parallel lines is a clear indication of interaction. The temperature effect is stronger at high levels of :math:`S`, and the effect of :math:`S` on conversion is also greater at high levels of temperature. What is missing is an interaction term, given by the product of temperature and substrate. We represent this as  :math:`T \times S`, and call it temperature-substrate interaction term.  
 
-This interaction term should be zero for systems with no interaction, which implies the lines are parallel in the interaction plot. Such systems will have roughly the same effect of :math:`T` at both low and high values of :math:`S` (and in between). So then, a good way to quantify interaction is by how different the main effect terms are at the high and low levels of the other factor in the interaction. The interaction must also be symmetrical, since if :math:`T` interacts with :math:`S`, then :math:`S` interacts with :math:`T` by the same amount.
+This interaction term should be zero for systems with no interaction, which implies the lines are parallel in the interaction plot. Such systems will have roughly the same effect of :math:`T` at both low and high values of :math:`S` (and in between). So then, a good way to quantify interaction is by how different the main effect terms are at the high and low levels of the other factor in the interaction. The interaction *must* also be symmetrical: if :math:`T` interacts with :math:`S`, then :math:`S` interacts with :math:`T` by the same amount.
 
 :math:`T` interaction with :math:`S`:  
 
-	-	Change in conversion due to :math:`T` at high :math:`S`: :math:`+8`
-	-	Change in conversion due to :math:`T` at low :math:`S`: :math:`+2`
+	-	Change in conversion due to :math:`T` at high :math:`S`: :math:`89 - 81 = +8`
+	-	Change in conversion due to :math:`T` at low :math:`S`: :math:`79 - 77 = +2`
 	-	The half difference: :math:`[+8 - (+2)]/2 = \bf{3}`
 	
 :math:`S` interaction with :math:`T`:
 
-	-	Change in conversion due to :math:`S` at high :math:`T`: :math:`+10`
-	-	Change in conversion due to :math:`S` at low :math:`T`: :math:`+4`
+	-	Change in conversion due to :math:`S` at high :math:`T`: :math:`89 - 79 = +10`
+	-	Change in conversion due to :math:`S` at low :math:`T`: :math:`81 - 77 = +4`
 	-	The half difference: :math:`[+10 - (+4)]/2 = \bf{3}`
 
 A large, positive interaction term indicates that temperature and substrate concentration will increase conversion by a greater amount when both :math:`T` and :math:`S` are high. Similarly, these two terms will rapidly reduce conversion when they both are low.
 
-We will get a much better appreciation for interpreting main effect and interaction effect in the next section, where we consider the analysis in the form of a linear, least squares model.
+We will get an improved appreciation for interpreting main effects and the interaction effect when we consider the analysis in the form of a linear, least squares model.
+
+.. TODO: point out the interaction is a separate, independent effect from the b_0, b_T and b_S effects.
 
 .. TODO: quantify and describe more completely what the interaction means
 
@@ -926,7 +957,7 @@ This example should be done by yourself. It is based on question 19 in the exerc
 
 The data are from a plastics molding factory which must treat its waste before discharge. The :math:`y` variable represents the average amount of pollutant discharged [lb per day], while the 3 factors that were varied were:
 
- 	-	:math:`C`: the chemical compound added [A or B]
+ 	-	:math:`C`: the chemical compound added [choose either chemical P or chemical Q]
 	-	:math:`T`: the treatment temperature [72°F or 100°F]
 	-	:math:`S`: the stirring speed [200 rpm or 400 rpm]
 	-	:math:`y`: the amount of pollutant discharged [lb per day]
@@ -936,21 +967,21 @@ The data are from a plastics molding factory which must treat its waste before d
 	+-----------+-------+---------------+-----------------+-----------------+-----------------+
 	| Experiment| Order | :math:`C`     | :math:`T` [°F]  | :math:`S` [rpm] | :math:`y` [lb]  |
 	+===========+=======+===============+=================+=================+=================+
-	| 1         | 5     | A             | 72              | 200             | 5               |
+	| 1         | 5     | Choice P      | 72              | 200             | 5               |
 	+-----------+-------+---------------+-----------------+-----------------+-----------------+
-	| 2         | 6     | B             | 72              | 200             | 30              |
+	| 2         | 6     | Choice Q      | 72              | 200             | 30              |
 	+-----------+-------+---------------+-----------------+-----------------+-----------------+
-	| 3         | 1     | A             | 100             | 200             | 6               |
+	| 3         | 1     | Choice P      | 100             | 200             | 6               |
 	+-----------+-------+---------------+-----------------+-----------------+-----------------+
-	| 4         | 4     | B             | 100             | 200             | 33              |
+	| 4         | 4     | Choice Q      | 100             | 200             | 33              |
 	+-----------+-------+---------------+-----------------+-----------------+-----------------+
-	| 5         | 2     | A             | 72              | 400             | 4               |
+	| 5         | 2     | Choice P      | 72              | 400             | 4               |
 	+-----------+-------+---------------+-----------------+-----------------+-----------------+
-	| 6         | 7     | B             | 72              | 400             | 3               |
+	| 6         | 7     | Choice Q      | 72              | 400             | 3               |
 	+-----------+-------+---------------+-----------------+-----------------+-----------------+
-	| 7         | 3     | A             | 100             | 400             | 5               |
+	| 7         | 3     | Choice P      | 100             | 400             | 5               |
 	+-----------+-------+---------------+-----------------+-----------------+-----------------+
-	| 8         | 8     | B             | 100             | 400             | 4               |
+	| 8         | 8     | Choice Q      | 100             | 400             | 4               |
 	+-----------+-------+---------------+-----------------+-----------------+-----------------+
 
 #.	Draw a geometric figure that illustrates the data from this experiment.
@@ -961,41 +992,41 @@ The data are from a plastics molding factory which must treat its waste before d
 	*	**T effect**: There are 4 estimates of :math:`T = \displaystyle \frac{(+1) + (+3) + (+1) + (+1)}{4} = \frac{6}{4} = \bf{1.5}`
 	*	**S effect**: There are 4 estimates of :math:`S = \displaystyle \frac{(-27) + (-1) + (-29) + (-1)}{4} = \frac{-58}{4} = \bf{-14.5}`
 
-#.	Calculate the 3 two-factor interactions (2fi) by hand
+#.	Calculate the 3 two-factor interactions (2fi) by hand, recalling that interactions are defined as the half difference going from high to low.
 
 	*	**CT interaction**: There are 2 estimates of :math:`CT`. Recall that interactions are calculated as the half difference going from high to low. Consider the change in :math:`C` when
 
-		-	:math:`T_\text{high}` (at :math:`S` high) = 4 - 5 = -1
-		-	:math:`T_\text{low}` (at :math:`S` high) = 3 - 4 = -1
-		-	First estimate = [(-1) - (-1)]/2 = 0
-		-	:math:`T_\text{high}` (at :math:`S` low) = 33 - 6 = +27
-		-	:math:`T_\text{low}` (at :math:`S` low) = 30 - 5 = +25
-		-	Second estimate = [(+27) - (+25)]/2 = +1
+		-	:math:`T_\text{high}` (at :math:`S` high) = :math:`4 - 5 = -1`
+		-	:math:`T_\text{low}` (at :math:`S` high) = :math:`3 - 4 = -1`
+		-	First estimate = :math:`[(-1) - (-1)]/2 = 0`
+		-	:math:`T_\text{high}` (at :math:`S` low) = :math:`33 - 6 = +27`
+		-	:math:`T_\text{low}` (at :math:`S` low) = :math:`30 - 5 = +25`
+		-	Second estimate = :math:`[(+27) - (+25)]/2 = +1`
 	
-		-	Average **CT** interaction = (0 + 1)/2 = **0.5**
+		-	Average **CT** interaction = :math:`(0 + 1)/2 = \mathbf{0.5}`
 		-	You can interchange :math:`C` and :math:`T` and still get the same result.
 
 	*	**CS interaction**: There are 2 estimates of :math:`CS`.  Consider the change in :math:`C` when
 
-			-	:math:`S_\text{high}` (at :math:`T` high) = 4 - 5 = -1
-			-	:math:`S_\text{low}` (at :math:`T` high) = 33 - 6 = +27
-			-	First estimate = [(-1) - (+27)]/2 = -14
-			-	:math:`S_\text{high}` (at :math:`T` low) = 3 - 4 = -1
-			-	:math:`S_\text{low}` (at :math:`T` low) = 30 - 5 = +25
-			-	Second estimate = [(-1) - (+25)]/2 = -13
+			-	:math:`S_\text{high}` (at :math:`T` high) = :math:`4 - 5 = -1`
+			-	:math:`S_\text{low}` (at :math:`T` high) = :math:`33 - 6 = +27`
+			-	First estimate = :math:`[(-1) - (+27)]/2 = -14`
+			-	:math:`S_\text{high}` (at :math:`T` low) = :math:`3 - 4 = -1`
+			-	:math:`S_\text{low}` (at :math:`T` low) = :math:`30 - 5 = +25`
+			-	Second estimate = :math:`[(-1) - (+25)]/2 = -13`
 
-			-	Average **CS** interaction = (-13 - 14)/2 = **-13.5**
+			-	Average **CS** interaction = :math:`(-13 - 14)/2 = \mathbf{-13.5}`
 			-	You can interchange :math:`C` and :math:`S` and still get the same result.	
 		
-	*	**ST interaction**: There are 2 estimates of :math:`ST`: (-1 + 0)/2 = **-0.5**, calculate in the same way as above.
+	*	**ST interaction**: There are 2 estimates of :math:`ST`: :math:`(-1 + 0)/2 = \mathbf{-0.5}`, calculate in the same way as above.
 
 #.	Calculate the single 3 factor interaction (3fi).
 	
 	There is only a single estimate of :math:`CTS`:
 
-		-	:math:`CT` effect at high :math:`S` = 0
-		-	:math:`CT` effect at low :math:`S` = +1
-		-	:math:`CTS` interaction = [(0) - (+1)] / 2 = **-0.5**
+		-	:math:`CT` effect at high :math:`S = 0`
+		-	:math:`CT` effect at low :math:`S = + 1`
+		-	:math:`CTS` interaction = :math:`[(0) - (+1)] / 2 = \mathbf{-0.5}`
 
 		-	You can calculate this also by considering the :math:`CS` effect at the two levels of :math:`T`
 		-	Or, you can calculate this by considering the :math:`ST` effect at the two levels of :math:`C`.
@@ -1006,14 +1037,14 @@ The data are from a plastics molding factory which must treat its waste before d
 	.. math::
 
 		\begin{bmatrix} 5\\30\\6\\33\\4\\3\\5\\4 \end{bmatrix} &=
-		\begin{bmatrix} +1 & -1 & -1 & -1 & +1 & +1 & +1 & -1\\ 
-		                +1 & +1 & -1 & -1 & -1 & -1 & +1 & +1\\
-		                +1 & -1 & +1 & -1 & -1 & +1 & -1 & +1\\
-		                +1 & +1 & +1 & -1 & +1 & -1 & -1 & -1\\
-		                +1 & -1 & -1 & +1 & +1 & -1 & -1 & +1\\
-		                +1 & +1 & -1 & +1 & -1 & +1 & -1 & -1\\
-		                +1 & -1 & +1 & +1 & -1 & -1 & +1 & -1\\
-		                +1 & +1 & +1 & +1 & +1 & +1 & +1 & +1\\
+		\begin{bmatrix} +1 & -1 & -1 & -1 & +1 & \mathbf{+1} & +1 & -1\\ 
+		                +1 & +1 & -1 & -1 & -1 & \mathbf{-1} & +1 & +1\\
+		                +1 & -1 & +1 & -1 & -1 & \mathbf{+1} & -1 & +1\\
+		                +1 & +1 & +1 & -1 & +1 & \mathbf{-1} & -1 & -1\\
+		                +1 & -1 & -1 & +1 & +1 & \mathbf{-1} & -1 & +1\\
+		                +1 & +1 & -1 & +1 & -1 & \mathbf{+1} & -1 & -1\\
+		                +1 & -1 & +1 & +1 & -1 & \mathbf{-1} & +1 & -1\\
+		                +1 & +1 & +1 & +1 & +1 & \mathbf{+1} & +1 & +1\\
 		\end{bmatrix}
 		\begin{bmatrix} b_0 \\ b_C \\ b_T \\ b_{S} \\ b_{CT} \\ b_{CS} \\ b_{TS} \\ b_{CTS}  \end{bmatrix} \\
 		\mathbf{y} &= \mathbf{X} \mathbf{b} 
@@ -1026,9 +1057,27 @@ The data are from a plastics molding factory which must treat its waste before d
 
 Learning notes:
 
-	*	The chemical compound could be coded either as (A = :math:`-1`, B = :math:`+1`), or (A = :math:`+1`, B = :math:`-1`). The interpretation of the :math:`x_C` coefficient is the same, regardless of the coding.
+	*	The chemical compound could be coded either as (chemical P = :math:`-1`, chemical Q = :math:`+1`), or (chemical P = :math:`+1`, chemical Q= :math:`-1`). The interpretation of the :math:`x_C` coefficient is the same, regardless of the coding.
 	
- 	*	Just the tabulation of the raw data gives us some interpretation of the results. Why?  Since the variables are manipulated independently, we can just look at the relationship of each factor to :math:`y`, without considering the others.  It is expected that the chemical compound and speed have a strong effect on :math:`y`, but we can also see the **chemical** :math:`\times` **speed** interaction. You get this last interpretation by writing out the full :math:`\mathbf{X}` design matrix.
+ 	*	Just the tabulation of the raw data gives us some interpretation of the results. Why?  Since the variables are manipulated independently, we can just look at the relationship of each factor to :math:`y`, without considering the others.  It is expected that the chemical compound and speed have a strong effect on :math:`y`, but we can also see the **chemical** :math:`\times` **speed** interaction. You can see this last interpretation by writing out the full :math:`\mathbf{X}` design matrix and comparing the bold column, associated with the :math:`b_\text{CS}` term, with the :math:`y` column.
+	
+.. sidebar:: A note about magnitude of effects
+
+	In these notes we quantify the effect as the change in response over *half the range* of the factor. For example, if the centerpoint is 400K, the lower level is 375K, and the upper level is 425K, then an effect of ``"-5"`` represents a reduction in :math:`y` of 5 units for every increase in 25K in :math:`x`.
+	
+	
+	We use this representation because it corresponds with the results calculated from least-squares software. Putting the matrix of :math:`-1` and :math:`+1` entries as :math:`\mathbf{X}` into the software, and the corresponding vector of responses, :math:`y`, will calculate these effects as :math:`\mathbf{b} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}\mathbf{y}`.
+	
+	
+	Other textbooks, specifically Box, Hunter and Hunter will report effects that are double ours. This is because they consider the effect to be the change from the lower level to the upper level (double the distance). The advantage of their representation is that binary factors (catalyst A or B; agitator on or off) can be readily interpreted. While in our notation, the effect is a little harder to describe (simply double it!).
+	
+	
+	The advantage of our methodology though is that the results calculated by hand would be the same as that from any computer software with respect to the magnitude of the coefficients and the standard errors; particularly in the case of duplicate runs and experiments with center points.
+	
+	
+	Remember: our effects are half those reported in Box, Hunter, and Hunter, and some other text books; our standard error would also be half of theirs. The conclusions drawn will always be the same, as long as one is consistent.
+	
+	
 
 Assessing significance of main effects and interactions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1069,35 +1118,19 @@ Standard error: from replicate runs, or from an external data set
 
 .. note:: It is often better to spend your experimental budget screening for additional factors than for replicating experiments.
 
-But, if a duplicate run exists at every combination of the factorial, then the standard error can be estimated as follows:
-
-	-	Let :math:`y_{i,1}` and :math:`y_{i,2}` be the two response values for each of the :math:`i^\text{th}` runs, where :math:`i=1, 2, ..., 2^k`
-	-	The mean response for the :math:`i^\text{th}` run is :math:`\overline{y}_i = 0.5y_{i,1} + 0.5y_{i,2}`
-	-	Denote the difference between them as :math:`d_i = y_{i,2} - y_{i,1}`, or the other way around - it doesn't matter.
-	-	The variance can be estimated with a single degree of freedom as :math:`s_i^2 = \dfrac{(y_{i,1} - \overline{y}_i)^2 + (y_{i,2} - \overline{y}_i)^2}{1}`
-	-	The variance can also be written as :math:`s_i^2 = d_i^2/2`
-	-	Now we can pool the variances for the :math:`2^k` runs to estimate :math:`\hat{\sigma}^2 = S_E^2 = \dfrac{1}{2}\displaystyle\sum_i^{2^k}{d_i^2}`
-	-	This estimated standard error is :math:`t`-distributed with :math:`2^k` degrees of freedom.
-
-The standard error can be calculated in a similar manner if more than one duplicate run is performed. So rather run a :math:`2^4` factorial for 4 factors than a :math:`2^3` factorial twice; or as we will see later - one can screen five or more factors with :math:`2^4` runs.
+.. But, if a duplicate run exists at every combination of the factorial, then the standard error can be estimated as follows:
+..
+.. 	-	Let :math:`y_{i,1}` and :math:`y_{i,2}` be the two response values for each of the :math:`i^\text{th}` runs, where :math:`i=1, 2, ..., 2^k`
+.. 	-	The mean response for the :math:`i^\text{th}` run is :math:`\overline{y}_i = 0.5y_{i,1} + 0.5y_{i,2}`
+.. 	-	Denote the difference between them as :math:`d_i = y_{i,2} - y_{i,1}`, or the other way around - it doesn't matter.
+.. 	-	The variance can be estimated with a single degree of freedom as :math:`s_i^2 = \dfrac{(y_{i,1} - \overline{y}_i)^2 + (y_{i,2} - \overline{y}_i)^2}{1}`
+.. 	-	The variance can also be written as :math:`s_i^2 = d_i^2/2`
+.. 	-	Now we can pool the variances for the :math:`2^k` runs to estimate :math:`\hat{\sigma}^2 = S_E^2 = \dfrac{1}{2}\displaystyle\sum_i^{2^k}{d_i^2}`
+.. 	-	This estimated standard error is :math:`t`-distributed with :math:`2^k` degrees of freedom.
+..
+.. The standard error can be calculated in a similar manner if more than one duplicate run is performed. So rather run a :math:`2^4` factorial for 4 factors than a :math:`2^3`factorial twice; or as we will see later - one can screen five or more factors with :math:`2^4` runs.
 	
-.. sidebar:: A note about standard errors and magnitude of effects
-
-	In these notes we quantify the effect as the change in response over *half the range* of the factor. For example, if the centerpoint is 400K, the lower level is 375K, and the upper level is 425K, then an effect of ``"-5"`` represents a reduction in :math:`y` of 5 units for every increase in 25K in :math:`x`.
-	
-	
-	We use this representation because it corresponds with the results calculated from least-squares software. Putting the matrix of :math:`-1` and :math:`+1` entries as :math:`\mathbf{X}` into the software, and the corresponding vector of responses, :math:`y`, will calculate these effects as :math:`\mathbf{b} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}\mathbf{y}`.
-	
-	
-	Other textbooks, specifically Box, Hunter and Hunter will report effects that are double ours. This is because they consider the effect to be the change from the lower level to the upper level (double the distance). The advantage of their representation is that binary factors (catalyst A or B; agitator on or off) can be readily interpreted. While in our notation, the effect is a little harder to describe (simply double it!).
-	
-	
-	The advantage of our methodology though is that the results calculated by hand would be the same as that from any computer software with respect to the magnitude of the coefficients and the standard errors; particularly in the case of duplicate runs and experiments with center points.
-	
-	
-	Remember: our effects are half those reported in Box, Hunter, and Hunter, and some other text books; our standard error would also be half of theirs. The conclusions drawn will always be the same, as long as one is consistent.
-		
-Once :math:`S_E` has been calculated, we can calculate the standard error for each model coefficient, and then confidence intervals can be constructed for each main effect and interaction. And, because the model matrix is orthogonal, the confidence interval for each effect is independent of the other. This is because the general confidence interval is :math:`\mathcal{V}\left(\mathbf{b}\right) = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}S_E^2`, and the off-diagonal elements in :math:`\mathbf{X}^T\mathbf{X}` are zero.
+If there are more experiments than parameters to be estimated, then we have extra degrees of freedom. Having degrees of freedom implies we can calculate the standard error, :math:`S_E`. Once :math:`S_E` has been found, we can also calculate the standard error for each model coefficient, and then confidence intervals can be constructed for each main effect and interaction. And, because the model matrix is orthogonal, the confidence interval for each effect is independent of the other. This is because the general confidence interval is :math:`\mathcal{V}\left(\mathbf{b}\right) = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}S_E^2`, and the off-diagonal elements in :math:`\mathbf{X}^T\mathbf{X}` are zero.
 
 So for an experiment with :math:`n` runs, and where we have coded our :math:`\mathbf{X}` matrix to contain :math:`-1` and :math:`+1` elements, and when the :math:`\mathbf{X}` matrix is orthogonal, then the standard error for coefficient :math:`b_i` is :math:`S_E(b_i) = \sqrt{\mathcal{V}\left(b_i\right)} = \sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`. Some examples:
 
@@ -1253,95 +1286,7 @@ Summary so far
 	
 -		A small or zero effect from an :math:`x` variable to the :math:`y` response variable implies the :math:`y` is insensitive to that :math:`x`. This is desirable in some situations - it means we can adjust that :math:`x` without affecting :math:`y`, sometimes said as "*the* :math:`y` *is robust to changes in* :math:`x`".
 
-
-.. _DOE_blocking_section:
-
-Blocking and confounding for disturbances
-===========================================
-
-Characterization of disturbances
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-External disturbances will always have an effect on our response variable, :math:`y`. Operators, ambient conditions, physical equipment, lab analyses, and time-dependent effects (catalyst deactivation, fouling), will impact the response. This is why it is crucial to :ref:`randomize <DOE-randomization>` the order of experiments: so that these **unknown, unmeasurable, and uncontrollable** disturbances cannot systematically affect the response.
-
-However, certain disturbances are **known, or controllable, or measurable**. For these cases we perform pairing and blocking. We have already discussed pairing in the univariate section: pairing is when two experiments are run on the same subject and we analyze the differences in the two response values, rather than the actual response values. If the effect of the disturbance has the same magnitude on both experiments, then that disturbance will cancel out when calculating the difference. The magnitude of the disturbance is expected to be different between paired experiments, but is expected to be the same within the two values of the pair.
-
-Blocking is slightly different: blocking is a special way of running the experiment so that the disturbance actually does affect the response, but we construct the experiment so that this effect is not misleading.
-
-Finally, a disturbance can be characterized as a **controlled disturbance**, in which case it isn't a disturbance anymore, as it is held constant for all experiments, and its effect cancels out. But it might be important to investigate  the controlled disturbance, especially if the system is operated later on when this disturbance is at a different level.
-
-.. _DOE-Blocking-and-confounding:
-
-Blocking and confounding
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-It is extremely common for known, or controllable or measurable factors to have an effect on the response. However these disturbance factors might not be of interest to us during the experiment. Cases are:
-
-	-	*Known and measurable, not controlled*: Reactor vessel A is known to achieve a slightly better response, on average, than reactor B. However both reactors must be used to complete the experiments in the short time available.
-	
-	-	*Known, but not measurable nor controlled*: There is not enough material to perform all :math:`2^3` runs, there is only enough for 4 runs. The impurity in either the first batch A for 4 experiments, or the second batch B for the other 4 runs will be different, and might either increase or decrease the response variable (we don't know the effect it will have).
-	
-	-	*Known, measurable and controlled*: Reactor vessel A and B have a known, measurable effect on the output, :math:`y`. To control for this effect we perform all experiments in either reactor A or B, to prevent the reactor effect from :index:`confounding` (confusing) our results.
-	
-In this section then we will deal with disturbances that are known, but their effect may or may not be measurable. We will also assume that we cannot control that disturbance, but we would like to minimize its effect.
-
-For example, if we don't have enough material for all :math:`2^3` runs, but only enough for 4 runs, the question is how to arrange the 2 sets of 4 runs so that the known, by unmeasurable disturbance from the impurity has the least effect on our results and interpretation of the 3 factors.
-	
-Our approach is to intentionally *confound*  the effect of the disturbance with an effect that is expected to be the least significant. The :math:`A \times B \times C` interaction term is almost always going to be small for many systems, so we will split the runs that the first 4 are run at the low level of :math:`ABC` and the other four at the high level, as illustrated below. 
-
-Each group of 4 runs is called a *block* and the process of creating these 2 blocks is called :index:`blocking <pair: blocking; experiments>`. The experiments within each block must be run randomly.
-
-.. image:: ../figures/doe/blocking-factorial-3-factors.png
-	:align: left
-	:scale: 50
-	:width: 500px
-	
-.. tabularcolumns:: |c||c|c|c||c|c|c||c||c|
-
-+-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
-| Experiment| A          | B         |  C         | AB        | AC        | BC        | ABC           | Response, :math:`y`     | 
-+===========+============+===========+============+===========+===========+===========+===============+=========================+
-| 1         | |-|        | |-|       |  |-|       | |+|       | |+|       | |+|       | |-| (batch 1) | :math:`\widetilde{y}_1` |
-+-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
-| 2         | |+|        | |-|       |  |-|       | |-|       | |-|       | |+|       | |+| (batch 2) | :math:`\mathring{y}_2`  |
-+-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
-| 3         | |-|        | |+|       |  |-|       | |-|       | |+|       | |-|       | |+| (batch 2) | :math:`\mathring{y}_3`  |
-+-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
-| 4         | |+|        | |+|       |  |-|       | |+|       | |-|       | |-|       | |-| (batch 1) | :math:`\widetilde{y}_4` |
-+-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
-| 5         | |-|        | |-|       |  |+|       | |+|       | |-|       | |-|       | |+| (batch 2) | :math:`\mathring{y}_5`  |
-+-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
-| 6         | |+|        | |-|       |  |+|       | |-|       | |+|       | |-|       | |-| (batch 1) | :math:`\widetilde{y}_6` |
-+-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
-| 7         | |-|        | |+|       |  |+|       | |-|       | |-|       | |+|       | |-| (batch 1) | :math:`\widetilde{y}_7` |
-+-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
-| 8         | |+|        | |+|       |  |+|       | |+|       | |+|       | |+|       | |+| (batch 2) | :math:`\mathring{y}_8`  |
-+-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
-
-
-If the raw material has a significant effect on the response variable, then we will not be able to tell whether it was due to the :math:`A \times B \times C` interaction, or due to the raw material, since :math:`\hat{\beta}_{ABC} \rightarrow \underbrace{\text{ABC interaction}}_{\text{expected to be small}} + \text{raw material effect}`.
-
-But the small loss due to this confusion of effects, is the gain that we can still estimate the main effects and two-factor interactions without bias, provided the effect of the disturbance is constant. Let's see how we get this result by denoting :math:`\widetilde{y}_i` as a :math:`y` response from the first batch of materials and let :math:`\mathring{y}_i` denote a response from the second batch.
-
-Using the least squares equations you can show for yourself that:
-
-	.. math::
-	
-		\hat{\beta}_A    &= -\widetilde{y}_1 + \mathring{y}_2 - \mathring{y}_3 + \widetilde{y}_4 - \mathring{y}_5 + \widetilde{y}_6 - \widetilde{y}_7 + \mathring{y}_8 \\
-		\hat{\beta}_B    &= \\
-		\hat{\beta}_C    &= \\
-		\hat{\beta}_{AB} &= +\widetilde{y}_1 - \mathring{y}_2 - \mathring{y}_3 + \widetilde{y}_4 + \mathring{y}_5 - \widetilde{y}_6 - \widetilde{y}_7 + \mathring{y}_8\\
-		\hat{\beta}_{AC} &= \\
-		\hat{\beta}_{BC} &= \\
-		\hat{\beta}_{ABC} &= \\
-		
-Imagine now the :math:`y` response was increased by :math:`g` units for the batch 1 experiments, and increased by :math:`h` units for batch 2 experiments. You can prove to yourself that these biases will cancel out for all main effects and all two-factor interactions. The three factor interaction of :math:`\hat{\beta}_{ABC}` will however be heavily confounded.
-
-Another way to view this problem is that the first batch of materials and the second batch of materials can be represented by a new variable, called :math:`D` with value of :math:`D_{-} =` batch 1 and :math:`D_{+} =` batch 2. We will show next that we must consider this new factor to be generated from the other three: **D = ABC**.
-
-We will also address the case when there are more than two blocks in the next section on the :ref:`use of generators <DOE-generators>`. For example, what should we do if we have to run a :math:`2^3` factorial but with only enough material for 2 experiments at a time?
-
-.. DOE-fractional-factorials:
+.. _DOE-fractional-factorials:
 
 Fractional factorial designs
 ===========================================
@@ -1804,13 +1749,13 @@ Use the following table to visualize the trade-off between design resolution, nu
 
 .. _DOE_design_trade_off_BHH_272:
 
-.. image:: ../figures/doe/DOE-trade-off-table.png
+.. figure:: ../figures/doe/DOE-trade-off-table.png
 	:alt:	../figures/doe/DOE-trade-off-table.svg
 	:scale: 100
 	:width: 550px
 	:align: left
 
-Adapted from Box, Hunter and Hunter (2nd edition, p 272), and (1st edition, p 410).
+	Adapted from Box, Hunter and Hunter (2nd edition, p 272), and (1st edition, p 410).
 
 .. _DOE-saturated-screening-designs:
 
@@ -1916,7 +1861,96 @@ On analyzing the data, the experimenter discovers that factor **C** does not act
 This projectivity of factorials holds in general for a larger number of factors. The above example, actually a :math:`2^{3-1}_\text{III}` experiment, was a case of projectivity = 2. In general, projectivity = :math:`P` = resolution :math:`-` 1. So if you have a resolution IV fractional factorial, then it has projectivity = :math:`P = 4 - 1`, implying that it contains a full factorial in 3 factors. So a :math:`2^{6-2}_\text{IV}` (16 runs) system with 6 factors, contains an embedded full factorial using a combination of any 3 factors; if any 3 factors were found unimportant, then a replicated full factorial exists in the remaining 3 factors.
 
 
+.. _DOE_blocking_section:
+
+Blocking and confounding for disturbances
+===========================================
+
+Characterization of disturbances
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+External disturbances will always have an effect on our response variable, :math:`y`. Operators, ambient conditions, physical equipment, lab analyses, and time-dependent effects (catalyst deactivation, fouling), will impact the response. This is why it is crucial to :ref:`randomize <DOE-randomization>` the order of experiments: so that these **unknown, unmeasurable, and uncontrollable** disturbances cannot systematically affect the response.
+
+However, certain disturbances are **known, or controllable, or measurable**. For these cases we perform pairing and blocking. We have already discussed pairing in the univariate section: pairing is when two experiments are run on the same subject and we analyze the differences in the two response values, rather than the actual response values. If the effect of the disturbance has the same magnitude on both experiments, then that disturbance will cancel out when calculating the difference. The magnitude of the disturbance is expected to be different between paired experiments, but is expected to be the same within the two values of the pair.
+
+Blocking is slightly different: blocking is a special way of running the experiment so that the disturbance actually does affect the response, but we construct the experiment so that this effect is not misleading.
+
+Finally, a disturbance can be characterized as a **controlled disturbance**, in which case it isn't a disturbance anymore, as it is held constant for all experiments, and its effect cancels out. But it might be important to investigate  the controlled disturbance, especially if the system is operated later on when this disturbance is at a different level.
+
+.. _DOE-Blocking-and-confounding:
+
+Blocking and confounding
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It is extremely common for known, or controllable or measurable factors to have an effect on the response. However these disturbance factors might not be of interest to us during the experiment. Cases are:
+
+	-	*Known and measurable, not controlled*: Reactor vessel A is known to achieve a slightly better response, on average, than reactor B. However both reactors must be used to complete the experiments in the short time available.
+	
+	-	*Known, but not measurable nor controlled*: There is not enough material to perform all :math:`2^3` runs, there is only enough for 4 runs. The impurity in either the first batch A for 4 experiments, or the second batch B for the other 4 runs will be different, and might either increase or decrease the response variable (we don't know the effect it will have).
+	
+	-	*Known, measurable and controlled*: Reactor vessel A and B have a known, measurable effect on the output, :math:`y`. To control for this effect we perform all experiments in either reactor A or B, to prevent the reactor effect from :index:`confounding` (confusing) our results.
+	
+In this section then we will deal with disturbances that are known, but their effect may or may not be measurable. We will also assume that we cannot control that disturbance, but we would like to minimize its effect.
+
+For example, if we don't have enough material for all :math:`2^3` runs, but only enough for 4 runs, the question is how to arrange the 2 sets of 4 runs so that the known, by unmeasurable disturbance from the impurity has the least effect on our results and interpretation of the 3 factors.
+	
+Our approach is to intentionally *confound*  the effect of the disturbance with an effect that is expected to be the least significant. The :math:`A \times B \times C` interaction term is almost always going to be small for many systems, so we will split the runs that the first 4 are run at the low level of :math:`ABC` and the other four at the high level, as illustrated below. 
+
+Each group of 4 runs is called a *block* and the process of creating these 2 blocks is called :index:`blocking <pair: blocking; experiments>`. The experiments within each block must be run randomly.
+
+.. image:: ../figures/doe/blocking-factorial-3-factors.png
+	:align: left
+	:scale: 50
+	:width: 500px
+	
+.. tabularcolumns:: |c||c|c|c||c|c|c||c||c|
+
++-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
+| Experiment| A          | B         |  C         | AB        | AC        | BC        | ABC           | Response, :math:`y`     | 
++===========+============+===========+============+===========+===========+===========+===============+=========================+
+| 1         | |-|        | |-|       |  |-|       | |+|       | |+|       | |+|       | |-| (batch 1) | :math:`\widetilde{y}_1` |
++-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
+| 2         | |+|        | |-|       |  |-|       | |-|       | |-|       | |+|       | |+| (batch 2) | :math:`\mathring{y}_2`  |
++-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
+| 3         | |-|        | |+|       |  |-|       | |-|       | |+|       | |-|       | |+| (batch 2) | :math:`\mathring{y}_3`  |
++-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
+| 4         | |+|        | |+|       |  |-|       | |+|       | |-|       | |-|       | |-| (batch 1) | :math:`\widetilde{y}_4` |
++-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
+| 5         | |-|        | |-|       |  |+|       | |+|       | |-|       | |-|       | |+| (batch 2) | :math:`\mathring{y}_5`  |
++-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
+| 6         | |+|        | |-|       |  |+|       | |-|       | |+|       | |-|       | |-| (batch 1) | :math:`\widetilde{y}_6` |
++-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
+| 7         | |-|        | |+|       |  |+|       | |-|       | |-|       | |+|       | |-| (batch 1) | :math:`\widetilde{y}_7` |
++-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
+| 8         | |+|        | |+|       |  |+|       | |+|       | |+|       | |+|       | |+| (batch 2) | :math:`\mathring{y}_8`  |
++-----------+------------+-----------+------------+-----------+-----------+-----------+---------------+-------------------------+
+
+
+If the raw material has a significant effect on the response variable, then we will not be able to tell whether it was due to the :math:`A \times B \times C` interaction, or due to the raw material, since :math:`\hat{\beta}_{ABC} \rightarrow \underbrace{\text{ABC interaction}}_{\text{expected to be small}} + \text{raw material effect}`.
+
+But the small loss due to this confusion of effects, is the gain that we can still estimate the main effects and two-factor interactions without bias, provided the effect of the disturbance is constant. Let's see how we get this result by denoting :math:`\widetilde{y}_i` as a :math:`y` response from the first batch of materials and let :math:`\mathring{y}_i` denote a response from the second batch.
+
+Using the least squares equations you can show for yourself that:
+
+	.. math::
+	
+		\hat{\beta}_A    &= -\widetilde{y}_1 + \mathring{y}_2 - \mathring{y}_3 + \widetilde{y}_4 - \mathring{y}_5 + \widetilde{y}_6 - \widetilde{y}_7 + \mathring{y}_8 \\
+		\hat{\beta}_B    &= \\
+		\hat{\beta}_C    &= \\
+		\hat{\beta}_{AB} &= +\widetilde{y}_1 - \mathring{y}_2 - \mathring{y}_3 + \widetilde{y}_4 + \mathring{y}_5 - \widetilde{y}_6 - \widetilde{y}_7 + \mathring{y}_8\\
+		\hat{\beta}_{AC} &= \\
+		\hat{\beta}_{BC} &= \\
+		\hat{\beta}_{ABC} &= \\
+		
+Imagine now the :math:`y` response was increased by :math:`g` units for the batch 1 experiments, and increased by :math:`h` units for batch 2 experiments. You can prove to yourself that these biases will cancel out for all main effects and all two-factor interactions. The three factor interaction of :math:`\hat{\beta}_{ABC}` will however be heavily confounded.
+
+Another way to view this problem is that the first batch of materials and the second batch of materials can be represented by a new variable, called :math:`D` with value of :math:`D_{-} =` batch 1 and :math:`D_{+} =` batch 2. We will show next that we must consider this new factor to be generated from the other three: **D = ABC**.
+
+We will also address the case when there are more than two blocks in the next section on the :ref:`use of generators <DOE-generators>`. For example, what should we do if we have to run a :math:`2^3` factorial but with only enough material for 2 experiments at a time?
+
+
 .. TODO: point out how blocking can be visualized as projectivity: in a 2 factor system (A and B) you have enough material only for 2 runs at a time. So you block on the AB interaction. But you can visualize that as a 3-factor factorial now, but run as a half-fraction, i.e. a 2^3_{III} design (show the cube with open and closed circles). This design has projectivity of 2 = 3-1, meaning a full 2^2 factorial is embedded in the design. If factor C (the blocking variable) has no effect on y, then you recover your full 2^2 factorial. That's why we typically block on the highest interaction possible.
+
 
 .. _DOE-RSM:
 
