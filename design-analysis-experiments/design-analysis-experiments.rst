@@ -1177,9 +1177,9 @@ Once we obtain the standard error for our system and calculate the variance of t
 	.. math::
 	
 		\text{Temperature effect}, b_T &= 11.5 \pm 0.707\\
-		\text{Catalyst effect}, b_K &= 0.75 \pm 0.707
+		\text{Catalyst effect}, b_K &= 1.1 \pm 0.707
 		
-So even though the temperature effect's confidence interval would be :math:`11.5 - c_t \times 0.707 \leq \beta_T \leq 11.5 + c_t \times 0.707`, it is clear from the above representation that the temperature effect is significant in this example, while the catalyst effect is not.
+So even though the temperature effect's confidence interval would be :math:`11.5 - c_t \times 0.707 \leq \beta_T \leq 11.5 + c_t \times 0.707`, it is clear that at the 95% significance level, the above representation shows the temperature effect is significant, while the catalyst effect is not (:math:`c_t \approx 2`)
 
 .. OMIT: this can be confusing and misleading
 

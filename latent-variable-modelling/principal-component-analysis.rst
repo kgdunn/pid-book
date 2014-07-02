@@ -665,10 +665,12 @@ Finally, the SPE value is a complete summary of the residual vector. As such, it
 
 .. _LVM_PCA_R2_values:
 
-Residuals for each column (:math:`R^2` for each column in |X|)
+Residuals for each column 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Using the residual matrix :math:`\mathbf{E} = \mathbf{X} - \mathbf{T} \mathbf{P}' = \mathbf{X} - \widehat{\mathbf{X}}`, we can calculate the residuals for each column in the original matrix. This gives an indication of how well the PCA model describes the data from that column.
+
+
+Using the residual matrix :math:`\mathbf{E} = \mathbf{X} - \mathbf{T} \mathbf{P}' = \mathbf{X} - \widehat{\mathbf{X}}`, we can calculate the residuals for each column in the original matrix. This is summarized by the :math:`R^2` value for each column in |X| and gives an indication of how well the PCA model describes the data from that column.
 
 .. image:: ../figures/pca/column-residuals-PCA.png
 	:alt:	../figures/pca/column-residuals-PCA.svg
@@ -685,7 +687,7 @@ The :math:`R^2_k` value for each variable will increase with every component tha
 
 The :math:`R^2` values for each column can be visualized as a bar plot for dissimilar variables (chemical process data), or as a line plot if there are many similar variables that have a logical left-to-right relationship, such as the case with :ref:`spectral variables <lvm_spectral_data_example>` (wavelengths).
 
-Residuals for the whole matrix X (:math:`R^2` for |X|)
+Residuals for the whole matrix X 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Finally, we can calculate an :math:`R^2` value for the entire matrix |X|. This is the ratio between the variance of |X| we can explain with the model over the ratio of variance initially present in |X|.
@@ -743,7 +745,7 @@ Finally, we can show the SPE plot for each observation. SPE values for each tabl
 
 .. _LVM-Hotellings-T2:
 
-Hotelling's :math:`T^2`
+Hotelling's T²
 ====================================
 
 The final quantity from a PCA model that we need to consider is called Hotelling's |T2| value. Some PCA models will have many components, :math:`A`, so an initial screening of these components using score scatterplots will require reviewing :math:`A(A-1)/2` scatterplots. The |T2| value for the :math:`i^\text{th}` observation is defined as:

@@ -312,7 +312,7 @@ Be sure that you can derive (and interpret!) these relationships:
 								&= \mathcal{V}\{ x \}             + 2\text{Cov}\{x,y\} + \mathcal{V}\{ y \}\\
 			\mathcal{V}\{x+y\}	&= \mathcal{V}\{x\} + \mathcal{V}\{y\}, \qquad\text{only if $x$ and $y$ are independent}
 
-Least squares models with a single :math:`x`-variable
+Least squares models with a single x-variable
 ======================================================
 
 .. index:: 
@@ -589,8 +589,8 @@ These 3 components must add up to the total variance we started with. By definit
 Using the accompanying figure, we see that geometrically, at any fixed value of :math:`x_i`, that any :math:`y` value above or below the least squares line, call it :math:`y_i` and shown with a circle, must obey the distance relationship:
 
 .. math::
-
-		\begin{array}{lrcl}
+	
+	\begin{array}{lrcl}
 		\text{Distance relationship:} & (y_i - \overline{\mathrm{y}})         &=& (\hat{y}_i - \overline{\mathrm{y}}) + (y_i - \hat{y}_i) \\
 		\text{Squaring both sides:}   & (y_i - \overline{\mathrm{y}})^2       &=& (\hat{y}_i - \overline{\mathrm{y}})^2 + 2(\hat{y}_i - \overline{\mathrm{y}})(y_i - \hat{y}_i) + (y_i - \hat{y}_i)^2 \\
 		\text{Sum and simplify:}      & \sum{(y_i - \overline{\mathrm{y}})^2} &=& \sum{(\hat{y}_i - \overline{\mathrm{y}})^2} + \sum{(y_i - \hat{y}_i)^2} \\
@@ -928,6 +928,7 @@ The 95% confidence interval for :math:`\beta_0`:
 
 .. math::
 
+	
 	\begin{array}{rccclrcccl}
 		- c_t                &\leq& \dfrac{b_0 - \beta_0}{S_E(b_0)} &\leq &  +c_t               \\
 		3.0 - 2.26 \times \sqrt{1.266}  &\leq& \beta_0   &\leq&	3.0 + 2.26 \times \sqrt{1.266}   \\
@@ -999,7 +1000,7 @@ You may read the reference texts for the interesting derivation of this variance
 We may construct a prediction interval in the standard manner, assuming that :math:`\hat{y}_i \sim \mathcal{N}\left( \overline{\hat{y}_i}, \mathcal{V}\{\hat{y}_i\} \right)`. We will use an estimate of this variance since we do not know the population variance. This requires we use the :math:`t`-distribution with :math:`n-k` degrees of freedom, at a given degree of confidence, e.g. 95%.
 
 .. math::
-
+	
     \begin{array}{rcccl}
         -c_t &<& \dfrac{\hat{y}_i - \overline{\hat{y}_i}}{\sqrt{V\{\hat{y}_i\}}} &<& +c_t \\
         \hat{y}_i -c_t \sqrt{V\{\hat{y}_i\}} &<& \overline{\hat{y}_i} &<& \hat{y}_i + c_t \sqrt{V\{\hat{y}_i\}}
@@ -1122,7 +1123,7 @@ The simple example shown here builds a model that predicts the price of a used v
 The group of outliers were due to 10 observations a certain class of vehicle (Cadillac convertibles) that distorted the model. We removed these observations, which now limits our model to be useful only for other vehicle types, but we gain a smaller standard error and a tighter confidence interval. These residuals are still very non-normal though.
 
 .. math::
-
+	
 	\begin{array}{rcccl}
 		\text{Before}: \qquad & b_1 = -0.173 & \qquad -0.255 \leq \beta_1 \leq -0.0898 &\qquad S_E = \text{\$} 9789\\
 		\text{After}:  \qquad & b_1 = -0.155 & \qquad -0.230 \leq \beta_1 \leq -0.0807 &\qquad S_E = \text{\$} 8655
@@ -1488,7 +1489,7 @@ Notice what these matrices imply (remembering that the vectors in the matrices h
 The inverse of the :math:`\mathbf{X}^T\mathbf{X}` matrix is particularly important - it is related to the standard error for the model parameters - as in: :math:`\mathcal{V}\{\mathbf{b}\} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1} S_E^2`.
 
 .. math::
-
+	
 	\begin{array}{lr}
 		\left(\mathbf{X}^T\mathbf{X}\right)^{-1}= \begin{bmatrix} 0.323 & 0.297 \\ 0.297 & 0.289 \end{bmatrix}
 	\end{array}
@@ -1567,7 +1568,7 @@ where :math:`d_i = 0` if an axial impeller was used, or :math:`d_i = 1` if a rad
 The :math:`\gamma` parameter, estimated by :math:`g`, is the difference in intercept when using a different impeller type. Note that the lines are parallel.
 
 .. math::
-
+	
 	\begin{array}{ll}
 		\text{Axial impellers:} \qquad &\qquad y = b_0 + 0 \\
 		\text{Radial impellers:} \qquad &\qquad y = b_0 + g
@@ -1901,7 +1902,7 @@ Let's give an example where :index:`bootstrapping` is strictly not required, but
 In the preceding section we derived this confidence interval for :math:`\beta_1` in equation :eq:`least-squares-CI`, repeated here:
 
 	.. math::
-
+		
 		\begin{array}{rcccl}
 			- c_t                  &\leq& \dfrac{b_1 - \beta_1}{S_E(b_1)} &\leq &  +c_t\\
 			  b_1 - c_t S_E(b_1)   &\leq& \beta_1                         &\leq&	b_1 + c_t S_E(b_1)
@@ -1923,7 +1924,7 @@ A histogram of the 1000 computed slope coefficients is shown here. This histogra
 For completeness the confidence interval at the 95% level for :math:`\beta_1` is calculated here, and also superimposed on the histogram.
 
 .. math::
-
+	
 	\begin{array}{rcccl}
 		- c_t                  					&\leq& \dfrac{b_1 - \beta_1}{S_E(b_1)} &\leq &  +c_t\\
 		  -0.005915 - 2.1788 \times 0.001047  	&\leq& \beta_1   &\leq&	-0.005915 + 2.1788 \times 0.001047 \\

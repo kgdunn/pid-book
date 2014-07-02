@@ -339,7 +339,7 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 	.. math::
 		:nowrap:
-
+			
 			\begin{alignat*}{2}
 				\text{population mean:} &\qquad&  \mathcal{E}\left\{x \right\} = \mu &= \frac{1}{N}\sum{x} \\
 				\text{sample mean:}     &\qquad&                       \overline{x}  &= \frac{1}{n}\sum_{i=1}^{n}{x_i}
@@ -364,7 +364,7 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 	.. math::
 		:nowrap:
-
+		
 	   	\begin{alignat*}{2}
 	      	\text{Population variance}: &\qquad& \mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} = \sigma^2 &= \frac{1}{N}\sum{(x-\mu)^2} \\
 			\text{Sample variance}:     &\qquad&                                                                             s^2  &= \frac{1}{n-1}\sum_{i=1}^{n}{(x_i - \overline{x})^2}
@@ -864,7 +864,7 @@ Let's take :math:`n` values of this daily profit value, let's say :math:`n=5`.
 	
 	The :math:`t`-distribution is required to remove this impractical requirement of knowing the population standard deviation.
 
-:math:`t`-distribution
+The t-distribution
 =======================
 
 .. index:: t-distribution
@@ -928,7 +928,7 @@ We will come back to :eq:`distribution-for-sample-average` in a minute; let's fi
 
 .. TODO: see p 295 of Devore here for in-class example
 
-Calculating the :math:`t`-distribution
+Calculating the t-distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -	In R we use the function ``dt(x=..., df=...)`` to give us the values of the probability density values, :math:`p(x)`, of the :math:`t`-distribution (compare this to the ``dnorm(x, mean=..., sd=...)`` function for the normal distribution).
@@ -942,7 +942,7 @@ Calculating the :math:`t`-distribution
 
 .. _univariate_confidence_interval_t_distribution:
 
-Using the :math:`t`-distribution to calculate our confidence interval
+Using the t-distribution to calculate our confidence interval
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ..  But in R, we use the ``dt(x, df=...)`` function to give us the values of the :math:`t`-distribution for a given value of :math:`x` which has been computed with ``df`` degrees of freedom. We use the :math:`t`-distribution in calculations related to a sample *mean*, and it is the sample mean that we use as the :math:`z` value, on the :math:`x`-axis in the distribution. This is why the distribution is only a function of the degrees of freedom.
@@ -950,10 +950,11 @@ Using the :math:`t`-distribution to calculate our confidence interval
 Returning back to :eq:`distribution-for-sample-average` we stated that
 
 .. math::
-
-	\frac{\overline{x} - \mu}{s/\sqrt{n}} &\sim t_{n-1}
+	
+		\frac{\overline{x} - \mu}{s/\sqrt{n}} &\sim t_{n-1}
 
 We can plot the :math:`t`-distribution for a given value of :math:`n-1`, the degrees of freedom. Then we can locate vertical lines on the :math:`x`-axis at :math:`-c_t` and :math:`+c_t` so that they area between the verticals covers say 95% of the total distribution's area. The subscript :math:`t` refers to the fact that these are critical values from the :math:`t`-distribution.
+
 
 Then we write:
 
@@ -1355,10 +1356,10 @@ The usual approach for assessing if the difference between :math:`\overline{x}_B
 
 		.. math::
 			:nowrap:
-
-				\begin{alignat*}{2}
-					\mathcal{V}\left\{\overline{x}_A\right\} = \frac{\sigma^2_A}{n_A} &\qquad\qquad & \mathcal{V}\left\{\overline{x}_B\right\} = \frac{\sigma^2_B}{n_B}
-				\end{alignat*}
+			
+			\begin{alignat*}{2}
+				\mathcal{V}\left\{\overline{x}_A\right\} = \frac{\sigma^2_A}{n_A} &\qquad\qquad & \mathcal{V}\left\{\overline{x}_B\right\} = \frac{\sigma^2_B}{n_B}
+			\end{alignat*}
 	
 	#.	Assuming independence again, but this time between groups, this implies the average of each sample group is independent, i.e. :math:`\overline{x}_A` and :math:`\overline{x}_B` are independent of each other. This allows us to write:
 	
@@ -1385,7 +1386,6 @@ The usual approach for assessing if the difference between :math:`\overline{x}_B
 
 				.. math::
 					:nowrap:
-
 						\begin{alignat*}{4}
 							(\overline{x}_B - \overline{x}_A) - c_n \sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}  &\qquad<\qquad& \mu_B - \mu_A &\qquad<\qquad& (\overline{x}_B - \overline{x}_A) + c_n \sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}
 						\end{alignat*}
@@ -1445,7 +1445,7 @@ But, because we do not always have a large and relevant body of data available, 
 .. Then, because we do not always have a large, relevant body of data available, we can calculate the difference between A and B and test if this difference lies in a confidence interval that includes zero. We highlighted several assumptions required to generate this confidence interval, noting that these assumptions are quite demanding.
 
 	.. math::
-	
+		:nowrap:
 		\begin{alignat*}{4}
 			(\overline{x}_B - \overline{x}_A) - c_n \sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}  &\qquad<\qquad& \mu_B - \mu_A &\qquad<\qquad& (\overline{x}_B - \overline{x}_A) + c_n \sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}
 		\end{alignat*}
@@ -1463,7 +1463,6 @@ The question we turn to now is what value to use for :math:`\sigma`  in equation
 
 	.. math::
 		:nowrap:
-	
 		\begin{alignat*}{3}
 			(82.93-79.89) - 1.96 \sqrt{6.61^2 \left(\displaystyle \frac{1}{10} + \frac{1}{10}\right)}  &\qquad<\qquad \mu_B - \mu_A &\qquad<\qquad& (82.93-79.89) + 1.96 \sqrt{6.61^2 \left(\displaystyle \frac{1}{10} + \frac{1}{10}\right)} \\
 			-2.75  &\qquad<\qquad \mu_B - \mu_A &\qquad<\qquad& 8.83
@@ -1639,10 +1638,10 @@ One way to test whether we can pool (combine) two variances, taken from two diff
 
 .. math::	
 	:nowrap:
-
-		\begin{alignat*}{4}
-			  F_{\alpha/2, \nu_1, \nu_2}\dfrac{s_2^2}{s_1^2} &\qquad<\qquad& \dfrac{\sigma_2^2}{\sigma_1^2} &\qquad<\qquad& F_{1-\alpha/2, \nu_1, \nu_2}\dfrac{s_2^2}{s_1^2}
-		\end{alignat*}
+	
+	\begin{alignat*}{4}
+		  F_{\alpha/2, \nu_1, \nu_2}\dfrac{s_2^2}{s_1^2} &\qquad<\qquad& \dfrac{\sigma_2^2}{\sigma_1^2} &\qquad<\qquad& F_{1-\alpha/2, \nu_1, \nu_2}\dfrac{s_2^2}{s_1^2}
+	\end{alignat*}
 
 where we use :math:`F_{\alpha/2, \nu_1, \nu_2}` to mean the point along the cumulative :math:`F`-distribution which has area of :math:`\alpha/2` using :math:`\nu_1` degrees of freedom for estimating :math:`s_1` and :math:`\nu_2` degrees of freedom for estimating :math:`s_2`. For example, in R, the value of :math:`F_{0.05/2, 10, 20}` can be found from ``qf(0.025, 10, 20)`` as 0.2925. The point along the cumulative :math:`F`-distribution which has area of :math:`1-\alpha/2` is denoted as :math:`F_{1-\alpha/2, \nu_1, \nu_2}`,  and :math:`\alpha` is the level of confidence, usually :math:`\alpha = 0.05` to denote a 95% confidence level.
 
@@ -1689,7 +1688,7 @@ Incidentally, it is this confidence interval that is used in polls to judge the 
 	single: normal distribution; table for
 	single: t-distribution; table for
 
-Statistical tables for the normal- and :math:`t`-distribution
+Statistical tables for the normal- and t-distribution
 ============================================================================
 
 .. image:: ../figures/univariate/Statistical-tables/Statistical-tables.png

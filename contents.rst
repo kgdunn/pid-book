@@ -9,9 +9,12 @@ Process Improvement Using Data
 
 .. toctree::
 
-	
+	data-visualization/index
+	univariate-review/index
+	process-monitoring/index
+	least-squares-modelling/index
 	design-analysis-experiments/index
-	
+	latent-variable-modelling/index
 	
 .. Sections omitted:
 
@@ -19,10 +22,8 @@ Process Improvement Using Data
 	univariate-review/index
 	process-monitoring/index
 	least-squares-modelling/index
+	design-analysis-experiments/index
 	latent-variable-modelling/index
-	
-	design-analysis-experiments-exercises  <--- remember to add this back to the local index.rst
-	
 	
 .. Solution manual
 
