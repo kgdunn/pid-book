@@ -408,7 +408,7 @@ References and readings
 -	Heather Tye: "`Application of Statistical Design of Experiments Methods in Drug Discovery <http://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_", *Drug Discovery Today*, **9**, 485-491, 2004.
 - R.A. Fisher, `Statistical Methods, Experimental Design and Scientific Inference <http://www.amazon.com/Statistical-Methods-Experimental-Scientific-Inference/dp/0198522290>`_, Oxford Science Publications, 2003.
 -	Myers and Montgomery: "`Response Surface Methodology: Process and product optimization using designed experiments <http://www.amazon.com/Response-Surface-Methodology-Optimization-Experiments/dp/0470174463>`_".
--	Hill and Hunter: "`A Review of Response Surface Methodology: A Literature Survey <http://www.jstor.org/pss/1266632>`_", *Technometrics*, **8**, 571-590 , 1966. 
+-	William Hill and William Hunter: "`A Review of Response Surface Methodology: A Literature Survey <http://www.jstor.org/pss/1266632>`_", *Technometrics*, **8**, 571-590, 1966. 
 -	Davies, "`The Design and Analysis of Industrial Experiments <http://www.amazon.com/The-design-analysis-industrial-experiments/dp/B0007J7BME>`_", chapter 11, revised second edition.
 
 ..	Živorad Lazić, "Design of Experiments in Chemical Engineering: A Practical Guide", Wiley-VCH, 2004.
@@ -2251,12 +2251,6 @@ The general approach for response surface modelling
 #.	Response surface methods assume the variables we adjust are continuous. Binary variables (yes/no, catalyst A or B) are handled by fixing them at one or the other value, and then performing the optimization conditional on those selected values. It is always worth investigating the alternative values once the optimum has been reached.
 
 #.	Many software packages provide tools that help with an RSM study. If you would like to use R in your work, we highly recommend the ``rsm`` package in R. You can read more about the package from `this article <http://www.jstatsoft.org/v32/i07>`_ in the Journal of Statistical Software (**32**, October 2009).
-
-.. rubric:: References
-
-*	A good book on response surface methods is by Myers and Montgomery: "`Response Surface Methodology: Process and product optimization using designed experiments <http://en.wikipedia.org/wiki/Special:BookSources/0470174463#Canada>`_".
-*	A review paper citing many examples of RSM in the chemical and engineering industries is by William Hill and William Hunter: "`A Review of Response Surface Methodology: A Literature Survey <http://www.jstor.org/pss/1266632>`_", *Technometrics*, **8**, 571-590 , 1966. 
-*	An excellent overview with worked examples is given by Davies in Chapter 11 of the revised second edition of "`The design and analysis of industrial experiments <http://en.wikipedia.org/wiki/Special:BookSources/0582460530#Canada>`_"
 
 .. _DOE-EVOP:
 
