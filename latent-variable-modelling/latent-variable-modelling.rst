@@ -400,7 +400,7 @@ These readings cover a variety of topics in the area of latent variable methods:
 
 * **General**: John MacGregor, Honglu Yu, Salvador García-Muñoz, Jesus Flores-Cerrillo, "`Data-Based Latent Variable Methods for Process Analysis, Monitoring and Control <http://dx.doi.org/10.1016/j.compchemeng.2005.02.007>`_". *Computers and Chemical Engineering*, **29**, 1217-1223, 2005.
 
-* **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold: "Multivariate and Megavariate Data Analysis" (`Part I <http://books.google.com/books?id=B-1NNMLLoo8C&lpg=PP1&pg=PP1#v=onepage&q&f=false>`_ and `Part II <http://books.google.com/books?id=2CHrDa-kBSYC&lpg=PP1&pg=PP1#v=onepage&q&f=false>`_).
+* **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold: "Multivariate and Megavariate Data Analysis" (Part I and Part II).
 
 
 .. Others:

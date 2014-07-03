@@ -16,7 +16,7 @@ These readings cover a variety of topics in the area of latent variable methods:
 
 *	**PLS**: Paul Garthwaite, "`An Interpretation of Partial Least Squares <http://www.jstor.org/pss/2291207>`_", Journal of the American Statistical Association, **89**, 122-127, 1994.
 
-*	**General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold: "Multivariate and Megavariate Data Analysis" (`Part I <http://books.google.com/books?id=B-1NNMLLoo8C&lpg=PP1&pg=PP1#v=onepage&q&f=false>`_ and `Part II <http://books.google.com/books?id=2CHrDa-kBSYC&lpg=PP1&pg=PP1#v=onepage&q&f=false>`_).
+*	**General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold: "Multivariate and Megavariate Data Analysis" (Part I and Part II).
 
 .. _LVM_PCR:
  

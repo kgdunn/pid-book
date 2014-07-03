@@ -402,5 +402,5 @@ Exercises
 
 	*Enrichment*:
 
-	*	Watch `this 20 minute video <http://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen.html>`_ that shows how a 2-dimensional plot comes alive to show 5 dimensions of data. What are the 5 dimensions?
+	*	Watch `this 20 minute video <http://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen>`_ that shows how a 2-dimensional plot comes alive to show 5 dimensions of data. What are the 5 dimensions?
 	*	A condensed version from this, `4 minute YouTube video <http://www.youtube.com/v/jbkSRLYSojo>`_ shows Hans Rosling giving a new perspective on the same data. This `Economist article <http://www.economist.com/node/17663585>`_ has some interesting background on Dr. Rosling, as does this page, `giving a selection of his work <http://www.economist.com/node/21013330>`_.

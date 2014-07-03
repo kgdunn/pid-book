@@ -281,7 +281,7 @@ In the unfolded matrix we have :math:`IJ` rows and 3 columns. In other words, ea
 	:width: 750px
 	:align: center
 	
-You can learn more about using PCA on image data in the manual that accompanies the interactive software that is freely available from http://macc.mcmaster.ca/research/software/maccmia.
+You can learn more about using PCA on image data in the manual that accompanies the interactive software that is freely available from http://macc.mcmaster.ca/maccmia.php.
 	
 
 .. 

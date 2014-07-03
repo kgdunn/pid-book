@@ -160,8 +160,6 @@ Exercises
 	
 	More readings: 
 	
-	#.	See `part 4 of the DOE tutorial on this website <http://www.chemometrics.se/index.php?option=com_content&task=view&id=18&Itemid=27>`_ which analyzes data from a 3-factor factorial.
-	
 	#.	It is worth reading this paper by Bisgaard to see how the same tools shown in these notes were used to solve a real industrial problem: designed experiments, autocorrelation plots, data visualization, and quality control charts. Also he describes how the very real pressure from managers, time-constraints and interactions with team-members impacted the work.
 
 		"`The Quality Detective: A Case Study <http://dx.doi.org/10.1098/rsta.1989.0006>`_" (and discussion), *Philosophical Transactions of the Royal Society A*, **327**, 499-511, 1989.

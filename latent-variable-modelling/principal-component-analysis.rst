@@ -19,7 +19,7 @@ These readings cover a variety of topics in the area of latent variable methods:
 
 * **About PCA**: Svante Wold, Kim Esbensen, Paul Geladi: "`Principal Component Analysis <http://dx.doi.org/10.1016/0169-7439(87)80084-9>`_", *Chemometrics and Intelligent Laboratory Systems*, **2**, 37-52, 1987.
 
-* **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold:  "Multivariate and Megavariate Data Analysis" (Part I `contains a chapter on PCA <http://books.google.com/books?id=B-1NNMLLoo8C&lpg=PP1&pg=PP1#v=onepage&q&f=false>`_).
+* **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold:  "Multivariate and Megavariate Data Analysis" (Part I contains a chapter on PCA).
 
 .. OMIT FOR NOW
 
@@ -1247,7 +1247,7 @@ However, cross-validation's objective is useful for predictive models, such as P
 .. 			
 .. 				..	I'm reluctant to implement this: more complexity, hard to justify (ad hoc)
 .. 				
-.. 					In addition, remove 1.0 risk points, or fewer if currently less than 1.0, from the current risk count. The reason is that sometimes we just cumulate half points (below) over several components, leading to early termination.See for example, the ISO_brightness.mat data file (Wiklund et al, 2007, J. Chemometrics paper DOI:10.1002/cem.1086)
+.. 					In addition, remove 1.0 risk points, or fewer if currently less than 1.0, from the current risk count. The reason is that sometimes we just cumulate half points (below) over several components, leading to early termination. See for example, the ISO_brightness.mat data file (Wiklund et al, 2007, J. Chemometrics paper DOI:10.1002/cem.1086) 
 .. 		
 .. 		*	Note that :math:`S_0` represents the correlation between :math:`t_a` and the :math:`u_a`, which is nothing more than a scaled version of the objective function of the PLS model, which each component is trying to maximize, subject to certain constraints. We accumulate risk based on the strength of this correlation as follows:
 .. 		

@@ -376,7 +376,7 @@ The traditional least squares model, the first objective function listed, has th
 
 Other reasons for so much focus on the least squares alternative is because it is computationally tractable by hand and very fast on computers, and it is easy to prove various mathematical properties. The other forms take much longer to calculate, almost always have to be done on a computer, may have multiple solutions, the solutions can change dramatically given small deviations in the data (unstable, high variance solutions), and the mathematical proofs are difficult. Also the interpretation of the least squares objective function is suitable in many situations: it penalizes deviations quadratically; i.e. large deviations much more than the smaller deviations.
 
-You can read more about least squares alternatives in the book by Birkes and Dodge: `Alternative Methods of Regression <http://books.google.com/books?id=kF4L6eblK6wC&lpg=PP1&ots=7EKF9MF2sc&dq=Alternative%20Methods%20of%20Regression&pg=PP1#v=onepage&q&f=false>`_
+You can read more about least squares alternatives in the book by Birkes and Dodge: "Alternative Methods of Regression".
 
 Solving the least squares problem and interpreting the model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
