@@ -452,11 +452,17 @@ As described :ref:`in the first reference, the book by Box, Hunter and Hunter <D
 
 And so we go about learning. One of the most frequent reasons we experiment is to fix a problem with our process. This is called troubleshooting. We can list several causes for the problem, change the factors, isolate the problem, and thereby learn more about our system while fixing the problem. 
 
+An engineering example
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Let's look at an example. We expect that compounds A and B should combine in the presence of a third chemical, C, to form a product D. An initial experiment shows very little of product D is produced. Our goal is to maximize the amount of D. Several factors are considered: temperature, reaction duration and pressure. Using a set of structured experiments, we can get an initial idea of which factors actually impact the amount of D produced. Perhaps these experiments show that only temperature and reaction duration are important and that pressure has little effect. Then we go ahead and adjust only those two factors, and we keep pressure low (to save money because we can now use a less costly, low-pressure reactor). We repeat several more systematic :ref:`response surface <DOE-RSM>` experiments to maximize our production goal.
 
 The iterations continue until we find the most economically profitable operating point. At each iteration we learn more about our system and how to improve it. The key point is this: you must disturb your system, and then observe it. This is the principle of causality, or *cause and effect*.
 
 It is only by *intentional manipulation* of our systems that we learn from them. Collecting :index:`happenstance data`, (everyday) operating data, does not always help, because it is confounded by other events that occur at the same time. Everyday, happenstance data is limited by feedback control systems.
+
+Feedback control
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Feedback control systems keep the region of operation to a small zone. Better yields or improved operation might exist beyond the bounds created by our automatic control systems. Due to safety concerns, and efficient manufacturing practices, we introduce automated feedback control systems to prevent deviating too far from a desired region of operation. As a result, data collected from such systems has low information quality.
 	
@@ -464,7 +470,8 @@ An example would be making eggs for breakfast. If you make eggs the same way eac
 		
 You must intentionally change the system to perturb it, and then observe it.
 
-.. AU: I changed "they" to "observed pressure and yield" to clarify. OK?
+Another engineering example
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here's a great example from the book by Box, Hunter and Hunter. Consider the negative-slope :ref:`relationship between pressure and yield <DOE-yield-pressure-impurity-correlation>`: as pressure increases, the yield drops. A line could be drawn through the points from the happenstance measurements, taken from the process at different times in the past. That line could be from a :ref:`least squares model <SECTION-least-squares-modelling>`. It is true that the observed pressure and yield are correlated, as that is exactly what a least squares model is intended for: to quantify correlation. 
 
@@ -497,7 +504,7 @@ Experiments are the most efficient way to extract information about a system, th
 Experiments with a single variable at two levels
 ======================================================
 
-This is the simplest type of experiment. It involves an outcome variable, :math:`y`, and one input variable, :math:`x`. The :math:`x` variable could be continuous (e.g. temperature), or discrete (e.g. a yes/no, on/off, A/B) type variable. Some examples:
+This is the simplest type of experiment. It involves an outcome variable, :math:`y`, and one input variable, :math:`x`. The :math:`x`-variable could be continuous (e.g. temperature) or discrete (e.g. yes/no, on/off, A/B). This type of experiment could be used to answer questions such as the following:
 
 	*	Has the reaction yield increased when using catalyst A or B?
 	
@@ -505,12 +512,12 @@ This is the simplest type of experiment. It involves an outcome variable, :math:
 	
 	*	Does the plastic's stretchability improve when extruded at various temperatures (a low or high temperature)?
 	
-So we can perform several runs (experiments) at level A, and some runs at level B. These runs are randomized (do not perform all the A runs, then the B runs). We strive to hold all other disturbance variables constant so we pick up only the A to B effect. Disturbances are any variables that might affect :math:`y`, but for whatever reason, we don't wish to quantify. If we cannot control the disturbance, then at least we can using :ref:`blocking <DOE_blocking_section>` and  :ref:`pairing <univariate_paired_tests>` (pairing is the name used when there is one factor in our experiment; blocking is the term used when we have more than one factor).
+We can perform several runs (experiments) at level A, and some runs at level B. These runs are randomized (i.e. do not perform all the A runs, and then the B runs). We strive to hold all other disturbance variables constant so we pick up only the A-to-B effect. Disturbances are any variables that might affect :math:`y` but, for whatever reason, we don't wish to quantify. If we cannot control the disturbance, then at least we can use :ref:`pairing <univariate_paired_tests>` and :ref:`blocking <DOE_blocking_section>`. Pairing is when there is one factor in our experiment; blocking is when we have more than one factor.
 
 Recap of group-to-group differences 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We have already seen in the :ref:`univariate statistics section <univariate-group-to-group-differences-no-reference-set>` how to analyze this sort of data. We first calculate a pooled variance, then a :math:`z`-value, and finally a confidence interval based on this :math:`z`. Please refer back to that section to review the important assumptions we have to make to arrive at this equation.
+We have already seen in the :ref:`univariate statistics section <univariate-group-to-group-differences-no-reference-set>` how to analyze this sort of data. We first calculate a pooled variance, then a :math:`z`-value, and finally a confidence interval based on this :math:`z`. Please refer back to that section to review the important assumptions we have to make to arrive at this equation:
 
 .. math::
 	s_P^2 &= \frac{(n_A -1) s_A^2 + (n_B-1)s_B^2}{n_A - 1 + n_B - 1}\\
@@ -521,7 +528,7 @@ We have already seen in the :ref:`univariate statistics section <univariate-grou
 		(\overline{x}_B - \overline{x}_A) - c_t \times \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)} &\leq& \mu_B - \mu_A &\leq & (\overline{x}_B - \overline{x}_A) + c_t  \times \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}
 	\end{array}
 
-We consider the effect of changing from condition A to condition B to be a *statistically* significant effect when this confidence interval does not span zero. However, the width of this interval and how symmetrically it spans zeros can cause us to come to a different, *practical* conclusion. In other words, we override the narrow statistical conclusion based on the richer information we can infer from the confidence interval's width and the process's variance.
+We consider the effect of changing from condition A to condition B to be a *statistically* significant effect when this confidence interval does not span zero. However, the width of this interval and how symmetrically it spans zero can cause us to come to a different, *practical* conclusion. In other words, we override the narrow statistical conclusion based on the richer information we can infer from the width of the confidence interval and the variance of the process.
 
 Using linear least squares models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
