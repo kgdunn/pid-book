@@ -345,14 +345,23 @@ Every experiment has these two components:
 
 .. AU: It would be nice to italicize the individual terminology words (outcome, factor, objective, etc.) to make them stand out. But italicizing doesn't seem to be compatible with :index:. Is there a way to make it work?
 
-#.  An :index:`outcome <pair: outcome; experiments>`: the result or the :index:`response <pair: response; experiments>` from an experiment.
-#.  One or more factors: a :index:`factor <pair: factor; experiments>` is the thing you can change to influence the outcome. Factors are also called :index:`variables <pair: variable; experiments>`.
+.. index::
+	pair: outcome; experiments
+	pair: response; experiments
+	pair: factor; experiments
+	pair: variable; experiments
+
+#.  An *outcome*: the result or the *response* from an experiment.
+#.  One or more factors: a *factor* is the thing you can change to influence the outcome. Factors are also called *variables*.
 
 An important aspect about the outcome is that it is always measurable--in some way. In other words, after you finish the experiment, you must have some measurement. 
 
 Let’s use an example of growing plants. The outcome of growing a plant might be the height of the plant, or the average width of the leaves, or the number of flowers on the plant. These are numeric measurements, also called quantitative measurements. Qualitative measurements are also possible. For example, perhaps the outcome is the colour of the flower: light red, red, or dark red. A qualitative outcome might also be a description of what happened, for example, *pass* or *fail*.
 
-An experiment can have an :index:`objective <pair: objective; experiments>`, which combines an outcome and the need to adjust that outcome. For example, you may want to maximize the height of the plant. Most often you want to maximize or minimize the outcome as your objective. Sometimes, though, you want the outcome to be *the same* even though you are changing factors. For example, you might want to change a recipe for your favourite pastry to be gluten-free but keep the taste the same as the original recipe. Your outcome is taste, and your objective is "the same".
+.. index::
+	 pair: objective; experiments
+
+An experiment can have an *objective*, which combines an outcome and the need to adjust that outcome. For example, you may want to maximize the height of the plant. Most often you want to maximize or minimize the outcome as your objective. Sometimes, though, you want the outcome to be *the same* even though you are changing factors. For example, you might want to change a recipe for your favourite pastry to be gluten-free but keep the taste the same as the original recipe. Your outcome is taste, and your objective is "the same".
 
 Every experiment always has an outcome. Every experiment does not have to have an objective, but usually we have an objective in our mind.
 
@@ -362,15 +371,19 @@ Another term we will use is factors. In the plant example, you could have change
 #.	The amount of fertilizer that you give the plant each week
 #.	The type of soil you use, A or B
 
-All experiments must have at least one factor that is changed. We distinguish between two types of factors: continuous factors and :index:`categorical factors <pair: categorical factor; experiments>`.
+.. index::
+	pair: categorical factor; experiments
+
+All experiments must have at least one factor that is changed. We distinguish between two types of factors: continuous factors and *categorical factors* 
 
 Continuous factors are quantified numerically, such as giving 15 mL of water or 30 mL of water to the plant each day. Categorical factors take on a limited number of values. For example, soil type A or soil type B could be used to grow the plants. If you were working in the area of marketing, you might try three different colours of background in your advertising poster. Those colours are categorical variables in the context of the experiment.
 
 Most experiments will have both continuous and categorical factors.
 
-When we perform an experiment, we call it a :index:`run <pair: run; experiments>`. If we perform eight experiments, we can say "there are eight runs" in the set of experiments.
-
-
+.. index:: 
+	pair: run; experiments
+	
+When we perform an experiment, we call it a run. If we perform eight experiments, we can say "there are eight runs" in the set of experiments.
 
 Usage examples
 ==============
@@ -378,12 +391,12 @@ Usage examples
 .. index::
 	pair: usage examples; experiments
 
-Here follow some questions you can answer, and ideas you can use, after you have finished studying this chapter. Consider these scenarios:
+After you complete this chapter, you will be able to answer questions such as those presented in these scenarios:
 
-	- *Colleague*: We have this list of 8 plausible factors that affect the polymer melt index (the outcome). How do we narrow down the list to a more manageable size and rank their effect on melt index?
- 	- *You*: Our initial screening experiments reduced the list down to 3 factors of interest. Now how do we perform the rest of the experiments?
+	- *Colleague*: We have this list of eight plausible factors that affect the polymer melt index (the outcome). How do we narrow down the list to a more manageable size and rank their effect on melt index?
+ 	- *You*: Our initial screening experiments reduced the list down to three factors of interest. Now, how do we perform the rest of the experiments?
  	- *Manager*: Two years ago someone collected these experimental data for the effectiveness of a new chemical to treat water. What interesting results do you see in this data, and where should we operate the system to achieve water quality that meets the required standards?
-	- *Colleague*: The current production settings for our food product gives us good shelf-life, but the energy used is high. How can we locate other settings (factors) that give long shelf-life but reduce the energy consumed?
+	- *Colleague*: The current production settings for our food product gives us good shelf life, but the energy used is high. How can we determine other settings (factors) that give long shelf life but reduce the energy consumed?
 	- *Colleague*: We would like to run experiments by varying temperature and pressure, but operating at both high temperature and pressure is unsafe. How do we plan such an experiment?
 
 .. TODO: add more questions/answers here
@@ -956,7 +969,7 @@ Finally, out of interest, the non-linear surface that was used to generate the e
 The corner points are exact with the nonlinear surface, because we have used the 4 values to estimate 4 model parameters. There are no degrees of freedom left and the model's residuals are therefore zero. Obviously the linear model will be less accurate away from the corner points when the true system is nonlinear, but it is a useful model over the region in which we will use it later in the :ref:`section on response surface methods <DOE-RSM>`.
 	
 Example: design and analysis of a 3-factor experiment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This example should be done by yourself. It is based on question 19 in the exercises for Chapter 5 in Box, Hunter, and Hunter (2nd edition).
 
