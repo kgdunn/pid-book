@@ -1120,45 +1120,46 @@ Learning notes:
 	Remember: our effects are half those reported in Box, Hunter and Hunter, and in some other textbooks; our standard error would also be half of theirs. The conclusions drawn will always be the same, as long as one is consistent.
 	
 	
-	
 Assessing significance of main effects and interactions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-When there are no :index:`replicate points <pair: replicates; experiments>`, then the number of factors to estimate from a full factorial is :math:`2^k` from the :math:`2^k` observations. So there are no degrees of freedom left to calculate the standard error, nor to calculate the confidence intervals for the main effects and interaction terms.
+When there are no :index:`replicate points <pair: replicates; experiments>`, then the number of factors to estimate from a full factorial is :math:`2^k` from the :math:`2^k` observations. There are no degrees of freedom left to calculate the standard error or the confidence intervals for the main effects and interaction terms.
 
-The standard error can be estimated if complete replicates are available. However, a complete replicate is onerous, because a complete replicate implies the entire experiment is repeated: system setup, running the experiment and measuring the result. Taking two samples from one actual experiment and measuring :math:`y` twice is not a true replicate, that is only an estimate of the measurement error and analytical error. 
+The standard error can be estimated if complete replicates are available. However, a complete replicate is onerous, because a complete replicate implies the entire experiment is repeated: system setup, running the experiment and measuring the result. Taking two samples from one actual experiment and measuring :math:`y` twice is not a true replicate. That is only an estimate of the measurement error and analytical error. 
 
-Furthermore, there are better ways to spend our experimental budget than running complete replicate experiments - see the section on :ref:`screening designs <DOE-saturated-screening-designs>` later on. Only later in the overall experimental procedure should we run replicate experiments as a verification step and to assess the statistical significance of effects.
+Furthermore, there are better ways to spend our experimental budget than running complete replicate experiments -- see the section on :ref:`screening designs <DOE-saturated-screening-designs>` later on. Only later in the overall experimental procedure should we run replicate experiments as a verification step and to assess the statistical significance of effects.
 
-There are 2 main ways we can determine if a main effect or interaction is significant.
+.. AU: I inserted the two main ways. Please confirm.
+
+There are two main ways we can determine if a main effect or interaction is significant: by using a Pareto plot or the standard deviation.
 
 .. _DOE-Pareto-plot:
 
 Pareto plot
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. Note:: This is a make-shift approach that is only applicable if all the factors are centered and scaled.
+.. Note:: This is a makeshift approach that is only applicable if all the factors are centered and scaled.
 
-A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to estimate. Once these parameters have been calculated, for example, by using a :ref:`least squares model <DOE-analysis-by-least-squares>`, then plot the absolute value of the model coefficients in sorted order: from largest magnitude to smallest, ignoring the intercept term. Significant coefficients are established by visual judgement - establishing a visual cut-off by contrasting the small coefficients to the larger ones.
+A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to estimate. Once these parameters have been calculated, for example, by using a :ref:`least squares model <DOE-analysis-by-least-squares>`, then plot the absolute value of the model coefficients in sorted order, from largest magnitude to smallest, ignoring the intercept term. Significant coefficients are established by visual judgement -- establishing a visual cutoff by contrasting the small coefficients to the larger ones.
 
 .. image:: ../figures/doe/pareto-plot-full-fraction.png
 	:align: left
 	:width: 800px
 	:scale: 50
 	
-The above example was from a full factorial experiment where the results for :math:`y` in standard order were: :math:`y = \left[45,71,48,65,68,60,80,65,43,100,45,104,75,86,70,96 \right]`.
+The above example was from a full factorial experiment where the results for :math:`y` in standard order were :math:`y = \left[45,71,48,65,68,60,80,65,43,100,45,104,75,86,70,96 \right]`.
 	
-In the above example we would interpret that factors **A**, **C** and **D**, as well as the interactions of **AC** and **AD** have a significant and causal effect on the response variable, :math:`y`. The main effect of **B** on the response :math:`y` is small - at least over the range that **B** was used in the experiment. Factor **B** can be omitted from future experimentation in this region, though it might be necessary to include it again if the system is operated at a very different point.
+We would interpret that factors **A**, **C** and **D**, as well as the interactions of **AC** and **AD**, have a significant and causal effect on the response variable, :math:`y`. The main effect of **B** on the response :math:`y` is small, at least over the range that **B** was used in the experiment. Factor **B** can be omitted from future experimentation in this region, though it might be necessary to include it again if the system is operated at a very different point.
 
-The reason why we can compare the coefficients this way, which is not normally the case with least squares models, is that we have both centered and scaled the factor-variables. If the centering is at typical baseline operation, and the range spanned by each factor is that expected over the typical operating range, then we can fairly compare each coefficient in the bar plot. Each bar represents the influence of that term on :math:`y` for a one-unit change in the factor, i.e. a change over half its operating range.
+The reason why we can compare the coefficients this way, which is not normally the case with least squares models, is that we have both centered and scaled the factor variables. If the centering is at typical baseline operation, and the range spanned by each factor is that expected over the typical operating range, then we can fairly compare each coefficient in the bar plot. Each bar represents the influence of that term on :math:`y` for a one-unit change in the factor, that is, a change over half its operating range.
 
-Obviously if the factors are not scaled appropriately, then this method will be error prone.  However, the approximate guidance is accurate, especially when you do not have a computer, or if additional information required by the other methods (discussed below) is not available. It is also the only way to estimate the effects for :ref:`highly fractionated and saturated designs <DOE-saturated-screening-designs>`.
+Obviously, if the factors are not scaled appropriately, then this method will be error prone.  However, the approximate guidance is accurate, especially when you do not have a computer or if additional information required by the other methods (discussed below) is not available. It is also the only way to estimate the effects for :ref:`highly fractionated and saturated designs <DOE-saturated-screening-designs>`.
 
 
-Standard error: from replicate runs, or from an external data set
+Standard error: from replicate runs or from an external dataset
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. note:: It is often better to spend your experimental budget screening for additional factors than for replicating experiments.
+.. note:: It is often better to spend your experimental budget screening for additional factors rather than replicating experiments.
 
 .. But, if a duplicate run exists at every combination of the factorial, then the standard error can be estimated as follows:
 ..
@@ -1172,12 +1173,12 @@ Standard error: from replicate runs, or from an external data set
 ..
 .. The standard error can be calculated in a similar manner if more than one duplicate run is performed. So rather run a :math:`2^4` factorial for 4 factors than a :math:`2^3`factorial twice; or as we will see later - one can screen five or more factors with :math:`2^4` runs.
 	
-If there are more experiments than parameters to be estimated, then we have extra degrees of freedom. Having degrees of freedom implies we can calculate the standard error, :math:`S_E`. Once :math:`S_E` has been found, we can also calculate the standard error for each model coefficient, and then confidence intervals can be constructed for each main effect and interaction. And, because the model matrix is orthogonal, the confidence interval for each effect is independent of the other. This is because the general confidence interval is :math:`\mathcal{V}\left(\mathbf{b}\right) = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}S_E^2`, and the off-diagonal elements in :math:`\mathbf{X}^T\mathbf{X}` are zero.
+If there are more experiments than parameters to be estimated, then we have extra degrees of freedom. Having degrees of freedom implies we can calculate the standard error, :math:`S_E`. Once :math:`S_E` has been found, we can also calculate the standard error for each model coefficient, and then confidence intervals can be constructed for each main effect and interaction. And because the model matrix is orthogonal, the confidence interval for each effect is independent of the other. This is because the general confidence interval is :math:`\mathcal{V}\left(\mathbf{b}\right) = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}S_E^2`, and the off-diagonal elements in :math:`\mathbf{X}^T\mathbf{X}` are zero.
 
-So for an experiment with :math:`n` runs, and where we have coded our :math:`\mathbf{X}` matrix to contain :math:`-1` and :math:`+1` elements, and when the :math:`\mathbf{X}` matrix is orthogonal, then the standard error for coefficient :math:`b_i` is :math:`S_E(b_i) = \sqrt{\mathcal{V}\left(b_i\right)} = \sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`. Some examples:
+For an experiment with :math:`n` runs, and where we have coded our :math:`\mathbf{X}` matrix to contain :math:`-1` and :math:`+1` elements, and when the :math:`\mathbf{X}` matrix is orthogonal, the standard error for coefficient :math:`b_i` is :math:`S_E(b_i) = \sqrt{\mathcal{V}\left(b_i\right)} = \sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`. Some examples:
 
 	*	A :math:`2^3` factorial where every combination has been repeated will have :math:`n=16` runs, so the standard error for each coefficient will be the same, at :math:`S_E(b_i) = \sqrt{\dfrac{S_E^2}{16}} = \dfrac{S_E}{4}`. 
-	*	A :math:`2^3` factorial with 3 additional runs at the center point would have a least squares representation of:
+	*	A :math:`2^3` factorial with three additional runs at the center point would have the following least squares representation:
 	
 		.. math::
 		
@@ -1212,16 +1213,16 @@ So for an experiment with :math:`n` runs, and where we have coded our :math:`\ma
 			\end{bmatrix}
 			\begin{bmatrix} b_0 \\ b_A \\ b_B \\ b_{C} \\ b_{AB} \\ b_{AC} \\ b_{BC} \\ b_{ABC} \end{bmatrix} + \mathbf{e}
 			
-		Note that the center point runs do not change the orthogonality of :math:`\mathbf{X}`, however, as we expect after having studied the :ref:`least squares modelling <SECTION-least-squares-modelling>` section, that additional runs decrease the variance of the model parameters, :math:`\mathcal{V}(\mathbf{b})`. In this case there are :math:`n=2^3+3 = 11` runs, so the standard error is decreased to :math:`S_E^2 = \dfrac{\mathbf{e}^T\mathbf{e}}{11 - 8}`, but the center points do not further reduce the variance of the parameters in :math:`\sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`, since the denominator is still :math:`2^k` (**except for the intercept term**, whose variance is reduced by the center points).
+		Note that the center point runs do not change the orthogonality of :math:`\mathbf{X}`. However, as we expect after having studied the section on :ref:`least squares modelling <SECTION-least-squares-modelling>`, additional runs decrease the variance of the model parameters, :math:`\mathcal{V}(\mathbf{b})`. In this case, there are :math:`n=2^3+3 = 11` runs, so the standard error is decreased to :math:`S_E^2 = \dfrac{\mathbf{e}^T\mathbf{e}}{11 - 8}`. However, the center points do not further reduce the variance of the parameters in :math:`\sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`, because the denominator is still :math:`2^k` (**except for the intercept term**, whose variance is reduced by the center points).
 	
-Once we obtain the standard error for our system and calculate the variance of the parameters, we can multiply it by the critical :math:`t`-value at the desired confidence level in order to calculate the confidence limit. However, it is customary to just report the standard error next to the coefficients, so that the user can use their own level of confidence. For example:
+Once we obtain the standard error for our system and calculate the variance of the parameters, we can multiply it by the critical :math:`t`-value at the desired confidence level in order to calculate the confidence limit. However, it is customary to just report the standard error next to the coefficients, so that users can apply their own level of confidence. For example,
 
 	.. math::
 	
 		\text{Temperature effect}, b_T &= 11.5 \pm 0.707\\
 		\text{Catalyst effect}, b_K &= 1.1 \pm 0.707
 		
-So even though the temperature effect's confidence interval would be :math:`11.5 - c_t \times 0.707 \leq \beta_T \leq 11.5 + c_t \times 0.707`, it is clear that at the 95% significance level, the above representation shows the temperature effect is significant, while the catalyst effect is not (:math:`c_t \approx 2`)
+Even though the confidence interval of the temperature effect would be :math:`11.5 - c_t \times 0.707 \leq \beta_T \leq 11.5 + c_t \times 0.707`, it is clear that at the 95% significance level, the above representation shows the temperature effect is significant, while the catalyst effect is not (:math:`c_t \approx 2`).
 
 .. OMIT: this can be confusing and misleading
 
@@ -1230,13 +1231,13 @@ So even though the temperature effect's confidence interval would be :math:`11.5
 
 	If the hypothesis that there is no causal effect from the :math:`k` factors on the response is true, then the :math:`2^k-1` parameter estimates, not counting the intercept, should be normally distributed. That is from the central limit theorem, and the fact that estimated coefficients are linear combinations of the response variable.
 
-	An example for a :math:`2^3` factorial would be that the 7 coefficients, not including :math:`b_0`, in this linear model would be normally distributed:
+	An example for a :math:`2^3` factorial would be that the seven coefficients, not including :math:`b_0`, in this linear model would be normally distributed:
 
 	.. math::
 
 		y_i = b_0 + b_A x_A + b_B x_B + b_{C}x_C + b_{AB}x_{AB} + b_{AC}x_{AC} +  b_{BC}x_{BC} +  b_{ABC}x_{ABC}
 	
-	A normal probability plot is a non-linear transformation of the data so that the s-shape of the cumulative normal distribution appears as a straight line. We used this idea in the section on :ref:`univariate statistics <SECTION-univariate-review>` where a q-q plot was constructed to assess normality. Another way to visualize this concept is to draw vertical divisions on the normal distribution curve, to create :math:`2^k-1` sections of equal area. One effect is expected per division.
+	A normal probability plot is a nonlinear transformation of the data so that the s-shape of the cumulative normal distribution appears as a straight line. We used this idea in the section on :ref:`univariate statistics <SECTION-univariate-review>` where a q-q plot was constructed to assess normality. Another way to visualize this concept is to draw vertical divisions on the normal distribution curve, to create :math:`2^k-1` sections of equal area. One effect is expected per division.
 
 	.. TODO: illustration of normal distribution division
 
