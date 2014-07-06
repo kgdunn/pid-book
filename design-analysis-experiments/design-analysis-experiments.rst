@@ -313,24 +313,26 @@
 
 .. note:: Coursera students
 
-	If you are using this chapter with the `Coursera MOOC <https://www.coursera.org/course/experiments>`_, then we wish to welcome you, and want to let you know that this book is generally part of a larger set of notes. The cross-references in this chapter will point you to other parts, where background knowledge is provided.
+	If you are using this chapter with the `Coursera MOOC <https://www.coursera.org/course/experiments>`_, then we wish to welcome you and want to let you know that this book is generally part of a larger set of notes. The cross-references in this chapter will point you to other parts, where background knowledge is provided.
 	
-	This chapter was written for engineers originally, but you will see the examples are very general, and can be applied to any other systems.
+	This chapter was written for engineers originally, but you will see the examples are very general and can be applied to any other systems.
 	
-	You can safely skip over the section on :ref:`DOE_expts_with_single_variable`; that section is not covered in the MOOC. You can also initially skip the :ref:`DOE_learning_about_systems`, but make sure you come back and read it.
+	You can safely skip over the section on :ref:`DOE_expts_with_single_variable`; that section is not covered in the MOOC. You can also initially skip the section on :ref:`DOE_learning_about_systems`, but make sure you come back and read it.
+
+.. AU: In this chapter, page references to section links are shown as "page 279". I have been using "p. 279" in previous chapters. To be consistent, please either change the format in previous chapters to "page", or change the ones in this chapter to "p.".
 
 .. index::
    see: Design of experiments; experiments
 
-Design and Analysis of Experiments: in context
+Design and analysis of experiments in context
 ===============================================
 
-This chapter will take a totally different approach to learning and understanding about systems, not only (chemical) engineering systems. The systems we could apply this to could be as straightforward as growing plants, or perfecting your favourite recipe at home. Or they may be as complex as the entire production line in a large factory producing multiple products and shipping them to customers.
+This chapter will take a totally different approach to learning about and understanding systems in general, not only (chemical) engineering systems. The systems we could apply this to could be as straightforward as growing plants or perfecting your favourite recipe at home. Or they may be as complex as the entire production line in a large factory producing multiple products and shipping them to customers.
 
 
-In order to learn about a system we have to disturb it and change it. This is to ensure cause and effect. If we do not intentionally change the system, we are only guessing, or using our intuition. In this chapter we learn what the best way is to intentionally disturb the system to learn more about it.
+In order to learn about a system, we have to disturb it and change it. This is to ensure cause and effect. If we do not intentionally change the system, we are only guessing, or using our intuition. To disturb the system, we change several factors. When we make these changes, we say that we have "run an experiment". 
 
-When we disturb the system we should be changing several factors. When we make these changes we say that we have "run an experiment". We will use some of the tools of :ref:`least squares modelling <SECTION-least-squares-modelling>`, :ref:`visualization <SECTION-data-visualization>` and :ref:`univariate statistics <SECTION-univariate-review>` that were described in earlier chapters. Where necessary, we will refer back to those earlier sections.
+In this chapter we learn the best way to intentionally disturb the system to learn more about it. We will use some of the tools of :ref:`least squares modelling <SECTION-least-squares-modelling>`, :ref:`visualization <SECTION-data-visualization>` and :ref:`univariate statistics <SECTION-univariate-review>` that were described in earlier chapters. Where necessary, we will refer back to those earlier sections.
 
 .. In the next section, on latent variables, we will take a look at learning more about our systems when the condition of independence between variables, required for designed experiments, is not met. But for now we can use least squares and simpler tools, as designed experiments are intentionally orthogonal (independent).
 
