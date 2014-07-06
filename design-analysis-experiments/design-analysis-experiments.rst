@@ -1129,7 +1129,7 @@ Furthermore, there are better ways to spend our experimental budget than running
 
 .. AU: I inserted the two main ways. Please confirm.
 
-There are two main ways we can determine if a main effect or interaction is significant: by using a Pareto plot or the standard deviation.
+There are two main ways we can determine if a main effect or interaction is significant: by using a Pareto plot or the standard error.
 
 .. _DOE-Pareto-plot:
 
@@ -1296,11 +1296,11 @@ Finally, we end this section on factorials by illustrating their efficiency. Con
 +--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
 | COST approach                                                            | Fractional factorial approach                                                                                  |
 +==========================================================================+================================================================================================================+
-| The main effect of :math:`T` is :math:`b_T = y_2 - y_1`.                  | The main effect is :math:`b_T = 0.5(y_2 - y_1) + 0.5(y_4 - y_3)`.                                               |
+| The main effect of :math:`T` is :math:`b_T = y_2 - y_1`.                 | The main effect is :math:`b_T = 0.5(y_2 - y_1) + 0.5(y_4 - y_3)`.                                               |
 +--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
-| The variance is :math:`\mathcal{V}(b_T) = \sigma_y^2 + \sigma_y^2`.       | The variance is :math:`\mathcal{V}(b_T) = 0.25(\sigma_y^2 + \sigma_y^2) + 0.25(\sigma_y^2 + \sigma_y^2)`.       |
+| The variance is :math:`\mathcal{V}(b_T) = \sigma_y^2 + \sigma_y^2`.      | The variance is :math:`\mathcal{V}(b_T) = 0.25(\sigma_y^2 + \sigma_y^2) + 0.25(\sigma_y^2 + \sigma_y^2)`.       |
 +--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
-| So :math:`\mathcal{V}(b_T) = 2\sigma_y^2`.                                | And :math:`\mathcal{V}(b_T) = \sigma_y^2`.                                                                      |
+| So :math:`\mathcal{V}(b_T) = 2\sigma_y^2`.                               | And :math:`\mathcal{V}(b_T) = \sigma_y^2`.                                                                      |
 +--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
 
 Not only does the factorial experiment estimate the effects with much greater precision (lower variance), but the COST approach cannot estimate the effect of interactions, which is incredibly important, especially as systems approach optima that are on ridges (see the contour plots earlier in this section for an example).
