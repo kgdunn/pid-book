@@ -9,6 +9,4 @@ Design and Analysis of Experiments
    :numbered:
 
    design-analysis-experiments
-   
-   
-.. design-analysis-experiments-exercises
+   design-analysis-experiments-exercises
