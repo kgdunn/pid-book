@@ -529,12 +529,11 @@ We have already seen in the :ref:`univariate statistics section <univariate-grou
 	\end{array}
 
 We consider the effect of changing from condition A to condition B to be a *statistically* significant effect when this confidence interval does not span zero. However, the width of this interval and how symmetrically it spans zero can cause us to come to a different, *practical* conclusion. In other words, we override the narrow statistical conclusion based on the richer information we can infer from the width of the confidence interval and the variance of the process.
+
 Using linear least squares models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. AU: Can you clarify "identical result"? Identical to what?
-
-There's another interesting way that you can analyze data from an A versus B set of tests and get the identical result. Use a least squares model of the form
+There's another interesting way that you can analyze data from an A versus B set of tests and get the identical result to the methods we showed in the section where :ref:`we made group-to-group comparisons <univariate-group-to-group-differences-no-reference-set>`. In this method, instead of using a :math:`t`-test, we use a least squares model of the form:
 
 .. math::
 
@@ -575,11 +574,11 @@ Both methods give identical results, but by very different routes.
 The importance of randomization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We :ref:`emphasized in a previous section <univariate-group-to-group-differences-no-reference-set>` that experiments must be performed in random order to avoid any unmeasured, and uncontrolled disturbances from impacting the system.
+We :ref:`emphasized in a previous section <univariate-group-to-group-differences-no-reference-set>` that experiments must be performed in random order to avoid any unmeasured, and uncontrolled, disturbances from impacting the system.
 
-The concept of randomization was elegantly described in an example by Fisher in Chapter 2 of his book, :ref:`The Design of Experiments <DOE_references>`, referenced above. A lady claims that she can taste the difference between a cup of tea where the milk has been added after the tea, or the tea added after the milk. By setting up :math:`N` cups of tea which either contain the milk first (M) or the tea first (T), the lady is asked to taste these :math:`N` cups and make her assessment. Fisher shows that if the experiments are performed in random order, the actual set of decisions made by the lady are just one of many possible outcomes. He calculates all possibilities (we show how below), and then he calculates the probability of the lady's actual set of decisions being due to chance alone. If the lady has test score values better than by random chance, then there is a reasonable claim the lady is reliable.
+The concept of randomization was elegantly described in an example by Fisher in Chapter 2 of his book, :ref:`The Design of Experiments <DOE_references>`. A lady claims that she can taste the difference in a cup of tea when the milk is added after the tea or when the tea is added after the milk. By setting up :math:`N` cups of tea that contain either the milk first (M) or the tea first (T), the lady is asked to taste these :math:`N` cups and make her assessment. Fisher shows that if the experiments are performed in random order, the actual set of decisions made by the lady are just one of many possible outcomes. He calculates all possibilities (we show how below), and then he calculates the probability of the lady's actual set of decisions being due to chance alone. If the lady has test score values better than by random chance, then there is a reasonable claim the lady is reliable.
 
-Let's take a look at a more engineering oriented example. We :ref:`previously considered <univariate-CO2-question>` the brittleness of a material made in either TK104 or in TK107. The same raw materials were charged to each reactor. So in effect, we are testing the difference due to using reactor TK104 or reactor TK107. Let's call them case A (TK104) and case B (TK107) so the notation is more general. We collected 20 brittleness values from TK104, and 23 values from TK107. We will only use the first 8 values from TK104 and the first 9 values from TK107 (you will see why soon):
+Let's take a look at a more engineering-oriented example. We :ref:`previously considered <univariate-CO2-question>` the brittleness of a material made in either TK104 or TK107. The same raw materials were charged to each reactor. So, in effect, we are testing the difference due to using reactor TK104 or reactor TK107. Let's call them case A (TK104) and case B (TK107) so the notation is more general. We collected 20 brittleness values from TK104 and 23 values from TK107. We will only use the first 8 values from TK104 and the first 9 values from TK107 (you will see why soon):
 
 .. tabularcolumns:: |l|lllllllll|
 
@@ -589,13 +588,13 @@ Let's take a look at a more engineering oriented example. We :ref:`previously co
 **Case B**   338 470 558 426 733 539 240 628 517 
 ==========   === === === === === === === === === 
 
-Fisher's insight was to create one long vector of these outcomes (length of vector = :math:`n_A + n_B`) and randomly assign "A" to :math:`n_A` of the values and "B" to :math:`n_B` of the values. One can show that there are :math:`\dfrac{(n_A + n_B)!}{n_A! n_B!}` possible combinations. For example, if :math:`n_A=8` and :math:`n_B = 9`, then the number of unique ways to split these 17 experiments into 2 groups of 8 (A) and 9 (B) is 24310 ways. E.g. one way is: BABB ABBA ABAB BAAB, so assign the experimental values accordingly [B=254, A=440, B=501, B=368, A=697, etc]. 
+Fisher's insight was to create one long vector of these outcomes (length of vector = :math:`n_A + n_B`) and randomly assign "A" to :math:`n_A` of the values and "B" to :math:`n_B` of the values. One can show that there are :math:`\dfrac{(n_A + n_B)!}{n_A! n_B!}` possible combinations. For example, if :math:`n_A=8` and :math:`n_B = 9`, then the number of unique ways to split these 17 experiments into two groups of 8 (A) and 9 (B) is 24,310 ways. For example, one way is BABB ABBA ABAB BAAB, and you would therefore assign the experimental values accordingly (B = 254, A = 440, B = 501, B = 368, A = 697, etc.). 
 
-Only one of the 24310 sequences will correspond to the actual data printed in the above table, while all the other realizations are possible, they are fictitious. We do this, because the null hypothesis is that there is no difference between A and B. Values in the table could have come from either system.
+Only one of the 24,310 sequences will correspond to the actual data printed in the above table. Although all the other realizations are possible, they are fictitious. We do this because the null hypothesis is that there is no difference between A and B. Values in the table could have come from either system.
 
-So for each of the 24310 realizations we calculate the difference of the averages between A and B, :math:`\overline{y}_A - \overline{y}_B`, and plot a histogram of these differences. This is :ref:`shown below <DOE-fig-randomization-one-factor>`, together with a vertical line showing the actual realization in the table. There are 4956 permutations that had a greater difference than the one actually realized, i.e. 79.6% of the other combinations had a smaller value. 
+So for each of the 24,310 realizations, we calculate the difference of the averages between A and B, :math:`\overline{y}_A - \overline{y}_B`, and plot a histogram of these differences. This is :ref:`shown below <DOE-fig-randomization-one-factor>`, together with a vertical line indicating the actual realization in the table. There are 4956 permutations that had a greater difference than the one actually realized; that is, 79.6% of the other combinations had a smaller value. 
 
-Had we used a formal test of differences where we pool the variances, we will find a :math:`z`-value of 0.8435, and the probability of obtaining that value, using the :math:`t`-distribution with :math:`n_A + n_B - 2` degrees of freedom is 79.3%. See how close they agree?  
+Had we used a formal test of differences where we pooled the variances, we would have found a :math:`z`-value of 0.8435, and the probability of obtaining that value, using the :math:`t`-distribution with :math:`n_A + n_B - 2` degrees of freedom, would be 79.3%. See how close they agree?  
 
 .. Future improvement: superimpose the t-distribution on top of the histogram (scaled). E.g. see BHH(v1) page 97
 
@@ -606,11 +605,11 @@ Had we used a formal test of differences where we pool the variances, we will fi
 	:width: 750px
 	:scale: 90
 	
-	The differences in the averages of A and B for the 24310 realizations. The vertical line represents the difference in the average for the one particular set of numbers we measured in the experiment.
+	The differences in the averages of A and B for the 24,310 realizations. The vertical line represents the difference in the average for the one particular set of numbers we measured in the experiment.
 
 Recall that independence is required to calculate the :math:`z`-value for the average difference and compare it against the :math:`t`-distribution. By randomizing our experiments, we are able to guarantee that the results we obtain from using :math:`t`-distributions are appropriate. Without randomization, these :math:`z`-values and confidence intervals may be misleading.
 
-The reason we prefer using the :math:`t`-distribution approach over randomization is that formulating all random combinations and then calculating all the average differences as shown here is intractable. Even on my relatively snappy computer it would take 3.4 years to calculate all possible combinations for the complete data set: 20 values from group A and 23 values from group B. [It took 122 seconds to calculate a million of them, so the full set of 960,566,918,220 combinations would take more than 3 years].
+The reason we prefer using the :math:`t`-distribution approach over randomization is that formulating all random combinations and then calculating all the average differences as shown here is intractable. Even on my relatively snappy computer it would take 3.4 years to calculate all possible combinations for the complete dataset: 20 values from group A and 23 values from group B. (It took 122 seconds to calculate a million of them, so the full set of 960,566,918,220 combinations would take more than 3 years.)
 
 .. _DOE-COST-approach:
 
