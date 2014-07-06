@@ -894,9 +894,7 @@ Let's review the original system (the one with little interaction) and analyze t
 	| 4         | |+|  (354 K)  | |+| (1.75 g/L)  |  53          |
 	+-----------+---------------+-----------------+--------------+
 
-.. AU: "DOE" has not been defined, and it is not used again in this chapter. Please spell out here.  
-
-It is standard practice to represent the data from DOE runs in a centered and scaled form: :math:`\dfrac{\text{variable} - \text{center point}}{\text{range}/2}`. This gives the following values:
+It is standard practice to represent the data from designed experiments in a centered and scaled form: :math:`\dfrac{\text{variable} - \text{center point}}{\text{range}/2}`. This gives the following values:
 
 	*	:math:`T_{-} = \dfrac{338 - 346}{(354-338)/2} = \dfrac{-8}{8} = -1`
 	*	:math:`S_{-} = \dfrac{1.25 - 1.50}{(1.75 - 1.25)/2} = \dfrac{-0.25}{0.25} = -1`
@@ -951,7 +949,7 @@ Some things to note are (1) the orthogonality of :math:`\mathbf{X}^T\mathbf{X}` 
 
 #.	Note how the :math:`\mathbf{X}^T\mathbf{X}` matrix has zeros on the off-diagonals. This confirms, algebraically, what we knew intuitively. The change we made in temperature, :math:`T`, was independent of the changes we made in substrate concentration, :math:`S`. This means that we can separately calculate *and interpret* the slope coefficients in the model.
 
-#.	What is the interpretation of, for example, :math:`b_T = -5`?  Recall that it is the effect of increasing the temperature by **1 unit**. In this case, the :math:`x_T` variable has been normalized, but this slope coefficient represents the effect of changing :math:`x_T` from 0 to 1, which in the variables of our system is a change from 346 to 354 K, that is, an 8 K increase in temperature. It equally well represents the effect of changing :math:`x_T` from :math:`-1` to 0: a change from 338 K to 346 K decreases conversion by 5%.
+#.	What is the interpretation of, for example, :math:`b_T = -5`?  Recall that it is the effect of increasing the temperature by **1 unit**. In this case, the :math:`x_T` variable has been normalized, but this slope coefficient represents the effect of changing :math:`x_T` from 0 to 1, which in the original units of the variables is a change from 346 to 354 K, that is, an 8 K increase in temperature. It equally well represents the effect of changing :math:`x_T` from :math:`-1` to 0: a change from 338 K to 346 K decreases conversion by 5%.
 
 	Similarly, the slope coefficient for :math:`b_S = -3` represents the expected decrease in conversion when :math:`S` is increased from 1.50 g/L to 1.75 g/L.
 
@@ -983,18 +981,17 @@ Finally, out of interest, the nonlinear surface that was used to generate the ex
 The corner points are exact with the nonlinear surface, because we have used the four values to estimate four model parameters. There are no degrees of freedom left, and the model's residuals are therefore zero. Obviously, the linear model will be less accurate away from the corner points when the true system is nonlinear, but it is a useful model over the region in which we will use it later in the :ref:`section on response surface methods <DOE-RSM>`.
 	
 
-	
-Example: design and analysis of a 3-factor experiment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Example: design and analysis of a three-factor experiment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This example should be done by yourself. It is based on question 19 in the exercises for Chapter 5 in Box, Hunter, and Hunter (2nd edition).
+This example should be done by yourself. It is based on Question 19 in the exercises for Chapter 5 in Box, Hunter and Hunter (2nd edition).
 
-The data are from a plastics molding factory which must treat its waste before discharge. The :math:`y` variable represents the average amount of pollutant discharged [lb per day], while the 3 factors that were varied were:
+The data are from a plastics molding factory that must treat its waste before discharge. The :math:`y`-variable represents the average amount of pollutant discharged (lb per day), while the three factors that were varied were
 
- 	-	:math:`C`: the chemical compound added [choose either chemical P or chemical Q]
-	-	:math:`T`: the treatment temperature [72°F or 100°F]
-	-	:math:`S`: the stirring speed [200 rpm or 400 rpm]
-	-	:math:`y`: the amount of pollutant discharged [lb per day]
+ 	-	:math:`C` = the chemical compound added (choose either chemical P or chemical Q)
+	-	:math:`T` = the treatment temperature (72 °F or 100 °F)
+	-	:math:`S` = the stirring speed (200 rpm or 400 rpm)
+	-	:math:`y` = the amount of pollutant discharged (lb per day)
 
 	.. tabularcolumns:: |l|l||c|c|c||c|
 
@@ -1020,51 +1017,62 @@ The data are from a plastics molding factory which must treat its waste before d
 
 #.	Draw a geometric figure that illustrates the data from this experiment.
 
+.. AU: I restructured some of this section to eliminate bullets.
+
 #.	Calculate the main effect for each factor by hand.
 
-	*	**C effect**: There are 4 estimates of :math:`C = \displaystyle \frac{(+25) + (+27) + (-1) + (-1)}{4} = \frac{50}{4} = \bf{12.5}`
-	*	**T effect**: There are 4 estimates of :math:`T = \displaystyle \frac{(+1) + (+3) + (+1) + (+1)}{4} = \frac{6}{4} = \bf{1.5}`
-	*	**S effect**: There are 4 estimates of :math:`S = \displaystyle \frac{(-27) + (-1) + (-29) + (-1)}{4} = \frac{-58}{4} = \bf{-14.5}`
+		For the **C effect**, there are four estimates of :math:`C`:
+
+		.. math::
+			\displaystyle \frac{(+25) + (+27) + (-1) + (-1)}{4} = \frac{50}{4} = \bf{12.5}
+	
+		For the	**T effect**, there are four estimates of :math:`T`:
+
+		.. math::
+			\displaystyle \frac{(+1) + (+3) + (+1) + (+1)}{4} = \frac{6}{4} = \bf{1.5}
+	
+		For the **S effect**, there are four estimates of :math:`S`:
+
+		.. math::
+			\displaystyle \frac{(-27) + (-1) + (-29) + (-1)}{4} = \frac{-58}{4} = \bf{-14.5}
 
 #.	Calculate the 3 two-factor interactions (2fi) by hand, recalling that interactions are defined as the half difference going from high to low.
 
-	*	**CT interaction**: There are 2 estimates of :math:`CT`. Recall that interactions are calculated as the half difference going from high to low. Consider the change in :math:`C` when
+		For the **CT interaction**, there are two estimates of :math:`CT`. Recall that interactions are calculated as the half difference going from high to low. Consider the change in :math:`C` when
 
-		-	:math:`T_\text{high}` (at :math:`S` high) = :math:`4 - 5 = -1`
-		-	:math:`T_\text{low}` (at :math:`S` high) = :math:`3 - 4 = -1`
-		-	First estimate = :math:`[(-1) - (-1)]/2 = 0`
-		-	:math:`T_\text{high}` (at :math:`S` low) = :math:`33 - 6 = +27`
-		-	:math:`T_\text{low}` (at :math:`S` low) = :math:`30 - 5 = +25`
-		-	Second estimate = :math:`[(+27) - (+25)]/2 = +1`
-	
-		-	Average **CT** interaction = :math:`(0 + 1)/2 = \mathbf{0.5}`
-		-	You can interchange :math:`C` and :math:`T` and still get the same result.
-
-	*	**CS interaction**: There are 2 estimates of :math:`CS`.  Consider the change in :math:`C` when
-
-			-	:math:`S_\text{high}` (at :math:`T` high) = :math:`4 - 5 = -1`
-			-	:math:`S_\text{low}` (at :math:`T` high) = :math:`33 - 6 = +27`
-			-	First estimate = :math:`[(-1) - (+27)]/2 = -14`
-			-	:math:`S_\text{high}` (at :math:`T` low) = :math:`3 - 4 = -1`
-			-	:math:`S_\text{low}` (at :math:`T` low) = :math:`30 - 5 = +25`
-			-	Second estimate = :math:`[(-1) - (+25)]/2 = -13`
-
-			-	Average **CS** interaction = :math:`(-13 - 14)/2 = \mathbf{-13.5}`
-			-	You can interchange :math:`C` and :math:`S` and still get the same result.	
+		*	:math:`T_\text{high}` (at :math:`S` high) = :math:`4 - 5 = -1`
+		*	:math:`T_\text{low}` (at :math:`S` high) = :math:`3 - 4 = -1`
 		
-	*	**ST interaction**: There are 2 estimates of :math:`ST`: :math:`(-1 + 0)/2 = \mathbf{-0.5}`, calculate in the same way as above.
+		This gives a first estimate of :math:`[(-1) - (-1)]/2 = 0`. Similarly,
 
-#.	Calculate the single 3 factor interaction (3fi).
+		*	:math:`T_\text{high}` (at :math:`S` low) = :math:`33 - 6 = +27`
+		*	:math:`T_\text{low}` (at :math:`S` low) = :math:`30 - 5 = +25`
+		
+		gives a second estimate of :math:`[(+27) - (+25)]/2 = +1`.
 	
-	There is only a single estimate of :math:`CTS`:
+		The average **CT** interaction  is therefore :math:`(0 + 1)/2 = \mathbf{0.5}`. You can interchange :math:`C` and :math:`T` and still get the same result.
 
-		-	:math:`CT` effect at high :math:`S = 0`
-		-	:math:`CT` effect at low :math:`S = + 1`
-		-	:math:`CTS` interaction = :math:`[(0) - (+1)] / 2 = \mathbf{-0.5}`
+		For the **CS interaction**, there are two estimates of :math:`CS`.  Consider the change in :math:`C` when
 
-		-	You can calculate this also by considering the :math:`CS` effect at the two levels of :math:`T`
-		-	Or, you can calculate this by considering the :math:`ST` effect at the two levels of :math:`C`.
-		-	All 3 approaches give the same result.
+		*	:math:`S_\text{high}` (at :math:`T` high) = :math:`4 - 5 = -1`
+		*	:math:`S_\text{low}` (at :math:`T` high) = :math:`33 - 6 = +27`
+			
+		This gives a first estimate of :math:`[(-1) - (+27)]/2 = -14`. Similarly,
+
+		*	:math:`S_\text{high}` (at :math:`T` low) = :math:`3 - 4 = -1`
+		*	:math:`S_\text{low}` (at :math:`T` low) = :math:`30 - 5 = +25`
+			
+		gives a second estimate of :math:`[(-1) - (+25)]/2 = -13`.
+
+		The average **CS** interaction is therefore :math:`(-13 - 14)/2 = \mathbf{-13.5}`. You can interchange :math:`C` and :math:`S` and still get the same result.	
+		
+		For the **ST interaction**, there are two estimates of :math:`ST`: :math:`(-1 + 0)/2 = \mathbf{-0.5}`. Calculate in the same way as above.
+
+#.	Calculate the single three-factor interaction (3fi).
+	
+		There is only a single estimate of :math:`CTS`. The :math:`CT` effect at high :math:`S` is 0, and the :math:`CT` effect at low :math:`S` is :math:`+1`. The :math:`CTS` interaction is then :math:`[(0) - (+1)] / 2 = \mathbf{-0.5}`.
+
+		You can also calculate this by considering the :math:`CS` effect at the two levels of :math:`T`, or by considering the :math:`ST` effect at the two levels of :math:`C`. All three approaches give the same result.
 
 #.	Compute the main effects and interactions using matrix algebra and a least squares model.
 
@@ -1091,28 +1099,28 @@ The data are from a plastics molding factory which must treat its waste before d
 
 Learning notes:
 
-	*	The chemical compound could be coded either as (chemical P = :math:`-1`, chemical Q = :math:`+1`), or (chemical P = :math:`+1`, chemical Q= :math:`-1`). The interpretation of the :math:`x_C` coefficient is the same, regardless of the coding.
+	*	The chemical compound could be coded either as (chemical P = :math:`-1`, chemical Q = :math:`+1`) or (chemical P = :math:`+1`, chemical Q = :math:`-1`). The interpretation of the :math:`x_C` coefficient is the same, regardless of the coding.
 	
  	*	Just the tabulation of the raw data gives us some interpretation of the results. Why?  Since the variables are manipulated independently, we can just look at the relationship of each factor to :math:`y`, without considering the others.  It is expected that the chemical compound and speed have a strong effect on :math:`y`, but we can also see the **chemical** :math:`\times` **speed** interaction. You can see this last interpretation by writing out the full :math:`\mathbf{X}` design matrix and comparing the bold column, associated with the :math:`b_\text{CS}` term, with the :math:`y` column.
 	
 .. sidebar:: A note about magnitude of effects
 
-	In these notes we quantify the effect as the change in response over *half the range* of the factor. For example, if the centerpoint is 400K, the lower level is 375K, and the upper level is 425K, then an effect of ``"-5"`` represents a reduction in :math:`y` of 5 units for every increase in 25K in :math:`x`.
+	In this text we quantify the effect as the change in response over *half the range* of the factor. For example, if the center point is 400 K, the lower level is 375 K and the upper level is 425 K, then an effect of ``"-5"`` represents a reduction in :math:`y` of 5 units for every increase of 25 K in :math:`x`.
 	
 	
-	We use this representation because it corresponds with the results calculated from least-squares software. Putting the matrix of :math:`-1` and :math:`+1` entries as :math:`\mathbf{X}` into the software, and the corresponding vector of responses, :math:`y`, will calculate these effects as :math:`\mathbf{b} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}\mathbf{y}`.
+	We use this representation because it corresponds with the results calculated from least-squares software. Putting the matrix of :math:`-1` and :math:`+1` entries into the software as :math:`\mathbf{X}`, along with the corresponding vector of responses, :math:`y`, you can calculate these effects as :math:`\mathbf{b} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}\mathbf{y}`.
 	
 	
-	Other textbooks, specifically Box, Hunter and Hunter will report effects that are double ours. This is because they consider the effect to be the change from the lower level to the upper level (double the distance). The advantage of their representation is that binary factors (catalyst A or B; agitator on or off) can be readily interpreted. While in our notation, the effect is a little harder to describe (simply double it!).
+	Other textbooks, specifically Box, Hunter and Hunter, will report effects that are double ours. This is because they consider the effect to be the change from the lower level to the upper level (double the distance). The advantage of their representation is that binary factors (catalyst A or B; agitator on or off) can be readily interpreted, whereas in our notation, the effect is a little harder to describe (simply double it!).
 	
 	
-	The advantage of our methodology though is that the results calculated by hand would be the same as that from any computer software with respect to the magnitude of the coefficients and the standard errors; particularly in the case of duplicate runs and experiments with center points.
+	The advantage of our methodology, though, is that the results calculated by hand would be the same as those from any computer software with respect to the magnitude of the coefficients and the standard errors, particularly in the case of duplicate runs and experiments with center points.
 	
 	
-	Remember: our effects are half those reported in Box, Hunter, and Hunter, and some other text books; our standard error would also be half of theirs. The conclusions drawn will always be the same, as long as one is consistent.
+	Remember: our effects are half those reported in Box, Hunter and Hunter, and in some other textbooks; our standard error would also be half of theirs. The conclusions drawn will always be the same, as long as one is consistent.
 	
 	
-
+	
 Assessing significance of main effects and interactions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
