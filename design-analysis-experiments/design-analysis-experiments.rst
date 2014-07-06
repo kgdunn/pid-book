@@ -784,11 +784,9 @@ We expect in many real systems that the main effect of temperature, :math:`T`, f
 
 .. index:: interaction effects
 
-.. AU: A and B are used here, but they aren't explained. Do you want to provide a brief explanation? Also, A and B are bold--are they matrices? 
+We call this result an *interaction*, when the effect of one factor is different at different levels of the other factors. Let's give a practical, everyday example: assume your hands are covered with dirt or oil. We know that if you wash your hands with cold water, it will take longer to clean them than washing with hot water. So let factor **A** be the temperature of the water; factor **A** has a significant effect on the time taken to clean your hands.  
 
-We call this result an *interaction*, when the effect of one factor is different at different levels of the other factors. Let's give a practical, everyday example: assume your hands are covered with dirt or oil. We know that if you wash your hands with cold water, it will take longer to clean them than washing with hot water. So the **A** = temperature of the water has a significant effect on the time taken to clean your hands.  
-
-Consider the case when washing your hands with cold water. If you use soap with cold water, it will take less time to clean your hands than if you did not use soap. It is clear that **B** = using soap reduces the time to clean your hands. 
+Consider the case when washing your hands with cold water. If you use soap with cold water, it will take less time to clean your hands than if you did not use soap. It is clear that factor **B**, the categorical factor of using no soap vs some soap, will reduce the time to clean your hands. 
 
 Now consider the case when washing your hands with hot water. The time taken to clean your hands with hot water when you use soap is greatly reduced, far faster than any other combination. We say there is an interaction between using soap and the temperature of the water. This is an example of an interaction that works to help us reach the objective faster. 
 
@@ -887,30 +885,32 @@ Let's review the original system (the one with little interaction) and analyze t
 	+===========+===============+=================+==============+
 	| Baseline  | **346 K**     | **1.50**        |              |
 	+-----------+---------------+-----------------+--------------+
-	| 1         | |-|  (338K)   | |-| (1.25 g/L)  |  69          |
+	| 1         | |-|  (338 K)  | |-| (1.25 g/L)  |  69          |
 	+-----------+---------------+-----------------+--------------+
-	| 2         | |+|  (354K)   | |-| (1.25 g/L)  |  60          |
+	| 2         | |+|  (354 K)  | |-| (1.25 g/L)  |  60          |
 	+-----------+---------------+-----------------+--------------+
-	| 3         | |-|  (338K)   | |+| (1.75 g/L)  |  64          |
+	| 3         | |-|  (338 K)  | |+| (1.75 g/L)  |  64          |
 	+-----------+---------------+-----------------+--------------+
-	| 4         | |+|  (354K)   | |+| (1.75 g/L)  |  53          |
+	| 4         | |+|  (354 K)  | |+| (1.75 g/L)  |  53          |
 	+-----------+---------------+-----------------+--------------+
 
-It is standard practice to represent the data from DOE runs in a centered and scaled form: :math:`\dfrac{\text{variable} - \text{center point}}{\text{range}/2}`
+.. AU: "DOE" has not been defined, and it is not used again in this chapter. Please spell out here.  
+
+It is standard practice to represent the data from DOE runs in a centered and scaled form: :math:`\dfrac{\text{variable} - \text{center point}}{\text{range}/2}`. This gives the following values:
 
 	*	:math:`T_{-} = \dfrac{338 - 346}{(354-338)/2} = \dfrac{-8}{8} = -1`
 	*	:math:`S_{-} = \dfrac{1.25 - 1.50}{(1.75 - 1.25)/2} = \dfrac{-0.25}{0.25} = -1`
 
-Similarly, :math:`T_{+} = +1` and :math:`S_{+} = +1`. While the center points (baseline experiment) would be :math:`T_{0} = 0` and :math:`S_{0} = 0`.
+Similarly, :math:`T_{+} = +1` and :math:`S_{+} = +1`, while the center points (baseline experiment) would be :math:`T_{0} = 0` and :math:`S_{0} = 0`.
 
-So we will propose a least squares model, that describes this system:
+We will propose a least squares model that describes this system:
 
 .. math::
 
 	\text{Population model}: \qquad\qquad &y = \beta_0 + \beta_Tx_T + \beta_S x_S + \beta_{TS} x_Tx_S + \varepsilon\\
 	\text{Sample model}: \qquad\qquad     &y = b_0 + b_Tx_T + b_S x_S + b_{TS} x_Tx_S + e\\
 	
-We have 4 parameters to estimate and 4 data points. This means when we fit the model to the data we will have no residual error, since there are no degrees of freedom left. If we had replicate experiments we would have degrees of freedom to estimate the error, but more on that later. Writing the above equation for each observation:
+We have four parameters to estimate and four data points. This means when we fit the model to the data, we will have no residual error, because there are no degrees of freedom left. If we had replicate experiments, we would have degrees of freedom to estimate the error, but more on that later. Writing the above equation for each observation,
 
 .. math::
 
@@ -949,9 +949,9 @@ We have 4 parameters to estimate and 4 data points. This means when we fit the m
 	
 Some things to note are (1) the orthogonality of :math:`\mathbf{X}^T\mathbf{X}` and (2) the interpretation of these coefficients.
 
-#.	Note how the :math:`\mathbf{X}^T\mathbf{X}` has zeros on the off-diagonals. This confirms, algebraically, what we knew intuitively. The change we made in temperature, :math:`T`, was independent of the changes we made in substrate concentration, :math:`S`. This means that we can separately calculat *and interpret* the slope coefficients in the model.
+#.	Note how the :math:`\mathbf{X}^T\mathbf{X}` matrix has zeros on the off-diagonals. This confirms, algebraically, what we knew intuitively. The change we made in temperature, :math:`T`, was independent of the changes we made in substrate concentration, :math:`S`. This means that we can separately calculate *and interpret* the slope coefficients in the model.
 
-#.	What is the interpretation of, for example, :math:`b_T = -5`?  Recall that it is the effect of increasing the temperature by **1 unit**. In this case the :math:`x_T` variable has been  normalized, but this slope coefficient represents the effect of changing :math:`x_T` from 0 to 1, which in the original variables is a change from 346 to 354K, i.e. an 8K increase in temperature. It equally well represents the effect of changing :math:`x_T` from -1 to 0: a change from 338K to 346K decreases conversion by 5%.
+#.	What is the interpretation of, for example, :math:`b_T = -5`?  Recall that it is the effect of increasing the temperature by **1 unit**. In this case, the :math:`x_T` variable has been normalized, but this slope coefficient represents the effect of changing :math:`x_T` from 0 to 1, which in the variables of our system is a change from 346 to 354 K, that is, an 8 K increase in temperature. It equally well represents the effect of changing :math:`x_T` from :math:`-1` to 0: a change from 338 K to 346 K decreases conversion by 5%.
 
 	Similarly, the slope coefficient for :math:`b_S = -3` represents the expected decrease in conversion when :math:`S` is increased from 1.50 g/L to 1.75 g/L.
 
@@ -962,25 +962,27 @@ Some things to note are (1) the orthogonality of :math:`\mathbf{X}^T\mathbf{X}` 
 		:width: 750px
 		:scale: 50
 
-	The 61.5 term in the least squares model is the expected conversion at the baseline conditions. Notice from the least squares equations how it is just the average of the 4 experimental values, even though we did not actually perform an experiment at the center.
+	The 61.5 term in the least squares model is the expected conversion at the baseline conditions. Notice from the least squares equations how it is just the average of the four experimental values, even though we did not actually perform an experiment at the center.
 		
 Let's return to the :ref:`system with high interaction <DOE-two-level-factorials-interaction-effects>` where the four outcome values in standard order were 
-77, 79, 81 and 89. Looking back, the baseline operation was :math:`T` = 395K, and :math:`S` = \frac{1.25 - 0.5}{2} = 0.875 g/L; you should prove to yourself that the least squares model is:
+77, 79, 81 and 89. Looking back, the baseline operation was :math:`T` = 395 K and :math:`S = \frac{1.25 - 0.5}{2}` = 0.875 g/L; you should prove to yourself that the least squares model is
 
 	.. math::
 	
 		y = 81.5 + 2.5 x_T + 3.5 x_S + 1.5 x_T x_S
 		
-The interaction term can now be readily interpreted: it is the additional increase in conversion seen when both temperature and :math:`S` are at their high level. If :math:`T` is at the high level and :math:`S` is at the low level, then the least squares model shows that conversion is expected at :math:`81.5 + 2.5 - 3.5 - 1.5 = 79`. So the interaction term has *decreased* conversion by 1.5 units.
+The interaction term can now be readily interpreted: it is the additional increase in conversion seen when both temperature and substrate concentration are at their high level. If :math:`T` is at the high level and :math:`S` is at the low level, then the least squares model shows that conversion is expected at :math:`81.5 + 2.5 - 3.5 - 1.5 = 79`. The interaction term has *decreased* conversion by 1.5 units.
 
-Finally, out of interest, the non-linear surface that was used to generate the experimental data for the interacting system is coloured in the illustration. In practice we never know what this surface looks like, but we estimate it with the least squares plane which appears below the non-linear surface as black and white grids. The corners of the box are outer levels at which we ran the factorial experiments.
+Finally, out of interest, the nonlinear surface that was used to generate the experimental data for the interacting system is coloured in the illustration. In practice we never know what this surface looks like, but we estimate it with the least squares plane, which appears below the nonlinear surface as black and white grids. The corners of the box are outer levels at which we ran the factorial experiments.
 	
 	.. image:: ../figures/doe/factorial-two-level-surface-with-interaction-cropped.png
 		:align: left
 		:width: 750px
 		:scale: 50
 	
-The corner points are exact with the nonlinear surface, because we have used the 4 values to estimate 4 model parameters. There are no degrees of freedom left and the model's residuals are therefore zero. Obviously the linear model will be less accurate away from the corner points when the true system is nonlinear, but it is a useful model over the region in which we will use it later in the :ref:`section on response surface methods <DOE-RSM>`.
+The corner points are exact with the nonlinear surface, because we have used the four values to estimate four model parameters. There are no degrees of freedom left, and the model's residuals are therefore zero. Obviously, the linear model will be less accurate away from the corner points when the true system is nonlinear, but it is a useful model over the region in which we will use it later in the :ref:`section on response surface methods <DOE-RSM>`.
+	
+
 	
 Example: design and analysis of a 3-factor experiment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
