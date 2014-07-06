@@ -611,50 +611,83 @@ Recall that independence is required to calculate the :math:`z`-value for the av
 
 The reason we prefer using the :math:`t`-distribution approach over randomization is that formulating all random combinations and then calculating all the average differences as shown here is intractable. Even on my relatively snappy computer it would take 3.4 years to calculate all possible combinations for the complete dataset: 20 values from group A and 23 values from group B. (It took 122 seconds to calculate a million of them, so the full set of 960,566,918,220 combinations would take more than 3 years.)
 
-.. _DOE-COST-approach:
 
-Changing one single variable at time (COST)
-==============================================
+.. _DOE-two-level-factorials:
 
-How do we go about running our experiments when there is more than one variable present that affects our outcome, :math:`y`?  In this section we describe **how not to do it**.
+Factorial designs: using two levels for two or more factors
+==============================================================
 
-You will certainly have seen the recommendation that we must **c**\ hange **o**\ ne **s**\ ingle variable at a **t**\ ime (COST):
-
-	*	Something goes wrong with a recipe: for example, the pancakes are not as fluffy as normal, or the muffins don't rise as much as they should. You are convinced it is the new brand of all-purpose flour you recently bought. You change only the flour the next time you make pancakes to check your hypothesis.
+In this section we learn how, and why, we should change more than one variable at a time. We will use factorial designs because
 	
-	*	University labs are notorious for asking you to change one variable at a time. The reason is that these labs intend for you to learn what the effect of a single variable is on some other variable (e.g. change temperature in a distillation column to improve product purity). The labs teach you that this is good scientific procedure, which is fine if your goal is to only initially learn about a system, especially a new system that has never been explored.
+	-	We can visually interpret these designs, and see where to run future experiments;
 	
-		However, when you want to *optimize and improve* a process, then a different style of experiments is required, where multiple factors are changed simultaneously.
+	-	These designs require relatively few experiments; and
+	
+	-	They are often building blocks for more complex designs.
+
+Most often we have two or more factors that affect our response variable, :math:`y`. In this section we consider the case when these factors are at two levels. Some examples would be to operate at low or high pH, select long operating times or short operating times, use catalyst A or B and use mixing system A or B. The general guidance is to choose the low and high values at the edges of normal operation. It is **not** wise to use the minimum and maximum values that each factor could possibly have; they will likely be too extreme. We will see an example of this in the section on :ref:`saturated designs <DOE-saturated-screening-designs>`.
+
+	
+Let's take a look at the mechanics of factorial designs by using our previous example where the conversion, :math:`y`, is affected by two factors: temperature, :math:`T`, and substrate concentration, :math:`S`. 
+
+The range over which they will be varied is given in the table. This range was identified by the process operators as being sufficient to actually show a difference in the conversion, but not so large as to move the system to a totally different operating regime (that's because we will fit a linear model to the data).
+
+	.. tabularcolumns:: |l|c|c|
+
+	+----------------------------+-----------------+-----------------+
+	|  Factor                    |  Low level, |-| | High level, |+| |
+	+============================+=================+=================+
+	| Temperature, :math:`T`     |  338 K          | 354 K           |
+	+----------------------------+-----------------+-----------------+
+	| Substrate level, :math:`S` |  1.25 g/L       | 1.75 g/L        |
+	+----------------------------+-----------------+-----------------+
+
+#.	Write down the factors that will be varied: :math:`T` and :math:`S`.
+
+#.	Write down the coded runs in standard order, also called :index:`Yates order`, which alternates the sign of the first variable the fastest and the last variable the slowest. By convention we start all runs at their low levels and finish off with all factors at their high levels. There will be :math:`2^k` runs, where :math:`k` is the number of variables in the design and the :math:`2` refers to the number of levels for each factor. In this case, :math:`2^2 = 4` experiments (runs). **We perform the actual experiments in random order**, but always write the table in this standard order.
+
+	.. tabularcolumns:: |c|c|c|c|
+
+	+-----------+---------------+-----------------+
+	| Experiment| :math:`T` [K] | :math:`S` [g/L] |
+	+===========+===============+=================+
+	| 1         | |-|           | |-|             |
+	+-----------+---------------+-----------------+
+	| 2         | |+|           | |-|             |
+	+-----------+---------------+-----------------+
+	| 3         | |-|           | |+|             |
+	+-----------+---------------+-----------------+
+	| 4         | |+|           | |+|             |
+	+-----------+---------------+-----------------+
+
+
+#.	Add an additional column to the table for the response variable. The response variable is a quantitative value, :math:`y`, which in this case is the conversion measured as a percentage. 
+
+	.. tabularcolumns:: |c|c|c|c||c|
+	
+	+-----------+-------+---------------+-----------------+--------------+
+	| Experiment|Order  | :math:`T` [K] | :math:`S` [g/L] | :math:`y` [%]|
+	+===========+=======+===============+=================+==============+
+	| 1         | 3     | |-|           | |-|             |  69          |
+	+-----------+-------+---------------+-----------------+--------------+
+	| 2         | 2     | |+|           | |-|             |  60          |
+	+-----------+-------+---------------+-----------------+--------------+
+	| 3         | 4     | |-|           | |+|             |  64          |
+	+-----------+-------+---------------+-----------------+--------------+
+	| 4         | 1     | |+|           | |+|             |  53          |
+	+-----------+-------+---------------+-----------------+--------------+
+	
+	Experiments were performed in random order; in this case, we happened to run experiment 4 first and experiment 3 last.
+
+#.	For simple systems you can visualize the design and results :ref:`as shown in the following figure <DOE-fig-Cube-plot>`. This is known as a :index:`cube plot`.
+
+	.. _DOE-fig-Cube-plot:
+	.. figure:: ../figures/doe/factorial-two-levels-two-variables-no-analysis.png
+		:align: left
+		:width: 750px
+		:scale: 50
 		
-We have known since the mid-1930s (almost 85 years), due to the work by :ref:`R. A. Fisher <DOE_references>`, that changing **o**\ ne **f**\ actor **a**\ t a **t**\ ime (OFAT) is not an efficient way for experimentation. Note that OFAT is an alternative name for COST.
-
-Consider a bioreactor where we are producing a particular enzyme. The yield, our outcome variable, is known to be affected by these six variables: dissolved oxygen level, agitation rate, reaction duration, feed substrate concentration, substrate type and reactor temperature. For illustration purposes, let's assume that temperature and feed substrate concentration are chosen, as they have the greatest effect on yield. The goal would be to maximize the yield.
-
-The base operating point is 346 K with a feed substrate concentration of 1.5 g/L, marked with a circle :ref:`in the figure <DOE-fig-COST>`. At these conditions, we report a yield from the reactor of approximately 63%.
-
-.. _DOE-fig-COST:
-.. figure:: ../figures/doe/COST-contours.png
-	:align: center
-	:width: 700px
-	:scale: 80	
-	
-	A demonstration of the COST (OFAT) approach
-	
-.. FUTURE: use a curved surface like figure (c) on page 445 of BHH2
-
-At this point, we start to investigate the effect of temperature. We decide to move up by 10 degrees to 356 K, marked as point 1. After running the experiment, we record a lower yield value than our starting point. So we go in the other direction and try temperatures at 338 K, 330 K and 322 K. We are happy that the yields are increasing, but experiment 4 shows a slightly lower yield. So we figure that we've reached a plateau in terms of the temperature variable. Our manager is pretty satisfied because we've boosted yield from 63% to around 67%. These four runs have cost us around $10,000 in equipment time and manpower costs so far.
-
-We now get approval to run four more experiments, and we decide to change the substrate feed concentration. But we're going to do this at the best temperature found so far, 330 K, at run 3. Our intuition tells us that higher feed concentrations should boost yield, so we try 1.75 g/L. Surprisingly, that experiment lowers the yield. There's likely something we don't understand about the reaction mechanism. Anyhow, we try the other direction, down to 1.25 g/L, and we see a yield increase. We decide to keep going, down to 1.0 g/L, and finally to 0.75 g/L. We see very little change between these last two runs, and we believe we have reached another plateau. Also, our budget of eight experimental runs is exhausted.
-
-Our final operating point chosen is marked on the plot with a hexagon, at 330 K and 0.75 g/L. We're proud of ourselves because we have boosted our yield from 63% to 67%, and then from 67% to 69.5%. We have also learned something interesting about our process: the temperature appears to be negatively correlated with yield, and the substrate concentration is negatively correlated with yield. An unexpected observation!
-
-The problem with this approach is that it leaves undiscovered values behind. Changing one single variable at a time leads you into thinking you've reached the optimum, when all you've done in fact is trap yourself at a suboptimal solution.
-
-Furthermore, notice that we would have got a completely different outcome had we decided to first change substrate concentration, :math:`S`, and then temperature, :math:`T`. We would have likely landed closer to the optimum. This is very unsatisfactory: we cannot use methods to optimize our processes that depend on the order of experiments!
-
-We have not yet even considered the effect of the other four variables of dissolved oxygen level, agitation rate, reaction duration and substrate type. We have suboptimally optimized the system in two dimensions, but there are in fact six dimensions. Although the OFAT (or COST) approach can get you close to the optimum in two variables, you have little to no hope of using this approach successfully with multiple factors.
-
-Designed experiments, on the other hand, provide an efficient mechanism to learn about a system, often in fewer runs than the COST approach, and avoid misleading conclusions that might be drawn from the COST approach. Designed experiments are always run in random order -- as we will presently see -- and we will get the same result, no matter the order.
+		A cube plot, showing the experimental results
 
 
 .. _DOE-two-level-factorials:
