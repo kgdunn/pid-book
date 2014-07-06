@@ -740,11 +740,11 @@ Analysis of a factorial design: main effects
 
 The first step is to calculate the :index:`main effect` of each variable. The effects are considered, by convention, to be the difference from the high level to the low level. So the interpretation of a main effect is by how much the outcome, :math:`y`, is adjusted when changing the variable.
 
-Consider the two runs where :math:`S` is at the |-| level for both experiments 1 and 2. The only change between these two runs is the **temperature**, so the temperature effect is :math:`\Delta T_{S-} = 60-69 = -9\%\,\,\text{per}\,\,(354-338)\text{K}`, i.e. :math:`-9\%` change in the conversion outcome per :math:`+16\text{K}` change in the temperature. 
+Consider the two runs where :math:`S` is at the |-| level for both experiments 1 and 2. The only change between these two runs is the **temperature**, so the temperature effect is :math:`\Delta T_{S-} = 60-69 = -9\%\,\,\text{per}\,\,(354-338)~\text{K}`, that is, a :math:`-9\%` change in the conversion outcome per :math:`+16~\text{K}` change in the temperature. 
 
-Runs 3 and 4 both have :math:`S` at the |+| level. Again, the only change is in the **temperature**: :math:`\Delta T_{S+} = 53-64 = -11\%` per :math:`+16\text{K}`. So we now have two temperature effects, and the average of them is a :math:`-10\%` change in conversion per :math:`+16\text{K}` change in temperature.
+Runs 3 and 4 both have :math:`S` at the |+| level. Again, the only change is in the **temperature**: :math:`\Delta T_{S+} = 53-64 = -11\%` per :math:`+16~\text{K}`. So we now have two temperature effects, and the average of them is a :math:`-10\%` change in conversion per :math:`+16~\text{K}` change in temperature.
 
-We can perform a similar calculation for the main effect of substrate concentration, :math:`S`, by comparing experiments 1 and 3. :math:`\Delta S_{T-} = 64-69 = -5\%\,\,\text{per}\,\,0.5\,\text{g/L}`, while experiments 2 and 4 give :math:`\Delta S_{T+} = 53-60 = -7\%` per :math:`0.5\,\text{g/L}`. So the average main effect for :math:`S` is a :math:`-6\%` change in conversion for every :math:`0.5\,\text{g/L}` change in substrate concentration. A :ref:`graphical method is developed <DOE-fig-Calculate-main-effects>` which you should use when calculating main effects from a cube plot.
+We can perform a similar calculation for the main effect of substrate concentration, :math:`S`, by comparing experiments 1 and 3: :math:`\Delta S_{T-} = 64-69 = -5\%\,\,\text{per}\,\,0.5\,\text{g/L}`, while experiments 2 and 4 give :math:`\Delta S_{T+} = 53-60 = -7\%` per :math:`0.5\,\text{g/L}`. So the average main effect for :math:`S` is a :math:`-6\%` change in conversion for every :math:`0.5\,\text{g/L}` change in substrate concentration. You should use the following :ref:`graphical method <DOE-fig-Calculate-main-effects>` when calculating main effects from a cube plot.
 
 
 .. _DOE-fig-Calculate-main-effects:
@@ -753,18 +753,18 @@ We can perform a similar calculation for the main effect of substrate concentrat
 	:width: 750px
 	:scale: 60
 	
-	A cube plot, showing the hand-calculations for the main effects.
+	A cube plot, showing the hand calculations for the main effects
 
 This visual summary is a very effective method of seeing how the system responds to the two variables. We can see the gradients in the system and the likely region where we can perform the next experiments to improve the bioreactor's conversion.
 
-The following surface plot illustrates the true, but unknown surface, from which our measurements are taken: notice the slight curvature on the edges of each face. The main effects estimated above are a linear approximation of the conversion over the region spanned by the factorial.
+The following surface plot illustrates the true, but unknown, surface from which our measurements are taken. Notice the slight curvature on the edges of each face. The main effects estimated above are a linear approximation of the conversion over the region spanned by the factorial.
 
 	.. image:: ../figures/doe/factorial-two-level-surface-example-cropped.png
 		:align: left
 		:width: 750px
 		:scale: 50
 
-There is an :ref:`alternative way to visualize these main effects <DOE-fig-Interaction-plot-example>`. Use this method when you don't have computer software to draw the surfaces. (We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>`). It is called an :index:`interaction plot`, which we discuss more in the next section.
+An :index:`interaction plot` is an :ref:`alternative way to visualize these main effects <DOE-fig-Interaction-plot-example>`. Use this method when you don't have computer software to draw the surfaces. [We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>`]. We will discuss interaction plots more in the next section.
 
 	.. _DOE-fig-Interaction-plot-example:
 	.. figure:: ../figures/doe/factorial-two-level-line-plot.png
@@ -772,7 +772,8 @@ There is an :ref:`alternative way to visualize these main effects <DOE-fig-Inter
 		:width: 750px
 		:scale: 80
 		
-		An interaction plot for the example where there is little interaction.
+		An interaction plot for the example where there is little interaction
+		
 		
 .. _DOE-two-level-factorials-interaction-effects:	
 
