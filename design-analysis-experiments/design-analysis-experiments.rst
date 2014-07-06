@@ -339,34 +339,37 @@ In this chapter we learn the best way to intentionally disturb the system to lea
 Terminology
 ===========
 
-There is some specific terminology that is specific to the area of designed experiments.
+The area of designed experiments uses specific terminology.
 
 Every experiment has these two components: 
 
-#.  An :index:`outcome <pair: outcome; experiments>` i.e. the result or the :index:`response <pair: response; experiments>` from an experiment.
-#.  one or more factors; a :index:`factor <pair: factor; experiments>` is the thing you can change to influence the outcome. Factors are also called :index:`variables <pair: variable; experiments>`.
+.. AU: It would be nice to italicize the individual terminology words (outcome, factor, objective, etc.) to make them stand out. But italicizing doesn't seem to be compatible with :index:. Is there a way to make it work?
 
-An important aspect about the outcome is that it is always measurable - in some way. In other words, after you finish the experiment, you must have some measurement. 
+#.  An :index:`outcome <pair: outcome; experiments>`: the result or the :index:`response <pair: response; experiments>` from an experiment.
+#.  One or more factors: a :index:`factor <pair: factor; experiments>` is the thing you can change to influence the outcome. Factors are also called :index:`variables <pair: variable; experiments>`.
 
-Let’s use an example of growing plants. The outcome of growing a plant might be the height of the plant, or the average width of the leaves, or number of flowers on the plant. These are numeric measurements, also called quantitative measurements. Qualitative measurements are also possible. For example, perhaps the outcome is the *colour* of the flower: "light red; red; or dark red". A qualitative outcome might also be a description of what happened; for example: *pass* or *fail*.
+An important aspect about the outcome is that it is always measurable--in some way. In other words, after you finish the experiment, you must have some measurement. 
 
-Another term is :index:`objective <pair: objective; experiments>`, which is when you combine an outcome and the need to adjust that outcome. For example, maximize the height of the plant. Most often we want to maximize or minimize the outcome as our objective. Sometimes though you want the outcome to be *the same* even though you are changing factors. For example, you might want to change a recipe for your favourite pastry to be gluten-free but keep the taste the same as the original recipe. Your outcome is taste; and your objective is "the same".
+Let’s use an example of growing plants. The outcome of growing a plant might be the height of the plant, or the average width of the leaves, or the number of flowers on the plant. These are numeric measurements, also called quantitative measurements. Qualitative measurements are also possible. For example, perhaps the outcome is the colour of the flower: light red, red, or dark red. A qualitative outcome might also be a description of what happened, for example, *pass* or *fail*.
 
-Every experiment always an outcome. Every experiment does not have to have an objective though. But usually we have an objective in our mind.
+An experiment can have an :index:`objective <pair: objective; experiments>`, which combines an outcome and the need to adjust that outcome. For example, you may want to maximize the height of the plant. Most often you want to maximize or minimize the outcome as your objective. Sometimes, though, you want the outcome to be *the same* even though you are changing factors. For example, you might want to change a recipe for your favourite pastry to be gluten-free but keep the taste the same as the original recipe. Your outcome is taste, and your objective is "the same".
 
-Another term we will use is factors. In the plant example, there could have been 3 factors that you changed:
+Every experiment always has an outcome. Every experiment does not have to have an objective, but usually we have an objective in our mind.
 
-#.	the amount of water that you give the plant each day
-#.	the amount of fertilizer that you give the plant each week
-#.	using soil type A or soil type B
+Another term we will use is factors. In the plant example, you could have changed three factors:
+
+#.	The amount of water that you give the plant each day
+#.	The amount of fertilizer that you give the plant each week
+#.	The type of soil you use, A or B
 
 All experiments must have at least one factor that is changed. We distinguish between two types of factors: continuous factors and :index:`categorical factors <pair: categorical factor; experiments>`.
 
-Continuous factors are quantified numerically, such as using 15 mL of water or 30mL of water to give to the plant each day. Categorical factors take on a limited number of values. For example, soil type A or soil type B could be used to grow the plants. If you were working in the area of marketing, you might try 3 different colours of background in your advertising poster. Those colours are categorical variables in the context of the experiment.
+Continuous factors are quantified numerically, such as giving 15 mL of water or 30 mL of water to the plant each day. Categorical factors take on a limited number of values. For example, soil type A or soil type B could be used to grow the plants. If you were working in the area of marketing, you might try three different colours of background in your advertising poster. Those colours are categorical variables in the context of the experiment.
 
-Most experiments will have both continuous categorical factors.
+Most experiments will have both continuous and categorical factors.
 
-When we perform an experiment we call it a :index:`run <pair: run; experiments>`. If we perform 8 experiments, we can say: "there are 8 runs" in the set of experiments.
+When we perform an experiment, we call it a :index:`run <pair: run; experiments>`. If we perform eight experiments, we can say "there are eight runs" in the set of experiments.
+
 
 
 Usage examples
