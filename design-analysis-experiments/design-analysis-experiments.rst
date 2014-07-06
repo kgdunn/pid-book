@@ -529,17 +529,18 @@ We have already seen in the :ref:`univariate statistics section <univariate-grou
 	\end{array}
 
 We consider the effect of changing from condition A to condition B to be a *statistically* significant effect when this confidence interval does not span zero. However, the width of this interval and how symmetrically it spans zero can cause us to come to a different, *practical* conclusion. In other words, we override the narrow statistical conclusion based on the richer information we can infer from the width of the confidence interval and the variance of the process.
-
 Using linear least squares models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There's another interesting way that you can analyze data from an A vs B set of tests and get the identical result. Use a least squares model of the form:
+.. AU: Can you clarify "identical result"? Identical to what?
+
+There's another interesting way that you can analyze data from an A versus B set of tests and get the identical result. Use a least squares model of the form
 
 .. math::
 
 	y_i = b_0 + g d_i
 	
-where :math:`d_i` is an indicator variable. For example :math:`d_i = 0` when using condition A, and :math:`d_i=1` for condition B, and :math:`y_i` is the response variable. Build this linear model and then examine the *confidence interval* for the coefficient :math:`g`. Here's a small R function that takes the :math:`y` values from experiments under condition A, and the values under condition B and calculates the least squares model.
+where :math:`y_i` is the response variable :math:`d_i` is an indicator variable. For example, :math:`d_i = 0` when using condition A and :math:`d_i=1` for condition B. Build this linear model, and then examine the *confidence interval* for the coefficient :math:`g`. The following R function uses the :math:`y`-values from experiments under condition A and the values under condition B to calculate the least squares model:
 
 .. code-block:: s
 
@@ -565,9 +566,9 @@ where :math:`d_i` is an indicator variable. For example :math:`d_i = 0` when usi
 	group_difference(brittle$TK104, brittle$TK107)  
 	lm_difference(brittle$TK104, brittle$TK107)
 	
-Use this function in the same way you did in :ref:`the carbon dioxide exercise in the univariate section <univariate-CO2-question>`. For example, you will find that comparing TK104 and TK107 that :math:`z = 1.4056`, and the confidence interval is: :math:`-21.4 \leq \mu_{107} - \mu_{104}\leq 119`. Similarly when coding :math:`d_i = 0` for reactor TK104 and :math:`d_i = 1` for reactor TK107, we get the least squares confidence interval for parameter :math:`g`: :math:`-21.4 \leq g \leq 119`. This is a little surprising, because the first method creates a pooled variance, calculates a :math:`z`-value and then a confidence interval. The least squares method builds a linear model, then calculates the confidence interval using the model's standard error.
+Use this function in the same way you did in :ref:`the carbon dioxide exercise in the univariate section <univariate-CO2-question>`. For example, you will find when comparing TK104 and TK107 that :math:`z = 1.4056` and the confidence interval is :math:`-21.4 \leq \mu_{107} - \mu_{104}\leq 119`. Similarly, when coding :math:`d_i = 0` for reactor TK104 and :math:`d_i = 1` for reactor TK107, we get the least squares confidence interval for parameter :math:`g`: :math:`-21.4 \leq g \leq 119`. This is a little surprising, because the first method creates a pooled variance and calculates a :math:`z`-value and then a confidence interval. The least squares method builds a linear model, and then calculates the confidence interval using the model's standard error.
 
-Both methods give identical results, but found by very different routes.
+Both methods give identical results, but by very different routes.
 
 .. _DOE-randomization:
 
