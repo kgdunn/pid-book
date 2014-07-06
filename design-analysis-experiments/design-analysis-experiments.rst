@@ -1017,8 +1017,6 @@ The data are from a plastics molding factory that must treat its waste before di
 
 #.	Draw a geometric figure that illustrates the data from this experiment.
 
-.. AU: I restructured some of this section to eliminate bullets.
-
 #.	Calculate the main effect for each factor by hand.
 
 		For the **C effect**, there are four estimates of :math:`C`:
@@ -1269,21 +1267,24 @@ Even though the confidence interval of the temperature effect would be :math:`11
 		:width: 800px
 		
 
-Refitting the model after removing non-significant effects
+
+Refitting the model after removing nonsignificant effects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-So after having established which effects are significant, we can exclude the non-significant effects and increase the degrees of freedom. (We do not have to recalculate the model parameters - why?). The residuals will be non-zero now, so we can then estimate the standard error, and apply all the tools from least squares modelling to assess the residuals. Plots of the residuals in experimental order, against fitted values, q-q plots, and all the other assessment tools from earlier are used, as usual.
+After having established which effects are significant, we can exclude the nonsignificant effects and increase the degrees of freedom. (We do not have to recalculate the model parameters -- why?) The residuals will be nonzero now, so we can then estimate the standard error and apply all the tools from least squares modelling to assess the residuals. Plots of the residuals in experimental order, against fitted values, q-q plots and all the other assessment tools from earlier are used, as usual.
 
-Continuing the above example, where a :math:`2^4` factorial was run, and the response values, in standard order were :math:`y = [71, 61, 90, 82, 68, 61, 87, 80, 61, 50, 89, 83, 59, 51, 85, 78]`. The significant effects were from **A**, **B**, **D**, and **BD**. Now omitting the non-significant effects, there are only 5 parameters to estimate, including the intercept, so the standard error is :math:`S_E^2 = \dfrac{39}{16-5} = 3.54`, with 11 degrees of freedom. The :math:`S_E(b_i)` value for all coefficients, except the intercept, is :math:`\sqrt{\dfrac{S_E^2}{16}} = 0.471`, and the critical :math:`t`-value at the 95% level is ``qt(0.975, df=11)`` = 2.2. So the confidence intervals can be calculated to confirm that these are indeed significant effects by calculating their confidence interval.
+.. AU: I modified the last sentence of the following paragraph because it seemed redundant. Please confirm.
 
-There is some circular reasoning here: postulate that one or more effects are zero, increase the degrees of freedom by removing those parameters in order to confirm the remaining effects are significant. So some general advice is to first exclude effects which are definitely small, and retain medium size effects in the model until you can confirm they are not-significant.
+Continuing the above example, where a :math:`2^4` factorial was run, the response values in standard order were :math:`y = [71, 61, 90, 82, 68, 61, 87, 80, 61, 50, 89, 83, 59, 51, 85, 78]`. The significant effects were from **A**, **B**, **D** and **BD**. Now, omitting the nonsignificant effects, there are only five parameters to estimate, including the intercept, so the standard error is :math:`S_E^2 = \dfrac{39}{16-5} = 3.54`, with 11 degrees of freedom. The :math:`S_E(b_i)` value for all coefficients, except the intercept, is :math:`\sqrt{\dfrac{S_E^2}{16}} = 0.471`, and the critical :math:`t`-value at the 95% level is ``qt(0.975, df=11)`` = 2.2. So the confidence intervals can be calculated to confirm that these are indeed significant effects.
+
+There is some circular reasoning here: postulate that one or more effects are zero and increase the degrees of freedom by removing those parameters in order to confirm the remaining effects are significant. Some general advice is to first exclude effects that are definitely small, and then retain medium-size effects in the model until you can confirm they are not significant.
 
 .. _DOE-COST-vs-factorial-efficiency:
  
-Variance of estimates from the COST approach vs factorial approach
+Variance of estimates from the COST approach versus the factorial approach
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Finally, we end this section on factorials by illustrating their efficiency. Contrast the two cases: COST and the full factorial approach. For this analysis we define the main effect simply as the difference between the high and low value (normally we divide through by 2, but the results still hold). Define the variance of the measured :math:`y` value as :math:`\sigma_y^2`.
+Finally, we end this section on factorials by illustrating their efficiency. Contrast the two cases: COST and the full factorial approach. For this analysis we define the main effect simply as the difference between the high and low values (normally we divide through by 2, but the results still hold). Define the variance of the measured :math:`y` value as :math:`\sigma_y^2`.
 
 	.. image:: ../figures/doe/comparison-of-variances.png
 		:align: left
@@ -1295,14 +1296,14 @@ Finally, we end this section on factorials by illustrating their efficiency. Con
 +--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
 | COST approach                                                            | Fractional factorial approach                                                                                  |
 +==========================================================================+================================================================================================================+
-| The main effect of :math:`T` is :math:`b_T = y_2 - y_1`                  | The main effect is :math:`b_T = 0.5(y_2 - y_1) + 0.5(y_4 - y_3)`                                               |
+| The main effect of :math:`T` is :math:`b_T = y_2 - y_1`.                  | The main effect is :math:`b_T = 0.5(y_2 - y_1) + 0.5(y_4 - y_3)`.                                               |
 +--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
-| The variance is :math:`\mathcal{V}(b_T) = \sigma_y^2 + \sigma_y^2`       | The variance is :math:`\mathcal{V}(b_T) = 0.25(\sigma_y^2 + \sigma_y^2) + 0.25(\sigma_y^2 + \sigma_y^2)`       |
+| The variance is :math:`\mathcal{V}(b_T) = \sigma_y^2 + \sigma_y^2`.       | The variance is :math:`\mathcal{V}(b_T) = 0.25(\sigma_y^2 + \sigma_y^2) + 0.25(\sigma_y^2 + \sigma_y^2)`.       |
 +--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
-| So :math:`\mathcal{V}(b_T) = 2\sigma_y^2`                                | And :math:`\mathcal{V}(b_T) = \sigma_y^2`                                                                      |
+| So :math:`\mathcal{V}(b_T) = 2\sigma_y^2`.                                | And :math:`\mathcal{V}(b_T) = \sigma_y^2`.                                                                      |
 +--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
 
-Not only does the factorial experiment estimate the effects with much greater precision (lower variance), but the COST approach cannot estimate the effect of interactions, which is incredibly important, especially as systems approach optima which are on ridges - see the contour plots earlier in this section for an example.
+Not only does the factorial experiment estimate the effects with much greater precision (lower variance), but the COST approach cannot estimate the effect of interactions, which is incredibly important, especially as systems approach optima that are on ridges (see the contour plots earlier in this section for an example).
 
 Factorial designs make each experimental observation work twice.
 	
@@ -1312,22 +1313,22 @@ Summary so far
 -	The factorial experimental design is intentionally constructed so that each factor is independent of the others. There are :math:`2^k` experiments for :math:`k` factors.
 
 	-	This implies the :math:`\mathbf{X}^T\mathbf{X}` matrix is easily constructed (a diagonal matrix, with a value of :math:`2^k` for each diagonal entry).
-	-	These coefficients have the lowest variability possible: :math:`(\mathbf{X}^T\mathbf{X})^{-1}S_E^2`
-	-	We have uncorrelated estimates of the slope coefficients in the model. That is we can be sure the value of the coefficient is unrelated to the other values. 
+	-	These coefficients have the lowest variability possible: :math:`(\mathbf{X}^T\mathbf{X})^{-1}S_E^2`.
+	-	We have uncorrelated estimates of the slope coefficients in the model. That is, we can be sure the value of the coefficient is unrelated to the other values. 
 	
--	However, we still need to take the usual care in *interpreting* the coefficients. The usual precaution, using the example below, is that the temperature coefficient :math:`b_T` is the effect of a one degree change, holding all other variables constant. That's not possible if :math:`b_{TS}`, the interaction between :math:`T` and :math:`S`, is significant: we cannot hold the :math:`TS` constant while changing :math:`b_T`.
+-	However, we still need to take the usual care in *interpreting* the coefficients. The usual precaution, using the example below, is that the temperature coefficient :math:`b_T` is the effect of a one-degree change, holding all other variables constant. That's not possible if :math:`b_{TS}`, the interaction between :math:`T` and :math:`S`, is significant: we cannot hold the :math:`TS` constant while changing :math:`b_T`.
 		
 	.. math:: 
 	
 		y = b_0 + b_T x_T + b_S x_S + b_{TS} x_Tx_S + e
 	
-	So *we cannot interpret the main effects separately from the interaction effects*, when we have significant interaction terms in the model.  Also, if you conclude the interaction term is significant, then you must also include all main factors that make up that interaction term in the model.
+	*We cannot interpret the main effects separately from the interaction effects* when we have significant interaction terms in the model.  Also, if you conclude the interaction term is significant, then you must also include all main factors that make up that interaction term in the model.
 		
-	For another example, with interpretation of it, please see Box, Hunter, and Hunter (2nd ed), page 185.
+	For another example, with an interpretation, please see Box, Hunter and Hunter (2nd edition), page 185.
 	
--	Factorial designs use the collected data much more efficiently than one-at-a-time experimentation. As shown in :ref:`the preceding section <DOE-COST-vs-factorial-efficiency>`, the estimated variance is halved when using a factorial design than from a COST approach.
+-	Factorial designs use the collected data much more efficiently than one-at-a-time experimentation. As shown in :ref:`the preceding section <DOE-COST-vs-factorial-efficiency>`, the estimated variance is halved when using a factorial design compared to a COST approach.
 	
--		A small or zero effect from an :math:`x` variable to the :math:`y` response variable implies the :math:`y` is insensitive to that :math:`x`. This is desirable in some situations - it means we can adjust that :math:`x` without affecting :math:`y`, sometimes said as "*the* :math:`y` *is robust to changes in* :math:`x`".
+-	A small or zero effect from an :math:`x` variable to the :math:`y` response variable implies the :math:`y` is insensitive to that :math:`x`. This is desirable in some situations. It means we can adjust that :math:`x` without affecting :math:`y`, sometimes stated as "the :math:`y` is robust to changes in :math:`x`".
 
 .. _DOE-fractional-factorials:
 
