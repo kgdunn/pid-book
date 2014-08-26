@@ -111,7 +111,11 @@ Here are some tips for effective time-series plots:
 		.. figure:: ../figures/visualization/3-correlated-variables-as-sparklines.png
 			:scale: 30
 
-	Sparklines are small graphics that carry a high density of information. The human eye is easily capable of absorbing about 250 dots (points) per linear inch and 650 points per square inch. These :index:`sparklines` convey the same amount of information as the previous plots and are easy to consume on hand-held devices such as iPhones, cellphones and tablet computing devices that are common in chemical plants and other engineering facilities. Read more about them from `this hyperlink <http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR>`_.
+
+
+	Sparklines are small graphics that carry a high density of information. The human eye is easily capable of absorbing about 250 dots (points) per linear inch and 60,000 points per square inch. These :index:`sparklines` convey the same amount of information as the previous plots and are easy to consume on hand-held devices such as iPhones, cellphones and tablet computing devices that are common in chemical plants and other engineering facilities. Read more about them from `this hyperlink <http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR>`_.
+	
+	https://mail.google.com/mail/u/0/#inbox/14735f2e6d8fb8df
 
 -	When plotting money values over time (e.g. sales of polymer composite over the past 10 years), adjust for inflation effects by dividing by the consumer price index or an appropriate factor. Distortions due to the time value of money can be very misleading, as this `example of car sales shows <http://people.duke.edu/~rnau/411infla.htm>`_.  A `Canadian inflation calculator <http://www.bankofcanada.ca/rates/related/inflation-calculator>`_ is available from the Bank of Canada.
 
@@ -429,4 +433,6 @@ There is no generic advice that applies in every instance. These tips are useful
 
 -	Maximize the data-ink ratio = (ink for data) / (total ink for graphics). Maximizing this ratio, within reason, means you should (a) eliminate nondata ink and (b) erase redundant data-ink.
 
--	Maximize data density. Humans can interpret data displays of 250 data points per linear inch and 625 data points per square inch.
+-	Maximize data density. Humans can interpret data displays of 250 data points per linear inch and 60,000 data points per square inch.
+
+.. see http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR for the above numbers

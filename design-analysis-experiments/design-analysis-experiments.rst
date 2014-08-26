@@ -313,59 +313,77 @@
 
 .. note:: Coursera students
 
-	If you are using this chapter with the `Coursera MOOC <https://www.coursera.org/course/experiments>`_, then we wish to welcome you, and want to let you know that this book is generally part of a larger set of notes. The cross-references in this chapter will point you to other parts, where background knowledge is provided.
+	If you are using this chapter with the `Coursera MOOC <https://www.coursera.org/course/experiments>`_, then we wish to welcome you and want to let you know that this book is generally part of a larger set of notes. The cross-references in this chapter will point you to other parts, where background knowledge is provided.
 	
-	This chapter was written for engineers originally, but you will see the examples are very general, and can be applied to any other systems.
+	This chapter was written for engineers originally, but you will see the examples are very general and can be applied to any other systems.
 	
-	You can safely skip over the section on :ref:`DOE_expts_with_single_variable`; that section is not covered in the MOOC. You can also initially skip the :ref:`DOE_learning_about_systems`, but make sure you come back and read it.
+	You can safely skip over the section on :ref:`DOE_expts_with_single_variable`; that section is not covered in the MOOC. You can also initially skip the section on :ref:`DOE_learning_about_systems`, but make sure you come back and read it.
+
+.. AU: In this chapter, page references to section links are shown as "page 279". I have been using "p. 279" in previous chapters. To be consistent, please either change the format in previous chapters to "page", or change the ones in this chapter to "p.".
 
 .. index::
    see: Design of experiments; experiments
 
-Design and Analysis of Experiments: in context
+Design and analysis of experiments in context
 ===============================================
 
-This chapter will take a totally different approach to learning and understanding about systems, not only (chemical) engineering systems. The systems we could apply this to could be as straightforward as growing plants, or perfecting your favourite recipe at home. Or they may be as complex as the entire production line in a large factory producing multiple products and shipping them to customers.
+This chapter will take a totally different approach to learning about and understanding systems in general, not only (chemical) engineering systems. The systems we could apply this to could be as straightforward as growing plants or perfecting your favourite recipe at home. Or they may be as complex as the entire production line in a large factory producing multiple products and shipping them to customers.
 
 
-In order to learn about a system we have to disturb it and change it. This is to ensure cause and effect. If we do not intentionally change the system, we are only guessing, or using our intuition. In this chapter we learn what the best way is to intentionally disturb the system to learn more about it.
+In order to learn about a system, we have to disturb it and change it. This is to ensure cause and effect. If we do not intentionally change the system, we are only guessing, or using our intuition. To disturb the system, we change several factors. When we make these changes, we say that we have "run an experiment". 
 
-When we disturb the system we should be changing several factors. When we make these changes we say that we have "run an experiment". We will use some of the tools of :ref:`least squares modelling <SECTION-least-squares-modelling>`, :ref:`visualization <SECTION-data-visualization>` and :ref:`univariate statistics <SECTION-univariate-review>` that were described in earlier chapters. Where necessary, we will refer back to those earlier sections.
+In this chapter we learn the best way to intentionally disturb the system to learn more about it. We will use some of the tools of :ref:`least squares modelling <SECTION-least-squares-modelling>`, :ref:`visualization <SECTION-data-visualization>` and :ref:`univariate statistics <SECTION-univariate-review>` that were described in earlier chapters. Where necessary, we will refer back to those earlier sections.
 
 .. In the next section, on latent variables, we will take a look at learning more about our systems when the condition of independence between variables, required for designed experiments, is not met. But for now we can use least squares and simpler tools, as designed experiments are intentionally orthogonal (independent).
 
 Terminology
 ===========
 
-There is some specific terminology that is specific to the area of designed experiments.
+The area of designed experiments uses specific terminology.
 
 Every experiment has these two components: 
 
-#.  An :index:`outcome <pair: outcome; experiments>` i.e. the result or the :index:`response <pair: response; experiments>` from an experiment.
-#.  one or more factors; a :index:`factor <pair: factor; experiments>` is the thing you can change to influence the outcome. Factors are also called :index:`variables <pair: variable; experiments>`.
+.. AU: It would be nice to italicize the individual terminology words (outcome, factor, objective, etc.) to make them stand out. But italicizing doesn't seem to be compatible with :index:. Is there a way to make it work?
 
-An important aspect about the outcome is that it is always measurable - in some way. In other words, after you finish the experiment, you must have some measurement. 
+.. index::
+	pair: outcome; experiments
+	pair: response; experiments
+	pair: factor; experiments
+	pair: variable; experiments
 
-Let’s use an example of growing plants. The outcome of growing a plant might be the height of the plant, or the average width of the leaves, or number of flowers on the plant. These are numeric measurements, also called quantitative measurements. Qualitative measurements are also possible. For example, perhaps the outcome is the *colour* of the flower: "light red; red; or dark red". A qualitative outcome might also be a description of what happened; for example: *pass* or *fail*.
+#.  An *outcome*: the result or the *response* from an experiment.
+#.  One or more factors: a *factor* is the thing you can change to influence the outcome. Factors are also called *variables*.
 
-Another term is :index:`objective <pair: objective; experiments>`, which is when you combine an outcome and the need to adjust that outcome. For example, maximize the height of the plant. Most often we want to maximize or minimize the outcome as our objective. Sometimes though you want the outcome to be *the same* even though you are changing factors. For example, you might want to change a recipe for your favourite pastry to be gluten-free but keep the taste the same as the original recipe. Your outcome is taste; and your objective is "the same".
+An important aspect about the outcome is that it is always measurable--in some way. In other words, after you finish the experiment, you must have some measurement. 
 
-Every experiment always an outcome. Every experiment does not have to have an objective though. But usually we have an objective in our mind.
+Let’s use an example of growing plants. The outcome of growing a plant might be the height of the plant, or the average width of the leaves, or the number of flowers on the plant. These are numeric measurements, also called quantitative measurements. Qualitative measurements are also possible. For example, perhaps the outcome is the colour of the flower: light red, red, or dark red. A qualitative outcome might also be a description of what happened, for example, *pass* or *fail*.
 
-Another term we will use is factors. In the plant example, there could have been 3 factors that you changed:
+.. index::
+	 pair: objective; experiments
 
-#.	the amount of water that you give the plant each day
-#.	the amount of fertilizer that you give the plant each week
-#.	using soil type A or soil type B
+An experiment can have an *objective*, which combines an outcome and the need to adjust that outcome. For example, you may want to maximize the height of the plant. Most often you want to maximize or minimize the outcome as your objective. Sometimes, though, you want the outcome to be *the same* even though you are changing factors. For example, you might want to change a recipe for your favourite pastry to be gluten-free but keep the taste the same as the original recipe. Your outcome is taste, and your objective is "the same".
 
-All experiments must have at least one factor that is changed. We distinguish between two types of factors: continuous factors and :index:`categorical factors <pair: categorical factor; experiments>`.
+Every experiment always has an outcome. Every experiment does not have to have an objective, but usually we have an objective in our mind.
 
-Continuous factors are quantified numerically, such as using 15 mL of water or 30mL of water to give to the plant each day. Categorical factors take on a limited number of values. For example, soil type A or soil type B could be used to grow the plants. If you were working in the area of marketing, you might try 3 different colours of background in your advertising poster. Those colours are categorical variables in the context of the experiment.
+Another term we will use is factors. In the plant example, you could have changed three factors:
 
-Most experiments will have both continuous categorical factors.
+#.	The amount of water that you give the plant each day
+#.	The amount of fertilizer that you give the plant each week
+#.	The type of soil you use, A or B
 
-When we perform an experiment we call it a :index:`run <pair: run; experiments>`. If we perform 8 experiments, we can say: "there are 8 runs" in the set of experiments.
+.. index::
+	pair: categorical factor; experiments
 
+All experiments must have at least one factor that is changed. We distinguish between two types of factors: continuous factors and *categorical factors* 
+
+Continuous factors are quantified numerically, such as giving 15 mL of water or 30 mL of water to the plant each day. Categorical factors take on a limited number of values. For example, soil type A or soil type B could be used to grow the plants. If you were working in the area of marketing, you might try three different colours of background in your advertising poster. Those colours are categorical variables in the context of the experiment.
+
+Most experiments will have both continuous and categorical factors.
+
+.. index:: 
+	pair: run; experiments
+	
+When we perform an experiment, we call it a run. If we perform eight experiments, we can say "there are eight runs" in the set of experiments.
 
 Usage examples
 ==============
@@ -373,12 +391,12 @@ Usage examples
 .. index::
 	pair: usage examples; experiments
 
-Here follow some questions you can answer, and ideas you can use, after you have finished studying this chapter. Consider these scenarios:
+After you complete this chapter, you will be able to answer questions such as those presented in these scenarios:
 
-	- *Colleague*: We have this list of 8 plausible factors that affect the polymer melt index (the outcome). How do we narrow down the list to a more manageable size and rank their effect on melt index?
- 	- *You*: Our initial screening experiments reduced the list down to 3 factors of interest. Now how do we perform the rest of the experiments?
+	- *Colleague*: We have this list of eight plausible factors that affect the polymer melt index (the outcome). How do we narrow down the list to a more manageable size and rank their effect on melt index?
+ 	- *You*: Our initial screening experiments reduced the list down to three factors of interest. Now, how do we perform the rest of the experiments?
  	- *Manager*: Two years ago someone collected these experimental data for the effectiveness of a new chemical to treat water. What interesting results do you see in this data, and where should we operate the system to achieve water quality that meets the required standards?
-	- *Colleague*: The current production settings for our food product gives us good shelf-life, but the energy used is high. How can we locate other settings (factors) that give long shelf-life but reduce the energy consumed?
+	- *Colleague*: The current production settings for our food product gives us good shelf life, but the energy used is high. How can we determine other settings (factors) that give long shelf life but reduce the energy consumed?
 	- *Colleague*: We would like to run experiments by varying temperature and pressure, but operating at both high temperature and pressure is unsafe. How do we plan such an experiment?
 
 .. TODO: add more questions/answers here
@@ -386,7 +404,6 @@ Here follow some questions you can answer, and ideas you can use, after you have
 Here's a visual representation of the topics we will cover in this chapter.
 
 .. figure:: ../figures/mindmaps/DOE-section-mapping.png
-	:width: 750px 
 	:align: center
 	:scale: 90
 	
@@ -398,22 +415,24 @@ References and readings
 .. index::
 	pair: references and readings; experiments
 
--	**Strongly recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, second edition. Chapters 5 and 6 with topics from chapters 11, 12, 13 and 15 are the most heavily used in this chapter.
--	Søren Bisgaard: `Must a Process Be in Statistical Control Before Conducting Designed Experiments <http://dx.doi.org/10.1080/08982110701826721>`_, with discussion (`part 1 <http://dx.doi.org/10.1080/08982110701866198>`_, `part 2 <http://dx.doi.org/10.1080/08982110801894892>`_, `part 3 <http://dx.doi.org/10.1080/08982110801890148>`_, `part 4 <http://dx.doi.org/10.1080/08982110801924509>`_, `part 5 <http://dx.doi.org/10.1080/08982110801894900>`_ and a `rejoinder <http://dx.doi.org/10.1080/08982110801973118>`_), 
--	George Box and J. Stuart Hunter: "The :math:`2^{k-p}` `Fractional Factorial Designs - Part I <http://www.jstor.org/pss/1266725>`_", *Technometrics*, **3**, 311-351, 1961.
--	George Box and J. Stuart Hunter: "The :math:`2^{k-p}` `Fractional Factorial Designs - Part II <http://www.jstor.org/pss/1266553>`_", *Technometrics*, **3**, 449 - 458, 1961.
--	George Box: `Evolutionary Operation: A Method for Increasing Industrial Productivity <http://www.jstor.org/pss/2985505>`_", *Journal of the Royal Statistical Society* (Applied Statistics), **6**, 81 - 101, 1957.
--	William G. Hunter and J. R. Kittrell, "`Evolutionary Operation: A Review <http://www.jstor.org/pss/1266686>`_", *Technometrics*, **8**, 389-397, 1966.
--	Heather Tye: "`Application of Statistical Design of Experiments Methods in Drug Discovery <http://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_", *Drug Discovery Today*, **9**, 485-491, 2004.
-- R.A. Fisher, `Statistical Methods, Experimental Design and Scientific Inference <http://www.amazon.com/Statistical-Methods-Experimental-Scientific-Inference/dp/0198522290>`_, Oxford Science Publications, 2003.
--	Myers and Montgomery: "`Response Surface Methodology: Process and product optimization using designed experiments <http://www.amazon.com/Response-Surface-Methodology-Optimization-Experiments/dp/0470174463>`_".
--	William Hill and William Hunter: "`A Review of Response Surface Methodology: A Literature Survey <http://www.jstor.org/pss/1266632>`_", *Technometrics*, **8**, 571-590, 1966. 
--	Davies, "`The Design and Analysis of Industrial Experiments <http://www.amazon.com/The-design-analysis-industrial-experiments/dp/B0007J7BME>`_", chapter 11, revised second edition.
 
-..	Živorad Lazić, "Design of Experiments in Chemical Engineering: A Practical Guide", Wiley-VCH, 2004.
+
+-	**Strongly recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, 2nd edition. Chapters 5 and 6 with topics from Chapters 11, 12, 13 and 15 are the most heavily used in this chapter.
+-	`A web tutorial on designed experiments <http://www.chemometrics.se/index.php?option=com_content&task=view&id=18&Itemid=27>`_
+-	Søren Bisgaard: `Must a Process Be in Statistical Control Before Conducting Designed Experiments? <http://dx.doi.org/10.1080/08982110701826721>`_, with discussion (`part 1 <http://dx.doi.org/10.1080/08982110701866198>`_, `part 2 <http://dx.doi.org/10.1080/08982110801894892>`_, `part 3 <http://dx.doi.org/10.1080/08982110801890148>`_, `part 4 <http://dx.doi.org/10.1080/08982110801924509>`_, `part 5 <http://dx.doi.org/10.1080/08982110801894900>`_ and a `rejoinder <http://dx.doi.org/10.1080/08982110801973118>`_). 
+-	George Box and J. Stuart Hunter, "The :math:`2^{k-p}` `Fractional Factorial Designs - Part I <http://www.jstor.org/pss/1266725>`_", *Technometrics*, **3**, 311-351, 1961.
+-	George Box and J. Stuart Hunter, "The :math:`2^{k-p}` `Fractional Factorial Designs - Part II <http://www.jstor.org/pss/1266553>`_", *Technometrics*, **3**, 449-458, 1961.
+-	George Box, "`Evolutionary Operation: A Method for Increasing Industrial Productivity <http://www.jstor.org/pss/2985505>`_", *Journal of the Royal Statistical Society* (Applied Statistics), **6**, 81-101, 1957.
+-	William G. Hunter and J. R. Kittrell, "`Evolutionary Operation: A Review <http://www.jstor.org/pss/1266686>`_", *Technometrics*, **8**, 389-397, 1966.
+-	Heather Tye, "`Application of Statistical Design of Experiments Methods in Drug Discovery <http://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_", *Drug Discovery Today*, **9**, 485-491, 2004.
+- R.A. Fisher, `Statistical Methods, Experimental Design and Scientific Inference <http://www.amazon.com/Statistical-Methods-Experimental-Scientific-Inference/dp/0198522290>`_, Oxford Science Publications, 2003.
+-	Raymond H. Myers, Douglas C. Montgomery and Christine M. Anderson-Cook, `Response Surface Methodology: Process and Product Optimization Using Designed Experiments <http://www.amazon.com/Response-Surface-Methodology-Optimization-Experiments/dp/0470174463>`_, Wiley, 2009.
+-	William Hill and William Hunter, "`A Review of Response Surface Methodology: A Literature Survey <http://www.jstor.org/pss/1266632>`_", *Technometrics*, **8**, 571-590, 1966. 
+-	Owen L. Davies, `The Design and Analysis of Industrial Experiments <http://www.amazon.com/The-design-analysis-industrial-experiments/dp/B0007J7BME>`_, Chapter 11, revised 2nd edition, Hafner, 1967.
+
 
 .. OTHER REFERENCES
-
+	Živorad Lazić, "Design of Experiments in Chemical Engineering: A Practical Guide", Wiley-VCH, 2004.
 	The web-based preprint book you have open in your browser tabs.
 
 .. _DOE_learning_about_systems:
@@ -421,30 +440,39 @@ References and readings
 Why learning about systems is important
 ===========================================
 
-One of the import reasons why we must experiments is that it brings us increased knowledge and a better understanding of our system. That could lead to profit, or it could help us make products more efficiently. Once we learn what really happens in our system, we can fix problems and optimize the system, because we have an improved understanding of cause and effect.
+One of the important reasons why we must experiment is that it brings us increased knowledge and a better understanding of our system. That could lead to profit, or it could help us manufacture products more efficiently. Once we learn what really happens in our system, we can fix problems and optimize the system, because we have an improved understanding of cause and effect.
 
 As described :ref:`in the first reference, the book by Box, Hunter and Hunter <DOE_references>`, learning from and improving a system is an iterative process. It usually follows this cycle:
 
 	*	Make a conjecture (hypothesis), which we believe is true.
 	*	If it is true, we expect certain consequences. 
-	*	Experiment and collect data - are the consequences that we expected visible in the data?
+	*	Experiment and collect data. Are the consequences that we expected visible in the data?
 	*	If so, it may lead to the next hypothesis. If not, we formulate an alternative hypothesis. Or perhaps it is not so clear cut: we see the consequence, but not to the extent expected. Perhaps modifications are required in the experimental conditions.
 
 And so we go about learning. One of the most frequent reasons we experiment is to fix a problem with our process. This is called troubleshooting. We can list several causes for the problem, change the factors, isolate the problem, and thereby learn more about our system while fixing the problem. 
 
-Let's look at an example: we expect that compounds A and B should combine in the presence of a third chemical, C, to form a product D. An initial experiment shows very little of product D is produced. Our goal is to maximize the amount of D. Several factors are considered: temperature, reaction duration, and pressure). Using a set of structured experiments, we can get an initial idea of which factors actually impact the amount of D produced. Perhaps these experiments show that only temperature and reaction duration are important and that pressure has little effect. Then we go ahead and adjust only those two factors, and we keep pressure low (to save money because we can now use a less costly, low pressure reactor). We repeat several more systematic :ref:`response surface <DOE-RSM>` experiments to maximize our production goal.
+An engineering example
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The iterations continue until we find the most economically profitable operating point. At each iteration we learn more about our system and how to improve it. The key point is this: you must disturb your system, then observe it. This is principle of causality, or *cause-and-effect*.
+Let's look at an example. We expect that compounds A and B should combine in the presence of a third chemical, C, to form a product D. An initial experiment shows very little of product D is produced. Our goal is to maximize the amount of D. Several factors are considered: temperature, reaction duration and pressure. Using a set of structured experiments, we can get an initial idea of which factors actually impact the amount of D produced. Perhaps these experiments show that only temperature and reaction duration are important and that pressure has little effect. Then we go ahead and adjust only those two factors, and we keep pressure low (to save money because we can now use a less costly, low-pressure reactor). We repeat several more systematic :ref:`response surface <DOE-RSM>` experiments to maximize our production goal.
 
-It is only by *intentional manipulation* of our systems that we learn from them. Collecting :index:`happenstance data` (everyday) operating data does not always help, because it is confounded by other events that occur at the same time. Everyday, happenstance, data is limited by feedback control systems.
+The iterations continue until we find the most economically profitable operating point. At each iteration we learn more about our system and how to improve it. The key point is this: you must disturb your system, and then observe it. This is the principle of causality, or *cause and effect*.
 
-Feedback control systems which keep the region of operation to a small zone - better yields or improved operation might exist beyond the bounds created by our automatic control systems. Due to safety concerns, and efficient manufacturing practices, we introduce automated feedback control systems to prevent deviating too far from a desired region of operation. As a result, data collected from such systems has low information quality.
+It is only by *intentional manipulation* of our systems that we learn from them. Collecting :index:`happenstance data`, (everyday) operating data, does not always help, because it is confounded by other events that occur at the same time. Everyday, happenstance data is limited by feedback control systems.
+
+Feedback control
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Feedback control systems keep the region of operation to a small zone. Better yields or improved operation might exist beyond the bounds created by our automatic control systems. Due to safety concerns, and efficient manufacturing practices, we introduce automated feedback control systems to prevent deviating too far from a desired region of operation. As a result, data collected from such systems has low information quality.
 	
-An example would be making eggs for breakfast. If you make eggs the same way each morning (a bit of butter, medium heat for 5 minutes, flip and cook it for 1 minutes, then eat), you will never experience anything different. The egg you make this morning is going to taste very similar to one last year, because of your good control system. That's happenstance data.
+An example would be making eggs for breakfast. If you make eggs the same way each morning (a bit of butter, medium heat for 5 minutes, flip and cook it for 1 minute, then eat), you will never experience anything different. The egg you make this morning is going to taste very similar to one last year, because of your good control system. That's happenstance data.
 		
 You must intentionally change the system to perturb it, and then observe it.
 
-Here's a great example from Box, Hunter and Hunter's book. Consider the negative slope :ref:`relationship between pressure and yield <DOE-yield-pressure-impurity-correlation>`: as pressure increases, the yield drops. A line could be drawn through the points from the happenstance measurements, taken from the process at different times in the past. That line could be from a :ref:`least squares model <SECTION-least-squares-modelling>`. It is true that they are correlated, as that is exactly what a least squares model is intended for: to quantify correlation. 
+Another engineering example
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here's a great example from the book by Box, Hunter and Hunter. Consider the negative-slope :ref:`relationship between pressure and yield <DOE-yield-pressure-impurity-correlation>`: as pressure increases, the yield drops. A line could be drawn through the points from the happenstance measurements, taken from the process at different times in the past. That line could be from a :ref:`least squares model <SECTION-least-squares-modelling>`. It is true that the observed pressure and yield are correlated, as that is exactly what a least squares model is intended for: to quantify correlation. 
 
 The true mechanism in this system is that pressure is increased to remove the frothing that occurs in the reactor. Higher frothing occurs when there is an impurity in the raw material, so operators increase reactor pressure when they see frothing (i.e. high impurity). However, it is the high impurity that actually causes the lower yield, not the pressure itself. 
 
@@ -453,29 +481,28 @@ The true mechanism in this system is that pressure is increased to remove the fr
 .. figure:: ../figures/doe/yield-pressure-impurity-correlation.png
 	:alt:	../figures/doe/yield-pressure-impurity-correlation.svg
 	:scale: 50
-	:width: 750px
 	:align: left
 	
-	The relationship between yield, pressure and impurity levels [adapted from Box, Hunter and Hunter, chapter 14 (1\ :sup:`st` ed) or chapter 10 (2\ :sup:`nd` ed)]
+	The relationship between yield, pressure and impurity levels [adapted from Box, Hunter and Hunter, Chapter 14 (1st edition) or Chapter 10 (2nd edition)]
 
-Pressure is correlated with the yield, but there is no cause-and-effect relationship between them. The happenstance relationship only appears in the data because of the operating policy, causing them to be correlated, but it is not cause-and-effect. That is why happenstance data cannot be relied on to imply cause-and-effect. An experiment in which the pressure is changed from low to high, performed on the same batch of raw materials (i.e. at constant impurity level), will quickly reveal that there is no causal relationship between pressure and yield.
+Pressure is correlated with the yield, but there is no cause-and-effect relationship between them. The happenstance relationship only appears in the data because of the operating policy, causing them to be correlated, but it is not cause and effect. That is why happenstance data cannot be relied on to imply cause and effect. An experiment in which the pressure is changed from low to high, performed on the same batch of raw materials (i.e. at constant impurity level), will quickly reveal that there is no causal relationship between pressure and yield.
 
-Here's another problem with using happenstance data: they are not taken in random order. Time-based effects, such as changes in the seasonal or daily temperatures,  will affect a process. We are all well-aware of slow changes: fridges and stoves degrade over time, cars need periodic maintenance. Even our human bodies follow this rule. If we do not randomize the order of experiments, we risk inferring a causal relationship when none actually exists.
+Another problem with using happenstance data is that they are not taken in random order. Time-based effects, such as changes in the seasonal or daily temperatures, will affect a process. We are all well aware of slow changes: fridges and stoves degrade over time, cars need periodic maintenance. Even our human bodies follow this rule. If we do not randomize the order of experiments, we risk inferring a causal relationship when none actually exists.
 
 .. Other factors are always affecting the system. The operator mistakenly adjusts the temperature set point to 480K instead of 470K. The conversion value at the end of the shift is 3% higher. This "experiment" of sorts enters the collection of anecdotes that operators and engineers like to tell each other, and soon it becomes "accepted" that temperature can be used to improve conversion. However, it might have been a lower impurity in the raw materials, the new pump that was installed the previous day, improved controller tuning by another team of engineers, or any other event(s).
 	
-Designed experiments are the only way we can be sure that these correlated events are causal. You often hear people repeat the (incomplete) phrase that "*correlation does not imply causality*". That is only half-true: the other half of the phrase is "*correlation is a necessary, but not sufficient, condition for causality*". 
+Designed experiments are the only way we can be sure that these correlated events are causal. You often hear people repeat the (incomplete) phrase that "correlation does not imply causality". That is only half-true: the other half of the phrase is "correlation is a necessary, but not sufficient, condition for causality". 
 
-In summary, do not rely on anecdotal "evidence" from colleagues - always question the system and always try to perturb the system intentionally. In practice you won't always be allowed to move the system too drastically, so we will discuss :ref:`section on response surface methods <DOE-RSM>` and :ref:`evolutionary operation <DOE-EVOP>` at the end of this chapter which can be implemented on-line in production processes.
+In summary, do not rely on anecdotal "evidence" from colleagues. Always question the system, and always try to perturb the system intentionally. In practice you won't always be allowed to move the system too drastically, so at the end of this chapter we will discuss :ref:`response surface methods <DOE-RSM>` and :ref:`evolutionary operation <DOE-EVOP>`, which can be implemented on-line in production processes.
 
-We will show that experiments are the most efficient way to extract information about a system: i.e. the most information in the fewest number of changes. So it is always worthwhile to experiment.
+Experiments are the most efficient way to extract information about a system, that is, the most information in the fewest number of changes. So it is always worthwhile to experiment.
 
 .. _DOE_expts_with_single_variable:
 
 Experiments with a single variable at two levels
 ======================================================
 
-This is the simplest type of experiment. It involves an outcome variable, :math:`y`, and one input variable, :math:`x`. The :math:`x` variable could be continuous (e.g. temperature), or discrete (e.g. a yes/no, on/off, A/B) type variable. Some examples:
+This is the simplest type of experiment. It involves an outcome variable, :math:`y`, and one input variable, :math:`x`. The :math:`x`-variable could be continuous (e.g. temperature) or discrete (e.g. yes/no, on/off, A/B). This type of experiment could be used to answer questions such as the following:
 
 	*	Has the reaction yield increased when using catalyst A or B?
 	
@@ -483,12 +510,12 @@ This is the simplest type of experiment. It involves an outcome variable, :math:
 	
 	*	Does the plastic's stretchability improve when extruded at various temperatures (a low or high temperature)?
 	
-So we can perform several runs (experiments) at level A, and some runs at level B. These runs are randomized (do not perform all the A runs, then the B runs). We strive to hold all other disturbance variables constant so we pick up only the A to B effect. Disturbances are any variables that might affect :math:`y`, but for whatever reason, we don't wish to quantify. If we cannot control the disturbance, then at least we can using :ref:`blocking <DOE_blocking_section>` and  :ref:`pairing <univariate_paired_tests>` (pairing is the name used when there is one factor in our experiment; blocking is the term used when we have more than one factor).
+We can perform several runs (experiments) at level A, and some runs at level B. These runs are randomized (i.e. do not perform all the A runs, and then the B runs). We strive to hold all other disturbance variables constant so we pick up only the A-to-B effect. Disturbances are any variables that might affect :math:`y` but, for whatever reason, we don't wish to quantify. If we cannot control the disturbance, then at least we can use :ref:`pairing <univariate_paired_tests>` and :ref:`blocking <DOE_blocking_section>`. Pairing is when there is one factor in our experiment; blocking is when we have more than one factor.
 
 Recap of group-to-group differences 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We have already seen in the :ref:`univariate statistics section <univariate-group-to-group-differences-no-reference-set>` how to analyze this sort of data. We first calculate a pooled variance, then a :math:`z`-value, and finally a confidence interval based on this :math:`z`. Please refer back to that section to review the important assumptions we have to make to arrive at this equation.
+We have already seen in the :ref:`univariate statistics section <univariate-group-to-group-differences-no-reference-set>` how to analyze this sort of data. We first calculate a pooled variance, then a :math:`z`-value, and finally a confidence interval based on this :math:`z`. Please refer back to that section to review the important assumptions we have to make to arrive at this equation:
 
 .. math::
 	s_P^2 &= \frac{(n_A -1) s_A^2 + (n_B-1)s_B^2}{n_A - 1 + n_B - 1}\\
@@ -499,18 +526,18 @@ We have already seen in the :ref:`univariate statistics section <univariate-grou
 		(\overline{x}_B - \overline{x}_A) - c_t \times \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)} &\leq& \mu_B - \mu_A &\leq & (\overline{x}_B - \overline{x}_A) + c_t  \times \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}
 	\end{array}
 
-We consider the effect of changing from condition A to condition B to be a *statistically* significant effect when this confidence interval does not span zero. However, the width of this interval and how symmetrically it spans zeros can cause us to come to a different, *practical* conclusion. In other words, we override the narrow statistical conclusion based on the richer information we can infer from the confidence interval's width and the process's variance.
+We consider the effect of changing from condition A to condition B to be a *statistically* significant effect when this confidence interval does not span zero. However, the width of this interval and how symmetrically it spans zero can cause us to come to a different, *practical* conclusion. In other words, we override the narrow statistical conclusion based on the richer information we can infer from the width of the confidence interval and the variance of the process.
 
 Using linear least squares models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There's another interesting way that you can analyze data from an A vs B set of tests and get the identical result. Use a least squares model of the form:
+There's another interesting way that you can analyze data from an A versus B set of tests and get the identical result to the methods we showed in the section where :ref:`we made group-to-group comparisons <univariate-group-to-group-differences-no-reference-set>`. In this method, instead of using a :math:`t`-test, we use a least squares model of the form:
 
 .. math::
 
 	y_i = b_0 + g d_i
 	
-where :math:`d_i` is an indicator variable. For example :math:`d_i = 0` when using condition A, and :math:`d_i=1` for condition B, and :math:`y_i` is the response variable. Build this linear model and then examine the *confidence interval* for the coefficient :math:`g`. Here's a small R function that takes the :math:`y` values from experiments under condition A, and the values under condition B and calculates the least squares model.
+where :math:`y_i` is the response variable :math:`d_i` is an indicator variable. For example, :math:`d_i = 0` when using condition A and :math:`d_i=1` for condition B. Build this linear model, and then examine the *confidence interval* for the coefficient :math:`g`. The following R function uses the :math:`y`-values from experiments under condition A and the values under condition B to calculate the least squares model:
 
 .. code-block:: s
 
@@ -536,20 +563,20 @@ where :math:`d_i` is an indicator variable. For example :math:`d_i = 0` when usi
 	group_difference(brittle$TK104, brittle$TK107)  
 	lm_difference(brittle$TK104, brittle$TK107)
 	
-Use this function in the same way you did in :ref:`the carbon dioxide exercise in the univariate section <univariate-CO2-question>`. For example, you will find that comparing TK104 and TK107 that :math:`z = 1.4056`, and the confidence interval is: :math:`-21.4 \leq \mu_{107} - \mu_{104}\leq 119`. Similarly when coding :math:`d_i = 0` for reactor TK104 and :math:`d_i = 1` for reactor TK107, we get the least squares confidence interval for parameter :math:`g`: :math:`-21.4 \leq g \leq 119`. This is a little surprising, because the first method creates a pooled variance, calculates a :math:`z`-value and then a confidence interval. The least squares method builds a linear model, then calculates the confidence interval using the model's standard error.
+Use this function in the same way you did in :ref:`the carbon dioxide exercise in the univariate section <univariate-CO2-question>`. For example, you will find when comparing TK104 and TK107 that :math:`z = 1.4056` and the confidence interval is :math:`-21.4 \leq \mu_{107} - \mu_{104}\leq 119`. Similarly, when coding :math:`d_i = 0` for reactor TK104 and :math:`d_i = 1` for reactor TK107, we get the least squares confidence interval for parameter :math:`g`: :math:`-21.4 \leq g \leq 119`. This is a little surprising, because the first method creates a pooled variance and calculates a :math:`z`-value and then a confidence interval. The least squares method builds a linear model, and then calculates the confidence interval using the model's standard error.
 
-Both methods give identical results, but found by very different routes.
+Both methods give identical results, but by very different routes.
 
 .. _DOE-randomization:
 
 The importance of randomization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We :ref:`emphasized in a previous section <univariate-group-to-group-differences-no-reference-set>` that experiments must be performed in random order to avoid any unmeasured, and uncontrolled disturbances from impacting the system.
+We :ref:`emphasized in a previous section <univariate-group-to-group-differences-no-reference-set>` that experiments must be performed in random order to avoid any unmeasured, and uncontrolled, disturbances from impacting the system.
 
-The concept of randomization was elegantly described in an example by Fisher in Chapter 2 of his book, :ref:`The Design of Experiments <DOE_references>`, referenced above. A lady claims that she can taste the difference between a cup of tea where the milk has been added after the tea, or the tea added after the milk. By setting up :math:`N` cups of tea which either contain the milk first (M) or the tea first (T), the lady is asked to taste these :math:`N` cups and make her assessment. Fisher shows that if the experiments are performed in random order, the actual set of decisions made by the lady are just one of many possible outcomes. He calculates all possibilities (we show how below), and then he calculates the probability of the lady's actual set of decisions being due to chance alone. If the lady has test score values better than by random chance, then there is a reasonable claim the lady is reliable.
+The concept of randomization was elegantly described in an example by Fisher in Chapter 2 of his book, :ref:`The Design of Experiments <DOE_references>`. A lady claims that she can taste the difference in a cup of tea when the milk is added after the tea or when the tea is added after the milk. By setting up :math:`N` cups of tea that contain either the milk first (M) or the tea first (T), the lady is asked to taste these :math:`N` cups and make her assessment. Fisher shows that if the experiments are performed in random order, the actual set of decisions made by the lady are just one of many possible outcomes. He calculates all possibilities (we show how below), and then he calculates the probability of the lady's actual set of decisions being due to chance alone. If the lady has test score values better than by random chance, then there is a reasonable claim the lady is reliable.
 
-Let's take a look at a more engineering oriented example. We :ref:`previously considered <univariate-CO2-question>` the brittleness of a material made in either TK104 or in TK107. The same raw materials were charged to each reactor. So in effect, we are testing the difference due to using reactor TK104 or reactor TK107. Let's call them case A (TK104) and case B (TK107) so the notation is more general. We collected 20 brittleness values from TK104, and 23 values from TK107. We will only use the first 8 values from TK104 and the first 9 values from TK107 (you will see why soon):
+Let's take a look at a more engineering-oriented example. We :ref:`previously considered <univariate-CO2-question>` the brittleness of a material made in either TK104 or TK107. The same raw materials were charged to each reactor. So, in effect, we are testing the difference due to using reactor TK104 or reactor TK107. Let's call them case A (TK104) and case B (TK107) so the notation is more general. We collected 20 brittleness values from TK104 and 23 values from TK107. We will only use the first 8 values from TK104 and the first 9 values from TK107 (you will see why soon):
 
 .. tabularcolumns:: |l|lllllllll|
 
@@ -559,13 +586,13 @@ Let's take a look at a more engineering oriented example. We :ref:`previously co
 **Case B**   338 470 558 426 733 539 240 628 517 
 ==========   === === === === === === === === === 
 
-Fisher's insight was to create one long vector of these outcomes (length of vector = :math:`n_A + n_B`) and randomly assign "A" to :math:`n_A` of the values and "B" to :math:`n_B` of the values. One can show that there are :math:`\dfrac{(n_A + n_B)!}{n_A! n_B!}` possible combinations. For example, if :math:`n_A=8` and :math:`n_B = 9`, then the number of unique ways to split these 17 experiments into 2 groups of 8 (A) and 9 (B) is 24310 ways. E.g. one way is: BABB ABBA ABAB BAAB, so assign the experimental values accordingly [B=254, A=440, B=501, B=368, A=697, etc]. 
+Fisher's insight was to create one long vector of these outcomes (length of vector = :math:`n_A + n_B`) and randomly assign "A" to :math:`n_A` of the values and "B" to :math:`n_B` of the values. One can show that there are :math:`\dfrac{(n_A + n_B)!}{n_A! n_B!}` possible combinations. For example, if :math:`n_A=8` and :math:`n_B = 9`, then the number of unique ways to split these 17 experiments into two groups of 8 (A) and 9 (B) is 24,310 ways. For example, one way is BABB ABBA ABAB BAAB, and you would therefore assign the experimental values accordingly (B = 254, A = 440, B = 501, B = 368, A = 697, etc.). 
 
-Only one of the 24310 sequences will correspond to the actual data printed in the above table, while all the other realizations are possible, they are fictitious. We do this, because the null hypothesis is that there is no difference between A and B. Values in the table could have come from either system.
+Only one of the 24,310 sequences will correspond to the actual data printed in the above table. Although all the other realizations are possible, they are fictitious. We do this because the null hypothesis is that there is no difference between A and B. Values in the table could have come from either system.
 
-So for each of the 24310 realizations we calculate the difference of the averages between A and B, :math:`\overline{y}_A - \overline{y}_B`, and plot a histogram of these differences. This is :ref:`shown below <DOE-fig-randomization-one-factor>`, together with a vertical line showing the actual realization in the table. There are 4956 permutations that had a greater difference than the one actually realized, i.e. 79.6% of the other combinations had a smaller value. 
+So for each of the 24,310 realizations, we calculate the difference of the averages between A and B, :math:`\overline{y}_A - \overline{y}_B`, and plot a histogram of these differences. This is :ref:`shown below <DOE-fig-randomization-one-factor>`, together with a vertical line indicating the actual realization in the table. There are 4956 permutations that had a greater difference than the one actually realized; that is, 79.6% of the other combinations had a smaller value. 
 
-Had we used a formal test of differences where we pool the variances, we will find a :math:`z`-value of 0.8435, and the probability of obtaining that value, using the :math:`t`-distribution with :math:`n_A + n_B - 2` degrees of freedom is 79.3%. See how close they agree?  
+Had we used a formal test of differences where we pooled the variances, we would have found a :math:`z`-value of 0.8435, and the probability of obtaining that value, using the :math:`t`-distribution with :math:`n_A + n_B - 2` degrees of freedom, would be 79.3%. See how close they agree?  
 
 .. Future improvement: superimpose the t-distribution on top of the histogram (scaled). E.g. see BHH(v1) page 97
 
@@ -576,32 +603,32 @@ Had we used a formal test of differences where we pool the variances, we will fi
 	:width: 750px
 	:scale: 90
 	
-	The differences in the averages of A and B for the 24310 realizations. The vertical line represents the difference in the average for the one particular set of numbers we measured in the experiment.
+	The differences in the averages of A and B for the 24,310 realizations. The vertical line represents the difference in the average for the one particular set of numbers we measured in the experiment.
 
 Recall that independence is required to calculate the :math:`z`-value for the average difference and compare it against the :math:`t`-distribution. By randomizing our experiments, we are able to guarantee that the results we obtain from using :math:`t`-distributions are appropriate. Without randomization, these :math:`z`-values and confidence intervals may be misleading.
 
-The reason we prefer using the :math:`t`-distribution approach over randomization is that formulating all random combinations and then calculating all the average differences as shown here is intractable. Even on my relatively snappy computer it would take 3.4 years to calculate all possible combinations for the complete data set: 20 values from group A and 23 values from group B. [It took 122 seconds to calculate a million of them, so the full set of 960,566,918,220 combinations would take more than 3 years].
+The reason we prefer using the :math:`t`-distribution approach over randomization is that formulating all random combinations and then calculating all the average differences as shown here is intractable. Even on my relatively snappy computer it would take 3.4 years to calculate all possible combinations for the complete dataset: 20 values from group A and 23 values from group B. (It took 122 seconds to calculate a million of them, so the full set of 960,566,918,220 combinations would take more than 3 years.)
 
 .. _DOE-COST-approach:
 
-Changing one variable at a single time (COST)
+Changing one single variable at time (COST)
 ==============================================
 
 How do we go about running our experiments when there is more than one variable present that affects our outcome, :math:`y`?  In this section we describe **how not to do it**.
 
 You will certainly have seen the recommendation that we must **c**\ hange **o**\ ne **s**\ ingle variable at a **t**\ ime (COST):
 
-	*	Something goes wrong with a recipe: e.g the pancakes are not as fluffy as normal, or the muffins don't rise as much as they should. You are convinced it is the new brand of all-purpose flour you recently bought. You change only the flour the next time you make pancakes to check your hypothesis.
+	*	Something goes wrong with a recipe: for example, the pancakes are not as fluffy as normal, or the muffins don't rise as much as they should. You are convinced it is the new brand of all-purpose flour you recently bought. You change only the flour the next time you make pancakes to check your hypothesis.
 	
 	*	University labs are notorious for asking you to change one variable at a time. The reason is that these labs intend for you to learn what the effect of a single variable is on some other variable (e.g. change temperature in a distillation column to improve product purity). The labs teach you that this is good scientific procedure, which is fine if your goal is to only initially learn about a system, especially a new system that has never been explored.
 	
-		However, when you want to *optimize and improve* a process, then a different style of experiments where multiple factors are changed simultaneously is required.
+		However, when you want to *optimize and improve* a process, then a different style of experiments is required, where multiple factors are changed simultaneously.
 		
-We have known since the mid 1930's (almost 85 years), due to the work by :ref:`R. A. Fisher, <DOE_references>`, that changing **o**\ ne **f**\ actor **a**\ t a **t**\ ime (OFAT) is not an efficient way for experimentation. Note that OFAT is alternative name for COST.
+We have known since the mid-1930s (almost 85 years), due to the work by :ref:`R. A. Fisher <DOE_references>`, that changing **o**\ ne **f**\ actor **a**\ t a **t**\ ime (OFAT) is not an efficient way for experimentation. Note that OFAT is an alternative name for COST.
 
-Consider a bioreactor where we are producing a particular enzyme. The yield, our outcome variable, is known to be affected by these 6 variables: dissolved oxygen level, agitation rate, reaction duration, feed substrate concentration, substrate type, and reactor temperature. For illustration purposes let's assume that temperature and feed substrate concentration are chosen, as they have the greatest effect on yield. The goal would be to maximize the yield.
+Consider a bioreactor where we are producing a particular enzyme. The yield, our outcome variable, is known to be affected by these six variables: dissolved oxygen level, agitation rate, reaction duration, feed substrate concentration, substrate type and reactor temperature. For illustration purposes, let's assume that temperature and feed substrate concentration are chosen, as they have the greatest effect on yield. The goal would be to maximize the yield.
 
-The base operating point is 346K with a feed substrate concentration of 1.5 g/L, marked with a circle :ref:`in the figure <DOE-fig-COST>`. At these conditions we report a yield from the reactor of approximately 63%.
+The base operating point is 346 K with a feed substrate concentration of 1.5 g/L, marked with a circle :ref:`in the figure <DOE-fig-COST>`. At these conditions, we report a yield from the reactor of approximately 63%.
 
 .. _DOE-fig-COST:
 .. figure:: ../figures/doe/COST-contours.png
@@ -609,21 +636,21 @@ The base operating point is 346K with a feed substrate concentration of 1.5 g/L,
 	:width: 700px
 	:scale: 80	
 	
-	A demonstration of the COST (OFAT) approach.
+	A demonstration of the COST (OFAT) approach
 	
 .. FUTURE: use a curved surface like figure (c) on page 445 of BHH2
 
-At this point we start to investigate the effect of temperature. We decide to move up by 10 degrees to 356K, marked as point 1. After running the experiment we record a lower yield value than our starting point. So we go in the other direction and try temperatures at 338K, 330K and 322K. We are happy that the yields are increasing, but experiment 4 shows a slightly lower yield. So we figure that we've reached a plateau in terms of the temperature variable. Our manager is pretty satisfied because we've boosted yield from 63% to around 67%. These 4 runs have cost us around $10,000 in equipment time and manpower costs so far.
+At this point, we start to investigate the effect of temperature. We decide to move up by 10 degrees to 356 K, marked as point 1. After running the experiment, we record a lower yield value than our starting point. So we go in the other direction and try temperatures at 338 K, 330 K and 322 K. We are happy that the yields are increasing, but experiment 4 shows a slightly lower yield. So we figure that we've reached a plateau in terms of the temperature variable. Our manager is pretty satisfied because we've boosted yield from 63% to around 67%. These four runs have cost us around $10,000 in equipment time and manpower costs so far.
 
-So we get approval now to run 4 more experiments, and we decide to change the substrate feed concentration. But we're going to do this at the best temperature found so far, 330K, at run 3. Our intuition tells us that higher feed concentrations should boost yield, so we try 1.75 g/L. Surprisingly, that experiment lowers the yield. There's likely something we don't understand about the reaction mechanism. Anyhow, we try the other direction, down to 1.25 g/L, and we see a yield increase. We decide to keep going, down to 1.0 g/L, and finally to 0.75 g/L. We see very little change between these last two runs and we believe we have reached another plateau. Also our budget of 8 experimental runs is exhausted.
+We now get approval to run four more experiments, and we decide to change the substrate feed concentration. But we're going to do this at the best temperature found so far, 330 K, at run 3. Our intuition tells us that higher feed concentrations should boost yield, so we try 1.75 g/L. Surprisingly, that experiment lowers the yield. There's likely something we don't understand about the reaction mechanism. Anyhow, we try the other direction, down to 1.25 g/L, and we see a yield increase. We decide to keep going, down to 1.0 g/L, and finally to 0.75 g/L. We see very little change between these last two runs, and we believe we have reached another plateau. Also, our budget of eight experimental runs is exhausted.
 
-So our final operating point chosen is marked on the plot with a hexagon, at 330K and 0.75 g/L. We're proud of ourselves because we have boosted our yield from 63% to 67%, and then from 67% to 69.5%. We have also learned something interesting about our process: the temperature appears to be negatively correlated with yield, and the substrate concentration is negatively correlated with yield. An unexpected observation!
+Our final operating point chosen is marked on the plot with a hexagon, at 330 K and 0.75 g/L. We're proud of ourselves because we have boosted our yield from 63% to 67%, and then from 67% to 69.5%. We have also learned something interesting about our process: the temperature appears to be negatively correlated with yield, and the substrate concentration is negatively correlated with yield. An unexpected observation!
 
-The problem with this approach is that it leaves undiscovered value behind. Changing one variable at a single time leads you into thinking you've reached the optimum, when all you've done in fact is trap yourself at a sub-optimal solution.
+The problem with this approach is that it leaves undiscovered values behind. Changing one single variable at a time leads you into thinking you've reached the optimum, when all you've done in fact is trap yourself at a suboptimal solution.
 
-Furthermore, notice that we would have got a completely different outcome had we decided to first change substrate concentration, :math:`S` and then change temperature, :math:`T`. We would have likely landed closer to the optimum. This is very unsatisfactory: we cannot use methods to optimize our processes that depend on the order of experiments!
+Furthermore, notice that we would have got a completely different outcome had we decided to first change substrate concentration, :math:`S`, and then temperature, :math:`T`. We would have likely landed closer to the optimum. This is very unsatisfactory: we cannot use methods to optimize our processes that depend on the order of experiments!
 
-Notice that we have not yet considered even the effect of the other 4 variables of dissolved oxygen level, agitation rate, reaction duration, and substrate type. We have sub-optimally optimized the system in 2 dimensions, but there are in fact 6 dimensions. While the OFAT (or COST) approach can get you close to the optimum in two variables, you have little to no hope of using this approach successfully with multiple factors.
+We have not yet even considered the effect of the other four variables of dissolved oxygen level, agitation rate, reaction duration and substrate type. We have suboptimally optimized the system in two dimensions, but there are in fact six dimensions. Although the OFAT (or COST) approach can get you close to the optimum in two variables, you have little to no hope of using this approach successfully with multiple factors.
 
 Designed experiments, on the other hand, provide an efficient mechanism to learn about a system, often in fewer runs than the COST approach, and avoid misleading conclusions that might be drawn from the COST approach. Designed experiments are always run in random order -- as we will presently see -- and we will get the same result, no matter the order.
 
@@ -632,15 +659,15 @@ Designed experiments, on the other hand, provide an efficient mechanism to learn
 Factorial designs: using two levels for two or more factors
 ==============================================================
 
-In this section we learn how, and why, we should change more than one variable at a time. We will use factorial designs because:
+In this section we learn how, and why, we should change more than one variable at a time. We will use factorial designs because
 	
-	-	we can visually interpret these designs, and see where to run future experiments
+	-	We can visually interpret these designs, and see where to run future experiments;
 	
-	-	these designs require relatively few experiments 
+	-	These designs require relatively few experiments; and
 	
-	-	they are often a building block for more complex designs
+	-	They are often building blocks for more complex designs.
 
-Most often we have two or more factors that affect our response variable, :math:`y`. In this section we consider the case when these factors are at two levels. Some examples: operate at low and high pH, long operating times or short times, use catalyst A or B, use mixing system A or B. The general guidance is to choose the low and high values at the edges of normal operation. It is **not** wise to use the minimum and maximum values that each factor could possibly have: as they will likely be too extreme. We will see an example of this in the section on :ref:`saturated designs <DOE-saturated-screening-designs>`.
+Most often we have two or more factors that affect our response variable, :math:`y`. In this section we consider the case when these factors are at two levels. Some examples would be to operate at low or high pH, select long operating times or short operating times, use catalyst A or B and use mixing system A or B. The general guidance is to choose the low and high values at the edges of normal operation. It is **not** wise to use the minimum and maximum values that each factor could possibly have; they will likely be too extreme. We will see an example of this in the section on :ref:`saturated designs <DOE-saturated-screening-designs>`.
 
 	
 Let's take a look at the mechanics of factorial designs by using our previous example where the conversion, :math:`y`, is affected by two factors: temperature, :math:`T`, and substrate concentration, :math:`S`. 
@@ -657,9 +684,9 @@ The range over which they will be varied is given in the table. This range was i
 	| Substrate level, :math:`S` |  1.25 g/L       | 1.75 g/L        |
 	+----------------------------+-----------------+-----------------+
 
-#.	Write down the factors that will be varied: :math:`T`, and :math:`S`.
+#.	Write down the factors that will be varied: :math:`T` and :math:`S`.
 
-#.	Write down the coded runs in standard order, also called :index:`Yates order`, which alternates the sign of the first variable the fastest and the last variable the slowest. By convention we start all runs at their low levels and finish off with all factors at their high levels. There will be :math:`2^k` runs, where :math:`k` is the number of variables in the design, and the :math:`2` refers to the number of levels for each factor. In this case :math:`2^2 = 4` experiments (runs). **We perform the actual experiments in random order though**, but always write the table in this standard order.
+#.	Write down the coded runs in standard order, also called :index:`Yates order`, which alternates the sign of the first variable the fastest and the last variable the slowest. By convention we start all runs at their low levels and finish off with all factors at their high levels. There will be :math:`2^k` runs, where :math:`k` is the number of variables in the design and the :math:`2` refers to the number of levels for each factor. In this case, :math:`2^2 = 4` experiments (runs). **We perform the actual experiments in random order**, but always write the table in this standard order.
 
 	.. tabularcolumns:: |c|c|c|c|
 
@@ -676,7 +703,7 @@ The range over which they will be varied is given in the table. This range was i
 	+-----------+---------------+-----------------+
 
 
-#.	Add an additional column to the table for the response variable. The response variable is a quantitative value, :math:`y` = conversion in this case, measured as a percentage. 
+#.	Add an additional column to the table for the response variable. The response variable is a quantitative value, :math:`y`, which in this case is the conversion measured as a percentage. 
 
 	.. tabularcolumns:: |c|c|c|c||c|
 	
@@ -692,9 +719,9 @@ The range over which they will be varied is given in the table. This range was i
 	| 4         | 1     | |+|           | |+|             |  53          |
 	+-----------+-------+---------------+-----------------+--------------+
 	
-	Experiments were performed in random order; in this case we happened to run experiment 4 first, and experiment 3 last.
+	Experiments were performed in random order; in this case, we happened to run experiment 4 first and experiment 3 last.
 
-#.	For simple systems you can visualize the design and results :ref:`as shown here <DOE-fig-Cube-plot>`. This is known as a :index:`cube plot`.
+#.	For simple systems you can visualize the design and results :ref:`as shown in the following figure <DOE-fig-Cube-plot>`. This is known as a :index:`cube plot`.
 
 	.. _DOE-fig-Cube-plot:
 	.. figure:: ../figures/doe/factorial-two-levels-two-variables-no-analysis.png
@@ -702,7 +729,7 @@ The range over which they will be varied is given in the table. This range was i
 		:width: 750px
 		:scale: 50
 		
-		A cube plot, showing the experimental results.
+		A cube plot, showing the experimental results
 		
 .. _DOE-two-level-factorials-main-effects:
 		
@@ -711,11 +738,11 @@ Analysis of a factorial design: main effects
 
 The first step is to calculate the :index:`main effect` of each variable. The effects are considered, by convention, to be the difference from the high level to the low level. So the interpretation of a main effect is by how much the outcome, :math:`y`, is adjusted when changing the variable.
 
-Consider the two runs where :math:`S` is at the |-| level for both experiments 1 and 2. The only change between these two runs is the **temperature**, so the temperature effect is :math:`\Delta T_{S-} = 60-69 = -9\%\,\,\text{per}\,\,(354-338)\text{K}`, i.e. :math:`-9\%` change in the conversion outcome per :math:`+16\text{K}` change in the temperature. 
+Consider the two runs where :math:`S` is at the |-| level for both experiments 1 and 2. The only change between these two runs is the **temperature**, so the temperature effect is :math:`\Delta T_{S-} = 60-69 = -9\%\,\,\text{per}\,\,(354-338)~\text{K}`, that is, a :math:`-9\%` change in the conversion outcome per :math:`+16~\text{K}` change in the temperature. 
 
-Runs 3 and 4 both have :math:`S` at the |+| level. Again, the only change is in the **temperature**: :math:`\Delta T_{S+} = 53-64 = -11\%` per :math:`+16\text{K}`. So we now have two temperature effects, and the average of them is a :math:`-10\%` change in conversion per :math:`+16\text{K}` change in temperature.
+Runs 3 and 4 both have :math:`S` at the |+| level. Again, the only change is in the **temperature**: :math:`\Delta T_{S+} = 53-64 = -11\%` per :math:`+16~\text{K}`. So we now have two temperature effects, and the average of them is a :math:`-10\%` change in conversion per :math:`+16~\text{K}` change in temperature.
 
-We can perform a similar calculation for the main effect of substrate concentration, :math:`S`, by comparing experiments 1 and 3. :math:`\Delta S_{T-} = 64-69 = -5\%\,\,\text{per}\,\,0.5\,\text{g/L}`, while experiments 2 and 4 give :math:`\Delta S_{T+} = 53-60 = -7\%` per :math:`0.5\,\text{g/L}`. So the average main effect for :math:`S` is a :math:`-6\%` change in conversion for every :math:`0.5\,\text{g/L}` change in substrate concentration. A :ref:`graphical method is developed <DOE-fig-Calculate-main-effects>` which you should use when calculating main effects from a cube plot.
+We can perform a similar calculation for the main effect of substrate concentration, :math:`S`, by comparing experiments 1 and 3: :math:`\Delta S_{T-} = 64-69 = -5\%\,\,\text{per}\,\,0.5\,\text{g/L}`, while experiments 2 and 4 give :math:`\Delta S_{T+} = 53-60 = -7\%` per :math:`0.5\,\text{g/L}`. So the average main effect for :math:`S` is a :math:`-6\%` change in conversion for every :math:`0.5\,\text{g/L}` change in substrate concentration. You should use the following :ref:`graphical method <DOE-fig-Calculate-main-effects>` when calculating main effects from a cube plot.
 
 
 .. _DOE-fig-Calculate-main-effects:
@@ -724,18 +751,18 @@ We can perform a similar calculation for the main effect of substrate concentrat
 	:width: 750px
 	:scale: 60
 	
-	A cube plot, showing the hand-calculations for the main effects.
+	A cube plot, showing the hand calculations for the main effects
 
 This visual summary is a very effective method of seeing how the system responds to the two variables. We can see the gradients in the system and the likely region where we can perform the next experiments to improve the bioreactor's conversion.
 
-The following surface plot illustrates the true, but unknown surface, from which our measurements are taken: notice the slight curvature on the edges of each face. The main effects estimated above are a linear approximation of the conversion over the region spanned by the factorial.
+The following surface plot illustrates the true, but unknown, surface from which our measurements are taken. Notice the slight curvature on the edges of each face. The main effects estimated above are a linear approximation of the conversion over the region spanned by the factorial.
 
 	.. image:: ../figures/doe/factorial-two-level-surface-example-cropped.png
 		:align: left
 		:width: 750px
 		:scale: 50
 
-There is an :ref:`alternative way to visualize these main effects <DOE-fig-Interaction-plot-example>`. Use this method when you don't have computer software to draw the surfaces. (We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>`). It is called an :index:`interaction plot`, which we discuss more in the next section.
+An :index:`interaction plot` is an :ref:`alternative way to visualize these main effects <DOE-fig-Interaction-plot-example>`. Use this method when you don't have computer software to draw the surfaces. [We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>`]. We will discuss interaction plots more in the next section.
 
 	.. _DOE-fig-Interaction-plot-example:
 	.. figure:: ../figures/doe/factorial-two-level-line-plot.png
@@ -743,28 +770,29 @@ There is an :ref:`alternative way to visualize these main effects <DOE-fig-Inter
 		:width: 750px
 		:scale: 80
 		
-		An interaction plot for the example where there is little interaction.
+		An interaction plot for the example where there is little interaction
 		
+
 .. _DOE-two-level-factorials-interaction-effects:	
 
 Analysis of a factorial design: interaction effects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We expect in many real systems that the main effect of temperature, :math:`T`, for example, is different at other levels of substrate concentration, :math:`S`. It is quite plausible for a bioreactor system that the main temperature effect on conversion is much greater, if the substrate concentration, :math:`S` is also high. While at low values of :math:`S`, the temperature effect is smaller. 
+We expect in many real systems that the main effect of temperature, :math:`T`, for example, is different at other levels of substrate concentration, :math:`S`. It is quite plausible for a bioreactor system that the main temperature effect on conversion is much greater if the substrate concentration, :math:`S`, is also high, while at low values of :math:`S`, the temperature effect is smaller. 
 
 .. index:: interaction effects
 
-We call this **interaction**, when the effect of one factor is different at different levels of the other factors. Let's give a practical, everyday example: assume your hands are covered with dirt or oil. We know that if you wash your hands with cold water it will take longer to clean them than washing with hot water. So the **A** = temperature of the water has a significant effect on the time taken to clean your hands.  
+We call this result an *interaction*, when the effect of one factor is different at different levels of the other factors. Let's give a practical, everyday example: assume your hands are covered with dirt or oil. We know that if you wash your hands with cold water, it will take longer to clean them than washing with hot water. So let factor **A** be the temperature of the water; factor **A** has a significant effect on the time taken to clean your hands.  
 
-Now go back to the case when washing hands with cold water. If you use soap with cold water it will reduce the time taken to clean your hands than if you did not use soap. It is clear that **B** = using soap reduces the time to clean your hands. 
+Consider the case when washing your hands with cold water. If you use soap with cold water, it will take less time to clean your hands than if you did not use soap. It is clear that factor **B**, the categorical factor of using no soap vs some soap, will reduce the time to clean your hands. 
 
-Now go back to the case when washing hands with hot water. The time taken to clean your hands with hot water and soap is greatly reduced, far faster than any other combination. We say there is an interaction between using soap and the temperature of the water. This is an example of an interaction that works to help us reach the objective faster. 
+Now consider the case when washing your hands with hot water. The time taken to clean your hands with hot water when you use soap is greatly reduced, far faster than any other combination. We say there is an interaction between using soap and the temperature of the water. This is an example of an interaction that works to help us reach the objective faster. 
 
 The effect of warm water enhances the effect of soap. Conversely, the effect is soap is enhanced by using warm water. So symmetry means that if soap interacts with water temperature, then we also know that water temperature interacts with soap.
 
-So in summary, interaction means the effect of one factor depends on the level of the other factor. In this example, that implies the effect of soap is different, depending on if we use cold water or hot water. Interactions are also symmetrical. The soap’s effect is enhanced by warm water. Also, the warm water’s effect is enhanced by soap. 
+In summary, interaction means the effect of one factor depends on the level of the other factor. In this example, that implies the effect of soap is different, depending on if we use cold water or hot water. Interactions are also symmetrical. The soap’s effect is enhanced by warm water, and the warm water’s effect is enhanced by soap. 
 
-Let's use a :ref:`different system here to illustrate <DOE-fig-interaction-example-contour-plot>` interaction effects, but still using :math:`T` and :math:`S` as the variables being changed, and keeping the response variable as :math:`y` = conversion, shown by the contour lines.
+Let's use a :ref:`different system here to illustrate <DOE-fig-interaction-example-contour-plot>` interaction effects, but still using :math:`T` and :math:`S` as the variables being changed and keeping the response variable, :math:`y`, as the conversion, shown by the contour lines.
 
 	.. _DOE-fig-interaction-example-contour-plot:
 	
@@ -773,35 +801,37 @@ Let's use a :ref:`different system here to illustrate <DOE-fig-interaction-examp
 		:width: 550px
 		:scale: 85
 
-		A new example, to illustrate the effects of interactions.
+		A new example, to illustrate the effects of interactions
 		
 	.. tabularcolumns:: |l|c|c||c|
 	
 	+-----------+---------------+-----------------+--------------+
 	| Experiment| :math:`T` [K] | :math:`S` [g/L] | :math:`y` [%]|
 	+===========+===============+=================+==============+
-	| 1         | |-|  (390K)   | |-| (0.5 g/L)   |  77          |
+	| 1         | |-|  (390 K)  | |-| (0.5 g/L)   |  77          |
 	+-----------+---------------+-----------------+--------------+
-	| 2         | |+|  (400K)   | |-| (0.5 g/L)   |  79          |
+	| 2         | |+|  (400 K)  | |-| (0.5 g/L)   |  79          |
 	+-----------+---------------+-----------------+--------------+
-	| 3         | |-|  (390K)   | |+| (1.25 g/L)  |  81          |
+	| 3         | |-|  (390 K)  | |+| (1.25 g/L)  |  81          |
 	+-----------+---------------+-----------------+--------------+
-	| 4         | |+|  (400K)   | |+| (1.25 g/L)  |  89          |
+	| 4         | |+|  (400 K)  | |+| (1.25 g/L)  |  89          |
 	+-----------+---------------+-----------------+--------------+
 
-The main effect of temperature for this system is: 
+The main effect of temperature for this system is
 		
-		-	:math:`\Delta T_{S-} = 79 - 77 = 2\%` per 10K
-		-	:math:`\Delta T_{S+} = 89 - 81 = 8\%` per 10K
-		-	the average temperature main effect is: 5% per 10 K
-		
-Notice how different the main effect is at the low and high level of :math:`S`. So the average of the two is an incomplete description of the system. There is some other aspect to the system that we have not captured.
+		-	:math:`\Delta T_{S-} = 79 - 77 = 2\%` per 10 K
+		-	:math:`\Delta T_{S+} = 89 - 81 = 8\%` per 10 K
 
-Similarly, the main effect of substrate concentration is:
+which means that the average temperature main effect is 5% per 10 K.
+		
+Notice how different the main effect is at the low and high levels of :math:`S`. So the average of the two is an incomplete description of the system. There is some other aspect to the system that we have not captured.
+
+Similarly, the main effect of substrate concentration is
 	
 		-	:math:`\Delta S_{T-} = 81 - 77 = 4\%` per 0.75 g/L
 		-	:math:`\Delta S_{T-} = 89 - 79 = 10\%` per 0.75 g/L
-		-	the average substrate concentration main effect is: 7% per 0.75 g/L
+
+which gives the average substrate concentration main effect as 7% per 0.75 g/L.
 
 .. TODO: Draw in Inkscape, the geometrical analysis of the main effects, and the interaction plot for this system: annotated with T effect at low S, T effect at high S, S effect at low T, S effect at high T
 
@@ -813,19 +843,19 @@ The data may also be visualized using an :ref:`interaction plot <DOE-fig-interac
 	:width: 600px
 	:scale: 100
 	
-	An interaction plot for the example where there is significant interaction.
+	An interaction plot for the example where there is significant interaction
 
-The lack of parallel lines is a clear indication of interaction. The temperature effect is stronger at high levels of :math:`S`, and the effect of :math:`S` on conversion is also greater at high levels of temperature. What is missing is an interaction term, given by the product of temperature and substrate. We represent this as  :math:`T \times S`, and call it temperature-substrate interaction term.  
+The lack of parallel lines is a clear indication of interaction. The temperature effect is stronger at high levels of :math:`S`, and the effect of :math:`S` on conversion is also greater at high levels of temperature. What is missing is an interaction term, given by the product of temperature and substrate. We represent this as  :math:`T \times S` and call it the temperature-substrate interaction term.  
 
 This interaction term should be zero for systems with no interaction, which implies the lines are parallel in the interaction plot. Such systems will have roughly the same effect of :math:`T` at both low and high values of :math:`S` (and in between). So then, a good way to quantify interaction is by how different the main effect terms are at the high and low levels of the other factor in the interaction. The interaction *must* also be symmetrical: if :math:`T` interacts with :math:`S`, then :math:`S` interacts with :math:`T` by the same amount.
 
-:math:`T` interaction with :math:`S`:  
+We can quantify the interaction of our current example in this way. For the :math:`T` interaction with :math:`S`:  
 
 	-	Change in conversion due to :math:`T` at high :math:`S`: :math:`89 - 81 = +8`
 	-	Change in conversion due to :math:`T` at low :math:`S`: :math:`79 - 77 = +2`
 	-	The half difference: :math:`[+8 - (+2)]/2 = \bf{3}`
 	
-:math:`S` interaction with :math:`T`:
+For the :math:`S` interaction with :math:`T`,
 
 	-	Change in conversion due to :math:`S` at high :math:`T`: :math:`89 - 79 = +10`
 	-	Change in conversion due to :math:`S` at low :math:`T`: :math:`81 - 77 = +4`
@@ -838,7 +868,6 @@ We will get an improved appreciation for interpreting main effects and the inter
 .. TODO: point out the interaction is a separate, independent effect from the b_0, b_T and b_S effects.
 
 .. TODO: quantify and describe more completely what the interaction means
-
 
 .. _DOE-analysis-by-least-squares:
 
@@ -854,30 +883,30 @@ Let's review the original system (the one with little interaction) and analyze t
 	+===========+===============+=================+==============+
 	| Baseline  | **346 K**     | **1.50**        |              |
 	+-----------+---------------+-----------------+--------------+
-	| 1         | |-|  (338K)   | |-| (1.25 g/L)  |  69          |
+	| 1         | |-|  (338 K)  | |-| (1.25 g/L)  |  69          |
 	+-----------+---------------+-----------------+--------------+
-	| 2         | |+|  (354K)   | |-| (1.25 g/L)  |  60          |
+	| 2         | |+|  (354 K)  | |-| (1.25 g/L)  |  60          |
 	+-----------+---------------+-----------------+--------------+
-	| 3         | |-|  (338K)   | |+| (1.75 g/L)  |  64          |
+	| 3         | |-|  (338 K)  | |+| (1.75 g/L)  |  64          |
 	+-----------+---------------+-----------------+--------------+
-	| 4         | |+|  (354K)   | |+| (1.75 g/L)  |  53          |
+	| 4         | |+|  (354 K)  | |+| (1.75 g/L)  |  53          |
 	+-----------+---------------+-----------------+--------------+
 
-It is standard practice to represent the data from DOE runs in a centered and scaled form: :math:`\dfrac{\text{variable} - \text{center point}}{\text{range}/2}`
+It is standard practice to represent the data from designed experiments in a centered and scaled form: :math:`\dfrac{\text{variable} - \text{center point}}{\text{range}/2}`. This gives the following values:
 
 	*	:math:`T_{-} = \dfrac{338 - 346}{(354-338)/2} = \dfrac{-8}{8} = -1`
 	*	:math:`S_{-} = \dfrac{1.25 - 1.50}{(1.75 - 1.25)/2} = \dfrac{-0.25}{0.25} = -1`
 
-Similarly, :math:`T_{+} = +1` and :math:`S_{+} = +1`. While the center points (baseline experiment) would be :math:`T_{0} = 0` and :math:`S_{0} = 0`.
+Similarly, :math:`T_{+} = +1` and :math:`S_{+} = +1`, while the center points (baseline experiment) would be :math:`T_{0} = 0` and :math:`S_{0} = 0`.
 
-So we will propose a least squares model, that describes this system:
+We will propose a least squares model that describes this system:
 
 .. math::
 
 	\text{Population model}: \qquad\qquad &y = \beta_0 + \beta_Tx_T + \beta_S x_S + \beta_{TS} x_Tx_S + \varepsilon\\
 	\text{Sample model}: \qquad\qquad     &y = b_0 + b_Tx_T + b_S x_S + b_{TS} x_Tx_S + e\\
 	
-We have 4 parameters to estimate and 4 data points. This means when we fit the model to the data we will have no residual error, since there are no degrees of freedom left. If we had replicate experiments we would have degrees of freedom to estimate the error, but more on that later. Writing the above equation for each observation:
+We have four parameters to estimate and four data points. This means when we fit the model to the data, we will have no residual error, because there are no degrees of freedom left. If we had replicate experiments, we would have degrees of freedom to estimate the error, but more on that later. Writing the above equation for each observation,
 
 .. math::
 
@@ -916,9 +945,9 @@ We have 4 parameters to estimate and 4 data points. This means when we fit the m
 	
 Some things to note are (1) the orthogonality of :math:`\mathbf{X}^T\mathbf{X}` and (2) the interpretation of these coefficients.
 
-#.	Note how the :math:`\mathbf{X}^T\mathbf{X}` has zeros on the off-diagonals. This confirms, algebraically, what we knew intuitively. The change we made in temperature, :math:`T`, was independent of the changes we made in substrate concentration, :math:`S`. This means that we can separately calculat *and interpret* the slope coefficients in the model.
+#.	Note how the :math:`\mathbf{X}^T\mathbf{X}` matrix has zeros on the off-diagonals. This confirms, algebraically, what we knew intuitively. The change we made in temperature, :math:`T`, was independent of the changes we made in substrate concentration, :math:`S`. This means that we can separately calculate *and interpret* the slope coefficients in the model.
 
-#.	What is the interpretation of, for example, :math:`b_T = -5`?  Recall that it is the effect of increasing the temperature by **1 unit**. In this case the :math:`x_T` variable has been  normalized, but this slope coefficient represents the effect of changing :math:`x_T` from 0 to 1, which in the original variables is a change from 346 to 354K, i.e. an 8K increase in temperature. It equally well represents the effect of changing :math:`x_T` from -1 to 0: a change from 338K to 346K decreases conversion by 5%.
+#.	What is the interpretation of, for example, :math:`b_T = -5`?  Recall that it is the effect of increasing the temperature by **1 unit**. In this case, the :math:`x_T` variable has been normalized, but this slope coefficient represents the effect of changing :math:`x_T` from 0 to 1, which in the original units of the variables is a change from 346 to 354 K, that is, an 8 K increase in temperature. It equally well represents the effect of changing :math:`x_T` from :math:`-1` to 0: a change from 338 K to 346 K decreases conversion by 5%.
 
 	Similarly, the slope coefficient for :math:`b_S = -3` represents the expected decrease in conversion when :math:`S` is increased from 1.50 g/L to 1.75 g/L.
 
@@ -929,37 +958,38 @@ Some things to note are (1) the orthogonality of :math:`\mathbf{X}^T\mathbf{X}` 
 		:width: 750px
 		:scale: 50
 
-	The 61.5 term in the least squares model is the expected conversion at the baseline conditions. Notice from the least squares equations how it is just the average of the 4 experimental values, even though we did not actually perform an experiment at the center.
+	The 61.5 term in the least squares model is the expected conversion at the baseline conditions. Notice from the least squares equations how it is just the average of the four experimental values, even though we did not actually perform an experiment at the center.
 		
 Let's return to the :ref:`system with high interaction <DOE-two-level-factorials-interaction-effects>` where the four outcome values in standard order were 
-77, 79, 81 and 89. Looking back, the baseline operation was :math:`T` = 395K, and :math:`S` = \frac{1.25 - 0.5}{2} = 0.875 g/L; you should prove to yourself that the least squares model is:
+77, 79, 81 and 89. Looking back, the baseline operation was :math:`T` = 395 K and :math:`S = \frac{1.25 - 0.5}{2}` = 0.875 g/L; you should prove to yourself that the least squares model is
 
 	.. math::
 	
 		y = 81.5 + 2.5 x_T + 3.5 x_S + 1.5 x_T x_S
 		
-The interaction term can now be readily interpreted: it is the additional increase in conversion seen when both temperature and :math:`S` are at their high level. If :math:`T` is at the high level and :math:`S` is at the low level, then the least squares model shows that conversion is expected at :math:`81.5 + 2.5 - 3.5 - 1.5 = 79`. So the interaction term has *decreased* conversion by 1.5 units.
+The interaction term can now be readily interpreted: it is the additional increase in conversion seen when both temperature and substrate concentration are at their high level. If :math:`T` is at the high level and :math:`S` is at the low level, then the least squares model shows that conversion is expected at :math:`81.5 + 2.5 - 3.5 - 1.5 = 79`. The interaction term has *decreased* conversion by 1.5 units.
 
-Finally, out of interest, the non-linear surface that was used to generate the experimental data for the interacting system is coloured in the illustration. In practice we never know what this surface looks like, but we estimate it with the least squares plane which appears below the non-linear surface as black and white grids. The corners of the box are outer levels at which we ran the factorial experiments.
+Finally, out of interest, the nonlinear surface that was used to generate the experimental data for the interacting system is coloured in the illustration. In practice we never know what this surface looks like, but we estimate it with the least squares plane, which appears below the nonlinear surface as black and white grids. The corners of the box are outer levels at which we ran the factorial experiments.
 	
 	.. image:: ../figures/doe/factorial-two-level-surface-with-interaction-cropped.png
 		:align: left
 		:width: 750px
 		:scale: 50
 	
-The corner points are exact with the nonlinear surface, because we have used the 4 values to estimate 4 model parameters. There are no degrees of freedom left and the model's residuals are therefore zero. Obviously the linear model will be less accurate away from the corner points when the true system is nonlinear, but it is a useful model over the region in which we will use it later in the :ref:`section on response surface methods <DOE-RSM>`.
+The corner points are exact with the nonlinear surface, because we have used the four values to estimate four model parameters. There are no degrees of freedom left, and the model's residuals are therefore zero. Obviously, the linear model will be less accurate away from the corner points when the true system is nonlinear, but it is a useful model over the region in which we will use it later in the :ref:`section on response surface methods <DOE-RSM>`.
 	
-Example: design and analysis of a 3-factor experiment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This example should be done by yourself. It is based on question 19 in the exercises for Chapter 5 in Box, Hunter, and Hunter (2nd edition).
+Example: design and analysis of a three-factor experiment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The data are from a plastics molding factory which must treat its waste before discharge. The :math:`y` variable represents the average amount of pollutant discharged [lb per day], while the 3 factors that were varied were:
+This example should be done by yourself. It is based on Question 19 in the exercises for Chapter 5 in Box, Hunter and Hunter (2nd edition).
 
- 	-	:math:`C`: the chemical compound added [choose either chemical P or chemical Q]
-	-	:math:`T`: the treatment temperature [72°F or 100°F]
-	-	:math:`S`: the stirring speed [200 rpm or 400 rpm]
-	-	:math:`y`: the amount of pollutant discharged [lb per day]
+The data are from a plastics molding factory that must treat its waste before discharge. The :math:`y`-variable represents the average amount of pollutant discharged (lb per day), while the three factors that were varied were
+
+ 	-	:math:`C` = the chemical compound added (choose either chemical P or chemical Q)
+	-	:math:`T` = the treatment temperature (72 °F or 100 °F)
+	-	:math:`S` = the stirring speed (200 rpm or 400 rpm)
+	-	:math:`y` = the amount of pollutant discharged (lb per day)
 
 	.. tabularcolumns:: |l|l||c|c|c||c|
 
@@ -987,49 +1017,58 @@ The data are from a plastics molding factory which must treat its waste before d
 
 #.	Calculate the main effect for each factor by hand.
 
-	*	**C effect**: There are 4 estimates of :math:`C = \displaystyle \frac{(+25) + (+27) + (-1) + (-1)}{4} = \frac{50}{4} = \bf{12.5}`
-	*	**T effect**: There are 4 estimates of :math:`T = \displaystyle \frac{(+1) + (+3) + (+1) + (+1)}{4} = \frac{6}{4} = \bf{1.5}`
-	*	**S effect**: There are 4 estimates of :math:`S = \displaystyle \frac{(-27) + (-1) + (-29) + (-1)}{4} = \frac{-58}{4} = \bf{-14.5}`
+		For the **C effect**, there are four estimates of :math:`C`:
+
+		.. math::
+			\displaystyle \frac{(+25) + (+27) + (-1) + (-1)}{4} = \frac{50}{4} = \bf{12.5}
+	
+		For the	**T effect**, there are four estimates of :math:`T`:
+
+		.. math::
+			\displaystyle \frac{(+1) + (+3) + (+1) + (+1)}{4} = \frac{6}{4} = \bf{1.5}
+	
+		For the **S effect**, there are four estimates of :math:`S`:
+
+		.. math::
+			\displaystyle \frac{(-27) + (-1) + (-29) + (-1)}{4} = \frac{-58}{4} = \bf{-14.5}
 
 #.	Calculate the 3 two-factor interactions (2fi) by hand, recalling that interactions are defined as the half difference going from high to low.
 
-	*	**CT interaction**: There are 2 estimates of :math:`CT`. Recall that interactions are calculated as the half difference going from high to low. Consider the change in :math:`C` when
+		For the **CT interaction**, there are two estimates of :math:`CT`. Recall that interactions are calculated as the half difference going from high to low. Consider the change in :math:`C` when
 
-		-	:math:`T_\text{high}` (at :math:`S` high) = :math:`4 - 5 = -1`
-		-	:math:`T_\text{low}` (at :math:`S` high) = :math:`3 - 4 = -1`
-		-	First estimate = :math:`[(-1) - (-1)]/2 = 0`
-		-	:math:`T_\text{high}` (at :math:`S` low) = :math:`33 - 6 = +27`
-		-	:math:`T_\text{low}` (at :math:`S` low) = :math:`30 - 5 = +25`
-		-	Second estimate = :math:`[(+27) - (+25)]/2 = +1`
-	
-		-	Average **CT** interaction = :math:`(0 + 1)/2 = \mathbf{0.5}`
-		-	You can interchange :math:`C` and :math:`T` and still get the same result.
-
-	*	**CS interaction**: There are 2 estimates of :math:`CS`.  Consider the change in :math:`C` when
-
-			-	:math:`S_\text{high}` (at :math:`T` high) = :math:`4 - 5 = -1`
-			-	:math:`S_\text{low}` (at :math:`T` high) = :math:`33 - 6 = +27`
-			-	First estimate = :math:`[(-1) - (+27)]/2 = -14`
-			-	:math:`S_\text{high}` (at :math:`T` low) = :math:`3 - 4 = -1`
-			-	:math:`S_\text{low}` (at :math:`T` low) = :math:`30 - 5 = +25`
-			-	Second estimate = :math:`[(-1) - (+25)]/2 = -13`
-
-			-	Average **CS** interaction = :math:`(-13 - 14)/2 = \mathbf{-13.5}`
-			-	You can interchange :math:`C` and :math:`S` and still get the same result.	
+		*	:math:`T_\text{high}` (at :math:`S` high) = :math:`4 - 5 = -1`
+		*	:math:`T_\text{low}` (at :math:`S` high) = :math:`3 - 4 = -1`
 		
-	*	**ST interaction**: There are 2 estimates of :math:`ST`: :math:`(-1 + 0)/2 = \mathbf{-0.5}`, calculate in the same way as above.
+		This gives a first estimate of :math:`[(-1) - (-1)]/2 = 0`. Similarly,
 
-#.	Calculate the single 3 factor interaction (3fi).
+		*	:math:`T_\text{high}` (at :math:`S` low) = :math:`33 - 6 = +27`
+		*	:math:`T_\text{low}` (at :math:`S` low) = :math:`30 - 5 = +25`
+		
+		gives a second estimate of :math:`[(+27) - (+25)]/2 = +1`.
 	
-	There is only a single estimate of :math:`CTS`:
+		The average **CT** interaction  is therefore :math:`(0 + 1)/2 = \mathbf{0.5}`. You can interchange :math:`C` and :math:`T` and still get the same result.
 
-		-	:math:`CT` effect at high :math:`S = 0`
-		-	:math:`CT` effect at low :math:`S = + 1`
-		-	:math:`CTS` interaction = :math:`[(0) - (+1)] / 2 = \mathbf{-0.5}`
+		For the **CS interaction**, there are two estimates of :math:`CS`.  Consider the change in :math:`C` when
 
-		-	You can calculate this also by considering the :math:`CS` effect at the two levels of :math:`T`
-		-	Or, you can calculate this by considering the :math:`ST` effect at the two levels of :math:`C`.
-		-	All 3 approaches give the same result.
+		*	:math:`S_\text{high}` (at :math:`T` high) = :math:`4 - 5 = -1`
+		*	:math:`S_\text{low}` (at :math:`T` high) = :math:`33 - 6 = +27`
+			
+		This gives a first estimate of :math:`[(-1) - (+27)]/2 = -14`. Similarly,
+
+		*	:math:`S_\text{high}` (at :math:`T` low) = :math:`3 - 4 = -1`
+		*	:math:`S_\text{low}` (at :math:`T` low) = :math:`30 - 5 = +25`
+			
+		gives a second estimate of :math:`[(-1) - (+25)]/2 = -13`.
+
+		The average **CS** interaction is therefore :math:`(-13 - 14)/2 = \mathbf{-13.5}`. You can interchange :math:`C` and :math:`S` and still get the same result.	
+		
+		For the **ST interaction**, there are two estimates of :math:`ST`: :math:`(-1 + 0)/2 = \mathbf{-0.5}`. Calculate in the same way as above.
+
+#.	Calculate the single three-factor interaction (3fi).
+	
+		There is only a single estimate of :math:`CTS`. The :math:`CT` effect at high :math:`S` is 0, and the :math:`CT` effect at low :math:`S` is :math:`+1`. The :math:`CTS` interaction is then :math:`[(0) - (+1)] / 2 = \mathbf{-0.5}`.
+
+		You can also calculate this by considering the :math:`CS` effect at the two levels of :math:`T`, or by considering the :math:`ST` effect at the two levels of :math:`C`. All three approaches give the same result.
 
 #.	Compute the main effects and interactions using matrix algebra and a least squares model.
 
@@ -1056,66 +1095,67 @@ The data are from a plastics molding factory which must treat its waste before d
 
 Learning notes:
 
-	*	The chemical compound could be coded either as (chemical P = :math:`-1`, chemical Q = :math:`+1`), or (chemical P = :math:`+1`, chemical Q= :math:`-1`). The interpretation of the :math:`x_C` coefficient is the same, regardless of the coding.
+	*	The chemical compound could be coded either as (chemical P = :math:`-1`, chemical Q = :math:`+1`) or (chemical P = :math:`+1`, chemical Q = :math:`-1`). The interpretation of the :math:`x_C` coefficient is the same, regardless of the coding.
 	
  	*	Just the tabulation of the raw data gives us some interpretation of the results. Why?  Since the variables are manipulated independently, we can just look at the relationship of each factor to :math:`y`, without considering the others.  It is expected that the chemical compound and speed have a strong effect on :math:`y`, but we can also see the **chemical** :math:`\times` **speed** interaction. You can see this last interpretation by writing out the full :math:`\mathbf{X}` design matrix and comparing the bold column, associated with the :math:`b_\text{CS}` term, with the :math:`y` column.
 	
 .. sidebar:: A note about magnitude of effects
 
-	In these notes we quantify the effect as the change in response over *half the range* of the factor. For example, if the centerpoint is 400K, the lower level is 375K, and the upper level is 425K, then an effect of ``"-5"`` represents a reduction in :math:`y` of 5 units for every increase in 25K in :math:`x`.
+	In this text we quantify the effect as the change in response over *half the range* of the factor. For example, if the center point is 400 K, the lower level is 375 K and the upper level is 425 K, then an effect of ``"-5"`` represents a reduction in :math:`y` of 5 units for every increase of 25 K in :math:`x`.
 	
 	
-	We use this representation because it corresponds with the results calculated from least-squares software. Putting the matrix of :math:`-1` and :math:`+1` entries as :math:`\mathbf{X}` into the software, and the corresponding vector of responses, :math:`y`, will calculate these effects as :math:`\mathbf{b} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}\mathbf{y}`.
+	We use this representation because it corresponds with the results calculated from least-squares software. Putting the matrix of :math:`-1` and :math:`+1` entries into the software as :math:`\mathbf{X}`, along with the corresponding vector of responses, :math:`y`, you can calculate these effects as :math:`\mathbf{b} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}\mathbf{y}`.
 	
 	
-	Other textbooks, specifically Box, Hunter and Hunter will report effects that are double ours. This is because they consider the effect to be the change from the lower level to the upper level (double the distance). The advantage of their representation is that binary factors (catalyst A or B; agitator on or off) can be readily interpreted. While in our notation, the effect is a little harder to describe (simply double it!).
+	Other textbooks, specifically Box, Hunter and Hunter, will report effects that are double ours. This is because they consider the effect to be the change from the lower level to the upper level (double the distance). The advantage of their representation is that binary factors (catalyst A or B; agitator on or off) can be readily interpreted, whereas in our notation, the effect is a little harder to describe (simply double it!).
 	
 	
-	The advantage of our methodology though is that the results calculated by hand would be the same as that from any computer software with respect to the magnitude of the coefficients and the standard errors; particularly in the case of duplicate runs and experiments with center points.
+	The advantage of our methodology, though, is that the results calculated by hand would be the same as those from any computer software with respect to the magnitude of the coefficients and the standard errors, particularly in the case of duplicate runs and experiments with center points.
 	
 	
-	Remember: our effects are half those reported in Box, Hunter, and Hunter, and some other text books; our standard error would also be half of theirs. The conclusions drawn will always be the same, as long as one is consistent.
+	Remember: our effects are half those reported in Box, Hunter and Hunter, and in some other textbooks; our standard error would also be half of theirs. The conclusions drawn will always be the same, as long as one is consistent.
 	
 	
-
 Assessing significance of main effects and interactions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-When there are no :index:`replicate points <pair: replicates; experiments>`, then the number of factors to estimate from a full factorial is :math:`2^k` from the :math:`2^k` observations. So there are no degrees of freedom left to calculate the standard error, nor to calculate the confidence intervals for the main effects and interaction terms.
+When there are no :index:`replicate points <pair: replicates; experiments>`, then the number of factors to estimate from a full factorial is :math:`2^k` from the :math:`2^k` observations. There are no degrees of freedom left to calculate the standard error or the confidence intervals for the main effects and interaction terms.
 
-The standard error can be estimated if complete replicates are available. However, a complete replicate is onerous, because a complete replicate implies the entire experiment is repeated: system setup, running the experiment and measuring the result. Taking two samples from one actual experiment and measuring :math:`y` twice is not a true replicate, that is only an estimate of the measurement error and analytical error. 
+The standard error can be estimated if complete replicates are available. However, a complete replicate is onerous, because a complete replicate implies the entire experiment is repeated: system setup, running the experiment and measuring the result. Taking two samples from one actual experiment and measuring :math:`y` twice is not a true replicate. That is only an estimate of the measurement error and analytical error. 
 
-Furthermore, there are better ways to spend our experimental budget than running complete replicate experiments - see the section on :ref:`screening designs <DOE-saturated-screening-designs>` later on. Only later in the overall experimental procedure should we run replicate experiments as a verification step and to assess the statistical significance of effects.
+Furthermore, there are better ways to spend our experimental budget than running complete replicate experiments -- see the section on :ref:`screening designs <DOE-saturated-screening-designs>` later on. Only later in the overall experimental procedure should we run replicate experiments as a verification step and to assess the statistical significance of effects.
 
-There are 2 main ways we can determine if a main effect or interaction is significant.
+.. AU: I inserted the two main ways. Please confirm.
+
+There are two main ways we can determine if a main effect or interaction is significant: by using a Pareto plot or the standard error.
 
 .. _DOE-Pareto-plot:
 
 Pareto plot
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. Note:: This is a make-shift approach that is only applicable if all the factors are centered and scaled.
+.. Note:: This is a makeshift approach that is only applicable if all the factors are centered and scaled.
 
-A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to estimate. Once these parameters have been calculated, for example, by using a :ref:`least squares model <DOE-analysis-by-least-squares>`, then plot the absolute value of the model coefficients in sorted order: from largest magnitude to smallest, ignoring the intercept term. Significant coefficients are established by visual judgement - establishing a visual cut-off by contrasting the small coefficients to the larger ones.
+A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to estimate. Once these parameters have been calculated, for example, by using a :ref:`least squares model <DOE-analysis-by-least-squares>`, then plot the absolute value of the model coefficients in sorted order, from largest magnitude to smallest, ignoring the intercept term. Significant coefficients are established by visual judgement -- establishing a visual cutoff by contrasting the small coefficients to the larger ones.
 
 .. image:: ../figures/doe/pareto-plot-full-fraction.png
 	:align: left
 	:width: 800px
 	:scale: 50
 	
-The above example was from a full factorial experiment where the results for :math:`y` in standard order were: :math:`y = \left[45,71,48,65,68,60,80,65,43,100,45,104,75,86,70,96 \right]`.
+The above example was from a full factorial experiment where the results for :math:`y` in standard order were :math:`y = \left[45,71,48,65,68,60,80,65,43,100,45,104,75,86,70,96 \right]`.
 	
-In the above example we would interpret that factors **A**, **C** and **D**, as well as the interactions of **AC** and **AD** have a significant and causal effect on the response variable, :math:`y`. The main effect of **B** on the response :math:`y` is small - at least over the range that **B** was used in the experiment. Factor **B** can be omitted from future experimentation in this region, though it might be necessary to include it again if the system is operated at a very different point.
+We would interpret that factors **A**, **C** and **D**, as well as the interactions of **AC** and **AD**, have a significant and causal effect on the response variable, :math:`y`. The main effect of **B** on the response :math:`y` is small, at least over the range that **B** was used in the experiment. Factor **B** can be omitted from future experimentation in this region, though it might be necessary to include it again if the system is operated at a very different point.
 
-The reason why we can compare the coefficients this way, which is not normally the case with least squares models, is that we have both centered and scaled the factor-variables. If the centering is at typical baseline operation, and the range spanned by each factor is that expected over the typical operating range, then we can fairly compare each coefficient in the bar plot. Each bar represents the influence of that term on :math:`y` for a one-unit change in the factor, i.e. a change over half its operating range.
+The reason why we can compare the coefficients this way, which is not normally the case with least squares models, is that we have both centered and scaled the factor variables. If the centering is at typical baseline operation, and the range spanned by each factor is that expected over the typical operating range, then we can fairly compare each coefficient in the bar plot. Each bar represents the influence of that term on :math:`y` for a one-unit change in the factor, that is, a change over half its operating range.
 
-Obviously if the factors are not scaled appropriately, then this method will be error prone.  However, the approximate guidance is accurate, especially when you do not have a computer, or if additional information required by the other methods (discussed below) is not available. It is also the only way to estimate the effects for :ref:`highly fractionated and saturated designs <DOE-saturated-screening-designs>`.
+Obviously, if the factors are not scaled appropriately, then this method will be error prone.  However, the approximate guidance is accurate, especially when you do not have a computer or if additional information required by the other methods (discussed below) is not available. It is also the only way to estimate the effects for :ref:`highly fractionated and saturated designs <DOE-saturated-screening-designs>`.
 
 
-Standard error: from replicate runs, or from an external data set
+Standard error: from replicate runs or from an external dataset
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. note:: It is often better to spend your experimental budget screening for additional factors than for replicating experiments.
+.. note:: It is often better to spend your experimental budget screening for additional factors rather than replicating experiments.
 
 .. But, if a duplicate run exists at every combination of the factorial, then the standard error can be estimated as follows:
 ..
@@ -1129,12 +1169,12 @@ Standard error: from replicate runs, or from an external data set
 ..
 .. The standard error can be calculated in a similar manner if more than one duplicate run is performed. So rather run a :math:`2^4` factorial for 4 factors than a :math:`2^3`factorial twice; or as we will see later - one can screen five or more factors with :math:`2^4` runs.
 	
-If there are more experiments than parameters to be estimated, then we have extra degrees of freedom. Having degrees of freedom implies we can calculate the standard error, :math:`S_E`. Once :math:`S_E` has been found, we can also calculate the standard error for each model coefficient, and then confidence intervals can be constructed for each main effect and interaction. And, because the model matrix is orthogonal, the confidence interval for each effect is independent of the other. This is because the general confidence interval is :math:`\mathcal{V}\left(\mathbf{b}\right) = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}S_E^2`, and the off-diagonal elements in :math:`\mathbf{X}^T\mathbf{X}` are zero.
+If there are more experiments than parameters to be estimated, then we have extra degrees of freedom. Having degrees of freedom implies we can calculate the standard error, :math:`S_E`. Once :math:`S_E` has been found, we can also calculate the standard error for each model coefficient, and then confidence intervals can be constructed for each main effect and interaction. And because the model matrix is orthogonal, the confidence interval for each effect is independent of the other. This is because the general confidence interval is :math:`\mathcal{V}\left(\mathbf{b}\right) = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}S_E^2`, and the off-diagonal elements in :math:`\mathbf{X}^T\mathbf{X}` are zero.
 
-So for an experiment with :math:`n` runs, and where we have coded our :math:`\mathbf{X}` matrix to contain :math:`-1` and :math:`+1` elements, and when the :math:`\mathbf{X}` matrix is orthogonal, then the standard error for coefficient :math:`b_i` is :math:`S_E(b_i) = \sqrt{\mathcal{V}\left(b_i\right)} = \sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`. Some examples:
+For an experiment with :math:`n` runs, and where we have coded our :math:`\mathbf{X}` matrix to contain :math:`-1` and :math:`+1` elements, and when the :math:`\mathbf{X}` matrix is orthogonal, the standard error for coefficient :math:`b_i` is :math:`S_E(b_i) = \sqrt{\mathcal{V}\left(b_i\right)} = \sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`. Some examples:
 
 	*	A :math:`2^3` factorial where every combination has been repeated will have :math:`n=16` runs, so the standard error for each coefficient will be the same, at :math:`S_E(b_i) = \sqrt{\dfrac{S_E^2}{16}} = \dfrac{S_E}{4}`. 
-	*	A :math:`2^3` factorial with 3 additional runs at the center point would have a least squares representation of:
+	*	A :math:`2^3` factorial with three additional runs at the center point would have the following least squares representation:
 	
 		.. math::
 		
@@ -1169,16 +1209,16 @@ So for an experiment with :math:`n` runs, and where we have coded our :math:`\ma
 			\end{bmatrix}
 			\begin{bmatrix} b_0 \\ b_A \\ b_B \\ b_{C} \\ b_{AB} \\ b_{AC} \\ b_{BC} \\ b_{ABC} \end{bmatrix} + \mathbf{e}
 			
-		Note that the center point runs do not change the orthogonality of :math:`\mathbf{X}`, however, as we expect after having studied the :ref:`least squares modelling <SECTION-least-squares-modelling>` section, that additional runs decrease the variance of the model parameters, :math:`\mathcal{V}(\mathbf{b})`. In this case there are :math:`n=2^3+3 = 11` runs, so the standard error is decreased to :math:`S_E^2 = \dfrac{\mathbf{e}^T\mathbf{e}}{11 - 8}`, but the center points do not further reduce the variance of the parameters in :math:`\sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`, since the denominator is still :math:`2^k` (**except for the intercept term**, whose variance is reduced by the center points).
+		Note that the center point runs do not change the orthogonality of :math:`\mathbf{X}`. However, as we expect after having studied the section on :ref:`least squares modelling <SECTION-least-squares-modelling>`, additional runs decrease the variance of the model parameters, :math:`\mathcal{V}(\mathbf{b})`. In this case, there are :math:`n=2^3+3 = 11` runs, so the standard error is decreased to :math:`S_E^2 = \dfrac{\mathbf{e}^T\mathbf{e}}{11 - 8}`. However, the center points do not further reduce the variance of the parameters in :math:`\sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`, because the denominator is still :math:`2^k` (**except for the intercept term**, whose variance is reduced by the center points).
 	
-Once we obtain the standard error for our system and calculate the variance of the parameters, we can multiply it by the critical :math:`t`-value at the desired confidence level in order to calculate the confidence limit. However, it is customary to just report the standard error next to the coefficients, so that the user can use their own level of confidence. For example:
+Once we obtain the standard error for our system and calculate the variance of the parameters, we can multiply it by the critical :math:`t`-value at the desired confidence level in order to calculate the confidence limit. However, it is customary to just report the standard error next to the coefficients, so that users can apply their own level of confidence. For example,
 
 	.. math::
 	
 		\text{Temperature effect}, b_T &= 11.5 \pm 0.707\\
 		\text{Catalyst effect}, b_K &= 1.1 \pm 0.707
 		
-So even though the temperature effect's confidence interval would be :math:`11.5 - c_t \times 0.707 \leq \beta_T \leq 11.5 + c_t \times 0.707`, it is clear that at the 95% significance level, the above representation shows the temperature effect is significant, while the catalyst effect is not (:math:`c_t \approx 2`)
+Even though the confidence interval of the temperature effect would be :math:`11.5 - c_t \times 0.707 \leq \beta_T \leq 11.5 + c_t \times 0.707`, it is clear that at the 95% significance level, the above representation shows the temperature effect is significant, while the catalyst effect is not (:math:`c_t \approx 2`).
 
 .. OMIT: this can be confusing and misleading
 
@@ -1187,13 +1227,13 @@ So even though the temperature effect's confidence interval would be :math:`11.5
 
 	If the hypothesis that there is no causal effect from the :math:`k` factors on the response is true, then the :math:`2^k-1` parameter estimates, not counting the intercept, should be normally distributed. That is from the central limit theorem, and the fact that estimated coefficients are linear combinations of the response variable.
 
-	An example for a :math:`2^3` factorial would be that the 7 coefficients, not including :math:`b_0`, in this linear model would be normally distributed:
+	An example for a :math:`2^3` factorial would be that the seven coefficients, not including :math:`b_0`, in this linear model would be normally distributed:
 
 	.. math::
 
 		y_i = b_0 + b_A x_A + b_B x_B + b_{C}x_C + b_{AB}x_{AB} + b_{AC}x_{AC} +  b_{BC}x_{BC} +  b_{ABC}x_{ABC}
 	
-	A normal probability plot is a non-linear transformation of the data so that the s-shape of the cumulative normal distribution appears as a straight line. We used this idea in the section on :ref:`univariate statistics <SECTION-univariate-review>` where a q-q plot was constructed to assess normality. Another way to visualize this concept is to draw vertical divisions on the normal distribution curve, to create :math:`2^k-1` sections of equal area. One effect is expected per division.
+	A normal probability plot is a nonlinear transformation of the data so that the s-shape of the cumulative normal distribution appears as a straight line. We used this idea in the section on :ref:`univariate statistics <SECTION-univariate-review>` where a q-q plot was constructed to assess normality. Another way to visualize this concept is to draw vertical divisions on the normal distribution curve, to create :math:`2^k-1` sections of equal area. One effect is expected per division.
 
 	.. TODO: illustration of normal distribution division
 
@@ -1225,21 +1265,24 @@ So even though the temperature effect's confidence interval would be :math:`11.5
 		:width: 800px
 		
 
-Refitting the model after removing non-significant effects
+
+Refitting the model after removing nonsignificant effects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-So after having established which effects are significant, we can exclude the non-significant effects and increase the degrees of freedom. (We do not have to recalculate the model parameters - why?). The residuals will be non-zero now, so we can then estimate the standard error, and apply all the tools from least squares modelling to assess the residuals. Plots of the residuals in experimental order, against fitted values, q-q plots, and all the other assessment tools from earlier are used, as usual.
+After having established which effects are significant, we can exclude the nonsignificant effects and increase the degrees of freedom. (We do not have to recalculate the model parameters -- why?) The residuals will be nonzero now, so we can then estimate the standard error and apply all the tools from least squares modelling to assess the residuals. Plots of the residuals in experimental order, against fitted values, q-q plots and all the other assessment tools from earlier are used, as usual.
 
-Continuing the above example, where a :math:`2^4` factorial was run, and the response values, in standard order were :math:`y = [71, 61, 90, 82, 68, 61, 87, 80, 61, 50, 89, 83, 59, 51, 85, 78]`. The significant effects were from **A**, **B**, **D**, and **BD**. Now omitting the non-significant effects, there are only 5 parameters to estimate, including the intercept, so the standard error is :math:`S_E^2 = \dfrac{39}{16-5} = 3.54`, with 11 degrees of freedom. The :math:`S_E(b_i)` value for all coefficients, except the intercept, is :math:`\sqrt{\dfrac{S_E^2}{16}} = 0.471`, and the critical :math:`t`-value at the 95% level is ``qt(0.975, df=11)`` = 2.2. So the confidence intervals can be calculated to confirm that these are indeed significant effects by calculating their confidence interval.
+.. AU: I modified the last sentence of the following paragraph because it seemed redundant. Please confirm.
 
-There is some circular reasoning here: postulate that one or more effects are zero, increase the degrees of freedom by removing those parameters in order to confirm the remaining effects are significant. So some general advice is to first exclude effects which are definitely small, and retain medium size effects in the model until you can confirm they are not-significant.
+Continuing the above example, where a :math:`2^4` factorial was run, the response values in standard order were :math:`y = [71, 61, 90, 82, 68, 61, 87, 80, 61, 50, 89, 83, 59, 51, 85, 78]`. The significant effects were from **A**, **B**, **D** and **BD**. Now, omitting the nonsignificant effects, there are only five parameters to estimate, including the intercept, so the standard error is :math:`S_E^2 = \dfrac{39}{16-5} = 3.54`, with 11 degrees of freedom. The :math:`S_E(b_i)` value for all coefficients, except the intercept, is :math:`\sqrt{\dfrac{S_E^2}{16}} = 0.471`, and the critical :math:`t`-value at the 95% level is ``qt(0.975, df=11)`` = 2.2. So the confidence intervals can be calculated to confirm that these are indeed significant effects.
+
+There is some circular reasoning here: postulate that one or more effects are zero and increase the degrees of freedom by removing those parameters in order to confirm the remaining effects are significant. Some general advice is to first exclude effects that are definitely small, and then retain medium-size effects in the model until you can confirm they are not significant.
 
 .. _DOE-COST-vs-factorial-efficiency:
  
-Variance of estimates from the COST approach vs factorial approach
+Variance of estimates from the COST approach versus the factorial approach
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Finally, we end this section on factorials by illustrating their efficiency. Contrast the two cases: COST and the full factorial approach. For this analysis we define the main effect simply as the difference between the high and low value (normally we divide through by 2, but the results still hold). Define the variance of the measured :math:`y` value as :math:`\sigma_y^2`.
+Finally, we end this section on factorials by illustrating their efficiency. Contrast the two cases: COST and the full factorial approach. For this analysis we define the main effect simply as the difference between the high and low values (normally we divide through by 2, but the results still hold). Define the variance of the measured :math:`y` value as :math:`\sigma_y^2`.
 
 	.. image:: ../figures/doe/comparison-of-variances.png
 		:align: left
@@ -1251,14 +1294,14 @@ Finally, we end this section on factorials by illustrating their efficiency. Con
 +--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
 | COST approach                                                            | Fractional factorial approach                                                                                  |
 +==========================================================================+================================================================================================================+
-| The main effect of :math:`T` is :math:`b_T = y_2 - y_1`                  | The main effect is :math:`b_T = 0.5(y_2 - y_1) + 0.5(y_4 - y_3)`                                               |
+| The main effect of :math:`T` is :math:`b_T = y_2 - y_1`.                 | The main effect is :math:`b_T = 0.5(y_2 - y_1) + 0.5(y_4 - y_3)`.                                              |
 +--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
-| The variance is :math:`\mathcal{V}(b_T) = \sigma_y^2 + \sigma_y^2`       | The variance is :math:`\mathcal{V}(b_T) = 0.25(\sigma_y^2 + \sigma_y^2) + 0.25(\sigma_y^2 + \sigma_y^2)`       |
+| The variance is :math:`\mathcal{V}(b_T) = \sigma_y^2 + \sigma_y^2`.      | The variance is :math:`\mathcal{V}(b_T) = 0.25(\sigma_y^2 + \sigma_y^2) + 0.25(\sigma_y^2 + \sigma_y^2)`.      |
 +--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
-| So :math:`\mathcal{V}(b_T) = 2\sigma_y^2`                                | And :math:`\mathcal{V}(b_T) = \sigma_y^2`                                                                      |
+| So :math:`\mathcal{V}(b_T) = 2\sigma_y^2`.                               | And :math:`\mathcal{V}(b_T) = \sigma_y^2`.                                                                     |
 +--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
 
-Not only does the factorial experiment estimate the effects with much greater precision (lower variance), but the COST approach cannot estimate the effect of interactions, which is incredibly important, especially as systems approach optima which are on ridges - see the contour plots earlier in this section for an example.
+Not only does the factorial experiment estimate the effects with much greater precision (lower variance), but the COST approach cannot estimate the effect of interactions, which is incredibly important, especially as systems approach optima that are on ridges (see the contour plots earlier in this section for an example).
 
 Factorial designs make each experimental observation work twice.
 	
@@ -1268,22 +1311,22 @@ Summary so far
 -	The factorial experimental design is intentionally constructed so that each factor is independent of the others. There are :math:`2^k` experiments for :math:`k` factors.
 
 	-	This implies the :math:`\mathbf{X}^T\mathbf{X}` matrix is easily constructed (a diagonal matrix, with a value of :math:`2^k` for each diagonal entry).
-	-	These coefficients have the lowest variability possible: :math:`(\mathbf{X}^T\mathbf{X})^{-1}S_E^2`
-	-	We have uncorrelated estimates of the slope coefficients in the model. That is we can be sure the value of the coefficient is unrelated to the other values. 
+	-	These coefficients have the lowest variability possible: :math:`(\mathbf{X}^T\mathbf{X})^{-1}S_E^2`.
+	-	We have uncorrelated estimates of the slope coefficients in the model. That is, we can be sure the value of the coefficient is unrelated to the other values. 
 	
--	However, we still need to take the usual care in *interpreting* the coefficients. The usual precaution, using the example below, is that the temperature coefficient :math:`b_T` is the effect of a one degree change, holding all other variables constant. That's not possible if :math:`b_{TS}`, the interaction between :math:`T` and :math:`S`, is significant: we cannot hold the :math:`TS` constant while changing :math:`b_T`.
+-	However, we still need to take the usual care in *interpreting* the coefficients. The usual precaution, using the example below, is that the temperature coefficient :math:`b_T` is the effect of a one-degree change, holding all other variables constant. That's not possible if :math:`b_{TS}`, the interaction between :math:`T` and :math:`S`, is significant: we cannot hold the :math:`TS` constant while changing :math:`b_T`.
 		
 	.. math:: 
 	
 		y = b_0 + b_T x_T + b_S x_S + b_{TS} x_Tx_S + e
 	
-	So *we cannot interpret the main effects separately from the interaction effects*, when we have significant interaction terms in the model.  Also, if you conclude the interaction term is significant, then you must also include all main factors that make up that interaction term in the model.
+	*We cannot interpret the main effects separately from the interaction effects* when we have significant interaction terms in the model.  Also, if you conclude the interaction term is significant, then you must also include all main factors that make up that interaction term in the model.
 		
-	For another example, with interpretation of it, please see Box, Hunter, and Hunter (2nd ed), page 185.
+	For another example, with an interpretation, please see Box, Hunter and Hunter (2nd edition), page 185.
 	
--	Factorial designs use the collected data much more efficiently than one-at-a-time experimentation. As shown in :ref:`the preceding section <DOE-COST-vs-factorial-efficiency>`, the estimated variance is halved when using a factorial design than from a COST approach.
+-	Factorial designs use the collected data much more efficiently than one-at-a-time experimentation. As shown in :ref:`the preceding section <DOE-COST-vs-factorial-efficiency>`, the estimated variance is halved when using a factorial design compared to a COST approach.
 	
--		A small or zero effect from an :math:`x` variable to the :math:`y` response variable implies the :math:`y` is insensitive to that :math:`x`. This is desirable in some situations - it means we can adjust that :math:`x` without affecting :math:`y`, sometimes said as "*the* :math:`y` *is robust to changes in* :math:`x`".
+-	A small or zero effect from an :math:`x` variable to the :math:`y` response variable implies the :math:`y` is insensitive to that :math:`x`. This is desirable in some situations. It means we can adjust that :math:`x` without affecting :math:`y`, sometimes stated as "the :math:`y` is robust to changes in :math:`x`".
 
 .. _DOE-fractional-factorials:
 
@@ -1876,12 +1919,17 @@ Blocking is slightly different: blocking is a special way of running the experim
 
 Finally, a disturbance can be characterized as a **controlled disturbance**, in which case it isn't a disturbance anymore, as it is held constant for all experiments, and its effect cancels out. But it might be important to investigate  the controlled disturbance, especially if the system is operated later on when this disturbance is at a different level.
 
+
+.. Add discussion from MOOC about disturbances and covariates here. INclude the mind map from this discussion https://mail.google.com/mail/u/0/#sent/147a62c3237dc5fb
+
+
+
 .. _DOE-Blocking-and-confounding:
 
 Blocking and confounding
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It is extremely common for known, or controllable or measurable factors to have an effect on the response. However these disturbance factors might not be of interest to us during the experiment. Cases are:
+It is common for known, or controllable or measurable factors to have an effect on the response. However these disturbance factors might not be of interest to us during the experiment. Cases are:
 
 	-	*Known and measurable, not controlled*: Reactor vessel A is known to achieve a slightly better response, on average, than reactor B. However both reactors must be used to complete the experiments in the short time available.
 	
@@ -2157,7 +2205,7 @@ So when the measured center point value is quite different from the predicted ce
 
 .. _DOE_central_composite_designs:
 
-We will not go into too much detail about :index:`central composite designs`, other than to show what they look like for the case of 2 and 3 variables. These designs take an existing orthogonal factorial and augment it will axial points. This is great, because we can start off with an ordinary factorial and always come back later to add the terms to account for nonlinearity.
+We will not go into too much detail about :index:`central composite designs`, other than to show what they look like for the case of 2 and 3 variables. These designs take an existing orthogonal factorial and augment it with axial points. This is great, because we can start off with an ordinary factorial and always come back later to add the terms to account for nonlinearity.
 
 The :index:`axial points <pair: axial points; experiments>` are placed :math:`4^{0.25} = 1.4` coded units away from the center for a 2 factor system, and :math:`8^{0.25} = 1.7` units away for a :math:`k=3` factor system. Rules for higher numbers of factors, and the reasoning behind the 1.4 and 1.7 unit step size can be found, for example in the textbook by Box, Hunter and Hunter.
 

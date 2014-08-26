@@ -1542,7 +1542,7 @@ The reference data method shows that the trial with 10 experiments using system 
 
 When constructing the reference set, we have to be sure the reference data are appropriate. Were the reference data acquired under conditions that were similar to the time in which data from system B were acquired?  In this example, they were, but in practice, careful inspection of plant records must be made to verify this.
 
-The other two methods mainly use the experimental data, and provide essentially the same answer *in this case study*, though that is not always the case. The main point here is that our experimental data are usually not independent. However, by careful planning, and expense, we can meet the requirement of independence by randomizing the order in which we acquire the data. Randomization is the insurance (cost) we pay so that we do not have to rely of a large body of prior reference data. But in some cases it is not possible to randomize, so blocking is required. More on blocking in the :ref:`DOE section <DOE_blocking_section>`.
+The other two methods mainly use the experimental data, and provide essentially the same answer *in this case study*, though that is not always the case. The main point here is that our experimental data are usually not independent. However, by careful planning, and expense, we can meet the requirement of independence by randomizing the order in which we acquire the data. Randomization is the insurance (cost) we pay so that we do not have to rely of a large body of prior reference data. But in some cases it is not possible to randomize, so blocking is required. More on blocking in the :ref:`design of experiments section <DOE_blocking_section>`.
 
 .. _univariate_paired_tests:
 

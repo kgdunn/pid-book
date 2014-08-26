@@ -49,6 +49,11 @@ Because this is a predominantly electronic book, we resort to many hyperlinks in
 
 **Acknowledgements**: I would like to thank my students and teaching assistants who over the years have made valuable comments, suggestions and corrections, and given permission to use their solutions to various questions. Particular thanks to Emily Nichols (2010), Ian Washington (2011), Ryan McBride (2011), Stuart Young (2011), Mudassir Rashid (2011), Yasser Ghobara (2012), Pedro Castillo (2012), Miles Montgomery (2012), Cameron DiPietro (2012), Andrew Haines (2012), Krishna Patel (2012), Xin Yuan (2013), Sean Johnstone (2013), Jervis Pereira (2013), and Ghassan Marjaba (2014). *Their contributions are greatly appreciated.*
 
+The textbook was used in an online course from July to August 2014, `Experimentation for Improvement <https://www.coursera.org/course/experiments>`_. Comments and feedback from that course have greatly improved this book. *Thanks to all the Courserians*.
+
+In particular, I'd like to thank Devon Mordell, from McMaster University, for her informal help on editing parts of the book. As well as my formal editor, `Teresa Wilson <http://tdwcommunications.com>`_, 
+
+
 Thanks also to instructors at other universities who have used these notes and slides in their courses and provided helpful feedback.
 
 Thanks everyone!
@@ -75,10 +80,9 @@ Thanks everyone!
 		*	Please tell us if you find errors in these chapters, or have suggestions for improvements.
 		*	Please email to ask permission if you would like changes to the above terms and conditions.
 
-	.. centered:: kevin.dunn@mcmaster.ca
 
 	Thanks, 
-	Kevin
+	`Kevin <mailto:kevin.dunn@mcmaster.ca>`_
 
 .. raw:: latex
 

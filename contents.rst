@@ -18,12 +18,7 @@ Process Improvement Using Data
 	
 .. Sections omitted:
 
-	data-visualization/index
-	univariate-review/index
-	process-monitoring/index
-	least-squares-modelling/index
-	design-analysis-experiments/index
-	latent-variable-modelling/index
+	
 	
 .. Solution manual
 
