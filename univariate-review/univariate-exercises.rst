@@ -44,7 +44,6 @@ Exercises
 	   :lines: 1-11,13,15-
 
 	.. image:: ../figures/univariate/soy-salt-content.png
-		:width: 400px
 		:scale: 50
 	
 	Note that the units of spread are the same as the variable being quantified. The IQR is 240 mg salt/15 mL serving. The standard deviation (202 mg salt/15 mL serving), and MAD (193 mg salt/15 mL serving), are 2 other ways to quantify the spread of the data.  Note that the IQR, for normally distributed data, will only be consistent if you divide the result by 1.349. Read the help for the ``IQR`` function in R for more details. Note from the code how the IQR is a *distance* between two points.
@@ -80,22 +79,16 @@ Exercises
 	   :language: s
 
 	.. image:: ../figures/univariate/size1.png
-		:width: 300px
 		:scale: 40
 	.. image:: ../figures/univariate/size2.png
-		:width: 300px
 		:scale: 40
 	.. image:: ../figures/univariate/size3.png
-		:width: 300px
 		:scale: 40
 	.. image:: ../figures/univariate/density1.png
-		:width: 300px
 		:scale: 40
 	.. image:: ../figures/univariate/density2.png
-		:width: 300px
 		:scale: 40
 	.. image:: ../figures/univariate/density3.png
-		:width: 300px
 		:scale: 40
 	
 
@@ -138,11 +131,9 @@ Exercises
 
 
 	.. image:: ../figures/univariate/snowfall-data.png
-		:width: 750px
 		:scale: 75
 	
 	.. image:: ../figures/univariate/temperature-data.png
-		:width: 750px
 		:scale: 75
 	
 .. question::
@@ -214,7 +205,6 @@ Exercises
 			*Additional information*: To answer this part, you should move everything to :math:`z`-coordinates first. Then you need to find the points :math:`-c` and :math:`+c` in the following diagram that mark the boundary for a 95% of the total area under the distribution. This region is an interval that will contain, with 95% certainty, the population mean of the viscosity, :math:`\mu`. Write your answer in form: :math:`\text{LB} < \mu < \text{UB}`.
 
 			.. image:: ../figures/univariate/show-confidence-interval.png
-				:width: 500px
 				:scale: 50
 
 		- Now assume that for some hypothetical reason we know the standard deviation of the bale's viscosity is :math:`\sigma=3.5` units, calculate the population mean's interval numerically.
@@ -350,7 +340,6 @@ Exercises
 		     xlab="Energy required over 24 hours (W.h)", col="White", ylim=c(0,20))
 	
 	.. image:: ../figures/univariate/bulb-energy-barplot.png
-		:width: 500px
 		:align: center
 		:scale: 50
 
@@ -422,7 +411,6 @@ Exercises
 	We can start by looking at the data. A box plot is a reasonable way to compare both the location and spread of the brittleness values from each reactor.
 
 	.. image:: ../figures/univariate/brittleness-boxplot.png
-	    :width: 750px
 	    :align: center
 	    :scale: 50
 
@@ -486,7 +474,6 @@ Exercises
 	- Pick any other 2 days that you would find interesting to compare and repeat your analysis.
 
 	.. image:: ../figures/univariate/Website-traffic-TS.png
-		:width: 750px
 		
 .. answer::
 	
@@ -559,7 +546,6 @@ Exercises
 	The temptation is to jump into the code and calculate the :math:`t`-values and averages differences (:math:`\overline{x}_D = 16.4`, and :math:`\overline{x}_M = 22.6`). But start with a plot of the data, specifically a plot of the differences between the two methods. The immediate problem you see is that average difference of 6.2 between the methods is strongly influenced by a single observation (the second one). In general, the dilution method always produced a smaller result than the manometric method. We expect to see that in our analytical results.
 
 	.. image:: ../figures/univariate/BOD-comparison-plot.png
-	    :width: 750px
 	    :align: center
 	    :scale: 60
 
@@ -584,7 +570,6 @@ Exercises
 	       :language: s
 
 	.. image:: ../figures/univariate/normal-t-comparison.png
-	    :width: 750px
 	    :align: center
     
 	The above source code and figure output shows that the :math:`t`-distribution starts being indistinguishable from the normal distribution after about 35 to 40 degrees of freedom. This means that when we deal with large sample sizes (over 40 or 50 samples), then we can use critical values from the normal distribution rather than the :math:`t`-distribution. Furthermore, it indicates that our estimate of the variance is a pretty good estimate of the population variance for largish sample sizes.
@@ -705,7 +690,6 @@ Exercises
 	A common unit operation in the pharmaceutical area is to uniformly blend powders for tablets. In this question we consider blending an excipient (an inactive magnesium stearate base), a binder, and the active ingredient. The mixing process is tracked using a wireless near infrared (NIR) probe embedded in a V-blender. The mixer is stopped when the NIR spectra become stable. A new supplier of magnesium stearate is being considered that will save $ 294,000 per year.
 
 	..	figure:: ../figures/univariate/V-Blender.png
-		:width: 500px
 		:align: center
 		:scale: 40
 	
@@ -850,7 +834,6 @@ Exercises
 	You are convinced that a different impeller (mixing blade) shape for your tank will lead to faster, i.e. shorter, mixing times. The choices are either an axial blade or a radial blade. 
 
 	..	figure:: ../figures/univariate/Mixing_-_flusso_assiale_e_radiale.jpg
-		:width: 500px
 		:align: center
 		:scale: 40
 
@@ -988,7 +971,6 @@ Exercises
 		.. image:: ../figures/univariate/batch-yields-qqplot.png
 			:alt:	../figures/univariate/batch-yields.R
 			:scale: 60
-			:width: 500px
 			:align: center  
 
 		The data appear to follow a normal distribution, based on the visual test of this qq-plot.
@@ -1042,7 +1024,6 @@ Exercises
 		.. image:: ../figures/univariate/overlaid-distributions-normal-and-t.jpg
 			:alt:	../figures/univariate/overlaid-distributions-normal-and-t.R
 			:scale: 50
-			:width: 750px
 			:align: center
 		
 		where the above figure was generated with the R-code:
@@ -1180,7 +1161,6 @@ Exercises
 	.. image:: ../figures/least-squares/concrete-slump.png
 		:alt:	../figures/least-squares/concrete-slump.svg
 		:scale: 70
-		:width: 750px
 		:align: center
 		
 	

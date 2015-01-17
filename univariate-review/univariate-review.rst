@@ -46,7 +46,6 @@ What we will cover
 ==================
 
 .. image:: ../figures/mindmaps/univariate-section-mapping.png
-  :width: 750px 
   :align: center
   :scale: 92
 
@@ -169,7 +168,6 @@ Turning the above discussion around, with you on the receiving end of a highly v
 
 	.. image:: ../figures/concepts/variation/feedback-control-variance-reduction-reduced.png
 		:align: center
-		:width: 750px
 		:scale: 50
 
 -	Even if you do take feedback or feed-forward corrective control: you have to incur additional cost, since you have to process materials that are not to specification: this will require energy and/or time, reducing your profit due to the supplier's raw material variability.
@@ -199,7 +197,6 @@ The :ref:`previous section <univariate-about-variability>` has hopefully convinc
 A histogram is a summary of the variation in a measured variable. It shows the *number* of samples that occur in a *category*: this is called a **frequency distribution**. For example: number of children born, categorized against their gender: male or female.
 
 .. image:: ../figures/univariate/histogram-children-by-gender.png
-   	:width: 750px
 	:scale: 40
 	:align: center
 	
@@ -208,7 +205,6 @@ The raw data in the above example was a vector of consisted of 2739 text entries
 Histograms make sense for categorical variables, but a histogram can also be derived from a continuous variable. Here is an example showing the mass of cartons of 1 kg of flour. The continuous variable, mass, is divided into equal-size bins that cover the range of the available data.  Notice how the packaging system has to overfill each carton so that the vast majority of packages weigh over 1 kg (what is the average package mass?). If the variability in the packaging system could be reduced, then the histogram can be shifted to the left, thereby reducing overfill.
 
 .. image:: ../figures/univariate/histogram-package-mass.png
-	:width: 750px
 	:scale: 60
 	:align: center
 
@@ -271,7 +267,6 @@ A :index:`relative frequency`, also called :index:`density`, is sometimes prefer
 -	the area under the histogram is equal to 1, and related to probability
 
 .. image:: ../figures/univariate/frequency-histogram.png
-	:width: 750px
 	:scale: 60
 	:align: center
 	
@@ -444,7 +439,6 @@ An example: a histogram for a system that produces 70% acceptable product, :math
 
 .. image:: ../figures/univariate/histogram-70-30.png
 	:align: center
-	:width: 750px
 	:scale: 45
 
 If each observation is independent of the other, then:
@@ -485,7 +479,6 @@ The histogram for an event with 4 possible outcomes that are uniformly distribut
 .. image:: ../figures/univariate/histogram-4-cuts.png
 	:align: center
 	:scale: 50
-	:width: 750px
 
 You can simulate uniformly distributed random numbers in most software packages. As an example, to generate 50 uniformly distributed random *integers* between 2 and 10, inclusive:
 
@@ -520,7 +513,6 @@ The condition of finite variance is true for almost all systems of practical int
 	
 .. image:: ../figures/univariate/CLT-derivation.png
 	:alt:	../figures/univariate/CLT-derivation.svg
-	:width: 750px
 	:align: center
 	:scale: 75
 	
@@ -529,7 +521,6 @@ The critical requirement for the central limit theorem to be true, is that the s
 Imagine a case where we are throwing dice. The distributions, shown below, are obtained when we throw a die :math:`M` times and we plot the distribution of the *average* of these :math:`M` throws.
 
 .. image:: ../figures/univariate/simulate-CLT.png
-	:width: 750px
 	:align: center
 	:scale: 70
 
@@ -595,7 +586,6 @@ Formal definition for the normal distribution
 .. math:: p(x) = \dfrac{1}{\sqrt{2\pi \sigma^2}}e^{-\dfrac{\left(x-\mu\right)^2}{2\sigma^2}}
 	
 .. image:: ../figures/univariate/normal-distribution-standardized.png
-	:width: 750px
 	:align: center
 	:scale: 80
 
@@ -696,7 +686,6 @@ Now the **inverse cumulative distribution** is used when we know the area, but w
 
 .. image:: ../figures/univariate/show-pnorm-and-qnorm.png
 	:scale: 70
-	:width: 750px
 	:align: center
 		
 On to checking for normality. We approach this problem by first constructing some quantities that we would expect for truly normally distributed data. Secondly, we construct the same quantities for the actual data. A plot of these 2 quantities against each other will reveal if the data are normal, or not.
@@ -740,7 +729,6 @@ On to checking for normality. We approach this problem by first constructing som
 		
 	.. image:: ../figures/univariate/qqplot-derivation.png
 		:align: center
-		:width: 750px
 		:scale: 50
 
 A built-in function exists in R that runs the above calculations and shows a scatter plot. The 45 degree line is added using the ``qqline(...)`` function. However, a better function that adds a confidence limit envelope is included in the ``car`` library (see the *Package Installer* menu in R for adding libraries from the internet). 
@@ -756,7 +744,6 @@ A built-in function exists in R that runs the above calculations and shows a sca
 
 .. image:: ../figures/univariate/qqplot-from-R.png
 	:align: center
-	:width: 750px
 	:scale: 100
 	
 The R plot rescales the :math:`y`-axis (sample quantiles) back to the original units to make interpretation easier. We expect some departure from the 45 degree line due to the fact that these are only a sample of data. However, large deviations indicates the data are not normally distributed. An error region, or confidence envelope, may be superimposed around the 45 degree line.
@@ -780,7 +767,6 @@ We can use the q-q plot to compare any 2 *samples of data*, even if they have di
 .. image:: ../figures/univariate/qqplot-comparison.png
 	:alt:   ../figures/univariate/qqplot-comparison.R
 	:align: center
-	:width: 750px
 	
 Even though the histogram of the :math:`F`-distribution samples looks normal to the eye (left), the q-q plot (right) quickly confirms it is definitely not normal, particularly, that the right-tail is too heavy.
 
@@ -812,7 +798,6 @@ Let's take :math:`n` values of this daily profit value, let's say :math:`n=5`.
 	.. image:: ../figures/univariate/explain-confidence-interval.png
 		:alt:	../figures/univariate/explain-confidence-interval.R
 		:scale: 80
-		:width: 750px
 		:align: center
 
 	The true population (but unknown to us) profit value is $700.
@@ -839,7 +824,6 @@ Let's take :math:`n` values of this daily profit value, let's say :math:`n=5`.
 	.. image:: ../figures/univariate/explain-confidence-interval-normalized.png
 		:alt:	../figures/univariate/explain-confidence-interval.R
 		:scale: 80
-		:width: 750px
 		:align: center
 	
 #.	Using the known normal distribution for :math:`\displaystyle \overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`, we can find the vertical, dashed red lines shown in the previous figure, that contain 95% of the area under the distribution for :math:`\overline{x}`.
@@ -888,14 +872,12 @@ which we derived by using the fact that :math:`\frac{\overline{x} - \mu}{\sigma/
 An obvious way out of our dilemma is to replace :math:`\sigma` by the sample standard deviation, :math:`s`, which is exactly what we will do, however, the quantity :math:`\frac{\overline{x} - \mu}{s/\sqrt{n}}` is not normally distributed, but is :math:`t`-distributed. Before we look at the details, it is helpful to see how similar in appearance the :math:`t` and normal distribution are: the :math:`t`-distribution peaks slightly lower than the normal distribution, but it has broader tails. The total area under both curves illustrated here is 1.0.
 
 .. image:: ../figures/univariate/t-distribution-comparison.png
-	:width: 750px
 	:align: center
 	:scale: 100
 
 There is one other requirement we have to observe to use the :math:`t`-distribution: the values that we sample, :math:`x_i` must come from a normal distribution (carefully note that in the previous section we didn't have this restriction!). Fortunately it is easy to check this requirement: just use the :ref:`q-q plot method described earlier <univariate_check_for_normality_qqplot>`. Another requirement, which we had before, was that we must be sure these measurements, :math:`x_i`, are independent.
 
 .. image:: ../figures/univariate/t-distribution-derivation.png
-	:width: 750px
 	:align: center
 	:scale: 75
 
@@ -1048,7 +1030,6 @@ There are two important properties:
 Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{e^{-\eta}\eta^{x}}{x!}`, with a plot as shown for :math:`\eta = 4`. Please note the lines are only guides, the probability is only defined at the integer values marked with a circle. 
 
 .. image:: ../figures/univariate/poisson-distribution.png
-	:width: 600px
 	:align: center
 	:scale: 50
 	
@@ -1229,7 +1210,6 @@ Either we want to confirm things are statistically the same, or confirm they hav
 *Example*: A process operator needs to verify that a new form of feedback control on the batch reactor leads to improved yields. Yields under the current control system, A, are compared with yields under the new system, B. The last ten runs with system A are compared to the next 10 sequential runs with system B. The data are shown in the table, and shown in graphical form as well. (Note that the box plot uses the median, while the plots on the right show the mean.)  
  
 .. image:: ../figures/univariate/system-comparison-boxplot-plots.png
-	:width: 750px
 	:scale: 60
 	:align: center
 
@@ -1301,7 +1281,6 @@ Here's the procedure:
 	#.	Repeat steps 2 and 3, but use batches 2 to 11 and 12 to 21. Repeat until all historical batch data are used up, i.e. batches 281 to 290 and 291 to 300. The plot below can be drawn, one point for each of these difference values.
 	
 		.. image:: ../figures/univariate/system-comparison-dotplot-grouped.png
-			:width: 750px
 			:align: center
 			:scale: 100
 	
@@ -1329,7 +1308,6 @@ In fact, for this example, the data were not independent, they were autocorrelat
 We can visualize this :index:`autocorrelation` by plotting the values of :math:`x[k]` against :math:`x[k+1]`:
 
 .. image:: ../figures/univariate/system-comparison-autocorrelation-scatterplot.png
-	:width: 600px
 	:align: center
 	:scale: 60
 	
@@ -1403,7 +1381,6 @@ Discuss whether these experiments would lead to :index:`independent data <single
 	a)	We are testing a new coating to repel moisture. The coating is applied to packaging sheets that are already hydrophobic, however this coating enhances the moisture barrier property of the sheet. In the lab, we take a large packaging sheet and divide it into 16 blocks. We coat the sheet as shown in the figure and then use the :math:`n_A=8` and :math:`n_B=8` values of hydrophobicity to judge if coating B is better than coating A.
 	
 		.. image:: ../figures/univariate/sheet-coating-application.png
-			:width: 600px
 			:align: center
 			:scale: 50
 		

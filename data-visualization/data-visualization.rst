@@ -31,9 +31,8 @@ You can use the material in this chapter when you must learn more about your sys
 What we will cover
 ==================
 
-.. figure:: ../figures/visualization/visualization-subject-mapping.png
+.. figure:: /figures/visualization/visualization-subject-mapping.png
 	:alt:	../figures/visualization/visualization-subject-mapping.xmind
-	:width: 750px
 	:align: center
 	:scale: 60
 
@@ -73,7 +72,6 @@ Here are some tips for effective time-series plots:
 	.. _visualization-bad-labels:
 
 	.. image:: ../figures/visualization/CPU-temperature_-_from_www_aw_org_on_26_Dec_2009.png
-		:width: 750px
 		:align: center
 		:scale: 50
 
@@ -86,7 +84,6 @@ Here are some tips for effective time-series plots:
 	.. _visualization-cluttered-trajectories:
 
 	.. image:: ../figures/visualization/3_correlated_variables_-_badly_displayed_in_Numbers.png
-		:width: 750px
 
 .. AU: The term "here" is ambiguous. In the following paragraph, is "here" referring to the figures above and below?
 
@@ -95,14 +92,12 @@ Here are some tips for effective time-series plots:
 	Using different markers, improving the axis labelling, tightening up the axis ranges, and thinning out the ink improves the chart slightly. This took about 3 minutes extra in the software, because I had not used the software before and had to find the settings.
 
 	.. figure:: ../figures/visualization/3_correlated_variables_-_slightly_better.png
-		:width: 750px
 
 	This final example with parallel axes is greatly improved, but took about 10 minutes to assemble and would likely take a similar amount of time to format in MATLAB, Excel, Python or other packages. The results are clearer to interpret: variables "Type A" and "Type B" move up and down together, while variable "Type C" moves in the opposite direction. Note how the *y*-axis for "Type C" is rescaled to start from its minimum value, rather than a value of zero. You should always use "tight" limits on the *y*-axis.
 
 	.. _visualization-cleaned-trajectories:
 
 	.. image:: ../figures/visualization/3_correlated_variables_-_better.png
-		:width: 750px
 
 -	Using the same data as in the previous tip, a much improved visualization technique is to use sparklines to represent the sequence of data.
 
@@ -124,8 +119,7 @@ Here are some tips for effective time-series plots:
 	.. _visualization-apple-stock:
 
 	.. image:: ../figures/visualization/AAPL-stock-prices.png
-		:width: 750px
-		:scale: 80
+		:scale: 50
 		:align: center
 
 Bar plots
@@ -144,9 +138,7 @@ Here is some advice for bar plots:
 
 	.. image:: ../figures/visualization/quarterly-profit-barplot-vs-lineplot.png
 		:alt:	../figures/visualization/quarterly-profit-barplot.R
-		:width: 750px
 		:align: center
-		:scale: 100
 
 -	Bar plots can be wasteful as each data point is repeated several times:
 
@@ -171,7 +163,6 @@ Here is some advice for bar plots:
 
     .. image:: ../figures/visualization/profit-by-region.png
 		:alt:	../figures/visualization/profit-by-region.numbers
-		:width: 750px
 		:align: center
 		:scale: 100
 
@@ -179,7 +170,6 @@ Here is some advice for bar plots:
 
 	.. image:: ../figures/visualization/hatched-barplot.png
 		:alt:	../figures/visualization/hatched-barplot.R
-		:width: 600px
 		:align: center
 		:scale: 45
 
@@ -248,7 +238,6 @@ The following box plot is a graphical summary of these numbers.
 
 .. image:: ../figures/visualization/boxplot-for-two-by-six-100-boards.png
 	:align: left
-	:width: 700px
 	:scale: 55
 
 Some variations for the box plot are possible:
@@ -267,8 +256,6 @@ This is a plot many people are comfortable using. It helps you understand the re
 The unspoken intention of a scatter plot is usually to ask the reader to draw a causal relationship between the two variables. However, not all scatter plots actually show causal phenomena.
 
 .. image:: ../figures/visualization/scatterplot-figures.png
-	:width: 750px
-	:scale: 80
 
 Strive for graphical excellence by doing the following:
 
@@ -289,13 +276,11 @@ You will see this in industrial settings as well. The next time you go into the 
 Further improvements can be made to your scatter plots. For example, extend the frames only as far as your data:
 
 	.. image:: ../figures/visualization/scatterplot-figures-with-regression-lines.png
-		:width: 750px
 		:scale: 75
 
 You can add box plots and histograms to the side of the axes to aide interpretation:
 
 	.. image:: ../figures/visualization/scatterplot-with-histograms-updated.png
-		:width: 750px
 		:scale: 42
 
 Add a third variable to the plot by adjusting the marker size, and add a fourth variable with the use of colour:
@@ -385,7 +370,6 @@ A layout that you expect to see in a standard engineering report:
 And the layout advocated by Tufte:
 
 	.. image:: ../figures/visualization/tables-recast-as-plots-both.png
-	   :width: 750px
 	   :scale: 75
 
 Note how the slopes carry the information about the effect of changing the coating type. The rearranged row ordering shows the changes as well. This idea is effective for two treatments but could be extended to three or four treatments by adding extra "columns."

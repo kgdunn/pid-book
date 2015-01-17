@@ -10,7 +10,6 @@ Exercises
 
 	.. image:: ../figures/visualization/course-website-visits.png
 		:align: center
-		:width: 750px
 
 	#.	What are the names (type) of the 2 plots shown?
 	#.	List any 2 interesting features in these data.
@@ -93,7 +92,6 @@ Exercises
 
 	.. image:: ../figures/visualization/scatterplotmatrix-food-data.png
 		:align: left
-		:width: 700px
 		:scale: 100
 	
 	.. literalinclude:: ../figures/visualization/scatterplotmatrix-food-data.R
@@ -139,7 +137,6 @@ Exercises
 		    boxplot(web$Visits ~ days)
 
 		.. image:: ../figures/visualization/website-traffic-boxplot.png
-			:width: 500px
 			:scale: 60
 
 		The box plot shows:
@@ -152,7 +149,6 @@ Exercises
 	#.	A time-series plot of the data shows increased visits in September and October, and declining visits in November and December. This coincides with the phases of the academic term. A plot of the total number of visits within each month will show this effect clearly. The lowest number of visits were recorded in late June and July. 
 	
 		.. image:: ../figures/visualization/website-traffic-timeseries.jpg
-			:width: 750px
 			:align: center
 
 	The best way to draw the time-series plot is to use proper time-based labelling on the x-axis, but we won't cover that topic here. If you are interested, read up about the ``xts`` package (`see the R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_) and it's plot command. See how it is used in the code below::
@@ -202,7 +198,6 @@ Exercises
 		.. image:: ../figures/visualization/kidnap-mobile.jpg
 			:alt:	../figures/visualization/kidnappings.R
 			:scale: 60
-			:width: 500px
 			:align: center
 		
 	#.	The advantage of the time-series plot is that you are able to clearly see any time-based trends - those are lost in the scatter plot (though you can recover some time-based information when you connect the dots in time order).
@@ -239,7 +234,6 @@ Exercises
 		.. image:: ../figures/examples/room-temperature/room-temperatures.png
 			:alt:	../figures/examples/room-temperature/room-temperature-plots.R
 			:scale: 100
-			:width: 500px
 			:align: center
 		
 		A sequence plot of the data is good enough, though a time-based plot is better.
@@ -254,7 +248,6 @@ Exercises
 		.. image:: ../figures/examples/room-temperature/room-temperature-sparklines.png
 			:alt:	../figures/examples/room-temperature/room-temperature-plots.R
 			:scale: 100
-			:width: 500px
 			:align: center
 
 		Another example of effective sparklines are for stock market data.  Take a look, for example at `Google Finance for ERJ <http://www.google.com/finance?q=NYSE:ERJ>`_ (Embraer SA).  Google shows Embraer's stock price, but scroll down to see the sparklines for other companies that are in the same economic sector (Bombadier, Boeing, Northrop Grumman, *etc*).  This quickly allows you to see whether movements in a stock are due to the overall sector (correlations), or due to a particular company (broken correlations).
@@ -277,7 +270,6 @@ Exercises
 	
 		.. image:: ../figures/visualization/boxplot-for-two-by-six-100-boards.png
 			:align: center
-			:width: 500px
 			:scale: 55
 
 		.. literalinclude:: ../figures/visualization/boxplot-for-boards.R
@@ -332,7 +324,6 @@ Exercises
 	
 	.. image:: ../figures/visualization/boxplot-for-systematic-method-used-2014.png
 		:align: left
-		:width: 700px
 		:scale: 70
 	
 	* students in either category achieved the highest grade possible
