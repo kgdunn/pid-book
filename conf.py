@@ -52,7 +52,7 @@ else:
     raise Exception('ucommentapp: django path is invalid')
 
 # MathJax extension:
-extensions.append('mathjax')
+extensions.append('sphinx.ext.mathjax')
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -109,7 +109,7 @@ del cmd, out, source, str_out, subprocess
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build', '.hg', 'ext']
+exclude_patterns = ['_build', '.hg', 'ext', 'latent-variable-modelling']
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 #default_role = None
@@ -172,7 +172,14 @@ linkcheck_ignore = [r'http://dx.doi.org/', 'http://www.jstor.org/pss/', 'http://
 
 # The theme to use for HTML and HTML Help pages.  Major themes that come with
 # Sphinx are currently 'default' and 'sphinxdoc'.
-html_theme = 'pyramid'
+#html_theme = 'pyramid'
+
+# sudo easy_install sphinx_rtd_theme
+# In your conf.py file:
+
+import sphinx_rtd_theme
+html_theme = "sphinx_rtd_theme"
+html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

@@ -38,6 +38,36 @@ To do
 
 
 
+Content-wise
+============
+
+Nelder-Mead vs RSM
+
+The Nelder-Mead algorithm (as the animations on that WikiPedia page show), move around the response surface, in a way that reminds you of the 4C approach. As you mentioned, both in the RSM (Response Surface Method) learned in 4C and in the Nelder-Mead 4G method, we never actually know what the true function is being optimized, $$f(x)$$.
+
+The distinctions between them are: 
+Use Nelder-Mead when you just want to get to an optimum, no matter how, and without really understanding the process. You mentioned that.
+The RSM approach in 4C is more subtle: we place a premium on doing a minimum number of function evaluations. The Nelder-Mead method, as you can see in the animations, simply does a brute force investigation, and can easily lead to over 100 function evaluations when searching in 2 variables.
+You might also have noticed in 4G we make a big deal about derivatives. The Nelder-Mead doesn't even try to approximate derivative information to assist its search. You can see in 4C that by calculating a search direction $$\dfrac{\Delta x_A}{\Delta x_B}=\dfrac{b_A}{b_B}$$ that we are approximating a slope going up the steepest direction (gradient). That slope calculation, i.e. an estimate of the derivatives, is how the RSM approach gains an advantage for a reduced number of steps.
+Finally, it is important to consider termination. The Nelder-Mead terminates when the simplex size gets small and the function values are close to each other. The RSM method is more subtle: we fit quadratic surfaces, and use that local model at the optimum to assert we have achieved our goal.
+There's a place for both techniques, mostly distinguished by how much prior knowledge you have about your system and related to the cost of function evaluations.
+
+
+RSM:
+-----
+I have a question in consideration to surface response methods and the steepest path of ascent. For this strategy, we implement the path of ascent from the baseline point. Why do we not initiate the path of steepest ascent from the point with the highest outcome (y) value?
+
+Hi Nastassia,
+
+Strictly speaking the direction of steepest ascent is a ratio of gradients: $$\dfrac{\Delta x_A}{\Delta x_B} = \dfrac{b_A}{b_B} = \dfrac{\partial y / \partial x_A}{\partial y / \partial x_B}$$, which are the partial derivatives at the $$(0,0)$$ tangent plane. This ratio is exact at the origin.
+
+At the point of highest outcome, the partial derivatives will have to take the value of the other variable(s) into account, so the ratio will only be  $$\dfrac{b_A}{b_B} \approx \dfrac{\partial y / \partial x_A}{\partial y / \partial x_B}$$.
+
+I've often wondered that myself - I suspect you won't be off by very much if you did start at the point of the highest outcome though. But I haven't tested it thoroughly.
+
+
+
+
 Preface
 -------
 

@@ -586,7 +586,6 @@ Interpretation of the PCR:
 The PCR is often called the :index:`process width`. Let's see why by taking a look at a process with PCR=0.5 and then PCR=2.0. In the first case :math:`\text{USL} - \text{LSL} = 3\sigma`. Since the interpretation of PCR assumes a :index:`centered process`, we can draw a diagram as shown below:
 
 .. image:: ../figures/monitoring/explain-PCR-half.png
-	:width: 750px
 	:align: center
 	:scale: 80
 
@@ -601,7 +600,6 @@ The diagram is from a process with mean of 80 and where LSL=65 and USL=95. These
 Contrast this to the case where PCR = 2.0 for the same system. To achieve that level of process capability, using the *same upper and lower specifications* we have to  reduce the standard deviation by a factor of 4, down to :math:`\sigma = 2.5`.  The figure below illustrates that almost no off-specification product is produced for a centered process at PCR = 2.0. There is a width of :math:`12 \sigma` units from the LSL to the USL, giving the process location (mean) ample room to drift left or right without creating additional off-specification product. 
 
 .. image:: ../figures/monitoring/explain-PCR-two.png
-	:width: 750px
 	:align: center
 	:scale: 80
 

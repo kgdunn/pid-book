@@ -600,7 +600,6 @@ Had we used a formal test of differences where we pooled the variances, we would
 
 .. figure:: ../figures/doe/single-experiment-randomization.png
 	:align: center
-	:width: 750px
 	:scale: 90
 	
 	The differences in the averages of A and B for the 24,310 realizations. The vertical line represents the difference in the average for the one particular set of numbers we measured in the experiment.
@@ -633,7 +632,6 @@ The base operating point is 346 K with a feed substrate concentration of 1.5 g/L
 .. _DOE-fig-COST:
 .. figure:: ../figures/doe/COST-contours.png
 	:align: center
-	:width: 700px
 	:scale: 80	
 	
 	A demonstration of the COST (OFAT) approach
@@ -726,7 +724,6 @@ The range over which they will be varied is given in the table. This range was i
 	.. _DOE-fig-Cube-plot:
 	.. figure:: ../figures/doe/factorial-two-levels-two-variables-no-analysis.png
 		:align: left
-		:width: 750px
 		:scale: 50
 		
 		A cube plot, showing the experimental results
@@ -748,7 +745,6 @@ We can perform a similar calculation for the main effect of substrate concentrat
 .. _DOE-fig-Calculate-main-effects:
 .. figure:: ../figures/doe/factorial-two-levels-two-variables-with-analysis.png
 	:align: left
-	:width: 750px
 	:scale: 60
 	
 	A cube plot, showing the hand calculations for the main effects
@@ -759,7 +755,6 @@ The following surface plot illustrates the true, but unknown, surface from which
 
 	.. image:: ../figures/doe/factorial-two-level-surface-example-cropped.png
 		:align: left
-		:width: 750px
 		:scale: 50
 
 An :index:`interaction plot` is an :ref:`alternative way to visualize these main effects <DOE-fig-Interaction-plot-example>`. Use this method when you don't have computer software to draw the surfaces. [We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>`]. We will discuss interaction plots more in the next section.
@@ -767,7 +762,6 @@ An :index:`interaction plot` is an :ref:`alternative way to visualize these main
 	.. _DOE-fig-Interaction-plot-example:
 	.. figure:: ../figures/doe/factorial-two-level-line-plot.png
 		:align: left
-		:width: 750px
 		:scale: 80
 		
 		An interaction plot for the example where there is little interaction
@@ -798,7 +792,6 @@ Let's use a :ref:`different system here to illustrate <DOE-fig-interaction-examp
 	
 	.. figure:: ../figures/doe/factorial-two-level-with-interactions.png
 		:align: left
-		:width: 550px
 		:scale: 85
 
 		A new example, to illustrate the effects of interactions
@@ -840,7 +833,6 @@ The data may also be visualized using an :ref:`interaction plot <DOE-fig-interac
 .. _DOE-fig-interaction-plot-with-interaction:
 .. figure:: ../figures/doe/factorial-two-level-line-plot-with-interaction.png
 	:align: center
-	:width: 600px
 	:scale: 100
 	
 	An interaction plot for the example where there is significant interaction
@@ -955,7 +947,6 @@ Some things to note are (1) the orthogonality of :math:`\mathbf{X}^T\mathbf{X}` 
 	
 	.. image:: ../figures/doe/factorial-two-levels-two-variables-with-analysis.png
 		:align: left
-		:width: 750px
 		:scale: 50
 
 	The 61.5 term in the least squares model is the expected conversion at the baseline conditions. Notice from the least squares equations how it is just the average of the four experimental values, even though we did not actually perform an experiment at the center.
@@ -973,7 +964,6 @@ Finally, out of interest, the nonlinear surface that was used to generate the ex
 	
 	.. image:: ../figures/doe/factorial-two-level-surface-with-interaction-cropped.png
 		:align: left
-		:width: 750px
 		:scale: 50
 	
 The corner points are exact with the nonlinear surface, because we have used the four values to estimate four model parameters. There are no degrees of freedom left, and the model's residuals are therefore zero. Obviously, the linear model will be less accurate away from the corner points when the true system is nonlinear, but it is a useful model over the region in which we will use it later in the :ref:`section on response surface methods <DOE-RSM>`.
@@ -1140,7 +1130,6 @@ A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to esti
 
 .. image:: ../figures/doe/pareto-plot-full-fraction.png
 	:align: left
-	:width: 800px
 	:scale: 50
 	
 The above example was from a full factorial experiment where the results for :math:`y` in standard order were :math:`y = \left[45,71,48,65,68,60,80,65,43,100,45,104,75,86,70,96 \right]`.
@@ -1262,7 +1251,6 @@ Even though the confidence interval of the temperature effect would be :math:`11
 	.. figure:: ../figures/doe/normal-probability-signifcant-effects.png
 		:align: center
 		:scale: 50
-		:width: 800px
 		
 
 
@@ -1286,7 +1274,6 @@ Finally, we end this section on factorials by illustrating their efficiency. Con
 
 	.. image:: ../figures/doe/comparison-of-variances.png
 		:align: left
-		:width: 750px
 		:scale: 70
 	
 	.. tabularcolumns:: |l|l|
@@ -1368,7 +1355,6 @@ So this is our designed experiment for 3 factors, but it only requires 4 experim
 .. image:: ../figures/doe/half-fraction-in-3-factors.png
 	:align: left
 	:scale: 35
-	:width: 500px
 
 What have we lost by running only half the factorial?  Let's write out the full design and matrix of all interactions, then construct the :math:`\mathbf{X}` matrix for the least squares model.
 
@@ -1516,7 +1502,6 @@ So we see that we can always complete our half-fraction by creating a complement
 .. image:: ../figures/doe/complementary-half-fraction-in-3-factors.png
 	:align: left
 	:scale: 35
-	:width: 500px
 	:alt:	complementary-half-fraction-in-3-factors.svg
 
 .. _DOE-Generators-for-blocking:
@@ -1794,7 +1779,6 @@ Use the following table to visualize the trade-off between design resolution, nu
 .. figure:: ../figures/doe/DOE-trade-off-table.png
 	:alt:	../figures/doe/DOE-trade-off-table.svg
 	:scale: 100
-	:width: 550px
 	:align: left
 
 	Adapted from Box, Hunter and Hunter (2nd edition, p 272), and (1st edition, p 410).
@@ -1847,7 +1831,6 @@ How do you assess which main effects are important?  There are eight data points
 
 .. image:: ../figures/doe/pareto-plot.png
 	:align: left
-	:width: 800px
 	:scale: 37
 	:alt:	../figures/doe/pareto-plot.R
 	
@@ -1894,7 +1877,6 @@ Consider the diagram here, where a half fraction in factors **A**, **B** and **C
 
 .. figure:: ../figures/doe/projectivity-of-a-half-fraction-in-3-factors.png
 	:align: center
-	:width: 800px
 	:scale: 50
 	:alt:	../figures/doe/projectivity-of-a-half-fraction-in-3-factors.svg
 
@@ -1948,7 +1930,6 @@ Each group of 4 runs is called a *block* and the process of creating these 2 blo
 .. image:: ../figures/doe/blocking-factorial-3-factors.png
 	:align: left
 	:scale: 50
-	:width: 500px
 	
 .. tabularcolumns:: |c||c|c|c||c|c|c||c||c|
 
@@ -2023,7 +2004,6 @@ We will however first consider just the effect of a single factor, :math:`x_1` a
 	:alt: steepest-ascent-univariately.svg
 	:align: center
 	:scale: 70
-	:width: 750px
 
 We start at the point marked :math:`i=0` as our initial baseline (cp=center point). We run a 2-level experiment, above and below this baseline at :math:`-1` and :math:`+1`, in coded units of :math:`x_1`, and obtain the corresponding response values of :math:`y_{0,-}` and :math:`y_{0,+}`. From this we can estimate a best-fit straight line and move in the direction that increases :math:`y`. The sloping tangential line, also called the *path of steepest ascent*. Make a move of step-size = :math:`\gamma_1` units along :math:`x_1` and measure the response, recorded as :math:`y_1`. The response variable increased, so we keep going in this direction.
 
@@ -2094,8 +2074,6 @@ The interaction term is small, indicating the response surface is mostly linear 
 	:alt:	RSM-base-case.py
 	:align: left
 	:scale: 80
-	:width: 750px
-	
 
 To improve our profit in the optimal way we move along our estimated model's surface, in the direction of steepest ascent. This direction is found by taking partial derivatives of the model function, ignoring the interaction term, since it is so small.
 
@@ -2158,7 +2136,6 @@ This time we have deciding to slightly smaller ranges in the factorial :math:`\t
 
 .. figure:: ../figures/doe/RSM-base-case-combined.png
 	:align: center
-	:width: 900px
 	:scale: 100
 	:alt:	RSM-base-case.py
 
@@ -2211,7 +2188,6 @@ The :index:`axial points <pair: axial points; experiments>` are placed :math:`4^
 
 .. image:: ../figures/doe/central-composite-design.png
 	:align: left
-	:width: 900px
 	:scale: 50
 	:alt:	central-composite-design.svg
 
@@ -2400,7 +2376,6 @@ A simple bioreactor example for 2 factors is shown: at high temperatures and hig
 
 .. figure:: ../figures/doe/two-factors-with-constraint.png
 	:align: center
-	:width: 500px
 	:scale: 45
 	:alt:	../figures/doe/two-factors-with-constraint.svg
 
@@ -2472,7 +2447,6 @@ A mixture design is required when the factors being varied add up to 100% to for
 
 .. figure:: ../figures/doe/mixture-design.png
 	:align: center
-	:width: 500px
 	:scale: 100
 	:alt:	../figures/doe/mixture-design.svg
 

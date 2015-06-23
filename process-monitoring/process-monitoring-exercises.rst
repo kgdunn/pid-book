@@ -321,7 +321,7 @@ Exercises
 			
 		So the operating point increases from 64.0 to 66.3 to obtain a higher capability ratio.
 		
-	*	Adjusting the *process variance* (we would expect to have to decrease the process variance, keeping the operating point fixed):
+	*	Adjusting the *process standard deviation* (we would have to assume we can decrease the standard deviation, keeping the operating point fixed):
 	
 		.. math::
 			1.67 &= \frac{64.0 - 56.0}{3 \times \sigma}\\

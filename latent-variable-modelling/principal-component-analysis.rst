@@ -852,7 +852,7 @@ There are a number of possibilities for data preprocessing. We mainly discuss ce
 	
 **Scaling**
 
-	:index:`Scaling <single: scaling>` is an important important step in latent variable modelling. Scaling can be seen as a way of assigning weights, or relative importance, to each column in |Xraw|. If we don't know much about our data, then it is common to assign an equal weight to each column. We can do this by simply dividing each column by its standard deviation. After this scaling each column will have variance (and standard deviation) of exactly 1.0. This allows each column an equal opportunity of contributing to the model.
+	:index:`Scaling <single: scaling>` is an important step in latent variable modelling. Scaling can be seen as a way of assigning weights, or relative importance, to each column in |Xraw|. If we don't know much about our data, then it is common to assign an equal weight to each column. We can do this by simply dividing each column by its standard deviation. After this scaling each column will have variance (and standard deviation) of exactly 1.0. This allows each column an equal opportunity of contributing to the model.
 
 	This sort of scaling is called unit-variance scaling. When combined with mean centering you will see the terminology that the data have been :index:`autoscaled`. 
 

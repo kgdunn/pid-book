@@ -8,6 +8,9 @@
 	
 .. rubric:: Preface
 
+Preface
+=======
+
 .. Disclaimer re Index
 .. Experiment in book publishing
 

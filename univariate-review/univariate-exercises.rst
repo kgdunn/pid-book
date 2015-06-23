@@ -234,7 +234,7 @@ Exercises
 	
 .. question::
 
-	You are responsible for the quality of maple syrup produced at your plant. Historical data show that the standard deviation of the syrup viscosity is 40 cP. How many lab samples of syrup must you measure so that an estimate of the syrup's long-term average viscosity is inside a **range** of 60 cP, 95% of the time. This question is like the previous one: except this time you are given the range of the interval :math:`\text{UB}\,-\,\text{LB}`, and you need to find :math:`n`.
+	You are responsible for the quality of maple syrup produced at your plant. Historical data show that the standard deviation of the syrup viscosity is 40 cP. How many lab samples of syrup must you measure so that an estimate of the syrup's long-term average viscosity is inside a **range** of 60 cP, 95% of the time? This question is like the previous one: except this time you are given the range of the interval :math:`\text{UB}\,-\,\text{LB}`, and you need to find :math:`n`.
 	
 .. answer::
 	:fullinclude: no 
@@ -289,7 +289,7 @@ Exercises
 
 .. question::
 
-	A new wastewater treatment plant is being commissioned and part of the commissioning report requires a statement of the confidence interval of the `biochemical oxygen demand (BOD) <http://en.wikipedia.org/wiki/Biochemical_oxygen_demand>`__. How many samples must you send to the lab to be sure the true BOD is within a range of 2 mg/L, centered about the sample average?  If there isn't enough information given here, specify your own numbers and assumptions and work with them to answer the question.
+	A new wastewater treatment plant is being commissioned and part of the commissioning report requires a statement of the confidence interval of the `biochemical oxygen demand (BOD) <http://en.wikipedia.org/wiki/Biochemical_oxygen_demand>`_. How many samples must you send to the lab to be sure the true BOD is within a range of 2 mg/L, centered about the sample average?  If there isn't enough information given here, specify your own numbers and assumptions and work with them to answer the question.
 
 .. answer::
 	:fullinclude: no 
@@ -519,7 +519,7 @@ Exercises
 
 .. question::
 
-    There are two analytical techniques for measuring BOD. You wish to evaluate the two testing procedures, so that you can select the test which has lower cost, and fastest turn-around time, but without a compromise in accuracy. The table contains the results of the each test, performed on a sample that was split in half. 
+    There are two analytical techniques for measuring `biochemical oxygen demand (BOD) <http://en.wikipedia.org/wiki/Biochemical_oxygen_demand>`_. You wish to evaluate the two testing procedures, so that you can select the test which has lower cost, and fastest turn-around time, but without a compromise in accuracy. The table contains the results of the each test, performed on a sample that was split in half. 
 
 	#.	Is there a *statistical* difference in accuracy between the two methods? 
 	#.	Review the raw data and answer whether there is a practical difference in accuracy.

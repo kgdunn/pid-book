@@ -475,10 +475,6 @@ Example
 
 We will refer back to the following example several times. Calculate the least squares estimates for the model :math:`y = b_0 + b_1 x` from the given data. Also calculate the predicted value of :math:`\hat{y}_i` when :math:`x_i = 5.5`
 
-	-	:math:`b_0 =`
-	-	:math:`b_1 =`
-	-	When :math:`x_i = 5`, then :math:`\hat{y}_i =`
-
 =========== ==== ==== ==== ==== ==== ==== ==== ==== ===== ==== ====
 :math:`x`   10.0 8.0  13.0 9.0  11.0 14.0 6.0  4.0  12.0  7.0  5.0
 ----------- ---- ---- ---- ---- ---- ---- ---- ---- ----- ---- ----
@@ -540,6 +536,9 @@ To calculate the least squares model in R:
 	(Intercept)            x
 	     3.0001       0.5001
 
+*	:math:`b_0 = 3.0`
+*	:math:`b_1 = 0.5`
+*	When :math:`x_i = 5`, then :math:`\hat{y}_i = 3.0 + 0.5 \times 5.5 = 5.75`
 
 .. image:: ../figures/least-squares/show-anscombe-problem-1.png
 	:align: center

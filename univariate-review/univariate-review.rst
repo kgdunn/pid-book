@@ -514,7 +514,6 @@ The condition of finite variance is true for almost all systems of practical int
 .. image:: ../figures/univariate/CLT-derivation.png
 	:alt:	../figures/univariate/CLT-derivation.svg
 	:align: center
-	:scale: 75
 	
 The critical requirement for the central limit theorem to be true, is that the samples used to compute the average are independent. In particular, we **do not** require the original data to be normally distributed. The average produced from these samples will be be more nearly normal though.
 
@@ -522,7 +521,6 @@ Imagine a case where we are throwing dice. The distributions, shown below, are o
 
 .. image:: ../figures/univariate/simulate-CLT.png
 	:align: center
-	:scale: 70
 
 As one sees from the above figures, the distribution from these averages quickly takes the shape of the so-called *normal distribution*. As :math:`M` increases, the y-axis starts to form a peak. 
 
@@ -555,7 +553,6 @@ We frequently violate this assumption of independence in engineering application
 	
 	.. image:: ../figures/univariate/simulate-independence.png
 		:align: center
-		:scale: 90
 	
 	Sequence 2 (sequence 1 is positively correlated, while sequence 3 is negatively correlated).
 
@@ -587,7 +584,6 @@ Formal definition for the normal distribution
 	
 .. image:: ../figures/univariate/normal-distribution-standardized.png
 	:align: center
-	:scale: 80
 
 -	:math:`x` is the variable of interest
 
@@ -685,10 +681,11 @@ Before we look at this method, we need to introduce the concept of the inverse :
 Now the **inverse cumulative distribution** is used when we know the area, but want to get back to the value along the :math:`z`-axis. For example, below which value of :math:`z` does 95% of the area lie for a standardized normal distribution?  Answer: :math:`z=1.64`. In R we use the ``qnorm(0.95, mean=0, sd=1)`` to calculate this value. The ``q`` stands for `quantile <http://en.wikipedia.org/wiki/Quantile>`_, because we give it the quantile and it returns the :math:`z`-value: e.g. ``qnorm(0.5)`` gives 0.0.
 
 .. image:: ../figures/univariate/show-pnorm-and-qnorm.png
-	:scale: 70
+	:width: 600px
+	:scale: 20
 	:align: center
 		
-On to checking for normality. We approach this problem by first constructing some quantities that we would expect for truly normally distributed data. Secondly, we construct the same quantities for the actual data. A plot of these 2 quantities against each other will reveal if the data are normal, or not.
+On to checking for normality. p by first constructing some quantities that we would expect for truly normally distributed data. Secondly, we construct the same quantities for the actual data. A plot of these 2 quantities against each other will reveal if the data are normal, or not.
 
 #.	Imagine we have :math:`N` observations which are normally distributed. Sort the data from smallest to largest. The first data point should be the :math:`(1/N \times 100)` quantile, the next data point is the :math:`(2/N \times 100)` quantile, the middle, sorted data point is the 50th quantile, :math:`(1/2 \times 100)`, and the last, sorted data point is the :math:`(N/N \times 100)` quantile.
 
@@ -867,7 +864,7 @@ But we got stuck, because the lower and upper bounds we calculated for the true 
 			  \text{LB}                                  &\leq&  \mu                                                     &\leq& \text{UB}
 		\end{array}
 
-which we derived by using the fact that :math:`\frac{\overline{x} - \mu}{\sigma/\sqrt{n}}` is normally distributed.
+which we derived by using the fact that :math:`\dfrac{\overline{x} - \mu}{\sigma/\sqrt{n}}` is normally distributed.
 
 An obvious way out of our dilemma is to replace :math:`\sigma` by the sample standard deviation, :math:`s`, which is exactly what we will do, however, the quantity :math:`\frac{\overline{x} - \mu}{s/\sqrt{n}}` is not normally distributed, but is :math:`t`-distributed. Before we look at the details, it is helpful to see how similar in appearance the :math:`t` and normal distribution are: the :math:`t`-distribution peaks slightly lower than the normal distribution, but it has broader tails. The total area under both curves illustrated here is 1.0.
 
@@ -875,7 +872,7 @@ An obvious way out of our dilemma is to replace :math:`\sigma` by the sample sta
 	:align: center
 	:scale: 100
 
-There is one other requirement we have to observe to use the :math:`t`-distribution: the values that we sample, :math:`x_i` must come from a normal distribution (carefully note that in the previous section we didn't have this restriction!). Fortunately it is easy to check this requirement: just use the :ref:`q-q plot method described earlier <univariate_check_for_normality_qqplot>`. Another requirement, which we had before, was that we must be sure these measurements, :math:`x_i`, are independent.
+There is one other requirement we have to ensure in order to use the :math:`t`-distribution: the values that we sample, :math:`x_i` must come from a normal distribution (carefully note that in the previous section we didn't have this restriction!). Fortunately it is easy to check this requirement: just use the :ref:`q-q plot method described earlier <univariate_check_for_normality_qqplot>`. Another requirement, which we had before, was that we must be sure these measurements, :math:`x_i`, are independent.
 
 .. image:: ../figures/univariate/t-distribution-derivation.png
 	:align: center

@@ -73,7 +73,6 @@ Exercises
 		.. image:: ../figures/doe/assignment-6-two-levels-two-variables-no-analysis.png
 			:alt:	../figures/doe/assignment-6-two-levels-two-variables-no-analysis.svg
 			:align: center
-			:width: 500px
 			:scale: 80
 		
 	#.	The interaction plot which visually shows the main effects described above is:
@@ -81,7 +80,6 @@ Exercises
 		.. image:: ../figures/doe/assignment-6-two-level-line-plot-with-interaction.png
 			:alt:	../figures/doe/assignment-6-two-level-line-plot-with-interaction.svg
 			:align: center
-			:width: 500px
 			:scale: 80
 
 	#.	The interaction term can be calculated in two ways, both giving the same answer. Only one way is shown here:
@@ -240,7 +238,6 @@ Exercises
 		.. image:: ../figures/doe/bioreactor-pareto-plot.png
 			:alt:	bioreactor-case.R
 			:align: center
-			:width: 600px
 			:scale: 60
 			
 	#.	The model does not have to be refitted because the columns in matrix :math:`\mathbf{X}` are orthogonal, meaning that the coefficient estimates do not depend on the levels of any other variables.
@@ -378,7 +375,6 @@ Exercises
 			
 	.. image:: ../figures/doe/central-composite-question.png
 		:align: center
-		:width: 500px
 		:scale: 60
 		:alt:	../figures/doe/central-composite-question.svg
 
@@ -726,7 +722,6 @@ Exercises
 		.. image:: ../figures/doe/chemical-reaction-cube-plot-3-factor-system.png
 			:alt:	../figures/doe/chemical-reaction-cube-plot-3-factor-system.svg
 			:scale: 44
-			:width: 550px
 			:align: center
 
 	#.	The main effects and interactions are:
@@ -811,7 +806,6 @@ Exercises
 		.. image:: ../figures/doe/chemical-reaction-contours.png
 			:alt:	../figures/doe/chemical_reaction_contours.m
 			:scale: 60
-			:width: 550px
 			:align: center
 	
 		In real-world units these points correspond to:
@@ -997,7 +991,6 @@ Exercises
 		.. image:: ../figures/doe/fractional-factorial-question.png
 			:alt:	../figures/doe/fractional-factorial-question.R
 			:scale: 60
-			:width: 550px
 			:align: center
 
 .. question::
