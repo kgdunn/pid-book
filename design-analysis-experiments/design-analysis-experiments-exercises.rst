@@ -378,7 +378,7 @@ Exercises
 		:scale: 60
 		:alt:	../figures/doe/central-composite-question.svg
 
-	You might feel more comfortable setting up the problem in MATLAB. You can use the `contour plot <http://www.mathworks.com/access/helpdesk/help/techdoc/creating_plots/f10-2524.html>`_ functions in MATLAB to visualize the results.
+	You might feel more comfortable setting up the problem in MATLAB. You can use the `contour plot <http://www.mathworks.com/help/matlab/ref/contour.html>`_ functions in MATLAB to visualize the results.
 
 	If you are using R, you can use the ``rbind(...)`` or ``cbind(...)`` functions to build up your :math:`\mathbf{X}` matrix row-by-row or column-by-column. The equivalent of meshgrid in R is the ``expand.grid(...)`` function. See the `R code on the course website <http://learnche.mcmaster.ca/4C3/Design_and_analysis_of_experiments_(2014)>`_ that shows how to generate surface plots in R.
 

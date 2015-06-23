@@ -1182,7 +1182,7 @@ If you suspect that there may be lack of independence, use plots of the residual
 	:width: 750px
 	:align: center
 
-One way around the autocorrelation is to subsample - use only every :math:`k^\text{th}` sample, where :math:`k` is a certain number of gaps between the points. How do we know how many gaps to leave?  Use the `autocorrelation function <http://en.wikipedia.org/wiki/Autocorrelation>`_ to determine how many samples. You can use the ``acf(...)`` function in R, which will show how many significant lags there are between observations. Calculating the autocorrelation accurately requires a large data set, which is a requirement anyway if you need to subsample your data to obtain independence.
+One way around the autocorrelation is to subsample - use only every :math:`k^\text{th}` sample, where :math:`k` is a certain number of gaps between the points. How do we know how many gaps to leave?  Use the `autocorrelation function <https://en.wikipedia.org/wiki/Autocorrelation>`_ to determine how many samples. You can use the ``acf(...)`` function in R, which will show how many significant lags there are between observations. Calculating the autocorrelation accurately requires a large data set, which is a requirement anyway if you need to subsample your data to obtain independence.
 
 Here are some examples of the autocorrelation plot: in the first case you would have to leave at least 16 samples between each sub-sample, while the second and third cases require a gap of 1 sample, i.e. use only every second data point.
 
@@ -1548,7 +1548,7 @@ Now that we have introduced multiple linear regression to expand our models, we 
 		:align: center
 		:scale: 40
 
-	Axial and radial blades; figure from `Wikipedia <http://en.wikipedia.org/wiki/Impeller>`_
+	Axial and radial blades; figure from `Wikipedia <https://en.wikipedia.org/wiki/Impeller>`_
 
 We will start with the simplest case, using the example of the radial or axial impeller. We wish to understand the effect on yield, :math:`y [\mu\text{g}]`, as a function of the impeller type, and impeller speed, :math:`x`.
 
@@ -1714,7 +1714,7 @@ Nonparametric models
 
 :index:`Nonparametric modelling <single:nonparametric modelling>` is a general model where the relationship between :math:`x` and :math:`y` is of the form: :math:`y = f(x) + \varepsilon`, but the function :math:`f(x)`, i.e. the model, is left unspecified. The model is usually a smooth function.
 
-Consider the example of plotting Prestige (the `Pineo-Porter prestige <http://en.wikipedia.org/wiki/John_Porter_(sociologist)>` score) against Income, from the 1971 Canadian census. A snippet of the data is given by:
+Consider the example of plotting Prestige (the `Pineo-Porter prestige <https://en.wikipedia.org/wiki/John_Porter_(sociologist)>` score) against Income, from the 1971 Canadian census. A snippet of the data is given by:
 
 .. code-block:: s
 

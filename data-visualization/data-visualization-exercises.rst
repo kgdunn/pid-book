@@ -101,7 +101,7 @@ Exercises
 
 	From these plots we quickly gain an insight into the data:
 
-		*	Most of the 5 variables have a normal-like distribution, except for ``Crispy``, but notice the small notches on the middle histogram: they are equally spaced, indicating the variable is not continuous; it is `quantized <http://en.wikipedia.org/wiki/Quantization_(signal_processing)>`_. The ``Fracture`` variable also displays this quantization.
+		*	Most of the 5 variables have a normal-like distribution, except for ``Crispy``, but notice the small notches on the middle histogram: they are equally spaced, indicating the variable is not continuous; it is `quantized <https://en.wikipedia.org/wiki/Quantization_(signal_processing)>`_. The ``Fracture`` variable also displays this quantization.
 		*	There is a strong negative correlation with oiliness and density: oilier pastries are less dense (to be expected). 
 		*	There is a positive correlation with oiliness and crispiness: oilier pastries are more crisp (to be expected).
 		*	There is no relationship between the oiliness and hardness of the pastry.
@@ -394,4 +394,4 @@ Exercises
 	*Enrichment*:
 
 	*	Watch `this 20 minute video <http://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen>`_ that shows how a 2-dimensional plot comes alive to show 5 dimensions of data. What are the 5 dimensions?
-	*	A condensed version from this, `4 minute YouTube video <http://www.youtube.com/v/jbkSRLYSojo>`_ shows Hans Rosling giving a new perspective on the same data. This `Economist article <http://www.economist.com/node/17663585>`_ has some interesting background on Dr. Rosling, as does this page, `giving a selection of his work <http://www.economist.com/node/21013330>`_.
+	*	A condensed version from this, `4 minute YouTube video <https://www.youtube.com/v/jbkSRLYSojo>`_ shows Hans Rosling giving a new perspective on the same data. This `Economist article <http://www.economist.com/node/17663585>`_ has some interesting background on Dr. Rosling, as does this page, `giving a selection of his work <http://www.economist.com/node/21013330>`_.

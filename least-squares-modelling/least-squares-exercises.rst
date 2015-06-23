@@ -633,7 +633,7 @@ Exercises
 
 	.. _thermocouple_LS_question:
 	
-	A new type of `thermocouple <http://en.wikipedia.org/wiki/Thermocouple>`_ is being investigated by your company's process control group. These devices produce an *almost* linear voltage  (millivolt) response at different temperatures. In practice though it is used the other way around: use the millivolt reading to predict the temperature. The process of fitting this linear model is called *calibration*. 
+	A new type of `thermocouple <https://en.wikipedia.org/wiki/Thermocouple>`_ is being investigated by your company's process control group. These devices produce an *almost* linear voltage  (millivolt) response at different temperatures. In practice though it is used the other way around: use the millivolt reading to predict the temperature. The process of fitting this linear model is called *calibration*. 
 
 	#.	Use the following data to calibrate a linear model:
 

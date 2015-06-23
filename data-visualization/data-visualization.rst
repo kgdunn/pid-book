@@ -110,8 +110,6 @@ Here are some tips for effective time-series plots:
 
 	Sparklines are small graphics that carry a high density of information. The human eye is easily capable of absorbing about 250 dots (points) per linear inch and 60,000 points per square inch. These :index:`sparklines` convey the same amount of information as the previous plots and are easy to consume on hand-held devices such as iPhones, cellphones and tablet computing devices that are common in chemical plants and other engineering facilities. Read more about them from `this hyperlink <http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR>`_.
 	
-	https://mail.google.com/mail/u/0/#inbox/14735f2e6d8fb8df
-
 -	When plotting money values over time (e.g. sales of polymer composite over the past 10 years), adjust for inflation effects by dividing by the consumer price index or an appropriate factor. Distortions due to the time value of money can be very misleading, as this `example of car sales shows <http://people.duke.edu/~rnau/411infla.htm>`_.  A `Canadian inflation calculator <http://www.bankofcanada.ca/rates/related/inflation-calculator>`_ is available from the Bank of Canada.
 
 -	If you ever ask yourself, "Why are we being shown so little?" then you must request more data before and after the time period or current sequence shown. A typical example is stock-price data (see :ref:`example figure of Apple's stock <visualization-apple-stock>`). There are numerous graphical "lies" in magazines and reports where the plot shows a drastic change in trend, but in the context of prior data, that trend is a small aberration. Again, this brings into play the brain's remarkable power to discern signal from noise, but to do this, our brains require context.
@@ -198,7 +196,7 @@ Box plots
 The box plot shows the so-called *five-number summary* of a univariate data series: 
 
 1. Minimum sample value
-2. 25th `percentile <http://en.wikipedia.org/wiki/Percentile>`_ (1st `quartile <http://en.wikipedia.org/wiki/Quartile>`_)
+2. 25th `percentile <https://en.wikipedia.org/wiki/Percentile>`_ (1st `quartile <https://en.wikipedia.org/wiki/Quartile>`_)
 3. 50th percentile (median)
 4. 75th percentile (3rd quartile)
 5. Maximum sample value
@@ -291,7 +289,7 @@ Add a third variable to the plot by adjusting the marker size, and add a fourth 
 		:scale: 80
 
 
-    This example, from `http://gapminder.org <http://tiny.cc/gapminder-example>`_, shows data as of 2007 for income per person against fertility. The size of each data point is proportional to the country's population, and the marker colour shows life expectancy at birth (years). The GapMinder website allows you to "play" the graph over time, effectively adding a fifth dimension to the 2D plot. Use the hyperlink above to see how richer countries move towards lower fertility and higher income over time.
+    This example, from `http://gapminder.org <http://yint.org/gapminder-example>`_, shows data as of 2007 for income per person against fertility. The size of each data point is proportional to the country's population, and the marker colour shows life expectancy at birth (years). The GapMinder website allows you to "play" the graph over time, effectively adding a fifth dimension to the 2D plot. Use the hyperlink above to see how richer countries move towards lower fertility and higher income over time.
 
 Tables 
 ======

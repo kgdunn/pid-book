@@ -228,7 +228,7 @@ Exercises
 	
 	So what aspect of a stock price is stable?  The difference between the opening and closing price of a stock is remarkably stationary. Monitoring the day-to-day change in a stock price would work. Since you aren't expected to know this fact, any reasonable answer that attempts to monitor a *stable* substitute for the price will be accepted. E.g. another alternative is to remove the linear up or down trend from a stock price and monitor the residuals. 
 		
-	There are many alternatives; if this sort of thing interests you, you might find the area called `technical analysis <http://en.wikipedia.org/wiki/Technical_analysis>`_ worth investigating. An EWMA chart is widely used in this sort of analysis.
+	There are many alternatives; if this sort of thing interests you, you might find the area called `technical analysis <https://en.wikipedia.org/wiki/Technical_analysis>`_ worth investigating. An EWMA chart is widely used in this sort of analysis.
 	
 	
 .. question::
@@ -402,10 +402,10 @@ Exercises
 
 	You will come across these terms in the workplace. Investigate one of these topics, using the Wikipedia link below to kick-start your research. Write a paragraph that (a) describes what your topic is and (b) how it can be used when you start working in a company after you graduate, or how you can use it now if you are currently working.
 
-		- `Lean manufacturing <http://en.wikipedia.org/wiki/Lean_manufacturing>`_
-		- `Six sigma <http://en.wikipedia.org/wiki/Six_Sigma>`_ and the DMAIC cycle. See the `list of companies <http://en.wikipedia.org/wiki/List_of_Six_Sigma_companies>`_ that use six sigma tools.
-		- `Kaizen <http://en.wikipedia.org/wiki/Kaizen>`_ (a component of `The Toyota Way <http://en.wikipedia.org/wiki/The_Toyota_Way>`_)
-		- `Genchi Genbutsu <http://en.wikipedia.org/wiki/Genchi_Genbutsu>`_  (also a component of `The Toyota Way <http://en.wikipedia.org/wiki/The_Toyota_Way>`_)
+		- `Lean manufacturing <https://en.wikipedia.org/wiki/Lean_manufacturing>`_
+		- `Six sigma <https://en.wikipedia.org/wiki/Six_Sigma>`_ and the DMAIC cycle. See the `list of companies <https://en.wikipedia.org/wiki/List_of_Six_Sigma_companies>`_ that use six sigma tools.
+		- `Kaizen <https://en.wikipedia.org/wiki/Kaizen>`_ (a component of `The Toyota Way <https://en.wikipedia.org/wiki/The_Toyota_Way>`_)
+		- `Genchi Genbutsu <https://en.wikipedia.org/wiki/Genchi_Genbutsu>`_  (also a component of `The Toyota Way <https://en.wikipedia.org/wiki/The_Toyota_Way>`_)
 
 		In early 2010 Toyota experienced some of its worst press coverage on this very topic. `Here is an article <http://www.reuters.com/article/2010/02/07/us-toyota-us-manufacturers-analysis-idUSTRE6161RV20100207>`_ in case you missed it.
 
@@ -519,7 +519,7 @@ Exercises
 
 	#.	One approach to fixing the problem is to subsample the data, i.e. only use every :math:`k^\text{th}` data point as the raw data, e.g. :math:`k=10`, and then form subgroups from that sampled data.
 
-		Another is to use a larger subgroup size. Use the `autocorrelation function <http://en.wikipedia.org/wiki/Autocorrelation>`_, and the corresponding ``acf(...)`` function in R to verify the degree of relationship. Using this function we can see the raw data are unrelated after the 17th lag, so we could use subgroups of that size. However, even then we see the Shewhart chart showing frequent violation, though fewer than before.
+		Another is to use a larger subgroup size. Use the `autocorrelation function <https://en.wikipedia.org/wiki/Autocorrelation>`_, and the corresponding ``acf(...)`` function in R to verify the degree of relationship. Using this function we can see the raw data are unrelated after the 17th lag, so we could use subgroups of that size. However, even then we see the Shewhart chart showing frequent violation, though fewer than before.
 
 		Yet another alternative is to use an EWMA chart, which takes the autocorrelation into account. However, the EWMA chart limits are found from the assumption that the subgroup means (or raw data, if subgroup size is 1), are independent.
 

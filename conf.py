@@ -66,17 +66,15 @@ source_suffix = '.rst'
 # The master toctree document.
 master_doc = 'contents'
 
-# TODO: put the year automatically in the copyright statement using datetime.now()
-
 # General information about the project.
 import datetime
 the_year = str(datetime.datetime.now().year)
 project = u'Process Improvement Using Data'
-copyright = the_year + u'Kevin Dunn, McMaster University'
+copyright = the_year + u' Kevin Dunn, McMaster University'
 today_fmt = '%d %B %Y'
 
 # Emits warnings for all missing references.
-nitpicky = False
+nitpicky = True
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -109,7 +107,7 @@ del cmd, out, source, str_out, subprocess
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build', '.hg', 'ext', 'latent-variable-modelling']
+exclude_patterns = ['_build', '.hg', 'ext', ]
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 #default_role = None
@@ -177,6 +175,8 @@ linkcheck_ignore = [r'http://dx.doi.org/', 'http://www.jstor.org/pss/', 'http://
 # sudo easy_install sphinx_rtd_theme
 # In your conf.py file:
 
+
+# pip install -U sphinx_rtd_theme
 import sphinx_rtd_theme
 html_theme = "sphinx_rtd_theme"
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
@@ -212,7 +212,7 @@ html_title = "Process Improvement using Data"
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
-html_last_updated_fmt = '%b %d, %Y'
+html_last_updated_fmt = '%d %B %Y'
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.

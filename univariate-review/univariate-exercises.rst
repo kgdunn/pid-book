@@ -113,7 +113,7 @@ Exercises
 
 		-	For each year from 2000 to 2009, get the total snowfall and the average of the ``Mean temp`` over the whole year (the sums and averages are reported at the bottom of the table).
 		-	Plot these 2 variables against time
-		-	Now retrieve the long-term averages for these data `from a different section of their website <http://climate.weatheroffice.gc.ca/climate_normals/index_e.html>`_ (use the same location, ``HAMILTON A``, and check that the data range is 1971 to 2000). Superimpose the long-term average as a horizontal line on your previous plot.
+		-	Now retrieve the long-term averages for these data `from a different section of their website <http://climate.weather.gc.ca/climate_normals/index_e.html>`_ (use the same location, ``HAMILTON A``, and check that the data range is 1971 to 2000). Superimpose the long-term average as a horizontal line on your previous plot.
 		-	**Note**: the purpose of this exercise is more for you to become comfortable with web-based data retrieval, which is common in most companies.
 		-	**Note**: please use any other city for this question if you prefer.
 
@@ -289,7 +289,7 @@ Exercises
 
 .. question::
 
-	A new wastewater treatment plant is being commissioned and part of the commissioning report requires a statement of the confidence interval of the `biochemical oxygen demand (BOD) <http://en.wikipedia.org/wiki/Biochemical_oxygen_demand>`_. How many samples must you send to the lab to be sure the true BOD is within a range of 2 mg/L, centered about the sample average?  If there isn't enough information given here, specify your own numbers and assumptions and work with them to answer the question.
+	A new wastewater treatment plant is being commissioned and part of the commissioning report requires a statement of the confidence interval of the `biochemical oxygen demand (BOD) <https://en.wikipedia.org/wiki/Biochemical_oxygen_demand>`_. How many samples must you send to the lab to be sure the true BOD is within a range of 2 mg/L, centered about the sample average?  If there isn't enough information given here, specify your own numbers and assumptions and work with them to answer the question.
 
 .. answer::
 	:fullinclude: no 
@@ -519,7 +519,7 @@ Exercises
 
 .. question::
 
-    There are two analytical techniques for measuring `biochemical oxygen demand (BOD) <http://en.wikipedia.org/wiki/Biochemical_oxygen_demand>`_. You wish to evaluate the two testing procedures, so that you can select the test which has lower cost, and fastest turn-around time, but without a compromise in accuracy. The table contains the results of the each test, performed on a sample that was split in half. 
+    There are two analytical techniques for measuring `biochemical oxygen demand (BOD) <https://en.wikipedia.org/wiki/Biochemical_oxygen_demand>`_. You wish to evaluate the two testing procedures, so that you can select the test which has lower cost, and fastest turn-around time, but without a compromise in accuracy. The table contains the results of the each test, performed on a sample that was split in half. 
 
 	#.	Is there a *statistical* difference in accuracy between the two methods? 
 	#.	Review the raw data and answer whether there is a practical difference in accuracy.
@@ -673,7 +673,7 @@ Exercises
 
 		Note the very large standard deviation relative to the confidence interval range. This is the reason why so many data points were taken (21), to calculate the average, because the raw data comes from a distribution with such a large variation.
 		
-		An important note here is the large estimated value for the standard deviation and realized it was so wide, that it would imply the distribution produced values with negative sulphur dioxide concentration (which is physically impossible). However, note that when dealing with large samples (21 in this case), the distinction between the normal and the :math:`t`-distribution is minimal. Further, the raw data are not necessarily assumed to be from the normal distribution, they could be from any distribution, including one that is heavy-tailed, such as the `F-distribution <http://en.wikipedia.org/wiki/File:F_distributionPDF.png>`_ (see the yellow and green lines in particular).
+		An important note here is the large estimated value for the standard deviation and realized it was so wide, that it would imply the distribution produced values with negative sulphur dioxide concentration (which is physically impossible). However, note that when dealing with large samples (21 in this case), the distinction between the normal and the :math:`t`-distribution is minimal. Further, the raw data are not necessarily assumed to be from the normal distribution, they could be from any distribution, including one that is heavy-tailed, such as the `F-distribution <https://en.wikipedia.org/wiki/File:F_distributionPDF.png>`_ (see the yellow and green lines in particular).
 		
 	#.	The probability calculation requires a mean value. Our best guess for the mean is the midpoint of the confidence interval, which is always symmetric about the estimated process mean, :math:`\overline{x} = \displaystyle \frac{240.2-123.6}{2} + 123.6 = 181.9`. Note that this is not the value for :math:`\mu`, since :math:`\mu` is unknown.
 
@@ -693,7 +693,7 @@ Exercises
 		:align: center
 		:scale: 40
 	
-		Illustration from `Wikipedia <http://en.wikipedia.org/wiki/Industrial_mixer>`__
+		Illustration from `Wikipedia <https://en.wikipedia.org/wiki/Industrial_mixer>`__
 
 	The 15 most recent runs with the current magnesium stearate supplier had an average mixing time of 2715 seconds, and a standard deviation of 390 seconds. So far you have run 6 batches from the new supplier, and the average mixing time of these runs is 3115 seconds with a standard deviation of 452 seconds. Your manager is not happy with these results so far - this extra mixing time will actually cost you more money via lost production. 
 
@@ -837,7 +837,7 @@ Exercises
 		:align: center
 		:scale: 40
 
-		Axial and radial blades; figure `from Wikipedia <http://en.wikipedia.org/wiki/Impeller>`__
+		Axial and radial blades; figure `from Wikipedia <https://en.wikipedia.org/wiki/Impeller>`__
 
 	Before obtaining approval to run some experiments, your team wants you to explain how you will interpret the experimental data. Your reply is that you will calculate the average mixing time from each blade type and then calculate a confidence interval for the difference. A team member asks you what the following 95% confidence intervals would mean:
 
@@ -1369,6 +1369,6 @@ Exercises
 
 	This question gives you exposure to analyzing a larger data set than seen in the preceding questions.
 	
-	Your manager has asked you to describe the flow rate characteristics of the overhead stream leaving the top of the `distillation column <http://en.wikipedia.org/wiki/Fractionating_column>`_ at your plant. You are able to download one month of data, `available from this website <http://datasets.connectmv.com/info/distillate-flow>`_, from 1 March to 31 March, taken at one minute intervals to answer this question. 
+	Your manager has asked you to describe the flow rate characteristics of the overhead stream leaving the top of the `distillation column <https://en.wikipedia.org/wiki/Fractionating_column>`_ at your plant. You are able to download one month of data, `available from this website <http://datasets.connectmv.com/info/distillate-flow>`_, from 1 March to 31 March, taken at one minute intervals to answer this question. 
 	
 .. answer: use Ghassan Marjaba's solution (permission given by email in February 2014).

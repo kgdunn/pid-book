@@ -678,11 +678,10 @@ Before we look at this method, we need to introduce the concept of the inverse :
 	
 .. index:: inverse cumulative distribution
 
-Now the **inverse cumulative distribution** is used when we know the area, but want to get back to the value along the :math:`z`-axis. For example, below which value of :math:`z` does 95% of the area lie for a standardized normal distribution?  Answer: :math:`z=1.64`. In R we use the ``qnorm(0.95, mean=0, sd=1)`` to calculate this value. The ``q`` stands for `quantile <http://en.wikipedia.org/wiki/Quantile>`_, because we give it the quantile and it returns the :math:`z`-value: e.g. ``qnorm(0.5)`` gives 0.0.
+Now the **inverse cumulative distribution** is used when we know the area, but want to get back to the value along the :math:`z`-axis. For example, below which value of :math:`z` does 95% of the area lie for a standardized normal distribution?  Answer: :math:`z=1.64`. In R we use the ``qnorm(0.95, mean=0, sd=1)`` to calculate this value. The ``q`` stands for `quantile <https://en.wikipedia.org/wiki/Quantile>`_, because we give it the quantile and it returns the :math:`z`-value: e.g. ``qnorm(0.5)`` gives 0.0.
 
 .. image:: ../figures/univariate/show-pnorm-and-qnorm.png
 	:width: 600px
-	:scale: 20
 	:align: center
 		
 On to checking for normality. p by first constructing some quantities that we would expect for truly normally distributed data. Secondly, we construct the same quantities for the actual data. A plot of these 2 quantities against each other will reveal if the data are normal, or not.
@@ -1251,7 +1250,7 @@ Either we want to confirm things are statistically the same, or confirm they hav
 
 .. image:: ../figures/univariate/system-comparison-wikitable.png
 	:align: center
-	:scale: 75
+
 
 We address the question of whether or not there was a *significant difference* between system A and B. A significant difference means that when system B is compared to a suitable reference, that we can be sure that the long run implementation of B will lead, in general, to an a different yield (%). We want to be sure that any change in the 10 runs under system B were not *only due to chance*, because system B will cost us $100,000 to install, and $20,000 in annual software license fees.
 
@@ -1379,7 +1378,7 @@ Discuss whether these experiments would lead to :index:`independent data <single
 	
 		.. image:: ../figures/univariate/sheet-coating-application.png
 			:align: center
-			:scale: 50
+			:scale: 40
 		
 		Some problems with this approach:
 		
