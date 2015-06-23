@@ -393,6 +393,8 @@ References and readings
 
 .. index::
 	pair: references and readings; latent variable modelling
+	pair: references and readings; principal component analysis
+	see: PCA; principal component analysis
 
 These readings cover a variety of topics in the area of latent variable methods: 
 
@@ -401,6 +403,10 @@ These readings cover a variety of topics in the area of latent variable methods:
 * **General**: John MacGregor, Honglu Yu, Salvador García-Muñoz, Jesus Flores-Cerrillo, "`Data-Based Latent Variable Methods for Process Analysis, Monitoring and Control <http://dx.doi.org/10.1016/j.compchemeng.2005.02.007>`_". *Computers and Chemical Engineering*, **29**, 1217-1223, 2005.
 
 * **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold: "Multivariate and Megavariate Data Analysis" (Part I and Part II).
+
+* **About PCA**: Svante Wold, Kim Esbensen, Paul Geladi: "`Principal Component Analysis <http://dx.doi.org/10.1016/0169-7439(87)80084-9>`_", *Chemometrics and Intelligent Laboratory Systems*, **2**, 37-52, 1987.
+
+* **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold:  "Multivariate and Megavariate Data Analysis" (Part I contains a chapter on PCA).
 
 
 .. Others:
@@ -411,6 +417,7 @@ These readings cover a variety of topics in the area of latent variable methods:
 	MacGregors 1997 paper on MSPC
 	Cross-validation: Svante Wold, "Cross-validatory estimation of the number of components in factor and principal components models", *Technometrics*, **20**, 397-405, 1978. 
 	Contribution plots: P Miller, RE Swanson, CE Heckler, "Contribution plots: a missing link in multivariate quality control, *Applied Mathematics and Computer Science*, *8* (4), 775-792, 1998.
+	*	**Contribution plots**: P Miller, RE Swanson, CE Heckler, "Contribution Plots: a Missing Link in Multivariate Quality Control, *Applied Mathematics and Computer Science*, *8* (4), 775-792, 1998.
 
 .. _LVM_extracting_value_from_data:
 
@@ -770,3 +777,32 @@ The main points from this section are:
 The examples given so far showed what a single latent variables is. In practice we usually obtain several latent variables for a data array. At this stage you likely have more questions, such as "*how many latent variables are there in a matrix*" and "*how are the values in* |P| *chosen*", and "*how do we know these latent variables are a good summary of the original data*"?
 
 We address these issues more formally in the next section on :ref:`principal component analysis <SECTION_PCA>`.
+
+.. _SECTION_PCA:
+
+PCA: Latent Variable Methods for a Single Block
+===================================================
+
+.. include:: principal-component-analysis.rst
+
+
+
+.. _SECTION_PLS:
+
+PCR and PLS: Latent Variable Methods for Two Blocks
+=====================================================
+
+.. include:: projection-to-latent-structures.rst
+
+
+.. _SECTION_LVM_applications:
+
+
+Applications of Latent Variable Models
+=====================================================
+
+.. include:: applications-of-latent-variable-models.rst
+
+
+
+

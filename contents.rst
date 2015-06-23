@@ -10,6 +10,7 @@ Process Improvement Using Data
 .. toctree::
 	:titlesonly:
 	:numbered:	
+	:maxdepth: 3
 	:caption: Table of Contents
 
 	data-visualization/index

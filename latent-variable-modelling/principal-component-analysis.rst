@@ -8,26 +8,10 @@
 	*	Gabriel, K. R. and Odoroff, C. L. (1990). Biplots in biomedical research. Statistics in Medicine, 9, 469–485.
 	*	J.C. Gower and D.J. Hand. Biplots. Number 54 in Monographs on Statistics and Applied Probability. Chapman and Hall, London, UK, 1996.
 
-References and readings
-========================
-
-.. index::
-	pair: references and readings; principal component analysis
-	see: PCA; principal component analysis
-
-These readings cover a variety of topics in the area of latent variable methods:
-
-* **About PCA**: Svante Wold, Kim Esbensen, Paul Geladi: "`Principal Component Analysis <http://dx.doi.org/10.1016/0169-7439(87)80084-9>`_", *Chemometrics and Intelligent Laboratory Systems*, **2**, 37-52, 1987.
-
-* **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold:  "Multivariate and Megavariate Data Analysis" (Part I contains a chapter on PCA).
-
-.. OMIT FOR NOW
-
-	*	**Contribution plots**: P Miller, RE Swanson, CE Heckler, "Contribution Plots: a Missing Link in Multivariate Quality Control, *Applied Mathematics and Computer Science*, *8* (4), 775-792, 1998.
 
 
 Introduction
-===============
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Principal component analysis, PCA, builds a model for a matrix of data.
 
@@ -38,7 +22,7 @@ In this section we will start by visualizing the data as well as consider a simp
 The first part of this section emphasizes the general interpretation of a PCA model, since this is a required step that any modeller will have to perform. We leave to the :ref:`second half of this section <LVM_preprocessing>` the important details of how to preprocess the raw data, how to actually calculate the PCA model, and how to validate and test it. This "reverse" order may be unsatisfying for some, but it helpful to see how to use the model first, before going into details on its calculation.
 
 Visualizing multivariate data
-====================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The data, collected in a matrix |X|, contains rows that represent an *object* of some sort. We usually call each row an *observation*. The observations in |X| could be a collection of measurements from a chemical process at a particular point in time, various properties of a final product, or properties from a sample of raw material. The columns in |X| are the values recorded for each observation. We call these the *variables*. 
 
@@ -77,7 +61,7 @@ Another effective way to visualize small multivariate data sets is to use a scat
 .. _LVM_PCA_geometric_interpretation:
 
 Geometric explanation of PCA
-====================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. index::
 	pair: principal component analysis; latent variable modelling
@@ -145,7 +129,7 @@ A principal component model is one type of latent variable model. A PCA model is
 .. _LVM_mathematical_geometric_derivation:
 
 Mathematical derivation for PCA
-====================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Geometrically, when finding the *best-fit line* for the swarm of points, our objective was to minimize the error, i.e. the residual distances from each point to the best-fit line is the smallest possible. This is also mathematically equivalent to maximizing the variance of the scores, :math:`\mathbf{t}_a`.
 
@@ -197,7 +181,7 @@ Finally, for an entire matrix of data, |X|, we can calculate all scores, for all
 	:label: LVM-score-values
 
 More about the direction vectors (loadings)
-=============================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The direction vectors |p1|, :math:`\mathbf{p}_2` and so on, are each :math:`K \times 1` unit vectors. These are vectors in the original coordinate space (the :math:`K`-dimensional real-world) where the observations are recorded.
 
@@ -238,7 +222,7 @@ This is very useful, because now instead of dealing with :math:`K` thermometers 
 .. _LVM_food_texture_example:
 
 Food texture example
-====================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Let's take a look at an example to consolidate and extend the ideas introduced so far. This `data set is from a food manufacturer <http://datasets.connectmv.com/info/food-texture>`_ making a pastry product. Each sample (row) in the data set is taken from a batch of product where 5 quality attributes are measured:
 
@@ -358,7 +342,7 @@ Because this component is orthogonal to the first component, we can be sure that
 .. _LVM_interpreting_scores:
 
 Interpreting score plots
-====================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. index::
 	pair: interpret score plot; latent variable modelling
@@ -459,7 +443,7 @@ A continuous 3rd variable can be implied using a varying colour scheme, going fr
 .. _LVM_interpreting_loadings:
 
 Interpreting loading plots
-====================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 Recall that the :index:`loadings plot <pair: loadings plot, interpretation of; latent variable modelling>` is a plot of the direction vectors that define the model. Returning back to a previous illustration:
 
@@ -502,7 +486,7 @@ Notice how the model spreads the weights out evenly over all the correlated vari
 Finally, one way to locate unimportant variables in the model is by finding which variables which have small weights in all components. These variables can generally be removed, as they show no correlation to any of the components or with other variables.
 
 Interpreting loadings and scores together
-==========================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 It is helpful to visualize any two score vectors, e.g. :math:`\mathbf{t}_1` *vs* :math:`\mathbf{t}_2`, in a scatterplot: the :math:`N` points in the scatterplot are the projection of the raw data onto the model plane described by the two loadings vectors, :math:`\mathbf{p}_1` and :math:`\mathbf{p}_2`. 
 
@@ -528,7 +512,7 @@ Use these two plots to characterize what values the 5 measurements would have be
 .. _LVM_geometric_predictions:
 
 Predicted values for each observation
-======================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 An interesting aspect of a PCA model is that it provides an estimate of each observation in the data set. Recall the latent variable model was oriented to create the best-fit plane to the data. This plane was oriented to minimize the errors, which implies the best estimate of each observation is its *perpendicular projection* onto the model plane.
 
@@ -591,14 +575,14 @@ where :math:`\mathbf{e}_{i,A}` is the residual vector of the :math:`i^\text{th}`
 
 
 Interpreting the residuals
-====================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We consider three types of residuals: residuals within each row of |X|, called squared prediction errors (SPE); residuals for each column of |X|, called :math:`R^2_k` for each column, and finally residuals for the entire matrix |X|, usually just called :math:`R^2` for the model.
 
 .. _LVM-interpreting-SPE-residuals:
 
 Residuals for each observation: the square prediction error
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We have already introduced the :ref:`squared prediction error geometrically <LVM_geometric_predictions>`. We showed in that section that the residual distance from the actual observation to the model plane is given by:
 
@@ -666,7 +650,7 @@ Finally, the SPE value is a complete summary of the residual vector. As such, it
 .. _LVM_PCA_R2_values:
 
 Residuals for each column 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 
@@ -688,7 +672,7 @@ The :math:`R^2_k` value for each variable will increase with every component tha
 The :math:`R^2` values for each column can be visualized as a bar plot for dissimilar variables (chemical process data), or as a line plot if there are many similar variables that have a logical left-to-right relationship, such as the case with :ref:`spectral variables <lvm_spectral_data_example>` (wavelengths).
 
 Residuals for the whole matrix X 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Finally, we can calculate an :math:`R^2` value for the entire matrix |X|. This is the ratio between the variance of |X| we can explain with the model over the ratio of variance initially present in |X|.
 
@@ -700,7 +684,7 @@ The variance of a general matrix, :math:`\mathbf{G}`, is taken as the sum of squ
 .. _lvm_spectral_data_example:
 
 Example: spectral data
-====================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A data set, `available on the dataset website <http://datasets.connectmv.com/info/tablet-spectra>`_, contains data on 460 tablets, measured at 650 different wavelengths.
 
@@ -746,7 +730,7 @@ Finally, we can show the SPE plot for each observation. SPE values for each tabl
 .. _LVM-Hotellings-T2:
 
 Hotelling's T²
-====================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The final quantity from a PCA model that we need to consider is called Hotelling's |T2| value. Some PCA models will have many components, :math:`A`, so an initial screening of these components using score scatterplots will require reviewing :math:`A(A-1)/2` scatterplots. The |T2| value for the :math:`i^\text{th}` observation is defined as:
 
@@ -802,7 +786,7 @@ where the :math:`s_a^2` values are constants, and are the variances of each comp
 .. _LVM_preprocessing:
 
 Preprocessing the data before building a model
-==================================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The previous sections of this chapter considered the interpretation of a PCA latent variable model. From this section onwards we return to filling important gaps in our knowledge. There are 3 major steps to building any latent variable models:
 
@@ -863,14 +847,14 @@ There are a number of possibilities for data preprocessing. We mainly discuss ce
 .. _LVM_algorithms_for_PCA:
 
 Algorithms to calculate (build) a PCA model 
-============================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The different algorithms used to build a PCA model provide a different insight into the model's structure and how to interpret it. These algorithms are a reflection of how PCA has been used in different disciplines: PCA is called by different names in each area.
 
 .. _LVM-eigenvalue-decomposition:
 
 Eigenvalue decomposition
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. Note:: The purpose of this section is not the theoretical details, but rather the interesting interpretation of the PCA model that we obtain from an eigenvalue decomposition.
 
@@ -926,7 +910,7 @@ The general approach to using the eigenvalue decomposition would be:
 However, we should note that calculating the latent variable model using an eigenvalue algorithm is usually not recommended, since it calculates all eigenvectors (loadings), even though only the first few will be used. The maximum number of components possible is :math:`A_\text{max} = \min(N, K)`. Also, the default eigenvalue algorithms in software packages cannot handle missing data.
 	
 Singular value decomposition
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. TODO: Provide additional insight here on how this is equivalent to rotation, scaling, rotation: break down the data into these 3 SVD components
 
@@ -947,7 +931,7 @@ Like the eigenvalue method, the SVD method calculates all principal components p
 .. _LVM_PCA_NIPALS_algorithm:
 
 Non-linear iterative partial least-squares (NIPALS)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. ADD arrow diagram, with numeric labels next to arrows, as in the PLS section.
 
@@ -1067,7 +1051,7 @@ In summary:
 .. _LVM_testing_PCA_models:
 
 Testing the model
-====================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As mentioned previously there are 3 major steps to building a PCA model for engineering applications. We have already considered the first two steps in the preceding sections.
 
@@ -1080,7 +1064,7 @@ The last step of testing, interpreting and using the model is where one will spe
 .. _LVM-using-a-PCA-model:
 
 Using an existing PCA model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In this section we outline the process required to use an existing PCA model. What this means is that you have already calculated the model and validated its usefulness. Now you would like to use the model on a new observation, which we call :math:`\mathbf{x}'_{\text{new, raw}}`. The method described below can be efficiently applied to many new rows of observations by converting the row vector notation to matrix notation.
 
@@ -1126,8 +1110,8 @@ The above outline is for the case when there is no missing data in a new observa
 
 .. _LVM_number_of_components:
 
-How many components to use in the model using cross-validation
-===============================================================
+How many components to use in the model using cross-validation?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ..	Any recorded values we have from a system, in |X|, can be broken down into 2 parts: the data structure that is systematic, :math:`\mathbf{TP}'`, and an error component, :math:`\textbf{E}`.
 
@@ -1267,7 +1251,7 @@ However, cross-validation's objective is useful for predictive models, such as P
 .. _LVM-PCA-properties:
 
 Some properties of PCA models
-====================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ..	Show the 3D to 2D projection
 
@@ -1319,7 +1303,7 @@ We summarize various properties of the PCA model, most have been described in th
 *	Notice that some score values are positive and others negative. Each loading direction, :math:`\mathbf{p}_a`, must point in the direction that best explains the data; but this direction is not unique, since :math:`-\mathbf{p}_a` also meets this criterion. If we did select :math:`-\mathbf{p}_a` as the direction, then the scores would just be :math:`-\mathbf{t}_a` instead. This does not matter too much, because :math:`(-\mathbf{t}_a)(-\mathbf{p}'_a) = \mathbf{t}_a \mathbf{p}'_a`, which is used to calculate the predicted |X| and the residuals. But this phenomena can lead to a confusing situation for newcomers when different computer packages give different-looking loading plots and score plots for the same data set. 
 
 Contribution plots
-===================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We have :ref:`previously seen <LVM_mathematical_geometric_derivation>` how :index:`contribution plots` are constructed for a score value, for the SPE and for |T2|. We breakdown the value, such as SPE, into its individual terms, one from each variable. Then we plot these |K| contribution values as a bar chart. 
 
@@ -1352,7 +1336,7 @@ The calculation procedure is actually the same in all cases: for a group of poin
 .. _LVM-using-indicator-variables:
 
 Using indicator variables
-====================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. index::
 	single: indicator variable
@@ -1378,7 +1362,7 @@ Interpreting these sort of variables in a loading plot is also no different; str
 .. _LVM_linking_brushing:
 
 Visualization topic: linking and brushing
-===========================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :index:`Linking <pair: linking; latent variable modelling>` is when the same data point(s), are highlighted in two or more plots. This is used to highlight outliers or interesting points in a multivariate data set. The points could be highlighted in terms of colour and/or shape.
 
@@ -1395,7 +1379,7 @@ In this illustration we are considering the well-known iris data set, a multivar
 This concept is very powerful to learn from, and to interrogate a latent variable model. For example, when we see interesting observations in the score plot, we can brush through the scores, while having a time series plot of the raw data open alongside. This would highlight what that score feature means in the context of the raw data.
 
 Exercises
-=========
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. index::
 	pair: exercises; latent variable modelling
@@ -1403,7 +1387,7 @@ Exercises
 Each exercise introduces a new topic or highlights some interesting aspect of PCA.
 
 Room temperature data
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * :math:`N = 144`
 * :math:`K = 4` + 1 column containing the date and time at which the 4 temperatures were recorded
@@ -1465,7 +1449,7 @@ What have we learned?
 *	We have confirmed how the scores are on the model plane, and the SPE is the distance from the model plane to the actual observation.
 
 Food texture data set
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * :math:`N = 50`
 * :math:`K = 5` + 1 column containing the labels for each batch
@@ -1483,7 +1467,7 @@ Food texture data set
 #.	Look for any observations that are unusual. Are there any unusual scores? SPE values?  Plot contribution plots for the unusual observations and interpret them.
 
 Food consumption data set
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This data set has become a classic data set when learning about multivariate data analysis. It consists of 
 
@@ -1518,7 +1502,7 @@ What we learned:
 * How to relate contribution plots to the loadings and the :math:`R^2` values for a particular component.
 
 Silicon wafer thickness
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * :math:`N=184`
 * :math:`K=9`
@@ -1558,7 +1542,7 @@ What we learned:
 .. _LVM-process-troubleshooting-plastic-pellets:
 
 Process troubleshooting
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Recent trends show that the yield of your company's flagship product is declining. You are uncertain if the supplier of a key raw material is to blame, or if it is due to a change in your process conditions. You begin by investigating the raw material supplier.
 
@@ -1600,7 +1584,7 @@ What we learned:
 
 
 .. Principal properties of surfactants
-.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. 
 .. * :math:`N=38`
 .. * :math:`K=19`
