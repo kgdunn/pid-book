@@ -8,6 +8,9 @@ Process Improvement Using Data
    preface/index
 
 .. toctree::
+	:titlesonly:
+	:numbered:	
+	:caption: Table of Contents
 
 	data-visualization/index
 	univariate-review/index

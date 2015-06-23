@@ -181,6 +181,9 @@ import sphinx_rtd_theme
 html_theme = "sphinx_rtd_theme"
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
+html_theme = "sphinx_rtd_theme_kgdmod"
+html_theme_path = ['.',]
+
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
@@ -236,6 +239,8 @@ html_use_index = True
 
 # If true, links to the reST sources are added to the pages.
 html_show_sourcelink = False
+html_copy_source = True
+html_search_language = 'en'
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
 html_show_sphinx = False
@@ -249,7 +254,7 @@ html_show_copyright = True
 #html_use_opensearch = ''
 
 # Permalinks (those strange characters next to headings)
-html_add_permalinks = 'Permalink'
+html_add_permalinks = ''  # was 'Permalink'
 
 # If nonempty, this is the file name suffix for generated HTML files. The
 # default is ".html".

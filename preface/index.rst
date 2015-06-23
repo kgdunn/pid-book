@@ -6,7 +6,6 @@
 	\renewcommand{\py@noticeend@tip}{\py@endheavybox}
 	\makeatother
 	
-.. rubric:: Preface
 
 Preface
 =======
@@ -85,7 +84,7 @@ Thanks everyone!
 
 
 	Thanks, 
-	`Kevin <mailto:kevin.dunn@mcmaster.ca>`_
+	`Kevin <mailto:kgdunn@gmail.com>`_ (kgdunn@gmail.com)
 
 .. raw:: latex
 
