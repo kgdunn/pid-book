@@ -388,6 +388,14 @@ What we will cover
 	:align: center
 	:scale: 90
 	
+	
+
+
+
+
+	
+	
+	
 References and readings
 ========================
 
@@ -395,6 +403,11 @@ References and readings
 	pair: references and readings; latent variable modelling
 	pair: references and readings; principal component analysis
 	see: PCA; principal component analysis
+	pair: references and readings; projection to latent structures
+	see: PLS; projection to latent structures
+	see: partial least squares; projection to latent structures
+	pair: references and readings; applications of latent variable models
+	
 
 These readings cover a variety of topics in the area of latent variable methods: 
 
@@ -402,11 +415,33 @@ These readings cover a variety of topics in the area of latent variable methods:
 
 * **General**: John MacGregor, Honglu Yu, Salvador García-Muñoz, Jesus Flores-Cerrillo, "`Data-Based Latent Variable Methods for Process Analysis, Monitoring and Control <http://dx.doi.org/10.1016/j.compchemeng.2005.02.007>`_". *Computers and Chemical Engineering*, **29**, 1217-1223, 2005.
 
-* **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold: "Multivariate and Megavariate Data Analysis" (Part I and Part II).
+* **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold:  "Multivariate and Megavariate Data Analysis".
 
 * **About PCA**: Svante Wold, Kim Esbensen, Paul Geladi: "`Principal Component Analysis <http://dx.doi.org/10.1016/0169-7439(87)80084-9>`_", *Chemometrics and Intelligent Laboratory Systems*, **2**, 37-52, 1987.
 
-* **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold:  "Multivariate and Megavariate Data Analysis" (Part I contains a chapter on PCA).
+* **PLS**: Svante Wold, Michael Sjöström, Lennart Eriksson: "`PLS-regression: A Basic Tool of Chemometrics <http://dx.doi.org/10.1016/S0169-7439(01)00155-1>`_", *Chemometrics and Intelligent Laboratory Systems*, **58**, 109-130, 2001.
+
+* **PLS**: S. Wold, S. Hellberg, T. Lundstedt, M. Sjöström and H. Wold, "PLS Modeling With Latent Variables in Two or More Dimensions", Frankfurt PLS meeting, 1987 (*available on request, by email to papers@connectmv.com*)
+
+* **PLS**: Paul Geladi and Bruce Kowalski, "`Partial Least-Squares Regression: A Tutorial <http://dx.doi.org/10.1016/0003-2670(86)80028-9>`_", *Analytica Chimica Acta*, **185**, 1-17, 1986.
+
+* **PLS**: Paul Garthwaite, "`An Interpretation of Partial Least Squares <http://www.jstor.org/pss/2291207>`_", Journal of the American Statistical Association, **89**, 122-127, 1994.
+
+* **Process monitoring**: John MacGregor and Theodora Kourti "`Statistical Process Control of Multivariate Processes <http://dx.doi.org/10.1016/0967-0661(95)00014-L>`_", *Control Engineering Practice*, **3**, p 403-414, 1995.
+
+* **Process monitoring**: J.V. Kresta, T.E. Marlin, and J.F. MacGregor "`Multivariate Statistical Monitoring of Process Operating Performance <http://dx.doi.org/10.1002/cjce.5450690105>`_", *Canadian Journal of Chemical Engineering*, **69**, 35-47, 1991.
+
+* **Contribution plots**: P Miller, RE Swanson, CE Heckler, "Contribution Plots: a Missing Link in Multivariate Quality Control, *Applied Mathematics and Computer Science*, *8* (4), 775-792, 1998. (*hard to obtain, but available on request, by email to papers@connectmv.com*)
+
+* **Soft sensors**: J.V. Kresta, T.E. Marlin, and J.F. MacGregor, "`Development of Inferential Process Models Using PLS <http://dx.doi.org/10.1016/0098-1354(93)E0006-U>`_". *Computers and Chemical Engineering*, **18**, 597-611, 1994.
+
+* **Industrial applications**: Ivan Miletic, Shannon Quinn, Michael Dudzic, Vit Vaculik and Marc Champagne, "`An Industrial Perspective on Implementing On-Line Applications of Multivariate Statistics <http://dx.doi.org/10.1016/j.jprocont.2004.02.001>`_", *Journal of Process Control*,  **14**, p. 821-836, 2004.
+
+* **Batch modelling and monitoring**: S. Wold, N. Kettaneh-Wold, J.F. MacGregor, K.G. Dunn, "`Batch Process Modeling and MSPC <http://dx.doi.org/10.1016/B978-044452701-1.00108-3>`_". *Comprehensive Chemometrics*, **2**, 163-197, 2009. (*available from the author on request, by email to papers@connectmv.com*)
+
+* **Image analysis**: M. Bharati, and J.F. MacGregor "`Multivariate Image Analysis for Real Time Process Monitoring and Control <http://dx.doi.org/10.1021/ie980334l>`_", *Industrial and Engineering Chemistry Research*, **37**, 4715-4724, 1998
+
+.. * Many other applications of latent variables are described here: http://macc.mcmaster.ca/research/publications
 
 
 .. Others:
@@ -484,7 +519,7 @@ These data sets meet all the assumptions required to use the so-called "classica
 
 	Obviously not all the columns in this matrix are important; some regions are more useful than others, and columns immediately adjacent to each other are extremely similar (non-independent).
 	
-	An ordinary least squares regression model, where we would like to predict some :math:`y`-variable from these spectral data, cannot be calculated when :math:`K>N`, since we are then estimating more unknowns than we have observations for. A common strategy used to deal with non-independence is to select only a few columns (wavelengths in the spectral example) so that :math:`K < N`. The choice of columns is subjective, so a better approach is required, such as :ref:`projection to latent structures <LVM_PLS>`.
+	An ordinary least squares regression model, where we would like to predict some :math:`y`-variable from these spectral data, cannot be calculated when :math:`K>N`, since we are then estimating more unknowns than we have observations for. A common strategy used to deal with non-independence is to select only a few columns (wavelengths in the spectral example) so that :math:`K < N`. The choice of columns is subjective, so a better approach is required, such as :ref:`projection to latent structures <SECTION_PLS>`.
 	
 **Large N and small K**
 
@@ -515,7 +550,7 @@ These data sets meet all the assumptions required to use the so-called "classica
 		:width: 500px
 		:align: center
 		
-	The "classical" solution to this problem is to build and maintain :math:`M` different least squares models. We will see in the section on  :ref:`projection to latent structures <LVM_PLS>` that we can build a single regression model. The sections on :ref:`principal component regression <LVM_PCR>` also investigates the above data structure, but for single :math:`y`-variables.	
+	The "classical" solution to this problem is to build and maintain :math:`M` different least squares models. We will see in the section on  :ref:`projection to latent structures <SECTION_PLS>` that we can build a single regression model. The sections on :ref:`principal component regression <LVM_PCR>` also investigates the above data structure, but for single :math:`y`-variables.	
 
 **3D data sets and higher dimensions**	
 
@@ -785,12 +820,10 @@ Principal Component Analysis (PCA)
 
 .. include:: principal-component-analysis.inc
 
+.. _LVM_PCR:
 
-
-.. _SECTION_PLS:
-
-Principal Component Regression (PCR) and Projection to Latent Structures (PLS)
-=================================================================================
+Principal Component Regression (PCR)
+=======================================
 
 .. include:: projection-to-latent-structures.inc
 

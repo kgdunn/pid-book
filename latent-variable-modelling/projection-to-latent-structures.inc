@@ -1,27 +1,3 @@
-References and readings
-========================
-
-.. index::
-	pair: references and readings; projection to latent structures
-	see: PLS; projection to latent structures
-	see: partial least squares; projection to latent structures
-
-These readings cover a variety of topics in the area of latent variable methods:
-
-*	**PLS**: Svante Wold, Michael Sjöström, Lennart Eriksson: "`PLS-regression: A Basic Tool of Chemometrics <http://dx.doi.org/10.1016/S0169-7439(01)00155-1>`_", *Chemometrics and Intelligent Laboratory Systems*, **58**, 109-130, 2001.
-
-*	**PLS**: S. Wold, S. Hellberg, T. Lundstedt, M. Sjöström and H. Wold, "PLS Modeling With Latent Variables in Two or More Dimensions", Frankfurt PLS meeting, 1987 (*available on request, by email to papers@connectmv.com*)
-
-*	**PLS**: Paul Geladi and Bruce Kowalski, "`Partial Least-Squares Regression: A Tutorial <http://dx.doi.org/10.1016/0003-2670(86)80028-9>`_", *Analytica Chimica Acta*, **185**, 1-17, 1986.
-
-*	**PLS**: Paul Garthwaite, "`An Interpretation of Partial Least Squares <http://www.jstor.org/pss/2291207>`_", Journal of the American Statistical Association, **89**, 122-127, 1994.
-
-*	**General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold: "Multivariate and Megavariate Data Analysis" (Part I and Part II).
-
-.. _LVM_PCR:
- 
-Principal component regression (PCR)
-=====================================
 
 Principal component regression (PCR) is an alternative to multiple linear regression (MLR) and has many advantages over MLR.
 
@@ -206,7 +182,7 @@ One of the main applications in engineering for PCR is in the use of software se
 	available to create PLS models. The SIMCA-P software by Umetrics
 	was used in this work.
 	
-.. _LVM_PLS:
+.. _SECTION_PLS:
 
 Introduction to Projection to Latent Structures (PLS)
 ========================================================
@@ -271,7 +247,7 @@ From an engineering point of view this is quite a satisfying interpretation. Aft
 .. _LVM-PLS-conceptual-interpretation:
 
 A conceptual explanation of PLS
-===================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Now that you are comfortable with the concept of a latent variable using PCA and PCR, you can interpret PLS as a latent variable model, but one that has a different objective function. In PCA the objective function was to calculate each latent variable so that it best explains the available variance in :math:`\mathbf{X}_a`, where the subscript |A| refers to the matrix :math:`\mathbf{X}` *before* extracting the :math:`a^\text{th}` component.
 
@@ -288,7 +264,7 @@ In other words, there are three simultaneous objectives with PLS:
 .. _LVM_PLS_mathematical_interpretation:
 
 A mathematical/statistical interpretation of PLS 
-====================================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We will get back to the :ref:`mathematical details later on <LVM_PLS_calculation>`, but we will consider our conceptual explanation above in terms of mathematical symbols.
 
@@ -347,7 +323,7 @@ The above is a description of one variant of PLS, `known as SIMPLS <http://dx.do
 .. _LVM_PLS_geometric_interpretation:
 
 A geometric interpretation of PLS 
-===================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :ref:`As we did with PCA <LVM_PCA_geometric_interpretation>`, let's take a geometric look at the PLS model space. In the illustration below we happen to have :math:`K=3` variables in |X|, and :math:`M=3` variables in |Y|. (In general :math:`K \neq M`, but :math:`K=M=3` make explanation in the figures easier.)  Once the data are centered and scaled we have just shifted our coordinate system to the origin. Notice that there is one dot in |X| for each dot in |Y|. Each dot represents a row from the corresponding |X| and |Y| matrix.
 
@@ -377,7 +353,7 @@ The second component is then found so that it is orthogonal to the first compone
 
 
 Interpreting the scores in PLS
-===================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Like in PCA, our scores in PLS are a summary of the data from *both* blocks. The reason for saying that, even though there are two sets of scores, |T| and |U|, for each of |X| and |Y| respectively, is that they have maximal covariance. We can interpret one set of them. In this regard, the |T| scores are more readily interpretable, since they are always available. The |U| scores are not available until |Y| is known. We have the |U| scores during model-building, but when we use the model on new data (e.g. when making predictions using PLS), then we only have the |T| scores. 
 
@@ -392,7 +368,7 @@ The only difference that must be remembered is that these scores have a differen
 	:align: center
 
 Interpreting the loadings in PLS
-===================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :ref:`Like with the loadings from PCA <LVM_interpreting_loadings>`, :math:`\mathbf{p}_a`,we interpret the loadings :math:`\mathbf{w}_a` from PLS in the same way. Highly correlated variables have similar weights in the loading vectors and appear close together in the loading plots of all dimensions. 
 
@@ -409,7 +385,7 @@ The :math:`\mathbf{r}` vectors show the effect of each of the original variables
 .. _LVM_PLS_calculation:
 
 How the PLS model is calculated
-===================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This section assumes that you are comfortable with the :ref:`NIPALS algorithm for calculating a PCA model <LVM_PCA_NIPALS_algorithm>` from |X|. The NIPALS algorithm proceeds in exactly the same way for PLS, except we iterate through both blocks of |X| and |Y|.
 
@@ -499,7 +475,7 @@ The algorithm repeats all over again using the deflated matrices for the subsequ
 .. _LVM_PLS_W_and_R: 
 
 What is the difference between |W| and |R|?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 After reading about the :ref:`NIPALS algorithm for PLS <LVM_PLS_calculation>` you should be aware that we deflate the |X| matrix after every component is extracted. This means that :math:`\mathbf{w}_1` are the weights that best predict the :math:`\mathbf{t}_1` score values, our summary of the data in :math:`\mathbf{X}_{a=1}` (the preprocessed raw data). Mathematically we can write the following:
 
@@ -525,7 +501,7 @@ One can show, using repeated substitution, that a matrix |R|, whose columns cont
 So our preference is to interpret the |R| weights (often called :math:`\mathbf{W}^*` in some literature), rather than the |W| weights when investigating the relationships in a PLS model.
 
 Variability explained with each component
-=========================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We can calculate :math:`R^2` values, since PLS explains both the |X|-space and the |Y|-space. We use the :math:`\mathbf{E}_a` matrix to calculate the cumulative variance explained for the |X|-space. 
 
@@ -618,7 +594,7 @@ These :math:`R^2` values help us understand which components best explain differ
 .. .. * Is c'c = 1 for each component?  I.e. can we see the u's as an orthogonal projection onto the loadings for Y?  They are not unit length and they are not orthogonal. So we cannot make that claim.
 
 Coefficient plots in PLS
-=========================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 After building an initial PLS model one of the most informative plots to investigate are plots of the :math:`\mathbf{r:c}` vectors: using either bar plots or scatter plots. (The notation :math:`\mathbf{r:c}` implies we superimpose a plot of :math:`\mathbf{r}` on a plot of :math:`\mathbf{c}`.) These plots show the relationship between variables in |X|, between variables in |Y|, as well as the latent variable relationship between these two spaces. The number of latent variables, |A|, is much smaller number than the original variables, :math:`K + M`, effectively compressing the data into a small number of informative plots.
 
@@ -673,7 +649,7 @@ In this example the ``Tin``, ``z2``, ``Tcin2`` and ``Tmax2``, ``Fi2``, ``Fi1``, 
 .. _LVM_DOE_data:
 
 Analysis of designed experiments using PLS models
-==================================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. NOTE: you already have some of these ideas in the section "LVM-preprocessing": combine them; cross reference them?
 
@@ -705,13 +681,13 @@ Lastly, models built from DOE data allow a much stronger interpretation of the l
 .. 
 .. An example that was mentioned in the :ref:`section of data preprocessing <LVM_preprocessing>` was that of a distillation column. The inverse temperature is known to more correlated to the vapour pressure, known from first-principles modelling. Using the temperature variable by itself will lead to an adequate model, but the transformed variable can lead to a better model. We sometimes leave both variables in the model: the temperature and the calculated inverted temperature.
 
-Exercises
-==========
+PLS Exercises
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. _LVM-cheddar-cheese-example:
 
 The taste of cheddar cheese
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 *	:math:`N=30`
 
@@ -783,7 +759,7 @@ Obviously the best way to test the model is to retain a certain amount of testin
 
 
 Comparing the loadings from a PCA model to a PLS model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 PLS explains both the |X| and |Y| spaces, as well as building a predictive model between the two spaces. In this question we explore two models: a PCA model and a PLS model on the same data set.
 
@@ -810,7 +786,7 @@ The data are from the :ref:`plastic pellets troubleshooting example <LVM-process
 .. _LVM-LDPE-case-study:
 
 Predicting final quality from on-line process data: LDPE system
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * 	:math:`N = 54`
 

@@ -1,0 +1,14 @@
+/*KGD: override some of the theme elements here.*/
+
+.wy-nav-content{max-width:1000px}
+
+.caption-text{
+	font-weight: normal;
+	color: #006600;
+	font-style: italic;
+	font-size: 16px;
+}
+
+li.toctree-l2{
+	margin-left: 4em;
+}

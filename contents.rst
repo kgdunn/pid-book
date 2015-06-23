@@ -10,7 +10,7 @@ Process Improvement Using Data
 .. toctree::
 	:titlesonly:
 	:numbered:	
-	:maxdepth: 3
+	:maxdepth: -1
 	:caption: Table of Contents
 
 	data-visualization/index
@@ -22,11 +22,8 @@ Process Improvement Using Data
 	
 .. Sections omitted:
 
-	
-	
+		
 .. Solution manual
-
-
 
 	data-visualization/data-visualization-exercises
 	univariate-review/univariate-exercises

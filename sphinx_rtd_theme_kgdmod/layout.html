@@ -46,6 +46,10 @@
     <link rel="stylesheet" href="{{ pathto(cssfile, 1) }}" type="text/css" />
   {% endfor %}
 
+  {# KGD added #}
+  <link rel="stylesheet" href="{{ pathto('_static/') }}css/theme-extended-kgd.css" type="text/css" />
+
+
   {%- block linktags %}
     {%- if hasdoc('about') %}
         <link rel="author" title="{{ _('About these documents') }}"
@@ -107,12 +111,12 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
         {% block menu %}
-          {% set toctree = toctree(maxdepth=6, collapse=False, includehidden=True) %}
+          {% set toctree = toctree(maxdepth=-1, collapse=False, includehidden=True) %}
           {% if toctree %}
-              {{ toctree }}
+		      {{ toctree }}
           {% else %}
               <!-- Local TOC -->
-              <div class="local-toc">{{ toc }}</div>
+              <div class="local-toc">LOCAL TOC{{ toc }}</div>
           {% endif %}
         {% endblock %}
       </div>

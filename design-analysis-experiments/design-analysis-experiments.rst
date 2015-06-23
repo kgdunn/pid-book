@@ -481,7 +481,7 @@ The true mechanism in this system is that pressure is increased to remove the fr
 .. figure:: ../figures/doe/yield-pressure-impurity-correlation.png
 	:alt:	../figures/doe/yield-pressure-impurity-correlation.svg
 	:scale: 50
-	:align: left
+	:align: center
 	
 	The relationship between yield, pressure and impurity levels [adapted from Box, Hunter and Hunter, Chapter 14 (1st edition) or Chapter 10 (2nd edition)]
 
@@ -723,7 +723,7 @@ The range over which they will be varied is given in the table. This range was i
 
 	.. _DOE-fig-Cube-plot:
 	.. figure:: ../figures/doe/factorial-two-levels-two-variables-no-analysis.png
-		:align: left
+		:align: center
 		:scale: 50
 		
 		A cube plot, showing the experimental results
@@ -744,7 +744,7 @@ We can perform a similar calculation for the main effect of substrate concentrat
 
 .. _DOE-fig-Calculate-main-effects:
 .. figure:: ../figures/doe/factorial-two-levels-two-variables-with-analysis.png
-	:align: left
+	:align: center
 	:scale: 60
 	
 	A cube plot, showing the hand calculations for the main effects
@@ -754,14 +754,14 @@ This visual summary is a very effective method of seeing how the system responds
 The following surface plot illustrates the true, but unknown, surface from which our measurements are taken. Notice the slight curvature on the edges of each face. The main effects estimated above are a linear approximation of the conversion over the region spanned by the factorial.
 
 	.. image:: ../figures/doe/factorial-two-level-surface-example-cropped.png
-		:align: left
+		:align: center
 		:scale: 50
 
 An :index:`interaction plot` is an :ref:`alternative way to visualize these main effects <DOE-fig-Interaction-plot-example>`. Use this method when you don't have computer software to draw the surfaces. [We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>`]. We will discuss interaction plots more in the next section.
 
 	.. _DOE-fig-Interaction-plot-example:
 	.. figure:: ../figures/doe/factorial-two-level-line-plot.png
-		:align: left
+		:align: center
 		:scale: 80
 		
 		An interaction plot for the example where there is little interaction
@@ -791,7 +791,7 @@ Let's use a :ref:`different system here to illustrate <DOE-fig-interaction-examp
 	.. _DOE-fig-interaction-example-contour-plot:
 	
 	.. figure:: ../figures/doe/factorial-two-level-with-interactions.png
-		:align: left
+		:align: center
 		:scale: 85
 
 		A new example, to illustrate the effects of interactions
@@ -946,7 +946,7 @@ Some things to note are (1) the orthogonality of :math:`\mathbf{X}^T\mathbf{X}` 
 	Now contrast these numbers with those in the :ref:`graphical analysis done previously <DOE-two-level-factorials-main-effects>` and repeated below. They are the same, as long as we are careful to interpret them as the change over **half the range**.
 	
 	.. image:: ../figures/doe/factorial-two-levels-two-variables-with-analysis.png
-		:align: left
+		:align: center
 		:scale: 50
 
 	The 61.5 term in the least squares model is the expected conversion at the baseline conditions. Notice from the least squares equations how it is just the average of the four experimental values, even though we did not actually perform an experiment at the center.
@@ -963,7 +963,7 @@ The interaction term can now be readily interpreted: it is the additional increa
 Finally, out of interest, the nonlinear surface that was used to generate the experimental data for the interacting system is coloured in the illustration. In practice we never know what this surface looks like, but we estimate it with the least squares plane, which appears below the nonlinear surface as black and white grids. The corners of the box are outer levels at which we ran the factorial experiments.
 	
 	.. image:: ../figures/doe/factorial-two-level-surface-with-interaction-cropped.png
-		:align: left
+		:align: center
 		:scale: 50
 	
 The corner points are exact with the nonlinear surface, because we have used the four values to estimate four model parameters. There are no degrees of freedom left, and the model's residuals are therefore zero. Obviously, the linear model will be less accurate away from the corner points when the true system is nonlinear, but it is a useful model over the region in which we will use it later in the :ref:`section on response surface methods <DOE-RSM>`.
@@ -1129,7 +1129,7 @@ Pareto plot
 A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to estimate. Once these parameters have been calculated, for example, by using a :ref:`least squares model <DOE-analysis-by-least-squares>`, then plot the absolute value of the model coefficients in sorted order, from largest magnitude to smallest, ignoring the intercept term. Significant coefficients are established by visual judgement -- establishing a visual cutoff by contrasting the small coefficients to the larger ones.
 
 .. image:: ../figures/doe/pareto-plot-full-fraction.png
-	:align: left
+	:align: center
 	:scale: 50
 	
 The above example was from a full factorial experiment where the results for :math:`y` in standard order were :math:`y = \left[45,71,48,65,68,60,80,65,43,100,45,104,75,86,70,96 \right]`.
@@ -1273,7 +1273,7 @@ Variance of estimates from the COST approach versus the factorial approach
 Finally, we end this section on factorials by illustrating their efficiency. Contrast the two cases: COST and the full factorial approach. For this analysis we define the main effect simply as the difference between the high and low values (normally we divide through by 2, but the results still hold). Define the variance of the measured :math:`y` value as :math:`\sigma_y^2`.
 
 	.. image:: ../figures/doe/comparison-of-variances.png
-		:align: left
+		:align: center
 		:scale: 70
 	
 	.. tabularcolumns:: |l|l|
@@ -1353,7 +1353,7 @@ A half fraction has :math:`\frac{1}{2}2^k = 2^{k-1}` runs. But which runs do we 
 So this is our designed experiment for 3 factors, but it only requires 4 experiments as shown by the open points. The experiments given by the solid points are not run.
 
 .. image:: ../figures/doe/half-fraction-in-3-factors.png
-	:align: left
+	:align: center
 	:scale: 35
 
 What have we lost by running only half the factorial?  Let's write out the full design and matrix of all interactions, then construct the :math:`\mathbf{X}` matrix for the least squares model.
@@ -1500,7 +1500,7 @@ After running these 4 experiments (in random order of course) we have a complete
 So we see that we can always complete our half-fraction by creating a complementary fraction. This complimentary fraction is found by flipping the sign on the generating factor. For example, changing the sign from **C** to **-C**. See the illustration.
 
 .. image:: ../figures/doe/complementary-half-fraction-in-3-factors.png
-	:align: left
+	:align: center
 	:scale: 35
 	:alt:	complementary-half-fraction-in-3-factors.svg
 
@@ -1779,7 +1779,7 @@ Use the following table to visualize the trade-off between design resolution, nu
 .. figure:: ../figures/doe/DOE-trade-off-table.png
 	:alt:	../figures/doe/DOE-trade-off-table.svg
 	:scale: 100
-	:align: left
+	:align: center
 
 	Adapted from Box, Hunter and Hunter (2nd edition, p 272), and (1st edition, p 410).
 
@@ -1830,7 +1830,7 @@ where :math:`\mathbf{b} = [b_0, b_A, b_B, b_C, b_D, b_E, b_F, b_G]`. The matrix 
 How do you assess which main effects are important?  There are eight data points and eight parameters, so there are no degrees of freedom and the residuals are all zero. In this case you have to use a :ref:`Pareto plot <DOE-Pareto-plot>`, which requires that your variables have been suitably scaled in order to judge importance of the main effects. The Pareto plot would be given as shown below, and as usual, it does not include the intercept term.
 
 .. image:: ../figures/doe/pareto-plot.png
-	:align: left
+	:align: center
 	:scale: 37
 	:alt:	../figures/doe/pareto-plot.R
 	
@@ -1928,7 +1928,7 @@ Our approach is to intentionally *confound*  the effect of the disturbance with 
 Each group of 4 runs is called a *block* and the process of creating these 2 blocks is called :index:`blocking <pair: blocking; experiments>`. The experiments within each block must be run randomly.
 
 .. image:: ../figures/doe/blocking-factorial-3-factors.png
-	:align: left
+	:align: center
 	:scale: 50
 	
 .. tabularcolumns:: |c||c|c|c||c|c|c||c||c|
@@ -2072,7 +2072,7 @@ The interaction term is small, indicating the response surface is mostly linear 
 
 .. image:: ../figures/doe/RSM-base-case-with-first-factorial-notes.png
 	:alt:	RSM-base-case.py
-	:align: left
+	:align: center
 	:scale: 80
 
 To improve our profit in the optimal way we move along our estimated model's surface, in the direction of steepest ascent. This direction is found by taking partial derivatives of the model function, ignoring the interaction term, since it is so small.
@@ -2187,7 +2187,7 @@ We will not go into too much detail about :index:`central composite designs`, ot
 The :index:`axial points <pair: axial points; experiments>` are placed :math:`4^{0.25} = 1.4` coded units away from the center for a 2 factor system, and :math:`8^{0.25} = 1.7` units away for a :math:`k=3` factor system. Rules for higher numbers of factors, and the reasoning behind the 1.4 and 1.7 unit step size can be found, for example in the textbook by Box, Hunter and Hunter.
 
 .. image:: ../figures/doe/central-composite-design.png
-	:align: left
+	:align: center
 	:scale: 50
 	:alt:	central-composite-design.svg
 

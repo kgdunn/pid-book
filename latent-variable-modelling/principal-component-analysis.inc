@@ -1378,7 +1378,7 @@ In this illustration we are considering the well-known iris data set, a multivar
 
 This concept is very powerful to learn from, and to interrogate a latent variable model. For example, when we see interesting observations in the score plot, we can brush through the scores, while having a time series plot of the raw data open alongside. This would highlight what that score feature means in the context of the raw data.
 
-Exercises
+PCA Exercises
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. index::

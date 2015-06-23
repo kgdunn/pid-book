@@ -1,28 +1,6 @@
-References and readings
-========================
-
-.. index::
-	pair: references and readings; applications of latent variable models
-	
-* **Process monitoring**: John MacGregor and Theodora Kourti "`Statistical Process Control of Multivariate Processes <http://dx.doi.org/10.1016/0967-0661(95)00014-L>`_", *Control Engineering Practice*, **3**, p 403-414, 1995.
-
-* **Process monitoring**: J.V. Kresta, T.E. Marlin, and J.F. MacGregor "`Multivariate Statistical Monitoring of Process Operating Performance <http://dx.doi.org/10.1002/cjce.5450690105>`_", *Canadian Journal of Chemical Engineering*, **69**, 35-47, 1991.
-
-* **Contribution plots**: P Miller, RE Swanson, CE Heckler, "Contribution Plots: a Missing Link in Multivariate Quality Control, *Applied Mathematics and Computer Science*, *8* (4), 775-792, 1998. (*hard to obtain, but available on request, by email to papers@connectmv.com*)
-
-* **Soft sensors**: J.V. Kresta, T.E. Marlin, and J.F. MacGregor, "`Development of Inferential Process Models Using PLS <http://dx.doi.org/10.1016/0098-1354(93)E0006-U>`_". *Computers and Chemical Engineering*, **18**, 597-611, 1994.
-
-* **Industrial applications**: Ivan Miletic, Shannon Quinn, Michael Dudzic, Vit Vaculik and Marc Champagne, "`An Industrial Perspective on Implementing On-Line Applications of Multivariate Statistics <http://dx.doi.org/10.1016/j.jprocont.2004.02.001>`_", *Journal of Process Control*,  **14**, p. 821-836, 2004.
-
-* **Batch modelling and monitoring**: S. Wold, N. Kettaneh-Wold, J.F. MacGregor, K.G. Dunn, "`Batch Process Modeling and MSPC <http://dx.doi.org/10.1016/B978-044452701-1.00108-3>`_". *Comprehensive Chemometrics*, **2**, 163-197, 2009. (*available from the author on request, by email to papers@connectmv.com*)
-
-* **Image analysis**: M. Bharati, and J.F. MacGregor "`Multivariate Image Analysis for Real Time Process Monitoring and Control <http://dx.doi.org/10.1021/ie980334l>`_", *Industrial and Engineering Chemistry Research*, **37**, 4715-4724, 1998
-
-.. * Many other applications of latent variables are described here: http://macc.mcmaster.ca/research/publications
-
 
 Improved process understanding
-==========================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. TODO: another example: http://dx.doi.org/10.1016/S0169-7439(02)00088-6
 
@@ -60,7 +38,7 @@ It it is not shown here, but the competitor's product points are close to the mo
 .. _LVM_troubleshooting:
 
 Troubleshooting process problems
-==========================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We already saw a troubleshooting example in the section on :ref:`interpreting scores <LVM_interpreting_scores>`. In general, troubleshooting with latent variable methods uses this approach:
 
@@ -120,7 +98,7 @@ Batch 22 on the other hand had very low values of TGA and TMA, even though its s
 This illustrates that the actual contribution values are a more precise diagnostic tool that just interpreting the loadings.
 
 Optimizing: new operating point and/or new product development
-====================================================================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. Mention latent variable control of processes (MacGregor et al paper 2005 has a section on this)
 
@@ -155,7 +133,7 @@ The general principle in model inversion problems is to manipulate the any degre
 .. _LVM_inferential_sensors:
 
 Predictive modelling (inferential sensors)
-====================================================================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This section will be expanded soon, but we give an outline here of what inferential sensors are, and how they are built. These sensors also go by the names of software sensors or just soft sensors.
 
@@ -174,7 +152,7 @@ It is an indication that the predictive models need to be updated if the SPE and
 .. _LVM_monitoring:
 
 Process monitoring using latent variable methods
-====================================================================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Any variable can be monitored using control charts, as we saw in the earlier section on :ref:`process monitoring <SECTION-process-monitoring>`. The main purpose of these charts is to rapidly distinguish between two types of operation: in-control and out-of-control. We also aim to have a minimum number of false alarms (type I error: we raise an alarm when one isn't necessary) and the lowest number of false negatives possible (type II error, when an alarm should be raised, but we don't pick up the problem with the chart). We used Shewhart charts, CUSUM and EWMA charts to achieve these goals.
 
@@ -215,7 +193,7 @@ A paper that outlines the reasons for multivariate monitoring is by John MacGreg
 We will look at the steps for phase I (building the monitoring charts) and phase II (using the monitoring charts).
 
 Phase I: building the control chart
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The procedure for building a multivariate monitoring chart, i.e. the phase I steps:
 
@@ -244,7 +222,7 @@ The procedure for building a multivariate monitoring chart, i.e. the phase I ste
 	*	Keep in reserve some "known good" data to test what the type I error level is; also keep some "known out-of-control" data to assess the type II error level.
 	
 Phase II: using the control chart
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The phase II steps, when we now wish to apply this quality chart on-line, are similar to the phase II steps for :ref:`univariate control charts <monitoring_general_approach>`. Calculate the scores, SPE and Hotelling's :math:`T^2` for the new observation, :math:`\mathbf{x}'_\text{new}`, as described in the :ref:`section on using an existing PCA model <LVM-using-a-PCA-model>`. Then plot these new quantities, rather than the original variables. The only other difference is how to deal with an alarm. 
 
@@ -261,7 +239,7 @@ The usual phase II approach when an alarm is raised is to investigate the variab
 	*	|T2| alarm: an alarm in |T2| implies one or more scores are large. In many cases it is sufficient to go investigate the score(s) that caused the value of :math:`T^2_\text{new}` to be large. Though as long as the SPE value is below its alarm level, many practitioners will argue that a high |T2| value really isn't an alarm at all; it indicates that the observation is multivariately in-control (on the plane), but beyond the boundaries of what has been observed when the model was built. My advice is to consider this point tentative: investigate it further (it might well be an interesting operating point that still produces good product).
 
 Dealing with higher dimensional data structures
-=================================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This section just gives a impression how 3-D and higher dimensional data sets are dealt with. Tools such as PCA and PLS work on two-dimensional matrices. When we receive a 3-dimensional array, such as an image, or a batch data set, then we must unfold that array into a (2D) matrix if we want to use PCA and PLS in the usual manner.
 
@@ -286,7 +264,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 
 .. 
 .. Multivariate characterization
-.. ============================================
+.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. 
 .. Still to come.
 .. 
@@ -294,7 +272,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 
 .. 
 .. Learning from data: classification
-.. ======================================
+.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. 
 .. Classification is a form of learning from data, but in classification problems there are two types of learning going on: you are learning more about the system that generated the data, and your computer model is "learning" (building a model) so that it can make some sort of predictions in the future about that system.
 .. 
@@ -305,7 +283,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. .. PAPER: Classifications: Oldtimers and Newcomers, DOI = 10.1002/cem.1180030304
 .. 
 .. What is classification?
-.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. 
 .. Classification is a statistical tool used to predict whether a sample (a new observation, or row) belongs to a particular *category* (also called a *group* or a *class*). Some examples:
 .. 
@@ -322,7 +300,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. 		:align: center
 .. 
 .. How are classification models built and tested?
-.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. 
 .. The purpose of classification model building is to find the boundaries that separate one class from another class. These boundaries are computed using previous data from the system under investigation. For example, one form of classification is to build a PCA model on the data, then create boundaries in the score space to separate the classes.
 .. 
@@ -337,7 +315,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. 	*	The model's bias, a function of :math:`y - \widehat{y}`, should be small.
 .. 
 .. Supervised or unsupervised?
-.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. 
 .. Classification problems are broken down into two types: unsupervised and supervised. This nomenclature refers only to the way the classification model is built, not to how it is used later on.
 .. 
@@ -346,10 +324,10 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. With unsupervised classification there is no teacher to provide guidance, rather some other objective function is used to fit the model and it is assumed (hoped) that this objective will provide similar predictive performance to a supervised classifier. This also makes judging an unsupervised classification model very hard, because there is no measure of prediction accuracy if the true prediction is unknown.
 .. 
 .. Using multivariate methods for classification
-.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. 
 .. Unsupervised classification: PCA
-.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. 
 .. Unsupervised classification relies on the observations (the data) to separate themselves into the various categories. There are `various tools for this <http://www-stat.stanford.edu/~tibs/ElemStatLearn/>`_, but PCA is a natural latent variable method that achieves this objective.
 .. 
@@ -402,7 +380,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. The implicit assumption in the previous bullet point is that one knows from the beginning, when *building the model*, what the class designation was for each observation. In these cases it is often more efficient to use that information when building the model. This leads to supervised classifiers.
 .. 
 .. Supervised classification: PCA (a.k.a SIMCA)
-.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. 
 .. If one knows which group each observation belongs to, then an improved classification model can be had by building a *separate PCA model for each group*. Each of the :math:`G` models can have a different number of components.
 .. 
@@ -421,7 +399,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. .. _LVM-supervised-classification-PLSDA:
 .. 
 .. Supervised classification: PLS-DA
-.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. 
 .. The latent variable directions calculated from a single PCA model (unsupervised classification) on all the data are oriented along the directions of greatest variance. What if we could re-orient those directions so that they are also in the directions that maximally separate the categories from each other?
 .. 
@@ -458,10 +436,10 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. .. FIGURE HERE OF THE POOR/ADEQUATE classifier example (K=6, M=1)
 .. 
 .. Exercises on classification
-.. ============================
+.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. 
 .. Classifying the process yield: ``Adequate`` or ``Poor``
-.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. 
 .. We have considered this data set twice before. In fact, you have already built a PLS-DA model on this data. We will revisit this data set though to emphasize some of the points just learned.
 .. 
@@ -518,7 +496,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. 
 .. 
 .. Modelling time series data with latent variables models
-.. ========================================================================
+.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. 
 .. .. NOTE: there is a placeholder for lagging in the PCA section
 .. .. NOTE: I think the illustration for lagging is incorrect.
@@ -598,7 +576,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. 
 .. 
 .. Empirical models: notes and cautions
-.. ====================================
+.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. 
 .. .. Using data from simulators: must include feedback control or control systems that closely match behaviour of actual systems (e.g. MPC with contraints); must include realistic disturbances
 .. 
@@ -607,7 +585,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. Three cautions are appropriate (1) inferring causality (2) the use of feedback control and (3) building models from simulation systems to be applied to real systems.
 .. 
 .. Inferring causality: dealing with correlation in the data
-.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. 
 .. Consider a system such as the :ref:`Cheddar Cheese case study <LVM-cheddar-cheese-example>`. In that system there were 3 measures that were predictive of the cheese's taste (|y|-variable): level of acetic acid, level of :math:`\text{H}_2\text{S}`, and level of lactic acid. Scatterplot matrices of the 4 variables, taste and the other 3, showed positive correlations with each other. 
 .. 
@@ -665,7 +643,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. .. NOTE: the feedback section has been moved further down: revise the above text
 .. 
 .. Building models from simulation systems then applied to real systems
-.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. 
 .. In the paper by `Kresta, Marlin and MacGregor <http://dx.doi.org/doi:10.1016/0098-1354(93)E0006-U>`_, the authors describe how a PLS model should be built under the same conditions as it will be used later on.  The example provided in the paper is from a distillation column that is under feedback control. A simulator for a methanol-acetone-water column was used and a data set created when only variation in the manipulated variables was present.
 .. 
@@ -678,7 +656,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. **Conclusion**: The practical use of this point is that using PLS models built from simulation systems are going to have different weights to those built from actual systems. The PLS model places less weight on the noisy variables, since there is less signal in them.
 .. 
 .. Dealing with feedback control
-.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. 
 .. Feedback control alters the correlation structure among the variables in a system as described in the paper `mentioned in the previous section <http://dx.doi.org/doi:10.1016/0098-1354(93)E0006-U>`_. Three models were built when the system was operating under open loop, with feedback control, and with cascade control.
 .. 
@@ -691,10 +669,10 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. The other important implication is that if you build an empirical soft-sensor model for feedback control, then that system should already be under feedback control!  This may not be too helpful if the system is initially under open loop control and you are building the model to use in a feedback control scheme. The solution is to use the crude, inaccurate soft sensor in  feedback mode, collect more data under closed loop now, then refit the model with the newer data. Kresta *et al*. point out that usually only two iterations are required.
 .. 
 .. Exercise
-.. ============
+.. ~~~~~~~~~~~~~~~~~
 .. 
 .. Kamyr digester case study
-.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. 
 .. *	:math:`N = 301`
 .. *	:math:`K = 21` 
@@ -733,14 +711,14 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. .. PCR and PLS comparison: more components in PCR
 .. 
 .. .. Soft-sensor case study
-.. .. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. .. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. 
 .. .. Modelling of dynamic, time-based systems
-.. .. =========================================
+.. .. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. .. 	- how batch data analysis is just lagging
 .. 
 .. .. Soft-sensors
-.. .. ==============
+.. .. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. .. Batch classification examples:
 .. 	- predict stability
 .. 	- predict bio-availability
