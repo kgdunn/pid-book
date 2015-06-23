@@ -780,19 +780,19 @@ We address these issues more formally in the next section on :ref:`principal com
 
 .. _SECTION_PCA:
 
-PCA: Latent Variable Methods for a Single Block
-===================================================
+Principal Component Analysis (PCA)
+=================================================================================
 
-.. include:: principal-component-analysis.rst
+.. include:: principal-component-analysis.inc
 
 
 
 .. _SECTION_PLS:
 
-PCR and PLS: Latent Variable Methods for Two Blocks
-=====================================================
+Principal Component Regression (PCR) and Projection to Latent Structures (PLS)
+=================================================================================
 
-.. include:: projection-to-latent-structures.rst
+.. include:: projection-to-latent-structures.inc
 
 
 .. _SECTION_LVM_applications:
@@ -801,7 +801,7 @@ PCR and PLS: Latent Variable Methods for Two Blocks
 Applications of Latent Variable Models
 =====================================================
 
-.. include:: applications-of-latent-variable-models.rst
+.. include:: applications-of-latent-variable-models.inc
 
 
 
