@@ -337,13 +337,23 @@ PygmentsBridge.latex_formatter = CustomLatexFormatter
 # Commands that go at the TOC section
 _TABLE_OF_CONTENTS = r"""
 % ==== BEGIN CUSTOMIZED TOC ====
+
+~\vfill
+\thispagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{\baselineskip}
+Copyright \copyright\ 2010 to \the\year\ Kevin G. Dunn
+
+\par{Published by Kevin G. Dunn}
+
+
 \pagenumbering{gobble}
 \tableofcontents
  \pagenumbering{gobble}
 \thispagestyle{empty}
 \pagenumbering{gobble}
 \addtocontents{toc}{\protect\thispagestyle{empty}}
-
+\pagenumbering{gobble}
 % ==== END OF CUSTOMIZED TOC ====
 
 """
@@ -533,6 +543,8 @@ _PREAMBLE = r"""
   
     
 \makeatother
+
+
 % ==== END OF CUSTOMIZED PREAMBLE ====
 """
 

@@ -36,7 +36,7 @@ Exercises
 
 	.. literalinclude:: ../figures/monitoring/batch-yields-monitoring-assignment4-2010.R
 	       :language: s
-	       :lines: 1-29, 32-
+	       :lines: 1-29, 33-
 
 
 .. question::
