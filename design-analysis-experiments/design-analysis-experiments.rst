@@ -356,7 +356,7 @@ Every experiment has these two components:
 
 An important aspect about the outcome is that it is always measurable--in some way. In other words, after you finish the experiment, you must have some measurement. 
 
-Let’s use an example of growing plants. The outcome of growing a plant might be the height of the plant, or the average width of the leaves, or the number of flowers on the plant. These are numeric measurements, also called quantitative measurements. Qualitative measurements are also possible. For example, perhaps the outcome is the colour of the flower: light red, red, or dark red. A qualitative outcome might also be a description of what happened, for example, *pass* or *fail*.
+Let's use an example of growing plants. The outcome of growing a plant might be the height of the plant, or the average width of the leaves, or the number of flowers on the plant. These are numeric measurements, also called quantitative measurements. Qualitative measurements are also possible. For example, perhaps the outcome is the colour of the flower: light red, red, or dark red. A qualitative outcome might also be a description of what happened, for example, *pass* or *fail*.
 
 .. index::
 	 pair: objective; experiments

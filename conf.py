@@ -23,6 +23,8 @@ needs_sphinx = '1.0'  # If your documentation needs a minimal Sphinx version, st
 # Sphinx extensions
 # =================
 extensions = ['sphinx.ext.todo', 'sphinx.ext.pngmath', ]
+#extensions.append('search.whooshindex')  # Depends on: pip install whoosh
+
 
 # Sphinx contrib extensions
 # -------------------------
@@ -107,7 +109,7 @@ del cmd, out, source, str_out, subprocess
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build', '.hg', 'ext', ]
+exclude_patterns = ['_build', '.hg', 'ext', 'DELETE']
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 #default_role = None
@@ -164,7 +166,8 @@ rst_epilog = """
 .. |xdb| replace:: :math:`\overline{\overline{x}}`
 """
 
-linkcheck_ignore = [r'http://dx.doi.org/', 'http://www.jstor.org/pss/', 'http://books.google.com/']
+linkcheck_ignore = [r'http://dx.doi.org/.+', 'http://www.jstor.org/pss/.+', 'http://books.google.com/.+']
+linkcheck_workers = 10
 
 # -- Options for HTML output ---------------------------------------------------
 
@@ -177,9 +180,9 @@ linkcheck_ignore = [r'http://dx.doi.org/', 'http://www.jstor.org/pss/', 'http://
 
 
 # pip install -U sphinx_rtd_theme
-import sphinx_rtd_theme
-html_theme = "sphinx_rtd_theme"
-html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+#import sphinx_rtd_theme
+#html_theme = "sphinx_rtd_theme"
+#html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 html_theme = "sphinx_rtd_theme_kgdmod"
 html_theme_path = ['.',]
