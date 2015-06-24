@@ -340,11 +340,7 @@ _TABLE_OF_CONTENTS = r"""
 
 ~\vfill
 \thispagestyle{empty}
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{\baselineskip}
 Copyright \copyright\ 2010 to \the\year\ Kevin G. Dunn
-
-\par{Published by Kevin G. Dunn}
 
 
 \pagenumbering{gobble}

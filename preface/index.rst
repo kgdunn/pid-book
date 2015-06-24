@@ -4,6 +4,7 @@
 	\makeatletter
 	%\renewcommand{\py@noticestart@tip}{\py@heavybox}
 	%\renewcommand{\py@noticeend@tip}{\py@endheavybox}
+	\setcounter{page}{6}
 	\pagenumbering{roman}
 	\setcounter{secnumdepth}{-1}
 	\makeatother
