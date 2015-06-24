@@ -2,8 +2,8 @@
 
 	\pagestyle{plain}
 	\makeatletter
-	\renewcommand{\py@noticestart@tip}{\py@heavybox}
-	\renewcommand{\py@noticeend@tip}{\py@endheavybox}
+	%\renewcommand{\py@noticestart@tip}{\py@heavybox}
+	%\renewcommand{\py@noticeend@tip}{\py@endheavybox}
 	\pagenumbering{roman}
 	\setcounter{secnumdepth}{-1}
 	\makeatother

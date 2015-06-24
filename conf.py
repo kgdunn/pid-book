@@ -271,6 +271,11 @@ html_link_suffix = ''
 # Output file base name for HTML help builder.
 #htmlhelp_basename = ''
 
+# Suffix for section numbers. Default: ". ". Set to " " to suppress the final dot on section numbers.
+html_secnumber_suffix = r'. '
+
+
+
 # -- Options for link checking -------------------------------------------------
 
 #A list of regular expressions that match URIs that should not be checked when doing a linkcheck build.
@@ -332,27 +337,15 @@ PygmentsBridge.latex_formatter = CustomLatexFormatter
 # Commands that go at the TOC section
 _TABLE_OF_CONTENTS = r"""
 % ==== BEGIN CUSTOMIZED TOC ====
-%\renewcommand{\baselinestretch}{0.95}                   % Use 1.25 line spacing
-%\small\normalsize                                       % Change font sizes down and back up to active the line spacing
-                                                        % See page 47 in the LaTeX manual for this trick
-%\setcounter{tocdepth}{2}
-%\thispagestyle{empty}
-%\newpage
-\pagenumbering{roman}
+\pagenumbering{gobble}
 \tableofcontents
-%\renewcommand{\baselinestretch}{1.00}                   % Use 1.25 line spacing
-%\small\normalsize                                       % Change font sizes down and back up to active the line spacing
-%                                                        % See page 47 in the LaTeX manual for this trick
+ \pagenumbering{gobble}
+\thispagestyle{empty}
+\pagenumbering{gobble}
+\addtocontents{toc}{\protect\thispagestyle{empty}}
+
 % ==== END OF CUSTOMIZED TOC ====
 
-% ==== START CUSTOMIZED PREFACE ====
-   
-  % We've not put the preface in using RST
-  %\cleardoublepage
-  %\pagenumbering{roman}
-  %\input{preface.tex}
-  %\pagenumbering{arabic}
-% ==== END CUSTOMIZED PREFACE ====
 """
 
 _PREAMBLE = r"""
@@ -477,6 +470,68 @@ _PREAMBLE = r"""
   \definecolor{VerbatimColor}{rgb}{1,1,1}
   \definecolor{VerbatimBorderColor}{rgb}{0.5,0.5,0.5}
   
+  
+  % Better style: use ragged right (based on https://tufte-latex.github.io/tufte-latex/)
+  \raggedright
+  % \RaggedRight allows hyphenation
+
+  \setlength{\parindent}{1.0pc}%
+  \setlength{\parskip}{0pt}%
+  \RequirePackage{ragged2e}
+  \setlength{\RaggedRightRightskip}{\z@ plus 0.08\hsize}
+  
+
+  % Set the font sizes and baselines to match Tufte's books
+  \renewcommand\normalsize{%
+     \@setfontsize\normalsize\@xpt{14}%
+     \abovedisplayskip 10\p@ \@plus2\p@ \@minus5\p@
+     \abovedisplayshortskip \z@ \@plus3\p@
+     \belowdisplayshortskip 6\p@ \@plus3\p@ \@minus3\p@
+     \belowdisplayskip \abovedisplayskip
+     \let\@listi\@listI}
+  \normalbaselineskip=14pt
+  \normalsize
+  \renewcommand\small{%
+     \@setfontsize\small\@ixpt{12}%
+     \abovedisplayskip 8.5\p@ \@plus3\p@ \@minus4\p@
+     \abovedisplayshortskip \z@ \@plus2\p@
+     \belowdisplayshortskip 4\p@ \@plus2\p@ \@minus2\p@
+     \def\@listi{\leftmargin\leftmargini
+                 \topsep 4\p@ \@plus2\p@ \@minus2\p@
+                 \parsep 2\p@ \@plus\p@ \@minus\p@
+                 \itemsep \parsep}%
+     \belowdisplayskip \abovedisplayskip
+  }
+  \renewcommand\footnotesize{%
+     \@setfontsize\footnotesize\@viiipt{10}%
+     \abovedisplayskip 6\p@ \@plus2\p@ \@minus4\p@
+     \abovedisplayshortskip \z@ \@plus\p@
+     \belowdisplayshortskip 3\p@ \@plus\p@ \@minus2\p@
+     \def\@listi{\leftmargin\leftmargini
+                 \topsep 3\p@ \@plus\p@ \@minus\p@
+                 \parsep 2\p@ \@plus\p@ \@minus\p@
+                 \itemsep \parsep}%
+     \belowdisplayskip \abovedisplayskip
+  }
+  \renewcommand\scriptsize{\@setfontsize\scriptsize\@viipt\@viiipt}
+  \renewcommand\tiny{\@setfontsize\tiny\@vpt\@vipt}
+  \renewcommand\large{\@setfontsize\large\@xipt{15}}
+  \renewcommand\Large{\@setfontsize\Large\@xiipt{16}}
+  \renewcommand\LARGE{\@setfontsize\LARGE\@xivpt{18}}
+  \renewcommand\huge{\@setfontsize\huge\@xxpt{30}}
+  \renewcommand\Huge{\@setfontsize\Huge{24}{36}}
+
+  \setlength\leftmargini   {1pc}
+  \setlength\leftmarginii  {1pc}
+  \setlength\leftmarginiii {1pc}
+  \setlength\leftmarginiv  {1pc}
+  \setlength\leftmarginv   {1pc}
+  \setlength\leftmarginvi  {1pc}
+  \setlength\labelsep      {.5pc}
+  \setlength\labelwidth    {\leftmargini}
+  \addtolength\labelwidth{-\labelsep}
+  
+    
 \makeatother
 % ==== END OF CUSTOMIZED PREAMBLE ====
 """
