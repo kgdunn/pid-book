@@ -86,7 +86,7 @@ Thanks everyone!
 
 
 	Thanks, 
-	`Kevin <mailto:kgdunn@gmail.com>`_ (kgdunn@gmail.com)
+	`Kevin <mailto:kgdunn@gmail.com>`_ 
 
 .. raw:: latex
 
