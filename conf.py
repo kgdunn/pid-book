@@ -313,6 +313,18 @@ latex_use_parts = False
 latex_show_urls = 'footnote'
 
 
+# Control the source code size
+# http://stackoverflow.com/questions/9899283/how-do-you-change-the-code-example-font-size-in-latex-pdf-output-with-sphinx
+from sphinx.highlighting import PygmentsBridge
+from pygments.formatters.latex import LatexFormatter
+
+class CustomLatexFormatter(LatexFormatter):
+    def __init__(self, **options):
+        super(CustomLatexFormatter, self).__init__(**options)
+        self.verboptions = r"formatcom=\footnotesize"
+
+PygmentsBridge.latex_formatter = CustomLatexFormatter
+
 
 #_MAKETITLE = r""" """
 
@@ -384,6 +396,8 @@ _PREAMBLE = r"""
 \def\@subtitle{\relax}
 \newcommand{\subtitle}[1]{\gdef\@subtitle{#1}}
 \makeatother
+
+
 
 \makeatletter
 \renewcommand{\releasename}{Version}
@@ -459,6 +473,10 @@ _PREAMBLE = r"""
     \renewcommand{\headrulewidth}{0pt}
     \renewcommand{\footrulewidth}{0.4pt}
   }
+  
+  \definecolor{VerbatimColor}{rgb}{1,1,1}
+  \definecolor{VerbatimBorderColor}{rgb}{0.5,0.5,0.5}
+  
 \makeatother
 % ==== END OF CUSTOMIZED PREAMBLE ====
 """
