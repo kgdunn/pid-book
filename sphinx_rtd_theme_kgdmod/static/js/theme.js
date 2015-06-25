@@ -6,6 +6,7 @@ function toggleCurrent (elem) {
     parent_li.toggleClass('current');
 }
 
+
 $(document).ready(function() {
     // Shift nav in mobile when clicking the menu.
     $(document).on('click', "[data-toggle='wy-nav-top']", function() {

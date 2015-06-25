@@ -12,3 +12,13 @@
 li.toctree-l2{
 	margin-left: 0em;
 }
+
+
+
+/* Q&A styling */
+.click-to-reveal{
+	font-style: italic;
+}
+.new_question{
+	margin-top: 2em;
+}

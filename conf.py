@@ -34,7 +34,8 @@ extensions = ['sphinx.ext.todo', 'sphinx.ext.pngmath', ]
 # -------------------------
 extensions.append('q-and-a')
 
-# Set the next line to "True" to create full solutions to the book (i.e. ``fullinclude`` is ignored)
+# Set the next line to "True" to create full solutions 
+# to the book (i.e. ``fullinclude`` is ignored)
 # The default value should be False
 q_and_a_override = False
 
@@ -242,7 +243,11 @@ html_use_index = True
 
 # If true, links to the reST sources are added to the pages.
 html_show_sourcelink = False
-html_copy_source = False
+
+# Leave as True: stictly speaking, the Makefile for "html" will replace the source code with 
+# the "text" builder's output, eliminating any comments and other details from the source.
+html_copy_source = True
+
 html_search_language = 'en'
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
@@ -480,9 +485,6 @@ _PREAMBLE = r"""
   % Better style: use ragged right (based on https://tufte-latex.github.io/tufte-latex/)
   \raggedright
   % \RaggedRight allows hyphenation
-
-  \setlength{\parindent}{1.0pc}%
-  \setlength{\parskip}{0pt}%
   \RequirePackage{ragged2e}
   \setlength{\RaggedRightRightskip}{\z@ plus 0.08\hsize}
   

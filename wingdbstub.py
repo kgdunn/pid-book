@@ -22,20 +22,19 @@ Then, add the following line to your code:
 
 Debugging will start immediately after this import statements.
 
-Next make sure that your IDE is running and that it's configured
-to do passive listening and accept passive connections from the
-host the debug program will be running on.
+Next make sure that your IDE is running and that it's configured to accept
+connections from the host the debug program will be running on.
 
 Now, invoking your python file should run the code within the debugger.
 Note, however, that Wing will not stop in the code unless a breakpoint
-set set.
+is set.
 
 If the debug process is started before the IDE, or is not listening
 at the time this module is imported then the program will run with
 debugging until an attach request is seen.  Attaching only works 
 if the .wingdebugpw file is present; see the manual for details.
 
-One win32, you either need to edit WINGHOME in this script or
+On win32, you either need to edit WINGHOME in this script or
 pass in an environment variable called WINGHOME that points to
 the Wing IDE installation directory.
 
@@ -112,8 +111,10 @@ kExitOnFailure = 0
 #------------------------------------------------------------------------
 # Find Wing debugger installation location
 
-# Edit this to point to your Wing installation or set to None to use env setting
-WINGHOME="/usr/lib/wingide4.0"
+# Edit this to point to your Wing installation or set to None to use env WINGHOME
+# On OS X this must be set to name of the Wing IDE application bundle
+# (for example, /Applications/WingIDE.app)
+WINGHOME = '/Applications/WingIDE.app'
 
 if sys.hexversion >= 0x03000000:
   def has_key(o, key):
@@ -138,16 +139,31 @@ if WINGHOME == None:
 kUserSettingsDir = None
 if kUserSettingsDir is None:
   kUserSettingsDir = os.environ.get('WINGDB_USERSETTINGS')
-
-#------------------------------------------------------------------------
-# Sanity check:  Debugging in optimized mode makes no sense
-if __debug__ == 0:
-  sys.stdout.write("*******************************************************************\n")
-  sys.stdout.write("Error: Cannot run a debug process with optimized python because\n")
-  sys.stdout.write("Error: this omits necessary debug information from byte code.\n")
-  sys.stdout.write("Error: You must omit the -O or -OO command line option, or undefine\n")
-  sys.stdout.write("Error: environment variable PYTHONOPTIMIZE before launching python.\n")
-  sys.exit(2)
+  
+def _FindActualWingHome(winghome):
+  """ Find the actual directory to use for winghome.  Needed on OS X
+  where the .app directory is the preferred dir to use for WINGHOME and
+  .app/Contents/MacOS is accepted for backward compatibility. """
+  
+  if sys.platform != 'darwin':
+    return winghome
+  
+  app_dir = None
+  if os.path.isdir(winghome):
+    if winghome.endswith('/'):
+      wo_slash = winghome[:-1]
+    else:
+      wo_slash = winghome
+      
+    if wo_slash.endswith('.app'):
+      app_dir = wo_slash
+    elif wo_slash.endswith('.app/Contents/MacOS'):
+      app_dir = wo_slash[:-len('/Contents/MacOS')]
+    
+  if app_dir and os.path.isdir(os.path.join(app_dir, 'Contents', 'Resources')):
+    return os.path.join(app_dir, 'Contents', 'Resources')
+  
+  return winghome
   
 def _ImportWingdb(winghome, user_settings=None):
   """ Find & import wingdb module. """
@@ -159,7 +175,7 @@ def _ImportWingdb(winghome, user_settings=None):
     dir_list = find_matching('bin', winghome, user_settings)
   except Exception:
     dir_list = []
-  dir_list.extend([os.path.join(WINGHOME, 'bin'), os.path.join(WINGHOME, 'src')])
+  dir_list.extend([os.path.join(winghome, 'bin'), os.path.join(winghome, 'src')])
   for path in dir_list:
     try:
       f, p, d = imp.find_module('wingdb', [path])
@@ -173,12 +189,23 @@ def _ImportWingdb(winghome, user_settings=None):
       pass
 
 #------------------------------------------------------------------------
+# Set debugger if it hasn't been set -- this is to handle module reloading
+# In the reload case, the debugger variable will be set to something
+try:
+  debugger
+except NameError:
+  debugger = None
+  
+# Unset WINGDB_ACTIVE env if it was inherited from another process
+# XXX Would be better to be able to call getpid() on dbgtracer but can't access it yet
+if 'WINGDB_ACTIVE' in os.environ and os.environ['WINGDB_ACTIVE'] != str(os.getpid()):
+  del os.environ['WINGDB_ACTIVE']
+
 # Start debugging if not disabled and this module has never been imported
 # before
-if not has_key(os.environ, 'WINGDB_ACTIVE'):
-  debugger = None
-if not kWingDebugDisabled and not has_key(os.environ, 'WINGDB_DISABLED') and \
-   not has_key(os.environ, 'WINGDB_ACTIVE'):
+if (not kWingDebugDisabled and debugger is None
+    and not has_key(os.environ, 'WINGDB_DISABLED') and 
+    not has_key(os.environ, 'WINGDB_ACTIVE')):
 
   exit_on_fail = 0
   
@@ -220,7 +247,8 @@ if not kWingDebugDisabled and not has_key(os.environ, 'WINGDB_DISABLED') and \
       pwfile_name = kPWFileName
     
     # Load wingdb.py
-    wingdb = _ImportWingdb(WINGHOME, kUserSettingsDir)
+    actual_winghome = _FindActualWingHome(WINGHOME)
+    wingdb = _ImportWingdb(actual_winghome, kUserSettingsDir)
     if wingdb == None:
       sys.stdout.write("*******************************************************************\n")
       sys.stdout.write("Error: Cannot find wingdb.py in $(WINGHOME)/bin or $(WINGHOME)/src\n")
@@ -228,7 +256,7 @@ if not kWingDebugDisabled and not has_key(os.environ, 'WINGDB_DISABLED') and \
       sys.exit(2)
     
     # Find the netserver module and create an error stream
-    netserver = wingdb.FindNetServerModule(WINGHOME, kUserSettingsDir)
+    netserver = wingdb.FindNetServerModule(actual_winghome, kUserSettingsDir)
     err = wingdb.CreateErrStream(netserver, logfile, very_verbose_log)
     
     # Start debugging
@@ -237,7 +265,7 @@ if not kWingDebugDisabled and not has_key(os.environ, 'WINGDB_DISABLED') and \
                                         pwfile_name=pwfile_name,
                                         autoquit=not embedded)
     debugger.StartDebug(stophere=0)
-    os.environ['WINGDB_ACTIVE'] = "1"
+    os.environ['WINGDB_ACTIVE'] = str(os.getpid())
     if debugger.ChannelClosed():
       raise ValueError('Not connected')
     
@@ -246,3 +274,44 @@ if not kWingDebugDisabled and not has_key(os.environ, 'WINGDB_DISABLED') and \
       raise
     else:
       pass
+
+def Ensure(require_connection=1, require_debugger=1):
+  """ Ensure the debugger is started and attempt to connect to the IDE if
+  not already connected.  Will raise a ValueError if:
+  
+  * the require_connection arg is true and the debugger is unable to connect
+  * the require_debugger arg is true and the debugger cannot be loaded
+  
+  If SuspendDebug() has been called through the low-level API, calling
+  Ensure() resets the suspend count to zero and additional calls to
+  ResumeDebug() will be ignored until SuspendDebug() is called again.
+  
+  Note that a change to the host & port to connect to will only
+  be use if a new connection is made.
+  
+  """
+  
+  if debugger is None:
+    if require_debugger:
+      raise ValueError("No debugger")
+    return
+
+  hostport = os.environ.get('WINGDB_HOSTPORT', kWingHostPort)
+  colonpos = hostport.find(':')
+  host = hostport[:colonpos]
+  port = int(hostport[colonpos+1:])
+  
+  resumed = debugger.ResumeDebug()
+  while resumed > 0:
+    resumed = debugger.ResumeDebug()
+  
+  debugger.SetClientAddress((host, port))  
+  
+  if not debugger.DebugActive():
+    debugger.StartDebug()
+  elif debugger.ChannelClosed():
+    debugger.ConnectToClient()
+    
+  if require_connection and debugger.ChannelClosed():
+    raise ValueError('Not connected')
+    
