@@ -11,11 +11,8 @@ from docutils.parsers.rst import directives
 from sphinx.util.compat import Directive
 import hashlib
 
-import wingdbstub
-
 txt = """ <a class="click-to-reveal" id="{0}-click" href="javascript: void(0);" 
 onClick="toggle_q_and_a('{0}')">Click to show answer</a><span id="{0}" class="q_and_a_answer" style="display:none;">"""
-
 
 def boolean_input(argument):
     return directives.choice(argument.lower() , ('yes', 'no')) == 'yes'
