@@ -98,6 +98,6 @@ Thanks everyone!
 	\clearpage
 	\setcounter{page}{1}
 	\pagenumbering{arabic}
-	\setcounter{secnumdepth}{0}
+	\setcounter{secnumdepth}{2}  % Go back to labelling the subsection
 	\pagestyle{normal}
 

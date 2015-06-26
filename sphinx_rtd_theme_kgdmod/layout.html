@@ -20,7 +20,7 @@
 
   {# FAVICON #}
   {% if favicon %}
-    <link rel="shortcut icon" href="{{ pathto('_static/' + favicon, 1) }}"/>
+    <link rel="shortcut icon" href="{{ pathto('_static/media/' + favicon, 1) }}"/>
   {% endif %}
 
   {# CSS #}
@@ -123,10 +123,14 @@
 	  <hr>
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
         {% block PDFdownload %}
-          <a href="{{ pathto('', 1) }}PID.pdf">Download PDF of entire book</a>
+				  <a href="{{ pathto('', 1) }}PID.pdf">
+				    <img src="{{ pathto('_static/media/' + '512px-Document-pdf.svg.png', 1) }}" width="25px" alt="Download a PDF of the entire book" /> Download PDF of entire book</a>
+					<!-- By RRZEicons [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons -->
         {% endblock %}
       </div>
       &nbsp;
+			<ul><li>Updated: {{last_updated}}<li>Version: {{release}}</ul>
+			
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
