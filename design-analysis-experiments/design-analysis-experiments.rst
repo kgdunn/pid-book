@@ -557,7 +557,7 @@ where :math:`y_i` is the response variable :math:`d_i` is an indicator variable.
 	    return(list(summary(model), confint(model)))
 	}
 	
-	brittle <- read.csv('http://datasets.connectmv.com/file/brittleness-index.csv')
+	brittle <- read.csv('http://openmv.net/file/brittleness-index.csv')
 
 	# We developed the "group_difference" function in the Univariate section
 	group_difference(brittle$TK104, brittle$TK107)  

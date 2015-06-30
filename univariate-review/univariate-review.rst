@@ -1265,7 +1265,7 @@ Continuing the above example we can compare the past 10 runs from system B with 
 
 Here's the procedure:
 
-	#.	Imagine that we have have 300 historical data points from this system, tabulated in time order: yield from batch 1, 2, 3 ... (the data are available on the `website <http://datasets.connectmv.com/info/batch-yields>`_).
+	#.	Imagine that we have have 300 historical data points from this system, tabulated in time order: yield from batch 1, 2, 3 ... (the data are available on the `website <http://openmv.net/info/batch-yields>`_).
 	
 	#.	Calculate the average yields from batches 1 to 10. Then calculate the average yield from batches 11 to 20. Notice that this is exactly like the experiment we performed when we acquired data for system B: two groups of 10 batches, with the groups formed from sequential batches.
 	

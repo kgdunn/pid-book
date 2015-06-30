@@ -224,7 +224,7 @@ This is very useful, because now instead of dealing with :math:`K` thermometers 
 Food texture example
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let's take a look at an example to consolidate and extend the ideas introduced so far. This `data set is from a food manufacturer <http://datasets.connectmv.com/info/food-texture>`_ making a pastry product. Each sample (row) in the data set is taken from a batch of product where 5 quality attributes are measured:
+Let's take a look at an example to consolidate and extend the ideas introduced so far. This `data set is from a food manufacturer <http://openmv.net/info/food-texture>`_ making a pastry product. Each sample (row) in the data set is taken from a batch of product where 5 quality attributes are measured:
 
 	#.	Percentage oil in the pastry
 	#.	The product's density (the higher the number, the more dense the product)
@@ -317,7 +317,7 @@ Let's examine the score values calculated. As shown in equation :eq:`LVM_t1_food
 	:width: 750px
 	:align: center
 	
-The samples appear to be evenly spread, some high and some low on the :math:`t_1` scale. Sample 33 has a :math:`t_1` value of -4.2, indicating it was much denser than the other pastries, and had a high fracture angle (it could be bent more than others). In fact, if we `refer to the raw data <http://datasets.connectmv.com/info/food-texture>`_ we can confirm these findings: :math:`\mathbf{x}_{i=33} = [15.5, \,\, 3125, \,\, 7, \,\, 33, \,\, 92]`. Also refer back to the scatterplot matrix and mark the point which has density of 3125, and fracture angle of 33. This pastry also has a low oil percentage (15.5%) and low crispy value (7).
+The samples appear to be evenly spread, some high and some low on the :math:`t_1` scale. Sample 33 has a :math:`t_1` value of -4.2, indicating it was much denser than the other pastries, and had a high fracture angle (it could be bent more than others). In fact, if we `refer to the raw data <http://openmv.net/info/food-texture>`_ we can confirm these findings: :math:`\mathbf{x}_{i=33} = [15.5, \,\, 3125, \,\, 7, \,\, 33, \,\, 92]`. Also refer back to the scatterplot matrix and mark the point which has density of 3125, and fracture angle of 33. This pastry also has a low oil percentage (15.5%) and low crispy value (7).
 
 We can also investigate sample 36, with a :math:`t_1` value of 3.6. The raw data again confirm that this pastry follows the trends of other, high :math:`t_1` value pastries. It has a high oil level, low density, high crispiness, and a low fracture angle: :math:`x_{36} = [21.2, \,\, 2570, \,\, 14, \,\, 13, \,\, 105]`. Locate again on the scatterplot matrices sample 36 where oil level is 21.2 and the crispiness is 14. Also mark the point where density = 2570 and the fracture value = 13 for this sample.
 
@@ -637,7 +637,7 @@ Looking back at the :ref:`room-temperature example <LVM_room_temperature_example
 	:width: 750px
 	:align: center
 
-Using the `raw data for this example <http://datasets.connectmv.com/info/room-temperature>`_, shown below, can you explain why we see those unusual points in the SPE plot around time 50 to 60?
+Using the `raw data for this example <http://openmv.net/info/room-temperature>`_, shown below, can you explain why we see those unusual points in the SPE plot around time 50 to 60?
 
 .. image:: ../figures/examples/room-temperature/room-temperature-plots.png
 	:alt:	../figures/examples/room-temperature/room-temperature-plots.py
@@ -686,7 +686,7 @@ The variance of a general matrix, :math:`\mathbf{G}`, is taken as the sum of squ
 Example: spectral data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A data set, `available on the dataset website <http://datasets.connectmv.com/info/tablet-spectra>`_, contains data on 460 tablets, measured at 650 different wavelengths.
+A data set, `available on the dataset website <http://openmv.net/info/tablet-spectra>`_, contains data on 460 tablets, measured at 650 different wavelengths.
 
 .. image:: ../figures/examples/tablet-spectra/pharma-spectra.png
 	:alt:	../figures/examples/tablet-spectra/pharma-spectra.py
@@ -699,7 +699,7 @@ This R code will calculate principal components for this data:
 .. code-block:: s
 
 	# Read large data file
-	spectra <- read.csv('http://datasets.connectmv.com/file/tablet-spectra.csv', 
+	spectra <- read.csv('http://openmv.net/file/tablet-spectra.csv', 
 	                     header=FALSE)
 	model.pca <- prcomp(spectra[,2:651], scale=TRUE)
 	summary(model.pca)
@@ -1391,7 +1391,7 @@ Room temperature data
 
 * :math:`N = 144`
 * :math:`K = 4` + 1 column containing the date and time at which the 4 temperatures were recorded
-* Web address: http://datasets.connectmv.com/info/room-temperature
+* Web address: http://openmv.net/info/room-temperature
 * Description: Temperature measurements from 4 corners of a room
 
 .. image:: ../figures/examples/room-temperature/room-temperature-plots.png
@@ -1453,7 +1453,7 @@ Food texture data set
 
 * :math:`N = 50`
 * :math:`K = 5` + 1 column containing the labels for each batch
-* Web address: http://datasets.connectmv.com/info/food-texture
+* Web address: http://openmv.net/info/food-texture
 * Description: Data from a :ref:`food manufacturer making a pastry product <LVM_food_texture_example>`. Each row contains the 5 quality attributes of a batch of product.
 
 #.	Fit a PCA model.
@@ -1474,7 +1474,7 @@ This data set has become a classic data set when learning about multivariate dat
 *	:math:`N=16` countries in the European area
 *	:math:`K=20` food items
 *	Missing data: yes
-*	Web address: http://datasets.connectmv.com/info/food-consumption
+*	Web address: http://openmv.net/info/food-consumption
 *	Description: The data table lists for each country the relative consumption of certain food items, such as tea, jam, coffee, yoghurt, and others.
 
 .. image:: ../figures/examples/food-consumption/food-consumption.png
@@ -1506,7 +1506,7 @@ Silicon wafer thickness
 
 * :math:`N=184`
 * :math:`K=9`
-* Web address: http://datasets.connectmv.com/info/silicon-wafer-thickness
+* Web address: http://openmv.net/info/silicon-wafer-thickness
 * Description: These are nine thickness measurements recorded from various batches of silicon wafers. One wafer is removed from each batch and the thickness of the wafer is measured at the nine locations, as shown in the illustration. 
 
 .. figure:: ../figures/examples/silicon-wafer-thickness/silicon-wafer-thickness-locations.png
@@ -1552,7 +1552,7 @@ The data available has:
 
 *	:math:`K = 6` + 1 designation of process outcome
 
-*	Web address: http://datasets.connectmv.com/info/raw-material-characterization
+*	Web address: http://openmv.net/info/raw-material-characterization
 
 *	Description: 3 of the 6 measurements are size values for the plastic pellets, while the other 3 are the outputs from thermogravimetric analysis (TGA), differential scanning calorimetry (DSC) and thermomechanical analysis (TMA), measured in a laboratory. These 6 measurements are thought to adequately characterize the raw material. Also provided is a designation ``Adequate`` or ``Poor`` that reflects the process engineer's opinion of the yield from that lot of materials.
 
@@ -1590,7 +1590,7 @@ What we learned:
 .. * :math:`K=19`
 .. * :math:`M=4`
 .. * Missing data: yes
-.. * Web address: http://datasets.connectmv.com/info/surfactants
+.. * Web address: http://openmv.net/info/surfactants
 .. * Description: These 38 non-ionic surfactants, ingredients for making a detergent, were characterized (described) by taking 19 measurements (the other 4 columns will be used in a future study). The first purpose of this data set was to understand how these 19 properties are related to each other, and to find a representative sub-sample from the rows in |X| which could be selected for further study.
 .. 
 .. #.	Import the data, making sure you *exclude* the ``YDet``, ``YConc``, ``YTemp``, and ``YTox`` variables. Build a PCA model on the 19 columns in remaining in |X|.

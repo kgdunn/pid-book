@@ -533,7 +533,7 @@ These data sets meet all the assumptions required to use the so-called "classica
 		:width: 500px
 		:align: center
 		
-	An `industrial distillation example <http://datasets.connectmv.com/info/distillation-tower>`_ is given on the data set website with :math:`K=27`, from a small column in Canada.
+	An `industrial distillation example <http://openmv.net/info/distillation-tower>`_ is given on the data set website with :math:`K=27`, from a small column in Canada.
 
 **N approximately equal to K**
 	

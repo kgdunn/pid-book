@@ -446,7 +446,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. * :math:`N = 24`
 .. * :math:`K = 6` 
 .. * :math:`G = 2`: two groups, ``Adequate`` or ``Poor``
-.. * Web address: http://datasets.connectmv.com/info/raw-material-characterization
+.. * Web address: http://openmv.net/info/raw-material-characterization
 .. * Description: The designation of ``Adequate`` or ``Poor`` reflects the process engineer's opinion of the yield from that lot of materials.
 .. 
 .. #.	Build a PCA model only on the data from the ``Adequate`` group using :math:`K=6` variables. 
@@ -677,7 +677,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. *	:math:`N = 301`
 .. *	:math:`K = 21` 
 .. *	:math:`M = 1` 
-.. *	Web address: http://datasets.connectmv.com/info/kamyr-digester
+.. *	Web address: http://openmv.net/info/kamyr-digester
 .. *	Description: A digester is an piece of equipment in paper making processes that cooks the woods chips for several hours. This cooking processes softens the chips using an alkali medium, known as liquor  The process is operated in counter-current, with wood chips flowing one direction and leaving as pulp, and the fresh liquor (alkali medium) entering at the opposite end of the digester. The key quality characteristic in the process is the Kappa number, a measure of the whiteness of the paper (bleachability of the pulp)
 .. 
 .. 	Several of the variables in the data set have already been lagged based on process knowledge. For example, ``ChipMass-4`` indicates that the chip mass feed rate has been lagged by 4 hours (approximately the residence time in the digester). Other variables with a numeric ending have also been lagged by 1, 2 or 4 hours.

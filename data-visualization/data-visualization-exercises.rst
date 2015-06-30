@@ -82,7 +82,7 @@ Exercises
 
 .. question::
 
-	This question is an extension to visualizing more than 3 variables. Investigate on your own the term "scatterplot matrix", and draw one for the `Food texture data set <http://datasets.connectmv.com/info/food-texture>`_. See the ``car`` library in R to create an effective scatterplot matrix with the ``scatterplotMatrix`` function.
+	This question is an extension to visualizing more than 3 variables. Investigate on your own the term "scatterplot matrix", and draw one for the `Food texture data set <http://openmv.net/info/food-texture>`_. See the ``car`` library in R to create an effective scatterplot matrix with the ``scatterplotMatrix`` function.
 
 	Give a couple of bullet-points interpreting the plot.
 
@@ -113,7 +113,7 @@ Exercises
 
 .. question::
 
-	Using the `Website traffic data set <http://datasets.connectmv.com/info/website-traffic>`_
+	Using the `Website traffic data set <http://openmv.net/info/website-traffic>`_
 
 	#.	Create a chart that shows the *variability* in website traffic for each day of the week.
 	#.	Use the same data set to describe any time-based trends that are apparent.
@@ -129,7 +129,7 @@ Exercises
 
 		.. code-block:: s
 
-		    web <- read.csv('http://datasets.connectmv.com/file/website-traffic.csv')
+		    web <- read.csv('http://openmv.net/file/website-traffic.csv')
 
 		    # Re-order the factors in this order
 		    day.names <- c("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday","Thursday", "Friday" )
@@ -153,7 +153,7 @@ Exercises
 
 	The best way to draw the time-series plot is to use proper time-based labelling on the x-axis, but we won't cover that topic here. If you are interested, read up about the ``xts`` package (`see the R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_) and it's plot command. See how it is used in the code below::
 
-		web <- read.csv('http://datasets.connectmv.com/file/website-traffic.csv')
+		web <- read.csv('http://openmv.net/file/website-traffic.csv')
 
 		layout(matrix(c(1,2), 1, 2))
 		plot(web$Visits, type="o")
@@ -218,7 +218,7 @@ Exercises
 
 ..	question:: 
 
-	Load the `room temperature <http://datasets.connectmv.com/info/room-temperature>`_ dataset from the general `Datasets website <http://datasets.connectmv.com>`_ into R, Python or MATLAB.
+	Load the `room temperature <http://openmv.net/info/room-temperature>`_ dataset from the general `Datasets website <http://openmv.net>`_ into R, Python or MATLAB.
 
 	#.	Plot the 4 trajectories, ``FrontLeft``, ``FrontRight``, ``BackLeft`` and ``BackRight`` on the same plot.
 	#.	Comment on any features you observe in your plot.
@@ -259,7 +259,7 @@ Exercises
 
 ..	question::
 
-	Load the `six point board thickness <http://datasets.connectmv.com/info/six-point-board-thickness>`_ dataset, available from datasets website.
+	Load the `six point board thickness <http://openmv.net/info/six-point-board-thickness>`_ dataset, available from datasets website.
 
 	#.	Plot a boxplot of the first 100 rows of data to match the figure :ref:`in the course notes <visualization_boxplot_example>`
 	#.	Explain why the thick center line in the box plot is not symmetrical with the outer edges of the box.
@@ -311,7 +311,7 @@ Exercises
 
 .. question::
 
-	In a final exam for a particular course at McMaster University there was an open-ended question. These `data values are the grades <http://datasets.connectmv.com/info/systematic-method>`_ achieved for the answer to that question, broken down by whether the student used a systematic method, or not. No grades were given for using a systematic method; grades were awarded only on answering the question. 
+	In a final exam for a particular course at McMaster University there was an open-ended question. These `data values are the grades <http://openmv.net/info/systematic-method>`_ achieved for the answer to that question, broken down by whether the student used a systematic method, or not. No grades were given for using a systematic method; grades were awarded only on answering the question. 
 	
 	A systematic method is any method that assists the student with problem solving (e.g. define the problem, identify knowns/unknowns and assumptions, explore alternatives, plan a strategy, implement the strategy and then check the solution).
 	

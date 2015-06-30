@@ -6,7 +6,7 @@ Exercises
 
 .. question::
 
-	Use the `distillation column data set <http://datasets.connectmv.com/info/distillation-tower>`_ and choose any two variables, one for |x| and one as |y|. Then fit the following models by least squares in any software package you prefer:
+	Use the `distillation column data set <http://openmv.net/info/distillation-tower>`_ and choose any two variables, one for |x| and one as |y|. Then fit the following models by least squares in any software package you prefer:
 
 		-	:math:`y_i = b_0 + b_1 x_i`
 		-	:math:`y_i = b_0 + b_1 (x_i - \overline{x})` (what does the :math:`b_0` coefficient represent in this case?)
@@ -41,7 +41,7 @@ Exercises
 
 		where :math:`c_t` is the critical t-value, for example at the 95% confidence level.
 
-	Use the `distillation column data set <http://datasets.connectmv.com/info/distillation-tower>`_ and with |y| as ``VapourPressure`` (units are kPa) and |x| as ``TempC2`` (units of degrees Farenheit) fit a linear model. Calculate the prediction interval for vapour pressure at these 3 temperatures: 430, 480, 520 °F.
+	Use the `distillation column data set <http://openmv.net/info/distillation-tower>`_ and with |y| as ``VapourPressure`` (units are kPa) and |x| as ``TempC2`` (units of degrees Farenheit) fit a linear model. Calculate the prediction interval for vapour pressure at these 3 temperatures: 430, 480, 520 °F.
 
 .. answer::
 
@@ -156,7 +156,7 @@ Exercises
 
 .. question::
 
-	The `Kappa number data set <http://datasets.connectmv.com/info/kappa-number>`_ was used in an :ref:`earlier question <monitoring-kappa-number-question>` to construct a Shewhart chart. The :ref:`"Mistakes to avoid" <monitoring_mistakes_to_avoid>` section (Process Monitoring), warns that the subgroups for a Shewhart chart must be independent to satisfy the assumptions used to derived the Shewhart limits. If the subgroups are not independent, then it will increase the type I (false alarm) rate.
+	The `Kappa number data set <http://openmv.net/info/kappa-number>`_ was used in an :ref:`earlier question <monitoring-kappa-number-question>` to construct a Shewhart chart. The :ref:`"Mistakes to avoid" <monitoring_mistakes_to_avoid>` section (Process Monitoring), warns that the subgroups for a Shewhart chart must be independent to satisfy the assumptions used to derived the Shewhart limits. If the subgroups are not independent, then it will increase the type I (false alarm) rate.
 
 	This is no different to the independence required for least squares models. Use the autocorrelation tool to determine a subgroup size for the Kappa variable that will satisfy the Shewhart chart assumptions. Show your autocorrelation plot and interpret it as well.
 
@@ -209,7 +209,7 @@ Exercises
 			92,      260,  4900,       Yes,     38
 
 
-	-	Use software to fit a linear model that predicts the yield from these variables (the `data set is available from the website <http://datasets.connectmv.com/info/bioreactor-yields>`_). See the `R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ for building linear models with integer variables in R.
+	-	Use software to fit a linear model that predicts the yield from these variables (the `data set is available from the website <http://openmv.net/info/bioreactor-yields>`_). See the `R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ for building linear models with integer variables in R.
 	-	Interpret the meaning of each effect in the model. If you are using R, then the ``confint(...)`` function will be helpful as well. Show plots of each |x| variable in the model against yield. Use a box plot for the baffles indicator variable.
 	-	Now calculate the :math:`\mathbf{X}^T\mathbf{X}` and :math:`\mathbf{X}^T\mathbf{y}` matrices; include a column in the :math:`\mathbf{X}` matrix for the intercept. Since you haven't mean centered the data to create these matrices, it would be misleading to try interpret them.
 	-	Calculate the least squares model estimates from these two matrices. See the `R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ for doing matrix operations in R, but you might prefer to use MATLAB for this step. Either way, you should get the same answer here as in the first part of this question.
@@ -425,7 +425,7 @@ Exercises
 
 .. question::
 
-	For a distillation column, it is well known that the column temperature directly influences the purity of the product, and this is used in fact for feedback control, to achieve the desired product purity. Use the `distillation data set <http://datasets.connectmv.com/info/distillation-tower>`_ , and build a least squares model that predicts ``VapourPressure`` from the temperature measurement, ``TempC2``. Report the following values:
+	For a distillation column, it is well known that the column temperature directly influences the purity of the product, and this is used in fact for feedback control, to achieve the desired product purity. Use the `distillation data set <http://openmv.net/info/distillation-tower>`_ , and build a least squares model that predicts ``VapourPressure`` from the temperature measurement, ``TempC2``. Report the following values:
 
 	#.	the slope coefficient, and describe what it means in terms of your objective to control the process with a feedback loop
 	#.	the interquartile range and median of the model's residuals
@@ -441,7 +441,7 @@ Exercises
 
 	.. code-block:: text
 
-		> distillation <- read.csv('http://datasets.connectmv.com/file/distillation-tower.csv')
+		> distillation <- read.csv('http://openmv.net/file/distillation-tower.csv')
 		> model <- lm(distillation$VapourPressure ~ distillation$TempC2)
 		> summary(model)
 
@@ -501,7 +501,7 @@ Exercises
 
 	.. _bioreactor_LS_question:
 	
-	Use the `bioreactor data <http://datasets.connectmv.com/info/bioreactor-yields>`_, which shows the percentage yield from the reactor when running various experiments where temperature was varied, impeller speed and the presence/absence of baffles were adjusted.
+	Use the `bioreactor data <http://openmv.net/info/bioreactor-yields>`_, which shows the percentage yield from the reactor when running various experiments where temperature was varied, impeller speed and the presence/absence of baffles were adjusted.
 
 	#.	Build a linear model that uses the reactor temperature to predict the yield. Interpret the slope and intercept term.
 
@@ -514,7 +514,7 @@ Exercises
 		.. code-block:: s
 
 			# Read in the data frame
-			bio <- read.csv('http://datasets.connectmv.com/file/bioreactor-yields.csv')
+			bio <- read.csv('http://openmv.net/file/bioreactor-yields.csv')
 
 			# Force the baffles variables to 0's and 1's
 			bio$baffles <- as.numeric(bio$baffles) - 1
@@ -574,7 +574,7 @@ Exercises
 
 	.. _gas_furnace_LS_question:
 
-	Use the `gas furnace data <http://datasets.connectmv.com/info/gas-furnace>`_ from the website to answer these questions. The data represent the gas flow rate (centered)  from a process and the corresponding CO\ :sub:`2` measurement.
+	Use the `gas furnace data <http://openmv.net/info/gas-furnace>`_ from the website to answer these questions. The data represent the gas flow rate (centered)  from a process and the corresponding CO\ :sub:`2` measurement.
 
 	#.	Make a scatter plot of the data to visualize the relationship between the variables. How would you characterize the relationship?
 
@@ -774,7 +774,7 @@ Exercises
 
 .. question::
 
-	Use the mature `cheddar cheese data set <http://datasets.connectmv.com/info/cheddar-cheese>`_ for this question.
+	Use the mature `cheddar cheese data set <http://openmv.net/info/cheddar-cheese>`_ for this question.
 
 	#.	Choose any :math:`x`-variable, either ``Acetic`` acid concentration (already log-transformed), ``H2S`` concentration  (already log-transformed), or ``Lactic`` acid concentration (in original units) and use this to predict the ``Taste`` variable in the data set. The ``Taste`` is a subjective measurement, presumably measured by a panel of tasters.
 
@@ -852,7 +852,7 @@ Exercises
 
 .. question::
 
-	In this question we will revisit the `bioreactor yield <http://datasets.connectmv.com/info/bioreactor-yields>`_ data set and fit a linear model with all :math:`x`-variables to predict the yield. (This data was also used :ref:`in a previous question <bioreactor_LS_question>`.)
+	In this question we will revisit the `bioreactor yield <http://openmv.net/info/bioreactor-yields>`_ data set and fit a linear model with all :math:`x`-variables to predict the yield. (This data was also used :ref:`in a previous question <bioreactor_LS_question>`.)
 
 	#.	Provide the interpretation for each coefficient in the model, and also comment on each one's confidence interval when interpreting it.
 
@@ -961,7 +961,7 @@ Exercises
 
 .. question::
 
-	In this question we will use the `LDPE data <http://datasets.connectmv.com/info/ldpe>`_ which is data from a high-fidelity simulation of a low-density polyethylene reactor. LDPE reactors are very long, thin tubes. In this particular case the tube is divided in 2 zones, since the feed enters at the start of the tube, and some point further down the tube (start of the second zone). There is a temperature profile along the tube, with a certain maximum temperature somewhere along the length. The maximum temperature in zone 1, ``Tmax1`` is reached some fraction ``z1`` along the length; similarly in zone 2 with the ``Tmax2`` and ``z2`` variables.
+	In this question we will use the `LDPE data <http://openmv.net/info/ldpe>`_ which is data from a high-fidelity simulation of a low-density polyethylene reactor. LDPE reactors are very long, thin tubes. In this particular case the tube is divided in 2 zones, since the feed enters at the start of the tube, and some point further down the tube (start of the second zone). There is a temperature profile along the tube, with a certain maximum temperature somewhere along the length. The maximum temperature in zone 1, ``Tmax1`` is reached some fraction ``z1`` along the length; similarly in zone 2 with the ``Tmax2`` and ``z2`` variables.
 
 	We will build a linear model to predict the ``SCB`` variable, the short chain branching (per 1000 carbon atoms) which is an important quality variable for this product. Note that the last 4 rows of data are known to be from abnormal process operation, when the process started to experience a problem. However, we will pretend we didn't know that when building the model, so keep them in for now.
 
@@ -969,7 +969,7 @@ Exercises
 
 		Use this code to get you started (make sure you understand what it is doing)::
 
-			LDPE <- read.csv('http://datasets.connectmv.com/file/ldpe.csv')
+			LDPE <- read.csv('http://openmv.net/file/ldpe.csv')
 			subdata <- data.frame(cbind(LDPE$Tmax1, LDPE$Tmax2, LDPE$z1, LDPE$z2, LDPE$SCB))
 			colnames(subdata) <- c("Tmax1", "Tmax2", "z1", "z2", "SCB")
 
