@@ -23,7 +23,7 @@ needs_sphinx = '1.0'  # If your documentation needs a minimal Sphinx version, st
 # Sphinx extensions
 # =================
 extensions = ['sphinx.ext.todo', 'sphinx.ext.pngmath', ]
-#extensions.append('search.whooshindex')  # Depends on: pip install whoosh
+extensions.append('sphinxcontrib.youtube') 
 
 
 # Sphinx contrib extensions

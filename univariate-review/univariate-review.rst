@@ -8,7 +8,7 @@
 Univariate data analysis in context
 ====================================
 
-This section is an introduction to the area of data analysis. We cover concepts from univariate data analysis, specifically the concepts shown in the pictorial outline below. This section is only a *review of these concepts*; for a more comprehensive treatment, please consult an introductory statistics textbook (see the recommended readings further down).
+This section is an introduction to the area of data analysis. We cover concepts from univariate data analysis, specifically the concepts shown in the pictorial outline below. This section is only a *review of these concepts*; for a more comprehensive treatment, please consult an introductory statistics textbook (see the recommended readings further down)
 
 Usage examples
 ==============
@@ -41,6 +41,8 @@ Any standard statistics text book will cover the topics from this part of the bo
 #. Hodges and Lehmann, *Basic Concepts of Probability and Statistics*
 #. Hogg and Ledolter, *Engineering Statistics*
 #. Montgomery and Runger, *Applied Statistics and Probability for Engineers*
+
+.. youtube:: https://www.youtube.com/watch?v=-wPc24FT-2Y&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=4
 
 What we will cover
 ==================
@@ -189,6 +191,8 @@ So, how do we make progress despite this variability?  This whole book, and all 
 	
 Histograms and probability distributions
 =========================================
+
+.. youtube:: https://www.youtube.com/watch?v=oA5HgF1vmXE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=5
 
 .. index:: histograms, frequency distribution
 

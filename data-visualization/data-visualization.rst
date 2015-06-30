@@ -59,6 +59,8 @@ References and readings
 Time-series plots
 =================
 
+.. youtube:: https://www.youtube.com/watch?v=aU6eZuiG8ck&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=0
+
 We start off by considering a plot most often seen in engineering applications: the :index:`time-series plot <pair: time-series plots; visualization>`. The time-series plot is a univariate plot (shows only one variable). It is a 2-dimensional plot in which one axis, the time-axis, shows graduations at an appropriate scale (seconds, minutes, weeks, quarters, years), while the other axis shows the data. Usually, the time-axis is displayed horizontally, but this is not a requirement: some interesting analysis can be done with time running vertically. 
 
 Many statistical packages call this a line plot, as it can be used generally to display any sort of sequence, whether it is along time or some other ordering. The time-series plot is an excellent way to visualize long sequences of data. It tells a visual story along the sequence axis, and the human brain is incredibly adept at absorbing this high density of data, locating patterns in the data such as sinusoids, spikes, and outliers, and separating noise from signal.
@@ -122,6 +124,8 @@ Here are some tips for effective time-series plots:
 
 Bar plots
 =========
+
+.. youtube:: https://www.youtube.com/watch?v=tb20hIQlEBU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=1
 
 The :index:`bar plot <pair: bar plot; visualization>` is another univariate plot on a two-dimensional axis. The axes are not called *x*- or *y*-axes. Instead, one axis is called the *category axis*, while the other, the *value axis*, shows the value of each bar.
 
@@ -191,6 +195,8 @@ Here is some advice for bar plots:
 Box plots
 ==========
 
+.. youtube:: https://www.youtube.com/watch?v=LumUy2F_DRc&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=2
+
 :index:`Box plots <pair: box plot; visualization>` are an efficient summary of one variable (univariate chart), but can also be used effectively to compare like variables that are in the same units of measurement.
 
 The box plot shows the so-called *five-number summary* of a univariate data series: 
@@ -248,6 +254,8 @@ Some variations for the box plot are possible:
 
 Relational graphs: scatter plots
 ================================
+
+.. youtube:: https://www.youtube.com/watch?v=JB8UP1JWNXQ&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=3
 	
 This is a plot many people are comfortable using. It helps you understand the relationship between two variables - a bivariate plot - as opposed to the previous charts that are univariate. A :index:`scatter plot <pair: scatter plot; visualization>` is a collection of points shown inside a box formed by two axes at 90 degrees to each other. The marker's position is located at the intersection of the values shown on the horizontal (*x*) axis and vertical (*y*) axis.
 
