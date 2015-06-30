@@ -266,12 +266,12 @@ html_add_permalinks = ''  # was 'Permalink'
 
 # If nonempty, this is the file name suffix for generated HTML files. The
 # default is ".html".
-html_file_suffix = ''
+html_file_suffix = '' 
 
 # Suffix for generated links to HTML files. The default is whatever
 # html_file_suffix is set to; it can be set differently (e.g. to support
 # different web server setups).
-html_link_suffix = ''
+html_link_suffix = '' 
 
 # Output file base name for HTML help builder.
 #htmlhelp_basename = ''
