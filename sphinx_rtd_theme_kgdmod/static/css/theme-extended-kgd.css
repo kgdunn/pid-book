@@ -22,3 +22,8 @@ li.toctree-l2{
 .new_question{
 	margin-top: 2em;
 }
+
+/* MathJax equation numbers */
+.eqno{
+	float: right;
+}

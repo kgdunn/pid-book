@@ -202,7 +202,7 @@ The :ref:`previous section <univariate-about-variability>` has hopefully convinc
 A histogram is a summary of the variation in a measured variable. It shows the *number* of samples that occur in a *category*: this is called a **frequency distribution**. For example: number of children born, categorized against their gender: male or female.
 
 .. image:: ../figures/univariate/histogram-children-by-gender.png
-	:scale: 20
+	:scale: 40
 	:align: center
 	
 The raw data in the above example was a vector of consisted of 2739 text entries, with 1420 of them as ``Male`` and 1319 of them as ``Female``. In this case ``Female`` and ``Male`` represent the two categories.
