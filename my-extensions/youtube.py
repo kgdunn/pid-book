@@ -7,6 +7,7 @@ import re
 from docutils import nodes
 from docutils.parsers.rst import directives
 from sphinx.util.compat import Directive
+#import wingdbstub
 
 CONTROL_HEIGHT = 30
 
@@ -27,7 +28,20 @@ def visit_youtube_node_text(self, node):
     text_to_add = '[YouTube video: %s]' % node['id']
     self.states[-1].append((-1, text_to_add))
     
-def visit_youtube_node(self, node):
+def visit_youtube_node_latex(self, node):
+    #print('Added video %s\n' % node['id'])
+    #print(dir(self))
+    #print(dir(node))
+    
+    #text_to_add = '[YouTube video: %s]' % node['id']
+    #self.states[-1].append((-1, text_to_add))
+    
+    
+    url = "http://www.youtube.com/embed/%s" % node["id"]
+    self.body.append('\href{%s}{YouTube video for this section}.\n\n' % url)
+                         
+    
+def visit_youtube_node_html(self, node):
     aspect = node["aspect"]
     width = node["width"]
     height = node["height"]
@@ -81,7 +95,7 @@ def depart_youtube_node(self, node):
     pass
 
 class YouTube(Directive):
-    has_content = True
+    has_content = True    
     required_arguments = 1
     optional_arguments = 0
     final_argument_whitespace = False
@@ -106,6 +120,10 @@ class YouTube(Directive):
 
 def setup(app):
     app.add_node(youtube, 
-       html=(visit_youtube_node, depart_youtube_node),
-       text=(visit_youtube_node_text, depart_youtube_node))
+       html=(visit_youtube_node_html, depart_youtube_node),
+       text=(visit_youtube_node_text, depart_youtube_node),
+       latex=(visit_youtube_node_latex, depart_youtube_node),
+       )
     app.add_directive("youtube", YouTube)
+    
+    return {'parallel_read_safe': True}

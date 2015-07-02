@@ -34,7 +34,7 @@ extensions.append('my-extensions.youtube')
 
 # Custom extensions
 # -------------------------
-extensions.append('q-and-a')
+extensions.append('my-extensions.q-and-a')
 
 # Set the next line to "True" to create full solutions 
 # to the book (i.e. ``fullinclude`` is ignored)
