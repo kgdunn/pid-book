@@ -23,7 +23,9 @@ needs_sphinx = '1.0'  # If your documentation needs a minimal Sphinx version, st
 # Sphinx extensions
 # =================
 extensions = ['sphinx.ext.todo', 'sphinx.ext.pngmath', ]
-extensions.append('sphinxcontrib.youtube') 
+
+# Download https://bitbucket.org/birkenfeld/sphinx-contrib/overview; cd youtube; setup.py build and setup.py install
+extensions.append('my-extensions.youtube') 
 
 
 # Sphinx contrib extensions
@@ -178,7 +180,6 @@ linkcheck_workers = 10
 
 # sudo easy_install sphinx_rtd_theme
 # In your conf.py file:
-
 
 # pip install -U sphinx_rtd_theme
 #import sphinx_rtd_theme
