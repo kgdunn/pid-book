@@ -29,7 +29,12 @@ def visit_youtube_node_text(self, node):
     
 def visit_youtube_node_latex(self, node):
     url = node["id"]  #"http://www.youtube.com/embed/%s" % 
-    self.body.append('\n\href{%s}{YouTube video for this section}.\n' % url)
+    text = """
+    \\begin{textblock*}{15mm}(-1.75cm,-1cm)
+    \n\\href{%s}{\scalebox{0.5}{\includegraphics{1024px-High-contrast-camera-video.png}}\n Video for this section}.\n 
+    \\end{textblock*}
+    """ % url 
+    self.body.append(text)
 
 def visit_youtube_node_html(self, node):
     aspect = node["aspect"]

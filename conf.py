@@ -365,6 +365,7 @@ _PREAMBLE = r"""
 \usepackage{float}
 \usepackage{cancel}  % to get cancelled terms
 \usepackage{upquote} % to avoid quotation marks from being mangled
+\usepackage{textpos} % to get YouTube video links outside the margin. As used here, the package is in "relative" mode
 \newcommand{\PYGZsq}{TO AVOID ERROR MESSAGE}
 
 

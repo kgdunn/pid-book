@@ -34,6 +34,7 @@ Preface
 .. 
 .. Distribution: PDF, web-files for off-line reading in your browser; ebook (e.g. iPad); or printed dead-tree version available on-demand. The printed version is available in hard-cover and soft-cover, and all profits are used to pay for the website hosting.
 
+
 This book is a *preliminary draft* on how to improve processes using the large quantities of data that are routinely collected from process systems.
 
 We cover :ref:`data visualization <SECTION-data-visualization>` first, in Chapter 1, since most data analysis studies start by plotting the data. This is an extremely brief introduction to this topic, only illustrating the most basic plots required for this book. Please consult the references in this chapter for more exciting plots that provide insight to your data.
@@ -54,7 +55,10 @@ Because this is a predominantly electronic book, we resort to many hyperlinks in
 
 **Acknowledgements**: I would like to thank my students and teaching assistants who over the years have made valuable comments, suggestions and corrections, and given permission to use their solutions to various questions. Particular thanks to Emily Nichols (2010), Ian Washington (2011), Ryan McBride (2011), Stuart Young (2011), Mudassir Rashid (2011), Yasser Ghobara (2012), Pedro Castillo (2012), Miles Montgomery (2012), Cameron DiPietro (2012), Andrew Haines (2012), Krishna Patel (2012), Xin Yuan (2013), Sean Johnstone (2013), Jervis Pereira (2013), and Ghassan Marjaba (2014). *Their contributions are greatly appreciated.*
 
-The textbook was used in an online course from July to August 2014, `Experimentation for Improvement <https://www.coursera.org/course/experiments>`_. Comments and feedback from that course have greatly improved this book. *Thanks to all the Courserians*.
+The textbook was used in an online course from July to August 2014, `Experimentation for Improvement <https://www.coursera.org/course/experiments>`_. Comments and feedback from that course have greatly improved this book. *Thanks to all the Courserians*. Videos created for that Coursera course, as well as videos created for the Ontario Online Initiative have been embedded in the textbook. Look for YouTube videos and this icon: |video|.
+
+.. |video| image:: 1024px-High-contrast-camera-video.png
+	:scale: 3%
 
 In particular, I'd like to thank Devon Mordell, from McMaster University, for her informal help on editing parts of the book. As well as my formal editor, `Teresa Wilson <http://tdwcommunications.com>`_, 
 
