@@ -7,7 +7,6 @@ import re
 from docutils import nodes
 from docutils.parsers.rst import directives
 from sphinx.util.compat import Directive
-#import wingdbstub
 
 CONTROL_HEIGHT = 30
 
@@ -29,18 +28,9 @@ def visit_youtube_node_text(self, node):
     self.states[-1].append((-1, text_to_add))
     
 def visit_youtube_node_latex(self, node):
-    #print('Added video %s\n' % node['id'])
-    #print(dir(self))
-    #print(dir(node))
-    
-    #text_to_add = '[YouTube video: %s]' % node['id']
-    #self.states[-1].append((-1, text_to_add))
-    
-    
-    url = "http://www.youtube.com/embed/%s" % node["id"]
-    self.body.append('\href{%s}{YouTube video for this section}.\n\n' % url)
-                         
-    
+    url = node["id"]  #"http://www.youtube.com/embed/%s" % 
+    self.body.append('\n\href{%s}{YouTube video for this section}.\n' % url)
+
 def visit_youtube_node_html(self, node):
     aspect = node["aspect"]
     width = node["width"]
