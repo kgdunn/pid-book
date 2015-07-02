@@ -37,6 +37,8 @@ Usage examples
 .. index::
 	pair: usage examples; process monitoring
 
+.. youtube:: https://www.youtube.com/watch?v=o97imeRitMI&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=57
+
 The material in this section is used whenever you need to rapidly detect problems. It has tangible application in many areas - in fact, you have likely encountered these monitoring charts in areas such as a hospital (monitoring a patient's heart beat), stock market charts (for intraday trading), or in a processing/manufacturing facility (control room computer screens).
 
 	-	*Co-worker*: We need a system to ensure an important dimension on our product is stable and consistent over the entire shift.
@@ -195,6 +197,8 @@ Shewhart chart
 
 .. For the mean: p174 to p186 of Barnes. KGD: what does "Barnes" refer to?
 
+.. youtube:: https://www.youtube.com/watch?v=8Ln3emiwQzU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=58
+
 A :index:`Shewhart chart <pair: Shewhart chart; process monitoring>`, named after Walter Shewhart from Bell Telephone and Western Electric, monitors that a process variable remains on target and within given upper and lower limits. It is a monitoring chart for *location*. It answers the question whether the variable's :index:`location <single: location (process monitoring)>` is stable over time.
 
 The defining characteristics are: a target, upper and lower control limits (:index:`UCL <single: upper control limit>` and :index:`LCL <single: lower control limit>`). These action limits are defined so that no action is required as long as the variable plotted remains within the limits.
@@ -301,6 +305,8 @@ The overall average is :math:`\overline{\overline{x}} = 238.8` and :math:`\overl
 
 Judging the chart's performance
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. youtube:: https://www.youtube.com/watch?v=vHbjFQSOiNQ&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=59
 
 There are 2 ways to :index:`judge performance of any monitoring <single: monitoring chart assessment>`, in particular here we discuss the Shewhart chart:
 
@@ -561,12 +567,15 @@ Process capability
 	
 .. Note:: This section is not about a particular monitoring chart, but is relevant to the topic of process monitoring.
 
+.. youtube:: https://www.youtube.com/watch?v=2VRAW4gGKiI&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=60
+
 Centered processes
 ~~~~~~~~~~~~~~~~~~~~
 
 .. index:: Cp
 
-Purchasers of your product may request a :index:`process capability ratio` (PCR) for each of the quality attributes of your product. For example, your plastic product is characterized by its Mooney viscosity and melting point. A PCR value can be calculated for either property, using the definition below:
+
+urchasers of your product may request a :index:`process capability ratio` (PCR) for each of the quality attributes of your product. For example, your plastic product is characterized by its Mooney viscosity and melting point. A PCR value can be calculated for either property, using the definition below:
 
 .. math::
 	:label: process-capability-ratio-centered
@@ -612,6 +621,8 @@ Uncentered processes
 	single: uncentered process capability; process monitoring
 	single: capability of a process
 	single: Cpk
+
+.. youtube:: https://www.youtube.com/watch?v=qgfutIul_5E&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=61
 
 Processes are not very often centered between their upper and lower specification limits. So a measure of process capability for an uncentered processes is defined:
 

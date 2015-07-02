@@ -327,6 +327,8 @@
 Design and analysis of experiments in context
 ===============================================
 
+.. youtube:: https://www.youtube.com/watch?v=eqhhOI_ynv4&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=30
+
 This chapter will take a totally different approach to learning about and understanding systems in general, not only (chemical) engineering systems. The systems we could apply this to could be as straightforward as growing plants or perfecting your favourite recipe at home. Or they may be as complex as the entire production line in a large factory producing multiple products and shipping them to customers.
 
 
@@ -338,6 +340,8 @@ In this chapter we learn the best way to intentionally disturb the system to lea
 
 Terminology
 ===========
+
+.. youtube:: https://www.youtube.com/watch?v=1AXpF2vdwq4&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=31
 
 The area of designed experiments uses specific terminology.
 
@@ -390,6 +394,9 @@ Usage examples
 
 .. index::
 	pair: usage examples; experiments
+
+
+.. youtube:: https://www.youtube.com/watch?v=X6ie8qm0Vzc&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=32
 
 After you complete this chapter, you will be able to answer questions such as those presented in these scenarios:
 
@@ -613,6 +620,8 @@ The reason we prefer using the :math:`t`-distribution approach over randomizatio
 Changing one single variable at time (COST)
 ==============================================
 
+.. youtube:: https://www.youtube.com/watch?v=6Q1UMWuF8wI&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=33
+
 How do we go about running our experiments when there is more than one variable present that affects our outcome, :math:`y`?  In this section we describe **how not to do it**.
 
 You will certainly have seen the recommendation that we must **c**\ hange **o**\ ne **s**\ ingle variable at a **t**\ ime (COST):
@@ -656,6 +665,8 @@ Designed experiments, on the other hand, provide an efficient mechanism to learn
 
 Factorial designs: using two levels for two or more factors
 ==============================================================
+
+.. youtube:: https://www.youtube.com/watch?v=pIaAuIiSe2U&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=34
 
 In this section we learn how, and why, we should change more than one variable at a time. We will use factorial designs because
 	
@@ -735,6 +746,9 @@ Analysis of a factorial design: main effects
 
 The first step is to calculate the :index:`main effect` of each variable. The effects are considered, by convention, to be the difference from the high level to the low level. So the interpretation of a main effect is by how much the outcome, :math:`y`, is adjusted when changing the variable.
 
+.. youtube:: https://www.youtube.com/watch?v=fPbd74KN7zw&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=35
+
+
 Consider the two runs where :math:`S` is at the |-| level for both experiments 1 and 2. The only change between these two runs is the **temperature**, so the temperature effect is :math:`\Delta T_{S-} = 60-69 = -9\%\,\,\text{per}\,\,(354-338)~\text{K}`, that is, a :math:`-9\%` change in the conversion outcome per :math:`+16~\text{K}` change in the temperature. 
 
 Runs 3 and 4 both have :math:`S` at the |+| level. Again, the only change is in the **temperature**: :math:`\Delta T_{S+} = 53-64 = -11\%` per :math:`+16~\text{K}`. So we now have two temperature effects, and the average of them is a :math:`-10\%` change in conversion per :math:`+16~\text{K}` change in temperature.
@@ -771,6 +785,8 @@ An :index:`interaction plot` is an :ref:`alternative way to visualize these main
 
 Analysis of a factorial design: interaction effects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. youtube:: https://www.youtube.com/watch?v=sSx5I_f4vE8&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=36
 
 We expect in many real systems that the main effect of temperature, :math:`T`, for example, is different at other levels of substrate concentration, :math:`S`. It is quite plausible for a bioreactor system that the main temperature effect on conversion is much greater if the substrate concentration, :math:`S`, is also high, while at low values of :math:`S`, the temperature effect is smaller. 
 
@@ -865,6 +881,8 @@ We will get an improved appreciation for interpreting main effects and the inter
 
 Analysis by least squares modelling
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. youtube:: https://www.youtube.com/watch?v=-aKZskRmiSI&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=37
 
 Let's review the original system (the one with little interaction) and analyze the data using a least squares model. We represent the original data here, with the baseline conditions:
 
@@ -972,6 +990,8 @@ The corner points are exact with the nonlinear surface, because we have used the
 Example: design and analysis of a three-factor experiment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. youtube:: https://www.youtube.com/watch?v=tZ54IMVbMx8&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=38
+
 This example should be done by yourself. It is based on Question 19 in the exercises for Chapter 5 in Box, Hunter and Hunter (2nd edition).
 
 The data are from a plastics molding factory that must treat its waste before discharge. The :math:`y`-variable represents the average amount of pollutant discharged (lb per day), while the three factors that were varied were
@@ -1062,6 +1082,8 @@ The data are from a plastics molding factory that must treat its waste before di
 
 #.	Compute the main effects and interactions using matrix algebra and a least squares model.
 
+	.. youtube:: https://www.youtube.com/watch?v=8Dj56L_ioew&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=39
+
 	.. math::
 
 		\begin{bmatrix} 5\\30\\6\\33\\4\\3\\5\\4 \end{bmatrix} &=
@@ -1104,7 +1126,6 @@ Learning notes:
 	
 	
 	Remember: our effects are half those reported in Box, Hunter and Hunter, and in some other textbooks; our standard error would also be half of theirs. The conclusions drawn will always be the same, as long as one is consistent.
-	
 	
 Assessing significance of main effects and interactions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1315,6 +1336,13 @@ Summary so far
 	
 -	A small or zero effect from an :math:`x` variable to the :math:`y` response variable implies the :math:`y` is insensitive to that :math:`x`. This is desirable in some situations. It means we can adjust that :math:`x` without affecting :math:`y`, sometimes stated as "the :math:`y` is robust to changes in :math:`x`".
 
+Example: analysis of systems with 4 factors
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In the prior sections you have seen how to analyze experiments with 2 factors and 3 factors. The logic to analyze systems with 4 or more factors proceeds in exactly the same way. The video here shows how to go about this.
+
+.. youtube:: https://www.youtube.com/watch?v=Vthul2GqDnk&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=40
+
 .. _DOE-fractional-factorials:
 
 Fractional factorial designs
@@ -1351,6 +1379,8 @@ A half fraction has :math:`\frac{1}{2}2^k = 2^{k-1}` runs. But which runs do we 
 +-----------+------------+-----------+------------+
 
 So this is our designed experiment for 3 factors, but it only requires 4 experiments as shown by the open points. The experiments given by the solid points are not run.
+
+.. youtube:: https://www.youtube.com/watch?v=vIkn5_znTTs&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=41
 
 .. image:: ../figures/doe/half-fraction-in-3-factors.png
 	:align: center
@@ -1421,6 +1451,8 @@ We introduce the terminology that **A** is an :index:`alias <pair: aliasing; exp
 
 Generators and defining relationships
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. youtube:: https://www.youtube.com/watch?v=upItRhEJLiQ&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=43
 
 Calculating which main effects and two-factor interactions will be confounded with each other, called the :index:`confounding pattern`, can be tedious for larger values of :math:`k`. Here we introduce an easy way to calculate the confounding pattern.
 
@@ -1508,6 +1540,8 @@ So we see that we can always complete our half-fraction by creating a complement
 
 Generators: to determine confounding due to blocking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. youtube:: https://www.youtube.com/watch?v=h7DmnL0MnyI&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=47
 
 Generators are also great for determining the blocking pattern. Recall the case described earlier where we only had enough material to run two sets of 4 experiments to complete our :math:`2^3` full factorial. An unintended disturbance could have been introduced by running the first half-fraction on different materials to the second half-fraction. We :ref:`intentionally decided <DOE-Blocking-and-confounding>` to confound the two blocks of experiments with the 3-factor interaction, **ABC**. So if there is an effect due to the blocks (i.e. the raw materials) or if there truly was a 3-factor interaction, it will show up as a significant coefficient for :math:`b_{ABC}`.
 
@@ -1629,6 +1663,8 @@ At the early stages of our work we might prefer to screen many factors, :math:`k
 So this section is concerned with the trade-offs as we go from a full factorial with :math:`2^k` runs to a highly fractionated factorial, :math:`2^{k-p}`.
 
 *Example 1* 
+
+	.. youtube:: https://www.youtube.com/watch?v=pTjx2MjAwsU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=48
 
 	You have identified 7 factors that affect your response. 
 	
@@ -1893,6 +1929,8 @@ Blocking and confounding for disturbances
 Characterization of disturbances
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. youtube:: https://www.youtube.com/watch?v=P_J1tJ0S0gk&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=44
+
 External disturbances will always have an effect on our response variable, :math:`y`. Operators, ambient conditions, physical equipment, lab analyses, and time-dependent effects (catalyst deactivation, fouling), will impact the response. This is why it is crucial to :ref:`randomize <DOE-randomization>` the order of experiments: so that these **unknown, unmeasurable, and uncontrollable** disturbances cannot systematically affect the response.
 
 However, certain disturbances are **known, or controllable, or measurable**. For these cases we perform pairing and blocking. We have already discussed pairing in the univariate section: pairing is when two experiments are run on the same subject and we analyze the differences in the two response values, rather than the actual response values. If the effect of the disturbance has the same magnitude on both experiments, then that disturbance will cancel out when calculating the difference. The magnitude of the disturbance is expected to be different between paired experiments, but is expected to be the same within the two values of the pair.
@@ -1910,6 +1948,8 @@ Finally, a disturbance can be characterized as a **controlled disturbance**, in 
 
 Blocking and confounding
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. youtube:: https://www.youtube.com/watch?v=4A40HQbfmZQ&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=45
 
 It is common for known, or controllable or measurable factors to have an effect on the response. However these disturbance factors might not be of interest to us during the experiment. Cases are:
 
@@ -1985,6 +2025,7 @@ We will also address the case when there are more than two blocks in the next se
 Response surface methods
 ==========================
 
+.. youtube:: https://www.youtube.com/watch?v=aWPx-kN2tj0&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=50
 
 .. Add this somewhere appropriate: http://xkcd.com/605/   .... on extrapolation
 
@@ -1999,6 +2040,8 @@ Notice how it is a *sequential* approach. RSM then is a tool the describes how w
 .. rubric:: RSM concept for a single variable: COST approach
 
 We will however first consider just the effect of a single factor, :math:`x_1` as it relates to our response, :math:`y`. This is to illustrate the general response surface process.
+
+.. youtube:: https://www.youtube.com/watch?v=fIwscBji2oU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=51
 
 .. figure:: ../figures/doe/steepest-ascent-univariately-corrected.png
 	:alt: steepest-ascent-univariately.svg
@@ -2017,10 +2060,14 @@ This univariate example is in fact what experimenters do when using the :ref:`CO
 * refit the model once we plateau
 * repeat
 
+.. youtube:: https://www.youtube.com/watch?v=3cUjFGdf1lc&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=52
+
 This approach works well if there really is only a single factor that affects the response. But with most systems there are multiple factors that affect the response. We show next how the exact same idea is used, only we change multiple variables at a time to find the optimum on the response surface.
 
 Response surface optimization via a 2-variable system example
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. youtube:: https://www.youtube.com/watch?v=gh9GzpCiV7M&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=53
 
 This example considers a new system here where two factors, temperature **T**, and substrate concentration **S** are known to affect the yield from a bioreactor. But in this example we are not just interested in yield, but actually the total profit from the system. This profit takes into account energy costs, raw materials costs and other relevant factors. The illustrations in this section show the contours of profit in light grey, but in practice these are obviously unknown.
 
@@ -2132,6 +2179,8 @@ The profit at this point is :math:`y_7 =` $ 463. We have gone too far as profit 
 | 11        | 339 K      | 2.17 g/L  | |+|        | |+|          |  642       |
 +-----------+------------+-----------+------------+--------------+------------+
 
+.. youtube:: https://www.youtube.com/watch?v=v_btvoZdFoM&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=54
+
 This time we have deciding to slightly smaller ranges in the factorial :math:`\text{range}_T = 8 = (339 - 331)` K and :math:`\text{range}_S = 0.4 = (2.17 - 1.77)` g/L so that we can move more slowly along the surface.
 
 .. figure:: ../figures/doe/RSM-base-case-combined.png
@@ -2221,6 +2270,8 @@ This example has demonstrated how powerful response surface methods are. A minim
 
 The general approach for response surface modelling
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. youtube:: https://www.youtube.com/watch?v=c-ZxPq16v48&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=56
 
 #.	Start at your baseline conditions and identify the main factors based on physics of the process, operator input, expert opinion input, and intuition. Also be aware of any constraints, especially for safe process operation. Perform factorial experiments (full or fractional factorials), completely randomized. Use the results from the experiment to estimate a linear model of the system:
 
@@ -2349,6 +2400,8 @@ Experiments with mistakes, missing values, or belatedly discovered constraints
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. BHH1: p 503
+
+.. youtube:: https://www.youtube.com/watch?v=x9REq4ouRnY&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=54
 
 Many real experiments do not go smoothly. Once the experimenter has established their :math:`-1` and :math:`+1` levels for each variable, they back that out to real units. For example, if temperature was scaled as :math:`T = \dfrac{T_\text{actual} - 450\text{K}}{\text{25K}}`, then :math:`T = -1` corresponds to 425K and :math:`T= +1` corresponds to 475K.
 
