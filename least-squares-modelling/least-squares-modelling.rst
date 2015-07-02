@@ -72,6 +72,8 @@ Usage examples
 
 .. index::
 	pair: usage examples; least squares
+	
+.. youtube:: https://www.youtube.com/watch?v=RW_8yKbMzUA&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=17
 
 The material in this section is used whenever you need to interpret and quantify the relationship between two or more variables.
 
@@ -133,6 +135,8 @@ What you will be able to do after this section
 
 Covariance
 ===========
+
+..youtube:: https://www.youtube.com/watch?v=tXOCOMtSWrc&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=18
 
 You probably have an intuitive sense for what it means when two things are correlated. We will get to correlation next, but we start by first looking at :index:`covariance`. Let's take a look at an example to formalize this, and to see how we can learn from data.
 
@@ -244,6 +248,8 @@ Note that deviation variables are not affected by a *shift* in the raw data of :
 
 Correlation
 ===========
+
+..youtube:: https://www.youtube.com/watch?v=tXOCOMtSWrc&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=18
 
 The variance and covariance values are units dependent. For example, you get a very different covariance when calculating it using grams vs kilograms. The :index:`correlation` on the other hand removes the effect of scaling and arbitrary unit changes. It is defined as:
 
@@ -361,6 +367,8 @@ Presuming we have calculated estimates |b0| and |b1| we can use the model with a
 
 Minimizing errors as an objective
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. youtube:: https://www.youtube.com/watch?v=8d_pbx4vnsI&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=19
 
 Our immediate aim however is to calculate the |b0| and |b1| estimates from the :math:`n` pairs of data collected: :math:`(x_i, y_i)`.
 
@@ -574,6 +582,8 @@ In order to perform the second part we need to make a few assumptions about the 
 The variance breakdown
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. youtube:: https://www.youtube.com/watch?v=xIjAD_6nXto&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=20
+
 Recall that :ref:`variability <univariate-about-variability>` is what makes our data interesting. Without variance (i.e. just flat lines) we would have nothing to do. The :index:`analysis of variance` is just a tool to show how much variability in the :math:`y`-variable is explained by:
 
  	#.	Doing nothing (no model: this implies :math:`\hat{y} = \overline{y}`)
@@ -779,6 +789,8 @@ Assumptions required for analysis of the least squares model
 
 .. index::
 	pair: least squares; assumptions for
+	
+.. youtube:: https://www.youtube.com/watch?v=Qls1R2HOzy0&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=21
 
 Recall that the population (true) model is :math:`y_i = \beta_0 + \beta_1 x_i + \epsilon_i` and :math:`b_0` and :math:`b_1` are our estimates of the model's coefficients, and :math:`\mathrm{e}` be the estimate of the true error :math:`\epsilon`. Note we are assuming imperfect knowledge of the :math:`y_i` by lumping all errors into :math:`e_i`. For example, measurement error, structural error (we are not sure the process follows a linear structure), inherent randomness, and so on.
 
@@ -899,6 +911,8 @@ Now it is straight forward to construct **confidence intervals for the least squ
 Example
 --------
 
+.. youtube:: https://www.youtube.com/watch?v=sY8CVMGUD54&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=22
+
 Returning :ref:`back to our ongoing example <LS-class-example>`, we can calculate the confidence interval for :math:`\beta_0` and :math:`\beta_1`. We calculated earlier already that |b0| = 3.0 and |b1| = 0.5. Using these values we can calculate the standard error:
 
 .. code-block:: s
@@ -957,6 +971,8 @@ In many cases the confidence interval for the intercept is not of any value beca
 
 Prediction error estimates for the y-variable
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. youtube:: https://www.youtube.com/watch?v=N8NF1_CBTw4&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=23
 
 Apart from understanding the error in the model's coefficient, we also would like an estimate of the error when predicting :math:`\hat{y}_i` from the model, :math:`y_i = b_0 + b_1 x_i + e_i` for a new value of :math:`x_i`. This is known as the :index:`prediction interval`, or :index:`prediction error interval`.
 
@@ -1076,6 +1092,8 @@ Make sure you can calculate the following values using the equations developed s
 Investigation of an existing linear model
 =============================================
 
+.. youtube:: https://www.youtube.com/watch?v=phufT1KE9Sk&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=24
+
 Summary so far
 ~~~~~~~~~~~~~~~~~~~
 
@@ -1169,6 +1187,8 @@ To counteract this problem one can use weighted least squares, with smaller weig
 
 Lack of independence in the data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. youtube:: https://www.youtube.com/watch?v=7fd8Qu1i3Dk&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=25
 
 The assumption of :index:`independence <single: independence in least squares>` in the data requires that values in the |y| variable are independent. Given that we have assumed the |x| variable to be fixed, this implies that the errors, :math:`e_i` are independent. The reason for independence is required for the central limit theorem, which was used to derive the various standard errors.
 
@@ -1357,6 +1377,8 @@ More than one variable: multiple linear regression (MLR)
 
 .. index:: 
 	pair: multiple linear regression (MLR); least squares
+	
+.. youtube:: https://www.youtube.com/watch?v=qiv1nBCfwBg&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=26
 
 We now move to including more than one explanatory |x| variable in the linear model. We will:
 
@@ -1386,6 +1408,8 @@ First some motivating examples:
 
 Multiple linear regression: notation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. youtube:: https://www.youtube.com/watch?v=dkfY0OKH12g&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=27
 
 To help the discussion below it is useful to omit the least squares model's intercept term. We do this by first centering the data.
 
@@ -1510,6 +1534,8 @@ where :math:`r^2_{12}` represents the correlation between variable :math:`x_1` a
 Interpretation of the model coefficients
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. youtube:: https://www.youtube.com/watch?v=FkZZiv3J6xQ&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=28
+
 .. _MLR_coefficient_interpretation:
 
 Let's take a look at the case where :math:`y = b_1x_1 + b_2x_2`. We can plot this on a 3D plot, with axes of :math:`x_1`, :math:`x_2` and :math:`y`:
@@ -1534,6 +1560,8 @@ Integer (dummy, indicator) variables in the model
 
 .. index:: 
 	pair: integer variables; least squares
+
+.. youtube:: https://www.youtube.com/watch?v=TrhG-XhnBK4&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=29
 
 Now that we have introduced multiple linear regression to expand our models, we also consider these sort of cases:
 

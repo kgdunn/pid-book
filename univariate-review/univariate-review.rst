@@ -13,6 +13,8 @@ This section is an introduction to the area of data analysis. We cover concepts 
 Usage examples
 ==============
 
+.. youtube:: https://www.youtube.com/watch?v=-wPc24FT-2Y&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=4
+
 .. index::
 	pair: usage examples; univariate data
 
@@ -42,7 +44,6 @@ Any standard statistics text book will cover the topics from this part of the bo
 #. Hogg and Ledolter, *Engineering Statistics*
 #. Montgomery and Runger, *Applied Statistics and Probability for Engineers*
 
-.. youtube:: https://www.youtube.com/watch?v=-wPc24FT-2Y&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=4
 
 What we will cover
 ==================
@@ -201,7 +202,7 @@ The :ref:`previous section <univariate-about-variability>` has hopefully convinc
 A histogram is a summary of the variation in a measured variable. It shows the *number* of samples that occur in a *category*: this is called a **frequency distribution**. For example: number of children born, categorized against their gender: male or female.
 
 .. image:: ../figures/univariate/histogram-children-by-gender.png
-	:scale: 40
+	:scale: 20
 	:align: center
 	
 The raw data in the above example was a vector of consisted of 2739 text entries, with 1420 of them as ``Male`` and 1319 of them as ``Female``. In this case ``Female`` and ``Male`` represent the two categories.
@@ -276,6 +277,8 @@ A :index:`relative frequency`, also called :index:`density`, is sometimes prefer
 	
 Some nomenclature
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. youtube:: https://www.youtube.com/watch?v=FIuU1REQvRM&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=6
 
 We review a couple of concepts that you should have seen in prior statistical work.
 
@@ -382,6 +385,8 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 **Outliers**
 
+	.. youtube:: https://www.youtube.com/watch?v=GlVNclR6UVo&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=7
+
 	Outliers are hard to define precisely, but an acceptable definition is that an :index:`outlier` is a point that is unusual, given the context of the surrounding data. The following 2 sequences of numbers show the number 4024 that appears in the first sequence, has become an outlier in the second sequence. It is an outlier based on the surrounding context.
 
 	* 4024, 5152, 2314, 6360, 4915, 9552, 2415, 6402, 6261
@@ -436,7 +441,7 @@ An example: a histogram for a system that produces 70% acceptable product, :math
 
 .. image:: ../figures/univariate/histogram-70-30.png
 	:align: center
-	:scale: 45
+	:scale: 25
 
 If each observation is independent of the other, then:
 
@@ -475,7 +480,7 @@ The histogram for an event with 4 possible outcomes that are uniformly distribut
 
 .. image:: ../figures/univariate/histogram-4-cuts.png
 	:align: center
-	:scale: 50
+	:scale: 30
 
 You can simulate uniformly distributed random numbers in most software packages. As an example, to generate 50 uniformly distributed random *integers* between 2 and 10, inclusive:
 
@@ -501,6 +506,8 @@ Before introducing the normal distribution, we first look at two important conce
 
 Central limit theorem 
 ~~~~~~~~~~~~~~~~~~~~~
+
+.. youtube:: https://www.youtube.com/watch?v=32EIklHEhyE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=8
 
 The :index:`Central limit theorem` plays an important role in the theory of probability and in the derivation of the normal distribution. We don't prove this theorem here, but we only use the result:
 
@@ -574,6 +581,8 @@ We frequently violate this assumption of independence in engineering application
 Formal definition for the normal distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. youtube:: https://www.youtube.com/watch?v=_WQxr7yBw8k&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=9
+
 .. index:: 
 	single: normal distribution; formal definition
 
@@ -640,6 +649,8 @@ It is more useful to calculate the area under :math:`p(x)` from :math:`x=-\infty
 
 You might still find yourself having to refer to tables of cumulative area under the normal distribution, instead of using the ``pnorm()`` function (for example in a test or exam). If you look at the appendix of most statistical texts you will find these tables, and there is one :ref:`at the end of this chapter <univariate_statistical_tables>`. Since these tables cannot be produced for all combinations of mean and standard deviation parameters, they use what is called *standard form*.
 
+.. youtube:: https://www.youtube.com/watch?v=hkHJ5dc2l4c&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=10
+
 .. math::
 
 	z_i = \frac{x_i - \text{mean}}{\text{standard deviation}}
@@ -668,6 +679,8 @@ Checking for normality: using a q-q plot
 .. index:: 
 	single: quantile-quantile plot (q-q plot)
 	single: normal distribution; check if
+	
+.. youtube:: https://www.youtube.com/watch?v=CIPvEjMO2Y0&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=11
 
 Often we are not sure if a sample of data can be assumed to be normally distributed. This section shows you how to test whether the data are normally distributed, or not. 
 
@@ -722,7 +735,7 @@ On to checking for normality. p by first constructing some quantities that we wo
 		
 	.. image:: ../figures/univariate/qqplot-derivation.png
 		:align: center
-		:scale: 50
+		:scale: 30
 
 A built-in function exists in R that runs the above calculations and shows a scatter plot. The 45 degree line is added using the ``qqline(...)`` function. However, a better function that adds a confidence limit envelope is included in the ``car`` library (see the *Package Installer* menu in R for adding libraries from the internet). 
 
@@ -922,6 +935,8 @@ Using the t-distribution to calculate our confidence interval
 
 ..  But in R, we use the ``dt(x, df=...)`` function to give us the values of the :math:`t`-distribution for a given value of :math:`x` which has been computed with ``df`` degrees of freedom. We use the :math:`t`-distribution in calculations related to a sample *mean*, and it is the sample mean that we use as the :math:`z` value, on the :math:`x`-axis in the distribution. This is why the distribution is only a function of the degrees of freedom.
 
+.. youtube:: https://www.youtube.com/watch?v=B22K3Fw49zo&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=12
+
 Returning back to :eq:`distribution-for-sample-average` we stated that
 
 .. math::
@@ -1090,6 +1105,8 @@ Interpreting the confidence interval
 .. index:: 
 	single: confidence interval; interpreting
 
+.. youtube:: https://www.youtube.com/watch?v=H_7dZRYSBGw&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=13
+
 -	The expression in :eq:`CI-mean-variance-unknown-repeated` should not be interpreted to mean that the viscosity is 20 units and lies inside the LB (lower-bound) to UB (upper-bound) range of 17.1 to 22.9 with a 95% probability. In fact, the sample mean lies exactly at the mid-point of the range with 100% certainty - that is how the range was calculated.
 
 -	What the expression in :eq:`CI-mean-variance-unknown-repeated` **does imply** is that :math:`\mu` lies in this interval. The confidence interval is a range of possible values for :math:`\mu`, not for :math:`\overline{x}`. Confidence intervals are for parameters, not for statistics.
@@ -1128,6 +1145,8 @@ Interpreting the confidence interval
 
 Confidence interval for the mean from a normal distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. youtube:: https://www.youtube.com/watch?v=yyK1O3JKd1U&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=14
 
 The aim here is to formalize the calculations for the confidence interval of :math:`\overline{x}`, given a sample of :math:`n` 
 
@@ -1192,6 +1211,8 @@ Testing for differences and similarity
 .. index:: 
 	single: tests for differences
 	see: significant difference; tests for differences
+	
+.. youtube:: https://www.youtube.com/watch?v=46qtZRg5nEg&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=15
 
 These sort of questions often arise in data analysis:
 
@@ -1302,7 +1323,7 @@ We can visualize this :index:`autocorrelation` by plotting the values of :math:`
 
 .. image:: ../figures/univariate/system-comparison-autocorrelation-scatterplot.png
 	:align: center
-	:scale: 60
+	:scale: 40
 	
 We can immediately see the data are **not independent**, because the slope is non-zero.
 
@@ -1523,6 +1544,8 @@ Paired tests
 
 .. index::
 	single: two treatments
+	
+.. youtube:: https://www.youtube.com/watch?v=OI1RD6gPALw&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=16
 
 A :index:`paired test` is a test that is run twice on the same object or batch of materials. You might see the nomenclature of "two treatments" being used in the literature. For example: 
 
