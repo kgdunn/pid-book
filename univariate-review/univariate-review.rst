@@ -1270,7 +1270,7 @@ Either we want to confirm things are statistically the same, or confirm they hav
 	:align: center
 
 
-We address the question of whether or not there was a *significant difference* between system A and B. A significant difference means that when system B is compared to a suitable reference, that we can be sure that the long run implementation of B will lead, in general, to an a different yield (%). We want to be sure that any change in the 10 runs under system B were not *only due to chance*, because system B will cost us $100,000 to install, and $20,000 in annual software license fees.
+We address the question of whether or not there was a *significant difference* between system A and B. A significant difference means that when system B is compared to a suitable reference, that we can be sure that the long run implementation of B will lead, in general, to a different yield (%). We want to be sure that any change in the 10 runs under system B were not *only due to chance*, because system B will cost us $100,000 to install, and $20,000 in annual software license fees.
 
 	*Note*: those with a traditional statistical background will recognize this section as one-sided hypothesis tests. We will only consider tests for a significant increase or decrease, i.e. one-sided tests, in this section. We use confidence intervals, rather than hypothesis tests; the results are exactly the same. Arguably the confidence interval approach is more interpretable, since we get a bound, rather that just a clear-cut yes/no answer.
 
