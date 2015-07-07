@@ -263,7 +263,7 @@ html_show_copyright = True
 #html_use_opensearch = ''
 
 # Permalinks (those strange characters next to headings)
-html_add_permalinks = ''  # was 'Permalink'
+html_add_permalinks = True  # was 'Permalink'
 
 # If nonempty, this is the file name suffix for generated HTML files. The
 # default is ".html".
