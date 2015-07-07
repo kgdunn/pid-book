@@ -147,4 +147,4 @@ def setup(app):
     app.add_directive('answer', Question_Answer)
     app.add_config_value('q_and_a_override', False, False)
     app.connect('doctree-resolved', process_question_nodes)
-    return {'parallel_read_safe': False}
+    return {'parallel_read_safe': True}

@@ -211,7 +211,7 @@ html_title = "Process Improvement using Data"
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-html_favicon = 'favicon.ico'
+html_favicon = 'sphinx_rtd_theme_kgdmod/static/media/favicon.ico'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -224,7 +224,7 @@ html_last_updated_fmt = '%d %B %Y'
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.
-html_use_smartypants = False
+html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
 #html_sidebars = {}
@@ -263,7 +263,7 @@ html_show_copyright = True
 #html_use_opensearch = ''
 
 # Permalinks (those strange characters next to headings)
-html_add_permalinks = True  # was 'Permalink'
+html_add_permalinks = u'¶'  # was 'Permalink'
 
 # If nonempty, this is the file name suffix for generated HTML files. The
 # default is ".html".
