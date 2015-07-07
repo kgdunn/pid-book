@@ -13,7 +13,12 @@ li.toctree-l2{
 	margin-left: 0em;
 }
 
-
+/* Permalinks for the h1 headers */
+.rst-content h1 .headerlink{	
+	visibility: visible;
+	float: right;
+	color: #888;
+}
 
 /* Q&A styling */
 .click-to-reveal{
