@@ -61,7 +61,7 @@ for root, dirnames, files in os.walk('_build/html'):
                     number = groups['subsec']
                     # Create the shorter link; eg. /pid/vis-1
                     link = shortcut[f] + '-' + number
-                    groups['permalink'] = shortner + link + '&nbsp;&nbsp;'
+                    groups['permalink'] = '&nbsp;&nbsp;' + shortner + link + '&nbsp;&nbsp;'
 
                     # Rewrite the html line for this row
                     line=('{prior}<h1>{sec}.{subsec}.{title}<a class="headerlink" '

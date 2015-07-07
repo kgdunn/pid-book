@@ -16,7 +16,6 @@ li.toctree-l2{
 /* Permalinks for the h1 headers */
 .rst-content h1 .headerlink{	
 	visibility: visible;
-	float: right;
 	color: #888;
 }
 
