@@ -71,7 +71,7 @@ for root, dirnames, files in os.walk('_build/html'):
                     # Write the .htaccess file
                     # and point it to the longer part, including the #.... anchor
                     htaccess.write(template.format(link,
-                            baselink + fullpath[12:] + groups['internal'] + ' [NE, L]\n')
+                            baselink + fullpath[12:] + groups['internal'] + ' [NE,L]\n')
                                    )
 
                 # Write the line back to the file
