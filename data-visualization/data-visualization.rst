@@ -213,6 +213,12 @@ The following data are thickness measurements of 2-by-6 boards, taken at six loc
 
 .. code-block:: text
 
+
+  > all.boards <- read.csv('http://openmv.net/file/six-point-board-thickness.csv')
+  > boards <- all.boards[1:100, 2:7]
+  > boards 
+  
+
 	    Pos1 Pos2 Pos3 Pos4 Pos5 Pos6
 	1   1761 1739 1758 1677 1684 1692
 	2   1801 1688 1753 1741 1692 1675
@@ -226,7 +232,7 @@ The following data are thickness measurements of 2-by-6 boards, taken at six loc
 	99  1689 1678 1677 1788 1720 1735
 	100 1751 1736 1752 1692 1670 1671
 
-  > summary(boards[1:100, 2:7])
+  > summary(boards)
          Pos1           Pos2           Pos3           Pos4           Pos5           Pos6
     Min.  :1524   Min.  :1603   Min.  :1594   Min.  :1452   Min.  :1568   Min.  :1503
     1st Qu.:1671   1st Qu.:1657   1st Qu.:1654   1st Qu.:1667   1st Qu.:1662   1st Qu.:1652
@@ -234,6 +240,8 @@ The following data are thickness measurements of 2-by-6 boards, taken at six loc
     Mean   :1687   Mean   :1677   Mean   :1677   Mean   :1679   Mean   :1674   Mean   :1672
     3rd Qu.:1705   3rd Qu.:1688   3rd Qu.:1696   3rd Qu.:1693   3rd Qu.:1685   3rd Qu.:1695
     Max.  :1822   Max.  :1762   Max.  :1763   Max.  :1788   Max.  :1741   Max.  :1765
+	
+  > boxplot(boards)	
 
 
 .. _visualization_boxplot_example:
@@ -246,8 +254,9 @@ The following box plot is a graphical summary of these numbers.
 
 Some variations for the box plot are possible:
 
-- Use the mean instead of the median.
-- Show outliers as dots, where an outlier is most commonly defined as any point 1.5 IQR distance units above and below the median (the upper and lower hinges).
+- Show outliers as dots, where an outlier is most commonly defined as any point 1.5 IQR distance units away from the box. The box's upper bound is at the 25th percentile, and the boxes lower bound is at the 75th percentile.
+- The whiskers on the plots are drawn *at most* 1.5 IQR distance units away from the box, however, if the whisker is to be drawn beyond the bound of the data vector, then it is redrawn at the edge of the data instead (i.e. it is clamped, to avoid it exceeding).
+- Use the mean instead of the median [*not too common*].
 - Use the 2% and 95% percentiles rather than the upper and lower hinge values.
 
 .. _visualization_scatter_plots:
