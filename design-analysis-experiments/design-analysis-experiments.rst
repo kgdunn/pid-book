@@ -378,11 +378,15 @@ Another term we will use is factors. In the plant example, you could have change
 .. index::
 	pair: categorical factor; experiments
 
-All experiments must have at least one factor that is changed. We distinguish between two types of factors: continuous factors and *categorical factors* 
+All experiments must have at least one factor that is changed. We distinguish between two types of factors: *numeric factors* and *categorical factors*. 
 
-Continuous factors are quantified numerically, such as giving 15 mL of water or 30 mL of water to the plant each day. Categorical factors take on a limited number of values. For example, soil type A or soil type B could be used to grow the plants. If you were working in the area of marketing, you might try three different colours of background in your advertising poster. Those colours are categorical variables in the context of the experiment.
+Numeric factors are quantified by measuring, such as giving 15 mL of water or 30 mL of water to the plant each day. An important point about numerical variables is that there is some order to them. 15 mL of water is less than 30 mL or water. Another name for this type of factor is a quantitative factor.
 
-Most experiments will have both continuous and categorical factors.
+Categorical factors take on a limited number of values. For example, soil type A or soil type B could be used to grow the plants. Categorical variables have no implicit ordering. You could have switched the names of soil A and soil B around. Categorical variables and qualitative variables can be used as synonyms.
+
+If you were working in the area of marketing, you might try three different colours of background in your advertising poster. Those 3 colours are categorical variables in the context of the experiment.
+
+Most experiments will have both numeric and categorical factors.
 
 .. index:: 
 	pair: run; experiments
@@ -509,7 +513,7 @@ Experiments are the most efficient way to extract information about a system, th
 Experiments with a single variable at two levels
 ======================================================
 
-This is the simplest type of experiment. It involves an outcome variable, :math:`y`, and one input variable, :math:`x`. The :math:`x`-variable could be continuous (e.g. temperature) or discrete (e.g. yes/no, on/off, A/B). This type of experiment could be used to answer questions such as the following:
+This is the simplest type of experiment. It involves an outcome variable, :math:`y`, and one input variable, :math:`x`. The :math:`x`-variable could be a continuous numeric one, such as temperature, or discrete on, such as yes/no, on/off, A/B. This type of experiment could be used to answer questions such as the following:
 
 	*	Has the reaction yield increased when using catalyst A or B?
 	
@@ -2322,7 +2326,7 @@ The general approach for response surface modelling
 
 #.	In the previous sections we used factorials and fractional factorials for screening the important factors. When we move to process optimization,  we are assuming that we have already identified the important variables. In fact, we might find that variables that were previously important, appear unimportant as we approach the optimum. Conversely, variables that might have been dropped out earlier, become important at the optimum.
 
-#.	Response surface methods assume the variables we adjust are continuous. Binary variables (yes/no, catalyst A or B) are handled by fixing them at one or the other value, and then performing the optimization conditional on those selected values. It is always worth investigating the alternative values once the optimum has been reached.
+#.	Response surface methods generally work best when the variables we adjust are numerically continuous. Categorical variables (yes/no, catalyst A or B) are handled by fixing them at one or the other value, and then performing the optimization conditional on those selected values. It is always worth investigating the alternative values once the optimum has been reached.
 
 #.	Many software packages provide tools that help with an RSM study. If you would like to use R in your work, we highly recommend the ``rsm`` package in R. You can read more about the package from `this article <http://www.jstatsoft.org/v32/i07>`_ in the Journal of Statistical Software (**32**, October 2009).
 
