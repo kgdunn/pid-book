@@ -126,7 +126,7 @@ Exercises
 	Again, for the distillation model, use the data from 2000 and 2001 to build the model (the first column in the data set contains the dates). Then use the remaining data to test the model. Use |x| = ``TempC2`` and |y| = ``VapourPressure`` in your model.
 
 		-	Calculate the RMSEP for the testing data. How does it compare to the standard error from the model?
-		-	Now use the ``influencePlot(...)`` function from the ``car`` library, to highlight the influential observations in the model building data (2000 and 2001). Show your plot with observation labels (observation numbers are OK). See part 5 of the `R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ for some help.
+		-	Now use the ``influencePlot(...)`` function from the ``car`` library, to highlight the influential observations in the model building data (2000 and 2001). Show your plot with observation labels (observation numbers are OK). See part 5 of the `R tutorial <http://learnche.mcmaster.ca/4C3/Software_tutorial>`_ for some help.
 		-	Explain how the points you selected are influential on the model?
 		-	Remove these influential points, and refit the model on the training data. How has the model's slope and standard error changed?
 		-	Recalculate the RMSEP for the testing data; how has it changed?
@@ -209,10 +209,10 @@ Exercises
 			92,      260,  4900,       Yes,     38
 
 
-	-	Use software to fit a linear model that predicts the yield from these variables (the `data set is available from the website <http://openmv.net/info/bioreactor-yields>`_). See the `R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ for building linear models with integer variables in R.
+	-	Use software to fit a linear model that predicts the yield from these variables (the `data set is available from the website <http://openmv.net/info/bioreactor-yields>`_). See the `R tutorial <http://learnche.mcmaster.ca/4C3/Software_tutorial>`_ for building linear models with integer variables in R.
 	-	Interpret the meaning of each effect in the model. If you are using R, then the ``confint(...)`` function will be helpful as well. Show plots of each |x| variable in the model against yield. Use a box plot for the baffles indicator variable.
 	-	Now calculate the :math:`\mathbf{X}^T\mathbf{X}` and :math:`\mathbf{X}^T\mathbf{y}` matrices; include a column in the :math:`\mathbf{X}` matrix for the intercept. Since you haven't mean centered the data to create these matrices, it would be misleading to try interpret them.
-	-	Calculate the least squares model estimates from these two matrices. See the `R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ for doing matrix operations in R, but you might prefer to use MATLAB for this step. Either way, you should get the same answer here as in the first part of this question.
+	-	Calculate the least squares model estimates from these two matrices. See the `R tutorial <http://learnche.mcmaster.ca/4C3/Software_tutorial>`_ for doing matrix operations in R, but you might prefer to use MATLAB for this step. Either way, you should get the same answer here as in the first part of this question.
 
 .. answer::
 	:fullinclude: no
@@ -724,7 +724,7 @@ Exercises
 
 	#.	Use the linear model you derived in the :ref:`gas furnace question <gas_furnace_LS_question>`, where you used the gas flow rate to predict the CO\ :sub:`2` measurement, and construct the analysis of variance table (ANOVA) for the dataset. Use your ANOVA table to reproduce the residual standard error, :math:`S_E` value, that you get from the R software output.
 
-		Go through the `R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ to learn how to efficiently obtain the residuals and predicted values from a linear model object.
+		Go through the `R tutorial <http://learnche.mcmaster.ca/4C3/Software_tutorial>`_ to learn how to efficiently obtain the residuals and predicted values from a linear model object.
 
 	#.	Also for the above linear model, verify whether the residuals are normally distributed.
 
@@ -870,7 +870,7 @@ Exercises
 
 		#.	First center the :math:`x`-variables and the :math:`y`-variable that you used in the model.
 
-			*Note*: feel free to use MATLAB, or any other tool to answer this question. If you are using R, then you will benefit from `this page in the R tutorial <http://connectmv.com/tutorials/r-tutorial/vectors-and-matrices/#matrix-operations>`_. Also, read the help for the ``model.matrix(...)`` function to get the :math:`\mathbf{X}`-matrix. Then read the help for the ``sweep(...)`` function, or more simply use the ``scale(...)`` function to do the mean-centering.
+			*Note*: feel free to use MATLAB, or any other tool to answer this question. If you are using R, then you will benefit from `this page in the R tutorial <http://learnche.mcmaster.ca/4C3/Software_tutorial/Vectors_and_matrices>`_. Also, read the help for the ``model.matrix(...)`` function to get the :math:`\mathbf{X}`-matrix. Then read the help for the ``sweep(...)`` function, or more simply use the ``scale(...)`` function to do the mean-centering.
 
 		#.	Show your calculated :math:`\mathbf{X}^T\mathbf{X}` and :math:`\mathbf{X}^T\mathbf{y}` variance-covariance matrices from the centered data.
 

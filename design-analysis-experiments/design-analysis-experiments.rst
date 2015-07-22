@@ -431,7 +431,6 @@ References and readings
 
 
 -	**Strongly recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, 2nd edition. Chapters 5 and 6 with topics from Chapters 11, 12, 13 and 15 are the most heavily used in this chapter.
--	`A web tutorial on designed experiments <http://www.chemometrics.se/index.php?option=com_content&task=view&id=18&Itemid=27>`_
 -	Søren Bisgaard: `Must a Process Be in Statistical Control Before Conducting Designed Experiments? <http://dx.doi.org/10.1080/08982110701826721>`_, with discussion (`part 1 <http://dx.doi.org/10.1080/08982110701866198>`_, `part 2 <http://dx.doi.org/10.1080/08982110801894892>`_, `part 3 <http://dx.doi.org/10.1080/08982110801890148>`_, `part 4 <http://dx.doi.org/10.1080/08982110801924509>`_, `part 5 <http://dx.doi.org/10.1080/08982110801894900>`_ and a `rejoinder <http://dx.doi.org/10.1080/08982110801973118>`_). 
 -	George Box and J. Stuart Hunter, "The :math:`2^{k-p}` `Fractional Factorial Designs - Part I <http://www.jstor.org/pss/1266725>`_", *Technometrics*, **3**, 311-351, 1961.
 -	George Box and J. Stuart Hunter, "The :math:`2^{k-p}` `Fractional Factorial Designs - Part II <http://www.jstor.org/pss/1266553>`_", *Technometrics*, **3**, 449-458, 1961.
@@ -1771,7 +1770,7 @@ So this section is concerned with the trade-offs as we go from a full factorial 
 	
 .. rubric:: Summary
 
-#.	It is tedious and error prone to calculate the aliasing structure by hand, so computer software is useful in this case.  For example, for the :math:`2^{7-4}` system can be created in  R by first loading the ``BHH2`` package, then using the command ``ffDesMatrix(k=7, gen=list(c(4,1,2), c(5,1,3), c(6,2,3), c(7,1,2,3)))``. See the `R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_ for more details.
+#.	It is tedious and error prone to calculate the aliasing structure by hand, so computer software is useful in this case.  For example, for the :math:`2^{7-4}` system can be created in  R by first loading the ``BHH2`` package, then using the command ``ffDesMatrix(k=7, gen=list(c(4,1,2), c(5,1,3), c(6,2,3), c(7,1,2,3)))``. See the `R tutorial <http://learnche.mcmaster.ca/4C3/Software_tutorial>`_ for more details.
 
 #.	The choice of generators is not unique and other choices may lead to a different, more preferable confounding pattern. But it is often easier to use the letters **A, B, C**, *etc*, then just reassign the factors to the letters to achieve the "least-worst" confounding.
 

@@ -151,7 +151,7 @@ Exercises
 		.. image:: ../figures/visualization/website-traffic-timeseries.jpg
 			:align: center
 
-	The best way to draw the time-series plot is to use proper time-based labelling on the x-axis, but we won't cover that topic here. If you are interested, read up about the ``xts`` package (`see the R tutorial <http://connectmv.com/tutorials/r-tutorial/>`_) and it's plot command. See how it is used in the code below::
+	The best way to draw the time-series plot is to use proper time-based labelling on the x-axis, but we won't cover that topic here. If you are interested, read up about the ``xts`` package (`see the R tutorial <http://learnche.mcmaster.ca/4C3/Software_tutorial>`_) and it's plot command. See how it is used in the code below::
 
 		web <- read.csv('http://openmv.net/file/website-traffic.csv')
 
@@ -252,7 +252,7 @@ Exercises
 
 		Another example of effective sparklines are for stock market data.  Take a look, for example at `Google Finance for ERJ <http://www.google.com/finance?q=NYSE:ERJ>`_ (Embraer SA).  Google shows Embraer's stock price, but scroll down to see the sparklines for other companies that are in the same economic sector (Bombadier, Boeing, Northrop Grumman, *etc*).  This quickly allows you to see whether movements in a stock are due to the overall sector (correlations), or due to a particular company (broken correlations).
 	
-		If you looked around for how to generate sparklines in R you may have come across `this website <http://cran.r-project.org/web/packages/YaleToolkit/>`_.  Notice in the top left corner that the ``sparklines`` function comes from the ``YaleToolkit``, which is an add-on package to R. We show how to `install packages in the tutorial <http://connectmv.com/tutorials/r-tutorial/extending-r-with-packages/>`_.  Once installed, you can try out that ``sparklines`` function: 
+		If you looked around for how to generate sparklines in R you may have come across `this website <https://cran.r-project.org/web/packages/YaleToolkit/>`_.  Notice in the top left corner that the ``sparklines`` function comes from the ``YaleToolkit``, which is an add-on package to R. We show how to `install packages in the tutorial <http://learnche.mcmaster.ca/4C3/Software_tutorial/Extending_R_with_packages>`_.  Once installed, you can try out that ``sparklines`` function: 
 	
 		*	First load the library: ``library(YaleToolkit)``
 		*	Then see the help for the function: ``help(sparklines)`` to see how to generate your sparklines
