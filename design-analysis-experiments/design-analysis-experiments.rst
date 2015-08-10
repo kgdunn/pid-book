@@ -313,7 +313,7 @@
 
 .. note:: Coursera students
 
-	If you are using this chapter with the `Coursera MOOC <https://www.coursera.org/course/experiments>`_, then we wish to welcome you and want to let you know that this book is generally part of a larger set of notes. The cross-references in this chapter will point you to other parts, where background knowledge is provided.
+	If you are using this chapter with the `Coursera MOOC <http://yint.org/experiments>`_, then we wish to welcome you and want to let you know that this book is generally part of a larger set of notes. The cross-references in this chapter will point you to other parts, where background knowledge is provided.
 	
 	This chapter was written for engineers originally, but you will see the examples are very general and can be applied to any other systems.
 	
