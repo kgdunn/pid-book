@@ -37,7 +37,7 @@ Usage examples
 .. index::
 	pair: usage examples; process monitoring
 
-.. youtube:: https://www.youtube.com/watch?v=o97imeRitMI&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=57
+.. youtube:: https://www.youtube.com/watch?v=o97imeRitMI&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=59
 
 The material in this section is used whenever you need to rapidly detect problems. It has tangible application in many areas - in fact, you have likely encountered these monitoring charts in areas such as a hospital (monitoring a patient's heart beat), stock market charts (for intraday trading), or in a processing/manufacturing facility (control room computer screens).
 
@@ -197,7 +197,7 @@ Shewhart chart
 
 .. For the mean: p174 to p186 of Barnes. KGD: what does "Barnes" refer to?
 
-.. youtube:: https://www.youtube.com/watch?v=8Ln3emiwQzU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=58
+.. youtube:: https://www.youtube.com/watch?v=8Ln3emiwQzU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=60
 
 A :index:`Shewhart chart <pair: Shewhart chart; process monitoring>`, named after Walter Shewhart from Bell Telephone and Western Electric, monitors that a process variable remains on target and within given upper and lower limits. It is a monitoring chart for *location*. It answers the question whether the variable's :index:`location <single: location (process monitoring)>` is stable over time.
 
@@ -306,7 +306,7 @@ The overall average is :math:`\overline{\overline{x}} = 238.8` and :math:`\overl
 Judging the chart's performance
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=vHbjFQSOiNQ&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=59
+.. youtube:: https://www.youtube.com/watch?v=vHbjFQSOiNQ&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=61
 
 There are 2 ways to :index:`judge performance of any monitoring <single: monitoring chart assessment>`, in particular here we discuss the Shewhart chart:
 
@@ -567,7 +567,7 @@ Process capability
 	
 .. Note:: This section is not about a particular monitoring chart, but is relevant to the topic of process monitoring.
 
-.. youtube:: https://www.youtube.com/watch?v=2VRAW4gGKiI&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=60
+.. youtube:: https://www.youtube.com/watch?v=2VRAW4gGKiI&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=62
 
 Centered processes
 ~~~~~~~~~~~~~~~~~~~~
@@ -622,7 +622,7 @@ Uncentered processes
 	single: capability of a process
 	single: Cpk
 
-.. youtube:: https://www.youtube.com/watch?v=qgfutIul_5E&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=61
+.. youtube:: https://www.youtube.com/watch?v=qgfutIul_5E&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=63
 
 Processes are not very often centered between their upper and lower specification limits. So a measure of process capability for an uncentered processes is defined:
 
