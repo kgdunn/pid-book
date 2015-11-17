@@ -471,7 +471,7 @@ This illustrates two points:
 	*	Strongly correlated variables, will have approximately the same weight value when they are positively correlated. In a loadings plot of :math:`p_i` vs :math:`p_j` they will appear near each other, while negatively correlated variables will appear diagonally opposite each other.
 	*	Signs of the loading variables are useful to compare within a direction vector; but these vectors can be rotated by 180° and still have the same interpretation.
 	
-This is why they are called loadings: the show how the original variables load, (contribute), to creating the component.
+This is why they are called loadings: they show how the original variables load, (contribute), to creating the component.
 	
 Another issue to consider is the case when one has many highly correlated variables. Consider the :ref:`room temperature example <LVM_room_temperature_example>` where the four temperatures are highly correlated with each other. The first component from the PCA model is shown here:
 
