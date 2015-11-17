@@ -661,7 +661,7 @@ We will take a look at what a latent variable is conceptually, geometrically, an
 Your health
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Your overall health is a latent variable. But there isn't a single measurement of "*health*" that can be measured - it is a rather abstract concept. Instead we measure physical properties from our bodies, such as blood pressure, cholesterol level, weight, various distances (waist, hips, chest), blood sugar, temperature, and a variety of other measurements. These separate measurements can be used by a trained person to judge your health, based on their experience of seeing these values from a variety of healthy and healthy patients.
+Your overall health is a latent variable. But there isn't a single measurement of "*health*" that can be measured - it is a rather abstract concept. Instead we measure physical properties from our bodies, such as blood pressure, cholesterol level, weight, various distances (waist, hips, chest), blood sugar, temperature, and a variety of other measurements. These separate measurements can be used by a trained person to judge your health, based on their experience of seeing these values from a variety of healthy and unhealthy patients.
 
 In this example, your *health* is a latent, or hidden variable. If we had a sensor for health, we could measure and use that variable, but since we don't, we use other measurements which all contribute in some way to assessing health.
 
