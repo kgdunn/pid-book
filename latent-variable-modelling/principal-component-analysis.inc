@@ -1345,7 +1345,7 @@ Using indicator variables
 	single: dummy variable
 	seealso: dummy variable; indicator variable
 
-Indicator variables, also called indicator variables, are most often binary variables that indicate the presence or absence of a certain effect. For example, a variable that shows if reactor A or reactor B was used. Its value is either a 0 or a 1 in the data matrix |X|. It's valid to include these sort of variables in a principal component analysis model where they are used and interpreted as any other continuous variable.
+Indicator variables, also called dummy variables, are most often binary variables that indicate the presence or absence of a certain effect. For example, a variable that shows if reactor A or reactor B was used. Its value is either a 0 or a 1 in the data matrix |X|. It's valid to include these sort of variables in a principal component analysis model where they are used and interpreted as any other continuous variable.
 
 Sometimes these variables are imported into the computer software, but *not used in the model*. They are only used in the display of results, where the indicator variable is shown in a different colour or with a different marker shape. We will see :ref:`an example of this for process troubleshooting <LVM_troubleshooting>`, to help isolate causes for poor yield from a process:
 
