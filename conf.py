@@ -51,7 +51,7 @@ if os.path.exists('/home/kevindunn/webapps/pid_connectmv_com/pidbook/ucommentapp
     ucomment['django_application_path'] = '/home/kevindunn/webapps/pid_connectmv_com/pidbook/ucommentapp/'
 elif os.path.exists('/home/kevindunn/django-projects/pidbook/ucommentapp/'):
     ucomment['django_application_path'] = '/home/kevindunn/django-projects/pidbook/ucommentapp/'
-elif os.path.exists('/Users/kevindunn/ConnectMV/pid-book/'):
+elif os.path.exists('/Users/kevindunn/dropbox/pid-book/'):
     ucomment['django_application_path'] = 'abc'
 else:
     raise Exception('ucommentapp: django path is invalid')
@@ -267,7 +267,10 @@ html_add_permalinks = u'¶'  # was 'Permalink'
 
 # If nonempty, this is the file name suffix for generated HTML files. The
 # default is ".html".
-html_file_suffix = '' 
+# You will also have to edit "/anaconda/lib/python2.7/site-packages/sphinx/themes/basic/static/searchtools....." 
+# Search for the entry "DOCUMENTATION_OPTIONS.FILE_SUFFIX" and you will see where a
+# trailing "/" gets auto added. Remove that code.
+html_file_suffix = ''
 
 # Suffix for generated links to HTML files. The default is whatever
 # html_file_suffix is set to; it can be set differently (e.g. to support
