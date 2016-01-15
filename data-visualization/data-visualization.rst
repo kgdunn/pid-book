@@ -74,8 +74,9 @@ Here are some tips for effective time-series plots:
 	.. _visualization-bad-labels:
 
 	.. image:: ../figures/visualization/CPU-temperature_-_from_www_aw_org_on_26_Dec_2009.png
-		:align: center
-		:scale: 50
+		:align: left
+		:width: 800px
+		:scale: 70 %
 
 	This plot, found on the Internet, shows a computer's CPU temperature with time. There are several problems with the plot, but the key issue here is the *x*-axis. This plot is probably the result of poor default settings in the software, but as you will start to realize, bad defaults are very common in most software packages. They waste your time when you have to repeatedly modify the charts. Good software will sensibly label the time-based axis for you.
 	
@@ -103,12 +104,12 @@ Here are some tips for effective time-series plots:
 
 -	Using the same data as in the previous tip, a much improved visualization technique is to use sparklines to represent the sequence of data.
 
-		.. _visualization-sparkline-trajectories:
+	.. _visualization-sparkline-trajectories:
 
-		.. figure:: ../figures/visualization/3-correlated-variables-as-sparklines.png
-			:scale: 30
-
-
+	.. figure:: ../figures/visualization/3-correlated-variables-as-sparklines.png
+		:width: 400px
+		:scale: 50 %
+		:align: right
 
 	Sparklines are small graphics that carry a high density of information. The human eye is easily capable of absorbing about 250 dots (points) per linear inch and 60,000 points per square inch. These :index:`sparklines` convey the same amount of information as the previous plots and are easy to consume on hand-held devices such as iPhones, cellphones and tablet computing devices that are common in chemical plants and other engineering facilities. Read more about them from `this hyperlink <http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR>`_.
 	
@@ -119,8 +120,10 @@ Here are some tips for effective time-series plots:
 	.. _visualization-apple-stock:
 
 	.. image:: ../figures/visualization/AAPL-stock-prices.png
-		:scale: 50
+		:scale: 60 %
+		:width: 900px
 		:align: center
+		:alt: fake width
 
 Bar plots
 =========
@@ -173,7 +176,10 @@ Here is some advice for bar plots:
 	.. image:: ../figures/visualization/hatched-barplot.png
 		:alt:	../figures/visualization/hatched-barplot.R
 		:align: center
-		:scale: 45
+		:scale: 45 %
+		:width: 900px
+		
+.. FAKE WIDTH in the above image
 
 .. COMMENTS
   Stack bar plots are OK, they show breakdowns quite nicely, even though one has to read the accompanying text carefully to make sure the break down is what you think it is. Never underestimate the audience's intelligence.
@@ -249,8 +255,10 @@ The following data are thickness measurements of 2-by-6 boards, taken at six loc
 The following box plot is a graphical summary of these numbers.
 
 .. image:: ../figures/visualization/boxplot-for-two-by-six-100-boards.png
-	:align: left
+	:align: right
 	:scale: 55
+	:width: 900px
+	:alt: fake width
 
 Some variations for the box plot are possible:
 
@@ -258,6 +266,9 @@ Some variations for the box plot are possible:
 - The whiskers on the plots are drawn *at most* 1.5 IQR distance units away from the box, however, if the whisker is to be drawn beyond the bound of the data vector, then it is redrawn at the edge of the data instead (i.e. it is clamped, to avoid it exceeding).
 - Use the mean instead of the median [*not too common*].
 - Use the 2% and 95% percentiles rather than the upper and lower hinge values.
+
+
+
 
 .. _visualization_scatter_plots:
 
@@ -297,6 +308,9 @@ You can add box plots and histograms to the side of the axes to aide interpretat
 
 	.. image:: ../figures/visualization/scatterplot-with-histograms-updated.png
 		:scale: 42
+		:align: right
+		:width: 900px
+		:alt: fake width
 
 Add a third variable to the plot by adjusting the marker size, and add a fourth variable with the use of colour:
 
@@ -304,6 +318,8 @@ Add a third variable to the plot by adjusting the marker size, and add a fourth 
 
 	.. image:: ../figures/visualization/scatterplot-with-2-extra-dimensions.png
 		:scale: 80
+		:width: 900px
+		:alt: fake width
 
 
     This example, from `http://gapminder.org <http://yint.org/gapminder-example>`_, shows data as of 2007 for income per person against fertility. The size of each data point is proportional to the country's population, and the marker colour shows life expectancy at birth (years). The GapMinder website allows you to "play" the graph over time, effectively adding a fifth dimension to the 2D plot. Use the hyperlink above to see how richer countries move towards lower fertility and higher income over time.
@@ -323,12 +339,13 @@ This table compares monthly payments for buying or leasing various cars (categor
 		:alt:	../figures/visualization/table-examples.numbers
 		:align: center
 		:scale: 75
+		:width: 881px
 
 The next table compares defect types (number of defects) for different product grades (categories).
 
 	.. figure:: ../figures/visualization/table-defect-counts.png
 		:alt:	../figures/visualization/table-examples.numbers
-		:align: center
+		:align: left
 		:scale: 50
 
 	This particular table raises more questions:
@@ -359,6 +376,8 @@ Three common pitfalls to avoid:
 
 	.. image:: ../figures/visualization/table-grid-comparison.png
 		:scale: 65
+		:width: 1036px
+		
 
 To wrap up this section is a demonstration of tabular data in a different format, based on an idea of Tufte in *The Visual Display of Quantitative Information*, p. 158. Here we compare the corrosion resistance and roughness of a steel surface for two different types of coatings, A and B. 
 

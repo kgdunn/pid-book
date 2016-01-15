@@ -27,7 +27,6 @@ extensions = ['sphinx.ext.todo', 'sphinx.ext.pngmath', ]
 # Download https://bitbucket.org/birkenfeld/sphinx-contrib/overview; cd youtube; setup.py build and setup.py install
 extensions.append('my-extensions.youtube') 
 
-
 # Sphinx contrib extensions
 # -------------------------
 # Spelling extension?
@@ -309,7 +308,7 @@ latex_documents = [
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
-#latex_logo = None
+latex_logo = html_logo
 
 # If true, add page references after internal references. This is very useful for printed copies of the manual. Default is False.
 latex_show_pagerefs = True

@@ -2,7 +2,7 @@
 #
 
 # You can set these variables from the command line.
-SPHINXOPTS    = -j 5 -W -E
+SPHINXOPTS    = -j 5  -E
 SPHINXBUILD   = sphinx-build
 PAPER         =
 BUILDDIR      = _build
@@ -106,7 +106,6 @@ latex:
 
 latexpdf:
 	$(SPHINXBUILD) -j 4 -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
-	cp textbook-logo* $(BUILDDIR)/latex
 	cp preface/*.png $(BUILDDIR)/latex
 	@echo "Running LaTeX files through pdflatex..."
 	make -C $(BUILDDIR)/latex all-pdf
