@@ -433,6 +433,7 @@ _PREAMBLE = r"""
       \vfill
       {\LARGE\py@HeaderFamily \@author \par}
       \vfill\vfill
+      \includegraphics[scale=0.45]{textbook-logo-no-text.jpg}
       {\large
        \@date \par
        \vfill
