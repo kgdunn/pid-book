@@ -107,6 +107,7 @@ latex:
 latexpdf:
 	$(SPHINXBUILD) -j 4 -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
 	cp textbook-logo* $(BUILDDIR)/latex
+	cp preface/*.png $(BUILDDIR)/latex
 	@echo "Running LaTeX files through pdflatex..."
 	make -C $(BUILDDIR)/latex all-pdf
 	@echo "pdflatex finished; the PDF files are in $(BUILDDIR)/latex."

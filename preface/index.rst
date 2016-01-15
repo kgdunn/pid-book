@@ -57,8 +57,8 @@ Because this is a predominantly electronic book, we resort to many hyperlinks in
 
 The textbook was used in an online course from July to August 2014, `Experimentation for Improvement <https://www.coursera.org/course/experiments>`_. Comments and feedback from that course have greatly improved this book. *Thanks to all the Courserians*. Videos created for that Coursera course, as well as videos created for the Ontario Online Initiative have been embedded in the textbook. Look for YouTube videos and this icon: 
 
-.. image:: 1024px-High-contrast-camera-video.png
-   :width: 100px
+.. image:: High-contrast-camera-video-smaller.png
+   :width: 150px
    :align: center
 
 In particular, I'd like to thank Devon Mordell, from McMaster University, for her informal help on editing parts of the book. As well as my formal editor, `Teresa Wilson <http://tdwcommunications.com>`_. Any errors, poor spelling and grammar are entirely my own fault -- any any feedback to improve them will be appreciated.
