@@ -91,8 +91,10 @@ Exercises
 	A scatterplot matrix can be created using the code below:
 
 	.. image:: ../figures/visualization/scatterplotmatrix-food-data.png
-		:align: left
-		:scale: 100
+		:align: center
+		:scale: 80
+		:width: 900px
+		:alt: fake width
 	
 	.. literalinclude:: ../figures/visualization/scatterplotmatrix-food-data.R
 		:language: s
@@ -233,8 +235,11 @@ Exercises
 
 		.. image:: ../figures/examples/room-temperature/room-temperatures.png
 			:alt:	../figures/examples/room-temperature/room-temperature-plots.R
-			:scale: 100
+			:scale: 80
 			:align: center
+			:width: 900px
+			
+		.. The above is a fake width for the plot
 		
 		A sequence plot of the data is good enough, though a time-based plot is better.
 		
@@ -271,6 +276,8 @@ Exercises
 		.. image:: ../figures/visualization/boxplot-for-two-by-six-100-boards.png
 			:align: center
 			:scale: 55
+			:width: 900px
+			:alt: fake width
 
 		.. literalinclude:: ../figures/visualization/boxplot-for-boards.R
 			:language: s	
@@ -395,3 +402,5 @@ Exercises
 
 	*	Watch `this 20 minute video <http://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen>`_ that shows how a 2-dimensional plot comes alive to show 5 dimensions of data. What are the 5 dimensions?
 	*	A condensed version from this, `4 minute YouTube video <https://www.youtube.com/v/jbkSRLYSojo>`_ shows Hans Rosling giving a new perspective on the same data. This `Economist article <http://www.economist.com/node/17663585>`_ has some interesting background on Dr. Rosling, as does this page, `giving a selection of his work <http://www.economist.com/node/21013330>`_.
+	
+		.. youtube:: jbkSRLYSojo

@@ -427,7 +427,7 @@ _PREAMBLE = r"""
       \endgroup
     \fi
     \begin{flushright}%
-      \sphinxlogo%
+      % \sphinxlogo% I don't want the logo here, and not with this size. I've manually placed it a few lines down.
       {\rm\Huge\py@HeaderFamily \@title \par}%
       \vfill
       {\LARGE\py@HeaderFamily \@author \par}
