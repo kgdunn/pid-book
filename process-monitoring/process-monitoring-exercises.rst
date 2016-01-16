@@ -30,7 +30,7 @@ Exercises
 	-	Upper control limit at 3 standard deviations = 89.6
 
 	.. image:: ../figures/monitoring/batch-yields-monitoring.png
-		:align: center
+		:align: right
 		:width: 750px
 		:scale: 60
 
@@ -147,9 +147,10 @@ Exercises
 	A tank uses small air bubbles to keep solid particles in suspension. If too much air is blown into the tank, then excessive foaming and loss of valuable solid product occurs; if too little air is blown into the tank the particles sink and drop out of suspension. 
 
 	.. image:: ../figures/monitoring/tank-suspension.png
-		:scale: 60
-		:align: center
+		:scale: 90
+		:align: right
 		:width: 400px
+		:alt: fake width
 
 	#.	Which monitoring chart would you use to ensure the airflow is always near target?
 

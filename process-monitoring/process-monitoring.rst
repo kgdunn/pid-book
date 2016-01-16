@@ -206,12 +206,13 @@ The defining characteristics are: a target, upper and lower control limits (:ind
 Derivation using theoretical parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Define the variable of interest as :math:`x`, and assume that we have samples of :math:`x` available in sequence order. No assumption is made regarding the distribution of :math:`x`. The average of :math:`n` of these :math:`x`-values is defined as :math:`\overline{x}`, which from the :ref:`Central limit theorem <central_limit_theorem>` we know will be more normally distributed with unknown population mean :math:`\mu` and unknown population variance :math:`\sigma^2/n`, where :math:`\mu` and :math:`\sigma` refer to the distribution that samples of :math:`x` came from. The figure below shows the case for :math:`n=5`.
+Define the variable of interest as :math:`x`, and assume that we have samples of :math:`x` available in sequence order. No assumption is made regarding the distribution of :math:`x`. The average of :math:`n` of these :math:`x`-values is defined as :math:`\overline{x}`, which from the :ref:`Central limit theorem <central_limit_theorem>` we know will be more normally distributed with unknown population mean :math:`\mu` and unknown population variance :math:`\sigma^2/n`, where :math:`\mu` and :math:`\sigma` refer to the distribution that samples of :math:`x` came from. The figure here shows the case for :math:`n=5`.
 
 .. image:: ../figures/monitoring/explain-Shewhart-data-source.png
-	:width: 750px
-	:align: center
+	:align: left
 	:scale: 70
+	:width: 800px
+	:alt: fake width
 
 So by taking :index:`subgroups <single: subgroups (monitoring charts)>` of size :math:`n` values, we now have a new variable, :math:`\overline{x}` and we will define a shorthand symbol for its standard deviation: :math:`\sigma_{\overline{X}} = \sigma/\sqrt{n}`. Writing a :math:`z`-value for :math:`\overline{x}`, and its associated confidence interval for :math:`\mu` is now easy after studying :ref:`the section on confidence intervals<univariate_confidence_intervals>`:
 
@@ -238,7 +239,7 @@ The following illustration should help connect the concept of the raw data's dis
 	:alt:	../figures/monitoring/explain-shewhart.R
 	:scale: 70
 	:width: 750px
-	:align: center
+	:align: right
 
 Using estimated parameters instead
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -329,10 +330,11 @@ To quantify the probability :math:`\beta`, recall that a Shewhart chart is for m
 	\alpha &= Pr\left(\overline{x}\,\,\text{is in control, but lies outside the limits}\right) = \text{type I error rate}\\
 	\beta &= Pr\left(\overline{x}\,\,\text{is not in control, but lies inside the limits}\right) = \text{type II error rate}
 
-.. image:: ../figures/monitoring/show-shift-beta-error.png
-	:width: 500px
-	:align: center
+.. figure:: ../figures/monitoring/show-shift-beta-error.png
+	:width: 800px
+	:align: left
 	:scale: 90
+	:alt: fake width
 
 .. todo  How did Devore calculate these numbers: see p 667 of his book - it doesn't make sense to me. See my attempt in "show-shift-typeII-error.R"
 
@@ -450,9 +452,10 @@ The two previous charts highlight 2 extremes of monitoring charts. On the one ha
 As an introduction to the exponentially weighted moving average (EWMA) chart, consider first the simple :index:`moving average` (MA) chart. This chart is used just like a Shewhart chart, except the samples that make up each subgroup are calculated using a moving window of width :math:`n`. The case of :math:`n=5` is shown below.
 
 .. image:: ../figures/monitoring/explain-moving-average-data-source.png
-	:width: 750px
-	:align: center
-	:scale: 70
+	:width: 800px
+	:align: left
+	:scale: 50
+	:alt: fake width
 
 The MA chart plots values of :math:`\overline{x}_t`, calculated from groups of size :math:`n`, using equal weight for each of the :math:`n` most recent raw data.
 
@@ -509,9 +512,11 @@ From the above discussion and the weights shown for the 4 different charts, it s
 
 .. image:: ../figures/monitoring/explain-weights-for-process-monitoring.png
 	:alt: ../figures/monitoring/explain-weights-for-process-monitoring.R
-	:width: 750px
+	:width: 900px
 	:align: center
-	:scale: 65
+	:scale: 90
+	
+.. FAKE WIDTH ABOVE
 	
 The upper and lower control limits for the EWMA plot are plotted in the same way as the Shewhart limits, but calculated differently:
 
@@ -726,8 +731,9 @@ The economics of monitoring charts cannot be overstated. The ArcelorMittal examp
 
 .. image:: ../figures/examples/Dofasco/breakouts-dofasco-economics.png
 	:width: 750px
-	:align: center
+	:align: left
 	:scale: 80
+	:alt: fake width
 
 .. FUTURE: Agnico-Eagle monitoring 
 .. FUTURE: show how a scatter plot can be used
