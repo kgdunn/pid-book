@@ -9,7 +9,6 @@
 	\setcounter{secnumdepth}{-1}
 	\makeatother
 	
-
 Preface
 =========
 
@@ -35,7 +34,7 @@ Preface
 .. Distribution: PDF, web-files for off-line reading in your browser; ebook (e.g. iPad); or printed dead-tree version available on-demand. The printed version is available in hard-cover and soft-cover, and all profits are used to pay for the website hosting.
 
 
-This book is a *preliminary draft* on how to improve processes using the large quantities of data that are routinely collected from process systems.
+This book is a guide on how to improve processes using the large quantities of data that are routinely collected from process systems. It is in a state of a *semi-permanent draft*.
 
 We cover :ref:`data visualization <SECTION-data-visualization>` first, in Chapter 1, since most data analysis studies start by plotting the data. This is an extremely brief introduction to this topic, only illustrating the most basic plots required for this book. Please consult the references in this chapter for more exciting plots that provide insight to your data.
 

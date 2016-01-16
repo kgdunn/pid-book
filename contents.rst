@@ -13,7 +13,6 @@ Process Improvement Using Data
 	:maxdepth: -1
 	:caption: Table of Contents
 
-	
 	data-visualization/index
 	univariate-review/index
 	process-monitoring/index

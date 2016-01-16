@@ -120,8 +120,9 @@ What you will be able to do after this section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. image:: ../figures/mindmaps/least-squares-section-mapping.png
-  :width: 750px
+  :width: 900px
   :scale: 90
+  :alt: fake width
 
 .. Notes
 	Specifically, we cover the technical topics of:
@@ -191,8 +192,9 @@ Given these numbers, we can simplify the ideal gas law to: :math:`p=\beta_1 T`, 
 	humidity <- c(42, 48, 45, 49, 41, 46, 48, 48, 45, 49)
 
 .. image:: ../figures/least-squares/table-of-cylinder-data.png
-	:width: 750px
+	:width: 900px
 	:scale: 67
+	:alt: fake width
 
 The formal definition for covariance between any two variables is:
 
@@ -268,15 +270,16 @@ So returning back to our example of the gas cylinder, the correlation between te
 	> cor(temp, humidity)
 	[1] 0.3803919
 
-Note that correlation is the same whether we measure temperature in Celsius or Kelvin. Study the plots below to get a feeling for the correlation value and its interpretation:
+Note that correlation is the same whether we measure temperature in Celsius or Kelvin. Study the plots here to get a feeling for the correlation value and its interpretation:
 
 .. image:: ../figures/least-squares/correlation-calculation.png
-	:width: 750px
+	:width: 900px
 	:align: center
 	:scale: 87
+	:alt: fake width
 	
 	
-.. See article by Brillinger: John Tukey and the correlation coefficient (included as a PDF in the repo)
+.. TODO See article by Brillinger: John Tukey and the correlation coefficient (included as a PDF in the repo)
 
 Some definitions
 ================
@@ -357,12 +360,13 @@ We develop **the least squares method** to estimate these parameters; these esti
 		y_i &= b_0 + b_1 x_i + e_i \\
 		\hat{y}_i &= b_0 + b_1 x_i
 
-Presuming we have calculated estimates |b0| and |b1| we can use the model with a new x-observation, :math:`x_i`, and predict its corresponding :math:`\hat{y}_i`. The error value, :math:`e_i`, is generally non-zero indicating out prediction estimate of :math:`\hat{y}_i` is not exact. All this new nomenclature is illustrated in the figure.
-
 .. image:: ../figures/least-squares/least-squares-picture.png
 	:width: 600px
 	:align: center
 	:scale: 71
+	:alt: fake width
+
+Presuming we have calculated estimates |b0| and |b1| we can use the model with a new x-observation, :math:`x_i`, and predict its corresponding :math:`\hat{y}_i`. The error value, :math:`e_i`, is generally non-zero indicating out prediction estimate of :math:`\hat{y}_i` is not exact. All this new nomenclature is illustrated in the figure.
 
 Minimizing errors as an objective
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -401,9 +405,10 @@ The least squares problem can be posed as an :index:`unconstrained optimization`
 Returning to our example of the gas cylinder. In this case we know that :math:`\beta_0 = 0` from theoretical principles. So we can solve the above problem by trial and error for |b1|. We expect :math:`b_1 \approx \beta_1 = \dfrac{nR}{V} = \dfrac{(14.1 \text{~mol})(8.314 \text{~J/(mol.K)})}{20 \times 10^{-3} \text{m}^3} = 5.861 \text{~kPa/K}`. So construct equally spaced points of :math:`5.0 \leq b_1 \leq 6.5`, set :math:`b_0 = 0`. Then calculate the objective function using the :math:`(x_i, y_i)` data points recorded earlier using :eq:`define-2-LS-optimization`.
 
 .. image:: ../figures/least-squares/cylinder-case-study-objective.png
-	:width: 600px
-	:align: center
-	:scale: 40
+	:align: left
+	:scale: 50
+	:width: 900px
+	:alt: fake width
 	
 We find our best estimate for :math:`b_1` roughly at 5.88, the minimum of our grid search, which is very close to the theoretically expected value of 5.86 kPa/K.
 
@@ -411,7 +416,7 @@ For the case where we have both |b0| and |b1|  varying we can construct a grid a
 
 .. image:: ../figures/least-squares/least-squares-objective-function-annotated.png
 	:width: 750px
-	:align: center
+	:align: left
 	:scale: 50
 
 The above figure shows the general nature of the :index:`least-squares objective function <pair: objective function; least squares>` where the two horizontal axes are for |b0| and |b1|, while the vertical axis represents the least squares objective function :math:`f(b_0, b_1)`.
@@ -488,6 +493,12 @@ We will refer back to the following example several times. Calculate the least s
 :math:`y`   8.04 6.95 7.58 8.81 8.33 9.96 7.24 4.26 10.84 4.82 5.68
 =========== ==== ==== ==== ==== ==== ==== ==== ==== ===== ==== ====
 
+.. image:: ../figures/least-squares/show-anscombe-problem-1.png
+	:align: center
+	:width: 900px
+	:scale: 50
+	:alt: fake width
+	
 ..
 	.. image:: ../figures/least-squares/regression-exercise.png
 		:align: center
@@ -547,10 +558,7 @@ To calculate the least squares model in R:
 *	:math:`b_1 = 0.5`
 *	When :math:`x_i = 5`, then :math:`\hat{y}_i = 3.0 + 0.5 \times 5.5 = 5.75`
 
-.. image:: ../figures/least-squares/show-anscombe-problem-1.png
-	:align: center
-	:width: 500px
-	:scale: 50
+
 
 ..	Estimating the parameters when the data are centered
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -606,9 +614,10 @@ Using the accompanying figure, we see that geometrically, at any fixed value of 
 	\end{array}
 
 .. image:: ../figures/least-squares/ANOVA-graphically.png
-	:width: 600px
+	:width: 900px
 	:align: center
 	:scale: 60
+	:alt: fake width
 
 The total sum of squares (TSS) is the total variance in the vector of :math:`y`-data. This broken down into two components: the sum of squares due to regression, :math:`\sum \left(\hat{y}_i - \overline{y}\right)^2`, called RegSS, and the sum of squares of the residuals (RSS), :math:`\sum e_i^2 = e^T e`.
 
@@ -777,7 +786,7 @@ Confidence intervals for the model coefficients |b0| and |b1|
 
 Up to this point we have made no assumptions about the data. In fact we can calculate the model estimates, |b0| and |b1| as well as predictions from the model without any assumptions on the data. It is only when we need additional information such as :index:`confidence intervals <pair: confidence interval; least squares>` for the coefficients and prediction error estimates that we must make assumptions.
 
-Recall the |b1| coefficient represents the average effect on |y| when changing the |x|-variable by 1 unit. Let's say you are estimating a reaction rate (kinetics) from a linear least squares model, a standard step in reactor design, you would want a measure of confidence of your coefficient. For example, if you calculate the reaction rate as :math:`k = b_1 = 0.81 \text{~s}^{-1}` you would benefit from knowing whether the 95% confidence interval was :math:`k = 0.81 \pm 0.26 \text{~s}^{-1}` or :math:`k = 0.81 \pm 0.68 \text{~s}^{-1}`. In the latter case it is doubtful whether the reaction rate is of practical significance. Point estimates of the least squares model parameters are satisfactory, but the confidence interval information is richer to interpret.
+Recall the |b1| coefficient represents the average effect on |y| when changing the |x|-variable by 1 unit. Let's say you are estimating a reaction rate (kinetics) from a linear least squares model, a standard step in reactor design, you would want a measure of confidence of your coefficient. For example, if you calculate the reaction rate as :math:`k = b_1 = 0.81 \,\text{s}^{-1}` you would benefit from knowing whether the 95% confidence interval was :math:`k = 0.81 \pm 0.26 \,\text{s}^{-1}` or :math:`k = 0.81 \pm 0.68 \,\text{s}^{-1}`. In the latter case it is doubtful whether the reaction rate is of practical significance. Point estimates of the least squares model parameters are satisfactory, but the confidence interval information is richer to interpret.
 
 We first take a look at some assumptions in least squares modelling, then return to deriving the confidence interval.
 
@@ -804,9 +813,10 @@ Furthermore, our derivation for the confidence intervals of |b0| and |b1| requir
 	-	The variability of |y| can be non-constant in several practical cases (e.g. our measurement accuracy deteriorates at extreme high and low levels of |x|).
 
 	.. image:: ../figures/least-squares/constant-error-variance.png
-		:width: 500px
+		:width: 900px
 		:align: center
 		:scale: 60
+		:alt: fake width
 		
 	Illustration of the constant error variance assumption and the normally distributed error assumption.
 
@@ -907,8 +917,8 @@ Now it is straight forward to construct **confidence intervals for the least squ
 		b_0 - c_t S_E(b_0)   &\leq& \beta_0                         &\leq&	b_0 + c_t S_E(b_0)  &\qquad b_1 - c_t S_E(b_1)   &\leq& \beta_1                         &\leq&	b_1 + c_t S_E(b_1)
 	\end{array}
 
-Example
---------
+**Example**
+
 
 .. youtube:: https://www.youtube.com/watch?v=sY8CVMGUD54&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=22
 
@@ -981,9 +991,10 @@ A naive first attempt
 We might expect the error is related to the average size of the residuals. After all, :ref:`our assumptions we made earlier <LS-assumptions>` showed the standard error of the residuals was the standard error of the |y|: :math:`S_E^2 = \mathcal{V}\left\{e_i\right\} = \mathcal{V}\left\{y_i\right\} = \dfrac{\sum{e_i^2}}{n-k}`.
 
 .. image:: ../figures/least-squares/residual-plots.png
-	:width: 750px
+	:width: 900px
 	:align: center
 	:scale: 80
+	:alt: fake width
 
 A typical histogram of the residuals looks as shown here: it is always centered around zero, and appears to be normally distributed. So we could expect to write our prediction error as :math:`\hat{y}_\text{new} = \left(b_0 + b_1 x_\text{new}\right) \pm c \cdot S_E`, where :math:`c` is the number of standard deviations around the average residual, for example we could have set :math:`c=2`, approximating the 95% confidence limit.
 
@@ -1038,9 +1049,9 @@ Let's understand the interpretation of :math:`\mathcal{V}\{\hat{y}_i\} = S_E^2 \
 	-	The confidence intervals have a quadratic shape due to the square term under the square root. The smallest prediction error will always occur at the center of the model, and expands progressively wider as one moves away from the model center. This is illustrated in the figure and makes intuitive sense as well.
 
 	.. image:: ../figures/least-squares/show-anscome-solution-with-yhat-bounds.png
-		:width: 750px
+		:width: 900px
 		:align: center
-		:scale: 59
+		:scale: 60
 
 Interpretation of software output
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1132,9 +1143,10 @@ If the residuals appear non-normal, then attempt the following:
 The simple example shown here builds a model that predicts the price of a used vehicle using only the mileage as an explanatory variable.
 
 .. image:: ../figures/least-squares/non-normal-errors-outliers.png
-	:align: center
-	:width: 750px
+	:align: left
+	:width: 900px
 	:scale: 70
+	:alt: fake width
 
 The group of outliers were due to 10 observations a certain class of vehicle (Cadillac convertibles) that distorted the model. We removed these observations, which now limits our model to be useful only for other vehicle types, but we gain a smaller standard error and a tighter confidence interval. These residuals are still very non-normal though.
 
@@ -1152,9 +1164,10 @@ Removing the Cadillac cars from our model indicates that there is more than just
 In the next fictitious example the |y|-variable is non-linearly related to the |x|-variable. This non-linearity in the |y| shows up as non-normality in the residuals if only a linear model is used. The residuals become more linearly distributed when using a square root transformation of the |y| before building the linear model.
 
 .. image:: ../figures/least-squares/non-normal-errors-transformation-required.png
-	:align: center
-	:width: 750px
+	:align: left
+	:width: 900px
 	:scale: 70
+	:alt: fake width
 
 More discussion about transformations of the data is given in the section on :ref:`model linearity <LS-model-linearity>`.
 
@@ -1173,12 +1186,13 @@ To detect this problem you should plot:
 
 	-	the |x| values against the residuals (y-axis)
 
-This problem reveals itself by showing a fan shape across the plot; an example is shown below.
+This problem reveals itself by showing a fan shape across the plot; an example is shown in the figure.
 
 .. image:: ../figures/least-squares/residual-pattern-non-contant-error.png
-	:scale: 60
+	:scale: 80
 	:align: center
-	:width: 750px
+	:width: 900px
+	:alt: fake width
 
 To counteract this problem one can use weighted least squares, with smaller weights on the high-variance observations, i.e. apply a weight inversely proportional to the variance. Weighted least squares minimizes: :math:`f(\mathrm{b}) = \sum_i^n{(w_ie_i)^2}`, with different weights, :math:`w_i` for each error term. More on this topic can be found in the book by Draper and Smith (p 224 to 229, 3rd edition).
 
@@ -1198,16 +1212,20 @@ Treating this problem properly comes under the topic of time-series analysis, fo
 If you suspect that there may be lack of independence, use plots of the residuals in time order. Look for patterns such as slow drifts, or rapid criss-crossing of the zero axis.
 
 .. image:: ../figures/least-squares/residual-pattern-unmodelled-dynamics.png
-	:width: 750px
+	:width: 900px
 	:align: center
+	:scale: 100
+	:alt: fake width
 
 One way around the autocorrelation is to subsample - use only every :math:`k^\text{th}` sample, where :math:`k` is a certain number of gaps between the points. How do we know how many gaps to leave?  Use the `autocorrelation function <https://en.wikipedia.org/wiki/Autocorrelation>`_ to determine how many samples. You can use the ``acf(...)`` function in R, which will show how many significant lags there are between observations. Calculating the autocorrelation accurately requires a large data set, which is a requirement anyway if you need to subsample your data to obtain independence.
 
 Here are some examples of the autocorrelation plot: in the first case you would have to leave at least 16 samples between each sub-sample, while the second and third cases require a gap of 1 sample, i.e. use only every second data point.
 
 .. image:: ../figures/least-squares/demonstrate-autocorrelation.png
-	:width: 750px
+	:width: 900px
 	:align: center
+	:scale: 100
+	:alt: fake width
 
 Another test for autocorrelation is the Durbin-Watson test. For more on this test see the book by Draper and Smith (Chapter 7, 3rd edition); in R you can use the ``durbinWatsonTest(model)`` function in ``library(car)``.
 
@@ -1246,12 +1264,13 @@ In other instances we may know from first-principles theory, or some other means
 	
 	*	Some cases cannot be linearized and are best estimated by non-linear least squares methods. However, a make-shift approach which works quite well for simple cases is to perform a grid search. For example imagine the equation to fit is :math:`y = \beta_1\left(1-e^{-\beta_2 x} \right)`, and you are given some data pairs :math:`(x_i, y_i)`. Then for example, create a set of trial values :math:`\beta_1 = [10, 20, 30, 40, 50]` and :math:`\beta_2 = [0.0, 0.2, 0.4, 0.8]`. Build up a grid for each combination of :math:`\beta_1` and :math:`\beta_2` and calculate the sum of squares objective function for each point in the grid. By trial-and-error you can converge to an approximate value of :math:`\beta_1` and :math:`\beta_2` that best fit the data. You can then calculate :math:`S_E`, but not the confidence intervals for :math:`\beta_1` and :math:`\beta_2`.
 
-Before launching into various :index:`transformations` or non-linear least squares models, bear in mind that the linear model may be useful over the region of interest. In the case below, we might only be concerned with using the model over the region shown, even though the system under observation is known to behave non-linearly over a wider region of operation.
+Before launching into various :index:`transformations` or non-linear least squares models, bear in mind that the linear model may be useful over the region of interest. In the figure we might only be concerned with using the model over the region shown, even though the system under observation is known to behave non-linearly over a wider region of operation.
 
 	.. image:: ../figures/least-squares/nonlinear-linear-region.png
-		:align: center
-		:width: 500px
-		:scale: 50
+		:align: right
+		:width: 900px
+		:scale: 60
+		:alt: fake width
 
 How can we detect when the linear model is not sufficient anymore?  While a q-q plot might hint at problems, better plots are the same two plots for detecting :ref:`non-constant error variance <LS-non-constant-error-variance>`:
 
@@ -1261,8 +1280,10 @@ How can we detect when the linear model is not sufficient anymore?  While a q-q 
 Here we show both plots for the example just prior (where we used a linear model for a smaller sub-region). The last two plots look the same, because the predicted :math:`\hat{\mathrm{y}}` values, :math:`\hat{\mathrm{y}} = b_0 + b_1 x_1`; in other words, just a linear transformation of the |x| values.
 
 	.. image:: ../figures/least-squares/nonlinear-detection.png
-		:align: center
-		:width: 750px
+		:align: left
+		:width: 900px
+		:scale: 75
+		:alt: fake width
 
 Transformations are considered successful once the residuals appear to have no more structure in them. Also bear in mind that structure in the residuals might indicate the model is missing an additional explanatory variable (see the section on :ref:`multiple linear regression <LS_multiple_X_MLR>`).
 
@@ -1540,9 +1561,10 @@ Interpretation of the model coefficients
 Let's take a look at the case where :math:`y = b_1x_1 + b_2x_2`. We can plot this on a 3D plot, with axes of :math:`x_1`, :math:`x_2` and :math:`y`:
 
 .. image:: ../figures/least-squares/least-squares-two-x-variables.png
-	:width: 500px
+	:width: 900px
 	:align: left
-	:scale: 55
+	:scale: 60
+	:alt: fake width
 
 The points are used to fit the plane by minimizing the sum of square distances shown by vertical lines from each point to the plane. The interpretation of the slope coefficients for :math:`b_1` and :math:`b_2` is **not the same** as for the case with just a single |x| variable.
 
@@ -1571,9 +1593,10 @@ Now that we have introduced multiple linear regression to expand our models, we 
 	-	Use an indicator variable to show if the raw material came from the supplier in Spain, India, or Vietnam and interpret the effect of supplier on yield.
 
 	..	figure:: ../figures/least-squares/Mixing_-_flusso_assiale_e_radiale.jpg
-		:width: 500px
-		:align: center
-		:scale: 40
+		:width: 900px
+		:align: left
+		:scale: 60
+		:alt: fake width
 
 	Axial and radial blades; figure from `Wikipedia <https://en.wikipedia.org/wiki/Impeller>`_
 
@@ -1584,12 +1607,13 @@ We will start with the simplest case, using the example of the radial or axial i
 	y &= \beta_0 + \beta_1x + \gamma d + \varepsilon \\
 	y &= b_0 + b_1 x + g d_i + e_i \\
 
-where :math:`d_i = 0` if an axial impeller was used, or :math:`d_i = 1` if a radial impeller was used. All other least squares assumptions hold, particularly that the variance of :math:`y_i` is unrelated to the value of :math:`d_i`. For the initial illustration, assume that :math:`\beta_1 = 0`, then geometrically, what is happening here is shown below:
+where :math:`d_i = 0` if an axial impeller was used, or :math:`d_i = 1` if a radial impeller was used. All other least squares assumptions hold, particularly that the variance of :math:`y_i` is unrelated to the value of :math:`d_i`. For the initial discussion let's assume that :math:`\beta_1 = 0`, then geometrically, what is happening here is:
 
 .. image:: ../figures/least-squares/least-squares-dummy-variable-and-intercept.png
-	:width: 500px
-	:align: center
-	:scale: 55
+	:width: 900px
+	:align: right
+	:scale: 60
+	:alt: fake width
 
 The :math:`\gamma` parameter, estimated by :math:`g`, is the difference in intercept when using a different impeller type. Note that the lines are parallel.
 
@@ -1613,9 +1637,10 @@ which would indicate the impeller type has no significant effect on the yield am
 Integer variables are also called dummy variables or indicator variables. Really what is happening here is the same concept as for multiple linear regression, the equation of a plane is being estimated. We only use the equation of the plane at integer values of :math:`d`, but mathematically the underlying plane is actually continuous.
 
 .. image:: ../figures/least-squares/least-squares-two-x-variables-one-integer.png
-	:width: 500px
-	:align: center
-	:scale: 55
+	:width: 900px
+	:align: left
+	:scale: 60
+	:alt: fake width
 
 We have to introduce additional terms into the model if we have integer variables with more than 2 levels. In general, if there are :math:`p`-levels, then we must include :math:`p-1` terms. For example, if we wish to test the effect of :math:`y` = yield achieved from the raw material supplier in Spain, India, or Vietnam, we could code:
 
@@ -1645,10 +1670,10 @@ Background
 ~~~~~~~~~~~~~~
 
 .. image:: ../figures/least-squares/influence-of-outliers.png
-	:width: 750px
+	:width: 900px
 	:scale: 100
 	:align: center
-
+	:alt: fake width
 
 A discrepancy is a data point that is unusual *in the context of the least squares model*, as shown in the first figure here. On its own, from the perspective of either |x| or |y| alone, the square point is not unusual. But it is unusual in the context of the least squares model. When that square point is removed, the updated least squares line (dashed line) is obtained. This square point clearly has little influence on the model, even though it is discrepant.
 
@@ -1674,13 +1699,13 @@ Leverage measures how much each observation contributes to the model's predictio
 
 		h_i &= \dfrac{1}{n} + \dfrac{\left(x_i -\overline{x}\right)^2}{\sum_{j=1}^{n}{\left(x_j -\overline{x}\right)^2}} \qquad \text{and}\qquad \overline{h} = \dfrac{k}{n}  \qquad \text{and}\qquad \dfrac{1}{n} \leq h_i \leq 1.0
 
-The average hat value can be calculated theoretically. While it is common to plot lines at 2 and 3 times the average hat value, always plot your data and judge for yourself what a large leverage means. Also notice that smallest hat value is always positive and greater or equal to :math:`1/n`, while the largest hat value possible is 1.0. Continuing the example of models A, B and C: the hat values for models B and C are the same, and are shown below. The last point has very high leverage.
+The average hat value can be calculated theoretically. While it is common to plot lines at 2 and 3 times the average hat value, always plot your data and judge for yourself what a large leverage means. Also notice that smallest hat value is always positive and greater or equal to :math:`1/n`, while the largest hat value possible is 1.0. Continuing the example of models A, B and C: the hat values for models B and C are the same, and are shown here. The last point has very high leverage.
 
 	.. image:: ../figures/least-squares/hatvalue-of-outliers.png
-		:width: 750px
+		:width: 900px
 		:scale: 100
 		:align: center
-
+		:alt: fake width
 
 Discrepancy
 ~~~~~~~~~~~~~~
@@ -1696,10 +1721,11 @@ Discrepancy can be measured by the residual distance. However the residual is no
 Where :math:`e_i` is the residual for the :math:`i^\text{th}` point, as usual, but :math:`S_{E(-i)}` is the standard error of the model when deleting the :math:`i^\text{th}` point and refitting the model. This studentized residual accounts for the fact that high leverage observations pull the model towards themselves. In practice the model is not recalculated by omitting each point one at a time, rather there are shortcut formula that implement this efficiently. Use the ``rstudent(lm(y~x))`` function in R to compute the :index:`studentized residuals` from a given model.
 
 	.. image:: ../figures/least-squares/studentized-residuals.png
-		:width: 750px
+		:width: 900px
 		:scale: 100
 		:align: center
-
+		:alt: fake width
+		
 This figure illustrates how the square point in model A and B is highly discrepant, while in model C it does not have a high discrepancy.
 
 Influence
@@ -1719,15 +1745,15 @@ One measure is called *Cook's statistic*, usually called :math:`D_i`, and often 
 
 where :math:`\frac{1}{n}\sum{e_i^2}` is called the mean square error of the model (the average square error). It is easy to see here now why influence is the product of discrepancy and leverage.
 
-The values of :math:`D_i` are conveniently calculated in R using the ``cooks.distance(model)`` function. The results for the 3 models are shown below. Interestingly for model C there is a point with even higher influence than the square point. Can you locate that point in the least squares plot?
+The values of :math:`D_i` are conveniently calculated in R using the ``cooks.distance(model)`` function. The results for the 3 models are shown. Interestingly for model C there is a point with even higher influence than the square point. Can you locate that point in the least squares plot?
 
 	.. image:: ../figures/least-squares/cooks-distance.png
-		:width: 750px
+		:width: 900px
 		:scale: 100
 		:align: center
+		:alt: fake width
 
-
-.. THRESHOLD FOR COOK'S D. BUBBLE PLOT.
+.. TODO THRESHOLD FOR COOK'S D. BUBBLE PLOT.
 
 
 Enrichment topics
@@ -1757,11 +1783,12 @@ Consider the example of plotting Prestige (the `Pineo-Porter prestige <https://e
 	MASONS                      6.60   5959  0.52     36.2   8782   bc
 	HOUSE.PAINTERS              7.81   4549  2.46     29.9   8785   bc
 
-The plot below on the left is the raw data, while on the right is the raw data with the nonparametric model (line) superimposed. The smoothed line is the nonparametric function, :math:`f(x)`, referred to above, and :math:`x` = Income ($), and :math:`y` = Prestige.
+The plot on the left is the raw data, while on the right is the raw data with the nonparametric model (line) superimposed. The smoothed line is the nonparametric function, :math:`f(x)`, referred to above, and :math:`x` = Income ($), and :math:`y` = Prestige.
 
 .. image:: ../figures/least-squares/nonparametric-plots.png
-	:width: 750px
+	:width: 900px
 	:align: center
+	:alt: fake width
 
 For bivariate cases, the nonparametric model is often called a *scatterplot smoother*. There are several methods to calculate the model; one way is by locally weighted scatterplot smoother (LOESS), described as follows. Inside a fixed subregion along the :math:`x`-axis (called the window):
 
@@ -1878,12 +1905,13 @@ We could naively assume that we just code our |y| variable as 0 or 1 (pass/fail)
 	
 	-	The variance of the errors are not constant and the assumption of linearity breaks down.
 
-A logistic model however accounts for the nature of the y-variable by creating a function, called a logistic function, which is bounded between 0 and 1. In fact you are already familiar with such a function: the cumulative probability of the normal distribution does exactly this.
+.. image:: ../figures/least-squares/logistic-regression-function.png
+	:scale: 50
+	:width: 900px
+	:align: right
+	:alt: fake width
 
-	.. image:: ../figures/least-squares/logistic-regression-function.png
-		:scale: 50
-		:width: 500px
-		:align: center
+A logistic model however accounts for the nature of the y-variable by creating a function, called a logistic function, which is bounded between 0 and 1. In fact you are already familiar with such a function: the cumulative probability of the normal distribution does exactly this.
 
 Once the :math:`y` data are appropriately transformed, then the model can be calculated. In R one uses the ``glm(y ~ x1 + x2, family=binomial)`` function to build a model where ``y`` must be a factor variable: type ``help(factor)`` to learn more. The model output is interpreted as any other.
 
@@ -1934,14 +1962,15 @@ In the preceding section we derived this confidence interval for :math:`\beta_1`
 			  b_1 - c_t S_E(b_1)   &\leq& \beta_1                         &\leq&	b_1 + c_t S_E(b_1)
 		\end{array}
 
-Visualize this confidence in the context of the following example where |x| is the dose of radiation administered (rads), and |y| is the survival percentage. The plot below shows the data and the least square slope coefficient (notice the |y| variable is a transformed variable, ``log(survival)``).
+Visualize this confidence in the context of the following example where |x| is the dose of radiation administered (rads), and |y| is the survival percentage. The plot shows the data and the least square slope coefficient (notice the |y| variable is a transformed variable, ``log(survival)``).
 
 The thick line represents the slope coefficient (:math:`-0.0059`) using all the data. Clearly the unusual point number 13 has some influence on that coefficient. Eliminating it and refitting the model makes the slope coefficient more steep (:math:`-0.0078`), which could change our interpretation of the model. This raises the question though: what happens to the slope coefficient when we eliminate other points in the training data?  How sensitive are our model parameters *to the data themselves*?
 
 	.. image:: ../figures/least-squares/bootstrap-example.png
 		:align: center
-		:width: 750px
+		:width: 900px
 		:scale: 90
+		:alt: fake width
 
 Bootstrapping gives us an indication of that sensitivity, as shown in the other plot. The original data set had 14 observations. What bootstrapping does is to randomly select 14 rows from the original data, allowing for duplicate selection. These selected rows are used to build a least squares model, and the slope coefficient is recorded. Then another 14 random rows are selected and this process is repeated ``R`` times (in this case ``R=1000``). On some of these occasions the outlier points will be included, and other times they will be excluded. 
 

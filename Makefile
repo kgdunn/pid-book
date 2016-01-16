@@ -3,7 +3,7 @@
 
 # You can set these variables from the command line.
 # Add "-W" to cause warnings to turn into errors
-SPHINXOPTS    = -j 5  -E
+SPHINXOPTS    = -j 5 -W -E
 SPHINXBUILD   = sphinx-build
 PAPER         =
 BUILDDIR      = _build
@@ -100,6 +100,7 @@ epub:
 
 latex:
 	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
+	cp preface/*.png $(BUILDDIR)/latex
 	@echo
 	@echo "Build finished; the LaTeX files are in $(BUILDDIR)/latex."
 	@echo "Run \`make' in that directory to run these through (pdf)latex" \

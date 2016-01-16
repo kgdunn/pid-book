@@ -59,8 +59,9 @@ Exercises
 
 	.. image:: ../figures/least-squares/distillation-prediction-interval.png
 		:align: center
-		:width: 750px
+		:width: 900px
 		:scale: 50
+		:alt: fake width
 
 	.. literalinclude:: ../figures/least-squares/distillation-column-questions.R
 		:language: s
@@ -103,15 +104,17 @@ Exercises
 
 		.. image:: ../figures/least-squares/distillation-prediction-qqplots.png
 			:align: center
-			:width: 750px
+			:width: 900px
 			:scale: 80
+			:alt: fake width
 
 	-	The slope coefficient of 75571 has units of ``kPa.°F``, indicating that each one unit *decrease* in temperature results in an *increase* in vapour pressure. Since division is not additive, the change in vapour pressure when decreasing 10 degrees from 430 °F is a different decrease to that when temperature is 530 °F. The interpretation of transformed variables in linear models is often a lot harder. The easiest interpretation is to show a plot of 1/T against vapour pressure.
 
 		.. image:: ../figures/least-squares/distillation-prediction-inverted-temperature.png
 			:align: center
-			:width: 750px
-			:scale: 40
+			:width: 900px
+			:scale: 60
+			:alt: fake width
 
 	-	The predicted vapour pressure at 480 °F is 36.68 kPa :math:`\pm 11.37`, or within the range [31.0 to 42.4] with 95% confidence, very similar to the prediction interval from question 2.
 
@@ -562,10 +565,10 @@ Exercises
 		*	We can't tell anything about the yield-duration relationship, as it doesn't vary in the data we have (there could/should be a relationship, but we can't tell).
 
 		.. image:: ../figures/least-squares/bioreactor-scatterplot-matrix.png
-			:alt:	images/math
-			:scale: 70
-			:width: 750px
+			:scale: 90
+			:width: 900px
 			:align: center
+			:alt:	fake width
 
 	.. literalinclude:: ../figures/least-squares/bioreactor-regression-assignment.R
 		:language: s
@@ -751,8 +754,9 @@ Exercises
 		.. image:: ../figures/least-squares/CO2-gas-furnace-residuals.png
 			:alt:	../figures/least-squares/CO2-gas-furnace-question.R
 			:scale: 60
-			:width: 750px
+			:width: 900px
 			:align: center
+
 
 		As mentioned in the ``help(qqPlot)`` output, the dashed red line is the confidence envelope at the 95% level. The single point just outside the confidence envelope is not going to have any practical effect on our assumption of normality. We expect 1 point in 20 to lie outside the limits.
 
@@ -811,7 +815,7 @@ Exercises
 
 		.. image:: ../figures/least-squares/cheese-data-correlation.png
 			:alt:	../figures/least-squares/cheddar-cheese.R
-			:width: 550px
+			:width: 900px
 			:scale: 60
 			:align: left
 
@@ -1002,8 +1006,8 @@ Exercises
 		.. image:: ../figures/least-squares/ldpe-scatterplot-matrix.png
 			:alt:	../figures/least-squares/LDPE-question.R
 			:scale: 50
-			:width: 550px
-			:align: center
+			:width: 900px
+			:align: right
 
 		*	``Tmax1`` and ``z1`` show a strongish negative correlation
 		*	``Tmax1`` and ``SCB`` show a strong positive correlation
@@ -1021,7 +1025,7 @@ Exercises
 		.. image:: ../figures/least-squares/ldpe-z2-SCB-raw-data-identify.jpg
 			:alt:	../figures/least-squares/LDPE-question.R
 			:scale: 45
-			:width: 550px
+			:width: 900px
 			:align: center
 
 		which helps when we look at the q-q plot of the Studentized residuals to see the positive and the negative residuals:
@@ -1029,8 +1033,8 @@ Exercises
 		.. image:: ../figures/least-squares/ldpe-z2-SCB-resids-qqplot.png
 			:alt:	../figures/least-squares/LDPE-question.R
 			:scale: 45
-			:width: 550px
-			:align: center
+			:width: 900px
+			:align: left
 
 		#.	We notice there is no strong evidence of non-normality, however, we can see a trend in the tails on both sides (there are large positive residuals and large negative residuals). The identified points in the two plots help understand which points affect the residual tails.
 
@@ -1042,7 +1046,7 @@ Exercises
 			.. image:: ../figures/least-squares/ldpe-z2-SCB-raw-resids-in-order.png
 				:alt:	../figures/least-squares/LDPE-question.R
 				:scale: 50
-				:width: 550px
+				:width: 900px
 				:align: center
 
 			Show no consistent structure, however we do see the short upward trend in the last 4 points. The autocorrelation function (not shown here), shows there is no autocorrelation, i.e. the residuals appear independent.
@@ -1055,7 +1059,7 @@ Exercises
 				.. image:: ../figures/least-squares/ldpe-z2-SCB-predictions-vs-residuals.png
 					:alt:	../figures/least-squares/LDPE-question.R
 					:scale: 50
-					:width: 550px
+					:width: 900px
 					:align: center
 
 			*	:math:`x`-variable vs residuals: definite structure in the residuals, which is similar to the above plot.
@@ -1065,7 +1069,7 @@ Exercises
 				.. image:: ../figures/least-squares/ldpe-z2-SCB-predictions-vs-actual.png
 					:alt:	../figures/least-squares/LDPE-question.R
 					:scale: 60
-					:width: 550px
+					:width: 900px
 					:align: center
 
 		#.	We can consider removing the 4 points that strongly bias the observed *vs* predicted plot above.
@@ -1075,7 +1079,7 @@ Exercises
 		.. image:: ../figures/least-squares/ldpe-z2-SCB-hat-values.png
 			:alt:	../figures/least-squares/LDPE-question.R
 			:scale: 50
-			:width: 550px
+			:width: 900px
 			:align: center
 
 		with 2 and 3 times the average hat value shown for reference. Points 52, 53 and 54 have leverage that is excessive, confirming what we saw in the previous part of this question.
@@ -1087,7 +1091,7 @@ Exercises
 		.. image:: ../figures/least-squares/ldpe-z2-SCB-hats-again.jpg
 			:alt:	../figures/least-squares/LDPE-question.R
 			:scale: 50
-			:width: 550px
+			:width: 900px
 			:align: center
 
 		which is reasonable to stop at, since the problem has mostly gone away. If you keep omitting points, you will likely deplete all the data. At some point, especially when there is no obvious structure in the residuals, it is time to stop interrogating (i.e. investigating) and removing outliers.
@@ -1099,7 +1103,7 @@ Exercises
 		.. image:: ../figures/least-squares/ldpe-z2-SCB-iip-before.jpg
 			:alt:	../figures/least-squares/LDPE-question.R
 			:scale: 80
-			:width: 550px
+			:width: 900px
 			:align: center
 
 		The increasing leverage, as the abnormal process operation develops is clearly apparent. This leverage is not "bad" (i.e. influential) initially, because it is "in-line" with the regression slope. But by observation 54, there is significant deviation that observation 54 has high residuals distance, and therefore a combined high influence on the model (high Cook's D).
@@ -1107,7 +1111,7 @@ Exercises
 		.. image:: ../figures/least-squares/ldpe-z2-SCB-iip-after.jpg
 			:alt:	../figures/least-squares/LDPE-question.R
 			:scale: 80
-			:width: 550px
+			:width: 900px
 			:align: center
 
 		The updated model shows shows only point 8 as an influential observation, due to its moderate leverage and large residual. However, this point does not warrant removal, since it is just above the cut-off value of :math:`4/(n-k) = 4/(50-2) = 0.083` for Cook's distance.
@@ -1129,8 +1133,9 @@ Exercises
 
 	.. image:: ../figures/least-squares/concrete-slump.png
 		:alt:	../figures/least-squares/concrete-slump.svg
-		:width: 650px
-		:align: center
+		:width: 900px
+		:align: right
+		:scale: 60
 		
 	Figure `from Wikipedia <https://en.wikipedia.org/wiki/File:Types_of_concrete_slump.jpg>`_
 
