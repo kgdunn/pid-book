@@ -546,9 +546,6 @@ _PREAMBLE = r"""
   
     
 \makeatother
-
-\setcounter{tocdepth}{10}
-
 % ==== END OF CUSTOMIZED PREAMBLE ====
 """
 
