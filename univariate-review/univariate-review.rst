@@ -88,13 +88,13 @@ Fortunately, we have plenty of variability in the recorded data from our process
 	-	Unknown sources, often called "*error*" (note that the word :index:`error <single: error; statistical>` in statistics does not have the usual negative connotation from English). These errors are all sources of variation which our imperfect knowledge of physics cannot account for.
 	
 		.. image:: ../figures/concepts/variation/variation-some.png
-			:scale: 50
+			:scale: 60
 			:align: center
 			
 	-	Measurement and sampling variability: sensor drift, spikes, noise, recalibration shifts, errors in our sample analysis.
 
 		.. image:: ../figures/concepts/variation/variation-more.png
-			:scale: 50
+			:scale: 60
 			:align: center
 
 	-	Production disturbances:
@@ -103,7 +103,7 @@ Fortunately, we have plenty of variability in the recorded data from our process
 		- pieces of plant equipment break down, wear out and are replaced
 		
 		.. image:: ../figures/concepts/variation/variation-spikes.png
-			:scale: 50
+			:scale: 60
 			:align: center
 	
 	-	:index:`Feedback control <single: feedback control>` systems introduce variability in your process, in order to reduce variability in another part of the process (think of what a :ref:`feedback control system <univariate_feedback_and_variability>` does)
@@ -172,6 +172,8 @@ Turning the above discussion around, with you on the receiving end of a highly v
 	.. image:: ../figures/concepts/variation/feedback-control-variance-reduction-reduced.png
 		:align: center
 		:scale: 50
+		:width: 900px
+		:alt: fake width
 
 -	Even if you do take feedback or feed-forward corrective control: you have to incur additional cost, since you have to process materials that are not to specification: this will require energy and/or time, reducing your profit due to the supplier's raw material variability.
 
@@ -199,11 +201,13 @@ Histograms and probability distributions
 
 The :ref:`previous section <univariate-about-variability>` has hopefully convinced you that variation in a process is inevitable. This section aims to show how we can visualize and quantify variability in a recorded vector of data.
 
-A histogram is a summary of the variation in a measured variable. It shows the *number* of samples that occur in a *category*: this is called a **frequency distribution**. For example: number of children born, categorized against their gender: male or female.
+A histogram is a summary of the variation in a measured variable. It shows the *number* of samples that occur in a *category*: this is called a **frequency distribution**. For example: number of children born, categorized against their birth gender: male or female.
 
 .. image:: ../figures/univariate/histogram-children-by-gender.png
 	:scale: 40
-	:align: center
+	:align: left
+	:width: 900px
+	:alt: fake width
 	
 The raw data in the above example was a vector of consisted of 2739 text entries, with 1420 of them as ``Male`` and 1319 of them as ``Female``. In this case ``Female`` and ``Male`` represent the two categories.
 
@@ -212,6 +216,8 @@ Histograms make sense for categorical variables, but a histogram can also be der
 .. image:: ../figures/univariate/histogram-package-mass.png
 	:scale: 60
 	:align: center
+	:width: 900px
+	:alt: fake width
 
 Plot histograms for the following:
 
@@ -303,7 +309,7 @@ We review a couple of concepts that you should have seen in prior statistical wo
 		single: sample
 
 	.. image:: ../figures/univariate/batch-yields.png
-		:scale: 60
+		:scale: 80
 		:align: center
 	
 	In engineering applications where we have plenty of data, we can characterize the population from all available data. The figure here shows the viscosity of a motor oil, from all batches produced in the last 5 years (about 1 batch per day). These 1825 data points, though technically a *sample* are an excellent surrogate for the *population* viscosity because they come from such a long duration. Once we have characterized these samples, future viscosity values will likely follow that same distribution, provided the process continues to operate in a similar manner.
@@ -442,6 +448,8 @@ An example: a histogram for a system that produces 70% acceptable product, :math
 .. image:: ../figures/univariate/histogram-70-30.png
 	:align: center
 	:scale: 25
+	:width: 900px
+	:alt: fake width
 
 If each observation is independent of the other, then:
 
@@ -481,6 +489,8 @@ The histogram for an event with 4 possible outcomes that are uniformly distribut
 .. image:: ../figures/univariate/histogram-4-cuts.png
 	:align: center
 	:scale: 30
+	:width: 900px
+	:alt: fake width
 
 You can simulate uniformly distributed random numbers in most software packages. As an example, to generate 50 uniformly distributed random *integers* between 2 and 10, inclusive:
 
@@ -589,7 +599,10 @@ Formal definition for the normal distribution
 .. math:: p(x) = \dfrac{1}{\sqrt{2\pi \sigma^2}}e^{-\dfrac{\left(x-\mu\right)^2}{2\sigma^2}}
 	
 .. image:: ../figures/univariate/normal-distribution-standardized.png
-	:align: center
+	:align: left
+	:width: 900px
+	:scale: 80%
+	:alt: fake width
 
 -	:math:`x` is the variable of interest
 
@@ -691,10 +704,12 @@ Before we look at this method, we need to introduce the concept of the inverse :
 Now the **inverse cumulative distribution** is used when we know the area, but want to get back to the value along the :math:`z`-axis. For example, below which value of :math:`z` does 95% of the area lie for a standardized normal distribution?  Answer: :math:`z=1.64`. In R we use the ``qnorm(0.95, mean=0, sd=1)`` to calculate this value. The ``q`` stands for `quantile <https://en.wikipedia.org/wiki/Quantile>`_, because we give it the quantile and it returns the :math:`z`-value: e.g. ``qnorm(0.5)`` gives 0.0.
 
 .. image:: ../figures/univariate/show-pnorm-and-qnorm.png
-	:width: 600px
-	:align: center
+	:width: 900px
+	:scale: 60 %
+	:align: right
+	:alt: fake width
 		
-On to checking for normality. p by first constructing some quantities that we would expect for truly normally distributed data. Secondly, we construct the same quantities for the actual data. A plot of these 2 quantities against each other will reveal if the data are normal, or not.
+On to checking for normality. We start by first constructing some quantities that we would expect for truly normally distributed data. Secondly, we construct the same quantities for the actual data. A plot of these 2 quantities against each other will reveal if the data are normal, or not.
 
 #.	Imagine we have :math:`N` observations which are normally distributed. Sort the data from smallest to largest. The first data point should be the :math:`(1/N \times 100)` quantile, the next data point is the :math:`(2/N \times 100)` quantile, the middle, sorted data point is the 50th quantile, :math:`(1/2 \times 100)`, and the last, sorted data point is the :math:`(N/N \times 100)` quantile.
 
@@ -734,8 +749,11 @@ On to checking for normality. p by first constructing some quantities that we wo
 		plot(theoretical.quantity, yields.z.sorted, type="p")
 		
 	.. image:: ../figures/univariate/qqplot-derivation.png
-		:align: center
-		:scale: 30
+		:align: left
+		:scale: 60
+		:width: 900
+		:alt: fake width
+		
 
 A built-in function exists in R that runs the above calculations and shows a scatter plot. The 45 degree line is added using the ``qqline(...)`` function. However, a better function that adds a confidence limit envelope is included in the ``car`` library (see the *Package Installer* menu in R for adding libraries from the internet). 
 
@@ -878,8 +896,10 @@ which we derived by using the fact that :math:`\dfrac{\overline{x} - \mu}{\sigma
 An obvious way out of our dilemma is to replace :math:`\sigma` by the sample standard deviation, :math:`s`, which is exactly what we will do, however, the quantity :math:`\frac{\overline{x} - \mu}{s/\sqrt{n}}` is not normally distributed, but is :math:`t`-distributed. Before we look at the details, it is helpful to see how similar in appearance the :math:`t` and normal distribution are: the :math:`t`-distribution peaks slightly lower than the normal distribution, but it has broader tails. The total area under both curves illustrated here is 1.0.
 
 .. image:: ../figures/univariate/t-distribution-comparison.png
-	:align: center
-	:scale: 100
+	:align: right
+	:scale: 80
+	:width: 900
+	:alt: fake width
 
 There is one other requirement we have to ensure in order to use the :math:`t`-distribution: the values that we sample, :math:`x_i` must come from a normal distribution (carefully note that in the previous section we didn't have this restriction!). Fortunately it is easy to check this requirement: just use the :ref:`q-q plot method described earlier <univariate_check_for_normality_qqplot>`. Another requirement, which we had before, was that we must be sure these measurements, :math:`x_i`, are independent.
 
@@ -1038,8 +1058,11 @@ There are two important properties:
 Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{e^{-\eta}\eta^{x}}{x!}`, with a plot as shown for :math:`\eta = 4`. Please note the lines are only guides, the probability is only defined at the integer values marked with a circle. 
 
 .. image:: ../figures/univariate/poisson-distribution.png
-	:align: center
-	:scale: 50
+	:align: right
+	:scale: 70
+	:width: 900
+	:alt: fake width
+	
 	
 :math:`p(x)` expresses the probability that there will be :math:`x` occurrences (must be an integer) of this rare event in the same interval of time or unit area as :math:`\eta` was measured.
 
@@ -1300,7 +1323,7 @@ Here's the procedure:
 	
 The vertical line at 3.04 is the difference value recorded between system B and system A.  From this we can see that historically, there were 31 out of 281 batches, about 11% of historical data, that had a difference value of 3.04 or greater. So there is a 11% probability that system B was better than system A purely by chance, and not due to any technical superiority. Given this information, we can now judge, if the improved control system will be economically viable and judge, based on internal company criteria, if this is a suitable investment, also considering the 11% risk that our investment will fail.
 
-Notice that no assumption of independence or any form of distributions was required for this work!   The only assumption made is that the historical data are relevant. We might know this if, for example, no substantial modification was made to the batch system for the duration over which the 300 samples were acquired. If however, a different batch recipe were used for sample 200 onwards, then we may have to discard those first 200 samples: it is not fair to judge control system B to the first 200 samples under system A, when a different operating procedure was in use.
+Notice that no assumption of independence or any form of distributions was required for this work! The only assumption made is that the historical data are relevant. We might know this if, for example, no substantial modification was made to the batch system for the duration over which the 300 samples were acquired. If however, a different batch recipe were used for sample 200 onwards, then we may have to discard those first 200 samples: it is not fair to judge control system B to the first 200 samples under system A, when a different operating procedure was in use.
 
 So to summarize: we can use a historical data set if it is relevant. And there are no assumptions of independence or shape of the distribution, e.g. a normal distribution.
 
@@ -1323,7 +1346,10 @@ We can visualize this :index:`autocorrelation` by plotting the values of :math:`
 
 .. image:: ../figures/univariate/system-comparison-autocorrelation-scatterplot.png
 	:align: center
-	:scale: 40
+	:scale: 70
+	:width: 900
+	:alt: fake width
+	
 	
 We can immediately see the data are **not independent**, because the slope is non-zero.
 
@@ -1396,7 +1422,9 @@ Discuss whether these experiments would lead to :index:`independent data <single
 	
 		.. image:: ../figures/univariate/sheet-coating-application.png
 			:align: center
-			:scale: 40
+			:scale: 60
+			:width: 900
+			:alt: fake 
 		
 		Some problems with this approach:
 		

@@ -79,18 +79,35 @@ Exercises
 	   :language: s
 
 	.. image:: ../figures/univariate/size1.png
-		:scale: 40
+		:scale: 50
+		:width: 900
+		:align: center
+		:alt: fake width
 	.. image:: ../figures/univariate/size2.png
-		:scale: 40
+		:scale: 50
+		:width: 900
+		:align: center
+		:alt: fake width
 	.. image:: ../figures/univariate/size3.png
-		:scale: 40
+		:scale: 50
+		:width: 900
+		:align: center
+		:alt: fake width
 	.. image:: ../figures/univariate/density1.png
-		:scale: 40
+		:scale: 50
+		:width: 900
+		:align: center
+		:alt: fake width
 	.. image:: ../figures/univariate/density2.png
-		:scale: 40
+		:scale: 50
+		:width: 900
+		:align: center
+		:alt: fake width
 	.. image:: ../figures/univariate/density3.png
-		:scale: 40
-	
+		:scale: 50
+		:width: 900
+		:align: center
+		:alt: fake width
 
 .. question::
 
@@ -341,7 +358,9 @@ Exercises
 	
 	.. image:: ../figures/univariate/bulb-energy-barplot.png
 		:align: center
-		:scale: 50
+		:scale: 70
+		:width: 900px
+		:alt: fake width
 
 	- Calculate an estimate of the mean and standard deviation, even though you don't have the original data.
 	- What is a confidence interval for the mean at 95% probability, stating and testing any assumptions you need to make.
@@ -690,8 +709,11 @@ Exercises
 	A common unit operation in the pharmaceutical area is to uniformly blend powders for tablets. In this question we consider blending an excipient (an inactive magnesium stearate base), a binder, and the active ingredient. The mixing process is tracked using a wireless near infrared (NIR) probe embedded in a V-blender. The mixer is stopped when the NIR spectra become stable. A new supplier of magnesium stearate is being considered that will save $ 294,000 per year.
 
 	..	figure:: ../figures/univariate/V-Blender.png
-		:align: center
-		:scale: 40
+		:align: right
+		:scale: 60
+		:width: 900px
+		:alt: fake width
+		
 	
 		Illustration from `Wikipedia <https://en.wikipedia.org/wiki/Industrial_mixer>`__
 
@@ -835,7 +857,9 @@ Exercises
 
 	..	figure:: ../figures/univariate/Mixing_-_flusso_assiale_e_radiale.jpg
 		:align: center
-		:scale: 40
+		:scale: 60
+		:width: 800px
+		:alt: fake width
 
 		Axial and radial blades; figure `from Wikipedia <https://en.wikipedia.org/wiki/Impeller>`__
 
