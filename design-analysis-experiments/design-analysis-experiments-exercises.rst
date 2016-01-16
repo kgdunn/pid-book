@@ -994,7 +994,7 @@ Exercises
 		.. image:: ../figures/doe/fractional-factorial-question.png
 			:alt:	../figures/doe/fractional-factorial-question.R
 			:scale: 60
-			:align: center
+			:align: right
 			:width: 900px
 
 .. question::

@@ -110,11 +110,11 @@ This section is only a simple review of the least squares model. More details ma
 
 -	Montgomery and Runger, *Applied Statistics and Probability for Engineers*, Wiley.
 
-..	Efron, Hastie, Johnstone and Tibshirani, `Least Angle Regression <http://www.jstor.org/pss/3448465>`_, *The Annals of Statistics*, **32**, p 407-451, 2004.
+..	Efron, Hastie, Johnstone and Tibshirani, `Least Angle Regression <http://www.jstor.org/stable/3448465>`_, *The Annals of Statistics*, **32**, p 407-451, 2004.
 
-..	S. Chatterjee and A. S. Hadi, `Influential Observations, High Leverage Points, and Outliers in Linear Regression <http://www.jstor.org/pss/2245477>`_, *Statistical Science*, **1** (3), 379-416, 1986.
+..	S. Chatterjee and A. S. Hadi, `Influential Observations, High Leverage Points, and Outliers in Linear Regression <http://www.jstor.org/stable/2245477>`_, *Statistical Science*, **1** (3), 379-416, 1986.
 
-.. G.E.P. Box, `Use and Abuse of Regression <http://www.jstor.org/pss/1266635>`_, *Technometrics*, **8** (4), 625-629, 1966.
+.. G.E.P. Box, `Use and Abuse of Regression <http://www.jstor.org/stable/1266635>`_, *Technometrics*, **8** (4), 625-629, 1966.
 
 What you will be able to do after this section
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1804,7 +1804,7 @@ For bivariate cases, the nonparametric model is often called a *scatterplot smoo
 
 The *model* is the collection of these :math:`x`- and :math:`y`-values. This is why it is called nonparameteric: there are no parameters to quantify the model. For example: if the relationship between the two variables is linear, then a linear smooth is achieved. It is hard to express the relationship between :math:`x` and :math:`y` in written form, so usually these models are shown visually. The nonparametric model is not immune to outliers, but it is resistant to them.
 
-More details can be found in W.S. Cleveland, `Robust Locally Weighted Regression and Smoothing Scatterplots <http://www.jstor.org/pss/2286407>`_, *Journal of the American Statistical Association*, **74** (368), p. 829-836, 1979.
+More details can be found in W.S. Cleveland, `Robust Locally Weighted Regression and Smoothing Scatterplots <http://www.jstor.org/stable/2286407>`_, *Journal of the American Statistical Association*, **74** (368), p. 829-836, 1979.
 
 
 Robust least squares models

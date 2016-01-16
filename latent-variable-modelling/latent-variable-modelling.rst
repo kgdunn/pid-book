@@ -425,7 +425,7 @@ These readings cover a variety of topics in the area of latent variable methods:
 
 * **PLS**: Paul Geladi and Bruce Kowalski, "`Partial Least-Squares Regression: A Tutorial <http://dx.doi.org/10.1016/0003-2670(86)80028-9>`_", *Analytica Chimica Acta*, **185**, 1-17, 1986.
 
-* **PLS**: Paul Garthwaite, "`An Interpretation of Partial Least Squares <http://www.jstor.org/pss/2291207>`_", Journal of the American Statistical Association, **89**, 122-127, 1994.
+* **PLS**: Paul Garthwaite, "`An Interpretation of Partial Least Squares <http://www.jstor.org/stable/2291207>`_", Journal of the American Statistical Association, **89**, 122-127, 1994.
 
 * **Process monitoring**: John MacGregor and Theodora Kourti "`Statistical Process Control of Multivariate Processes <http://dx.doi.org/10.1016/0967-0661(95)00014-L>`_", *Control Engineering Practice*, **3**, p 403-414, 1995.
 

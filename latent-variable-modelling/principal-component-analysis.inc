@@ -1140,7 +1140,7 @@ This holds for any model where the :math:`\widehat{\mathbf{X}}` and :math:`\math
 
 There comes a point for any real data set where the number of components, |A| = the number of columns in :math:`\mathbf{T}` and :math:`\mathbf{P}`, extracts all systematic variance from :math:`\mathbf{X}`, leaving unstructured residual variance in :math:`\mathbf{E}`. Fitting any further components will start to fit this noise, and unstructured variance, in :math:`\mathbf{E}`.
 
-Cross-validation for multivariate data sets was described by Svante Wold in his paper on `Cross-validatory estimation of the number of components in factor and principal components models <http://www.jstor.org/pss/1267639>`_, in *Technometrics*, **20**, 397-405, 1978. 
+Cross-validation for multivariate data sets was described by Svante Wold in his paper on `Cross-validatory estimation of the number of components in factor and principal components models <http://www.jstor.org/stable/1267639>`_, in *Technometrics*, **20**, 397-405, 1978. 
 
 The general idea is to divide the matrix |X| into :math:`G` groups of rows. These rows should be selected randomly, but are often selected in order: row 1 goes in group 1, row 2 goes in group 2, and so on. We can collect the rows belonging to the first group into a new matrix called :math:`\mathbf{X}_{(1)}`, and leave behind all the other rows from all other groups, which we will call group :math:`\mathbf{X}_{(-1)}`. So in general, for the :math:`g^\text{th}` group, we can split matrix |X| into :math:`\mathbf{X}_{(g)}` and :math:`\mathbf{X}_{(-g)}`.
 
@@ -1191,7 +1191,7 @@ However, cross-validation's objective is useful for predictive models, such as P
 .. *	Does it work well for DOE data (the usual shortcoming for Q2 calculations)
 .. *	Use a robust correlation estimate to guard against outliers in score correlations
 .. 	*	http://www.eric.ed.gov/ERICWebPortal/search/detailmini.jsp?_nfpb=true&_&ERICExtSearch_SearchValue_0=ED201658&ERICExtSearch_SearchType_0=no&accno=ED201658
-.. 	*	http://www.jstor.org/pss/2349088
+.. 	*	http://www.jstor.org/stable/2349088
 .. 	*	``covRob`` function in ``robust`` package in R
 .. 	*	http://www.unt.edu/benchmarks/archives/2001/december01/rss.htm
 .. 
@@ -1366,7 +1366,7 @@ Visualization topic: linking and brushing
 
 :index:`Linking <pair: linking; latent variable modelling>` is when the same data point(s), are highlighted in two or more plots. This is used to highlight outliers or interesting points in a multivariate data set. The points could be highlighted in terms of colour and/or shape.
 
-:index:`Brushing <pair: brushing; latent variable modelling>` is the same as linking, except it is done in real-time as the user moves a mouse over a plot. This concept was described by Becker and Cleveland in their original article called `Brushing Scatterplots <http://www.jstor.org/pss/1269768>`_, *Technometrics*, **29**, 127-142, 1987.
+:index:`Brushing <pair: brushing; latent variable modelling>` is the same as linking, except it is done in real-time as the user moves a mouse over a plot. This concept was described by Becker and Cleveland in their original article called `Brushing Scatterplots <http://www.jstor.org/stable/1269768>`_, *Technometrics*, **29**, 127-142, 1987.
 
 .. image:: ../figures/visualization/brushing-illustration.png
 	:alt:	../figures/visualization/brushing-illustration.R
