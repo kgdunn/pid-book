@@ -73,14 +73,16 @@ Exercises
 		.. image:: ../figures/doe/assignment-6-two-levels-two-variables-no-analysis.png
 			:alt:	../figures/doe/assignment-6-two-levels-two-variables-no-analysis.svg
 			:align: center
-			:scale: 80
+			:scale: 60
+			:width: 900px
 		
 	#.	The interaction plot which visually shows the main effects described above is:
 
 		.. image:: ../figures/doe/assignment-6-two-level-line-plot-with-interaction.png
 			:alt:	../figures/doe/assignment-6-two-level-line-plot-with-interaction.svg
 			:align: center
-			:scale: 80
+			:scale: 60
+			:width: 900px
 
 	#.	The interaction term can be calculated in two ways, both giving the same answer. Only one way is shown here:
 
@@ -374,8 +376,9 @@ Exercises
 			*	**B** = *stirring time*, 30 minutes and 40 minutes
 			
 	.. image:: ../figures/doe/central-composite-question.png
-		:align: center
+		:align: right
 		:scale: 60
+		:width: 900px
 		:alt:	../figures/doe/central-composite-question.svg
 
 	You might feel more comfortable setting up the problem in MATLAB. You can use the `contour plot <http://www.mathworks.com/help/matlab/ref/contour.html>`_ functions in MATLAB to visualize the results.
@@ -992,6 +995,7 @@ Exercises
 			:alt:	../figures/doe/fractional-factorial-question.R
 			:scale: 60
 			:align: center
+			:width: 900px
 
 .. question::
 	

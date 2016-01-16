@@ -10,7 +10,7 @@ Process Improvement Using Data
 .. toctree::
 	:titlesonly:
 	:numbered:	
-	:maxdepth: -1
+	:maxdepth: -2
 	:caption: Table of Contents
 
 	data-visualization/index
@@ -19,7 +19,6 @@ Process Improvement Using Data
 	least-squares-modelling/index
 	design-analysis-experiments/index
 	latent-variable-modelling/index
-	
 	
 .. Sections omitted:
 	data-visualization/index

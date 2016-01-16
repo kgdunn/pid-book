@@ -492,8 +492,9 @@ The true mechanism in this system is that pressure is increased to remove the fr
 
 .. figure:: ../figures/doe/yield-pressure-impurity-correlation.png
 	:alt:	../figures/doe/yield-pressure-impurity-correlation.svg
-	:scale: 50
-	:align: center
+	:scale: 70
+	:align: right
+	:width: 900px
 	
 	The relationship between yield, pressure and impurity levels [adapted from Box, Hunter and Hunter, Chapter 14 (1st edition) or Chapter 10 (2nd edition)]
 
@@ -611,8 +612,10 @@ Had we used a formal test of differences where we pooled the variances, we would
 .. _DOE-fig-randomization-one-factor:
 
 .. figure:: ../figures/doe/single-experiment-randomization.png
-	:align: center
+	:align: right
 	:scale: 90
+	:width: 900px
+	:alt: fake width
 	
 	The differences in the averages of A and B for the 24,310 realizations. The vertical line represents the difference in the average for the one particular set of numbers we measured in the experiment.
 
@@ -645,8 +648,10 @@ The base operating point is 346 K with a feed substrate concentration of 1.5 g/L
 
 .. _DOE-fig-COST:
 .. figure:: ../figures/doe/COST-contours.png
-	:align: center
+	:align: left
 	:scale: 80	
+	:width: 900px
+	:alt: fake width
 	
 	A demonstration of the COST (OFAT) approach
 	
@@ -741,6 +746,8 @@ The range over which they will be varied is given in the table. This range was i
 	.. figure:: ../figures/doe/factorial-two-levels-two-variables-no-analysis.png
 		:align: center
 		:scale: 50
+		:width: 900px
+		:alt: fake width
 		
 		A cube plot, showing the experimental results
 		
@@ -772,8 +779,10 @@ This visual summary is a very effective method of seeing how the system responds
 The following surface plot illustrates the true, but unknown, surface from which our measurements are taken. Notice the slight curvature on the edges of each face. The main effects estimated above are a linear approximation of the conversion over the region spanned by the factorial.
 
 	.. image:: ../figures/doe/factorial-two-level-surface-example-cropped.png
-		:align: center
-		:scale: 50
+		:align: left
+		:scale: 70
+		:alt: fake width
+		:width: 900px
 
 An :index:`interaction plot` is an :ref:`alternative way to visualize these main effects <DOE-fig-Interaction-plot-example>`. Use this method when you don't have computer software to draw the surfaces. [We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>`]. We will discuss interaction plots more in the next section.
 
@@ -812,7 +821,9 @@ Let's use a :ref:`different system here to illustrate <DOE-fig-interaction-examp
 	
 	.. figure:: ../figures/doe/factorial-two-level-with-interactions.png
 		:align: center
-		:scale: 85
+		:scale: 60
+		:width: 900px
+		:alt: fake width
 
 		A new example, to illustrate the effects of interactions
 		
@@ -987,8 +998,10 @@ The interaction term can now be readily interpreted: it is the additional increa
 Finally, out of interest, the nonlinear surface that was used to generate the experimental data for the interacting system is coloured in the illustration. In practice we never know what this surface looks like, but we estimate it with the least squares plane, which appears below the nonlinear surface as black and white grids. The corners of the box are outer levels at which we ran the factorial experiments.
 	
 	.. image:: ../figures/doe/factorial-two-level-surface-with-interaction-cropped.png
-		:align: center
-		:scale: 50
+		:align: right
+		:scale: 65
+		:width: 900px
+		:alt: fake width
 	
 The corner points are exact with the nonlinear surface, because we have used the four values to estimate four model parameters. There are no degrees of freedom left, and the model's residuals are therefore zero. Obviously, the linear model will be less accurate away from the corner points when the true system is nonlinear, but it is a useful model over the region in which we will use it later in the :ref:`section on response surface methods <DOE-RSM>`.
 	
@@ -1157,8 +1170,10 @@ Pareto plot
 A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to estimate. Once these parameters have been calculated, for example, by using a :ref:`least squares model <DOE-analysis-by-least-squares>`, then plot the absolute value of the model coefficients in sorted order, from largest magnitude to smallest, ignoring the intercept term. Significant coefficients are established by visual judgement -- establishing a visual cutoff by contrasting the small coefficients to the larger ones.
 
 .. image:: ../figures/doe/pareto-plot-full-fraction.png
-	:align: center
+	:align: left
 	:scale: 50
+	:width: 900px
+	:alt: fake width
 	
 The above example was from a full factorial experiment where the results for :math:`y` in standard order were :math:`y = \left[45,71,48,65,68,60,80,65,43,100,45,104,75,86,70,96 \right]`.
 	
@@ -1298,11 +1313,13 @@ There is some circular reasoning here: postulate that one or more effects are ze
 Variance of estimates from the COST approach versus the factorial approach
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Finally, we end this section on factorials by illustrating their efficiency. Contrast the two cases: COST and the full factorial approach. For this analysis we define the main effect simply as the difference between the high and low values (normally we divide through by 2, but the results still hold). Define the variance of the measured :math:`y` value as :math:`\sigma_y^2`.
+.. image:: ../figures/doe/comparison-of-variances.png
+	:align: center
+	:scale: 70
+	:width: 900px
+	:alt: fake width
 
-	.. image:: ../figures/doe/comparison-of-variances.png
-		:align: center
-		:scale: 70
+Finally, we end this section on factorials by illustrating their efficiency. Contrast the two cases: COST and the full factorial approach. For this analysis we define the main effect simply as the difference between the high and low values (normally we divide through by 2, but the results still hold). Define the variance of the measured :math:`y` value as :math:`\sigma_y^2`.
 	
 	.. tabularcolumns:: |l|l|
 	
@@ -1390,8 +1407,10 @@ So this is our designed experiment for 3 factors, but it only requires 4 experim
 .. youtube:: https://www.youtube.com/watch?v=yddiDn_0vww&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=43
 
 .. image:: ../figures/doe/half-fraction-in-3-factors.png
-	:align: center
+	:align: left
 	:scale: 35
+	:width: 900px
+	:alt: fake width
 
 What have we lost by running only half the factorial?  Let's write out the full design and matrix of all interactions, then construct the :math:`\mathbf{X}` matrix for the least squares model.
 
@@ -1541,9 +1560,12 @@ After running these 4 experiments (in random order of course) we have a complete
 So we see that we can always complete our half-fraction by creating a complementary fraction. This complimentary fraction is found by flipping the sign on the generating factor. For example, changing the sign from **C** to **-C**. See the illustration.
 
 .. image:: ../figures/doe/complementary-half-fraction-in-3-factors.png
-	:align: center
+	:align: right
 	:scale: 35
 	:alt:	complementary-half-fraction-in-3-factors.svg
+	:width: 900px
+
+.. FAKE WIDTH ABOVE
 
 .. _DOE-Generators-for-blocking:
 
@@ -1874,8 +1896,9 @@ where :math:`\mathbf{b} = [b_0, b_A, b_B, b_C, b_D, b_E, b_F, b_G]`. The matrix 
 How do you assess which main effects are important?  There are eight data points and eight parameters, so there are no degrees of freedom and the residuals are all zero. In this case you have to use a :ref:`Pareto plot <DOE-Pareto-plot>`, which requires that your variables have been suitably scaled in order to judge importance of the main effects. The Pareto plot would be given as shown below, and as usual, it does not include the intercept term.
 
 .. image:: ../figures/doe/pareto-plot.png
-	:align: center
+	:align: right
 	:scale: 37
+	:width: 900px
 	:alt:	../figures/doe/pareto-plot.R
 	
 Significant effects would be **A**, **C** and **G**. The next largest effect, **E**, though fairly small, could be due to the main effect **E** or due to the **AC** interaction, because recall the confounding pattern for main effect was :math:`\widehat{\beta}_{\mathbf{E}} \rightarrow` **E + AC + BG + DF**.
@@ -1924,8 +1947,9 @@ A final observation for this section is how fractional factorials will collapse 
 Consider the diagram here, where a half fraction in factors **A**, **B** and **C** was run (4 experiments) at the closed points. 
 
 .. figure:: ../figures/doe/projectivity-of-a-half-fraction-in-3-factors.png
-	:align: center
+	:align: right
 	:scale: 50
+	:width: 900px
 	:alt:	../figures/doe/projectivity-of-a-half-fraction-in-3-factors.svg
 
 On analyzing the data, the experimenter discovers that factor **C** does not actually have an impact on response :math:`y`. This means the **C** dimension could have been removed from the experiment, and is illustrated by projecting the **A** and **B** factors forward, removing factor **C**. Notice that this is now a full factorial in factors **A** and **B**. The same situation would hold if either factor **B** or factor **A** were found to be unimportant. Furthermore if two factors are found to be unimportant, then this corresponds to 2 replicate experiments in 1 factor.
@@ -1971,17 +1995,19 @@ It is common for known, or controllable or measurable factors to have an effect 
 	
 	-	*Known, measurable and controlled*: Reactor vessel A and B have a known, measurable effect on the output, :math:`y`. To control for this effect we perform all experiments in either reactor A or B, to prevent the reactor effect from :index:`confounding` (confusing) our results.
 	
+.. image:: ../figures/doe/blocking-factorial-3-factors.png
+	:align: left
+	:scale: 50
+	:width: 900px
+	:alt: fake width
+
 In this section then we will deal with disturbances that are known, but their effect may or may not be measurable. We will also assume that we cannot control that disturbance, but we would like to minimize its effect.
 
 For example, if we don't have enough material for all :math:`2^3` runs, but only enough for 4 runs, the question is how to arrange the 2 sets of 4 runs so that the known, by unmeasurable disturbance from the impurity has the least effect on our results and interpretation of the 3 factors.
 	
-Our approach is to intentionally *confound*  the effect of the disturbance with an effect that is expected to be the least significant. The :math:`A \times B \times C` interaction term is almost always going to be small for many systems, so we will split the runs that the first 4 are run at the low level of :math:`ABC` and the other four at the high level, as illustrated below. 
+Our approach is to intentionally *confound*  the effect of the disturbance with an effect that is expected to be the least significant. The :math:`A \times B \times C` interaction term is almost always going to be small for many systems, so we will split the runs that the first 4 are run at the low level of :math:`ABC` and the other four at the high level, as illustrated. 
 
 Each group of 4 runs is called a *block* and the process of creating these 2 blocks is called :index:`blocking <pair: blocking; experiments>`. The experiments within each block must be run randomly.
-
-.. image:: ../figures/doe/blocking-factorial-3-factors.png
-	:align: center
-	:scale: 50
 	
 .. tabularcolumns:: |c||c|c|c||c|c|c||c||c|
 
@@ -2057,8 +2083,9 @@ We will however first consider just the effect of a single factor, :math:`x_1` a
 
 .. figure:: ../figures/doe/steepest-ascent-univariately-corrected.png
 	:alt: steepest-ascent-univariately.svg
-	:align: center
+	:align: left
 	:scale: 70
+	:width: 900px
 
 We start at the point marked :math:`i=0` as our initial baseline (cp=center point). We run a 2-level experiment, above and below this baseline at :math:`-1` and :math:`+1`, in coded units of :math:`x_1`, and obtain the corresponding response values of :math:`y_{0,-}` and :math:`y_{0,+}`. From this we can estimate a best-fit straight line and move in the direction that increases :math:`y`. The sloping tangential line, also called the *path of steepest ascent*. Make a move of step-size = :math:`\gamma_1` units along :math:`x_1` and measure the response, recorded as :math:`y_1`. The response variable increased, so we keep going in this direction.
 
@@ -2131,8 +2158,9 @@ The interaction term is small, indicating the response surface is mostly linear 
 
 .. image:: ../figures/doe/RSM-base-case-with-first-factorial-notes.png
 	:alt:	RSM-base-case.py
-	:align: center
-	:scale: 80
+	:align: left
+	:scale: 70
+	:width: 900px
 
 To improve our profit in the optimal way we move along our estimated model's surface, in the direction of steepest ascent. This direction is found by taking partial derivatives of the model function, ignoring the interaction term, since it is so small.
 
@@ -2245,9 +2273,10 @@ We will not go into too much detail about :index:`central composite designs`, ot
 The :index:`axial points <pair: axial points; experiments>` are placed :math:`4^{0.25} = 1.4` coded units away from the center for a 2 factor system, and :math:`8^{0.25} = 1.7` units away for a :math:`k=3` factor system. Rules for higher numbers of factors, and the reasoning behind the 1.4 and 1.7 unit step size can be found, for example in the textbook by Box, Hunter and Hunter.
 
 .. image:: ../figures/doe/central-composite-design.png
-	:align: center
-	:scale: 50
+	:align: left
+	:scale: 60
 	:alt:	central-composite-design.svg
+	:width: 900px
 
 So a central composite design layout was added to the factorial in the above example and the experiments run, randomly, at the 4 axial points. 
 
@@ -2444,9 +2473,10 @@ Most engineering systems have limits of performance, either by design or from a 
 A simple bioreactor example for 2 factors is shown: at high temperatures and high substrate concentrations we risk activating a different, undesirable side-reaction. The shaded region represents the constraint where we may not operate. We could for example replace the :math:`(T_{+}, C_{+})` experiment with two others, and then analyze these 5 runs using least squares.
 
 .. figure:: ../figures/doe/two-factors-with-constraint.png
-	:align: center
+	:align: right
 	:scale: 45
 	:alt:	../figures/doe/two-factors-with-constraint.svg
+	:width: 900px
 
 Unfortunately, these 5 runs do not form an orthogonal (independent) :math:`\mathbf{X}` matrix anymore. We have lost orthogonality. We have also reduced the space (or volume when we have 3 or more factors) spanned by the factorial design.
 
@@ -2517,6 +2547,7 @@ A mixture design is required when the factors being varied add up to 100% to for
 .. figure:: ../figures/doe/mixture-design.png
 	:align: center
 	:scale: 100
+	:width: 900px
 	:alt:	../figures/doe/mixture-design.svg
 
 In the above figure on the right, the shaded region represents a constraint that cannot be operated in. A D-optimal algorithm must then be used to select experiments in the remaining region. The example is for finding the lowest cost mixture for a fruit punch, while still meeting certain taste requirements (e.g. watermelon juice is cheap, but has little taste). The constraint represents a region where the acidity is too high. 

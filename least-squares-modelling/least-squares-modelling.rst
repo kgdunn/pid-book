@@ -1164,7 +1164,7 @@ Removing the Cadillac cars from our model indicates that there is more than just
 In the next fictitious example the |y|-variable is non-linearly related to the |x|-variable. This non-linearity in the |y| shows up as non-normality in the residuals if only a linear model is used. The residuals become more linearly distributed when using a square root transformation of the |y| before building the linear model.
 
 .. image:: ../figures/least-squares/non-normal-errors-transformation-required.png
-	:align: left
+	:align: center
 	:width: 900px
 	:scale: 70
 	:alt: fake width
