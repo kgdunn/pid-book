@@ -93,8 +93,8 @@ There are 2 cases: one where you know the population standard deviation (unlikel
 
 The detailed derivation for the two cases was covered in earlier sections.
 
-A. Variance is known
-^^^^^^^^^^^^^^^^^^^^^
+Case A. Variance is known
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 When the variance is known, the confidence interval is given by :eq:`CI-mean-variance-known-again` below, derived from this :math:`z`-deviate:  :math:`z = \dfrac{\overline{x} - \mu}{\sigma/\sqrt{n}}` back in :eq:`CI-mean-variance-known`
 
@@ -110,8 +110,8 @@ When the variance is known, the confidence interval is given by :eq:`CI-mean-var
 
 The values of :math:`c_n` are ``qnorm(1 - 0.05/2) = 1.96`` when we happen to use the 95% confidence interval (2.5% in each tail). 
 
-B. Variance is unknown
-^^^^^^^^^^^^^^^^^^^^^^
+Case B. Variance is unknown
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. index::
 	single: confidence interval; unknown variance

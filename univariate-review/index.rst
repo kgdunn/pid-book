@@ -12,7 +12,7 @@ Univariate Data Analysis
    histograms-and-probability-distributions
    binary-distribution-bernoulli-distribution
    uniform-distribution
-   normal-distribution
+   The normal distribution and checking for normality <normal-distribution-and-checking-for-normality>
    t-distribution
    poisson-distribution
    confidence-intervals

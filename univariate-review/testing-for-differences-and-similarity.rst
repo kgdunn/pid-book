@@ -192,8 +192,8 @@ Discuss whether these experiments would lead to :index:`independent data <single
 	
 		.. image:: ../figures/univariate/sheet-coating-application.png
 			:align: center
-			:scale: 60
-			:width: 900
+			:scale: 50
+			:width: 900px
 			:alt: fake 
 		
 		Some problems with this approach:

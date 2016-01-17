@@ -1,6 +1,6 @@
 .. _univariate-about-variability:
 
-What is Variability?
+What is variability?
 =====================
 
 Life is pretty boring without :index:`variability`, and this book, and almost all the field of statistics would be unnecessary if things did not naturally vary.
