@@ -1,4 +1,3 @@
-
 Topics of aesthetics and style
 ==============================
 
