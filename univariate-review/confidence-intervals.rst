@@ -96,7 +96,9 @@ The detailed derivation for the two cases was covered in earlier sections.
 Case A. Variance is known
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When the variance is known, the confidence interval is given by :eq:`CI-mean-variance-known-again` below, derived from this :math:`z`-deviate:  :math:`z = \dfrac{\overline{x} - \mu}{\sigma/\sqrt{n}}` back in :eq:`CI-mean-variance-known`
+When the variance is known, the confidence interval is given by :eq:`CI-mean-variance-known-again` below, derived from this :math:`z`-deviate:  :math:`z = \dfrac{\overline{x} - \mu}{\sigma/\sqrt{n}}` back in the :ref:`section on the normal distribution <univariate_eqn_CI-mean-variance-known>`. 
+
+.. _univariate_eqn_CI-mean-variance-known-again:
 
 .. math::
 		:label: CI-mean-variance-known-again
@@ -116,13 +118,13 @@ Case B. Variance is unknown
 .. index::
 	single: confidence interval; unknown variance
 
-In the more realistic case when the variance is unknown we use equation :eq:`CI-mean-variance-unknown`, repeated here below. This is derived from the :math:`z`-deviate: :math:`z = \dfrac{\overline{x} - \mu}{s/\sqrt{n}}`:
+In the more realistic case when the variance is unknown we use the equation :ref:`derived in the section on the t-distribution <univariate_eqn_CI-mean-variance-unknown>`, and repeated here below. This is derived from the :math:`z`-deviate: :math:`z = \dfrac{\overline{x} - \mu}{s/\sqrt{n}}`:
 
 .. math::
 	:label: CI-mean-variance-unknown-again
 		
 	\begin{array}{rcccl} 
-		  - c_n                                 &\leq& z                                                   &\leq &  +c_n\\
+		  - c_t                                 &\leq& z                                                   &\leq &  +c_t\\
 		  - c_t                                 &\leq& \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}} &\leq &  +c_t\\
 		\overline{x}  - c_t \dfrac{s}{\sqrt{n}} &\leq& \mu                                                 &\leq& \overline{x}  + c_t\dfrac{s}{\sqrt{n}} \\
 		  \text{LB}                             &\leq& \mu                                                 &\leq& \text{UB}

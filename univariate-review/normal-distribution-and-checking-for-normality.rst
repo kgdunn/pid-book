@@ -347,6 +347,8 @@ Let's take :math:`n` values of this daily profit value, let's say :math:`n=5`.
 
 #.	Finally, we construct an interval for the true population mean, :math:`\mu`, using the standard form:
 
+	.. _univariate_eqn_CI-mean-variance-known:
+
 	.. math::
 			:label: CI-mean-variance-known
 

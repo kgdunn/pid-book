@@ -279,10 +279,11 @@ We interpret this number in the summary section, but let's finally look at what 
 
 The sample variance from each system was :math:`s_A^2 = 6.81^2` and :math:`s_B^2 = 6.70^2`, and in this case it happened that :math:`n_A = n_B = 10`, although the sample sizes do not necessarily have to be the same.
 
-If the variances are comparable (there is a :ref:`test for that below <univariate_pooled_variance>`), then we can calculate a pooled variance, :math:`s_P^2`, which is a weighted sum of the sampled variances:
+If the variances are comparable (there is a :ref:`test for that below <univariate_pooled_variance>`), then we can calculate a *pooled variance*, :math:`s_P^2`, which is a weighted sum of the sampled variances:
+
+.. _univariate_eqn_pooled_variance:
 
 .. math:: 
-	:label: pooled-variance
 
 	s_P^2 &= \frac{(n_A -1) s_A^2 + (n_B-1)s_B^2}{n_A - 1 + n_B - 1} \\
 	s_P^2 &= \frac{9\times 6.81^2 + 9 \times 6.70^2}{18} \\

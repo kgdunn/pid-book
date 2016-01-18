@@ -48,7 +48,7 @@ The disadvantage of the paired test is that we lose degrees of freedom. Let's se
 			
 		The value of :math:`c_t` is taken from the :math:`t`-distribution with :math:`n-1` degrees of freedom at the level of confidence required: use the ``qt(...)`` function in R to obtain the values of :math:`c_t`.
 
-The :index:`loss of degrees of freedom <single: degrees of freedom; loss of>` can be seen when we use exactly the same data and treat the problem as one where we have :math:`n_A` and :math:`n_B` samples in groups A and B and want to test for a difference between :math:`\mu_A` and :math:`\mu_B`. You are encouraged to try this out. There are more degrees of freedom, :math:`n_A + n_B - 2` in fact when we use the :math:`t`-distribution with the pooled variance from equation :eq:`pooled-variance`. Compare this to the case just described above where there are only :math:`n` degrees of freedom.
+The :index:`loss of degrees of freedom <single: degrees of freedom; loss of>` can be seen when we use exactly the same data and treat the problem as one where we have :math:`n_A` and :math:`n_B` samples in groups A and B and want to test for a difference between :math:`\mu_A` and :math:`\mu_B`. You are encouraged to try this out. There are more degrees of freedom, :math:`n_A + n_B - 2` in fact when we use the :math:`t`-distribution with the :ref:`pooled variance shown here <univariate_eqn_pooled_variance>`. Compare this to the case just described above where there are only :math:`n` degrees of freedom.
 	
 .. This example illustrates:
 .. todo:: example showing loss of DOF (boys shoes example in BHH2). particularly, show the plots (p98 on BHH2- edition 1)

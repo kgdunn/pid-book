@@ -7,7 +7,7 @@ Suppose we have a quantity of interest from a process, such as the daily profit.
 
 	What is the range within which the true average value lies?  E.g. the range for the true, but unknown, daily profit.
 	
-But we got stuck, because the lower and upper bounds we calculated for the true average, :math:`\mu` were a function of the unknown population standard deviation, :math:`\sigma`. Repeating :eq:`CI-mean-variance-known`:
+But we got stuck, because the lower and upper bounds we calculated for the true average, :math:`\mu` were a function of the unknown population standard deviation, :math:`\sigma`. Repeating :ref:`the prior equation for confidence interval <univariate_eqn_CI-mean-variance-known-again>` where we know the variance: 
 
 .. math::
 
@@ -91,6 +91,7 @@ Returning back to :eq:`distribution-for-sample-average` we stated that
 
 We can plot the :math:`t`-distribution for a given value of :math:`n-1`, the degrees of freedom. Then we can locate vertical lines on the :math:`x`-axis at :math:`-c_t` and :math:`+c_t` so that they area between the verticals covers say 95% of the total distribution's area. The subscript :math:`t` refers to the fact that these are critical values from the :math:`t`-distribution.
 
+.. _univariate_eqn_CI-mean-variance-unknown:
 
 Then we write:
 
@@ -124,7 +125,7 @@ If we repeat this process with a different set of 9 samples we will get a differ
 		
 #.	Assume, for some hypothetical reason, that we know the population viscosity standard deviation is :math:`\sigma=3.5` units. Calculate a lower and upper bound for :math:`\mu`:
 
-		The interval is calculated using :eq:`CI-mean-variance-known`:
+		The interval is calculated using from an :ref:`earlier equation when discussing the normal distribution <univariate_eqn_CI-mean-variance-known>`:
 		
 		.. math::
 		
