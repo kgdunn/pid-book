@@ -10,8 +10,8 @@ Univariate data analysis in context
 
 This section is an introduction to the area of data analysis. We cover concepts from univariate data analysis, specifically the concepts shown in the pictorial outline below. This section is only a *review of these concepts*; for a more comprehensive treatment, please consult an introductory statistics textbook (see the recommended readings further down)
 
-.. rubric:: Usage examples
-
+Usage examples
+~~~~~~~~~~~~~~~~~~~~
 
 .. youtube:: https://www.youtube.com/watch?v=-wPc24FT-2Y&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=4
 
@@ -33,7 +33,8 @@ The material in this section is used whenever you want to learn more about a sin
 
 
 
-.. rubric:: What we will cover
+What we will cover
+~~~~~~~~~~~~~~~~~~~~
 
 .. image:: ../figures/mindmaps/univariate-section-mapping.png
   :align: center

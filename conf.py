@@ -350,6 +350,9 @@ _TABLE_OF_CONTENTS = r"""
 \thispagestyle{empty}
 Copyright \copyright\ 2010 to \the\year\ Kevin G. Dunn
 
+% Sphinx has decided to set this to "-2" in one of the newer versions.
+% Set it "+1", which is what we are looking for
+\setcounter{tocdepth}{+1}
 
 %\pagenumbering{gobble}
 \tableofcontents
