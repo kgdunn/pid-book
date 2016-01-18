@@ -2,8 +2,6 @@
 Process Improvement Using Data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-:tocdepth: 2
-
 .. toctree::
    :hidden:
 

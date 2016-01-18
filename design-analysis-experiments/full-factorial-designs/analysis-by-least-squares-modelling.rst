@@ -5,7 +5,7 @@ Analysis by least squares modelling
 
 .. youtube:: https://www.youtube.com/watch?v=f8HFKO7iGVU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=39
 
-Let's review the original system (the one with little interaction) and analyze the experimental data using a least squares model. We represent the original data here, with the baseline conditions:
+Let's review the :ref:`original system (the one with little interaction) <DOE-two-level-factorials>` and analyze the experimental data using a least squares model. We represent the original data here, with the baseline conditions:
 
 	.. tabularcolumns:: |l|c|c||c|
 

@@ -25,7 +25,7 @@ So this is our designed experiment for 3 factors, but it only requires 4 experim
 .. youtube:: https://www.youtube.com/watch?v=yddiDn_0vww&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=43
 
 .. image:: ../../figures/doe/half-fraction-in-3-factors.png
-	:align: left
+	:align: center
 	:scale: 35
 	:width: 900px
 	:alt: fake width
