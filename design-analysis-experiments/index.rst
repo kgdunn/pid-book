@@ -6,7 +6,6 @@ Design and Analysis of Experiments
 
 .. toctree::
    :maxdepth: 2
-   :glob:
 
    design-analysis-experiments
    examples-of-how-designed-experiments-are-used

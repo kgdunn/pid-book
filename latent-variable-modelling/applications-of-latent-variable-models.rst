@@ -1,3 +1,7 @@
+.. _SECTION_LVM_applications:
+
+Applications of Latent Variable Models
+=====================================================
 
 Improved process understanding
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
