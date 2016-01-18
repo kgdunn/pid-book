@@ -7,7 +7,7 @@ The histogram for an event with 4 possible outcomes that are uniformly distribut
 
 .. image:: ../figures/univariate/histogram-4-cuts.png
 	:align: center
-	:scale: 30
+	:scale: 50
 	:width: 900px
 	:alt: fake width
 
