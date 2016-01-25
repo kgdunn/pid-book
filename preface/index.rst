@@ -58,6 +58,7 @@ The textbook was used in an online course from July to August 2014, `Experimenta
 
 .. image:: High-contrast-camera-video-smaller.png
    :width: 150px
+   :scale: 80%
    :align: left
 
 In particular, I'd like to thank Devon Mordell, from McMaster University, for her informal help on editing parts of the book. As well as my formal editor, `Teresa Wilson <http://tdwcommunications.com>`_. Any errors, poor spelling and grammar are entirely my own fault -- any any feedback to improve them will be appreciated.
