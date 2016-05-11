@@ -3,7 +3,8 @@
 
 # You can set these variables from the command line.
 # Add "-W" to cause warnings to turn into errors
-SPHINXOPTS    = -j 5 -W -E
+# Remove "-j 5" for Python 3.5 (parallel building does not work)
+SPHINXOPTS    = -W -E
 SPHINXBUILD   = sphinx-build
 PAPER         =
 BUILDDIR      = _build

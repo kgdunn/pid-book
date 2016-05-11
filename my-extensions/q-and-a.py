@@ -88,7 +88,7 @@ class Question_Answer(Directive):
             
             hash_id = hashlib.new('ripemd160')
             
-            if not self.options.has_key('fullinclude') or override:
+            if not ('fullinclude' in self.options) or override:
                 # If the option wasn't given, or if the 'q_and_a_override'
                 # flag is True
                 self.options['fullinclude'] = True
@@ -104,7 +104,7 @@ class Question_Answer(Directive):
                 
                 # This code is used below as well
                 if self.state.document.settings.env.app.builder.name == 'html':                    
-                    hash_id.update(str(current_question))
+                    hash_id.update(str(current_question).encode('utf-8')) # Python 3.x
                     out.append(nodes.raw('', 
                                          txt.format(hash_id.hexdigest()[0:5]), 
                                          format ='html'))          
@@ -123,7 +123,7 @@ class Question_Answer(Directive):
                 
                 # This code is used above as well
                 if self.state.document.settings.env.app.builder.name == 'html':                    
-                    hash_id.update(str(current_question))
+                    hash_id.update(str(current_question).encode('utf-8')) # Python 3.x
                     out.append(nodes.raw('', 
                                          txt.format(hash_id.hexdigest()[0:5]), 
                                          format ='html'))
