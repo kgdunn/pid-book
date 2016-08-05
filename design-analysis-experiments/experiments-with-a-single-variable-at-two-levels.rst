@@ -23,7 +23,7 @@ We have already seen in the :ref:`univariate statistics section <univariate-grou
 	z &= \frac{(\overline{x}_B - \overline{x}_A) - (\mu_B - \mu_A)}{\sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}} \\
 
 	\begin{array}{rcccl}  
-		-c_t &\leq& \mu_B - \mu_A &\leq & c_t\\
+		-c_t &\leq& z &\leq & c_t\\
 		(\overline{x}_B - \overline{x}_A) - c_t \times \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)} &\leq& \mu_B - \mu_A &\leq & (\overline{x}_B - \overline{x}_A) + c_t  \times \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}
 	\end{array}
 
