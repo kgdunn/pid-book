@@ -313,7 +313,7 @@
 
 .. note:: Coursera students
 
-	If you are using this chapter with the `Coursera MOOC <http://yint.org/experiments>`_, then we wish to welcome you and want to let you know that this book is generally part of a larger set of notes. The cross-references in this chapter will point you to other parts, where background knowledge is provided.
+	If you are using this chapter with the `Coursera MOOC <http://yint.org/experiments>`_ (massive open online course), then we wish to welcome you and want to let you know that this book is generally part of a larger set of notes. The cross-references in this chapter will point you to other parts, where background knowledge is provided.
 	
 	.. youtube:: https://www.youtube.com/watch?v=9Sljs2064u4&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=30
 	
