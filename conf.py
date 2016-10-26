@@ -74,7 +74,7 @@ master_doc = 'contents'
 import datetime
 the_year = str(datetime.datetime.now().year)
 project = u'Process Improvement Using Data'
-copyright = the_year + u' Kevin Dunn, McMaster University'
+copyright = the_year + u' Kevin Dunn'
 today_fmt = '%d %B %Y'
 
 # Emits warnings for all missing references.
@@ -304,7 +304,7 @@ linkcheck_anchors = True
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual], toctree only).
 latex_documents = [
-  ('contents', 'PID.tex', 'Process Improvement Using Data', u'Kevin Dunn, McMaster University', 'manual', True),
+  ('contents', 'PID.tex', 'Process Improvement Using Data', u'Kevin Dunn', 'manual', True),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -613,8 +613,8 @@ latex_elements = {
 # Bibliographic Dublin Core info.
 epub_title = 'Process Improvement Using Data'
 epub_author = u'Kevin Dunn'
-epub_publisher = u'McMaster University'
-epub_copyright = the_year + u'McMaster University'
+epub_publisher = u''
+epub_copyright = the_year + u''
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.
