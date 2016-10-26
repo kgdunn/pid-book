@@ -19,22 +19,24 @@ The algorithm starts by selecting a column from :math:`\mathbf{Y}_a` as our init
 
       .. math::
 			\mathbf{w}_a = \dfrac{1}{\mathbf{u}'_a\mathbf{u}_a} \cdot \mathbf{X}'_a\mathbf{u}_a
-		
+	
+	
+   **Step 2**
       Normalize the weight vector to unit length: :math:`\mathbf{w}_a = \dfrac{\mathbf{w}_a}{\sqrt{\mathbf{w}'_a \mathbf{w}_a}}`.
 
-   **Arrow 2**
+   **Arrow 3**
       Regress every row in :math:`\mathbf{X}_a` onto the weight vector. The slope coefficients are stored as entries in :math:`\mathbf{t}_a`. This means that rows in :math:`\mathbf{X}_a` that have a similar pattern to that described by the weight vector will have large values in :math:`\mathbf{t}_a`. Observations that are totally different to :math:`\mathbf{w}_a` will have near-zero score values. These :math:`N` regressions can be performed in one go:
 
 	.. math::
 			\mathbf{t}_a = \dfrac{1}{\mathbf{w}'_a\mathbf{w}_a} \cdot \mathbf{X}_a\mathbf{w}_a
 
-   **Arrow 3**
-      Regress every column in :math:`\mathbf{Y}_a` onto this score vector now. The slope coefficients are stored in :math:`\mathbf{c}_a`. We can calculate all |M| slope coefficients:
+   **Arrow 4**
+      Next, regress every column in :math:`\mathbf{Y}_a` onto this score vector, :math:`\mathbf{t}_a`. The slope coefficients are stored in :math:`\mathbf{c}_a`. We can calculate all |M| slope coefficients:
 
       .. math::
 			\mathbf{c}_a = \dfrac{1}{\mathbf{t}'_a\mathbf{t}_a} \cdot \mathbf{Y}'_a\mathbf{t}_a
 			
-   **Arrow 4**
+   **Arrow 5**
       Finally, regress each of the :math:`N` rows in :math:`\mathbf{Y}_a` onto this weight vector, :math:`\mathbf{c}_a`. Observations in :math:`\mathbf{Y}_a` that are strongly related to :math:`\mathbf{c}_a` will have large positive or negative slope coefficients in vector :math:`\mathbf{u}_a`:
 
       .. math::

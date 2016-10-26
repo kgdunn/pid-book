@@ -1,3 +1,21 @@
+Better referencing possible?  See waht this can do for you: https://github.com/sphinx-doc/sphinx/issues/326
+
+
+What about this to make the admonitions/etc have an icon?
+\makeatletter
+% Update all the admonitions we use to be centered  (not all shown here)
+\renewcommand{\py@noticestart@warning}{\py@heavybox\begin{center}}
+\renewcommand{\py@noticeend@warning}{\end{center}\py@endheavybox}
+\makeatother
+
+\renewenvironment{notice}[2]{
+  \def\py@noticetype{#1}
+  \csname py@noticestart@#1\endcsname
+  % Make the admonition type be upper case and on its own line
+  \strong{\MakeUppercase{#2}} \\
+}{\csname py@noticeend@\py@noticetype\endcsname}
+
+
 To do
 ------
 
