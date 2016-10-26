@@ -50,7 +50,7 @@ The final chapter, Chapter 6, is on :ref:`latent variable modelling <SECTION_lat
 
 Because this is a predominantly electronic book, we resort to many hyperlinks in the text. We recommend a good PDF reader that allows forward and back navigation of links. However, we have ensured that a printed copy can be navigated just as easily, especially if you use the table of contents and index for cross referencing.
 
-**Updates**: This book is continually updated; there isn't a fixed edition. You should view it as a wiki. You might currently have an incomplete or older draft of the document. The latest version is always available at http://learnche.org/pid
+**Updates**: This book is continually updated; there isn't a fixed edition. You should view it as a wiki. You might currently have an incomplete or older draft of the document. The latest version is always available at `http://learnche.org/pid <http://learnche.org/pid>`.
 
 **Acknowledgements**: I would like to thank my students and teaching assistants who over the years have made valuable comments, suggestions and corrections, and given permission to use their solutions to various questions. Particular thanks to Emily Nichols (2010), Ian Washington (2011), Ryan McBride (2011), Stuart Young (2011), Mudassir Rashid (2011), Yasser Ghobara (2012), Pedro Castillo (2012), Miles Montgomery (2012), Cameron DiPietro (2012), Andrew Haines (2012), Krishna Patel (2012), Xin Yuan (2013), Sean Johnstone (2013), Jervis Pereira (2013), and Ghassan Marjaba (2014). *Their contributions are greatly appreciated.*
 
