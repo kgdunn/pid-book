@@ -1,5 +1,10 @@
 Better referencing possible?  See waht this can do for you: https://github.com/sphinx-doc/sphinx/issues/326
 
+See level fitting: https://www.epa.gov/climate-indicators/climate-change-indicators-sea-level
+
+
+Better search results: https://github.com/TimKam/sphinx-pretty-searchresults
+
 
 What about this to make the admonitions/etc have an icon?
 \makeatletter

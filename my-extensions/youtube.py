@@ -28,7 +28,7 @@ def visit_youtube_node_text(self, node):
     self.states[-1].append((-1, text_to_add))
     
 def visit_youtube_node_latex(self, node):
-    url = node["id"]  #"http://www.youtube.com/embed/%s" % 
+    url = node["id"]  #"https://www.youtube.com/embed/%s" % 
     text = """
     \\begin{textblock*}{15mm}(-1.75cm,-1cm)
     \n\\href{%s}{\scalebox{0.5}{\includegraphics{1024px-High-contrast-camera-video.png}}\n Video for this section}.\n 
@@ -61,7 +61,7 @@ def visit_youtube_node_html(self, node):
             "border": "0",
         }
         attrs = {
-            "src": "http://www.youtube.com/embed/%s" % node["id"],
+            "src": "https://www.youtube.com/embed/%s" % node["id"],
             "style": css(style),
         }
         self.body.append(self.starttag(node, "iframe", **attrs))
@@ -80,7 +80,7 @@ def visit_youtube_node_html(self, node):
             "border": "0",
         }
         attrs = {
-            "src": "http://www.youtube.com/embed/%s" % node["id"],
+            "src": "https://www.youtube.com/embed/%s" % node["id"],
             "style": css(style),
         }
         self.body.append(self.starttag(node, "iframe", **attrs))
