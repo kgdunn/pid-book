@@ -13,6 +13,7 @@
 # From Sphinx
 import sys, os
 sys.path.append(os.getcwd())
+sys.path.insert(0, os.path.abspath('.'))
 needs_sphinx = '1.0'  # If your documentation needs a minimal Sphinx version, state it here.
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -22,7 +23,7 @@ needs_sphinx = '1.0'  # If your documentation needs a minimal Sphinx version, st
 
 # Sphinx extensions
 # =================
-extensions = ['sphinx.ext.todo', 'sphinx.ext.pngmath', ]
+extensions = ['sphinx.ext.todo', ] #'sphinx.ext.imgmath', ]
 
 # Download https://bitbucket.org/birkenfeld/sphinx-contrib/overview; cd youtube; setup.py build and setup.py install
 extensions.append('my-extensions.youtube') 
@@ -599,7 +600,6 @@ latex_elements = {
      'figure_align': 'H',         # put figures where told
      'fncychap': '\\usepackage[Glenn]{fncychap}',  # Bjarne (default), Lenny” (OK), “Glenn” (nice), “Conny” and “Rejne”,
      'tableofcontents': _TABLE_OF_CONTENTS,
-     'footer': '',                # Additional footer content (before the indices), default empty.
      'inputenc': '\\usepackage[utf8]{inputenc}', # default
      'fontenc': '\\usepackage[T1]{fontenc}',     # default
      'maketitle': '\\maketitle',                  # default

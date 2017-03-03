@@ -186,6 +186,8 @@ In the :ref:`latent variable modelling <SECTION_latent_variable_modelling>` sect
 
 .. TODO: cf the book by Esbensen for other methods
 
+.. TODO: see these bootstrap confidence intervals: https://sebastianraschka.com/blog/2016/model-evaluation-selection-part2.html#the-bootstrap-method-and-empirical-confidence-intervals
+
 .. TODO: add the topic of randomization here
 
 Bootstrapping
