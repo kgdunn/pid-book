@@ -65,4 +65,4 @@ Some variations for the box plot are possible:
 - Show outliers as dots, where an outlier is most commonly defined as any point 1.5 IQR distance units away from the box. The box's upper bound is at the 25th percentile, and the boxes lower bound is at the 75th percentile.
 - The whiskers on the plots are drawn *at most* 1.5 IQR distance units away from the box, however, if the whisker is to be drawn beyond the bound of the data vector, then it is redrawn at the edge of the data instead (i.e. it is clamped, to avoid it exceeding).
 - Use the mean instead of the median [*not too common*].
-- Use the 2% and 95% percentiles rather than the upper and lower hinge values.
+- Use the 2% and 98% percentiles rather than the upper and lower hinge values.
