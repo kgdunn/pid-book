@@ -271,6 +271,10 @@ html_add_permalinks = u'¶'  # was 'Permalink'
 # You will also have to edit "/anaconda/lib/python2.7/site-packages/sphinx/themes/basic/static/searchtools....." 
 # Search for the entry "DOCUMENTATION_OPTIONS.FILE_SUFFIX" and you will see where a
 # trailing "/" gets auto added. Remove that code.
+#
+# Also set:: var suffix = '.txt'; //DOCUMENTATION_OPTIONS.SOURCELINK_SUFFIX;
+# in the "searchtools.js_t" file
+
 html_file_suffix = ''
 
 # Suffix for generated links to HTML files. The default is whatever
