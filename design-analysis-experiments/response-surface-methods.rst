@@ -105,7 +105,8 @@ The interaction term is small, indicating the response surface is mostly linear 
 To improve our profit in the optimal way we move along our estimated model's surface, in the direction of steepest ascent. This direction is found by taking partial derivatives of the model function, ignoring the interaction term, since it is so small.
 
 .. math::
-		\dfrac{\partial \hat{y}}{\partial x_T} = b_T = 55  \qquad \qquad & \dfrac{\partial \hat{y}}{\partial x_S} = b_S = 134
+
+		\dfrac{\partial \hat{y}}{\partial x_T} = b_T = 55  \qquad \qquad  \dfrac{\partial \hat{y}}{\partial x_S} = b_S = 134
 		
 This says for every :math:`b_T = 55` coded units that we move by in :math:`x_T` we should also move :math:`x_S` by :math:`b_S = 134` coded units. Mathematically:
 
@@ -268,7 +269,7 @@ The general approach for response surface modelling
 
 	.. math::	
 	
-		\dfrac{\partial \hat{y}}{\partial x_1} = b_1 & \qquad\qquad \dfrac{\partial \hat{y}}{\partial x_2} = b_2 \qquad \ldots
+		\dfrac{\partial \hat{y}}{\partial x_1} = b_1  \qquad\qquad \dfrac{\partial \hat{y}}{\partial x_2} = b_2 \qquad \ldots
 		
 	The path of steepest ascent is climbed. Move any one of the main effects, e.g. :math:`b_A` by a certain amount, :math:`\Delta x_A`. Then move the other effects: :math:`\Delta x_i = \frac{b_i}{b_A} \Delta x_A`. For example, :math:`\Delta x_C` is moved by :math:`\frac{b_C}{b_A} \Delta x_A`. 
 	
