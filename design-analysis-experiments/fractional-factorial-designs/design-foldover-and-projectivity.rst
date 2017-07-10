@@ -17,13 +17,15 @@ So our **general conclusion** is: switching the sign of one factor will de-alias
 
 *Increase design resolution* (switching all signs)
 
-One can improve the aliasing structure of a design when switching all the signs of all factors from the first fraction.
+One can improve the aliasing structure of a design when switching all the signs of all factors from the first fraction. Switching the signs means that we take the complete design matrix of factor settings, and simply flip the signs to create the second fraction. A factor setting that was run at the low level in the first fraction is then run at a high level in the second fraction. This includes generated factors: imagine that **D = AB**, and we had **A** :math:`=-1`, **B** :math:`=+1` in the first fraction. In the first fraction we would have **D** :math:`=-1`, while in the second fraction it would simply be **D** :math:`=+1`, since we simply flip it's sign. **We do not regenerate the generated factors.**
 
 .. Double check this and give an example; e.g. a 2^{5-2} design (a resolution III design) has 8 runs; what are the complementary 8 runs to increase resolution; show what the resolution and defining relationships for the 16 runs become; show the generators for both sets of 8 runs; show the generators for the combined set of 16 runs that would have been used.
 
 In the :math:`2^{7-4}_\text{III}` example, we ran 8 experiments. If we now run another 8 experiments with all the signs switched, then these 8+8 experiments would be equivalent to a :math:`2^{7-3}_\text{IV}` design. This resolution IV design means that all the main effects can now be estimated without confounding from any two-factor interactions. However, the two-factor interactions are still confounded with themselves. 
 
-This is a good strategy in general: run the first fraction of runs to assess the main effects; it serves as a good checkpoint as well to provide feedback to colleagues and get approval/budget to run the next set of experiments. Then if we perform another set of runs we know that we are doing them in a way that captures the most additional information, and with the least confounding.
+This is a good strategy in general: to run the first fraction of runs to assess the main effects. It serves as a good checkpoint, as well providing intermediate results to colleagues, it can be used to get approval/budget to run the next set of experiments. If we then perform another set of runs we know that we are doing them in a way that captures the most additional information, and with the least confounding. Remember experimentation is not done in a single go; it is sequential. We perform experiments, analyze the results, and design further experiments to reach our goal.
+
+
 
 Projectivity 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
