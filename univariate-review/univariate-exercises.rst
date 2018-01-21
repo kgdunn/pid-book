@@ -337,13 +337,38 @@ Exercises
 
 .. question::
 	
-	One of the question we posed at the start of this chapter was: `Here are the yields from a batch bioreactor system <http://openmv.net/info/batch-yields>`_  for the last 3 years (300 data points; we run a new batch about every 3 to 4 days).
+	One of the questions we posed at the start of this chapter was: `Here are the yields from a batch bioreactor system <http://openmv.net/info/batch-yields>`_  for the last 3 years (300 data points; we run a new batch about every 3 to 4 days).
 
 	#.	What sort of distribution do the yield data have?
 	#.	A recorded yield value was less than 60%, what are the chances of that occurring?  Express your answer as: *there's a 1 in n chance* of it occurring.
 	#.	Which assumptions do you have to make for the second part of this question?
 	
 	.. From assignment 2, 2011
+
+.. answer::
+	:fullinclude: no
+
+	#.	Assume the 300 data points represent an entire population. Plot a ``qqPlot(...)`` using the ``car`` package:
+
+		.. image:: ../figures/univariate/batch-yields-qqplot.png
+			:alt:	../figures/univariate/batch-yields.R
+			:scale: 60
+			:align: center  
+
+		The data appear to follow a normal distribution, based on the visual test of this qq-plot.
+
+	#.	We need to find the probability that the yield, :math:`Y`, is less than or equal to 60, stated as :math:`P(Y\le 60)`. If we assume :math:`Y \sim \mathcal{N}(\mu,\sigma^{2})` then we first need to find the :math:`z`-value bound corresponding to 60, and then find the probability of finding values below, or equal to that bound.
+
+		.. math::
+
+			z_\text{bound} = \frac{y-\mu}{\sigma} = \frac{60-80.353}{6.597} = -3.085
+
+		In this data set of 300 numbers there are zero entries below this limit. But using the distribution's fit, we can calculate the probability as ``pnorm(-3.085)``, which is :math:`\approx 0.001`. This is equivalent to saying that there is a *1 in 1000 chance* of achieving a yield less than 60\%.
+
+	#.	We only had to assume the data are normally distributed - we did not need the data to be independent - in order to use the estimated parameters from the distribution to calculate the probability.
+	
+		.. literalinclude:: ../figures/univariate/batch-yields.R
+			:language: s
 
 .. question::
 
@@ -979,38 +1004,7 @@ Exercises
 
 .. question::
 	
-	One of the questions we posed at the start of this chapter was: "Here are `the yields <http://openmv.net/info/batch-yields>`_ from a batch bioreactor system for the last 3 years (300 data points; we run a new batch about every 3 to 4 days).
-
-	#.	What sort of distribution do the yield data have?
-	#.	A recorded yield value today was less than 60%, what are the chances of that occurring?  Express your answer as: *there's a 1 in x chance* of it occurring.
-	#.	Which assumptions do you have to make for the second part of this question?
-	
-	.. From assignment 2, 2011
-
-.. answer::
-	:fullinclude: no
-
-	#.	Assume the 300 data points represent an entire population. Plot a ``qqPlot(...)`` using the ``car`` package:
-
-		.. image:: ../figures/univariate/batch-yields-qqplot.png
-			:alt:	../figures/univariate/batch-yields.R
-			:scale: 60
-			:align: center  
-
-		The data appear to follow a normal distribution, based on the visual test of this qq-plot.
-
-	#.	We need to find the probability that the yield, :math:`Y`, is less than or equal to 60, stated as :math:`P(Y\le 60)`. If we assume :math:`Y \sim \mathcal{N}(\mu,\sigma^{2})` then we first need to find the :math:`z`-value bound corresponding to 60, and then find the probability of finding values below, or equal to that bound.
-
-		.. math::
-
-			z_\text{bound} = \frac{y-\mu}{\sigma} = \frac{60-80.353}{6.597} = -3.085
-
-		In this data set of 300 numbers there are zero entries below this limit. But using the distribution's fit, we can calculate the probability as ``pnorm(-3.085)``, which is :math:`\approx 0.001`. This is equivalent to saying that there is a *1 in 1000 chance* of achieving a yield less than 60\%.
-
-	#.	We only had to assume the data are normally distributed - we did not need the data to be independent - in order to use the estimated parameters from the distribution to calculate the probability.
-	
-		.. literalinclude:: ../figures/univariate/batch-yields.R
-			:language: s
+	Removed. Was a duplicate of a prior question (number 13).
 
 .. question::
 

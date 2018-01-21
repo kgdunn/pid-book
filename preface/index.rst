@@ -2,8 +2,6 @@
 
 	\pagestyle{plain}
 	\makeatletter
-	%\renewcommand{\py@noticestart@tip}{\py@heavybox}
-	%\renewcommand{\py@noticeend@tip}{\py@endheavybox}
 	\setcounter{page}{6}
 	\pagenumbering{roman}
 	\setcounter{secnumdepth}{-1}
@@ -95,8 +93,6 @@ Thanks everyone!
 .. raw:: latex
 
 	\makeatletter
-	%\renewcommand{\py@noticestart@tip}{\py@lightbox}
-	%\renewcommand{\py@noticeend@tip}{\py@endlightbox}
 	\makeatother
 	\clearpage
 	\setcounter{page}{1}

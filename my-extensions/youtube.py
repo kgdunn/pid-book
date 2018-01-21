@@ -32,7 +32,7 @@ def visit_youtube_node_latex(self, node):
     url = node["id"]  #"https://www.youtube.com/embed/%s" %
     text = """
     \\begin{textblock*}{15mm}(-1.75cm,-1cm)
-    \n\\href{%s}{\scalebox{0.5}{\includegraphics{1024px-High-contrast-camera-video.png}}\n Video for this section}.\n
+    \n\\href{%s}{\scalebox{0.05}{\includegraphics{1024px-High-contrast-camera-video.png}}\n Video for this section}.\n
     \\end{textblock*}
     """ % url
     self.body.append(text)

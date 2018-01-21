@@ -47,7 +47,7 @@ The simple example shown here builds a model that predicts the price of a used v
 	:scale: 70
 	:alt: fake width
 
-The group of outliers were due to 10 observations a certain class of vehicle (Cadillac convertibles) that distorted the model. We removed these observations, which now limits our model to be useful only for other vehicle types, but we gain a smaller standard error and a tighter confidence interval. These residuals are still very non-normal though.
+The group of outliers were due to 10 observations of a certain class of vehicle (Cadillac convertibles) that distorted the model. We removed these observations, which now limits our model to be useful only for other vehicle types, but we gain a smaller standard error and a tighter confidence interval. These residuals are still very non-normal though.
 
 .. math::
 	
@@ -106,7 +106,7 @@ The assumption of :index:`independence <single: independence in least squares>` 
 
 Data are not independent when they are correlated with each other. This is common on slow moving processes: for example, measurements taken from a large reactor are unlikely to change much from one minute to the next.
 
-Treating this problem properly comes under the topic of time-series analysis, for which a number of excellent textbooks exist, particular the one by Box and Jenkins. But we will show how to detect autocorrelation, and provide a make-shift solution to avoid it.
+Treating this problem properly comes under the topic of time-series analysis, for which a number of excellent textbooks exist, in particular the one by Box and Jenkins. But we will show how to detect autocorrelation, and provide a make-shift solution to avoid it.
 
 If you suspect that there may be lack of independence, use plots of the residuals in time order. Look for patterns such as slow drifts, or rapid criss-crossing of the zero axis.
 

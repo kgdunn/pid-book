@@ -298,6 +298,8 @@ So we can write:
         \mathcal{V}\{b_1\} &= \sum_i{ \left( \dfrac{x_i - \overline{\mathrm{x}}}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \right)^2   } \mathcal{V}\{y_i\} \\
         \mathcal{V}\{b_1\} &= \dfrac{\mathcal{V}\{y_i\}}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}
 
+where :math:`j` is an index for all data points used to build the least squares model.
+
 **Questions**:
 
 #.	So now apart from the numerator term, how could you decrease the error in your model's |b1| coefficient?
@@ -468,9 +470,9 @@ Let's understand the interpretation of :math:`\mathcal{V}\{\hat{y}_i\} = S_E^2 \
 
 #.	Now let's say our :math:`x_\text{new}` happens to be :math:`\overline{\mathrm{x}}`, the center point of our data. Write down the upper and lower value of the prediction bounds for the corresponding :math:`\hat{y}`, given that :math:`c_t = 2.26` at the 95% confidence level.
 
-	- The LB = :math:`\hat{y}_i - c_t \sqrt{V\{\hat{y}_i\}} = 7.5 - 2.26 \times \sqrt{(1.236)^2  \left(1+\dfrac{1}{11} + \dfrac{(\overline{\mathrm{x}} - \overline{\mathrm{x}})^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}\right)} = 7.5 - 2.26  \times 1.29 = 7.50 - 2.917 = 10.4`
+	- The LB = :math:`\hat{y}_i - c_t \sqrt{V\{\hat{y}_i\}} = 7.5 - 2.26 \times \sqrt{(1.237)^2  \left(1+\dfrac{1}{11} + \dfrac{(\overline{\mathrm{x}} - \overline{\mathrm{x}})^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}\right)} = 7.5 - 2.26  \times 1.29 = 7.50 - 2.917 = 10.4`
 	
-	- The UB = :math:`\hat{y}_i + c_t \sqrt{V\{\hat{y}_i\}} = 7.5 + 2.26 \times \sqrt{(1.236)^2  \left(1+\dfrac{1}{11} + \dfrac{(\overline{\mathrm{x}} - \overline{\mathrm{x}})^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}\right)} = 7.5 + 2.26 \times 1.29 = 7.50 + 2.917 = 4.58`
+	- The UB = :math:`\hat{y}_i + c_t \sqrt{V\{\hat{y}_i\}} = 7.5 + 2.26 \times \sqrt{(1.237)^2  \left(1+\dfrac{1}{11} + \dfrac{(\overline{\mathrm{x}} - \overline{\mathrm{x}})^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}\right)} = 7.5 + 2.26 \times 1.29 = 7.50 + 2.917 = 4.58`
 
 #.	Now move left and right, away from :math:`\overline{\mathrm{x}}`, and mark the confidence intervals. What general shape do they have?
 

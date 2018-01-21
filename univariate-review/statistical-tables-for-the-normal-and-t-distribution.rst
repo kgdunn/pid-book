@@ -1,4 +1,3 @@
-.. _univariate_statistical_tables:
 
 .. index::
 	single: statistical tables
@@ -7,6 +6,8 @@
 
 Statistical tables for the normal- and t-distribution
 ============================================================================
+
+.. _univariate_statistical_tables:
 
 .. image:: ../figures/univariate/Statistical-tables/Statistical-tables.png
 	:scale: 95

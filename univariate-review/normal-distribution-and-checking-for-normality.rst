@@ -20,7 +20,7 @@ The condition of finite variance is true for almost all systems of practical int
 	:alt:	../figures/univariate/CLT-derivation.svg
 	:align: center
 	
-The critical requirement for the central limit theorem to be true, is that the samples used to compute the average are independent. In particular, we **do not** require the original data to be normally distributed. The average produced from these samples will be be more nearly normal though.
+The critical requirement for the central limit theorem to be true, is that the samples used to compute the average are independent. In particular, we **do not** require the original data to be normally distributed. The average produced from these samples will be more nearly normal though.
 
 Imagine a case where we are throwing dice. The distributions, shown below, are obtained when we throw a die :math:`M` times and we plot the distribution of the *average* of these :math:`M` throws.
 
@@ -36,7 +36,7 @@ Independence
 
 The assumption of :index:`independence` is widely used in statistical work and is a condition for using the central limit theorem. 
 
-.. note:: The assumption of independence means the the samples we have in front of us are *randomly taken* from a population. If two samples are independent, there is no possible relationship between them.
+.. note:: The assumption of independence means that the samples we have in front of us are *randomly taken* from a population. If two samples are independent, there is no possible relationship between them.
 
 We frequently violate this assumption of independence in engineering applications. Think about these examples for a while:
 
@@ -241,7 +241,7 @@ On to checking for normality. We start by first constructing some quantities tha
 		
 	.. image:: ../figures/univariate/qqplot-derivation.png
 		:align: left
-		:scale: 60
+		:scale: 50
 		:width: 900
 		:alt: fake width
 		
@@ -306,9 +306,9 @@ Let's take :math:`n` values of this daily profit value, let's say :math:`n=5`.
 
 	Mathematically we write: :math:`\displaystyle \overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`.
 
-	This important results helps answer our question above. It says that repeated estimates of the mean will be an accurate, unbiased estimate of the population mean, and interestingly, the variance of that estimate is decreased by using a greater number of samples, :math:`n`, to estimate that mean. This makes intuitive sense: the more **independent** samples of data we have, the *better* our estimate ("better" in this case implies lower error, i.e. lower variance).
+	This important result helps answer our question above. It says that repeated estimates of the mean will be an accurate, unbiased estimate of the population mean, and interestingly, the variance of that estimate is decreased by using a greater number of samples, :math:`n`, to estimate that mean. This makes intuitive sense: the more **independent** samples of data we have, the *better* our estimate ("better" in this case implies lower error, i.e. lower variance).
 	
-	We can illustrate this result as shown here:
+	We can illustrate this result as shown below:
 	
 	.. image:: ../figures/univariate/explain-confidence-interval.png
 		:alt:	../figures/univariate/explain-confidence-interval.R
@@ -332,9 +332,7 @@ Let's take :math:`n` values of this daily profit value, let's say :math:`n=5`.
 	
 		z = \dfrac{\overline{x} - \mu}{\sigma / \sqrt{n}}
 
-	which subtracts off the unknown population mean from our estimate of the mean, and divides through by the standard deviation for :math:`\overline{x}`.
-	
-	We can illustrate this as:
+	which subtracts off the unknown population mean from our estimate of the mean, and divides through by the standard deviation for :math:`\overline{x}`. We can illustrate this as:
 	
 	.. image:: ../figures/univariate/explain-confidence-interval-normalized.png
 		:alt:	../figures/univariate/explain-confidence-interval.R

@@ -79,7 +79,7 @@ Continuing the above example we can compare the past 10 runs from system B with 
 
 Here's the procedure:
 
-	#.	Imagine that we have have 300 historical data points from this system, tabulated in time order: yield from batch 1, 2, 3 ... (the data are available on the `website <http://openmv.net/info/batch-yields>`_).
+	#.	Imagine that we have 300 historical data points from this system, tabulated in time order: yield from batch 1, 2, 3 ... (the data are available on the `website <http://openmv.net/info/batch-yields>`_).
 	
 	#.	Calculate the average yields from batches 1 to 10. Then calculate the average yield from batches 11 to 20. Notice that this is exactly like the experiment we performed when we acquired data for system B: two groups of 10 batches, with the groups formed from sequential batches.
 	
@@ -128,7 +128,7 @@ We can immediately see the data are **not independent**, because the slope is no
 Comparison when a reference set is not available
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A reference data set may not always be available, only the data from the 20 experimental runs (10 from system A and 10 from B). We can proceed to compare the data, but we will require a strong assumption of random sampling (independence), which is often not valid in engineering data sets. Fortunately, engineering data sets are usually large - we are good at collecting data - so the methodology in the preceding section on using a reference set, is greatly preferred, when possible.
+A reference data set may not always be available; we might only have the data from the 20 experimental runs (10 from system A and 10 from B). We can proceed to compare the data, but we will require a strong assumption of random sampling (independence), which is often not valid in engineering data sets. Fortunately, engineering data sets are usually large - we are good at collecting data - so the methodology in the preceding section on using a reference set, is greatly preferred, when possible.
 
 How could the assumption of independence (random sampling) be made more realistically?  How is the :index:`lack of independence <single: independence; lack of>` detrimental?  We show below that the assumption of independence is made twice: the samples within group A and B must be independent; furthermore, the samples between the groups should be independent. But first we have to understand why the assumption of independence is required, by understanding the usual approach for estimating if differences are significant or not.
 
@@ -332,5 +332,5 @@ The reference data method shows that the trial with 10 experiments using system 
 
 When constructing the reference set, we have to be sure the reference data are appropriate. Were the reference data acquired under conditions that were similar to the time in which data from system B were acquired?  In this example, they were, but in practice, careful inspection of plant records must be made to verify this.
 
-The other two methods mainly use the experimental data, and provide essentially the same answer *in this case study*, though that is not always the case. The main point here is that our experimental data are usually not independent. However, by careful planning, and expense, we can meet the requirement of independence by randomizing the order in which we acquire the data. Randomization is the insurance (cost) we pay so that we do not have to rely of a large body of prior reference data. But in some cases it is not possible to randomize, so blocking is required. More on blocking in the :ref:`design of experiments section <DOE_blocking_section>`.
+The other two methods mainly use the experimental data, and provide essentially the same answer *in this case study*, though that is not always the case. The main point here is that our experimental data are usually not independent. However, by careful planning, and expense, we can meet the requirement of independence by randomizing the order in which we acquire the data. Randomization is the insurance (cost) we pay so that we do not have to rely on a large body of prior reference data. But in some cases it is not possible to randomize, so blocking is required. More on blocking in the :ref:`design of experiments section <DOE_blocking_section>`.
 

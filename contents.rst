@@ -9,16 +9,12 @@ Process Improvement Using Data
 
 .. toctree::
 	:titlesonly:
-	:numbered:	
+	:numbered:
 	:maxdepth: 3
 	:caption: Table of Contents
 
-	data-visualization/index
+	
 	univariate-review/index
-	process-monitoring/index
-	least-squares-modelling/index
-	design-analysis-experiments/index
-	latent-variable-modelling/index
 
 .. Sections omitted:
 	data-visualization/index
@@ -35,4 +31,3 @@ Process Improvement Using Data
 	process-monitoring/process-monitoring-exercises
 	least-squares-modelling/least-squares-exercises
 	design-analysis-experiments/design-analysis-experiments-exercises
-	

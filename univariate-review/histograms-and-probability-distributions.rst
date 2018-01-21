@@ -37,7 +37,7 @@ Plot histograms for the following:
 .. - analytical measurements taken in a laboratory, even by the same person or computerized process have different outcomes
 .. - weight of corn seeds (average is 200mg)
 
-In preparing the above histograms, what have you implicitly inferred about time-scales? These histograms show the long-term distribution (probabilities) of the system being considered. This is why *concepts of chance and random phenomena* can be use to described systems and processes. Probabilities describe our long-term expectations:
+In preparing the above histograms, what have you implicitly inferred about time-scales? These histograms show the long-term distribution (probabilities) of the system being considered. This is why *concepts of chance and random phenomena* can be use to described systems and processes. Probabilities can be used to describe our long-term expectations:
 
 -	The long-term sex ratio at birth 1.06:1 (boy:girl) is expected in Canada; but a newly pregnant mother would not know the sex.
 -	The long-term data from a process shows an 85% yield from our batch reactor; but tomorrow it could be 59% and the day after that 86%.
@@ -212,7 +212,7 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 	.. note::	
 	
-		The median is the most robust estimator of the sample location: it has a breakdown of 50%, which means that just under 50% of the data need to be replaced with unusual values before the median breaks down as a suitable estimate. The mean on the other hand has a breakdown value of :math:`1/n`, as only one of the data points needs to be unusual to cause the mean to be a poor estimate. To computer the median in R, use the ``median(x)`` function on a vector ``x``.
+		The median is the most robust estimator of the sample location: it has a breakdown of 50%, which means that just under 50% of the data need to be replaced with unusual values before the median breaks down as a suitable estimate. The mean on the other hand has a breakdown value of :math:`1/n`, as only one of the data points needs to be unusual to cause the mean to be a poor estimate. To compute the median in R, use the ``median(x)`` function on a vector ``x``.
 
 			
 	Governments will report the median income, rather than the mean, to avoid influencing the value with the few very high earners and the many low earners. The median income per person is a more fair measure of location in this case.
