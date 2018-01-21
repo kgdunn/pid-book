@@ -48,8 +48,8 @@ html:
 	cp -R $(BUILDDIR)/text/* $(BUILDDIR)/html/_sources/
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
-    
-	
+
+
 dirhtml:
 	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
 	@echo
@@ -102,13 +102,14 @@ epub:
 latex:
 	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
 	cp preface/*.png $(BUILDDIR)/latex
+	cp preface/*.jpg $(BUILDDIR)/latex
 	@echo
 	@echo "Build finished; the LaTeX files are in $(BUILDDIR)/latex."
 	@echo "Run \`make' in that directory to run these through (pdf)latex" \
 	      "(use \`make latexpdf' here to do that automatically)."
 
 latexpdf:
-	$(SPHINXBUILD) -j 4 -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
+	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
 	cp preface/*.png $(BUILDDIR)/latex
 	cp preface/*.jpg $(BUILDDIR)/latex
 	@echo "Running LaTeX files through pdflatex..."
