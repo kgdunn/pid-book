@@ -80,8 +80,10 @@ We will discuss how to determine the number of components to use :ref:`in a futu
 This plot shows the first component. All variables, except for hardness have large values in :math:`\mathbf{p}_1`. If we write out the equation for :math:`t_1` for an observation :math:`i`:
 
 .. math::
+	:label: LVM_t1_food_texture
+
 	t_{i,1} = 0.46 \,\, x_\text{oil} - 0.47 \,\, x_\text{density} + 0.53 \,\, x_\text{crispy} - 0.50 \,\, x_\text{fracture}  + 0.15 \,\, x_\text{hardness}
-	:label: LVM_t1_food_texture_
+
 
 Once we have centered and scaled the data, remember that a negative :math:`x`-value is a value below the average, and that a positive :math:`x`-value lies above the average.
 
@@ -90,7 +92,7 @@ For a pastry product to have a high :math:`t_1` value would require it to have s
 
 **Scores:** :math:`\,\mathbf{t}_1`
 
-Let's examine the score values calculated. As shown in equation :eq:`LVM_t1_food_texture_`, the score value is a linear combination of the data, :math:`\mathbf{x}`, given by the weights in the loadings matrix, |P|. For the first component, :math:`\mathbf{t}_1 = \mathbf{X} \mathbf{p}_1`. The plot here shows the values in vector :math:`\mathbf{t}_1` (an :math:`N \times 1` vector):
+Let's examine the score values calculated. As shown in equation :eq:`LVM_t1_food_texture`, the score value is a linear combination of the data, :math:`\mathbf{x}`, given by the weights in the loadings matrix, |P|. For the first component, :math:`\mathbf{t}_1 = \mathbf{X} \mathbf{p}_1`. The plot here shows the values in vector :math:`\mathbf{t}_1` (an :math:`N \times 1` vector):
 
 .. image:: ../../figures/examples/food-texture/pca-on-food-texture-pc1-scores.png
 	:alt:	../../figures/examples/food-texture/pca-on-food-texture-data.R
