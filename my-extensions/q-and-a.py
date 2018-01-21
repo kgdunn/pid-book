@@ -8,10 +8,11 @@
 """
 from docutils import nodes
 from docutils.parsers.rst import directives
-from sphinx.util.compat import Directive
+#from sphinx.util.compat import Directive
+from docutils.parsers.rst import Directive
 import hashlib
 
-txt = """ <a class="click-to-reveal" id="{0}-click" href="javascript: void(0);" 
+txt = """ <a class="click-to-reveal" id="{0}-click" href="javascript: void(0);"
 onClick="toggle_q_and_a('{0}')">Click to show answer</a><span id="{0}" class="q_and_a_answer" style="display:none;">"""
 
 def boolean_input(argument):
@@ -43,56 +44,56 @@ class Question_Answer(Directive):
 
         # Default value is False (i.e. we obey the 'fullinclude' option)
         override = self.state.document.settings.env.config.q_and_a_override
-        # Even include "copyright content" even in "override" mode. 
+        # Even include "copyright content" even in "override" mode.
         # Override literally includes everything:
-        already_overridden = False        
-        
+        already_overridden = False
+
         out = []
         key = env.docname + 'serialno'
         try:
-            current_question = env.temp_data[key]  
+            current_question = env.temp_data[key]
         except KeyError:
             # Now we know this is the first time this document is called.
             # Add special HTML to reveal all answers.
             button = '<button id="q_and_a_all" onClick="toggle_all_q_and_a(q_and_a_all)" type="button">Show all answers</button>'
-            out.append(nodes.raw('', button, format ='html'))            
-            
+            out.append(nodes.raw('', button, format ='html'))
+
         if self.name == 'question':
-            
-            
+
+
             if override:
                 q_number = env.new_serialno(env.docname) + 1
-                if self.state.document.settings.env.app.builder.name == 'html':                    
-                    out.append(nodes.raw('', 
-                                         '<div class="new_question"></div>', 
-                                         format ='html'))                        
+                if self.state.document.settings.env.app.builder.name == 'html':
+                    out.append(nodes.raw('',
+                                         '<div class="new_question"></div>',
+                                         format ='html'))
 
                 out.append(nodes.rubric(' ', 'Question %d' % q_number))
                 out.append(self.add_content())
                 already_overridden = True
-                
+
             if self.options.get('copyright_issue'):
                 pass
             elif not(already_overridden):
                 q_number = env.new_serialno(env.docname) + 1
-                if self.state.document.settings.env.app.builder.name == 'html':                    
-                    out.append(nodes.raw('', 
-                                         '<div class="new_question"></div>', 
-                                         format ='html'))                
+                if self.state.document.settings.env.app.builder.name == 'html':
+                    out.append(nodes.raw('',
+                                         '<div class="new_question"></div>',
+                                         format ='html'))
 
                 out.append(nodes.rubric(' ', 'Question %d' % q_number))
                 out.append(self.add_content())
-            
+
 
         elif self.name == 'answer':
-            
+
             hash_id = hashlib.new('ripemd160')
-            
+
             if not ('fullinclude' in self.options) or override:
                 # If the option wasn't given, or if the 'q_and_a_override'
                 # flag is True
                 self.options['fullinclude'] = True
-                
+
                 # But, also check if there is a copyright issue
                 if self.options.get('copyright_issue'):
                     self.options['fullinclude'] = False
@@ -100,38 +101,38 @@ class Question_Answer(Directive):
             if self.options['fullinclude']:
                 out.append(nodes.paragraph(' ', ''))
                 out.append(nodes.strong('', 'Solution'))
-                
-                
+
+
                 # This code is used below as well
-                if self.state.document.settings.env.app.builder.name == 'html':                    
+                if self.state.document.settings.env.app.builder.name == 'html':
                     hash_id.update(str(current_question).encode('utf-8')) # Python 3.x
-                    out.append(nodes.raw('', 
-                                         txt.format(hash_id.hexdigest()[0:5]), 
-                                         format ='html'))          
+                    out.append(nodes.raw('',
+                                         txt.format(hash_id.hexdigest()[0:5]),
+                                         format ='html'))
                 # For all output
                 out.append(nodes.paragraph(' ', ''))
                 out.append(self.add_content())
-                
-                if self.state.document.settings.env.app.builder.name == 'html':                    
+
+                if self.state.document.settings.env.app.builder.name == 'html':
                     out.append(nodes.raw('', '</span>', format ='html'))
 
 
             elif self.options.get('short', ''):
-                
+
                 out.append(nodes.paragraph('', ''))
                 out.append(nodes.strong('', 'Short answer: '))
-                
+
                 # This code is used above as well
-                if self.state.document.settings.env.app.builder.name == 'html':                    
+                if self.state.document.settings.env.app.builder.name == 'html':
                     hash_id.update(str(current_question).encode('utf-8')) # Python 3.x
-                    out.append(nodes.raw('', 
-                                         txt.format(hash_id.hexdigest()[0:5]), 
+                    out.append(nodes.raw('',
+                                         txt.format(hash_id.hexdigest()[0:5]),
                                          format ='html'))
-                    
+
                 out.append(nodes.Text(self.options.get('short')))
-                if self.state.document.settings.env.app.builder.name == 'html':                    
+                if self.state.document.settings.env.app.builder.name == 'html':
                     out.append(nodes.raw('', '</span>', format ='html'))
-                
+
                 out.append(nodes.paragraph(' ', ''))
 
         return out
