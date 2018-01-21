@@ -241,7 +241,7 @@ On to checking for normality. We start by first constructing some quantities tha
 		
 	.. image:: ../figures/univariate/qqplot-derivation.png
 		:align: left
-		:scale: 50
+		:scale: 40
 		:width: 900
 		:alt: fake width
 		
