@@ -14,7 +14,7 @@
 import sys, os
 sys.path.append(os.getcwd())
 sys.path.insert(0, os.path.abspath('.'))
-needs_sphinx = '1.0'  # If your documentation needs a minimal Sphinx version, state it here.
+needs_sphinx = '1.5'  # If your documentation needs a minimal Sphinx version, state it here.
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -225,7 +225,7 @@ html_last_updated_fmt = '%d %B %Y'
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.
-html_use_smartypants = True
+# html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
 #html_sidebars = {}
@@ -378,7 +378,7 @@ _PREAMBLE = r"""
 \usepackage{cancel}  % to get cancelled terms
 \usepackage{upquote} % to avoid quotation marks from being mangled
 \usepackage{textpos} % to get YouTube video links outside the margin. As used here, the package is in "relative" mode
-\newcommand{\PYGZsq}{TO AVOID ERROR MESSAGE}
+\renewcommand{\PYGZsq}{TO AVOID ERROR MESSAGE}
 
 
 \usepackage[]{geometry}
@@ -424,18 +424,7 @@ _PREAMBLE = r"""
     \let\footnotesize\small
     \let\footnoterule\relax
     \rule{\textwidth}{1pt}%
-    \ifsphinxpdfoutput
-      \begingroup
-      % This \def is required to deal with multi-line authors; it
-      % changes \\ to ', ' (comma-space), making it pass muster for
-      % generating document info in the PDF file.
-      \def\\{, }
-      \pdfinfo{
-        /Author (\@author)
-        /Title (\@title)
-      }
-      \endgroup
-    \fi
+
     \begin{flushright}%
       % \sphinxlogo% I don't want the logo here, and not with this size. I've manually placed it a few lines down.
       {\rm\Huge\py@HeaderFamily \@title \par}%
@@ -597,7 +586,7 @@ _PREAMBLE = r"""
 # \pagestyle{plain}
 
 latex_elements = {
-     'papersize': 'letterpaper',  # paper size ('letter' or 'a4paper').
+     'papersize': 'a4paper',  # paper size ('letter' or 'a4paper').
      'pointsize': '11pt',         # font size ('10pt', '11pt' or '12pt')
      'fontpkg': '\\usepackage{palatino}',
      'preamble': _PREAMBLE,
@@ -606,7 +595,7 @@ latex_elements = {
      'tableofcontents': _TABLE_OF_CONTENTS,
      'inputenc': '\\usepackage[utf8]{inputenc}', # default
      'fontenc': '\\usepackage[T1]{fontenc}',     # default
-     'maketitle': '\\maketitle',                  # default
+     #'maketitle': '\\maketitle',                  # default
      'printindex': '\\printindex',              # override to generate index differently or append some content after the index
      'releasename': '',
 #     'docclass' 'classoptions' 'title' 'date' 'release' 'author' 'logo' 'releasename' 'makeindex' 'shorthandoff'
