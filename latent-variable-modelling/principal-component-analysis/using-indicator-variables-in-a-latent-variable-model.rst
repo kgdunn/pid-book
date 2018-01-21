@@ -11,6 +11,18 @@ Using indicator variables in a latent variable model
 	single: dummy variable
 	seealso: dummy variable; indicator variable
 
+.. ... you use the term "binary" and "indicator" interchangeably. Specifically you say, "Indicator variables, also called dummy variables, are most often binary variables..." which is imprecise and vague. My experience with latent variable modeling suggests that "indicators" (in measurement models) are the things that load on a latent variable, such as "words per minute" which is manifested by literacy. 
+
+.. I suppose it is has to do with comfort of terminology regarding the use of the word 'indicator'. There's a bad track recording in statistics and mathematics to use everyday English words in slightly different ways, that then leads to confusion with people coming from different backgrounds/trainings.
+
+.. I've generally (in my field at least of engineering) seen the word indicator used to indicate the presence or absence of something. For example, the page you referred to has a diagram where there was an indicator variable of "Adequate yield" (probably a 1 in the data column) vs "Poor yield" (probably a 0 in that same column). In that sense, that column in the data matrix indicates which row was adequate or poor. In that sense it is a binary variable. 
+
+.. But I have also seen situations where the indicator variable indicates multiple levels, and is included as an ordinal variable. There that variables also indicates something meaningful.
+
+.. When such a variable is included in the latent variable model it will appear in the loadings plot, and can be meaningfully interpreted, perhaps hinting at some cause-effect possibilities, or at least raising interesting questions that can be verified by further research/experiments.
+
+
+
 Indicator variables, also called dummy variables, are most often binary variables that indicate the presence or absence of a certain effect. For example, a variable that shows if reactor A or reactor B was used. Its value is either a 0 or a 1 in the data matrix |X|. It's valid to include these sort of variables in a principal component analysis model where they are used and interpreted as any other continuous variable.
 
 Sometimes these variables are imported into the computer software, but *not used in the model*. They are only used in the display of results, where the indicator variable is shown in a different colour or with a different marker shape. We will see :ref:`an example of this for process troubleshooting <LVM_troubleshooting>`, to help isolate causes for poor yield from a process:
