@@ -95,8 +95,8 @@ Thanks everyone!
 .. raw:: latex
 
 	\makeatletter
-	\renewcommand{\py@noticestart@tip}{\py@lightbox}
-	\renewcommand{\py@noticeend@tip}{\py@endlightbox}
+	%\renewcommand{\py@noticestart@tip}{\py@lightbox}
+	%\renewcommand{\py@noticeend@tip}{\py@endlightbox}
 	\makeatother
 	\clearpage
 	\setcounter{page}{1}

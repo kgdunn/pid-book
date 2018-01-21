@@ -1,6 +1,6 @@
 
-General approach for experimentation in industry
-================================================
+General approach for experimentation 
+=====================================
 
 .. Reference: p 251 of BHH2, and personal experience
 

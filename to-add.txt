@@ -1,3 +1,198 @@
+Expts section, based on Coursera questions:
+
+
+
+----
+Phil Kay
+Phil Kay
+Enabling Excellence in Analytics
+3 most important factors for DoE success?
+What, in your experience, are the most important factors for DoE to be successful in a company? I'm thinking at an organisation level, rather than what it takes for an individual to be successful. What does it take for DoE to become the default approach to experimentation within a company?
+
+LikeComment2344
+2mo
+View previous comments
+Phil Kay
+Phil Kay Yes, there is often a "guru". They will often tell you that their process is unique and only they are capable of understanding it. Gurus have told me "DoE is great but I know this process and I know that, for reasons you wouldn't understand, DoE will not work here." Then, after a lot of persuasion, a designed experiment is run and it proves very useful in understanding the process. The guru replies "yes, well I could have told that before you did the DoE". (!)  Show less
+Like
+2mo
+Phil Kay
+Phil Kay I have exaggerated a bit there. But there will probably always be gurus. They need to be persuaded that DoE augments and relies upon their expertise, it does not replace them. How do some companies create a culture that brings the gurus along on the journey of using DoE?
+Like
+2mo
+Jonathan Smyth-Renshaw
+Jonathan Smyth-Renshaw Hi 
+
+I see a gap between the DOE statistical packages and the needs of business I use Plackett and Burman 8 run which is very good for industrial experiments but it is not in the packages so I use Excel and build a model which is not statistically great but in the industrial setting it works 
+
+I have raised this a number of times but no one listens 😀Show less
+Like1
+2mo
+Josef Betschart
+Josef Betschart If only a guru is leading DoE, your sucess is very limited. I still strongly recommend doing it in teams not only because a team has more knowledge of a process but it also has wider acess to key people and has a better lobby.
+Like1
+2mo
+Seamus Clifford
+Seamus Clifford Hi, I have been involved in many projects for companies and the main barriers and solutions that I have come across / used are:
+1. They do not want to give up production time for the experiment due to production deadlines and cost. So a cost benefit analysis and timely experimental pre-planning helps make the argument here. Pre-planning involves full DOE design and estimation of maximum production time and cost requied for the experiment. 
+2. Lack of knowledge of DOE and what it can do. We always present the technique the client and demonstrate clearly what single-factor experimentation cannot do that DOE can do.
+3. We do an exercise with the client which involves working on a problem statement and then a process / product factor analysis and factor sensitivity analysis (VMEA -variation mode and effect analysis). This exercise draws a clear line between the knowledge (especially tacit knowledge ) the client already has and knowledge that will be created from the experimentation (draws a clear line between the background knowledge and foreground knowledge which helps if IP arises from the work).Show less
+Like
+2mo
+Seamus Clifford
+Seamus Clifford Hi all,
+Also, my experience is that once a client company sees a successful outcome / benefit from DOE it then becomes more acceptable. When presenting & reporting conclusions and recommendations off the back of a block of sucessful D...Show more
+Like
+2mo
+George S. Baggs
+George S. Baggs I've seen hesitation from people that fear failure if they use this 'different' approach (i.e. DOE). Unequivocal support from senior management is a must, and clear understanding that the company expects these techniques to be used. O...Show more
+Like
+2mo
+Phil Kay
+Phil Kay Hi Jonathan, I'm happy to listen to you about PB designs. I'm interested in why you want to use the 8-run PB. JMP (and most other softwares, I think) will allow you to created the 12+ run PBs. I think that is different topic though, so I'll PM you about that.
+Like
+2mo
+Phil Kay
+Phil Kay Thanks again everyone. From what Josef and Seamus have said, that reiterates to me that it is not enough just to have individual experts/champions. You need a larger group of people that are inspired by learning from each other and from examples outside of the organisation.
+Like
+2mo
+Phil Kay
+Phil Kay George, again you have highlighted the importance of having backing from senior people to get the time and resource. And also the backing to take the fear factor out of a new approach. Does anyone have an example where DoE became the default way for experimentation without any support from management?
+
+---
+https://www.coursera.org/learn/experimentation/discussions/all/threads/Uqm0xMSpEeeFcw6gQymyng?sort=createdAtDesc
+Question: I would like to optimize the diet for an organism. The diet consists of five main components (= five factors). These factors add up to 96.9% of the diet. The remaining 3.1% are constant between the diets. In contrast to examples presented in the course, this is a mixed design problem, i.e. when changing one factor I automatically have to change another factor (because all factors have to make up 96.9%, and the mass hass to stay the same). It is basically like baking a cake with five ingredients.
+
+I would like to design a pre-screening to identify which of the factors has the largest influence on my response (e.g. growth of the organisms) (so maybe a half factorial design with five factors and at least two levels). Next I might continue with three parameters to further optimize the diet.
+
+I have a lot of books for mixed design/design for formulation in my book, and there is an R package (mixep) for the design of such experiments. However, I find transferring the knowledge from this course difficult to such a question.
+
+Answer: You are definitely in the area of mixture design for your particular application. As you rightly point out, in those designs, when you change one factor, you need to also alter the others. As a result, the ratios change, and you have the constraint that everything must sum to 100%.
+
+The topics covered in this course have as a prerequisite that you can adjust the factors, A, B, C, etc all independently of each other. That is not the case with mixture designs. So it is not surprising that you came to the conclusion that "transferring the knowledge from this course difficult to such a question."
+
+I will also apologize here for not ever making that clear at the very start of this course. It is mentioned at the end of the textbook chapter, where a very superficial example is given.
+
+Not all is lost: many of the concepts from this course are applicable in mixture designs though, once you recognize the constraint in the system.
+
+
+
+----
+https://www.coursera.org/learn/experimentation/discussions/all/threads/hkhGQcruEee2MhJYIYQTJg
+Question: What if a factor has three instead of two levels? How would you approach such a system? Will this be covered in one of the courses or a particular R code?
+
+For example a factor that contains morning, evening and night.
+---
+Answer: Hi Wyona, at its simplest, three levels can, for example, be coded as $$-1, 0, +1$$, if they are numeric, and the spacing between them is equidistant.
+
+In the case of morning, evening and night, you might still be able to code them that way, if it is simply a matter of interpreting the results. You might find night > evening > morning, for example (in other words, you can rank the 3 levels).
+
+But perhaps it can't be ranked, or ranking is meaningless and the factor simply has 3 (unrelated) states. Then you can add two artificial factors, and I will call them A and B for simplicity. With these 2 factors you can create 4 combinations, though you only need 3. So in your example you can use:
+
+$$\mathbf{A}=-1$$ and $$\mathbf{B}=-1$$ represents morning
+$$\mathbf{A}=+1$$ and $$\mathbf{B}=-1$$ represents evening
+$$\mathbf{A}=-1$$ and $$\mathbf{B}=+1$$ represents night
+$$\mathbf{A}=+1$$ and $$\mathbf{B}=+1$$ is not used
+----
+https://www.coursera.org/learn/experimentation/discussions/all/threads/qzotObslEeeb_xL-a3Jo7A
+
+Question: Is it possible for a main effect to be confounding with a interaction term with the opposite sign? Thus making it look like the effect is unimportant? For example, in the 7 factor resolution III example in video 4H, after the initial analysis, we remove factors B, D, and F because they have relatively small effects. But since those factors are all confounded with three two factor interactions each, don't we run the risk of accidently removing important factors that seem small due to confounding?
+
+Quick example, factor B is confounded with AD, CF, and EG (if I did it right). If we made up some values such as B = +20, AD = -10 CF, CF = -7, EG = -3, then B would look like it was 0 and not significant even though the "pure" value of B is very significant.
+
+How do we prevent this from happening?
+
+Answer: Hi Bumki,
+
+There is a real concern that this can happen, exactly as you describe, especially with resolution III systems (main effects and two factor interactions are confounded).
+
+The way you described here can cancel out the main effect (factor B, in your example), but it can also go the other way and make a factor appear important when it is actually do to one or some of the confounded factors. That is the risk of a resolution III system, and it is better that you know that risk up front, which is why we study this topic.
+
+But what can you practically do about it?
+
+Choose your allocation of factors in a way that you can almost guarantee it doesn't happen. For example, if B is confounded with AC, then pick A and C to be factors that you know are not/cannot actually interact to affect the outcome. For example, if A = tire pressure, and C = windows open/closed for a system where you measuring impact on y = gas milage, then tire pressure and windows open/closed simply cannot interact, due to the nature of those factors. Then you can have a greater assurance of the factor B.
+You can choose another experimental set up, such as a resolution IV design, especially when you know, or have a feeling you might expect two-factor interactions in the system that have about the same order of magnitude effect on the response as the main effects. In your example, I would definitely use a resolution IV design, given the numbers you used. You can also consider a Definitive Screening Design. [http://yint.org/dsdesign]
+
+In that last bullet, I am well aware that a bit of chicken-egg situation is present. You don't know up front if the effects are similar in order of magnitude until you do the experiments. This is where a bit of single factor experimentation can be useful, to get a preliminary feeling for the system.
+
+It is also why we said to not spend all your budget on your experiments in one go. Do some experiments, get a feeling for the factors and response, learn from the preliminary analysis, and repeat.
+
+Hope that helps. (And sorry for the late replies, I am just getting back to being online here again).
+
+Kevin
+----
+https://www.coursera.org/learn/experimentation/discussions/all/threads/diWGQcbPEeemvAoyMa4lng
+Quesiton:
+The procedure of finding the optimum was illustrated. The example of Mount Fuji triggered this question: we see a local optimum on the mountain next to the real highest mountain top. How to make sure that we are really finding this global maximum? I have a feeling that if the experiments are located around the local optimum only we never find the real top of the mountain. Only by putting experiments further and further away from the local area we may get some indication of the way to travel.
+
+Perhaps this mountain illustrates my question better. https://en.wikipedia.org/wiki/Ushba
+
+
+A1:  was thinking about the same issue during this lesson. I'm thinking about start my experiments at another point and execute again to see if the final steps will converge to the same optimum. But this is very expensive and maybe isn't the smart way to do that. Any other idea?
+
+A2: I agree. Could be very expensive.
+
+Next to that I saw another post "Local vs Global maxima" in this week's posts.
+
+I quote the answer Kevin Dunn gave there. I like it. Quote:
+
+The method shown in the course is not a global optimization method: we cannot guarantee that you will avoid a local optimum. However, typically when we run these experiments and optimize, we operate over the range of interest of the factors. There could be a better optimum outside the range, but it might not be accessible. Further, on systems that we have run experiments on before, we might have build up knowledge about the smoothness of the surface, and the likelihood the multiple optima exist.
+
+From this follows the logical conclusion, which you will agree, that the "start from another point" you suggest should be a well thought decision. Take into account the plane already known and the operational relevant/possible ranges of levels for the factors. Use also experience from people working in the area; they will know most relevant search area's and especially where not to look.
+
+A3: Hi Peter and Rodrigo. I'm glad you found my prior post to the discussion forum, because I was going to point you there, but also add this:
+
+In agreement with Rodrigo, starting from another position can potentially identify another optimum that was not discovered the first time, but there is no guarantee, and it is expensive. This is especially true if you automate the response surface routine. If you do it manually (i.e. you are sitting in the middle of the data and using your brain), you can steer it into the other direction when you encounter the saddle point at the red dot [image taken from that link, https://en.wikipedia.org/wiki/Saddle_point]
+
+which is essentially what I think Peter was saying with "Take into account the plane already known and the operational relevant/possible ranges of levels for the factors."
+
+But again, to emphasize, in my experience with engineering systems, complete areas are off-limits (e.g. for safety reasons). So while there might be a better optimum there, it is technically 'unachievable'.
+
+I also like what Peter said with using the experience of people that have worked with the systems before. Usually when we get to the 'optimization' stage, we have covered a lot of exploration/discovery prior to that. That is why, for example, we know certain regions of the search space are unsafe to work in.
+
+So build on that knowledge (read reports from prior employees/researchers, ask questions, etc). Sometimes a system moves into a whole now set of conditions for the factors by mistake, or due to an accident, and suddenly a better optimum is noticed. So look back at historical data, which is harder and harder to do these days with the masses of data we accumulate.
+
+Hope that helps, Kevin.
+
+----
+https://www.coursera.org/learn/experimentation/discussions/all/threads/qzotObslEeeb_xL-a3Jo7A
+Is it possible for a main effect to be confounding with a interaction term with the opposite sign? Thus making it look like the effect is unimportant? For example, in the 7 factor resolution III example in video 4H, after the initial analysis, we remove factors B, D, and F because they have relatively small effects. But since those factors are all confounded with three two factor interactions each, don't we run the risk of accidently removing important factors that seem small due to confounding?
+
+Quick example, factor B is confounded with AD, CF, and EG (if I did it right). If we made up some values such as B = +20, AD = -10 CF, CF = -7, EG = -3, then B would look like it was 0 and not significant even though the "pure" value of B is very significant.
+
+How do we prevent this from happening?
+
+----
+https://www.coursera.org/learn/experimentation/discussions/all/threads/Agsw3IdfEeeNeRJP10SOQA?sort=createdAtDesc
+Question: There is a difference between your video tutorial and the code that your video tutorial is based on. Why is it that the coded values for price range from -1.38 to 1.38 as opposed to -1.41 to 1.41 as in throughput? Why -/+ 1.38 and not say, -/+ 1.42?
+
+I take it that using the price range with coded values -1.38 to + 1.38 as opposed to -1.41 and +1.41 would not materially affect the conclusion or would it?
+Answer:
+We aim for a coded value of $$\pm 1.41$$, and calculate what the real world values would be. But it might not be possible to actually implement that real-world value.
+
+Take an example [see this code, and video 5G at time 11:30]. The factor is T, with center point of 339K, and the range is = 342-336 = 6K. So a real world value of 342K has a value of +1 in coded units $$= \dfrac{342 - 339}{0.5 \times 6} = \dfrac{3}{3} =+1$$. 
+
+Now let's aim for a coded value of $$+1.41$$, and if you run the above equation backwards you get that that corresponds to $$T = 343.2K$$. That is our aim. But in practice we cannot achieve that, because our system can only actually implement the temperature in integer values. So the closest integer is 343K. In coded units that corresponds to 1.33. So it is not exact, but it is close.
+----
+https://www.coursera.org/learn/experimentation/discussions/all/threads/ha45NHhvEeeBRg5FFlUzqg
+Question: I am so happy to have come across this course. It teaches what I need to know in order to succeed in my next endeavor, which is an online service.
+
+Now, I have been reading about A/B testing and Multivariate testing (MVT). Apparently, one disadvantage of MVT is that it requires a lot of traffic (see this [https://www.optimizely.com/optimization-glossary/multivariate-testing/]). My question is what is the minimum sample size per experimental run needed to draw statistically significant conclusions?
+
+Another way to put it, what number of users are needed per web page variation in an MVT to have draw statistically significant conclusions?
+--
+Answer: This is not a question that can be easily answered. That website you refer to is correct in pointing out that with a single factor an A/B test ($$-1$$ and $$+1$$ in our way of speaking in this course) you split your website traffic in half. Half gets the $$-1$$ and the other half gets the $$+1$$. If you have 2 factors, then you have 4 conditions, so you split your website traffic in quarters, etc.
+
+The reason why it cannot be answered in a general way, is because it depends on your system. If you were testing website sales and marketing, it can take a long time to see a noticeable effect across your customers (there is lots of noise in the system). I mean that if you have a 100 customers each seeing the same condition (e.g. at the $$-1$$ condition), then 7% of them might purchase something, and the customers at condition $$+1$, only 10% purchase something. If you repeat the experiment again, you might see 9% for condition $$-1$$ and 8.5% for condition $$+1$$. And you repeat the experiment again ... you get the idea. There isn't a clear signal, so you have to acquire many many customers and wait for the clarity to show up.
+
+But in some (often engineering) systems, you can see a clear signal right away, and we have fairly little noise. This is especially true when you have good control of the situation. Then you might just need 1 experiment at each condition.
+
+To summarize, we intentionally don't cover this topic in the course, because it is left to your far more detailed knowledge of the system [how much noise, repeatability of experiments, and so on] to judge whether you are getting significant results.
+
+Not a satisfying answer, I know, but I hope it gets you thinking a bit about your system. Kevin
+
+
+----
 Better referencing possible?  See waht this can do for you: https://github.com/sphinx-doc/sphinx/issues/326
 
 See level fitting: https://www.epa.gov/climate-indicators/climate-change-indicators-sea-level
