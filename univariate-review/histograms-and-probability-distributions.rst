@@ -96,10 +96,6 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 .. _univariate-population:
 
-.. raw:: latex
-
-	\\
-
 **Population**
 	
 	A large collection of observations that *might* occur; a set of *potential* measurements. Some texts consider an infinite collection of observations, but a large number of observations is good enough. 
