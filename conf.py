@@ -586,7 +586,7 @@ _PREAMBLE = r"""
 # \pagestyle{plain}
 
 latex_elements = {
-     'papersize': 'a4paper',  # paper size ('letter' or 'a4paper').
+     'papersize': 'letter',  # paper size ('letter' or 'a4paper').
      'pointsize': '11pt',         # font size ('10pt', '11pt' or '12pt')
      'fontpkg': '\\usepackage{palatino}',
      'preamble': _PREAMBLE,
