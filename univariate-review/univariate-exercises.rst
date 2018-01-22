@@ -79,32 +79,32 @@ Exercises
 	   :language: s
 
 	.. image:: ../figures/univariate/size1.png
-		:scale: 50
+		:scale: 49
 		:width: 900
 		:align: center
 		:alt: fake width
 	.. image:: ../figures/univariate/size2.png
-		:scale: 50
+		:scale: 49
 		:width: 900
 		:align: center
 		:alt: fake width
 	.. image:: ../figures/univariate/size3.png
-		:scale: 50
+		:scale: 49
 		:width: 900
 		:align: center
 		:alt: fake width
 	.. image:: ../figures/univariate/density1.png
-		:scale: 50
+		:scale: 49
 		:width: 900
 		:align: center
 		:alt: fake width
 	.. image:: ../figures/univariate/density2.png
-		:scale: 50
+		:scale: 49
 		:width: 900
 		:align: center
 		:alt: fake width
 	.. image:: ../figures/univariate/density3.png
-		:scale: 50
+		:scale: 49
 		:width: 900
 		:align: center
 		:alt: fake width
@@ -222,7 +222,8 @@ Exercises
 			*Additional information*: To answer this part, you should move everything to :math:`z`-coordinates first. Then you need to find the points :math:`-c` and :math:`+c` in the following diagram that mark the boundary for a 95% of the total area under the distribution. This region is an interval that will contain, with 95% certainty, the population mean of the viscosity, :math:`\mu`. Write your answer in form: :math:`\text{LB} < \mu < \text{UB}`.
 
 			.. image:: ../figures/univariate/show-confidence-interval.png
-				:scale: 50
+				:scale: 45
+				:width: 900
 
 		- Now assume that for some hypothetical reason we know the standard deviation of the bale's viscosity is :math:`\sigma=3.5` units, calculate the population mean's interval numerically.
 
@@ -518,6 +519,8 @@ Exercises
 	- Pick any other 2 days that you would find interesting to compare and repeat your analysis.
 
 	.. image:: ../figures/univariate/Website-traffic-TS.png
+	    :align: center
+	    :width: 900
 		
 .. answer::
 	
@@ -979,7 +982,7 @@ Exercises
 	#. Continuing the notation from the above question we can derive the expected variance as,
 
 		.. math::
-			\mathcal{V}(X) &= \frac{1}{N}\sum_i^{12}{(x_i - \mu)^2} = \frac{1}{12} \cdot \left[ (1 - 6.5)^2 + (2 - 6.5)^2 + \ldots + (12 - 6.5)^2 \right] \approx \bf{11.9167}
+			\mathcal{V}(X) = \frac{1}{N}\sum_i^{12}{(x_i - \mu)^2} = \frac{1}{12} \cdot \left[ (1 - 6.5)^2 + (2 - 6.5)^2 + \ldots + (12 - 6.5)^2 \right] \approx \bf{11.9167}
 
 	#.	Simulating 10,000 throws corresponds to 10,000 independent and mutually exclusive random events, each with an outcome between 1 and 12. The sample mean and variance from my sample was calculated using this code in R:
 

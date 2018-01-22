@@ -16,7 +16,7 @@ Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{
 
 .. image:: ../figures/univariate/poisson-distribution.png
 	:align: right
-	:scale: 70
+	:scale: 60
 	:width: 900
 	:alt: fake width
 	

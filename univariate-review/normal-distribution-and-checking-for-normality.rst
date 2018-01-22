@@ -90,9 +90,9 @@ Formal definition for the normal distribution
 .. math:: p(x) = \dfrac{1}{\sqrt{2\pi \sigma^2}}e^{-\dfrac{\left(x-\mu\right)^2}{2\sigma^2}}
 	
 .. image:: ../figures/univariate/normal-distribution-standardized.png
-	:align: left
+	:align: center	
 	:width: 900px
-	:scale: 80%
+	:scale: 70
 	:alt: fake width
 
 -	:math:`x` is the variable of interest
@@ -312,7 +312,8 @@ Let's take :math:`n` values of this daily profit value, let's say :math:`n=5`.
 	
 	.. image:: ../figures/univariate/explain-confidence-interval.png
 		:alt:	../figures/univariate/explain-confidence-interval.R
-		:scale: 80
+		:scale: 70
+		:width: 900
 		:align: center
 
 	The true population (but unknown to us) profit value is $700.
@@ -336,7 +337,8 @@ Let's take :math:`n` values of this daily profit value, let's say :math:`n=5`.
 	
 	.. image:: ../figures/univariate/explain-confidence-interval-normalized.png
 		:alt:	../figures/univariate/explain-confidence-interval.R
-		:scale: 80
+		:scale: 70
+		:width: 900
 		:align: center
 	
 #.	Using the known normal distribution for :math:`\displaystyle \overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n\right)`, we can find the vertical, dashed red lines shown in the previous figure, that contain 95% of the area under the distribution for :math:`\overline{x}`.

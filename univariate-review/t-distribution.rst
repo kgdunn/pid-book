@@ -23,7 +23,7 @@ An obvious way out of our dilemma is to replace :math:`\sigma` by the sample sta
 
 .. image:: ../figures/univariate/t-distribution-comparison.png
 	:align: right
-	:scale: 80
+	:scale: 70
 	:width: 900
 	:alt: fake width
 
@@ -87,7 +87,7 @@ Returning back to :eq:`distribution-for-sample-average` we stated that
 
 .. math::
 	
-		\frac{\overline{x} - \mu}{s/\sqrt{n}} &\sim t_{n-1}
+		\dfrac{\overline{x} - \mu}{s / \sqrt{n}} \sim t_{n-1}
 
 We can plot the :math:`t`-distribution for a given value of :math:`n-1`, the degrees of freedom. Then we can locate vertical lines on the :math:`x`-axis at :math:`-c_t` and :math:`+c_t` so that the area between the verticals covers say 95% of the total distribution's area. The subscript :math:`t` refers to the fact that these are critical values from the :math:`t`-distribution.
 

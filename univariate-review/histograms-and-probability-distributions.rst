@@ -10,7 +10,7 @@ The :ref:`previous section <univariate-about-variability>` has hopefully convinc
 A histogram is a summary of the variation in a measured variable. It shows the *number* of samples that occur in a *category*: this is called a **frequency distribution**. For example: number of children born, categorized against their birth gender: male or female.
 
 .. image:: ../figures/univariate/histogram-children-by-gender.png
-	:scale: 40
+	:scale: 35
 	:align: left
 	:width: 900px
 	:alt: fake width
@@ -20,7 +20,7 @@ The raw data in the above example was a vector of consisted of 2739 text entries
 Histograms make sense for categorical variables, but a histogram can also be derived from a continuous variable. Here is an example showing the mass of cartons of 1 kg of flour. The continuous variable, mass, is divided into equal-size bins that cover the range of the available data.  Notice how the packaging system has to overfill each carton so that the vast majority of packages weigh over 1 kg (what is the average package mass?). If the variability in the packaging system could be reduced, then the histogram can be shifted to the left, thereby reducing overfill.
 
 .. image:: ../figures/univariate/histogram-package-mass.png
-	:scale: 60
+	:scale: 50
 	:align: center
 	:width: 900px
 	:alt: fake width

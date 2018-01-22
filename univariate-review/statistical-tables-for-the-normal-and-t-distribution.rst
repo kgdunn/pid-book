@@ -10,5 +10,6 @@ Statistical tables for the normal- and t-distribution
 .. _univariate_statistical_tables:
 
 .. image:: ../figures/univariate/Statistical-tables/Statistical-tables.png
-	:scale: 95
+	:scale: 67
+	:width: 900
 	:align: center

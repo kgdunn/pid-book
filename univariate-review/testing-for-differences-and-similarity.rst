@@ -116,7 +116,7 @@ We can visualize this :index:`autocorrelation` by plotting the values of :math:`
 
 .. image:: ../figures/univariate/system-comparison-autocorrelation-scatterplot.png
 	:align: center
-	:scale: 70
+	:scale: 50
 	:width: 900
 	:alt: fake width
 	
@@ -192,7 +192,7 @@ Discuss whether these experiments would lead to :index:`independent data <single
 	
 		.. image:: ../figures/univariate/sheet-coating-application.png
 			:align: center
-			:scale: 50
+			:scale: 30
 			:width: 900px
 			:alt: fake 
 		
