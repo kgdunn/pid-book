@@ -56,7 +56,7 @@ The following box plot is a graphical summary of these numbers.
 
 .. image:: ../figures/visualization/boxplot-for-two-by-six-100-boards.png
 	:align: right
-	:scale: 55
+	:scale: 40
 	:width: 900px
 	:alt: fake width
 

@@ -37,20 +37,20 @@ The next table compares defect types (number of defects) for different product g
 
 Three common pitfalls to avoid:
 
-#.	Using pie charts when tables will do
+#.	Avoid using pie charts when tables will do
 
 	Pie charts are tempting when we want to graphically break down a quantity into components. I have used them erroneously myself (here is an example on a website that I helped with: http://www.macc.mcmaster.ca/gradstudies.php). We won't go into details here, but I strongly suggest you read the convincing evidence of Stephen Few in: `"Save the pies for dessert" <http://www.perceptualedge.com/articles/08-21-07.pdf>`_. The key problem is that the human eye cannot adequately decode angles; however, we have no problem with linear data.
 
-#.	Arbitrary ordering along the first column; usually, alphabetically or in time order
+#.	Avoid arbitrary ordering along the first column; usually, alphabetically or in time order
 
 	Listing the car types alphabetically is trivial: instead, list them by some other third criterion of interest, perhaps minimum down payment required, typical lease duration, or total amount of interest paid on the loan. That way you get some extra context to the table for free.
 
-#.	Using excessive grid lines
+#.	Avoid using excessive grid lines
 
 	Tabular data should avoid vertical grid lines, except when the columns are so close that mistakes will be made. The human eye will use the visual white space between the numbers to create its own columns.
 
 	.. image:: ../figures/visualization/table-grid-comparison.png
-		:scale: 65
+		:scale: 60
 		:width: 1036px
 		
 

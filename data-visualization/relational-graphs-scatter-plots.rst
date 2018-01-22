@@ -46,8 +46,9 @@ Add a third variable to the plot by adjusting the marker size, and add a fourth 
     .. _reference_to_use_of_colour:
 
 	.. image:: ../figures/visualization/scatterplot-with-2-extra-dimensions.png
-		:scale: 80
 		:width: 900px
+		:align: center
+		:scale: 60
 		:alt: fake width
 
 

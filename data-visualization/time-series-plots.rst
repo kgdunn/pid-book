@@ -18,9 +18,9 @@ Here are some tips for effective time-series plots:
 	.. _visualization-bad-labels:
 
 	.. image:: ../figures/visualization/CPU-temperature_-_from_www_aw_org_on_26_Dec_2009.png
-		:align: left
-		:width: 800px
-		:scale: 70 %
+		:align: center
+		:width: 750px
+		:scale: 76 %
 
 	This plot, found on the Internet, shows a computer's CPU temperature with time. There are several problems with the plot, but the key issue here is the *x*-axis. This plot is probably the result of poor default settings in the software, but as you will start to realize, bad defaults are very common in most software packages. They waste your time when you have to repeatedly modify the charts. Good software will sensibly label the time-based axis for you.
 	

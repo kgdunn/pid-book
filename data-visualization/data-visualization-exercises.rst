@@ -82,17 +82,13 @@ Exercises
 
 .. question::
 
-	This question is an extension to visualizing more than 3 variables. Investigate on your own the term "scatterplot matrix", and draw one for the `Food texture data set <http://openmv.net/info/food-texture>`_. See the ``car`` library in R to create an effective scatterplot matrix with the ``scatterplotMatrix`` function.
-
-	Give a couple of bullet-points interpreting the plot.
+	This question is an extension to visualizing more than 3 variables. Investigate on your own the term "scatterplot matrix", and draw one for the `Food texture data set <http://openmv.net/info/food-texture>`_. See the ``car`` library in R to create an effective scatterplot matrix with the ``scatterplotMatrix`` function. List some bullet-points that interpret the plot.
 
 .. answer::
 
-	A scatterplot matrix can be created using the code below:
-
 	.. image:: ../figures/visualization/scatterplotmatrix-food-data.png
 		:align: center
-		:scale: 80
+		:scale: 70
 		:width: 900px
 		:alt: fake width
 	
@@ -235,7 +231,7 @@ Exercises
 
 		.. image:: ../figures/examples/room-temperature/room-temperatures.png
 			:alt:	../figures/examples/room-temperature/room-temperature-plots.R
-			:scale: 80
+			:scale: 60
 			:align: center
 			:width: 900px
 			
@@ -271,16 +267,16 @@ Exercises
 
 ..	answer::
 
-	#.	The following code will load the data, and plot a boxplot on the first 100 rows:
+	#.	The following code will load the data, and plot a boxplot for the first 100 rows:
 	
-		.. image:: ../figures/visualization/boxplot-for-two-by-six-100-boards.png
-			:align: center
-			:scale: 55
-			:width: 900px
-			:alt: fake width
-
 		.. literalinclude:: ../figures/visualization/boxplot-for-boards.R
 			:language: s	
+			
+		.. image:: ../figures/visualization/boxplot-for-two-by-six-100-boards.png
+			:align: center
+			:scale: 45
+			:width: 900px
+			:alt: fake width
 
 	#.	The thick center line on each boxplot is the median (50th percentile) of that variable.  The top and bottom edges of the box are the 25th and 75th percentile, respectively.  If the data are from a symmetric distribution, such as the :math:`t` or normal distribution, then the median should be approximately centered with respect to those 2 percentiles.  The fact that it is not, especially for position 1, indicates the data are *skewed* either to the left (median is closer to upper edge) or the the right (median closer to the lower edge).
 

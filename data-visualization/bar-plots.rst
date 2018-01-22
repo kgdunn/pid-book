@@ -49,7 +49,7 @@ Here is some advice for bar plots:
 	.. image:: ../figures/visualization/hatched-barplot.png
 		:alt:	../figures/visualization/hatched-barplot.R
 		:align: center
-		:scale: 45 %
+		:scale: 35
 		:width: 900px
 		
 .. FAKE WIDTH in the above image
