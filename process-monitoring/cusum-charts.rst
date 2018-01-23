@@ -22,6 +22,7 @@ We :ref:`showed earlier <monitoring_sluggish_shewhart_chart>` that the Shewhart 
 	:alt:	../figures/monitoring/explain-CUSUM.R
 	:width: 750px
 	:align: center
+	:scale: 90
 	
 Values of :math:`S_t` for an in-control process should really just be random errors, with mean of zero. The long-term sum of :math:`S_t` is also zero, as the positive and negative errors keep cancelling out.
 

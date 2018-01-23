@@ -37,7 +37,7 @@ Here is an example that shows these properties.
 
 .. image:: ../figures/monitoring/demo-of-monitoring-chart.png
 	:width: 750px
-	:scale: 100
+	:scale: 80
 
 .. _monitoring_general_approach:
 

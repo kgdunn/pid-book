@@ -147,7 +147,7 @@ Exercises
 	A tank uses small air bubbles to keep solid particles in suspension. If too much air is blown into the tank, then excessive foaming and loss of valuable solid product occurs; if too little air is blown into the tank the particles sink and drop out of suspension. 
 
 	.. image:: ../figures/monitoring/tank-suspension.png
-		:scale: 90
+		:scale: 70
 		:align: right
 		:width: 400px
 		:alt: fake width
@@ -382,7 +382,7 @@ Exercises
 
 	.. image:: ../figures/monitoring/monitoring-chart-cycling.png
 		:alt:	../figures/monitoring/monitoring-chart-cycling.R
-		:scale: 90%
+		:scale: 80
 		:width: 750px
 		:align: center	
 
@@ -469,6 +469,7 @@ Exercises
 	.. image:: ../figures/monitoring/pharma-spectra.jpg
 		:width: 750px
 		:align: center
+		:scale: 80
 
 .. answer::
 	:fullinclude: no 
@@ -567,9 +568,10 @@ Exercises
 		.. image:: ../figures/monitoring/batch-yield-phaseI-round-1-Yield.png
 			:width: 750px
 			:align: center
+			:scale: 80
 
 		.. image:: ../figures/monitoring/batch-yield-phaseI-round-2-Yield.png
-			:scale: 100
+			:scale: 80
 			:width: 750px
 			:align: center
 

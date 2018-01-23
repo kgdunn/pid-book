@@ -30,7 +30,7 @@ The EWMA chart is similar to the MA chart, but uses different weights; heavier w
 .. figure:: ../figures/monitoring/explain-EWMA.png
 	:width: 750px
 	:align: center
-	:scale: 95
+	:scale: 80
 
 Define the process target as :math:`T`.
 
@@ -74,7 +74,7 @@ From the above discussion and the weights shown for the 4 different charts, it s
 	:alt: ../figures/monitoring/explain-weights-for-process-monitoring.R
 	:width: 900px
 	:align: center
-	:scale: 90
+	:scale: 65
 	
 .. FAKE WIDTH ABOVE
 	

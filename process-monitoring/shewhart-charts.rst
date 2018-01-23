@@ -18,7 +18,7 @@ Define the variable of interest as :math:`x`, and assume that we have samples of
 
 .. image:: ../figures/monitoring/explain-Shewhart-data-source.png
 	:align: left
-	:scale: 70
+	:scale: 50
 	:width: 800px
 	:alt: fake width
 
@@ -140,8 +140,8 @@ To quantify the probability :math:`\beta`, recall that a Shewhart chart is for m
 
 .. figure:: ../figures/monitoring/show-shift-beta-error.png
 	:width: 800px
-	:align: left
-	:scale: 90
+	:align: center
+	:scale: 70
 	:alt: fake width
 
 .. todo  How did Devore calculate these numbers: see p 667 of his book - it doesn't make sense to me. See my attempt in "show-shift-typeII-error.R"

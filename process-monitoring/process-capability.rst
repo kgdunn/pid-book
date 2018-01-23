@@ -36,7 +36,8 @@ The PCR is often called the :index:`process width`. Let's see why by taking a lo
 
 .. image:: ../figures/monitoring/explain-PCR-half.png
 	:align: center
-	:scale: 80
+	:scale: 65
+	:width: 750
 
 The diagram is from a process with mean of 80 and where LSL=65 and USL=95. These specification are fixed, set by our production guidelines. If the process variation is :math:`\sigma = 10`, then this implies that PCR=0.5. Assuming further that the our production is centered at the mean of 80, we can calculate how much defective product is produced in the shaded region of the plot. Assuming a normal distribution:
 
@@ -50,7 +51,8 @@ Contrast this to the case where PCR = 2.0 for the same system. To achieve that l
 
 .. image:: ../figures/monitoring/explain-PCR-two.png
 	:align: center
-	:scale: 80
+	:scale: 65
+	:width: 750
 
 .. Note:: You will probably come across the terminology C\ :sub:`p`, especially when dealing with 6 sigma programs. This is the same as PCR for a centered process.
 
