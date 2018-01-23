@@ -30,6 +30,7 @@ The plot on the left is the raw data, while on the right is the raw data with th
 .. image:: ../figures/least-squares/nonparametric-plots.png
 	:width: 900px
 	:align: center
+	:scale: 70
 	:alt: fake width
 
 For bivariate cases, the nonparametric model is often called a *scatterplot smoother*. There are several methods to calculate the model; one way is by locally weighted scatterplot smoother (LOESS), described as follows. Inside a fixed subregion along the :math:`x`-axis (called the window):
@@ -148,7 +149,7 @@ We could naively assume that we just code our |y| variable as 0 or 1 (pass/fail)
 	-	The variance of the errors are not constant and the assumption of linearity breaks down.
 
 .. image:: ../figures/least-squares/logistic-regression-function.png
-	:scale: 50
+	:scale: 40
 	:width: 900px
 	:align: right
 	:alt: fake width
@@ -213,7 +214,7 @@ The thick line represents the slope coefficient (:math:`-0.0059`) using all the 
 	.. image:: ../figures/least-squares/bootstrap-example.png
 		:align: center
 		:width: 900px
-		:scale: 90
+		:scale: 65
 		:alt: fake width
 
 Bootstrapping gives us an indication of that sensitivity, as shown in the other plot. The original data set had 14 observations. What bootstrapping does is to randomly select 14 rows from the original data, allowing for duplicate selection. These selected rows are used to build a least squares model, and the slope coefficient is recorded. Then another 14 random rows are selected and this process is repeated ``R`` times (in this case ``R=1000``). On some of these occasions the outlier points will be included, and other times they will be excluded. 

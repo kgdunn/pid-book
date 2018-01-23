@@ -13,7 +13,7 @@ Background
 
 .. image:: ../figures/least-squares/influence-of-outliers.png
 	:width: 900px
-	:scale: 100
+	:scale: 70
 	:align: center
 	:alt: fake width
 
@@ -45,7 +45,7 @@ The average hat value can be calculated theoretically. While it is common to plo
 
 	.. image:: ../figures/least-squares/hatvalue-of-outliers.png
 		:width: 900px
-		:scale: 100
+		:scale: 70
 		:align: center
 		:alt: fake width
 
@@ -64,7 +64,7 @@ Where :math:`e_i` is the residual for the :math:`i^\text{th}` point, as usual, b
 
 	.. image:: ../figures/least-squares/studentized-residuals.png
 		:width: 900px
-		:scale: 100
+		:scale: 65
 		:align: center
 		:alt: fake width
 		
@@ -91,7 +91,7 @@ The values of :math:`D_i` are conveniently calculated in R using the ``cooks.dis
 
 	.. image:: ../figures/least-squares/cooks-distance.png
 		:width: 900px
-		:scale: 100
+		:scale: 65
 		:align: center
 		:alt: fake width
 

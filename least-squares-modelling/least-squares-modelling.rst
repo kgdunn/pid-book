@@ -95,7 +95,7 @@ What you will be able to do after this section
 
 .. image:: ../figures/mindmaps/least-squares-section-mapping.png
   :width: 900px
-  :scale: 90
+  :scale: 67
   :alt: Map of the least squares section
 
 .. Notes

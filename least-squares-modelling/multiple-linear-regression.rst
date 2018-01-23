@@ -171,7 +171,7 @@ Let's take a look at the case where :math:`y = b_1x_1 + b_2x_2`. We can plot thi
 .. image:: ../figures/least-squares/least-squares-two-x-variables.png
 	:width: 900px
 	:align: left
-	:scale: 60
+	:scale: 40
 	:alt: fake width
 
 The points are used to fit the plane by minimizing the sum of square distances shown by vertical lines from each point to the plane. The interpretation of the slope coefficients for :math:`b_1` and :math:`b_2` is **not the same** as for the case with just a single |x| variable.
@@ -247,7 +247,7 @@ Integer variables are also called dummy variables or indicator variables. Really
 .. image:: ../figures/least-squares/least-squares-two-x-variables-one-integer.png
 	:width: 900px
 	:align: left
-	:scale: 60
+	:scale: 50
 	:alt: fake width
 
 We have to introduce additional terms into the model if we have integer variables with more than 2 levels. In general, if there are :math:`p`-levels, then we must include :math:`p-1` terms. For example, if we wish to test the effect of :math:`y` = yield achieved from the raw material supplier in Spain, India, or Vietnam, we could code:

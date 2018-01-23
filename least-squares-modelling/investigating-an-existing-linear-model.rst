@@ -88,7 +88,7 @@ To detect this problem you should plot:
 This problem reveals itself by showing a fan shape across the plot; an example is shown in the figure.
 
 .. image:: ../figures/least-squares/residual-pattern-non-contant-error.png
-	:scale: 80
+	:scale: 70
 	:align: center
 	:width: 900px
 	:alt: fake width
@@ -113,7 +113,7 @@ If you suspect that there may be lack of independence, use plots of the residual
 .. image:: ../figures/least-squares/residual-pattern-unmodelled-dynamics.png
 	:width: 900px
 	:align: center
-	:scale: 100
+	:scale: 70
 	:alt: fake width
 
 One way around the autocorrelation is to subsample - use only every :math:`k^\text{th}` sample, where :math:`k` is a certain number of gaps between the points. How do we know how many gaps to leave?  Use the `autocorrelation function <https://en.wikipedia.org/wiki/Autocorrelation>`_ to determine how many samples. You can use the ``acf(...)`` function in R, which will show how many significant lags there are between observations. Calculating the autocorrelation accurately requires a large data set, which is a requirement anyway if you need to subsample your data to obtain independence.
@@ -123,7 +123,7 @@ Here are some examples of the autocorrelation plot: in the first case you would 
 .. image:: ../figures/least-squares/demonstrate-autocorrelation.png
 	:width: 900px
 	:align: center
-	:scale: 100
+	:scale: 70
 	:alt: fake width
 
 Another test for autocorrelation is the Durbin-Watson test. For more on this test see the book by Draper and Smith (Chapter 7, 3rd edition); in R you can use the ``durbinWatsonTest(model)`` function in ``library(car)``.
@@ -168,7 +168,7 @@ Before launching into various :index:`transformations` or non-linear least squar
 	.. image:: ../figures/least-squares/nonlinear-linear-region.png
 		:align: right
 		:width: 900px
-		:scale: 60
+		:scale: 50
 		:alt: fake width
 
 How can we detect when the linear model is not sufficient anymore?  While a q-q plot might hint at problems, better plots are the same two plots for detecting :ref:`non-constant error variance <LS-non-constant-error-variance>`:
@@ -181,7 +181,7 @@ Here we show both plots for the example just prior (where we used a linear model
 	.. image:: ../figures/least-squares/nonlinear-detection.png
 		:align: left
 		:width: 900px
-		:scale: 75
+		:scale: 67
 		:alt: fake width
 
 Transformations are considered successful once the residuals appear to have no more structure in them. Also bear in mind that structure in the residuals might indicate the model is missing an additional explanatory variable (see the section on :ref:`multiple linear regression <LS_multiple_X_MLR>`).

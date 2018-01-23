@@ -41,7 +41,7 @@ We develop **the least squares method** to estimate these parameters; these esti
 .. image:: ../figures/least-squares/least-squares-picture.png
 	:width: 600px
 	:align: center
-	:scale: 71
+	:scale: 65
 	:alt: fake width
 
 Presuming we have calculated estimates |b0| and |b1| we can use the model with a new x-observation, :math:`x_i`, and predict its corresponding :math:`\hat{y}_i`. The error value, :math:`e_i`, is generally non-zero indicating out prediction estimate of :math:`\hat{y}_i` is not exact. All this new nomenclature is illustrated in the figure.
@@ -84,7 +84,7 @@ Returning to our example of the gas cylinder. In this case we know that :math:`\
 
 .. image:: ../figures/least-squares/cylinder-case-study-objective.png
 	:align: left
-	:scale: 50
+	:scale: 40
 	:width: 900px
 	:alt: fake width
 	
@@ -95,7 +95,7 @@ For the case where we have both |b0| and |b1|  varying we can construct a grid a
 .. image:: ../figures/least-squares/least-squares-objective-function-annotated.png
 	:width: 750px
 	:align: left
-	:scale: 50
+	:scale: 45
 
 The above figure shows the general nature of the :index:`least-squares objective function <pair: objective function; least squares>` where the two horizontal axes are for |b0| and |b1|, while the vertical axis represents the least squares objective function :math:`f(b_0, b_1)`.
 
@@ -175,7 +175,7 @@ We will refer back to the following example several times. Calculate the least s
 .. image:: ../figures/least-squares/show-anscombe-problem-1.png
 	:align: center
 	:width: 900px
-	:scale: 50
+	:scale: 40
 	:alt: fake width
 	
 ..

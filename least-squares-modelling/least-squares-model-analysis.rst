@@ -43,7 +43,7 @@ Using the accompanying figure, we see that geometrically, at any fixed value of 
 .. image:: ../figures/least-squares/ANOVA-graphically.png
 	:width: 900px
 	:align: center
-	:scale: 60
+	:scale: 45
 	:alt: fake width
 
 The total sum of squares (TSS) is the total variance in the vector of :math:`y`-data. This broken down into two components: the sum of squares due to regression, :math:`\sum \left(\hat{y}_i - \overline{y}\right)^2`, called RegSS, and the sum of squares of the residuals (RSS), :math:`\sum e_i^2 = e^T e`.
@@ -403,7 +403,7 @@ The plot shows the effect of varying the slope parameter, :math:`b_1`, from its 
 .. image:: ../figures/least-squares/show-anscome-solution-marked.png
 	:width: 750px
 	:align: center
-	:scale: 50
+	:scale: 40
 
 In many cases the confidence interval for the intercept is not of any value because the data for |x| is so far away from zero, or the true value of the intercept is not of concern for us.
 
@@ -423,7 +423,7 @@ We might expect the error is related to the average size of the residuals. After
 .. image:: ../figures/least-squares/residual-plots.png
 	:width: 900px
 	:align: center
-	:scale: 80
+	:scale: 65
 	:alt: fake width
 
 A typical histogram of the residuals looks as shown here: it is always centered around zero, and appears to be normally distributed. So we could expect to write our prediction error as :math:`\hat{y}_\text{new} = \left(b_0 + b_1 x_\text{new}\right) \pm c \cdot S_E`, where :math:`c` is the number of standard deviations around the average residual, for example we could have set :math:`c=2`, approximating the 95% confidence limit.
@@ -481,7 +481,7 @@ Let's understand the interpretation of :math:`\mathcal{V}\{\hat{y}_i\} = S_E^2 \
 	.. image:: ../figures/least-squares/show-anscome-solution-with-yhat-bounds.png
 		:width: 900px
 		:align: center
-		:scale: 60
+		:scale: 40
 
 Interpretation of software output
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

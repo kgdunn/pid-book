@@ -49,6 +49,7 @@ The following illustration should help connect the concept of the raw data's dis
 	:width: 750px
 	:align: right
 
+
 Using estimated parameters instead
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

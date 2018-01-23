@@ -145,7 +145,7 @@ Note that correlation is the same whether we measure temperature in Celsius or K
 .. image:: ../figures/least-squares/correlation-calculation.png
 	:width: 900px
 	:align: center
-	:scale: 87
+	:scale: 65
 	:alt: fake width
 	
 	
