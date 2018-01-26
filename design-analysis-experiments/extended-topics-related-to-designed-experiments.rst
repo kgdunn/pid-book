@@ -37,9 +37,9 @@ Most engineering systems have limits of performance, either by design or from a 
 
 A simple bioreactor example for 2 factors is shown: at high temperatures and high substrate concentrations we risk activating a different, undesirable side-reaction. The shaded region represents the constraint where we may not operate. We could for example replace the :math:`(T_{+}, C_{+})` experiment with two others, and then analyze these 5 runs using least squares.
 
-.. figure:: ../figures/doe/two-factors-with-constraint.png
+.. image:: ../figures/doe/two-factors-with-constraint.png
 	:align: right
-	:scale: 45
+	:scale: 40
 	:alt:	../figures/doe/two-factors-with-constraint.svg
 	:width: 900px
 
@@ -109,9 +109,9 @@ The area of mixture designs is incredibly important for optimizing recipes, part
 
 A mixture design is required when the factors being varied add up to 100% to form a mixture. Then these factors cannot be adjusted in an independent, factorial-like manner, since their proportion in the recipe must add to 100%: :math:`\sum_i x_i = 1`. These designs result in triangular patterns (called simplexes). The experimental points at the 3 vertices are for pure components :math:`x_A, x_B`, or :math:`x_C`. Points along the sides represent a 2-component mixture, and points in the interior represent a 3-component blend.
 
-.. figure:: ../figures/doe/mixture-design.png
+.. image:: ../figures/doe/mixture-design.png
 	:align: center
-	:scale: 100
+	:scale: 60
 	:width: 900px
 	:alt:	../figures/doe/mixture-design.svg
 

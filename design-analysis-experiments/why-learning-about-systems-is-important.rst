@@ -43,8 +43,8 @@ The true mechanism in this system is that pressure is increased to remove the fr
 
 .. figure:: ../figures/doe/yield-pressure-impurity-correlation.png
 	:alt:	../figures/doe/yield-pressure-impurity-correlation.svg
-	:scale: 70
-	:align: right
+	:scale: 50
+	:align: center
 	:width: 900px
 	
 	The relationship between yield, pressure and impurity levels [adapted from Box, Hunter and Hunter, Chapter 14 (1st edition) or Chapter 10 (2nd edition)]

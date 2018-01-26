@@ -21,7 +21,7 @@ We will however first consider just the effect of a single factor, :math:`x_1` a
 
 .. youtube:: https://www.youtube.com/watch?v=id71dS8b8EA&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=52
 
-.. figure:: ../figures/doe/steepest-ascent-univariately-corrected.png
+.. image:: ../figures/doe/steepest-ascent-univariately-corrected.png
 	:alt: steepest-ascent-univariately.svg
 	:align: left
 	:scale: 70
@@ -99,7 +99,7 @@ The interaction term is small, indicating the response surface is mostly linear 
 .. image:: ../figures/doe/RSM-base-case-with-first-factorial-notes.png
 	:alt:	RSM-base-case.py
 	:align: left
-	:scale: 60
+	:scale: 40
 	:width: 900px
 
 To improve our profit in the optimal way we move along our estimated model's surface, in the direction of steepest ascent. This direction is found by taking partial derivatives of the model function, ignoring the interaction term, since it is so small.
@@ -215,7 +215,7 @@ The :index:`axial points <pair: axial points; experiments>` are placed :math:`4^
 
 .. image:: ../figures/doe/central-composite-design.png
 	:align: left
-	:scale: 60
+	:scale: 50
 	:alt:	central-composite-design.svg
 	:width: 900px
 

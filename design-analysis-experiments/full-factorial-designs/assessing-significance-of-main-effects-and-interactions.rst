@@ -1,3 +1,5 @@
+.. _DOE-replicate_points:
+
 Assessing significance of main effects and interactions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
@@ -20,7 +22,7 @@ Pareto plot
 
 .. image:: ../../figures/doe/pareto-plot-full-fraction.png
 	:align: left
-	:scale: 50
+	:scale: 40
 	:width: 900px
 	:alt: fake width
 	
@@ -77,7 +79,12 @@ For an experiment with :math:`n` runs, and where we have coded our :math:`\mathb
 			\end{bmatrix}
 			\begin{bmatrix} b_0 \\ b_A \\ b_B \\ b_{C} \\ b_{AB} \\ b_{AC} \\ b_{BC} \\ b_{ABC} \end{bmatrix} +
 			\begin{bmatrix} e_1\\ e_2\\ e_3 \\ e_4 \\ e_5 \\ e_6 \\ e_7 \\ e_8 \\ e_{c,1} \\ e_{c,2} \\ e_{c,3} \end{bmatrix}\\
-			\mathbf{y} & = 
+			
+		And substituting in the values, using vector shortcut notation for :math:`\mathbf{y}` and :math:`\mathbf{e}`:
+		
+		.. math::
+		
+			\mathbf{y} &= 
 			\begin{bmatrix} 1 & -1 & -1 & -1 & +1 & +1 & +1 & -1\\ 
 							1 & +1 & -1 & -1 & -1 & -1 & +1 & +1\\
 							1 & -1 & +1 & -1 & -1 & +1 & -1 & +1\\
@@ -92,7 +99,7 @@ For an experiment with :math:`n` runs, and where we have coded our :math:`\mathb
 			\end{bmatrix}
 			\begin{bmatrix} b_0 \\ b_A \\ b_B \\ b_{C} \\ b_{AB} \\ b_{AC} \\ b_{BC} \\ b_{ABC} \end{bmatrix} + \mathbf{e}
 			
-		Note that the center point runs do not change the orthogonality of :math:`\mathbf{X}`. However, as we expect after having studied the section on :ref:`least squares modelling <SECTION-least-squares-modelling>`, additional runs decrease the variance of the model parameters, :math:`\mathcal{V}(\mathbf{b})`. In this case, there are :math:`n=2^3+3 = 11` runs, so the standard error is decreased to :math:`S_E^2 = \dfrac{\mathbf{e}^T\mathbf{e}}{11 - 8}`. However, the center points do not further reduce the variance of the parameters in :math:`\sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`, because the denominator is still :math:`2^k` (**except for the intercept term**, whose variance is reduced by the center points).
+		Note that the center point runs do not change the orthogonality of :math:`\mathbf{X}` (verify this by writing out and computing the :math:`\mathbf{X}^T\mathbf{X}` matrix and observing that all off-diagonal entries are zeros). However, as we expect after having studied the section on :ref:`least squares modelling <SECTION-least-squares-modelling>`, additional runs decrease the variance of the model parameters, :math:`\mathcal{V}(\mathbf{b})`. In this case, there are :math:`n=2^3+3 = 11` runs, so the standard error is decreased to :math:`S_E^2 = \dfrac{\mathbf{e}^T\mathbf{e}}{11 - 8}`. However, the center points do not further reduce the variance of the parameters in :math:`\sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`, because the denominator is still :math:`2^k` (**except for the intercept term**, whose variance is reduced by the center points).
 	
 Once we obtain the standard error for our system and calculate the variance of the parameters, we can multiply it by the critical :math:`t`-value at the desired confidence level in order to calculate the confidence limit. However, it is customary to just report the standard error next to the coefficients, so that users can apply their own level of confidence. For example,
 
@@ -166,7 +173,7 @@ Variance of estimates from the COST approach versus the factorial approach
 
 .. image:: ../../figures/doe/comparison-of-variances.png
 	:align: center
-	:scale: 70
+	:scale: 50
 	:width: 900px
 	:alt: fake width
 

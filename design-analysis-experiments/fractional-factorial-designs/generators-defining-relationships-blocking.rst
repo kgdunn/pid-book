@@ -86,7 +86,7 @@ So we see that we can always complete our half-fraction by creating a complement
 
 .. image:: ../../figures/doe/complementary-half-fraction-in-3-factors.png
 	:align: right
-	:scale: 35
+	:scale: 30
 	:alt:	complementary-half-fraction-in-3-factors.svg
 	:width: 900px
 

@@ -23,7 +23,7 @@ The base operating point is 346 K with a feed substrate concentration of 1.5 g/L
 
 .. _DOE-fig-COST:
 .. figure:: ../figures/doe/COST-contours.png
-	:align: left
+	:align: center
 	:scale: 70
 	:width: 900px
 	:alt: fake width

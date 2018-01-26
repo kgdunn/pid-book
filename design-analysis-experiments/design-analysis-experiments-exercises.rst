@@ -42,7 +42,7 @@ Exercises
 	
 .. answer::
 
-	#.	This is a :math:`2^2` factorial system with a replicate at each point. We had not covered replicates in class at the time you had to do this assignment. So you should average the replicate points and then calculate the main effects and other terms for this system. You will get the same result if you analyze it as two separate factorials and then average the results - it's just more work that way though.
+	#.	This is a :math:`2^2` factorial system with a replicate at each point. We might not have :ref:`covered replicates <DOE-replicate_points>` in class by the time you had to do this assignment. So you should average the replicate points and then calculate the main effects and other terms for this system. You will get the same result if you analyze it as two separate factorials and then average the results - it's just more work that way though.
 
 	#.	The experiment results in standard form with 4 corner points:
 
@@ -58,13 +58,13 @@ Exercises
 			| |+|        | |+|       | :math:`\tfrac{1}{2}\left(2439+2571\right) = \$ 2,505` |
 			+------------+-----------+-------------------------------------------------------+
 
-		where **A** = free shipping over $30 (low level) and $50 (high level), and let **B** = -1 if no profile is required, or +1 if a profile is required before completing the transaction.
+		where :math:`\mathbf{A}` = free shipping over $30 (low level) and $50 (high level), and let :math:`\mathbf{B} = -1` if no profile is required, or :math:`+1` if a profile is required before completing the transaction.
 
 		-	The main effect for free shipping (**A**) is = :math:`\tfrac{1}{2}(3610 - 3500 + 2505 - 3120) = \dfrac{-505}{2} = -252.50`
 	
 			This indicates that sales decrease by $252.50, on average, when going from free shipping over $30 to $50. One might expect, within reason, that higher sales are made when the free shipping value is higher (people add purchases so they reach the free shipping limit). That is shown by the very small effect of $50 when no profile is required. However when a profile is required, we see the opposite: a drop in sales!
 		
-		-	The main effect of creating a profile (**B**) :math:`\tfrac{1}{2}(3120 - 3500 + 2505 - 3610) = \dfrac{-1485}{2} = -742.50` 
+		-	The main effect of creating a profile  :math:`\mathbf{B} = \tfrac{1}{2}(3120 - 3500 + 2505 - 3610) = \dfrac{-1485}{2} = -742.50` 
 	
 			Indicating that sales drop by $742.50 on average when requiring a profile before completing the transaction vs not requiring a profile. The drop in sales is less when offering free shipping over $30 than when free shipping is for $50 or more in purchases.
 	
@@ -73,7 +73,7 @@ Exercises
 		.. image:: ../figures/doe/assignment-6-two-levels-two-variables-no-analysis.png
 			:alt:	../figures/doe/assignment-6-two-levels-two-variables-no-analysis.svg
 			:align: center
-			:scale: 60
+			:scale: 40
 			:width: 900px
 		
 	#.	The interaction plot which visually shows the main effects described above is:
@@ -129,6 +129,8 @@ Exercises
 							 1 & +1 & +1 & +1
 			\end{bmatrix}
 			\begin{bmatrix} b_0 \\ b_\mathbf{A} \\ b_\mathbf{A} \\ b_\mathbf{AB} \end{bmatrix} + \begin{bmatrix}  e_1 \\ e_2 \\ e_3 \\ e_4 \end{bmatrix}
+			
+		And solving the regression coefficients (note the orthogonality in the :math:`\mathbf{X}^T\mathbf{X}` matrix):
 		
 		.. math::
 	
@@ -377,7 +379,7 @@ Exercises
 			
 	.. image:: ../figures/doe/central-composite-question.png
 		:align: right
-		:scale: 60
+		:scale: 40
 		:width: 900px
 		:alt:	../figures/doe/central-composite-question.svg
 
@@ -993,7 +995,7 @@ Exercises
 			    
 		.. image:: ../figures/doe/fractional-factorial-question.png
 			:alt:	../figures/doe/fractional-factorial-question.R
-			:scale: 60
+			:scale: 40
 			:align: right
 			:width: 900px
 

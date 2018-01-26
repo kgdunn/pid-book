@@ -34,11 +34,15 @@ A final observation for this section is how fractional factorials will collapse 
 
 Consider the diagram here, where a half fraction in factors **A**, **B** and **C** was run (4 experiments) at the closed points. 
 
-.. figure:: ../../figures/doe/projectivity-of-a-half-fraction-in-3-factors.png
+.. image:: ../../figures/doe/projectivity-of-a-half-fraction-in-3-factors.png
 	:align: right
-	:scale: 50
+	:scale: 30
 	:width: 900px
 	:alt:	../../figures/doe/projectivity-of-a-half-fraction-in-3-factors.svg
+	
+
+.. FAKE WIDTH ABOVE
+
 
 On analyzing the data, the experimenter discovers that factor **C** does not actually have an impact on response :math:`y`. This means the **C** dimension could have been removed from the experiment, and is illustrated by projecting the **A** and **B** factors forward, removing factor **C**. Notice that this is now a full factorial in factors **A** and **B**. The same situation would hold if either factor **B** or factor **A** were found to be unimportant. Furthermore if two factors are found to be unimportant, then this corresponds to 2 replicate experiments in 1 factor.
 

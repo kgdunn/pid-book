@@ -48,7 +48,8 @@ We have four parameters to estimate and four data points. This means when we fit
 	                1 & T_{+} & S_{+} & T_{+}S_{+}\\
 	\end{bmatrix}
 	\begin{bmatrix} b_0 \\ b_T \\ b_S \\ b_{TS} \end{bmatrix} +
-	\begin{bmatrix} e_1\\ e_2\\ e_3 \\ e_4 \end{bmatrix}\\
+	\begin{bmatrix} e_1\\ e_2\\ e_3 \\ e_4 \end{bmatrix}
+	\\
 	\begin{bmatrix} 69\\ 60\\ 64\\ 53 \end{bmatrix} &=
 	\begin{bmatrix} 1 & -1 & -1 & +1\\ 
 	                1 & +1 & -1 & -1\\
@@ -57,14 +58,20 @@ We have four parameters to estimate and four data points. This means when we fit
 	\end{bmatrix}
 	\begin{bmatrix} b_0 \\ b_T \\ b_S \\ b_{TS} \end{bmatrix} +
 	\begin{bmatrix} e_1\\ e_2\\ e_3 \\ e_4 \end{bmatrix}\\
-	\mathbf{y} &= \mathbf{X} \mathbf{b} + \mathbf{e} \\
+	\mathbf{y} &= \mathbf{X} \mathbf{b} + \mathbf{e} 
+
+Where the last line is a more compact representation. Notice then that the :ref:`matrices from linear regression <LS_multiple_X_MLR>` are:
+
+.. math::
+	
 	\mathbf{X}^T\mathbf{X} &=
 	\begin{bmatrix} 4   & 0   & 0   & 0\\ 
 	                0   & 4   & 0   & 0\\
 	                0   & 0   & 4   & 0\\
 	                0   & 0   & 0   & 4
 	\end{bmatrix} \\
-	\mathbf{X}^T\mathbf{y} &= \begin{bmatrix} 246 \\ -20 \\ -12 \\ -2\end{bmatrix}\\
+	\mathbf{X}^T\mathbf{y} &= \begin{bmatrix} 246 \\ -20 \\ -12 \\ -2\end{bmatrix}
+	\\
 	\mathbf{b} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y} &= 
 	\begin{bmatrix} 1/4 & 0   & 0   & 0\\ 
 	                0   & 1/4 & 0   & 0\\
@@ -80,7 +87,7 @@ Some things to note are (1) the orthogonality of :math:`\mathbf{X}^T\mathbf{X}` 
 
 #.	Note how the :math:`\mathbf{X}^T\mathbf{X}` matrix has zeros on the off-diagonals. This confirms, algebraically, what we knew intuitively. The change we made in temperature, :math:`T`, was independent of the changes we made in substrate concentration, :math:`S`. This means that we can separately calculate *and interpret* the slope coefficients in the model.
 
-#.	What is the interpretation of, for example, :math:`b_T = -5`?  Recall that it is the effect of increasing the temperature by **1 unit**. In this case, the :math:`x_T` variable has been normalized, but this slope coefficient represents the effect of changing :math:`x_T` from 0 to 1, which in the original units of the variables is a change from 346 to 354 K, that is, an 8 K increase in temperature. It equally well represents the effect of changing :math:`x_T` from :math:`-1` to 0: a change from 338 K to 346 K decreases conversion by 5%.
+#.	What is the interpretation of, for example, :math:`b_T = -5`?  Recall, from the section on :ref:`linear regression interpretation <MLR_coefficient_interpretation>`, that it is the effect of increasing the temperature by **1 unit**. In this case, the :math:`x_T` variable has been normalized, but this slope coefficient represents the effect of changing :math:`x_T` from 0 to 1, which in the original units of the variables is a change from 346 to 354 K, that is, an 8 K increase in temperature. It equally well represents the effect of changing :math:`x_T` from :math:`-1` to 0: a change from 338 K to 346 K decreases conversion by 5%.
 
 	Similarly, the slope coefficient for :math:`b_S = -3` represents the expected decrease in conversion when :math:`S` is increased from 1.50 g/L to 1.75 g/L.
 
@@ -88,7 +95,7 @@ Some things to note are (1) the orthogonality of :math:`\mathbf{X}^T\mathbf{X}` 
 	
 	.. image:: ../../figures/doe/factorial-two-levels-two-variables-with-analysis.png
 		:align: center
-		:scale: 50
+		:scale: 45
 
 	The 61.5 term in the least squares model is the expected conversion at the baseline conditions. Notice from the least squares equations how it is just the average of the four experimental values, even though we did not actually perform an experiment at the center.
 		
@@ -103,7 +110,7 @@ The interaction term can now be readily interpreted: it is the additional increa
 
 	.. image:: ../../figures/doe/factorial-two-level-surface-with-interaction-cropped.png
 		:align: right
-		:scale: 65
+		:scale: 45
 		:width: 900px
 		:alt: fake width
 		

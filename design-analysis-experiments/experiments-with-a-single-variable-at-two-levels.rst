@@ -22,6 +22,7 @@ We have already seen in the :ref:`univariate statistics section <univariate-grou
 	s_P^2 &= \frac{(n_A -1) s_A^2 + (n_B-1)s_B^2}{n_A - 1 + n_B - 1}\\
 	z &= \frac{(\overline{x}_B - \overline{x}_A) - (\mu_B - \mu_A)}{\sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}} \\
 
+.. math::
 	\begin{array}{rcccl}  
 		-c_t &\leq& z &\leq & c_t\\
 		(\overline{x}_B - \overline{x}_A) - c_t \times \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)} &\leq& \mu_B - \mu_A &\leq & (\overline{x}_B - \overline{x}_A) + c_t  \times \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}
@@ -100,12 +101,13 @@ Had we used a formal test of differences where we pooled the variances, we would
 .. _DOE-fig-randomization-one-factor:
 
 .. figure:: ../figures/doe/single-experiment-randomization.png
-	:align: right
-	:scale: 70
+	:align: center
+	:scale: 60
 	:width: 900px
 	:alt: fake width
 	
-	The differences in the averages of A and B for the 24,310 realizations. The vertical line represents the difference in the average for the one particular set of numbers we measured in the experiment.
+	The differences in the averages of A and B for the 24,310 realizations. 
+	The vertical line represents the difference in the average for the one particular set of numbers we measured in the experiment.
 
 Recall that independence is required to calculate the :math:`z`-value for the average difference and compare it against the :math:`t`-distribution. By randomizing our experiments, we are able to guarantee that the results we obtain from using :math:`t`-distributions are appropriate. Without randomization, these :math:`z`-values and confidence intervals may be misleading.
 

@@ -84,7 +84,7 @@ We can perform a similar calculation for the main effect of substrate concentrat
 .. _DOE-fig-Calculate-main-effects:
 .. figure:: ../../figures/doe/factorial-two-levels-two-variables-with-analysis.png
 	:align: center
-	:scale: 60
+	:scale: 50
 	
 	A cube plot, showing the hand calculations for the main effects
 
@@ -94,7 +94,7 @@ The following surface plot illustrates the true, but unknown, surface from which
 
 	.. image:: ../../figures/doe/factorial-two-level-surface-example-cropped.png
 		:align: left
-		:scale: 70
+		:scale: 50
 		:alt: fake width
 		:width: 900px
 
@@ -135,7 +135,7 @@ Let's use a :ref:`different system here to illustrate <DOE-fig-interaction-examp
 	
 	.. figure:: ../../figures/doe/factorial-two-level-with-interactions.png
 		:align: center
-		:scale: 60
+		:scale: 40
 		:width: 900px
 		:alt: fake width
 
