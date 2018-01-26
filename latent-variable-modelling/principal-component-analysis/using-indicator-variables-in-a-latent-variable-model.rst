@@ -27,9 +27,9 @@ Indicator variables, also called dummy variables, are most often binary variable
 
 Sometimes these variables are imported into the computer software, but *not used in the model*. They are only used in the display of results, where the indicator variable is shown in a different colour or with a different marker shape. We will see :ref:`an example of this for process troubleshooting <LVM_troubleshooting>`, to help isolate causes for poor yield from a process:
 
-.. figure:: ../../figures/examples/raw-material-outcome/process-troubleshooting.png
+.. image:: ../../figures/examples/raw-material-outcome/process-troubleshooting.png
 	:alt:	../../figures/examples/raw-material-outcome/process-troubleshooting.R
-	:scale: 100
+	:scale: 80
 	:width: 750px
 	:align: center
 	

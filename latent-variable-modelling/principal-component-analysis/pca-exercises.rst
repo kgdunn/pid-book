@@ -99,7 +99,7 @@ This data set has become a classic data set when learning about multivariate dat
 
 .. image:: ../../figures/examples/food-consumption/food-consumption.png
 	:alt:	../../figures/examples/food-consumption/food-consumption.numbers
-	:scale: 100
+	:scale: 80
 	:width: 750px
 	:align: center
 

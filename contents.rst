@@ -13,8 +13,8 @@ Process Improvement Using Data
 	:maxdepth: 3
 	:caption: Table of Contents
 
+	latent-variable-modelling/index	
 	
-	design-analysis-experiments/index
 	
 .. Sections omitted:
 		
@@ -22,8 +22,8 @@ Process Improvement Using Data
 	univariate-review/index
 	process-monitoring/index
 	least-squares-modelling/index
+	design-analysis-experiments/index
 	
-	latent-variable-modelling/index	
 	
 
 .. Solution manual

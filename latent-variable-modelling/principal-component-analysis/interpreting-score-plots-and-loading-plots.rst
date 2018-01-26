@@ -10,10 +10,10 @@ Before summarizing some points about how to interpret a score plot, let's quickl
 
 The score value for an observation, for say the first component, is the distance from the origin, along the direction (loading vector) of the first component, up to the point where that observation projects onto the direction vector. We repeat :ref:`an earlier figure here <LVM_PCA_geometric_interpretation>`, which shows the projected values for 2 of the observations.
 
-.. figure:: ../../figures/pca/geometric-PCA-5-first-component-with-projections.png
+.. image:: ../../figures/pca/geometric-PCA-5-first-component-with-projections.png
 	:alt:	../../figures/pca/geometric-interpretation-of-PCA.svg
-	:scale: 34
-	:width: 750px
+	:scale: 40
+	:width: 900px
 	:align: center
 
 We used :ref:`geometric concepts in another section <LVM_mathematical_geometric_derivation>` that showed we can write: :math:`\mathbf{T} = \mathbf{X}\mathbf{P}` to get all the scores value in one go. In this section we are plotting values from the columns of :math:`\mathbf{T}`. In particular, for a single observation, for the :math:`a^\text{th}` component:
@@ -153,8 +153,8 @@ Any two loadings can also be shown in a scatterplot and interpreted by recalling
 
 .. image:: ../../figures/examples/food-texture/pca-on-food-texture-scores-and-loadings.png
 	:alt:	../../figures/examples/food-texture/pca-on-food-texture-data.R
-	:scale: 90
-	:width: 750px
+	:scale: 70
+	:width: 900px
 	:align: center
 	
 Side-by-side, these 2 plots very helpfully characterize all the observations in the data set. Recall observation 33 had a large, negative :math:`t_1` value. It had an above average fracture angle, an above average density, a below average crispiness value of 7, and below average oil level of 15.5.

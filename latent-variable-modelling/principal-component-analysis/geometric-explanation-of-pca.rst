@@ -8,10 +8,10 @@ Geometric explanation of PCA
 
 We refer to a :math:`K`-dimensional space when referring to the data in |X|. We will start by looking at the geometric interpretation of PCA when |X| has 3 columns, in other words a 3-dimensional space, using measurements: :math:`[x_1, x_2, x_3]`.
 
-.. figure:: ../../figures/pca/geometric-PCA-1-and-2-swarm-with-mean.png
+.. image:: ../../figures/pca/geometric-PCA-1-and-2-swarm-with-mean.png
 	:alt: 	../../figures/pca/geometric-interpretation-of-PCA.svg
 	:width: 900px
-	:scale: 100
+	:scale: 70
 	:align: center
 
 The raw data in the cloud swarm show how the 3 variables move together. The first step in PCA is to move the data to the center of the coordinate system. This is called mean-centering and removes the arbitrary bias from measurements that we don't wish to model. We also scale the data, usually to unit-variance. This removes the fact that the variables are in different units of measurement. Additional discussion on centering and scaling is :ref:`in the section on data preprocessing <LVM_preprocessing>`.
@@ -23,7 +23,7 @@ The best-fit line is drawn through the swarm of points. The more correlated the 
 .. image:: ../../figures/pca/geometric-PCA-3-and-4-centered-with-first-component.png
 	:alt: 	../../figures/pca/geometric-interpretation-of-PCA.svg
 	:width: 900px
-	:scale: 100
+	:scale: 70
 	:align: center
 
 When the direction of the best-fit line is found we can mark the location of each observation along the line. We find the 90 degree projection of each observation onto the line (see the next illustration). The distance from the origin to this projected point along the line is called the *score*. Each observation gets its own score value. When we say the best-fit line is in the direction of maximum variance, what we are saying is that the variance of these scores will be maximal. (There is one score for each observation, so there are :math:`N` score values; the variance of these :math:`N` values is at a maximum). Notice that some score values will be positive and others negative. 
@@ -39,15 +39,15 @@ After we have added this best-fit line to the data, we have calculated the first
 .. image:: ../../figures/pca/geometric-PCA-5-and-6-first-component-with-projections-and-second-component.png
 	:alt: 	../../figures/pca/geometric-interpretation-of-PCA.svg
 	:width: 900px
-	:scale: 100
+	:scale: 70
 	:align: center
 
 This first principal component is fixed and we now add a second component to the system. We find the second component so that it is perpendicular to the first component's direction. Notice that this vector also starts at the origin, and can point in any direction as long as it remains perpendicular to the first component. We keep rotating the second component's direction vector around until we find a direction that gives the greatest variance in the score values when projected on this new direction vector.
 
-.. figure:: ../../figures/pca/geometric-PCA-7-and-8-second-component-and-both-components.png
+.. image:: ../../figures/pca/geometric-PCA-7-and-8-second-component-and-both-components.png
 	:alt: 	../../figures/pca/geometric-interpretation-of-PCA.svg
 	:width: 900px
-	:scale: 100
+	:scale: 70
 	:align: center
 
 What that means is that once we have settled on a direction for the second component, we calculate the scores values by perpendicularly projecting each observation towards this second direction vector. The score values for the second component are the locations along this line. As before, there will be some positive and some negative score values. This completes our second component:

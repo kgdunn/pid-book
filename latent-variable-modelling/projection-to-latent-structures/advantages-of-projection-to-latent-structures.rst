@@ -17,7 +17,7 @@ An important point is that PCR is a two-step process:
 
 .. image:: ../../figures/pls/PCR-data-structure-compared-to-MLR.png
 	:alt:	../../figures/pls/PCR-data-structure-compared-to-MLR.svg
-	:scale: 100%
+	:scale: 70
 	:width: 900px
 	:align: center
 

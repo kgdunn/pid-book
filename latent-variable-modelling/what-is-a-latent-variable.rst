@@ -22,7 +22,7 @@ Room temperature
 
 Imagine the room you are in has 4 temperature probes that sample and record the local temperature every 30 minutes. Here is an example of what the four measurements might look like over 3 days.
 
-.. figure:: ../figures/examples/room-temperature/room-temperature-plots.png
+.. image:: ../figures/examples/room-temperature/room-temperature-plots.png
 	:alt:	../figures/examples/room-temperature/room-temperature-plots.py
 	:scale: 70
 	:width: 900px
@@ -67,9 +67,9 @@ Mathematically the correct way to say this is that :math:`t_1` is a *linear comb
 
 We can visualize the data from this system in several ways, but we will simply show a 3-D representation of the first 3 temperatures: :math:`x_1, x_2, x_3`.
 
-.. figure:: ../figures/examples/room-temperature/room-temperature-plots-combine.png
+.. image:: ../figures/examples/room-temperature/room-temperature-plots-combine.png
 	:alt:	../figures/examples/room-temperature/room-temperature-plots-combine.py
-	:scale: 100
+	:scale: 70
 	:width: 900px
 	:align: center
 

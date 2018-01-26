@@ -5,17 +5,17 @@ The data, collected in a matrix |X|, contains rows that represent an *object* of
 
 Which variables should you use, and how many observations do you require? We address this issue later. For now though we consider that you have your data organized in this manner:
 
-.. figure:: ../../figures/data-types/X-matrix.png
+.. image:: ../../figures/data-types/X-matrix.png
 	:alt:	../../figures/data-types/X-matrix.svg
 	:align: center
-	:scale: 35
+	:scale: 15
 	:width: 900px
 
 Consider the case of 2 variables, :math:`K=2` (left) and :math:`K=3` variables (right) for the room thermometers example :ref:`from earlier <LVM_room_temperature_example>`:
 
-.. figure:: ../../figures/examples/room-temperature/temperature-2d-and-3d-plot.png
+.. image:: ../../figures/examples/room-temperature/temperature-2d-and-3d-plot.png
 	:alt:	../../figures/examples/room-temperature/temperature-data-combine.py
-	:scale: 100
+	:scale: 60
 	:width: 900px
 	:align: center
 
@@ -31,7 +31,7 @@ Another effective way to visualize small multivariate data sets is to use a scat
 
 .. image:: ../../figures/examples/food-texture/pca-on-food-texture-scatterplot-matrix.png
 	:alt:	../../figures/examples/food-texture/pca-on-food-texture-data.R
-	:scale: 100
+	:scale: 70
 	:width: 900px
 	:align: center
 

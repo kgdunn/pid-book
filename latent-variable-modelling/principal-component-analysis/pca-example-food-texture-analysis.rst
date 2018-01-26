@@ -13,11 +13,12 @@ Let's take a look at an example to consolidate and extend the ideas introduced s
 	
 A scatter plot matrix of these :math:`K = 5` measurements is shown for the :math:`N=50` observations.
 
-.. figure:: ../../figures/examples/food-texture/pca-on-food-texture-scatterplot-matrix.png
+.. image:: ../../figures/examples/food-texture/pca-on-food-texture-scatterplot-matrix.png
 	:alt:	../../figures/examples/food-texture/pca-on-food-texture-data.R
-	:scale: 100
-	:width: 750px
+	:scale: 70
+	:width: 900px
 	:align: center
+	
 
 We can get by with this visualization of the data because :math:`K` is small in this case. This is also a good starting example, because you can refer back to these scatterplots to confirm your findings.
 
@@ -25,10 +26,10 @@ We can get by with this visualization of the data because :math:`K` is small in 
 
 The first step with PCA is to center and scale the data. The box plots show how the raw data are located at different levels and have arbitrary units. 
 
-.. figure:: ../../figures/examples/food-texture/pca-on-food-texture-centering-and-scaling.png
+.. image:: ../../figures/examples/food-texture/pca-on-food-texture-centering-and-scaling.png
 	:alt:	../../figures/examples/food-texture/pca-on-food-texture-data.R
-	:scale: 100
-	:width: 750px
+	:scale: 60
+	:width: 900px
 	:align: center
 
 Centering removes any bias terms from the data by subtracting the mean value from each column in the matrix |X|. For the :math:`k^\text{th}` column:
@@ -67,13 +68,17 @@ We will discuss how to determine the number of components to use :ref:`in a futu
 
 .. math:: 
 	\mathbf{p}_1 = \begin{bmatrix} +0.46 \\  -0.47 \\ +0.53 \\ -0.50 \\ +0.15 \end{bmatrix} \qquad \text{and} \qquad 
-	\mathbf{p}_2 = \begin{bmatrix} -0.37 \\  +0.36 \\ +0.20 \\ -0.22 \\ +0.80 \end{bmatrix}
+	\mathbf{p}_2 = \begin{bmatrix} -0.37 \\  +0.36 \\ +0.20 \\ -0.22 \\ +0.80 \end{bmatrix}\\
+
+
+Where we might visualize that first component by a bar plot:
 
 .. image:: ../../figures/examples/food-texture/pca-on-food-texture-pc1-loadings.png
 	:alt:	../../figures/examples/food-texture/pca-on-food-texture-data.R
 	:scale: 60
 	:width: 750px
 	:align: center
+
 
 .. _LVM_eqn_LVM_t1_food_texture:
 
@@ -92,11 +97,11 @@ For a pastry product to have a high :math:`t_1` value would require it to have s
 
 **Scores:** :math:`\,\mathbf{t}_1`
 
-Let's examine the score values calculated. As shown in equation :eq:`LVM_t1_food_texture`, the score value is a linear combination of the data, :math:`\mathbf{x}`, given by the weights in the loadings matrix, |P|. For the first component, :math:`\mathbf{t}_1 = \mathbf{X} \mathbf{p}_1`. The plot here shows the values in vector :math:`\mathbf{t}_1` (an :math:`N \times 1` vector):
+Let's examine the score values calculated. As shown in equation :eq:`LVM_t1_food_texture`, the score value is a linear combination of the data, :math:`\mathbf{x}`, given by the weights in the loadings matrix, |P|. For the first component, :math:`\mathbf{t}_1 = \mathbf{X} \mathbf{p}_1`. The plot here shows the values in vector :math:`\mathbf{t}_1` (an :math:`N \times 1` vector) as a sequence plot
 
 .. image:: ../../figures/examples/food-texture/pca-on-food-texture-pc1-scores.png
 	:alt:	../../figures/examples/food-texture/pca-on-food-texture-data.R
-	:scale: 80
+	:scale: 50
 	:width: 750px
 	:align: center
 	

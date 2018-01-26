@@ -29,10 +29,10 @@ Or in general, for the whole data set
 
 This shows that each observation (row in |X|) can be split and interpreted in two portions: a vector on-the-plane, :math:`\mathbf{t}'_i \mathbf{P}'`, and a vector perpendicular to the plane, :math:`\mathbf{e}'_{i,A}`. This residual portion, a vector, can be reduced to a single number, a distance value called SPE, as :ref:`previously described <LVM_geometric_predictions>`.
 
-.. figure:: ../../figures/pca/SPE-illustration.png
+.. image:: ../../figures/pca/SPE-illustration.png
 	:alt:	../../figures/pca/SPE-illustration.svg
-	:scale: 100
-	:width: 750px
+	:scale: 60
+	:width: 900px
 	:align: center
 
 An observation in |X| that has :math:`\text{SPE}_i = 0` is exactly on the plane and follows the model structure exactly; this is the smallest SPE value possible. For a given data set we have a distribution of SPE values. We can calculate a confidence limit below which we expect to find a certain fraction of the data, e.g. a 95% confidence limit. We won't go into how this limit is derived, suffice to say that most software packages will compute it and show it.
@@ -77,14 +77,12 @@ Finally, the SPE value is a complete summary of the residual vector. As such, it
 Residuals for each column 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-
-
 Using the residual matrix :math:`\mathbf{E} = \mathbf{X} - \mathbf{T} \mathbf{P}' = \mathbf{X} - \widehat{\mathbf{X}}`, we can calculate the residuals for each column in the original matrix. This is summarized by the :math:`R^2` value for each column in |X| and gives an indication of how well the PCA model describes the data from that column.
 
 .. image:: ../../figures/pca/column-residuals-PCA.png
 	:alt:	../../figures/pca/column-residuals-PCA.svg
-	:scale: 100
-	:width: 750px
+	:scale: 60
+	:width: 900px
 	:align: center
 
 In the section on :ref:`least squares modelling <SECTION-least-squares-modelling>`, the :math:`R^2` number was shown to be the ratio between the variance remaining in the residuals over the total variances we started off with, subtracted from 1.0. Using the notation in the previous illustration:

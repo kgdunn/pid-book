@@ -23,7 +23,7 @@ But sometimes we would like to know, as in the figure below, what are the contri
 
 .. image:: ../../figures/concepts/contributions/contribution-plots-in-the-scores.png
 	:alt:	../../figures/concepts/contributions/contribution-plots-in-the-scores.svg
-	:scale: 100
+	:scale: 70
 	:width: 750px
 	:align: center
 

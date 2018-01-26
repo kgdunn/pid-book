@@ -8,7 +8,7 @@ This section assumes that you are comfortable with the :ref:`NIPALS algorithm fo
 
 .. figure:: ../../figures/pls/NIPALS-iterations-PLS.png
 	:alt:	../../figures/pls/NIPALS-iterations-PLS.svg
-	:scale: 75%
+	:scale: 70
 	:width: 900px
 	:align: center
 

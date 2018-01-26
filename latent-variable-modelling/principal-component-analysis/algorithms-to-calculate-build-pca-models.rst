@@ -152,7 +152,7 @@ There are 3 missing observations (open circles), but despite this, the regressio
 
 .. image:: ../../figures/pca/NIPALS-with-missing-values.png
 	:alt:	../../figures/pca/NIPALS-with-missing-values.svg
-	:scale: 50
+	:scale: 30
 	:width: 750px
 	:align: center
 	

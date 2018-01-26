@@ -14,6 +14,3 @@ Latent Variable Modelling
    principal-components-regression
    projection-to-latent-structures/index
    applications-of-latent-variable-models
-
-
-

@@ -83,7 +83,7 @@ A geometric interpretation of PLS
 
 .. image:: ../../figures/pls/geometric-interpretation-of-PLS-step1.png
 	:alt:	../../figures/pls/geometric-interpretation-of-PLS.svg
-	:scale: 100%
+	:scale: 70
 	:width: 900px
 	:align: center
 
@@ -91,7 +91,7 @@ We assume here that you understand how the scores are the perpendicular projecti
 
 .. image:: ../../figures/pls/geometric-interpretation-of-PLS-step3.png
 	:alt:	../../figures/pls/geometric-interpretation-of-PLS.svg
-	:scale: 100%
+	:scale: 70
 	:width: 900px
 	:align: center
 
@@ -101,6 +101,6 @@ The second component is then found so that it is orthogonal to the first compone
 
 .. image:: ../../figures/pls/geometric-interpretation-of-PLS-step4.png
 	:alt:	../../figures/pls/geometric-interpretation-of-PLS.svg
-	:scale: 90%
+	:scale: 70
 	:width: 900px
 	:align: center

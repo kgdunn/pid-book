@@ -37,8 +37,8 @@ The main idea with principal component regression is to replace the :math:`K` co
 
 .. image:: ../figures/pls/PCR-data-structure-compared-to-MLR.png
 	:alt:	../figures/pls/PCR-data-structure-compared-to-MLR.svg
-	:scale: 100%
-	:width: 750px
+	:scale: 70
+	:width: 900px
 	:align: center
 
 In other words, we replace the :math:`N \times K` matrix of raw data with a smaller :math:`N \times A` matrix of data that summarizes the original |X| matrix. Then we relate these :math:`A` scores to the |y| variable. Mathematically it is a two-step process:
@@ -70,7 +70,7 @@ Illustrated as follows we see the misleading strategy that is regularly seen wit
 
 .. image:: ../figures/pls/correlated-x-variables-related-to-y.png
 	:alt:	../figures/pls/correlated-x-variables-related-to-y.svg
-	:scale: 60%
+	:scale: 50
 	:width: 750px
 	:align: center
 

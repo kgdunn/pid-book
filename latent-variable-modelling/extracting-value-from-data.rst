@@ -34,7 +34,7 @@ The "classical" tools required to visualize and understand these datasets are :r
 
 We will represent any data set as a matrix, called |X|, where each row in |X| contains values taken from an *object* of some sort. These rows, or *observations* could be a collection of measurements at a particular point in time, various properties on a sample of final product, or a sample of raw material from a supplier. The columns in |X| are the values recorded for each observation. We call these the *variables* and there are :math:`K` of them.
 
-	.. figure:: ../figures/data-types/X-matrix-long-and-thin.png
+	.. image:: ../figures/data-types/X-matrix-long-and-thin.png
 		:alt:	../figures/data-types/X-matrix-long-and-thin.svg
 		:align: center
 		:scale: 18
@@ -122,7 +122,7 @@ These data sets meet all the assumptions required to use the so-called "classica
 	An example of batch trajectory data, in matrix |X|, where there are 4 variables, recorded at 80 times points, on about 20 batches is shown here:
 	
 	.. image:: ../figures/batch/aligned-trajectories-many-batches-yeast.png
-		:scale: 40
+		:scale: 60
 		:width: 550px
 		:align: center
 

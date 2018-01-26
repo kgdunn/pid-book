@@ -72,8 +72,8 @@ The score plot (left) and loadings plot (right) help isolate potential reasons f
 
 .. image:: ../figures/examples/raw-material-outcome/process-troubleshooting.png
 	:alt:	../figures/examples/raw-material-outcome/process-troubleshooting.R
-	:scale: 100
-	:width: 750px
+	:scale: 70
+	:width: 900px
 	:align: center
 
 We can investigate *specific* batches and look at the contribution of each variable to the score values. Let's look at the contributions for batch 8 for both the :math:`t_1` and :math:`t_2` scores.
@@ -164,8 +164,8 @@ Consider the case of two variables, called :math:`x_1` and :math:`x_2`, shown on
 
 .. figure:: ../figures/monitoring/two-axis-monitoring-plot.png
 	:alt:	../figures/monitoring/two-axis-monitoring-plot.py
-	:scale: 90
-	:width: 750px
+	:scale: 70
+	:width: 900px
 	:align: center
 
 Rearranging the axes at 90 degrees to each other, and plotting the joint scatter plot of the two variables in the upper left corner reveals the negative correlation, if you didn't notice it initially. Ignore the ellipse for now. It is clear that sample 10 (green closed dot, if these notes are printed in colour) is very different from the other samples. It is not an outlier from the perspective of :math:`x_1`, nor of :math:`x_2`, but jointly it is an outlier. This particular batch of materials would result in very different process operation and final product quality to the other samples. Yet a producer using separate control charts for :math:`x_1` and :math:`x_2` would not pick up this problem.
@@ -257,10 +257,10 @@ The following illustration shows how we deal with an image, such as the one take
 
 In the unfolded matrix we have :math:`IJ` rows and 3 columns. In other words, each pixel in the image is represented in its own row. A digital image with 768 rows and 1024 columns, would therefore be unfolded into a matrix with 786,432 rows and 3 columns. If we perform PCA on this matrix we can calculate score values and SPE values: one per pixel. Those scores can be refolded back into the original shape of the image. It is useful to visualize those scores and SPE values in this way.
 
-.. figure:: ../figures/examples/lumber-images/lumber-example-combine.png
+.. image:: ../figures/examples/lumber-images/lumber-example-combine.png
 	:alt:	../figures/examples/lumber-images/lumber-example-combine.py
-	:scale: 100
-	:width: 750px
+	:scale: 70
+	:width: 900px
 	:align: center
 	
 You can learn more about using PCA on image data in the manual that accompanies the interactive software that is freely available from http://macc.mcmaster.ca/maccmia.php.
