@@ -99,7 +99,7 @@ What is the difference between |W| and |R|?
 After reading about the :ref:`NIPALS algorithm for PLS <LVM_PLS_calculation>` you should be aware that we deflate the |X| matrix after every component is extracted. This means that :math:`\mathbf{w}_1` are the weights that best predict the :math:`\mathbf{t}_1` score values, our summary of the data in :math:`\mathbf{X}_{a=1}` (the preprocessed raw data). Mathematically we can write the following:
 
 .. math::
-	\mathbf{t}_1 &= \mathbf{X}_{a=1} \mathbf{w}_1 = \mathbf{X}_1 \mathbf{w}_1 
+	\mathbf{t}_1 = \mathbf{X}_{a=1} \mathbf{w}_1 = \mathbf{X}_1 \mathbf{w}_1 
 
 The problem comes once we deflate. The :math:`\mathbf{w}_2` vector is calculated from the deflated matrix :math:`\mathbf{X}_{a=2}`, so  interpreting these scores is a quite a bit harder.
 
@@ -113,7 +113,7 @@ The :math:`\mathbf{w}_2` is not really giving us insight into the relationships 
 Ideally we would like a set of vectors we can interpret directly; something like:
 
 .. math::
-	\mathbf{t}_a &= \mathbf{X} \mathbf{r}_a
+	\mathbf{t}_a = \mathbf{X} \mathbf{r}_a
 	
 One can show, using repeated substitution, that a matrix |R|, whose columns contain :math:`\mathbf{r}_a`, can be found from: :math:`\mathbf{R} = \mathbf{W}\left(\mathbf{P}'\mathbf{W}\right)^{-1}`. The first column, :math:`\mathbf{r}_1 = \mathbf{w}_1`.
 

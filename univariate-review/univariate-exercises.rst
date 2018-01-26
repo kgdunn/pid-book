@@ -79,34 +79,34 @@ Exercises
 	   :language: s
 
 	.. image:: ../figures/univariate/size1.png
-		:scale: 49
+		:scale: 45
 		:width: 900
-		:align: center
+		:align: left
 		:alt: fake width
 	.. image:: ../figures/univariate/size2.png
-		:scale: 49
+		:scale: 45
 		:width: 900
-		:align: center
+		:align: right
 		:alt: fake width
 	.. image:: ../figures/univariate/size3.png
-		:scale: 49
+		:scale: 45
 		:width: 900
-		:align: center
+		:align: left
 		:alt: fake width
 	.. image:: ../figures/univariate/density1.png
-		:scale: 49
+		:scale: 45
 		:width: 900
-		:align: center
+		:align: right
 		:alt: fake width
 	.. image:: ../figures/univariate/density2.png
-		:scale: 49
+		:scale: 45
 		:width: 900
-		:align: center
+		:align: left
 		:alt: fake width
 	.. image:: ../figures/univariate/density3.png
-		:scale: 49
+		:scale: 45
 		:width: 900
-		:align: center
+		:align: right
 		:alt: fake width
 
 .. question::
@@ -736,7 +736,7 @@ Exercises
 
 	A common unit operation in the pharmaceutical area is to uniformly blend powders for tablets. In this question we consider blending an excipient (an inactive magnesium stearate base), a binder, and the active ingredient. The mixing process is tracked using a wireless near infrared (NIR) probe embedded in a V-blender. The mixer is stopped when the NIR spectra become stable. A new supplier of magnesium stearate is being considered that will save $ 294,000 per year.
 
-	..	figure:: ../figures/univariate/V-Blender.png
+	..	image:: ../figures/univariate/V-Blender.png
 		:align: right
 		:scale: 60
 		:width: 900px

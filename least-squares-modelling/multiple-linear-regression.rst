@@ -200,7 +200,7 @@ Now that we have introduced multiple linear regression to expand our models, we 
 	
 	-	Use an indicator variable to show if the raw material came from the supplier in Spain, India, or Vietnam and interpret the effect of supplier on yield.
 
-	..	figure:: ../figures/least-squares/Mixing_-_flusso_assiale_e_radiale.jpg
+	..	image:: ../figures/least-squares/Mixing_-_flusso_assiale_e_radiale.jpg
 		:width: 900px
 		:align: left
 		:scale: 60

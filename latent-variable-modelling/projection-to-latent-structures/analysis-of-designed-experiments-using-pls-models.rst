@@ -5,9 +5,10 @@ Analysis of designed experiments using PLS models
 
 .. NOTE: you already have some of these ideas in the section "LVM-preprocessing": combine them; cross reference them?
 
-Data from a designed experiment, particularly factorial experiments, will have independent columns in |X|. These data tables are adequately analyzed using :ref`multiple linear regression <LS_multiple_X_MLR>` (MLR) least squares models. 
+Data from a designed experiment, particularly factorial experiments, will have independent columns in |X|. These data tables are adequately analyzed using :ref:`multiple linear regression <LS_multiple_X_MLR>` (MLR) least squares models. 
 
-These factorial and fractional factorial data are also well suited to analysis with PLS. Since factorial models support interaction terms, these additional interactions should be added to the |X| matrix. For example, a full factorial design with variables **A**, **B** and **C** will also support the **AB**, **AC**, **BC** and **ABC** interactions. These four columns should be added to the |X| matrix so that the loadings for these variables are also estimated. If a :ref:`central composite design <DOE_central_composite_designs>`, or some other design that supports quadratic terms has been performed, then these columns should also be added to |X|, e.g.: :math:`\text{\textbf{A}}^2`, :math:`\text{\textbf{B}}^2` and :math:`\text{\textbf{C}}^2`.
+These factorial and fractional factorial data are also well suited to analysis with PLS. Since factorial models support interaction terms, these additional interactions should be added to the |X| matrix. For example, a full factorial design with variables **A**, **B** and **C** will also support the **AB**, **AC**, **BC** and **ABC** interactions. These four columns should be added to the |X| matrix so that the loadings for these variables are also estimated. If a :ref:`central composite design <DOE_central_composite_designs>`, or some other design that supports quadratic terms has been performed, then these columns should also be added to |X|, e.g.: :math:`\mathbf{\text{A}}^2`, :math:`\mathbf{\text{B}}^2` and :math:`\mathbf{\text{C}}^2`.
+
 
 The PLS loadings plots from analyzing these DOE data are interpreted in the usual manner; and the coefficient plot is informative if :math:`A>2`.
 

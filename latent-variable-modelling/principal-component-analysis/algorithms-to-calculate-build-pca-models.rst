@@ -99,7 +99,7 @@ We will show the algorithm here for the :math:`a^\text{th}` component, where :ma
 
 #.	The NIPALS algorithm starts by arbitrarily creating an initial column for :math:`\mathbf{t}_a`. You can use a column of random numbers, or some people use a column from the |X| matrix; anything can be used as long as it is not a column of zeros.
 
-#.	Then we take every column in |X|, call it :math:`\mathbf{X}_k`, and regress it onto this initial column :math:`\mathbf{t}_a`;  store the regression coefficient as the entry in :math:`p_{k,a}`. What this means, and it is illustrated below, is that we perform an ordinary least squares regression (:math:`\mathbf{y} = \boldsymbol{\beta} \mathbf{x}`), except our |x|-variable is this column of :math:`\mathbf{t}_a` values, and our |y|-variable is the particular column from |X|.
+#.	Then we take every column in |X|, call it :math:`\mathbf{X}_k`, and regress it onto this initial column :math:`\mathbf{t}_a`;  store the regression coefficient as the entry in :math:`p_{k,a}`. What this means, and it is illustrated below, is that we perform an ordinary least squares regression (:math:`\mathbf{y} = \beta \mathbf{x}`), except our |x|-variable is this column of :math:`\mathbf{t}_a` values, and our |y|-variable is the particular column from |X|.
 
 	.. image:: ../../figures/pca/NIPALS-iterations-columns.png
 		:alt:	../../figures/pca/NIPALS-iterations-PCA.svg
@@ -107,7 +107,7 @@ We will show the algorithm here for the :math:`a^\text{th}` component, where :ma
 		:width: 750px
 		:align: center
 
-	For ordinary least squares, you will remember that the solution for this regression problem is :math:`\widehat{\boldsymbol\beta} = \dfrac{\mathbf{x'y}}{\mathbf{x'x}}`. Using our notation, this means:
+	For ordinary least squares, you will remember that the solution for this regression problem is :math:`\widehat{\beta} = \dfrac{\mathbf{x'y}}{\mathbf{x'x}}`. Using our notation, this means:
 
 	.. math::
 		p_{k,a} = \dfrac{\mathbf{t}'_a \mathbf{X}_k}{\mathbf{t}'_a\mathbf{t}_a}

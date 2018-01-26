@@ -34,8 +34,7 @@ For PCA, for the :math:`a^\text{th}` component, we can calculate the scores as f
 
 .. math::
 
-	\mathbf{t}_a &= \mathbf{X}_a \mathbf{p}_a
-	
+	\mathbf{t}_a = \mathbf{X}_a \mathbf{p}_a
 
 Now let's look at PLS. Earlier we said that PLS extracts a single set of scores, |T|, from |X| and |Y| simultaneously. That wasn't quite true, but it is still an accurate statement!  PLS actually extracts two sets of scores, one set for |X| and another set for |Y|. We write these scores for each space as:
 

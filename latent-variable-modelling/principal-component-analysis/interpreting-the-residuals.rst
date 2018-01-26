@@ -44,7 +44,7 @@ If we find an observation that has a large squared prediction error, i.e. the ob
 We would like to know why, specifically which variable(s) in |X|, are most related with this deviation off the model plane. As we did in the section on :ref:`interpreting scores <LVM_interpreting_scores>`, we can generate a contribution plot.
 
 .. math:: 
-	\mathbf{e}'_{i,A} 	&= \mathbf{x}'_i - \widehat{\mathbf{x}}'_{i,A}
+	\mathbf{e}'_{i,A} = \mathbf{x}'_i - \widehat{\mathbf{x}}'_{i,A}
 		
 Dropping the :math:`A` subscript for convenience we can write the :math:`1 \times K` vector as:
 

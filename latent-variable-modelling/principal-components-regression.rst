@@ -108,7 +108,7 @@ Here then is the procedure for **building** a principal component regression mod
 
 #.	If either of the :math:`\text{SPE}` or :math:`T^2` limits were exceeded, then one should investigate the contributions to SPE, |T2| or the individuals scores to see why the new observation is unusual.
 
-	Predictions of math:`\widehat{y}_\text{new}` when a point is above either limit, especially the SPE limit, are not to be trusted.
+	Predictions of :math:`\widehat{y}_\text{new}` when a point is above either limit, especially the SPE limit, are not to be trusted.
 
 Multiple linear regression, though relatively simpler to implement, has no such consistency check on the new observation's :math:`x`-values. It simply calculates a direct prediction for :math:`\widehat{y}_\text{new}`, no matter what the values are in :math:`\mathbf{x}_{\text{new}}`.
 
