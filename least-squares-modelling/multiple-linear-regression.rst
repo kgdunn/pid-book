@@ -203,7 +203,7 @@ Now that we have introduced multiple linear regression to expand our models, we 
 	..	image:: ../figures/least-squares/Mixing_-_flusso_assiale_e_radiale.jpg
 		:width: 900px
 		:align: left
-		:scale: 60
+		:scale: 40
 		:alt: fake width
 
 	Axial and radial blades; figure from `Wikipedia <https://en.wikipedia.org/wiki/Impeller>`_

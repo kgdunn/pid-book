@@ -384,7 +384,7 @@ Exercises
 	
 	.. image:: ../figures/univariate/bulb-energy-barplot.png
 		:align: center
-		:scale: 70
+		:scale: 50
 		:width: 900px
 		:alt: fake width
 
@@ -521,6 +521,7 @@ Exercises
 	.. image:: ../figures/univariate/Website-traffic-TS.png
 	    :align: center
 	    :width: 900
+		:scale: 70
 		
 .. answer::
 	
