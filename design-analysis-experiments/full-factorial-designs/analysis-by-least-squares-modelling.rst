@@ -110,7 +110,7 @@ The interaction term can now be readily interpreted: it is the additional increa
 
 	.. image:: ../../figures/doe/factorial-two-level-surface-with-interaction-cropped.png
 		:align: right
-		:scale: 45
+		:scale: 40
 		:width: 900px
 		:alt: fake width
 		
