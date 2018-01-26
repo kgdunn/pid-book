@@ -521,7 +521,7 @@ Exercises
 	.. image:: ../figures/univariate/Website-traffic-TS.png
 	    :align: center
 	    :width: 900
-		:scale: 70
+	    :scale: 70
 		
 .. answer::
 	
@@ -737,8 +737,8 @@ Exercises
 
 	A common unit operation in the pharmaceutical area is to uniformly blend powders for tablets. In this question we consider blending an excipient (an inactive magnesium stearate base), a binder, and the active ingredient. The mixing process is tracked using a wireless near infrared (NIR) probe embedded in a V-blender. The mixer is stopped when the NIR spectra become stable. A new supplier of magnesium stearate is being considered that will save $ 294,000 per year.
 
-	..	image:: ../figures/univariate/V-Blender.png
-		:align: right
+	..	figure:: ../figures/univariate/V-Blender.png
+		:align: center
 		:scale: 60
 		:width: 900px
 		:alt: fake width
@@ -886,7 +886,7 @@ Exercises
 
 	..	figure:: ../figures/univariate/Mixing_-_flusso_assiale_e_radiale.jpg
 		:align: center
-		:scale: 60
+		:scale: 40
 		:width: 800px
 		:alt: fake width
 
