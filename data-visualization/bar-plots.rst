@@ -3,7 +3,7 @@ Bar plots
 
 .. youtube:: https://www.youtube.com/watch?v=tb20hIQlEBU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=1
 
-The :index:`bar plot <pair: bar plot; visualization>` is another univariate plot on a two-dimensional axis. The axes are not called *x*- or *y*-axes. Instead, one axis is called the *category axis*, while the other, the *value axis*, shows the value of each bar.
+The :index:`bar plot <pair: bar plot; visualization>` is another univariate plot on a two-dimensional axis. The axes are not called *x*- or *y*-axes. Instead, one axis is called the *category axis* showing the category name, while the other, the *value axis*, shows the value of that category as a bar.
 
 .. image:: ../figures/visualization/barplot-example-expenses.png
    :scale: 60
