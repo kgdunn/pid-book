@@ -15,7 +15,7 @@ Centered processes
 .. index:: Cp
 
 
-urchasers of your product may request a :index:`process capability ratio` (PCR) for each of the quality attributes of your product. For example, your plastic product is characterized by its Mooney viscosity and melting point. A PCR value can be calculated for either property, using the definition below:
+Purchasers of your product may request a :index:`process capability ratio` (PCR) for each of the quality attributes of your product. For example, your plastic product is characterized by its Mooney viscosity and melting point. A PCR value can be calculated for either property, using the definition below:
 
 .. math::
 	:label: process-capability-ratio-centered
