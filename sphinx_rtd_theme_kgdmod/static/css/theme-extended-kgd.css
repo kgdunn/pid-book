@@ -31,3 +31,8 @@ li.toctree-l2{
 .eqno{
 	float: right;
 }
+
+/* In the Index only*/
+.indextable ul{
+	padding-left: 25px;
+}

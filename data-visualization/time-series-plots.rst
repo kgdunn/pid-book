@@ -52,7 +52,7 @@ Here are some tips for effective time-series plots:
 
 	.. figure:: ../figures/visualization/3-correlated-variables-as-sparklines.png
 		:width: 400px
-		:scale: 50 %
+		:scale: 50 
 		:align: right
 
 	Sparklines are small graphics that carry a high density of information. The human eye is easily capable of absorbing about 250 dots (points) per linear inch and 60,000 points per square inch. These :index:`sparklines` convey the same amount of information as the previous plots and are easy to consume on hand-held devices such as iPhones, cellphones and tablet computing devices that are common in chemical plants and other engineering facilities. Read more about them from `this hyperlink <http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR>`_.
