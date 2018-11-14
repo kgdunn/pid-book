@@ -118,6 +118,7 @@
               <!-- Local TOC -->
               <div class="local-toc">LOCAL TOC{{ toc }}</div>
           {% endif %}
+          <a href="genindex">Index</a>
         {% endblock %}
       </div>
 	  <hr>
@@ -132,7 +133,7 @@
 			<ul><li>Updated: {{last_updated}}</li><li>Version: {{release}}</li></ul>
 			<hr>
 			<p><a href="https://docs.google.com/forms/d/1IpO-bvJwQwhK64eid4YXwJBvGxN5cfyYDv81G-YgWrM/viewform">Suggest improvements; provide feedback; point out spelling, grammar, or other errors</a></p>
-			
+
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
@@ -190,11 +191,11 @@
       });
   </script>
   {% endif %}
-  
+
   {# Handles toggling for answers to questions #}
-	<script type="text/javascript"> 
-		function toggle_q_and_a(obj) { 
-			var obj=document.getElementById(obj); 
+	<script type="text/javascript">
+		function toggle_q_and_a(obj) {
+			var obj=document.getElementById(obj);
 			var link=document.getElementById(obj.id+'-click');
 			if(obj.style.display == "inline"){
 				obj.style.display = "none";
@@ -203,10 +204,10 @@
 				obj.style.display = "inline";
 				link.text = "Hide answer ";
 			}
-		} 
+		}
 		function toggle_all_q_and_a(obj){
-			var answers = document.getElementsByClassName('q_and_a_answer');		
-			
+			var answers = document.getElementsByClassName('q_and_a_answer');
+
 			// Reset the state of the answers to the opposite of what is desired
 			if(obj.innerHTML == "Show all answers"){
 				obj.innerHTML = "Hide all answers";
@@ -218,7 +219,7 @@
 			// Now actually get the answers to the correct state
 			for (index = 0, len = answers.length; index < len; ++index) {toggle_q_and_a(answers[index].id);}
 		}
-	</script> 
+	</script>
 
   {%- block footer %} {% endblock %}
 
