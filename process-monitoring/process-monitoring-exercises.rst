@@ -509,8 +509,8 @@ Exercises
 		*	:math:`\bar{\bar{x}} =\frac{1}{K}\sum\limits_{k=1}^K\bar{x}_k= 53.5`\
 		*	:math:`\bar{S} =\frac{1}{K}\sum\limits_{k=1}^K s_k= 1.10`
 		*	:math:`a_n =0.952` 
-		*	LCL = :math:`53.5 -3 \cdot\frac{1.10}{0.952\sqrt{6}} = 53.5`
-		*	UCL = :math:`53.5 +3 \cdot\frac{1.10}{0.952\sqrt{6}} = 54.0`
+		*	LCL = :math:`53.5 -3 \cdot\frac{1.10}{0.952\sqrt{6}} = 52.08`
+		*	UCL = :math:`53.5 +3 \cdot\frac{1.10}{0.952\sqrt{6}} = 54.92`
 
 	#.	The Shewhart chart using a subgroup of size 6 is not a useful monitoring chart. There are too many false alarms, which will cause the operators to just ignore the chart. The problem is that the first assumption of independence is not correct and has a detrimental effect, as shown in :ref:`a previous question <lack_of_independence_question>`. 
 
