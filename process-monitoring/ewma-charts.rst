@@ -52,7 +52,7 @@ To start the EWMA sequence we define the value for :math:`\hat{x}_0 = T`, and :m
 	:label: ewma-derivation-2
 	
 		\begin{array}{lcrclcl}
-			x_t = \text{new data}\qquad		&& \hat{x}_{t+1} &=& \hat{x}_{t}   + \lambda e_{t}\qquad\qquad	& \text{where~} e_t = x_t - \hat{x}_t \\
+			x_t = \text{new data}\qquad		&& \hat{x}_{t+1} &=& \hat{x}_{t}   + \lambda e_{t}\qquad\qquad	& \text{where}\,\, e_t = x_t - \hat{x}_t \\
 			\text{Substituting in the error}&& \hat{x}_{t+1} &=& \hat{x}_{t}   + \lambda \left(x_t - \hat{x}_t\right)     \\
 											&& \hat{x}_{t+1} &=& \left(1-\lambda \right)\hat{x}_{t}   + \lambda x_t  \\
 		\end{array}
