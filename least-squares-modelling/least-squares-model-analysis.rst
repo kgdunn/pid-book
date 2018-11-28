@@ -324,13 +324,13 @@ Now for the variance of :math:`b_0 = \overline{\mathrm{y}} - b_1 \overline{\math
 
 	\mathcal{V}\{\beta_0\} \approx \mathcal{V}\{b_0\} &= \left(\dfrac{1}{N} + \dfrac{\overline{\mathrm{x}}^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \right)\mathcal{V}\{y_i\} \\ \\
 	\mathcal{V}\{\beta_1\} \approx \mathcal{V}\{b_1\} &= \dfrac{\mathcal{V}\{y_i\}}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \\ \\
-	\text{where}\qquad \mathcal{V}\{y_i\} &= \mathcal{V}\{e_i\}  = \dfrac{\sum{e_i^2}}{n-k}, \text{~if there is no lack-of-fit and the y's are independent of each other}.
+	\text{where}\qquad \mathcal{V}\{y_i\} &= \mathcal{V}\{e_i\}  = \dfrac{\sum{e_i^2}}{n-k}, \,\,\text{if there is no lack-of-fit and the y's are independent of each other}.
 
 For convenience we will define some short-hand notation, which is common in least squares:
 
 .. math::
 
-	S_E^2 &= \mathcal{V}\{e_i\}  = \mathcal{V}\{y_i\} = \dfrac{\sum{e_i^2}}{n-k} \qquad\qquad \text{or~~} S_E = \sqrt{ \dfrac{\sum{e_i^2}}{n-k} }\\
+	S_E^2 &= \mathcal{V}\{e_i\}  = \mathcal{V}\{y_i\} = \dfrac{\sum{e_i^2}}{n-k} \qquad\qquad \text{or}\,\, S_E = \sqrt{ \dfrac{\sum{e_i^2}}{n-k} }\\
 	S_E^2(b_0) &= \mathcal{V}\{b_0\} = \left(\dfrac{1}{N} + \dfrac{\overline{\mathrm{x}}^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \right)S_E^2\\
 	S_E^2(b_1) &= \mathcal{V}\{b_1\} = \dfrac{S_E^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}
 

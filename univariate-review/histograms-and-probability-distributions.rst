@@ -225,7 +225,7 @@ We review a couple of concepts that you should have seen in prior statistical wo
 	
 			\text{mad}\left\{ x_i \right\} = c \cdot \text{median}\left\{ \| x_i - \text{median}\left\{ x_i \right\}  \|  \right\} \qquad\qquad \text{where}\qquad c = 1.4826
 
-	The constant :math:`c` makes the MAD consistent with the standard deviation when the observations :math:`x_i` are normally distributed. The MAD has a :index:`breakdown point` of 50%, because like the median, we can replace just under half the data with outliers before the estimate becomes unbounded. To computer the MAD in R, use the ``MAD(x)`` function on a vector ``x``.
+	The constant :math:`c` makes the MAD consistent with the standard deviation when the observations :math:`x_i` are normally distributed. The MAD has a :index:`breakdown point` of 50%, because like the median, we can replace just under half the data with outliers before the estimate becomes unbounded. To compute the MAD in R, use the ``MAD(x)`` function on a vector ``x``.
 
 		Enrichment reading: read pages *1 to 8* of "`Tutorial to Robust Statistics <http://dx.doi.org/10.1002/cem.1180050103>`_", PJ Rousseeuw, *Journal of Chemometrics*, **5**, 1-20, 1991.
 

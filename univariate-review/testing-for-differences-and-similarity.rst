@@ -128,7 +128,7 @@ We can immediately see the data are **not independent**, because the slope is no
 Comparison when a reference set is not available
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A reference data set may not always be available; we might only have the data from the 20 experimental runs (10 from system A and 10 from B). We can proceed to compare the data, but we will require a strong assumption of random sampling (independence), which is often not valid in engineering data sets. Fortunately, engineering data sets are usually large - we are good at collecting data - so the methodology in the preceding section on using a reference set, is greatly preferred, when possible.
+A reference data set may not always be available; we may only have the data from the 20 experimental runs (10 from system A and 10 from B) and nothing else. We can proceed to compare the data, but we will require a strong assumption of random sampling (independence), which is often not valid in engineering data sets. Fortunately, engineering data sets are usually large - we are good at collecting data - so the methodology in the preceding section on using a reference set, is greatly preferred, when possible.
 
 How could the assumption of independence (random sampling) be made more realistically?  How is the :index:`lack of independence <single: independence; lack of>` detrimental?  We show below that the assumption of independence is made twice: the samples within group A and B must be independent; furthermore, the samples between the groups should be independent. But first we have to understand why the assumption of independence is required, by understanding the usual approach for estimating if differences are significant or not.
 
