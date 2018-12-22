@@ -187,9 +187,10 @@ We review a couple of concepts that you should have seen in prior statistical wo
 				\text{sample mean:}     &\qquad&                       \overline{x}  &= \frac{1}{n}\sum_{i=1}^{n}{x_i}
 			\end{alignat*}
 			
-	where :math:`N` represents the entire population, and :math:`n` are the number of entries in the sample.
+	where :math:`N` represents the entire population, and :math:`n` are the numberhe sample.
 		
 	.. dcl:: R
+		:height: 200px
 
 		# A vector of 50 normally distributed 
 		# random numbers
@@ -217,15 +218,20 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 	Dividing by :math:`n-1` makes the variance statistic, :math:`s^2`, an unbiased estimator of the population variance, :math:`\sigma^2`. However, in most engineering data sets our value for :math:`n` is large, so using a divisor of :math:`n`, which you might come across in computer software or other texts, rather than :math:`n-1` as shown here, has little difference.
 
-	.. dcl:: s
+	.. dcl:: R
+		:height: 200px;
 
 		# A vector of 50 normally distributed 
-		# random numbers
+		# random numbers with a standard 
+		# deviation of 5
 				
-		x <- rnorm(50)
+		x <- rnorm(50, sd=5)
 
-		sd(x)     # for standard deviation
-		var(x)    # for variance
+		paste0('Standard deviation = ', sd(x))
+		paste0('The variance is    = ', var(x))
+		paste0('Square root of variance = ', sqrt(var(x)))
+		
+		
 		
 	The square root of variance, called the :index:`standard deviation` is a more useful measure of spread to engineers: it is easier to visualize on a histogram and has the advantage of being in the same units of the variable.
 
@@ -267,7 +273,8 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 	The constant :math:`c` makes the MAD consistent with the standard deviation when the observations :math:`x_i` are normally distributed. The MAD has a :index:`breakdown point` of 50%, because like the median, we can replace just under half the data with outliers before the estimate becomes unbounded. To compute the MAD in R, use the ``mad(x)`` function on a vector ``x``.
 	
-	.. dcl:: s
+	.. dcl:: 
+		:height: 500px
 
 		# A vector of 500 normally distributed 
 		# random numbers
