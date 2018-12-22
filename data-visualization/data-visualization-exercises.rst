@@ -91,10 +91,9 @@ Exercises
 		:scale: 70
 		:width: 900px
 		:alt: fake width
-	
-	
-	.. dcl:: # 
 		
+	.. dcl:: R
+
 		library(car)
 		data_file = 'http://openmv.net/file/food-texture.csv'
 		food <- read.csv(data_file)
@@ -129,7 +128,7 @@ Exercises
 	:fullinclude: no 
 
 
-	#.	A suitable chart for displaying variability on a per-day basis is the boxplot, one box for each day of the week.  This allows you to see *between-day* variation when comparing the boxes side by side, and get an impression of the *variability within* each variable, by examining how the box's horizontal lines are spread out (25th, 50th and 75th percentiles).
+	#.	A suitable chart for displaying variability on a per-day basis is the boxplot, one box for each day of the week. This allows you to see *between-day* variation when comparing the boxes side by side, and get an impression of the *variability within* each variable, by examining how the box's horizontal lines are spread out (25th, 50th and 75th percentiles).
 	
 	
 	#.	A box plot is an effective way to summarize and compare the data for each day of the week.
@@ -150,7 +149,7 @@ Exercises
 
 			- Much less website traffic on Saturdays and Sundays, especially Sunday which has less spread than Saturday.
 			- Visits increase during the weekday, peaking on Wednesday and then dropping down by Friday.
-			- All week days seem to have about the same level of spread, except Friday, which is more variable.  
+			- All week days seem to have about the same level of spread, except Friday, which is more variable.
 			- This is a website of academic interest, so these trends are expected.
 
 	#.	A time-series plot of the data shows increased visits in September and October, and declining visits in November and December. This coincides with the phases of the academic term. A plot of the total number of visits within each month will show this effect clearly. The lowest number of visits were recorded in late June and July. 
@@ -220,7 +219,7 @@ Exercises
 
 	To compensate for that, social science studies compare similar countries - for example the original article from `The Economist's website <http://www.economist.com/node/15127287>`_ shows how the same data from Mexico and Venezuela were compared to Columbia's data. The article also shows how much  of the trend was due to political changes in the country that were happening at the same time: in particular a 3rd factor not shown in the plots was largely responsible for the decrease in kidnappings. Kidnappings would probably have remained at the same level if it were not also for the increase in the number of police officers, who are able to respond to citizen's cellphone calls.
 	
-	Fortunately in engineering situations we deal with much shorter time scales, and are able to better control our experiments. However the case of an uncertain 3rd factor is prevalent and must be guarded for - we'll learn about this is the section on design of experiments.      
+	Fortunately in engineering situations we deal with much shorter time scales, and are able to better control our experiments. However the case of an uncertain 3rd factor is prevalent and must be guarded for - we'll learn about this is the section on design of experiments.
 
 
 ..	question:: 
@@ -263,11 +262,11 @@ Exercises
 
 			legend(20, 300, 
 				 legend=c("Front left", 
-							"Front right", 
-							"Back left", 
-							"Back right"),
+				          "Front right", 
+				          "Back left", 
+				          "Back right"),
 				col=c("blue", "blue", 
-						"black", "black"), 
+				      "black", "black"), 
 				lwd=2, 
 				pch=c(NA, "o", NA, "o"))
 
@@ -284,19 +283,19 @@ Exercises
 		
 	#.	*	Oscillations, with a period of roughly 48 to 50 samples (corresponds to 24 hours) shows a daily cycle in the temperature.
 		*	All 4 temperatures are correlated (move together).
-		*	There is a break in the correlation around samples 50 to 60 on the front temperatures (maybe a door or window was left open?).  Notice that the oscillatory trend still continues within the offset region - just shifted lower.
+		*	There is a break in the correlation around samples 50 to 60 on the front temperatures (maybe a door or window was left open?). Notice that the oscillatory trend still continues within the offset region - just shifted lower.
 		*	A spike up in the room's back left temperature, around sample 135.
 	
-	#.	The above plot was requested to be on one axis, which leads to some clutter in the presentation.  Sparklines show each trajectory on their own axis, so it is less cluttered, but the same features would still be observed when the 4 tiny plots are stacked one on top of each other. 
+	#.	The above plot was requested to be on one axis, which leads to some clutter in the presentation. Sparklines show each trajectory on their own axis, so it is less cluttered, but the same features would still be observed when the 4 tiny plots are stacked one on top of each other. 
 	
 		.. image:: ../figures/examples/room-temperature/room-temperature-sparklines.png
 			:alt:	../figures/examples/room-temperature/room-temperature-plots.R
 			:scale: 100
 			:align: center
 
-		Another example of effective sparklines are for stock market data.  Take a look, for example at `Google Finance for ERJ <http://www.google.com/finance?q=NYSE:ERJ>`_ (Embraer SA).  Google shows Embraer's stock price, but scroll down to see the sparklines for other companies that are in the same economic sector (Bombadier, Boeing, Northrop Grumman, *etc*).  This quickly allows you to see whether movements in a stock are due to the overall sector (correlations), or due to a particular company (broken correlations).
+		Another example of effective sparklines are for stock market data. Take a look, for example at `Google Finance for ERJ <http://www.google.com/finance?q=NYSE:ERJ>`_ (Embraer SA). Google shows Embraer's stock price, but scroll down to see the sparklines for other companies that are in the same economic sector (Bombadier, Boeing, Northrop Grumman, *etc*). This quickly allows you to see whether movements in a stock are due to the overall sector (correlations), or due to a particular company (broken correlations).
 	
-		If you looked around for how to generate sparklines in R you may have come across `this website <https://cran.r-project.org/web/packages/YaleToolkit/>`_.  Notice in the top left corner that the ``sparklines`` function comes from the ``YaleToolkit``, which is an add-on package to R. We show how to `install packages in the tutorial <http://learnche.mcmaster.ca/4C3/Software_tutorial/Extending_R_with_packages>`_.  Once installed, you can try out that ``sparklines`` function: 
+		If you looked around for how to generate sparklines in R you may have come across `this website <https://cran.r-project.org/web/packages/YaleToolkit/>`_. Notice in the top left corner that the ``sparklines`` function comes from the ``YaleToolkit``, which is an add-on package to R. We show how to `install packages in the tutorial <http://learnche.mcmaster.ca/4C3/Software_tutorial/Extending_R_with_packages>`_. Once installed, you can try out that ``sparklines`` function: 
 	
 		*	First load the library: ``library(YaleToolkit)``
 		*	Then see the help for the function: ``help(sparklines)`` to see how to generate your sparklines
@@ -313,6 +312,7 @@ Exercises
 	#.	The following code will load the data, and plot a boxplot for the first 100 rows:
 	
 		.. dcl:: R
+		
 			data_file = 'http://openmv.net/file/six-point-board-thickness.csv'
 			boards <- read.csv(data_file)
 			summary(boards)
@@ -330,9 +330,8 @@ Exercises
 			:align: center
 			:scale: 45
 			:width: 900px
-			:alt: fake width
 
-	#.	The thick center line on each boxplot is the median (50th percentile) of that variable.  The top and bottom edges of the box are the 25th and 75th percentile, respectively.  If the data are from a symmetric distribution, such as the :math:`t` or normal distribution, then the median should be approximately centered with respect to those 2 percentiles.  The fact that it is not, especially for position 1, indicates the data are *skewed* either to the left (median is closer to upper edge) or the the right (median closer to the lower edge).
+	#.	The thick center line on each boxplot is the median (50th percentile) of that variable. The top and bottom edges of the box are the 25th and 75th percentile, respectively. If the data are from a symmetric distribution, such as the :math:`t` or normal distribution, then the median should be approximately centered with respect to those 2 percentiles. The fact that it is not, especially for position 1, indicates the data are *skewed* either to the left (median is closer to upper edge) or the the right (median closer to the lower edge).
 
 
 .. question::
