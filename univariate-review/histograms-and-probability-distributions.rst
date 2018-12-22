@@ -197,6 +197,11 @@ We review a couple of concepts that you should have seen in prior statistical wo
 		
 		x <- rnorm(50)
 		mean(x)
+		
+		# Run the code several times, to check
+		# that the mean is approximately 0
+		# Check what the 'x' variable contains.
+	
 	
 	This is one of several statistics that describes your data: if you told your customer that the average density of your liquid product was 1.421 g/L, and nothing further, the customer might assume that some lots of the same product could have a density of 0.824 g/L, or 2.519 g/L. We need information in addition to the mean to quantify the distribution of values: *the spread*.
 

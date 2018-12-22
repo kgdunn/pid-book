@@ -27,7 +27,43 @@ Imagine a case where we are throwing dice. The distributions, shown below, are o
 .. image:: ../figures/univariate/simulate-CLT.png
 	:align: center
 
-As one sees from the above figures, the distribution from these averages quickly takes the shape of the so-called *normal distribution*. As :math:`M` increases, the y-axis starts to form a peak. 
+As one sees from the above figures, the distribution from these averages quickly takes the shape of the so-called *normal distribution*. As :math:`M` increases, the y-axis starts to form a peak.  Try it yourself:
+
+.. dcl:: R
+
+	N = 500
+	
+	# Layout the plots in 2 rows and 3 columns
+	m <- t(matrix(seq(1,6), 3, 2))
+	layout(m)
+	
+	# Throw the dice several times
+	s1 <- as.integer(runif(N, 1, 7))
+	s2 <- as.integer(runif(N, 1, 7))
+	s3 <- as.integer(runif(N, 1, 7))
+	s4 <- as.integer(runif(N, 1, 7))
+	s5 <- as.integer(runif(N, 1, 7))
+	s6 <- as.integer(runif(N, 1, 7))
+	s7 <- as.integer(runif(N, 1, 7))
+	s8 <- as.integer(runif(N, 1, 7))
+	s9 <- as.integer(runif(N, 1, 7))
+	s10 <- as.integer(runif(N, 1, 7))
+
+
+	hist(s1, main="", xlab="One throw", breaks=seq(0,6)+0.5)
+	bins = 8
+	hist((s1+s2)/2, breaks=bins, 
+	     main="", xlab="Average of two throws")
+	hist((s1+s2+s3+s4)/4, breaks=bins, 
+	     main="", xlab="Average of 4 throws")
+	hist((s1+s2+s3+s4+s5+s6)/6, breaks=bins, 
+	     main="", xlab="Average of 6 throws")
+	bins=12
+	hist((s1+s2+s3+s4+s5+s6+s7+s8)/8, breaks=bins, 
+	     main="", xlab="Average of 8 throws")
+	hist((s1+s2+s3+s4+s5+s6+s7+s8+s9+s10)/10, breaks=bins, 
+	     main="", xlab="Average of 10 throws")
+
 
 What is the engineering significance of this averaging process (which is really just a weighted sum)?  Many of the quantities we measure are bulk properties, such as viscosity, density, or particle size. We can conceptually imagine that the bulk property measured is the combination of the same property, measured on smaller and smaller components. Even if the value measured on the smaller component is not normally distributed, the bulk property will be as if it came from a normal distribution.
 
@@ -135,21 +171,25 @@ Some useful points:
 
 To calculate the point on the curve :math:`p(x)` we use the ``dnorm(...)`` function in R. It requires you specify the two parameters:
 
-	.. code-block:: s
+	.. dcl:: R
 
-		> dnorm(-1, mean=0, sd=1)    # gives value of p(x = -1) when mu=0, sigma=1
-		[1] 0.2419707
+		# gives value of p(x = -1) when mu=0, sigma=1
+		dnorm(-1, mean=0, sd=1)   #  0.2419707
+
 
 It is more useful to calculate the area under :math:`p(x)` from :math:`x=-\infty` to a particular point :math:`x`. This is called the cumulative distribution, and is discussed more fully in :ref:`the next section <univariate_check_for_normality_qqplot>`.
 
-	.. code-block:: s
+	.. dcl:: R
 	
-		> pnorm(-1, mean=0, sd=1)    # gives area from -inf to -1, for mu=0, sigma=1
-		[1] 0.1586553
-		> pnorm(1, mean=0, sd=1)     # gives area from -inf to +1, for mu=0, sigma=1
-		[1] 0.8413447
-		> pnorm(3, mean=0, sd=3)     # spread is wider, but fractional area the same
-		[1] 0.8413447
+		# gives area from -inf to -1, for mu=0, sigma=1
+		pnorm(-1, mean=0, sd=1)    # 0.1586553
+		
+		# gives area from -inf to +1, for mu=0, sigma=1
+		pnorm(1, mean=0, sd=1)     #  0.8413447
+		
+		# spread is wider, but fractional area the same
+		pnorm(3, mean=0, sd=3)     # 0.8413447
+
 
 You might still find yourself having to refer to tables of cumulative area under the normal distribution, instead of using the ``pnorm()`` function (for example in a test or exam). If you look at the appendix of most statistical texts you will find these tables, and there is one :ref:`at the end of this chapter <univariate_statistical_tables>`. Since these tables cannot be produced for all combinations of mean and standard deviation parameters, they use what is called *standard form*.
 
@@ -267,17 +307,36 @@ The q-q plot, quantile-quantile plot, shows the quantiles of 2 distributions aga
 
 We can use the q-q plot to compare any 2 *samples of data*, even if they have different values of :math:`N`, by calculating the quantiles for each sample at different step quantiles (e.g. 1, 2, 3, 4, 5, 10, 15, .... 95, 96, 97, 98, 99), then plot the q-q plot for the two samples. You can calculate quantiles for any sample of data using the ``quantile`` function in R. The simple example below shows how to compare the q-q plot for 1000 normal distribution samples against 2000 :math:`F`-distribution samples. 
 
-	.. code-block:: s
+	.. dcl:: R
 	
-		rand.norm <- rnorm(1000)            # 1000 normal values
-		rand.f <- rf(2000, df1=200, df=150) # 2000 values from F-distribution
-		hist(rand.f)                        # looks sort of normally distributed
+		# 1000 normal values
+		rand.norm <- rnorm(1000)   
+		         
+		# 2000 values from F-distribution
+		rand.f <- rf(2000, df1=200, df=150) 
+		
+		# looks sort of normally distributed
+		hist(rand.f, freq=FALSE, ylim=c(0, 2.6), 
+			 main="Are these data from a normal distribution?",
+			 ylab="Frequency")
+			 
+		# Add the density line on top
+		lines(density(rand.f))
+		
+		# But your eye is being fooled ...
+		
 		quantiles <- c(1, 2, 3, 4, seq(5, 95, 5), 96, 97, 98, 99)/100
 		norm.quantiles <- quantile(rand.norm, quantiles)
 		f.quantiles <- quantile(rand.f, quantiles)
-		plot(f.quantiles, norm.quantiles)   # proves it isn't
+		
+		# Proves it isn't normally distributed
+		plot(f.quantiles, norm.quantiles)   
+		
+		
+		
+		# Another way to proves it isn't
 		library(car)
-		qqPlot(rand.f, distribution="norm") # also proves it isn't
+		qqPlot(rand.f, distribution="norm") 
 		
 .. image:: ../figures/univariate/qqplot-comparison.png
 	:alt:   ../figures/univariate/qqplot-comparison.R
