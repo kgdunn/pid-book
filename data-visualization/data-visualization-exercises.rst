@@ -92,8 +92,17 @@ Exercises
 		:width: 900px
 		:alt: fake width
 	
-	.. literalinclude:: ../figures/visualization/scatterplotmatrix-food-data.R
-		:language: s
+	
+	.. dcl:: # 
+		
+		library(car)
+		data_file = 'http://openmv.net/file/food-texture.csv'
+		food <- read.csv(data_file)
+		
+		# Hide the smoother and bounds
+		scatterplotMatrix(food[,2:6],
+		                  smoother=FALSE)
+
 
 	From this plot we see histograms of the 5 univariate distributions on the diagonal plots; the off-diagonal plots are the bivariate correlations between each combination of variable. The trend line (solid light green) shows the linear regression between the two variables. The lower diagonal part of the plot is a 90 degree rotation of the upper diagonal part. Some software packages will just draw either the upper or lower part.
 
@@ -226,8 +235,42 @@ Exercises
 
 	#.	You could use the following code to plot the data:
 	
-		.. literalinclude:: ../figures/examples/room-temperature/room-temperature-plots.R
-		       :language: s
+		.. dcl:: R
+			:height: 800px
+			
+			data_file = 'http://openmv.net/file/room-temperature.csv'
+			roomtemp <- read.csv(data_file)
+			summary(roomtemp)
+			ylim = c(290, 300)
+
+			plot(roomtemp$FrontLeft,   
+				 type='l',
+				 col="blue", 
+				 ylim=c(290, 300), 
+				 xlab="Sequence order", 
+				 ylab="Room temperature [K]")
+			lines(roomtemp$FrontRight,
+				 type='b',
+				 pch='o',
+				 col="blue")
+			lines(roomtemp$BackLeft,
+				 type='l',
+				 col="black")
+			lines(roomtemp$BackRight,
+				 type='b',
+				 pch='o',
+				 col="black")
+
+			legend(20, 300, 
+				 legend=c("Front left", 
+							"Front right", 
+							"Back left", 
+							"Back right"),
+				col=c("blue", "blue", 
+						"black", "black"), 
+				lwd=2, 
+				pch=c(NA, "o", NA, "o"))
+
 
 		.. image:: ../figures/examples/room-temperature/room-temperatures.png
 			:alt:	../figures/examples/room-temperature/room-temperature-plots.R
@@ -269,10 +312,21 @@ Exercises
 
 	#.	The following code will load the data, and plot a boxplot for the first 100 rows:
 	
-		.. literalinclude:: ../figures/visualization/boxplot-for-boards.R
-			:language: s	
+		.. dcl:: R
+			data_file = 'http://openmv.net/file/six-point-board-thickness.csv'
+			boards <- read.csv(data_file)
+			summary(boards)
+
+			plot(boards[1:100,5], type='l')
+			plot(boards[1:100,5], type='l')
+			first100 <- boards[1:100, 2:7]
+
+			# Ignore the first date/time column: using only Pos1, Pos2, ... Pos6 columns
+			boxplot(first100, ylab="Thickness [mils]")
+			
 			
 		.. image:: ../figures/visualization/boxplot-for-two-by-six-100-boards.png
+			:alt: ../figures/visualization/boxplot-for-boards.R
 			:align: center
 			:scale: 45
 			:width: 900px
