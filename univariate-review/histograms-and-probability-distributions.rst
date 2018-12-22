@@ -24,6 +24,17 @@ Histograms make sense for categorical variables, but a histogram can also be der
 	:align: center
 	:width: 900px
 	:alt: fake width
+	
+.. dcl:: R
+
+	# Created 500 normally distributed points
+	# with a mean of 1100 and standard deviation
+	# of 50 units.
+	data <- rnorm(500, mean=1100, sd=50)
+	hist(data, 
+	     xlab="Mass [g] of each package", 
+	     ylab="Number of packages (N=500)")
+
 
 Plot histograms for the following:
 
@@ -87,6 +98,21 @@ A :index:`relative frequency`, also called :index:`density`, is sometimes prefer
 	:scale: 60
 	:align: center
 	
+	
+.. dcl:: R
+
+	# 1000 normally distributed values
+	values = rnorm(1000)
+	hist(values, freq=TRUE,  xlab="Random values", 
+		 cex.lab=1.5, cex.main=1.8, lwd=2, 
+		 cex.sub=1.8, cex.axis=1.8, 
+		 ylab="Frequency (N=1000)")
+	hist(values, freq=FALSE, xlab="Random values", 
+		 cex.lab=1.5, cex.main=1.8, lwd=2, 
+		 cex.sub=1.8, cex.axis=1.8, 
+		 ylab="Relative density")
+
+
 Some nomenclature
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
