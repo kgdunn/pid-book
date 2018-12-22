@@ -317,7 +317,7 @@ Exercises
 			boards <- read.csv(data_file)
 			summary(boards)
 
-			plot(boards[1:100,5], type='l')
+			plot(boards[1:100,2], type='l')
 			plot(boards[1:100,5], type='l')
 			first100 <- boards[1:100, 2:7]
 
