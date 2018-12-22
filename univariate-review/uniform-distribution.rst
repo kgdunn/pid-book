@@ -15,20 +15,27 @@ You can simulate uniformly distributed random numbers in most software packages.
 
 	**MATLAB/Octave**: ``round(rand(50, 1) * (10 - 2) + 2)``
 
-	**R**: ``
+	**R**: 
 	
-	.. dcl:: R 
-		:height: 100px
+		.. dcl:: R 
+			:height: 100px
 	
-		x <- as.integer(runif(50, 2, 11))
+			as.integer(runif(50, 2, 11))
+		
+			# run the code several times to verify
+			# the numbers are between 2 and 10
+		
 
 	**Python**:
 	
 		.. dcl:: python
 			:height: 100px
 		
-			# Requires installing the Numpy library
+			# Requires installing the NumPy library
 			import numpy as np
-			(np.random.rand(50, 1) * (10 - 2) + 2).round()
+			(np.random.rand(50) * (10 - 2) + 2).round()
+			
+			# run the code several times to verify
+			# the numbers are between 2 and 10
 
 A continuous, uniform distribution arises when there is equal probability of every measurement occurring within a given lower- and upper-bound. This sort of phenomena is not often found in practice. Usually, continuous measurements follow some other distribution, of which we will discuss the normal and :math:`t`-distribution next.

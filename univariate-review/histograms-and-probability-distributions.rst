@@ -26,8 +26,9 @@ Histograms make sense for categorical variables, but a histogram can also be der
 	:alt: fake width
 	
 .. dcl:: R
+	:height: 350px
 
-	# Created 500 normally distributed points
+	# Create 500 normally distributed points
 	# with a mean of 1100 and standard deviation
 	# of 50 units.
 	data <- rnorm(500, mean=1100, sd=50)
@@ -100,6 +101,8 @@ A :index:`relative frequency`, also called :index:`density`, is sometimes prefer
 	
 	
 .. dcl:: R
+	:height: 450px
+
 
 	# 1000 normally distributed values
 	values = rnorm(1000)
@@ -111,6 +114,9 @@ A :index:`relative frequency`, also called :index:`density`, is sometimes prefer
 		 cex.lab=1.5, cex.main=1.8, lwd=2, 
 		 cex.sub=1.8, cex.axis=1.8, 
 		 ylab="Relative density")
+		 
+	# Compare the two plots: only the 
+	# y-axis changes!
 
 
 Some nomenclature
@@ -183,9 +189,12 @@ We review a couple of concepts that you should have seen in prior statistical wo
 			
 	where :math:`N` represents the entire population, and :math:`n` are the number of entries in the sample.
 		
-	.. code-block:: s
+	.. dcl:: R
 
-		x <- rnorm(50)   # a vector of 50 normally distributed random numbers
+		# A vector of 50 normally distributed 
+		# random numbers
+		
+		x <- rnorm(50)
 		mean(x)
 	
 	This is one of several statistics that describes your data: if you told your customer that the average density of your liquid product was 1.421 g/L, and nothing further, the customer might assume that some lots of the same product could have a density of 0.824 g/L, or 2.519 g/L. We need information in addition to the mean to quantify the distribution of values: *the spread*.
@@ -208,7 +217,12 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 	Dividing by :math:`n-1` makes the variance statistic, :math:`s^2`, an unbiased estimator of the population variance, :math:`\sigma^2`. However, in most engineering data sets our value for :math:`n` is large, so using a divisor of :math:`n`, which you might come across in computer software or other texts, rather than :math:`n-1` as shown here, has little difference.
 
-	.. code-block:: s
+	.. dcl:: s
+
+		# A vector of 50 normally distributed 
+		# random numbers
+				
+		x <- rnorm(50)
 
 		sd(x)     # for standard deviation
 		var(x)    # for variance
@@ -251,9 +265,30 @@ We review a couple of concepts that you should have seen in prior statistical wo
 	
 			\text{mad}\left\{ x_i \right\} = c \cdot \text{median}\left\{ \| x_i - \text{median}\left\{ x_i \right\}  \|  \right\} \qquad\qquad \text{where}\qquad c = 1.4826
 
-	The constant :math:`c` makes the MAD consistent with the standard deviation when the observations :math:`x_i` are normally distributed. The MAD has a :index:`breakdown point` of 50%, because like the median, we can replace just under half the data with outliers before the estimate becomes unbounded. To compute the MAD in R, use the ``MAD(x)`` function on a vector ``x``.
+	The constant :math:`c` makes the MAD consistent with the standard deviation when the observations :math:`x_i` are normally distributed. The MAD has a :index:`breakdown point` of 50%, because like the median, we can replace just under half the data with outliers before the estimate becomes unbounded. To compute the MAD in R, use the ``mad(x)`` function on a vector ``x``.
+	
+	.. dcl:: s
 
-		Enrichment reading: read pages *1 to 8* of "`Tutorial to Robust Statistics <http://dx.doi.org/10.1002/cem.1180050103>`_", PJ Rousseeuw, *Journal of Chemometrics*, **5**, 1-20, 1991.
+		# A vector of 500 normally distributed 
+		# random numbers
+				
+		x <- rnorm(500)
+
+		paste0('Without any outliers: ')
+		paste0('Standard deviation = ', sd(x))
+		paste0('The MAD is         = ', mad(x))
+		
+		# Run it several times to verify that the
+		# two are similar, when they are not 
+		# outliers
+		
+		# Now add a huge outlier:
+		x[2] <- 9876
+		paste0('Added an outlier: ')
+		paste0('*Standard deviation = ', sd(x))
+		paste0('*The MAD is         = ', mad(x))
+
+	Enrichment reading: read pages *1 to 8* of "`Tutorial to Robust Statistics <http://dx.doi.org/10.1002/cem.1180050103>`_", PJ Rousseeuw, *Journal of Chemometrics*, **5**, 1-20, 1991.
 
 
 .. For each of the distributions:
