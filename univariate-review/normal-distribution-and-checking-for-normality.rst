@@ -172,23 +172,29 @@ Some useful points:
 To calculate the point on the curve :math:`p(x)` we use the ``dnorm(...)`` function in R. It requires you specify the two parameters:
 
 	.. dcl:: R
+		:height: 200px
 
-		# gives value of p(x = -1) when mu=0, sigma=1
-		dnorm(-1, mean=0, sd=1)   #  0.2419707
+		# gives value of p(x = -1) when 
+		#     mu=0, and sigma=1
+		dnorm(-1, mean = 0, sd = 1)   #  0.2419707
 
 
 It is more useful to calculate the area under :math:`p(x)` from :math:`x=-\infty` to a particular point :math:`x`. This is called the cumulative distribution, and is discussed more fully in :ref:`the next section <univariate_check_for_normality_qqplot>`.
 
 	.. dcl:: R
+		:height: 200px
 	
-		# gives area from -inf to -1, for mu=0, sigma=1
-		pnorm(-1, mean=0, sd=1)    # 0.1586553
+		# gives area from -inf to -1, 
+		# for mu=0, sigma=1
+		pnorm(-1, mean = 0, sd = 1)    # 0.1586553
 		
-		# gives area from -inf to +1, for mu=0, sigma=1
-		pnorm(1, mean=0, sd=1)     #  0.8413447
+		# gives area from -inf to +1, 
+		# for mu=0, sigma=1
+		pnorm(1, mean = 0, sd = 1)     #  0.8413447
 		
-		# spread is wider, but fractional area the same
-		pnorm(3, mean=0, sd=3)     # 0.8413447
+		# spread is wider, but the
+		# fractional area is the same
+		pnorm(3, mean = 0, sd = 3)     # 0.8413447
 
 
 You might still find yourself having to refer to tables of cumulative area under the normal distribution, instead of using the ``pnorm()`` function (for example in a test or exam). If you look at the appendix of most statistical texts you will find these tables, and there is one :ref:`at the end of this chapter <univariate_statistical_tables>`. Since these tables cannot be produced for all combinations of mean and standard deviation parameters, they use what is called *standard form*.
@@ -301,13 +307,41 @@ A built-in function exists in R that runs the above calculations and shows a sca
 	:align: center
 	:scale: 100
 	
+All the above code together in one script for you to test out:
+	
+.. dcl:: R
+
+	N = 10
+	index <- seq(1, N)
+	P <- (index - 0.5) / N
+	theoretical.quantity <- qnorm(P)
+
+	yields <- c(86.2, 85.7, 71.9, 95.3, 77.1,
+	            71.4, 68.9, 78.9, 86.9, 78.4)
+	mean.yield <- mean(yields)        # 80.0
+	sd.yield <- sd(yields)            # 8.35
+
+	yields.z <- (yields - mean.yield)/sd.yield
+	yields.z.sorted <- sort(yields.z)
+
+	plot(theoretical.quantity, 
+	     yields.z.sorted, 
+	     type="p")
+
+	qqnorm(yields)
+	qqline(yields)
+
+	# or, using the ``car`` library
+	library(car)
+	qqPlot(yields)
+
 The R plot rescales the :math:`y`-axis (sample quantiles) back to the original units to make interpretation easier. We expect some departure from the 45 degree line due to the fact that these are only a sample of data. However, large deviations indicates the data are not normally distributed. An error region, or confidence envelope, may be superimposed around the 45 degree line.
 
 The q-q plot, quantile-quantile plot, shows the quantiles of 2 distributions against each other. In fact, we can use the horizontal axis for any distribution, it need not be the theoretical normal distribution. We might be interested if our data follow an :math:`F`-distribution then we could use the quantiles for that theoretical distribution on the horizontal axis.
 
 We can use the q-q plot to compare any 2 *samples of data*, even if they have different values of :math:`N`, by calculating the quantiles for each sample at different step quantiles (e.g. 1, 2, 3, 4, 5, 10, 15, .... 95, 96, 97, 98, 99), then plot the q-q plot for the two samples. You can calculate quantiles for any sample of data using the ``quantile`` function in R. The simple example below shows how to compare the q-q plot for 1000 normal distribution samples against 2000 :math:`F`-distribution samples. 
 
-	.. dcl:: R
+.. dcl:: R
 	
 		# 1000 normal values
 		rand.norm <- rnorm(1000)   
@@ -317,24 +351,14 @@ We can use the q-q plot to compare any 2 *samples of data*, even if they have di
 		
 		# looks sort of normally distributed
 		hist(rand.f, freq=FALSE, ylim=c(0, 2.6), 
-			 main="Are these data from a normal distribution?",
-			 ylab="Frequency")
+		     main="Are these data from a normal distribution?",
+		     ylab="Frequency")
 			 
 		# Add the density line on top
 		lines(density(rand.f))
 		
-		# But your eye is being fooled ...
-		
-		quantiles <- c(1, 2, 3, 4, seq(5, 95, 5), 96, 97, 98, 99)/100
-		norm.quantiles <- quantile(rand.norm, quantiles)
-		f.quantiles <- quantile(rand.f, quantiles)
-		
-		# Proves it isn't normally distributed
-		plot(f.quantiles, norm.quantiles)   
-		
-		
-		
-		# Another way to proves it isn't
+		# But your eye is being fooled ...	
+		# See the heavy tail
 		library(car)
 		qqPlot(rand.f, distribution="norm") 
 		
