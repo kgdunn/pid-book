@@ -117,6 +117,7 @@ So to summarize: we can use a historical data set if it is relevant. And there a
 In fact, for this example, the data were not independent, they were autocorrelated. There was a relationship from one batch to the next: :math:`x[k] = \phi x[k-1] + a[k]`, with :math:`\phi = -0.3`, and  :math:`a[k] \sim \mathcal{N}\left(\mu=0, \sigma^2=6.7^2\right)`. As an aside you can simulate your own set of autocorrelated data using this R code:
 
 .. dcl:: R
+	:height: 650px
 
 	N <- 300
 	phi <- -0.3
@@ -128,7 +129,7 @@ In fact, for this example, the data were not independent, they were autocorrelat
 	for (k in 2:N)
 	{
 	  A.hist[k] <- phi*(A.hist[k-1]) + 
-	    rnorm(1, mean=0, sd=spread)
+	           rnorm(1, mean = 0, sd = spread)
 	}
 	A.hist <- A.hist + location
 
@@ -146,6 +147,9 @@ In fact, for this example, the data were not independent, they were autocorrelat
 	     ylim = c(60,100))
 
 	lines(lowess(A.hist[1:N-1], A.hist[2:N]))
+	
+	# Hint: run the code several times, with
+	# different values of variable `phi`.
 
 We can visualize this :index:`autocorrelation` by plotting the values of :math:`x[k]` against :math:`x[k+1]`:
 
@@ -306,9 +310,34 @@ Check the probability of obtaining the :math:`z`-value in :eq:`zvalue-for-differ
 	\end{alignat*}
 	
 	
-The probability of seeing a :math:`z`-value from :math:`-\infty` up to 1.03 is 84.8% (use the ``pnorm(1.03)`` function in R). But we are interested in the probability of obtaining a :math:`z`-value **larger** than this. Why?  Because :math:`z=0` represents no improvement, and a value of :math:`z<0` would mean that system B is worse than system A. So what are the chances of obtaining :math:`z=1.03`?  It is (100-84.8)% = 15.2%, which means that system B's performance could have been obtained by pure luck in 15% of cases. 
+The probability of seeing a :math:`z`-value from :math:`-\infty` up to 1.03 is 84.8% (use the ``pnorm(1.03)`` function in R). But we are interested in the probability of obtaining a :math:`z`-value **larger** than this. Why?  Because :math:`z=0` represents no improvement, and a value of :math:`z<0` would mean that system B is worse than system A. So what are the chances of obtaining :math:`z=1.03`?  It is (100-84.8)% = 15.2%, which means that system B's performance could have been obtained by pure luck in 15.2% of cases. 
 
-We interpret this number in the summary section, but let's finally look at what happens if we have no historical data - then we generate an *internal* estimate of :math:`\sigma` from the 20 experimental runs alone.
+
+.. dcl:: R
+
+	A <- c(92.7, 73.3, 80.5, 81.2, 87.1,
+	       69.2, 81.9, 73.9, 78.6, 80.5)
+	B <- c(83.5, 78.9, 82.7, 93.2, 86.3,
+	       74.7, 81.6, 92.4, 83.6, 72.4)
+
+	xA.avg <- mean(A)
+	xB.avg <- mean(B)
+	n.A <- length(A)
+	n.B <- length(B)
+	sigma.external <- 6.61 # given
+
+	den <- sigma.external**2 * (1/n.A + 1/n.B)
+	z <- (xB.avg - xA.avg) / sqrt(den)
+
+	# Probability of this z?
+	# We have normalized to zero mean
+	# and to unit standard deviation:
+	p <- pnorm(z, mean=0, sd=1)  # 0.8481164
+	paste0('Probability by chance: ', 
+	       round((1-p)*100, 1), '%')
+	
+
+We interpret this number of "15.2%" in the summary section, but let's finally look at what happens if we have no historical data - then we generate an *internal* estimate of :math:`\sigma` from the 20 experimental runs alone.
 
 **Internal estimate of spread**
 
@@ -336,9 +365,36 @@ Now using this value of :math:`s_P` instead of :math:`\sigma` in :eq:`zvalue-for
 
 ..	TODO: add the equation for the confidence interval here
 
-The probability of obtaining a :math:`z`-value greater than this can be calculated as 16.3% using the :math:`t`-distribution with 18 degrees of freedom (use ``1-pt(1.01, df=18)`` in R). We use a :math:`t`-distribution because an estimate of the variance is used, :math:`s_p^2`, not a population variance, :math:`\sigma^2`. 
+The probability of obtaining a :math:`z`-value greater than this can be calculated as 16.4% using the :math:`t`-distribution with 18 degrees of freedom (use ``1-pt(1.01, df=18)`` in R). We use a :math:`t`-distribution because an estimate of the variance is used, :math:`s_p^2`, not a population variance, :math:`\sigma^2`. 
 
-As an aside: we used a normal distribution for the external :math:`\sigma` and a :math:`t`-distribution for the internal :math:`s`. Both cases had a similar value for :math:`z` (compare :math:`z = 1.01` to :math:`z = 1.03`). Note however that the probabilities are higher in the :math:`t`-distribution's tails, which means that even though we have similar :math:`z`-values, the probability is greater: 16.3% against 15.2%. While this difference is not much from a practical point of view, it illustrates the difference between the :math:`t`-distribution and the normal distribution.
+.. dcl:: R
+
+	A <- c(92.7, 73.3, 80.5, 81.2, 87.1,
+	       69.2, 81.9, 73.9, 78.6, 80.5)
+	B <- c(83.5, 78.9, 82.7, 93.2, 86.3,
+	       74.7, 81.6, 92.4, 83.6, 72.4)
+
+	xA.avg <- mean(A)
+	xB.avg <- mean(B)
+	n.A <- length(A)
+	n.B <- length(B)
+	# degrees of freedom
+	dof <- n.A - 1 + n.B - 1
+	var.pooled <- ((n.A - 1) * var(A) + 
+	          (n.B - 1) * var(B)) / dof
+	
+	den <- var.pooled * (1/n.A + 1/n.B)
+	z <- (xB.avg - xA.avg) / sqrt(den)
+
+	# Probability of this z?
+	# Compare it against the t-distribution:
+	p <- pt(z, df = dof)  # 0.8361346
+	
+	1-pt(1.01, df=18)
+	paste0('Probability by chance: ', 
+	       round((1-p)*100, 1), '%')
+
+As an aside: we used a normal distribution for the external :math:`\sigma` and a :math:`t`-distribution for the internal :math:`s`. Both cases had a similar value for :math:`z` (compare :math:`z = 1.01` to :math:`z = 1.03`). Note however that the probabilities are higher in the :math:`t`-distribution's tails, which means that even though we have similar :math:`z`-values, the probability is greater: 16.4% against 15.2%. While this difference is not much from a practical point of view, it illustrates the difference between the :math:`t`-distribution and the normal distribution.
 
 The results from this section were achieved by only using the 20 experimental runs, no external data. However, it made some strong assumptions: 
 
@@ -361,7 +417,7 @@ If we play devil's advocate, our *null hypothesis* is that system B has no effec
 	
 	#.	Using the 20 experimental runs, but an external estimate of :math:`\sigma`: 15.2% (about 1 in 7)
 	
-	#.	Using the 20 experimental runs only, no external data: 16.3% (about 1 in 6)
+	#.	Using the 20 experimental runs only, no external data: 16.4% (about 1 in 6)
 
 The reference data method shows that the trial with 10 experiments using system B could have actually been taken from the historical data with a chance of 11%. A risk adverse company may want this number to be around 5%, or as low as 1% (1 in 100), which essentially guarantees the new system will have better performance. 
 
