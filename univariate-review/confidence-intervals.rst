@@ -66,25 +66,23 @@ Interpreting the confidence interval
 		Try it out:
 		
 		.. dcl:: R
-		
-			.. dcl:: R
-	
-				# Try varying this value:
-				conf.level <- 0.90
-				
-				viscosity <- c(23, 19, 17, 18, 
-				               24, 26, 21, 14, 18)
-				n <- length(viscosity)
-				x.avg <- mean(viscosity)
-				x.sd <- sd(viscosity)
-				dof <- n - 1
-				c.t <- qt(p = 1-(1-conf.level)/2, 
-				          df = dof) 
-				LB <- x.avg - c.t * x.sd / sqrt(n)
-				UB <- x.avg + c.t * x.sd / sqrt(n)
-				paste0('The ', round(conf.level*100, 0),
-				       '% confidence interval is: ')
-				paste0('[', round(LB, 1), '; ', round(UB, 1), ']')
+
+			# Try varying this value:
+			conf.level <- 0.90
+			
+			viscosity <- c(23, 19, 17, 18, 
+			               24, 26, 21, 14, 18)
+			n <- length(viscosity)
+			x.avg <- mean(viscosity)
+			x.sd <- sd(viscosity)
+			dof <- n - 1
+			c.t <- qt(p = 1-(1-conf.level)/2, 
+			          df = dof) 
+			LB <- x.avg - c.t * x.sd / sqrt(n)
+			UB <- x.avg + c.t * x.sd / sqrt(n)
+			paste0('The ', round(conf.level*100, 0),
+			       '% confidence interval is: ')
+			paste0('[', round(LB, 1), '; ', round(UB, 1), ']')
 			
 ..	TODO: show the confidence ranges, like BHH, p114 (2nd edition)
 

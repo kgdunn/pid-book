@@ -39,11 +39,12 @@ Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{
 		15, 0.1%
 		
 .. dcl:: R
+	:height: 200px
 
     x <- c(0, 1, 3, 6, 10, 15)
-	
+
 	# Note: R calls the Poisson parameter 'lambda'
-    dpois(x, lambda=6)    
+	dpois(x, lambda=6)    
 	
 	# Output:
 	# 0.0025 0.0149 0.0892 0.161 0.0413 0.001

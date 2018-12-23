@@ -63,6 +63,7 @@ Either we want to confirm things are statistically the same, or confirm they hav
 	:align: center
 	
 .. dcl:: R
+	:height: 450px
 
 	# Generate the boxplot
 	A <- c(92.7, 73.3, 80.5, 81.2, 87.1,
