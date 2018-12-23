@@ -67,11 +67,66 @@ Calculating the t-distribution
 
 -	In R we use the function ``dt(x=..., df=...)`` to give us the values of the probability density values, :math:`p(x)`, of the :math:`t`-distribution (compare this to the ``dnorm(x, mean=..., sd=...)`` function for the normal distribution).
 
-	For example ``dt(x=0, df=8)`` returns 0.386699, while the same ordinate under the standard normal distribution, ``dnorm(x=0)`` gives 0.3989423, proving the :math:`t`-distribution has a lower peak than the normal distribution. 
+	.. dcl:: R
+		:height: 300px
+		
+		x = 0.0
+		
+		# Recall, for the normal distribution:
+		dnorm(x, mean=0, sd=1)    # 0.3989423
+		
+		# For the t-distribution we don't have
+		# a sigma, but we do need to say how
+		# many degrees of freedom we have:
+		
+		dof <- 8
+		dt(x, df=dof)             # 0.386699
+		
+		# Shows that the t-distribution has a 
+		# lower peak than the normal distribution.
+		# Try it again, but with fewer and
+		# greater degrees of freedom (`dof`).
+
 
 -	The cumulative area from :math:`-\infty` to :math:`x` under the probability density curve gives us the probability that values less than or equal to :math:`x` could be observed. It is calculated in R using ``pt(q=..., df=...)``. For example, ``pt(1.0, df=8)`` is 0.8267. Compare this to the R function for the standard normal distribution: ``pnorm(1.0, mean=0, sd=1)`` which returns 0.8413.
 
+	.. dcl:: R
+		:height: 300px
+		
+		q = 1.0
+		
+		# Recall, for the normal distribution:
+		pnorm(q, mean=0, sd=1) # 0.8413447
+		
+		# For the t-distribution we need to 
+		# specify the degrees of freedom:
+		
+		dof <- 8
+		pt(q, df=dof)          # 0.8267032
+		
+		# Shows that the t-distribution is  
+		# similar, but the areas are slightly
+		# different.
+
 -	And similarly to the ``qnorm`` function which returns the ordinate for a given area under the normal distribution, the function ``qt(0.8267, df=8)`` returns 0.9999857, close enough to 1.0, which is the inverse of the previous example.
+
+	.. dcl:: R
+		:height: 300px
+		
+		p = 0.5
+		
+		# Recall, for the normal distribution:
+		qnorm(p, mean=0, sd=1)   # 0.0
+		
+		# For the t-distribution:
+		
+		dof <- 8
+		qt(p, df=dof)            # 0.0
+		
+		# Both distributions have their 50% 
+		# quantile at p=0. But try it for
+		# other values ...
+
 
 
 .. _univariate_confidence_interval_t_distribution:
