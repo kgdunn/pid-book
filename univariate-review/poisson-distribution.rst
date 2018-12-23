@@ -41,7 +41,7 @@ Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{
 .. dcl:: R
 	:height: 200px
 
-    x <- c(0, 1, 3, 6, 10, 15)
+	x <- c(0, 1, 3, 6, 10, 15)
 
 	# Note: R calls the Poisson parameter 'lambda'
 	dpois(x, lambda=6)    

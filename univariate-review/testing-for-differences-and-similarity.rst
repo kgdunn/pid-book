@@ -63,7 +63,7 @@ Either we want to confirm things are statistically the same, or confirm they hav
 	:align: center
 	
 .. dcl:: R
-	:height: 450px
+	:height: 500px
 
 	# Generate the boxplot
 	A <- c(92.7, 73.3, 80.5, 81.2, 87.1,
@@ -114,20 +114,38 @@ Notice that no assumption of independence or any form of distributions was requi
 
 So to summarize: we can use a historical data set if it is relevant. And there are no assumptions of independence or shape of the distribution, e.g. a normal distribution.
 
-In fact, for this example, the data were not independent, they were autocorrelated. There was a relationship from one batch to the next: :math:`x[k] = \phi x[k-1] + a[k]`, with :math:`\phi = -0.3`, and  :math:`a[k] \sim \mathcal{N}\left(\mu=0, \sigma^2=6.7^2\right)`. You can simulate your own set of autocorrelated data using this R code:
+In fact, for this example, the data were not independent, they were autocorrelated. There was a relationship from one batch to the next: :math:`x[k] = \phi x[k-1] + a[k]`, with :math:`\phi = -0.3`, and  :math:`a[k] \sim \mathcal{N}\left(\mu=0, \sigma^2=6.7^2\right)`. As an aside you can simulate your own set of autocorrelated data using this R code:
 
-.. code-block:: s
+.. dcl:: R
 
 	N <- 300
 	phi <- -0.3
 	spread <- 6.7
 	location <- 79.9
-	A.historical <- numeric(N)   # create a vector of zeros
+
+	# create a vector of zeros
+	A.hist <- numeric(N)   
 	for (k in 2:N)
 	{
-	   A.historical[k] <- phi*(A.historical[k-1]) + rnorm(1, mean=0, sd=spread)
+	  A.hist[k] <- phi*(A.hist[k-1]) + 
+	    rnorm(1, mean=0, sd=spread)
 	}
-	A.historical <- A.historical + location
+	A.hist <- A.hist + location
+
+	# Note: your plot will look different to
+	# the text, because it will be from a
+	# different set of random numbers
+	title = paste0("Autocorrelation between ",
+	        "successive values of batch yield")
+	plot(A.hist[1:N-1], A.hist[2:N], 
+	     xlab = "x[k]", 
+	     ylab = "x[k+1]", 
+	     main = title,
+	     lwd = 3, 
+	     xlim = c(60,100), 
+	     ylim = c(60,100))
+
+	lines(lowess(A.hist[1:N-1], A.hist[2:N]))
 
 We can visualize this :index:`autocorrelation` by plotting the values of :math:`x[k]` against :math:`x[k+1]`:
 

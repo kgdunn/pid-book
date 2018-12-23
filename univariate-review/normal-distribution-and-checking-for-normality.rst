@@ -155,7 +155,7 @@ Some questions:
 
 		0, 1, 0,
 		1, 1, 0,
-		-1 1, 0,
+		-1, 1, 0,
 		
 To calculate the point on the curve :math:`p(x)` we use the ``dnorm(...)`` function in R. It requires you specify the two parameters:
 

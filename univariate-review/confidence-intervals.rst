@@ -66,6 +66,7 @@ Interpreting the confidence interval
 		Try it out:
 		
 		.. dcl:: R
+			:height: 450px
 
 			# Try varying this value:
 			conf.level <- 0.90
