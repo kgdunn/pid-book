@@ -160,7 +160,7 @@ Some questions:
 To calculate the point on the curve :math:`p(x)` we use the ``dnorm(...)`` function in R. It requires you specify the two parameters:
 
 	.. dcl:: R
-		:height: 200px
+		:height: 400px
 
 		# x=0, mu=0, and sigma=1
 		# This is the maximum of the curve
@@ -231,32 +231,38 @@ Consult a statistical table found in most statistical textbooks for the normal d
 #.	Assume :math:`x`, the measurement of biological activity for a drug, is normally distributed with mean of 26.2 and standard deviation of 9.2. What is the probability of obtaining an activity reading less than or equal to 30.0?
 
 	.. dcl:: R
+		:height: 300px
 	
 		# We know that the probability should be 50%
 		# if the activity is equal to the mean. 
-		# 
-		x = 26.2
-		mu <- ____
+		 
+		x <- 26.2
+		mu <- 26.2 
 		sigma <- ____
 		pnorm(x, mean=mu, sd=sigma)
 		
-		# Now use the above to answer the question.
+		# Now modify this above to answer the question.
 		
 
-#.	Assume :math:`x` is the yield for a batch process, with mean of 85 g/L and **variance** of 16 :math:`\text{g}^2.\text{L}^{-2}`. What proportion of batch yield values lie between 70 and 95 g/L?
-
+#.	Assume :math:`x` is the yield for a batch process, with mean of 85 g/L and **variance** of 16 :math:`\text{g}^2.\text{L}^{-2}`. What proportion of batch yield values lie between 75 and 95 g/L?
 
 	.. dcl:: R
+		:height: 400px
 	
 		mu <- 85 # g/L
-		sigma <- sqrt(16)  # g/L
-		x = ___
-		area.left.tail <- pnorm(x, mean=mu, sd=sigma)
-		
-		x = ___
-		area.right.tail <- pnorm(x, mean=mu, sd=sigma)
-		
-		# Now subtract the two areas. Why?
+		sigma <- sqrt(16) # g/L
+		x.left <- ___
+		area.left.tail <- pnorm(x.left,
+		                        mean=mu,
+		                        sd=sigma)
+
+		x.right <- ___
+		area.right.tail <- pnorm(x.right,
+		                         mean=mu,
+		                         sd=sigma)
+
+		# Now subtract the two areas to get
+		# the answer. Why?
 
 .. _univariate_check_for_normality_qqplot:
 
