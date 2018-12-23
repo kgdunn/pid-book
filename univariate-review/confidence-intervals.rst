@@ -61,13 +61,36 @@ Interpreting the confidence interval
 			95%, 17.1, 22.9
 			99%, 15.7, 24.2			
 			
-		As the confidence value is increased, our interval widens, indicating that we have a more reliable region, but it is less precise.
+		As the confidence level is *increased*, our interval widens, indicating that we have a more reliable region, but it is less precise. With a wider interval we have greater confidence that the true parameter will be inside that region.
+		
+		Try it out:
+		
+		.. dcl:: R
+		
+			.. dcl:: R
+	
+				# Try varying this value:
+				conf.level <- 0.90
+				
+				viscosity <- c(23, 19, 17, 18, 
+				               24, 26, 21, 14, 18)
+				n <- length(viscosity)
+				x.avg <- mean(viscosity)
+				x.sd <- sd(viscosity)
+				dof <- n - 1
+				c.t <- qt(p = 1-(1-conf.level)/2, 
+				          df = dof) 
+				LB <- x.avg - c.t * x.sd / sqrt(n)
+				UB <- x.avg + c.t * x.sd / sqrt(n)
+				paste0('The ', round(conf.level*100, 0),
+				       '% confidence interval is: ')
+				paste0('[', round(LB, 1), '; ', round(UB, 1), ']')
 			
-..	TODO: show the confidence ranges, like BHH, p114 (1st edition)
+..	TODO: show the confidence ranges, like BHH, p114 (2nd edition)
 
 -	What happens if the level of confidence is 100%?
 
-		The confidence interval is then infinite. We are 100% certain this infinite range contains the population mean, however this is not a useful interval.
+		The confidence interval is then infinite. We are 100% certain this infinite range contains the population mean, however this is not a useful interval. Test it out in the code above; also try creating an interval with 99.9% confidence, and then 99.99% confidence.
 
 -	What happens if we increase the value of :math:`n`?
 

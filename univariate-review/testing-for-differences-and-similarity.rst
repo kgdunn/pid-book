@@ -61,6 +61,22 @@ Either we want to confirm things are statistically the same, or confirm they hav
 
 .. image:: ../figures/univariate/system-comparison-wikitable.png
 	:align: center
+	
+.. dcl:: R
+
+	# Generate the boxplot
+	A <- c(92.7, 73.3, 80.5, 81.2, 87.1,
+	       69.2, 81.9, 73.9, 78.6, 80.5)
+	B <- c(83.5, 78.9, 82.7, 93.2, 86.3,
+	       74.7, 81.6, 92.4, 83.6, 72.4)
+
+	data.A <- data.frame(observe=A, method='A')
+	data.B <- data.frame(observe=B, method='B')
+	data <- rbind(data.A, data.B)
+
+	limits <- range(data$observe)
+	boxplot(data$obs ~ data$method, lwd=2, 
+	        main="Batch yield (%) for two trials")
 
 
 We address the question of whether or not there was a *significant difference* between system A and B. A significant difference means that when system B is compared to a suitable reference, that we can be sure that the long run implementation of B will lead, in general, to a different yield (%). We want to be sure that any change in the 10 runs under system B were not *only due to chance*, because system B will cost us $100,000 to install, and $20,000 in annual software license fees.

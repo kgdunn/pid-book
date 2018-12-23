@@ -213,6 +213,7 @@ If we repeat this process with a different set of 9 samples we will get a differ
 		using from R that ``qt(0.025, df=8)`` and ``qt(0.975, df=8)``, which gives ``2.306004``
 		
 	.. dcl:: R
+		:height: 700px
 	
 		# Step 0: the raw data
 		viscosity <- c(23, 19, 17, 18, 
@@ -246,7 +247,8 @@ If we repeat this process with a different set of 9 samples we will get a differ
 				  
 		LB <- x.avg - c.t * x.sd / sqrt(n)
 		UB <- x.avg + c.t * x.sd / sqrt(n)
-		paste0('The confidence interval is: ')
+		paste0('The ', round(conf.level*100, 0),
+		       '% confidence interval is: ')
 		paste0('[', round(LB, 1), '; ', round(UB, 1), ']')
 		
 		
