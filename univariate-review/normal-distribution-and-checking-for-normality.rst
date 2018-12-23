@@ -150,13 +150,33 @@ Some questions:
 #.	Fill out this table:
 
 	.. csv-table:: 
-	   :header: :math:`\\mu`, :math:`\\sigma`, :math:`x`, :math:`p(x)`
+	   :header: :math:`x`, :math:`\\sigma`, :math:`\\mu`, :math:`p(x)`
 	   :widths: 30, 30, 30, 80
 
 		0, 1, 0,
-		0, 1, 1,
-		0, 1, -1,
+		1, 1, 0,
+		-1 1, 0,
 		
+To calculate the point on the curve :math:`p(x)` we use the ``dnorm(...)`` function in R. It requires you specify the two parameters:
+
+	.. dcl:: R
+		:height: 200px
+
+		# x=0, mu=0, and sigma=1
+		# This is the maximum of the curve
+		dnorm(x = 0, mean = 0, sd = 1)  # 0.3989423
+		
+		# x=1, mu=0, and sigma=1
+		dnorm(x = 1, mean = 0, sd = 1)  # 0.2419707
+
+		# x=-1, mu=0, and sigma=1
+		# It is symmetrical
+		dnorm(x = -1, mean = 0, sd = 1) # 0.2419707
+		
+		# x=+3, mu=0, and sigma=1
+		# This is at a point very far from center
+		dnorm(x = +3, mean = 0, sd = 1) # 0.00443185
+
 Some useful points:
 
 	-	The total area from :math:`x=-\infty` to :math:`x=+\infty` is 1.0; we cannot calculate the integral of :math:`p(x)` analytically.
@@ -169,30 +189,21 @@ Some useful points:
 	
 	-	The :index:`tail <single: tail, in a histogram>` area outside :math:`\pm 2\sigma` is about 5% (2.275 outside each tail)
 
-To calculate the point on the curve :math:`p(x)` we use the ``dnorm(...)`` function in R. It requires you specify the two parameters:
-
-	.. dcl:: R
-		:height: 200px
-
-		# gives value of p(x = -1) when 
-		#     mu=0, and sigma=1
-		dnorm(-1, mean = 0, sd = 1)   #  0.2419707
-
 
 It is more useful to calculate the area under :math:`p(x)` from :math:`x=-\infty` to a particular point :math:`x`. This is called the cumulative distribution, and is discussed more fully in :ref:`the next section <univariate_check_for_normality_qqplot>`.
 
 	.. dcl:: R
 		:height: 200px
 	
-		# gives area from -inf to -1, 
+		# gives area from -Inf to -1, 
 		# for mu=0, sigma=1
 		pnorm(-1, mean = 0, sd = 1)    # 0.1586553
 		
-		# gives area from -inf to +1, 
+		# Gives area from -Inf to +1, 
 		# for mu=0, sigma=1
-		pnorm(1, mean = 0, sd = 1)     #  0.8413447
+		pnorm(1, mean = 0, sd = 1)     # 0.8413447
 		
-		# spread is wider, but the
+		# Spread is wider, but the
 		# fractional area is the same
 		pnorm(3, mean = 0, sd = 3)     # 0.8413447
 
@@ -219,7 +230,33 @@ Consult a statistical table found in most statistical textbooks for the normal d
 
 #.	Assume :math:`x`, the measurement of biological activity for a drug, is normally distributed with mean of 26.2 and standard deviation of 9.2. What is the probability of obtaining an activity reading less than or equal to 30.0?
 
-#.	Assume :math:`x` is the yield for a batch process, with mean of 85 g/L and variance of 16 g/L. What proportion of batch yield values lie between 70 and 95 g/L?
+	.. dcl:: R
+	
+		# We know that the probability should be 50%
+		# if the activity is equal to the mean. 
+		# 
+		x = 26.2
+		mu <- ____
+		sigma <- ____
+		pnorm(x, mean=mu, sd=sigma)
+		
+		# Now use the above to answer the question.
+		
+
+#.	Assume :math:`x` is the yield for a batch process, with mean of 85 g/L and **variance** of 16 :math:`\text{g}^2.\text{L}^{-2}`. What proportion of batch yield values lie between 70 and 95 g/L?
+
+
+	.. dcl:: R
+	
+		mu <- 85 # g/L
+		sigma <- sqrt(16)  # g/L
+		x = ___
+		area.left.tail <- pnorm(x, mean=mu, sd=sigma)
+		
+		x = ___
+		area.right.tail <- pnorm(x, mean=mu, sd=sigma)
+		
+		# Now subtract the two areas. Why?
 
 .. _univariate_check_for_normality_qqplot:
 
@@ -310,6 +347,7 @@ A built-in function exists in R that runs the above calculations and shows a sca
 All the above code together in one script for you to test out:
 	
 .. dcl:: R
+	:height: 500px
 
 	N = 10
 	index <- seq(1, N)
@@ -342,26 +380,27 @@ The q-q plot, quantile-quantile plot, shows the quantiles of 2 distributions aga
 We can use the q-q plot to compare any 2 *samples of data*, even if they have different values of :math:`N`, by calculating the quantiles for each sample at different step quantiles (e.g. 1, 2, 3, 4, 5, 10, 15, .... 95, 96, 97, 98, 99), then plot the q-q plot for the two samples. You can calculate quantiles for any sample of data using the ``quantile`` function in R. The simple example below shows how to compare the q-q plot for 1000 normal distribution samples against 2000 :math:`F`-distribution samples. 
 
 .. dcl:: R
+	:height: 500px
 	
-		# 1000 normal values
-		rand.norm <- rnorm(1000)   
-		         
-		# 2000 values from F-distribution
-		rand.f <- rf(2000, df1=200, df=150) 
-		
-		# looks sort of normally distributed
-		hist(rand.f, freq=FALSE, ylim=c(0, 2.6), 
-		     main="Are these data from a normal distribution?",
-		     ylab="Frequency")
-			 
-		# Add the density line on top
-		lines(density(rand.f))
-		
-		# But your eye is being fooled ...	
-		# See the heavy tail
-		library(car)
-		qqPlot(rand.f, distribution="norm") 
-		
+	# 1000 normal values
+	rand.norm <- rnorm(1000)   
+	         
+	# 2000 values from F-distribution
+	rand.f <- rf(2000, df1=200, df=150) 
+	
+	# looks sort of normally distributed
+	hist(rand.f, freq=FALSE, ylim=c(0, 2.6), 
+	     main="Are these data from a normal distribution?",
+	     ylab="Frequency")
+		 
+	# Add the density line on top
+	lines(density(rand.f))
+	
+	# But your eye is being fooled ...	
+	# See the heavy tail
+	library(car)
+	qqPlot(rand.f, distribution="norm") 
+	
 .. image:: ../figures/univariate/qqplot-comparison.png
 	:alt:   ../figures/univariate/qqplot-comparison.R
 	:align: center

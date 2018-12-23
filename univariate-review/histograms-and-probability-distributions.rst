@@ -286,9 +286,10 @@ We review a couple of concepts that you should have seen in prior statistical wo
 				
 		x <- rnorm(500)
 
-		paste0('Without any outliers: ')
+		paste0('Without any outliers:')
 		paste0('Standard deviation = ', sd(x))
 		paste0('The MAD is         = ', mad(x))
+		print('These two should agree mostly')
 		
 		# Run it several times to verify that the
 		# two are similar, when they are not 
@@ -296,9 +297,10 @@ We review a couple of concepts that you should have seen in prior statistical wo
 		
 		# Now add a huge outlier:
 		x[2] <- 9876
-		paste0('Added an outlier: ')
+		paste0('But now add an outlier...')
 		paste0('*Standard deviation = ', sd(x))
 		paste0('*The MAD is         = ', mad(x))
+		paste0('See how MAD is not affected.')
 
 	Enrichment reading: read pages *1 to 8* of "`Tutorial to Robust Statistics <http://dx.doi.org/10.1002/cem.1180050103>`_", PJ Rousseeuw, *Journal of Chemometrics*, **5**, 1-20, 1991.
 
