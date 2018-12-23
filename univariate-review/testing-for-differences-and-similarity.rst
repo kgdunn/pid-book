@@ -63,7 +63,7 @@ Either we want to confirm things are statistically the same, or confirm they hav
 	:align: center
 	
 .. dcl:: R
-	:height: 500px
+	:height: 400px
 
 	# Generate the boxplot
 	A <- c(92.7, 73.3, 80.5, 81.2, 87.1,
@@ -314,6 +314,7 @@ The probability of seeing a :math:`z`-value from :math:`-\infty` up to 1.03 is 8
 
 
 .. dcl:: R
+	:height: 500px
 
 	A <- c(92.7, 73.3, 80.5, 81.2, 87.1,
 	       69.2, 81.9, 73.9, 78.6, 80.5)
@@ -368,6 +369,7 @@ Now using this value of :math:`s_P` instead of :math:`\sigma` in :eq:`zvalue-for
 The probability of obtaining a :math:`z`-value greater than this can be calculated as 16.4% using the :math:`t`-distribution with 18 degrees of freedom (use ``1-pt(1.01, df=18)`` in R). We use a :math:`t`-distribution because an estimate of the variance is used, :math:`s_p^2`, not a population variance, :math:`\sigma^2`. 
 
 .. dcl:: R
+	:height: 500px
 
 	A <- c(92.7, 73.3, 80.5, 81.2, 87.1,
 	       69.2, 81.9, 73.9, 78.6, 80.5)
@@ -390,7 +392,6 @@ The probability of obtaining a :math:`z`-value greater than this can be calculat
 	# Compare it against the t-distribution:
 	p <- pt(z, df = dof)  # 0.8361346
 	
-	1-pt(1.01, df=18)
 	paste0('Probability by chance: ', 
 	       round((1-p)*100, 1), '%')
 
