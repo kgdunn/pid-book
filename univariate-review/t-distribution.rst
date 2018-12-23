@@ -68,7 +68,7 @@ Calculating the t-distribution
 -	In R we use the function ``dt(x=..., df=...)`` to give us the values of the probability density values, :math:`p(x)`, of the :math:`t`-distribution (compare this to the ``dnorm(x, mean=..., sd=...)`` function for the normal distribution).
 
 	.. dcl:: R
-		:height: 300px
+		:height: 350px
 		
 		x = 0.0
 		
@@ -91,7 +91,7 @@ Calculating the t-distribution
 -	The cumulative area from :math:`-\infty` to :math:`x` under the probability density curve gives us the probability that values less than or equal to :math:`x` could be observed. It is calculated in R using ``pt(q=..., df=...)``. For example, ``pt(1.0, df=8)`` is 0.8267. Compare this to the R function for the standard normal distribution: ``pnorm(1.0, mean=0, sd=1)`` which returns 0.8413.
 
 	.. dcl:: R
-		:height: 300px
+		:height: 350px
 		
 		q = 1.0
 		
@@ -125,7 +125,7 @@ Calculating the t-distribution
 		
 		# Both distributions have their 50% 
 		# quantile at p=0. But try it for
-		# other values ...
+		# other values of probability, p.
 
 
 
@@ -189,7 +189,7 @@ If we repeat this process with a different set of 9 samples we will get a differ
 			          &= 20 - 2.286 = {\bf 17.7} \\
 			\text{UB} &= 20 + 2.286 = {\bf 22.3}
 
-#.	We can confirm these 9 samples are normally distributed by using a q-q plot (not shown). This is an important requirement to use the :math:`t`-distribution, next.
+#.	We can confirm these 9 samples are normally distributed by using a q-q plot (not shown, but you can use the code below to generate the plot). This is an important requirement to use the :math:`t`-distribution, next.
 
 #.	Calculate an estimate of the standard deviation.
 
@@ -211,6 +211,45 @@ If we repeat this process with a different set of 9 samples we will get a differ
 			\text{UB} &= 20 + 2.929 = 22.9
 
 		using from R that ``qt(0.025, df=8)`` and ``qt(0.975, df=8)``, which gives ``2.306004``
+		
+	.. dcl:: R
+	
+		# Step 0: the raw data
+		viscosity <- c(23, 19, 17, 18, 
+		               24, 26, 21, 14, 18)
+		n <- length(viscosity)
+		
+		# Step 1:
+		x.avg <- mean(viscosity)
+		
+		# Step 5: Verify the data are normal
+		library(car)
+		qqPlot(viscosity)
+		
+		# Step 6: 
+		x.sd <- sd(viscosity)
+		
+		# Step 7: t-distribution 
+		dof <- n - 1
+		
+		# Step 8:
+		conf.level <- 0.95
+		
+		# Can be calculated at either
+		# the lower tail
+		c.t <- qt(p = (1-conf.level)/2, 
+		          df = dof) 
+				  
+		# or the upper tail
+		c.t <- qt(p = 1-(1-conf.level)/2, 
+		          df = dof) 
+				  
+		LB <- x.avg - c.t * x.sd / sqrt(n)
+		UB <- x.avg + c.t * x.sd / sqrt(n)
+		paste0('The confidence interval is: ')
+		paste0('[', round(LB, 1), '; ', round(UB, 1), ']')
+		
+		
 			
 Comparing the answers for parts 4 and 8 we see the interval, for the same level of 95% certainty, is wider when we have to estimate the standard deviation. This makes sense: the standard deviation is an estimate (meaning there is error in that estimate) of the true standard deviation. That uncertainty must propagate, leading to a wider interval within which we expect to locate the true population viscosity, :math:`\mu`.
 
