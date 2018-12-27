@@ -23,7 +23,7 @@ Exercises
 
 .. answer::
 
-	Pleaseode below. The Shewhart chart's parameters are as below, with plots generated from the R code.
+	Please see the code below. The Shewhart chart's parameters are as below, with plots generated from the R code.
 
 	-	Target = 80.4
 	-	Lower control limit at 3 standard deviations = 71.1
@@ -34,6 +34,10 @@ Exercises
 		:width: 750px
 		:scale: 60
 		:alt: ../figures/monitoring/batch-yields-monitoring-assignment4-2010.R
+		
+	:raw:html:`<div style="clear: both;"></div>`
+	
+	Try it yourself:
 
 	.. dcl:: R
 		:height: 800px
