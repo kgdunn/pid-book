@@ -79,13 +79,15 @@ The computer screenshot shows the monitoring system, called Caster SOS (Stable O
 	:scale: 70
 	:alt: fake width
 	
-The economics of monitoring charts cannot be overstated. The ArcelorMittal example above was introduced around 1997. The calculations required by this system are complex - however the computer systems performs them in near real-time, allowing the operators to take corrective action within a few seconds. The data show a significant reduction in breakouts since 1997 (*used with permission of Dr. John MacGregor*). The economic savings and increased productivity is in the millions of dollars per year, as each breakout costs around $200,000 to $500,000 due to process shutdowns and/or equipment damage.
+The economics of monitoring charts cannot be overstated. The ArcelorMittal example above was introduced around 1997. The calculations required by this system are complex - however the computer systems performs them in near real-time, allowing the operators to take corrective action within a few seconds. The data show a significant reduction in breakouts since 1997 (*used with permission of Dr. John MacGregor*). 
 
 .. image:: ../figures/examples/Dofasco/breakouts-dofasco-economics.png
 	:width: 750px
 	:align: left
 	:scale: 80
 	:alt: fake width
+
+The economic savings and increased productivity is in the millions of dollars per year, as each breakout costs around $200,000 to $500,000 due to process shutdowns and/or equipment damage.
 
 .. FUTURE: Agnico-Eagle monitoring 
 .. FUTURE: show how a scatter plot can be used

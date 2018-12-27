@@ -91,18 +91,22 @@ where :math:`\sigma_{\text{Shewhart}}` represents the standard deviation as calc
 
 The R code here shows one way of calculating the EWMA values for a vector of data. Once you have pasted this function into R, use it as ``ewma(x, lambda=..., target=...)``.
 
-.. code-block:: s
+.. dcl:: R
 
 	ewma <- function(x, lambda, target=x[1]){
 	    N <- length(x)
 	    y <- numeric(N)
 	    y[1] = target
 	    for (k in 2:N){
-	        error = x[k-1] - y[k-1]
-	        y[k] = y[k-1] + lambda*error
+	        error = x[k - 1] - y[k - 1]
+	        y[k] = y[k - 1] + lambda*error
 	    }
 	return(y)
 	}
+	
+	# Try using this function now:
+	x <- c(5, 4, 5, 4, 5, 4, 5)
+	ewma(x, lambda = 0.6, target = 5)
 
 
 .. EWMA can detect both changes in level and changes in variance
