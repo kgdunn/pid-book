@@ -23,7 +23,7 @@ Exercises
 
 .. answer::
 
-	Please see the code below. The Shewhart chart's parameters are as below, with plots generated from the R code.
+	Pleaseode below. The Shewhart chart's parameters are as below, with plots generated from the R code.
 
 	-	Target = 80.4
 	-	Lower control limit at 3 standard deviations = 71.1
@@ -33,10 +33,62 @@ Exercises
 		:align: right
 		:width: 750px
 		:scale: 60
+		:alt: ../figures/monitoring/batch-yields-monitoring-assignment4-2010.R
 
-	.. literalinclude:: ../figures/monitoring/batch-yields-monitoring-assignment4-2010.R
-	       :language: s
-	       :lines: 1-29, 33-
+	.. dcl:: R
+		:height: 800px
+	
+		data_file <- 'http://openmv.net/file/batch-yields.csv'
+		batch <- read.csv(data_file)
+
+		# make sure we have the expected data
+		summary(batch)  
+		attach(batch)
+
+		# To get a feel for the data; 
+		# looks pretty good; no unusual outliers
+		plot(Yield)     
+
+		N = length(Yield)
+		N.sub = 5       # subgroup size
+		subgroup <- matrix(Yield, N.sub, N/N.sub)
+		N.groups <- ncol(subgroup)
+		dim(subgroup)   # 5 by 60 matrix
+
+		subgroup.sd <- apply(subgroup, 2, sd)
+		subgroup.xbar <- apply(subgroup, 2, mean)
+
+		# Take a look at what these numbers mean
+		plot(subgroup.xbar, 
+		     type="b", 
+		     ylab="Subgroup average")
+		plot(subgroup.sd, 
+		     type="b",
+		     ylab="Subgroup spread")
+
+		# Report your target value, lower control 
+		# limit and upper control limit, showing
+		# the calculations you made. 
+		target <- mean(subgroup.xbar)
+		Sbar <- mean(subgroup.sd)
+
+		# a_n value is from the table when 
+		# subgroup size = 5
+		an <- 0.94
+		an.num <- sqrt(2)*gamma(N.sub/2)
+		an.den <- sqrt(N.sub-1)*gamma(N.sub/2-0.5)
+		an <- an.num/an.den
+		sigma.estimate <- Sbar / an  
+		LCL <- target - 3 * sigma.estimate/sqrt(N.sub)
+		UCL <- target + 3 * sigma.estimate/sqrt(N.sub)
+		c(LCL, target, UCL)
+		plot(subgroup.xbar, 
+		     ylim=c(LCL-5, UCL+5), 
+		     ylab="Subgroup means", 
+		     main="Shewhart chart")
+		abline(h=target, col="green")
+		abline(h=UCL, col="red")
+		abline(h=LCL, col="red")
 
 
 .. question::
@@ -123,12 +175,12 @@ Exercises
 	Your process with Cpk of 2.0 experiences a drift of :math:`1.5\sigma` away from the current process operating point towards the closest specification limit. What is the new Cpk value; how many defects per million items did you have before the drift?  And after the drift?
 
 .. answer::
-	:fullinclude: no 
+	:fullinclude: yes 
 	:short: The new Cpk value is 1.5.
 
 	The new Cpk value is 1.5. The number of defects per million items at Cpk = 2.0 is 0.00098 (essentially no defects), while at Cpk = 1.5 it is 3.4 defects per million items. You only have to consider one-side of the distribution, since Cpk is by definition for an uncentered process, and deals with the side closest to the specification limits.
 
-	.. code-block:: s
+	.. dcl:: R
 
 		Cpk <- 1.5
 		n.sigma.distance <- 3 * Cpk

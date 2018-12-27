@@ -92,6 +92,7 @@ where :math:`\sigma_{\text{Shewhart}}` represents the standard deviation as calc
 The R code here shows one way of calculating the EWMA values for a vector of data. Once you have pasted this function into R, use it as ``ewma(x, lambda=..., target=...)``.
 
 .. dcl:: R
+	:height: 450px
 
 	ewma <- function(x, lambda, target=x[1]){
 	    N <- length(x)
