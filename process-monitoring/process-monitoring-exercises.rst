@@ -35,7 +35,9 @@ Exercises
 		:scale: 60
 		:alt: ../figures/monitoring/batch-yields-monitoring-assignment4-2010.R
 		
-	:raw:html:`<div style="clear: both;"></div>`
+	.. raw:: html
+	
+		<div style="clear: both;"></div>
 	
 	Try it yourself:
 
@@ -185,11 +187,15 @@ Exercises
 	The new Cpk value is 1.5. The number of defects per million items at Cpk = 2.0 is 0.00098 (essentially no defects), while at Cpk = 1.5 it is 3.4 defects per million items. You only have to consider one-side of the distribution, since Cpk is by definition for an uncentered process, and deals with the side closest to the specification limits.
 
 	.. dcl:: R
+		:height: 200px
 
 		Cpk <- 1.5
 		n.sigma.distance <- 3 * Cpk
-		defects.per.million <- pnorm(-n.sigma.distance, mean=0, sd=1) * 1E6
-	
+		dpm <- pnorm(-n.sigma.distance, 
+		             mean=0, 
+		             sd=1) * 1E6
+		paste0('Defects per million = ', round(dpm,3))
+		
 .. question::
 
 	Which type of monitoring chart would be appropriate to detect unusual spikes (outliers) in your production process?
@@ -222,7 +228,7 @@ Exercises
 		*	Compare the Shewhart chart's performance to the chart in part 3 of this question.
 
 .. answer::
-	:fullinclude: no 
+	:fullinclude: yes
 
 	*Solution based on work by Ryan and Stuart (2011 class)*
 
@@ -582,9 +588,88 @@ Exercises
 		Yet another alternative is to use an EWMA chart, which takes the autocorrelation into account. However, the EWMA chart limits are found from the assumption that the subgroup means (or raw data, if subgroup size is 1), are independent.
 
 		So we are finally left with the conclusion that perhaps there data really are not from in control operation, or, if they are, we must manually adjust the limits to be wider.
+		
+		.. Source code: ../figures/monitoring/CO2-question.R
 
-	.. literalinclude:: ../figures/monitoring/CO2-question.R
-		:language: s
+	.. dcl:: R
+	
+		file <- 'http://openmv.net/file/gas-furnace.csv'
+		data <- read.csv(file)
+		CO2 <- data$CO2
+		N.raw <- length(CO2)
+		N.sub <- 6  
+
+		# Change ``N.sub`` to 10, 15, 20, etc
+		# At N.sub <- 17 we see the 
+		# autocorrelation disappear
+
+		# Plot all the data
+		par(mar=c(4.2, 4.2, 0.5, 0.5))  
+		par(cex.lab=1.3, cex.main=1.5, 
+		    cex.sub=1.5, cex.axis=1.5)
+		plot(CO2, type="p", pch=".", cex=2, 
+		     main="", ylab="CO2: raw data", 
+		     xlab="Sequence order")
+
+		# Create the subgroups on ALL the raw data. # Form a matrix with `N.subgroup` rows by 
+		# placing the vector of data down each row, 
+		# then going across to form the columns.
+		# Calculate the mean and standard deviation 
+		# within each subgroup (columns of the matrix)
+
+		subgroups <- matrix(CO2, N.sub, N.raw/N.sub)
+		subgroups.S <- apply(subgroups, 2, sd)
+		subgroups.xbar <- apply(subgroups, 2, mean)
+		ylim <- range(subgroups.xbar) + c(-3, +3)
+
+		# Keep adjusting N.sub until you don't see 
+		# any autocorrelation between subgroups
+		acf(subgroups.xbar)
+
+		# Create a function to calculate 
+		# Shewhart chart limits
+		shewhart_limits <- function(xbar, S, 
+		                        sub.n, N.stdev=3){
+		  # Give the xbar and S vector containing
+		  # the subgroup means and standard 
+		  # deviations.  Also give the subgroup 
+		  # size used. Returns the lower and upper 
+		  # control limits for the Shewhart chart 
+		  # (UCL and LCL) which are N.stdev away 
+		  # from the target.
+    
+		  # xdb = x.double.bar = mean of means
+		  xdb <- mean(xbar)     
+		  s.bar <- mean(S)
+		  num.an <- sqrt(2)*gamma(sub.n/2)
+		  den.an <- sqrt(sub.n-1)*gamma((sub.n-1)/2)
+		  an <- num.an / den.an
+		  LCL <- xdb - 3*s.bar/(an*sqrt(sub.n))
+		  UCL <- xdb + 3*s.bar/(an*sqrt(sub.n))
+		  return(list(LCL, xdb, UCL))
+		}
+
+		limits <- shewhart_limits(subgroups.xbar, 
+		                     subgroups.S, N.sub)
+		LCL <- limits[1]
+		xdb <- limits[2]
+		UCL <- limits[3]
+		c(LCL, xdb, UCL)
+
+		# Any points outside these limits?  
+		par(mar=c(4.2, 4.2, 0.5, 0.5))  
+		par(cex.lab=1.3, cex.main=1.5, 
+		    cex.sub=1.5, cex.axis=1.5)
+		plot(subgroups.xbar, type="b", pch=".", 
+		     cex=5, main="", ylim=ylim, 
+		     ylab="Phase I subgroups: round 1",
+		     xlab="Sequence order")
+		abline(h=UCL, col="red")
+		abline(h=LCL, col="red")
+		abline(h=xdb, col="green")
+		lines(subgroups.xbar, type="b", pch=".", 
+		      cex=5)
+		
 
 .. question::
 
@@ -630,9 +715,80 @@ Exercises
 			:scale: 80
 			:width: 750px
 			:align: center
+			
+	.. raw:: html
+	
+		<div style="clear: both;"></div>
+		
+	.. Source code: ../figures/monitoring/batch-yield-and-purity-recursive.R
+		
+	.. dcl:: R
+	
+		# Thanks to Mudassir for his source code to 
+		# recursively calculate the limits. Some 
+		# updates were made.
 
-	.. literalinclude:: ../figures/monitoring/batch-yield-and-purity-recursive.R
-		:language: s
+		file <- 'http://openmv.net/file/batch-yield-and-purity.csv'
+		data <- read.csv(file)
+		y <- data$yield
+		variable <- "Yield"
+		N <- 3
+
+		# No further changes required. The code 
+		# below will work for any new data set
+		subgroups <- matrix(y, N, length(y)/N)
+		x.mean <- numeric(length(y)/N)
+		x.sd <- numeric(length(y)/N)
+
+		# Calculate mean and sd of subgroups 
+		# (see R-tutorial)
+		x.mean <- apply(subgroups, 2, mean)
+		x.sd <- apply(subgroups, 2, sd)
+		ylim <- range(x.mean) + c(-5, +5)
+		k <- 1
+		doloop <- TRUE
+
+		# Prevent infinite loops
+		while (doloop & k < 5){
+   
+		  num.an <- sqrt(2)*gamma(N/2)
+		  den.an <- sqrt(N-1)*gamma((N-1)/2)
+		  an <- num.an / den.an
+  
+		  S <- mean(x.sd)
+		  xdb <- mean(x.mean) # x-double bar
+		  LCL <- xdb - (3*S/(an*sqrt(N)))
+		  UCL <- xdb + (3*S/(an*sqrt(N)))
+		  print(c(LCL, UCL))
+
+		  # Create a figure on every loop
+		  par(mar=c(4.2, 4.2, 0.5, 0.5)) 
+		  par(cex.lab=1.3, cex.main=1.5, 
+		      cex.sub=1.5, cex.axis=1.5)
+		  plot(x.mean, type="b", pch=".", 
+		       cex=5, main="", 
+		  ylab=paste("Phase I subgroups: round", k),
+		       xlab="Sequence order", ylim=ylim)
+		  abline(h=UCL, col="red")
+		  abline(h=LCL, col="red")
+		  abline(h=xdb, col="green")
+		  lines(x.mean, type="b", pch=".", cex=5)
+
+		  if (!(any(x.mean<LCL) | any(x.mean>UCL))){
+		    # Finally!  No more points to exclude
+		    doloop <- FALSE
+		  }
+		  k <- k + 1
+  
+		  # Retain in x.sd and x.mean only those
+		  # entries that are within the control
+		  # limits  
+		  x.sd <- x.sd[x.mean>=LCL]
+		  x.mean <- x.mean[x.mean>=LCL]
+		  x.sd <- x.sd[x.mean<=UCL]
+		  x.mean <- x.mean[x.mean<=UCL]
+		} # end: while doloop
+	
 		
 .. question::
 
