@@ -774,7 +774,7 @@ Exercises
 		  abline(h=xdb, col="green")
 		  lines(x.mean, type="b", pch=".", cex=5)
 
-		  if (!(any(x.mean<LCL) | any(x.mean>UCL))){
+		  if (!(any(x.mean < LCL) | any(x.mean > UCL))){
 		    # Finally!  No more points to exclude
 		    doloop <- FALSE
 		  }
