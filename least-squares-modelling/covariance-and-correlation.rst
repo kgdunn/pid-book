@@ -52,11 +52,6 @@ Given these numbers, we can simplify the ideal gas law to: :math:`p=\beta_1 T`, 
 	|'''Variance''' || 1320 || 43267 || 8.1
 	|}
 
-.. code-block:: text
-
-	temp <- c(273, 285, 297, 309, 321, 333, 345, 357, 369, 381)
-	pres <- c(1600, 1670, 1730, 1830, 1880, 1920, 2000, 2100, 2170, 2200)
-	humidity <- c(42, 48, 45, 49, 41, 46, 48, 48, 45, 49)
 
 .. image:: ../figures/least-squares/table-of-cylinder-data.png
 	:width: 900px
@@ -78,14 +73,39 @@ Use this to calculate the covariance between temperature and pressure by breakin
 	
 	-	Next multiply the two vectors, element-by-element, to calculate a new vector :math:`(T - \overline{T}) (p - \overline{p})`.
 
-		.. code-block:: s
+		.. dcl:: R
+		
+			temp <- c(273, 285, 297, 309, 321, 333, 345,
+			          357, 369, 381)
+			pres <- c(1600, 1670, 1730, 1830, 1880, 1920,
+			          2000, 2100, 2170, 2200)
+			humidity <- c(42, 48, 45, 49, 41, 46, 48, 
+			              48, 45, 49)
 
-			> temp.centered <- temp - mean(temp)
-			> pres.centered <- pres - mean(pres)
-			> product <- temp.centered * pres.centered
-			# R does element-by-element multiplication in the above line
-			> product
-			 [1] 16740 10080  5400  1440   180    60  1620  5700 10920 15660
+			temp.centered <- temp - mean(temp)
+			pres.centered <- pres - mean(pres)
+			product <- temp.centered * pres.centered
+
+			# R does element-by-element multiplication 
+			# in the above line
+			print(product)
+			# [1] 16740 10080  5400  1440   180    60 
+			#      1620  5700 10920 15660
+
+			# Average of 'product':
+			mean(product)    # 6780
+
+			# Calculated covariance is 7533.33
+			paste0('The covariance of temperature and ',
+			       'pressure is = ', 
+			       round(cov(temp, pres), 2))
+	   
+			# The covariance of a variable with
+			# itself is just the variance: 
+			paste0('The covariance with itself is = ', 
+			       round(cov(temp, temp), 2))
+			paste0('while the variance = ',
+			       round(var(temp), 2))
 
 	-	The expected value of this product can be estimated by using the average, or any other suitable measure of location. In this case ``mean(product)`` in R gives 6780. This is the covariance value.
 
