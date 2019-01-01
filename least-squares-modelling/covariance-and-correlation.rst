@@ -74,35 +74,35 @@ Use this to calculate the covariance between temperature and pressure by breakin
 	-	Next multiply the two vectors, element-by-element, to calculate a new vector :math:`(T - \overline{T}) (p - \overline{p})`.
 
 		.. dcl:: R
+			:height: 800px
 		
-			temp <- c(273, 285, 297, 309, 321, 333, 345,
-			          357, 369, 381)
-			pres <- c(1600, 1670, 1730, 1830, 1880, 1920,
-			          2000, 2100, 2170, 2200)
-			humidity <- c(42, 48, 45, 49, 41, 46, 48, 
-			              48, 45, 49)
+			temp <- c(273, 285, 297, 309, 321, 333,
+			          345, 357, 369, 381)
+			pres <- c(1600, 1670, 1730, 1830, 1880,
+			          1920, 2000, 2100, 2170, 2200)
+			humidity <- c(42, 48, 45, 49, 41, 46, 
+			              48, 48, 45, 49)
 
 			temp.centered <- temp - mean(temp)
 			pres.centered <- pres - mean(pres)
 			product <- temp.centered * pres.centered
 
-			# R does element-by-element multiplication 
-			# in the above line
+			# R does element-by-element  multiplication in the above line
 			print(product)
-			# [1] 16740 10080  5400  1440   180    60 
-			#      1620  5700 10920 15660
+			# [1] 16740 10080  5400  1440   180    
+			#        60  1620  5700 10920 15660
 
 			# Average of 'product':
 			mean(product)    # 6780
 
 			# Calculated covariance is 7533.33
-			paste0('The covariance of temperature and ',
-			       'pressure is = ', 
+			paste0('Covariance of temperature and ',
+			       'pressure is = ',
 			       round(cov(temp, pres), 2))
-	   
+
 			# The covariance of a variable with
-			# itself is just the variance: 
-			paste0('The covariance with itself is = ', 
+			# itself is just the variance:
+			paste0('Covariance with itself is = ',
 			       round(cov(temp, temp), 2))
 			paste0('while the variance = ',
 			       round(var(temp), 2))
@@ -153,12 +153,26 @@ It takes the covariance value and divides through by the units of :math:`x` and 
 
 So returning back to our example of the gas cylinder, the correlation between temperature and pressure, and temperature and humidity can be calculated now as:
 
-.. code-block:: text
+.. dcl:: R
 
-	> cor(temp, pres)
-	[1] 0.9968355
-	> cor(temp, humidity)
-	[1] 0.3803919
+	temp <- c(273, 285, 297, 309, 321, 333, 345,
+	          357, 369, 381)
+	pres <- c(1600, 1670, 1730, 1830, 1880, 1920,
+	          2000, 2100, 2170, 2200)
+	humidity <- c(42, 48, 45, 49, 41, 46, 48, 
+	              48, 45, 49)
+
+	# Correlation between temperature
+	# and pressure is high: 0.9968355
+	cor(temp, pres)
+	
+	# Correlation between temperature
+	# and humidity is low: 0.3803919
+	cor(temp, humidity)
+	
+	# What is correlation of humidity
+	# and pressure?
+	
 
 Note that correlation is the same whether we measure temperature in Celsius or Kelvin. Study the plots here to get a feeling for the correlation value and its interpretation:
 
