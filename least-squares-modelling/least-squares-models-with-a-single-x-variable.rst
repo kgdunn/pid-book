@@ -228,7 +228,7 @@ To calculate the least squares model in R:
 
 	# "Calculate for me the linear model, 
 	# where y is described by x"
-	lm(y ~ x)  
+	mod.ls <- lm(y ~ x) 
 
 	# Call:
 	# lm(formula = y ~ x)
@@ -236,9 +236,20 @@ To calculate the least squares model in R:
 	# Coefficients:
 	# (Intercept)            x
 	#	       3.0001       0.5001
-		   
+	   
 	# You can get more information with
-	summary(lm(y ~ x))
+	summary(mod.ls)
+
+	print('The model coefficients are: ')
+	coefficients(mod.ls)
+
+	b0 <- coefficients(mod.ls)[1]
+	b1 <- coefficients(mod.ls)[2]
+	x.new <- 5.5
+	y_predicted <- b0 + b1 * x.new
+	paste0('Give a new x value of ', x.new,
+	       ' the predicted y = ', 
+	       round(y_predicted, 3))
 
 *	:math:`b_0 = 3.0`
 *	:math:`b_1 = 0.5`

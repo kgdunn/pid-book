@@ -354,17 +354,39 @@ Now it is straight forward to construct **confidence intervals for the least squ
 
 Returning :ref:`back to our ongoing example <LS-class-example>`, we can calculate the confidence interval for :math:`\beta_0` and :math:`\beta_1`. We calculated earlier already that |b0| = 3.0 and |b1| = 0.5. Using these values we can calculate the standard error:
 
-.. code-block:: s
+.. dcl:: R
+	:height: 600px
 
-	# Assume you have calculated "b0" and "b1" already using vectors "x" and "y"
+	x <- c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5)
+	y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96,
+	      7.24, 4.26, 10.84, 4.82, 5.68)
 
-	> predictions <- b0 + x*b1
-	> predictions
-	[1]  8.001  7.000  9.501  7.501  8.501  10.001  6.00  5.000  9.001  6.500  5.501
-	> error <- y - predictions
-	> SE <- sqrt(sum(error^2) / (N-2))
-	> SE
-	1.236603
+	# "Calculate for me the linear model,
+	# where y is described by x"
+	mod.ls <- lm(y ~ x)
+
+	# We can see what the "b0" and "b1" 
+	# are in several ways:
+	summary(mod.ls)
+
+	print('The model coefficients are: ')
+	coefficients(mod.ls)
+
+	# Model predictions:
+	print('The predicted values are: ')
+	predict(mod.ls)
+	# 8.001  7.000  9.501  7.501  8.501  
+	# 10.001  6.00  5.000  9.001  6.500  5.501
+
+	# Prediction error = observed - predicted
+	error <- y - predict(mod.ls)
+	N <- length(x)
+
+	# The SE = standard error = 1.236603
+	std.error <- sqrt(sum(error^2) / (N-2))
+	paste0('Standard error SE = ', 
+	       round(std.error, 4))
+	
 
 Use that :math:`S_E` value to calculate the confidence intervals for :math:`\beta_0` and :math:`\beta_1`, and use that :math:`c_t = 2.26` at the 95% confidence level. You can calculate  this value in R using ``qt(0.975, df=(N-2))``. There are :math:`n-2` degrees of freedom, the number of degrees of freedom used to calculate :math:`S_E`.
 
