@@ -432,7 +432,7 @@ In many cases the confidence interval for the intercept is not of any value beca
 
 
 .. dcl:: R
-	:height: 600px
+	:height: 500px
 
 	x <- c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5)
 	y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96,
@@ -452,7 +452,7 @@ In many cases the confidence interval for the intercept is not of any value beca
 	# If you want the confidence interval at any
 	# other level, for example, at the 90% level:
 
-	confint(mod.ls, level=0.90))
+	confint(mod.ls, level=0.90)
 	
 
 
@@ -539,7 +539,7 @@ To complete this section we show how to interpret the output from computer softw
 The following output is obtained in R for the :ref:`example <LS-class-example>` we have been using in this section. The Python version follows below.
 
 .. dcl:: R
-	height: 200px
+	:height: 200px
 
 	x <- c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5)
 	y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 
@@ -646,7 +646,7 @@ As for the R code, we can see at a glance:
 	- The standard error of the model, :math:`S_E` = 1.237, using :math:`n-k = 11 - 2 = 9` degrees of freedom. The summary output table does not show the standard error, but you can get it from ``np.sqrt(results.scale)``, where ``results`` is the Python object from fitting the linear model.
 	- Using the standard error, calculate the standard error for the intercept = :math:`S_E(b_0) = 1.1247`, which is reported directly in the table.
 	- Using the standard error, calculate the standard error for the slope = :math:`S_E(b_1) = 0.1179`, which is reported directly in the table.
-	- The :math:`z`-value for the |b0| term is 2.667 (Python calls this the ``t value`` in the printout, but in our notes we have called this :math:`z = \dfrac{b_0 - \beta_0}{S_E(b_0)}`; the value that we compare to the :math:`t`-statistic and used to create the confidence interval).
+	- The :math:`z`-value for the |b0| term is 2.667 (Python calls this the ``t``-value in the printout, but in our notes we have called this :math:`z = \dfrac{b_0 - \beta_0}{S_E(b_0)}`; the value that we compare to the :math:`t`-statistic and used to create the confidence interval).
 	- The :math:`z`-value for the |b1| term is 4.241 (see the above comment again).
 	- The two probability values, ``P>|t|``, for |b0| and |b1| should be familiar to you; they are the probability with which we expect to find a value of :math:`z` greater than the calculated :math:`z`-value (called ``t value`` in the output above). The smaller the number, the more confident we can be the confidence interval contains the parameter estimate.
 	- You can construct the confidence interval for |b0| or |b1| by using their reported standard errors and multiplying by the corresponding :math:`t`-value. For example, if you want 99% confidence limits, then look up the 99% values for the :math:`t`-distribution using :math:`n-k` degrees of freedom, in this case it would be ``from scipy.stats import t; t.ppf(1-(1-0.99)/2, df=9)``, which is :math:`\pm 3.25`. So the 99% confidence limits for the slope coefficient would be :math:`[0.5 - 3.25 \times 0.1179; 0.5 + 3.25 \times 0.1179] = [0.117; 0.883]`. However, the table output gives you the 95% confidence interval. Under the column ``0.025`` and ``0.975`` (leaving 2.5% in the lower and upper tail respectively). For the slope coefficient, for example, this interval is [0.233; 0.767]. If you desire, for example, the 99% confidence interval, you can adjust the code: ``print(results.summary(alpha=1-0.99))``
