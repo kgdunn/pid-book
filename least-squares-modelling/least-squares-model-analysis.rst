@@ -115,7 +115,7 @@ For two extreme cases:
 #. :math:`y_i = e_i`, i.e. where :math:`b_0 = 0` and :math:`b_1 = 0`. In other words, our :math:`y_i` measurements are just random noise.
 #. :math:`y_i = b_0 + b_1 x_i + e_i`, for any values of :math:`b_0` and :math:`b_1`, that model fits the data perfectly, with no residuals.
 
-Do the following:
+Do the following in the space below:
 
  	- draw a generic plot
 	- create an ANOVA table with fake values
