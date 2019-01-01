@@ -116,12 +116,12 @@ In source code:
 
 .. dcl:: R
 
-	# Given information (but it can be calculated
+	# Given information (but calculate yourself
 	# from http://openmv.net/info/rubber-colour)
 	xbar <- c(245, 239, 239, 241, 241, 241, 238,
-	          238, 236, 248, 233, 236, 246, 253, 
+	          238, 236, 248, 233, 236, 246, 253,
 	          227, 231, 237, 228, 239, 240)
-		  
+
 	# Number of measurements per subgroup
 	N.sub <- 5
 
@@ -142,8 +142,8 @@ In source code:
 	paste0('Control limits: [', round(LCL, 2),
 	       '; ', round(UCL,2), ']')
 
-	paste0('Number above UCL: ', sum(xbar>UCL))
-	paste0('Number below LCL: ', sum(xbar<LCL))
+	paste0('Number > UCL: ', sum(xbar > UCL))
+	paste0('Number < LCL: ', sum(xbar < LCL))
 
 
 	# Exclude the one subgroup above the UCL.
