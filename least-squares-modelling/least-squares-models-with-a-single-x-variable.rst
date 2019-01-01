@@ -220,18 +220,25 @@ We will refer back to the following example several times. Calculate the least s
 
 To calculate the least squares model in R:
 
-.. code-block:: s
+.. dcl:: R
 
-	> x <- c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5)
-	> y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68)
-	> lm(y ~ x)  # "The linear model, where y is described by x"
+	x <- c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5)
+	y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 
+	      7.24, 4.26, 10.84, 4.82, 5.68)
 
-	Call:
-	lm(formula = y ~ x)
+	# "Calculate for me the linear model, 
+	# where y is described by x"
+	lm(y ~ x)  
 
-	Coefficients:
-	(Intercept)            x
-	     3.0001       0.5001
+	# Call:
+	# lm(formula = y ~ x)
+	#
+	# Coefficients:
+	# (Intercept)            x
+	#	       3.0001       0.5001
+		   
+	# You can get more information with
+	summary(lm(y ~ x))
 
 *	:math:`b_0 = 3.0`
 *	:math:`b_1 = 0.5`
