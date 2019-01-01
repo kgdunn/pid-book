@@ -247,7 +247,7 @@ To calculate the least squares model in R:
 	b1 <- coefficients(mod.ls)[2]
 	x.new <- 5.5
 	y_predicted <- b0 + b1 * x.new
-	paste0('Give a new x value of ', x.new,
+	paste0('Given a new x value of ', x.new,
 	       ' the predicted y = ', 
 	       round(y_predicted, 3))
 

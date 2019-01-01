@@ -355,7 +355,7 @@ Now it is straight forward to construct **confidence intervals for the least squ
 Returning :ref:`back to our ongoing example <LS-class-example>`, we can calculate the confidence interval for :math:`\beta_0` and :math:`\beta_1`. We calculated earlier already that |b0| = 3.0 and |b1| = 0.5. Using these values we can calculate the standard error:
 
 .. dcl:: R
-	:height: 600px
+	:height: 700px
 
 	x <- c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5)
 	y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96,
@@ -365,10 +365,11 @@ Returning :ref:`back to our ongoing example <LS-class-example>`, we can calculat
 	# where y is described by x"
 	mod.ls <- lm(y ~ x)
 
-	# We can see what the "b0" and "b1" 
-	# are in several ways:
+	# We can find what the "b0" and "b1" 
+	# values are in several different ways:
 	summary(mod.ls)
-
+	
+	# or using
 	print('The model coefficients are: ')
 	coefficients(mod.ls)
 
@@ -385,7 +386,7 @@ Returning :ref:`back to our ongoing example <LS-class-example>`, we can calculat
 	# The SE = standard error = 1.236603
 	std.error <- sqrt(sum(error^2) / (N-2))
 	paste0('Standard error SE = ', 
-	       round(std.error, 4))
+	       round(std.error, 3))
 	
 
 Use that :math:`S_E` value to calculate the confidence intervals for :math:`\beta_0` and :math:`\beta_1`, and use that :math:`c_t = 2.26` at the 95% confidence level. You can calculate  this value in R using ``qt(0.975, df=(N-2))``. There are :math:`n-2` degrees of freedom, the number of degrees of freedom used to calculate :math:`S_E`.
@@ -428,6 +429,31 @@ The plot shows the effect of varying the slope parameter, :math:`b_1`, from its 
 	:scale: 40
 
 In many cases the confidence interval for the intercept is not of any value because the data for |x| is so far away from zero, or the true value of the intercept is not of concern for us.
+
+
+.. dcl:: R
+	:height: 600px
+
+	x <- c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5)
+	y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96,
+	      7.24, 4.26, 10.84, 4.82, 5.68)
+
+	# "Calculate for me the linear model,
+	# where y is described by x"
+	mod.ls <- lm(y ~ x)
+
+	# You can (and should at the beginning) 
+	# calculate the confidence intervals as shown
+	# above. But there is a short-cut, to save
+	# time, and is less error prone:
+
+	confint(mod.ls)
+
+	# If you want the confidence interval at any
+	# other level, for example, at the 90% level:
+
+	confint(mod.ls, level=0.90))
+	
 
 
 Prediction error estimates for the y-variable
@@ -510,14 +536,24 @@ Interpretation of software output
 
 To complete this section we show how to interpret the output from computer software packages. Most packages have very standardized output, and you should make sure that whatever package you use, that you can interpret the estimates of the parameters, their confidence intervals and get a feeling for the model's performance.
 
-The following output is obtained in R for the :ref:`example <LS-class-example>` we have been using in this section.
+The following output is obtained in R for the :ref:`example <LS-class-example>` we have been using in this section. The Python version follows below.
+
+.. dcl:: R
+	height: 200px
+
+	x <- c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5)
+	y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 
+	      7.24, 4.26, 10.84, 4.82, 5.68)
+
+	# "Calculate for me the linear model, 
+	# where y is described by x"
+	mod.ls <- lm(y ~ x) 
+	
+	summary(mod.ls)
+	
+and produces this output:
 
 .. code-block:: text
-
-	> x <- c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5)
-	> y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68)
-	> model <- lm(y ~ x)    # "The linear model, where y is described by x"
-	> summary(model)
 
 	Call:
 	lm(formula = y ~ x)
@@ -537,7 +573,7 @@ The following output is obtained in R for the :ref:`example <LS-class-example>` 
 	Multiple R-squared: 0.6665,	Adjusted R-squared: 0.6295
 	F-statistic: 17.99 on 1 and 9 DF,  p-value: 0.002170
 
-Make sure you can calculate the following values using the equations developed so far, and the above software output:
+Make sure you can calculate the following values using the equations developed so far, based on the above software output:
 
 	- The intercept term |b0| = 3.0001.
 	- The slope term |b1| = 0.5001.
@@ -550,3 +586,69 @@ Make sure you can calculate the following values using the equations developed s
 	- You can construct the confidence interval for |b0| or |b1| by using their reported standard errors and multiplying by the corresponding :math:`t`-value. For example, if you want 99% confidence limits, then look up the 99% values for the :math:`t`-distribution using :math:`n-k` degrees of freedom, in this case it would be ``qt((1-0.99)/2, df=9)``, which is :math:`\pm 3.25`. So the 99% confidence limits for the slope coefficient would be :math:`[0.5 - 3.25 \times 0.1179; 0.5 + 3.25 \times 0.1179] = [0.12; 0.88]`.
 	- The :math:`R^2 = 0.6665` value.
 	- Be able to calculate the residuals: :math:`e_i = y_i - \hat{y}_i = y_i - b_0 - b_1 x_i`. We expect the median of the residuals to be around 0, and the rest of the summary of the residuals gives a feeling for how far the residuals range about zero.
+
+Using Python, you can run the following code:
+
+.. dcl:: python
+	:height: 400px
+	
+	import numpy as np
+	import statsmodels.api as sm
+
+	X = np.array([10, 8, 13, 9, 11, 14, 
+	              6, 4, 12, 7, 5])
+	y = np.array([8.04, 6.95, 7.58, 8.81, 
+	              8.33, 9.96, 7.24, 4.26, 
+	              10.84, 4.82, 5.68])
+				  
+	# We do want to estimate a 'b0' term
+	X = sm.add_constant(X)
+	model = sm.OLS(y, X)
+	results = model.fit()
+	print(results.summary())
+	print('Standard error = {}'.format(\
+	    np.sqrt(results.scale)))
+
+which produces the following output:
+
+.. code-block:: text
+
+	                            OLS Regression Results
+	==============================================================================
+	Dep. Variable:                      y   R-squared:                       0.667
+	Model:                            OLS   Adj. R-squared:                  0.629
+	Method:                 Least Squares   F-statistic:                     17.99
+	Date:                Tue, 01 Jan 2019   Prob (F-statistic):            0.00217
+	Time:                        00:00:00   Log-Likelihood:                -16.841
+	No. Observations:                  11   AIC:                             37.68
+	Df Residuals:                       9   BIC:                             38.48
+	Df Model:                           1
+	Covariance Type:            nonrobust
+	==============================================================================
+	                 coef    std err          t      P>|t|      [0.025      0.975]
+	------------------------------------------------------------------------------
+	const          3.0001      1.125      2.667      0.026       0.456       5.544
+	x1             0.5001      0.118      4.241      0.002       0.233       0.767
+	==============================================================================
+	Omnibus:                        0.082   Durbin-Watson:                   3.212
+	Prob(Omnibus):                  0.960   Jarque-Bera (JB):                0.289
+	Skew:                          -0.122   Prob(JB):                        0.865
+	Kurtosis:                       2.244   Cond. No.                         29.1
+	==============================================================================
+	
+	
+	Standard error = 1.2366033227263207
+
+As for the R code, we can see at a glance:
+
+	- The intercept term |b0| = 3.0001.
+	- The slope term |b1| = 0.5001.
+	- The standard error of the model, :math:`S_E` = 1.237, using :math:`n-k = 11 - 2 = 9` degrees of freedom. The summary output table does not show the standard error, but you can get it from ``np.sqrt(results.scale)``, where ``results`` is the Python object from fitting the linear model.
+	- Using the standard error, calculate the standard error for the intercept = :math:`S_E(b_0) = 1.1247`, which is reported directly in the table.
+	- Using the standard error, calculate the standard error for the slope = :math:`S_E(b_1) = 0.1179`, which is reported directly in the table.
+	- The :math:`z`-value for the |b0| term is 2.667 (Python calls this the ``t value`` in the printout, but in our notes we have called this :math:`z = \dfrac{b_0 - \beta_0}{S_E(b_0)}`; the value that we compare to the :math:`t`-statistic and used to create the confidence interval).
+	- The :math:`z`-value for the |b1| term is 4.241 (see the above comment again).
+	- The two probability values, ``P>|t|``, for |b0| and |b1| should be familiar to you; they are the probability with which we expect to find a value of :math:`z` greater than the calculated :math:`z`-value (called ``t value`` in the output above). The smaller the number, the more confident we can be the confidence interval contains the parameter estimate.
+	- You can construct the confidence interval for |b0| or |b1| by using their reported standard errors and multiplying by the corresponding :math:`t`-value. For example, if you want 99% confidence limits, then look up the 99% values for the :math:`t`-distribution using :math:`n-k` degrees of freedom, in this case it would be ``from scipy.stats import t; t.ppf(1-(1-0.99)/2, df=9)``, which is :math:`\pm 3.25`. So the 99% confidence limits for the slope coefficient would be :math:`[0.5 - 3.25 \times 0.1179; 0.5 + 3.25 \times 0.1179] = [0.117; 0.883]`. However, the table output gives you the 95% confidence interval. Under the column ``0.025`` and ``0.975`` (leaving 2.5% in the lower and upper tail respectively). For the slope coefficient, for example, this interval is [0.233; 0.767]. If you desire, for example, the 99% confidence interval, you can adjust the code: ``print(results.summary(alpha=1-0.99))``
+	- The :math:`R^2 = 0.6665` value.
+	- Be able to calculate the residuals: :math:`e_i = y_i - \hat{y}_i = y_i - b_0 - b_1 x_i`. 
