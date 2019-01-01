@@ -33,11 +33,11 @@ which gives this output:
 
 .. code-block:: text
 	
-	Importance of components:
-	                          PC1    PC2    PC3    PC4 ... 
-	Standard deviation     21.883 10.975 3.6008 3.2708 ...
-	Proportion of Variance  0.737  0.185 0.0199 0.0165 ...
-	Cumulative Proportion   0.737  0.922 0.9420 0.9585
+	Importance of first k=4 (out of 460) components:
+	                           PC1     PC2     PC3     PC4
+	Standard deviation     21.8835 10.9748 3.60075 3.27081
+	Proportion of Variance  0.7368  0.1853 0.01995 0.01646
+	Cumulative Proportion   0.7368  0.9221 0.94200 0.95846
 
 The :math:`R^2_a` (``Cumulative Proportion``) values shows the first component explains 73.7% of the variability in |X|, the second explains an additional 18.5% for a cumulative total of 92.2%, and the third component explains an additional 1.99%. These three components together explain 94.2% of all the variation in |X|. This means we have reduced |X| from a :math:`460 \times 650` matrix to a :math:`460 \times 3` matrix of scores, |T|, and a :math:`650 \times 3` matrix of loadings, |P|. This is a large reduction in data size, with a minimal loss of information.
 

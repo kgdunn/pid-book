@@ -38,9 +38,7 @@ Here is some advice for bar plots:
 			 xpd = TRUE, 
 			 col = "black")
 
-		# Now rather use a line plot
-		p_range = range(profit)
-		
+		# Now rather use a line plot.
 		# Graph profit, but turn off axes 
 		# and annotations
 		plot(profit, type="b", axes=TRUE, 
@@ -50,9 +48,7 @@ Here is some advice for bar plots:
 		axis(1, at=1:8, lab=labels)
 
 		# Plot title
-		title(ylab="Quarterly profit ($ '000)")
-	
-	
+		title(ylab="Quarterly profit ($ '000)")	
 
 -	Bar plots can be wasteful as each data point is repeated several times:
 

@@ -95,17 +95,76 @@ Bales of rubber are being produced, with every 10th bale automatically removed f
 In the above example the raw data are the bale's colour. There are :math:`n = 5` values in each subgroup. Collect say :math:`K=20` samples of 
 good production bales considered to be from stable operation. No special process events occurred while these bales were manufactured.
 
-The data below represent the average of the :math:`n=5` samples from each bale, there are :math:`K=20` subgroups.
+The data below represent the average of the :math:`n=5` samples from each bale, there are :math:`K=20` of these subgroups.
 
 .. math::
  	\overline{x} = [245, 239, 239, 241, 241, 241, 238, 238, 236, 248, 233, 236, 246, 253, 227, 231, 237, 228, 239, 240]
 
-The overall average is :math:`\overline{\overline{x}} = 238.8` and :math:`\overline{S} = 9.28`. Calculate the lower and upper control limits for this Shewhart chart. Were there any points in the phase 1 data (training phase) that exceeded these limits?
+The overall average is :math:`\overline{\overline{x}} = 238.8` and :math:`\overline{S} = 9.28`. The raw data are `available on this website <http://openmv.net/info/rubber-colour>`_ and you can verify these calculations.
+
+
+*	Calculate the lower and upper control limits for this Shewhart chart. 
+*	Were there any points in the phase 1 data (training phase) that exceeded these limits?
 
 	-	LCL = :math:`\overline{\overline{x}} - 3 \cdot \frac{\displaystyle \overline{S}}{\displaystyle a_n\sqrt{n}} = 238.8 - 3 \cdot \displaystyle \frac{9.28}{(0.94)(\sqrt{5})} = 225.6` 
 	-	UCL = :math:`\overline{\overline{x}} + 3 \cdot \frac{\displaystyle \overline{S}}{\displaystyle a_n\sqrt{n}} = 238.8 + 3 \cdot \displaystyle \frac{9.28}{(0.94)(\sqrt{5})} = 252.0` 
 	-	The group with :math:`\overline{x}` = 253 exceeds the calculated upper control limit. 
 	-	That :math:`\overline{x}` point should be excluded and the limits recomputed. You can show the new :math:`\overline{\overline{x}} = 238.0` and :math:`\overline{S} = 9.68` and the new LCL = 224 and UCL = 252.
+	
+	
+In source code:
+
+.. dcl:: R
+
+	# Given information (but it can be calculated
+	# from http://openmv.net/info/rubber-colour)
+	xbar <- c(245, 239, 239, 241, 241, 241, 238,
+	          238, 236, 248, 233, 236, 246, 253, 
+	          227, 231, 237, 228, 239, 240)
+		  
+	# Number of measurements per subgroup
+	N.sub <- 5
+
+	# Average of the 20 standard deviations 
+	# of the 20 subgroups
+	S = 9.28
+
+	# xdb = x double bar = overall mean =
+	#       mean of the means
+	xdb = mean(xbar)
+
+	num.an <- sqrt(2) * gamma(N.sub/2)
+	den.an <- sqrt(N.sub-1) * gamma((N.sub-1)/2)
+	an <- num.an / den.an
+
+	LCL <- xdb - (3 * S/(an * sqrt(N.sub)))
+	UCL <- xdb + (3 * S/(an * sqrt(N.sub)))
+	paste0('Control limits: [', round(LCL, 2),
+	       '; ', round(UCL,2), ']')
+
+	paste0('Number above UCL: ', sum(xbar>UCL))
+	paste0('Number below LCL: ', sum(xbar<LCL))
+
+
+	# Exclude the one subgroup above the UCL.
+	# Do this by setting it to 'NA' (missing)
+	xbar[xbar > UCL] <- NA
+
+	# Calculate the mean, removing missing
+	# values (ignore it).
+	xdb = mean(xbar, na.rm=TRUE)
+
+	# 'S' will change also. If you download the
+	# raw data (link above), you can prove
+	# that the new 'S' will be:
+	S = 9.68
+
+	# The 'an' and 'N.sub' will not change.
+
+	LCL <- xdb - (3 * S/(an * sqrt(N.sub)))
+	UCL <- xdb + (3 * S/(an * sqrt(N.sub)))
+	paste0('Control limits: [', round(LCL, 0),
+	       '; ', round(UCL,0), ']')
 	
 .. todo: show chart in class
 		
