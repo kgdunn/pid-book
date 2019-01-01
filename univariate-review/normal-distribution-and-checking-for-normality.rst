@@ -30,6 +30,7 @@ Imagine a case where we are throwing dice. The distributions, shown below, are o
 As one sees from the above figures, the distribution from these averages quickly takes the shape of the so-called *normal distribution*. As :math:`M` increases, the y-axis starts to form a peak.  Try it yourself:
 
 .. dcl:: R
+	:codefile: ../figures/univariate/simulate-CLT.R
 
 	N = 500
 	
@@ -387,6 +388,7 @@ We can use the q-q plot to compare any 2 *samples of data*, even if they have di
 
 .. dcl:: R
 	:height: 500px
+	:codefile: ../figures/univariate/qqplot-comparison.R
 	
 	# 1000 normal values
 	rand.norm <- rnorm(1000)   

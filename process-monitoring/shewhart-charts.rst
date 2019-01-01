@@ -145,7 +145,6 @@ In source code:
 	paste0('Number > UCL: ', sum(xbar > UCL))
 	paste0('Number < LCL: ', sum(xbar < LCL))
 
-
 	# Exclude the one subgroup above the UCL.
 	# Do this by setting it to 'NA' (missing)
 	xbar[xbar > UCL] <- NA
@@ -218,6 +217,17 @@ The table highlights that :math:`\beta` is a function of the amount by which the
 ------------------------------  ------ ------ ------ ------ ------ ------ 
 :math:`\beta` when :math:`n=4`  0.9936 0.9772 0.9332 0.8413 0.5000 0.1587
 ==============================  ====== ====== ====== ====== ====== ======
+
+.. dcl:: R
+	:height: 250px
+	
+	Delta <- 1
+	N <- 4
+	beta <- pnorm(+3 - Delta*sqrt(N)) - 
+	        pnorm(-3 - Delta*sqrt(N))
+
+	paste0('When Delta=', Delta, ' and N=', N, 
+	       ' then beta = ', round(beta, 4))
 
 The key point you should note from the table is that a Shewhart chart is *not good* (it is slow) at detecting a change in the location (level) of a variable. This is surprising given the intention of the plot is to monitor the variable's location. Even a moderate shift of :math:`0.75\sigma` units :math:`(\Delta=0.75)` will only be detected around 6.7% of the time (:math:`100-93.3\%`) when :math:`n=4`. We will discuss :ref:`CUSUM charts <monitoring_CUSUM_charts>` and the Western Electric rules, next, as a way to overcome this issue.
 

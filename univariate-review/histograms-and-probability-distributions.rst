@@ -103,7 +103,6 @@ A :index:`relative frequency`, also called :index:`density`, is sometimes prefer
 .. dcl:: R
 	:height: 450px
 
-
 	# 1000 normally distributed values
 	values = rnorm(1000)
 	hist(values, freq=TRUE,  xlab="Random values", 
