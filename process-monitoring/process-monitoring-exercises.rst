@@ -611,7 +611,8 @@ Exercises
 		     main="", ylab="CO2: raw data", 
 		     xlab="Sequence order")
 
-		# Create the subgroups on ALL the raw data. # Form a matrix with `N.subgroup` rows by 
+		# Create the subgroups on ALL the raw data. 
+		# Form a matrix with `N.subgroup` rows by 
 		# placing the vector of data down each row, 
 		# then going across to form the columns.
 		# Calculate the mean and standard deviation 

@@ -3,7 +3,7 @@
 PCA example: analysis of spectral data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A data set, `available on the dataset website <http://openmv.net/info/tablet-spectra>`_, contains data on 460 tablets, measured at 650 different wavelengths.
+A data set, `available on the dataset website <https://openmv.net/info/tablet-spectra>`_, contains data on 460 tablets, measured at 650 different wavelengths.
 
 .. image:: ../../figures/examples/tablet-spectra/pharma-spectra.png
 	:alt:	../../figures/examples/tablet-spectra/pharma-spectra.py
@@ -13,18 +13,20 @@ A data set, `available on the dataset website <http://openmv.net/info/tablet-spe
 	
 This R code will calculate principal components for this data:
 
-.. code-block:: s
+.. dcl:: R
+	:height: 300px
 
 	# Read large data file
-	spectra <- read.csv('http://openmv.net/file/tablet-spectra.csv', 
-	                     header=FALSE)
+	file <- 'http://openmv.net/file/tablet-spectra.csv'
+	spectra <- read.csv(file, header=FALSE)
 	model.pca <- prcomp(spectra[,2:651], scale=TRUE)
 	summary(model.pca)
-	Importance of components:
-	                          PC1    PC2    PC3    PC4 ... 
-	Standard deviation     21.883 10.975 3.6008 3.2708 ...
-	Proportion of Variance  0.737  0.185 0.0199 0.0165 ...
-	Cumulative Proportion   0.737  0.922 0.9420 0.9585
+	
+	#Importance of components:
+	#                          PC1    PC2    PC3    PC4 ... 
+	#Standard deviation     21.883 10.975 3.6008 3.2708 ...
+	#Proportion of Variance  0.737  0.185 0.0199 0.0165 ...
+	#Cumulative Proportion   0.737  0.922 0.9420 0.9585
 
 The :math:`R^2_a` (``Cumulative Proportion``) values shows the first component explains 73.7% of the variability in |X|, the second explains an additional 18.5% for a cumulative total of 92.2%, and the third component explains an additional 1.99%. These three components together explain 94.2% of all the variation in |X|. This means we have reduced |X| from a :math:`460 \times 650` matrix to a :math:`460 \times 3` matrix of scores, |T|, and a :math:`650 \times 3` matrix of loadings, |P|. This is a large reduction in data size, with a minimal loss of information.
 
