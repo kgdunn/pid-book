@@ -124,7 +124,7 @@ class DataCampLite(Directive):
     final_argument_whitespace = False
     option_spec = {
         "height": directives.unchanged,
-        "codefile": directives.unchanged,
+        "codefile": directives.unchanged,  # not used for anything, but for the author to track the original file location
     }
 
     def run(self):
