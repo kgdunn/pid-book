@@ -191,11 +191,11 @@ These two common examples illustrate the abuse. You likely have said or heard so
 	#.	"the :math:`R^2` value is really high, 90%, so this is a good model".
 	#.	"Wow, that's a really low :math:`R^2`, this model can't be right - it's no good".
 
-How **good** a model is *for a particular purpose* is almost never related to the :math:`R^2` value. The goodness of a model is better assessed by:
+How **good**, or how suitable a model is *for a particular purpose* is almost never related to the :math:`R^2` value. The goodness of a model is better assessed by:
 
 - your engineering judgment: does the *interpretation* of model parameters make sense?
 - use testing data to verify the model's predictive performance,
-- using cross-validation tools (we will see this topic later on).
+- using cross-validation tools (we will see this topic later on) to see how well the model performs on new, unseen and unused testing data.
 
 We will see later on that :math:`R^2` can be arbitrarily increased by adding terms to the linear model, as we will see in the section on :ref:`multiple linear regression (MLR) <LS_multiple_X_MLR>`. So sometimes you will see the adjusted :math:`R^2` used to account for the :math:`k` terms used in the model:
 
@@ -349,7 +349,6 @@ Now it is straight forward to construct **confidence intervals for the least squ
 
 **Example**
 
-
 .. youtube:: https://www.youtube.com/watch?v=sY8CVMGUD54&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=22
 
 Returning :ref:`back to our ongoing example <LS-class-example>`, we can calculate the confidence interval for :math:`\beta_0` and :math:`\beta_1`. We calculated earlier already that |b0| = 3.0 and |b1| = 0.5. Using these values we can calculate the standard error:
@@ -387,7 +386,6 @@ Returning :ref:`back to our ongoing example <LS-class-example>`, we can calculat
 	std.error <- sqrt(sum(error^2) / (N-2))
 	paste0('Standard error SE = ', 
 	       round(std.error, 3))
-	
 
 Use that :math:`S_E` value to calculate the confidence intervals for :math:`\beta_0` and :math:`\beta_1`, and use that :math:`c_t = 2.26` at the 95% confidence level. You can calculate  this value in R using ``qt(0.975, df=(N-2))``. There are :math:`n-2` degrees of freedom, the number of degrees of freedom used to calculate :math:`S_E`.
 
@@ -403,7 +401,6 @@ The 95% confidence interval for :math:`\beta_0`:
 
 .. math::
 
-	
 	\begin{array}{rccclrcccl}
 		- c_t                &\leq& \dfrac{b_0 - \beta_0}{S_E(b_0)} &\leq &  +c_t               \\
 		3.0 - 2.26 \times \sqrt{1.266}  &\leq& \beta_0   &\leq&	3.0 + 2.26 \times \sqrt{1.266}   \\
@@ -446,14 +443,19 @@ In many cases the confidence interval for the intercept is not of any value beca
 	# calculate the confidence intervals as shown
 	# above. But there is a short-cut, to save
 	# time, and is less error prone:
-
 	confint(mod.ls)
+	
+	#                 2.5 %    97.5 %
+	# (Intercept) 0.4557369 5.5444449
+	# x           0.2333701 0.7668117
 
 	# If you want the confidence interval at any
 	# other level, for example, at the 90% level:
-
 	confint(mod.ls, level=0.90)
 	
+	#                   5 %     95 %
+	# (Intercept) 0.9383030 5.061879
+	# x           0.2839568 0.716225
 
 
 Prediction error estimates for the y-variable

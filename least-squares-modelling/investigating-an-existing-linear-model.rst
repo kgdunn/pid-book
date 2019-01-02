@@ -126,8 +126,37 @@ Here are some examples of the autocorrelation plot: in the first case you would 
 	:scale: 70
 	:alt: fake width
 
-Another test for autocorrelation is the Durbin-Watson test. For more on this test see the book by Draper and Smith (Chapter 7, 3rd edition); in R you can use the ``durbinWatsonTest(model)`` function in ``library(car)``.
+Another test for autocorrelation is the Durbin-Watson test. For more on this test see the book by Draper and Smith (Chapter 7, 3rd edition); in R you can use the ``durbinWatsonTest(model)`` function in ``library(car)``. Try generating autocorrelation of varying strength (positive, e.g. ``phi_long = 0.80`` and negative, e.g. ``phi_long = -0.75``) in the code below. Inspect the plots which are generated as a result:
 
+.. dcl:: R
+
+	# Adjust this autocorrelation parameter:
+	phi_long = 0.80
+
+	N = 1005
+	data <- numeric(N)	
+	for (k in 2:N){
+	  data[k] = rnorm(1, sd=4) + 
+	                       phi_long * data[k-1]
+	}
+	x <- data + 50
+	summary(x)
+
+	# Plot autocorrelation in the first 100 points
+	plot(data[1:100], type='b', 
+	     main='Raw data', xlab = 'Time order')
+
+	plot.new()
+	lims = c(30,70)
+	plot(x[1:1000], x[2:1001], asp=1, 
+	     xlim=lims, ylim=lims)
+	model <- lm(x[2:1001] ~ x[1:1000])
+	abline(model, col="darkgreen", lwd=2)
+	text(30, 30, paste("Correlation = r = ", 
+	                   round(cor(x[2:1001], 
+	                         x[1:1000]), 2)), 
+	     col="darkgreen", cex=1.5, adj = c(0, NA))
+	
 
 .. Box and Newbold describe a case where the lack of independence lead to serious mis-interpretation:  J Royal Statist. Soc. Series A, v134, p229-240, 1971
 .. Also see: /Users/kevindunn/Statistics course/Course notes/Correlation, covariance and least squares/images/autocorrelated-data-problem.R
