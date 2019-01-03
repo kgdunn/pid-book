@@ -59,7 +59,8 @@ The taste of cheddar cheese
 		cheese <- read.csv(filename)
 		summary(cheese)
 
-		model.pca <- prcomp(cheese[, 2:5], scale=TRUE)
+		model.pca <- prcomp(cheese[, 2:5],
+		                    scale=TRUE)
 		summary(model.pca)
 		P <- model.pca$rotation
 		T <- model.pca$x
@@ -75,7 +76,7 @@ The taste of cheddar cheese
 
 	*	``model.lm <- lm(Taste ~ Acetic + H2S + Lactic, data=cheese)``
 
-	*	Report each coefficient :math:`\pm 2 S_E(b_i)`. Which coefficients does ``R`` find significant in MLR?
+	*	Report each coefficient :math:`\pm 2 S_E(b_i)`. Which coefficients does R find significant in MLR? (You can use the ``confint(model.lm)`` function too.)
 
 		.. math::
 			\beta_\text{Acetic} &= \qquad \qquad \pm \\
@@ -97,12 +98,14 @@ The taste of cheddar cheese
 		resid = residuals(model.lm)
 		resid.ssq = sum(resid**2)
 		standard.error = sqrt( resid.ssq /
-		                  (nrow(cheese) - 4))
+		                       (nrow(cheese) - 4))
 		ssq.total = sum((cheese$Taste -
-		         mean(cheese$Taste)) ** 2)
+		                  mean(cheese$Taste)) ** 2)
 		R2.value = 1 - resid.ssq / ssq.total
-		paste0('Least squares SE = ', standard.error)
-		paste0('Least squares R2 = ', R2.value)	
+		paste0('Least squares SE = ',
+		       round(standard.error, 2))
+		paste0('Least squares R^2 = ',
+		       round(R2.value*100, 2), '%')
 
 #.	Now build a PCR model in ``R`` using only 1 component, then using 2 components. Again calculate the standard error and :math:`R^2_y` values.
 
