@@ -14,7 +14,7 @@ A histogram is a summary of the variation in a measured variable. It shows the *
 	:align: left
 	:width: 900px
 	:alt: fake width
-	
+
 The raw data in the above example was a vector of consisted of 2739 text entries, with 1420 of them as ``Male`` and 1319 of them as ``Female``. In this case ``Female`` and ``Male`` represent the two categories.
 
 Histograms make sense for categorical variables, but a histogram can also be derived from a continuous variable. Here is an example showing the mass of cartons of 1 kg of flour. The continuous variable, mass, is divided into equal-size bins that cover the range of the available data.  Notice how the packaging system has to overfill each carton so that the vast majority of packages weigh over 1 kg (what is the average package mass?). If the variability in the packaging system could be reduced, then the histogram can be shifted to the left, thereby reducing overfill.
@@ -24,16 +24,16 @@ Histograms make sense for categorical variables, but a histogram can also be der
 	:align: center
 	:width: 900px
 	:alt: fake width
-	
+
 .. dcl:: R
-	:height: 350px
+	:height: 550px
 
 	# Create 500 normally distributed points
 	# with a mean of 1100 and standard deviation
 	# of 50 units.
 	data <- rnorm(500, mean=1100, sd=50)
-	hist(data, 
-	     xlab="Mass [g] of each package", 
+	hist(data,
+	     xlab="Mass [g] of each package",
 	     ylab="Number of packages (N=500)")
 
 
@@ -56,36 +56,36 @@ In preparing the above histograms, what have you implicitly inferred about time-
 -	Canadian life tables from 2002 (`Statistics Canada website <http://www.statcan.gc.ca/bsolc/olc-cel/olc-cel?catno=84-537-XIE&lang=eng>`_) show that females have a 98.86% chance of reaching age 30 and a 77.5% chance of reaching age 75; but people die at different ages due to different causes.
 -	We know that a fair die has a 16.67% chance of showing a 4 when thrown, but we cannot predict the value of the next throw.
 
-Even if we have complete mechanistic knowledge of our process, the concepts from probability and statistics are useful to summarize and communicate information about past behaviour, and the expected future behaviour. 
+Even if we have complete mechanistic knowledge of our process, the concepts from probability and statistics are useful to summarize and communicate information about past behaviour, and the expected future behaviour.
 
 Steps to creating a frequency distribution, illustrated with 4 examples:
 
 	#.	Decide what you are measuring:
-	
+
 		A.	acceptable or unacceptable metal appearance: yes/no
 		B.	number of defects on a metal sheet: none, low, medium, high
 		C.	yield from the batch reactor: somewhat continuous - quantized due to rounding to the closest integer
 		D.	daily ambient temperature, in Kelvin: continuous values
-	
+
 	#.	Decide on a resolution for the measurement axis:
-	
+
 		A.	acceptable/unacceptable (1/0) code for the metal's appearance
 		B.	use a scale from 1 to 4 that grades the metal's appearance
 		C.	batch yield is measured in 1% increments, reported either as 78, 79, 80, 81%, *etc*.
 		D.	temperature is measured to a 0.05 K precision, but we can report the values in bins of 5K
-	
+
 	#.	Report the number of observations in the sample or population that fall within each bin (resolution step):
-	
+
 		A.	number of metal pieces with appearance level "acceptable" and "unacceptable"
 		B.	number of pieces with defect level 1, 2, 3, 4
 		C.	number of batches with yield inside each bin level
 		D.	number of temperature values inside each bin level
-		
+
 	#.	Plot the number of observations in category as a bar plot. If you plot the number of observations divided by the total number of observations, :math:`N`, then you are plotting the **relative frequency**.
-	
+
 .. TODO: show the above plots
 
-.. index:: 
+.. index::
 	single: frequency, relative
 
 A :index:`relative frequency`, also called :index:`density`, is sometimes preferred:
@@ -98,23 +98,23 @@ A :index:`relative frequency`, also called :index:`density`, is sometimes prefer
 .. image:: ../figures/univariate/frequency-histogram.png
 	:scale: 60
 	:align: center
-	
-	
+
+
 .. dcl:: R
 	:height: 450px
 
 	# 1000 normally distributed values
 	values = rnorm(1000)
-	hist(values, freq=TRUE,  xlab="Random values", 
-		 cex.lab=1.5, cex.main=1.8, lwd=2, 
-		 cex.sub=1.8, cex.axis=1.8, 
+	hist(values, freq=TRUE,  xlab="Random values",
+		 cex.lab=1.5, cex.main=1.8, lwd=2,
+		 cex.sub=1.8, cex.axis=1.8,
 		 ylab="Frequency (N=1000)")
-	hist(values, freq=FALSE, xlab="Random values", 
-		 cex.lab=1.5, cex.main=1.8, lwd=2, 
-		 cex.sub=1.8, cex.axis=1.8, 
+	hist(values, freq=FALSE, xlab="Random values",
+		 cex.lab=1.5, cex.main=1.8, lwd=2,
+		 cex.sub=1.8, cex.axis=1.8,
 		 ylab="Relative density")
-		 
-	# Compare the two plots: only the 
+
+	# Compare the two plots: only the
 	# y-axis changes!
 
 
@@ -128,8 +128,8 @@ We review a couple of concepts that you should have seen in prior statistical wo
 .. _univariate-population:
 
 **Population**
-	
-	A large collection of observations that *might* occur; a set of *potential* measurements. Some texts consider an infinite collection of observations, but a large number of observations is good enough. 
+
+	A large collection of observations that *might* occur; a set of *potential* measurements. Some texts consider an infinite collection of observations, but a large number of observations is good enough.
 
 .. We will use capital :math:`N` in this section to denote the :index:`population` size. WE USUALLY USE "N" as the sample size
 .. We will use lowercase :math:`n` in this section to denote the :index:`sample` size.
@@ -137,14 +137,14 @@ We review a couple of concepts that you should have seen in prior statistical wo
 **Sample**
 
 	A collection of observations that have *actually* occurred; a set of *existing* measurements that we have recorded in some way, usually electronically.
-	
-	.. index:: 
+
+	.. index::
 		single: sample
 
 	.. image:: ../figures/univariate/batch-yields.png
 		:scale: 80
 		:align: center
-	
+
 	In engineering applications where we have plenty of data, we can characterize the population from all available data. The figure here shows the viscosity of a motor oil, from all batches produced in the last 5 years (about 1 batch per day). These 1825 data points, though technically a *sample* are an excellent surrogate for the *population* viscosity because they come from such a long duration. Once we have characterized these samples, future viscosity values will likely follow that same distribution, provided the process continues to operate in a similar manner.
 
 **Distribution**
@@ -152,56 +152,56 @@ We review a couple of concepts that you should have seen in prior statistical wo
 	Distributions are used to provide a much smaller summary of many data points. Histograms, discussed above, are one way of visualizing a distribution. We will look at various distributions in the next section.
 
 **Probability**
-	
+
 	The area under a plot of relative frequency distribution is equal to 1. :index:`Probability <single: probability>` is then the fraction of the area under the frequency distribution curve (also called density curve).
-	
+
 	Superimpose on your histograms drawn earlier:
-	
+
 	-	The probability of a test grades less than 80%
 	-	The probability that the number thrown from a 6-sided die is less than or equal to 2
 	-	The probability of someone's income exceeding $50,000
 
 **Parameter**
 
-	.. index:: 
+	.. index::
 		pair: population; parameter
 
 	A parameter is a value that describes the population's **distribution** in some way. For example, the population mean.
-	
+
 **Statistic**
-	
+
 	A :index:`statistic` is an estimate of a population parameter.
 
 **Mean (location)**
-	
+
 	.. _univariate_calculate_mean:
-	
+
 	The :index:`mean`, or :index:`average`, is a measure of :index:`location` of the distribution. For each measurement, :math:`x_i`, in your sample
 
 	.. math::
 		:nowrap:
-			
+
 			\begin{alignat*}{2}
 				\text{population mean:} &\qquad&  \mathcal{E}\left\{x \right\} = \mu &= \frac{1}{N}\sum{x} \\
 				\text{sample mean:}     &\qquad&                       \overline{x}  &= \frac{1}{n}\sum_{i=1}^{n}{x_i}
 			\end{alignat*}
-			
+
 	where :math:`N` represents the entire population, and :math:`n` are the numberhe sample.
-		
+
 	.. dcl:: R
 		:height: 200px
 
-		# A vector of 50 normally distributed 
+		# A vector of 50 normally distributed
 		# random numbers
-		
+
 		x <- rnorm(50)
 		mean(x)
-		
+
 		# Run the code several times, to check
 		# that the mean is approximately 0
 		# Check what the 'x' variable contains.
-	
-	
+
+
 	This is one of several statistics that describes your data: if you told your customer that the average density of your liquid product was 1.421 g/L, and nothing further, the customer might assume that some lots of the same product could have a density of 0.824 g/L, or 2.519 g/L. We need information in addition to the mean to quantify the distribution of values: *the spread*.
 
 .. _univariate-variance:
@@ -210,11 +210,11 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 	.. _univariate_calculate_variance:
 
-	A measure of :index:`spread`, or :index:`variance`, is useful to quantify your distribution. 
+	A measure of :index:`spread`, or :index:`variance`, is useful to quantify your distribution.
 
 	.. math::
 		:nowrap:
-		
+
 	   	\begin{alignat*}{2}
 	      	\text{Population variance}: &\qquad& \mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} = \sigma^2 &= \frac{1}{N}\sum{(x-\mu)^2} \\
 			\text{Sample variance}:     &\qquad&                                                                             s^2  &= \frac{1}{n-1}\sum_{i=1}^{n}{(x_i - \overline{x})^2}
@@ -223,20 +223,23 @@ We review a couple of concepts that you should have seen in prior statistical wo
 	Dividing by :math:`n-1` makes the variance statistic, :math:`s^2`, an unbiased estimator of the population variance, :math:`\sigma^2`. However, in most engineering data sets our value for :math:`n` is large, so using a divisor of :math:`n`, which you might come across in computer software or other texts, rather than :math:`n-1` as shown here, has little difference.
 
 	.. dcl:: R
-		:height: 200px
+		:height: 350px
 
-		# A vector of 50 normally distributed 
-		# random numbers with a standard 
+		# A vector of 50 normally distributed
+		# random numbers with a standard
 		# deviation of 5
-				
 		x <- rnorm(50, sd=5)
 
-		paste0('Standard deviation = ', sd(x))
-		paste0('The variance is    = ', var(x))
-		paste0('Square root of variance = ', sqrt(var(x)))
-		
-		
-		
+		paste0('Standard deviation = ',
+		       round(sd(x), 3))
+		paste0('The variance is    = ',
+		       round(var(x), 3))
+		paste0('Square root of variance = ',
+		       round(sqrt(var(x)), 3))
+
+		# Run the code several times.
+
+
 	The square root of variance, called the :index:`standard deviation` is a more useful measure of spread to engineers: it is easier to visualize on a histogram and has the advantage of being in the same units of the variable.
 
 	**Degrees of freedom**: The denominator in the sample variance calculation, :math:`n-1`, is called the degrees of freedom. We have one fewer than :math:`n` degrees of freedom, because there is a constraint that the sum of the deviations around :math:`\overline{x}` must add up to zero. This constraint is from the definition of the mean. However, if we knew what the sample mean was without having to estimate it, then we could subtract each :math:`x_i` from that value, and our degrees of freedom would be :math:`n`.
@@ -249,22 +252,22 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 	* 4024, 5152, 2314, 6360, 4915, 9552, 2415, 6402, 6261
 	* 4, 61, 12, 64, 4024, 52, -8, 67, 104, 24
-	
+
 .. TODO: add a multivariate outlier illustration here
-	
+
 .. _univariate-median:
 
 .. index:: robust statistics
 
 **Median (robust measure of location)**
 
-	The :index:`median` is an alternative measure of :index:`location`. It is a sample statistic, not a population statistic, and is computed by sorting the data and taking the middle value (or average of the middle 2 values, for even :math:`n`). It is also called a robust statistic, because it is insensitive (robust) to outliers in the data. 
+	The :index:`median` is an alternative measure of :index:`location`. It is a sample statistic, not a population statistic, and is computed by sorting the data and taking the middle value (or average of the middle 2 values, for even :math:`n`). It is also called a robust statistic, because it is insensitive (robust) to outliers in the data.
 
-	.. note::	
-	
+	.. note::
+
 		The median is the most robust estimator of the sample location: it has a breakdown of 50%, which means that just under 50% of the data need to be replaced with unusual values before the median breaks down as a suitable estimate. The mean on the other hand has a breakdown value of :math:`1/n`, as only one of the data points needs to be unusual to cause the mean to be a poor estimate. To compute the median in R, use the ``median(x)`` function on a vector ``x``.
 
-			
+
 	Governments will report the median income, rather than the mean, to avoid influencing the value with the few very high earners and the many low earners. The median income per person is a more fair measure of location in this case.
 
 **Median absolute deviation, MAD (robust measure of spread)**
@@ -272,28 +275,28 @@ We review a couple of concepts that you should have seen in prior statistical wo
 	A robust measure of :index:`spread` is the :index:`MAD`, the :index:`median absolute deviation <see: median absolute deviation; MAD>`.  The name is descriptive of how the MAD is computed:
 
 	.. math::
-	
+
 			\text{mad}\left\{ x_i \right\} = c \cdot \text{median}\left\{ \| x_i - \text{median}\left\{ x_i \right\}  \|  \right\} \qquad\qquad \text{where}\qquad c = 1.4826
 
 	The constant :math:`c` makes the MAD consistent with the standard deviation when the observations :math:`x_i` are normally distributed. The MAD has a :index:`breakdown point` of 50%, because like the median, we can replace just under half the data with outliers before the estimate becomes unbounded. To compute the MAD in R, use the ``mad(x)`` function on a vector ``x``.
-	
+
 	.. dcl:: R
 		:height: 500px
 
-		# A vector of 500 normally distributed 
+		# A vector of 500 normally distributed
 		# random numbers
-				
+
 		x <- rnorm(500)
 
 		paste0('Without any outliers:')
 		paste0('Standard deviation = ', sd(x))
 		paste0('The MAD is         = ', mad(x))
 		print('These two should agree mostly')
-		
+
 		# Run it several times to verify that the
-		# two are similar, when they are not 
+		# two are similar, when they are not
 		# outliers
-		
+
 		# Now add a huge outlier:
 		x[2] <- 9876
 		paste0('But now add an outlier...')
@@ -308,5 +311,3 @@ We review a couple of concepts that you should have seen in prior statistical wo
 .. #.	show a typical plot of the probability function :math:`p(x)` against the variable's value :math:`x`
 .. #.	learn when to use that distribution (we will show some examples)
 .. #.	know what the parameters of the distribution are
-
-
