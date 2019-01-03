@@ -18,7 +18,7 @@ The taste of cheddar cheese
 *	Description: This very simple case study considers the taste of mature cheddar cheese. There are 3 measurements taken on each cheese: lactic acid, acetic acid and :math:`\text{H}_2\text{S}`.
 
 
-#.	Import the data into ``R``: ``cheese <- read.csv('http://openmv.net/file/cheddar-cheese.csv')``
+#.	Import the data into R: ``cheese <- read.csv('http://openmv.net/file/cheddar-cheese.csv')``
 
 #.	Use the ``car`` library and plot a scatter plot matrix of the raw data:
 
@@ -62,8 +62,8 @@ The taste of cheddar cheese
 		model.pca <- prcomp(cheese[, 2:5],
 		                    scale=TRUE)
 		summary(model.pca)
-		P <- model.pca$rotation
-		T <- model.pca$x
+		loadings.P <- model.pca$rotation
+		scores.T <- model.pca$x
 
 
 #.	Before building the PLS model, how many components would you expect?  And what would the weights look like (:math:`\mathbf{r}_1`, and :math:`\mathbf{c}_1`)?
@@ -72,7 +72,7 @@ The taste of cheddar cheese
 
 #.	Now plot the SPE plot; these are the SPE values for the projections onto the |X|-space. Any outliers apparent?
 
-#.	In ``R``, build a least squares model that regresses the ``Taste`` variable on to the other 3 |X| variables.
+#.	In R, build a least squares model that regresses the ``Taste`` variable on to the other 3 |X| variables.
 
 	*	``model.lm <- lm(Taste ~ Acetic + H2S + Lactic, data=cheese)``
 
@@ -98,7 +98,7 @@ The taste of cheddar cheese
 		resid = residuals(model.lm)
 		resid.ssq = sum(resid**2)
 		standard.error = sqrt( resid.ssq /
-		                       (nrow(cheese) - 4))
+		                     model.lm$df.residual )
 		ssq.total = sum((cheese$Taste -
 		                  mean(cheese$Taste)) ** 2)
 		R2.value = 1 - resid.ssq / ssq.total
@@ -107,15 +107,36 @@ The taste of cheddar cheese
 		paste0('Least squares R^2 = ',
 		       round(R2.value*100, 2), '%')
 
-#.	Now build a PCR model in ``R`` using only 1 component, then using 2 components. Again calculate the standard error and :math:`R^2_y` values.
+#.	Now build a PCR model in R using only 1 component, then using 2 components. Again calculate the standard error and :math:`R^2_y` values.
 
-	*	``model.pca <- prcomp(cheese[,2:4], scale=TRUE)``
+	.. dcl:: R
 
-	*	``T <- model.pca$x``
+		cheese <- read.csv('http://openmv.net/file/cheddar-cheese.csv')
+		summary(cheese)
 
-	*	``model.pcr.1 <- lm(cheese$Taste ~ T[,1]) # one component``
+		# PCA model with only 2 components
+		model.pca <- prcomp(cheese[,2:4],
+		                    scale = TRUE,
+		                    rank. = 2)
 
-	*	``model.pcr.2 <- lm(cheese$Taste ~ T[,1:2]) # two components``
+		scores.T <- model.pca$x
+
+		# PCR model using only PC 1
+		pcr.1 <- lm(cheese$Taste ~ scores.T[,1])
+
+		# PCR model using PC 1 and PC 2
+		pcr.2 <- lm(cheese$Taste ~ scores.T[,1:2])
+
+		SE.1 <- sqrt( sum( residuals(pcr.1)^2 ) /
+		                      pcr.1$df.residual )
+		SE.2 <- sqrt( sum( residuals(pcr.2)^2 ) /
+		                pcr.2$df.residual )
+
+		paste0('SE for PCR with 1 component: ',
+		       round(SE.1, 2))
+		paste0('SE for PCR with 2 components: ',
+		       round(SE.2, 2))
+
 
 #.	Plot the observed |y| values against the predicted |y| values for the PLS model.
 
