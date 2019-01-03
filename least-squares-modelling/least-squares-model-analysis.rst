@@ -456,6 +456,9 @@ In many cases the confidence interval for the intercept is not of any value beca
 	#                   5 %     95 %
 	# (Intercept) 0.9383030 5.061879
 	# x           0.2839568 0.716225
+	
+	# Compare this to the calculated value by hand 
+	# above. It is exactly the same!
 
 
 Prediction error estimates for the y-variable

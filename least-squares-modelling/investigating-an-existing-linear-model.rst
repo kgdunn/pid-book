@@ -126,7 +126,7 @@ Here are some examples of the autocorrelation plot: in the first case you would 
 	:scale: 70
 	:alt: fake width
 
-Another test for autocorrelation is the Durbin-Watson test. For more on this test see the book by Draper and Smith (Chapter 7, 3rd edition); in R you can use the ``durbinWatsonTest(model)`` function in ``library(car)``. Try generating autocorrelation of varying strength (positive, e.g. ``phi_long = 0.80`` and negative, e.g. ``phi_long = -0.75``) in the code below. Inspect the plots which are generated as a result:
+Another test for autocorrelation is the Durbin-Watson test. For more on this test see the book by Draper and Smith (Chapter 7, 3rd edition); in R you can use the ``durbinWatsonTest(model)`` function in ``library(car)``. Try generating autocorrelation of varying strength (positive, e.g. ``phi_long = 0.80`` and negative, e.g. ``phi_long = -0.75``) in the code below. Inspect the plots which are generated as a result, especially the time order plot: get a feeling for what a strong and weak positive/negative correlation looks like in the time order.
 
 .. dcl:: R
 
