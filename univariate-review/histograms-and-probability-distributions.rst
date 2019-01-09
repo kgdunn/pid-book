@@ -26,7 +26,7 @@ Histograms make sense for categorical variables, but a histogram can also be der
 	:alt: fake width
 
 .. dcl:: R
-	:height: 550px
+	:height: 650px
 
 	# Create 500 normally distributed points
 	# with a mean of 1100 and standard deviation
