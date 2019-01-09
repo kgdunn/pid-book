@@ -109,7 +109,7 @@ Writing it this way clearly shows how the main effects and two-factor interactio
 	-	:math:`b_C + b_{AB} = \widehat{\beta}_C \rightarrow` **C + AB**
 
 
-It means we cannot separate, for example, the effect of the **BC** interaction from the main effect of **A**: the least-squares coefficient is a sum of both these effects. Similarly for the other pairs. This is why we say the factor **A** is :index:`confounded` with the two-factor interaction **AB**. Factor **B** is confounded with **AC**, and factor **C** is confounded with **AB**. Also the intercept is not a pure estimate of the intercept; it is confounded with the 3-factor interaction **ABC**.
+It means we cannot separate, for example, the effect of the **BC** interaction from the main effect of **A**: the least-squares coefficient is a sum of both these effects. Similarly for the other pairs. This is why we say the factor **A** is :index:`confounded` with the two-factor interaction **BC**. Factor **B** is confounded with **AC**, and factor **C** is confounded with **AB**. Also the intercept is not a pure estimate of the intercept; it is confounded with the 3-factor interaction **ABC**.
 
 This is what we have lost by running a half-fraction: the benefit of doing fewer experiments is paid by the price of confounding within the factors we estimate.
 
