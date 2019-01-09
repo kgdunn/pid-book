@@ -118,7 +118,7 @@ So this section is concerned with the trade-offs as we go from a full factorial 
 	
 .. rubric:: Summary
 
-#.	It is tedious and error prone to calculate the aliasing structure by hand, so computer software is useful in this case.  For example, for the :math:`2^{7-4}` system can be created in  R by first loading the ``BHH2`` package, then using the command ``ffDesMatrix(k=7, gen=list(c(4,1,2), c(5,1,3), c(6,2,3), c(7,1,2,3)))``. See the `R tutorial <http://learnche.mcmaster.ca/4C3/Software_tutorial>`_ for more details.
+#.	It is tedious and error prone to calculate the aliasing structure by hand, so computer software is useful in this case.  For example, for the :math:`2^{7-4}` system can be created in  R by first loading the ``BHH2`` package, then using the command ``ffDesMatrix(k=7, gen=list(c(4,1,2), c(5,1,3), c(6,2,3), c(7,1,2,3)))``. See the `R tutorial <https://learnche.org/4C3/Software_tutorial>`_ for more details.
 
 #.	The choice of generators is not unique and other choices may lead to a different, more preferable confounding pattern. But it is often easier to use the letters **A, B, C**, *etc*, then just reassign the factors to the letters to achieve the "least-worst" confounding.
 
