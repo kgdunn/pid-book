@@ -7,56 +7,64 @@ Generators and defining relationships
 
 Calculating which main effects and two-factor interactions will be confounded with each other, called the :index:`confounding pattern`, can be tedious for larger values of :math:`k`. Here we introduce an easy way to calculate the confounding pattern.
 
-Recall for the half-fraction of a :math:`2^k` factorial that the first  :math:`k-1` main factors are written down, then the final :math:`k^\text{th}` factor is *generated* from the product of the previous :math:`k-1` factors. Consider the case of a :math:`2^4` half fraction with factors **A**, **B**, **C** and **D**. We write a :math:`2^3` factorial in factors **A**, **B**, and **C**, then set 
+Recall for the half-fraction of a :math:`2^k` factorial that the first  :math:`k-1` main factors are written down, then the final :math:`k^\text{th}` factor is *generated* from the product of the previous :math:`k-1` factors. Consider the case of a :math:`2^4` half fraction with factors **A**, **B**, **C** and **D**. The half-fraction has :math:`\frac{1}{2} 2^4 = 2^3 = 8` experiments, so we write this :math:`2^3` factorial in factors **A**, **B**, and **C**, then set:
 
 .. centered:: **D = ABC**
 
-This is called the *generating relation* for the design. Some rules when working with this notation are that  **A** :math:`\times` **A = I**, **B** :math:`\times` **B = I**, **I** :math:`\times` **I = I**. So for example,  **D** =  **ABC** can by multiplied on both sides by **D** to get **D** :math:`\times` **D** = **ABC** :math:`\times` **D**, which gives **I** = **ABCD**. Another way to get this same result: **ABC** :math:`\times` **D** =  **ABC** :math:`\times` **ABC = AABBCC = I I I = I = ABCD**.
+This is called the *generating relation* for the design. Here are some rules when working with this notation:
+
+*	A factor multiplied by itself is the identity, or intercept column: **A** :math:`\times` **A = I**, **B** :math:`\times` **B = I**, etc. Think about that: if you look at the previous designs we have written out, this makes sense. Any column multiplied by itself is equal to a column of ones.
+* 	A factor multiplied by a column of ones is equal to itself. For example: **D** :math:`\times` **I = D**
+*	The intercept **I** is simply a column of ones, which is what the intercept column is. And for emphasis: **I** :math:`\times` **I = I**.
+*	You can substitute in the *generating relation* of **D = ABC**, and like with an algebraic equation, we can multiply both sides by **D** to get **D** :math:`\times` **D** = **ABC** :math:`\times` **D**, which simplifies to **I** = **ABCD**. Another way to get this same result it to substitute the generating relationship in twice: **ABC** :math:`\times` **D** =  **ABC** :math:`\times` **ABC = AABBCC = I I I = I = ABCD**.
 
 
 .. index::
 	pair: generating relationship; experiments
 	pair: defining relationship; experiments
-	
-This last part, **I = ABCD**, is called the *defining relation* for this design. The defining relationship is the product of all generator combinations, then simplified to be written as **I = ....**. In this case there is just one generator, so the defining relationship is the generator. We will discuss this again later.
+
+This last part, **I = ABCD**, is called the *defining relation* for this design. Notice that we started with the *generating relation* and simplified it by multiplying the terms in that relationship with each other. Since there were two terms, **ABC** and **D**, we multiplied them, and ended up with **I = ABCD**.
+
+This is our defining relationship for this design:
 
 .. centered:: **I = ABCD**
 
-Now the effects which are aliased (confounded) with each other can be found quickly by multiplying the effect by the defining relationship. For example, if we wanted to know what the main effect **A** would be confounded with in this :math:`2^{4-1}` half fraction we should multiply **A** by the defining relationship as in 
+We will discuss this topic again later with more examples. The main point though is that the effects which are aliased (confounded) with each other can be found quickly by multiplying the effect we are interested in by the defining relationship. For example, if we wanted to know what the main effect **A** would be confounded with in this :math:`2^{4-1}` half fraction we should multiply **A** by the defining relationship as in
 
-.. centered:: **A** :math:`\times` **I = A** :math:`\times` **ABCD = BCD**
+.. centered:: **A** = **A** :math:`\times` **I = A** :math:`\times` **ABCD = BCD**
 
 indicating that **A** is aliased with the 3-factor interaction **BCD**.  What is the aliasing for these effects:
 
 	-	What is main effect **B** aliased with? (*Answer*: **ACD**)
-		
+
 	-	What is the 2fi **AC** aliased with? (*Answer*: **BD**)
 
-**Another example**: 
+**Another example**:
 
-	Returning back to the :math:`2^{3-1}` half fraction in the :ref:`previous section <DOE-half-fractions>`, use the defining relation to verify the aliasing of main-effects and two-factor interactions derived earlier by hand.
+	Returning back to the :math:`2^{3-1}` half fraction in the :ref:`previous section <DOE-half-fractions>`, use the generating relation to verify the aliasing of main-effects and two-factor interactions derived earlier by hand.
 
-		-	What is the defining relationship?
-		
+		-	First calculate the defining relationship. It is **I** = .....
+
 		-	Aliasing for **A**? (*Answer*: **BC**)
-	
+
 		-	Aliasing for **B**? (*Answer*: **AC**)
-		
+
 		-	Aliasing for **C**? (*Answer*: **AB**: recall this is how we generated that half fraction)
-		
+
 		-	Aliasing for the intercept term, **I**? (*Answer*: **ABC**)
-	
-**Yet another example**: 
+
+**Yet another example**:
 
 	Which aliasing (confounding) would occur if you decided for a :math:`2^{4-1}` design to generate the half-fraction by using the 2-factor interaction term **AC** rather than the 3-factor interaction term **ABC**.
 
-		-	What is the defining relationship?
+		-	First write out your generating relationship: **D** = **AC**
+		-	Now calculate the defining relationship: **I** = ....
 		-	Aliasing for **A**? (*Answer*: **CD**)
 		-	Aliasing for **B**? (*Answer*: **ABCD**)
 		-	Aliasing for **C**? (*Answer*: **AD**)
-		
+
 	Why is this a poorer choice than using **D = ABC** to generate the half-fraction? *Answer*: the main effects of **A** and **C** are aliased with 2fi which could be important. Had we generated the design with the usual 3fi term, **ABC**, the main effects would only be aliased with three-factor interactions (3fi).
-	
+
 	.. youtube:: https://www.youtube.com/watch?v=LaWQyZxl2do&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=45
 
 Generating the complementary half-fraction
@@ -120,11 +128,11 @@ Here are the block generators you can use when splitting a :math:`2^k` factorial
 	What if the block effect has more than two levels?  For example, for a :math:`2^3` factorial, there is only enough material for 2 experiments. So :math:`g=4` groups of experiments will be run. How do we assign these groups to minimize confounding?  Find the smallest full factorial that can accommodate these :math:`g` groups, in this case a :math:`2^2` factorial. Write out this factorial and assign the groups accordingly:
 
 	.. tabularcolumns:: |c||c|c|c|
-                       
+
 	+-------------------+-------------+-------------+
 	| Lot of material   | D           | E           |
 	+===================+=============+=============+
-	|  1                | |-|         | |-|         | 
+	|  1                | |-|         | |-|         |
 	+-------------------+-------------+-------------+
 	|  2                | |+|         | |-|         |
 	+-------------------+-------------+-------------+
@@ -135,7 +143,7 @@ Here are the block generators you can use when splitting a :math:`2^k` factorial
 
 	It is as if we are introducing two new variables into our :math:`2^3` factorial: in addition to the factors **A**, **B** and **C**, we also have factors **D** and **E** corresponding to the different groups of materials. For example, when we use lot 3, then :math:`D = -1` and :math:`E = +1`.
 
-	How do we assign **D** and **E** so that the confounding is minimized?  We might be tempted to use **D = ABC** and then assign **E** to **BC**, an interaction that we are not concerned 
+	How do we assign **D** and **E** so that the confounding is minimized?  We might be tempted to use **D = ABC** and then assign **E** to **BC**, an interaction that we are not concerned
 	about. The generators are then **I = ABCD** and **I = BCE** respectively. The *defining relationship* is found from all possible products of all generators. In this case there are just two generators, so the defining relationship, which is the product of all generators is: **I = ABCD = BCE = ADE**.
 
 	Now let's calculate the aliasing structure:
@@ -149,13 +157,13 @@ Here are the block generators you can use when splitting a :math:`2^k` factorial
 		-	Fix this: **ABC x ADE = BCDE**
 
 	This indicates the main effect of **A** is aliased with the two-factor interaction **DE**. Why is this problematic?
-	
+
 	The other effects are confounded with three-factor interactions
 
 	A better choice of generators is **D = AB** and **E = AC** (or use the other two-factor interaction). Now calculate:
 
-		-	The defining relationship = 
-	
+		-	The defining relationship =
+
 			.. I = ABD = ACE = ABD x ACE = BCDE
 
 		-	Aliasing for:
@@ -166,8 +174,8 @@ Here are the block generators you can use when splitting a :math:`2^k` factorial
 			* **AB**
 			* **AC**
 			* **BC**
-			* **ABC**  
-			
+			* **ABC**
+
 	Rather than determine the best aliasing structure by trial-and-error, refer to a table, such as Table 5A.1 (page 221) in the second edition of Box, Hunter and Hunter to read which generators should be assigned to which blocks to minimize confounding. For this example, you would use the row in the table with :math:`k=3`, block size = 2 (two experiments per block). Another example is given in this same reference, page 219, that describes how a 64 run experiments is broken down into 8 blocks of 8 runs.
 
 .. Don't try this example: it's still too early.
@@ -176,11 +184,11 @@ Here are the block generators you can use when splitting a :math:`2^k` factorial
 	Start by rounding down to the closest power of 2, which is :math:`p = 2^1 = 2` in this case. Create a full factorial with :math:`2^p` runs. Assign the blocks according to the different runs in this factorial:
 
 	.. tabularcolumns:: |c||c|c|c|
-	                          D              E   
+	                          D              E
 	+-------------------+-------------+-------------+
 	| Batch of material | :math:`B_1` | :math:`B_2` |
 	+===================+=============+=============+
-	|  1                | |-|         | |-|         | 
+	|  1                | |-|         | |-|         |
 	+-------------------+-------------+-------------+
 	|  2                | |+|         | |-|         |
 	+-------------------+-------------+-------------+
@@ -189,11 +197,10 @@ Here are the block generators you can use when splitting a :math:`2^k` factorial
 	|  4 (ignored)      | |+|         | |+|         |
 	+-------------------+-------------+-------------+
 
-	B_1: I=ABCD;  
+	B_1: I=ABCD;
 	B_2: I=BCE
 
 	overall generator: ABCD.BCE = ADE
 	A: DE
 	B: ABDE
 	C: ACDE
-	
