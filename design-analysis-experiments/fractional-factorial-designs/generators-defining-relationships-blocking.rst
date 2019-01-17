@@ -110,7 +110,7 @@ Generators: to determine confounding due to blocking
 
 Generators are also great for determining the blocking pattern. Recall the case described earlier where we only had enough material to run two sets of 4 experiments to complete our :math:`2^3` full factorial. An unintended disturbance could have been introduced by running the first half-fraction on different materials to the second half-fraction. We :ref:`intentionally decided <DOE-Blocking-and-confounding>` to confound the two blocks of experiments with the 3-factor interaction, **ABC**. So if there is an effect due to the blocks (i.e. the raw materials) or if there truly was a 3-factor interaction, it will show up as a significant coefficient for :math:`b_{ABC}`.
 
-So *in general* when running a :math:`2^k` factorial in two blocks you should create a :math:`2^{k-1}` half fraction to run as the first block, and then run the other block on the complementary half-fraction. You should always confound your block effect on the highest possible interaction term. Then block 1 runs will have that highest interaction term with all positive signs, and block 2 will have all negative signs for that interaction.
+So *in general* if you run a full :math:`2^k` factorial in two blocks you should create a :math:`2^{k-1}` half fraction to run as the first block, and then run the other block on the complementary half-fraction. You should always confound your block effect on the highest possible interaction term. Then block 1 runs will have that highest interaction factor with all positive signs, and block 2 will have all negative signs for that interaction factor.
 
 Here are the block generators you can use when splitting a :math:`2^k` factorial in 2 blocks:
 
