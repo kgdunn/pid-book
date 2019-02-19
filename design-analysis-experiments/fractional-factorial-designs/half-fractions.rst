@@ -78,7 +78,7 @@ For these reasons the least squares model cannot be solved by inverting the :mat
 	print("The X'X matrix is = ")
 	print(XtX)
 
-	print('Calculate the inverse (it fails)')
+	print('Calculate the inverse (it will fail!)')
 	solve(XtX)
 
 	# We cannot, since the determinant is 0:

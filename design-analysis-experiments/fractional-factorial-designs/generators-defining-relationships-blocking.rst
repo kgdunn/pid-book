@@ -18,7 +18,6 @@ This is called the *generating relation* for the design. Here are some rules whe
 *	The intercept **I** is simply a column of ones, which is what the intercept column is. And for emphasis: **I** :math:`\times` **I = I**.
 *	You can substitute in the *generating relation* of **D = ABC**, and like with an algebraic equation, we can multiply both sides by **D** to get **D** :math:`\times` **D** = **ABC** :math:`\times` **D**, which simplifies to **I** = **ABCD**. Another way to get this same result it to substitute the generating relationship in twice: **ABC** :math:`\times` **D** =  **ABC** :math:`\times` **ABC = AABBCC = I I I = I = ABCD**.
 
-
 .. index::
 	pair: generating relationship; experiments
 	pair: defining relationship; experiments
@@ -63,7 +62,7 @@ indicating that **A** is aliased with the 3-factor interaction **BCD**.  What is
 		-	Aliasing for **B**? (*Answer*: **ABCD**)
 		-	Aliasing for **C**? (*Answer*: **AD**)
 
-	Why is this a poorer choice than using **D = ABC** to generate the half-fraction? *Answer*: the main effects of **A** and **C** are aliased with 2fi which could be important. Had we generated the design with the usual 3fi term, **ABC**, the main effects would only be aliased with three-factor interactions (3fi).
+	Why is this a poorer choice than using **D = ABC** to generate the half-fraction? *Answer*: the main effects of **A** and **C**  which could be important, are aliased with 2fi. Had we generated the design with the usual 3fi term, **ABC**, the main effects would only be aliased with three-factor interactions (3fi).
 
 	.. youtube:: https://www.youtube.com/watch?v=LaWQyZxl2do&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=45
 
