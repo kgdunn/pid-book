@@ -1,3 +1,5 @@
+.. _DOE-design-resolution:
+
 Design resolution
 ~~~~~~~~~~~~~~~~~~~
 
