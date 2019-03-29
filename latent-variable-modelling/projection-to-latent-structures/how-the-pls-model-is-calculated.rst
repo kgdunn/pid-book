@@ -75,7 +75,7 @@ Then we deflate. Deflation removes variability already explained from :math:`\ma
           \mathbf{E}_a &= \mathbf{X}_a - \widehat{\mathbf{X}}_a = \mathbf{X}_a - \mathbf{t}_a \mathbf{p}'_a  \\
           \mathbf{X}_{a+1} &= \mathbf{E}_a
 
-      For the first component, the :math:`\mathbf{X}_{a=1}` matrix contains the preprocessed raw |Y|-data. By convention, :math:`\mathbf{E}_{a=0}` is the residual matrix *before*  fitting the first component and is just the same matrix as :math:`\mathbf{X}_{a=1}`, i.e. the data used to fit the first component.
+      For the first component, the :math:`\mathbf{X}_{a=1}` matrix contains the preprocessed raw |X|-data. By convention, :math:`\mathbf{E}_{a=0}` is the residual matrix *before*  fitting the first component and is just the same matrix as :math:`\mathbf{X}_{a=1}`, i.e. the data used to fit the first component.
 
       We also remove any variance explained from :math:`\mathbf{Y}_a`:
 
