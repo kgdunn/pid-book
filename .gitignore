@@ -1,0 +1,11 @@
+PID.pdf
+index.html
+wingdbstub.*
+_build/*
+.*\.pyc
+latent-variable-modelling/images/frames/
+other/
+figures
+temp/
+DELETE/*
+__pycache__/
