@@ -26,7 +26,7 @@ needs_sphinx = '1.5'  # If your documentation needs a minimal Sphinx version, st
 extensions = ['sphinx.ext.todo', ] #'sphinx.ext.imgmath', ]
 
 # Download https://bitbucket.org/birkenfeld/sphinx-contrib/overview; cd youtube; setup.py build and setup.py install
-extensions.append('my-extensions.youtube') 
+extensions.append('my-extensions.youtube')
 
 # Sphinx contrib extensions
 # -------------------------
@@ -37,7 +37,7 @@ extensions.append('my-extensions.youtube')
 extensions.append('my-extensions.q-and-a')
 extensions.append('my-extensions.datacamplite')
 
-# Set the next line to "True" to create full solutions 
+# Set the next line to "True" to create full solutions
 # to the book (i.e. ``fullinclude`` is ignored)
 # The default value should be False
 q_and_a_override = False
@@ -47,15 +47,15 @@ if os.path.exists('ucomment-extension.py'):
     html_translator_class = 'ucomment-extension.ucomment_html_translator'
 
 # Point to your Django application, which contains all the other settings required.
-ucomment = {}
-if os.path.exists('/home/kevindunn/webapps/pid_connectmv_com/pidbook/ucommentapp/'):
-    ucomment['django_application_path'] = '/home/kevindunn/webapps/pid_connectmv_com/pidbook/ucommentapp/'
-elif os.path.exists('/home/kevindunn/django-projects/pidbook/ucommentapp/'):
-    ucomment['django_application_path'] = '/home/kevindunn/django-projects/pidbook/ucommentapp/'
-elif os.path.exists('/Users/kevindunn/dropbox/pid-book/'):
-    ucomment['django_application_path'] = 'abc'
-else:
-    raise Exception('ucommentapp: django path is invalid')
+# ucomment = {}
+# if os.path.exists('/home/kevindunn/webapps/pid_connectmv_com/pidbook/ucommentapp/'):
+#     ucomment['django_application_path'] = '/home/kevindunn/webapps/pid_connectmv_com/pidbook/ucommentapp/'
+# elif os.path.exists('/home/kevindunn/django-projects/pidbook/ucommentapp/'):
+#     ucomment['django_application_path'] = '/home/kevindunn/django-projects/pidbook/ucommentapp/'
+# elif os.path.exists('/Users/kevindunn/dropbox/pid-book/'):
+#     ucomment['django_application_path'] = 'abc'
+# else:
+#     raise Exception('ucommentapp: django path is invalid')
 
 # MathJax extension:
 extensions.append('sphinx.ext.mathjax')
@@ -246,7 +246,7 @@ html_use_index = True
 # If true, links to the reST sources are added to the pages.
 html_show_sourcelink = False
 
-# Leave as True: stictly speaking, the Makefile for "html" will replace the source code with 
+# Leave as True: stictly speaking, the Makefile for "html" will replace the source code with
 # the "text" builder's output, eliminating any comments and other details from the source.
 html_copy_source = True
 
@@ -268,7 +268,7 @@ html_add_permalinks = u'¶'  # was 'Permalink'
 
 # If nonempty, this is the file name suffix for generated HTML files. The
 # default is ".html".
-# You will also have to edit "/anaconda/lib/python2.7/site-packages/sphinx/themes/basic/static/searchtools....." 
+# You will also have to edit "/anaconda/lib/python2.7/site-packages/sphinx/themes/basic/static/searchtools....."
 # Search for the entry "DOCUMENTATION_OPTIONS.FILE_SUFFIX" and you will see where a
 # trailing "/" gets auto added. Remove that code.
 #
@@ -280,7 +280,7 @@ html_file_suffix = ''
 # Suffix for generated links to HTML files. The default is whatever
 # html_file_suffix is set to; it can be set differently (e.g. to support
 # different web server setups).
-html_link_suffix = '' 
+html_link_suffix = ''
 
 # Output file base name for HTML help builder.
 #htmlhelp_basename = ''
@@ -394,6 +394,15 @@ _PREAMBLE = r"""
 }
 %\fvset{frame=single,xleftmargin=9pt,numbersep=4pt}
 
+% Nicer URLs
+\usepackage{url}
+\makeatletter
+\def\Url@twoslashes{\mathchar`\/\@ifnextchar/{\kern-.2em}{}}
+\g@addto@macro\UrlSpecials{\do\/{\Url@twoslashes}}
+\makeatother
+
+
+
 \renewcommand{\sectionmark}[1]%
 {\markright{\MakeUppercase{\thesection.\ #1}}}
 \renewcommand{\headrulewidth}{0pt}
@@ -482,17 +491,17 @@ _PREAMBLE = r"""
     \renewcommand{\headrulewidth}{0pt}
     \renewcommand{\footrulewidth}{0.4pt}
   }
-  
+
   \definecolor{VerbatimColor}{rgb}{1,1,1}
   \definecolor{VerbatimBorderColor}{rgb}{0.5,0.5,0.5}
-  
-  
+
+
   % Better style: use ragged right (based on https://tufte-latex.github.io/tufte-latex/)
   \raggedright
   % \RaggedRight allows hyphenation
   \RequirePackage{ragged2e}
   \setlength{\RaggedRightRightskip}{\z@ plus 0.08\hsize}
-  
+
 
   % Set the font sizes and baselines to match Tufte's books
   \renewcommand\normalsize{%
@@ -543,8 +552,8 @@ _PREAMBLE = r"""
   \setlength\labelsep      {.5pc}
   \setlength\labelwidth    {\leftmargini}
   \addtolength\labelwidth{-\labelsep}
-  
-    
+
+
 \makeatother
 % ==== END OF CUSTOMIZED PREAMBLE ====
 """
