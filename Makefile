@@ -6,7 +6,7 @@
 # Remove "-j 5" for Python 3.5 (parallel building does not work)
 SPHINXOPTS    = -E -W
 SPHINXBUILD   = sphinx-build
-PAPER         =
+PAPER         = a4
 BUILDDIR      = _build
 
 # Internal variables.
@@ -151,5 +151,3 @@ doctest:
 whoosh:
 	$(SPHINXBUILD) -b whoosh $(ALLSPHINXOPTS) $(BUILDDIR)/whoosh
 	@echo "Creating whoosh search index"
-
-

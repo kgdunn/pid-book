@@ -50,7 +50,7 @@ Here are some tips for effective time-series plots:
 
 	.. _visualization-sparkline-trajectories:
 
-	.. figure:: ../figures/visualization/three_correlated_variables_as_sparklines.png
+	.. image:: ../figures/visualization/three_correlated_variables_as_sparklines.png
 		:width: 400px
 		:scale: 50
 		:align: right

@@ -27,11 +27,11 @@ The next table compares defect types (number of defects) for different product g
 
 	-	Which defects cost us the most money?
 	-	Which defects occur most frequently?  The table does not contain any information about production rate. For example, if there were 1850 lots of grade A4636 (first row) produced, then defect A occurs at a rate of 37/1850 = 1/50. And if 250 lots of grade A2610 (last row) were produced, then, again, defect A occurs at a rate of 1/50. Redrawing the table on a production-rate basis would be useful if we are making changes to the process and want to target the most problematic defect.
-	
+
 .. AU: These last two bullets aren't questions, so I turned them into paragraphs.
 
 	If we are comparing a type of defect over different grades, then we are now comparing down the table, instead of across the table. In this case, the fraction of defects for each grade would be a more useful quantity to display.
-	
+
 	If we are comparing defects within a grade, then we are comparing across the table. Here again, the fraction of each defect type, weighted according to the cost of that defect, would be more appropriate.
 
 
@@ -52,9 +52,9 @@ Three common pitfalls to avoid:
 	.. image:: ../figures/visualization/table-grid-comparison.png
 		:scale: 60
 		:width: 1036px
-		
 
-To wrap up this section is a demonstration of tabular data in a different format, based on an idea of Tufte in *The Visual Display of Quantitative Information*, p. 158. Here we compare the corrosion resistance and roughness of a steel surface for two different types of coatings, A and B. 
+
+To wrap up this section is a demonstration of tabular data in a different format, based on an idea of Tufte in *The Visual Display of Quantitative Information*, p. 158. Here we compare the corrosion resistance and roughness of a steel surface for two different types of coatings, A and B.
 
 A layout that you expect to see in a standard engineering report:
 

@@ -14,14 +14,18 @@ Process Improvement Using Data
 	:caption: Table of Contents
 
 	data-visualization/index
-	univariate-review/index
-	process-monitoring/index
-	least-squares-modelling/index
-	design-analysis-experiments/index
-	latent-variable-modelling/index	
-	
+  univariate-review/index
+  process-monitoring/index
+  least-squares-modelling/index
+  design-analysis-experiments/index
+  latent-variable-modelling/index
+
+
+
 .. Sections omitted:
 
+  None for now.
+  
 .. Solution manual
 
 	data-visualization/data-visualization-exercises

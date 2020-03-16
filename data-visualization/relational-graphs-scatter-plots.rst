@@ -5,42 +5,42 @@ Relational graphs: scatter plots
 ================================
 
 .. youtube:: https://www.youtube.com/watch?v=JB8UP1JWNXQ&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=3
-	
+
 This is a plot many people are comfortable using. It helps you understand the relationship between two variables - a bivariate plot - as opposed to the previous charts that are univariate. A :index:`scatter plot <pair: scatter plot; visualization>` is a collection of points shown inside a box formed by two axes at 90 degrees to each other. The marker's position is located at the intersection of the values shown on the horizontal (*x*) axis and vertical (*y*) axis.
 
 The unspoken intention of a scatter plot is usually to ask the reader to draw a causal relationship between the two variables. However, not all scatter plots actually show causal phenomena.
 
 .. image:: ../figures/visualization/scatterplot-figures.png
 
-This source code generates similar, but not identical, figures: 
+This source code generates similar, but not identical, figures:
 
 .. dcl:: R
 
 	# Plot of temperature vs vapour pressure
 	data_file = 'http://openmv.net/file/distillation-tower.csv'
 	distillation <- read.csv(data_file)
-	
-	plot(distillation$Temp9, 
-	     distillation$VapourPressure, 
-	     xlab="Temperature (F)", 
+
+	plot(distillation$Temp9,
+	     distillation$VapourPressure,
+	     xlab="Temperature (F)",
 	     ylab="Vapour pressure (kPa)")
 
 	# Plot of white hairs vs BMD
 	# Osteoporosis (fake) data: number of white
-	# hairs per square inch vs bone mineral 
-	# density (measurement of osteoporosis) 
+	# hairs per square inch vs bone mineral
+	# density (measurement of osteoporosis)
 	# if kg/m^3 (1500 kg/m3 is typical)
 	N = 50
-	white.hairs = round(rnorm(N, 
-							  mean=500, 
+	white.hairs = round(rnorm(N,
+							  mean=500,
 							  sd=250))
 	bone.mineral.density = -0.25 * white.hairs + 1550 + rnorm(N, mean=0, sd=25)
-	
-	plot(white.hairs, bone.mineral.density, 
-	     xlab = "Number of white hairs per square inch of scalp", 
+
+	plot(white.hairs, bone.mineral.density,
+	     xlab = "Number of white hairs per square inch of scalp",
 	     ylab = "Bone mineral density (kg/m^3) [measure of osteoporosis]")
 
-	
+
 Strive for graphical excellence by doing the following:
 
 - Make each axis as tight as possible.

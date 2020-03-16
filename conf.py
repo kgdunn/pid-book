@@ -42,9 +42,9 @@ extensions.append('my-extensions.datacamplite')
 # The default value should be False
 q_and_a_override = False
 
-if os.path.exists('ucomment-extension.py'):
-    extensions.append('ucomment-extension')
-    html_translator_class = 'ucomment-extension.ucomment_html_translator'
+#if os.path.exists('ucomment-extension.py'):
+#    extensions.append('ucomment-extension')
+#    html_translator_class = 'ucomment-extension.ucomment_html_translator'
 
 # Point to your Django application, which contains all the other settings required.
 # ucomment = {}
@@ -91,7 +91,7 @@ version = '<not-used>'
 # The full version, including alpha/beta/rc tags.
 release = '<not-used>'
 
-# Get the Mercurial revision number: "hg summary -R ."
+# Get the Git revision number: "git rev-parse HEAD"
 import subprocess
 cmd = ['git', 'rev-parse', 'HEAD']
 out = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -595,7 +595,7 @@ _PREAMBLE = r"""
 # \pagestyle{plain}
 
 latex_elements = {
-     'papersize': 'letter',  # paper size ('letter' or 'a4paper').
+     'papersize': 'a4paper',  # paper size ('letter' or 'a4paper').
      'pointsize': '11pt',         # font size ('10pt', '11pt' or '12pt')
      'fontpkg': '\\usepackage{palatino}',
      'preamble': _PREAMBLE,
