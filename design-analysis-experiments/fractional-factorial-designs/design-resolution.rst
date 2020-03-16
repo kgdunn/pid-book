@@ -13,13 +13,13 @@ You can consider the resolution of a design to be an indication of how clearly t
 
 You can interpret the resolution index as follows: let main effects = 1, two-factor interactions = 2, three-factor interactions = 3, *etc*. Then subtract this number from the resolution index to show how that effect is aliased. Consider a resolution IV design, since :math:`4-1=3`, it indicates that main effects are aliased with 3fi, but not with two-factor interactions; and :math:`4-2 = 2` indicates that 2fi are aliased with each other. Here is a summary:
 
-Resolution III designs: are for screening
+Resolution III designs: are good for screening
 	-	Are excellent for initial screening: to separate out the important factors from the many potential factors. To identify important variables that can be studied in the next experiments.
 	-	Main effects are not confounded with each other.
 	-	Main effects are aliased with two-factor interactions (:math:`3 - 1 = 2`).
 	-	Two-factor interactions are aliased with main effects (:math:`3 - 2 = 1`).
 
-Resolution IV designs: are for characterizing
+Resolution IV designs: are good for characterizing
 	-	Most useful for characterizing (learning about and understanding) a system, both the main effects and the interactions, since:
 	-	Interactions are very interesting in many systems, since they go beyond just the main effects and can improve your process even more (or sometimes take away from it too!).
 	-	Main effects are not confounded with each other.
@@ -27,7 +27,7 @@ Resolution IV designs: are for characterizing
 	-	Main effects are aliased with three-factor interactions though (:math:`4-1=3`).
 	-	Two-factor interactions are still aliased with each other though (:math:`4-2=2`).
 
-Resolution V designs: are for optimizing
+Resolution V designs: are good for optimizing
 	-	For optimizing a process, learning about complex effects, and developing high-accuracy predictive models, since:
 	-	Main effects are not confounded with each other.
 	-	Main effects are not aliased with two-factor interactions.
