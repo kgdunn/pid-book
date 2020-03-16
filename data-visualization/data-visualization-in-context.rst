@@ -23,7 +23,7 @@ You can use the material in this chapter when you must learn more about your sys
 
 	* *Manager*:  How can we effectively summarize the (a) number and (b) types of defects on our 17 products for the last 12 months?
 
-	* *Yourself*: We produce products ina batchwise manner. For each batch we have 25 different measurements (sensors) that we record a value for at a rate of 5 readings per minute, over a total interval of 300 minutes. How can we visualize these :math:`25 \times 5 \times 300 = 37500` data points?
+	* *Yourself*: We produce products in a batchwise manner. For each batch we have 25 different sensors that we record a value for at a rate of 5 readings per minute, over a total interval of 300 minutes. How can we visualize these :math:`25 \times 5 \times 300 = 37500` data points?
 
 .. rubric:: What we will cover
 

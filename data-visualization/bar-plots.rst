@@ -3,7 +3,7 @@ Bar plots
 
 .. youtube:: https://www.youtube.com/watch?v=tb20hIQlEBU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=1
 
-The :index:`bar plot <pair: bar plot; visualization>` is another univariate plot on a two-dimensional axis. The wo axes are not called *x*- or *y*-axes. Instead, one axis is called the *category axis* showing the category name, while the other, the *value axis*, shows the numeric value of that category, given by the length of the bar.
+The :index:`bar plot <pair: bar plot; visualization>` is another univariate plot on a two-dimensional axis. The two axes are not called *x*- or *y*-axes. Instead, one axis is called the *category axis* showing the category name, while the other, the *value axis*, shows the numeric value of that category, given by the length of the bar.
 
 .. image:: ../figures/visualization/barplot-example-expenses.png
    :scale: 60
@@ -65,8 +65,8 @@ Here is some advice for bar plots:
 
   .. math::
 
-		\text{Maximize data-ink ratio} &= \frac{\text{total ink for data}}{\text{total ink for graphics}}     \\
-		                              &= 1 - \text{proportion of ink that can be erased without loss of data information}
+		\text{Data-ink ratio} &= \frac{\text{total ink for data}}{\text{total ink for graphics}}     \\
+		                      &= 1 - \text{proportion of ink that can be erased without loss of data information}
 
 	The heuristic is to maximize this ratio as far as possible by using the ink (pixels) for only the data.
 
