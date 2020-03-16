@@ -6,7 +6,7 @@
 # Remove "-j 5" for Python 3.5 (parallel building does not work)
 SPHINXOPTS    = -E -W
 SPHINXBUILD   = sphinx-build
-PAPER         = a4
+PAPER         = 
 BUILDDIR      = _build
 
 # Internal variables.
