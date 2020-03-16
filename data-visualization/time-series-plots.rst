@@ -47,12 +47,12 @@ Here are some tips for effective time-series plots:
 
 -	Using the same data as in the previous tip, a much improved visualization technique is to use sparklines to represent the sequence of data.
 
-	.. _visualization-sparkline-trajectories:
+		.. _visualization-sparkline-trajectories:
 
-.. image:: ../figures/visualization/three_correlated_variables_as_sparklines.png
-	:width: 400px
-	:scale: 50
-	:align: right
+	  .. image:: ../figures/visualization/three_correlated_variables_as_sparklines.png
+			:width: 400px
+			:scale: 50
+			:align: right
 
 	Sparklines are small graphics that carry a high density of information. The human eye is easily capable of absorbing about 100 dots or points per linear centimeter and around 10000 points per square centimeter. These :index:`sparklines` convey the same amount of information as the previous plots and are easy to consume on hand-held devices such as cellphones and tablet computing devices that are common in chemical plants and other engineering facilities. Read more about them from `this hyperlink <http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR>`_.
 
