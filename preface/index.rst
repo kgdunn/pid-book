@@ -6,7 +6,7 @@
 	\pagenumbering{roman}
 	\setcounter{secnumdepth}{-1}
 	\makeatother
-	
+
 Preface
 =========
 
@@ -16,19 +16,19 @@ Preface
 .. For all the previous clients and companies that I've learnt from, experimented with their money, data, time and patience.
 
 .. This book is an experiment. And as in all good experiments we are testing the effect of changing more than one variable at a time.
- 
+
 .. Firstly, this book is not available from a publisher. Of course a publisher adds value by having the manuscript professionally reviewed, they do a nice layout and printing the material, and marketing and distribution of the final product. In exchange the publisher takes a cut of the sales and almost always retains the intellectual property rights to the book. This is a very crude description, but regardless of the publisher's effectiveness, the result is an increased cost to the final user.
 
 .. May be repetitive in cases, assumption is that people are coming from on-line search engines, and may start reading a section without the preceding parts.
-.. 
+..
 .. Is not a comprehensive statistical textbook: each topic (visualization, univariate data analysis, least squares, process monitoring, latent variable regression, design of experiments) can fill a book or two on its own. We aim to cover the most important topics from each area, defering to references for the interested ready
-.. 
+..
 .. The objective is a high-level treatment of these topics, with enough mathematical background to understand and interpret the results. It is the understanding and interpretation of equations that helps the engineer solve the data-analysis problem.
-.. 
+..
 .. For example: we cover tests of differences, but a complete treatment would consider tests that are one-sided or two-sided, knowing the population variance or using an estimate of the variance. There are too many combinations to be practical for an introduction. We always defer to the most commonly encountered case. In the above example it would be a two-sided test, using an estimate of the variance (who really ever knows the population variance?)
-.. 
-.. Being a predominantly electronic book, we resort to many hyperlinks in the text. We recommend a good PDF reader that allows forward and back navigation of links, or use a web-browser, 
-.. 
+..
+.. Being a predominantly electronic book, we resort to many hyperlinks in the text. We recommend a good PDF reader that allows forward and back navigation of links, or use a web-browser,
+..
 .. Distribution: PDF, web-files for off-line reading in your browser; ebook (e.g. iPad); or printed dead-tree version available on-demand. The printed version is available in hard-cover and soft-cover, and all profits are used to pay for the website hosting.
 
 
@@ -56,14 +56,12 @@ The textbook was used in an online course from July to August 2014, `Experimenta
 
 .. image:: High-contrast-camera-video-smaller.png
    :width: 150px
-   :scale: 50%
+   :scale: 40%
    :align: left
 
-In particular, I'd like to thank Devon Mordell, from McMaster University, for her informal help on editing parts of the book. As well as my formal editor, `Teresa Wilson <http://tdwcommunications.com>`_. Any errors, poor spelling and grammar are entirely my own fault -- any feedback to improve them will be appreciated.
+In particular, I'd like to thank Devon Mordell, from McMaster University, for her informal help on editing parts of the book. As well as countless others who have via email or web forms provided feedback. Any errors, poor spelling and grammar are entirely my own fault -- any feedback to improve them `will be appreciated <https://docs.google.com/forms/d/1IpO-bvJwQwhK64eid4YXwJBvGxN5cfyYDv81G-YgWrM/viewform>`_.
 
 Thanks also to instructors at other universities who have used these notes and slides in their courses and provided helpful feedback.
-
-Thanks everyone!
 
 .. tip:: **Copyright and Your Rights**
 
@@ -81,14 +79,14 @@ Thanks everyone!
 
 		*	*Using selected portions*: "Portions of this work are the copyright of Kevin Dunn."
 		*	*Or if used in its entirety*: "This work is the copyright of Kevin Dunn."
-	
+
 	You don't have to, but it would be nice if you tell us you are using this book. That way we can let you know of any errors.
 
 		*	Please tell us if you find errors in these chapters, or have suggestions for improvements.
 		*	Please email to ask permission if you would like changes to the above terms and conditions.
 
-	Thanks, 
-	`Kevin <mailto:kgdunn@gmail.com>`_ 
+	Thanks,
+	`Kevin <mailto:kgdunn@gmail.com>`_
 
 .. raw:: latex
 
@@ -99,4 +97,3 @@ Thanks everyone!
 	\pagenumbering{arabic}
 	\setcounter{secnumdepth}{2}  % Go back to labelling the subsection
 	\pagestyle{normal}
-
