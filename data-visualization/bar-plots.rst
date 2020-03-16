@@ -63,10 +63,10 @@ Here is some advice for bar plots:
 
 	To this end, Tufte defines the data ink ratio as:
 
-  .. math::
+	.. math::
 
 		\text{Data-ink ratio} &= \frac{\text{total ink for data}}{\text{total ink for graphics}}     \\
-		                      &= 1 - \text{proportion of ink that can be erased without loss of data information}
+		&= 1 - \text{proportion of ink that can be erased without loss of data information}
 
 	The heuristic is to maximize this ratio as far as possible by using the ink (pixels) for only the data.
 
