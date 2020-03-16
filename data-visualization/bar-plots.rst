@@ -3,52 +3,54 @@ Bar plots
 
 .. youtube:: https://www.youtube.com/watch?v=tb20hIQlEBU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=1
 
-The :index:`bar plot <pair: bar plot; visualization>` is another univariate plot on a two-dimensional axis. The axes are not called *x*- or *y*-axes. Instead, one axis is called the *category axis* showing the category name, while the other, the *value axis*, shows the value of that category as a bar.
+The :index:`bar plot <pair: bar plot; visualization>` is another univariate plot on a two-dimensional axis. The wo axes are not called *x*- or *y*-axes. Instead, one axis is called the *category axis* showing the category name, while the other, the *value axis*, shows the numeric value of that category, given by the length of the bar.
 
 .. image:: ../figures/visualization/barplot-example-expenses.png
    :scale: 60
 
 Here is some advice for bar plots:
 
--	Use a bar plot when there are many categories and interpretation of the plot does not differ if the category axis is reshuffled. (It might be easier to interpret the plot with a particular ordering; however, the interpretation won't be different with a different ordering.)
+-	Use a bar plot when there are many categories and interpretation of the plot does not differ if the category axis is reshuffled. (It might be easier to interpret the plot with a particular ordering; however, the interpretation won't be different with a different ordering of the categories.)
 
 -	A time-series plot is more appropriate than a bar plot when there is a time-based ordering to the categories, because usually you want to imply some sort of trend with time-ordered data.
 
-	.. image:: ../figures/visualization/quarterly-profit-barplot-vs-lineplot.png
+	.. figure:: ../figures/visualization/quarterly-profit-barplot-vs-lineplot.png
 		:alt:	../figures/visualization/quarterly-profit-barplot.R
 		:align: center
-		
-		
-	With the code to draw the above figures: 
-	
+
+		Do not use a bar plot for time trends, rather use a time-series plot.
+
+
+	Use this R code to draw the figures:
+
 	.. dcl:: R
-	
-		labels = c("2008 Q1", "Q2", "Q3", "Q4", 
+
+		labels = c("2008 Q1", "Q2", "Q3", "Q4",
 		           "2009 Q1", "Q2", "Q3", "Q4")
 		profit = c(45, 32, 67, 23, 42, 56, 64, 92)+40
 
 		# Draw a bar-plot
-		bp <- barplot(profit, 
-                      names.arg=labels, 
-                      axisnames=TRUE, 
-                      ylab="Quarterly profit ($ '000)", 
-                      border = TRUE) 
-		text(bp, profit+3, 
-			 labels=format(profit), 
-			 xpd = TRUE, 
+		bp <- barplot(profit,
+                      names.arg=labels,
+                      axisnames=TRUE,
+                      ylab="Quarterly profit ($ '000)",
+                      border = TRUE)
+		text(bp, profit+3,
+			 labels=format(profit),
+			 xpd = TRUE,
 			 col = "black")
 
 		# Now rather use a line plot.
-		# Graph profit, but turn off axes 
+		# Graph profit, but turn off axes
 		# and annotations
-		plot(profit, type="b", axes=TRUE, 
+		plot(profit, type="b", axes=TRUE,
 		     ann=FALSE, xlab="Quarter", xaxt="n")
 
 		# Show the x-axis using our labels
 		axis(1, at=1:8, lab=labels)
 
 		# Plot title
-		title(ylab="Quarterly profit ($ '000)")	
+		title(ylab="Quarterly profit ($ '000)")
 
 -	Bar plots can be wasteful as each data point is repeated several times:
 
@@ -59,17 +61,16 @@ Here is some advice for bar plots:
 	#. The top edge of each bar, just below the number
 	#. The number itself
 
+	To this end, Tufte defines the data ink ratio as:
 
-	.. note::
-
-	    Maximize the data-ink ratio within reason.
-
-	.. math::
+  .. math::
 
 		\text{Maximize data-ink ratio} &= \frac{\text{total ink for data}}{\text{total ink for graphics}}     \\
 		                              &= 1 - \text{proportion of ink that can be erased without loss of data information}
 
--	Use a table for a handful of data points rather than a bar plot.
+	The heuristic is to maximize this ratio as far as possible by using the ink (pixels) for only the data.
+
+-	Rather use a table than a bar plot for a handful of data points.
 
     .. image:: ../figures/visualization/profit-by-region.png
 		:alt:	../figures/visualization/profit-by-region.numbers
@@ -83,7 +84,7 @@ Here is some advice for bar plots:
 		:align: center
 		:scale: 35
 		:width: 900px
-		
+
 .. FAKE WIDTH in the above image
 
 .. COMMENTS
@@ -92,8 +93,8 @@ Here is some advice for bar plots:
 
 -	Use horizontal bars if
 
-	- there is some ordering to the categories (it is often easier to read these from top-to-bottom), or
-	- the labels do not fit side-by-side: don't make the reader have to rotate the page to interpret the plot; rotate the plot for the reader.
+	- there is some ordering to the categories (it is often easier to read the category labels from top-to-bottom), or
+	- if the labels do not fit side-by-side: don't make the reader have to rotate the page to interpret the plot; rotate the plot for the reader.
 
 -	You can place the labels inside the bars.
 
@@ -101,5 +102,3 @@ Here is some advice for bar plots:
 
 ..
   Exception to starting at zero: todo Few, p 189 (ranges)
-
-

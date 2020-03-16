@@ -6,9 +6,9 @@
 Data visualization in context
 =============================
 
-This is the first chapter in the book. Why?  Every engineer has heard the phrase "plot your data," but seldom are we shown what appropriate plots look like.
+This is the first chapter in the book. Why? Many of you have heard the phrase "plot your data," but seldom are we shown what appropriate plots look like.
 
-In this section we consider quantitative plots -- plots that show numbers. We cover various plots that will help you learn more from your data, and we end with a list of tips for effective data visualization.
+In this section we consider quantitative plots -- plots that show numbers. We cover various plots that will help you gain more insight from your data. We end with a list of tips for effective data visualization.
 
 .. rubric:: Usage examples
 
@@ -16,14 +16,14 @@ In this section we consider quantitative plots -- plots that show numbers. We co
 
 You can use the material in this chapter when you must learn more about your system from the data. For example, you may get these questions:
 
-	* *Co-worker*: Here are the yields from a batch system for the last 3 years (1256 data points). Can you help me
+	* *Co-worker*: Here are the yields (final output value) from a given system for the last 3 years (1256 data points). Can you help me:
 
-		* understand more about the time trends in the data?
-		* efficiently summarize the batch yields?
+		* effectively communicate what the time trends are in the data?
+		* summarize the yield values?
 
-	* *Manager*:  How can we effectively summarize the (a) number and (b) types of defects on our 17 aluminium grades for the last 12 months?
+	* *Manager*:  How can we effectively summarize the (a) number and (b) types of defects on our 17 products for the last 12 months?
 
-	* *Yourself*: We have 24 different measurements against time (5 readings per minute, over an interval of 300 minutes) for each batch we produce. How can we visualize these 36,000 data points?
+	* *Yourself*: We produce products ina batchwise manner. For each batch we have 25 different measurements (sensors) that we record a value for at a rate of 5 readings per minute, over a total interval of 300 minutes. How can we visualize these :math:`25 \times 5 \times 300 = 37500` data points?
 
 .. rubric:: What we will cover
 
@@ -31,9 +31,9 @@ You can use the material in this chapter when you must learn more about your sys
 	:alt:	../figures/visualization/visualization-subject-mapping.xmind
 	:align: center
 	:scale: 60
-	
+
 .. _visualization_references:
-	
+
 References and readings
 ========================
 
@@ -49,5 +49,3 @@ References and readings
 #. William Cleveland, *Visualizing Data*, 1st edition, Hobart Press, 1993.
 #. William Cleveland, *The Elements of Graphing Data*, 2nd edition, Hobart Press, 1994.
 #. Su, `It's Easy to Produce Chartjunk Using Microsoft Excel 2007 but Hard to Make Good Graphs <http://dx.doi.org/10.1016/j.csda.2008.03.007>`_, *Computational Statistics and Data Analysis*, **52** (10), 4594-4601, 2008.
-
-.. KGD: figure out how to get bold volume number next to regular issue number: **52**(10) instead of **52** (10)
