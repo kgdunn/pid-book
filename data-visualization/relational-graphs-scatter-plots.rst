@@ -8,11 +8,11 @@ Relational graphs: scatter plots
 
 This is a plot many people are comfortable using. It helps you understand the relationship between two variables - a bivariate plot - as opposed to the previous charts that are univariate. A :index:`scatter plot <pair: scatter plot; visualization>` is a collection of points shown inside a box formed by two axes at 90 degrees to each other. The marker's position is located at the intersection of the values shown on the horizontal (*x*) axis and vertical (*y*) axis.
 
-The unspoken intention of a scatter plot is usually to ask the reader to draw a causal relationship between the two variables. However, not all scatter plots actually show causal phenomena.
+The unspoken intention of a scatter plot is usually to ask the reader to draw a causal relationship between the two variables. However, not all scatter plots actually show causal phenomena, as the figure below tries to convince you:
 
 .. image:: ../figures/visualization/scatterplot-figures.png
 
-This source code generates similar, but not identical, figures:
+This source code generates similar, but not identical, figures to those shows here in the text.
 
 .. dcl:: R
 
@@ -32,8 +32,8 @@ This source code generates similar, but not identical, figures:
 	# if kg/m^3 (1500 kg/m3 is typical)
 	N = 50
 	white.hairs = round(rnorm(N,
-							  mean=500,
-							  sd=250))
+	                    mean=500,
+	                    sd=250))
 	bone.mineral.density = -0.25 * white.hairs + 1550 + rnorm(N, mean=0, sd=25)
 
 	plot(white.hairs, bone.mineral.density,
@@ -48,9 +48,9 @@ Strive for graphical excellence by doing the following:
 - Use the least amount of ink.
 - Do not distort the axes.
 
-There is an unfounded fear that others won't understand your 2D scatter plot. Tufte (*Visual Display of Quantitative Information*, p 83) shows that there are no scatter plots in a sample (1974 to 1980) of U.S., German and British dailies, despite studies showing that 12-year-olds can interpret such plots. (Japanese newspapers frequently use them.)
+There is an unfounded fear that others won't understand your 2D scatter plot. Tufte (*Visual Display of Quantitative Information*, p 83) shows that there are no scatter plots in a sample (1974 to 1980) of U.S., German and British dailies, despite studies showing that 12-year-olds can interpret such plots: Japanese newspapers frequently use them.
 
-You will see this in industrial settings as well. The next time you go into the control room, try finding any scatter plots. The audience is not to blame: it is the producers of these charts who assume the audience is incapable of interpreting them.
+You will see this in industrial settings as well. The next time you go into an industrial control room (or look carefull at some screens in online videos), try finding any scatter plots. The audience is not to blame: it is the producers of these charts who assume the audience is incapable of interpreting them.
 
 .. note::
 
@@ -81,4 +81,12 @@ Add a third variable to the plot by adjusting the marker size, and add a fourth 
 		:alt: fake width
 
 
-    This example, from `http://gapminder.org <http://yint.org/gapminder-example>`_, shows data as of 2007 for income per person against fertility. The size of each data point is proportional to the country's population, and the marker colour shows life expectancy at birth (years). The GapMinder website allows you to "play" the graph over time, effectively adding a fifth dimension to the 2D plot. Use the hyperlink above to see how richer countries move towards lower fertility and higher income over time.
+    This example, from `http://gapminder.org <http://yint.org/gapminder-example>`_, shows data until 2007 for:
+
+		1. income per person (*x*-axis);
+		2. against fertility (*y*-axis);
+		3. the size of each data point is proportional to the country's population;
+		4. the marker colour shows life expectancy at birth (years).
+		5. The GapMinder website allows you to "play" the graph over time, effectively adding a fifth dimension to the 2D plot.
+
+		Use the hyperlink above to see how richer countries move towards lower fertility and higher income over time.
