@@ -420,7 +420,7 @@ Exercises
 
 	Read the short, clearly written article by Stephen Few on the pitfalls of pie charts: `Save the pies for dessert, https://www.perceptualedge.com/articles/08-21-07.pdf <https://www.perceptualedge.com/articles/08-21-07.pdf>`_. The article presents an easy-to-read argument against pie charts that will hopefully convince you.
 
-	Here's a `great example that proves his point <http://www.cra-arc.gc.ca/nwsrm/t1stts-eng.html>`_ from the Canada Revenue Agency.
+	Here's a `great example that proves his point <https://www.canada.ca/en/revenue-agency/corporate/about-canada-revenue-agency-cra/individual-income-tax-return-statistics.html>`_ from the Canada Revenue Agency.
 
 
 ..	question::
