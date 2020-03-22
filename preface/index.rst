@@ -59,7 +59,7 @@ The textbook was used in an online course from July to August 2014, `Experimenta
    :scale: 40%
    :align: left
 
-In particular, I'd like to thank Devon Mordell, from McMaster University, for her informal help on editing parts of the book. As well as countless others who have via email or web forms provided feedback. Any errors, poor spelling and grammar are entirely my own fault -- any feedback to improve them `will be appreciated <https://docs.google.com/forms/d/1IpO-bvJwQwhK64eid4YXwJBvGxN5cfyYDv81G-YgWrM/viewform>`_.
+In particular, I'd like to thank Devon Mordell, from McMaster University, for her informal help on editing parts of the book. As well as countless others who have via email or web forms provided feedback. Any errors, poor spelling and grammar are entirely my own fault -- any feedback to improve them `will be appreciated <https://docs.google.com/forms/d/e/1FAIpQLScENs2JsKnS1HL4OAlu__blZZlcJdc7P0yDuSvyM3X7mLqsoQ/viewform>`_.
 
 Thanks also to instructors at other universities who have used these notes and slides in their courses and provided helpful feedback.
 
