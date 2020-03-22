@@ -15,7 +15,7 @@ Exercises
 	#.	List any 2 interesting features in these data.
 
 .. answer::
-	:fullinclude: no 
+	:fullinclude: no
 	:short: Time-series and sparkline.
 
 	#.	The plots are a time-series plot and a sparkline. The sparkline shows exactly the same data, just a more compact form (without the labelling on the axes).
@@ -38,7 +38,7 @@ Exercises
 		:scale: 40
 
 .. answer::
-	:fullinclude: no 
+	:fullinclude: no
 	:copyright_issue: yes
 
 	There are several problems with this graphical comparison, but the main concerns are with showing time trends as bar plots, and the alignment of the time trends.
@@ -64,9 +64,9 @@ Exercises
 		:scale: 80
 
 .. answer::
-	:fullinclude: no 
+	:fullinclude: no
 	:copyright_issue: yes
-	
+
 	The data from this article are needlessly embellished with a picture of a house, a $20,000 bill and a stake in the ground.
 
 	A simple annotated table will show the data well enough. A bar chart, horizontally or vertically aligned is not suitable.
@@ -91,13 +91,13 @@ Exercises
 		:scale: 70
 		:width: 900px
 		:alt: fake width
-		
+
 	.. dcl:: R
 
 		library(car)
 		data_file = 'http://openmv.net/file/food-texture.csv'
 		food <- read.csv(data_file)
-		
+
 		# Hide the smoother and bounds
 		scatterplotMatrix(food[,2:6],
 		                  smoother=FALSE)
@@ -108,10 +108,10 @@ Exercises
 	From these plots we quickly gain an insight into the data:
 
 		*	Most of the 5 variables have a normal-like distribution, except for ``Crispy``, but notice the small notches on the middle histogram: they are equally spaced, indicating the variable is not continuous; it is `quantized <https://en.wikipedia.org/wiki/Quantization_(signal_processing)>`_. The ``Fracture`` variable also displays this quantization.
-		*	There is a strong negative correlation with oiliness and density: oilier pastries are less dense (to be expected). 
+		*	There is a strong negative correlation with oiliness and density: oilier pastries are less dense (to be expected).
 		*	There is a positive correlation with oiliness and crispiness: oilier pastries are more crisp (to be expected).
 		*	There is no relationship between the oiliness and hardness of the pastry.
-		*	There is a negative correlation between density and crispiness (based on the prior relationship with ``Oil``): less dense pastries (e.g. more air in them) and crispier. 
+		*	There is a negative correlation between density and crispiness (based on the prior relationship with ``Oil``): less dense pastries (e.g. more air in them) and crispier.
 		*	There is a positive correlation between ``Density`` and ``Fracture``. As described in the dataset file, ``Fracture`` is the angle by which the pastry can be bent, before it breaks; more dense pastries have a higher fracture angle.
 		*	Similarly, a very strong negative correlation between ``Crispy`` and ``Fracture``, indicating the expected effect that very crispy pastries have a low fracture angle.
 		*	The pastry's hardness seems to be uncorrelated to all the other 4 variables.
@@ -125,12 +125,12 @@ Exercises
 	#.	Use the same data set to describe any time-based trends that are apparent.
 
 .. answer::
-	:fullinclude: no 
+	:fullinclude: no
 
 
 	#.	A suitable chart for displaying variability on a per-day basis is the boxplot, one box for each day of the week. This allows you to see *between-day* variation when comparing the boxes side by side, and get an impression of the *variability within* each variable, by examining how the box's horizontal lines are spread out (25th, 50th and 75th percentiles).
-	
-	
+
+
 	#.	A box plot is an effective way to summarize and compare the data for each day of the week.
 
 		.. code-block:: s
@@ -152,8 +152,8 @@ Exercises
 			- All week days seem to have about the same level of spread, except Friday, which is more variable.
 			- This is a website of academic interest, so these trends are expected.
 
-	#.	A time-series plot of the data shows increased visits in September and October, and declining visits in November and December. This coincides with the phases of the academic term. A plot of the total number of visits within each month will show this effect clearly. The lowest number of visits were recorded in late June and July. 
-	
+	#.	A time-series plot of the data shows increased visits in September and October, and declining visits in November and December. This coincides with the phases of the academic term. A plot of the total number of visits within each month will show this effect clearly. The lowest number of visits were recorded in late June and July.
+
 		.. image:: ../figures/visualization/website-traffic-timeseries.jpg
 			:align: center
 
@@ -174,7 +174,7 @@ Exercises
 	:copyright_issue: yes
 
 	.. See the higher resolution PNG file version also
-	
+
 	.. image:: ../figures/visualization/kidnappings-question.png
 		:scale: 30
 		:align: center
@@ -184,7 +184,7 @@ Exercises
 	#.	Which plot type asks you to draw a cause and effect relationship between two variables?
 	#.	Use rough values from the given plot to construct an approximate example of the plot you proposed in part 3.
 	#.	What advantage is there to the plot given here, over the type in your answer to part 3.
-	
+
 .. answer::
 	:copyright_issue: yes
 
@@ -193,24 +193,24 @@ Exercises
 	#.	The rate of cellphone usage (expected to be proportional to number of mobile phone antennae) has increased in Columbia, especially since 2002. Likely this is this usual case where the price comes down, leading to greater use. Though some other political or economic change may have taken place in 2002 leading to increased phone use.
 
 		The rate of kidnappings peaked in 2000, at a rate of 8 per 100,000 residents, and has steadily decreased since that peak.
-	
+
 	#.	A scatter plot.
 
 	#.	A scatter plot, from approximate values on the plot, is generated by the following code (you may use any software to construct your plot)
 
 		.. literalinclude:: ../figures/visualization/kidnappings.R
-		       :language: s	
-	
+		       :language: s
+
 		.. image:: ../figures/visualization/kidnap-mobile.jpg
 			:alt:	../figures/visualization/kidnappings.R
 			:scale: 60
 			:align: center
-		
+
 	#.	The advantage of the time-series plot is that you are able to clearly see any time-based trends - those are lost in the scatter plot (though you can recover some time-based information when you connect the dots in time order).
 
-	**Comment**: 
+	**Comment**:
 
-	The general negative correlation in the scatter plot, and the trends observed in the time-series plots ask you to infer a relationship between the two trajectories. In this case the plot's author would like you to infer that increased cellphone penetration in the population has been (partly) responsible for the reduction in kidnappings. 
+	The general negative correlation in the scatter plot, and the trends observed in the time-series plots ask you to infer a relationship between the two trajectories. In this case the plot's author would like you to infer that increased cellphone penetration in the population has been (partly) responsible for the reduction in kidnappings.
 
 	This relationship may, or may not be, causal in nature. The only way to ascertain causality would be to do an experiment: in this case, you would remove cellphone antennae and see if kidnappings increased again. This example outlines the problem with trends and data observed from society - we can never be sure the phenomena are causal:
 
@@ -218,11 +218,11 @@ Exercises
 		*	even if we could, the time scales are too long to control the experimental conditions: something else would change while we were doing the experiment.
 
 	To compensate for that, social science studies compare similar countries - for example the original article from `The Economist's website <http://www.economist.com/node/15127287>`_ shows how the same data from Mexico and Venezuela were compared to Columbia's data. The article also shows how much  of the trend was due to political changes in the country that were happening at the same time: in particular a 3rd factor not shown in the plots was largely responsible for the decrease in kidnappings. Kidnappings would probably have remained at the same level if it were not also for the increase in the number of police officers, who are able to respond to citizen's cellphone calls.
-	
+
 	Fortunately in engineering situations we deal with much shorter time scales, and are able to better control our experiments. However the case of an uncertain 3rd factor is prevalent and must be guarded for - we'll learn about this is the section on design of experiments.
 
 
-..	question:: 
+..	question::
 
 	Load the `room temperature <http://openmv.net/info/room-temperature>`_ dataset from the general `Datasets website <http://openmv.net>`_ into R, Python or MATLAB.
 
@@ -233,20 +233,20 @@ Exercises
 .. answer::
 
 	#.	You could use the following code to plot the data:
-	
+
 		.. dcl:: R
 			:height: 800px
-			
+
 			data_file = 'http://openmv.net/file/room-temperature.csv'
 			roomtemp <- read.csv(data_file)
 			summary(roomtemp)
 			ylim = c(290, 300)
 
-			plot(roomtemp$FrontLeft,   
+			plot(roomtemp$FrontLeft,
 				 type='l',
-				 col="blue", 
-				 ylim=c(290, 300), 
-				 xlab="Sequence order", 
+				 col="blue",
+				 ylim=c(290, 300),
+				 xlab="Sequence order",
 				 ylab="Room temperature [K]")
 			lines(roomtemp$FrontRight,
 				 type='b',
@@ -260,14 +260,14 @@ Exercises
 				 pch='o',
 				 col="black")
 
-			legend(20, 300, 
-				 legend=c("Front left", 
-				          "Front right", 
-				          "Back left", 
+			legend(20, 300,
+				 legend=c("Front left",
+				          "Front right",
+				          "Back left",
 				          "Back right"),
-				col=c("blue", "blue", 
-				      "black", "black"), 
-				lwd=2, 
+				col=c("blue", "blue",
+				      "black", "black"),
+				lwd=2,
 				pch=c(NA, "o", NA, "o"))
 
 
@@ -276,27 +276,27 @@ Exercises
 			:scale: 60
 			:align: center
 			:width: 900px
-			
+
 		.. The above is a fake width for the plot
-		
+
 		A sequence plot of the data is good enough, though a time-based plot is better.
-		
+
 	#.	*	Oscillations, with a period of roughly 48 to 50 samples (corresponds to 24 hours) shows a daily cycle in the temperature.
 		*	All 4 temperatures are correlated (move together).
 		*	There is a break in the correlation around samples 50 to 60 on the front temperatures (maybe a door or window was left open?). Notice that the oscillatory trend still continues within the offset region - just shifted lower.
 		*	A spike up in the room's back left temperature, around sample 135.
-	
-	#.	The above plot was requested to be on one axis, which leads to some clutter in the presentation. Sparklines show each trajectory on their own axis, so it is less cluttered, but the same features would still be observed when the 4 tiny plots are stacked one on top of each other. 
-	
+
+	#.	The above plot was requested to be on one axis, which leads to some clutter in the presentation. Sparklines show each trajectory on their own axis, so it is less cluttered, but the same features would still be observed when the 4 tiny plots are stacked one on top of each other.
+
 		.. image:: ../figures/examples/room-temperature/room-temperature-sparklines.png
 			:alt:	../figures/examples/room-temperature/room-temperature-plots.R
 			:scale: 100
 			:align: center
 
 		Another example of effective sparklines are for stock market data. Take a look, for example at `Google Finance for ERJ <http://www.google.com/finance?q=NYSE:ERJ>`_ (Embraer SA). Google shows Embraer's stock price, but scroll down to see the sparklines for other companies that are in the same economic sector (Bombadier, Boeing, Northrop Grumman, *etc*). This quickly allows you to see whether movements in a stock are due to the overall sector (correlations), or due to a particular company (broken correlations).
-	
-		If you looked around for how to generate sparklines in R you may have come across `this website <https://cran.r-project.org/web/packages/YaleToolkit/>`_. Notice in the top left corner that the ``sparklines`` function comes from the ``YaleToolkit``, which is an add-on package to R. We show how to `install packages in the tutorial <https://learnche.org/4C3/Software_tutorial/Extending_R_with_packages>`_. Once installed, you can try out that ``sparklines`` function: 
-	
+
+		If you looked around for how to generate sparklines in R you may have come across `this website <https://cran.r-project.org/web/packages/YaleToolkit/>`_. Notice in the top left corner that the ``sparklines`` function comes from the ``YaleToolkit``, which is an add-on package to R. We show how to `install packages in the tutorial <https://learnche.org/4C3/Software_tutorial/Extending_R_with_packages>`_. Once installed, you can try out that ``sparklines`` function:
+
 		*	First load the library: ``library(YaleToolkit)``
 		*	Then see the help for the function: ``help(sparklines)`` to see how to generate your sparklines
 
@@ -310,9 +310,9 @@ Exercises
 ..	answer::
 
 	#.	The following code will load the data, and plot a boxplot for the first 100 rows:
-	
+
 		.. dcl:: R
-		
+
 			data_file = 'http://openmv.net/file/six-point-board-thickness.csv'
 			boards <- read.csv(data_file)
 			summary(boards)
@@ -323,8 +323,8 @@ Exercises
 
 			# Ignore the first date/time column: using only Pos1, Pos2, ... Pos6 columns
 			boxplot(first100, ylab="Thickness [mils]")
-			
-			
+
+
 		.. image:: ../figures/visualization/boxplot-for-two-by-six-100-boards.png
 			:alt: ../figures/visualization/boxplot-for-boards.R
 			:align: center
@@ -338,54 +338,32 @@ Exercises
 	:copyright_issue: yes
 
 	Consider this plot from the Economist article regarding `"Working hours" <http://www.economist.com/blogs/freeexchange/2013/09/working-hours>`_
-	
+
 	.. image:: ../figures/visualization/scatterplot-GDP-working-hours.png
-	
-	#.	What is the plot's author trying to convey with this scatter plot? 
-	#.	Do you believe this an effective and complete message (i.e. could you improve it somehow?) 
-	#.	Is there a causal mechanism at play between the two variables? 
+
+	#.	What is the plot's author trying to convey with this scatter plot?
+	#.	Do you believe this an effective and complete message (i.e. could you improve it somehow?)
+	#.	Is there a causal mechanism at play between the two variables?
 	#.	How would you confirm or disprove the message the plot's author is making?
 
 .. answer::
-	:fullinclude: no 
+	:fullinclude: no
 	:copyright_issue: yes
 
 	#.	The message is likely that longer working hours do not translate into greater earnings (measured with GDP) as might be expected. In fact, the opposite holds: longer working hours are correlated with *lower* earnings (we say: "there's a negative correlation between working hours and earnings"). The axes have been scaled to account for purchasing power.
-	
-	#.	As the original article alludes, there are differences between countries; and given the large number of points on the plot (well over 200) it is safe to assume that there are several points per country, showing the shifts over time. As a result, colour coding, or using different markers to show each country's shift and change over time will provide some additional insight. For example, the line of points stretching from 2200 to 2600 on the x-axis: is that due to one country and in which direction is it moving over time (left or right)? 
-	
+
+	#.	As the original article alludes, there are differences between countries; and given the large number of points on the plot (well over 200) it is safe to assume that there are several points per country, showing the shifts over time. As a result, colour coding, or using different markers to show each country's shift and change over time will provide some additional insight. For example, the line of points stretching from 2200 to 2600 on the x-axis: is that due to one country and in which direction is it moving over time (left or right)?
+
 		Some students rightly pointed out that policy shifts occurred during this period; some countries joined the EU, and that may have lead to a change in the plots. So the picture is by no means complete. However, the picture is almost never complete for any data set.
-		
-	#.	This is a tough one to answer. The data are compelling in their lack of scatter. Usually systems with dubious correlations show a high degree of scatter. As before, colour or shaped codes for each country will give a better idea of cause-effect. I suspect this plot shows a strong correlation simply because there are small clusters for each country that are close together, but the negative trend simply comes from a country-to-country difference. 
-	
+
+	#.	This is a tough one to answer. The data are compelling in their lack of scatter. Usually systems with dubious correlations show a high degree of scatter. As before, colour or shaped codes for each country will give a better idea of cause-effect. I suspect this plot shows a strong correlation simply because there are small clusters for each country that are close together, but the negative trend simply comes from a country-to-country difference.
+
 		As emphasized before in this course, we can only truly tell causality by doing an experiment. Here there are no major ethical obligations, however it is unlikely that you would be able to convince companies to enforce short vs long working hours so you can observe productivity. The time before the change also takes effect is likely very long.
-		
+
 		So the answer is yes, maybe there is a causal mechanism here that is plausible (we've often heard that people whose work-life balanced is better are more productive), but we cannot test it explicitly.
-		
+
 	#.	Also see the prior answer: require experiments over a broad range of employment types and regions, using shorter and longer working hours, and measure the corresponding earnings.
 
-
-.. question::
-
-	In a final exam for a particular course at McMaster University there was an open-ended question. These `data values are the grades <http://openmv.net/info/systematic-method>`_ achieved for the answer to that question, broken down by whether the student used a systematic method, or not. No grades were given for using a systematic method; grades were awarded only on answering the question. 
-	
-	A systematic method is any method that assists the student with problem solving (e.g. define the problem, identify knowns/unknowns and assumptions, explore alternatives, plan a strategy, implement the strategy and then check the solution).
-	
-	Draw two box plots next to each other that compare the two approaches to answering the question. Comment on any features you notice in the comparison.
-	
-.. answer::
-	:fullinclude: no 
-
-	Several points are apparent in the box plot:
-	
-	.. image:: ../figures/visualization/boxplot-for-systematic-method-used-2014.png
-		:align: left
-		:scale: 70
-	
-	* students in either category achieved the highest grade possible
-	* the spread (interquartile distance) when using the method is smaller
-	* both box plots show a skew to the lower left tail (compare the median to the first and third quartiles)
-	* we will use a :ref:`confidence interval <univariate-group-to-group-differences-no-reference-set>` in a later chapter to judge whether this difference is statistically significant or not.
 
 
 .. question::
@@ -398,20 +376,20 @@ Exercises
 
 
 .. question::
-	
+
 	Which types of features can can the human eye easily pick out of a time series plot?
-	
+
 .. answer::
 
 	Features such as sinusoids, spikes, gaps (missing values), upward and downward trends are quickly picked out by the human eye, even in a poorly drawn plot.
 
 
 .. question::
-	
+
 	.. Final exam, 2013
-	
+
 	Why is the principle of minimizing "data ink" so important in an effective visualization? Give an engineering example of why this important.
-	
+
 .. answer::
 
 	It reduces the time or work to interpret that plot, by eliminating elements that are non-essential to the plot's interpretation. Situations which are time or safety critical are examples, for example in an operator control room, or medical facility (operating room).
@@ -420,9 +398,9 @@ Exercises
 .. question::
 
 	Describe what the main difference(s) between a bar chart and a histogram are.
-	
+
 .. answer::
-	:fullinclude: no 
+	:fullinclude: no
 
 	The solution is taken directly from: http://www.forbes.com/sites/naomirobbins/2012/01/04/a-histogram-is-not-a-bar-chart/
 
@@ -441,15 +419,15 @@ Exercises
 .. question::
 
 	Read the short, clearly written article by Stephen Few on the pitfalls of pie charts: `Save the pies for dessert, http://www.perceptualedge.com/articles/08-21-07.pdf <http://www.perceptualedge.com/articles/08-21-07.pdf>`_. The article presents an easy-to-read argument against pie charts that will hopefully convince you.
-	
-	Here's a `great example that proves his point <http://www.cra-arc.gc.ca/nwsrm/t1stts-eng.html>`_ from the Canada Revenue Agency.
-	
 
-..	question:: 
+	Here's a `great example that proves his point <http://www.cra-arc.gc.ca/nwsrm/t1stts-eng.html>`_ from the Canada Revenue Agency.
+
+
+..	question::
 
 	*Enrichment*:
 
 	*	Watch `this 20 minute video <http://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen>`_ that shows how a 2-dimensional plot comes alive to show 5 dimensions of data. What are the 5 dimensions?
 	*	A condensed version from this, `4 minute YouTube video <https://youtu.be/jbkSRLYSojo>`_ shows Hans Rosling giving a new perspective on the same data. This `Economist article <http://www.economist.com/node/17663585>`_ has some interesting background on Dr. Rosling, as does this page, `giving a selection of his work <http://www.economist.com/node/21013330>`_.
-	
+
 		.. youtube:: https://www.youtube.com/watch?v=jbkSRLYSojo
