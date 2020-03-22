@@ -93,7 +93,7 @@ As with the simple least squares model, :math:`y = b_0 + b_1 x`, we aim to minim
 		                  &= \mathbf{y}^T\mathbf{y} - 2 \mathbf{y}^T\mathbf{X}\mathbf{b} + \mathbf{b}\mathbf{X}^T\mathbf{X}\mathbf{b}
 		\end{array}
 
-Taking partial derivatives with respect to the entries in :math:`\mathbf{b}` and setting the result equal to a vector of zeros, you can prove to yourself that :math:`\mathbf{b} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1}\mathbf{X}^T\mathbf{y}`. You might find the `Matrix Cookbook <http://www.google.ca/search?q=The+Matrix+Cookbook/>`_ useful in solving these equations and optimization problems.
+Taking partial derivatives with respect to the entries in :math:`\mathbf{b}` and setting the result equal to a vector of zeros, you can prove to yourself that :math:`\mathbf{b} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1}\mathbf{X}^T\mathbf{y}`. You might find the `Matrix Cookbook <https://www.google.ca/search?q=The+Matrix+Cookbook/>`_ useful in solving these equations and optimization problems.
 
 Three important relationships are now noted:
 

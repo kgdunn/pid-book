@@ -17,7 +17,7 @@ This R code will calculate principal components for this data:
 	:height: 300px
 
 	# Read large data file
-	file <- 'http://openmv.net/file/tablet-spectra.csv'
+	file <- 'https://openmv.net/file/tablet-spectra.csv'
 	spectra <- read.csv(file, header = FALSE, row.names = 1)
 	
 	# Only extract 4 components, but
@@ -61,7 +61,7 @@ The code for the above plots is:
 
 .. dcl:: R
 
-	file <- 'http://openmv.net/file/tablet-spectra.csv'
+	file <- 'https://openmv.net/file/tablet-spectra.csv'
 	spectra <- read.csv(file, header = FALSE, row.names = 1)
 
 

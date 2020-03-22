@@ -60,7 +60,7 @@
 	
 	---------------
 	
-	From NIST: Rotatability: A design is rotatable if the variance of the predicted response at any point x depends only on the distance of x from the design center point. A design with this property can be rotated around its center point without changing the prediction variance at x. Note: Rotatability is a desirable property for response surface designs (i.e. quadratic model designs). http://www.itl.nist.gov/div898/handbook/pri/section7/pri7.htm#Rotatability
+	From NIST: Rotatability: A design is rotatable if the variance of the predicted response at any point x depends only on the distance of x from the design center point. A design with this property can be rotated around its center point without changing the prediction variance at x. Note: Rotatability is a desirable property for response surface designs (i.e. quadratic model designs). https://www.itl.nist.gov/div898/handbook/pri/section7/pri7.htm#Rotatability
 	
 	Comment on binary factors:
 	
@@ -113,7 +113,7 @@
 		- e.g. testing fitness improvement: during experiment you are getting naturally fitter
 		- e.g. testing laptop battery performance. But use of battery over and over is going to gradually make it worse (e.g. car tests: wear and tear increase over duration of test). Slowly varying distrbances accounted for by randomization so they show up as noise. Worse thing to do is run the experiments in Yates order: that will confound this disturbance with the last, slowest-varying factor in table.
 	
-	On Yates (factorial) analysis: http://www.itl.nist.gov/div898/handbook/eda/section3/eda35i.htm
+	On Yates (factorial) analysis: https://www.itl.nist.gov/div898/handbook/eda/section3/eda35i.htm
 	
 	DOE RSM with colour:
 	
@@ -159,7 +159,7 @@
 
 		So at what point is it worth including main effects or leaving them out while retaining their interactions? This is the only reason I can think of for retaining main effects and their interactions. We never really know the true model, and if we use the model without main effects at corner points that conflict with the interactions, we can get poor predictions. After all, that's why we are building these models: to optimize and improve the process later on.
 	
-	DOE is a way to bring an out of control process back into control. See the comment by Vining (top right, p152) in the  Bisgaard articles http://dx.doi.org/10.1080/08982110701826721
+	DOE is a way to bring an out of control process back into control. See the comment by Vining (top right, p152) in the  Bisgaard articles https://dx.doi.org/10.1080/08982110701826721
 	
 	Investigate the .. sectnum:: directive in ReST
 	
@@ -313,7 +313,7 @@
 
 .. note:: Coursera students
 
-	If you are using this chapter with the `Coursera MOOC <http://yint.org/experiments>`_ (massive open online course), then we wish to welcome you and want to let you know that this book is generally part of a larger set of notes. The cross-references in this chapter will point you to other parts, where background knowledge is provided.
+	If you are using this chapter with the `Coursera MOOC <https://yint.org/experiments>`_ (massive open online course), then we wish to welcome you and want to let you know that this book is generally part of a larger set of notes. The cross-references in this chapter will point you to other parts, where background knowledge is provided.
 	
 	.. youtube:: https://www.youtube.com/watch?v=9Sljs2064u4&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=30
 	

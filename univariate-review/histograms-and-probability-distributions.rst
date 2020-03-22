@@ -304,7 +304,7 @@ We review a couple of concepts that you should have seen in prior statistical wo
 		paste0('*The MAD is         = ', mad(x))
 		paste0('See how MAD is not affected.')
 
-	Enrichment reading: read pages *1 to 8* of "`Tutorial to Robust Statistics <http://dx.doi.org/10.1002/cem.1180050103>`_", PJ Rousseeuw, *Journal of Chemometrics*, **5**, 1-20, 1991.
+	Enrichment reading: read pages *1 to 8* of "`Tutorial to Robust Statistics <https://dx.doi.org/10.1002/cem.1180050103>`_", PJ Rousseeuw, *Journal of Chemometrics*, **5**, 1-20, 1991.
 
 
 .. For each of the distributions:

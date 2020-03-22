@@ -6,7 +6,7 @@ Applications of Latent Variable Models
 Improved process understanding
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. TODO: another example: http://dx.doi.org/10.1016/S0169-7439(02)00088-6
+.. TODO: another example: https://dx.doi.org/10.1016/S0169-7439(02)00088-6
 
 :ref:`Interpreting the loadings plot <LVM_interpreting_loadings>` from a model is well worth the time spent. At the very least, one will confirm what you already know about the process, but sometimes there are unexpected insights that are revealed. Guide your interpretation of the loadings plot with contributions in the scores, and cross-referencing with the raw data, to verify your interpretation.
 
@@ -130,7 +130,7 @@ New product development follows a similar line of thought, but uses more of a "w
 
 But if our manager asks, can we readily produce a pastry with the 5 variables set at [Oil=14%, Density=2600, Crispy=14, Fracture can be any value, Hardness=100]. We can treat this as a new observation, and following the steps described in the earlier :ref:`section on using a PCA model <LVM-using-a-PCA-model>`, we will find that :math:`\mathbf{e} = [2.50, 1.57, -1.10,  -0.18,  0.67]`, and the SPE value is 10.4. This is well above the 95% limit of SPE, indicating that such a pastry is not consistent with how we have run our process in the past. So there isn't a quick solution. 
 
-Fortunately, there are systematic tools to move on from this step, but they are beyond the level of this introductory material. They involve the inversion and optimization of latent variable models. This paper is a good starting point if you are interested in more information: Christiane Jaeckle and John MacGregor, "`Product design through multivariate statistical analysis of process data <http://dx.doi.org/10.1002/aic.690440509>`_". *AIChE Journal*, **44**, 1105-1118, 1998. 
+Fortunately, there are systematic tools to move on from this step, but they are beyond the level of this introductory material. They involve the inversion and optimization of latent variable models. This paper is a good starting point if you are interested in more information: Christiane Jaeckle and John MacGregor, "`Product design through multivariate statistical analysis of process data <https://dx.doi.org/10.1002/aic.690440509>`_". *AIChE Journal*, **44**, 1105-1118, 1998. 
 
 The general principle in model inversion problems is to manipulate the any degrees of freedom in the process (variables that can be manipulated in a process control sense) to obtain a product as close as possible to the required specification, but with low SPE in the model. A PLS model built with these manipulated variables, and other process measurements in |X|, and collecting the required product specifications in |Y| can be used for these model inversion problems.
 
@@ -145,7 +145,7 @@ The intention of an inferential sensor is to infer a hard-to-measure property, u
 
 Consider a distillation column where various automatic measurements are used to predict the vapour pressure. The actual vapour pressure is a lab measurement, usually taken 3 or 4 times per week, and takes several hours to complete. The soft sensor can predict the lab value from the real-time process measurements with sufficient accuracy. This is a common soft sensor on distillation columns. The lab values are used to build (train) the software sensor and to update in periodically.
 
-Other interesting examples use camera images to predict hard-to-measure values. In the paper by `Honglu Yu, John MacGregor, Gabe Haarsma and Wilfred Bourg <http://dx.doi.org/10.1021/ie020941f>`_ (*Ind. Eng. Chem. Res.*, **42**, 3036–3044, 2003), the authors describe how machine vision is used to predict, in real-time, the seasoning of various snack-food products. This sensors uses the colour information of the snacks to infer the amount of seasoning dispensed onto them. The dispenser is controlled via a feedback loop to ensure the seasoning is at target.
+Other interesting examples use camera images to predict hard-to-measure values. In the paper by `Honglu Yu, John MacGregor, Gabe Haarsma and Wilfred Bourg <https://dx.doi.org/10.1021/ie020941f>`_ (*Ind. Eng. Chem. Res.*, **42**, 3036–3044, 2003), the authors describe how machine vision is used to predict, in real-time, the seasoning of various snack-food products. This sensors uses the colour information of the snacks to infer the amount of seasoning dispensed onto them. The dispenser is controlled via a feedback loop to ensure the seasoning is at target.
 
 Once validated, a soft sensor can also reduce costs of a process by allowing for rapid feedback control of the inferred property, so that less off-specification product is produced. They also often have the side-effect that reduced lab sampling is required; this saves on manpower costs.
 
@@ -192,7 +192,7 @@ There are a few other good reasons to use latent variables models:
 	
 	*	But by far, one of the most valuable attributes of the process data is the fact that they are measured in real-time. The residence time in complex processes can be in the order of hours to days, going from start to end. Having to wait till much later in time to detect problems, based on lab measurements can lead to monetary losses as off-spec product must be discarded or reworked. Conversely, having the large quantity of data available in real-time means we can detect faults as they occur (making it much easier to decode what went wrong). But we need to use a tool that handles these highly correlated measurements.
 
-A paper that outlines the reasons for multivariate monitoring is by John MacGregor, "`Using on-line process data to improve quality: Challenges for statisticians <http://dx.doi.org/10.1111/j.1751-5823.1997.tb00311.x>`_", *International Statistical Review*, **65**, p 309-323, 1997. 
+A paper that outlines the reasons for multivariate monitoring is by John MacGregor, "`Using on-line process data to improve quality: Challenges for statisticians <https://dx.doi.org/10.1111/j.1751-5823.1997.tb00311.x>`_", *International Statistical Review*, **65**, p 309-323, 1997. 
 
 We will look at the steps for phase I (building the monitoring charts) and phase II (using the monitoring charts).
 
@@ -298,7 +298,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. 	*	Similar to the batch example above, one might be able to use various features extracted from `ECG signals <http://en.wikipedia.org/wiki/Electrocardiography>`_ to designate the status of a patient, based on their heart rhythms.
 .. 
 .. 	.. figure:: images/12leadECG.jpg
-.. 		:alt:	http://upload.wikimedia.org/wikipedia/commons/b/bd/12leadECG.jpg
+.. 		:alt:	https://upload.wikimedia.org/wikipedia/commons/b/bd/12leadECG.jpg
 .. 		:scale: 85
 .. 		:width: 750px
 .. 		:align: center
@@ -450,7 +450,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. * :math:`N = 24`
 .. * :math:`K = 6` 
 .. * :math:`G = 2`: two groups, ``Adequate`` or ``Poor``
-.. * Web address: http://openmv.net/info/raw-material-characterization
+.. * Web address: https://openmv.net/info/raw-material-characterization
 .. * Description: The designation of ``Adequate`` or ``Poor`` reflects the process engineer's opinion of the yield from that lot of materials.
 .. 
 .. #.	Build a PCA model only on the data from the ``Adequate`` group using :math:`K=6` variables. 
@@ -649,7 +649,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. Building models from simulation systems then applied to real systems
 .. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. 
-.. In the paper by `Kresta, Marlin and MacGregor <http://dx.doi.org/doi:10.1016/0098-1354(93)E0006-U>`_, the authors describe how a PLS model should be built under the same conditions as it will be used later on.  The example provided in the paper is from a distillation column that is under feedback control. A simulator for a methanol-acetone-water column was used and a data set created when only variation in the manipulated variables was present.
+.. In the paper by `Kresta, Marlin and MacGregor <https://dx.doi.org/doi:10.1016/0098-1354(93)E0006-U>`_, the authors describe how a PLS model should be built under the same conditions as it will be used later on.  The example provided in the paper is from a distillation column that is under feedback control. A simulator for a methanol-acetone-water column was used and a data set created when only variation in the manipulated variables was present.
 .. 
 .. Later on, the model was applied to a data set generated with variation in both the manipulated and disturbance variables. The model's predictive ability was poor, because when building the model, no important weights were placed on the variables associated with disturbance effects. 
 .. 
@@ -662,7 +662,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. Dealing with feedback control
 .. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. 
-.. Feedback control alters the correlation structure among the variables in a system as described in the paper `mentioned in the previous section <http://dx.doi.org/doi:10.1016/0098-1354(93)E0006-U>`_. Three models were built when the system was operating under open loop, with feedback control, and with cascade control.
+.. Feedback control alters the correlation structure among the variables in a system as described in the paper `mentioned in the previous section <https://dx.doi.org/doi:10.1016/0098-1354(93)E0006-U>`_. Three models were built when the system was operating under open loop, with feedback control, and with cascade control.
 .. 
 .. Some of the PLS coefficients from the open loop case changed their sign when compared to the two other cases under feedback control. This might seem surprising at first, but is expected, when considering the relationship between the controlled variable (CV) and the manipulated variable (MV). 
 .. 
@@ -681,7 +681,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. *	:math:`N = 301`
 .. *	:math:`K = 21` 
 .. *	:math:`M = 1` 
-.. *	Web address: http://openmv.net/info/kamyr-digester
+.. *	Web address: https://openmv.net/info/kamyr-digester
 .. *	Description: A digester is an piece of equipment in paper making processes that cooks the woods chips for several hours. This cooking processes softens the chips using an alkali medium, known as liquor  The process is operated in counter-current, with wood chips flowing one direction and leaving as pulp, and the fresh liquor (alkali medium) entering at the opposite end of the digester. The key quality characteristic in the process is the Kappa number, a measure of the whiteness of the paper (bleachability of the pulp)
 .. 
 .. 	Several of the variables in the data set have already been lagged based on process knowledge. For example, ``ChipMass-4`` indicates that the chip mass feed rate has been lagged by 4 hours (approximately the residence time in the digester). Other variables with a numeric ending have also been lagged by 1, 2 or 4 hours.

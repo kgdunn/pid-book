@@ -48,4 +48,4 @@ References and readings
 #. Stephen Few, *Show Me the Numbers* and *Now You See It: Simple Visualization Techniques for Quantitative Analysis*; both from Analytics Press.
 #. William Cleveland, *Visualizing Data*, 1st edition, Hobart Press, 1993.
 #. William Cleveland, *The Elements of Graphing Data*, 2nd edition, Hobart Press, 1994.
-#. Su, `It's Easy to Produce Chartjunk Using Microsoft Excel 2007 but Hard to Make Good Graphs <http://dx.doi.org/10.1016/j.csda.2008.03.007>`_, *Computational Statistics and Data Analysis*, **52** (10), 4594-4601, 2008.
+#. Su, `It's Easy to Produce Chartjunk Using Microsoft Excel 2007 but Hard to Make Good Graphs <https://dx.doi.org/10.1016/j.csda.2008.03.007>`_, *Computational Statistics and Data Analysis*, **52** (10), 4594-4601, 2008.

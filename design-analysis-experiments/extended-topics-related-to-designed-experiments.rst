@@ -23,7 +23,7 @@ Also see the section on :ref:`optimal designs <DOE-optimial-designs>` for how on
 
 The other case that happens occasionally is that samples are lost, or the final response value is missing for some reason. Not everything is lost: recall the main effects for a full :math:`2^k` factorial are estimated :math:`k` times at :ref:`each combination of the factors <DOE-COST-vs-factorial-efficiency>`. 
 
-If one or more experiments have missing :math:`y` values, you can still estimate these main effects, and sometimes the interaction parameters by hand. Furthermore, analyzing the data in a least squares model will be an undetermined system: more unknowns than equations. You could choose to drop out higher-order interaction terms to reduce the equations to a square system: as many unknowns as equations. Then proceed to analyze the results from the least squares model as usual. There are actually slightly more sophisticated ways of dealing with this problem, as described by Norman Draper in "`Missing Values in Response Surface Designs <http://www.jstor.org/stable/1266729>`_", *Technometrics*, **3**, 389-398, 1961.
+If one or more experiments have missing :math:`y` values, you can still estimate these main effects, and sometimes the interaction parameters by hand. Furthermore, analyzing the data in a least squares model will be an undetermined system: more unknowns than equations. You could choose to drop out higher-order interaction terms to reduce the equations to a square system: as many unknowns as equations. Then proceed to analyze the results from the least squares model as usual. There are actually slightly more sophisticated ways of dealing with this problem, as described by Norman Draper in "`Missing Values in Response Surface Designs <https://www.jstor.org/stable/1266729>`_", *Technometrics*, **3**, 389-398, 1961.
 
 The above discussion illustrates clearly our preference for using the least squares model: whether the experimental design was executed accurately or not: the least squares model always works, whereas the :ref:`short cut tools <DOE-two-level-factorials>` developed for perfectly executed experiments will fail.
 
@@ -98,7 +98,7 @@ The algorithms used to find the subset of experiments to run are called candidat
 
 **Readings**
 
-* St. John and Draper: "`D-Optimality for Regression Designs: A Review <http://www.jstor.org/stable/1267995>`_", *Technometrics*, **17**, 15-, 1975.
+* St. John and Draper: "`D-Optimality for Regression Designs: A Review <https://www.jstor.org/stable/1267995>`_", *Technometrics*, **17**, 15-, 1975.
 
 .. _DOE-mixture-designs:
 

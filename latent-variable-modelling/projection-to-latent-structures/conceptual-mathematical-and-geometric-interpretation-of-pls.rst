@@ -71,7 +71,7 @@ As this shows then, maximizing the covariance between :math:`\mathbf{t}'_a` and 
 
 These scores, :math:`\mathbf{t}'_a` and :math:`\mathbf{u}_a`, are found subject to the constraints that :math:`\mathbf{\mathbf{w}'_a \mathbf{w}_a} = 1.0` and :math:`\mathbf{\mathbf{c}'_a \mathbf{c}_a} = 1.0`. This is similar to PCA, where the loadings :math:`\mathbf{p}_a` were constrained to unit length. In PLS we constrain the loadings for |X|, called :math:`\mathbf{w}_a`, and the loadings for |Y|, called :math:`\mathbf{c}_a`, to unit length.
 
-The above is a description of one variant of PLS, `known as SIMPLS <http://dx.doi.org/10.1016/0169-7439(93)85002-X>`_ (simple PLS). 
+The above is a description of one variant of PLS, `known as SIMPLS <https://dx.doi.org/10.1016/0169-7439(93)85002-X>`_ (simple PLS). 
 
 .. _LVM_PLS_geometric_interpretation:
 

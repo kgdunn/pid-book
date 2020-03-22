@@ -31,7 +31,7 @@ Exercises
 
 	.. _economist-question:
 
-	The following graphics were shown in the print issue of *The Economist* in the 28 November 2009 issue, page 85. The article attempts to argue that there are enough similarities between Japan's stagnant economic experience in the 1990's (known as "Japan's Lost Decade"), and the current experience in the "rich world" western countries to give their policymakers pause for concern. You can `read the full article here <http://www.economist.com/node/14973163?story_id=14973163>`_. What problems do you notice with the graphics?
+	The following graphics were shown in the print issue of *The Economist* in the 28 November 2009 issue, page 85. The article attempts to argue that there are enough similarities between Japan's stagnant economic experience in the 1990's (known as "Japan's Lost Decade"), and the current experience in the "rich world" western countries to give their policymakers pause for concern. You can `read the full article here <https://www.economist.com/node/14973163?story_id=14973163>`_. What problems do you notice with the graphics?
 
 	.. image:: ../figures/visualization/economist-figure-story-id-14973163.png
 		:align: center
@@ -82,7 +82,7 @@ Exercises
 
 .. question::
 
-	This question is an extension to visualizing more than 3 variables. Investigate on your own the term "scatterplot matrix", and draw one for the `Food texture data set <http://openmv.net/info/food-texture>`_. See the ``car`` library in R to create an effective scatterplot matrix with the ``scatterplotMatrix`` function. List some bullet-points that interpret the plot.
+	This question is an extension to visualizing more than 3 variables. Investigate on your own the term "scatterplot matrix", and draw one for the `Food texture data set <https://openmv.net/info/food-texture>`_. See the ``car`` library in R to create an effective scatterplot matrix with the ``scatterplotMatrix`` function. List some bullet-points that interpret the plot.
 
 .. answer::
 
@@ -95,7 +95,7 @@ Exercises
 	.. dcl:: R
 
 		library(car)
-		data_file = 'http://openmv.net/file/food-texture.csv'
+		data_file = 'https://openmv.net/file/food-texture.csv'
 		food <- read.csv(data_file)
 
 		# Hide the smoother and bounds
@@ -119,7 +119,7 @@ Exercises
 
 .. question::
 
-	Using the `Website traffic data set <http://openmv.net/info/website-traffic>`_
+	Using the `Website traffic data set <https://openmv.net/info/website-traffic>`_
 
 	#.	Create a chart that shows the *variability* in website traffic for each day of the week.
 	#.	Use the same data set to describe any time-based trends that are apparent.
@@ -135,7 +135,7 @@ Exercises
 
 		.. code-block:: s
 
-		    web <- read.csv('http://openmv.net/file/website-traffic.csv')
+		    web <- read.csv('https://openmv.net/file/website-traffic.csv')
 
 		    # Re-order the factors in this order
 		    day.names <- c("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday","Thursday", "Friday" )
@@ -159,7 +159,7 @@ Exercises
 
 	The best way to draw the time-series plot is to use proper time-based labelling on the x-axis, but we won't cover that topic here. If you are interested, read up about the ``xts`` package (`see the R tutorial <https://learnche.org/4C3/Software_tutorial>`_) and it's plot command. See how it is used in the code below::
 
-		web <- read.csv('http://openmv.net/file/website-traffic.csv')
+		web <- read.csv('https://openmv.net/file/website-traffic.csv')
 
 		layout(matrix(c(1,2), 1, 2))
 		plot(web$Visits, type="o")
@@ -217,14 +217,14 @@ Exercises
 		*	firstly we couldn't possibly perform that experiment of removing cell towers, and
 		*	even if we could, the time scales are too long to control the experimental conditions: something else would change while we were doing the experiment.
 
-	To compensate for that, social science studies compare similar countries - for example the original article from `The Economist's website <http://www.economist.com/node/15127287>`_ shows how the same data from Mexico and Venezuela were compared to Columbia's data. The article also shows how much  of the trend was due to political changes in the country that were happening at the same time: in particular a 3rd factor not shown in the plots was largely responsible for the decrease in kidnappings. Kidnappings would probably have remained at the same level if it were not also for the increase in the number of police officers, who are able to respond to citizen's cellphone calls.
+	To compensate for that, social science studies compare similar countries - for example the original article from `The Economist's website <https://www.economist.com/node/15127287>`_ shows how the same data from Mexico and Venezuela were compared to Columbia's data. The article also shows how much  of the trend was due to political changes in the country that were happening at the same time: in particular a 3rd factor not shown in the plots was largely responsible for the decrease in kidnappings. Kidnappings would probably have remained at the same level if it were not also for the increase in the number of police officers, who are able to respond to citizen's cellphone calls.
 
 	Fortunately in engineering situations we deal with much shorter time scales, and are able to better control our experiments. However the case of an uncertain 3rd factor is prevalent and must be guarded for - we'll learn about this is the section on design of experiments.
 
 
 ..	question::
 
-	Load the `room temperature <http://openmv.net/info/room-temperature>`_ dataset from the general `Datasets website <http://openmv.net>`_ into R, Python or MATLAB.
+	Load the `room temperature <https://openmv.net/info/room-temperature>`_ dataset from the general `Datasets website <https://openmv.net>`_ into R, Python or MATLAB.
 
 	#.	Plot the 4 trajectories, ``FrontLeft``, ``FrontRight``, ``BackLeft`` and ``BackRight`` on the same plot.
 	#.	Comment on any features you observe in your plot.
@@ -237,7 +237,7 @@ Exercises
 		.. dcl:: R
 			:height: 800px
 
-			data_file = 'http://openmv.net/file/room-temperature.csv'
+			data_file = 'https://openmv.net/file/room-temperature.csv'
 			roomtemp <- read.csv(data_file)
 			summary(roomtemp)
 			ylim = c(290, 300)
@@ -293,7 +293,7 @@ Exercises
 			:scale: 100
 			:align: center
 
-		Another example of effective sparklines are for stock market data. Take a look, for example at `Google Finance for ERJ <http://www.google.com/finance?q=NYSE:ERJ>`_ (Embraer SA). Google shows Embraer's stock price, but scroll down to see the sparklines for other companies that are in the same economic sector (Bombadier, Boeing, Northrop Grumman, *etc*). This quickly allows you to see whether movements in a stock are due to the overall sector (correlations), or due to a particular company (broken correlations).
+		Another example of effective sparklines are for stock market data. Take a look, for example at `Google Finance for ERJ <https://www.google.com/finance?q=NYSE:ERJ>`_ (Embraer SA). Google shows Embraer's stock price, but scroll down to see the sparklines for other companies that are in the same economic sector (Bombadier, Boeing, Northrop Grumman, *etc*). This quickly allows you to see whether movements in a stock are due to the overall sector (correlations), or due to a particular company (broken correlations).
 
 		If you looked around for how to generate sparklines in R you may have come across `this website <https://cran.r-project.org/web/packages/YaleToolkit/>`_. Notice in the top left corner that the ``sparklines`` function comes from the ``YaleToolkit``, which is an add-on package to R. We show how to `install packages in the tutorial <https://learnche.org/4C3/Software_tutorial/Extending_R_with_packages>`_. Once installed, you can try out that ``sparklines`` function:
 
@@ -302,7 +302,7 @@ Exercises
 
 ..	question::
 
-	Load the `six point board thickness <http://openmv.net/info/six-point-board-thickness>`_ dataset, available from datasets website.
+	Load the `six point board thickness <https://openmv.net/info/six-point-board-thickness>`_ dataset, available from datasets website.
 
 	#.	Plot a boxplot of the first 100 rows of data to match the figure :ref:`in the course notes <visualization_boxplot_example>`
 	#.	Explain why the thick center line in the box plot is not symmetrical with the outer edges of the box.
@@ -313,7 +313,7 @@ Exercises
 
 		.. dcl:: R
 
-			data_file = 'http://openmv.net/file/six-point-board-thickness.csv'
+			data_file = 'https://openmv.net/file/six-point-board-thickness.csv'
 			boards <- read.csv(data_file)
 			summary(boards)
 
@@ -337,7 +337,7 @@ Exercises
 .. question::
 	:copyright_issue: yes
 
-	Consider this plot from the Economist article regarding `"Working hours" <http://www.economist.com/blogs/freeexchange/2013/09/working-hours>`_
+	Consider this plot from the Economist article regarding `"Working hours" <https://www.economist.com/blogs/freeexchange/2013/09/working-hours>`_
 
 	.. image:: ../figures/visualization/scatterplot-GDP-working-hours.png
 
@@ -418,7 +418,7 @@ Exercises
 
 .. question::
 
-	Read the short, clearly written article by Stephen Few on the pitfalls of pie charts: `Save the pies for dessert, http://www.perceptualedge.com/articles/08-21-07.pdf <http://www.perceptualedge.com/articles/08-21-07.pdf>`_. The article presents an easy-to-read argument against pie charts that will hopefully convince you.
+	Read the short, clearly written article by Stephen Few on the pitfalls of pie charts: `Save the pies for dessert, https://www.perceptualedge.com/articles/08-21-07.pdf <https://www.perceptualedge.com/articles/08-21-07.pdf>`_. The article presents an easy-to-read argument against pie charts that will hopefully convince you.
 
 	Here's a `great example that proves his point <http://www.cra-arc.gc.ca/nwsrm/t1stts-eng.html>`_ from the Canada Revenue Agency.
 
@@ -428,6 +428,6 @@ Exercises
 	*Enrichment*:
 
 	*	Watch `this 20 minute video <http://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen>`_ that shows how a 2-dimensional plot comes alive to show 5 dimensions of data. What are the 5 dimensions?
-	*	A condensed version from this, `4 minute YouTube video <https://youtu.be/jbkSRLYSojo>`_ shows Hans Rosling giving a new perspective on the same data. This `Economist article <http://www.economist.com/node/17663585>`_ has some interesting background on Dr. Rosling, as does this page, `giving a selection of his work <http://www.economist.com/node/21013330>`_.
+	*	A condensed version from this, `4 minute YouTube video <https://youtu.be/jbkSRLYSojo>`_ shows Hans Rosling giving a new perspective on the same data. This `Economist article <https://www.economist.com/node/17663585>`_ has some interesting background on Dr. Rosling, as does this page, `giving a selection of his work <https://www.economist.com/node/21013330>`_.
 
 		.. youtube:: https://www.youtube.com/watch?v=jbkSRLYSojo

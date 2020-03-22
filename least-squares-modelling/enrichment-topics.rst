@@ -47,7 +47,7 @@ For bivariate cases, the nonparametric model is often called a *scatterplot smoo
 
 The *model* is the collection of these :math:`x`- and :math:`y`-values. This is why it is called nonparameteric: there are no parameters to quantify the model. For example: if the relationship between the two variables is linear, then a linear smooth is achieved. It is hard to express the relationship between :math:`x` and :math:`y` in written form, so usually these models are shown visually. The nonparametric model is not immune to outliers, but it is resistant to them.
 
-More details can be found in W.S. Cleveland, `Robust Locally Weighted Regression and Smoothing Scatterplots <http://www.jstor.org/stable/2286407>`_, *Journal of the American Statistical Association*, **74** (368), p. 829-836, 1979.
+More details can be found in W.S. Cleveland, `Robust Locally Weighted Regression and Smoothing Scatterplots <https://www.jstor.org/stable/2286407>`_, *Journal of the American Statistical Association*, **74** (368), p. 829-836, 1979.
 
 
 Robust least squares models
@@ -65,7 +65,7 @@ However, the ability to build a linear model that is not heavily influenced by o
 
 Some criticism of robust methods are that there are too many different robust methods and that these routines are much more computationally expensive than ordinary least squares. The first point is true, as this as a rapidly evolving field, however the latter objection is not of too much concern these days. Robust methods are now available in most decent software packages, and are stabilizing towards a few reliable robust estimators.
 
-If you would like to read up some more, a nice introduction targeted at engineering readers is given in PJ Rousseeuw's "`Tutorial to Robust Statistics <http://dx.doi.org/10.1002/cem.1180050103>`_", *Journal of Chemometrics*, **5**, 1-20, 1991.
+If you would like to read up some more, a nice introduction targeted at engineering readers is given in PJ Rousseeuw's "`Tutorial to Robust Statistics <https://dx.doi.org/10.1002/cem.1180050103>`_", *Journal of Chemometrics*, **5**, 1-20, 1991.
 
 In R the various efforts of international researchers is being consolidated. The ``robustbase`` package provides basic functionality that is now well established in the field; use that package if you want to assemble various robust tools yourself. On the other hand, a more comprehensive package called ``robust`` is also available which provides robust tools that you should use if you are not too concerned with the details of implementation.
 
@@ -73,7 +73,7 @@ For example:
 
 .. code-block:: s
 
-	> data <- read.csv('http://openmv.net/file/distillation-tower.csv')
+	> data <- read.csv('https://openmv.net/file/distillation-tower.csv')
 
 	# Using ordinary least squares
 	# -----------------------------

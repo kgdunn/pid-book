@@ -5,7 +5,7 @@ Visualization latent variable models with linking and brushing
 
 :index:`Linking <pair: linking; latent variable modelling>` is when the same data point(s), are highlighted in two or more plots. This is used to highlight outliers or interesting points in a multivariate data set. The points could be highlighted in terms of colour and/or shape.
 
-:index:`Brushing <pair: brushing; latent variable modelling>` is the same as linking, except it is done in real-time as the user moves a mouse over a plot. This concept was described by Becker and Cleveland in their original article called `Brushing Scatterplots <http://www.jstor.org/stable/1269768>`_, *Technometrics*, **29**, 127-142, 1987.
+:index:`Brushing <pair: brushing; latent variable modelling>` is the same as linking, except it is done in real-time as the user moves a mouse over a plot. This concept was described by Becker and Cleveland in their original article called `Brushing Scatterplots <https://www.jstor.org/stable/1269768>`_, *Technometrics*, **29**, 127-142, 1987.
 
 .. image:: ../../figures/visualization/brushing-illustration.png
 	:alt:	../../figures/visualization/brushing-illustration.R

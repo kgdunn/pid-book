@@ -325,8 +325,8 @@ Because every experimental run is a run that is expected to produce saleable pro
 
 Some examples of the success of EVOP and a review paper are in these readings:
 
-- George Box: `Evolutionary Operation: A Method for Increasing Industrial Productivity <http://www.jstor.org/stable/2985505>`_", *Journal of the Royal Statistical Society* (Applied Statistics), **6**, 81 - 101, 1957.
-- William G. Hunter and J. R. Kittrell, "`Evolutionary Operation: A Review <http://www.jstor.org/stable/1266686>`_", *Technometrics*, **8**, 389-397, 1966.
+- George Box: `Evolutionary Operation: A Method for Increasing Industrial Productivity <https://www.jstor.org/stable/2985505>`_", *Journal of the Royal Statistical Society* (Applied Statistics), **6**, 81 - 101, 1957.
+- William G. Hunter and J. R. Kittrell, "`Evolutionary Operation: A Review <https://www.jstor.org/stable/1266686>`_", *Technometrics*, **8**, 389-397, 1966.
 
 Current day examples of EVOP do not appear in the scientific literature much, because this methodology is now so well established.
 

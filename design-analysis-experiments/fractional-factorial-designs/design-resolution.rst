@@ -39,7 +39,7 @@ The above guidance about using resolution IV and V designs for characterization 
 In this text currently, for resolution III, IV and V designs we look at factorial designs. However, there are a number of other design types which can also be used. If you are interested, please research Plackett-Burman designs, Box-Behnken designs, central composite designs, and definitive screening designs (DSD).
 
 .. you could also include ideas from this link?
-	http://asq.org/quality-progress/2005/10/statistics-roundtable/how-to-choose-the-appropriate-design.html
+	https://asq.org/quality-progress/2005/10/statistics-roundtable/how-to-choose-the-appropriate-design.html
 
 .. youtube:: https://www.youtube.com/watch?v=uYdLP4TJHYA&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=48
 

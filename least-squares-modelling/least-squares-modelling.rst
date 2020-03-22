@@ -126,9 +126,9 @@ This section is only a simple review of the least squares model. More details ma
 
 -	Montgomery and Runger, *Applied Statistics and Probability for Engineers*, Wiley.
 
-..	Efron, Hastie, Johnstone and Tibshirani, `Least Angle Regression <http://www.jstor.org/stable/3448465>`_, *The Annals of Statistics*, **32**, p 407-451, 2004.
+..	Efron, Hastie, Johnstone and Tibshirani, `Least Angle Regression <https://www.jstor.org/stable/3448465>`_, *The Annals of Statistics*, **32**, p 407-451, 2004.
 
-..	S. Chatterjee and A. S. Hadi, `Influential Observations, High Leverage Points, and Outliers in Linear Regression <http://www.jstor.org/stable/2245477>`_, *Statistical Science*, **1** (3), 379-416, 1986.
+..	S. Chatterjee and A. S. Hadi, `Influential Observations, High Leverage Points, and Outliers in Linear Regression <https://www.jstor.org/stable/2245477>`_, *Statistical Science*, **1** (3), 379-416, 1986.
 
-.. G.E.P. Box, `Use and Abuse of Regression <http://www.jstor.org/stable/1266635>`_, *Technometrics*, **8** (4), 625-629, 1966.
+.. G.E.P. Box, `Use and Abuse of Regression <https://www.jstor.org/stable/1266635>`_, *Technometrics*, **8** (4), 625-629, 1966.
 

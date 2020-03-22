@@ -8,7 +8,7 @@ Exercises
 
 	These readings are to illustrate the profound effect that designed experiments have had in some areas. 
 
-		*	`Application of Statistical Design of Experiments Methods in Drug Discovery <http://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_ and `using DOE for high-throughput screening to locate new drug compounds <http://dx.doi.org/10.1016/1359-6446(96)10025-8>`_.
+		*	`Application of Statistical Design of Experiments Methods in Drug Discovery <https://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_ and `using DOE for high-throughput screening to locate new drug compounds <https://dx.doi.org/10.1016/1359-6446(96)10025-8>`_.
 		*	High traffic websites offer a unique opportunity to perform testing and optimization. This is because each visitor to the site is independent of the others (randomized), and these tests can be run in parallel. Read more in this `brief writeup <http://youtube-global.blogspot.com/2009/08/look-inside-1024-recipe-multivariate.html>`_ on how Google uses testing tools to optimize YouTube, one of their web properties. Unfortunately they use the term "multivariate" incorrectly - a better term is "multi-variable"; nevertheless, the number of factors and combinations to be tested is large. It's well known that fractional factorial methods are used to analyze these data.
 		*	See three chemical engineering examples of factorial designs in Box, Hunter, and Hunter: Chapter 11 (1st edition), or page 173 to 183 in the second edition.
 		
@@ -164,9 +164,9 @@ Exercises
 	
 	#.	It is worth reading this paper by Bisgaard to see how the same tools shown in these notes were used to solve a real industrial problem: designed experiments, autocorrelation plots, data visualization, and quality control charts. Also he describes how the very real pressure from managers, time-constraints and interactions with team-members impacted the work.
 
-		"`The Quality Detective: A Case Study <http://dx.doi.org/10.1098/rsta.1989.0006>`_" (and discussion), *Philosophical Transactions of the Royal Society A*, **327**, 499-511, 1989.
+		"`The Quality Detective: A Case Study <https://dx.doi.org/10.1098/rsta.1989.0006>`_" (and discussion), *Philosophical Transactions of the Royal Society A*, **327**, 499-511, 1989.
 		
-	#.	George Box, The R. A. Fisher Memorial Lecture, 1988, "`Quality Improvement - An Expanding Domain for the Application of Scientific Method <http://dx.doi.org/10.1098/rsta.1989.0017>`_", *Philosophical Transactions of the Royal Society - A*, **327**: pages 617-630, 1989.
+	#.	George Box, The R. A. Fisher Memorial Lecture, 1988, "`Quality Improvement - An Expanding Domain for the Application of Scientific Method <https://dx.doi.org/10.1098/rsta.1989.0017>`_", *Philosophical Transactions of the Royal Society - A*, **327**: pages 617-630, 1989.
 	
 .. question::
 

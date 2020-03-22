@@ -49,4 +49,4 @@ In this example the ``Tin``, ``z2``, ``Tcin2`` and ``Tmax2``, ``Fi2``, ``Fi1``, 
 
 .. YOU NEED AN EXAMPLE HERE. I can find several contradicting examples; eg. Kamyr digester case study, where Y = YKappa; 4 components by cross; not all the variables in PC 3 and 4 match up with the coefficient plot's expectation.
 
-.. Variable importance to projection (VIP): See: http://dx.doi.org/10.1137/0905052 - this paper has no mention of VIP (despite what ProSensus software says)
+.. Variable importance to projection (VIP): See: https://dx.doi.org/10.1137/0905052 - this paper has no mention of VIP (despite what ProSensus software says)

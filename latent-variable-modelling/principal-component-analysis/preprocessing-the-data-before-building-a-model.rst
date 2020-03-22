@@ -47,7 +47,7 @@ There are a number of possibilities for data preprocessing. We mainly discuss ce
 
 	As we learned in the section on :ref:`univariate data analysis <SECTION-univariate-review>`, the mean has a low resistance to outliers: any large outlier will distort the value of the mean. So users often resort to trimming their data and then mean centering. In this regard, centering each column around its median is a better choice. We recommend :index:`median centering <single: centering, about median>` as it avoids the trimming step, and simultaneously highlights any outliers.
 	
-	In the paper by `Bro and Smilde on centering and scaling <http://dx.doi.org/10.1002/cem.773>`_ they show how centering is far more influential on the model than scaling. Centering can be seen as adding a new principal component to the model, while scaling has much less of an effect. 
+	In the paper by `Bro and Smilde on centering and scaling <https://dx.doi.org/10.1002/cem.773>`_ they show how centering is far more influential on the model than scaling. Centering can be seen as adding a new principal component to the model, while scaling has much less of an effect. 
 	
 **Scaling**
 

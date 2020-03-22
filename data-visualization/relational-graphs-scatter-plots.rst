@@ -17,7 +17,7 @@ This source code generates similar, but not identical, figures to those shows he
 .. dcl:: R
 
 	# Plot of temperature vs vapour pressure
-	data_file = 'http://openmv.net/file/distillation-tower.csv'
+	data_file = 'https://openmv.net/file/distillation-tower.csv'
 	distillation <- read.csv(data_file)
 
 	plot(distillation$Temp9,
@@ -81,7 +81,7 @@ Add a third variable to the plot by adjusting the marker size, and add a fourth 
 		:alt: fake width
 
 
-    This example, from `http://gapminder.org <http://yint.org/gapminder-example>`_, shows data until 2007 for:
+    This example, from `https://gapminder.org <https://yint.org/gapminder-example>`_, shows data until 2007 for:
 
 		1. income per person (*x*-axis);
 		2. against fertility (*y*-axis);

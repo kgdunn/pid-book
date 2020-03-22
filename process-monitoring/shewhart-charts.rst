@@ -100,7 +100,7 @@ The data below represent the average of the :math:`n=5` samples from each bale, 
 .. math::
  	\overline{x} = [245, 239, 239, 241, 241, 241, 238, 238, 236, 248, 233, 236, 246, 253, 227, 231, 237, 228, 239, 240]
 
-The overall average is :math:`\overline{\overline{x}} = 238.8` and :math:`\overline{S} = 9.28`. The raw data are `available on this website <http://openmv.net/info/rubber-colour>`_ and you can verify these calculations.
+The overall average is :math:`\overline{\overline{x}} = 238.8` and :math:`\overline{S} = 9.28`. The raw data are `available on this website <https://openmv.net/info/rubber-colour>`_ and you can verify these calculations.
 
 
 *	Calculate the lower and upper control limits for this Shewhart chart. 
@@ -117,7 +117,7 @@ In source code:
 .. dcl:: R
 
 	# Given information (but calculate yourself
-	# from http://openmv.net/info/rubber-colour)
+	# from https://openmv.net/info/rubber-colour)
 	xbar <- c(245, 239, 239, 241, 241, 241, 238,
 	          238, 236, 248, 233, 236, 246, 253,
 	          227, 231, 237, 228, 239, 240)
@@ -252,7 +252,7 @@ Extensions to the basic Shewhart chart
 
 *	**Adding robustness**: the phase I derivation of a monitoring chart is iterative. If you find a point that violates the LCL and UCL limits, then the approach is to remove that point, and recompute the LCL and UCL values. That is because the LCL and UCL limits would have been biased up or down by these unusual points :math:`\overline{x}_k` points.
 
-	This iterative approach can be tiresome with data that has spikes, missing values, outliers, and other problems typical of data pulled from a process database (:index:`historian <single: data historian>`. Robust monitoring charts are procedures to calculate the limits so the LCL and UCL are resistant to the effect of outliers. For example, a robust procedure might use the medians and MAD instead of the mean and standard deviation. An examination of various robust procedures, especially that of the interquartile range, is given in the paper by D. M. Rocke, `Robust Control Charts <http://dx.doi.org/10.2307/1268815>`_, *Technometrics*, **31** (2), p 173 - 184, 1989.
+	This iterative approach can be tiresome with data that has spikes, missing values, outliers, and other problems typical of data pulled from a process database (:index:`historian <single: data historian>`. Robust monitoring charts are procedures to calculate the limits so the LCL and UCL are resistant to the effect of outliers. For example, a robust procedure might use the medians and MAD instead of the mean and standard deviation. An examination of various robust procedures, especially that of the interquartile range, is given in the paper by D. M. Rocke, `Robust Control Charts <https://dx.doi.org/10.2307/1268815>`_, *Technometrics*, **31** (2), p 173 - 184, 1989.
 
 	*Note*: do not use robust methods to calculate the values plotted on the charts during phase 2, only use robust methods to calculate the chart limits in phase 1!
 	

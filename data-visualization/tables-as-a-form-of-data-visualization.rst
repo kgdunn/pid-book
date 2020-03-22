@@ -39,7 +39,7 @@ Three common pitfalls to avoid:
 
 #.	Avoid using pie charts when tables will do
 
-	Pie charts are tempting when we want to graphically break down a quantity into components. I have used them erroneously myself (here is an example on a website that I helped with: http://www.macc.mcmaster.ca/gradstudies.php). We won't go into details here, but I strongly suggest you read the convincing evidence of Stephen Few in: `"Save the pies for dessert" <http://www.perceptualedge.com/articles/08-21-07.pdf>`_. The key problem is that the human eye cannot adequately decode angles; however, we have no problem with linear data.
+	Pie charts are tempting when we want to graphically break down a quantity into components. I have used them erroneously myself (here is an example on a website that I helped with: http://www.macc.mcmaster.ca/gradstudies.php). We won't go into details here, but I strongly suggest you read the convincing evidence of Stephen Few in: `"Save the pies for dessert" <https://www.perceptualedge.com/articles/08-21-07.pdf>`_. The key problem is that the human eye cannot adequately decode angles; however, we have no problem with linear data.
 
 #.	Avoid arbitrary ordering along the first column; usually, alphabetically or in time order
 
