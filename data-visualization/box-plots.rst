@@ -67,7 +67,7 @@ Several points are apparent in the box plot:
 
 .. image:: ../figures/visualization/boxplot-for-systematic-method-used-2014.png
 	:align: left
-	:scale: 70
+	:scale: 50
 	:width: 900px
 
 * students in either category achieved the highest grade possible
