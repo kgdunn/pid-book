@@ -81,12 +81,14 @@ Add a third variable to the plot by adjusting the marker size, and add a fourth 
 		:alt: fake width
 
 
-    This example, from `https://gapminder.org <https://yint.org/gapminder-example>`_, shows data until 2007 for:
+    This example, from https://gapminder.org <https://yint.org/gapminder-example, shows data until 2007 for:
 
 		1. income per person (*x*-axis);
 		2. against fertility (*y*-axis);
 		3. the size of each data point is proportional to the country's population;
 		4. the marker colour shows life expectancy at birth (years).
 		5. The GapMinder website allows you to "play" the graph over time, effectively adding a fifth dimension to the 2D plot.
+
+		So 5 dimensions in a 2D surface. A 6th dimension cab be added if using technology such as VR glasses, to create a 3rd dimension, to display another variable from the data set.
 
 		Use the hyperlink above to see how richer countries move towards lower fertility and higher income over time.
