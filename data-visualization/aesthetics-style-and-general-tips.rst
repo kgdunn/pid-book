@@ -17,9 +17,9 @@ Frames are the basic containers that surround the data and give context to our n
 Colour
 ---------------------
 
-:index:`Colour <pair: colour; visualization>` is very effective in all graphical charts. However, you must bear in mind that your readers might be colour-blind, or the document might be read from a grayscale printout. 
+:index:`Colour <pair: colour; visualization>` is very effective in all graphical charts. However, you must bear in mind that your readers might be colour-blind, or the document might be read from a grayscale printout, or viewed on an electronic device where colours are shown differently than you might intend.
 
-Note also that a standard colour progression does *not* exist. We often see dark blues and purples representing low numbers and reds the higher numbers, with greens, yellows and orange in-between. Also, there are several such colour schemes - there isn't a universal standard. The only safest colour progression is the grayscale axis, ranging from black to white at each extreme: this satisfies both colour-blind readers and users of your grayscale printed output.
+Note also that a standard colour progression does *not* exist. We often see dark blues and purples representing low numbers and reds the higher numbers, with greens, yellows and orange in-between. There are several such `colour schemes <https://en.wikipedia.org/wiki/Color_scheme>`_ - there isn't a universal standard. The only safest colour progression is the grayscale axis, ranging from black to white at each extreme: this satisfies both colour-blind readers and users of your grayscale printed output.
 
 See the :ref:`section on scatter plots <reference_to_use_of_colour>` for an example of the effective use of colour.
 
@@ -40,7 +40,4 @@ There is no generic advice that applies in every instance. These tips are useful
 
 -	Maximize the data-ink ratio = (ink for data) / (total ink for graphics). Maximizing this ratio, within reason, means you should (a) eliminate nondata ink and (b) erase redundant data-ink.
 
--	Maximize data density. Humans can interpret data displays of 250 data points per linear inch and 60,000 data points per square inch.
-
-.. see http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR for the above numbers
-
+-	Maximize data density. Humans can `interpret data displays <https://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR>`_ of around 100 data points per centimeter (250 data points per linear inch) and around 10000 per square centimeter (60000 data points per square inch).
