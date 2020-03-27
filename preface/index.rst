@@ -68,7 +68,7 @@ Thanks also to instructors at other universities who have used these notes and s
 
 	This book is unusual in that it is not available from a publisher. You may download it electronically, use it for yourself, or share it with anyone.
 
-	The copyright to the book is held by Kevin Dunn, but it is licensed to you under the permissive `Creative Commons Attribution-ShareAlike 4.0 Unported (CC BY-SA 4.0) <https://creativecommons.org/licenses/by-sa/4.0/>`_  license.
+	The copyright to the book is held by Kevin Dunn, but it is licensed to you under the permissive `Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) <https://creativecommons.org/licenses/by-sa/4.0/>`_  license.
 
 	In particular, you are free to
 
