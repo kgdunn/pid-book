@@ -6,7 +6,7 @@ Exercises
 
 .. question::
 
-	The data shown here are the number of visits to a university website for a particular statistics course. There are 90 students in the class, however the site is also publicly available.
+	The data shown here are the number of visits to a university website for a particular statistics course. There are 90 students in the class.
 
 	.. image:: ../figures/visualization/course-website-visits.png
 		:align: center
@@ -15,7 +15,7 @@ Exercises
 	#.	List any 2 interesting features in these data.
 
 .. answer::
-	:fullinclude: no
+	:fullinclude: yes
 	:short: Time-series and sparkline.
 
 	#.	The plots are a time-series plot and a sparkline. The sparkline shows exactly the same data, just a more compact form (without the labelling on the axes).
@@ -25,6 +25,58 @@ Exercises
 		-	A noticeable weekly cycle; probably assignments are due the next day!
 		-	A sustained, high level of traffic in the first week February - maybe a midterm test.
 		-	Some days have more than 90 visits, indicating that students visit the site more than once per day, or due to external visitors to the site.
+
+
+.. question::
+
+	What are the names of the axes on a bar plot?
+
+.. answer::
+
+	The category axis and value axis.
+
+
+.. question::
+
+	Which types of features can can the human eye easily pick out of a time series plot?
+
+.. answer::
+
+	Features such as sinusoids, spikes, gaps (missing values), upward and downward trends are quickly picked out by the human eye, even in a poorly drawn plot.
+
+
+.. question::
+
+	.. Final exam, 2013
+
+	Why is the principle of minimizing "data ink" so important in an effective visualization? Give an scientific or engineering example of why this important.
+
+.. answer::
+
+	It reduces the time or work to interpret that plot, by eliminating elements that are non-essential to the plot's interpretation. Situations which are time or safety critical are examples, for example in an operator control room, or medical facility (operating room).
+
+
+.. question::
+
+	Describe what the main difference(s) between a bar chart and a histogram are.
+
+.. answer::
+	:fullinclude: yes
+
+	The solution is taken directly from: https://www.forbes.com/sites/naomirobbins/2012/01/04/a-histogram-is-not-a-bar-chart/
+
+	*	Histograms are used to show distributions of variables while bar charts are used to compare variables.
+	*	Histograms plot quantitative data with ranges of the data grouped into bins or intervals while bar charts plot categorical data.
+	*	Bars can be reordered in bar charts but not in histograms.
+	*	There are no spaces between the bars of a histogram since there are no gaps between the bins. An exception would occur if there were no values in a given bin but in that case the value is zero rather than a space. On the other hand, there are spaces between the variables of a bar chart.
+	*	The bars of bar charts typically have the same width. The widths of the bars in a histogram need not be the same as long as the total area is one hundred percent if percents are used or the total count if counts are used. Therefore, values in bar charts are given by the length of the bar while values in histograms are given by areas.
+
+
+.. question::
+
+	Write out a list of any features that can turn a plot into a poor visualization. Think carefully about plots you encountered in textbooks and scientific publications, or the lab reports you might have recently created for a university or college course.
+
+
 
 .. question::
 	:copyright_issue: yes
@@ -38,7 +90,7 @@ Exercises
 		:scale: 40
 
 .. answer::
-	:fullinclude: no
+	:fullinclude: yes
 	:copyright_issue: yes
 
 	There are several problems with this graphical comparison, but the main concerns are with showing time trends as bar plots, and the alignment of the time trends.
@@ -57,14 +109,14 @@ Exercises
 .. question::
 	:copyright_issue: yes
 
-	This figure is a screen shot from a `Toronto Star article <http://www.yourhome.ca/homes/realestate/article/742160--mortgage-rate-roulette>`_ about mortgage payments as a function of the interest rate. Redraw the same information in a more suitable form.
+	This figure is a screenshot from a `Toronto Star article <http://www.yourhome.ca/homes/realestate/article/742160--mortgage-rate-roulette>`_ about mortgage payments as a function of the interest rate. Redraw the same information in a more suitable form.
 
 	.. image:: ../figures/visualization/Toronto-Star-Mortgage-Rates.png
 		:align: center
 		:scale: 80
 
 .. answer::
-	:fullinclude: no
+	:fullinclude: yes
 	:copyright_issue: yes
 
 	The data from this article are needlessly embellished with a picture of a house, a $20,000 bill and a stake in the ground.
@@ -82,7 +134,7 @@ Exercises
 
 .. question::
 
-	This question is an extension to visualizing more than 3 variables. Investigate on your own the term "scatterplot matrix", and draw one for the `Food texture data set <https://openmv.net/info/food-texture>`_. See the ``car`` library in R to create an effective scatterplot matrix with the ``scatterplotMatrix`` function. List some bullet-points that interpret the plot.
+	This question is an extension to visualizing more than 3 variables. Investigate on your own the term "*scatterplot matrix*", and draw one for the `Food texture data set <https://openmv.net/info/food-texture>`_. See the ``car`` library in R to create an effective scatterplot matrix with the ``scatterplotMatrix`` function. List some bullet-points that interpret the plot.
 
 .. answer::
 
@@ -99,8 +151,7 @@ Exercises
 		food <- read.csv(data_file)
 
 		# Hide the smoother and bounds
-		scatterplotMatrix(food[,2:6],
-		                  smoother=FALSE)
+		scatterplotMatrix(food[,2:6])
 
 
 	From this plot we see histograms of the 5 univariate distributions on the diagonal plots; the off-diagonal plots are the bivariate correlations between each combination of variable. The trend line (solid light green) shows the linear regression between the two variables. The lower diagonal part of the plot is a 90 degree rotation of the upper diagonal part. Some software packages will just draw either the upper or lower part.
@@ -125,7 +176,7 @@ Exercises
 	#.	Use the same data set to describe any time-based trends that are apparent.
 
 .. answer::
-	:fullinclude: no
+	:fullinclude: yes
 
 
 	#.	A suitable chart for displaying variability on a per-day basis is the boxplot, one box for each day of the week. This allows you to see *between-day* variation when comparing the boxes side by side, and get an impression of the *variability within* each variable, by examining how the box's horizontal lines are spread out (25th, 50th and 75th percentiles).
@@ -224,7 +275,7 @@ Exercises
 
 ..	question::
 
-	Load the `room temperature <https://openmv.net/info/room-temperature>`_ dataset from the general `Datasets website <https://openmv.net>`_ into R, Python or MATLAB.
+	Load the `room temperature <https://openmv.net/info/room-temperature>`_ dataset into R, Python or MATLAB, or whichever software tool you prefer to plot with.
 
 	#.	Plot the 4 trajectories, ``FrontLeft``, ``FrontRight``, ``BackLeft`` and ``BackRight`` on the same plot.
 	#.	Comment on any features you observe in your plot.
@@ -293,8 +344,6 @@ Exercises
 			:scale: 100
 			:align: center
 
-		Another example of effective sparklines are for stock market data. Take a look, for example at `Google Finance for ERJ <https://www.google.com/finance?q=NYSE:ERJ>`_ (Embraer SA). Google shows Embraer's stock price, but scroll down to see the sparklines for other companies that are in the same economic sector (Bombadier, Boeing, Northrop Grumman, *etc*). This quickly allows you to see whether movements in a stock are due to the overall sector (correlations), or due to a particular company (broken correlations).
-
 		If you looked around for how to generate sparklines in R you may have come across `this website <https://cran.r-project.org/web/packages/YaleToolkit/>`_. Notice in the top left corner that the ``sparklines`` function comes from the ``YaleToolkit``, which is an add-on package to R. We show how to `install packages in the tutorial <https://learnche.org/4C3/Software_tutorial/Extending_R_with_packages>`_. Once installed, you can try out that ``sparklines`` function:
 
 		*	First load the library: ``library(YaleToolkit)``
@@ -304,7 +353,7 @@ Exercises
 
 	Load the `six point board thickness <https://openmv.net/info/six-point-board-thickness>`_ dataset, available from datasets website.
 
-	#.	Plot a boxplot of the first 100 rows of data to match the figure :ref:`in the course notes <visualization_boxplot_example>`
+	#.	Plot a boxplot of the first 100 rows of data to match the figure :ref:`in these notes <visualization_boxplot_example>`
 	#.	Explain why the thick center line in the box plot is not symmetrical with the outer edges of the box.
 
 ..	answer::
@@ -347,7 +396,7 @@ Exercises
 	#.	How would you confirm or disprove the message the plot's author is making?
 
 .. answer::
-	:fullinclude: no
+	:fullinclude: yes
 	:copyright_issue: yes
 
 	#.	The message is likely that longer working hours do not translate into greater earnings (measured with GDP) as might be expected. In fact, the opposite holds: longer working hours are correlated with *lower* earnings (we say: "there's a negative correlation between working hours and earnings"). The axes have been scaled to account for purchasing power.
@@ -363,58 +412,6 @@ Exercises
 		So the answer is yes, maybe there is a causal mechanism here that is plausible (we've often heard that people whose work-life balanced is better are more productive), but we cannot test it explicitly.
 
 	#.	Also see the prior answer: require experiments over a broad range of employment types and regions, using shorter and longer working hours, and measure the corresponding earnings.
-
-
-
-.. question::
-
-	What are the names of the axes on a bar plot?
-
-.. answer::
-
-	The category axis and value axis.
-
-
-.. question::
-
-	Which types of features can can the human eye easily pick out of a time series plot?
-
-.. answer::
-
-	Features such as sinusoids, spikes, gaps (missing values), upward and downward trends are quickly picked out by the human eye, even in a poorly drawn plot.
-
-
-.. question::
-
-	.. Final exam, 2013
-
-	Why is the principle of minimizing "data ink" so important in an effective visualization? Give an engineering example of why this important.
-
-.. answer::
-
-	It reduces the time or work to interpret that plot, by eliminating elements that are non-essential to the plot's interpretation. Situations which are time or safety critical are examples, for example in an operator control room, or medical facility (operating room).
-
-
-.. question::
-
-	Describe what the main difference(s) between a bar chart and a histogram are.
-
-.. answer::
-	:fullinclude: no
-
-	The solution is taken directly from: https://www.forbes.com/sites/naomirobbins/2012/01/04/a-histogram-is-not-a-bar-chart/
-
-	*	Histograms are used to show distributions of variables while bar charts are used to compare variables.
-	*	Histograms plot quantitative data with ranges of the data grouped into bins or intervals while bar charts plot categorical data.
-	*	Bars can be reordered in bar charts but not in histograms.
-	*	There are no spaces between the bars of a histogram since there are no gaps between the bins. An exception would occur if there were no values in a given bin but in that case the value is zero rather than a space. On the other hand, there are spaces between the variables of a bar chart.
-	*	The bars of bar charts typically have the same width. The widths of the bars in a histogram need not be the same as long as the total area is one hundred percent if percents are used or the total count if counts are used. Therefore, values in bar charts are given by the length of the bar while values in histograms are given by areas.
-
-
-.. question::
-
-	Write out a list of any features that can turn a plot into a poor visualization. Think carefully about plots you encountered in textbooks and scientific publications, or the lab reports you might have recently created for a university or college course.
-
 
 .. question::
 

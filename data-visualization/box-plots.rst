@@ -68,7 +68,7 @@ Several points are apparent in the box plot:
 .. image:: ../figures/visualization/boxplot-for-systematic-method-used-2014.png
 	:align: left
 	:scale: 50
-	:width: 900px
+	:width: 700px
 
 * students in either category achieved the highest grade possible
 * the spread (interquartile distance) when using the problem solving method is smaller
