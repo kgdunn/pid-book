@@ -74,3 +74,8 @@ Several points are apparent in the box plot:
 * the spread (interquartile distance) when using the problem solving method is smaller
 * both box plots show a skew to the lower left tail (compare the median to the first and third quartiles)
 * we will use a :ref:`confidence interval <univariate-group-to-group-differences-no-reference-set>` in a later chapter to judge whether this difference is statistically significant or not.
+
+
+**More readings**
+
+You can read more about box plots in the `paper by Hadley Wickham and Lisa Stryjewsk <https://vita.had.co.nz/papers/boxplots.pdf>`_. It summarizes variations of this plot, such as the violin plot, and two-dimensional versions of it. It is a power summary plot that has been around since 1970.
