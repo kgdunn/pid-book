@@ -103,11 +103,12 @@ A :index:`relative frequency`, also called :index:`density`, is sometimes prefer
 	:height: 450px
 
 	# 1000 normally distributed values
-	values = rnorm(1000)
+	N <- 1000
+	values <- rnorm(N)
 	hist(values, freq=TRUE,  xlab="Random values",
 		 cex.lab=1.5, cex.main=1.8, lwd=2,
 		 cex.sub=1.8, cex.axis=1.8,
-		 ylab="Frequency (N=1000)")
+		 ylab=paste0("Frequency (N=",N,")"))
 	hist(values, freq=FALSE, xlab="Random values",
 		 cex.lab=1.5, cex.main=1.8, lwd=2,
 		 cex.sub=1.8, cex.axis=1.8,

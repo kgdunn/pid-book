@@ -8,7 +8,7 @@
 Univariate data analysis in context
 ====================================
 
-This section gives a starting idea to the general area of data analysis. We cover concepts from univariate data analysis shown in the pictorial outline below. This section is only a *review of these concepts* for one single variable. If you have more than one variable, you can repeat the analysis for each one. Later, in the :ref:`multivariate chapter <SECTION_latent_variable_modelling>` we learn how to extract information from multiple variables at the same time.
+This section gives a starting idea to the general area of data analysis. We cover concepts from univariate data analysis shown in the pictorial outline below. This section is only a *review of these concepts* for one single variable. If you have more than one variable, you can repeat the analysis for each one. Later, in the :ref:`multivariate chapter <SECTION_latent_variable_modelling>`, we learn how to extract information from multiple variables at the same time.
 
 Some introductory statistics textbooks, for more detailed background, are recommend further down.
 
