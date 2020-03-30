@@ -90,7 +90,7 @@ Exercises
 		:scale: 40
 
 .. answer::
-	:fullinclude: yes
+	:fullinclude: no
 	:copyright_issue: yes
 
 	There are several problems with this graphical comparison, but the main concerns are with showing time trends as bar plots, and the alignment of the time trends.
@@ -116,7 +116,7 @@ Exercises
 		:scale: 80
 
 .. answer::
-	:fullinclude: yes
+	:fullinclude: no
 	:copyright_issue: yes
 
 	The data from this article are needlessly embellished with a picture of a house, a $20,000 bill and a stake in the ground.
@@ -237,7 +237,7 @@ Exercises
 	#.	What advantage is there to the plot given here, over the type in your answer to part 3.
 
 .. answer::
-	:copyright_issue: yes
+	:copyright_issue: no
 
 	#.	A time-series plot.
 
@@ -396,7 +396,7 @@ Exercises
 	#.	How would you confirm or disprove the message the plot's author is making?
 
 .. answer::
-	:fullinclude: yes
+	:fullinclude: no
 	:copyright_issue: yes
 
 	#.	The message is likely that longer working hours do not translate into greater earnings (measured with GDP) as might be expected. In fact, the opposite holds: longer working hours are correlated with *lower* earnings (we say: "there's a negative correlation between working hours and earnings"). The axes have been scaled to account for purchasing power.
