@@ -11,15 +11,15 @@ Life is pretty boring without :index:`variability`, and this book, and almost al
 		
 Fortunately, we have plenty of variability in the recorded data from our processes and systems:
 
-	-	Raw material properties are not constant
+	-	Raw material properties are not constant.
 	
-	-	Unknown sources, often called "*error*" (note that the word :index:`error <single: error; statistical>` in statistics does not have the usual negative connotation from English). These errors are all sources of variation which our imperfect knowledge of physics cannot account for.
+	-	Unknown sources, often called "*error*" (note that the word :index:`error <single: error; statistical>` in statistics does not have the usual negative connotation from English). These errors are all sources of variation which our imperfect knowledge of the process cannot account for.
 	
 		.. image:: ../figures/concepts/variation/variation-some.png
 			:scale: 60
 			:align: center
 			
-	-	Measurement and sampling variability: sensor drift, spikes, noise, recalibration shifts, errors in our sample analysis.
+	-	Measurement and sampling variability: sensor drift, spikes, noise, recalibration shifts, errors in our sample analysis and laboratory equipment.
 
 		.. image:: ../figures/concepts/variation/variation-more.png
 			:scale: 60
@@ -27,21 +27,19 @@ Fortunately, we have plenty of variability in the recorded data from our process
 
 	-	Production disturbances:
 	
-		- external conditions change (ambient temperature, humidity)
-		- pieces of plant equipment break down, wear out and are replaced
+		- external conditions change, such as ambient temperature, or humidity, and
+		- pieces of plant equipment break down, wear out and are replaced.
 		
 		.. image:: ../figures/concepts/variation/variation-spikes.png
 			:scale: 60
 			:align: center
 	
-	-	:index:`Feedback control <single: feedback control>` systems introduce variability in your process, in order to reduce variability in another part of the process (think of what a :ref:`feedback control system <univariate_feedback_and_variability>` does)
-	
-		..	See Marlin textbook, p 880 and p222 for illustrations and concepts
+	-	:index:`Feedback control <single: feedback control>` systems introduce variability in your process, in order to reduce variability in another part of the process. Think of what a :ref:`feedback control system <univariate_feedback_and_variability>` does. See page 222 or page 879 of the freely available `textbook by Dr. Thomas Marlin <http://pc-textbook.mcmaster.ca>`_ for visual illustrations.
 		
-	-	Operating staff: introduce variability into a process in feedback manner (i.e. they react to process upsets) or in a feedforward manner, for example, to preemptively act on the process to counteract a known disturbance.
+	-	Operating staff: introduce variability into a process in feedback manner (i.e. they react to process upsets) or in a feed-forward manner, for example, to preemptively act on the process to counteract a known disturbance. By doing so they introduce variability into a process.
 	
 	
-All this variability, although a good opportunity to keep us process engineers employed, comes at a price as described next.
+All this variability, although a good opportunity to keep many of use employed, comes at a price as described next.
 	
 The high cost of variability in your final product
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -69,9 +67,9 @@ In addition to the risk of decreasing your market share (see the above 3 points)
 .. index::
 	single: inspection costs
 
-#.	Inspection costs: to mitigate the above risks you must inspect your product before you ship it to your customers. It is prohibitively expensive and inefficient to test every product (known as "*inspecting quality into your product*"). A production line with low variability on the other hand, does not require us to inspect every product downstream of production.
+#.	Inspection costs: to mitigate the above risks you must inspect your product before you ship it to your customers. It is prohibitively expensive and inefficient to test every product (known as "*inspecting quality into your product*"). A production line with low variability on the other hand, requires less inspection of every product.
 
-	The pharmaceutical industry is well known to be inefficient in this respect, with terms such as "100% inspection" and even "200% inspection".
+	The pharmaceutical industry is well known to be inefficient in this respect, with terms such as "100% inspection" and even "200% inspection". Furthermore, some types of inspection are destructive, and therefore 100% inspection is not feasible.
 
 	.. index::
 		single: off-specification product
@@ -95,7 +93,7 @@ The high cost of variability in your raw materials
 
 Turning the above discussion around, with you on the receiving end of a highly variable raw material:
 
--	If you do not implement any sort of process control system, then any variability in these raw materials is manifest as variability in your final product. This usually shows up in proportion: higher variability in the inputs results in higher variability in the product quality.
+-	If you do not implement any sort of process control system, then any variability in these raw materials that you receive and process is manifest as variability in your final product. This usually shows up in proportion: higher variability in the inputs results in higher variability in the product quality.
 
 	.. image:: ../figures/concepts/variation/feedback-control-variance-reduction-reduced.png
 		:align: center
@@ -113,7 +111,7 @@ Dealing with variability
 So, how do we make progress despite this variability?  This whole book, and all of statistical data analysis, is about variability:
 
 - in the :ref:`data visualization section <SECTION-data-visualization>` we gave some hints how to plot graphics that **show the variability** in our process clearly
-- in this section we learn how to **quantify variability** and then **compare variability**
+- in this chapter we learn how to **quantify variability** and then **compare variability**
 - later we consider how to :ref:`construct monitoring charts <SECTION-process-monitoring>` to **track variability**
 - in the section on :ref:`least squares modelling <SECTION-least-squares-modelling>` we learn how **variation in one variable might affect another variable**
 - with :ref:`designed experiments <SECTION-design-analysis-experiments>` we intentionally **introduce variation** into our process to learn more about the process (e.g. so that we can optimize our process for improved profitability); and
