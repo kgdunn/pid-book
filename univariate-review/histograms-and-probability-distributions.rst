@@ -5,7 +5,7 @@ Histograms and probability distributions
 
 .. index:: histograms, frequency distribution
 
-The :ref:`previous section <univariate-about-variability>` has hopefully convinced you that variation in a process is inevitable. This section aims to show how we can visualize and quantify variability in a recorded vector of data.
+The :ref:`previous section <univariate-about-variability>` has hopefully convinced you that variation in a process is inevitable. This section aims to show how we can visualize and quantify any variability in a recorded vector of data.
 
 A histogram is a summary of the variation in a measured variable. It shows the *number* of samples that occur in a *category*: this is called a **frequency distribution**. For example: number of children born, categorized against their birth gender: male or female.
 
@@ -15,9 +15,9 @@ A histogram is a summary of the variation in a measured variable. It shows the *
 	:width: 900px
 	:alt: fake width
 
-The raw data in the above example was a vector of consisted of 2739 text entries, with 1420 of them as ``Male`` and 1319 of them as ``Female``. In this case ``Female`` and ``Male`` represent the two categories.
+The raw data in the above example was a vector that consisted of 2739 text entries, with 1420 of them as ``Male`` and 1319 of them as ``Female``. In this case ``Female`` and ``Male`` represent the two categories.
 
-Histograms make sense for categorical variables, but a histogram can also be derived from a continuous variable. Here is an example showing the mass of cartons of 1 kg of flour. The continuous variable, mass, is divided into equal-size bins that cover the range of the available data.  Notice how the packaging system has to overfill each carton so that the vast majority of packages weigh over 1 kg (what is the average package mass?). If the variability in the packaging system could be reduced, then the histogram can be shifted to the left, thereby reducing overfill.
+Histograms make sense for categorical variables, but a histogram can also be derived from a continuous variable. Here is an example showing the mass of cartons of 1 kg of flour. The continuous variable, mass, is divided into equal-size bins that cover the range of the available data.  Notice how the packaging system has to overfill each carton so that the vast majority of packages weigh over 1 kg (what is the average package mass?). If the variability in the packaging system could be reduced - the spread of the data made narrower - then the histogram can be shifted to the left, thereby reducing overfill.
 
 .. image:: ../figures/univariate/histogram-package-mass.png
 	:scale: 50
@@ -37,28 +37,27 @@ Histograms make sense for categorical variables, but a histogram can also be der
 	     ylab="Number of packages (N=500)")
 
 
-Plot histograms for the following:
+Try creating a fictitious histogram for each of the following situations:
 
--	The grades for a class for a really easy test
--	The numbers thrown from a 6-sided die
--	The annual income for people in your country
+-	The grades for a class for a really easy test.
+-	The numbers thrown from a 6-sided die.
+-	The annual income for people in your country.
+-   Analytical measurements taken in a laboratory, by the same person or computerized process.
 
 .. - seeds with the same size later become plants of different heights and yield of fruit
 .. - people born in the same year have lives of different duration due to environmental, genetic, health and societal factors
 .. - games such as poker, roulette, lotteries, dice
-.. - analytical measurements taken in a laboratory, even by the same person or computerized process have different outcomes
 .. - weight of corn seeds (average is 200mg)
 
-In preparing the above histograms, what have you implicitly inferred about time-scales? These histograms show the long-term distribution (probabilities) of the system being considered. This is why *concepts of chance and random phenomena* can be use to described systems and processes. Probabilities can be used to describe our long-term expectations:
+In preparing the above histograms, what have you implicitly inferred about time-scales? These histograms show the long-term distribution (probabilities) of the system being considered. This is why *concepts of chance and random phenomena* can be use to described systems and processes. Probabilities can be used to describe our long-term expectations. Let us contrast some long-term and short-term expectations next:
 
 -	The long-term sex ratio at birth 1.06:1 (boy:girl) is expected in Canada; but a newly pregnant mother would not know the sex.
--	The long-term data from a process shows an 85% yield from our batch reactor; but tomorrow it could be 59% and the day after that 86%.
--	Canadian life tables from 2002 (`Statistics Canada website <http://www.statcan.gc.ca/bsolc/olc-cel/olc-cel?catno=84-537-XIE&lang=eng>`_) show that females have a 98.86% chance of reaching age 30 and a 77.5% chance of reaching age 75; but people die at different ages due to different causes.
+-	The long-term data from a process shows an 85% output yield from our batch reactor; but tomorrow it could be 59% and the day after that 86%.
 -	We know that a fair die has a 16.67% chance of showing a 4 when thrown, but we cannot predict the value of the next throw.
 
 Even if we have complete mechanistic knowledge of our process, the concepts from probability and statistics are useful to summarize and communicate information about past behaviour, and the expected future behaviour.
 
-Steps to creating a frequency distribution, illustrated with 4 examples:
+Steps to creating a frequency distribution, illustrated with 4 examples, labelled A, B, C, and D.
 
 	#.	Decide what you are measuring:
 
@@ -76,10 +75,10 @@ Steps to creating a frequency distribution, illustrated with 4 examples:
 
 	#.	Report the number of observations in the sample or population that fall within each bin (resolution step):
 
-		A.	number of metal pieces with appearance level "acceptable" and "unacceptable"
-		B.	number of pieces with defect level 1, 2, 3, 4
-		C.	number of batches with yield inside each bin level
-		D.	number of temperature values inside each bin level
+		A.	number of metal pieces with appearance level "acceptable" and "unacceptable" are added up
+		B.	number of pieces with defect level 1, 2, 3, 4 are counted
+		C.	number of batches with yield inside each bin level are calculated 
+		D.	number of temperature values inside each bin level are computed
 
 	#.	Plot the number of observations in category as a bar plot. If you plot the number of observations divided by the total number of observations, :math:`N`, then you are plotting the **relative frequency**.
 
@@ -114,8 +113,8 @@ A :index:`relative frequency`, also called :index:`density`, is sometimes prefer
 		 cex.sub=1.8, cex.axis=1.8,
 		 ylab="Relative density")
 
-	# Compare the two plots: only the
-	# y-axis changes!
+	# Compare the two plots: only the y-axis
+	# changes but the general shape remains.
 
 
 Some nomenclature
@@ -123,7 +122,7 @@ Some nomenclature
 
 .. youtube:: https://www.youtube.com/watch?v=FIuU1REQvRM&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=6
 
-We review a couple of concepts that you should have seen in prior statistical work.
+We review a couple of concepts that you should have seen in a prior statistical course or elsewhere. If unfamiliar, please type the word or concept in a search engine for more background.
 
 .. _univariate-population:
 
@@ -149,17 +148,18 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 **Distribution**
 
-	Distributions are used to provide a much smaller summary of many data points. Histograms, discussed above, are one way of visualizing a distribution. We will look at various distributions in the next section.
+	Distributions are used to summarize, in a compact way, a much larger collection of a much larger collection of data points. Histograms, just discussed above, are one way of visualizing a distribution. We can also express distributions by a few numerical parameters. See below.
 
 **Probability**
 
 	The area under a plot of relative frequency distribution is equal to 1. :index:`Probability <single: probability>` is then the fraction of the area under the frequency distribution curve (also called density curve).
 
-	Superimpose on your histograms drawn earlier:
+	Superimpose a vertical line on your fictitious histograms you drew earlier to indicate:
 
-	-	The probability of a test grades less than 80%
-	-	The probability that the number thrown from a 6-sided die is less than or equal to 2
-	-	The probability of someone's income exceeding $50,000
+	-	the probability of a test grades less than 80%;
+	-	the probability that the number thrown from a 6-sided die is less than or equal to 2;
+	-	the probability of someone's income exceeding $60000;
+	-	the probability of the measurement exceeding a certain critical value.
 
 **Parameter**
 
@@ -186,15 +186,15 @@ We review a couple of concepts that you should have seen in prior statistical wo
 				\text{sample mean:}     &\qquad&                       \overline{x}  &= \frac{1}{n}\sum_{i=1}^{n}{x_i}
 			\end{alignat*}
 
-	where :math:`N` represents the entire population, and :math:`n` are the numberhe sample.
+	where :math:`N` represents the size of the entire population, and :math:`n` is the number of samples measured from the population.
 
 	.. dcl:: R
 		:height: 200px
 
 		# A vector of 50 normally distributed
 		# random numbers
-
-		x <- rnorm(50)
+		N <- 50
+		x <- rnorm(N)
 		mean(x)
 
 		# Run the code several times, to check
@@ -202,7 +202,7 @@ We review a couple of concepts that you should have seen in prior statistical wo
 		# Check what the 'x' variable contains.
 
 
-	This is one of several statistics that describes your data: if you told your customer that the average density of your liquid product was 1.421 g/L, and nothing further, the customer might assume that some lots of the same product could have a density of 0.824 g/L, or 2.519 g/L. We need information in addition to the mean to quantify the distribution of values: *the spread*.
+	This is only one of several statistics that describes your data: if you told your customer that the average density of your liquid product was 1.421 g/L, and nothing further, the customer might assume all lots of the same product have a density of 1.421 g/L. But we know from :ref:`our earlier discussion <univariate-about-variability>` that there will be variation. We need information, in addition to the mean, to quantify the distribution of values: *the spread*.
 
 .. _univariate-variance:
 
@@ -210,7 +210,7 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 	.. _univariate_calculate_variance:
 
-	A measure of :index:`spread`, or :index:`variance`, is useful to quantify your distribution.
+	A measure of :index:`spread`, or :index:`variance`, is also essential to quantify your distribution.
 
 	.. math::
 		:nowrap:
@@ -220,7 +220,7 @@ We review a couple of concepts that you should have seen in prior statistical wo
 			\text{Sample variance}:     &\qquad&                                                                             s^2  &= \frac{1}{n-1}\sum_{i=1}^{n}{(x_i - \overline{x})^2}
 		\end{alignat*}
 
-	Dividing by :math:`n-1` makes the variance statistic, :math:`s^2`, an unbiased estimator of the population variance, :math:`\sigma^2`. However, in most engineering data sets our value for :math:`n` is large, so using a divisor of :math:`n`, which you might come across in computer software or other texts, rather than :math:`n-1` as shown here, has little difference.
+	Dividing by :math:`n-1` makes the variance statistic, :math:`s^2`, an unbiased estimator of the population variance, :math:`\sigma^2`. However, in many data sets our value for :math:`n` is large, so using a divisor of :math:`n`, which you might come across in computer software or other texts, rather than :math:`n-1` as shown here, leads to little difference.
 
 	.. dcl:: R
 		:height: 350px
@@ -228,7 +228,9 @@ We review a couple of concepts that you should have seen in prior statistical wo
 		# A vector of 50 normally distributed
 		# random numbers with a standard
 		# deviation of 5
-		x <- rnorm(50, sd=5)
+		N <- 50
+		spread <- 5
+		x <- rnorm(N, sd=spread)
 
 		paste0('Standard deviation = ',
 		       round(sd(x), 3))
@@ -240,20 +242,22 @@ We review a couple of concepts that you should have seen in prior statistical wo
 		# Run the code several times.
 
 
-	The square root of variance, called the :index:`standard deviation` is a more useful measure of spread to engineers: it is easier to visualize on a histogram and has the advantage of being in the same units of the variable.
+	The square root of variance, called the :index:`standard deviation` is a more useful measure of spread: it is easier to visualize on a histogram and has the advantage of being in the same units of measurement as the variable itself.
 
-	**Degrees of freedom**: The denominator in the sample variance calculation, :math:`n-1`, is called the degrees of freedom. We have one fewer than :math:`n` degrees of freedom, because there is a constraint that the sum of the deviations around :math:`\overline{x}` must add up to zero. This constraint is from the definition of the mean. However, if we knew what the sample mean was without having to estimate it, then we could subtract each :math:`x_i` from that value, and our degrees of freedom would be :math:`n`.
+**Degrees of freedom**
+
+	The denominator in the sample variance calculation, :math:`n-1`, is called the :index:`degrees of freedom`. We have one fewer than :math:`n` degrees of freedom, because there is a constraint that the sum of the deviations around :math:`\overline{x}` must add up to zero. This constraint is from the definition of the mean. However, if we knew what the sample mean was without having to estimate it, then we could subtract each :math:`x_i` from that value, and our degrees of freedom would be :math:`n`.
 
 **Outliers**
 
 	.. youtube:: https://www.youtube.com/watch?v=GlVNclR6UVo&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=7
 
-	Outliers are hard to define precisely, but an acceptable definition is that an :index:`outlier` is a point that is unusual, given the context of the surrounding data. The following 2 sequences of numbers show the number 4024 that appears in the first sequence, has become an outlier in the second sequence. It is an outlier based on the surrounding context.
+	Outliers are hard to define precisely, but an acceptable definition is that an :index:`outlier` is a point that is unusual, given the context of the surrounding data. Another definition which is less useful, but nevertheless points out the problem of concretely defining what an outlier is, is this: "*An outlier - I know it when I see it!*"
+	
+	The following 2 sequences of numbers show the number **4024** that appears in the first sequence, has become an outlier in the second sequence. It is an outlier based on the surrounding context.
 
 	* 4024, 5152, 2314, 6360, 4915, 9552, 2415, 6402, 6261
 	* 4, 61, 12, 64, 4024, 52, -8, 67, 104, 24
-
-.. TODO: add a multivariate outlier illustration here
 
 .. _univariate-median:
 
@@ -278,7 +282,7 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 			\text{mad}\left\{ x_i \right\} = c \cdot \text{median}\left\{ \| x_i - \text{median}\left\{ x_i \right\}  \|  \right\} \qquad\qquad \text{where}\qquad c = 1.4826
 
-	The constant :math:`c` makes the MAD consistent with the standard deviation when the observations :math:`x_i` are normally distributed. The MAD has a :index:`breakdown point` of 50%, because like the median, we can replace just under half the data with outliers before the estimate becomes unbounded. To compute the MAD in R, use the ``mad(x)`` function on a vector ``x``.
+	The constant :math:`c` makes the MAD consistent with the standard deviation when the observations :math:`x_i` are normally distributed. The MAD has a :index:`breakdown point` of 50%, because like the median, we can replace just under half the data with outliers before the MAD estimate becomes unbounded. To compute the MAD in R, use the ``mad(x)`` function on a vector ``x``.
 
 	.. dcl:: R
 		:height: 500px
