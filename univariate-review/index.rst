@@ -10,6 +10,7 @@ Univariate Data Analysis
    univariate-data-analysis-in-context
    what-is-variability
    histograms-and-probability-distributions
+   some-terminology
    binary-distribution-bernoulli-distribution
    uniform-distribution
    The normal distribution and checking for normality <normal-distribution-and-checking-for-normality>
