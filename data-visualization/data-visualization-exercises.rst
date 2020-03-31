@@ -237,7 +237,7 @@ Exercises
 	#.	What advantage is there to the plot given here, over the type in your answer to part 3.
 
 .. answer::
-	:copyright_issue: no
+	:copyright_issue: yes
 
 	#.	A time-series plot.
 
