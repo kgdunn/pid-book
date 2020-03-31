@@ -735,7 +735,7 @@ Exercises
 	
 .. question::
 
-	A common unit operation in the pharmaceutical area is to uniformly blend powders for tablets. One such unit is illustrated below (figure from `Wikipedia <https://en.wikipedia.org/wiki/Industrial_mixer>`_). In this question we consider blending an excipient (an inactive magnesium stearate base), a binder, and the active ingredient. The mixing process is tracked using a wireless near infrared (NIR) probe embedded in a V-blender. The mixer is stopped when the NIR spectra become stable. A new supplier of magnesium stearate is being considered that will save $ 294,000 per year.
+	A common unit operation in the pharmaceutical area is to uniformly blend powders for tablets. One such unit is illustrated below (figure `taken from Wikipedia <https://en.wikipedia.org/wiki/Industrial_mixer>`_). In this question we consider blending an excipient (an inactive magnesium stearate base), a binder, and the active ingredient. The mixing process is tracked using a wireless near infrared (NIR) probe embedded in a V-blender. The mixer is stopped when the NIR spectra become stable. A new supplier of magnesium stearate is being considered that will save $ 294,000 per year.
 
 	..	figure:: ../figures/univariate/V-Blender.png
 		:align: center
@@ -1173,16 +1173,13 @@ Exercises
 
 	A concrete slump test is used to test for the fluidity, or workability, of concrete. It's a crude, but quick test often used to measure the effect of polymer additives that are mixed with the concrete to improve workability.
 	
-	The concrete mixture is prepared with a polymer additive. The mixture is placed in a mold and filled to the top. The mold is inverted and removed. The height of the mold minus the height of the remaining concrete pile is called the "slump". 
+	The concrete mixture is prepared with a polymer additive. The mixture is placed in a mold and filled to the top. The mold is inverted and removed. The height of the mold minus the height of the remaining concrete pile is called the "slump", as shown in this `figure from Wikipedia <https://en.wikipedia.org/wiki/File:Types_of_concrete_slump.jpg>`_.
 	
 	.. image:: ../figures/least-squares/concrete-slump.png
 		:alt:	../figures/least-squares/concrete-slump.svg
 		:scale: 70
 		:align: center
 		
-	
-	Figure `from Wikipedia <https://en.wikipedia.org/wiki/File:Types_of_concrete_slump.jpg>`_
-
 	Your company provides the polymer additive, and you are developing an improved polymer formulation, call it B, that hopefully provides the same slump values as your existing polymer, call it A. Formulation B costs less money than A, but you don't want to upset, or lose, customers by varying the slump value too much.
 	
 	#.	You have a single day to run your tests (experiments). Preparation, mixing times, measurement and clean up take 1 hour, only allowing you to run 10 experiments. Describe all precautions, and why you take these precautions, when planning and executing your experiment. Be very specific in your answer (use bullet points).
