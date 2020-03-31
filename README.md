@@ -10,14 +10,14 @@ https://learnche.org/pid
 
 You will need:
 
-* All the figures for the book, in a separate repository: https://github.com/kgdunn/figures
-* Python and Sphinx: https://www.sphinx-doc.org/en/master/
+* All the figures for the book, in a separate repository: https://github.com/kgdunn/figures. We call this `figures` in the text below.
+* Python, [Sphinx](https://www.sphinx-doc.org/en/master/) and a working copy of LaTeX, if you wish to generate  the PDF version of the book. If you are interested only in making HTML, you only need Sphinx then.
 * Around 2Gb (yes!) space for files, compiled documents and illustrations
 
-1. Clone the `figures` repository, preferable outside/next-to this repository.
-2. Softlink the `figures` repo so that it is visible as the directory of the same name, but within in this repo. You could also just move the `figures` repo into this one, but that is hackish.
+1. Clone the `figures` repository, preferably somewhere outside or next-to this repository, which we call `pid-book`.
+2. Softlink the `figures` repo so that it is visible as the directory of the same name, but within `pid-book`. You could also just move the `figures` repo into this one, but that is hackish.
 
-   `ln -s ../figures figures`
+   `ln -s /location/of/figures /location/of/pid-book/figures`
 
 3. `make clean`
 4. `make html`   
