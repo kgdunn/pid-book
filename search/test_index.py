@@ -1,8 +1,9 @@
+import os
 import whoosh.index as index
 from whoosh.qparser import QueryParser
 
 
-indexdir = "/Users/kevindunn/ConnectMV/pid-book/_build/whoosh"
+indexdir = os.getcwd()
 myindex = index.open_dir(indexdir)
 assert(index.exists_in(indexdir))
 
