@@ -735,16 +735,13 @@ Exercises
 	
 .. question::
 
-	A common unit operation in the pharmaceutical area is to uniformly blend powders for tablets. In this question we consider blending an excipient (an inactive magnesium stearate base), a binder, and the active ingredient. The mixing process is tracked using a wireless near infrared (NIR) probe embedded in a V-blender. The mixer is stopped when the NIR spectra become stable. A new supplier of magnesium stearate is being considered that will save $ 294,000 per year.
+	A common unit operation in the pharmaceutical area is to uniformly blend powders for tablets. One such unit is illustrated below (figure from `Wikipedia <https://en.wikipedia.org/wiki/Industrial_mixer>`_). In this question we consider blending an excipient (an inactive magnesium stearate base), a binder, and the active ingredient. The mixing process is tracked using a wireless near infrared (NIR) probe embedded in a V-blender. The mixer is stopped when the NIR spectra become stable. A new supplier of magnesium stearate is being considered that will save $ 294,000 per year.
 
 	..	figure:: ../figures/univariate/V-Blender.png
 		:align: center
 		:scale: 60
 		:width: 900px
 		:alt: fake width
-		
-	
-		Illustration from `Wikipedia <https://en.wikipedia.org/wiki/Industrial_mixer>`__
 
 	The 15 most recent runs with the current magnesium stearate supplier had an average mixing time of 2715 seconds, and a standard deviation of 390 seconds. So far you have run 6 batches from the new supplier, and the average mixing time of these runs is 3115 seconds with a standard deviation of 452 seconds. Your manager is not happy with these results so far - this extra mixing time will actually cost you more money via lost production. 
 
@@ -882,15 +879,13 @@ Exercises
 	
 .. question::
 
-	You are convinced that a different impeller (mixing blade) shape for your tank will lead to faster, i.e. shorter, mixing times. The choices are either an axial blade or a radial blade. 
+	You are convinced that a different impeller (mixing blade) shape for your tank will lead to faster, i.e. shorter, mixing times. The choices are either an axial blade or a radial blade, as shown in this figure `from Wikipedia <https://en.wikipedia.org/wiki/Impeller>`_.
 
 	..	figure:: ../figures/univariate/Mixing_-_flusso_assiale_e_radiale.jpg
 		:align: center
 		:scale: 40
 		:width: 800px
 		:alt: fake width
-
-		Axial and radial blades; figure `from Wikipedia <https://en.wikipedia.org/wiki/Impeller>`__
 
 	Before obtaining approval to run some experiments, your team wants you to explain how you will interpret the experimental data. Your reply is that you will calculate the average mixing time from each blade type and then calculate a confidence interval for the difference. A team member asks you what the following 95% confidence intervals would mean:
 
@@ -936,7 +931,7 @@ Exercises
 		Use this vector of data as an example: :math:`[2, 6, 1, 9151616, -4, 2]`. The mean is 1525270, while the median is 2.
 		
 	#.	
-		*	Robust methods are insensitive to outliers, which is useful when we need a measure of location or spread that is calculated in an automated way. It is increasingly prevalent to skip out the "human" step that might have detected the outlier, but our datasets are getting so large that we can't possibly visualize or look for outliers manually anymore.
+		*	Robust methods are insensitive to outliers, which is useful when we need a measure of location or spread that is calculated in an automated way. It is increasingly prevalent to skip out the "human" step that might have detected the outlier, but our data sets are getting so large that we can't possibly visualize or look for outliers manually anymore.
 
 		*	As described in the above paper by Rousseeuw, robust methods also emphasize outliers. Their "lack of sensitivity to outliers" can also be considered an advantage.
 

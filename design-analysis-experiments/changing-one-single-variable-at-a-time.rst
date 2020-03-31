@@ -15,7 +15,7 @@ You will certainly have seen the recommendation that we must **c**\ hange **o**\
 	
 		However, when you want to *optimize and improve* a process, then a different style of experiments is required, where multiple factors are changed simultaneously.
 		
-We have known since the mid-1930s (almost 85 years), due to the work by :ref:`R. A. Fisher <DOE_references>`, that changing **o**\ ne **f**\ actor **a**\ t a **t**\ ime (OFAT) is not an efficient way for experimentation. Note that OFAT is an alternative name for COST.
+We have known since the mid-1930s (almost 85 years), due to the work by :ref:`R. A. Fisher <DOE_references>`, that changing **o**\ ne **f**\ actor **a**\ t a **t**\ ime (OFAT) is not an efficient way for experimentation. Note that OFAT is an alternative name for COST, and an example of OFAT is illustrated in the figure.
 
 Consider a bioreactor where we are producing a particular enzyme. The yield, our outcome variable, is known to be affected by these six variables: dissolved oxygen level, agitation rate, reaction duration, feed substrate concentration, substrate type and reactor temperature. For illustration purposes, let's assume that temperature and feed substrate concentration are chosen, as they have the greatest effect on yield. The goal would be to maximize the yield.
 
@@ -27,8 +27,6 @@ The base operating point is 346 K with a feed substrate concentration of 1.5 g/L
 	:scale: 70
 	:width: 900px
 	:alt: fake width
-	
-	A demonstration of the COST (OFAT) approach
 	
 .. FUTURE: use a curved surface like figure (c) on page 445 of BHH2
 

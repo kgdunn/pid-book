@@ -63,8 +63,6 @@ The range over which they will be varied is given in the table. This range was i
 		:width: 900px
 		:alt: fake width
 		
-		A cube plot, showing the experimental results
-		
 .. _DOE-two-level-factorials-main-effects:
 		
 Analysis of a factorial design: main effects
@@ -78,7 +76,7 @@ Consider the two runs where :math:`S` is at the |-| level for both experiments 1
 
 Runs 3 and 4 both have :math:`S` at the |+| level. Again, the only change is in the **temperature**: :math:`\Delta T_{S+} = 53-64 = -11\%` per :math:`+16~\text{K}`. So we now have two temperature effects, and the average of them is a :math:`-10\%` change in conversion per :math:`+16~\text{K}` change in temperature.
 
-We can perform a similar calculation for the main effect of substrate concentration, :math:`S`, by comparing experiments 1 and 3: :math:`\Delta S_{T-} = 64-69 = -5\%\,\,\text{per}\,\,0.5\,\text{g/L}`, while experiments 2 and 4 give :math:`\Delta S_{T+} = 53-60 = -7\%` per :math:`0.5\,\text{g/L}`. So the average main effect for :math:`S` is a :math:`-6\%` change in conversion for every :math:`0.5\,\text{g/L}` change in substrate concentration. You should use the following :ref:`graphical method <DOE-fig-Calculate-main-effects>` when calculating main effects from a cube plot.
+We can perform a similar calculation for the main effect of substrate concentration, :math:`S`, by comparing experiments 1 and 3: :math:`\Delta S_{T-} = 64-69 = -5\%\,\,\text{per}\,\,0.5\,\text{g/L}`, while experiments 2 and 4 give :math:`\Delta S_{T+} = 53-60 = -7\%` per :math:`0.5\,\text{g/L}`. So the average main effect for :math:`S` is a :math:`-6\%` change in conversion for every :math:`0.5\,\text{g/L}` change in substrate concentration. You should use the following :ref:`graphical method <DOE-fig-Calculate-main-effects>` when calculating main effects from a cube plot by hand.
 
 
 .. _DOE-fig-Calculate-main-effects:
@@ -86,8 +84,6 @@ We can perform a similar calculation for the main effect of substrate concentrat
 	:align: center
 	:scale: 50
 	
-	A cube plot, showing the hand calculations for the main effects
-
 This visual summary is a very effective method of seeing how the system responds to the two variables. We can see the gradients in the system and the likely region where we can perform the next experiments to improve the bioreactor's conversion.
 
 The following surface plot illustrates the true, but unknown, surface from which our measurements are taken. Notice the slight curvature on the edges of each face. The main effects estimated above are a linear approximation of the conversion over the region spanned by the factorial.
@@ -98,16 +94,13 @@ The following surface plot illustrates the true, but unknown, surface from which
 		:alt: fake width
 		:width: 900px
 
-An :index:`interaction plot` is an :ref:`alternative way to visualize these main effects <DOE-fig-Interaction-plot-example>`. Use this method when you don't have computer software to draw the surfaces. [We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>`]. We will discuss interaction plots more in the next section.
+An :index:`interaction plot` is an :ref:`alternative way to visualize these main effects <DOE-fig-Interaction-plot-example>`. Use this method when you don't have computer software to draw the surfaces. [We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>`]. We will discuss interaction plots more in the next section. Here is an illustration of one such plot for a system with little interaction.
 
 	.. _DOE-fig-Interaction-plot-example:
 	.. figure:: ../../figures/doe/factorial-two-level-line-plot.png
 		:align: center
 		:scale: 80
 		
-		An interaction plot for the example where there is little interaction
-		
-
 .. _DOE-two-level-factorials-interaction-effects:	
 
 Analysis of a factorial design: interaction effects
@@ -139,8 +132,6 @@ Let's use a :ref:`different system here to illustrate <DOE-fig-interaction-examp
 		:width: 900px
 		:alt: fake width
 
-		A new example, to illustrate the effects of interactions
-		
 	.. tabularcolumns:: |l|c|c||c|
 	
 	+-----------+---------------+-----------------+--------------+
@@ -173,15 +164,13 @@ which gives the average substrate concentration main effect as 7% per 0.75 g/L.
 
 .. TODO: Draw in Inkscape, the geometrical analysis of the main effects, and the interaction plot for this system: annotated with T effect at low S, T effect at high S, S effect at low T, S effect at high T
 
-The data may also be visualized using an :ref:`interaction plot <DOE-fig-interaction-plot-with-interaction>` again:
+The data may also be visualized using an :ref:`interaction plot <DOE-fig-interaction-plot-with-interaction>` here, showing a higher degree of interaction.
 
 .. _DOE-fig-interaction-plot-with-interaction:
 .. figure:: ../../figures/doe/factorial-two-level-line-plot-with-interaction.png
 	:align: center
 	:scale: 100
 	
-	An interaction plot for the example where there is significant interaction
-
 The lack of parallel lines is a clear indication of interaction. The temperature effect is stronger at high levels of :math:`S`, and the effect of :math:`S` on conversion is also greater at high levels of temperature. What is missing is an interaction term, given by the product of temperature and substrate. We represent this as  :math:`T \times S` and call it the temperature-substrate interaction term.  
 
 This interaction term should be zero for systems with no interaction, which implies the lines are parallel in the interaction plot. Such systems will have roughly the same effect of :math:`T` at both low and high values of :math:`S` (and in between). So then, a good way to quantify interaction is by how different the main effect terms are at the high and low levels of the other factor in the interaction. The interaction *must* also be symmetrical: if :math:`T` interacts with :math:`S`, then :math:`S` interacts with :math:`T` by the same amount.

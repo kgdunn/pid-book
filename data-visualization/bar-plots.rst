@@ -12,14 +12,11 @@ Here is some advice for bar plots:
 
 -	Use a bar plot when there are many categories and interpretation of the plot does not differ if the category axis is reshuffled. (It might be easier to interpret the plot with a particular ordering; however, the interpretation won't be different with a different ordering of the categories.)
 
--	A time-series plot is more appropriate than a bar plot when there is a time-based ordering to the categories, because usually you want to imply some sort of trend with time-ordered data.
+-	A time-series plot is more appropriate than a bar plot when there is a time-based ordering to the categories, because usually you want to imply some sort of trend with time-ordered data. Therefore do not use a bar plot for time trends, rather use a time-series plot.
 
 	.. figure:: ../figures/visualization/quarterly-profit-barplot-vs-lineplot.png
 		:alt:	../figures/visualization/quarterly-profit-barplot.R
 		:align: center
-
-		Do not use a bar plot for time trends, rather use a time-series plot.
-
 
 	Use this R code to draw the figures:
 

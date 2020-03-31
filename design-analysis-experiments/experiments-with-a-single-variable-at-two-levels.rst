@@ -106,8 +106,7 @@ Had we used a formal test of differences where we pooled the variances, we would
 	:width: 900px
 	:alt: fake width
 	
-	The differences in the averages of A and B for the 24,310 realizations. 
-	The vertical line represents the difference in the average for the one particular set of numbers we measured in the experiment.
+The figure shows the differences in the averages of A and B for the 24,310 realizations. The vertical line represents the difference in the average for the one particular set of numbers we measured in the experiment.
 
 Recall that independence is required to calculate the :math:`z`-value for the average difference and compare it against the :math:`t`-distribution. By randomizing our experiments, we are able to guarantee that the results we obtain from using :math:`t`-distributions are appropriate. Without randomization, these :math:`z`-values and confidence intervals may be misleading.
 

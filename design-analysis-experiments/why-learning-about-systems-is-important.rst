@@ -37,7 +37,7 @@ Another engineering example
 
 Here's a great example from the book by Box, Hunter and Hunter. Consider the negative-slope :ref:`relationship between pressure and yield <DOE-yield-pressure-impurity-correlation>`: as pressure increases, the yield drops. A line could be drawn through the points from the happenstance measurements, taken from the process at different times in the past. That line could be from a :ref:`least squares model <SECTION-least-squares-modelling>`. It is true that the observed pressure and yield are correlated, as that is exactly what a least squares model is intended for: to quantify correlation. 
 
-The true mechanism in this system is that pressure is increased to remove the frothing that occurs in the reactor. Higher frothing occurs when there is an impurity in the raw material, so operators increase reactor pressure when they see frothing (i.e. high impurity). However, it is the high impurity that actually causes the lower yield, not the pressure itself. 
+The true mechanism in this system is that pressure is increased to remove the frothing that occurs in the reactor. Higher frothing occurs when there is an impurity in the raw material, so operators increase reactor pressure when they see frothing (i.e. high impurity). However, it is the high impurity that actually causes the lower yield, not the pressure itself. These relationships between yield, pressure and impurity levels are illustrated below, based an adaption from the book by Box, Hunter and Hunter, Chapter 14 (1st edition) or Chapter 10 (2nd edition).
 
 .. _DOE-yield-pressure-impurity-correlation:
 
@@ -45,9 +45,7 @@ The true mechanism in this system is that pressure is increased to remove the fr
 	:alt:	../figures/doe/yield-pressure-impurity-correlation.svg
 	:scale: 50
 	:align: center
-	:width: 900px
-	
-	The relationship between yield, pressure and impurity levels [adapted from Box, Hunter and Hunter, Chapter 14 (1st edition) or Chapter 10 (2nd edition)]
+	:width: 900px	
 
 Pressure is correlated with the yield, but there is no cause-and-effect relationship between them. The happenstance relationship only appears in the data because of the operating policy, causing them to be correlated, but it is not cause and effect. That is why happenstance data cannot be relied on to imply cause and effect. An experiment in which the pressure is changed from low to high, performed on the same batch of raw materials (i.e. at constant impurity level), will quickly reveal that there is no causal relationship between pressure and yield.
 
