@@ -12,7 +12,8 @@ You will need:
 
 * All the figures for the book, in a separate repository: https://github.com/kgdunn/figures. We call this `figures` in the text below.
 * Python, [Sphinx](https://www.sphinx-doc.org/en/master/) and a working copy of LaTeX, if you wish to generate  the PDF version of the book. If you are interested only in making HTML, you only need Sphinx then.
-* Around 2Gb (yes!) space for files, compiled documents and illustrations
+* Around 2Gb (yes!) space for files, compiled documents and illustrations.
+* A good text editor, with syntax highlighting for RST files. I use Visual Studio Code at the moment, but many IDE environments support syntax highlighting for RST source documents.
 
 1. Clone the `figures` repository, preferably somewhere outside or next-to this repository, which we call `pid-book`.
 2. Softlink the `figures` repo so that it is visible as the directory of the same name, but within `pid-book`. You could also just move the `figures` repo into this one, but that is hackish.
