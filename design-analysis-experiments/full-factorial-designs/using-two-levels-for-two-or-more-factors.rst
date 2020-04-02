@@ -57,7 +57,7 @@ The range over which they will be varied is given in the table. This range was i
 #.	For simple systems you can visualize the design and results :ref:`as shown in the following figure <DOE-fig-Cube-plot>`. This is known as a :index:`cube plot`.
 
 	.. _DOE-fig-Cube-plot:
-	.. figure:: ../../figures/doe/factorial-two-levels-two-variables-no-analysis.png
+	.. image:: ../../figures/doe/factorial-two-levels-two-variables-no-analysis.png
 		:align: center
 		:scale: 40
 		:width: 900px
@@ -80,7 +80,7 @@ We can perform a similar calculation for the main effect of substrate concentrat
 
 
 .. _DOE-fig-Calculate-main-effects:
-.. figure:: ../../figures/doe/factorial-two-levels-two-variables-with-analysis.png
+.. image:: ../../figures/doe/factorial-two-levels-two-variables-with-analysis.png
 	:align: center
 	:scale: 50
 	
@@ -97,7 +97,7 @@ The following surface plot illustrates the true, but unknown, surface from which
 An :index:`interaction plot` is an :ref:`alternative way to visualize these main effects <DOE-fig-Interaction-plot-example>`. Use this method when you don't have computer software to draw the surfaces. [We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>`]. We will discuss interaction plots more in the next section. Here is an illustration of one such plot for a system with little interaction.
 
 	.. _DOE-fig-Interaction-plot-example:
-	.. figure:: ../../figures/doe/factorial-two-level-line-plot.png
+	.. image:: ../../figures/doe/factorial-two-level-line-plot.png
 		:align: center
 		:scale: 80
 		
@@ -126,7 +126,7 @@ Let's use a :ref:`different system here to illustrate <DOE-fig-interaction-examp
 
 	.. _DOE-fig-interaction-example-contour-plot:
 	
-	.. figure:: ../../figures/doe/factorial-two-level-with-interactions.png
+	.. image:: ../../figures/doe/factorial-two-level-with-interactions.png
 		:align: center
 		:scale: 40
 		:width: 900px
@@ -167,7 +167,7 @@ which gives the average substrate concentration main effect as 7% per 0.75 g/L.
 The data may also be visualized using an :ref:`interaction plot <DOE-fig-interaction-plot-with-interaction>` here, showing a higher degree of interaction.
 
 .. _DOE-fig-interaction-plot-with-interaction:
-.. figure:: ../../figures/doe/factorial-two-level-line-plot-with-interaction.png
+.. image:: ../../figures/doe/factorial-two-level-line-plot-with-interaction.png
 	:align: center
 	:scale: 100
 	

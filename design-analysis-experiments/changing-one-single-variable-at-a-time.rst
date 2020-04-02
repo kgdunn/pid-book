@@ -19,7 +19,7 @@ We have known since the mid-1930s (almost 85 years), due to the work by :ref:`R.
 
 Consider a bioreactor where we are producing a particular enzyme. The yield, our outcome variable, is known to be affected by these six variables: dissolved oxygen level, agitation rate, reaction duration, feed substrate concentration, substrate type and reactor temperature. For illustration purposes, let's assume that temperature and feed substrate concentration are chosen, as they have the greatest effect on yield. The goal would be to maximize the yield.
 
-The base operating point is 346 K with a feed substrate concentration of 1.5 g/L, marked with a circle :ref:`in the figure <DOE-fig-COST>`. At these conditions, we report a yield from the reactor of approximately 63%.
+The base operating point is 346 K with a feed substrate concentration of 1.5 g/L, marked with a circle in the figure below. At these conditions, we report a yield from the reactor of approximately 63%.
 
 .. _DOE-fig-COST:
 .. figure:: ../figures/doe/COST-contours.png

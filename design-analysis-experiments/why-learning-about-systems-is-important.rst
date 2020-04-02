@@ -41,8 +41,8 @@ The true mechanism in this system is that pressure is increased to remove the fr
 
 .. _DOE-yield-pressure-impurity-correlation:
 
-.. figure:: ../figures/doe/yield-pressure-impurity-correlation.png
-	:alt:	../figures/doe/yield-pressure-impurity-correlation.svg
+.. image:: ../figures/doe/yield-pressure-impurity-correlation.png
+	:alt:	../figures/doe/yield-pregon.svg
 	:scale: 50
 	:align: center
 	:width: 900px	

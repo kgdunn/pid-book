@@ -92,13 +92,11 @@ Fisher's insight was to create one long vector of these outcomes (length of vect
 
 Only one of the 24,310 sequences will correspond to the actual data printed in the above table. Although all the other realizations are possible, they are fictitious. We do this because the null hypothesis is that there is no difference between A and B. Values in the table could have come from either system.
 
-So for each of the 24,310 realizations, we calculate the difference of the averages between A and B, :math:`\overline{y}_A - \overline{y}_B`, and plot a histogram of these differences. This is :ref:`shown below <DOE-fig-randomization-one-factor>`, together with a vertical line indicating the actual realization in the table. There are 4956 permutations that had a greater difference than the one actually realized; that is, 79.6% of the other combinations had a smaller value. 
+So for each of the 24,310 realizations, we calculate the difference of the averages between A and B, :math:`\overline{y}_A - \overline{y}_B`, and plot a histogram of these differences. This is shown below, together with a vertical line indicating the actual realization in the table. There are 4956 permutations that had a greater difference than the one actually realized; that is, 79.6% of the other combinations had a smaller value. 
 
 Had we used a formal test of differences where we pooled the variances, we would have found a :math:`z`-value of 0.8435, and the probability of obtaining that value, using the :math:`t`-distribution with :math:`n_A + n_B - 2` degrees of freedom, would be 79.3%. See how close they agree?  
 
 .. Future improvement: superimpose the t-distribution on top of the histogram (scaled). E.g. see BHH(v1) page 97
-
-.. _DOE-fig-randomization-one-factor:
 
 .. figure:: ../figures/doe/single-experiment-randomization.png
 	:align: center

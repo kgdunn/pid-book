@@ -47,7 +47,7 @@ You can use the following table to visualize the trade-off between design resolu
 
 .. _DOE_design_trade_off_BHH_272:
 
-.. figure:: ../../figures/doe/DOE-trade-off-table.png
+.. image:: ../../figures/doe/DOE-trade-off-table.png
 	:alt:	../../figures/doe/DOE-trade-off-table.svg
 	:scale: 100
 	:align: center
