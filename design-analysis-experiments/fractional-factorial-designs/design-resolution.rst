@@ -46,7 +46,6 @@ In this text currently, for resolution III, IV and V designs we look at factoria
 You can use the following table to visualize the trade-off between design resolution, the number of factors (:math:`k`), the number of runs required, and the aliasing pattern. The table is adapted from the text by  Box, Hunter and Hunter (2nd edition, p 272), and (1st edition, p 410).
 
 .. _DOE_design_trade_off_BHH_272:
-
 .. image:: ../../figures/doe/DOE-trade-off-table.png
 	:alt:	../../figures/doe/DOE-trade-off-table.svg
 	:scale: 100

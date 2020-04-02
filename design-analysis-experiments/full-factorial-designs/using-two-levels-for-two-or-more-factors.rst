@@ -125,7 +125,6 @@ In summary, interaction means the effect of one factor depends on the level of t
 Let's use a :ref:`different system here to illustrate <DOE-fig-interaction-example-contour-plot>` interaction effects, but still using :math:`T` and :math:`S` as the variables being changed and keeping the response variable, :math:`y`, as the conversion, shown by the contour lines.
 
 	.. _DOE-fig-interaction-example-contour-plot:
-	
 	.. image:: ../../figures/doe/factorial-two-level-with-interactions.png
 		:align: center
 		:scale: 40

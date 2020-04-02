@@ -29,7 +29,7 @@ Exercises
 
 .. question::
 
-	Characterizing a distribution: Compute the mean, median, standard deviation and MAD for salt content for the various soy sauces given `in this report <http://beta.images.theglobeandmail.com/archive/00245/Read_the_report_245543a.pdf>`_ (page 41) as described in the the article from the `Globe and Mail <https://www.theglobeandmail.com/incoming/salt-variation-between-brands-raises-call-for-cuts/article4287171/>`_ on 24 September 2009. Plot a box plot of the data and report the interquartile range (IQR). Comment on the 3 measures of spread you have calculated: standard deviation, MAD, and interquartile range.
+	Characterizing a distribution: Compute the mean, median, standard deviation and MAD for salt content for the various soy sauces given `in this report <https://beta.images.theglobeandmail.com/archive/00245/Read_the_report_245543a.pdf>`_ (page 41) as described in the the article from the `Globe and Mail <https://www.theglobeandmail.com/incoming/salt-variation-between-brands-raises-call-for-cuts/article4287171/>`_ on 24 September 2009. Plot a box plot of the data and report the interquartile range (IQR). Comment on the 3 measures of spread you have calculated: standard deviation, MAD, and interquartile range.
 	
 	The raw data are given below in units of milligrams of salt per 15 mL serving::
 		
@@ -52,7 +52,7 @@ Exercises
 
 .. question::
 
-	Give a reason why Statistics Canada reports the median income when reporting income by geographic area. Where would you expect the mean to lie, relative to the median?  Use `this table <http://www.statcan.gc.ca/tables-tableaux/sum-som/l01/cst01/famil107a-eng.htm>`_ to look up the income for Hamilton. How does it compare to Toronto?  And all of Canada?
+	Give a reason why Statistics Canada reports the median income when reporting income by geographic area. Where would you expect the mean to lie, relative to the median?  Use `this table <https://www150.statcan.gc.ca/cgi-bin/tableviewer.pl?page=l01/cst01/famil107a-eng.htm>`_ to look up the income for Hamilton. How does it compare to Toronto?  And all of Canada?
 
 .. answer::
 

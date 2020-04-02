@@ -310,7 +310,7 @@ The general approach for response surface modelling
 
 #.	Response surface methods generally work best when the variables we adjust are numerically continuous. Categorical variables (yes/no, catalyst A or B) are handled by fixing them at one or the other value, and then performing the optimization conditional on those selected values. It is always worth investigating the alternative values once the optimum has been reached.
 
-#.	Many software packages provide tools that help with an RSM study. If you would like to use R in your work, we highly recommend the ``rsm`` package in R. You can read more about the package from `this article <http://www.jstatsoft.org/v32/i07>`_ in the Journal of Statistical Software (**32**, October 2009).
+#.	Many software packages provide tools that help with an RSM study. If you would like to use R in your work, we highly recommend the ``rsm`` package in R. You can read more about the package from `this article <https://www.jstatsoft.org/article/view/v032i07>`_ in the Journal of Statistical Software (**32**, October 2009).
 
 .. _DOE-EVOP:
 

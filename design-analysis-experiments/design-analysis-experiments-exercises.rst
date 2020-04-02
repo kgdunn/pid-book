@@ -9,7 +9,7 @@ Exercises
 	These readings are to illustrate the profound effect that designed experiments have had in some areas. 
 
 		*	`Application of Statistical Design of Experiments Methods in Drug Discovery <https://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_ and `using DOE for high-throughput screening to locate new drug compounds <https://dx.doi.org/10.1016/1359-6446(96)10025-8>`_.
-		*	High traffic websites offer a unique opportunity to perform testing and optimization. This is because each visitor to the site is independent of the others (randomized), and these tests can be run in parallel. Read more in this `brief writeup <http://youtube-global.blogspot.com/2009/08/look-inside-1024-recipe-multivariate.html>`_ on how Google uses testing tools to optimize YouTube, one of their web properties. Unfortunately they use the term "multivariate" incorrectly - a better term is "multi-variable"; nevertheless, the number of factors and combinations to be tested is large. It's well known that fractional factorial methods are used to analyze these data.
+		*	High traffic websites offer a unique opportunity to perform testing and optimization. This is because each visitor to the site is independent of the others (randomized), and these tests can be run in parallel. Read more in this `brief writeup <https://youtube.googleblog.com/2009/08/look-inside-1024-recipe-multivariate.html>`_ on how Google uses testing tools to optimize YouTube, one of their web properties. Unfortunately they use the term "multivariate" incorrectly - a better term is "multi-variable"; nevertheless, the number of factors and combinations to be tested is large. It's well known that fractional factorial methods are used to analyze these data.
 		*	See three chemical engineering examples of factorial designs in Box, Hunter, and Hunter: Chapter 11 (1st edition), or page 173 to 183 in the second edition.
 		
 .. question::
@@ -383,7 +383,7 @@ Exercises
 		:width: 900px
 		:alt:	../figures/doe/central-composite-question.svg
 
-	You might feel more comfortable setting up the problem in MATLAB. You can use the `contour plot <http://www.mathworks.com/help/matlab/ref/contour.html>`_ functions in MATLAB to visualize the results.
+	You might feel more comfortable setting up the problem in MATLAB. You can use the `contour plot <https://www.mathworks.com/help/matlab/ref/contour.html>`_ functions in MATLAB to visualize the results.
 
 	If you are using R, you can use the ``rbind(...)`` or ``cbind(...)`` functions to build up your :math:`\mathbf{X}` matrix row-by-row or column-by-column. The equivalent of meshgrid in R is the ``expand.grid(...)`` function. See the `R code on the course website <https://learnche.org/4C3/Design_and_analysis_of_experiments_(2014)>`_ that shows how to generate surface plots in R.
 
