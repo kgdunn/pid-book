@@ -36,7 +36,7 @@ Resolution V designs: are good for optimizing
 
 The above guidance about using resolution IV and V designs for characterization and optimization is fairly general - there are many cases where a satisfactory optimization can be performed with a resolution IV experiment.
 
-In this text currently, for resolution III, IV and V designs we look at factorial designs. However, there are a number of other design types which can also be used. If you are interested, please research Plackett-Burman designs, Box-Behnken designs, central composite designs, and definitive screening designs (DSD).
+In this text currently, for resolution III, IV and V designs we look at factorial designs. However, there are a number of other design types which can also be used. If you are interested, please research Plackett-Burman designs, Box-Behnken designs, central composite designs, and :ref:`definitive screening designs <DOE-definitive-screening-designs>`.
 
 .. you could also include ideas from this link?
 	https://asq.org/quality-progress/2005/10/statistics-roundtable/how-to-choose-the-appropriate-design.html
