@@ -108,4 +108,4 @@ A side note on screening designs is a mention of :index:`Plackett and Burman des
 
 .. youtube:: https://www.youtube.com/watch?v=dbxijjAHeUU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=50
 
-An important mention to readers interested in other, arguable better screening strategies, is to consider `definitive screening designs <https://www.google.com/search?q=definitive+screening+designs>`_.
+An important mention to readers interested in other, arguable better screening strategies, is to consider :ref:`definitive screening designs <DOE-definitive-screening-designs>`.

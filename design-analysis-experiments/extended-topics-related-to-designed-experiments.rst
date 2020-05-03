@@ -100,11 +100,12 @@ The algorithms used to find the subset of experiments to run are called candidat
 
 * St. John and Draper: "`D-Optimality for Regression Designs: A Review <https://www.jstor.org/stable/1267995>`_", *Technometrics*, **17**, 15-, 1975.
 
+.. _DOE-definitive-screening-designs:
 
 Definitive Screening designs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The final type of design to be aware of is a class of designs called the Definitive Screening Design, and below is a link that you can read up some more information.
+The final type of design to be aware of is a class of designs called the :index:`definitive screening design <pair: definitive screening design; experiments>`, and below is a link that you can read up some more information.
 
 These designs are a type of :ref:`optimal design <DOE-optimial-designs>`. Optimal designs can be very flexible. For example, if you had a limited budget you can create an optimal design for a given number of factors you are investigating to maximize one of these optimality criteria to fit your budget. A computer algorithm is used to find the settings for each one of the budgeted number of runs, so that the optimization criterion is maximized. In other words the computer is designing the experiments for you, so they have some very distinct advantages.
 
