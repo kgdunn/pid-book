@@ -10,7 +10,11 @@ temp/
 DELETE/*
 __pycache__/
 .vscode/settings.json
+
+
 design-analysis-experiments/Readings/
 latent-variable-modelling/Readings/
 least-squares-modelling/Readings/
 univariate-review/Readings/
+process-monitoring/Readings/
+data-visualization/Readings/
