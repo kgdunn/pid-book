@@ -21,7 +21,7 @@ Similarly, it might be discovered that temperature cannot be set to 475K when th
 
 Also see the section on :ref:`optimal designs <DOE-optimial-designs>` for how one can add one or more additional experiments to fix an existing bad set of experiments.
 
-The other case that happens occasionally is that samples are lost, or the final response value is missing for some reason. Not everything is lost: recall the main effects for a full :math:`2^k` factorial are estimated :math:`k` times at :ref:`each combination of the factors <DOE-COST-vs-factorial-efficiency>`. 
+The other case that happens occasionally is that samples are lost, or the final response value is missing for some reason. Not everything is lost: recall the main effects for a full :math:`2^k` factorial are estimated :math:`k` times at :ref:`each combination of the factors <DOE-COST-vs-factorial-efficiency>`.
 
 If one or more experiments have missing :math:`y` values, you can still estimate these main effects, and sometimes the interaction parameters by hand. Furthermore, analyzing the data in a least squares model will be an undetermined system: more unknowns than equations. You could choose to drop out higher-order interaction terms to reduce the equations to a square system: as many unknowns as equations. Then proceed to analyze the results from the least squares model as usual. There are actually slightly more sophisticated ways of dealing with this problem, as described by Norman Draper in "`Missing Values in Response Surface Designs <https://www.jstor.org/stable/1266729>`_", *Technometrics*, **3**, 389-398, 1961.
 
@@ -33,7 +33,7 @@ The above discussion illustrates clearly our preference for using the least squa
 Handling of constraints
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Most engineering systems have limits of performance, either by design or from a safety standpoint. It is also common that optimum production levels are found close to these constraints. The factorials we use in our experiments must, by necessity, span a wide range of operation so that we see systematic change in our response variables, and not merely measure noise. These large ranges that we choose for the factors often hit up again constraints. 
+Most engineering systems have limits of performance, either by design or from a safety standpoint. It is also common that optimum production levels are found close to these constraints. The factorials we use in our experiments must, by necessity, span a wide range of operation so that we see systematic change in our response variables, and not merely measure noise. These large ranges that we choose for the factors often hit up again constraints.
 
 A simple bioreactor example for 2 factors is shown: at high temperatures and high substrate concentrations we risk activating a different, undesirable side-reaction. The shaded region represents the constraint where we may not operate. We could for example replace the :math:`(T_{+}, C_{+})` experiment with two others, and then analyze these 5 runs using least squares.
 
@@ -65,33 +65,33 @@ All an optimal design does is select the experimental points by optimizing some 
  	- The design region is a cube with a diagonal slice cut-off on two corner due to constraints. What is the design that spans the maximum volume of the remaining cube?
 
 	- The experimenter wishes to estimate a non-standard model, e.g. :math:`y = b_0 + b_\mathrm{A}x_\mathrm{A} + b_\mathrm{AB}x_\mathrm{AB} + b_\mathrm{B}x_\mathrm{B} + b_\mathrm{AB}\exp^{-\tfrac{dx_\mathrm{A}+e}{fx_\mathrm{B}+g}}` for fixed values of :math:`d, e, f` and :math:`g`.
-		
+
 	-	For a central composite design, or even a factorial design with constraints, find a smaller number of experiments than required for the full design, e.g. say 14 experiments (a number that is not a power of 2).
-	
+
 	-	The user might want to investigate more than 2 levels in each factor.
-	
+
 	-	The experimenter has already run :math:`n` experiments, but wants to add one or more additional experiments to improve the parameter estimates, i.e. decrease the variance of the parameters. In the case of a D-optimal design, this would find which additional experiment(s) would most increase the determinant of the :math:`\mathbf{X}^T\mathbf{X}` matrix.
-	
-The general approach with optimal designs is 
+
+The general approach with optimal designs is
 
 	#.	The user specifies the model (i.e. the parameters).
-	
+
 	#.	The computer finds all possible combinations of factor levels that satisfy the constraints, including center-points. These are now called the *candidate points* or :index:`candidate set <pair: candidate set; optimal designs>`, represented as a long list of all possible experiments. The user can add extra experiments they would like to run to this list.
-	
+
 	#.	The user specifies a small number of experiments they would actually like to run.
-	
-	#.	The computer algorithm finds this required number of runs by picking entries from the list so that those few runs optimize the chosen criterion. 
+
+	#.	The computer algorithm finds this required number of runs by picking entries from the list so that those few runs optimize the chosen criterion.
 
 The most common optimality criteria are:
 
 	-	A-optimal designs minimize the average variance of the parameters, i.e. minimizes :math:`\text{trace}\left\{(\mathbf{X}^T\mathbf{X})^{-1}\right\}`
-	
-	-	D-optimal designs minimize the general variance of the parameters, i.e. maximize :math:`\text{det}\left(\mathbf{X}^T\mathbf{X}\right)` 
-	
+
+	-	D-optimal designs minimize the general variance of the parameters, i.e. maximize :math:`\text{det}\left(\mathbf{X}^T\mathbf{X}\right)`
+
 	-	G-optimal designs minimize the maximum variance of the predictions
-	
+
 	-	V-optimal designs minimize the average variance of the predictions
-	
+
 It must be pointed out that a full factorial design, :math:`2^k` is already A-, D- G- and V-optimal. Also notice that for optimal designs the user must specify the model required. This is actually no different to factorial and central composite designs, where the model is implicit in the design.
 
 The algorithms used to find the subset of experiments to run are called candidate exchange algorithms. They are usually just a brute force evaluation of the objective function by trying all possible combinations. They bring a new trial combination into the set, calculate the objective value for the criterion, and then iterate until the final candidate set provides the best objective function value.
@@ -99,6 +99,22 @@ The algorithms used to find the subset of experiments to run are called candidat
 **Readings**
 
 * St. John and Draper: "`D-Optimality for Regression Designs: A Review <https://www.jstor.org/stable/1267995>`_", *Technometrics*, **17**, 15-, 1975.
+
+
+Definitive Screening designs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The final type of design to be aware of is a class of designs called the Definitive Screening Design, and below is a link that you can read up some more information.
+
+These designs are a type of :ref:`optimal design <DOE-optimial-designs>`. Optimal designs can be very flexible. For example, if you had a limited budget you can create an optimal design for a given number of factors you are investigating to maximize one of these optimality criteria to fit your budget. A computer algorithm is used to find the settings for each one of the budgeted number of runs, so that the optimization criterion is maximized. In other words the computer is designing the experiments for you, so they have some very distinct advantages.
+
+The readings below give more details, and a practical implementation of these designs using the R software package.
+
+**Readings**
+
+* John Lawson "`DefScreen: Definitive Screening Designs, in package "daewr": Design and Analysis of Experiments with R <https://rdrr.io/cran/daewr/man/DefScreen.html>`_".
+* Bradley Jones: "`Class of Three-Level Designs for Definitive Screening in the Presence of Second-Order Effects <https://yint.org/dsdesign>`_", Journal of Quality Technology, 2011.
+
 
 .. _DOE-mixture-designs:
 
@@ -115,7 +131,7 @@ A mixture design is required when the factors being varied add up to 100% to for
 	:width: 900px
 	:alt:	../figures/doe/mixture-design.svg
 
-In the above figure on the right, the shaded region represents a constraint that cannot be operated in. A D-optimal algorithm must then be used to select experiments in the remaining region. The example is for finding the lowest cost mixture for a fruit punch, while still meeting certain taste requirements (e.g. watermelon juice is cheap, but has little taste). The constraint represents a region where the acidity is too high. 
+In the above figure on the right, the shaded region represents a constraint that cannot be operated in. A D-optimal algorithm must then be used to select experiments in the remaining region. The example is for finding the lowest cost mixture for a fruit punch, while still meeting certain taste requirements (e.g. watermelon juice is cheap, but has little taste). The constraint represents a region where the acidity is too high.
 
 .. Clean this up and make it clearer
 
@@ -125,6 +141,5 @@ In the above figure on the right, the shaded region represents a constraint that
 		-	**B**: 1% or 2%
 		-	**C** and **D** make up the rest of the recipe in a consistent 40/60 ratio
 		-	**T**: is the temperature at which the blend is extruded, either high or low
-	
-	In this case **A** and **B** are the factors being investigated in the recipe, in addition to temperature **T**. The results from a full factorial in factors **A**, **B** and **T** (i.e. a :math:`2^3` factorial) would give similar results to a mixture design at high temperature and low temperature, but 
 
+	In this case **A** and **B** are the factors being investigated in the recipe, in addition to temperature **T**. The results from a full factorial in factors **A**, **B** and **T** (i.e. a :math:`2^3` factorial) would give similar results to a mixture design at high temperature and low temperature, but
