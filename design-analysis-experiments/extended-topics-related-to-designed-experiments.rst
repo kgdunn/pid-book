@@ -102,7 +102,7 @@ The algorithms used to find the subset of experiments to run are called candidat
 
 .. _DOE-definitive-screening-designs:
 
-Definitive Screening designs
+Definitive screening designs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The final type of design to be aware of is a class of designs called the :index:`definitive screening design <pair: definitive screening design; experiments>`, and below is a link that you can read up some more information.
