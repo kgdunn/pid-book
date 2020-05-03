@@ -7,7 +7,7 @@ Response surface methods
 
 .. Add this somewhere appropriate: http://xkcd.com/605/   .... on extrapolation
 
-The purpose of :index:`response surface methods <pair: response surface methods; experiments>` (RSM) is to optimize a process or system. RSM is a way to explore the effect of operating conditions (the factors) on the response variable, :math:`y`. As we map out the unknown response surface of :math:`y`, we move our process as close as possible towards the optimum, taking into account any constraints. 
+The purpose of :index:`response surface methods <pair: response surface methods; experiments>` (RSM) is to optimize a process or system. RSM is a way to explore the effect of operating conditions (the factors) on the response variable, :math:`y`. As we map out the unknown response surface of :math:`y`, we move our process as close as possible towards the optimum, taking into account any constraints.
 
 Initially, when we are far away from the optimum, we will use factorial experiments. As we approach the optimum then these factorials are replaced with better designs that more closely approximate conditions at the optimum.
 
@@ -81,8 +81,8 @@ Clearly the promising direction to maximize profit is to operate at higher tempe
 .. math::
 
 	\hat{y} &= b_0 + b_T x_T + b_S x_S + b_{TS} x_T x_S \\
-	\hat{y} &= 389.8 + 55 x_T + 134 x_S - 3.50 x_T x_S 
-		
+	\hat{y} &= 389.8 + 55 x_T + 134 x_S - 3.50 x_T x_S
+
 where :math:`x_T = \dfrac{x_{T,\text{actual}} - \text{center}_T}{\Delta_T / 2} = \dfrac{x_{T,\text{actual}} - 325}{5}` and similarly,  :math:`x_S = \dfrac{x_{S,\text{actual}} - 0.75}{0.25}`.
 
 The model shows that we can expect an increase of $55/day of profit for a unit increase in :math:`x_T` (coded units). In real-world units that would require increasing temperature by :math:`\Delta x_{T,\text{actual}} = (1) \times \Delta_T /2` = 5K to achieve that goal. That scaling factor comes from the coding we used:
@@ -90,7 +90,7 @@ The model shows that we can expect an increase of $55/day of profit for a unit i
 .. math::
 
 	x_T &= \displaystyle \frac{x_{T,\text{actual}} - \text{center}_T}{\Delta_T / 2} \\
-	\Delta x_T &= \displaystyle \frac{\Delta x_{T,\text{actual}}}{\Delta_T / 2} 
+	\Delta x_T &= \displaystyle \frac{\Delta x_{T,\text{actual}}}{\Delta_T / 2}
 
 Similarly, we can increase :math:`S` by :math:`\Delta x_S = \text{1 unit} = 1 \times \Delta_S/2 = 0.5/2` = 0.25 g/L real-world units, to achieve a $134 per day profit increase.
 
@@ -107,7 +107,7 @@ To improve our profit in the optimal way we move along our estimated model's sur
 .. math::
 
 		\dfrac{\partial \hat{y}}{\partial x_T} = b_T = 55  \qquad \qquad  \dfrac{\partial \hat{y}}{\partial x_S} = b_S = 134
-		
+
 This says for every :math:`b_T = 55` coded units that we move by in :math:`x_T` we should also move :math:`x_S` by :math:`b_S = 134` coded units. Mathematically:
 
 .. math::
@@ -129,16 +129,16 @@ So we will choose to increase :math:`\Delta x_T = 1` coded unit, which means:
 
 *	:math:`T_5 = T_\text{baseline} + \Delta x_{T,\text{actual}} = 325 + 5 = 330` K
 *	:math:`S_5 = S_\text{baseline} + \Delta x_{S,\text{actual}} = 0.75 + 0.6 = 1.36` g/L
-	
+
 So when we run the next experiment at these conditions. The daily profit is :math:`y_5 =` $ 669, improving quite substantially from the  baseline case.
-	
+
 We decide to make another move, in the same direction of steepest ascent, i.e. along the vector that points in the :math:`\frac{134}{55}` direction. We  move the temperature up 5K, although we could have used a larger or smaller step size if we wanted:
 
 	*	:math:`T_6 = T_5 + \Delta x_{T,\text{actual}} = 330 + 5 = 335` K
 	*	:math:`S_6 = S_5 + \Delta x_{S,\text{actual}} = 1.36 + 0.61 = 1.97` g/L
 
 Again, we determine profit at :math:`y_6 =` $ 688. It is still increasing, but not by nearly as much. Perhaps we are starting to level off. However, we still decide to move temperature up by another 5 K and increase the substrate concentration in the required ratio:
-	
+
 	*	:math:`T_7 = T_6 + \Delta x_{T,\text{actual}} = 335 + 5 = 340` K
 	*	:math:`S_7 = S_6 + \Delta x_{S,\text{actual}} = 1.97 + 0.61 = 2.58` g/L
 
@@ -190,11 +190,11 @@ We determine that at run 12 the profit is :math:`y_{12}` = $ 716. But our previo
 One must realize that as one approaches an optimum we will find:
 
 	-	The response variable will start to plateau, since, recall that the first derivative is zero at an optimum, implying the surface flattens out, and all points, in all directions away from the optimum are worse off.
-	
+
 	-	The response variable remains roughly constant for two consecutive jumps, because one has jumped over the optimum.
-	
+
 	-	The response variable decreases, sometimes very rapidly, because we have overshot the optimum.
-	
+
 	-	The presence of curvature can also be inferred when interaction terms are similar or larger in magnitude than the main effect terms.
 
 An optimum therefore exhibits curvature, so a model that only has linear terms in it will not be suitable to use to find the direction of steepest ascent along the *true response surface*. We must add terms that account for this curvature.
@@ -219,14 +219,14 @@ The :index:`axial points <pair: axial points; experiments>` are placed :math:`4^
 	:alt:	central-composite-design.svg
 	:width: 900px
 
-So a central composite design layout was added to the factorial in the above example and the experiments run, randomly, at the 4 axial points. 
+So a central composite design layout was added to the factorial in the above example and the experiments run, randomly, at the 4 axial points.
 
 The four response values were :math:`y_{13} = 720`, :math:`y_{14} = 699`, :math:`y_{15} = 610`, and :math:`y_{16} = 663`. This allows us to estimate a model with quadratic terms in it: :math:`y = b_0 + b_T x_T + b_S x_S + b_{TS} x_T x_S + b_{TT} x_T^2 + b_{SS} x_S^2`. The parameters in this model are found in the usual way, using a least-squares model:
 
-	.. math:: 
+	.. math::
 		\mathbf{y} &= \mathbf{X} \mathbf{b} + \mathbf{e}\\
 		\begin{bmatrix} y_8\\ y_9\\ y_{10} \\ y_{11} \\ y_{6} \\ y_{13} \\ y_{14} \\ y_{15} \\ y_{16} \end{bmatrix} &=
-		\begin{bmatrix} 1 & -1 & -1 & +1 & +1 & +1\\ 
+		\begin{bmatrix} 1 & -1 & -1 & +1 & +1 & +1\\
 						1 & +1 & -1 & -1 & +1 & +1\\
 						1 & -1 & +1 & -1 & +1 & +1\\
 						1 & +1 & +1 & +1 & +1 & +1\\
@@ -241,7 +241,7 @@ The four response values were :math:`y_{13} = 720`, :math:`y_{14} = 699`, :math:
 
 Notice how the linear terms estimated previously are the same! The quadratic effects are clearly significant when compared to the other effects, which was what prevented us from successfully using a linear model to project out to point 12 previously.
 
-The final step in the response surface methodology is to plot this model's contour plot and predict where to run the next few experiments. As the solid contour lines in the illustration show, we should run our next experiments roughly at :math:`T` = 343K and :math:`S` = 1.60 g/L where the expected profit is around $736. We get those two values by eye-balling the solid contour lines, drawn from the above non-linear model. You could find this point analytically as well. 
+The final step in the response surface methodology is to plot this model's contour plot and predict where to run the next few experiments. As the solid contour lines in the illustration show, we should run our next experiments roughly at :math:`T` = 343K and :math:`S` = 1.60 g/L where the expected profit is around $736. We get those two values by eye-balling the solid contour lines, drawn from the above non-linear model. You could find this point analytically as well.
 
 This is not exactly where the true process optimum is, but it is pretty close to it (the temperature of :math:`T` = 343K is just a little lower that where the true optimum is.
 
@@ -260,35 +260,35 @@ The general approach for response surface modelling
 #.	Start at your baseline conditions and identify the main factors based on physics of the process, operator input, expert opinion input, and intuition. Also be aware of any constraints, especially for safe process operation. Perform factorial experiments (full or fractional factorials), completely randomized. Use the results from the experiment to estimate a linear model of the system:
 
 	.. math::
-	
+
 		\hat{y} = b_0 + b_Ax_A + b_B x_B + b_C x_C  \ldots + b_{AB}x_Ax_B + b_{AC} x_A x_C + \ldots
 
 #.	The main effects are usually significantly larger than the two-factor interactions, so these higher interaction terms can be safely ignored. Any main effects that are not significant may be dropped for future iterations.
 
 #.	Use the model to estimate the path of steepest ascent (or descent if minimizing :math:`y`):
 
-	.. math::	
-	
+	.. math::
+
 		\dfrac{\partial \hat{y}}{\partial x_1} = b_1  \qquad\qquad \dfrac{\partial \hat{y}}{\partial x_2} = b_2 \qquad \ldots
-		
-	The path of steepest ascent is climbed. Move any one of the main effects, e.g. :math:`b_A` by a certain amount, :math:`\Delta x_A`. Then move the other effects: :math:`\Delta x_i = \frac{b_i}{b_A} \Delta x_A`. For example, :math:`\Delta x_C` is moved by :math:`\frac{b_C}{b_A} \Delta x_A`. 
-	
-	If any of the :math:`\Delta x_i` values are too large to safely implement, then take a smaller proportional step in all factors. Recall that these are coded units, so unscale them to obtain the move amount in real-world units. 
-	
-#.	One can make several sequential steps until the response starts to level off, or if you become certain you have entered a different operating mode of the process. 
+
+	The path of steepest ascent is climbed. Move any one of the main effects, e.g. :math:`b_A` by a certain amount, :math:`\Delta x_A`. Then move the other effects: :math:`\Delta x_i = \frac{b_i}{b_A} \Delta x_A`. For example, :math:`\Delta x_C` is moved by :math:`\frac{b_C}{b_A} \Delta x_A`.
+
+	If any of the :math:`\Delta x_i` values are too large to safely implement, then take a smaller proportional step in all factors. Recall that these are coded units, so unscale them to obtain the move amount in real-world units.
+
+#.	One can make several sequential steps until the response starts to level off, or if you become certain you have entered a different operating mode of the process.
 
 #.	At this point you repeat the factorial experiment from step 1, making the last best response value your new baseline. This is also a good point to reintroduce factors that you may have omitted earlier. Also, if you have a binary factor; investigate the effect of alternating its sign at this point. These additional factorial experiments should also include center points.
 
 #.	Repeat steps 1 through 5 until the linear model estimate starts to show evidence of curvature, or that the interaction terms start to dominate the main effects. This indicates that you are reaching an optimum.
 
 	-	Curvature can be assessed by comparing the predicted center point, i.e. the model's intercept = :math:`b_0`, against the actual center point response(s). A large difference in the prediction, when compared to the model's effects, indicates the response surface is curved.
-	
+
 #.	If there is curvature, add axial points to expand the factorial into a central composite design. Now estimate a quadratic model of the form:
 
 	.. math::
-		
+
 		y = b_0 + b_1x_1 + b_2 x_2	+ \ldots + b_{12}x_1x_2 + \ldots + b_{11}x_1^2 + b_{22}x_2^2 +  \ldots
-	
+
 #.	Draw contour plots of this estimated response surface (all data analysis software packages have contour plotting functions) and determine where to place your sequential experiments. You can also find the model's optimum analytically by taking derivatives of the model function.
 
 
@@ -296,12 +296,12 @@ The general approach for response surface modelling
 
 	.. youtube:: https://www.youtube.com/watch?v=LrCvoK7Ve0Q&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=58
 
-	Response surface methods consider optimization of a single outcome, or response variable, called :math:`y`. In many instances we are interested in just a single response, but more often we are interested in the a multi-objective response, i.e. there are trade-offs. For example we can achieve a higher production rate, but it is at the expense of more energy. 
+	Response surface methods consider optimization of a single outcome, or response variable, called :math:`y`. In many instances we are interested in just a single response, but more often we are interested in the a multi-objective response, i.e. there are trade-offs. For example we can achieve a higher production rate, but it is at the expense of more energy.
 
 	One way to balance all competing objectives is to rephrase the :math:`y` variable in terms of total costs, or better still, net profit. This makes calculating the :math:`y` value more complex, as we have to know the various costs and their relative weightings to calculate the profit. Now you have a single :math:`y` to work with.
-	
+
 	Another way is to superimpose the response surfaces of two or more :math:`y`-variables. This is tremendously helpful when discussing and evaluating alternate operating points, because plant managers and operators can then visually see the trade-offs.
-	
+
 .. TODO: figure here showing RSM trade-offs: two contours superimposed
 
 .. rubric:: Summary
@@ -310,7 +310,7 @@ The general approach for response surface modelling
 
 #.	Response surface methods generally work best when the variables we adjust are numerically continuous. Categorical variables (yes/no, catalyst A or B) are handled by fixing them at one or the other value, and then performing the optimization conditional on those selected values. It is always worth investigating the alternative values once the optimum has been reached.
 
-#.	Many software packages provide tools that help with an RSM study. If you would like to use R in your work, we highly recommend the ``rsm`` package in R. You can read more about the package from `this article <https://www.jstatsoft.org/article/view/v032i07>`_ in the Journal of Statistical Software (**32**, October 2009).
+#.	Many software packages provide tools that help with an RSM study. If you would like to use R in your work, we highly recommend the ``rsm`` package by Russel Lenth, available in R. You can read more about the package in `this article <https://cran.r-project.org/web/packages/rsm/vignettes/rsm.pdf>`_ as well as a `case-study <https://cran.r-project.org/web/packages/rsm/vignettes/rs-illus.pdf>`_.
 
 .. _DOE-EVOP:
 
@@ -336,5 +336,3 @@ Current day examples of EVOP do not appear in the scientific literature much, be
 
 	* Process robustness lecture: http://ocw.mit.edu/OcwWeb/Mechanical-Engineering/2-830JSpring-2008/VideoLectures/index.htm
 	* BHH(v2) has some discussion about this
-
-
