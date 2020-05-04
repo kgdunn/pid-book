@@ -3,7 +3,7 @@ labels = c("2008 Q1", "Q2", "Q3", "Q4",
 profit = c(45, 32, 67, 23, 42, 56, 64, 92)+40
 
 # Draw a bar-plot
-bp <- barplot(profit,
+bp = barplot(profit,
                 names.arg=labels,
                 axisnames=TRUE,
                 ylab="Quarterly profit ($ '000)",
