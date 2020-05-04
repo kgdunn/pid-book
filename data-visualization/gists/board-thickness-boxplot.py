@@ -9,6 +9,6 @@ boards = all_boards.iloc[0:100, 1:7]
 # doing anything else
 boards.head()
 boards.tail()
-boards.describe()
+boards.describe(fontsize=16)
 ax = boards.plot.box()
 plt.show()

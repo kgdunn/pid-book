@@ -15,23 +15,13 @@ The box plot shows the so-called *five-number summary* of a univariate data seri
 
 The 25th percentile is the value below which 25% of the observations in the sample are found. The distance from the 3rd to the 1st quartile is also known as the interquartile range (IQR) and represents the data's spread, similar to the standard deviation.
 
-The following data are thickness measurements of 2-by-6 boards (2-by-6 refers for the thickness and depth of a wooden board), taken at six locations around the edge. Here is a sample of the measurements and a summary of the first 100 boards (created in ``R``):
+The following data are thickness measurements of 2-by-6 boards (2-by-6 refers for the thickness and depth of a wooden board), taken at six locations around the edge. Here is a sample of the measurements and a summary of the first 100 boards (copy in ``R`` and ``python`` respectively):
 
 .. dcl:: R
+	:codefile: data-visualization/gists/board-thickness-boxplot.R
 
-	all.boards <- read.csv('https://openmv.net/file/six-point-board-thickness.csv')
-	boards <- all.boards[1:100, 2:7]
-
-	# Look at the start and end of the data
-	# Examine and summarize your data before
-	# doing anything else
-	head(boards)
-	tail(boards)
-
-	summary(boards)
-
-	boxplot(boards)
-
+.. dcl:: python
+	:codefile: data-visualization/gists/board-thickness-boxplot.py
 
 .. _visualization_boxplot_example:
 
