@@ -5,7 +5,9 @@ import matplotlib.pyplot as plt
 # Plot of temperature vs vapour pressure
 data_file = "https://openmv.net/file/distillation-tower.csv"
 distillation = pd.read_csv(data_file)
-ax = distillation.plot.scatter(x="Temp9", y="VapourPressure")
+ax = distillation.plot.scatter(x="Temp9",
+                               y="VapourPressure",
+                               marker="o", s=20)
 ax.set_xlabel("Temperature (F)")
 ax.set_ylabel("Vapour pressure (kPa)")
 plt.show()
