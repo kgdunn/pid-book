@@ -4,7 +4,9 @@ import matplotlib.pyplot as plt
 labels = ["2008 Q1", "Q2", "Q3", "Q4", "2009 Q1", "Q2", "Q3", "Q4"]
 profit = (
     pd.DataFrame(
-        data=[45, 32, 67, 23, 42, 56, 64, 92], index=labels, columns=["Quarterly profit ($ '000)"]
+        data=[45, 32, 67, 23, 42, 56, 64, 92],
+        index=labels,
+        columns=["Quarterly profit ($ '000)"]
     )
     + 40
 )
