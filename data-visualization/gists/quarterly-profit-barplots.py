@@ -12,7 +12,7 @@ profit = (
 )
 
 # # Draw a bar-plot
-ax = profit.plot.bar()
+ax = profit.plot.bar(color='lightgrey')
 ax.set_ylabel("Quarterly profit ($ '000)")
 plt.show()
 

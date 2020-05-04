@@ -23,6 +23,8 @@ Here is some advice for bar plots:
 	.. dcl:: R
 		:codefile: data-visualization/gists/quarterly-profit-barplots.R
 
+	or this Python code:
+
 	.. dcl:: python
 		:codefile: data-visualization/gists/quarterly-profit-barplots.py
 
