@@ -18,6 +18,7 @@ This source code generates similar, but not identical, figures to those shows he
 	:codefile: data-visualization/gists/scatter-plot-example.R
 
 The equivalent code in Python:
+
 .. dcl:: python
 	:codefile: data-visualization/gists/scatter-plot-example.py
 
