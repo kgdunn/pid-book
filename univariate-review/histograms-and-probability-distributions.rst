@@ -27,15 +27,11 @@ Histograms make sense for categorical variables, but a histogram can also be der
 
 .. dcl:: R
 	:height: 650px
+	:codefile: univariate-review/gists/histogram-normal-distribution.R
 
-	# Create 500 normally distributed points
-	# with a mean of 1100 and standard deviation
-	# of 50 units.
-	data <- rnorm(500, mean=1100, sd=50)
-	hist(data,
-	     xlab="Mass [g] of each package",
-	     ylab="Number of packages (N=500)")
-
+.. dcl:: python
+	:height: 650px
+	:codefile: univariate-review/gists/histogram-normal-distribution.py
 
 Try creating a fictitious histogram for each of the following situations:
 
@@ -77,7 +73,7 @@ Steps to creating a frequency distribution, illustrated with 4 examples, labelle
 
 		A.	number of metal pieces with appearance level "acceptable" and "unacceptable" are added up
 		B.	number of pieces with defect level 1, 2, 3, 4 are counted
-		C.	number of batches with yield inside each bin level are calculated 
+		C.	number of batches with yield inside each bin level are calculated
 		D.	number of temperature values inside each bin level are computed
 
 	#.	Plot the number of observations in category as a bar plot. If you plot the number of observations divided by the total number of observations, :math:`N`, then you are plotting the **relative frequency**.
@@ -101,19 +97,9 @@ A :index:`relative frequency`, also called :index:`density`, is sometimes prefer
 
 .. dcl:: R
 	:height: 450px
+	:codefile: univariate-review/gists/histogram-area.R
 
-	# 1000 normally distributed values
-	N <- 1000
-	values <- rnorm(N)
-	hist(values, freq=TRUE,  xlab="Random values",
-		 cex.lab=1.5, cex.main=1.8, lwd=2,
-		 cex.sub=1.8, cex.axis=1.8,
-		 ylab=paste0("Frequency (N=",N,")"))
-	hist(values, freq=FALSE, xlab="Random values",
-		 cex.lab=1.5, cex.main=1.8, lwd=2,
-		 cex.sub=1.8, cex.axis=1.8,
-		 ylab="Relative density")
 
-	# Compare the two plots: only the y-axis
-	# changes but the general shape remains.
-
+.. dcl:: python
+	:height: 450px
+	:codefile: univariate-review/gists/histogram-area.py
