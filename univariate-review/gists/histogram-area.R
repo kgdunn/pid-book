@@ -1,6 +1,6 @@
 # 1000 normally distributed values
-N <- 1000
-values <- rnorm(N)
+N = 1000
+values = rnorm(N)
 hist(values, freq=TRUE,  xlab="Random values",
         cex.lab=1.5, cex.main=1.8, lwd=2,
         cex.sub=1.8, cex.axis=1.8,
