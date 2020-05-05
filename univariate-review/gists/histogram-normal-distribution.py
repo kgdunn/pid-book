@@ -1,25 +1,15 @@
-# Create 1000 normally distributed points
-# with mean of 0 and standard deviation of 1.
+# Create 500 normally distributed points
+# with a mean of 1100 and standard deviation
+# of 50 units.
 import numpy as np
 import matplotlib.pyplot as plt
 
-N = 1000
-values = np.random.normal(loc=0, scale=1,
+N = 500
+values = np.random.normal(loc=1100,
+                          scale=50,
                           size=N)
 
-plt.subplot(1, 2, 1)
-plt.hist(values, color="white",)
-plt.ylabel("Frequency (N={})".format(N))
-
-plt.subplot(1, 2, 2)
-plt.hist(values,
-         color="white",
-         # For older matplotlib versions
-         normed=True,
-         # Rather, use 'density' instead
-         #density=True
-         )
-plt.ylabel("Relative density")
-
-plt.tight_layout()
+plt.hist(values, color="white", bins=8)
+plt.xlabel("Mass [g] of each package")
+plt.ylabel("Number of packages (N={})".format(N))
 plt.show()
