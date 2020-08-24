@@ -299,11 +299,11 @@ On to checking for normality. We start by first constructing some quantities tha
 	.. code-block:: s
 
 		N = 10
-		index <- seq(1, N)
-		P <- (index - 0.5) / N
+		index = seq(1, N)
+		P = (index - 0.5) / N
 		P
 		[1] 0.05  0.15  0.25  0.35  0.45  0.55  0.65  0.75  0.85  0.95
-		theoretical.quantity <- qnorm(P)
+		theoretical.quantity = qnorm(P)
 		[1] -1.64 -1.04 -0.674 -0.385 -0.126  0.125  0.385  0.6744 1.036  1.64
 
 #.	We also construct the actual quantiles for the sampled data. First, standardize the sampled data by subtracting off its mean and dividing by its standard deviation. Here is an example of 10 batch yields (see actual values below). The mean yield is 80.0 and the standard deviation is 8.35. The standardized yields are found by subtracting off the mean and dividing by the standard deviation. Then the standardized values are sorted. Compare them to the theoretical quantities.
@@ -314,10 +314,10 @@ On to checking for normality. We start by first constructing some quantities tha
 		mean.yield <- mean(yields)		# 80.0
 		sd.yield <- sd(yields)			# 8.35
 
-		yields.z <- (yields - mean.yield)/sd.yield
+		yields.z = (yields - mean.yield)/sd.yield
 		[1] 0.734  0.674 -0.978  1.82 -0.35 -1.04 -1.34 -0.140  0.818 -0.200
 
-		yields.z.sorted <- sort(yields.z)
+		yields.z.sorted = sort(yields.z)
 		[1] -1.34 -1.04 -0.978 -0.355 -0.200 -0.140  0.674  0.734  0.818  1.82
 
 		theoretical.quantity  # numbers are rounded in the printed output
