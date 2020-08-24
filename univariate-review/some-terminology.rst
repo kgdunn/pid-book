@@ -105,8 +105,7 @@ We review a couple of concepts that you should have seen in a prior statistical 
 	.. dcl:: python
 		:height: 350px
 		:codefile: univariate-review/gists/create-normally-distributed-values-with-variance-parameter.py
-
-
+		
 	The square root of variance, called the :index:`standard deviation` is a more useful measure of spread: it is easier to visualize on a histogram and has the advantage of being in the same units of measurement as the variable itself.
 
 **Degrees of freedom**
