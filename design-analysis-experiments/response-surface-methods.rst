@@ -296,7 +296,7 @@ The general approach for response surface modelling
 
 	.. youtube:: https://www.youtube.com/watch?v=LrCvoK7Ve0Q&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=58
 
-	Response surface methods consider optimization of a single outcome, or response variable, called :math:`y`. In many instances we are interested in just a single response, but more often we are interested in the a multi-objective response, i.e. there are trade-offs. For example we can achieve a higher production rate, but it is at the expense of more energy.
+	Response surface methods consider optimization of a single outcome, or response variable, called :math:`y`. In many instances we are interested in just a single response, but more often we are interested in a multi-objective response, i.e. there are trade-offs. For example we can achieve a higher production rate, but it is at the expense of more energy.
 
 	One way to balance all competing objectives is to rephrase the :math:`y` variable in terms of total costs, or better still, net profit. This makes calculating the :math:`y` value more complex, as we have to know the various costs and their relative weightings to calculate the profit. Now you have a single :math:`y` to work with.
 
