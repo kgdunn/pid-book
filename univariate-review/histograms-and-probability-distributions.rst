@@ -101,5 +101,5 @@ A :index:`relative frequency`, also called :index:`density`, is sometimes prefer
 
 
 .. dcl:: python
-  :height: 650px
+  	:height: 650px
 	:codefile: univariate-review/gists/histogram-area.py

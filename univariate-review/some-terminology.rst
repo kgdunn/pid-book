@@ -71,17 +71,11 @@ We review a couple of concepts that you should have seen in a prior statistical 
 
 	.. dcl:: R
 		:height: 200px
-
-
-
-	.. dcl:: R
-		:height: 200px
 		:codefile: univariate-review/gists/create-normally-distributed-values.R
 
 	.. dcl:: python
-		:height: 650px
-		:codefile: univariate-review/gists/histogram-normal-distribution.py
-
+		:height: 200px
+		:codefile: univariate-review/gists/create-normally-distributed-values.py
 
 	This is only one of several statistics that describes your data: if you told your customer that the average density of your liquid product was 1.421 g/L, and nothing further, the customer might assume all lots of the same product have a density of 1.421 g/L. But we know from :ref:`our earlier discussion <univariate-about-variability>` that there will be variation. We need information, in addition to the mean, to quantify the distribution of values: *the spread*.
 
