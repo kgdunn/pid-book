@@ -72,15 +72,15 @@ We review a couple of concepts that you should have seen in a prior statistical 
 	.. dcl:: R
 		:height: 200px
 
-		# A vector of 50 normally distributed
-		# random numbers
-		N <- 50
-		x <- rnorm(N)
-		mean(x)
 
-		# Run the code several times, to check
-		# that the mean is approximately 0
-		# Check what the 'x' variable contains.
+
+	.. dcl:: R
+		:height: 200px
+		:codefile: univariate-review/gists/create-normally-distributed-values.R
+
+	.. dcl:: python
+		:height: 650px
+		:codefile: univariate-review/gists/histogram-normal-distribution.py
 
 
 	This is only one of several statistics that describes your data: if you told your customer that the average density of your liquid product was 1.421 g/L, and nothing further, the customer might assume all lots of the same product have a density of 1.421 g/L. But we know from :ref:`our earlier discussion <univariate-about-variability>` that there will be variation. We need information, in addition to the mean, to quantify the distribution of values: *the spread*.
@@ -134,7 +134,7 @@ We review a couple of concepts that you should have seen in a prior statistical 
 	.. youtube:: https://www.youtube.com/watch?v=GlVNclR6UVo&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=7
 
 	Outliers are hard to define precisely, but an acceptable definition is that an :index:`outlier` is a point that is unusual, given the context of the surrounding data. Another definition which is less useful, but nevertheless points out the problem of concretely defining what an outlier is, is this: "*An outlier - I know it when I see it!*"
-	
+
 	The following 2 sequences of numbers show the number **4024** that appears in the first sequence, has become an outlier in the second sequence. It is an outlier based on the surrounding context.
 
 	* 4024, 5152, 2314, 6360, 4915, 9552, 2415, 6402, 6261
