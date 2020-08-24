@@ -351,7 +351,7 @@ from pygments.formatters.latex import LatexFormatter
 class CustomLatexFormatter(LatexFormatter):
     def __init__(self, **options):
         super(CustomLatexFormatter, self).__init__(**options)
-        self.verboptions = r"formatcom=\footnotesize"
+        self.verboptions = r"formatcom=\footnotesize,frame=lines"
 
 
 PygmentsBridge.latex_formatter = CustomLatexFormatter
@@ -505,7 +505,7 @@ _PREAMBLE = r"""
   }
 
   \definecolor{VerbatimColor}{rgb}{1,1,1}
-  \definecolor{VerbatimBorderColor}{rgb}{0.5,0.5,0.5}
+  \definecolor{VerbatimBorderColor}{rgb}{1,1,1}
 
 
   % Better style: use ragged right (based on https://tufte-latex.github.io/tufte-latex/)

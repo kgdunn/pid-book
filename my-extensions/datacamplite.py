@@ -94,6 +94,10 @@ def visit_dcl_node_latex(self, node):
     else:
         hlcode += "\\end{sphinxVerbatim}"
 
+    # HACKY HACK to get the caption in the LaTeX listing. This is not ideal, but it works
+    # It finds the piece of text that is specified in the "conf.py" file, and augments it.
+    hlcode = hlcode.replace("frame=lines", f"frame=lines,label=\\textit{{{node['caption']}}}")
+
     hllines = "\\fvset{hllines={, %s,}}%%" % str(highlight_args.get("hl_lines", []))[1:-1]
     self.body.append("\n" + hllines + "\n" + hlcode + "\n")
 
@@ -150,11 +154,15 @@ class DataCampLite(Directive):
         else:
             self.assert_has_content()
 
+        language = self.arguments[0]
+        lang = language[0].upper() + language[1:]
         node = dcl(
-            language=self.arguments[0],
+            language=language,
             source=self.content.data,
             height=get_size(self.options, "height"),
+            caption=self.options.get("codefile", f"/{lang} code").split("/")[-1],
         )
+
         node.document = self.state.document
         node.rawsource = "\n".join(self.content.data)
         node.line = self.lineno
