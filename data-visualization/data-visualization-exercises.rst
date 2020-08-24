@@ -184,13 +184,13 @@ Exercises
 
 	#.	A box plot is an effective way to summarize and compare the data for each day of the week.
 
-		.. code-block:: s
+		.. dcl:: R
 
-		    web <- read.csv('https://openmv.net/file/website-traffic.csv')
+		    web = read.csv('https://openmv.net/file/website-traffic.csv')
 
 		    # Re-order the factors in this order
-		    day.names <- c("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday","Thursday", "Friday" )
-		    days <- factor(web$DayOfWeek, level=day.names)
+		    day.names = c("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday","Thursday", "Friday" )
+		    days = factor(web$DayOfWeek, level=day.names)
 		    boxplot(web$Visits ~ days)
 
 		.. image:: ../figures/visualization/website-traffic-boxplot.png
@@ -208,18 +208,20 @@ Exercises
 		.. image:: ../figures/visualization/website-traffic-timeseries.jpg
 			:align: center
 
-	The best way to draw the time-series plot is to use proper time-based labelling on the x-axis, but we won't cover that topic here. If you are interested, read up about the ``xts`` package (`see the R tutorial <https://learnche.org/4C3/Software_tutorial>`_) and it's plot command. See how it is used in the code below::
+	The best way to draw the time-series plot is to use proper time-based labelling on the x-axis, but we won't cover that topic here. If you are interested, read up about the ``xts`` package (`see the R tutorial <https://learnche.org/4C3/Software_tutorial>`_) and it's plot command. See how it is used in the code below:
 
-		web <- read.csv('https://openmv.net/file/website-traffic.csv')
+		.. dcl:: R
 
-		layout(matrix(c(1,2), 1, 2))
-		plot(web$Visits, type="o")
+			web = read.csv('https://openmv.net/file/website-traffic.csv')
 
-		# A better plot using the xts library
-		library(xts)
-		date.order <- as.Date(web$MonthDay, format=" %B %d")
-		web.visits <- xts(web$Visits, order.by=date.order)
-		plot(web.visits, major.format="%b")
+			layout(matrix(c(1,2), 1, 2))
+			plot(web$Visits, type="o")
+
+			# A better plot using the xts library
+			library(xts)
+			date.order = as.Date(web$MonthDay, format=" %B %d")
+			web.visits = xts(web$Visits, order.by=date.order)
+			plot(web.visits, major.format="%b")
 
 .. question::
 	:copyright_issue: yes
