@@ -9,8 +9,7 @@ figures
 temp/
 DELETE/*
 __pycache__/
-.vscode/settings.json
-
+**/.vscode/*
 
 design-analysis-experiments/Readings/
 latent-variable-modelling/Readings/
