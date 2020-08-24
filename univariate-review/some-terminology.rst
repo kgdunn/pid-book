@@ -97,24 +97,14 @@ We review a couple of concepts that you should have seen in a prior statistical 
 
 	Dividing by :math:`n-1` makes the variance statistic, :math:`s^2`, an unbiased estimator of the population variance, :math:`\sigma^2`. However, in many data sets our value for :math:`n` is large, so using a divisor of :math:`n`, which you might come across in computer software or other texts, rather than :math:`n-1` as shown here, leads to little difference.
 
+
 	.. dcl:: R
 		:height: 350px
+		:codefile: univariate-review/gists/create-normally-distributed-values-with-variance-parameter.R
 
-		# A vector of 50 normally distributed
-		# random numbers with a standard
-		# deviation of 5
-		N <- 50
-		spread <- 5
-		x <- rnorm(N, sd=spread)
-
-		paste0('Standard deviation = ',
-		       round(sd(x), 3))
-		paste0('The variance is    = ',
-		       round(var(x), 3))
-		paste0('Square root of variance = ',
-		       round(sqrt(var(x)), 3))
-
-		# Run the code several times.
+	.. dcl:: python
+		:height: 350px
+		:codefile: univariate-review/gists/create-normally-distributed-values-with-variance-parameter.py
 
 
 	The square root of variance, called the :index:`standard deviation` is a more useful measure of spread: it is easier to visualize on a histogram and has the advantage of being in the same units of measurement as the variable itself.

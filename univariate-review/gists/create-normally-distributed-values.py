@@ -1,7 +1,7 @@
 # A vector of 50 normally distributed
 # random numbers. If you have Python 3.8
 # or higher, consider using the
-# 'statistics' package.
+# 'statistics' package instead.
 
 import numpy as np
 
