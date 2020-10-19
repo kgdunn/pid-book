@@ -12,7 +12,7 @@ Saturated designs are most suited for screening, and should always be run when y
 For example, a :math:`2^{7-4}_{\text{III}}` factorial, introduced in the section on :ref:`highly fractionated designs <DOE-highly-fractionated-designs>`, will screen 7 factors in 8 experiments. Once you have run the 8 experiments you can quickly tell which subset of the 7 factors are actually important, and spend the rest of your budget on clearly understanding these effects and their interactions. Bear in mind that there is a risk of confounding, as previously described in that section.
 
 Let's see how by continuing the previous example, repeated again below with the corresponding values of :math:`y`. Recall it was a
-:ref:`set of eight experiments in seven factorss <DOE-highly-fractionated-designs>`:
+:ref:`set of eight experiments in seven factors <DOE-highly-fractionated-designs>`:
 
 	.. tabularcolumns:: |c||c|c|c||c|c|c|c|c|
 
