@@ -3,7 +3,7 @@ What is process monitoring about?
 
 Most industries have now realized that product quality is not an option. There was historical thinking that quality is the equivalent of "gold-plating" your product, but that has mostly fallen away. Product quality is not always a cost-benefit trade-off: it is beneficial to you in the long-term to improve your :index:`product quality`, and for your customers as well.
 
-As we spoke about in the :ref:`univariate review section <SECTION-univariate-review>`, good quality products (low variability) actually boost your profits by lowering costs in the long thermocouples. You have lower costs when you *do not* have to scrap off-specification product, or have to rework bad product. You have increased long-term sales with more loyal customers and improved brand reputation as a reliable and consistent supplier.
+As we spoke about in the :ref:`univariate review section <SECTION-univariate-review>`, good quality products (low variability) actually boost your profits by lowering costs in the long term. You have lower costs when you *do not* have to scrap off-specification product, or have to rework bad product. You have increased long-term sales with more loyal customers and improved brand reputation as a reliable and consistent supplier.
 
 An example that most people in North America can relate to is the rise in Asian car manufacturers' market share, at the expense American manufacturers' market share. The market has the perception that Asian cars are more reliable than American cars and resale rates certainly reflect that. The perception has started to change since 2010, as North American manufacturers have become more quality conscious. That is an illustration of how lack of variability in your product can benefit you.
 
@@ -17,7 +17,7 @@ Notice here that process monitoring is not intended to be automatic feedback con
 *	these adjustments are made **manually** [not automatically with actuators], 
 *	and take place due to **special causes** [not due to regularly occurring process disturbances].
 
-As seen by the items in square brackets above, automatic :index:`feedback control` is applied continuously by computer systems and makes short-term, temporary changes to the system to keep it at the desired target (called the setpoint) in the face of process disturbances.
+As seen by the items in square brackets above, automatic :index:`feedback control` is applied continuously by computer systems and makes short-term, temporary changes to the system to keep it at the desired target (called the setpoint) in the face of process disturbances. Process monitoring is very different therefore to feedback control.
 
 Note that process monitoring is often called :index:`statistical process control` (SPC). This can lead to unnecessary confusion with process control, i.e. the design and implementation of feedback control, feed-forward control and other automated control systems. We will not use the term SPC, rather we will use the term *process monitoring*.
 
