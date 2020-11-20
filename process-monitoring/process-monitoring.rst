@@ -25,9 +25,9 @@
 Process monitoring in context
 ==============================
 
-In the first section we learned about :ref:`visualizing data <SECTION-data-visualization>`, then we moved on to reviewing :ref:`univariate statistics <SECTION-univariate-review>`. This section combines both areas, showing how to create a system that monitors a single, univariate, value from any process. These systems are easily implemented online, and generate great value for companies that use them in day-to-day production. 
+In the first section we learned about :ref:`visualizing data <SECTION-data-visualization>`, then we moved on to reviewing :ref:`univariate statistics <SECTION-univariate-review>`. This section now combines both topics, showing how to create a system that monitors a single, univariate, value from any process. These monitoring systems are easily implemented online, and generate great value for companies that use them in day-to-day production. This is one of their greatest advantages: almost no training is required to interpret the visualization and secondly the human eye can quickly pick up any patters or trends in the plots; both expected and unexpected patterns.
 
-Monitoring charts are a graphical tool, enabling anyone to rapidly detect a problem by visual analysis. The next logical step after detection is to diagnose the problem, but we will cover diagnosis in the section on :ref:`latent variable models <SECTION_latent_variable_modelling>`.
+Monitoring charts are a graphical tool, enabling anyone to rapidly detect a problem by visual analysis. The next logical step after detection of a problem is to diagnose it, but we will cover diagnosis in the section on :ref:`latent variable models <SECTION_latent_variable_modelling>`.
 
 This section is the last section where we deal with univariate data; after this section we start to use and deal with 2 or more variables. 
 
@@ -42,16 +42,18 @@ Usage examples
 The material in this section is used whenever you need to rapidly detect problems. It has tangible application in many areas - in fact, you have likely encountered these monitoring charts in areas such as a hospital (monitoring a patient's heart beat), stock market charts (for intraday trading), or in a processing/manufacturing facility (control room computer screens).
 
 	-	*Co-worker*: We need a system to ensure an important dimension on our product is stable and consistent over the entire shift.
-	-	*Yourself*: We know that as the position of a manufacturing robot moves out of alignment that our product starts becoming inconsistent; more variable. How can we quickly detect this slow drift?
+	-	*Yourself*: We know that as the position of a manufacturing robot moves out of alignment that our product starts becoming inconsistent; more variable. How can we quickly detect this slow drift in alignment and predict when to stop the process and perform preventative maintenance?
 	-	*Manager*: the hourly average profit, and process throughput is important to the head-office; can we create a system for them to track that?
 	-	*Potential customer*: what is your process capability - we are looking for a new supplier that can provide a low-variability raw material for us with |Cpk| of at least 1.6, preferably higher.
 	
-**Note**: process monitoring is mostly *reactive* and not *proactive*. So it is suited to *incremental* process improvement, which is typical of most improvements.
+**Note**: process monitoring is mostly *reactive* and not *proactive*. So it is suited to *incremental* process improvement, which is typical of most improvements. However, using the monitoring charts to make proactive changes to avoid a bigger problem later in time is certainly possible by adding additional rules and calculations to the plots. For example, rules to forecast a few steps ahead, with prediction intervals, can be easily added.
+
+We point out in the :ref:`next section <monitoring_is_not_feedback_control>` that process monitoring is not a feedback control system. So that section should be read in the context of thinking reactively and proactively (in a feed forward anticipatory manner).
 
 What we will cover
 ~~~~~~~~~~~~~~~~~~~~
 
-We will consider 3 main charts after introducing some basic concepts: Shewhart charts, CUSUM charts and EWMA (exponentially weighted moving average) charts. The EWMA chart has an adjustable parameter that captures the behaviour of a Shewhart chart at one extreme and a CUSUM chart at the other extreme.
+We will consider 3 main charts after introducing some basic concepts: Shewhart charts, CUSUM charts and (exponentially weighted moving average) charts. The EWMA chart has an adjustable parameter that captures the behaviour of a Shewhart chart at one extreme and a CUSUM chart at the other extreme, or a combination of both is possible by settings this parameter on a sliding scale.
 
 Concepts
 ~~~~~~~~~~~~~~~
@@ -80,11 +82,9 @@ References and readings
 
 #.	**Recommended**: Montgomery and Runger, *Applied Statistics and Probability for Engineers*.
 
-#.	Hogg and Ledolter, *Engineering Statistics*.
-
 #.	Hunter, J.S. "`The Exponentially Weighted Moving Average <https://asq.org/quality-resources/articles/the-exponentially-weighted-moving-average?id=27d7a4ac83cf47a18df2d09729369f41>`_", *Journal of Quality Technology*, **18** (4) p 203 - 210, 1986.
 
-#.	Macgregor, J.F. "`Using On-Line Process Data to Improve Quality: Challenges for Statisticians <https://dx.doi.org/10.1111/j.1751-5823.1997.tb00311.x>`_", *International Statistical Review*, **65**, p 309-323, 1997.
+#.	MacGregor, J.F. "`Using On-Line Process Data to Improve Quality: Challenges for Statisticians <https://dx.doi.org/10.1111/j.1751-5823.1997.tb00311.x>`_", *International Statistical Review*, **65**, p 309-323, 1997.
 
 .. 
 	Box, The R. A. Fisher Memorial Lecture, 1988- Quality Improvement- An Expanding Domain for the Application of Scientific Method, Phil. Trans. R. Soc. Lond. A February 24, 1989 327:617-630, [https://dx.doi.org/10.1098/rsta.1989.0017 DOI]

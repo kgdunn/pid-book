@@ -9,6 +9,8 @@ An example that most people in North America can relate to is the rise in Asian 
 
 In order to achieve this high level of final product quality, our systems should be producing low variability product at every step of the manufacturing process. Rather than wait till the end of the process to *discover* poor quality product, we should be monitoring, in real-time, raw materials and the intermediate steps in our process. When we discover unusual variability the lofty aim is to make (permanent) process adjustments to avoid that variability from ever occurring again.
 
+.. _monitoring_is_not_feedback_control:
+
 Notice here that process monitoring is not intended to be automatic feedback control. It has the same principles of quantifying unusual operation (errors), but the intention with *process monitoring* is:
 
 *	that any process adjustments are **infrequent**, 
