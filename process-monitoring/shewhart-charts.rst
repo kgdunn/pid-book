@@ -9,7 +9,7 @@ Shewhart charts
 
 A :index:`Shewhart chart <pair: Shewhart chart; process monitoring>`, named after Walter Shewhart from Bell Telephone and Western Electric, monitors that a process variable remains on target and within given upper and lower limits. It is a monitoring chart for *location*. It answers the question whether the variable's :index:`location <single: location (process monitoring)>` is stable over time. It does not track anything else about the measurement, such as its standard deviation. Looking ahead: :ref:`we show later <monitoring_shewart_chart_slugishness>` that a pure Shewhart chart needs extra rules to help monitor the location of a variable effectively.
 
-The defining characteristics of a Shewhart chart are: a target, upper and lower control limits (:index:`UCL <single: upper control limit>` and :index:`LCL <single: lower control limit>`). These action limits are defined so that no action is required as long as the variable plotted remains within the limits. In other words a special cause is not likely present if the points remain the UCL and LCL.
+The defining characteristics of a Shewhart chart are: a target, upper and lower control limits (:index:`UCL <single: upper control limit>` and :index:`LCL <single: lower control limit>`). These action limits are defined so that no action is required as long as the variable plotted remains within the limits. In other words a special cause is not likely present if the points remain within the UCL and LCL.
 
 Derivation using theoretical parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
