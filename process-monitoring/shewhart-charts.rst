@@ -257,7 +257,7 @@ However, an alternative chart, the CUSUM chart is more effective at detecting a 
 
 	*Note*: do not use robust methods to calculate the values plotted on the charts during phase 2, only use robust methods to calculate the chart limits in phase 1!
 	
-*Warning limits**: it is common to see warning limits on a monitoring chart at :math:`\pm 2 \sigma`, while the :math:`\pm 3\sigma` limits are called the action limits. Real-time computer systems usually use a colour scheme to distinguish between the warning state and the action state. For example, the chart background changes from green, to orange to red as the deviations from target become more severe.
+**Warning limits**: it is common to see warning limits on a monitoring chart at :math:`\pm 2 \sigma`, while the :math:`\pm 3\sigma` limits are called the action limits. Real-time computer systems usually use a colour scheme to distinguish between the warning state and the action state. For example, the chart background changes from green, to orange to red as the deviations from target become more severe.
 
 .. _monitoring_adjust_limits:
 
