@@ -40,8 +40,8 @@ Define the process target as :math:`T`.
 		\begin{array}{lcrcl}
 			\text{Let}  \qquad\qquad && x_t                              &=& \text{new data measurement}\\
 			\text{let}  \qquad\qquad && e_t                              &=& x_t - \hat{x}_t \\
-			\text{where}			 && \hat{x}_t                        &=& \hat{x}_{t-1} + \lambda e_{t-1} \qquad\qquad \\
-			\text{shifting everything one step forward:}&& \hat{x}_{t+1} &=& \hat{x}_{t}   + \lambda e_{t}    \\
+			\text{where}             && \hat{x}_t                        &=& \hat{x}_{t-1} + \lambda e_{t-1} \qquad\qquad \\
+			\text{shifting everything one step forward:}&& \hat{x}_{t+1} &=& \hat{x}_{t}   + \lambda e_{t}\\
 		\end{array}
 
 The reason for the :math:`\wedge` mark above the :math:`x_t`, as in :math:`\hat{x}_t`, is that :math:`\hat{x}_t` indicates that it is a prediction of the actual measured :math:`x_t` value. 

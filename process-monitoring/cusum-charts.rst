@@ -26,7 +26,7 @@ The following equation shows how this chart works.
 	:align: center
 	:scale: 90
 	
-Values of :math:`S_t` are the values plotted on the y-axis of a CUSUM chart. Imagine during a period of good, stable process operation around the target :math:`T`, then these :math:`S_t` numbers are just random errors, with mean of zero. The long-term sum of :math:`S_t` is also zero, as the positive and negative errors keep cancelling out.
+Values of :math:`S_t` are the values plotted on the y-axis of a CUSUM chart. Imagine during a period of good, stable, in-control process operation around the target :math:`T`, then these :math:`S_t` numbers are just random errors, with mean of zero. The long-term sum of :math:`S_t` is also zero, as the positive and negative errors keep cancelling out.
 
 So imagine a CUSUM chart where at some time point the process mean shifts up by :math:`\Delta` units, causing future values of :math:`x_t` to be :math:`x_t + \Delta` instead. Now the summation in the last equation of :eq:`CUSUM-derivation` has an extra :math:`\Delta` term added at each step to :math:`S_t`. Every point will build up an accumulation of :math:`\Delta`, which shows up as a positive or negative slope in the CUSUM chart. 
 
@@ -40,5 +40,5 @@ The process is considered in control as long as all points are within the arms o
 
 Once the process has been investigated the CUSUM value, :math:`S_t` is often reset to zero; though other resetting strategies exist. A tabular version of the CUSUM chart also exists which tends to be the version used in software systems.
 
-The purpose of this section is not to provide formulas for the V-mask or tabular CUSUM charts, only to explain the CUSUM concept to set the next section on EWMA control charts in perspective.
+The purpose of this section is not to provide formulas for the V-mask or tabular CUSUM charts, only to explain the CUSUM concept to put the next section on EWMA control charts in perspective.
 
