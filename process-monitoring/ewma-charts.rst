@@ -25,7 +25,7 @@ The MA chart plots values of :math:`\overline{x}_t`, calculated from groups of s
 
 The EWMA chart is similar to the MA chart, but uses different weights; heavier weights for more recent observations, tailing off exponentially to very small weights further back in history. Let's take a look at a derivation. 
 
-Define the process target as :math:`T` and define :math:`x_t` as a new data measurement arriving now. We then try to *create an estimate of that incoming value, giving some weight, :math:`\lambda`, to the actual measured value, and the rest of the weight, :math:`1-\lambda`, to the prior estimate*.
+Define the process target as :math:`T` and define :math:`x_t` as a new data measurement arriving now. We then try to *create an estimate of that incoming value, giving some weight*, :math:`\lambda`, *to the actual measured value, and the rest of the weight*, :math:`1-\lambda`, *to the prior estimate*.
 
 Let us write the estimate of :math:`x_t` as :math:`\hat{x}_t`, with the :math:`\wedge` mark above the :math:`x_t` to indicate that it is a prediction of the actual measured :math:`x_t` value. The prior estimate is therefore written as :math:`\hat{x}_{t-1}`.
 
