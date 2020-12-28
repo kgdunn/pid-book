@@ -52,13 +52,13 @@ An alternative way of writing the above equation gives a new insight into the va
 											&& \hat{x}_{t+1} &=& \left(1-\lambda \right)\hat{x}_{t}   + \lambda x_t  \\
 		\end{array}
 
-That last line shows that a one-step-ahead prediction for :math:`x` at time :math:`t+1` is a weighted sum of two components: the predicted value, :math:`\hat{x}_t`, and the current measured value, :math:`x_t`, weighted to add up to 1. This predictor can be quite valuable in a slow-moving process, to estimate the next value one step into the future.
+That last line shows that a one-step-ahead prediction for :math:`x` at time :math:`t+1` is a weighted sum of two components: the predicted value, :math:`\hat{x}_t`, and the current measured value, :math:`x_t`, with the weights adding up to 1. This predictor can be quite valuable in a slow-moving process, to estimate the next value one step into the future.
 
 The plot below shows visually what happens as the weight of :math:`\lambda` is changed. In this example a shift of :math:`\Delta = 1\sigma = 3` units occurs abruptly at :math:`t=150`. This is of course not known in practice, but the purpose here is to illustrate the effects of choosing :math:`\lambda`. Prior to that change the process mean is :math:`\mu=20` and the raw data has :math:`\sigma = 3`. 
 
-The first chart is the raw data and also a Shewhart chart with subgroup size of 1; the control limits are at :math:`\pm 3` time the standard deviation. This control chart barely picks up the shift, as was explained in a :ref:`prior section <monitoring_shewart_chart_slugishness>`.
+The first chart is the raw data and also a Shewhart chart with subgroup size of 1; the control limits are at :math:`\pm 3` time the standard deviation, so at 11.0 and 19.0 units. This control chart barely picks up the shift, as was explained in a :ref:`prior section <monitoring_shewart_chart_slugishness>`.
 
-The second, third and fourth charts are EWMA charts with different values of :math:`\lambda`; the line is essentially a one-step-ahead prediction value from equation :eq:`ewma-derivation-2`, :math:`\hat{x}_{t+1}` = EWMA value plotted at time :math:`t`. We see that as :math:`\lambda` decreases, the charts are smoother, since the averaging effect is greater: more and more weight is given to the history, :math:`\hat{x}_{t}`, and less weight to the current data point, :math:`x_t`.  See equation :eq:`ewma-derivation-2` to understand that interpretation. Also note carefully how the control limits become narrower as the :math:`\lambda` decreases.
+The second, third and fourth charts are EWMA charts with different values of :math:`\lambda`; the line is the value on the left-hand side of equation :eq:`ewma-derivation-2`, in other words it is :math:`\hat{x}_{t+1}`, the EWMA value at time :math:`t`. We see that as :math:`\lambda` decreases, the charts are smoother, since the averaging effect is greater: more and more weight is given to the history, :math:`\hat{x}_{t}`, and less weight to the current data point, :math:`x_t`.  See equation :eq:`ewma-derivation-2` to understand that interpretation. Also note carefully how the control limits become narrower as the :math:`\lambda` decreases, as is explained shortly below.
 
 To see why :math:`\hat{x}_{t}` represents historical data, you can recursively substitute and show that:
 
@@ -78,7 +78,7 @@ The final chart of the sequence of 5 charts is a CUSUM chart, which is :ref:`the
 
 In the next figure, we show a comparison of the weights used in different monitoring charts studied so far.
 
-From the above discussion and the weights shown for the 4 different charts, it should be clear now how an EWMA chart is a tradeoff between a Shewhart chart and a CUSUM chart. As :math:`\lambda \rightarrow 1`, the EWMA chart behaves more as a Shewhart chart, giving only weight to the most recent observation. While as :math:`\lambda \rightarrow 0` the EWMA chart starts to have an infinite memory (like a CUSUM chart).
+From the above discussion and the weights shown for the 4 different charts, it should be clear now how an EWMA chart is a tradeoff between a Shewhart chart and a CUSUM chart. As :math:`\lambda \rightarrow 1`, the EWMA chart behaves more as a Shewhart chart, giving only weight to the most recent observation. While as :math:`\lambda \rightarrow 0` the EWMA chart starts to have an infinite memory (like a CUSUM chart). There are 12 data points used in the example, so the CUSUM 'weight' is one twelfth or :math:`\approx 0.0833`.
 
 .. image:: ../figures/monitoring/explain-weights-for-process-monitoring.png
 	:alt: ../figures/monitoring/explain-weights-for-process-monitoring.R
