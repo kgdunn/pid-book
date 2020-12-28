@@ -25,25 +25,25 @@ The MA chart plots values of :math:`\overline{x}_t`, calculated from groups of s
 
 The EWMA chart is similar to the MA chart, but uses different weights; heavier weights for more recent observations, tailing off exponentially to very small weights further back in history. Let's take a look at a derivation. 
 
-Define the process target as :math:`T` and define :math:`x_t` as a new data measurement arriving now. We then try to create an estimate of that incoming value, giving some weight, :math:`\lambda`, to the actual measured value, and the rest of the weight, :math:`1-\lambda`, to the prior estimate.
+Define the process target as :math:`T` and define :math:`x_t` as a new data measurement arriving now. We then try to *create an estimate of that incoming value, giving some weight, :math:`\lambda`, to the actual measured value, and the rest of the weight, :math:`1-\lambda`, to the prior estimate*.
 
 Let us write the estimate of :math:`x_t` as :math:`\hat{x}_t`, with the :math:`\wedge` mark above the :math:`x_t` to indicate that it is a prediction of the actual measured :math:`x_t` value. The prior estimate is therefore written as :math:`\hat{x}_{t-1}`.
 
-So putting into equation form that an estimate of that incoming value, is given by some weight, :math:`\lambda` and the rest of the weight, :math:`1-\lambda`, to the prior estimate:
+So putting into equation form that "an estimate of that incoming value, is given by some weight, :math:`\lambda` and the rest of the weight, :math:`1-\lambda`, to the prior estimate":
 
 .. math:: 
 	:label: ewma-derivation-2
 	
 		\begin{array}{rcl}
 			\hat{x}_{t} &=& \lambda x_t + \left(1-\lambda \right)\hat{x}_{t-1} \\			
-			\hat{x}_{t} &=& \hat{x}_{t-1} +\lambda \left( x_t + -\hat{x}_{t-1} \right)   \\
+			\hat{x}_{t} &=& \hat{x}_{t-1} +\lambda \left( x_t -\hat{x}_{t-1} \right)   \\
 			\hat{x}_{t+1} &=& \hat{x}_{t} +\lambda \left( x_{t+1} -\hat{x}_{t} \right)  \\
 			\hat{x}_{t+1} &=& \lambda  x_{t+1} +\left(1-\lambda \right)  \hat{x}_{t}
 		\end{array}
 
-To start the EWMA sequence we define the value for :math:`\hat{x}_0 = T` and :math:`\hat{x}_1 = \lambda x_1 + T \left(1-lambda \right)`. 
+To start the EWMA sequence we define the value for :math:`\hat{x}_0 = T` and :math:`\hat{x}_1 = \lambda x_1 + T \left(1-\lambda \right)`. A worked example is given further on in this section.
 
-The last line in the equation set shows that a 1-step-ahead prediction for :math:`x` at time :math:`t+1` is a weighted sum of two components: the current measured value, :math:`x_t`, and secondly the predicted value, :math:`\hat{x}_t`, with the weights summing up to 1. This gives a way to experimentally find a suitable :math:`\lambda` value from historical data: adjust it up and down until the differences between :math:`\hat{x}_{t+1}` and :math:`x_{t+1}` are small.
+The last line in the equation group above shows that a 1-step-ahead prediction for :math:`x` at time :math:`t+1` is a weighted sum of two components: the current measured value, :math:`x_t`, and secondly the predicted value, :math:`\hat{x}_t`, with the weights summing up to 1. This gives a way to experimentally find a suitable :math:`\lambda` value from historical data: adjust it up and down until the differences between :math:`\hat{x}_{t+1}` and the actual measured values of :math:`x_{t+1}` are small.
 
 The next plot shows visually what happens as the weight of :math:`\lambda` is changed. In this example a shift of :math:`\Delta = 1\sigma = 3` units occurs abruptly at :math:`t=150`. This is of course not known in practice, but the purpose here is to illustrate the effects of choosing :math:`\lambda`. Prior to that change the process mean is :math:`\mu=20` and the raw data has :math:`\sigma = 3`. 
 
@@ -109,8 +109,8 @@ The R code here shows one way of calculating the EWMA values for a vector of dat
 	}
 	
 	# Try using this function now:
-	x <- c(5, 4, 5, 4, 5, 4, 5)
-	ewma(x, lambda = 0.6, target = 5)
+	x <- c(200, 210, 190, 190, 190, 190)
+	ewma(x, lambda = 0.3, target = 200)
 
 
 .. EWMA can detect both changes in level and changes in variance
@@ -121,8 +121,8 @@ Here is a worked example, starting with the assumption the process is at the tar
 ============= ==================== ==================================================
 Sample number Raw data :math:`x_t` Value plotted on chart: :math:`\hat{x}_t`  
 ============= ==================== ==================================================
-0             -                    200	
-1             200                  200
+0             NA                   200	
+1             200                  :math:`0.3 \times 200 + 0.7 \times 200 = 200` 
 2             210                  :math:`0.3 \times 210 + 0.7 \times 200 = 203` 
 3             190                  :math:`0.3 \times 190 + 0.7 \times 203 = 199.1`
 4             190                  :math:`0.3 \times 190 + 0.7 \times 199.1 = 196.4` 
