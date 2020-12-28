@@ -25,36 +25,27 @@ The MA chart plots values of :math:`\overline{x}_t`, calculated from groups of s
 
 The EWMA chart is similar to the MA chart, but uses different weights; heavier weights for more recent observations, tailing off exponentially to very small weights further back in history. Let's take a look at a derivation. 
 
-Define the process target as :math:`T`.
+Define the process target as :math:`T` and define :math:`x_t` as a new data measurement arriving now. We then try to create an estimate of that incoming value, giving some weight, :math:`\lambda`, to the actual measured value, and the rest of the weight, :math:`1-\lambda`, to the prior estimate.
 
-.. math:: 
-	:label: ewma-derivation-1
-	
-		\begin{array}{lcrcl}
-			\text{Let}  \qquad\qquad && x_t                              &=& \text{new data measurement}\\
-			\text{let}  \qquad\qquad && e_t                              &=& x_t - \hat{x}_t \\
-			\text{where}             && \hat{x}_t                        &=& \hat{x}_{t-1} + \lambda e_{t-1} \qquad\qquad \\
-			\text{shifting everything one step forward:}&& \hat{x}_{t+1} &=& \hat{x}_{t}   + \lambda e_{t}\\
-		\end{array}
+Let us write the estimate of :math:`x_t` as :math:`\hat{x}_t`, with the :math:`\wedge` mark above the :math:`x_t` to indicate that it is a prediction of the actual measured :math:`x_t` value. The prior estimate is therefore written as :math:`\hat{x}_{t-1}`.
 
-The reason for the :math:`\wedge` mark above the :math:`x_t`, as in :math:`\hat{x}_t`, is that :math:`\hat{x}_t` indicates that it is a prediction of the actual measured :math:`x_t` value. 
-		
-To start the EWMA sequence we define the value for :math:`\hat{x}_0 = T`, and :math:`e_0 = 0`, so that :math:`\hat{x}_1 = T`. 
-
-An alternative way of writing the above equation gives a new insight into the value of the EWMA value:
+So putting into equation form that an estimate of that incoming value, is given by some weight, :math:`\lambda` and the rest of the weight, :math:`1-\lambda`, to the prior estimate:
 
 .. math:: 
 	:label: ewma-derivation-2
 	
-		\begin{array}{lcrclcl}
-			x_t = \text{new data}\qquad		&& \hat{x}_{t+1} &=& \hat{x}_{t}   + \lambda e_{t}\qquad\qquad	& \text{where}\,\, e_t = x_t - \hat{x}_t \\
-			\text{Substituting in the error}&& \hat{x}_{t+1} &=& \hat{x}_{t}   + \lambda \left(x_t - \hat{x}_t\right)     \\
-											&& \hat{x}_{t+1} &=& \left(1-\lambda \right)\hat{x}_{t}   + \lambda x_t  \\
+		\begin{array}{rcl}
+			\hat{x}_{t} &=& \lambda x_t + \left(1-\lambda \right)\hat{x}_{t-1} \\			
+			\hat{x}_{t} &=& \hat{x}_{t-1} +\lambda \left( x_t + -\hat{x}_{t-1} \right)   \\
+			\hat{x}_{t+1} &=& \hat{x}_{t} +\lambda \left( x_{t+1} -\hat{x}_{t} \right)  \\
+			\hat{x}_{t+1} &=& \lambda  x_{t+1} +\left(1-\lambda \right)  \hat{x}_{t}
 		\end{array}
 
-That last line shows that a one-step-ahead prediction for :math:`x` at time :math:`t+1` is a weighted sum of two components: the predicted value, :math:`\hat{x}_t`, and the current measured value, :math:`x_t`, with the weights adding up to 1. This predictor can be quite valuable in a slow-moving process, to estimate the next value one step into the future.
+To start the EWMA sequence we define the value for :math:`\hat{x}_0 = T` and :math:`\hat{x}_1 = \lambda x_1 + T \left(1-lambda \right)`. 
 
-The plot below shows visually what happens as the weight of :math:`\lambda` is changed. In this example a shift of :math:`\Delta = 1\sigma = 3` units occurs abruptly at :math:`t=150`. This is of course not known in practice, but the purpose here is to illustrate the effects of choosing :math:`\lambda`. Prior to that change the process mean is :math:`\mu=20` and the raw data has :math:`\sigma = 3`. 
+The last line in the equation set shows that a 1-step-ahead prediction for :math:`x` at time :math:`t+1` is a weighted sum of two components: the current measured value, :math:`x_t`, and secondly the predicted value, :math:`\hat{x}_t`, with the weights summing up to 1. This gives a way to experimentally find a suitable :math:`\lambda` value from historical data: adjust it up and down until the differences between :math:`\hat{x}_{t+1}` and :math:`x_{t+1}` are small.
+
+The next plot shows visually what happens as the weight of :math:`\lambda` is changed. In this example a shift of :math:`\Delta = 1\sigma = 3` units occurs abruptly at :math:`t=150`. This is of course not known in practice, but the purpose here is to illustrate the effects of choosing :math:`\lambda`. Prior to that change the process mean is :math:`\mu=20` and the raw data has :math:`\sigma = 3`. 
 
 The first chart is the raw data and also a Shewhart chart with subgroup size of 1; the control limits are at :math:`\pm 3` time the standard deviation, so at 11.0 and 19.0 units. This control chart barely picks up the shift, as was explained in a :ref:`prior section <monitoring_shewart_chart_slugishness>`.
 
@@ -67,7 +58,7 @@ To see why :math:`\hat{x}_{t}` represents historical data, you can recursively s
 	\hat{x}_{t+1} &= \sum_{i=0}^{i=t}{w_i x_i} = w_0x_0 + w_1x_1 + w_2x_2 + \ldots \\
 	\text{where the weights are:} \qquad w_i &= \lambda (1-\lambda)^{t-i}
 
-which emphasizes that the one-step-ahead prediction is a just a weighted sum of the raw measurements, with weights declining in time. 
+which emphasizes that the prediction is a just a weighted sum of the raw measurements, with weights declining in time. 
 
 The final chart of the sequence of 5 charts is a CUSUM chart, which is :ref:`the ideal chart <monitoring_CUSUM_charts>` for picking up such an abrupt shift in the level. 
 
@@ -125,4 +116,16 @@ The R code here shows one way of calculating the EWMA values for a vector of dat
 .. EWMA can detect both changes in level and changes in variance
 .. TODO: After introducing concept, show why Shewhart fails with heavy autocorr. Have to increase Shewhart N, or widen the limits.
 
+Here is a worked example, starting with the assumption the process is at the target value of :math:`T = 200` units, and :math:`lambda=0.3`. We intentionally show what happens if the new value stays fixed at 190: you see the value plotted gets only a weight of 0.3, while the 0.7 weight is for the prior historical value. Slowly the value plotted catches up, but there is always a lag.
 
+============= ==================== ==================================================
+Sample number Raw data :math:`x_t` Value plotted on chart: :math:`\hat{x}_t`  
+============= ==================== ==================================================
+0             -                    200	
+1             200                  200
+2             210                  :math:`0.3 \times 210 + 0.7 \times 200 = 203` 
+3             190                  :math:`0.3 \times 190 + 0.7 \times 203 = 199.1`
+4             190                  :math:`0.3 \times 190 + 0.7 \times 199.1 = 196.4` 
+5             190                  :math:`0.3 \times 190 + 0.7 \times 196.4 = 194.5` 
+6             190                  :math:`0.3 \times 190 + 0.7 \times 194.5 = 193.1` 
+============= ==================== ==================================================
