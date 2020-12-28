@@ -18,8 +18,6 @@ The following equation shows how this chart works.
 	\\
 	\text{In general}\qquad S_t &= S_{t-1} + (x_t - T) 
 
-.. TODO: should add Shewhart chart to this to prove its sluggishness
-
 .. figure:: ../figures/monitoring/explain-CUSUM.png
 	:alt:	../figures/monitoring/explain-CUSUM.R
 	:width: 750px
