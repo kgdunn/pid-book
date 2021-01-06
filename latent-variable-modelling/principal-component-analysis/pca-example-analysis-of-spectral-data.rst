@@ -153,6 +153,6 @@ The code for the above plots is:
 	plot(seq(1, N), SPE.2, col='black', 
 	     type='l', lwd=2,  ylab="SPE: A=2", 
 	     ylim=c(0, max(SPE.2)))
-	plot(seq(1, N), SPE.2, col='blue', 
+	plot(seq(1, N), SPE.3, col='blue', 
 	     type='l', lwd=2,  ylab="SPE: A=3", 
 	     xlab="Tablet number", ylim=c(0, max(SPE.3)))
