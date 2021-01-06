@@ -116,7 +116,7 @@ The R code here shows one way of calculating the EWMA values for a vector of dat
 .. EWMA can detect both changes in level and changes in variance
 .. TODO: After introducing concept, show why Shewhart fails with heavy autocorr. Have to increase Shewhart N, or widen the limits.
 
-Here is a worked example, starting with the assumption the process is at the target value of :math:`T = 200` units, and :math:`lambda=0.3`. We intentionally show what happens if the new value stays fixed at 190: you see the value plotted gets only a weight of 0.3, while the 0.7 weight is for the prior historical value. Slowly the value plotted catches up, but there is always a lag.
+Here is a worked example, starting with the assumption the process is at the target value of :math:`T = 200` units, and :math:`\lambda=0.3`. We intentionally show what happens if the new value stays fixed at 190: you see the value plotted gets only a weight of 0.3, while the 0.7 weight is for the prior historical value. Slowly the value plotted catches up, but there is always a lag. The value plotted on the chart is from the last equation in the set of :eq:`ewma-derivation-2`.
 
 ============= ==================== ==================================================
 Sample number Raw data :math:`x_t` Value plotted on chart: :math:`\hat{x}_t`  
