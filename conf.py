@@ -147,7 +147,7 @@ rst_epilog = r"""
 .. |t| replace:: :math:`\mathbf{t}`
 .. |T| replace:: :math:`\mathbf{T}`
 .. |X| replace:: :math:`\mathbf{X}`
-.. |Xraw| replace:: :math:`\mathbf{X}_\\text{raw}`
+.. |Xraw| replace:: :math:`\mathbf{X}_\text{raw}`
 .. |P| replace:: :math:`\mathbf{P}`
 .. |p1| replace:: :math:`\mathbf{p}_1`
 .. |T2| replace:: :math:`T^2`
