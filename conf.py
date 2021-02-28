@@ -11,7 +11,13 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 # From Sphinx
-import sys, os
+import os
+import sys
+import datetime
+import subprocess
+
+from sphinx.highlighting import PygmentsBridge
+from pygments.formatters.latex import LatexFormatter
 
 sys.path.append(os.getcwd())
 sys.path.insert(0, os.path.abspath("."))
@@ -26,9 +32,10 @@ needs_sphinx = "1.5"  # If your documentation needs a minimal Sphinx version, st
 # =================
 extensions = [
     "sphinx.ext.todo",
-]  #'sphinx.ext.imgmath', ]
+]  # 'sphinx.ext.imgmath', ]
 
-# Download https://bitbucket.org/birkenfeld/sphinx-contrib/overview; cd youtube; setup.py build and setup.py install
+# Download https://bitbucket.org/birkenfeld/sphinx-contrib/overview;
+# cd youtube; setup.py build and setup.py install
 extensions.append("my-extensions.youtube")
 
 # Sphinx contrib extensions
@@ -44,21 +51,6 @@ extensions.append("my-extensions.datacamplite")
 # to the book (i.e. ``fullinclude`` is ignored)
 # The default value should be False
 q_and_a_override = False
-
-# if os.path.exists('ucomment-extension.py'):
-#    extensions.append('ucomment-extension')
-#    html_translator_class = 'ucomment-extension.ucomment_html_translator'
-
-# Point to your Django application, which contains all the other settings required.
-# ucomment = {}
-# if os.path.exists('/home/kevindunn/webapps/pid_connectmv_com/pidbook/ucommentapp/'):
-#     ucomment['django_application_path'] = '/home/kevindunn/webapps/pid_connectmv_com/pidbook/ucommentapp/'
-# elif os.path.exists('/home/kevindunn/django-projects/pidbook/ucommentapp/'):
-#     ucomment['django_application_path'] = '/home/kevindunn/django-projects/pidbook/ucommentapp/'
-# elif os.path.exists('/Users/kevindunn/dropbox/pid-book/'):
-#     ucomment['django_application_path'] = 'abc'
-# else:
-#     raise Exception('ucommentapp: django path is invalid')
 
 # MathJax extension:
 extensions.append("sphinx.ext.mathjax")
@@ -76,11 +68,10 @@ source_suffix = ".rst"
 master_doc = "contents"
 
 # General information about the project.
-import datetime
 
 the_year = str(datetime.datetime.now().year)
-project = u"Process Improvement Using Data"
-copyright = the_year + u" Kevin Dunn"
+project = "Process Improvement Using Data"
+copyright = f"2010-{the_year} Kevin Dunn"
 today_fmt = "%d %B %Y"
 
 # Emits warnings for all missing references.
@@ -96,8 +87,6 @@ version = "<not-used>"
 release = "<not-used>"
 
 # Get the Git revision number: "git rev-parse HEAD"
-import subprocess
-
 cmd = ["git", "rev-parse", "HEAD"]
 out = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 if out.returncode == 0 or out.returncode is None:
@@ -146,7 +135,7 @@ rst_prolog = """
    :http-equiv=X-UA-Compatible: IE=EmulateIE7
 """
 
-rst_epilog = """
+rst_epilog = r"""
 .. |x| replace:: :math:`\mathrm{x}`
 .. |y| replace:: :math:`\mathrm{y}`
 .. |z| replace:: :math:`\mathrm{z}`
@@ -275,11 +264,12 @@ html_show_copyright = True
 # html_use_opensearch = ''
 
 # Permalinks (those strange characters next to headings)
-html_add_permalinks = u"¶"  # was 'Permalink'
+html_add_permalinks = "¶"  # was 'Permalink'
 
 # If nonempty, this is the file name suffix for generated HTML files. The
 # default is ".html".
-# You will also have to edit "/anaconda/lib/python2.7/site-packages/sphinx/themes/basic/static/searchtools....."
+# You will also have to edit
+# "/anaconda/lib/python2.7/site-packages/sphinx/themes/basic/static/searchtools....."
 # Search for the entry "DOCUMENTATION_OPTIONS.FILE_SUFFIX" and you will see where a
 # trailing "/" gets auto added. Remove that code.
 #
@@ -296,22 +286,24 @@ html_link_suffix = ""
 # Output file base name for HTML help builder.
 # htmlhelp_basename = ''
 
-# Suffix for section numbers. Default: ". ". Set to " " to suppress the final dot on section numbers.
+# Suffix for section numbers. Default: ". ". Set to " " to suppress final dot on section numbers.
 html_secnumber_suffix = r". "
 
 
 # -- Options for link checking -------------------------------------------------
 
-# A list of regular expressions that match URIs that should not be checked when doing a linkcheck build.
+# A list of regular expressions that match URIs that should not be checked when doing linkcheck.
 linkcheck_ignore = [r"http://localhost:\d+/"]
 
-# A timeout value, in seconds, for the linkcheck builder. Only works in Python 2.6 and higher. The default is to use Python’s global socket timeout.
+# A timeout value, in seconds, for the linkcheck builder. Only works in Python 2.6 and higher.
+# The default is to use Python’s global socket timeout.
 linkcheck_timeout = 20
 
 # The number of worker threads to use when checking links. Default is 5 threads.
 linkcheck_workers = 5
 
-# True or false, whether to check the validity of #anchors in links. Since this requires downloading the whole document, it’s considerably slower when enabled. Default is True.
+# True or false, whether to check the validity of #anchors in links. Since this requires
+# downloading the whole document, it’s considerably slower when enabled. Default is True.
 linkcheck_anchors = True
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -319,23 +311,25 @@ linkcheck_anchors = True
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual], toctree only).
 latex_documents = [
-    ("contents", "PID.tex", "Process Improvement Using Data", u"Kevin Dunn", "manual", True),
+    ("contents", "PID.tex", "Process Improvement Using Data", "Kevin Dunn", "manual", True),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
 latex_logo = html_logo
 
-# If true, add page references after internal references. This is very useful for printed copies of the manual. Default is False.
+# If true, add page references after internal references. This is very useful for
+# printed copies of the manual. Default is False.
 latex_show_pagerefs = True
 
-latex_additional_files = []  #'preface.tex'
+latex_additional_files = []  # 'preface.tex'
 
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.
 latex_use_parts = False
 
-# Control whether to display URL addresses. This is very useful for printed copies of the manual. The setting can have the following values:
+# Control whether to display URL addresses. This is very useful for printed copies of the
+# manual. The setting can have the following values:
 # 'no' – do not display URLs (default)
 # 'footnote' – display URLs in footnotes
 # 'inline' – display URLs inline in parentheses
@@ -344,10 +338,6 @@ latex_show_urls = "footnote"
 
 # Control the source code size
 # http://stackoverflow.com/questions/9899283/how-do-you-change-the-code-example-font-size-in-latex-pdf-output-with-sphinx
-from sphinx.highlighting import PygmentsBridge
-from pygments.formatters.latex import LatexFormatter
-
-
 class CustomLatexFormatter(LatexFormatter):
     def __init__(self, **options):
         super(CustomLatexFormatter, self).__init__(**options)
@@ -389,7 +379,7 @@ _PREAMBLE = r"""
 \usepackage{float}
 \usepackage{cancel}  % to get cancelled terms
 \usepackage{upquote} % to avoid quotation marks from being mangled
-\usepackage{textpos} % to get YouTube video links outside the margin. As used here, the package is in "relative" mode
+\usepackage{textpos} % get YouTube links outside the margin. Tthe package is in "relative" mode
 \renewcommand{\PYGZsq}{TO AVOID ERROR MESSAGE}
 
 
@@ -447,7 +437,7 @@ _PREAMBLE = r"""
     \rule{\textwidth}{1pt}%
 
     \begin{flushright}%
-      % \sphinxlogo% I don't want the logo here, and not with this size. I've manually placed it a few lines down.
+      % \sphinxlogo% Don't want logo here, and not this size. Manually placed it a few lines down.
       {\rm\Huge\py@HeaderFamily \@title \par}%
       \vfill
       {\LARGE\py@HeaderFamily \@author \par}
@@ -489,8 +479,8 @@ _PREAMBLE = r"""
     \fancyfoot[LE,RO]{{\py@HeaderFamily\thepage}}
     \fancyfoot[LO]{{\py@HeaderFamily\nouppercase{\rightmark}}}
     \fancyfoot[RE]{{\py@HeaderFamily\nouppercase{\leftmark}}}
-    \fancyhead[LE]{{\py@HeaderFamily \@title}} % previously: \py@HeaderFamily \@title, \py@release
-    \fancyhead[RO]{{\py@HeaderFamily \py@release}} % previously: \py@HeaderFamily \@title, \py@release
+    \fancyhead[LE]{{\py@HeaderFamily \@title}} % before: \py@HeaderFamily \@title, \py@release
+    \fancyhead[RO]{{\py@HeaderFamily \py@release}} % before: \py@HeaderFamily \@title, \py@release
     \renewcommand{\headrulewidth}{0.4pt}
     \renewcommand{\footrulewidth}{0.4pt}
   }
@@ -612,23 +602,26 @@ latex_elements = {
     "fontpkg": "\\usepackage{palatino}",
     "preamble": _PREAMBLE,
     "figure_align": "H",  # put figures where told
-    "fncychap": "\\usepackage[Glenn]{fncychap}",  # Bjarne (default), Lenny” (OK), “Glenn” (nice), “Conny” and “Rejne”,
+    # Bjarne (default), Lenny” (OK), “Glenn” (nice), “Conny” and “Rejne”,
+    "fncychap": "\\usepackage[Glenn]{fncychap}",
     "tableofcontents": _TABLE_OF_CONTENTS,
     "inputenc": "\\usepackage[utf8]{inputenc}",  # default
     "fontenc": "\\usepackage[T1]{fontenc}",  # default
-    #'maketitle': '\\maketitle',                  # default
-    "printindex": "\\printindex",  # override to generate index differently or append some content after the index
+    # 'maketitle': '\\maketitle',   # default
+    # override to generate index differently or append some content after the index
+    "printindex": "\\printindex",
     "releasename": "",
-    #     'docclass' 'classoptions' 'title' 'date' 'release' 'author' 'logo' 'releasename' 'makeindex' 'shorthandoff'
+    #   'docclass' 'classoptions' 'title' 'date' 'release' 'author' 'logo' 'releasename'
+    #   'makeindex' 'shorthandoff'
 }
 
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
 epub_title = "Process Improvement Using Data"
-epub_author = u"Kevin Dunn"
-epub_publisher = u""
-epub_copyright = the_year + u""
+epub_author = "Kevin Dunn"
+epub_publisher = ""
+epub_copyright = the_year + ""
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.
