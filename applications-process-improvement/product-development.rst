@@ -59,10 +59,11 @@ This is a specification of what you want to achieve. Your end goal. It is often 
 
 Some entries in the desired outcome vector might simply be given as constraints. For example, "an *elongation* value of 15 or lower is acceptable, or a *shelf-life* of 30 days or greater is acceptable. This is more of a yes/no constraint: it is either met, or it is not. It creates a discontinuity in our system when we specify it as an equation later on. Discontinuities are often undesirable from a mathematical modelling and optmization perspective. However these can be dealt with by converting them to a smoothed version, such as by using a sigmoid function or a `Gompertz function <https://en.wikipedia.org/wiki/Gompertz_function>`_.
 
-Finally, sometimes the desired outcome is a very large vector, such as time series showing the change of the product, such as elongation in a controlled experiments, or a pH over time. It can also be a spectrum, such as an NIR spectrum. The number of entries in this long vector are highly correlated. So the first step in such a situation is to use a :ref:`principal component model <SECTION_PCA>`_ and understand the true lower dimensional space that the output space has. Then these, far smaller number of components, are used as a specification. Therefore the methods of product design are applicable in this case too.
+Finally, sometimes the desired outcome is a very large vector, such as time series showing the change of the product, such as elongation in a controlled experiments, or a pH over time. It can also be a spectrum, such as an NIR spectrum. The number of entries in this long vector are highly correlated. So the first step in such a situation is to use a :ref:`principal component model <SECTION_PCA>` and understand the true lower dimensional space that the output space has. Then these, far smaller number of components, are used as a specification. Therefore the methods of product design are applicable in this case too.
 
 The "rank"
 ~~~~~~~~~~~
 
 Details to come in March 2021, with illustrations and interactive case studies.
+
 

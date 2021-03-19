@@ -32,15 +32,20 @@ needs_sphinx = "1.5"  # If your documentation needs a minimal Sphinx version, st
 # =================
 extensions = [
     "sphinx.ext.todo",
+    "nbsphinx",
 ]  # 'sphinx.ext.imgmath', ]
 
 # Download https://bitbucket.org/birkenfeld/sphinx-contrib/overview;
 # cd youtube; setup.py build and setup.py install
 extensions.append("my-extensions.youtube")
 
-# Sphinx contrib extensions
+# Notebook extension
 # -------------------------
-# Spelling extension?
+nbsphinx_execute = "always"
+nbsphinx_execute_arguments = [
+    "--InlineBackend.figure_formats={'svg', 'pdf'}",
+    "--InlineBackend.rc={'figure.dpi': 96}",
+]
 
 # Custom extensions
 # -------------------------
@@ -650,4 +655,3 @@ epub_language = "en"
 
 # The depth of the table of contents in toc.ncx.
 # epub_tocdepth = 3
-

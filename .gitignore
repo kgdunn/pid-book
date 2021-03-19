@@ -1,3 +1,4 @@
+pid-book.code-workspace
 PID.pdf
 index.html
 wingdbstub.*
@@ -10,6 +11,9 @@ temp/
 DELETE/*
 __pycache__/
 **/.vscode/*
+**/.mypy_cache/**
+**/.ipynb_checkpoints/**
+
 
 design-analysis-experiments/Readings/
 latent-variable-modelling/Readings/
@@ -17,3 +21,4 @@ least-squares-modelling/Readings/
 univariate-review/Readings/
 process-monitoring/Readings/
 data-visualization/Readings/
+

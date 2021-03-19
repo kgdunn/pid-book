@@ -43,7 +43,7 @@ clean:
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
-	$(SPHINXBUILD) -b text $(ALLSPHINXOPTS) $(BUILDDIR)/text
+	# $(SPHINXBUILD) -b text $(ALLSPHINXOPTS) $(BUILDDIR)/text
 	cp -R $(BUILDDIR)/text/* $(BUILDDIR)/html/_sources/
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
@@ -112,3 +112,7 @@ linkcheck:
 	@echo
 	@echo "Link check complete; look for any errors in the above output " \
 	      "or in $(BUILDDIR)/linkcheck/output.txt."
+
+serve: 
+	python -m http.server 8080 --directory _build/html/
+
