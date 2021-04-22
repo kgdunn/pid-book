@@ -5,7 +5,7 @@ Shewhart charts
 
 .. For the mean: p174 to p186 of Barnes. KGD: what does "Barnes" refer to?
 
-.. youtube:: https://www.youtube.com/watch?v=8Ln3emiwQzU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=60
+.. youtube:: https://www.youtube.com/watch?v=8Ln3emiwQzU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=61
 
 A :index:`Shewhart chart <pair: Shewhart chart; process monitoring>`, named after Walter Shewhart from Bell Telephone and Western Electric, monitors that a process variable remains on target and within given upper and lower limits. It is a monitoring chart for *location*. It answers the question whether the variable's :index:`location <single: location (process monitoring)>` is stable over time. It does not track anything else about the measurement, such as its standard deviation. Looking ahead: :ref:`we show later <monitoring_shewart_chart_slugishness>` that a pure Shewhart chart needs extra rules to help monitor the location of a variable effectively.
 
@@ -172,7 +172,7 @@ In source code:
 Judging the chart's performance
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=vHbjFQSOiNQ&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=61
+.. youtube:: https://www.youtube.com/watch?v=vHbjFQSOiNQ&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=62
 
 There are 2 ways to :index:`judge performance of a monitoring chart <single: monitoring chart assessment>`. In particular here we discuss the Shewhart chart:
 

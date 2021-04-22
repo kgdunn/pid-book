@@ -1,7 +1,7 @@
 Histograms and probability distributions
 =========================================
 
-.. youtube:: https://www.youtube.com/watch?v=oA5HgF1vmXE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=5
+.. youtube:: https://www.youtube.com/watch?v=oA5HgF1vmXE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=6
 
 .. index:: histograms, frequency distribution
 

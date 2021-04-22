@@ -3,7 +3,7 @@
 Generators and defining relationships
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=3Wp-0aOo-ns&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=44
+.. youtube:: https://www.youtube.com/watch?v=3Wp-0aOo-ns&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=45
 
 Calculating which main effects and two-factor interactions will be confounded with each other, called the :index:`confounding pattern`, can be tedious for larger values of :math:`k`. Here we introduce an easy way to calculate the confounding pattern.
 
@@ -64,7 +64,7 @@ indicating that **A** is aliased with the 3-factor interaction **BCD**.  What is
 
 	Why is this a poorer choice than using **D = ABC** to generate the half-fraction? *Answer*: the main effects of **A** and **C**  which could be important, are aliased with 2fi. Had we generated the design with the usual 3fi term, **ABC**, the main effects would only be aliased with three-factor interactions (3fi).
 
-	.. youtube:: https://www.youtube.com/watch?v=LaWQyZxl2do&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=45
+	.. youtube:: https://www.youtube.com/watch?v=LaWQyZxl2do&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=46
 
 .. index::
 	pair: complementary half-fraction; experiments

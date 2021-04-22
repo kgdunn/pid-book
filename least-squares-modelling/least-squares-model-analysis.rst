@@ -16,7 +16,7 @@ In order to perform the second part we need to make a few assumptions about the 
 The variance breakdown
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=xIjAD_6nXto&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=20
+.. youtube:: https://www.youtube.com/watch?v=xIjAD_6nXto&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=21
 
 Recall that :ref:`variability <univariate-about-variability>` is what makes our data interesting. Without variance (i.e. just flat lines) we would have nothing to do. The :index:`analysis of variance` is just a tool to show how much variability in the :math:`y`-variable is explained by:
 
@@ -225,7 +225,7 @@ Assumptions required for analysis of the least squares model
 .. index::
 	pair: least squares; assumptions for
 	
-.. youtube:: https://www.youtube.com/watch?v=Qls1R2HOzy0&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=21
+.. youtube:: https://www.youtube.com/watch?v=Qls1R2HOzy0&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=22
 
 Recall that the population (true) model is :math:`y_i = \beta_0 + \beta_1 x_i + \epsilon_i` and :math:`b_0` and :math:`b_1` are our estimates of the model's coefficients, and :math:`\mathrm{e}` be the estimate of the true error :math:`\epsilon`. Note we are assuming imperfect knowledge of the :math:`y_i` by lumping all errors into :math:`e_i`. For example, measurement error, structural error (we are not sure the process follows a linear structure), inherent randomness, and so on.
 
@@ -349,7 +349,7 @@ Now it is straight forward to construct **confidence intervals for the least squ
 
 **Example**
 
-.. youtube:: https://www.youtube.com/watch?v=sY8CVMGUD54&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=22
+.. youtube:: https://www.youtube.com/watch?v=sY8CVMGUD54&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=23
 
 Returning :ref:`back to our ongoing example <LS-class-example>`, we can calculate the confidence interval for :math:`\beta_0` and :math:`\beta_1`. We calculated earlier already that |b0| = 3.0 and |b1| = 0.5. Using these values we can calculate the standard error:
 
@@ -464,7 +464,7 @@ In many cases the confidence interval for the intercept is not of any value beca
 Prediction error estimates for the y-variable
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=N8NF1_CBTw4&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=23
+.. youtube:: https://www.youtube.com/watch?v=N8NF1_CBTw4&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=24
 
 Apart from understanding the error in the model's coefficient, we also would like an estimate of the error when predicting :math:`\hat{y}_i` from the model, :math:`y_i = b_0 + b_1 x_i + e_i` for a new value of :math:`x_i`. This is known as the :index:`prediction interval`, or :index:`prediction error interval`.
 

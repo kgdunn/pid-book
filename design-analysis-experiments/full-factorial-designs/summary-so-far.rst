@@ -26,4 +26,4 @@ Example: analysis of systems with 4 factors
 
 In the prior sections you have seen how to analyze experiments with 2 factors and 3 factors. The logic to analyze systems with 4 or more factors proceeds in exactly the same way. The video here shows how to go about this.
 
-.. youtube:: https://www.youtube.com/watch?v=Rti2zqQFrTY&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=42
+.. youtube:: https://www.youtube.com/watch?v=Rti2zqQFrTY&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=43

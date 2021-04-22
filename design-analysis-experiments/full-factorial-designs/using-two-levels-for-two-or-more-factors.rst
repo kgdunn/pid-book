@@ -70,7 +70,7 @@ Analysis of a factorial design: main effects
 
 The first step is to calculate the :index:`main effect` of each variable. The effects are considered, by convention, to be the difference from the high level to the low level. So the interpretation of a main effect is by how much the outcome, :math:`y`, is adjusted when changing the variable.
 
-.. youtube:: https://www.youtube.com/watch?v=fPbd74KN7zw&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=36
+.. youtube:: https://www.youtube.com/watch?v=fPbd74KN7zw&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=37
 
 Consider the two runs where :math:`S` is at the |-| level for both experiments 1 and 2. The only change between these two runs is the **temperature**, so the temperature effect is :math:`\Delta T_{S-} = 60-69 = -9\%\,\,\text{per}\,\,(354-338)~\text{K}`, that is, a :math:`-9\%` change in the conversion outcome per :math:`+16~\text{K}` change in the temperature. 
 
@@ -106,7 +106,7 @@ An :index:`interaction plot` is an :ref:`alternative way to visualize these main
 Analysis of a factorial design: interaction effects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=_NIA8RGGtAs&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=37
+.. youtube:: https://www.youtube.com/watch?v=_NIA8RGGtAs&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=38
 
 We expect in many real systems that the main effect of temperature, :math:`T`, for example, is different at other levels of substrate concentration, :math:`S`. It is quite plausible for a bioreactor system that the main temperature effect on conversion is much greater if the substrate concentration, :math:`S`, is also high, while at low values of :math:`S`, the temperature effect is smaller. 
 

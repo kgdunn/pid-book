@@ -13,7 +13,7 @@ This section is an introduction to the area of data analysis. We cover concepts 
 Usage examples
 ==============
 
-.. youtube:: https://www.youtube.com/watch?v=-wPc24FT-2Y&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=4
+.. youtube:: https://www.youtube.com/watch?v=-wPc24FT-2Y&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=5
 
 .. index::
 	pair: usage examples; univariate data
@@ -195,7 +195,7 @@ So, how do we make progress despite this variability?  This whole book, and all 
 Histograms and probability distributions
 =========================================
 
-.. youtube:: https://www.youtube.com/watch?v=oA5HgF1vmXE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=5
+.. youtube:: https://www.youtube.com/watch?v=oA5HgF1vmXE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=6
 
 .. index:: histograms, frequency distribution
 
@@ -284,7 +284,7 @@ A :index:`relative frequency`, also called :index:`density`, is sometimes prefer
 Some nomenclature
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=FIuU1REQvRM&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=6
+.. youtube:: https://www.youtube.com/watch?v=FIuU1REQvRM&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=7
 
 We review a couple of concepts that you should have seen in prior statistical work.
 
@@ -391,7 +391,7 @@ We review a couple of concepts that you should have seen in prior statistical wo
 
 **Outliers**
 
-	.. youtube:: https://www.youtube.com/watch?v=GlVNclR6UVo&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=7
+	.. youtube:: https://www.youtube.com/watch?v=GlVNclR6UVo&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=8
 
 	Outliers are hard to define precisely, but an acceptable definition is that an :index:`outlier` is a point that is unusual, given the context of the surrounding data. The following 2 sequences of numbers show the number 4024 that appears in the first sequence, has become an outlier in the second sequence. It is an outlier based on the surrounding context.
 
@@ -517,7 +517,7 @@ Before introducing the normal distribution, we first look at two important conce
 Central limit theorem 
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=32EIklHEhyE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=8
+.. youtube:: https://www.youtube.com/watch?v=32EIklHEhyE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=9
 
 The :index:`Central limit theorem` plays an important role in the theory of probability and in the derivation of the normal distribution. We don't prove this theorem here, but we only use the result:
 
@@ -591,7 +591,7 @@ We frequently violate this assumption of independence in engineering application
 Formal definition for the normal distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=_WQxr7yBw8k&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=9
+.. youtube:: https://www.youtube.com/watch?v=_WQxr7yBw8k&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=10
 
 .. index:: 
 	single: normal distribution; formal definition
@@ -662,7 +662,7 @@ It is more useful to calculate the area under :math:`p(x)` from :math:`x=-\infty
 
 You might still find yourself having to refer to tables of cumulative area under the normal distribution, instead of using the ``pnorm()`` function (for example in a test or exam). If you look at the appendix of most statistical texts you will find these tables, and there is one :ref:`at the end of this chapter <univariate_statistical_tables>`. Since these tables cannot be produced for all combinations of mean and standard deviation parameters, they use what is called *standard form*.
 
-.. youtube:: https://www.youtube.com/watch?v=hkHJ5dc2l4c&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=10
+.. youtube:: https://www.youtube.com/watch?v=hkHJ5dc2l4c&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=11
 
 .. math::
 
@@ -693,7 +693,7 @@ Checking for normality: using a q-q plot
 	single: quantile-quantile plot (q-q plot)
 	single: normal distribution; check if
 	
-.. youtube:: https://www.youtube.com/watch?v=CIPvEjMO2Y0&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=11
+.. youtube:: https://www.youtube.com/watch?v=CIPvEjMO2Y0&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=12
 
 Often we are not sure if a sample of data can be assumed to be normally distributed. This section shows you how to test whether the data are normally distributed, or not. 
 
@@ -955,7 +955,7 @@ Using the t-distribution to calculate our confidence interval
 
 ..  But in R, we use the ``dt(x, df=...)`` function to give us the values of the :math:`t`-distribution for a given value of :math:`x` which has been computed with ``df`` degrees of freedom. We use the :math:`t`-distribution in calculations related to a sample *mean*, and it is the sample mean that we use as the :math:`z` value, on the :math:`x`-axis in the distribution. This is why the distribution is only a function of the degrees of freedom.
 
-.. youtube:: https://www.youtube.com/watch?v=B22K3Fw49zo&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=12
+.. youtube:: https://www.youtube.com/watch?v=B22K3Fw49zo&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=13
 
 Returning back to :eq:`distribution-for-sample-average` we stated that
 
@@ -1128,7 +1128,7 @@ Interpreting the confidence interval
 .. index:: 
 	single: confidence interval; interpreting
 
-.. youtube:: https://www.youtube.com/watch?v=H_7dZRYSBGw&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=13
+.. youtube:: https://www.youtube.com/watch?v=H_7dZRYSBGw&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=14
 
 -	The expression in :eq:`CI-mean-variance-unknown-repeated` should not be interpreted to mean that the viscosity is 20 units and lies inside the LB (lower-bound) to UB (upper-bound) range of 17.1 to 22.9 with a 95% probability. In fact, the sample mean lies exactly at the mid-point of the range with 100% certainty - that is how the range was calculated.
 
@@ -1169,7 +1169,7 @@ Interpreting the confidence interval
 Confidence interval for the mean from a normal distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=yyK1O3JKd1U&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=14
+.. youtube:: https://www.youtube.com/watch?v=yyK1O3JKd1U&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=15
 
 The aim here is to formalize the calculations for the confidence interval of :math:`\overline{x}`, given a sample of :math:`n` 
 
@@ -1235,7 +1235,7 @@ Testing for differences and similarity
 	single: tests for differences
 	see: significant difference; tests for differences
 	
-.. youtube:: https://www.youtube.com/watch?v=46qtZRg5nEg&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=15
+.. youtube:: https://www.youtube.com/watch?v=46qtZRg5nEg&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=16
 
 These sort of questions often arise in data analysis:
 
@@ -1573,7 +1573,7 @@ Paired tests
 .. index::
 	single: two treatments
 	
-.. youtube:: https://www.youtube.com/watch?v=OI1RD6gPALw&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=16
+.. youtube:: https://www.youtube.com/watch?v=OI1RD6gPALw&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=17
 
 A :index:`paired test` is a test that is run twice on the same object or batch of materials. You might see the nomenclature of "two treatments" being used in the literature. For example: 
 

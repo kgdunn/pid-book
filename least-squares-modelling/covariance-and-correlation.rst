@@ -4,7 +4,7 @@
 Covariance
 ===========
 
-.. youtube:: https://www.youtube.com/watch?v=tXOCOMtSWrc&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=18
+.. youtube:: https://www.youtube.com/watch?v=tXOCOMtSWrc&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=19
 
 You probably have an intuitive sense for what it means when two things are correlated. We will get to correlation next, but we start by first looking at :index:`covariance`. Let's take a look at an example to formalize this, and to see how we can learn from data.
 
@@ -140,7 +140,7 @@ Note that deviation variables are not affected by a *shift* in the raw data of :
 Correlation
 ===========
 
-.. youtube:: https://www.youtube.com/watch?v=tXOCOMtSWrc&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=18
+.. youtube:: https://www.youtube.com/watch?v=tXOCOMtSWrc&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=19
 
 The variance and covariance values are units dependent. For example, you get a very different covariance when calculating it using grams vs kilograms. The :index:`correlation` on the other hand removes the effect of scaling and arbitrary unit changes. It is defined as:
 

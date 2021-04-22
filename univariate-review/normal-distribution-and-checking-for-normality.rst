@@ -8,7 +8,7 @@ Before introducing the normal distribution, we first look at two important conce
 Central limit theorem
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=32EIklHEhyE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=8
+.. youtube:: https://www.youtube.com/watch?v=32EIklHEhyE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=9
 
 The :index:`Central limit theorem` plays an important role in the theory of probability and in the derivation of the normal distribution. We don't prove this theorem here, but we only use the result that:
 
@@ -119,7 +119,7 @@ We frequently violate this assumption of independence in engineering application
 Formal definition for the normal distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=_WQxr7yBw8k&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=9
+.. youtube:: https://www.youtube.com/watch?v=_WQxr7yBw8k&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=10
 
 .. index::
 	single: normal distribution; formal definition
@@ -211,7 +211,7 @@ It is more useful to calculate the area under :math:`p(x)` from :math:`x=-\infty
 
 You might still find yourself having to refer to tables of cumulative area under the normal distribution, instead of using the ``pnorm()`` function (for example in a test or exam). If you look at the appendix of most statistical texts you will find these tables, and there is one :ref:`at the end of this chapter <univariate_statistical_tables>`. Since these tables cannot be produced for all combinations of mean and standard deviation parameters, they use what is called *standard form*.
 
-.. youtube:: https://www.youtube.com/watch?v=hkHJ5dc2l4c&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=10
+.. youtube:: https://www.youtube.com/watch?v=hkHJ5dc2l4c&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=11
 
 .. math::
 
@@ -274,7 +274,7 @@ Checking for normality: using a q-q plot
 	single: quantile-quantile plot (q-q plot)
 	single: normal distribution; check if
 
-.. youtube:: https://www.youtube.com/watch?v=CIPvEjMO2Y0&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=11
+.. youtube:: https://www.youtube.com/watch?v=CIPvEjMO2Y0&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=12
 
 Often we are not sure if a sample of data can be assumed to be normally distributed. This section shows you how to test whether the data are normally distributed, or not.
 

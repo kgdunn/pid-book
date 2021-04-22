@@ -41,7 +41,7 @@ In this text currently, for resolution III, IV and V designs we look at factoria
 .. you could also include ideas from this link?
 	https://asq.org/quality-progress/2005/10/statistics-roundtable/how-to-choose-the-appropriate-design.html
 
-.. youtube:: https://www.youtube.com/watch?v=uYdLP4TJHYA&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=48
+.. youtube:: https://www.youtube.com/watch?v=uYdLP4TJHYA&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=49
 
 You can use the following table to visualize the trade-off between design resolution, the number of factors (:math:`k`), the number of runs required, and the aliasing pattern. The table is adapted from the text by  Box, Hunter and Hunter (2nd edition, p 272), and (1st edition, p 410).
 

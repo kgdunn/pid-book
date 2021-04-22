@@ -49,7 +49,7 @@ Presuming we have calculated estimates |b0| and |b1| we can use the model with a
 Minimizing errors as an objective
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=8d_pbx4vnsI&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=19
+.. youtube:: https://www.youtube.com/watch?v=8d_pbx4vnsI&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=20
 
 Our immediate aim however is to calculate the |b0| and |b1| estimates from the :math:`n` pairs of data collected: :math:`(x_i, y_i)`.
 

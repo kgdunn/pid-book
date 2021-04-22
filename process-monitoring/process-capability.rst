@@ -7,7 +7,7 @@ Process capability
 	
 .. Note:: This section is not about a particular monitoring chart, but is relevant to the topic of process monitoring.
 
-.. youtube:: https://www.youtube.com/watch?v=2VRAW4gGKiI&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=62
+.. youtube:: https://www.youtube.com/watch?v=2VRAW4gGKiI&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=63
 
 Centered processes
 ~~~~~~~~~~~~~~~~~~~~
@@ -64,7 +64,7 @@ Uncentered processes
 	single: capability of a process
 	single: Cpk
 
-.. youtube:: https://www.youtube.com/watch?v=qgfutIul_5E&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=63
+.. youtube:: https://www.youtube.com/watch?v=qgfutIul_5E&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=64
 
 Processes are not very often centered between their upper and lower specification limits. So a measure of process capability for an uncentered processes is defined:
 

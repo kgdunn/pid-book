@@ -72,7 +72,7 @@ Usage examples
 .. index::
 	pair: usage examples; least squares
 	
-.. youtube:: https://www.youtube.com/watch?v=RW_8yKbMzUA&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=17
+.. youtube:: https://www.youtube.com/watch?v=RW_8yKbMzUA&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=18
 
 The material in this section is used whenever you need to interpret and quantify the relationship between two or more variables.
 

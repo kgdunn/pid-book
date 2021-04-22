@@ -15,7 +15,7 @@ Some introductory statistics textbooks, for more detailed background, are recomm
 Usage examples
 ~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=-wPc24FT-2Y&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=4
+.. youtube:: https://www.youtube.com/watch?v=-wPc24FT-2Y&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=5
 
 .. index::
 	pair: usage examples; univariate data

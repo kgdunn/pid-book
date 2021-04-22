@@ -8,7 +8,7 @@ Paired tests
 .. index::
 	single: two treatments
 	
-.. youtube:: https://www.youtube.com/watch?v=OI1RD6gPALw&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=16
+.. youtube:: https://www.youtube.com/watch?v=OI1RD6gPALw&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=17
 
 A :index:`paired test` is a test that is run twice on the same object or batch of materials. You might see the nomenclature of "two treatments" being used in the literature. For example: 
 

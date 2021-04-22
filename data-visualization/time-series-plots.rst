@@ -3,7 +3,7 @@
 Time-series plots
 =================
 
-.. youtube:: https://www.youtube.com/watch?v=aU6eZuiG8ck&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=0
+.. youtube:: https://www.youtube.com/watch?v=aU6eZuiG8ck&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=1
 
 We start off by considering a plot most often seen in engineering applications: the :index:`time-series plot <pair: time-series plots; visualization>`. The time-series plot is a univariate plot: it shows only one variable. It is a 2-dimensional plot in which one axis, the time-axis, shows graduations at an appropriate scale (seconds, minutes, weeks, quarters, years), while the other axis shows the numeric values. Usually, the time-axis is displayed horizontally, but this is not a requirement: some interesting analysis can be done with time running vertically.
 

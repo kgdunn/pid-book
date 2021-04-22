@@ -1,7 +1,7 @@
 Example: design and analysis of a three-factor experiment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=H_s5gGyXor8&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=38
+.. youtube:: https://www.youtube.com/watch?v=H_s5gGyXor8&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=39
 
 
 This example should be done by yourself. It is based on Question 19 in the exercises for Chapter 5 in Box, Hunter and Hunter (2nd edition).
@@ -94,7 +94,7 @@ The data are from a plastics molding factory that must treat its waste before di
 
 #.	Compute the main effects and interactions using matrix algebra and a least squares model.
 
-	.. youtube:: https://www.youtube.com/watch?v=5qBTXnfp94M&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=41
+	.. youtube:: https://www.youtube.com/watch?v=5qBTXnfp94M&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=42
 
 	.. math::
 

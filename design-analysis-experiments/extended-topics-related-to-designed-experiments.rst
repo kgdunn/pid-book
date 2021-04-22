@@ -11,7 +11,7 @@ Experiments with mistakes, missing values, or belatedly discovered constraints
 
 .. BHH1: p 503
 
-.. youtube:: https://www.youtube.com/watch?v=AcEPqVr4JJQ&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=56
+.. youtube:: https://www.youtube.com/watch?v=AcEPqVr4JJQ&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=57
 
 Many real experiments do not go smoothly. Once the experimenter has established their :math:`-1` and :math:`+1` levels for each variable, they back that out to real units. For example, if temperature was scaled as :math:`T = \dfrac{T_\text{actual} - 450\text{K}}{\text{25K}}`, then :math:`T = -1` corresponds to 425K and :math:`T= +1` corresponds to 475K.
 

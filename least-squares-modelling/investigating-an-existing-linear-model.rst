@@ -1,7 +1,7 @@
 Investigating an existing linear model
 =============================================
 
-.. youtube:: https://www.youtube.com/watch?v=phufT1KE9Sk&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=24
+.. youtube:: https://www.youtube.com/watch?v=phufT1KE9Sk&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=25
 
 Summary so far
 ~~~~~~~~~~~~~~~~~~~
@@ -100,7 +100,7 @@ To counteract this problem one can use weighted least squares, with smaller weig
 Lack of independence in the data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=7fd8Qu1i3Dk&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=25
+.. youtube:: https://www.youtube.com/watch?v=7fd8Qu1i3Dk&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=26
 
 The assumption of :index:`independence <single: independence in least squares>` in the data requires that values in the |y| variable are independent. Given that we have assumed the |x| variable to be fixed, this implies that the errors, :math:`e_i` are independent. The reason for independence is required for the central limit theorem, which was used to derive the various standard errors.
 

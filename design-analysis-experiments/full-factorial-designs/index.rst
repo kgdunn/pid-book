@@ -1,7 +1,7 @@
 Full factorial designs
 =======================
 
-.. youtube:: https://www.youtube.com/watch?v=LhK38-4ruU0&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=35
+.. youtube:: https://www.youtube.com/watch?v=LhK38-4ruU0&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=36
 
 In this section we learn how, and why, we should change more than one variable at a time. We will use factorial designs because
 	

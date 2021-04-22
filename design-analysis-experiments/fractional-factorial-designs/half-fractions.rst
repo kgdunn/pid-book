@@ -3,7 +3,7 @@
 Half fractions
 ~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=yddiDn_0vww&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=43
+.. youtube:: https://www.youtube.com/watch?v=yddiDn_0vww&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=44
 
 A half fraction has :math:`\frac{1}{2}2^k = 2^{k-1}` runs. But which half of the runs do we omit? Let's use an example of a :math:`2^3` full factorial which has 8 experiments. The half-fraction would have 4 runs. Since 4 runs can be represented by a :math:`2^2` factorial, we start by writing down the usual :math:`2^2` factorial for any 2 factors (we will use **A** and **B** in this example, but you can use any 2 factors). Now create the :math:`3^\text{rd}` factor as the product of the first two, **C** = **AB**.
 

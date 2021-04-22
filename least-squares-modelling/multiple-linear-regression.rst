@@ -6,7 +6,7 @@ More than one variable: multiple linear regression (MLR)
 .. index:: 
 	pair: multiple linear regression (MLR); least squares
 	
-.. youtube:: https://www.youtube.com/watch?v=qiv1nBCfwBg&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=26
+.. youtube:: https://www.youtube.com/watch?v=qiv1nBCfwBg&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=27
 
 We now move to including more than one explanatory |x| variable in the linear model. We will:
 
@@ -37,7 +37,7 @@ First some motivating examples:
 Multiple linear regression: notation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=dkfY0OKH12g&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=27
+.. youtube:: https://www.youtube.com/watch?v=dkfY0OKH12g&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=28
 
 To help the discussion below it is useful to omit the least squares model's intercept term. We do this by first centering the data.
 
@@ -162,7 +162,7 @@ where :math:`r^2_{12}` represents the correlation between variable :math:`x_1` a
 Interpretation of the model coefficients
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=FkZZiv3J6xQ&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=28
+.. youtube:: https://www.youtube.com/watch?v=FkZZiv3J6xQ&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=29
 
 .. _MLR_coefficient_interpretation:
 
@@ -190,7 +190,7 @@ Integer (dummy, indicator) variables in the model
 .. index:: 
 	pair: integer variables; least squares
 
-.. youtube:: https://www.youtube.com/watch?v=TrhG-XhnBK4&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=29
+.. youtube:: https://www.youtube.com/watch?v=TrhG-XhnBK4&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=30
 
 Now that we have introduced multiple linear regression to expand our models, we also consider these sort of cases:
 

@@ -3,7 +3,7 @@
 Changing one single variable at a time (COST)
 ==============================================
 
-.. youtube:: https://www.youtube.com/watch?v=BpCxktmoTig&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=34
+.. youtube:: https://www.youtube.com/watch?v=BpCxktmoTig&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=35
 
 How do we go about running our experiments when there is more than one variable present that affects our outcome, :math:`y`?  In this section we describe **how not to do it**.
 

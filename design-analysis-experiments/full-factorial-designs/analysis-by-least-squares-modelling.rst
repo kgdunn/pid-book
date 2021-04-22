@@ -3,7 +3,7 @@
 Analysis by least squares modelling
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=f8HFKO7iGVU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=39
+.. youtube:: https://www.youtube.com/watch?v=f8HFKO7iGVU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=40
 
 Let's review the :ref:`original system (the one with little interaction) <DOE-two-level-factorials>` and analyze the experimental data using a least squares model. We represent the original data here, with the baseline conditions:
 
@@ -81,7 +81,7 @@ Where the last line is a more compact representation. Notice then that the :ref:
 	\begin{bmatrix} 246 \\ -20 \\ -12 \\ -2\end{bmatrix}=
 	\begin{bmatrix} 61.5 \\ -5 \\ -3 \\ -0.5 \end{bmatrix}\\
 
-.. youtube:: https://www.youtube.com/watch?v=I2FKlFuUrow&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=40
+.. youtube:: https://www.youtube.com/watch?v=I2FKlFuUrow&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=41
 
 .. _DOE_orthogonality:
 

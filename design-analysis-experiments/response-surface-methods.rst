@@ -3,7 +3,7 @@
 Response surface methods
 ==========================
 
-.. youtube:: https://www.youtube.com/watch?v=CFoj2mEVWvA&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=51
+.. youtube:: https://www.youtube.com/watch?v=CFoj2mEVWvA&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=52
 
 .. Add this somewhere appropriate: http://xkcd.com/605/   .... on extrapolation
 
@@ -19,7 +19,7 @@ Notice how it is a *sequential* approach. RSM then is a tool the describes how w
 
 We will however first consider just the effect of a single factor, :math:`x_1` as it relates to our response, :math:`y`. This is to illustrate the general response surface process.
 
-.. youtube:: https://www.youtube.com/watch?v=id71dS8b8EA&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=52
+.. youtube:: https://www.youtube.com/watch?v=id71dS8b8EA&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=53
 
 .. image:: ../figures/doe/steepest-ascent-univariately-corrected.png
 	:alt: steepest-ascent-univariately.svg
@@ -39,14 +39,14 @@ This univariate example is in fact what experimenters do when using the :ref:`CO
 * refit the model once we plateau
 * repeat
 
-.. youtube:: https://www.youtube.com/watch?v=jSOBZ4yT3Sc&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=53
+.. youtube:: https://www.youtube.com/watch?v=jSOBZ4yT3Sc&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=54
 
 This approach works well if there really is only a single factor that affects the response. But with most systems there are multiple factors that affect the response. We show next how the exact same idea is used, only we change multiple variables at a time to find the optimum on the response surface.
 
 Response surface optimization via a 2-variable system example
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=7WXN3QgzkbE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=54
+.. youtube:: https://www.youtube.com/watch?v=7WXN3QgzkbE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=55
 
 This example considers a new system here where two factors, temperature **T**, and substrate concentration **S** are known to affect the yield from a bioreactor. But in this example we are not just interested in yield, but actually the total profit from the system. This profit takes into account energy costs, raw materials costs and other relevant factors. The illustrations in this section show the contours of profit in light grey, but in practice these are obviously unknown.
 
@@ -247,11 +247,11 @@ This is not exactly where the true process optimum is, but it is pretty close to
 
 This example has demonstrated how powerful response surface methods are. A minimal number of experiments has quickly converged onto the true, unknown process optimum. We achieved this by building successive least squares models that approximate the underlying surface. Those least squares models are built using the tools of fractional and full factorials and basic optimization theory, to climb the hill of steepest ascent.
 
-.. youtube:: https://www.youtube.com/watch?v=h80k3AusIcI&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=55
+.. youtube:: https://www.youtube.com/watch?v=h80k3AusIcI&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=56
 
-.. youtube:: https://www.youtube.com/watch?v=AcEPqVr4JJQ&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=56
+.. youtube:: https://www.youtube.com/watch?v=AcEPqVr4JJQ&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=57
 
-.. youtube:: https://www.youtube.com/watch?v=s_sutHvaBZE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=57
+.. youtube:: https://www.youtube.com/watch?v=s_sutHvaBZE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=58
 
 
 The general approach for response surface modelling
@@ -294,7 +294,7 @@ The general approach for response surface modelling
 
 .. sidebar:: What is the response variable when optimizing more than one outcome?
 
-	.. youtube:: https://www.youtube.com/watch?v=LrCvoK7Ve0Q&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=58
+	.. youtube:: https://www.youtube.com/watch?v=LrCvoK7Ve0Q&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=59
 
 	Response surface methods consider optimization of a single outcome, or response variable, called :math:`y`. In many instances we are interested in just a single response, but more often we are interested in a multi-objective response, i.e. there are trade-offs. For example we can achieve a higher production rate, but it is at the expense of more energy.
 

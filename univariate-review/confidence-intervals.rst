@@ -39,7 +39,7 @@ Interpreting the confidence interval
 .. index:: 
 	single: confidence interval; interpreting
 
-.. youtube:: https://www.youtube.com/watch?v=H_7dZRYSBGw&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=13
+.. youtube:: https://www.youtube.com/watch?v=H_7dZRYSBGw&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=14
 
 -	The expression in :eq:`CI-mean-variance-unknown-repeated` should not be interpreted to mean that the viscosity is 20 units and lies inside the LB (lower-bound) to UB (upper-bound) range of 17.1 to 22.9 with a 95% probability. In fact, the sample mean lies exactly at the mid-point of the range with 100% certainty - that is how the range was calculated.
 
@@ -102,7 +102,7 @@ Interpreting the confidence interval
 Confidence interval for the mean from a normal distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. youtube:: https://www.youtube.com/watch?v=yyK1O3JKd1U&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=14
+.. youtube:: https://www.youtube.com/watch?v=yyK1O3JKd1U&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=15
 
 The aim here is to formalize the calculations for the confidence interval of :math:`\overline{x}`, given a sample of :math:`n` 
 

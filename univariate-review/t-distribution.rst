@@ -136,7 +136,7 @@ Using the t-distribution to calculate our confidence interval
 
 ..  But in R, we use the ``dt(x, df=...)`` function to give us the values of the :math:`t`-distribution for a given value of :math:`x` which has been computed with ``df`` degrees of freedom. We use the :math:`t`-distribution in calculations related to a sample *mean*, and it is the sample mean that we use as the :math:`z` value, on the :math:`x`-axis in the distribution. This is why the distribution is only a function of the degrees of freedom.
 
-.. youtube:: https://www.youtube.com/watch?v=B22K3Fw49zo&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=12
+.. youtube:: https://www.youtube.com/watch?v=B22K3Fw49zo&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=13
 
 Returning back to :eq:`distribution-for-sample-average` we stated that
 

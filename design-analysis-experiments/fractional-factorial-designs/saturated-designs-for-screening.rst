@@ -104,8 +104,8 @@ The factor **B** is definitely not important to the response variable in this sy
 
 A side note on screening designs is a mention of :index:`Plackett and Burman designs <pair: Plackett-Burman designs; experiments>`. These designs can sometimes be of greater use than a highly fractionated design. A fractional factorial must have :math:`2^{k-p}` runs, for integers :math:`k` and :math:`p`: i.e. either :math:`4, 8, 16, 32, 64, 128, \ldots` runs. Plackett-Burman designs are screening designs that can be run in any multiple of 4 greater or equal to 12:, i.e. :math:`12, 16, 20, 24, \ldots` runs. The Box, Hunter, and Hunter book has more information in Chapter 7, but another interesting paper on these topic is by Box and Bisgaard: "What can you find out from 12 experimental runs?", which shows how to screen for 11 factors in 12 experiments.
 
-.. youtube:: https://www.youtube.com/watch?v=zrZS-zovKSc&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=49
+.. youtube:: https://www.youtube.com/watch?v=zrZS-zovKSc&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=50
 
-.. youtube:: https://www.youtube.com/watch?v=dbxijjAHeUU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=50
+.. youtube:: https://www.youtube.com/watch?v=dbxijjAHeUU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=51
 
 An important mention to readers interested in other, arguable better screening strategies, is to consider :ref:`definitive screening designs <DOE-definitive-screening-designs>`.

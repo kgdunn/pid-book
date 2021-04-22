@@ -315,7 +315,7 @@
 
 	If you are using this chapter with the `Coursera MOOC <https://yint.org/experiments>`_ (massive open online course), then we wish to welcome you and want to let you know that this book is generally part of a larger set of notes. The cross-references in this chapter will point you to other parts, where background knowledge is provided.
 	
-	.. youtube:: https://www.youtube.com/watch?v=9Sljs2064u4&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=30
+	.. youtube:: https://www.youtube.com/watch?v=9Sljs2064u4&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=31
 	
 	This chapter was written for engineers originally, but you will see the examples are very general and can be applied to any other systems.
 	
@@ -329,7 +329,7 @@
 Design and analysis of experiments in context
 ===============================================
 
-.. youtube:: https://www.youtube.com/watch?v=iYsR93LpHi8&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=31
+.. youtube:: https://www.youtube.com/watch?v=iYsR93LpHi8&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=32
 
 This chapter will take a totally different approach to learning about and understanding systems in general, not only (chemical) engineering systems. The systems we could apply this to could be as straightforward as growing plants or perfecting your favourite recipe at home. Or they may be as complex as the entire production line in a large factory producing multiple products and shipping them to customers.
 
@@ -343,7 +343,7 @@ In this chapter we learn the best way to intentionally disturb the system to lea
 Terminology
 ===========
 
-.. youtube:: https://www.youtube.com/watch?v=0vzsc2daVKU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=32
+.. youtube:: https://www.youtube.com/watch?v=0vzsc2daVKU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=33
 
 The area of designed experiments uses specific terminology.
 
