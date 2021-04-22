@@ -197,7 +197,7 @@ The usual approach for assessing if the difference between :math:`\overline{x}_B
 				
 		..	For a full proof of this result, please see :eq:`eq_add_variance_2`.
 
-	#.	Using the central limit theorem, even if the samples in A and the samples in B are non-normal, the sample averages :math:`\overline{x}_A` and :math:`\overline{x}_B` will be much more normal, even for small sample sizes. So the difference between these means will also be more normal: :math:`\overline{x}_B - \overline{x}_A`. Now express this difference in the form of a :math:`z`-deviate (:index:`standard form`):
+	#.	Using the central limit theorem, even if the samples in A and the samples in B are non-normal, the sample averages :math:`\overline{x}_A` and :math:`\overline{x}_B` will be more normal as the sample size becomes progressively larger. So the difference between these means will also be more normal: :math:`\overline{x}_B - \overline{x}_A`. Now express this difference in the form of a :math:`z`-deviate (:index:`standard form`):
 
 		.. math::
 			:label: zvalue-for-difference
