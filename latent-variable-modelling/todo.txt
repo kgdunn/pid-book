@@ -1,0 +1,32 @@
+Teaching PCA in a logical way
+
+* Use the Food Texture case study: what relationships do you see?
+ - write them all down by hand: this is correlated with that, etc.
+* Interesting to start with the 2D monitoring issue, to justify the use of PCA???
+
+* Start with showing the N x K matrix
+* Give different examples
+* Explain that PCA has only 1 objective: explain variance
+* Use the 4 temperatures examples
+ - LV is a linear combination
+ - what is a linear combination? In this case it is just the average
+ - emphasize that each variable contributes
+ - show N*K matrix, with a new T scores matrix (column if A=1) next to it
+ - show the 2D plot of 2 temperatures: correlation seen of a 'line'
+ - show the 3D plot of 3 of the 4 temperatures: a 'line' still
+ - likely in 4D it is also a line
+ - show t1 visually for the temperatures: it is just a single number, summarizing the 4 numbers
+ - the PCA model is in this case a 1 dimensional line for 4 variables
+* Show the YouTube video of temperatures  in the spinning cube
+* Show the YouTube video of Abel: https://www.youtube.com/watch?v=4pnQd6jnCWk
+ - emphasize that the data are prescaled: we will come back to that later
+ - the plane is fit so that it minimizes the distance.
+ - in this case the PCA model is 2 dimensional plane for 3 variables
+
+* Now use the Food Texture case study
+ - calculate 2 components
+ - look at PC 1
+ - do you see the matching interpretation of the scatterplot matrix with the loadings interpretation?
+ - look at bi-plot also
+ - which observation is most similar to sample XXX? Verify it in the raw data.
+ - which observation is most dissimilar to sample YYY? Verify it in the raw data.
