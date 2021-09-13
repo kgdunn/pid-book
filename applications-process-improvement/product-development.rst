@@ -64,6 +64,6 @@ Finally, sometimes the desired outcome is a very large vector, such as time seri
 The "rank"
 ~~~~~~~~~~~
 
-Details to come in March 2021, with illustrations and interactive case studies.
+Details to come in 2021, with illustrations and interactive case studies.
 
 

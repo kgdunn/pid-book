@@ -1,6 +1,40 @@
+
+ [] Why does Sparkline figure in Ch1 show at the wrong place?
+ [] Give a paired test example in Chapter 2
+ [] Add more images from Dofasco case study
+ [] Use/investigate http://sigil-ebook.com/about/ for e-book
+ [] Search is bad: "t-test", "paired test" all produce bad results
+ [] Better search. You cannot search for phrases at the moment
+ [] Search does not work properly
+ [] Add Javascript, as was done here: http://www.scipy-lectures.org/index.html
+ [] Make images clickable to reveal code
+ [x] Check out Skyepack for publisher 
+ [x] Fix typo in feedback header 
+ [x] Have link: "Provide feedback"
+ [] TOC main page shows cover and 6 main TOC items instead? 
+ [x] See above: can you also have embedded R scripts in the book? 
+ [] Use http://ace.c9.io/#nav=embedding ACE for HTML code snippets
+ [] Add the "boards" data to R package; then improve the Boxplot example in Ch1 of PID. http://learnche.org/pid/data-visualization/data-visualization#box-plots
+ [] Get a textbook cover for your book.
+ [] Provide "click to copy" for the permalinks
+ [x] Add LearnChE link to openmv.net 
+ [] How can you get the slides into the HTML book?
+ [x] Show the index. The index does not show up in HTML
+ [] Other resources drawn into the book? Such as code links, PDF (slides), etc
+ [] Add that datasets are part of the PID R package 
+ [] Add page title in HTML header in Mobile
+ [x] Datasets: Put the tab header in the HTML template
+ [x] Add a main header to base.html for all dataset pages
+ [x] Republish with the new dataset links added
+ [x] Fix extention to handle YouTube in LaTeX
+ [x] Change openmv.net URLS
+ [] DOE RSM chapter redone using the MOOC example
+ [] Add the test and exam questions from the last 2 to 3 years
+ [] And add assignment questions
+ [] Add 4C3 OOI version questions
+
+ [] ADD rsm website
 Expts section, based on Coursera questions:
-
-
 
 ----
 Phil Kay
