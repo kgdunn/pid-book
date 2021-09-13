@@ -66,7 +66,7 @@ Exercises
 
 		- How many variables in the data set?
 		- How many observations?
-		- The data are properties of a powder. Plot each variable, one at a time, and locate any outliers. R-users will benefit from `the R tutorial <https://learnche.mcmaster.ca/4C3/Software_tutorial>`_ (see the use of the ``identify`` function).
+		- The data are properties of a powder. Plot each variable, one at a time, and locate any outliers. R-users will benefit from `the R tutorial <https://learnche.org/4C3/Software_tutorial>`_ (see the use of the ``identify`` function).
 		
 .. answer::
 
