@@ -35,7 +35,7 @@ So :math:`t_{i,1}` is the score value for the :math:`i^\text{th}` observation al
 We can calculate the second score value for the :math:`i^\text{th}` observation in a similar way:
 
 .. math:: 
-	t_{i,2} = x_{i,1} p_{1,2} + x_{i,2} p_{2,2} + \ldots + x_{i,k} p_{k,1}  + \ldots + x_{i,K} p_{K,2}
+	t_{i,2} = x_{i,1} p_{1,2} + x_{i,2} p_{2,2} + \ldots + x_{i,k} p_{k,2}  + \ldots + x_{i,K} p_{K,2}
 
 And so on, for the third and subsequent components. We can compactly write in matrix form for the :math:`i^\text{th}` observation that:
 
