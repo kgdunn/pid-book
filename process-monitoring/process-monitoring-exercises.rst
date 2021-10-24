@@ -19,7 +19,7 @@ Exercises
 
 .. question::
 
-    Use the `batch yields data <https://openmv.net/info/batch-yields>`_ and construct a monitoring chart using the 300 yield values. Use a subgroup of size 5. Report your target value, lower control limit and upper control limit, showing the calculations you made. I recommend that you write your code so that you can reuse it for other questions.
+    Use the `batch yields data <http://openmv.net/info/batch-yields>`_ and construct a monitoring chart using the 300 yield values. Use a subgroup of size 5. Report your target value, lower control limit and upper control limit, showing the calculations you made. I recommend that you write your code so that you can reuse it for other questions.
 
 .. answer::
 
@@ -44,7 +44,7 @@ Exercises
 	.. dcl:: R
 		:height: 800px
 
-		data_file <- 'https://openmv.net/file/batch-yields.csv'
+		data_file <- 'http://openmv.net/file/batch-yields.csv'
 		batch <- read.csv(data_file)
 
 		# make sure we have the expected data
@@ -99,7 +99,7 @@ Exercises
 
 .. question::
 
-    The `boards data <https://openmv.net/info/six-point-board-thickness>`_ on the website are from a line which cuts spruce, pine and fir (SPF) to produce general quality lumber that you could purchase at Rona, Home Depot, etc. The price that a saw mill receives for its lumber is strongly dependent on how accurate the cut is made. Use the data for the 2 by 6 boards (each row is one board) and develop a monitoring system using these steps.
+    The `boards data <http://openmv.net/info/six-point-board-thickness>`_ on the website are from a line which cuts spruce, pine and fir (SPF) to produce general quality lumber that you could purchase at Rona, Home Depot, etc. The price that a saw mill receives for its lumber is strongly dependent on how accurate the cut is made. Use the data for the 2 by 6 boards (each row is one board) and develop a monitoring system using these steps.
 
     	a) Plot all the data.
     	b) Now assume that boards 1 to 500 are the phase 1 data; identify any boards in this subset that appear to be unusual (where the board thickness is not consistent with most of the other operation)
@@ -216,7 +216,7 @@ Exercises
 
 	#.	Which monitoring chart would you use to ensure the airflow is always near target?
 
-	#.	Use the `aeration rate dataset <https://openmv.net/info/aeration-rate>`_ from the website and plot the raw data (total litres of air added in a 1 minute period). Are you able to detect any problems?
+	#.	Use the `aeration rate dataset <http://openmv.net/info/aeration-rate>`_ from the website and plot the raw data (total litres of air added in a 1 minute period). Are you able to detect any problems?
 
 	#.	Construct the chart you described in part 1, and show it's performance on all the data. Make any necessary assumptions to construct the chart.
 
@@ -476,7 +476,7 @@ Exercises
 
 .. question::
 
-	The Kappa number is a widely used measurement in the pulp and paper industry. It can be measured on-line, and indicates the severity of chemical treatment that must be applied to a wood pulp to obtain a given level of whiteness (i.e. the pulp's bleachability). Data on the `website <https://openmv.net/info/kappa-number>`_ contain the Kappa values from a pulp mill. Use the first 2000 data points to construct a Shewhart monitoring chart for the Kappa number. You may use any subgroup size you like. Then use the remaining data as your phase 2 (testing) data. Does the chart perform as expected?
+	The Kappa number is a widely used measurement in the pulp and paper industry. It can be measured on-line, and indicates the severity of chemical treatment that must be applied to a wood pulp to obtain a given level of whiteness (i.e. the pulp's bleachability). Data on the `website <http://openmv.net/info/kappa-number>`_ contain the Kappa values from a pulp mill. Use the first 2000 data points to construct a Shewhart monitoring chart for the Kappa number. You may use any subgroup size you like. Then use the remaining data as your phase 2 (testing) data. Does the chart perform as expected?
 
 .. answer::
 	:fullinclude: no
@@ -548,7 +548,7 @@ Exercises
 
 	.. Advanced question
 
-	The carbon dioxide measurement is available from a `gas-fired furnace <https://openmv.net/info/gas-furnace>`_. These data are from phase 1 operation.
+	The carbon dioxide measurement is available from a `gas-fired furnace <http://openmv.net/info/gas-furnace>`_. These data are from phase 1 operation.
 
 	#.	Calculate the Shewhart chart upper and lower control limits that you would use during phase 2 with a subgroup size of :math:`n=6`.
 	#.	Is this a useful monitoring chart? What is going in this data?
@@ -593,7 +593,7 @@ Exercises
 
 	.. dcl:: R
 
-		file <- 'https://openmv.net/file/gas-furnace.csv'
+		file <- 'http://openmv.net/file/gas-furnace.csv'
 		data <- read.csv(file)
 		CO2 <- data$CO2
 		N.raw <- length(CO2)
@@ -674,7 +674,7 @@ Exercises
 
 .. question::
 
-	The percentage yield from a batch reactor, and the purity of the feedstock are available as the `Batch yield and purity <https://openmv.net/info/batch-yield-and-purity>`_ data set. Assume these data are from phase 1 operation and calculate the Shewhart chart upper and lower control limits that you would use during phase 2. Use a subgroup size of :math:`n=3`.
+	The percentage yield from a batch reactor, and the purity of the feedstock are available as the `Batch yield and purity <http://openmv.net/info/batch-yield-and-purity>`_ data set. Assume these data are from phase 1 operation and calculate the Shewhart chart upper and lower control limits that you would use during phase 2. Use a subgroup size of :math:`n=3`.
 
 	#.	What is phase 1?
 	#.	What is phase 2?
@@ -729,7 +729,7 @@ Exercises
 		# recursively calculate the limits. Some
 		# updates were made.
 
-		file <- 'https://openmv.net/file/batch-yield-and-purity.csv'
+		file <- 'http://openmv.net/file/batch-yield-and-purity.csv'
 		data <- read.csv(file)
 		y <- data$yield
 		variable <- "Yield"

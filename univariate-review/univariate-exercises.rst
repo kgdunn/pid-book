@@ -62,7 +62,7 @@ Exercises
 
 .. question::
 
-	Use the data set on `raw materials <https://openmv.net/info/raw-material-properties>`_.
+	Use the data set on `raw materials <http://openmv.net/info/raw-material-properties>`_.
 
 		- How many variables in the data set?
 		- How many observations?
@@ -155,7 +155,7 @@ Exercises
 	
 .. question::
 
-	Does the number of visits in the `website traffic <https://openmv.net/info/website-traffic>`_ data set follow a normal distribution?  If so, what are the parameters for the distribution?  What is the likelihood that you will have between 10 and 30 visits to the website?
+	Does the number of visits in the `website traffic <http://openmv.net/info/website-traffic>`_ data set follow a normal distribution?  If so, what are the parameters for the distribution?  What is the likelihood that you will have between 10 and 30 visits to the website?
 	
 .. answer:: 
 	:fullinclude: no 
@@ -176,7 +176,7 @@ Exercises
 
 .. question::
 
-	The ammonia concentration in your wastewater treatment plant is measured every 6 hours. The data for one year are available from the `dataset website <https://openmv.net/info/ammonia>`_. 
+	The ammonia concentration in your wastewater treatment plant is measured every 6 hours. The data for one year are available from the `dataset website <http://openmv.net/info/ammonia>`_. 
 
 	#.	Use a visualization plot to hypothesize from which distribution the data might come. Which distribution do you think is most likely? Once you've decided on a distribution, use a qq-plot to test your decision.
 	#.	Estimate location and spread statistics assuming the data are from a normal distribution. You can investigate using the ``fitdistr`` function in R, in the MASS package.
@@ -338,7 +338,7 @@ Exercises
 
 .. question::
 	
-	One of the questions we posed at the start of this chapter was: `Here are the yields from a batch bioreactor system <https://openmv.net/info/batch-yields>`_  for the last 3 years (300 data points; we run a new batch about every 3 to 4 days).
+	One of the questions we posed at the start of this chapter was: `Here are the yields from a batch bioreactor system <http://openmv.net/info/batch-yields>`_  for the last 3 years (300 data points; we run a new batch about every 3 to 4 days).
 
 	#.	What sort of distribution do the yield data have?
 	#.	A recorded yield value was less than 60%, what are the chances of that occurring?  Express your answer as: *there's a 1 in n chance* of it occurring.
@@ -439,7 +439,7 @@ Exercises
 
     A major aim of many engineers is/will be to reduce the carbon footprint of their company's high-profile products. Next week your boss wants you to evaluate a new raw material that requires 2.6 :math:`\dfrac{\text{kg CO}_2}{\text{kg product}}` less than the current material, but the final product's brittleness must be the same as achieved with the current raw material. This is a large reduction in :math:`\text{CO}_2`, given your current production capacity of 51,700 kg of product per year. Manpower and physical constraints prevent you from running a randomized test; you don't have a suitable database of historical data either.
 
-    One idea you come up with is to use to your advantage the fact that your production line has three parallel reactors, TK104, TK105, and TK107. They were installed at the same time, they have the same geometry, the same instrumentation, *etc*; you have pretty much thought about every factor that might vary between them, and are confident the 3 reactors are identical. Typical production schedules split the raw material between the 3 reactors. Data `on the website <https://openmv.net/info/brittleness-index>`_ contain the brittleness values from the three reactors for the past few runs on the current raw material.
+    One idea you come up with is to use to your advantage the fact that your production line has three parallel reactors, TK104, TK105, and TK107. They were installed at the same time, they have the same geometry, the same instrumentation, *etc*; you have pretty much thought about every factor that might vary between them, and are confident the 3 reactors are identical. Typical production schedules split the raw material between the 3 reactors. Data `on the website <http://openmv.net/info/brittleness-index>`_ contain the brittleness values from the three reactors for the past few runs on the current raw material.
 
 	#.	Which two reactors would you pick to run your comparative trial on next week?
 	
@@ -511,7 +511,7 @@ Exercises
 
 .. question::
 
-	Use the `website traffic data <https://openmv.net/info/website-traffic>`_ from the dataset website:
+	Use the `website traffic data <http://openmv.net/info/website-traffic>`_ from the dataset website:
 
 	- Write down, symbolically, the z-value for the difference in average visits on a Friday and Saturday.
 	- Estimate a suitable value for the variance and justify your choice.
@@ -1383,6 +1383,6 @@ Exercises
 
 	This question gives you exposure to analyzing a larger data set than seen in the preceding questions.
 	
-	Your manager has asked you to describe the flow rate characteristics of the overhead stream leaving the top of the `distillation column <https://en.wikipedia.org/wiki/Fractionating_column>`_ at your plant. You are able to download one month of data, `available from this website <https://openmv.net/info/distillate-flow>`_, from 1 March to 31 March, taken at one minute intervals to answer this question. 
+	Your manager has asked you to describe the flow rate characteristics of the overhead stream leaving the top of the `distillation column <https://en.wikipedia.org/wiki/Fractionating_column>`_ at your plant. You are able to download one month of data, `available from this website <http://openmv.net/info/distillate-flow>`_, from 1 March to 31 March, taken at one minute intervals to answer this question. 
 	
 .. answer: use Ghassan Marjaba's solution (permission given by email in February 2014).

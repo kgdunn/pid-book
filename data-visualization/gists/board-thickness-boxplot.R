@@ -1,4 +1,4 @@
-all.boards = read.csv("https://openmv.net/file/six-point-board-thickness.csv")
+all.boards = read.csv("http://openmv.net/file/six-point-board-thickness.csv")
 boards = all.boards[1:100, 2:7]
 
 # Look at the start and end of the data

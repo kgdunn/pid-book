@@ -134,7 +134,7 @@ Exercises
 
 .. question::
 
-	This question is an extension to visualizing more than 3 variables. Investigate on your own the term "*scatterplot matrix*", and draw one for the `Food texture data set <https://openmv.net/info/food-texture>`_. See the ``car`` library in R to create an effective scatterplot matrix with the ``scatterplotMatrix`` function. List some bullet-points that interpret the plot.
+	This question is an extension to visualizing more than 3 variables. Investigate on your own the term "*scatterplot matrix*", and draw one for the `Food texture data set <http://openmv.net/info/food-texture>`_. See the ``car`` library in R to create an effective scatterplot matrix with the ``scatterplotMatrix`` function. List some bullet-points that interpret the plot.
 
 .. answer::
 
@@ -147,7 +147,7 @@ Exercises
 	.. dcl:: R
 
 		library(car)
-		data_file = 'https://openmv.net/file/food-texture.csv'
+		data_file = 'http://openmv.net/file/food-texture.csv'
 		food <- read.csv(data_file)
 
 		# Hide the smoother and bounds
@@ -170,7 +170,7 @@ Exercises
 
 .. question::
 
-	Using the `Website traffic data set <https://openmv.net/info/website-traffic>`_
+	Using the `Website traffic data set <http://openmv.net/info/website-traffic>`_
 
 	#.	Create a chart that shows the *variability* in website traffic for each day of the week.
 	#.	Use the same data set to describe any time-based trends that are apparent.
@@ -186,7 +186,7 @@ Exercises
 
 		.. dcl:: R
 
-		    web = read.csv('https://openmv.net/file/website-traffic.csv')
+		    web = read.csv('http://openmv.net/file/website-traffic.csv')
 
 		    # Re-order the factors in this order
 		    day.names = c("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday","Thursday", "Friday" )
@@ -212,7 +212,7 @@ Exercises
 
 		.. dcl:: R
 
-			web = read.csv('https://openmv.net/file/website-traffic.csv')
+			web = read.csv('http://openmv.net/file/website-traffic.csv')
 
 			layout(matrix(c(1,2), 1, 2))
 			plot(web$Visits, type="o")
@@ -277,7 +277,7 @@ Exercises
 
 ..	question::
 
-	Load the `room temperature <https://openmv.net/info/room-temperature>`_ dataset into R, Python or MATLAB, or whichever software tool you prefer to plot with.
+	Load the `room temperature <http://openmv.net/info/room-temperature>`_ dataset into R, Python or MATLAB, or whichever software tool you prefer to plot with.
 
 	#.	Plot the 4 trajectories, ``FrontLeft``, ``FrontRight``, ``BackLeft`` and ``BackRight`` on the same plot.
 	#.	Comment on any features you observe in your plot.
@@ -290,7 +290,7 @@ Exercises
 		.. dcl:: R
 			:height: 800px
 
-			data_file = 'https://openmv.net/file/room-temperature.csv'
+			data_file = 'http://openmv.net/file/room-temperature.csv'
 			roomtemp <- read.csv(data_file)
 			summary(roomtemp)
 			ylim = c(290, 300)
@@ -353,7 +353,7 @@ Exercises
 
 ..	question::
 
-	Load the `six point board thickness <https://openmv.net/info/six-point-board-thickness>`_ dataset, available from datasets website.
+	Load the `six point board thickness <http://openmv.net/info/six-point-board-thickness>`_ dataset, available from datasets website.
 
 	#.	Plot a boxplot of the first 100 rows of data to match the figure :ref:`in these notes <visualization_boxplot_example>`
 	#.	Explain why the thick center line in the box plot is not symmetrical with the outer edges of the box.
@@ -364,7 +364,7 @@ Exercises
 
 		.. dcl:: R
 
-			data_file = 'https://openmv.net/file/six-point-board-thickness.csv'
+			data_file = 'http://openmv.net/file/six-point-board-thickness.csv'
 			boards <- read.csv(data_file)
 			summary(boards)
 

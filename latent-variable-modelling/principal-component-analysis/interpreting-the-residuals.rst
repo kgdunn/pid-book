@@ -62,7 +62,7 @@ Looking back at the :ref:`room-temperature example <LVM_room_temperature_example
 	:width: 750px
 	:align: center
 
-Using the `raw data for this example <https://openmv.net/info/room-temperature>`_, shown below, can you explain why we see those unusual points in the SPE plot around time 50 to 60?
+Using the `raw data for this example <http://openmv.net/info/room-temperature>`_, shown below, can you explain why we see those unusual points in the SPE plot around time 50 to 60?
 
 .. image:: ../../figures/examples/room-temperature/room-temperature-plots.png
 	:alt:	../../figures/examples/room-temperature/room-temperature-plots.py

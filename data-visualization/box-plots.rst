@@ -45,7 +45,7 @@ Some variations for the box plot are possible:
 
 **Example**
 
-In a final exam for a particular course at McMaster University there was an open-ended question. These `data values are the grades <https://openmv.net/info/systematic-method>`_ achieved for the answer to that question, broken down by whether the student used a systematic method, or not. No grades were given for using a systematic method; grades were awarded only for answering the question.
+In a final exam for a particular course at McMaster University there was an open-ended question. These `data values are the grades <http://openmv.net/info/systematic-method>`_ achieved for the answer to that question, broken down by whether the student used a systematic method, or not. No grades were given for using a systematic method; grades were awarded only for answering the question.
 
 A systematic method is any method that assists the student with problem solving. For example, a strategry could be to: define the problem, identify knowns/unknowns and assumptions, explore alternatives, plan a strategy, implement the strategy and then check the solution.
 

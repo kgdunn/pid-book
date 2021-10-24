@@ -1,5 +1,5 @@
 # Plot of temperature vs vapour pressure
-data_file = "https://openmv.net/file/distillation-tower.csv"
+data_file = "http://openmv.net/file/distillation-tower.csv"
 distillation = read.csv(data_file)
 
 plot(distillation$Temp9,

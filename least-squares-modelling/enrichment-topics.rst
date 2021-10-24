@@ -73,7 +73,7 @@ For example:
 
 .. code-block:: s
 
-	> data <- read.csv('https://openmv.net/file/distillation-tower.csv')
+	> data <- read.csv('http://openmv.net/file/distillation-tower.csv')
 
 	# Using ordinary least squares
 	# -----------------------------

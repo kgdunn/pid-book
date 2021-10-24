@@ -3,7 +3,7 @@
 PCA example: Food texture analysis
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let's take a look at an example to consolidate and extend the ideas introduced so far. This `data set is from a food manufacturer <https://openmv.net/info/food-texture>`_ making a pastry product. Each sample (row) in the data set is taken from a batch of product where 5 quality attributes are measured:
+Let's take a look at an example to consolidate and extend the ideas introduced so far. This `data set is from a food manufacturer <http://openmv.net/info/food-texture>`_ making a pastry product. Each sample (row) in the data set is taken from a batch of product where 5 quality attributes are measured:
 
 	#.	Percentage oil in the pastry
 	#.	The product's density (the higher the number, the more dense the product)
@@ -105,7 +105,7 @@ Let's examine the score values calculated. As shown in equation :eq:`LVM_t1_food
 	:width: 750px
 	:align: center
 	
-The samples appear to be evenly spread, some high and some low on the :math:`t_1` scale. Sample 33 has a :math:`t_1` value of -4.2, indicating it was much denser than the other pastries, and had a high fracture angle (it could be bent more than others). In fact, if we `refer to the raw data <https://openmv.net/info/food-texture>`_ we can confirm these findings: :math:`\mathbf{x}_{i=33} = [15.5, \,\, 3125, \,\, 7, \,\, 33, \,\, 92]`. Also refer back to the scatterplot matrix and mark the point which has density of 3125, and fracture angle of 33. This pastry also has a low oil percentage (15.5%) and low crispy value (7).
+The samples appear to be evenly spread, some high and some low on the :math:`t_1` scale. Sample 33 has a :math:`t_1` value of -4.2, indicating it was much denser than the other pastries, and had a high fracture angle (it could be bent more than others). In fact, if we `refer to the raw data <http://openmv.net/info/food-texture>`_ we can confirm these findings: :math:`\mathbf{x}_{i=33} = [15.5, \,\, 3125, \,\, 7, \,\, 33, \,\, 92]`. Also refer back to the scatterplot matrix and mark the point which has density of 3125, and fracture angle of 33. This pastry also has a low oil percentage (15.5%) and low crispy value (7).
 
 We can also investigate sample 36, with a :math:`t_1` value of 3.6. The raw data again confirm that this pastry follows the trends of other, high :math:`t_1` value pastries. It has a high oil level, low density, high crispiness, and a low fracture angle: :math:`x_{36} = [21.2, \,\, 2570, \,\, 14, \,\, 13, \,\, 105]`. Locate again on the scatterplot matrices sample 36 where oil level is 21.2 and the crispiness is 14. Also mark the point where density = 2570 and the fracture value = 13 for this sample.
 
