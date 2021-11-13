@@ -393,7 +393,7 @@ Exercises
 
 .. answer::
 	:fullinclude: no 
-	:short: mean = 4127, standard deviation = 77.2
+	:short: mean = 4127, standard deviation = 78.9
 
 	-   The mean and standard deviation can be estimated as shown in the code below. The estimates are: the mean energy usage is **4127 W.hours**, and the standard deviation is **79 W.hours**. This corresponds very closely to the raw data I used to generate this question (mean of actual data = 4125, sd of actual data = 77.2).
 
