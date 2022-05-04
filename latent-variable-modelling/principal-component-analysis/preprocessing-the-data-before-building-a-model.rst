@@ -17,7 +17,7 @@ There are a number of possibilities for data preprocessing. We mainly discuss ce
 
 	The columns in |Xraw| can be transformed: log, square-root and various powers (-1, -0.5, 0.5, 2) are popular options. These are used to reduce the effect of extreme measurements (e.g. log transforms), or because the transformed variable is known to be more correlated with the other variables. An example of this is in a distillation column: the inverse temperature is known to more correlated to the vapour pressure, which we know from first-principles modelling. Using the untransformed variable will lead to an adequate model, but the transformed variable, e.g. using the inverse temperature, can lead to a better model.
 	
-	The tools we considered earlier on visualization and univariate distributions (histograms) can help assess which variables require transformation. But one's knowledge of the system is the most useful guide for knowing which transformations to apply. Note: latent variable modes do not require each column in |Xraw| to be normally distributed: any type of quantitative variable may be used.
+	The tools we considered earlier on visualization and univariate distributions (histograms) can help assess which variables require transformation. But one's knowledge of the system is the most useful guide for knowing which transformations to apply. Note: latent variable models do not require each column in |Xraw| to be normally distributed: any type of quantitative variable may be used.
 
 **Expanding the X-matrix**
 
