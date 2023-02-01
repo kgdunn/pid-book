@@ -30,7 +30,7 @@ In other words, we replace the :math:`N \times K` matrix of raw data with a smal
 
 The PLS model goes a bit further and introduces some additional advantages over PCR:
 
-*	A single PLS model can be built for multiple, correlated |Y| variables. The eliminates having to build |M| PCR models, one for each column in |Y|.
+*	A single PLS model can be built for multiple, correlated |Y| variables. This eliminates having to build |M| PCR models, one for each column in |Y|.
 
 *	The PLS model directly assumes that there is error in |X| and |Y|. We will return to this important point of an |X|-space model later on.
 

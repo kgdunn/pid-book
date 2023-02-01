@@ -52,7 +52,7 @@ The average hat value can be calculated theoretically. While it is common to plo
 Discrepancy
 ~~~~~~~~~~~~~~
 
-Discrepancy can be measured by the residual distance. However the residual is not a complete measure of :index:`discrepancy <pair: discrepancy; least squares>`. We can imagine cases where the point has such high leverage that it drags the enter model towards it, leaving it only with a small residual. One way then to isolate these points is to divide the residual by :math:`1-\text{leverage} = 1 - h_i`. So we introduce a new way to quantify the residuals here, called *studentized residuals*:
+Discrepancy can be measured by the residual distance. However the residual is not a complete measure of :index:`discrepancy <pair: discrepancy; least squares>`. We can imagine cases where the point has such high leverage that it drags the entire model towards it, leaving it only with a small residual. One way then to isolate these points is to divide the residual by :math:`1-\text{leverage} = 1 - h_i`. So we introduce a new way to quantify the residuals here, called *studentized residuals*:
 
 	.. math::
 

@@ -21,7 +21,7 @@ We summarize various properties of the PCA model, most have been described in th
 	where :math:`\mathbf{E}_1` is the residual matrix after fitting one component. The estimate for |X| will have smaller residuals if we fit a second component:
 
 	.. math::
-		\widehat{\mathbf{X}}_2 = \mathbf{t}_1 \mathbf{p}_1 + \mathbf{t}_2 \mathbf{p}_2 \qquad \text{or equivalently:} \qquad \mathbf{X}_2 = \mathbf{t}_1 \mathbf{p}_1 + \mathbf{t}_1 \mathbf{p}_1 + \mathbf{E}_2
+		\widehat{\mathbf{X}}_2 = \mathbf{t}_1 \mathbf{p}_1 + \mathbf{t}_2 \mathbf{p}_2 \qquad \text{or equivalently:} \qquad \mathbf{X}_2 = \mathbf{t}_1 \mathbf{p}_1 + \mathbf{t}_2 \mathbf{p}_2 + \mathbf{E}_2
 
 	In general we can illustrate this:
 

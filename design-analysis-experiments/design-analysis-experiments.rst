@@ -386,7 +386,7 @@ Numeric factors are quantified by measuring, such as giving 15 mL of water or 30
 
 Categorical factors usually take on a limited number of values. For example, soil type A or soil type B could be used to grow the plants. Categorical variables have no implicit ordering. You could have switched the names of soil A and soil B around. Categorical variables and qualitative variables can be used as synonyms.
 
-Most categorical variables can be converted to continuous variables, with some careful thought. For example: water vs some water (categorical) can be converted to 0 mL and 40 mL (now it is numeric). In the case of soil A vs soil B it might be that soil A contains a higher level of nutrients in total than soil B, so a numeric version of this factor could be measured as nutrient load.
+Most categorical variables can be converted to continuous variables, with some careful thought. For example: no water vs some water (categorical) can be converted to 0 mL and 40 mL (now it is numeric). In the case of soil A vs soil B it might be that soil A contains a higher level of nutrients in total than soil B, so a numeric version of this factor could be measured as nutrient load.
 
 If you were working in the area of marketing, you might try three different colours of background in your advertising poster. Those 3 colours are categorical variables in the context of the experiment. 
 

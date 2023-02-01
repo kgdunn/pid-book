@@ -60,7 +60,7 @@ Given these numbers, we can simplify the ideal gas law to: :math:`p=\beta_1 T`, 
 
 .. _LS_eqn_definition-covariance:
 
-The formal definition for covariance between any two variables is:
+The formal definition for covariance between any two variables is: [terminology used here was defined :ref:`in a previous section <univariate_calculate_mean>`]
 
 .. math::
 	:label: definition-covariance

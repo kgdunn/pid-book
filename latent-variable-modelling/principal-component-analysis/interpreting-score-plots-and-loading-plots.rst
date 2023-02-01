@@ -142,7 +142,7 @@ Another issue to consider is the case when one has many highly correlated variab
 
 Notice how the model spreads the weights out evenly over all the correlated variables. Each variable is individually important. The model could well have assigned a weight of 1.0 to one of the variables and 0.0 to the others. This is a common feature in latent variable models: variables which have roughly equal influence on defining a direction are correlated with each other and will have roughly equal numeric weights.
 
-Finally, one way to locate unimportant variables in the model is by finding which variables which have small weights in all components. These variables can generally be removed, as they show no correlation to any of the components or with other variables.
+Finally, one way to locate unimportant variables in the model is by finding which variables have small weights in all components. These variables can generally be removed, as they show no correlation to any of the components or with other variables.
 
 Interpreting loadings and scores together
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -23,7 +23,7 @@ Approach to implement a monitoring chart in an industrial setting
 
 Here is some general guidance; feel free to adjust the steps as required for your unique situation.
 
-	#.	Identify the variable(s) to monitor. Make sure each variables show different, uncorrelated phenomena to avoid redundancy. If unsure which variables to select, use a :ref:`multivariate monitoring system <LVM_monitoring>`.
+	#.	Identify the variable(s) to monitor. Make sure each variable shows different, uncorrelated phenomena to avoid redundancy. If unsure which variables to select, use a :ref:`multivariate monitoring system <LVM_monitoring>`.
 	
 	#.	Retrieve historical data from your computer systems, or lab data, or paper records.
 	
