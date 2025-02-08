@@ -32,7 +32,7 @@ needs_sphinx = "1.5"  # If your documentation needs a minimal Sphinx version, st
 # =================
 extensions = [
     "sphinx.ext.todo",
-    "nbsphinx",
+    #"nbsphinx",
 ]  # 'sphinx.ext.imgmath', ]
 
 # Download https://bitbucket.org/birkenfeld/sphinx-contrib/overview;
@@ -41,11 +41,11 @@ extensions.append("my-extensions.youtube")
 
 # Notebook extension
 # -------------------------
-nbsphinx_execute = "always"
-nbsphinx_execute_arguments = [
-    "--InlineBackend.figure_formats={'svg', 'pdf'}",
-    "--InlineBackend.rc={'figure.dpi': 96}",
-]
+# nbsphinx_execute = "always"
+# nbsphinx_execute_arguments = [
+#     "--InlineBackend.figure_formats={'svg', 'pdf'}",
+#     "--InlineBackend.rc={'figure.dpi': 96}",
+# ]
 
 # Custom extensions
 # -------------------------

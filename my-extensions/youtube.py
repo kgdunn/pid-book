@@ -6,36 +6,47 @@ from __future__ import division
 import re
 from docutils import nodes
 from docutils.parsers.rst import directives
-#from sphinx.util.compat import Directive
+
+# from sphinx.util.compat import Directive
 from docutils.parsers.rst import Directive
 
 CONTROL_HEIGHT = 30
 
+
 def get_size(d, key):
     if key not in d:
         return None
-    m = re.match("(\d+)(|%|px)$", d[key])
+    m = re.match(r"(\d+)(|%|px)$", d[key])
     if not m:
         raise ValueError("invalid size %r" % d[key])
     return int(m.group(1)), m.group(2) or "px"
 
+
 def css(d):
     return "; ".join(sorted("%s: %s" % kv for kv in d.items()))
 
-class youtube(nodes.General, nodes.Element): pass
+
+class youtube(nodes.General, nodes.Element):
+    pass
+
 
 def visit_youtube_node_text(self, node):
-    text_to_add = '[YouTube video: %s]' % node['id']
+    text_to_add = "[YouTube video: %s]" % node["id"]
     self.states[-1].append((-1, text_to_add))
 
+
 def visit_youtube_node_latex(self, node):
-    url = node["id"]  #"https://www.youtube.com/embed/%s" %
-    text = """
+    url = node["id"]  # "https://www.youtube.com/embed/%s" %
+    text = (
+        r"""
     \\begin{textblock*}{15mm}(-1.75cm,-1cm)
     \n\\href{%s}{\scalebox{0.05}{\includegraphics{1024px-High-contrast-camera-video.png}}\n Video for this section}.\n
     \\end{textblock*}
-    """ % url
+    """
+        % url
+    )
     self.body.append(text)
+
 
 def visit_youtube_node_html(self, node):
     aspect = node["aspect"]
@@ -87,8 +98,10 @@ def visit_youtube_node_html(self, node):
         self.body.append(self.starttag(node, "iframe", **attrs))
         self.body.append("</iframe>")
 
+
 def depart_youtube_node(self, node):
     pass
+
 
 class YouTube(Directive):
     has_content = True
@@ -104,7 +117,7 @@ class YouTube(Directive):
     def run(self):
         if "aspect" in self.options:
             aspect = self.options.get("aspect")
-            m = re.match("(\d+):(\d+)", aspect)
+            m = re.match(r"(\d+):(\d+)", aspect)
             if m is None:
                 raise ValueError("invalid aspect ratio %r" % aspect)
             aspect = tuple(int(x) for x in m.groups())
@@ -114,12 +127,14 @@ class YouTube(Directive):
         height = get_size(self.options, "height")
         return [youtube(id=self.arguments[0], aspect=aspect, width=width, height=height)]
 
+
 def setup(app):
-    app.add_node(youtube,
-       html=(visit_youtube_node_html, depart_youtube_node),
-       text=(visit_youtube_node_text, depart_youtube_node),
-       latex=(visit_youtube_node_latex, depart_youtube_node),
-       )
+    app.add_node(
+        youtube,
+        html=(visit_youtube_node_html, depart_youtube_node),
+        text=(visit_youtube_node_text, depart_youtube_node),
+        latex=(visit_youtube_node_latex, depart_youtube_node),
+    )
     app.add_directive("youtube", YouTube)
 
-    return {'parallel_read_safe': True}
+    return {"parallel_read_safe": True}
