@@ -22,6 +22,7 @@ Process Improvement Using Data
 	design-analysis-experiments/index
 	latent-variable-modelling/index
 	applications-process-improvement/index
+	product-development-product-improvement/index
 
 
 

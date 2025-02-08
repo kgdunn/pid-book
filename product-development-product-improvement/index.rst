@@ -11,5 +11,3 @@ Over the years since 2010 when this online book has been available, there has be
    :maxdepth: 1
 
    product-development
-   process-monitoring
-   design-of-experiment-case-studies
