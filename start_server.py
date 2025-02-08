@@ -10,7 +10,6 @@ class HttpRequestHandler(http.server.SimpleHTTPRequestHandler):
         "": "text/html",
         ".html": "text/html",
         ".manifest": "text/cache-manifest",
-        ".html": "text/html",
         ".png": "image/png",
         ".jpg": "image/jpg",
         ".svg": "image/svg+xml",

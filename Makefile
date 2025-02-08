@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 # Add "-W" to cause warnings to turn into errors
 # Remove "-j 5" for Python 3.5 (parallel building does not work)
-SPHINXOPTS    = -E -W
+SPHINXOPTS    = -E -W -j 5
 RELAXOPTS     = -E
 SPHINXBUILD   = sphinx-build
 PAPER         =
@@ -37,9 +37,29 @@ help:
 	@echo "  gettext    to make PO message catalogs"
 	@echo "  linkcheck  to check all external links for integrity"
 
-clean:
-	-rm -rf $(BUILDDIR)/*
-	-rm -rf *.pyc
+clean: 		## Remove build artifacts and set up environment
+	rm -rf $(BUILDDIR)
+	rm -rf *.pyc
+	find . -name '*.pyc' -exec rm -f {} +
+	find . -name '*.pyo' -exec rm -f {} +
+	find . -name '*~' -exec rm -f {} +
+	find . -name '__pycache__' -exec rm -fr {} +
+	find . -name '*.egg-info' -exec rm -fr {} +
+	find . -name '*.egg' -exec rm -f {} +
+	rm -f uv.lock
+	rm -rf .venv/
+	rm -rf lib/
+	rm -rf lib64/
+	rm -rf bin/
+
+	curl -LsSf https://astral.sh/uv/install.sh | sh
+	uv python install 3.11
+	uv venv
+	uv lock
+
+	uv add "sphinx<7"
+
+
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
@@ -113,6 +133,6 @@ linkcheck:
 	@echo "Link check complete; look for any errors in the above output " \
 	      "or in $(BUILDDIR)/linkcheck/output.txt."
 
-serve: 
+serve:
 	python -m http.server 8080 --directory _build/html/
 

@@ -1,0 +1,21 @@
+
+[project]
+name = "pid-book"
+version = "0.2.5"
+description = 'Process Improvement using Data. Repository for the book.'
+readme = "README.md"
+license = {text = "Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)"}
+requires-python = ">=3.12"
+keywords = ["Designed Experiments", "Latent Variables", "PCA", "PLS", "Multivariate Data Analysis", "Batch data analysis"]
+authors = [
+    { name = "Kevin Dunn", email = "kgdunn@gmail.com" },
+]
+dependencies = [
+    "sphinx<7",
+]
+
+
+[project.urls]
+Homepage = "https://github.com/kgdunn/pid-book"
+Repository = "https://github.com/kgdunn/pid-book"
+Issues = "https://github.com/kgdunn/pid-book/issues"
