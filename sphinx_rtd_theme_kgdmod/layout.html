@@ -2,14 +2,16 @@
 {%- set url_root = pathto('', 1) %}
 {%- if url_root == '#' %}{% set url_root = '' %}{% endif %}
 {%- if not embedded and docstitle %}
-  {%- set titlesuffix = " &mdash; "|safe + docstitle|e %}
+{%- set titlesuffix = " &mdash; "|safe + docstitle|e %}
 {%- else %}
-  {%- set titlesuffix = "" %}
+{%- set titlesuffix = "" %}
 {%- endif %}
 
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en"> <!--<![endif]-->
+
 <head>
   <meta charset="utf-8">
   {{ metatags }}
@@ -20,30 +22,33 @@
 
   {# FAVICON #}
   {% if favicon %}
-    <link rel="shortcut icon" href="{{ pathto('_static/media/' + favicon, 1) }}"/>
+  <link rel="shortcut icon" href="{{ pathto('_static/media/' + favicon, 1) }}" />
   {% endif %}
 
   {# CSS #}
 
   {# OPENSEARCH #}
   {% if not embedded %}
-    {% if use_opensearch %}
-      <link rel="search" type="application/opensearchdescription+xml" title="{% trans docstitle=docstitle|e %}Search within {{ docstitle }}{% endtrans %}" href="{{ pathto('_static/opensearch.xml', 1) }}"/>
-    {% endif %}
+  {% if use_opensearch %}
+  <link rel="search" type="application/opensearchdescription+xml"
+    title="{% trans docstitle=docstitle|e %}Search within {{ docstitle }}{% endtrans %}"
+    href="{{ pathto('_static/opensearch.xml', 1) }}" />
+  {% endif %}
 
   {% endif %}
 
   {# RTD hosts this file, so just load on non RTD builds #}
   {% if not READTHEDOCS %}
-    <link rel="stylesheet" href="{{ pathto('_static/' + style, 1) }}" type="text/css" />
+  <!-- Fix from: https://paste.xinu.at/JfsPm/   `style` -> `style[-1]` -->
+  <link rel="stylesheet" href="{{ pathto('_static/' + styles[-1], 1) }}" type="text/css" />
   {% endif %}
 
   {% for cssfile in css_files %}
-    <link rel="stylesheet" href="{{ pathto(cssfile, 1) }}" type="text/css" />
+  <link rel="stylesheet" href="{{ pathto(cssfile, 1) }}" type="text/css" />
   {% endfor %}
 
   {% for cssfile in extra_css_files %}
-    <link rel="stylesheet" href="{{ pathto(cssfile, 1) }}" type="text/css" />
+  <link rel="stylesheet" href="{{ pathto(cssfile, 1) }}" type="text/css" />
   {% endfor %}
 
   {# KGD added #}
@@ -51,30 +56,28 @@
 
 
   {%- block linktags %}
-    {%- if hasdoc('about') %}
-        <link rel="author" title="{{ _('About these documents') }}"
-              href="{{ pathto('about') }}"/>
-    {%- endif %}
-    {%- if hasdoc('genindex') %}
-        <link rel="index" title="{{ _('Index') }}"
-              href="{{ pathto('genindex') }}"/>
-    {%- endif %}
-    {%- if hasdoc('search') %}
-        <link rel="search" title="{{ _('Search') }}" href="{{ pathto('search') }}"/>
-    {%- endif %}
-    {%- if hasdoc('copyright') %}
-        <link rel="copyright" title="{{ _('Copyright') }}" href="{{ pathto('copyright') }}"/>
-    {%- endif %}
-    <link rel="top" title="{{ docstitle|e }}" href="{{ pathto('index') }}"/>
-    {%- if parents %}
-        <link rel="up" title="{{ parents[-1].title|striptags|e }}" href="{{ parents[-1].link|e }}"/>
-    {%- endif %}
-    {%- if next %}
-        <link rel="next" title="{{ next.title|striptags|e }}" href="{{ next.link|e }}"/>
-    {%- endif %}
-    {%- if prev %}
-        <link rel="prev" title="{{ prev.title|striptags|e }}" href="{{ prev.link|e }}"/>
-    {%- endif %}
+  {%- if hasdoc('about') %}
+  <link rel="author" title="{{ _('About these documents') }}" href="{{ pathto('about') }}" />
+  {%- endif %}
+  {%- if hasdoc('genindex') %}
+  <link rel="index" title="{{ _('Index') }}" href="{{ pathto('genindex') }}" />
+  {%- endif %}
+  {%- if hasdoc('search') %}
+  <link rel="search" title="{{ _('Search') }}" href="{{ pathto('search') }}" />
+  {%- endif %}
+  {%- if hasdoc('copyright') %}
+  <link rel="copyright" title="{{ _('Copyright') }}" href="{{ pathto('copyright') }}" />
+  {%- endif %}
+  <link rel="top" title="{{ docstitle|e }}" href="{{ pathto('index') }}" />
+  {%- if parents %}
+  <link rel="up" title="{{ parents[-1].title|striptags|e }}" href="{{ parents[-1].link|e }}" />
+  {%- endif %}
+  {%- if next %}
+  <link rel="next" title="{{ next.title|striptags|e }}" href="{{ next.link|e }}" />
+  {%- endif %}
+  {%- if prev %}
+  <link rel="prev" title="{{ prev.title|striptags|e }}" href="{{ prev.link|e }}" />
+  {%- endif %}
   {%- endblock %}
   {%- block extrahead %} {% endblock %}
 
@@ -96,60 +99,66 @@
         {% block sidebartitle %}
 
         {% if logo and theme_logo_only %}
-          <a href="{{ pathto(master_doc) }}">
-        {% else %}
+        <a href="{{ pathto(master_doc) }}">
+          {% else %}
           <a href="{{ pathto(master_doc) }}" class="icon icon-home"> {{ project }}
-        {% endif %}
+            {% endif %}
 
-        {% if logo %}
-          {# Not strictly valid HTML, but it's the only way to display/scale it properly, without weird scripting or heaps of work #}
-          <img style="width: 250px" src="{{ pathto('_static/' + logo, 1) }}" class="logo" />
-        {% endif %}
-        </a>
+            {% if logo %}
+            {# Not strictly valid HTML, but it's the only way to display/scale it properly, without weird scripting or heaps of work #}
+            <img style="width: 250px" src="{{ pathto('_static/' + logo, 1) }}" class="logo" />
+            {% endif %}
+          </a>
 
-        {% include "searchbox.html" %}
+          {% include "searchbox.html" %}
 
-        {% endblock %}
+          {% endblock %}
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
         {% block menu %}
-          {% set toctree = toctree(maxdepth=-1, collapse=False, includehidden=True) %}
-          {% if toctree %}
-		      {{ toctree }}
-          {% else %}
-              <!-- Local TOC -->
-              <div class="local-toc">LOCAL TOC{{ toc }}</div>
-          {% endif %}
-          <a href="{{ pathto('', 1) }}genindex">Complete index</a>
+        {% set toctree = toctree(maxdepth=-1, collapse=False, includehidden=True) %}
+        {% if toctree %}
+        {{ toctree }}
+        {% else %}
+        <!-- Local TOC -->
+        <div class="local-toc">LOCAL TOC{{ toc }}</div>
+        {% endif %}
+        <a href="{{ pathto('', 1) }}genindex">Complete index</a>
         {% endblock %}
       </div>
-	  <hr>
+      <hr>
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
         {% block PDFdownload %}
-				  <a href="{{ pathto('', 1) }}PID.pdf?{{release}}">
-				    <img style="width: 30px" src="{{ pathto('_static/media/' + '512px-Document-pdf.svg.png', 1) }}" conalt="Download a PDF of the entire book" /> Download PDF of entire book</a>
-					<!-- By RRZEicons [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons -->
+        <a href="{{ pathto('', 1) }}PID.pdf?{{release}}">
+          <img style="width: 30px" src="{{ pathto('_static/media/' + '512px-Document-pdf.svg.png', 1) }}"
+            conalt="Download a PDF of the entire book" /> Download PDF of entire book</a>
+        <!-- By RRZEicons [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons -->
         {% endblock %}
       </div>
       &nbsp;
-			<ul style="color:#777777"><li>Updated: {{last_updated}}</li><li>Version: {{release}}</li></ul>
-			<hr>
-			<p>
-				<img style="width: 30px"
-				src="{{ pathto('_static/media/' + '500px-Font_Awesome_5_solid_chalkboard-teacher-blue.svg.png', 1) }}"
-				conalt="Resources for teachers" />
-				<!-- https://commons.wikimedia.org/wiki/File:Font_Awesome_5_solid_chalkboard-teacher.svg -->
+      <ul style="color:#777777">
+        <li>Updated: {{last_updated}}</li>
+        <li>Version: {{release}}</li>
+      </ul>
+      <hr>
+      <p>
+        <img style="width: 30px"
+          src="{{ pathto('_static/media/' + '500px-Font_Awesome_5_solid_chalkboard-teacher-blue.svg.png', 1) }}"
+          conalt="Resources for teachers" />
+        <!-- https://commons.wikimedia.org/wiki/File:Font_Awesome_5_solid_chalkboard-teacher.svg -->
 
-				<a href="https://yint.org/instructors" target="_blank">Resources for teachers</a></p>
-            <hr>
-    		<p>
-				<img style="width: 30px"
-				src="{{ pathto('_static/media/' + 'Nuvola_apps_korganizer.svg.png', 1) }}"
-				conalt="Suggest improvements; provide feedback; point out spelling, grammar, or other errors" />
-				<!-- https://commons.wikimedia.org/wiki/File:Nuvola_apps_korganizer.svg -->
+        <a href="https://yint.org/instructors" target="_blank">Resources for teachers</a>
+      </p>
+      <hr>
+      <p>
+        <img style="width: 30px" src="{{ pathto('_static/media/' + 'Nuvola_apps_korganizer.svg.png', 1) }}"
+          conalt="Suggest improvements; provide feedback; point out spelling, grammar, or other errors" />
+        <!-- https://commons.wikimedia.org/wiki/File:Nuvola_apps_korganizer.svg -->
 
-				<a href="https://docs.google.com/forms/d/1IpO-bvJwQwhK64eid4YXwJBvGxN5cfyYDv81G-YgWrM/viewform" target="_blank">Suggest improvements; provide feedback; point out spelling, grammar, or other errors</a></p>
+        <a href="https://docs.google.com/forms/d/1IpO-bvJwQwhK64eid4YXwJBvGxN5cfyYDv81G-YgWrM/viewform"
+          target="_blank">Suggest improvements; provide feedback; point out spelling, grammar, or other errors</a>
+      </p>
 
     </nav>
 
@@ -180,65 +189,73 @@
 
   {% if not embedded %}
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'{{ url_root }}',
-            VERSION:'{{ release|e }}',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'{{ '' if no_search_suffix else file_suffix }}',
-            HAS_SOURCE:  {{ has_source|lower }}
+  <script type="text/javascript">
+    var DOCUMENTATION_OPTIONS = {
+      URL_ROOT: '{{ url_root }}',
+      VERSION: '{{ release|e }}',
+      COLLAPSE_INDEX: false,
+      FILE_SUFFIX: '{{ '' if no_search_suffix else file_suffix }}',
+      HAS_SOURCE: {{ has_source| lower }}
         };
-    </script>
-    {%- for scriptfile in script_files %}
-      <script type="text/javascript" src="{{ pathto(scriptfile, 1) }}"></script>
-    {%- endfor %}
+  </script>
+  {%- for scriptfile in script_files %}
+  <script type="text/javascript" src="{{ pathto(scriptfile, 1) }}"></script>
+  {%- endfor %}
 
   {% endif %}
 
   {# RTD hosts this file, so just load on non RTD builds #}
   {% if not READTHEDOCS %}
-    <script type="text/javascript" src="{{ pathto('_static/js/theme.js', 1) }}"></script>
+  <script type="text/javascript" src="{{ pathto('_static/js/theme.js', 1) }}"></script>
   {% endif %}
 
   {# STICKY NAVIGATION #}
   {% if theme_sticky_navigation %}
   <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
-      });
+    jQuery(function ()
+    {
+      SphinxRtdTheme.StickyNav.enable();
+    });
   </script>
   {% endif %}
 
   {# Handles toggling for answers to questions #}
-	<script type="text/javascript">
-		function toggle_q_and_a(obj) {
-			var obj=document.getElementById(obj);
-			var link=document.getElementById(obj.id+'-click');
-			if(obj.style.display == "inline"){
-				obj.style.display = "none";
-				link.text = " Show answer ";
-			}else{
-				obj.style.display = "inline";
-				link.text = "Hide answer ";
-			}
-		}
-		function toggle_all_q_and_a(obj){
-			var answers = document.getElementsByClassName('q_and_a_answer');
+  <script type="text/javascript">
+    function toggle_q_and_a(obj)
+    {
+      var obj = document.getElementById(obj);
+      var link = document.getElementById(obj.id + '-click');
+      if (obj.style.display == "inline")
+      {
+        obj.style.display = "none";
+        link.text = " Show answer ";
+      } else
+      {
+        obj.style.display = "inline";
+        link.text = "Hide answer ";
+      }
+    }
+    function toggle_all_q_and_a(obj)
+    {
+      var answers = document.getElementsByClassName('q_and_a_answer');
 
-			// Reset the state of the answers to the opposite of what is desired
-			if(obj.innerHTML == "Show all answers"){
-				obj.innerHTML = "Hide all answers";
-				for (index = 0, len = answers.length; index < len; ++index) {answers[index].style.display = 'none';}
-			}else{
-				obj.innerHTML = "Show all answers";
-				for (index = 0, len = answers.length; index < len; ++index) {answers[index].style.display = 'inline';}
-			}
-			// Now actually get the answers to the correct state
-			for (index = 0, len = answers.length; index < len; ++index) {toggle_q_and_a(answers[index].id);}
-		}
-	</script>
+      // Reset the state of the answers to the opposite of what is desired
+      if (obj.innerHTML == "Show all answers")
+      {
+        obj.innerHTML = "Hide all answers";
+        for (index = 0, len = answers.length; index < len; ++index) { answers[index].style.display = 'none'; }
+      } else
+      {
+        obj.innerHTML = "Show all answers";
+        for (index = 0, len = answers.length; index < len; ++index) { answers[index].style.display = 'inline'; }
+      }
+      // Now actually get the answers to the correct state
+      for (index = 0, len = answers.length; index < len; ++index) { toggle_q_and_a(answers[index].id); }
+    }
+  </script>
 
   {%- block footer %} {% endblock %}
 
 </body>
+
 </html>

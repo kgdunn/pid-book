@@ -21,7 +21,6 @@ Process Improvement Using Data
 	least-squares-modelling/index
 	design-analysis-experiments/index
 	latent-variable-modelling/index
-	applications-process-improvement/index
 	product-development-product-improvement/index
 
 

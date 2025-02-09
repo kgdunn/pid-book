@@ -21,7 +21,9 @@ from pygments.formatters.latex import LatexFormatter
 
 sys.path.append(os.getcwd())
 sys.path.insert(0, os.path.abspath("."))
-needs_sphinx = "1.5"  # If your documentation needs a minimal Sphinx version, state it here.
+needs_sphinx = (
+    "1.5"  # If your documentation needs a minimal Sphinx version, state it here.
+)
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -32,12 +34,16 @@ needs_sphinx = "1.5"  # If your documentation needs a minimal Sphinx version, st
 # =================
 extensions = [
     "sphinx.ext.todo",
-    #"nbsphinx",
+    # "nbsphinx",
 ]  # 'sphinx.ext.imgmath', ]
 
 # Download https://bitbucket.org/birkenfeld/sphinx-contrib/overview;
 # cd youtube; setup.py build and setup.py install
 extensions.append("my-extensions.youtube")
+
+# JQuery:
+extensions.append("sphinxcontrib.jquery")
+jquery_use_sri = False
 
 # Notebook extension
 # -------------------------
@@ -64,7 +70,7 @@ extensions.append("sphinx.ext.mathjax")
 templates_path = ["_templates"]
 
 # The suffix of source filenames.
-source_suffix = ".rst"
+source_suffix = {".rst": "restructuredtext"}
 
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
@@ -112,7 +118,13 @@ del cmd, out, subprocess
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ["_build", ".hg", "ext", "DELETE", "applications-process-improvement/notebooks"]
+exclude_patterns = [
+    "_build",
+    ".hg",
+    "ext",
+    "DELETE",
+    ".venv",
+]
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 # default_role = None
@@ -317,7 +329,14 @@ linkcheck_anchors = True
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual], toctree only).
 latex_documents = [
-    ("contents", "PID.tex", "Process Improvement Using Data", "Kevin Dunn", "manual", True),
+    (
+        "contents",
+        "PID.tex",
+        "Process Improvement Using Data",
+        "Kevin Dunn",
+        "manual",
+        True,
+    ),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

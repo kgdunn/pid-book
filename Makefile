@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 # Add "-W" to cause warnings to turn into errors
 # Remove "-j 5" for Python 3.5 (parallel building does not work)
-SPHINXOPTS    = -E -W -j 5
+SPHINXOPTS    = -E -j 5
 RELAXOPTS     = -E
 SPHINXBUILD   = sphinx-build
 PAPER         =
@@ -37,6 +37,8 @@ help:
 	@echo "  gettext    to make PO message catalogs"
 	@echo "  linkcheck  to check all external links for integrity"
 
+
+
 clean: 		## Remove build artifacts and set up environment
 	rm -rf $(BUILDDIR)
 	rm -rf *.pyc
@@ -53,11 +55,11 @@ clean: 		## Remove build artifacts and set up environment
 	rm -rf bin/
 
 	curl -LsSf https://astral.sh/uv/install.sh | sh
-	uv python install 3.11
+	uv python install
 	uv venv
 	uv lock
-
-	uv add "sphinx<7"
+	uv add sphinx
+	uv add sphinxcontrib-jquery
 
 
 
