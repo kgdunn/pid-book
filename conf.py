@@ -65,6 +65,8 @@ q_and_a_override = False
 
 # MathJax extension:
 extensions.append("sphinx.ext.mathjax")
+# NOTE: also edit in `layout.html` to force the path to be correct. See the `{# MathJax #}` comment in `layout.html`
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
