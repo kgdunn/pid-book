@@ -151,7 +151,7 @@ Some questions:
 #.	Fill out this table:
 
 	.. csv-table::
-	   :header: :math:`x`, :math:`\\sigma`, :math:`\\mu`, :math:`p(x)`
+	   :header: :math:`x`, :math:`\sigma`, :math:`\mu`, :math:`p(x)`
 	   :widths: 30, 30, 30, 80
 
 		0, 1, 0,
