@@ -1,4 +1,6 @@
 import http.server
+import pathlib
+import os
 import socketserver
 
 PORT = 8080
@@ -6,7 +8,7 @@ PORT = 8080
 
 class HttpRequestHandler(http.server.SimpleHTTPRequestHandler):
     extensions_map = {
-        #'': 'application/octet-stream',
+        # '': 'application/octet-stream',
         "": "text/html",
         ".html": "text/html",
         ".manifest": "text/cache-manifest",
@@ -21,10 +23,12 @@ class HttpRequestHandler(http.server.SimpleHTTPRequestHandler):
     }
 
 
+web_dir = pathlib.Path(".") / "_build" / "html"
+os.chdir(web_dir)
 httpd = socketserver.TCPServer(("localhost", PORT), HttpRequestHandler)
 
 try:
-    print(f"serving at http://localhost:{PORT}")
+    print(f"http://localhost:{PORT}")
     httpd.serve_forever()
 except KeyboardInterrupt:
     pass
