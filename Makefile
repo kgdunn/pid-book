@@ -60,6 +60,7 @@ clean: 		## Remove build artifacts and set up environment
 	uv lock
 	uv add sphinx
 	uv add sphinxcontrib-jquery
+	uv add sphinx-book-theme
 
 
 
@@ -136,5 +137,6 @@ linkcheck:
 	      "or in $(BUILDDIR)/linkcheck/output.txt."
 
 serve:
-	python -m http.server 8080 --directory _build/html/
+	uvx python start_server.py
+	#python -m http.server 8080 --directory _build/html/
 
