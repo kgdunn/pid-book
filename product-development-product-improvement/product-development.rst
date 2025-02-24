@@ -39,36 +39,37 @@ Scope of the problem
 =====================
 
 
-There are a few key features that are desired for any data-driven product development tool:
+First, we describe some features that are desirable for a framework/tooling used for data-driven product development.
 
-A. The tool is **guided by the expert** to accelerate the process; it is not intended to replace the expert. It will allow the expert to more rapidly prototype and test alternatives, guide the expert. The expert also plays an active role: for example, constraints can be specified by the subject matter expert (SME), and the tool can help the expert to understand the tradeoffs by providing alternative solutions that the SME selects from.
+A. The tool is **guided by the subject matter expert** (SME) to accelerate the process; it is not intended to replace them. It will allow them to more rapidly prototype and test alternatives, and guide them. The expert also plays an active role: for example, constraints can be specified by the expert and the tool can help them understand the tradeoffs by providing alternative solutions that they select from.
 
-B. It is **multi-objective**. Multiple goals and targets can be taken along, each with different weights and prioritization if needed. For example, if a certain target objective is poorly explained by the data, then it can be down weighted, but not ignored. We should not have to build models for each outcome variable: we must be able to handle multiple key performance indicators (KPIs), even highly correlated ones and also high-dimensional ones (such a vectors).
+B. It is **multi-objective**. Multiple goals and targets can be taken along, each with different weights and prioritization if needed. For example, if a certain target objective is poorly explained by the data, then it can be down weighted, but not ignored. We should not have to build models for each outcome variable: we must be able to handle multiple key performance indicators (KPIs), even highly correlated ones and also high-dimensional ones (such as vectors).
 
-C. It is **permutation invariant**. The order in which we acquire experimental data should not alter the outcome.
+C. We must be able to **handle missing data**. Our knowledge regarding physical and chemical properties of the materials is incomplete; we might only have partial results, or loss of data might have occurred. We might have results from earlier experiments, while later experiments may have extra or more sophisticated measurements. In all of these cases we should use the data we have available, and not have to discard rows or columns of incomplete knowledge.
 
-D. We must be able to **handle missing data**. Our knowledge regarding physical and chemical properties of the materials is incomplete; we might only have partial results, or loss of data might have occurred. We might have results from earlier experiments, while later experiments are have extra/more sophisticated data. In all of these cases we should use the data we have, and not have to discard rows or columns of incomplete knowledge.
+D. It should **not be dependent on the specific training dataset** and therefore unable to generalize to new ingredients, other properties, new experiments or other conditions used to create the product. Another way of saying this is that it should not be `transductive <https://en.wikipedia.org/wiki/Transduction_(machine_learning)>`_, but rather inductive.
 
-E. It should **not be dependent on the specific training dataset** and  therefore unable to generalize to new ingredients, other properties, new experiments or other conditions used to create the product. Another way of saying this is that it should not be `transductive <https://en.wikipedia.org/wiki/Transduction_(machine_learning)>`_, but rather inductive.
+E. It should be able to handle **small data**, particularly small sets of experimentally acquired data that iteratively and sequentially become available. We should not need large amounts of data to get good results as long as we have well-designed experimental data which is strategically chosen to give the most information.
 
+F. It should however be able to handle **large data**. If we do have large quantities of data, then it should be able to handle these as well.
 
-F. It should be able to handle **small data**. We should not need large amounts of data to get good results as long as we have well-designed experimental data which is strategically chosen to give the most information.
+G. It must allow for **learning and interpretation** by the expert. The model results should be understandable, confirm prior knowledge, and generate new insights not yet known to the experts.
 
-G. It should however be able to handle **large data**. If we do have large quantities of data, then it should be able to handle these as well.
+H. It should be able to handle **high-dimensional data**, even if many of the measured data are affected by random noise, or are unrelated to the problem. As we will not always know upfront what is important, if we do happen to add more information in our models, then we should not be penalized. It is acceptable to learn iteratively that certain data are uninteresting. See the prior point.
 
-H. It must allow for **learning and interpretation** by the expert. The model results should be understandable, confirm prior knowledge, and generate new insights.
+I. It should provide guidance to **fill in the spaces of unknown knowledge**. It is therefore both sequential and active. The expert can influence where future experiments should be done, to help expand the model's predictive power, or the model actively indicates the regions where experimental input is needed (the standard exploit and explore tradeoff).
 
-I. It should be able to handle **high-dimensional data**, even if many of the measured data are affected by random noise, or are unrelated to the problem. As we will not always know upfront what is important, if we do happen to add more information, then we should not be penalized. It is acceptable to learn iteratively that certain data are uninteresting. See the prior point.
+J. An **operating window** for the solution is provided. When constraints are active at a solution, these should be reported, to learn the limits of the system. Conversely, inactive constraints are also insightful, since these provide an operating window within which we can move without changing the optimization result too much. Even better is if a parameterized solution is presented, allowing the user to fine-tune the solution based on tuneable parameters.
 
-J. It should provide guidance to **fill in the spaces of unknown knowledge**. It is therefore sequential. The expert can provide influence on where future experiments should be done, to help expand the model's predictive power.
+K. The method should **enable transfer learning** across different manufacturing sites, lines, or even different products. For example, a new product can be developed on site A, and then transferred to site B, using data from both sites, to learn the transferable knowledge, and ignore the regions of operation which have no impact.
 
-K. An **operating window** for the solution is provided. When constraints are active at a solution, these should be reported, to learn the limits of the system. Conversely, inactive constraints are also insightful, since these provide an operating windows in which we can move without changing the optimization result too much. Even better is if a parameterized solution is presented, allowing the user to fine-tune the solution.
+L. Different conditions must be handled. Extending an existing product from one matrix to another (e.g. from a liquid to a gel) or when used at different settings (e.g. high or low temperature, pH etc) it will alter the outcomes. So modelling to predict and handle these cases is desirable.
 
-L. The method should **enable transfer learning** across different sites, lines, or even different products. For example, a new product can be developed on site A, and then transferred to site B, using data from both sites, to learn the transferable knowledge, and ignore the regions of operation which have no impact. Extending an existing product from one matrix to another  (e.g. from a liquid to a gel) is another example of transferability.
+M. It is **permutation invariant**. The order in which we acquire experimental data or present the data to our models should not alter the outcomes we achieve.
 
-M. **Handling different scales** should also be accommodated; cheap experiments at a smaller scale being combined with sparse data at a larger scale (e.g. customer trials).
+N. **Handling different scales** should also be accommodated; cheap experiments at a smaller scale being combined with sparse data at a larger scale (e.g. customer trials).
 
-N. Allow for **model inversion**: we do not only want to predict an outcome from upstream information, but also to use the inverse approach: to predict upstream settings for a given set of performance outcomes. This inverse approach is in many cases non-unique: there are multiple upstream settings that can give the same performance outcome. The system should indicate when multiple solutions are possible (the rank of the input space exceeds the output space) and as such there are directions in input space which are unrelated to the output, giving us extra degrees of freedom.
+O. Allow for **model inversion**: we do not only want to predict an outcome from upstream information, but also to use the inverse approach: to predict upstream settings for a given set of performance outcomes. This inverse approach is in many cases non-unique: there are multiple upstream settings that can give the same performance outcome. The system should indicate when multiple solutions are possible (the rank of the input space exceeds the output space) and as such there are directions in input space which are unrelated to the output, giving us extra degrees of freedom.
 
 These are ambitious goals. Let us explore how we can achieve most of these in the next sections.
 
