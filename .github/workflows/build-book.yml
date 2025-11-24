@@ -1,0 +1,180 @@
+name: Build Book
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:  # Allow manual triggering
+
+# Cancel in-progress runs when a new workflow with the same group is triggered
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-html:
+    name: Build HTML
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for git version info
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Build HTML
+        run: uv run sphinx-build -b html -E -j auto . _build/html
+
+      - name: Build text (for source view)
+        run: |
+          uv run sphinx-build -b text -E -j auto . _build/text
+          cp -R _build/text/* _build/html/_sources/
+
+      - name: Upload HTML artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-book
+          path: _build/html/
+          retention-days: 30
+
+  build-pdf:
+    name: Build PDF
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install LaTeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            texlive-latex-recommended \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            texlive-fonts-extra \
+            latexmk
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Build LaTeX files
+        run: |
+          uv run sphinx-build -b latex -E -j auto . _build/latex
+          cp preface/*.png _build/latex/
+          cp preface/*.jpg _build/latex/
+
+      - name: Build PDF
+        run: |
+          cd _build/latex
+          make all-pdf
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf-book
+          path: _build/latex/PID.pdf
+          retention-days: 90
+
+  build-epub:
+    name: Build EPUB
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Build EPUB
+        run: uv run sphinx-build -b epub -E -j auto . _build/epub
+
+      - name: Upload EPUB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: epub-book
+          path: _build/epub/PID.epub
+          retention-days: 90
+
+  linkcheck:
+    name: Check Links
+    runs-on: ubuntu-latest
+    # Allow this job to fail without failing the entire workflow
+    continue-on-error: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Check links
+        run: uv run sphinx-build -b linkcheck -E . _build/linkcheck
+
+      - name: Upload linkcheck results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linkcheck-results
+          path: _build/linkcheck/
+          retention-days: 14
+
+  summary:
+    name: Build Summary
+    needs: [build-html, build-pdf, build-epub]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check build status
+        run: |
+          echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ All book formats built successfully!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- HTML build: ${{ needs.build-html.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- PDF build: ${{ needs.build-pdf.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- EPUB build: ${{ needs.build-epub.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📦 Artifacts are available in the Actions tab" >> $GITHUB_STEP_SUMMARY

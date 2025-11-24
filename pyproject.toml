@@ -16,9 +16,40 @@ dependencies = [
     "sphinxcontrib-jquery>=4.1",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pre-commit>=4.0.0",
+    "ruff>=0.8.0",
+    "rstcheck>=6.2.0",
+]
 
 [project.urls]
 Homepage = "https://github.com/kgdunn/pid-book"
 Repository = "https://github.com/kgdunn/pid-book"
 Issues = "https://github.com/kgdunn/pid-book/issues"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # line too long (handled by formatter)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"conf.py" = ["E402"]  # Module level import not at top of file
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
 

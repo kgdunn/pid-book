@@ -8,37 +8,135 @@ All the reStructuredText (RST) source files for the book with this title. The bo
 https://learnche.org/pid
 
 
-## What you need to compile the HTML and/or PDF yourself
+## What you need to compile the book yourself
 
-* Clone this repository, which we call `pid-book`, somewhere on your computer. The location is referred to `/location/of/pid-book/` in the example below.
-* Get the repository for all the figures for the book: https://github.com/kgdunn/figures. We call this `figures` in the text below.
-* Python, [Sphinx](https://www.sphinx-doc.org/en/master/) and a working copy of LaTeX, if you wish to generate  the PDF version of the book. If you are interested only in making HTML, you only need Sphinx then.
-* Around 2Gb (yes!) space for files, compiled documents and illustrations.
-* A good text editor, with syntax highlighting for RST files. I use Visual Studio Code at the moment, but many IDE environments support syntax highlighting for RST source documents.
+### Prerequisites
+
+* Clone this repository
+* Get the repository for all the figures: https://github.com/kgdunn/figures
+* Python 3.12 or higher
+* [uv](https://docs.astral.sh/uv/) - Modern Python package manager (installed automatically if using Make/Just)
+* LaTeX distribution (for PDF generation):
+  - **Linux**: `sudo apt-get install texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended`
+  - **macOS**: Install [MacTeX](https://www.tug.org/mactex/)
+  - **Windows**: Install [MiKTeX](https://miktex.org/)
+* Around 2GB of disk space for files, compiled documents, and illustrations
+* A good text editor with RST syntax highlighting (VS Code, PyCharm, Sublime Text, etc.)
+
+### Quick Start
+
+```bash
+# 1. Clone this repository
+git clone https://github.com/kgdunn/pid-book.git
+cd pid-book
+
+# 2. Set up the figures repository (symlink or clone inside this repo)
+ln -s /path/to/figures ./figures
+# OR clone it directly:
+# git clone https://github.com/kgdunn/figures.git
+
+# 3. Install dependencies (this will install uv if not present)
+make install
+# OR using just (modern alternative):
+# just install
+
+# 4. Build the book (HTML, PDF, and EPUB)
+make all
+# OR: just all
+```
+
+### Available Build Commands
+
+#### Using Make (traditional)
+
+```bash
+make install        # Set up Python environment
+make html           # Build HTML only (fastest)
+make pdf            # Build PDF only
+make epub           # Build EPUB only
+make all            # Build all formats (default)
+make clean          # Remove build artifacts
+make serve          # Start local web server
+make linkcheck      # Check all external links
+```
+
+#### Using Just (modern alternative)
+
+[Just](https://github.com/casey/just) is a modern command runner that's more user-friendly than Make.
+
+```bash
+just install        # Set up Python environment
+just html           # Build HTML only
+just pdf            # Build PDF only
+just epub           # Build EPUB e-book
+just all            # Build all formats (default)
+just clean          # Remove build artifacts
+just serve          # Start local web server
+just watch          # Auto-rebuild on file changes (requires entr)
+```
+
+Run `just` without arguments to see all available commands.
+
+### Development Workflow
+
+```bash
+# Install pre-commit hooks for code quality
+make pre-commit-install
+# OR: just pre-commit-install
+
+# Run pre-commit checks manually
+make pre-commit-run
+# OR: just pre-commit
+```
+
+### Build Output Locations
+
+After building, you'll find the outputs in the `_build/` directory:
+
+- **HTML**: `_build/html/index.html`
+- **PDF**: `_build/latex/PID.pdf`
+- **EPUB**: `_build/epub/PID.epub`
+
+The HTML build is quick (1-2 minutes). The PDF build takes 5-10 minutes due to LaTeX compilation, cross-references, and index generation.
 
 
-## How to compile the book yourself
+## Continuous Integration
 
-1. Clone the `figures` repository, preferably somewhere outside or next-to this repository.
-2. Softlink the `figures` repo so that it is visible as the directory of the same name, but within `pid-book`. You could also just move the `figures` repo into this one, but that is hackish.
+This repository uses GitHub Actions to automatically build all formats (HTML, PDF, EPUB) on every push. The workflows:
 
-   `ln -s /location/of/figures /location/of/pid-book/figures`
+- Build and validate all output formats
+- Check for broken links
+- Provide downloadable artifacts for each build
 
-3. `make clean`
-4. `make html`      
-5. `make latexpdf`
-
-Step 4 is a quick process to generate HTML, and is a good check if you have all the settings correct.
-
-Step 5, to create the PDF version, can take around 5 to 10 minutes to completely compile all references, cross-references and index. You can compare your PDF to the one on the website, https://learnche.org/pid/PID.pdf, to see if you successfully managed to reproduce it.
-
+See [.github/workflows/build-book.yml](.github/workflows/build-book.yml) for details.
 
 ## Why would you want to compile it yourself?
 
-Perhaps you would like to improve a section, customize the book for a course you are teaching, delete topics you don't want? Whatever the reason, you are allowed to do so. Everything provided to you is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license](https://creativecommons.org/licenses/by-sa/4.0/).
+Perhaps you would like to:
+- Improve a section or fix errors
+- Customize the book for a course you're teaching
+- Add or remove topics
+- Translate content
+- Learn how Sphinx book publishing works
 
-But that means, I still hold the copyright on the parts I've written. Your adaptations are allowed, and in fact encouraged, but your changes must be distributed under the same, or similar, conditions as this license.
+Whatever the reason, you're encouraged to do so! Everything is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license](https://creativecommons.org/licenses/by-sa/4.0/).
 
-Surprise me! 
+Your adaptations are allowed and encouraged, but must be distributed under the same or similar license conditions.
 
-Let me know what you have done, and I am always interested in feedback/comments/exercises/contributions. You can provide that [feedback here please](https://docs.google.com/forms/d/1IpO-bvJwQwhK64eid4YXwJBvGxN5cfyYDv81G-YgWrM/viewform).
+## Contributing
+
+Contributions are welcome! Please:
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run `make pre-commit-run` or `just pre-commit` to check code quality
+5. Submit a pull request
+
+## Feedback
+
+I'm always interested in feedback, comments, exercises, and contributions. You can:
+- [Submit feedback via this form](https://docs.google.com/forms/d/1IpO-bvJwQwhK64eid4YXwJBvGxN5cfyYDv81G-YgWrM/viewform)
+- [Open an issue on GitHub](https://github.com/kgdunn/pid-book/issues)
+- Submit a pull request with improvements
+
+Surprise me!
