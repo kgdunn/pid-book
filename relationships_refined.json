@@ -1,0 +1,519 @@
+{
+  "impact": [
+    {
+      "source": "operators , ambient conditions , physical equipment , lab analyses , and time - dependent effects ( catalyst deactivation , fouling ) ",
+      "target": "the response",
+      "file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
+      "line": 10,
+      "context": "Operators, ambient conditions, physical equipment, lab analyses, and time-dependent effects (catalyst deactivation, fouling), will impact the response"
+    }
+  ],
+  "characterize": [
+    {
+      "source": "a disturbance",
+      "target": "* , in which case it is n't a disturbance anymore , as it is held constant for all experiments",
+      "file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
+      "line": 16,
+      "context": "Finally, a disturbance can be characterized as a **controlled disturbance**, in which case it isn't a disturbance anymore, as it is held constant for "
+    },
+    {
+      "source": "a disturbance",
+      "target": "a * * controlled disturbance",
+      "file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
+      "line": 16,
+      "context": "Finally, a disturbance can be characterized as a **controlled disturbance**, in which case it isn't a disturbance anymore, as it is held constant for "
+    }
+  ],
+  "provide": [
+    {
+      "source": "designed experiments",
+      "target": "an efficient mechanism to learn about a system , often in fewer runs than the cost approach",
+      "file": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst",
+      "line": 41,
+      "context": "Designed experiments, on the other hand, provide an efficient mechanism to learn about a system, often in fewer runs than the COST approach, and avoid"
+    }
+  ],
+  "calculate": [
+    {
+      "source": "a least squares model",
+      "target": "the average of each replicate",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 114,
+      "context": "A least squares model can be calculated from the average of each replicate."
+    }
+  ],
+  "set": [
+    {
+      "source": "the generating term for the fourth factor * * d * *",
+      "target": "the highest level of confounding ",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 269,
+      "context": "The generating term for the fourth factor **D** is best set to the highest level of confounding, the **ABC** term."
+    }
+  ],
+  "run": [
+    {
+      "source": "the factors",
+      "target": "their standard levels",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 369,
+      "context": "The factors were run at their standard levels, and there were 4 runs at the center point."
+    },
+    {
+      "source": "* factor * * g *",
+      "target": "factor *",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 1191,
+      "context": "*\tFactor **G** must be run at the highest level possible, i.e. **G = Gp**\n\t\t*\tFactor **A** must be run at a lower level, specifically :math:`\\Delta A "
+    },
+    {
+      "source": "* factor * * g *",
+      "target": "the highest level possible ",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 1191,
+      "context": "*\tFactor **G** must be run at the highest level possible, i.e. **G = Gp**\n\t\t*\tFactor **A** must be run at a lower level, specifically :math:`\\Delta A "
+    },
+    {
+      "source": "* factor * * c",
+      "target": "a higher level",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 1193,
+      "context": "*\tFactor **C** must be run at a higher level, specifically :math:`\\Delta C = 3.5/4 \\times 2.33 = 2.04`, or a deviation of +306 in actual units from th"
+    },
+    {
+      "source": "a factor setting that was run at the low level in the first fraction",
+      "target": "a high level in the second fraction",
+      "file": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst",
+      "line": 19,
+      "context": "A factor setting that was run at the low level in the first fraction is then run at a high level in the second fraction."
+    }
+  ],
+  "have": [
+    {
+      "source": "the design",
+      "target": "resolution",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 486,
+      "context": "The design has resolution = :math:`R = 3`, from the table in the notes."
+    },
+    {
+      "source": "the model",
+      "target": "the form .. math : : y = b_0 + b_a x_a + b_b x_b + b_{ab}x_{ab } + e the matrices and vectors to solves this least squares model are ",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 544,
+      "context": "The model would have the form:\n\n\t\t.. math::\n\n\t\t\ty = b_0 + b_A x_A + b_B x_B + b_{AB}x_{AB} + e\n\n\t\tThe matrices and vectors to solves this least square"
+    },
+    {
+      "source": "* * levels both",
+      "target": "positive coefficients",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 1064,
+      "context": "Yes: the **D+** and **P+** levels both have positive coefficients, while the **R-** level has a negative coefficient."
+    },
+    {
+      "source": "interaction",
+      "target": "a negative coefficient",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 1064,
+      "context": "The **DR** interaction has a negative coefficient."
+    },
+    {
+      "source": "the type of soil you use , a or b .. index : : pair : categorical factor",
+      "target": "at least one factor that is changed",
+      "file": "design-analysis-experiments/design-analysis-experiments.rst",
+      "line": 64,
+      "context": "The type of soil you use, A or B\n\n.. index::\n\tpair: categorical factor; experiments\n\nAll experiments must have at least one factor that is changed."
+    },
+    {
+      "source": "experiments all experiments",
+      "target": "at least one factor that is changed",
+      "file": "design-analysis-experiments/design-analysis-experiments.rst",
+      "line": 64,
+      "context": "The type of soil you use, A or B\n\n.. index::\n\tpair: categorical factor; experiments\n\nAll experiments must have at least one factor that is changed."
+    },
+    {
+      "source": "most experiments",
+      "target": "both numeric and categorical factors",
+      "file": "design-analysis-experiments/design-analysis-experiments.rst",
+      "line": 79,
+      "context": "Most experiments will have both numeric and categorical factors."
+    },
+    {
+      "source": "factor * * a * *",
+      "target": "a significant effect on the time taken to clean your hands",
+      "file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
+      "line": 107,
+      "context": "So let factor **A** be the temperature of the water; factor **A** has a significant effect on the time taken to clean your hands."
+    }
+  ],
+  "include": [
+    {
+      "source": "experiments 5 and 6 from the standard order",
+      "target": "baseline experiments",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 532,
+      "context": "Experiments 5 and 6 from the standard order might have been included as baseline experiments, since they appear at the center point for factors **A** "
+    },
+    {
+      "source": "that center point run",
+      "target": "the least squares model",
+      "file": "design-analysis-experiments/general-approach-for-experimentation.rst",
+      "line": 15,
+      "context": "If successful though, that center point run can be included in the least squares model.\n\n\t-\tInclude as many factors into as few runs as possible."
+    },
+    {
+      "source": "that center point run",
+      "target": "many factors into as few runs as possible",
+      "file": "design-analysis-experiments/general-approach-for-experimentation.rst",
+      "line": 15,
+      "context": "If successful though, that center point run can be included in the least squares model.\n\n\t-\tInclude as many factors into as few runs as possible."
+    }
+  ],
+  "x_a^2": [
+    {
+      "source": "the experimental strategy changes by included axial points into the factorial design , allowing one to calculate the quadratic terms in the model , such as a",
+      "target": "the quadratic effect of factor",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 613,
+      "context": "The experimental strategy changes by included axial points into the factorial design, allowing one to calculate the quadratic terms in the model, such"
+    }
+  ],
+  "confound": [
+    {
+      "source": "the main effects",
+      "target": "any 2 - factor interactions in this case",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 859,
+      "context": "The main effects will not be confounded with any 2-factor interactions in this case."
+    },
+    {
+      "source": "factor * * a * *",
+      "target": "the first 8 experiments",
+      "file": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst",
+      "line": 13,
+      "context": "For example, factor **A** was originally confounded with **CE** with the first 8 experiments; but that will be removed when analyzing all 16 together."
+    },
+    {
+      "source": "main effects",
+      "target": "2 - factor interactions in that example",
+      "file": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst",
+      "line": 7,
+      "context": "Main effects were confounded with 2-factor interactions in that example."
+    },
+    {
+      "source": "main effects",
+      "target": "3 - factor interactions",
+      "file": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst",
+      "line": 8,
+      "context": "Main effects were confounded with 3-factor interactions."
+    },
+    {
+      "source": "the main effect of * * a * *",
+      "target": "* * two - factor interactions",
+      "file": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst",
+      "line": 84,
+      "context": "In particular, the main effect of **A** is confounded here with the **BD**, **CE** and **FG** two-factor interactions."
+    }
+  ],
+  "require": [
+    {
+      "source": "how many experiments",
+      "target": "a full factorial experiment",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 907,
+      "context": "How many experiments would have been required for a full factorial experiment?\n\n\t#."
+    },
+    {
+      "source": "a full factorial",
+      "target": "^ 7 = 128 ` experiments",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 927,
+      "context": "There are 7 factors in this experiment, so a full factorial would require :math:`2^7 = 128` experiments.\n\n\t#."
+    },
+    {
+      "source": "these five factors",
+      "target": "32 ` runs",
+      "file": "design-analysis-experiments/fractional-factorial-designs/index.rst",
+      "line": 7,
+      "context": "These five factors, at two levels, require :math:`2^5 = 32` runs."
+    },
+    {
+      "source": "these five factors",
+      "target": "two levels",
+      "file": "design-analysis-experiments/fractional-factorial-designs/index.rst",
+      "line": 7,
+      "context": "These five factors, at two levels, require :math:`2^5 = 32` runs."
+    },
+    {
+      "source": "these designs",
+      "target": "relatively few experiments",
+      "file": "design-analysis-experiments/full-factorial-designs/index.rst",
+      "line": 7,
+      "context": "We will use factorial designs because\n\t\n\t-\tWe can visually interpret these designs, and see where to run future experiments;\n\t\n\t-\tThese designs requir"
+    }
+  ],
+  "interchange": [
+    {
+      "source": "these experiments",
+      "target": "columns , in which case factors * * e * * and * * f * * would be different",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 931,
+      "context": "For example, these experiments could have interchanged the **A** and **B** columns, in which case factors **E** and **F** would be different."
+    }
+  ],
+  "understand": [
+    {
+      "source": "r : scale : 40 : align : right : width : 900px .. question : : one of the experiment projects investigated by a previous student of this course",
+      "target": "effects related to the preparation of uncooked , breaded chicken strips",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 998,
+      "context": "R\n\t\t\t:scale: 40\n\t\t\t:align: right\n\t\t\t:width: 900px\n\n.. question::\n\t\n\tOne of the experiment projects investigated by a previous student of this course w"
+    }
+  ],
+  "add": [
+    {
+      "source": "the experimenter",
+      "target": "experiments",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 1104,
+      "context": "Why might the experimenter have added experiments 7, 8, 9 and 10 after the first six?"
+    },
+    {
+      "source": "a central composite design layout",
+      "target": "the factorial",
+      "file": "design-analysis-experiments/response-surface-methods.rst",
+      "line": 215,
+      "context": "So a central composite design layout was added to the factorial in the above example and the experiments run, randomly, at the 4 axial points."
+    }
+  ],
+  "show": [
+    {
+      "source": "the presence of curvature at the center point",
+      "target": "this model",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 1141,
+      "context": "In this model, the presence of curvature at the center point has already been shown."
+    }
+  ],
+  "grow": [
+    {
+      "source": "there 4 degrees of freedom ( 10 observations , 6 parameters ) .. question : : : fullinclude : no biological drugs",
+      "target": "the treatment of certain diseases , such as cancers and arthritis",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 1151,
+      "context": "There 4 degrees of freedom (10 observations, 6 parameters)\n\n.. question::\n\t:fullinclude: no\n\n\tBiological drugs are rapidly growing in importance in th"
+    }
+  ],
+  "choose": [
+    {
+      "source": "the following factors = glucose substrate choice : a binary factor , either * * gm * * at the low level code or * * gp * * at the high level",
+      "target": "the usual factorial manner ",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 1158,
+      "context": "The following factors were chosen in the usual factorial manner:\n\n\t*\t**G** = glucose substrate choice: a binary factor, either **Gm** at the low level"
+    }
+  ],
+  "give": [
+    {
+      "source": "a fractional factorial in 8 runs at the above settings , created by aliasing * * c = gat * *",
+      "target": "the following model in coded units ",
+      "file": "design-analysis-experiments/design-analysis-experiments-exercises.rst",
+      "line": 1165,
+      "context": "A fractional factorial in 8 runs at the above settings, created by aliasing **C = GAT**, gave the following model in coded units:\n\t\n\t.. math::\n\t\n\t\ty ="
+    }
+  ],
+  "convert": [
+    {
+      "source": "most categorical variables",
+      "target": "continuous variables",
+      "file": "design-analysis-experiments/design-analysis-experiments.rst",
+      "line": 75,
+      "context": "Most categorical variables can be converted to continuous variables, with some careful thought."
+    }
+  ],
+  "build": [
+    {
+      "source": "the least squares method",
+      "target": "a linear model",
+      "file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
+      "line": 67,
+      "context": "The least squares method builds a linear model, and then calculates the confidence interval using the model's standard error."
+    }
+  ],
+  "come": [
+    {
+      "source": "optimal designs ~~~~~~~~~~~~~~~~~~~~~~~~~",
+      "target": "the concept of an * optimal * design",
+      "file": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst",
+      "line": 46,
+      "context": "Optimal designs\n~~~~~~~~~~~~~~~~~~~~~~~~~\n\nIf you delve into the modern literature on experimental methods you will rapidly come across the concept of"
+    }
+  ],
+  "remove": [
+    {
+      "source": "any two - factor interactions involving * * c * *",
+      "target": "the other main effects",
+      "file": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst",
+      "line": 13,
+      "context": "Also, any two-factor interactions involving **C** are removed from the other main effects."
+    }
+  ],
+  "discover": [
+    {
+      "source": "the experimenter",
+      "target": "that factor",
+      "file": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst",
+      "line": 34,
+      "context": ".. image:: ../../figures/doe/projectivity-of-a-half-fraction-in-3-factors.png\n\t:align: right\n\t:scale: 30\n\t:width: 900px\n\t:alt:\t../../figures/doe/proje"
+    }
+  ],
+  "hold": [
+    {
+      "source": "this projectivity of factorials",
+      "target": "a larger number of factors",
+      "file": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst",
+      "line": 43,
+      "context": "This projectivity of factorials holds in general for a larger number of factors."
+    }
+  ],
+  "exist": [
+    {
+      "source": "a replicated full factorial",
+      "target": "the remaining 3 factors",
+      "file": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst",
+      "line": 43,
+      "context": "So a :math:`2^{6-2}_\\text{IV}` (16 runs) system with 6 factors, contains an embedded full factorial using a combination of any 3 factors; if any 3 fac"
+    }
+  ],
+  "write": [
+    {
+      "source": "the first four factors",
+      "target": "the standard factorial way",
+      "file": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst",
+      "line": 9,
+      "context": "The first four factors are written in the standard factorial way, but the fifth factor is generated from **E = ABCD**."
+    }
+  ],
+  "call": [
+    {
+      "source": "experiments this last part , * * i = abcd * * ",
+      "target": "this design",
+      "file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
+      "line": 18,
+      "context": "= I = ABCD**.\n\n.. index::\n\tpair: generating relationship; experiments\n\tpair: defining relationship; experiments\n\nThis last part, **I = ABCD**, is call"
+    }
+  ],
+  "aliase": [
+    {
+      "source": "the main effects",
+      "target": "three - factor interactions ( 3fi )",
+      "file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
+      "line": 64,
+      "context": "Had we generated the design with the usual 3fi term, **ABC**, the main effects would only be aliased with three-factor interactions (3fi)."
+    },
+    {
+      "source": "none of the main effects",
+      "target": "two - factor interactions",
+      "file": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst",
+      "line": 118,
+      "context": "In this example none of the main effects have been aliased with two-factor interactions."
+    }
+  ],
+  "find": [
+    {
+      "source": "experiments >",
+      "target": "the product of all possible generator combinations",
+      "file": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst",
+      "line": 64,
+      "context": "The :index:`defining relation <pair: defining relationship; experiments>` is found from the product of all possible generator combinations, and then s"
+    }
+  ],
+  "estimate": [
+    {
+      "source": "a full factorial",
+      "target": "32 effects",
+      "file": "design-analysis-experiments/fractional-factorial-designs/index.rst",
+      "line": 9,
+      "context": "A full factorial would estimate 32 effects, even if we likely only interested in at most 16 of them (5 main effects + 10 of the 2fi's + 1 intercept)."
+    },
+    {
+      "source": "the factorial experiment",
+      "target": "the effects with much greater precision ( lower variance )",
+      "file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
+      "line": 128,
+      "context": "|\n+--------------------------------------------------------------------------+------------------------------------------------------------------------"
+    }
+  ],
+  "focus": [
+    {
+      "source": "future experiments",
+      "target": "* factors and their interactions",
+      "file": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst",
+      "line": 100,
+      "context": "Future experiments should focus on the **A**, **C** and **G** factors and their interactions."
+    }
+  ],
+  "omit": [
+    {
+      "source": "factor * * b *",
+      "target": "future experimentation in this region",
+      "file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
+      "line": 29,
+      "context": "Factor **B** can be omitted from future experimentation in this region, though it might be necessary to include it again if the system is operated at "
+    }
+  ],
+  "decrease": [
+    {
+      "source": "additional runs",
+      "target": "the variance of the model parameters",
+      "file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
+      "line": 88,
+      "context": "However, as we expect after having studied the section on :ref:`least squares modelling <SECTION-least-squares-modelling>`, additional runs decrease t"
+    }
+  ],
+  "make": [
+    {
+      "source": "factorial designs",
+      "target": "each experimental observation work twice",
+      "file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
+      "line": 133,
+      "context": "Factorial designs make each experimental observation work twice."
+    }
+  ],
+  "enhance": [
+    {
+      "source": "the effect of warm water",
+      "target": "the effect of soap",
+      "file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
+      "line": 113,
+      "context": "The effect of warm water enhances the effect of soap."
+    }
+  ],
+  "replace": [
+    {
+      "source": "these factorials",
+      "target": "better designs",
+      "file": "design-analysis-experiments/response-surface-methods.rst",
+      "line": 9,
+      "context": "As we approach the optimum then these factorials are replaced with better designs that more closely approximate conditions at the optimum."
+    }
+  ],
+  "take": [
+    {
+      "source": "these designs",
+      "target": "an existing orthogonal factorial",
+      "file": "design-analysis-experiments/response-surface-methods.rst",
+      "line": 205,
+      "context": "These designs take an existing orthogonal factorial and augment it with axial points."
+    }
+  ],
+  "place": [
+    {
+      "source": "experiments > `",
+      "target": "a 2 factor system",
+      "file": "design-analysis-experiments/response-surface-methods.rst",
+      "line": 207,
+      "context": "The :index:`axial points <pair: axial points; experiments>` are placed :math:`4^{0.25} = 1.4` coded units away from the center for a 2 factor system, "
+    }
+  ]
+}
