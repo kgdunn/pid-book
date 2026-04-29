@@ -36,6 +36,40 @@ verify locally that **both** `make html` and `make latexpdf` still succeed
 before opening the PR. A broken HTML build is usually obvious; a broken
 LaTeX build often only surfaces in the PDF.
 
+## URLs and HTML output: no `.html` extension, ever
+
+The book at <https://learnche.org/pid> has always been served with
+extensionless URLs (e.g. `/pid/contents`, not `/pid/contents.html`).
+This is intentional and must not be reverted. Sphinx is configured to
+match:
+
+- `html_file_suffix = ""` — built files have no extension on disk
+  (`_build/html/contents`, `_build/html/data-visualization/box-plots`,
+  etc.).
+- `html_link_suffix = ""` — internal links in the rendered HTML also
+  omit the extension.
+- `master_doc` / `root_doc = "contents"` — the entry page is
+  `_build/html/contents`, **not** `index.html`.
+- `start_server.py` (used by `make serve`) already serves extensionless
+  files as `text/html`; the production webserver does the same.
+
+**Do not introduce code or config that assumes `.html`-suffixed
+filenames.** This includes:
+
+- Build verification: check `_build/html/contents`, never
+  `_build/html/index.html`.
+- Search/indexers: Pagefind's default glob is `**/*.html` and matches
+  nothing here — that's why the `npx pagefind` line in `make html` is
+  prefixed with `-` (best-effort). Sphinx's own `searchindex.js` is the
+  real search; do not flip the file-suffix settings to make Pagefind
+  happy.
+- Rsync / deploy: don't filter by `*.html`; copy the whole tree.
+- External tooling that walks the site: configure it to treat
+  extensionless files as HTML, not the reverse.
+
+Years of citations and external links point at the extensionless URLs.
+Reverting would break them silently.
+
 ## Figures repository
 
 Figures live in a separate repo (<https://github.com/kgdunn/figures>) and are
