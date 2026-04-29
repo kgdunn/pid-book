@@ -4,7 +4,7 @@ Exercises
 .. index::
 	pair: exercises; least squares
 
-.. question::
+.. admonition:: Question
 
 	Use the `distillation column data set <http://openmv.net/info/distillation-tower>`_ and choose any two variables, one for |x| and one as |y|. Then fit the following models by least squares in any software package you prefer:
 
@@ -14,7 +14,7 @@ Exercises
 
 		Prove to yourself that centering the |x| and |y| variables gives the same model for the 3 cases in terms of the :math:`b_1` slope coefficient, standard errors and other model outputs.
 
-.. answer::
+.. admonition:: Solution
 
 	Once you have created an ``x`` and ``y`` variable in R, compare the output from these 3 models:
 
@@ -31,7 +31,7 @@ Exercises
 		y.mc <- y - mean(y)
 		summary(lm(y.mc ~ x.mc))
 
-.. question::
+.. admonition:: Question
 
 	For a :math:`x_{\text{new}}` value and the linear model :math:`y = b_0 + b_1 x` the prediction interval for :math:`\hat{y}_\text{new}` is:
 
@@ -43,7 +43,7 @@ Exercises
 
 	Use the `distillation column data set <http://openmv.net/info/distillation-tower>`_ and with |y| as ``VapourPressure`` (units are kPa) and |x| as ``TempC2`` (units of degrees Farenheit) fit a linear model. Calculate the prediction interval for vapour pressure at these 3 temperatures: 430, 480, 520 °F.
 
-.. answer::
+.. admonition:: Solution
 
 	The prediction interval is dependent on the value of :math:`x_\text{new, i}` used to make the prediction. For this model, :math:`S_E = 2.989` kPa, :math:`n=253`,  :math:`\sum_j{(x_j - \overline{x})^2} = 86999.6`, and :math:`\overline{x} = 480.82`.
 
@@ -67,7 +67,7 @@ Exercises
 		:language: s
 		:lines: 1-25,30-33
 
-.. question::
+.. admonition:: Question
 
 	 Refit the distillation model from the previous question with a transformed temperature variable. Use :math:`1/T` instead of the actual temperature.
 
@@ -76,7 +76,7 @@ Exercises
 		-	How do you interpret the slope coefficient for the transformed temperature variable?
 		-	Use the model to compute the predicted vapour pressure at a temperature of 480 °F, and also calculate the corresponding prediction interval at that new temperature.
 
-.. answer::
+.. admonition:: Solution
 
 	-	Using the ``model.inv <- lm(VapourPressure ~ I(1/TempC2))`` instruction, one obtains the model summary below. The model fit has improved slightly: the standard error is 2.88 kPa, reduced from 2.99 kPa.
 
@@ -124,7 +124,7 @@ Exercises
 		:lines: 36-39,43-45,48-56,60-63
 
 
-.. question::
+.. admonition:: Question
 
 	Again, for the distillation model, use the data from 2000 and 2001 to build the model (the first column in the data set contains the dates). Then use the remaining data to test the model. Use |x| = ``TempC2`` and |y| = ``VapourPressure`` in your model.
 
@@ -134,9 +134,7 @@ Exercises
 		-	Remove these influential points, and refit the model on the training data. How has the model's slope and standard error changed?
 		-	Recalculate the RMSEP for the testing data; how has it changed?
 
-.. answer::
-	:fullinclude: no
-	:short: RMSEP = 4.18 kPa; standard error = 2.68 kPa.
+.. admonition:: Solution
 
 	-	The testing data starts at index 160. The code at the end of this question shows how RMSEP was calculated as 4.18 kPa, as compared to the standard error from the model building data (observations 1 to 159) of 2.679 kPa. This indicates the predictions on totally new data have greater error that those observations used to build the model - an expected result.
 
@@ -157,14 +155,13 @@ Exercises
 		:language: s
 		:lines: 1-3,8,66-89,93-94,96-108
 
-.. question::
+.. admonition:: Question
 
 	The `Kappa number data set <http://openmv.net/info/kappa-number>`_ was used in an :ref:`earlier question <monitoring-kappa-number-question>` to construct a Shewhart chart. The :ref:`"Mistakes to avoid" <monitoring_mistakes_to_avoid>` section (Process Monitoring), warns that the subgroups for a Shewhart chart must be independent to satisfy the assumptions used to derived the Shewhart limits. If the subgroups are not independent, then it will increase the type I (false alarm) rate.
 
 	This is no different to the independence required for least squares models. Use the autocorrelation tool to determine a subgroup size for the Kappa variable that will satisfy the Shewhart chart assumptions. Show your autocorrelation plot and interpret it as well.
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	The autocorrelation plot shows significant lags up to lag 3, or even 4. So subsampling the vector with every 4th or 5th element should yield independent samples. The autocorrelation with every 5th observation confirms this. You could also use every 6th, 7th, *etc* observation. Using every 30th observation though is not too useful, since it would lead to a long delay before the control chart showed any problems.
 
@@ -186,7 +183,7 @@ Exercises
 	       :language: s
 	       :lines: 1-9,13-15,21-37
 
-.. question::
+.. admonition:: Question
 
 	You presume the yield from your lab-scale bioreactor, :math:`y`, is a function of reactor temperature, batch duration, impeller speed and reactor type (one with with baffles and one without). You have collected these data from various experiments.
 
@@ -217,8 +214,7 @@ Exercises
 	-	Now calculate the :math:`\mathbf{X}^T\mathbf{X}` and :math:`\mathbf{X}^T\mathbf{y}` matrices; include a column in the :math:`\mathbf{X}` matrix for the intercept. Since you haven't mean centered the data to create these matrices, it would be misleading to try interpret them.
 	-	Calculate the least squares model estimates from these two matrices. See the `R tutorial <https://learnche.org/4C3/Software_tutorial>`_ for doing matrix operations in R, but you might prefer to use MATLAB for this step. Either way, you should get the same answer here as in the first part of this question.
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	-	After importing the data, just make sure the ``baffles`` variable is imported as a factor. Then build the model as usual. The computer output below shows the linear model's coefficients.
 
@@ -287,7 +283,7 @@ Exercises
 			:language: s
 			:lines: 46-
 
-.. question::
+.. admonition:: Question
 
 	In the section on comparing differences between two groups we used, without proof, the fact that:
 
@@ -297,8 +293,7 @@ Exercises
 
 	Prove this statement, and clearly explain all steps in your proof.
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	I don't normally concentrate on proofs in the book, unless they show something interesting, or are used over and over. This short mathematical statement fits both criteria.
 
@@ -313,7 +308,7 @@ Exercises
 
 	The second line is a result shown earlier. The third line requires that we assume the between-group means :math:`\overline{x}_B` and :math:`\overline{x}_A` are independent, and so they are uncorrelated (their covariance is zero). This was one of the key assumptions when we studied between-group differences; and is one assumption that is often true in many real cases.
 
-.. question::
+.. admonition:: Question
 
 	The production of low density polyethylene is carried out in long, thin pipes at high temperature and pressure (1.5 kilometres long, 50mm in diameter, 500 K, 2500 atmospheres). One quality measurement of the LDPE is its melt index. Laboratory measurements of the melt index can take between 2 to 4 hours. Being able to predict this melt index, in real time, allows for faster adjustment to process upsets, reducing the product's variability. There are many variables that are predictive of the melt index, but in this example we only use a temperature measurement that is measured along the reactor's length.
 
@@ -377,9 +372,7 @@ Exercises
 
 	#.	Quote a confidence interval for the slope coefficient in the model and describe what it means. Again, you may use the above software output to help answer your question.
 
-.. answer::
-	:fullinclude: no
-	:short: m = 42.0 - 0.0772 T
+.. admonition:: Solution
 
 	#.	The simplest linear predictive model possible is :math:`m = \beta_0 + \beta_1 T + \varepsilon`, predicting the melt index from temperature. Once we find estimates for these coefficients we write: :math:`m = b_0 + b_1 T + e`. And one way to calculate these coefficients is by least squares. In the class notes we showed that for a variable :math:`x` used to predict a variable :math:`y` that:
 
@@ -426,7 +419,7 @@ Exercises
 
 	This shows, at which ever confidence level (95% or 99%), the range within which we can expect to find the true slope coefficient. This slope represents the magnitude by which the melt index changes, on average, for a one degree change in temperature. If we plan to manipulate the melt index using temperature, then this range will help us estimate an upper and lower bound for the effort required to adjust the melt index.
 
-.. question::
+.. admonition:: Question
 
 	For a distillation column, it is well known that the column temperature directly influences the purity of the product, and this is used in fact for feedback control, to achieve the desired product purity. Use the `distillation data set <http://openmv.net/info/distillation-tower>`_ , and build a least squares model that predicts ``VapourPressure`` from the temperature measurement, ``TempC2``. Report the following values:
 
@@ -437,8 +430,7 @@ Exercises
 
 	You may use any computer package to build the model and read these values off the computer output.
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	The solution to this question can be almost entirely solved using R, though any other language could be used. These commands, with the output that follows, were used:
 
@@ -500,7 +492,7 @@ Exercises
 	       :language: s
 	       :lines: 1-67,70-82
 
-.. question::
+.. admonition:: Question
 
 	.. _bioreactor_LS_question:
 	
@@ -526,7 +518,7 @@ Exercises
 
 	#.	Use the ``plot(bio)`` function in R, where ``bio`` is the data frame you loaded using the ``read.csv(...)`` function. R notices that ``bio`` is not a single variable, but a group of variables, i.e. a data frame, so it plots what is called a *scatterplot matrix* instead. Describe how the scatterplot matrix agrees with your interpretation of the slopes in parts 1, 2 and 3 of this question.
 
-.. answer::
+.. admonition:: Solution
 
 	The R code (below) was used to answer all questions.
 
@@ -573,7 +565,7 @@ Exercises
 	.. literalinclude:: ../figures/least-squares/bioreactor-regression-assignment.R
 		:language: s
 
-.. question::
+.. admonition:: Question
 
 	.. _gas_furnace_LS_question:
 
@@ -589,8 +581,7 @@ Exercises
 
 	#.	**Advanced**: Switch :math:`x` and :math:`y` around and rebuild your least squares model. Compare the new :math:`R^2` to the previous model's :math:`R^2`. Is this result surprising?  How do interpret this?
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	#.	Relationship: the data are negatively correlated.
 
@@ -632,7 +623,7 @@ Exercises
 	.. literalinclude:: ../figures/least-squares/CO2-gas-furnace-question.R
 		:language: s
 
-.. question::
+.. admonition:: Question
 
 	.. _thermocouple_LS_question:
 	
@@ -656,8 +647,7 @@ Exercises
 
 	**Note**: This example explains why we don't use the terminology of *independent* and *dependent* variables in this book. Here the temperature truly is the independent variable, because it causes the voltage difference that we measure. But the voltage reading is the independent variable in the least squares model. The word *independent* is being used in two different senses (its English meaning *vs* its mathematical meaning), and this can be misleading.
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	#.	The linear model is used to predict temperature given the reading in millivolts. The reason is that in modelling, in general, we specify as :math:`x` the variable(s) we always have available, while :math:`y` is the variable we would like to predict from the :math:`x`.
 
@@ -723,7 +713,7 @@ Exercises
 	.. ratio = 1 - 0.0216/0.3333 = 0.935: seems pretty good
 	
 
-.. question::
+.. admonition:: Question
 
 	#.	Use the linear model you derived in the :ref:`gas furnace question <gas_furnace_LS_question>`, where you used the gas flow rate to predict the CO\ :sub:`2` measurement, and construct the analysis of variance table (ANOVA) for the dataset. Use your ANOVA table to reproduce the residual standard error, :math:`S_E` value, that you get from the R software output.
 
@@ -733,7 +723,7 @@ Exercises
 
 	#.	Use the linear model you derived in :ref:`the thermocouple question <thermocouple_LS_question>`, where you used the voltage measurement to predict the temperature, and construct the analysis of variance table (ANOVA) for that dataset. Use your ANOVA table to reproduce the residual standard error, :math:`S_E` value, that you get from the R software output.
 
-.. answer::
+.. admonition:: Solution
 
 	#.	The ANOVA table values were calculated in the code solutions for question 2:
 
@@ -776,7 +766,7 @@ Exercises
 
 		The residual standard error, or just standard error, :math:`S_E = \sqrt{\frac{122.7}{10-2}} = 3.9` K, which agrees with the value from R.
 
-.. question::
+.. admonition:: Question
 
 	Use the mature `cheddar cheese data set <http://openmv.net/info/cheddar-cheese>`_ for this question.
 
@@ -794,7 +784,7 @@ Exercises
 		-	Report the model's standard error. Has it decreased from the model in part 1?
 		-	Report the model's :math:`R^2` value. Has it decreased?
 
-.. answer:: 
+.. admonition:: Solution
 
 	#.	We used the acetic acid variable as :math:`x` and derived the following two models to predict taste, :math:`y`:
 
@@ -854,7 +844,7 @@ Exercises
 	.. literalinclude:: ../figures/least-squares/cheddar-cheese.R
 		:language: s
 
-.. question::
+.. admonition:: Question
 
 	In this question we will revisit the `bioreactor yield <http://openmv.net/info/bioreactor-yields>`_ data set and fit a linear model with all :math:`x`-variables to predict the yield. (This data was also used :ref:`in a previous question <bioreactor_LS_question>`.)
 
@@ -884,8 +874,7 @@ Exercises
 
 	#.	What would be the predicted yield for an experiment run without baffles, at 4000 rpm impeller speed, run at a reactor temperature of 90 °C?
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	#.	The full linear model that relates bioreactor yield to 3 factors is:
 
@@ -963,7 +952,7 @@ Exercises
 		:language: s
 
 
-.. question::
+.. admonition:: Question
 
 	In this question we will use the `LDPE data <http://openmv.net/info/ldpe>`_ which is data from a high-fidelity simulation of a low-density polyethylene reactor. LDPE reactors are very long, thin tubes. In this particular case the tube is divided in 2 zones, since the feed enters at the start of the tube, and some point further down the tube (start of the second zone). There is a temperature profile along the tube, with a certain maximum temperature somewhere along the length. The maximum temperature in zone 1, ``Tmax1`` is reached some fraction ``z1`` along the length; similarly in zone 2 with the ``Tmax2`` and ``z2`` variables.
 
@@ -999,7 +988,7 @@ Exercises
 	#.	Use the ``influenceIndexPlot(...)`` function in the ``car`` library on both the ``z2`` model and the ``z2.updated`` model. Interpret what each plot is showing for the two models. You may ignore the *Bonferroni p-values*  subplot.
 
 
-.. answer:: 
+.. admonition:: Solution
 
 	#.	A scatter plot matrix of the 5 variables is
 
@@ -1125,7 +1114,7 @@ Exercises
 	.. literalinclude:: ../figures/least-squares/LDPE-question.R
 		:language: s
 		
-.. question::
+.. admonition:: Question
 
 	A concrete slump test is used to test for the fluidity, or workability, of concrete. It's a crude, but quick test often used to measure the effect of polymer additives that are mixed with the concrete to improve workability.
 
@@ -1173,7 +1162,7 @@ Exercises
 
 	Show that the 95% confidence interval for :math:`b_A` gives exactly the same lower and upper bounds, as derived above with the traditional approach for tests of differences.
 
-.. answer::
+.. admonition:: Solution
 
 	This short piece of R code shows the expected result when regressing the slump value onto the binary factor variable:
 
@@ -1190,7 +1179,7 @@ Exercises
 
 	Note that this approach works only if your coding has a one unit difference between the two levels. For example, you can code :math:`A = 17` and :math:`B = 18` and still get the same result. Usually though :math:`A=0` and :math:`B=1` or the :math:`A = 1` and :math:`B = 2` coding is the most natural, but all 3 of these codings would give the same confidence interval (the intercept changes though).
 
-.. question::
+.. admonition:: Question
 
 	Some data were collected from tests where the compressive strength, :math:`x`, used to form concrete was measured, as well as the intrinsic permeability of the product, :math:`y`. There were 16 data points collected. The mean :math:`x`-value was :math:`\overline{x} = 3.1` and the variance of the :math:`x`-values was 1.52. The average :math:`y`-value was 40.9. The estimated covariance between :math:`x` and :math:`y` was :math:`-5.5`.
 
@@ -1204,8 +1193,7 @@ Exercises
 	
 	#.	Now provide a more accurate, calculated 95% prediction confidence interval for the previous part.
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	#.	It is :math:`\hat{y} = 52.1 - 3.6(5.8) = 31.22`
 	
@@ -1249,7 +1237,7 @@ Exercises
 		
 		The confidence interval, or prediction interval for this :math:`\hat{y}_i` is :math:`\pm c_t \sqrt{V\{\hat{y}_i\}} = \pm 2.14 \sqrt{27.99} = \pm 11.3`,  a bit larger than the rough estimate above.
 
-.. question::
+.. admonition:: Question
 
 	A simple linear model relating reactor temperature to polymer viscosity is desirable, because measuring viscosity online, in real time is far too costly, and inaccurate. Temperature, on the other hand, is quick and inexpensive. This is the concept of *soft sensors*, also known as *inferential sensors*.
 
@@ -1292,7 +1280,7 @@ Exercises
 
 	#.	The standard error features prominently in all derivations related to least squares. Provide an interpretation of it and be specific in any assumption(s) you require to make this interpretation.
 
-.. answer::
+.. admonition:: Solution
 
 	#.	The causal direction is that a change in temperature causes a change in viscosity.
 

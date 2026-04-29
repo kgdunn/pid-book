@@ -55,13 +55,7 @@ jquery_use_sri = False
 
 # Custom extensions
 # -------------------------
-extensions.append("my-extensions.q-and-a")
 extensions.append("my-extensions.datacamplite")
-
-# Set the next line to "True" to create full solutions
-# to the book (i.e. ``fullinclude`` is ignored)
-# The default value should be False
-q_and_a_override = False
 
 # MathJax extension:
 extensions.append("sphinx.ext.mathjax")
