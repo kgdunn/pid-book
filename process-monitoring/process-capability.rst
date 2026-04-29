@@ -22,7 +22,10 @@ Purchasers of your product may request a :index:`process capability ratio` (PCR)
 	
 	\text{PCR} = \frac{\text{Upper specification limit} - \text{Lower specification limit}}{6\sigma} = \frac{\text{USL} - \text{LSL}}{6\sigma}
 	
-Since the population standard deviation, :math:`\sigma`, is not known, an estimate of it is used. Note that the :index:`lower specification limit` (LSL) and :index:`upper specification limit` (USL) are **not the same** as the lower control limit (LCL) and upper control limit (UCL) as were calculated for the Shewhart chart. The LSL and USL are the tolerance limits required by your customers, or set from your internal specifications. 
+.. index::
+	see: tolerance limits; specification limits
+
+Since the population standard deviation, :math:`\sigma`, is not known, an estimate of it is used. Note that the :index:`lower specification limit` (LSL) and :index:`upper specification limit` (USL) are **not the same** as the lower control limit (LCL) and upper control limit (UCL) as were calculated for the Shewhart chart. The LSL and USL are the tolerance limits required by your customers, or set from your internal specifications.
 
 Interpretation of the PCR:
 	
@@ -75,9 +78,13 @@ Processes are not very often centered between their upper and lower specificatio
 		
 The |xdb| term would be the process target from a Shewhart chart, or simply the actual average operating point. Notice that |Cpk| is a one-sided ratio, only the side closest to the specification is reported. So even an excellent process with C\ :sub:`p` = 2.0 that is running off-center will have a lower |Cpk|.
 
+.. index::
+	single: six-sigma process
+	see: 6-sigma; six-sigma process
+
 It is the |Cpk| value that is requested by your customer. Values of 1.3 are usually a minimum requirement, while 1.67 and higher are requested for health and safety-critical applications. A value of |Cpk| :math:`\geq 2.0` is termed a six-sigma process, because the distance from the current operating point, |xdb|, to the closest specification is at least :math:`6\sigma` units.
 
-You can calculate that a shift of :math:`1.5\sigma` from process center will introduce only 3.4 defects per million. This shift would reduce your |Cpk| from 2.0 to 1.5.
+You can calculate that a shift of :math:`1.5\sigma` from process center will introduce only 3.4 :index:`defects per million`. This shift would reduce your |Cpk| from 2.0 to 1.5.
 
 .. Note:: It must be emphasized that |Cpk| and C\ :sub:`p` numbers are only useful for a process which is stable. Furthermore the assumption of normally distributed samples is also required to interpret the |Cpk| value.
 

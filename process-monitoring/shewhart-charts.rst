@@ -7,6 +7,9 @@ Shewhart charts
 
 .. youtube:: https://www.youtube.com/watch?v=8Ln3emiwQzU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=61
 
+.. index::
+	single: Shewhart, Walter
+
 A :index:`Shewhart chart <pair: Shewhart chart; process monitoring>`, named after Walter Shewhart from Bell Telephone and Western Electric, monitors that a process variable remains on target and within given upper and lower limits. It is a monitoring chart for *location*. It answers the question whether the variable's :index:`location <single: location (process monitoring)>` is stable over time. It does not track anything else about the measurement, such as its standard deviation. Looking ahead: :ref:`we show later <monitoring_shewart_chart_slugishness>` that a pure Shewhart chart needs extra rules to help monitor the location of a variable effectively.
 
 The defining characteristics of a Shewhart chart are: a target, upper and lower control limits (:index:`UCL <single: upper control limit>` and :index:`LCL <single: lower control limit>`). These action limits are defined so that no action is required as long as the variable plotted remains within the limits. In other words a special cause is not likely present if the points remain within the UCL and LCL.
@@ -57,7 +60,7 @@ The derivation in equation :eq:`shewhart-theoretical` requires knowing the popul
 
 .. index:: ! phase 1 (monitoring charts)
 
-Let's take a look at phase 1, the step where we are building the monitoring chart's limits from historical data. Create a new variable |xdb| :math:`= \displaystyle \frac{1}{K} \sum_{k=1}^{K}{ \overline{x}_k}`, where :math:`K` is the number of :math:`\overline{x}` samples we have available to build the monitoring chart, called the :index:`phase 1 <single: phase 1 (monitoring charts)>` data. Note that |xdb| is sometimes called the *grand mean*. Alternatively, just set |xdb| to the desired target value for :math:`x` or use a long portion of stable data to estimate a suitable target
+Let's take a look at phase 1, the step where we are building the monitoring chart's limits from historical data. Create a new variable |xdb| :math:`= \displaystyle \frac{1}{K} \sum_{k=1}^{K}{ \overline{x}_k}`, where :math:`K` is the number of :math:`\overline{x}` samples we have available to build the monitoring chart, called the :index:`phase 1 <single: phase 1 (monitoring charts)>` data. Note that |xdb| is sometimes called the :index:`grand mean <see: grand mean; mean>`. Alternatively, just set |xdb| to the desired target value for :math:`x` or use a long portion of stable data to estimate a suitable target
 
 The next hurdle is :math:`\sigma`. Define :math:`s_k` to be the standard deviation of the :math:`n` values in the :math:`k^\text{th}` subgroup. We do not show it here, but for a subgroup of :math:`n` samples, an unbiased estimator of :math:`\sigma` is given by :math:`\displaystyle \frac{\overline{S}}{a_n}`, where :math:`\overline{S} =  \displaystyle \frac{1}{K} \displaystyle \sum_{k=1}^{K}{s_k}` is simply the average standard deviation calculated from :math:`K` subgroups. Values for :math:`a_n` are looked up from a table, or using the formula below, and depend on the number of samples we use within each subgroup.
 
@@ -176,7 +179,19 @@ Judging the chart's performance
 
 There are 2 ways to :index:`judge performance of a monitoring chart <single: monitoring chart assessment>`. In particular here we discuss the Shewhart chart:
 
-.. rubric:: 1. Error probability. 
+.. rubric:: 1. Error probability.
+
+.. index::
+	single: type I error
+	single: type II error
+	pair: type I error; type II error
+	see: false alarm; type I error
+	see: false positive; type I error
+	see: producer's risk; type I error
+	see: false rejection rate; type I error
+	see: false negative; type II error
+	see: consumer's risk; type II error
+	see: false acceptance rate; type II error
 
 We define two types of errors, Type I and Type II, which are a function of the lower and upper control limits (LCL and UCL).
 
@@ -243,6 +258,9 @@ The :index:`average run length` (ARL) is defined as the average number of sequen
 Extensions to the basic Shewhart chart to help monitor stability of the location
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	single: center line
+
 The :index:`Western Electric rules`: we saw above how sluggish the Shewhart chart is in detecting a small shift in the process mean, from :math:`\mu` to :math:`\mu + \Delta\sigma`. The **Western Electric rules** are an attempt to more rapidly detect a process shift, by raising an alarm when these *improbable* events occur:
 
 #. Two out of 3 points lie beyond :math:`2\sigma` on the same side of the centre line
@@ -253,10 +271,14 @@ However, an alternative chart, the CUSUM chart is more effective at detecting a 
 
 **Adding robustness**: the phase I derivation of a monitoring chart is iterative. If you find a point that violates the LCL and UCL limits, then the approach is to remove that point, and recompute the LCL and UCL values. That is because the LCL and UCL limits would have been biased up or down by these unusual points :math:`\overline{x}_k` points.
 
-	This iterative approach can be tiresome with data that has spikes, missing values, outliers, and other problems typical of data pulled from a process database (:index:`historian <single: data historian>`). Robust monitoring charts are procedures to calculate the limits so the LCL and UCL are resistant to the effect of outliers. For example, a robust procedure might use the medians and MAD instead of the mean and standard deviation. An examination of various robust procedures, especially that of the interquartile range, is given in the paper by D. M. Rocke, `Robust Control Charts <https://dx.doi.org/10.2307/1268815>`_, *Technometrics*, **31** (2), p 173 - 184, 1989.
+	This iterative approach can be tiresome with data that has spikes, missing values, outliers, and other problems typical of data pulled from a process database (:index:`historian <single: data historian>`). :index:`Robust monitoring charts <single: robust monitoring chart>` are procedures to calculate the limits so the LCL and UCL are resistant to the effect of outliers. For example, a robust procedure might use the medians and MAD instead of the mean and standard deviation. An examination of various robust procedures, especially that of the interquartile range, is given in the paper by D. M. Rocke, `Robust Control Charts <https://dx.doi.org/10.2307/1268815>`_, *Technometrics*, **31** (2), p 173 - 184, 1989.
 
 	*Note*: do not use robust methods to calculate the values plotted on the charts during phase 2, only use robust methods to calculate the chart limits in phase 1!
 	
+.. index::
+	single: warning limits
+	single: action limits
+
 **Warning limits**: it is common to see warning limits on a monitoring chart at :math:`\pm 2 \sigma`, while the :math:`\pm 3\sigma` limits are called the action limits. Real-time computer systems usually use a colour scheme to distinguish between the warning state and the action state. For example, the chart background changes from green, to orange to red as the deviations from target become more severe.
 
 .. _monitoring_adjust_limits:
@@ -269,6 +291,9 @@ However, an alternative chart, the CUSUM chart is more effective at detecting a 
 
 Mistakes to avoid
 ~~~~~~~~~~~~~~~~~~~~~~~
+
+.. index::
+	single: specification limits
 
 .. TODO: check if the assumption of independence within each subgroup is required
 
