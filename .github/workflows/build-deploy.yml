@@ -71,9 +71,11 @@ jobs:
           make -C _build/latex all-pdf
 
       - name: Verify build outputs
+        # The master page is `_build/html/contents` (not index.html) because
+        # conf.py sets `master_doc = "contents"` and `html_file_suffix = ""`.
         run: |
-          test -f _build/html/index.html
-          test -f _build/latex/PID.pdf
+          test -s _build/html/contents
+          test -s _build/latex/PID.pdf
 
       - name: Configure SSH for learnche.org
         if: github.event_name != 'pull_request'
