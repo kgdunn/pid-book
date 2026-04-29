@@ -53,8 +53,11 @@ class Question_Answer(Directive):
         try:
             current_question = env.temp_data[key]
         except KeyError:
-            # Now we know this is the first time this document is called.
-            # Add special HTML to reveal all answers.
+            # First directive seen for this document. Default the question
+            # number to 0 (so an `.. answer::` that appears before any
+            # `.. question::` doesn't crash with UnboundLocalError on a
+            # fresh build) and add the "Show all answers" button.
+            current_question = 0
             button = '<button id="q_and_a_all" onClick="toggle_all_q_and_a(q_and_a_all)" type="button">Show all answers</button>'
             out.append(nodes.raw('', button, format ='html'))
 
@@ -63,6 +66,7 @@ class Question_Answer(Directive):
 
             if override:
                 q_number = env.new_serialno(env.docname) + 1
+                env.temp_data[key] = q_number
                 if self.state.document.settings.env.app.builder.name == 'html':
                     out.append(nodes.raw('',
                                          '<div class="new_question"></div>',
@@ -76,6 +80,7 @@ class Question_Answer(Directive):
                 pass
             elif not(already_overridden):
                 q_number = env.new_serialno(env.docname) + 1
+                env.temp_data[key] = q_number
                 if self.state.document.settings.env.app.builder.name == 'html':
                     out.append(nodes.raw('',
                                          '<div class="new_question"></div>',

@@ -63,7 +63,11 @@ html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	$(SPHINXBUILD) -b text $(ALLSPHINXOPTS) $(BUILDDIR)/text
 	cp -R $(BUILDDIR)/text/* $(BUILDDIR)/html/_sources/
-	npx -y pagefind --site $(BUILDDIR)/html
+	# Pagefind is best-effort: with html_file_suffix="" Sphinx emits
+	# extensionless pages and Pagefind's default `**/*.html` glob misses
+	# them. Sphinx's own searchindex.js still works. The leading `-`
+	# tells make to ignore a non-zero exit so the build doesn't fail.
+	-npx -y pagefind --site $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
