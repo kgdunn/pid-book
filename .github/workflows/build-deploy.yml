@@ -1,0 +1,99 @@
+name: Build and deploy book
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-learnche
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout pid-book
+        uses: actions/checkout@v4
+
+      - name: Checkout figures repo
+        uses: actions/checkout@v4
+        with:
+          repository: kgdunn/figures
+          path: figures-src
+
+      - name: Symlink figures into the source tree
+        run: ln -s "$PWD/figures-src" figures
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Install Python dependencies
+        run: uv sync --frozen
+
+      - name: Set up Node.js (for Pagefind)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install TeX Live
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            texlive-latex-recommended \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            texlive-fonts-extra \
+            texlive-xetex \
+            latexmk
+
+      - name: Build HTML
+        run: uv run make html
+
+      - name: Build PDF
+        # Sidestep the xdg-open step at the end of the `latexpdf` target,
+        # which has no display on a CI runner.
+        run: |
+          uv run make latex
+          make -C _build/latex all-pdf
+
+      - name: Verify build outputs
+        run: |
+          test -f _build/html/index.html
+          test -f _build/latex/PID.pdf
+
+      - name: Configure SSH for learnche.org
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.LEARNCHE_SSH_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.LEARNCHE_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          if [ -n "$SSH_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          else
+            ssh-keyscan -H learnche.org >> ~/.ssh/known_hosts
+          fi
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Deploy to learnche.org
+        env:
+          SSH_USER: ${{ secrets.LEARNCHE_SSH_USER }}
+        run: |
+          rsync -avz --delete-after \
+            _build/html/ \
+            "$SSH_USER@learnche.org:/var/www/learnche.org/pid/"
+          rsync -avz \
+            _build/latex/PID.pdf \
+            "$SSH_USER@learnche.org:/var/www/learnche.org/pid/"
