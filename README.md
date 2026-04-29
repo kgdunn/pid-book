@@ -122,7 +122,7 @@ your derivative work under the same terms.
 
 Suggested attribution:
 
-> Dunn, K. G. *Process Improvement using Data.* learnche.org/pid (CC BY-SA 4.0).
+> Dunn, K. G. (2010–2026). *Process Improvement using Data.* learnche.org/pid (CC BY-SA 4.0).
 
 Machine-readable citation metadata is available in
 [`CITATION.cff`](CITATION.cff).
