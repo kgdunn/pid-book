@@ -1,9 +1,18 @@
 {%- if builder != 'singlehtml' %}
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="{{ pathto('search') }}" method="get">
-    <input type="text" name="q" placeholder="Search the book" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+  <link rel="stylesheet" href="{{ pathto('pagefind/pagefind-ui.css', 1) }}" />
+  <script src="{{ pathto('pagefind/pagefind-ui.js', 1) }}"></script>
+  <div id="pagefind-search"></div>
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      new PagefindUI({
+        element: "#pagefind-search",
+        showSubResults: true,
+        showImages: false,
+        resetStyles: false,
+        placeholder: "Search the book"
+      });
+    });
+  </script>
 </div>
 {%- endif %}
