@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+title: "Process Improvement using Data"
+message: "If you use this book, please cite it as below."
+type: book
+authors:
+  - family-names: Dunn
+    given-names: Kevin G.
+    email: kgdunn@gmail.com
+abstract: >-
+  An open-access textbook covering data visualization, univariate statistics,
+  process monitoring, least-squares modelling, design and analysis of
+  experiments, latent variable methods (PCA, PLS), and product development
+  for engineers and scientists working with process data.
+keywords:
+  - statistics
+  - process improvement
+  - design of experiments
+  - latent variable methods
+  - PCA
+  - PLS
+  - multivariate data analysis
+  - batch data analysis
+license: CC-BY-SA-4.0
+repository-code: "https://github.com/kgdunn/pid-book"
+url: "https://learnche.org/pid"

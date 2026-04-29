@@ -119,7 +119,13 @@ latexpdf:
 	@echo "Running LaTeX files through pdflatex..."
 	make -C $(BUILDDIR)/latex all-pdf
 	@echo "pdflatex finished; the PDF files are in $(BUILDDIR)/latex."
-	open $(BUILDDIR)/latex/PID.pdf
+	@if command -v xdg-open >/dev/null 2>&1; then \
+		xdg-open $(BUILDDIR)/latex/PID.pdf; \
+	elif command -v open >/dev/null 2>&1; then \
+		open $(BUILDDIR)/latex/PID.pdf; \
+	else \
+		echo "PDF built at $(BUILDDIR)/latex/PID.pdf (no opener found)."; \
+	fi
 
 text:
 	$(SPHINXBUILD) -b text $(ALLSPHINXOPTS) $(BUILDDIR)/text
