@@ -3,7 +3,7 @@ Bar plots
 
 .. youtube:: https://www.youtube.com/watch?v=tb20hIQlEBU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=2
 
-The :index:`bar plot <pair: bar plot; visualization>` is another univariate plot on a two-dimensional axis. The two axes are not called *x*- or *y*-axes. Instead, one axis is called the *category axis* showing the category name, while the other, the *value axis*, shows the numeric value of that category, given by the length of the bar.
+The :index:`bar plot <pair: bar plot; visualization>` is another univariate plot on a two-dimensional axis. The two axes are not called *x*- or *y*-axes. Instead, one axis is called the :index:`category axis <pair: category axis; bar plot>` showing the category name, while the other, the :index:`value axis <pair: value axis; bar plot>`, shows the numeric value of that category, given by the length of the bar.
 
 .. image:: ../figures/visualization/barplot-example-expenses.png
    :scale: 60
@@ -37,7 +37,7 @@ Here is some advice for bar plots:
 	#. The top edge of each bar, just below the number
 	#. The number itself
 
-	To this end, Tufte defines the data ink ratio as:
+	To this end, :index:`Tufte <single: Tufte, Edward>` defines the :index:`data-ink ratio <pair: data-ink ratio; visualization>` as:
 
 	.. math::
 
@@ -67,7 +67,7 @@ Here is some advice for bar plots:
   Stack bar plots are OK, they show breakdowns quite nicely, even though one has to read the accompanying text carefully to make sure the break down is what you think it is. Never underestimate the audience's intelligence.
   - My preference is to avoid stacked bar plots. I'm never sure, until I read the text carefully, or the plot annotations, whether the bars represent a cumulative amount or an incremental amount. Is the blue region showing 25% or 15%?
 
--	Use horizontal bars if
+-	Use :index:`horizontal bars <pair: horizontal bar chart; visualization>` if
 
 	- there is some ordering to the categories (it is often easier to read the category labels from top-to-bottom), or
 	- if the labels do not fit side-by-side: don't make the reader have to rotate the page to interpret the plot; rotate the plot for the reader.

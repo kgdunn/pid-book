@@ -4,6 +4,9 @@ Tables as a form of data visualization
 .. index::
    pair: data table; visualization
    see: table; data table
+   single: cell, in a data table
+   single: grid lines
+   single: Tufte, Edward
 
 A data table, or a spreadsheet, is an efficient format for comparative data analysis on categorical objects. Usually, the items being compared are placed in a column, while the categorical objects are in the rows.  The quantitative value is then placed at the intersection of the row and column, called the *cell*. The following examples demonstrate data tables.
 
@@ -34,9 +37,9 @@ This particular table raises more questions:
 
 Three common pitfalls to avoid:
 
-#.	*Avoid using pie charts when tables will do.*
+#.	*Avoid using* :index:`pie charts <pair: pie chart; visualization>` *when tables will do.*
 
-	Pie charts are tempting when we want to graphically break down a quantity into components. I have used them erroneously myself (here is an example on a website that I helped with: http://www.macc.mcmaster.ca/gradstudies.php). We won't go into details here, but I strongly suggest you read the convincing evidence of Stephen Few in: `"Save the pies for dessert" <https://www.perceptualedge.com/articles/08-21-07.pdf>`_. The key problem is that the human eye cannot adequately decode angles; however, we have no problem with linear data.
+	Pie charts are tempting when we want to graphically break down a quantity into components. I have used them erroneously myself (here is an example on a website that I helped with: http://www.macc.mcmaster.ca/gradstudies.php). We won't go into details here, but I strongly suggest you read the convincing evidence of :index:`Stephen Few <single: Few, Stephen>` in: `"Save the pies for dessert" <https://www.perceptualedge.com/articles/08-21-07.pdf>`_. The key problem is that the human eye cannot adequately decode angles; however, we have no problem with linear data.
 
 #.	*Avoid arbitrary ordering along the first column; usually, alphabetically or in time order is better.*
 
