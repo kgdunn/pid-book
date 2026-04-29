@@ -36,7 +36,7 @@ The full table of contents lives in [`contents.rst`](contents.rst).
 ### Prerequisites
 
 * **Python ≥ 3.12**
-* **[uv](https://docs.astral.sh/uv/)** — installed automatically by `make clean`
+* **[uv](https://docs.astral.sh/uv/)** — installed automatically by `make setup`
 * **Node.js / `npx`** — used to run [Pagefind](https://pagefind.app/) for the
   HTML search index
 * **A LaTeX distribution** (TeX Live, MacTeX, MiKTeX) — only required for the
@@ -60,19 +60,21 @@ cd pid-book
 git clone https://github.com/kgdunn/figures.git ../figures
 ln -s "$(cd ../figures && pwd)" figures
 
-# 3. Bootstrap the toolchain (installs uv, creates .venv, locks deps)
-#    NOTE: `make clean` is more than a clean — it also re-installs the env.
-make clean
+# 3. Bootstrap the toolchain (installs uv, creates .venv, syncs deps)
+make setup
 ```
 
 ### Build targets
 
 | Command | What it does |
 |---|---|
+| `make setup` | Bootstrap the toolchain: install `uv`, create `.venv`, sync deps |
 | `make html` | Build the HTML book into `_build/html/` and run Pagefind for search |
 | `make serve` | Serve `_build/html/` at <http://localhost:8080> for local preview |
 | `make latexpdf` | Build the PDF (5–10 minutes; needs LaTeX). Output: `_build/latex/PID.pdf` |
 | `make linkcheck` | Verify external links |
+| `make clean` | Remove build artifacts (`_build/`, caches) |
+| `make distclean` | Also remove `.venv/` and `uv.lock` (forces a re-resolve on next `make setup`) |
 | `make` | Default target is `latexpdf` |
 
 Compare your PDF against <https://learnche.org/pid/PID.pdf> to confirm a

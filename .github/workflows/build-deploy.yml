@@ -3,11 +3,15 @@ name: Build and deploy book
 on:
   push:
     branches: [master]
+  pull_request:
+    branches: [master]
   workflow_dispatch:
 
 concurrency:
-  group: deploy-learnche
-  cancel-in-progress: false
+  # Pushes/dispatch share one queue (so deploys never race); each PR gets its
+  # own queue so multiple PRs can validate in parallel.
+  group: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || 'deploy-learnche' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build-and-deploy:
@@ -72,6 +76,7 @@ jobs:
           test -f _build/latex/PID.pdf
 
       - name: Configure SSH for learnche.org
+        if: github.event_name != 'pull_request'
         env:
           SSH_PRIVATE_KEY: ${{ secrets.LEARNCHE_SSH_KEY }}
           SSH_KNOWN_HOSTS: ${{ secrets.LEARNCHE_KNOWN_HOSTS }}
@@ -88,6 +93,7 @@ jobs:
           chmod 600 ~/.ssh/known_hosts
 
       - name: Deploy to learnche.org
+        if: github.event_name != 'pull_request'
         env:
           SSH_USER: ${{ secrets.LEARNCHE_SSH_USER }}
         run: |
