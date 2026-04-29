@@ -3,6 +3,11 @@ Exercises
 
 .. index::
 	pair: exercises; visualizing data
+	pair: histogram; visualization
+	pair: scatterplot matrix; visualization
+	see: bar chart; bar plot
+	single: Few, Stephen
+	single: Rosling, Hans
 
 .. question::
 
@@ -58,7 +63,7 @@ Exercises
 
 .. question::
 
-	Describe what the main difference(s) between a bar chart and a histogram are.
+	Describe what the main difference(s) between a :index:`bar chart` and a :index:`histogram <pair: histogram; visualization>` are.
 
 .. answer::
 	:fullinclude: yes
@@ -134,7 +139,7 @@ Exercises
 
 .. question::
 
-	This question is an extension to visualizing more than 3 variables. Investigate on your own the term "*scatterplot matrix*", and draw one for the `Food texture data set <http://openmv.net/info/food-texture>`_. See the ``car`` library in R to create an effective scatterplot matrix with the ``scatterplotMatrix`` function. List some bullet-points that interpret the plot.
+	This question is an extension to visualizing more than 3 variables. Investigate on your own the term ":index:`scatterplot matrix <pair: scatterplot matrix; visualization>`", and draw one for the `Food texture data set <http://openmv.net/info/food-texture>`_. See the ``car`` library in R to create an effective scatterplot matrix with the ``scatterplotMatrix`` function. List some bullet-points that interpret the plot.
 
 .. answer::
 
@@ -417,7 +422,7 @@ Exercises
 
 .. question::
 
-	Read the short, clearly written article by Stephen Few on the pitfalls of pie charts: `Save the pies for dessert, https://www.perceptualedge.com/articles/08-21-07.pdf <https://www.perceptualedge.com/articles/08-21-07.pdf>`_. The article presents an easy-to-read argument against pie charts that will hopefully convince you.
+	Read the short, clearly written article by Stephen Few on the pitfalls of :index:`pie charts <pair: pie chart; visualization>`: `Save the pies for dessert, https://www.perceptualedge.com/articles/08-21-07.pdf <https://www.perceptualedge.com/articles/08-21-07.pdf>`_. The article presents an easy-to-read argument against pie charts that will hopefully convince you.
 
 	Here's a `great example that proves his point <https://www.canada.ca/en/revenue-agency/corporate/about-canada-revenue-agency-cra/individual-income-tax-return-statistics.html>`_ from the Canada Revenue Agency.
 

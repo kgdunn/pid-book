@@ -1,10 +1,14 @@
 Topics of aesthetics and style
 ==============================
 
-We won't cover these topics, but :ref:`Tufte's books <visualization_references>` contain remarkable examples that discuss effective use of colour for good contrast, varying line widths, and graph layout (e.g. use more horizontal than vertical - an aspect ratio of about 1.4 to 2.0; and flow the graphics into the location in the text where discussed).
+We won't cover these topics, but :ref:`Tufte's books <visualization_references>` (see :index:`Tufte <single: Tufte, Edward>`) contain remarkable examples that discuss effective use of colour for good contrast, varying line widths, and graph layout (e.g. use more horizontal than vertical - an :index:`aspect ratio <pair: aspect ratio; visualization>` of about 1.4 to 2.0; and flow the graphics into the location in the text where discussed).
 
 Data frames (axes)
 ---------------------
+
+.. index::
+	pair: data frame; visualization
+	single: axes, data frame
 
 Frames are the basic containers that surround the data and give context to our numbers. Here are some tips:
 
@@ -17,7 +21,7 @@ Frames are the basic containers that surround the data and give context to our n
 Colour
 ---------------------
 
-:index:`Colour <pair: colour; visualization>` is very effective in all graphical charts. However, you must bear in mind that your readers might be colour-blind, or the document might be read from a grayscale printout, or viewed on an electronic device where colours are shown differently than you might intend.
+:index:`Colour <pair: colour; visualization>` is very effective in all graphical charts. However, you must bear in mind that your readers might be :index:`colour-blind <single: colour-blindness>`, or the document might be read from a :index:`grayscale <single: grayscale>` printout, or viewed on an electronic device where colours are shown differently than you might intend.
 
 Note also that a standard colour progression does *not* exist. We often see dark blues and purples representing low numbers and reds the higher numbers, with greens, yellows and orange in-between. There are several such `colour schemes <https://en.wikipedia.org/wiki/Color_scheme>`_ - there isn't a universal standard. The only safest colour progression is the grayscale axis, ranging from black to white at each extreme: this satisfies both colour-blind readers and users of your grayscale printed output.
 
@@ -28,7 +32,7 @@ General summary: revealing complex data graphically
 
 There is no generic advice that applies in every instance. These tips are useful, though, in most cases:
 
--	If the question you want answered is causality, then show causality (the most effective way is with bivariate scatter plots). If trying to answer a question with alternatives, show comparisons (with tiles of plots or a simple table).
+-	If the question you want answered is causality, then show causality (the most effective way is with bivariate scatter plots). If trying to answer a question with alternatives, show comparisons (with :index:`tiles of plots <pair: small multiples; visualization>` or a simple table).
 
 -	Words and graphics belong together. Add labels to plots for outliers, and explain interesting points. Add equations and even small summary tables on top of your plots. Remember that a graph should be like a paragraph of text, not necessarily just a graphical display of numbers that you discuss later on.
 
@@ -38,6 +42,6 @@ There is no generic advice that applies in every instance. These tips are useful
 
 -	When the graphics involve money and time, make sure you adjust the money for inflation.
 
--	Maximize the data-ink ratio = (ink for data) / (total ink for graphics). Maximizing this ratio, within reason, means you should (a) eliminate nondata ink and (b) erase redundant data-ink.
+-	Maximize the :index:`data-ink ratio <pair: data-ink ratio; visualization>` = (ink for data) / (total ink for graphics). Maximizing this ratio, within reason, means you should (a) eliminate nondata ink and (b) erase redundant data-ink.
 
--	Maximize data density. Humans can `interpret data displays <https://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR>`_ of around 100 data points per centimeter (250 data points per linear inch) and around 10000 per square centimeter (60000 data points per square inch).
+-	Maximize :index:`data density <pair: data density; visualization>`. Humans can `interpret data displays <https://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR>`_ of around 100 data points per centimeter (250 data points per linear inch) and around 10000 per square centimeter (60000 data points per square inch).

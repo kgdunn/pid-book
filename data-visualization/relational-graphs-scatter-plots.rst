@@ -6,7 +6,7 @@ Relational graphs: scatter plots
 
 .. youtube:: https://www.youtube.com/watch?v=JB8UP1JWNXQ&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=4
 
-This is a plot many people are comfortable using. It helps you understand the relationship between two variables - a bivariate plot - as opposed to the previous charts that are univariate. A :index:`scatter plot <pair: scatter plot; visualization>` is a collection of points shown inside a box formed by two axes at 90 degrees to each other. The marker's position is located at the intersection of the values shown on the horizontal (*x*) axis and vertical (*y*) axis.
+This is a plot many people are comfortable using. It helps you understand the relationship between two variables - a :index:`bivariate plot <pair: bivariate plot; visualization>` - as opposed to the previous charts that are univariate. A :index:`scatter plot <pair: scatter plot; visualization>` is a collection of points shown inside a box formed by two axes at 90 degrees to each other. The marker's position is located at the intersection of the values shown on the horizontal (*x*) axis and vertical (*y*) axis.
 
 The unspoken intention of a scatter plot is usually to ask the reader to draw a causal relationship between the two variables. However, not all scatter plots actually show causal phenomena, as the figure below tries to convince you:
 
@@ -29,7 +29,7 @@ Strive for graphical excellence by doing the following:
 - Use the least amount of ink.
 - Do not distort the axes.
 
-There is an unfounded fear that others won't understand your 2D scatter plot. Tufte (*Visual Display of Quantitative Information*, p 83) shows that there are no scatter plots in a sample (1974 to 1980) of U.S., German and British dailies, despite studies showing that 12-year-olds can interpret such plots: Japanese newspapers frequently use them.
+There is an unfounded fear that others won't understand your 2D scatter plot. :index:`Tufte <single: Tufte, Edward>` (*Visual Display of Quantitative Information*, p 83) shows that there are no scatter plots in a sample (1974 to 1980) of U.S., German and British dailies, despite studies showing that 12-year-olds can interpret such plots: Japanese newspapers frequently use them.
 
 You will see this in industrial settings as well. The next time you go into an industrial control room (or look carefull at some screens in online videos), try finding any scatter plots. The audience is not to blame: it is the producers of these charts who assume the audience is incapable of interpreting them.
 
@@ -38,7 +38,7 @@ You will see this in industrial settings as well. The next time you go into an i
 	Assume that if you can understand the plot, so will your audience.
 
 
-Further improvements can be made to your scatter plots. For example, extend the frames only as far as your data:
+Further improvements can be made to your scatter plots. For example, extend the frames only as far as your data, and add a :index:`regression line <pair: regression line; scatter plot>` where appropriate:
 
 	.. image:: ../figures/visualization/scatterplot-figures-with-regression-lines.png
 		:scale: 75
@@ -51,7 +51,7 @@ You can add box plots and histograms to the side of the axes to aide interpretat
 		:width: 900px
 		:alt: fake width
 
-Add a third variable to the plot by adjusting the marker size, and add a fourth variable with the use of colour:
+Add a third variable to the plot by adjusting the :index:`marker size <single: marker size; scatter plot>`, and add a fourth variable with the use of colour:
 
     .. _reference_to_use_of_colour:
 
@@ -62,7 +62,7 @@ Add a third variable to the plot by adjusting the marker size, and add a fourth 
 		:alt: fake width
 
 
-    This example, from `https://gapminder.org <https://yint.org/gapminder-example>`_ , shows data until 2007 for:
+    This example, from :index:`GapMinder <single: GapMinder>` (`https://gapminder.org <https://yint.org/gapminder-example>`_) , shows data until 2007 for:
 
 		1. income per person (*x*-axis);
 		2. against fertility (*y*-axis);
