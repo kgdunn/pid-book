@@ -19,7 +19,7 @@ But a confidence interval conveys a similar concept, in a useful manner. It give
 
 Let's return to the previous viscosity example, where we had the 9 viscosity measurements ``23, 19, 17, 18, 24, 26, 21, 14, 18``. The sample average was :math:`\overline{x} = 20.0` and the standard deviation was :math:`s = 3.81`. The :math:`z`-value is: :math:`z = \dfrac{\overline{x} - \mu}{s/\sqrt{n}}`. And we showed this was distributed according to the :math:`t`-distribution with 8 degrees of freedom. 
 
-Calculating a confidence interval requires we find a range within which that :math:`z`-value occurs. Most often we are interested in symmetrical confidence intervals, so the procedure is:
+Calculating a confidence interval requires we find a range within which that :math:`z`-value occurs. Most often we are interested in symmetrical confidence intervals, so the procedure uses :index:`critical values <single: critical value>` from the relevant distribution:
 
 .. math::
 	:label: CI-mean-variance-unknown-repeated
@@ -116,7 +116,10 @@ There are 2 cases: one where you know the population standard deviation (unlikel
 The detailed derivation for the two cases was covered in earlier sections.
 
 Case A. Variance is known
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+	single: confidence interval; known variance
 
 When the variance is known, the confidence interval is given by :eq:`CI-mean-variance-known-again` below, derived from this :math:`z`-deviate:  :math:`z = \dfrac{\overline{x} - \mu}{\sigma/\sqrt{n}}` back in the :ref:`section on the normal distribution <univariate_eqn_CI-mean-variance-known>`. 
 

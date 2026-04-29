@@ -3,7 +3,10 @@ Histograms and probability distributions
 
 .. youtube:: https://www.youtube.com/watch?v=oA5HgF1vmXE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=6
 
-.. index:: histograms, frequency distribution
+.. index::
+	single: histograms
+	single: frequency distribution
+	single: probability distribution
 
 The :ref:`previous section <univariate-about-variability>` has hopefully convinced you that variation in a process is inevitable. This section aims to show how we can visualize and quantify any variability in a recorded vector of data.
 
@@ -17,7 +20,7 @@ A histogram is a summary of the variation in a measured variable. It shows the *
 
 The raw data in the above example was a vector that consisted of 2739 text entries, with 1420 of them as ``Male`` and 1319 of them as ``Female``. In this case ``Female`` and ``Male`` represent the two categories.
 
-Histograms make sense for categorical variables, but a histogram can also be derived from a continuous variable. Here is an example showing the mass of cartons of 1 kg of flour. The continuous variable, mass, is divided into equal-size bins that cover the range of the available data.  Notice how the packaging system has to overfill each carton so that the vast majority of packages weigh over 1 kg (what is the average package mass?). If the variability in the packaging system could be reduced - the spread of the data made narrower - then the histogram can be shifted to the left, thereby reducing overfill.
+Histograms make sense for :index:`categorical variables <single: categorical variable>`, but a histogram can also be derived from a :index:`continuous variable`. Here is an example showing the mass of cartons of 1 kg of flour. The continuous variable, mass, is divided into equal-size :index:`bins <single: bin, in a histogram>` that cover the range of the available data.  Notice how the packaging system has to overfill each carton so that the vast majority of packages weigh over 1 kg (what is the average package mass?). If the variability in the packaging system could be reduced - the spread of the data made narrower - then the histogram can be shifted to the left, thereby reducing overfill.
 
 .. image:: ../figures/univariate/histogram-package-mass.png
 	:scale: 50
