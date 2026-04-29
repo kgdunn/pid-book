@@ -4,16 +4,14 @@ Exercises
 .. index::
 	pair: exercises; univariate data
 
-.. question::
+.. admonition:: Question
 
 	Recall that :math:`\mu = \mathcal{E}(x) = \dfrac{1}{N}\sum{x}` and :math:`\mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} = \sigma^2 = \dfrac{1}{N}\sum{(x-\mu)^2}`. 
 
 	#. What is the expected value thrown of a fair 6-sided die? (Note: plural of die is dice)
 	#. What is the expected variance of a fair 6-sided die?
 	
-.. answer::
-	:fullinclude: no 
-	:short: 3.5; 2.92
+.. admonition:: Solution
 
 	Often the mean and standard deviation of a uniform distribution are not actual values from the distribution, however the definitions for them hold:
 
@@ -27,7 +25,7 @@ Exercises
 		> mean(as.integer(runif(N, 1, 7)))      # 3.4929
 		> var(as.integer(runif(N, 1, 7)))       # 2.885426
 
-.. question::
+.. admonition:: Question
 
 	Characterizing a distribution: Compute the mean, median, standard deviation and MAD for salt content for the various soy sauces given `in this report <https://beta.images.theglobeandmail.com/archive/00245/Read_the_report_245543a.pdf>`_ (page 41) as described in the the article from the `Globe and Mail <https://www.theglobeandmail.com/incoming/salt-variation-between-brands-raises-call-for-cuts/article4287171/>`_ on 24 September 2009. Plot a box plot of the data and report the interquartile range (IQR). Comment on the 3 measures of spread you have calculated: standard deviation, MAD, and interquartile range.
 	
@@ -35,9 +33,7 @@ Exercises
 		
 			[460, 520, 580, 700, 760, 770, 890, 910, 920, 940, 960, 1060, 1100]
 
-.. answer::
-	:fullinclude: no 
-	:short: IQR = 240 mg salt/15 mL serving
+.. admonition:: Solution
 
 	.. literalinclude:: ../figures/univariate/soy-salt-content.R
 	   :language: s
@@ -50,17 +46,17 @@ Exercises
 
 	In this example the numbers are mostly in agreement, because there are no major outliers. The MAD and IQR are two robust methods of quantifying spread, while the standard deviation is extremely sensitive to outliers - due to the squaring of residuals about the mean.  You can verify this by replacing one of the values and recalculating the numbers.
 
-.. question::
+.. admonition:: Question
 
 	Give a reason why Statistics Canada reports the median income when reporting income by geographic area. Where would you expect the mean to lie, relative to the median?  Use `this table <https://www150.statcan.gc.ca/cgi-bin/tableviewer.pl?page=l01/cst01/famil107a-eng.htm>`_ to look up the income for Hamilton. How does it compare to Toronto?  And all of Canada?
 
-.. answer::
+.. admonition:: Solution
 
 	We described how easily the :ref:`mean is influenced by unusual data points <univariate-median>`. Take any group of people anywhere in the world, and there will always be a few who earn lots of money (not everyone can be the CEO, especially of a bank!). Also, since no one earns negative income, the distribution piles up at the left, with fewer people on the right. This implies that the mean will lie above the median, since 50% of the histogram area must lie below the median, by definition. A previous student pointed out that low income earners are less likely to file tax returns, so they are underrepresented in the data.
 
 	Even though the median is a more fair way of reporting income, and :index:`robust <single: robustness; example>` to unusual earners (many low income earners, very few super-rich), I would prefer if Statistics Canada released a histogram - that would tell a lot more - even just the MAD, or IQR would be informative. It was surprising that Hamilton showed higher median earnings per family than Toronto. I infer from this that there are more low income earners in Toronto and Canada than in Hamilton, but without the histograms it is hard to be sure. Also, I wasn't able to find exactly what StatsCan means by a family - did they include single people as a "family"?  Maybe there are more, wealthy singles in Toronto, but they are aren't included in the numbers. The median income *per person* would be a useful statistic to help judge that.
 
-.. question::
+.. admonition:: Question
 
 	Use the data set on `raw materials <http://openmv.net/info/raw-material-properties>`_.
 
@@ -68,7 +64,7 @@ Exercises
 		- How many observations?
 		- The data are properties of a powder. Plot each variable, one at a time, and locate any outliers. R-users will benefit from `the R tutorial <https://learnche.org/4C3/Software_tutorial>`_ (see the use of the ``identify`` function).
 		
-.. answer::
+.. admonition:: Solution
 
 	See the code below that generates the plots.  Outliers were identified by visual inspection of these plots. Recall an outlier is an unusual/interesting point, and a function of the surrounding data. You can use a box plot to locate *preliminary* outliers, but recognize that you are leaving the computer to determine what is unusual. Automated outlier detection systems work moderately well, but there is no substitute (yet!) for visual inspection of the data.
 
@@ -109,12 +105,11 @@ Exercises
 		:align: right
 		:alt: fake width
 
-.. question::
+.. admonition:: Question
 
 	Write a few notes on the purpose of feedback control, and its effect on variability of process quality.
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	*	Purpose is to keep the process close to a desired set point (or mean).
 
@@ -124,7 +119,7 @@ Exercises
 
 	*	Feedback control allows us to move the process operation closer to targets, without less likelihood of deviation outside these limits. (In the next section on process monitoring we will learn how to track and quantify this).
 
-.. question::
+.. admonition:: Question
 
 	Use the section on `Historical data <https://climate.weather.gc.ca/index_e.html>`_ from Environment Canada's website and use the ``Customized Search`` option to obtain data for the ``HAMILTON A`` station from 2000 to 2009. Use the settings as ``Year=2000``, and ``Data interval=Monthly`` and request the data for 2000, then click ``Next year`` to go to 2001 and so on. 
 
@@ -134,8 +129,7 @@ Exercises
 		-	**Note**: the purpose of this exercise is more for you to become comfortable with web-based data retrieval, which is common in most companies.
 		-	**Note**: please use any other city for this question if you prefer.
 
-.. answer::
-	:fullinclude: no 
+.. admonition:: Solution
 		
 	.. Snow:     170.9, 94.1, 138.0, 166.2, 175.8, 218.4, 56.6, 182.4, 243.2,   avg=161.8
 	.. MeanTemp: 7.6,   8.8,  8.8,   7.3,   7.7,   8.2,   9.1 , 8.2,  7.7
@@ -153,13 +147,11 @@ Exercises
 	.. image:: ../figures/univariate/temperature-data.png
 		:scale: 75
 	
-.. question::
+.. admonition:: Question
 
 	Does the number of visits in the `website traffic <http://openmv.net/info/website-traffic>`_ data set follow a normal distribution?  If so, what are the parameters for the distribution?  What is the likelihood that you will have between 10 and 30 visits to the website?
 	
-.. answer:: 
-	:fullinclude: no 
-	:short: These data are normally distributed according to the q-q plot.
+.. admonition:: Solution
 	
 	.. literalinclude:: ../figures/univariate/website-visits-univariate.R
 		:language: s
@@ -174,7 +166,7 @@ Exercises
 	We should use the :math:`t`-distribution to answer the last part, but at this stage we had not yet looked at the :math:`t`-distribution. However, the large number of observations (214) means the :math:`t`-distribution is no different than the normal distribution.
 
 
-.. question::
+.. admonition:: Question
 
 	The ammonia concentration in your wastewater treatment plant is measured every 6 hours. The data for one year are available from the `dataset website <http://openmv.net/info/ammonia>`_. 
 
@@ -188,8 +180,7 @@ Exercises
 	
 		**Note**: Answer this entire question using computer software to calculate values from the normal distribution. But also make sure you can answer the last part of the question by hand, (when given the mean and variance), and using a table of normal distributions.
 
-.. answer::
-	:fullinclude: no 
+.. admonition:: Solution
 	
 	.. literalinclude:: ../figures/univariate/ammonia-in-wastewater.R
 		:language: s
@@ -207,7 +198,7 @@ Exercises
 		
 			*Note*: We should use actually be using the :math:`t`-distribution, since we used *an estimate* of the population variance and not the true population variance to calculate :math:`z`. However, since the degrees of freedom, :math:`n-1 = 1439`, are so large, there is no practical difference in our answer.
 
-.. question::
+.. admonition:: Question
 
 	We take a large bale of polymer composite from our production line and using good sampling techniques, we take 9 samples from the bale and measure the viscosity in the lab for each sample. These samples are independent estimates of the population (bale) viscosity. We will believe these samples follow a normal distribution (we could confirm this in practice by running tests and verifying that samples from any bale are normally distributed). Here are 9 sampled values: ``23, 19, 17, 18, 24, 26, 21, 14, 18``. 
 
@@ -229,9 +220,7 @@ Exercises
 
 			*Additional information*: In this part you are just finding the values of :math:`\text{LB}` and :math:`\text{UB}`
 	
-.. answer::  
-	:fullinclude: no 
-	:short: Average = 20, standard deviation = 3.81
+.. admonition:: Solution
 
 	.. literalinclude:: ../figures/univariate/polymer-bale-samples.R
 		:language: s
@@ -250,13 +239,11 @@ Exercises
 		
 	-	The 95% confidence interval for :math:`\mu` is from 17.7 to 22.3.
 	
-.. question::
+.. admonition:: Question
 
 	You are responsible for the quality of maple syrup produced at your plant. Historical data show that the standard deviation of the syrup viscosity is 40 cP. How many lab samples of syrup must you measure so that an estimate of the syrup's long-term average viscosity is inside a **range** of 60 cP, 95% of the time? This question is like the previous one: except this time you are given the range of the interval :math:`\text{UB}\,-\,\text{LB}`, and you need to find :math:`n`.
 	
-.. answer::
-	:fullinclude: no 
-	:short: 7 samples
+.. admonition:: Solution
 
 	We can write the range symbolically as:
 	
@@ -273,7 +260,7 @@ Exercises
 		n &= \left( \dfrac{(2)(1.96)(40)}{60}\right)^2 \\
 		n &\approx 7 \text{~samples}
 
-.. question::
+.. admonition:: Question
 
 	Your manager is asking for the average viscosity of a product that you produce in a batch process. Recorded below are the 12 most recent values, taken from consecutive batches. State any assumptions, and clearly show the calculations which are required to estimate a 95% confidence interval for the mean. Interpret that confidence interval for your manager, who is not sure what a confidence interval is.
 
@@ -284,8 +271,7 @@ Exercises
 
 	Ensure you can also complete the question by hand, using statistical tables.
 
-.. answer::
-	:fullinclude: no 
+.. admonition:: Solution
 	
 	The confidence interval for a mean requires the assumption that the individual numbers are taken from a normal distribution, and they are sampled independently (no sample has an effect on the others). Under these assumptions we can calculate a :math:`z`-value for the sampled mean, :math:`\overline{x}`, and construct upper and lower bounds reflecting the probability of sampling that :math:`z`-value.
 	
@@ -305,12 +291,11 @@ Exercises
 	
 	This confidence interval means that we have 95% confidence that the true average viscosity lies within these bounds. If we took 100 groups of 12 samples, then the limits calculated from 95 of those groups are expected to contain the true mean. It is **incorrect** to say that there is 95% probability the true mean lies within these bounds; the true mean is fixed, there is no probability associated with it.
 
-.. question::
+.. admonition:: Question
 
 	A new wastewater treatment plant is being commissioned and part of the commissioning report requires a statement of the confidence interval of the `biochemical oxygen demand (BOD) <https://en.wikipedia.org/wiki/Biochemical_oxygen_demand>`_. How many samples must you send to the lab to be sure the true BOD is within a range of 2 mg/L, centered about the sample average?  If there isn't enough information given here, specify your own numbers and assumptions and work with them to answer the question.
 
-.. answer::
-	:fullinclude: no 
+.. admonition:: Solution
 
 	The objective is to calculate :math:`n`, the number of samples. Let :math:`\overline{x}` be the average of these :math:`n` samples, and this average will be distributed according to the normal distribution with mean and standard deviation as shown below, if the samples are taken independently (which may not be possible in practice!):
 
@@ -336,7 +321,7 @@ Exercises
 	Solving for :math:`n` at these values gives: :math:`n = \left(\dfrac{2(1.96)(\hat{\sigma}_{\text{BOD}})}{2}\right)^2 = (1.96 \times 4)^2 \sim 62`. This large number of samples makes sense: compare the range (2 mg/L) to the standard deviation of 4 mg/L: you have to take a large number of samples to get your precision up when you have so much noise in your signal.
 
 
-.. question::
+.. admonition:: Question
 	
 	One of the questions we posed at the start of this chapter was: `Here are the yields from a batch bioreactor system <http://openmv.net/info/batch-yields>`_  for the last 3 years (300 data points; we run a new batch about every 3 to 4 days).
 
@@ -346,8 +331,7 @@ Exercises
 	
 	.. From assignment 2, 2011
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	#.	Assume the 300 data points represent an entire population. Plot a ``qqPlot(...)`` using the ``car`` package:
 
@@ -371,7 +355,7 @@ Exercises
 		.. literalinclude:: ../figures/univariate/batch-yields.R
 			:language: s
 
-.. question::
+.. admonition:: Question
 
     One aspect of your job responsibility is to reduce energy consumption on the plant floor. You ask the electrical supplier for the energy requirements (W.h) for running a particular light fixture for 24 hours. They won't give you the raw data, only their histogram when they tested randomly selected bulbs (see the data and code below). 
 
@@ -391,9 +375,7 @@ Exercises
 	- Calculate an estimate of the mean and standard deviation, even though you don't have the original data.
 	- What is a confidence interval for the mean at 95% probability, stating and testing any assumptions you need to make.
 
-.. answer::
-	:fullinclude: no 
-	:short: mean = 4127, standard deviation = 78.9
+.. admonition:: Solution
 
 	-   The mean and standard deviation can be estimated as shown in the code below. The estimates are: the mean energy usage is **4127 W.hours**, and the standard deviation is **79 W.hours**. This corresponds very closely to the raw data I used to generate this question (mean of actual data = 4125, sd of actual data = 77.2).
 
@@ -416,7 +398,7 @@ Exercises
 
 	    Look at this answer and compare it to the original histogram; does it make sense to you?
 
-.. question::
+.. admonition:: Question
 
     The confidence interval for the population mean takes one of two forms below, depending on whether we know the variance or not. At the 90% confidence level, for a sample size of 13, compare and comment on the upper and lower bounds for the two cases. Assume that :math:`s = \sigma = 3.72`.
 
@@ -427,13 +409,12 @@ Exercises
 			  - c_t &\leq& \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}}  &\leq &  c_t
 		\end{array}
 
-.. answer::
-	:fullinclude: no 
+.. admonition:: Solution
 	
 	This question aims for you to prove to yourself that the :math:`t`-distribution is **wider (more broad)** than the normal distribution. The 90% region spanned by the :math:`t`-distribution with 12 degrees of freedom has upper and lower limits at ``qt((1-0.9)/2, df=12)``, i.e. from **-1.782** to **1.782**. The equivalent 90% region spanned by the normal distribution is ``qnorm((1-0.9)/2)``, spanning from **z=-1.64** to **z=1.64**. Everything else in the center of the 2 inequalities is the same, so we only need to compare :math:`c_t` and :math:`c_n`.
 
 
-.. question::
+.. admonition:: Question
 
 	.. _univariate-CO2-question:
 
@@ -445,9 +426,7 @@ Exercises
 	
 	#.	Repeat your calculations assuming pairing.
 
-.. answer::
-	:fullinclude: no 
-	:short: You can do an ordinary test of differences, or a paired test. Also note that there are missing data which reduce the degrees of freedom.
+.. admonition:: Solution
 	
 		The purpose of this question is to compare two systems. There are two ways: either compare one group to another group, or to have paired tests. We could consider this a paired test, because the material is run in both reactors at the same conditions. In this answer we compare reactor I to reactor J as groups. Our answer will be to run experiments in the reactors that show the smallest difference.
 
@@ -509,7 +488,7 @@ Exercises
 
 	Advanced students should look at how the reduction in degrees of freedom affects this test; and contrast the results to those when using an unpaired test.
 
-.. question::
+.. admonition:: Question
 
 	Use the `website traffic data <http://openmv.net/info/website-traffic>`_ from the dataset website:
 
@@ -523,7 +502,7 @@ Exercises
 	    :width: 900
 	    :scale: 70
 		
-.. answer::
+.. admonition:: Solution
 	
 	-   Let our variable of interest be the difference between the average of the 2 groups: :math:`\overline{x}_{\text{Fri}} - \overline{x}_{\text{Sat}}`. This variable will be distributed normally (why? - see the notes) according to :math:`\overline{x}_{\text{Fri}} - \overline{x}_{\text{Sat}} \sim \mathcal{N}\left(\mu_{\text{Fri}}-\mu_{\text{Sat}}, \sigma^2_{\text{diff}}\right)`. So the z-value for this variable is: :math:`z = \dfrac{(\overline{x}_{\text{Fri}} - \overline{x}_{\text{Sat}}) - (\mu_{\text{Fri}}-\mu_{\text{Sat}}) }{\sigma_{\text{diff}}}`
 
@@ -548,12 +527,11 @@ Exercises
 		:language: s
 		:lines: 32-54,75-
 
-.. question::
+.. admonition:: Question
 
 	You plan to run a series of 22 experiments to measure the economic advantage, if any, of switching to a corn-based raw material, rather than using your current sugar-based material. You can only run one experiment per day, and there is a high cost to change between raw material dispensing systems. Describe two important precautions you would implement when running these experiments, so you can be certain your results will be accurate.
 
-.. answer::
-	:fullinclude: no 
+.. admonition:: Solution
 
 	Some important precautions one has to take are:
 
@@ -565,7 +543,7 @@ Exercises
 
 	#.	Use representative lots of corn- and sugar-based materials. You don't want to run all your experiments on one batch of corn or sugar. What if the batch of corn-based material was an unusual in some way and showed no difference, when really there is a long-term difference? Or the opposite could have occurred as well.
 
-.. question::
+.. admonition:: Question
 
     There are two analytical techniques for measuring `biochemical oxygen demand (BOD) <https://en.wikipedia.org/wiki/Biochemical_oxygen_demand>`_. You wish to evaluate the two testing procedures, so that you can select the test which has lower cost, and fastest turn-around time, but without a compromise in accuracy. The table contains the results of the each test, performed on a sample that was split in half. 
 
@@ -588,8 +566,7 @@ Exercises
 	14              16
 	=============== =================
 
-.. answer::
-	:fullinclude: no 
+.. admonition:: Solution
 
 	The temptation is to jump into the code and calculate the :math:`t`-values and averages differences (:math:`\overline{x}_D = 16.4`, and :math:`\overline{x}_M = 22.6`). But start with a plot of the data, specifically a plot of the differences between the two methods. The immediate problem you see is that average difference of 6.2 between the methods is strongly influenced by a single observation (the second one). In general, the dilution method always produced a smaller result than the manometric method. We expect to see that in our analytical results.
 
@@ -603,7 +580,7 @@ Exercises
 
 	.. note:: You may have discovered/used the ``t.test(...)`` function in R. If you know what you are doing with this function, you are welcome to use it; however I'm reluctant to advocate its use at this point, because these exercises are all about understanding what is going on with confidence intervals and calculating them yourself.
 
-.. question::
+.. admonition:: Question
 
 	Plot the cumulative probability function for the normal distribution and the :math:`t`-distribution on the same plot. 
 
@@ -612,7 +589,7 @@ Exercises
 		- At which point is the :math:`t`-distribution indistinguishable from the normal distribution?  
 		- What is the practical implication of this result?
 
-.. answer::
+.. admonition:: Solution
 
 	.. literalinclude:: ../figures/univariate/t-distribution-normal-comparison-assignment3-2010.R
 	       :language: s
@@ -622,20 +599,18 @@ Exercises
     
 	The above source code and figure output shows that the :math:`t`-distribution starts being indistinguishable from the normal distribution after about 35 to 40 degrees of freedom. This means that when we deal with large sample sizes (over 40 or 50 samples), then we can use critical values from the normal distribution rather than the :math:`t`-distribution. Furthermore, it indicates that our estimate of the variance is a pretty good estimate of the population variance for largish sample sizes.
 	
-.. question::
+.. admonition:: Question
 
 	Explain why tests of differences are insensitive to unit changes. If this were not the case, then one could show a significant difference for a weight-loss supplement when measuring waist size in millimetres, yet show no significant difference when measuring in inches!
 
-.. question::
+.. admonition:: Question
 
 	A food production facility fills bags with potato chips. The advertised bag weight is 35.0 grams.  But, the current bagging system is set to fill bags with a mean weight of 37.4 grams, and this done so that only 1% of bags have a weight of 35.0 grams or less. 
 
 		-	Back-calculate the standard deviation of the bag weights, assuming a normal distribution.
 		-	Out of 1000 customers, how many are lucky enough to get 40.0 grams or more of potato chips in their bags?
 
-.. answer::
-	:fullinclude: no 
-	:short: standard deviation = 1.03 grams
+.. admonition:: Solution
 
 	-	Calculate the z-value and find which fraction of :math:`z` falls at or below 1% of the probability area. From the tables this is -2.326.
 
@@ -653,7 +628,7 @@ Exercises
 
 		The exact answer is ``(1 - pnorm(2.52))*1000 = 5.86``, though using tables you could use the value corresponding to :math:`z=2.5`, which is 99.38%, which is the area below that z-value. The area above it is 0.62%, corresponding to 6.2 people. Either 5, 6 or 7 people is an acceptable answer, depending on your rounding error.
 
-.. question::
+.. admonition:: Question
 
 	.. Assignment 2, 2014
 
@@ -663,8 +638,7 @@ Exercises
 
 	#.	Out of 100 customers, how many are lucky enough to get 55.0 grams or more of potato chips in their bags?
 	
-.. answer::
-	:fullinclude: no 
+.. admonition:: Solution
 
 	#.	Given that it is a long-term standard deviation, we have :math:`\sigma = 2.8\,\text{grams}`. Calculate the :math:`z`-value and find which fraction of :math:`z` falls at or below 1.5% of the probability area. From the tables this is :math:`z = -2.17` = ``qnorm(0.015)``.
 
@@ -684,7 +658,7 @@ Exercises
 
 		The exact answer is ``(1 - pnorm(-0.385))*100 = 64.98``, so around 65 customers out of every 100 (you might have a slightly different number if you used tables to answer your question - make sure you can use the statistical tables to answer this problem too.)
 
-.. question::
+.. admonition:: Question
 
 	.. Assignment 2, 2014
 
@@ -705,7 +679,7 @@ Exercises
 
 	#.	Explain clearly why a wide confidence interval is not desirable, from an environmental perspective.
 
-.. answer::
+.. admonition:: Solution
 
 	#.	The 21 data points are independent and come from *any distribution* of finite variance. 
 
@@ -733,7 +707,7 @@ Exercises
 	
 	#.	A wide confidence interval implies that our sulphur dioxide emissions are extremely variable (the confidence interval bounds are a strong function of the process standard deviation). Some days we are putting more pollution up into the air and balancing it out with lower pollution on other days. Those days with high pollution are more environmentally detrimental.
 	
-.. question::
+.. admonition:: Question
 
 	A common unit operation in the pharmaceutical area is to uniformly blend powders for tablets. One such unit is illustrated below (figure `taken from Wikipedia <https://en.wikipedia.org/wiki/Industrial_mixer>`_). In this question we consider blending an excipient (an inactive magnesium stearate base), a binder, and the active ingredient. The mixing process is tracked using a wireless near infrared (NIR) probe embedded in a V-blender. The mixer is stopped when the NIR spectra become stable. A new supplier of magnesium stearate is being considered that will save $ 294,000 per year.
 
@@ -747,9 +721,7 @@ Exercises
 
 	The manager wants to revert back to the original supplier, but is leaving the decision up to you; what would be your advice?  Show all calculations and describe any additional assumptions, if required.
 
-.. answer::
-	:fullinclude: no 
-	:short: This problem is open-ended: pay attention to having a significant difference vs a practical difference.
+.. admonition:: Solution
 
 	This question, similar to most real statistical problems, is open-ended. This problem considers whether a significant difference has occurred. And in many cases, even though there is significant difference, it has to be weighed up whether there is a *practical* difference as well, together with the potential of saving money (increased profit).
 
@@ -816,12 +788,11 @@ Exercises
 
 	So comparing this :math:`\pm 390` with 7 runs, to the :math:`\pm 412` with 6 runs, shows that the confidence interval shrinks in quite a bit, much more than the 12 second overlap of zero. Of course we don't know what the new :math:`\overline{x}_B - \overline{x}_A` will be with 7 runs, so my recommendation would be to perform at least one more run with the new excipient, but I suspect that the new run would show there to be a significant difference, and statistically confirm that we should "*revert to using the previous excipient*".
 	
-.. question::
+.. admonition:: Question
 
 	List an advantage of using a paired test over an unpaired test. Give an example, not from the notes, that illustrates your answer.
 
-.. answer::
-	:fullinclude: no 
+.. admonition:: Solution
 	
 	One primary advantage of pairing is that any systematic difference between the two groups (A and B) is eliminated. For example, a bias in the measurement will cancel out when calculating the pairs of differences. Any example is suitable as an answer: e.g. laboratory miscalibration; an offset in an on-line sensor, *etc*.
 
@@ -829,7 +800,7 @@ Exercises
 
 	Another advantage is that randomization of the trials is required in the unpaired case (often a costly extra expense), whereas in the paired case, we only need to be sure the pairs are independent of each other (that's much easier to assume, and often true). For example testing drug A and B on a person, some time apart. The pairs are run on the same person, but each person in the drug trial is independent of the other.
 
-.. question::
+.. admonition:: Question
 
 	An *unpaired* test to distinguish between group A and group B was performed with 18 runs: 9 samples for group A and 9 samples for group B. The pooled variance was 86 units. 
 
@@ -837,8 +808,7 @@ Exercises
 
 	Discuss, in the context of this example, an advantage of paired tests over unpaired tests. Assume 95% confidence intervals, and that the true result was one of "no significant difference between method A and method B". Give numeric values from this example to substantiate your answer.
 
-.. answer::
-	:fullinclude: no 
+.. admonition:: Solution
 
 	One advantage of the paired test is that often a fewer number of samples are required to obtain a more sensitive result than when analyzing the data as from two distinct, unpaired groups.
 
@@ -877,7 +847,7 @@ Exercises
 
 	So while the :math:`c_t` value for the paired case is actually larger (widening the confidence interval due to the fewer degrees of freedom), the overall effect is  that the paired confidence interval is narrower than the unpaired confidence interval. This result holds for most cases of paired and unpaired studies, though not always.
 	
-.. question::
+.. admonition:: Question
 
 	You are convinced that a different impeller (mixing blade) shape for your tank will lead to faster, i.e. shorter, mixing times. The choices are either an axial blade or a radial blade, as shown in this figure `from Wikipedia <https://en.wikipedia.org/wiki/Impeller>`_.
 
@@ -896,8 +866,7 @@ Exercises
 
 	\3. Now assume the result from your experimental test was :math:`-21 \text{~seconds} \leq \mu_{\text{Axial}} - \mu_{\text{Radial}} \leq 187 \text{~seconds}`; how can you make the confidence interval narrower?
 
-.. answer::
-	:fullinclude: no 
+.. admonition:: Solution
 
 	#.	This confidence interval spans zero, and nearly symmetrically. This implies the population difference is likely zero, while the symmetry implies their is no preference either way: the difference in mixing times is as low as -453 seconds or as high as 390 seconds. The recommendation is that either the axial or radial impeller could be used, with no expected long-term difference. Use the cheaper impeller; or use the axial impeller if the costs are the same (only because of the very slight imbalance in the CI). Note that there is a 5% chance that the confidence interval does not contain the true difference.
 
@@ -914,7 +883,7 @@ Exercises
 
 		Recall the definition of the confidence interval is subtle: it says 95% of the time, the upper and lower bounds of the confidence interval contain the true value of the parameter; it does *not* say there is a 95% probability the true value of the parameter lies inside the bounds. That last part is incorrect because it implies the true value of the parameter can vary, which it can't: the true parameter value is fixed, only the bounds change. 
 		
-.. question::
+.. admonition:: Question
 
 	The paper by PJ Rousseeuw, "`Tutorial to Robust Statistics <https://dx.doi.org/10.1002/cem.1180050103>`_", *Journal of Chemometrics*, **5**, 1-20, 1991 discusses the breakdown point of a statistic. 
 	
@@ -922,7 +891,7 @@ Exercises
 	
 	#.	What is an advantage of using robust methods over their "classical" counterparts?
 
-.. answer::
+.. admonition:: Solution
 
 	#.	PJ Rousseeuw defines the breakdown point on page 3 of his paper as "... the smallest fraction of the observations that have to be replaced to make the estimator unbounded. In this definition one can choose which observations are replaced, as well as the magnitude of the outliers, in the least favourable way".
 
@@ -936,7 +905,7 @@ Exercises
 		*	As described in the above paper by Rousseeuw, robust methods also emphasize outliers. Their "lack of sensitivity to outliers" can also be considered an advantage.
 
 
-.. question::
+.. admonition:: Question
 	
 	.. Assignment 2, 2014
 	
@@ -944,7 +913,7 @@ Exercises
 	
 	#.	What is meant by the break-down point of a robust statistic? Give an example to explain your answer.
 	
-.. answer::
+.. admonition:: Solution
 
 	#.	Data sets you will have to deal with in the workplace are getting larger and larger (lengthwise), and processing them by trimming outliers (see Question 5 later) manually is almost impossible. Robust statistics are a way to summarize such data sets without point-by-point investigation.
 	
@@ -955,7 +924,7 @@ Exercises
 		Consider the sequence :math:`[2, 6, 1, 91511, -4, 2]`. The mean is 15253, while the median is 2, which is a far more useful estimate of the central tendency in the data.
 
 
-.. question::
+.. admonition:: Question
 
 	Recall that :math:`\mu = \mathcal{E}(x) = \frac{1}{N}\sum{x}` and :math:`\mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} = \sigma^2 = \frac{1}{N}\sum{(x-\mu)^2}`. 
 
@@ -964,7 +933,7 @@ Exercises
 		#.	Simulate 10,000 throws in a software package (R, MATLAB, or Python) from this dice and see if your answers match those above. Record the average value from the 10,000 throws, call that average :math:`\overline{x}`.
 		#.	Repeat the simulation 10 times, calculating the average value of all the dice throws. Calculate the mean and standard deviation of the 10 :math:`\overline{x}` values and *comment* whether the results match the theoretically expected values.
 
-.. answer::
+.. admonition:: Solution
 
 	The objective of this question is to recall basic probability rules.
 
@@ -1001,11 +970,11 @@ Exercises
 
 		Calculating the variance of those 10 means shows a number around 0.00119167, as expected.
 
-.. question::
+.. admonition:: Question
 	
 	Removed. Was a duplicate of a prior question (number 13).
 
-.. question::
+.. admonition:: Question
 
 	#.	At the 95% confidence level, for a sample size of 7, compare and comment on the upper and lower bounds of the confidence interval that you would calculate if:
 
@@ -1020,8 +989,7 @@ Exercises
 	
 	#.	What is the implication of this?
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 	
 	#.	This question aims for you to prove to yourself that the :math:`t`-distribution is **wider (more broad)** than the normal distribution, and as a result, the confidence interval is wider as well. This is because we are less certain of the data's spread when using the estimated variance.
 	
@@ -1054,7 +1022,7 @@ Exercises
 
 		Since the wider values from the :math:`t`-distribution reflect our uncertainty in using an *estimate of the variance*, rather than the population variance, this result indicates that our estimated variances are a good estimate of the population variance for largish sample sizes.
 
-.. question::
+.. admonition:: Question
 
 	.. _lack_of_independence_question:
 	
@@ -1089,7 +1057,7 @@ Exercises
 
 	Comment on the results, and the implication of this regarding tests of significance (i.e. statistical tests to see if a significant change occurred or not).
 
-.. answer::
+.. admonition:: Solution
 
 	.. See BHH, 2nd edition. p 60.
 
@@ -1133,7 +1101,7 @@ Exercises
 	
 	In this particular example there is a known theoretical relationship between :math:`\phi` and the inflated/deflated variance that can be derived (with some difficulty). But in most situations the affect of violating assumptions is too difficult to derive mathematically, so we use computer power to do the work for us: but then we still have to spend time thinking and interpreting the results.
 
-.. question::
+.. admonition:: Question
 
 	.. 2011 midterm
 	.. Assignment 3, 2014
@@ -1148,8 +1116,7 @@ Exercises
 	#.	What is the confidence interval that must be reported, given that the sample average of these 11 points is 181.9 ppb and the sample standard deviation is 106.8 ppb?
 	#.	Why might Environment Canada require you to report the confidence interval instead of the mean?
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	#.	From the central limit theorem, assuming the 11 values are independent, the mean SO\ :sub:`2` value, :math:`\overline{x} \sim \mathcal{N}\left\{\mu, \sigma^2/n \right\}`, where :math:`\mu` and :math:`\sigma` are the distribution from which the raw values come.
 	
@@ -1169,7 +1136,7 @@ Exercises
 		A wide CI gives an indication that you might in fact be polluting too much on some days, and compensating on others, which is not desirable.  The confidence interval's width can also be compared between plants to find the most variable polluters.
 
 
-.. question::
+.. admonition:: Question
 
 	A concrete slump test is used to test for the fluidity, or workability, of concrete. It's a crude, but quick test often used to measure the effect of polymer additives that are mixed with the concrete to improve workability.
 	
@@ -1227,8 +1194,7 @@ Exercises
 
 		Use these data, and provide, if necessary, an updated recommendation to your manager.
 	
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 	
 	#.	The basic rule is to control what you can and randomize against what you cannot. You should have mentioned some of these items:
 	
@@ -1326,7 +1292,7 @@ Exercises
 	
 		Practically though, there is a bit of a risk, due to the imbalance (asymmetry) in the confidence interval. It would be reluctant to hinge my company's profitability on this result, especially with the fact that there are only 4 experiments.  So my personal conclusion would be to still "send the polymer engineers back to the lab".
 
-.. question::
+.. admonition:: Question
 
 	.. Assignment 3, 2012
 
@@ -1337,7 +1303,7 @@ Exercises
 	#.	adjustable halogen lighting: **A** = soft and dim lighting and **B** = brighter lighting
 	#.	alternative shelving: **A** = solid white metal shelves and **B** = commercial stainless steel racking
 
-.. answer::
+.. admonition:: Solution
 
 	*By Cameron DiPietro and Andrew Haines (2012 class)*
 
@@ -1377,7 +1343,7 @@ Exercises
 	
 	One thing to consider in such cases is to run the experiments in two separate stores that are as similar as possible in all other respects (e.g. built in the area with similar profiles of customers, similar store layout, etc.).
 	
-.. question::
+.. admonition:: Question
 
 	.. Assignment 2, 2014
 

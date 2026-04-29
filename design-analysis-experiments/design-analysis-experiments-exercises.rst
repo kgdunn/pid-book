@@ -4,7 +4,7 @@ Exercises
 .. index::
 	pair: exercises; experiments
 
-.. question::
+.. admonition:: Question
 
 	These readings are to illustrate the profound effect that designed experiments have had in some areas. 
 
@@ -12,7 +12,7 @@ Exercises
 		*	High traffic websites offer a unique opportunity to perform testing and optimization. This is because each visitor to the site is independent of the others (randomized), and these tests can be run in parallel. Read more in this `brief writeup <https://youtube.googleblog.com/2009/08/look-inside-1024-recipe-multivariate.html>`_ on how Google uses testing tools to optimize YouTube, one of their web properties. Unfortunately they use the term "multivariate" incorrectly - a better term is "multi-variable"; nevertheless, the number of factors and combinations to be tested is large. It's well known that fractional factorial methods are used to analyze these data.
 		*	See three chemical engineering examples of factorial designs in Box, Hunter, and Hunter: Chapter 11 (1st edition), or page 173 to 183 in the second edition.
 		
-.. question::
+.. admonition:: Question
 
 	Your family runs a small business selling low dollar value products over the web. They want to improve sales. There is a known effect from the day of the week, so to avoid that effect they run the following designed experiment every Tuesday for the past eight weeks. The first factor of interest is whether to provide free shipping over $30 or over $50. The second factor is whether or not the purchaser must first create a profile (user name, password, address, etc) before completing the transaction. The purchaser can still complete their transaction without creating a profile.
 
@@ -40,7 +40,7 @@ Exercises
 		#.	What is the recommendation to increase sales?
 		#.	Calculate the main effects and interactions by hand using a least squares model. You may confirm your result using software, but your answer should not just be the computer software output.
 	
-.. answer::
+.. admonition:: Solution
 
 	#.	This is a :math:`2^2` factorial system with a replicate at each point. We might not have :ref:`covered replicates <DOE-replicate_points>` in class by the time you had to do this assignment. So you should average the replicate points and then calculate the main effects and other terms for this system. You will get the same result if you analyze it as two separate factorials and then average the results - it's just more work that way though.
 
@@ -158,7 +158,7 @@ Exercises
 	
 		Particularly the effect of requiring a profile, :math:`x_B`, is to reduce sales by :math:`2 \times $371 = $ 742`.
 
-.. question::
+.. admonition:: Question
 	
 	More readings: 
 	
@@ -168,7 +168,7 @@ Exercises
 		
 	#.	George Box, The R. A. Fisher Memorial Lecture, 1988, "`Quality Improvement - An Expanding Domain for the Application of Scientific Method <https://dx.doi.org/10.1098/rsta.1989.0017>`_", *Philosophical Transactions of the Royal Society - A*, **327**: pages 617-630, 1989.
 	
-.. question::
+.. admonition:: Question
 
 	.. note::	This is a tutorial-type question: all the sub-questions build on each other. All questions deal with a hypothetical bioreactor system, and we are investigating four factors: 
 
@@ -216,8 +216,7 @@ Exercises
 		-	What is the projectivity of this half-fraction? And what does this mean in light of the fact that factor **A** was shown to be unimportant?
 		-	Factor **C** was found to be an important variable from the half-fraction; it had a significant coefficient in the linear model, but it was aliased with **ABD**. Obviously in this problem, the foldover set of experiments to run would be the *other half-fraction*. But we showed a way to de-alias a main effect. Use that method to show that the other 8 experiments to de-alias factor **C** would just be the other 8 experiment not included in your first half-fraction.
 		
-.. answer::
-	:fullinclude: no 
+.. admonition:: Solution
 	
 	#.	Using the computer code (at the end of the question), we found the complete model for all effects and interaction as:
 
@@ -328,7 +327,7 @@ Exercises
 	.. literalinclude:: ../figures/doe/bioreactor-case-improved.R
 			:language: s
 			
-.. question::
+.. admonition:: Question
 
 	Your group is developing a new product, but have been struggling to get the product's stability, measured in days, to the level required. You are aiming for a stability value of 50 days or more. Four factors have been considered:
 
@@ -363,7 +362,7 @@ Exercises
 
 	Where would you run the next experiment to try get the stability above 50 or greater?
 
-.. question::
+.. admonition:: Question
 	
 	The following diagram shows data from a central composite design. The factors were run at their standard levels, and there were 4 runs at the center point. 
 
@@ -388,7 +387,7 @@ Exercises
 	If you are using R, you can use the ``rbind(...)`` or ``cbind(...)`` functions to build up your :math:`\mathbf{X}` matrix row-by-row or column-by-column. The equivalent of meshgrid in R is the ``expand.grid(...)`` function. See the `R code on the course website <https://learnche.org/4C3/Design_and_analysis_of_experiments_(2014)>`_ that shows how to generate surface plots in R.
 
 
-.. question::
+.. admonition:: Question
 
 	A full :math:`2^3` factorial was run as shown:
 
@@ -418,7 +417,7 @@ Exercises
 	*	If instead experiment 2 was run at (A,B,C) = (45%, 200, Larry), and experiment 3 run at (A, B, C) = (35%, 400, Larry); what would be the D-optimal objective function value?
 	*	What is the ratio between the two objective function values?
 
-.. answer::
+.. admonition:: Solution
 
 	*	The D-optimal objective function is to maximize the determinant of the design matrix, i.e. :math:`\text{det}\left(\mathbf{X}^T\mathbf{X}\right)`.
 	
@@ -430,7 +429,7 @@ Exercises
 	
 	*	The ratio is :math:`\frac{6.402 \times 10^6}{16777216} = 0.38`, a fairly large reduction in the objective.
 
-.. question::
+.. admonition:: Question
 
 	In your start-up company you are investigating treatment options for reducing the contamination level of soil that has been soaked with hydrocarbon products. You have two different heaps of contaminated soil from two different sites. You expect your treatment method to work on any soil type though.
 	
@@ -440,7 +439,7 @@ Exercises
 	
 	#.	What is the projectivity and resolution of your design?
 
-.. answer::
+.. admonition:: Solution
 
 	#.	When given a constraint on the number of experiments, we would like to examine the highest number of factors, but with the lowest tradeoff in the associated resolution. 
 	
@@ -485,7 +484,7 @@ Exercises
 	#.	The design has resolution = :math:`R = 3`, from the table in the notes. The projectivity is :math:`R-1 = 2`.
 
 	
-.. question::
+.. admonition:: Question
 
 	A factorial experiment was run to investigate the settings that minimize the production of an unwanted side product. The two factors being investigated are called **A** and **B**  for simplicity, but are:
 
@@ -526,7 +525,7 @@ Exercises
 
 	#.	As you move along the response surface, performing new experiments to approach the optimum, how do you know when you are reaching an optimum? How does your experimental strategy change? Please give specific details, and any model equations that might help illustrate your answer.
 
-.. answer::
+.. admonition:: Solution
 
 	#.	Experiments 5 and 6 from the standard order might have been included as baseline experiments, since they appear at the center point for factors **A** and **B**.
 
@@ -611,7 +610,7 @@ Exercises
 
 		The experimental strategy changes by included axial points into the factorial design, allowing one to calculate the quadratic terms in the model, such as a :math:`b_{AA} x_A^2` term for the quadratic effect of factor **A**.
 
-.. question::
+.. admonition:: Question
 
 	*Adapted from Box, Hunter and Hunter*
 	
@@ -657,7 +656,7 @@ Exercises
 	#.	Which conditions would you use to create a product was *not* milky, was of low viscosity, and had no yellowness?
 	#.	Which conditions would you use to create a product was *not* milky, was of low viscosity, and had some yellowness?
 
-.. answer::
+.. admonition:: Solution
 
 	Tables are often frowned on by people, but the reality is they are sometimes one of the best forms of visualizing data. In this example we see:
 
@@ -685,7 +684,7 @@ Exercises
 
 	In all these questions we can conclusively state there is cause and effect, since we see repeated changes in the factors (holding the other variables and disturbances constant) and the corresponding effects in the 3 :math:`y`-variables.
 
-.. question::
+.. admonition:: Question
 
 	Using a :math:`2^3` factorial design in 3 variables (**A** = temperature, **B** = pH and **C** = agitation rate), the conversion, :math:`y`, from a chemical reaction was recorded.
 
@@ -719,8 +718,7 @@ Exercises
 	#.	Show that a least squares model for the full factorial agrees with the effects and interactions calculated by hand.
 	#.	Approximately, at what conditions (given in real-world units), would you run the next experiment to improve conversion. Give your settings in coded units, then unscale and uncenter them to get real-world units.
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	#.	A cube plot for the data from these 8 runs is:
 
@@ -818,12 +816,12 @@ Exercises
 		*	:math:`A_\text{actual} = 1.5 \times 10 \text{°C} + 150 \text{°C}` = 165 °C.
 		*	:math:`B_\text{actual} = 1.5 \times 0.5 \text{°C} + 7.5 \text{°C}` = 8.25 pH units.
 	
-.. question::
+.. admonition:: Question
 
 	#.	Why do we block groups of experiments?
 	#.	Write a :math:`2^3` factorial design in two blocks of 4 runs, so that no main effect or 2 factor interaction is confounded with block differences.
 
-.. answer::
+.. admonition:: Solution
 
 	#.	When performing experiments in groups, for example, half the experiments are run on day one and the others on day 2, we must block the experiments we choose to run on each day, to avoid inadvertently introducing a new effect, a day-to-day effect in the model. In other words, we must choose in a careful way the half group of runs we place on day 1 and day 2.
 
@@ -861,7 +859,7 @@ Exercises
 	
 		But we can only run 8 experiments, so we now use the table in the course notes (derived from page 272 in Box, Hunter and Hunter, 2nd edition), and see the layout that will cause least disruption is to assign **D = ABC**. This gives the same experimental layout above.
 
-.. question::
+.. admonition:: Question
 
 	Factors related to the shrinkage of plastic film, produced in an injection molding device, are being investigated. The following factors have been identified by the engineer responsible:
 
@@ -921,7 +919,7 @@ Exercises
 
 	#.	Why is in necessary to know the confounding pattern for a fractional factorial design.
 
-.. answer::
+.. admonition:: Solution
 
 	#.	There are 7 factors in this experiment, so a full factorial would require :math:`2^7 = 128` experiments.
 
@@ -999,7 +997,7 @@ Exercises
 			:align: right
 			:width: 900px
 
-.. question::
+.. admonition:: Question
 	
 	One of the experiment projects investigated by a previous student of this course was understanding effects related to the preparation of uncooked, breaded chicken strips.
 
@@ -1053,8 +1051,7 @@ Exercises
 
 		Next, write out the model equation and estimate the 4 model parameters from your reduced set of experiments. Compare and comment on your model coefficients, relative to the full model equation from all 8 experiments.
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	#.	(22-15)/2 increase in cooking time results in a 2.5 taste level increase.
 	
@@ -1066,7 +1063,7 @@ Exercises
 
 .. Raw data: see 2011 DOE project "Heydari-Cook-chicken.pdf"
 
-.. question::
+.. admonition:: Question
 	
 	Your company is developing a microgel-hydrogel composite, used for controlled drug delivery with a magnetic field. A previous employee did the experimental work but she has since left the company. You have been asked to analyze the existing experimental data.
 	
@@ -1118,8 +1115,7 @@ Exercises
 		
 	#.	How many degrees of freedom will be available to estimate the standard error and confidence intervals?
 		
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	#.	These are centerpoint (baseline) runs. They may have been run for some of the following reasons:
 	
@@ -1151,8 +1147,7 @@ Exercises
 	
 	#.	There 4 degrees of freedom (10 observations, 6 parameters)
 
-.. question::
-	:fullinclude: no
+.. admonition:: Question
 
 	Biological drugs are rapidly growing in importance in the treatment of certain diseases, such as cancers and arthritis, since they are designed to target very specific sites in the human body. This can result in treating diseases with minimal side effects. Such drugs differ from traditional drugs in the way they are manufactured -- they are produced during the complex reactions that take place in live cell culture. The cells are grown in lab-scale bioreactors, harvested, purified and packaged.
 	
@@ -1179,7 +1174,7 @@ Exercises
 	
 	#.	Report the expected yield at these proposed experimental conditions.
 
-.. answer::
+.. admonition:: Solution
 
 	#.	Baseline conditions are at **G** = **Gm** or **Gp** (either would work), **A** at 15 rpm, **T** at 30°C, and **C** at 1250 concentration units.
 	

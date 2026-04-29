@@ -4,12 +4,11 @@ Exercises
 .. index::
 	pair: exercises; process monitoring
 
-.. question::
+.. admonition:: Question
 
 	Is it fair to say that a monitoring chart is like an online version of a :ref:`confidence interval <univariate_confidence_intervals>`?  Explain your answer.
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	This question is likely to generate a wide range of answers. No surprise, since there are strong feelings on this point in the `quality control literature <http://filebox.vt.edu/users/bwoodall/2000%20JQT%20Controversies%20and%20Contradictions.pdf>`_ as well. The confusion stems from the fact that if you are in phase 1, then no, a monitoring chart is not a confidence interval, but in phase 2, then you can argue that confidence intervals have many similarities to monitoring charts.
 
@@ -17,11 +16,11 @@ Exercises
 
 	The similarity comes from the way the monitoring chart's limits are calculated: by using the concept of a confidence interval. But a monitoring chart's limits can and *should be adjusted* up or down to improve your type I and II error levels, while for a confidence interval, the only way to alter the limits is to take a different sample size, take a new sample of data, and choose a different level of confidence. But doing this, will still only find you bounds within which you expect the population mean to lie. A monitoring chart's bounds are only there to signal when things are not the same any more.
 
-.. question::
+.. admonition:: Question
 
     Use the `batch yields data <http://openmv.net/info/batch-yields>`_ and construct a monitoring chart using the 300 yield values. Use a subgroup of size 5. Report your target value, lower control limit and upper control limit, showing the calculations you made. I recommend that you write your code so that you can reuse it for other questions.
 
-.. answer::
+.. admonition:: Solution
 
 	Please see the code below. The Shewhart chart's parameters are as below, with plots generated from the R code.
 
@@ -97,7 +96,7 @@ Exercises
 		abline(h=LCL, col="red")
 
 
-.. question::
+.. admonition:: Question
 
     The `boards data <http://openmv.net/info/six-point-board-thickness>`_ on the website are from a line which cuts spruce, pine and fir (SPF) to produce general quality lumber that you could purchase at Rona, Home Depot, etc. The price that a saw mill receives for its lumber is strongly dependent on how accurate the cut is made. Use the data for the 2 by 6 boards (each row is one board) and develop a monitoring system using these steps.
 
@@ -109,8 +108,7 @@ Exercises
     	f) Describe how you might calculate the consumer's risk (:math:`\beta`).
     	g) How would you monitor if the saws are slowly going out of alignment?
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	This questions answers are derived in the source code (at the end).
 
@@ -176,13 +174,11 @@ Exercises
 	       :language: s
 	       :lines: 1-8, 12,14-15,19-20,22-57,61-65,67-69,73-77,79-101,105-106
 
-.. question::
+.. admonition:: Question
 
 	Your process with Cpk of 2.0 experiences a drift of :math:`1.5\sigma` away from the current process operating point towards the closest specification limit. What is the new Cpk value; how many defects per million items did you have before the drift?  And after the drift?
 
-.. answer::
-	:fullinclude: yes
-	:short: The new Cpk value is 1.5.
+.. admonition:: Solution
 
 	The new Cpk value is 1.5. The number of defects per million items at Cpk = 2.0 is 0.00098 (essentially no defects), while at Cpk = 1.5 it is 3.4 defects per million items. You only have to consider one-side of the distribution, since Cpk is by definition for an uncentered process, and deals with the side closest to the specification limits.
 
@@ -196,15 +192,15 @@ Exercises
 		             sd=1) * 1E6
 		paste0('Defects per million = ', round(dpm,3))
 
-.. question::
+.. admonition:: Question
 
 	Which type of monitoring chart would be appropriate to detect unusual spikes (outliers) in your production process?
 
-.. answer::
+.. admonition:: Solution
 
 	A Shewhart chart has no memory, and is suited to detecting unusual spikes in your production. CUSUM and EWMA charts have memory, and while they would pick up this spike, they would also create a long duration of false alarms after that. So those charts are much less appropriate.
 
-.. question::
+.. admonition:: Question
 
 	A tank uses small air bubbles to keep solid particles in suspension. If too much air is blown into the tank, then excessive foaming and loss of valuable solid product occurs; if too little air is blown into the tank the particles sink and drop out of suspension.
 
@@ -227,8 +223,7 @@ Exercises
 		*	Show this phase 2 Shewhart chart.
 		*	Compare the Shewhart chart's performance to the chart in part 3 of this question.
 
-.. answer::
-	:fullinclude: yes
+.. admonition:: Solution
 
 	*Solution based on work by Ryan and Stuart (2011 class)*
 
@@ -281,11 +276,11 @@ Exercises
 
 	If you used the Western Electric rules, in addition to the Shewhart chart limits, you would have picked up a consecutive sequence of 8 points on one side of the target around :math:`t=350`.
 
-.. question::
+.. admonition:: Question
 
 	Do you think a Shewhart chart would be suitable for monitoring the closing price of a stock on the stock market?  Please explain your answer if you agree, or describe an alternative if you disagree.
 
-.. answer::
+.. admonition:: Solution
 
 	No, a Shewhart chart is not suitable for monitoring stock prices. Stock prices are volatile variables (not stable), so there is no sense in monitoring their location. Hopefully the stock is moving up, which it should on average, but the point is that stock prices are not stable. Nor are stock prices independent day-to-day.
 
@@ -294,17 +289,17 @@ Exercises
 	There are many alternatives; if this sort of thing interests you, you might find the area called `technical analysis <https://en.wikipedia.org/wiki/Technical_analysis>`_ worth investigating. An EWMA chart is widely used in this sort of analysis.
 
 
-.. question::
+.. admonition:: Question
 
 	Describe how a monitoring chart could be used to prevent over-control of a batch-to-batch process. (A batch-to-batch process is one where a batch of materials is processed, followed by another batch, and so on).
 
-.. answer::
+.. admonition:: Solution
 
 	Over-control of any process takes place when too much corrective action is applied. Using the language of feedback control, your gain is the right sign, but the magnitude is too large. Batch processes are often subject to this phenomenon: e.g. the operator reduces the set-point temperature for the next batch, because the current batch produced product with a viscosity that was too high. But then the next batch has a viscosity that is too low, so the operator increases the temperature set-point for the following batch. This constant switching is known as over-control (the operator is the feedback controller and his/her gain is too high, i.e. they are over-reacting).
 
 	A monitoring chart such as a Shewhart chart would help the operator: if the previous batch was within the limits, then s/he should not take any corrective action. Only take action when the viscosity value is outside the limits. An EWMA chart would additionally provide a one-step ahead prediction, which is an advantage.
 
-.. question::
+.. admonition:: Question
 
 	You need to construct a Shewhart chart. You go to your company's database and extract data from 10 periods of time lasting 6 hours each. Each time period is taken approximately 1 month apart so that you get a representative data set that covers roughly 1 year of process operation. You choose these time periods so that you are confident each one was from in control operation. Putting these 10 periods of data together, you get one long vector that now represents your phase 1 data.
 
@@ -319,9 +314,7 @@ Exercises
 
 	#.	Operators like warning limits on their charts, so they don't have to wait until an action limit alarm occurs. Discussions with the operators indicate that lines at 590 and 820 might be good warning limits. What percentage of in control operation will lie inside the proposed warning limit region?
 
-.. answer::
-	:fullinclude: no
-	:short: Unbiased estimate of the process standard deviation = 106.4; UCL = 874; LCL = 554.
+.. admonition:: Solution
 
 	#.	An unbiased estimate of the process standard deviation is :math:`\hat{\sigma} = \frac{\overline{S}}{a_n} = \frac{98}{0.921} = \mathrm{106.4}`, since the subgroup size is :math:`n=4`.
 	#.	Using the data provided in the question:
@@ -343,18 +336,17 @@ Exercises
 
 	The asymmetry in their chosen warning limits might be because a violation of the lower bound is more serious than the upper bound.
 
-.. question::
+.. admonition:: Question
 
 	.. From the final exam, 2010
 
 	If an exponentially weighted moving average (EWMA) chart can be made to approximate either a CUSUM or a Shewhart chart by adjusting the value of :math:`\lambda`, what is an advantage of the EWMA chart over the other two?  Describe a specific situation where you can benefit from this.
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	The EWMA chart not only provides control limits for monitoring a process, it also provides a one-step-ahead prediction of the variable being monitored. This is particularly beneficial as the EWMA chart's prediction can be used to adjust process conditions, should the prediction show the process heading towards, or outside, the control limits. This means that changes to the process are only made if they are required. This is extremely important on slow-moving processes, which are prone to overly aggressive control.
 
-.. question::
+.. admonition:: Question
 
 	.. From the final exam, 2010
 
@@ -362,8 +354,7 @@ Exercises
 
 	What are the two parameters of the system you could adjust, and by how much, to achieve a capability ratio of 1.67, required by recent safety regulations. Assume you can adjust these parameters independently.
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	The process capability ratio for an uncentered process, :math:`\text{PCR}_\text{k}`, is given by:
 
@@ -392,7 +383,7 @@ Exercises
 
 		Decrease the process standard deviation from 2.05 to 1.60.
 
-.. question::
+.. admonition:: Question
 
 	A bagging system fills bags with a target weight of 37.4 grams and the lower specification limit is 35.0 grams. Assume the bagging system fills the bags with a standard deviation of 0.8 grams:
 
@@ -400,15 +391,13 @@ Exercises
 	#.	To what target weight would you have to set the bagging system to obtain Cpk=1.3?
 	#.	How can you adjust the Cpk to 1.3 without adjusting the target weight (i.e. keep the target weight at 37.4 grams)?
 
-.. answer::
-	:fullinclude: no
-	:short: Current Cpk = 1.0
+.. admonition:: Solution
 
 	#.	Recall the Cpk is defined relative to the closest specification limit. So in this case it must be due to the lower limit. Cpk = :math:`\frac{\overline{\overline{x}} - LSL}{3\sigma} = \frac{37.4 - 35.0}{3 \times 0.8} = \mathrm{1.0}`
 	#.	To obtain Cpk = 1.3 we solve the above equation for :math:`\overline{\overline{x}} = 1.3 \times 3 \times 0.8 + 35.0 = \mathrm{38.12}` grams.
 	#.	Changing the lower specification limit is not an option to raise Cpk, because the bags are sold as containing 35.0 grams of snackfood. Changing the specification limit is in general an artificial way of changing Cpk. The only practical way to improve Cpk is to decrease the process variance (e.g. using better equipment with tighter control). The new :math:`\sigma = \frac{37.4 - 35.0}{3 \times 1.3} = \mathrm{0.615}` grams.
 
-.. question::
+.. admonition:: Question
 
 	Plastic sheets are manufactured on your blown film line. The Cp value is 1.7. You sell the plastic sheets to your customers with specification of 2 mm :math:`\pm` 0.4 mm.
 
@@ -417,8 +406,7 @@ Exercises
 		#.	What would be the Shewhart chart limits for this system using subgroups of size :math:`n=4`?
 		#.	Illustrate your answer from part 2 and 3 of this question on a diagram of the normal distribution.
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	#.	The notes show that Cp values require us to assume that (a) the process values follow a normal distribution, the process was centered when the data were collected, and (c) that the process was stable (use a monitoring chart to verify this last assumption).
 	#.	The range from the lower to the upper specification limit is 0.8 mm, which spans 6 standard deviations. Given the Cp value of 1.7, the process standard deviation must have been :math:`\sigma = \frac{0.8}{1.7 \times 6} = \mathrm{0.0784}` mm.
@@ -436,7 +424,7 @@ Exercises
 			:language: s
 			:lines: 3-44
 
-.. question::
+.. admonition:: Question
 
 	.. Final exam, 2010
 
@@ -452,8 +440,7 @@ Exercises
 	#.	Why is this variability not seen in the Shewhart chart?
 	#.	Using concepts described elsewhere in this book, why might this sort of input to the reactor have an effect on the quality of the product leaving the reactor?
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	#.	The time-series plot shows a cyclical, almost saw-tooth, pattern in the weight of feed entering. I would investigate the feeding equipment to see what is leading to these fluctuations in the feed weight. Perhaps some rotary device is responsible for the periodic variation.
 
@@ -461,7 +448,7 @@ Exercises
 
 	#.	As engineers we are aiming for stability in our processes; stability in the raw material characteristics, stability in how we operate the process over time and minimizing as many disturbances as possible. If we can do this, it will lead to greatly improved consistency in our products (low output variability). Having this sort of input to the reactor means we have to provide apply (feedback) control to counteract it. In this case the feedback control may not have been effective to eliminate the feed variation, or the feedback control itself caused other disruptions to the process quality.
 
-.. question::
+.. admonition:: Question
 
 	You will come across these terms in the workplace. Investigate one of these topics, using the Wikipedia link below to kick-start your research. Write a paragraph that (a) describes what your topic is and (b) how it can be used when you start working in a company after you graduate, or how you can use it now if you are currently working.
 
@@ -474,13 +461,11 @@ Exercises
 
 .. _monitoring-kappa-number-question:
 
-.. question::
+.. admonition:: Question
 
 	The Kappa number is a widely used measurement in the pulp and paper industry. It can be measured on-line, and indicates the severity of chemical treatment that must be applied to a wood pulp to obtain a given level of whiteness (i.e. the pulp's bleachability). Data on the `website <http://openmv.net/info/kappa-number>`_ contain the Kappa values from a pulp mill. Use the first 2000 data points to construct a Shewhart monitoring chart for the Kappa number. You may use any subgroup size you like. Then use the remaining data as your phase 2 (testing) data. Does the chart perform as expected?
 
-.. answer::
-	:fullinclude: no
-	:short: The intention of this question is for you to experience the process of iteratively calculating limits from phase 1 data and applying them to phase 2 data.
+.. admonition:: Solution
 
 	The intention of this question is for you to experience the process of iteratively calculating limits from phase 1 data and applying them to phase 2 data.
 
@@ -518,7 +503,7 @@ Exercises
 	       :language: s
 	       :lines: 18-32,36-40,42-80,84-89,91-108,112-117,119-136,140-145,147-151,155-160,162-
 
-.. question::
+.. admonition:: Question
 
 	In this section we showed how one can monitor any variable in a process. Modern instrumentation though capture a wider variety of data. It is common to measure point values, e.g. temperature, pressure, concentration and other hard-to-measure values. But it is increasingly common to measure spectral data. These spectral data are a vector of numbers instead of a single number.
 
@@ -533,8 +518,7 @@ Exercises
 		:align: center
 		:scale: 80
 
-.. answer::
-	:fullinclude: no
+.. admonition:: Solution
 
 	A complete spectrum (vector) of values is obtained with every observation. To monitor a process using one of the charts learned about so far (Shewhart, CUSUM, or EWMA chart) we have to reduce this vector down to a single number. Any of these methods will do:
 
@@ -544,7 +528,7 @@ Exercises
 
 	Later on we will learn about :ref:`multivariate monitoring methods <LVM_monitoring>`.
 
-.. question::
+.. admonition:: Question
 
 	.. Advanced question
 
@@ -554,7 +538,7 @@ Exercises
 	#.	Is this a useful monitoring chart? What is going in this data?
 	#.	How can you fix the problem?
 
-.. answer::
+.. admonition:: Solution
 
 	*Solution based on work by Ryan and Stuart (2011 class)*
 
@@ -672,7 +656,7 @@ Exercises
 		      cex=5)
 
 
-.. question::
+.. admonition:: Question
 
 	The percentage yield from a batch reactor, and the purity of the feedstock are available as the `Batch yield and purity <http://openmv.net/info/batch-yield-and-purity>`_ data set. Assume these data are from phase 1 operation and calculate the Shewhart chart upper and lower control limits that you would use during phase 2. Use a subgroup size of :math:`n=3`.
 
@@ -681,7 +665,7 @@ Exercises
 	#.	Show your calculations for the upper and lower control limits for the Shewhart chart on the *yield value*.
 	#.	Show a plot of the Shewhart chart on these phase 1 data.
 
-.. answer::
+.. admonition:: Solution
 
 	*Solution based on work by Ryan McBride, Stuart Young, and Mudassir Rashid (2011 class)*
 
@@ -791,6 +775,6 @@ Exercises
 		} # end: while doloop
 
 
-.. question::
+.. admonition:: Question
 
 	You will hear about 6-sigma processes frequently in your career. What does it mean exactly that a process is "6-sigma capable"? Draw a diagram to help illustrate your answer.

@@ -15,7 +15,7 @@ PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 ALLRELAXEDOPTS  =  -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(RELAXOPTS) .
 
-.PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext whoosh
+.PHONY: help setup clean distclean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext whoosh
 
 .DEFAULT_GOAL := latexpdf
 
@@ -38,28 +38,23 @@ help:
 
 
 
-clean: 		## Remove build artifacts and set up environment
+clean: 		## Remove build artifacts
 	rm -rf $(BUILDDIR)
-	rm -rf *.pyc
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
 	find . -name '*~' -exec rm -f {} +
 	find . -name '__pycache__' -exec rm -fr {} +
 	find . -name '*.egg-info' -exec rm -fr {} +
 	find . -name '*.egg' -exec rm -f {} +
-	rm -f uv.lock
-	rm -rf .venv/
-	rm -rf lib/
-	rm -rf lib64/
-	rm -rf bin/
 
-	curl -LsSf https://astral.sh/uv/install.sh | sh
+distclean: clean	## Also remove the virtualenv and lockfile (forces a re-resolve next setup)
+	rm -rf .venv/ lib/ lib64/ bin/
+	rm -f uv.lock
+
+setup:		## Bootstrap the toolchain: install uv, create .venv, sync deps from pyproject.toml + uv.lock
+	@command -v uv >/dev/null 2>&1 || curl -LsSf https://astral.sh/uv/install.sh | sh
 	uv python install
-	uv venv
-	uv lock
-	uv add sphinx
-	uv add sphinxcontrib-jquery
-	uv add sphinx-book-theme
+	uv sync
 
 
 
@@ -67,7 +62,11 @@ html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	$(SPHINXBUILD) -b text $(ALLSPHINXOPTS) $(BUILDDIR)/text
 	cp -R $(BUILDDIR)/text/* $(BUILDDIR)/html/_sources/
-	npx -y pagefind --site $(BUILDDIR)/html
+	# Pagefind is best-effort: with html_file_suffix="" Sphinx emits
+	# extensionless pages and Pagefind's default `**/*.html` glob misses
+	# them. Sphinx's own searchindex.js still works. The leading `-`
+	# tells make to ignore a non-zero exit so the build doesn't fail.
+	-npx -y pagefind --site $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 

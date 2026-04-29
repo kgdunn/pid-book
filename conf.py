@@ -22,7 +22,6 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinxcontrib.jquery",
     "my-extensions.youtube",
-    "my-extensions.q-and-a",
     "my-extensions.datacamplite",
 ]
 
@@ -30,11 +29,6 @@ extensions = [
 jquery_use_sri = False
 
 # NOTE: MathJax path is also forced in `layout.html` (see the `{# MathJax #}` comment).
-
-# Set q_and_a_override to True to render full solutions in the book
-# (i.e. `fullinclude` is ignored).
-q_and_a_override = False
-
 
 templates_path = ["_templates"]
 source_suffix = {".rst": "restructuredtext"}

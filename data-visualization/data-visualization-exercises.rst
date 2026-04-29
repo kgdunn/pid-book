@@ -9,7 +9,7 @@ Exercises
 	single: Few, Stephen
 	single: Rosling, Hans
 
-.. question::
+.. admonition:: Question
 
 	The data shown here are the number of visits to a university website for a particular statistics course. There are 90 students in the class.
 
@@ -19,9 +19,7 @@ Exercises
 	#.	What are the names (type) of the 2 plots shown?
 	#.	List any 2 interesting features in these data.
 
-.. answer::
-	:fullinclude: yes
-	:short: Time-series and sparkline.
+.. admonition:: Solution
 
 	#.	The plots are a time-series plot and a sparkline. The sparkline shows exactly the same data, just a more compact form (without the labelling on the axes).
 
@@ -32,41 +30,40 @@ Exercises
 		-	Some days have more than 90 visits, indicating that students visit the site more than once per day, or due to external visitors to the site.
 
 
-.. question::
+.. admonition:: Question
 
 	What are the names of the axes on a bar plot?
 
-.. answer::
+.. admonition:: Solution
 
 	The category axis and value axis.
 
 
-.. question::
+.. admonition:: Question
 
 	Which types of features can can the human eye easily pick out of a time series plot?
 
-.. answer::
+.. admonition:: Solution
 
 	Features such as sinusoids, spikes, gaps (missing values), upward and downward trends are quickly picked out by the human eye, even in a poorly drawn plot.
 
 
-.. question::
+.. admonition:: Question
 
 	.. Final exam, 2013
 
 	Why is the principle of minimizing "data ink" so important in an effective visualization? Give an scientific or engineering example of why this important.
 
-.. answer::
+.. admonition:: Solution
 
 	It reduces the time or work to interpret that plot, by eliminating elements that are non-essential to the plot's interpretation. Situations which are time or safety critical are examples, for example in an operator control room, or medical facility (operating room).
 
 
-.. question::
+.. admonition:: Question
 
 	Describe what the main difference(s) between a :index:`bar chart` and a :index:`histogram <pair: histogram; visualization>` are.
 
-.. answer::
-	:fullinclude: yes
+.. admonition:: Solution
 
 	The solution is taken directly from: https://www.forbes.com/sites/naomirobbins/2012/01/04/a-histogram-is-not-a-bar-chart/
 
@@ -77,14 +74,13 @@ Exercises
 	*	The bars of bar charts typically have the same width. The widths of the bars in a histogram need not be the same as long as the total area is one hundred percent if percents are used or the total count if counts are used. Therefore, values in bar charts are given by the length of the bar while values in histograms are given by areas.
 
 
-.. question::
+.. admonition:: Question
 
 	Write out a list of any features that can turn a plot into a poor visualization. Think carefully about plots you encountered in textbooks and scientific publications, or the lab reports you might have recently created for a university or college course.
 
 
 
-.. question::
-	:copyright_issue: yes
+.. admonition:: Question
 
 	.. _economist-question:
 
@@ -94,9 +90,7 @@ Exercises
 		:align: center
 		:scale: 40
 
-.. answer::
-	:fullinclude: no
-	:copyright_issue: yes
+.. admonition:: Solution
 
 	There are several problems with this graphical comparison, but the main concerns are with showing time trends as bar plots, and the alignment of the time trends.
 
@@ -111,8 +105,7 @@ Exercises
 	- The use of stacked bar plots is almost always problematic: the user is never sure if the bars are cumulative or additive, unless they know the subject matter or read the accompanying text.
 
 
-.. question::
-	:copyright_issue: yes
+.. admonition:: Question
 
 	This figure is a screenshot from a `Toronto Star article <http://www.yourhome.ca/homes/realestate/article/742160--mortgage-rate-roulette>`_ about mortgage payments as a function of the interest rate. Redraw the same information in a more suitable form.
 
@@ -120,9 +113,7 @@ Exercises
 		:align: center
 		:scale: 80
 
-.. answer::
-	:fullinclude: no
-	:copyright_issue: yes
+.. admonition:: Solution
 
 	The data from this article are needlessly embellished with a picture of a house, a $20,000 bill and a stake in the ground.
 
@@ -137,11 +128,11 @@ Exercises
 	A key point though: the mortgage amount and the amortization rate must be shown with the plot or table. The cost of the house and the downpayment are actually irrelevant. You are paying interest on the mortgage amount, where :math:`\text{mortgage amount} = \text{cost of the house} + \text{mortgage insurance} - \text{downpayment}`. The table or the plot will change if either of those two variables change. Your monthly payment is higher for shorter amortization periods, and for larger mortgage amounts.
 
 
-.. question::
+.. admonition:: Question
 
 	This question is an extension to visualizing more than 3 variables. Investigate on your own the term ":index:`scatterplot matrix <pair: scatterplot matrix; visualization>`", and draw one for the `Food texture data set <http://openmv.net/info/food-texture>`_. See the ``car`` library in R to create an effective scatterplot matrix with the ``scatterplotMatrix`` function. List some bullet-points that interpret the plot.
 
-.. answer::
+.. admonition:: Solution
 
 	.. image:: ../figures/visualization/scatterplotmatrix-food-data.png
 		:align: center
@@ -173,15 +164,14 @@ Exercises
 		*	The pastry's hardness seems to be uncorrelated to all the other 4 variables.
 
 
-.. question::
+.. admonition:: Question
 
 	Using the `Website traffic data set <http://openmv.net/info/website-traffic>`_
 
 	#.	Create a chart that shows the *variability* in website traffic for each day of the week.
 	#.	Use the same data set to describe any time-based trends that are apparent.
 
-.. answer::
-	:fullinclude: yes
+.. admonition:: Solution
 
 
 	#.	A suitable chart for displaying variability on a per-day basis is the boxplot, one box for each day of the week. This allows you to see *between-day* variation when comparing the boxes side by side, and get an impression of the *variability within* each variable, by examining how the box's horizontal lines are spread out (25th, 50th and 75th percentiles).
@@ -228,8 +218,7 @@ Exercises
 			web.visits = xts(web$Visits, order.by=date.order)
 			plot(web.visits, major.format="%b")
 
-.. question::
-	:copyright_issue: yes
+.. admonition:: Question
 
 	.. See the higher resolution PNG file version also
 
@@ -243,8 +232,7 @@ Exercises
 	#.	Use rough values from the given plot to construct an approximate example of the plot you proposed in part 3.
 	#.	What advantage is there to the plot given here, over the type in your answer to part 3.
 
-.. answer::
-	:copyright_issue: yes
+.. admonition:: Solution
 
 	#.	A time-series plot.
 
@@ -288,7 +276,7 @@ Exercises
 	#.	Comment on any features you observe in your plot.
 	#.	Be specific and describe how sparklines of these same data would improve the message the data is showing.
 
-.. answer::
+.. admonition:: Solution
 
 	#.	You could use the following code to plot the data:
 
@@ -390,8 +378,7 @@ Exercises
 	#.	The thick center line on each boxplot is the median (50th percentile) of that variable. The top and bottom edges of the box are the 25th and 75th percentile, respectively. If the data are from a symmetric distribution, such as the :math:`t` or normal distribution, then the median should be approximately centered with respect to those 2 percentiles. The fact that it is not, especially for position 1, indicates the data are *skewed* either to the left (median is closer to upper edge) or the the right (median closer to the lower edge).
 
 
-.. question::
-	:copyright_issue: yes
+.. admonition:: Question
 
 	Consider this plot from the Economist article regarding `"Working hours" <https://www.economist.com/blogs/freeexchange/2013/09/working-hours>`_
 
@@ -402,9 +389,7 @@ Exercises
 	#.	Is there a causal mechanism at play between the two variables?
 	#.	How would you confirm or disprove the message the plot's author is making?
 
-.. answer::
-	:fullinclude: no
-	:copyright_issue: yes
+.. admonition:: Solution
 
 	#.	The message is likely that longer working hours do not translate into greater earnings (measured with GDP) as might be expected. In fact, the opposite holds: longer working hours are correlated with *lower* earnings (we say: "there's a negative correlation between working hours and earnings"). The axes have been scaled to account for purchasing power.
 
@@ -420,7 +405,7 @@ Exercises
 
 	#.	Also see the prior answer: require experiments over a broad range of employment types and regions, using shorter and longer working hours, and measure the corresponding earnings.
 
-.. question::
+.. admonition:: Question
 
 	Read the short, clearly written article by Stephen Few on the pitfalls of :index:`pie charts <pair: pie chart; visualization>`: `Save the pies for dessert, https://www.perceptualedge.com/articles/08-21-07.pdf <https://www.perceptualedge.com/articles/08-21-07.pdf>`_. The article presents an easy-to-read argument against pie charts that will hopefully convince you.
 
