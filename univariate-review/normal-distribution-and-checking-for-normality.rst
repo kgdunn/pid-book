@@ -182,7 +182,7 @@ Some useful points:
 
 	-	The total area from :math:`x=-\infty` to :math:`x=+\infty` is 1.0; we cannot calculate the integral of :math:`p(x)` analytically.
 
-	-	:math:`\sigma` is the distance from the mean, :math:`\mu`, to the point of inflection
+	-	:math:`\sigma` is the distance from the mean, :math:`\mu`, to the :index:`point of inflection <single: inflection point>`
 
 	-	The normal distribution only requires two parameters to describe it: :math:`\mu` and :math:`\sigma`
 
@@ -209,7 +209,7 @@ It is more useful to calculate the area under :math:`p(x)` from :math:`x=-\infty
 		pnorm(3, mean = 0, sd = 3)     # 0.8413447
 
 
-You might still find yourself having to refer to tables of cumulative area under the normal distribution, instead of using the ``pnorm()`` function (for example in a test or exam). If you look at the appendix of most statistical texts you will find these tables, and there is one :ref:`at the end of this chapter <univariate_statistical_tables>`. Since these tables cannot be produced for all combinations of mean and standard deviation parameters, they use what is called *standard form*.
+You might still find yourself having to refer to tables of cumulative area under the normal distribution, instead of using the ``pnorm()`` function (for example in a test or exam). If you look at the appendix of most statistical texts you will find these tables, and there is one :ref:`at the end of this chapter <univariate_statistical_tables>`. Since these tables cannot be produced for all combinations of mean and standard deviation parameters, they use what is called :index:`standard form`.
 
 .. youtube:: https://www.youtube.com/watch?v=hkHJ5dc2l4c&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=11
 
@@ -217,11 +217,11 @@ You might still find yourself having to refer to tables of cumulative area under
 
 	z_i = \frac{x_i - \text{mean}}{\text{standard deviation}}
 
-The values of the mean and standard deviation are either the population parameters, if known, or using the best estimate of the mean and standard deviation from the sampled data.
+The values of the mean and standard deviation are either the population parameters, if known, or using the best estimate of the mean and standard deviation from the sampled data. The transformed quantity is called the :index:`z-value` (or :math:`z`-deviate).
 
 For example, if our values of :math:`x_i` come from a normal distribution with mean of 34.2 and variance of 55. Then we could write :math:`x \sim \mathcal{N}(34.2, 55)`, which is short-hand notation of saying the same thing. The equivalent :math:`z`-values for these :math:`x_i` values would be: :math:`z_i = \dfrac{x_i - 34.2}{\sqrt{55}}`.
 
-This transformation to standard form **does not change the distribution** of the original :math:`x`, it only changes the parameters of the distribution. You can easily prove to yourself that :math:`z` is normally distributed as :math:`z \sim \mathcal{N}(0.0, 1.0)`. So statistical tables only report the area under the distribution of a :math:`z` value with mean of zero, and unit variance.
+This transformation to standard form **does not change the distribution** of the original :math:`x`, it only changes the parameters of the distribution. You can easily prove to yourself that :math:`z` is normally distributed as :math:`z \sim \mathcal{N}(0.0, 1.0)`; the :index:`standard normal distribution <single: normal distribution; standard>` has mean of zero and unit variance. So statistical tables only report the area under the distribution of a :math:`z` value with mean of zero, and unit variance.
 
 This is a common statistical technique, to :index:`standardize a variable`, which we will see several times. Standardization takes our variable from :math:`x \sim \mathcal{N}(\text{some mean}, \text{some variance})` and converts it to :math:`z \sim \mathcal{N}(0.0, 1.0)`. It is just as easy to go backwards, from a given :math:`z`-value and return back to our original :math:`x`-value.
 

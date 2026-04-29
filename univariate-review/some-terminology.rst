@@ -57,7 +57,7 @@ We review a couple of concepts that you should have seen in a prior statistical 
 
 	.. _univariate_calculate_mean:
 
-	The :index:`mean`, or :index:`average`, is a measure of :index:`location` of the distribution. For each measurement, :math:`x_i`, in your sample
+	The :index:`mean`, or :index:`average`, is a measure of :index:`location` of the distribution. For each measurement, :math:`x_i`, in your sample, the population mean is also called the :index:`expected value`, written as :math:`\mathcal{E}\left\{x\right\}`.
 
 	.. math::
 		:nowrap:
@@ -95,7 +95,7 @@ We review a couple of concepts that you should have seen in a prior statistical 
 			\text{Sample variance}:     &\qquad&                                                                             s^2  &= \frac{1}{n-1}\sum_{i=1}^{n}{(x_i - \overline{x})^2}
 		\end{alignat*}
 
-	Dividing by :math:`n-1` makes the variance statistic, :math:`s^2`, an unbiased estimator of the population variance, :math:`\sigma^2`. However, in many data sets our value for :math:`n` is large, so using a divisor of :math:`n`, which you might come across in computer software or other texts, rather than :math:`n-1` as shown here, leads to little difference.
+	Dividing by :math:`n-1` makes the variance statistic, :math:`s^2`, an :index:`unbiased estimator` of the population variance, :math:`\sigma^2`. However, in many data sets our value for :math:`n` is large, so using a divisor of :math:`n`, which you might come across in computer software or other texts, rather than :math:`n-1` as shown here, leads to little difference.
 
 
 	.. dcl:: R

@@ -82,7 +82,7 @@ Either we want to confirm things are statistically the same, or confirm they hav
 
 We address the question of whether or not there was a *significant difference* between system A and B. A significant difference means that when system B is compared to a suitable reference, that we can be sure that the long run implementation of B will lead, in general, to a different yield (%). We want to be sure that any change in the 10 runs under system B were not *only due to chance*, because system B will cost us $100,000 to install, and $20,000 in annual software license fees.
 
-	*Note*: those with a traditional statistical background will recognize this section as one-sided hypothesis tests. We will only consider tests for a significant increase or decrease, i.e. one-sided tests, in this section. We use confidence intervals, rather than hypothesis tests; the results are exactly the same. Arguably the confidence interval approach is more interpretable, since we get a bound, rather that just a clear-cut yes/no answer.
+	*Note*: those with a traditional statistical background will recognize this section as one-sided :index:`hypothesis tests <single: hypothesis test>`. We will only consider tests for a significant increase or decrease, i.e. :index:`one-sided tests <single: hypothesis test; one-sided>`, in this section. We use confidence intervals, rather than hypothesis tests; the results are exactly the same. Arguably the confidence interval approach is more interpretable, since we get a bound, rather that just a clear-cut yes/no answer.
 
 There are two main ways to test for a significant increase or significant decrease.
 
@@ -247,7 +247,7 @@ Discuss whether these experiments would lead to :index:`independent data <single
 	
 	b)	We are testing an alternative, cheaper raw material in our process, but want to be sure our product's final properties are unaffected. Our raw material dispensing system will need to be modified to dispense material B. This requires the production line to be shut down for 15 hours while the new dispenser, lent from the supplier, is installed. The new supplier has given us 8 representative batches of their new material to test, and each test will take 3 hours. We are inclined to run these 8 batches over the weekend: set up the dispenser on Friday night (15 hours), run the tests from Saturday noon to Sunday noon, then return the line back to normal for Monday's shift. How might we violate the assumptions required by the data analysis steps above when we compare 8 batches of material A (collected on Thursday and Friday) to the 8 batches from material B (from the weekend)?  What might we do to avoid these problems?
 	
-		-	The 8 tests are run sequentially, so **any changes** in conditions between these 8 runs and the 8 runs from material A will be confounded (confused) in the results. List some actual scenarios how confounding between the weekday and weekend experiments occur:
+		-	The 8 tests are run sequentially, so **any changes** in conditions between these 8 runs and the 8 runs from material A will be :index:`confounded <single: confounding>` (confused) in the results. List some actual scenarios how confounding between the weekday and weekend experiments occur:
 	
 			-	For example, the staff running the equipment on the weekend are likely not the same staff that run the equipment on weekdays. 
 			
@@ -257,11 +257,11 @@ Discuss whether these experiments would lead to :index:`independent data <single
 			
 		 This confounding with all these other, potential factors means that we will not be able to determine whether material B caused a true difference, or whether it was due to the other conditions.
 		
-		-	It is certainly expensive and impractical to randomize the runs in this case. Randomization would mean we randomly run the 16 tests, with the A and B chosen in random order, e.g. ``A B A B A A B B A A B B B A B A``. This particular randomization sequence would require changing the dispenser 9 times. 
+		-	It is certainly expensive and impractical to randomize the runs in this case. :index:`Randomization` would mean we randomly run the 16 tests, with the A and B chosen in random order, e.g. ``A B A B A A B B A A B B B A B A``. This particular randomization sequence would require changing the dispenser 9 times.
 
 		-	One suboptimal sequence of running the system is ``A A A A B B B B A A A A B B B B``. This requires changing the dispenser 4 times (one extra change to get the system back to material A). We run each (``A A A A B B B B``) sequence on two different weekends, changing the operating staff between the two groups of 8 runs, making sure the sample analysis follows the usual protocols: so  we reduce the chance of confounding the results. 
 
-Randomization might be expensive and time-consuming in some studies, but it is the insurance we require to avoid being misled. These two examples demonstrate this principle: **block what you can and randomize what you cannot**. We will review these concepts again in the :ref:`design and analysis of experiments section <SECTION-design-analysis-experiments>`. If the change being tested is expected to improve the process, then we must follow these precautions to avoid a process upgrade/modification  that does not lead to the expected improvement; or the the converse - a missed opportunity of implementing a change for the better.
+Randomization might be expensive and time-consuming in some studies, but it is the insurance we require to avoid being misled. These two examples demonstrate this principle: **block what you can and randomize what you cannot** (see :index:`blocking <single: blocking; in experimental design>`). We will review these concepts again in the :ref:`design and analysis of experiments section <SECTION-design-analysis-experiments>`. If the change being tested is expected to improve the process, then we must follow these precautions to avoid a process upgrade/modification  that does not lead to the expected improvement; or the the converse - a missed opportunity of implementing a change for the better.
 
 External and internal estimates of spread
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -344,7 +344,7 @@ We interpret this number of "15.2%" in the summary section, but let's finally lo
 
 The sample variance from each system was :math:`s_A^2 = 6.81^2` and :math:`s_B^2 = 6.70^2`, and in this case it happened that :math:`n_A = n_B = 10`, although the sample sizes do not necessarily have to be the same.
 
-If the variances are comparable (there is a :ref:`test for that below <univariate_pooled_variance>`), then we can calculate a *pooled variance*, :math:`s_P^2`, which is a weighted sum of the sampled variances:
+If the variances are comparable (there is a :ref:`test for that below <univariate_pooled_variance>`), then we can calculate a :index:`pooled variance`, :math:`s_P^2`, which is a weighted sum of the sampled variances:
 
 .. _univariate_eqn_pooled_variance:
 
@@ -412,7 +412,7 @@ Summary and comparison of methods
 
 Let's compare the 3 estimates. Recall our aim is to convince ourself/someone that system B will have better long-term performance than the current system A. 
 
-If we play devil's advocate, our *null hypothesis* is that system B has no effect. Then it is up to us to prove, convincingly, that the change from A to B has a systematic, permanent effect. That is what the calculated probabilities represent :, the probability of us being wrong.
+If we play devil's advocate, our :index:`null hypothesis` is that system B has no effect. Then it is up to us to prove, convincingly, that the change from A to B has a systematic, permanent effect. That is what the calculated probabilities represent :, the probability of us being wrong.
 
 	#.	Using only reference data: 11% (about 1 in 10)
 	
