@@ -8,8 +8,7 @@ Product development and product improvement
 	single: product improvement
 	pair: product development; product improvement
 
-This section covers product development, but it is more correctly called product improvement.
-The reason is that new products are seldom developed completely from scratch; products are regularly improved. The following usage examples show:
+Most "product development" is really product improvement: new products are seldom developed from scratch. The usage examples below show what this looks like in practice, and they motivate the rest of the chapter.
 
 Usage examples
 ~~~~~~~~~~~~~~~
@@ -29,15 +28,13 @@ Usage examples
 
 -   *Engineer 2*: Our current top line product is made with 6 different ingredients. Can we reduce this number down by adjusting the ratios or the choices of ingredients?
 
-As these examples show: "product development" actually happens far more frequently than simply the case of a customer coming to ask for *different, entirely new, specifications* to those you currently have in your portfolio or product catalogue. The opposite case of changing these 3 things, in order to keep the *same specifications* is far more common:
+As these examples show, the common case is not a request for entirely new specifications, but a change to one of three things while the specifications stay the same:
 
-    * which ingredients (raw materials) do you use?
-    * which ingredient ratios, specified by mass fraction, do you use?
-    * which conditions do you implement to get the final product?
+    * which ingredients (raw materials) we use,
+    * the ratios in which we combine them, by mass fraction, and
+    * the process conditions used to make the product.
 
-Both cases of creating an entirely new product, or improving an existing product can be considered with the methods described here.
-
-The end goal is "faster development of personalized products and customer-centric development", using the information and databases we have accumulated over the many years of experience with the process.
+The methods in this chapter handle both situations --- a wholly new product and the adaptation of an existing one --- because the underlying problem is the same: pick values for those three groups of variables that produce the desired outcomes, using whatever historical data we have to guide the choice.
 
 The three degrees of freedom
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -106,7 +103,7 @@ Why product development is difficult
 	pair: Design-Build-Test-Learn cycle; product development
 	single: DBTL cycle
 
-Most product development is still done by intuition and trial-and-error. The methods of optimization and mathematical modelling in this chapter can speed that work up considerably, and in some settings can even automate it. But before getting to the methods, it is worth being honest about why the problem is difficult: there are several places where things can go wrong, and a tool that does not address them will not improve on a good engineer's intuition.
+Most product development is still done by intuition and trial-and-error. The methods later in this chapter can speed that work up considerably, but only if they address the things that make the problem difficult in the first place. The challenges below appear in almost every campaign, and a tool that ignores them will not improve on a good engineer's intuition.
 
 We frame each iteration as a Design-Build-Test-Learn (DBTL) cycle, a framing widely used in the biotechnology and autonomous-experimentation literature:
 
@@ -115,7 +112,7 @@ We frame each iteration as a Design-Build-Test-Learn (DBTL) cycle, a framing wid
 	* **Test**: measure the outcomes on the resulting product.
 	* **Learn**: compare the outcomes against the targets, update the model, decide on the next iteration.
 
-We do not get the product right on the first cycle, so we iterate. Even when you work "by eye" from plots, you are using an implicit model of the system; the methods in this chapter make that model explicit so it can be reused, criticized and improved. Six broad areas of difficulty appear in almost every product-development problem.
+We do not get the product right on the first cycle, so we iterate. Even when you work by eye from plots you are running an implicit model of the system; the methods in this chapter make that model explicit, so it can be reused, criticized and improved. Six broad areas of difficulty recur --- one for each stage of the cycle, plus a cross-cutting set that affects the iteration as a whole.
 
 Problems with the specifications
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -208,7 +205,9 @@ The difficulties above tell us what an ideal framework needs to do. Most of thos
 
 	*	**Reports an operating window.** When constraints are active at a solution, the framework names them, so we learn the limits of the system. When constraints are inactive, the directions in which we can move without losing the solution are reported as an :index:`operating window <single: operating window>`, and ideally the solution is parameterised so the SME can fine-tune within that window. Multivariate :ref:`troubleshooting tools <LVM_troubleshooting>` give us the same diagnostic in the latent-variable space.
 
-The remainder of this chapter shows how the methods already developed in the book --- :ref:`designed experiments <SECTION-design-analysis-experiments>`, :ref:`response surface methods <DOE-RSM>` and :ref:`latent variable models <SECTION_latent_variable_modelling>`, together with standard and Bayesian optimization --- deliver against these properties. Three more goals --- handling **large** data sets, **transfer learning** across manufacturing sites, and a formal proof of **permutation invariance** --- are sometimes asked of a product-development framework. The methods here cope with each of them informally (the latent-variable methods scale to large :math:`N`, mean-centring and scaling are insensitive to row order in practice, and a model trained on one site can be re-fit at another), but a rigorous treatment is beyond this chapter's scope.
+The remainder of this chapter shows how the methods already developed in the book --- :ref:`designed experiments <SECTION-design-analysis-experiments>`, :ref:`response surface methods <DOE-RSM>` and :ref:`latent variable models <SECTION_latent_variable_modelling>`, together with standard and Bayesian optimization --- deliver against these properties.
+
+Three further goals are sometimes asked of a product-development framework but are not treated rigorously here: handling **large** data sets, **transfer learning** across manufacturing sites, and a formal proof of **permutation invariance**. The methods we use cope with each of them informally --- latent-variable models scale to large :math:`N`, mean-centring and scaling are insensitive to row order in practice, and a model trained on one site can be re-fit at another --- but a careful treatment is left to the literature.
 
 Data needed for product development
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
