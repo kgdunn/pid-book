@@ -3,6 +3,10 @@
 Product development and product improvement
 ===========================================
 
+.. index::
+	single: product development
+	single: product improvement
+	pair: product development; product improvement
 
 This section covers product development, but it is more correctly called product improvement.
 The reason is that new products are seldom developed completely from scratch; products are regularly improved. The following usage examples show:
@@ -41,9 +45,9 @@ Scope of the problem
 
 First, we describe some features that are desirable for a framework/tooling used for data-driven product development.
 
-A. The tool is **guided by the subject matter expert** (SME) to accelerate the process; it is not intended to replace them. It will allow them to more rapidly prototype and test alternatives, and guide them. The expert also plays an active role: for example, constraints can be specified by the expert and the tool can help them understand the tradeoffs by providing alternative solutions that they select from.
+A. The tool is **guided by the** :index:`subject matter expert <pair: subject matter expert; product development>` (SME) to accelerate the process; it is not intended to replace them. It will allow them to more rapidly prototype and test alternatives, and guide them. The expert also plays an active role: for example, constraints can be specified by the expert and the tool can help them understand the tradeoffs by providing alternative solutions that they select from.
 
-B. It is **multi-objective**. Multiple goals and targets can be taken along, each with different weights and prioritization if needed. For example, if a certain target objective is poorly explained by the data, then it can be down weighted, but not ignored. We should not have to build models for each outcome variable: we must be able to handle multiple key performance indicators (KPIs), even highly correlated ones and also high-dimensional ones (such as vectors).
+B. It is :index:`multi-objective <single: multi-objective optimization>`. Multiple goals and targets can be taken along, each with different weights and prioritization if needed. For example, if a certain target objective is poorly explained by the data, then it can be down weighted, but not ignored. We should not have to build models for each outcome variable: we must be able to handle multiple :index:`key performance indicators <single: key performance indicator>` (KPIs), even highly correlated ones and also high-dimensional ones (such as vectors).
 
 C. We must be able to **handle missing data**. Our knowledge regarding physical and chemical properties of the materials is incomplete; we might only have partial results, or loss of data might have occurred. We might have results from earlier experiments, while later experiments may have extra or more sophisticated measurements. In all of these cases we should use the data we have available, and not have to discard rows or columns of incomplete knowledge.
 
@@ -57,17 +61,22 @@ G. It must allow for **learning and interpretation** by the expert. The model re
 
 H. It should be able to handle **high-dimensional data**, even if many of the measured data are affected by random noise, or are unrelated to the problem. As we will not always know upfront what is important, if we do happen to add more information in our models, then we should not be penalized. It is acceptable to learn iteratively that certain data are uninteresting. See the prior point.
 
-I. It should provide guidance to **fill in the spaces of unknown knowledge**. It is therefore both sequential and active. The expert can influence where future experiments should be done, to help expand the model's predictive power, or the model actively indicates the regions where experimental input is needed (the standard exploit and explore tradeoff).
+I. It should provide guidance to **fill in the spaces of unknown knowledge**. It is therefore both sequential and active. The expert can influence where future experiments should be done, to help expand the model's predictive power, or the model actively indicates the regions where experimental input is needed (the standard :index:`exploit and explore tradeoff <single: explore-exploit tradeoff>`).
 
-J. An **operating window** for the solution is provided. When constraints are active at a solution, these should be reported, to learn the limits of the system. Conversely, inactive constraints are also insightful, since these provide an operating window within which we can move without changing the optimization result too much. Even better is if a parameterized solution is presented, allowing the user to fine-tune the solution based on tuneable parameters.
+J. An :index:`operating window <single: operating window>` for the solution is provided. When constraints are active at a solution, these should be reported, to learn the limits of the system. Conversely, inactive constraints are also insightful, since these provide an operating window within which we can move without changing the optimization result too much. Even better is if a parameterized solution is presented, allowing the user to fine-tune the solution based on tuneable parameters.
 
-K. The method should **enable transfer learning** across different manufacturing sites, lines, or even different products. For example, a new product can be developed on site A, and then transferred to site B, using data from both sites, to learn the transferable knowledge, and ignore the regions of operation which have no impact.
+K. The method should **enable** :index:`transfer learning <single: transfer learning>` across different manufacturing sites, lines, or even different products. For example, a new product can be developed on site A, and then transferred to site B, using data from both sites, to learn the transferable knowledge, and ignore the regions of operation which have no impact.
 
 L. Different conditions must be handled. Extending an existing product from one matrix to another (e.g. from a liquid to a gel) or when used at different settings (e.g. high or low temperature, pH etc) it will alter the outcomes. So modelling to predict and handle these cases is desirable.
 
 M. It is **permutation invariant**. The order in which we acquire experimental data or present the data to our models should not alter the outcomes we achieve.
 
 N. **Handling different scales** should also be accommodated; cheap experiments at a smaller scale being combined with sparse data at a larger scale (e.g. customer trials).
+
+.. index::
+	single: model inversion
+	pair: model inversion; product development
+	see: inverse approach; model inversion
 
 O. Allow for **model inversion**: we do not only want to predict an outcome from upstream information, but also to use the inverse approach: to predict upstream settings for a given set of performance outcomes. This inverse approach is in many cases non-unique: there are multiple upstream settings that can give the same performance outcome. The system should indicate when multiple solutions are possible (the rank of the input space exceeds the output space) and as such there are directions in input space which are unrelated to the output, giving us extra degrees of freedom.
 
@@ -78,6 +87,9 @@ Important concepts
 
 What are the "Degrees of freedom"?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. index::
+	single: degrees of freedom; in product development
 
 As just mentioned, there are 3 groups of things you can change:
 
@@ -92,6 +104,10 @@ The "desired outcome"
 ~~~~~~~~~~~~~~~~~~~~~~
 
 This is a specification of what you want to achieve. Your end goal. It is often given as a vector of one or more specifications. For example: you might need to achieve a given viscosity, melting point and product density. These 3 numbers jointly defind the expectations.
+
+.. index::
+	single: sigmoid function
+	single: Gompertz function
 
 Some entries in the desired outcome vector might simply be given as constraints. For example, "an *elongation* value of 15 or lower is acceptable, or a *shelf-life* of 30 days or greater is acceptable. This is more of a yes/no constraint: it is either met, or it is not. It creates a discontinuity in our system when we specify it as an equation later on. Discontinuities are often undesirable from a mathematical modelling and optmization perspective. However these can be dealt with by converting them to a smoothed version, such as by using a sigmoid function or a `Gompertz function <https://en.wikipedia.org/wiki/Gompertz_function>`_.
 
