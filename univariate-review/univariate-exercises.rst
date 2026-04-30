@@ -879,7 +879,7 @@ Exercises
 
 		One can also reduce the interval by shrinking the standard deviation, but that's usually not a practical possibility. You cannot perform a paired test, as you only have one mixing tank.
 
-	.. sidebar:: Interpreting confidence intervals
+	.. admonition:: Interpreting confidence intervals
 
 		Recall the definition of the confidence interval is subtle: it says 95% of the time, the upper and lower bounds of the confidence interval contain the true value of the parameter; it does *not* say there is a 95% probability the true value of the parameter lies inside the bounds. That last part is incorrect because it implies the true value of the parameter can vary, which it can't: the true parameter value is fixed, only the bounds change. 
 		
