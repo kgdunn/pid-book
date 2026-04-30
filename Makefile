@@ -70,6 +70,9 @@ html:
 	# files; Pagefind skips non-HTML content automatically. Sphinx's own
 	# searchindex.js remains the primary search.
 	npx -y pagefind --site $(BUILDDIR)/html --glob "**"
+	# index.html is the web-server directory-index convention so that
+	# https://learnche.org/pid/ auto-redirects to /pid/contents.
+	printf '<!DOCTYPE html>\n<html><head><meta http-equiv="refresh" content="0; url=contents"><link rel="canonical" href="contents"></head><body><a href="contents">Redirecting to contents…</a></body></html>\n' > $(BUILDDIR)/html/index.html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
