@@ -3,7 +3,10 @@
 Using two levels for two or more factors
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let's take a look at the mechanics of factorial designs by using our previous example where the conversion, :math:`y`, is affected by two factors: temperature, :math:`T`, and substrate concentration, :math:`S`. 
+.. index::
+	see: standard order; Yates order
+
+Let's take a look at the mechanics of factorial designs by using our previous example where the conversion, :math:`y`, is affected by two factors: temperature, :math:`T`, and substrate concentration, :math:`S`.
 
 The range over which they will be varied is given in the table. This range was identified by the process operators as being sufficient to actually show a difference in the conversion, but not so large as to move the system to a totally different operating regime (that's because we will fit a linear model to the data).
 
@@ -68,6 +71,9 @@ The range over which they will be varied is given in the table. This range was i
 Analysis of a factorial design: main effects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	pair: main effect; experiments
+
 The first step is to calculate the :index:`main effect` of each variable. The effects are considered, by convention, to be the difference from the high level to the low level. So the interpretation of a main effect is by how much the outcome, :math:`y`, is adjusted when changing the variable.
 
 .. youtube:: https://www.youtube.com/watch?v=fPbd74KN7zw&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=37
@@ -110,7 +116,10 @@ Analysis of a factorial design: interaction effects
 
 We expect in many real systems that the main effect of temperature, :math:`T`, for example, is different at other levels of substrate concentration, :math:`S`. It is quite plausible for a bioreactor system that the main temperature effect on conversion is much greater if the substrate concentration, :math:`S`, is also high, while at low values of :math:`S`, the temperature effect is smaller. 
 
-.. index:: interaction effects
+.. index::
+	pair: interaction effect; experiments
+	pair: two-factor interaction; experiments
+	see: 2fi; two-factor interaction
 
 We call this result an *interaction*, when the effect of one factor is different at different levels of the other factors. Let's give a practical, everyday example: assume your hands are covered with dirt or oil. We know that if you wash your hands with cold water, it will take longer to clean them than washing with hot water. So let factor **A** be the temperature of the water; factor **A** has a significant effect on the time taken to clean your hands.  
 

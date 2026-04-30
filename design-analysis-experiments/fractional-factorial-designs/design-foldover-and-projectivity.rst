@@ -1,7 +1,11 @@
-Design foldover 
+Design foldover
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Experiments are not a one-shot operation. They are almost always sequential, as we learn more and more about our system. Once the first screening experiments are complete there will always be additional questions. In this section we consider two common questions that arise after an initial set of fractional factorials have been run. 
+.. index::
+	pair: foldover; experiments
+	pair: dealiasing; experiments
+
+Experiments are not a one-shot operation. They are almost always sequential, as we learn more and more about our system. Once the first screening experiments are complete there will always be additional questions. In this section we consider two common questions that arise after an initial set of fractional factorials have been run.
 
 *Dealias a single main effect* (switch sign of one factor)
 
@@ -27,8 +31,11 @@ This is a good strategy in general: to run the first fraction of runs to assess 
 
 
 
-Projectivity 
+Projectivity
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. index::
+	pair: projectivity; experiments
 
 A final observation for this section is how fractional factorials will collapse down to a full factorial under certain conditions.
 

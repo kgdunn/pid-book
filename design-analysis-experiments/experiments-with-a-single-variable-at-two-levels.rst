@@ -74,6 +74,10 @@ Both methods give identical results, but by very different routes.
 The importance of randomization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	pair: randomization; experiments
+	pair: pairing; experiments
+
 We :ref:`emphasized in a previous section <univariate-group-to-group-differences-no-reference-set>` that experiments must be performed in random order to avoid any unmeasured, and uncontrolled, disturbances from impacting the system.
 
 The concept of randomization was elegantly described in an example by Fisher in Chapter 2 of his book, :ref:`The Design of Experiments <DOE_references>`. A lady claims that she can taste the difference in a cup of tea when the milk is added after the tea or when the tea is added after the milk. By setting up :math:`N` cups of tea that contain either the milk first (M) or the tea first (T), the lady is asked to taste these :math:`N` cups and make her assessment. Fisher shows that if the experiments are performed in random order, the actual set of decisions made by the lady are just one of many possible outcomes. He calculates all possibilities (we show how below), and then he calculates the probability of the lady's actual set of decisions being due to chance alone. If the lady has test score values better than by random chance, then there is a reasonable claim the lady is reliable.

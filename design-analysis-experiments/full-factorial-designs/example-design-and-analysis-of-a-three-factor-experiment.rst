@@ -1,6 +1,10 @@
 Example: design and analysis of a three-factor experiment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	pair: three-factor interaction; experiments
+	see: 3fi; three-factor interaction
+
 .. youtube:: https://www.youtube.com/watch?v=H_s5gGyXor8&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=39
 
 

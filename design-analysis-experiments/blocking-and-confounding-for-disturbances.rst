@@ -6,6 +6,9 @@ Blocking and confounding for disturbances
 Characterization of disturbances
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	pair: disturbance; experiments
+
 .. youtube:: https://www.youtube.com/watch?v=ugqXsS_r4WU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=47
 
 External disturbances will always have an effect on our response variable, :math:`y`. Operators, ambient conditions, physical equipment, lab analyses, and time-dependent effects (catalyst deactivation, fouling), will impact the response. This is why it is crucial to :ref:`randomize <DOE-randomization>` the order of experiments: so that these **unknown, unmeasurable, and uncontrollable** disturbances cannot systematically affect the response.
