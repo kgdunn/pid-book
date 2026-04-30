@@ -268,7 +268,7 @@ Exercises
 	Fortunately in engineering situations we deal with much shorter time scales, and are able to better control our experiments. However the case of an uncertain 3rd factor is prevalent and must be guarded for - we'll learn about this is the section on design of experiments.
 
 
-..	question::
+.. admonition:: Question
 
 	Load the `room temperature <http://openmv.net/info/room-temperature>`_ dataset into R, Python or MATLAB, or whichever software tool you prefer to plot with.
 
@@ -344,14 +344,14 @@ Exercises
 		*	First load the library: ``library(YaleToolkit)``
 		*	Then see the help for the function: ``help(sparklines)`` to see how to generate your sparklines
 
-..	question::
+.. admonition:: Question
 
 	Load the `six point board thickness <http://openmv.net/info/six-point-board-thickness>`_ dataset, available from datasets website.
 
 	#.	Plot a boxplot of the first 100 rows of data to match the figure :ref:`in these notes <visualization_boxplot_example>`
 	#.	Explain why the thick center line in the box plot is not symmetrical with the outer edges of the box.
 
-..	answer::
+.. admonition:: Solution
 
 	#.	The following code will load the data, and plot a boxplot for the first 100 rows:
 
@@ -412,7 +412,7 @@ Exercises
 	Here's a `great example that proves his point <https://www.canada.ca/en/revenue-agency/corporate/about-canada-revenue-agency-cra/individual-income-tax-return-statistics.html>`_ from the Canada Revenue Agency.
 
 
-..	question::
+.. admonition:: Question
 
 	*Enrichment*:
 

@@ -94,14 +94,14 @@ jobs:
           fi
           chmod 600 ~/.ssh/known_hosts
 
-      - name: Deploy to learnche.org
+      - name: Deploy to learnche.org (staging)
         if: github.event_name != 'pull_request'
         env:
           SSH_USER: ${{ secrets.LEARNCHE_SSH_USER }}
         run: |
           rsync -avz --delete-after \
             _build/html/ \
-            "$SSH_USER@learnche.org:/var/www/learnche.org/pid/"
+            "$SSH_USER@learnche.org:/var/www/learnche.org/pid-staging/"
           rsync -avz \
             _build/latex/PID.pdf \
-            "$SSH_USER@learnche.org:/var/www/learnche.org/pid/"
+            "$SSH_USER@learnche.org:/var/www/learnche.org/pid-staging/"

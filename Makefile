@@ -5,7 +5,7 @@
 # Add "-W" to cause warnings to turn into errors.
 SPHINXOPTS    = -E -j auto
 RELAXOPTS     = -E
-SPHINXBUILD   = sphinx-build
+SPHINXBUILD   = uv run sphinx-build
 PAPER         =
 BUILDDIR      = _build
 
@@ -55,18 +55,21 @@ setup:		## Bootstrap the toolchain: install uv, create .venv, sync deps from pyp
 	@command -v uv >/dev/null 2>&1 || curl -LsSf https://astral.sh/uv/install.sh | sh
 	uv python install
 	uv sync
-
-
+	@command -v latexmk >/dev/null 2>&1 || { \
+		echo "WARNING: latexmk not found. 'make latexpdf' will not work."; \
+		echo "Install it with:  sudo apt-get install texlive-full latexmk"; \
+		echo "  (or on Fedora:  sudo dnf install texlive-scheme-full latexmk)"; \
+	}
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	$(SPHINXBUILD) -b text $(ALLSPHINXOPTS) $(BUILDDIR)/text
 	cp -R $(BUILDDIR)/text/* $(BUILDDIR)/html/_sources/
-	# Pagefind is best-effort: with html_file_suffix="" Sphinx emits
-	# extensionless pages and Pagefind's default `**/*.html` glob misses
-	# them. Sphinx's own searchindex.js still works. The leading `-`
-	# tells make to ignore a non-zero exit so the build doesn't fail.
-	-npx -y pagefind --site $(BUILDDIR)/html
+	# With html_file_suffix="" Sphinx emits extensionless pages that
+	# Pagefind's default **/*.html glob misses. --glob "**" indexes all
+	# files; Pagefind skips non-HTML content automatically. Sphinx's own
+	# searchindex.js remains the primary search.
+	npx -y pagefind --site $(BUILDDIR)/html --glob "**"
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
@@ -111,6 +114,12 @@ latex:
 	      "(use \`make latexpdf' here to do that automatically)."
 
 latexpdf:
+	@command -v latexmk >/dev/null 2>&1 || { \
+		echo "ERROR: latexmk not found."; \
+		echo "Install it with:  sudo apt-get install texlive-full latexmk"; \
+		echo "  (or on Fedora:  sudo dnf install texlive-scheme-full latexmk)"; \
+		exit 1; \
+	}
 	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
 	cp preface/*.png $(BUILDDIR)/latex
 	cp preface/*.jpg $(BUILDDIR)/latex

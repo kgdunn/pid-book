@@ -36,6 +36,9 @@ verify locally that **both** `make html` and `make latexpdf` still succeed
 before opening the PR. A broken HTML build is usually obvious; a broken
 LaTeX build often only surfaces in the PDF.
 
+If you need a quick test `make text` MUST succeed: no warnings and no errors
+allowed.
+
 ## URLs and HTML output: no `.html` extension, ever
 
 The book at <https://learnche.org/pid> has always been served with
