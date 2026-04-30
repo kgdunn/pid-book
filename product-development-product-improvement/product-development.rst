@@ -127,13 +127,13 @@ Problems with the specifications
 
 	*	Closeness to a lab-scale specification is not the same as robustness in production or in the customer's hands. An optimum found in the lab can perform poorly at full scale.
 
-Problems in the Design step
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 .. index::
 	single: model inversion
 	pair: model inversion; product development
 	see: inverse approach; model inversion
+
+Problems in the Design step
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 	*	The first iteration has little or no data, so the search direction has to come from prior knowledge or :ref:`screening designs <DOE-saturated-screening-designs>`.
 
