@@ -3,6 +3,17 @@
 Applications of Latent Variable Models
 =====================================================
 
+.. index::
+	pair: applications; latent variable modelling
+	pair: troubleshooting; latent variable modelling
+	pair: process monitoring; latent variable modelling
+	single: multivariate statistical process control (MSPC)
+	see: MSPC; multivariate statistical process control (MSPC)
+	single: soft sensor
+	see: inferential sensor; soft sensor
+	single: model inversion
+	single: new product development
+
 Improved process understanding
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -139,7 +150,7 @@ The general principle in model inversion problems is to manipulate the any degre
 Predictive modelling (inferential sensors)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This section will be expanded soon, but we give an outline here of what inferential sensors are, and how they are built. These sensors also go by the names of software sensors or just soft sensors.
+This section will be expanded soon, but we give an outline here of what :index:`inferential sensors <single: soft sensor>` are, and how they are built. These sensors also go by the names of software sensors or just soft sensors.
 
 The intention of an inferential sensor is to infer a hard-to-measure property, usually a lab measurement or an expensive measurement, using a combination of process data and software-implemented algorithms. 
 
@@ -244,6 +255,11 @@ The usual phase II approach when an alarm is raised is to investigate the variab
 
 Dealing with higher dimensional data structures
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. index::
+	single: multivariate image analysis (MIA)
+	single: image unfolding
+	pair: batch data analysis; latent variable modelling
 
 This section just gives a impression how 3-D and higher dimensional data sets are dealt with. Tools such as PCA and PLS work on two-dimensional matrices. When we receive a 3-dimensional array, such as an image, or a batch data set, then we must unfold that array into a (2D) matrix if we want to use PCA and PLS in the usual manner.
 

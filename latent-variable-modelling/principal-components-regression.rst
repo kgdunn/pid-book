@@ -3,6 +3,12 @@
 Principal Component Regression (PCR)
 =======================================
 
+.. index::
+	single: principal component regression (PCR)
+	see: PCR; principal component regression (PCR)
+	pair: principal component regression (PCR); latent variable modelling
+	single: collinearity
+
 Principal component regression (PCR) is an alternative to multiple linear regression (MLR) and has many advantages over MLR.
 
 In :ref:`multiple linear regression <LS_multiple_X_MLR>` we have two matrices (blocks): :math:`\mathbf{X}`, an :math:`N \times K` matrix whose columns we relate to the single vector, :math:`\mathbf{y}`, an :math:`N \times 1` vector, using a model of the form: :math:`\mathbf{y} = \mathbf{Xb}`. The solution vector :math:`\mathbf{b}` is found by solving :math:`\mathbf{b} = \left(\mathbf{X'X}\right)^{-1}\mathbf{X'y}`. The variance of the estimated solution is given by :math:`\mathcal{V}(\mathbf{b}) = \left(\mathbf{X'X}\right)^{-1}S_E^2`.

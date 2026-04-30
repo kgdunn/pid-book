@@ -2,6 +2,10 @@
 PLS Exercises
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	pair: exercises; projection to latent structures (PLS)
+	pair: cheddar cheese example; projection to latent structures (PLS)
+
 .. _LVM-cheddar-cheese-example:
 
 The taste of cheddar cheese

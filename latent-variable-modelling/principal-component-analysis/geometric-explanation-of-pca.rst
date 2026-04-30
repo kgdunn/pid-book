@@ -5,6 +5,12 @@ Geometric explanation of PCA
 
 .. index::
 	pair: principal component analysis; latent variable modelling
+	single: principal component analysis (PCA)
+	single: principal component
+	pair: score; principal component analysis
+	pair: loading vector; principal component analysis
+	single: hyperplane
+	pair: residual error; principal component analysis
 
 We refer to a :math:`K`-dimensional space when referring to the data in |X|. We will start by looking at the geometric interpretation of PCA when |X| has 3 columns, in other words a 3-dimensional space, using measurements: :math:`[x_1, x_2, x_3]`.
 

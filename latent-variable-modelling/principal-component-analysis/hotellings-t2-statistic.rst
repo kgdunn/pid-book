@@ -3,6 +3,11 @@
 Hotelling's T²
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	single: Hotelling's T-squared statistic
+	see: T-squared statistic; Hotelling's T-squared statistic
+	pair: Hotelling's T-squared statistic; principal component analysis
+
 The final quantity from a PCA model that we need to consider is called Hotelling's |T2| value. Some PCA models will have many components, :math:`A`, so an initial screening of these components using score scatterplots will require reviewing :math:`A(A-1)/2` scatterplots. The |T2| value for the :math:`i^\text{th}` observation is defined as:
 
 .. math::

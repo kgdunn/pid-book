@@ -3,12 +3,21 @@
 Algorithms to calculate (build) PCA models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	pair: algorithms; principal component analysis
+
 The different algorithms used to build a PCA model provide a different insight into the model's structure and how to interpret it. These algorithms are a reflection of how PCA has been used in different disciplines: PCA is called by different names in each area.
 
 .. _LVM-eigenvalue-decomposition:
 
 Eigenvalue decomposition
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+	single: eigenvalue decomposition
+	single: eigenvalue
+	single: eigenvector
+	single: Lagrange multiplier
 
 .. Note:: The purpose of this section is not the theoretical details, but rather the interesting interpretation of the PCA model that we obtain from an eigenvalue decomposition.
 
@@ -66,6 +75,10 @@ However, we should note that calculating the latent variable model using an eige
 Singular value decomposition
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. index::
+	single: singular value decomposition (SVD)
+	see: SVD; singular value decomposition (SVD)
+
 .. TODO: Provide additional insight here on how this is equivalent to rotation, scaling, rotation: break down the data into these 3 SVD components
 
 The singular value decomposition (SVD), in general, decomposes a given matrix |X| into three other matrices:
@@ -86,6 +99,12 @@ Like the eigenvalue method, the SVD method calculates all principal components p
 
 Non-linear iterative partial least-squares (NIPALS)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+	single: NIPALS algorithm
+	pair: NIPALS algorithm; principal component analysis
+	single: power algorithm
+	see: power algorithm; NIPALS algorithm
 
 .. ADD arrow diagram, with numeric labels next to arrows, as in the PLS section.
 
@@ -142,7 +161,7 @@ We will show the algorithm here for the :math:`a^\text{th}` component, where :ma
 		
 	For the first component, :math:`\mathbf{X}_{a}` is just the preprocessed raw data. So we can see that the second component is actually calculated on the residuals :math:`\mathbf{E}_1`, obtained after extracting the first component.
 	
-	This is called *deflation*, and nicely shows why each component is orthogonal to the others. Each subsequent component is only seeing variation remaining after removing all the others; there is no possibility that two components can explain the same type of variability.
+	This is called :index:`deflation <single: deflation>`, and nicely shows why each component is orthogonal to the others. Each subsequent component is only seeing variation remaining after removing all the others; there is no possibility that two components can explain the same type of variability.
 	
 	After deflation we go back to step 1 and repeat the entire process for the next component. Just before accepting the new component we can use a test, such as a randomization test, or :ref:`cross-validation <LVM_number_of_components>`, to decide whether to keep that component or not.
 	

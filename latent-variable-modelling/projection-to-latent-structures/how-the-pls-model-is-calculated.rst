@@ -4,6 +4,10 @@
 How the PLS model is calculated
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	pair: NIPALS algorithm; projection to latent structures (PLS)
+	pair: deflation; projection to latent structures (PLS)
+
 This section assumes that you are comfortable with the :ref:`NIPALS algorithm for calculating a PCA model <LVM_PCA_NIPALS_algorithm>` from |X|. The NIPALS algorithm proceeds in exactly the same way for PLS, except we iterate through both blocks of |X| and |Y|.
 
 .. figure:: ../../figures/pls/NIPALS-iterations-PLS.png

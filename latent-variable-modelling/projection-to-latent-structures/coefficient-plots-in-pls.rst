@@ -1,6 +1,10 @@
 Coefficient plots in PLS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	single: coefficient plot
+	pair: coefficient plot; projection to latent structures (PLS)
+
 After building an initial PLS model one of the most informative plots to investigate are plots of the :math:`\mathbf{r:c}` vectors: using either bar plots or scatter plots. (The notation :math:`\mathbf{r:c}` implies we superimpose a plot of :math:`\mathbf{r}` on a plot of :math:`\mathbf{c}`.) These plots show the relationship between variables in |X|, between variables in |Y|, as well as the latent variable relationship between these two spaces. The number of latent variables, |A|, is much smaller number than the original variables, :math:`K + M`, effectively compressing the data into a small number of informative plots.
 
 There are models where the number of components is of moderate size, around |A| = 4 to 8, in which case there are several combinations of :math:`\mathbf{r:c}` plots to view. If we truly want to understand how all the |X| and |Y| variables are related, then we must spend time investigating all these plots. However, the coefficient plot can be a useful compromise if one wants to learn, in a single plot,how the |X| variables are related to the |Y| variables using *all* |A| *components*.

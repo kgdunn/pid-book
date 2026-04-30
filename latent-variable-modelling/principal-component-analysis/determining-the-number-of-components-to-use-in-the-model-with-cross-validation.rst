@@ -3,6 +3,11 @@
 Determining the number of components to use in the model with cross-validation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	single: Q-squared statistic
+	pair: number of components; latent variable modelling
+	single: over-fitting
+
 ..	Any recorded values we have from a system, in |X|, can be broken down into 2 parts: the data structure that is systematic, :math:`\mathbf{TP}'`, and an error component, :math:`\textbf{E}`.
 
 .. The problem of determining "*how many components*" is related to knowing when we have extracted all the systematic variables from the data, |X|, into the latent variable model, :math:`\mathbf{TP}'`. Step back for a minute and think what that means: it says we should stop adding latent variables to the model when there is no more systematic correlation remaining between the variables in |X|. That's all the PCA does: extract the variability in |X|. We should stop adding components when we have extracted, *reproducibly*, all systematic variation.

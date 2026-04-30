@@ -3,6 +3,11 @@
 A conceptual explanation of PLS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	pair: X-space; projection to latent structures (PLS)
+	pair: Y-space; projection to latent structures (PLS)
+	pair: inner relation; projection to latent structures (PLS)
+
 Now that you are comfortable with the concept of a latent variable using PCA and PCR, you can interpret PLS as a latent variable model, but one that has a different objective function. In PCA the objective function was to calculate each latent variable so that it best explains the available variance in :math:`\mathbf{X}_a`, where the subscript |A| refers to the matrix :math:`\mathbf{X}` *before* extracting the :math:`a^\text{th}` component.
 
 In PLS, we also find these latent variables, but we find them so they best explain :math:`\mathbf{X}_a` and best explain :math:`\mathbf{Y}_a`, and so that these latent variables have the strongest possible relationship between :math:`\mathbf{X}_a` and :math:`\mathbf{Y}_a`.
@@ -71,7 +76,12 @@ As this shows then, maximizing the covariance between :math:`\mathbf{t}'_a` and 
 
 These scores, :math:`\mathbf{t}'_a` and :math:`\mathbf{u}_a`, are found subject to the constraints that :math:`\mathbf{\mathbf{w}'_a \mathbf{w}_a} = 1.0` and :math:`\mathbf{\mathbf{c}'_a \mathbf{c}_a} = 1.0`. This is similar to PCA, where the loadings :math:`\mathbf{p}_a` were constrained to unit length. In PLS we constrain the loadings for |X|, called :math:`\mathbf{w}_a`, and the loadings for |Y|, called :math:`\mathbf{c}_a`, to unit length.
 
-The above is a description of one variant of PLS, `known as SIMPLS <https://dx.doi.org/10.1016/0169-7439(93)85002-X>`_ (simple PLS). 
+The above is a description of one variant of PLS, `known as SIMPLS <https://dx.doi.org/10.1016/0169-7439(93)85002-X>`_ (simple PLS).
+
+.. index::
+	single: SIMPLS
+	pair: weight vector (w, c); projection to latent structures (PLS)
+	pair: scores (t, u); projection to latent structures (PLS)
 
 .. _LVM_PLS_geometric_interpretation:
 

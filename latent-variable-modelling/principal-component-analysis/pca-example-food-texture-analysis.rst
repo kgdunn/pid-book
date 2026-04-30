@@ -3,6 +3,9 @@
 PCA example: Food texture analysis
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	pair: food texture example; latent variable modelling
+
 Let's take a look at an example to consolidate and extend the ideas introduced so far. This `data set is from a food manufacturer <http://openmv.net/info/food-texture>`_ making a pastry product. Each sample (row) in the data set is taken from a batch of product where 5 quality attributes are measured:
 
 	#.	Percentage oil in the pastry

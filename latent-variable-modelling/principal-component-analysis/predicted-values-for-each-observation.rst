@@ -54,7 +54,11 @@ Once we have the predicted value for an observation, we are also interested in t
 					   &= \mathbf{x}'_i - \mathbf{x}'_i \mathbf{P} \mathbf{P}' \\
 					   &= \mathbf{x}'_i \left(I_{K \times K} - \mathbf{P} \mathbf{P}' \right)
 
-The residual *length* or *distance* is the sum of squares of this residual, then we take the square root to form a distance. Technically the *squared prediction error* (SPE) is just the sum of squares for each observation, but often we refer to the square root of this quantity as the SPE as well. Some software packages will scale the root of the SPE by some value; you will see this referred to as the DModX, distance to the model plane for |X|. 
+The residual *length* or *distance* is the sum of squares of this residual, then we take the square root to form a distance. Technically the :index:`squared prediction error <single: squared prediction error (SPE)>` (SPE) is just the sum of squares for each observation, but often we refer to the square root of this quantity as the SPE as well. Some software packages will scale the root of the SPE by some value; you will see this referred to as the :index:`DModX <single: DModX>`, distance to the model plane for |X|.
+
+.. index::
+	see: SPE; squared prediction error (SPE)
+	see: distance to model; DModX 
 
 .. math::
 	\text{SPE}_i &= \sqrt{\mathbf{e}'_{i,A} \mathbf{e}_{i,A}} \\

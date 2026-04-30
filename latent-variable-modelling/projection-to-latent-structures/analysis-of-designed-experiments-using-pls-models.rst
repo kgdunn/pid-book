@@ -3,6 +3,9 @@
 Analysis of designed experiments using PLS models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	pair: designed experiments; projection to latent structures (PLS)
+
 .. NOTE: you already have some of these ideas in the section "LVM-preprocessing": combine them; cross reference them?
 
 Data from a designed experiment, particularly factorial experiments, will have independent columns in |X|. These data tables are adequately analyzed using :ref:`multiple linear regression <LS_multiple_X_MLR>` (MLR) least squares models. 

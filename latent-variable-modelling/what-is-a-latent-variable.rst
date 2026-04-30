@@ -3,6 +3,8 @@ What is a latent variable?
 
 .. index::
 	pair: latent variable modelling; what is a latent variable
+	single: latent variable
+	single: latent variable modelling
 
 We will take a look at what a latent variable is conceptually, geometrically, and mathematically.
 
@@ -61,7 +63,7 @@ and suitable values for each of the weights are :math:`p_{1,1} = p_{2,1} = p_{3,
 
 .. _LVM_linear_combination:
 
-Mathematically the correct way to say this is that :math:`t_1` is a *linear combination* of the raw measurements (:math:`x_1, x_2, x_3` and :math:`x_4`) given by the weights (:math:`p_{1,1}, p_{2,1}, p_{3,1}, p_{4,1}`).
+Mathematically the correct way to say this is that :math:`t_1` is a :index:`linear combination <single: linear combination>` of the raw measurements (:math:`x_1, x_2, x_3` and :math:`x_4`) given by the weights (:math:`p_{1,1}, p_{2,1}, p_{3,1}, p_{4,1}`).
 
 **Geometrically**
 

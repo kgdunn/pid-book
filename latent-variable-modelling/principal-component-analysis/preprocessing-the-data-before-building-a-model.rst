@@ -3,6 +3,11 @@
 Preprocessing the data before building a model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	pair: preprocessing; latent variable modelling
+	single: unit-variance scaling
+	see: unit-variance scaling; autoscaling
+
 The previous sections of this chapter considered the interpretation of a PCA latent variable model. From this section onwards we return to filling important gaps in our knowledge. There are 3 major steps to building any latent variable models:
 
 	#.	Preprocessing the data 
@@ -14,6 +19,9 @@ We discuss the first step in this section, and the next two steps after that.
 There are a number of possibilities for data preprocessing. We mainly discuss centering and scaling in this section, but outline a few other tools first. These steps are usually univariate, i.e. they are applied separately to each column in the raw data matrix |Xraw|. We call the matrix of preprocessed data |X|, this is the matrix that is then presented to the algorithm to build the latent variable model. Latent variable algorithms seldom work on the raw data.
 
 **Transformations**
+
+	.. index::
+		pair: transformations; preprocessing
 
 	The columns in |Xraw| can be transformed: log, square-root and various powers (-1, -0.5, 0.5, 2) are popular options. These are used to reduce the effect of extreme measurements (e.g. log transforms), or because the transformed variable is known to be more correlated with the other variables. An example of this is in a distillation column: the inverse temperature is known to more correlated to the vapour pressure, which we know from first-principles modelling. Using the untransformed variable will lead to an adequate model, but the transformed variable, e.g. using the inverse temperature, can lead to a better model.
 	
@@ -37,7 +45,7 @@ There are a number of possibilities for data preprocessing. We mainly discuss ce
 
 **Dealing with outliers**
 
-	Users often go through a phase of pruning outliers prior to building a latent variable model.  There are often *uninteresting* outliers, for example when a temperature sensor goes off-line and provides a default reading of 0.0 instead of its usual values in the range of 300 to 400K.  The automated tools used to do this are known by names such as trimming and winsorizing. These tools remove the upper and lower :math:`\alpha` percent of the column's tails on the histogram. But care should be taken with these automated approaches, since the most interesting observations are often in the outliers. 
+	Users often go through a phase of pruning outliers prior to building a latent variable model.  There are often *uninteresting* outliers, for example when a temperature sensor goes off-line and provides a default reading of 0.0 instead of its usual values in the range of 300 to 400K.  The automated tools used to do this are known by names such as :index:`trimming <single: trimming>` and :index:`winsorizing <single: winsorizing>`. These tools remove the upper and lower :math:`\alpha` percent of the column's tails on the histogram. But care should be taken with these automated approaches, since the most interesting observations are often in the outliers. 
 
 	The course of action when removing outliers is to always mark their values as missing just for that variable in |Xraw|, rather than removing the entire row in |Xraw|. We do this because we can use the algorithms to calculate the latent variable model when missing data are present within a row.
 
