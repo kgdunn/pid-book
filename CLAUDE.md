@@ -31,7 +31,7 @@ If you need to bump the version, edit `pyproject.toml`.
 ## Build verification before claiming a build change works
 
 If a PR touches the build (`Makefile`, `pyproject.toml`, `conf.py`,
-`my-extensions/`, `sphinx_rtd_theme_kgdmod/`, or anything imported by them),
+`my-extensions/`, `_static/`, `_templates/`, or anything imported by them),
 verify locally that **both** `make html` and `make latexpdf` still succeed
 before opening the PR. A broken HTML build is usually obvious; a broken
 LaTeX build often only surfaces in the PDF.

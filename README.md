@@ -94,7 +94,8 @@ pid-book/
 ├── product-development-product-improvement/  Ch 7
 ├── my-extensions/                            Custom Sphinx extensions
 │                                             (youtube, datacamplite)
-├── sphinx_rtd_theme_kgdmod/                  Forked RTD theme used by the build
+├── _static/                                  Custom CSS and favicon (sphinx-book-theme)
+├── _templates/                               Custom Jinja2 templates (Pagefind search)
 ├── figures/                                  Symlink to the figures repo
 ├── conf.py, contents.rst                     Sphinx config + master ToC
 ├── Makefile                                  Build entry points
