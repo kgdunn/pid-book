@@ -3,6 +3,13 @@
 Changing one single variable at a time (COST)
 ==============================================
 
+.. index::
+	pair: COST approach; experiments
+	pair: one-factor-at-a-time; experiments
+	single: Fisher, R. A.
+	see: OFAT; one-factor-at-a-time
+	see: change one single variable at a time; COST approach
+
 .. youtube:: https://www.youtube.com/watch?v=BpCxktmoTig&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=35
 
 How do we go about running our experiments when there is more than one variable present that affects our outcome, :math:`y`?  In this section we describe **how not to do it**.

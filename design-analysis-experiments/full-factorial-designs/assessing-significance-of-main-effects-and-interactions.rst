@@ -18,6 +18,10 @@ There are two main ways we can determine if a main effect or interaction is sign
 Pareto plot
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. index::
+	single: Pareto plot of effects
+	see: Pareto plot; Pareto plot of effects
+
 .. Note:: This is a makeshift approach that is only applicable if all the factors are centered and scaled.
 
 

@@ -3,6 +3,10 @@
 Why learning about systems is important
 ===========================================
 
+.. index::
+	single: cause and effect
+	single: Box, George E. P.
+
 One of the important reasons why we must experiment is that it brings us increased knowledge and a better understanding of our system. That could lead to profit, or it could help us manufacture products more efficiently. Once we learn what really happens in our system, we can fix problems and optimize the system, because we have an improved understanding of cause and effect.
 
 As described :ref:`in the first reference, the book by Box, Hunter and Hunter <DOE_references>`, learning from and improving a system is an iterative process. It usually follows this cycle:
@@ -12,7 +16,7 @@ As described :ref:`in the first reference, the book by Box, Hunter and Hunter <D
 	*	Experiment and collect data. Are the consequences that we expected visible in the data?
 	*	If so, it may lead to the next hypothesis. If not, we formulate an alternative hypothesis. Or perhaps it is not so clear cut: we see the consequence, but not to the extent expected. Perhaps modifications are required in the experimental conditions.
 
-And so we go about learning. One of the most frequent reasons we experiment is to fix a problem with our process. This is called troubleshooting. We can list several causes for the problem, change the factors, isolate the problem, and thereby learn more about our system while fixing the problem. 
+And so we go about learning. One of the most frequent reasons we experiment is to fix a problem with our process. This is called :index:`troubleshooting`. We can list several causes for the problem, change the factors, isolate the problem, and thereby learn more about our system while fixing the problem.
 
 An engineering example
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,6 +29,9 @@ It is only by *intentional manipulation* of our systems that we learn from them.
 
 Feedback control
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. index::
+	single: feedback control
 
 Feedback control systems keep the region of operation to a small zone. Better yields or improved operation might exist beyond the bounds created by our automatic control systems. Due to safety concerns, and efficient manufacturing practices, we introduce automated feedback control systems to prevent deviating too far from a desired region of operation. As a result, data collected from such systems has low information quality.
 	

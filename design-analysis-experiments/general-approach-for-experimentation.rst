@@ -2,6 +2,10 @@
 General approach for experimentation
 =====================================
 
+.. index::
+	pair: sequential experiments; experiments
+	pair: center point; experiments
+
 .. Reference: p 251 of BHH2, and personal experience
 
 We complete this section with some guidance for experimentation in general. The main point is that experiments are never run in one go. You will always have more questions after the first round. Box, Hunter and Hunter provide two pieces of guidance on this:

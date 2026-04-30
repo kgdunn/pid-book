@@ -1,6 +1,11 @@
 Full factorial designs
 =======================
 
+.. index::
+	pair: full factorial; experiments
+	pair: factorial design; experiments
+	single: 2^k design
+
 .. youtube:: https://www.youtube.com/watch?v=LhK38-4ruU0&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=36
 
 In this section we learn how, and why, we should change more than one variable at a time. We will use factorial designs because

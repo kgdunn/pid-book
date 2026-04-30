@@ -5,7 +5,7 @@ Generators and defining relationships
 
 .. youtube:: https://www.youtube.com/watch?v=3Wp-0aOo-ns&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=45
 
-Calculating which main effects and two-factor interactions will be confounded with each other, called the :index:`confounding pattern`, can be tedious for larger values of :math:`k`. Here we introduce an easy way to calculate the confounding pattern.
+Calculating which main effects and two-factor interactions will be confounded with each other, called the :index:`confounding pattern <pair: confounding pattern; experiments>`, can be tedious for larger values of :math:`k`. Here we introduce an easy way to calculate the confounding pattern.
 
 Recall for the half-fraction of a :math:`2^k` factorial that the first  :math:`k-1` main factors are written down, then the final :math:`k^\text{th}` factor is *generated* from the product of the previous :math:`k-1` factors. Consider the case of a :math:`2^4` half fraction with factors **A**, **B**, **C** and **D**. The half-fraction has :math:`\frac{1}{2} 2^4 = 2^3 = 8` experiments, so we write this :math:`2^3` factorial in factors **A**, **B**, and **C**, then set:
 

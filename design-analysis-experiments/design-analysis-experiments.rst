@@ -379,8 +379,11 @@ Another term we will use is factors. In the plant example, you could have change
 
 .. index::
 	pair: categorical factor; experiments
+	pair: numeric factor; experiments
+	pair: qualitative factor; experiments
+	see: quantitative factor; numeric factor
 
-All experiments must have at least one factor that is changed. We distinguish between two types of factors: *numeric factors* and *categorical factors*. 
+All experiments must have at least one factor that is changed. We distinguish between two types of factors: *numeric factors* and *categorical factors*.
 
 Numeric factors are quantified by measuring, such as giving 15 mL of water or 30 mL of water to the plant each day. An important point about numerical variables is that there is some order to them. 15 mL of water is less than 30 mL or water. Another name for this type of factor is a quantitative factor.
 

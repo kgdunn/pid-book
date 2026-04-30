@@ -7,6 +7,14 @@ Response surface methods
 
 .. Add this somewhere appropriate: http://xkcd.com/605/   .... on extrapolation
 
+.. index::
+	pair: steepest ascent; response surface
+	pair: coded units; experiments
+	pair: contour plot; response surface
+	see: path of steepest ascent; steepest ascent
+	see: real-world units; coded units
+	see: RSM; response surface methods
+
 The purpose of :index:`response surface methods <pair: response surface methods; experiments>` (RSM) is to optimize a process or system. RSM is a way to explore the effect of operating conditions (the factors) on the response variable, :math:`y`. As we map out the unknown response surface of :math:`y`, we move our process as close as possible towards the optimum, taking into account any constraints.
 
 Initially, when we are far away from the optimum, we will use factorial experiments. As we approach the optimum then these factorials are replaced with better designs that more closely approximate conditions at the optimum.
@@ -310,12 +318,16 @@ The general approach for response surface modelling
 
 #.	Response surface methods generally work best when the variables we adjust are numerically continuous. Categorical variables (yes/no, catalyst A or B) are handled by fixing them at one or the other value, and then performing the optimization conditional on those selected values. It is always worth investigating the alternative values once the optimum has been reached.
 
-#.	Many software packages provide tools that help with an RSM study. If you would like to use R in your work, we highly recommend the ``rsm`` package by Russel Lenth, available in R. You can read more about the package in `this article <https://cran.r-project.org/web/packages/rsm/vignettes/rsm.pdf>`_ as well as a `case-study <https://cran.r-project.org/web/packages/rsm/vignettes/rs-illus.pdf>`_.
+#.	Many software packages provide tools that help with an RSM study. If you would like to use R in your work, we highly recommend the ``rsm`` package by :index:`Russel Lenth <single: Lenth, Russel>`, available in R. You can read more about the package in `this article <https://cran.r-project.org/web/packages/rsm/vignettes/rsm.pdf>`_ as well as a `case-study <https://cran.r-project.org/web/packages/rsm/vignettes/rs-illus.pdf>`_.
 
 .. _DOE-EVOP:
 
 Evolutionary operation
 ===========================
+
+.. index::
+	single: evolutionary operation (EVOP)
+	see: EVOP; evolutionary operation (EVOP)
 
 Evolutionary operation (EVOP) is a tool to help maintain a full-scale process at its optimum. Since the process is not constant, the optimum will gradually move away from its current operating point. Chemical processes drift due to things such as heat-exchanger fouling, build-up inside reactors and tubing, catalyst deactivation, and other slowly varying disturbances in the system.
 

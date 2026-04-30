@@ -3,6 +3,11 @@
 Design resolution
 ~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	single: resolution III design
+	single: resolution IV design
+	single: resolution V design
+
 The :index:`resolution <pair: design resolution; experiments>` of a design is given by the length of the shortest word in the defining relation. We normally write the resolution as a subscript to the factorial design using Roman numerals. Some examples:
 
 	#.	The :math:`2^{7-4}` *example 1* in the previous section had  the shortest word of 3 characters, so this would be called a :math:`2^{7-4}_\text{III}` design. Main effects were confounded with 2-factor interactions in that example.
