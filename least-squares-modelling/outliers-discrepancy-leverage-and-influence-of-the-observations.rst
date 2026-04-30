@@ -32,10 +32,10 @@ Can we quantify how much *influence* these *discrepancies* have on the model; an
 Leverage
 ~~~~~~~~~~~~~~
 
-.. index:: 
+.. index::
 	pair: leverage; least squares
 
-Leverage measures how much each observation contributes to the model's prediction of :math:`\hat{y}_i`. It is also called the hat value, :math:`h_i`, and simply measures how far away the data point is from the center of the model, but it takes the model's correlation into account:
+Leverage measures how much each observation contributes to the model's prediction of :math:`\hat{y}_i`. It is also called the :index:`hat value <see: hat value; leverage>`, :math:`h_i`, and simply measures how far away the data point is from the center of the model, but it takes the model's correlation into account:
 
 	.. math::
 
@@ -75,7 +75,9 @@ Influence
 
 The :index:`influence <pair: influence; least squares>` of each data point can be quantified by seeing how much the model changes when we omit that data point. The influence of a point is a combination its leverage and its discrepancy. In model A, the square point had large discrepancy but low leverage, so its influence on the model parameters (slope and intercept) was small. For model C, the square point had high leverage, but low discrepancy, so again the change in the slope and intercept of the model was small. However model B had both large discrepancy and high leverage, so its influence is large.
 
-.. index:: Cook's D-statistic
+.. index::
+	single: Cook's D-statistic
+	see: Cook's distance; Cook's D-statistic
 
 ..
 

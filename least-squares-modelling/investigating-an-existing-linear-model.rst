@@ -22,7 +22,7 @@ The assumption of normally distributed errors
 
 We look for normally distributed errors because if they are non-normal, then the standard error, :math:`S_E` and the other variances that depend on :math:`S_E`, such as :math:`\mathcal{V}(b_1)`, could be inflated, and their interpretation could be in doubt. This might, for example, lead us to infer that a slope coefficient is not important when it actually is.
 
-This is one of the easiest assumptions to verify: use a :ref:`q-q plot <univariate_check_for_normality_qqplot>` to assess the distribution of the residuals. Do *not* plot the residuals in sequence or some other order to verify normality - it is extremely difficult to see that. A q-q plot highlights very clearly when tails from the residuals are too heavy. A histogram may also be used, but for real data sets, the choice of bin width can dramatically distort the interpretation - rather use a q-q plot. Some code for R:
+This is one of the easiest assumptions to verify: use a :index:`q-q plot <pair: q-q plot; residuals>` (see the :ref:`univariate review <univariate_check_for_normality_qqplot>`) to assess the distribution of the residuals. Do *not* plot the residuals in sequence or some other order to verify normality - it is extremely difficult to see that. A q-q plot highlights very clearly when tails from the residuals are too heavy. A histogram may also be used, but for real data sets, the choice of bin width can dramatically distort the interpretation - rather use a q-q plot. Some code for R:
 
 .. code-block:: s
 
@@ -93,12 +93,16 @@ This problem reveals itself by showing a fan shape across the plot; an example i
 	:width: 900px
 	:alt: fake width
 
-To counteract this problem one can use weighted least squares, with smaller weights on the high-variance observations, i.e. apply a weight inversely proportional to the variance. Weighted least squares minimizes: :math:`f(\mathrm{b}) = \sum_i^n{(w_ie_i)^2}`, with different weights, :math:`w_i` for each error term. More on this topic can be found in the book by Draper and Smith (p 224 to 229, 3rd edition).
+To counteract this problem one can use :index:`weighted least squares <pair: weighted least squares; WLS>`, with smaller weights on the high-variance observations, i.e. apply a weight inversely proportional to the variance. Weighted least squares minimizes: :math:`f(\mathrm{b}) = \sum_i^n{(w_ie_i)^2}`, with different weights, :math:`w_i` for each error term. More on this topic can be found in the book by Draper and Smith (p 224 to 229, 3rd edition).
 
 .. _LS-autocorrelation-test:
 
 Lack of independence in the data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. index::
+	single: autocorrelation
+	see: WLS; weighted least squares
 
 .. youtube:: https://www.youtube.com/watch?v=7fd8Qu1i3Dk&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=26
 
@@ -126,7 +130,7 @@ Here are some examples of the autocorrelation plot: in the first case you would 
 	:scale: 70
 	:alt: fake width
 
-Another test for autocorrelation is the Durbin-Watson test. For more on this test see the book by Draper and Smith (Chapter 7, 3rd edition); in R you can use the ``durbinWatsonTest(model)`` function in ``library(car)``. Try generating autocorrelation of varying strength (positive, e.g. ``phi_long = 0.80`` and negative, e.g. ``phi_long = -0.75``) in the code below. Inspect the plots which are generated as a result, especially the time order plot: get a feeling for what a strong and weak positive/negative correlation looks like in the time order.
+Another test for autocorrelation is the :index:`Durbin-Watson test <pair: Durbin-Watson test; autocorrelation>`. For more on this test see the book by Draper and Smith (Chapter 7, 3rd edition); in R you can use the ``durbinWatsonTest(model)`` function in ``library(car)``. Try generating autocorrelation of varying strength (positive, e.g. ``phi_long = 0.80`` and negative, e.g. ``phi_long = -0.75``) in the code below. Inspect the plots which are generated as a result, especially the time order plot: get a feeling for what a strong and weak positive/negative correlation looks like in the time order.
 
 .. dcl:: R
 

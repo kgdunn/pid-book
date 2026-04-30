@@ -7,6 +7,9 @@ These topics are not covered in depth in this book, but might be of interest to 
 Nonparametric models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	see: locally weighted regression; LOESS
+
 :index:`Nonparametric modelling <single:nonparametric modelling>` is a general model where the relationship between :math:`x` and :math:`y` is of the form: :math:`y = f(x) + \varepsilon`, but the function :math:`f(x)`, i.e. the model, is left unspecified. The model is usually a smooth function.
 
 Consider the example of plotting Prestige (the `Pineo-Porter prestige <https://en.wikipedia.org/wiki/John_Porter_(sociologist)>`_ score) against Income, from the 1971 Canadian census. A snippet of the data is given by:
@@ -33,7 +36,7 @@ The plot on the left is the raw data, while on the right is the raw data with th
 	:scale: 70
 	:alt: fake width
 
-For bivariate cases, the nonparametric model is often called a *scatterplot smoother*. There are several methods to calculate the model; one way is by locally weighted scatterplot smoother (LOESS), described as follows. Inside a fixed subregion along the :math:`x`-axis (called the window):
+For bivariate cases, the nonparametric model is often called a :index:`scatterplot smoother <pair: scatterplot smoother; nonparametric modelling>`. There are several methods to calculate the model; one way is by :index:`locally weighted scatterplot smoother <pair: LOESS; nonparametric modelling>` (LOESS), described as follows. Inside a fixed subregion along the :math:`x`-axis (called the window):
 
 .. TODO: be specific in point 2 below
 
@@ -130,7 +133,9 @@ In this example the two models perform similarly in terms on their :math:`S_E`, 
 Logistic modelling (regression)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. index:: integer variables in least squares, logistic regression
+.. index::
+	single: logistic regression
+	see: logistic modelling; logistic regression
 
 There are many practical cases in engineering modelling where our |y|-variable is a discrete entity. The most common case is pass or failure, naturally coded as |y| = 0 for failure, and |y| = 1 is coded as success. Some examples:
 
@@ -166,7 +171,7 @@ Testing of least-squares models
 
 Before launching into this concept, first step back and understand why we are building least squares models. One objective is to learn more about our systems: (a) what is the effect of one variable on another, or (b) is the effect significant (examine the confidence interval). Another objective is purely predictive: build a model so that we can use it to make predictions. For this last case we must test our model's capability for accurate predictions.
 
-The gold standard is always to have a testing data set available to quantify how good (adequate) your least squares model is. It is important that (a) the test set has no influence on the calculation of the model parameters, and (b) is representative of how the model will be used in the future. We will illustrate this with 2 examples: you need to build a predictive model for product viscosity from 3 variables on your process. You have data available, once per day, for 2006 and 2007 (730 observations).
+The gold standard is always to have a :index:`testing data <pair: testing data; least squares>` set available to quantify how good (adequate) your least squares model is. It is important that (a) the test set has no influence on the calculation of the model parameters, and (b) is representative of how the model will be used in the future. We will illustrate this with 2 examples: you need to build a predictive model for product viscosity from 3 variables on your process. You have data available, once per day, for 2006 and 2007 (730 observations).
 
 	*	Use observation 1, 3, 5, 7, ... 729 to build the least squares model; then use observation 2, 4, 6, 8, ... 730 to test the model.
 	
@@ -174,7 +179,7 @@ The gold standard is always to have a testing data set available to quantify how
 
 In both cases, the testing data has no influence on the model parameters. However the first case is not representative of how the model will be used in the future. The results from the first case are likely to give over-optimistic results, while the second case represents the intended use of the model more closely, and will have more honest results. Find out sooner, rather than later, that the model's long-term performance is not what you expect. It may be that you have to keep rebuilding the model every 3 months, updating the model with the most recent data, in order to maintain it's predictive performance.
 
-How do we quantify this predictive performance?  A common way is to calculate the root mean square of the prediction error (:index:`RMSEP`), this is very similar to the :ref:`standard error <standard-error-section>` that we saw earlier for regression models. Assuming the errors are centered at zero and follow a normal distribution, the RMSEP can be interpreted as the standard deviation of the prediction residuals. It is important the RMSEP be calculated only from new, unseen testing data. By contrast, you might see the term RMSEE (root mean square error of estimation), which is the RMSEP, but calculated from the training (model-building) data. The :index:`RMSEE` :math:`\approx S_E` = standard error; the small difference being due to the denominator used (:math:`n` versus :math:`n-k`).
+How do we quantify this predictive performance?  A common way is to calculate the root mean square of the prediction error (:index:`RMSEP`), this is very similar to the :ref:`standard error <standard-error-section>` that we saw earlier for regression models. Assuming the errors are centered at zero and follow a normal distribution, the RMSEP can be interpreted as the standard deviation of the prediction residuals. It is important the RMSEP be calculated only from new, unseen testing data. By contrast, you might see the term RMSEE (root mean square error of estimation), which is the RMSEP, but calculated from the :index:`training data <pair: training data; least squares>` (model-building data). The :index:`RMSEE` :math:`\approx S_E` = standard error; the small difference being due to the denominator used (:math:`n` versus :math:`n-k`).
 
 .. math::
 
