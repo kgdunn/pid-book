@@ -1,8 +1,13 @@
 Least squares models with a single x-variable
 ======================================================
 
-.. index:: 
+.. index::
 	pair:	derivation; least squares
+	pair:	slope; least squares
+	pair:	intercept; least squares
+	single: ordinary least squares (OLS)
+	see:    OLS; ordinary least squares (OLS)
+	see:    predicted value; fitted value
 
 The general linear least squares model is a very useful tool (in the right circumstances), and it is the workhorse for a number of algorithms in data analysis.
 
@@ -153,7 +158,7 @@ Now divide the first line through by :math:`n` (the number of data pairs we are 
 
 #.	What does it mean that :math:`\sum_i{(\hat{y}_i e_i)} =  \hat{y}^T e = 0`
 
-		-	The fitted values are uncorrelated with the residuals.
+		-	The :index:`fitted values <pair: fitted value; least squares>` are uncorrelated with the residuals.
 
 #.	How could the denominator term for :math:`b_1` equal zero?  And what would that mean?
 

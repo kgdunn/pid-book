@@ -16,6 +16,9 @@ In order to perform the second part we need to make a few assumptions about the 
 The variance breakdown
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	pair: F-statistic; least squares
+
 .. youtube:: https://www.youtube.com/watch?v=xIjAD_6nXto&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=21
 
 Recall that :ref:`variability <univariate-about-variability>` is what makes our data interesting. Without variance (i.e. just flat lines) we would have nothing to do. The :index:`analysis of variance` is just a tool to show how much variability in the :math:`y`-variable is explained by:
@@ -159,7 +162,10 @@ Derivation of :math:`R^2`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. index:: R2 (correlation coefficient)
+.. index::
+	single: R-squared
+	see: R²; R-squared
+	see: coefficient of determination; R-squared
 
 .. To use this derivation you have to work in deviation variables (x-mean(x)) and (y-mean(y)). Too early in the notes to do that.
 	.. image:: ../figures/least-squares/angle-between-two-vectors.png
@@ -197,7 +203,7 @@ How **good**, or how suitable a model is *for a particular purpose* is almost ne
 - use testing data to verify the model's predictive performance,
 - using cross-validation tools (we will see this topic later on) to see how well the model performs on new, unseen and unused testing data.
 
-We will see later on that :math:`R^2` can be arbitrarily increased by adding terms to the linear model, as we will see in the section on :ref:`multiple linear regression (MLR) <LS_multiple_X_MLR>`. So sometimes you will see the adjusted :math:`R^2` used to account for the :math:`k` terms used in the model:
+We will see later on that :math:`R^2` can be arbitrarily increased by adding terms to the linear model, as we will see in the section on :ref:`multiple linear regression (MLR) <LS_multiple_X_MLR>`. So sometimes you will see the :index:`adjusted R-squared <single: adjusted R-squared>` used to account for the :math:`k` terms used in the model:
 
 .. math::
 
@@ -224,7 +230,9 @@ Assumptions required for analysis of the least squares model
 
 .. index::
 	pair: least squares; assumptions for
-	
+	single: constant error variance
+	see: homoscedasticity; constant error variance
+
 .. youtube:: https://www.youtube.com/watch?v=Qls1R2HOzy0&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=22
 
 Recall that the population (true) model is :math:`y_i = \beta_0 + \beta_1 x_i + \epsilon_i` and :math:`b_0` and :math:`b_1` are our estimates of the model's coefficients, and :math:`\mathrm{e}` be the estimate of the true error :math:`\epsilon`. Note we are assuming imperfect knowledge of the :math:`y_i` by lumping all errors into :math:`e_i`. For example, measurement error, structural error (we are not sure the process follows a linear structure), inherent randomness, and so on.
@@ -310,7 +318,7 @@ where :math:`j` is an index for all data points used to build the least squares 
 
 #.	What do we use for the numerator term :math:`\mathcal{V}\{y_i\}`?
 
-	-	This term represents the variance of the :math:`y_i` values at a given point :math:`x_i`. If (a) there is no evidence of lack-of-fit, and (b) if |y| has the same error at all levels of |x|, then we can write that :math:`\mathcal{V}\{y_i\}` = :math:`\mathcal{V}\{e_i\}  = \dfrac{\sum{e_i^2}}{n-k}`, where :math:`n` is the number of data points used, and :math:`k` is the number of coefficients estimated (2 in this case). The :math:`n-k` quantity is the degrees of freedom.
+	-	This term represents the variance of the :math:`y_i` values at a given point :math:`x_i`. If (a) there is no evidence of :index:`lack-of-fit`, and (b) if |y| has the same error at all levels of |x|, then we can write that :math:`\mathcal{V}\{y_i\}` = :math:`\mathcal{V}\{e_i\}  = \dfrac{\sum{e_i^2}}{n-k}`, where :math:`n` is the number of data points used, and :math:`k` is the number of coefficients estimated (2 in this case). The :math:`n-k` quantity is the degrees of freedom.
 
 Now for the variance of :math:`b_0 = \overline{\mathrm{y}} - b_1 \overline{\mathrm{x}}`. The only terms with error are :math:`b_1`, and :math:`\overline{\mathrm{y}}`. So we can derive that:
 

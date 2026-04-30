@@ -47,7 +47,7 @@ To help the discussion below it is useful to omit the least squares model's inte
 	\overline{y} &= b_0 + b_1 \overline{x} \\
 	y_i - \overline{y} &= 0 +b_1(x_i - \overline{x}) \qquad \text{by subtracting the previous lines from each other}
 
-This indicates that if we fit a model where the |x| and |y| vectors are first mean-centered, i.e. let :math:`x = x_\text{original} - \text{mean}\left(x_\text{original} \right)` and :math:`y = y_\text{original} - \text{mean}\left(y_\text{original} \right)`, then we still estimate the same slope for :math:`b_1`, but the intercept term is zero. All we gain from this is simplification of the subsequent analysis. Of course, if you need to know what :math:`b_0` was, you can use the fact that :math:`b_0 = \overline{y} - b_1 \overline{x}`. Nothing else changes: the :math:`R^2, S_E, S_E(b_1)` and all other model interpretations remain the same. You can easily prove this for yourself.
+This indicates that if we fit a model where the |x| and |y| vectors are first :index:`mean-centered <pair: mean-centering; least squares>`, i.e. let :math:`x = x_\text{original} - \text{mean}\left(x_\text{original} \right)` and :math:`y = y_\text{original} - \text{mean}\left(y_\text{original} \right)`, then we still estimate the same slope for :math:`b_1`, but the intercept term is zero. All we gain from this is simplification of the subsequent analysis. Of course, if you need to know what :math:`b_0` was, you can use the fact that :math:`b_0 = \overline{y} - b_1 \overline{x}`. Nothing else changes: the :math:`R^2, S_E, S_E(b_1)` and all other model interpretations remain the same. You can easily prove this for yourself.
 
 So in the rest of the this section we will omit the model's intercept term, since it can always be recovered afterwards.
 
@@ -187,8 +187,10 @@ In the prior example, we could say: the effect of substrate concentration on yie
 Integer (dummy, indicator) variables in the model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. index:: 
+.. index::
 	pair: integer variables; least squares
+	see: dummy variable; integer variables
+	see: indicator variable; integer variables
 
 .. youtube:: https://www.youtube.com/watch?v=TrhG-XhnBK4&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=30
 
