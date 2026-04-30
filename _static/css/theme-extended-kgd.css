@@ -1,0 +1,64 @@
+/*KGD: override some of the theme elements here.*/
+
+/* Constrain content width to match the old book layout */
+.bd-article-container {
+	max-width: 1000px;
+}
+
+/* Figures: never let an image overflow its column.
+   !important is required to beat Sphinx's inline style="width:Xpx; height:Ypx;"
+   that it emits for every figure. */
+.bd-article img {
+	max-width: 100% !important;
+	height: auto !important;
+}
+
+.caption-text{
+	font-weight: normal;
+	color: #009900;
+	font-style: italic;
+	font-size: 16px;
+}
+
+li.toctree-l2{
+	margin-left: 0em;
+}
+
+/* Permalinks for the h1 headers */
+h1 .headerlink {
+	visibility: visible;
+	color: #888;
+}
+
+/* Q&A styling */
+.click-to-reveal{
+	font-style: italic;
+}
+.new_question{
+	margin-top: 2em;
+}
+
+/* MathJax equation numbers */
+.eqno{
+	float: right;
+}
+
+/* In the Index only*/
+.indextable ul{
+	padding-left: 25px;
+}
+
+/* Pagefind UI: scale to fit the sidebar; inherit sphinx-book-theme's primary colour */
+#pagefind-search {
+    --pagefind-ui-scale: 0.85;
+    --pagefind-ui-primary: var(--pst-color-primary, #0071bc);
+    --pagefind-ui-border-radius: 4px;
+}
+
+/* Matched-word highlight: use the theme primary colour instead of default yellow */
+.pagefind-ui__result-excerpt mark {
+    background: var(--pst-color-primary, #0071bc);
+    color: #ffffff;
+    border-radius: 2px;
+    padding: 0 2px;
+}
