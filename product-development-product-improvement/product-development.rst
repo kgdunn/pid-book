@@ -39,11 +39,96 @@ Both cases of creating an entirely new product, or improving an existing product
 
 The end goal is "faster development of personalized products and customer-centric development", using the information and databases we have accumulated over the many years of experience with the process.
 
+Why product development is difficult
+=====================================
+
+.. index::
+	pair: Design-Build-Test-Learn cycle; product development
+	single: DBTL cycle
+
+Most product development is still done by intuition and trial-and-error. The methods of optimization and mathematical modelling in this chapter can speed that work up considerably, and in some settings can even automate it. But before getting to the methods, it is worth being honest about why the problem is difficult: there are several places where things can go wrong, and a tool that does not address them will not improve on a good engineer's intuition.
+
+We frame each iteration as a Design-Build-Test-Learn (DBTL) cycle, a framing widely used in the biotechnology and autonomous-experimentation literature:
+
+	* **Design**: pick the values for the three groups of degrees of freedom (ingredients, ratios, conditions).
+	* **Build**: run one or more experiments with that design.
+	* **Test**: measure the outcomes on the resulting product.
+	* **Learn**: compare the outcomes against the targets, update the model, decide on the next iteration.
+
+We do not get the product right on the first cycle, so we iterate. Even when you work "by eye" from plots, you are using an implicit model of the system; the methods in this chapter make that model explicit so it can be reused, criticized and improved. Six broad areas of difficulty appear in almost every product-development problem.
+
+Problems with the specifications
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	*	The targets are usually correlated. As one increases, so does another. A specification that treats them as independent (or constrains one and lets the other float) ignores this structure and will mislead the optimization.
+
+	*	Specifications are often asymmetric. A weight of "ideally above 4 g" is a soft target, while "must not exceed 7 g" is a hard limit. Casting both into a single objective requires care, often using a smoothed indicator such as a sigmoid or `Gompertz function <https://en.wikipedia.org/wiki/Gompertz_function>`_.
+
+	*	Each DBTL cycle is solved as an optimization, so we have to capture several targets in a single objective. Sum of squared deviations? Absolute deviations? Equal weights, or a ranking? And how do we scale a target measured in 1000s so it does not swamp one measured in 0.01s?
+
+	*	Profit is often suggested as the objective, but reliable estimates of selling price, raw-material costs, emissions, labour and rework costs are rarely all available at the same time.
+
+	*	Closeness to a lab-scale specification is not the same as robustness in production or in the customer's hands. An optimum found in the lab can perform poorly at full scale.
+
+Problems in the Design step
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	*	The first iteration has little or no data, so the search direction has to come from prior knowledge or screening designs.
+
+	*	When experiments can run in parallel (e.g. on a robotic platform), how many points, where in the input space, and with how many replicates?
+
+	*	Step size matters. Moving from :math:`x = 0.5` to :math:`x = 0.499` is wasteful; moving to :math:`x = 0.2` may be too far. The right step balances information against cost, and we would like that choice to be automatic in a self-driving DBTL loop.
+
+	*	Bringing in new candidate ingredients is a combinatorial problem. With 100 candidate plastics it helps to rank them on a continuous scale (e.g. thermal stability) so the choice becomes a numeric variable rather than a 100-way switch.
+
+	*	On/off effects: the mere presence of an ingredient at small amounts can flip the system's behaviour, creating strong nonlinearities that are hard to model.
+
+	*	Process conditions are sometimes discrete (stirrer at off / low / high), and the order of manufacturing steps matters.
+
+	*	Model inversion is non-unique. Solving :math:`x + y = 4` has infinitely many solutions, and product design almost always has more inputs (manipulated variables) than outputs (targets), so the inverse problem is underdetermined.
+
+Problems in the Build step
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	*	How repeatable can you run the same recipe? Without good control here an apparent improvement may just be experimental noise, and a move to a new operating region cannot be distinguished from drift.
+
+	*	Even when a recipe is reproduced perfectly, there are block effects between iterations. Including references and controls in each cycle lets us correct for these.
+
+	*	Is the lab system a faithful proxy for how the customer actually uses the product? A product that is robust on the bench and fails in customer hands has not really been improved.
+
+Problems in the Test step
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	*	Measurement reproducibility. Outputs sometimes shift between iterations because of uncontrolled factors. We would like to eliminate those factors, or at least correct for them.
+
+	*	Outputs interact. Viscosity readings depend on pH, for example, so the test result is itself a function of more than one quality.
+
+	*	Sensory and slow lab measurements cannot be done on every experiment. A taste panel, or a 5-day shelf-life test, will not keep up with a fast iteration loop. Soft sensors and surrogate measurements speed up the cycle, but they introduce their own error.
+
+Problems in the Learn step
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	*	Which way do we go next: explore an unexamined region, or exploit the neighbourhood of the current best result? And how should the balance shift as we accumulate cycles?
+
+	*	Which model family should we use for the forward (inputs to outputs) prediction: Gaussian processes, polynomial response surfaces, splines, latent variable models? Which can be inverted analytically, and which require an optimization to invert?
+
+	*	When do we drop old data; when is a surprising point an outlier and not the next ah-ha result; and how do we use the model's predictive uncertainty to decide where to sample next?
+
+Problems with the cycle itself
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	*	When do we stop? The obvious case is when the goal is reached, but we also need to detect diminishing returns, and to recognize when no feasible solution exists.
+
+	*	An optimum sits in a nonlinear region by definition. How do we know we have found the global peak rather than a local one?
+
+	*	Storage and provenance. How do we name experiments, record ratios and units, and capture covariates (ambient humidity, operator, lot numbers, raw-material amounts that were "constant") that we did not think mattered until the day they did? Model versioning, input-data lineage and a clear audit trail are part of this discipline.
+
+The remainder of this chapter describes how the methods already developed in the book --- :ref:`designed experiments <SECTION-design-analysis-experiments>`, :ref:`response surface methods <DOE-RSM>` and :ref:`latent variable models <SECTION_latent_variable_modelling>`, together with standard and Bayesian optimization --- address most of these issues.
+
 Scope of the problem
 =====================
 
-
-First, we describe some features that are desirable for a framework/tooling used for data-driven product development.
+Before working through any specific method, it helps to lay out what an ideal framework for data-driven product development should look like. The fifteen features below are the design goals we hold the methods later in this chapter against. None of them is unique to a particular algorithm; together they tell us which combinations of methods are worth assembling.
 
 A. The tool is **guided by the** :index:`subject matter expert <pair: subject matter expert; product development>` (SME) to accelerate the process; it is not intended to replace them. It will allow them to more rapidly prototype and test alternatives, and guide them. The expert also plays an active role: for example, constraints can be specified by the expert and the tool can help them understand the tradeoffs by providing alternative solutions that they select from.
 
@@ -117,5 +202,89 @@ The "rank"
 ~~~~~~~~~~~
 
 More to come.
+
+
+Data needed for product development
+====================================
+
+.. index::
+	pair: data organization; product development
+	single: D matrix; product development
+	single: F matrix; product development
+	single: Z matrix; product development
+	single: Y matrix; product development
+
+The methods later in this chapter operate on four data tables that fit together. We refer to them by capital letters: :math:`\mathbf{D}`, :math:`\mathbf{F}`, :math:`\mathbf{Z}` and :math:`\mathbf{Y}`. Each table answers a different question and each one normally comes from a different source. Setting them up correctly --- and getting the alignment between them right --- is most of what makes the rest of the workflow possible.
+
+* :math:`\mathbf{D}`: a property database, one column per candidate building block, one row per measured property.
+* :math:`\mathbf{F}`: a recipe table, one row per experiment, columns aligned with :math:`\mathbf{D}`, entries are mass fractions that sum to 1.
+* :math:`\mathbf{Z}`: a process-conditions table, one row per experiment, columns are the conditions used to make that row's product.
+* :math:`\mathbf{Y}`: a quality-outcomes table, one row per experiment, columns are the KPIs that the customer (or our specification) cares about.
+
+The matrix :math:`\mathbf{D}` shares columns with :math:`\mathbf{F}`. The matrices :math:`\mathbf{F}`, :math:`\mathbf{Z}` and :math:`\mathbf{Y}` share rows: row :math:`i` of each describes the same experiment.
+
+The property database :math:`\mathbf{D}`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This is the most heterogeneous of the four. Each column of :math:`\mathbf{D}` is a candidate building block --- an oil, a fat, a binder, a filler, a polymer --- and the rows are properties: molecular weight, melting point, viscosity at a given shear rate, surface tension, NIR absorbance at each wavelength, and so on. Some practitioners prefer the transposed layout (one material per row, properties as columns); either is fine, as long as you stay consistent.
+
+:math:`\mathbf{D}` is assembled from internal lab measurements, supplier data sheets, public databases, and computational property estimators. It is worth investing in: a well-populated :math:`\mathbf{D}` is reused across many product-development campaigns. Collect more rows and more columns than you strictly need for the current project.
+
+A few practical points:
+
+	*	**Do not break "compound" ingredients into their pure constituents.** If you use *milk* as an ingredient, store the properties of milk; do not try to split it into water, fat, protein and lactose. The same goes for any pre-mix or proprietary blend. The columns of :math:`\mathbf{D}` should match the units in which you actually purchase, weigh and add the materials --- the same units that appear in :math:`\mathbf{F}`.
+
+	*	**Properties are usually blocked.** Some rows are only meaningful for solids, others only for liquids, others only for spectroscopic samples. The methods in this chapter handle missing values explicitly, as long as you mark them as missing rather than filling with zeros.
+
+	*	**The result must not depend on the order of rows or columns.** We may *group* rows --- for example, all NIR wavelengths together --- so that block-wise preprocessing is possible, but inside a group the order is arbitrary. This is one of the desiderata (item M) in the previous section.
+
+	*	**Vector-valued properties belong in :math:`\mathbf{D}`** as consecutive rows: a particle-size distribution, a thermogravimetric trace, an NIR spectrum. Such blocks are highly correlated and are a natural fit for a :ref:`principal component model <SECTION_PCA>`.
+
+The recipe :math:`\mathbf{F}`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Each row of :math:`\mathbf{F}` is one experiment or one product, and each column is a building block, aligned with the columns of :math:`\mathbf{D}`. The entries in a row are mass fractions and typically sum to 1.
+
+The rows in :math:`\mathbf{F}` need not be products that you sell. Intermediate blends, side experiments and customer trials all belong, as long as each row has a corresponding outcome in :math:`\mathbf{Y}`. It is also useful to split :math:`\mathbf{F}` into sub-blocks --- a binders block, a fats block, a starches block --- so that the model can later assess the effect of each material family separately.
+
+The process conditions :math:`\mathbf{Z}`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The matrix :math:`\mathbf{Z}` has the same number of rows as :math:`\mathbf{F}` and one column per process condition: temperature, pressure, mixing speed, residence time, addition order. Discrete settings (a stirrer that is off, low or high) are one-hot encoded. Recipe steps that may or may not be applied are stored as 0/1 indicators.
+
+It is tempting to leave :math:`\mathbf{Z}` out when only the recipe varies during a campaign. Resist that temptation. Conditions that look constant in a campaign --- ambient humidity, operator, raw-material lot number, the calibration date of the analyser --- routinely turn out, after the fact, to have driven a result. If they were never recorded, that diagnosis is impossible. The correct rule is: store the suspected covariates as well as the obvious controlled variables, even if you do not plan to vary them.
+
+The quality outcomes :math:`\mathbf{Y}`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Each row of :math:`\mathbf{Y}` is the same experiment as the corresponding row of :math:`\mathbf{F}` and :math:`\mathbf{Z}`. The columns are the key performance indicators (KPIs): viscosity, melting point, shelf life, taste-panel score, and so on. Vector outcomes (such as a release-rate curve) can also be stored in :math:`\mathbf{Y}` as consecutive columns; if they are highly correlated, summarize them with a few principal components first.
+
+The crucial design rule for :math:`\mathbf{Y}` is to capture, at minimum, the same metrics the customer specifies. The whole point of the methodology is to invert the relationship :math:`(\mathbf{D}, \mathbf{F}, \mathbf{Z}) \rightarrow \mathbf{Y}` so that, given a target row :math:`\mathbf{y}_\text{new}`, we can prescribe the recipe and conditions :math:`(\mathbf{f}_\text{new}, \mathbf{z}_\text{new})` that achieve it. If the customer's target metrics are not among the columns of :math:`\mathbf{Y}`, the inversion is solving the wrong problem.
+
+As with :math:`\mathbf{D}`, capture provenance for every entry: who measured the value, where, when, in which units, and with which protocol. Two viscosity numbers measured with different geometries are not the same measurement.
+
+How the four tables fit together
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	*	:math:`\mathbf{D}` and :math:`\mathbf{F}` share columns. Every ingredient appearing in any recipe must have a property column in :math:`\mathbf{D}`. A new, unseen ingredient can later be added to :math:`\mathbf{D}` and then used in :math:`\mathbf{F}`, provided its properties lie within the correlation structure of the existing materials.
+
+	*	:math:`\mathbf{F}`, :math:`\mathbf{Z}` and :math:`\mathbf{Y}` share rows. Row :math:`i` of each describes the same experiment, so they can be concatenated horizontally for a multi-block latent variable analysis.
+
+	*	The forward model :math:`(\mathbf{F}, \mathbf{Z}) \rightarrow \mathbf{Y}` is augmented by the property information in :math:`\mathbf{D}`, so that the model is expressed in terms of *what the materials do* (their physical and chemical properties), not just *which materials were chosen*. This is what allows the model to generalize to new ingredients --- the inductive property (item D) of the desiderata.
+
+	*	Inversion of this model is generally underdetermined: there are typically more inputs than outputs, so a target :math:`\mathbf{y}_\text{new}` corresponds to a *region* of feasible :math:`(\mathbf{f}_\text{new}, \mathbf{z}_\text{new})` rather than a single point. The dimension of that region is the difference between the rank of the input space and the rank of the output space, which is the topic of the next section.
+
+References
+~~~~~~~~~~
+
+The four-table organization is drawn from a sequence of papers, several of whose authors I have had the pleasure of working with over the past 25 years:
+
+	*	S. Garcia-Munoz, "Two Novel Methods to Analyze the Combined Effect of Multiple Raw-Materials and Processing Conditions on the Product's Final Attributes: JRPLS and TPLS." *Chemometrics and Intelligent Laboratory Systems*, **133**, 2014, https://doi.org/10.1016/j.chemolab.2014.02.006
+
+	*	K. Muteki, J. F. MacGregor, and T. Ueda. "Mixture Designs and Models for the Simultaneous Selection of Ingredients and Their Ratios." *Chemometrics and Intelligent Laboratory Systems*, **86**, 2007, https://doi.org/10.1016/j.chemolab.2006.08.003
+
+	*	C. M. Jaeckle and J. F. MacGregor. "Product Design through Multivariate Statistical Analysis of Process Data." *AIChE Journal*, **44**, 1998, https://doi.org/10.1002/aic.690440509
+
+	*	E. Tomba, M. Barolo, and S. García-Muñoz. "General Framework for Latent Variable Model Inversion for the Design and Manufacturing of New Products." *Industrial & Engineering Chemistry Research*, **51**, 2012, https://doi.org/10.1021/ie301214c
 
 
