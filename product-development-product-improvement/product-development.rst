@@ -39,6 +39,39 @@ Both cases of creating an entirely new product, or improving an existing product
 
 The end goal is "faster development of personalized products and customer-centric development", using the information and databases we have accumulated over the many years of experience with the process.
 
+Product design uses every chapter of this book
+================================================
+
+.. index::
+	pair: five uses of data; product development
+	pair: extracting value from data; product development
+
+The :ref:`introduction to latent variable methods <LVM_extracting_value_from_data>` listed the five main areas where engineers extract value from process data:
+
+#.	**Improved process understanding** --- confirming what we know, and seeing the unexpected, often by inspecting :ref:`score and loading plots <LVM_interpreting_scores>`.
+
+#.	**Troubleshooting process problems** --- isolating which variables drove a deviation, using the multivariate :ref:`troubleshooting tools <LVM_troubleshooting>`.
+
+#.	**Improving, optimizing and controlling processes** --- moving the operating point on purpose, using :ref:`designed experiments <SECTION-design-analysis-experiments>` and :ref:`response surface methods <DOE-RSM>`.
+
+#.	**Predictive modelling** --- estimating a hard-to-measure quantity from the easy-to-measure ones, either with :ref:`least-squares models <SECTION-least-squares-modelling>` or with :ref:`inferential sensors <LVM_inferential_sensors>` built on PLS.
+
+#.	**Process monitoring** --- raising an alarm when the process drifts away from where it should be, with :ref:`univariate charts <SECTION-process-monitoring>` or :ref:`multivariate ones <LVM_monitoring>`.
+
+Product design and improvement is not a sixth area. It is what happens when we do all five at once, on the same data set, in the same iteration. Each Design-Build-Test-Learn cycle (introduced below) draws on every one of them:
+
+	*	We start each campaign with a round of **process understanding** on the historical :math:`(\mathbf{F}, \mathbf{Z}, \mathbf{Y})` data: which materials, ratios and conditions drove the past quality outcomes? The score and loading plots of a :ref:`PCA <SECTION_PCA>` or :ref:`PLS <SECTION_PLS>` model on these matrices answer that question directly.
+
+	*	Each new experiment that misses the target is an act of **troubleshooting**: the same multivariate contribution plots that diagnose a process upset tell us which input is responsible for a missed quality target.
+
+	*	The **improvement and optimization** step is what proposes the next recipe and conditions to try. Sometimes this is a :ref:`response-surface optimization <DOE-RSM>` on top of a designed experiment; sometimes it is :ref:`mixture-design <DOE-mixture-designs>` reasoning on the ratios; often it is the inverse of a PLS model, with :ref:`constraints <DOE-handling-constraints>` from the operating window.
+
+	*	**Predictive models** are how slow or expensive measurements --- a taste panel, a 30-day shelf-life test, a customer trial --- are estimated from quick lab data so the cycle does not stall waiting for the slowest test.
+
+	*	**Monitoring** in the latent-variable space tells us whether a proposed recipe is still inside the region where the historical model can be trusted, or whether the optimizer has pushed us into an extrapolated region where the predictions are not reliable.
+
+The chapter therefore does not introduce many new techniques: it shows how to assemble the methods you already know into a single workflow that designs and improves products.
+
 Why product development is difficult
 =====================================
 
@@ -73,7 +106,7 @@ Problems with the specifications
 Problems in the Design step
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	*	The first iteration has little or no data, so the search direction has to come from prior knowledge or screening designs.
+	*	The first iteration has little or no data, so the search direction has to come from prior knowledge or :ref:`screening designs <DOE-saturated-screening-designs>`.
 
 	*	When experiments can run in parallel (e.g. on a robotic platform), how many points, where in the input space, and with how many replicates?
 
@@ -92,7 +125,7 @@ Problems in the Build step
 
 	*	How repeatable can you run the same recipe? Without good control here an apparent improvement may just be experimental noise, and a move to a new operating region cannot be distinguished from drift.
 
-	*	Even when a recipe is reproduced perfectly, there are block effects between iterations. Including references and controls in each cycle lets us correct for these.
+	*	Even when a recipe is reproduced perfectly, there are :ref:`block effects <DOE_blocking_section>` between iterations. Including references and controls in each cycle lets us correct for these.
 
 	*	Is the lab system a faithful proxy for how the customer actually uses the product? A product that is robust on the bench and fails in customer hands has not really been improved.
 
@@ -103,7 +136,7 @@ Problems in the Test step
 
 	*	Outputs interact. Viscosity readings depend on pH, for example, so the test result is itself a function of more than one quality.
 
-	*	Sensory and slow lab measurements cannot be done on every experiment. A taste panel, or a 5-day shelf-life test, will not keep up with a fast iteration loop. Soft sensors and surrogate measurements speed up the cycle, but they introduce their own error.
+	*	Sensory and slow lab measurements cannot be done on every experiment. A taste panel, or a 5-day shelf-life test, will not keep up with a fast iteration loop. :ref:`Inferential sensors <LVM_inferential_sensors>` and other surrogate measurements speed up the cycle, but they introduce their own error.
 
 Problems in the Learn step
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -112,7 +145,7 @@ Problems in the Learn step
 
 	*	Which model family should we use for the forward (inputs to outputs) prediction: Gaussian processes, polynomial response surfaces, splines, latent variable models? Which can be inverted analytically, and which require an optimization to invert?
 
-	*	When do we drop old data; when is a surprising point an outlier and not the next ah-ha result; and how do we use the model's predictive uncertainty to decide where to sample next?
+	*	When do we drop old data; when is a surprising point an :ref:`outlier <LS-studentized-residuals>` and not the next ah-ha result; and how do we use the model's predictive uncertainty to decide where to sample next?
 
 Problems with the cycle itself
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -134,7 +167,7 @@ A. The tool is **guided by the** :index:`subject matter expert <pair: subject ma
 
 B. It is :index:`multi-objective <single: multi-objective optimization>`. Multiple goals and targets can be taken along, each with different weights and prioritization if needed. For example, if a certain target objective is poorly explained by the data, then it can be down weighted, but not ignored. We should not have to build models for each outcome variable: we must be able to handle multiple :index:`key performance indicators <single: key performance indicator>` (KPIs), even highly correlated ones and also high-dimensional ones (such as vectors).
 
-C. We must be able to **handle missing data**. Our knowledge regarding physical and chemical properties of the materials is incomplete; we might only have partial results, or loss of data might have occurred. We might have results from earlier experiments, while later experiments may have extra or more sophisticated measurements. In all of these cases we should use the data we have available, and not have to discard rows or columns of incomplete knowledge.
+C. We must be able to **handle missing data**. Our knowledge regarding physical and chemical properties of the materials is incomplete; we might only have partial results, or loss of data might have occurred. We might have results from earlier experiments, while later experiments may have extra or more sophisticated measurements. In all of these cases we should use the data we have available, and not have to discard rows or columns of incomplete knowledge. (:ref:`PCA <SECTION_PCA>` and :ref:`PLS <SECTION_PLS>` models tolerate missing values natively.)
 
 D. It should **not be dependent on the specific training dataset** and therefore unable to generalize to new ingredients, other properties, new experiments or other conditions used to create the product. Another way of saying this is that it should not be `transductive <https://en.wikipedia.org/wiki/Transduction_(machine_learning)>`_, but rather inductive.
 
@@ -144,7 +177,7 @@ F. It should however be able to handle **large data**. If we do have large quant
 
 G. It must allow for **learning and interpretation** by the expert. The model results should be understandable, confirm prior knowledge, and generate new insights not yet known to the experts.
 
-H. It should be able to handle **high-dimensional data**, even if many of the measured data are affected by random noise, or are unrelated to the problem. As we will not always know upfront what is important, if we do happen to add more information in our models, then we should not be penalized. It is acceptable to learn iteratively that certain data are uninteresting. See the prior point.
+H. It should be able to handle **high-dimensional data**, even if many of the measured data are affected by random noise, or are unrelated to the problem. As we will not always know upfront what is important, if we do happen to add more information in our models, then we should not be penalized. It is acceptable to learn iteratively that certain data are uninteresting. (This is one of the central reasons we lean on :ref:`latent variable methods <SECTION_latent_variable_modelling>` later in the chapter.) See the prior point.
 
 I. It should provide guidance to **fill in the spaces of unknown knowledge**. It is therefore both sequential and active. The expert can influence where future experiments should be done, to help expand the model's predictive power, or the model actively indicates the regions where experimental input is needed (the standard :index:`exploit and explore tradeoff <single: explore-exploit tradeoff>`).
 
@@ -180,7 +213,7 @@ As just mentioned, there are 3 groups of things you can change:
 
 1. **Select your ingredients**. This is a discrete choice: either you use an ingredient or raw materials, or you do not. It is a yes/no selection. You might have a whole catalogue, or database, of materials that you can select from. In many of the cases described in the "Usage examples" above this degree of freedom is actually fixed. In other words, you cannot change the ingredient choice and you must keep using what you already use. This is often due to regulations, or the fact that introducing new ingredients will be too expensive to test and validate and might lead to unexpected side-reactions or interactions.
 
-2. **Adjust the ratios of the ingredients**. This is a sliding parameter: for example you can go from 45% weight fraction of material A, to 41% weight fraction, but remember by using less material A, the weight fractions of other materials change. The total weight fractions always add up to 1.0, so there is a constraint in the system, and adjusting one material will force the other material ratio to also be adjusted.
+2. **Adjust the ratios of the ingredients**. This is a sliding parameter: for example you can go from 45% weight fraction of material A, to 41% weight fraction, but remember by using less material A, the weight fractions of other materials change. The total weight fractions always add up to 1.0, so there is a constraint in the system, and adjusting one material will force the other material ratio to also be adjusted. This sum-to-one structure is exactly what :ref:`mixture designs <DOE-mixture-designs>` are built to handle.
 
 3. **Use different process conditions**. This group is where often you have the most degrees of freedom. You can adjust process settings used to make the product quite easily, such as temperature, pH, duration of certain steps, and order in which you add ingredients and complete the manufacturing steps. Because of the diversity of the options here, you might need to spend quite some time thinking about the process, and seeing what freedom you practically and economically have. Like the prior group, the ratios, this group of degrees of freedom also has some correlations in the historical data. For example, you might not be able to independently increase temperature in the process, without adjusting flow rate.
 
@@ -250,9 +283,9 @@ The rows in :math:`\mathbf{F}` need not be products that you sell. Intermediate 
 The process conditions :math:`\mathbf{Z}`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The matrix :math:`\mathbf{Z}` has the same number of rows as :math:`\mathbf{F}` and one column per process condition: temperature, pressure, mixing speed, residence time, addition order. Discrete settings (a stirrer that is off, low or high) are one-hot encoded. Recipe steps that may or may not be applied are stored as 0/1 indicators.
+The matrix :math:`\mathbf{Z}` has the same number of rows as :math:`\mathbf{F}` and one column per process condition: temperature, pressure, mixing speed, residence time, addition order. Discrete settings (a stirrer that is off, low or high) are :ref:`one-hot encoded <LVM-using-indicator-variables>`. Recipe steps that may or may not be applied are stored as 0/1 indicators.
 
-It is tempting to leave :math:`\mathbf{Z}` out when only the recipe varies during a campaign. Resist that temptation. Conditions that look constant in a campaign --- ambient humidity, operator, raw-material lot number, the calibration date of the analyser --- routinely turn out, after the fact, to have driven a result. If they were never recorded, that diagnosis is impossible. The correct rule is: store the suspected covariates as well as the obvious controlled variables, even if you do not plan to vary them.
+It is tempting to leave :math:`\mathbf{Z}` out when only the recipe varies during a campaign. Resist that temptation. Conditions that look constant in a campaign --- ambient humidity, operator, raw-material lot number, the calibration date of the analyser --- routinely turn out, after the fact, to have driven a result. If they were never recorded, that diagnosis is impossible. (When such effects *are* expected and we want to remove them by design, we can plan the campaign with :ref:`blocking <DOE_blocking_section>`.) The correct rule is: store the suspected covariates as well as the obvious controlled variables, even if you do not plan to vary them.
 
 The quality outcomes :math:`\mathbf{Y}`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -268,11 +301,11 @@ How the four tables fit together
 
 	*	:math:`\mathbf{D}` and :math:`\mathbf{F}` share columns. Every ingredient appearing in any recipe must have a property column in :math:`\mathbf{D}`. A new, unseen ingredient can later be added to :math:`\mathbf{D}` and then used in :math:`\mathbf{F}`, provided its properties lie within the correlation structure of the existing materials.
 
-	*	:math:`\mathbf{F}`, :math:`\mathbf{Z}` and :math:`\mathbf{Y}` share rows. Row :math:`i` of each describes the same experiment, so they can be concatenated horizontally for a multi-block latent variable analysis.
+	*	:math:`\mathbf{F}`, :math:`\mathbf{Z}` and :math:`\mathbf{Y}` share rows. Row :math:`i` of each describes the same experiment, so they can be concatenated horizontally for a multi-block :ref:`PLS <SECTION_PLS>` analysis. Standard :ref:`preprocessing <LVM_preprocessing>` (mean-centring, scaling, optional block scaling) applies before the model is built.
 
 	*	The forward model :math:`(\mathbf{F}, \mathbf{Z}) \rightarrow \mathbf{Y}` is augmented by the property information in :math:`\mathbf{D}`, so that the model is expressed in terms of *what the materials do* (their physical and chemical properties), not just *which materials were chosen*. This is what allows the model to generalize to new ingredients --- the inductive property (item D) of the desiderata.
 
-	*	Inversion of this model is generally underdetermined: there are typically more inputs than outputs, so a target :math:`\mathbf{y}_\text{new}` corresponds to a *region* of feasible :math:`(\mathbf{f}_\text{new}, \mathbf{z}_\text{new})` rather than a single point. The dimension of that region is the difference between the rank of the input space and the rank of the output space, which is the topic of the next section.
+	*	Inversion of this model is generally underdetermined: there are typically more inputs than outputs, so a target :math:`\mathbf{y}_\text{new}` corresponds to a *region* of feasible :math:`(\mathbf{f}_\text{new}, \mathbf{z}_\text{new})` rather than a single point. The dimension of that region is the difference between the rank of the input space and the rank of the output space (the "rank" idea in the previous subsection); the inactive directions are the operating window described by item J of the desiderata.
 
 References
 ~~~~~~~~~~
