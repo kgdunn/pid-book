@@ -93,7 +93,7 @@ pid-book/
 ├── latent-variable-modelling/                Ch 6
 ├── product-development-product-improvement/  Ch 7
 ├── my-extensions/                            Custom Sphinx extensions
-│                                             (youtube, q-and-a, datacamplite)
+│                                             (youtube, datacamplite)
 ├── sphinx_rtd_theme_kgdmod/                  Forked RTD theme used by the build
 ├── figures/                                  Symlink to the figures repo
 ├── conf.py, contents.rst                     Sphinx config + master ToC
