@@ -90,18 +90,18 @@ jobs:
           if [ -n "$SSH_KNOWN_HOSTS" ]; then
             printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
           else
-            ssh-keyscan -H learnche.org >> ~/.ssh/known_hosts
+            ssh-keyscan -H 139.162.148.246 >> ~/.ssh/known_hosts
           fi
           chmod 600 ~/.ssh/known_hosts
 
-      - name: Deploy to learnche.org (staging)
+      - name: Deploy to learnche.org [139.162.148.246] (staging)
         if: github.event_name != 'pull_request'
         env:
           SSH_USER: ${{ secrets.LEARNCHE_SSH_USER }}
         run: |
           rsync -avz --delete-after \
             _build/html/ \
-            "$SSH_USER@learnche.org:/var/www/learnche.org/pid/"
+            "$SSH_USER@139.162.148.246:/var/www/learnche.org/pid/"
           rsync -avz \
             _build/latex/PID.pdf \
-            "$SSH_USER@learnche.org:/var/www/learnche.org/pid/"
+            "$SSH_USER@139.162.148.246:/var/www/learnche.org/pid/"

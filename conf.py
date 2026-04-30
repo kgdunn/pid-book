@@ -505,6 +505,12 @@ _PREAMBLE = r"""
 
 
 \makeatother
+
+% Increase gap between fancyvrb's frame=lines rule and the code content.
+% VerbatimColor/VerbatimBorderColor are white so Sphinx's outer box is
+% invisible; the only visible border is fancyvrb's own rule, whose inner
+% gap is fancyvrb's framesep (default 3pt), not Sphinx's pre_padding.
+\fvset{framesep=8pt}
 % ==== END OF CUSTOMIZED PREAMBLE ====
 """
 
