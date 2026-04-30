@@ -1,6 +1,15 @@
 Other types of monitoring charts
 ================================
 
+.. index::
+	pair: S chart; process monitoring
+	pair: R chart; process monitoring
+	pair: p chart; process monitoring
+	pair: np chart; process monitoring
+	pair: EWMV chart; process monitoring
+	see: range chart; R chart
+	see: exponentially weighted moving variance; EWMV chart
+
 You may encounter other charts in practice:
 
 	*	The *S chart* is for monitoring the subgroup's standard deviation. Take the group of :math:`n` samples and show their standard deviation on a Shewhart-type chart. The limits for the chart are calculated using similar correction factors as were used in the derivation for the :math:`\overline{x}` Shewhart chart. This chart has a LCL :math:`\geq 0`.

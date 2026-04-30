@@ -291,7 +291,7 @@ Exercises
 
 .. admonition:: Question
 
-	Describe how a monitoring chart could be used to prevent over-control of a batch-to-batch process. (A batch-to-batch process is one where a batch of materials is processed, followed by another batch, and so on).
+	Describe how a monitoring chart could be used to prevent :index:`over-control` of a batch-to-batch process. (A batch-to-batch process is one where a batch of materials is processed, followed by another batch, and so on).
 
 .. admonition:: Solution
 
@@ -569,7 +569,7 @@ Exercises
 
 		Another is to use a larger subgroup size. Use the `autocorrelation function <https://en.wikipedia.org/wiki/Autocorrelation>`_, and the corresponding ``acf(...)`` function in R to verify the degree of relationship. Using this function we can see the raw data are unrelated after the 17th lag, so we could use subgroups of that size. However, even then we see the Shewhart chart showing frequent violation, though fewer than before.
 
-		Yet another alternative is to use an EWMA chart, which takes the autocorrelation into account. However, the EWMA chart limits are found from the assumption that the subgroup means (or raw data, if subgroup size is 1), are independent.
+		Yet another alternative is to use an EWMA chart, which takes the :index:`autocorrelation` into account. However, the EWMA chart limits are found from the assumption that the subgroup means (or raw data, if subgroup size is 1), are independent.
 
 		So we are finally left with the conclusion that perhaps there data really are not from in control operation, or, if they are, we must manually adjust the limits to be wider.
 

@@ -3,6 +3,9 @@
 CUSUM charts
 ==============
 
+.. index::
+	see: cumulative sum; CUSUM
+
 We :ref:`showed earlier <monitoring_sluggish_shewhart_chart>` that the Shewhart chart is not too sensitive to detecting shifts in the mean. Depending on the subgroup size, :math:`n`, we showed that it can take several consecutive samples before a warning or action limit is triggered. The cumulative sum chart, or :index:`CUSUM chart <pair: CUSUM; process monitoring>`, allows more rapid detection of these shifts away from a target value, :math:`T`.
 
 The following equation shows how this chart works.
@@ -32,7 +35,7 @@ The CUSUM chart is extremely sensitive to small changes. The example chart is sh
 
 This figure also shows how the CUSUM chart is used with the 2 masks. Notice that there are no lower and upper bounds for :math:`S_t`. A process that is on target will show a "wandering" value of :math:`S`, moving up and down. In fact, as the second row in the figure shows, a surprising amount of movement up and down occurs even when the process is in control.
 
-What is of interest however is a persistent change in slope in the CUSUM chart. The angle of the superimposed V-mask is the control limit: the narrower the mouth of the mask, the more sensitive the CUSUM chart is to deviations from the target. Both the type I and II error are set by the angle of the V and the leading distance (the distance from the short vertical line to the apex of the V).
+What is of interest however is a persistent change in slope in the CUSUM chart. The angle of the superimposed :index:`V-mask` is the control limit: the narrower the mouth of the mask, the more sensitive the CUSUM chart is to deviations from the target. Both the type I and II error are set by the angle of the V and the leading distance (the distance from the short vertical line to the apex of the V).
 
 The process is considered in control as long as all points are within the arms of the V shape.  The mask in the second row of the plot shows "in control" behaviour, while the mask in the fourth row detects the process mean has shifted, and an alarm should be raised.
 

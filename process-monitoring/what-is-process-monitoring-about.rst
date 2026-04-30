@@ -87,6 +87,13 @@ Discuss one of these unit operations with your colleague. Which variables would 
 In-control vs out-of-control
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	single: in-control
+	single: out-of-control
+	pair: in-control; out-of-control
+	see: stable operation; in-control
+	see: unstable operation; out-of-control
+
 Every book on quality control gives a slightly different viewpoint, or uses different terminology for these terms.
 
 In this book we will take "in-control" to mean that the behaviour of the process is stable over time. Note though, that in-control *does not* mean the variable of interest meets the specifications required by the customer, or set by the plant personnel. All that "in control" means is that there are no **special causes** in the data, i.e. the process is stable. A :index:`special cause`, or an :index:`assignable cause` is an event that occurs to move the process, or destabilize it. Process monitoring charts aim to detect such events. The opposite of "special cause" operation is :index:`common cause` operation, or stable process operation.
