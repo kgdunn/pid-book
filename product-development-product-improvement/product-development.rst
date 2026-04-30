@@ -39,6 +39,33 @@ Both cases of creating an entirely new product, or improving an existing product
 
 The end goal is "faster development of personalized products and customer-centric development", using the information and databases we have accumulated over the many years of experience with the process.
 
+The three degrees of freedom
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. index::
+	single: degrees of freedom; in product development
+
+The usage examples above already named the three things we can change. Each Design step in a product-development cycle is a choice over these three groups, and the rest of the chapter keeps coming back to them, so it is worth pinning the vocabulary down explicitly.
+
+1.	**Select the ingredients.** This is a discrete choice: either an ingredient is in the recipe, or it is not. The candidate set is usually a catalogue or database of materials. In many of the usage examples above this degree of freedom is actually fixed --- regulatory constraints, validation cost, or the risk of unexpected side-reactions mean we have to keep using what we already use.
+
+2.	**Adjust the ratios of the ingredients.** This is a continuous choice constrained to a simplex: the mass fractions sum to 1, so reducing one ingredient forces another to increase. This sum-to-one structure is exactly what :ref:`mixture designs <DOE-mixture-designs>` are built to handle.
+
+3.	**Choose the process conditions.** Temperature, pH, residence time, addition order, and the on/off state of optional steps. This is usually where the most degrees of freedom live, and where the historical data has the most correlation: temperature and flow rate, for example, are rarely independent in the historical record even when they are independent on paper.
+
+Specifying the desired outcome
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The desired outcome is the end goal: a vector of one or more specifications. A simple case is three scalars --- a viscosity, a melting point, a density --- that jointly define what "good" means.
+
+.. index::
+	single: sigmoid function
+	single: Gompertz function
+
+Some entries are inequalities rather than targets: an *elongation* of 15 or lower is acceptable, a *shelf-life* of 30 days or greater is acceptable. These are yes/no constraints, and they introduce a discontinuity into the objective. Discontinuities are awkward for the optimizers later in the chapter, so we replace each one with a smoothed indicator --- a sigmoid or a `Gompertz function <https://en.wikipedia.org/wiki/Gompertz_function>`_ --- that approximates the cliff but stays differentiable.
+
+The desired outcome is sometimes a very long vector: a release-rate curve, a pH trajectory, an NIR spectrum. The entries in such a vector are heavily correlated, so we do not work with them directly. The first step is a :ref:`principal component model <SECTION_PCA>` of the output space; the few scores that explain it become the specification, and the rest of the methodology proceeds unchanged.
+
 Product design uses every chapter of this book
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -182,37 +209,6 @@ The difficulties above tell us what an ideal framework needs to do. Most of thos
 	*	**Reports an operating window.** When constraints are active at a solution, the framework names them, so we learn the limits of the system. When constraints are inactive, the directions in which we can move without losing the solution are reported as an :index:`operating window <single: operating window>`, and ideally the solution is parameterised so the SME can fine-tune within that window. Multivariate :ref:`troubleshooting tools <LVM_troubleshooting>` give us the same diagnostic in the latent-variable space.
 
 The remainder of this chapter shows how the methods already developed in the book --- :ref:`designed experiments <SECTION-design-analysis-experiments>`, :ref:`response surface methods <DOE-RSM>` and :ref:`latent variable models <SECTION_latent_variable_modelling>`, together with standard and Bayesian optimization --- deliver against these properties. Three more goals --- handling **large** data sets, **transfer learning** across manufacturing sites, and a formal proof of **permutation invariance** --- are sometimes asked of a product-development framework. The methods here cope with each of them informally (the latent-variable methods scale to large :math:`N`, mean-centring and scaling are insensitive to row order in practice, and a model trained on one site can be re-fit at another), but a rigorous treatment is beyond this chapter's scope.
-
-Important concepts
-~~~~~~~~~~~~~~~~~~~
-
-What are the "Degrees of freedom"?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. index::
-	single: degrees of freedom; in product development
-
-As just mentioned, there are 3 groups of things you can change:
-
-1. **Select your ingredients**. This is a discrete choice: either you use an ingredient or raw materials, or you do not. It is a yes/no selection. You might have a whole catalogue, or database, of materials that you can select from. In many of the cases described in the "Usage examples" above this degree of freedom is actually fixed. In other words, you cannot change the ingredient choice and you must keep using what you already use. This is often due to regulations, or the fact that introducing new ingredients will be too expensive to test and validate and might lead to unexpected side-reactions or interactions.
-
-2. **Adjust the ratios of the ingredients**. This is a sliding parameter: for example you can go from 45% weight fraction of material A, to 41% weight fraction, but remember by using less material A, the weight fractions of other materials change. The total weight fractions always add up to 1.0, so there is a constraint in the system, and adjusting one material will force the other material ratio to also be adjusted. This sum-to-one structure is exactly what :ref:`mixture designs <DOE-mixture-designs>` are built to handle.
-
-3. **Use different process conditions**. This group is where often you have the most degrees of freedom. You can adjust process settings used to make the product quite easily, such as temperature, pH, duration of certain steps, and order in which you add ingredients and complete the manufacturing steps. Because of the diversity of the options here, you might need to spend quite some time thinking about the process, and seeing what freedom you practically and economically have. Like the prior group, the ratios, this group of degrees of freedom also has some correlations in the historical data. For example, you might not be able to independently increase temperature in the process, without adjusting flow rate.
-
-
-The "desired outcome"
-^^^^^^^^^^^^^^^^^^^^^^
-
-This is a specification of what you want to achieve. Your end goal. It is often given as a vector of one or more specifications. For example: you might need to achieve a given viscosity, melting point and product density. These 3 numbers jointly define the expectations.
-
-.. index::
-	single: sigmoid function
-	single: Gompertz function
-
-Some entries in the desired outcome vector might simply be given as constraints. For example, an *elongation* value of 15 or lower is acceptable, or a *shelf-life* of 30 days or greater is acceptable. This is more of a yes/no constraint: it is either met, or it is not. It creates a discontinuity in our system when we specify it as an equation later on. Discontinuities are often undesirable from a mathematical modelling and optimization perspective. However these can be dealt with by converting them to a smoothed version, such as by using a sigmoid function or a `Gompertz function <https://en.wikipedia.org/wiki/Gompertz_function>`_.
-
-Finally, sometimes the desired outcome is a very large vector, such as time series showing the change of the product, such as elongation in a controlled experiments, or a pH over time. It can also be a spectrum, such as an NIR spectrum. The number of entries in this long vector are highly correlated. So the first step in such a situation is to use a :ref:`principal component model <SECTION_PCA>` and understand the true lower dimensional space that the output space has. Then these, far smaller number of components, are used as a specification. Therefore the methods of product design are applicable in this case too.
 
 Data needed for product development
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
