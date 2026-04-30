@@ -16,6 +16,11 @@ The only difference that must be remembered is that these scores have a differen
 Interpreting the loadings in PLS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	pair: loadings; projection to latent structures (PLS)
+	single: r weights (W*)
+	see: W-star; r weights (W*)
+
 :ref:`Like with the loadings from PCA <LVM_interpreting_loadings>`, :math:`\mathbf{p}_a`,we interpret the loadings :math:`\mathbf{w}_a` from PLS in the same way. Highly correlated variables have similar weights in the loading vectors and appear close together in the loading plots of all dimensions. 
 
 We tend to refer to the PLS loadings, :math:`\mathbf{w}_a`, as weights; this is for reasons that will be explained soon.

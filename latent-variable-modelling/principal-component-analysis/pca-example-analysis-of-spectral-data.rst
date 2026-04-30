@@ -3,6 +3,11 @@
 PCA example: analysis of spectral data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	pair: spectral data example; latent variable modelling
+	single: chemometrics
+	single: spectroscopy
+
 A data set, `available on the dataset website <http://openmv.net/info/tablet-spectra>`_, contains data on 460 tablets, measured at 650 different wavelengths.
 
 .. image:: ../../figures/examples/tablet-spectra/pharma-spectra.png

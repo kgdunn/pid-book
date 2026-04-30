@@ -3,6 +3,13 @@
 Extracting value from data
 ===================================================
 
+.. index::
+	pair: extracting value from data; latent variable modelling
+	single: troubleshooting
+	single: process monitoring; multivariate
+	pair: missing data; latent variable modelling
+	pair: signal-to-noise ratio; latent variable modelling
+
 There are five main areas where engineers use large quantities of data.
 
 	#.	**Improved process understanding**
@@ -130,6 +137,9 @@ These data sets meet all the assumptions required to use the so-called "classica
 
 **Data fusion**
 
+	.. index::
+		single: data fusion
+
 	This is a recent buzz-word that simply means we collect and use data from multiple sources. Imagine the batch system above: we already have data in |Z| recorded by manual entry, data in |X| recorded by sensors on the process, and then |Y|, typically from lab measurements. We might even have a near infrared probe in the reactor that provides a complete spectrum (a vector) at each point in time. The process of combining these data sets together is called data fusion. Each data set is often referred to as a :index:`block <single: block (data set)>`. We prefer to use the term :index:`multiblock` data analysis when dealing with combined data sets.
 
 Issues faced with engineering data
@@ -151,7 +161,7 @@ Issues faced with engineering data
 
 	Engineering systems are usually kept as stable as possible: the ideal being a flat line. Data from such systems have very little signal and high noise. Even though we might record 50 Mb per second from various sensors, computer systems can, and actually do, "throw away" much of the data. This is not advisable from a multivariate data analysis perspective, but the reasoning behind it is hard to fault: much of the data we collect is not very informative. A lot of it is just from constant operation, noise, slow drift or error.
 
-	Finding the interesting signals in these routine data (also known as happenstance data), is a challenge.
+	Finding the interesting signals in these routine data (also known as :index:`happenstance data <single: happenstance data>`), is a challenge.
 
 **Non-causal data**
 

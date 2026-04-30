@@ -5,6 +5,7 @@ Interpreting score plots
 
 .. index::
 	pair: interpret score plot; latent variable modelling
+	single: score plot
 
 Before summarizing some points about how to interpret a score plot, let's quickly repeat what a score value is. There is one score value for each observation (row) in the data set, so there are are :math:`N` score values for the first component, another :math:`N` for the second component, and so on.
 
@@ -48,14 +49,14 @@ It shows how the process was operating in region A, then moved to region B and f
 
 **Outliers**
 
-Outliers are readily detected in a score plot, and using the equation below we can see why. Recall that the data in |X| have been centered and scaled, so the :math:`x`-value for a variable that is operating at the mean level will be roughtly zero. An observation that is at the mean value for all :math:`K` variables will have a score vector of :math:`\mathbf{t}_i = [0, 0, \ldots, 0]`. An observation where many of the variables have values far from their average level is called a multivariate outlier. It will have one or more score values that are far from zero, and will show up on the outer edges of the score scatterplots. 
+Outliers are readily detected in a score plot, and using the equation below we can see why. Recall that the data in |X| have been centered and scaled, so the :math:`x`-value for a variable that is operating at the mean level will be roughtly zero. An observation that is at the mean value for all :math:`K` variables will have a score vector of :math:`\mathbf{t}_i = [0, 0, \ldots, 0]`. An observation where many of the variables have values far from their average level is called a :index:`multivariate outlier <single: multivariate outlier>`. It will have one or more score values that are far from zero, and will show up on the outer edges of the score scatterplots. 
 
 Sometimes all it takes is for one variable, :math:`x_{i,k}` to be far away from its average to cause :math:`t_{i,a}` to be large:
 
 .. math:: 
 	t_{i,a} = x_{i,1}\,\, p_{1,a} + x_{i,2} \,\, p_{2,a} + \ldots + x_{i,k} \,\, p_{k,a} + \ldots + x_{i,K} \,\, p_{K,a} 
 	
-But usually it is a combination of more than one :math:`x`-variable. There are :math:`K` terms in this equation, each of which *contribute* to the score value. A bar plot of each of these :math:`K` terms, :math:`x_{i,k} \,\, p_{k,a}`, is called a contribution plot. It shows which variable(s) most contribute to the large score value.
+But usually it is a combination of more than one :math:`x`-variable. There are :math:`K` terms in this equation, each of which *contribute* to the score value. A bar plot of each of these :math:`K` terms, :math:`x_{i,k} \,\, p_{k,a}`, is called a :index:`contribution plot <single: contribution plot>`. It shows which variable(s) most contribute to the large score value.
 
 As an example from the :ref:`food texture data <LVM_food_texture_example>` from earlier, we saw that observation 33 had a large negative :math:`\mathbf{t}_1` value. From :ref:`that prior equation <LVM_eqn_LVM_t1_food_texture>`:
 
@@ -103,7 +104,10 @@ A continuous 3rd variable can be implied using a varying colour scheme, going fr
 
 Interpreting loading plots
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	
+
+.. index::
+	single: loading plot
+
 Recall that the :index:`loadings plot <pair: loadings plot, interpretation of; latent variable modelling>` is a plot of the direction vectors that define the model. Returning back to a previous illustration:
 
 .. image:: ../../figures/pca/geometric-PCA-8-both-components-with-plane.png

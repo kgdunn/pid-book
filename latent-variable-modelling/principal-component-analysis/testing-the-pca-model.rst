@@ -16,6 +16,9 @@ The last step of testing, interpreting and using the model is where one will spe
 Using an existing PCA model
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. index::
+	pair: using model on new data; principal component analysis
+
 In this section we outline the process required to use an existing PCA model. What this means is that you have already calculated the model and validated its usefulness. Now you would like to use the model on a new observation, which we call :math:`\mathbf{x}'_{\text{new, raw}}`. The method described below can be efficiently applied to many new rows of observations by converting the row vector notation to matrix notation.
 
 	#.	Preprocess your vector of new data in the same way as you did when you built the model. For example, if you took the log transform of a certain variable, then you must do so for the corresponding entry in :math:`\mathbf{x}'_{\text{new, raw}}`. Also apply mean centering and scaling, using the mean centering and scaling information you calculated when you originally built the model.

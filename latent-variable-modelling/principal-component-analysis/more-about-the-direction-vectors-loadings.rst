@@ -1,6 +1,11 @@
 More about the direction vectors (loadings)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	single: loadings (P matrix)
+	single: direction vector
+	see: direction vector; loadings (P matrix)
+
 The direction vectors |p1|, :math:`\mathbf{p}_2` and so on, are each :math:`K \times 1` unit vectors. These are vectors in the original coordinate space (the :math:`K`-dimensional real-world) where the observations are recorded.
 
 But these direction vectors are also our link to the latent-variable coordinate system. These direction vectors create a (hyper)plane that is embedded inside the :math:`K`-dimensional space of the :math:`K` original variables. You will see the terminology of *loadings* - this is just another name for these direction vectors:

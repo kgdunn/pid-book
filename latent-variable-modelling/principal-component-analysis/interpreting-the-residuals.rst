@@ -2,6 +2,10 @@
 Interpreting the residuals
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. index::
+	pair: residuals; principal component analysis
+	pair: R-squared; principal component analysis
+
 We consider three types of residuals: residuals within each row of |X|, called squared prediction errors (SPE); residuals for each column of |X|, called :math:`R^2_k` for each column, and finally residuals for the entire matrix |X|, usually just called :math:`R^2` for the model.
 
 .. _LVM-interpreting-SPE-residuals:
