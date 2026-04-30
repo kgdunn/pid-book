@@ -55,6 +55,11 @@ setup:		## Bootstrap the toolchain: install uv, create .venv, sync deps from pyp
 	@command -v uv >/dev/null 2>&1 || curl -LsSf https://astral.sh/uv/install.sh | sh
 	uv python install
 	uv sync
+	@command -v latexmk >/dev/null 2>&1 || { \
+		echo "WARNING: latexmk not found. 'make latexpdf' will not work."; \
+		echo "Install it with:  sudo apt-get install texlive-full latexmk"; \
+		echo "  (or on Fedora:  sudo dnf install texlive-scheme-full latexmk)"; \
+	}
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
@@ -109,6 +114,12 @@ latex:
 	      "(use \`make latexpdf' here to do that automatically)."
 
 latexpdf:
+	@command -v latexmk >/dev/null 2>&1 || { \
+		echo "ERROR: latexmk not found."; \
+		echo "Install it with:  sudo apt-get install texlive-full latexmk"; \
+		echo "  (or on Fedora:  sudo dnf install texlive-scheme-full latexmk)"; \
+		exit 1; \
+	}
 	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
 	cp preface/*.png $(BUILDDIR)/latex
 	cp preface/*.jpg $(BUILDDIR)/latex
