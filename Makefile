@@ -5,7 +5,7 @@
 # Add "-W" to cause warnings to turn into errors.
 SPHINXOPTS    = -E -j auto
 RELAXOPTS     = -E
-SPHINXBUILD   = sphinx-build
+SPHINXBUILD   = uv run sphinx-build
 PAPER         =
 BUILDDIR      = _build
 
@@ -55,8 +55,6 @@ setup:		## Bootstrap the toolchain: install uv, create .venv, sync deps from pyp
 	@command -v uv >/dev/null 2>&1 || curl -LsSf https://astral.sh/uv/install.sh | sh
 	uv python install
 	uv sync
-
-
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
