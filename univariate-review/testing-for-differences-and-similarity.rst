@@ -62,6 +62,29 @@ Either we want to confirm things are statistically the same, or confirm they hav
 .. image:: ../figures/univariate/system-comparison-wikitable.png
 	:align: center
 	
+.. code-block:: python
+
+	import pandas as pd
+
+	pd.options.plotting.backend = "plotly"
+
+	# Generate the boxplot
+	A = [92.7, 73.3, 80.5, 81.2, 87.1,
+	     69.2, 81.9, 73.9, 78.6, 80.5]
+	B = [83.5, 78.9, 82.7, 93.2, 86.3,
+	     74.7, 81.6, 92.4, 83.6, 72.4]
+
+	data = pd.concat([
+	    pd.DataFrame({"observe": A, "method": "A"}),
+	    pd.DataFrame({"observe": B, "method": "B"}),
+	])
+
+	fig = data.plot.box(
+	    x="method", y="observe",
+	    title="Batch yield (%) for two trials",
+	)
+	fig.show()
+
 .. code-block:: r
 
 	# Generate the boxplot
@@ -75,7 +98,7 @@ Either we want to confirm things are statistically the same, or confirm they hav
 	data <- rbind(data.A, data.B)
 
 	limits <- range(data$observe)
-	boxplot(data$obs ~ data$method, lwd=2, 
+	boxplot(data$obs ~ data$method, lwd=2,
 	        main="Batch yield (%) for two trials")
 
 
@@ -115,6 +138,42 @@ So to summarize: we can use a historical data set if it is relevant. And there a
 
 In fact, for this example, the data were not independent, they were autocorrelated. There was a relationship from one batch to the next: :math:`x[k] = \phi x[k-1] + a[k]`, with :math:`\phi = -0.3`, and  :math:`a[k] \sim \mathcal{N}\left(\mu=0, \sigma^2=6.7^2\right)`. As an aside you can simulate your own set of autocorrelated data using this R code:
 
+.. code-block:: python
+
+	import numpy as np
+	import pandas as pd
+
+	pd.options.plotting.backend = "plotly"
+
+	N = 300
+	phi = -0.3
+	spread = 6.7
+	location = 79.9
+
+	A_hist = np.zeros(N)
+	for k in range(1, N):
+	    A_hist[k] = (phi * A_hist[k - 1]
+	                 + np.random.normal(loc=0,
+	                                    scale=spread))
+	A_hist = A_hist + location
+
+	# Note: your plot will look different to
+	# the text, because it will be from a
+	# different set of random numbers.
+	title = ("Autocorrelation between "
+	         "successive values of batch yield")
+	fig = pd.DataFrame(
+	    {"x[k]":   A_hist[:-1],
+	     "x[k+1]": A_hist[1:]}
+	).plot.scatter(x="x[k]", y="x[k+1]",
+	               title=title)
+	fig.update_xaxes(range=[60, 100])
+	fig.update_yaxes(range=[60, 100])
+	fig.show()
+
+	# Hint: run the code several times, with
+	# different values of variable `phi`.
+
 .. code-block:: r
 
 	N <- 300
@@ -123,10 +182,10 @@ In fact, for this example, the data were not independent, they were autocorrelat
 	location <- 79.9
 
 	# create a vector of zeros
-	A.hist <- numeric(N)   
+	A.hist <- numeric(N)
 	for (k in 2:N)
 	{
-	  A.hist[k] <- phi*(A.hist[k-1]) + 
+	  A.hist[k] <- phi*(A.hist[k-1]) +
 	           rnorm(1, mean = 0, sd = spread)
 	}
 	A.hist <- A.hist + location
@@ -136,16 +195,16 @@ In fact, for this example, the data were not independent, they were autocorrelat
 	# different set of random numbers
 	title = paste0("Autocorrelation between ",
 	        "successive values of batch yield")
-	plot(A.hist[1:N-1], A.hist[2:N], 
-	     xlab = "x[k]", 
-	     ylab = "x[k+1]", 
+	plot(A.hist[1:N-1], A.hist[2:N],
+	     xlab = "x[k]",
+	     ylab = "x[k+1]",
 	     main = title,
-	     lwd = 3, 
-	     xlim = c(60,100), 
+	     lwd = 3,
+	     xlim = c(60,100),
 	     ylim = c(60,100))
 
 	lines(lowess(A.hist[1:N-1], A.hist[2:N]))
-	
+
 	# Hint: run the code several times, with
 	# different values of variable `phi`.
 
@@ -311,6 +370,32 @@ Check the probability of obtaining the :math:`z`-value in :eq:`zvalue-for-differ
 The probability of seeing a :math:`z`-value from :math:`-\infty` up to 1.03 is 84.8% (use the ``pnorm(1.03)`` function in R). But we are interested in the probability of obtaining a :math:`z`-value **larger** than this. Why?  Because :math:`z=0` represents no improvement, and a value of :math:`z<0` would mean that system B is worse than system A. So what are the chances of obtaining :math:`z=1.03`?  It is (100-84.8)% = 15.2%, which means that system B's performance could have been obtained by pure luck in 15.2% of cases. 
 
 
+.. code-block:: python
+
+	import numpy as np
+	from scipy.stats import norm
+
+	A = np.array([92.7, 73.3, 80.5, 81.2, 87.1,
+	              69.2, 81.9, 73.9, 78.6, 80.5])
+	B = np.array([83.5, 78.9, 82.7, 93.2, 86.3,
+	              74.7, 81.6, 92.4, 83.6, 72.4])
+
+	xA_avg = A.mean()
+	xB_avg = B.mean()
+	n_A = len(A)
+	n_B = len(B)
+	sigma_external = 6.61  # given
+
+	den = sigma_external ** 2 * (1 / n_A + 1 / n_B)
+	z = (xB_avg - xA_avg) / np.sqrt(den)
+
+	# Probability of this z?
+	# We have normalized to zero mean
+	# and to unit standard deviation:
+	p = norm.cdf(z, loc=0, scale=1)  # 0.8481164
+	print(f"Probability by chance: "
+	      f"{round((1 - p) * 100, 1)}%")
+
 .. code-block:: r
 
 	A <- c(92.7, 73.3, 80.5, 81.2, 87.1,
@@ -331,7 +416,7 @@ The probability of seeing a :math:`z`-value from :math:`-\infty` up to 1.03 is 8
 	# We have normalized to zero mean
 	# and to unit standard deviation:
 	p <- pnorm(z, mean=0, sd=1)  # 0.8481164
-	paste0('Probability by chance: ', 
+	paste0('Probability by chance: ',
 	       round((1-p)*100, 1), '%')
 	
 
@@ -365,6 +450,35 @@ Now using this value of :math:`s_P` instead of :math:`\sigma` in :eq:`zvalue-for
 
 The probability of obtaining a :math:`z`-value greater than this can be calculated as 16.4% using the :math:`t`-distribution with 18 degrees of freedom (use ``1-pt(1.01, df=18)`` in R). We use a :math:`t`-distribution because an estimate of the variance is used, :math:`s_p^2`, not a population variance, :math:`\sigma^2`. 
 
+.. code-block:: python
+
+	import numpy as np
+	from scipy.stats import t
+
+	A = np.array([92.7, 73.3, 80.5, 81.2, 87.1,
+	              69.2, 81.9, 73.9, 78.6, 80.5])
+	B = np.array([83.5, 78.9, 82.7, 93.2, 86.3,
+	              74.7, 81.6, 92.4, 83.6, 72.4])
+
+	xA_avg = A.mean()
+	xB_avg = B.mean()
+	n_A = len(A)
+	n_B = len(B)
+	# degrees of freedom
+	dof = n_A - 1 + n_B - 1
+	var_pooled = ((n_A - 1) * A.var(ddof=1)
+	              + (n_B - 1) * B.var(ddof=1)) / dof
+
+	den = var_pooled * (1 / n_A + 1 / n_B)
+	z = (xB_avg - xA_avg) / np.sqrt(den)
+
+	# Probability of this z?
+	# Compare it against the t-distribution:
+	p = t.cdf(z, df=dof)  # 0.8361346
+
+	print(f"Probability by chance: "
+	      f"{round((1 - p) * 100, 1)}%")
+
 .. code-block:: r
 
 	A <- c(92.7, 73.3, 80.5, 81.2, 87.1,
@@ -378,17 +492,17 @@ The probability of obtaining a :math:`z`-value greater than this can be calculat
 	n.B <- length(B)
 	# degrees of freedom
 	dof <- n.A - 1 + n.B - 1
-	var.pooled <- ((n.A - 1) * var(A) + 
+	var.pooled <- ((n.A - 1) * var(A) +
 	          (n.B - 1) * var(B)) / dof
-	
+
 	den <- var.pooled * (1/n.A + 1/n.B)
 	z <- (xB.avg - xA.avg) / sqrt(den)
 
 	# Probability of this z?
 	# Compare it against the t-distribution:
 	p <- pt(z, df = dof)  # 0.8361346
-	
-	paste0('Probability by chance: ', 
+
+	paste0('Probability by chance: ',
 	       round((1-p)*100, 1), '%')
 
 As an aside: we used a normal distribution for the external :math:`\sigma` and a :math:`t`-distribution for the internal :math:`s`. Both cases had a similar value for :math:`z` (compare :math:`z = 1.01` to :math:`z = 1.03`). Note however that the probabilities are higher in the :math:`t`-distribution's tails, which means that even though we have similar :math:`z`-values, the probability is greater: 16.4% against 15.2%. While this difference is not much from a practical point of view, it illustrates the difference between the :math:`t`-distribution and the normal distribution.

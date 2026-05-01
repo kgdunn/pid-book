@@ -65,19 +65,41 @@ Interpreting the confidence interval
 		
 		Try it out:
 		
+		.. code-block:: python
+
+			import numpy as np
+			from scipy.stats import t
+
+			# Try varying this value:
+			conf_level = 0.90
+
+			viscosity = np.array([23, 19, 17, 18,
+			                      24, 26, 21, 14, 18])
+			n = len(viscosity)
+			x_avg = viscosity.mean()
+			x_sd = viscosity.std(ddof=1)
+			dof = n - 1
+			c_t = t.ppf(q=1 - (1 - conf_level) / 2,
+			            df=dof)
+			LB = x_avg - c_t * x_sd / np.sqrt(n)
+			UB = x_avg + c_t * x_sd / np.sqrt(n)
+			print(f"The {round(conf_level * 100):.0f}"
+			      f"% confidence interval is: ")
+			print(f"[{round(LB, 1)}; {round(UB, 1)}]")
+
 		.. code-block:: r
 
 			# Try varying this value:
 			conf.level <- 0.90
-			
-			viscosity <- c(23, 19, 17, 18, 
+
+			viscosity <- c(23, 19, 17, 18,
 			               24, 26, 21, 14, 18)
 			n <- length(viscosity)
 			x.avg <- mean(viscosity)
 			x.sd <- sd(viscosity)
 			dof <- n - 1
-			c.t <- qt(p = 1-(1-conf.level)/2, 
-			          df = dof) 
+			c.t <- qt(p = 1-(1-conf.level)/2,
+			          df = dof)
 			LB <- x.avg - c.t * x.sd / sqrt(n)
 			UB <- x.avg + c.t * x.sd / sqrt(n)
 			paste0('The ', round(conf.level*100, 0),

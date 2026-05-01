@@ -69,11 +69,11 @@ We review a couple of concepts that you should have seen in a prior statistical 
 
 	where :math:`N` represents the size of the entire population, and :math:`n` is the number of samples measured from the population.
 
-	.. literalinclude:: /univariate-review/gists/create-normally-distributed-values.R
-		:language: r
-
 	.. literalinclude:: /univariate-review/gists/create-normally-distributed-values.py
 		:language: python
+
+	.. literalinclude:: /univariate-review/gists/create-normally-distributed-values.R
+		:language: r
 
 	This is only one of several statistics that describes your data: if you told your customer that the average density of your liquid product was 1.421 g/L, and nothing further, the customer might assume all lots of the same product have a density of 1.421 g/L. But we know from :ref:`our earlier discussion <univariate-about-variability>` that there will be variation. We need information, in addition to the mean, to quantify the distribution of values: *the spread*.
 
@@ -96,11 +96,11 @@ We review a couple of concepts that you should have seen in a prior statistical 
 	Dividing by :math:`n-1` makes the variance statistic, :math:`s^2`, an :index:`unbiased estimator` of the population variance, :math:`\sigma^2`. However, in many data sets our value for :math:`n` is large, so using a divisor of :math:`n`, which you might come across in computer software or other texts, rather than :math:`n-1` as shown here, leads to little difference.
 
 
-	.. literalinclude:: /univariate-review/gists/create-normally-distributed-values-with-variance-parameter.R
-		:language: r
-
 	.. literalinclude:: /univariate-review/gists/create-normally-distributed-values-with-variance-parameter.py
 		:language: python
+
+	.. literalinclude:: /univariate-review/gists/create-normally-distributed-values-with-variance-parameter.R
+		:language: r
 
 	The square root of variance, called the :index:`standard deviation` is a more useful measure of spread: it is easier to visualize on a histogram and has the advantage of being in the same units of measurement as the variable itself.
 
@@ -143,6 +143,35 @@ We review a couple of concepts that you should have seen in a prior statistical 
 			\text{mad}\left\{ x_i \right\} = c \cdot \text{median}\left\{ \| x_i - \text{median}\left\{ x_i \right\}  \|  \right\} \qquad\qquad \text{where}\qquad c = 1.4826
 
 	The constant :math:`c` makes the MAD consistent with the standard deviation when the observations :math:`x_i` are normally distributed. The MAD has a :index:`breakdown point` of 50%, because like the median, we can replace just under half the data with outliers before the MAD estimate becomes unbounded. To compute the MAD in R, use the ``mad(x)`` function on a vector ``x``.
+
+	.. code-block:: python
+
+		# A vector of 500 normally distributed
+		# random numbers.
+		import numpy as np
+		from scipy.stats import median_abs_deviation
+
+		x = np.random.normal(size=500)
+
+		print("Without any outliers:")
+		print(f"Standard deviation = {np.std(x, ddof=1)}")
+		# scale='normal' applies the 1.4826 factor so the
+		# MAD agrees with sd() for normal data.
+		print(f"The MAD is         = "
+		      f"{median_abs_deviation(x, scale='normal')}")
+		print("These two should agree mostly.")
+
+		# Run it several times to verify that the
+		# two are similar, when there are no
+		# outliers.
+
+		# Now add a huge outlier:
+		x[1] = 9876
+		print("But now add an outlier...")
+		print(f"*Standard deviation = {np.std(x, ddof=1)}")
+		print(f"*The MAD is         = "
+		      f"{median_abs_deviation(x, scale='normal')}")
+		print("See how MAD is not affected.")
 
 	.. code-block:: r
 

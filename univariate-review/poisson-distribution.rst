@@ -38,13 +38,26 @@ Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{
 		10, 4.1%
 		15, 0.1%
 		
+.. code-block:: python
+
+	from scipy.stats import poisson
+
+	x = [0, 1, 3, 6, 10, 15]
+
+	# scipy calls the Poisson parameter 'mu'.
+	poisson.pmf(x, mu=6)
+
+	# Output:
+	# array([0.00247875, 0.01487251, 0.08923508,
+	#        0.16062314, 0.04130303, 0.00103326])
+
 .. code-block:: r
 
 	x <- c(0, 1, 3, 6, 10, 15)
 
 	# Note: R calls the Poisson parameter 'lambda'
-	dpois(x, lambda=6)    
-	
+	dpois(x, lambda=6)
+
 	# Output:
 	# 0.0025 0.0149 0.0892 0.161 0.0413 0.001
 
