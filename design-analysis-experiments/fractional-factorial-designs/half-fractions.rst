@@ -64,6 +64,28 @@ The :math:`\mathbf{X}` matrix is not :ref:`orthogonal <DOE_orthogonality>` anymo
 
 For these reasons the least squares model cannot be solved by inverting the :math:`\mathbf{X}^T\mathbf{X}` matrix. Prove it to yourself by using this code:
 
+.. code-block:: python
+
+	import numpy as np
+
+	intercept = np.ones(4)
+	A = np.array([-1, +1, -1, +1])
+	B = np.array([-1, -1, +1, +1])
+	C = A * B
+	X = np.column_stack([intercept, A, B, C,
+	                     A * B, A * C, B * C,
+	                     A * B * C])
+
+	XtX = X.T @ X
+	print("The X'X matrix is = ")
+	print(XtX)
+
+	print("Calculate the inverse (it will fail!)")
+	np.linalg.inv(XtX)
+
+	# We cannot, since the determinant is 0:
+	np.linalg.det(XtX)
+
 .. code-block:: r
 
 	int <- c(1, 1, 1, 1)

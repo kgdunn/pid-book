@@ -47,6 +47,64 @@ where :math:`\mathbf{b} = [b_0, b_A, b_B, b_C, b_D, b_E, b_F, b_G]`. The matrix 
 
 How do you assess which main effects are important?  There are eight data points and eight parameters, so there are no degrees of freedom and the residuals are all zero. In this case you have to use a :ref:`Pareto plot <DOE-Pareto-plot>`, which requires that your variables have been suitably scaled in order to judge importance of the main effects relative to each other. The Pareto plot would be given as shown below, and as usual, it does not show the intercept term.
 
+.. code-block:: python
+
+	import itertools
+	import numpy as np
+	import pandas as pd
+	import statsmodels.api as sm
+
+	pd.options.plotting.backend = "plotly"
+
+	# Create vectors for each factor in the experiment.
+	# itertools.product gives the full 2^3 design.
+	design = pd.DataFrame(
+	    list(itertools.product([-1, +1],
+	                           [-1, +1],
+	                           [-1, +1])),
+	    columns=["A", "B", "C"],
+	)
+	A = design["A"].to_numpy()
+	B = design["B"].to_numpy()
+	C = design["C"].to_numpy()
+	D = A * B
+	E = A * C
+	F = B * C
+	G = A * B * C
+	y = np.array([77.1, 68.9, 75.5, 72.5,
+	              67.9, 68.5, 71.5, 63.7])
+
+	X = np.column_stack([A, B, C, D, E, F, G])
+	X = sm.add_constant(X)
+	demo = sm.OLS(y, X).fit()
+	print(demo.summary())
+
+	# OK, now we are ready to generate the Pareto plot.
+	# Sort the absolute coefficient values, dropping
+	# the intercept (matching the R paretoPlot conventions).
+	names = ["A", "B", "C", "D", "E", "F", "G"]
+	effects = pd.Series(
+	    np.abs(demo.params[1:]),
+	    index=names,
+	).sort_values()
+	fig = effects.plot.bar(orientation="h")
+	fig.update_layout(
+	    xaxis_title_text="|effect|",
+	    yaxis_title_text="Factor",
+	    showlegend=False,
+	)
+	fig.show()
+
+	# Try getting the results manually:
+	XtX = X.T @ X
+	print("The XtX matrix is:")
+	print(XtX)
+
+	Xty = X.T @ y
+	b = np.linalg.solve(XtX, Xty)
+	print("The solution vector is:")
+	print(b)
+
 .. code-block:: r
 
 	# Create vectors for each factor in the experiment
