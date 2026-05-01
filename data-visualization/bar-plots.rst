@@ -18,15 +18,15 @@ Here is some advice for bar plots:
 		:alt:	../figures/visualization/quarterly-profit-barplot.R
 		:align: center
 
-	Use this R code to draw the figures:
-
-	.. dcl:: R
-		:codefile: data-visualization/gists/quarterly-profit-barplots.R
-
-	or this Python code:
+	Use this Python code to draw the figures:
 
 	.. dcl:: python
 		:codefile: data-visualization/gists/quarterly-profit-barplots.py
+
+	or this R code:
+
+	.. dcl:: R
+		:codefile: data-visualization/gists/quarterly-profit-barplots.R
 
 -	Bar plots can be wasteful as each data point is repeated several times:
 
