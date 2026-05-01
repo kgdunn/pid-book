@@ -69,13 +69,11 @@ We review a couple of concepts that you should have seen in a prior statistical 
 
 	where :math:`N` represents the size of the entire population, and :math:`n` is the number of samples measured from the population.
 
-	.. dcl:: R
-		:height: 200px
-		:codefile: univariate-review/gists/create-normally-distributed-values.R
+	.. literalinclude:: /univariate-review/gists/create-normally-distributed-values.R
+		:language: r
 
-	.. dcl:: python
-		:height: 200px
-		:codefile: univariate-review/gists/create-normally-distributed-values.py
+	.. literalinclude:: /univariate-review/gists/create-normally-distributed-values.py
+		:language: python
 
 	This is only one of several statistics that describes your data: if you told your customer that the average density of your liquid product was 1.421 g/L, and nothing further, the customer might assume all lots of the same product have a density of 1.421 g/L. But we know from :ref:`our earlier discussion <univariate-about-variability>` that there will be variation. We need information, in addition to the mean, to quantify the distribution of values: *the spread*.
 
@@ -98,14 +96,12 @@ We review a couple of concepts that you should have seen in a prior statistical 
 	Dividing by :math:`n-1` makes the variance statistic, :math:`s^2`, an :index:`unbiased estimator` of the population variance, :math:`\sigma^2`. However, in many data sets our value for :math:`n` is large, so using a divisor of :math:`n`, which you might come across in computer software or other texts, rather than :math:`n-1` as shown here, leads to little difference.
 
 
-	.. dcl:: R
-		:height: 350px
-		:codefile: univariate-review/gists/create-normally-distributed-values-with-variance-parameter.R
+	.. literalinclude:: /univariate-review/gists/create-normally-distributed-values-with-variance-parameter.R
+		:language: r
 
-	.. dcl:: python
-		:height: 350px
-		:codefile: univariate-review/gists/create-normally-distributed-values-with-variance-parameter.py
-		
+	.. literalinclude:: /univariate-review/gists/create-normally-distributed-values-with-variance-parameter.py
+		:language: python
+
 	The square root of variance, called the :index:`standard deviation` is a more useful measure of spread: it is easier to visualize on a histogram and has the advantage of being in the same units of measurement as the variable itself.
 
 **Degrees of freedom**
@@ -148,8 +144,7 @@ We review a couple of concepts that you should have seen in a prior statistical 
 
 	The constant :math:`c` makes the MAD consistent with the standard deviation when the observations :math:`x_i` are normally distributed. The MAD has a :index:`breakdown point` of 50%, because like the median, we can replace just under half the data with outliers before the MAD estimate becomes unbounded. To compute the MAD in R, use the ``mad(x)`` function on a vector ``x``.
 
-	.. dcl:: R
-		:height: 500px
+	.. code-block:: r
 
 		# A vector of 500 normally distributed
 		# random numbers

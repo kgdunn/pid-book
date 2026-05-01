@@ -64,8 +64,7 @@ The :math:`\mathbf{X}` matrix is not :ref:`orthogonal <DOE_orthogonality>` anymo
 
 For these reasons the least squares model cannot be solved by inverting the :math:`\mathbf{X}^T\mathbf{X}` matrix. Prove it to yourself by using this code:
 
-.. dcl:: R
-	:height: 450px
+.. code-block:: r
 
 	int <- c(1, 1, 1, 1)
 	A <- c(-1, +1, -1, +1)

@@ -225,7 +225,7 @@ We will refer back to the following example several times. Calculate the least s
 
 To calculate the least squares model in R:
 
-.. dcl:: R
+.. code-block:: r
 
 	x <- c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5)
 	y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 

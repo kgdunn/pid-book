@@ -29,8 +29,7 @@ Imagine a case where we are throwing dice. The distributions, shown below, are o
 
 As one sees from the above figures, the distribution from these averages quickly takes the shape of the so-called *normal distribution*. As :math:`M` increases, the y-axis starts to form a peak.  Try it yourself:
 
-.. dcl:: R
-	:codefile: ../figures/univariate/simulate-CLT.R
+.. code-block:: r
 
 	N = 500
 
@@ -160,8 +159,7 @@ Some questions:
 
 To calculate the point on the curve :math:`p(x)` we use the ``dnorm(...)`` function in R. It requires you specify the two parameters:
 
-	.. dcl:: R
-		:height: 400px
+	.. code-block:: r
 
 		# x=0, mu=0, and sigma=1
 		# This is the maximum of the curve
@@ -193,8 +191,7 @@ Some useful points:
 
 It is more useful to calculate the area under :math:`p(x)` from :math:`x=-\infty` to a particular point :math:`x`. This is called the cumulative distribution, and is discussed more fully in :ref:`the next section <univariate_check_for_normality_qqplot>`.
 
-	.. dcl:: R
-		:height: 200px
+	.. code-block:: r
 
 		# gives area from -Inf to -1,
 		# for mu=0, sigma=1
@@ -231,8 +228,7 @@ Consult a statistical table found in most statistical textbooks for the normal d
 
 #.	Assume :math:`x`, the measurement of biological activity for a drug, is normally distributed with mean of 26.2 and standard deviation of 9.2. What is the probability of obtaining an activity reading less than or equal to 30.0?
 
-	.. dcl:: R
-		:height: 300px
+	.. code-block:: r
 
 		# We know that the probability should be 50%
 		# if the activity is equal to the mean.
@@ -247,8 +243,7 @@ Consult a statistical table found in most statistical textbooks for the normal d
 
 #.	Assume :math:`x` is the yield for a batch process, with mean of 85 g/L and **variance** of 16 :math:`\text{g}^2.\text{L}^{-2}`. What proportion of batch yield values lie between 75 and 95 g/L?
 
-	.. dcl:: R
-		:height: 400px
+	.. code-block:: r
 
 		mu <- 85 # g/L
 		sigma <- sqrt(16) # g/L
@@ -353,8 +348,7 @@ A built-in function exists in R that runs the above calculations and shows a sca
 
 All the above code together in one script for you to test out:
 
-.. dcl:: R
-	:height: 500px
+.. code-block:: r
 
 	N = 10
 	index <- seq(1, N)
@@ -386,9 +380,7 @@ The q-q plot, quantile-quantile plot, shows the quantiles of 2 distributions aga
 
 We can use the q-q plot to compare any 2 *samples of data*, even if they have different values of :math:`N`, by calculating the quantiles for each sample at different step quantiles (e.g. 1, 2, 3, 4, 5, 10, 15, .... 95, 96, 97, 98, 99), then plot the q-q plot for the two samples. You can calculate quantiles for any sample of data using the ``quantile`` function in R. The simple example below shows how to compare the q-q plot for 1000 normal distribution samples against 2000 :math:`F`-distribution samples.
 
-.. dcl:: R
-	:height: 500px
-	:codefile: ../figures/univariate/qqplot-comparison.R
+.. code-block:: r
 
 	# 1000 normal values
 	rand.norm <- rnorm(1000)

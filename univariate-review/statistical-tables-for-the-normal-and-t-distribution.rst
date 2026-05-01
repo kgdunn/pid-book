@@ -16,7 +16,7 @@ Statistical tables for the normal- and t-distribution
 
 If interested, here is the code used to generate these figures
 	
-.. dcl:: R
+.. code-block:: r
 
 	# The source code used to generate the
 	# *normal distribution* section:

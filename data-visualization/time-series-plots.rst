@@ -26,8 +26,8 @@ Here are some tips for effective time-series plots:
 
 	The Python code below shows how to do this correctly: a real ``pd.DatetimeIndex``, a Plotly time axis formatted with month/year tick labels, and a rolling-mean overlay that helps separate signal from noise.
 
-	.. dcl:: python
-		:codefile: data-visualization/gists/time-series-plot.py
+	.. literalinclude:: /data-visualization/gists/time-series-plot.py
+		:language: python
 
 .. AU: The last sentence in the following paragraph seemed a little convoluted. Please verify edits.
 

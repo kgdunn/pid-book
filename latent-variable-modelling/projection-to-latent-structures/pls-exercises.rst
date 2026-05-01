@@ -36,9 +36,7 @@ The taste of cheddar cheese
 		:width: 900px
 		:align: center
 
-	.. dcl:: R
-		:height: 300px
-		:codefile: ../../figures/examples/cheese/cheese-plots.R
+	.. code-block:: r
 
 		filename <- 'http://openmv.net/file/cheddar-cheese.csv'
 		cheese <- read.csv(filename)
@@ -55,9 +53,7 @@ The taste of cheddar cheese
 
 #.	Build a PCA model now to verify your answers.
 
-	.. dcl:: R
-		:height: 300px
-		:codefile: ../../figures/examples/cheese/cheese-plots.R
+	.. code-block:: r
 
 		filename <- 'http://openmv.net/file/cheddar-cheese.csv'
 		cheese <- read.csv(filename)
@@ -91,7 +87,7 @@ The taste of cheddar cheese
 
 	*	Compare this to the PLS model's :math:`R^2_y` value.
 
-	.. dcl:: R
+	.. code-block:: r
 
 		cheese <- read.csv('http://openmv.net/file/cheddar-cheese.csv')
 		summary(cheese)
@@ -113,7 +109,7 @@ The taste of cheddar cheese
 
 #.	Now build a PCR model in R using only 1 component, then using 2 components. Again calculate the standard error and :math:`R^2_y` values.
 
-	.. dcl:: R
+	.. code-block:: r
 
 		cheese <- read.csv('http://openmv.net/file/cheddar-cheese.csv')
 		summary(cheese)

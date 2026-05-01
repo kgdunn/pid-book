@@ -24,11 +24,11 @@ The 25th percentile is the value below which 25% of the observations in the samp
 
 The following data are thickness measurements of 2-by-6 boards (2-by-6 refers for the thickness and depth of a wooden board), taken at six locations around the edge. Here is a sample of the measurements and a summary of the first 100 boards (code in Python and R respectively):
 
-.. dcl:: python
-	:codefile: data-visualization/gists/board-thickness-boxplot.py
+.. literalinclude:: /data-visualization/gists/board-thickness-boxplot.py
+	:language: python
 
-.. dcl:: R
-	:codefile: data-visualization/gists/board-thickness-boxplot.R
+.. literalinclude:: /data-visualization/gists/board-thickness-boxplot.R
+	:language: r
 
 .. _visualization_boxplot_example:
 

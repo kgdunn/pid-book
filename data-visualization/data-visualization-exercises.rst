@@ -140,7 +140,7 @@ Exercises
 		:width: 900px
 		:alt: fake width
 
-	.. dcl:: python
+	.. code-block:: python
 
 		import pandas as pd
 		import plotly.express as px
@@ -152,7 +152,7 @@ Exercises
 		fig.show()
 
 
-	.. dcl:: R
+	.. code-block:: r
 
 		library(car)
 		data_file = 'http://openmv.net/file/food-texture.csv'
@@ -191,7 +191,7 @@ Exercises
 
 	#.	A box plot is an effective way to summarize and compare the data for each day of the week.
 
-		.. dcl:: python
+		.. code-block:: python
 
 		    import pandas as pd
 		    pd.options.plotting.backend = "plotly"
@@ -210,7 +210,7 @@ Exercises
 		    fig.show()
 
 
-		.. dcl:: R
+		.. code-block:: r
 
 		    web = read.csv('http://openmv.net/file/website-traffic.csv')
 
@@ -236,7 +236,7 @@ Exercises
 
 	The best way to draw the time-series plot is to use proper time-based labelling on the x-axis, but we won't cover that topic here. If you are interested, read up about the ``xts`` package (`see the R tutorial <https://learnche.org/4C3/Software_tutorial>`_) and it's plot command. See how it is used in the code below:
 
-		.. dcl:: python
+		.. code-block:: python
 
 			import pandas as pd
 			pd.options.plotting.backend = "plotly"
@@ -259,7 +259,7 @@ Exercises
 			fig.show()
 
 
-		.. dcl:: R
+		.. code-block:: r
 
 			web = read.csv('http://openmv.net/file/website-traffic.csv')
 
@@ -334,8 +334,7 @@ Exercises
 
 	#.	You could use the following code to plot the data:
 
-		.. dcl:: python
-			:height: 800px
+		.. code-block:: python
 
 			import pandas as pd
 			pd.options.plotting.backend = "plotly"
@@ -357,8 +356,7 @@ Exercises
 			fig.show()
 
 
-		.. dcl:: R
-			:height: 800px
+		.. code-block:: r
 
 			data_file = 'http://openmv.net/file/room-temperature.csv'
 			roomtemp <- read.csv(data_file)
@@ -432,7 +430,7 @@ Exercises
 
 	#.	The following code will load the data, and plot a boxplot for the first 100 rows:
 
-		.. dcl:: python
+		.. code-block:: python
 
 			import pandas as pd
 			pd.options.plotting.backend = "plotly"
@@ -448,7 +446,7 @@ Exercises
 			fig.show()
 
 
-		.. dcl:: R
+		.. code-block:: r
 
 			data_file = 'http://openmv.net/file/six-point-board-thickness.csv'
 			boards <- read.csv(data_file)
