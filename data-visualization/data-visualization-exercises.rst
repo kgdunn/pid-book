@@ -140,6 +140,18 @@ Exercises
 		:width: 900px
 		:alt: fake width
 
+	.. dcl:: python
+
+		import pandas as pd
+		import plotly.express as px
+
+		data_file = 'http://openmv.net/file/food-texture.csv'
+		food = pd.read_csv(data_file)
+
+		fig = px.scatter_matrix(food, dimensions=food.columns[1:6])
+		fig.show()
+
+
 	.. dcl:: R
 
 		library(car)
@@ -179,6 +191,25 @@ Exercises
 
 	#.	A box plot is an effective way to summarize and compare the data for each day of the week.
 
+		.. dcl:: python
+
+		    import pandas as pd
+		    pd.options.plotting.backend = "plotly"
+
+		    web = pd.read_csv('http://openmv.net/file/website-traffic.csv')
+
+		    # Re-order the days
+		    day_names = ["Saturday", "Sunday", "Monday", "Tuesday",
+		                 "Wednesday", "Thursday", "Friday"]
+		    web["DayOfWeek"] = pd.Categorical(web["DayOfWeek"],
+		                                     categories=day_names,
+		                                     ordered=True)
+		    web = web.sort_values("DayOfWeek")
+
+		    fig = web.plot.box(x="DayOfWeek", y="Visits")
+		    fig.show()
+
+
 		.. dcl:: R
 
 		    web = read.csv('http://openmv.net/file/website-traffic.csv')
@@ -204,6 +235,29 @@ Exercises
 			:align: center
 
 	The best way to draw the time-series plot is to use proper time-based labelling on the x-axis, but we won't cover that topic here. If you are interested, read up about the ``xts`` package (`see the R tutorial <https://learnche.org/4C3/Software_tutorial>`_) and it's plot command. See how it is used in the code below:
+
+		.. dcl:: python
+
+			import pandas as pd
+			pd.options.plotting.backend = "plotly"
+
+			web = pd.read_csv('http://openmv.net/file/website-traffic.csv')
+
+			# Sequence plot of the raw integer index
+			fig = web["Visits"].plot.line(markers=True)
+			fig.update_layout(xaxis_title_text="Sequence order",
+			                  yaxis_title_text="Visits")
+			fig.show()
+
+			# A better plot using a real date axis
+			web["Date"] = pd.to_datetime(web["MonthDay"].str.strip(),
+			                             format="%B %d")
+			web = web.sort_values("Date").set_index("Date")
+			fig = web["Visits"].plot.line()
+			fig.update_xaxes(tickformat="%b")
+			fig.update_layout(yaxis_title_text="Visits")
+			fig.show()
+
 
 		.. dcl:: R
 
@@ -280,6 +334,29 @@ Exercises
 
 	#.	You could use the following code to plot the data:
 
+		.. dcl:: python
+			:height: 800px
+
+			import pandas as pd
+			pd.options.plotting.backend = "plotly"
+
+			data_file = 'http://openmv.net/file/room-temperature.csv'
+			roomtemp = pd.read_csv(data_file)
+			roomtemp.describe()
+
+			fig = roomtemp[["FrontLeft", "FrontRight",
+			                "BackLeft", "BackRight"]].plot.line(
+			    color_discrete_sequence=["blue", "royalblue",
+			                             "black", "dimgray"],
+			)
+			fig.update_layout(
+			    yaxis_range=[290, 300],
+			    xaxis_title_text="Sequence order",
+			    yaxis_title_text="Room temperature [K]",
+			)
+			fig.show()
+
+
 		.. dcl:: R
 			:height: 800px
 
@@ -354,6 +431,22 @@ Exercises
 .. admonition:: Solution
 
 	#.	The following code will load the data, and plot a boxplot for the first 100 rows:
+
+		.. dcl:: python
+
+			import pandas as pd
+			pd.options.plotting.backend = "plotly"
+
+			data_file = 'http://openmv.net/file/six-point-board-thickness.csv'
+			boards = pd.read_csv(data_file)
+			boards.describe()
+
+			# Ignore the first date/time column; use only Pos1...Pos6
+			first100 = boards.iloc[:100, 1:7]
+			fig = first100.plot.box()
+			fig.update_layout(yaxis_title_text="Thickness [mils]")
+			fig.show()
+
 
 		.. dcl:: R
 
