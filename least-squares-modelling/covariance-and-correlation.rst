@@ -73,13 +73,51 @@ Use this to calculate the covariance between temperature and pressure by breakin
 	
 	-	Next multiply the two vectors, element-by-element, to calculate a new vector :math:`(T - \overline{T}) (p - \overline{p})`.
 
+		.. code-block:: python
+
+			import numpy as np
+
+			temp = np.array([273, 285, 297, 309, 321, 333,
+			                 345, 357, 369, 381])
+			pres = np.array([1600, 1670, 1730, 1830, 1880,
+			                 1920, 2000, 2100, 2170, 2200])
+			humidity = np.array([42, 48, 45, 49, 41, 46,
+			                     48, 48, 45, 49])
+
+			temp_centered = temp - temp.mean()
+			pres_centered = pres - pres.mean()
+			product = temp_centered * pres_centered
+
+			# numpy does element-by-element multiplication.
+			print(product)
+			# [16740 10080  5400  1440   180
+			#     60  1620  5700 10920 15660]
+
+			# Average of `product`:
+			product.mean()    # 6780
+
+			# np.cov returns the covariance matrix; the
+			# off-diagonal entry [0, 1] is Cov{temp, pres}
+			# (with N-1 normalisation, matching R).
+			# Calculated covariance is 7533.33
+			print("Covariance of temperature and "
+			      "pressure is = "
+			      f"{round(np.cov(temp, pres)[0, 1], 2)}")
+
+			# The covariance of a variable with
+			# itself is just the variance:
+			print("Covariance with itself is = "
+			      f"{round(np.cov(temp, temp)[0, 1], 2)}")
+			print("while the variance = "
+			      f"{round(temp.var(ddof=1), 2)}")
+
 		.. code-block:: r
 
 			temp <- c(273, 285, 297, 309, 321, 333,
 			          345, 357, 369, 381)
 			pres <- c(1600, 1670, 1730, 1830, 1880,
 			          1920, 2000, 2100, 2170, 2200)
-			humidity <- c(42, 48, 45, 49, 41, 46, 
+			humidity <- c(42, 48, 45, 49, 41, 46,
 			              48, 48, 45, 49)
 
 			temp.centered <- temp - mean(temp)
@@ -88,7 +126,7 @@ Use this to calculate the covariance between temperature and pressure by breakin
 
 			# R does element-by-element  multiplication in the above line
 			print(product)
-			# [1] 16740 10080  5400  1440   180    
+			# [1] 16740 10080  5400  1440   180
 			#        60  1620  5700 10920 15660
 
 			# Average of 'product':
@@ -152,23 +190,49 @@ It takes the covariance value and divides through by the units of :math:`x` and 
 
 So returning back to our example of the gas cylinder, the correlation between temperature and pressure, and temperature and humidity can be calculated now as:
 
+.. code-block:: python
+
+	import numpy as np
+
+	temp = np.array([273, 285, 297, 309, 321, 333, 345,
+	                 357, 369, 381])
+	pres = np.array([1600, 1670, 1730, 1830, 1880, 1920,
+	                 2000, 2100, 2170, 2200])
+	humidity = np.array([42, 48, 45, 49, 41, 46, 48,
+	                     48, 45, 49])
+
+	# np.corrcoef returns the correlation matrix; the
+	# off-diagonal entry [0, 1] is r(x, y).
+
+	# Correlation between temperature
+	# and pressure is high: 0.9968355
+	np.corrcoef(temp, pres)[0, 1]
+
+	# Correlation between temperature
+	# and humidity is low: 0.3803919
+	np.corrcoef(temp, humidity)[0, 1]
+
+	# What is correlation of humidity
+	# and pressure?
+	np.corrcoef(___, ___)[0, 1]
+
 .. code-block:: r
 
 	temp <- c(273, 285, 297, 309, 321, 333, 345,
 	          357, 369, 381)
 	pres <- c(1600, 1670, 1730, 1830, 1880, 1920,
 	          2000, 2100, 2170, 2200)
-	humidity <- c(42, 48, 45, 49, 41, 46, 48, 
+	humidity <- c(42, 48, 45, 49, 41, 46, 48,
 	              48, 45, 49)
 
 	# Correlation between temperature
 	# and pressure is high: 0.9968355
 	cor(temp, pres)
-	
+
 	# Correlation between temperature
 	# and humidity is low: 0.3803919
 	cor(temp, humidity)
-	
+
 	# What is correlation of humidity
 	# and pressure?
 	cor(___, ___)

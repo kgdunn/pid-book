@@ -361,6 +361,43 @@ Now it is straight forward to construct **confidence intervals for the least squ
 
 Returning :ref:`back to our ongoing example <LS-class-example>`, we can calculate the confidence interval for :math:`\beta_0` and :math:`\beta_1`. We calculated earlier already that |b0| = 3.0 and |b1| = 0.5. Using these values we can calculate the standard error:
 
+.. code-block:: python
+
+	import numpy as np
+	import statsmodels.api as sm
+
+	x = np.array([10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5])
+	y = np.array([8.04, 6.95, 7.58, 8.81, 8.33, 9.96,
+	              7.24, 4.26, 10.84, 4.82, 5.68])
+
+	# Calculate the linear model, where y
+	# is described by x.
+	X = sm.add_constant(x)
+	mod_ls = sm.OLS(y, X).fit()
+
+	# We can find what `b0` and `b1` are in
+	# several different ways:
+	print(mod_ls.summary())
+
+	# or using
+	print("The model coefficients are: ")
+	mod_ls.params
+
+	# Model predictions:
+	print("The predicted values are: ")
+	mod_ls.predict()
+	# [ 8.001  7.000  9.501  7.501  8.501
+	#  10.001  6.000  5.000  9.001  6.500  5.501]
+
+	# Prediction error = observed - predicted
+	error = y - mod_ls.predict()
+	N = len(x)
+
+	# The SE = standard error = 1.236603
+	std_error = np.sqrt((error ** 2).sum() / (N - 2))
+	print(f"Standard error SE = "
+	      f"{round(std_error, 3)}")
+
 .. code-block:: r
 
 	x <- c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5)
@@ -371,10 +408,10 @@ Returning :ref:`back to our ongoing example <LS-class-example>`, we can calculat
 	# where y is described by x"
 	mod.ls <- lm(y ~ x)
 
-	# We can find what the "b0" and "b1" 
+	# We can find what the "b0" and "b1"
 	# values are in several different ways:
 	summary(mod.ls)
-	
+
 	# or using
 	print('The model coefficients are: ')
 	coefficients(mod.ls)
@@ -382,7 +419,7 @@ Returning :ref:`back to our ongoing example <LS-class-example>`, we can calculat
 	# Model predictions:
 	print('The predicted values are: ')
 	predict(mod.ls)
-	# 8.001  7.000  9.501  7.501  8.501  
+	# 8.001  7.000  9.501  7.501  8.501
 	# 10.001  6.00  5.000  9.001  6.500  5.501
 
 	# Prediction error = observed - predicted
@@ -391,7 +428,7 @@ Returning :ref:`back to our ongoing example <LS-class-example>`, we can calculat
 
 	# The SE = standard error = 1.236603
 	std.error <- sqrt(sum(error^2) / (N-2))
-	paste0('Standard error SE = ', 
+	paste0('Standard error SE = ',
 	       round(std.error, 3))
 
 Use that :math:`S_E` value to calculate the confidence intervals for :math:`\beta_0` and :math:`\beta_1`, and use that :math:`c_t = 2.26` at the 95% confidence level. You can calculate  this value in R using ``qt(0.975, df=(N-2))``. There are :math:`n-2` degrees of freedom, the number of degrees of freedom used to calculate :math:`S_E`.
@@ -435,6 +472,41 @@ The plot shows the effect of varying the slope parameter, :math:`b_1`, from its 
 In many cases the confidence interval for the intercept is not of any value because the data for |x| is so far away from zero, or the true value of the intercept is not of concern for us.
 
 
+.. code-block:: python
+
+	import numpy as np
+	import statsmodels.api as sm
+
+	x = np.array([10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5])
+	y = np.array([8.04, 6.95, 7.58, 8.81, 8.33, 9.96,
+	              7.24, 4.26, 10.84, 4.82, 5.68])
+
+	# Calculate the linear model, where y
+	# is described by x.
+	X = sm.add_constant(x)
+	mod_ls = sm.OLS(y, X).fit()
+
+	# You can (and should at the beginning)
+	# calculate the confidence intervals as shown
+	# above. But there is a short-cut, to save
+	# time, and is less error prone:
+	mod_ls.conf_int()
+
+	#                  0         1
+	# const     0.455737  5.544445
+	# x1        0.233370  0.766812
+
+	# If you want the confidence interval at any
+	# other level, for example, at the 90% level:
+	mod_ls.conf_int(alpha=0.10)
+
+	#                  0         1
+	# const     0.938303  5.061879
+	# x1        0.283957  0.716225
+
+	# Compare this to the calculated value by hand
+	# above. It is exactly the same!
+
 .. code-block:: r
 
 	x <- c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5)
@@ -445,12 +517,12 @@ In many cases the confidence interval for the intercept is not of any value beca
 	# where y is described by x"
 	mod.ls <- lm(y ~ x)
 
-	# You can (and should at the beginning) 
+	# You can (and should at the beginning)
 	# calculate the confidence intervals as shown
 	# above. But there is a short-cut, to save
 	# time, and is less error prone:
 	confint(mod.ls)
-	
+
 	#                 2.5 %    97.5 %
 	# (Intercept) 0.4557369 5.5444449
 	# x           0.2333701 0.7668117
@@ -458,12 +530,12 @@ In many cases the confidence interval for the intercept is not of any value beca
 	# If you want the confidence interval at any
 	# other level, for example, at the 90% level:
 	confint(mod.ls, level=0.90)
-	
+
 	#                   5 %     95 %
 	# (Intercept) 0.9383030 5.061879
 	# x           0.2839568 0.716225
-	
-	# Compare this to the calculated value by hand 
+
+	# Compare this to the calculated value by hand
 	# above. It is exactly the same!
 
 

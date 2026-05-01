@@ -132,33 +132,88 @@ Here are some examples of the autocorrelation plot: in the first case you would 
 
 Another test for autocorrelation is the :index:`Durbin-Watson test <pair: Durbin-Watson test; autocorrelation>`. For more on this test see the book by Draper and Smith (Chapter 7, 3rd edition); in R you can use the ``durbinWatsonTest(model)`` function in ``library(car)``. Try generating autocorrelation of varying strength (positive, e.g. ``phi_long = 0.80`` and negative, e.g. ``phi_long = -0.75``) in the code below. Inspect the plots which are generated as a result, especially the time order plot: get a feeling for what a strong and weak positive/negative correlation looks like in the time order.
 
+.. code-block:: python
+
+	import numpy as np
+	import pandas as pd
+	import statsmodels.api as sm
+
+	pd.options.plotting.backend = "plotly"
+
+	# Adjust this autocorrelation parameter:
+	phi_long = 0.80
+
+	N = 1005
+	data = np.zeros(N)
+	for k in range(1, N):
+	    data[k] = (np.random.normal(scale=4)
+	               + phi_long * data[k - 1])
+	x = data + 50
+	pd.Series(x).describe()
+
+	# Plot autocorrelation in the first 100 points
+	pd.Series(data[:100]).plot.line(
+	    title="Raw data").update_layout(
+	    xaxis_title_text="Time order").show()
+
+	# Lag-1 scatter plot with a regression line.
+	xk = x[:1000]
+	xk1 = x[1:1001]
+	X = sm.add_constant(xk)
+	model = sm.OLS(xk1, X).fit()
+	r = np.corrcoef(xk1, xk)[0, 1]
+
+	fig = pd.DataFrame({"x[k]": xk,
+	                    "x[k+1]": xk1}
+	                   ).plot.scatter(x="x[k]",
+	                                  y="x[k+1]")
+	fig.update_xaxes(range=[30, 70])
+	fig.update_yaxes(range=[30, 70],
+	                 scaleanchor="x",
+	                 scaleratio=1)
+	x_line = np.array([30, 70])
+	fig.add_scatter(
+	    x=x_line,
+	    y=model.params[0] + model.params[1] * x_line,
+	    mode="lines",
+	    line=dict(color="darkgreen", width=2),
+	    showlegend=False,
+	)
+	fig.add_annotation(
+	    x=30, y=30, xanchor="left",
+	    text=f"Correlation = r = {round(r, 2)}",
+	    showarrow=False,
+	    font=dict(color="darkgreen", size=18),
+	)
+	fig.show()
+
 .. code-block:: r
 
 	# Adjust this autocorrelation parameter:
 	phi_long = 0.80
 
 	N = 1005
-	data <- numeric(N)	
+	data <- numeric(N)
 	for (k in 2:N){
-	  data[k] = rnorm(1, sd=4) + 
+	  data[k] = rnorm(1, sd=4) +
 	                       phi_long * data[k-1]
 	}
 	x <- data + 50
 	summary(x)
 
 	# Plot autocorrelation in the first 100 points
-	plot(data[1:100], type='b', 
+	plot(data[1:100], type='b',
 	     main='Raw data', xlab = 'Time order')
 
 	plot.new()
 	lims = c(30,70)
-	plot(x[1:1000], x[2:1001], asp=1, 
+	plot(x[1:1000], x[2:1001], asp=1,
 	     xlim=lims, ylim=lims)
 	model <- lm(x[2:1001] ~ x[1:1000])
 	abline(model, col="darkgreen", lwd=2)
-	text(30, 30, paste("Correlation = r = ", 
-	                   round(cor(x[2:1001], 
-	                         x[1:1000]), 2)), 
+	text(30, 30, paste("Correlation = r = ",
+	                   round(cor(x[2:1001],
+	                         x[1:1000]), 2)),
 	     col="darkgreen", cex=1.5, adj = c(0, NA))
 	
 

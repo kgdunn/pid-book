@@ -223,17 +223,50 @@ We will refer back to the following example several times. Calculate the least s
 	* :math:`\sum_i{\left( x_i - \overline{\mathrm{x}}_1\right)^2} = 110`
 	|}
 
-To calculate the least squares model in R:
+To calculate the least squares model:
+
+.. code-block:: python
+
+	import numpy as np
+	import statsmodels.api as sm
+
+	x = np.array([10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5])
+	y = np.array([8.04, 6.95, 7.58, 8.81, 8.33, 9.96,
+	              7.24, 4.26, 10.84, 4.82, 5.68])
+
+	# Calculate the linear model, where y
+	# is described by x. add_constant adds
+	# the intercept term.
+	X = sm.add_constant(x)
+	mod_ls = sm.OLS(y, X).fit()
+
+	# Coefficients:
+	# const     3.0001
+	# x1        0.5001
+	mod_ls.params
+
+	# You can get more information with
+	print(mod_ls.summary())
+
+	print("The model coefficients are: ")
+	mod_ls.params
+
+	b0, b1 = mod_ls.params
+	x_new = 5.5
+	y_predicted = b0 + b1 * x_new
+	print(f"Given a new x value of {x_new} "
+	      f"the predicted y = "
+	      f"{round(y_predicted, 3)}")
 
 .. code-block:: r
 
 	x <- c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5)
-	y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 
+	y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96,
 	      7.24, 4.26, 10.84, 4.82, 5.68)
 
-	# "Calculate for me the linear model, 
+	# "Calculate for me the linear model,
 	# where y is described by x"
-	mod.ls <- lm(y ~ x) 
+	mod.ls <- lm(y ~ x)
 
 	# Call:
 	# lm(formula = y ~ x)
@@ -241,7 +274,7 @@ To calculate the least squares model in R:
 	# Coefficients:
 	# (Intercept)            x
 	#	       3.0001       0.5001
-	   
+
 	# You can get more information with
 	summary(mod.ls)
 
@@ -253,7 +286,7 @@ To calculate the least squares model in R:
 	x.new <- 5.5
 	y_predicted <- b0 + b1 * x.new
 	paste0('Given a new x value of ', x.new,
-	       ' the predicted y = ', 
+	       ' the predicted y = ',
 	       round(y_predicted, 3))
 
 *	:math:`b_0 = 3.0`
