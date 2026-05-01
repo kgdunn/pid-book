@@ -93,7 +93,7 @@ pid-book/
 ├── latent-variable-modelling/                Ch 6
 ├── product-development-product-improvement/  Ch 7
 ├── my-extensions/                            Custom Sphinx extensions
-│                                             (youtube, datacamplite)
+│                                             (youtube)
 ├── _static/                                  Custom CSS and favicon (sphinx-book-theme)
 ├── _templates/                               Custom Jinja2 templates (Pagefind search)
 ├── figures/                                  Symlink to the figures repo

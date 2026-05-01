@@ -65,8 +65,7 @@ Interpreting the confidence interval
 		
 		Try it out:
 		
-		.. dcl:: R
-			:height: 450px
+		.. code-block:: r
 
 			# Try varying this value:
 			conf.level <- 0.90
@@ -84,7 +83,7 @@ Interpreting the confidence interval
 			paste0('The ', round(conf.level*100, 0),
 			       '% confidence interval is: ')
 			paste0('[', round(LB, 1), '; ', round(UB, 1), ']')
-			
+
 ..	TODO: show the confidence ranges, like BHH, p114 (2nd edition)
 
 -	What happens if the level of confidence is 100%?

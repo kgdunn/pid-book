@@ -22,7 +22,6 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinxcontrib.jquery",
     "my-extensions.youtube",
-    "my-extensions.datacamplite",
 ]
 
 # Avoid Subresource Integrity errors for the bundled jQuery.

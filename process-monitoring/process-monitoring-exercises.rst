@@ -40,8 +40,7 @@ Exercises
 
 	Try it yourself:
 
-	.. dcl:: R
-		:height: 800px
+	.. code-block:: r
 
 		data_file <- 'http://openmv.net/file/batch-yields.csv'
 		batch <- read.csv(data_file)
@@ -182,8 +181,7 @@ Exercises
 
 	The new Cpk value is 1.5. The number of defects per million items at Cpk = 2.0 is 0.00098 (essentially no defects), while at Cpk = 1.5 it is 3.4 defects per million items. You only have to consider one-side of the distribution, since Cpk is by definition for an uncentered process, and deals with the side closest to the specification limits.
 
-	.. dcl:: R
-		:height: 200px
+	.. code-block:: r
 
 		Cpk <- 1.5
 		n.sigma.distance <- 3 * Cpk
@@ -575,7 +573,7 @@ Exercises
 
 		.. Source code: ../figures/monitoring/CO2-question.R
 
-	.. dcl:: R
+	.. code-block:: r
 
 		file <- 'http://openmv.net/file/gas-furnace.csv'
 		data <- read.csv(file)
@@ -707,7 +705,7 @@ Exercises
 
 	.. Source code: ../figures/monitoring/batch-yield-and-purity-recursive.R
 
-	.. dcl:: R
+	.. code-block:: r
 
 		# Thanks to Mudassir for his source code to
 		# recursively calculate the limits. Some

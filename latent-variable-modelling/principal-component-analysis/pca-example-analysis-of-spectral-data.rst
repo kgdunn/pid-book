@@ -18,8 +18,7 @@ A data set, `available on the dataset website <http://openmv.net/info/tablet-spe
 	
 This R code will calculate principal components for this data:
 
-.. dcl:: R
-	:height: 300px
+.. code-block:: r
 
 	# Read large data file
 	file <- 'http://openmv.net/file/tablet-spectra.csv'
@@ -64,7 +63,7 @@ Finally, we can show the SPE plot for each observation. SPE values for each tabl
 	
 The code for the above plots is:
 
-.. dcl:: R
+.. code-block:: r
 
 	file <- 'http://openmv.net/file/tablet-spectra.csv'
 	spectra <- read.csv(file, header = FALSE, row.names = 1)

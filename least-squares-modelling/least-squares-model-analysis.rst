@@ -361,8 +361,7 @@ Now it is straight forward to construct **confidence intervals for the least squ
 
 Returning :ref:`back to our ongoing example <LS-class-example>`, we can calculate the confidence interval for :math:`\beta_0` and :math:`\beta_1`. We calculated earlier already that |b0| = 3.0 and |b1| = 0.5. Using these values we can calculate the standard error:
 
-.. dcl:: R
-	:height: 700px
+.. code-block:: r
 
 	x <- c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5)
 	y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96,
@@ -436,8 +435,7 @@ The plot shows the effect of varying the slope parameter, :math:`b_1`, from its 
 In many cases the confidence interval for the intercept is not of any value because the data for |x| is so far away from zero, or the true value of the intercept is not of concern for us.
 
 
-.. dcl:: R
-	:height: 500px
+.. code-block:: r
 
 	x <- c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5)
 	y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96,
@@ -551,8 +549,7 @@ To complete this section we show how to interpret the output from computer softw
 
 The following output is obtained in R for the :ref:`example <LS-class-example>` we have been using in this section. The Python version follows below.
 
-.. dcl:: R
-	:height: 200px
+.. code-block:: r
 
 	x <- c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5)
 	y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 
@@ -602,8 +599,7 @@ Make sure you can calculate the following values using the equations developed s
 
 Using Python, you can run the following code:
 
-.. dcl:: python
-	:height: 400px
+.. code-block:: python
 	
 	import numpy as np
 	import statsmodels.api as sm

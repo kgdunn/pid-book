@@ -38,8 +38,7 @@ Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{
 		10, 4.1%
 		15, 0.1%
 		
-.. dcl:: R
-	:height: 200px
+.. code-block:: r
 
 	x <- c(0, 1, 3, 6, 10, 15)
 

@@ -14,13 +14,13 @@ The unspoken intention of a scatter plot is usually to ask the reader to draw a 
 
 This source code generates similar, but not identical, figures to those shows here in the text.
 
-.. dcl:: python
-	:codefile: data-visualization/gists/scatter-plot-example.py
+.. literalinclude:: /data-visualization/gists/scatter-plot-example.py
+	:language: python
 
 The equivalent code in R:
 
-.. dcl:: R
-	:codefile: data-visualization/gists/scatter-plot-example.R
+.. literalinclude:: /data-visualization/gists/scatter-plot-example.R
+	:language: r
 
 Strive for graphical excellence by doing the following:
 

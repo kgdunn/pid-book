@@ -28,13 +28,11 @@ Histograms make sense for :index:`categorical variables <single: categorical var
 	:width: 900px
 	:alt: fake width
 
-.. dcl:: R
-	:height: 650px
-	:codefile: univariate-review/gists/histogram-normal-distribution.R
+.. literalinclude:: /univariate-review/gists/histogram-normal-distribution.R
+	:language: r
 
-.. dcl:: python
-	:height: 650px
-	:codefile: univariate-review/gists/histogram-normal-distribution.py
+.. literalinclude:: /univariate-review/gists/histogram-normal-distribution.py
+	:language: python
 
 Try creating a fictitious histogram for each of the following situations:
 
@@ -98,11 +96,9 @@ A :index:`relative frequency`, also called :index:`density`, is sometimes prefer
 	:align: center
 
 
-.. dcl:: R
-	:height: 450px
-	:codefile: univariate-review/gists/histogram-area.R
+.. literalinclude:: /univariate-review/gists/histogram-area.R
+	:language: r
 
 
-.. dcl:: python
-  	:height: 650px
-	:codefile: univariate-review/gists/histogram-area.py
+.. literalinclude:: /univariate-review/gists/histogram-area.py
+	:language: python

@@ -67,9 +67,8 @@ Calculating the t-distribution
 
 -	In R we use the function ``dt(x=..., df=...)`` to give us the values of the probability density values, :math:`p(x)`, of the :math:`t`-distribution (compare this to the ``dnorm(x, mean=..., sd=...)`` function for the normal distribution).
 
-	.. dcl:: R
-		:height: 350px
-		
+	.. code-block:: r
+
 		x = 0.0
 		
 		# Recall, for the normal distribution:
@@ -90,9 +89,8 @@ Calculating the t-distribution
 
 -	The cumulative area from :math:`-\infty` to :math:`x` under the probability density curve gives us the probability that values less than or equal to :math:`x` could be observed. It is calculated in R using ``pt(q=..., df=...)``. For example, ``pt(1.0, df=8)`` is 0.8267. Compare this to the R function for the standard normal distribution: ``pnorm(1.0, mean=0, sd=1)`` which returns 0.8413.
 
-	.. dcl:: R
-		:height: 350px
-		
+	.. code-block:: r
+
 		q = 1.0
 		
 		# Recall, for the normal distribution:
@@ -110,9 +108,8 @@ Calculating the t-distribution
 
 -	And similarly to the ``qnorm`` function which returns the ordinate for a given area under the normal distribution, the function ``qt(0.8267, df=8)`` returns 0.9999857, close enough to 1.0, which is the inverse of the previous example.
 
-	.. dcl:: R
-		:height: 300px
-		
+	.. code-block:: r
+
 		p = 0.5
 		
 		# Recall, for the normal distribution:
@@ -212,9 +209,8 @@ If we repeat this process with a different set of 9 samples we will get a differ
 
 		using from R that ``qt(0.025, df=8)`` and ``qt(0.975, df=8)``, which gives ``2.306004``
 		
-	.. dcl:: R
-		:height: 700px
-	
+	.. code-block:: r
+
 		# Step 0: the raw data
 		viscosity <- c(23, 19, 17, 18, 
 		               24, 26, 21, 14, 18)
@@ -250,9 +246,9 @@ If we repeat this process with a different set of 9 samples we will get a differ
 		paste0('The ', round(conf.level*100, 0),
 		       '% confidence interval is: ')
 		paste0('[', round(LB, 1), '; ', round(UB, 1), ']')
-		
-		
-			
+
+
+
 Comparing the answers for parts 4 and 8 we see the interval, for the same level of 95% certainty, is wider when we have to estimate the standard deviation. This makes sense: the standard deviation is an estimate (meaning there is error in that estimate) of the true standard deviation. That uncertainty must propagate, leading to a wider interval within which we expect to locate the true population viscosity, :math:`\mu`.
 
 We will interpret confidence intervals in more detail a :ref:`little later on <univariate_confidence_intervals>`.

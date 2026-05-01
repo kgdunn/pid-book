@@ -20,13 +20,13 @@ Here is some advice for bar plots:
 
 	Use this Python code to draw the figures:
 
-	.. dcl:: python
-		:codefile: data-visualization/gists/quarterly-profit-barplots.py
+	.. literalinclude:: /data-visualization/gists/quarterly-profit-barplots.py
+		:language: python
 
 	or this R code:
 
-	.. dcl:: R
-		:codefile: data-visualization/gists/quarterly-profit-barplots.R
+	.. literalinclude:: /data-visualization/gists/quarterly-profit-barplots.R
+		:language: r
 
 -	Bar plots can be wasteful as each data point is repeated several times:
 

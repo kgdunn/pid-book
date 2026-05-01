@@ -73,9 +73,8 @@ Use this to calculate the covariance between temperature and pressure by breakin
 	
 	-	Next multiply the two vectors, element-by-element, to calculate a new vector :math:`(T - \overline{T}) (p - \overline{p})`.
 
-		.. dcl:: R
-			:height: 600px
-		
+		.. code-block:: r
+
 			temp <- c(273, 285, 297, 309, 321, 333,
 			          345, 357, 369, 381)
 			pres <- c(1600, 1670, 1730, 1830, 1880,
@@ -153,8 +152,7 @@ It takes the covariance value and divides through by the units of :math:`x` and 
 
 So returning back to our example of the gas cylinder, the correlation between temperature and pressure, and temperature and humidity can be calculated now as:
 
-.. dcl:: R
-	:height: 450px
+.. code-block:: r
 
 	temp <- c(273, 285, 297, 309, 321, 333, 345,
 	          357, 369, 381)

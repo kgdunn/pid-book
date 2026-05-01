@@ -94,8 +94,7 @@ An interesting implementation can be to show both the Shewhart and EWMA plot on 
 
 The R code here shows one way of calculating the EWMA values for a vector of data. Once you have pasted this function into R, use it as ``ewma(x, lambda=..., target=...)``.
 
-.. dcl:: R
-	:height: 450px
+.. code-block:: r
 
 	ewma <- function(x, lambda, target=x[1]){
 	    N <- length(x)

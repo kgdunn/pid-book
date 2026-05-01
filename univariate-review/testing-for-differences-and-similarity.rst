@@ -62,8 +62,7 @@ Either we want to confirm things are statistically the same, or confirm they hav
 .. image:: ../figures/univariate/system-comparison-wikitable.png
 	:align: center
 	
-.. dcl:: R
-	:height: 400px
+.. code-block:: r
 
 	# Generate the boxplot
 	A <- c(92.7, 73.3, 80.5, 81.2, 87.1,
@@ -116,8 +115,7 @@ So to summarize: we can use a historical data set if it is relevant. And there a
 
 In fact, for this example, the data were not independent, they were autocorrelated. There was a relationship from one batch to the next: :math:`x[k] = \phi x[k-1] + a[k]`, with :math:`\phi = -0.3`, and  :math:`a[k] \sim \mathcal{N}\left(\mu=0, \sigma^2=6.7^2\right)`. As an aside you can simulate your own set of autocorrelated data using this R code:
 
-.. dcl:: R
-	:height: 650px
+.. code-block:: r
 
 	N <- 300
 	phi <- -0.3
@@ -313,8 +311,7 @@ Check the probability of obtaining the :math:`z`-value in :eq:`zvalue-for-differ
 The probability of seeing a :math:`z`-value from :math:`-\infty` up to 1.03 is 84.8% (use the ``pnorm(1.03)`` function in R). But we are interested in the probability of obtaining a :math:`z`-value **larger** than this. Why?  Because :math:`z=0` represents no improvement, and a value of :math:`z<0` would mean that system B is worse than system A. So what are the chances of obtaining :math:`z=1.03`?  It is (100-84.8)% = 15.2%, which means that system B's performance could have been obtained by pure luck in 15.2% of cases. 
 
 
-.. dcl:: R
-	:height: 500px
+.. code-block:: r
 
 	A <- c(92.7, 73.3, 80.5, 81.2, 87.1,
 	       69.2, 81.9, 73.9, 78.6, 80.5)
@@ -368,8 +365,7 @@ Now using this value of :math:`s_P` instead of :math:`\sigma` in :eq:`zvalue-for
 
 The probability of obtaining a :math:`z`-value greater than this can be calculated as 16.4% using the :math:`t`-distribution with 18 degrees of freedom (use ``1-pt(1.01, df=18)`` in R). We use a :math:`t`-distribution because an estimate of the variance is used, :math:`s_p^2`, not a population variance, :math:`\sigma^2`. 
 
-.. dcl:: R
-	:height: 500px
+.. code-block:: r
 
 	A <- c(92.7, 73.3, 80.5, 81.2, 87.1,
 	       69.2, 81.9, 73.9, 78.6, 80.5)

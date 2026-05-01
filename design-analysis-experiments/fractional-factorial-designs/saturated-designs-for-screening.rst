@@ -47,8 +47,7 @@ where :math:`\mathbf{b} = [b_0, b_A, b_B, b_C, b_D, b_E, b_F, b_G]`. The matrix 
 
 How do you assess which main effects are important?  There are eight data points and eight parameters, so there are no degrees of freedom and the residuals are all zero. In this case you have to use a :ref:`Pareto plot <DOE-Pareto-plot>`, which requires that your variables have been suitably scaled in order to judge importance of the main effects relative to each other. The Pareto plot would be given as shown below, and as usual, it does not show the intercept term.
 
-.. dcl:: R
-	:height: 700px
+.. code-block:: r
 
 	# Create vectors for each factor in the experiment
 	A = B = C = c(-1, +1)

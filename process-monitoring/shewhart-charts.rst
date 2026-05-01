@@ -116,7 +116,7 @@ The overall average is :math:`\overline{\overline{x}} = 238.8` and :math:`\overl
 	
 In source code:
 
-.. dcl:: R
+.. code-block:: r
 
 	# Given information (but calculate yourself
 	# from http://openmv.net/info/rubber-colour)
@@ -231,8 +231,7 @@ The table highlights that :math:`\beta` is a function of the amount by which the
 :math:`\beta` when :math:`n=4`  0.9936 0.9772 0.9332 0.8413 0.5000 0.1587
 ==============================  ====== ====== ====== ====== ====== ======
 
-.. dcl:: R
-	:height: 250px
+.. code-block:: r
 	
 	delta <- 1
 	n <- 4
