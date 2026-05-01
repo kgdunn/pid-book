@@ -116,6 +116,60 @@ The overall average is :math:`\overline{\overline{x}} = 238.8` and :math:`\overl
 	
 In source code:
 
+.. code-block:: python
+
+	import numpy as np
+	from scipy.special import gamma
+
+	# Given information (but calculate yourself
+	# from http://openmv.net/info/rubber-colour)
+	xbar = np.array([245, 239, 239, 241, 241, 241, 238,
+	                 238, 236, 248, 233, 236, 246, 253,
+	                 227, 231, 237, 228, 239, 240],
+	                dtype=float)
+
+	# Number of measurements per subgroup
+	N_sub = 5
+
+	# Average of the 20 standard deviations
+	# of the 20 subgroups
+	S = 9.28
+
+	# xdb = x double bar = overall mean =
+	#       mean of the means
+	xdb = xbar.mean()
+
+	num_an = np.sqrt(2) * gamma(N_sub / 2)
+	den_an = np.sqrt(N_sub - 1) * gamma((N_sub - 1) / 2)
+	an = num_an / den_an
+
+	LCL = xdb - (3 * S / (an * np.sqrt(N_sub)))
+	UCL = xdb + (3 * S / (an * np.sqrt(N_sub)))
+	print(f"Control limits: [{round(LCL, 2)}; "
+	      f"{round(UCL, 2)}]")
+
+	print(f"Number > UCL: {(xbar > UCL).sum()}")
+	print(f"Number < LCL: {(xbar < LCL).sum()}")
+
+	# Exclude the one subgroup above the UCL.
+	# Do this by setting it to NaN (missing).
+	xbar[xbar > UCL] = np.nan
+
+	# Calculate the mean, ignoring NaN.
+	xdb = np.nanmean(xbar)
+
+	# 'S' will change also. If you download the
+	# raw data (link above), you can prove
+	# that the new 'S' will be:
+	S = 9.68
+
+	# 'an' and N_sub will not change.
+
+	LCL = xdb - (3 * S / (an * np.sqrt(N_sub)))
+	UCL = xdb + (3 * S / (an * np.sqrt(N_sub)))
+	print(f"Control limits: [{round(LCL)}; "
+	      f"{round(UCL)}]")
+
 .. code-block:: r
 
 	# Given information (but calculate yourself
@@ -127,7 +181,7 @@ In source code:
 	# Number of measurements per subgroup
 	N.sub = 5
 
-	# Average of the 20 standard deviations 
+	# Average of the 20 standard deviations
 	# of the 20 subgroups
 	S = 9.28
 
@@ -231,14 +285,27 @@ The table highlights that :math:`\beta` is a function of the amount by which the
 :math:`\beta` when :math:`n=4`  0.9936 0.9772 0.9332 0.8413 0.5000 0.1587
 ==============================  ====== ====== ====== ====== ====== ======
 
+.. code-block:: python
+
+	import numpy as np
+	from scipy.stats import norm
+
+	delta = 1
+	n = 4
+	beta = (norm.cdf(+3 - delta * np.sqrt(n))
+	        - norm.cdf(-3 - delta * np.sqrt(n)))
+
+	print(f"When delta={delta} and n={n} "
+	      f"then beta = {round(beta, 4)}")
+
 .. code-block:: r
-	
+
 	delta <- 1
 	n <- 4
-	beta <- pnorm(+3 - delta*sqrt(n)) - 
+	beta <- pnorm(+3 - delta*sqrt(n)) -
 	        pnorm(-3 - delta*sqrt(n))
 
-	paste0('When delta=', delta, ' and n=', n, 
+	paste0('When delta=', delta, ' and n=', n,
 	       ' then beta = ', round(beta, 4))
 
 .. _monitoring_shewart_chart_slugishness:
