@@ -36,6 +36,18 @@ The taste of cheddar cheese
 		:width: 900px
 		:align: center
 
+	.. code-block:: python
+
+		import pandas as pd
+		import plotly.express as px
+
+		filename = "http://openmv.net/file/cheddar-cheese.csv"
+		cheese = pd.read_csv(filename)
+		cheese.describe()
+
+		fig = px.scatter_matrix(cheese.iloc[:, 1:5])
+		fig.show()
+
 	.. code-block:: r
 
 		filename <- 'http://openmv.net/file/cheddar-cheese.csv'
@@ -52,6 +64,23 @@ The taste of cheddar cheese
 #.	What would the loadings look like?
 
 #.	Build a PCA model now to verify your answers.
+
+	.. code-block:: python
+
+		import pandas as pd
+		from sklearn.decomposition import PCA
+		from sklearn.preprocessing import StandardScaler
+
+		filename = "http://openmv.net/file/cheddar-cheese.csv"
+		cheese = pd.read_csv(filename)
+		cheese.describe()
+
+		X = StandardScaler().fit_transform(
+		    cheese.iloc[:, 1:5])
+		model_pca = PCA().fit(X)
+		print(model_pca.explained_variance_ratio_.cumsum())
+		loadings_P = model_pca.components_.T
+		scores_T = model_pca.transform(X)
 
 	.. code-block:: r
 
@@ -87,6 +116,32 @@ The taste of cheddar cheese
 
 	*	Compare this to the PLS model's :math:`R^2_y` value.
 
+	.. code-block:: python
+
+		import numpy as np
+		import pandas as pd
+		import statsmodels.api as sm
+
+		cheese = pd.read_csv(
+		    "http://openmv.net/file/cheddar-cheese.csv")
+		cheese.describe()
+
+		# Least squares model:
+		X = sm.add_constant(
+		    cheese[["Acetic", "H2S", "Lactic"]])
+		model_lm = sm.OLS(cheese["Taste"], X).fit()
+		resid = model_lm.resid
+		resid_ssq = (resid ** 2).sum()
+		standard_error = np.sqrt(
+		    resid_ssq / model_lm.df_resid)
+		ssq_total = ((cheese["Taste"]
+		              - cheese["Taste"].mean()) ** 2).sum()
+		R2_value = 1 - resid_ssq / ssq_total
+		print(f"Least squares SE = "
+		      f"{round(standard_error, 2)}")
+		print(f"Least squares R^2 = "
+		      f"{round(R2_value * 100, 2)}%")
+
 	.. code-block:: r
 
 		cheese <- read.csv('http://openmv.net/file/cheddar-cheese.csv')
@@ -108,6 +163,43 @@ The taste of cheddar cheese
 		       round(R2.value*100, 2), '%')
 
 #.	Now build a PCR model in R using only 1 component, then using 2 components. Again calculate the standard error and :math:`R^2_y` values.
+
+	.. code-block:: python
+
+		import numpy as np
+		import pandas as pd
+		import statsmodels.api as sm
+		from sklearn.decomposition import PCA
+		from sklearn.preprocessing import StandardScaler
+
+		cheese = pd.read_csv(
+		    "http://openmv.net/file/cheddar-cheese.csv")
+		cheese.describe()
+
+		# PCA model with only 2 components
+		X_scaled = StandardScaler().fit_transform(
+		    cheese.iloc[:, 1:4])
+		model_pca = PCA(n_components=2).fit(X_scaled)
+		scores_T = model_pca.transform(X_scaled)
+
+		# PCR model using only PC 1
+		y = cheese["Taste"]
+		pcr_1 = sm.OLS(
+		    y, sm.add_constant(scores_T[:, [0]])).fit()
+
+		# PCR model using PC 1 and PC 2
+		pcr_2 = sm.OLS(
+		    y, sm.add_constant(scores_T)).fit()
+
+		SE_1 = np.sqrt(
+		    (pcr_1.resid ** 2).sum() / pcr_1.df_resid)
+		SE_2 = np.sqrt(
+		    (pcr_2.resid ** 2).sum() / pcr_2.df_resid)
+
+		print(f"SE for PCR with 1 component: "
+		      f"{round(SE_1, 2)}")
+		print(f"SE for PCR with 2 components: "
+		      f"{round(SE_2, 2)}")
 
 	.. code-block:: r
 
