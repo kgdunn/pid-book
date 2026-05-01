@@ -92,7 +92,25 @@ where :math:`\sigma_{\text{Shewhart}}` represents the standard deviation as calc
 
 An interesting implementation can be to show both the Shewhart and EWMA plot on the same chart, with both sets of limits. The EWMA value plotted is actually the one-step ahead prediction of the next :math:`x`-value, which can be informative for slow-moving processes.
 
-The R code here shows one way of calculating the EWMA values for a vector of data. Once you have pasted this function into R, use it as ``ewma(x, lambda=..., target=...)``.
+The code here shows one way of calculating the EWMA values for a vector of data. Once you have defined the function, use it as ``ewma(x, lam=..., target=...)``.
+
+.. code-block:: python
+
+	import numpy as np
+
+	def ewma(x, lam, target=None):
+	    if target is None:
+	        target = x[0]
+	    y = np.zeros(len(x))
+	    y[0] = target
+	    for k in range(1, len(x)):
+	        error = x[k - 1] - y[k - 1]
+	        y[k] = y[k - 1] + lam * error
+	    return y
+
+	# Try using this function now:
+	x = np.array([200, 210, 190, 190, 190, 190])
+	ewma(x, lam=0.3, target=200)
 
 .. code-block:: r
 
@@ -106,7 +124,7 @@ The R code here shows one way of calculating the EWMA values for a vector of dat
 	    }
 	return(y)
 	}
-	
+
 	# Try using this function now:
 	x <- c(200, 210, 190, 190, 190, 190)
 	ewma(x, lambda = 0.3, target = 200)

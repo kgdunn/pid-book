@@ -40,6 +40,67 @@ Exercises
 
 	Try it yourself:
 
+	.. code-block:: python
+
+		import numpy as np
+		import pandas as pd
+		from scipy.special import gamma
+
+		pd.options.plotting.backend = "plotly"
+
+		data_file = "http://openmv.net/file/batch-yields.csv"
+		batch = pd.read_csv(data_file)
+
+		# Make sure we have the expected data.
+		batch.describe()
+		Yield = batch["Yield"].to_numpy()
+
+		# To get a feel for the data; looks pretty
+		# good, no unusual outliers.
+		pd.Series(Yield).plot.line().show()
+
+		N = len(Yield)
+		N_sub = 5  # subgroup size
+		# Reshape so each column is one subgroup.
+		subgroup = Yield.reshape(N // N_sub, N_sub).T
+		N_groups = subgroup.shape[1]
+		subgroup.shape  # (5, 60)
+
+		subgroup_sd = subgroup.std(axis=0, ddof=1)
+		subgroup_xbar = subgroup.mean(axis=0)
+
+		# Take a look at what these numbers mean.
+		pd.Series(subgroup_xbar).plot.line().update_layout(
+		    yaxis_title_text="Subgroup average").show()
+		pd.Series(subgroup_sd).plot.line().update_layout(
+		    yaxis_title_text="Subgroup spread").show()
+
+		# Report your target value, lower control
+		# limit and upper control limit, showing
+		# the calculations you made.
+		target = subgroup_xbar.mean()
+		Sbar = subgroup_sd.mean()
+
+		# a_n value is from the table when
+		# subgroup size = 5
+		an_num = np.sqrt(2) * gamma(N_sub / 2)
+		an_den = np.sqrt(N_sub - 1) * gamma(N_sub / 2 - 0.5)
+		an = an_num / an_den
+		sigma_estimate = Sbar / an
+		LCL = target - 3 * sigma_estimate / np.sqrt(N_sub)
+		UCL = target + 3 * sigma_estimate / np.sqrt(N_sub)
+		(LCL, target, UCL)
+
+		fig = pd.Series(subgroup_xbar).plot.line(
+		    title="Shewhart chart")
+		fig.update_layout(
+		    yaxis=dict(range=[LCL - 5, UCL + 5],
+		               title_text="Subgroup means"))
+		fig.add_hline(y=target, line_color="green")
+		fig.add_hline(y=UCL, line_color="red")
+		fig.add_hline(y=LCL, line_color="red")
+		fig.show()
+
 	.. code-block:: r
 
 		data_file <- 'http://openmv.net/file/batch-yields.csv'
@@ -180,6 +241,17 @@ Exercises
 .. admonition:: Solution
 
 	The new Cpk value is 1.5. The number of defects per million items at Cpk = 2.0 is 0.00098 (essentially no defects), while at Cpk = 1.5 it is 3.4 defects per million items. You only have to consider one-side of the distribution, since Cpk is by definition for an uncentered process, and deals with the side closest to the specification limits.
+
+	.. code-block:: python
+
+		from scipy.stats import norm
+
+		Cpk = 1.5
+		n_sigma_distance = 3 * Cpk
+		dpm = norm.cdf(-n_sigma_distance,
+		               loc=0,
+		               scale=1) * 1e6
+		print(f"Defects per million = {round(dpm, 3)}")
 
 	.. code-block:: r
 
@@ -573,6 +645,80 @@ Exercises
 
 		.. Source code: ../figures/monitoring/CO2-question.R
 
+	.. code-block:: python
+
+		import numpy as np
+		import pandas as pd
+		from scipy.special import gamma
+		from statsmodels.graphics.tsaplots import plot_acf
+
+		pd.options.plotting.backend = "plotly"
+
+		file = "http://openmv.net/file/gas-furnace.csv"
+		data = pd.read_csv(file)
+		CO2 = data["CO2"].to_numpy()
+		N_raw = len(CO2)
+		N_sub = 6
+
+		# Change N_sub to 10, 15, 20, etc.
+		# At N_sub = 17 we see the
+		# autocorrelation disappear.
+
+		# Plot all the data.
+		pd.Series(CO2).plot.scatter().update_layout(
+		    xaxis_title_text="Sequence order",
+		    yaxis_title_text="CO2: raw data").show()
+
+		# Create the subgroups on ALL the raw data.
+		# Reshape into N_sub rows by N_raw/N_sub
+		# columns; each column is one subgroup.
+		# Calculate the mean and standard deviation
+		# within each subgroup.
+		subgroups = CO2.reshape(N_raw // N_sub, N_sub).T
+		subgroups_S = subgroups.std(axis=0, ddof=1)
+		subgroups_xbar = subgroups.mean(axis=0)
+		ylim = (subgroups_xbar.min() - 3,
+		        subgroups_xbar.max() + 3)
+
+		# Keep adjusting N_sub until you don't see
+		# any autocorrelation between subgroups.
+		plot_acf(subgroups_xbar)
+
+		# Create a function to calculate Shewhart
+		# chart limits.
+		def shewhart_limits(xbar, S, sub_n,
+		                    N_stdev=3):
+		    """Return (LCL, xdb, UCL) which are
+		    N_stdev away from the target, given the
+		    subgroup means xbar, subgroup standard
+		    deviations S, and subgroup size sub_n."""
+		    xdb = xbar.mean()  # x-double-bar
+		    s_bar = S.mean()
+		    num_an = np.sqrt(2) * gamma(sub_n / 2)
+		    den_an = np.sqrt(sub_n - 1) * gamma(
+		        (sub_n - 1) / 2)
+		    an = num_an / den_an
+		    LCL = xdb - N_stdev * s_bar / (
+		        an * np.sqrt(sub_n))
+		    UCL = xdb + N_stdev * s_bar / (
+		        an * np.sqrt(sub_n))
+		    return LCL, xdb, UCL
+
+		LCL, xdb, UCL = shewhart_limits(
+		    subgroups_xbar, subgroups_S, N_sub)
+		(LCL, xdb, UCL)
+
+		# Any points outside these limits?
+		fig = pd.Series(subgroups_xbar).plot.line(
+		    title="Phase I subgroups: round 1")
+		fig.update_layout(
+		    xaxis_title_text="Sequence order",
+		    yaxis=dict(range=ylim))
+		fig.add_hline(y=UCL, line_color="red")
+		fig.add_hline(y=LCL, line_color="red")
+		fig.add_hline(y=xdb, line_color="green")
+		fig.show()
+
 	.. code-block:: r
 
 		file <- 'http://openmv.net/file/gas-furnace.csv'
@@ -704,6 +850,70 @@ Exercises
 		<div style="clear: both;"></div>
 
 	.. Source code: ../figures/monitoring/batch-yield-and-purity-recursive.R
+
+	.. code-block:: python
+
+		import numpy as np
+		import pandas as pd
+		from scipy.special import gamma
+
+		pd.options.plotting.backend = "plotly"
+
+		# Recursively calculate the Shewhart limits,
+		# trimming subgroups outside the limits each
+		# round, until no more points are excluded.
+		file = ("http://openmv.net/file/"
+		        "batch-yield-and-purity.csv")
+		data = pd.read_csv(file)
+		y = data["yield"].to_numpy()
+		variable = "Yield"
+		N = 3
+
+		# No further changes required. The code
+		# below will work for any new data set.
+		# Truncate to the closest multiple of N
+		# so the reshape works.
+		y = y[: (len(y) // N) * N]
+		subgroups = y.reshape(len(y) // N, N).T
+		x_mean = subgroups.mean(axis=0)
+		x_sd = subgroups.std(axis=0, ddof=1)
+		ylim = (x_mean.min() - 5, x_mean.max() + 5)
+
+		num_an = np.sqrt(2) * gamma(N / 2)
+		den_an = np.sqrt(N - 1) * gamma((N - 1) / 2)
+		an = num_an / den_an
+
+		k = 1
+		doloop = True
+		# Prevent infinite loops.
+		while doloop and k < 5:
+		    S = x_sd.mean()
+		    xdb = x_mean.mean()  # x-double-bar
+		    LCL = xdb - (3 * S / (an * np.sqrt(N)))
+		    UCL = xdb + (3 * S / (an * np.sqrt(N)))
+		    print((LCL, UCL))
+
+		    fig = pd.Series(x_mean).plot.line(
+		        title=f"Phase I subgroups: round {k}")
+		    fig.update_layout(
+		        xaxis_title_text="Sequence order",
+		        yaxis=dict(range=ylim))
+		    fig.add_hline(y=UCL, line_color="red")
+		    fig.add_hline(y=LCL, line_color="red")
+		    fig.add_hline(y=xdb, line_color="green")
+		    fig.show()
+
+		    if not ((x_mean < LCL).any()
+		            or (x_mean > UCL).any()):
+		        # Finally! No more points to exclude.
+		        doloop = False
+		    k += 1
+
+		    # Keep only subgroups whose mean falls
+		    # inside the current control limits.
+		    keep = (x_mean >= LCL) & (x_mean <= UCL)
+		    x_sd = x_sd[keep]
+		    x_mean = x_mean[keep]
 
 	.. code-block:: r
 
