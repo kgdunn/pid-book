@@ -67,21 +67,42 @@ Calculating the t-distribution
 
 -	In R we use the function ``dt(x=..., df=...)`` to give us the values of the probability density values, :math:`p(x)`, of the :math:`t`-distribution (compare this to the ``dnorm(x, mean=..., sd=...)`` function for the normal distribution).
 
-	.. code-block:: r
+	.. code-block:: python
+
+		from scipy.stats import norm, t
 
 		x = 0.0
-		
+
 		# Recall, for the normal distribution:
-		dnorm(x, mean=0, sd=1)    # 0.3989423
-		
+		norm.pdf(x, loc=0, scale=1)   # 0.3989423
+
 		# For the t-distribution we don't have
 		# a sigma, but we do need to say how
 		# many degrees of freedom we have:
-		
+
+		dof = 8
+		t.pdf(x, df=dof)              # 0.386699
+
+		# Shows that the t-distribution has a
+		# lower peak than the normal distribution.
+		# Try it again, but with fewer and
+		# greater degrees of freedom (`dof`).
+
+	.. code-block:: r
+
+		x = 0.0
+
+		# Recall, for the normal distribution:
+		dnorm(x, mean=0, sd=1)    # 0.3989423
+
+		# For the t-distribution we don't have
+		# a sigma, but we do need to say how
+		# many degrees of freedom we have:
+
 		dof <- 8
 		dt(x, df=dof)             # 0.386699
-		
-		# Shows that the t-distribution has a 
+
+		# Shows that the t-distribution has a
 		# lower peak than the normal distribution.
 		# Try it again, but with fewer and
 		# greater degrees of freedom (`dof`).
@@ -89,38 +110,75 @@ Calculating the t-distribution
 
 -	The cumulative area from :math:`-\infty` to :math:`x` under the probability density curve gives us the probability that values less than or equal to :math:`x` could be observed. It is calculated in R using ``pt(q=..., df=...)``. For example, ``pt(1.0, df=8)`` is 0.8267. Compare this to the R function for the standard normal distribution: ``pnorm(1.0, mean=0, sd=1)`` which returns 0.8413.
 
+	.. code-block:: python
+
+		from scipy.stats import norm, t
+
+		q = 1.0
+
+		# Recall, for the normal distribution:
+		norm.cdf(q, loc=0, scale=1)  # 0.8413447
+
+		# For the t-distribution we need to
+		# specify the degrees of freedom:
+
+		dof = 8
+		t.cdf(q, df=dof)             # 0.8267032
+
+		# Shows that the t-distribution is
+		# similar, but the areas are slightly
+		# different.
+
 	.. code-block:: r
 
 		q = 1.0
-		
+
 		# Recall, for the normal distribution:
 		pnorm(q, mean=0, sd=1) # 0.8413447
-		
-		# For the t-distribution we need to 
+
+		# For the t-distribution we need to
 		# specify the degrees of freedom:
-		
+
 		dof <- 8
 		pt(q, df=dof)          # 0.8267032
-		
-		# Shows that the t-distribution is  
+
+		# Shows that the t-distribution is
 		# similar, but the areas are slightly
 		# different.
 
 -	And similarly to the ``qnorm`` function which returns the ordinate for a given area under the normal distribution, the function ``qt(0.8267, df=8)`` returns 0.9999857, close enough to 1.0, which is the inverse of the previous example.
 
+	.. code-block:: python
+
+		from scipy.stats import norm, t
+
+		p = 0.5
+
+		# Recall, for the normal distribution:
+		norm.ppf(p, loc=0, scale=1)  # 0.0
+
+		# For the t-distribution:
+
+		dof = 8
+		t.ppf(p, df=dof)             # 0.0
+
+		# Both distributions have their 50%
+		# quantile at p=0. But try it for
+		# other values of probability, p.
+
 	.. code-block:: r
 
 		p = 0.5
-		
+
 		# Recall, for the normal distribution:
 		qnorm(p, mean=0, sd=1)   # 0.0
-		
+
 		# For the t-distribution:
-		
+
 		dof <- 8
 		qt(p, df=dof)            # 0.0
-		
-		# Both distributions have their 50% 
+
+		# Both distributions have their 50%
 		# quantile at p=0. But try it for
 		# other values of probability, p.
 
@@ -209,38 +267,88 @@ If we repeat this process with a different set of 9 samples we will get a differ
 
 		using from R that ``qt(0.025, df=8)`` and ``qt(0.975, df=8)``, which gives ``2.306004``
 		
+	.. code-block:: python
+
+		import numpy as np
+		import pandas as pd
+		from scipy.stats import t, probplot
+
+		pd.options.plotting.backend = "plotly"
+
+		# Step 0: the raw data
+		viscosity = np.array([23, 19, 17, 18,
+		                      24, 26, 21, 14, 18])
+		n = len(viscosity)
+
+		# Step 1:
+		x_avg = viscosity.mean()
+
+		# Step 5: Verify the data are normal
+		osm, osr = probplot(viscosity, dist="norm",
+		                    fit=False)
+		fig = pd.DataFrame(
+		    {"theoretical quantile": osm,
+		     "viscosity":             osr}
+		).plot.scatter(x="theoretical quantile",
+		               y="viscosity")
+		fig.show()
+
+		# Step 6:
+		x_sd = viscosity.std(ddof=1)
+
+		# Step 7: t-distribution
+		dof = n - 1
+
+		# Step 8:
+		conf_level = 0.95
+
+		# Can be calculated at either
+		# the lower tail
+		c_t = t.ppf(q=(1 - conf_level) / 2,
+		            df=dof)
+
+		# or the upper tail
+		c_t = t.ppf(q=1 - (1 - conf_level) / 2,
+		            df=dof)
+
+		LB = x_avg - c_t * x_sd / np.sqrt(n)
+		UB = x_avg + c_t * x_sd / np.sqrt(n)
+		print(f"The {round(conf_level * 100):.0f}"
+		      f"% confidence interval is: ")
+		print(f"[{round(LB, 1)}; {round(UB, 1)}]")
+
 	.. code-block:: r
 
 		# Step 0: the raw data
-		viscosity <- c(23, 19, 17, 18, 
+		viscosity <- c(23, 19, 17, 18,
 		               24, 26, 21, 14, 18)
 		n <- length(viscosity)
-		
+
 		# Step 1:
 		x.avg <- mean(viscosity)
-		
+
 		# Step 5: Verify the data are normal
 		library(car)
 		qqPlot(viscosity)
-		
-		# Step 6: 
+
+		# Step 6:
 		x.sd <- sd(viscosity)
-		
-		# Step 7: t-distribution 
+
+		# Step 7: t-distribution
 		dof <- n - 1
-		
+
 		# Step 8:
 		conf.level <- 0.95
-		
+
 		# Can be calculated at either
 		# the lower tail
-		c.t <- qt(p = (1-conf.level)/2, 
-		          df = dof) 
-				  
+		c.t <- qt(p = (1-conf.level)/2,
+		          df = dof)
+
 		# or the upper tail
-		c.t <- qt(p = 1-(1-conf.level)/2, 
-		          df = dof) 
-				  
+		c.t <- qt(p = 1-(1-conf.level)/2,
+		          df = dof)
+
 		LB <- x.avg - c.t * x.sd / sqrt(n)
 		UB <- x.avg + c.t * x.sd / sqrt(n)
 		paste0('The ', round(conf.level*100, 0),

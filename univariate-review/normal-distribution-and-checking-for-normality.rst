@@ -29,6 +29,35 @@ Imagine a case where we are throwing dice. The distributions, shown below, are o
 
 As one sees from the above figures, the distribution from these averages quickly takes the shape of the so-called *normal distribution*. As :math:`M` increases, the y-axis starts to form a peak.  Try it yourself:
 
+.. code-block:: python
+
+	import numpy as np
+	import pandas as pd
+	from plotly.subplots import make_subplots
+	import plotly.graph_objects as go
+
+	N = 500
+
+	# Throw N six-sided dice, ten times.
+	throws = np.random.randint(1, 7, size=(10, N))
+
+	groupings = [(1, "One throw", 6),
+	             (2, "Average of two throws", 8),
+	             (4, "Average of 4 throws", 8),
+	             (6, "Average of 6 throws", 8),
+	             (8, "Average of 8 throws", 12),
+	             (10, "Average of 10 throws", 12)]
+
+	fig = make_subplots(rows=2, cols=3,
+	                    subplot_titles=[g[1] for g in groupings])
+	for k, (m, _label, bins) in enumerate(groupings):
+	    averages = throws[:m].mean(axis=0)
+	    fig.add_trace(
+	        go.Histogram(x=averages, nbinsx=bins, showlegend=False),
+	        row=k // 3 + 1, col=k % 3 + 1,
+	    )
+	fig.show()
+
 .. code-block:: r
 
 	N = 500
@@ -159,6 +188,25 @@ Some questions:
 
 To calculate the point on the curve :math:`p(x)` we use the ``dnorm(...)`` function in R. It requires you specify the two parameters:
 
+	.. code-block:: python
+
+		from scipy.stats import norm
+
+		# x=0, mu=0, and sigma=1
+		# This is the maximum of the curve
+		norm.pdf(x=0, loc=0, scale=1)  # 0.3989423
+
+		# x=1, mu=0, and sigma=1
+		norm.pdf(x=1, loc=0, scale=1)  # 0.2419707
+
+		# x=-1, mu=0, and sigma=1
+		# It is symmetrical
+		norm.pdf(x=-1, loc=0, scale=1) # 0.2419707
+
+		# x=+3, mu=0, and sigma=1
+		# This is at a point very far from center
+		norm.pdf(x=+3, loc=0, scale=1) # 0.00443185
+
 	.. code-block:: r
 
 		# x=0, mu=0, and sigma=1
@@ -190,6 +238,22 @@ Some useful points:
 
 
 It is more useful to calculate the area under :math:`p(x)` from :math:`x=-\infty` to a particular point :math:`x`. This is called the cumulative distribution, and is discussed more fully in :ref:`the next section <univariate_check_for_normality_qqplot>`.
+
+	.. code-block:: python
+
+		from scipy.stats import norm
+
+		# gives area from -Inf to -1,
+		# for mu=0, sigma=1
+		norm.cdf(-1, loc=0, scale=1)   # 0.1586553
+
+		# Gives area from -Inf to +1,
+		# for mu=0, sigma=1
+		norm.cdf(1, loc=0, scale=1)    # 0.8413447
+
+		# Spread is wider, but the
+		# fractional area is the same
+		norm.cdf(3, loc=0, scale=3)    # 0.8413447
 
 	.. code-block:: r
 
@@ -228,6 +292,19 @@ Consult a statistical table found in most statistical textbooks for the normal d
 
 #.	Assume :math:`x`, the measurement of biological activity for a drug, is normally distributed with mean of 26.2 and standard deviation of 9.2. What is the probability of obtaining an activity reading less than or equal to 30.0?
 
+	.. code-block:: python
+
+		# We know that the probability should be 50%
+		# if the activity is equal to the mean.
+		from scipy.stats import norm
+
+		x = 26.2
+		mu = 26.2
+		sigma = ____
+		norm.cdf(x, loc=mu, scale=sigma)
+
+		# Now modify this above to answer the question.
+
 	.. code-block:: r
 
 		# We know that the probability should be 50%
@@ -242,6 +319,26 @@ Consult a statistical table found in most statistical textbooks for the normal d
 
 
 #.	Assume :math:`x` is the yield for a batch process, with mean of 85 g/L and **variance** of 16 :math:`\text{g}^2.\text{L}^{-2}`. What proportion of batch yield values lie between 75 and 95 g/L?
+
+	.. code-block:: python
+
+		import numpy as np
+		from scipy.stats import norm
+
+		mu = 85              # g/L
+		sigma = np.sqrt(16)  # g/L
+		x_left = ___
+		area_left_tail = norm.cdf(x_left,
+		                          loc=mu,
+		                          scale=sigma)
+
+		x_right = ___
+		area_right_tail = norm.cdf(x_right,
+		                           loc=mu,
+		                           scale=sigma)
+
+		# Now subtract the two areas to get
+		# the answer. Why?
 
 	.. code-block:: r
 
@@ -348,6 +445,46 @@ A built-in function exists in R that runs the above calculations and shows a sca
 
 All the above code together in one script for you to test out:
 
+.. code-block:: python
+
+	import numpy as np
+	import pandas as pd
+	from scipy.stats import norm, probplot
+
+	pd.options.plotting.backend = "plotly"
+
+	N = 10
+	index = np.arange(1, N + 1)
+	P = (index - 0.5) / N
+	theoretical_quantity = norm.ppf(P)
+
+	yields = np.array([86.2, 85.7, 71.9, 95.3, 77.1,
+	                   71.4, 68.9, 78.9, 86.9, 78.4])
+	mean_yield = yields.mean()              # 80.0
+	sd_yield = yields.std(ddof=1)           # 8.35
+
+	yields_z = (yields - mean_yield) / sd_yield
+	yields_z_sorted = np.sort(yields_z)
+
+	# Manual q-q plot, on standardized scale.
+	fig = pd.DataFrame(
+	    {"theoretical": theoretical_quantity,
+	     "sample":      yields_z_sorted}
+	).plot.scatter(x="theoretical", y="sample")
+	fig.show()
+
+	# Built-in q-q plot, on the original scale.
+	# scipy.stats.probplot returns (osm, osr) and
+	# the slope/intercept of the regression line.
+	osm, osr = probplot(yields, dist="norm",
+	                    fit=False)
+	fig = pd.DataFrame(
+	    {"theoretical quantile": osm,
+	     "yields":                osr}
+	).plot.scatter(x="theoretical quantile",
+	               y="yields")
+	fig.show()
+
 .. code-block:: r
 
 	N = 10
@@ -379,6 +516,39 @@ The R plot rescales the :math:`y`-axis (sample quantiles) back to the original u
 The q-q plot, quantile-quantile plot, shows the quantiles of 2 distributions against each other. In fact, we can use the horizontal axis for any distribution, it need not be the theoretical normal distribution. We might be interested if our data follow an :math:`F`-distribution then we could use the quantiles for that theoretical distribution on the horizontal axis.
 
 We can use the q-q plot to compare any 2 *samples of data*, even if they have different values of :math:`N`, by calculating the quantiles for each sample at different step quantiles (e.g. 1, 2, 3, 4, 5, 10, 15, .... 95, 96, 97, 98, 99), then plot the q-q plot for the two samples. You can calculate quantiles for any sample of data using the ``quantile`` function in R. The simple example below shows how to compare the q-q plot for 1000 normal distribution samples against 2000 :math:`F`-distribution samples.
+
+.. code-block:: python
+
+	import numpy as np
+	import pandas as pd
+	from scipy.stats import f, probplot
+
+	pd.options.plotting.backend = "plotly"
+
+	# 1000 normal values
+	rand_norm = np.random.normal(size=1000)
+
+	# 2000 values from F-distribution
+	rand_f = f.rvs(dfn=200, dfd=150, size=2000)
+
+	# looks sort of normally distributed
+	fig = pd.Series(rand_f).plot.hist(
+	    histnorm="probability density",
+	    title="Are these data from a normal distribution?",
+	)
+	fig.update_layout(yaxis_title_text="Frequency")
+	fig.show()
+
+	# But your eye is being fooled ...
+	# See the heavy tail in the q-q plot.
+	osm, osr = probplot(rand_f, dist="norm",
+	                    fit=False)
+	fig = pd.DataFrame(
+	    {"theoretical quantile": osm,
+	     "sample":                osr}
+	).plot.scatter(x="theoretical quantile",
+	               y="sample")
+	fig.show()
 
 .. code-block:: r
 

@@ -1,26 +1,25 @@
 # Create 1000 normally distributed points
 # with mean of 0 and standard deviation of 1.
 import numpy as np
-import matplotlib.pyplot as plt
+import pandas as pd
+
+pd.options.plotting.backend = "plotly"
 
 N = 1000
-values = np.random.normal(loc=0,
-                          scale=1,
-                          size=N)
+values = pd.Series(np.random.normal(loc=0, scale=1, size=N))
 
-plt.subplot(1, 2, 1)
-plt.hist(values, color="white")
-plt.ylabel("Frequency (N={})".format(N))
+# Frequency histogram (counts).
+fig = values.plot.hist()
+fig.update_layout(
+    yaxis_title_text=f"Frequency (N={N})",
+    showlegend=False,
+)
+fig.show()
 
-plt.subplot(1, 2, 2)
-plt.hist(values,
-         color="white",
-         # For older matplotlib versions
-         normed=True,
-         # Rather, use 'density' instead
-         #density=True
-         )
-plt.ylabel("Relative density")
-
-plt.tight_layout()
-plt.show()
+# Relative-density histogram (area sums to 1).
+fig = values.plot.hist(histnorm="probability density")
+fig.update_layout(
+    yaxis_title_text="Relative density",
+    showlegend=False,
+)
+fig.show()

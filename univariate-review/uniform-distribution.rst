@@ -13,10 +13,10 @@ The histogram for an event with 4 possible outcomes that are uniformly distribut
 
 You can simulate uniformly distributed random numbers in most software packages. As an example, to generate 50 uniformly distributed random *integers* between 2 and 10, inclusive, in various languages:
 
-	.. literalinclude:: /univariate-review/gists/uniform-distribution-example.R
-		:language: r
-
 	.. literalinclude:: /univariate-review/gists/uniform-distribution-example.py
 		:language: python
+
+	.. literalinclude:: /univariate-review/gists/uniform-distribution-example.R
+		:language: r
 
 A :index:`continuous, uniform distribution <single: uniform distribution; continuous>` arises when there is equal probability of every measurement occurring within a given lower- and upper-bound. This sort of phenomena is not often found in practice. Usually, continuous measurements follow some other distribution, of which we will discuss the normal and :math:`t`-distribution next.
