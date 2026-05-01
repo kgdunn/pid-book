@@ -24,6 +24,11 @@ Here are some tips for effective time-series plots:
 
 	This plot, found on the Internet, shows a computer's CPU temperature with time. There are several problems with the plot, but the key issue here is the *x*-axis. This plot is probably the result of poor default settings in the software, but as you will start to realize, bad defaults are very common in most software packages. They waste your time when you have to repeatedly modify the charts, especially if you are just starting out with exploring the data. Good software will sensibly label the time-based axis for you.
 
+	The Python code below shows how to do this correctly: a real ``pd.DatetimeIndex``, a Plotly time axis formatted with month/year tick labels, and a rolling-mean overlay that helps separate signal from noise.
+
+	.. dcl:: python
+		:codefile: data-visualization/gists/time-series-plot.py
+
 .. AU: The last sentence in the following paragraph seemed a little convoluted. Please verify edits.
 
 -	When plotting more than one trajectory (a vector of values) against time, it is helpful if the lines do not cross or jumble too much. This allows you to clearly see the relationship with other variables. The use of a second *y*-axis on the right-hand side is helpful when plotting two trajectories, but when plotting three or more trajectories that are in the same numeric range, it is better to use several :index:`parallel axes <pair: parallel axes; visualization>`.
