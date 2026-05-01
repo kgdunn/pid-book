@@ -68,19 +68,17 @@ The taste of cheddar cheese
 	.. code-block:: python
 
 		import pandas as pd
-		from sklearn.decomposition import PCA
-		from sklearn.preprocessing import StandardScaler
+		from process_improve.multivariate import PCA, MCUVScaler
 
 		filename = "http://openmv.net/file/cheddar-cheese.csv"
 		cheese = pd.read_csv(filename)
 		cheese.describe()
 
-		X = StandardScaler().fit_transform(
-		    cheese.iloc[:, 1:5])
-		model_pca = PCA().fit(X)
-		print(model_pca.explained_variance_ratio_.cumsum())
-		loadings_P = model_pca.components_.T
-		scores_T = model_pca.transform(X)
+		X = MCUVScaler().fit_transform(cheese.iloc[:, 1:5])
+		model_pca = PCA(n_components=4).fit(X)
+		print(model_pca.r2_cumulative_)
+		loadings_P = model_pca.loadings_
+		scores_T = model_pca.scores_
 
 	.. code-block:: r
 
@@ -169,18 +167,17 @@ The taste of cheddar cheese
 		import numpy as np
 		import pandas as pd
 		import statsmodels.api as sm
-		from sklearn.decomposition import PCA
-		from sklearn.preprocessing import StandardScaler
+		from process_improve.multivariate import PCA, MCUVScaler
 
 		cheese = pd.read_csv(
 		    "http://openmv.net/file/cheddar-cheese.csv")
 		cheese.describe()
 
 		# PCA model with only 2 components
-		X_scaled = StandardScaler().fit_transform(
+		X_scaled = MCUVScaler().fit_transform(
 		    cheese.iloc[:, 1:4])
 		model_pca = PCA(n_components=2).fit(X_scaled)
-		scores_T = model_pca.transform(X_scaled)
+		scores_T = model_pca.scores_.to_numpy()
 
 		# PCR model using only PC 1
 		y = cheese["Taste"]

@@ -21,29 +21,23 @@ This code will calculate principal components for this data:
 .. code-block:: python
 
 	import pandas as pd
-	from sklearn.decomposition import PCA
-	from sklearn.preprocessing import StandardScaler
+	from process_improve.multivariate import PCA, MCUVScaler
 
 	# Read large data file
 	file = "http://openmv.net/file/tablet-spectra.csv"
 	spectra = pd.read_csv(file, header=None, index_col=0)
 
-	# Only extract 4 components, but
-	# center and scale the data before
-	# calculating the components.
-	scaler = StandardScaler()
-	X = scaler.fit_transform(spectra)
-	model_pca = PCA(n_components=4).fit(X)
+	# Only extract 4 components, but center and
+	# scale the data before fitting. MCUVScaler is
+	# mean-centring and unit-variance scaling.
+	spectra_mcuv = MCUVScaler().fit_transform(spectra)
+	model_pca = PCA(n_components=4).fit(spectra_mcuv)
 
-	# Standard deviation of each PC:
-	import numpy as np
-	print(np.sqrt(model_pca.explained_variance_))
-
-	# Proportion of variance:
-	print(model_pca.explained_variance_ratio_)
+	# Proportion of variance per component:
+	print(model_pca.r2_per_component_)
 
 	# Cumulative proportion:
-	print(model_pca.explained_variance_ratio_.cumsum())
+	print(model_pca.r2_cumulative_)
 
 .. code-block:: r
 
@@ -93,45 +87,31 @@ The code for the above plots is:
 .. code-block:: python
 
 	import numpy as np
-	import pandas as pd
 	import plotly.graph_objects as go
+	import pandas as pd
 	from plotly.subplots import make_subplots
-	from sklearn.decomposition import PCA
-	from sklearn.preprocessing import StandardScaler
+	from process_improve.multivariate import PCA, MCUVScaler
 
 	file = "http://openmv.net/file/tablet-spectra.csv"
 	spectra = pd.read_csv(file, header=None, index_col=0)
 
-	# Only extract 4 components, but center and scale
-	# the data before calculating the components.
-	scaler = StandardScaler()
-	spectra_mcuv = scaler.fit_transform(spectra)
+	# Center and scale the data before fitting.
+	spectra_mcuv = MCUVScaler().fit_transform(spectra)
 	model_pca = PCA(n_components=4).fit(spectra_mcuv)
-	# sklearn stores components row-wise; transpose to
-	# match the K-by-A loadings matrix used in the text.
-	spectra_P = model_pca.components_.T
-	spectra_T = model_pca.transform(spectra_mcuv)
 
-	# Baseline variance (per element).
-	spectra_X2 = spectra_mcuv * spectra_mcuv
-
+	# The fitted PCA model exposes the per-variable R^2
+	# (cumulative up to each component) and the per-row
+	# SPE values directly, both indexed by component.
+	# r2_per_variable_ is K-by-A; spe_ is N-by-A.
 	wavelengths = np.arange(600, 1900, 2)
 	colors = {1: "darkgreen", 2: "black", 3: "blue"}
 	widths = {1: 2, 2: 4, 3: 6}
-	SPE = {}
+
 	r2_fig = go.Figure()
 	for a in (1, 2, 3):
-	    spectra_Xhat_a = spectra_T[:, :a] @ spectra_P[:, :a].T
-	    spectra_E = spectra_mcuv - spectra_Xhat_a
-	    spectra_E2 = spectra_E * spectra_E
-	    spectra_Xhat_a_2 = spectra_Xhat_a * spectra_Xhat_a
-
-	    SPE[a] = np.sqrt(spectra_E2.sum(axis=1))
-	    R2_k_a = (spectra_Xhat_a_2.sum(axis=0)
-	              / spectra_X2.sum(axis=0))
-
 	    r2_fig.add_trace(go.Scatter(
-	        x=wavelengths, y=R2_k_a,
+	        x=wavelengths,
+	        y=model_pca.r2_per_variable_[a],
 	        mode="lines",
 	        name=f"R^2: component {a}",
 	        line=dict(color=colors[a], width=widths[a]),
@@ -151,7 +131,8 @@ The code for the above plots is:
 	)
 	for k, a in enumerate((1, 2, 3), start=1):
 	    spe_fig.add_trace(
-	        go.Scatter(x=np.arange(1, N + 1), y=SPE[a],
+	        go.Scatter(x=np.arange(1, N + 1),
+	                   y=model_pca.spe_[a],
 	                   mode="lines",
 	                   line=dict(color=colors[a], width=2),
 	                   showlegend=False),
