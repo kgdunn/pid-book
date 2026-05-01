@@ -16,18 +16,45 @@ A data set, `available on the dataset website <http://openmv.net/info/tablet-spe
 	:width: 750px
 	:align: center
 	
-This R code will calculate principal components for this data:
+This code will calculate principal components for this data:
+
+.. code-block:: python
+
+	import pandas as pd
+	from sklearn.decomposition import PCA
+	from sklearn.preprocessing import StandardScaler
+
+	# Read large data file
+	file = "http://openmv.net/file/tablet-spectra.csv"
+	spectra = pd.read_csv(file, header=None, index_col=0)
+
+	# Only extract 4 components, but
+	# center and scale the data before
+	# calculating the components.
+	scaler = StandardScaler()
+	X = scaler.fit_transform(spectra)
+	model_pca = PCA(n_components=4).fit(X)
+
+	# Standard deviation of each PC:
+	import numpy as np
+	print(np.sqrt(model_pca.explained_variance_))
+
+	# Proportion of variance:
+	print(model_pca.explained_variance_ratio_)
+
+	# Cumulative proportion:
+	print(model_pca.explained_variance_ratio_.cumsum())
 
 .. code-block:: r
 
 	# Read large data file
 	file <- 'http://openmv.net/file/tablet-spectra.csv'
 	spectra <- read.csv(file, header = FALSE, row.names = 1)
-	
+
 	# Only extract 4 components, but
 	# center and scale the data before
 	# calculation the components
-	model.pca <- prcomp(spectra, 
+	model.pca <- prcomp(spectra,
 	                    center = TRUE,
 	                    scale =TRUE,
 	                    rank. = 4)
@@ -63,6 +90,77 @@ Finally, we can show the SPE plot for each observation. SPE values for each tabl
 	
 The code for the above plots is:
 
+.. code-block:: python
+
+	import numpy as np
+	import pandas as pd
+	import plotly.graph_objects as go
+	from plotly.subplots import make_subplots
+	from sklearn.decomposition import PCA
+	from sklearn.preprocessing import StandardScaler
+
+	file = "http://openmv.net/file/tablet-spectra.csv"
+	spectra = pd.read_csv(file, header=None, index_col=0)
+
+	# Only extract 4 components, but center and scale
+	# the data before calculating the components.
+	scaler = StandardScaler()
+	spectra_mcuv = scaler.fit_transform(spectra)
+	model_pca = PCA(n_components=4).fit(spectra_mcuv)
+	# sklearn stores components row-wise; transpose to
+	# match the K-by-A loadings matrix used in the text.
+	spectra_P = model_pca.components_.T
+	spectra_T = model_pca.transform(spectra_mcuv)
+
+	# Baseline variance (per element).
+	spectra_X2 = spectra_mcuv * spectra_mcuv
+
+	wavelengths = np.arange(600, 1900, 2)
+	colors = {1: "darkgreen", 2: "black", 3: "blue"}
+	widths = {1: 2, 2: 4, 3: 6}
+	SPE = {}
+	r2_fig = go.Figure()
+	for a in (1, 2, 3):
+	    spectra_Xhat_a = spectra_T[:, :a] @ spectra_P[:, :a].T
+	    spectra_E = spectra_mcuv - spectra_Xhat_a
+	    spectra_E2 = spectra_E * spectra_E
+	    spectra_Xhat_a_2 = spectra_Xhat_a * spectra_Xhat_a
+
+	    SPE[a] = np.sqrt(spectra_E2.sum(axis=1))
+	    R2_k_a = (spectra_Xhat_a_2.sum(axis=0)
+	              / spectra_X2.sum(axis=0))
+
+	    r2_fig.add_trace(go.Scatter(
+	        x=wavelengths, y=R2_k_a,
+	        mode="lines",
+	        name=f"R^2: component {a}",
+	        line=dict(color=colors[a], width=widths[a]),
+	    ))
+	r2_fig.update_layout(
+	    xaxis_title_text="Wavelengths",
+	    yaxis_title_text="R^2 per component (wavelength)",
+	    yaxis=dict(range=[0, 1]),
+	)
+	r2_fig.show()
+
+	# SPE plot: 3 stacked panels (A=1, A=2, A=3).
+	N = spectra.shape[0]
+	spe_fig = make_subplots(
+	    rows=3, cols=1, shared_xaxes=True,
+	    subplot_titles=("SPE: A=1", "SPE: A=2", "SPE: A=3"),
+	)
+	for k, a in enumerate((1, 2, 3), start=1):
+	    spe_fig.add_trace(
+	        go.Scatter(x=np.arange(1, N + 1), y=SPE[a],
+	                   mode="lines",
+	                   line=dict(color=colors[a], width=2),
+	                   showlegend=False),
+	        row=k, col=1,
+	    )
+	spe_fig.update_xaxes(title_text="Tablet number",
+	                     row=3, col=1)
+	spe_fig.show()
+
 .. code-block:: r
 
 	file <- 'http://openmv.net/file/tablet-spectra.csv'
@@ -72,7 +170,7 @@ The code for the above plots is:
 	# Only extract 4 components, but
 	# center and scale the data before
 	# calculation the components
-	model.pca <- prcomp(spectra, 
+	model.pca <- prcomp(spectra,
 	                    center = TRUE,
 	                    scale =TRUE,
 	                    rank. = 4)
