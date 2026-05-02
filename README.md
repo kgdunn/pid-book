@@ -170,7 +170,7 @@ figures/  ───┘                LaTeX ──pdflatex──► PDF    ├�
 3. **Build.** `uv` resolves the Python toolchain (see Prerequisites above),
    then `make html` and `make latexpdf` produce the distributable outputs
    alongside a text build that feeds the search index. Outputs land in
-   `_build/html/` (extensionless static pages), `_build/latex/PID.pdf`
+   `_build/html/` (extensionless static pages), `_build/latex/PID.pdf?2026-05-02`
    (Tufte-styled, A4, Palatino, built via `pdflatex` / `latexmk`), and
    `_build/text/` (consumed by Pagefind, copied into the HTML tree as
    `_sources/`).
@@ -182,7 +182,7 @@ figures/  ───┘                LaTeX ──pdflatex──► PDF    ├�
    runs on every push to and PR against `master`. It checks out both repos,
    sets up Python 3.12, `uv`, and Node.js, installs a full TeX Live, builds
    HTML and PDF, and asserts both artifacts exist. On pushes to `master`
-   only, it then rsyncs `_build/html/` and `_build/latex/PID.pdf` over SSH to
+   only, it then rsyncs `_build/html/` and `_build/latex/PID.pdf?2026-05-02` over SSH to
    the learnche.org host (using the `LEARNCHE_SSH_KEY` and
    `LEARNCHE_SSH_USER` repository secrets).
 
