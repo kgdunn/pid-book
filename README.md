@@ -102,6 +102,66 @@ pid-book/
 └── pyproject.toml, uv.lock                   Python dependencies
 ```
 
+## How this book is published
+
+The book has a fairly typical static-site pipeline, with a couple of design
+quirks worth knowing about.
+
+```
+RST sources ─┐
+             ├─►  Sphinx  ─►  HTML (extensionless URLs) ─┐
+figures/  ───┘                LaTeX ──pdflatex──► PDF    ├─► rsync ─► learnche.org/pid
+                              text  (fed to Pagefind)    │
+                                                         │
+                       GitHub Actions (.github/workflows/build-deploy.yml)
+```
+
+1. **Sources.** Every chapter is reStructuredText in its own directory;
+   [`contents.rst`](contents.rst) is the master table of contents. The custom
+   Sphinx extension under `my-extensions/` adds the `.. youtube::` directive
+   used in a handful of chapters.
+2. **Figures (separate repo).** Images live in
+   [`kgdunn/figures`](https://github.com/kgdunn/figures) and are pulled in
+   through the `figures/` symlink. CI checks that repo out alongside this one
+   and recreates the symlink before building. A content change that touches
+   figures needs a parallel PR in the figures repo, with the two PRs cross-
+   linked.
+3. **Build.** `uv` resolves the Python toolchain (see Prerequisites above),
+   then `make html` and `make latexpdf` produce the distributable outputs
+   alongside a text build that feeds the search index. Outputs land in
+   `_build/html/` (extensionless static pages), `_build/latex/PID.pdf`
+   (Tufte-styled, A4, Palatino, built via `pdflatex` / `latexmk`), and
+   `_build/text/` (consumed by Pagefind, copied into the HTML tree as
+   `_sources/`).
+4. **Search.** Sphinx's own `searchindex.js` is the canonical search backend;
+   [Pagefind](https://pagefind.app) is layered on top to power the Ctrl+K
+   search box wired into the sidebar.
+5. **CI/CD.**
+   [`.github/workflows/build-deploy.yml`](.github/workflows/build-deploy.yml)
+   runs on every push to and PR against `master`. It checks out both repos,
+   sets up Python 3.12, `uv`, and Node.js, installs a full TeX Live, builds
+   HTML and PDF, and asserts both artifacts exist. On pushes to `master`
+   only, it then rsyncs `_build/html/` and `_build/latex/PID.pdf` over SSH to
+   the learnche.org host (using the `LEARNCHE_SSH_KEY` and
+   `LEARNCHE_SSH_USER` repository secrets).
+
+### Design choices worth knowing
+
+* **Extensionless URLs are intentional.** Pages are served as
+  `/pid/contents`, not `/pid/contents.html`. Years of citations and external
+  links point at the extensionless form, so `conf.py` sets
+  `html_file_suffix = ""` and `html_link_suffix = ""`, and both the
+  production webserver and `start_server.py` serve the extensionless files
+  as `text/html`. Reverting this would break inbound links silently.
+* **Pull requests build but do not deploy.** PRs run the full HTML and PDF
+  build to catch breakage, but the SSH and rsync steps are gated on
+  `github.event_name != 'pull_request'`. Only pushes to `master` reach the
+  server.
+* **Pagefind needs a custom glob.** Because output files have no `.html`
+  extension, Pagefind's default `**/*.html` glob would match nothing. The
+  Makefile invokes Pagefind with `--glob "**"` and prefixes the call with
+  `-` so an indexing failure doesn't break the build.
+
 ## Contributing
 
 Contributions, corrections, and exercises are welcome. The fastest channels:
@@ -133,7 +193,10 @@ Machine-readable citation metadata is available in
 <details>
 <summary>Deployment and release</summary>
 
-* `copy-html.sh` rsyncs `_build/html/` and the PDF to the learnche.org server.
+* `copy-html.sh` is a manual rsync fallback for `_build/html/` and the PDF —
+  useful when CI is unavailable. Day-to-day deploys happen automatically via
+  the GitHub Actions workflow described in
+  [How this book is published](#how-this-book-is-published).
   Maintainer-only; assumes SSH access.
 * `start_server.py` serves `_build/html/` locally on port 8080 with the MIME
   types Pagefind expects. It is invoked by `make serve`.
