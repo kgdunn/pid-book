@@ -7,7 +7,6 @@ Kevin Dunn. Actively written and updated since August 2010.
 [![Read online](https://img.shields.io/badge/read-learnche.org%2Fpid-blue.svg)](https://learnche.org/pid)
 [![Download PDF](https://img.shields.io/badge/download-PDF-red.svg)](https://learnche.org/pid/PID.pdf?2026-05-02)
 [![Build status](https://img.shields.io/github/actions/workflow/status/kgdunn/pid-book/build-deploy.yml?branch=master&label=build)](https://github.com/kgdunn/pid-book/actions/workflows/build-deploy.yml)
-[![Version](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fkgdunn%2Fpid-book%2Fmaster%2Fpyproject.toml&query=%24.project.version&label=version&prefix=v&color=blue)](https://github.com/kgdunn/pid-book/blob/master/pyproject.toml)
 [![Last commit](https://img.shields.io/github/last-commit/kgdunn/pid-book.svg)](https://github.com/kgdunn/pid-book/commits)
 [![Issues](https://img.shields.io/github/issues/kgdunn/pid-book.svg)](https://github.com/kgdunn/pid-book/issues)
 
