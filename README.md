@@ -138,7 +138,7 @@ Machine-readable citation metadata is available in
 * `start_server.py` serves `_build/html/` locally on port 8080 with the MIME
   types Pagefind expects. It is invoked by `make serve`.
 * The release version is tracked in [`pyproject.toml`](pyproject.toml).
-* `to-add.txt` is a working backlog. Migrating items to GitHub Issues is
-  encouraged.
+* [`TODO.md`](TODO.md) is a working backlog. Migrating items to GitHub Issues
+  is encouraged.
 
 </details>
