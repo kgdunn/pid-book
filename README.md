@@ -31,6 +31,44 @@ introductory-graduate courses, and for self-study by practitioners.
 
 The full table of contents lives in [`contents.rst`](contents.rst).
 
+## For instructors
+
+You're welcome to use this book — and the course materials below — for your
+own teaching. Everything is licensed under
+[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), so you can
+share, adapt, and even commercialize derivative work as long as you attribute
+the original and license the result under the same terms. No permission
+needed.
+
+The book has been adopted at other universities (undergraduate and graduate)
+and used inside companies as an internal training manual.
+
+Course materials live on the original
+[Learning Chemical Engineering: Courses](https://learnche.org/4C3/Main_Page)
+site:
+
+- [Suggested course structure](https://learnche.org/4C3/Course_outlines)
+- [PDF slides](https://learnche.org/4C3/Main_Page) covering every section of
+  the book
+- [Assignments (with solutions)](https://learnche.org/4C3/Assignments_from_prior_years)
+- [Midterms / tests](https://learnche.org/4C3/Midterms_from_prior_years)
+- [Final exams](https://learnche.org/4C3/Final_exams_from_prior_years)
+- Projects for
+  [response surface optimization](https://learnche.org/4C3/Response_surface_project_from_prior_years)
+  and
+  [design of experiments](https://learnche.org/4C3/Designed_experiments_projects_from_prior_years)
+- A [tutorial to learn R](https://learnche.org/4C3/Software_tutorial)
+- [Video recordings](https://learnche.org/4C3/Course_videos_and_audio_from_previous_years)
+  of the course on YouTube
+- [Sample datasets](https://openmv.net/) for assignments, tests, and practice
+
+**Teaching at a company?** Get in touch via the
+[contact page](https://learnche.org/4C3/Statistics_for_Engineering:About) for
+additional slides, worksheets, and tips.
+
+Questions, comments, or "how did you make that figure?" enquiries are all
+welcome through the same contact link.
+
 ## Compiling the book yourself
 
 ### Prerequisites
