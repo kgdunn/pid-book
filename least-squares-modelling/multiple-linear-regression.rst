@@ -184,6 +184,82 @@ This is a good point to introduce some terminology you might come across.  Imagi
 
 In the prior example, we could say: the effect of substrate concentration on yield, :index:`controlling <single: controlling for another variable>` for temperature, is to increase the yield by 3.2 :math:`\mu\text{g}` for every increase in 1 g/L of substrate concentration.
 
+
+.. _LS_MLR_with_sklearn:
+
+Fitting an MLR model with scikit-learn
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In the :ref:`single-x section <LS_single_x_sklearn_distillation>` we built a model on the
+distillation tower data using only ``InvTemp3`` as a predictor of ``VapourPressure``. We now
+extend that model by adding a second predictor, ``InvPressure1`` (the inverse of a pressure
+measurement). The scikit-learn API requires almost no change: we simply pass a list of column
+names instead of a single one.
+
+.. code-block:: python
+
+	import pandas as pd
+	from sklearn.linear_model import LinearRegression
+
+	distill = pd.read_csv(
+	    "https://openmv.net/file/distillation-tower.csv"
+	)
+	build = distill.iloc[:150]
+	test = distill.iloc[150:]
+
+	# Specifying the predictors as a list lets us
+	# add or remove variables without touching
+	# the rest of the code:
+	predictors = ["InvTemp3", "InvPressure1"]
+
+	X_build_MLR = build[predictors].values
+	y_build = build["VapourPressure"].values
+
+	full_model = LinearRegression()
+	full_model.fit(X=X_build_MLR, y=y_build)
+
+	# Residuals on the building data:
+	predict_MLR_build = full_model.predict(X_build_MLR)
+	errors_MLR_build = y_build - predict_MLR_build
+	avg_absolute_error_MLR_build = (
+	    pd.Series(errors_MLR_build).abs().mean()
+	)
+	print(
+	    f"MLR building-data average absolute error "
+	    f"= {avg_absolute_error_MLR_build:.3f}"
+	)
+
+	pd.Series(errors_MLR_build).plot(
+	    grid=True,
+	    title="MLR residuals (Actual - Predicted)",
+	)
+
+The same model is then assessed on the held-out test partition. Compare the average absolute
+error and standard deviation against the values reported in the
+:ref:`single-predictor case <LS_test_set_predictions_with_sklearn>`: a useful additional predictor
+should reduce both numbers, *and* leave the residual time series free of obvious drift or
+structure.
+
+.. code-block:: python
+
+	X_test_MLR = test[predictors].values
+	y_test = test["VapourPressure"].values
+
+	predict_MLR_test = full_model.predict(X_test_MLR)
+	errors_MLR_test = y_test - predict_MLR_test
+
+	avg_absolute_error_MLR_test = (
+	    pd.Series(errors_MLR_test).abs().mean()
+	)
+	std_error_MLR_test = errors_MLR_test.std()
+
+	print(
+	    f"MLR testing-data average absolute error "
+	    f"= {avg_absolute_error_MLR_test:.3f}, "
+	    f"std. dev. = {std_error_MLR_test:.3f}"
+	)
+
+
 Integer (dummy, indicator) variables in the model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

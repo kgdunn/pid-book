@@ -71,6 +71,98 @@ Summary of steps to build and investigate a linear model
 		lines(lowess(y, predict(model), f=0.5))     # a smoother
 		abline(a=0, b=1, col="red")                 # a 45 degree line
 
+
+.. _LS_workflow_blender_python:
+
+A worked example of the workflow in Python
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The steps above describe a general workflow that applies to any data analysis project, not just
+least squares. We illustrate the early steps of that workflow on the
+`blender efficiency <https://openmv.net/info/blender-efficiency>`_ data set, which records the
+result of designed experiments where four factors were varied to study blending efficiency:
+``ParticleSize``, ``MixerDiameter``, ``MixerRotation``, and ``BlendingTime``.
+
+The six-step workflow on these data:
+
+#.	**Define the objective**: understand which factors drive ``BlendingEfficiency``.
+
+#.	**Get the data**:
+
+	.. code-block:: python
+
+		import pandas as pd
+
+		blender = pd.read_csv(
+		    "https://openmv.net/file/blender-efficiency.csv"
+		)
+
+#.	**Explore**: look at a few rows, the column types, and a numeric summary.
+
+	.. code-block:: python
+
+		blender.head()
+		blender.tail()
+		blender.describe()
+		blender.info()
+
+#.	**Clean**: in this case the data are pre-cleaned, so we move on.
+
+#.	**Calculate**: a correlation matrix and scatter-plot matrix highlight which factors are most
+	related to the outcome variable.
+
+	.. code-block:: python
+
+		from pandas.plotting import scatter_matrix
+
+		# Numeric correlation matrix:
+		blender.corr()
+
+		# Visual version: scatter plot of every
+		# pair of variables, with a kde on the
+		# diagonal.
+		scatter_matrix(
+		    blender,
+		    alpha=0.2,
+		    figsize=(10, 8),
+		    diagonal="kde",
+		)
+
+	Filtering and grouping are part of the daily work of anyone working with data, and Pandas
+	makes both very compact:
+
+	.. code-block:: python
+
+		# Boolean indexing returns only the rows
+		# where the condition is true:
+		blender[blender["ParticleSize"] == 2]
+		blender[blender["ParticleSize"] <= 5]
+		blender[blender["ParticleSize"] > 5]
+
+		# groupby applies the same calculation
+		# to each value of the grouping variable:
+		blender.groupby("ParticleSize").mean()
+		blender.groupby("ParticleSize").std()
+		blender.groupby("ParticleSize").max()
+
+#.	**Communicate**: create a separate plot per particle size, so each subgroup can be inspected
+	on its own axes:
+
+	.. code-block:: python
+
+		for psize, subset in blender.groupby("ParticleSize"):
+		    ax = subset.plot.scatter(
+		        x="BlendingTime",
+		        y="BlendingEfficiency",
+		    )
+		    ax.set_title(f"When particle size = {psize}")
+
+	Once the patterns are clear, you can fit a least squares model using
+	:ref:`scikit-learn <LS_single_x_sklearn_distillation>` or
+	:ref:`statsmodels <LS-class-example>` and continue with the residual diagnostics outlined in
+	the steps above.
+
+
 ..	R2 = corr(x,y) = cov(X,Y)/SD(X)/SD(Y): notice the symmetry, R2 is the same whether y~x or x~y
 
 .. Notes for this section

@@ -17,6 +17,50 @@ Along the way, while investigating these assumptions, we will introduce some new
 
 It is a common theme in any modelling work that the most informative plots are those of the residuals - the unmodelled component of our data.  We expect to see no structure in the residuals, and since the human eye is excellent at spotting patterns in plots, it is no surprise that various types of :index:`residual plots` are used to diagnose problems with our model.
 
+.. _LS_test_set_predictions_with_sklearn:
+
+Testing the model on unseen data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The residual statistics on the building data give one view of the model. A more honest assessment
+is the residuals on data that the model has **never seen**. Continuing the distillation example
+from the :ref:`prior chapter <LS_residuals_and_R2_with_sklearn>`, where we held out the rows from
+index 150 onward as the testing partition, we can call ``.predict(...)`` again, but on the test
+set:
+
+.. code-block:: python
+
+	# The held-out partition of the data set:
+	X_test = test[["InvTemp3"]].values
+	y_test = test["VapourPressure"].values
+
+	prediction_test = mymodel.predict(X_test)
+	errors_test = y_test - prediction_test
+
+	avg_absolute_error_test = (
+	    pd.Series(errors_test).abs().mean()
+	)
+	std_error_test = errors_test.std()
+
+	print(
+	    f"Testing-data: average absolute error = "
+	    f"{avg_absolute_error_test:.3f}, "
+	    f"std. dev. = {std_error_test:.3f}"
+	)
+
+	# Inspect the residuals in time order; any
+	# drift or pattern is a sign that the model
+	# does not generalize.
+	pd.Series(errors_test).plot(
+	    grid=True,
+	    title="Testing-data residuals (Actual - Predicted)",
+	)
+
+If the testing-data error is much larger than the building-data error, or if the residual time
+series shows an obvious drift, then the model has not generalized: there is structure in the data
+that is not captured by ``InvTemp3`` alone. The remedy is to add more explanatory variables, which
+is the topic of the :ref:`section on multiple linear regression <LS_multiple_X_MLR>`.
+
 The assumption of normally distributed errors
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
