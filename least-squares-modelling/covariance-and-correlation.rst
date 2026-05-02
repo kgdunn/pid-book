@@ -146,7 +146,7 @@ Use this to calculate the covariance between temperature and pressure by breakin
 
 	-	The expected value of this product can be estimated by using the average, or any other suitable measure of location. In this case ``mean(product)`` in R gives 6780. This is the covariance value.
 
-	-	More specifically, we should provide the units as well:  the covariance between temperature and pressure is 6780 [K.kPa] in this example. Similarly the covariance between temperature and humidity is 202 [K.%].
+	-	More specifically, we should provide the units as well:  the covariance between temperature and pressure is 6780 [K.kPa] in this example. Similarly the covariance between temperature and humidity is 35.4 [K.%].
 
 In your own time calculate a rough numeric value and give the units of covariance for these cases:
 
