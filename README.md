@@ -5,11 +5,11 @@ Kevin Dunn. Actively written and updated since August 2010.
 
 [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
 [![Read online](https://img.shields.io/badge/read-learnche.org%2Fpid-blue.svg)](https://learnche.org/pid)
-[![Download PDF](https://img.shields.io/badge/download-PDF-red.svg)](https://learnche.org/pid/PID.pdf?2026-05-01)
+[![Download PDF](https://img.shields.io/badge/download-PDF-red.svg)](https://learnche.org/pid/PID.pdf?2026-05-02)
 [![Issues](https://img.shields.io/github/issues/kgdunn/pid-book.svg)](https://github.com/kgdunn/pid-book/issues)
 
 > **Just want to read it?** Go to **<https://learnche.org/pid>** (HTML) or
-> grab the **[PDF](https://learnche.org/pid/PID.pdf?2026-05-01)**. This repository is for
+> grab the **[PDF](https://learnche.org/pid/PID.pdf?2026-05-02)**. This repository is for
 > readers who want to compile, modify, or contribute to the book.
 
 ## What the book covers
@@ -71,13 +71,13 @@ make setup
 | `make setup` | Bootstrap the toolchain: install `uv`, create `.venv`, sync deps |
 | `make html` | Build the HTML book into `_build/html/` and run Pagefind for search |
 | `make serve` | Serve `_build/html/` at <http://localhost:8080> for local preview |
-| `make latexpdf` | Build the PDF (5–10 minutes; needs LaTeX). Output: `_build/latex/PID.pdf?2026-05-01` |
+| `make latexpdf` | Build the PDF (5–10 minutes; needs LaTeX). Output: `_build/latex/PID.pdf?2026-05-02` |
 | `make linkcheck` | Verify external links |
 | `make clean` | Remove build artifacts (`_build/`, caches) |
 | `make distclean` | Also remove `.venv/` and `uv.lock` (forces a re-resolve on next `make setup`) |
 | `make` | Default target is `latexpdf` |
 
-Compare your PDF against <https://learnche.org/pid/PID.pdf?2026-05-01> to confirm a
+Compare your PDF against <https://learnche.org/pid/PID.pdf?2026-05-02> to confirm a
 clean build.
 
 ## Repository layout
