@@ -334,6 +334,48 @@ it correlates with the outcome.
 	distill.corr().iloc[-1, :]
 
 
+.. _LS_correlation_near_zero_example:
+
+What does a near-zero correlation look like?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The cylinder-pressure, distillation-tower and flotation-cell examples above all show *strong*
+correlations. It is just as important to develop intuition for what :math:`r \approx 0` looks like
+in real data. The `unlimited-time-test <https://openmv.net/info/unlimited-time-test>`_ data set is
+a useful counter-example: students were given as much time as they wanted to write an open-book
+exam, and we have two columns: ``Time`` taken to finish, and the ``Grade`` achieved.
+
+.. code-block:: python
+
+	import pandas as pd
+
+	grades = pd.read_csv(
+	    "https://openmv.net/file/unlimited-time-test.csv"
+	)
+	grades.plot.scatter(x="Time", y="Grade", figsize=(8, 6))
+
+	# Correlation of -0.044 -- essentially zero.
+	grades.corr()
+
+The scatter plot shows no visible pattern, and the correlation matrix confirms it: :math:`r =
+-0.044`. Two things are worth noting from this example:
+
+	-	The correlation is *symmetric*: :math:`r(\text{Time}, \text{Grade}) = r(\text{Grade},
+		\text{Time}) = -0.044`. There is no notion of an :math:`x`- or :math:`y`-variable yet.
+
+	-	The :math:`R^2` value commonly reported with a least-squares model is just :math:`r^2`. So
+		without fitting any model we already know that a straight line through these data would
+		have :math:`R^2 = (-0.044)^2 \approx 0.002`. Said differently: ``Time`` would explain
+		about 0.2% of the variation in ``Grade``. This is one reason :math:`R^2` on its own is a
+		poor way to judge a regression model.
+
+Compare this against the cheddar-cheese exercise (:math:`r` around 0.5 to 0.8 between flavour and
+the chemical predictors), and against the cylinder-pressure example above where :math:`r = 0.997`.
+Looking at the *scatter plots* alongside the *correlation values* for these three regimes ---
+near-zero, moderate, near-one --- is the fastest way to develop a calibrated visual sense of what
+a correlation coefficient really means.
+
+
 .. TODO See article by Brillinger: John Tukey and the correlation coefficient (included as a PDF in the repo)
 
 Some definitions
