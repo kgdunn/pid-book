@@ -31,6 +31,30 @@ Exercises
 		y.mc <- y - mean(y)
 		summary(lm(y.mc ~ x.mc))
 
+	The same comparison in Python, using ``statsmodels``, would be:
+
+	.. code-block:: python
+
+		import pandas as pd
+		import statsmodels.api as sm
+
+		distill = pd.read_csv(
+		    "https://openmv.net/file/distillation-tower.csv"
+		)
+		x = distill["TempC2"].values
+		y = distill["VapourPressure"].values
+
+		# Model 1: y ~ x
+		print(sm.OLS(y, sm.add_constant(x)).fit().summary())
+
+		# Model 2: y ~ (x - mean(x))
+		x_mc = x - x.mean()
+		print(sm.OLS(y, sm.add_constant(x_mc)).fit().summary())
+
+		# Model 3: (y - mean(y)) ~ (x - mean(x))
+		y_mc = y - y.mean()
+		print(sm.OLS(y_mc, sm.add_constant(x_mc)).fit().summary())
+
 .. admonition:: Question
 
 	For a :math:`x_{\text{new}}` value and the linear model :math:`y = b_0 + b_1 x` the prediction interval for :math:`\hat{y}_\text{new}` is:
@@ -843,6 +867,117 @@ Exercises
 
 	.. literalinclude:: ../figures/least-squares/cheddar-cheese.R
 		:language: s
+
+	A Pandas / scikit-learn version of the same workflow is given below for reference:
+
+	.. code-block:: python
+
+		import pandas as pd
+		from pandas.plotting import scatter_matrix
+		from sklearn.linear_model import LinearRegression
+
+		cheese = pd.read_csv(
+		    "https://openmv.net/file/cheddar-cheese.csv"
+		)
+
+		# Drop the case identifier; it is not a
+		# variable to model with.
+		cheese = cheese.drop(columns="Case")
+
+		# Correlation matrix and scatter plot matrix:
+		cheese.corr()
+		scatter_matrix(
+		    cheese,
+		    alpha=0.8,
+		    marker="s",
+		    figsize=(8, 8),
+		    diagonal="kde",
+		)
+
+		# Single-variable model: predict Taste from
+		# acetic acid concentration.
+		X = cheese[["Acetic"]].values
+		y = cheese["Taste"].values
+		single = LinearRegression().fit(X, y)
+		print(
+		    f"Intercept = {single.intercept_:.3f}, "
+		    f"slope = {single.coef_[0]:.3f}"
+		)
+
+		# Multiple linear regression with all three
+		# x-variables:
+		X_mlr = cheese[["Acetic", "H2S", "Lactic"]].values
+		mlr = LinearRegression().fit(X_mlr, y)
+		print(
+		    f"Intercept = {mlr.intercept_:.3f}, "
+		    f"coefficients = {mlr.coef_}"
+		)
+		print(f"R^2 = {mlr.score(X_mlr, y):.3f}")
+
+.. admonition:: Question
+
+	The `Kamyr digester data set <https://openmv.net/info/kamyr-digester>`_ comes from a pulp and
+	paper plant. Use it to practise the early steps of the data-analysis workflow before fitting
+	a least squares model.
+
+	#.	Read the data, drop any non-numeric identifier columns, and produce a histogram of every
+		variable. Find two variables with a clearly bimodal distribution, and two that are
+		roughly normally distributed.
+
+	#.	For each bimodal variable, plot it in time order. Does the bimodal histogram now make
+		sense?
+
+	#.	Find the three columns most strongly positively correlated, and the three most strongly
+		negatively correlated, with the outcome variable ``Y-Kappa``. Build a 7-column data frame
+		that combines those six predictors with ``Y-Kappa``, and produce a scatter plot matrix
+		for that subset only.
+
+	#.	If you needed to *increase* the Kappa number for this process, which variables would you
+		change, and in which direction?
+
+.. admonition:: Solution
+
+	Starter code for the exploration:
+
+	.. code-block:: python
+
+		import pandas as pd
+
+		digester = pd.read_csv(
+		    "https://openmv.net/file/kamyr-digester.csv"
+		)
+
+		# A histogram per numeric column.
+		# Adjust figsize and bins to taste:
+		digester.hist(figsize=(15, 12), bins=30,
+		              color="lightblue")
+
+		# Numeric correlation matrix.
+		# Sort by the column we care about,
+		# from most negative to most positive:
+		correlations = digester.corr()["Y-Kappa"]
+		correlations.sort_values()
+
+		# Pick the 3 strongest positive and 3
+		# strongest negative correlations, then
+		# build a 7-column subset:
+		positives = (
+		    correlations.drop("Y-Kappa")
+		    .sort_values(ascending=False)
+		    .head(3)
+		    .index.tolist()
+		)
+		negatives = (
+		    correlations.drop("Y-Kappa")
+		    .sort_values()
+		    .head(3)
+		    .index.tolist()
+		)
+		subset = digester[positives + negatives + ["Y-Kappa"]]
+
+		from pandas.plotting import scatter_matrix
+		scatter_matrix(subset, alpha=0.4,
+		               figsize=(12, 12), diagonal="kde")
 
 .. admonition:: Question
 

@@ -732,4 +732,111 @@ As for the R code, we can see at a glance:
 	- The two probability values, ``P>|t|``, for |b0| and |b1| should be familiar to you; they are the probability with which we expect to find a value of :math:`z` greater than the calculated :math:`z`-value (called ``t value`` in the output above). The smaller the number, the more confident we can be the confidence interval contains the parameter estimate.
 	- You can construct the confidence interval for |b0| or |b1| by using their reported standard errors and multiplying by the corresponding :math:`t`-value. For example, if you want 99% confidence limits, then look up the 99% values for the :math:`t`-distribution using :math:`n-k` degrees of freedom, in this case it would be ``from scipy.stats import t; t.ppf(1-(1-0.99)/2, df=9)``, which is :math:`\pm 3.25`. So the 99% confidence limits for the slope coefficient would be :math:`[0.5 - 3.25 \times 0.1179; 0.5 + 3.25 \times 0.1179] = [0.117; 0.883]`. However, the table output gives you the 95% confidence interval. Under the column ``0.025`` and ``0.975`` (leaving 2.5% in the lower and upper tail respectively). For the slope coefficient, for example, this interval is [0.233; 0.767]. If you desire, for example, the 99% confidence interval, you can adjust the code: ``print(results.summary(alpha=1-0.99))``
 	- The :math:`R^2 = 0.6665` value.
-	- Be able to calculate the residuals: :math:`e_i = y_i - \hat{y}_i = y_i - b_0 - b_1 x_i`. 
+	- Be able to calculate the residuals: :math:`e_i = y_i - \hat{y}_i = y_i - b_0 - b_1 x_i`.
+
+
+.. _LS_visualizing_a_fit_with_seaborn:
+
+Visualizing the fit
+^^^^^^^^^^^^^^^^^^^
+
+Returning to the larger distillation example from the
+:ref:`prior section <LS_single_x_sklearn_distillation>`, the seaborn library has a useful function,
+``regplot``, that draws the scatter plot of the raw data, overlays the least squares line, and
+shades the confidence interval for the regression line in a single call.
+
+.. code-block:: python
+
+	import pandas as pd
+	import seaborn as sns
+
+	distill = pd.read_csv(
+	    "https://openmv.net/file/distillation-tower.csv"
+	)
+
+	ax = sns.regplot(
+	    x="InvTemp3",
+	    y="VapourPressure",
+	    data=distill,
+	)
+	ax.grid(True)
+
+A common upgrade is the ``jointplot``, which adds a histogram (or kernel density estimate) of each
+variable to the margins of the plot:
+
+.. code-block:: python
+
+	# Marginal histograms with the regression line:
+	sns.jointplot(
+	    x="InvTemp3",
+	    y="VapourPressure",
+	    data=distill,
+	    kind="reg",
+	)
+
+	# Or the kernel density estimate:
+	sns.jointplot(
+	    x="InvTemp3",
+	    y="VapourPressure",
+	    data=distill,
+	    kind="kde",
+	)
+
+
+.. _LS_residuals_and_R2_with_sklearn:
+
+Residuals, standard error and :math:`R^2` for the model
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Once a scikit-learn ``LinearRegression`` object has been fitted, the residuals on the building
+data are obtained by subtracting the predictions from the observed values. Two simple summaries
+of the residuals are useful: their average absolute size, and their standard deviation. Both are
+"smaller is better", and the standard deviation is the model's standard error :math:`S_E`.
+
+We continue with the model fitted in the
+:ref:`prior section <LS_single_x_sklearn_distillation>`:
+
+.. code-block:: python
+
+	# Predictions and residuals on the building data:
+	X_build = build[["InvTemp3"]]
+	y_build = build["VapourPressure"].values
+
+	prediction_build = mymodel.predict(X_build)
+	errors_build = y_build - prediction_build
+
+	# Average absolute residual:
+	avg_absolute_error = (
+	    pd.Series(errors_build).abs().mean()
+	)
+
+	# Standard deviation of the residuals
+	# (equivalent to S_E, up to the n-k correction):
+	std_error = errors_build.std()
+
+	print(
+	    f"Average absolute error = "
+	    f"{avg_absolute_error:.3f}, "
+	    f"std. dev. of residuals = "
+	    f"{std_error:.3f}"
+	)
+
+	# Plot residuals in time order to look for
+	# trends or autocorrelation:
+	pd.Series(errors_build).plot(
+	    grid=True,
+	    title="Building-data residuals (Actual - Predicted)",
+	)
+
+The :math:`R^2` value can be read off directly from the model object, using its ``.score(...)``
+method:
+
+.. code-block:: python
+
+	# R-squared on the building data:
+	mymodel.score(X_build, y_build)
+
+As emphasized earlier in this section, a high :math:`R^2` value is **not** a measure of
+prediction accuracy: it only tells you how strongly :math:`x` and :math:`y` are correlated. The
+prediction quality on **new** data is a more honest test, and that is what we turn to in the
+:ref:`next section <LS_test_set_predictions_with_sklearn>`.

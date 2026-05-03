@@ -294,6 +294,65 @@ To calculate the least squares model:
 *	When :math:`x_i = 5`, then :math:`\hat{y}_i = 3.0 + 0.5 \times 5.5 = 5.75`
 
 
+.. _LS_single_x_sklearn_distillation:
+
+A larger example with scikit-learn: predicting vapour pressure
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For larger data sets, the ``LinearRegression`` class from scikit-learn provides a convenient API
+that fits naturally with Pandas data frames. We will use it again on the `distillation tower
+<https://openmv.net/info/distillation-tower>`_ data set introduced in the
+:ref:`prior section <LS_correlation_matrix_in_python>`.
+
+Good statistical practice is to split the data: build the model on one part, then test it on
+unseen data. Otherwise we get an inflated sense of how well the model performs. The ``.iloc``
+accessor in Pandas selects rows by position, so we use it to split the 253 observations into a
+"build" partition (the first 150 rows) and a "test" partition (the remaining rows):
+
+.. code-block:: python
+
+	import pandas as pd
+
+	distill = pd.read_csv(
+	    "https://openmv.net/file/distillation-tower.csv"
+	)
+
+	# Use the first 150 rows to build the model,
+	# and the remaining rows to test it later.
+	build = distill.iloc[:150]
+	test = distill.iloc[150:]
+	build.shape, test.shape
+
+Now fit a single-variable least squares model that uses ``InvTemp3`` (the inverse of a temperature
+measurement on tray 3) to predict ``VapourPressure``. The double-bracket idiom
+``build[["InvTemp3"]]`` returns a column matrix (a 2-D :math:`n \times 1` array), which is the
+shape scikit-learn expects for the predictor matrix :math:`\mathbf{X}`:
+
+.. code-block:: python
+
+	from sklearn.linear_model import LinearRegression
+
+	# X must be a 2-D array (n_rows by n_cols).
+	# build[["InvTemp3"]] returns a column matrix;
+	# build["InvTemp3"] would return a 1-D array.
+	X = build[["InvTemp3"]].values
+	y = build["VapourPressure"].values
+
+	mymodel = LinearRegression()
+	mymodel.fit(X, y)
+
+	# .intercept_ is a scalar; .coef_ is an array,
+	# so we index it with [0] to print the slope.
+	print(
+	    f"Intercept = {mymodel.intercept_:.5g}, "
+	    f"slope = {mymodel.coef_[0]:.5g}"
+	)
+
+We will return to this model in the :ref:`next section <standard-error-section>` to inspect its
+residuals, its standard error, and its :math:`R^2` value, and again in the section on
+:ref:`multiple linear regression <LS_multiple_X_MLR>` to extend it with a second predictor.
+
+
 
 ..	Estimating the parameters when the data are centered
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

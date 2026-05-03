@@ -245,8 +245,95 @@ Note that correlation is the same whether we measure temperature in Celsius or K
 	:align: center
 	:scale: 65
 	:alt: fake width
-	
-	
+
+
+.. _LS_correlation_matrix_in_python:
+
+Visualizing the correlation matrix
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When working with a real data set that has many variables, looking at correlations one pair at a
+time is tedious. Pandas can compute every pairwise correlation in one call with ``.corr()``, and we
+can visualize the resulting matrix as a *heat map* to spot patterns at a glance.
+
+The example below uses a `flotation cell <https://openmv.net/info/flotation-cell>`_ data set:
+
+.. code-block:: python
+
+	import pandas as pd
+
+	flot = pd.read_csv("https://openmv.net/file/flotation-cell.csv")
+
+	# A square matrix of correlation values, one
+	# per pair of numeric columns:
+	flot.corr()
+
+For a wider data set, the numeric matrix becomes hard to read; a heat map encodes the same
+information visually. Here we use a `distillation column
+<https://openmv.net/info/distillation-tower>`_ data set, where the goal is to predict
+``VapourPressure`` from process measurements:
+
+.. code-block:: python
+
+	import pandas as pd
+	import seaborn as sns
+
+	distill = pd.read_csv(
+	    "https://openmv.net/file/distillation-tower.csv"
+	)
+
+	# Print the correlation matrix as numbers:
+	display(distill.corr())
+
+	# A diverging palette is helpful: red for
+	# positive, blue for negative correlations,
+	# white for near-zero.
+	cmap = sns.diverging_palette(220, 10, as_cmap=True)
+	sns.set(rc={"figure.figsize": (15, 15)})
+	sns.heatmap(
+	    distill.corr(),
+	    cmap=cmap,
+	    square=True,
+	    linewidths=0.2,
+	    cbar_kws={"shrink": 0.5},
+	)
+
+A complementary view is the *scatter plot matrix*, which shows the actual data behind each
+correlation. The diagonal panels are replaced by a kernel density estimate (kde) of each variable's
+distribution:
+
+.. code-block:: python
+
+	from pandas.plotting import scatter_matrix
+
+	scatter_matrix(
+	    distill,
+	    alpha=0.2,
+	    figsize=(15, 15),
+	    diagonal="kde",
+	)
+
+	# For large data sets, sub-sample to speed
+	# up the plot, e.g. every second row:
+	scatter_matrix(
+	    distill.iloc[0::2, :],
+	    alpha=0.2,
+	    figsize=(15, 15),
+	    diagonal="kde",
+	)
+
+When the goal is to model a particular outcome variable (here ``VapourPressure``), the most useful
+slice of the correlation matrix is its last row: it ranks every potential predictor by how strongly
+it correlates with the outcome.
+
+.. code-block:: python
+
+	# The last row of the correlation matrix shows
+	# how each x-variable correlates with the
+	# outcome variable VapourPressure.
+	distill.corr().iloc[-1, :]
+
+
 .. TODO See article by Brillinger: John Tukey and the correlation coefficient (included as a PDF in the repo)
 
 Some definitions
