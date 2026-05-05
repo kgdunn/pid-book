@@ -5,13 +5,13 @@ Kevin Dunn. Actively written and updated since August 2010.
 
 [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
 [![Read online](https://img.shields.io/badge/read-learnche.org%2Fpid-blue.svg)](https://learnche.org/pid)
-[![Download PDF](https://img.shields.io/badge/download-PDF-red.svg)](https://learnche.org/pid/PID.pdf?2026-05-03)
+[![Download PDF](https://img.shields.io/badge/download-PDF-red.svg)](https://learnche.org/pid/PID.pdf?2026-05-05)
 [![Build status](https://img.shields.io/github/actions/workflow/status/kgdunn/pid-book/build-deploy.yml?branch=master&label=build)](https://github.com/kgdunn/pid-book/actions/workflows/build-deploy.yml)
 [![Last commit](https://img.shields.io/github/last-commit/kgdunn/pid-book.svg)](https://github.com/kgdunn/pid-book/commits)
 [![Issues](https://img.shields.io/github/issues/kgdunn/pid-book.svg)](https://github.com/kgdunn/pid-book/issues)
 
 > **Just want to read it?** Go to **<https://learnche.org/pid>** (HTML) or
-> grab the **[PDF](https://learnche.org/pid/PID.pdf?2026-05-03)**. This repository is for
+> grab the **[PDF](https://learnche.org/pid/PID.pdf?2026-05-05)**. This repository is for
 > readers who want to compile, modify, or contribute to the book.
 
 ## What the book covers
@@ -111,13 +111,13 @@ make setup
 | `make setup` | Bootstrap the toolchain: install `uv`, create `.venv`, sync deps |
 | `make html` | Build the HTML book into `_build/html/` and run Pagefind for search |
 | `make serve` | Serve `_build/html/` at <http://localhost:8080> for local preview |
-| `make latexpdf` | Build the PDF (5–10 minutes; needs LaTeX). Output: `_build/latex/PID.pdf?2026-05-03` |
+| `make latexpdf` | Build the PDF (5–10 minutes; needs LaTeX). Output: `_build/latex/PID.pdf?2026-05-05` |
 | `make linkcheck` | Verify external links |
 | `make clean` | Remove build artifacts (`_build/`, caches) |
 | `make distclean` | Also remove `.venv/` and `uv.lock` (forces a re-resolve on next `make setup`) |
 | `make` | Default target is `latexpdf` |
 
-Compare your PDF against <https://learnche.org/pid/PID.pdf?2026-05-03> to confirm a
+Compare your PDF against <https://learnche.org/pid/PID.pdf?2026-05-05> to confirm a
 clean build.
 
 ## Repository layout
@@ -169,7 +169,7 @@ figures/  ───┘                LaTeX ──pdflatex──► PDF    ├�
 3. **Build.** `uv` resolves the Python toolchain (see Prerequisites above),
    then `make html` and `make latexpdf` produce the distributable outputs
    alongside a text build that feeds the search index. Outputs land in
-   `_build/html/` (extensionless static pages), `_build/latex/PID.pdf?2026-05-03`
+   `_build/html/` (extensionless static pages), `_build/latex/PID.pdf?2026-05-05`
    (Tufte-styled, A4, Palatino, built via `pdflatex` / `latexmk`), and
    `_build/text/` (consumed by Pagefind, copied into the HTML tree as
    `_sources/`).
@@ -181,7 +181,7 @@ figures/  ───┘                LaTeX ──pdflatex──► PDF    ├�
    runs on every push to and PR against `master`. It checks out both repos,
    sets up Python 3.12, `uv`, and Node.js, installs a full TeX Live, builds
    HTML and PDF, and asserts both artifacts exist. On pushes to `master`
-   only, it then rsyncs `_build/html/` and `_build/latex/PID.pdf?2026-05-03` over SSH to
+   only, it then rsyncs `_build/html/` and `_build/latex/PID.pdf?2026-05-05` over SSH to
    the learnche.org host (using the `LEARNCHE_SSH_KEY` and
    `LEARNCHE_SSH_USER` repository secrets).
 
