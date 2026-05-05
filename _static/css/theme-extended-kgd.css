@@ -48,10 +48,17 @@ h1 .headerlink {
 	padding-left: 25px;
 }
 
-/* Pagefind UI: scale to fit the sidebar; inherit sphinx-book-theme's primary colour */
+/* Pagefind UI: scale to fit the sidebar; inherit sphinx-book-theme's
+   primary colour, and bind text/background/border to the theme's
+   --pst-* variables so the search input stays legible in dark mode
+   (issue #66). */
 #pagefind-search {
     --pagefind-ui-scale: 0.85;
     --pagefind-ui-primary: var(--pst-color-primary, #0071bc);
+    --pagefind-ui-text: var(--pst-color-text-base, #393939);
+    --pagefind-ui-background: var(--pst-color-background, #ffffff);
+    --pagefind-ui-border: var(--pst-color-border, #eeeeee);
+    --pagefind-ui-tag: var(--pst-color-on-surface, #f5f5f5);
     --pagefind-ui-border-radius: 4px;
 }
 
