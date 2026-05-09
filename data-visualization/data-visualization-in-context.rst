@@ -49,9 +49,10 @@ References and readings
 .. AU: Do you have publication dates for the Few books?
 
 #. Edward Tufte, *Envisioning Information*, Graphics Press, 1990. (10th printing in 2005)
-#. Edward Tufte, *The Visual Display of Quantitative Information*, Graphics Press, 2001.
+#. Edward Tufte, `The Visual Display of Quantitative Information <https://literature.learnche.org/item/53/the-visual-display-of-quantitative-information>`_, Graphics Press, 2001.
 #. Edward Tufte, *Visual Explanations: Images and Quantities, Evidence and Narrative*, 2nd edition, Graphics Press, 1997.
 #. Stephen Few, *Show Me the Numbers* and *Now You See It: Simple Visualization Techniques for Quantitative Analysis*; both from Analytics Press.
 #. William Cleveland, *Visualizing Data*, 1st edition, Hobart Press, 1993.
 #. William Cleveland, *The Elements of Graphing Data*, 2nd edition, Hobart Press, 1994.
 #. Su, `It's Easy to Produce Chartjunk Using Microsoft Excel 2007 but Hard to Make Good Graphs <https://dx.doi.org/10.1016/j.csda.2008.03.007>`_, *Computational Statistics and Data Analysis*, **52** (10), 4594-4601, 2008.
+#. P. Geladi, M. Manley and T. Lestander, `Scatter plotting in multivariate data analysis <https://literature.learnche.org/item/86/scatter-plotting-in-multivariate-data-analysis>`_, *Journal of Chemometrics*, **17**, 503-511, 2003.

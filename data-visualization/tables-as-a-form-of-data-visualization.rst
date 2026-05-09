@@ -54,7 +54,7 @@ Three common pitfalls to avoid:
 		:width: 1036px
 
 
-To wrap up this section is a demonstration of tabular data in a different format, based on an idea of Tufte in *The Visual Display of Quantitative Information*, p. 158. Here we compare the corrosion resistance and roughness of a steel surface for two different types of coatings, A and B.
+To wrap up this section is a demonstration of tabular data in a different format, based on an idea of `Tufte (2001) <https://literature.learnche.org/item/53/the-visual-display-of-quantitative-information>`_ in *The Visual Display of Quantitative Information*, p. 158. Here we compare the corrosion resistance and roughness of a steel surface for two different types of coatings, A and B.
 
 A layout that you expect to see in a standard engineering report:
 
