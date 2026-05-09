@@ -45,4 +45,15 @@ upgraded from plain text or external link to a catalogue hyperlink.
 - **Hogg and Ledolter**, *Engineering Statistics*.
   Cited in `univariate-review/univariate-data-analysis-in-context.rst` references list.
 - **Montgomery and Runger**, *Applied Statistics and Probability for Engineers*. Wiley.
-  Cited in `univariate-review/univariate-data-analysis-in-context.rst` references list.
+  Cited in `univariate-review/univariate-data-analysis-in-context.rst` references list. Also cited in Chapter 3 (`process-monitoring/process-monitoring.rst`) and Chapter 4 (`least-squares-modelling/least-squares-modelling.rst`) reference lists.
+
+### Chapter 3 — Process Monitoring
+
+No new missing references; standard textbooks (Box-Hunter-Hunter, Montgomery-Runger) are already listed under Chapter 2.
+
+### Chapter 4 — Least Squares Modelling
+
+- **John Fox**, *Applied Regression Analysis and Generalized Linear Models*. Sage.
+  Cited as recommended reading in `least-squares-modelling/least-squares-modelling.rst` references list.
+- **N.R. Draper and H. Smith**, *Applied Regression Analysis*. Wiley.
+  Cited as recommended reading in `least-squares-modelling/least-squares-modelling.rst` references list.

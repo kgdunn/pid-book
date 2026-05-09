@@ -67,7 +67,7 @@ Any variable can be monitored. However, the purpose of process monitoring is so 
 
 Data/measurements available at the start of your process, suc as raw material data from your supplier should also be monitored as soon as it is available, e.g. when received by your company, or even earlier - before the supplier ships it to you.
 
-Intermediate variables measured from sensors at all points along the production process are (a) available much more frequently and without delay, (b) are more precise, (c) are usually more meaningful to the operating staff than final quality variables from the lab, and (d) contain the "fingerprint" of the fault, helping the engineers with diagnosis of what the problem is and point to which part(s) of the process need adjustment (see *MacGregor, 1997*).
+Intermediate variables measured from sensors at all points along the production process are (a) available much more frequently and without delay, (b) are more precise, (c) are usually more meaningful to the operating staff than final quality variables from the lab, and (d) contain the "fingerprint" of the fault, helping the engineers with diagnosis of what the problem is and point to which part(s) of the process need adjustment (see `MacGregor (1997) <https://literature.learnche.org/item/75/using-on-line-process-data-to-improve-quality-challenges-for-statisticians>`_).
 
 Note that we do not have to monitor variables that are measured only from on-line sensors. The variable could be a calculation made from the on-line measurements. 
 

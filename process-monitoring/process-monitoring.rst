@@ -82,9 +82,9 @@ References and readings
 
 #.	**Recommended**: Montgomery and Runger, *Applied Statistics and Probability for Engineers*.
 
-#.	Hunter, J.S. "`The Exponentially Weighted Moving Average <https://asq.org/quality-resources/articles/the-exponentially-weighted-moving-average?id=27d7a4ac83cf47a18df2d09729369f41>`_", *Journal of Quality Technology*, **18** (4) p 203 - 210, 1986.
+#.	Hunter, J.S. "`The Exponentially Weighted Moving Average <https://literature.learnche.org/item/175/the-exponentially-weighted-moving-average>`_", *Journal of Quality Technology*, **18** (4) p 203 - 210, 1986.
 
-#.	MacGregor, J.F. "`Using On-Line Process Data to Improve Quality: Challenges for Statisticians <https://dx.doi.org/10.1111/j.1751-5823.1997.tb00311.x>`_", *International Statistical Review*, **65**, p 309-323, 1997.
+#.	MacGregor, J.F. "`Using On-Line Process Data to Improve Quality: Challenges for Statisticians <https://literature.learnche.org/item/75/using-on-line-process-data-to-improve-quality-challenges-for-statisticians>`_", *International Statistical Review*, **65**, p 309-323, 1997.
 
 .. 
 	Box, The R. A. Fisher Memorial Lecture, 1988- Quality Improvement- An Expanding Domain for the Application of Scientific Method, Phil. Trans. R. Soc. Lond. A February 24, 1989 327:617-630, [https://dx.doi.org/10.1098/rsta.1989.0017 DOI]

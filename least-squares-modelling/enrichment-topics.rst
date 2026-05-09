@@ -68,7 +68,7 @@ However, the ability to build a linear model that is not heavily influenced by o
 
 Some criticism of robust methods are that there are too many different robust methods and that these routines are much more computationally expensive than ordinary least squares. The first point is true, as this as a rapidly evolving field, however the latter objection is not of too much concern these days. Robust methods are now available in most decent software packages, and are stabilizing towards a few reliable robust estimators.
 
-If you would like to read up some more, a nice introduction targeted at engineering readers is given in PJ Rousseeuw's "`Tutorial to Robust Statistics <https://dx.doi.org/10.1002/cem.1180050103>`_", *Journal of Chemometrics*, **5**, 1-20, 1991.
+If you would like to read up some more, a nice introduction targeted at engineering readers is given in PJ Rousseeuw's "`Tutorial to Robust Statistics <https://literature.learnche.org/item/173/tutorial-to-robust-statistics>`_", *Journal of Chemometrics*, **5**, 1-20, 1991.
 
 In R the various efforts of international researchers is being consolidated. The ``robustbase`` package provides basic functionality that is now well established in the field; use that package if you want to assemble various robust tools yourself. On the other hand, a more comprehensive package called ``robust`` is also available which provides robust tools that you should use if you are not too concerned with the details of implementation.
 
@@ -188,7 +188,7 @@ How do we quantify this predictive performance?  A common way is to calculate th
 
 The units of RMSEP and RMSEE are the same as the units of the |y|-variable.
 
-In the :ref:`latent variable modelling <SECTION_latent_variable_modelling>` section of the book we will introduce the concept of :index:`cross-validation` to test a model. Cross-validation uses the model training data to simulate the testing process. So it is not as desirable as having a fresh testing data set, but it works well in many cases. Cross-validation can be equally well applied to least squares models. We will revisit this topic later.
+In the :ref:`latent variable modelling <SECTION_latent_variable_modelling>` section of the book we will introduce the concept of :index:`cross-validation` to test a model. Cross-validation uses the model training data to simulate the testing process. So it is not as desirable as having a fresh testing data set, but it works well in many cases. Cross-validation can be equally well applied to least squares models. See `Esbensen and Geladi (2010) <https://literature.learnche.org/item/77/principles-of-proper-validation-use-and-abuse-of-re-sampling-for-validation>`_, *Principles of proper validation: use and abuse of re-sampling for validation*, for a critical view on common pitfalls. We will revisit this topic later.
 
 .. TODO: cf the book by Esbensen for other methods
 
@@ -238,7 +238,7 @@ For completeness the confidence interval at the 95% level for :math:`\beta_1` is
 
 This confidence interval, together with the bootstrapped values of :math:`b_1` give us additional insight when when making our interpretation of :math:`b_1`. 
 
-By now you should also be wondering whether you can bootstrap the confidence interval bounds! That's left as exercise for interested readers. The above example was inspired from an example in `ASA Statistics Computing and Graphics <http://stat-computing.org/newsletter/>`_, **13** (1), 2002.
+By now you should also be wondering whether you can bootstrap the confidence interval bounds! That's left as exercise for interested readers. The above example was inspired from an example in `ASA Statistics Computing and Graphics <http://stat-computing.org/newsletter/>`_, **13** (1), 2002. The standard reference on the bootstrap is `Efron and Tibshirani (1993) <https://literature.learnche.org/item/93/an-introduction-to-the-bootstrap>`_, *An Introduction to the Bootstrap*, Chapman and Hall.
 
 .. Give R example source code for bootstrapping.
 
