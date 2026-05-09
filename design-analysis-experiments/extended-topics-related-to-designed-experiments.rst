@@ -148,6 +148,8 @@ A mixture design is required when the factors being varied add up to 100% to for
 
 In the above figure on the right, the shaded region represents a constraint that cannot be operated in. A D-optimal algorithm must then be used to select experiments in the remaining region. The example is for finding the lowest cost mixture for a fruit punch, while still meeting certain taste requirements (e.g. watermelon juice is cheap, but has little taste). The constraint represents a region where the acidity is too high.
 
+For further reading on mixture-design strategies for product development, see `Muteki and MacGregor (2007) <https://literature.learnche.org/item/170/sequential-design-of-mixture-experiments-for-the-development-of-new-products>`_, *Sequential design of mixture experiments for the development of new products*.
+
 .. Clean this up and make it clearer
 
 	You may not always need a mixture design for recipe experiments if you are only changing a small amount of ingredient, and your factors include only a subset of the ingredients. For example, you are investigating the properties of a new polymer blend, made with ingredients:
