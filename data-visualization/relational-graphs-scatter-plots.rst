@@ -29,7 +29,7 @@ Strive for graphical excellence by doing the following:
 - Use the least amount of ink.
 - Do not distort the axes.
 
-There is an unfounded fear that others won't understand your 2D scatter plot. :index:`Tufte <single: Tufte, Edward>` (*Visual Display of Quantitative Information*, p 83) shows that there are no scatter plots in a sample (1974 to 1980) of U.S., German and British dailies, despite studies showing that 12-year-olds can interpret such plots: Japanese newspapers frequently use them.
+There is an unfounded fear that others won't understand your 2D scatter plot. :index:`Tufte <single: Tufte, Edward>` `(2001) <https://literature.learnche.org/item/53/the-visual-display-of-quantitative-information>`_ (*Visual Display of Quantitative Information*, p 83) shows that there are no scatter plots in a sample (1974 to 1980) of U.S., German and British dailies, despite studies showing that 12-year-olds can interpret such plots: Japanese newspapers frequently use them.
 
 You will see this in industrial settings as well. The next time you go into an industrial control room (or look carefull at some screens in online videos), try finding any scatter plots. The audience is not to blame: it is the producers of these charts who assume the audience is incapable of interpreting them.
 

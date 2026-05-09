@@ -885,7 +885,7 @@ Exercises
 		
 .. admonition:: Question
 
-	The paper by PJ Rousseeuw, "`Tutorial to Robust Statistics <https://dx.doi.org/10.1002/cem.1180050103>`_", *Journal of Chemometrics*, **5**, 1-20, 1991 discusses the breakdown point of a statistic. 
+	The paper by PJ Rousseeuw, "`Tutorial to Robust Statistics <https://literature.learnche.org/item/173/tutorial-to-robust-statistics>`_", *Journal of Chemometrics*, **5**, 1-20, 1991 discusses the breakdown point of a statistic.
 	
 	#.	Describe what the breakdown point is, and give two examples: one with a low breakdown point, and one with a high breakdown point. Use a vector of numbers to help illustrate your answer.
 	

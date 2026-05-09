@@ -37,7 +37,7 @@ Here is some advice for bar plots:
 	#. The top edge of each bar, just below the number
 	#. The number itself
 
-	To this end, :index:`Tufte <single: Tufte, Edward>` defines the :index:`data-ink ratio <pair: data-ink ratio; visualization>` as:
+	To this end, :index:`Tufte <single: Tufte, Edward>` `(2001) <https://literature.learnche.org/item/53/the-visual-display-of-quantitative-information>`_ defines the :index:`data-ink ratio <pair: data-ink ratio; visualization>` as:
 
 	.. math::
 
