@@ -406,11 +406,13 @@ These readings cover a variety of topics in the area of latent variable methods:
 
 * **General**: A collection of important latent variable publications are collected at https://learnche.org/literature
 
-* **General**: John MacGregor, Honglu Yu, Salvador García-Muñoz, Jesus Flores-Cerrillo, "`Data-Based Latent Variable Methods for Process Analysis, Monitoring and Control <https://dx.doi.org/10.1016/j.compchemeng.2005.02.007>`_". *Computers and Chemical Engineering*, **29**, 1217-1223, 2005.
+* **General**: John MacGregor, Honglu Yu, Salvador García-Muñoz, Jesus Flores-Cerrillo, "`Data-Based Latent Variable Methods for Process Analysis, Monitoring and Control <https://literature.learnche.org/item/15/data-based-latent-variable-methods-for-process-analysis-monitoring-and-control>`_". *Computers and Chemical Engineering*, **29**, 1217-1223, 2005.
 
 * **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold:  "Multivariate and Megavariate Data Analysis".
 
-* **About PCA**: Svante Wold, Kim Esbensen, Paul Geladi: "`Principal Component Analysis <https://dx.doi.org/10.1016/0169-7439(87)80084-9>`_", *Chemometrics and Intelligent Laboratory Systems*, **2**, 37-52, 1987.
+* **About PCA**: Svante Wold, Kim Esbensen, Paul Geladi: "`Principal Component Analysis <https://literature.learnche.org/item/13/principal-component-analysis>`_", *Chemometrics and Intelligent Laboratory Systems*, **2**, 37-52, 1987.
+
+* **About PCA**: J. Edward Jackson, `A User's Guide to Principal Components <https://literature.learnche.org/item/38/a-users-guide-to-principal-components>`_, Wiley, 1991.
 
 * **PLS**: Svante Wold, Michael Sjöström, Lennart Eriksson: "`PLS-regression: A Basic Tool of Chemometrics <https://dx.doi.org/10.1016/S0169-7439(01)00155-1>`_", *Chemometrics and Intelligent Laboratory Systems*, **58**, 109-130, 2001.
 

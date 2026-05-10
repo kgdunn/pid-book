@@ -58,6 +58,11 @@ No new missing references; standard textbooks (Box-Hunter-Hunter, Montgomery-Run
 - **N.R. Draper and H. Smith**, *Applied Regression Analysis*. Wiley.
   Cited as recommended reading in `least-squares-modelling/least-squares-modelling.rst` references list.
 
+### Chapter 6 — Latent Variable Modelling
+
+- **Eriksson, Johansson, Kettaneh-Wold, Trygg, Wikström and Wold**, *Multivariate and Megavariate Data Analysis* (Umetrics).
+  Cited as a "General" entry in `latent-variable-modelling/latent-variable-modelling.rst` references list. No DOI/URL currently in book; check Umetrics/Sartorius for canonical citation form.
+
 ### Chapter 5 — Design and Analysis of Experiments
 
 - **Søren Bisgaard et al. (2007–2008)**, *Must a Process Be in Statistical Control Before Conducting Designed Experiments?*, with multi-part discussion. DOIs: 10.1080/08982110701826721 (main), 10.1080/08982110701866198, 10.1080/08982110801894892, 10.1080/08982110801890148, 10.1080/08982110801924509, 10.1080/08982110801894900, 10.1080/08982110801973118 (rejoinder).
