@@ -132,6 +132,11 @@ Two changes in [`.github/workflows/build-deploy.yml`](../../.github/workflows/bu
   unset it falls back to `learnche-pid`. Use the variable mechanism,
   not a secret, because the site code is published in the rendered
   HTML anyway — it's a public identifier, not credentials.
+* The site code only does anything if a matching site is actually
+  registered on goatcounter.com. Until then, the pixel requests 404
+  silently and the dashboard stays empty. See
+  [`operations.md#first-time-setup-goatcounter-cloud-account`](operations.md#first-time-setup-goatcounter-cloud-account)
+  for the one-time SaaS account walkthrough.
 
 ## What does **not** ship telemetry
 

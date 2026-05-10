@@ -1,7 +1,112 @@
-# Operations: verify, switch, disable, troubleshoot
+# Operations: set up, verify, switch, disable, troubleshoot
 
 Day-to-day operations cookbook. The other docs explain the design and
 the code; this one is the procedure manual.
+
+## First-time setup: GoatCounter Cloud account
+
+The pixel layer (Layer B in [`architecture.md`](architecture.md))
+points at GoatCounter's hosted SaaS, not a self-hosted instance.
+Until somebody registers a site on goatcounter.com, the
+`learnche-pid.goatcounter.com/count` requests the pixel makes will
+404 silently — the page still works, but the dashboard stays empty.
+
+This is a **one-time** setup. The cron jobs
+([`run-goaccess.sh`](../../scripts/server/run-goaccess.sh) and
+[`build-sparklines.py`](../../scripts/server/build-sparklines.py))
+are independent of GoatCounter; they read Caddy logs and produce the
+public `/_stats/` dashboards even with no GoatCounter account.
+Skipping the account loses only: search-query events, country /
+device breakdowns, and engagement-time signal. The popularity
+ranking and per-page sparklines are fully covered by the log-side
+pipeline.
+
+### What the workflow is wired to expect
+
+`.github/workflows/build-deploy.yml` resolves the site code in this
+order:
+
+1. `vars.GOATCOUNTER_CODE` (a GitHub Actions repo-level **variable**,
+   not a secret — the value ends up in public HTML anyway).
+2. Falls back to the literal `learnche-pid`.
+
+In other words: if you do nothing, the next deploy will tell every
+reader's browser to hit `learnche-pid.goatcounter.com/count`. So
+either register `learnche-pid` on goatcounter.com, or pick a different
+code and override the GitHub variable.
+
+### Steps
+
+1. **Sign up** at <https://www.goatcounter.com/signup>.
+   * Free tier: 100 000 pageviews/month, no credit card, no time
+     limit.
+   * The book qualifies as personal / non-commercial under the
+     GoatCounter terms because of the CC BY-SA 4.0 license.
+   * Pick a site code. Use `learnche-pid` to match the workflow
+     default; if you choose anything else, see step 3.
+2. **In the dashboard, configure the site:**
+   * **Settings → Site code** — confirm it matches the value you
+     intend `PID_BOOK_GC_CODE` to be.
+   * **Settings → Domain** — set to `learnche.org/pid` (or just
+     `learnche.org` — GoatCounter uses this for the dashboard
+     header, not for filtering).
+   * **Settings → Privacy** — confirm "Don't collect IP", "Don't
+     store sessions", and any "Anonymise visitor IDs" toggles are
+     **on**. The defaults are correct as of 2026; the
+     [`privacy.rst`](../../privacy.rst) page promises these guarantees,
+     so a drift here is a privacy-page bug.
+   * **Settings → Advanced → Allow these origins** — add
+     `https://learnche.org` so the `/count` endpoint accepts hits
+     from the book.
+3. **(Optional) override the site code in CI.** Only needed if you
+   picked something other than `learnche-pid`:
+   * GitHub repo → **Settings → Secrets and variables → Actions →
+     Variables → New repository variable**.
+   * Name: `GOATCOUNTER_CODE`. Value: your chosen code (e.g.
+     `pid-book`).
+   * Use a **variable**, not a secret. The site code is not
+     credentials — it ends up in every page's HTML.
+4. **Trigger a non-PR build.** Push a small commit to master, or use
+   the **Actions → Build and deploy book → Run workflow** button on
+   GitHub. PR builds intentionally ship with telemetry off, so you
+   need a master push or a `workflow_dispatch` to verify.
+5. **Verify** by opening any production page in a private window
+   with extensions disabled, then watching the GoatCounter dashboard
+   for 30 seconds. The hit should appear under "Pages". Type
+   something into the sidebar Pagefind input and watch the "Events"
+   tab — the search query should arrive as `path: /search?q=...`.
+
+### Why the script also short-circuits
+
+[`telemetry.js`](../../_static/js/telemetry.js) Section 0 has a guard:
+
+```js
+var cfg = window.__PID_TELEMETRY || {};
+if (!cfg.gc) return;
+```
+
+If `PID_BOOK_GC_CODE` is empty, the script loads, runs the
+short-circuit guards (DNT, `localhost`, `file://`), then exits
+cleanly without injecting `count.js`. So shipping with
+`vars.GOATCOUNTER_CODE` set to an empty string is a valid
+"telemetry-disabled but Privacy page still present" mode. See
+[Disabling telemetry, partially or fully](#disabling-telemetry-partially-or-fully)
+below.
+
+### Sanity check the wiring without leaving the office
+
+```sh
+# 1. What site code is the workflow currently set to?
+gh -R kgdunn/pid-book variable list   # needs gh CLI; or check via the web UI
+
+# 2. After deploy, what does the live HTML say?
+curl -s https://learnche.org/pid/contents | grep -oE 'gc:"[^"]+"'
+# → gc:"learnche-pid"  (or whatever you set it to)
+
+# 3. Is the site code actually live on goatcounter.com?
+curl -sf -o /dev/null -w '%{http_code}\n' https://learnche-pid.goatcounter.com/count
+# → 200 or 405. 404 means the site isn't registered yet.
+```
 
 ## Daily verification
 

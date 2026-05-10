@@ -21,6 +21,7 @@ dashboards.
 | Runtime behaviour of `_static/js/telemetry.js` | [`client.md`](client.md) |
 | Server-side pipeline (GoAccess, cron, Caddy) | [`server-runbook.md`](server-runbook.md) |
 | `sparklines.json` schema and key normalisation | [`sparklines-schema.md`](sparklines-schema.md) |
+| First-time GoatCounter Cloud account setup | [`operations.md`](operations.md#first-time-setup-goatcounter-cloud-account) |
 | Day-to-day operations (verify, disable, switch providers, troubleshoot) | [`operations.md`](operations.md) |
 
 ## What ships in the repo
