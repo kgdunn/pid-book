@@ -63,6 +63,8 @@ exclude_patterns = [
     "DELETE",
     ".venv",
     "**/.ipynb_checkpoints",
+    "docs",      # engineering / operations Markdown — not part of the book
+    "scripts",   # server-side helper scripts — not part of the book
 ]
 
 add_function_parentheses = True

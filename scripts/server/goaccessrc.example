@@ -1,0 +1,78 @@
+# GoAccess configuration for the learnche.org/pid stats dashboard.
+#
+# Install as /etc/pid-book/goaccessrc (or pass via GOACCESS_CONF env var
+# to scripts/server/run-goaccess.sh).
+#
+# Reference: https://goaccess.io/man
+
+# ---------------------------------------------------------------------------
+# Display
+# ---------------------------------------------------------------------------
+
+html-report-title learnche.org/pid — readership
+html-prefs {"theme":"darkBlue","perPage":20}
+
+# ---------------------------------------------------------------------------
+# Bot filtering. Mirror this list with scripts/server/build-sparklines.py
+# (the FALLBACK_BOT_SUBSTRINGS list there) so both pipelines exclude the
+# same crawlers.
+# ---------------------------------------------------------------------------
+
+# Built-in crawler list (Googlebot, bingbot, ...).
+ignore-crawlers true
+
+# Specific UA strings GoAccess may not catch by default.
+ignore-referer GPTBot
+ignore-referer ClaudeBot
+ignore-referer anthropic-ai
+ignore-referer CCBot
+ignore-referer PerplexityBot
+ignore-referer Bytespider
+ignore-referer AhrefsBot
+ignore-referer SemrushBot
+ignore-referer MJ12bot
+ignore-referer DotBot
+ignore-referer PetalBot
+ignore-referer Amazonbot
+ignore-referer Applebot
+ignore-referer archive.org_bot
+ignore-referer ia_archiver
+ignore-referer wayback
+
+# ---------------------------------------------------------------------------
+# Static-asset filtering. These are served, but they aren't pageviews.
+# Keep in sync with scripts/server/build-sparklines.py STATIC_EXTS.
+# ---------------------------------------------------------------------------
+
+static-file .css
+static-file .js
+static-file .png
+static-file .jpg
+static-file .jpeg
+static-file .gif
+static-file .svg
+static-file .webp
+static-file .ico
+static-file .woff
+static-file .woff2
+static-file .ttf
+static-file .otf
+static-file .eot
+static-file .pdf
+static-file .zip
+static-file .map
+static-file .txt
+
+# ---------------------------------------------------------------------------
+# Privacy. We never serve raw IPs in the dashboard.
+# ---------------------------------------------------------------------------
+
+anonymize-ip true
+
+# ---------------------------------------------------------------------------
+# Panels. Keep things scannable; geography and visit-by-OS are interesting,
+# but raw referrers are noisy and IPs are sensitive.
+# ---------------------------------------------------------------------------
+
+ignore-panel HOSTS
+ignore-panel KEYPHRASES

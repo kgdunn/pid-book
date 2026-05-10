@@ -53,6 +53,22 @@ link the two PRs.
 * Code blocks: use `.. code-block:: python` (or `r`, `matlab`, `text`) so the
   PDF backend syntax-highlights correctly.
 
+## Telemetry and privacy
+
+The HTML book carries cookieless telemetry in production (pageviews,
+in-book search queries, sidebar sparklines). It is **disabled by default
+in local builds** — running `make html` without setting
+`PID_BOOK_TELEMETRY=1` produces HTML with no script tag and no
+sparkline mount. Do not enable it locally unless you are specifically
+testing the production code path.
+
+If your PR touches anything under `_static/js/`, `_templates/`,
+`scripts/server/`, the `Build HTML` workflow step, or `privacy.rst`,
+read [`docs/telemetry/README.md`](docs/telemetry/README.md) first —
+the design has invariants (production-only, no cookies, no IPs stored,
+DNT respected, self-hosters short-circuit) that are easy to break
+inadvertently.
+
 ## Reporting build problems
 
 If `make html` or `make latexpdf` fails for you on a clean checkout, please

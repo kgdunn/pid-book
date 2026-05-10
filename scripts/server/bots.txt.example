@@ -1,0 +1,61 @@
+# UA substrings (case-insensitive) treated as bots and excluded from
+# sparklines and GoAccess. Any UA containing one of these substrings
+# is dropped.
+#
+# Install as /etc/pid-book/bots.txt. Lines starting with # are ignored.
+#
+# Keep in sync with goaccessrc.example. The set below is taken from
+# scripts/server/build-sparklines.py FALLBACK_BOT_SUBSTRINGS as of
+# 2026-05-10.
+
+# Search engines
+googlebot
+bingbot
+yandexbot
+duckduckbot
+baiduspider
+applebot
+petalbot
+
+# SEO and link crawlers
+ahrefsbot
+semrushbot
+mj12bot
+dotbot
+
+# AI training / answer-engine bots
+gptbot
+ccbot
+claudebot
+anthropic-ai
+perplexitybot
+cohere-ai
+amazonbot
+google-extended
+bytespider
+
+# Archives
+archive.org_bot
+ia_archiver
+wayback
+
+# Social-media link unfurlers (treat as bots — they fetch once per share)
+facebookexternalhit
+twitterbot
+linkedinbot
+slackbot
+discordbot
+telegrambot
+whatsapp
+
+# Headless browsers and HTTP libraries (real users don't have these UAs)
+headlesschrome
+phantomjs
+puppeteer
+python-requests
+curl/
+wget/
+go-http-client
+okhttp/
+axios/
+node-fetch
