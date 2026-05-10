@@ -189,7 +189,7 @@ In summary:
 	
 	*	It is used by most software packages, especially those that handle missing data.
 	
-	*	Of interest: it is well known that Google used this algorithm for the early versions of their search engine, `called PageRank <http://ilpubs.stanford.edu:8090/422/>`_.
+	*	Of interest: it is well known that Google used this algorithm for the early versions of their search engine, `called PageRank <https://ilpubs.stanford.edu:8090/422/>`_.
 	
 .. Kernel methods for PCA
 .. ^^^^^^^^^^^^^^^^^^^^^^

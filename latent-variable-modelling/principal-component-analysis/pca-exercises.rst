@@ -11,7 +11,7 @@ Room temperature data
 
 * :math:`N = 144`
 * :math:`K = 4` + 1 column containing the date and time at which the 4 temperatures were recorded
-* Web address: http://openmv.net/info/room-temperature
+* Web address: https://openmv.net/info/room-temperature
 * Description: Temperature measurements from 4 corners of a room
 
 .. image:: ../../figures/examples/room-temperature/room-temperature-plots.png
@@ -73,7 +73,7 @@ Food texture data set
 
 * :math:`N = 50`
 * :math:`K = 5` + 1 column containing the labels for each batch
-* Web address: http://openmv.net/info/food-texture
+* Web address: https://openmv.net/info/food-texture
 * Description: Data from a :ref:`food manufacturer making a pastry product <LVM_food_texture_example>`. Each row contains the 5 quality attributes of a batch of product.
 
 #.	Fit a PCA model.
@@ -94,7 +94,7 @@ This data set has become a classic data set when learning about multivariate dat
 *	:math:`N=16` countries in the European area
 *	:math:`K=20` food items
 *	Missing data: yes
-*	Web address: http://openmv.net/info/food-consumption
+*	Web address: https://openmv.net/info/food-consumption
 *	Description: The data table lists for each country the relative consumption of certain food items, such as tea, jam, coffee, yoghurt, and others.
 
 .. image:: ../../figures/examples/food-consumption/food-consumption.png
@@ -126,7 +126,7 @@ Silicon wafer thickness
 
 * :math:`N=184`
 * :math:`K=9`
-* Web address: http://openmv.net/info/silicon-wafer-thickness
+* Web address: https://openmv.net/info/silicon-wafer-thickness
 * Description: These are nine thickness measurements recorded from various batches of silicon wafers. One wafer is removed from each batch and the thickness of the wafer is measured at the nine locations, as shown in the illustration. 
 
 .. figure:: ../../figures/examples/silicon-wafer-thickness/silicon-wafer-thickness-locations.png
@@ -172,7 +172,7 @@ The data available has:
 
 *	:math:`K = 6` + 1 designation of process outcome
 
-*	Web address: http://openmv.net/info/raw-material-characterization
+*	Web address: https://openmv.net/info/raw-material-characterization
 
 *	Description: 3 of the 6 measurements are size values for the plastic pellets, while the other 3 are the outputs from thermogravimetric analysis (TGA), differential scanning calorimetry (DSC) and thermomechanical analysis (TMA), measured in a laboratory. These 6 measurements are thought to adequately characterize the raw material. Also provided is a designation ``Adequate`` or ``Poor`` that reflects the process engineer's opinion of the yield from that lot of materials.
 
@@ -210,7 +210,7 @@ What we learned:
 .. * :math:`K=19`
 .. * :math:`M=4`
 .. * Missing data: yes
-.. * Web address: http://openmv.net/info/surfactants
+.. * Web address: https://openmv.net/info/surfactants
 .. * Description: These 38 non-ionic surfactants, ingredients for making a detergent, were characterized (described) by taking 19 measurements (the other 4 columns will be used in a future study). The first purpose of this data set was to understand how these 19 properties are related to each other, and to find a representative sub-sample from the rows in |X| which could be selected for further study.
 .. 
 .. #.	Import the data, making sure you *exclude* the ``YDet``, ``YConc``, ``YTemp``, and ``YTox`` variables. Build a PCA model on the 19 columns in remaining in |X|.

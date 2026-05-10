@@ -17,12 +17,12 @@ The taste of cheddar cheese
 
 *	:math:`M=1`
 
-*	`Link to cheese data <http://openmv.net/info/cheddar-cheese>`_
+*	`Link to cheese data <https://openmv.net/info/cheddar-cheese>`_
 
 *	Description: This very simple case study considers the taste of mature cheddar cheese. There are 3 measurements taken on each cheese: lactic acid, acetic acid and :math:`\text{H}_2\text{S}`.
 
 
-#.	Import the data into R: ``cheese <- read.csv('http://openmv.net/file/cheddar-cheese.csv')``
+#.	Import the data into R: ``cheese <- read.csv('https://openmv.net/file/cheddar-cheese.csv')``
 
 #.	Use the ``car`` library and plot a scatter plot matrix of the raw data:
 
@@ -41,7 +41,7 @@ The taste of cheddar cheese
 		import pandas as pd
 		import plotly.express as px
 
-		filename = "http://openmv.net/file/cheddar-cheese.csv"
+		filename = "https://openmv.net/file/cheddar-cheese.csv"
 		cheese = pd.read_csv(filename)
 		cheese.describe()
 
@@ -50,7 +50,7 @@ The taste of cheddar cheese
 
 	.. code-block:: r
 
-		filename <- 'http://openmv.net/file/cheddar-cheese.csv'
+		filename <- 'https://openmv.net/file/cheddar-cheese.csv'
 		cheese <- read.csv(filename)
 		summary(cheese)
 
@@ -70,7 +70,7 @@ The taste of cheddar cheese
 		import pandas as pd
 		from process_improve.multivariate import PCA, MCUVScaler
 
-		filename = "http://openmv.net/file/cheddar-cheese.csv"
+		filename = "https://openmv.net/file/cheddar-cheese.csv"
 		cheese = pd.read_csv(filename)
 		cheese.describe()
 
@@ -82,7 +82,7 @@ The taste of cheddar cheese
 
 	.. code-block:: r
 
-		filename <- 'http://openmv.net/file/cheddar-cheese.csv'
+		filename <- 'https://openmv.net/file/cheddar-cheese.csv'
 		cheese <- read.csv(filename)
 		summary(cheese)
 
@@ -121,7 +121,7 @@ The taste of cheddar cheese
 		import statsmodels.api as sm
 
 		cheese = pd.read_csv(
-		    "http://openmv.net/file/cheddar-cheese.csv")
+		    "https://openmv.net/file/cheddar-cheese.csv")
 		cheese.describe()
 
 		# Least squares model:
@@ -142,7 +142,7 @@ The taste of cheddar cheese
 
 	.. code-block:: r
 
-		cheese <- read.csv('http://openmv.net/file/cheddar-cheese.csv')
+		cheese <- read.csv('https://openmv.net/file/cheddar-cheese.csv')
 		summary(cheese)
 
 		# Least squares model:
@@ -170,7 +170,7 @@ The taste of cheddar cheese
 		from process_improve.multivariate import PCA, MCUVScaler
 
 		cheese = pd.read_csv(
-		    "http://openmv.net/file/cheddar-cheese.csv")
+		    "https://openmv.net/file/cheddar-cheese.csv")
 		cheese.describe()
 
 		# PCA model with only 2 components
@@ -200,7 +200,7 @@ The taste of cheddar cheese
 
 	.. code-block:: r
 
-		cheese <- read.csv('http://openmv.net/file/cheddar-cheese.csv')
+		cheese <- read.csv('https://openmv.net/file/cheddar-cheese.csv')
 		summary(cheese)
 
 		# PCA model with only 2 components
@@ -245,7 +245,7 @@ The data are from the :ref:`plastic pellets troubleshooting example <LVM-process
 
 *	:math:`K = 6 + 1` designation of process outcome
 
-*	`Link to raw materials data <http://openmv.net/info/raw-material-characterization>`_
+*	`Link to raw materials data <https://openmv.net/info/raw-material-characterization>`_
 
 *	Description: 3 of the 6 measurements are size values for the plastic pellets, while the other 3 are the outputs from thermogravimetric analysis (TGA), differential scanning calorimetry (DSC) and thermomechanical analysis (TMA), measured in a laboratory. These 6 measurements are thought to adequately characterize the raw material. Also provided is a designation ``Adequate`` or ``Poor`` that reflects the process engineer's opinion of the yield from that lot of materials.
 
@@ -270,7 +270,7 @@ Predicting final quality from on-line process data: LDPE system
 
 * 	:math:`K = 5`
 
-*	`Link to dataset website <http://openmv.net/info/LDPE>`_ and description of the data.
+*	`Link to dataset website <https://openmv.net/info/LDPE>`_ and description of the data.
 
 #.	Build a PCA model on the 14 |X|-variables and the first 50 observations.
 
@@ -299,7 +299,7 @@ Predicting final quality from on-line process data: LDPE system
 .. * :math:`K=19`
 .. * :math:`M=4`
 .. * Missing data: yes
-.. * Web address: http://openmv.net/info/surfactants
+.. * Web address: https://openmv.net/info/surfactants
 .. * Description: These 38 non-ionic surfactants, ingredients for making a detergent, were characterized (described) by taking 19 measurements. 4 columns will be used in a future study). The first purpose of this data set was to understand how these 19 properties are related to each other, and to find a representative sub-sample from the rows in |X| which could be selected for further study.
 ..
 .. An earlier exercise had you build a PCA model on the 19 properties of the 38 surfactants; then 10 of the surfactants were chosen and studied in depth to calculate their washing efficiency:

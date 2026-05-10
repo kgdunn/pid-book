@@ -29,7 +29,7 @@ First some motivating examples:
 	-	We know that the quality of our plastic product is a function of the mixing time, and also the mixing tank in which the raw materials are blended. How do we incorporate the concept of a mixing tank indicator in our model?
 
 ..	- Ian Nichols example
-..	- Case study/Example: http://www.amstat.org/publications/jse/v16n3/datasets.kuiper.html
+..	- Case study/Example: https://www.amstat.org/publications/jse/v16n3/datasets.kuiper.html
 ..	- Show that R2 increases when adding a new variable to the equation (also see p105 of Fox)
 	- Consider summarizing p223-225 of Fox here regarding t- and F-tests
 	- Add Q5.11 from assignment 3 here to show how adding terms increases R2

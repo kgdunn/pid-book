@@ -102,7 +102,7 @@ The data below represent the average of the :math:`n=5` samples from each bale, 
 .. math::
  	\overline{x} = [245, 239, 239, 241, 241, 241, 238, 238, 236, 248, 233, 236, 246, 253, 227, 231, 237, 228, 239, 240]
 
-The overall average is :math:`\overline{\overline{x}} = 238.8` and :math:`\overline{S} = 9.28`. The raw data are `available on this website <http://openmv.net/info/rubber-colour>`_ and you can verify the values of :math:`\overline{\overline{x}}` and :math:`\overline{S}` were correctly calculated.
+The overall average is :math:`\overline{\overline{x}} = 238.8` and :math:`\overline{S} = 9.28`. The raw data are `available on this website <https://openmv.net/info/rubber-colour>`_ and you can verify the values of :math:`\overline{\overline{x}}` and :math:`\overline{S}` were correctly calculated.
 
 
 *	Calculate the lower and upper control limits for this Shewhart chart. 
@@ -122,7 +122,7 @@ In source code:
 	from scipy.special import gamma
 
 	# Given information (but calculate yourself
-	# from http://openmv.net/info/rubber-colour)
+	# from https://openmv.net/info/rubber-colour)
 	xbar = np.array([245, 239, 239, 241, 241, 241, 238,
 	                 238, 236, 248, 233, 236, 246, 253,
 	                 227, 231, 237, 228, 239, 240],
@@ -173,7 +173,7 @@ In source code:
 .. code-block:: r
 
 	# Given information (but calculate yourself
-	# from http://openmv.net/info/rubber-colour)
+	# from https://openmv.net/info/rubber-colour)
 	xbar = c(245, 239, 239, 241, 241, 241, 238,
 	         238, 236, 248, 233, 236, 246, 253,
 	         227, 231, 237, 228, 239, 240)

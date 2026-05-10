@@ -6,7 +6,7 @@
 	^^^^^
 	-----
 	
-.. MIT courseware: http://ocw.mit.edu/OcwWeb/Mechanical-Engineering/2-830JSpring-2008/VideoLectures/index.htm	
+.. MIT courseware: https://ocw.mit.edu/OcwWeb/Mechanical-Engineering/2-830JSpring-2008/VideoLectures/index.htm	
 		
 .. TODO list of plots
     Plot of Shewhart chart
