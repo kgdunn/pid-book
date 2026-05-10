@@ -1,0 +1,26 @@
+# Configuration for scripts/server/build-sparklines.py.
+#
+# Install as /etc/pid-book/sparklines.conf. Any value can also be passed
+# on the command line; CLI flags win.
+
+[paths]
+# Whitespace-separated list of glob patterns. Both .log and .log.gz are
+# supported automatically. Both Caddy JSON and Apache combined-format
+# files are parsed (the script auto-detects per line). Order does not
+# matter — the script deduplicates.
+logs = /var/log/caddy/learnche.org.access.log* /var/log/learnche-archive/access.log*
+
+# Public path. Must be served as-is by Caddy under the same origin as
+# the book (learnche.org/_stats/) so the sidebar `fetch()` does not need
+# CORS headers.
+output = /var/www/learnche.org/_stats/sparklines.json
+
+# Optional: one bot UA substring per line. If the file is missing, the
+# script falls back to its built-in list (FALLBACK_BOT_SUBSTRINGS in
+# build-sparklines.py). If you supply a file, it REPLACES the built-in
+# list — copy the built-in list as a starting point.
+bot_list = /etc/pid-book/bots.txt
+
+[windows]
+# How many days of history each sparkline shows.
+days = 90

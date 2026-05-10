@@ -89,3 +89,28 @@ See `CONTRIBUTING.md` for the full RST style notes. Key points:
 - Use `:math:` / `.. math::` for equations.
 - Use `.. code-block:: <lang>` so the LaTeX backend syntax-highlights
   correctly.
+
+## Telemetry
+
+The HTML book ships privacy-first telemetry (cookieless GoatCounter pixel,
+search-query events, server-log-derived sidebar sparklines). It is
+production-only — gated on `PID_BOOK_TELEMETRY=1`, set only for non-PR
+builds in `.github/workflows/build-deploy.yml`.
+
+**Hard rules** when touching anything in this area:
+
+- Local `make html` (no env vars) MUST produce HTML with no `goatcounter`
+  string anywhere — verify with
+  `grep -r goatcounter _build/html/contents` returning zero hits.
+- PR builds MUST NOT enable telemetry. The workflow gates this; do not
+  weaken the gate.
+- Any code that calls home MUST short-circuit on `localhost`,
+  `127.0.0.1`, `*.local`, and `file://` so CC BY-SA self-hosters do not
+  leak data to our dashboard. See `_static/js/telemetry.js` Section 0.
+- The reader-facing `/pid/privacy` page (`privacy.rst`) is the public
+  contract. If you change what is collected, update that page in the
+  **same** PR.
+
+The full design, build wiring, runtime behaviour, server pipeline, and
+operations cookbook live in [`docs/telemetry/`](docs/telemetry/). Read
+`docs/telemetry/README.md` first; it links to the rest.

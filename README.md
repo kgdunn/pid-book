@@ -228,6 +228,22 @@ Suggested attribution:
 Machine-readable citation metadata is available in
 [`CITATION.cff`](CITATION.cff).
 
+## Privacy and readership data
+
+The HTML edition at <https://learnche.org/pid> records aggregate,
+cookieless pageview and search-query signal so the maintainer can tell
+which sections need attention. No cookies are set, no IP addresses are
+stored, no third-party trackers are loaded, and the browser
+*Do Not Track* setting is honoured. Self-hosted copies of this book do
+not phone home.
+
+The reader-facing summary lives at <https://learnche.org/pid/privacy>
+(source: [`privacy.rst`](privacy.rst)). The aggregated dashboards (top
+pages, per-page 90-day sparklines, search queries) are themselves
+public at <https://learnche.org/_stats/> in keeping with the open
+spirit of the book. Engineering and operations docs are under
+[`docs/telemetry/`](docs/telemetry/).
+
 ## Maintainer notes
 
 <details>
