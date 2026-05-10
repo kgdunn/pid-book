@@ -26,8 +26,8 @@
 
 .. Case studies to consider
 
-	Cigarette: http://www.amstat.org/publications/jse/v2n1/datasets.mcintyre.html
-	Car sales: http://www.amstat.org/publications/jse/v16n3/datasets.kuiper.html
+	Cigarette: https://www.amstat.org/publications/jse/v2n1/datasets.mcintyre.html
+	Car sales: https://www.amstat.org/publications/jse/v16n3/datasets.kuiper.html
 
 .. Enrichment topics
 

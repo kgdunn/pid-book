@@ -95,5 +95,5 @@ The economic savings and increased productivity is in the millions of dollars pe
 
 .. Software for monitoring charts
 
-	* Quality control charts in R: http://cran.r-project.org/web/packages/qcc/
+	* Quality control charts in R: https://cran.r-project.org/web/packages/qcc/
 

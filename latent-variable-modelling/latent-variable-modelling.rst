@@ -434,12 +434,12 @@ These readings cover a variety of topics in the area of latent variable methods:
 
 * **Image analysis**: M. Bharati, and J.F. MacGregor "`Multivariate Image Analysis for Real Time Process Monitoring and Control <https://dx.doi.org/10.1021/ie980334l>`_", *Industrial and Engineering Chemistry Research*, **37**, 4715-4724, 1998
 
-.. * Many other applications of latent variables are described here: http://macc.mcmaster.ca/research/publications
+.. * Many other applications of latent variables are described here: https://macc.mcmaster.ca/research/publications
 
 
 .. Others:
 
-	Reading: http://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html  (shows MATLAB code)
+	Reading: https://matlabdatamining.blogspot.com/2010/02/principal-components-analysis.html  (shows MATLAB code)
 	Camo book
 	Eigenvector webpage
 	MacGregors 1997 paper on MSPC

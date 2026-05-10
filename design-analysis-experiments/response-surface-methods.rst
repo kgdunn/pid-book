@@ -5,7 +5,7 @@ Response surface methods
 
 .. youtube:: https://www.youtube.com/watch?v=CFoj2mEVWvA&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=52
 
-.. Add this somewhere appropriate: http://xkcd.com/605/   .... on extrapolation
+.. Add this somewhere appropriate: https://xkcd.com/605/   .... on extrapolation
 
 .. index::
 	pair: steepest ascent; response surface
@@ -346,5 +346,5 @@ Current day examples of EVOP do not appear in the scientific literature much, be
 ..	Robust process operation
 	============================
 
-	* Process robustness lecture: http://ocw.mit.edu/OcwWeb/Mechanical-Engineering/2-830JSpring-2008/VideoLectures/index.htm
+	* Process robustness lecture: https://ocw.mit.edu/OcwWeb/Mechanical-Engineering/2-830JSpring-2008/VideoLectures/index.htm
 	* BHH(v2) has some discussion about this

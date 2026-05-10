@@ -8,7 +8,7 @@ PCA example: analysis of spectral data
 	single: chemometrics
 	single: spectroscopy
 
-A data set, `available on the dataset website <http://openmv.net/info/tablet-spectra>`_, contains data on 460 tablets, measured at 650 different wavelengths.
+A data set, `available on the dataset website <https://openmv.net/info/tablet-spectra>`_, contains data on 460 tablets, measured at 650 different wavelengths.
 
 .. image:: ../../figures/examples/tablet-spectra/pharma-spectra.png
 	:alt:	../../figures/examples/tablet-spectra/pharma-spectra.py
@@ -24,7 +24,7 @@ This code will calculate principal components for this data:
 	from process_improve.multivariate import PCA, MCUVScaler
 
 	# Read large data file
-	file = "http://openmv.net/file/tablet-spectra.csv"
+	file = "https://openmv.net/file/tablet-spectra.csv"
 	spectra = pd.read_csv(file, header=None, index_col=0)
 
 	# Only extract 4 components, but center and
@@ -42,7 +42,7 @@ This code will calculate principal components for this data:
 .. code-block:: r
 
 	# Read large data file
-	file <- 'http://openmv.net/file/tablet-spectra.csv'
+	file <- 'https://openmv.net/file/tablet-spectra.csv'
 	spectra <- read.csv(file, header = FALSE, row.names = 1)
 
 	# Only extract 4 components, but
@@ -92,7 +92,7 @@ The code for the above plots is:
 	from plotly.subplots import make_subplots
 	from process_improve.multivariate import PCA, MCUVScaler
 
-	file = "http://openmv.net/file/tablet-spectra.csv"
+	file = "https://openmv.net/file/tablet-spectra.csv"
 	spectra = pd.read_csv(file, header=None, index_col=0)
 
 	# Center and scale the data before fitting.
@@ -144,7 +144,7 @@ The code for the above plots is:
 
 .. code-block:: r
 
-	file <- 'http://openmv.net/file/tablet-spectra.csv'
+	file <- 'https://openmv.net/file/tablet-spectra.csv'
 	spectra <- read.csv(file, header = FALSE, row.names = 1)
 
 

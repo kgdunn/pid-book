@@ -1,7 +1,7 @@
 .. TODO
 
-	Website with DOE problems and R code: http://www.stat.ualberta.ca/~wiens/stat368/stat368.html
-	DOE Textbook: http://users.stat.umn.edu/~gary/Book.html
+	Website with DOE problems and R code: https://www.stat.ualberta.ca/~wiens/stat368/stat368.html
+	DOE Textbook: https://users.stat.umn.edu/~gary/Book.html
 	
 	Mention that experiments don't have to be done in order. Can be done in parallel (e.g. growing plants).
 	Give code on generating random order 
@@ -143,7 +143,7 @@
 	
 		Email to Dr. Hrymak on 27 March 2011 about this topic
 	
-		This Minitab write-up should help the student: http://www.minitab.com/en-US/support/answers/answer.aspx?log=0&id=559&langType=1033
+		This Minitab write-up should help the student: https://www.minitab.com/en-US/support/answers/answer.aspx?log=0&id=559&langType=1033
 
 		That write-up, and text books on general linear models always suggest to keep the main effect in the model when estimating the interaction. They never explain why though. I've still not found a satisfactory explanation for myself.
 
@@ -165,7 +165,7 @@
 	
 ..	DOE implementation
 
-	* Cocktail algorithm to create D-optimal design: http://arxiv.org/abs/0911.0108 
+	* Cocktail algorithm to create D-optimal design: https://arxiv.org/abs/0911.0108 
 		
 .. FUTURE
 

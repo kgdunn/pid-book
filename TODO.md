@@ -85,7 +85,7 @@ remains the canonical short-form list.
 - [ ] For external websites, decide whether to add the URL after the hyperlink
       for print readers, or collect URLs in the References section.
       Example: ``Canadian life tables from 2002 (`Statistics Canada website
-      <http://www.statcan.gc.ca/bsolc/olc-cel/olc-cel?catno=84-537-XIE&lang=eng>`_)``
+      <https://www.statcan.gc.ca/bsolc/olc-cel/olc-cel?catno=84-537-XIE&lang=eng>`_)``
       — the print reader sees only "Statistics Canada website".
 - [ ] `*x*-axis` → `:math:`x`-axis`
 - [ ] `make linkcheck`
@@ -293,7 +293,7 @@ What can you practically do about it?
    simply cannot interact.)
 2. Choose another experimental setup, such as a resolution-IV design, when
    you suspect two-factor interactions of a similar magnitude to the main
-   effects. Or consider a Definitive Screening Design (<http://yint.org/dsdesign>).
+   effects. Or consider a Definitive Screening Design (<https://yint.org/dsdesign>).
 
 There is a chicken-and-egg situation: you don't know up front if the effects
 are similar in magnitude until you do the experiments. A bit of single-factor

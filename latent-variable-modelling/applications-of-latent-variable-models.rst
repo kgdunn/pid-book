@@ -279,7 +279,7 @@ In the unfolded matrix we have :math:`IJ` rows and 3 columns. In other words, ea
 	:width: 900px
 	:align: center
 	
-You can learn more about using PCA on image data in the manual that accompanies the interactive software that is freely available from http://macc.mcmaster.ca/maccmia.php.
+You can learn more about using PCA on image data in the manual that accompanies the interactive software that is freely available from https://macc.mcmaster.ca/maccmia.php.
 	
 
 .. 
@@ -311,7 +311,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. 	*	If we measure a variety of raw material properties on an unknown, new sample of material, can we classify how that raw material will be processed in our reactor?  The categories might be "leads to rapid fouling of the heat exchanger", "causes excessive frothing", or "leads to acceptable product".
 .. 	*	We measure absorbance values at several hundred wavelengths using a near infrared probe on a sample of seeds. From this vector of absorbance values we classify the seed as belonging to one of 5 major types (classes, family) of seed.
 .. 	*	Using the data collected during a batch process, as well as the data at the start of the batch (raw material properties and recipe information), we make a prediction of whether the batch should be released to the next processing step, or held back for more intensive laboratory testing. In other words we designate the batch output without waiting for the laboratory results.
-.. 	*	Similar to the batch example above, one might be able to use various features extracted from `ECG signals <http://en.wikipedia.org/wiki/Electrocardiography>`_ to designate the status of a patient, based on their heart rhythms.
+.. 	*	Similar to the batch example above, one might be able to use various features extracted from `ECG signals <https://en.wikipedia.org/wiki/Electrocardiography>`_ to designate the status of a patient, based on their heart rhythms.
 .. 
 .. 	.. figure:: images/12leadECG.jpg
 .. 		:alt:	https://upload.wikimedia.org/wikipedia/commons/b/bd/12leadECG.jpg
@@ -349,7 +349,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. Unsupervised classification: PCA
 .. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. 
-.. Unsupervised classification relies on the observations (the data) to separate themselves into the various categories. There are `various tools for this <http://www-stat.stanford.edu/~tibs/ElemStatLearn/>`_, but PCA is a natural latent variable method that achieves this objective.
+.. Unsupervised classification relies on the observations (the data) to separate themselves into the various categories. There are `various tools for this <https://www-stat.stanford.edu/~tibs/ElemStatLearn/>`_, but PCA is a natural latent variable method that achieves this objective.
 .. 
 .. After build the PCA model we look for clusters in the score plots to find groupings among the observations. If the true category is known for each observation, then it is helpful to colour-code the score plots with that information. Then classification boundaries are drawn manually, by the modeller, once the groupings are found. Tools such as three-dimensional score plots can sometimes be useful to separate classes. 
 .. 
@@ -466,7 +466,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. * :math:`N = 24`
 .. * :math:`K = 6` 
 .. * :math:`G = 2`: two groups, ``Adequate`` or ``Poor``
-.. * Web address: http://openmv.net/info/raw-material-characterization
+.. * Web address: https://openmv.net/info/raw-material-characterization
 .. * Description: The designation of ``Adequate`` or ``Poor`` reflects the process engineer's opinion of the yield from that lot of materials.
 .. 
 .. #.	Build a PCA model only on the data from the ``Adequate`` group using :math:`K=6` variables. 
@@ -697,7 +697,7 @@ You can learn more about using PCA on image data in the manual that accompanies 
 .. *	:math:`N = 301`
 .. *	:math:`K = 21` 
 .. *	:math:`M = 1` 
-.. *	Web address: http://openmv.net/info/kamyr-digester
+.. *	Web address: https://openmv.net/info/kamyr-digester
 .. *	Description: A digester is an piece of equipment in paper making processes that cooks the woods chips for several hours. This cooking processes softens the chips using an alkali medium, known as liquor  The process is operated in counter-current, with wood chips flowing one direction and leaving as pulp, and the fresh liquor (alkali medium) entering at the opposite end of the digester. The key quality characteristic in the process is the Kappa number, a measure of the whiteness of the paper (bleachability of the pulp)
 .. 
 .. 	Several of the variables in the data set have already been lagged based on process knowledge. For example, ``ChipMass-4`` indicates that the chip mass feed rate has been lagged by 4 hours (approximately the residence time in the digester). Other variables with a numeric ending have also been lagged by 1, 2 or 4 hours.

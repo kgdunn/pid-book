@@ -320,6 +320,6 @@ Transformations are considered successful once the residuals appear to have no m
 
 Another type of plot to diagnose non-linearity present in the linear model is called a *component-plus-residual plot* or a *partial-residual plot*. This is an advanced topic not covered here, but well covered in the :ref:`Fox reference <LS_references>`.
 
-.. Also see:  http://www.apsnet.org/education/advancedplantpath/topics/RModules/doc1/05_Nonlinear_regression.html
+.. Also see:  https://www.apsnet.org/education/advancedplantpath/topics/RModules/doc1/05_Nonlinear_regression.html
 
 
