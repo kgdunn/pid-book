@@ -62,6 +62,8 @@ No new missing references; standard textbooks (Box-Hunter-Hunter, Montgomery-Run
 
 - **Eriksson, Johansson, Kettaneh-Wold, Trygg, Wikström and Wold**, *Multivariate and Megavariate Data Analysis* (Umetrics).
   Cited as a "General" entry in `latent-variable-modelling/latent-variable-modelling.rst` references list. No DOI/URL currently in book; check Umetrics/Sartorius for canonical citation form.
+- **Paul Garthwaite (1994)**, *An Interpretation of Partial Least Squares*, Journal of the American Statistical Association, **89**, 122-127.
+  Cited as a "PLS" entry in `latent-variable-modelling/latent-variable-modelling.rst` references list (currently linked to JSTOR).
 
 ### Chapter 5 — Design and Analysis of Experiments
 
