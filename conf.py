@@ -237,6 +237,39 @@ html_link_suffix = ""
 html_secnumber_suffix = r". "
 
 
+# -- Optional production-only telemetry ----------------------------------------
+# Off by default; enabled in CI for the master/deploy build via env vars.
+# See `_static/js/telemetry.js` and `privacy.rst` for what is collected.
+TELEMETRY_ENABLED = os.environ.get("PID_BOOK_TELEMETRY", "0") == "1"
+TELEMETRY_GC_CODE = os.environ.get("PID_BOOK_GC_CODE", "")
+
+if TELEMETRY_ENABLED:
+    # html_js_files is consumed only by the HTML builder, so LaTeX/text/epub
+    # builders are unaffected.
+    html_js_files = [("js/telemetry.js", {"defer": "defer"})]
+
+    # Surfaced to Jinja templates; gates the sparkline mount in
+    # `_templates/pid-sidebar-extra.html`.
+    html_context = {
+        "pid_telemetry": True,
+        "pid_gc_code": TELEMETRY_GC_CODE,
+    }
+
+    def _inject_telemetry_globals(app, pagename, templatename, context, doctree):
+        # Single inline <script> appended to the per-page metatags context.
+        # This is the theme-agnostic Sphinx pattern for HEAD injection and
+        # avoids needing a layout.html override.
+        gc = TELEMETRY_GC_CODE.replace('"', "")
+        snippet = (
+            f'<script>window.__PID_TELEMETRY={{gc:"{gc}"}};</script>'
+        )
+        context["metatags"] = context.get("metatags", "") + snippet
+
+    def setup(app):
+        app.connect("html-page-context", _inject_telemetry_globals)
+        return {"parallel_read_safe": True, "parallel_write_safe": True}
+
+
 # -- Options for link checking -------------------------------------------------
 
 # A list of regular expressions that match URIs that should not be checked when doing linkcheck.

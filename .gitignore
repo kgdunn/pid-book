@@ -14,6 +14,9 @@ __pycache__/
 **/.ipynb_checkpoints/**
 .venv/
 
+# ECharts bundle for sidebar sparklines, fetched at build time by CI.
+_static/js/echarts-min.js
+
 
 
 design-analysis-experiments/Readings/

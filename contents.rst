@@ -7,6 +7,7 @@ Process Improvement Using Data
    :hidden:
 
    preface/index
+   privacy
 
 
 .. toctree::
