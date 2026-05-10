@@ -286,9 +286,9 @@ The four-table organization is drawn from a sequence of papers, several of whose
 
 	*	S. Garcia-Munoz, "Two Novel Methods to Analyze the Combined Effect of Multiple Raw-Materials and Processing Conditions on the Product's Final Attributes: JRPLS and TPLS." *Chemometrics and Intelligent Laboratory Systems*, **133**, 2014, https://doi.org/10.1016/j.chemolab.2014.02.006
 
-	*	K. Muteki, J. F. MacGregor, and T. Ueda. "Mixture Designs and Models for the Simultaneous Selection of Ingredients and Their Ratios." *Chemometrics and Intelligent Laboratory Systems*, **86**, 2007, https://doi.org/10.1016/j.chemolab.2006.08.003
+	*	K. Muteki, J. F. MacGregor, and T. Ueda. "`Mixture Designs and Models for the Simultaneous Selection of Ingredients and Their Ratios <https://literature.learnche.org/item/146/mixture-designs-and-models-for-the-simultaneous-selection-of-ingredients-and-their-ratios>`_." *Chemometrics and Intelligent Laboratory Systems*, **86**, 2007.
 
-	*	C. M. Jaeckle and J. F. MacGregor. "Product Design through Multivariate Statistical Analysis of Process Data." *AIChE Journal*, **44**, 1998, https://doi.org/10.1002/aic.690440509
+	*	C. M. Jaeckle and J. F. MacGregor. "`Product Design through Multivariate Statistical Analysis of Process Data <https://literature.learnche.org/item/61/product-design-through-multivariate-statistical-analysis-of-process-data>`_." *AIChE Journal*, **44**, 1998.
 
 	*	E. Tomba, M. Barolo, and S. García-Muñoz. "General Framework for Latent Variable Model Inversion for the Design and Manufacturing of New Products." *Industrial & Engineering Chemistry Research*, **51**, 2012, https://doi.org/10.1021/ie301214c
 

@@ -65,6 +65,13 @@ No new missing references; standard textbooks (Box-Hunter-Hunter, Montgomery-Run
 - **Paul Garthwaite (1994)**, *An Interpretation of Partial Least Squares*, Journal of the American Statistical Association, **89**, 122-127.
   Cited as a "PLS" entry in `latent-variable-modelling/latent-variable-modelling.rst` references list (currently linked to JSTOR).
 
+### Chapter 7 — Applications of Process Improvement using Data
+
+- **S. García-Muñoz (2014)**, *Two Novel Methods to Analyze the Combined Effect of Multiple Raw-Materials and Processing Conditions on the Product's Final Attributes: JRPLS and TPLS*, Chemometrics and Intelligent Laboratory Systems, **133**. DOI: 10.1016/j.chemolab.2014.02.006.
+  Cited in `product-development-product-improvement/product-development.rst` references list. Post-2011 work, so not in the current literature catalogue export.
+- **E. Tomba, M. Barolo and S. García-Muñoz (2012)**, *General Framework for Latent Variable Model Inversion for the Design and Manufacturing of New Products*, Industrial & Engineering Chemistry Research, **51**. DOI: 10.1021/ie301214c.
+  Cited in `product-development-product-improvement/product-development.rst` references list. Post-2011 work, so not in the current literature catalogue export.
+
 ### Chapter 5 — Design and Analysis of Experiments
 
 - **Søren Bisgaard et al. (2007–2008)**, *Must a Process Be in Statistical Control Before Conducting Designed Experiments?*, with multi-part discussion. DOIs: 10.1080/08982110701826721 (main), 10.1080/08982110701866198, 10.1080/08982110801894892, 10.1080/08982110801890148, 10.1080/08982110801924509, 10.1080/08982110801894900, 10.1080/08982110801973118 (rejoinder).
