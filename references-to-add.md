@@ -57,3 +57,48 @@ No new missing references; standard textbooks (Box-Hunter-Hunter, Montgomery-Run
   Cited as recommended reading in `least-squares-modelling/least-squares-modelling.rst` references list.
 - **N.R. Draper and H. Smith**, *Applied Regression Analysis*. Wiley.
   Cited as recommended reading in `least-squares-modelling/least-squares-modelling.rst` references list.
+
+### Chapter 6 — Latent Variable Modelling
+
+- **Eriksson, Johansson, Kettaneh-Wold, Trygg, Wikström and Wold**, *Multivariate and Megavariate Data Analysis* (Umetrics).
+  Cited as a "General" entry in `latent-variable-modelling/latent-variable-modelling.rst` references list. No DOI/URL currently in book; check Umetrics/Sartorius for canonical citation form.
+- **Paul Garthwaite (1994)**, *An Interpretation of Partial Least Squares*, Journal of the American Statistical Association, **89**, 122-127.
+  Cited as a "PLS" entry in `latent-variable-modelling/latent-variable-modelling.rst` references list (currently linked to JSTOR).
+
+### Chapter 7 — Applications of Process Improvement using Data
+
+- **S. García-Muñoz (2014)**, *Two Novel Methods to Analyze the Combined Effect of Multiple Raw-Materials and Processing Conditions on the Product's Final Attributes: JRPLS and TPLS*, Chemometrics and Intelligent Laboratory Systems, **133**. DOI: 10.1016/j.chemolab.2014.02.006.
+  Cited in `product-development-product-improvement/product-development.rst` references list. Post-2011 work, so not in the current literature catalogue export.
+- **E. Tomba, M. Barolo and S. García-Muñoz (2012)**, *General Framework for Latent Variable Model Inversion for the Design and Manufacturing of New Products*, Industrial & Engineering Chemistry Research, **51**. DOI: 10.1021/ie301214c.
+  Cited in `product-development-product-improvement/product-development.rst` references list. Post-2011 work, so not in the current literature catalogue export.
+
+### Chapter 5 — Design and Analysis of Experiments
+
+- **Søren Bisgaard et al. (2007–2008)**, *Must a Process Be in Statistical Control Before Conducting Designed Experiments?*, with multi-part discussion. DOIs: 10.1080/08982110701826721 (main), 10.1080/08982110701866198, 10.1080/08982110801894892, 10.1080/08982110801890148, 10.1080/08982110801924509, 10.1080/08982110801894900, 10.1080/08982110801973118 (rejoinder).
+  Cited in `design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst` references list.
+- **George Box and J. Stuart Hunter (1961)**, *The 2^(k-p) Fractional Factorial Designs - Part I*, Technometrics, **3**, 311-351.
+  Cited in `design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst` references list.
+- **George Box and J. Stuart Hunter (1961)**, *The 2^(k-p) Fractional Factorial Designs - Part II*, Technometrics, **3**, 449-458.
+  Cited in `design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst` references list.
+- **George Box (1957)**, *Evolutionary Operation: A Method for Increasing Industrial Productivity*, Journal of the Royal Statistical Society (Applied Statistics), **6**, 81-101.
+  Cited in both `design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst` and `design-analysis-experiments/response-surface-methods.rst`.
+- **William G. Hunter and J. R. Kittrell (1966)**, *Evolutionary Operation: A Review*, Technometrics, **8**, 389-397.
+  Cited in both `design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst` and `design-analysis-experiments/response-surface-methods.rst`.
+- **Heather Tye (2004)**, *Application of Statistical Design of Experiments Methods in Drug Discovery*, Drug Discovery Today, **9**, 485-491. DOI: 10.1016/S1359-6446(04)03086-7.
+  Cited in `design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst` references list.
+- **R.A. Fisher (2003 reprint)**, *Statistical Methods, Experimental Design and Scientific Inference*, Oxford Science Publications.
+  Cited in `design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst` references list. The Lady Tasting Tea example from Fisher's *The Design of Experiments* is also discussed inline in `design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst`.
+- **Raymond H. Myers, Douglas C. Montgomery and Christine M. Anderson-Cook (2009)**, *Response Surface Methodology: Process and Product Optimization Using Designed Experiments*, Wiley.
+  Cited in `design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst` references list.
+- **William Hill and William Hunter (1966)**, *A Review of Response Surface Methodology: A Literature Survey*, Technometrics, **8**, 571-590.
+  Cited in `design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst` references list.
+- **Owen L. Davies (1967)**, *The Design and Analysis of Industrial Experiments*, revised 2nd edition, Hafner.
+  Cited in `design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst` references list.
+- **Bradley Jones (2011)**, *Class of Three-Level Designs for Definitive Screening in the Presence of Second-Order Effects*, Journal of Quality Technology.
+  Cited inline in `design-analysis-experiments/extended-topics-related-to-designed-experiments.rst` (definitive screening designs section).
+- **John Lawson**, *DefScreen: Definitive Screening Designs*, in package `daewr`: Design and Analysis of Experiments with R.
+  Cited inline in `design-analysis-experiments/extended-topics-related-to-designed-experiments.rst` (definitive screening designs section).
+- **George Box and Søren Bisgaard**, *What can you find out from 12 experimental runs?*.
+  Cited inline in `design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst` (Plackett-Burman discussion).
+- **George Box (1989)**, *Quality Improvement - An Expanding Domain for the Application of Scientific Method* (R.A. Fisher Memorial Lecture), Philosophical Transactions of the Royal Society A, **327**, 617-630. DOI: 10.1098/rsta.1989.0017.
+  Cited in `design-analysis-experiments/design-analysis-experiments-exercises.rst`.

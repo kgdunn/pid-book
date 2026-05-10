@@ -35,7 +35,9 @@ This holds for any model where the :math:`\widehat{\mathbf{X}}` and :math:`\math
 
 There comes a point for any real data set where the number of components, |A| = the number of columns in :math:`\mathbf{T}` and :math:`\mathbf{P}`, extracts all systematic variance from :math:`\mathbf{X}`, leaving unstructured residual variance in :math:`\mathbf{E}`. Fitting any further components will start to fit this noise, and unstructured variance, in :math:`\mathbf{E}`.
 
-Cross-validation for multivariate data sets was described by Svante Wold in his paper on `Cross-validatory estimation of the number of components in factor and principal components models <https://www.jstor.org/stable/1267639>`_, in *Technometrics*, **20**, 397-405, 1978. 
+Cross-validation for multivariate data sets was described by Svante Wold in his paper on `Cross-validatory estimation of the number of components in factor and principal components models <https://literature.learnche.org/item/12/cross-validatory-estimation-of-the-number-of-components-in-factor-and-principal-components-models>`_, in *Technometrics*, **20**, 397-405, 1978.
+
+For a critical review of cross-validation procedures applied to component models, see `Bro, Kjeldahl, Smilde and Kiers (2008) <https://literature.learnche.org/item/110/cross-validation-of-component-models-a-critical-look-at-current-methods>`_, *Cross-validation of component models: A critical look at current methods*.
 
 The general idea is to divide the matrix |X| into :math:`G` groups of rows. These rows should be selected randomly, but are often selected in order: row 1 goes in group 1, row 2 goes in group 2, and so on. We can collect the rows belonging to the first group into a new matrix called :math:`\mathbf{X}_{(1)}`, and leave behind all the other rows from all other groups, which we will call group :math:`\mathbf{X}_{(-1)}`. So in general, for the :math:`g^\text{th}` group, we can split matrix |X| into :math:`\mathbf{X}_{(g)}` and :math:`\mathbf{X}_{(-g)}`.
 
