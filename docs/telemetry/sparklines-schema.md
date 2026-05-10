@@ -17,7 +17,7 @@ https://learnche.org/_stats/sparklines.json
 ```
 
 * Same origin as the book → no CORS concern from `learnche.org/pid/*`.
-* Served by nginx with `Cache-Control: public, max-age=3600` (1 hour)
+* Served by Caddy with `Cache-Control: public, max-age=3600` (1 hour)
   so browsers reuse the response across a reading session. The cron
   refreshes the file once a day, so the worst-case staleness is
   about 25 hours.

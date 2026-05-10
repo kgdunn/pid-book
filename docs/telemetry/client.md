@@ -271,7 +271,7 @@ fetch("/_stats/sparklines.json", { cache: "force-cache" })
 * **`cache: "force-cache"`** — the JSON is regenerated nightly, so
   we let the browser reuse the response across the whole site visit.
   The HTTP cache headers on the JSON (1 hour `max-age` per the
-  nginx config) bound staleness.
+  Caddyfile `/_stats/*` handle) bound staleness.
 * **Catch-all on errors** — network failure, malformed JSON, server
   500 — all silently leave the empty mount. The page must not break
   because sparkline data was unavailable.

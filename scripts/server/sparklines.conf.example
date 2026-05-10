@@ -5,13 +5,14 @@
 
 [paths]
 # Whitespace-separated list of glob patterns. Both .log and .log.gz are
-# supported automatically. Order does not matter — the script
-# deduplicates.
-logs = /var/log/nginx/learnche.org.access.log* /var/log/learnche-archive/access.log*
+# supported automatically. Both Caddy JSON and Apache combined-format
+# files are parsed (the script auto-detects per line). Order does not
+# matter — the script deduplicates.
+logs = /var/log/caddy/learnche.org.access.log* /var/log/learnche-archive/access.log*
 
-# Public path. Must be served as-is by nginx with
-#   Access-Control-Allow-Origin not set (same-origin only is fine —
-#   the book is served from the same hostname).
+# Public path. Must be served as-is by Caddy under the same origin as
+# the book (learnche.org/_stats/) so the sidebar `fetch()` does not need
+# CORS headers.
 output = /var/www/learnche.org/_stats/sparklines.json
 
 # Optional: one bot UA substring per line. If the file is missing, the

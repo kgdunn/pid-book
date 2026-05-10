@@ -11,15 +11,26 @@ The output file is consumed by _static/js/telemetry.js to render the
 
 Inputs
 ------
-* Combined-format access logs (nginx default, Apache `combined`).
-* Configurable globs for the current and archived log paths.
+The script auto-detects the log format on a per-line basis and supports:
+
+* **Caddy JSON access logs** — the production webserver is Caddy, which
+  emits one JSON object per line (the default `json` encoder). Fields
+  used: ``ts`` (Unix seconds, may be float), ``request.remote_ip``
+  (or ``request.remote_addr``), ``request.method``, ``request.uri``,
+  ``request.headers.User-Agent`` (array), ``status``.
+* **Apache / generic combined-format** — used by the archived
+  pre-Hetzner Apache logs and as a fallback for any future webserver
+  swap. Each line is parsed with ``LOG_RE``.
+
+Each line is tried as JSON first; if that fails, we fall back to the
+combined-format regex. Mixed-format inputs are fine.
 
 Algorithm
 ---------
 1. Stream every line from the configured log files (gzip-aware).
 2. Parse: client_ip, timestamp, request line, status, user-agent.
 3. Drop bots by user-agent substring match (shared list with
-   ~/.goaccessrc — see scripts/server/goaccessrc.example).
+   /etc/pid-book/bots.txt — see scripts/server/bots.txt.example).
 4. Drop static assets and non-2xx responses.
 5. Drop hits outside the /pid/ prefix.
 6. Normalise URL path → Sphinx pagename:
@@ -46,7 +57,7 @@ Default config path is /etc/pid-book/sparklines.conf if it exists,
 otherwise the defaults below. The config is a tiny INI file:
 
     [paths]
-    logs = /var/log/nginx/learnche.org.access.log* /var/log/learnche-archive/access.log*
+    logs = /var/log/caddy/learnche.org.access.log* /var/log/learnche-archive/access.log*
     output = /var/www/learnche.org/_stats/sparklines.json
     bot_list = /etc/pid-book/bots.txt
 
@@ -84,7 +95,9 @@ LOG = logging.getLogger("build-sparklines")
 DEFAULT_CONFIG = "/etc/pid-book/sparklines.conf"
 
 DEFAULT_LOG_GLOBS = [
-    "/var/log/nginx/learnche.org.access.log*",
+    # Caddy's default per-host log path on Debian/Ubuntu installs.
+    "/var/log/caddy/learnche.org.access.log*",
+    # Archived pre-Hetzner Apache logs (combined format).
     "/var/log/learnche-archive/access.log*",
 ]
 DEFAULT_OUTPUT = "/var/www/learnche.org/_stats/sparklines.json"
@@ -145,12 +158,12 @@ STATIC_EXTS = {
     ".map", ".txt",
 }
 
-# Combined-format regex.
+# Combined-format regex (Apache / generic).
 #
 #   <ip> - <user> [<time>] "<method> <path> <proto>" <status> <bytes>
 #   "<referer>" "<user-agent>"
 #
-# Tolerant of extra fields some nginx configs append (e.g. request_time).
+# Tolerant of extra fields some webservers append (e.g. request_time).
 LOG_RE = re.compile(
     r'^(?P<ip>\S+)\s+\S+\s+\S+\s+'
     r'\[(?P<time>[^\]]+)\]\s+'
@@ -162,6 +175,114 @@ LOG_RE = re.compile(
 
 # Apache's typical date format: 10/May/2026:04:17:23 +0000
 TIME_FMT = "%d/%b/%Y:%H:%M:%S %z"
+
+
+# ---------------------------------------------------------------------------
+# Per-line record produced by either parser.
+# ---------------------------------------------------------------------------
+
+
+class Hit:
+    """Minimal struct-like holder for a parsed log line."""
+    __slots__ = ("ip", "method", "path", "status", "ua", "ts")
+
+    def __init__(self, ip: str, method: str, path: str, status: str,
+                 ua: str, ts: dt.datetime) -> None:
+        self.ip = ip
+        self.method = method
+        self.path = path
+        self.status = status
+        self.ua = ua
+        self.ts = ts
+
+
+def parse_caddy_json(line: str) -> Hit | None:
+    """Parse a Caddy JSON access-log line. Return None on any mismatch.
+
+    Caddy's default JSON encoder emits one object per line with at least
+    these fields when ``msg == "handled request"``:
+
+        {"ts": 1746866243.123,
+         "msg": "handled request",
+         "request": {
+            "remote_ip": "203.0.113.5",          # Caddy ≥ 2.7
+            "remote_addr": "203.0.113.5:54321",  # older Caddy
+            "method": "GET",
+            "uri": "/pid/contents",
+            "headers": { "User-Agent": ["Mozilla/5.0"] }
+         },
+         "status": 200,
+         ...}
+
+    See https://caddyserver.com/docs/json/logging/ for the full schema.
+    """
+    if not line or line[0] != "{":
+        return None
+    try:
+        obj = json.loads(line)
+    except ValueError:
+        return None
+    if not isinstance(obj, dict):
+        return None
+    # Most Caddy access entries have msg == "handled request"; tolerate
+    # absence (some configs emit the message at debug level).
+    msg = obj.get("msg")
+    if msg is not None and msg != "handled request":
+        return None
+    req = obj.get("request") or {}
+    if not isinstance(req, dict):
+        return None
+
+    ip = req.get("remote_ip") or ""
+    if not ip:
+        addr = req.get("remote_addr") or ""
+        # remote_addr is "ip:port"; rsplit handles IPv6 forms like
+        # "[2001:db8::1]:443".
+        if addr.startswith("["):
+            end = addr.find("]")
+            if end > 0:
+                ip = addr[1:end]
+        elif ":" in addr:
+            ip = addr.rsplit(":", 1)[0]
+        else:
+            ip = addr
+    method = req.get("method") or ""
+    path = req.get("uri") or ""
+    status = obj.get("status")
+    if status is None:
+        return None
+    headers = req.get("headers") or {}
+    ua_list = headers.get("User-Agent") or headers.get("user-agent") or []
+    ua = ua_list[0] if isinstance(ua_list, list) and ua_list else ""
+
+    ts_raw = obj.get("ts")
+    if ts_raw is None:
+        return None
+    try:
+        ts = dt.datetime.fromtimestamp(float(ts_raw), tz=dt.timezone.utc)
+    except (TypeError, ValueError, OSError):
+        return None
+
+    return Hit(ip=ip, method=method, path=path, status=str(status),
+               ua=ua, ts=ts)
+
+
+def parse_combined(line: str) -> Hit | None:
+    """Parse an Apache / generic combined-format line."""
+    m = LOG_RE.match(line)
+    if not m:
+        return None
+    try:
+        ts = dt.datetime.strptime(m["time"], TIME_FMT)
+    except ValueError:
+        return None
+    return Hit(ip=m["ip"], method=m["method"], path=m["path"],
+               status=m["status"], ua=m["ua"], ts=ts)
+
+
+def parse_line(line: str) -> Hit | None:
+    """Try Caddy JSON first; fall back to combined-format. None if neither."""
+    return parse_caddy_json(line) or parse_combined(line)
 
 
 # ---------------------------------------------------------------------------
@@ -282,28 +403,24 @@ def build(
         with fh:
             for line in fh:
                 parsed += 1
-                m = LOG_RE.match(line)
-                if not m:
+                hit = parse_line(line)
+                if hit is None:
                     continue
-                if m["status"] not in ("200", "304"):
+                if hit.status not in ("200", "304"):
                     continue
-                if m["method"] not in ("GET", "HEAD"):
+                if hit.method not in ("GET", "HEAD"):
                     continue
-                if is_bot(m["ua"], bot_substrings):
+                if is_bot(hit.ua, bot_substrings):
                     continue
-                if is_static(m["path"]):
+                if is_static(hit.path):
                     continue
-                pagename = normalise_pagename(m["path"])
+                pagename = normalise_pagename(hit.path)
                 if pagename is None:
                     continue
-                try:
-                    ts = dt.datetime.strptime(m["time"], TIME_FMT)
-                except ValueError:
-                    continue
-                day = ts.date()
+                day = hit.ts.date()
                 if day < cutoff or day > today:
                     continue
-                buckets[(pagename, day)].add(m["ip"])
+                buckets[(pagename, day)].add(hit.ip)
                 matched += 1
 
     LOG.info("parsed %d lines, matched %d hits across %d buckets",

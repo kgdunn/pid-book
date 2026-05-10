@@ -139,26 +139,17 @@ docker run -d \
   -v goatcounter-data:/home/user \
   arp242/goatcounter:latest
 
-# Front-end via nginx, on a subdomain or path. Subdomain is simpler:
-# add an A record for stats.learnche.org → 139.162.148.246, then:
-cat >/etc/nginx/sites-available/stats.learnche.org <<'EOF'
-server {
-    listen 443 ssl http2;
-    server_name stats.learnche.org;
+# Front-end via Caddy, on a subdomain or path. Subdomain is simpler:
+# add an A record for stats.learnche.org → 139.162.148.246, then add
+# this site block to /etc/caddy/Caddyfile (Caddy auto-provisions the
+# TLS cert via ACME; no certbot needed):
+cat >>/etc/caddy/Caddyfile <<'EOF'
 
-    ssl_certificate     /etc/letsencrypt/live/stats.learnche.org/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/stats.learnche.org/privkey.pem;
-
-    location / {
-        proxy_pass http://127.0.0.1:8081;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Real-IP $remote_addr;
-    }
+stats.learnche.org {
+    reverse_proxy 127.0.0.1:8081
 }
 EOF
-ln -s /etc/nginx/sites-available/stats.learnche.org /etc/nginx/sites-enabled/
-certbot --nginx -d stats.learnche.org
+caddy validate --config /etc/caddy/Caddyfile && systemctl reload caddy
 ```
 
 In GoatCounter, create a new site with code `learnche-pid` (any
@@ -247,7 +238,7 @@ Diagnose:
 ```sh
 # 1. Is the JSON serving?
 curl -sf -o /dev/null -w '%{http_code}\n' https://learnche.org/_stats/sparklines.json
-# 200 expected. 404 → check nginx /_stats/ block. 403 → check directory perms.
+# 200 expected. 404 → check the Caddyfile /_stats/* handle. 403 → check directory perms.
 
 # 2. Does the JSON contain the page key?
 curl -sf https://learnche.org/_stats/sparklines.json |
@@ -350,16 +341,31 @@ silent zero-byte download is impossible.
 
 ### "GoAccess report has no entries despite the access log being non-empty."
 
-Most often: the log format doesn't match `--log-format=COMBINED`.
-Check a sample line:
+Most often: the log format isn't what the pipeline expects. Caddy
+should be writing JSON; the pipeline pipes it through
+`caddy-json-to-combined.py` before handing it to GoAccess. Check a
+sample line:
 
 ```sh
-head -1 /var/log/nginx/learnche.org.access.log
+head -1 /var/log/caddy/learnche.org.access.log
 ```
 
-If the format is different (e.g. you customised nginx's log_format),
-either revert that customisation, or change `LOG_RE` and the
-`--log-format` flag together. Both pipelines must agree.
+It should be a single JSON object (starts with `{`). If it is plain
+text, your Caddyfile has been switched away from the default `format
+json` encoder — either restore it, or rewrite the JSON filter to match
+your custom format.
+
+To verify the filter end-to-end:
+
+```sh
+head -100 /var/log/caddy/learnche.org.access.log |
+    /usr/local/bin/caddy-json-to-combined.py
+```
+
+You should see Apache combined-format lines on stdout. If you see the
+same JSON echoed back, the filter is rejecting the input — inspect the
+JSON shape against `parse_caddy_json` in
+[`build-sparklines.py`](../../scripts/server/build-sparklines.py).
 
 ## Periodic maintenance
 

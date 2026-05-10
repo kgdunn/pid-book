@@ -47,8 +47,12 @@ spots.
 
 ### Layer A — GoAccess on access logs
 
-* **Source:** nginx access logs on the production server, plus the
-  archived Apache logs from before the Hetzner migration.
+* **Source:** Caddy access logs on the production server (JSON, the
+  default Caddy encoder), plus the archived Apache logs from before
+  the Hetzner migration. Both are fed through the same pipeline; a
+  small filter ([`scripts/server/caddy-json-to-combined.py`](../../scripts/server/caddy-json-to-combined.py))
+  converts the live JSON stream to Apache combined format so GoAccess
+  sees one uniform input.
 * **Strength:** captures **100 %** of HTTP hits, including ad-blocked
   readers, machine-to-machine fetches, and old-browser readers.
 * **Output:** static HTML report at

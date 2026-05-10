@@ -19,7 +19,7 @@ dashboards.
 | Why this design (and what was rejected) | [`architecture.md`](architecture.md) |
 | Build-time wiring: env vars, CI, conf.py | [`build-and-deploy.md`](build-and-deploy.md) |
 | Runtime behaviour of `_static/js/telemetry.js` | [`client.md`](client.md) |
-| Server-side pipeline (GoAccess, cron, nginx) | [`server-runbook.md`](server-runbook.md) |
+| Server-side pipeline (GoAccess, cron, Caddy) | [`server-runbook.md`](server-runbook.md) |
 | `sparklines.json` schema and key normalisation | [`sparklines-schema.md`](sparklines-schema.md) |
 | Day-to-day operations (verify, disable, switch providers, troubleshoot) | [`operations.md`](operations.md) |
 
@@ -33,10 +33,13 @@ _templates/pid-sidebar-extra.html    # sparkline mount + Privacy link
 conf.py                              # env-var gate + html-page-context hook
 contents.rst                         # adds privacy to hidden toctree
 privacy.rst                          # reader-facing disclosure page
-scripts/server/build-sparklines.py   # nightly JSON builder for sparklines
-scripts/server/run-goaccess.sh       # nightly GoAccess wrapper
-scripts/server/goaccessrc.example    # GoAccess config template
-docs/telemetry/                      # everything you are reading
+scripts/server/build-sparklines.py        # nightly JSON builder for sparklines
+scripts/server/run-goaccess.sh            # nightly GoAccess wrapper
+scripts/server/caddy-json-to-combined.py  # filter: Caddy JSON → Apache combined
+scripts/server/goaccessrc.example         # GoAccess config template
+scripts/server/sparklines.conf.example    # build-sparklines.py config template
+scripts/server/bots.txt.example           # shared UA blocklist seed
+docs/telemetry/                           # everything you are reading
 ```
 
 The ECharts JS bundle (`_static/js/echarts-min.js`) is **not** in git; it
@@ -49,7 +52,11 @@ Three signals layered for resilience against ad-blockers, bots, and
 self-hosting reusers.
 
 1. **Server access logs → GoAccess** — 100 % of HTTP hits, including
-   readers behind uBlock Origin. Daily static HTML report at
+   readers behind uBlock Origin. The production webserver is **Caddy**,
+   which writes JSON access logs by default; the pipeline pipes them
+   through `caddy-json-to-combined.py` so GoAccess (which understands
+   Apache combined natively) can ingest the same stream as the
+   archived pre-Hetzner Apache logs. Daily static HTML report at
    <https://learnche.org/_stats/>.
 2. **GoatCounter cookieless pixel** — engagement signal (referrers,
    devices, time-on-site) for the ad-block-free subset. Free tier;
@@ -105,7 +112,7 @@ catches up.
 * If you are a contributor wondering what's safe to change, read
   [`build-and-deploy.md`](build-and-deploy.md) and
   [`client.md`](client.md).
-* If you are operating the server (cron, nginx, log archive), read
+* If you are operating the server (cron, Caddy, log archive), read
   [`server-runbook.md`](server-runbook.md) and
   [`operations.md`](operations.md).
 * If you are the maintainer reviewing whether the design still makes
