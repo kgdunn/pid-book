@@ -42,9 +42,9 @@ References and readings
 -	Raymond H. Myers, Douglas C. Montgomery and Christine M. Anderson-Cook, `Response Surface Methodology: Process and Product Optimization Using Designed Experiments <https://www.amazon.com/Response-Surface-Methodology-Optimization-Experiments/dp/0470174463>`_, Wiley, 2009.
 -	William Hill and William Hunter, "`A Review of Response Surface Methodology: A Literature Survey <https://www.jstor.org/stable/1266632>`_", *Technometrics*, **8**, 571-590, 1966.
 -	Owen L. Davies, `The Design and Analysis of Industrial Experiments <https://www.amazon.com/The-design-analysis-industrial-experiments/dp/B0007J7BME>`_, Chapter 11, revised 2nd edition, Hafner, 1967.
--	T. Lundstedt, E. Seifert, L. Abramo, B. Thelin, Å. Nyström, J. Pettersen and R. Bergman, `Experimental design and optimization <https://literature.learnche.org/item/169/experimental-design-and-optimization>`_, *Chemometrics and Intelligent Laboratory Systems*, **42**, 3-40, 1998.
--	R. Carlson, T. Lundstedt and C. Albano, `Screening of suitable solvents in organic synthesis. Strategies for solvent selection <https://literature.learnche.org/item/168/screening-of-suitable-solvents-in-organic-synthesis-strategies-for-solvent-selection>`_, *Acta Chemica Scandinavica*, **B39**, 79-91, 1985.
--	N. Bratchell, `Multivariate response surface modelling by principal components analysis <https://literature.learnche.org/item/6/multivariate-response-surface-modelling-by-principal-components-analysis>`_, *Journal of Chemometrics*, **3**, 579-588, 1989.
+-	Torbjörn Lundstedt, Elisabeth Seifert, Lisbeth Abramo, Bernt Thelin, Åsa Nyström, Jarle Pettersen and Rolf Bergman, `Experimental design and optimization <https://literature.learnche.org/item/169/experimental-design-and-optimization>`_, *Chemometrics and Intelligent Laboratory Systems*, **42**, 3-40, 1998.
+-	Rolf Carlson, Torbjörn Lundstedt and Christer Albano, `Screening of suitable solvents in organic synthesis. Strategies for solvent selection <https://literature.learnche.org/item/168/screening-of-suitable-solvents-in-organic-synthesis-strategies-for-solvent-selection>`_, *Acta Chemica Scandinavica*, **B39**, 79-91, 1985.
+-	Nigel Bratchell, `Multivariate response surface modelling by principal components analysis <https://literature.learnche.org/item/6/multivariate-response-surface-modelling-by-principal-components-analysis>`_, *Journal of Chemometrics*, **3**, 579-588, 1989.
 
 
 .. OTHER REFERENCES

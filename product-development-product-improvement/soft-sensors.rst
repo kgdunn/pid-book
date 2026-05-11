@@ -21,26 +21,26 @@ References to incorporate
 Foundational and review papers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* J. V. Kresta, T. E. Marlin and J. F. MacGregor, "`Development of inferential process models using PLS <https://literature.learnche.org/item/17/development-of-inferential-process-models-using-pls>`_", *Computers and Chemical Engineering*, **18**, 597-611, 1994.
+* James V. Kresta, Thomas E. Marlin and John F. MacGregor, "`Development of inferential process models using PLS <https://literature.learnche.org/item/17/development-of-inferential-process-models-using-pls>`_", *Computers and Chemical Engineering*, **18**, 597-611, 1994.
 
-* L. Fortuna, S. Graziani, A. Rizzo and M. G. Xibilia, `Soft Sensors for Monitoring and Control of Industrial Processes <https://literature.learnche.org/item/111/soft-sensors-for-monitoring-and-control-of-industrial-processes>`_, Springer, 2007.
+* Luigi Fortuna, Salvatore Graziani, Alessandro Rizzo and M. Gabriella Xibilia, `Soft Sensors for Monitoring and Control of Industrial Processes <https://literature.learnche.org/item/111/soft-sensors-for-monitoring-and-control-of-industrial-processes>`_, Springer, 2007.
 
-* P. Kadlec, B. Gabrys and S. Strandt, "`Data-driven soft sensors in the process industry <https://literature.learnche.org/item/105/data-driven-soft-sensors-in-the-process-industry>`_", *Computers and Chemical Engineering*, **33**, 795-814, 2009.
+* Petr Kadlec, Bogdan Gabrys and Sibylle Strandt, "`Data-driven soft sensors in the process industry <https://literature.learnche.org/item/105/data-driven-soft-sensors-in-the-process-industry>`_", *Computers and Chemical Engineering*, **33**, 795-814, 2009.
 
-* P. Kadlec, R. Grbić and B. Gabrys, "`Review of adaptation mechanisms for data-driven soft sensors <https://literature.learnche.org/item/106/review-of-adaptation-mechanisms-for-data-driven-soft-sensors>`_", *Computers and Chemical Engineering*, **35**, 1-24, 2011.
+* Petr Kadlec, Ratko Grbić and Bogdan Gabrys, "`Review of adaptation mechanisms for data-driven soft sensors <https://literature.learnche.org/item/106/review-of-adaptation-mechanisms-for-data-driven-soft-sensors>`_", *Computers and Chemical Engineering*, **35**, 1-24, 2011.
 
-* B. Lin, B. Recke, J. K. H. Knudsen and S. B. Jørgensen, "`A systematic approach for soft sensor development <https://literature.learnche.org/item/107/a-systematic-approach-for-soft-sensor-development>`_", *Computers and Chemical Engineering*, **31**, 419-425, 2007.
+* Bao Lin, Bodil Recke, Jørgen K. H. Knudsen and Sten Bay Jørgensen, "`A systematic approach for soft sensor development <https://literature.learnche.org/item/107/a-systematic-approach-for-soft-sensor-development>`_", *Computers and Chemical Engineering*, **31**, 419-425, 2007.
 
 Industrial applications and case studies
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* H. M. Budman, C. Webb, T. R. Holcomb and M. Morari, "`Robust inferential control for a packed-bed reactor <https://literature.learnche.org/item/22/robust-inferential-control-for-a-packed-bed-reactor>`_", *Industrial and Engineering Chemistry Research*, **31**, 1665-1679, 1992.
+* Hector M. Budman, Chris Webb, Tyler R. Holcomb and Manfred Morari, "`Robust inferential control for a packed-bed reactor <https://literature.learnche.org/item/22/robust-inferential-control-for-a-packed-bed-reactor>`_", *Industrial and Engineering Chemistry Research*, **31**, 1665-1679, 1992.
 
-* B. S. Dayal, J. F. MacGregor, P. A. Taylor, R. Kildaw and S. Marcikic, "`Application of feedforward neural networks and partial least squares regression to modelling Kappa number in a continuous Kamyr digester <https://literature.learnche.org/item/124/application-of-feedforward-neural-networks-and-partial-least-squares-regression-to-modelling-kappa-number-in-a-continuous-kamyr-digester>`_", *Pulp and Paper Canada*, **95**, T7-T13, 1994.
+* Bhupinder S. Dayal, John F. MacGregor, Paul A. Taylor, R. Kildaw and S. Marcikic, "`Application of feedforward neural networks and partial least squares regression to modelling Kappa number in a continuous Kamyr digester <https://literature.learnche.org/item/124/application-of-feedforward-neural-networks-and-partial-least-squares-regression-to-modelling-kappa-number-in-a-continuous-kamyr-digester>`_", *Pulp and Paper Canada*, **95**, T7-T13, 1994.
 
-* V. Tzovla and A. Mehta, "`Creating intelligence: Automating the approach to development and online operation of soft sensors <https://literature.learnche.org/item/103/creating-intelligence-automating-the-approach-to-development-and-online-operation-of-soft-sensors>`_", *InTech*, September, 30-33, 2002.
+* Vasiliki Tzovla and Ashish Mehta, "`Creating intelligence: Automating the approach to development and online operation of soft sensors <https://literature.learnche.org/item/103/creating-intelligence-automating-the-approach-to-development-and-online-operation-of-soft-sensors>`_", *InTech*, September, 30-33, 2002.
 
 Theses (McMaster University)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* S. D. Roney, `Development of inferential sensors for chemical processes using partial least squares <https://literature.learnche.org/item/143/development-of-inferential-sensors-for-chemical-processes-using-partial-least-squares>`_, Masters thesis, 1998.
+* Steven D. Roney, `Development of inferential sensors for chemical processes using partial least squares <https://literature.learnche.org/item/143/development-of-inferential-sensors-for-chemical-processes-using-partial-least-squares>`_, Masters thesis, 1998.
