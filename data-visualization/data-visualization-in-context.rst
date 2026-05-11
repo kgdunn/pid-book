@@ -55,4 +55,4 @@ References and readings
 #. William Cleveland, *Visualizing Data*, 1st edition, Hobart Press, 1993.
 #. William Cleveland, *The Elements of Graphing Data*, 2nd edition, Hobart Press, 1994.
 #. Su, `It's Easy to Produce Chartjunk Using Microsoft Excel 2007 but Hard to Make Good Graphs <https://dx.doi.org/10.1016/j.csda.2008.03.007>`_, *Computational Statistics and Data Analysis*, **52** (10), 4594-4601, 2008.
-#. P. Geladi, M. Manley and T. Lestander, `Scatter plotting in multivariate data analysis <https://literature.learnche.org/item/86/scatter-plotting-in-multivariate-data-analysis>`_, *Journal of Chemometrics*, **17**, 503-511, 2003.
+#. Paul Geladi, Marena Manley and Torbjörn Lestander, `Scatter plotting in multivariate data analysis <https://literature.learnche.org/item/86/scatter-plotting-in-multivariate-data-analysis>`_, *Journal of Chemometrics*, **17**, 503-511, 2003.
