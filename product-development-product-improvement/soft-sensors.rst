@@ -121,10 +121,8 @@ worth looking at:
 
 .. code-block:: python
 
-	>>> model.r2_cumulative_
-	1    0.411
-	2    0.531
-	Name: Output cumulative R², dtype: float64
+	>>> model.r2_cumulative_.values
+	array([0.411, 0.531])
 
 A single latent variable already accounts for 41 % of the Kappa variability and the second adds
 another 12 %. That is not a brilliant model -- on a well-instrumented mill with the *full* set of
