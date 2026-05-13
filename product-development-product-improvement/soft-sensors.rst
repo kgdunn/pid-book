@@ -60,12 +60,20 @@ and a monitoring chart on the Kappa number shows the problem long after the oper
 adjusted the process. This is the situation a soft sensor is designed for.
 
 The data set used here is the `Kamyr digester data <https://openmv.net/info/kamyr-digester>`_
-from openmv.net, an hourly record of nine process tags and the Kappa number for a kraft mill in
-Alberta. Two of the process columns, ``ChipLevel-4`` and ``BlackFlow-2``, have already been
-shifted in time so that the row of process data lines up with the Kappa number that the lab will
-eventually report; the lag of 4 hours on the chip level and 2 hours on the black-liquor flow are
-residence-time estimates from the mill. The lab returned a Kappa value for 52 of the 96 hourly
-samples; the remaining rows have a missing Kappa.
+from openmv.net, an hourly record from a kraft mill in Alberta. The file is 301 rows by 23
+columns: the first column is an ``Observation`` timestamp, ``Y-Kappa`` is the lab measurement
+that we want to predict, and the remaining 21 columns are process tags. Two of the process
+columns, ``AAWhiteSt-4`` and ``SulphidityL-4``, are missing on about half of the rows and we
+drop them, leaving 19 process tags in :math:`\mathbf{X}`.
+
+Several of the tags have already been pre-aligned in time: a column name that ends in a digit
+indicates how many hours that tag has been shifted to line up with the Kappa number it eventually
+produces. For example, ``ChipLevel4`` is the chip level lagged 4 hours, ``BlackFlow-2`` is the
+black-liquor flow lagged 2 hours, ``SteamHeatF-3`` is the steam-heater flow lagged 3 hours. The
+unlagged tags (``ChipRate``, ``BF-CMratio``, ``BlowFlow``, ``UCZAA``, ``WeakLiquorF``,
+``WeakWashF``) measure quantities that affect the pulp downstream of the digester or that change
+slowly enough that the lag is negligible. The residence-time estimates were provided by the mill
+along with the data.
 
 .. figure:: ../figures/monitoring/Kappa-soft-sensor-raw-data.png
 	:alt: Raw Kappa number and two of the lagged process tags plotted against sample number.
@@ -73,9 +81,9 @@ samples; the remaining rows have a missing Kappa.
 	:scale: 90
 	:align: center
 
-	The Kappa number in the top panel covers a range of about 3 units, and is missing on roughly
-	half of the samples. The two lagged process tags shown underneath are sampled every hour and
-	provide the real-time information that the soft sensor uses.
+	The Kappa number in the top panel covers a range of about 15 units (from 12 to 28 Kappa).
+	The two pre-shifted process tags below it move on the same time-scale and provide the
+	real-time information that the soft sensor will use.
 
 .. _APPS_soft_sensors_building_model:
 
@@ -94,16 +102,17 @@ in that form.
 	from process_improve.multivariate import PLS, MCUVScaler
 
 	digester = pd.read_csv("https://openmv.net/file/kamyr-digester.csv")
-	digester = (
-		digester.dropna(subset=["Y-Kappa"])
-		        .fillna(digester.median(numeric_only=True))
-	)
 
-	X_COLS = [
-		"ChipRate", "BlackFlow", "ChipLevel-4", "T-upper-Ext-2", "T-lower-Ext-2",
-		"UCZAA", "WhiteFlow-L", "AAWhiteFlow", "BlackFlow-2",
-	]
-	X, y = digester[X_COLS], digester[["Y-Kappa"]]
+	# Strip the trailing whitespace baked into some of the column names.
+	digester.columns = [c.strip() for c in digester.columns]
+
+	# Drop the timestamp column and the two tags that are missing half the time;
+	# impute the remaining gaps with the column median.
+	digester = digester.drop(columns=["Observation", "AAWhiteSt-4", "SulphidityL-4"])
+	digester = digester.fillna(digester.median(numeric_only=True))
+
+	X = digester.drop(columns=["Y-Kappa"])
+	y = digester[["Y-Kappa"]]
 
 	scaler_x = MCUVScaler().fit(X)
 	scaler_y = MCUVScaler().fit(y)
@@ -116,12 +125,12 @@ each latent variable is added:
 .. code-block:: python
 
 	>>> model.r2_cumulative_.values
-	array([0.411, 0.531])
+	array([0.350, 0.503])
 
-The first component picks up 41% of the Kappa variability, and the second adds another 12%, for a
-cumulative 53%. This is not a high-:math:`R^2_Y` model in absolute terms; the number of process
-tags in this public subset is the limiting factor. Even so, the signal is enough for the model
-to be useful as a soft sensor, as we will see when we evaluate it on held-out data below.
+The first component picks up 35% of the Kappa variability, and the second adds another 15%, for a
+cumulative 50%. This is not a high-:math:`R^2_Y` model in absolute terms, but for a soft sensor
+on a continuous process it is enough to be useful, as we will see when we evaluate it on held-out
+data below.
 
 The regression coefficients show which tags drive the model:
 
@@ -132,18 +141,22 @@ The regression coefficients show which tags drive the model:
 	:align: center
 
 	PLS regression coefficients on the centred and scaled :math:`\mathbf{X}`. The bar heights are
-	directly comparable. ``UCZAA``, ``T-upper-Ext-2``, ``AAWhiteFlow`` and ``ChipLevel-4`` carry
-	most of the relationship to ``Y-Kappa``.
+	directly comparable. ``BF-CMratio``, ``ChipLevel4``, ``SteamHeatF-3``, ``ChipRate``,
+	``SteamFlow-4`` and ``WhiteFlow-4`` carry most of the relationship to ``Y-Kappa``.
 
-The signs match what is known about the chemistry of the cook: a higher temperature in the upper
-extraction zone or a higher active-alkali charge both increase the rate of delignification and
-reduce the Kappa number. The coefficients are a correlation, not a causation, but they agree
-with what a process engineer would predict from first principles.
+The signs match what is known about the chemistry of the cook. A higher ``SteamHeatF-3``,
+``SteamFlow-4`` or ``WhiteFlow-4`` puts more heat or active alkali into the digester, increases
+the rate of delignification, and pulls the Kappa number down -- their coefficients are negative.
+A higher ``ChipRate`` or ``ChipLevel4`` moves more wood through the digester for the same heat
+and alkali, leaves more residual lignin, and pushes the Kappa number up. The coefficients are a
+correlation, not a causation, but they agree with what a process engineer would predict from
+first principles.
 
 The cumulative :math:`R^2_Y` reports the fit on the data we trained on. To know whether the model
 will be useful as a live soft sensor we have to evaluate it on data it has never seen. We split
-the 52 rows in time order: the first 70% for training, the last 30% as a held-out test set, and
-we report the root-mean-square error of prediction (RMSEP) on the test set:
+the 301 rows in time order: the first 70% (211 rows) for training, the last 30% (90 rows) as a
+held-out test set, and we report the root-mean-square error of prediction (RMSEP) on the test
+set:
 
 .. code-block:: python
 
@@ -161,7 +174,8 @@ we report the root-mean-square error of prediction (RMSEP) on the test set:
 		y_hat = sy.inverse_transform(y_hat_scaled).values.ravel()
 		return float(np.sqrt(np.mean((test[y_col].values - y_hat) ** 2))), y_hat
 
-	rmsep_base, _ = evaluate_split(digester, X_COLS, "Y-Kappa")
+	x_cols = list(X.columns)
+	rmsep_base, _ = evaluate_split(digester, x_cols, "Y-Kappa")
 	print(f"RMSEP (process tags only): {rmsep_base:.2f} Kappa units")
 
 .. figure:: ../figures/monitoring/Kappa-soft-sensor-obs-pred-base.png
@@ -170,16 +184,15 @@ we report the root-mean-square error of prediction (RMSEP) on the test set:
 	:scale: 80
 	:align: center
 
-	Predicted *vs* observed Kappa number on the held-out test set, using only the nine process
-	tags. The RMSEP is 1.66 Kappa units; the points scatter around the ideal line but are not
-	tightly aligned.
+	Predicted *vs* observed Kappa number on the held-out test set, using only the 19 process tags.
+	The RMSEP is 1.96 Kappa units.
 
-An RMSEP of 1.66 Kappa units is large compared to the 3 Kappa unit range of the historical data,
-and a soft sensor with this much error would be of limited use on a monitoring chart. A standard
-improvement is to add the previous Kappa value as another predictor: each time the lab returns a
-value we keep it as a one-step memory and feed it back into :math:`\mathbf{X}` until the next lab
-value arrives. We add a column ``Kappa_lag1`` to the data, drop the first row (which has no
-previous Kappa), and re-fit:
+The held-out RMSEP is 1.96 Kappa units, on a Kappa number that varies between 12 and 28 in this
+dataset (standard deviation about 3 units). A soft sensor that is within 2 Kappa of the lab value
+is already useful, and a common refinement makes it a fair bit better: include the previous Kappa
+value as another predictor. Each time the lab returns a value we keep it as a one-step memory and
+feed it back into :math:`\mathbf{X}` until the next lab value arrives. We add a column
+``Kappa_lag1`` to the data, drop the first row (which has no previous Kappa), and re-fit:
 
 .. code-block:: python
 
@@ -187,7 +200,7 @@ previous Kappa), and re-fit:
 	df_lag["Kappa_lag1"] = df_lag["Y-Kappa"].shift(1)
 	df_lag = df_lag.dropna(subset=["Kappa_lag1"]).reset_index(drop=True)
 
-	rmsep_lag, _ = evaluate_split(df_lag, X_COLS + ["Kappa_lag1"], "Y-Kappa")
+	rmsep_lag, _ = evaluate_split(df_lag, x_cols + ["Kappa_lag1"], "Y-Kappa")
 	print(f"RMSEP (with one-step Kappa lag): {rmsep_lag:.2f} Kappa units")
 
 .. figure:: ../figures/monitoring/Kappa-soft-sensor-obs-pred-lagged.png
@@ -196,8 +209,8 @@ previous Kappa), and re-fit:
 	:scale: 80
 	:align: center
 
-	Adding the previous Kappa value as a tenth predictor reduces the RMSEP from 1.66 to 1.28
-	Kappa units, an improvement of about 23% on the same underlying data.
+	Adding the previous Kappa value as a twentieth predictor reduces the RMSEP from 1.96 to 1.73
+	Kappa units, an improvement of about 12% on the same underlying data.
 
 .. note::
 
