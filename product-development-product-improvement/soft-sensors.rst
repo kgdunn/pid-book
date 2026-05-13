@@ -212,6 +212,22 @@ feed it back into :math:`\mathbf{X}` until the next lab value arrives. We add a 
 	Adding the previous Kappa value as a twentieth predictor reduces the RMSEP from 1.96 to 1.73
 	Kappa units, an improvement of about 12% on the same underlying data.
 
+The scatter plots tell us how close the predictions are on average, but they hide *where* the
+soft sensor disagrees with the lab. Plotting the two test-set predictions and the lab value
+against time shows both stories on one figure:
+
+.. figure:: ../figures/monitoring/Kappa-soft-sensor-time-series.png
+	:alt: Time-series overlay of held-out Kappa predictions and the actual lab values.
+	:width: 900px
+	:scale: 80
+	:align: center
+
+	Held-out test predictions over time. The actual lab Kappa is the solid black line; the
+	process-tags-only prediction is the blue dashed line with round markers; the lag-augmented
+	prediction is the red dotted line with square markers. Both soft sensors track the slow
+	upward drift in the second half, but the lag-augmented model stays closer to the lab values
+	on sample-to-sample swings, which is what drives the RMSEP down from 1.96 to 1.73.
+
 .. note::
 
 	The PLS coefficients are a measure of correlation, not causation. They are useful as a
