@@ -8,39 +8,39 @@ Soft sensors and inferential sensors
 	single: inferential sensors
 	pair: soft sensors; applications
 
-A soft sensor (also called an inferential sensor) is a model that infers a quality variable from
-the cheap, real-time process measurements you already have. We met the idea in passing back in
-:ref:`the latent-variable applications section <LVM_inferential_sensors>`. This section is the
-worked example, on a Kamyr digester where the quality variable is the Kappa number and the only
-real source of it is a lab measurement that arrives hours late.
+A soft sensor (also called an inferential sensor) infers a hard-to-measure quality variable from
+cheap, real-time process measurements that are already on the data historian. The general idea
+was introduced in :ref:`an earlier section <LVM_inferential_sensors>`. This section is a worked
+example: predicting the Kappa number on a continuous Kamyr pulp digester, where the Kappa number
+is a lab measurement that arrives several hours after the pulp it describes was made.
 
 .. _APPS_soft_sensors_monitoring_recap:
 
-Recap: what process monitoring did, and where it falls short
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Recap: process monitoring and the lab-measurement gap
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When we talked about :ref:`process monitoring <SECTION-process-monitoring>` in the earlier chapter,
-the workflow was: build a chart on a stretch of stable historical data
-(:ref:`phase 1 <monitoring_general_approach>`), then run it live on new data to flag unusual
-variability (:ref:`phase 2 <monitoring_general_approach>`) so a human can decide whether to
-intervene. We were careful to say that
-:ref:`monitoring is not feedback control <monitoring_is_not_feedback_control>`: the adjustments are
-infrequent, manual, and only made when special causes are detected.
+Recall from the earlier chapter on :ref:`process monitoring <SECTION-process-monitoring>` that
+control charts are built in two phases: phase 1 fits a chart to a stretch of stable historical
+data, and phase 2 uses that chart on new, real-time data to flag unusual variability so that an
+operator can intervene. We were careful to point out that
+:ref:`monitoring is not feedback control <monitoring_is_not_feedback_control>`: the adjustments
+that follow an alarm are infrequent, manual, and made only when a special cause has been
+identified.
 
-That whole story rests on a quiet assumption -- that the variable you want to watch is *available*
-to watch. Most of the time it is: a temperature, a flow rate, a pressure, an on-line composition
-analyser are all sitting on the data historian, refreshed every few seconds. The problem comes when
-the variable that *actually matters to the customer* only gets measured in the lab, hours after the
-material has already moved downstream. You cannot react early to something you only learn about
-late, and you certainly cannot monitor a chart that updates four times a week.
+This procedure has a practical requirement: the variable being charted must be available in
+real-time. A temperature, a flow rate, a pressure or an on-line composition analyser update every
+few seconds and present no difficulty. The case that does not fit is the lab measurement: a final
+quality property that arrives several hours, sometimes a full shift, after the material it
+describes was made. A monitoring chart on such a variable shows the problem long after it
+happened, and corrective action is no longer possible without scrapping or reworking the
+intermediate product.
 
-This is exactly where the soft sensor earns its keep. We build a model from a stretch of historical
-data that pairs the slow lab values with the fast process tags that were collected alongside them.
-Once that model is in place, we infer the lab variable in real-time from the process tags, and
-monitor *that* prediction. The same phase 1 and phase 2 discipline still applies; what changes is
-that the quantity being charted is now a calculated quantity, exactly as we discussed when we
-asked :ref:`what should we monitor <SECTION-process-monitoring>` -- the calculation just happens to
-be a multivariate regression rather than an energy balance.
+A soft sensor solves this problem by inferring the lab value in real-time from the process tags
+that are available at that moment. The model is built on historical data where both the process
+tags and the lab values were collected; once it has been validated the prediction is used in
+place of the lab value on the monitoring chart, on the on-line trend, or in a feedback loop. The
+phase 1 and phase 2 requirements still apply: the model is fit on a representative stretch of
+data, then tested on data it has not seen before it is deployed.
 
 .. _APPS_soft_sensors_case_kamyr:
 
@@ -48,28 +48,24 @@ Case study: predicting Kappa number on a Kamyr digester
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A continuous Kamyr digester cooks wood chips under pressure in white-liquor to dissolve the lignin
-that binds the cellulose fibres together. The amount of lignin that remains in the pulp is summarised
-by a single number, the :index:`Kappa number`. A high Kappa number means lots of residual lignin and
-a brown, paperboard-grade pulp; a low Kappa number means the cook is closer to a bleachable grade.
-Either way, holding the Kappa number on target while keeping its variability small is what the mill
-gets paid for.
+that binds the cellulose fibres. The amount of lignin that remains in the pulp is summarised by a
+single quality number, the :index:`Kappa number`. A high Kappa number indicates a brown,
+paperboard-grade pulp; a low Kappa number indicates a pulp that is closer to a bleachable grade.
+The mill aims to hold the Kappa number on target with as little variability as possible.
 
-The Kappa number is a lab measurement. Even in a well-instrumented mill the sample has to be taken,
-transported, prepared, and titrated; the whole loop can easily run three hours, and at smaller mills
-the analysis only happens on day shift. By the time the lab calls back, you have already produced
-several cubic metres of pulp at the wrong setting. Feedback control on Kappa is therefore not
-practical, and a monitoring chart on Kappa shows the problem long after the operator could have
-done anything about it.
+The Kappa number is a wet-chemistry lab measurement. The sample must be taken, transported,
+prepared and titrated; the whole loop runs about three hours, and in many mills the analysis is
+only performed once per shift. Feedback control on the Kappa number is therefore not practical,
+and a monitoring chart on the Kappa number shows the problem long after the operator could have
+adjusted the process. This is the situation a soft sensor is designed for.
 
-The data we use here is the public subset of one such mill in Alberta that ships with
-``process-improve`` at ``process_improve/datasets/multivariate/kamyr.csv``. Each row is an hourly
-snapshot. There are nine process tags in the :math:`\mathbf{X}` block and the Kappa number in
-:math:`\mathbf{y}`; the lab returned a value for only 52 of the 96 hours, which is realistic for a
-once-per-shift assay. Two of the columns -- ``ChipLevel-4`` and ``BlackFlow-2`` -- have already
-been shifted in time so that the row of process data lines up with the Kappa number it eventually
-produces. The lag of four hours on chip level and two hours on black-liquor flow are
-residence-time estimates from the operators; they let us build a model on aligned rows without
-having to do the alignment ourselves.
+The data set used here is the `Kamyr digester data <https://openmv.net/info/kamyr-digester>`_
+from openmv.net, an hourly record of nine process tags and the Kappa number for a kraft mill in
+Alberta. Two of the process columns, ``ChipLevel-4`` and ``BlackFlow-2``, have already been
+shifted in time so that the row of process data lines up with the Kappa number that the lab will
+eventually report; the lag of 4 hours on the chip level and 2 hours on the black-liquor flow are
+residence-time estimates from the mill. The lab returned a Kappa value for 52 of the 96 hourly
+samples; the remaining rows have a missing Kappa.
 
 .. figure:: ../figures/monitoring/Kappa-soft-sensor-raw-data.png
 	:alt: Raw Kappa number and two of the lagged process tags plotted against sample number.
@@ -77,59 +73,57 @@ having to do the alignment ourselves.
 	:scale: 90
 	:align: center
 
-	The Kappa number drifts slowly between roughly 29 and 32, on a clear weekly rhythm. The two
-	lagged process tags shown underneath move on the same time-scale, which is what we want from a
-	soft-sensor: the inputs should carry the information that drives the output.
+	The Kappa number in the top panel covers a range of about 3 units, and is missing on roughly
+	half of the samples. The two lagged process tags shown underneath are sampled every hour and
+	provide the real-time information that the soft sensor uses.
 
 .. _APPS_soft_sensors_building_model:
 
 Building the soft sensor
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-We will build the model with PLS, treating Kappa as the single :math:`y`-variable and the nine
-process tags as the :math:`\mathbf{X}` block. The ``process-improve`` package gives us a ``PLS``
-class and the ``MCUVScaler`` that we should always reach for first, because PLS scores and loadings
-are only interpretable after we have centred each variable and scaled it to unit standard deviation.
+We build the model with PLS, using the Kappa number as the :math:`y`-variable and the nine
+process tags as the :math:`\mathbf{X}` block. The ``process-improve`` package provides a ``PLS``
+class and an ``MCUVScaler`` for centring and scaling. The data are centred to zero mean and
+scaled to unit standard deviation before fitting: PLS scores and loadings are only interpretable
+in that form.
 
 .. code-block:: python
 
 	import pandas as pd
 	from process_improve.multivariate import PLS, MCUVScaler
 
-	# 9 X columns + Y-Kappa. Two X columns are already lagged in the source data.
+	digester = pd.read_csv("https://openmv.net/file/kamyr-digester.csv")
+	digester = (
+		digester.dropna(subset=["Y-Kappa"])
+		        .fillna(digester.median(numeric_only=True))
+	)
+
 	X_COLS = [
 		"ChipRate", "BlackFlow", "ChipLevel-4", "T-upper-Ext-2", "T-lower-Ext-2",
 		"UCZAA", "WhiteFlow-L", "AAWhiteFlow", "BlackFlow-2",
 	]
-	Y_COL = "Y-Kappa"
+	X, y = digester[X_COLS], digester[["Y-Kappa"]]
 
-	df = pd.read_csv(
-		"process_improve/datasets/multivariate/kamyr.csv",
-		header=None,
-		names=X_COLS + [Y_COL],
-	)
-	df = df.dropna(subset=[Y_COL]).fillna(df.median(numeric_only=True))
-
-	X, y = df[X_COLS], df[[Y_COL]]
 	scaler_x = MCUVScaler().fit(X)
 	scaler_y = MCUVScaler().fit(y)
 
 	model = PLS(n_components=2).fit(scaler_x.transform(X), scaler_y.transform(y))
 
-After fitting we go straight to the cumulative :math:`R^2_Y` to see whether two components are even
-worth looking at:
+The cumulative :math:`R^2_Y` measures how much of the Kappa variability the model accounts for as
+each latent variable is added:
 
 .. code-block:: python
 
 	>>> model.r2_cumulative_.values
 	array([0.411, 0.531])
 
-A single latent variable already accounts for 41 % of the Kappa variability and the second adds
-another 12 %. That is not a brilliant model -- on a well-instrumented mill with the *full* set of
-tags one would aim for the high seventies -- but it is comfortably enough signal to be useful, and
-on a subset of nine tags it is more or less what we should expect.
+The first component picks up 41% of the Kappa variability, and the second adds another 12%, for a
+cumulative 53%. This is not a high-:math:`R^2_Y` model in absolute terms; the number of process
+tags in this public subset is the limiting factor. Even so, the signal is enough for the model
+to be useful as a soft sensor, as we will see when we evaluate it on held-out data below.
 
-The regression coefficients show *which* tags carry that signal:
+The regression coefficients show which tags drive the model:
 
 .. figure:: ../figures/monitoring/Kappa-soft-sensor-coefficients.png
 	:alt: Bar chart of PLS regression coefficients onto Y-Kappa for the nine process tags.
@@ -137,17 +131,19 @@ The regression coefficients show *which* tags carry that signal:
 	:scale: 80
 	:align: center
 
-	Coefficients are on the scaled :math:`\mathbf{X}`, so the bar heights are directly comparable.
-	``UCZAA``, ``T-upper-Ext-2``, ``AAWhiteFlow`` and ``ChipLevel-4`` carry most of the model.
+	PLS regression coefficients on the centred and scaled :math:`\mathbf{X}`. The bar heights are
+	directly comparable. ``UCZAA``, ``T-upper-Ext-2``, ``AAWhiteFlow`` and ``ChipLevel-4`` carry
+	most of the relationship to ``Y-Kappa``.
 
-The signs are also consistent with the chemistry: a higher temperature in the upper extraction zone
-and a higher active-alkali charge both lift the rate of delignification and pull the Kappa number
-down. The model is *correlation*, not causation, but the coefficients line up with what the
-operators would tell us if we walked into the control room.
+The signs match what is known about the chemistry of the cook: a higher temperature in the upper
+extraction zone or a higher active-alkali charge both increase the rate of delignification and
+reduce the Kappa number. The coefficients are a correlation, not a causation, but they agree
+with what a process engineer would predict from first principles.
 
-To know whether this thing will work as a live soft sensor we have to test it on data the model has
-never seen. We split the 52 rows chronologically -- the first 70 % to train, the last 30 % to test
--- and report the root-mean-square error of prediction (RMSEP) on the held-out tail:
+The cumulative :math:`R^2_Y` reports the fit on the data we trained on. To know whether the model
+will be useful as a live soft sensor we have to evaluate it on data it has never seen. We split
+the 52 rows in time order: the first 70% for training, the last 30% as a held-out test set, and
+we report the root-mean-square error of prediction (RMSEP) on the test set:
 
 .. code-block:: python
 
@@ -165,7 +161,7 @@ never seen. We split the 52 rows chronologically -- the first 70 % to train, the
 		y_hat = sy.inverse_transform(y_hat_scaled).values.ravel()
 		return float(np.sqrt(np.mean((test[y_col].values - y_hat) ** 2))), y_hat
 
-	rmsep_base, _ = evaluate_split(df, X_COLS, Y_COL)
+	rmsep_base, _ = evaluate_split(digester, X_COLS, "Y-Kappa")
 	print(f"RMSEP (process tags only): {rmsep_base:.2f} Kappa units")
 
 .. figure:: ../figures/monitoring/Kappa-soft-sensor-obs-pred-base.png
@@ -174,23 +170,24 @@ never seen. We split the 52 rows chronologically -- the first 70 % to train, the
 	:scale: 80
 	:align: center
 
-	Observed-vs-predicted Kappa on the held-out tail of the dataset, using only the nine process
-	tags. The model lands within roughly 1.7 Kappa units (RMSEP = 1.66), but the points hug the
-	ideal line less tightly than we would like for a charting application.
+	Predicted *vs* observed Kappa number on the held-out test set, using only the nine process
+	tags. The RMSEP is 1.66 Kappa units; the points scatter around the ideal line but are not
+	tightly aligned.
 
-An RMSEP of 1.66 on a process where the Kappa number varies by about three units is not great --
-the signal-to-noise ratio of the soft sensor would only be borderline useful on a chart. The fix is
-the trick that practical soft sensors lean on almost always: feed the *previous* lab value back to
-the model as an extra input. Whenever the lab returns a result we keep it, and we use it as a
-one-step memory until the next result arrives.
+An RMSEP of 1.66 Kappa units is large compared to the 3 Kappa unit range of the historical data,
+and a soft sensor with this much error would be of limited use on a monitoring chart. A standard
+improvement is to add the previous Kappa value as another predictor: each time the lab returns a
+value we keep it as a one-step memory and feed it back into :math:`\mathbf{X}` until the next lab
+value arrives. We add a column ``Kappa_lag1`` to the data, drop the first row (which has no
+previous Kappa), and re-fit:
 
 .. code-block:: python
 
-	df_lag = df.copy()
-	df_lag["Kappa_lag1"] = df_lag[Y_COL].shift(1)
+	df_lag = digester.copy()
+	df_lag["Kappa_lag1"] = df_lag["Y-Kappa"].shift(1)
 	df_lag = df_lag.dropna(subset=["Kappa_lag1"]).reset_index(drop=True)
 
-	rmsep_lag, _ = evaluate_split(df_lag, X_COLS + ["Kappa_lag1"], Y_COL)
+	rmsep_lag, _ = evaluate_split(df_lag, X_COLS + ["Kappa_lag1"], "Y-Kappa")
 	print(f"RMSEP (with one-step Kappa lag): {rmsep_lag:.2f} Kappa units")
 
 .. figure:: ../figures/monitoring/Kappa-soft-sensor-obs-pred-lagged.png
@@ -199,32 +196,28 @@ one-step memory until the next result arrives.
 	:scale: 80
 	:align: center
 
-	Adding the previous Kappa value as a tenth predictor brings RMSEP down to 1.28 -- a 23 %
-	improvement over the process-tags-only model, with no change to the underlying data
-	infrastructure.
+	Adding the previous Kappa value as a tenth predictor reduces the RMSEP from 1.66 to 1.28
+	Kappa units, an improvement of about 23% on the same underlying data.
 
 .. note::
 
-	The interpretation of the soft-sensor coefficients is correlation, not causation. They are a
-	helpful prompt for a discussion with the operators about what is driving the variability they
-	are seeing, but they are not a substitute for the conversation. Pair the model with the process
-	knowledge.
+	The PLS coefficients are a measure of correlation, not causation. They are useful as a
+	starting point for a discussion with the operators about what is driving the variability in
+	the process, but they should not be interpreted as a cause-and-effect statement on their own.
 
-In production we would deploy this exactly as we built it. The model lives in the same
-phase 1 / phase 2 split as any other monitoring artefact: we fit on a representative stretch of
-historical operation, we test it on a held-out tail, and once we are comfortable that the RMSEP is
-small enough relative to the Kappa-number spec, we wire the prediction into the same SPC chart we
-would have used on the lab value itself. The chart now updates every hour instead of every shift,
-and any out-of-target deviation that develops over a few hours is visible to the operator while
-there is still time to do something about it.
+This soft sensor can now be deployed in the same way as any other monitoring artefact: the model
+is fit on a representative stretch of historical operation, tested on a held-out tail, and once
+the RMSEP is small enough compared to the Kappa specification limits, the prediction is wired
+into the same chart that would have been used for the lab value. The chart now updates every hour
+rather than once per shift.
 
-There are two refinements worth mentioning before moving on. First, the model decays: chip species,
-mill upsets, and seasonal raw-material drift will all pull the relationship between
-:math:`\mathbf{X}` and Kappa away from where we fit it, and a soft sensor that is never re-fit will
-eventually start charting noise. The pragmatic fix is to refit on a rolling window of the last few
-hundred lab values. Second, the same dataset has a strong autocorrelation in :math:`y` itself: we
-exploited that crudely with the one-step lag here, but adding two or three lags of both :math:`y`
-and the most influential :math:`x` variables typically buys another fraction of the variance.
+Two refinements are worth noting. First, the relationship between :math:`\mathbf{X}` and the
+Kappa number changes over time, with chip species, mill upsets and seasonal raw-material
+variation. A soft sensor that is never re-fit will gradually lose accuracy. The standard practice
+is to re-fit the model on a rolling window of the most recent lab values. Second, the Kappa
+number is autocorrelated in time: we exploited this with a single one-step lag of :math:`y`
+above, but adding lags of two or three hours, and lags on the most influential :math:`x`
+variables, typically reduces the prediction error further.
 
 References
 ~~~~~~~~~~~
