@@ -86,9 +86,9 @@ those same limits to phase-2 subgroups:
 	from math import gamma, sqrt
 
 	def subgroup(x, n_sub):
-		"""Reshape a 1-D time series into (n_groups, n_sub) without the trailing partial subgroup."""
-		n_groups = len(x) // n_sub
-		return np.asarray(x[: n_groups * n_sub]).reshape((n_groups, n_sub))
+	    """Reshape a 1-D time series into (n_groups, n_sub) without the trailing partial subgroup."""
+	    n_groups = len(x) // n_sub
+	    return np.asarray(x[: n_groups * n_sub]).reshape((n_groups, n_sub))
 
 	n_sub = 4
 	sub_p1 = subgroup(phase1["Feed rate"].values, n_sub)
@@ -141,6 +141,17 @@ with the limits derived from phase 1 carried across:
 		margin=dict(l=70, r=20, t=40, b=50))
 	fig.show()
 
+.. figure:: ../figures/monitoring/Flotation-MSPC-shewhart.png
+	:alt: Shewhart chart of Feed rate subgroup means across phase 1 and phase 2 with 3-sigma limits.
+	:width: 900px
+	:scale: 80
+	:align: center
+
+	Shewhart chart on ``Feed rate`` (subgroup size 4, 2-minute aggregation):
+	phase-1 subgroups in black, phase-2 subgroups in blue, 3-sigma limits
+	(``LCL = 301.0`` and ``UCL = 349.9``) carried across from phase 1. The
+	first phase-2 alarm sits at subgroup 62, ~2 hours into 16 December.
+
 The chart does flag the disturbance eventually, but the first alarm sits at
 subgroup 62, with the disturbance well-established by that point. The
 question is whether the other four tags carry information that, combined
@@ -177,6 +188,16 @@ where the in-control operating region lies in score space:
 
 	model.score_plot(pc_horiz=1, pc_vert=2).show()
 
+.. figure:: ../figures/monitoring/Flotation-MSPC-score-phase1.png
+	:alt: Phase-1 score plot of the flotation cell with the 95% T^2 ellipse.
+	:width: 600px
+	:scale: 80
+	:align: center
+
+	Phase-1 score plot (479 observations on 15 December) with the 95%
+	:math:`T^2` ellipse drawn in. The in-control cloud sits inside the
+	ellipse and is roughly centred at the origin.
+
 The phase-1 cloud is roughly elliptical and centred at the origin -- exactly
 what we want from a stable operating period. The loadings tell us which raw
 tags align with each latent direction:
@@ -184,13 +205,24 @@ tags align with each latent direction:
 .. code-block:: python
 
 	for a in (1, 2):
-		p = model.loadings_.iloc[:, a - 1]
-		fig = go.Figure(go.Bar(x=p.index, y=p.values,
-			marker_color=["#1f77b4" if v >= 0 else "#d62728" for v in p.values]))
-		fig.add_hline(y=0, line_color="black", line_width=0.6)
-		fig.update_layout(yaxis_title=f"p{a} loading", height=320,
-			margin=dict(l=70, r=20, t=20, b=80))
-		fig.show()
+	    p = model.loadings_.iloc[:, a - 1]
+	    fig = go.Figure(go.Bar(x=p.index, y=p.values,
+	        marker_color=["#1f77b4" if v >= 0 else "#d62728" for v in p.values]))
+	    fig.add_hline(y=0, line_color="black", line_width=0.6)
+	    fig.update_layout(yaxis_title=f"p{a} loading", height=320,
+	        margin=dict(l=70, r=20, t=20, b=80))
+	    fig.show()
+
+.. figure:: ../figures/monitoring/Flotation-MSPC-loadings.png
+	:alt: Loading bar plots for the first two principal components of the flotation model.
+	:width: 900px
+	:scale: 80
+	:align: center
+
+	First and second loading vectors as bar plots. :math:`p_1` is dominated
+	by the air-flow / pulp-level / pH triple (the aeration-and-froth regime
+	of the cell); :math:`p_2` is dominated by ``Feed rate`` and ``CuSO4
+	added`` (the reagent-and-throughput axis).
 
 .. _APPS_multivariate_monitoring_phase2:
 
@@ -251,6 +283,16 @@ subgroup 62. Drawing the two traces side by side with their 95% limits:
 	fig.update_layout(height=560, margin=dict(l=70, r=20, t=60, b=50))
 	fig.show()
 
+.. figure:: ../figures/monitoring/Flotation-MSPC-t2-spe.png
+	:alt: Hotelling's T^2 and SPE traces on the phase-2 flotation data with 95% limits.
+	:width: 900px
+	:scale: 80
+	:align: center
+
+	Hotelling's :math:`T^2` (top, 95% limit at 6.05) and SPE (bottom, 95%
+	limit at 2.41) on the 2443 phase-2 observations. Both rise within
+	minutes of 16 December starting and stay elevated through the day.
+
 Both diagnostics rise within minutes of 16 December starting and stay
 elevated for most of the day -- a much earlier and stronger signal than the
 univariate chart on feed rate alone.
@@ -280,6 +322,17 @@ the centred-and-scaled space:
 		yaxis_title="(x_k - x_hat_k)^2 in scaled units", height=380,
 		margin=dict(l=70, r=20, t=60, b=80))
 	fig.show()
+
+.. figure:: ../figures/monitoring/Flotation-MSPC-contributions.png
+	:alt: Per-variable SPE contributions at the first phase-2 SPE alarm.
+	:width: 700px
+	:scale: 80
+	:align: center
+
+	Per-variable contributions to SPE at phase-2 observation 19 (16 Dec,
+	first SPE alarm). ``Pulp level`` (4.0) and ``Feed rate`` (3.4) dominate;
+	``Upstream pH`` is a distant third (1.2). ``CuSO4 added`` and ``Air
+	flow rate`` are essentially in pattern.
 
 At the first SPE alarm, **``Pulp level`` and ``Feed rate``** carry the
 largest contributions (4.0 and 3.4 respectively in scaled-squared units),
@@ -322,10 +375,19 @@ observation.
 
 	A few practical considerations not pursued here but worth flagging:
 
-	* **Re-fitting**. The phase-1 / phase-2 split is a static demonstration.
-	  A production deployment would re-fit the model on a rolling window of
-	  recent in-control data, the same way the :ref:`Kappa soft sensor
-	  <APPS_soft_sensors_case_kamyr>` re-fit was discussed in §7.2.
+	* **Re-fitting**. The phase-1 / phase-2 split is a static demonstration;
+	  in production the model has to be kept current. Several strategies
+	  are in routine use: re-fit periodically on the most recent stretch of
+	  fresh data; re-fit *reactively* when the alarm rate climbs above
+	  some threshold (simple, but it can produce frustrating false alarms
+	  if "alarm rate" is just measuring a real but slow drift the operator
+	  is already aware of); or use an *adaptive* model that updates
+	  continuously from a small rolling window of in-control data without
+	  a discrete re-fit step. `Kadlec, Grbić and Gabrys (2011)
+	  <https://literature.learnche.org/item/106/review-of-adaptation-mechanisms-for-data-driven-soft-sensors>`_
+	  review the trade-offs of the three approaches in detail. The same
+	  considerations apply to the :ref:`Kappa soft sensor
+	  <APPS_soft_sensors_case_kamyr>` discussed in §7.2.
 	* **Autocorrelation**. The 30-second sampling makes consecutive
 	  observations highly correlated. A practical deployment usually
 	  monitors the 2-minute subgroup mean rather than every 30-second
