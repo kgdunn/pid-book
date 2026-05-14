@@ -7,16 +7,336 @@ Multivariate process monitoring case studies
 	single: multivariate process monitoring (MSPC)
 	pair: multivariate process monitoring; applications
 
+Chapter 3 introduced the toolkit of univariate process monitoring -- the
+:ref:`Shewhart chart <monitoring_shewhart_chart>`,
+:ref:`CUSUM <monitoring_CUSUM_charts>` and :ref:`EWMA <monitoring_EWMA>` -- and
+applied them one variable at a time. That works when the upset shows up as a
+movement in a single tag, but real industrial faults usually distort several
+variables at once, in directions that respect the correlation structure of the
+process. A chart that watches each tag on its own does not see the joint
+shift; it can either miss the fault entirely or, more often, raise the alarm
+only after the disturbance has grown large enough to be visible in one
+variable. This section is a worked example of that, on the same mineral
+flotation cell mentioned in :ref:`an earlier chapter <SECTION-process-monitoring>`
+as one of the canonical processes for monitoring: we build a Shewhart chart on
+a single variable, then a multivariate-statistical-process-control (MSPC)
+chart on all five variables, and compare what each one detects.
+
+.. _APPS_multivariate_monitoring_flotation:
+
+The flotation cell
+~~~~~~~~~~~~~~~~~~
+
+`Flotation <https://openmv.net/info/flotation-cell>`_ is the workhorse
+separation step in mineral processing. Crushed ore is mixed with water and a
+collector reagent into a slurry, fed into an agitated tank, and aerated from
+below. Hydrophobic particles (the valuable mineral) attach to the rising
+bubbles and concentrate in the froth at the surface; hydrophilic particles
+(the gangue) sink and leave through the tailings stream. The product is the
+froth that overflows. Five process tags are recorded every 30 seconds:
+
+* ``Feed rate`` -- slurry feed into the cell (tonnes per hour),
+* ``Upstream pH`` -- pH of the upstream conditioner where collector dosing
+  happens,
+* ``CuSO4 added`` -- copper sulphate dose, an activator used to make the
+  target mineral more responsive to the collector,
+* ``Pulp level`` -- froth-pulp interface depth inside the cell,
+* ``Air flow rate`` -- aeration rate into the bottom of the cell.
+
+The dataset is a 30-second sampling of those five tags over two consecutive
+days. The first day (15 December 2004) is used as the phase 1 stretch, on
+which we will build both the univariate chart limits and the multivariate
+model. The second day onwards is the phase 2 stretch, against which both
+charts are evaluated.
+
+Loading the data and setting up the phase split:
+
+.. code-block:: python
+
+	import numpy as np
+	import pandas as pd
+	import plotly.graph_objects as go
+	from plotly.subplots import make_subplots
+	from process_improve.multivariate import PCA, MCUVScaler
+
+	flot = pd.read_csv("https://openmv.net/file/flotation-cell.csv")
+	num = flot.drop(columns=["Date and time"])
+
+	N_phase1 = 479
+	phase1 = num.iloc[:N_phase1]
+	phase2 = num.iloc[N_phase1:]
+	print(f"phase1 shape: {phase1.shape}  phase2 shape: {phase2.shape}")
+
+This gives 479 phase-1 observations on 15 December and 2442 phase-2
+observations from 16 December onwards.
+
+.. _APPS_multivariate_monitoring_univariate:
+
+Univariate Shewhart chart on the feed rate
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Following the same recipe as in :ref:`the Shewhart chapter <monitoring_shewhart_chart>`,
+we reduce the raw 30-second feed-rate measurements into 2-minute subgroups
+(size :math:`n = 4`), compute the subgroup means and standard deviations on
+phase 1, and turn them into target / lower / upper limits. We then apply
+those same limits to phase-2 subgroups:
+
+.. code-block:: python
+
+	from math import gamma, sqrt
+
+	def subgroup(x, n_sub):
+		"""Reshape a 1-D time series into (n_groups, n_sub) without the trailing partial subgroup."""
+		n_groups = len(x) // n_sub
+		return np.asarray(x[: n_groups * n_sub]).reshape((n_groups, n_sub))
+
+	n_sub = 4
+	sub_p1 = subgroup(phase1["Feed rate"].values, n_sub)
+	sub_p2 = subgroup(phase2["Feed rate"].values, n_sub)
+
+	xbar_p1 = sub_p1.mean(axis=1)
+	s_p1 = sub_p1.std(axis=1, ddof=1)
+	xbar_p2 = sub_p2.mean(axis=1)
+
+	target = xbar_p1.mean()
+	sbar = s_p1.mean()
+	a_n = sqrt(2) * gamma(n_sub / 2) / (sqrt(n_sub - 1) * gamma((n_sub - 1) / 2))
+	sigma_hat = sbar / a_n
+	lcl = target - 3 * sigma_hat / sqrt(n_sub)
+	ucl = target + 3 * sigma_hat / sqrt(n_sub)
+	print(f"Feed rate Shewhart: target={target:.1f}  LCL={lcl:.1f}  UCL={ucl:.1f}")
+
+	first_alarm_p2 = int(np.where((xbar_p2 < lcl) | (xbar_p2 > ucl))[0][0])
+	print(f"first phase-2 alarm at subgroup index {first_alarm_p2}")
+
+The 99.7% Shewhart limits on the feed rate come out at :math:`325.5 \pm 24.4`
+(LCL = 301.0, UCL = 349.9), no phase-1 alarms, and the **first phase-2 alarm
+appears at subgroup 62** -- about two hours into 16 December. The trace below
+shows the phase-1 subgroups (in black) and the phase-2 subgroups (in blue),
+with the limits derived from phase 1 carried across:
+
+.. code-block:: python
+
+	x_all = np.concatenate([xbar_p1, xbar_p2])
+	idx_p1 = np.arange(len(xbar_p1))
+	idx_p2 = np.arange(len(xbar_p1), len(x_all))
+
+	fig = go.Figure()
+	fig.add_trace(go.Scatter(x=idx_p1, y=xbar_p1, mode="lines+markers",
+		line=dict(color="black"), marker=dict(size=4, color="black"),
+		name="Phase 1 (15 Dec)"))
+	fig.add_trace(go.Scatter(x=idx_p2, y=xbar_p2, mode="lines+markers",
+		line=dict(color="#1f77b4"), marker=dict(size=4, color="#1f77b4"),
+		name="Phase 2 (16 Dec onwards)"))
+	fig.add_hline(y=target, line_color="grey", line_dash="dot",
+		annotation_text="target")
+	fig.add_hline(y=ucl, line_color="red", line_dash="dash",
+		annotation_text="UCL (3 sigma)")
+	fig.add_hline(y=lcl, line_color="red", line_dash="dash",
+		annotation_text="LCL (3 sigma)")
+	fig.add_vline(x=len(xbar_p1) - 0.5, line_color="grey", line_dash="dot",
+		annotation_text="phase 1 / 2")
+	fig.update_layout(xaxis_title="Subgroup index (2 min each)",
+		yaxis_title="Feed rate (subgroup mean)", height=380,
+		margin=dict(l=70, r=20, t=40, b=50))
+	fig.show()
+
+The chart does flag the disturbance eventually, but the first alarm sits at
+subgroup 62, with the disturbance well-established by that point. The
+question is whether the other four tags carry information that, combined
+with feed rate, would have caught the shift earlier.
+
+.. _APPS_multivariate_monitoring_pca:
+
+Multivariate model on phase 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We centre and scale the 5 tags using their phase-1 means and standard
+deviations, then fit a :math:`A`-component PCA on phase 1 only. The
+cumulative :math:`R^2_X` tells us how much joint variability each latent
+variable picks up:
+
+.. code-block:: python
+
+	scaler = MCUVScaler().fit(phase1)
+	model = PCA(n_components=2).fit(scaler.transform(phase1))
+	print("R^2 cumulative (2 components):", model.r2_cumulative_.values)
+
+	model3 = PCA(n_components=3).fit(scaler.transform(phase1))
+	print("R^2 cumulative (3 components):", model3.r2_cumulative_.values)
+
+A 2-component model captures :math:`R^2_X \approx [0.35, 0.58]` (35% and an
+extra 23%, for a cumulative 58%), and a third component adds another 20%.
+Two components are enough to demonstrate the monitoring idea, so we proceed
+with the 2-component model.
+
+The score plot of phase 1 with the 95% Hotelling's :math:`T^2` ellipse shows
+where the in-control operating region lies in score space:
+
+.. code-block:: python
+
+	model.score_plot(pc_horiz=1, pc_vert=2).show()
+
+The phase-1 cloud is roughly elliptical and centred at the origin -- exactly
+what we want from a stable operating period. The loadings tell us which raw
+tags align with each latent direction:
+
+.. code-block:: python
+
+	for a in (1, 2):
+		p = model.loadings_.iloc[:, a - 1]
+		fig = go.Figure(go.Bar(x=p.index, y=p.values,
+			marker_color=["#1f77b4" if v >= 0 else "#d62728" for v in p.values]))
+		fig.add_hline(y=0, line_color="black", line_width=0.6)
+		fig.update_layout(yaxis_title=f"p{a} loading", height=320,
+			margin=dict(l=70, r=20, t=20, b=80))
+		fig.show()
+
+.. _APPS_multivariate_monitoring_phase2:
+
+Monitoring phase 2 with :math:`T^2` and SPE
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To monitor phase 2, we project each new observation onto the model and read
+out two diagnostics:
+
+* the Hotelling's :math:`T^2` score on the model plane (how unusual the
+  observation is *within* the in-control subspace), and
+* the squared prediction error SPE (how far off the model plane the
+  observation sits -- i.e. how much of the joint structure is *not* explained
+  by the model).
+
+``PCA.predict`` returns both, alongside the per-observation scores:
+
+.. code-block:: python
+
+	result = model.predict(scaler.transform(phase2))
+	t2 = result.hotellings_t2.iloc[:, -1]
+	spe = result.spe
+	t2_lim = float(model.hotellings_t2_limit(conf_level=0.95))
+	spe_lim = float(model.spe_limit(conf_level=0.95))
+	print(f"95% T^2 limit: {t2_lim:.2f}")
+	print(f"95% SPE limit: {spe_lim:.2f}")
+
+	flagged_t2 = t2[t2 > t2_lim]
+	flagged_spe = spe[spe > spe_lim]
+	first_t2 = int(flagged_t2.index[0]) - N_phase1 if len(flagged_t2) else None
+	first_spe = int(flagged_spe.index[0]) - N_phase1 if len(flagged_spe) else None
+	print(f"first T^2 alarm at phase-2 obs {first_t2}")
+	print(f"first SPE alarm at phase-2 obs {first_spe}")
+
+The 95% T² limit is 6.05 and the 95% SPE limit is 2.41. **The first phase-2
+T² alarm comes at observation 2** (about a minute into 16 December) and the
+first SPE alarm at observation 19 (about ten minutes in) -- compared with
+~120 minutes of feed-rate Shewhart silence before its first alarm at
+subgroup 62. Drawing the two traces side by side with their 95% limits:
+
+.. code-block:: python
+
+	fig = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.07,
+		subplot_titles=("Hotelling's T^2 on phase 2", "SPE on phase 2"))
+	fig.add_trace(go.Scatter(x=t2.index, y=t2.values, mode="lines",
+		line=dict(color="#1f77b4"), name="T^2", showlegend=False),
+		row=1, col=1)
+	fig.add_hline(y=t2_lim, line_color="red", line_dash="dash",
+		annotation_text="95%", row=1, col=1)
+	fig.add_trace(go.Scatter(x=spe.index, y=spe.values, mode="lines",
+		line=dict(color="#d62728"), name="SPE", showlegend=False),
+		row=2, col=1)
+	fig.add_hline(y=spe_lim, line_color="red", line_dash="dash",
+		annotation_text="95%", row=2, col=1)
+	fig.update_xaxes(title_text="Observation index", row=2, col=1)
+	fig.update_yaxes(title_text="T^2", row=1, col=1)
+	fig.update_yaxes(title_text="SPE", row=2, col=1)
+	fig.update_layout(height=560, margin=dict(l=70, r=20, t=60, b=50))
+	fig.show()
+
+Both diagnostics rise within minutes of 16 December starting and stay
+elevated for most of the day -- a much earlier and stronger signal than the
+univariate chart on feed rate alone.
+
+.. _APPS_multivariate_monitoring_contribution:
+
+Diagnosing the alarm: contribution plot
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The :math:`T^2` and SPE statistics tell us *that* the operation has moved
+off-spec; the contribution plot tells us *which* tag drove the alarm. For an
+SPE alarm, the per-variable contribution is :math:`(x_k - \hat{x}_k)^2` in
+the centred-and-scaled space:
+
+.. code-block:: python
+
+	first_alarm = int(flagged_spe.index[0])
+	row_scaled = scaler.transform(phase2).loc[first_alarm].values
+	row_hat = row_scaled @ model.loadings_.values @ model.loadings_.values.T
+	contribs = pd.Series((row_scaled - row_hat) ** 2,
+		index=phase1.columns, name="SPE contribution")
+
+	fig = go.Figure(go.Bar(x=contribs.index, y=contribs.values,
+		marker_color="#d62728"))
+	fig.update_layout(
+		title=f"SPE contributions at phase-2 obs {first_alarm - N_phase1} (16 Dec, first SPE alarm)",
+		yaxis_title="(x_k - x_hat_k)^2 in scaled units", height=380,
+		margin=dict(l=70, r=20, t=60, b=80))
+	fig.show()
+
+At the first SPE alarm, **``Pulp level`` and ``Feed rate``** carry the
+largest contributions (4.0 and 3.4 respectively in scaled-squared units),
+with ``Upstream pH`` a distant third (1.2). The contribution plot points
+the operator straight at the two tags worth investigating, without having
+to scan all five line plots by eye.
+
+.. _APPS_multivariate_monitoring_compare:
+
+What the multivariate chart catches that the univariate chart misses
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Putting the two stories side by side:
+
+* The univariate Shewhart chart on ``Feed rate`` is silent through all
+  of phase 1 (as it should be) and only alarms at subgroup 62 of phase 2,
+  about **two hours** into the new day. By the time it alarms, the
+  disturbance has grown large enough to push the subgroup mean past the
+  3-sigma limit on this *single* tag.
+* The multivariate :math:`T^2` chart alarms at phase-2 observation 2 --
+  within **one minute** of 16 December starting. The SPE chart alarms at
+  observation 19, about **ten minutes** in. Both diagnose the cause as a
+  joint shift in ``Pulp level`` and ``Feed rate``.
+
+The two-hour gap is the multivariate dividend on this dataset. It comes
+from the fact that the disturbance is initially small in each individual
+tag (no single tag is yet outside its own 3-sigma band) but it has already
+broken the *correlation structure* the model learned in phase 1 -- and the
+SPE statistic catches that violation directly.
+
+This is the same pattern :ref:`monitoring is not feedback control
+<monitoring_is_not_feedback_control>` warned about in chapter 3: catching
+the upset early gives the operator time to act before off-spec material
+moves downstream. The price of admission is a model -- not three chart
+limits, but a 2-component PCA on a phase-1 stretch -- and the running cost
+is a single ``model.predict(scaler.transform(new_row))`` per new
+observation.
+
 .. note::
 
-	**Status: planned subsection.** This page collects the catalogued
-	literature that should ground the multivariate-statistical-process-
-	control (MSPC) and process-troubleshooting case-study discussion.
-	The body content is yet to be written; the open GitHub issue
-	tracks the remaining work.
+	A few practical considerations not pursued here but worth flagging:
 
-References to incorporate
-~~~~~~~~~~~~~~~~~~~~~~~~~
+	* **Re-fitting**. The phase-1 / phase-2 split is a static demonstration.
+	  A production deployment would re-fit the model on a rolling window of
+	  recent in-control data, the same way the :ref:`Kappa soft sensor
+	  <APPS_soft_sensors_case_kamyr>` re-fit was discussed in §7.2.
+	* **Autocorrelation**. The 30-second sampling makes consecutive
+	  observations highly correlated. A practical deployment usually
+	  monitors the 2-minute subgroup mean rather than every 30-second
+	  sample, exactly as the univariate Shewhart chart above does.
+	* **Contribution plots are correlational**. A high contribution from
+	  ``Pulp level`` says the variable is *off-pattern relative to the
+	  others*, not that it is the *cause* of the upset. Diagnosis is for
+	  the process engineer with knowledge of the unit operation.
+
+Further reading
+~~~~~~~~~~~~~~~
 
 Foundational MSPC papers
 ^^^^^^^^^^^^^^^^^^^^^^^^

@@ -84,6 +84,11 @@ Discuss one of these unit operations with your colleague. Which variables would 
 - Mineral processing plant (e.g. a flotation cell)
 - Plastics processing (e.g. a twin-screw extruder)
 
+For a worked case study on a flotation cell -- starting with a univariate
+Shewhart chart on the feed-rate tag and progressing to multivariate
+PCA-based :math:`T^2` and SPE monitoring on the full set of five process
+tags -- see :ref:`APPS_multivariate_monitoring`.
+
 In-control vs out-of-control
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
