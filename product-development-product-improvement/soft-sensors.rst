@@ -9,10 +9,13 @@ Soft sensors and inferential sensors
 	pair: soft sensors; applications
 
 A soft sensor (also called an inferential sensor) infers a hard-to-measure quality variable from
-cheap, real-time process measurements that are already on the data historian. The general idea
-was introduced in :ref:`an earlier section <LVM_inferential_sensors>`. This section is a worked
-example: predicting the Kappa number on a continuous Kamyr pulp digester, where the Kappa number
-is a lab measurement that arrives several hours after the pulp it describes was made.
+cheap, real-time process measurements that are already on the data historian. The use of PLS for
+exactly this purpose was introduced by `Kresta, Marlin and MacGregor (1994)
+<https://literature.learnche.org/item/17/development-of-inferential-process-models-using-pls>`_;
+the general idea was touched on in :ref:`an earlier section <LVM_inferential_sensors>`. This
+section is a worked example: predicting the Kappa number on a continuous Kamyr pulp digester,
+where the Kappa number is a lab measurement that arrives several hours after the pulp it
+describes was made.
 
 .. _APPS_soft_sensors_monitoring_recap:
 
@@ -40,7 +43,9 @@ that are available at that moment. The model is built on historical data where b
 tags and the lab values were collected; once it has been validated the prediction is used in
 place of the lab value on the monitoring chart, on the on-line trend, or in a feedback loop. The
 phase 1 and phase 2 requirements still apply: the model is fit on a representative stretch of
-data, then tested on data it has not seen before it is deployed.
+data, then tested on data it has not seen before it is deployed. For a step-by-step procedure
+that covers the engineering choices along the way, see `Lin, Recke, Knudsen and Jørgensen (2007)
+<https://literature.learnche.org/item/107/a-systematic-approach-for-soft-sensor-development>`_.
 
 .. _APPS_soft_sensors_case_kamyr:
 
@@ -57,7 +62,11 @@ The Kappa number is a wet-chemistry lab measurement. The sample must be taken, t
 prepared and titrated; the whole loop runs about three hours, and in many mills the analysis is
 only performed once per shift. Feedback control on the Kappa number is therefore not practical,
 and a monitoring chart on the Kappa number shows the problem long after the operator could have
-adjusted the process. This is the situation a soft sensor is designed for.
+adjusted the process. This is the situation a soft sensor is designed for. `Dayal, MacGregor,
+Taylor, Kildaw and Marcikic (1994)
+<https://literature.learnche.org/item/124/application-of-feedforward-neural-networks-and-partial-least-squares-regression-to-modelling-kappa-number-in-a-continuous-kamyr-digester>`_
+demonstrated PLS and neural networks side by side on exactly this problem and on the same data
+set we use here.
 
 The data set used here is the `Kamyr digester data <https://openmv.net/info/kamyr-digester>`_
 from openmv.net, an hourly record from a kraft mill in Alberta. The file is 301 rows by 23
@@ -238,58 +247,40 @@ This soft sensor can now be deployed in the same way as any other monitoring art
 is fit on a representative stretch of historical operation, tested on a held-out tail, and once
 the RMSEP is small enough compared to the Kappa specification limits, the prediction is wired
 into the same chart that would have been used for the lab value. The chart now updates every hour
-rather than once per shift.
+rather than once per shift. `Tzovla and Mehta (2002)
+<https://literature.learnche.org/item/103/creating-intelligence-automating-the-approach-to-development-and-online-operation-of-soft-sensors>`_
+describe how this build-test-deploy loop can be automated for soft sensors inside commercial
+control systems.
 
 Two refinements are worth noting. First, the relationship between :math:`\mathbf{X}` and the
 Kappa number changes over time, with chip species, mill upsets and seasonal raw-material
 variation. A soft sensor that is never re-fit will gradually lose accuracy. The standard practice
-is to re-fit the model on a rolling window of the most recent lab values. Second, the Kappa
-number is autocorrelated in time: we exploited this with a single one-step lag of :math:`y`
-above, but adding lags of two or three hours, and lags on the most influential :math:`x`
-variables, typically reduces the prediction error further.
+is to re-fit the model on a rolling window of the most recent lab values; `Kadlec, Grbić and
+Gabrys (2011) <https://literature.learnche.org/item/106/review-of-adaptation-mechanisms-for-data-driven-soft-sensors>`_
+review the variations on this adaptation theme. Second, the Kappa number is autocorrelated in
+time: we exploited this with a single one-step lag of :math:`y` above, but adding lags of two or
+three hours, and lags on the most influential :math:`x` variables, typically reduces the
+prediction error further.
 
-References
-~~~~~~~~~~~
-
-**Foundational and review papers**
-
-* James V. Kresta, Thomas E. Marlin and John F. MacGregor, "`Development of inferential process
-  models using PLS <https://literature.learnche.org/item/17/development-of-inferential-process-models-using-pls>`_",
-  *Computers and Chemical Engineering*, **18**, 597-611, 1994.
+Further reading
+~~~~~~~~~~~~~~~~
 
 * Luigi Fortuna, Salvatore Graziani, Alessandro Rizzo and M. Gabriella Xibilia,
   `Soft Sensors for Monitoring and Control of Industrial Processes <https://literature.learnche.org/item/111/soft-sensors-for-monitoring-and-control-of-industrial-processes>`_,
-  Springer, 2007.
+  Springer, 2007. A book-length treatment that covers the modelling, validation and deployment
+  topics introduced here in much more depth.
 
 * Petr Kadlec, Bogdan Gabrys and Sibylle Strandt,
   "`Data-driven soft sensors in the process industry <https://literature.learnche.org/item/105/data-driven-soft-sensors-in-the-process-industry>`_",
-  *Computers and Chemical Engineering*, **33**, 795-814, 2009.
-
-* Petr Kadlec, Ratko Grbić and Bogdan Gabrys,
-  "`Review of adaptation mechanisms for data-driven soft sensors <https://literature.learnche.org/item/106/review-of-adaptation-mechanisms-for-data-driven-soft-sensors>`_",
-  *Computers and Chemical Engineering*, **35**, 1-24, 2011.
-
-* Bao Lin, Bodil Recke, Jørgen K. H. Knudsen and Sten Bay Jørgensen,
-  "`A systematic approach for soft sensor development <https://literature.learnche.org/item/107/a-systematic-approach-for-soft-sensor-development>`_",
-  *Computers and Chemical Engineering*, **31**, 419-425, 2007.
-
-**Industrial applications and case studies**
+  *Computers and Chemical Engineering*, **33**, 795-814, 2009. A survey of the field, useful for
+  orienting yourself in the wider literature beyond the PLS-based approach used in this section.
 
 * Hector M. Budman, Chris Webb, Tyler R. Holcomb and Manfred Morari,
   "`Robust inferential control for a packed-bed reactor <https://literature.learnche.org/item/22/robust-inferential-control-for-a-packed-bed-reactor>`_",
-  *Industrial and Engineering Chemistry Research*, **31**, 1665-1679, 1992.
-
-* Bhupinder S. Dayal, John F. MacGregor, Paul A. Taylor, R. Kildaw and S. Marcikic,
-  "`Application of feedforward neural networks and partial least squares regression to modelling
-  Kappa number in a continuous Kamyr digester <https://literature.learnche.org/item/124/application-of-feedforward-neural-networks-and-partial-least-squares-regression-to-modelling-kappa-number-in-a-continuous-kamyr-digester>`_",
-  *Pulp and Paper Canada*, **95**, T7-T13, 1994.
-
-* Vasiliki Tzovla and Ashish Mehta,
-  "`Creating intelligence: Automating the approach to development and online operation of soft sensors <https://literature.learnche.org/item/103/creating-intelligence-automating-the-approach-to-development-and-online-operation-of-soft-sensors>`_",
-  *InTech*, September, 30-33, 2002.
-
-**Theses**
+  *Industrial and Engineering Chemistry Research*, **31**, 1665-1679, 1992. An early industrial
+  application of inferential control, on a packed-bed reactor rather than a digester.
 
 * Steven D. Roney,
   `Development of inferential sensors for chemical processes using partial least squares <https://literature.learnche.org/item/143/development-of-inferential-sensors-for-chemical-processes-using-partial-least-squares>`_,
-  Masters thesis, McMaster University, 1998.
+  Masters thesis, McMaster University, 1998. A long-form treatment of how to build a PLS
+  inferential sensor for chemical processes.
