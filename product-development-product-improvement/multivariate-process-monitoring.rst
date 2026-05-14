@@ -162,22 +162,44 @@ with feed rate, would have caught the shift earlier.
 Multivariate model on phase 1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We centre and scale the 5 tags using their phase-1 means and standard
+So the multivariate analysis is on the same statistical object as the
+univariate Shewhart chart above, we aggregate each set of four
+consecutive 30-second observations into a 2-minute subgroup mean before
+fitting. Otherwise, the multivariate model would be fit on the raw
+30-second observations and the comparison against the Shewhart chart
+later in the section would be unfair: the multivariate machinery would
+be picking up within-subgroup noise that the Shewhart chart has averaged
+away.
+
+.. code-block:: python
+
+	def subgroup_means(df, n_sub):
+	    """Average each block of n_sub consecutive rows into a single row."""
+	    n_groups = len(df) // n_sub
+	    arr = df.values[: n_groups * n_sub].reshape((n_groups, n_sub, df.shape[1]))
+	    return pd.DataFrame(arr.mean(axis=1), columns=df.columns)
+
+	p1_sub = subgroup_means(phase1, n_sub)
+	p2_sub = subgroup_means(phase2, n_sub)
+	print(f"phase 1 subgroups: {p1_sub.shape}   phase 2 subgroups: {p2_sub.shape}")
+
+This gives 119 phase-1 subgroups and 610 phase-2 subgroups. We centre
+and scale the 5 tags using their phase-1 subgroup means and standard
 deviations, then fit a :math:`A`-component PCA on phase 1 only. The
 cumulative :math:`R^2_X` tells us how much joint variability each latent
 variable picks up:
 
 .. code-block:: python
 
-	scaler = MCUVScaler().fit(phase1)
-	model = PCA(n_components=2).fit(scaler.transform(phase1))
+	scaler = MCUVScaler().fit(p1_sub)
+	model = PCA(n_components=2).fit(scaler.transform(p1_sub))
 	print("R^2 cumulative (2 components):", model.r2_cumulative_.values)
 
-	model3 = PCA(n_components=3).fit(scaler.transform(phase1))
+	model3 = PCA(n_components=3).fit(scaler.transform(p1_sub))
 	print("R^2 cumulative (3 components):", model3.r2_cumulative_.values)
 
-A 2-component model captures :math:`R^2_X \approx [0.35, 0.58]` (35% and an
-extra 23%, for a cumulative 58%), and a third component adds another 20%.
+A 2-component model captures :math:`R^2_X \approx [0.38, 0.61]` (38% and an
+extra 23%, for a cumulative 61%), and a third component adds another 21%.
 Two components are enough to demonstrate the monitoring idea, so we proceed
 with the 2-component model.
 
@@ -194,7 +216,7 @@ where the in-control operating region lies in score space:
 	:scale: 80
 	:align: center
 
-	Phase-1 score plot (479 observations on 15 December) with the 95%
+	Phase-1 score plot (119 subgroup means from 15 December) with the 95%
 	:math:`T^2` ellipse drawn in. The in-control cloud sits inside the
 	ellipse and is roughly centred at the origin.
 
@@ -206,8 +228,7 @@ tags align with each latent direction:
 
 	for a in (1, 2):
 	    p = model.loadings_.iloc[:, a - 1]
-	    fig = go.Figure(go.Bar(x=p.index, y=p.values,
-	        marker_color=["#1f77b4" if v >= 0 else "#d62728" for v in p.values]))
+	    fig = go.Figure(go.Bar(x=p.index, y=p.values, marker_color="#4c72b0"))
 	    fig.add_hline(y=0, line_color="black", line_width=0.6)
 	    fig.update_layout(yaxis_title=f"p{a} loading", height=320,
 	        margin=dict(l=70, r=20, t=20, b=80))
@@ -229,20 +250,20 @@ tags align with each latent direction:
 Monitoring phase 2 with :math:`T^2` and SPE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To monitor phase 2, we project each new observation onto the model and read
-out two diagnostics:
+To monitor phase 2, we project each new subgroup mean onto the model and
+read out two diagnostics:
 
 * the Hotelling's :math:`T^2` score on the model plane (how unusual the
-  observation is *within* the in-control subspace), and
+  subgroup is *within* the in-control subspace), and
 * the squared prediction error SPE (how far off the model plane the
-  observation sits -- i.e. how much of the joint structure is *not* explained
+  subgroup sits -- i.e. how much of the joint structure is *not* explained
   by the model).
 
-``PCA.predict`` returns both, alongside the per-observation scores:
+``PCA.predict`` returns both, alongside the per-subgroup scores:
 
 .. code-block:: python
 
-	result = model.predict(scaler.transform(phase2))
+	result = model.predict(scaler.transform(p2_sub))
 	t2 = result.hotellings_t2.iloc[:, -1]
 	spe = result.spe
 	t2_lim = float(model.hotellings_t2_limit(conf_level=0.95))
@@ -252,16 +273,16 @@ out two diagnostics:
 
 	flagged_t2 = t2[t2 > t2_lim]
 	flagged_spe = spe[spe > spe_lim]
-	first_t2 = int(flagged_t2.index[0]) - N_phase1 if len(flagged_t2) else None
-	first_spe = int(flagged_spe.index[0]) - N_phase1 if len(flagged_spe) else None
-	print(f"first T^2 alarm at phase-2 obs {first_t2}")
-	print(f"first SPE alarm at phase-2 obs {first_spe}")
+	first_t2 = int(flagged_t2.index[0]) if len(flagged_t2) else None
+	first_spe = int(flagged_spe.index[0]) if len(flagged_spe) else None
+	print(f"first T^2 alarm at phase-2 subgroup {first_t2}")
+	print(f"first SPE alarm at phase-2 subgroup {first_spe}")
 
-The 95% T² limit is 6.05 and the 95% SPE limit is 2.41. **The first phase-2
-T² alarm comes at observation 2** (about a minute into 16 December) and the
-first SPE alarm at observation 19 (about ten minutes in) -- compared with
-~120 minutes of feed-rate Shewhart silence before its first alarm at
-subgroup 62. Drawing the two traces side by side with their 95% limits:
+The 95% T² limit is 6.25 and the 95% SPE limit is 2.38. **Both diagnostics
+first alarm at phase-2 subgroup 5**, about ten minutes into 16 December.
+Compare that with ~120 minutes of feed-rate Shewhart silence before its
+first alarm at subgroup 62. Drawing the two multivariate traces side by
+side with their 95% limits:
 
 .. code-block:: python
 
@@ -277,21 +298,22 @@ subgroup 62. Drawing the two traces side by side with their 95% limits:
 		row=2, col=1)
 	fig.add_hline(y=spe_lim, line_color="red", line_dash="dash",
 		annotation_text="95%", row=2, col=1)
-	fig.update_xaxes(title_text="Observation index", row=2, col=1)
+	fig.update_xaxes(title_text="Phase-2 subgroup index (2 min each)", row=2, col=1)
 	fig.update_yaxes(title_text="T^2", row=1, col=1)
 	fig.update_yaxes(title_text="SPE", row=2, col=1)
 	fig.update_layout(height=560, margin=dict(l=70, r=20, t=60, b=50))
 	fig.show()
 
 .. figure:: ../figures/monitoring/Flotation-MSPC-t2-spe.png
-	:alt: Hotelling's T^2 and SPE traces on the phase-2 flotation data with 95% limits.
+	:alt: Hotelling's T^2 and SPE traces on the phase-2 flotation subgroups with 95% limits.
 	:width: 900px
 	:scale: 80
 	:align: center
 
-	Hotelling's :math:`T^2` (top, 95% limit at 6.05) and SPE (bottom, 95%
-	limit at 2.41) on the 2443 phase-2 observations. Both rise within
-	minutes of 16 December starting and stay elevated through the day.
+	Hotelling's :math:`T^2` (top, 95% limit at 6.25) and SPE (bottom, 95%
+	limit at 2.38) on the 610 phase-2 subgroups. Both first cross their
+	limit at subgroup 5 (~10 minutes into 16 December) and stay elevated
+	through most of the day.
 
 Both diagnostics rise within minutes of 16 December starting and stay
 elevated for most of the day -- a much earlier and stronger signal than the
@@ -310,15 +332,15 @@ the centred-and-scaled space:
 .. code-block:: python
 
 	first_alarm = int(flagged_spe.index[0])
-	row_scaled = scaler.transform(phase2).loc[first_alarm].values
+	row_scaled = scaler.transform(p2_sub).loc[first_alarm].values
 	row_hat = row_scaled @ model.loadings_.values @ model.loadings_.values.T
 	contribs = pd.Series((row_scaled - row_hat) ** 2,
-		index=phase1.columns, name="SPE contribution")
+		index=p1_sub.columns, name="SPE contribution")
 
 	fig = go.Figure(go.Bar(x=contribs.index, y=contribs.values,
 		marker_color="#d62728"))
 	fig.update_layout(
-		title=f"SPE contributions at phase-2 obs {first_alarm - N_phase1} (16 Dec, first SPE alarm)",
+		title=f"SPE contributions at phase-2 subgroup {first_alarm} (16 Dec, first SPE alarm)",
 		yaxis_title="(x_k - x_hat_k)^2 in scaled units", height=380,
 		margin=dict(l=70, r=20, t=60, b=80))
 	fig.show()
@@ -329,14 +351,14 @@ the centred-and-scaled space:
 	:scale: 80
 	:align: center
 
-	Per-variable contributions to SPE at phase-2 observation 19 (16 Dec,
-	first SPE alarm). ``Pulp level`` (4.0) and ``Feed rate`` (3.4) dominate;
-	``Upstream pH`` is a distant third (1.2). ``CuSO4 added`` and ``Air
+	Per-variable contributions to SPE at phase-2 subgroup 5 (16 Dec, first
+	SPE alarm). ``Pulp level`` (5.8) and ``Feed rate`` (3.8) dominate;
+	``Upstream pH`` is a distant third (1.3). ``CuSO4 added`` and ``Air
 	flow rate`` are essentially in pattern.
 
 At the first SPE alarm, **``Pulp level`` and ``Feed rate``** carry the
-largest contributions (4.0 and 3.4 respectively in scaled-squared units),
-with ``Upstream pH`` a distant third (1.2). The contribution plot points
+largest contributions (5.8 and 3.8 respectively in scaled-squared units),
+with ``Upstream pH`` a distant third (1.3). The contribution plot points
 the operator straight at the two tags worth investigating, without having
 to scan all five line plots by eye.
 
@@ -345,6 +367,47 @@ to scan all five line plots by eye.
 What the multivariate chart catches that the univariate chart misses
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+To make the comparison concrete we plot the ``Feed rate`` subgroup mean
+(left axis, blue) and the multivariate Hotelling's :math:`T^2` (right
+axis, red) on the same time axis -- 610 phase-2 subgroups, each two
+minutes apart:
+
+.. code-block:: python
+
+	fig = make_subplots(specs=[[{"secondary_y": True}]])
+	x = np.arange(len(t2))
+	feed_p2 = subgroup_means(phase2[["Feed rate"]], n_sub)["Feed rate"].values
+	fig.add_trace(go.Scatter(x=x, y=feed_p2, mode="lines+markers",
+		line=dict(color="#1f77b4"), marker=dict(size=3),
+		name="Feed rate (subgroup mean, left)"), secondary_y=False)
+	fig.add_hline(y=target, line_color="#1f77b4", line_dash="dot", opacity=0.6)
+	fig.add_hline(y=ucl, line_color="#1f77b4", line_dash="dash", opacity=0.6)
+	fig.add_hline(y=lcl, line_color="#1f77b4", line_dash="dash", opacity=0.6)
+
+	fig.add_trace(go.Scatter(x=x, y=t2.values, mode="lines+markers",
+		line=dict(color="#d62728"), marker=dict(size=3),
+		name="Hotelling's T^2 (right)"), secondary_y=True)
+	fig.add_hline(y=t2_lim, line_color="#d62728", line_dash="dash", opacity=0.6)
+
+	fig.update_yaxes(title_text="Feed rate (t/h)", color="#1f77b4", secondary_y=False)
+	fig.update_yaxes(title_text="Hotelling's T^2", color="#d62728", secondary_y=True)
+	fig.update_xaxes(title_text="Phase-2 subgroup index (2 min each)")
+	fig.update_layout(height=440, margin=dict(l=70, r=70, t=40, b=60))
+	fig.show()
+
+.. figure:: ../figures/monitoring/Flotation-MSPC-comparison.png
+	:alt: Dual-axis overlay of Feed-rate subgroups and Hotelling's T^2 on phase 2.
+	:width: 950px
+	:scale: 80
+	:align: center
+
+	Phase-2 ``Feed rate`` subgroup mean (left axis, blue) and Hotelling's
+	:math:`T^2` of the 5-variable subgroup mean (right axis, red), on a
+	shared subgroup-index x-axis. Dashed lines on each axis are the 95 %
+	limits; vertical dotted lines mark the first alarm on each chart. The
+	multivariate :math:`T^2` (subgroup 5) leads the univariate Shewhart
+	(subgroup 62) by 57 subgroups, or about 114 minutes.
+
 Putting the two stories side by side:
 
 * The univariate Shewhart chart on ``Feed rate`` is silent through all
@@ -352,16 +415,19 @@ Putting the two stories side by side:
   about **two hours** into the new day. By the time it alarms, the
   disturbance has grown large enough to push the subgroup mean past the
   3-sigma limit on this *single* tag.
-* The multivariate :math:`T^2` chart alarms at phase-2 observation 2 --
-  within **one minute** of 16 December starting. The SPE chart alarms at
-  observation 19, about **ten minutes** in. Both diagnose the cause as a
+* The multivariate :math:`T^2` chart -- on the *same* 2-minute subgroups
+  -- alarms at phase-2 subgroup 5, about **ten minutes** into the new day.
+  The SPE chart alarms at the same subgroup. Both diagnose the cause as a
   joint shift in ``Pulp level`` and ``Feed rate``.
 
-The two-hour gap is the multivariate dividend on this dataset. It comes
-from the fact that the disturbance is initially small in each individual
-tag (no single tag is yet outside its own 3-sigma band) but it has already
-broken the *correlation structure* the model learned in phase 1 -- and the
-SPE statistic catches that violation directly.
+The ~110-minute gap is the multivariate dividend on this dataset, and
+the fair-comparison qualifier matters: both charts are aggregating the
+same data into the same 2-minute subgroups, so the dividend cannot be
+explained away by saying "the multivariate chart just samples faster".
+It comes from the fact that the disturbance is initially small in each
+individual tag (no single tag is yet outside its own 3-sigma band) but
+it has already broken the *correlation structure* the model learned in
+phase 1 -- and the SPE statistic catches that violation directly.
 
 This is the same pattern :ref:`monitoring is not feedback control
 <monitoring_is_not_feedback_control>` warned about in chapter 3: catching
