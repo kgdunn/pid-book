@@ -206,8 +206,7 @@ tags align with each latent direction:
 
 	for a in (1, 2):
 	    p = model.loadings_.iloc[:, a - 1]
-	    fig = go.Figure(go.Bar(x=p.index, y=p.values,
-	        marker_color=["#1f77b4" if v >= 0 else "#d62728" for v in p.values]))
+	    fig = go.Figure(go.Bar(x=p.index, y=p.values, marker_color="#4c72b0"))
 	    fig.add_hline(y=0, line_color="black", line_width=0.6)
 	    fig.update_layout(yaxis_title=f"p{a} loading", height=320,
 	        margin=dict(l=70, r=20, t=20, b=80))
