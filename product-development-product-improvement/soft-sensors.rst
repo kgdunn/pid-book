@@ -14,8 +14,8 @@ exactly this purpose was introduced by `Kresta, Marlin and MacGregor (1994)
 <https://literature.learnche.org/item/17/development-of-inferential-process-models-using-pls>`_;
 the general idea was touched on in :ref:`an earlier section <LVM_inferential_sensors>`. This
 section is a worked example: predicting the Kappa number on a continuous Kamyr pulp digester,
-where the Kappa number is a lab measurement that arrives several hours after the pulp it
-describes was made.
+where the Kappa number is reported less often, and with more delay, than the process tags
+around it.
 
 .. _APPS_soft_sensors_monitoring_recap:
 
@@ -33,10 +33,11 @@ identified.
 This procedure has a practical requirement: the variable being charted must be available in
 real-time. A temperature, a flow rate, a pressure or an on-line composition analyser update every
 few seconds and present no difficulty. The case that does not fit is the lab measurement: a final
-quality property that arrives several hours, sometimes a full shift, after the material it
-describes was made. A monitoring chart on such a variable shows the problem long after it
-happened, and corrective action is no longer possible without scrapping or reworking the
-intermediate product.
+quality property that is sampled at intervals of an hour or more, and -- depending on whether the
+mill has an on-line analyser or a wet-chemistry titration in a busy lab -- reported with a
+turnaround of anywhere from a minute to a couple of hours. Even when the chemistry itself is
+fast, the sampling interval is enough to leave a chart that updates only a few times per shift,
+which is too sparse to react to disturbances before the off-spec material has moved downstream.
 
 A soft sensor solves this problem by inferring the lab value in real-time from the process tags
 that are available at that moment. The model is built on historical data where both the process
@@ -58,12 +59,15 @@ single quality number, the :index:`Kappa number`. A high Kappa number indicates 
 paperboard-grade pulp; a low Kappa number indicates a pulp that is closer to a bleachable grade.
 The mill aims to hold the Kappa number on target with as little variability as possible.
 
-The Kappa number is a wet-chemistry lab measurement. The sample must be taken, transported,
-prepared and titrated; the whole loop runs about three hours, and in many mills the analysis is
-only performed once per shift. Feedback control on the Kappa number is therefore not practical,
-and a monitoring chart on the Kappa number shows the problem long after the operator could have
-adjusted the process. This is the situation a soft sensor is designed for. `Dayal, MacGregor,
-Taylor, Kildaw and Marcikic (1994)
+The Kappa number is conventionally a wet-chemistry lab measurement defined by the ISO 302
+titration method, which is itself about 30 minutes of bench work; once sampling, transport,
+sample preparation, lab queueing and reporting are added, the practical turnaround on a busy
+mill is typically one to two hours, and the sampling frequency is usually no faster than that.
+Modern installations also offer on-line NIR analysers that can return a Kappa-equivalent value
+in under a minute, calibrated against ISO 302, but these are still far from universal; on mills
+that do not have one the fastest information about the digester is the existing process
+historian, which is what a soft sensor lets us turn into a real-time Kappa estimate. `Dayal,
+MacGregor, Taylor, Kildaw and Marcikic (1994)
 <https://literature.learnche.org/item/124/application-of-feedforward-neural-networks-and-partial-least-squares-regression-to-modelling-kappa-number-in-a-continuous-kamyr-digester>`_
 demonstrated PLS and neural networks side by side on exactly this problem and on the same data
 set we use here.
@@ -84,6 +88,36 @@ unlagged tags (``ChipRate``, ``BF-CMratio``, ``BlowFlow``, ``UCZAA``, ``WeakLiqu
 slowly enough that the lag is negligible. The residence-time estimates were provided by the mill
 along with the data.
 
+We load the file, drop the timestamp and the two mostly-missing columns, and median-impute the
+remaining gaps. The same ``digester`` dataframe is reused throughout this section, so the
+plotting and modelling blocks below can be pasted in order to reproduce every figure:
+
+.. code-block:: python
+
+	import matplotlib.pyplot as plt
+	import numpy as np
+	import pandas as pd
+	from process_improve.multivariate import PLS, MCUVScaler
+
+	digester = pd.read_csv("https://openmv.net/file/kamyr-digester.csv")
+	digester.columns = [c.strip() for c in digester.columns]
+	digester = digester.drop(columns=["Observation", "AAWhiteSt-4", "SulphidityL-4"])
+	digester = digester.fillna(digester.median(numeric_only=True))
+
+	fig, axes = plt.subplots(3, 1, figsize=(9, 7), sharex=True)
+	sample = np.arange(len(digester))
+	axes[0].plot(sample, digester["Y-Kappa"], "k-", linewidth=1.0)
+	axes[0].set_ylabel("Y-Kappa")
+	axes[1].plot(sample, digester["ChipLevel4"], "C0-", linewidth=1.0)
+	axes[1].set_ylabel("ChipLevel4")
+	axes[2].plot(sample, digester["BlackFlow-2"], "C3-", linewidth=1.0)
+	axes[2].set_ylabel("BlackFlow-2")
+	axes[2].set_xlabel("Sample (1 hour spacing)")
+	for ax in axes:
+		ax.grid(True, alpha=0.3)
+	fig.tight_layout()
+	plt.show()
+
 .. figure:: ../figures/monitoring/Kappa-soft-sensor-raw-data.png
 	:alt: Raw Kappa number and two of the lagged process tags plotted against sample number.
 	:width: 750px
@@ -99,26 +133,13 @@ along with the data.
 Building the soft sensor
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-We build the model with PLS, using the Kappa number as the :math:`y`-variable and the nine
+We build the model with PLS, using the Kappa number as the :math:`y`-variable and the nineteen
 process tags as the :math:`\mathbf{X}` block. The ``process-improve`` package provides a ``PLS``
 class and an ``MCUVScaler`` for centring and scaling. The data are centred to zero mean and
 scaled to unit standard deviation before fitting: PLS scores and loadings are only interpretable
 in that form.
 
 .. code-block:: python
-
-	import pandas as pd
-	from process_improve.multivariate import PLS, MCUVScaler
-
-	digester = pd.read_csv("https://openmv.net/file/kamyr-digester.csv")
-
-	# Strip the trailing whitespace baked into some of the column names.
-	digester.columns = [c.strip() for c in digester.columns]
-
-	# Drop the timestamp column and the two tags that are missing half the time;
-	# impute the remaining gaps with the column median.
-	digester = digester.drop(columns=["Observation", "AAWhiteSt-4", "SulphidityL-4"])
-	digester = digester.fillna(digester.median(numeric_only=True))
 
 	X = digester.drop(columns=["Y-Kappa"])
 	y = digester[["Y-Kappa"]]
@@ -143,8 +164,20 @@ data below.
 
 The regression coefficients show which tags drive the model:
 
+.. code-block:: python
+
+	coefs = model.beta_coefficients_.iloc[:, 0]
+	fig, ax = plt.subplots(figsize=(11, 4.8))
+	ax.bar(coefs.index, coefs.values, color=["C0" if c >= 0 else "C3" for c in coefs.values])
+	ax.axhline(0, color="k", linewidth=0.6)
+	ax.set_ylabel("Coefficient on scaled X")
+	plt.setp(ax.get_xticklabels(), rotation=40, ha="right")
+	ax.grid(True, axis="y", alpha=0.3)
+	fig.tight_layout()
+	plt.show()
+
 .. figure:: ../figures/monitoring/Kappa-soft-sensor-coefficients.png
-	:alt: Bar chart of PLS regression coefficients onto Y-Kappa for the nine process tags.
+	:alt: Bar chart of PLS regression coefficients onto Y-Kappa for the nineteen process tags.
 	:width: 750px
 	:scale: 80
 	:align: center
@@ -169,8 +202,6 @@ set:
 
 .. code-block:: python
 
-	import numpy as np
-
 	def evaluate_split(df, x_cols, y_col, frac=0.70):
 		n_train = int(round(frac * len(df)))
 		train, test = df.iloc[:n_train], df.iloc[n_train:]
@@ -181,11 +212,36 @@ set:
 			np.asarray(m.predict(sx.transform(test[x_cols])).y_hat),
 			index=test.index, columns=[y_col])
 		y_hat = sy.inverse_transform(y_hat_scaled).values.ravel()
-		return float(np.sqrt(np.mean((test[y_col].values - y_hat) ** 2))), y_hat
+		y_obs = test[y_col].values
+		rmsep = float(np.sqrt(np.mean((y_obs - y_hat) ** 2)))
+		return rmsep, y_obs, y_hat
 
 	x_cols = list(X.columns)
-	rmsep_base, _ = evaluate_split(digester, x_cols, "Y-Kappa")
+	rmsep_base, y_obs_base, y_hat_base = evaluate_split(digester, x_cols, "Y-Kappa")
 	print(f"RMSEP (process tags only): {rmsep_base:.2f} Kappa units")
+
+The same predicted-vs-observed scatter is reused below for the lag-augmented model, so we
+define it once as a helper:
+
+.. code-block:: python
+
+	def plot_obs_pred(y_obs, y_hat, title):
+		fig, ax = plt.subplots(figsize=(7.5, 6))
+		lo = float(min(y_obs.min(), y_hat.min()))
+		hi = float(max(y_obs.max(), y_hat.max()))
+		pad = 0.05 * (hi - lo)
+		ax.plot([lo - pad, hi + pad], [lo - pad, hi + pad], "k--", linewidth=0.8, label="ideal")
+		ax.plot(y_obs, y_hat, "o", markersize=6, alpha=0.8)
+		ax.set_xlabel("Observed Kappa")
+		ax.set_ylabel("Predicted Kappa")
+		ax.set_title(title)
+		ax.grid(True, alpha=0.3)
+		ax.legend(loc="upper left")
+		ax.set_aspect("equal", adjustable="box")
+		fig.tight_layout()
+		plt.show()
+
+	plot_obs_pred(y_obs_base, y_hat_base, "Soft sensor predictions: process tags only")
 
 .. figure:: ../figures/monitoring/Kappa-soft-sensor-obs-pred-base.png
 	:alt: Predicted vs observed Kappa number on the held-out test set with the process-tag model.
@@ -209,8 +265,10 @@ feed it back into :math:`\mathbf{X}` until the next lab value arrives. We add a 
 	df_lag["Kappa_lag1"] = df_lag["Y-Kappa"].shift(1)
 	df_lag = df_lag.dropna(subset=["Kappa_lag1"]).reset_index(drop=True)
 
-	rmsep_lag, _ = evaluate_split(df_lag, x_cols + ["Kappa_lag1"], "Y-Kappa")
+	rmsep_lag, y_obs_lag, y_hat_lag = evaluate_split(df_lag, x_cols + ["Kappa_lag1"], "Y-Kappa")
 	print(f"RMSEP (with one-step Kappa lag): {rmsep_lag:.2f} Kappa units")
+
+	plot_obs_pred(y_obs_lag, y_hat_lag, "Soft sensor predictions: process tags + 1-step Kappa lag")
 
 .. figure:: ../figures/monitoring/Kappa-soft-sensor-obs-pred-lagged.png
 	:alt: Predicted vs observed Kappa with one-step Kappa lag in X.
@@ -224,6 +282,22 @@ feed it back into :math:`\mathbf{X}` until the next lab value arrives. We add a 
 The scatter plots tell us how close the predictions are on average, but they hide *where* the
 soft sensor disagrees with the lab. Plotting the two test-set predictions and the lab value
 against time shows both stories on one figure:
+
+.. code-block:: python
+
+	fig, ax = plt.subplots(figsize=(11, 4.8))
+	sample = np.arange(len(y_obs_base))
+	ax.plot(sample, y_obs_base, color="black", linewidth=1.8, label="Lab (actual)")
+	ax.plot(sample, y_hat_base, color="C0", linestyle="--", linewidth=1.4,
+		marker="o", markersize=4, label="Soft sensor: process tags only")
+	ax.plot(sample[-len(y_hat_lag):], y_hat_lag, color="C3", linestyle=":", linewidth=1.4,
+		marker="s", markersize=4, label="Soft sensor: process tags + Kappa lag")
+	ax.set_xlabel("Test sample index (1 hour spacing)")
+	ax.set_ylabel("Kappa number")
+	ax.grid(True, alpha=0.3)
+	ax.legend(loc="best")
+	fig.tight_layout()
+	plt.show()
 
 .. figure:: ../figures/monitoring/Kappa-soft-sensor-time-series.png
 	:alt: Time-series overlay of held-out Kappa predictions and the actual lab values.
