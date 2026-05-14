@@ -86,6 +86,93 @@ Food texture data set
 
 #.	Look for any observations that are unusual. Are there any unusual scores? SPE values?  Plot contribution plots for the unusual observations and interpret them.
 
+#.	**Replicate the** :math:`t_1` **score for pastry "B758" by hand.** Pastry "B758" is row 36 of the dataset, with raw values
+	``Oil = 21.2``, ``Density = 2570``, ``Crispy = 14``, ``Fracture = 13``, ``Hardness = 105``. Using the centring vector
+	:math:`\bar{x} = [17.2, 2857.6, 11.5, 20.9, 128.2]` and the standard-deviation vector :math:`[1.6, 124.5, 1.78, 5.47, 31.1]` from the
+	:ref:`worked example <LVM_food_texture_example>`, scale each variable, then form
+	:math:`t_1 = 0.46\,x_\text{oil} - 0.48\,x_\text{density} + 0.53\,x_\text{crispy} - 0.50\,x_\text{fract} + 0.15\,x_\text{hard}`.
+	You should get :math:`t_1 \approx 3.6`. Describe what a pastry with that profile looks like in terms of its five attributes.
+
+#.	**Repeat for sample 33**, with raw values ``Oil = 15.5``, ``Density = 3125``, ``Crispy = 7``, ``Fracture = 33``, ``Hardness = 92``. You should
+	get :math:`t_1 \approx -4.2`. Contrast this attribute profile against pastry B758. Which contributions to :math:`t_1` (variable-by-variable)
+	are largest in magnitude for each of the two pastries, and what does that tell you about which raw measurements drive the first component?
+
+**Reproducing this analysis in Python**
+
+The block below runs the whole analysis end-to-end, including the hand-calculation verifications for questions 6 and 7. It uses the same
+``process-improve`` package and plotly idiom as the rest of the book.
+
+.. code-block:: python
+
+	import numpy as np
+	import pandas as pd
+	import plotly.graph_objects as go
+	from plotly.subplots import make_subplots
+	from process_improve.multivariate import PCA, MCUVScaler
+
+	food = pd.read_csv("https://openmv.net/file/food-texture.csv")
+
+	scaler = MCUVScaler().fit(food)
+	model = PCA(n_components=2).fit(scaler.transform(food))
+
+	# Q2: R^2 cumulative and per variable
+	print("R^2 cumulative:", model.r2_cumulative_.values)
+	print("R^2 per variable (after 2 components):",
+		model.r2_per_variable_.iloc[:, -1].to_dict())
+
+	# Q3: bar plot of the first loading p1
+	p1 = model.loadings_.iloc[:, 0]
+	fig = go.Figure(go.Bar(x=p1.index, y=p1.values,
+		marker_color=["#1f77b4" if v >= 0 else "#d62728" for v in p1.values]))
+	fig.add_hline(y=0, line_color="black", line_width=0.6)
+	fig.update_layout(yaxis_title="p1 loading", height=380,
+		margin=dict(l=70, r=20, t=20, b=60))
+	fig.show()
+
+	# Q4: scores plot t1 vs t2, and the raw data in sequence order
+	fig = model.score_plot(pc_horiz=1, pc_vert=2)
+	fig.show()
+
+	sample = np.arange(len(food))
+	fig = make_subplots(rows=5, cols=1, shared_xaxes=True, vertical_spacing=0.03,
+		subplot_titles=list(food.columns))
+	for k, col in enumerate(food.columns, start=1):
+		fig.add_trace(go.Scatter(x=sample, y=food[col], mode="lines",
+			showlegend=False), row=k, col=1)
+	fig.update_xaxes(title_text="Sample number", row=5, col=1)
+	fig.update_layout(height=720, margin=dict(l=70, r=20, t=40, b=40))
+	fig.show()
+
+	# Q5: Hotelling's T^2 and SPE
+	model.t2_plot().show()
+	model.spe_plot().show()
+
+	# Q6: hand calculation of t1 for B758 (row 36, i.e. iloc[35])
+	xbar_pub = np.array([17.2, 2857.6, 11.5, 20.9, 128.2])
+	sd_pub = np.array([1.6, 124.5, 1.78, 5.47, 31.1])
+	p1_pub = np.array([0.46, -0.48, 0.53, -0.50, 0.15])
+
+	b758_raw = food.iloc[35].values
+	b758_scaled = (b758_raw - xbar_pub) / sd_pub
+	t1_b758 = float(np.dot(b758_scaled, p1_pub))
+	print(f"Hand-computed t1 for B758: {t1_b758:.2f}  (expect approx 3.6)")
+	print(f"Model t1 for B758:          {model.scores_.iloc[35, 0]:.2f}")
+
+	# Q7: repeat for sample 33 (iloc[32])
+	s33_raw = food.iloc[32].values
+	s33_scaled = (s33_raw - xbar_pub) / sd_pub
+	t1_s33 = float(np.dot(s33_scaled, p1_pub))
+	print(f"Hand-computed t1 for sample 33: {t1_s33:.2f}  (expect approx -4.2)")
+	print(f"Model t1 for sample 33:          {model.scores_.iloc[32, 0]:.2f}")
+
+	# Variable-by-variable contributions for each pastry, for the comparison
+	# requested in Q7.
+	contributions = pd.DataFrame({
+		"B758": b758_scaled * p1_pub,
+		"Sample 33": s33_scaled * p1_pub,
+	}, index=food.columns)
+	print(contributions.round(2))
+
 Food consumption data set
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -153,10 +240,100 @@ Silicon wafer thickness
 
 #.	Finally, plot both the :math:`t_1` and :math:`t_2` series overlaid on the same plot, in time-order, to see the smaller variance that :math:`t_2` explains.
 
+#.	**Train / test split.** Rebuild the model using only the first 100 observations. Then apply that model to **all 184** rows as test data,
+	in time order, and plot the Hotelling's :math:`T^2` and SPE traces over the full 184-sample span with a vertical line at sample 100 marking
+	the train / test boundary.
+
+#.	**Outlier persistence.** Do the wafers you flagged as outliers earlier still appear extreme on this train-on-100 model? Do new outliers
+	surface in samples 101-184? For any sample that crosses the 95% :math:`T^2` or SPE limit, plot a contribution plot and report which of the
+	nine grid locations is driving the alarm.
+
+**Reproducing this analysis in Python**
+
+The block below runs the full exercise end-to-end: an initial all-184 model for outlier scouting, then the train-on-100 / test-on-all-184
+variant for questions 10 and 11.
+
+.. code-block:: python
+
+	import numpy as np
+	import pandas as pd
+	import plotly.graph_objects as go
+	from process_improve.multivariate import PCA, MCUVScaler
+
+	wafer = pd.read_csv("https://openmv.net/file/silicon-wafer-thickness.csv")
+
+	# Q1-Q9: PCA on the whole dataset
+	scaler = MCUVScaler().fit(wafer)
+	model = PCA(n_components=2).fit(scaler.transform(wafer))
+	print("R^2 cumulative (all 184):", model.r2_cumulative_.values)
+
+	model.score_plot(pc_horiz=1, pc_vert=2).show()
+	model.t2_plot().show()
+	model.spe_plot().show()
+
+	for a in (1, 2):
+		p = model.loadings_.iloc[:, a - 1]
+		fig = go.Figure(go.Bar(x=p.index, y=p.values,
+			marker_color=["#1f77b4" if v >= 0 else "#d62728" for v in p.values]))
+		fig.add_hline(y=0, line_color="black", line_width=0.6)
+		fig.update_layout(yaxis_title=f"p{a} loading", height=380,
+			margin=dict(l=70, r=20, t=20, b=60))
+		fig.show()
+
+	sample = np.arange(len(wafer))
+	fig = go.Figure()
+	fig.add_trace(go.Scatter(x=sample, y=model.scores_.iloc[:, 0],
+		mode="lines", name="t1", line=dict(color="#1f77b4")))
+	fig.add_trace(go.Scatter(x=sample, y=model.scores_.iloc[:, 1],
+		mode="lines", name="t2", line=dict(color="#d62728", dash="dash")))
+	fig.update_layout(xaxis_title="Sample (wafer index)",
+		yaxis_title="Score", height=380)
+	fig.show()
+
+	# Q10: train on the first 100, test on all 184.
+	train = wafer.iloc[:100]
+	scaler_t = MCUVScaler().fit(train)
+	model_t = PCA(n_components=2).fit(scaler_t.transform(train))
+	result = model_t.predict(scaler_t.transform(wafer))
+
+	t2 = result.hotellings_t2.iloc[:, -1]
+	spe = result.spe
+	t2_limit = float(model_t.hotellings_t2_limit(conf_level=0.95))
+	spe_limit = float(model_t.spe_limit(conf_level=0.95))
+
+	fig = go.Figure()
+	fig.add_trace(go.Scatter(x=t2.index, y=t2.values, mode="lines",
+		name="T^2 (cumulative)"))
+	fig.add_hline(y=t2_limit, line_color="red", line_dash="dash",
+		annotation_text="95% limit")
+	fig.add_vline(x=99.5, line_color="grey", line_dash="dot",
+		annotation_text="train / test boundary")
+	fig.update_layout(xaxis_title="Sample (wafer index)",
+		yaxis_title="Hotelling's T^2", height=380)
+	fig.show()
+
+	fig = go.Figure()
+	fig.add_trace(go.Scatter(x=spe.index, y=spe.values, mode="lines",
+		name="SPE"))
+	fig.add_hline(y=spe_limit, line_color="red", line_dash="dash",
+		annotation_text="95% limit")
+	fig.add_vline(x=99.5, line_color="grey", line_dash="dot",
+		annotation_text="train / test boundary")
+	fig.update_layout(xaxis_title="Sample (wafer index)",
+		yaxis_title="SPE", height=380)
+	fig.show()
+
+	# Q11: which samples cross the 95% limits, in each half of the data?
+	flagged_t2 = t2[t2 > t2_limit].index.tolist()
+	flagged_spe = spe[spe > spe_limit].index.tolist()
+	print("Flagged by T^2:", flagged_t2)
+	print("Flagged by SPE:", flagged_spe)
+
 What we learned:
 
 * Identifying outliers; removing them and refitting the model.
 * Variability in a process can very often be interpreted. The :math:`R^2` and :math:`Q^2` values for each component show which part of the variability in the system is due the particular phenomenon modelled by that component.
+* Splitting the data into a model-building portion (the first 100 wafers) and a held-out portion (the remaining 84) is what tells you whether the structure the model has captured generalises beyond the period it was fit on; new outliers showing up in the held-out portion are the early warning that the process has shifted.
 
 	
 .. _LVM-process-troubleshooting-plastic-pellets:
