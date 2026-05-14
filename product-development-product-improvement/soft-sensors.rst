@@ -94,9 +94,10 @@ plotting and modelling blocks below can be pasted in order to reproduce every fi
 
 .. code-block:: python
 
-	import matplotlib.pyplot as plt
 	import numpy as np
 	import pandas as pd
+	import plotly.graph_objects as go
+	from plotly.subplots import make_subplots
 	from process_improve.multivariate import PLS, MCUVScaler
 
 	digester = pd.read_csv("https://openmv.net/file/kamyr-digester.csv")
@@ -104,19 +105,20 @@ plotting and modelling blocks below can be pasted in order to reproduce every fi
 	digester = digester.drop(columns=["Observation", "AAWhiteSt-4", "SulphidityL-4"])
 	digester = digester.fillna(digester.median(numeric_only=True))
 
-	fig, axes = plt.subplots(3, 1, figsize=(9, 7), sharex=True)
 	sample = np.arange(len(digester))
-	axes[0].plot(sample, digester["Y-Kappa"], "k-", linewidth=1.0)
-	axes[0].set_ylabel("Y-Kappa")
-	axes[1].plot(sample, digester["ChipLevel4"], "C0-", linewidth=1.0)
-	axes[1].set_ylabel("ChipLevel4")
-	axes[2].plot(sample, digester["BlackFlow-2"], "C3-", linewidth=1.0)
-	axes[2].set_ylabel("BlackFlow-2")
-	axes[2].set_xlabel("Sample (1 hour spacing)")
-	for ax in axes:
-		ax.grid(True, alpha=0.3)
-	fig.tight_layout()
-	plt.show()
+	fig = make_subplots(rows=3, cols=1, shared_xaxes=True, vertical_spacing=0.05)
+	fig.add_trace(go.Scatter(x=sample, y=digester["Y-Kappa"], mode="lines",
+		line=dict(color="black"), showlegend=False), row=1, col=1)
+	fig.add_trace(go.Scatter(x=sample, y=digester["ChipLevel4"], mode="lines",
+		line=dict(color="#1f77b4"), showlegend=False), row=2, col=1)
+	fig.add_trace(go.Scatter(x=sample, y=digester["BlackFlow-2"], mode="lines",
+		line=dict(color="#d62728"), showlegend=False), row=3, col=1)
+	fig.update_yaxes(title_text="Y-Kappa", row=1, col=1)
+	fig.update_yaxes(title_text="ChipLevel4", row=2, col=1)
+	fig.update_yaxes(title_text="BlackFlow-2", row=3, col=1)
+	fig.update_xaxes(title_text="Sample (1 hour spacing)", row=3, col=1)
+	fig.update_layout(height=620, margin=dict(l=70, r=20, t=20, b=50))
+	fig.show()
 
 .. figure:: ../figures/monitoring/Kappa-soft-sensor-raw-data.png
 	:alt: Raw Kappa number and two of the lagged process tags plotted against sample number.
@@ -167,14 +169,12 @@ The regression coefficients show which tags drive the model:
 .. code-block:: python
 
 	coefs = model.beta_coefficients_.iloc[:, 0]
-	fig, ax = plt.subplots(figsize=(11, 4.8))
-	ax.bar(coefs.index, coefs.values, color=["C0" if c >= 0 else "C3" for c in coefs.values])
-	ax.axhline(0, color="k", linewidth=0.6)
-	ax.set_ylabel("Coefficient on scaled X")
-	plt.setp(ax.get_xticklabels(), rotation=40, ha="right")
-	ax.grid(True, axis="y", alpha=0.3)
-	fig.tight_layout()
-	plt.show()
+	colors = ["#1f77b4" if c >= 0 else "#d62728" for c in coefs.values]
+	fig = go.Figure(go.Bar(x=coefs.index, y=coefs.values, marker_color=colors))
+	fig.add_hline(y=0, line_color="black", line_width=0.6)
+	fig.update_layout(yaxis_title="Coefficient on scaled X", xaxis_tickangle=-40,
+		height=420, margin=dict(l=70, r=20, t=20, b=120))
+	fig.show()
 
 .. figure:: ../figures/monitoring/Kappa-soft-sensor-coefficients.png
 	:alt: Bar chart of PLS regression coefficients onto Y-Kappa for the nineteen process tags.
@@ -226,20 +226,18 @@ define it once as a helper:
 .. code-block:: python
 
 	def plot_obs_pred(y_obs, y_hat, title):
-		fig, ax = plt.subplots(figsize=(7.5, 6))
 		lo = float(min(y_obs.min(), y_hat.min()))
 		hi = float(max(y_obs.max(), y_hat.max()))
 		pad = 0.05 * (hi - lo)
-		ax.plot([lo - pad, hi + pad], [lo - pad, hi + pad], "k--", linewidth=0.8, label="ideal")
-		ax.plot(y_obs, y_hat, "o", markersize=6, alpha=0.8)
-		ax.set_xlabel("Observed Kappa")
-		ax.set_ylabel("Predicted Kappa")
-		ax.set_title(title)
-		ax.grid(True, alpha=0.3)
-		ax.legend(loc="upper left")
-		ax.set_aspect("equal", adjustable="box")
-		fig.tight_layout()
-		plt.show()
+		fig = go.Figure()
+		fig.add_trace(go.Scatter(x=[lo - pad, hi + pad], y=[lo - pad, hi + pad],
+			mode="lines", line=dict(color="black", dash="dash", width=1), name="ideal"))
+		fig.add_trace(go.Scatter(x=y_obs, y=y_hat, mode="markers",
+			marker=dict(size=8, opacity=0.8), name="predictions"))
+		fig.update_layout(title=title, xaxis_title="Observed Kappa",
+			yaxis_title="Predicted Kappa", height=520, width=580)
+		fig.update_yaxes(scaleanchor="x", scaleratio=1)
+		fig.show()
 
 	plot_obs_pred(y_obs_base, y_hat_base, "Soft sensor predictions: process tags only")
 
@@ -285,19 +283,19 @@ against time shows both stories on one figure:
 
 .. code-block:: python
 
-	fig, ax = plt.subplots(figsize=(11, 4.8))
 	sample = np.arange(len(y_obs_base))
-	ax.plot(sample, y_obs_base, color="black", linewidth=1.8, label="Lab (actual)")
-	ax.plot(sample, y_hat_base, color="C0", linestyle="--", linewidth=1.4,
-		marker="o", markersize=4, label="Soft sensor: process tags only")
-	ax.plot(sample[-len(y_hat_lag):], y_hat_lag, color="C3", linestyle=":", linewidth=1.4,
-		marker="s", markersize=4, label="Soft sensor: process tags + Kappa lag")
-	ax.set_xlabel("Test sample index (1 hour spacing)")
-	ax.set_ylabel("Kappa number")
-	ax.grid(True, alpha=0.3)
-	ax.legend(loc="best")
-	fig.tight_layout()
-	plt.show()
+	fig = go.Figure()
+	fig.add_trace(go.Scatter(x=sample, y=y_obs_base, mode="lines",
+		line=dict(color="black", width=2.4), name="Lab (actual)"))
+	fig.add_trace(go.Scatter(x=sample, y=y_hat_base, mode="lines+markers",
+		line=dict(color="#1f77b4", dash="dash"), marker=dict(symbol="circle", size=6),
+		name="Soft sensor: process tags only"))
+	fig.add_trace(go.Scatter(x=sample[-len(y_hat_lag):], y=y_hat_lag, mode="lines+markers",
+		line=dict(color="#d62728", dash="dot"), marker=dict(symbol="square", size=6),
+		name="Soft sensor: process tags + Kappa lag"))
+	fig.update_layout(xaxis_title="Test sample index (1 hour spacing)",
+		yaxis_title="Kappa number", height=440)
+	fig.show()
 
 .. figure:: ../figures/monitoring/Kappa-soft-sensor-time-series.png
 	:alt: Time-series overlay of held-out Kappa predictions and the actual lab values.
