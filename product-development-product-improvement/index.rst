@@ -10,8 +10,8 @@ Over the years since 2010 when this online book has been available, there has be
 .. toctree::
    :maxdepth: 1
 
-   product-development
    image-analysis
    soft-sensors
-   batch-process-monitoring
    multivariate-process-monitoring
+   batch-process-monitoring
+   product-development
