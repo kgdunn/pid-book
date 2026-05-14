@@ -378,3 +378,18 @@ Industrial troubleshooting case studies
 * Bert Skagerberg, John F. MacGregor and Costas Kiparissides, "`Multivariate data analysis applied to low-density polyethylene reactors <https://literature.learnche.org/item/27/multivariate-data-analysis-applied-to-low-density-polyethylene-reactors>`_", *Chemometrics and Intelligent Laboratory Systems*, **14**, 341-356, 1992.
 
 * John F. MacGregor, Christiane M. Jaeckle, Costas Kiparissides and M. Koutoudi, "`Process monitoring and diagnosis by multiblock PLS method <https://literature.learnche.org/item/29/process-monitoring-and-diagnosis-by-multiblock-pls-method>`_", *AIChE Journal*, **40**, 826-838, 1994.
+
+* Salvador García-Muñoz, Theodora Kourti, John F. MacGregor, Arthur G. Mateos and Gerald Murphy, "`Troubleshooting of an industrial batch process using multivariate methods <https://literature.learnche.org/item/24/troubleshooting-of-an-industrial-batch-process-using-multivariate-methods>`_", *Industrial and Engineering Chemistry Research*, **42**, 3592-3601, 2003.
+
+* Ivan Miletic, Shannon Quinn, Michael Dudzic, Vit Vaculik and Marc Champagne, "`An industrial perspective on implementing on-line applications of multivariate statistics <https://literature.learnche.org/item/18/an-industrial-perspective-on-implementing-on-line-applications-of-multivariate-statistics>`_", *Journal of Process Control*, **14**, 821-836, 2004.
+
+Theses (McMaster University)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Carol F. Slama, `Multivariate statistical analysis of data from an industrial fluidized catalytic cracking process using PCA and PLS <https://literature.learnche.org/item/59/multivariate-statistical-analysis-of-data-from-an-industrial-fluidized-catalytic-cracking-process-using-pca-and-pls>`_, Masters thesis, 1991.
+
+* Carl Duchesne, `Improvement of processes and product quality through multivariate data analysis <https://literature.learnche.org/item/46/improvement-of-processes-and-product-quality-through-multivariate-data-analysis>`_, Ph.D thesis, 2000.
+
+* François Yacoub, `Learning from data using latent variable methods <https://literature.learnche.org/item/112/learning-from-data-using-latent-variable-methods>`_, Ph.D thesis, 2006.
+
+* Emily Nichols, `Latent variable methods: Case studies in the food industry <https://literature.learnche.org/item/113/latent-variable-methods-case-studies-in-the-food-industry>`_, Masters thesis, 2011.
