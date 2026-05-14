@@ -20,12 +20,26 @@ needs_sphinx = "5.0"
 extensions = [
     "sphinx.ext.todo",
     "sphinx.ext.mathjax",
+    "sphinx_copybutton",
     "sphinxcontrib.jquery",
     "my-extensions.youtube",
 ]
 
 # Avoid Subresource Integrity errors for the bundled jQuery.
 jquery_use_sri = False
+
+# Configure the copy button on every code block.
+# Strip interactive prompts so paste-into-REPL still works:
+#   >>>   doctest
+#   ...   doctest continuation
+#   $     shell
+#   In [N]:  IPython
+# copybutton_only_copy_prompt_lines = True keeps the output lines out of
+# the clipboard when a prompt is present.
+copybutton_prompt_text = r">>> |\.\.\. |\$ |In \[\d*\]: "
+copybutton_prompt_is_regexp = True
+copybutton_only_copy_prompt_lines = True
+copybutton_remove_prompts = True
 
 # NOTE: MathJax path is also forced in `layout.html` (see the `{# MathJax #}` comment).
 
