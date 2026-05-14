@@ -69,3 +69,16 @@ h1 .headerlink {
     border-radius: 2px;
     padding: 0 2px;
 }
+
+/* sphinx-copybutton: always show the clipboard icon.
+   Upstream's default is `opacity: 0` with a hover trigger, which is invisible
+   on touch devices (iPad, phone) and easy to miss on desktop. Keep it
+   permanently visible but dimmed; brighten on hover / focus. */
+button.copybtn {
+    opacity: 0.6;
+}
+button.copybtn:hover,
+button.copybtn:focus,
+.highlight:hover button.copybtn {
+    opacity: 1;
+}
