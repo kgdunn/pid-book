@@ -10,17 +10,17 @@ Multivariate process monitoring case studies
 Chapter 3 introduced the toolkit of univariate process monitoring -- the
 :ref:`Shewhart chart <monitoring_shewhart_chart>`,
 :ref:`CUSUM <monitoring_CUSUM_charts>` and :ref:`EWMA <monitoring_EWMA>` -- and
-applied them one variable at a time. That works when the upset shows up as a
-movement in a single tag, but real industrial faults usually distort several
-variables at once, in directions that respect the correlation structure of the
-process. A chart that watches each tag on its own does not see the joint
+applied them one variable at a time. That works when the process problem
+appears as a change in a single tag, but real industrial faults usually
+distort several variables at once, in directions that respect the
+correlation structure of the process. A chart that watches each tag on its own does not see the joint
 shift; it can either miss the fault entirely or, more often, raise the alarm
 only after the disturbance has grown large enough to be visible in one
 variable. This section is a worked example of that, on the same mineral
-flotation cell mentioned in :ref:`an earlier chapter <SECTION-process-monitoring>`
-as one of the canonical processes for monitoring: we build a Shewhart chart on
-a single variable, then a multivariate-statistical-process-control (MSPC)
-chart on all five variables, and compare what each one detects.
+flotation cell mentioned in :ref:`an earlier chapter <SECTION-process-monitoring>`:
+we build a Shewhart chart on a single variable, then a
+multivariate-statistical-process-control (MSPC) chart on all five
+variables, and compare what each one detects.
 
 .. _APPS_multivariate_monitoring_flotation:
 
@@ -48,7 +48,7 @@ days. The first 479 observations (15 December 2004) were visibly unsettled
 and make a poor in-control reference, so we discard them entirely. Phase 1
 is the next 1000 observations (250 2-minute subgroups, plenty for fitting a
 2-component PCA model on five variables) and phase 2 is everything after
-that (1443 observations, 360 subgroups). Both the univariate chart limits
+that (1443 observations). Both the univariate chart limits
 and the multivariate model are built on phase 1, and both charts are then
 evaluated on phase 2.
 
@@ -66,24 +66,76 @@ Loading the data and setting up the phase split:
 	num = flot.drop(columns=["Date and time"])
 
 	N_DROP = 479           # discard the unsettled startup stretch
-	N_PHASE1_RAW = 1000    # next 1000 raw obs = 250 subgroups of 4
+	N_PHASE1_RAW = 1000    # next 1000 raw obs (125 subgroups of 8)
 	phase1 = num.iloc[N_DROP : N_DROP + N_PHASE1_RAW].reset_index(drop=True)
 	phase2 = num.iloc[N_DROP + N_PHASE1_RAW :].reset_index(drop=True)
 	print(f"phase1 shape: {phase1.shape}  phase2 shape: {phase2.shape}")
 
-This gives 1000 raw phase-1 observations and 1443 raw phase-2 observations
-(or 250 vs. 360 subgroups of size 4).
+This gives 1000 raw phase-1 observations and 1443 raw phase-2 observations.
 
 .. _APPS_multivariate_monitoring_univariate:
 
-Univariate Shewhart chart on the feed rate
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Univariate Shewhart chart on the pulp level
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Following the same recipe as in :ref:`the Shewhart chapter <monitoring_shewhart_chart>`,
-we reduce the raw 30-second feed-rate measurements into 2-minute subgroups
-(size :math:`n = 4`), compute the subgroup means and standard deviations on
-phase 1, and turn them into target / lower / upper limits. We then apply
-those same limits to phase-2 subgroups:
+For the univariate side of the comparison we pick the ``Pulp level`` tag --
+the froth-pulp interface depth inside the cell, which is the variable an
+operator most directly tunes to control the residence time and recovery.
+Before fixing a subgroup size we look at how autocorrelated the raw
+30-second observations are; Shewhart limits assume the underlying noise is
+independent between samples, and an inflated false-alarm rate from
+ignoring autocorrelation would not be informative. Here is the
+autocorrelation function of ``Pulp level`` on phase 1, with the
+:math:`\pm 1.96/\sqrt{N}` band drawn in for the standard 95% noise
+envelope:
+
+.. code-block:: python
+
+	def acf(x, nlags):
+	    xc = np.asarray(x, dtype=float) - float(np.mean(x))
+	    var = float((xc ** 2).sum())
+	    return np.array([(xc[: len(xc) - k] * xc[k:]).sum() / var for k in range(nlags + 1)])
+
+	nlags = 40
+	rho = acf(phase1["Pulp level"].values, nlags)
+	ci = 1.96 / np.sqrt(len(phase1))
+
+	fig = go.Figure(go.Bar(x=list(range(len(rho))), y=rho, marker_color="#4c72b0"))
+	fig.add_hline(y=0, line_color="black", line_width=0.6)
+	fig.add_hline(y=ci, line_color="red", line_dash="dash",
+		annotation_text=f"95% noise band (±{ci:.3f})")
+	fig.add_hline(y=-ci, line_color="red", line_dash="dash")
+	fig.update_layout(xaxis_title="Lag (30-second samples)", yaxis_title="ACF",
+		title="Autocorrelation of Pulp level on phase 1",
+		height=380, margin=dict(l=70, r=20, t=50, b=50))
+	fig.show()
+
+.. figure:: ../figures/monitoring/Flotation-MSPC-acf.png
+	:alt: Autocorrelation of Pulp level on phase 1, with the 95% noise band.
+	:width: 850px
+	:scale: 80
+	:align: center
+
+	Sample autocorrelation function of ``Pulp level`` on the 1000 raw
+	phase-1 observations. The lag-to-lag autocorrelation first falls
+	within the :math:`\pm 1.96/\sqrt{N}` noise band around lag 9, then
+	there is a slow negative-then-positive oscillation that reflects
+	real periodic structure in the flotation cell, not noise.
+
+The short-range autocorrelation is large (`rho_1` is around 0.87, and
+`rho_k` does not drop within the noise band until k ≈ 9) so monitoring
+the raw 30-second samples with Shewhart limits would over-flag. Averaging
+each block of :math:`n = 8` consecutive samples into a 4-minute subgroup
+mean takes us through the most autocorrelated lags; the residual
+oscillation at longer lags is process behaviour that we want the chart to
+*see*, not noise we want to smooth out. We therefore use :math:`n_\text{sub} = 8`
+throughout the case study, for both the univariate chart below and the
+multivariate model in the next section.
+
+With the subgroup size fixed, we follow the same recipe as in :ref:`the
+Shewhart chapter <monitoring_shewhart_chart>`: compute the phase-1
+subgroup means and standard deviations, turn them into target / lower /
+upper limits, and apply those limits to the phase-2 subgroups:
 
 .. code-block:: python
 
@@ -94,9 +146,9 @@ those same limits to phase-2 subgroups:
 	    n_groups = len(x) // n_sub
 	    return np.asarray(x[: n_groups * n_sub]).reshape((n_groups, n_sub))
 
-	n_sub = 4
-	sub_p1 = subgroup(phase1["Feed rate"].values, n_sub)
-	sub_p2 = subgroup(phase2["Feed rate"].values, n_sub)
+	n_sub = 8
+	sub_p1 = subgroup(phase1["Pulp level"].values, n_sub)
+	sub_p2 = subgroup(phase2["Pulp level"].values, n_sub)
 
 	xbar_p1 = sub_p1.mean(axis=1)
 	s_p1 = sub_p1.std(axis=1, ddof=1)
@@ -108,16 +160,19 @@ those same limits to phase-2 subgroups:
 	sigma_hat = sbar / a_n
 	lcl = target - 3 * sigma_hat / sqrt(n_sub)
 	ucl = target + 3 * sigma_hat / sqrt(n_sub)
-	print(f"Feed rate Shewhart: target={target:.1f}  LCL={lcl:.1f}  UCL={ucl:.1f}")
+	print(f"Pulp level Shewhart: target={target:.2f}  LCL={lcl:.2f}  UCL={ucl:.2f}")
 
 	first_alarm_p2 = int(np.where((xbar_p2 < lcl) | (xbar_p2 > ucl))[0][0])
 	print(f"first phase-2 alarm at subgroup index {first_alarm_p2}")
 
-The 99.7% Shewhart limits on the feed rate come out at :math:`341.6 \pm 22.5`
-(LCL = 319.1, UCL = 364.1), no phase-1 alarms, and the **first phase-2 alarm
-appears at subgroup 105** -- about 3.5 hours into the monitoring period. The
-trace below shows the phase-1 subgroups (in black) and the phase-2 subgroups
-(in blue), with the limits derived from phase 1 carried across:
+The 99.7% Shewhart limits on Pulp level come out at :math:`30.12 \pm 2.71`
+(LCL = 27.40, UCL = 32.83), no phase-1 alarms, and the **first phase-2
+alarm appears at subgroup 2** -- about eight minutes into the monitoring
+period. ``Pulp level`` is highly reactive to the upset captured in this
+dataset; the univariate chart on this single tag catches the shift
+quickly. The trace below shows the phase-1 subgroups (in black) and the
+phase-2 subgroups (in blue), with the limits derived from phase 1 carried
+across:
 
 .. code-block:: python
 
@@ -128,10 +183,10 @@ trace below shows the phase-1 subgroups (in black) and the phase-2 subgroups
 	fig = go.Figure()
 	fig.add_trace(go.Scatter(x=idx_p1, y=xbar_p1, mode="lines+markers",
 		line=dict(color="black"), marker=dict(size=4, color="black"),
-		name="Phase 1 (training, 250 subgroups)"))
+		name="Phase 1 (training, 125 subgroups)"))
 	fig.add_trace(go.Scatter(x=idx_p2, y=xbar_p2, mode="lines+markers",
 		line=dict(color="#1f77b4"), marker=dict(size=4, color="#1f77b4"),
-		name="Phase 2 (monitoring, 360 subgroups)"))
+		name="Phase 2 (monitoring, 180 subgroups)"))
 	fig.add_hline(y=target, line_color="grey", line_dash="dot",
 		annotation_text="target")
 	fig.add_hline(y=ucl, line_color="red", line_dash="dash",
@@ -140,40 +195,39 @@ trace below shows the phase-1 subgroups (in black) and the phase-2 subgroups
 		annotation_text="LCL (3 sigma)")
 	fig.add_vline(x=len(xbar_p1) - 0.5, line_color="grey", line_dash="dot",
 		annotation_text="phase 1 / 2")
-	fig.update_layout(xaxis_title="Subgroup index (2 min each)",
-		yaxis_title="Feed rate (subgroup mean)", height=380,
+	fig.update_layout(xaxis_title="Subgroup index (4 min each)",
+		yaxis_title="Pulp level (subgroup mean)", height=380,
 		margin=dict(l=70, r=20, t=40, b=50))
 	fig.show()
 
 .. figure:: ../figures/monitoring/Flotation-MSPC-shewhart.png
-	:alt: Shewhart chart of Feed rate subgroup means across phase 1 and phase 2 with 3-sigma limits.
+	:alt: Shewhart chart of Pulp level subgroup means across phase 1 and phase 2 with 3-sigma limits.
 	:width: 900px
 	:scale: 80
 	:align: center
 
-	Shewhart chart on ``Feed rate`` (subgroup size 4, 2-minute aggregation):
+	Shewhart chart on ``Pulp level`` (subgroup size 8, 4-minute aggregation):
 	phase-1 subgroups in black, phase-2 subgroups in blue, 3-sigma limits
-	(``LCL = 319.1`` and ``UCL = 364.1``) carried across from phase 1. The
-	first phase-2 alarm sits at subgroup 105, about 3.5 hours in.
+	(``LCL = 27.40`` and ``UCL = 32.83``) carried across from phase 1. The
+	first phase-2 alarm sits at subgroup 2.
 
-The chart does flag the disturbance eventually, but the first alarm sits at
-subgroup 105, with the disturbance well-established by that point. The
-question is whether the other four tags carry information that, combined
-with feed rate, would have caught the shift earlier.
+So a univariate chart on a *well-chosen* single tag does catch this
+upset, and quickly. The question for the multivariate model is no longer
+"can we detect faster than this?" but "what does watching all five tags
+jointly tell us that watching one of them cannot?".
 
 .. _APPS_multivariate_monitoring_pca:
 
 Multivariate model on phase 1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-So the multivariate analysis is on the same statistical object as the
-univariate Shewhart chart above, we aggregate each set of four
-consecutive 30-second observations into a 2-minute subgroup mean before
-fitting. Otherwise, the multivariate model would be fit on the raw
-30-second observations and the comparison against the Shewhart chart
-later in the section would be unfair: the multivariate machinery would
-be picking up within-subgroup noise that the Shewhart chart has averaged
-away.
+For a like-for-like comparison with the Shewhart chart above, the
+multivariate analysis uses the same :math:`n_\text{sub} = 8` aggregation:
+each block of eight consecutive 30-second observations becomes one
+4-minute subgroup mean, and we fit and monitor on those. Otherwise the
+multivariate machinery would be picking up within-subgroup noise that
+the Shewhart chart has averaged away, and the timing comparison later
+in the section would be unfair.
 
 .. code-block:: python
 
@@ -187,7 +241,7 @@ away.
 	p2_sub = subgroup_means(phase2, n_sub)
 	print(f"phase 1 subgroups: {p1_sub.shape}   phase 2 subgroups: {p2_sub.shape}")
 
-This gives 250 phase-1 subgroups and 360 phase-2 subgroups. We centre
+This gives 125 phase-1 subgroups and 180 phase-2 subgroups. We centre
 and scale the 5 tags using their phase-1 subgroup means and standard
 deviations, then fit a :math:`A`-component PCA on phase 1 only. The
 cumulative :math:`R^2_X` tells us how much joint variability each latent
@@ -202,8 +256,8 @@ variable picks up:
 	model3 = PCA(n_components=3).fit(scaler.transform(p1_sub))
 	print("R^2 cumulative (3 components):", model3.r2_cumulative_.values)
 
-A 2-component model captures :math:`R^2_X \approx [0.33, 0.63]` (33% and an
-extra 29%, for a cumulative 63%), and a third component adds another 15%.
+A 2-component model captures :math:`R^2_X \approx [0.36, 0.66]` (36% and an
+extra 30%, for a cumulative 66%), and a third component adds another 14%.
 Two components are enough to demonstrate the monitoring idea, so we proceed
 with the 2-component model.
 
@@ -220,8 +274,8 @@ where the in-control operating region lies in score space:
 	:scale: 80
 	:align: center
 
-	Phase-1 score plot (250 subgroup means from the chosen training stretch)
-	with the 95% :math:`T^2` ellipse drawn in. The in-control cloud sits
+	Phase-1 score plot (125 subgroup means from the training stretch) with
+	the 95% :math:`T^2` ellipse drawn in. The in-control cloud sits
 	inside the ellipse and is roughly centred at the origin.
 
 The phase-1 cloud is roughly elliptical and centred at the origin -- exactly
@@ -282,11 +336,11 @@ read out two diagnostics:
 	print(f"first T^2 alarm at phase-2 subgroup {first_t2}")
 	print(f"first SPE alarm at phase-2 subgroup {first_spe}")
 
-The 95% T² limit is 6.11 and the 95% SPE limit is 2.36. **The first
-phase-2 SPE alarm comes at subgroup 1 and the first T² alarm at subgroup
-6** -- both within twelve minutes of the monitoring period starting.
-Compare that with ~3.5 hours of feed-rate Shewhart silence before its
-first alarm at subgroup 105. Drawing the two multivariate traces side by
+The 95% T² limit is 6.24 and the 95% SPE limit is 2.26. **The first
+phase-2 SPE alarm comes at subgroup 0 and the first T² alarm at subgroup
+3** -- the SPE chart fires on the very first monitored subgroup, and the
+T² chart fires one subgroup behind the univariate Pulp-level Shewhart
+(which fired at subgroup 2). Drawing the two multivariate traces side by
 side with their 95% limits:
 
 .. code-block:: python
@@ -303,7 +357,7 @@ side with their 95% limits:
 		row=2, col=1)
 	fig.add_hline(y=spe_lim, line_color="red", line_dash="dash",
 		annotation_text="95%", row=2, col=1)
-	fig.update_xaxes(title_text="Phase-2 subgroup index (2 min each)", row=2, col=1)
+	fig.update_xaxes(title_text="Phase-2 subgroup index (4 min each)", row=2, col=1)
 	fig.update_yaxes(title_text="T^2", row=1, col=1)
 	fig.update_yaxes(title_text="SPE", row=2, col=1)
 	fig.update_layout(height=560, margin=dict(l=70, r=20, t=60, b=50))
@@ -315,14 +369,16 @@ side with their 95% limits:
 	:scale: 80
 	:align: center
 
-	Hotelling's :math:`T^2` (top, 95% limit at 6.11) and SPE (bottom, 95%
-	limit at 2.36) on the 360 phase-2 subgroups. The SPE first crosses
-	its limit at subgroup 1, the :math:`T^2` at subgroup 6; both stay
+	Hotelling's :math:`T^2` (top, 95% limit at 6.24) and SPE (bottom, 95%
+	limit at 2.26) on the 180 phase-2 subgroups. The SPE first crosses
+	its limit at subgroup 0, the :math:`T^2` at subgroup 3; both stay
 	elevated through the rest of the monitoring period.
 
-Both diagnostics rise within minutes of the monitoring period starting
-and stay elevated for most of it -- a much earlier and stronger signal
-than the univariate chart on feed rate alone.
+Both diagnostics rise within the first few subgroups and stay elevated
+for the rest of phase 2. The SPE chart is the fastest of the three
+charts considered here (univariate Shewhart, multivariate T², SPE);
+the T² chart is the slowest of the three but still keeps up to within
+one subgroup of the univariate.
 
 .. _APPS_multivariate_monitoring_contribution:
 
@@ -358,11 +414,11 @@ score space:
 	:scale: 80
 	:align: center
 
-	Per-variable contributions to :math:`T^2` at phase-2 subgroup 6
+	Per-variable contributions to :math:`T^2` at phase-2 subgroup 3
 	(first :math:`T^2` alarm). All five variables contribute in the same
-	direction with comparable magnitude: ``Air flow rate`` (-1.37),
-	``Feed rate`` (-1.22), ``CuSO4 added`` (-1.22), ``Upstream pH``
-	(-1.17), and ``Pulp level`` (-1.05). The subgroup has shifted away
+	direction with comparable magnitude: ``Air flow rate`` (-1.62),
+	``Upstream pH`` (-1.45), ``Pulp level`` (-1.32), ``Feed rate``
+	(-1.25), and ``CuSO4 added`` (-1.12). The subgroup has shifted away
 	from the model centre along PC1 (and a little along PC2) in a
 	balanced way: no single tag dominates.
 
@@ -377,19 +433,19 @@ point rather than at one valve or one analyser.
 What the multivariate chart catches that the univariate chart misses
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To make the comparison concrete we plot the ``Feed rate`` subgroup mean
+To make the comparison concrete we plot the ``Pulp level`` subgroup mean
 (left axis, blue) and the multivariate Hotelling's :math:`T^2` (right
-axis, red) on the same time axis -- 360 phase-2 subgroups, each two
+axis, red) on the same time axis -- 180 phase-2 subgroups, each four
 minutes apart:
 
 .. code-block:: python
 
 	fig = make_subplots(specs=[[{"secondary_y": True}]])
 	x = np.arange(len(t2))
-	feed_p2 = subgroup_means(phase2[["Feed rate"]], n_sub)["Feed rate"].values
-	fig.add_trace(go.Scatter(x=x, y=feed_p2, mode="lines+markers",
+	univ_p2 = subgroup_means(phase2[["Pulp level"]], n_sub)["Pulp level"].values
+	fig.add_trace(go.Scatter(x=x, y=univ_p2, mode="lines+markers",
 		line=dict(color="#1f77b4"), marker=dict(size=3),
-		name="Feed rate (subgroup mean, left)"), secondary_y=False)
+		name="Pulp level (subgroup mean, left)"), secondary_y=False)
 	fig.add_hline(y=target, line_color="#1f77b4", line_dash="dot", opacity=0.6)
 	fig.add_hline(y=ucl, line_color="#1f77b4", line_dash="dash", opacity=0.6)
 	fig.add_hline(y=lcl, line_color="#1f77b4", line_dash="dash", opacity=0.6)
@@ -399,48 +455,57 @@ minutes apart:
 		name="Hotelling's T^2 (right)"), secondary_y=True)
 	fig.add_hline(y=t2_lim, line_color="#d62728", line_dash="dash", opacity=0.6)
 
-	fig.update_yaxes(title_text="Feed rate (t/h)", color="#1f77b4", secondary_y=False)
+	fig.update_yaxes(title_text="Pulp level", color="#1f77b4", secondary_y=False)
 	fig.update_yaxes(title_text="Hotelling's T^2", color="#d62728", secondary_y=True)
-	fig.update_xaxes(title_text="Phase-2 subgroup index (2 min each)")
+	fig.update_xaxes(title_text="Phase-2 subgroup index (4 min each)")
 	fig.update_layout(height=440, margin=dict(l=70, r=70, t=40, b=60))
 	fig.show()
 
 .. figure:: ../figures/monitoring/Flotation-MSPC-comparison.png
-	:alt: Dual-axis overlay of Feed-rate subgroups and Hotelling's T^2 on phase 2.
+	:alt: Dual-axis overlay of Pulp-level subgroups and Hotelling's T^2 on phase 2.
 	:width: 950px
 	:scale: 80
 	:align: center
 
-	Phase-2 ``Feed rate`` subgroup mean (left axis, blue) and Hotelling's
+	Phase-2 ``Pulp level`` subgroup mean (left axis, blue) and Hotelling's
 	:math:`T^2` of the 5-variable subgroup mean (right axis, red), on a
-	shared subgroup-index x-axis. Dashed lines on each axis are the 95 %
-	limits; vertical dotted lines mark the first alarm on each chart. The
-	multivariate :math:`T^2` (subgroup 6) leads the univariate Shewhart
-	(subgroup 105) by 99 subgroups, or about 198 minutes (~3.3 hours).
+	shared subgroup-index x-axis. Dashed lines on each axis are the 95%
+	limits; vertical dotted lines mark the first alarm on each chart.
+	Both charts fire within the first few subgroups -- Pulp level Shewhart
+	at subgroup 2, multivariate :math:`T^2` at subgroup 3 -- and the SPE
+	(not on this plot) fires at subgroup 0.
 
-Putting the two stories side by side:
+Putting the three stories side by side:
 
-* The univariate Shewhart chart on ``Feed rate`` is silent through all
-  of phase 1 (as it should be) and only alarms at subgroup 105 of
-  phase 2, about **3.5 hours** into the monitoring period. By the time
-  it alarms, the disturbance has grown large enough to push the
-  subgroup mean past the 3-sigma limit on this *single* tag.
-* The multivariate :math:`T^2` chart -- on the *same* 2-minute subgroups
-  -- alarms at phase-2 subgroup 6, about **twelve minutes** in, and the
-  SPE chart alarms at subgroup 1, almost immediately. The contribution
-  decomposition at the :math:`T^2` alarm shows the upset as a
-  *balanced* joint shift across all five process tags, not as one
-  variable misbehaving.
+* The **univariate Pulp-level Shewhart** is silent through all of
+  phase 1 (as it should be) and first alarms at subgroup 2 of phase 2,
+  about **eight minutes** into the monitoring period.
+* The **multivariate** :math:`T^2` -- on the *same* 4-minute subgroups
+  -- alarms one subgroup later, at subgroup 3.
+* The **multivariate SPE** -- the off-plane residual -- alarms on the
+  very first phase-2 subgroup.
 
-The ~200-minute gap is the multivariate dividend on this dataset, and
-the fair-comparison qualifier matters: both charts are aggregating the
-same data into the same 2-minute subgroups, so the dividend cannot be
-explained away by saying "the multivariate chart just samples faster".
-It comes from the fact that the disturbance is initially small in each
-individual tag (no single tag is yet outside its own 3-sigma band) but
-it has already broken the *correlation structure* the model learned in
-phase 1 -- and both the :math:`T^2` and SPE statistics catch that
-violation directly.
+Two observations:
+
+1. With a well-chosen univariate tag like ``Pulp level`` the timing
+   dividend over a single chart almost disappears. The :math:`T^2`
+   statistic, which projects onto the in-control model plane, has no
+   timing advantage here; SPE does, but only by one or two subgroups.
+2. What the multivariate chart adds is the **diagnosis**. The
+   contribution decomposition at the first :math:`T^2` alarm shows the
+   upset as a balanced shift across *all five* process tags in the same
+   direction, not as a single rogue variable. A univariate chart on
+   ``Pulp level`` would have told the operator "Pulp level is off"; the
+   multivariate model says "the entire operating point has moved, and
+   no single valve will get it back." That is a different conversation
+   to have in the control room.
+
+The fair-comparison qualifier matters: both univariate and multivariate
+charts are aggregating the same data into the same 4-minute subgroups,
+so the small SPE timing dividend cannot be explained away by saying
+"the multivariate chart just samples faster". The off-plane signal
+comes from the disturbance breaking the *correlation structure* the
+model learned in phase 1, and SPE catches that violation directly.
 
 This is the same pattern :ref:`monitoring is not feedback control
 <monitoring_is_not_feedback_control>` warned about in chapter 3: catching
