@@ -122,11 +122,12 @@ envelope:
 	there is a slow negative-then-positive oscillation that reflects
 	real periodic structure in the flotation cell, not noise.
 
-The short-range autocorrelation is large (`rho_1` is around 0.87, and
-`rho_k` does not drop within the noise band until k ≈ 9) so monitoring
-the raw 30-second samples with Shewhart limits would over-flag. Averaging
-each block of :math:`n = 8` consecutive samples into a 4-minute subgroup
-mean takes us through the most autocorrelated lags; the residual
+The short-range autocorrelation is large (:math:`\rho_1` is around 0.87,
+and :math:`\rho_k` does not drop within the noise band until
+:math:`k \approx 9`) so monitoring the raw 30-second samples with
+Shewhart limits would over-flag. Averaging each block of :math:`n = 8`
+consecutive samples into a 4-minute subgroup mean takes us through the
+most autocorrelated lags; the residual
 oscillation at longer lags is process behaviour that we want the chart to
 *see*, not noise we want to smooth out. We therefore use :math:`n_\text{sub} = 8`
 throughout the case study, for both the univariate chart below and the
