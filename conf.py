@@ -85,28 +85,21 @@ exclude_patterns = [
 #
 # Setting the PID_PDF_THEME environment variable switches the LaTeX build to a
 # small, self-contained sample — the preface plus the process-monitoring
-# chapter (see pdf-theme-sample.rst) — rendered with one of several alternative
-# PDF "themes". This makes it possible to compare page designs without
+# chapter (see pdf-theme-sample.rst) — rendered with the candidate
+# "business-ragged" PDF theme: business typography, ragged-right text, and
+# compact code listings. This previews the candidate page design without
 # recompiling the whole book.
 #
-#   make theme-pdf THEME=tufte       Tufte-inspired (Palatino, wide outer margin)
-#   make theme-pdf THEME=academic    Classic thesis (Latin Modern, justified)
-#   make theme-pdf THEME=business    Business report (Charter + sans headings)
-#   make theme-pdf THEME=business-ragged
-#                                    business, but ragged-right throughout and
-#                                    with compact, upright-comment code listings
+#   make theme-pdf
 #
 # Cross-references from the monitoring chapter into chapters that are *not*
 # part of the sample cannot resolve and render as plain text. That is expected:
 # the sample is a layout preview, not a navigable book.
 #
 # When PID_PDF_THEME is unset every builder behaves exactly as before.
-pdf_theme = os.environ.get("PID_PDF_THEME", "").strip().lower()
-_PDF_THEMES = ("tufte", "academic", "business", "business-ragged")
+pdf_theme = bool(os.environ.get("PID_PDF_THEME", "").strip())
 
 if pdf_theme:
-    if pdf_theme not in _PDF_THEMES:
-        raise ValueError(f"PID_PDF_THEME={pdf_theme!r} is not one of {_PDF_THEMES}")
     root_doc = "pdf-theme-sample"
     exclude_patterns += [
         "contents.rst",
@@ -386,11 +379,11 @@ latex_show_urls = "footnote"
 class CustomLatexFormatter(LatexFormatter):
     def __init__(self, **options):
         super(CustomLatexFormatter, self).__init__(**options)
-        if pdf_theme == "business-ragged":
-            # Compact code listings (8pt/10pt), matching the current book —
-            # that theme runs at an 11pt base where \footnotesize is larger.
+        if pdf_theme:
+            # Compact-but-readable code listings (9pt/11pt). The theme runs an
+            # 11pt base where \footnotesize would render larger still.
             self.verboptions = (
-                r"formatcom=\fontsize{8pt}{10pt}\selectfont,frame=lines"
+                r"formatcom=\fontsize{9pt}{11pt}\selectfont,frame=lines"
             )
         else:
             self.verboptions = r"formatcom=\footnotesize,frame=lines"
@@ -676,10 +669,10 @@ latex_elements = {
 # -- PDF theme comparison harness: LaTeX themes --------------------------------
 #
 # Everything below only takes effect when PID_PDF_THEME is set; the full-book
-# LaTeX build above is left untouched. A theme is just an override of a few
+# LaTeX build above is left untouched. The theme is just an override of a few
 # `latex_elements` keys (fonts, chapter style, preamble). Sphinx hardcodes the
-# `sphinxmanual` document class, so a true tufte-book class swap is not
-# possible — these themes vary fonts, margins and heading design instead.
+# `sphinxmanual` document class, so the theme varies fonts, margins and heading
+# design rather than swapping the document class.
 
 # Scaffolding every theme preamble needs: the custom title page and the
 # header/footer page styles the preface's raw-LaTeX blocks switch between.
@@ -768,37 +761,15 @@ _PREAMBLE_COMMON = r"""
 % ==== END SHARED THEME PREAMBLE ====
 """
 
-# Theme 1 — Tufte-inspired: Palatino body, wide outer margin, ragged-right.
-# geometry is loaded with no options (Sphinx already loads it; passing options
-# to \usepackage a second time triggers an "option clash"), then configured
-# with \geometry — the same pattern the full-book preamble uses.
-_PREAMBLE_TUFTE = r"""
-% ==== TUFTE-INSPIRED THEME ====
-\usepackage{geometry}
-\geometry{a4paper,left=1.1in,right=1.7in,top=1.0in,height=9.0in,footskip=0.5in}
-\usepackage{microtype}
-% Ragged right with hyphenation, after tufte-latex.github.io.
-\usepackage{ragged2e}
-\makeatletter
-\setlength{\RaggedRightRightskip}{\z@ plus 0.08\hsize}
-\makeatother
-\AtBeginDocument{\RaggedRight}
-% ==== END TUFTE-INSPIRED THEME ====
-"""
-
-# Theme 2 — Classic academic: Latin Modern, symmetric margins, justified.
-_PREAMBLE_ACADEMIC = r"""
-% ==== CLASSIC ACADEMIC / THESIS THEME ====
-\usepackage{geometry}
-\geometry{a4paper,margin=1.25in,footskip=0.5in}
-\usepackage{microtype}
-\linespread{1.05}
-% ==== END CLASSIC ACADEMIC / THESIS THEME ====
-"""
-
-# Theme 3 — Business professional: Charter body, sans accented headings.
-_PREAMBLE_BUSINESS = r"""
-% ==== BUSINESS PROFESSIONAL THEME ====
+# The "business-ragged" theme: Charter body, sans-serif accent-coloured
+# headings, compact margins, and ragged-right text throughout (no fully
+# justified paragraphs, after tufte-latex.github.io). geometry is loaded with
+# no options first (Sphinx already loads it; passing options to \usepackage a
+# second time triggers an "option clash"), then configured with \geometry —
+# the same pattern the full-book preamble uses. Code listings are compact (see
+# CustomLatexFormatter) with upright comments (see pygments_style below).
+_PREAMBLE_THEME = r"""
+% ==== BUSINESS-RAGGED THEME ====
 \usepackage{geometry}
 \geometry{a4paper,left=1.2in,right=1.2in,top=1.1in,height=9.0in,footskip=0.55in}
 \usepackage{microtype}
@@ -816,67 +787,39 @@ _PREAMBLE_BUSINESS = r"""
   {\sffamily\Large\bfseries\color{accent}}{\thesection}{1em}{}
 \titleformat{\subsection}
   {\sffamily\large\bfseries\color{accent!85!black}}{\thesubsection}{1em}{}
-% ==== END BUSINESS PROFESSIONAL THEME ====
-"""
-
-# Ragged-right snippet — no fully justified text anywhere, after
-# tufte-latex.github.io. Appended to a theme's preamble.
-_PREAMBLE_RAGGED = r"""
-% ==== RAGGED-RIGHT (no full justification) ====
+% Ragged-right: no fully justified text anywhere.
 \usepackage{ragged2e}
 \makeatletter
 \setlength{\RaggedRightRightskip}{\z@ plus 0.08\hsize}
 \makeatother
 \AtBeginDocument{\RaggedRight}
-% ==== END RAGGED-RIGHT ====
+% ==== END BUSINESS-RAGGED THEME ====
 """
-
-_THEME_ELEMENTS = {
-    "tufte": {
-        "fontpkg": "\\usepackage{palatino}",
-        "fncychap": "\\usepackage[Sonny]{fncychap}",
-        "preamble": _PREAMBLE_COMMON + _PREAMBLE_TUFTE,
-    },
-    "academic": {
-        "fontpkg": "\\usepackage{lmodern}",
-        "fncychap": "\\usepackage[Lenny]{fncychap}",
-        "preamble": _PREAMBLE_COMMON + _PREAMBLE_ACADEMIC,
-    },
-    "business": {
-        # fncychap is disabled so titlesec can restyle \chapter cleanly.
-        "fontpkg": "\\usepackage{charter}",
-        "fncychap": "",
-        "preamble": _PREAMBLE_COMMON + _PREAMBLE_BUSINESS,
-    },
-    # The business theme, but ragged-right throughout (no justified text).
-    # Code listings are compact (see CustomLatexFormatter) with upright
-    # comments (see pygments_style, set in the PID_PDF_THEME block below).
-    "business-ragged": {
-        "fontpkg": "\\usepackage{charter}",
-        "fncychap": "",
-        "preamble": _PREAMBLE_COMMON + _PREAMBLE_BUSINESS + _PREAMBLE_RAGGED,
-    },
-}
 
 if pdf_theme:
     latex_documents = [
         (
             "pdf-theme-sample",
-            f"PID-sample-{pdf_theme}.tex",
+            "PID-sample.tex",
             "Process Improvement Using Data",
             "Kevin Dunn",
             "manual",
             True,
         ),
     ]
-    latex_elements = {**latex_elements, **_THEME_ELEMENTS[pdf_theme]}
+    latex_elements = {
+        **latex_elements,
+        # fncychap is disabled so titlesec can restyle \chapter cleanly.
+        "fontpkg": "\\usepackage{charter}",
+        "fncychap": "",
+        "preamble": _PREAMBLE_COMMON + _PREAMBLE_THEME,
+    }
     # Page references to chapters outside the sample cannot resolve; drop them
     # so the preview is not littered with "??".
     latex_show_pagerefs = False
-    if pdf_theme == "business-ragged":
-        # Upright (non-italic) comments in code listings. Only the LaTeX
-        # builder runs during a theme build, so the HTML book is untouched.
-        pygments_style = "my-extensions.pygments_upright.UprightCommentSphinxStyle"
+    # Upright (non-italic) comments in code listings. Only the LaTeX builder
+    # runs during a theme build, so the HTML book is untouched.
+    pygments_style = "my-extensions.pygments_upright.UprightCommentSphinxStyle"
 
 # -- Options for Epub output ---------------------------------------------------
 
