@@ -9,13 +9,16 @@ SPHINXBUILD   = uv run sphinx-build
 PAPER         =
 BUILDDIR      = _build
 
+# Theme used by `make theme-pdf`: tufte | academic | business
+THEME         ?= tufte
+
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 ALLRELAXEDOPTS  =  -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(RELAXOPTS) .
 
-.PHONY: help setup clean distclean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext whoosh
+.PHONY: help setup clean distclean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext whoosh theme-pdf theme-pdf-all
 
 .DEFAULT_GOAL := latexpdf
 
@@ -35,6 +38,9 @@ help:
 	@echo "  text       to make text files"
 	@echo "  gettext    to make PO message catalogs"
 	@echo "  linkcheck  to check all external links for integrity"
+	@echo "  theme-pdf  to build a carved-off PDF sample (preface + ch.3)"
+	@echo "             with THEME=tufte|academic|business"
+	@echo "  theme-pdf-all  to build all three theme samples"
 
 
 
@@ -136,6 +142,39 @@ latexpdf:
 	else \
 		echo "PDF built at $(BUILDDIR)/latex/PID.pdf (no opener found)."; \
 	fi
+
+# PDF theme comparison harness. Builds a small carved-off sample — the
+# preface plus the process-monitoring chapter — with one alternative LaTeX
+# theme, so several PDF designs can be compared without recompiling the whole
+# book. The theme machinery lives in conf.py, gated on PID_PDF_THEME.
+# Cross-references into the chapters left out of the sample render as plain
+# text; that is expected for a layout preview.
+theme-pdf:	## Build a PDF sample with THEME=tufte|academic|business
+	@case "$(THEME)" in tufte|academic|business) ;; *) \
+		echo "ERROR: THEME must be tufte, academic or business (got '$(THEME)')."; \
+		exit 1;; esac
+	@command -v latexmk >/dev/null 2>&1 || { \
+		echo "ERROR: latexmk not found. See 'make setup'."; \
+		exit 1; \
+	}
+	PID_PDF_THEME=$(THEME) $(SPHINXBUILD) -b latex $(SPHINXOPTS) \
+		-d $(BUILDDIR)/theme-doctrees . $(BUILDDIR)/theme-$(THEME)
+	cp preface/*.png $(BUILDDIR)/theme-$(THEME)
+	cp preface/*.jpg $(BUILDDIR)/theme-$(THEME)
+	@echo "Running LaTeX files through pdflatex..."
+	make -C $(BUILDDIR)/theme-$(THEME) all-pdf
+	@echo
+	@echo "Theme sample: $(BUILDDIR)/theme-$(THEME)/PID-sample-$(THEME).pdf"
+
+theme-pdf-all:	## Build all three theme samples for side-by-side comparison
+	$(MAKE) theme-pdf THEME=tufte
+	$(MAKE) theme-pdf THEME=academic
+	$(MAKE) theme-pdf THEME=business
+	@echo
+	@echo "Theme samples ready:"
+	@echo "  $(BUILDDIR)/theme-tufte/PID-sample-tufte.pdf"
+	@echo "  $(BUILDDIR)/theme-academic/PID-sample-academic.pdf"
+	@echo "  $(BUILDDIR)/theme-business/PID-sample-business.pdf"
 
 text:
 	$(SPHINXBUILD) -b text $(ALLSPHINXOPTS) $(BUILDDIR)/text
