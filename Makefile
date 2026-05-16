@@ -39,8 +39,8 @@ help:
 	@echo "  gettext    to make PO message catalogs"
 	@echo "  linkcheck  to check all external links for integrity"
 	@echo "  theme-pdf  to build a carved-off PDF sample (preface + ch.3)"
-	@echo "             with THEME=tufte|academic|business"
-	@echo "  theme-pdf-all  to build all three theme samples"
+	@echo "             with THEME=tufte|academic|business|business-ragged"
+	@echo "  theme-pdf-all  to build every theme sample"
 
 
 
@@ -149,9 +149,9 @@ latexpdf:
 # book. The theme machinery lives in conf.py, gated on PID_PDF_THEME.
 # Cross-references into the chapters left out of the sample render as plain
 # text; that is expected for a layout preview.
-theme-pdf:	## Build a PDF sample with THEME=tufte|academic|business
-	@case "$(THEME)" in tufte|academic|business) ;; *) \
-		echo "ERROR: THEME must be tufte, academic or business (got '$(THEME)')."; \
+theme-pdf:	## Build a PDF sample with THEME=tufte|academic|business|business-ragged
+	@case "$(THEME)" in tufte|academic|business|business-ragged) ;; *) \
+		echo "ERROR: THEME must be tufte, academic, business or business-ragged (got '$(THEME)')."; \
 		exit 1;; esac
 	@command -v latexmk >/dev/null 2>&1 || { \
 		echo "ERROR: latexmk not found. See 'make setup'."; \
@@ -166,15 +166,17 @@ theme-pdf:	## Build a PDF sample with THEME=tufte|academic|business
 	@echo
 	@echo "Theme sample: $(BUILDDIR)/theme-$(THEME)/PID-sample-$(THEME).pdf"
 
-theme-pdf-all:	## Build all three theme samples for side-by-side comparison
+theme-pdf-all:	## Build every theme sample for side-by-side comparison
 	$(MAKE) theme-pdf THEME=tufte
 	$(MAKE) theme-pdf THEME=academic
 	$(MAKE) theme-pdf THEME=business
+	$(MAKE) theme-pdf THEME=business-ragged
 	@echo
 	@echo "Theme samples ready:"
 	@echo "  $(BUILDDIR)/theme-tufte/PID-sample-tufte.pdf"
 	@echo "  $(BUILDDIR)/theme-academic/PID-sample-academic.pdf"
 	@echo "  $(BUILDDIR)/theme-business/PID-sample-business.pdf"
+	@echo "  $(BUILDDIR)/theme-business-ragged/PID-sample-business-ragged.pdf"
 
 text:
 	$(SPHINXBUILD) -b text $(ALLSPHINXOPTS) $(BUILDDIR)/text
