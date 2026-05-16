@@ -15,7 +15,7 @@ Statistical tables for the normal- and t-distribution
 	:align: center
 
 If interested, here is the code used to generate these figures
-	
+
 .. code-block:: r
 
 	# The source code used to generate the

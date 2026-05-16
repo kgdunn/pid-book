@@ -15,7 +15,7 @@ A data set, `available on the dataset website <https://openmv.net/info/tablet-sp
 	:scale: 80
 	:width: 750px
 	:align: center
-	
+
 This code will calculate principal components for this data:
 
 .. code-block:: python
@@ -53,11 +53,11 @@ This code will calculate principal components for this data:
 	                    scale =TRUE,
 	                    rank. = 4)
 	summary(model.pca)
-	
+
 which gives this output:
 
 .. code-block:: text
-	
+
 	Importance of first k=4 (out of 460) components:
 	                           PC1     PC2     PC3     PC4
 	Standard deviation     21.8835 10.9748 3.60075 3.27081
@@ -81,7 +81,7 @@ Finally, we can show the SPE plot for each observation. SPE values for each tabl
 	:scale: 80
 	:width: 750px
 	:align: center
-	
+
 The code for the above plots is:
 
 .. code-block:: python
@@ -167,7 +167,7 @@ The code for the above plots is:
 	spectra.mc <- sweep(spectra, 2, spectra.mean, FUN='-')
 
 	# Scale each column, dividing by the standard deviation
-	spectra.mcuv <- sweep(spectra.mc, 2, spectra.sd, FUN='/') 
+	spectra.mcuv <- sweep(spectra.mc, 2, spectra.sd, FUN='/')
 
 	# Baseline variance
 	spectra.X2 <- spectra.mcuv * spectra.mcuv
@@ -184,9 +184,9 @@ The code for the above plots is:
 	R2.k.a <- apply(spectra.Xhat.a.2, 2, sum) / apply(spectra.X2, 2, sum)
 
 	wavelengths <- seq(600, 1898, 2)
-	plot(wavelengths, R2.k.a, col='darkgreen', 
-	     type='l', lwd=a*2, ylim=c(0,1), 
-	     ylab=expression("R"^2*" per component (wavelength)"), 
+	plot(wavelengths, R2.k.a, col='darkgreen',
+	     type='l', lwd=a*2, ylim=c(0,1),
+	     ylab=expression("R"^2*" per component (wavelength)"),
 	     xlab="Wavelengths")
 
 	# A = 2
@@ -196,7 +196,7 @@ The code for the above plots is:
 	spectra.E <- spectra.mcuv - spectra.Xhat.a
 
 	# mean for each row
-	spectra.E.mean <- apply(spectra.E, 1, mean, na.rm=TRUE)  
+	spectra.E.mean <- apply(spectra.E, 1, mean, na.rm=TRUE)
 	spectra.E2 <- spectra.E * spectra.E
 	spectra.Xhat.a.2 <- spectra.Xhat.a * spectra.Xhat.a
 
@@ -219,23 +219,23 @@ The code for the above plots is:
 
 	lines(wavelengths, R2.k.a, col='blue', type='l', lwd=a*2)
 
-	legend(x=650, y=0.35, 
-	       legend=c(expression("R"^2*": 1st component"), 
-	                expression("R"^2*": 2nd component"), 
-	                expression("R"^2*": 3rd component")), 
-	       col=c("darkgreen", "black", "blue"), 
+	legend(x=650, y=0.35,
+	       legend=c(expression("R"^2*": 1st component"),
+	                expression("R"^2*": 2nd component"),
+	                expression("R"^2*": 3rd component")),
+	       col=c("darkgreen", "black", "blue"),
 	       lty=c(1, 1, 1), lwd=c(2,4,6), cex=1.0)
 
 
 	# SPE plot
 	N <- dim(spectra)[1]
 	layout(matrix(c(1,2,3), 3, 1))
-	plot(seq(1, N), SPE.1, col='darkgreen', 
-	    type='l', lwd=2,  ylab="SPE: A=1", 
+	plot(seq(1, N), SPE.1, col='darkgreen',
+	    type='l', lwd=2,  ylab="SPE: A=1",
 	    ylim=c(0, max(SPE.1)))
-	plot(seq(1, N), SPE.2, col='black', 
-	     type='l', lwd=2,  ylab="SPE: A=2", 
+	plot(seq(1, N), SPE.2, col='black',
+	     type='l', lwd=2,  ylab="SPE: A=2",
 	     ylim=c(0, max(SPE.2)))
-	plot(seq(1, N), SPE.3, col='blue', 
-	     type='l', lwd=2,  ylab="SPE: A=3", 
+	plot(seq(1, N), SPE.3, col='blue',
+	     type='l', lwd=2,  ylab="SPE: A=3",
 	     xlab="Tablet number", ylim=c(0, max(SPE.3)))

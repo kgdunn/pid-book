@@ -19,11 +19,11 @@ As an introduction to the exponentially weighted moving average (EWMA) chart, co
 
 The MA chart plots values of :math:`\overline{x}_t`, calculated from groups of size :math:`n`, using equal weight for each of the :math:`n` most recent raw data.
 
-.. math::	
-	
+.. math::
+
 	\overline{x}_t = \frac{1}{n}x_{t-1} + \frac{1}{n}x_{t-2} + \ldots + \frac{1}{n}x_{t-n}
 
-The EWMA chart is similar to the MA chart, but uses different weights; heavier weights for more recent observations, tailing off exponentially to very small weights further back in history. Let's take a look at a derivation. 
+The EWMA chart is similar to the MA chart, but uses different weights; heavier weights for more recent observations, tailing off exponentially to very small weights further back in history. Let's take a look at a derivation.
 
 Define the process target as :math:`T` and define :math:`x_t` as a new data measurement arriving now. We then try to *create an estimate of that incoming value, giving some weight*, :math:`\lambda`, *to the actual measured value, and the rest of the weight*, :math:`1-\lambda`, *to the prior estimate*.
 
@@ -31,11 +31,11 @@ Let us write the estimate of :math:`x_t` as :math:`\hat{x}_t`, with the :math:`\
 
 So putting into equation form that "an estimate of that incoming value, is given by some weight, :math:`\lambda` and the rest of the weight, :math:`1-\lambda`, to the prior estimate":
 
-.. math:: 
+.. math::
 	:label: ewma-derivation-2
-	
+
 		\begin{array}{rcl}
-			\hat{x}_{t} &=& \lambda x_t + \left(1-\lambda \right)\hat{x}_{t-1} \\			
+			\hat{x}_{t} &=& \lambda x_t + \left(1-\lambda \right)\hat{x}_{t-1} \\
 			\hat{x}_{t} &=& \hat{x}_{t-1} +\lambda \left( x_t -\hat{x}_{t-1} \right)   \\
 			\hat{x}_{t+1} &=& \hat{x}_{t} +\lambda \left( x_{t+1} -\hat{x}_{t} \right)  \\
 			\hat{x}_{t+1} &=& \lambda  x_{t+1} +\left(1-\lambda \right)  \hat{x}_{t}
@@ -45,7 +45,7 @@ To start the EWMA sequence we define the value for :math:`\hat{x}_0 = T` and :ma
 
 The last line in the equation group above shows that a 1-step-ahead prediction for :math:`x` at time :math:`t+1` is a weighted sum of two components: the current measured value, :math:`x_t`, and secondly the predicted value, :math:`\hat{x}_t`, with the weights summing up to 1. This gives a way to experimentally find a suitable :math:`\lambda` value from historical data: adjust it up and down until the differences between :math:`\hat{x}_{t+1}` and the actual measured values of :math:`x_{t+1}` are small.
 
-The next plot shows visually what happens as the weight of :math:`\lambda` is changed. In this example a shift of :math:`\Delta = 1\sigma = 3` units occurs abruptly at :math:`t=150`. This is of course not known in practice, but the purpose here is to illustrate the effects of choosing :math:`\lambda`. Prior to that change the process mean is :math:`\mu=20` and the raw data has :math:`\sigma = 3`. 
+The next plot shows visually what happens as the weight of :math:`\lambda` is changed. In this example a shift of :math:`\Delta = 1\sigma = 3` units occurs abruptly at :math:`t=150`. This is of course not known in practice, but the purpose here is to illustrate the effects of choosing :math:`\lambda`. Prior to that change the process mean is :math:`\mu=20` and the raw data has :math:`\sigma = 3`.
 
 The first chart is the raw data and also a Shewhart chart with subgroup size of 1; the control limits are at :math:`\pm 3` time the standard deviation, so at 11.0 and 19.0 units. This control chart barely picks up the shift, as was explained in a :ref:`prior section <monitoring_shewart_chart_slugishness>`.
 
@@ -54,13 +54,13 @@ The second, third and fourth charts are EWMA charts with different values of :ma
 To see why :math:`\hat{x}_{t}` represents historical data, you can recursively substitute and show that:
 
 .. math::
-	
+
 	\hat{x}_{t+1} &= \sum_{i=0}^{i=t}{w_i x_i} = w_0x_0 + w_1x_1 + w_2x_2 + \ldots \\
 	\text{where the weights are:} \qquad w_i &= \lambda (1-\lambda)^{t-i}
 
-which emphasizes that the prediction is a just a weighted sum of the raw measurements, with weights declining in time. 
+which emphasizes that the prediction is a just a weighted sum of the raw measurements, with weights declining in time.
 
-The final chart of the sequence of 5 charts is a CUSUM chart, which is :ref:`the ideal chart <monitoring_CUSUM_charts>` for picking up such an abrupt shift in the level. 
+The final chart of the sequence of 5 charts is a CUSUM chart, which is :ref:`the ideal chart <monitoring_CUSUM_charts>` for picking up such an abrupt shift in the level.
 
 .. figure:: ../figures/monitoring/explain-EWMA.png
 	:width: 750px
@@ -76,19 +76,19 @@ From the above discussion and the weights shown for the 4 different charts, it s
 	:width: 900px
 	:align: center
 	:scale: 65
-	
+
 .. FAKE WIDTH ABOVE
-	
+
 The upper and lower control limits for the EWMA plot are plotted in the same way as the Shewhart limits, but calculated differently:
 
 .. math::
 	:label: ewma-limits
-	
-	\begin{array}{rcccl} 
-		 \text{LCL} = \overline{\overline{x}} - K \cdot \sigma_{\text{Shewhart}}\sqrt{\frac{\displaystyle \lambda}{\displaystyle 2-\lambda}} &&  &&  \text{UCL} = \overline{\overline{x}} + K \cdot \sigma_{\text{Shewhart}} \sqrt{\frac{\displaystyle \lambda}{\displaystyle 2-\lambda}}
-	\end{array} 
 
-where :math:`\sigma_{\text{Shewhart}}` represents the standard deviation as calculated for the Shewhart chart. :math:`K` is usually a value of 3, similar to the 3 standard deviations used in a Shewhart chart, but can of course be set to any level that balances the type I (false alarms) and type II errors (not detecting a deviation which is present already). 
+	\begin{array}{rcccl}
+		 \text{LCL} = \overline{\overline{x}} - K \cdot \sigma_{\text{Shewhart}}\sqrt{\frac{\displaystyle \lambda}{\displaystyle 2-\lambda}} &&  &&  \text{UCL} = \overline{\overline{x}} + K \cdot \sigma_{\text{Shewhart}} \sqrt{\frac{\displaystyle \lambda}{\displaystyle 2-\lambda}}
+	\end{array}
+
+where :math:`\sigma_{\text{Shewhart}}` represents the standard deviation as calculated for the Shewhart chart. :math:`K` is usually a value of 3, similar to the 3 standard deviations used in a Shewhart chart, but can of course be set to any level that balances the type I (false alarms) and type II errors (not detecting a deviation which is present already).
 
 An interesting implementation can be to show both the Shewhart and EWMA plot on the same chart, with both sets of limits. The EWMA value plotted is actually the one-step ahead prediction of the next :math:`x`-value, which can be informative for slow-moving processes.
 
@@ -136,13 +136,13 @@ The code here shows one way of calculating the EWMA values for a vector of data.
 Here is a worked example, starting with the assumption the process is at the target value of :math:`T = 200` units, and :math:`\lambda=0.3`. We intentionally show what happens if the new value stays fixed at 190: you see the value plotted gets only a weight of 0.3, while the 0.7 weight is for the prior historical value. Slowly the value plotted catches up, but there is always a lag. The value plotted on the chart is from the last equation in the set of :eq:`ewma-derivation-2`.
 
 ============= ==================== ==================================================
-Sample number Raw data :math:`x_t` Value plotted on chart: :math:`\hat{x}_t`  
+Sample number Raw data :math:`x_t` Value plotted on chart: :math:`\hat{x}_t`
 ============= ==================== ==================================================
-0             NA                   200	
-1             200                  :math:`0.3 \times 200 + 0.7 \times 200 = 200` 
-2             210                  :math:`0.3 \times 210 + 0.7 \times 200 = 203` 
+0             NA                   200
+1             200                  :math:`0.3 \times 200 + 0.7 \times 200 = 200`
+2             210                  :math:`0.3 \times 210 + 0.7 \times 200 = 203`
 3             190                  :math:`0.3 \times 190 + 0.7 \times 203 = 199.1`
-4             190                  :math:`0.3 \times 190 + 0.7 \times 199.1 = 196.4` 
-5             190                  :math:`0.3 \times 190 + 0.7 \times 196.4 = 194.5` 
-6             190                  :math:`0.3 \times 190 + 0.7 \times 194.5 = 193.1` 
+4             190                  :math:`0.3 \times 190 + 0.7 \times 199.1 = 196.4`
+5             190                  :math:`0.3 \times 190 + 0.7 \times 196.4 = 194.5`
+6             190                  :math:`0.3 \times 190 + 0.7 \times 194.5 = 193.1`
 ============= ==================== ==================================================

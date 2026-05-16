@@ -164,4 +164,3 @@ pre-commit-install:	## Install the pre-commit git hook
 
 pre-commit-run:		## Run every pre-commit hook against the whole tree
 	uvx pre-commit run --all-files
-

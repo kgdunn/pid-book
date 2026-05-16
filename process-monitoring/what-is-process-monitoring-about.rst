@@ -14,7 +14,7 @@ In order to achieve this high level of final product quality, our systems should
 Notice here that process monitoring is not intended to be automatic feedback control. It has the same principles of quantifying unusual operation (errors) and reacting to them in some way, but the intention with *process monitoring* is:
 
 *	that any process adjustments are **infrequent** [not frequently on a set cycle, as feedback control does],
-*	these adjustments are made **manually** [not automatically with actuators], 
+*	these adjustments are made **manually** [not automatically with actuators],
 *	and take place due to **special causes** [not due to regularly occurring process disturbances].
 
 As seen by the items in square brackets above, automatic :index:`feedback control` is applied continuously by computer systems and makes short-term, temporary changes to the system to keep it at the desired target (called the setpoint) in the face of process disturbances. Process monitoring is very different therefore to feedback control.
@@ -50,7 +50,7 @@ Monitoring charts are developed in 2 phases. You will see the terminology of:
 
 .. index:: phase 1 (monitoring charts)
 
-*	**Phase 1**: building and testing the chart from historical data that you have collected. This phase is performed off-line, it is very iterative, and you will spend most of your time here. The primary purpose of this phase is to 
+*	**Phase 1**: building and testing the chart from historical data that you have collected. This phase is performed off-line, it is very iterative, and you will spend most of your time here. The primary purpose of this phase is to
 
 	-	find portions of the data that are from stable operation
 	-	use these stable portions to calculate suitable control chart limits
@@ -63,13 +63,13 @@ Monitoring charts are developed in 2 phases. You will see the terminology of:
 What should we monitor?
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Any variable can be monitored. However, the purpose of process monitoring is so that you can **react early** to bad, or unusual operation. This implies we should monitor variables as soon as they become available, preferably in real-time. They are more suitable than variables that take a long time to acquire (e.g. laboratory measurements). We should not have to wait to the end of the production line to find our process was out of statistical control. 
+Any variable can be monitored. However, the purpose of process monitoring is so that you can **react early** to bad, or unusual operation. This implies we should monitor variables as soon as they become available, preferably in real-time. They are more suitable than variables that take a long time to acquire (e.g. laboratory measurements). We should not have to wait to the end of the production line to find our process was out of statistical control.
 
 Data/measurements available at the start of your process, suc as raw material data from your supplier should also be monitored as soon as it is available, e.g. when received by your company, or even earlier - before the supplier ships it to you.
 
 Intermediate variables measured from sensors at all points along the production process are (a) available much more frequently and without delay, (b) are more precise, (c) are usually more meaningful to the operating staff than final quality variables from the lab, and (d) contain the "fingerprint" of the fault, helping the engineers with diagnosis of what the problem is and point to which part(s) of the process need adjustment (see `MacGregor (1997) <https://literature.learnche.org/item/75/using-on-line-process-data-to-improve-quality-challenges-for-statisticians>`_).
 
-Note that we do not have to monitor variables that are measured only from on-line sensors. The variable could be a calculation made from the on-line measurements. 
+Note that we do not have to monitor variables that are measured only from on-line sensors. The variable could be a calculation made from the on-line measurements.
 
 For example, an energy balance could be calculated from various thermocouples on the process and the degree of mismatch in the energy balance could be critical to quality. For example, the mismatch could indicate an unexpected source of heat into or out of the process - so monitor that mismatch, rather than the raw temperature data. Similarly, a mass balance can be monitored in real-time, such as a total mass balance, or a carbon (or other elemental) balance. This is common in the mining industry and bio-processing industries.
 
@@ -104,4 +104,3 @@ Every book on quality control gives a slightly different viewpoint, or uses diff
 In this book we will take "in-control" to mean that the behaviour of the process is stable over time. Note though, that in-control *does not* mean the variable of interest meets the specifications required by the customer, or set by the plant personnel. All that "in control" means is that there are no **special causes** in the data, i.e. the process is stable. A :index:`special cause`, or an :index:`assignable cause` is an event that occurs to move the process, or destabilize it. Process monitoring charts aim to detect such events. The opposite of "special cause" operation is :index:`common cause` operation, or stable process operation.
 
 .. note:: Our objective: quickly detect abnormal variation, and fix it by finding the root cause. In this section we look at the "detection" problem. Diagnosis and process adjustment are two separate steps that follow detection.
-

@@ -219,4 +219,3 @@ For each `.. figure::` directive, insert a small
   `<chapter>/index.rst` is one line; before pushing, run
   `grep -rn -E '\b[0-9]+\.[0-9]+\b' --include='*.rst' .` to confirm
   no prose hard-codes the old numbers.
-

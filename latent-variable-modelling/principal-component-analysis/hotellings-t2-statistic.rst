@@ -12,7 +12,7 @@ The final quantity from a PCA model that we need to consider is called Hotelling
 
 .. math::
 	T^2 = \sum_{a=1}^{a=A}{\left(\dfrac{t_{i,a}}{s_a}\right)^2}
-	
+
 where the :math:`s_a^2` values are constants, and are the variances of each component. The easiest interpretation is that |T2| is a scalar number that summarizes all the score values. Some other properties regarding |T2|:
 
 *	It is a positive number, greater than or equal to zero.
@@ -30,9 +30,9 @@ where the :math:`s_a^2` values are constants, and are the variances of each comp
 
 	.. math::
 		T^2_{A=2, \alpha=0.95} = \dfrac{t^2_{1}}{s^2_1} + \dfrac{t^2_{2}}{s^2_2}
-		
-	On a scatterplot of :math:`t_1` vs :math:`t_2` for all observations, this would be the equation of an ellipse, centered at the origin. You will often see this ellipse shown on :math:`t_i` vs :math:`t_j` scatterplots of the scores. Points inside this elliptical region are within the 95% confidence limit for |T2|. 
-	
+
+	On a scatterplot of :math:`t_1` vs :math:`t_2` for all observations, this would be the equation of an ellipse, centered at the origin. You will often see this ellipse shown on :math:`t_i` vs :math:`t_j` scatterplots of the scores. Points inside this elliptical region are within the 95% confidence limit for |T2|.
+
 *	The same principle holds for :math:`A>2`, except the ellipse is called a hyper-ellipse (think of a rugby-ball shaped object for :math:`A=3`). The general interpretation is that if a point is within this ellipse, then it is also below the |T2| limit, if |T2| were to be plotted on a line.
 
 .. image:: ../../figures/examples/tablet-spectra/spectral-data-t1-t2-scoreplot.png
@@ -40,10 +40,10 @@ where the :math:`s_a^2` values are constants, and are the variances of each comp
 	:scale: 80
 	:width: 750px
 	:align: center
-	
-	
+
+
 .. Take a look at Anderson, 1958 (An introduction to multivariate statistical analysis). Paper by MacGregor (https://dx.doi.org/10.1002/aic.690400509) cites this as the distribution for T2, with F as 2 and 48 DOF (2=because PC1 and PC2, and 48 = 50-2, where N=50 and A=2).
-	
+
 
 .. The PCA model as a way to extract information from noise
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -53,7 +53,7 @@ where the :math:`s_a^2` values are constants, and are the variances of each comp
 		- little systematic (repeatable) variation in the data
 		- we inspect the residuals to learn more about the system
 			-structure in the residuals?
-		
+
 
 	X = TP' + E
 	- data = information + error

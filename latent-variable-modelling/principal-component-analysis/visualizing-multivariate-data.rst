@@ -1,7 +1,7 @@
 Visualizing multivariate data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The data, collected in a matrix |X|, contains rows that represent an *object* of some sort. We usually call each row an *observation*. The observations in |X| could be a collection of measurements from a chemical process at a particular point in time, various properties of a final product, or properties from a sample of raw material. The columns in |X| are the values recorded for each observation. We call these the *variables*. 
+The data, collected in a matrix |X|, contains rows that represent an *object* of some sort. We usually call each row an *observation*. The observations in |X| could be a collection of measurements from a chemical process at a particular point in time, various properties of a final product, or properties from a sample of raw material. The columns in |X| are the values recorded for each observation. We call these the *variables*.
 
 Which variables should you use, and how many observations do you require? We address this issue later. For now though we consider that you have your data organized in this manner:
 
@@ -34,4 +34,3 @@ Another effective way to visualize small multivariate data sets is to use a scat
 	:scale: 70
 	:width: 900px
 	:align: center
-

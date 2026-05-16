@@ -31,11 +31,11 @@ Let's return to the :ref:`example of the 4 temperatures <LVM_room_temperature_ex
 So the loading vector for this example points in the direction :math:`\mathbf{p}'_1 = [0.25, 0.25, 0.25, 0.25]`. This isn't a unit vector though; but we can make it one:
 
 	*	Current magnitude of vector = :math:`\sqrt{0.25^2 + 0.25^2 + 0.25^2 + 0.25^2} = 0.50`
-	
+
 	*	Divide the vector by current magnitude: :math:`\mathbf{p}_1 = \dfrac{1}{0.5} \cdot [0.25, 0.25, 0.25, 0.25]`
-	
+
 	*	New, unit vector = :math:`\mathbf{p}_1 = [0.5, 0.5, 0.5, 0.5]`
-	
+
 	*	Check new magnitude = :math:`\sqrt{0.5^2 + 0.5^2 + 0.5^2 + 0.5^2} = 1.0`
 
 What would be the entries in the |p1| loading vector if we had 6 thermometers? (*Ans* = 0.41; in general, for :math:`K` thermometers, :math:`1/\sqrt{K}`).

@@ -188,4 +188,3 @@ The six-step workflow on these data:
 
 	Leverage, outliers, influence and discrepancy
 	- Chatterjee and Hadi paper (see PDF)
-

@@ -36,9 +36,9 @@ Confidence interval for the ratio of two variances
 
 One way to test whether we can pool (combine) two variances, taken from two different normal distributions, is to construct the ratio: :math:`\dfrac{s^2_1}{s^2_2}`. We can construct a confidence interval, and if this interval contains the value of 1.0, then we have no evidence to presume they are different (i.e. we can assume the two population variances are similar).
 
-.. math::	
+.. math::
 	:nowrap:
-	
+
 	\begin{alignat*}{4}
 		  F_{\alpha/2, \nu_1, \nu_2}\dfrac{s_2^2}{s_1^2} &\qquad<\qquad& \dfrac{\sigma_2^2}{\sigma_1^2} &\qquad<\qquad& F_{1-\alpha/2, \nu_1, \nu_2}\dfrac{s_2^2}{s_1^2}
 	\end{alignat*}
@@ -50,7 +50,7 @@ where we use :math:`F_{\alpha/2, \nu_1, \nu_2}` to mean the point along the cumu
 Confidence interval for proportions: the binomial proportion confidence interval
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. index:: 
+.. index::
 	single: confidence interval; for proportions
 
 Sometimes we measure the proportion of successes (passes). For example, if we take a sample of :math:`n` independent items from our production line, and with an inspection system we can judge pass or failure. The proportion of passes is what is important, and we wish to construct a confidence region for the population *proportion*. This allows one to say the population proportion of passes lies between the given range. As in *the proportion of packaged pizzas with 20 or more pepperoni slices is between 86 and 92\%*.
@@ -60,16 +60,16 @@ Incidentally, it is this confidence interval that is used in polls to judge the 
 .. Hypothesis tests; test of significance
 	=======================================
 
-	A confidence interval gives an engineer a sense of the precision of a parameter from a distribution. The engineer can then use their judgement to determine if that confidence interval is important to them or not. For example, knowing that your plastic product has a melting point of 455K to 495K, with 95% probability, can be used by your customer, e.g. 3M, to judge whether that product is suitable in their extruders. 
+	A confidence interval gives an engineer a sense of the precision of a parameter from a distribution. The engineer can then use their judgement to determine if that confidence interval is important to them or not. For example, knowing that your plastic product has a melting point of 455K to 495K, with 95% probability, can be used by your customer, e.g. 3M, to judge whether that product is suitable in their extruders.
 
-	A hypothesis test, or test of significance as it is also known, is use to make a statement, and then verify that statement. For example, 3M could say, we tried 8 samples of your plastic, and the average melting point for the 8 samples was 500K. Is that normal?  You product specification says your melting point is in the range 455K to 495K, with 95% probability. 
+	A hypothesis test, or test of significance as it is also known, is use to make a statement, and then verify that statement. For example, 3M could say, we tried 8 samples of your plastic, and the average melting point for the 8 samples was 500K. Is that normal?  You product specification says your melting point is in the range 455K to 495K, with 95% probability.
 
 	 455K to 495K. So then you go perform a hypothesis test to verify if 500K is reasonable. Your hypothesis is that 500K is not unusual. The alternative hypothesis is that 500K is unusual.
 
 	  What is the significance level?  How do you get to a test statistic?
-	  You must present strong evidence to 
+	  You must present strong evidence to
 
-	reject that statement (hypothesis), otherwise it is accepted; sometimes we are prone to say this with a double-negative: "*there is no evidence to show that the melting point is not 472K*". 
+	reject that statement (hypothesis), otherwise it is accepted; sometimes we are prone to say this with a double-negative: "*there is no evidence to show that the melting point is not 472K*".
 
 	Hypothesis tests always work in this way:
 
@@ -78,6 +78,5 @@ Incidentally, it is this confidence interval that is used in polls to judge the 
 		#. Specify a level of significance, a low probability number that indicates the threshold between a significant and insignificant difference, e.g. :math:`p = 0.05`. This number represents the strength of evidence we require
 		#. Then construct a test statistic, which is a function of the sampled data that ....
 		#. And define a rejection region, which is a region for the test statistic's values that will result in you rejecting the null hypothesis.
-	
-		.. todo:: how does this level change our answer as it varies?
 
+		.. todo:: how does this level change our answer as it varies?

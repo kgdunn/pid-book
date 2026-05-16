@@ -3,9 +3,9 @@
 More than one variable: multiple linear regression (MLR)
 ================================================================================
 
-.. index:: 
+.. index::
 	pair: multiple linear regression (MLR); least squares
-	
+
 .. youtube:: https://www.youtube.com/watch?v=qiv1nBCfwBg&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=27
 
 We now move to including more than one explanatory |x| variable in the linear model. We will:
@@ -13,19 +13,19 @@ We now move to including more than one explanatory |x| variable in the linear mo
  	#.	introduce some matrix notation for this section
 
 	#.	show how the optimization problem is solved to estimate the model parameters
-	
+
 	#.	how to interpret the model coefficients
-	
+
 	#.	extend our tools from the previous section to analyze the MLR model
-	
+
 	#.	use integer (yes/no *or* on/off) variables in our model.
 
 First some motivating examples:
 
 	-	A relationship exists between :math:`x_1` = reactant concentration and :math:`x_2` = temperature with respect to :math:`y` = reaction rate. We already have a linear model between :math:`y = b_0 + b_1x_1`, but we want to improve our understanding of the system by learning about the temperature effect, :math:`x_2`.
-	
+
 	-	We want to predict melt index in our reactor from the reactor temperature, but we know that the feed flow and pressure are also good explanatory variables for melt index. How do these additional variables improve the predictions?
-	
+
 	-	We know that the quality of our plastic product is a function of the mixing time, and also the mixing tank in which the raw materials are blended. How do we incorporate the concept of a mixing tank indicator in our model?
 
 ..	- Ian Nichols example
@@ -86,7 +86,7 @@ Estimating the model parameters via optimization
 As with the simple least squares model, :math:`y = b_0 + b_1 x`, we aim to minimize the sum of squares of the errors in vector :math:`\mathbf{e}`. This least squares objective function can be written compactly as:
 
 	.. math::
-	
+
 		\begin{array}{rl}
 		    f(\mathbf{b}) &= \mathbf{e}^T\mathbf{e} \\
 		                  &= \left(\mathbf{y} - \mathbf{X} \mathbf{b} \right)^T \left( \mathbf{y} - \mathbf{X} \mathbf{b} \right) \\
@@ -140,7 +140,7 @@ Notice what these matrices imply (remembering that the vectors in the matrices h
 The inverse of the :math:`\mathbf{X}^T\mathbf{X}` matrix is particularly important - it is related to the standard error for the model parameters - as in: :math:`\mathcal{V}\{\mathbf{b}\} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1} S_E^2`.
 
 .. math::
-	
+
 	\begin{array}{lr}
 		\left(\mathbf{X}^T\mathbf{X}\right)^{-1}= \begin{bmatrix} 0.323 & 0.297 \\ 0.297 & 0.289 \end{bmatrix}
 	\end{array}
@@ -273,9 +273,9 @@ Integer (dummy, indicator) variables in the model
 Now that we have introduced multiple linear regression to expand our models, we also consider these sort of cases:
 
 	-	We want to predict yield, but want to indicate whether a radial or axial impeller was used in the reactor and learn whether it has any effect on yield.
-	
+
 	-	Is there an important difference when we add the catalyst first and then the reactants, or the reactants followed by the catalyst?
-	
+
 	-	Use an indicator variable to show if the raw material came from the supplier in Spain, India, or Vietnam and interpret the effect of supplier on yield.
 
 	..	image:: ../figures/least-squares/Mixing_-_flusso_assiale_e_radiale.jpg
@@ -304,7 +304,7 @@ where :math:`d_i = 0` if an axial impeller was used, or :math:`d_i = 1` if a rad
 The :math:`\gamma` parameter, estimated by :math:`g`, is the difference in intercept when using a different impeller type. Note that the lines are parallel.
 
 .. math::
-	
+
 	\begin{array}{ll}
 		\text{Axial impellers:} \qquad &\qquad y = b_0 + 0 \\
 		\text{Radial impellers:} \qquad &\qquad y = b_0 + g
@@ -341,4 +341,3 @@ and solve for the least squares model: :math:`y = \beta_0 + \beta_1x_1 + \ldots 
 	- Vietnam: :math:`d_{i1} = 0` and :math:`d_{i2} = 0` and :math:`d_{i3} = 1`
 
 and :math:`y = \beta_0 + \beta_1x_1 + \ldots + \beta_k x_k + \gamma_1 d_1 + \gamma_2 d_2 + \gamma_3 d_3 + \varepsilon`, where the coefficients :math:`\gamma_1, \gamma_2` and :math:`\gamma_3` are assumed to be more easily interpreted. However, calculating this model will fail, because there is a built-in perfect linear combination. The :math:`\mathbf{X}^T\mathbf{X}` matrix is not invertible.
-

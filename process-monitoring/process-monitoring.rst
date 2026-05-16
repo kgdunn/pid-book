@@ -1,13 +1,13 @@
 .. Header notes
    -------------
-	
+
 	=====
 	~~~~~
 	^^^^^
 	-----
-	
-.. MIT courseware: https://ocw.mit.edu/OcwWeb/Mechanical-Engineering/2-830JSpring-2008/VideoLectures/index.htm	
-		
+
+.. MIT courseware: https://ocw.mit.edu/OcwWeb/Mechanical-Engineering/2-830JSpring-2008/VideoLectures/index.htm
+
 .. TODO list of plots
     Plot of Shewhart chart
         - just showing target + data
@@ -18,9 +18,9 @@
 	Boards thickness monitoring chart
 	Show chart for Shewhart example in class
 	Case study: total energy input
-	
+
 	Explain how to change Cpk if it is undesirable
-	
+
 
 Process monitoring in context
 ==============================
@@ -29,7 +29,7 @@ In the first section we learned about :ref:`visualizing data <SECTION-data-visua
 
 Monitoring charts are a graphical tool, enabling anyone to rapidly detect a problem by visual analysis. The next logical step after detection of a problem is to diagnose it, but we will cover diagnosis in the section on :ref:`latent variable models <SECTION_latent_variable_modelling>`.
 
-This section is the last section where we deal with univariate data; after this section we start to use and deal with 2 or more variables. 
+This section is the last section where we deal with univariate data; after this section we start to use and deal with 2 or more variables.
 
 Usage examples
 ~~~~~~~~~~~~~~~
@@ -45,7 +45,7 @@ The material in this section is used whenever you need to rapidly detect problem
 	-	*Yourself*: We know that as the position of a manufacturing robot moves out of alignment that our product starts becoming inconsistent; more variable. How can we quickly detect this slow drift in alignment and predict when to stop the process and perform preventative maintenance?
 	-	*Manager*: the hourly average profit, and process throughput is important to the head-office; can we create a system for them to track that?
 	-	*Potential customer*: what is your process capability - we are looking for a new supplier that can provide a low-variability raw material for us with |Cpk| of at least 1.6, preferably higher.
-	
+
 **Note**: process monitoring is mostly *reactive* and not *proactive*. So it is suited to *incremental* process improvement, which is typical of most improvements. However, using the monitoring charts to make proactive changes to avoid a bigger problem later in time is certainly possible by adding additional rules and calculations to the plots. For example, rules to forecast a few steps ahead, with prediction intervals, can be easily added.
 
 We point out in the :ref:`next section <monitoring_is_not_feedback_control>` that process monitoring is not a feedback control system. So that section should be read in the context of thinking reactively and proactively (in a feed forward anticipatory manner).
@@ -58,7 +58,7 @@ We will consider 3 main charts after introducing some basic concepts: Shewhart c
 Concepts
 ~~~~~~~~~~~~~~~
 
-Concepts and acronyms that you must be familiar with by the end of this section: 
+Concepts and acronyms that you must be familiar with by the end of this section:
 
 	*	Shewhart chart, CUSUM chart and EWMA chart
 	*	Phase 1 and phase 2 when building a monitoring system
@@ -86,9 +86,9 @@ References and readings
 
 #.	MacGregor, J.F. "`Using On-Line Process Data to Improve Quality: Challenges for Statisticians <https://literature.learnche.org/item/75/using-on-line-process-data-to-improve-quality-challenges-for-statisticians>`_", *International Statistical Review*, **65**, p 309-323, 1997.
 
-.. 
+..
 	Box, The R. A. Fisher Memorial Lecture, 1988- Quality Improvement- An Expanding Domain for the Application of Scientific Method, Phil. Trans. R. Soc. Lond. A February 24, 1989 327:617-630, [https://dx.doi.org/10.1098/rsta.1989.0017 DOI]
-	
+
 .. (Not available): Box critique of Taguchi methods: https://dx.doi.org/10.1002/qre.4680040207
 ..	Bisgaard, S., "`The Quality Detective: A Case Study <https://dx.doi.org/10.1098/rsta.1989.0006>`_", Philosophical Transactions of the Royal Society-A, **327**, p 499-511, 1989.
 .. UMetrics book: review chapter on (M)SPC
@@ -97,4 +97,3 @@ References and readings
 .. EWMV paper by MacGregor?
 .. Box, G.E.P., Comparisons, Absolute Values, and How I Got to Go to the Folies Bergeres, Quality Engineering, 14(1), p167-169, 2001.
 .. p 669 of Devore: see also Technometrics, 1989, p173-184, by David M Rocke
-

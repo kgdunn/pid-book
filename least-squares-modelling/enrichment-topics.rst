@@ -140,17 +140,17 @@ Logistic modelling (regression)
 There are many practical cases in engineering modelling where our |y|-variable is a discrete entity. The most common case is pass or failure, naturally coded as |y| = 0 for failure, and |y| = 1 is coded as success. Some examples:
 
 	*	Predict whether our product specifications are achieved (|y| = 0 or 1) given the batch reaction's temperature as :math:`x_1`, the reaction duration :math:`x_2` and the reactor vessel, where :math:`x_3=0` for reactor A and :math:`x_3=1` for reactor B.
-	
+
 	*	Predict the likelihood of making a sale in your store (|y| = 0 or 1), given the customer's age :math:`x_1`, whether they are a new or existing customers, :math:`x_2` is either 0 or 1, and the day of the week as :math:`x_3`.
-	
+
 	*	Predict if the final product will be |y| = acceptable, medium, or unsellable based on the raw material's properties :math:`x_1, x_2, x_3` and the ambient temperature :math:`x_4`.
 
 We could naively assume that we just code our |y| variable as 0 or 1 (pass/fail) and build our least squares model as usual, using the |x| variables. While a seemingly plausible approach, the problems are that:
 
 	-	The predictions when using the model are not dichotomous (0 or 1), which is not too much of a problem if we interpret our prediction more as a probability. That is, our prediction is the probability of success or failure, according to how we coded it originally. However the predictions often lie outside the range :math:`[0, 1]`.  We can attempt to compensate for this by clamping the output to zero or one, but this non-linearity causes instability in the estimation algorithms.
-	
+
 	-	The errors are not normally distributed.
-	
+
 	-	The variance of the errors are not constant and the assumption of linearity breaks down.
 
 .. image:: ../figures/least-squares/logistic-regression-function.png
@@ -174,7 +174,7 @@ Before launching into this concept, first step back and understand why we are bu
 The gold standard is always to have a :index:`testing data <pair: testing data; least squares>` set available to quantify how good (adequate) your least squares model is. It is important that (a) the test set has no influence on the calculation of the model parameters, and (b) is representative of how the model will be used in the future. We will illustrate this with 2 examples: you need to build a predictive model for product viscosity from 3 variables on your process. You have data available, once per day, for 2006 and 2007 (730 observations).
 
 	*	Use observation 1, 3, 5, 7, ... 729 to build the least squares model; then use observation 2, 4, 6, 8, ... 730 to test the model.
-	
+
 	*	Use observations 1 to 365 (data from 2006) to build the model, and then use observations 366 to 730 (data from 2007) to test the model.
 
 In both cases, the testing data has no influence on the model parameters. However the first case is not representative of how the model will be used in the future. The results from the first case are likely to give over-optimistic results, while the second case represents the intended use of the model more closely, and will have more honest results. Find out sooner, rather than later, that the model's long-term performance is not what you expect. It may be that you have to keep rebuilding the model every 3 months, updating the model with the most recent data, in order to maintain it's predictive performance.
@@ -206,7 +206,7 @@ Let's give an example where :index:`bootstrapping` is strictly not required, but
 In the preceding section on least squares model analysis we :ref:`derived this confidence interval <LS_eqn_least-squares-CI>` for :math:`\beta_1`, repeated here:
 
 	.. math::
-		
+
 		\begin{array}{rcccl}
 			- c_t                  &\leq& \dfrac{b_1 - \beta_1}{S_E(b_1)} &\leq &  +c_t\\
 			  b_1 - c_t S_E(b_1)   &\leq& \beta_1                         &\leq&	b_1 + c_t S_E(b_1)
@@ -222,21 +222,21 @@ The thick line represents the slope coefficient (:math:`-0.0059`) using all the 
 		:scale: 65
 		:alt: fake width
 
-Bootstrapping gives us an indication of that sensitivity, as shown in the other plot. The original data set had 14 observations. What bootstrapping does is to randomly select 14 rows from the original data, allowing for duplicate selection. These selected rows are used to build a least squares model, and the slope coefficient is recorded. Then another 14 random rows are selected and this process is repeated ``R`` times (in this case ``R=1000``). On some of these occasions the outlier points will be included, and other times they will be excluded. 
+Bootstrapping gives us an indication of that sensitivity, as shown in the other plot. The original data set had 14 observations. What bootstrapping does is to randomly select 14 rows from the original data, allowing for duplicate selection. These selected rows are used to build a least squares model, and the slope coefficient is recorded. Then another 14 random rows are selected and this process is repeated ``R`` times (in this case ``R=1000``). On some of these occasions the outlier points will be included, and other times they will be excluded.
 
 A histogram of the 1000 computed slope coefficients is shown here. This histogram gives us an additional indication of the uncertainty of the slope coefficient. It shows many possible slope coefficients that could have been obtained. One in particular has been marked, the slope when point 13 was omitted.
 
 For completeness the confidence interval at the 95% level for :math:`\beta_1` is calculated here, and also superimposed on the histogram.
 
 .. math::
-	
+
 	\begin{array}{rcccl}
 		- c_t                  					&\leq& \dfrac{b_1 - \beta_1}{S_E(b_1)} &\leq &  +c_t\\
 		  -0.005915 - 2.1788 \times 0.001047  	&\leq& \beta_1   &\leq&	-0.005915 + 2.1788 \times 0.001047 \\
 		  -0.0082 								&\leq& \beta_1   &\leq& -0.0036
 	\end{array}
 
-This confidence interval, together with the bootstrapped values of :math:`b_1` give us additional insight when when making our interpretation of :math:`b_1`. 
+This confidence interval, together with the bootstrapped values of :math:`b_1` give us additional insight when when making our interpretation of :math:`b_1`.
 
 By now you should also be wondering whether you can bootstrap the confidence interval bounds! That's left as exercise for interested readers. The above example was inspired from an example in `ASA Statistics Computing and Graphics <https://stat-computing.org/newsletter/>`_, **13** (1), 2002. The standard reference on the bootstrap is `Efron and Tibshirani (1993) <https://literature.learnche.org/item/93/an-introduction-to-the-bootstrap>`_, *An Introduction to the Bootstrap*, Chapman and Hall.
 
@@ -251,4 +251,3 @@ By now you should also be wondering whether you can bootstrap the confidence int
 	The variable selection problem is ...
 
 	We will start off by saying that variable selection is a topic that is widely and actively researched.
-

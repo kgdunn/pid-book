@@ -7,9 +7,9 @@ Principal Component Analysis (PCA)
 .. Next sections must address:
 
 	Which variables should you use, and how many observations do you require?
-	
+
 	Add a part about the biplot:
-	
+
 	*	Gabriel, K. R. (1971). The biplot graphical display of matrices with applications to principal component analysis. Biometrika, 58, 453–467.
 	*	Gabriel, K. R. and Odoroff, C. L. (1990). Biplots in biomedical research. Statistics in Medicine, 9, 469–485.
 	*	J.C. Gower and D.J. Hand. Biplots. Number 54 in Monographs on Statistics and Applied Probability. Chapman and Hall, London, UK, 1996.
@@ -18,7 +18,7 @@ Principal Component Analysis (PCA)
 
 Principal component analysis, PCA, builds a model for a matrix of data.
 
-A model is always an approximation of the system from where the data came. The objectives for which we use that model :ref:`can be varied <LVM_extracting_value_from_data>`. 
+A model is always an approximation of the system from where the data came. The objectives for which we use that model :ref:`can be varied <LVM_extracting_value_from_data>`.
 
 In this section we will start by visualizing the data as well as consider a simplified, geometric view of what a PCA model looks like. A mathematical analysis of PCA is also required to get a deeper understanding of PCA, so we go into some detail on that point, however it can be skipped on first reading.
 
@@ -46,6 +46,3 @@ The first part of this section emphasizes the general interpretation of a PCA mo
    using-indicator-variables-in-a-latent-variable-model
    visualization-latent-variable-models-with-linking-and-brushing
    pca-exercises
-   
-   
-   

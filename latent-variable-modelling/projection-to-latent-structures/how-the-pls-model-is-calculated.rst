@@ -16,15 +16,15 @@ This section assumes that you are comfortable with the :ref:`NIPALS algorithm fo
 	:width: 900px
 	:align: center
 
-The algorithm starts by selecting a column from :math:`\mathbf{Y}_a` as our initial estimate for :math:`\mathbf{u}_a`. The :math:`\mathbf{X}_a` and  :math:`\mathbf{Y}_a` matrices are just the preprocessed version of the raw data when :math:`a=1`. 
+The algorithm starts by selecting a column from :math:`\mathbf{Y}_a` as our initial estimate for :math:`\mathbf{u}_a`. The :math:`\mathbf{X}_a` and  :math:`\mathbf{Y}_a` matrices are just the preprocessed version of the raw data when :math:`a=1`.
 
    **Arrow 1**
       Perform |K| regressions, regressing each column from :math:`\mathbf{X}_a` onto the vector :math:`\mathbf{u}_a`. The slope coefficients from the regressions are stored as the entries in :math:`\mathbf{w}_a`. Columns in :math:`\mathbf{X}_a` which are strongly correlated with :math:`\mathbf{u}_a` will have large weights in :math:`\mathbf{w}_a`, while unrelated columns will have small, close to zero, weights. We can perform these regression in one go:
 
       .. math::
 			\mathbf{w}_a = \dfrac{1}{\mathbf{u}'_a\mathbf{u}_a} \cdot \mathbf{X}'_a\mathbf{u}_a
-	
-	
+
+
    **Step 2**
       Normalize the weight vector to unit length: :math:`\mathbf{w}_a = \dfrac{\mathbf{w}_a}{\sqrt{\mathbf{w}'_a \mathbf{w}_a}}`.
 
@@ -39,7 +39,7 @@ The algorithm starts by selecting a column from :math:`\mathbf{Y}_a` as our init
 
       .. math::
 			\mathbf{c}_a = \dfrac{1}{\mathbf{t}'_a\mathbf{t}_a} \cdot \mathbf{Y}'_a\mathbf{t}_a
-			
+
    **Arrow 5**
       Finally, regress each of the :math:`N` rows in :math:`\mathbf{Y}_a` onto this weight vector, :math:`\mathbf{c}_a`. Observations in :math:`\mathbf{Y}_a` that are strongly related to :math:`\mathbf{c}_a` will have large positive or negative slope coefficients in vector :math:`\mathbf{u}_a`:
 
@@ -48,7 +48,7 @@ The algorithm starts by selecting a column from :math:`\mathbf{Y}_a` as our init
 
 This is one round of the NIPALS algorithm. We iterate through these 4 arrow steps until the :math:`\mathbf{u}_a` vector does not change much. On convergence, we store these 4 vectors: :math:`\mathbf{w}_a, \mathbf{t}_a, \mathbf{c}_a`, and :math:`\mathbf{u}_a`, which jointly define the :math:`a^{\text{th}}` component.
 
-.. Research topic: if we deflate |X| using the u's, predicted from |Y| and |c|, then how does the second component look?  Can we calculate all the |P| loadings after NIPALS has completed all components? 
+.. Research topic: if we deflate |X| using the u's, predicted from |Y| and |c|, then how does the second component look?  Can we calculate all the |P| loadings after NIPALS has completed all components?
 
 
 .. TO ADD: discussion of the X-space model, the loadings. We assume the X's are measured in error X= TP' + E, so we have a model for the X's.
@@ -69,10 +69,10 @@ Then we deflate. Deflation removes variability already explained from :math:`\ma
 
       This whole discussion might also leave you asking why we even bother to have predictions of the :math:`\mathbf{X}`. We do this primarily to ensure orthogonality among the |t|-scores, by removing everything from :math:`\mathbf{X}_a` that those scores explain (see the next deflation step).
 
-      These predictions of :math:`\widehat{\mathbf{X}}` are also used to calculate the squared prediction error, a very important consistency check when using the PLS model on new data. 
+      These predictions of :math:`\widehat{\mathbf{X}}` are also used to calculate the squared prediction error, a very important consistency check when using the PLS model on new data.
 
    **Step 2: Remove the predicted variability from X and Y**
-      Using the loadings, :math:`\mathbf{p}_a` just calculated above, we remove from :math:`\mathbf{X}_a` the best prediction of :math:`\mathbf{X}_a`, in other words, remove everything we can explain about it. 
+      Using the loadings, :math:`\mathbf{p}_a` just calculated above, we remove from :math:`\mathbf{X}_a` the best prediction of :math:`\mathbf{X}_a`, in other words, remove everything we can explain about it.
 
       .. math::
           \widehat{\mathbf{X}}_a &= \mathbf{t}_a \mathbf{p}'_a \\
@@ -95,7 +95,7 @@ Then we deflate. Deflation removes variability already explained from :math:`\ma
 The algorithm repeats all over again using the deflated matrices for the subsequent iterations.
 
 
-.. _LVM_PLS_W_and_R: 
+.. _LVM_PLS_W_and_R:
 
 What is the difference between |W| and |R|?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -103,7 +103,7 @@ What is the difference between |W| and |R|?
 After reading about the :ref:`NIPALS algorithm for PLS <LVM_PLS_calculation>` you should be aware that we deflate the |X| matrix after every component is extracted. This means that :math:`\mathbf{w}_1` are the weights that best predict the :math:`\mathbf{t}_1` score values, our summary of the data in :math:`\mathbf{X}_{a=1}` (the preprocessed raw data). Mathematically we can write the following:
 
 .. math::
-	\mathbf{t}_1 = \mathbf{X}_{a=1} \mathbf{w}_1 = \mathbf{X}_1 \mathbf{w}_1 
+	\mathbf{t}_1 = \mathbf{X}_{a=1} \mathbf{w}_1 = \mathbf{X}_1 \mathbf{w}_1
 
 The problem comes once we deflate. The :math:`\mathbf{w}_2` vector is calculated from the deflated matrix :math:`\mathbf{X}_{a=2}`, so  interpreting these scores is a quite a bit harder.
 
@@ -112,13 +112,13 @@ The problem comes once we deflate. The :math:`\mathbf{w}_2` vector is calculated
 	\mathbf{t}_2 = \mathbf{X}_2 \mathbf{w}_2 &= \left(\mathbf{X}_1 - \mathbf{t}_1 \mathbf{p}'_1 \right) \mathbf{w}_2 \\
 	                                         &= \left(\mathbf{X}_1 - \mathbf{X}_1 \mathbf{w}_1 \mathbf{p}_1 \right) \mathbf{w}_2
 
-The :math:`\mathbf{w}_2` is not really giving us insight into the relationships between the score, :math:`\mathbf{t}_2`, and the data, :math:`\mathbf{X}`, but rather between the score and the *deflated* data, :math:`\mathbf{X}_2`. 
+The :math:`\mathbf{w}_2` is not really giving us insight into the relationships between the score, :math:`\mathbf{t}_2`, and the data, :math:`\mathbf{X}`, but rather between the score and the *deflated* data, :math:`\mathbf{X}_2`.
 
 Ideally we would like a set of vectors we can interpret directly; something like:
 
 .. math::
 	\mathbf{t}_a = \mathbf{X} \mathbf{r}_a
-	
+
 One can show, using repeated substitution, that a matrix |R|, whose columns contain :math:`\mathbf{r}_a`, can be found from: :math:`\mathbf{R} = \mathbf{W}\left(\mathbf{P}'\mathbf{W}\right)^{-1}`. The first column, :math:`\mathbf{r}_1 = \mathbf{w}_1`.
 
 So our preference is to interpret the |R| weights (often called :math:`\mathbf{W}^*` in some literature), rather than the |W| weights when investigating the relationships in a PLS model.

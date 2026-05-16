@@ -15,14 +15,14 @@ In PLS, we also find these latent variables, but we find them so they best expla
 In other words, there are three simultaneous objectives with PLS:
 
 	#. The best explanation of the |X|-space.
-	
+
 	#. The best explanation of the |Y|-space.
-	
+
 	#. The greatest relationship between the |X|- and |Y|-space.
 
 .. _LVM_PLS_mathematical_interpretation:
 
-A mathematical/statistical interpretation of PLS 
+A mathematical/statistical interpretation of PLS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We will get back to the :ref:`mathematical details later on <LVM_PLS_calculation>`, but we will consider our conceptual explanation above in terms of mathematical symbols.
@@ -50,13 +50,13 @@ Now let's look at PLS. Earlier we said that PLS extracts a single set of scores,
 	\mathbf{t}_a &= \mathbf{X}_a \mathbf{w}_a \qquad &\text{for the $\mathbf{X}$-space} \\
 	\mathbf{u}_a &= \mathbf{Y}_a \mathbf{c}_a \qquad &\text{for the $\mathbf{Y}$-space}
 	\end{align*}
-	
+
 The objective of PLS is to extract these scores so that they have *maximal covariance*. Let's take a look at this. :ref:`Covariance was shown <LS_covariance>` to be:
-	
+
 .. math::
 
-	\text{Cov}\left(\mathbf{t}_a, \mathbf{u}_a\right) = \mathcal{E}\left\{ (\mathbf{t}_a - \overline{\mathbf{t}}_a) (\mathbf{u}_a - \overline{\mathbf{u}}_a)\right\} 
-	
+	\text{Cov}\left(\mathbf{t}_a, \mathbf{u}_a\right) = \mathcal{E}\left\{ (\mathbf{t}_a - \overline{\mathbf{t}}_a) (\mathbf{u}_a - \overline{\mathbf{u}}_a)\right\}
+
 Using the fact that these scores have mean of zero, the covariance is proportional (with a constant scaling factor of :math:`N`) to :math:`\mathbf{t}'_a \mathbf{u}_a`. So in summary, each component in PLS is maximizing that covariance, or the dot product: :math:`\mathbf{t}'_a \mathbf{u}_a`.
 
 Now covariance is a hard number to interpret; about all we can say with a covariance number is that the larger it is, the greater the relationship, or *correlation*, between two vectors. So it is actually more informative to rewrite covariance in terms of :ref:`correlations <LS_correlation>` and variances:
@@ -69,9 +69,9 @@ Now covariance is a hard number to interpret; about all we can say with a covari
 As this shows then, maximizing the covariance between :math:`\mathbf{t}'_a` and :math:`\mathbf{u}_a` is actually maximizing the 3 simultaneous objectives mentioned earlier:
 
 	#. The best explanation of the |X|-space: given by :math:`\mathbf{t}'_a \mathbf{t}_a`
-	
+
 	#. The best explanation of the |Y|-space. given by :math:`\mathbf{u}'_a \mathbf{u}_a`
-	
+
 	#. The greatest relationship between the |X|- and |Y|-space: given by :math:`\text{correlation}\left(\mathbf{t}_a, \mathbf{u}_a\right)`
 
 These scores, :math:`\mathbf{t}'_a` and :math:`\mathbf{u}_a`, are found subject to the constraints that :math:`\mathbf{\mathbf{w}'_a \mathbf{w}_a} = 1.0` and :math:`\mathbf{\mathbf{c}'_a \mathbf{c}_a} = 1.0`. This is similar to PCA, where the loadings :math:`\mathbf{p}_a` were constrained to unit length. In PLS we constrain the loadings for |X|, called :math:`\mathbf{w}_a`, and the loadings for |Y|, called :math:`\mathbf{c}_a`, to unit length.
@@ -85,7 +85,7 @@ The above is a description of one variant of PLS, `known as SIMPLS <https://lite
 
 .. _LVM_PLS_geometric_interpretation:
 
-A geometric interpretation of PLS 
+A geometric interpretation of PLS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :ref:`As we did with PCA <LVM_PCA_geometric_interpretation>`, let's take a geometric look at the PLS model space. In the illustration below we happen to have :math:`K=3` variables in |X|, and :math:`M=3` variables in |Y|. (In general :math:`K \neq M`, but :math:`K=M=3` make explanation in the figures easier.)  Once the data are centered and scaled we have just shifted our coordinate system to the origin. Notice that there is one dot in |X| for each dot in |Y|. Each dot represents a row from the corresponding |X| and |Y| matrix.

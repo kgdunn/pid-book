@@ -1,5 +1,5 @@
 .. TODO
-	
+
 	=====
 	~~~~~
 	^^^^^
@@ -71,23 +71,23 @@ Usage examples
 
 .. index::
 	pair: usage examples; least squares
-	
+
 .. youtube:: https://www.youtube.com/watch?v=RW_8yKbMzUA&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=18
 
 The material in this section is used whenever you need to interpret and quantify the relationship between two or more variables.
 
 	-	*Colleague*: How is the yield from our lactic acid batch fermentation related to the purity of the sucrose substrate?
-	
+
 		*You*: The yield can be predicted from sucrose purity with an error of plus/minus 8%
-		
+
 		*Colleague*: And how about the relationship between yield and glucose purity?
-		
+
 		*You*: Over the range of our historical data, there is no discernible relationship.
-		
+
 	-	*Engineer 1*: The theoretical equation for the melt index is non-linearly related to the viscosity
-	
+
 		*Engineer 2*: The linear model does not show any evidence of that, but the model's prediction ability does improve slightly when we use a non-linear transformation in the least squares model.
-		
+
 	-	*HR manager*: We use a least squares regression model to graduate personnel through our pay grades. The model is a function of education level and  number of years of experience. What do the model coefficients mean?
 
 What you will be able to do after this section
@@ -105,7 +105,7 @@ What you will be able to do after this section
 	#. The relationship between correlation, covariance and variance
 	#. Introduction to bivariate least squares (the linear relationship between 2 variables).
 	#. We will also discuss the short-sighted idiom that is often repeated: *correlation does not imply causation* and complete it by understanding that *correlation is a necessary, but not sufficient, condition for causality*. We will take a look at an example of correlation and understand that it is impossible to imply causality without doing intentional experimentation.
-	
+
 .. _LS_references:
 
 References and readings
@@ -113,7 +113,7 @@ References and readings
 
 .. index::
 	pair: references and readings; least squares
-	
+
 This section is only a simple review of the least squares model. More details may be found in these references.
 
 -	**Recommended**: John Fox, *Applied Regression Analysis and Generalized Linear Models*, Sage.
@@ -131,4 +131,3 @@ This section is only a simple review of the least squares model. More details ma
 ..	S. Chatterjee and A. S. Hadi, `Influential Observations, High Leverage Points, and Outliers in Linear Regression <https://www.jstor.org/stable/2245477>`_, *Statistical Science*, **1** (3), 379-416, 1986.
 
 .. G.E.P. Box, `Use and Abuse of Regression <https://www.jstor.org/stable/1266635>`_, *Technometrics*, **8** (4), 625-629, 1966.
-

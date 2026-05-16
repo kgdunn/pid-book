@@ -3,7 +3,7 @@ PCA Exercises
 
 .. index::
 	pair: exercises; latent variable modelling
-	
+
 Each exercise introduces a new topic or highlights some interesting aspect of PCA.
 
 Room temperature data
@@ -48,7 +48,7 @@ Now use the :ref:`concept of brushing <LVM_linking_brushing>` to interrogate and
 
 #.	Next plot the Hotelling's |T2| line plot, as :ref:`described earlier <LVM-Hotellings-T2>`. Does the 95% limit in the Hotelling's |T2| line plot correspond to the 95% limit in the score plot?
 
-#.	Also plot the SPE line plot. Brush the outlier in the SPE plot and find its location in the score plot. 
+#.	Also plot the SPE line plot. Brush the outlier in the SPE plot and find its location in the score plot.
 
 #.	Why does this point have a large SPE value?
 
@@ -176,7 +176,7 @@ The block below runs the whole analysis end-to-end, including the hand-calculati
 Food consumption data set
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This data set has become a classic data set when learning about multivariate data analysis. It consists of 
+This data set has become a classic data set when learning about multivariate data analysis. It consists of
 
 *	:math:`N=16` countries in the European area
 *	:math:`K=20` food items
@@ -214,7 +214,7 @@ Silicon wafer thickness
 * :math:`N=184`
 * :math:`K=9`
 * Web address: https://openmv.net/info/silicon-wafer-thickness
-* Description: These are nine thickness measurements recorded from various batches of silicon wafers. One wafer is removed from each batch and the thickness of the wafer is measured at the nine locations, as shown in the illustration. 
+* Description: These are nine thickness measurements recorded from various batches of silicon wafers. One wafer is removed from each batch and the thickness of the wafer is measured at the nine locations, as shown in the illustration.
 
 .. figure:: ../../figures/examples/silicon-wafer-thickness/silicon-wafer-thickness-locations.png
 	:alt:	../../figures/examples/silicon-wafer-thickness/silicon-wafer-thickness-locations.svg
@@ -226,7 +226,7 @@ Silicon wafer thickness
 
 #.	Plot the scores for the first two components. What do you notice?  Investigate the outliers, and the raw data for each of these unusual observations. What do you conclude about those observations?
 
-#.	Exclude the unusual observations and refit the model. 
+#.	Exclude the unusual observations and refit the model.
 
 #.	Now plot the scores plot again; do things look better?  Record the :math:`R^2` and :math:`Q^2` values (from cross-validation) for the first three components. Are the :math:`R^2` and :math:`Q^2` values close to each other; what does this mean?
 
@@ -335,7 +335,7 @@ What we learned:
 * Variability in a process can very often be interpreted. The :math:`R^2` and :math:`Q^2` values for each component show which part of the variability in the system is due the particular phenomenon modelled by that component.
 * Splitting the data into a model-building portion (the first 100 wafers) and a held-out portion (the remaining 84) is what tells you whether the structure the model has captured generalises beyond the period it was fit on; new outliers showing up in the held-out portion are the early warning that the process has shifted.
 
-	
+
 .. _LVM-process-troubleshooting-plastic-pellets:
 
 Process troubleshooting
@@ -365,7 +365,7 @@ Import the data, and set the ``Outcome`` variable as a secondary identifier for 
 
 #.	Interpret component 1, 2 and 3 separately (using the loadings bar plot).
 
-#.	Now plot the score plot for components 1 and 2, and colour code the score plot with the ``Outcome`` variable. Interpret why observations with ``Poor`` outcome are at their locations in the score plot (use a contribution plot). 
+#.	Now plot the score plot for components 1 and 2, and colour code the score plot with the ``Outcome`` variable. Interpret why observations with ``Poor`` outcome are at their locations in the score plot (use a contribution plot).
 
 #.	What would be your recommendations to your manager to get more of your batches classified as ``Adequate`` rather than ``Poor``?
 
@@ -382,19 +382,17 @@ What we learned:
 
 .. Principal properties of surfactants
 .. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. 
+..
 .. * :math:`N=38`
 .. * :math:`K=19`
 .. * :math:`M=4`
 .. * Missing data: yes
 .. * Web address: https://openmv.net/info/surfactants
 .. * Description: These 38 non-ionic surfactants, ingredients for making a detergent, were characterized (described) by taking 19 measurements (the other 4 columns will be used in a future study). The first purpose of this data set was to understand how these 19 properties are related to each other, and to find a representative sub-sample from the rows in |X| which could be selected for further study.
-.. 
+..
 .. #.	Import the data, making sure you *exclude* the ``YDet``, ``YConc``, ``YTemp``, and ``YTox`` variables. Build a PCA model on the 19 columns in remaining in |X|.
 .. #.	Study the first two components. What do you notice in the score plot?  Investigate this feature that seems interesting and try to explain why it occurs.
 .. #.	Exclude the cluster (they were related to surfactants which were too lipophilic) for the rest of the study.
-.. #.	Rebuild the model. 
+.. #.	Rebuild the model.
 .. #.	Since the purpose of the original data set was to find a smaller group of samples that are representative of all surfactants, which samples would you select for further study and why?
 .. #.	Save the :math:`t_1` *vs* :math:`t_2` score plot to a figure (e.g. BMP) and mark these samples on it to show your colleagues/manager.
-
-
