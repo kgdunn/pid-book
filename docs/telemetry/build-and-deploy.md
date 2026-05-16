@@ -122,7 +122,7 @@ Two changes in [`.github/workflows/build-deploy.yml`](../../.github/workflows/bu
 ```
 
 * The ternary `github.event_name != 'pull_request' && '1' || '0'`
-  evaluates to `"1"` for `push` (master) and `workflow_dispatch`,
+  evaluates to `"1"` for `push` (main) and `workflow_dispatch`,
   and to `"0"` for `pull_request`. Belt-and-braces: even if this
   condition were wrong, the existing `if: github.event_name !=
   'pull_request'` on the Deploy step (line 126) prevents PR HTML

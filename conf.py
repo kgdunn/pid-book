@@ -261,7 +261,7 @@ html_secnumber_suffix = r". "
 
 
 # -- Optional production-only telemetry ----------------------------------------
-# Off by default; enabled in CI for the master/deploy build via env vars.
+# Off by default; enabled in CI for the main/deploy build via env vars.
 # See `_static/js/telemetry.js` and `privacy.rst` for what is collected.
 TELEMETRY_ENABLED = os.environ.get("PID_BOOK_TELEMETRY", "0") == "1"
 TELEMETRY_GC_CODE = os.environ.get("PID_BOOK_GC_CODE", "")

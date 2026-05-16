@@ -66,10 +66,10 @@ code and override the GitHub variable.
      `pid-book`).
    * Use a **variable**, not a secret. The site code is not
      credentials — it ends up in every page's HTML.
-4. **Trigger a non-PR build.** Push a small commit to master, or use
+4. **Trigger a non-PR build.** Push a small commit to main, or use
    the **Actions → Build and deploy book → Run workflow** button on
    GitHub. PR builds intentionally ship with telemetry off, so you
-   need a master push or a `workflow_dispatch` to verify.
+   need a main push or a `workflow_dispatch` to verify.
 5. **Verify** by opening any production page in a private window
    with extensions disabled, then watching the GoatCounter dashboard
    for 30 seconds. The hit should appear under "Pages". Type
@@ -191,7 +191,7 @@ and force the env var to `'0'`:
   run: uv run make html
 ```
 
-Push to master. The next deploy ships HTML with no script tag and no
+Push to main. The next deploy ships HTML with no script tag and no
 sparkline mount. The Privacy page remains (it's a published URL; we
 don't 404 it on a whim).
 

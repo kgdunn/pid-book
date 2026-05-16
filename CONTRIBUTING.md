@@ -20,14 +20,14 @@ the [Google Form](https://docs.google.com/forms/d/1IpO-bvJwQwhK64eid4YXwJBvGxN5c
 
 ## Workflow
 
-1. Fork the repo and create a topic branch off `master`.
+1. Fork the repo and create a topic branch off `main`.
 2. Build the book locally (see [README.md](README.md)) and verify your change
    renders correctly in **both HTML and PDF** if it touches content. Math,
    figures, and tables often render differently in the two backends.
 3. Run `make linkcheck` if you added or changed external links.
 4. Commit with a descriptive message. Reference an issue number when relevant
    (e.g. `Fix off-by-one in EWMA limit (#42)`).
-5. Open a pull request against `master`. Describe what changed and, where
+5. Open a pull request against `main`. Describe what changed and, where
    useful, attach a before/after screenshot of the rendered page.
 
 Small, focused PRs are reviewed faster than sweeping ones. If you have a large
