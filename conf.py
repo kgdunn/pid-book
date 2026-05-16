@@ -82,9 +82,10 @@ exclude_patterns = [
 ]
 
 add_function_parentheses = True
-# A copy of Sphinx's "sphinx" style with non-italic code comments; see
-# my-extensions/pygments_upright.py. Applies to both the HTML and PDF builds.
-pygments_style = "my-extensions.pygments_upright.UprightCommentSphinxStyle"
+# A copy of Sphinx's "sphinx" style with every token upright (no slanted
+# comments/docstrings); see my-extensions/pygments_upright.py. Drives the PDF
+# build; HTML code styling is set via html_theme_options below.
+pygments_style = "my-extensions.pygments_upright.UprightSphinxStyle"
 
 # These substitutions apply to every RST file
 rst_prolog = """
