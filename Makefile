@@ -15,7 +15,7 @@ PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 ALLRELAXEDOPTS  =  -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(RELAXOPTS) .
 
-.PHONY: help setup clean distclean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext whoosh theme-pdf
+.PHONY: help setup clean distclean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext whoosh
 
 .DEFAULT_GOAL := latexpdf
 
@@ -35,8 +35,6 @@ help:
 	@echo "  text       to make text files"
 	@echo "  gettext    to make PO message catalogs"
 	@echo "  linkcheck  to check all external links for integrity"
-	@echo "  theme-pdf  to build the business-ragged PDF theme sample"
-	@echo "             (preface + ch.3)"
 
 
 
@@ -138,26 +136,6 @@ latexpdf:
 	else \
 		echo "PDF built at $(BUILDDIR)/latex/PID.pdf (no opener found)."; \
 	fi
-
-# PDF theme preview. Builds a small carved-off sample — the preface plus the
-# process-monitoring chapter — with the candidate "business-ragged" LaTeX
-# theme, so the PDF design can be previewed without recompiling the whole
-# book. The theme machinery lives in conf.py, gated on PID_PDF_THEME.
-# Cross-references into the chapters left out of the sample render as plain
-# text; that is expected for a layout preview.
-theme-pdf:	## Build the business-ragged PDF theme sample (preface + ch.3)
-	@command -v latexmk >/dev/null 2>&1 || { \
-		echo "ERROR: latexmk not found. See 'make setup'."; \
-		exit 1; \
-	}
-	PID_PDF_THEME=1 $(SPHINXBUILD) -b latex $(SPHINXOPTS) \
-		-d $(BUILDDIR)/theme-doctrees . $(BUILDDIR)/theme
-	cp preface/*.png $(BUILDDIR)/theme
-	cp preface/*.jpg $(BUILDDIR)/theme
-	@echo "Running LaTeX files through pdflatex..."
-	make -C $(BUILDDIR)/theme all-pdf
-	@echo
-	@echo "Theme sample: $(BUILDDIR)/theme/PID-sample.pdf"
 
 text:
 	$(SPHINXBUILD) -b text $(ALLSPHINXOPTS) $(BUILDDIR)/text

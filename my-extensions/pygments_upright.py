@@ -1,9 +1,9 @@
-"""Pygments style for the PDF theme harness.
+"""Pygments style with upright code comments.
 
 A copy of Sphinx's built-in ``sphinx`` style with ``italic`` swapped to
-``noitalic`` on every comment token, so code-listing comments render upright.
-Used only by the ``business-ragged`` PDF theme — see the PID_PDF_THEME block
-in ``conf.py``. Nothing else (the full book, the HTML build) is affected.
+``noitalic`` on every comment token, so code-listing comments render upright
+rather than slanted. Wired up as ``pygments_style`` in ``conf.py``; it applies
+to both the HTML and the PDF builds.
 """
 
 from sphinx.pygments_styles import SphinxStyle

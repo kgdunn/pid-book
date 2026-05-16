@@ -81,43 +81,10 @@ exclude_patterns = [
     "scripts",   # server-side helper scripts — not part of the book
 ]
 
-# -- PDF theme comparison harness ----------------------------------------------
-#
-# Setting the PID_PDF_THEME environment variable switches the LaTeX build to a
-# small, self-contained sample — the preface plus the process-monitoring
-# chapter (see pdf-theme-sample.rst) — rendered with the candidate
-# "business-ragged" PDF theme: business typography, ragged-right text, and
-# compact code listings. This previews the candidate page design without
-# recompiling the whole book.
-#
-#   make theme-pdf
-#
-# Cross-references from the monitoring chapter into chapters that are *not*
-# part of the sample cannot resolve and render as plain text. That is expected:
-# the sample is a layout preview, not a navigable book.
-#
-# When PID_PDF_THEME is unset every builder behaves exactly as before.
-pdf_theme = bool(os.environ.get("PID_PDF_THEME", "").strip())
-
-if pdf_theme:
-    root_doc = "pdf-theme-sample"
-    exclude_patterns += [
-        "contents.rst",
-        "privacy.rst",
-        "data-visualization",
-        "univariate-review",
-        "least-squares-modelling",
-        "design-analysis-experiments",
-        "latent-variable-modelling",
-        "product-development-product-improvement",
-    ]
-else:
-    # Keep the sample root document out of the normal html / text / epub
-    # builds so it does not warn "isn't included in any toctree".
-    exclude_patterns.append("pdf-theme-sample.rst")
-
 add_function_parentheses = True
-pygments_style = "sphinx"
+# A copy of Sphinx's "sphinx" style with non-italic code comments; see
+# my-extensions/pygments_upright.py. Applies to both the HTML and PDF builds.
+pygments_style = "my-extensions.pygments_upright.UprightCommentSphinxStyle"
 
 # These substitutions apply to every RST file
 rst_prolog = """
@@ -379,14 +346,10 @@ latex_show_urls = "footnote"
 class CustomLatexFormatter(LatexFormatter):
     def __init__(self, **options):
         super(CustomLatexFormatter, self).__init__(**options)
-        if pdf_theme:
-            # Compact-but-readable code listings (9pt/11pt). The theme runs an
-            # 11pt base where \footnotesize would render larger still.
-            self.verboptions = (
-                r"formatcom=\fontsize{9pt}{11pt}\selectfont,frame=lines"
-            )
-        else:
-            self.verboptions = r"formatcom=\footnotesize,frame=lines"
+        # Compact-but-readable code listings (9pt on an 11pt body).
+        self.verboptions = (
+            r"formatcom=\fontsize{9pt}{11pt}\selectfont,frame=lines"
+        )
 
 
 PygmentsBridge.latex_formatter = CustomLatexFormatter
@@ -422,15 +385,10 @@ Copyright \copyright\ 2010 to \the\year\ Kevin G. Dunn
 _PREAMBLE = r"""
 % ==== BEGIN CUSTOMIZED PREAMBLE ====
 \usepackage{float}
-\usepackage{cancel}  % to get cancelled terms
-\usepackage{upquote} % to avoid quotation marks from being mangled
-\usepackage{textpos} % get YouTube links outside the margin. Tthe package is in "relative" mode
+\usepackage{cancel}    % cancelled terms
+\usepackage{upquote}   % keep straight quotes in verbatim
+\usepackage{textpos}   % YouTube links placed outside the margin
 \renewcommand{\PYGZsq}{TO AVOID ERROR MESSAGE}
-
-
-\usepackage[]{geometry}
-%\geometry{left=1.0in,width=6.5in,top=0.75in,height=9.25in,nohead,footskip=0.5in,portrait}
- \geometry{left=1.0in,width=6.5in,top=1.00in,height=9.25in,       footskip=0.5in,portrait}
 
 \hypersetup{
     colorlinks=true,
@@ -439,7 +397,6 @@ _PREAMBLE = r"""
     filecolor=black,
     urlcolor=blue
 }
-%\fvset{frame=single,xleftmargin=9pt,numbersep=4pt}
 
 % Nicer URLs
 \usepackage{url}
@@ -448,257 +405,9 @@ _PREAMBLE = r"""
 \g@addto@macro\UrlSpecials{\do\/{\Url@twoslashes}}
 \makeatother
 
-
-
-\renewcommand{\sectionmark}[1]%
-{\markright{\MakeUppercase{\thesection.\ #1}}}
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
-\fancyhf{}
-\fancyfoot[C]{\thepage}
-\fancyhead[RO]{}
-\fancyhead[LE]{}
-
-\fancypagestyle{plain}{
-  \fancyhf{} % empty header and footer
-  \renewcommand{\headrulewidth}{0pt} % ho header line
-  \renewcommand{\footrulewidth}{0pt}% not footer line
-  \fancyfoot[C]{\thepage}% like fancy style
-}
-
-\makeatletter
-\def\@subtitle{\relax}
-\newcommand{\subtitle}[1]{\gdef\@subtitle{#1}}
-\makeatother
-
-
-
-\makeatletter
-\renewcommand{\releasename}{Version}
-\renewcommand{\maketitle}{%
-  \begin{titlepage}%
-    \let\footnotesize\small
-    \let\footnoterule\relax
-    \rule{\textwidth}{1pt}%
-
-    \begin{flushright}%
-      % \sphinxlogo% Don't want logo here, and not this size. Manually placed it a few lines down.
-      {\rm\Huge\py@HeaderFamily \@title \par}%
-      \vfill
-      {\LARGE\py@HeaderFamily \@author \par}
-      \vfill\vfill
-      \includegraphics[scale=0.35]{textbook-logo-no-text.jpg}
-      \\
-      {\large
-       \@date \par
-       \vfill
-       \py@authoraddress \par
-       \vfill
-       {\Large\py@HeaderFamily Version: \py@release\releaseinfo \par}
-      }%
-    \end{flushright}%\par
-    \@thanks
-  \end{titlepage}%
-  \setcounter{footnote}{0}%
-  \let\thanks\relax\let\maketitle\relax
-  %\gdef\@thanks{}\gdef\@author{}\gdef\@title{}
-}
-\makeatother
-
-
-
-\fancypagestyle{normal}{
-  \fancyhf{}
-  \fancyfoot[LE,RO]{{\py@HeaderFamily\thepage}}
-  \fancyfoot[LO]{{\py@HeaderFamily\nouppercase{\rightmark}}}
-  \fancyfoot[RE]{{\py@HeaderFamily\nouppercase{\leftmark}}}
-  \fancyhead[LE,RO]{{\py@HeaderFamily \@title, \py@release}}
-  \renewcommand{\headrulewidth}{0.4pt}
-  \renewcommand{\footrulewidth}{0.4pt}
-}
-
-\makeatletter
-  % Use \pagestyle{normal} as the primary pagestyle for text.
-  \fancypagestyle{normal}{
-    \fancyhf{}
-    \fancyfoot[LE,RO]{{\py@HeaderFamily\thepage}}
-    \fancyfoot[LO]{{\py@HeaderFamily\nouppercase{\rightmark}}}
-    \fancyfoot[RE]{{\py@HeaderFamily\nouppercase{\leftmark}}}
-    \fancyhead[LE]{{\py@HeaderFamily \@title}} % before: \py@HeaderFamily \@title, \py@release
-    \fancyhead[RO]{{\py@HeaderFamily \py@release}} % before: \py@HeaderFamily \@title, \py@release
-    \renewcommand{\headrulewidth}{0.4pt}
-    \renewcommand{\footrulewidth}{0.4pt}
-  }
-  % Update the plain style so we get the page number & footer line,
-  % but not a chapter or section title.  This is to keep the first
-  % page of a chapter and the blank page between chapters `clean.'
-  \fancypagestyle{plain}{
-    \fancyhf{}
-    \fancyfoot[LE,RO]{{\py@HeaderFamily\thepage}}
-    \renewcommand{\headrulewidth}{0pt}
-    \renewcommand{\footrulewidth}{0.4pt}
-  }
-
-  \definecolor{VerbatimColor}{rgb}{1,1,1}
-  \definecolor{VerbatimBorderColor}{rgb}{1,1,1}
-
-
-  % Better style: use ragged right (based on https://tufte-latex.github.io/tufte-latex/)
-  \raggedright
-  % \RaggedRight allows hyphenation
-  \RequirePackage{ragged2e}
-  \setlength{\RaggedRightRightskip}{\z@ plus 0.08\hsize}
-
-
-  % Set the font sizes and baselines to match Tufte's books
-  \renewcommand\normalsize{%
-     \@setfontsize\normalsize\@xpt{14}%
-     \abovedisplayskip 10\p@ \@plus2\p@ \@minus5\p@
-     \abovedisplayshortskip \z@ \@plus3\p@
-     \belowdisplayshortskip 6\p@ \@plus3\p@ \@minus3\p@
-     \belowdisplayskip \abovedisplayskip
-     \let\@listi\@listI}
-  \normalbaselineskip=14pt
-  \normalsize
-  \renewcommand\small{%
-     \@setfontsize\small\@ixpt{12}%
-     \abovedisplayskip 8.5\p@ \@plus3\p@ \@minus4\p@
-     \abovedisplayshortskip \z@ \@plus2\p@
-     \belowdisplayshortskip 4\p@ \@plus2\p@ \@minus2\p@
-     \def\@listi{\leftmargin\leftmargini
-                 \topsep 4\p@ \@plus2\p@ \@minus2\p@
-                 \parsep 2\p@ \@plus\p@ \@minus\p@
-                 \itemsep \parsep}%
-     \belowdisplayskip \abovedisplayskip
-  }
-  \renewcommand\footnotesize{%
-     \@setfontsize\footnotesize\@viiipt{10}%
-     \abovedisplayskip 6\p@ \@plus2\p@ \@minus4\p@
-     \abovedisplayshortskip \z@ \@plus\p@
-     \belowdisplayshortskip 3\p@ \@plus\p@ \@minus2\p@
-     \def\@listi{\leftmargin\leftmargini
-                 \topsep 3\p@ \@plus\p@ \@minus\p@
-                 \parsep 2\p@ \@plus\p@ \@minus\p@
-                 \itemsep \parsep}%
-     \belowdisplayskip \abovedisplayskip
-  }
-  \renewcommand\scriptsize{\@setfontsize\scriptsize\@viipt\@viiipt}
-  \renewcommand\tiny{\@setfontsize\tiny\@vpt\@vipt}
-  \renewcommand\large{\@setfontsize\large\@xipt{15}}
-  \renewcommand\Large{\@setfontsize\Large\@xiipt{16}}
-  \renewcommand\LARGE{\@setfontsize\LARGE\@xivpt{18}}
-  \renewcommand\huge{\@setfontsize\huge\@xxpt{30}}
-  \renewcommand\Huge{\@setfontsize\Huge{24}{36}}
-
-  \setlength\leftmargini   {1pc}
-  \setlength\leftmarginii  {1pc}
-  \setlength\leftmarginiii {1pc}
-  \setlength\leftmarginiv  {1pc}
-  \setlength\leftmarginv   {1pc}
-  \setlength\leftmarginvi  {1pc}
-  \setlength\labelsep      {.5pc}
-  \setlength\labelwidth    {\leftmargini}
-  \addtolength\labelwidth{-\labelsep}
-
-
-\makeatother
-
-% Increase gap between fancyvrb's frame=lines rule and the code content.
 % VerbatimColor/VerbatimBorderColor are white so Sphinx's outer box is
-% invisible; the only visible border is fancyvrb's own rule, whose inner
-% gap is fancyvrb's framesep (default 3pt), not Sphinx's pre_padding.
-\fvset{framesep=8pt}
-% ==== END OF CUSTOMIZED PREAMBLE ====
-"""
-
-# % Redefine these colors to your liking in the preamble.
-# \definecolor{TitleColor}{rgb}{0,0,0}
-# \definecolor{InnerLinkColor}{rgb}{0.208,0.374,0.486}
-# \definecolor{OuterLinkColor}{rgb}{0.216,0.439,0.388}
-# % Redefine these colors to something not white if you want to have colored
-# % background and border for code examples.
-# \definecolor{VerbatimColor}{rgb}{1,1,1}
-# \definecolor{VerbatimBorderColor}{rgb}{1,1,1}
-#
-# \makeatletter
-# % Notices / Admonitions
-# %
-# \newcommand{\py@veryheavybox}{
-#   \setlength{\fboxrule}{2pt}
-#   \setlength{\fboxsep}{7pt}
-#   \setlength{\py@noticelength}{\linewidth}
-#   \addtolength{\py@noticelength}{-2\fboxsep}
-#   \addtolength{\py@noticelength}{-2\fboxrule}
-#   \setlength{\shadowsize}{3pt}
-#   \Sbox
-#   \minipage{\py@noticelength}
-# }
-# \newcommand{\py@endveryheavybox}{
-#   \endminipage
-#   \endSbox
-#   \fbox{\TheSbox}
-# }
-# \renewcommand{\py@noticestart@warning}{\py@veryheavybox}
-# \renewcommand{\py@noticeend@warning}{\py@endveryheavybox}
-# \renewcommand{\py@noticestart@note}{\py@heavybox}
-# \renewcommand{\py@noticeend@note}{\py@endheavybox}
-# \makeatother
-#
-# %\sloppy
-# \pagestyle{plain}
-
-latex_elements = {
-    "papersize": "a4paper",  # paper size ('letter' or 'a4paper').
-    "pointsize": "11pt",  # font size ('10pt', '11pt' or '12pt')
-    "fontpkg": "\\usepackage{palatino}",
-    "preamble": _PREAMBLE,
-    "figure_align": "H",  # put figures where told
-    # Bjarne (default), Lenny” (OK), “Glenn” (nice), “Conny” and “Rejne”,
-    "fncychap": "\\usepackage[Glenn]{fncychap}",
-    "tableofcontents": _TABLE_OF_CONTENTS,
-    "inputenc": "\\usepackage[utf8]{inputenc}",  # default
-    "fontenc": "\\usepackage[T1]{fontenc}",  # default
-    # 'maketitle': '\\maketitle',   # default
-    # override to generate index differently or append some content after the index
-    "printindex": "\\printindex",
-    "releasename": "",
-    #   'docclass' 'classoptions' 'title' 'date' 'release' 'author' 'logo' 'releasename'
-    #   'makeindex' 'shorthandoff'
-}
-
-# -- PDF theme comparison harness: LaTeX themes --------------------------------
-#
-# Everything below only takes effect when PID_PDF_THEME is set; the full-book
-# LaTeX build above is left untouched. The theme is just an override of a few
-# `latex_elements` keys (fonts, chapter style, preamble). Sphinx hardcodes the
-# `sphinxmanual` document class, so the theme varies fonts, margins and heading
-# design rather than swapping the document class.
-
-# Scaffolding every theme preamble needs: the custom title page and the
-# header/footer page styles the preface's raw-LaTeX blocks switch between.
-_PREAMBLE_COMMON = r"""
-% ==== BEGIN SHARED THEME PREAMBLE ====
-\usepackage{float}
-\usepackage{cancel}
-\usepackage{upquote}
-\usepackage{textpos}
-\renewcommand{\PYGZsq}{TO AVOID ERROR MESSAGE}
-
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    citecolor=black,
-    filecolor=black,
-    urlcolor=blue
-}
-
-% Nicer URLs
-\usepackage{url}
-\makeatletter
-\def\Url@twoslashes{\mathchar`\/\@ifnextchar/{\kern-.2em}{}}
-\g@addto@macro\UrlSpecials{\do\/{\Url@twoslashes}}
-\makeatother
-
+% invisible; the only visible border is fancyvrb's own frame=lines rule, and
+% framesep widens the gap between that rule and the code.
 \definecolor{VerbatimColor}{rgb}{1,1,1}
 \definecolor{VerbatimBorderColor}{rgb}{1,1,1}
 \fvset{framesep=8pt}
@@ -708,7 +417,7 @@ _PREAMBLE_COMMON = r"""
 \newcommand{\subtitle}[1]{\gdef\@subtitle{#1}}
 \makeatother
 
-% Custom title page, shared with the full book.
+% Custom title page.
 \makeatletter
 \renewcommand{\releasename}{Version}
 \renewcommand{\maketitle}{%
@@ -758,25 +467,18 @@ _PREAMBLE_COMMON = r"""
   \renewcommand{\footrulewidth}{0.4pt}
 }
 \makeatother
-% ==== END SHARED THEME PREAMBLE ====
-"""
 
-# The "business-ragged" theme: Charter body, sans-serif accent-coloured
-# headings, compact margins, and ragged-right text throughout (no fully
-# justified paragraphs, after tufte-latex.github.io). geometry is loaded with
-# no options first (Sphinx already loads it; passing options to \usepackage a
-# second time triggers an "option clash"), then configured with \geometry —
-# the same pattern the full-book preamble uses. Code listings are compact (see
-# CustomLatexFormatter) with upright comments (see pygments_style below).
-_PREAMBLE_THEME = r"""
-% ==== BUSINESS-RAGGED THEME ====
+% Compact, symmetric page geometry. geometry is loaded with no options first
+% (Sphinx already loads it; a second optioned \usepackage would clash), then
+% configured with \geometry.
 \usepackage{geometry}
 \geometry{a4paper,left=1.2in,right=1.2in,top=1.1in,height=9.0in,footskip=0.55in}
 \usepackage{microtype}
 \usepackage[scaled=0.92]{helvet}
+
+% Sans-serif, accent-coloured headings.
 \usepackage{titlesec}
 \definecolor{accent}{HTML}{1F4E79}
-% Sans-serif, accent-coloured headings.
 \titleformat{\chapter}[display]
   {\sffamily\bfseries\color{accent}}
   {\filright\Large\MakeUppercase{\chaptertitlename}\ \Huge\thechapter}
@@ -787,39 +489,71 @@ _PREAMBLE_THEME = r"""
   {\sffamily\Large\bfseries\color{accent}}{\thesection}{1em}{}
 \titleformat{\subsection}
   {\sffamily\large\bfseries\color{accent!85!black}}{\thesubsection}{1em}{}
-% Ragged-right: no fully justified text anywhere.
+
+% Ragged-right throughout: no fully justified text anywhere, after
+% tufte-latex.github.io. \RaggedRight still hyphenates, unlike \raggedright.
 \usepackage{ragged2e}
 \makeatletter
 \setlength{\RaggedRightRightskip}{\z@ plus 0.08\hsize}
 \makeatother
 \AtBeginDocument{\RaggedRight}
-% ==== END BUSINESS-RAGGED THEME ====
+% ==== END OF CUSTOMIZED PREAMBLE ====
 """
 
-if pdf_theme:
-    latex_documents = [
-        (
-            "pdf-theme-sample",
-            "PID-sample.tex",
-            "Process Improvement Using Data",
-            "Kevin Dunn",
-            "manual",
-            True,
-        ),
-    ]
-    latex_elements = {
-        **latex_elements,
-        # fncychap is disabled so titlesec can restyle \chapter cleanly.
-        "fontpkg": "\\usepackage{charter}",
-        "fncychap": "",
-        "preamble": _PREAMBLE_COMMON + _PREAMBLE_THEME,
-    }
-    # Page references to chapters outside the sample cannot resolve; drop them
-    # so the preview is not littered with "??".
-    latex_show_pagerefs = False
-    # Upright (non-italic) comments in code listings. Only the LaTeX builder
-    # runs during a theme build, so the HTML book is untouched.
-    pygments_style = "my-extensions.pygments_upright.UprightCommentSphinxStyle"
+# % Redefine these colors to your liking in the preamble.
+# \definecolor{TitleColor}{rgb}{0,0,0}
+# \definecolor{InnerLinkColor}{rgb}{0.208,0.374,0.486}
+# \definecolor{OuterLinkColor}{rgb}{0.216,0.439,0.388}
+# % Redefine these colors to something not white if you want to have colored
+# % background and border for code examples.
+# \definecolor{VerbatimColor}{rgb}{1,1,1}
+# \definecolor{VerbatimBorderColor}{rgb}{1,1,1}
+#
+# \makeatletter
+# % Notices / Admonitions
+# %
+# \newcommand{\py@veryheavybox}{
+#   \setlength{\fboxrule}{2pt}
+#   \setlength{\fboxsep}{7pt}
+#   \setlength{\py@noticelength}{\linewidth}
+#   \addtolength{\py@noticelength}{-2\fboxsep}
+#   \addtolength{\py@noticelength}{-2\fboxrule}
+#   \setlength{\shadowsize}{3pt}
+#   \Sbox
+#   \minipage{\py@noticelength}
+# }
+# \newcommand{\py@endveryheavybox}{
+#   \endminipage
+#   \endSbox
+#   \fbox{\TheSbox}
+# }
+# \renewcommand{\py@noticestart@warning}{\py@veryheavybox}
+# \renewcommand{\py@noticeend@warning}{\py@endveryheavybox}
+# \renewcommand{\py@noticestart@note}{\py@heavybox}
+# \renewcommand{\py@noticeend@note}{\py@endheavybox}
+# \makeatother
+#
+# %\sloppy
+# \pagestyle{plain}
+
+latex_elements = {
+    "papersize": "a4paper",  # paper size ('letter' or 'a4paper').
+    "pointsize": "11pt",  # font size ('10pt', '11pt' or '12pt')
+    "fontpkg": "\\usepackage{charter}",
+    "preamble": _PREAMBLE,
+    "figure_align": "H",  # put figures where told
+    # fncychap is disabled so titlesec (see _PREAMBLE) can restyle \chapter.
+    "fncychap": "",
+    "tableofcontents": _TABLE_OF_CONTENTS,
+    "inputenc": "\\usepackage[utf8]{inputenc}",  # default
+    "fontenc": "\\usepackage[T1]{fontenc}",  # default
+    # 'maketitle': '\\maketitle',   # default
+    # override to generate index differently or append some content after the index
+    "printindex": "\\printindex",
+    "releasename": "",
+    #   'docclass' 'classoptions' 'title' 'date' 'release' 'author' 'logo' 'releasename'
+    #   'makeindex' 'shorthandoff'
+}
 
 # -- Options for Epub output ---------------------------------------------------
 
