@@ -540,7 +540,13 @@ _PREAMBLE = r"""
 latex_elements = {
     "papersize": "a4paper",  # paper size ('letter' or 'a4paper').
     "pointsize": "11pt",  # font size ('10pt', '11pt' or '12pt')
-    "fontpkg": "\\usepackage{charter}",
+    "fontpkg": (
+        "\\usepackage{charter}\n"
+        # Inconsolata for code listings, replacing the default Computer
+        # Modern Typewriter. varqu gives upright quotes and varl a straight
+        # lowercase l — both aid code legibility.
+        "\\usepackage[varqu,varl]{inconsolata}\n"
+    ),
     "preamble": _PREAMBLE,
     "figure_align": "H",  # put figures where told
     # fncychap is disabled so titlesec (see _PREAMBLE) can restyle \chapter.
