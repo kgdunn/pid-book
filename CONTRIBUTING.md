@@ -53,6 +53,29 @@ link the two PRs.
 * Code blocks: use `.. code-block:: python` (or `r`, `matlab`, `text`) so the
   PDF backend syntax-highlights correctly.
 
+## Pre-commit hooks
+
+The repository ships a [pre-commit](https://pre-commit.com/) configuration
+(`.pre-commit-config.yaml`) that catches trivial problems before they reach a
+PR: trailing whitespace, missing final newlines, mixed line endings, malformed
+YAML/TOML, merge-conflict markers, and obvious Python issues via
+[Ruff](https://docs.astral.sh/ruff/). It also runs
+[rstcheck](https://github.com/rstcheck/rstcheck) over the `.rst` sources.
+
+Set it up once:
+
+    make pre-commit-install
+
+After that the hooks run automatically on every `git commit`. To sweep the
+whole tree on demand — useful before opening a PR — run:
+
+    make pre-commit-run
+
+Ruff is scoped to the repository's own Python (`conf.py`, `start_server.py`,
+`my-extensions/`); the chapter gists are left alone. rstcheck only *reports*
+problems — it never rewrites the book. Both tools also install via
+`uv sync --all-extras`, which pulls in the `dev` optional dependencies.
+
 ## Telemetry and privacy
 
 The HTML book carries cookieless telemetry in production (pageviews,

@@ -1,6 +1,6 @@
 import http.server
-import pathlib
 import os
+import pathlib
 import socketserver
 
 PORT = 8080
@@ -8,7 +8,7 @@ PORT = 8080
 
 class HttpRequestHandler(http.server.SimpleHTTPRequestHandler):
     extensions_map = {
-        "": "text/html",           # extensionless pages served as HTML
+        "": "text/html",  # extensionless pages served as HTML
         ".html": "text/html",
         ".manifest": "text/cache-manifest",
         ".png": "image/png",

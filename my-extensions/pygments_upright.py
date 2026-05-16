@@ -14,9 +14,7 @@ def _upright(value):
 
     Word-wise so that ``noitalic`` (which contains ``italic``) is left alone.
     """
-    return " ".join(
-        "noitalic" if word == "italic" else word for word in value.split()
-    )
+    return " ".join("noitalic" if word == "italic" else word for word in value.split())
 
 
 class UprightCommentSphinxStyle(SphinxStyle):

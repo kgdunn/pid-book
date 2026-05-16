@@ -15,7 +15,7 @@ PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 ALLRELAXEDOPTS  =  -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(RELAXOPTS) .
 
-.PHONY: help setup clean distclean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext whoosh
+.PHONY: help setup clean distclean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext whoosh pre-commit-install pre-commit-run
 
 .DEFAULT_GOAL := latexpdf
 
@@ -35,6 +35,8 @@ help:
 	@echo "  text       to make text files"
 	@echo "  gettext    to make PO message catalogs"
 	@echo "  linkcheck  to check all external links for integrity"
+	@echo "  pre-commit-install  to install the pre-commit git hook"
+	@echo "  pre-commit-run      to run every pre-commit hook over the tree"
 
 
 
@@ -156,4 +158,10 @@ linkcheck:
 serve:
 	uvx python start_server.py
 	#python -m http.server 8080 --directory _build/html/
+
+pre-commit-install:	## Install the pre-commit git hook
+	uvx pre-commit install
+
+pre-commit-run:		## Run every pre-commit hook against the whole tree
+	uvx pre-commit run --all-files
 

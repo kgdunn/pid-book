@@ -77,8 +77,8 @@ exclude_patterns = [
     "DELETE",
     ".venv",
     "**/.ipynb_checkpoints",
-    "docs",      # engineering / operations Markdown — not part of the book
-    "scripts",   # server-side helper scripts — not part of the book
+    "docs",  # engineering / operations Markdown — not part of the book
+    "scripts",  # server-side helper scripts — not part of the book
 ]
 
 add_function_parentheses = True
@@ -159,7 +159,12 @@ html_css_files = ["css/theme-extended-kgd.css"]
 
 # Custom sidebar: logo, then Pagefind search, then the book TOC.
 html_sidebars = {
-    "**": ["navbar-logo.html", "pagefind-search.html", "sbt-sidebar-nav.html", "pid-sidebar-extra.html"],
+    "**": [
+        "navbar-logo.html",
+        "pagefind-search.html",
+        "sbt-sidebar-nav.html",
+        "pid-sidebar-extra.html",
+    ],
 }
 
 # The name for this set of Sphinx documents.  If None, it defaults to
@@ -278,9 +283,7 @@ if TELEMETRY_ENABLED:
         # This is the theme-agnostic Sphinx pattern for HEAD injection and
         # avoids needing a layout.html override.
         gc = TELEMETRY_GC_CODE.replace('"', "")
-        snippet = (
-            f'<script>window.__PID_TELEMETRY={{gc:"{gc}"}};</script>'
-        )
+        snippet = f'<script>window.__PID_TELEMETRY={{gc:"{gc}"}};</script>'
         context["metatags"] = context.get("metatags", "") + snippet
 
     def setup(app):
@@ -345,11 +348,9 @@ latex_show_urls = "footnote"
 # http://stackoverflow.com/questions/9899283/how-do-you-change-the-code-example-font-size-in-latex-pdf-output-with-sphinx
 class CustomLatexFormatter(LatexFormatter):
     def __init__(self, **options):
-        super(CustomLatexFormatter, self).__init__(**options)
+        super().__init__(**options)
         # Compact-but-readable code listings (9pt on an 11pt body).
-        self.verboptions = (
-            r"formatcom=\fontsize{9pt}{11pt}\selectfont,frame=lines"
-        )
+        self.verboptions = r"formatcom=\fontsize{9pt}{11pt}\selectfont,frame=lines"
 
 
 PygmentsBridge.latex_formatter = CustomLatexFormatter
