@@ -92,6 +92,9 @@ exclude_patterns = [
 #   make theme-pdf THEME=tufte       Tufte-inspired (Palatino, wide outer margin)
 #   make theme-pdf THEME=academic    Classic thesis (Latin Modern, justified)
 #   make theme-pdf THEME=business    Business report (Charter + sans headings)
+#   make theme-pdf THEME=business-ragged
+#                                    business, but ragged-right throughout and
+#                                    with compact, upright-comment code listings
 #
 # Cross-references from the monitoring chapter into chapters that are *not*
 # part of the sample cannot resolve and render as plain text. That is expected:
@@ -99,7 +102,7 @@ exclude_patterns = [
 #
 # When PID_PDF_THEME is unset every builder behaves exactly as before.
 pdf_theme = os.environ.get("PID_PDF_THEME", "").strip().lower()
-_PDF_THEMES = ("tufte", "academic", "business")
+_PDF_THEMES = ("tufte", "academic", "business", "business-ragged")
 
 if pdf_theme:
     if pdf_theme not in _PDF_THEMES:
@@ -383,7 +386,14 @@ latex_show_urls = "footnote"
 class CustomLatexFormatter(LatexFormatter):
     def __init__(self, **options):
         super(CustomLatexFormatter, self).__init__(**options)
-        self.verboptions = r"formatcom=\footnotesize,frame=lines"
+        if pdf_theme == "business-ragged":
+            # Compact code listings (8pt/10pt), matching the current book —
+            # that theme runs at an 11pt base where \footnotesize is larger.
+            self.verboptions = (
+                r"formatcom=\fontsize{8pt}{10pt}\selectfont,frame=lines"
+            )
+        else:
+            self.verboptions = r"formatcom=\footnotesize,frame=lines"
 
 
 PygmentsBridge.latex_formatter = CustomLatexFormatter
@@ -809,6 +819,18 @@ _PREAMBLE_BUSINESS = r"""
 % ==== END BUSINESS PROFESSIONAL THEME ====
 """
 
+# Ragged-right snippet — no fully justified text anywhere, after
+# tufte-latex.github.io. Appended to a theme's preamble.
+_PREAMBLE_RAGGED = r"""
+% ==== RAGGED-RIGHT (no full justification) ====
+\usepackage{ragged2e}
+\makeatletter
+\setlength{\RaggedRightRightskip}{\z@ plus 0.08\hsize}
+\makeatother
+\AtBeginDocument{\RaggedRight}
+% ==== END RAGGED-RIGHT ====
+"""
+
 _THEME_ELEMENTS = {
     "tufte": {
         "fontpkg": "\\usepackage{palatino}",
@@ -825,6 +847,14 @@ _THEME_ELEMENTS = {
         "fontpkg": "\\usepackage{charter}",
         "fncychap": "",
         "preamble": _PREAMBLE_COMMON + _PREAMBLE_BUSINESS,
+    },
+    # The business theme, but ragged-right throughout (no justified text).
+    # Code listings are compact (see CustomLatexFormatter) with upright
+    # comments (see pygments_style, set in the PID_PDF_THEME block below).
+    "business-ragged": {
+        "fontpkg": "\\usepackage{charter}",
+        "fncychap": "",
+        "preamble": _PREAMBLE_COMMON + _PREAMBLE_BUSINESS + _PREAMBLE_RAGGED,
     },
 }
 
@@ -843,6 +873,10 @@ if pdf_theme:
     # Page references to chapters outside the sample cannot resolve; drop them
     # so the preview is not littered with "??".
     latex_show_pagerefs = False
+    if pdf_theme == "business-ragged":
+        # Upright (non-italic) comments in code listings. Only the LaTeX
+        # builder runs during a theme build, so the HTML book is untouched.
+        pygments_style = "my-extensions.pygments_upright.UprightCommentSphinxStyle"
 
 # -- Options for Epub output ---------------------------------------------------
 
