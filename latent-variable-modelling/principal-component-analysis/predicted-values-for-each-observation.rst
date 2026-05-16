@@ -18,7 +18,7 @@ Since :math:`\widehat{\mathbf{x}}_{i,1}` is a vector, we can write it as the pro
 .. math::
 	\widehat{\mathbf{x}}_{i,1}' &= t_{i,1} \,\,\mathbf{p}'_1 \\
 	(1 \times K) &= (1 \times 1)(1 \times K)
-		
+
 This is the best prediction of the original observation using one component. If we added a second component to our model, then our estimate improves:
 
 .. math::
@@ -32,13 +32,13 @@ With multiple components, we write:
 	\widehat{\mathbf{x}}_{i,A}' &= \mathbf{t}'_i \, \mathbf{P}'\\
 	(1 \times K) &= (1 \times A) (A \times K)
 
-This is interesting: :math:`\widehat{\mathbf{x}}_{i,A}` is a prediction of every variable in the :math:`i^\text{th}` observation. We only require the score values for that :math:`i^\text{th}` observation in order to get this prediction. We multiply the scores :math:`\mathbf{t}_i` by the direction vectors in matrix |P| to get the prediction. 
+This is interesting: :math:`\widehat{\mathbf{x}}_{i,A}` is a prediction of every variable in the :math:`i^\text{th}` observation. We only require the score values for that :math:`i^\text{th}` observation in order to get this prediction. We multiply the scores :math:`\mathbf{t}_i` by the direction vectors in matrix |P| to get the prediction.
 
 .. TODO: image here showing vector arms
 
 The preceding equation can be written in a way that handles the entire matrix |X|:
 
-.. math:: 
+.. math::
 	\widehat{\mathbf{X}} &= \mathbf{T}\mathbf{P}'\\
 	(N \times K) &= (N \times A) (A \times K)
 	:label: LVM-X-hat-prediction-PCA
@@ -49,7 +49,7 @@ Once we have the predicted value for an observation, we are also interested in t
 	\mathbf{e}'_{i,A} &= \mathbf{x}'_i - \widehat{\mathbf{x}}'_{i,A} \\
 	(1 \times K) &= (1 \times K) - (1 \times K)
 
-.. You can add this to the above, but it doesn't advance the concepts for this particular section. Rather leave it out for now.		
+.. You can add this to the above, but it doesn't advance the concepts for this particular section. Rather leave it out for now.
 	\mathbf{e}_{i,A}'  &= \mathbf{x}'_i - \mathbf{t}'_i \mathbf{P}' \\
 					   &= \mathbf{x}'_i - \mathbf{x}'_i \mathbf{P} \mathbf{P}' \\
 					   &= \mathbf{x}'_i \left(I_{K \times K} - \mathbf{P} \mathbf{P}' \right)
@@ -58,11 +58,10 @@ The residual *length* or *distance* is the sum of squares of this residual, then
 
 .. index::
 	see: SPE; squared prediction error (SPE)
-	see: distance to model; DModX 
+	see: distance to model; DModX
 
 .. math::
 	\text{SPE}_i &= \sqrt{\mathbf{e}'_{i,A} \mathbf{e}_{i,A}} \\
 	(1 \times 1) &= (1 \times K)(K \times 1)
-	
-where :math:`\mathbf{e}_{i,A}` is the residual vector of the :math:`i^\text{th}` observation using :math:`A` components.
 
+where :math:`\mathbf{e}_{i,A}` is the residual vector of the :math:`i^\text{th}` observation using :math:`A` components.

@@ -78,9 +78,9 @@ This is one of the easiest assumptions to verify: use a :index:`q-q plot <pair: 
 If the residuals appear non-normal, then attempt the following:
 
 	-	Remove the outlying observation(s) in the tails, but only after careful investigation whether that :index:`outlier` really was unusual
-	
+
 	-	Use a suitable transformation of the y-variable
-	
+
 	-	Add :ref:`additional terms to the least squares model <LS_multiple_X_MLR>`
 
 The simple example shown here builds a model that predicts the price of a used vehicle using only the mileage as an explanatory variable.
@@ -94,7 +94,7 @@ The simple example shown here builds a model that predicts the price of a used v
 The group of outliers were due to 10 observations of a certain class of vehicle (Cadillac convertibles) that distorted the model. We removed these observations, which now limits our model to be useful only for other vehicle types, but we gain a smaller standard error and a tighter confidence interval. These residuals are still very non-normal though.
 
 .. math::
-	
+
 	\begin{array}{rcccl}
 		\text{Before}: \qquad & b_1 = -0.173 & \qquad -0.255 \leq \beta_1 \leq -0.0898 &\qquad S_E = \text{\$} 9789\\
 		\text{After}:  \qquad & b_1 = -0.155 & \qquad -0.230 \leq \beta_1 \leq -0.0807 &\qquad S_E = \text{\$} 8655
@@ -259,7 +259,7 @@ Another test for autocorrelation is the :index:`Durbin-Watson test <pair: Durbin
 	                   round(cor(x[2:1001],
 	                         x[1:1000]), 2)),
 	     col="darkgreen", cex=1.5, adj = c(0, NA))
-	
+
 
 .. Box and Newbold describe a case where the lack of independence lead to serious mis-interpretation:  J Royal Statist. Soc. Series A, v134, p229-240, 1971
 .. Also see: /Users/kevindunn/Statistics course/Course notes/Correlation, covariance and least squares/images/autocorrelated-data-problem.R
@@ -278,21 +278,21 @@ Certain cases of non-linearity can be dealt with by simple transformations of th
 We saw earlier a case where a square-root transformation of the |y| variable made the residuals more normally distributed. There is in fact a sequence of transformations that can be tried to modify the distribution of a single variable: :math:`x_\text{transformed} \leftarrow x^p_\text{original}`.
 
 	*	When :math:`p` goes from 1 and higher, say 1.5, 1.75, 2.0, *etc*, it compresses small values of :math:`x` and inflates larger values.
-	
+
 	*	When :math:`p` goes down from 1, 0.5 (:math:`\sqrt{x}`), 0.25, -0.5, -1.0 (:math:`1/x`), -1.5, -2.0, *etc*, it compresses large values of :math:`x` and inflates smaller values.
-	
+
 	*	The case of :math:`\log(x)` approximates :math:`p=0` in terms of the severity of the transformation.
 
 In other instances we may know from first-principles theory, or some other means, what the expected non-linear relationship is between an |x| and |y| variable.
 
 	*	In a distillation column the temperature, :math:`T` is inversely proportional to the logarithm of the vapour pressure, :math:`P`. So fit a linear model, :math:`y = b_0 + b_1x` where :math:`x \leftarrow 1/T` and where :math:`y \leftarrow P`. The slope coefficient will have a different interpretation and a different set of units as compared to the case when predicting vapour pressure directly from temperature.
-	
+
 	*	If :math:`y = p \times q^x`, then we can take logs and estimate this equivalent linear model: :math:`\log(y) = \log(p) + x \log(q)`, which is of the form :math:`y = b_0 + b_1 x`. So the slope coefficient will be an estimate of :math:`\log(q)`.
-	
+
 	*	If :math:`y = \dfrac{1}{p+qx}`, then invert both sides and estimate the model :math:`y = b_0 + b_1 x` where :math:`b_0 \leftarrow p`, :math:`b_1 \leftarrow q` and :math:`y\leftarrow 1/y`.
-	
+
 	*	There are plenty of other examples, some classic cases being the non-linear models that arise during reactor design and biological growth rate models. With some ingenuity (taking logs, inverting the equation), these can often be simplified into linear models.
-	
+
 	*	Some cases cannot be linearized and are best estimated by non-linear least squares methods. However, a make-shift approach which works quite well for simple cases is to perform a grid search. For example imagine the equation to fit is :math:`y = \beta_1\left(1-e^{-\beta_2 x} \right)`, and you are given some data pairs :math:`(x_i, y_i)`. Then for example, create a set of trial values :math:`\beta_1 = [10, 20, 30, 40, 50]` and :math:`\beta_2 = [0.0, 0.2, 0.4, 0.8]`. Build up a grid for each combination of :math:`\beta_1` and :math:`\beta_2` and calculate the sum of squares objective function for each point in the grid. By trial-and-error you can converge to an approximate value of :math:`\beta_1` and :math:`\beta_2` that best fit the data. You can then calculate :math:`S_E`, but not the confidence intervals for :math:`\beta_1` and :math:`\beta_2`.
 
 Before launching into various :index:`transformations` or non-linear least squares models, bear in mind that the linear model may be useful over the region of interest. In the figure we might only be concerned with using the model over the region shown, even though the system under observation is known to behave non-linearly over a wider region of operation.
@@ -321,5 +321,3 @@ Transformations are considered successful once the residuals appear to have no m
 Another type of plot to diagnose non-linearity present in the linear model is called a *component-plus-residual plot* or a *partial-residual plot*. This is an advanced topic not covered here, but well covered in the :ref:`Fox reference <LS_references>`.
 
 .. Also see:  https://www.apsnet.org/education/advancedplantpath/topics/RModules/doc1/05_Nonlinear_regression.html
-
-

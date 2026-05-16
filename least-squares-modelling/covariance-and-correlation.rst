@@ -1,5 +1,5 @@
 
-.. _LS_covariance:	
+.. _LS_covariance:
 
 Covariance
 ===========
@@ -70,7 +70,7 @@ The formal definition for covariance between any two variables is: [terminology 
 Use this to calculate the covariance between temperature and pressure by breaking the problem into steps:
 
 	-	First calculate :index:`deviation variables`. They are called this because they are now the deviations from the mean: :math:`T - \overline{T}` and :math:`p - \overline{p}`. Subtracting off the mean from each vector just centers their frame of reference to zero.
-	
+
 	-	Next multiply the two vectors, element-by-element, to calculate a new vector :math:`(T - \overline{T}) (p - \overline{p})`.
 
 		.. code-block:: python
@@ -163,7 +163,7 @@ In your own time calculate a rough numeric value and give the units of covarianc
 
 	Also describe what an outlier observation would mean in these cases.
 
-One last point is that the covariance of a variable with itself is the variance: :math:`\text{Cov}\left\{x, x\right\} = \mathcal{V}(x) = \mathcal{E}\left\{ (x - \overline{x}) (x - \overline{x})\right\}`, a definition :ref:`we saw earlier <univariate-variance>`. 
+One last point is that the covariance of a variable with itself is the variance: :math:`\text{Cov}\left\{x, x\right\} = \mathcal{V}(x) = \mathcal{E}\left\{ (x - \overline{x}) (x - \overline{x})\right\}`, a definition :ref:`we saw earlier <univariate-variance>`.
 
 Using the ``cov(temp, pres)`` function in R gives ``7533.333``, while we calculated 6780. The difference comes from :math:`6780 \times \dfrac{N}{N-1}= 7533.33`, indicating that R divides by :math:`N-1` rather than :math:`N`. This is because the variance function in R for a vector ``x`` is internally called as ``cov(x, x)``. Since R returns the unbiased variance, it divides through by :math:`N-1`. This inconsistency does not really matter for large values of :math:`N`, but emphasizes that one should always read the documentation for the software being used.
 
@@ -236,7 +236,7 @@ So returning back to our example of the gas cylinder, the correlation between te
 	# What is correlation of humidity
 	# and pressure?
 	cor(___, ___)
-	
+
 
 Note that correlation is the same whether we measure temperature in Celsius or Kelvin. Study the plots here to get a feeling for the correlation value and its interpretation:
 
@@ -384,29 +384,29 @@ Some definitions
 Be sure that you can derive (and interpret!) these relationships, which are derived from the definition of the covariance and correlation:
 
 	-	:math:`\mathcal{E}\{x\} = \overline{x}`
-	
+
 	-	:math:`\mathcal{E}\{x+y\} = \mathcal{E}\{x\} + \mathcal{E}\{y\} = \overline{x} + \overline{y}`
-	
+
 	-	:math:`\mathcal{V}\{x\} = \mathcal{E}\{(x-\overline{x})^2\}`
-	
+
 	-	:math:`\mathcal{V}\{cx\} = c^2\mathcal{V}\{x\}`
-	
+
 	-	:math:`\text{Cov}\{x,y\} = \mathcal{E}\{(x-\overline{x})(y-\overline{y})\}` which we take as the definition for covariance
-	
+
 	-	:math:`\mathcal{V}\{x+x\} = 2\mathcal{V}\{x\} + 2\text{Cov}\{x,x\} = 4\mathcal{V}\{x\}`
-	
+
 	-	:math:`\text{Cov}\{x,y\} = \mathcal{E}\{xy\} - \mathcal{E}\{x\}\mathcal{E}\{y\}`
-	
+
 	-	:math:`\text{Cov}\{x,c\} = 0`
-	
+
 	-	:math:`\text{Cov}\{x+a, y+b\} = \text{Cov}\{x,y\}`
-	
+
 	-	:math:`\text{Cov}\{ax, by\} = ab \cdot \text{Cov}\{x,y\}`
 
 	-	:math:`\mathcal{V}\{x+y\} \neq \mathcal{V}\{x\} + \mathcal{V}\{y\}`, which is counter to what might be expected.
-	
+
 	-	Rather:
-	
+
 		.. math::
 			:label: eq_add_variance_2
 

@@ -15,21 +15,21 @@ Residuals for each observation: the square prediction error
 
 We have already introduced the :ref:`squared prediction error geometrically <LVM_geometric_predictions>`. We showed in that section that the residual distance from the actual observation to the model plane is given by:
 
-.. math:: 
+.. math::
 	\mathbf{e}'_{i,A} &= \mathbf{x}'_i - \widehat{\mathbf{x}}'_{i,A} \\
 	\mathbf{e}'_{i,A} &= \mathbf{x}'_i - \mathbf{t}'_i \mathbf{P}'
 
 Turning this last equation around we have:
-	
-.. math:: 
+
+.. math::
 	\mathbf{x}'_i &= \mathbf{t}'_i \mathbf{P}' + \mathbf{e}'_{i,A} \\
-	(1 \times K) &= (1 \times A)(A \times K)  + (1 \times K) 
+	(1 \times K) &= (1 \times A)(A \times K)  + (1 \times K)
 
 Or in general, for the whole data set
 
 .. math::
 	\mathbf{X} &= \mathbf{T} \mathbf{P}' + \mathbf{E} =  \widehat{\mathbf{X}} + \mathbf{E} \\
-		(N \times K) &= (N \times A)(A \times K)  + (N \times K) 
+		(N \times K) &= (N \times A)(A \times K)  + (N \times K)
 
 This shows that each observation (row in |X|) can be split and interpreted in two portions: a vector on-the-plane, :math:`\mathbf{t}'_i \mathbf{P}'`, and a vector perpendicular to the plane, :math:`\mathbf{e}'_{i,A}`. This residual portion, a vector, can be reduced to a single number, a distance value called SPE, as :ref:`previously described <LVM_geometric_predictions>`.
 
@@ -47,9 +47,9 @@ If we find an observation that has a large squared prediction error, i.e. the ob
 
 We would like to know why, specifically which variable(s) in |X|, are most related with this deviation off the model plane. As we did in the section on :ref:`interpreting scores <LVM_interpreting_scores>`, we can generate a contribution plot.
 
-.. math:: 
+.. math::
 	\mathbf{e}'_{i,A} = \mathbf{x}'_i - \widehat{\mathbf{x}}'_{i,A}
-		
+
 Dropping the :math:`A` subscript for convenience we can write the :math:`1 \times K` vector as:
 
 .. math::
@@ -78,7 +78,7 @@ Finally, the SPE value is a complete summary of the residual vector. As such, it
 
 .. _LVM_PCA_R2_values:
 
-Residuals for each column 
+Residuals for each column
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Using the residual matrix :math:`\mathbf{E} = \mathbf{X} - \mathbf{T} \mathbf{P}' = \mathbf{X} - \widehat{\mathbf{X}}`, we can calculate the residuals for each column in the original matrix. This is summarized by the :math:`R^2` value for each column in |X| and gives an indication of how well the PCA model describes the data from that column.
@@ -98,7 +98,7 @@ The :math:`R^2_k` value for each variable will increase with every component tha
 
 The :math:`R^2` values for each column can be visualized as a bar plot for dissimilar variables (chemical process data), or as a line plot if there are many similar variables that have a logical left-to-right relationship, such as the case with :ref:`spectral variables <lvm_spectral_data_example>` (wavelengths).
 
-Residuals for the whole matrix X 
+Residuals for the whole matrix X
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Finally, we can calculate an :math:`R^2` value for the entire matrix |X|. This is the ratio between the variance of |X| we can explain with the model over the ratio of variance initially present in |X|.
@@ -107,4 +107,3 @@ Finally, we can calculate an :math:`R^2` value for the entire matrix |X|. This i
 	R^2 = 1 - \dfrac{\text{Var}(\mathbf{X} - \widehat{\mathbf{X}})}{\text{Var}(\mathbf{X})} = 1 - \dfrac{\text{Var}(\mathbf{E})}{\text{Var}(\mathbf{X})}
 
 The variance of a general matrix, :math:`\mathbf{G}`, is taken as the sum of squares of every element in :math:`\mathbf{G}`. The example in the next section illustrates how to interpret these residuals. The smallest value of  :math:`R^2` value is :math:`R^2_{a=0} = 0.0` when there are no components. After the first component is added we can calculate :math:`R^2_{a=1}`. Then after fitting a second component we get :math:`R^2_{a=2}`. Since each component is extracting new information from |X|, we know that :math:`R^2_{a=0} < R^2_{a=1} < R^2_{a=2} < \ldots < R^2_{a=A} = 1.0`.
-

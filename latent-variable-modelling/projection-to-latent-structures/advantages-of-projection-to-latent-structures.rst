@@ -48,4 +48,4 @@ We will get into the details shortly, but as a starting approximation, you can v
 	:width: 900px
 	:align: center
 
-From an engineering point of view this is quite a satisfying interpretation. After all, the variables we chose to be in |X| and in |Y| come from the same system. That system is driven (moved around) by the *same underlying latent variables*. 
+From an engineering point of view this is quite a satisfying interpretation. After all, the variables we chose to be in |X| and in |Y| come from the same system. That system is driven (moved around) by the *same underlying latent variables*.

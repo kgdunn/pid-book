@@ -1,7 +1,7 @@
 Outliers: discrepancy, leverage, and influence of the observations
 ==========================================================================================
 
-.. index:: 
+.. index::
 	pair: outliers; least squares
 
 Unusual observations will influence the model parameters and also influence the analysis from the model (standard errors and confidence intervals). In this section we will examine how these outliers influence the model.
@@ -26,7 +26,7 @@ In model C the square point is not discrepant in the context of the model. But i
 Can we quantify how much *influence* these *discrepancies* have on the model; and what is *leverage*?   The following general formula is helpful in the rest of this discussion:
 
 	.. math::
-	
+
 		\text{Leverage} \times \text{Discrepancy}  = \text{Influence on the model}
 
 Leverage
@@ -67,7 +67,7 @@ Where :math:`e_i` is the residual for the :math:`i^\text{th}` point, as usual, b
 		:scale: 65
 		:align: center
 		:alt: fake width
-		
+
 This figure illustrates how the square point in model A and B is highly discrepant, while in model C it does not have a high discrepancy.
 
 Influence
@@ -98,5 +98,3 @@ The values of :math:`D_i` are conveniently calculated in R using the ``cooks.dis
 		:alt: fake width
 
 .. TODO THRESHOLD FOR COOK'S D. BUBBLE PLOT.
-
-

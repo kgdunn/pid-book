@@ -35,8 +35,8 @@ Assuming we know :math:`\sigma_{\overline{X}}`, which we usually do not in pract
 
 .. math::
 	:label: shewhart-theoretical
-	
-	\begin{array}{rcccl} 
+
+	\begin{array}{rcccl}
 		  - c_n                                              &\leq& \dfrac{\overline{x} - \mu}{\sigma_{\overline{X}}} &\leq&  +c_n\\ \\
 		\overline{x}  - c_n\sigma_{\overline{X}}             &\leq&  \mu                                              &\leq& \overline{x}  + c_n\sigma_{\overline{X}} \\ \\
 		\text{LCL}                                           &\leq&  \mu                                              &\leq& \text{UCL}
@@ -82,18 +82,18 @@ Notice how the :math:`a_n` values tend to 1.0 the larger the subgroup size, indi
 
 .. math::
 	:label: shewhart-limits
-	
-	\begin{array}{rcccl} 
-		 \text{LCL} = \overline{\overline{x}} - 3 \cdot \frac{\displaystyle \overline{S}}{\displaystyle a_n\sqrt{n}} &&  &&  \text{UCL} = \overline{\overline{x}} + 3 \cdot \frac{\displaystyle \overline{S}}{\displaystyle a_n\sqrt{n}} 
+
+	\begin{array}{rcccl}
+		 \text{LCL} = \overline{\overline{x}} - 3 \cdot \frac{\displaystyle \overline{S}}{\displaystyle a_n\sqrt{n}} &&  &&  \text{UCL} = \overline{\overline{x}} + 3 \cdot \frac{\displaystyle \overline{S}}{\displaystyle a_n\sqrt{n}}
 	\end{array}
-	
+
 It is highly unlikely that all the data chosen to calculate the phase 1 limits actually lie within these calculated LCL and UCLs. Those portions of data not from stable operation, which are outside the limits, should not have been used to calculate these limits. Those unstable data bias the limits to be wider than required.
 
-Exclude these :index:`outlier` data points and recompute the LCL and UCLs. Usually this process is repeated 2 to 3 times. It is wise to investigate the data being excluded to ensure they truly are from unstable operation. If they are from stable operation, then they should not be excluded. These data may be :ref:`violating the assumption of independence <monitoring_mistakes_to_avoid>`. One may consider using wider limits, or use an :ref:`EWMA control chart <monitoring_EWMA>`. 
+Exclude these :index:`outlier` data points and recompute the LCL and UCLs. Usually this process is repeated 2 to 3 times. It is wise to investigate the data being excluded to ensure they truly are from unstable operation. If they are from stable operation, then they should not be excluded. These data may be :ref:`violating the assumption of independence <monitoring_mistakes_to_avoid>`. One may consider using wider limits, or use an :ref:`EWMA control chart <monitoring_EWMA>`.
 
 .. rubric:: Example
 
-Bales of rubber are being produced, with every 10th bale automatically removed from the line for testing. Measurements of colour intensity are made on 5 sides of that bale, using calibrated digital cameras under controlled lighting conditions. The rubber compound is used for medical devices, so it needs to have the correct colour, as measured on a scale from 0 to 255. The average of the 5 colour measurements is to be plotted on a Shewhart chart. So we have a new data point appearing on the monitoring chart after every 10th bale. 
+Bales of rubber are being produced, with every 10th bale automatically removed from the line for testing. Measurements of colour intensity are made on 5 sides of that bale, using calibrated digital cameras under controlled lighting conditions. The rubber compound is used for medical devices, so it needs to have the correct colour, as measured on a scale from 0 to 255. The average of the 5 colour measurements is to be plotted on a Shewhart chart. So we have a new data point appearing on the monitoring chart after every 10th bale.
 
 In the above example the raw data are the bale's colour. There are :math:`n = 5` values in each subgroup. Collect say :math:`K=20` samples of good production bales considered to be from stable operation. No special process events occurred while these bales were manufactured.
 
@@ -105,15 +105,15 @@ The data below represent the average of the :math:`n=5` samples from each bale, 
 The overall average is :math:`\overline{\overline{x}} = 238.8` and :math:`\overline{S} = 9.28`. The raw data are `available on this website <https://openmv.net/info/rubber-colour>`_ and you can verify the values of :math:`\overline{\overline{x}}` and :math:`\overline{S}` were correctly calculated.
 
 
-*	Calculate the lower and upper control limits for this Shewhart chart. 
+*	Calculate the lower and upper control limits for this Shewhart chart.
 *	Were there any points in the phase 1 data (training phase) that exceeded these limits?
 
-	*	LCL = :math:`\overline{\overline{x}} - 3 \cdot \frac{\displaystyle \overline{S}}{\displaystyle a_n\sqrt{n}} = 238.8 - 3 \cdot \displaystyle \frac{9.28}{(0.94)(\sqrt{5})} = 225.6` 
-	*	UCL = :math:`\overline{\overline{x}} + 3 \cdot \frac{\displaystyle \overline{S}}{\displaystyle a_n\sqrt{n}} = 238.8 + 3 \cdot \displaystyle \frac{9.28}{(0.94)(\sqrt{5})} = 252.0` 
-	*	The group with :math:`\overline{x}` = 253 exceeds the calculated upper control limit. 
+	*	LCL = :math:`\overline{\overline{x}} - 3 \cdot \frac{\displaystyle \overline{S}}{\displaystyle a_n\sqrt{n}} = 238.8 - 3 \cdot \displaystyle \frac{9.28}{(0.94)(\sqrt{5})} = 225.6`
+	*	UCL = :math:`\overline{\overline{x}} + 3 \cdot \frac{\displaystyle \overline{S}}{\displaystyle a_n\sqrt{n}} = 238.8 + 3 \cdot \displaystyle \frac{9.28}{(0.94)(\sqrt{5})} = 252.0`
+	*	The group with :math:`\overline{x}` = 253 exceeds the calculated upper control limit.
 	*	That :math:`\overline{x}` point should be excluded and the limits recomputed. You can show the new :math:`\overline{\overline{x}} = 238.0` and :math:`\overline{S} = 9.68` and the new LCL = 224 and UCL = 252.
-	
-	
+
+
 In source code:
 
 .. code-block:: python
@@ -220,7 +220,7 @@ In source code:
 	UCL = xdb + (3 * S/(an * sqrt(N.sub)))
 	paste0('Control limits: [', round(LCL, 0),
 	       '; ', round(UCL,0), ']')
-	
+
 
 .. TODO: in the future, describe more clearly the difference between phase 1 and phase 2. Students were asking a lot of questions around this.
 
@@ -279,9 +279,9 @@ To quantify the probability :math:`\beta`, recall that a Shewhart chart is for m
 
 The table highlights that :math:`\beta` is a function of the amount by which the process shifts = :math:`\Delta`, where :math:`\Delta=1` implies the process has shifted up by :math:`1\sigma`. The table was calculated for :math:`n=4` and used critical limits of :math:`\pm 3 \sigma_{\overline{X}}`. You can calculate your own values of :math:`\beta` using this line of R code: ``beta <- pnorm(3 - delta*sqrt(n)) - pnorm(-3 - delta*sqrt(n))``
 
-==============================  ====== ====== ====== ====== ====== ====== 
-:math:`\Delta`                  0.25   0.50   0.75   1.00   1.50   2.00   
-------------------------------  ------ ------ ------ ------ ------ ------ 
+==============================  ====== ====== ====== ====== ====== ======
+:math:`\Delta`                  0.25   0.50   0.75   1.00   1.50   2.00
+------------------------------  ------ ------ ------ ------ ------ ------
 :math:`\beta` when :math:`n=4`  0.9936 0.9772 0.9332 0.8413 0.5000 0.1587
 ==============================  ====== ====== ====== ====== ====== ======
 
@@ -340,7 +340,7 @@ However, an alternative chart, the CUSUM chart is more effective at detecting a 
 	This iterative approach can be tiresome with data that has spikes, missing values, outliers, and other problems typical of data pulled from a process database (:index:`historian <single: data historian>`). :index:`Robust monitoring charts <single: robust monitoring chart>` are procedures to calculate the limits so the LCL and UCL are resistant to the effect of outliers. For example, a robust procedure might use the medians and MAD instead of the mean and standard deviation. An examination of various robust procedures, especially that of the interquartile range, is given in the paper by D. M. Rocke, `Robust Control Charts <https://literature.learnche.org/item/174/robust-control-charts>`_, *Technometrics*, **31** (2), p 173 - 184, 1989.
 
 	*Note*: do not use robust methods to calculate the values plotted on the charts during phase 2, only use robust methods to calculate the chart limits in phase 1!
-	
+
 .. index::
 	single: warning limits
 	single: action limits
@@ -368,4 +368,3 @@ Mistakes to avoid
 #.	Shewhart chart limits were calculated with the assumption of **independent subgroups** (e.g. subgroup :math:`i` has no effect on subgroup :math:`i+1`). For a process with mild autocorrelation, the act of creating subgroups, with :math:`n` samples in each group, removes most, if not all, of the relationship between subgroups. However processes with heavy autocorrelation (slow moving processes sampled at a high rate, for example), will have LCL and UCL calculated from equation :eq:`shewhart-limits` that will raise false alarms too frequently. In these cases you can widen the limits, or remove the autocorrelation from the signal. More on this in the later section on :ref:`exponentially weighted moving average (EWMA) charts <monitoring_EWMA>`.
 
 #.	Using Shewhart charts on two or more **highly correlated quality variables**, usually on your final product measurement, can increase your type II (consumer's risk) dramatically. We will come back to this very important topic in the section on :ref:`latent variable models <LVM_monitoring>`, where we will counterintuitively prove that even having individual charts each within their respective limits can result where it is outside the joint limits.
-

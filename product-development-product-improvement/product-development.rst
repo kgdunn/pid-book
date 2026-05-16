@@ -291,5 +291,3 @@ The four-table organization is drawn from a sequence of papers, several of whose
 	*	Christiane M. Jaeckle and John F. MacGregor, "`Product Design through Multivariate Statistical Analysis of Process Data <https://literature.learnche.org/item/61/product-design-through-multivariate-statistical-analysis-of-process-data>`_." *AIChE Journal*, **44**, 1998.
 
 	*	Emanuele Tomba, Massimiliano Barolo and Salvador García-Muñoz, "General Framework for Latent Variable Model Inversion for the Design and Manufacturing of New Products." *Industrial & Engineering Chemistry Research*, **51**, 2012, https://doi.org/10.1021/ie301214c
-
-

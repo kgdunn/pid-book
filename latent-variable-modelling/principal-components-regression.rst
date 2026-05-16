@@ -35,11 +35,11 @@ We face another problem with MLR: the assumption that the variables in |X| are m
 
 *	cannot handle missing values in |X|
 
-*	MLR requires that :math:`N > K`, which can be impractical in many circumstances, which leads to 
+*	MLR requires that :math:`N > K`, which can be impractical in many circumstances, which leads to
 
 *	variable selection to meet the :math:`N > K` requirement, and to gain independence between columns of |X|, but that selection process is non-obvious, and may lead to suboptimal predictions.
 
-The main idea with principal component regression is to replace the :math:`K` columns in |X| with their uncorrelated :math:`A` score vectors from PCA. 
+The main idea with principal component regression is to replace the :math:`K` columns in |X| with their uncorrelated :math:`A` score vectors from PCA.
 
 .. image:: ../figures/pls/PCR-data-structure-compared-to-MLR.png
 	:alt:	../figures/pls/PCR-data-structure-compared-to-MLR.svg
@@ -110,7 +110,7 @@ Here then is the procedure for **building** a principal component regression mod
 
 #.	And the Hotelling's |T2| value for the new observation: :math:`T^2_\text{new} = \displaystyle \sum_{a=1}^{a=A}{\left(\dfrac{t_{\text{new},a}}{s_a}\right)^2}`.
 
-#.	Before calculating the prediction from the PCR model, first check if the :math:`\text{SPE}_\text{new}` and :math:`T^2_\text{new}` values are below their 95% or 99% limits. If the new observation is below these limits, then go on to calculate the prediction: :math:`\widehat{y}_\text{new} = \mathbf{t}'_\text{new}\mathbf{b}`, where :math:`\mathbf{b}` was from the 
+#.	Before calculating the prediction from the PCR model, first check if the :math:`\text{SPE}_\text{new}` and :math:`T^2_\text{new}` values are below their 95% or 99% limits. If the new observation is below these limits, then go on to calculate the prediction: :math:`\widehat{y}_\text{new} = \mathbf{t}'_\text{new}\mathbf{b}`, where :math:`\mathbf{b}` was from the
 
 #.	If either of the :math:`\text{SPE}` or :math:`T^2` limits were exceeded, then one should investigate the contributions to SPE, |T2| or the individuals scores to see why the new observation is unusual.
 
@@ -119,4 +119,3 @@ Here then is the procedure for **building** a principal component regression mod
 Multiple linear regression, though relatively simpler to implement, has no such consistency check on the new observation's :math:`x`-values. It simply calculates a direct prediction for :math:`\widehat{y}_\text{new}`, no matter what the values are in :math:`\mathbf{x}_{\text{new}}`.
 
 One of the main applications in engineering for PCR is in the use of software sensors, also called :ref:`inferential sensors <LVM_inferential_sensors>`. The method of PLS has some distinct advantages over PCR, so we prefer to use that method instead, as described next.
-	

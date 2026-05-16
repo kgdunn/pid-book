@@ -92,7 +92,7 @@ Returning to our example of the gas cylinder. In this case we know that :math:`\
 	:scale: 40
 	:width: 900px
 	:alt: fake width
-	
+
 We find our best estimate for :math:`b_1` roughly at 5.88, the minimum of our grid search, which is very close to the theoretically expected value of 5.86 kPa/K.
 
 For the case where we have both |b0| and |b1|  varying we can construct a grid and tabulate the objective function values at all points on the grid. The least squares objective function will always be shaped like a bowl for these cases, and a unique minimum  always be found, because the objective function is :index:`convex <pair: convex optimization; least squares>`.
@@ -138,7 +138,7 @@ Now divide the first line through by :math:`n` (the number of data pairs we are 
 
 **Remarks**:
 
-#.	What units does parameter estimate :math:`b_1` have? 
+#.	What units does parameter estimate :math:`b_1` have?
 
 	-	The units of :math:`y` divided by the units of :math:`x`.
 
@@ -182,7 +182,7 @@ We will refer back to the following example several times. Calculate the least s
 	:width: 900px
 	:scale: 40
 	:alt: fake width
-	
+
 ..
 	.. image:: ../figures/least-squares/regression-exercise.png
 		:align: center
@@ -363,5 +363,3 @@ residuals, its standard error, and its :math:`R^2` value, and again in the secti
 			:label:define-2-LS-modified
 
 				\mathrm{y} &= \beta_0 + \beta_1 (\mathrm{x} -\overline{\mathrm{x}}) + \epsilon
-
-

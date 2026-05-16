@@ -16,4 +16,3 @@ Visualization latent variable models with linking and brushing
 In this illustration we are considering the well-known iris data set, a multivariate data set consisting of the 4 length measurements taken on 3 species of iris. There are 150 observations (50 for each species). Linking is used to mark each iris species with a different marker shape (a different colour could also have been used). Brushing cannot be illustrated, but as shown in the paper by Becker and Cleveland, it would amount to dynamically changing the marker shape or colour of points in one plot, while the user selects those same observations in another plot.
 
 This concept is very powerful to learn from, and to interrogate a latent variable model. For example, when we see interesting observations in the score plot, we can brush through the scores, while having a time series plot of the raw data open alongside. This would highlight what that score feature means in the context of the raw data.
-

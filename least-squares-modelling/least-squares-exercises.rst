@@ -60,7 +60,7 @@ Exercises
 	For a :math:`x_{\text{new}}` value and the linear model :math:`y = b_0 + b_1 x` the prediction interval for :math:`\hat{y}_\text{new}` is:
 
 		.. math::
-		
+
 			\hat{y}_i \pm c_t \sqrt{V\{\hat{y}_i\}}
 
 		where :math:`c_t` is the critical t-value, for example at the 95% confidence level.
@@ -258,7 +258,7 @@ Exercises
 	-	For the model :math:`y = b_0  + b_\text{speed}x_\text{speed} + b_\text{baffles}x_\text{baffles} + b_\text{temp}x_\text{temp}` let the coefficient vector be :math:`\mathrm{b} = [b_0, b_\text{speed},  b_\text{baffles}, b_\text{temp}]`, then we can write down the following X matrix to estimate it:
 
 		.. math::
-		
+
 			\mathrm{X} = \begin{bmatrix}
 							1 &  4300 & 0 & 82  \\
 							1 &  3700 & 1 & 90  \\
@@ -279,7 +279,7 @@ Exercises
 		You can obtain the above :math:`\mathrm{X}` matrix in R using the ``model.matrix(model)`` function. The :math:`\mathrm{X}^T\mathrm{X}` and :math:`\mathrm{X}^T\mathrm{y}` matrices are:
 
 		.. math::
-		
+
 			\mathrm{X}^T\mathrm{X} = \begin{bmatrix}
 							14      &   59100      &    6  &  1119 \\
 							59100   & 251330000    & 24300 & 4714700 \\
@@ -297,7 +297,7 @@ Exercises
 	-	Using these matrices to solve for :math:`\mathrm{b}`
 
 	 	.. math::
-	
+
 			\mathrm{b} = \left(\mathrm{X}^T\mathrm{X} \right)^{-1}\mathrm{X}^T\mathrm{y} =  \begin{bmatrix} 52.48 \\ 0.00871 \\ -9.09 \\ -0.471 \end{bmatrix}
 
 
@@ -519,14 +519,14 @@ Exercises
 .. admonition:: Question
 
 	.. _bioreactor_LS_question:
-	
+
 	Use the `bioreactor data <https://openmv.net/info/bioreactor-yields>`_, which shows the percentage yield from the reactor when running various experiments where temperature was varied, impeller speed and the presence/absence of baffles were adjusted.
 
 	#.	Build a linear model that uses the reactor temperature to predict the yield. Interpret the slope and intercept term.
 
 	#.	Build a linear model that uses the impeller speed to predict yield. Interpret the slope and intercept term.
 
-	#.	Build a linear model that uses the presence (represent it as 1) or absence (represent it as 0) of baffles to predict yield. Interpret the slope and intercept term. 
+	#.	Build a linear model that uses the presence (represent it as 1) or absence (represent it as 0) of baffles to predict yield. Interpret the slope and intercept term.
 
 		*Note*: if you use R it will automatically convert the ``baffles`` variable to 1's and 0's for you. If you wanted to make the conversion yourself, to  verify what R does behind the scenes, try this:
 
@@ -546,17 +546,17 @@ Exercises
 
 	The R code (below) was used to answer all questions.
 
-	#.	
+	#.
 		*	The model is: :math:`\hat{y} = 102.5 - 0.69T`, where :math:`T` is tank temperature.
 		*	Intercept = :math:`102.5` % points is the yield when operating at 0 :math:`^\circ \text{C}`. Obviously not a useful interpretation, because data have not been collected in a range that spans, or is even close to 0 :math:`^\circ \text{C}`. It is likely that this bioreactor system won't yield any product under such cold conditions. Further, a yield greater than 100% is not realizable.
 		*	Slope = -0.69 :math:`\frac{[\%]}{[^\circ \text{C}]}`, indicating the yield decreases, on average, by about 0.7 units for every degree increase in tank temperature.
 
-	#.	
+	#.
 		*	The model is: :math:`\hat{y} = -20.3 + 0.016S`, where :math:`S` is impeller speed.
 		*	Intercept = :math:`-20.3` % points is the yield when operating no agitation. Again, obviously not a useful interpretation, because the data have not been collected under these conditions, and yield can't be a negative quantity.
 		*	Slope = 0.016 :math:`\frac{[\%]}{[\text{RPM}]}`, indicating the yield increases, on average, by about 1.6 percentage points per 100 RPM increase.
 
-	#.	
+	#.
 		*	The model is: :math:`\hat{y} = 54.9 - 16.7B`, where :math:`B` is 1 if baffles are present and :math:`B=0` with no baffles.
 		*	Intercept = :math:`54.9` % points yield is the yield when operating with no baffles (it is in fact the average yield of all the rows that have "No" as their baffle value).
 		*	Slope = -16.7 %, indicating the presence of baffles decreases the yield, on average, by about 16.7 percentage points.
@@ -569,7 +569,7 @@ Exercises
 
 		*	Operate at higher speeds and take that cost into account. Notice however there is one observation at 4900 RPM that seems unusual: was that due to the presence of baffles, or due to temperature in that run?  We'll look into this issue with multiple linear regression later on.
 
-		.. note:: 
+		.. note::
 
 			Please note that our calculations above are not the true effect of each of the variables (temperature, speed and baffles) on yield. Our calculations assume that there is no interaction between temperature, speed and baffles, and that each effect operates independent of the others. That's not necessarily true. See the section on :ref:`interpreting MLR coefficients <MLR_coefficient_interpretation>` to learn how to "control for the effects" of other variables.
 
@@ -630,17 +630,17 @@ Exercises
 
 	#.	From the R model output:
 
-	 	*	intercept is -1.44 units of CO\ :sub:`2` 
+	 	*	intercept is -1.44 units of CO\ :sub:`2`
 		*	slope is 53.4 :math:`\frac{[\text{units of CO}_2]}{[\text{units of gas flow}]}`
 
-	#.	
+	#.
 		*	From the R model output: :math:`R^2 = 0.2347`
-		*	From earlier, the squared correlation is :math:`(-0.484)^2 = 0.2347`, the same value. 
-		*	Correlation can be interpreted as the square root of the :math:`R^2` value when regressing :math:`y` on :math:`x` (i.e. fitting a linear model to :math:`y` using :math:`x` as the input). 
+		*	From earlier, the squared correlation is :math:`(-0.484)^2 = 0.2347`, the same value.
+		*	Correlation can be interpreted as the square root of the :math:`R^2` value when regressing :math:`y` on :math:`x` (i.e. fitting a linear model to :math:`y` using :math:`x` as the input).
 		*	Most novices would be misled and consider an :math:`R^2` value of 0.23 quite low. But notice that there is a repeatable and consistent negative linear relationship between :math:`x` and :math:`y` in this data.
 
 
-	#.	This shows the interesting result that when regressing :math:`x` on :math:`y` (instead of the usual regression of :math:`y` on :math:`x`), that we get the same :math:`R^2` value. Note however that the *intercept* and *slope* are different between the two regressions. 
+	#.	This shows the interesting result that when regressing :math:`x` on :math:`y` (instead of the usual regression of :math:`y` on :math:`x`), that we get the same :math:`R^2` value. Note however that the *intercept* and *slope* are different between the two regressions.
 
 		This also calls into question the interpretation of the :math:`R^2` value in regression. :math:`R^2` is just the square of the correlation coefficient. Recall from class the slide on the `Wikipedia examples of correlation <https://en.wikipedia.org/wiki/File:Correlation_examples.png>`_: there were examples where :math:`r(x,y) = \sqrt{R^2}` was zero, but still a strong *relationship* existing in the data. So we should interpret :math:`R^2` as a measure only of the *linear relationship* between two variables. And bear its quadratic nature in mind  - interpreting the correlation is actually easier, and more "linear", in that a 0.2 improvement in correlation means the same thing when going from :math:`r=0.2` to 0.4, as it does when going from :math:`r=0.7` to 0.9 (not so for :math:`R^2`).
 
@@ -650,20 +650,20 @@ Exercises
 .. admonition:: Question
 
 	.. _thermocouple_LS_question:
-	
-	A new type of `thermocouple <https://en.wikipedia.org/wiki/Thermocouple>`_ is being investigated by your company's process control group. These devices produce an *almost* linear voltage  (millivolt) response at different temperatures. In practice though it is used the other way around: use the millivolt reading to predict the temperature. The process of fitting this linear model is called *calibration*. 
+
+	A new type of `thermocouple <https://en.wikipedia.org/wiki/Thermocouple>`_ is being investigated by your company's process control group. These devices produce an *almost* linear voltage  (millivolt) response at different temperatures. In practice though it is used the other way around: use the millivolt reading to predict the temperature. The process of fitting this linear model is called *calibration*.
 
 	#.	Use the following data to calibrate a linear model:
 
 		================= ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
-		Temperature [K]   273  293  313  333  353  373  393  413  433  453 
+		Temperature [K]   273  293  313  333  353  373  393  413  433  453
 		----------------- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
-		Reading [mV]	  0.01 0.12 0.24 0.38 0.51 0.67 0.84 1.01 1.15 1.31  
+		Reading [mV]	  0.01 0.12 0.24 0.38 0.51 0.67 0.84 1.01 1.15 1.31
 		================= ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
 
 		Show the linear model and provide the predicted temperature when reading 1.00 mV.
 
-	#.	Are you satisfied with this model, based on the coefficient of determination (:math:`R^2`) value?  
+	#.	Are you satisfied with this model, based on the coefficient of determination (:math:`R^2`) value?
 
 	#.	What is the model's standard error?  Now, are you satisfied with the model's prediction ability, given that temperatures can usually be recorded to an accuracy of :math:`\pm 0.5` K with most inexpensive thermocouples.
 
@@ -679,7 +679,7 @@ Exercises
 
 		.. math::
 
-			T = 278.6 + 135.3 V 
+			T = 278.6 + 135.3 V
 
 		implies that recording an increase in 0.1 mV means, on average, the temperature has increased by 13.5 K in the system.
 
@@ -690,7 +690,7 @@ Exercises
 			:align: center
 
 		The following Python code was used to fit the model and draw the plot.
-		
+
 		.. literalinclude:: ../figures/least-squares/voltage_linear_model.py
 			:language: python
 
@@ -705,27 +705,27 @@ Exercises
 			lm(formula = T ~ V)
 
 			Residuals:
-			    Min      1Q  Median      3Q     Max 
-			-6.9272 -2.1212 -0.1954  2.7480  5.4239 
+			    Min      1Q  Median      3Q     Max
+			-6.9272 -2.1212 -0.1954  2.7480  5.4239
 
 			Coefficients:
-			            Estimate Std. Error t value Pr(>|t|)    
+			            Estimate Std. Error t value Pr(>|t|)
 			(Intercept)  278.574      2.204  126.39 1.72e-14 ***
 			V            135.298      2.922   46.30 5.23e-11 ***
 			---
-			Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
+			Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 			Residual standard error: 3.916 on 8 degrees of freedom
-			Multiple R-squared: 0.9963,	Adjusted R-squared: 0.9958 
+			Multiple R-squared: 0.9963,	Adjusted R-squared: 0.9958
 			F-statistic:  2144 on 1 and 8 DF,  p-value: 5.229e-11
 
-	#.	The :math:`R^2` value from this linear fit is :math:`R^2 = 0.996`, which being so close to 1.0, implies the linear relationship in the data is strong (the linear model fits the data very well) - that's all. 
+	#.	The :math:`R^2` value from this linear fit is :math:`R^2 = 0.996`, which being so close to 1.0, implies the linear relationship in the data is strong (the linear model fits the data very well) - that's all.
 
 		One cannot be satisfied with only an :math:`R^2` value: it has nothing to do with whether the model's prediction accuracy is any good. So we can't tell anything from this number.
 
 	#.	The model's standard error is 3.9 K. If we assume the prediction error is normally distributed around the linear fit, this corresponds to one standard deviation. So 95% of our prediction error lies roughly within a range of :math:`\pm 2\times 3.92` or :math:`\pm 7.8` K. These are the dashed red lines drawn on the figure. (Please note: the true error intervals are not parallel to the regression line, they are curved; however the :math:`\pm 2S_E` limits are a good-enough approximation for most engineering applications.
 
-		This prediction ability of :math:`\pm 8` K is probably not satisfying for most engineering applications, since we can predict temperatures far more accurately, over the range from 273K to 453K, using off-the-shelf commercial thermocouples. 
+		This prediction ability of :math:`\pm 8` K is probably not satisfying for most engineering applications, since we can predict temperatures far more accurately, over the range from 273K to 453K, using off-the-shelf commercial thermocouples.
 
 	#.	The purpose of this question is to mainly point out the misleading nature of :math:`R^2` - this value looks really good: 99.6%, yet the actual purpose of the model, the ability to predict temperature from the millivolt reading, has no relationship at all to this :math:`R^2` value.
 
@@ -735,7 +735,7 @@ Exercises
 	.. SE = 3.9
 	.. model_ratio = 3.9/180 = 0.0216
 	.. ratio = 1 - 0.0216/0.3333 = 0.935: seems pretty good
-	
+
 
 .. admonition:: Question
 
@@ -800,7 +800,7 @@ Exercises
 
 	#.	What is the level of correlation between each of the :math:`x`-variables. Also show a scatterplot matrix to learn what this level of correlation looks like visually.
 
-		*	Report your correlations as a :math:`3 \times 3` matrix, where there should be 1.0's on the diagonal, and values between :math:`-1` and :math:`+1` on the off-diagonals.	
+		*	Report your correlations as a :math:`3 \times 3` matrix, where there should be 1.0's on the diagonal, and values between :math:`-1` and :math:`+1` on the off-diagonals.
 
 	#.	Build a linear regression that uses all three :math:`x`-variables to predict :math:`y`.
 
@@ -841,7 +841,7 @@ Exercises
 			    			0.618 & 1.0   & 0.644\\
 			                0.604 & 0.644 & 1.0 \end{bmatrix}
 
-		There is about a 60% correlation between each of the :math:`x`-variables in this model, and in each case the correlation is positive. 
+		There is about a 60% correlation between each of the :math:`x`-variables in this model, and in each case the correlation is positive.
 
 	#.	A combined linear regression model is :math:`y = -28.9 + 0.31 x_A + 3.92 x_S + 19.7 x_L` where :math:`x_A` is the log of the acetic acid concentration, :math:`x_S` is the log of the hydrogen sulphide concentration and :math:`x_L` is the lactic acid concentration in the cheese. The confidence intervals for each coefficient are:
 
@@ -1019,7 +1019,7 @@ Exercises
 
 		where :math:`x_T` is the temperature value in °C, :math:`x_S` is the speed in RPM and :math:`x_B` is a coded variable, 0=no baffles and 1=with baffles.
 
-		*	*Temperature effect*: :math:`-0.74 < \beta_T < -0.21`, with :math:`b_T = -0.47` indicates that increasing the temperature by 1 °C will decrease the yield on average by 0.47 units, holding the speed and baffle effects constant. The confidence interval does not span zero, indicating this coefficient is significant. An ad-hoc way I sometimes use to gather the effect of a variables is to ask what is the effect over the entire range of temperature, :math:`\sim 40 \text{°C}`: 
+		*	*Temperature effect*: :math:`-0.74 < \beta_T < -0.21`, with :math:`b_T = -0.47` indicates that increasing the temperature by 1 °C will decrease the yield on average by 0.47 units, holding the speed and baffle effects constant. The confidence interval does not span zero, indicating this coefficient is significant. An ad-hoc way I sometimes use to gather the effect of a variables is to ask what is the effect over the entire range of temperature, :math:`\sim 40 \text{°C}`:
 
 			*	:math:`\Delta y = -0.74 \times 40 = -29.6` % decrease in yield
 			*	:math:`\Delta y = -0.21 \times 40 = -8.4` % decrease in yield
@@ -1041,7 +1041,7 @@ Exercises
 		.. math::
 
 			y &= b_0 + b_T x_T + e \\
-			y &= b_0 + b_T x_T + (e' + b_S' x_S + b_B' x_B) 
+			y &= b_0 + b_T x_T + (e' + b_S' x_S + b_B' x_B)
 
 		i.e. we are lumping the effect of speed and baffles which we have omitted from the model, into the residuals, and we should see structure in our residuals due to these omitted effects.
 
@@ -1109,9 +1109,9 @@ Exercises
 		#.	What is the standard error of this model?
 		#.	Are there any time-based trends in the residuals (the rows in the data are already in time-order)?
 		#.	Use any other relevant plots of the predicted values, the residuals, the :math:`x`-variable, as described in class, and diagnose the problem with this linear model.
-		#.	What can be done to fix the problem? (You don't need to implement the fix yet). 
+		#.	What can be done to fix the problem? (You don't need to implement the fix yet).
 
-	#.	Show a plot of the hat-values (leverage) from the ``z2`` model. 
+	#.	Show a plot of the hat-values (leverage) from the ``z2`` model.
 
 		#.	Add suitable horizontal cut-off lines to your hat-value plot.
 		#.	Identify on your plot the observations that have large leverage on the model
@@ -1145,7 +1145,7 @@ Exercises
 	#.	A linear model between ``z2`` and ``SCB``: :math:`\widehat{\text{SCB}} = 32.23 - 10.6 z_2`
 
 		First start with a plot of the raw data with this regression line superimposed:
-		
+
 		.. image:: ../figures/least-squares/ldpe-z2-SCB-raw-data-identify.jpg
 			:alt:	../figures/least-squares/LDPE-question.R
 			:scale: 35
@@ -1153,7 +1153,7 @@ Exercises
 			:align: right
 
 		which helps when we look at the q-q plot of the Studentized residuals to see the positive and the negative residuals:
-		
+
 		.. image:: ../figures/least-squares/ldpe-z2-SCB-resids-qqplot.png
 			:alt:	../figures/least-squares/LDPE-question.R
 			:scale: 35
@@ -1165,7 +1165,7 @@ Exercises
 		#.	This model's standard error is :math:`S_E = 0.114`, which should be compared to the range of the :math:`y`-axis, 0.70 units, to get an idea whether this is large or small, so about 15% of the range. Given that a conservative estimate of the prediction interval is :math:`\pm 2 S_E`, or a total range of :math:`4S_E`, this is quite large.
 
 
-		#.	The residuals in time-order 
+		#.	The residuals in time-order
 
 			.. image:: ../figures/least-squares/ldpe-z2-SCB-raw-resids-in-order.png
 				:alt:	../figures/least-squares/LDPE-question.R
@@ -1178,7 +1178,7 @@ Exercises
 
 		#.	Three plots that do show a problem with the linear model:
 
-			*	*Predictions vs residuals*: definite structure in the residuals. We expect to see no structure, but a definite trend, formed by the 4 points is noticeable, as well as a negative correlation at high predicted ``SCB``. 
+			*	*Predictions vs residuals*: definite structure in the residuals. We expect to see no structure, but a definite trend, formed by the 4 points is noticeable, as well as a negative correlation at high predicted ``SCB``.
 
 				.. image:: ../figures/least-squares/ldpe-z2-SCB-predictions-vs-residuals.png
 					:alt:	../figures/least-squares/LDPE-question.R
@@ -1208,7 +1208,7 @@ Exercises
 
 		with 2 and 3 times the average hat value shown for reference. Points 52, 53 and 54 have leverage that is excessive, confirming what we saw in the previous part of this question.
 
-		Once these points are removed, the model was rebuilt, and this time showed point 51 as an high-leverage outlier. This point was removed and the model rebuilt. 
+		Once these points are removed, the model was rebuilt, and this time showed point 51 as an high-leverage outlier. This point was removed and the model rebuilt.
 
 		The hat values from this updated model are:
 
@@ -1240,7 +1240,7 @@ Exercises
 
 		The updated model shows shows only point 8 as an influential observation, due to its moderate leverage and large residual. However, this point does not warrant removal, since it is just above the cut-off value of :math:`4/(n-k) = 4/(50-2) = 0.083` for Cook's distance.
 
-		The other large hat values don't have large Studentized residuals, so they are not influential on the model. 
+		The other large hat values don't have large Studentized residuals, so they are not influential on the model.
 
 		Notice how the residuals in the updated model are all a little smaller than in the initial model.
 
@@ -1248,19 +1248,19 @@ Exercises
 
 	.. literalinclude:: ../figures/least-squares/LDPE-question.R
 		:language: s
-		
+
 .. admonition:: Question
 
 	A concrete slump test is used to test for the fluidity, or workability, of concrete. It's a crude, but quick test often used to measure the effect of polymer additives that are mixed with the concrete to improve workability.
 
-	The concrete mixture is prepared with a polymer additive. The mixture is placed in a mold and filled to the top. The mold is inverted and removed. The height of the mold minus the height of the remaining concrete pile is called the "slump". 
+	The concrete mixture is prepared with a polymer additive. The mixture is placed in a mold and filled to the top. The mold is inverted and removed. The height of the mold minus the height of the remaining concrete pile is called the "slump".
 
 	.. image:: ../figures/least-squares/concrete-slump.png
 		:alt:	../figures/least-squares/concrete-slump.svg
 		:width: 900px
 		:align: right
 		:scale: 60
-		
+
 	Figure `from Wikipedia <https://en.wikipedia.org/wiki/File:Types_of_concrete_slump.jpg>`_
 
 	Your company provides the polymer additive, and you are developing an improved polymer formulation, call it B, that hopefully provides the same slump values as your existing polymer, call it A. Formulation B costs less money than A, but you don't want to upset, or lose, customers by varying the slump value too much.
@@ -1270,23 +1270,23 @@ Exercises
 		==========  ================
 		Additive	Slump value [cm]
 		==========  ================
-		A           5.2            
-		A           3.3            
-		B           5.8            
-		A           4.6            
-		B           6.3            
-		A           5.8            
-		A           4.1            
-		B           6.0            
-		B           5.5            
-		B           4.5            
+		A           5.2
+		A           3.3
+		B           5.8
+		A           4.6
+		B           6.3
+		A           5.8
+		A           4.1
+		B           6.0
+		B           5.5
+		B           4.5
 		==========  ================
 
 	You can derive the 95% confidence interval for the true, but unknown, difference between the effect of the two additives:
 
 		.. math::
 
-			\begin{array}{rcccl} 
+			\begin{array}{rcccl}
 				-c_t &\leq& z	&\leq & +c_t \\
 				(\overline{x}_B - \overline{x}_A) - c_t \sqrt{s_P^2 \left(\frac{1}{n_B} + \frac{1}{n_A}\right)}	&\leq& \mu_B - \mu_A	&\leq &  (\overline{x}_B - \overline{x}_A) + c_t \sqrt{s_P^2 \left(\frac{1}{n_B} + \frac{1}{n_A}\right)}\\
 				1.02 - 2.3 \sqrt{0.709 \left(\frac{1}{5} + \frac{1}{5}\right)} 	&\leq& \mu_B - \mu_A	&\leq& 1.02 + 2.3 \sqrt{0.709 \left(\frac{1}{5} + \frac{1}{5}\right)} \\
@@ -1319,57 +1319,57 @@ Exercises
 	Some data were collected from tests where the compressive strength, :math:`x`, used to form concrete was measured, as well as the intrinsic permeability of the product, :math:`y`. There were 16 data points collected. The mean :math:`x`-value was :math:`\overline{x} = 3.1` and the variance of the :math:`x`-values was 1.52. The average :math:`y`-value was 40.9. The estimated covariance between :math:`x` and :math:`y` was :math:`-5.5`.
 
 	The least squares estimate of the slope and intercept was: :math:`y = 52.1 - 3.6 x`.
-	
+
 	#.	What is the expected permeability when the compressive strength is at 5.8 units?
-	
+
 	#.	Calculate the 95% confidence interval for the slope if the standard error from the model was 4.5 units. Is the slope coefficient statistically significant?
 
 	#.	Provide a rough estimate of the 95% prediction interval when the compressive strength is at 5.8 units (same level as for part 1). What assumptions did you make to provide this estimate?
-	
+
 	#.	Now provide a more accurate, calculated 95% prediction confidence interval for the previous part.
 
 .. admonition:: Solution
 
 	#.	It is :math:`\hat{y} = 52.1 - 3.6(5.8) = 31.22`
-	
+
 	#.	From the definition:
-	
+
 		.. math::
-		
+
 			S_E^2(b_i)	&= \dfrac{S_E^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \\
-						&= \dfrac{4.5^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} 
-						
+						&= \dfrac{4.5^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}
+
 		We need the denominator term, which can be found by back-calculation:
-		
+
 		.. math::
-		
+
 			\mathcal{V}(x) = 1.52 &= \frac{\sum_j{(x_j - \overline{\mathrm{x}})^2}}{n-1} \\
 			\sum_j{(x_j - \overline{\mathrm{x}})^2} &= 1.52 \times (16-1) = 22.8
-			
+
 		So the 95% confidence interval for the slope, :math:`b_i`:
-		
+
 		.. math::
-		
+
 			b_i &\pm c_t S_E(b_i) \\
 			-3.6 &\pm 2.14 \sqrt{\dfrac{4.5^2}{22.8}}\\
 			-3.6 &\pm 2.02
-	
+
 		where :math:`c_t = 2.14` from the :math:`t`-distribution with :math:`n-k = 16-2` degrees of freedom.
-		
+
 		Since this confidence interval *does not* span zero, we conclude the slope coefficient is statistically significant.
-		
+
 	#.	A rough estimate would be at :math:`\hat{y} \pm 2 S_E`, in other words, :math:`31.2 \pm 9.0`, which is :math:`[22.2, 40.2]`
-	
+
 	#.	A more accurate prediction interval is given by :math:`\hat{y}_i \pm c_t \sqrt{V\{\hat{y}_i\}}`, where:
-	
+
 		.. math::
-	
+
 		    V\{\hat{y}_i\} &= S_E^2 \left(1 + \dfrac{1}{n} + \dfrac{(x_i - \overline{\mathrm{x}})^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}\right)\\
 						   &= 4.5^2 \left(1 + \dfrac{1}{16} + \dfrac{(5.8 - 3.1)^2}{22.8}\right)\\
-						   &= 27.99	
-		
-		and represents the variance of the predicted :math:`\hat{y}_i` at the given value of :math:`x_i = 5.8`. 
-		
+						   &= 27.99
+
+		and represents the variance of the predicted :math:`\hat{y}_i` at the given value of :math:`x_i = 5.8`.
+
 		The confidence interval, or prediction interval for this :math:`\hat{y}_i` is :math:`\pm c_t \sqrt{V\{\hat{y}_i\}} = \pm 2.14 \sqrt{27.99} = \pm 11.3`,  a bit larger than the rough estimate above.
 
 .. admonition:: Question
@@ -1388,14 +1388,14 @@ Exercises
 
 	.. code-block:: text
 
-		                    Analysis of Variance         
+		                    Analysis of Variance
 		---------------------------------------------------------
-		                                    Sum of           Mean 
-		Source                   DF        Squares         Square 
-		Model                     2         9532.7        4766.35 
+		                                    Sum of           Mean
+		Source                   DF        Squares         Square
+		Model                     2         9532.7        4766.35
 		Error                    84         9963.7          118.6
-		Total                    86        19496.4                
-		Root MSE              XXXXX    
+		Total                    86        19496.4
+		Root MSE              XXXXX
 		R-Square              XXXXX
 
 
@@ -1409,7 +1409,7 @@ Exercises
 
 	#.	What is the viscosity prediction at 430K?  And at 480K?
 
-	#.	In the future you plan to use this model to adjust temperature, in order to meet a certain viscosity target. To do that you must be sure the change in temperature will lead to the desired change in viscosity. 
+	#.	In the future you plan to use this model to adjust temperature, in order to meet a certain viscosity target. To do that you must be sure the change in temperature will lead to the desired change in viscosity.
 
 	 	What is the 95% confidence interval for the slope coefficient, *and interpret* this confidence interval in the context of how you plan to use this model.
 

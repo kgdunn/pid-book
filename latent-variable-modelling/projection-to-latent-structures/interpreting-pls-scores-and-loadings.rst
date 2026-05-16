@@ -1,7 +1,7 @@
 Interpreting the scores in PLS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Like in PCA, our scores in PLS are a summary of the data from *both* blocks. The reason for saying that, even though there are two sets of scores, |T| and |U|, for each of |X| and |Y| respectively, is that they have maximal covariance. We can interpret one set of them. In this regard, the |T| scores are more readily interpretable, since they are always available. The |U| scores are not available until |Y| is known. We have the |U| scores during model-building, but when we use the model on new data (e.g. when making predictions using PLS), then we only have the |T| scores. 
+Like in PCA, our scores in PLS are a summary of the data from *both* blocks. The reason for saying that, even though there are two sets of scores, |T| and |U|, for each of |X| and |Y| respectively, is that they have maximal covariance. We can interpret one set of them. In this regard, the |T| scores are more readily interpretable, since they are always available. The |U| scores are not available until |Y| is known. We have the |U| scores during model-building, but when we use the model on new data (e.g. when making predictions using PLS), then we only have the |T| scores.
 
 The scores for PLS are interpreted in exactly the :ref:`same way as for PCA <LVM_interpreting_scores>`. Particularly, we look for clusters, outliers and interesting patterns in the line plots of the scores.
 
@@ -21,7 +21,7 @@ Interpreting the loadings in PLS
 	single: r weights (W*)
 	see: W-star; r weights (W*)
 
-:ref:`Like with the loadings from PCA <LVM_interpreting_loadings>`, :math:`\mathbf{p}_a`,we interpret the loadings :math:`\mathbf{w}_a` from PLS in the same way. Highly correlated variables have similar weights in the loading vectors and appear close together in the loading plots of all dimensions. 
+:ref:`Like with the loadings from PCA <LVM_interpreting_loadings>`, :math:`\mathbf{p}_a`,we interpret the loadings :math:`\mathbf{w}_a` from PLS in the same way. Highly correlated variables have similar weights in the loading vectors and appear close together in the loading plots of all dimensions.
 
 We tend to refer to the PLS loadings, :math:`\mathbf{w}_a`, as weights; this is for reasons that will be explained soon.
 

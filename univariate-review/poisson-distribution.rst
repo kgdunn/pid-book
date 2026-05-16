@@ -12,22 +12,22 @@ There are two important properties:
 #.	The mean of the distribution for the rate happens to be the rate at which unusual events occur = :math:`\eta = np`
 #.	The variance of the distribution is also :math:`\eta`. This property is particularly interesting - state in your own words what this implies.
 
-Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{e^{-\eta}\eta^{x}}{x!}`, with a plot as shown for :math:`\eta = 4`. Please note the lines are only guides, the probability is only defined at the integer values marked with a circle. 
+Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{e^{-\eta}\eta^{x}}{x!}`, with a plot as shown for :math:`\eta = 4`. Please note the lines are only guides, the probability is only defined at the integer values marked with a circle.
 
 .. image:: ../figures/univariate/poisson-distribution.png
 	:align: right
 	:scale: 60
 	:width: 900
 	:alt: fake width
-	
-	
+
+
 :math:`p(x)` expresses the probability that there will be :math:`x` occurrences (must be an integer) of this rare event in the same interval of time or unit area as :math:`\eta` was measured.
 
 *Example*: Equipment in a chemical plant can and will fail. Since it is a rare event, let's use the Poisson distribution to model the failure rates. Historical records on a plant show that a particular supplier's pumps are, on average, prone to failure in a month with probability :math:`p = 0.01` (1 in 100 chance of failure each month). There are 50 such pumps in use throughout the plant. *What is the probability that* either 0, 1, 3, 6, 10, or 15 *pumps will fail this year?* (Create a table)
 
 	:math:`\eta = 12\,\frac{\displaystyle \text{months}}{\displaystyle \text{year}} \times 50\,\text{pumps} \times 0.01\,\frac{\displaystyle\text{failure}}{\displaystyle\text{month}} = 6\,\frac{\displaystyle\text{pump failures}}{\displaystyle\text{year}}`
 
-	.. csv-table:: 
+	.. csv-table::
 	   :header: :math:`x`, :math:`p(x)`
 	   :widths: 30, 80
 
@@ -37,7 +37,7 @@ Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{
 		6, 16%
 		10, 4.1%
 		15, 0.1%
-		
+
 .. code-block:: python
 
 	from scipy.stats import poisson
@@ -60,4 +60,3 @@ Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{
 
 	# Output:
 	# 0.0025 0.0149 0.0892 0.161 0.0413 0.001
-

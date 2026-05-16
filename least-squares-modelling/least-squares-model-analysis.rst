@@ -35,7 +35,7 @@ These 3 components must add up to the total variance we started with. By definit
 Using the accompanying figure, we see that geometrically, at any fixed value of :math:`x_i`, that any :math:`y` value above or below the least squares line, call it :math:`y_i` and shown with a circle, must obey the distance relationship:
 
 .. math::
-	
+
 	\begin{array}{lrcl}
 		\text{Distance relationship:} & (y_i - \overline{\mathrm{y}})         &=& (\hat{y}_i - \overline{\mathrm{y}}) + (y_i - \hat{y}_i) \\
 		\text{Squaring both sides:}   & (y_i - \overline{\mathrm{y}})^2       &=& (\hat{y}_i - \overline{\mathrm{y}})^2 + 2(\hat{y}_i - \overline{\mathrm{y}})(y_i - \hat{y}_i) + (y_i - \hat{y}_i)^2 \\
@@ -175,7 +175,7 @@ Derivation of :math:`R^2`
 	Recall, perhaps from a second year math course, that the cosine of the angle between any two vectors, :math:`a` and :math:`b` is related to the vector dot product
 
 	.. math::
-	
+
 		\cos \theta_{ab} = \dfrac{a^Tb}{\|a\| \|b\|}
 
 As introduced by example in the previous part, :math:`R^2 = \dfrac{\text{RegSS}}{\text{TSS}} = \dfrac{\sum_i{ \left(\hat{y}_i - \overline{\mathrm{y}}\right)^2}}{\sum_i{ \left(y_i - \overline{\mathrm{y}}\right)^2}}`: simply the ratio between the variance we can explain with the model (RegSS) and the total variance we started off with (TSS). We can also write that :math:`R^2 = 1-\dfrac{\text{RSS}}{\text{TSS}}`, based on the fact that TSS = RegSS + RSS.
@@ -252,7 +252,7 @@ Furthermore, our derivation for the confidence intervals of |b0| and |b1| requir
 		:align: center
 		:scale: 60
 		:alt: fake width
-		
+
 	Illustration of the constant error variance assumption and the normally distributed error assumption.
 
 #.	The errors are normally distributed: :math:`e_i \sim \mathcal{N}(0, \sigma_\epsilon^2)`. This also implies that :math:`y_i \sim \mathcal{N}(\beta_0 + \beta_1x_i, \sigma_\epsilon^2)` from the first linearity assumption.
@@ -265,7 +265,7 @@ Furthermore, our derivation for the confidence intervals of |b0| and |b1| requir
 
 #.	All :math:`y_i` values are independent of each other. This again is violated in cases where the data are collected in time order and the :math:`y_i` values are autocorrelated.
 
-.. note:: Derivation of the model's coefficients do not require these assumptions, only the derivation of the coefficient's confidence intervals require this. 
+.. note:: Derivation of the model's coefficients do not require these assumptions, only the derivation of the coefficient's confidence intervals require this.
 
 Also, if we want to interpret the model's :math:`S_E` as the estimated standard deviation of the residuals, then it helps if the residuals are normally distributed.
 
@@ -313,7 +313,7 @@ where :math:`j` is an index for all data points used to build the least squares 
 #.	So now apart from the numerator term, how could you decrease the error in your model's |b1| coefficient?
 
 	- Use samples that are far from the mean of the |x|-data.
-	
+
 	- Use more samples.
 
 #.	What do we use for the numerator term :math:`\mathcal{V}\{y_i\}`?
@@ -586,7 +586,7 @@ You may read the reference texts for the interesting derivation of this variance
 We may construct a prediction interval in the standard manner, assuming that :math:`\hat{y}_i \sim \mathcal{N}\left( \overline{\hat{y}_i}, \mathcal{V}\{\hat{y}_i\} \right)`. We will use an estimate of this variance since we do not know the population variance. This requires we use the :math:`t`-distribution with :math:`n-k` degrees of freedom, at a given degree of confidence, e.g. 95%.
 
 .. math::
-	
+
     \begin{array}{rcccl}
         -c_t &<& \dfrac{\hat{y}_i - \overline{\hat{y}_i}}{\sqrt{V\{\hat{y}_i\}}} &<& +c_t \\
         \hat{y}_i -c_t \sqrt{V\{\hat{y}_i\}} &<& \overline{\hat{y}_i} &<& \hat{y}_i + c_t \sqrt{V\{\hat{y}_i\}}
@@ -602,7 +602,7 @@ Let's understand the interpretation of :math:`\mathcal{V}\{\hat{y}_i\} = S_E^2 \
 #.	Now let's say our :math:`x_\text{new}` happens to be :math:`\overline{\mathrm{x}}`, the center point of our data. Write down the upper and lower value of the prediction bounds for the corresponding :math:`\hat{y}`, given that :math:`c_t = 2.26` at the 95% confidence level.
 
 	- The LB = :math:`\hat{y}_i - c_t \sqrt{V\{\hat{y}_i\}} = 7.5 - 2.26 \times \sqrt{(1.237)^2  \left(1+\dfrac{1}{11} + \dfrac{(x_i - \overline{\mathrm{x}})^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}\right)} = 7.5 - 2.26  \times 1.29 = 7.50 - 2.917 = 4.58`
-	
+
 	- The UB = :math:`\hat{y}_i + c_t \sqrt{V\{\hat{y}_i\}} = 7.5 + 2.26 \times \sqrt{(1.237)^2  \left(1+\dfrac{1}{11} + \dfrac{(x_i - \overline{\mathrm{x}})^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}\right)} = 7.5 + 2.26 \times 1.29 = 7.50 + 2.917 = 10.4`
 
 #.	Now move left and right, away from :math:`\overline{\mathrm{x}}`, and mark the confidence intervals. What general shape do they have?
@@ -624,15 +624,15 @@ The following output is obtained in R for the :ref:`example <LS-class-example>` 
 .. code-block:: r
 
 	x <- c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5)
-	y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 
+	y <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96,
 	      7.24, 4.26, 10.84, 4.82, 5.68)
 
-	# "Calculate for me the linear model, 
+	# "Calculate for me the linear model,
 	# where y is described by x"
-	mod.ls <- lm(y ~ x) 
-	
+	mod.ls <- lm(y ~ x)
+
 	summary(mod.ls)
-	
+
 and produces this output:
 
 .. code-block:: text
@@ -672,16 +672,16 @@ Make sure you can calculate the following values using the equations developed s
 Using Python, you can run the following code:
 
 .. code-block:: python
-	
+
 	import numpy as np
 	import statsmodels.api as sm
 
-	X = np.array([10, 8, 13, 9, 11, 14, 
+	X = np.array([10, 8, 13, 9, 11, 14,
 	              6, 4, 12, 7, 5])
-	y = np.array([8.04, 6.95, 7.58, 8.81, 
-	              8.33, 9.96, 7.24, 4.26, 
+	y = np.array([8.04, 6.95, 7.58, 8.81,
+	              8.33, 9.96, 7.24, 4.26,
 	              10.84, 4.82, 5.68])
-				  
+
 	# We do want to estimate a 'b0' term
 	X = sm.add_constant(X)
 	model = sm.OLS(y, X)
@@ -716,8 +716,8 @@ which produces the following output:
 	Skew:                          -0.122   Prob(JB):                        0.865
 	Kurtosis:                       2.244   Cond. No.                         29.1
 	==============================================================================
-	
-	
+
+
 	Standard error = 1.2366033227263207
 
 As for the R code, we can see at a glance:

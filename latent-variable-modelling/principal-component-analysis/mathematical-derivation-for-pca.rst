@@ -17,24 +17,24 @@ We briefly review here what that means. Let :math:`\mathbf{x}'_i` be a row from 
 
 Recall from geometry that the cosine of an angle in a right-angled triangle is the ratio of the adjacent side to the hypotenuse. But the cosine of an angle is also used in linear algebra to define the dot-product. Mathematically:
 
-.. math::	
+.. math::
 	\cos \theta = \dfrac{\text{adjacent length}}{\text{hypotenuse}} = \dfrac{t_{i,1}}{\| \mathbf{x}_i\|} \qquad &\text{and also} \qquad \cos \theta = \dfrac{\mathbf{x}'_i \mathbf{p}_1}{\|\mathbf{x}_i\| \|\mathbf{p}_1\|} \\
 	\dfrac{t_{i,1}}{\| \mathbf{x}_i\|} &= \dfrac{\mathbf{x}'_i \mathbf{p}_1}{\|\mathbf{x}_i\| \|\mathbf{p}_1\|} \\
 	t_{i,1} &= \mathbf{x}'_i \mathbf{p}_1 \\
 	(1 \times 1) &= (1 \times K)(K \times 1)
-		
+
 where :math:`\| \cdot \|` indicates the length of the enclosed vector, and the length of the direction vector, |p1| is 1.0, by definition.
 
 Note that :math:`t_{i,1} = \mathbf{x}'_i \mathbf{p}_1` represents a :ref:`linear combination <LVM_linear_combination>`
 
-.. math:: 
+.. math::
 	t_{i,1} = x_{i,1} p_{1,1} + x_{i,2} p_{2,1} + \ldots + x_{i,k} p_{k,1}  + \ldots + x_{i,K} p_{K,1}
 
 So :math:`t_{i,1}` is the score value for the :math:`i^\text{th}` observation along the first component, and is a linear combination of the :math:`i^\text{th}` row of data, :math:`\mathbf{x}_i` and the direction vector |p1|. Notice that there are :math:`K` terms in the linear combination: each of the :math:`K` variables *contributes* to the overall score.
 
 We can calculate the second score value for the :math:`i^\text{th}` observation in a similar way:
 
-.. math:: 
+.. math::
 	t_{i,2} = x_{i,1} p_{1,2} + x_{i,2} p_{2,2} + \ldots + x_{i,k} p_{k,2}  + \ldots + x_{i,K} p_{K,2}
 
 And so on, for the third and subsequent components. We can compactly write in matrix form for the :math:`i^\text{th}` observation that:
@@ -53,4 +53,3 @@ Finally, for an entire matrix of data, |X|, we can calculate all scores, for all
 	\mathbf{T}   &= \mathbf{X} \mathbf{P} \\
 	(N \times A) &= (N \times K)(K \times A)
 	:label: LVM-score-values
-

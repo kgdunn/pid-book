@@ -29,10 +29,10 @@ Imagine the room you are in has 4 temperature probes that sample and record the 
 	:scale: 70
 	:width: 900px
 	:align: center
-	
+
 In table form, the first few measurements are:
 
-.. csv-table:: 
+.. csv-table::
    :header: Date, :math:`x_1`, :math:`x_2`, :math:`x_3`, :math:`x_4`
    :widths: 50, 30, 30, 30, 30
 
@@ -45,19 +45,19 @@ In table form, the first few measurements are:
 
 .. Some questions that come to mind are what are fluctuations due to in the data; what is the sharp spike in the 3rd measurement due to; and why is there an unusual dip in the first temperature measurement?
 
-The general up and down fluctuations are due to the daily change in the room's temperature. The single, physical phenomenon being recorded in these four measurements is just the variation in room temperature.  
+The general up and down fluctuations are due to the daily change in the room's temperature. The single, physical phenomenon being recorded in these four measurements is just the variation in room temperature.
 
-If we added two more thermometers in the middle of the room, we would expect these new measurements to show the same pattern as the other four. In that regard we can add as many thermometers as we like to the room, but we won't be recording some new, independent piece of information with each thermometer. There is only one true variable that drives all the temperature readings up and down: it is a latent variable. 
+If we added two more thermometers in the middle of the room, we would expect these new measurements to show the same pattern as the other four. In that regard we can add as many thermometers as we like to the room, but we won't be recording some new, independent piece of information with each thermometer. There is only one true variable that drives all the temperature readings up and down: it is a latent variable.
 
 Notice that we don't necessarily have to know what *causes* the latent variable to move up and down (it could be the amount of sunlight on the building; it could be the air-conditioner's settings). All we know is that these temperature measurements just reflect the underlying phenomenon that drives the up-and-down movements in temperature; they are *correlated* with the latent variable.
 
-Notice also the sharp spike recorded at the back-left corner of the room could be due to an error in the temperature sensor. And the front part of the room showed a dip, maybe because the door was left open for an extended period; but not long enough to affect the other temperature readings.  These two events go against the general trend of the data, so we expect these periods of time to *stand out* in some way, so that we can detect them. 
+Notice also the sharp spike recorded at the back-left corner of the room could be due to an error in the temperature sensor. And the front part of the room showed a dip, maybe because the door was left open for an extended period; but not long enough to affect the other temperature readings.  These two events go against the general trend of the data, so we expect these periods of time to *stand out* in some way, so that we can detect them.
 
 **Mathematically**
 
 If we wanted to summarize the events taking place in the room we might just use the average of the recorded temperatures. Let's call this new, average variable :math:`t_1`, which summarizes the other four original temperature measurements :math:`x_1, x_2, x_3` and :math:`x_4`.
 
-.. math:: t_1 &= \begin{bmatrix} x_1 & x_2 & x_3 & x_4 \end{bmatrix}\begin{bmatrix} p_{1,1} \\ p_{2,1} \\ p_{3,1} \\ p_{4,1} \end{bmatrix} = x_1 p_{1,1} + x_2 p_{2,1} + x_3 p_{3,1} + x_4 p_{4,1} 
+.. math:: t_1 &= \begin{bmatrix} x_1 & x_2 & x_3 & x_4 \end{bmatrix}\begin{bmatrix} p_{1,1} \\ p_{2,1} \\ p_{3,1} \\ p_{4,1} \end{bmatrix} = x_1 p_{1,1} + x_2 p_{2,1} + x_3 p_{3,1} + x_4 p_{4,1}
 
 and suitable values for each of the weights are :math:`p_{1,1} = p_{2,1} = p_{3,1} = p_{4,1} = 1/4`.
 
@@ -99,10 +99,10 @@ Note how correlated the data appear: forming a diagonal line across the cube's i
 
 	Imagine that we have data from 100 boards, so we could represent this raw data a matrix where each row are the 3 measurements from one board.
 
-	.. math:: 
+	.. math::
 		\underbrace{\mathbf{X}_\text{raw}}_{100 \times 3}
-	
-	The plots of these different thicknesses are 
+
+	The plots of these different thicknesses are
 
 	.. figure:: ../figures/examples/board-thickness/board-thickness-2d-and-3d-plot.png
 		:alt:	../figures/examples/board-thickness/board-thickness-data-combine.py
@@ -112,12 +112,12 @@ Note how correlated the data appear: forming a diagonal line across the cube's i
 
 	It is not surprising that the feed and tail thickness are related to each other. They are expected to have a positive correlation, because if the board is thicker, it will be thick at all locations. The taper measurement is unrelated to the boards thickness, since it doesn't matter if the board is thick or thin: it can still be tapered.
 
-	So there are two latent variables in this system: 
+	So there are two latent variables in this system:
 
 		#.	The fact that the entire board is thicker or thinner is captured by the feed and tail thickness measurements.  These measurements are correlated with whatever physical phenomenon causes that average thickness to increase or decrease (e.g. spacing of the saw blades).
-		#.	The third measurement, taper of the board, is capturing a different phenomenon in the system; possibly caused by how much the blades are skewed out of alignment. 
-	
-		.. But unless we perform an experiment where we change the saw alignment and measure the taper, we won't be sure that this is a causal relationship. 
+		#.	The third measurement, taper of the board, is capturing a different phenomenon in the system; possibly caused by how much the blades are skewed out of alignment.
+
+		.. But unless we perform an experiment where we change the saw alignment and measure the taper, we won't be sure that this is a causal relationship.
 
 	The main points from this section so far:
 
@@ -128,7 +128,7 @@ Note how correlated the data appear: forming a diagonal line across the cube's i
 	Latent variable modelling is concerned with how we can reduce the number of values we measure on each observation, but still retain the important features. In this example of the board thickness, we could use an average of the feed and tail measurements as one of the summary variables, called :math:`t_1`. And since the taper is independent of thickness, we would retain a second latent variable, called :math:`t_2`, that captures the taper measurement.
 
 		.. math::
-	
+
 			t_1 &= \begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}\begin{bmatrix} p_{1,1} \\ p_{2,1} \\ p_{3,1} \end{bmatrix} = x_1 p_{1,1} + x_2 p_{2,1} + x_3 p_{3,1}  \\
 			t_2 &= \begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}\begin{bmatrix} p_{1,2} \\ p_{2,2} \\ p_{3,2} \end{bmatrix} = x_1 p_{1,2} + x_2 p_{2,2} + x_3 p_{3,2}
 
@@ -136,20 +136,20 @@ Note how correlated the data appear: forming a diagonal line across the cube's i
 
 	What values would be suitable for the weights?  One option might be that:
 
-	.. math::	
+	.. math::
 			t_1 &= \begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}\begin{bmatrix} 1/2 \\ 1/2 \\ 0 \end{bmatrix} = \dfrac{x_1}{2} + \dfrac{x_2}{2} + 0 \\
 			t_2 &= \begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}\begin{bmatrix} 0 \\ 0 \\ \,1\, \end{bmatrix} = 0 + 0 + x_3
-		
+
 	or more compactly:
 
 	.. math::
 			\mathbf{t}' = \begin{bmatrix} t_1 & t_2 \end{bmatrix} &=
-			\begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix} 
+			\begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}
 			\begin{bmatrix}  0.5 & 0 \\ 0.5 & 0 \\ 0  & 1  \end{bmatrix} =
 			\begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}
 			\begin{bmatrix} p_{1,1} & p_{1,2}\\ p_{2,1} & p_{2,2} \\ p_{3,1} & p_{3,2} \end{bmatrix} =
 			 \underbrace{\mathbf{x}_\text{raw}}_{1 \times 3} \underbrace{\mathbf{P}}_{3 \times 2} = \underbrace{\begin{bmatrix} t_1 & t_2 \end{bmatrix}}_{1 \times 2}
-		
+
 	The matrix |P| can now be used to take any vector of board measurements, represented as vector :math:`\mathbf{x}`, and calculate a summary vector, |t|, from it.
 
 .. BACK TO NORMAL
@@ -158,8 +158,7 @@ The main points from this section are:
 
 	*	Latent variables capture, in some way, an underlying phenomenon in the system being investigated.
 	*	After calculating the latent variables in a system, we can use these fewer number of variables, instead of the :math:`K` columns of raw data. This is because the actual measurements are *correlated* with the latent variable.
-	
+
 The examples given so far showed what a single latent variables is. In practice we usually obtain several latent variables for a data array. At this stage you likely have more questions, such as "*how many latent variables are there in a matrix*" and "*how are the values in* |P| *chosen*", and "*how do we know these latent variables are a good summary of the original data*"?
 
 We address these issues more formally in the next section on :ref:`principal component analysis <SECTION_PCA>`.
-

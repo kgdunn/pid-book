@@ -2,10 +2,10 @@
 
 Assessing significance of main effects and interactions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	
+
 When there are no :index:`replicate points <pair: replicates; experiments>`, then the number of factors to estimate from a full factorial is :math:`2^k` from the :math:`2^k` observations. There are no degrees of freedom left to calculate the standard error or the confidence intervals for the main effects and interaction terms.
 
-The standard error can be estimated if complete replicates are available. However, a complete replicate is onerous, because a complete replicate implies the entire experiment is repeated: system setup, running the experiment and measuring the result. Taking two samples from one actual experiment and measuring :math:`y` twice is not a true replicate. That is only an estimate of the measurement error and analytical error. 
+The standard error can be estimated if complete replicates are available. However, a complete replicate is onerous, because a complete replicate implies the entire experiment is repeated: system setup, running the experiment and measuring the result. Taking two samples from one actual experiment and measuring :math:`y` twice is not a true replicate. That is only an estimate of the measurement error and analytical error.
 
 Furthermore, there are better ways to spend our experimental budget than running complete replicate experiments -- see the section on :ref:`screening designs <DOE-saturated-screening-designs>` later on. Only later in the overall experimental procedure should we run replicate experiments as a verification step and to assess the statistical significance of effects.
 
@@ -32,9 +32,9 @@ A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to esti
 	:scale: 30
 	:width: 900px
 	:alt: fake width
-	
+
 The example shown in the bar graph was from a full factorial experiment where the results for :math:`y` in standard order were :math:`y = \left[45,71,48,65,68,60,80,65,43,100,45,104,75,86,70,96 \right]`.
-	
+
 We would interpret that factors **A**, **C** and **D**, as well as the interactions of **AC** and **AD**, have a significant and causal effect on the response variable, :math:`y`. The main effect of **B** on the response :math:`y` is small, at least over the range that **B** was used in the experiment. Factor **B** can be omitted from future experimentation in this region, though it might be necessary to include it again if the system is operated at a very different point.
 
 The reason why we can compare the coefficients this way, which is not normally the case with least squares models, is that we have both centered and scaled the factor variables. If the centering is at typical baseline operation, and the range spanned by each factor is that expected over the typical operating range, then we can fairly compare each coefficient in the bar plot. Each bar represents the influence of that term on :math:`y` for a one-unit change in the factor, that is, a change over half its operating range.
@@ -58,19 +58,19 @@ Standard error: from replicate runs or from an external dataset
 .. 	-	This estimated standard error is :math:`t`-distributed with :math:`2^k` degrees of freedom.
 ..
 .. The standard error can be calculated in a similar manner if more than one duplicate run is performed. So rather run a :math:`2^4` factorial for 4 factors than a :math:`2^3`factorial twice; or as we will see later - one can screen five or more factors with :math:`2^4` runs.
-	
+
 If there are more experiments than parameters to be estimated, then we have extra degrees of freedom. Having degrees of freedom implies we can calculate the standard error, :math:`S_E`. Once :math:`S_E` has been found, we can also calculate the standard error for each model coefficient, and then confidence intervals can be constructed for each main effect and interaction. And because the model matrix is orthogonal, the confidence interval for each effect is independent of the other. This is because the general confidence interval is :math:`\mathcal{V}\left(\mathbf{b}\right) = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}S_E^2`, and the off-diagonal elements in :math:`\mathbf{X}^T\mathbf{X}` are zero.
 
 For an experiment with :math:`n` runs, and where we have coded our :math:`\mathbf{X}` matrix to contain :math:`-1` and :math:`+1` elements, and when the :math:`\mathbf{X}` matrix is orthogonal, the standard error for coefficient :math:`b_i` is :math:`S_E(b_i) = \sqrt{\mathcal{V}\left(b_i\right)} = \sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`. Some examples:
 
-	*	A :math:`2^3` factorial where every combination has been repeated will have :math:`n=16` runs, so the standard error for each coefficient will be the same, at :math:`S_E(b_i) = \sqrt{\dfrac{S_E^2}{16}} = \dfrac{S_E}{4}`. 
+	*	A :math:`2^3` factorial where every combination has been repeated will have :math:`n=16` runs, so the standard error for each coefficient will be the same, at :math:`S_E(b_i) = \sqrt{\dfrac{S_E^2}{16}} = \dfrac{S_E}{4}`.
 	*	A :math:`2^3` factorial with three additional runs at the center point would have the following least squares representation:
-	
+
 		.. math::
-		
+
 			\mathbf{y} &= \mathbf{X} \mathbf{b} + \mathbf{e}\\
 			\begin{bmatrix} y_1\\ y_2\\ y_3 \\ y_4 \\ y_5 \\ y_6 \\ y_7 \\ y_8 \\ y_{c,1} \\ y_{c,2} \\ y_{c,3}\end{bmatrix} &=
-			\begin{bmatrix} 1 & A_{-} & B_{-} & C_{-} & A_{-}B_{-} & A_{-}C_{-} & B_{-}C_{-} & A_{-}B_{-}C_{-}\\ 
+			\begin{bmatrix} 1 & A_{-} & B_{-} & C_{-} & A_{-}B_{-} & A_{-}C_{-} & B_{-}C_{-} & A_{-}B_{-}C_{-}\\
 							1 & A_{+} & B_{-} & C_{-} & A_{+}B_{-} & A_{+}C_{-} & B_{-}C_{-} & A_{+}B_{-}C_{-}\\
 							1 & A_{-} & B_{+} & C_{-} & A_{-}B_{+} & A_{-}C_{-} & B_{+}C_{-} & A_{-}B_{+}C_{-}\\
 							1 & A_{+} & B_{+} & C_{-} & A_{+}B_{+} & A_{+}C_{-} & B_{+}C_{-} & A_{+}B_{+}C_{-}\\
@@ -80,21 +80,21 @@ For an experiment with :math:`n` runs, and where we have coded our :math:`\mathb
 							1 & A_{+} & B_{+} & C_{+} & A_{+}B_{+} & A_{+}C_{+} & B_{+}C_{+} & A_{+}B_{+}C_{+}\\
 							1 & 0     & 0     & 0     & 0          & 0          & 0          & 0              \\
 							1 & 0     & 0     & 0     & 0          & 0          & 0          & 0              \\
-							1 & 0     & 0     & 0     & 0          & 0          & 0          & 0              
+							1 & 0     & 0     & 0     & 0          & 0          & 0          & 0
 			\end{bmatrix}
 			\begin{bmatrix} b_0 \\ b_A \\ b_B \\ b_{C} \\ b_{AB} \\ b_{AC} \\ b_{BC} \\ b_{ABC} \end{bmatrix} +
 			\begin{bmatrix} e_1\\ e_2\\ e_3 \\ e_4 \\ e_5 \\ e_6 \\ e_7 \\ e_8 \\ e_{c,1} \\ e_{c,2} \\ e_{c,3} \end{bmatrix}\\
-			
+
 		And substituting in the values, using vector shortcut notation for :math:`\mathbf{y}` and :math:`\mathbf{e}`:
-		
+
 		.. math::
-		
-			\mathbf{y} &= 
-			\begin{bmatrix} 1 & -1 & -1 & -1 & +1 & +1 & +1 & -1\\ 
+
+			\mathbf{y} &=
+			\begin{bmatrix} 1 & -1 & -1 & -1 & +1 & +1 & +1 & -1\\
 							1 & +1 & -1 & -1 & -1 & -1 & +1 & +1\\
 							1 & -1 & +1 & -1 & -1 & +1 & -1 & +1\\
 							1 & +1 & +1 & -1 & +1 & -1 & -1 & -1\\
-							1 & -1 & -1 & +1 & +1 & -1 & -1 & +1\\ 
+							1 & -1 & -1 & +1 & +1 & -1 & -1 & +1\\
 							1 & +1 & -1 & +1 & -1 & +1 & -1 & -1\\
 							1 & -1 & +1 & +1 & -1 & -1 & +1 & -1\\
 							1 & +1 & +1 & +1 & +1 & +1 & +1 & +1\\
@@ -103,16 +103,16 @@ For an experiment with :math:`n` runs, and where we have coded our :math:`\mathb
 							1 &  0 &  0 &  0 &  0 &  0 &  0 &  0
 			\end{bmatrix}
 			\begin{bmatrix} b_0 \\ b_A \\ b_B \\ b_{C} \\ b_{AB} \\ b_{AC} \\ b_{BC} \\ b_{ABC} \end{bmatrix} + \mathbf{e}
-			
+
 		Note that the center point runs do not change the orthogonality of :math:`\mathbf{X}` (verify this by writing out and computing the :math:`\mathbf{X}^T\mathbf{X}` matrix and observing that all off-diagonal entries are zeros). However, as we expect after having studied the section on :ref:`least squares modelling <SECTION-least-squares-modelling>`, additional runs decrease the variance of the model parameters, :math:`\mathcal{V}(\mathbf{b})`. In this case, there are :math:`n=2^3+3 = 11` runs, so the standard error is decreased to :math:`S_E^2 = \dfrac{\mathbf{e}^T\mathbf{e}}{11 - 8}`. However, the center points do not further reduce the variance of the parameters in :math:`\sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`, because the denominator is still :math:`2^k` (**except for the intercept term**, whose variance is reduced by the center points).
-	
+
 Once we obtain the standard error for our system and calculate the variance of the parameters, we can multiply it by the critical :math:`t`-value at the desired confidence level in order to calculate the confidence limit. However, it is customary to just report the standard error next to the coefficients, so that users can apply their own level of confidence. For example,
 
 	.. math::
-	
+
 		\text{Temperature effect}, b_T &= 11.5 \pm 0.707\\
 		\text{Catalyst effect}, b_K &= 1.1 \pm 0.707
-		
+
 Even though the confidence interval of the temperature effect would be :math:`11.5 - c_t \times 0.707 \leq \beta_T \leq 11.5 + c_t \times 0.707`, it is clear that at the 95% significance level, the above representation shows the temperature effect is significant, while the catalyst effect is not (:math:`c_t \approx 2`).
 
 .. OMIT: this can be confusing and misleading
@@ -127,7 +127,7 @@ Even though the confidence interval of the temperature effect would be :math:`11
 	.. math::
 
 		y_i = b_0 + b_A x_A + b_B x_B + b_{C}x_C + b_{AB}x_{AB} + b_{AC}x_{AC} +  b_{BC}x_{BC} +  b_{ABC}x_{ABC}
-	
+
 	A normal probability plot is a nonlinear transformation of the data so that the s-shape of the cumulative normal distribution appears as a straight line. We used this idea in the section on :ref:`univariate statistics <SECTION-univariate-review>` where a q-q plot was constructed to assess normality. Another way to visualize this concept is to draw vertical divisions on the normal distribution curve, to create :math:`2^k-1` sections of equal area. One effect is expected per division.
 
 	.. TODO: illustration of normal distribution division
@@ -139,10 +139,10 @@ Even though the confidence interval of the temperature effect would be :math:`11
 		index <- seq(1, n)
 		p <- (index - 0.5) / n
 		theoretical.quantity <- qnorm(p)
-	
-		labels = c('A', 'B',    'C',   'D', 'AB',  'AC', 'AD',   'BC', 'BD',   'CD', 
+
+		labels = c('A', 'B',    'C',   'D', 'AB',  'AC', 'AD',   'BC', 'BD',   'CD',
 		            'ABC',  'ABD',  'ACD',  'BCD',  'ABCD')
-		b      = c( -4,  12, -1.125, -2.75,  0.5, 0.375,  0.0, -0.625, 2.25, -0.125, 
+		b      = c( -4,  12, -1.125, -2.75,  0.5, 0.375,  0.0, -0.625, 2.25, -0.125,
 		           -0.375,   0.25, -0.125, -0.375,  -0.125)
 
 		b.sort = sort(b)
@@ -153,11 +153,11 @@ Even though the confidence interval of the temperature effect would be :math:`11
 		# Or more simply: use the qqPlot function:
 		library(car)
 		qqPlot(b, labels=labels)
-	
+
 	.. figure:: ../../figures/doe/normal-probability-signifcant-effects.png
 		:align: center
 		:scale: 50
-		
+
 
 
 Refitting the model after removing nonsignificant effects
@@ -172,7 +172,7 @@ Continuing the above example, where a :math:`2^4` factorial was run, the respons
 There is some circular reasoning here: postulate that one or more effects are zero and increase the degrees of freedom by removing those parameters in order to confirm the remaining effects are significant. Some general advice is to first exclude effects that are definitely small, and then retain medium-size effects in the model until you can confirm they are not significant.
 
 .. _DOE-COST-vs-factorial-efficiency:
- 
+
 Variance of estimates from the COST approach versus the factorial approach
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -183,9 +183,9 @@ Variance of estimates from the COST approach versus the factorial approach
 	:alt: fake width
 
 Finally, we end this section on factorials by illustrating their efficiency. Contrast the two cases: COST and the full factorial approach. For this analysis we define the main effect simply as the difference between the high and low values (normally we divide through by 2, but the results still hold). Define the variance of the measured :math:`y` value as :math:`\sigma_y^2`.
-	
+
 	.. tabularcolumns:: |l|l|
-	
+
 +--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
 | COST approach                                                            | Fractional factorial approach                                                                                  |
 +==========================================================================+================================================================================================================+
@@ -199,5 +199,3 @@ Finally, we end this section on factorials by illustrating their efficiency. Con
 Not only does the factorial experiment estimate the effects with much greater precision (lower variance), but the COST approach cannot estimate the effect of interactions, which is incredibly important, especially as systems approach optima that are on ridges (see the contour plots earlier in this section for an example).
 
 Factorial designs make each experimental observation work twice.
-	
-

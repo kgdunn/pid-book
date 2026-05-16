@@ -17,4 +17,3 @@ Process Monitoring
    the-industrial-practice-of-process-monitoring
    summary
    process-monitoring-exercises
-

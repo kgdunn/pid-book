@@ -39,10 +39,10 @@ The range over which they will be varied is given in the table. This range was i
 	+-----------+---------------+-----------------+
 
 
-#.	Add an additional column to the table for the response variable. The response variable is a quantitative value, :math:`y`, which in this case is the conversion measured as a percentage. 
+#.	Add an additional column to the table for the response variable. The response variable is a quantitative value, :math:`y`, which in this case is the conversion measured as a percentage.
 
 	.. tabularcolumns:: |c|c|c|c||c|
-	
+
 	+-----------+-------+---------------+-----------------+--------------+
 	| Experiment|Order  | :math:`T` [K] | :math:`S` [g/L] | :math:`y` [%]|
 	+===========+=======+===============+=================+==============+
@@ -54,7 +54,7 @@ The range over which they will be varied is given in the table. This range was i
 	+-----------+-------+---------------+-----------------+--------------+
 	| 4         | 1     | |+|           | |+|             |  53          |
 	+-----------+-------+---------------+-----------------+--------------+
-	
+
 	Experiments were performed in random order; in this case, we happened to run experiment 4 first and experiment 3 last.
 
 #.	For simple systems you can visualize the design and results :ref:`as shown in the following figure <DOE-fig-Cube-plot>`. This is known as a :index:`cube plot`.
@@ -65,9 +65,9 @@ The range over which they will be varied is given in the table. This range was i
 		:scale: 40
 		:width: 900px
 		:alt: fake width
-		
+
 .. _DOE-two-level-factorials-main-effects:
-		
+
 Analysis of a factorial design: main effects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -78,7 +78,7 @@ The first step is to calculate the :index:`main effect` of each variable. The ef
 
 .. youtube:: https://www.youtube.com/watch?v=fPbd74KN7zw&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=37
 
-Consider the two runs where :math:`S` is at the |-| level for both experiments 1 and 2. The only change between these two runs is the **temperature**, so the temperature effect is :math:`\Delta T_{S-} = 60-69 = -9\%\,\,\text{per}\,\,(354-338)~\text{K}`, that is, a :math:`-9\%` change in the conversion outcome per :math:`+16~\text{K}` change in the temperature. 
+Consider the two runs where :math:`S` is at the |-| level for both experiments 1 and 2. The only change between these two runs is the **temperature**, so the temperature effect is :math:`\Delta T_{S-} = 60-69 = -9\%\,\,\text{per}\,\,(354-338)~\text{K}`, that is, a :math:`-9\%` change in the conversion outcome per :math:`+16~\text{K}` change in the temperature.
 
 Runs 3 and 4 both have :math:`S` at the |+| level. Again, the only change is in the **temperature**: :math:`\Delta T_{S+} = 53-64 = -11\%` per :math:`+16~\text{K}`. So we now have two temperature effects, and the average of them is a :math:`-10\%` change in conversion per :math:`+16~\text{K}` change in temperature.
 
@@ -89,7 +89,7 @@ We can perform a similar calculation for the main effect of substrate concentrat
 .. image:: ../../figures/doe/factorial-two-levels-two-variables-with-analysis.png
 	:align: center
 	:scale: 50
-	
+
 This visual summary is a very effective method of seeing how the system responds to the two variables. We can see the gradients in the system and the likely region where we can perform the next experiments to improve the bioreactor's conversion.
 
 The following surface plot illustrates the true, but unknown, surface from which our measurements are taken. Notice the slight curvature on the edges of each face. The main effects estimated above are a linear approximation of the conversion over the region spanned by the factorial.
@@ -106,30 +106,30 @@ An :index:`interaction plot` is an :ref:`alternative way to visualize these main
 	.. image:: ../../figures/doe/factorial-two-level-line-plot.png
 		:align: center
 		:scale: 80
-		
-.. _DOE-two-level-factorials-interaction-effects:	
+
+.. _DOE-two-level-factorials-interaction-effects:
 
 Analysis of a factorial design: interaction effects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. youtube:: https://www.youtube.com/watch?v=_NIA8RGGtAs&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=38
 
-We expect in many real systems that the main effect of temperature, :math:`T`, for example, is different at other levels of substrate concentration, :math:`S`. It is quite plausible for a bioreactor system that the main temperature effect on conversion is much greater if the substrate concentration, :math:`S`, is also high, while at low values of :math:`S`, the temperature effect is smaller. 
+We expect in many real systems that the main effect of temperature, :math:`T`, for example, is different at other levels of substrate concentration, :math:`S`. It is quite plausible for a bioreactor system that the main temperature effect on conversion is much greater if the substrate concentration, :math:`S`, is also high, while at low values of :math:`S`, the temperature effect is smaller.
 
 .. index::
 	pair: interaction effect; experiments
 	pair: two-factor interaction; experiments
 	see: 2fi; two-factor interaction
 
-We call this result an *interaction*, when the effect of one factor is different at different levels of the other factors. Let's give a practical, everyday example: assume your hands are covered with dirt or oil. We know that if you wash your hands with cold water, it will take longer to clean them than washing with hot water. So let factor **A** be the temperature of the water; factor **A** has a significant effect on the time taken to clean your hands.  
+We call this result an *interaction*, when the effect of one factor is different at different levels of the other factors. Let's give a practical, everyday example: assume your hands are covered with dirt or oil. We know that if you wash your hands with cold water, it will take longer to clean them than washing with hot water. So let factor **A** be the temperature of the water; factor **A** has a significant effect on the time taken to clean your hands.
 
-Consider the case when washing your hands with cold water. If you use soap with cold water, it will take less time to clean your hands than if you did not use soap. It is clear that factor **B**, the categorical factor of using no soap vs some soap, will reduce the time to clean your hands. 
+Consider the case when washing your hands with cold water. If you use soap with cold water, it will take less time to clean your hands than if you did not use soap. It is clear that factor **B**, the categorical factor of using no soap vs some soap, will reduce the time to clean your hands.
 
-Now consider the case when washing your hands with hot water. The time taken to clean your hands with hot water when you use soap is greatly reduced, far faster than any other combination. We say there is an interaction between using soap and the temperature of the water. This is an example of an interaction that works to help us reach the objective faster. 
+Now consider the case when washing your hands with hot water. The time taken to clean your hands with hot water when you use soap is greatly reduced, far faster than any other combination. We say there is an interaction between using soap and the temperature of the water. This is an example of an interaction that works to help us reach the objective faster.
 
 The effect of warm water enhances the effect of soap. Conversely, the effect is soap is enhanced by using warm water. So symmetry means that if soap interacts with water temperature, then we also know that water temperature interacts with soap.
 
-In summary, interaction means the effect of one factor depends on the level of the other factor. In this example, that implies the effect of soap is different, depending on if we use cold water or hot water. Interactions are also symmetrical. The soap’s effect is enhanced by warm water, and the warm water’s effect is enhanced by soap. 
+In summary, interaction means the effect of one factor depends on the level of the other factor. In this example, that implies the effect of soap is different, depending on if we use cold water or hot water. Interactions are also symmetrical. The soap’s effect is enhanced by warm water, and the warm water’s effect is enhanced by soap.
 
 Let's use a :ref:`different system here to illustrate <DOE-fig-interaction-example-contour-plot>` interaction effects, but still using :math:`T` and :math:`S` as the variables being changed and keeping the response variable, :math:`y`, as the conversion, shown by the contour lines.
 
@@ -141,7 +141,7 @@ Let's use a :ref:`different system here to illustrate <DOE-fig-interaction-examp
 		:alt: fake width
 
 	.. tabularcolumns:: |l|c|c||c|
-	
+
 	+-----------+---------------+-----------------+--------------+
 	| Experiment| :math:`T` [K] | :math:`S` [g/L] | :math:`y` [%]|
 	+===========+===============+=================+==============+
@@ -155,16 +155,16 @@ Let's use a :ref:`different system here to illustrate <DOE-fig-interaction-examp
 	+-----------+---------------+-----------------+--------------+
 
 The main effect of temperature for this system is
-		
+
 		-	:math:`\Delta T_{S-} = 79 - 77 = 2\%` per 10 K
 		-	:math:`\Delta T_{S+} = 89 - 81 = 8\%` per 10 K
 
 which means that the average temperature main effect is 5% per 10 K.
-		
+
 Notice how different the main effect is at the low and high levels of :math:`S`. So the average of the two is an incomplete description of the system. There is some other aspect to the system that we have not captured.
 
 Similarly, the main effect of substrate concentration is
-	
+
 		-	:math:`\Delta S_{T-} = 81 - 77 = 4\%` per 0.75 g/L
 		-	:math:`\Delta S_{T-} = 89 - 79 = 10\%` per 0.75 g/L
 
@@ -178,17 +178,17 @@ The data may also be visualized using an :ref:`interaction plot <DOE-fig-interac
 .. image:: ../../figures/doe/factorial-two-level-line-plot-with-interaction.png
 	:align: center
 	:scale: 100
-	
-The lack of parallel lines is a clear indication of interaction. The temperature effect is stronger at high levels of :math:`S`, and the effect of :math:`S` on conversion is also greater at high levels of temperature. What is missing is an interaction term, given by the product of temperature and substrate. We represent this as  :math:`T \times S` and call it the temperature-substrate interaction term.  
+
+The lack of parallel lines is a clear indication of interaction. The temperature effect is stronger at high levels of :math:`S`, and the effect of :math:`S` on conversion is also greater at high levels of temperature. What is missing is an interaction term, given by the product of temperature and substrate. We represent this as  :math:`T \times S` and call it the temperature-substrate interaction term.
 
 This interaction term should be zero for systems with no interaction, which implies the lines are parallel in the interaction plot. Such systems will have roughly the same effect of :math:`T` at both low and high values of :math:`S` (and in between). So then, a good way to quantify interaction is by how different the main effect terms are at the high and low levels of the other factor in the interaction. The interaction *must* also be symmetrical: if :math:`T` interacts with :math:`S`, then :math:`S` interacts with :math:`T` by the same amount.
 
-We can quantify the interaction of our current example in this way. For the :math:`T` interaction with :math:`S`:  
+We can quantify the interaction of our current example in this way. For the :math:`T` interaction with :math:`S`:
 
 	-	Change in conversion due to :math:`T` at high :math:`S`: :math:`89 - 81 = +8`
 	-	Change in conversion due to :math:`T` at low :math:`S`: :math:`79 - 77 = +2`
 	-	The half difference: :math:`[+8 - (+2)]/2 = \bf{3}`
-	
+
 For the :math:`S` interaction with :math:`T`,
 
 	-	Change in conversion due to :math:`S` at high :math:`T`: :math:`89 - 79 = +10`
@@ -202,4 +202,3 @@ We will get an improved appreciation for interpreting main effects and the inter
 .. TODO: point out the interaction is a separate, independent effect from the b_0, b_T and b_S effects.
 
 .. TODO: quantify and describe more completely what the interaction means
-

@@ -17,9 +17,42 @@ dependencies = [
     "sphinxcontrib-jquery>=4.1",
 ]
 
+[project.optional-dependencies]
+# Contributor tooling. Install with `uv sync --all-extras`; it backs the
+# pre-commit hooks (see .pre-commit-config.yaml and CONTRIBUTING.md).
+dev = [
+    "pre-commit",
+    "ruff",
+    "rstcheck[sphinx]",
+]
 
 [project.urls]
 Homepage = "https://github.com/kgdunn/pid-book"
 Repository = "https://github.com/kgdunn/pid-book"
 Issues = "https://github.com/kgdunn/pid-book/issues"
 
+# -- Ruff: lint + format the repo's small amount of Python --------------------
+# The pre-commit hook scopes Ruff to conf.py, start_server.py and
+# my-extensions/; these settings apply whenever Ruff runs.
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "C4", "UP"]
+ignore = ["E501"]  # line length is handled by the formatter, not the linter
+
+# -- rstcheck: sanity-check reStructuredText ----------------------------------
+# rstcheck is a checker only — it never rewrites files. It runs with Sphinx
+# support, so the standard Sphinx directives are recognised. The entries below
+# cover what it cannot know on its own: the custom `youtube` directive, the
+# `todo` directive from sphinx.ext.todo, and the math substitutions defined in
+# conf.py's `rst_epilog`.
+[tool.rstcheck]
+report_level = "WARNING"
+ignore_directives = ["youtube", "todo"]
+ignore_substitutions = [
+    "x", "y", "z", "n", "b0", "b1", "-", "+",
+    "t", "T", "X", "Xraw", "P", "p1", "T2", "R",
+    "U", "Y", "W", "Z", "Q2", "A", "K", "M", "Cpk", "xdb",
+]
