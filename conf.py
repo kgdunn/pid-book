@@ -349,8 +349,11 @@ latex_show_urls = "footnote"
 class CustomLatexFormatter(LatexFormatter):
     def __init__(self, **options):
         super().__init__(**options)
-        # Compact-but-readable code listings (9pt on an 11pt body).
-        self.verboptions = r"formatcom=\fontsize{9pt}{11pt}\selectfont,frame=lines"
+        # Compact-but-readable code listings (9pt on an 11pt body). No
+        # fancyvrb frame — that makes the block an unbreakable box; the
+        # listing background is styled via sphinxsetup instead, which stays
+        # breakable across pages.
+        self.verboptions = r"formatcom=\fontsize{9pt}{11pt}\selectfont"
 
 
 PygmentsBridge.latex_formatter = CustomLatexFormatter
@@ -406,12 +409,10 @@ _PREAMBLE = r"""
 \g@addto@macro\UrlSpecials{\do\/{\Url@twoslashes}}
 \makeatother
 
-% VerbatimColor/VerbatimBorderColor are white so Sphinx's outer box is
-% invisible; the only visible border is fancyvrb's own frame=lines rule, and
-% framesep widens the gap between that rule and the code.
-\definecolor{VerbatimColor}{rgb}{1,1,1}
-\definecolor{VerbatimBorderColor}{rgb}{1,1,1}
-\fvset{framesep=8pt}
+% Code listings sit on a light-grey background tint with no border (the
+% frame is turned off via sphinxsetup). VerbatimColor is Sphinx's verbatim
+% background colour.
+\definecolor{VerbatimColor}{rgb}{0.95,0.95,0.95}
 
 \makeatletter
 \def\@subtitle{\relax}
@@ -548,6 +549,9 @@ latex_elements = {
         "\\usepackage[varqu,varl]{inconsolata}\n"
     ),
     "preamble": _PREAMBLE,
+    # Code listings: no frame (so the block stays breakable across pages),
+    # just the light-grey VerbatimColor tint with a little inner padding.
+    "sphinxsetup": "verbatimwithframe=false, verbatimsep=6pt",
     "figure_align": "H",  # put figures where told
     # fncychap is disabled so titlesec (see _PREAMBLE) can restyle \chapter.
     "fncychap": "",
