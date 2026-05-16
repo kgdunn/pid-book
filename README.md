@@ -6,7 +6,7 @@ Kevin Dunn. Actively written and updated since August 2010.
 [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
 [![Read online](https://img.shields.io/badge/read-learnche.org%2Fpid-blue.svg)](https://learnche.org/pid)
 [![Download PDF](https://img.shields.io/badge/download-PDF-red.svg)](https://learnche.org/pid/PID.pdf?2026-05-16)
-[![Build status](https://img.shields.io/github/actions/workflow/status/kgdunn/pid-book/build-deploy.yml?branch=master&label=build)](https://github.com/kgdunn/pid-book/actions/workflows/build-deploy.yml)
+[![Build status](https://img.shields.io/github/actions/workflow/status/kgdunn/pid-book/build-deploy.yml?branch=main&label=build)](https://github.com/kgdunn/pid-book/actions/workflows/build-deploy.yml)
 [![Last commit](https://img.shields.io/github/last-commit/kgdunn/pid-book.svg)](https://github.com/kgdunn/pid-book/commits)
 [![Issues](https://img.shields.io/github/issues/kgdunn/pid-book.svg)](https://github.com/kgdunn/pid-book/issues)
 
@@ -178,9 +178,9 @@ figures/  ───┘                LaTeX ──pdflatex──► PDF    ├�
    search box wired into the sidebar.
 5. **CI/CD.**
    [`.github/workflows/build-deploy.yml`](.github/workflows/build-deploy.yml)
-   runs on every push to and PR against `master`. It checks out both repos,
+   runs on every push to and PR against `main`. It checks out both repos,
    sets up Python 3.12, `uv`, and Node.js, installs a full TeX Live, builds
-   HTML and PDF, and asserts both artifacts exist. On pushes to `master`
+   HTML and PDF, and asserts both artifacts exist. On pushes to `main`
    only, it then rsyncs `_build/html/` and `_build/latex/PID.pdf?2026-05-16` over SSH to
    the learnche.org host (using the `LEARNCHE_SSH_KEY` and
    `LEARNCHE_SSH_USER` repository secrets).
@@ -195,7 +195,7 @@ figures/  ───┘                LaTeX ──pdflatex──► PDF    ├�
   as `text/html`. Reverting this would break inbound links silently.
 * **Pull requests build but do not deploy.** PRs run the full HTML and PDF
   build to catch breakage, but the SSH and rsync steps are gated on
-  `github.event_name != 'pull_request'`. Only pushes to `master` reach the
+  `github.event_name != 'pull_request'`. Only pushes to `main` reach the
   server.
 * **Pagefind needs a custom glob.** Because output files have no `.html`
   extension, Pagefind's default `**/*.html` glob would match nothing. The

@@ -31,7 +31,7 @@ your install differs.
   build-sparklines.py         # symlink → /opt/pid-book/scripts/server/build-sparklines.py
   caddy-json-to-combined.py   # symlink → /opt/pid-book/scripts/server/caddy-json-to-combined.py
 
-/opt/pid-book/                # git checkout of kgdunn/pid-book master
+/opt/pid-book/                # git checkout of kgdunn/pid-book main
   scripts/server/             # owns the canonical scripts
 
 /var/log/caddy/
@@ -42,7 +42,7 @@ your install differs.
   access.log*                 # archived pre-Hetzner Apache logs (combined)
 
 /var/www/learnche.org/
-  pid/                        # rsync'd from CI on master push
+  pid/                        # rsync'd from CI on main push
   _stats/                     # public dashboards
     index.html                # GoAccess output
     sparklines.json           # sparkline series

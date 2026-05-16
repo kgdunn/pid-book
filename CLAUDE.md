@@ -120,7 +120,7 @@ operations cookbook live in [`docs/telemetry/`](docs/telemetry/). Read
 A repeatable pattern for sweeping a chapter (or numbered subsection)
 for technical accuracy and reproducible figures. Work on one chapter
 per PR, on the assigned `claude/<slug>` branch, opened as a single
-non-draft PR against `master`.
+non-draft PR against `main`.
 
 ### Step 1 — Read the section end-to-end
 
@@ -197,7 +197,7 @@ For each `.. figure::` directive, insert a small
 - Commit with a descriptive message focused on the *why*. Never
   mention the model identifier.
 - Push to the assigned `claude/...` branch.
-- Open a single non-draft PR per chapter against `master`. Body
+- Open a single non-draft PR per chapter against `main`. Body
   covers: what changed, what didn't, headline numbers verified,
   `make text` / `make html` results. If the underlying analysis is
   unchanged, say so explicitly.

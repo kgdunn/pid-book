@@ -2,9 +2,9 @@ name: Build and deploy book
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
   workflow_dispatch:
 
 concurrency:
@@ -111,16 +111,16 @@ jobs:
 
       - name: Bump PDF cache-busting date in README
         if: github.event_name != 'pull_request'
-        # Race-safe: each attempt re-syncs to the current origin/master, re-applies
+        # Race-safe: each attempt re-syncs to the current origin/main, re-applies
         # the sed, and retries the push. This avoids the "fetch first" rejection
-        # that happens when origin/master moved between checkout and push.
+        # that happens when origin/main moved between checkout and push.
         run: |
           TODAY=$(date +%Y-%m-%d)
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           for attempt in 1 2 3 4 5; do
-            git fetch origin master
-            git reset --hard origin/master
+            git fetch origin main
+            git reset --hard origin/main
             sed -i -E "s|PID\.pdf(\?[0-9-]*)?|PID.pdf?${TODAY}|g" README.md
             git add README.md
             if git diff --cached --quiet; then
@@ -128,7 +128,7 @@ jobs:
               exit 0
             fi
             git commit -m "chore: bump PDF link date to ${TODAY} [skip ci]"
-            if git push origin HEAD:master; then
+            if git push origin HEAD:main; then
               exit 0
             fi
             echo "Push attempt ${attempt} failed; will refetch and retry."
