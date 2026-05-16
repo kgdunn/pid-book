@@ -112,10 +112,11 @@ make setup
 | `make html` | Build the HTML book into `_build/html/` and run Pagefind for search |
 | `make serve` | Serve `_build/html/` at <http://localhost:8080> for local preview |
 | `make latexpdf` | Build the PDF (5–10 minutes; needs LaTeX). Output: `_build/latex/PID.pdf?2026-05-16` |
+| `make epub` | Build the EPUB into `_build/epub/` |
 | `make linkcheck` | Verify external links |
 | `make clean` | Remove build artifacts (`_build/`, caches) |
-| `make distclean` | Also remove `.venv/` and `uv.lock` (forces a re-resolve on next `make setup`) |
-| `make` | Default target is `latexpdf` |
+| `make clean-all` | Also remove `.venv/` and `uv.lock` (forces a re-resolve on next `make setup`) |
+| `make` | Default target is `latexpdf`. Run `make help` for the full list |
 
 Compare your PDF against <https://learnche.org/pid/PID.pdf?2026-05-16> to confirm a
 clean build.

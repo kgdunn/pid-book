@@ -15,28 +15,30 @@ PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 ALLRELAXEDOPTS  =  -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(RELAXOPTS) .
 
-.PHONY: help setup clean distclean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext whoosh pre-commit-install pre-commit-run
+.PHONY: help setup clean clean-all html dirhtml singlehtml pickle json htmlhelp epub latex latexpdf text gettext linkcheck serve pre-commit-install pre-commit-run
 
 .DEFAULT_GOAL := latexpdf
 
 help:
-	@echo "Please use \`make <target>' where <target> is one of"
-	@echo "  html       to make standalone HTML files"
-	@echo "  dirhtml    to make HTML files named index.html in directories"
-	@echo "  singlehtml to make a single large HTML file"
-	@echo "  pickle     to make pickle files"
-	@echo "  json       to make JSON files"
-	@echo "  htmlhelp   to make HTML files and a HTML help project"
-	@echo "  qthelp     to make HTML files and a qthelp project"
-	@echo "  devhelp    to make HTML files and a Devhelp project"
-	@echo "  epub       to make an epub"
-	@echo "  latex      to make LaTeX files, you can set PAPER=a4 or PAPER=letter"
-	@echo "  latexpdf   to make LaTeX files and run them through pdflatex"
-	@echo "  text       to make text files"
-	@echo "  gettext    to make PO message catalogs"
-	@echo "  linkcheck  to check all external links for integrity"
-	@echo "  pre-commit-install  to install the pre-commit git hook"
-	@echo "  pre-commit-run      to run every pre-commit hook over the tree"
+	@echo "Process Improvement using Data — make targets"
+	@echo
+	@echo "Primary:"
+	@echo "  html       Build the HTML book (also runs Pagefind for search)"
+	@echo "  latexpdf   Build the PDF — needs LaTeX (this is the default target)"
+	@echo "  latex      Build the LaTeX sources only, without running pdflatex"
+	@echo "  epub       Build the EPUB"
+	@echo "  text       Build the plain-text output"
+	@echo
+	@echo "Development:"
+	@echo "  setup               Install uv and sync dependencies"
+	@echo "  serve               Serve the built HTML at http://localhost:8080"
+	@echo "  linkcheck           Check all external links"
+	@echo "  pre-commit-install  Install the pre-commit git hook"
+	@echo "  pre-commit-run      Run every pre-commit hook over the tree"
+	@echo "  clean               Remove build artifacts"
+	@echo "  clean-all           Also remove the venv and lockfile"
+	@echo
+	@echo "Set PAPER=a4 or PAPER=letter for the LaTeX targets."
 
 
 
@@ -49,7 +51,7 @@ clean: 		## Remove build artifacts
 	find . -name '*.egg-info' -exec rm -fr {} +
 	find . -name '*.egg' -exec rm -f {} +
 
-distclean: clean	## Also remove the virtualenv and lockfile (forces a re-resolve next setup)
+clean-all: clean	## Also remove the virtualenv and lockfile (forces a re-resolve next setup)
 	rm -rf .venv/ lib/ lib64/ bin/
 	rm -f uv.lock
 
@@ -129,7 +131,7 @@ latexpdf:
 	cp preface/*.png $(BUILDDIR)/latex
 	cp preface/*.jpg $(BUILDDIR)/latex
 	@echo "Running LaTeX files through pdflatex..."
-	make -C $(BUILDDIR)/latex all-pdf
+	$(MAKE) -C $(BUILDDIR)/latex all-pdf
 	@echo "pdflatex finished; the PDF files are in $(BUILDDIR)/latex."
 	@if command -v xdg-open >/dev/null 2>&1; then \
 		xdg-open $(BUILDDIR)/latex/PID.pdf; \
