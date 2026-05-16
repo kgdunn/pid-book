@@ -81,6 +81,45 @@ exclude_patterns = [
     "scripts",   # server-side helper scripts — not part of the book
 ]
 
+# -- PDF theme comparison harness ----------------------------------------------
+#
+# Setting the PID_PDF_THEME environment variable switches the LaTeX build to a
+# small, self-contained sample — the preface plus the process-monitoring
+# chapter (see pdf-theme-sample.rst) — rendered with one of several alternative
+# PDF "themes". This makes it possible to compare page designs without
+# recompiling the whole book.
+#
+#   make theme-pdf THEME=tufte       Tufte-inspired (Palatino, wide outer margin)
+#   make theme-pdf THEME=academic    Classic thesis (Latin Modern, justified)
+#   make theme-pdf THEME=business    Business report (Charter + sans headings)
+#
+# Cross-references from the monitoring chapter into chapters that are *not*
+# part of the sample cannot resolve and render as plain text. That is expected:
+# the sample is a layout preview, not a navigable book.
+#
+# When PID_PDF_THEME is unset every builder behaves exactly as before.
+pdf_theme = os.environ.get("PID_PDF_THEME", "").strip().lower()
+_PDF_THEMES = ("tufte", "academic", "business")
+
+if pdf_theme:
+    if pdf_theme not in _PDF_THEMES:
+        raise ValueError(f"PID_PDF_THEME={pdf_theme!r} is not one of {_PDF_THEMES}")
+    root_doc = "pdf-theme-sample"
+    exclude_patterns += [
+        "contents.rst",
+        "privacy.rst",
+        "data-visualization",
+        "univariate-review",
+        "least-squares-modelling",
+        "design-analysis-experiments",
+        "latent-variable-modelling",
+        "product-development-product-improvement",
+    ]
+else:
+    # Keep the sample root document out of the normal html / text / epub
+    # builds so it does not warn "isn't included in any toctree".
+    exclude_patterns.append("pdf-theme-sample.rst")
+
 add_function_parentheses = True
 pygments_style = "sphinx"
 
@@ -623,6 +662,187 @@ latex_elements = {
     #   'docclass' 'classoptions' 'title' 'date' 'release' 'author' 'logo' 'releasename'
     #   'makeindex' 'shorthandoff'
 }
+
+# -- PDF theme comparison harness: LaTeX themes --------------------------------
+#
+# Everything below only takes effect when PID_PDF_THEME is set; the full-book
+# LaTeX build above is left untouched. A theme is just an override of a few
+# `latex_elements` keys (fonts, chapter style, preamble). Sphinx hardcodes the
+# `sphinxmanual` document class, so a true tufte-book class swap is not
+# possible — these themes vary fonts, margins and heading design instead.
+
+# Scaffolding every theme preamble needs: the custom title page and the
+# header/footer page styles the preface's raw-LaTeX blocks switch between.
+_PREAMBLE_COMMON = r"""
+% ==== BEGIN SHARED THEME PREAMBLE ====
+\usepackage{float}
+\usepackage{cancel}
+\usepackage{upquote}
+\usepackage{textpos}
+\renewcommand{\PYGZsq}{TO AVOID ERROR MESSAGE}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=black,
+    filecolor=black,
+    urlcolor=blue
+}
+
+% Nicer URLs
+\usepackage{url}
+\makeatletter
+\def\Url@twoslashes{\mathchar`\/\@ifnextchar/{\kern-.2em}{}}
+\g@addto@macro\UrlSpecials{\do\/{\Url@twoslashes}}
+\makeatother
+
+\definecolor{VerbatimColor}{rgb}{1,1,1}
+\definecolor{VerbatimBorderColor}{rgb}{1,1,1}
+\fvset{framesep=8pt}
+
+\makeatletter
+\def\@subtitle{\relax}
+\newcommand{\subtitle}[1]{\gdef\@subtitle{#1}}
+\makeatother
+
+% Custom title page, shared with the full book.
+\makeatletter
+\renewcommand{\releasename}{Version}
+\renewcommand{\maketitle}{%
+  \begin{titlepage}%
+    \let\footnotesize\small
+    \let\footnoterule\relax
+    \rule{\textwidth}{1pt}%
+    \begin{flushright}%
+      {\rm\Huge\py@HeaderFamily \@title \par}%
+      \vfill
+      {\LARGE\py@HeaderFamily \@author \par}
+      \vfill\vfill
+      \includegraphics[scale=0.35]{textbook-logo-no-text.jpg}
+      \\
+      {\large
+       \@date \par
+       \vfill
+       \py@authoraddress \par
+       \vfill
+       {\Large\py@HeaderFamily Version: \py@release\releaseinfo \par}
+      }%
+    \end{flushright}%
+    \@thanks
+  \end{titlepage}%
+  \setcounter{footnote}{0}%
+  \let\thanks\relax\let\maketitle\relax
+}
+\makeatother
+
+% Header / footer page styles. The preface's raw-LaTeX blocks switch between
+% \pagestyle{plain} and \pagestyle{normal}, so both must exist.
+\makeatletter
+\fancypagestyle{normal}{
+  \fancyhf{}
+  \fancyfoot[LE,RO]{{\py@HeaderFamily\thepage}}
+  \fancyfoot[LO]{{\py@HeaderFamily\nouppercase{\rightmark}}}
+  \fancyfoot[RE]{{\py@HeaderFamily\nouppercase{\leftmark}}}
+  \fancyhead[LE]{{\py@HeaderFamily \@title}}
+  \fancyhead[RO]{{\py@HeaderFamily \py@release}}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \renewcommand{\footrulewidth}{0.4pt}
+}
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyfoot[LE,RO]{{\py@HeaderFamily\thepage}}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0.4pt}
+}
+\makeatother
+% ==== END SHARED THEME PREAMBLE ====
+"""
+
+# Theme 1 — Tufte-inspired: Palatino body, wide outer margin, ragged-right.
+# geometry is loaded with no options (Sphinx already loads it; passing options
+# to \usepackage a second time triggers an "option clash"), then configured
+# with \geometry — the same pattern the full-book preamble uses.
+_PREAMBLE_TUFTE = r"""
+% ==== TUFTE-INSPIRED THEME ====
+\usepackage{geometry}
+\geometry{a4paper,left=1.1in,right=1.7in,top=1.0in,height=9.0in,footskip=0.5in}
+\usepackage{microtype}
+% Ragged right with hyphenation, after tufte-latex.github.io.
+\usepackage{ragged2e}
+\makeatletter
+\setlength{\RaggedRightRightskip}{\z@ plus 0.08\hsize}
+\makeatother
+\AtBeginDocument{\RaggedRight}
+% ==== END TUFTE-INSPIRED THEME ====
+"""
+
+# Theme 2 — Classic academic: Latin Modern, symmetric margins, justified.
+_PREAMBLE_ACADEMIC = r"""
+% ==== CLASSIC ACADEMIC / THESIS THEME ====
+\usepackage{geometry}
+\geometry{a4paper,margin=1.25in,footskip=0.5in}
+\usepackage{microtype}
+\linespread{1.05}
+% ==== END CLASSIC ACADEMIC / THESIS THEME ====
+"""
+
+# Theme 3 — Business professional: Charter body, sans accented headings.
+_PREAMBLE_BUSINESS = r"""
+% ==== BUSINESS PROFESSIONAL THEME ====
+\usepackage{geometry}
+\geometry{a4paper,left=1.2in,right=1.2in,top=1.1in,height=9.0in,footskip=0.55in}
+\usepackage{microtype}
+\usepackage[scaled=0.92]{helvet}
+\usepackage{titlesec}
+\definecolor{accent}{HTML}{1F4E79}
+% Sans-serif, accent-coloured headings.
+\titleformat{\chapter}[display]
+  {\sffamily\bfseries\color{accent}}
+  {\filright\Large\MakeUppercase{\chaptertitlename}\ \Huge\thechapter}
+  {1ex}
+  {\titlerule[1.5pt]\vspace{1ex}\filright\Huge}
+\titlespacing*{\chapter}{0pt}{10pt}{2.5ex}
+\titleformat{\section}
+  {\sffamily\Large\bfseries\color{accent}}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\sffamily\large\bfseries\color{accent!85!black}}{\thesubsection}{1em}{}
+% ==== END BUSINESS PROFESSIONAL THEME ====
+"""
+
+_THEME_ELEMENTS = {
+    "tufte": {
+        "fontpkg": "\\usepackage{palatino}",
+        "fncychap": "\\usepackage[Sonny]{fncychap}",
+        "preamble": _PREAMBLE_COMMON + _PREAMBLE_TUFTE,
+    },
+    "academic": {
+        "fontpkg": "\\usepackage{lmodern}",
+        "fncychap": "\\usepackage[Lenny]{fncychap}",
+        "preamble": _PREAMBLE_COMMON + _PREAMBLE_ACADEMIC,
+    },
+    "business": {
+        # fncychap is disabled so titlesec can restyle \chapter cleanly.
+        "fontpkg": "\\usepackage{charter}",
+        "fncychap": "",
+        "preamble": _PREAMBLE_COMMON + _PREAMBLE_BUSINESS,
+    },
+}
+
+if pdf_theme:
+    latex_documents = [
+        (
+            "pdf-theme-sample",
+            f"PID-sample-{pdf_theme}.tex",
+            "Process Improvement Using Data",
+            "Kevin Dunn",
+            "manual",
+            True,
+        ),
+    ]
+    latex_elements = {**latex_elements, **_THEME_ELEMENTS[pdf_theme]}
+    # Page references to chapters outside the sample cannot resolve; drop them
+    # so the preview is not littered with "??".
+    latex_show_pagerefs = False
 
 # -- Options for Epub output ---------------------------------------------------
 
