@@ -9,16 +9,13 @@ SPHINXBUILD   = uv run sphinx-build
 PAPER         =
 BUILDDIR      = _build
 
-# Theme used by `make theme-pdf`: tufte | academic | business
-THEME         ?= tufte
-
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 ALLRELAXEDOPTS  =  -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(RELAXOPTS) .
 
-.PHONY: help setup clean distclean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext whoosh theme-pdf theme-pdf-all
+.PHONY: help setup clean distclean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext whoosh theme-pdf
 
 .DEFAULT_GOAL := latexpdf
 
@@ -38,9 +35,8 @@ help:
 	@echo "  text       to make text files"
 	@echo "  gettext    to make PO message catalogs"
 	@echo "  linkcheck  to check all external links for integrity"
-	@echo "  theme-pdf  to build a carved-off PDF sample (preface + ch.3)"
-	@echo "             with THEME=tufte|academic|business|business-ragged"
-	@echo "  theme-pdf-all  to build every theme sample"
+	@echo "  theme-pdf  to build the business-ragged PDF theme sample"
+	@echo "             (preface + ch.3)"
 
 
 
@@ -143,40 +139,25 @@ latexpdf:
 		echo "PDF built at $(BUILDDIR)/latex/PID.pdf (no opener found)."; \
 	fi
 
-# PDF theme comparison harness. Builds a small carved-off sample — the
-# preface plus the process-monitoring chapter — with one alternative LaTeX
-# theme, so several PDF designs can be compared without recompiling the whole
+# PDF theme preview. Builds a small carved-off sample — the preface plus the
+# process-monitoring chapter — with the candidate "business-ragged" LaTeX
+# theme, so the PDF design can be previewed without recompiling the whole
 # book. The theme machinery lives in conf.py, gated on PID_PDF_THEME.
 # Cross-references into the chapters left out of the sample render as plain
 # text; that is expected for a layout preview.
-theme-pdf:	## Build a PDF sample with THEME=tufte|academic|business|business-ragged
-	@case "$(THEME)" in tufte|academic|business|business-ragged) ;; *) \
-		echo "ERROR: THEME must be tufte, academic, business or business-ragged (got '$(THEME)')."; \
-		exit 1;; esac
+theme-pdf:	## Build the business-ragged PDF theme sample (preface + ch.3)
 	@command -v latexmk >/dev/null 2>&1 || { \
 		echo "ERROR: latexmk not found. See 'make setup'."; \
 		exit 1; \
 	}
-	PID_PDF_THEME=$(THEME) $(SPHINXBUILD) -b latex $(SPHINXOPTS) \
-		-d $(BUILDDIR)/theme-doctrees . $(BUILDDIR)/theme-$(THEME)
-	cp preface/*.png $(BUILDDIR)/theme-$(THEME)
-	cp preface/*.jpg $(BUILDDIR)/theme-$(THEME)
+	PID_PDF_THEME=1 $(SPHINXBUILD) -b latex $(SPHINXOPTS) \
+		-d $(BUILDDIR)/theme-doctrees . $(BUILDDIR)/theme
+	cp preface/*.png $(BUILDDIR)/theme
+	cp preface/*.jpg $(BUILDDIR)/theme
 	@echo "Running LaTeX files through pdflatex..."
-	make -C $(BUILDDIR)/theme-$(THEME) all-pdf
+	make -C $(BUILDDIR)/theme all-pdf
 	@echo
-	@echo "Theme sample: $(BUILDDIR)/theme-$(THEME)/PID-sample-$(THEME).pdf"
-
-theme-pdf-all:	## Build every theme sample for side-by-side comparison
-	$(MAKE) theme-pdf THEME=tufte
-	$(MAKE) theme-pdf THEME=academic
-	$(MAKE) theme-pdf THEME=business
-	$(MAKE) theme-pdf THEME=business-ragged
-	@echo
-	@echo "Theme samples ready:"
-	@echo "  $(BUILDDIR)/theme-tufte/PID-sample-tufte.pdf"
-	@echo "  $(BUILDDIR)/theme-academic/PID-sample-academic.pdf"
-	@echo "  $(BUILDDIR)/theme-business/PID-sample-business.pdf"
-	@echo "  $(BUILDDIR)/theme-business-ragged/PID-sample-business-ragged.pdf"
+	@echo "Theme sample: $(BUILDDIR)/theme/PID-sample.pdf"
 
 text:
 	$(SPHINXBUILD) -b text $(ALLSPHINXOPTS) $(BUILDDIR)/text
