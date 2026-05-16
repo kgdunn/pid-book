@@ -82,3 +82,10 @@ button.copybtn:focus,
 .highlight:hover button.copybtn {
     opacity: 1;
 }
+
+/* Code listings: keep every token upright. Some Pygments styles (e.g.
+   github-dark) italicise comments; this guarantees no slanted code in
+   either colour mode. */
+.highlight span {
+    font-style: normal !important;
+}

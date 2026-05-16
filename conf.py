@@ -82,9 +82,10 @@ exclude_patterns = [
 ]
 
 add_function_parentheses = True
-# A copy of Sphinx's "sphinx" style with non-italic code comments; see
-# my-extensions/pygments_upright.py. Applies to both the HTML and PDF builds.
-pygments_style = "my-extensions.pygments_upright.UprightCommentSphinxStyle"
+# A copy of Sphinx's "sphinx" style with every token upright (no slanted
+# comments/docstrings); see my-extensions/pygments_upright.py. Drives the PDF
+# build; HTML code styling is set via html_theme_options below.
+pygments_style = "my-extensions.pygments_upright.UprightSphinxStyle"
 
 # These substitutions apply to every RST file
 rst_prolog = """
@@ -152,6 +153,9 @@ html_theme_options = {
     # Remove the navbar search button so Pagefind in the sidebar is the only search.
     "navbar_persistent": [],
     "extra_footer": "",
+    # Syntax-highlighting palette for HTML code blocks, per colour mode.
+    "pygments_light_style": "github-light",
+    "pygments_dark_style": "github-dark",
 }
 
 html_static_path = ["_static"]

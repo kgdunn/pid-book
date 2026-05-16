@@ -1,9 +1,11 @@
-"""Pygments style with upright code comments.
+"""Pygments style with no slanted code.
 
 A copy of Sphinx's built-in ``sphinx`` style with ``italic`` swapped to
-``noitalic`` on every comment token, so code-listing comments render upright
-rather than slanted. Wired up as ``pygments_style`` in ``conf.py``; it applies
-to both the HTML and the PDF builds.
+``noitalic`` on every token, so nothing in a code listing renders slanted
+(the stock style italicises comments, docstrings and string interpolation).
+Wired up as ``pygments_style`` in ``conf.py`` for the PDF build. The HTML
+build uses the theme's own Pygments styles; it is kept upright by a CSS rule
+in ``_static/css/theme-extended-kgd.css``.
 """
 
 from sphinx.pygments_styles import SphinxStyle
@@ -17,10 +19,7 @@ def _upright(value):
     return " ".join("noitalic" if word == "italic" else word for word in value.split())
 
 
-class UprightCommentSphinxStyle(SphinxStyle):
-    """The ``sphinx`` style, but with non-italic comments."""
+class UprightSphinxStyle(SphinxStyle):
+    """The ``sphinx`` style, but with every token rendered upright."""
 
-    styles = {
-        token: (_upright(value) if "Comment" in str(token) else value)
-        for token, value in SphinxStyle.styles.items()
-    }
+    styles = {token: _upright(value) for token, value in SphinxStyle.styles.items()}
