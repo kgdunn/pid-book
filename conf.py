@@ -152,6 +152,9 @@ html_theme_options = {
     # Remove the navbar search button so Pagefind in the sidebar is the only search.
     "navbar_persistent": [],
     "extra_footer": "",
+    # Syntax-highlighting palette for HTML code blocks, per colour mode.
+    "pygments_light_style": "github-light",
+    "pygments_dark_style": "github-dark",
 }
 
 html_static_path = ["_static"]
