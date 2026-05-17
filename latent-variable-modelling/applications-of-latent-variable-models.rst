@@ -291,7 +291,9 @@ Each scaled variable is reconstructed from the scores through its own row of the
 
 where :math:`z_h` is the desired hardness, expressed in the model's mean-centered and scaled units. Fixing :math:`z_h` turns this into the equation of a straight line in the :math:`(t_1, t_2)` plane: every score on that line reproduces the requested hardness exactly.
 
-We still have a target score in mind — the profitable point :math:`\mathbf{t}^\star = (2, -1)` from before — but in general it does not lie on the constraint line. The constrained solution is the point of the line closest to the target: the target *projected* onto the line. The projection shifts the target along the loadings direction :math:`\mathbf{p}_h`:
+We still have a target score in mind — the profitable point :math:`\mathbf{t}^\star = (2, -1)` from before — but in general it does not lie on the constraint line. To find the score we should use instead, split the target into two parts: the component pointing *along* the hardness loading direction :math:`\mathbf{p}_h`, and the component *perpendicular* to it. Only the first part changes the hardness — the perpendicular component contributes nothing to the dot product :math:`\mathbf{p}_h \cdot \mathbf{t}`. So we keep the perpendicular part of the target exactly as it is, and reset only the along-:math:`\mathbf{p}_h` part, choosing it so the hardness comes out at the requested value. Holding the perpendicular component fixed moves the score as little as the constraint allows.
+
+That operation — keep the perpendicular part, reset the part along :math:`\mathbf{p}_h` — is the orthogonal projection of the target :math:`\mathbf{t}^\star` onto the constraint line. It shifts the target along :math:`\mathbf{p}_h`:
 
 .. math::
 
@@ -300,6 +302,8 @@ We still have a target score in mind — the profitable point :math:`\mathbf{t}^
 	\lambda = \frac{\mathbf{p}_h \cdot \mathbf{t}^\star - z_h}{\mathbf{p}_h \cdot \mathbf{p}_h}
 
 The numerator is the amount by which the unconstrained target misses the required hardness; the correction :math:`\lambda\,\mathbf{p}_h` is subtracted from the target scores to bring them onto the constraint line. The further the requested hardness is from what the target naturally gives, the larger :math:`\lambda`, and the more the other four variables must move to compensate.
+
+Fixing one variable used up only one of the two score degrees of freedom; the second is still ours to spend. Projection spends it on *staying as close to the original target as possible* — the perpendicular component of the target is carried over untouched. That is the natural default, but not the only choice: we could instead hold :math:`t_1` at its target value and solve :math:`t_2` alone for the required hardness, which gives a different recipe that is equally, and exactly, at the requested hardness. Whenever a constraint leaves a degree of freedom unclaimed, some rule has to decide how to use it.
 
 .. code-block:: python
 
