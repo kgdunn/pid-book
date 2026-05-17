@@ -279,7 +279,59 @@ Inverting the origin :math:`(0, 0)` returns Oil = 17.2%, Density = 2858, Crispy 
 
 The target :math:`(t_1 = 2,\ t_2 = -1)` inverts to a recipe of Oil = 19.2%, Density = 2694, Crispy = 13.1, Fracture = 16.6, Hardness = 113. Next to the average pastry this one is oilier, less dense, and crispier — exactly the trade-off the loadings plot predicts for that quadrant, now written as numbers a process engineer can aim for.
 
-Two cautions apply. First, a target is only realistic if it lies within the model: inside the |T2| ellipse, and implying a low SPE. Asking for a score far outside the cloud of pastries inverts to a recipe the process has never been shown to produce. Second, the inversion above is *unconstrained* — it is free to move all five variables at once. In practice some variables are fixed (a hardness specification, say) and the rest must be solved for; that constrained problem is a modest extension of the same projection idea.
+Two cautions apply. First, a target is only realistic if it lies within the model: inside the |T2| ellipse, and implying a low SPE. Asking for a score far outside the cloud of pastries inverts to a recipe the process has never been shown to produce. Second, the inversion above is *unconstrained* — it is free to move all five variables at once. In practice some variables are fixed (a hardness specification, say) and the rest must be solved for. We work through that case next.
+
+A recipe is often not free in every variable. A product specification may *fix* one of them — suppose a customer requires the hardness to come out at an exact value. The model still has only two score degrees of freedom, :math:`t_1` and :math:`t_2`. Pinning one variable adds one equation that those two scores must satisfy, so it uses up one degree of freedom: we are no longer free to roam the whole score plane, only a line within it.
+
+Each scaled variable is reconstructed from the scores through its own row of the loadings matrix |P|. Writing :math:`\mathbf{p}_h = [p_{h,1},\ p_{h,2}]` for the hardness row, the hardness of any point on the model plane is
+
+.. math::
+
+	z_h = t_1 p_{h,1} + t_2 p_{h,2} = \mathbf{p}_h \cdot \mathbf{t}
+
+where :math:`z_h` is the desired hardness, expressed in the model's mean-centered and scaled units. Fixing :math:`z_h` turns this into the equation of a straight line in the :math:`(t_1, t_2)` plane: every score on that line reproduces the requested hardness exactly.
+
+We still have a target score in mind — the profitable point :math:`\mathbf{t}^\star = (2, -1)` from before — but in general it does not lie on the constraint line. To find the score we should use instead, split the target into two parts: the component pointing *along* the hardness loading direction :math:`\mathbf{p}_h`, and the component *perpendicular* to it. Only the first part changes the hardness — the perpendicular component contributes nothing to the dot product :math:`\mathbf{p}_h \cdot \mathbf{t}`. So we keep the perpendicular part of the target exactly as it is, and reset only the along-:math:`\mathbf{p}_h` part, choosing it so the hardness comes out at the requested value. Holding the perpendicular component fixed moves the score as little as the constraint allows.
+
+That operation — keep the perpendicular part, reset the part along :math:`\mathbf{p}_h` — is the orthogonal projection of the target :math:`\mathbf{t}^\star` onto the constraint line. It shifts the target along :math:`\mathbf{p}_h`:
+
+.. math::
+
+	\mathbf{t} = \mathbf{t}^\star - \lambda\,\mathbf{p}_h
+	\qquad\text{where}\qquad
+	\lambda = \frac{\mathbf{p}_h \cdot \mathbf{t}^\star - z_h}{\mathbf{p}_h \cdot \mathbf{p}_h}
+
+The numerator is the amount by which the unconstrained target misses the required hardness; the correction :math:`\lambda\,\mathbf{p}_h` is subtracted from the target scores to bring them onto the constraint line. The further the requested hardness is from what the target naturally gives, the larger :math:`\lambda`, and the more the other four variables must move to compensate.
+
+Fixing one variable used up only one of the two score degrees of freedom; the second is still ours to spend. Projection spends it on *staying as close to the original target as possible* — the perpendicular component of the target is carried over untouched. That is the natural default, but not the only choice: we could instead hold :math:`t_1` at its target value and solve :math:`t_2` alone for the required hardness, which gives a different recipe that is equally, and exactly, at the requested hardness. Whenever a constraint leaves a degree of freedom unclaimed, some rule has to decide how to use it.
+
+.. code-block:: python
+
+	p_h = model.loadings_.loc["Hardness"].values   # the hardness loadings row
+
+	def invert_fixing_hardness(t_star, hardness):
+	    """Invert towards t_star, but force Hardness to an exact value."""
+	    z_h = (hardness - scaler.center_["Hardness"]) / scaler.scale_["Hardness"]
+	    t_star = np.array(t_star, dtype=float)
+	    lam = (p_h @ t_star - z_h) / (p_h @ p_h)
+	    t = t_star - lam * p_h
+	    recipe = scaler.inverse_transform(pd.DataFrame([t @ P.T], columns=food.columns))
+	    return recipe.iloc[0]
+
+	print(invert_fixing_hardness([2, -1], 110))
+	print(invert_fixing_hardness([2, -1], 150))
+
+The unconstrained target :math:`(2, -1)` already gave a hardness of 113, so asking for 110 barely disturbs anything: the correction is tiny (:math:`\lambda = 0.13`) and the other four variables are essentially unchanged — Oil = 19.3%, Density = 2691, Crispy = 13.0, Fracture = 16.7, against the unconstrained 19.2, 2694, 13.1, 16.6. The model is telling us this hardness was almost free.
+
+Asking for a hardness of 150 is a different matter. It is well above what the target naturally produces, so the correction is large (:math:`\lambda = -1.79`) and the scores swing all the way from :math:`t_2 = -1` to :math:`t_2 = +0.4`. The recipe becomes Oil = 18.6%, Density = 2741, Crispy = 13.8, Fracture = 14.1, Hardness = 150 — every other variable has moved to pay for the harder pastry. This is the model's honest answer: there is no recipe close to the original target that is also that hard, so something has to give.
+
+This projection geometry is easiest to see drawn. The score plane below shows the target :math:`\mathbf{t}^\star`, the two constraint lines, and the correction that lands the target on each — short for the nearby hardness of 110, long for the distant hardness of 150:
+
+.. figure:: ../figures/examples/food-texture/pca-on-food-texture-model-inversion-constraint-projection.png
+	:alt:	../figures/examples/food-texture/pca-on-food-texture-model-inversion.py
+	:scale: 80
+	:width: 750px
+	:align: center
 
 To explore the inversion interactively — hovering over any target in the score plot and reading off the recipe it implies — download and run this notebook: :download:`PCA-model-inversion.ipynb <PCA-model-inversion.ipynb>`.
 
