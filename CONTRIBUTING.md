@@ -76,6 +76,29 @@ Ruff is scoped to the repository's own Python (`conf.py`, `start_server.py`,
 problems — it never rewrites the book. Both tools also install via
 `uv sync --all-extras`, which pulls in the `dev` optional dependencies.
 
+## Building with `just` (optional)
+
+The repository also ships a [`just`](https://just.systems) recipe file
+(`justfile`) that mirrors the Makefile's build commands with a friendlier
+menu. It is **entirely optional** — the `Makefile` remains the canonical
+entry point and is what CI uses.
+
+`just` is a separate tool to install — see the
+[install instructions](https://just.systems/man/en/packages.html), or, since
+this project already uses `uv`:
+
+    uv tool install rust-just
+
+Then run `just` with no arguments for the menu of recipes:
+
+    just            # list all recipes
+    just html       # build the HTML book
+    just pdf        # build the PDF
+    just all        # build HTML, PDF and EPUB
+
+The recipe names match the Makefile targets (`just` uses `pdf` where the
+Makefile says `latexpdf`).
+
 ## Telemetry and privacy
 
 The HTML book carries cookieless telemetry in production (pageviews,
