@@ -325,6 +325,14 @@ The unconstrained target :math:`(2, -1)` already gave a hardness of 113, so aski
 
 Asking for a hardness of 150 is a different matter. It is well above what the target naturally produces, so the correction is large (:math:`\lambda = -1.79`) and the scores swing all the way from :math:`t_2 = -1` to :math:`t_2 = +0.4`. The recipe becomes Oil = 18.6%, Density = 2741, Crispy = 13.8, Fracture = 14.1, Hardness = 150 — every other variable has moved to pay for the harder pastry. This is the model's honest answer: there is no recipe close to the original target that is also that hard, so something has to give.
 
+This projection geometry is easiest to see drawn. The score plane below shows the target :math:`\mathbf{t}^\star`, the two constraint lines, and the correction that lands the target on each — short for the nearby hardness of 110, long for the distant hardness of 150:
+
+.. figure:: ../figures/examples/food-texture/pca-on-food-texture-model-inversion-constraint-projection.png
+	:alt:	../figures/examples/food-texture/pca-on-food-texture-model-inversion.py
+	:scale: 80
+	:width: 750px
+	:align: center
+
 To explore the inversion interactively — hovering over any target in the score plot and reading off the recipe it implies — download and run this notebook: :download:`PCA-model-inversion.ipynb <PCA-model-inversion.ipynb>`.
 
 .. _LVM_inferential_sensors:
