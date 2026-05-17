@@ -214,6 +214,18 @@ Before trusting the model to *generate* recipes, we should check that it is a fa
 	                  height=320)
 	fig.show()
 
+.. figure:: ../figures/examples/food-texture/pca-on-food-texture-model-inversion-spe.png
+	:alt:	../figures/examples/food-texture/pca-on-food-texture-model-inversion.py
+	:scale: 80
+	:width: 600px
+	:align: center
+
+.. figure:: ../figures/examples/food-texture/pca-on-food-texture-model-inversion-t2.png
+	:alt:	../figures/examples/food-texture/pca-on-food-texture-model-inversion.py
+	:scale: 80
+	:width: 600px
+	:align: center
+
 The 95% limits work out to :math:`\text{SPE} = 1.38` and |T2| :math:`= 6.65`. Two pastries sit just above the SPE limit and one just above the |T2| limit — about what a 95% limit implies for 50 observations, and none is a gross outlier. The two-component plane is a sound summary of how this product has been made, so it is a sensible basis for inversion.
 
 The score plot is the model's two-dimensional map of the data, and the loadings give that map its meaning:
@@ -241,6 +253,12 @@ The score plot is the model's two-dimensional map of the data, and the loadings 
 	fig.update_xaxes(title_text="p1", row=1, col=2)
 	fig.update_yaxes(title_text="p2", row=1, col=2)
 	fig.show()
+
+.. figure:: ../figures/examples/food-texture/pca-on-food-texture-model-inversion-scores-and-loadings.png
+	:alt:	../figures/examples/food-texture/pca-on-food-texture-model-inversion.py
+	:scale: 80
+	:width: 750px
+	:align: center
 
 Earlier we noted that the lower-right quadrant of the score plot — high :math:`t_1`, low :math:`t_2` — is the economically attractive region. Model inversion turns a chosen point in that quadrant into a concrete recipe. We extract the loadings as a plain array and project a target score back through them:
 
