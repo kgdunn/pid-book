@@ -11,11 +11,49 @@ Soft sensors and inferential sensors
 A soft sensor (also called an inferential sensor) infers a hard-to-measure quality variable from
 cheap, real-time process measurements that are already on the data historian. The use of PLS for
 exactly this purpose was introduced by `Kresta, Marlin and MacGregor (1994)
-<https://literature.learnche.org/item/17/development-of-inferential-process-models-using-pls>`_;
-the general idea was touched on in :ref:`an earlier section <LVM_inferential_sensors>`. This
+<https://literature.learnche.org/item/17/development-of-inferential-process-models-using-pls>`_.
+The next subsection outlines what these sensors are and how they are built; the rest of this
 section is a worked example: predicting the Kappa number on a continuous Kamyr pulp digester,
 where the Kappa number is reported less often, and with more delay, than the process tags
 around it.
+
+.. _LVM_inferential_sensors:
+
+What a soft sensor is
+~~~~~~~~~~~~~~~~~~~~~
+
+The intention of an inferential sensor is to infer a hard-to-measure property, usually a lab
+measurement or an expensive measurement, using a combination of process data and
+software-implemented algorithms. These sensors also go by the names of software sensors or just
+soft sensors.
+
+Consider a distillation column where various automatic measurements are used to predict the
+vapour pressure. The actual vapour pressure is a lab measurement, usually taken 3 or 4 times per
+week, and takes several hours to complete. The soft sensor can predict the lab value from the
+real-time process measurements with sufficient accuracy. This is a common soft sensor on
+distillation columns. The lab values are used to build (train) the software sensor and to update
+in periodically.
+
+Other interesting examples use camera images to predict hard-to-measure values. In the paper by
+`Honglu Yu, John MacGregor, Gabe Haarsma and Wilfred Bourg
+<https://literature.learnche.org/item/57/digital-imaging-for-online-monitoring-and-control-of-industrial-snack-food-processes>`_
+(*Ind. Eng. Chem. Res.*, **42**, 3036–3044, 2003), the authors describe how machine vision is
+used to predict, in real-time, the seasoning of various snack-food products. This sensors uses
+the colour information of the snacks to infer the amount of seasoning dispensed onto them. The
+dispenser is controlled via a feedback loop to ensure the seasoning is at target.
+
+Once validated, a soft sensor can also reduce costs of a process by allowing for rapid feedback
+control of the inferred property, so that less off-specification product is produced. They also
+often have the side-effect that reduced lab sampling is required; this saves on manpower costs.
+
+Soft sensors using latent variables will almost always be PLS models. Once the model has been
+built, it can be applied in real-time. The |T2| and SPE value for each new observation is checked
+for consistency with the model before a prediction is made. Contribution plots are used to
+diagnose unusual observations.
+
+It is an indication that the predictive models need to be updated if the SPE and/or |T2| values
+are consistently above the limits. This is a real advantage over using an MLR-based model, which
+has no such consistency checks.
 
 .. _APPS_soft_sensors_monitoring_recap:
 

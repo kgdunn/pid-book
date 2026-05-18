@@ -6,6 +6,9 @@ Multivariate process monitoring case studies
 .. index::
 	single: multivariate process monitoring (MSPC)
 	pair: multivariate process monitoring; applications
+	pair: process monitoring; latent variable modelling
+	single: multivariate statistical process control (MSPC)
+	see: MSPC; multivariate statistical process control (MSPC)
 
 Chapter 3 introduced the toolkit of univariate process monitoring -- the
 :ref:`Shewhart chart <monitoring_shewhart_chart>`,
@@ -16,11 +19,102 @@ distort several variables at once, in directions that respect the
 correlation structure of the process. A chart that watches each tag on its own does not see the joint
 shift; it can either miss the fault entirely or, more often, raise the alarm
 only after the disturbance has grown large enough to be visible in one
-variable. This section is a worked example of that, on the same mineral
-flotation cell mentioned in :ref:`an earlier chapter <SECTION-process-monitoring>`:
-we build a Shewhart chart on a single variable, then a
+variable. The first part of this section sets out *what* a latent variable
+model lets us monitor and *how* the monitoring charts are built; the rest is
+a worked example on the same mineral flotation cell mentioned in
+:ref:`an earlier chapter <SECTION-process-monitoring>`, where we build a
+Shewhart chart on a single variable, then a
 multivariate-statistical-process-control (MSPC) chart on all five
 variables, and compare what each one detects.
+
+.. _LVM_monitoring:
+
+Monitoring with latent variable methods
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Any variable can be monitored using control charts, as we saw in the earlier section on :ref:`process monitoring <SECTION-process-monitoring>`. The main purpose of these charts is to rapidly distinguish between two types of operation: in-control and out-of-control. We also aim to have a minimum number of false alarms (type I error: we raise an alarm when one isn't necessary) and the lowest number of false negatives possible (type II error, when an alarm should be raised, but we don't pick up the problem with the chart). We used Shewhart charts, CUSUM and EWMA charts to achieve these goals.
+
+Consider the case of two variables, called :math:`x_1` and :math:`x_2`, shown on the right, on the two horizontal axes. These could be time-oriented data, or just measurements from various sequential batches of material. The main point is that each variable's :math:`3\sigma` Shewhart control limits indicate that all observations are within control. It may not be apparent, but these two variables are negatively correlated with each other: as :math:`x_1` increases, the :math:`x_2` value decreases.
+
+.. figure:: ../figures/monitoring/two-axis-monitoring-plot.png
+	:alt:	../figures/monitoring/two-axis-monitoring-plot.py
+	:scale: 70
+	:width: 900px
+	:align: center
+
+Rearranging the axes at 90 degrees to each other, and plotting the joint scatter plot of the two variables in the upper left corner reveals the negative correlation, if you didn't notice it initially. Ignore the ellipse for now. It is clear that sample 10 (green closed dot, if these notes are printed in colour) is very different from the other samples. It is not an outlier from the perspective of :math:`x_1`, nor of :math:`x_2`, but jointly it is an outlier. This particular batch of materials would result in very different process operation and final product quality to the other samples. Yet a producer using separate control charts for :math:`x_1` and :math:`x_2` would not pick up this problem.
+
+While using univariate control charts is *necessary* to pick up problems, univariate charts are not *sufficient* to pick up all quality problems if the variables are correlated. The key point here is that **quality is a multivariate attribute**. All our measurements on a system must be jointly within in the limits of common operation. Using only univariate control charts will raise the type II error: an alarm should be raised, but we don't pick up the problem with the charts.
+
+Let's take a look at how process monitoring can be improved when dealing with *many attributes* (many variables). We note here that the same charts are used: Shewhart, CUSUM and EWMA charts, the only difference is that we replace the variables in the charts with variables from a *latent variable model*. We monitor instead the:
+
+	*	scores from the model, :math:`t_1, t_2, \ldots, t_A`
+	*	Hotelling's :math:`T^2 = \displaystyle \sum_{a=1}^{a=A}{\left(\dfrac{t_{a}}{s_a}\right)^2}`
+	*	SPE value
+
+The last two values are particularly appealing: they measure the on-the-plane and off-the-plane variation respectively, compressing :math:`K` measurements into 2 very compact summaries of the process.
+
+There are a few other good reasons to use latent variables models:
+
+	*	The scores are orthogonal, totally uncorrelated to each other. The scores are also unrelated to the SPE: this means that we are not going to inflate our type II error rate, which happens when using correlated variables.
+
+	*	There are far fewer scores than original variables on the process, yet the scores capture all the essential variation in the original data, leading to fewer monitoring charts on the operators' screens.
+
+	*	We can calculate the scores, |T2| and SPE values even if there are missing data present; conversely, univariate charts have gaps when sensors go off-line.
+
+	*	Rather than waiting for laboratory final quality checks, we can use the automated measurements from our process. There are many more of these measurements, so they will be correlated -- we have to use latent variable tools. The process data are usually measured with greater accuracy than the lab values, and they are measured at higher frequency (often once per second). Furthermore, if a problem is detected in the lab values, then we would have to come back to these process data anyway to uncover the reason for the problem.
+
+	*	But by far, one of the most valuable attributes of the process data is the fact that they are measured in real-time. The residence time in complex processes can be in the order of hours to days, going from start to end. Having to wait till much later in time to detect problems, based on lab measurements can lead to monetary losses as off-spec product must be discarded or reworked. Conversely, having the large quantity of data available in real-time means we can detect faults as they occur (making it much easier to decode what went wrong). But we need to use a tool that handles these highly correlated measurements.
+
+A paper that outlines the reasons for multivariate monitoring is by John MacGregor, "`Using on-line process data to improve quality: Challenges for statisticians <https://literature.learnche.org/item/75/using-on-line-process-data-to-improve-quality-challenges-for-statisticians>`_", *International Statistical Review*, **65**, p 309-323, 1997.
+
+We will look at the steps for phase I (building the monitoring charts) and phase II (using the monitoring charts).
+
+Phase I: building the control chart
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The procedure for building a multivariate monitoring chart, i.e. the phase I steps:
+
+	*	Collect the relevant process data for the system being monitored. The preference is to collect the measurements of all attributes that characterize the system being monitored. Some of these are direct measurements, others might have to be calculated first.
+
+	*	Assemble these measurements into a matrix |X|.
+
+	*	As we did with univariate control charts, remove observations (rows) from |X| that are from out-of control operation, then build a latent variable model (either PCA or PLS). The objective is to build a model using only data that is from in-control operation.
+
+	*	In all real cases the practitioner seldom knows which observations are from in-control operation, so this is an iterative step.
+
+		*	Prune out observations which have high |T2| and SPE (after verifying they are outliers).
+
+		*	Prune out variables in |X| that have low :math:`R^2`.
+
+	*	The observations that are pruned out are excellent testing data that can be set aside and used later to verify the detection limits for the scores, |T2| and SPE.
+
+	*	The control limits depend on the type of variable:
+
+		*	Each score has variance of :math:`s_a^2`, so this can be used to derive the Shewhart or EWMA control limits. Recall that Shewhart limits are typically placed at :math:`\pm 3 \sigma/\sqrt{n}`, for subgroups of size :math:`n`.
+
+		*	Hotelling's |T2| and SPE have limits provided by the software (we do not derive here how these limits are calculated, though its not difficult).
+
+		However, do not feel that these control limits are fixed. Adjust them up or down, using your testing data to find the desirable levels of type I and type II error.
+
+	*	Keep in reserve some "known good" data to test what the type I error level is; also keep some "known out-of-control" data to assess the type II error level.
+
+Phase II: using the control chart
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The phase II steps, when we now wish to apply this quality chart on-line, are similar to the phase II steps for :ref:`univariate control charts <monitoring_general_approach>`. Calculate the scores, SPE and Hotelling's :math:`T^2` for the new observation, :math:`\mathbf{x}'_\text{new}`, as described in the :ref:`section on using an existing PCA model <LVM-using-a-PCA-model>`. Then plot these new quantities, rather than the original variables. The only other difference is how to deal with an alarm.
+
+The usual phase II approach when an alarm is raised is to investigate the variable that raised the alarm, and use your engineering knowledge of the process to understand why it was raised. When using scores, SPE and |T2|, we actually have a bit more information, but the approach is generally the same: use your engineering knowledge, in conjunction with the relevant contribution plot.
+
+	*	A score variable, e.g. :math:`t_a` raised the alarm. We :ref:`derived earlier <LVM_interpreting_scores>` that the contribution to each score was :math:`t_{\text{new},a} = x_{\text{new},1} \,\, p_{1,a} + x_{\text{new},2} \,\, p_{2,a} + \ldots + x_{\text{new},k} \,\, p_{k,a} + \ldots + x_{\text{new},K} \,\, p_{K,a}`. It indicates which of the original :math:`K` variables contributed most to the very high or very low score value.
+
+	*	SPE alarm. The contribution to SPE for a new observation was derived in an :ref:`earlier section <LVM-interpreting-SPE-residuals>` as well; it is conveniently shown using a barplot of the :math:`K` elements in the vector below. These are the variables most associated with the broken correlation structure.
+
+		.. math::
+			\mathbf{e}'_{\text{new}} &= \mathbf{x}'_\text{new} - \hat{\mathbf{x}}'_\text{new} = \mathbf{x}'_\text{new} - \mathbf{t}'_\text{new} \mathbf{P}'\\
+			  				&= \begin{bmatrix}(x_{\text{new},1} - \hat{x}_{\text{new},1}) & (x_{\text{new},2} - \hat{x}_{\text{new},2}) & \ldots & (x_{\text{new},k} - \hat{x}_{\text{new},k}) &  \ldots & (x_{\text{new},K} - \hat{x}_{\text{new},K})\end{bmatrix}
+
+	*	|T2| alarm: an alarm in |T2| implies one or more scores are large. In many cases it is sufficient to go investigate the score(s) that caused the value of :math:`T^2_\text{new}` to be large. Though as long as the SPE value is below its alarm level, many practitioners will argue that a high |T2| value really isn't an alarm at all; it indicates that the observation is multivariately in-control (on the plane), but beyond the boundaries of what has been observed when the model was built. My advice is to consider this point tentative: investigate it further (it might well be an interesting operating point that still produces good product).
 
 .. _APPS_multivariate_monitoring_flotation:
 
@@ -532,7 +626,7 @@ observation.
 	  <https://literature.learnche.org/item/106/review-of-adaptation-mechanisms-for-data-driven-soft-sensors>`_
 	  review the trade-offs of the three approaches in detail. The same
 	  considerations apply to the :ref:`Kappa soft sensor
-	  <APPS_soft_sensors_case_kamyr>` discussed in §7.2.
+	  <APPS_soft_sensors_case_kamyr>` discussed in a later section.
 	* **Autocorrelation**. The 30-second sampling makes consecutive
 	  observations highly correlated. A practical deployment usually
 	  monitors the 2-minute subgroup mean rather than every 30-second

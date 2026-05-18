@@ -6,13 +6,27 @@ Multivariate image analysis
 .. index::
 	single: multivariate image analysis (MIA)
 	pair: multivariate image analysis; applications
+	single: image unfolding
 
-.. note::
+This section just gives a impression how 3-D and higher dimensional data sets are dealt with. Tools such as PCA and PLS work on two-dimensional matrices. When we receive a 3-dimensional array, such as an image, or a batch data set, then we must unfold that array into a (2D) matrix if we want to use PCA and PLS in the usual manner.
 
-	**Status: planned subsection.** This page collects the catalogued
-	literature that should ground the multivariate image analysis
-	(MIA) discussion. The body content is yet to be written; the open
-	GitHub issue tracks the remaining work.
+The following illustration shows how we deal with an image, such as the one taken from a colour camera. Imagine we have :math:`I` rows and :math:`J` columns of pixels, on 3 layers (red, green and blue wavelengths). Each entry in this array is an intensity value, a number between 0 and 255. For example, a pure red pixel is has the following 3 intensity values in layer 1, 2 and 3: (255, 0, 0), because layer 1 contains the intensity of the red wavelengths. A pure blue pixel would be (0, 0, 255), while a pure green pixel would be (0, 255, 0) and a pure white pixel is (255, 255, 255). In other words, each pixel is represented as a triplet of 3 intensity values.
+
+.. image:: ../figures/image/image-unfolding.jpg
+	:alt:	../figures/image/image-unfolding.jpg
+	:scale: 55
+	:width: 750px
+	:align: center
+
+In the unfolded matrix we have :math:`IJ` rows and 3 columns. In other words, each pixel in the image is represented in its own row. A digital image with 768 rows and 1024 columns, would therefore be unfolded into a matrix with 786,432 rows and 3 columns. If we perform PCA on this matrix we can calculate score values and SPE values: one per pixel. Those scores can be refolded back into the original shape of the image. It is useful to visualize those scores and SPE values in this way.
+
+.. image:: ../figures/examples/lumber-images/lumber-example-combine.png
+	:alt:	../figures/examples/lumber-images/lumber-example-combine.py
+	:scale: 70
+	:width: 900px
+	:align: center
+
+You can learn more about using PCA on image data in the manual that accompanies the interactive software that is freely available from https://macc.mcmaster.ca/maccmia.php.
 
 References to incorporate
 ~~~~~~~~~~~~~~~~~~~~~~~~~
