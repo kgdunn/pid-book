@@ -13,4 +13,3 @@ Latent Variable Modelling
    principal-component-analysis/index
    principal-components-regression
    projection-to-latent-structures/index
-   applications-of-latent-variable-models

@@ -10,8 +10,10 @@ Over the years since 2010 when this online book has been available, there has be
 .. toctree::
    :maxdepth: 1
 
-   image-analysis
-   soft-sensors
+   process-understanding
+   troubleshooting
    multivariate-process-monitoring
+   soft-sensors
+   image-analysis
    batch-process-monitoring
    product-development

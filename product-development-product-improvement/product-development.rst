@@ -279,6 +279,232 @@ How the four tables fit together
 
 	*	Inversion of this model is generally underdetermined: there are typically more inputs than outputs, so a target :math:`\mathbf{y}_\text{new}` corresponds to a *region* of feasible :math:`(\mathbf{f}_\text{new}, \mathbf{z}_\text{new})` rather than a single point. The dimension of that region is the difference between the rank of the input space and the rank of the output space (the "rank" idea in the previous subsection); the inactive directions are the operating window described by item J of the desiderata.
 
+Optimizing: new operating point and/or new product development
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. index::
+	single: new product development
+
+.. Mention latent variable control of processes (MacGregor et al paper 2005 has a section on this)
+
+This application area is rapidly growing in importance. Fortunately it is fairly straightforward to get an impression of how powerful this tool is. Let's return back to the :ref:`food texture example considered previously <LVM_food_texture_example>`, where data from a biscuit/pastry product was considered. These 5 measurements were used:
+
+	#.	Percentage oil in the pastry
+	#.	The product's density (the higher the number, the more dense the product)
+	#.	A crispiness measurement, on a scale from 7 to 15, with 15 being more crispy.
+	#.	The product's fracturability: the angle, in degrees, through which the pasty can be slowly bent before it fractures.
+	#.	Hardness: a sharp point is used to measure the amount of force required before breakage occurs.
+
+The scores and loadings plot are repeated here again:
+
+.. figure:: ../figures/examples/food-texture/pca-on-food-texture-scores-and-loadings.png
+	:alt:	../figures/examples/food-texture//pca-on-food-texture-data.R
+	:scale: 80
+	:width: 750px
+	:align: center
+
+Process optimization follows the principle that certain regions of operation are more desirable than others. For example, if all the pastry batches produced on the score plot are of acceptable quality, there might be regions in the plot which are more economically profitable than others.
+
+For example, pastries produced in the lower right quadrant of the score plot (high values of :math:`t_1` and low values of :math:`t_2`), require more oil, but might require a lower cooking time, due to the decreased product density. Economically, the additional oil cost is offset by the lower energy costs. All other things being equal, we can optimize the process by moving production conditions so that we consistently produce pastries in this region of the score plot. We could cross-reference the machine settings for the days when batches 17, 49, 36, 37 and 30 were produced and ensure we always operate at those conditions.
+
+New product development follows a similar line of thought, but uses more of a "what-if" scenario. If market research or customer requests show that a pastry product with lower oil, but still with high crispiness is required, we can initially guess from the loadings plot that this is not possible: oil percentage and crispiness are positively correlated, not negatively correlated.
+
+But if our manager asks, can we readily produce a pastry with the 5 variables set at [Oil=14%, Density=2600, Crispy=14, Fracture can be any value, Hardness=100]. We can treat this as a new observation, and following the steps described in the earlier :ref:`section on using a PCA model <LVM-using-a-PCA-model>`, we will find that :math:`\mathbf{e} = [2.50, 1.57, -1.10,  -0.18,  0.67]`, and the SPE value is 10.4. This is well above the 95% limit of SPE, indicating that such a pastry is not consistent with how we have run our process in the past. So there isn't a quick solution.
+
+Fortunately, there are systematic tools to move on from this step. They involve the *inversion* of a latent variable model: running the model backwards, from a desired result to the recipe that would produce it. The :ref:`worked example below <LVM_model_inversion_example>` introduces the idea on the food texture data. A good starting point for further reading is the paper by Christiane Jaeckle and John MacGregor, "`Product design through multivariate statistical analysis of process data <https://literature.learnche.org/item/61/product-design-through-multivariate-statistical-analysis-of-process-data>`_". *AIChE Journal*, **44**, 1105-1118, 1998.
+
+The general principle in model inversion problems is to manipulate the any degrees of freedom in the process (variables that can be manipulated in a process control sense) to obtain a product as close as possible to the required specification, but with low SPE in the model. A PLS model built with these manipulated variables, and other process measurements in |X|, and collecting the required product specifications in |Y| can be used for these model inversion problems.
+
+.. _LVM_model_inversion_example:
+
+Worked example: PCA model inversion
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. index::
+	pair: model inversion; latent variable modelling
+	single: inversion of a latent variable model
+
+The previous section ended with a manager's question: *what recipe will give us the pastry we want?* A latent variable model can be run in reverse to answer it. This is called model inversion. The forward calculation takes a new observation and projects it onto the model to obtain its scores; inversion does the opposite, starting from a desired score and recovering the raw variables that would place an observation there.
+
+For a two-component PCA model the idea is geometric. The model is a flat plane embedded in the five-dimensional space of pastry properties, and every pastry projects onto that plane at a score :math:`(t_1, t_2)`. To invert the model we choose a *target* score and read off the point on the plane it corresponds to. With the loadings matrix |P| (here :math:`5 \times 2`) and a target score :math:`\mathbf{t} = [t_1, t_2]`:
+
+.. math::
+
+	\mathbf{x}_\text{scaled} = \mathbf{t}\,\mathbf{P}^{T}
+
+This result is in the model's mean-centered and scaled units; undoing the centering and scaling returns a recipe in the original units of percentage oil, density, and so on.
+
+We build the model on the same :ref:`food texture data <LVM_food_texture_example>` as before, mean-centered and scaled to unit variance:
+
+.. code-block:: python
+
+	import numpy as np
+	import pandas as pd
+	import plotly.graph_objects as go
+	from plotly.subplots import make_subplots
+	from process_improve.multivariate import PCA, MCUVScaler
+
+	food = pd.read_csv("https://openmv.net/file/food-texture.csv")
+	scaler = MCUVScaler().fit(food)
+	food_mcuv = scaler.transform(food)
+
+Two components are enough for this small data set:
+
+.. code-block:: python
+
+	A = 2
+	model = PCA(n_components=A).fit(food_mcuv)
+	print(model.r2_cumulative_)
+
+The first component explains 60.6% of the variability in the five measurements and the second a further 25.9%, for a cumulative :math:`R^2` of 86.5%.
+
+Before trusting the model to *generate* recipes, we should check that it is a faithful summary of the data. We plot the SPE and Hotelling's |T2| value of each pastry, together with their 95% limits:
+
+.. code-block:: python
+
+	spe = model.spe_.iloc[:, -1]
+	t2 = model.hotellings_t2_.iloc[:, -1]
+	spe_limit = float(model.spe_limit(conf_level=0.95))
+	t2_limit = float(model.hotellings_t2_limit(conf_level=0.95))
+
+	fig = go.Figure()
+	fig.add_trace(go.Scatter(y=spe.values, mode="lines+markers", name="SPE"))
+	fig.add_hline(y=spe_limit, line_color="red", line_dash="dash",
+	              annotation_text="95% limit")
+	fig.update_layout(title="SPE per pastry", xaxis_title="Pastry number",
+	                  yaxis_title="SPE", height=320)
+	fig.show()
+
+	fig = go.Figure()
+	fig.add_trace(go.Scatter(y=t2.values, mode="lines+markers", name="T2"))
+	fig.add_hline(y=t2_limit, line_color="red", line_dash="dash",
+	              annotation_text="95% limit")
+	fig.update_layout(title="Hotelling's T-squared per pastry",
+	                  xaxis_title="Pastry number", yaxis_title="T-squared",
+	                  height=320)
+	fig.show()
+
+.. figure:: ../figures/examples/food-texture/pca-on-food-texture-model-inversion-spe.png
+	:alt:	../figures/examples/food-texture/pca-on-food-texture-model-inversion.py
+	:scale: 80
+	:width: 600px
+	:align: center
+
+.. figure:: ../figures/examples/food-texture/pca-on-food-texture-model-inversion-t2.png
+	:alt:	../figures/examples/food-texture/pca-on-food-texture-model-inversion.py
+	:scale: 80
+	:width: 600px
+	:align: center
+
+The 95% limits work out to :math:`\text{SPE} = 1.38` and |T2| :math:`= 6.65`. Two pastries sit just above the SPE limit and one just above the |T2| limit — about what a 95% limit implies for 50 observations, and none is a gross outlier. The two-component plane is a sound summary of how this product has been made, so it is a sensible basis for inversion.
+
+The score plot is the model's two-dimensional map of the data, and the loadings give that map its meaning:
+
+.. code-block:: python
+
+	scores = model.scores_
+	ci_x, ci_y = model.ellipse_coordinates(score_horiz=1, score_vert=2,
+	                                       conf_level=0.95)
+
+	fig = make_subplots(rows=1, cols=2, subplot_titles=("Scores", "Loadings"))
+	fig.add_trace(go.Scatter(x=scores.iloc[:, 0], y=scores.iloc[:, 1],
+	                         mode="markers", marker=dict(color="black"),
+	                         showlegend=False), row=1, col=1)
+	fig.add_trace(go.Scatter(x=ci_x, y=ci_y, mode="lines",
+	                         line=dict(color="palevioletred"),
+	                         showlegend=False), row=1, col=1)
+	fig.add_trace(go.Scatter(x=model.loadings_.iloc[:, 0],
+	                         y=model.loadings_.iloc[:, 1], mode="markers+text",
+	                         text=model.loadings_.index,
+	                         textposition="bottom center",
+	                         showlegend=False), row=1, col=2)
+	fig.update_xaxes(title_text="t1", row=1, col=1)
+	fig.update_yaxes(title_text="t2", row=1, col=1)
+	fig.update_xaxes(title_text="p1", row=1, col=2)
+	fig.update_yaxes(title_text="p2", row=1, col=2)
+	fig.show()
+
+.. figure:: ../figures/examples/food-texture/pca-on-food-texture-model-inversion-scores-and-loadings.png
+	:alt:	../figures/examples/food-texture/pca-on-food-texture-model-inversion.py
+	:scale: 80
+	:width: 750px
+	:align: center
+
+Earlier we noted that the lower-right quadrant of the score plot — high :math:`t_1`, low :math:`t_2` — is the economically attractive region. Model inversion turns a chosen point in that quadrant into a concrete recipe. We extract the loadings as a plain array and project a target score back through them:
+
+.. code-block:: python
+
+	P = model.loadings_.values
+
+	def invert(t1, t2):
+	    """Return the pastry recipe for a target score (t1, t2)."""
+	    x_scaled = np.array([[t1, t2]]) @ P.T
+	    recipe = scaler.inverse_transform(pd.DataFrame(x_scaled, columns=food.columns))
+	    return recipe.iloc[0]
+
+	print(invert(0, 0))     # the origin returns the average pastry
+	print(invert(2, -1))    # a point in the profitable quadrant
+
+Inverting the origin :math:`(0, 0)` returns Oil = 17.2%, Density = 2858, Crispy = 11.5, Fracture = 20.9, Hardness = 128. These are the column means: a useful sanity check, since the centre of the score plot must correspond to the average pastry.
+
+The target :math:`(t_1 = 2,\ t_2 = -1)` inverts to a recipe of Oil = 19.2%, Density = 2694, Crispy = 13.1, Fracture = 16.6, Hardness = 113. Next to the average pastry this one is oilier, less dense, and crispier — exactly the trade-off the loadings plot predicts for that quadrant, now written as numbers a process engineer can aim for.
+
+Two cautions apply. First, a target is only realistic if it lies within the model: inside the |T2| ellipse, and implying a low SPE. Asking for a score far outside the cloud of pastries inverts to a recipe the process has never been shown to produce. Second, the inversion above is *unconstrained* — it is free to move all five variables at once. In practice some variables are fixed (a hardness specification, say) and the rest must be solved for. We work through that case next.
+
+A recipe is often not free in every variable. A product specification may *fix* one of them — suppose a customer requires the hardness to come out at an exact value. The model still has only two score degrees of freedom, :math:`t_1` and :math:`t_2`. Pinning one variable adds one equation that those two scores must satisfy, so it uses up one degree of freedom: we are no longer free to roam the whole score plane, only a line within it.
+
+Each scaled variable is reconstructed from the scores through its own row of the loadings matrix |P|. Writing :math:`\mathbf{p}_h = [p_{h,1},\ p_{h,2}]` for the hardness row, the hardness of any point on the model plane is
+
+.. math::
+
+	z_h = t_1 p_{h,1} + t_2 p_{h,2} = \mathbf{p}_h \cdot \mathbf{t}
+
+where :math:`z_h` is the desired hardness, expressed in the model's mean-centered and scaled units. Fixing :math:`z_h` turns this into the equation of a straight line in the :math:`(t_1, t_2)` plane: every score on that line reproduces the requested hardness exactly.
+
+We still have a target score in mind — the profitable point :math:`\mathbf{t}^\star = (2, -1)` from before — but in general it does not lie on the constraint line. To find the score we should use instead, split the target into two parts: the component pointing *along* the hardness loading direction :math:`\mathbf{p}_h`, and the component *perpendicular* to it. Only the first part changes the hardness — the perpendicular component contributes nothing to the dot product :math:`\mathbf{p}_h \cdot \mathbf{t}`. So we keep the perpendicular part of the target exactly as it is, and reset only the along-:math:`\mathbf{p}_h` part, choosing it so the hardness comes out at the requested value. Holding the perpendicular component fixed moves the score as little as the constraint allows.
+
+That operation — keep the perpendicular part, reset the part along :math:`\mathbf{p}_h` — is the orthogonal projection of the target :math:`\mathbf{t}^\star` onto the constraint line. It shifts the target along :math:`\mathbf{p}_h`:
+
+.. math::
+
+	\mathbf{t} = \mathbf{t}^\star - \lambda\,\mathbf{p}_h
+	\qquad\text{where}\qquad
+	\lambda = \frac{\mathbf{p}_h \cdot \mathbf{t}^\star - z_h}{\mathbf{p}_h \cdot \mathbf{p}_h}
+
+The numerator is the amount by which the unconstrained target misses the required hardness; the correction :math:`\lambda\,\mathbf{p}_h` is subtracted from the target scores to bring them onto the constraint line. The further the requested hardness is from what the target naturally gives, the larger :math:`\lambda`, and the more the other four variables must move to compensate.
+
+Fixing one variable used up only one of the two score degrees of freedom; the second is still ours to spend. Projection spends it on *staying as close to the original target as possible* — the perpendicular component of the target is carried over untouched. That is the natural default, but not the only choice: we could instead hold :math:`t_1` at its target value and solve :math:`t_2` alone for the required hardness, which gives a different recipe that is equally, and exactly, at the requested hardness. Whenever a constraint leaves a degree of freedom unclaimed, some rule has to decide how to use it.
+
+.. code-block:: python
+
+	p_h = model.loadings_.loc["Hardness"].values   # the hardness loadings row
+
+	def invert_fixing_hardness(t_star, hardness):
+	    """Invert towards t_star, but force Hardness to an exact value."""
+	    z_h = (hardness - scaler.center_["Hardness"]) / scaler.scale_["Hardness"]
+	    t_star = np.array(t_star, dtype=float)
+	    lam = (p_h @ t_star - z_h) / (p_h @ p_h)
+	    t = t_star - lam * p_h
+	    recipe = scaler.inverse_transform(pd.DataFrame([t @ P.T], columns=food.columns))
+	    return recipe.iloc[0]
+
+	print(invert_fixing_hardness([2, -1], 110))
+	print(invert_fixing_hardness([2, -1], 150))
+
+The unconstrained target :math:`(2, -1)` already gave a hardness of 113, so asking for 110 barely disturbs anything: the correction is tiny (:math:`\lambda = 0.13`) and the other four variables are essentially unchanged — Oil = 19.3%, Density = 2691, Crispy = 13.0, Fracture = 16.7, against the unconstrained 19.2, 2694, 13.1, 16.6. The model is telling us this hardness was almost free.
+
+Asking for a hardness of 150 is a different matter. It is well above what the target naturally produces, so the correction is large (:math:`\lambda = -1.79`) and the scores swing all the way from :math:`t_2 = -1` to :math:`t_2 = +0.4`. The recipe becomes Oil = 18.6%, Density = 2741, Crispy = 13.8, Fracture = 14.1, Hardness = 150 — every other variable has moved to pay for the harder pastry. This is the model's honest answer: there is no recipe close to the original target that is also that hard, so something has to give.
+
+This projection geometry is easiest to see drawn. The score plane below shows the target :math:`\mathbf{t}^\star`, the two constraint lines, and the correction that lands the target on each — short for the nearby hardness of 110, long for the distant hardness of 150:
+
+.. figure:: ../figures/examples/food-texture/pca-on-food-texture-model-inversion-constraint-projection.png
+	:alt:	../figures/examples/food-texture/pca-on-food-texture-model-inversion.py
+	:scale: 80
+	:width: 750px
+	:align: center
+
+To explore the inversion interactively — hovering over any target in the score plot and reading off the recipe it implies — download and run this notebook: :download:`PCA-model-inversion.ipynb <PCA-model-inversion.ipynb>`.
+
 References
 ~~~~~~~~~~
 
