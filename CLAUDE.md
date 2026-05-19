@@ -47,14 +47,18 @@ each one. Releases are deliberate: not every merge to `main` warrants one,
 so they are never created automatically.
 
 **After a pull request with substantive changes merges to `main`, ask the
-user whether to cut a release.** If they decline, do nothing. If they agree:
+user whether to cut a release.** If they decline, do nothing. If they agree,
+the tag has to be pushed by the maintainer: a Claude-on-the-web session
+cannot push tags, because its git proxy accepts only the working branch.
+Claude's job is to prepare everything and hand over the commands:
 
-1. Check out `main` and make sure it is up to date with `origin/main`.
-2. Create an annotated, calendar-versioned tag on the merge commit:
-   `git tag -a vYYYY.MM.DD -m "<release notes>"`. Use today's date. The tag
-   message becomes the GitHub Release notes, so write a short summary of
-   what changed since the previous release.
-3. Push the tag: `git push origin vYYYY.MM.DD`.
+1. Make sure `main` is up to date with `origin/main`.
+2. Write the release notes to a file. They become the GitHub Release body,
+   so summarise what changed since the previous release.
+3. Give the maintainer an annotated, calendar-versioned tag command to run,
+   using today's date:
+   `git tag -a vYYYY.MM.DD origin/main -F <notes-file>`
+   followed by `git push origin vYYYY.MM.DD`.
 
 Pushing a `vYYYY.MM.DD` tag triggers `.github/workflows/release.yml`, which
 creates the GitHub Release automatically. Zenodo then archives that release
