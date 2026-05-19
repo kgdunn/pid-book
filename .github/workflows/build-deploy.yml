@@ -49,17 +49,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install TeX Live
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            texlive-latex-recommended \
-            texlive-latex-extra \
-            texlive-fonts-recommended \
-            texlive-fonts-extra \
-            texlive-xetex \
-            latexmk
-
       - name: Fetch ECharts (for sidebar sparklines)
         # Pinned official Apache ECharts build, line/bar/pie subset.
         # ~280 KB minified / ~80 KB gzip; served from same origin so no
@@ -72,11 +61,25 @@ jobs:
             https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.simple.min.js
           test -s _static/js/echarts-min.js
 
+      # Build HTML runs before the TeX Live install: the apt-get step is slow
+      # and is not a prerequisite for the HTML build, so a broken HTML build
+      # surfaces as a fast early signal.
       - name: Build HTML
         env:
           PID_BOOK_TELEMETRY: ${{ github.event_name != 'pull_request' && '1' || '0' }}
           PID_BOOK_GC_CODE: ${{ vars.GOATCOUNTER_CODE || 'learnche-pid' }}
         run: uv run make html
+
+      - name: Install TeX Live
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            texlive-latex-recommended \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            texlive-fonts-extra \
+            texlive-xetex \
+            latexmk
 
       - name: Build PDF
         # Sidestep the xdg-open step at the end of the `latexpdf` target,
