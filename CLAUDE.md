@@ -11,25 +11,62 @@ comma, parentheses, or two separate sentences instead. En-dashes (`–`) in
 numeric ranges such as the `2010–2026` year range are correct and should
 stay.
 
-## Bump the citation date whenever you plan a PR
+## Bump the version and citation date whenever you plan a PR
 
-This repository ships citation metadata in two places:
+This repository ships release metadata in three places that reusers and
+GitHub's "Cite this repository" button depend on:
 
-- `CITATION.cff` — the `date-released:` field
-- `README.md` — the suggested attribution line, which carries a year range
-  ending in the most recent update (e.g. `2010–2026`)
+- `CITATION.cff` `version:`, a calendar version written as `YYYY.MM.DD`.
+- `CITATION.cff` `date-released:`, written as `YYYY-MM-DD`.
+- `README.md`, the suggested attribution line, which carries a year range
+  ending in the most recent update (e.g. `2010–2026`).
 
 **Whenever you are planning a pull request that contains substantive changes
-(content edits, new sections, build changes, anything beyond a pure
-typo / link fix), update both fields before committing:**
+(content edits, new sections, build changes, anything beyond a pure typo or
+link fix), update all three before committing:**
 
-1. Set `CITATION.cff` `date-released:` to today's date (`YYYY-MM-DD`).
-2. Update the trailing year of the year range in the README's suggested
+1. Set `CITATION.cff` `version:` to today's date as `YYYY.MM.DD`.
+2. Set `CITATION.cff` `date-released:` to today's date (`YYYY-MM-DD`).
+3. Update the trailing year of the year range in the README's suggested
    attribution line to the current year, if it isn't already.
 
-If you skip this step, GitHub's "Cite this repository" button will keep
-showing a stale year and reusers of the book will undercredit the latest
+The `CITATION.cff` `version:` is the citation's own calendar version. It is
+independent of the `pyproject.toml` `version` covered under "Where the
+canonical version lives" below. When a release is cut, this `version:` value
+must equal the release tag with the leading `v` removed (see "Cutting a
+release" below).
+
+If you skip this step, the "Cite this repository" button keeps showing a
+stale version and date, and reusers of the book undercredit the latest
 revision.
+
+## Cutting a release (Zenodo DOI archiving)
+
+GitHub Releases of this book are archived by Zenodo, which mints a DOI for
+each one. Releases are deliberate: not every merge to `main` warrants one,
+so they are never created automatically.
+
+**After a pull request with substantive changes merges to `main`, ask the
+user whether to cut a release.** If they decline, do nothing. If they agree:
+
+1. Check out `main` and make sure it is up to date with `origin/main`.
+2. Create an annotated, calendar-versioned tag on the merge commit:
+   `git tag -a vYYYY.MM.DD -m "<release notes>"`. Use today's date. The tag
+   message becomes the GitHub Release notes, so write a short summary of
+   what changed since the previous release.
+3. Push the tag: `git push origin vYYYY.MM.DD`.
+
+Pushing a `vYYYY.MM.DD` tag triggers `.github/workflows/release.yml`, which
+creates the GitHub Release automatically. Zenodo then archives that release
+and issues a DOI. The tag version without the `v` must match the
+`CITATION.cff` `version:` already merged in the PR.
+
+Once Zenodo has minted the concept DOI (the one that always resolves to the
+latest release), add it to `CITATION.cff` in a follow-up PR under an
+`identifiers:` block of `type: doi`, so the citation metadata is complete.
+
+Enabling the Zenodo archive itself is a one-time manual step the repository
+owner performs in their Zenodo account; it cannot be scripted here.
 
 ## Where the canonical version lives
 
