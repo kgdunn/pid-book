@@ -10,9 +10,13 @@
 [![Last commit](https://img.shields.io/github/last-commit/kgdunn/pid-book.svg)](https://github.com/kgdunn/pid-book/commits)
 [![Issues](https://img.shields.io/github/issues/kgdunn/pid-book.svg)](https://github.com/kgdunn/pid-book/issues)
 
-📖 **Read it now:** [learnche.org/pid](https://learnche.org/pid) (HTML) · [PDF](https://learnche.org/pid/PID.pdf?2026-05-19)
-💻 **Run the methods in Python:** [`process-improve`](https://github.com/kgdunn/process-improve) — the companion package
-🎓 **Teaching with it?** See the [instructor section](#for-instructors) below
+## Read the book
+
+The book is free to read online and free to download. You do **not** need this
+repository to read it:
+
+- **Read online:** **<https://learnche.org/pid>**
+- **Download the PDF:** **[PID.pdf?2026-05-19](https://learnche.org/pid/PID.pdf?2026-05-19)**
 
 This repository holds the book's source. It is here for people who want to
 report a problem, contribute a correction, or build the book themselves — see
