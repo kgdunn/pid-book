@@ -4,6 +4,7 @@
 > Continuously written and refined in industry-facing classrooms since 2010.
 
 [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20284934.svg)](https://doi.org/10.5281/zenodo.20284934)
 [![Read online](https://img.shields.io/badge/read-learnche.org%2Fpid-blue.svg)](https://learnche.org/pid)
 [![Download PDF](https://img.shields.io/badge/download-PDF-red.svg)](https://learnche.org/pid/PID.pdf)
 [![Build status](https://img.shields.io/github/actions/workflow/status/kgdunn/pid-book/build-deploy.yml?branch=main&label=build)](https://github.com/kgdunn/pid-book/actions/workflows/build-deploy.yml)
@@ -146,10 +147,11 @@ your derivative work under the same terms.
 
 Suggested attribution:
 
-> Dunn, K. G. (2010–2026). *Process Improvement using Data.* learnche.org/pid (CC BY-SA 4.0).
+> Dunn, K. G. (2010–2026). *Process Improvement using Data* (CC BY-SA 4.0). Zenodo. https://doi.org/10.5281/zenodo.20284934
 
-Machine-readable citation metadata is available in
-[`CITATION.cff`](CITATION.cff).
+Each tagged release is archived on Zenodo. The DOI above is the concept DOI:
+it always resolves to the latest archived edition. Machine-readable citation
+metadata, including the DOI, is in [`CITATION.cff`](CITATION.cff).
 
 ## Privacy and readership data
 
