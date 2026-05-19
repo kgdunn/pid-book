@@ -6,6 +6,7 @@ authors:
   - family-names: Dunn
     given-names: Kevin G.
     email: kgdunn@gmail.com
+    orcid: "https://orcid.org/0000-0002-0681-6794"
 abstract: >-
   An open-access textbook covering data visualization, univariate statistics,
   process monitoring, least-squares modelling, design and analysis of
@@ -21,6 +22,7 @@ keywords:
   - multivariate data analysis
   - batch data analysis
 license: CC-BY-SA-4.0
+version: "2026.05"
 date-released: 2026-05-19
 repository-code: "https://github.com/kgdunn/pid-book"
 url: "https://learnche.org/pid"

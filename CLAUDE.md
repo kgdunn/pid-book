@@ -11,24 +11,31 @@ comma, parentheses, or two separate sentences instead. En-dashes (`–`) in
 numeric ranges such as the `2010–2026` year range are correct and should
 stay.
 
-## Bump the citation date whenever you plan a PR
+## Bump the version and citation date whenever you plan a PR
 
-This repository ships citation metadata in two places:
+This repository ships release metadata in three places that reusers and
+GitHub's "Cite this repository" button depend on:
 
-- `CITATION.cff` — the `date-released:` field
-- `README.md` — the suggested attribution line, which carries a year range
-  ending in the most recent update (e.g. `2010–2026`)
+- `CITATION.cff` `version:`, a calendar version written as `YYYY.MM`.
+- `CITATION.cff` `date-released:`, written as `YYYY-MM-DD`.
+- `README.md`, the suggested attribution line, which carries a year range
+  ending in the most recent update (e.g. `2010–2026`).
 
 **Whenever you are planning a pull request that contains substantive changes
-(content edits, new sections, build changes, anything beyond a pure
-typo / link fix), update both fields before committing:**
+(content edits, new sections, build changes, anything beyond a pure typo or
+link fix), update all three before committing:**
 
-1. Set `CITATION.cff` `date-released:` to today's date (`YYYY-MM-DD`).
-2. Update the trailing year of the year range in the README's suggested
+1. Set `CITATION.cff` `version:` to the current `YYYY.MM`.
+2. Set `CITATION.cff` `date-released:` to today's date (`YYYY-MM-DD`).
+3. Update the trailing year of the year range in the README's suggested
    attribution line to the current year, if it isn't already.
 
-If you skip this step, GitHub's "Cite this repository" button will keep
-showing a stale year and reusers of the book will undercredit the latest
+The `CITATION.cff` `version:` is the citation's own calendar version. It is
+independent of the `pyproject.toml` `version` covered under "Where the
+canonical version lives" below.
+
+If you skip this step, the "Cite this repository" button keeps showing a
+stale version and date, and reusers of the book undercredit the latest
 revision.
 
 ## Where the canonical version lives
