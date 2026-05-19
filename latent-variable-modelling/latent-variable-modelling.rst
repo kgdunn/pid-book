@@ -421,8 +421,6 @@ These readings cover a variety of topics in the area of latent variable methods:
 
 * **PLS**: Paul Garthwaite, "`An Interpretation of Partial Least Squares <https://www.jstor.org/stable/2291207>`_", Journal of the American Statistical Association, **89**, 122-127, 1994.
 
-* **Contribution plots**: P Miller, RE Swanson, CE Heckler, "`Contribution Plots: a Missing Link in Multivariate Quality Control <https://literature.learnche.org/item/78/contribution-plots-a-missing-link-in-multivariate-quality-control>`_", *Applied Mathematics and Computer Science*, *8* (4), 775-792, 1998. (*hard to obtain, but available on request, by email to kgdunn@gmail.com*)
-
 .. * Many other applications of latent variables are described here: https://macc.mcmaster.ca/research/publications
 
 
