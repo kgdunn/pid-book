@@ -5,7 +5,7 @@
 
 [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
 [![Read online](https://img.shields.io/badge/read-learnche.org%2Fpid-blue.svg)](https://learnche.org/pid)
-[![Download PDF](https://img.shields.io/badge/download-PDF-red.svg)](https://learnche.org/pid/PID.pdf?2026-05-19)
+[![Download PDF](https://img.shields.io/badge/download-PDF-red.svg)](https://learnche.org/pid/PID.pdf)
 [![Build status](https://img.shields.io/github/actions/workflow/status/kgdunn/pid-book/build-deploy.yml?branch=main&label=build)](https://github.com/kgdunn/pid-book/actions/workflows/build-deploy.yml)
 [![Last commit](https://img.shields.io/github/last-commit/kgdunn/pid-book.svg)](https://github.com/kgdunn/pid-book/commits)
 [![Issues](https://img.shields.io/github/issues/kgdunn/pid-book.svg)](https://github.com/kgdunn/pid-book/issues)
@@ -16,10 +16,10 @@ The book is free to read online and free to download. You do **not** need this
 repository to read it:
 
 - **Read online:** **<https://learnche.org/pid>**
-- **Download the PDF:** **[PID.pdf?2026-05-19](https://learnche.org/pid/PID.pdf?2026-05-19)**
+- **Download the PDF:** **[PID.pdf](https://learnche.org/pid/PID.pdf)**
 
 This repository holds the book's source. It is here for people who want to
-report a problem, contribute a correction, or build the book themselves — see
+report a problem, contribute a correction, or build the book themselves. See
 [Contributing](#contributing) below.
 
 ---
@@ -27,15 +27,15 @@ report a problem, contribute a correction, or build the book themselves — see
 ## Why this book exists
 
 There is no other free, coherent text that covers what engineers and scientists
-actually do with process data — visualization, regression, designed
-experiments, process monitoring, *and* multivariate / latent-variable methods —
+actually do with process data (visualization, regression, designed
+experiments, process monitoring, *and* multivariate / latent-variable methods)
 in one volume.
 
 Most textbooks pick one of those topics and go deep. Practitioners need all of
 them, and need to see how they fit together, because real industrial problems
 don't respect chapter boundaries. *Process Improvement using Data* was written
 to fill that gap, and has been continuously refined in industry-facing
-classrooms and on shop floors since 2010.
+classrooms and in industrial practice since 2010.
 
 It is suitable for upper-undergraduate or introductory-graduate courses, and
 for self-study by working engineers and data scientists with a basic
@@ -45,23 +45,21 @@ statistics background.
 
 | Chapter | Topic and what you'll take away |
 |:-:|---|
-| 1 | **Data visualization** — how to look at data before you model it. |
-| 2 | **Univariate review** — probability, distributions, confidence intervals, and hypothesis tests, refreshed with engineering examples. |
-| 3 | **Process monitoring** — Shewhart, CUSUM, and EWMA charts: the toolbox that catches problems before they leave the plant. |
-| 4 | **Least-squares modelling** — linear and multiple regression, from first principles through honest diagnostics. |
-| 5 | **Design and analysis of experiments** — factorial, fractional factorial, and response-surface designs; learning the most from the fewest runs. |
-| 6 | **Latent variable modelling** — PCA, PLS, and batch data analysis: turning high-dimensional process data into actionable insight. |
-| 7 | **Product development and product improvement** — combining DOE and latent variable methods to develop new products and improve existing ones. |
-
-The full table of contents lives in [`contents.rst`](contents.rst).
+| 1 | **Data visualization**: how to look at data before you model it. |
+| 2 | **Univariate review**: probability, distributions, confidence intervals, and hypothesis tests, refreshed with engineering examples. |
+| 3 | **Process monitoring**: Shewhart, CUSUM, and EWMA charts: the toolbox that catches problems before they leave the plant. |
+| 4 | **Least-squares modelling**: linear and multiple regression, from first principles through honest diagnostics. |
+| 5 | **Design and analysis of experiments**: factorial, fractional factorial, and response-surface designs; learning the most from the fewest runs. |
+| 6 | **Latent variable modelling**: PCA, PLS, and batch data analysis: turning high-dimensional process data into actionable insight. |
+| 7 | **Product development and product improvement**: combining DOE and latent variable methods to develop new products and improve existing ones. |
 
 ## Companion software: `process-improve`
 
 Every method in this book has a worked, production-grade implementation in the
 open-source Python package
-[`process-improve`](https://github.com/kgdunn/process-improve) — PCA and PLS
-with proper outlier diagnostics and prediction intervals, control charts,
-designed experiments, and batch process monitoring. Install it with
+[`process-improve`](https://github.com/kgdunn/process-improve). It provides PCA
+and PLS with proper outlier diagnostics and prediction intervals, control
+charts, designed experiments, and batch process monitoring. Install it with
 `pip install process-improve` and run the exercises in any Jupyter notebook.
 
 ## Who's using this book
@@ -69,11 +67,11 @@ designed experiments, and batch process monitoring. Install it with
 The book is adopted in university courses, cited in graduate research, and
 used inside companies as internal training material. A few course adoptions:
 
-- **Western University, Canada** — required text for the graduate course
+- **Western University, Canada**: required text for the graduate course
   *CBE 9190: Advanced Statistical Process Analysis*.
-- **UNSW Sydney, Australia** — recommended text for *CEIC6789: Data-driven
+- **UNSW Sydney, Australia**: recommended text for *CEIC6789: Data-driven
   Decision Making in Chemical Engineering and Food Science*.
-- **McMaster University, Canada** — *IBEHS 4C03: Statistical Methods for
+- **McMaster University, Canada**: *IBEHS 4C03: Statistical Methods for
   Biomedical Engineering* is built on the book's foundations and adapts them
   into JupyterLab notebooks.
 
@@ -82,12 +80,12 @@ of fields, from chemometrics and semiconductor manufacturing to public health
 and tribology.
 
 Teaching or training with the book? Tell us via
-[Discussions](https://github.com/kgdunn/pid-book/discussions) — we'd be glad
+[Discussions](https://github.com/kgdunn/pid-book/discussions). We'd be glad
 to list your course here.
 
 ## For instructors
 
-You're welcome to use this book — and the course materials below — for your
+You're welcome to use this book, and the course materials below, for your
 own teaching. Everything is licensed under
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), so you can
 share, adapt, and even commercialize derivative work as long as you attribute
@@ -113,16 +111,16 @@ site:
   of the course on YouTube
 - [Sample datasets](https://openmv.net/) for assignments, tests, and practice
 
-**Teaching at a company?** Get in touch via the
-[contact page](https://learnche.org/4C3/Statistics_for_Engineering:About) for
+**Teaching at a company?** Ask via
+[GitHub Discussions](https://github.com/kgdunn/pid-book/discussions) for
 additional slides, worksheets, and tips.
 
 Questions, comments, or "how did you make that figure?" enquiries are all
-welcome through the same contact link.
+welcome there too.
 
 ## Contributing
 
-Contributions, corrections, and exercises are welcome from anyone — students,
+Contributions, corrections, and exercises are welcome from anyone: students,
 instructors, and practitioners alike. The book has been improved continuously
 since 2010 thanks to readers like you. The fastest channels:
 
@@ -130,7 +128,7 @@ since 2010 thanks to readers like you. The fastest channels:
    technical errors, broken links, or build problems.
 2. **Open a pull request** for content changes.
 3. **Use [Discussions](https://github.com/kgdunn/pid-book/discussions)** for
-   adoption stories, teaching ideas, and long-form feedback — or
+   adoption stories, teaching ideas, and long-form feedback, or
    [this Google Form](https://docs.google.com/forms/d/1IpO-bvJwQwhK64eid4YXwJBvGxN5cfyYDv81G-YgWrM/viewform)
    if you prefer.
 
@@ -142,8 +140,8 @@ the RST style notes, and how the book is published.
 
 The book is licensed under the
 [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/)
-license. You are free to copy, adapt, and redistribute it — including for
-courses you teach — provided you attribute the original author and license
+license. You are free to copy, adapt, and redistribute it (including for
+courses you teach) provided you attribute the original author and license
 your derivative work under the same terms.
 
 Suggested attribution:
