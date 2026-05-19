@@ -3,6 +3,14 @@
 These instructions apply to any Claude Code session working in this
 repository. Follow them in addition to the normal workflow.
 
+## Writing style: never use em-dashes
+
+Do not use em-dashes (`—`) in any prose you write or edit: README, RST
+source, commit messages, PR descriptions, or code comments. Use a colon, a
+comma, parentheses, or two separate sentences instead. En-dashes (`–`) in
+numeric ranges such as the `2010–2026` year range are correct and should
+stay.
+
 ## Bump the citation date whenever you plan a PR
 
 This repository ships citation metadata in two places:
