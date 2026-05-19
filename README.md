@@ -1,7 +1,7 @@
 # Process Improvement using Data
 
-Source repository for the open-access book *Process Improvement using Data* by
-Kevin Dunn. Actively written and updated since August 2010.
+> *A free textbook on the statistics that engineers actually need.*
+> Continuously written and refined in industry-facing classrooms since 2010.
 
 [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
 [![Read online](https://img.shields.io/badge/read-learnche.org%2Fpid-blue.svg)](https://learnche.org/pid)
@@ -22,29 +22,68 @@ This repository holds the book's source. It is here for people who want to
 report a problem, contribute a correction, or build the book themselves — see
 [Contributing](#contributing) below.
 
-## What the book is about
+---
 
-*Process Improvement using Data* teaches the statistical methods that engineers
-and scientists use to learn from process data — how to **visualize** it,
-**model** it, **monitor** it, and use it to **improve** products and processes.
-It is practical and example-driven: most concepts are introduced through a
-real dataset and a worked analysis rather than through theory alone.
+## Why this book exists
 
-It suits an upper-undergraduate or introductory-graduate course, and it works
-equally well for self-study by practitioners who want to put these tools to use
-on their own data.
+There is no other free, coherent text that covers what engineers and scientists
+actually do with process data — visualization, regression, designed
+experiments, process monitoring, *and* multivariate / latent-variable methods —
+in one volume.
 
-| Chapter | Topic |
-|---|---|
-| 1 | Data visualization |
-| 2 | Univariate review (probability, distributions, confidence intervals, hypothesis tests) |
-| 3 | Process monitoring (Shewhart, CUSUM, EWMA charts) |
-| 4 | Least-squares modelling (linear and multiple regression) |
-| 5 | Design and analysis of experiments (DOE) |
-| 6 | Latent variable modelling (PCA, PLS, batch data analysis) |
-| 7 | Product development and product improvement |
+Most textbooks pick one of those topics and go deep. Practitioners need all of
+them, and need to see how they fit together, because real industrial problems
+don't respect chapter boundaries. *Process Improvement using Data* was written
+to fill that gap, and has been continuously refined in industry-facing
+classrooms and on shop floors since 2010.
+
+It is suitable for upper-undergraduate or introductory-graduate courses, and
+for self-study by working engineers and data scientists with a basic
+statistics background.
+
+## What's inside
+
+| Chapter | Topic and what you'll take away |
+|:-:|---|
+| 1 | **Data visualization** — how to look at data before you model it. |
+| 2 | **Univariate review** — probability, distributions, confidence intervals, and hypothesis tests, refreshed with engineering examples. |
+| 3 | **Process monitoring** — Shewhart, CUSUM, and EWMA charts: the toolbox that catches problems before they leave the plant. |
+| 4 | **Least-squares modelling** — linear and multiple regression, from first principles through honest diagnostics. |
+| 5 | **Design and analysis of experiments** — factorial, fractional factorial, and response-surface designs; learning the most from the fewest runs. |
+| 6 | **Latent variable modelling** — PCA, PLS, and batch data analysis: turning high-dimensional process data into actionable insight. |
+| 7 | **Product development and product improvement** — combining DOE and latent variable methods to develop new products and improve existing ones. |
 
 The full table of contents lives in [`contents.rst`](contents.rst).
+
+## Companion software: `process-improve`
+
+Every method in this book has a worked, production-grade implementation in the
+open-source Python package
+[`process-improve`](https://github.com/kgdunn/process-improve) — PCA and PLS
+with proper outlier diagnostics and prediction intervals, control charts,
+designed experiments, and batch process monitoring. Install it with
+`pip install process-improve` and run the exercises in any Jupyter notebook.
+
+## Who's using this book
+
+The book is adopted in university courses, cited in graduate research, and
+used inside companies as internal training material. A few course adoptions:
+
+- **Western University, Canada** — required text for the graduate course
+  *CBE 9190: Advanced Statistical Process Analysis*.
+- **UNSW Sydney, Australia** — recommended text for *CEIC6789: Data-driven
+  Decision Making in Chemical Engineering and Food Science*.
+- **McMaster University, Canada** — *IBEHS 4C03: Statistical Methods for
+  Biomedical Engineering* is built on the book's foundations and adapts them
+  into JupyterLab notebooks.
+
+It is also cited in graduate theses and peer-reviewed research across a range
+of fields, from chemometrics and semiconductor manufacturing to public health
+and tribology.
+
+Teaching or training with the book? Tell us via
+[Discussions](https://github.com/kgdunn/pid-book/discussions) — we'd be glad
+to list your course here.
 
 ## For instructors
 
@@ -54,9 +93,6 @@ own teaching. Everything is licensed under
 share, adapt, and even commercialize derivative work as long as you attribute
 the original and license the result under the same terms. No permission
 needed.
-
-The book has been adopted at other universities (undergraduate and graduate)
-and used inside companies as an internal training manual.
 
 Course materials live on the original
 [Learning Chemical Engineering: Courses](https://learnche.org/4C3/Main_Page)
@@ -86,15 +122,17 @@ welcome through the same contact link.
 
 ## Contributing
 
-Contributions, corrections, and exercises are welcome. The book has been
-improved continuously since 2010 thanks to readers like you. The fastest
-channels:
+Contributions, corrections, and exercises are welcome from anyone — students,
+instructors, and practitioners alike. The book has been improved continuously
+since 2010 thanks to readers like you. The fastest channels:
 
 1. **Open an [issue](https://github.com/kgdunn/pid-book/issues)** for typos,
    technical errors, broken links, or build problems.
 2. **Open a pull request** for content changes.
-3. **Long-form feedback**, course adoption stories, and exercise contributions
-   can also go through [this Google Form](https://docs.google.com/forms/d/1IpO-bvJwQwhK64eid4YXwJBvGxN5cfyYDv81G-YgWrM/viewform).
+3. **Use [Discussions](https://github.com/kgdunn/pid-book/discussions)** for
+   adoption stories, teaching ideas, and long-form feedback — or
+   [this Google Form](https://docs.google.com/forms/d/1IpO-bvJwQwhK64eid4YXwJBvGxN5cfyYDv81G-YgWrM/viewform)
+   if you prefer.
 
 [CONTRIBUTING.md](CONTRIBUTING.md) has everything a contributor needs: the
 contribution workflow, how to build the book locally, the repository layout,
