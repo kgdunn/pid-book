@@ -11,6 +11,12 @@
 [![Last commit](https://img.shields.io/github/last-commit/kgdunn/pid-book.svg)](https://github.com/kgdunn/pid-book/commits)
 [![Issues](https://img.shields.io/github/issues/kgdunn/pid-book.svg)](https://github.com/kgdunn/pid-book/issues)
 
+<p align="center">
+  <img src="_static/hero.png"
+       alt="Process Improvement using Data: distributions, process monitoring, regression, designed experiments, latent variables (PCA), and PLS loadings"
+       width="720">
+</p>
+
 ## Read the book
 
 The book is free to read online and free to download. You do **not** need this
