@@ -16,7 +16,7 @@ The book is free to read online and free to download. You do **not** need this
 repository to read it:
 
 - **Read online:** **<https://learnche.org/pid>**
-- **Download the PDF:** **[PID.pdf](https://learnche.org/pid/PID.pdf?2026-05-19)**
+- **Download the PDF:** **[PID.pdf?2026-05-19](https://learnche.org/pid/PID.pdf?2026-05-19)**
 
 This repository holds the book's source. It is here for people who want to
 report a problem, contribute a correction, or build the book themselves — see
