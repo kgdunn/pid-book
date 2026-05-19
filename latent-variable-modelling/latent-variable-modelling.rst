@@ -399,42 +399,36 @@ References and readings
 	pair: references and readings; projection to latent structures
 	see: PLS; projection to latent structures
 	see: partial least squares; projection to latent structures
-	pair: references and readings; applications of latent variable models
 
 
-These readings cover a variety of topics in the area of latent variable methods:
+These readings cover a variety of topics in the area of latent variable methods.
 
-* **General**: A collection of important latent variable publications are collected at https://learnche.org/literature
+General
+~~~~~~~
 
-* **General**: John MacGregor, Honglu Yu, Salvador García-Muñoz, Jesus Flores-Cerrillo, "`Data-Based Latent Variable Methods for Process Analysis, Monitoring and Control <https://literature.learnche.org/item/15/data-based-latent-variable-methods-for-process-analysis-monitoring-and-control>`_". *Computers and Chemical Engineering*, **29**, 1217-1223, 2005.
+* A collection of important latent variable publications are collected at https://literature.learnche.org
 
-* **General**: Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold:  "Multivariate and Megavariate Data Analysis".
+* John MacGregor, Honglu Yu, Salvador García-Muñoz, Jesus Flores-Cerrillo, "`Data-Based Latent Variable Methods for Process Analysis, Monitoring and Control <https://literature.learnche.org/item/15/data-based-latent-variable-methods-for-process-analysis-monitoring-and-control>`_". *Computers and Chemical Engineering*, **29**, 1217-1223, 2005.
 
-* **About PCA**: Svante Wold, Kim Esbensen, Paul Geladi: "`Principal Component Analysis <https://literature.learnche.org/item/13/principal-component-analysis>`_", *Chemometrics and Intelligent Laboratory Systems*, **2**, 37-52, 1987.
+* Ericsson, Johansson, Kettaneth-Wold, Trygg, Wikström, Wold:  "Multivariate and Megavariate Data Analysis".
 
-* **About PCA**: J. Edward Jackson, `A User's Guide to Principal Components <https://literature.learnche.org/item/38/a-users-guide-to-principal-components>`_, Wiley, 1991.
+PCA
+~~~
 
-* **PLS**: Svante Wold, Michael Sjöström, Lennart Eriksson: "`PLS-regression: A Basic Tool of Chemometrics <https://literature.learnche.org/item/1/pls-regression-a-basic-tool-of-chemometrics>`_", *Chemometrics and Intelligent Laboratory Systems*, **58**, 109-130, 2001.
+* Svante Wold, Kim Esbensen, Paul Geladi: "`Principal Component Analysis <https://literature.learnche.org/item/13/principal-component-analysis>`_", *Chemometrics and Intelligent Laboratory Systems*, **2**, 37-52, 1987.
 
-* **PLS**: S. Wold, S. Hellberg, T. Lundstedt, M. Sjöström and H. Wold, "`PLS Modeling With Latent Variables in Two or More Dimensions <https://literature.learnche.org/item/4/pls-modeling-with-latent-variables-in-two-or-more-dimensions>`_", Frankfurt PLS meeting, 1987 (*available on request, by email to kgdunn@gmail.com*)
+* J. Edward Jackson, `A User's Guide to Principal Components <https://literature.learnche.org/item/38/a-users-guide-to-principal-components>`_, Wiley, 1991.
 
-* **PLS**: Paul Geladi and Bruce Kowalski, "`Partial Least-Squares Regression: A Tutorial <https://literature.learnche.org/item/44/partial-least-squares-regression-a-tutorial>`_", *Analytica Chimica Acta*, **185**, 1-17, 1986.
+PLS
+~~~
 
-* **PLS**: Paul Garthwaite, "`An Interpretation of Partial Least Squares <https://www.jstor.org/stable/2291207>`_", Journal of the American Statistical Association, **89**, 122-127, 1994.
+* Svante Wold, Michael Sjöström, Lennart Eriksson: "`PLS-regression: A Basic Tool of Chemometrics <https://literature.learnche.org/item/1/pls-regression-a-basic-tool-of-chemometrics>`_", *Chemometrics and Intelligent Laboratory Systems*, **58**, 109-130, 2001.
 
-* **Process monitoring**: John MacGregor and Theodora Kourti "`Statistical Process Control of Multivariate Processes <https://literature.learnche.org/item/16/statistical-process-control-of-multivariate-processes>`_", *Control Engineering Practice*, **3**, p 403-414, 1995.
+* S. Wold, S. Hellberg, T. Lundstedt, M. Sjöström and H. Wold, "`PLS Modeling With Latent Variables in Two or More Dimensions <https://literature.learnche.org/item/4/pls-modeling-with-latent-variables-in-two-or-more-dimensions>`_", Frankfurt PLS meeting, 1987 (*available on request, by email to kgdunn@gmail.com*)
 
-* **Process monitoring**: J.V. Kresta, T.E. Marlin, and J.F. MacGregor "`Multivariate Statistical Monitoring of Process Operating Performance <https://literature.learnche.org/item/9/multivariate-statistical-monitoring-of-process-operating-performance>`_", *Canadian Journal of Chemical Engineering*, **69**, 35-47, 1991.
+* Paul Geladi and Bruce Kowalski, "`Partial Least-Squares Regression: A Tutorial <https://literature.learnche.org/item/44/partial-least-squares-regression-a-tutorial>`_", *Analytica Chimica Acta*, **185**, 1-17, 1986.
 
-* **Contribution plots**: P Miller, RE Swanson, CE Heckler, "`Contribution Plots: a Missing Link in Multivariate Quality Control <https://literature.learnche.org/item/78/contribution-plots-a-missing-link-in-multivariate-quality-control>`_", *Applied Mathematics and Computer Science*, *8* (4), 775-792, 1998. (*hard to obtain, but available on request, by email to kgdunn@gmail.com*)
-
-* **Soft sensors**: J.V. Kresta, T.E. Marlin, and J.F. MacGregor, "`Development of Inferential Process Models Using PLS <https://literature.learnche.org/item/17/development-of-inferential-process-models-using-pls>`_". *Computers and Chemical Engineering*, **18**, 597-611, 1994.
-
-* **Industrial applications**: Ivan Miletic, Shannon Quinn, Michael Dudzic, Vit Vaculik and Marc Champagne, "`An Industrial Perspective on Implementing On-Line Applications of Multivariate Statistics <https://literature.learnche.org/item/18/an-industrial-perspective-on-implementing-on-line-applications-of-multivariate-statistics>`_", *Journal of Process Control*,  **14**, p. 821-836, 2004.
-
-* **Batch modelling and monitoring**: S. Wold, N. Kettaneh-Wold, J.F. MacGregor, K.G. Dunn, "`Batch Process Modeling and MSPC <https://literature.learnche.org/item/155/batch-process-modeling-and-mspc>`_". *Comprehensive Chemometrics*, **2**, 163-197, 2009. (*available from the author on request, by email to kgdunn@gmail.com*)
-
-* **Image analysis**: M. Bharati, and J.F. MacGregor "`Multivariate Image Analysis for Real Time Process Monitoring and Control <https://literature.learnche.org/item/19/multivariate-image-analysis-for-real-time-process-monitoring-and-control>`_", *Industrial and Engineering Chemistry Research*, **37**, 4715-4724, 1998
+* Paul Garthwaite, "`An Interpretation of Partial Least Squares <https://www.jstor.org/stable/2291207>`_", Journal of the American Statistical Association, **89**, 122-127, 1994.
 
 .. * Many other applications of latent variables are described here: https://macc.mcmaster.ca/research/publications
 
