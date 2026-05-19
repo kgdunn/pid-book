@@ -50,6 +50,10 @@ link the two PRs.
 * Math: prefer `:math:` for inline and `.. math::` for displayed equations.
 * Cross-references should use `:ref:` with explicit labels rather than raw
   section names.
+* Do not start a bullet or list item with a bare author initial
+  (`J. Smith`, `S. Wold`): reStructuredText reads the leading `letter.` as
+  an enumerated-list marker and mis-indents the entry. Escape the initial
+  with a backslash (`\J. Smith`), or spell the first name out.
 * Code blocks: use `.. code-block:: python` (or `r`, `matlab`, `text`) so the
   PDF backend syntax-highlights correctly.
 

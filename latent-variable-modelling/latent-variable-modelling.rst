@@ -417,14 +417,14 @@ PCA
 
 * Svante Wold, Kim Esbensen, Paul Geladi: "`Principal Component Analysis <https://literature.learnche.org/item/13/principal-component-analysis>`_", *Chemometrics and Intelligent Laboratory Systems*, **2**, 37-52, 1987.
 
-* J. Edward Jackson, `A User's Guide to Principal Components <https://literature.learnche.org/item/38/a-users-guide-to-principal-components>`_, Wiley, 1991.
+* \J. Edward Jackson, `A User's Guide to Principal Components <https://literature.learnche.org/item/38/a-users-guide-to-principal-components>`_, Wiley, 1991.
 
 PLS
 ~~~
 
 * Svante Wold, Michael Sjöström, Lennart Eriksson: "`PLS-regression: A Basic Tool of Chemometrics <https://literature.learnche.org/item/1/pls-regression-a-basic-tool-of-chemometrics>`_", *Chemometrics and Intelligent Laboratory Systems*, **58**, 109-130, 2001.
 
-* S. Wold, S. Hellberg, T. Lundstedt, M. Sjöström and H. Wold, "`PLS Modeling With Latent Variables in Two or More Dimensions <https://literature.learnche.org/item/4/pls-modeling-with-latent-variables-in-two-or-more-dimensions>`_", Frankfurt PLS meeting, 1987 (*available on request, by email to kgdunn@gmail.com*)
+* \S. Wold, S. Hellberg, T. Lundstedt, M. Sjöström and H. Wold, "`PLS Modeling With Latent Variables in Two or More Dimensions <https://literature.learnche.org/item/4/pls-modeling-with-latent-variables-in-two-or-more-dimensions>`_", Frankfurt PLS meeting, 1987 (*available on request, by email to kgdunn@gmail.com*)
 
 * Paul Geladi and Bruce Kowalski, "`Partial Least-Squares Regression: A Tutorial <https://literature.learnche.org/item/44/partial-least-squares-regression-a-tutorial>`_", *Analytica Chimica Acta*, **185**, 1-17, 1986.
 
