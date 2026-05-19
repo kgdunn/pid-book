@@ -1,0 +1,37 @@
+name: Publish release
+
+# Cutting a release is deliberate, not automatic. Pushing a calendar-version
+# tag (vYYYY.MM.DD) is the trigger; see "Cutting a release" in CLAUDE.md.
+on:
+  push:
+    tags:
+      - 'v[0-9][0-9][0-9][0-9].[0-9][0-9].[0-9][0-9]'
+
+permissions:
+  contents: write
+
+jobs:
+  publish-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the tagged commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF_NAME}"
+          TITLE="Process Improvement using Data: ${TAG#v} edition"
+          # The annotated tag's message is the release notes. Fall back to
+          # auto-generated notes only if the tag carries no message.
+          NOTES="$(git for-each-ref "refs/tags/${TAG}" --format='%(contents)')"
+          if [ -n "${NOTES//[[:space:]]/}" ]; then
+            printf '%s\n' "$NOTES" > release-notes.md
+            gh release create "$TAG" --title "$TITLE" --notes-file release-notes.md
+          else
+            gh release create "$TAG" --title "$TITLE" --generate-notes
+          fi
