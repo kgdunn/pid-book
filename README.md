@@ -10,16 +10,29 @@ Kevin Dunn. Actively written and updated since August 2010.
 [![Last commit](https://img.shields.io/github/last-commit/kgdunn/pid-book.svg)](https://github.com/kgdunn/pid-book/commits)
 [![Issues](https://img.shields.io/github/issues/kgdunn/pid-book.svg)](https://github.com/kgdunn/pid-book/issues)
 
-> **Just want to read it?** Go to **<https://learnche.org/pid>** (HTML) or
-> grab the **[PDF](https://learnche.org/pid/PID.pdf?2026-05-19)**. This repository is for
-> readers who want to compile, modify, or contribute to the book.
+## Read the book
 
-## What the book covers
+The book is free to read online and free to download. You do **not** need this
+repository to read it:
 
-The book teaches statistical methods for engineers and scientists who work
-with process data — how to visualize it, model it, monitor it, and use it to
-improve products and processes. It is suitable for upper-undergraduate or
-introductory-graduate courses, and for self-study by practitioners.
+- **Read online:** **<https://learnche.org/pid>**
+- **Download the PDF:** **[PID.pdf](https://learnche.org/pid/PID.pdf?2026-05-19)**
+
+This repository holds the book's source. It is here for people who want to
+report a problem, contribute a correction, or build the book themselves — see
+[Contributing](#contributing) below.
+
+## What the book is about
+
+*Process Improvement using Data* teaches the statistical methods that engineers
+and scientists use to learn from process data — how to **visualize** it,
+**model** it, **monitor** it, and use it to **improve** products and processes.
+It is practical and example-driven: most concepts are introduced through a
+real dataset and a worked analysis rather than through theory alone.
+
+It suits an upper-undergraduate or introductory-graduate course, and it works
+equally well for self-study by practitioners who want to put these tools to use
+on their own data.
 
 | Chapter | Topic |
 |---|---|
@@ -71,148 +84,21 @@ additional slides, worksheets, and tips.
 Questions, comments, or "how did you make that figure?" enquiries are all
 welcome through the same contact link.
 
-## Compiling the book yourself
-
-### Prerequisites
-
-* **Python ≥ 3.12**
-* **[uv](https://docs.astral.sh/uv/)** — installed automatically by `make setup`
-* **Node.js / `npx`** — used to run [Pagefind](https://pagefind.app/) for the
-  HTML search index
-* **A LaTeX distribution** (TeX Live, MacTeX, MiKTeX) — only required for the
-  PDF build
-* **The figures repository** — clone <https://github.com/kgdunn/figures> and
-  symlink it into this repo (see below)
-* About **2 GB** of disk space for the build tree, intermediate files, and
-  illustrations
-
-Python dependencies (Sphinx ≥ 8.1.3, sphinx-book-theme, sphinxcontrib-jquery)
-are pinned in [`pyproject.toml`](pyproject.toml) and resolved by uv.
-
-### One-time setup
-
-```sh
-# 1. Clone this repo
-git clone https://github.com/kgdunn/pid-book.git
-cd pid-book
-
-# 2. Clone the figures repo somewhere outside this one and symlink it in
-git clone https://github.com/kgdunn/figures.git ../figures
-ln -s "$(cd ../figures && pwd)" figures
-
-# 3. Bootstrap the toolchain (installs uv, creates .venv, syncs deps)
-make setup
-```
-
-### Build targets
-
-| Command | What it does |
-|---|---|
-| `make setup` | Bootstrap the toolchain: install `uv`, create `.venv`, sync deps |
-| `make html` | Build the HTML book into `_build/html/` and run Pagefind for search |
-| `make serve` | Serve `_build/html/` at <http://localhost:8080> for local preview |
-| `make latexpdf` | Build the PDF (5–10 minutes; needs LaTeX). Output: `_build/latex/PID.pdf?2026-05-19` |
-| `make epub` | Build the EPUB into `_build/epub/` |
-| `make linkcheck` | Verify external links |
-| `make clean` | Remove build artifacts (`_build/`, caches) |
-| `make clean-all` | Also remove `.venv/` and `uv.lock` (forces a re-resolve on next `make setup`) |
-| `make` | Default target is `latexpdf`. Run `make help` for the full list |
-
-Compare your PDF against <https://learnche.org/pid/PID.pdf?2026-05-19> to confirm a
-clean build.
-
-## Repository layout
-
-```
-pid-book/
-├── preface/                                  Front matter
-├── data-visualization/                       Ch 1
-├── univariate-review/                        Ch 2
-├── process-monitoring/                       Ch 3
-├── least-squares-modelling/                  Ch 4
-├── design-analysis-experiments/              Ch 5
-├── latent-variable-modelling/                Ch 6
-├── product-development-product-improvement/  Ch 7
-├── my-extensions/                            Custom Sphinx extensions
-│                                             (youtube)
-├── _static/                                  Custom CSS and favicon (sphinx-book-theme)
-├── _templates/                               Custom Jinja2 templates (Pagefind search)
-├── figures/                                  Symlink to the figures repo
-├── conf.py, contents.rst                     Sphinx config + master ToC
-├── Makefile                                  Build entry points
-└── pyproject.toml, uv.lock                   Python dependencies
-```
-
-## How this book is published
-
-The book has a fairly typical static-site pipeline, with a couple of design
-quirks worth knowing about.
-
-```
-RST sources ─┐
-             ├─►  Sphinx  ─►  HTML (extensionless URLs) ─┐
-figures/  ───┘                LaTeX ──pdflatex──► PDF    ├─► rsync ─► learnche.org/pid
-                              text  (fed to Pagefind)    │
-                                                         │
-                       GitHub Actions (.github/workflows/build-deploy.yml)
-```
-
-1. **Sources.** Every chapter is reStructuredText in its own directory;
-   [`contents.rst`](contents.rst) is the master table of contents. The custom
-   Sphinx extension under `my-extensions/` adds the `.. youtube::` directive
-   used in a handful of chapters.
-2. **Figures (separate repo).** Images live in
-   [`kgdunn/figures`](https://github.com/kgdunn/figures) and are pulled in
-   through the `figures/` symlink. CI checks that repo out alongside this one
-   and recreates the symlink before building. A content change that touches
-   figures needs a parallel PR in the figures repo, with the two PRs cross-
-   linked.
-3. **Build.** `uv` resolves the Python toolchain (see Prerequisites above),
-   then `make html` and `make latexpdf` produce the distributable outputs
-   alongside a text build that feeds the search index. Outputs land in
-   `_build/html/` (extensionless static pages), `_build/latex/PID.pdf?2026-05-19`
-   (Tufte-styled, A4, Palatino, built via `pdflatex` / `latexmk`), and
-   `_build/text/` (consumed by Pagefind, copied into the HTML tree as
-   `_sources/`).
-4. **Search.** Sphinx's own `searchindex.js` is the canonical search backend;
-   [Pagefind](https://pagefind.app) is layered on top to power the Ctrl+K
-   search box wired into the sidebar.
-5. **CI/CD.**
-   [`.github/workflows/build-deploy.yml`](.github/workflows/build-deploy.yml)
-   runs on every push to and PR against `main`. It checks out both repos,
-   sets up Python 3.12, `uv`, and Node.js, installs a full TeX Live, builds
-   HTML and PDF, and asserts both artifacts exist. On pushes to `main`
-   only, it then rsyncs `_build/html/` and `_build/latex/PID.pdf?2026-05-19` over SSH to
-   the learnche.org host (using the `LEARNCHE_SSH_KEY` and
-   `LEARNCHE_SSH_USER` repository secrets).
-
-### Design choices worth knowing
-
-* **Extensionless URLs are intentional.** Pages are served as
-  `/pid/contents`, not `/pid/contents.html`. Years of citations and external
-  links point at the extensionless form, so `conf.py` sets
-  `html_file_suffix = ""` and `html_link_suffix = ""`, and both the
-  production webserver and `start_server.py` serve the extensionless files
-  as `text/html`. Reverting this would break inbound links silently.
-* **Pull requests build but do not deploy.** PRs run the full HTML and PDF
-  build to catch breakage, but the SSH and rsync steps are gated on
-  `github.event_name != 'pull_request'`. Only pushes to `main` reach the
-  server.
-* **Pagefind needs a custom glob.** Because output files have no `.html`
-  extension, Pagefind's default `**/*.html` glob would match nothing. The
-  Makefile invokes Pagefind with `--glob "**"` and prefixes the call with
-  `-` so an indexing failure doesn't break the build.
-
 ## Contributing
 
-Contributions, corrections, and exercises are welcome. The fastest channels:
+Contributions, corrections, and exercises are welcome. The book has been
+improved continuously since 2010 thanks to readers like you. The fastest
+channels:
 
 1. **Open an [issue](https://github.com/kgdunn/pid-book/issues)** for typos,
    technical errors, broken links, or build problems.
-2. **Open a pull request** for content changes — see
-   [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow and RST style notes.
+2. **Open a pull request** for content changes.
 3. **Long-form feedback**, course adoption stories, and exercise contributions
    can also go through [this Google Form](https://docs.google.com/forms/d/1IpO-bvJwQwhK64eid4YXwJBvGxN5cfyYDv81G-YgWrM/viewform).
+
+[CONTRIBUTING.md](CONTRIBUTING.md) has everything a contributor needs: the
+contribution workflow, how to build the book locally, the repository layout,
+the RST style notes, and how the book is published.
 
 ## License and citation
 
@@ -244,21 +130,3 @@ pages, per-page 90-day sparklines, search queries) are themselves
 public at <https://learnche.org/_stats/> in keeping with the open
 spirit of the book. Engineering and operations docs are under
 [`docs/telemetry/`](docs/telemetry/).
-
-## Maintainer notes
-
-<details>
-<summary>Deployment and release</summary>
-
-* `copy-html.sh` is a manual rsync fallback for `_build/html/` and the PDF —
-  useful when CI is unavailable. Day-to-day deploys happen automatically via
-  the GitHub Actions workflow described in
-  [How this book is published](#how-this-book-is-published).
-  Maintainer-only; assumes SSH access.
-* `start_server.py` serves `_build/html/` locally on port 8080 with the MIME
-  types Pagefind expects. It is invoked by `make serve`.
-* The release version is tracked in [`pyproject.toml`](pyproject.toml).
-* [`TODO.md`](TODO.md) is a working backlog. Migrating items to GitHub Issues
-  is encouraged.
-
-</details>

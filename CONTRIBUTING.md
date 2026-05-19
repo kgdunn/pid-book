@@ -21,9 +21,10 @@ the [Google Form](https://docs.google.com/forms/d/1IpO-bvJwQwhK64eid4YXwJBvGxN5c
 ## Workflow
 
 1. Fork the repo and create a topic branch off `main`.
-2. Build the book locally (see [README.md](README.md)) and verify your change
-   renders correctly in **both HTML and PDF** if it touches content. Math,
-   figures, and tables often render differently in the two backends.
+2. Build the book locally (see [Building the book locally](#building-the-book-locally)
+   below) and verify your change renders correctly in **both HTML and PDF** if
+   it touches content. Math, figures, and tables often render differently in
+   the two backends.
 3. Run `make linkcheck` if you added or changed external links.
 4. Commit with a descriptive message. Reference an issue number when relevant
    (e.g. `Fix off-by-one in EWMA limit (#42)`).
@@ -32,6 +33,119 @@ the [Google Form](https://docs.google.com/forms/d/1IpO-bvJwQwhK64eid4YXwJBvGxN5c
 
 Small, focused PRs are reviewed faster than sweeping ones. If you have a large
 change in mind, split it.
+
+## Building the book locally
+
+### Prerequisites
+
+* **Python ≥ 3.12**
+* **[uv](https://docs.astral.sh/uv/)** — installed automatically by `make setup`
+* **Node.js / `npx`** — used to run [Pagefind](https://pagefind.app/) for the
+  HTML search index
+* **A LaTeX distribution** (TeX Live, MacTeX, MiKTeX) — only required for the
+  PDF build
+* **The figures repository** — clone <https://github.com/kgdunn/figures> and
+  symlink it into this repo (see below)
+* About **2 GB** of disk space for the build tree, intermediate files, and
+  illustrations
+
+Python dependencies (Sphinx ≥ 8.1.3, sphinx-book-theme, sphinxcontrib-jquery)
+are pinned in [`pyproject.toml`](pyproject.toml) and resolved by uv.
+
+### One-time setup
+
+```sh
+# 1. Clone this repo
+git clone https://github.com/kgdunn/pid-book.git
+cd pid-book
+
+# 2. Clone the figures repo somewhere outside this one and symlink it in
+git clone https://github.com/kgdunn/figures.git ../figures
+ln -s "$(cd ../figures && pwd)" figures
+
+# 3. Bootstrap the toolchain (installs uv, creates .venv, syncs deps)
+make setup
+```
+
+### Build targets
+
+| Command | What it does |
+|---|---|
+| `make setup` | Bootstrap the toolchain: install `uv`, create `.venv`, sync deps |
+| `make html` | Build the HTML book into `_build/html/` and run Pagefind for search |
+| `make serve` | Serve `_build/html/` at <http://localhost:8080> for local preview |
+| `make latexpdf` | Build the PDF (5–10 minutes; needs LaTeX). Output: `_build/latex/PID.pdf?2026-05-19` |
+| `make epub` | Build the EPUB into `_build/epub/` |
+| `make linkcheck` | Verify external links |
+| `make clean` | Remove build artifacts (`_build/`, caches) |
+| `make clean-all` | Also remove `.venv/` and `uv.lock` (forces a re-resolve on next `make setup`) |
+| `make` | Default target is `latexpdf`. Run `make help` for the full list |
+
+Compare your PDF against <https://learnche.org/pid/PID.pdf?2026-05-19> to confirm a
+clean build.
+
+## Repository layout
+
+```
+pid-book/
+├── preface/                                  Front matter
+├── data-visualization/                       Ch 1
+├── univariate-review/                        Ch 2
+├── process-monitoring/                       Ch 3
+├── least-squares-modelling/                  Ch 4
+├── design-analysis-experiments/              Ch 5
+├── latent-variable-modelling/                Ch 6
+├── product-development-product-improvement/  Ch 7
+├── my-extensions/                            Custom Sphinx extensions
+│                                             (youtube)
+├── _static/                                  Custom CSS and favicon (sphinx-book-theme)
+├── _templates/                               Custom Jinja2 templates (Pagefind search)
+├── figures/                                  Symlink to the figures repo
+├── conf.py, contents.rst                     Sphinx config + master ToC
+├── Makefile                                  Build entry points
+└── pyproject.toml, uv.lock                   Python dependencies
+```
+
+## How the book is published
+
+The book has a fairly typical static-site pipeline:
+
+```
+RST sources ─┐
+             ├─►  Sphinx  ─►  HTML (extensionless URLs) ─┐
+figures/  ───┘                LaTeX ──pdflatex──► PDF    ├─► rsync ─► learnche.org/pid
+                              text  (fed to Pagefind)    │
+                                                         │
+                       GitHub Actions (.github/workflows/build-deploy.yml)
+```
+
+Each chapter is reStructuredText in its own directory, with
+[`contents.rst`](contents.rst) as the master table of contents. `uv` resolves
+the Python toolchain, then `make html` and `make latexpdf` produce the
+distributable HTML and PDF alongside a text build that feeds the search index.
+[`.github/workflows/build-deploy.yml`](.github/workflows/build-deploy.yml) runs
+the full HTML and PDF build on every push and PR; on pushes to `main` it then
+rsyncs the outputs over SSH to the learnche.org host. Figures live in a
+separate repository — see [Working with the figures
+repository](#working-with-the-figures-repository) — and the in-book telemetry
+has its own invariants — see [Telemetry and privacy](#telemetry-and-privacy).
+
+### Design choices worth knowing
+
+* **Extensionless URLs are intentional.** Pages are served as
+  `/pid/contents`, not `/pid/contents.html`. Years of citations and external
+  links point at the extensionless form, so `conf.py` sets
+  `html_file_suffix = ""` and `html_link_suffix = ""`, and both the
+  production webserver and `start_server.py` serve the extensionless files
+  as `text/html`. Reverting this would break inbound links silently.
+* **Pull requests build but do not deploy.** PRs run the full HTML and PDF
+  build to catch breakage, but the SSH and rsync steps are gated on
+  `github.event_name != 'pull_request'`. Only pushes to `main` reach the
+  server.
+* **Pagefind needs a custom glob.** Because output files have no `.html`
+  extension, Pagefind's default `**/*.html` glob would match nothing. The
+  Makefile invokes Pagefind with `--glob "**"` and prefixes the call with
+  `-` so an indexing failure doesn't break the build.
 
 ## Working with the figures repository
 
@@ -130,6 +244,24 @@ open an issue with:
 * Whether the `figures/` symlink is set up
 
 Build problems that reproduce on a clean clone are treated as bugs.
+
+## Maintainer notes
+
+<details>
+<summary>Deployment and release</summary>
+
+* `copy-html.sh` is a manual rsync fallback for `_build/html/` and the PDF —
+  useful when CI is unavailable. Day-to-day deploys happen automatically via
+  the GitHub Actions workflow described in
+  [How the book is published](#how-the-book-is-published).
+  Maintainer-only; assumes SSH access.
+* `start_server.py` serves `_build/html/` locally on port 8080 with the MIME
+  types Pagefind expects. It is invoked by `make serve`.
+* The release version is tracked in [`pyproject.toml`](pyproject.toml).
+* [`TODO.md`](TODO.md) is a working backlog. Migrating items to GitHub Issues
+  is encouraged.
+
+</details>
 
 ## Code of conduct
 
