@@ -60,6 +60,27 @@ with proper outlier diagnostics and prediction intervals, control charts,
 designed experiments, and batch process monitoring. Install it with
 `pip install process-improve` and run the exercises in any Jupyter notebook.
 
+## Who's using this book
+
+The book is adopted in university courses, cited in graduate research, and
+used inside companies as internal training material. A few course adoptions:
+
+- **Western University, Canada** — required text for the graduate course
+  *CBE 9190: Advanced Statistical Process Analysis*.
+- **UNSW Sydney, Australia** — recommended text for *CEIC6789: Data-driven
+  Decision Making in Chemical Engineering and Food Science*.
+- **McMaster University, Canada** — *IBEHS 4C03: Statistical Methods for
+  Biomedical Engineering* is built on the book's foundations and adapts them
+  into JupyterLab notebooks.
+
+It is also cited in graduate theses and peer-reviewed research across a range
+of fields, from chemometrics and semiconductor manufacturing to public health
+and tribology.
+
+Teaching or training with the book? Tell us via
+[Discussions](https://github.com/kgdunn/pid-book/discussions) — we'd be glad
+to list your course here.
+
 ## For instructors
 
 You're welcome to use this book — and the course materials below — for your
@@ -68,9 +89,6 @@ own teaching. Everything is licensed under
 share, adapt, and even commercialize derivative work as long as you attribute
 the original and license the result under the same terms. No permission
 needed.
-
-The book has been adopted at other universities (undergraduate and graduate)
-and used inside companies as an internal training manual.
 
 Course materials live on the original
 [Learning Chemical Engineering: Courses](https://learnche.org/4C3/Main_Page)
