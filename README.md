@@ -13,7 +13,7 @@
 
 <p align="center">
   <img src="_static/hero.png"
-       alt="Process Improvement using Data, by Kevin G. Dunn: an open textbook since 2010, with a six-panel preview of data visualization, distributions, process monitoring, regression, designed experiments, and latent variables (PCA)."
+       alt="Process Improvement using Data, by Kevin G. Dunn: an open textbook since 2010, with a six-panel preview of data visualization, distributions, process monitoring, regression, designed experiments, and latent variables."
        width="720">
 </p>
 
