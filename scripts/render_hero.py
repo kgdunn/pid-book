@@ -114,6 +114,10 @@ def panel_regression(ax):
     ax.plot(xs, 0.8 * xs, color=PLOT_BLUE, linewidth=1.8)
     ax.fill_between(xs, 0.8 * xs - 1.0, 0.8 * xs + 1.0,
                     color=PLOT_FILL, alpha=0.40)
+    high_lev = np.array([[0.4, -1.7], [1.2, -0.9]])
+    ax.scatter(high_lev[:, 0], high_lev[:, 1], s=70, color=ACCENT,
+               edgecolors="white", linewidths=1.0, zorder=5)
+    ax.set_ylim(-2.4, 9.5)
     _frame(ax)
 
 
