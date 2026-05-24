@@ -30,10 +30,11 @@ dashboards.
 .github/workflows/build-deploy.yml   # ECharts fetch step + telemetry env vars
 .gitignore                           # ignores _static/js/echarts-min.js
 _static/js/telemetry.js              # the entire client; ~220 lines
-_templates/pid-sidebar-extra.html    # sparkline mount + Privacy link
+_templates/pid-sidebar-extra.html    # sparkline mount, total-count, Stats + Privacy links
 conf.py                              # env-var gate + html-page-context hook
-contents.rst                         # adds privacy to hidden toctree
+contents.rst                         # adds privacy + stats to hidden toctree
 privacy.rst                          # reader-facing disclosure page
+stats.rst                            # in-book readership dashboard (filled by JS)
 scripts/server/build-sparklines.py        # nightly JSON builder for sparklines
 scripts/server/run-goaccess.sh            # nightly GoAccess wrapper
 scripts/server/caddy-json-to-combined.py  # filter: Caddy JSON → Apache combined
@@ -65,11 +66,18 @@ self-hosting reusers.
 3. **Search-query events** — what readers type into the sidebar
    search box, debounced and PII-stripped, sent to GoatCounter as
    custom events.
-4. **Per-page 90-day sparkline** — derived from the access logs by
-   `scripts/server/build-sparklines.py` into a public
+4. **Per-page 90-day sparkline + reader count** — derived from the
+   access logs by `scripts/server/build-sparklines.py` into a public
    `sparklines.json`, rendered with a same-origin ECharts build in
-   the sidebar of every page. Because it is log-derived it counts
-   ad-blocked readers — the *honest* signal.
+   the sidebar of every page. The 90-day total reads for the current
+   page are written next to the heading. Because it is log-derived it
+   counts ad-blocked readers — the *honest* signal.
+5. **In-book stats page** — [`/pid/stats`](https://learnche.org/pid/stats)
+   reads the same `sparklines.json` and shows three site-wide
+   widgets: a summary (total reads / pages with traffic / days of
+   data), a daily totals chart across the whole book, and a top-20
+   most-read pages table. All filled by `telemetry.js` at runtime;
+   empty-state hides the widgets cleanly when no data is available.
 
 ## Operating principles
 

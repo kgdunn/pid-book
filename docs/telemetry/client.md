@@ -293,6 +293,26 @@ A page with no historical data (e.g. a freshly added page like
 and the "Page views (90 days)" heading. The alternative (showing a
 "0 hits" placeholder) would be misleading and visually noisy.
 
+### Phase 4c.5 — 90-day reader count in the heading
+
+After confirming the series is non-empty, but before any ECharts
+work, we compute the sum and write it into the sidebar heading:
+
+```js
+var totalEl = document.getElementById("pid-sparkline-total");
+if (totalEl) {
+  var total = series.reduce(function (a, p) { return a + p[1]; }, 0);
+  totalEl.textContent = total.toLocaleString() + " reads";
+}
+```
+
+The `<span id="pid-sparkline-total">` ships from
+`_templates/pid-sidebar-extra.html`, floated to the right of the
+"Page views (90 days)" heading. Tabular-numeric CSS keeps the digits
+aligned across pages. The `if (totalEl)` guard makes this a no-op
+when an older cached template doesn't have the span — pageview
+tracking and the sparkline still work.
+
 ### Phase 4d — render
 
 ```js
@@ -355,6 +375,54 @@ function loadECharts(cb) {
 * `onerror` is non-fatal: if ECharts is somehow missing we just don't
   render the sparkline. Pageview tracking is unaffected.
 
+## Section 4b — stats page (`/pid/stats`)
+
+`renderStatsPage()` runs on every page but exits immediately unless
+`#pid-stats-summary` is in the DOM. Only [`stats.rst`](../../stats.rst)
+ships that mount point, so the whole function is a no-op on every
+other page.
+
+When the mount is present, the function fetches the same
+`sparklines.json` the sidebar uses and fills three widgets:
+
+| Mount point | What's rendered |
+|---|---|
+| `#pid-stats-summary` | Three "big number" cards: total reads in the window, number of pages with at least one read, number of distinct days in the data. |
+| `#pid-stats-daily` | A daily-totals line chart — sum of reads across all pages per day, smoothed, with an area fill and axis-trigger tooltip. ECharts SVG renderer; lazy-loaded via the same `loadECharts()` the sparkline uses. |
+| `#pid-stats-top` | A table of the top-20 pages by 90-day total. Each row links to `/pid/<pagename>` (with `/index` stripped, so `data-visualization/index` → `/pid/data-visualization/`). |
+
+Aggregation is a single pass over `Object.keys(data)`:
+
+```js
+pages.forEach(function (page) {
+  var series = data[page] || [];
+  var pageTotal = 0;
+  series.forEach(function (p) {
+    var date = p[0], count = p[1] | 0;
+    totalReads += count;
+    pageTotal += count;
+    dailyMap[date] = (dailyMap[date] || 0) + count;
+  });
+  if (pageTotal > 0) pageTotals.push([page, pageTotal]);
+});
+pageTotals.sort(function (a, b) { return b[1] - a[1]; });
+```
+
+The `| 0` coerces to int (defends against a future schema change
+that emits floats). Pages whose 90-day total is zero are dropped
+from the top-N consideration but still count in `totalReads`.
+
+Empty-state behaviour is uniform across all three widgets: if
+`sparklines.json` is missing, malformed, or empty, the summary is
+replaced with an italic "Statistics aren't available yet…" message
+and the chart + table mounts are hidden via `style.display = "none"`.
+The page never appears broken — just empty.
+
+CSS for the cards and table lives in
+`_static/css/theme-extended-kgd.css` under the "stats page widgets"
+section; every selector is namespaced to `.pid-stats-*` so it cannot
+leak into the rest of the book.
+
 ## Section 5 — boot
 
 ```js
@@ -362,6 +430,7 @@ function boot() {
   hookSphinxSearch();
   if (!hookPagefindSearch()) { /* MutationObserver */ }
   renderSparkline();
+  renderStatsPage();
 }
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", boot);
@@ -374,6 +443,10 @@ The `defer` attribute on the script tag means the browser waits to
 execute until parsing is done, but `defer` doesn't fire its callback
 **after** `DOMContentLoaded` in every browser; we use the
 `readyState` check as belt-and-braces.
+
+`renderStatsPage()` runs on every page but cheaply early-returns when
+`#pid-stats-summary` is absent (which is all but the
+[`/pid/stats`](https://learnche.org/pid/stats) page).
 
 ## Footprint
 

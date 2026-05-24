@@ -24,12 +24,16 @@
   </p>
   {% if pid_telemetry %}
   <hr/>
-  <p style="color:#777; font-size:0.85em; margin:0.3em 0 0.1em">Page views (90 days)</p>
+  <p style="color:#777; font-size:0.85em; margin:0.3em 0 0.1em">
+    Page views (90 days)<span id="pid-sparkline-total"
+      style="float:right; font-variant-numeric:tabular-nums"></span>
+  </p>
   <div id="pid-sparkline" style="width:100%; height:38px"
        data-page="{{ pagename }}"></div>
   {% endif %}
   <hr/>
   <p style="color:#777; font-size:0.85em">
+    <a href="{{ pathto('stats') }}">Stats</a> &nbsp;·&nbsp;
     <a href="{{ pathto('privacy') }}">Privacy</a>
   </p>
 </div>

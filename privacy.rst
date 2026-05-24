@@ -24,7 +24,9 @@ What is collected
 The resulting aggregates — top pages, the 90-day per-page sparklines you see
 in the sidebar, search queries, and an overview report — are **public** at
 `learnche.org/_stats/ <https://learnche.org/_stats/>`_, in keeping with the
-open spirit of this CC BY-SA 4.0 book.
+open spirit of this CC BY-SA 4.0 book. The same numbers are also surfaced
+inside the book itself on the :ref:`stats` page, and as the 90-day reader
+count next to the sparkline in the sidebar of every page.
 
 Opt out
 -------

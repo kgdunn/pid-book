@@ -89,3 +89,66 @@ button.copybtn:focus,
 .highlight span {
     font-style: normal !important;
 }
+
+/* ---------------------------------------------------------------------
+   /pid/stats page widgets. Mount points are injected as raw HTML by
+   stats.rst and filled at runtime by _static/js/telemetry.js.
+   Styles are scoped to .pid-stats-* so they cannot leak into the rest
+   of the book.
+   ------------------------------------------------------------------ */
+
+.pid-stats-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.pid-stats-card {
+    flex: 1 1 180px;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--pst-color-border, #ddd);
+    border-radius: 6px;
+    text-align: center;
+    background: var(--pst-color-surface, transparent);
+}
+
+.pid-stats-num {
+    font-size: 1.75rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+}
+
+.pid-stats-label {
+    color: #777;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+.pid-stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0 1.5rem;
+}
+
+.pid-stats-table th,
+.pid-stats-table td {
+    padding: 0.4rem 0.6rem;
+    border-bottom: 1px solid var(--pst-color-border, #eee);
+}
+
+.pid-stats-table th.pid-stats-rank,
+.pid-stats-table td.pid-stats-rank {
+    width: 2.5rem;
+    text-align: right;
+    color: #888;
+    font-variant-numeric: tabular-nums;
+}
+
+.pid-stats-table th.pid-stats-count,
+.pid-stats-table td.pid-stats-count {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}

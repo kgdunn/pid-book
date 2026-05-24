@@ -8,6 +8,7 @@ Process Improvement Using Data
 
    preface/index
    privacy
+   stats
 
 
 .. toctree::
