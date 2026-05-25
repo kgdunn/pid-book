@@ -362,7 +362,8 @@ def normalise_pagename(path: str) -> str | None:
     # Internal endpoints that aren't book pages.
     if rest in ("search", "genindex", "py-modindex"):
         return None
-    if rest.startswith("_static/") or rest.startswith("_sources/") or rest.startswith("_images/"):
+    if (rest.startswith("_static/") or rest.startswith("_sources/")
+            or rest.startswith("_images/") or rest.startswith("_downloads/")):
         return None
     if rest.startswith("pagefind/") or rest == "pagefind":
         return None

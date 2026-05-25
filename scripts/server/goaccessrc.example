@@ -3,41 +3,18 @@
 # Install as /etc/pid-book/goaccessrc (or pass via GOACCESS_CONF env var
 # to scripts/server/run-goaccess.sh).
 #
+# This file is compatible with GoAccess >= 1.4 (the Debian 11 / stable
+# version). Directives added in later versions are intentionally absent;
+# see "Why directives are missing" at the bottom for details.
+#
 # Reference: https://goaccess.io/man
 
 # ---------------------------------------------------------------------------
-# Display
+# Bot filtering.
 # ---------------------------------------------------------------------------
 
-html-report-title learnche.org/pid — readership
-html-prefs {"theme":"darkBlue","perPage":20}
-
-# ---------------------------------------------------------------------------
-# Bot filtering. Mirror this list with scripts/server/build-sparklines.py
-# (the FALLBACK_BOT_SUBSTRINGS list there) so both pipelines exclude the
-# same crawlers.
-# ---------------------------------------------------------------------------
-
-# Built-in crawler list (Googlebot, bingbot, ...).
+# Use GoAccess's built-in crawler list (Googlebot, bingbot, ...).
 ignore-crawlers true
-
-# Specific UA strings GoAccess may not catch by default.
-ignore-referer GPTBot
-ignore-referer ClaudeBot
-ignore-referer anthropic-ai
-ignore-referer CCBot
-ignore-referer PerplexityBot
-ignore-referer Bytespider
-ignore-referer AhrefsBot
-ignore-referer SemrushBot
-ignore-referer MJ12bot
-ignore-referer DotBot
-ignore-referer PetalBot
-ignore-referer Amazonbot
-ignore-referer Applebot
-ignore-referer archive.org_bot
-ignore-referer ia_archiver
-ignore-referer wayback
 
 # ---------------------------------------------------------------------------
 # Static-asset filtering. These are served, but they aren't pageviews.
@@ -64,15 +41,37 @@ static-file .map
 static-file .txt
 
 # ---------------------------------------------------------------------------
-# Privacy. We never serve raw IPs in the dashboard.
-# ---------------------------------------------------------------------------
-
-anonymize-ip true
-
-# ---------------------------------------------------------------------------
-# Panels. Keep things scannable; geography and visit-by-OS are interesting,
-# but raw referrers are noisy and IPs are sensitive.
+# Panels. Keep things scannable; geography and visit-by-OS are
+# interesting; raw visitor IPs are sensitive (HOSTS panel suppressed
+# so the public dashboard never displays them).
 # ---------------------------------------------------------------------------
 
 ignore-panel HOSTS
 ignore-panel KEYPHRASES
+
+# ---------------------------------------------------------------------------
+# Why directives are missing (compatibility notes)
+# ---------------------------------------------------------------------------
+#
+# * html-prefs   — added in GoAccess 1.6. On 1.4 it is silently rejected
+#                  but causes the HTML output to be empty (0 bytes).
+#                  Override the theme via --html-prefs on the CLI if
+#                  needed on 1.6+.
+#
+# * anonymize-ip — added in GoAccess 1.6. Same 0-byte failure on 1.4.
+#                  We mitigate by setting "ignore-panel HOSTS" above,
+#                  which keeps IPs out of the rendered report even if
+#                  they reach GoAccess internally. If you upgrade to
+#                  1.6+ you can re-add this for defence in depth.
+#
+# * ignore-referer — this directive filters Referer headers (URLs), not
+#                    User-Agent substrings. Previous versions of this
+#                    file listed UA names like "GPTBot" under it, which
+#                    was a no-op. UA-based bot filtering is done via
+#                    --ignore-crawlers and build-sparklines.py's bot
+#                    list. If you want to drop spam referers (e.g.
+#                    semalt.com), add lines here.
+#
+# * html-report-title — the wrapper passes this as a CLI flag instead,
+#                       partly to avoid encoding issues with unicode
+#                       (em-dashes) in the config file value.

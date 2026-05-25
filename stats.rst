@@ -43,6 +43,26 @@ click through to read them.
 
    <div id="pid-stats-top"></div>
 
+Least-read pages (last 90 days)
+-------------------------------
+
+The 10 pages with the *fewest* reads over the 90-day window, lowest
+first. Useful for spotting sections that may need clearer links,
+better discoverability, or a refresh.
+
+.. note::
+
+   Pages with **zero** hits in the window do not appear in
+   ``sparklines.json`` and therefore never reach this table. So this
+   is "least-read pages that got at least one reader", not "unread
+   pages". To find truly unread pages, diff the Sphinx page list
+   against the JSON keys (see
+   ``docs/telemetry/operations.md``).
+
+.. raw:: html
+
+   <div id="pid-stats-bottom"></div>
+
 Raw data
 --------
 
