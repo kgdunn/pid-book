@@ -472,6 +472,56 @@ same JSON echoed back, the filter is rejecting the input — inspect the
 JSON shape against `parse_caddy_json` in
 [`build-sparklines.py`](../../scripts/server/build-sparklines.py).
 
+### "GoAccess writes 0 bytes despite parsing millions of log lines."
+
+You'll see the progress counter complete (`Parsing... [N,NNN,NNN]`),
+the wrapper print `wrote ... (0 bytes)`, and the report file is
+empty. RC is 0 — silent failure.
+
+Likely causes (in order of how often they bite):
+
+1. **GoAccess 1.4 silently refuses any `--output` path whose final
+   extension isn't `.html`, `.csv`, or `.json`.** `mktemp
+   /tmp/run-goaccess.html.XXXXXX` produces filenames like
+   `/tmp/run-goaccess.html.aBcDeF` — the last extension is `.aBcDeF`,
+   not `.html`, and goaccess emits an error to stderr (often hidden by
+   shell pipelines) and exits 0. The fix in `run-goaccess.sh` is to use
+   `mktemp --suffix=.html /tmp/run-goaccess.XXXXXX` so the random part
+   is in the middle.
+
+2. **`--anonymize-ip` was added in GoAccess 1.6.** On 1.4 the flag is
+   silently accepted but causes 0-byte output. Drop the flag (and the
+   matching `anonymize-ip true` directive from `goaccessrc`) on 1.4;
+   use `ignore-panel HOSTS` for equivalent privacy (raw IPs never reach
+   the rendered HTML).
+
+3. **`html-prefs` was added in GoAccess 1.6.** Same silent 0-byte
+   failure on 1.4 if the directive is in the config file.
+
+Confirm which by running goaccess against a single small log
+**without** the wrapper:
+
+```sh
+sudo cat /var/www/logs/learnche.org/access.log \
+  | /usr/local/bin/caddy-json-to-combined.py \
+  | goaccess - --no-global-config --config-file=/dev/null \
+      --log-format=COMBINED --output=/tmp/diag.html 2>&1
+ls -la /tmp/diag.html
+```
+
+This bypasses the conf and uses an unambiguous `.html` filename. If
+*this* produces a real file but the wrapper doesn't, the conf or the
+mktemp template is the culprit — patch the relevant fix above.
+
+### "Bottom-10 stats page shows weird URLs like `_downloads/...`"
+
+`build-sparklines.py`'s `normalise_pagename()` filters out
+`/_static/`, `/_sources/`, `/_images/`, `/_downloads/`, and
+`/pagefind/` so Sphinx-generated download artifacts don't pollute the
+page list. If a new Sphinx category appears (e.g. `/_modules/`), add
+it to the filter list and re-run `build-sparklines.py` — the next
+nightly rebuild will drop it.
+
 ## Periodic maintenance
 
 * **Quarterly**: review `/etc/pid-book/bots.txt` against current

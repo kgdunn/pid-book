@@ -194,17 +194,19 @@
   }
 
   // 4b. Stats page widgets. Run only if the /pid/stats page is loaded,
-  // detected by the presence of #pid-stats-summary in the DOM. Three
+  // detected by the presence of #pid-stats-summary in the DOM. Four
   // mounts are filled from the same sparklines.json the sidebar uses:
   //   #pid-stats-summary  — three big-number cards (reads, pages, days)
   //   #pid-stats-daily    — daily-totals line chart across all pages
   //   #pid-stats-top      — top-20 most-read pages table
+  //   #pid-stats-bottom   — bottom-10 least-read pages table
   function renderStatsPage() {
     var summary = document.getElementById("pid-stats-summary");
     if (!summary) return;
 
     var dailyMount = document.getElementById("pid-stats-daily");
     var topMount = document.getElementById("pid-stats-top");
+    var bottomMount = document.getElementById("pid-stats-bottom");
 
     function showEmpty(msg) {
       summary.innerHTML =
@@ -214,6 +216,26 @@
         "</em></p>";
       if (dailyMount) dailyMount.style.display = "none";
       if (topMount) topMount.style.display = "none";
+      if (bottomMount) bottomMount.style.display = "none";
+    }
+
+    // Build a [rank, page-link, count] HTML table from an array of
+    // [pagename, count] entries already in display order.
+    function buildPageTable(entries) {
+      var rows = entries.map(function (kv, i) {
+        var page = kv[0], count = kv[1];
+        // Sphinx pagename → URL. /index suffix means the directory
+        // landing page; other pages are direct.
+        var href = "/pid/" + page.replace(/\/index$/, "/");
+        return '<tr><td class="pid-stats-rank">' + (i + 1) +
+          '</td><td><a href="' + href + '">' + page + "</a></td>" +
+          '<td class="pid-stats-count">' + count.toLocaleString() +
+          "</td></tr>";
+      }).join("");
+      return '<table class="pid-stats-table"><thead><tr>' +
+        '<th class="pid-stats-rank">#</th><th>Page</th>' +
+        '<th class="pid-stats-count">Reads</th></tr></thead>' +
+        "<tbody>" + rows + "</tbody></table>";
     }
 
     fetch("/_stats/sparklines.json", { cache: "force-cache" })
@@ -288,24 +310,17 @@
           });
         }
 
-        // Top-N table.
+        // Top-N table (most-read pages).
         if (topMount) {
-          var N = 20;
-          var rows = pageTotals.slice(0, N).map(function (kv, i) {
-            var page = kv[0], count = kv[1];
-            // Sphinx pagename → URL. /index suffix means the directory
-            // landing page; other pages are direct.
-            var href = "/pid/" + page.replace(/\/index$/, "/");
-            return '<tr><td class="pid-stats-rank">' + (i + 1) +
-              '</td><td><a href="' + href + '">' + page + "</a></td>" +
-              '<td class="pid-stats-count">' + count.toLocaleString() +
-              "</td></tr>";
-          }).join("");
-          topMount.innerHTML =
-            '<table class="pid-stats-table"><thead><tr>' +
-            '<th class="pid-stats-rank">#</th><th>Page</th>' +
-            '<th class="pid-stats-count">Reads</th></tr></thead>' +
-            "<tbody>" + rows + "</tbody></table>";
+          topMount.innerHTML = buildPageTable(pageTotals.slice(0, 20));
+        }
+
+        // Bottom-N table (least-read pages — ascending, lowest first).
+        // Pages with zero hits never reach the JSON, so this only
+        // surfaces pages with at least one read in the window.
+        if (bottomMount) {
+          var bottom = pageTotals.slice(-10).reverse();
+          bottomMount.innerHTML = buildPageTable(bottom);
         }
       })
       .catch(function () { showEmpty(); });
