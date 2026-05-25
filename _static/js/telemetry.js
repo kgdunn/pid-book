@@ -8,8 +8,8 @@
  * Four responsibilities:
  *   1. Pageview pixel via GoatCounter (loaded async).
  *   2. Search-query event capture from BOTH Sphinx and Pagefind boxes.
- *   3. 90-day pageview sparkline in the sidebar (ECharts, lazy-loaded),
- *      with the per-page 90-day total written into #pid-sparkline-total.
+ *   3. Yearly pageview sparkline in the sidebar (ECharts, lazy-loaded),
+ *      with the per-page total written into #pid-sparkline-total.
  *   4. The /pid/stats page: site-wide summary, daily-totals chart, and
  *      top-N table sourced from the same /_stats/sparklines.json.
  *
@@ -143,8 +143,8 @@
           // tampered with the JSON). Block stays hidden — nothing to do.
           return;
         }
-        // Write the 90-day total into the sidebar heading, if its span
-        // is present (template ships it; older builds may not).
+        // Write the total-reads-in-window into the sidebar heading, if
+        // its span is present (template ships it; older builds may not).
         var totalEl = document.getElementById("pid-sparkline-total");
         if (totalEl) {
           var total = series.reduce(function (a, p) { return a + p[1]; }, 0);
@@ -279,7 +279,7 @@
         summary.innerHTML =
           '<div class="pid-stats-card"><div class="pid-stats-num">' +
             totalReads.toLocaleString() +
-          '</div><div class="pid-stats-label">reads (90 days)</div></div>' +
+          '</div><div class="pid-stats-label">reads (365 days)</div></div>' +
           '<div class="pid-stats-card"><div class="pid-stats-num">' +
             pageTotals.length.toLocaleString() +
           '</div><div class="pid-stats-label">pages with traffic</div></div>' +

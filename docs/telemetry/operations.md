@@ -174,7 +174,7 @@ If you **rename or move** an existing page (e.g.
 * New pagename starts with empty history; sparkline mount is hidden.
 * Old pagename keeps its history but no new hits accrue (because the
   URL no longer resolves). The orphan key stays in the JSON until it
-  scrolls out of the 90-day window. This is fine — just expected.
+  scrolls out of the 365-day window. This is fine — just expected.
 
 ## Disabling telemetry, partially or fully
 
@@ -334,7 +334,7 @@ section for the canonical talking points.
 
 ### "The sparkline shows nothing on a page that should have data."
 
-Symptoms: sidebar shows the "Page views (90 days)" heading but no
+Symptoms: sidebar shows the "Page views (365 days)" heading but no
 chart underneath, or shows no heading at all when the page does have
 hits.
 
