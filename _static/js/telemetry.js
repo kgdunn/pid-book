@@ -113,9 +113,14 @@
   }
 
   // 4. Sparkline. Lazy-loads ECharts only if the mount point exists.
+  // The sidebar template ships the whole block (heading + chart) hidden
+  // by default via `<div id="pid-sparkline-block" style="display:none">`.
+  // We only unhide it after the chart actually renders, so a blocked
+  // fetch / DNT / empty data path never leaves an orphan heading visible.
   function renderSparkline() {
     var mount = document.getElementById("pid-sparkline");
     if (!mount) return;
+    var block = document.getElementById("pid-sparkline-block");
     var pageKey = mount.getAttribute("data-page") || "";
     if (!pageKey) {
       // Fallback: derive from the URL when the template didn't supply one.
@@ -134,10 +139,8 @@
       .then(function (data) {
         var series = data && data[pageKey];
         if (!series || !series.length) {
-          // No history yet (e.g. a freshly added page). Hide silently.
-          var heading = mount.previousElementSibling;
-          if (heading && heading.tagName === "P") heading.style.display = "none";
-          mount.style.display = "none";
+          // No history for this page (e.g. fresh page, content blocker
+          // tampered with the JSON). Block stays hidden — nothing to do.
           return;
         }
         // Write the 90-day total into the sidebar heading, if its span
@@ -183,13 +186,16 @@
               },
             ],
           });
+          // Reveal the whole block now that the chart is actually drawn.
+          if (block) block.style.display = "";
           window.addEventListener("resize", function () {
             chart.resize();
           });
         });
       })
       .catch(function () {
-        /* network/JSON error: leave the empty mount; do not break the page */
+        /* network/JSON error or content blocker: block stays hidden;
+           the page never shows an orphan "Page views" heading. */
       });
   }
 
@@ -209,6 +215,10 @@
     var bottomMount = document.getElementById("pid-stats-bottom");
 
     function showEmpty(msg) {
+      // Replace whatever the page shipped (could be the "Statistics
+      // could not load" placeholder, or a previous render's content)
+      // with a JS-specific message. The chart/table mounts are already
+      // hidden by default in stats.rst — re-hide just in case.
       summary.innerHTML =
         '<p style="color:#777"><em>' +
         (msg || "Statistics aren't available yet. The nightly aggregator " +
@@ -277,7 +287,9 @@
             dailyDates.length +
           '</div><div class="pid-stats-label">days of data</div></div>';
 
-        // Daily totals chart.
+        // Daily totals chart. Mount is hidden by default in stats.rst
+        // (so it doesn't show a 280px-tall blank area when JS is blocked
+        // or the fetch fails); unhide after the chart actually renders.
         if (dailyMount && dailyDates.length) {
           loadECharts(function (echarts) {
             if (!echarts) return;
@@ -306,6 +318,7 @@
                 areaStyle: { opacity: 0.15 },
               }],
             });
+            dailyMount.style.display = "";
             window.addEventListener("resize", function () { chart.resize(); });
           });
         }
@@ -313,6 +326,7 @@
         // Top-N table (most-read pages).
         if (topMount) {
           topMount.innerHTML = buildPageTable(pageTotals.slice(0, 20));
+          topMount.style.display = "";
         }
 
         // Bottom-N table (least-read pages — ascending, lowest first).
@@ -321,6 +335,7 @@
         if (bottomMount) {
           var bottom = pageTotals.slice(-10).reverse();
           bottomMount.innerHTML = buildPageTable(bottom);
+          bottomMount.style.display = "";
         }
       })
       .catch(function () { showEmpty(); });

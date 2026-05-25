@@ -18,7 +18,11 @@ Summary
 .. raw:: html
 
    <div id="pid-stats-summary" class="pid-stats-summary">
-     <p style="color:#777"><em>Loading…</em></p>
+     <p style="color:#777"><em>Statistics could not load. Common reasons:
+     Do Not Track is enabled in your browser, a content blocker is
+     hiding <code>/_stats/sparklines.json</code>, or the nightly
+     aggregator hasn't produced data yet. The numbers will appear when
+     the data file is reachable.</em></p>
    </div>
 
 Daily reads (last 90 days)
@@ -30,7 +34,7 @@ count once.
 
 .. raw:: html
 
-   <div id="pid-stats-daily" style="width:100%; height:280px"></div>
+   <div id="pid-stats-daily" style="width:100%; height:280px; display:none"></div>
 
 Most-read pages (last 90 days)
 ------------------------------
@@ -41,7 +45,7 @@ click through to read them.
 
 .. raw:: html
 
-   <div id="pid-stats-top"></div>
+   <div id="pid-stats-top" style="display:none"></div>
 
 Least-read pages (last 90 days)
 -------------------------------
@@ -61,7 +65,7 @@ better discoverability, or a refresh.
 
 .. raw:: html
 
-   <div id="pid-stats-bottom"></div>
+   <div id="pid-stats-bottom" style="display:none"></div>
 
 Raw data
 --------
