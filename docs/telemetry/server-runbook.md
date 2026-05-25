@@ -151,11 +151,13 @@ learnche.org {
     }
 
     # Per-host access log. JSON encoder is the default; we keep it.
+    # Retention must be ≥ the sparkline window (default 365 days; see
+    # sparklines.conf.example). 400 days = 365 + ~5 weeks of slack.
     log {
         output file /var/log/caddy/learnche.org.access.log {
             roll_size 50MiB
-            roll_keep 95
-            roll_keep_for 95d
+            roll_keep 400
+            roll_keep_for 400d
         }
         format json
     }
@@ -169,8 +171,8 @@ Key points:
   `console` formatter, update `caddy-json-to-combined.py` or set the
   Caddyfile back to `json`.
 * **`roll_size` / `roll_keep` / `roll_keep_for`** — Caddy rotates the
-  log itself. The 95-day retention is ≥ the 90-day sparkline window
-  with a few days slack. Increase if you want longer history.
+  log itself. The 400-day retention is ≥ the 365-day sparkline window
+  with ~5 weeks of slack. Increase if you want longer history.
 * **`/_stats/*` handle** — same-origin under `learnche.org` so the
   sidebar `fetch("/_stats/sparklines.json")` does not need CORS
   headers. The 1-hour cache is the staleness budget for browser
@@ -278,7 +280,7 @@ is stdlib-only Python. Algorithm:
    * UAs matching the bot list (`/etc/pid-book/bots.txt` or fallback),
    * paths matching `STATIC_EXTS`,
    * paths outside `/pid/`,
-   * timestamps outside the 90-day window.
+   * timestamps outside the 365-day window.
 4. For each surviving hit, normalise the URL to a Sphinx pagename
    via `normalise_pagename` (rules documented in
    [`sparklines-schema.md`](sparklines-schema.md)).

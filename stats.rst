@@ -12,6 +12,16 @@ see in the sidebar of every page.
 
 See :ref:`privacy` for what is and isn't collected.
 
+.. note::
+
+   The site moved to logging real client IPs (via Apache's
+   ``mod_remoteip``) on **2026-05-24**. Before that date, every
+   reader behind Cloudflare appeared as one of a handful of edge IPs,
+   so the daily unique-reader counts for the pre-cutover portion of
+   the year-long window are dramatically undercounted. The visible
+   step-up around late May 2026 is a measurement artefact, not real
+   growth.
+
 Summary
 -------
 
@@ -25,8 +35,8 @@ Summary
      the data file is reachable.</em></p>
    </div>
 
-Daily reads (last 90 days)
---------------------------
+Daily reads (last 365 days)
+---------------------------
 
 Total reads per day across the whole book. Each daily bucket
 de-duplicates by IP, so two visits from the same reader on the same day
@@ -36,21 +46,21 @@ count once.
 
    <div id="pid-stats-daily" style="width:100%; height:280px; display:none"></div>
 
-Most-read pages (last 90 days)
-------------------------------
+Most-read pages (last 365 days)
+-------------------------------
 
-The 20 pages with the most reads over the 90-day window. Page names are
-the Sphinx page identifiers (e.g. ``data-visualization/box-plots``);
+The 20 pages with the most reads over the 365-day window. Page names
+are the Sphinx page identifiers (e.g. ``data-visualization/box-plots``);
 click through to read them.
 
 .. raw:: html
 
    <div id="pid-stats-top" style="display:none"></div>
 
-Least-read pages (last 90 days)
--------------------------------
+Least-read pages (last 365 days)
+--------------------------------
 
-The 10 pages with the *fewest* reads over the 90-day window, lowest
+The 10 pages with the *fewest* reads over the 365-day window, lowest
 first. Useful for spotting sections that may need clearer links,
 better discoverability, or a refresh.
 

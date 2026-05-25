@@ -110,11 +110,11 @@ Each value is an array of `[date, count]` pairs.
   at least one hit appears exactly once. **Days with zero hits are
   omitted.** The consumer should not assume the array length equals
   the window length.
-* The window is **the most recent 90 days** (configurable via the
+* The window is **the most recent 365 days** (configurable via the
   producer's `[windows] days` setting, but the JS assumes 90 in its
   layout). If you change the window length on the server, also
   update the sidebar heading text in
-  `_templates/pid-sidebar-extra.html` (`"Page views (90 days)"`).
+  `_templates/pid-sidebar-extra.html` (`"Page views (365 days)"`).
 * If a page got at least one hit in the window, its entry exists.
 * If a page got **zero hits** in the window, it is **not** in the
   JSON. The consumer treats missing keys and empty arrays
@@ -239,6 +239,6 @@ curl -sf https://learnche.org/_stats/sparklines.json |
 ```
 
 If `sparklines.json` ever becomes a bottleneck (e.g. > 1 MB), revisit
-the schema — but for a book with O(100) pages and 90 days of daily
+the schema — but for a book with O(100) pages and 365 days of daily
 counts, the file is ~50–200 KB depending on activity, well below any
 problematic threshold.

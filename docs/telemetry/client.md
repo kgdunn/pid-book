@@ -290,10 +290,10 @@ if (!series || !series.length) {
 
 A page with no historical data (e.g. a freshly added page like
 `privacy` itself) gets **no UI at all** — we hide both the mount
-and the "Page views (90 days)" heading. The alternative (showing a
+and the "Page views (365 days)" heading. The alternative (showing a
 "0 hits" placeholder) would be misleading and visually noisy.
 
-### Phase 4c.5 — 90-day reader count in the heading
+### Phase 4c.5 — reader count in the heading
 
 After confirming the series is non-empty, but before any ECharts
 work, we compute the sum and write it into the sidebar heading:
@@ -308,7 +308,7 @@ if (totalEl) {
 
 The `<span id="pid-sparkline-total">` ships from
 `_templates/pid-sidebar-extra.html`, floated to the right of the
-"Page views (90 days)" heading. Tabular-numeric CSS keeps the digits
+"Page views (365 days)" heading. Tabular-numeric CSS keeps the digits
 aligned across pages. The `if (totalEl)` guard makes this a no-op
 when an older cached template doesn't have the span — pageview
 tracking and the sparkline still work.
@@ -389,7 +389,7 @@ When the mount is present, the function fetches the same
 |---|---|
 | `#pid-stats-summary` | Three "big number" cards: total reads in the window, number of pages with at least one read, number of distinct days in the data. |
 | `#pid-stats-daily` | A daily-totals line chart — sum of reads across all pages per day, smoothed, with an area fill and axis-trigger tooltip. ECharts SVG renderer; lazy-loaded via the same `loadECharts()` the sparkline uses. |
-| `#pid-stats-top` | A table of the top-20 pages by 90-day total. Each row links to `/pid/<pagename>` (with `/index` stripped, so `data-visualization/index` → `/pid/data-visualization/`). |
+| `#pid-stats-top` | A table of the top-20 pages by 365-day total. Each row links to `/pid/<pagename>` (with `/index` stripped, so `data-visualization/index` → `/pid/data-visualization/`). |
 
 Aggregation is a single pass over `Object.keys(data)`:
 
@@ -409,7 +409,7 @@ pageTotals.sort(function (a, b) { return b[1] - a[1]; });
 ```
 
 The `| 0` coerces to int (defends against a future schema change
-that emits floats). Pages whose 90-day total is zero are dropped
+that emits floats). Pages whose 365-day total is zero are dropped
 from the top-N consideration but still count in `totalReads`.
 
 Empty-state behaviour is uniform across all three widgets: if

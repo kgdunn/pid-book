@@ -7,7 +7,7 @@ minimal server install.
 
 Output schema is described in docs/telemetry/sparklines-schema.md.
 The output file is consumed by _static/js/telemetry.js to render the
-90-day pageview sparkline in the sidebar of every book page.
+year-long pageview sparkline in the sidebar of every book page.
 
 Inputs
 ------
@@ -40,7 +40,8 @@ Algorithm
        /pid/data-visualization/box-plots → data-visualization/box-plots
    (Trailing slash means index page.)
 7. Aggregate (pagename, date) → set of unique IPs.
-8. Convert to (pagename, date) → unique-IP count for the last 90 days.
+8. Convert to (pagename, date) → unique-IP count for the configured
+   window (default 365 days).
 9. Atomically write JSON to the output path.
 
 Privacy
@@ -62,7 +63,7 @@ otherwise the defaults below. The config is a tiny INI file:
     bot_list = /etc/pid-book/bots.txt
 
     [windows]
-    days = 90
+    days = 365
 
 The bot list is one user-agent substring per line; lines starting with
 '#' are comments. Any UA containing one of the substrings (case-
@@ -102,7 +103,7 @@ DEFAULT_LOG_GLOBS = [
 ]
 DEFAULT_OUTPUT = "/var/www/learnche.org/_stats/sparklines.json"
 DEFAULT_BOT_LIST = "/etc/pid-book/bots.txt"
-DEFAULT_DAYS = 90
+DEFAULT_DAYS = 365
 
 # Bot UA substrings used when no bot_list file is present. Keep in sync with
 # scripts/server/goaccessrc.example.

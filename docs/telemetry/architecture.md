@@ -96,7 +96,7 @@ spots.
 * **Limitations:** same ad-block undercounting as Layer B; the
   email-regex guard is heuristic, not bulletproof.
 
-### Layer D — Per-page 90-day sparkline
+### Layer D — Per-page year-long sparkline
 
 * **Source:** same access logs as Layer A, processed by
   [`scripts/server/build-sparklines.py`](../../scripts/server/build-sparklines.py)

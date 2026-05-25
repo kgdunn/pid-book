@@ -66,10 +66,10 @@ self-hosting reusers.
 3. **Search-query events** — what readers type into the sidebar
    search box, debounced and PII-stripped, sent to GoatCounter as
    custom events.
-4. **Per-page 90-day sparkline + reader count** — derived from the
+4. **Per-page year-long sparkline + reader count** — derived from the
    access logs by `scripts/server/build-sparklines.py` into a public
    `sparklines.json`, rendered with a same-origin ECharts build in
-   the sidebar of every page. The 90-day total reads for the current
+   the sidebar of every page. The 365-day total reads for the current
    page are written next to the heading. Because it is log-derived it
    counts ad-blocked readers — the *honest* signal.
 5. **In-book stats page** — [`/pid/stats`](https://learnche.org/pid/stats)
