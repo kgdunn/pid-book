@@ -177,7 +177,7 @@
                 type: "line",
                 data: values,
                 showSymbol: false,
-                smooth: true,
+                smooth: false,
                 lineStyle: { width: 1.5 },
                 areaStyle: { opacity: 0.15 },
               },
@@ -277,7 +277,7 @@
               },
               series: [{
                 type: "line",
-                smooth: true,
+                smooth: false,
                 showSymbol: false,
                 data: dailyDates.map(function (d) { return dailyMap[d]; }),
                 lineStyle: { width: 1.5 },
