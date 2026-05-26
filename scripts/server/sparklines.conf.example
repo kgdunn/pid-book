@@ -1,9 +1,11 @@
 # Configuration for scripts/server/build-sparklines.py.
 #
-# Default window is 365 days (1 year). Change [windows] days = N
-# below if you want a different period. The in-book labels assume
-# 365 days, so changing this also requires editing the heading text
-# in _templates/pid-sidebar-extra.html and stats.rst.
+# Default backend window is 365 days (1 year). This controls what
+# /_stats/sparklines.json contains. The in-book UI display window is
+# independent: the JS in _static/js/telemetry.js filters this JSON to
+# a shorter window (look for DISPLAY_DAYS) before rendering. Change
+# this value to widen/narrow the backend; change DISPLAY_DAYS to
+# widen/narrow what readers see.
 #
 # Install as /etc/pid-book/sparklines.conf. Any value can also be passed
 # on the command line; CLI flags win.

@@ -14,27 +14,23 @@ See :ref:`privacy` for what is and isn't collected.
 
 .. note::
 
-   Two unrelated server-side issues distort the historical portion of
-   the year-long window. The post-fix data (roughly **2026-05-22
-   onward**) is accurate; everything before that has caveats:
+   The in-book figures show the most recent **10 days** while the
+   pipeline is still bedding in. Two server-side fixes only took
+   effect recently, so wider windows are not yet representative:
 
-   * **Real client IPs only since 2026-05-24.** Until then every
-     reader behind Cloudflare appeared as one of a handful of edge
-     IPs per region per day, and the script's daily-unique-IP
-     deduplication collapsed real reader counts ~10–50×. The visible
-     step-up in late May 2026 is a measurement artefact, not real
-     growth. (Fixed by configuring Apache ``mod_remoteip`` to honour
-     the ``CF-Connecting-IP`` header.)
-   * **No access logs from Feb 2022 to May 2026.** Debian's default
-     Apache ``logrotate`` configuration kept only 4 days of history.
-     For ~4 years that quietly purged the access logs the next day,
-     so we have nothing to aggregate for that period. (Fixed by
-     bumping the ``rotate`` count to 1825.)
+   * **Real client IPs since 2026-05-24** (Apache ``mod_remoteip`` +
+     Cloudflare ``CF-Connecting-IP``). Earlier data deduplicated by
+     Cloudflare edge IPs and undercounted by ~10–50×.
+   * **Access logs retained 5 years since 2026-05-26** (logrotate
+     ``rotate 1825``). Earlier rotations purged everything after 4
+     days, so almost nothing from Feb 2022 to May 2026 exists on
+     disk.
 
-   The 2021/2022 archive *does* exist in the log directory but falls
-   outside the 365-day window so doesn't appear here. Bumping the
-   window to 5 years would surface it as a "valley" of empty days
-   between two dense regions.
+   The backend keeps a full 365-day window in
+   `sparklines.json <https://learnche.org/_stats/sparklines.json>`_;
+   the in-book display is filtered to a shorter window so a young
+   deployment doesn't look unread. The window will gradually widen
+   over the next few weeks.
 
 Summary
 -------
@@ -49,8 +45,8 @@ Summary
      the data file is reachable.</em></p>
    </div>
 
-Daily reads (last 365 days)
----------------------------
+Daily reads (last 10 days)
+--------------------------
 
 Total reads per day across the whole book. Each daily bucket
 de-duplicates by IP, so two visits from the same reader on the same day
@@ -60,10 +56,10 @@ count once.
 
    <div id="pid-stats-daily" style="width:100%; height:280px; display:none"></div>
 
-Most-read pages (last 365 days)
--------------------------------
+Most-read pages (last 10 days)
+------------------------------
 
-The 20 pages with the most reads over the 365-day window. Page names
+The 20 pages with the most reads over the 10-day window. Page names
 are the Sphinx page identifiers (e.g. ``data-visualization/box-plots``);
 click through to read them.
 
@@ -71,10 +67,10 @@ click through to read them.
 
    <div id="pid-stats-top" style="display:none"></div>
 
-Least-read pages (last 365 days)
---------------------------------
+Least-read pages (last 10 days)
+-------------------------------
 
-The 10 pages with the *fewest* reads over the 365-day window, lowest
+The 10 pages with the *fewest* reads over the 10-day window, lowest
 first. Useful for spotting sections that may need clearer links,
 better discoverability, or a refresh.
 

@@ -42,6 +42,53 @@
   var cfg = window.__PID_TELEMETRY || {};
   if (!cfg.gc) return;
 
+  // -------------------------------------------------------------------
+  // Front-end display window.
+  //
+  // The backend (build-sparklines.py + /etc/pid-book/sparklines.conf)
+  // keeps a 365-day window in /_stats/sparklines.json. The in-book UI
+  // is intentionally narrower: showing 365-day totals on a young
+  // deployment (or one with historical log gaps) makes pages look
+  // unread when they are actually being read every day.
+  //
+  // Change DISPLAY_DAYS in lockstep with the labels that mention "N
+  // days" in:
+  //   - _templates/pid-sidebar-extra.html   ("Page views (10 days)")
+  //   - stats.rst                            ("(last 10 days)" x3)
+  // and the backend (365) stays the same.
+  // -------------------------------------------------------------------
+  var DISPLAY_DAYS = 10;
+  var DISPLAY_LABEL = DISPLAY_DAYS + " days";
+
+  // Find the most recent date present anywhere in the JSON. Used as
+  // the anchor for the rolling display window. Series are sorted
+  // ascending in the producer, so the last element holds the latest.
+  function globalAnchorDate(data) {
+    var max = "";
+    for (var page in data) {
+      var s = data[page];
+      if (s && s.length) {
+        var last = s[s.length - 1][0];
+        if (last > max) max = last;
+      }
+    }
+    return max;
+  }
+
+  // "YYYY-MM-DD" arithmetic: return the date `days-1` days before
+  // anchor, so a window of `days` includes the anchor day itself.
+  function cutoffDateString(anchor, days) {
+    if (!anchor) return "";
+    var d = new Date(anchor + "T00:00:00Z");
+    d.setUTCDate(d.getUTCDate() - days + 1);
+    return d.toISOString().slice(0, 10);
+  }
+
+  function filterToWindow(series, cutoff) {
+    if (!series || !cutoff) return series || [];
+    return series.filter(function (p) { return p[0] >= cutoff; });
+  }
+
   // 1. Path normalisation: extensionless URLs, fold trailing slash and /index.
   function normPath() {
     var p = location.pathname.replace(/\/+$/, "") || "/";
@@ -137,10 +184,16 @@
         return r.json();
       })
       .then(function (data) {
-        var series = data && data[pageKey];
+        // The JSON is the full 365-day window; the UI shows only
+        // the most recent DISPLAY_DAYS days from the global anchor
+        // (so different pages compare against the same date range).
+        var anchor = globalAnchorDate(data);
+        var cutoff = cutoffDateString(anchor, DISPLAY_DAYS);
+        var series = filterToWindow(data && data[pageKey], cutoff);
         if (!series || !series.length) {
-          // No history for this page (e.g. fresh page, content blocker
-          // tampered with the JSON). Block stays hidden — nothing to do.
+          // No history for this page in the display window (fresh
+          // page, content blocker tampering, or genuinely unread for
+          // DISPLAY_DAYS). Block stays hidden — nothing to do.
           return;
         }
         // Write the total-reads-in-window into the sidebar heading, if
@@ -257,12 +310,17 @@
         var pages = data && Object.keys(data);
         if (!pages || !pages.length) { showEmpty(); return; }
 
-        // Aggregate.
+        // The JSON holds 365 days; the UI shows the most recent
+        // DISPLAY_DAYS days only. Compute the cutoff once and filter
+        // every per-page series through it before aggregating.
+        var anchor = globalAnchorDate(data);
+        var cutoff = cutoffDateString(anchor, DISPLAY_DAYS);
+
         var totalReads = 0;
         var dailyMap = {};
         var pageTotals = [];
         pages.forEach(function (page) {
-          var series = data[page] || [];
+          var series = filterToWindow(data[page], cutoff);
           var pageTotal = 0;
           series.forEach(function (p) {
             var date = p[0], count = p[1] | 0;
@@ -275,11 +333,14 @@
         pageTotals.sort(function (a, b) { return b[1] - a[1]; });
         var dailyDates = Object.keys(dailyMap).sort();
 
+        // If the window has no data at all, fall back to the empty UI.
+        if (!pageTotals.length) { showEmpty(); return; }
+
         // Summary cards.
         summary.innerHTML =
           '<div class="pid-stats-card"><div class="pid-stats-num">' +
             totalReads.toLocaleString() +
-          '</div><div class="pid-stats-label">reads (365 days)</div></div>' +
+          '</div><div class="pid-stats-label">reads (' + DISPLAY_LABEL + ')</div></div>' +
           '<div class="pid-stats-card"><div class="pid-stats-num">' +
             pageTotals.length.toLocaleString() +
           '</div><div class="pid-stats-label">pages with traffic</div></div>' +
