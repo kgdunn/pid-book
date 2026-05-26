@@ -189,6 +189,86 @@ chown caddy:caddy /var/www/learnche.org/_stats
 (The Caddy package on Debian/Ubuntu creates a `caddy` system user that
 owns the served paths; substitute whatever user your install uses.)
 
+### 5b. Apache alternative
+
+If you're on Apache rather than Caddy (the original learnche.org host
+ran Apache 2.4 on Debian 11 through mid-2026; the docs target Caddy
+because that's the post-migration setup), three things differ.
+
+**Vhost.** The `learnche.org` `<VirtualHost *:443>` block needs
+`DocumentRoot /var/www/learnche.org` (so `/_stats/` and `/pid/` are
+both served from the same tree), and a `CustomLog` pointing at the
+per-vhost access log:
+
+```apache
+<VirtualHost *:443>
+    ServerName  learnche.org
+    DocumentRoot /var/www/learnche.org
+
+    <Directory "/var/www/learnche.org">
+        Options All Includes Indexes
+        AllowOverride All
+    </Directory>
+
+    # Cloudflare reverse-proxy: log the real client IP, not the CF
+    # edge IP. Without this, every visitor looks like one of ~5–10
+    # Cloudflare IPs per region per day and the sparkline dedup
+    # silently undercounts by ~10–50×.
+    RemoteIPHeader CF-Connecting-IP
+    RemoteIPTrustedProxyList /etc/apache2/cloudflare-ips-v4.txt
+    RemoteIPTrustedProxyList /etc/apache2/cloudflare-ips-v6.txt
+
+    ErrorLog  /var/www/logs/learnche.org/error.log
+    CustomLog /var/www/logs/learnche.org/access.log combined
+
+    # ... TLS directives ...
+</VirtualHost>
+```
+
+The `cloudflare-ips-v4.txt` / `-v6.txt` files come from
+<https://www.cloudflare.com/ips-v4> / `ips-v6`. Refresh them
+occasionally — Cloudflare updates the list every few months.
+
+**Log rotation.** Debian's default `/etc/logrotate.d/apache2` ships
+with `rotate 4`, which keeps only **4 days** of history for busy
+vhosts. With a 365-day sparkline window, that's catastrophic — the
+script reads 4 days of recent data and silently shows almost nothing.
+For 5 years of history bump it to **`rotate 1825`**:
+
+```sh
+sudo sed -i 's/^\s*rotate 4$/    rotate 1825/' /etc/logrotate.d/apache2
+grep rotate /etc/logrotate.d/apache2    # expect: rotate 1825
+
+# Dry-run; should print "1825 rotations" in the pattern header
+sudo logrotate -d /etc/logrotate.d/apache2 2>&1 | head -10
+
+# Force one rotation to test the postrotate apache2 reload hook
+sudo logrotate -f /etc/logrotate.d/apache2
+sudo systemctl status apache2 --no-pager | head -3
+curl -sI 'https://learnche.org/pid/contents' | head -3
+```
+
+Note the warning `'size' overrides previously specified 'daily'` —
+that's expected: Debian's default has both `size 10M` and `daily`,
+and when `size` is set, the time-based directive is ignored. In
+practice cron fires logrotate daily, and busy access logs always
+exceed 10 MB, so it's "one rotation per day" anyway. Low-traffic
+vhosts may go weeks or months between rotations (their files just
+grow until they cross 10 MB) — not a problem for sparklines, just a
+quirk to know.
+
+**`_stats/` directory.** Apache serves it automatically since
+`DocumentRoot` covers it; you only need to create the directory and
+make sure `www-data` can write to it:
+
+```sh
+mkdir -p /var/www/learnche.org/_stats
+chown www-data:www-data /var/www/learnche.org/_stats
+chmod 755 /var/www/learnche.org/_stats
+```
+
+No `<Location>` or `Alias` block needed.
+
 ### 6. Cron
 
 ```sh
