@@ -14,13 +14,27 @@ See :ref:`privacy` for what is and isn't collected.
 
 .. note::
 
-   The site moved to logging real client IPs (via Apache's
-   ``mod_remoteip``) on **2026-05-24**. Before that date, every
-   reader behind Cloudflare appeared as one of a handful of edge IPs,
-   so the daily unique-reader counts for the pre-cutover portion of
-   the year-long window are dramatically undercounted. The visible
-   step-up around late May 2026 is a measurement artefact, not real
-   growth.
+   Two unrelated server-side issues distort the historical portion of
+   the year-long window. The post-fix data (roughly **2026-05-22
+   onward**) is accurate; everything before that has caveats:
+
+   * **Real client IPs only since 2026-05-24.** Until then every
+     reader behind Cloudflare appeared as one of a handful of edge
+     IPs per region per day, and the script's daily-unique-IP
+     deduplication collapsed real reader counts ~10–50×. The visible
+     step-up in late May 2026 is a measurement artefact, not real
+     growth. (Fixed by configuring Apache ``mod_remoteip`` to honour
+     the ``CF-Connecting-IP`` header.)
+   * **No access logs from Feb 2022 to May 2026.** Debian's default
+     Apache ``logrotate`` configuration kept only 4 days of history.
+     For ~4 years that quietly purged the access logs the next day,
+     so we have nothing to aggregate for that period. (Fixed by
+     bumping the ``rotate`` count to 1825.)
+
+   The 2021/2022 archive *does* exist in the log directory but falls
+   outside the 365-day window so doesn't appear here. Bumping the
+   window to 5 years would surface it as a "valley" of empty days
+   between two dense regions.
 
 Summary
 -------
