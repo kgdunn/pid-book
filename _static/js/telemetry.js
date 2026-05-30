@@ -178,7 +178,7 @@
       if (!pageKey) pageKey = "contents";
     }
 
-    fetch("/_stats/sparklines.json", { cache: "force-cache" })
+    fetch("/_stats/sparklines.json", { cache: "default" })
       .then(function (r) {
         if (!r.ok) throw new Error("sparklines.json " + r.status);
         return r.json();
@@ -301,7 +301,7 @@
         "<tbody>" + rows + "</tbody></table>";
     }
 
-    fetch("/_stats/sparklines.json", { cache: "force-cache" })
+    fetch("/_stats/sparklines.json", { cache: "default" })
       .then(function (r) {
         if (!r.ok) throw new Error("sparklines.json " + r.status);
         return r.json();

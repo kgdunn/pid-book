@@ -522,6 +522,53 @@ page list. If a new Sphinx category appears (e.g. `/_modules/`), add
 it to the filter list and re-run `build-sparklines.py` — the next
 nightly rebuild will drop it.
 
+### "Stats page shows data from a week ago, even though the cron is running."
+
+Symptom: the on-disk `/var/www/learnche.org/_stats/sparklines.json`
+has a fresh `mtime`, `curl -s 'https://learnche.org/_stats/sparklines.json'`
+from any machine returns fresh data, but the chart in a reader's
+browser keeps showing the old data day after day.
+
+Cause we've actually hit: `_static/js/telemetry.js` used to call
+`fetch("/_stats/sparklines.json", { cache: "force-cache" })`.
+**`force-cache` is the Fetch API's most aggressive cache mode**: it
+returns whatever is in the HTTP cache regardless of `max-age`, and
+only refetches when the cache entry is evicted by the browser's own
+quota. On iOS Safari that can mean weeks. We swapped to
+`cache: "default"`, which honours the `Cache-Control: max-age=3600`
+header and revalidates after an hour.
+
+Diagnostic:
+
+```sh
+# Server side — should match curl-from-anywhere
+sudo python3 -c "
+import json
+d = json.load(open('/var/www/learnche.org/_stats/sparklines.json'))
+all_dates = sorted({p[0] for v in d.values() for p in v})
+print(f'on-disk:   {all_dates[0]} -> {all_dates[-1]}')
+"
+
+# Cloudflare side — bypass any local cache with a unique query string
+curl -s 'https://learnche.org/_stats/sparklines.json?v=test' | python3 -c "
+import json, sys
+d = json.load(sys.stdin)
+all_dates = sorted({p[0] for v in d.values() for p in v})
+print(f'CF:        {all_dates[0]} -> {all_dates[-1]}')
+"
+
+# Confirm CF isn't caching the JSON (it's marked DYNAMIC by default
+# because .json is not on CF's auto-cache extension list).
+curl -sI 'https://learnche.org/_stats/sparklines.json' | grep -iE 'cache|last-mod'
+```
+
+If on-disk and CF match (both fresh) but a reader's browser still
+shows stale data, the bug is purely client-side: a reader whose JS
+was loaded before the fix shipped is still using `force-cache`. They
+can force-reload the page (Cmd+Shift+R, or in Safari iOS: pull-down
+on the address bar → "Reload Without Content Blockers") to evict
+their cache and pick up the new `telemetry.js`.
+
 ## Periodic maintenance
 
 * **Quarterly**: review `/etc/pid-book/bots.txt` against current

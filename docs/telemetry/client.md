@@ -261,17 +261,20 @@ if (!pageKey) {
 ### Phase 4b — fetch sparklines.json
 
 ```js
-fetch("/_stats/sparklines.json", { cache: "force-cache" })
+fetch("/_stats/sparklines.json", { cache: "default" })
   .then(...)
   .catch(function () { /* leave the empty mount; do not break */ });
 ```
 
 * **Same-origin fetch** — `learnche.org/_stats/sparklines.json`.
   Same hostname as the book, so no CORS dance.
-* **`cache: "force-cache"`** — the JSON is regenerated nightly, so
-  we let the browser reuse the response across the whole site visit.
-  The HTTP cache headers on the JSON (1 hour `max-age` per the
-  Caddyfile `/_stats/*` handle) bound staleness.
+* **`cache: "default"`** — the JSON is regenerated nightly. Default
+  HTTP caching honours the `Cache-Control: max-age=3600` we send,
+  so the browser reuses the response for an hour and then
+  revalidates. (Earlier versions used `force-cache`, which silently
+  ignores `max-age` and pins the very first response forever — that
+  one bit us: see the "Stats page shows data from a week ago" entry
+  in [`operations.md`](operations.md).)
 * **Catch-all on errors** — network failure, malformed JSON, server
   500 — all silently leave the empty mount. The page must not break
   because sparkline data was unavailable.
