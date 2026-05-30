@@ -53,11 +53,11 @@
   //
   // Change DISPLAY_DAYS in lockstep with the labels that mention "N
   // days" in:
-  //   - _templates/pid-sidebar-extra.html   ("Page views (10 days)")
-  //   - stats.rst                            ("(last 10 days)" x3)
+  //   - _templates/pid-sidebar-extra.html   ("Page views (N days)")
+  //   - stats.rst                            ("(last N days)" x3 + body)
   // and the backend (365) stays the same.
   // -------------------------------------------------------------------
-  var DISPLAY_DAYS = 10;
+  var DISPLAY_DAYS = 15;
   var DISPLAY_LABEL = DISPLAY_DAYS + " days";
 
   // Find the most recent date present anywhere in the JSON. Used as
