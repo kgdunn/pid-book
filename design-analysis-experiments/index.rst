@@ -18,6 +18,7 @@ Design and Analysis of Experiments
    response-surface-methods
    general-approach-for-experimentation
    extended-topics-related-to-designed-experiments
+   judging-and-comparing-designs
    design-analysis-experiments-exercises
 
 
