@@ -137,7 +137,7 @@ that the coefficient variances live in the reciprocals :math:`1/\lambda`.
         we develop next.
 
 D multiplies the eigenvalues, A sums their reciprocals, E looks at the extreme one:
-the same matrix, aggregated differently. That is precisely why a design can score well
+the same matrix, aggregated differently. That is why a design can score well
 on one criterion and poorly on another, and why the choice of criterion should follow
 the purpose of the experiment. As noted in the :ref:`optimal designs <DOE-optimial-designs>`
 section, a full :math:`2^k` factorial is simultaneously A-, D-, G- and V-optimal for the
@@ -249,7 +249,7 @@ warning to keep for later: the raw criteria scale with the number of runs :math:
 cannot be used to compare designs of different size. We undo that scaling below. For the same
 reason, the base design cannot be compared with either five-run design.
 
-The fair comparison is between the two five-run designs, and here the criteria genuinely disagree.
+The fair comparison is between the two five-run designs, and here the criteria start to disagree.
 Adding the two extreme points **maximises** :math:`D` (16 versus 12): spreading runs to the
 boundary buys the most joint information, so it is the choice when the goal is to estimate the
 coefficients as a set. Adding the two centre points instead **minimises** :math:`A` (1.67 versus
