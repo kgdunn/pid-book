@@ -37,6 +37,15 @@ reading it, how prediction variance is derived from it, and how to read a
 fraction-of-design-space plot. We close with a short checklist for choosing
 between designs.
 
+One quantity runs through everything that follows and deserves to be pinned down now: the noise
+standard deviation :math:`\sigma`. It is the irreducible, run-to-run variability of the response,
+the scatter you would still see if you held every factor fixed and simply repeated the experiment:
+measurement error plus whatever the process itself contributes. Every variance in this subchapter
+is written as :math:`\sigma^2` multiplied by something that depends only on the design, and the
+design controls only that second part, the geometry. It can do nothing about :math:`\sigma`.
+Pinning :math:`\sigma` down, by replication, from a control chart, or from prior knowledge of the
+process, is the experimenter's responsibility, not something any design can deliver.
+
 The model matrix and the information matrix
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -128,7 +137,7 @@ that the coefficient variances live in the reciprocals :math:`1/\lambda`.
         we develop next.
 
 D multiplies the eigenvalues, A sums their reciprocals, E looks at the extreme one:
-the same matrix, aggregated differently. That is precisely why a design can score well
+the same matrix, aggregated differently. That is why a design can score well
 on one criterion and poorly on another, and why the choice of criterion should follow
 the purpose of the experiment. As noted in the :ref:`optimal designs <DOE-optimial-designs>`
 section, a full :math:`2^k` factorial is simultaneously A-, D-, G- and V-optimal for the
@@ -168,6 +177,89 @@ is the hardest thing to pin down from only three points), and the :math:`-1`
 off-diagonal is the intercept-quadratic correlation we anticipated from
 :math:`M_{02}`.
 
+That single design is rarely the end of the story. Suppose the budget stretches to two more runs.
+Two natural options present themselves, and they pull in different directions:
+
+    *   add **two replicate centre points** (two more runs at :math:`x = 0`), or
+    *   add **a point at** :math:`x = -1` **and one at** :math:`x = +1`, reinforcing the extremes.
+
+Which is better? It depends entirely on what we ask of the design, and the optimality criteria turn
+that vague question into an arithmetic one. The table below evaluates four designs on the same
+quadratic model: the base three-run design, the base design with all three runs repeated, the base
+plus two centre points, and the base plus two extreme points. The criteria are the raw,
+unnormalised summaries of :math:`\mathbf{M}` from earlier (:math:`D = \det\mathbf{M}`,
+:math:`A = \text{trace}\,\mathbf{M}^{-1}`, :math:`E = \lambda_{\min}(\mathbf{M})`), together with
+the maximum and average of the prediction variance
+:math:`d(x) = \mathbf{x}_m^T \mathbf{M}^{-1} \mathbf{x}_m` over :math:`x \in [-1, +1]` (these are the
+:math:`G` and :math:`I` quantities, in units of :math:`\sigma^2`).
+
+.. list-table:: Four candidate designs for the single-factor quadratic model.
+    :header-rows: 1
+    :widths: 34 8 12 16 14 8 8
+
+    *   - design
+        - :math:`N`
+        - :math:`D=\det\mathbf{M}`
+        - :math:`A=\text{trace}\,\mathbf{M}^{-1}`
+        - :math:`E=\lambda_{\min}`
+        - :math:`G`
+        - :math:`I`
+    *   - base :math:`\{-1, 0, +1\}`
+        - 3
+        - 4
+        - 3.00
+        - 0.44
+        - 1.0
+        - 0.80
+    *   - base, all three runs repeated
+        - 6
+        - 32
+        - 1.50
+        - 0.88
+        - 0.5
+        - 0.40
+    *   - base + two centre points
+        - 5
+        - 12
+        - 1.67
+        - 1.00
+        - 1.0
+        - 0.44
+    *   - base + two points at :math:`\pm 1`
+        - 5
+        - 16
+        - 2.50
+        - 0.47
+        - 1.0
+        - 0.67
+
+Before reading the numbers, fix the direction each criterion is driven. A design is better when
+:math:`D` is **larger** (a bigger determinant is more joint information and a smaller confidence
+ellipsoid), when :math:`A` is **smaller** (a smaller :math:`\text{trace}\,\mathbf{M}^{-1}` is a
+lower average coefficient variance), when :math:`E` is **larger** (a bigger smallest eigenvalue
+means the worst-estimated direction is better pinned down), and when :math:`G` and :math:`I` are
+**smaller** (lower worst-case and lower average prediction variance). "Better" points a different
+way in each column, which is precisely why no single design can top them all.
+
+Now read the rows, and notice the trap first. Going from the base design to the same design with
+every run repeated, *every* criterion improves: :math:`D` jumps by a factor of :math:`2^p` (here
+:math:`p = 3`, so :math:`4 \to 32`), :math:`A` halves, :math:`E` doubles, and both :math:`G` and
+:math:`I` halve. Nothing about the design got better; we only ran more experiments. This is the
+warning to keep for later: the raw criteria scale with the number of runs :math:`N`, so they
+cannot be used to compare designs of different size. We undo that scaling below. For the same
+reason, the base design cannot be compared with either five-run design.
+
+The fair comparison is between the two five-run designs, and here the criteria start to disagree.
+Adding the two extreme points **maximises** :math:`D` (16 versus 12): spreading runs to the
+boundary buys the most joint information, so it is the choice when the goal is to estimate the
+coefficients as a set. Adding the two centre points instead **minimises** :math:`A` (1.67 versus
+2.50), **maximises** :math:`E` (1.00 versus 0.47), and **minimises** :math:`I` (0.44 versus 0.67):
+the centre runs lower the average coefficient variance, shore up the worst-estimated direction, and
+predict better across the interior. The worst-case prediction variance :math:`G` is a tie. So the
+dilemma resolves by purpose: reinforce the extremes if you want the tightest joint estimate of the
+coefficients, add centre runs if you care about average precision and prediction. That is the
+D-for-estimation, :math:`I`-for-prediction split we return to in the closing checklist.
+
 Prediction variance
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -186,6 +278,14 @@ with :math:`\mathbf{a} = \mathbf{x}_m(\mathbf{x})`,
         = \mathbf{x}_m(\mathbf{x})^T \,\text{Var}(\mathbf{b})\, \mathbf{x}_m(\mathbf{x})
         = \sigma^2\, \mathbf{x}_m(\mathbf{x})^T \mathbf{M}^{-1} \mathbf{x}_m(\mathbf{x})
 
+Read this as a product of three things. The variance of a prediction at a new point depends on
+**where** you are predicting (the model expansion :math:`\mathbf{x}_m(\mathbf{x})`, which encodes
+how far that point sits from the centre of the design in coded space), on **how the design is laid
+out** (the inverse information matrix :math:`\mathbf{M}^{-1}`, the entire geometry of the runs
+distilled into one matrix), and on **how noisy the system is** (the baseline variance
+:math:`\sigma^2`). Only the middle term is in the experimenter's hands: the first is set by where
+you happen to want a prediction, and the last is a property of the process.
+
 That is the entire derivation: it is just error propagation through the linear
 predictor, using :math:`\text{Var}(\mathbf{b}) = \sigma^2 \mathbf{M}^{-1}`.
 
@@ -202,6 +302,16 @@ minimum of :math:`0.625\,\sigma^2` at :math:`x = \pm 0.707`, and beyond :math:`x
 climbs steeply (already :math:`5.2\,\sigma^2` at :math:`x = 1.5`): a quantitative warning
 against extrapolation.
 
+.. figure:: ../figures/doe/prediction-variance-extrapolation.png
+    :align: center
+    :width: 750px
+    :alt: prediction-variance-extrapolation.py
+
+    Prediction variance for the three-run quadratic design. It equals :math:`\sigma^2` at the three
+    design points, dips to :math:`0.625\,\sigma^2` midway between them, and climbs steeply once
+    :math:`x` leaves the design region :math:`[-1, +1]`. The shaded bands are the extrapolation
+    zone, where predictions become rapidly less certain.
+
 To *compare designs* we strip out two nuisance factors. We divide by the unknown
 :math:`\sigma^2` (a property of the process, not the design), and we multiply by the
 number of runs :math:`N` (otherwise a design looks better merely for being larger:
@@ -216,15 +326,43 @@ is the :index:`scaled prediction variance <pair: scaled prediction variance; exp
 The SPV depends only on the geometry of the design. The G-optimal value is its maximum
 over the region and the V-optimal (I-optimal) value is its average.
 
+Return for a moment to the dilemma table. The base three-run design has
+:math:`\text{SPV}(x) = 3\,(1 - 1.5\,x^2 + 1.5\,x^4)`, with a maximum of :math:`3` at the design
+points and an average of :math:`2.4` over the region. Now scale the design that simply repeated all
+three runs: it has :math:`N = 6` and half the prediction variance, so its SPV is
+:math:`6 \times \tfrac{1}{2}(1 - 1.5\,x^2 + 1.5\,x^4)`, the *identical* curve. Scaling by :math:`N`
+has exactly cancelled the artificial gain from pure replication: on the SPV scale the two designs
+are correctly seen as one and the same. This is the fix promised earlier, and it is why the
+fraction-of-design-space plot below is built from the SPV rather than from the raw prediction
+variance.
+
 The fraction-of-design-space (FDS) plot
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A single design has a *different* SPV at every point in the factor region, so quoting one
 number hides a lot. The :index:`fraction-of-design-space plot <pair: fraction of design space; experiments>`
-(FDS plot) shows the whole distribution. It is built by sampling many points spread across
-the region, computing the SPV at each, sorting those values from smallest to largest, and
-plotting SPV (vertical axis) against the cumulative fraction of the region (horizontal
-axis, running from 0 to 1).
+(FDS plot) shows the whole distribution. It is worth being precise about how it is built, because
+the recipe is far less mysterious than the finished plot can look.
+
+Start from the key fact that
+:math:`\text{SPV}(\mathbf{x}) = N\,\mathbf{x}_m(\mathbf{x})^T \mathbf{M}^{-1} \mathbf{x}_m(\mathbf{x})`
+is a *closed-form function of position*. A "point" here is not an experimental run: it is any
+location :math:`\mathbf{x}` in the factor region, and once the design has fixed :math:`\mathbf{M}`
+we can evaluate the SPV there by simply plugging :math:`\mathbf{x}` into the formula, with no data
+and no experiment required. The whole plot is a property of the design's geometry alone.
+
+So we sample the region. Scatter a large number of locations, tens of thousands of them (the figure
+below uses 80,000), uniformly at random across the coded factor region: for :math:`k` factors that
+means drawing each coordinate independently and uniformly on :math:`[-1, +1]`, so the points fill
+the cube evenly. At every one of those locations we evaluate the SPV formula. We now hold tens of
+thousands of SPV values, one per sampled location, a dense picture of how precisely the fitted model
+would predict across the entire region.
+
+Finally we turn that cloud of numbers into a curve. Sort the SPV values from smallest to largest.
+The :math:`i`-th value in the sorted list is plotted at horizontal position
+:math:`f = i / (\text{number of points})`, and its height is the SPV itself. The horizontal axis is
+therefore just the running fraction of sampled locations, and the curve is the empirical cumulative
+distribution of SPV over the region: with enough points it converges to the true distribution.
 
 The horizontal axis is the part that confuses people on first sight: it is **not** a
 factor axis. A point at horizontal position :math:`f` means "a fraction :math:`f` of the
@@ -282,15 +420,35 @@ Separability is not the same as precision
 
 The optimality criteria and the FDS plot all speak to *precision*. They are silent on the
 other question, *separability*, which is governed by the off-diagonal structure of
-:math:`\mathbf{M}`, i.e. how correlated the effects are with one another. For a design
-where the main effects are guaranteed orthogonal to the second-order terms (the definitive
-screening designs and their generalizations have this property), the only correlations
-left are *among* the second-order terms. A useful single number is the largest absolute
-correlation between any two second-order columns, computed after first removing the part of
-each column that is explained by the intercept and the main effects (this centring matters,
-because the quadratic columns :math:`x_i^2` have a positive mean that would otherwise
-inflate every correlation). A value of 0 means perfectly separable; a value of 1 means the
-two effects are statistically the same column and cannot be told apart.
+:math:`\mathbf{M}`: how correlated the effects are with one another. The correlation between
+two model-term columns, :math:`\mathbf{c}_a` and :math:`\mathbf{c}_b`, is just the cosine of
+the angle between them once each has been centred:
+
+.. math::
+
+    r_{ab} = \frac{\widetilde{\mathbf{c}}_a^{\,T} \widetilde{\mathbf{c}}_b}
+                  {\|\widetilde{\mathbf{c}}_a\| \, \|\widetilde{\mathbf{c}}_b\|}
+
+where :math:`\widetilde{\mathbf{c}}` is the column after subtracting the part explained by the
+intercept and the main effects. This residualizing step matters because the quadratic columns
+:math:`x_i^2` have a positive mean that would otherwise inflate every correlation; removing the
+intercept and main-effect content leaves only the genuine entanglement *between* the
+second-order terms. (For a design whose main effects are already orthogonal to the second-order
+terms, the definitive screening designs and their generalizations being the prime example, the
+main-effect part is essentially zero and only the centring does any work.)
+
+We report the *absolute* value of :math:`r` because its sign is an artefact of how the factor
+levels happen to be coded: flip the direction of one factor and the sign of every term
+containing it flips with it. The magnitude is the coding-invariant quantity, and it is what
+governs separability. A value of :math:`|r| = 0` means the two effects are orthogonal and can be
+estimated independently; :math:`|r| = 1` means they are the same column and cannot be told apart
+at all. Two summaries are useful: the **maximum** :math:`|r|` over all pairs is the single
+tightest confounding anywhere in the design (the worst case you would have to defend), while the
+**mean** :math:`|r|` is the overall level of entanglement. In the comparison table, the
+definitive screening design has a worst-pair value of :math:`0.707` (a structural hallmark of
+DSDs), which the thirteen-run design improves to :math:`0.570`; the mean values, :math:`0.322`
+against :math:`0.307`, are much closer, telling us the extra runs help most with the *worst* pair
+rather than with the average.
 
 It is essential to treat separability and precision as *two* axes, because a design can be
 excellent on one and poor on the other. A one-factor-at-a-time design, for instance, has
@@ -298,6 +456,157 @@ almost no correlation between its effects (good separability) and yet very poor 
 (its information is spread thinly, giving a low determinant and high prediction variance).
 Ranking designs on any single number (including a correlation summary) will eventually
 recommend something you would never want to run. Look at both axes.
+
+.. _DOE-variance-inflation-factors:
+
+.. index::
+    pair: variance inflation factor; experiments
+    see: VIF; variance inflation factor
+
+Variance inflation factors
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The correlation :math:`r` above is a *pairwise* measure. Its multivariate cousin, which asks how
+much a coefficient suffers from its entanglement with *all* the other terms at once, is the
+:index:`variance inflation factor <pair: variance inflation factor; experiments>` (VIF). For term
+:math:`j`,
+
+.. math::
+
+    \text{VIF}_j = \frac{1}{1 - R_j^2}
+
+where :math:`R_j^2` is the coefficient of determination from regressing column :math:`j` of the
+model matrix on all of the other columns. Equivalently, :math:`\text{VIF}_j` is the :math:`j`-th
+diagonal element of the inverse of the correlation matrix of the model terms. It is the factor by
+which the variance of :math:`b_j` is inflated relative to a perfectly orthogonal design:
+
+.. math::
+
+    \text{Var}(b_j) = \text{VIF}_j \cdot \frac{\sigma^2}{S_{jj}}
+
+with :math:`S_{jj}` the corrected sum of squares of column :math:`j`. In an orthogonal design every
+:math:`R_j^2 = 0`, so every :math:`\text{VIF}_j = 1`: the ideal. A value of 4 means the standard
+error of that coefficient is doubled (:math:`\sqrt{4}`) by the correlation; a common rule of thumb
+raises a flag past 5, and a serious one past 10.
+
+The link to :math:`r` is direct: if a term were correlated with just one other term at level
+:math:`r`, its VIF would be :math:`1/(1 - r^2)`. The VIF generalizes this to the joint effect of
+every other term, and is computed on whichever model you actually intend to fit.
+
+In the comparison table both summaries are reported for the main-effects-and-quadratic model. The
+definitive screening design shows :math:`\text{VIF} = 1.0` throughout: on that model its terms are
+mutually orthogonal. The thirteen-run design carries a maximum VIF of :math:`1.18` and a mean of
+:math:`1.08`, which inflates the worst standard error by only :math:`\sqrt{1.18} \approx 1.09`,
+about nine percent. That is a mild and entirely acceptable price for the residual degrees of freedom
+and the interaction estimates that the extra runs provide.
+
+.. _DOE-statistical-power:
+
+.. index::
+    pair: power; experiments
+    pair: residual degrees of freedom; experiments
+    pair: effect size; experiments
+
+Statistical power
+~~~~~~~~~~~~~~~~~~~~~
+
+Everything so far describes how *precisely* a design estimates. Power asks the question the
+experimenter actually cares about: if an effect is really there, how likely are we to detect it? We
+are testing :math:`H_0\!: \beta_j = 0` against the alternative that :math:`\beta_j` equals some
+effect size :math:`\delta` we consider practically important. Under that alternative the usual
+:math:`t`- or :math:`F`-test statistic is no longer central; it follows a *non-central* distribution
+whose non-centrality parameter is
+
+.. math::
+
+    \lambda = \frac{\delta^2}{\text{Var}(b_j)} = \frac{\delta^2}{\sigma^2\, c_{jj}},
+    \qquad c_{jj} = \left[(\mathbf{X}^T\mathbf{X})^{-1}\right]_{jj}
+
+The power is the probability that the statistic clears its critical value under this non-central
+distribution, :math:`\text{power} = P\!\left(F_{1,\nu} > F_{\text{crit}} \mid \lambda\right)`, where
+:math:`\nu` is the residual degrees of freedom. Anything that improves precision (a larger
+:math:`1/c_{jj}`, i.e. more information about that term) raises :math:`\lambda` and therefore the
+power, for a fixed effect size and significance level.
+
+Two consequences deserve to be stated plainly. First, **power requires residual degrees of
+freedom**: the non-central distribution needs an estimate of :math:`\sigma^2`, and a saturated
+design with :math:`\nu = 0` supplies none. This is exactly why the definitive screening design's
+power entries in the table are marked "n/a": with nine runs and nine terms in the
+main-effects-and-quadratic model it has nothing left over to estimate the noise, so no test can be
+run at all. The four extra runs of the thirteen-run design buy :math:`\nu = 4`, and with them the
+ability to test.
+
+Second, power is always quoted *for a stated effect size and* :math:`\alpha`. The table's values
+assume an effect of one noise standard deviation (:math:`\delta = \sigma`) at :math:`\alpha = 0.05`.
+Read that way, the thirteen-run design has a :math:`0.46` chance of flagging a true one-sigma main
+effect as significant, but only :math:`0.25` for a quadratic of the same size. The gap is expected:
+quadratic effects are estimated with larger variance (we saw this in the worked example, where
+:math:`\text{Var}(b_2)` was the largest of the three), so they are intrinsically harder to detect. A
+screening study that must catch curvature will need either more runs or a larger assumed effect
+size.
+
+.. _DOE-design-comparison-table:
+
+Putting the metrics side by side
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Collecting every measure we have defined into one place, here are the two designs from the FDS plot,
+a nine-run definitive screening design and the thirteen-run OMARS design, evaluated on the
+four-factor main-effects-and-quadratic model.
+
+.. list-table:: Comparing the nine-run DSD with the thirteen-run OMARS design.
+    :header-rows: 1
+    :widths: 48 26 26
+
+    *   - metric (and preferred direction)
+        - DSD, 9 runs
+        - OMARS, 13 runs
+    *   - D-efficiency (higher is better)
+        - 42.8 %
+        - 39.0 %
+    *   - :math:`A`, summed coefficient variance (lower)
+        - 3.67
+        - 2.52
+    *   - :math:`I`, average SPV (lower)
+        - 6.59
+        - 6.19
+    *   - :math:`G`, maximum SPV (lower)
+        - 8.98
+        - 12.50
+    *   - maximum :math:`|r|` (lower)
+        - 0.707
+        - 0.570
+    *   - mean :math:`|r|` (lower)
+        - 0.322
+        - 0.307
+    *   - maximum VIF (lower)
+        - 1.00
+        - 1.18
+    *   - mean VIF (lower)
+        - 1.00
+        - 1.08
+    *   - residual degrees of freedom (higher)
+        - 0
+        - 4
+    *   - power, main effect at :math:`\delta = \sigma` (higher)
+        - n/a
+        - 0.46
+    *   - power, quadratic at :math:`\delta = \sigma` (higher)
+        - n/a
+        - 0.25
+    *   - two-factor interactions estimable (higher)
+        - 0
+        - 2
+
+No design wins every row, which is the entire point. The thirteen-run design is better on average
+coefficient variance, average prediction, both correlation summaries, and is the only one of the two
+that can estimate interactions or test anything at all; the nine-run design holds a higher
+D-efficiency and a lower worst-case prediction variance :math:`G`. Read the D-efficiency and the
+per-run figures with care, though: as the dilemma table showed, these quantities shift with the
+number of runs, so a head-to-head on :math:`D` across a nine-run and a thirteen-run design is not a
+like-for-like comparison. The honest reading leans on the quantities that carry real meaning here,
+separability (:math:`|r|`, VIF), prediction (:math:`I`, :math:`G`), and the ability to test at all
+(residual degrees of freedom), and lets the purpose of the study break the ties.
 
 A checklist for choosing among designs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
