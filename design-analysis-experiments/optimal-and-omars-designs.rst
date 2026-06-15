@@ -196,15 +196,33 @@ variances live in the reciprocals :math:`1/\lambda`.
     *   **D-optimality** maximizes :math:`\det(\mathbf{M}) = \prod_j \lambda_j`. The joint
         confidence region for all the coefficients is an ellipsoid whose volume is proportional to
         :math:`1/\sqrt{\det(\mathbf{M})}`, so a large determinant means the smallest *overall,
-        joint* uncertainty. This is the natural criterion when the goal is to estimate the model
-        coefficients well, as in screening.
+        joint* uncertainty. Because the determinant is a *product*, a design that distributes
+        information unevenly across coefficients (one estimated very precisely, another less so)
+        can still score well, provided the precise directions compensate. D-optimality is the
+        natural criterion when the goal is to estimate the full set of model coefficients
+        together, as in screening, where the joint confidence ellipsoid matters.
 
     *   **A-optimality** minimizes :math:`\text{trace}(\mathbf{M}^{-1}) = \sum_j 1/\lambda_j`,
-        which is exactly the sum (or average) of the individual coefficient variances. It is the
-        most directly interpretable criterion.
+        which is exactly the sum of the individual coefficient variances (the diagonal entries of
+        :math:`\mathbf{M}^{-1}`). Because it is a *sum* rather than a product, every coefficient
+        contributes equally: a design that lets one variance become large is penalised even when
+        all others are small. A-optimality asks for the smallest total estimation error across all
+        terms, so it tends to produce more balanced designs than D-optimality when some
+        coefficients are inherently harder to estimate. Where D-optimality would let a
+        hard-to-estimate coefficient's variance balloon if doing so improves the product,
+        A-optimality resists that trade-off. Mnemonic: D for the Determinant of the joint
+        confidence ellipsoid; A for the Average individual variance.
 
-    *   **E-optimality** maximizes the smallest eigenvalue of :math:`\mathbf{M}`, controlling the
-        *worst-estimated* combination of coefficients.
+    *   **E-optimality** maximizes the smallest eigenvalue of :math:`\mathbf{M}`. The eigenvectors
+        of :math:`\mathbf{M}` are directions in coefficient space; the eigenvalues are the
+        information available in each direction. The smallest eigenvalue corresponds to the linear
+        combination of coefficients that is hardest to estimate, the direction in which the
+        confidence ellipsoid stretches furthest. E-optimality is a minimax criterion: it forces
+        the design to strengthen whichever direction is weakest, even at the cost of being
+        suboptimal elsewhere. It is appropriate when a poorly-estimated contrast would invalidate
+        the experiment, but it is rarely the primary criterion in practice because shoring up a
+        single worst-case direction can degrade the average (A) and joint (D) measures noticeably.
+        Mnemonic: E for the Eigenvalue of the worst-Estimated direction.
 
     *   **G-** and **V-optimality** are about the variance of the *predictions* rather than the
         coefficients directly. G-optimality minimizes the largest prediction variance anywhere in
