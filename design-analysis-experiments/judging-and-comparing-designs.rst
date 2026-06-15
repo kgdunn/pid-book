@@ -571,6 +571,6 @@ and the number of residual degrees of freedom.
   the scaled prediction variance, and FDS plots.
 * Goos and Jones, *Optimal Design of Experiments: A Case Study Approach*, for the
   information-matrix view of the optimality criteria.
-* Núñez Ares, Schoen and Goos, "Orthogonal Minimally Aliased Response Surface Designs", and the
-  review by Goos, "OMARS Designs for Factor Screening and Response Surface Experimentation in One
-  Step", for the OMARS family used in the comparison above.
+* Núñez Ares and Goos, "Enumeration and Multicriteria Selection of Orthogonal Minimally Aliased
+  Response Surface Designs", and the review by Goos, "OMARS Designs for Factor Screening and
+  Response Surface Experimentation in One Step", for the OMARS family used in the comparison above.
