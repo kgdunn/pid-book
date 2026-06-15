@@ -132,11 +132,11 @@ the maximum and average of the prediction variance
 
     *   - design
         - :math:`N`
-        - :math:`D=\det\mathbf{M}`
-        - :math:`A=\text{trace}\,\mathbf{M}^{-1}`
-        - :math:`E=\lambda_{\min}`
-        - :math:`G`
-        - :math:`I`
+        - :math:`\uparrow\ D=\det\mathbf{M}`
+        - :math:`\downarrow\ A=\text{trace}\,\mathbf{M}^{-1}`
+        - :math:`\uparrow\ E=\lambda_{\min}`
+        - :math:`\downarrow\ G`
+        - :math:`\downarrow\ I`
     *   - base :math:`\{-1, 0, +1\}`
         - 3
         - 4
@@ -166,13 +166,56 @@ the maximum and average of the prediction variance
         - 1.0
         - 0.67
 
+It is worth seeing the matrices these summaries come from. Writing each run as
+:math:`\mathbf{x}_m = [\,1,\ x,\ x^2\,]` and stacking the runs as the rows of :math:`\mathbf{X}`,
+the base three-run design (row 1) gives the matrix already worked out in the
+:ref:`previous section <DOE-information-matrix-worked-example>`,
+
+.. math::
+
+    \mathbf{X}_1 = \begin{bmatrix} 1 & -1 & 1 \\ 1 & 0 & 0 \\ 1 & 1 & 1 \end{bmatrix},
+    \qquad
+    \mathbf{M}_1 = \mathbf{X}_1^T\mathbf{X}_1
+        = \begin{bmatrix} 3 & 0 & 2 \\ 0 & 2 & 0 \\ 2 & 0 & 2 \end{bmatrix}
+
+Repeating all three runs (row 2) stacks a second copy of every row, which simply doubles the
+information matrix,
+
+.. math::
+
+    \mathbf{X}_2 = \begin{bmatrix} 1 & -1 & 1 \\ 1 & 0 & 0 \\ 1 & 1 & 1 \\
+        1 & -1 & 1 \\ 1 & 0 & 0 \\ 1 & 1 & 1 \end{bmatrix},
+    \qquad
+    \mathbf{M}_2 = \begin{bmatrix} 6 & 0 & 4 \\ 0 & 4 & 0 \\ 4 & 0 & 4 \end{bmatrix}
+        = 2\,\mathbf{M}_1
+
+while adding a point at each extreme (row 4) keeps the single centre run but doubles the two
+boundary runs,
+
+.. math::
+
+    \mathbf{X}_4 = \begin{bmatrix} 1 & -1 & 1 \\ 1 & 0 & 0 \\ 1 & 1 & 1 \\
+        1 & -1 & 1 \\ 1 & 1 & 1 \end{bmatrix},
+    \qquad
+    \mathbf{M}_4 = \begin{bmatrix} 5 & 0 & 4 \\ 0 & 4 & 0 \\ 4 & 0 & 4 \end{bmatrix}
+
+The :math:`D`, :math:`A`, and :math:`E` columns of the table are nothing more than the determinant,
+the trace of the inverse, and the smallest eigenvalue of each of these :math:`\mathbf{M}` matrices,
+and the prediction columns :math:`G` and :math:`I` follow from :math:`\mathbf{M}^{-1}` exactly as in
+the previous section. Notice already that :math:`\mathbf{M}_2` and :math:`\mathbf{M}_4` differ only
+in the top-left entry (6 versus 5): the fully replicated design is the extreme-point design plus one
+extra centre run, and that centre run adds to :math:`M_{00}` alone. That single observation is the
+seed of the comparison below.
+
 Before reading the numbers, fix the direction each criterion should move towards. A design is better when
 :math:`D` is **larger** (a bigger determinant is more joint information and a smaller confidence
 ellipsoid), when :math:`A` is **smaller** (a smaller :math:`\text{trace}\,\mathbf{M}^{-1}` is a
 lower average coefficient variance), when :math:`E` is **larger** (a bigger smallest eigenvalue
 means the worst-estimated direction is better pinned down), and when :math:`G` and :math:`I` are
-**smaller** (lower worst-case and lower average prediction variance). "Better" points a different
-way in each column, which is precisely why no single design can top them all.
+**smaller** (lower worst-case and lower average prediction variance). The arrow at the head of each
+column marks that direction of improvement: :math:`\uparrow` where larger is better and
+:math:`\downarrow` where smaller is better. "Better" points a different way in each column, which is
+precisely why no single design can top them all.
 
 Now read the rows, and notice the trap first. Going from the base design to the same design with
 every run repeated, *every* criterion improves: :math:`D` jumps by a factor of :math:`2^p` (here
@@ -182,32 +225,37 @@ warning to keep for later: the raw criteria scale with the number of runs :math:
 cannot be used to compare designs of different size. We undo that scaling below. For the same
 reason, the base design cannot be compared with either five-run design.
 
-The fair comparison is between the two five-run designs, and here the criteria start to disagree.
-Adding the two extreme points **maximises** :math:`D` (16 versus 12): spreading runs to the
-boundary buys the most joint information, so it is the choice when the goal is to estimate the
-coefficients as a set. Adding the two centre points instead **minimises** :math:`A` (1.67 versus
-2.50), **maximises** :math:`E` (1.00 versus 0.47), and **minimises** :math:`I` (0.44 versus 0.67):
-the centre runs lower the average coefficient variance, shore up the worst-estimated direction, and
-predict better across the interior. The worst-case prediction variance :math:`G` is a tie.
+The fair comparison is between the two five-run designs, and here the criteria start to help make a
+decision. Adding the two extreme points maximises :math:`D` (16 versus 12 when adding two replicate
+centre points): spreading runs to the boundary buys more joint information on the coefficient
+estimates, so it is the choice when the goal is to estimate the coefficients as a set.
 
-It is worth seeing *why* the centre points win on :math:`A` and :math:`E`. The weak spot of the
-three-run base design is the intercept-quadratic pair: the two are correlated
-(:math:`M_{02} = 2`) and the quadratic is the least precise coefficient
-(:math:`\text{Var}(b_2) = 1.5\,\sigma^2`). A centre run expands to
-:math:`\mathbf{x}_m = [\,1,\ 0,\ 0\,]`, so it adds information to the intercept alone: it raises
-:math:`M_{00}` from 3 to 5 while leaving the entangling cross-term :math:`M_{02}` untouched.
-Pinning the intercept down this way partly de-correlates it from :math:`b_2` and pulls
-:math:`\text{Var}(b_2)` down from :math:`1.5\,\sigma^2` to :math:`0.83\,\sigma^2`. That is exactly
-what the two centre-favouring criteria reward: :math:`A` is dominated by the largest coefficient
-variance, and the smallest eigenvalue of :math:`\mathbf{M}` that :math:`E` maximises lies along
-that same intercept-quadratic direction. The two extreme points instead expand to
-:math:`[\,1,\ -1,\ 1\,]` and :math:`[\,1,\ +1,\ 1\,]`, which *deepen* the entanglement (the
-cross-term grows to :math:`M_{02} = 4`): they buy the most joint volume, hence the best :math:`D`,
-but leave the weak direction no better pinned down, which is why :math:`E` barely moves (0.47
-versus the base 0.44). So the
-dilemma resolves by purpose: reinforce the extremes if you want the tightest joint estimate of the
-coefficients, add centre runs if you care about average precision and prediction. That is the
-D-for-estimation, :math:`I`-for-prediction split we return to in the closing checklist.
+Adding the two centre points instead reduces :math:`A` (1.67 versus 2.50) because it lowers the
+average coefficient variance. The reason is visible in the information matrix. The weak spot of the
+base design is the intercept-quadratic pair: the two are correlated (:math:`M_{02} = 2`) and the
+quadratic is the least precise coefficient (:math:`\text{Var}(b_2) = 1.5\,\sigma^2`). A centre run
+expands to :math:`\mathbf{x}_m = [\,1,\ 0,\ 0\,]`, so it adds information to the intercept alone:
+it raises :math:`M_{00}` from 3 to 5 while leaving the entangling cross-term :math:`M_{02}`
+untouched. Pinning the intercept down this way partly de-correlates it from :math:`b_2` and pulls
+:math:`\text{Var}(b_2)` from :math:`1.5\,\sigma^2` down to :math:`0.83\,\sigma^2`, and that drop in
+the largest coefficient variance is what lowers the average.
+
+The centre points also maximise :math:`E` (1.00 versus 0.47), the smallest eigenvalue of
+:math:`\mathbf{M}`, which gauges how well the *worst-estimated* direction in coefficient space is
+pinned down. That weakest direction is the very same intercept-quadratic combination, so the runs
+that de-correlate the pair are exactly the ones that shore it up. The extreme points cannot help
+here: their rows :math:`[\,1,\ -1,\ 1\,]` and :math:`[\,1,\ +1,\ 1\,]` *deepen* the entanglement
+(the cross-term grows to :math:`M_{02} = 4`), which is why :math:`E` barely moves from the base
+value of 0.44.
+
+Finally the centre points minimise :math:`I` (0.44 versus 0.67), the average prediction variance
+over the region: concentrating runs in the interior predicts better across the bulk of the factor
+space, where the fitted model is most often used. The worst-case prediction variance :math:`G` is a
+tie between the two five-run designs.
+
+So the dilemma resolves by purpose: reinforce the extremes if you want the tightest joint estimate
+of the coefficients, add centre runs if you care about average precision and prediction. That is the
+:math:`D`-for-estimation, :math:`I`-for-prediction split we return to in the closing checklist.
 
 Return for a moment to the dilemma table. The base three-run design has
 :math:`\text{SPV}(x) = 3\,(1 - 1.5\,x^2 + 1.5\,x^4)`, with a maximum of :math:`3` at the design
