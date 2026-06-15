@@ -166,6 +166,47 @@ the maximum and average of the prediction variance
         - 1.0
         - 0.67
 
+It is worth seeing the matrices these summaries come from. Writing each run as
+:math:`\mathbf{x}_m = [\,1,\ x,\ x^2\,]` and stacking the runs as the rows of :math:`\mathbf{X}`,
+the base three-run design (row 1) gives the matrix already worked out in the
+:ref:`previous section <DOE-information-matrix-worked-example>`,
+
+.. math::
+
+    \mathbf{X}_1 = \begin{bmatrix} 1 & -1 & 1 \\ 1 & 0 & 0 \\ 1 & 1 & 1 \end{bmatrix},
+    \qquad
+    \mathbf{M}_1 = \mathbf{X}_1^T\mathbf{X}_1
+        = \begin{bmatrix} 3 & 0 & 2 \\ 0 & 2 & 0 \\ 2 & 0 & 2 \end{bmatrix}
+
+Repeating all three runs (row 2) stacks a second copy of every row, which simply doubles the
+information matrix,
+
+.. math::
+
+    \mathbf{X}_2 = \begin{bmatrix} 1 & -1 & 1 \\ 1 & 0 & 0 \\ 1 & 1 & 1 \\
+        1 & -1 & 1 \\ 1 & 0 & 0 \\ 1 & 1 & 1 \end{bmatrix},
+    \qquad
+    \mathbf{M}_2 = \begin{bmatrix} 6 & 0 & 4 \\ 0 & 4 & 0 \\ 4 & 0 & 4 \end{bmatrix}
+        = 2\,\mathbf{M}_1
+
+while adding a point at each extreme (row 4) keeps the single centre run but doubles the two
+boundary runs,
+
+.. math::
+
+    \mathbf{X}_4 = \begin{bmatrix} 1 & -1 & 1 \\ 1 & 0 & 0 \\ 1 & 1 & 1 \\
+        1 & -1 & 1 \\ 1 & 1 & 1 \end{bmatrix},
+    \qquad
+    \mathbf{M}_4 = \begin{bmatrix} 5 & 0 & 4 \\ 0 & 4 & 0 \\ 4 & 0 & 4 \end{bmatrix}
+
+The :math:`D`, :math:`A`, and :math:`E` columns of the table are nothing more than the determinant,
+the trace of the inverse, and the smallest eigenvalue of each of these :math:`\mathbf{M}` matrices,
+and the prediction columns :math:`G` and :math:`I` follow from :math:`\mathbf{M}^{-1}` exactly as in
+the previous section. Notice already that :math:`\mathbf{M}_2` and :math:`\mathbf{M}_4` differ only
+in the top-left entry (6 versus 5): the fully replicated design is the extreme-point design plus one
+extra centre run, and that centre run adds to :math:`M_{00}` alone. That single observation is the
+seed of the comparison below.
+
 Before reading the numbers, fix the direction each criterion should move towards. A design is better when
 :math:`D` is **larger** (a bigger determinant is more joint information and a smaller confidence
 ellipsoid), when :math:`A` is **smaller** (a smaller :math:`\text{trace}\,\mathbf{M}^{-1}` is a
