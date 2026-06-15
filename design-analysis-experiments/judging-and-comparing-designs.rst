@@ -15,7 +15,7 @@ Judging and comparing experimental designs
 By this point we have several ways to build a design: full factorials, fractional
 factorials, central composite designs (:ref:`central composite designs
 <DOE_central_composite_designs>`), and the
-more flexible :ref:`optimal designs <DOE-optimial-designs>`. A practical question
+more flexible :ref:`optimal designs <DOE-optimal-designs>`. A practical question
 follows almost immediately: when you are handed two or three candidate designs
 (perhaps a small screening design, a slightly larger one, and a classical response
 surface design), how do you decide which is *better*?
@@ -30,12 +30,13 @@ your mind:
     #.  **Precision.** Even when the effects are separable, how *precisely* can we
         estimate the coefficients and predict the response?
 
-Both questions are answered by a single object built from the design: the
-information matrix. This subchapter shows what that matrix is, how the
-:ref:`optimality criteria <DOE-optimial-designs>` are simply different ways of
-reading it, how prediction variance is derived from it, and how to read a
-fraction-of-design-space plot. We close with a short checklist for choosing
-between designs.
+Both questions are answered by a single object built from the design: the information
+matrix :math:`\mathbf{M} = \mathbf{X}^T\mathbf{X}`, together with the optimality criteria
+that summarise it. Both are introduced in the previous section,
+:ref:`Optimal designs and OMARS designs <DOE-optimal-and-omars-designs>`, so here we take
+them as given. This subchapter shows how prediction variance is derived from
+:math:`\mathbf{M}`, and how to read a fraction-of-design-space plot. We close with a short
+checklist for choosing between designs.
 
 One quantity runs through everything that follows and deserves to be pinned down now: the noise
 standard deviation :math:`\sigma`. It is the irreducible, run-to-run variability of the response,
@@ -46,136 +47,8 @@ design controls only that second part, the geometry. It can do nothing about :ma
 Pinning :math:`\sigma` down, by replication, from a control chart, or from prior knowledge of the
 process, is the experimenter's responsibility, not something any design can deliver.
 
-The model matrix and the information matrix
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Everything starts with the :math:`\mathbf{X}` matrix from least squares
-(:ref:`multiple linear regression <LS_multiple_X_MLR>`). The key point that trips
-people up: **the columns of** :math:`\mathbf{X}` **are the terms of the model you
-intend to fit, not just the factors.** Each row is one experimental run; each column
-is one term in the model.
-
-For the full second-order model in :math:`k` factors,
-
-.. math::
-
-    y = b_0 + \sum_i b_i x_i + \sum_i b_{ii} x_i^2 + \sum_{i<j} b_{ij} x_i x_j + e
-
-the columns of :math:`\mathbf{X}` are: a column of ones (the intercept), one column
-per main effect :math:`x_i`, one column per pure quadratic :math:`x_i^2`, and one
-column per two-factor interaction :math:`x_i x_j`. The same physical design produces
-a *different* :math:`\mathbf{X}` for a different model. A single row of
-:math:`\mathbf{X}` is the *model expansion* of that run: a run at settings
-:math:`(x_1, x_2, \ldots)` becomes the row
-:math:`\mathbf{x}_m^T = [\,1,\ x_1,\ x_2,\ \ldots,\ x_1^2,\ \ldots,\ x_1 x_2,\ \ldots\,]`.
-We will reuse :math:`\mathbf{x}_m(\mathbf{x})` shortly to mean this same expansion
-evaluated at *any* point :math:`\mathbf{x}`, including points we never ran.
-
-The **information matrix** is
-
-.. math::
-
-    \mathbf{M} = \mathbf{X}^T \mathbf{X}
-
-It earns its name from the least squares result for the covariance of the estimated
-coefficients (:ref:`confidence intervals for the parameters <LS-CI-for-model-parameters>`):
-
-.. math::
-
-    \text{Var}(\mathbf{b}) = \sigma^2 \left(\mathbf{X}^T \mathbf{X}\right)^{-1}
-                           = \sigma^2 \mathbf{M}^{-1}
-
-So :math:`\mathbf{M}^{-1}`, scaled by the noise variance :math:`\sigma^2`, *is* the
-variance-covariance matrix of the coefficient estimates. More information (a "larger"
-:math:`\mathbf{M}`) means a smaller :math:`\mathbf{M}^{-1}`, and therefore more
-precise estimates.
-
-Read :math:`\mathbf{M}` entry by entry. Because :math:`\mathbf{M} = \mathbf{X}^T\mathbf{X}`,
-the entry :math:`M_{jk}` is the dot product of model columns :math:`j` and :math:`k`:
-
-    *   the **diagonal** :math:`M_{jj}` is the squared length of column :math:`j`:
-        how hard the design exercises that term. Bigger means more information about
-        that coefficient;
-
-    *   the **off-diagonal** :math:`M_{jk}` measures how *entangled* terms :math:`j`
-        and :math:`k` are. Zero means the two effects are orthogonal and are
-        estimated independently; a large value means their estimates are correlated
-        and their variances inflate.
-
-If a design is fully orthogonal, :math:`\mathbf{M}` is diagonal and every coefficient
-is estimated on its own with variance :math:`\sigma^2 / M_{jj}`. If two columns are
-linearly dependent (one effect :ref:`confounded <DOE-design-resolution>` with
-another) then :math:`\mathbf{M}` is singular, cannot be inverted, and that
-coefficient is simply not estimable.
-
-Reading the optimality criteria
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The :ref:`optimality criteria <DOE-optimial-designs>` are nothing more than different
-scalar summaries of :math:`\mathbf{M}`. They are easiest to understand through the
-eigenvalues :math:`\lambda_1, \ldots, \lambda_p` of :math:`\mathbf{M}`, remembering
-that the coefficient variances live in the reciprocals :math:`1/\lambda`.
-
-    *   **D-optimality** maximizes :math:`\text{det}(\mathbf{M}) = \prod_j \lambda_j`.
-        The joint confidence region for all the coefficients is an ellipsoid whose
-        volume is proportional to :math:`1/\sqrt{\text{det}(\mathbf{M})}`, so a large
-        determinant means the smallest *overall, joint* uncertainty. This is the
-        natural criterion when the goal is to estimate the model coefficients well,
-        as in screening.
-
-    *   **A-optimality** minimizes :math:`\text{trace}(\mathbf{M}^{-1}) =
-        \sum_j 1/\lambda_j`, which is exactly the sum (or average) of the individual
-        coefficient variances. It is the most directly interpretable criterion.
-
-    *   **E-optimality** maximizes the smallest eigenvalue of :math:`\mathbf{M}`, i.e.
-        it controls the *worst-estimated* combination of coefficients.
-
-    *   **G-optimality** minimizes the largest prediction variance anywhere in the
-        region, and **V-optimality** (also called *I-* or *IV-optimality* in the
-        literature) minimizes the *average* prediction variance over the region.
-        These two are about prediction rather than the coefficients directly, which
-        we develop next.
-
-D multiplies the eigenvalues, A sums their reciprocals, E looks at the extreme one:
-the same matrix, aggregated differently. That is why a design can score well
-on one criterion and poorly on another, and why the choice of criterion should follow
-the purpose of the experiment. As noted in the :ref:`optimal designs <DOE-optimial-designs>`
-section, a full :math:`2^k` factorial is simultaneously A-, D-, G- and V-optimal for the
-main-effects-and-interactions model: the criteria only start to disagree once we
-economize on runs or move to three-level designs.
-
-.. _DOE-information-matrix-worked-example:
-
-A worked example: the information matrix of a small design
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The mechanics are clearest on the smallest design that still has curvature: a single
-factor run at three levels, :math:`x = -1, 0, +1`, fitting the quadratic model
-:math:`y = b_0 + b_1 x + b_2 x^2 + e`. Each point expands to
-:math:`\mathbf{x}_m = [\,1,\ x,\ x^2\,]`, so
-
-.. math::
-
-    \mathbf{X} = \begin{bmatrix} 1 & -1 & 1 \\ 1 & 0 & 0 \\ 1 & 1 & 1 \end{bmatrix},
-    \qquad
-    \mathbf{M} = \mathbf{X}^T\mathbf{X}
-        = \begin{bmatrix} 3 & 0 & 2 \\ 0 & 2 & 0 \\ 2 & 0 & 2 \end{bmatrix}
-
-The off-diagonal :math:`M_{01} = M_{12} = 0` tells us the linear term is orthogonal to
-both the intercept and the quadratic, so :math:`b_1` is estimated cleanly. But
-:math:`M_{02} = 2 \neq 0`: the intercept and quadratic columns are entangled (both have
-a positive mean), so :math:`b_0` and :math:`b_2` will be correlated. Inverting,
-
-.. math::
-
-    \mathbf{M}^{-1} = \begin{bmatrix} 1 & 0 & -1 \\ 0 & 0.5 & 0 \\ -1 & 0 & 1.5 \end{bmatrix}
-
-The diagonal gives the coefficient variances in units of :math:`\sigma^2`:
-:math:`\text{Var}(b_0) = 1.0\,\sigma^2`, :math:`\text{Var}(b_1) = 0.5\,\sigma^2`, and
-:math:`\text{Var}(b_2) = 1.5\,\sigma^2`. The quadratic is the least precise (curvature
-is the hardest thing to pin down from only three points), and the :math:`-1`
-off-diagonal is the intercept-quadratic correlation we anticipated from
-:math:`M_{02}`.
+A worked example: augmenting a small design
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 That single design is rarely the end of the story. Suppose the budget stretches to two more runs.
 Two natural options present themselves, and they pull in different directions:
