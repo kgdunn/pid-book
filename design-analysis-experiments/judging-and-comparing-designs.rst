@@ -12,9 +12,9 @@
 Judging and comparing experimental designs
 =============================================
 
-By this point we have several ways to build a design: full factorials, fractional
-factorials, central composite designs (:ref:`central composite designs
-<DOE_central_composite_designs>`), and the
+By this point we have several ways to build a design: :ref:`full factorials
+<DOE-two-level-factorials>`, :ref:`fractional factorials <DOE-fractional-factorials>`,
+:ref:`central composite designs <DOE_central_composite_designs>`, and the
 more flexible :ref:`optimal designs <DOE-optimal-designs>`. A practical question
 follows almost immediately: when you are handed two or three candidate designs
 (perhaps a small screening design, a slightly larger one, and a classical response
@@ -37,95 +37,6 @@ that summarise it. Both are introduced in the previous section,
 them as given. This subchapter shows how prediction variance is derived from
 :math:`\mathbf{M}`, and how to read a fraction-of-design-space plot. We close with a short
 checklist for choosing between designs.
-
-A worked example: augmenting a small design
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The :ref:`previous section <DOE-information-matrix-worked-example>` worked out the information
-matrix of the smallest design with curvature: a single factor at three levels,
-:math:`x = -1, 0, +1`, fitting the quadratic model :math:`y = b_0 + b_1 x + b_2 x^2 + e`. That
-single design is rarely the end of the story. Suppose the budget stretches to two more runs.
-Two natural options present themselves, and they pull in different directions:
-
-    *   add **two replicate centre points** (two more runs at :math:`x = 0`), or
-    *   add **a point at** :math:`x = -1` **and one at** :math:`x = +1`, reinforcing the extremes.
-
-Which is better? It depends entirely on what we ask of the design, and the optimality criteria turn
-that vague question into an arithmetic one. The table below evaluates four designs on the same
-quadratic model: the base three-run design, the base design with all three runs repeated, the base
-plus two centre points, and the base plus two extreme points. The criteria are the raw,
-unnormalised summaries of :math:`\mathbf{M}` from earlier (:math:`D = \det\mathbf{M}`,
-:math:`A = \text{trace}\,\mathbf{M}^{-1}`, :math:`E = \lambda_{\min}(\mathbf{M})`), together with
-the maximum and average of the prediction variance
-:math:`d(x) = \mathbf{x}_m^T \mathbf{M}^{-1} \mathbf{x}_m` over :math:`x \in [-1, +1]` (these are the
-:math:`G` and :math:`I` quantities, in units of :math:`\sigma^2`).
-
-.. list-table:: Four candidate designs for the single-factor quadratic model.
-    :header-rows: 1
-    :widths: 34 8 12 16 14 8 8
-
-    *   - design
-        - :math:`N`
-        - :math:`D=\det\mathbf{M}`
-        - :math:`A=\text{trace}\,\mathbf{M}^{-1}`
-        - :math:`E=\lambda_{\min}`
-        - :math:`G`
-        - :math:`I`
-    *   - base :math:`\{-1, 0, +1\}`
-        - 3
-        - 4
-        - 3.00
-        - 0.44
-        - 1.0
-        - 0.80
-    *   - base, all three runs repeated
-        - 6
-        - 32
-        - 1.50
-        - 0.88
-        - 0.5
-        - 0.40
-    *   - base + two centre points
-        - 5
-        - 12
-        - 1.67
-        - 1.00
-        - 1.0
-        - 0.44
-    *   - base + two points at :math:`\pm 1`
-        - 5
-        - 16
-        - 2.50
-        - 0.47
-        - 1.0
-        - 0.67
-
-Before reading the numbers, fix the direction each criterion is driven. A design is better when
-:math:`D` is **larger** (a bigger determinant is more joint information and a smaller confidence
-ellipsoid), when :math:`A` is **smaller** (a smaller :math:`\text{trace}\,\mathbf{M}^{-1}` is a
-lower average coefficient variance), when :math:`E` is **larger** (a bigger smallest eigenvalue
-means the worst-estimated direction is better pinned down), and when :math:`G` and :math:`I` are
-**smaller** (lower worst-case and lower average prediction variance). "Better" points a different
-way in each column, which is precisely why no single design can top them all.
-
-Now read the rows, and notice the trap first. Going from the base design to the same design with
-every run repeated, *every* criterion improves: :math:`D` jumps by a factor of :math:`2^p` (here
-:math:`p = 3`, so :math:`4 \to 32`), :math:`A` halves, :math:`E` doubles, and both :math:`G` and
-:math:`I` halve. Nothing about the design got better; we only ran more experiments. This is the
-warning to keep for later: the raw criteria scale with the number of runs :math:`N`, so they
-cannot be used to compare designs of different size. We undo that scaling below. For the same
-reason, the base design cannot be compared with either five-run design.
-
-The fair comparison is between the two five-run designs, and here the criteria start to disagree.
-Adding the two extreme points **maximises** :math:`D` (16 versus 12): spreading runs to the
-boundary buys the most joint information, so it is the choice when the goal is to estimate the
-coefficients as a set. Adding the two centre points instead **minimises** :math:`A` (1.67 versus
-2.50), **maximises** :math:`E` (1.00 versus 0.47), and **minimises** :math:`I` (0.44 versus 0.67):
-the centre runs lower the average coefficient variance, shore up the worst-estimated direction, and
-predict better across the interior. The worst-case prediction variance :math:`G` is a tie. So the
-dilemma resolves by purpose: reinforce the extremes if you want the tightest joint estimate of the
-coefficients, add centre runs if you care about average precision and prediction. That is the
-D-for-estimation, :math:`I`-for-prediction split we return to in the closing checklist.
 
 Prediction variance
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -192,6 +103,95 @@ is the :index:`scaled prediction variance <pair: scaled prediction variance; exp
 
 The SPV depends only on the geometry of the design. The G-optimal value is its maximum
 over the region and the V-optimal (I-optimal) value is its average.
+
+A worked example: augmenting a small design
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The :ref:`previous section <DOE-information-matrix-worked-example>` worked out the information
+matrix of the smallest design with curvature: a single factor at three levels,
+:math:`x = -1, 0, +1`, fitting the quadratic model :math:`y = b_0 + b_1 x + b_2 x^2 + e`. That
+single design is rarely the end of the story. Suppose the budget stretches to two more runs.
+Two natural options present themselves, and they pull in different directions:
+
+    *   add **two replicate centre points** (two more runs at :math:`x = 0`), or
+    *   add **a point at** :math:`x = -1` **and one at** :math:`x = +1`, reinforcing the extremes.
+
+Which is better? It depends entirely on what we ask of the design, and the optimality criteria turn
+that vague question into an arithmetic one. The table below evaluates four designs on the same
+quadratic model: the base three-run design, the base design with all three runs repeated, the base
+plus two centre points, and the base plus two extreme points. The criteria are the raw,
+unnormalised summaries of :math:`\mathbf{M}` from earlier (:math:`D = \det\mathbf{M}`,
+:math:`A = \text{trace}\,\mathbf{M}^{-1}`, :math:`E = \lambda_{\min}(\mathbf{M})`), together with
+the maximum and average of the prediction variance
+:math:`d(x) = \mathbf{x}_m^T \mathbf{M}^{-1} \mathbf{x}_m` over :math:`x \in [-1, +1]` (these are the
+:math:`G` and :math:`I` quantities, in units of :math:`\sigma^2`).
+
+.. list-table:: Four candidate designs for the single-factor quadratic model.
+    :header-rows: 1
+    :widths: 34 8 12 16 14 8 8
+
+    *   - design
+        - :math:`N`
+        - :math:`D=\det\mathbf{M}`
+        - :math:`A=\text{trace}\,\mathbf{M}^{-1}`
+        - :math:`E=\lambda_{\min}`
+        - :math:`G`
+        - :math:`I`
+    *   - base :math:`\{-1, 0, +1\}`
+        - 3
+        - 4
+        - 3.00
+        - 0.44
+        - 1.0
+        - 0.80
+    *   - base, all three runs repeated
+        - 6
+        - 32
+        - 1.50
+        - 0.88
+        - 0.5
+        - 0.40
+    *   - base + two centre points
+        - 5
+        - 12
+        - 1.67
+        - 1.00
+        - 1.0
+        - 0.44
+    *   - base + two points at :math:`\pm 1`
+        - 5
+        - 16
+        - 2.50
+        - 0.47
+        - 1.0
+        - 0.67
+
+Before reading the numbers, fix the direction each criterion should move towards. A design is better when
+:math:`D` is **larger** (a bigger determinant is more joint information and a smaller confidence
+ellipsoid), when :math:`A` is **smaller** (a smaller :math:`\text{trace}\,\mathbf{M}^{-1}` is a
+lower average coefficient variance), when :math:`E` is **larger** (a bigger smallest eigenvalue
+means the worst-estimated direction is better pinned down), and when :math:`G` and :math:`I` are
+**smaller** (lower worst-case and lower average prediction variance). "Better" points a different
+way in each column, which is precisely why no single design can top them all.
+
+Now read the rows, and notice the trap first. Going from the base design to the same design with
+every run repeated, *every* criterion improves: :math:`D` jumps by a factor of :math:`2^p` (here
+:math:`p = 3`, so :math:`4 \to 32`), :math:`A` halves, :math:`E` doubles, and both :math:`G` and
+:math:`I` halve. Nothing about the design got better; we only ran more experiments. This is the
+warning to keep for later: the raw criteria scale with the number of runs :math:`N`, so they
+cannot be used to compare designs of different size. We undo that scaling below. For the same
+reason, the base design cannot be compared with either five-run design.
+
+The fair comparison is between the two five-run designs, and here the criteria start to disagree.
+Adding the two extreme points **maximises** :math:`D` (16 versus 12): spreading runs to the
+boundary buys the most joint information, so it is the choice when the goal is to estimate the
+coefficients as a set. Adding the two centre points instead **minimises** :math:`A` (1.67 versus
+2.50), **maximises** :math:`E` (1.00 versus 0.47), and **minimises** :math:`I` (0.44 versus 0.67):
+the centre runs lower the average coefficient variance, shore up the worst-estimated direction, and
+predict better across the interior. The worst-case prediction variance :math:`G` is a tie. So the
+dilemma resolves by purpose: reinforce the extremes if you want the tightest joint estimate of the
+coefficients, add centre runs if you care about average precision and prediction. That is the
+D-for-estimation, :math:`I`-for-prediction split we return to in the closing checklist.
 
 Return for a moment to the dilemma table. The base three-run design has
 :math:`\text{SPV}(x) = 3\,(1 - 1.5\,x^2 + 1.5\,x^4)`, with a maximum of :math:`3` at the design
