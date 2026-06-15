@@ -251,6 +251,16 @@ thing to pin down from only three points), and the :math:`-1` off-diagonal is th
 intercept-quadratic correlation we anticipated from :math:`M_{02}`. Every optimality criterion above
 is just a one-number summary of these same two matrices.
 
+For this design those summaries are easy to read off. The D-criterion is
+:math:`\det(\mathbf{M}) = 4`. The A-criterion is
+:math:`\text{trace}(\mathbf{M}^{-1}) = 1.0 + 0.5 + 1.5 = 3.0`, the sum of the three coefficient
+variances. The E-criterion is the smallest eigenvalue of :math:`\mathbf{M}`, here about
+:math:`0.44`. The prediction-based G- and V-criteria need the prediction variance, which we develop
+in the next section. We also return to this very design there: in
+:ref:`Judging and comparing designs <DOE-judging-and-comparing-designs>` we add two more runs to it
+and watch every one of these numbers change, which is the starting point for learning how to
+compare designs.
+
 How the algorithms search: exchange algorithms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -277,7 +287,8 @@ runs under the hood when you (or the code in this book) ask for an optimal desig
 
 To see the contrast, watch both algorithms solve the same small problem: two factors, the model
 :math:`y = b_0 + b_1 x_1 + b_2 x_2 + b_{12} x_1 x_2 + e`, four runs, and the region
-:math:`[-1, +1]^2`. The D-optimal answer is the :math:`2^2` factorial (the four corners), where
+:math:`[-1, +1]^2`, meaning each of the two coded factors may take any value from :math:`-1` to
+:math:`+1`. The D-optimal answer is the :math:`2^2` factorial (the four corners), where
 :math:`\mathbf{X}^T\mathbf{X} = 4\,\mathbf{I}` and :math:`\det(\mathbf{M}) = 4^4 = 256`. Here are
 the two algorithms reaching it, side by side, with :math:`\det(\mathbf{M})` shown at each step.
 
@@ -287,7 +298,7 @@ the two algorithms reaching it, side by side, with :math:`\det(\mathbf{M})` show
 
     *   - Point-exchange (swaps whole runs)
         - Coordinate-exchange (adjusts one coordinate)
-    *   - Candidate set: the nine points :math:`\{-1, 0, +1\}^2`.
+    *   - Candidate set: the nine points where each factor is :math:`-1`, :math:`0`, or :math:`+1`, namely :math:`(-1,-1)`, :math:`(-1,0)`, :math:`(-1,+1)`, :math:`(0,-1)`, :math:`(0,0)`, :math:`(0,+1)`, :math:`(+1,-1)`, :math:`(+1,0)`, :math:`(+1,+1)`.
         - No candidate set; each coordinate ranges freely over :math:`[-1, +1]`.
     *   - Start :math:`\{(-1,-1), (0,1), (1,0), (1,1)\}`, :math:`\det\mathbf{M} = 16`.
         - Start from four random points, :math:`\det\mathbf{M} = 0.3`.
@@ -300,8 +311,9 @@ the two algorithms reaching it, side by side, with :math:`\det(\mathbf{M})` show
 
 Both land on the same design, which is reassuring, but they got there differently, and that
 difference is the whole point. Point-exchange can only ever choose runs that are already in the
-candidate set, so a coarse grid caps the quality of the result: had we offered it only the corners
-:math:`\{-1, +1\}^2` it could not have explored at all, and on a finer grid it has many more points
+candidate set, so a coarse grid caps the quality of the result: had we offered it only the four corners
+:math:`(-1,-1)`, :math:`(-1,+1)`, :math:`(+1,-1)`, :math:`(+1,+1)` it could not have explored at all,
+and on a finer grid it has many more points
 to sift through. Coordinate-exchange carries no candidate set; it slides each coordinate along its
 continuous range, so it can place a run anywhere, including at points no grid would have listed.
 That freedom is what makes it the natural choice for constrained regions and for many factors, and
@@ -437,9 +449,11 @@ themselves identically. The consequences are:
     *   all :math:`k` quadratic effects are estimable, so curvature can be detected in every
         factor; and
 
-    *   the design *projects* onto any three of the factors as an near-complete quadratic
-        design, which is exactly what you want under the common assumption that only a few
-        factors are active.
+    *   under effect sparsity (the common assumption that only a few of the many factors actually
+        drive the response), the design has a further useful property: restricted to any three of
+        the factors, its runs already form a design able to fit the full quadratic model in just
+        those three factors. So if only a handful of factors turn out to matter, the same single
+        set of runs supports a complete response-surface model in them.
 
 There is one limitation, and it comes from the very same mechanism. Folding cancels the
 cross-products between the main effects and the second-order terms, but it does nothing to
@@ -472,7 +486,7 @@ interactions better, or you want a design that sits deliberately between the bar
 DSD and the full richness of a central composite design?
 
 That spectrum is exactly what :index:`OMARS designs <pair: OMARS design; experiments>`
-(Orthogonal Minimally Aliased Response Surface designs, Nuñez Ares and Goos, 2020) provide. The
+(Orthogonal Minimally Aliased Response Surface designs, Núñez Ares and Goos, 2020) provide. The
 defining property generalises the property that makes the DSD work: in an OMARS design the main effects are
 orthogonal to one another *and* to every second-order effect, both quadratics and two-factor
 interactions. The only aliasing that remains is *among the second-order effects*, and the
@@ -498,7 +512,7 @@ two definitive screening designs.
 
 **Readings**
 
-* Nuñez Ares, J. and Goos, P.: "Enumeration and Multicriteria Selection of Orthogonal Minimally
+* Núñez Ares, J. and Goos, P.: "Enumeration and Multicriteria Selection of Orthogonal Minimally
   Aliased Response Surface Designs", *Technometrics*, **62**, 21--36, 2020.
 * Goos, P.: "OMARS designs for factor screening and response surface experimentation in one
   step: A review", *WIREs Computational Statistics*, **17**, e70018, 2025.
@@ -553,7 +567,11 @@ One last point, and it is easy to get wrong. Because these designs are deliberat
 and carry structured aliasing, you should *not* simply throw the data at a least squares fit of
 the full second-order model. Two things go wrong if you do. The model often has more terms than
 the design has runs, so it is not estimable at all: the :math:`\mathbf{X}^T\mathbf{X}` matrix is
-singular and cannot be inverted. And even when it can be fitted, a generic stepwise or penalised
+singular and cannot be inverted. For four factors, for example, the full quadratic model has
+:math:`1 + 4 + 4 + 6 = 15` terms (an intercept, four main effects, four quadratics, and six
+two-factor interactions), while a definitive screening design has only nine runs and even the
+thirteen-run OMARS design has only thirteen, so neither can fit the full model. And even when it
+can be fitted, a generic stepwise or penalised
 regression treats every column alike and can let the entangled second-order effects leak into,
 and bias, the main-effect estimates, throwing away the very orthogonality the design worked so
 hard to provide.
@@ -611,5 +629,5 @@ book.
 
 * Jones, B. and Nachtsheim, C.J.: "Effective Design-Based Model Selection for Definitive
   Screening Designs", *Technometrics*, **59**, 319--329, 2017.
-* Hameed, M.S.I., Nuñez Ares, J. and Goos, P.: "Analysis of data from orthogonal minimally
+* Hameed, M.S.I., Núñez Ares, J. and Goos, P.: "Analysis of data from orthogonal minimally
   aliased response surface designs", *Journal of Quality Technology*, **55**, 366--384, 2023.

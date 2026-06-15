@@ -41,7 +41,10 @@ checklist for choosing between designs.
 A worked example: augmenting a small design
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-That single design is rarely the end of the story. Suppose the budget stretches to two more runs.
+The :ref:`previous section <DOE-information-matrix-worked-example>` worked out the information
+matrix of the smallest design with curvature: a single factor at three levels,
+:math:`x = -1, 0, +1`, fitting the quadratic model :math:`y = b_0 + b_1 x + b_2 x^2 + e`. That
+single design is rarely the end of the story. Suppose the budget stretches to two more runs.
 Two natural options present themselves, and they pull in different directions:
 
     *   add **two replicate centre points** (two more runs at :math:`x = 0`), or
