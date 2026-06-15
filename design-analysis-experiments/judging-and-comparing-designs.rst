@@ -38,15 +38,6 @@ them as given. This subchapter shows how prediction variance is derived from
 :math:`\mathbf{M}`, and how to read a fraction-of-design-space plot. We close with a short
 checklist for choosing between designs.
 
-One quantity runs through everything that follows and deserves to be pinned down now: the noise
-standard deviation :math:`\sigma`. It is the irreducible, run-to-run variability of the response,
-the scatter you would still see if you held every factor fixed and simply repeated the experiment:
-measurement error plus whatever the process itself contributes. Every variance in this subchapter
-is written as :math:`\sigma^2` multiplied by something that depends only on the design, and the
-design controls only that second part, the geometry. It can do nothing about :math:`\sigma`.
-Pinning :math:`\sigma` down, by replication, from a control chart, or from prior knowledge of the
-process, is the experimenter's responsibility, not something any design can deliver.
-
 A worked example: augmenting a small design
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -22,7 +22,7 @@ template, we state the model we want to fit, the region we are allowed to explor
 single number that measures how good a design is, and then let an algorithm choose the
 runs that make that number as good as possible. Making "how good a design is" precise
 forces us to introduce one object, the information matrix, that the rest of this section
-(and the :ref:`next one <DOE-judging-and-comparing-designs>`) leans on heavily. The second
+(and the :ref:`next one <DOE-judging-and-comparing-designs>`) uses throughout. The second
 movement is *OMARS designs*: a structured, economical family that does the work of a
 screening experiment and a response surface experiment in a single set of runs.
 
@@ -374,16 +374,242 @@ forbidden corner. The full quadratic model remains estimable throughout. No cata
 have produced this; the optimal design simply read off the constraint and the model and did the
 sensible thing.
 
-..
-    FIGURE PLACEHOLDER (to be generated with the book's own Python code):
-    a scatter of the feasible candidate region with the shaded infeasible corner (x1 + x2 > 1)
-    and the ten chosen runs marked, point sizes reflecting the replication. Suggested file:
-    ../figures/doe/constrained-d-optimal-region.png
+.. figure:: ../figures/doe/constrained-d-optimal-region.png
+    :align: center
+    :width: 600px
+    :alt: constrained-d-optimal-region.py
 
-..
-    Sections 6 to 10 (definitive screening designs, OMARS designs, the screening-to-RSM
-    spectrum, and a design-based analysis workflow) will be added below. The anchor that
-    follows is reserved for the definitive screening designs subsection, so that existing
-    cross-references to it keep resolving until that subsection is written.
+    The feasible region (white) for the two-factor constrained example. The corner with
+    :math:`x_1 + x_2 > 1` is infeasible (shaded), so the run at :math:`(+1, +1)` cannot be
+    performed. The ten-run D-optimal design uses the eight feasible grid points, with the two
+    larger markers run twice.
 
 .. _DOE-definitive-screening-designs:
+
+One experiment for two jobs: definitive screening designs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The traditional way to run an investigation with many factors is in two phases. First you
+*screen*: a two-level :ref:`fractional factorial <DOE-fractional-factorials>` or a
+Plackett-Burman design with as few runs as possible, to find out which of the many factors
+actually matter. Then, on the handful that survive, you run a separate *response surface*
+experiment, a :ref:`central composite <DOE_central_composite_designs>` or Box-Behnken design,
+to model the curvature and find an optimum. The logic is sound, but it has real friction. It
+takes two rounds of experimentation, with the delay and overhead of stopping, analysing, and
+restarting. The screening design is at two levels, so it cannot see curvature at all; you only
+discover whether a factor bends the response in the second phase. And a low-resolution
+screening design :ref:`aliases <DOE-design-resolution>` main effects with two-factor
+interactions, so a large "main effect" may really be an interaction in disguise.
+
+A :index:`definitive screening design <pair: definitive screening design; experiments>` (DSD),
+introduced by Jones and Nachtsheim in 2011, collapses the two phases into one. It is a
+three-level design, economical (about :math:`2k + 1` runs for :math:`k` factors), that screens
+the main effects *and* lets you detect curvature, all from a single set of runs.
+
+The construction is a *foldover* of a conference matrix with a centre run added. A conference
+matrix :math:`\mathbf{C}` of order :math:`m` is an :math:`m \times m` matrix with zeros on the
+diagonal and :math:`\pm 1` off it, whose columns are orthogonal:
+:math:`\mathbf{C}^T\mathbf{C} = (m-1)\mathbf{I}`. The design stacks :math:`\mathbf{C}`, its
+mirror image :math:`-\mathbf{C}`, and a row of zeros:
+
+.. math::
+
+    \mathbf{D} = \begin{bmatrix} \mathbf{C} \\ -\mathbf{C} \\ \mathbf{0} \end{bmatrix}
+
+so that every factor is run at all three levels :math:`-1, 0, +1`.
+
+The foldover is what gives the design its remarkable properties, and the reason is worth
+understanding because it returns when we meet OMARS designs. Consider what happens when we
+negate a run, flipping the sign of every factor at once, which is exactly what the
+:math:`-\mathbf{C}` block does. A main effect, being linear in a single factor, reverses sign.
+The intercept, a quadratic :math:`x_i^2`, and a two-factor interaction :math:`x_i x_j` (where
+both factors flip together, so the product is unchanged) all stay exactly as they were. So when
+a run is added to its negated mirror, every product between a main-effect column and a
+second-order column cancels between the two halves, while the second-order columns reproduce
+themselves identically. The consequences are:
+
+    *   main effects are orthogonal to one another, and estimated as cleanly as in a two-level
+        design;
+
+    *   main effects are orthogonal to (unaliased with) *every* two-factor interaction and
+        *every* quadratic effect, so a real interaction can never masquerade as a main effect;
+
+    *   all :math:`k` quadratic effects are estimable, so curvature can be detected in every
+        factor; and
+
+    *   the design *projects* onto any three of the factors as an near-complete quadratic
+        design, which is exactly what you want under the common assumption that only a few
+        factors are active.
+
+There is one limitation, and it comes from the very same mechanism. Folding cancels the
+cross-products between the main effects and the second-order terms, but it does nothing to
+separate the second-order terms from *one another*: a two-factor interaction column is identical
+in :math:`\mathbf{C}` and in
+:math:`-\mathbf{C}`. So the two-factor interactions remain correlated among themselves (and
+partially with the quadratics), and you cannot estimate all of them cleanly at once. A DSD is
+therefore at its best when only a few factors turn out to be active, so that only a few
+second-order terms compete. That residual entanglement among the second-order effects is
+precisely what the next family of designs sets out to manage.
+
+**Readings**
+
+* Jones, B. and Nachtsheim, C.J.: "`A Class of Three-Level Designs for Definitive Screening in
+  the Presence of Second-Order Effects <https://yint.org/dsdesign>`_", *Journal of Quality
+  Technology*, **43**, 1--15, 2011.
+* John Lawson: "`DefScreen: Definitive Screening Designs, in package "daewr"
+  <https://rdrr.io/cran/daewr/man/DefScreen.html>`_", *Design and Analysis of Experiments with
+  R*.
+
+.. _DOE-omars-designs:
+
+Generalising the bridge: OMARS designs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A definitive screening design is excellent, but it is also rather rigid: for a given number of
+factors it is essentially one design, of one size, with one fixed compromise on how it handles
+interactions. What if you can afford a few more runs and would like to estimate the
+interactions better, or you want a design that sits deliberately between the bare economy of a
+DSD and the full richness of a central composite design?
+
+That spectrum is exactly what :index:`OMARS designs <pair: OMARS design; experiments>`
+(Orthogonal Minimally Aliased Response Surface designs, Nuñez Ares and Goos, 2020) provide. The
+defining property generalises the property that makes the DSD work: in an OMARS design the main effects are
+orthogonal to one another *and* to every second-order effect, both quadratics and two-factor
+interactions. The only aliasing that remains is *among the second-order effects*, and the
+designs are catalogued so as to keep that aliasing minimal, which is what the name records:
+**o**\ rthogonal (clean main effects), **m**\ inimally **a**\ liased (the residual entanglement,
+held down), **r**\ esponse **s**\ urface (a full second-order model is the target).
+
+The important shift in thinking is this: OMARS is not a single design but a whole *catalogue*.
+For a given number of factors there are many OMARS designs of different run sizes, and they
+trade off against one another: a larger design estimates more of the second-order effects, with
+lower correlation among them and more power, at the cost of more runs. The definitive screening
+design turns out to be the smallest member of the family; the largest members rival a central
+composite design. Choosing among them is therefore a genuine multi-criteria decision, not a
+lookup, which is the subject of the next two subsections.
+
+The original catalogue was produced by an enumeration (an integer-programming search) that is
+complete for up to five factors and 44 runs, and partial for six and seven factors. Many of the
+designs can also be built, as the DSD was, by folding over a base matrix whose columns are
+orthogonal, which is why the main effects always come out clean. The family has since been
+extended to mixed-level designs (continuous factors together with two-level categorical
+factors), to orthogonally blocked designs, and to large designs constructed by concatenating
+two definitive screening designs.
+
+**Readings**
+
+* Nuñez Ares, J. and Goos, P.: "Enumeration and Multicriteria Selection of Orthogonal Minimally
+  Aliased Response Surface Designs", *Technometrics*, **62**, 21--36, 2020.
+* Goos, P.: "OMARS designs for factor screening and response surface experimentation in one
+  step: A review", *WIREs Computational Statistics*, **17**, e70018, 2025.
+
+A spectrum from screening to response surface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It helps to see the three families on one line rather than as separate boxes. At the economical
+end sits the definitive screening design: the fewest runs, every main effect clean, curvature
+detectable, but the interactions tangled together. In the middle sit the larger OMARS designs:
+more runs buy more estimable second-order effects, lower correlation among them, and more power.
+At the rich end sit the classical response surface designs, the :ref:`central composite
+<DOE_central_composite_designs>` and Box-Behnken designs: enough runs to estimate the full
+second-order model with little or no aliasing, often with the near-rotatable prediction
+behaviour those designs are prized for.
+
+The axis along which they are arranged is the trade-off between three things: how many runs you
+spend, how much of the second-order model you can estimate, and how cleanly (how free of
+aliasing) you can estimate it. Spending more runs moves you to the right, buying estimability and
+separability.
+
+.. figure:: ../figures/doe/design-spectrum.png
+    :align: center
+    :width: 750px
+    :alt: design-spectrum.py
+
+    The three design families on a single axis. Moving from left to right spends more runs and
+    reduces the aliasing among the second-order effects.
+
+That immediately suggests how to choose:
+
+    *   **Many factors, a tight budget, and a reasonable belief that only a few will matter**:
+        a definitive screening design. Screen and glimpse curvature in one economical step.
+
+    *   **A handful of factors, and a wish to estimate some interactions and curvature without
+        committing to a full response surface design**: a mid-sized OMARS design.
+
+    *   **Few factors and a genuine response-surface goal, predicting and optimizing over the
+        region**: a central composite or Box-Behnken design, or one of the largest OMARS designs.
+
+Saying which specific design is best, even once the run budget is fixed, requires the
+quantitative tools of the next section: the information matrix, the prediction variance and its
+fraction-of-design-space plot, the correlations among the effects, and the power. Those are
+exactly the measures developed in :ref:`Judging and comparing designs
+<DOE-judging-and-comparing-designs>`, and they turn the choice along this spectrum from a matter
+of taste into a matter of arithmetic.
+
+Analysing data from these designs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+One last point, and it is easy to get wrong. Because these designs are deliberately economical
+and carry structured aliasing, you should *not* simply throw the data at a least squares fit of
+the full second-order model. Two things go wrong if you do. The model often has more terms than
+the design has runs, so it is not estimable at all: the :math:`\mathbf{X}^T\mathbf{X}` matrix is
+singular and cannot be inverted. And even when it can be fitted, a generic stepwise or penalised
+regression treats every column alike and can let the entangled second-order effects leak into,
+and bias, the main-effect estimates, throwing away the very orthogonality the design worked so
+hard to provide.
+
+The remedy is a *design-based* analysis that exploits the structure we built in. It proceeds in
+stages: estimate the main effects first, where the design guarantees they are clean; recover
+degrees of freedom from the effects that turn out to be inactive; and only then test for, and
+select among, the second-order effects, in their own subspace and respecting how few of them can
+be told apart. The workflow is:
+
+::
+
+    design matrix  +  measured responses
+             |
+             v
+    (0)  enough spare error degrees of freedom?
+         ( runs greater than the number of terms being fitted )
+         if not  ->  stop; replicate or add runs first
+             |
+             v
+    (1)  estimate the MAIN EFFECTS
+         clean and unbiased: they are orthogonal to every
+         second-order term, whichever of those are active
+             |
+             v
+    (2)  test them; pool the INACTIVE effects back into the
+         error estimate, recovering degrees of freedom
+             |
+             v
+    (3)  one F-TEST: is any second-order effect active at all?
+         if not  ->  report the main-effects model
+             |
+             v
+    (4)  SELECT the active second-order effects, limited by how
+         many are jointly estimable and guided by factor heredity
+         ( an interaction is admitted only if its parent main
+           effects are active )
+             |
+             v
+    final model: the active main, quadratic, and interaction effects
+
+Step 0 is not a formality. A *saturated* design, one with no spare runs, leaves nothing with
+which to estimate the noise :math:`\sigma^2`, and without that estimate there are no standard
+errors, no tests, and no power: the analysis simply cannot start. Step 1 is possible only
+because of the orthogonality property: the main effects are unaliased with every second-order
+term, so their estimates are unbiased no matter which interactions or quadratics are truly
+active, which is what lets us analyse them on their own. Step 4 is where the design's one weakness is managed:
+since the second-order effects are correlated among themselves, only a limited number can be
+estimated together, and factor heredity (preferring the interaction whose parent main effects
+are active) is the principled way to choose among the candidates the data alone cannot fully
+separate. This staged procedure, and the code that carries it out, is developed alongside this
+book.
+
+**Readings**
+
+* Jones, B. and Nachtsheim, C.J.: "Effective Design-Based Model Selection for Definitive
+  Screening Designs", *Technometrics*, **59**, 319--329, 2017.
+* Hameed, M.S.I., Nuñez Ares, J. and Goos, P.: "Analysis of data from orthogonal minimally
+  aliased response surface designs", *Journal of Quality Technology*, **55**, 366--384, 2023.
