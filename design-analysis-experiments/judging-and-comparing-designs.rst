@@ -572,5 +572,7 @@ and the number of residual degrees of freedom.
 * Goos and Jones, *Optimal Design of Experiments: A Case Study Approach*, for the
   information-matrix view of the optimality criteria.
 * Núñez Ares and Goos, "Enumeration and Multicriteria Selection of Orthogonal Minimally Aliased
-  Response Surface Designs", and the review by Goos, "OMARS Designs for Factor Screening and
-  Response Surface Experimentation in One Step", for the OMARS family used in the comparison above.
+  Response Surface Designs", *Technometrics*, **62**, 21--36, 2020, and the review by Goos,
+  "OMARS designs for factor screening and response surface experimentation in one step",
+  *WIREs Computational Statistics*, **17**, e70018, 2025, for the OMARS family used in the
+  comparison above.
