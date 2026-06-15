@@ -513,7 +513,9 @@ designs are catalogued so as to keep that aliasing minimal, which is what the na
 held down), **r**\ esponse **s**\ urface (a full second-order model is the target).
 
 The important shift in thinking is this: OMARS is not a single design but a whole *catalogue*.
-For a given number of factors there are many OMARS designs of different run sizes, and they
+The 2020 enumeration found 7,933 basic designs, which become 55,531 in total once zero to six
+centre runs are added to each. For a given number of factors there are many OMARS designs of
+different run sizes, and they
 trade off against one another: a larger design estimates more of the second-order effects, with
 lower correlation among them and more power, at the cost of more runs. The definitive screening
 design turns out to be the smallest member of the family; the largest members rival a central
@@ -521,12 +523,16 @@ composite design. Choosing among them is therefore a genuine multi-criteria deci
 lookup, which is the subject of the next two subsections.
 
 The original catalogue was produced by an enumeration (an integer-programming search) that is
-complete for up to five factors and 44 runs, and partial for six and seven factors. Many of the
-designs can also be built, as the DSD was, by folding over a base matrix whose columns are
-orthogonal, which is why the main effects always come out clean. The family has since been
-extended to mixed-level designs (continuous factors together with two-level categorical
-factors), to orthogonally blocked designs, and to large designs constructed by concatenating
-two definitive screening designs.
+complete for three to five factors at the smaller run sizes (up to 14 runs for three factors, and
+up to 24 runs for four and five factors), and partial for six and seven factors, where the
+seven-factor search was restricted to foldover designs. Many of these designs are foldover
+designs, built as the DSD was by folding over a base matrix whose columns are orthogonal. The
+orthogonality of the main effects, however, comes from the construction itself: all odd design
+moments through order three are set to zero, so the non-foldover designs in the catalogue have
+equally clean main effects. The family has since been extended to mixed-level designs (three-level
+quantitative factors together with two-level categorical factors) and to orthogonally blocked
+designs, and the same line of work noted that two definitive screening designs, or more generally
+two OMARS designs, can be concatenated to build a larger design.
 
 **Readings**
 
