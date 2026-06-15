@@ -188,7 +188,23 @@ boundary buys the most joint information, so it is the choice when the goal is t
 coefficients as a set. Adding the two centre points instead **minimises** :math:`A` (1.67 versus
 2.50), **maximises** :math:`E` (1.00 versus 0.47), and **minimises** :math:`I` (0.44 versus 0.67):
 the centre runs lower the average coefficient variance, shore up the worst-estimated direction, and
-predict better across the interior. The worst-case prediction variance :math:`G` is a tie. So the
+predict better across the interior. The worst-case prediction variance :math:`G` is a tie.
+
+It is worth seeing *why* the centre points win on :math:`A` and :math:`E`. The weak spot of the
+three-run base design is the intercept-quadratic pair: the two are correlated
+(:math:`M_{02} = 2`) and the quadratic is the least precise coefficient
+(:math:`\text{Var}(b_2) = 1.5\,\sigma^2`). A centre run expands to
+:math:`\mathbf{x}_m = [\,1,\ 0,\ 0\,]`, so it adds information to the intercept alone: it raises
+:math:`M_{00}` from 3 to 5 while leaving the entangling cross-term :math:`M_{02}` untouched.
+Pinning the intercept down this way partly de-correlates it from :math:`b_2` and pulls
+:math:`\text{Var}(b_2)` down from :math:`1.5\,\sigma^2` to :math:`0.83\,\sigma^2`. That is exactly
+what the two centre-favouring criteria reward: :math:`A` is dominated by the largest coefficient
+variance, and the smallest eigenvalue of :math:`\mathbf{M}` that :math:`E` maximises lies along
+that same intercept-quadratic direction. The two extreme points instead expand to
+:math:`[\,1,\ -1,\ 1\,]` and :math:`[\,1,\ +1,\ 1\,]`, which *deepen* the entanglement (the
+cross-term grows to :math:`M_{02} = 4`): they buy the most joint volume, hence the best :math:`D`,
+but leave the weak direction no better pinned down, which is why :math:`E` barely moves (0.47
+versus the base 0.44). So the
 dilemma resolves by purpose: reinforce the extremes if you want the tightest joint estimate of the
 coefficients, add centre runs if you care about average precision and prediction. That is the
 D-for-estimation, :math:`I`-for-prediction split we return to in the closing checklist.
