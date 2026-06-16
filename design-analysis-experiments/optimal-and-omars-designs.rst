@@ -538,8 +538,10 @@ two OMARS designs, can be concatenated to build a larger design.
 
 * Núñez Ares, J. and Goos, P.: "Enumeration and Multicriteria Selection of Orthogonal Minimally
   Aliased Response Surface Designs", *Technometrics*, **62**, 21--36, 2020.
+  `doi:10.1080/00401706.2018.1549103 <https://doi.org/10.1080/00401706.2018.1549103>`__
 * Goos, P.: "OMARS designs for factor screening and response surface experimentation in one
   step: A review", *WIREs Computational Statistics*, **17**, e70018, 2025.
+  `doi:10.1002/wics.70018 <https://doi.org/10.1002/wics.70018>`__
 
 A spectrum from screening to response surface
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -67,8 +67,9 @@ you happen to want a prediction, and the last is a property of the process.
 That is the entire derivation: it is just error propagation through the linear
 predictor, using :math:`\text{Var}(\mathbf{b}) = \sigma^2 \mathbf{M}^{-1}`.
 
-For the three-run example above, multiplying :math:`[1, x, x^2]` through
-:math:`\mathbf{M}^{-1}` and contracting gives a tidy polynomial:
+For the three-run example from the :ref:`previous section <DOE-information-matrix-worked-example>`,
+multiplying :math:`[1, x, x^2]` through :math:`\mathbf{M}^{-1}` and contracting gives a tidy
+polynomial:
 
 .. math::
 
@@ -189,6 +190,16 @@ information matrix,
     \mathbf{M}_2 = \begin{bmatrix} 6 & 0 & 4 \\ 0 & 4 & 0 \\ 4 & 0 & 4 \end{bmatrix}
         = 2\,\mathbf{M}_1
 
+Adding two centre points instead (row 3) repeats the centre run, feeding the intercept while
+leaving the boundary runs unchanged,
+
+.. math::
+
+    \mathbf{X}_3 = \begin{bmatrix} 1 & -1 & 1 \\ 1 & 0 & 0 \\ 1 & 1 & 1 \\
+        1 & 0 & 0 \\ 1 & 0 & 0 \end{bmatrix},
+    \qquad
+    \mathbf{M}_3 = \begin{bmatrix} 5 & 0 & 2 \\ 0 & 2 & 0 \\ 2 & 0 & 2 \end{bmatrix}
+
 while adding a point at each extreme (row 4) keeps the single centre run but doubles the two
 boundary runs,
 
@@ -202,9 +213,11 @@ boundary runs,
 The :math:`D`, :math:`A`, and :math:`E` columns of the table are nothing more than the determinant,
 the trace of the inverse, and the smallest eigenvalue of each of these :math:`\mathbf{M}` matrices,
 and the prediction columns :math:`G` and :math:`I` follow from :math:`\mathbf{M}^{-1}` exactly as in
-the previous section. Notice already that :math:`\mathbf{M}_2` and :math:`\mathbf{M}_4` differ only
-in the top-left entry (6 versus 5): the fully replicated design is the extreme-point design plus one
-extra centre run, and that centre run adds to :math:`M_{00}` alone. That single observation is the
+the previous section. Notice already how the two five-run designs compare: :math:`\mathbf{M}_3` and
+:math:`\mathbf{M}_4` share the same intercept information (:math:`M_{00} = 5`, since each adds two
+runs to the base), but the centre-point design holds the intercept-quadratic cross-term down at
+:math:`M_{02} = 2`, whereas doubling the boundary runs drives it up to :math:`M_{02} = 4`. That
+difference in entanglement, read straight off :math:`\mathbf{M}_3` and :math:`\mathbf{M}_4`, is the
 seed of the comparison below.
 
 Before reading the numbers, fix the direction each criterion should move towards. A design is better when
@@ -215,7 +228,7 @@ means the worst-estimated direction is better pinned down), and when :math:`G` a
 **smaller** (lower worst-case and lower average prediction variance). The arrow at the head of each
 column marks that direction of improvement: :math:`\uparrow` where larger is better and
 :math:`\downarrow` where smaller is better. "Better" points a different way in each column, which is
-precisely why no single design can top them all.
+precisely why no single design is best in every column.
 
 Now read the rows, and notice the trap first. Going from the base design to the same design with
 every run repeated, *every* criterion improves: :math:`D` jumps by a factor of :math:`2^p` (here
@@ -228,7 +241,7 @@ reason, the base design cannot be compared with either five-run design.
 The fair comparison is between the two five-run designs, and here the criteria start to help make a
 decision. Adding the two extreme points maximises :math:`D` (16 versus 12 when adding two replicate
 centre points): spreading runs to the boundary buys more joint information on the coefficient
-estimates, so it is the choice when the goal is to estimate the coefficients as a set.
+estimates, so it is the choice when the goal is to estimate the coefficients jointly.
 
 Adding the two centre points instead reduces :math:`A` (1.67 versus 2.50) because it lowers the
 average coefficient variance. The reason is visible in the information matrix. The weak spot of the
@@ -243,7 +256,7 @@ the largest coefficient variance is what lowers the average.
 The centre points also maximise :math:`E` (1.00 versus 0.47), the smallest eigenvalue of
 :math:`\mathbf{M}`, which gauges how well the *worst-estimated* direction in coefficient space is
 pinned down. That weakest direction is the very same intercept-quadratic combination, so the runs
-that de-correlate the pair are exactly the ones that shore it up. The extreme points cannot help
+that de-correlate the pair are exactly the ones that strengthen it. The extreme points cannot help
 here: their rows :math:`[\,1,\ -1,\ 1\,]` and :math:`[\,1,\ +1,\ 1\,]` *deepen* the entanglement
 (the cross-term grows to :math:`M_{02} = 4`), which is why :math:`E` barely moves from the base
 value of 0.44.
@@ -253,9 +266,10 @@ over the region: concentrating runs in the interior predicts better across the b
 space, where the fitted model is most often used. The worst-case prediction variance :math:`G` is a
 tie between the two five-run designs.
 
-So the dilemma resolves by purpose: reinforce the extremes if you want the tightest joint estimate
-of the coefficients, add centre runs if you care about average precision and prediction. That is the
-:math:`D`-for-estimation, :math:`I`-for-prediction split we return to in the closing checklist.
+So the dilemma resolves based on your intentions: reinforce the extremes if you want the tightest
+joint estimate of the coefficients, add centre runs if you care about average precision and
+prediction. That is the :math:`D`-for-estimation, :math:`I`-for-prediction split we return to in
+the closing checklist.
 
 Return for a moment to the dilemma table. The base three-run design has
 :math:`\text{SPV}(x) = 3\,(1 - 1.5\,x^2 + 1.5\,x^4)`, with a maximum of :math:`3` at the design
@@ -292,7 +306,7 @@ would predict across the entire region.
 Finally we turn that cloud of numbers into a curve. Sort the SPV values from smallest to largest.
 The :math:`i`-th value in the sorted list is plotted at horizontal position
 :math:`f = i / (\text{number of points})`, and its height is the SPV itself. The horizontal axis is
-therefore just the running fraction of sampled locations, and the curve is the empirical cumulative
+therefore just the running fraction (percentiles), and the curve is the empirical cumulative
 distribution of SPV over the region: with enough points it converges to the true distribution.
 
 The horizontal axis is the part that confuses people on first sight: it is **not** a
@@ -336,15 +350,15 @@ designs are themselves the smallest members of that family.
     fraction of 0.75: the larger design predicts better on average but worse at the extreme
     corners.
 
-The thirteen-run curve sits *below* the nine-run curve for roughly the first three
+The thirteen-run OMARS curve sits *below* the nine-run DSD curve for roughly the first three
 quarters of the region: it has lower best-case, median, and average prediction variance.
-But the two curves **cross** near :math:`f \approx 0.75`, and the thirteen-run curve then
+But the two curves **cross** near :math:`f \approx 0.75`, and the thirteen-run OMARS curve then
 rises well above: its worst corner is noticeably worse. This crossing is the practical
 tension between V- (average) and G- (worst-case) optimality, and it has a physical cause:
 the larger design here places fewer runs at the extreme corners, so prediction there
 behaves like mild extrapolation. The reading is concrete: if you care about prediction on
 average across the space (typical optimization work), prefer the larger design; if you must
-predict reliably even at the worst corner, the flatter nine-run curve is the safer choice.
+predict reliably even at the worst corner, the flatter nine-run DSD curve is the safer choice.
 
 Separability is not the same as precision
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -377,7 +391,7 @@ at all. Two summaries are useful: the **maximum** :math:`|r|` over all pairs is 
 tightest confounding anywhere in the design (the worst case you would have to defend), while the
 **mean** :math:`|r|` is the overall level of entanglement. In the comparison table, the
 definitive screening design has a worst-pair value of :math:`0.707` (a structural hallmark of
-DSDs), which the thirteen-run design improves to :math:`0.570`; the mean values, :math:`0.322`
+DSDs), which the thirteen-run OMARS design improves to :math:`0.570`; the mean values, :math:`0.322`
 against :math:`0.307`, are much closer, telling us the extra runs help most with the *worst* pair
 rather than with the average.
 
@@ -424,9 +438,10 @@ The link to :math:`r` is direct: if a term were correlated with just one other t
 :math:`r`, its VIF would be :math:`1/(1 - r^2)`. The VIF generalizes this to the joint effect of
 every other term, and is computed on whichever model you actually intend to fit.
 
-In the comparison table both summaries are reported for the main-effects-and-quadratic model. The
-definitive screening design shows :math:`\text{VIF} = 1.0` throughout: on that model its terms are
-mutually orthogonal. The thirteen-run design carries a maximum VIF of :math:`1.18` and a mean of
+In the comparison table below, both summaries are reported for the main-effects-and-quadratic
+model. The definitive screening design shows :math:`\text{VIF} = 1.0` throughout: on that model its
+terms are mutually orthogonal. The thirteen-run OMARS design carries a maximum VIF of :math:`1.18`
+and a mean of
 :math:`1.08`, which inflates the worst standard error by only :math:`\sqrt{1.18} \approx 1.09`,
 about nine percent. That is a mild and entirely acceptable price for the residual degrees of freedom
 and the interaction estimates that the extra runs provide.
@@ -462,15 +477,16 @@ power, for a fixed effect size and significance level.
 Two consequences deserve to be stated plainly. First, **power requires residual degrees of
 freedom**: the non-central distribution needs an estimate of :math:`\sigma^2`, and a saturated
 design with :math:`\nu = 0` supplies none. This is exactly why the definitive screening design's
-power entries in the table are marked "n/a": with nine runs and nine terms in the
+power entries in the comparison table below are marked "n/a": with nine runs and nine terms in the
 main-effects-and-quadratic model it has nothing left over to estimate the noise, so no test can be
-run at all. The four extra runs of the thirteen-run design buy :math:`\nu = 4`, and with them the
-ability to test.
+run at all. The four extra runs of the thirteen-run OMARS design buy :math:`\nu = 4`, and with
+them the ability to test.
 
 Second, power is always quoted *for a stated effect size and* :math:`\alpha`. The table's values
 assume an effect of one noise standard deviation (:math:`\delta = \sigma`) at :math:`\alpha = 0.05`.
-Read that way, the thirteen-run design has a :math:`0.46` chance of flagging a true one-sigma main
-effect as significant, but only :math:`0.25` for a quadratic of the same size. The gap is expected:
+Read that way, the thirteen-run OMARS design has a :math:`0.46` chance of flagging a true one-sigma
+main effect as significant, but only :math:`0.25` for a quadratic of the same size. The gap is
+expected:
 quadratic effects are estimated with larger variance (we saw this in the worked example, where
 :math:`\text{Var}(b_2)` was the largest of the three), so they are intrinsically harder to detect. A
 screening study that must catch curvature will need either more runs or a larger assumed effect
@@ -529,12 +545,14 @@ four-factor main-effects-and-quadratic model.
         - 0
         - 2
 
-No design wins every row, which is the entire point. The thirteen-run design is better on average
-coefficient variance, average prediction, both correlation summaries, and is the only one of the two
-that can estimate interactions or test anything at all; the nine-run design holds a higher
+No design wins every row, which is the entire point. The thirteen-run OMARS design is better on
+average coefficient variance, average prediction, both correlation summaries, and is the only one
+of the two
+that can estimate interactions or test anything at all; the nine-run DSD holds a higher
 D-efficiency and a lower worst-case prediction variance :math:`G`. Read the D-efficiency and the
 per-run figures with care, though: as the dilemma table showed, these quantities shift with the
-number of runs, so a head-to-head on :math:`D` across a nine-run and a thirteen-run design is not a
+number of runs, so a head-to-head on :math:`D` across a nine-run DSD and a thirteen-run OMARS design
+is not a
 like-for-like comparison. The honest reading leans on the quantities that carry real meaning here,
 separability (:math:`|r|`, VIF), prediction (:math:`I`, :math:`G`), and the ability to test at all
 (residual degrees of freedom), and lets the purpose of the study break the ties.
@@ -559,7 +577,7 @@ Let the purpose of the experiment set the priorities.
 Two rules of thumb close the loop. First, use **D for estimation and V/I for prediction**;
 they frequently disagree, so choose by what you will actually do with the model. Second,
 **compare D-efficiency only between designs of the same number of runs**: across
-different run counts it always flatters the smaller design, so judge larger-versus-smaller on
+different run counts it always favours the smaller design, so judge larger-versus-smaller on
 the quantities that carry real units: average coefficient variance, prediction variance, power,
 and the number of residual degrees of freedom.
 
@@ -572,7 +590,9 @@ and the number of residual degrees of freedom.
 * Goos and Jones, *Optimal Design of Experiments: A Case Study Approach*, for the
   information-matrix view of the optimality criteria.
 * Núñez Ares and Goos, "Enumeration and Multicriteria Selection of Orthogonal Minimally Aliased
-  Response Surface Designs", *Technometrics*, **62**, 21--36, 2020, and the review by Goos,
-  "OMARS designs for factor screening and response surface experimentation in one step",
-  *WIREs Computational Statistics*, **17**, e70018, 2025, for the OMARS family used in the
-  comparison above.
+  Response Surface Designs", *Technometrics*, **62**, 21--36, 2020
+  (`doi:10.1080/00401706.2018.1549103 <https://doi.org/10.1080/00401706.2018.1549103>`__), and the
+  review by Goos, "OMARS designs for factor screening and response surface experimentation in one
+  step", *WIREs Computational Statistics*, **17**, e70018, 2025
+  (`doi:10.1002/wics.70018 <https://doi.org/10.1002/wics.70018>`__), for the OMARS family used in
+  the comparison above.
