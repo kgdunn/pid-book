@@ -122,6 +122,7 @@ subsection.
 
 * St. John and Draper: "`D-Optimality for Regression Designs: A Review
   <https://www.jstor.org/stable/1267995>`_", *Technometrics*, **17**, 15--23, 1975.
+  `doi:10.1080/00401706.1975.10489266 <https://doi.org/10.1080/00401706.1975.10489266>`__
 
 The information matrix and the optimality criteria
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -343,6 +344,7 @@ there to absorb.
 * Meyer, R.K. and Nachtsheim, C.J.: "`The Coordinate-Exchange Algorithm for Constructing Exact
   Optimal Experimental Designs <https://www.jstor.org/stable/1269153>`_", *Technometrics*, **37**,
   60--69, 1995.
+  `doi:10.1080/00401706.1995.10485889 <https://doi.org/10.1080/00401706.1995.10485889>`__
 
 .. _DOE-constrained-optimal-example:
 
@@ -488,6 +490,7 @@ precisely what the next family of designs sets out to manage.
 * Jones, B. and Nachtsheim, C.J.: "`A Class of Three-Level Designs for Definitive Screening in
   the Presence of Second-Order Effects <https://yint.org/dsdesign>`_", *Journal of Quality
   Technology*, **43**, 1--15, 2011.
+  `doi:10.1080/00224065.2011.11917841 <https://doi.org/10.1080/00224065.2011.11917841>`__
 * John Lawson: "`DefScreen: Definitive Screening Designs, in package "daewr"
   <https://rdrr.io/cran/daewr/man/DefScreen.html>`_", *Design and Analysis of Experiments with
   R*.
@@ -655,5 +658,7 @@ book.
 
 * Jones, B. and Nachtsheim, C.J.: "Effective Design-Based Model Selection for Definitive
   Screening Designs", *Technometrics*, **59**, 319--329, 2017.
+  `doi:10.1080/00401706.2016.1234979 <https://doi.org/10.1080/00401706.2016.1234979>`__
 * Hameed, M.S.I., Núñez Ares, J. and Goos, P.: "Analysis of data from orthogonal minimally
   aliased response surface designs", *Journal of Quality Technology*, **55**, 366--384, 2023.
+  `doi:10.1080/00224065.2022.2151530 <https://doi.org/10.1080/00224065.2022.2151530>`__
