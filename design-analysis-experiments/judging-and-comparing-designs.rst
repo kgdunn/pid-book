@@ -511,8 +511,8 @@ four-factor main-effects-and-quadratic model.
     :widths: 48 26 26
 
     *   - metric (and preferred direction)
-        - DSD, 9 runs
-        - OMARS, 13 runs
+        - DSD, 9 runs, 4 factors
+        - OMARS, 13 runs, 4 factors
     *   - D-efficiency (higher is better)
         - 42.8 %
         - 39.0 %
@@ -562,6 +562,180 @@ like-for-like comparison. The honest reading leans on the quantities that carry 
 separability (:math:`|r|`, VIF), prediction (:math:`I`, :math:`G`), and the ability to test at all
 (residual degrees of freedom), and lets the purpose of the study break the ties.
 
+.. _DOE-omnibus-comparison:
+
+An omnibus comparison across design families
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The two-design table makes its point on a narrow contest. Widen it now to the six families a
+practitioner would actually shortlist for **five** factors on the same
+main-effects-and-quadratic model (eleven terms: an intercept, five linear, and five pure
+quadratic, with no two-factor interactions): a full :math:`2^5` factorial, a resolution-V
+:math:`2^{5-1}` fractional factorial, a :ref:`central composite design <DOE_central_composite_designs>`,
+a :ref:`Box-Behnken design <DOE-box-behnken-designs>`, a :ref:`definitive screening design
+<DOE-definitive-screening-designs>`, and an :ref:`OMARS design <DOE-omars-designs>`. The run
+counts differ, and we do not pad them to match: comparing designs at their natural sizes is the
+whole point. Every design here is confined to the coded range :math:`[-1, 1]` on each factor, so
+the contest is like-for-like on one fixed experimental region. The fuller second-order story, with
+all the two-factor interactions, is where strong OMARS and composite designs really compete; the
+script that backs this section builds that model too, but the comparison below holds to
+main-effects-and-quadratics so it lines up with the rest of the chapter.
+
+Start with the question that decides whether a design belongs in the contest at all: can it even
+fit the model?
+
+.. list-table:: Which designs can fit the five-factor main-effects-and-quadratic model.
+    :header-rows: 1
+    :widths: 34 12 22 32
+
+    *   - design (5 factors)
+        - runs
+        - fits the 11-term model?
+        - residual degrees of freedom
+    *   - full factorial, :math:`2^5` + 2 centre
+        - 34
+        - no (rank 7)
+        - 27, reduced model only
+    *   - fractional, :math:`2^{5-1}` + 2 centre
+        - 18
+        - no (rank 7)
+        - 11, reduced model only
+    *   - CCD, face-centred
+        - 32
+        - yes
+        - 21
+    *   - Box-Behnken
+        - 46
+        - yes
+        - 35
+    *   - DSD
+        - 13
+        - yes
+        - 2
+    *   - OMARS
+        - 25
+        - yes
+        - 14
+
+Both two-level factorials fail outright, and adding centre points does not rescue them. At two
+levels every :math:`x_i^2` column equals 1, and at the centre it equals 0, so all five quadratic
+columns are *identical*: the eleven-term model collapses to rank 7 (the intercept, five linear
+terms, and a single lumped curvature direction). The centre runs still earn their place, they
+supply an estimate of :math:`\sigma^2`, a few residual degrees of freedom, a check on
+between-run drift, and a one-degree-of-freedom test for *overall* curvature, but they cannot tell
+the five quadratics apart. That single curvature signal is precisely the cue to augment the
+factorial with axial runs, which is how the face-centred composite design in the same table is
+born. The four remaining designs are full rank and carry the comparison from here.
+
+**Lead with power, because it is what the experiment is for.** The figure below reads off the four
+designs' ability to flag a true effect of one noise standard deviation
+(:math:`\delta = \sigma`) at :math:`\alpha = 0.05`.
+
+.. figure:: ../figures/doe/power-comparison-six-designs.png
+    :align: center
+    :width: 750px
+    :alt: power-comparison-six-designs.py
+
+    Power to detect a one-sigma main effect and a one-sigma quadratic effect, for the four
+    response-surface designs on the five-factor model. More runs buy more power, and curvature is
+    always the harder target.
+
+The thirteen-run DSD is visibly underpowered: a :math:`0.42` chance on a one-sigma main effect and
+only :math:`0.15` on a quadratic of the same size. The run-richer designs all clear :math:`0.97`
+on main effects, and the Box-Behnken design, the largest at forty-six runs, is the only one with a
+strong :math:`0.82` chance on curvature. Power rewards the larger designs, which is the honest
+practical reading and exactly what a per-run efficiency score would have hidden.
+
+.. list-table:: Quality metrics for the four response-surface designs (five factors).
+    :header-rows: 1
+    :widths: 40 15 15 15 15
+
+    *   - metric (and preferred direction)
+        - CCD, 32
+        - BBD, 46
+        - DSD, 13
+        - OMARS, 25
+    *   - power, main effect at :math:`\delta = \sigma` (higher)
+        - 0.98
+        - 0.97
+        - 0.42
+        - 0.99
+    *   - power, quadratic at :math:`\delta = \sigma` (higher)
+        - 0.32
+        - 0.82
+        - 0.15
+        - 0.46
+    *   - average prediction variance, :math:`\sigma^2` units (lower)
+        - 0.31
+        - 0.18
+        - 0.71
+        - 0.51
+    *   - maximum prediction variance, :math:`\sigma^2` units (lower)
+        - 0.77
+        - 0.84
+        - 1.05
+        - 0.84
+    *   - :math:`A`, summed coefficient variance (lower)
+        - 2.39
+        - 1.05
+        - 3.70
+        - 2.34
+    *   - maximum :math:`|r|` among model terms (lower)
+        - 0.75
+        - 0.15
+        - 0.13
+        - 0.00
+    *   - maximum VIF (lower)
+        - 3.20
+        - 1.20
+        - 1.05
+        - 1.00
+    *   - D-efficiency, per run (higher, but see note)
+        - 28.0 %
+        - 30.5 %
+        - 39.9 %
+        - 39.3 %
+
+Read the last row against the rest and the trap in per-run efficiency becomes plain. D-efficiency
+ranks the small DSD and OMARS designs *highest*, at :math:`39.9\,\%` and :math:`39.3\,\%`, above
+the Box-Behnken and composite designs that predict better, test better, and detect curvature far
+better. The number is not wrong, it is just answering a per-run question that nobody asked: divided
+through by the run count, a small design always looks thrifty. Scaled prediction variance carries
+the same defect, and for the same reason it has long been questioned in the design literature
+(Anderson-Cook, Borror and Montgomery, 2009, and its published discussion; Goos and Núñez Ares,
+2025). The honest quantities are the ones in real units: the **unscaled
+prediction variance** in :math:`\sigma^2`, the summed coefficient variance :math:`A`, and the
+power, all of which reward the larger Box-Behnken design as they should. Two design-specific
+cautions sit alongside this. The composite design here is **face-centred** (axial runs at
+:math:`\pm 1`) so that it stays on the same :math:`[-1, 1]` region as the others; a rotatable CCD
+would place those runs at :math:`\pm 2`, scoring much better only by quietly spending experiments
+on a region twice as wide, which is not a fair comparison and explains the face-centred design's
+weaker curvature precision (its :math:`|r| = 0.75` and VIF of :math:`3.20`). And the families
+overlap: a composite design built on a resolution-V fraction is itself a strong OMARS design, while
+a definitive screening design is the smallest OMARS member, so think of these as a spectrum, not as
+six rival camps.
+
+The two views of prediction variance are worth seeing side by side, because the scaling is exactly
+what hides the cost of running too few experiments.
+
+.. figure:: ../figures/doe/fds-plot-six-designs.png
+    :align: center
+    :width: 750px
+    :alt: fds-plot-six-designs.py
+
+    FDS curves for the four response-surface designs, scaled (left) and unscaled (right). Scaling
+    by the run count flatters the small DSD; in real :math:`\sigma^2` units it is the worst
+    predictor and the larger Box-Behnken design is the best.
+
+On the left, scaled, the thirteen-run DSD sits low and looks thoroughly competitive. On the right,
+unscaled and in the units a modeller actually cares about, the same DSD curve is the highest in the
+plot: it predicts worst everywhere, and the forty-six-run Box-Behnken design predicts best. Within
+either panel the rule from before still holds, a low and flat curve is what you want, and the right
+tail (anchored at the cube vertices, where the maximum prediction variance always lives) shows the
+worst case. The scaled panel is not lying, but it answers a per-run question; the unscaled panel
+answers the modeller's question, and the two disagree precisely because more runs genuinely buy
+better predictions.
+
 A checklist for choosing among designs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -592,6 +766,15 @@ and the number of residual degrees of freedom.
   response-surface groundwork.
 * Myers, Montgomery and Anderson-Cook, *Response Surface Methodology*, for prediction variance,
   the scaled prediction variance, and FDS plots.
+* Anderson-Cook, Borror and Montgomery, "Response surface design evaluation and comparison",
+  *Journal of Statistical Planning and Inference*, **139**, 629--641, 2009
+  (`doi:10.1016/j.jspi.2008.04.004 <https://doi.org/10.1016/j.jspi.2008.04.004>`__), and its
+  published discussion, for the fraction-of-design-space comparison and the case for judging
+  designs on prediction variance.
+* Goos and Núñez Ares, "Response to Letter to the Editor", *Technometrics*, **67**, 189--191, 2025
+  (`doi:10.1080/00401706.2024.2379849 <https://doi.org/10.1080/00401706.2024.2379849>`__), on why
+  absolute efficiencies and scaled prediction variance mislead when designs differ in run size, and
+  why power and unscaled prediction variance are the honest comparisons.
 * Goos and Jones, *Optimal Design of Experiments: A Case Study Approach*, for the
   information-matrix view of the optimality criteria.
 * Núñez Ares and Goos, "Enumeration and Multicriteria Selection of Orthogonal Minimally Aliased
