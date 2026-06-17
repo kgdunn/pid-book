@@ -204,10 +204,20 @@ button.copybtn:focus,
     font-weight: 600;
     line-height: 1.25;
     margin-bottom: 0.35rem;
+}
+
+/* By default keep the toctree-l1 entries in the link colour so they read
+   as clickable. On a chapter index page the top level IS the chapter's
+   list of section links, and they must look like links. Only on the main
+   contents page (the captioned "Table of Contents") do we tone the top
+   level down to the heading colour, because there the top level is the
+   chapter titles and the clickable navigation is the section list nested
+   beneath each one. */
+.bd-article .toctree-wrapper:has(> .caption) li.toctree-l1 > a {
     color: var(--pst-color-text-base, #333);
 }
-.bd-article .toctree-wrapper li.toctree-l1 > a:hover,
-.bd-article .toctree-wrapper li.toctree-l1 > a:focus {
+.bd-article .toctree-wrapper:has(> .caption) li.toctree-l1 > a:hover,
+.bd-article .toctree-wrapper:has(> .caption) li.toctree-l1 > a:focus {
     color: var(--pst-color-primary, #0071bc);
 }
 
