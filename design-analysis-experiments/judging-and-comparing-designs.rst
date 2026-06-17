@@ -230,9 +230,10 @@ column marks that direction of improvement: :math:`\uparrow` where larger is bet
 :math:`\downarrow` where smaller is better. "Better" points a different way in each column, which is
 precisely why no single design is best in every column.
 
-Now read the rows, and notice the trap first. Going from the base design to the same design with
-every run repeated, *every* criterion improves: :math:`D` jumps by a factor of :math:`2^p` (here
-:math:`p = 3`, so :math:`4 \to 32`), :math:`A` halves, :math:`E` doubles, and both :math:`G` and
+Now read the rows, and notice the run-count effect first. Going from the base design to the same
+design with every run repeated, *every* criterion improves: :math:`D` jumps by a factor of
+:math:`2^p` (here :math:`p = 3`, so :math:`4 \to 32`), :math:`A` halves, :math:`E` doubles, and
+both :math:`G` and
 :math:`I` halve. Nothing about the design got better; we only ran more experiments. This is the
 warning to keep for later: the raw criteria scale with the number of runs :math:`N`, so they
 cannot be used to compare designs of different size. We undo that scaling below. For the same
@@ -653,69 +654,80 @@ The thirteen-run DSD is visibly underpowered: a :math:`0.42` chance on a one-sig
 only :math:`0.15` on a quadratic of the same size. The run-richer designs all clear :math:`0.97`
 on main effects, and the Box-Behnken design, the largest at forty-six runs, is the only one with a
 strong :math:`0.82` chance on curvature. Power rewards the larger designs, which is the honest
-practical reading and exactly what a per-run efficiency score would have hidden.
+practical reading and exactly what an efficiency score that normalizes out the number of runs
+would have hidden.
 
 .. list-table:: Quality metrics for the four response-surface designs (five factors).
     :header-rows: 1
     :widths: 40 15 15 15 15
 
-    *   - metric (and preferred direction)
+    *   - Metric (and preferred direction)
         - CCD, 32
         - BBD, 46
         - DSD, 13
         - OMARS, 25
-    *   - power, main effect at :math:`\delta = \sigma` (higher)
+    *   - Power, main effect at :math:`\delta = \sigma` (higher)
         - 0.98
         - 0.97
         - 0.42
         - 0.99
-    *   - power, quadratic at :math:`\delta = \sigma` (higher)
+    *   - Power, quadratic at :math:`\delta = \sigma` (higher)
         - 0.32
         - 0.82
         - 0.15
         - 0.46
-    *   - average prediction variance, :math:`\sigma^2` units (lower)
+    *   - Average prediction variance, :math:`\sigma^2` units (lower)
         - 0.31
         - 0.18
         - 0.71
         - 0.51
-    *   - maximum prediction variance, :math:`\sigma^2` units (lower)
+    *   - Maximum prediction variance, :math:`\sigma^2` units (lower)
         - 0.77
         - 0.84
         - 1.05
         - 0.84
-    *   - :math:`A`, summed coefficient variance (lower)
+    *   - Summed coefficient variance :math:`A` (lower)
         - 2.39
         - 1.05
         - 3.70
         - 2.34
-    *   - maximum :math:`|r|` among model terms (lower)
+    *   - Maximum :math:`|r|` among model terms (lower)
         - 0.75
         - 0.15
         - 0.13
         - 0.00
-    *   - maximum VIF (lower)
+    *   - Maximum VIF (lower)
         - 3.20
         - 1.20
         - 1.05
         - 1.00
     *   - D-efficiency, per run (higher, but see note)
-        - 28.0 %
-        - 30.5 %
-        - 39.9 %
-        - 39.3 %
+        - 28.0%
+        - 30.5%
+        - 39.9%
+        - 39.3%
 
-Read the last row against the rest and the trap in per-run efficiency becomes plain. D-efficiency
-ranks the small DSD and OMARS designs *highest*, at :math:`39.9\,\%` and :math:`39.3\,\%`, above
-the Box-Behnken and composite designs that predict better, test better, and detect curvature far
-better. The number is not wrong, it is just answering a per-run question that nobody asked: divided
-through by the run count, a small design always looks thrifty. Scaled prediction variance carries
-the same defect, and for the same reason it has long been questioned in the design literature
-(Anderson-Cook, Borror and Montgomery, 2009, and its published discussion; Goos and Núñez Ares,
-2025). The honest quantities are the ones in real units: the **unscaled
-prediction variance** in :math:`\sigma^2`, the summed coefficient variance :math:`A`, and the
-power, all of which reward the larger Box-Behnken design as they should. Two design-specific
-cautions sit alongside this. The composite design here is **face-centred** (axial runs at
+Read the last row against the rest. Recall what D-efficiency measures: it takes the determinant of
+the information matrix :math:`\mathbf{X}^T\mathbf{X}`, raises it to the power :math:`1/p` to put it
+on a per-coefficient scale, and then divides by the run count :math:`N`, reported as a percentage.
+The division by :math:`N` is the whole story here. It measures information *per experiment*, not
+total information, and that single normalisation flips the ranking.
+
+D-efficiency ranks the small DSD and OMARS designs *highest*, at :math:`39.9\,\%` and
+:math:`39.3\,\%`, above the Box-Behnken and composite designs that predict better, test better, and
+detect curvature far better. The number is not wrong; it is answering a different question. Divided
+through by the run count, a small design always looks thrifty, because each of its few runs is made
+to work hard. Scaled prediction variance carries the same defect, and for the same reason it has
+long been questioned in the design literature (Anderson-Cook, Borror and Montgomery, 2009, and its
+published discussion; Goos and Núñez Ares, 2025).
+
+The honest quantities are the ones in real units: the **unscaled prediction variance** in
+:math:`\sigma^2`, the summed coefficient variance :math:`A`, and the power. All of these reward the
+larger Box-Behnken design, which is the reading that matches what the experiments can actually
+deliver.
+
+Two design-specific cautions sit alongside this. The composite design here is **face-centred**
+(axial runs at
 :math:`\pm 1`) so that it stays on the same :math:`[-1, 1]` region as the others; a rotatable CCD
 would place those runs at :math:`\pm 2`, scoring much better only by quietly spending experiments
 on a region twice as wide, which is not a fair comparison and explains the face-centred design's
