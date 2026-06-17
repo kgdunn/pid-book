@@ -31,20 +31,19 @@ References and readings
 .. index::
 	pair: references and readings; experiments
 
--	**Strongly recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, 2nd edition. Chapters 5 and 6 with topics from Chapters 11, 12, 13 and 15 are the most heavily used in this chapter.
--	Søren Bisgaard: `Must a Process Be in Statistical Control Before Conducting Designed Experiments? <https://dx.doi.org/10.1080/08982110701826721>`_, with discussion (`part 1 <https://dx.doi.org/10.1080/08982110701866198>`_, `part 2 <https://dx.doi.org/10.1080/08982110801894892>`_, `part 3 <https://dx.doi.org/10.1080/08982110801890148>`_, `part 4 <https://dx.doi.org/10.1080/08982110801924509>`_, `part 5 <https://dx.doi.org/10.1080/08982110801894900>`_ and a `rejoinder <https://dx.doi.org/10.1080/08982110801973118>`_).
--	George Box and J. Stuart Hunter, "The :math:`2^{k-p}` `Fractional Factorial Designs - Part I <https://www.jstor.org/stable/1266725>`_", *Technometrics*, **3**, 311-351, 1961.
--	George Box and J. Stuart Hunter, "The :math:`2^{k-p}` `Fractional Factorial Designs - Part II <https://www.jstor.org/stable/1266553>`_", *Technometrics*, **3**, 449-458, 1961.
--	George Box, "`Evolutionary Operation: A Method for Increasing Industrial Productivity <https://www.jstor.org/stable/2985505>`_", *Journal of the Royal Statistical Society* (Applied Statistics), **6**, 81-101, 1957.
--	William G. Hunter and J. R. Kittrell, "`Evolutionary Operation: A Review <https://www.jstor.org/stable/1266686>`_", *Technometrics*, **8**, 389-397, 1966.
--	Heather Tye, "`Application of Statistical Design of Experiments Methods in Drug Discovery <https://dx.doi.org/10.1016/S1359-6446(04)03086-7>`_", *Drug Discovery Today*, **9**, 485-491, 2004.
-- R.A. Fisher, `Statistical Methods, Experimental Design and Scientific Inference <https://www.amazon.com/Statistical-Methods-Experimental-Scientific-Inference/dp/0198522290>`_, Oxford Science Publications, 2003.
--	Raymond H. Myers, Douglas C. Montgomery and Christine M. Anderson-Cook, `Response Surface Methodology: Process and Product Optimization Using Designed Experiments <https://www.amazon.com/Response-Surface-Methodology-Optimization-Experiments/dp/0470174463>`_, Wiley, 2009.
--	William Hill and William Hunter, "`A Review of Response Surface Methodology: A Literature Survey <https://www.jstor.org/stable/1266632>`_", *Technometrics*, **8**, 571-590, 1966.
+-	**Strongly recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, 2nd edition. Chapters 5 and 6 with topics from Chapters 11, 12, 13 and 15 are the most heavily used in this chapter. ISBN 978-0-471-71813-0.
+-	George Box and J. Stuart Hunter, "The :math:`2^{k-p}` `Fractional Factorial Designs - Part I <https://doi.org/10.2307/1266725>`_", *Technometrics*, **3**, 311-351, 1961.
+-	George Box and J. Stuart Hunter, "The :math:`2^{k-p}` `Fractional Factorial Designs - Part II <https://doi.org/10.2307/1266553>`_", *Technometrics*, **3**, 449-458, 1961.
+-	George Box, "`Evolutionary Operation: A Method for Increasing Industrial Productivity <https://doi.org/10.2307/2985505>`_", *Journal of the Royal Statistical Society* (Applied Statistics), **6**, 81-101, 1957.
+-	William G. Hunter and J. R. Kittrell, "`Evolutionary Operation: A Review <https://doi.org/10.2307/1266686>`_", *Technometrics*, **8**, 389-397, 1966.
+-	Heather Tye, "`Application of Statistical Design of Experiments Methods in Drug Discovery <https://doi.org/10.1016/S1359-6446(04)03086-7>`_", *Drug Discovery Today*, **9**, 485-491, 2004.
+-	Raymond H. Myers, Douglas C. Montgomery and Christine M. Anderson-Cook, *Response Surface Methodology: Process and Product Optimization Using Designed Experiments*, Wiley, 2009. ISBN 978-0-470-17446-3.
+-	William Hill and William Hunter, "`A Review of Response Surface Methodology: A Literature Survey <https://doi.org/10.1080/00401706.1966.10490404>`_", *Technometrics*, **8**, 571-590, 1966.
 -	Owen L. Davies, `The Design and Analysis of Industrial Experiments <https://www.amazon.com/The-design-analysis-industrial-experiments/dp/B0007J7BME>`_, Chapter 11, revised 2nd edition, Hafner, 1967.
--	Torbjörn Lundstedt, Elisabeth Seifert, Lisbeth Abramo, Bernt Thelin, Åsa Nyström, Jarle Pettersen and Rolf Bergman, `Experimental design and optimization <https://literature.learnche.org/item/169/experimental-design-and-optimization>`_, *Chemometrics and Intelligent Laboratory Systems*, **42**, 3-40, 1998.
--	Rolf Carlson, Torbjörn Lundstedt and Christer Albano, `Screening of suitable solvents in organic synthesis. Strategies for solvent selection <https://literature.learnche.org/item/168/screening-of-suitable-solvents-in-organic-synthesis-strategies-for-solvent-selection>`_, *Acta Chemica Scandinavica*, **B39**, 79-91, 1985.
--	Nigel Bratchell, `Multivariate response surface modelling by principal components analysis <https://literature.learnche.org/item/6/multivariate-response-surface-modelling-by-principal-components-analysis>`_, *Journal of Chemometrics*, **3**, 579-588, 1989.
+-	Torbjörn Lundstedt, Elisabeth Seifert, Lisbeth Abramo, Bernt Thelin, Åsa Nyström, Jarle Pettersen and Rolf Bergman, `Experimental design and optimization <https://doi.org/10.1016/S0169-7439(98)00065-3>`_, *Chemometrics and Intelligent Laboratory Systems*, **42**, 3-40, 1998.
+-	Bradley Jones and Christopher J. Nachtsheim, "`A Class of Three-Level Designs for Definitive Screening in the Presence of Second-Order Effects <https://doi.org/10.1080/00224065.2011.11917841>`_", *Journal of Quality Technology*, **43**, 1-15, 2011.
+-	José Núñez Ares and Peter Goos, "`Enumeration and Multicriteria Selection of Orthogonal Minimally Aliased Response Surface Designs <https://doi.org/10.1080/00401706.2018.1549103>`_", *Technometrics*, **62**, 21-36, 2020.
+-	Peter Goos, "`OMARS Designs for Factor Screening and Response Surface Experimentation in One Step: A Review <https://doi.org/10.1002/wics.70018>`_", *WIREs Computational Statistics*, **17**, e70018, 2025.
 
 
 .. OTHER REFERENCES
