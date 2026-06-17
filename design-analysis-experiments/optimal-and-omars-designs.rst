@@ -439,7 +439,8 @@ introduced by Jones and Nachtsheim in 2011, collapses the two phases into one. I
 three-level design, economical (about :math:`2k + 1` runs for :math:`k` factors), that screens
 the main effects *and* lets you detect curvature, all from a single set of runs.
 
-The construction is a *foldover* of a conference matrix with a centre run added. A conference
+The construction is a *foldover* of a conference matrix with a centre run added, a route to the DSD
+due to Xiao, Lin, and Bai (2012). A conference
 matrix :math:`\mathbf{C}` of order :math:`m` is an :math:`m \times m` matrix with zeros on the
 diagonal and :math:`\pm 1` off it, whose columns are orthogonal:
 :math:`\mathbf{C}^T\mathbf{C} = (m-1)\mathbf{I}`. The design stacks :math:`\mathbf{C}`, its
@@ -471,10 +472,14 @@ themselves identically. The consequences are:
         factor; and
 
     *   under effect sparsity (the common assumption that only a few of the many factors actually
-        drive the response), the design has a further useful property: restricted to any three of
-        the factors, its runs already form a design able to fit the full quadratic model in just
-        those three factors. So if only a handful of factors turn out to matter, the same single
-        set of runs supports a complete response-surface model in them.
+        drive the response), a sufficiently large design has a further useful property. Jones and
+        Nachtsheim show it for six factors or more, where the :math:`2k+1` runs comfortably exceed
+        the ten that a three-factor full quadratic needs: restricted to any three of the factors,
+        the runs already form a design able to fit the full quadratic model in just those three
+        factors. So if only a handful of factors turn out to matter, the same single set of runs
+        supports a complete response-surface model in them. (A small DSD cannot do this: the
+        nine-run, four-factor design used as the running example in the next section has fewer runs
+        than that ten-parameter model requires.)
 
 There is one limitation, and it comes from the very same mechanism. Folding cancels the
 cross-products between the main effects and the second-order terms, but it does nothing to
@@ -492,6 +497,9 @@ precisely what the next family of designs sets out to manage.
   the Presence of Second-Order Effects <https://yint.org/dsdesign>`_", *Journal of Quality
   Technology*, **43**, 1--15, 2011.
   `doi:10.1080/00224065.2011.11917841 <https://doi.org/10.1080/00224065.2011.11917841>`__
+* Xiao, L., Lin, D.K.J. and Bai, F.: "Constructing Definitive Screening Designs Using Conference
+  Matrices", *Journal of Quality Technology*, **44**, 2--8, 2012.
+  `doi:10.1080/00224065.2012.11917877 <https://doi.org/10.1080/00224065.2012.11917877>`__
 * John Lawson: "`DefScreen: Definitive Screening Designs, in package "daewr"
   <https://rdrr.io/cran/daewr/man/DefScreen.html>`_", *Design and Analysis of Experiments with
   R*.
@@ -522,11 +530,13 @@ centre runs are added to each. For a given number of factors there are many OMAR
 different run sizes, and they
 trade off against one another: a larger design estimates more of the second-order effects, with
 lower correlation among them and more power, at the cost of more runs. The definitive screening
-design turns out to be the smallest member of the family; the largest members rival a central
-composite design. Choosing among them is therefore a genuine multi-criteria decision, not a
-lookup, which is the subject of the next two subsections.
+design turns out to be the smallest member of the family; at the other extreme, the classical
+face-centred central composite and Box-Behnken designs are themselves OMARS designs, so the
+largest members coincide with the standard response surface designs. Choosing among them is
+therefore a genuine multi-criteria decision, not a lookup, which is the subject of the next two
+subsections.
 
-The original catalogue was produced by an enumeration (an integer-programming search) that is
+The original catalogue was produced by an enumeration based on integer programming that is
 complete for three to five factors at the smaller run sizes (up to 14 runs for three factors, and
 up to 24 runs for four and five factors), and partial for six and seven factors, where the
 seven-factor search was restricted to foldover designs. Many of these designs are foldover
@@ -535,8 +545,9 @@ orthogonality of the main effects, however, comes from the construction itself: 
 moments through order three are set to zero, so the non-foldover designs in the catalogue have
 equally clean main effects. The family has since been extended to mixed-level designs (three-level
 quantitative factors together with two-level categorical factors) and to orthogonally blocked
-designs, and the same line of work noted that two definitive screening designs, or more generally
-two OMARS designs, can be concatenated to build a larger design.
+designs. Larger OMARS designs can also be built by folding over and combining orthogonal building
+blocks such as conference, weighing, and Hadamard matrices, the same mechanism that turns a single
+conference matrix into a definitive screening design.
 
 **Readings**
 
@@ -557,7 +568,9 @@ more runs buy more estimable second-order effects, lower correlation among them,
 At the rich end sit the classical response surface designs, the :ref:`central composite
 <DOE_central_composite_designs>` and Box-Behnken designs: enough runs to estimate the full
 second-order model with little or no aliasing, often with the near-rotatable prediction
-behaviour those designs are prized for.
+behaviour those designs are prized for. In the face-centred case these classical designs are
+themselves OMARS designs, the strongest and largest members of the family, so the spectrum is
+really one continuous family rather than three separate boxes.
 
 The axis along which they are arranged is the trade-off between three things: how many runs you
 spend, how much of the second-order model you can estimate, and how cleanly (how free of
