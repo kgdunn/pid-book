@@ -387,11 +387,13 @@ levels happen to be coded: flip the direction of one factor and the sign of ever
 containing it flips with it. The magnitude is the coding-invariant quantity, and it is what
 governs separability. A value of :math:`|r| = 0` means the two effects are orthogonal and can be
 estimated independently; :math:`|r| = 1` means they are the same column and cannot be told apart
-at all. Two summaries are useful: the **maximum** :math:`|r|` over all pairs is the single
-tightest confounding anywhere in the design (the worst case you would have to defend), while the
-**mean** :math:`|r|` is the overall level of entanglement. In the comparison table, the
-definitive screening design has a worst-pair value of :math:`0.707` (a structural hallmark of
-DSDs), which the thirteen-run OMARS design improves to :math:`0.570`; the mean values, :math:`0.322`
+at all. Two summaries are useful: the **maximum** :math:`|r|` over all pairs of second-order
+effects (the quadratics and two-factor interactions, which is where a screening design's
+entanglement lives) is the single tightest confounding anywhere in the design (the worst case you
+would have to defend), while the **mean** :math:`|r|` is the overall level of entanglement. In the
+comparison table, the definitive screening design has a worst-pair value of :math:`0.707` (a
+structural hallmark of DSDs, and a confounding between two of its second-order effects), which the
+thirteen-run OMARS design improves to :math:`0.570`; the mean values, :math:`0.322`
 against :math:`0.307`, are much closer, telling us the extra runs help most with the *worst* pair
 rather than with the average.
 
@@ -440,7 +442,10 @@ every other term, and is computed on whichever model you actually intend to fit.
 
 In the comparison table below, both summaries are reported for the main-effects-and-quadratic
 model. The definitive screening design shows :math:`\text{VIF} = 1.0` throughout: on that model its
-terms are mutually orthogonal. The thirteen-run OMARS design carries a maximum VIF of :math:`1.18`
+terms are mutually orthogonal. (This is not in tension with the worst-pair :math:`|r| = 0.707`
+quoted above: that correlation involves the two-factor interactions, which this model leaves out.
+Restricted to the main effects and quadratics, the DSD really is orthogonal.) The thirteen-run
+OMARS design carries a maximum VIF of :math:`1.18`
 and a mean of
 :math:`1.08`, which inflates the worst standard error by only :math:`\sqrt{1.18} \approx 1.09`,
 about nine percent. That is a mild and entirely acceptable price for the residual degrees of freedom
