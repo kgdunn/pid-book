@@ -353,12 +353,21 @@ designs are themselves the smallest members of that family.
 The thirteen-run OMARS curve sits *below* the nine-run DSD curve for roughly the first three
 quarters of the region: it has lower best-case, median, and average prediction variance.
 But the two curves **cross** near :math:`f \approx 0.75`, and the thirteen-run OMARS curve then
-rises well above: its worst corner is noticeably worse. This crossing is the practical
-tension between V- (average) and G- (worst-case) optimality, and it has a physical cause:
-the larger design here places fewer runs at the extreme corners, so prediction there
+rises well above: its worst-case prediction variance is noticeably higher. This crossing is the
+practical tension between V- (average) and G- (worst-case) optimality, and it has a physical cause:
+the larger design here places fewer runs out near the edge of the region, so prediction there
 behaves like mild extrapolation. The reading is concrete: if you care about prediction on
 average across the space (typical optimization work), prefer the larger design; if you must
-predict reliably even at the worst corner, the flatter nine-run DSD curve is the safer choice.
+predict reliably even in the worst spot, the flatter nine-run DSD curve is the safer choice.
+
+One detail of method is worth stating, because it is easy to get wrong. The worst-case figure
+:math:`G` is a maximum over the whole design region, and that maximum can sit exactly at an extreme
+corner (a vertex of the :math:`[-1, 1]` cube), where random interior sampling rarely lands. The
+evaluation here therefore includes the cube vertices explicitly alongside the interior sample. Doing
+so lifts the nine-run DSD's :math:`G` from :math:`8.98` to :math:`9.00`, a maximum that turns out to
+sit precisely at a corner, and leaves the thirteen-run OMARS value at :math:`12.50` because its
+worst case lies in the interior. The shift is tiny, so it changes no conclusion here, but including
+the extreme points is the correct procedure, and the omnibus comparison below relies on it.
 
 Separability is not the same as precision
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -523,7 +532,7 @@ four-factor main-effects-and-quadratic model.
         - 6.59
         - 6.19
     *   - :math:`G`, maximum SPV (lower)
-        - 8.98
+        - 9.00
         - 12.50
     *   - maximum :math:`|r|` (lower)
         - 0.707
