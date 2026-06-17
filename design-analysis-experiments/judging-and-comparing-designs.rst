@@ -662,50 +662,55 @@ would have hidden.
     :widths: 40 15 15 15 15
 
     *   - Metric (and preferred direction)
-        - CCD, 32
         - BBD, 46
-        - DSD, 13
+        - CCD, 32
         - OMARS, 25
+        - DSD, 13
     *   - Power, main effect at :math:`\delta = \sigma` (higher)
-        - 0.98
         - 0.97
-        - 0.42
+        - 0.98
         - 0.99
+        - 0.42
     *   - Power, quadratic at :math:`\delta = \sigma` (higher)
-        - 0.32
         - 0.82
-        - 0.15
+        - 0.32
         - 0.46
+        - 0.15
     *   - Average prediction variance, :math:`\sigma^2` units (lower)
-        - 0.31
         - 0.18
-        - 0.71
+        - 0.31
         - 0.51
+        - 0.71
     *   - Maximum prediction variance, :math:`\sigma^2` units (lower)
+        - 0.84
         - 0.77
         - 0.84
         - 1.05
-        - 0.84
     *   - Summed coefficient variance :math:`A` (lower)
+        - 1.05
         - 2.39
-        - 1.05
-        - 3.70
         - 2.34
+        - 3.70
     *   - Maximum :math:`|r|` among model terms (lower)
-        - 0.75
         - 0.15
-        - 0.13
+        - 0.75
         - 0.00
+        - 0.13
     *   - Maximum VIF (lower)
-        - 3.20
         - 1.20
-        - 1.05
+        - 3.20
         - 1.00
+        - 1.05
+    *   - D-optimal information :math:`|\mathbf{X}^T\mathbf{X}|^{1/p}` (higher)
+        - 14.04
+        - 8.97
+        - 9.82
+        - 5.19
     *   - D-efficiency, per run (higher, but see note)
-        - 28.0%
         - 30.5%
-        - 39.9%
+        - 28.0%
         - 39.3%
+        - 39.9%
 
 Read the last row against the rest. Recall what D-efficiency measures: it takes the determinant of
 the information matrix :math:`\mathbf{X}^T\mathbf{X}`, raises it to the power :math:`1/p` to put it
@@ -713,18 +718,34 @@ on a per-coefficient scale, and then divides by the run count :math:`N`, reporte
 The division by :math:`N` is the whole story here. It measures information *per experiment*, not
 total information, and that single normalisation flips the ranking.
 
-D-efficiency ranks the small DSD and OMARS designs *highest*, at :math:`39.9\,\%` and
+The two D rows make this concrete. The **unscaled** D-optimal information
+:math:`|\mathbf{X}^T\mathbf{X}|^{1/p}` ranks the designs as every other honest row does, the
+Box-Behnken design highest at :math:`14.04` and the thirteen-run DSD lowest at :math:`5.19`. Divide
+that same determinant through by the run count and the order reverses in the row directly beneath
+it: per-run D-efficiency ranks the small DSD and OMARS designs *highest*, at :math:`39.9\,\%` and
 :math:`39.3\,\%`, above the Box-Behnken and composite designs that predict better, test better, and
-detect curvature far better. The number is not wrong; it is answering a different question. Divided
-through by the run count, a small design always looks thrifty, because each of its few runs is made
-to work hard. Scaled prediction variance carries the same defect, and for the same reason it has
-long been questioned in the design literature (Anderson-Cook, Borror and Montgomery, 2009, and its
-published discussion; Goos and Núñez Ares, 2025).
+detect curvature far better. The number is not wrong; it is answering a different question. Dividing
+by the run count rewards a design for spending few experiments, so a small design comes out ahead
+even when it tests and predicts worse. Scaled prediction variance carries the same defect, and for
+the same reason it has long been questioned in the design literature (Anderson-Cook, Borror and
+Montgomery, 2009, and its published discussion; Goos and Núñez Ares, 2025).
 
 The honest quantities are the ones in real units: the **unscaled prediction variance** in
 :math:`\sigma^2`, the summed coefficient variance :math:`A`, and the power. All of these reward the
 larger Box-Behnken design, which is the reading that matches what the experiments can actually
 deliver.
+
+A word on the criteria not tabulated. In prediction space the table carries both an average and a
+worst-case measure (the average and maximum prediction variance, the working analogues of
+:math:`I`- and :math:`G`-optimality); in coefficient space it carries only the average, :math:`A`.
+The missing partner is :math:`E`-optimality, the precision in the worst single coefficient direction
+(the smallest eigenvalue of :math:`\mathbf{X}^T\mathbf{X}`). It is left out for two reasons. It
+reaches the same verdict as the rows already shown, ranking the Box-Behnken design best
+(:math:`2.54`), then the composite (:math:`2.00`), OMARS (:math:`0.93`) and the DSD last
+(:math:`0.85`); and, like the raw determinant and :math:`A`, it scales with the run count, so a fair
+cross-size comparison would drag in the very per-run normalisation just shown to be misleading. The
+trace criterion :math:`T` (total information) is omitted for that same scaling reason. Neither would
+separate these designs any further than the rows already given.
 
 Two design-specific cautions sit alongside this. The composite design here is **face-centred**
 (axial runs at
