@@ -262,34 +262,127 @@ This example has demonstrated how powerful response surface methods are. A minim
 .. youtube:: https://www.youtube.com/watch?v=s_sutHvaBZE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=58
 
 
-**An alternative for quadratic models: Box-Behnken designs**
-
 .. _DOE-box-behnken-designs:
 
-A :index:`Box-Behnken design <pair: Box-Behnken designs; experiments>` is another way to
-collect enough data to fit the same full quadratic model, but it gets there by a different
-route to the central composite design. Instead of starting from a factorial and adding axial
-points outside the cube, a Box-Behnken design takes a two-level factorial on a *pair* of
-factors at a time, holding all the remaining factors at their centre value, and repeats this
-for every pair of factors. A few centre points are added to estimate the curvature and the
-pure error.
+Box-Behnken designs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The practical consequence is in the geometry. Every run sits either at the centre of the
-design region or at the midpoint of one of its edges: no run is placed at a corner, where all
-the factors are simultaneously at their extreme high or low setting, and no run is placed
-outside the original :math:`-1` to :math:`+1` range. That is the design's main attraction.
-When the corner combinations are expensive, unsafe, or physically impossible (think of three
-reagents all at their maximum at once), a Box-Behnken design avoids them entirely while still
-supporting a second-order model. It keeps every factor at just three levels, and for three to
-five factors it is close to rotatable, so the prediction variance is nearly the same in every
-direction out from the centre.
+A :index:`Box-Behnken design <pair: Box-Behnken designs; experiments>` (BBD) is a three-level
+(:math:`-1, 0, +1`) response surface design that supports the same full second-order
+(quadratic) model as the central composite design above. Box and Behnken (1960) constructed
+them by combining two-level factorials with balanced incomplete block designs. Each non-centre
+run sits at the midpoint of an edge of the experimental cube: two factors are set to their
+extremes (a :math:`2 \times 2` factorial in that pair) while all the remaining factors are held
+at the centre. Centre points are then replicated, to estimate the pure error and to stabilise
+the prediction near the middle of the region.
 
-The trade-off, compared with the central composite design above, is that a Box-Behnken design
-cannot be grown from a plain factorial you may have already run: it is built in one piece. It
-also collects no information at the corners, so if you expect the optimum to lie near a corner
-of the region, the central composite design, which does sample there, is the safer choice. For
-three factors a Box-Behnken design needs twelve edge runs plus a few centre points, slightly
-fewer than the matching central composite design.
+**The defining feature.** A BBD places no runs at the cube vertices: there is no run with every
+factor simultaneously at its high or low setting. All the design points lie on a sphere of
+radius :math:`\sqrt{2}` in coded units (the edge midpoints), plus the centre. This single
+property is what separates a BBD from a central composite design (CCD), and it drives every
+practical consequence. Because the extreme corner combinations are never required, a BBD is
+attractive when the corners of the region are infeasible, unsafe, or physically meaningless:
+high temperature with high pressure and high concentration all at once, for example. It also
+keeps each factor at three operationally convenient settings, which simplifies the execution.
+
+A BBD has these properties:
+
+    *   it fits the full quadratic model: intercept, linear, two-factor interaction, and pure
+        quadratic terms;
+    *   it requires at least three factors, and does not exist for two;
+    *   it is rotatable for :math:`k = 3`, and nearly rotatable for higher factor counts, giving
+        roughly uniform prediction variance at a fixed distance from the centre;
+    *   it is spherical rather than cuboidal: the prediction quality is good in the interior, and
+        degrades towards the corners, where there is no design support.
+
+The run count, and how it compares with a rotatable CCD, is what usually decides the matter in
+practice.
+
+.. list-table:: Run counts for a Box-Behnken design.
+    :header-rows: 1
+    :widths: 22 20 32 18
+
+    *   - Factors :math:`k`
+        - Edge points
+        - Centre points (typical)
+        - Total runs
+    *   - 3
+        - 12
+        - 3
+        - 15
+    *   - 4
+        - 24
+        - 3
+        - 27
+    *   - 5
+        - 40
+        - 6
+        - 46
+    *   - 6
+        - 48
+        - 6
+        - 54
+    *   - 7
+        - 56
+        - 6
+        - 62
+
+.. list-table:: Box-Behnken compared with central composite designs.
+    :header-rows: 1
+    :widths: 26 18 40
+
+    *   - Aspect
+        - Box-Behnken
+        - Central composite
+    *   - Factor levels
+        - 3
+        - 5 (rotatable) or 3 (face-centred)
+    *   - Corner runs
+        - none
+        - yes (the factorial portion)
+    *   - Region shape
+        - spherical
+        - spherical or cuboidal
+    *   - Runs at :math:`k = 3`
+        - 15
+        - about 20
+    *   - Sequential build
+        - no
+        - yes: augment a factorial with axial and centre points
+    *   - Prediction at corners
+        - weak
+        - strong
+
+For three and four factors a BBD is usually more economical than a rotatable CCD. The trade-off
+is that a BBD cannot be assembled sequentially from a screening factorial, and it should not be
+used when the corner conditions are themselves of interest, since the model is effectively
+extrapolating there.
+
+**Where they are used.** Box-Behnken designs are an optimisation-stage tool, reached once
+screening has reduced the factor set to roughly three to five important continuous factors. They
+are common in analytical method development and analytical quality by design (HPLC and other
+separations), in pharmaceutical formulation and quality by design, in fermentation and
+bioprocess optimisation, in extraction, and in food and beverage science. In each case the
+appeal is the same: a compact second-order design that never asks for the dangerous or
+impossible corner of the operating space.
+
+There are three situations where a BBD is the wrong choice:
+
+    *   with only two factors, or when the corner conditions must be explored: use a CCD, or a
+        face-centred CCD;
+    *   when a sequential path from screening to response surface modelling is planned: a CCD
+        augments a factorial directly, whereas a BBD does not;
+    *   with categorical factors, or hard constraints on the region: prefer an
+        :ref:`optimal (D- or I-) design <DOE-optimal-designs>`.
+
+**Readings**
+
+* Box, G.E.P. and Behnken, D.W.: "Some New Three Level Designs for the Study of Quantitative
+  Variables", *Technometrics*, **2**, 455--475, 1960.
+  `doi:10.1080/00401706.1960.10489912 <https://doi.org/10.1080/00401706.1960.10489912>`__
+* Myers, Montgomery and Anderson-Cook, *Response Surface Methodology*, the chapter on
+  second-order designs; and Montgomery, *Design and Analysis of Experiments*, the response
+  surface chapter.
 
 
 The general approach for response surface modelling
