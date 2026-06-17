@@ -152,3 +152,83 @@ button.copybtn:focus,
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
 }
+
+/* ---------------------------------------------------------------------
+   Body "Table of Contents".
+
+   This styles the in-page toctree that is rendered in the article body:
+   the big Table of Contents on the /pid/contents landing page, and the
+   section lists at the top of each chapter index page. It does NOT touch
+   the left sidebar navigation, which lives outside `.bd-article` and is
+   styled by the theme.
+
+   Goal: present the chapters as prominent headings with quiet section
+   links beneath, rather than one long, uniformly underlined list.
+   ------------------------------------------------------------------ */
+
+/* Caption ("Table of Contents"): read as a real heading, not a figure
+   caption. The shared `.caption-text` rule renders it small green italic;
+   override that here, scoped to the body toctree only. */
+.bd-article .toctree-wrapper > .caption .caption-text {
+    color: var(--pst-color-text-base, #333);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1.6rem;
+}
+
+/* Strip the bullets and default indentation from every level. */
+.bd-article .toctree-wrapper ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+/* Quiet links: no underline at rest, reveal it on hover/focus so the
+   affordance is still there. */
+.bd-article .toctree-wrapper a {
+    text-decoration: none;
+}
+.bd-article .toctree-wrapper a:hover,
+.bd-article .toctree-wrapper a:focus {
+    text-decoration: underline;
+}
+
+/* Chapter level (toctree-l1): a large, bold heading with breathing room
+   above it so chapters are easy to scan apart. */
+.bd-article .toctree-wrapper li.toctree-l1 {
+    margin-top: 1.6rem;
+}
+.bd-article .toctree-wrapper li.toctree-l1 > a {
+    display: inline-block;
+    font-size: 1.3rem;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 0.35rem;
+    color: var(--pst-color-text-base, #333);
+}
+.bd-article .toctree-wrapper li.toctree-l1 > a:hover,
+.bd-article .toctree-wrapper li.toctree-l1 > a:focus {
+    color: var(--pst-color-primary, #0071bc);
+}
+
+/* Section level (toctree-l2): indented under a soft rule, kept in the
+   link colour. On wider screens lay the sections out in two balanced
+   columns so chapters with many sections are not so tall; this collapses
+   to a single column on narrow/mobile widths. */
+.bd-article .toctree-wrapper li.toctree-l1 > ul {
+    padding-left: 1rem;
+    border-left: 2px solid var(--pst-color-border, #e5e5e5);
+}
+.bd-article .toctree-wrapper li.toctree-l2 {
+    margin: 0.18rem 0;
+}
+
+@media (min-width: 1200px) {
+    .bd-article .toctree-wrapper li.toctree-l1 > ul {
+        columns: 2;
+        column-gap: 2.5rem;
+    }
+    .bd-article .toctree-wrapper li.toctree-l2 {
+        break-inside: avoid;
+    }
+}
