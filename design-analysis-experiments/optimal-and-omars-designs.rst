@@ -11,8 +11,9 @@ Optimal designs and OMARS designs
 ===================================
 
 Every design we have built so far has been a *template*. You decide how many factors
-:math:`k` you are studying, and the recipe (full factorial, fractional factorial,
-:ref:`central composite <DOE_central_composite_designs>`, Box-Behnken) then fixes the
+:math:`k` you are studying, and the recipe (:ref:`full factorial <DOE-two-level-factorials>`,
+:ref:`fractional factorial <DOE-fractional-factorials>`, :ref:`central composite
+<DOE_central_composite_designs>`, :ref:`Box-Behnken <DOE-box-behnken-designs>`) then fixes the
 runs for you. Templates are superb when your problem happens to match their shape. This
 section is about what to do when it does not, and about a family of designs that lets a
 computer build the experiment for you.

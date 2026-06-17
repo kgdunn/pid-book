@@ -262,6 +262,36 @@ This example has demonstrated how powerful response surface methods are. A minim
 .. youtube:: https://www.youtube.com/watch?v=s_sutHvaBZE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=58
 
 
+**An alternative for quadratic models: Box-Behnken designs**
+
+.. _DOE-box-behnken-designs:
+
+A :index:`Box-Behnken design <pair: Box-Behnken designs; experiments>` is another way to
+collect enough data to fit the same full quadratic model, but it gets there by a different
+route to the central composite design. Instead of starting from a factorial and adding axial
+points outside the cube, a Box-Behnken design takes a two-level factorial on a *pair* of
+factors at a time, holding all the remaining factors at their centre value, and repeats this
+for every pair of factors. A few centre points are added to estimate the curvature and the
+pure error.
+
+The practical consequence is in the geometry. Every run sits either at the centre of the
+design region or at the midpoint of one of its edges: no run is placed at a corner, where all
+the factors are simultaneously at their extreme high or low setting, and no run is placed
+outside the original :math:`-1` to :math:`+1` range. That is the design's main attraction.
+When the corner combinations are expensive, unsafe, or physically impossible (think of three
+reagents all at their maximum at once), a Box-Behnken design avoids them entirely while still
+supporting a second-order model. It keeps every factor at just three levels, and for three to
+five factors it is close to rotatable, so the prediction variance is nearly the same in every
+direction out from the centre.
+
+The trade-off, compared with the central composite design above, is that a Box-Behnken design
+cannot be grown from a plain factorial you may have already run: it is built in one piece. It
+also collects no information at the corners, so if you expect the optimum to lie near a corner
+of the region, the central composite design, which does sample there, is the safer choice. For
+three factors a Box-Behnken design needs twelve edge runs plus a few centre points, slightly
+fewer than the matching central composite design.
+
+
 The general approach for response surface modelling
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
