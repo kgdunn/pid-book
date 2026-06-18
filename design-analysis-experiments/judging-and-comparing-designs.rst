@@ -568,7 +568,8 @@ D-efficiency and a lower worst-case prediction variance :math:`G`. Read the D-ef
 per-run figures with care, though: as the dilemma table showed, these quantities shift with the
 number of runs, so a head-to-head on :math:`D` across a nine-run DSD and a thirteen-run OMARS design
 is not a
-like-for-like comparison. The honest reading leans on the quantities that carry real meaning here,
+like-for-like comparison. The reading that carries weight leans on the quantities that carry real
+meaning here,
 separability (:math:`|r|`, VIF), prediction (:math:`I`, :math:`G`), and the ability to test at all
 (residual degrees of freedom), and lets the purpose of the study break the ties.
 
@@ -653,19 +654,19 @@ designs' ability to flag a true effect of one noise standard deviation
 The thirteen-run DSD is visibly underpowered: a :math:`0.42` chance on a one-sigma main effect and
 only :math:`0.15` on a quadratic of the same size. The run-richer designs all clear :math:`0.97`
 on main effects, and the Box-Behnken design, the largest at forty-six runs, is the only one with a
-strong :math:`0.82` chance on curvature. Power rewards the larger designs, which is the honest
-practical reading and exactly what an efficiency score that normalizes out the number of runs
-would have hidden.
+strong :math:`0.82` chance on curvature. Power rewards the larger designs, which is the practical
+reading and exactly what an efficiency score that normalizes out the number of runs would have
+hidden.
 
 .. list-table:: Quality metrics for the four response-surface designs (five factors).
     :header-rows: 1
     :widths: 40 15 15 15 15
 
     *   - Metric (and preferred direction)
-        - BBD, 46
-        - CCD, 32
-        - OMARS, 25
-        - DSD, 13
+        - BBD, 46 runs
+        - CCD, 32 runs
+        - OMARS, 25 runs
+        - DSD, 13 runs
     *   - Power, main effect at :math:`\delta = \sigma` (higher)
         - 0.97
         - 0.98
@@ -691,6 +692,11 @@ would have hidden.
         - 2.39
         - 2.34
         - 3.70
+    *   - :math:`E`, smallest eigenvalue of :math:`\mathbf{X}^T\mathbf{X}` (higher)
+        - 2.54
+        - 2.00
+        - 0.93
+        - 0.85
     *   - Maximum :math:`|r|` among model terms (lower)
         - 0.15
         - 0.75
@@ -702,7 +708,7 @@ would have hidden.
         - 1.00
         - 1.05
     *   - D-optimal information :math:`|\mathbf{X}^T\mathbf{X}|^{1/p}` (higher)
-        - 14.04
+        - 14.0
         - 8.97
         - 9.82
         - 5.19
@@ -712,40 +718,40 @@ would have hidden.
         - 39.3%
         - 39.9%
 
-Read the last row against the rest. Recall what D-efficiency measures: it takes the determinant of
+Let's focus on the last row first. Recall what D-efficiency measures: it takes the determinant of
 the information matrix :math:`\mathbf{X}^T\mathbf{X}`, raises it to the power :math:`1/p` to put it
 on a per-coefficient scale, and then divides by the run count :math:`N`, reported as a percentage.
-The division by :math:`N` is the whole story here. It measures information *per experiment*, not
-total information, and that single normalisation flips the ranking.
+Dividing by :math:`N` measures information *per experiment*, not total information, and that single
+normalisation flips the ranking.
 
 The two D rows make this concrete. The **unscaled** D-optimal information
-:math:`|\mathbf{X}^T\mathbf{X}|^{1/p}` ranks the designs as every other honest row does, the
-Box-Behnken design highest at :math:`14.04` and the thirteen-run DSD lowest at :math:`5.19`. Divide
+:math:`|\mathbf{X}^T\mathbf{X}|^{1/p}` ranks the designs as every other row does, the
+Box-Behnken design highest at :math:`14.0` and the thirteen-run DSD lowest at :math:`5.19`. Divide
 that same determinant through by the run count and the order reverses in the row directly beneath
 it: per-run D-efficiency ranks the small DSD and OMARS designs *highest*, at :math:`39.9\,\%` and
 :math:`39.3\,\%`, above the Box-Behnken and composite designs that predict better, test better, and
 detect curvature far better. The number is not wrong; it is answering a different question. Dividing
 by the run count rewards a design for spending few experiments, so a small design comes out ahead
-even when it tests and predicts worse. Scaled prediction variance carries the same defect, and for
-the same reason it has long been questioned in the design literature (Anderson-Cook, Borror and
+even when it tests and predicts worse. Scaled prediction variance carries the same concern, and for
+the same reason it has been questioned in the design literature (Anderson-Cook, Borror and
 Montgomery, 2009, and its published discussion; Goos and Núñez Ares, 2025).
 
-The honest quantities are the ones in real units: the **unscaled prediction variance** in
-:math:`\sigma^2`, the summed coefficient variance :math:`A`, and the power. All of these reward the
-larger Box-Behnken design, which is the reading that matches what the experiments can actually
-deliver.
+The quantities in real units, the **unscaled prediction variance** in :math:`\sigma^2`, the summed
+coefficient variance :math:`A`, and the power, all reward the larger Box-Behnken design, which is
+the reading that matches what the experiments can actually deliver.
 
-A word on the criteria not tabulated. In prediction space the table carries both an average and a
-worst-case measure (the average and maximum prediction variance, the working analogues of
-:math:`I`- and :math:`G`-optimality); in coefficient space it carries only the average, :math:`A`.
-The missing partner is :math:`E`-optimality, the precision in the worst single coefficient direction
-(the smallest eigenvalue of :math:`\mathbf{X}^T\mathbf{X}`). It is left out for two reasons. It
-reaches the same verdict as the rows already shown, ranking the Box-Behnken design best
-(:math:`2.54`), then the composite (:math:`2.00`), OMARS (:math:`0.93`) and the DSD last
-(:math:`0.85`); and, like the raw determinant and :math:`A`, it scales with the run count, so a fair
-cross-size comparison would drag in the very per-run normalisation just shown to be misleading. The
-trace criterion :math:`T` (total information) is omitted for that same scaling reason. Neither would
-separate these designs any further than the rows already given.
+It is worth being clear about what the table compares. The model is already settled: we have
+committed to the eleven-term main-effects-plus-quadratics model and are comparing point-placement
+strategies, the designs, for estimating its coefficients and predicting from it. The criteria split
+along exactly that line. For *estimation*, the determinant criterion :math:`D` (unscaled and per
+run) and the summed coefficient variance :math:`A` summarise the whole parameter set, and
+:math:`E`-optimality adds the worst single coefficient direction, the smallest eigenvalue of
+:math:`\mathbf{X}^T\mathbf{X}`. It is the coefficient-space counterpart to the maximum prediction
+variance, and it agrees with :math:`A` and the prediction rows: the Box-Behnken design first, the
+DSD last. For *prediction*, the average and maximum prediction variance are the working analogues of
+:math:`I`- and :math:`G`-optimality. A model-discrimination criterion such as :math:`T`-optimality
+has no place here: it is defined only against a second, rival model, measuring the lack of fit of
+one against the other, so once a single model is settled there is no rival curve to be far from.
 
 Two design-specific cautions sit alongside this. The composite design here is **face-centred**
 (axial runs at
@@ -754,8 +760,7 @@ would place those runs at :math:`\pm 2`, scoring much better only by quietly spe
 on a region twice as wide, which is not a fair comparison and explains the face-centred design's
 weaker curvature precision (its :math:`|r| = 0.75` and VIF of :math:`3.20`). And the families
 overlap: a composite design built on a resolution-V fraction is itself a strong OMARS design, while
-a definitive screening design is the smallest OMARS member, so think of these as a spectrum, not as
-six rival camps.
+a definitive screening design is the smallest OMARS member, so think of these as a spectrum.
 
 The two views of prediction variance are worth seeing side by side, because the scaling is exactly
 what hides the cost of running too few experiments.
@@ -766,17 +771,18 @@ what hides the cost of running too few experiments.
     :alt: fds-plot-six-designs.py
 
     FDS curves for the four response-surface designs, scaled (left) and unscaled (right). Scaling
-    by the run count flatters the small DSD; in real :math:`\sigma^2` units it is the worst
-    predictor and the larger Box-Behnken design is the best.
+    by the run count lowers the small DSD's curve; in real :math:`\sigma^2` units the DSD curve is
+    the highest and the larger Box-Behnken design's is the lowest.
 
-On the left, scaled, the thirteen-run DSD sits low and looks thoroughly competitive. On the right,
-unscaled and in the units a modeller actually cares about, the same DSD curve is the highest in the
-plot: it predicts worst everywhere, and the forty-six-run Box-Behnken design predicts best. Within
-either panel the rule from before still holds, a low and flat curve is what you want, and the right
-tail (anchored at the cube vertices, where the maximum prediction variance always lives) shows the
-worst case. The scaled panel is not lying, but it answers a per-run question; the unscaled panel
-answers the modeller's question, and the two disagree precisely because more runs genuinely buy
-better predictions.
+Within either panel the rule from before still holds: a low and flat curve is what you want, and the
+right tail (anchored at the cube vertices, where the maximum prediction variance always lives) shows
+the worst case. The two panels differ only in how they put the designs on a common footing. The left
+panel is scaled, normalized by the number of runs, so it compares the designs per experiment; on
+that footing the thirteen-run DSD curve sits among the rest. The right panel is unscaled, in real
+:math:`\sigma^2` units, so it compares the variance actually obtained at the bench; there the DSD
+curve is the highest and the forty-six-run Box-Behnken the lowest. The two views answer different
+questions, and they diverge because adding runs lowers the variance you obtain while leaving the
+per-run figure roughly fixed.
 
 A checklist for choosing among designs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -816,7 +822,7 @@ and the number of residual degrees of freedom.
 * Goos and Núñez Ares, "Response to Letter to the Editor", *Technometrics*, **67**, 189--191, 2025
   (`doi:10.1080/00401706.2024.2379849 <https://doi.org/10.1080/00401706.2024.2379849>`__), on why
   absolute efficiencies and scaled prediction variance mislead when designs differ in run size, and
-  why power and unscaled prediction variance are the honest comparisons.
+  why power and unscaled prediction variance are the comparisons that hold up.
 * Goos and Jones, *Optimal Design of Experiments: A Case Study Approach*, for the
   information-matrix view of the optimality criteria.
 * Núñez Ares and Goos, "Enumeration and Multicriteria Selection of Orthogonal Minimally Aliased
