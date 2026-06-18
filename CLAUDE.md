@@ -33,6 +33,12 @@ same edits do not have to be made again.
   story" unless the claim is literally true; prefer measured wording.
 - No cute or colourful adjectives standing in for precision (e.g.
   "thrifty"). Use plain, exact language.
+- Avoid idioms and colloquialisms; prefer plain, literal phrasing. For
+  example "shore it up" (use "strengthen it") or "top them all" (use "is
+  best in every column").
+- Prefer concrete, reader-directed phrasing over an abstract
+  nominalisation. For example "the dilemma resolves based on your
+  intentions", not "resolves by purpose".
 
 **Technical rigour**
 
@@ -46,7 +52,14 @@ same edits do not have to be made again.
   bluff.
 - Re-explain at the point of use. Briefly restate what a term means
   where it appears again, rather than relying on the reader to scroll
-  back to an earlier definition.
+  back to an earlier definition. Likewise, name the object at each
+  mention (the "nine-run DSD", the "thirteen-run OMARS design"), not a
+  bare "the nine-run design", so the reader need not scroll back to
+  recall which is which.
+- Prefer the exact technical term to a loose paraphrase. For example
+  "estimate the coefficients jointly", not "estimate them as a set"; and
+  "the running fraction (percentiles)", not "the running fraction of
+  sampled locations".
 - State the scenario first. Make the assumptions explicit before drawing
   a conclusion (for example: the model is already fixed, and we are
   comparing where the runs are placed).
@@ -59,6 +72,12 @@ same edits do not have to be made again.
 - Tables: capitalise the first-column labels, and order the columns
   meaningfully, keeping any related figure in the same order.
 - Keep paragraphs short; split a long one at its natural seam.
+- Cross-reference with an explicit ``:ref:`` link, not a positional word.
+  The HTML edition splits sections onto separate pages, so "the example
+  above" may sit on a different page; link to the labelled target rather
+  than writing "above" or "earlier".
+- Do not refer to a table or figure before it appears in the text. If a
+  forward reference is unavoidable, point to it explicitly as "below".
 
 **Process**
 
