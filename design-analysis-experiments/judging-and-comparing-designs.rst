@@ -300,9 +300,13 @@ and no experiment required. The whole plot is a property of the design's geometr
 So we sample the region. Scatter a large number of locations, tens of thousands of them (the figure
 below uses 80,000), uniformly at random across the coded factor region: for :math:`k` factors that
 means drawing each coordinate independently and uniformly on :math:`[-1, +1]`, so the points fill
-the cube evenly. At every one of those locations we evaluate the SPV formula. We now hold tens of
-thousands of SPV values, one per sampled location, a dense picture of how precisely the fitted model
-would predict across the entire region.
+the cube evenly. One point is easy to miss: uniform random sampling almost never lands exactly on a
+corner of the cube, yet the prediction variance is usually largest at a vertex, where the G-optimal
+worst case sits. Add the :math:`2^k` extreme vertices back to the sampled set explicitly, so the
+worst-case (right-hand) tail of the curve is represented and the region is covered fairly. At every
+one of those locations we evaluate the SPV formula. We now hold tens of thousands of SPV values, one
+per sampled location, a dense picture of how precisely the fitted model would predict across the
+entire region.
 
 Finally we turn that cloud of numbers into a curve. Sort the SPV values from smallest to largest.
 The :math:`i`-th value in the sorted list is plotted at horizontal position
