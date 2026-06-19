@@ -82,7 +82,7 @@ climbs steeply (already :math:`5.2\,\sigma^2` at :math:`x = 1.5`): a quantitativ
 against extrapolation.
 
 This and every figure in this subchapter is reproducible with `process_improve
-<https://github.com/kgdunn/process-improve>`_ (``pip install 'process-improve[expt]'``);
+<https://github.com/kgdunn/process-improve>`_ (``pip install 'process-improve[expt]>=1.42'``);
 the code blocks build on one another, so paste them in order. The prediction variance of the
 three-run quadratic design is a closed form:
 
@@ -764,10 +764,10 @@ designs' ability to flag a true effect of one noise standard deviation
 (:math:`\delta = \sigma`) at :math:`\alpha = 0.05`.
 
 The four response-surface designs are built once here and reused for the table and the FDS
-panels that follow. ``process_improve`` builds the Box-Behnken design and the DSD directly;
-its central composite design uses a full-factorial cube (48 runs for five factors), so the
-face-centred CCD is built on the standard resolution-V half-fraction cube instead, and the
-25-run OMARS design (no library generator) is two permuted conference-matrix foldovers. The
+panels that follow. ``process_improve`` builds the Box-Behnken design and the DSD directly,
+and builds the face-centred CCD on a resolution-V half-fraction cube with ``cube="fractional"``
+(the standard five-factor CCD; the library's default cube is the full factorial). The 25-run
+OMARS design has no library generator, so it is two permuted conference-matrix foldovers. The
 power comes from ``evaluate_design``, given the eleven-term model as an explicit formula so
 the library scores exactly this model and not the full second-order one:
 
@@ -797,11 +797,8 @@ the library scores exactly this model and not the full second-order one:
 
 	bbd = coded(generate_design(factors, "box_behnken", center_points=6))
 	dsd = coded(generate_design(factors, "dsd"))
-	cube = coded(generate_design(factors, "fractional_factorial",
-	                             generators=["E=ABCD"], center_points=0))
-	faces = np.array([[s if i == m else 0 for i in range(5)]
-	                  for m in range(5) for s in (-1, 1)], float)
-	ccd = np.vstack([cube, faces, np.zeros((6, 5))])
+	ccd = coded(generate_design(factors, "ccd", cube="fractional",
+	                            alpha="face_centered", center_points=6))
 	cm = conference_matrix_order6()[:, :5]
 	cm2 = cm[:, [2, 4, 1, 3, 0]]
 	omars = np.vstack([cm, -cm, cm2, -cm2, np.zeros((1, 5))])
