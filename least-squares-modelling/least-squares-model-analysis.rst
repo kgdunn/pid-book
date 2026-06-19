@@ -294,6 +294,12 @@ Start from the equations that define |b0| and |b1| :ref:`in the prior section <L
     	b_1 &=& \sum{m_iy_i} &\text{where} \qquad m_i &=& \dfrac{x_i - \overline{\mathrm{x}}}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}
 	\end{array}
 
+In going from the second line to the third, the :math:`\overline{\mathrm{y}}` term drops out. Expand the
+numerator: :math:`\sum_i \left(x_i - \overline{\mathrm{x}}\right)\left(y_i - \overline{\mathrm{y}}\right) = \sum_i \left(x_i - \overline{\mathrm{x}}\right)y_i - \overline{\mathrm{y}} \sum_i \left(x_i - \overline{\mathrm{x}}\right)`,
+and the last sum is zero, since :math:`\sum_i \left(x_i - \overline{\mathrm{x}}\right) = 0` by the definition of
+the mean. So :math:`\overline{\mathrm{y}}` is the average of all the :math:`y_i`, but here it multiplies a
+quantity that is identically zero, so it has no effect on :math:`b_1`.
+
 That last form of expressing :math:`b_1` shows that every data point contributes a small amount to the coefficient :math:`b_1`. But notice how it is broken into 2 pieces: each term in the sum has a component due to :math:`m_i` and one due to :math:`y_i`. The :math:`m_i` term is a function of the x-data only, and since we assume the x's are measured without error, that term has no error. The :math:`y_i` component is the only part that has error.
 
 So we can write:
@@ -318,7 +324,7 @@ where :math:`j` is an index for all data points used to build the least squares 
 
 #.	What do we use for the numerator term :math:`\mathcal{V}\{y_i\}`?
 
-	-	This term represents the variance of the :math:`y_i` values at a given point :math:`x_i`. If (a) there is no evidence of :index:`lack-of-fit`, and (b) if |y| has the same error at all levels of |x|, then we can write that :math:`\mathcal{V}\{y_i\}` = :math:`\mathcal{V}\{e_i\}  = \dfrac{\sum{e_i^2}}{n-k}`, where :math:`n` is the number of data points used, and :math:`k` is the number of coefficients estimated (2 in this case). The :math:`n-k` quantity is the degrees of freedom.
+	-	This term represents the variance of the :math:`y_i` values at a given point :math:`x_i`. It is the variance of :math:`y_i` about its true value on the line (the error variance), not the spread of the :math:`y_i` about their overall average :math:`\overline{\mathrm{y}}`. If you took repeated measurements at a fixed :math:`x_i`, it is the variance you would see around the average of those repeats; with no replicates we estimate it by pooling the residuals about the fitted line. If (a) there is no evidence of :index:`lack-of-fit`, and (b) if |y| has the same error at all levels of |x|, then we can write that :math:`\mathcal{V}\{y_i\}` = :math:`\mathcal{V}\{e_i\}  = \dfrac{\sum{e_i^2}}{n-k}`, where :math:`n` is the number of data points used, and :math:`k` is the number of coefficients estimated (2 in this case). The :math:`n-k` quantity is the degrees of freedom.
 
 Now for the variance of :math:`b_0 = \overline{\mathrm{y}} - b_1 \overline{\mathrm{x}}`. The only terms with error are :math:`b_1`, and :math:`\overline{\mathrm{y}}`. So we can derive that:
 
