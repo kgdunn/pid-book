@@ -127,7 +127,8 @@ is the :index:`scaled prediction variance <pair: scaled prediction variance; exp
                            = \frac{N\,\text{Var}\big(\widehat{y}(\mathbf{x})\big)}{\sigma^2}
 
 The SPV depends only on the geometry of the design. The G-optimal value is its maximum
-over the region and the V-optimal (I-optimal) value is its average.
+over the region, and the I-optimal value is its average over the region (V-optimality is the
+same average taken over a chosen set of points rather than over the whole region).
 
 A worked example: augmenting a small design
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -367,7 +368,7 @@ response surface* (OMARS) design that spends its four extra runs to buy two esti
 two-factor interactions. OMARS designs are a recent generalization of the definitive
 screening design: they keep the main effects orthogonal to every second-order term while
 trading a handful of runs for interaction estimability, and the definitive screening
-designs are themselves the smallest members of that family.
+designs are themselves a special case within that family.
 
 The definitive screening design comes straight from ``process_improve``; the OMARS design
 has no generator in the library, so it is given explicitly. The helpers defined here, the
@@ -834,6 +835,14 @@ strong :math:`0.82` chance on curvature. Power rewards the larger designs, which
 reading and exactly what an efficiency score that normalizes out the number of runs would have
 hidden.
 
+One caveat in the definitive screening design's favour, since its numbers look stark. A DSD is
+built on an assumption of effect sparsity, not for this saturated eleven-term fit: its design
+intent (Jones and Nachtsheim, 2011) is to project onto the few factors that turn out to be active
+and estimate their quadratics cleanly, rather than to test all five quadratics at once on thirteen
+runs. Held to the full model here it is being asked for more than it was built to give; the
+comparison keeps it on the same model as the others to make that trade-off visible, not to mark it
+a poor design.
+
 .. list-table:: Quality metrics for the four response-surface designs (five factors).
     :header-rows: 1
     :widths: 40 15 15 15 15
@@ -903,7 +912,12 @@ Let's focus on the last row first. Recall what D-efficiency measures: it takes t
 the information matrix :math:`\mathbf{X}^T\mathbf{X}`, raises it to the power :math:`1/p` to put it
 on a per-coefficient scale, and then divides by the run count :math:`N`, reported as a percentage.
 Dividing by :math:`N` measures information *per experiment*, not total information, and that single
-normalisation flips the ranking.
+normalisation flips the ranking. One more point on the scale: for this absolute percentage, 100%
+would be a hypothetical orthogonal design (:math:`|\mathbf{X}^T\mathbf{X}| = N^p`), not the
+D-optimal design. That ceiling is out of reach for a model with pure-quadratic terms on the coded
+cube, since the squared columns cannot be made orthogonal to the intercept, which is why even the
+strongest designs here sit near 30 to 40%. (A separate *relative* D-efficiency convention instead
+takes the D-optimal design as 100%, so it is worth checking which one a given package reports.)
 
 The two D rows make this concrete. The **unscaled** D-optimal information
 :math:`|\mathbf{X}^T\mathbf{X}|^{1/p}` ranks the designs as every other row does, the
@@ -952,10 +966,11 @@ would place those runs at :math:`\pm 2`, scoring much better only by quietly spe
 on a region twice as wide, which is not a fair comparison and explains the face-centred design's
 weaker curvature precision (its :math:`|r| = 0.75` and VIF of :math:`3.20`). And the families
 overlap: a composite design built on a resolution-V fraction is itself a strong OMARS design, while
-a definitive screening design is the smallest OMARS member, so think of these as a spectrum.
+a definitive screening design is a special case within the OMARS family, so think of these as a
+spectrum.
 
-The two views of prediction variance are worth seeing side by side, because the scaling is exactly
-what hides the cost of running too few experiments.
+The two views of prediction variance are worth seeing side by side, because the scaling by run
+count is exactly what leaves out the cost of running too few experiments.
 
 Reusing the four designs and the ``fds_curve`` helper, the two panels are the same curves
 on the two scales:
@@ -1009,11 +1024,12 @@ Let the purpose of the experiment set the priorities.
         errors, no tests, no power. Favour D-optimality here.
 
     *   **Optimization / response surfaces** (map the surface and find the optimum): lead with
-        the FDS plot and V-/I-optimality, then quadratic estimability, then how the design
+        the FDS plot and I-optimality (the average prediction variance over the region), then
+        quadratic estimability, then how the design
         behaves when projected onto the subset of factors that turn out to be active. Favour a
         design whose FDS curve is low and flat.
 
-Two rules of thumb close the loop. First, use **D for estimation and V/I for prediction**;
+Two rules of thumb close the loop. First, use **D for estimation and I for prediction**;
 they frequently disagree, so choose by what you will actually do with the model. Second,
 **compare D-efficiency only between designs of the same number of runs**: across
 different run counts it favours the smaller design, so judge larger-versus-smaller on
@@ -1037,6 +1053,10 @@ and the number of residual degrees of freedom.
   why power and unscaled prediction variance are the comparisons that hold up.
 * Goos and Jones, *Optimal Design of Experiments: A Case Study Approach*, for the
   information-matrix view of the optimality criteria.
+* Jones and Nachtsheim, "A Class of Three-Level Designs for Definitive Screening in the Presence of
+  Second-Order Effects", *Journal of Quality Technology*, **43**, 1--15, 2011
+  (`doi:10.1080/00224065.2011.11917841 <https://doi.org/10.1080/00224065.2011.11917841>`__), for the
+  effect-sparsity and projection rationale behind definitive screening designs.
 * Núñez Ares and Goos, "Enumeration and Multicriteria Selection of Orthogonal Minimally Aliased
   Response Surface Designs", *Technometrics*, **62**, 21--36, 2020
   (`doi:10.1080/00401706.2018.1549103 <https://doi.org/10.1080/00401706.2018.1549103>`__), and the
