@@ -41,4 +41,4 @@ Another example: you work in a company that produces tablets. The machine create
 		:math:`n=100`
 		===================== ================== =================
 
-	-	Are you surprised by the large reduction in the number of defective tablets for only a small increase in :math:`p`? It is for this reason that a well-performing process producing accetable product does not need to have inspection of every product produced.
+	-	Are you surprised by the large reduction in the number of defective tablets for only a small increase in :math:`p`? It is for this reason that a well-performing process producing acceptable product does not need to have inspection of every product produced.

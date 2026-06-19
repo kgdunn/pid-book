@@ -59,7 +59,7 @@ Interpreting the confidence interval
 
 			90%, 17.6, 22.4
 			95%, 17.1, 22.9
-			99%, 15.7, 24.2
+			99%, 15.7, 24.3
 
 		As the confidence level is *increased*, our interval widens, indicating that we have a more reliable region, but it is less precise. With a wider interval we have greater confidence that the true parameter will be inside that region.
 

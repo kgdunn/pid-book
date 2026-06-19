@@ -12,14 +12,14 @@ Confidence interval for the variance
 	single: confidence interval; for variance
 	single: chi-squared distribution
 
-This confidence interval finds a region in which the normal distribution's variance parameter, :math:`\sigma`, lies. The range is obviously positive, since variance is a positive quantity. For reference, this range is:
+This confidence interval finds a region in which the normal distribution's variance parameter, :math:`\sigma^2`, lies. The range is positive, since variance is a positive quantity. For reference, this range is:
 
 .. math::
-	\left[\frac{(n-1)S^2}{\chi^2_{n-1, \alpha/2}} \quad\text{to}\quad \frac{(n-1)S^2}{\chi^2_{n-1, 1-\alpha/2}} \right]
+	\left[\frac{(n-1)S^2}{\chi^2_{n-1,\, 1-\alpha/2}} \quad\text{to}\quad \frac{(n-1)S^2}{\chi^2_{n-1,\, \alpha/2}} \right]
 
 -	:math:`n` is the number of samples
 -	:math:`S^2` is the sample variance
--	:math:`\chi^2_{n-1, \alpha/2}` are values from the :math:`\chi^2` distribution with :math:`n-1` and :math:`\alpha/2` degrees of freedom
+-	:math:`\chi^2_{n-1,\, \alpha/2}` and :math:`\chi^2_{n-1,\, 1-\alpha/2}` are the values from the :math:`\chi^2` distribution with :math:`n-1` degrees of freedom, having a cumulative area of :math:`\alpha/2` and :math:`1-\alpha/2` respectively to their left. The smaller critical value, :math:`\chi^2_{n-1,\, \alpha/2}`, appears in the denominator of the upper bound.
 -	:math:`1-\alpha`: is the level of confidence, usually 95%, so :math:`\alpha = 0.05` in that case.
 
 .. todo: give some R code still
