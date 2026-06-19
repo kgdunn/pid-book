@@ -81,6 +81,30 @@ minimum of :math:`0.625\,\sigma^2` at :math:`x = \pm 0.707`, and beyond :math:`x
 climbs steeply (already :math:`5.2\,\sigma^2` at :math:`x = 1.5`): a quantitative warning
 against extrapolation.
 
+This and every figure in this subchapter is reproducible with `process_improve
+<https://github.com/kgdunn/process-improve>`_ (``pip install 'process-improve[expt]'``);
+the code blocks build on one another, so paste them in order. The prediction variance of the
+three-run quadratic design is a closed form:
+
+.. code-block:: python
+
+	import itertools
+	import numpy as np
+	import pandas as pd
+	import plotly.graph_objects as go
+	from plotly.subplots import make_subplots
+	from process_improve.experiments import Factor, generate_design, evaluate_design
+
+	# Single-factor quadratic design {-1, 0, +1}: the prediction variance is a closed form.
+	x = np.linspace(-1.6, 1.6, 321)
+	pred_var = 1 - 1.5 * x**2 + 1.5 * x**4              # Var(y_hat) / sigma^2
+
+	fig = go.Figure(go.Scatter(x=x, y=pred_var, mode="lines"))
+	fig.add_vrect(x0=-1.6, x1=-1, fillcolor="LightSalmon", opacity=0.2, line_width=0)
+	fig.add_vrect(x0=1, x1=1.6, fillcolor="LightSalmon", opacity=0.2, line_width=0)
+	fig.update_layout(xaxis_title="x (coded)", yaxis_title="Prediction variance / sigma^2")
+	fig.show()
+
 .. figure:: ../figures/doe/prediction-variance-extrapolation.png
     :align: center
     :width: 750px
@@ -345,6 +369,56 @@ screening design: they keep the main effects orthogonal to every second-order te
 trading a handful of runs for interaction estimability, and the definitive screening
 designs are themselves the smallest members of that family.
 
+The definitive screening design comes straight from ``process_improve``; the OMARS design
+has no generator in the library, so it is given explicitly. The helpers defined here, the
+model expansion, the prediction variance and the FDS curve, are reused for the omnibus
+comparison further down.
+
+.. code-block:: python
+
+	def model_matrix(design):
+	    """Main-effects-plus-pure-quadratics expansion [1 | x_i | x_i^2]."""
+	    d = np.asarray(design, float)
+	    k = d.shape[1]
+	    return np.column_stack([np.ones(len(d))] + [d[:, i] for i in range(k)]
+	                           + [d[:, i] ** 2 for i in range(k)])
+
+	def prediction_variance(design, points):
+	    """x'(X'X)^-1 x at each row of `points`, in sigma^2 units."""
+	    xtx_inv = np.linalg.inv(model_matrix(design).T @ model_matrix(design))
+	    P = model_matrix(points)
+	    return np.einsum("ij,jk,ik->i", P, xtx_inv, P)
+
+	def fds_curve(design, points, fracs, scaled=False):
+	    """Sorted prediction variance as a fraction-of-design-space curve."""
+	    pv = np.sort(prediction_variance(design, points))
+	    if scaled:
+	        pv = pv * len(np.asarray(design))
+	    return np.quantile(pv, fracs)
+
+	# 4-factor DSD (9 runs) from process_improve; the 13-run OMARS is given explicitly.
+	dsd4 = np.asarray(generate_design([Factor(name=c, low=-1, high=1) for c in "ABCD"],
+	                                  design_type="dsd").design[list("ABCD")], float)
+	omars4 = np.array([[0, 0, 0, 1], [0, 0, 1, 0], [0, 1, -1, -1], [1, -1, -1, 0],
+	                   [1, 0, 1, -1], [1, 1, 0, 1], [0, 0, 0, -1], [0, 0, -1, 0],
+	                   [0, -1, 1, 1], [-1, 1, 1, 0], [-1, 0, -1, 1], [-1, -1, 0, -1],
+	                   [0, 0, 0, 0]], float)
+
+	# Sample the region uniformly and add the 2^4 vertices, where the worst case can sit.
+	rng = np.random.default_rng(1)
+	region4 = np.vstack([rng.uniform(-1, 1, size=(80_000, 4)),
+	                     np.array(list(itertools.product([-1, 1], repeat=4)), float)])
+	fracs = np.linspace(0, 1, 200)
+
+	fig = go.Figure()
+	fig.add_trace(go.Scatter(x=fracs, y=fds_curve(dsd4, region4, fracs, scaled=True),
+	                         name="DSD (9 runs)"))
+	fig.add_trace(go.Scatter(x=fracs, y=fds_curve(omars4, region4, fracs, scaled=True),
+	                         name="OMARS (13 runs)"))
+	fig.update_layout(xaxis_title="Fraction of design space",
+	                  yaxis_title="Scaled prediction variance, SPV")
+	fig.show()
+
 .. figure:: ../figures/doe/fds-plot-dsd-vs-omars.png
     :align: center
     :width: 750px
@@ -464,6 +538,46 @@ and a mean of
 :math:`1.08`, which inflates the worst standard error by only :math:`\sqrt{1.18} \approx 1.09`,
 about nine percent. That is a mild and entirely acceptable price for the residual degrees of freedom
 and the interaction estimates that the extra runs provide.
+
+.. _DOE-alias-bias:
+
+Bias from the terms left out: the alias matrix
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The variance inflation factor measures entanglement *among the terms we fit*. A separate
+question sits underneath the whole comparison: the model we have chosen leaves the
+two-factor interactions out, and if any of them is not in fact zero, leaving it out pushes
+its effect onto the coefficients we do estimate. How much, and onto which ones, is read
+from the alias matrix.
+
+Split the model terms into the ones we keep and the ones we drop. Let :math:`\mathbf{X}_1`
+hold the eleven fitted columns (the intercept, the five linear terms, and the five pure
+quadratics) and :math:`\mathbf{X}_2` hold the ten two-factor interaction columns
+:math:`x_i x_j` left out. If the true response contains those interactions with
+coefficients :math:`\boldsymbol{\beta}_2`, the least-squares estimates of the fitted
+coefficients are biased by a fixed, design-dependent amount:
+
+.. math::
+
+    E[\mathbf{b}_1] = \boldsymbol{\beta}_1 + \mathbf{A}\,\boldsymbol{\beta}_2,
+    \qquad
+    \mathbf{A} = (\mathbf{X}_1^T\mathbf{X}_1)^{-1}\mathbf{X}_1^T\mathbf{X}_2
+
+Each entry of the alias matrix :math:`\mathbf{A}` is the amount by which one omitted
+interaction shifts one fitted coefficient: an entry of zero leaves that coefficient
+untouched, an entry of one adds a full unit of the interaction to it. This is the same kind
+of entanglement the VIF describes, turned outward. The VIF measures overlap among the terms
+in the model; the alias matrix measures overlap between those terms and the terms the model
+omits.
+
+The two screening-oriented designs are built to control the rows of :math:`\mathbf{A}` that
+matter most. A definitive screening design and an OMARS design keep every main effect
+orthogonal to every second-order term, so the main-effect rows of :math:`\mathbf{A}` are
+exactly zero: interactions that are present but omitted do not bias the estimated main
+effects. That is what *minimally aliased* names. The price is carried by the quadratics,
+whose rows are not zero. The omnibus comparison below reports the largest absolute entry of
+:math:`\mathbf{A}` for each design, so this bias sits in the same table as the variance it
+trades against.
 
 .. _DOE-statistical-power:
 
@@ -594,7 +708,10 @@ whole point. Every design here is confined to the coded range :math:`[-1, 1]` on
 the contest is like-for-like on one fixed experimental region. The fuller second-order story, with
 all the two-factor interactions, is where strong OMARS and composite designs really compete; the
 script that backs this section builds that model too, but the comparison below holds to
-main-effects-and-quadratics so it lines up with the rest of the chapter.
+main-effects-and-quadratics so it lines up with the rest of the chapter. Holding the
+two-factor interactions out is an assumption: if they are in fact present, they bias the
+eleven estimated coefficients by the :ref:`alias matrix <DOE-alias-bias>`, and the table
+below records how large that bias can be for each design.
 
 Start with the question that decides whether a design belongs in the contest at all: can it even
 fit the model?
@@ -646,6 +763,64 @@ born. The four remaining designs are full rank and carry the comparison from her
 designs' ability to flag a true effect of one noise standard deviation
 (:math:`\delta = \sigma`) at :math:`\alpha = 0.05`.
 
+The four response-surface designs are built once here and reused for the table and the FDS
+panels that follow. ``process_improve`` builds the Box-Behnken design and the DSD directly;
+its central composite design uses a full-factorial cube (48 runs for five factors), so the
+face-centred CCD is built on the standard resolution-V half-fraction cube instead, and the
+25-run OMARS design (no library generator) is two permuted conference-matrix foldovers. The
+power comes from ``evaluate_design``, given the eleven-term model as an explicit formula so
+the library scores exactly this model and not the full second-order one:
+
+.. code-block:: python
+
+	def conference_matrix_order6():
+	    """Order-6 conference matrix (C C' = 5 I) from the quadratic residues of GF(5):
+	    the backbone of definitive screening and OMARS designs."""
+	    q = 5
+	    residues = {(a * a) % q for a in range(1, q)}
+	    chi = [0] + [1 if a in residues else -1 for a in range(1, q)]
+	    c = np.zeros((6, 6))
+	    for i in range(1, 6):
+	        c[0, i] = c[i, 0] = 1
+	    for i in range(q):
+	        for j in range(q):
+	            if i != j:
+	                c[1 + i, 1 + j] = chi[(j - i) % q]
+	    return c
+
+	names = list("ABCDE")
+	factors = [Factor(name=c, low=-1, high=1) for c in names]
+	model = " + ".join(names + [f"I({c}**2)" for c in names])   # 11 terms, no interactions
+
+	def coded(result):
+	    return np.asarray(result.design[names], float)
+
+	bbd = coded(generate_design(factors, "box_behnken", center_points=6))
+	dsd = coded(generate_design(factors, "dsd"))
+	cube = coded(generate_design(factors, "fractional_factorial",
+	                             generators=["E=ABCD"], center_points=0))
+	faces = np.array([[s if i == m else 0 for i in range(5)]
+	                  for m in range(5) for s in (-1, 1)], float)
+	ccd = np.vstack([cube, faces, np.zeros((6, 5))])
+	cm = conference_matrix_order6()[:, :5]
+	cm2 = cm[:, [2, 4, 1, 3, 0]]
+	omars = np.vstack([cm, -cm, cm2, -cm2, np.zeros((1, 5))])
+	designs = {"Box-Behnken": bbd, "CCD": ccd, "OMARS": omars, "DSD": dsd}
+
+	def power(design):
+	    df = pd.DataFrame(np.asarray(design), columns=names)
+	    p = evaluate_design(df, model=model, metric="power",
+	                        effect_size=1.0, sigma=1.0)["power"]
+	    return p["A"], p["I(A ** 2)"]          # one main effect, one pure quadratic
+
+	power_main = [power(d)[0] for d in designs.values()]
+	power_quad = [power(d)[1] for d in designs.values()]
+	fig = go.Figure([go.Bar(name="main effect", x=list(designs), y=power_main),
+	                 go.Bar(name="quadratic effect", x=list(designs), y=power_quad)])
+	fig.update_layout(barmode="group",
+	                  yaxis_title="Power (delta = sigma, alpha = 0.05)")
+	fig.show()
+
 .. figure:: ../figures/doe/power-comparison-six-designs.png
     :align: center
     :width: 750px
@@ -653,7 +828,7 @@ designs' ability to flag a true effect of one noise standard deviation
 
     Power to detect a one-sigma main effect and a one-sigma quadratic effect, for the four
     response-surface designs on the five-factor model. More runs buy more power, and curvature is
-    always the harder target.
+    the harder target.
 
 The thirteen-run DSD is visibly underpowered: a :math:`0.42` chance on a one-sigma main effect and
 only :math:`0.15` on a quadratic of the same size. The run-richer designs all clear :math:`0.97`
@@ -711,6 +886,11 @@ hidden.
         - 3.20
         - 1.00
         - 1.05
+    *   - Maximum alias :math:`|\mathbf{A}|`, omitted interactions (lower)
+        - 0.00
+        - 0.00
+        - 1.00
+        - 1.09
     *   - D-optimal information :math:`|\mathbf{X}^T\mathbf{X}|^{1/p}` (higher)
         - 14.0
         - 8.97
@@ -744,6 +924,17 @@ The quantities in real units, the **unscaled prediction variance** in :math:`\si
 coefficient variance :math:`A`, and the power, all reward the larger Box-Behnken design, which is
 the reading that matches what the experiments can actually deliver.
 
+The alias row makes the cost of the reduced model explicit. The model fits no two-factor
+interactions, so any that are present bias the coefficients we keep, by the
+:ref:`alias matrix <DOE-alias-bias>`. The Box-Behnken and composite designs hold that bias
+at zero on this model (:math:`|\mathbf{A}| = 0`): their quadratics are balanced against the
+omitted interactions, so a present interaction leaves the fitted coefficients untouched. The
+definitive screening and OMARS designs instead protect the main effects, whose alias is
+zero, but let a present interaction shift a quadratic by as much as a full unit. Whether that
+matters is a question about the system rather than the design: it is the price of setting the
+interactions aside, and it is why a follow-up design is run once a screening study has
+flagged the active factors.
+
 It is worth being clear about what the table compares. The model is already settled: we have
 committed to the eleven-term main-effects-plus-quadratics model and are comparing point-placement
 strategies, the designs, for estimating its coefficients and predicting from it. The criteria split
@@ -769,6 +960,26 @@ a definitive screening design is the smallest OMARS member, so think of these as
 The two views of prediction variance are worth seeing side by side, because the scaling is exactly
 what hides the cost of running too few experiments.
 
+Reusing the four designs and the ``fds_curve`` helper, the two panels are the same curves
+on the two scales:
+
+.. code-block:: python
+
+	region5 = np.vstack([np.random.default_rng(1).uniform(-1, 1, size=(120_000, 5)),
+	                     np.array(list(itertools.product([-1, 1], repeat=5)), float)])
+	fracs = np.linspace(0, 1, 200)
+
+	fig = make_subplots(rows=1, cols=2,
+	                    subplot_titles=("Scaled (per run)", "Unscaled (sigma^2 units)"))
+	for label, d in designs.items():
+	    fig.add_trace(go.Scatter(x=fracs, y=fds_curve(d, region5, fracs, scaled=True),
+	                             name=label), row=1, col=1)
+	    fig.add_trace(go.Scatter(x=fracs, y=fds_curve(d, region5, fracs, scaled=False),
+	                             name=label, showlegend=False), row=1, col=2)
+	fig.update_yaxes(title_text="Scaled prediction variance", row=1, col=1)
+	fig.update_yaxes(title_text="Prediction variance / sigma^2", row=1, col=2)
+	fig.show()
+
 .. figure:: ../figures/doe/fds-plot-six-designs.png
     :align: center
     :width: 750px
@@ -779,7 +990,7 @@ what hides the cost of running too few experiments.
     the highest and the larger Box-Behnken design's is the lowest.
 
 Within either panel the rule from before still holds: a low and flat curve is what you want, and the
-right tail (anchored at the cube vertices, where the maximum prediction variance always lives) shows
+right tail (anchored at the cube vertices, where the maximum prediction variance usually lives) shows
 the worst case. The two panels differ only in how they put the designs on a common footing. The left
 panel is scaled, normalized by the number of runs, so it compares the designs per experiment; on
 that footing the thirteen-run DSD curve sits among the rest. The right panel is unscaled, in real
@@ -808,7 +1019,7 @@ Let the purpose of the experiment set the priorities.
 Two rules of thumb close the loop. First, use **D for estimation and V/I for prediction**;
 they frequently disagree, so choose by what you will actually do with the model. Second,
 **compare D-efficiency only between designs of the same number of runs**: across
-different run counts it always favours the smaller design, so judge larger-versus-smaller on
+different run counts it favours the smaller design, so judge larger-versus-smaller on
 the quantities that carry real units: average coefficient variance, prediction variance, power,
 and the number of residual degrees of freedom.
 
