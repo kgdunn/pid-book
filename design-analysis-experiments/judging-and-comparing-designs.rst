@@ -636,43 +636,43 @@ four-factor main-effects-and-quadratic model.
     :header-rows: 1
     :widths: 48 26 26
 
-    *   - metric (and preferred direction)
+    *   - metric (arrow shows the preferred direction)
         - DSD, 9 runs, 4 factors
         - OMARS, 13 runs, 4 factors
-    *   - D-efficiency (higher is better)
+    *   - :math:`\uparrow` D-efficiency
         - 42.8 %
         - 39.0 %
-    *   - :math:`A`, summed coefficient variance (lower)
+    *   - :math:`\downarrow\ A`, summed coefficient variance
         - 3.67
         - 2.52
-    *   - :math:`I`, average SPV (lower)
+    *   - :math:`\downarrow\ I`, average SPV
         - 6.59
         - 6.19
-    *   - :math:`G`, maximum SPV (lower)
+    *   - :math:`\downarrow\ G`, maximum SPV
         - 9.00
         - 12.50
-    *   - maximum :math:`|r|` (lower)
+    *   - :math:`\downarrow` maximum :math:`|r|`
         - 0.707
         - 0.570
-    *   - mean :math:`|r|` (lower)
+    *   - :math:`\downarrow` mean :math:`|r|`
         - 0.322
         - 0.307
-    *   - maximum VIF (lower)
+    *   - :math:`\downarrow` maximum VIF
         - 1.00
         - 1.18
-    *   - mean VIF (lower)
+    *   - :math:`\downarrow` mean VIF
         - 1.00
         - 1.08
-    *   - residual degrees of freedom (higher)
+    *   - :math:`\uparrow` residual degrees of freedom
         - 0
         - 4
-    *   - power, main effect at :math:`\delta = \sigma` (higher)
+    *   - :math:`\uparrow` power, main effect at :math:`\delta = \sigma`
         - n/a
         - 0.46
-    *   - power, quadratic at :math:`\delta = \sigma` (higher)
+    *   - :math:`\uparrow` power, quadratic at :math:`\delta = \sigma`
         - n/a
         - 0.25
-    *   - two-factor interactions estimable (higher)
+    *   - :math:`\uparrow` two-factor interactions estimable
         - 0
         - 2
 
@@ -865,67 +865,67 @@ a poor design.
     :header-rows: 1
     :widths: 40 15 15 15 15
 
-    *   - Metric (and preferred direction)
+    *   - Metric (arrow shows the preferred direction)
         - BBD, 46 runs
         - CCD, 32 runs
         - OMARS, 25 runs
         - DSD, 13 runs
-    *   - Power, main effect at :math:`\delta = \sigma` (higher)
+    *   - :math:`\uparrow` Power, main effect at :math:`\delta = \sigma`
         - 0.97
         - 0.98
         - 0.99
         - 0.42
-    *   - Power, quadratic at :math:`\delta = \sigma` (higher)
+    *   - :math:`\uparrow` Power, quadratic at :math:`\delta = \sigma`
         - 0.82
         - 0.32
         - 0.46
         - 0.15
-    *   - Average prediction variance, :math:`\sigma^2` units (lower)
+    *   - :math:`\downarrow` Average prediction variance, :math:`\sigma^2` units
         - 0.18
         - 0.31
         - 0.51
         - 0.71
-    *   - Maximum prediction variance, :math:`\sigma^2` units (lower)
+    *   - :math:`\downarrow` Maximum prediction variance, :math:`\sigma^2` units
         - 0.84
         - 0.77
         - 0.84
         - 1.05
-    *   - Maximum scaled prediction variance :math:`G` (lower)
+    *   - :math:`\downarrow` Maximum scaled prediction variance :math:`G`
         - 38.8
         - 24.6
         - 20.9
         - 13.6
-    *   - Summed coefficient variance :math:`A` (lower)
+    *   - :math:`\downarrow` Summed coefficient variance :math:`A`
         - 1.05
         - 2.39
         - 2.34
         - 3.70
-    *   - :math:`E`, smallest eigenvalue of :math:`\mathbf{X}^T\mathbf{X}` (higher)
+    *   - :math:`\uparrow\ E`, smallest eigenvalue of :math:`\mathbf{X}^T\mathbf{X}`
         - 2.54
         - 2.00
         - 0.93
         - 0.85
-    *   - Maximum :math:`|r|` among model terms (lower)
+    *   - :math:`\downarrow` Maximum :math:`|r|` among model terms
         - 0.15
         - 0.75
         - 0.00
         - 0.13
-    *   - Maximum VIF (lower)
+    *   - :math:`\downarrow` Maximum VIF
         - 1.20
         - 3.20
         - 1.00
         - 1.05
-    *   - Maximum alias :math:`|\mathbf{A}|`, omitted interactions (lower)
+    *   - :math:`\downarrow` Maximum alias :math:`|\mathbf{A}|`, omitted interactions
         - 0.00
         - 0.00
         - 1.00
         - 1.09
-    *   - D-optimal information :math:`|\mathbf{X}^T\mathbf{X}|^{1/p}` (higher)
+    *   - :math:`\uparrow` D-optimal information :math:`|\mathbf{X}^T\mathbf{X}|^{1/p}`
         - 14.0
         - 8.97
         - 9.82
         - 5.19
-    *   - D-efficiency, per run (higher, but see note)
+    *   - :math:`\uparrow` D-efficiency, per run (see note)
         - 30.5%
         - 28.0%
         - 39.3%
