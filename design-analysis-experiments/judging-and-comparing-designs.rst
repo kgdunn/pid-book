@@ -392,12 +392,12 @@ comparison further down.
 	    P = model_matrix(points)
 	    return np.einsum("ij,jk,ik->i", P, xtx_inv, P)
 
-	def fds_curve(design, points, fracs, scaled=False):
+	def fds_curve(design, points, fractions, scaled=False):
 	    """Sorted prediction variance as a fraction-of-design-space curve."""
 	    pv = np.sort(prediction_variance(design, points))
 	    if scaled:
 	        pv = pv * len(np.asarray(design))
-	    return np.quantile(pv, fracs)
+	    return np.quantile(pv, fractions)
 
 	# 4-factor DSD (9 runs) from process_improve; the 13-run OMARS is given explicitly.
 	dsd4 = np.asarray(generate_design([Factor(name=c, low=-1, high=1) for c in "ABCD"],
@@ -411,12 +411,14 @@ comparison further down.
 	rng = np.random.default_rng(1)
 	region4 = np.vstack([rng.uniform(-1, 1, size=(80_000, 4)),
 	                     np.array(list(itertools.product([-1, 1], repeat=4)), float)])
-	fracs = np.linspace(0, 1, 200)
+	fraction_grid = np.linspace(0, 1, 200)
 
 	fig = go.Figure()
-	fig.add_trace(go.Scatter(x=fracs, y=fds_curve(dsd4, region4, fracs, scaled=True),
+	fig.add_trace(go.Scatter(x=fraction_grid,
+	                         y=fds_curve(dsd4, region4, fraction_grid, scaled=True),
 	                         name="DSD (9 runs)"))
-	fig.add_trace(go.Scatter(x=fracs, y=fds_curve(omars4, region4, fracs, scaled=True),
+	fig.add_trace(go.Scatter(x=fraction_grid,
+	                         y=fds_curve(omars4, region4, fraction_grid, scaled=True),
 	                         name="OMARS (13 runs)"))
 	fig.update_layout(xaxis_title="Fraction of design space",
 	                  yaxis_title="Scaled prediction variance, SPV")
@@ -992,14 +994,14 @@ on the two scales:
 	# Reuses fds_curve (from the DSD-vs-OMARS block) and the designs dict (previous block).
 	region5 = np.vstack([np.random.default_rng(1).uniform(-1, 1, size=(120_000, 5)),
 	                     np.array(list(itertools.product([-1, 1], repeat=5)), float)])
-	fracs = np.linspace(0, 1, 200)
+	fds_fraction = np.linspace(0, 1, 200)
 
 	fig = make_subplots(rows=1, cols=2,
 	                    subplot_titles=("Scaled (per run)", "Unscaled (sigma^2 units)"))
 	for label, d in designs.items():
-	    fig.add_trace(go.Scatter(x=fracs, y=fds_curve(d, region5, fracs, scaled=True),
+	    fig.add_trace(go.Scatter(x=fds_fraction, y=fds_curve(d, region5, fds_fraction, scaled=True),
 	                             name=label), row=1, col=1)
-	    fig.add_trace(go.Scatter(x=fracs, y=fds_curve(d, region5, fracs, scaled=False),
+	    fig.add_trace(go.Scatter(x=fds_fraction, y=fds_curve(d, region5, fds_fraction, scaled=False),
 	                             name=label, showlegend=False), row=1, col=2)
 	fig.update_yaxes(title_text="Scaled prediction variance", row=1, col=1)
 	fig.update_yaxes(title_text="Prediction variance / sigma^2", row=1, col=2)
