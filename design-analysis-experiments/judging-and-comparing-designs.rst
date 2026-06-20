@@ -368,36 +368,27 @@ trading a handful of runs for interaction estimability, and the definitive scree
 designs are themselves a special case within that family.
 
 The definitive screening design comes straight from ``process_improve``; the OMARS design
-has no generator in the library, so it is given explicitly. The helpers defined here, the
-model expansion, the prediction variance and the FDS curve, are reused for the omnibus
-comparison further down.
+has no generator in the library, so it is given explicitly. The ``fds`` helper defined here
+wraps ``evaluate_design``, which integrates the prediction variance over the design region
+and returns both the FDS curve and the average and worst-case values; it is reused for the
+omnibus comparison further down.
 
 .. code-block:: python
 
-	import itertools
 	import numpy as np
+	import pandas as pd
 	import plotly.graph_objects as go
-	from process_improve.experiments import Factor, generate_design
+	from process_improve.experiments import Factor, evaluate_design, generate_design
 
-	def model_matrix(design):
-	    """Main-effects-plus-pure-quadratics expansion [1 | x_i | x_i^2]."""
-	    d = np.asarray(design, float)
-	    k = d.shape[1]
-	    return np.column_stack([np.ones(len(d))] + [d[:, i] for i in range(k)]
-	                           + [d[:, i] ** 2 for i in range(k)])
-
-	def prediction_variance(design, points):
-	    """x'(X'X)^-1 x at each row of `points`, in sigma^2 units."""
-	    xtx_inv = np.linalg.inv(model_matrix(design).T @ model_matrix(design))
-	    P = model_matrix(points)
-	    return np.einsum("ij,jk,ik->i", P, xtx_inv, P)
-
-	def fds_curve(design, points, fractions, scaled=False):
-	    """Sorted prediction variance as a fraction-of-design-space curve."""
-	    pv = np.sort(prediction_variance(design, points))
-	    if scaled:
-	        pv = pv * len(np.asarray(design))
-	    return np.quantile(pv, fractions)
+	def fds(design, model, *, n_samples, seed=1):
+	    """Region prediction-variance summary from ``evaluate_design``: the FDS
+	    curve (fraction of the design space vs prediction variance, scaled and
+	    unscaled) together with the average and worst-case values. The 2**k cube
+	    vertices, where the worst case usually sits, are included by default."""
+	    cols = [chr(ord("A") + i) for i in range(np.shape(design)[1])]
+	    df = pd.DataFrame(np.asarray(design, float), columns=cols)
+	    return evaluate_design(df, model=model, metric="fds", n_samples=n_samples,
+	                           random_seed=seed, fds_resolution=200)["fds"]
 
 	# 4-factor DSD (9 runs) from process_improve; the 13-run OMARS is given explicitly.
 	dsd4 = np.asarray(generate_design([Factor(name=c, low=-1, high=1) for c in "ABCD"],
@@ -406,20 +397,13 @@ comparison further down.
 	                   [1, 0, 1, -1], [1, 1, 0, 1], [0, 0, 0, -1], [0, 0, -1, 0],
 	                   [0, -1, 1, 1], [-1, 1, 1, 0], [-1, 0, -1, 1], [-1, -1, 0, -1],
 	                   [0, 0, 0, 0]], float)
-
-	# Sample the region uniformly and add the 2^4 vertices, where the worst case can sit.
-	rng = np.random.default_rng(1)
-	region4 = np.vstack([rng.uniform(-1, 1, size=(80_000, 4)),
-	                     np.array(list(itertools.product([-1, 1], repeat=4)), float)])
-	fraction_grid = np.linspace(0, 1, 200)
+	model4 = " + ".join(list("ABCD") + [f"I({c}**2)" for c in "ABCD"])
 
 	fig = go.Figure()
-	fig.add_trace(go.Scatter(x=fraction_grid,
-	                         y=fds_curve(dsd4, region4, fraction_grid, scaled=True),
-	                         name="DSD (9 runs)"))
-	fig.add_trace(go.Scatter(x=fraction_grid,
-	                         y=fds_curve(omars4, region4, fraction_grid, scaled=True),
-	                         name="OMARS (13 runs)"))
+	for design, label in [(dsd4, "DSD (9 runs)"), (omars4, "OMARS (13 runs)")]:
+	    curve = fds(design, model4, n_samples=80_000)["curve"]
+	    fig.add_trace(go.Scatter(x=curve["fraction"],
+	                             y=curve["scaled_prediction_variance"], name=label))
 	fig.update_layout(xaxis_title="Fraction of design space",
 	                  yaxis_title="Scaled prediction variance, SPV")
 	fig.show()
@@ -446,12 +430,13 @@ predict reliably even in the worst spot, the flatter nine-run DSD curve is the s
 
 One detail of method is worth stating, because it is easy to get wrong. The worst-case figure
 :math:`G` is a maximum over the whole design region, and that maximum can sit exactly at an extreme
-corner (a vertex of the :math:`[-1, 1]` cube), where random interior sampling rarely lands. The
-evaluation here therefore includes the cube vertices explicitly alongside the interior sample. Doing
-so lifts the nine-run DSD's :math:`G` from :math:`8.98` to :math:`9.00`, a maximum that turns out to
-sit precisely at a corner, and leaves the thirteen-run OMARS value at :math:`12.50` because its
-worst case lies in the interior. The shift is tiny, so it changes no conclusion here, but including
-the extreme points is the correct procedure, and the omnibus comparison below relies on it.
+corner (a vertex of the :math:`[-1, 1]` cube), where random interior sampling rarely lands.
+``evaluate_design`` therefore adds the cube vertices to its interior sample by default (its
+``include_vertices`` argument). Including them lifts the nine-run DSD's :math:`G` from :math:`8.98`
+to :math:`9.00`, a maximum that turns out to sit precisely at a corner, and leaves the thirteen-run
+OMARS value at :math:`12.50` because its worst case lies in the interior. The shift is tiny, so it
+changes no conclusion here, but including the extreme points is the correct procedure, and the
+omnibus comparison below relies on it.
 
 Separability is not the same as precision
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -981,28 +966,29 @@ spectrum.
 The two views of prediction variance are worth seeing side by side, because the scaling by run
 count is exactly what leaves out the cost of running too few experiments.
 
-Reusing the four designs and the ``fds_curve`` helper, the two panels are the same curves
+Reusing the four designs and the ``fds`` helper, the two panels are the same curves
 on the two scales:
 
 .. code-block:: python
 
-	import itertools
-	import numpy as np
 	import plotly.graph_objects as go
 	from plotly.subplots import make_subplots
 
-	# Reuses fds_curve (from the DSD-vs-OMARS block) and the designs dict (previous block).
-	region5 = np.vstack([np.random.default_rng(1).uniform(-1, 1, size=(120_000, 5)),
-	                     np.array(list(itertools.product([-1, 1], repeat=5)), float)])
-	fds_fraction = np.linspace(0, 1, 200)
-
+	# Reuses the fds helper (from the DSD-vs-OMARS block), and the designs dict and the
+	# model formula (from the power block).
 	fig = make_subplots(rows=1, cols=2,
 	                    subplot_titles=("Scaled (per run)", "Unscaled (sigma^2 units)"))
 	for label, d in designs.items():
-	    fig.add_trace(go.Scatter(x=fds_fraction, y=fds_curve(d, region5, fds_fraction, scaled=True),
-	                             name=label), row=1, col=1)
-	    fig.add_trace(go.Scatter(x=fds_fraction, y=fds_curve(d, region5, fds_fraction, scaled=False),
-	                             name=label, showlegend=False), row=1, col=2)
+	    result = fds(d, model, n_samples=120_000)
+	    # result["average_prediction_variance"] and ["max_prediction_variance"] are
+	    # the average and maximum prediction-variance rows in the table above.
+	    curve = result["curve"]
+	    fig.add_trace(go.Scatter(x=curve["fraction"],
+	                             y=curve["scaled_prediction_variance"], name=label),
+	                  row=1, col=1)
+	    fig.add_trace(go.Scatter(x=curve["fraction"],
+	                             y=curve["prediction_variance"], name=label,
+	                             showlegend=False), row=1, col=2)
 	fig.update_yaxes(title_text="Scaled prediction variance", row=1, col=1)
 	fig.update_yaxes(title_text="Prediction variance / sigma^2", row=1, col=2)
 	fig.show()
