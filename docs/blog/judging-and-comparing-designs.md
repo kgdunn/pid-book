@@ -236,22 +236,22 @@ on the quadratic rows (up to 1.00 and 1.09).
 
 ## The four designs side by side
 
-One table holds the whole comparison. Designs run largest to smallest; for each metric the
-parenthetical says which direction is better. Power is quoted at delta = sigma, an effect of one
-noise standard deviation, as defined in lens 1.
+One table holds the whole comparison. Designs run largest to smallest; the arrow at the start of
+each label says which direction is better. Power is quoted at delta = sigma, an effect of one noise
+standard deviation, as defined in lens 1.
 
 | Metric | BBD (46) | CCD (32) | OMARS (25) | DSD (13) |
 |---|---|---|---|---|
-| Residual degrees of freedom (higher) | 35 | 21 | 14 | 2 |
-| Power, main effect at delta = sigma (higher) | 0.97 | 0.98 | 0.99 | 0.42 |
-| Power, quadratic at delta = sigma (higher) | 0.82 | 0.32 | 0.46 | 0.15 |
-| D-efficiency, per run (higher) | 30.5% | 28.0% | 39.3% | 39.9% |
-| Information det(X'X)^(1/p) (higher) | 14.0 | 8.97 | 9.82 | 5.19 |
-| Average prediction variance, sigma^2 (lower) | 0.18 | 0.31 | 0.51 | 0.71 |
-| Maximum prediction variance, sigma^2 (lower) | 0.84 | 0.77 | 0.84 | 1.05 |
-| Maximum scaled prediction variance, G (lower) | 38.8 | 24.6 | 20.9 | 13.6 |
-| Maximum VIF (lower) | 1.20 | 3.20 | 1.00 | 1.05 |
-| Maximum alias coefficient (lower) | 0.00 | 0.00 | 1.00 | 1.09 |
+| ↑ Residual degrees of freedom | 35 | 21 | 14 | 2 |
+| ↑ Power, main effect at delta = sigma | 0.97 | 0.98 | 0.99 | 0.42 |
+| ↑ Power, quadratic at delta = sigma | 0.82 | 0.32 | 0.46 | 0.15 |
+| ↑ D-efficiency, per run | 30.5% | 28.0% | 39.3% | 39.9% |
+| ↑ Information det(X'X)^(1/p) | 14.0 | 8.97 | 9.82 | 5.19 |
+| ↓ Average prediction variance, sigma^2 | 0.18 | 0.31 | 0.51 | 0.71 |
+| ↓ Maximum prediction variance, sigma^2 | 0.84 | 0.77 | 0.84 | 1.05 |
+| ↓ Maximum scaled prediction variance, G | 38.8 | 24.6 | 20.9 | 13.6 |
+| ↓ Maximum VIF | 1.20 | 3.20 | 1.00 | 1.05 |
+| ↓ Maximum alias coefficient | 0.00 | 0.00 | 1.00 | 1.09 |
 
 No design wins every row, which is the point. The per-run scores (D-efficiency, and the scaled
 maximum G) put the two small designs on top; every quantity carried in real units, the unscaled
