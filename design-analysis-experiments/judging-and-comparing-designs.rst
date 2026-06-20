@@ -516,7 +516,10 @@ raises a flag past 5, and a serious one past 10.
 
 The link to :math:`r` is direct: if a term were correlated with just one other term at level
 :math:`r`, its VIF would be :math:`1/(1 - r^2)`. The VIF generalizes this to the joint effect of
-every other term, and is computed on whichever model you actually intend to fit.
+every other term, and is computed on whichever model you actually intend to fit. The quadratic
+columns :math:`x_i^2` have a nonzero mean, but because each column is centered when the factor is
+formed (the corrected sum of squares :math:`S_{jj}` above reflects the same centering), that mean
+does not by itself inflate the VIF; only genuine correlation with the other fitted terms does.
 
 In the comparison table below, both summaries are reported for the main-effects-and-quadratic
 model. The definitive screening design shows :math:`\text{VIF} = 1.0` throughout: on that model its
@@ -607,6 +610,11 @@ them the ability to test.
 
 Second, power is always quoted *for a stated effect size and* :math:`\alpha`. The table's values
 assume an effect of one noise standard deviation (:math:`\delta = \sigma`) at :math:`\alpha = 0.05`.
+Here :math:`\delta` is the coefficient itself, so for a linear main effect :math:`\delta = \sigma`
+means the response shifts by :math:`2\sigma` across a factor's :math:`-1` to :math:`+1` range, a
+signal-to-noise ratio of 2. That is the default several design packages (for example Stat-Ease
+Design-Expert) use for power calculations, so the entries here are directly comparable to them; a
+larger assumed effect would raise every entry in the power rows.
 Read that way, the thirteen-run OMARS design has a :math:`0.46` chance of flagging a true one-sigma
 main effect as significant, but only :math:`0.25` for a quadratic of the same size. The gap is
 expected:
@@ -757,15 +765,22 @@ The four response-surface designs are built once here and reused for the table a
 panels that follow. ``process_improve`` builds the Box-Behnken design and the DSD directly,
 and builds the face-centred CCD on a resolution-V half-fraction cube with ``cube="fractional"``
 (the standard five-factor CCD; the library's default cube is the full factorial). The 25-run
-OMARS design has no library generator, so it is two permuted conference-matrix foldovers.
+OMARS design has no library generator, so it is built here as two permuted conference-matrix
+foldovers. That construction has the defining OMARS property, main effects orthogonal to every
+second-order term, but it is one constructed design and not a catalog-optimal member: a design
+selected from the :ref:`OMARS catalogue <DOE-omars-designs>` at this run size may score somewhat
+differently on the metrics below.
 
 Each design carries its textbook number of center runs rather than padding added to equalize the
 comparison: six for the Box-Behnken design (the canonical 46-run design is forty design runs plus
 six center runs) and six for the face-centred CCD, against one each for the definitive screening and
 OMARS designs. Those center runs set the pure-error degrees of freedom and steady the prediction
 variance near the center of the region. In practice one might add two or three further center runs
-for a firmer estimate of the noise; here each design is held to its textbook count so the comparison
-stays like for like.
+for a firmer estimate of the noise; here each design is held to its textbook count. One consequence
+is worth keeping in view when reading the table: the six-versus-one difference in center runs is
+itself part of the contrast, not a controlled-for constant. The extra center replication lowers the
+larger designs' prediction variance near the center and adds residual degrees of freedom, so some of
+that advantage comes from the replication rather than from where the non-center points are placed.
 
 The power comes from ``evaluate_design``, given the eleven-term model as an explicit formula so
 the library scores exactly this model and not the full second-order one:
@@ -875,6 +890,11 @@ a poor design.
         - 0.77
         - 0.84
         - 1.05
+    *   - Maximum scaled prediction variance :math:`G` (lower)
+        - 38.8
+        - 24.6
+        - 20.9
+        - 13.6
     *   - Summed coefficient variance :math:`A` (lower)
         - 1.05
         - 2.39
@@ -937,6 +957,16 @@ Montgomery, 2009, and its published discussion; Goos and Núñez Ares, 2025).
 The quantities in real units, the **unscaled prediction variance** in :math:`\sigma^2`, the summed
 coefficient variance :math:`A`, and the power, all reward the larger Box-Behnken design, which is
 the reading that matches what the experiments can actually deliver.
+
+The two maximum-variance rows report the worst case under each scaling, and the two do not agree. In
+real :math:`\sigma^2` units the face-centred CCD has the lowest maximum (:math:`0.77`), just below
+the Box-Behnken and OMARS designs, because the face-centred cube carries runs at the corners where
+the unscaled variance peaks while the Box-Behnken design does not. The scaled maximum :math:`G`, the
+worst-case scaled prediction variance, reverses the order: the thirteen-run DSD is lowest at
+:math:`13.6` and the forty-six-run Box-Behnken highest at :math:`38.8`. This is the same per-run
+normalisation seen in the two D rows; dividing the worst-case variance through by the run count
+rewards the design that spends fewer experiments. Read the unscaled maximum for the variance
+obtained at the bench, and the scaled :math:`G` to compare worst cases per experiment.
 
 The alias row makes the cost of the reduced model explicit. The model fits no two-factor
 interactions, so any that are present bias the coefficients we keep, by the
@@ -1104,7 +1134,9 @@ Within either panel the rule from before still holds: a low and flat curve is wh
 right tail (anchored at the cube vertices, where the maximum prediction variance usually lives) shows
 the worst case. The two panels differ only in how they put the designs on a common footing. The left
 panel is scaled, normalized by the number of runs, so it compares the designs per experiment; on
-that footing the thirteen-run DSD curve sits among the rest. The right panel is unscaled, in real
+that footing the thirteen-run DSD curve sits among the rest, and its right-tail value, the scaled
+maximum :math:`G` reported in the table, is in fact the lowest of the four. The right panel is
+unscaled, in real
 :math:`\sigma^2` units, so it compares the variance actually obtained at the bench; there the DSD
 curve is the highest and the forty-six-run Box-Behnken the lowest. The two views answer different
 questions, and they diverge because adding runs lowers the variance you obtain while leaving the
