@@ -242,3 +242,15 @@ button.copybtn:focus,
         break-inside: avoid;
     }
 }
+
+/* Top Previous / Next navigation row (see _templates/sections/header-article.html).
+   It reuses the theme's .prev-next-footer styling for the links, but sits at the
+   top of the article, so flip the divider to a bottom border and add a little
+   breathing room beneath it before the article content begins. */
+.bd-article-container .prev-next-top {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-top: none;
+    border-bottom: 1px solid var(--pst-color-border, #e5e5e5);
+}
