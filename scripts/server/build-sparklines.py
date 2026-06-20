@@ -96,8 +96,14 @@ LOG = logging.getLogger("build-sparklines")
 DEFAULT_CONFIG = "/etc/pid-book/sparklines.conf"
 
 DEFAULT_LOG_GLOBS = [
-    # Caddy's default per-host log path on Debian/Ubuntu installs.
+    # Caddy's default per-host log path on Debian/Ubuntu installs (the
+    # post-migration target server).
     "/var/log/caddy/learnche.org.access.log*",
+    # Current pre-migration server: Apache per-vhost CustomLog path. This
+    # is where learnche.org actually logs today; keep it in the default
+    # list so a config drift toward the Caddy path does not silently
+    # starve the builder of input.
+    "/var/www/logs/learnche.org/access.log*",
     # Archived pre-Hetzner Apache logs (combined format).
     "/var/log/learnche-archive/access.log*",
 ]
