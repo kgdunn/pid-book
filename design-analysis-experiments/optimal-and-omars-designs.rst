@@ -566,7 +566,8 @@ end sits the definitive screening design: the fewest runs, every main effect cle
 detectable, but the interactions tangled together. In the middle sit the larger OMARS designs:
 more runs buy more estimable second-order effects, lower correlation among them, and more power.
 At the rich end sit the classical response surface designs, the :ref:`central composite
-<DOE_central_composite_designs>` and Box-Behnken designs: enough runs to estimate the full
+<DOE_central_composite_designs>` and :ref:`Box-Behnken <DOE-box-behnken-designs>` designs: enough
+runs to estimate the full
 second-order model with little or no aliasing, often with the near-rotatable prediction
 behaviour those designs are prized for. In the face-centred case these classical designs are
 themselves OMARS designs, the strongest and largest members of the family, so the spectrum is
@@ -602,6 +603,21 @@ fraction-of-design-space plot, the correlations among the effects, and the power
 exactly the measures developed in :ref:`Judging and comparing designs
 <DOE-judging-and-comparing-designs>`, and they turn the choice along this spectrum from a matter
 of taste into a matter of arithmetic.
+
+This whole spectrum takes the second-order polynomial as the model to be estimated, which is worth
+stating. It is the lowest-order polynomial that can place a stationary point inside the region, a
+maximum, minimum, or saddle, so it is the simplest model able to describe an optimum; it stays
+linear in its coefficients, and it needs only three levels per factor. Higher-degree polynomials
+need more levels and tend to oscillate near the edges of the region, so when a quadratic does not
+fit it is more common to change the model class than to raise the degree. That choice matters here
+because the aliasing and the efficiency measures are properties of the design *together with* the
+model: they are read from the model matrix, so a different model gives a different alias structure
+and different efficiencies. Re-expressing the same quadratic in an orthogonal-polynomial basis (a
+re-parameterisation that leaves the fitted surface unchanged) lowers the correlations among the
+terms; a mechanistic model that is nonlinear in its parameters, or a flexible surrogate such as a
+Gaussian process or a spline fit, would call instead for a design optimal for that model, or a
+space-filling one. The spectrum here, and the measures that rank it, therefore describe the
+second-order case, and the model itself is one of the choices rather than a fixed backdrop.
 
 Analysing data from these designs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
