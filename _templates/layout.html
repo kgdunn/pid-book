@@ -1,0 +1,18 @@
+{# Extend the active theme's layout (the "!" skips this templates_path entry so
+   we inherit sphinx_book_theme/layout.html instead of recursing into this file).
+
+   Goal: show the Previous / Next links at the TOP of the article as well as in
+   the footer, so readers can move between pages without scrolling to the
+   bottom. We render the row at the start of the article body (in the normal
+   content flow, full width), not in the sticky header bar, so it sits just
+   above the page content and mirrors the footer row. #}
+{% extends "!layout.html" %}
+
+{% block docs_body %}
+{% if theme_show_prev_next and (prev or next) %}
+<nav class="prev-next-footer prev-next-top d-print-none" aria-label="Page navigation (top)">
+  {% include "components/prev-next.html" %}
+</nav>
+{% endif %}
+{{ super() }}
+{% endblock %}
