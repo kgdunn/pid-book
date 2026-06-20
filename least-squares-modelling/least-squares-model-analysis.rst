@@ -302,6 +302,8 @@ quantity that is identically zero, so it has no effect on :math:`b_1`.
 
 That last form of expressing :math:`b_1` shows that every data point contributes a small amount to the coefficient :math:`b_1`. But notice how it is broken into 2 pieces: each term in the sum has a component due to :math:`m_i` and one due to :math:`y_i`. The :math:`m_i` term is a function of the x-data only, and since we assume the x's are measured without error, that term has no error. The :math:`y_i` component is the only part that has error.
 
+Up to this point :math:`b_1` is a single number, computed from the data in hand. To describe how precise that number is, we change how we read the :math:`y_i`. We now treat each :math:`y_i` as one realisation of a random variable, drawn from :math:`y_i \sim \mathcal{N}(\beta_0 + \beta_1 x_i, \sigma_\epsilon^2)` (assumptions 1 to 3). Imagine repeating the experiment: hold every :math:`x_i` at exactly the same setting, take a fresh measurement of each :math:`y_i`, and recompute :math:`b_1`. Each repeat gives a slightly different :math:`b_1`. The expectation :math:`\mathcal{E}\{b_1\}` and variance :math:`\mathcal{V}\{b_1\}` below describe the distribution of :math:`b_1` over those hypothetical repeats. Because the :math:`x_i` are held fixed, the weights :math:`m_i` are constants that carry no error, and the only randomness enters through the :math:`y_i`.
+
 So we can write:
 
 .. math::
@@ -313,6 +315,10 @@ So we can write:
         \mathcal{V}\{b_1\} &= \dfrac{\mathcal{V}\{y_i\}}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}
 
 where :math:`j` is an index for all data points used to build the least squares model.
+
+Two rules take us from the expectation line to the variance line. First, a constant multiplying a random variable comes out of the variance as its square, :math:`\mathcal{V}\{m_i y_i\} = m_i^2 \mathcal{V}\{y_i\}`, in the same way that :math:`\mathcal{E}\{m_i y_i\} = m_i \mathcal{E}\{y_i\}` for the expectation. Second, the variance of a sum equals the sum of the individual variances only when the terms are independent. That is assumption 6, that the :math:`y_i` are independent of one another; the cross-covariance terms are then zero, so no products between different :math:`y_i` appear. If the :math:`y_i` were correlated, for example data collected in time order, those cross terms would not vanish and this step would not hold.
+
+The last two lines use assumption 2, the constant error variance: every :math:`\mathcal{V}\{y_i\}` has the same value, so it factors out of the sum to leave :math:`\mathcal{V}\{b_1\} = \mathcal{V}\{y_i\} \sum_i m_i^2`. The remaining sum collapses because :math:`\sum_i m_i^2 = \dfrac{\sum_i (x_i - \overline{\mathrm{x}})^2}{\left(\sum_j (x_j - \overline{\mathrm{x}})^2\right)^2} = \dfrac{1}{\sum_j (x_j - \overline{\mathrm{x}})^2}`.
 
 **Questions**:
 
