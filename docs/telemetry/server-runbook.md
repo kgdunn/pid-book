@@ -258,6 +258,29 @@ vhosts may go weeks or months between rotations (their files just
 grow until they cross 10 MB) — not a problem for sparklines, just a
 quirk to know.
 
+Two consequences of this size-based behaviour are worth spelling out,
+because "how many days do I keep?" is the question that usually prompts
+a `rotate` change:
+
+* **`rotate N` counts files, not days.** With size-based rotation,
+  `rotate 1825` keeps the last 1825 rotated files. For the busy
+  `access.log` that crosses 10 MB about once a day, that is roughly
+  1825 days; for a quieter log it spans much longer. To guarantee at
+  least N days of `access.log` history, any `rotate` value comfortably
+  above N suffices (the live server uses `rotate 1825`, so 40+ days is
+  met for any realistic traffic level). Newly raised counts fill in one
+  file at a time: a recent bump shows only as many days as have elapsed
+  since the bump, plus whatever older files survived the previous
+  setting.
+* **Day-granularity survives multi-day files.** When a low-traffic day
+  does not push the log past 10 MB, one rotated file can span two or
+  more calendar days. That does not blur the sparklines:
+  `build-sparklines.py` buckets every hit by its own timestamp,
+  independent of file boundaries, so per-day counts are still exact.
+  This is why there is no need to force `daily` rotation (which would
+  drop `size 10M` and rotate every apache and vhost log, producing many
+  near-empty files) just to get clean daily numbers.
+
 **`_stats/` directory.** Apache serves it automatically since
 `DocumentRoot` covers it; you only need to create the directory and
 make sure `www-data` can write to it:
