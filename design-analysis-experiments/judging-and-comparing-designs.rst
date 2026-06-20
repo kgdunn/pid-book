@@ -990,10 +990,11 @@ interactions across the columns:
     main-effect rows at zero and carry the bias on the quadratic rows, up to :math:`1.00` and
     :math:`1.09` respectively.
 
-The same entanglement, read among the second-order effects themselves rather than as bias on the
-fitted terms, is a correlation. The figure below shows the absolute correlation among the fifteen
-second-order effects, the five quadratics together with the ten two-factor interactions the model
-leaves out, each residualised against the intercept and the main effects:
+The same entanglement is a correlation rather than a directed bias. The figure below shows the
+absolute correlation among the twenty model-effect columns, in three blocks separated by lines: the
+five main effects, the five quadratics, and the ten two-factor interactions the model leaves out.
+Pearson correlation centers each column, so the quadratics' positive mean does not inflate the
+values:
 
 .. code-block:: python
 
@@ -1001,25 +1002,26 @@ leaves out, each residualised against the intercept and the main effects:
 	import plotly.graph_objects as go
 	from plotly.subplots import make_subplots
 
-	second = ["A^2", "B^2", "C^2", "D^2", "E^2"] + pairs   # pairs from the previous block
+	# Twenty model-effect columns in three blocks: main effects, quadratics, then the omitted
+	# interactions (pairs, from the previous block). Lines at 4.5 and 9.5 separate the blocks.
+	model_terms = list("ABCDE") + ["A^2", "B^2", "C^2", "D^2", "E^2"] + pairs
 
-	def secondorder_corr(d):
-	    d = np.asarray(d, float); n = len(d)
-	    base = np.column_stack([np.ones(n)] + [d[:, i] for i in range(5)])
-	    cols = ([d[:, i] ** 2 for i in range(5)]
+	def model_term_corr(d):
+	    d = np.asarray(d, float)
+	    cols = ([d[:, i] for i in range(5)] + [d[:, i] ** 2 for i in range(5)]
 	            + [d[:, i] * d[:, j] for i in range(5) for j in range(i + 1, 5)])
-	    S = np.column_stack(cols)
-	    R = S - base @ np.linalg.pinv(base) @ S          # residualise against intercept + mains
-	    keep = np.where(np.linalg.norm(R, axis=0) > 1e-9)[0]
-	    C = np.eye(S.shape[1])
-	    C[np.ix_(keep, keep)] = np.corrcoef(R[:, keep], rowvar=False)
-	    return np.abs(C)
+	    C = np.corrcoef(np.column_stack(cols), rowvar=False)   # Pearson centers each column
+	    return np.abs(np.nan_to_num(C))
 
 	fig = make_subplots(rows=2, cols=2, subplot_titles=list(designs))
 	for k, d in enumerate(designs.values()):
-	    fig.add_trace(go.Heatmap(z=secondorder_corr(d), x=second, y=second, zmin=0, zmax=1,
-	                             colorscale="Blues", showscale=(k == 0)),
-	                  row=k // 2 + 1, col=k % 2 + 1)
+	    r, c = k // 2 + 1, k % 2 + 1
+	    fig.add_trace(go.Heatmap(z=model_term_corr(d), x=model_terms, y=model_terms,
+	                             zmin=0, zmax=1, colorscale="Blues", showscale=(k == 0)),
+	                  row=r, col=c)
+	    for b in (4.5, 9.5):   # block-separating lines
+	        fig.add_vline(x=b, line_width=1, line_color="gray", row=r, col=c)
+	        fig.add_hline(y=b, line_width=1, line_color="gray", row=r, col=c)
 	fig.update_yaxes(autorange="reversed")
 	fig.show()
 
@@ -1028,12 +1030,13 @@ leaves out, each residualised against the intercept and the main effects:
     :width: 750px
     :alt: heatmaps-four-designs.py
 
-    Absolute correlation among the fifteen second-order effects (the five quadratics and the ten
-    two-factor interactions), each residualised against the intercept and the main effects. Because
-    it includes the interactions the model omits, this is a different quantity from the table's
-    maximum :math:`|r|` row, which is taken among the fitted terms only: here the worst values are
-    :math:`0.15`, :math:`0.75`, :math:`0.50`, and :math:`0.50` for the Box-Behnken, composite,
-    OMARS, and definitive screening designs.
+    Absolute correlation among the twenty model-effect columns, in three blocks (the main effects,
+    the quadratics, and the two-factor interactions the model omits), separated by lines. The
+    main-effect block is orthogonal to everything for every design. The main-effect and quadratic
+    blocks are the fitted terms, so their worst off-diagonal is the table's maximum :math:`|r|` row
+    (:math:`0.15`, :math:`0.75`, :math:`0.00`, :math:`0.13`); the :math:`0.50` for the OMARS and
+    definitive screening designs sits only in the blocks that involve the omitted interactions,
+    the same aliasing the matrix above measures.
 
 It is worth being clear about what the table compares. The model is already settled: we have
 committed to the eleven-term main-effects-plus-quadratics model and are comparing point-placement
