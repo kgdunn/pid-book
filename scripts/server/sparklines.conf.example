@@ -14,8 +14,18 @@
 # Whitespace-separated list of glob patterns. Both .log and .log.gz are
 # supported automatically. Both Caddy JSON and Apache combined-format
 # files are parsed (the script auto-detects per line). Order does not
-# matter — the script deduplicates.
-logs = /var/log/caddy/learnche.org.access.log* /var/log/learnche-archive/access.log*
+# matter; the script deduplicates.
+#
+# This is the single source of truth for the log path: run-goaccess.sh
+# reads the same `logs =` value when LOG_GLOBS is not set in the
+# environment, so both halves of the nightly pipeline stay in step.
+#
+# The current pre-migration server is Apache, logging the learnche.org
+# vhost to /var/www/logs/learnche.org/access.log*. The /var/log/caddy/
+# entry is the post-migration target. Listing both means the same config
+# works before and after the move. The archive glob is the immutable
+# pre-Hetzner history.
+logs = /var/www/logs/learnche.org/access.log* /var/log/caddy/learnche.org.access.log* /var/log/learnche-archive/access.log*
 
 # Public path. Must be served as-is by Caddy under the same origin as
 # the book (learnche.org/_stats/) so the sidebar `fetch()` does not need
