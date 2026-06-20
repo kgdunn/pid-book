@@ -82,18 +82,15 @@ climbs steeply (already :math:`5.2\,\sigma^2` at :math:`x = 1.5`): a quantitativ
 against extrapolation.
 
 This and every figure in this subchapter is reproducible with `process_improve
-<https://github.com/kgdunn/process-improve>`_ (``pip install 'process-improve[expt]>=1.42'``);
-the code blocks build on one another, so paste them in order. The prediction variance of the
+<https://github.com/kgdunn/process-improve>`_ (``pip install 'process-improve[expt]>=1.42'``).
+Each block imports what it needs; the final figure also reuses the FDS helper and the designs
+built in the two blocks before it, so paste them in order. The prediction variance of the
 three-run quadratic design is a closed form:
 
 .. code-block:: python
 
-	import itertools
 	import numpy as np
-	import pandas as pd
 	import plotly.graph_objects as go
-	from plotly.subplots import make_subplots
-	from process_improve.experiments import Factor, generate_design, evaluate_design
 
 	# Single-factor quadratic design {-1, 0, +1}: the prediction variance is a closed form.
 	x = np.linspace(-1.6, 1.6, 321)
@@ -376,6 +373,11 @@ model expansion, the prediction variance and the FDS curve, are reused for the o
 comparison further down.
 
 .. code-block:: python
+
+	import itertools
+	import numpy as np
+	import plotly.graph_objects as go
+	from process_improve.experiments import Factor, generate_design
 
 	def model_matrix(design):
 	    """Main-effects-plus-pure-quadratics expansion [1 | x_i | x_i^2]."""
@@ -774,6 +776,11 @@ the library scores exactly this model and not the full second-order one:
 
 .. code-block:: python
 
+	import numpy as np
+	import pandas as pd
+	import plotly.graph_objects as go
+	from process_improve.experiments import Factor, evaluate_design, generate_design
+
 	def conference_matrix_order6():
 	    """Order-6 conference matrix (C C' = 5 I) from the quadratic residues of GF(5):
 	    the backbone of definitive screening and OMARS designs."""
@@ -977,6 +984,12 @@ on the two scales:
 
 .. code-block:: python
 
+	import itertools
+	import numpy as np
+	import plotly.graph_objects as go
+	from plotly.subplots import make_subplots
+
+	# Reuses fds_curve (from the DSD-vs-OMARS block) and the designs dict (previous block).
 	region5 = np.vstack([np.random.default_rng(1).uniform(-1, 1, size=(120_000, 5)),
 	                     np.array(list(itertools.product([-1, 1], repeat=5)), float)])
 	fracs = np.linspace(0, 1, 200)
