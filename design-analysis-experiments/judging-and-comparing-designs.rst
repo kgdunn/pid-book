@@ -757,8 +757,17 @@ The four response-surface designs are built once here and reused for the table a
 panels that follow. ``process_improve`` builds the Box-Behnken design and the DSD directly,
 and builds the face-centred CCD on a resolution-V half-fraction cube with ``cube="fractional"``
 (the standard five-factor CCD; the library's default cube is the full factorial). The 25-run
-OMARS design has no library generator, so it is two permuted conference-matrix foldovers. The
-power comes from ``evaluate_design``, given the eleven-term model as an explicit formula so
+OMARS design has no library generator, so it is two permuted conference-matrix foldovers.
+
+Each design carries its textbook number of center runs rather than padding added to equalize the
+comparison: six for the Box-Behnken design (the canonical 46-run design is forty design runs plus
+six center runs) and six for the face-centred CCD, against one each for the definitive screening and
+OMARS designs. Those center runs set the pure-error degrees of freedom and steady the prediction
+variance near the center of the region. In practice one might add two or three further center runs
+for a firmer estimate of the noise; here each design is held to its textbook count so the comparison
+stays like for like.
+
+The power comes from ``evaluate_design``, given the eleven-term model as an explicit formula so
 the library scores exactly this model and not the full second-order one:
 
 .. code-block:: python
@@ -939,6 +948,95 @@ zero, but let a present interaction shift a quadratic by as much as a full unit.
 matters is a question about the system rather than the design: it is the price of setting the
 interactions aside, and it is why a follow-up design is run once a screening study has
 flagged the active factors.
+
+The pattern is easier to see than to tabulate. The figure below shows the absolute alias matrix
+for each design as a heatmap, the eleven fitted terms down the rows and the ten omitted two-factor
+interactions across the columns:
+
+.. code-block:: python
+
+	import numpy as np
+	import plotly.graph_objects as go
+	from plotly.subplots import make_subplots
+
+	# Reuses the designs dict (from the power block). A = (X1'X1)^-1 X1'X2 maps the ten omitted
+	# two-factor interactions (columns) onto the eleven fitted terms (rows).
+	fitted = ["1", "A", "B", "C", "D", "E", "A^2", "B^2", "C^2", "D^2", "E^2"]
+	pairs = [a + b for i, a in enumerate("ABCDE") for b in "ABCDE"[i + 1:]]
+
+	def alias_abs(d):
+	    d = np.asarray(d, float); n = len(d)
+	    X1 = np.column_stack([np.ones(n)] + [d[:, i] for i in range(5)]
+	                         + [d[:, i] ** 2 for i in range(5)])
+	    X2 = np.column_stack([d[:, i] * d[:, j] for i in range(5) for j in range(i + 1, 5)])
+	    return np.abs(np.linalg.solve(X1.T @ X1, X1.T @ X2))
+
+	fig = make_subplots(rows=2, cols=2, subplot_titles=list(designs))
+	for k, d in enumerate(designs.values()):
+	    fig.add_trace(go.Heatmap(z=alias_abs(d), x=pairs, y=fitted, zmin=0, zmax=1.1,
+	                             colorscale="Blues", showscale=(k == 0)),
+	                  row=k // 2 + 1, col=k % 2 + 1)
+	fig.update_yaxes(autorange="reversed")
+	fig.show()
+
+.. figure:: ../figures/doe/alias-matrix-heatmaps-four-designs.png
+    :align: center
+    :width: 750px
+    :alt: heatmaps-four-designs.py
+
+    Absolute alias matrix :math:`|\mathbf{A}|` for the four designs (rows: the eleven fitted terms;
+    columns: the ten omitted two-factor interactions). The Box-Behnken and composite designs hold
+    every entry at zero on this model; the OMARS and definitive screening designs keep the
+    main-effect rows at zero and carry the bias on the quadratic rows, up to :math:`1.00` and
+    :math:`1.09` respectively.
+
+The same entanglement is a correlation rather than a directed bias. The figure below shows the
+absolute correlation among the twenty model-effect columns, in three blocks separated by lines: the
+five main effects, the five quadratics, and the ten two-factor interactions the model leaves out.
+Pearson correlation centers each column, so the quadratics' positive mean does not inflate the
+values:
+
+.. code-block:: python
+
+	import numpy as np
+	import plotly.graph_objects as go
+	from plotly.subplots import make_subplots
+
+	# Twenty model-effect columns in three blocks: main effects, quadratics, then the omitted
+	# interactions (pairs, from the previous block). Lines at 4.5 and 9.5 separate the blocks.
+	model_terms = list("ABCDE") + ["A^2", "B^2", "C^2", "D^2", "E^2"] + pairs
+
+	def model_term_corr(d):
+	    d = np.asarray(d, float)
+	    cols = ([d[:, i] for i in range(5)] + [d[:, i] ** 2 for i in range(5)]
+	            + [d[:, i] * d[:, j] for i in range(5) for j in range(i + 1, 5)])
+	    C = np.corrcoef(np.column_stack(cols), rowvar=False)   # Pearson centers each column
+	    return np.abs(np.nan_to_num(C))
+
+	fig = make_subplots(rows=2, cols=2, subplot_titles=list(designs))
+	for k, d in enumerate(designs.values()):
+	    r, c = k // 2 + 1, k % 2 + 1
+	    fig.add_trace(go.Heatmap(z=model_term_corr(d), x=model_terms, y=model_terms,
+	                             zmin=0, zmax=1, colorscale="Blues", showscale=(k == 0)),
+	                  row=r, col=c)
+	    for b in (4.5, 9.5):   # block-separating lines
+	        fig.add_vline(x=b, line_width=1, line_color="gray", row=r, col=c)
+	        fig.add_hline(y=b, line_width=1, line_color="gray", row=r, col=c)
+	fig.update_yaxes(autorange="reversed")
+	fig.show()
+
+.. figure:: ../figures/doe/correlation-colormap-four-designs.png
+    :align: center
+    :width: 750px
+    :alt: heatmaps-four-designs.py
+
+    Absolute correlation among the twenty model-effect columns, in three blocks (the main effects,
+    the quadratics, and the two-factor interactions the model omits), separated by lines. The
+    main-effect block is orthogonal to everything for every design. The main-effect and quadratic
+    blocks are the fitted terms, so their worst off-diagonal is the table's maximum :math:`|r|` row
+    (:math:`0.15`, :math:`0.75`, :math:`0.00`, :math:`0.13`); the :math:`0.50` for the OMARS and
+    definitive screening designs sits only in the blocks that involve the omitted interactions,
+    the same aliasing the matrix above measures.
 
 It is worth being clear about what the table compares. The model is already settled: we have
 committed to the eleven-term main-effects-plus-quadratics model and are comparing point-placement
