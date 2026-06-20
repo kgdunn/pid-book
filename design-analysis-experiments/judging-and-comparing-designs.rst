@@ -82,18 +82,15 @@ climbs steeply (already :math:`5.2\,\sigma^2` at :math:`x = 1.5`): a quantitativ
 against extrapolation.
 
 This and every figure in this subchapter is reproducible with `process_improve
-<https://github.com/kgdunn/process-improve>`_ (``pip install 'process-improve[expt]>=1.42'``);
-the code blocks build on one another, so paste them in order. The prediction variance of the
+<https://github.com/kgdunn/process-improve>`_ (``pip install 'process-improve[expt]>=1.42'``).
+Each block imports what it needs; the final figure also reuses the FDS helper and the designs
+built in the two blocks before it, so paste them in order. The prediction variance of the
 three-run quadratic design is a closed form:
 
 .. code-block:: python
 
-	import itertools
 	import numpy as np
-	import pandas as pd
 	import plotly.graph_objects as go
-	from plotly.subplots import make_subplots
-	from process_improve.experiments import Factor, generate_design, evaluate_design
 
 	# Single-factor quadratic design {-1, 0, +1}: the prediction variance is a closed form.
 	x = np.linspace(-1.6, 1.6, 321)
@@ -377,6 +374,11 @@ comparison further down.
 
 .. code-block:: python
 
+	import itertools
+	import numpy as np
+	import plotly.graph_objects as go
+	from process_improve.experiments import Factor, generate_design
+
 	def model_matrix(design):
 	    """Main-effects-plus-pure-quadratics expansion [1 | x_i | x_i^2]."""
 	    d = np.asarray(design, float)
@@ -390,12 +392,12 @@ comparison further down.
 	    P = model_matrix(points)
 	    return np.einsum("ij,jk,ik->i", P, xtx_inv, P)
 
-	def fds_curve(design, points, fracs, scaled=False):
+	def fds_curve(design, points, fractions, scaled=False):
 	    """Sorted prediction variance as a fraction-of-design-space curve."""
 	    pv = np.sort(prediction_variance(design, points))
 	    if scaled:
 	        pv = pv * len(np.asarray(design))
-	    return np.quantile(pv, fracs)
+	    return np.quantile(pv, fractions)
 
 	# 4-factor DSD (9 runs) from process_improve; the 13-run OMARS is given explicitly.
 	dsd4 = np.asarray(generate_design([Factor(name=c, low=-1, high=1) for c in "ABCD"],
@@ -409,12 +411,14 @@ comparison further down.
 	rng = np.random.default_rng(1)
 	region4 = np.vstack([rng.uniform(-1, 1, size=(80_000, 4)),
 	                     np.array(list(itertools.product([-1, 1], repeat=4)), float)])
-	fracs = np.linspace(0, 1, 200)
+	fraction_grid = np.linspace(0, 1, 200)
 
 	fig = go.Figure()
-	fig.add_trace(go.Scatter(x=fracs, y=fds_curve(dsd4, region4, fracs, scaled=True),
+	fig.add_trace(go.Scatter(x=fraction_grid,
+	                         y=fds_curve(dsd4, region4, fraction_grid, scaled=True),
 	                         name="DSD (9 runs)"))
-	fig.add_trace(go.Scatter(x=fracs, y=fds_curve(omars4, region4, fracs, scaled=True),
+	fig.add_trace(go.Scatter(x=fraction_grid,
+	                         y=fds_curve(omars4, region4, fraction_grid, scaled=True),
 	                         name="OMARS (13 runs)"))
 	fig.update_layout(xaxis_title="Fraction of design space",
 	                  yaxis_title="Scaled prediction variance, SPV")
@@ -774,6 +778,11 @@ the library scores exactly this model and not the full second-order one:
 
 .. code-block:: python
 
+	import numpy as np
+	import pandas as pd
+	import plotly.graph_objects as go
+	from process_improve.experiments import Factor, evaluate_design, generate_design
+
 	def conference_matrix_order6():
 	    """Order-6 conference matrix (C C' = 5 I) from the quadratic residues of GF(5):
 	    the backbone of definitive screening and OMARS designs."""
@@ -977,16 +986,22 @@ on the two scales:
 
 .. code-block:: python
 
+	import itertools
+	import numpy as np
+	import plotly.graph_objects as go
+	from plotly.subplots import make_subplots
+
+	# Reuses fds_curve (from the DSD-vs-OMARS block) and the designs dict (previous block).
 	region5 = np.vstack([np.random.default_rng(1).uniform(-1, 1, size=(120_000, 5)),
 	                     np.array(list(itertools.product([-1, 1], repeat=5)), float)])
-	fracs = np.linspace(0, 1, 200)
+	fds_fraction = np.linspace(0, 1, 200)
 
 	fig = make_subplots(rows=1, cols=2,
 	                    subplot_titles=("Scaled (per run)", "Unscaled (sigma^2 units)"))
 	for label, d in designs.items():
-	    fig.add_trace(go.Scatter(x=fracs, y=fds_curve(d, region5, fracs, scaled=True),
+	    fig.add_trace(go.Scatter(x=fds_fraction, y=fds_curve(d, region5, fds_fraction, scaled=True),
 	                             name=label), row=1, col=1)
-	    fig.add_trace(go.Scatter(x=fracs, y=fds_curve(d, region5, fracs, scaled=False),
+	    fig.add_trace(go.Scatter(x=fds_fraction, y=fds_curve(d, region5, fds_fraction, scaled=False),
 	                             name=label, showlegend=False), row=1, col=2)
 	fig.update_yaxes(title_text="Scaled prediction variance", row=1, col=1)
 	fig.update_yaxes(title_text="Prediction variance / sigma^2", row=1, col=2)
