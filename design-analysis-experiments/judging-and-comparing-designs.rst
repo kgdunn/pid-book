@@ -311,6 +311,8 @@ criteria, and the per-run (SPV) scaling that stops sheer replication from masque
 The rest of this subchapter puts that vocabulary to work on a single running comparison of two
 realistic multi-factor designs, introduced in the next section.
 
+.. _DOE-dsd-omars-comparison:
+
 A running comparison: a DSD and an OMARS design
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

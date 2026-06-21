@@ -3,7 +3,7 @@
 An omnibus comparison across design families
 ============================================
 
-The :ref:`two-design comparison <DOE-design-comparison-table>` made its point on a narrow contest. Widen it now to the six families a
+The :ref:`two-design comparison <DOE-dsd-omars-comparison>` made its point on a narrow contest. Widen it now to the six families a
 practitioner would actually shortlist for **five** factors on the same
 main-effects-and-quadratic model (eleven terms: an intercept, five linear, and five pure
 quadratic, with no two-factor interactions): a full :math:`2^5` factorial, a resolution-V
@@ -27,15 +27,15 @@ fit the model?
     :header-rows: 1
     :widths: 34 12 22 32
 
-    *   - design (5 factors)
-        - runs
-        - fits the 11-term model?
-        - residual degrees of freedom
-    *   - full factorial, :math:`2^5` + 2 centre
+    *   - Design (5 factors)
+        - Runs
+        - Fits the 11-term model?
+        - Residual degrees of freedom
+    *   - Full factorial, :math:`2^5` + 2 centre
         - 34
         - no (rank 7)
         - 27, reduced model only
-    *   - fractional, :math:`2^{5-1}` + 2 centre
+    *   - Fractional, :math:`2^{5-1}` + 2 centre
         - 18
         - no (rank 7)
         - 11, reduced model only
