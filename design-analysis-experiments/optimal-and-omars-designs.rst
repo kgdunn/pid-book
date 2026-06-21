@@ -681,8 +681,12 @@ active, which is what lets us analyse them on their own. Step 4 is where the des
 since the second-order effects are correlated among themselves, only a limited number can be
 estimated together, and factor heredity (preferring the interaction whose parent main effects
 are active) is the principled way to choose among the candidates the data alone cannot fully
-separate. This staged procedure, and the code that carries it out, is developed alongside this
-book.
+separate. This staged procedure is available in ``process_improve`` as ``analyze_omars()``: it
+takes any coded two- or three-level design with its measured responses and carries out exactly the
+stages above, returning the clean main effects, the pooled error, the overall test for second-order
+activity, and the heredity-constrained selection among the second-order effects. See the top entry
+of the `process_improve changelog
+<https://github.com/kgdunn/process-improve/blob/main/CHANGELOG.md>`__.
 
 **Readings**
 
