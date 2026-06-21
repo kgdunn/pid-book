@@ -20,6 +20,7 @@ Design and Analysis of Experiments
    extended-topics-related-to-designed-experiments
    optimal-and-omars-designs
    judging-and-comparing-designs
+   comparing-design-families
    design-analysis-experiments-exercises
 
 

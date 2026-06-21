@@ -684,9 +684,7 @@ are active) is the principled way to choose among the candidates the data alone 
 separate. This staged procedure is available in ``process_improve`` as ``analyze_omars()``: it
 takes any coded two- or three-level design with its measured responses and carries out exactly the
 stages above, returning the clean main effects, the pooled error, the overall test for second-order
-activity, and the heredity-constrained selection among the second-order effects. See the top entry
-of the `process_improve changelog
-<https://github.com/kgdunn/process-improve/blob/main/CHANGELOG.md>`__.
+activity, and the heredity-constrained selection among the second-order effects.
 
 **Readings**
 
