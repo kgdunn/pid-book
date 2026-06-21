@@ -309,7 +309,54 @@ That is as far as a single factor can take us. The one-factor example has suppli
 vocabulary: prediction variance, the :math:`D`, :math:`A`, :math:`E`, :math:`G`, and :math:`I`
 criteria, and the per-run (SPV) scaling that stops sheer replication from masquerading as quality.
 The rest of this subchapter puts that vocabulary to work on a single running comparison of two
-realistic multi-factor designs, introduced next with the fraction-of-design-space plot.
+realistic multi-factor designs, introduced in the next section.
+
+A running comparison: a DSD and an OMARS design
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The running example for the rest of the subchapter is a pair of four-factor designs, both fitted on
+the main-effects-plus-quadratic model: a nine-run :ref:`definitive screening design
+<DOE-definitive-screening-designs>` and a thirteen-run *orthogonal minimally aliased response
+surface* (OMARS) design that spends its four extra runs to buy two estimable two-factor
+interactions. OMARS designs are a recent generalization of the definitive screening design: they
+keep the main effects orthogonal to every second-order term while trading a handful of runs for
+interaction estimability, and the definitive screening designs are themselves a special case within
+that family.
+
+As each new metric is introduced (the FDS reading, then separability, the variance inflation factor,
+the alias bias, and power), it is read off these same two designs, and :ref:`a single summary table
+<DOE-design-comparison-table>` collects every value at the end.
+
+The definitive screening design comes straight from ``process_improve``; the OMARS design has no
+generator in the library, so it is given explicitly. The ``fds`` helper defined here wraps
+``evaluate_design``, which integrates the prediction variance over the design region and returns
+both the FDS curve and the average and worst-case values; the next section uses it to draw the plot.
+
+.. code-block:: python
+
+	import numpy as np
+	import pandas as pd
+	import plotly.graph_objects as go
+	from process_improve.experiments import Factor, evaluate_design, generate_design
+
+	def fds(design, model, *, n_samples, seed=1):
+	    """Region prediction-variance summary from ``evaluate_design``: the FDS
+	    curve (fraction of the design space vs prediction variance, scaled and
+	    unscaled) together with the average and worst-case values. The 2**k cube
+	    vertices, where the worst case usually sits, are included by default."""
+	    cols = [chr(ord("A") + i) for i in range(np.shape(design)[1])]
+	    df = pd.DataFrame(np.asarray(design, float), columns=cols)
+	    return evaluate_design(df, model=model, metric="fds", n_samples=n_samples,
+	                           random_seed=seed, fds_resolution=200)["fds"]
+
+	# 4-factor DSD (9 runs) from process_improve; the 13-run OMARS is given explicitly.
+	dsd4 = np.asarray(generate_design([Factor(name=c, low=-1, high=1) for c in "ABCD"],
+	                                  design_type="dsd").design[list("ABCD")], float)
+	omars4 = np.array([[0, 0, 0, 1], [0, 0, 1, 0], [0, 1, -1, -1], [1, -1, -1, 0],
+	                   [1, 0, 1, -1], [1, 1, 0, 1], [0, 0, 0, -1], [0, 0, -1, 0],
+	                   [0, -1, 1, 1], [-1, 1, 1, 0], [-1, 0, -1, 1], [-1, -1, 0, -1],
+	                   [0, 0, 0, 0]], float)
+	model4 = " + ".join(list("ABCD") + [f"I({c}**2)" for c in "ABCD"])
 
 The fraction-of-design-space (FDS) plot
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -365,49 +412,10 @@ shape. What to read off it:
 In short, you are looking for **low and flat**, and when comparing two designs, for which
 curve sits underneath and which is flatter.
 
-This pair of designs is the running example for the rest of the subchapter. As each new metric is
-introduced (the FDS reading here, then separability, the variance inflation factor, the alias bias,
-and power), it is read off the same two designs, and :ref:`a single summary table
-<DOE-design-comparison-table>` collects every value at the end.
-
-The figure below compares them in four factors on the main-effects-plus-quadratic model: a nine-run
-:ref:`definitive screening design <DOE-definitive-screening-designs>` and a thirteen-run
-*orthogonal minimally aliased response surface* (OMARS) design that spends its four extra runs to
-buy two estimable two-factor interactions. OMARS designs are a recent generalization of the
-definitive screening design: they keep the main effects orthogonal to every second-order term while
-trading a handful of runs for interaction estimability, and the definitive screening designs are
-themselves a special case within that family.
-
-The definitive screening design comes straight from ``process_improve``; the OMARS design has no
-generator in the library, so it is given explicitly. The ``fds`` helper defined here wraps
-``evaluate_design``, which integrates the prediction variance over the design region and returns
-both the FDS curve and the average and worst-case values.
+Applying that recipe to the running example reuses ``dsd4``, ``omars4``, ``model4`` and the ``fds``
+helper from the previous section:
 
 .. code-block:: python
-
-	import numpy as np
-	import pandas as pd
-	import plotly.graph_objects as go
-	from process_improve.experiments import Factor, evaluate_design, generate_design
-
-	def fds(design, model, *, n_samples, seed=1):
-	    """Region prediction-variance summary from ``evaluate_design``: the FDS
-	    curve (fraction of the design space vs prediction variance, scaled and
-	    unscaled) together with the average and worst-case values. The 2**k cube
-	    vertices, where the worst case usually sits, are included by default."""
-	    cols = [chr(ord("A") + i) for i in range(np.shape(design)[1])]
-	    df = pd.DataFrame(np.asarray(design, float), columns=cols)
-	    return evaluate_design(df, model=model, metric="fds", n_samples=n_samples,
-	                           random_seed=seed, fds_resolution=200)["fds"]
-
-	# 4-factor DSD (9 runs) from process_improve; the 13-run OMARS is given explicitly.
-	dsd4 = np.asarray(generate_design([Factor(name=c, low=-1, high=1) for c in "ABCD"],
-	                                  design_type="dsd").design[list("ABCD")], float)
-	omars4 = np.array([[0, 0, 0, 1], [0, 0, 1, 0], [0, 1, -1, -1], [1, -1, -1, 0],
-	                   [1, 0, 1, -1], [1, 1, 0, 1], [0, 0, 0, -1], [0, 0, -1, 0],
-	                   [0, -1, 1, 1], [-1, 1, 1, 0], [-1, 0, -1, 1], [-1, -1, 0, -1],
-	                   [0, 0, 0, 0]], float)
-	model4 = " + ".join(list("ABCD") + [f"I({c}**2)" for c in "ABCD"])
 
 	fig = go.Figure()
 	for design, label in [(dsd4, "DSD [n=9]"), (omars4, "OMARS [n=13]")]:
