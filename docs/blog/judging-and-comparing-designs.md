@@ -240,7 +240,7 @@ One table holds the whole comparison. Designs run largest to smallest; the arrow
 each label says which direction is better. Power is quoted at delta = sigma, an effect of one noise
 standard deviation, as defined in lens 1.
 
-| Metric | BBD (46) | CCD (32) | OMARS (25) | DSD (13) |
+| Metric | BBD [n=46] | CCD [n=32] | OMARS [n=25] | DSD [n=13] |
 |---|---|---|---|---|
 | ↑ Residual degrees of freedom | 35 | 21 | 14 | 2 |
 | ↑ Power, main effect at delta = sigma | 0.97 | 0.98 | 0.99 | 0.42 |

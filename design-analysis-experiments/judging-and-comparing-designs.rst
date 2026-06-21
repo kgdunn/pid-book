@@ -82,7 +82,7 @@ climbs steeply (already :math:`5.2\,\sigma^2` at :math:`x = 1.5`): a quantitativ
 against extrapolation.
 
 This and every figure in this subchapter is reproducible with `process_improve
-<https://github.com/kgdunn/process-improve>`_ (``pip install 'process-improve[expt]>=1.42'``).
+<https://github.com/kgdunn/process-improve>`_ (``pip install 'process-improve[expt]'``).
 Each block imports what it needs; the final figure also reuses the FDS helper and the designs
 built in the two blocks before it, so paste them in order. The prediction variance of the
 three-run quadratic design is a closed form:
@@ -153,35 +153,35 @@ the maximum and average of the prediction variance
     :header-rows: 1
     :widths: 34 8 12 16 14 8 8
 
-    *   - design
+    *   - Design
         - :math:`N`
         - :math:`\uparrow\ D=\det\mathbf{M}`
         - :math:`\downarrow\ A=\text{trace}\,\mathbf{M}^{-1}`
         - :math:`\uparrow\ E=\lambda_{\min}`
         - :math:`\downarrow\ G`
         - :math:`\downarrow\ I`
-    *   - base :math:`\{-1, 0, +1\}`
+    *   - Base :math:`\{-1, 0, +1\}`
         - 3
         - 4
         - 3.00
         - 0.44
         - 1.0
         - 0.80
-    *   - base, all three runs repeated
+    *   - Base, all three runs repeated
         - 6
         - 32
         - 1.50
         - 0.88
         - 0.5
         - 0.40
-    *   - base + two centre points
+    *   - Base + two centre points
         - 5
         - 12
         - 1.67
         - 1.00
         - 1.0
         - 0.44
-    *   - base + two points at :math:`\pm 1`
+    *   - Base + two points at :math:`\pm 1`
         - 5
         - 16
         - 2.50
@@ -400,7 +400,7 @@ omnibus comparison further down.
 	model4 = " + ".join(list("ABCD") + [f"I({c}**2)" for c in "ABCD"])
 
 	fig = go.Figure()
-	for design, label in [(dsd4, "DSD (9 runs)"), (omars4, "OMARS (13 runs)")]:
+	for design, label in [(dsd4, "DSD [n=9]"), (omars4, "OMARS [n=13]")]:
 	    curve = fds(design, model4, n_samples=80_000)["curve"]
 	    fig.add_trace(go.Scatter(x=curve["fraction"],
 	                             y=curve["scaled_prediction_variance"], name=label))
@@ -637,8 +637,8 @@ four-factor main-effects-and-quadratic model.
     :widths: 48 26 26
 
     *   - metric (arrow shows the preferred direction)
-        - DSD, 9 runs, 4 factors
-        - OMARS, 13 runs, 4 factors
+        - DSD [n=9], 4 factors
+        - OMARS [n=13], 4 factors
     *   - :math:`\uparrow` D-efficiency
         - 42.8 %
         - 39.0 %
@@ -866,10 +866,10 @@ a poor design.
     :widths: 40 15 15 15 15
 
     *   - Metric (arrow shows the preferred direction)
-        - BBD, 46 runs
-        - CCD, 32 runs
-        - OMARS, 25 runs
-        - DSD, 13 runs
+        - BBD [n=46]
+        - CCD [n=32]
+        - OMARS [n=25]
+        - DSD [n=13]
     *   - :math:`\uparrow` Power, main effect at :math:`\delta = \sigma`
         - 0.97
         - 0.98
