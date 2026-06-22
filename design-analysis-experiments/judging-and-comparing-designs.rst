@@ -726,6 +726,14 @@ meaning here,
 separability (:math:`|r|`, VIF), prediction (:math:`I`, :math:`G`), and the ability to test at all
 (residual degrees of freedom), and lets the purpose of the study break the ties.
 
+Read this for the method, not for a verdict on the design types. The rows rank these two particular
+designs on one model; they do not say that an OMARS design is in general better or worse than a
+definitive screening design. The thirteen-run design here is one member of a large family: for a
+given factor count the OMARS catalogue holds many designs of different run sizes and aliasing
+trade-offs, so a different member would sit differently on every row. What transfers to the next
+study is the procedure, reading precision, separability, and power off the information matrix, not
+the ranking of any one design.
+
 That is the running comparison in full. The :ref:`next page <DOE-omnibus-comparison>` widens it from
 two designs to a shortlist of six, comparing the standard design families for five factors on the
 same model, and closes with a checklist for choosing among them.

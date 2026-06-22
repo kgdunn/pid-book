@@ -486,6 +486,15 @@ different run counts it favours the smaller design, so judge larger-versus-small
 the quantities that carry real units: average coefficient variance, prediction variance, power,
 and the number of residual degrees of freedom.
 
+Read the whole comparison as an illustration of the process, not as a ranking of the design
+families. The table orders these particular designs on one model and one region; it is not a claim
+that a family is best. That is clearest for the OMARS row: the catalogue holds many OMARS designs
+for five factors, of different run sizes and aliasing trade-offs, and the twenty-five-run design
+here is one constructed instance, so its numbers describe that design rather than OMARS designs as a
+class. Change the member, the model, or the region and the rows shift. What carries from one study
+to the next is the method, building the information matrix and reading precision, separability,
+bias, and power from it.
+
 **Readings**
 
 * Box, Hunter and Hunter, *Statistics for Experimenters*, 2nd edition, for the factorial and

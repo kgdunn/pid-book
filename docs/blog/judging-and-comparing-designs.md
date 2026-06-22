@@ -321,6 +321,12 @@ degrees of freedom to test anything at all, and terms separable enough to attrib
 one assumption in view: this comparison sets the two-factor interactions aside, so it favours the
 smaller designs to the extent that those interactions are negligible.
 
+And read the result as a demonstration of the comparison process, not as a verdict on the design
+families: the rows rank these particular designs on one model and region, not the families in
+general. That is sharpest for OMARS, where the catalogue holds many designs per factor count and the
+25-run instance here is just one of them, so the numbers describe that design and not OMARS designs
+as a class.
+
 The fully worked comparison, with every design constructed and every number defined, is in the
 "Judging and comparing experimental designs" chapter of my free textbook. Every figure and number
 above regenerates from open Python scripts (built with the process_improve library).
