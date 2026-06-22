@@ -329,8 +329,10 @@ As each new metric is introduced (the FDS reading, then separability, the varian
 the alias bias, and power), it is read off these same two designs, and :ref:`a single summary table
 <DOE-design-comparison-table>` collects every value at the end.
 
-The definitive screening design comes straight from ``process_improve``; the OMARS design has no
-generator in the library, so it is given explicitly. The ``fds`` helper defined here wraps
+The definitive screening design comes straight from ``process_improve``. The library also
+generates OMARS designs (``generate_omars``, with the DSD as the minimal member), but it does
+not pin this specific precision-optimal member, so the thirteen-run design is given explicitly
+and confirmed with the library's ``is_omars`` verifier. The ``fds`` helper defined here wraps
 ``evaluate_design``, which integrates the prediction variance over the design region and returns
 both the FDS curve and the average and worst-case values; the next section uses it to draw the plot.
 
@@ -339,7 +341,7 @@ both the FDS curve and the average and worst-case values; the next section uses 
 	import numpy as np
 	import pandas as pd
 	import plotly.graph_objects as go
-	from process_improve.experiments import Factor, evaluate_design, generate_design
+	from process_improve.experiments import Factor, evaluate_design, generate_design, is_omars
 
 	def fds(design, model, *, n_samples, seed=1):
 	    """Region prediction-variance summary from ``evaluate_design``: the FDS
@@ -351,13 +353,17 @@ both the FDS curve and the average and worst-case values; the next section uses 
 	    return evaluate_design(df, model=model, metric="fds", n_samples=n_samples,
 	                           random_seed=seed, fds_resolution=200)["fds"]
 
-	# 4-factor DSD (9 runs) from process_improve; the 13-run OMARS is given explicitly.
+	# 4-factor DSD (9 runs) from process_improve; the precision-optimal (A-optimal) 13-run
+	# OMARS member is given explicitly, then verified as a genuine OMARS design. The same
+	# family is produced by generate_omars(factors, n_runs=13, model="main_quadratic",
+	# selection_criterion="a_optimal").
 	dsd4 = np.asarray(generate_design([Factor(name=c, low=-1, high=1) for c in "ABCD"],
 	                                  design_type="dsd").design[list("ABCD")], float)
 	omars4 = np.array([[0, 0, 0, 1], [0, 0, 1, 0], [0, 1, -1, -1], [1, -1, -1, 0],
 	                   [1, 0, 1, -1], [1, 1, 0, 1], [0, 0, 0, -1], [0, 0, -1, 0],
 	                   [0, -1, 1, 1], [-1, 1, 1, 0], [-1, 0, -1, 1], [-1, -1, 0, -1],
 	                   [0, 0, 0, 0]], float)
+	assert is_omars(dsd4) and is_omars(omars4)
 	model4 = " + ".join(list("ABCD") + [f"I({c}**2)" for c in "ABCD"])
 
 The fraction-of-design-space (FDS) plot
@@ -719,6 +725,14 @@ like-for-like comparison. The reading that carries weight leans on the quantitie
 meaning here,
 separability (:math:`|r|`, VIF), prediction (:math:`I`, :math:`G`), and the ability to test at all
 (residual degrees of freedom), and lets the purpose of the study break the ties.
+
+Read this for the method, not for a verdict on the design types. The rows rank these two particular
+designs on one model; they do not say that an OMARS design is in general better or worse than a
+definitive screening design. The thirteen-run design here is one member of a large family: for a
+given factor count the OMARS catalogue holds many designs of different run sizes and aliasing
+trade-offs, so a different member would sit differently on every row. What transfers to the next
+study is the procedure, reading precision, separability, and power off the information matrix, not
+the ranking of any one design.
 
 That is the running comparison in full. The :ref:`next page <DOE-omnibus-comparison>` widens it from
 two designs to a shortlist of six, comparing the standard design families for five factors on the

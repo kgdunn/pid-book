@@ -83,13 +83,15 @@ better only by exploring a wider region.
 
 One disclosure about the OMARS design used here. OMARS is a catalogue, not a single recipe: for a
 given factor count it offers many designs of different sizes, each selected to keep the aliasing
-among second-order terms minimal. The 25-run design in this comparison is not taken from that
-catalogue. It is built by hand as two permuted conference-matrix foldovers, which gives it the
-defining OMARS property (main effects orthogonal to every second-order term) but makes it one
-constructed instance rather than a catalog-optimal member. A design pulled from the published OMARS
-catalogue at this run size may score somewhat differently. All four designs, and every figure and
-number below, regenerate from the open Python scripts in the book (built with the process_improve
-library).
+among second-order terms minimal. The `process_improve` library does generate OMARS designs
+(`generate_omars`, with the definitive screening design as the minimal member), but its foldover
+search does not reproduce this particular minimally-aliased 25-run member, so it is built directly
+as two permuted conference-matrix foldovers and confirmed with the library's `is_omars` verifier.
+That gives it the defining OMARS property (main effects orthogonal to every second-order term) but
+makes it one constructed instance rather than a catalog-optimal member; a design pulled from the
+published OMARS catalogue at this run size may score somewhat differently. All four designs, and
+every figure and number below, regenerate from the open Python scripts in the book (built with the
+process_improve library).
 
 ## 1. Power
 
@@ -318,6 +320,12 @@ deliver: power to detect the effects that matter, prediction variance in real un
 degrees of freedom to test anything at all, and terms separable enough to attribute. And keep the
 one assumption in view: this comparison sets the two-factor interactions aside, so it favours the
 smaller designs to the extent that those interactions are negligible.
+
+And read the result as a demonstration of the comparison process, not as a verdict on the design
+families: the rows rank these particular designs on one model and region, not the families in
+general. That is sharpest for OMARS, where the catalogue holds many designs per factor count and the
+25-run instance here is just one of them, so the numbers describe that design and not OMARS designs
+as a class.
 
 The fully worked comparison, with every design constructed and every number defined, is in the
 "Judging and comparing experimental designs" chapter of my free textbook. Every figure and number
