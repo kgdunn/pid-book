@@ -73,10 +73,13 @@ designs' ability to flag a true effect of one noise standard deviation
 The four response-surface designs are built once here and reused for the table and the FDS
 panels that follow. ``process_improve`` builds the Box-Behnken design and the DSD directly,
 and builds the face-centred CCD on a resolution-V half-fraction cube with ``cube="fractional"``
-(the standard five-factor CCD; the library's default cube is the full factorial). The 25-run
-OMARS design has no library generator, so it is built here as two permuted conference-matrix
-foldovers. That construction has the defining OMARS property, main effects orthogonal to every
-second-order term, but it is one constructed design and not a catalog-optimal member: a design
+(the standard five-factor CCD; the library's default cube is the full factorial). The library
+also generates OMARS designs (``generate_omars``, with the DSD as the minimal member), but its
+foldover search does not reproduce this particular minimally-aliased 25-run member, so it is
+built here as two permuted conference-matrix foldovers and confirmed with the library's
+``is_omars`` verifier. That construction has the defining OMARS property, main effects
+orthogonal to every second-order term, but it is one constructed design and not a
+catalog-optimal member: a design
 selected from the :ref:`OMARS catalogue <DOE-omars-designs>` at this run size may score somewhat
 differently on the metrics below.
 

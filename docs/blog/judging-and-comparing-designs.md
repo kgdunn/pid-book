@@ -83,13 +83,15 @@ better only by exploring a wider region.
 
 One disclosure about the OMARS design used here. OMARS is a catalogue, not a single recipe: for a
 given factor count it offers many designs of different sizes, each selected to keep the aliasing
-among second-order terms minimal. The 25-run design in this comparison is not taken from that
-catalogue. It is built by hand as two permuted conference-matrix foldovers, which gives it the
-defining OMARS property (main effects orthogonal to every second-order term) but makes it one
-constructed instance rather than a catalog-optimal member. A design pulled from the published OMARS
-catalogue at this run size may score somewhat differently. All four designs, and every figure and
-number below, regenerate from the open Python scripts in the book (built with the process_improve
-library).
+among second-order terms minimal. The `process_improve` library does generate OMARS designs
+(`generate_omars`, with the definitive screening design as the minimal member), but its foldover
+search does not reproduce this particular minimally-aliased 25-run member, so it is built directly
+as two permuted conference-matrix foldovers and confirmed with the library's `is_omars` verifier.
+That gives it the defining OMARS property (main effects orthogonal to every second-order term) but
+makes it one constructed instance rather than a catalog-optimal member; a design pulled from the
+published OMARS catalogue at this run size may score somewhat differently. All four designs, and
+every figure and number below, regenerate from the open Python scripts in the book (built with the
+process_improve library).
 
 ## 1. Power
 
