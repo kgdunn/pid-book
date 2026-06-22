@@ -75,13 +75,14 @@ panels that follow. ``process_improve`` builds the Box-Behnken design and the DS
 and builds the face-centred CCD on a resolution-V half-fraction cube with ``cube="fractional"``
 (the standard five-factor CCD; the library's default cube is the full factorial). The library
 also generates OMARS designs (``generate_omars``, with the DSD as the minimal member), but its
-foldover search does not reproduce this particular minimally-aliased 25-run member, so it is
-built here as two permuted conference-matrix foldovers and confirmed with the library's
-``is_omars`` verifier. That construction has the defining OMARS property, main effects
-orthogonal to every second-order term, but it is one constructed design and not a
-catalog-optimal member: a design
-selected from the :ref:`OMARS catalogue <DOE-omars-designs>` at this run size may score somewhat
-differently on the metrics below.
+foldover search does not enumerate this larger 25-run member, so it is built here as two permuted
+conference-matrix foldovers and confirmed with the library's ``is_omars`` verifier. Its 24
+distinct factor runs are the :ref:`OMARS catalogue <DOE-omars-designs>` basic design
+``bd-5-24-4-8-53`` (the construction reproduces that catalogue design exactly, up to a relabeling
+of the factors and a reordering of the runs), with one centre run added to make 25. It has the
+defining OMARS property, main effects orthogonal to every second-order term. The catalogue holds
+other 24-run members that place their runs differently and so score differently on the metrics
+below; this is one of them.
 
 Each design carries its textbook number of center runs rather than padding added to equalize the
 comparison: six for the Box-Behnken design (the canonical 46-run design is forty design runs plus
@@ -490,8 +491,9 @@ Read the whole comparison as an illustration of the process, not as a ranking of
 families. The table orders these particular designs on one model and one region; it is not a claim
 that a family is best. That is clearest for the OMARS row: the catalogue holds many OMARS designs
 for five factors, of different run sizes and aliasing trade-offs, and the twenty-five-run design
-here is one constructed instance, so its numbers describe that design rather than OMARS designs as a
-class. Change the member, the model, or the region and the rows shift. What carries from one study
+here is one of them (the basic design ``bd-5-24-4-8-53`` with a centre run), so its numbers describe
+that member rather than OMARS designs as a class. Change the member, the model, or the region and
+the rows shift. What carries from one study
 to the next is the method, building the information matrix and reading precision, separability,
 bias, and power from it.
 

@@ -85,13 +85,34 @@ One disclosure about the OMARS design used here. OMARS is a catalogue, not a sin
 given factor count it offers many designs of different sizes, each selected to keep the aliasing
 among second-order terms minimal. The `process_improve` library does generate OMARS designs
 (`generate_omars`, with the definitive screening design as the minimal member), but its foldover
-search does not reproduce this particular minimally-aliased 25-run member, so it is built directly
-as two permuted conference-matrix foldovers and confirmed with the library's `is_omars` verifier.
-That gives it the defining OMARS property (main effects orthogonal to every second-order term) but
-makes it one constructed instance rather than a catalog-optimal member; a design pulled from the
-published OMARS catalogue at this run size may score somewhat differently. All four designs, and
+search does not enumerate this larger 25-run member, so it is built directly as two permuted
+conference-matrix foldovers and confirmed with the library's `is_omars` verifier. Its 24 distinct
+factor runs are the catalogue basic design `bd-5-24-4-8-53`: the construction reproduces that
+catalogue design exactly, up to a relabeling of the factors and a reordering of the runs, with one
+centre run added to make 25. That gives it the defining OMARS property (main effects orthogonal to
+every second-order term). The catalogue holds other 24-run members that place their runs
+differently and so score differently; this is one of them. All four designs, and
 every figure and number below, regenerate from the open Python scripts in the book (built with the
 process_improve library).
+
+To show where this member sits, three of the thirty 24-run catalogue designs, scored on the same
+eleven-term model and the same 25-run basis (each 24-run basic design plus one centre run), bracket
+the spread. `A` is the summed coefficient variance (smaller is more precise); the correlation column
+is the worst absolute correlation among all second-order terms, including the two-factor
+interactions the model leaves out (the fitted main-effect and quadratic terms stay uncorrelated at
+0.00 for every OMARS member).
+
+| Design | D-efficiency | A | Max \|r\| (2nd-order) |
+|---|---|---|---|
+| `bd-5-24-4-8-53` (used here) | 39.3% | 2.34 | 0.50 |
+| `bd-5-24-10-16-28` | 40.6% | 1.44 | 0.57 |
+| `bd-5-24-2-4-45` | 32.7% | 3.20 | 0.40 |
+
+Across all thirty 24-run members the per-run D-efficiency runs from 32.7% to 40.6%, the summed
+coefficient variance A from 1.44 to 3.20, and the worst second-order correlation from 0.40 to 0.57.
+The member used here sits between the extremes: more precise than the least-aliased design and less
+aliased than the most precise one. Which corner suits a study depends on whether precision or clean
+separation of the second-order terms matters more for its purpose.
 
 ## 1. Power
 
@@ -324,8 +345,8 @@ smaller designs to the extent that those interactions are negligible.
 And read the result as a demonstration of the comparison process, not as a verdict on the design
 families: the rows rank these particular designs on one model and region, not the families in
 general. That is sharpest for OMARS, where the catalogue holds many designs per factor count and the
-25-run instance here is just one of them, so the numbers describe that design and not OMARS designs
-as a class.
+25-run design here (the basic design `bd-5-24-4-8-53` with a centre run) is just one of them, so the
+numbers describe that member and not OMARS designs as a class.
 
 The fully worked comparison, with every design constructed and every number defined, is in the
 "Judging and comparing experimental designs" chapter of my free textbook. Every figure and number
