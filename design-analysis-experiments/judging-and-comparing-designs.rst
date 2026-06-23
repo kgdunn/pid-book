@@ -329,19 +329,19 @@ As each new metric is introduced (the FDS reading, then separability, the varian
 the alias bias, and power), it is read off these same two designs, and :ref:`a single summary table
 <DOE-design-comparison-table>` collects every value at the end.
 
-The definitive screening design comes straight from ``process_improve``. The library also
-generates OMARS designs (``generate_omars``, with the DSD as the minimal member), but it does
-not pin this specific precision-optimal member, so the thirteen-run design is given explicitly
-and confirmed with the library's ``is_omars`` verifier. The ``fds`` helper defined here wraps
-``evaluate_design``, which integrates the prediction variance over the design region and returns
-both the FDS curve and the average and worst-case values; the next section uses it to draw the plot.
+Both designs come straight from ``process_improve``: ``generate_design`` builds the nine-run
+definitive screening design, and ``generate_omars`` builds the thirteen-run OMARS member directly
+(the DSD is the minimal member of the same foldover family), each confirmed with the library's
+``is_omars`` verifier. The ``fds`` helper defined here wraps ``evaluate_design``, which integrates
+the prediction variance over the design region and returns both the FDS curve and the average and
+worst-case values; the next section uses it to draw the plot.
 
 .. code-block:: python
 
 	import numpy as np
 	import pandas as pd
 	import plotly.graph_objects as go
-	from process_improve.experiments import Factor, evaluate_design, generate_design, is_omars
+	from process_improve.experiments import Factor, evaluate_design, generate_design, generate_omars, is_omars
 
 	def fds(design, model, *, n_samples, seed=1):
 	    """Region prediction-variance summary from ``evaluate_design``: the FDS
@@ -353,16 +353,13 @@ both the FDS curve and the average and worst-case values; the next section uses 
 	    return evaluate_design(df, model=model, metric="fds", n_samples=n_samples,
 	                           random_seed=seed, fds_resolution=200)["fds"]
 
-	# 4-factor DSD (9 runs) from process_improve; the precision-optimal (A-optimal) 13-run
-	# OMARS member is given explicitly, then verified as a genuine OMARS design. The same
-	# family is produced by generate_omars(factors, n_runs=13, model="main_quadratic",
-	# selection_criterion="a_optimal").
-	dsd4 = np.asarray(generate_design([Factor(name=c, low=-1, high=1) for c in "ABCD"],
-	                                  design_type="dsd").design[list("ABCD")], float)
-	omars4 = np.array([[0, 0, 0, 1], [0, 0, 1, 0], [0, 1, -1, -1], [1, -1, -1, 0],
-	                   [1, 0, 1, -1], [1, 1, 0, 1], [0, 0, 0, -1], [0, 0, -1, 0],
-	                   [0, -1, 1, 1], [-1, 1, 1, 0], [-1, 0, -1, 1], [-1, -1, 0, -1],
-	                   [0, 0, 0, 0]], float)
+	# Both four-factor designs come from process_improve: the 9-run DSD and the
+	# precision-optimal (A-optimal) 13-run OMARS member of the same foldover family,
+	# the latter carrying two estimable two-factor interactions. is_omars confirms each.
+	factors4 = [Factor(name=c, low=-1, high=1) for c in "ABCD"]
+	dsd4 = np.asarray(generate_design(factors4, design_type="dsd").design[list("ABCD")], float)
+	omars4 = np.asarray(generate_omars(factors4, n_runs=13, model="main_quadratic",
+	                                   selection_criterion="a_optimal").design[list("ABCD")], float)
 	assert is_omars(dsd4) and is_omars(omars4)
 	model4 = " + ".join(list("ABCD") + [f"I({c}**2)" for c in "ABCD"])
 
@@ -441,12 +438,12 @@ helper from the previous section:
 
     FDS plot for a nine-run definitive screening design and a thirteen-run OMARS design,
     both in four factors on the main-effects-plus-quadratic model. The curves cross near a
-    fraction of 0.75: the larger design predicts better on average but worse at the extreme
+    fraction of 0.73: the larger design predicts better on average but worse at the extreme
     corners.
 
 The thirteen-run OMARS curve sits *below* the nine-run DSD curve for roughly the first three
 quarters of the region: it has lower best-case, median, and average prediction variance.
-But the two curves **cross** near :math:`f \approx 0.75`, and the thirteen-run OMARS curve then
+But the two curves **cross** near :math:`f \approx 0.73`, and the thirteen-run OMARS curve then
 rises well above: its worst-case prediction variance is noticeably higher. This crossing is the
 practical tension between V- (average) and G- (worst-case) optimality, and it has a physical cause:
 the larger design here places fewer runs out near the edge of the region, so prediction there
@@ -460,7 +457,7 @@ corner (a vertex of the :math:`[-1, 1]` cube), where random interior sampling ra
 ``evaluate_design`` therefore adds the cube vertices to its interior sample by default (its
 ``include_vertices`` argument). Including them lifts the nine-run DSD's :math:`G` from :math:`8.98`
 to :math:`9.00`, a maximum that turns out to sit precisely at a corner, and leaves the thirteen-run
-OMARS value at :math:`12.50` because its worst case lies in the interior. The shift is tiny, so it
+OMARS value at :math:`12.70` because its worst case lies in the interior. The shift is tiny, so it
 changes no conclusion here, but including the extreme points is the correct procedure, and the
 :ref:`omnibus comparison <DOE-omnibus-comparison>` relies on it.
 
@@ -687,7 +684,7 @@ four-factor main-effects-and-quadratic model.
         - 6.19
     *   - :math:`\downarrow\ G`, maximum SPV
         - 9.00
-        - 12.50
+        - 12.70
     *   - :math:`\downarrow` maximum :math:`|r|`
         - 0.707
         - 0.570
