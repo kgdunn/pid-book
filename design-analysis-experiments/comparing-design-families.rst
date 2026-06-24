@@ -20,6 +20,9 @@ two-factor interactions out is an assumption: if they are in fact present, they 
 eleven estimated coefficients by the :ref:`alias matrix <DOE-alias-bias>`, and the table
 below records how large that bias can be for each design.
 
+Can the design fit the model?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Start with the question that decides whether a design belongs in the contest at all: can it even
 fit the model?
 
@@ -65,6 +68,9 @@ between-run drift, and a one-degree-of-freedom test for *overall* curvature, but
 the five quadratics apart. That single curvature signal is precisely the cue to augment the
 factorial with axial runs, which is how the face-centred composite design in the same table is
 born. The four remaining designs are full rank and carry the comparison from here.
+
+Power to detect an effect
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Lead with power, because it is what the experiment is for.** The figure below reads off the four
 designs' ability to flag a true effect of one noise standard deviation
@@ -156,6 +162,9 @@ and estimate their quadratics cleanly, rather than to test all five quadratics a
 runs. Held to the full model here it is being asked for more than it was built to give; the
 comparison keeps it on the same model as the others to make that trade-off visible, not to mark it
 a poor design.
+
+Quality metrics for the four designs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. list-table:: Quality metrics for the four response-surface designs (five factors).
     :header-rows: 1
@@ -266,6 +275,9 @@ DSD and the Box-Behnken is the same per-run normalisation seen in the two D rows
 run count rewards the design that spends fewer experiments. Read the unscaled maximum for the
 variance obtained at the bench, and the scaled :math:`G` to compare worst cases per experiment.
 
+Aliasing from the omitted interactions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 The alias row makes the cost of the reduced model explicit. The model fits no two-factor
 interactions, so any that are present bias the coefficients we keep, by the
 :ref:`alias matrix <DOE-alias-bias>`. The Box-Behnken and composite designs hold that bias
@@ -367,6 +379,9 @@ values:
     :math:`0.83` for the OMARS design and :math:`0.50` for the definitive screening design, sit in
     the blocks that involve the omitted interactions, the same aliasing the matrix above measures.
 
+What the table compares
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
 It is worth being clear about what the table compares. The model is already settled: we have
 committed to the eleven-term main-effects-plus-quadratics model and are comparing point-placement
 strategies, the designs, for estimating its coefficients and predicting from it. The criteria split
@@ -390,6 +405,9 @@ weaker curvature precision (its :math:`|r| = 0.75` and VIF of :math:`3.20`). And
 overlap: a composite design built on a resolution-V fraction is itself a strong OMARS design, while
 a definitive screening design is a special case within the OMARS family, so think of these as a
 spectrum.
+
+Two views of prediction variance
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The two views of prediction variance are worth seeing side by side, because the scaling by run
 count is exactly what leaves out the cost of running too few experiments.
