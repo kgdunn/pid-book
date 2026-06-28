@@ -113,18 +113,19 @@ are requested.
 
     fig = go.Figure(go.Heatmap(
         z=matrix, x=dsd.factor_names, zmid=0, showscale=False,
-        colorscale=[[0, "#1f5fa8"], [0.5, "#f2f2f2"], [1, "#c0392b"]]))
+        colorscale=[[0, "#0072B2"], [0.5, "#EDEDED"], [1, "#D55E00"]]))
     fig.update_layout(xaxis_title="Factor", yaxis_title="Run (construction order)",
                       yaxis=dict(autorange="reversed"))
     fig.show()
 
 Each cell is one factor at one of its three coded levels: :math:`-1` (blue), :math:`0` (grey),
-or :math:`+1` (red). Reading the figure top to bottom, there is a light interpretation worth
+or :math:`+1` (vermillion). The blue and vermillion are the colourblind-safe Okabe-Ito pair.
+Reading the figure top to bottom, there is a light interpretation worth
 making now, leaving the mechanics to the construction above and the quantitative comparison to
 the :ref:`next sections <DOE-omars-designs>`:
 
     *   The runs come in *mirror-image pairs*. The lower block is the upper block with every
-        sign flipped (each blue cell becomes red and the reverse): this is the
+        sign flipped (each blue cell becomes vermillion and the reverse): this is the
         :math:`-\mathbf{C}` half folded under the :math:`\mathbf{C}` half. That mirror symmetry
         is the foldover, and it is what buys the clean, unaliased main effects.
 
@@ -145,7 +146,8 @@ the :ref:`next sections <DOE-omars-designs>`:
     The run matrix of a six-factor definitive screening design (13 runs), shown in construction
     order. The top block is a conference matrix :math:`\mathbf{C}`; the middle block is its
     sign-flipped mirror :math:`-\mathbf{C}`; the final row is the centre run. Colours are the
-    coded levels :math:`-1` (blue), :math:`0` (grey), and :math:`+1` (red).
+    coded levels :math:`-1` (blue), :math:`0` (grey), and :math:`+1` (vermillion), using the
+    colourblind-safe Okabe-Ito palette.
 
 How to analyse the resulting data, once responses are measured, is a topic in its own right,
 because the structured aliasing among the second-order effects means a naive least squares fit
