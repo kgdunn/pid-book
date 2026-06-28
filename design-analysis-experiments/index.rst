@@ -18,7 +18,9 @@ Design and Analysis of Experiments
    response-surface-methods
    general-approach-for-experimentation
    extended-topics-related-to-designed-experiments
-   optimal-and-omars-designs
+   optimal-designs
+   definitive-screening-designs
+   omars-designs
    judging-and-comparing-designs
    comparing-design-families
    design-analysis-experiments-exercises
