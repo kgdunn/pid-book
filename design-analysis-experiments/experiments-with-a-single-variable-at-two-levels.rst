@@ -3,7 +3,7 @@
 Experiments with a single variable at two levels
 ======================================================
 
-This is the simplest type of experiment. It involves an outcome variable, :math:`y`, and one input variable, :math:`x`. The :math:`x`-variable could be a continuous numeric one, such as temperature, or discrete on, such as yes/no, on/off, A/B. This type of experiment could be used to answer questions such as the following:
+This is the simplest type of experiment. It involves an outcome variable, :math:`y`, and one input variable, :math:`x`. The :math:`x`-variable could be a continuous numeric one, such as temperature, or discrete, such as yes/no, on/off, A/B. This type of experiment could be used to answer questions such as the following:
 
 	*	Has the reaction yield increased when using catalyst A or B?
 
@@ -11,7 +11,7 @@ This is the simplest type of experiment. It involves an outcome variable, :math:
 
 	*	Does the plastic's stretchability improve when extruded at various temperatures (a low or high temperature)?
 
-We can perform several runs (experiments) at level A, and some runs at level B. These runs are randomized (i.e. do not perform all the A runs, and then the B runs). We strive to hold all other disturbance variables constant so we pick up only the A-to-B effect. Disturbances are any variables that might affect :math:`y` but, for whatever reason, we don't wish to quantify. If we cannot control the disturbance, then at least we can use :ref:`pairing <univariate_paired_tests>` and :ref:`blocking <DOE_blocking_section>`. Pairing is when there is one factor in our experiment; blocking is when we have more than one factor.
+We can perform several runs (experiments) at level A, and some runs at level B. These runs are randomized (i.e. do not perform all the A runs, and then the B runs). We strive to hold all other disturbance variables constant so we pick up only the A-to-B effect. Disturbances are any variables that might affect :math:`y` but, for whatever reason, we don't wish to quantify. If we cannot control the disturbance, then at least we can use :ref:`pairing <univariate_paired_tests>` and :ref:`blocking <DOE_blocking_section>`. Pairing is blocking with blocks of size two: the two runs of a pair are made under the same level of the disturbance, so its effect cancels in their difference. Blocking generalizes this to larger groups, and it is used even when there is only a single factor of interest.
 
 Recap of group-to-group differences
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -27,6 +27,8 @@ We have already seen in the :ref:`univariate statistics section <univariate-grou
 		-c_t &\leq& z &\leq & c_t\\
 		(\overline{x}_B - \overline{x}_A) - c_t \times \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)} &\leq& \mu_B - \mu_A &\leq & (\overline{x}_B - \overline{x}_A) + c_t  \times \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}
 	\end{array}
+
+.. note:: We keep the symbol :math:`z` here to match the univariate section, but because the pooled variance :math:`s_P^2` is *estimated* from the data (rather than known), this statistic is strictly :math:`t`-distributed, not standard normal. That is why the critical value :math:`c_t` and the degrees of freedom :math:`n_A + n_B - 2` come from the :math:`t`-distribution.
 
 We consider the effect of changing from condition A to condition B to be a *statistically* significant effect when this confidence interval does not span zero. However, the width of this interval and how symmetrically it spans zero can cause us to come to a different, *practical* conclusion. In other words, we override the narrow statistical conclusion based on the richer information we can infer from the width of the confidence interval and the variance of the process.
 
@@ -106,7 +108,7 @@ Had we used a formal test of differences where we pooled the variances, we would
 	:align: center
 	:scale: 60
 	:width: 900px
-	:alt: fake width
+	:alt: Histogram of the average A-minus-B difference over all randomization permutations
 
 The figure shows the differences in the averages of A and B for the 24,310 realizations. The vertical line represents the difference in the average for the one particular set of numbers we measured in the experiment.
 

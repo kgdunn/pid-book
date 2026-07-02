@@ -44,12 +44,12 @@ Another engineering example
 
 Here's a great example from the book by Box, Hunter and Hunter. Consider the negative-slope :ref:`relationship between pressure and yield <DOE-yield-pressure-impurity-correlation>`: as pressure increases, the yield drops. A line could be drawn through the points from the happenstance measurements, taken from the process at different times in the past. That line could be from a :ref:`least squares model <SECTION-least-squares-modelling>`. It is true that the observed pressure and yield are correlated, as that is exactly what a least squares model is intended for: to quantify correlation.
 
-The true mechanism in this system is that pressure is increased to remove the frothing that occurs in the reactor. Higher frothing occurs when there is an impurity in the raw material, so operators increase reactor pressure when they see frothing (i.e. high impurity). However, it is the high impurity that actually causes the lower yield, not the pressure itself. These relationships between yield, pressure and impurity levels are illustrated below, based an adaption from the book by Box, Hunter and Hunter, Chapter 14 (1st edition) or Chapter 10 (2nd edition).
+The true mechanism in this system is that pressure is increased to remove the frothing that occurs in the reactor. Higher frothing occurs when there is an impurity in the raw material, so operators increase reactor pressure when they see frothing (i.e. high impurity). However, it is the high impurity that actually causes the lower yield, not the pressure itself. These relationships between yield, pressure and impurity levels are illustrated below, based on an adaptation from the book by Box, Hunter and Hunter, Chapter 14 (1st edition) or Chapter 10 (2nd edition).
 
 .. _DOE-yield-pressure-impurity-correlation:
 
 .. image:: ../figures/doe/yield-pressure-impurity-correlation.png
-	:alt:	../figures/doe/yield-pregon.svg
+	:alt: Projections showing how yield, pressure and impurity are related
 	:scale: 50
 	:align: center
 	:width: 900px
@@ -60,7 +60,7 @@ Another problem with using happenstance data is that they are not taken in rando
 
 .. Other factors are always affecting the system. The operator mistakenly adjusts the temperature set point to 480K instead of 470K. The conversion value at the end of the shift is 3% higher. This "experiment" of sorts enters the collection of anecdotes that operators and engineers like to tell each other, and soon it becomes "accepted" that temperature can be used to improve conversion. However, it might have been a lower impurity in the raw materials, the new pump that was installed the previous day, improved controller tuning by another team of engineers, or any other event(s).
 
-Designed experiments are the only way we can be sure that these correlated events are causal. You often hear people repeat the (incomplete) phrase that "correlation does not imply causality". That is only half-true: the other half of the phrase is "correlation is a necessary, but not sufficient, condition for causality".
+Designed experiments are the only way we can be sure that these correlated events are causal. You often hear people repeat the phrase that "correlation does not imply causality". That is true, but it is worth adding the other half: some observable association is usually present when there is a causal link, but the association on its own is not sufficient evidence of it. (The association need not be a linear correlation; a genuine causal effect can show near-zero linear correlation when the relationship is curved or when competing mechanisms offset each other.)
 
 In summary, do not rely on anecdotal "evidence" from colleagues. Always question the system, and always try to perturb the system intentionally. In practice you won't always be allowed to move the system too drastically, so at the end of this chapter we will discuss :ref:`response surface methods <DOE-RSM>` and :ref:`evolutionary operation <DOE-EVOP>`, which can be implemented on-line in production processes.
 

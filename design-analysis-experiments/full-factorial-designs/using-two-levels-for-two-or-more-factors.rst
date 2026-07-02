@@ -64,7 +64,7 @@ The range over which they will be varied is given in the table. This range was i
 		:align: center
 		:scale: 40
 		:width: 900px
-		:alt: fake width
+		:alt: Cube plot of a two-factor, two-level factorial design
 
 .. _DOE-two-level-factorials-main-effects:
 
@@ -97,7 +97,7 @@ The following surface plot illustrates the true, but unknown, surface from which
 	.. image:: ../../figures/doe/factorial-two-level-surface-example-cropped.png
 		:align: left
 		:scale: 50
-		:alt: fake width
+		:alt: True response surface with slight curvature over the factorial region
 		:width: 900px
 
 An :index:`interaction plot` is an :ref:`alternative way to visualize these main effects <DOE-fig-Interaction-plot-example>`. Use this method when you don't have computer software to draw the surfaces. [We saw this earlier in the :ref:`visualization section <SECTION-data-visualization>`]. We will discuss interaction plots more in the next section. Here is an illustration of one such plot for a system with little interaction.
@@ -127,7 +127,7 @@ Consider the case when washing your hands with cold water. If you use soap with 
 
 Now consider the case when washing your hands with hot water. The time taken to clean your hands with hot water when you use soap is greatly reduced, far faster than any other combination. We say there is an interaction between using soap and the temperature of the water. This is an example of an interaction that works to help us reach the objective faster.
 
-The effect of warm water enhances the effect of soap. Conversely, the effect is soap is enhanced by using warm water. So symmetry means that if soap interacts with water temperature, then we also know that water temperature interacts with soap.
+The effect of warm water enhances the effect of soap. Conversely, the effect of soap is enhanced by using warm water. So symmetry means that if soap interacts with water temperature, then we also know that water temperature interacts with soap.
 
 In summary, interaction means the effect of one factor depends on the level of the other factor. In this example, that implies the effect of soap is different, depending on if we use cold water or hot water. Interactions are also symmetrical. The soap’s effect is enhanced by warm water, and the warm water’s effect is enhanced by soap.
 
@@ -138,7 +138,7 @@ Let's use a :ref:`different system here to illustrate <DOE-fig-interaction-examp
 		:align: center
 		:scale: 40
 		:width: 900px
-		:alt: fake width
+		:alt: Contour plot of a two-factor system that shows interaction
 
 	.. tabularcolumns:: |l|c|c||c|
 
@@ -166,7 +166,7 @@ Notice how different the main effect is at the low and high levels of :math:`S`.
 Similarly, the main effect of substrate concentration is
 
 		-	:math:`\Delta S_{T-} = 81 - 77 = 4\%` per 0.75 g/L
-		-	:math:`\Delta S_{T-} = 89 - 79 = 10\%` per 0.75 g/L
+		-	:math:`\Delta S_{T+} = 89 - 79 = 10\%` per 0.75 g/L
 
 which gives the average substrate concentration main effect as 7% per 0.75 g/L.
 

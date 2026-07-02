@@ -43,7 +43,7 @@ It is common for known, or controllable or measurable factors to have an effect 
 	:align: left
 	:scale: 50
 	:width: 900px
-	:alt: fake width
+	:alt: Cube showing a two-level, three-factor factorial split into two blocks on the ABC interaction
 
 In this section then we will deal with disturbances that are known, but their effect may or may not be measurable. We will also assume that we cannot control that disturbance, but we would like to minimize its effect.
 

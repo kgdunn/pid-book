@@ -43,7 +43,7 @@ Use a least squares model to estimate the coefficients in the model:
 	\mathbf{y} &= \mathbf{Xb} \\
 	\mathbf{b} &= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y}
 
-where :math:`\mathbf{b} = [b_0, b_A, b_B, b_C, b_D, b_E, b_F, b_G]`. The matrix :math:`\mathbf{X}` is essentiall a copy of the above table, but with an added column of 1's for the intercept term. Notice that the :math:`\mathbf{X}^T\mathbf{X}` matrix will be diagonal. Make sure you can calculate :math:`\mathbf{X}^T\mathbf{X}` by hand, at least once. It is also straightforward to calculate the solution vector (by hand!), which you can confirm to be :math:`\mathbf{b} = [70.7, -2.3, 0.1, -2.8, -0.4, 0.5, -0.4, -1.7]`.
+where :math:`\mathbf{b} = [b_0, b_A, b_B, b_C, b_D, b_E, b_F, b_G]`. The matrix :math:`\mathbf{X}` is essentially a copy of the above table, but with an added column of 1's for the intercept term. Notice that the :math:`\mathbf{X}^T\mathbf{X}` matrix will be diagonal. Make sure you can calculate :math:`\mathbf{X}^T\mathbf{X}` by hand, at least once. It is also straightforward to calculate the solution vector (by hand!), which you can confirm to be :math:`\mathbf{b} = [70.7, -2.3, 0.1, -2.8, -0.4, 0.5, -0.4, -1.7]`.
 
 How do you assess which main effects are important?  There are eight data points and eight parameters, so there are no degrees of freedom and the residuals are all zero. In this case you have to use a :ref:`Pareto plot <DOE-Pareto-plot>`, which requires that your variables have been suitably scaled in order to judge importance of the main effects relative to each other. The Pareto plot would be given as shown below, and as usual, it does not show the intercept term.
 
@@ -57,13 +57,15 @@ How do you assess which main effects are important?  There are eight data points
 	pd.options.plotting.backend = "plotly"
 
 	# Create vectors for each factor in the experiment.
-	# itertools.product gives the full 2^3 design.
+	# itertools.product varies the last column fastest, so we label
+	# the columns C, B, A to obtain standard (Yates) order, where
+	# factor A alternates fastest. This matches the run table above.
 	design = pd.DataFrame(
 	    list(itertools.product([-1, +1],
 	                           [-1, +1],
 	                           [-1, +1])),
-	    columns=["A", "B", "C"],
-	)
+	    columns=["C", "B", "A"],
+	)[["A", "B", "C"]]
 	A = design["A"].to_numpy()
 	B = design["B"].to_numpy()
 	C = design["C"].to_numpy()
@@ -159,7 +161,7 @@ Significant effects would be **A**, **C** and **G**. The next largest effect, **
 
 The factor **B** is definitely not important to the response variable in this system and can be excluded in future experiments, as could **F** and **D** likely. Future experiments should focus on the **A**, **C** and **G** factors and their interactions. We show how to use these existing 8 experiments in the above table, but add a few new ones in the next section on design foldover and by understanding projectivity.
 
-A side note on screening designs is a mention of :index:`Plackett and Burman designs <pair: Plackett-Burman designs; experiments>`. These designs can sometimes be of greater use than a highly fractionated design. A fractional factorial must have :math:`2^{k-p}` runs, for integers :math:`k` and :math:`p`: i.e. either :math:`4, 8, 16, 32, 64, 128, \ldots` runs. Plackett-Burman designs are screening designs that can be run in any multiple of 4 greater or equal to 12:, i.e. :math:`12, 16, 20, 24, \ldots` runs. The Box, Hunter, and Hunter book has more information in Chapter 7, but another interesting paper on these topic is by Box and :index:`Bisgaard <single: Bisgaard, Søren>`: "What can you find out from 12 experimental runs?", which shows how to screen for 11 factors in 12 experiments.
+A side note on screening designs is a mention of :index:`Plackett and Burman designs <pair: Plackett-Burman designs; experiments>`. These designs can sometimes be of greater use than a highly fractionated design. A fractional factorial must have :math:`2^{k-p}` runs, for integers :math:`k` and :math:`p`: i.e. either :math:`4, 8, 16, 32, 64, 128, \ldots` runs. Plackett-Burman designs are screening designs that can be run in any multiple of 4, i.e. :math:`12, 16, 20, 24, \ldots` runs. The non-geometric cases (12, 20, 24, 28, ...), which are not powers of 2, are the ones that a fractional factorial cannot provide. The Box, Hunter, and Hunter book has more information in Chapter 7, but another interesting paper on these topic is by Box and :index:`Bisgaard <single: Bisgaard, Søren>`: "What can you find out from 12 experimental runs?", which shows how to screen for 11 factors in 12 experiments.
 
 .. youtube:: https://www.youtube.com/watch?v=zrZS-zovKSc&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=50
 
