@@ -27,7 +27,7 @@ Recall that :ref:`variability <univariate-about-variability>` is what makes our 
  	#.	The model (:math:`\hat{y}_i = b_0 + b_1 x_i`)
  	#.	How much variance is left over in the errors, :math:`e_i`
 
-These 3 components must add up to the total variance we started with. By definition, the variance is computed about a mean, so the variance of no model (i.e. the "doing nothing" case) is zero. So the total variance in vector :math:`y` is just the sum of the other two variances: the model's variance, and the error variance. We show this next.
+These components must add up to the total variance we started with. By definition, the variance is computed about a mean, so the "doing nothing" case explains no variance: its prediction is the mean itself. So the total variance in vector :math:`y` is the sum of the other two components: the variance captured by the model, and the variance left in the errors. We show this next.
 
 .. The variance breakdown: graphically
 .. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -52,17 +52,42 @@ Using the accompanying figure, we see that geometrically, at any fixed value of 
 The total sum of squares (TSS) is the total variance in the vector of :math:`y`-data. This broken down into two components: the sum of squares due to regression, :math:`\sum \left(\hat{y}_i - \overline{y}\right)^2`, called RegSS, and the sum of squares of the residuals (RSS), :math:`\sum e_i^2 = e^T e`.
 
 
+.. _LS-ANOVA-table:
+
 It is convenient to write these sums of squares (variances) in table form, called an Analysis of Variance (:index:`ANOVA`) table:
 
-	=================== ========================================= ================================================ ======= ========================================
-	Type of variance    Distance                                  Degrees of freedom                               SSQ     Mean square
-	=================== ========================================= ================================================ ======= ========================================
-	Regression          :math:`\hat{y}_i - \overline{y}`          :math:`k` (:math:`k=2` in the examples so far)   RegSS   :math:`\text{RegSS}/k`
-	------------------- ----------------------------------------- ------------------------------------------------ ------- ----------------------------------------
-	Error               :math:`y_i - \hat{y}_i`                   :math:`n-k`                                      RSS     :math:`\text{RSS}/(n-k)`
-	------------------- ----------------------------------------- ------------------------------------------------ ------- ----------------------------------------
-	Total               :math:`y_i - \overline{y}`                :math:`n`                                        TSS     :math:`\text{TSS}/n`
-	=================== ========================================= ================================================ ======= ========================================
+	=================== ========================================= ================================================== ======= ========================================
+	Type of variance    Distance                                  Degrees of freedom                                 SSQ     Mean square
+	=================== ========================================= ================================================== ======= ========================================
+	Regression          :math:`\hat{y}_i - \overline{y}`          :math:`k-1` (:math:`k=2` in the examples so far)   RegSS   :math:`\text{RegSS}/(k-1)`
+	------------------- ----------------------------------------- -------------------------------------------------- ------- ----------------------------------------
+	Error               :math:`y_i - \hat{y}_i`                   :math:`n-k`                                        RSS     :math:`\text{RSS}/(n-k)`
+	------------------- ----------------------------------------- -------------------------------------------------- ------- ----------------------------------------
+	Total               :math:`y_i - \overline{y}`                :math:`n-1`                                        TSS     :math:`\text{TSS}/(n-1)`
+	=================== ========================================= ================================================== ======= ========================================
+
+Here :math:`k` is the number of parameters estimated in the model, so :math:`k = 2` for the model
+:math:`\hat{y}_i = b_0 + b_1 x_i`. The degrees of freedom follow from the distances in the second
+column. The total row uses :math:`n-1`, not :math:`n`, because the :math:`n` distances
+:math:`y_i - \overline{y}` are computed from the estimated mean :math:`\overline{y}`, which removes
+one degree of freedom (:ref:`seen earlier <univariate-variance>` when estimating a variance). The
+error row uses :math:`n-k`, since :math:`k` parameters were estimated to compute the
+:math:`\hat{y}_i`. The regression row gets the difference, :math:`(n-1) - (n-k) = k-1`, which is
+the number of predictor terms in the model (one, for a straight line). The degrees of freedom of
+the regression and error rows add up to the total row, as do the sums of squares.
+
+The ratio of the two mean squares in the last column is called the :math:`F`-statistic:
+
+.. math::
+
+	F_0 = \dfrac{\text{RegSS}/(k-1)}{\text{RSS}/(n-k)}
+
+It compares the variance explained by the model against the variance left in the residuals. A
+value of :math:`F_0` near 1.0 says the model explains about as much per degree of freedom as the
+noise; a large :math:`F_0` says the model explains far more than could be expected from noise.
+Software packages report this number, together with the two degrees of freedom used to compute
+it, and a p-value; we will point it out in the software output
+:ref:`later in this section <LS-software-output>`.
 
 ..	Original table in wiki form
 
@@ -108,7 +133,7 @@ The term :math:`S_E^2 = \text{RSS}/(n-k)` is one way of quantifying the model's 
 
 *Example*: Assume we have a model for predicting batch yield in kilograms from |x| = raw material purity, what does a standard error of 3.4 kg imply?
 
-*Answer*: Recall if the assumption of normally distributed errors is correct, then this value of 3.4 kg indicates that about two thirds of the yield predictions will lie within :math:`\pm 3.4` kg, and that 95% of the yield predictions will lie within :math:`\pm 2 \times 3.4` kg. We will quantify the prediction interval more precisely, but the standard error is a good approximation for the error of |y|.
+*Answer*: Recall if the assumption of normally distributed errors is correct, then this value of 3.4 kg indicates that about two thirds of the yield prediction errors will lie within :math:`\pm 3.4` kg, and that 95% of the prediction errors will lie within :math:`\pm 2 \times 3.4` kg. We will quantify the prediction interval more precisely, but the standard error is a good approximation for the error of |y|.
 
 Exercise
 ^^^^^^^^^
@@ -123,7 +148,7 @@ Do the following in the space below:
  	- draw a generic plot
 	- create an ANOVA table with fake values
  	- write down the value of the ratio :math:`\dfrac{\text{RegSS}}{\text{TSS}}`
-	- interpret what this ratio means: :math:`F_0 = \dfrac{\text{mean square of regression}}{\text{mean square of residuals}}`
+	- also write down what happens to :math:`F_0 = \dfrac{\text{RegSS}/(k-1)}{\text{RSS}/(n-k)}`, the ratio of the two mean squares, in each case
 
 .. raw:: latex
 
@@ -182,7 +207,7 @@ As introduced by example in the previous part, :math:`R^2 = \dfrac{\text{RegSS}}
 
 From the above ratios it is straightforward to see that if :math:`R^2 = 0`, it requires that :math:`\hat{y}_i = \overline{\mathrm{y}}`: we are predicting just a flat line, the mean of the |y| data. On the other extreme, an :math:`R^2 = 1` implies that :math:`\hat{y}_i = y_i`, we have perfect predictions for every data point.
 
-The nomenclature :math:`R^2` comes from the fact that it is the square of the correlation between |x| and |y|. Recall from the :ref:`correlation section <LS_correlation>` that
+The nomenclature :math:`R^2` comes from the fact that, for a model with a single |x|-variable, it is the square of the correlation between |x| and |y|. (In the general case, with several |x|-variables, :math:`R^2` is the square of the correlation between |y| and :math:`\hat{y}`.) Recall from the :ref:`correlation section <LS_correlation>` that
 
 .. math::
 
@@ -255,7 +280,7 @@ Furthermore, our derivation for the confidence intervals of |b0| and |b1| requir
 
 	Illustration of the constant error variance assumption and the normally distributed error assumption.
 
-#.	The errors are normally distributed: :math:`e_i \sim \mathcal{N}(0, \sigma_\epsilon^2)`. This also implies that :math:`y_i \sim \mathcal{N}(\beta_0 + \beta_1x_i, \sigma_\epsilon^2)` from the first linearity assumption.
+#.	The errors are normally distributed: :math:`\epsilon_i \sim \mathcal{N}(0, \sigma_\epsilon^2)`. This also implies that :math:`y_i \sim \mathcal{N}(\beta_0 + \beta_1x_i, \sigma_\epsilon^2)` from the first linearity assumption. (The residuals :math:`e_i` are our estimates of the unobservable :math:`\epsilon_i`, so this assumption is checked by examining the residuals.)
 
 #.	Each error is independent of the other. This assumption is often violated in cases where the observations are taken in time order on slow moving processes (e.g. if you have a positive error now, your next sample is also likely to have a positive error). We will have more to say about this later when we check for independence with an :ref:`autocorrelation test <LS-autocorrelation-test>`.
 
@@ -274,15 +299,15 @@ Also, if we want to interpret the model's :math:`S_E` as the estimated standard 
 Confidence intervals for :math:`\beta_0` and :math:`\beta_1`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Recall from our discussions on :ref:`confidence intervals <univariate_confidence_intervals>` that we need to know the mean and variance of the population from which |b0| and |b1| come. Specifically for the least squares case:
+Recall from our discussions on :ref:`confidence intervals <univariate_confidence_intervals>` that we need to know the mean and variance of the population from which |b0| and |b1| come. Note that :math:`\beta_0` and :math:`\beta_1` are fixed population values; it is our *estimates* |b0| and |b1| that vary from one data sample to the next, and so have a distribution. Specifically for the least squares case:
 
 .. math::
 
 	\begin{array}{lcr}
-		b_0 \sim \mathcal{N}(\beta_0, \mathcal{V}\{\beta_0\}) &\qquad\text{and}\qquad& b_1 \sim \mathcal{N}(\beta_1,\mathcal{V}\{\beta_1\})
+		b_0 \sim \mathcal{N}(\beta_0, \mathcal{V}\{b_0\}) &\qquad\text{and}\qquad& b_1 \sim \mathcal{N}(\beta_1,\mathcal{V}\{b_1\})
 	\end{array}
 
-Once we know those parameters, we can create a :math:`z`-value for |b0| and |b1|, and then calculate the confidence interval for :math:`\beta_0` and :math:`\beta_1`. So our quest now is to calculate :math:`\mathcal{V}\{\beta_0\}` and :math:`\mathcal{V}\{\beta_1\}`, and we will use the 6 assumptions we made in the previous part.
+Once we know those parameters, we can create a :math:`z`-value for |b0| and |b1|, and then calculate the confidence interval for :math:`\beta_0` and :math:`\beta_1`. So our quest now is to calculate :math:`\mathcal{V}\{b_0\}` and :math:`\mathcal{V}\{b_1\}`, and we will use the 6 assumptions we made in the previous part.
 
 Start from the equations that define |b0| and |b1| :ref:`in the prior section <LS_eqn_define-2-LS-b0-b1-result>` where we showed that:
 
@@ -336,14 +361,14 @@ Now for the variance of :math:`b_0 = \overline{\mathrm{y}} - b_1 \overline{\math
 
 .. math::
 
-	\mathcal{V}\{b_0\} = \left(\dfrac{1}{N} + \dfrac{\overline{\mathrm{x}}^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \right)\mathcal{V}\{y_i\}
+	\mathcal{V}\{b_0\} = \left(\dfrac{1}{n} + \dfrac{\overline{\mathrm{x}}^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \right)\mathcal{V}\{y_i\}
 
 **Summary of important equations**
 
 .. math::
 
-	\mathcal{V}\{\beta_0\} \approx \mathcal{V}\{b_0\} &= \left(\dfrac{1}{N} + \dfrac{\overline{\mathrm{x}}^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \right)\mathcal{V}\{y_i\} \\ \\
-	\mathcal{V}\{\beta_1\} \approx \mathcal{V}\{b_1\} &= \dfrac{\mathcal{V}\{y_i\}}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \\ \\
+	\mathcal{V}\{b_0\} &= \left(\dfrac{1}{n} + \dfrac{\overline{\mathrm{x}}^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \right)\mathcal{V}\{y_i\} \\ \\
+	\mathcal{V}\{b_1\} &= \dfrac{\mathcal{V}\{y_i\}}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \\ \\
 	\text{where}\qquad \mathcal{V}\{y_i\} &= \mathcal{V}\{e_i\}  = \dfrac{\sum{e_i^2}}{n-k}, \,\,\text{if there is no lack-of-fit and the y's are independent of each other}.
 
 For convenience we will define some short-hand notation, which is common in least squares:
@@ -351,7 +376,7 @@ For convenience we will define some short-hand notation, which is common in leas
 .. math::
 
 	S_E^2 &= \mathcal{V}\{e_i\}  = \mathcal{V}\{y_i\} = \dfrac{\sum{e_i^2}}{n-k} \qquad\qquad \text{or}\,\, S_E = \sqrt{ \dfrac{\sum{e_i^2}}{n-k} }\\
-	S_E^2(b_0) &= \mathcal{V}\{b_0\} = \left(\dfrac{1}{N} + \dfrac{\overline{\mathrm{x}}^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \right)S_E^2\\
+	S_E^2(b_0) &= \mathcal{V}\{b_0\} = \left(\dfrac{1}{n} + \dfrac{\overline{\mathrm{x}}^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}} \right)S_E^2\\
 	S_E^2(b_1) &= \mathcal{V}\{b_1\} = \dfrac{S_E^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}
 
 You will see that :math:`S_E` is an estimate of the standard deviation of the error (residuals), while :math:`S_E(b_0)` and :math:`S_E(b_1)` are the standard deviations of estimates for |b0| and |b1| respectively.
@@ -584,7 +609,7 @@ A better attempt to construct prediction intervals for the least squares model
 
 .. As is Devore, Probability and statistics for engineering and the sciences, page 506
 
-The derivation for the :index:`prediction interval` is similar to that for |b1|. We require an estimate for the variance of the predicted |y| at at given value of |x|. Let's fix our |x| value at :math:`x_*` and since :math:`b_0 = \overline{\mathrm{y}} - b_1 \overline{\mathrm{x}}`, we can write the prediction at this fixed |x| value as :math:`\hat{y}_* = \overline{\mathrm{y}} - b_1(x_* - \overline{\mathrm{x}})`.
+The derivation for the :index:`prediction interval` is similar to that for |b1|. We require an estimate for the variance of the predicted |y| at a given value of |x|. Let's fix our |x| value at :math:`x_*` and since :math:`b_0 = \overline{\mathrm{y}} - b_1 \overline{\mathrm{x}}`, we can write the prediction at this fixed |x| value as :math:`\hat{y}_* = b_0 + b_1 x_* = \overline{\mathrm{y}} + b_1(x_* - \overline{\mathrm{x}})`.
 
 .. math::
 
@@ -595,16 +620,16 @@ You may read the reference texts for the interesting derivation of this variance
 
 :math:`\mathcal{V}\{\hat{y}_i\} = S_E^2\left(1 + \dfrac{1}{n} + \dfrac{(x_i - \overline{\mathrm{x}})^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}\right)`, where :math:`j` is the index for all points used to build the least squares model.
 
-We may construct a prediction interval in the standard manner, assuming that :math:`\hat{y}_i \sim \mathcal{N}\left( \overline{\hat{y}_i}, \mathcal{V}\{\hat{y}_i\} \right)`. We will use an estimate of this variance since we do not know the population variance. This requires we use the :math:`t`-distribution with :math:`n-k` degrees of freedom, at a given degree of confidence, e.g. 95%.
+We may construct a prediction interval in the standard manner. The quantity being bracketed is the new observation itself, :math:`y_\text{new}`: the difference :math:`y_\text{new} - \hat{y}_i` is normally distributed with mean zero and the variance :math:`\mathcal{V}\{\hat{y}_i\}` given above. We will use an estimate of this variance since we do not know the population variance. This requires we use the :math:`t`-distribution with :math:`n-k` degrees of freedom, at a given degree of confidence, e.g. 95%.
 
 .. math::
 
     \begin{array}{rcccl}
-        -c_t &<& \dfrac{\hat{y}_i - \overline{\hat{y}_i}}{\sqrt{V\{\hat{y}_i\}}} &<& +c_t \\
-        \hat{y}_i -c_t \sqrt{V\{\hat{y}_i\}} &<& \overline{\hat{y}_i} &<& \hat{y}_i + c_t \sqrt{V\{\hat{y}_i\}}
+        -c_t &<& \dfrac{y_\text{new} - \hat{y}_i}{\sqrt{V\{\hat{y}_i\}}} &<& +c_t \\
+        \hat{y}_i -c_t \sqrt{V\{\hat{y}_i\}} &<& y_\text{new} &<& \hat{y}_i + c_t \sqrt{V\{\hat{y}_i\}}
     \end{array}
 
-This is a prediction interval for a new prediction, :math:`\hat{y}_i` given a new |x| value, :math:`x_i`. For example, if :math:`\hat{y}_i` = 20 at a given value of :math:`x_i`, and if :math:`c_t \sqrt{V\{\hat{y}_i\}}` = 5, then you will usually see written in reports and documents that, the prediction was :math:`20 \pm 5`. A more correct way of expressing this concept is to say the true prediction at the value of :math:`x_i` lies within a bound from 15 to 25, with 95% confidence.
+This is a prediction interval for a new observation, :math:`y_\text{new}`, at a new |x| value, :math:`x_i`. For example, if :math:`\hat{y}_i` = 20 at a given value of :math:`x_i`, and if :math:`c_t \sqrt{V\{\hat{y}_i\}}` = 5, then you will usually see written in reports and documents that, the prediction was :math:`20 \pm 5`. A more correct way of expressing this concept is to say the actual observation at the value of :math:`x_i` will lie within a bound from 15 to 25, with 95% confidence.
 
 Implications of the prediction error of a new |y|
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -619,12 +644,14 @@ Let's understand the interpretation of :math:`\mathcal{V}\{\hat{y}_i\} = S_E^2 \
 
 #.	Now move left and right, away from :math:`\overline{\mathrm{x}}`, and mark the confidence intervals. What general shape do they have?
 
-	-	The confidence intervals have a quadratic shape due to the square term under the square root. The smallest prediction error will always occur at the center of the model, and expands progressively wider as one moves away from the model center. This is illustrated in the figure and makes intuitive sense as well.
+	-	The prediction bounds are curved: the term :math:`(x_i - \overline{\mathrm{x}})^2` under the square root is smallest at the center of the model and grows as :math:`x_i` moves away from :math:`\overline{\mathrm{x}}` in either direction. The narrowest prediction interval therefore occurs at the center of the model, and the interval widens progressively as one moves away from the model center. This is illustrated in the figure and makes intuitive sense as well.
 
 	.. image:: ../figures/least-squares/show-anscome-solution-with-yhat-bounds.png
 		:width: 900px
 		:align: center
 		:scale: 40
+
+.. _LS-software-output:
 
 Interpretation of software output
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -676,9 +703,10 @@ Make sure you can calculate the following values using the equations developed s
 	- Using the standard error, calculate the standard error for the slope = :math:`S_E(b_1) = 0.1179`.
 	- The :math:`z`-value for the |b0| term is 2.667 (R calls this the ``t value`` in the printout, but in our notes we have called this :math:`z = \dfrac{b_0 - \beta_0}{S_E(b_0)}`; the value that we compare to the :math:`t`-statistic and used to create the confidence interval).
 	- The :math:`z`-value for the |b1| term is 4.241 (see the above comment again).
-	- The two probability values, ``Pr(>|t|)``, for |b0| and |b1| should be familiar to you; they are the probability with which we expect to find a value of :math:`z` greater than the calculated :math:`z`-value (called ``t value`` in the output above). The smaller the number, the more confident we can be the confidence interval contains the parameter estimate.
+	- The two probability values, ``Pr(>|t|)``, for |b0| and |b1| should be familiar to you; each is the probability of observing a :math:`z`-value (called ``t value`` in the output above) at least as far from zero as the one calculated, *if the true coefficient were zero*. A small number is evidence the coefficient differs from zero; equivalently, the confidence interval for that coefficient does not contain zero.
 	- You can construct the confidence interval for |b0| or |b1| by using their reported standard errors and multiplying by the corresponding :math:`t`-value. For example, if you want 99% confidence limits, then look up the 99% values for the :math:`t`-distribution using :math:`n-k` degrees of freedom, in this case it would be ``qt((1-0.99)/2, df=9)``, which is :math:`\pm 3.25`. So the 99% confidence limits for the slope coefficient would be :math:`[0.5 - 3.25 \times 0.1179; 0.5 + 3.25 \times 0.1179] = [0.12; 0.88]`.
 	- The :math:`R^2 = 0.6665` value.
+	- The line ``F-statistic: 17.99 on 1 and 9 DF`` is the ratio of mean squares from the :ref:`ANOVA table <LS-ANOVA-table>`: :math:`F_0 = \dfrac{\text{RegSS}/(k-1)}{\text{RSS}/(n-k)}` on :math:`k-1 = 1` and :math:`n-k = 9` degrees of freedom, with its p-value alongside.
 	- Be able to calculate the residuals: :math:`e_i = y_i - \hat{y}_i = y_i - b_0 - b_1 x_i`. We expect the median of the residuals to be around 0, and the rest of the summary of the residuals gives a feeling for how far the residuals range about zero.
 
 Using Python, you can run the following code:
@@ -741,7 +769,7 @@ As for the R code, we can see at a glance:
 	- Using the standard error, calculate the standard error for the slope = :math:`S_E(b_1) = 0.1179`, which is reported directly in the table.
 	- The :math:`z`-value for the |b0| term is 2.667 (Python calls this the ``t``-value in the printout, but in our notes we have called this :math:`z = \dfrac{b_0 - \beta_0}{S_E(b_0)}`; the value that we compare to the :math:`t`-statistic and used to create the confidence interval).
 	- The :math:`z`-value for the |b1| term is 4.241 (see the above comment again).
-	- The two probability values, ``P>|t|``, for |b0| and |b1| should be familiar to you; they are the probability with which we expect to find a value of :math:`z` greater than the calculated :math:`z`-value (called ``t value`` in the output above). The smaller the number, the more confident we can be the confidence interval contains the parameter estimate.
+	- The two probability values, ``P>|t|``, for |b0| and |b1| should be familiar to you; each is the probability of observing a :math:`z`-value (called ``t`` in the output above) at least as far from zero as the one calculated, *if the true coefficient were zero*. A small number is evidence the coefficient differs from zero; equivalently, the confidence interval for that coefficient does not contain zero.
 	- You can construct the confidence interval for |b0| or |b1| by using their reported standard errors and multiplying by the corresponding :math:`t`-value. For example, if you want 99% confidence limits, then look up the 99% values for the :math:`t`-distribution using :math:`n-k` degrees of freedom, in this case it would be ``from scipy.stats import t; t.ppf(1-(1-0.99)/2, df=9)``, which is :math:`\pm 3.25`. So the 99% confidence limits for the slope coefficient would be :math:`[0.5 - 3.25 \times 0.1179; 0.5 + 3.25 \times 0.1179] = [0.117; 0.883]`. However, the table output gives you the 95% confidence interval. Under the column ``0.025`` and ``0.975`` (leaving 2.5% in the lower and upper tail respectively). For the slope coefficient, for example, this interval is [0.233; 0.767]. If you desire, for example, the 99% confidence interval, you can adjust the code: ``print(results.summary(alpha=1-0.99))``
 	- The :math:`R^2 = 0.6665` value.
 	- Be able to calculate the residuals: :math:`e_i = y_i - \hat{y}_i = y_i - b_0 - b_1 x_i`.
@@ -850,5 +878,5 @@ method:
 
 As emphasized earlier in this section, a high :math:`R^2` value is **not** a measure of
 prediction accuracy: it only tells you how strongly :math:`x` and :math:`y` are correlated. The
-prediction quality on **new** data is a more honest test, and that is what we turn to in the
+prediction quality on **new** data is a more demanding test, and that is what we turn to in the
 :ref:`next section <LS_test_set_predictions_with_sklearn>`.

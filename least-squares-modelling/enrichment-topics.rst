@@ -44,11 +44,11 @@ For bivariate cases, the nonparametric model is often called a :index:`scatterpl
 
 -	calculate a fitted :math:`y`-value, but use a weighted least squares procedure, with weights that peak at the center of the window and declines towards the edges,
 
--	record that average :math:`y`-value against the window's center (:math:`x`-value)
+-	record that fitted :math:`y`-value against the window's center (:math:`x`-value)
 
 -	slide the window along the :math:`x` axis and repeat
 
-The *model* is the collection of these :math:`x`- and :math:`y`-values. This is why it is called nonparameteric: there are no parameters to quantify the model. For example: if the relationship between the two variables is linear, then a linear smooth is achieved. It is hard to express the relationship between :math:`x` and :math:`y` in written form, so usually these models are shown visually. The nonparametric model is not immune to outliers, but it is resistant to them.
+The *model* is the collection of these :math:`x`- and :math:`y`-values. This is why it is called nonparametric: there are no parameters to quantify the model. For example: if the relationship between the two variables is linear, then a linear smooth is achieved. It is hard to express the relationship between :math:`x` and :math:`y` in written form, so usually these models are shown visually. The nonparametric model is not immune to outliers, but it is resistant to them.
 
 More details can be found in W.S. Cleveland, `Robust Locally Weighted Regression and Smoothing Scatterplots <https://www.jstor.org/stable/2286407>`_, *Journal of the American Statistical Association*, **74** (368), p. 829-836, 1979.
 
@@ -66,7 +66,7 @@ However, the ability to build a linear model that is not heavily influenced by o
 
 *	The human reviewer is not skilled to know which plots to inspect for influential and discrepant observations, or may not know how to interpret these plots.
 
-Some criticism of robust methods are that there are too many different robust methods and that these routines are much more computationally expensive than ordinary least squares. The first point is true, as this as a rapidly evolving field, however the latter objection is not of too much concern these days. Robust methods are now available in most decent software packages, and are stabilizing towards a few reliable robust estimators.
+One criticism of robust methods is that there are many different robust methods to choose from; another is that these routines are much more computationally expensive than ordinary least squares. The first point is true, as this is a rapidly evolving field, however the latter objection is not of too much concern these days. Robust methods are now available in most decent software packages, and are stabilizing towards a few reliable robust estimators.
 
 If you would like to read up some more, a nice introduction targeted at engineering readers is given in PJ Rousseeuw's "`Tutorial to Robust Statistics <https://literature.learnche.org/item/173/tutorial-to-robust-statistics>`_", *Journal of Chemometrics*, **5**, 1-20, 1991.
 
@@ -124,7 +124,7 @@ For example:
 	M-estimate   7.962583 0.018661525
 	LS-estimate 12.336592 0.002094802
 
-In this example the two models perform similarly in terms on their :math:`S_E`, :math:`b_0` and :math:`b_1` values, as well as confidence intervals for them.
+In this example the robust fit shifts the coefficients noticeably: the intercept moves from 196 to 179, and the slope from :math:`-0.331` to :math:`-0.298` (about 10%), while the residual standard error drops from 2.99 to 2.79. The "Test for Bias" at the bottom of the robust output compares the two fits, and its small p-values indicate the ordinary least squares estimates are influenced by the outlying observations, visible in the ``Max`` residual of over 14 units in both fits. Which model to use depends on the purpose: the robust fit describes the bulk of the data, while the ordinary fit is pulled towards the unusual observations.
 
 .. - Least angle least squares (regression)
 .. see the Efron paper mentioned above
@@ -151,7 +151,7 @@ We could naively assume that we just code our |y| variable as 0 or 1 (pass/fail)
 
 	-	The errors are not normally distributed.
 
-	-	The variance of the errors are not constant and the assumption of linearity breaks down.
+	-	The variance of the errors is not constant and the assumption of linearity breaks down.
 
 .. image:: ../figures/least-squares/logistic-regression-function.png
 	:scale: 40
@@ -159,9 +159,9 @@ We could naively assume that we just code our |y| variable as 0 or 1 (pass/fail)
 	:align: right
 	:alt: fake width
 
-A logistic model however accounts for the nature of the y-variable by creating a function, called a logistic function, which is bounded between 0 and 1. In fact you are already familiar with such a function: the cumulative probability of the normal distribution does exactly this.
+A logistic model however accounts for the nature of the y-variable: rather than predicting |y| directly, it models the *probability* of success as a function of the |x| variables, passed through a function, called a logistic function, which is bounded between 0 and 1. In fact you are already familiar with a function of this shape: the cumulative probability of the normal distribution looks similar.
 
-Once the :math:`y` data are appropriately transformed, then the model can be calculated. In R one uses the ``glm(y ~ x1 + x2, family=binomial)`` function to build a model where ``y`` must be a factor variable: type ``help(factor)`` to learn more. The model output is interpreted as any other.
+The 0/1 data themselves are not transformed; the model's coefficients are estimated by maximum likelihood rather than by minimizing a sum of squares. In R one uses the ``glm(y ~ x1 + x2, family=binomial)`` function to build such a model, where ``y`` is a factor variable (type ``help(factor)`` to learn more) or a 0/1 numeric vector. The model output is interpreted as any other.
 
 
 Testing of least-squares models
@@ -177,7 +177,7 @@ The gold standard is always to have a :index:`testing data <pair: testing data; 
 
 	*	Use observations 1 to 365 (data from 2006) to build the model, and then use observations 366 to 730 (data from 2007) to test the model.
 
-In both cases, the testing data has no influence on the model parameters. However the first case is not representative of how the model will be used in the future. The results from the first case are likely to give over-optimistic results, while the second case represents the intended use of the model more closely, and will have more honest results. Find out sooner, rather than later, that the model's long-term performance is not what you expect. It may be that you have to keep rebuilding the model every 3 months, updating the model with the most recent data, in order to maintain it's predictive performance.
+In both cases, the testing data has no influence on the model parameters. However the first case is not representative of how the model will be used in the future. The results from the first case are likely to give over-optimistic results, while the second case represents the intended use of the model more closely, and gives a more realistic estimate of future performance. Find out sooner, rather than later, that the model's long-term performance is not what you expect. It may be that you have to keep rebuilding the model every 3 months, updating the model with the most recent data, in order to maintain its predictive performance.
 
 How do we quantify this predictive performance?  A common way is to calculate the root mean square of the prediction error (:index:`RMSEP`), this is very similar to the :ref:`standard error <standard-error-section>` that we saw earlier for regression models. Assuming the errors are centered at zero and follow a normal distribution, the RMSEP can be interpreted as the standard deviation of the prediction residuals. It is important the RMSEP be calculated only from new, unseen testing data. By contrast, you might see the term RMSEE (root mean square error of estimation), which is the RMSEP, but calculated from the :index:`training data <pair: training data; least squares>` (model-building data). The :index:`RMSEE` :math:`\approx S_E` = standard error; the small difference being due to the denominator used (:math:`n` versus :math:`n-k`).
 
@@ -236,7 +236,7 @@ For completeness the confidence interval at the 95% level for :math:`\beta_1` is
 		  -0.0082 								&\leq& \beta_1   &\leq& -0.0036
 	\end{array}
 
-This confidence interval, together with the bootstrapped values of :math:`b_1` give us additional insight when when making our interpretation of :math:`b_1`.
+This confidence interval, together with the bootstrapped values of :math:`b_1` give us additional insight when making our interpretation of :math:`b_1`.
 
 By now you should also be wondering whether you can bootstrap the confidence interval bounds! That's left as exercise for interested readers. The above example was inspired from an example in `ASA Statistics Computing and Graphics <https://stat-computing.org/newsletter/>`_, **13** (1), 2002. The standard reference on the bootstrap is `Efron and Tibshirani (1993) <https://literature.learnche.org/item/93/an-introduction-to-the-bootstrap>`_, *An Introduction to the Bootstrap*, Chapman and Hall.
 

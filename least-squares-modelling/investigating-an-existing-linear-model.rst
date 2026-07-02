@@ -22,7 +22,7 @@ It is a common theme in any modelling work that the most informative plots are t
 Testing the model on unseen data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The residual statistics on the building data give one view of the model. A more honest assessment
+The residual statistics on the building data give one view of the model. A more demanding assessment
 is the residuals on data that the model has **never seen**. Continuing the distillation example
 from the :ref:`prior chapter <LS_residuals_and_R2_with_sklearn>`, where we held out the rows from
 index 150 onward as the testing partition, we can call ``.predict(...)`` again, but on the test
@@ -64,7 +64,7 @@ is the topic of the :ref:`section on multiple linear regression <LS_multiple_X_M
 The assumption of normally distributed errors
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We look for normally distributed errors because if they are non-normal, then the standard error, :math:`S_E` and the other variances that depend on :math:`S_E`, such as :math:`\mathcal{V}(b_1)`, could be inflated, and their interpretation could be in doubt. This might, for example, lead us to infer that a slope coefficient is not important when it actually is.
+We look for normally distributed errors because the confidence intervals derived earlier rely on the :math:`t`-distribution, which assumes the errors are normal. Non-normal errors, most often a few large residuals in the tails, inflate the standard error :math:`S_E` and the other variances that depend on :math:`S_E`, such as :math:`\mathcal{V}(b_1)`, and put their interpretation in doubt. This might, for example, lead us to infer that a slope coefficient is not important when it actually is.
 
 This is one of the easiest assumptions to verify: use a :index:`q-q plot <pair: q-q plot; residuals>` (see the :ref:`univariate review <univariate_check_for_normality_qqplot>`) to assess the distribution of the residuals. Do *not* plot the residuals in sequence or some other order to verify normality - it is extremely difficult to see that. A q-q plot highlights very clearly when tails from the residuals are too heavy. A histogram may also be used, but for real data sets, the choice of bin width can dramatically distort the interpretation - rather use a q-q plot. Some code for R:
 
@@ -104,7 +104,7 @@ The slope coefficient (*interpretation*: each extra mile on the odometer reduces
 
 Removing the Cadillac cars from our model indicates that there is more than just mileage that affect their resale value. In fact, the lack of normality, and structure in the residuals leads us to ask which other explanatory variables can be included in the model.
 
-In the next fictitious example the |y|-variable is non-linearly related to the |x|-variable. This non-linearity in the |y| shows up as non-normality in the residuals if only a linear model is used. The residuals become more linearly distributed when using a square root transformation of the |y| before building the linear model.
+In the next fictitious example the |y|-variable is non-linearly related to the |x|-variable. This non-linearity in the |y| shows up as non-normality in the residuals if only a linear model is used. The residuals become more normally distributed when using a square root transformation of the |y| before building the linear model.
 
 .. image:: ../figures/least-squares/non-normal-errors-transformation-required.png
 	:align: center
@@ -121,7 +121,7 @@ Non-constant error variance
 
 It is common in many situations that the variability in |y| increases or decreases as |y| is increased (e.g. certain properties are more consistently measured at low levels than at high levels). Similarly, variability in |y| increases or decreases as |x| is increased (e.g. as temperature, |x|, increases the variability of a particular |y| increases).
 
-Violating the assumption of :index:`non-constant error variance` increases the :index:`standard error`, :math:`S_E`, undermining the estimates of the confidence intervals, and other analyses that depend on the standard error. Fortunately, it is only problematic if the non-constant variance is extreme, so we can tolerate minor violations of this assumption.
+Violating the assumption of constant error variance (i.e. having :index:`non-constant error variance`) increases the :index:`standard error`, :math:`S_E`, undermining the estimates of the confidence intervals, and other analyses that depend on the standard error. Fortunately, it is only problematic if the non-constant variance is extreme, so we can tolerate minor violations of this assumption.
 
 To detect this problem you should plot:
 
@@ -137,7 +137,7 @@ This problem reveals itself by showing a fan shape across the plot; an example i
 	:width: 900px
 	:alt: fake width
 
-To counteract this problem one can use :index:`weighted least squares <pair: weighted least squares; WLS>`, with smaller weights on the high-variance observations, i.e. apply a weight inversely proportional to the variance. Weighted least squares minimizes: :math:`f(\mathrm{b}) = \sum_i^n{(w_ie_i)^2}`, with different weights, :math:`w_i` for each error term. More on this topic can be found in the book by Draper and Smith (p 224 to 229, 3rd edition).
+To counteract this problem one can use :index:`weighted least squares <pair: weighted least squares; WLS>`, with smaller weights on the high-variance observations. Weighted least squares minimizes :math:`f(\mathrm{b}) = \sum_i^n{w_ie_i^2}`, with a different weight :math:`w_i` for each error term; choosing each weight inversely proportional to the error variance of that observation, :math:`w_i \propto 1/\sigma_i^2`, gives every observation the same influence on the fit. More on this topic can be found in the book by Draper and Smith (p 224 to 229, 3rd edition).
 
 .. _LS-autocorrelation-test:
 
@@ -150,7 +150,7 @@ Lack of independence in the data
 
 .. youtube:: https://www.youtube.com/watch?v=7fd8Qu1i3Dk&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=26
 
-The assumption of :index:`independence <single: independence in least squares>` in the data requires that values in the |y| variable are independent. Given that we have assumed the |x| variable to be fixed, this implies that the errors, :math:`e_i` are independent. The reason for independence is required for the central limit theorem, which was used to derive the various standard errors.
+The assumption of :index:`independence <single: independence in least squares>` in the data requires that values in the |y| variable are independent. Given that we have assumed the |x| variable to be fixed, this implies that the errors, :math:`e_i` are independent. Independence was required in the derivation of the standard errors: it is what allowed the variance of a sum to be written as the sum of the variances, with no covariance terms.
 
 Data are not independent when they are correlated with each other. This is common on slow moving processes: for example, measurements taken from a large reactor are unlikely to change much from one minute to the next.
 
@@ -285,7 +285,7 @@ We saw earlier a case where a square-root transformation of the |y| variable mad
 
 In other instances we may know from first-principles theory, or some other means, what the expected non-linear relationship is between an |x| and |y| variable.
 
-	*	In a distillation column the temperature, :math:`T` is inversely proportional to the logarithm of the vapour pressure, :math:`P`. So fit a linear model, :math:`y = b_0 + b_1x` where :math:`x \leftarrow 1/T` and where :math:`y \leftarrow P`. The slope coefficient will have a different interpretation and a different set of units as compared to the case when predicting vapour pressure directly from temperature.
+	*	In a distillation column the logarithm of the vapour pressure, :math:`P`, is linearly related to the reciprocal of temperature, :math:`1/T` (the Clausius-Clapeyron relationship). So fit a linear model, :math:`y = b_0 + b_1x` where :math:`x \leftarrow 1/T` and where :math:`y \leftarrow \log(P)`. The slope coefficient will have a different interpretation and a different set of units as compared to the case when predicting vapour pressure directly from temperature.
 
 	*	If :math:`y = p \times q^x`, then we can take logs and estimate this equivalent linear model: :math:`\log(y) = \log(p) + x \log(q)`, which is of the form :math:`y = b_0 + b_1 x`. So the slope coefficient will be an estimate of :math:`\log(q)`.
 

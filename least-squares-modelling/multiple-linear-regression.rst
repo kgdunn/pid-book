@@ -90,16 +90,16 @@ As with the simple least squares model, :math:`y = b_0 + b_1 x`, we aim to minim
 		\begin{array}{rl}
 		    f(\mathbf{b}) &= \mathbf{e}^T\mathbf{e} \\
 		                  &= \left(\mathbf{y} - \mathbf{X} \mathbf{b} \right)^T \left( \mathbf{y} - \mathbf{X} \mathbf{b} \right) \\
-		                  &= \mathbf{y}^T\mathbf{y} - 2 \mathbf{y}^T\mathbf{X}\mathbf{b} + \mathbf{b}\mathbf{X}^T\mathbf{X}\mathbf{b}
+		                  &= \mathbf{y}^T\mathbf{y} - 2 \mathbf{y}^T\mathbf{X}\mathbf{b} + \mathbf{b}^T\mathbf{X}^T\mathbf{X}\mathbf{b}
 		\end{array}
 
 Taking partial derivatives with respect to the entries in :math:`\mathbf{b}` and setting the result equal to a vector of zeros, you can prove to yourself that :math:`\mathbf{b} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1}\mathbf{X}^T\mathbf{y}`. You might find the `Matrix Cookbook <https://www.google.ca/search?q=The+Matrix+Cookbook/>`_ useful in solving these equations and optimization problems.
 
 Three important relationships are now noted:
 
-#. :math:`\mathcal{E}\{\mathbf{b}\} = \mathbf{\beta}`
-#. :math:`\mathcal{V}\{\mathbf{b}\} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1} S_E^2`
-#. An estimate of the standard error is given by: :math:`\sigma_e \approx S_E = \sqrt{\dfrac{\mathbf{e}^T\mathbf{e}}{n-k}}`, where :math:`k` is the number of parameters estimated in the model and :math:`n` is the number of observations.
+#. :math:`\mathcal{E}\{\mathbf{b}\} = \mathbf{\beta}`, provided the postulated linear model form is correct
+#. :math:`\mathcal{V}\{\mathbf{b}\} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1} \sigma_\epsilon^2`, which we estimate as :math:`\left( \mathbf{X}^T\mathbf{X} \right)^{-1} S_E^2`
+#. An estimate of the standard error is given by: :math:`\sigma_\epsilon \approx S_E = \sqrt{\dfrac{\mathbf{e}^T\mathbf{e}}{n-k}}`, where :math:`k` is the number of parameters estimated in the model and :math:`n` is the number of observations.
 
 These relationships imply that our estimates of the model parameters are unbiased (the first line), and that the variability of our parameters is related to the :math:`\mathbf{X}^T\mathbf{X}` matrix and the model's standard error, :math:`S_E`.
 
@@ -135,7 +135,7 @@ The :math:`\mathbf{X}^T\mathbf{X}` and :math:`\mathbf{X}^T\mathbf{y}` matrices c
 		\mathbf{X}^T\mathbf{y} = \begin{bmatrix} 36.5 \\ -36.0 \end{bmatrix}
 	\end{array}
 
-Notice what these matrices imply (remembering that the vectors in the matrices have been centered). The :math:`\mathbf{X}^T\mathbf{X}` matrix is a scaled version of the covariance matrix of :math:`\mathbf{X}`. The diagonal terms show how strongly the variable is correlated with itself, which is the variance, and always a positive number. The off-diagonal terms are symmetrical, and represent the strength of the relationship between, in this case, :math:`x_1` and :math:`x_2`. The off-diagonal terms for two uncorrelated variables would be a number close to, or equal to zero.
+Notice what these matrices imply (remembering that the vectors in the matrices have been centered). The :math:`\mathbf{X}^T\mathbf{X}` matrix is a scaled version of the covariance matrix of :math:`\mathbf{X}`. Each diagonal term is the sum of squares of a centered variable, proportional to that variable's variance, and always a positive number. The off-diagonal terms are symmetrical, and represent the strength of the relationship between, in this case, :math:`x_1` and :math:`x_2`. The off-diagonal terms for two uncorrelated variables would be a number close to, or equal to zero.
 
 The inverse of the :math:`\mathbf{X}^T\mathbf{X}` matrix is particularly important - it is related to the standard error for the model parameters - as in: :math:`\mathcal{V}\{\mathbf{b}\} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1} S_E^2`.
 
@@ -154,7 +154,7 @@ For the two variable case, :math:`y = b_1x_1 + b_2x_2`, the general relationship
 	\mathcal{V}\left(b_1\right) &= \dfrac{1}{1-r^2_{12}} \times \dfrac{S_E^2}{\sum{x_1^2}} \\
 	\mathcal{V}\left(b_2\right) &= \dfrac{1}{1-r^2_{12}} \times \dfrac{S_E^2}{\sum{x_2^2}}
 
-where :math:`r^2_{12}` represents the correlation between variable :math:`x_1` and :math:`x_2`. What happens as the correlation between the two variables increases?
+where :math:`r_{12}` is the correlation between variable :math:`x_1` and :math:`x_2`, so :math:`r^2_{12}` is its square. What happens as the correlation between the two variables increases?
 
 .. We won't go into details here, but these lead to oval-shaped confidence intervals. Show picture and illustrate the marginal vs elliptical CI; see BHH,v2, page 370
 

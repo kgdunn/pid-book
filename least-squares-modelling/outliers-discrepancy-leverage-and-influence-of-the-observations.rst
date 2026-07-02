@@ -52,7 +52,7 @@ The average hat value can be calculated theoretically. While it is common to plo
 Discrepancy
 ~~~~~~~~~~~~~~
 
-Discrepancy can be measured by the residual distance. However the residual is not a complete measure of :index:`discrepancy <pair: discrepancy; least squares>`. We can imagine cases where the point has such high leverage that it drags the entire model towards it, leaving it only with a small residual. One way then to isolate these points is to divide the residual by :math:`1-\text{leverage} = 1 - h_i`. So we introduce a new way to quantify the residuals here, called *studentized residuals*:
+Discrepancy can be measured by the residual distance. However the residual is not a complete measure of :index:`discrepancy <pair: discrepancy; least squares>`. We can imagine cases where the point has such high leverage that it drags the entire model towards it, leaving it only with a small residual. One way then to isolate these points is to rescale each residual by a factor involving its leverage, :math:`\sqrt{1 - h_i}`, which is small for high-leverage points and so inflates their rescaled residual. So we introduce a new way to quantify the residuals here, called *studentized residuals*:
 
 	.. math::
 
@@ -85,9 +85,9 @@ One measure is called *Cook's statistic*, usually called :math:`D_i`, and often 
 
 	.. math::
 
-		D_i = \dfrac{e_i^2}{k \times \frac{1}{n}\sum{e_i^2}} \times \dfrac{h_i}{1-h_i}
+		D_i = \dfrac{e_i^2}{k \times S_E^2} \times \dfrac{h_i}{\left(1-h_i\right)^2}
 
-where :math:`\frac{1}{n}\sum{e_i^2}` is called the mean square error of the model (the average square error). It is easy to see here now why influence is the product of discrepancy and leverage.
+where :math:`S_E^2 = \dfrac{\sum{e_i^2}}{n-k}` is the mean square error of the model, and :math:`k` is the number of parameters estimated (2 for a straight line). The first factor grows with the size of the residual (the discrepancy), and the second factor grows with the leverage, so it is easy to see here now why influence is the product of discrepancy and leverage. This is the formula implemented by R's ``cooks.distance(model)`` and by ``statsmodels`` in Python.
 
 The values of :math:`D_i` are conveniently calculated in R using the ``cooks.distance(model)`` function. The results for the 3 models are shown. Interestingly for model C there is a point with even higher influence than the square point. Can you locate that point in the least squares plot?
 

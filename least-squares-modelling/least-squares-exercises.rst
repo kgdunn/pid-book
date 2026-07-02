@@ -1,3 +1,5 @@
+.. _LS-exercises:
+
 Exercises
 =========
 

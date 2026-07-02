@@ -49,7 +49,7 @@ We develop **the least squares method** to estimate these parameters; these esti
 	:scale: 65
 	:alt: fake width
 
-Presuming we have calculated estimates |b0| and |b1| we can use the model with a new x-observation, :math:`x_i`, and predict its corresponding :math:`\hat{y}_i`. The error value, :math:`e_i`, is generally non-zero indicating out prediction estimate of :math:`\hat{y}_i` is not exact. All this new nomenclature is illustrated in the figure.
+Presuming we have calculated estimates |b0| and |b1| we can use the model with a new x-observation, :math:`x_i`, and predict its corresponding :math:`\hat{y}_i`. The error value, :math:`e_i`, is generally non-zero, indicating our prediction estimate of :math:`\hat{y}_i` is not exact. All this new nomenclature is illustrated in the figure.
 
 Minimizing errors as an objective
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -63,10 +63,10 @@ Here are some valid approaches, usually called objective functions for making th
  	#.	:math:`\sum_{i=1}^{n}{(e_i)^2}`, which leads to the least squares model
 	#.	:math:`\sum_{i=1}^{n}{(e_i)^4}`
 	#.	sum of perpendicular distances to the line :math:`y = b_0 + b_1 x`
-	#.	:math:`\sum_{i=1}^{n}{\|e_i\|}` is known as the least absolute deviations model, or the :math:`l`-1 norm problem
-	#.	*least median of squared error* model, which a robust form of least squares that is far less sensitive to outliers.
+	#.	:math:`\sum_{i=1}^{n}{|e_i|}`, known as the least absolute deviations model, or the :math:`l`-1 norm problem
+	#.	*least median of squared error* model, which is a robust form of least squares that is far less sensitive to outliers.
 
-The traditional least squares model, the first objective function listed, has the lowest possible variance for |b0| and |b1| when certain additional :ref:`assumptions are met <LS-assumptions>`. The low variance of these parameter estimates is very desirable, for both model interpretation and using the model. The other objective functions are good alternatives and may useful in many situations, particular the last alternative.
+The traditional least squares model, the first objective function listed, has the lowest variance for |b0| and |b1| among all estimators that are linear in the :math:`y`-values and unbiased, provided certain additional :ref:`assumptions are met <LS-assumptions>` (this result is known as the Gauss-Markov theorem). The low variance of these parameter estimates is very desirable, for both model interpretation and using the model. The other objective functions are good alternatives and may be useful in many situations, particularly the last alternative.
 
 Other reasons for so much focus on the least squares alternative is because it is computationally tractable by hand and very fast on computers, and it is easy to prove various mathematical properties. The other forms take much longer to calculate, almost always have to be done on a computer, may have multiple solutions, the solutions can change dramatically given small deviations in the data (unstable, high variance solutions), and the mathematical proofs are difficult. Also the interpretation of the least squares objective function is suitable in many situations: it penalizes deviations quadratically; i.e. large deviations much more than the smaller deviations.
 
@@ -95,7 +95,7 @@ Returning to our example of the gas cylinder. In this case we know that :math:`\
 
 We find our best estimate for :math:`b_1` roughly at 5.88, the minimum of our grid search, which is very close to the theoretically expected value of 5.86 kPa/K.
 
-For the case where we have both |b0| and |b1|  varying we can construct a grid and tabulate the objective function values at all points on the grid. The least squares objective function will always be shaped like a bowl for these cases, and a unique minimum  always be found, because the objective function is :index:`convex <pair: convex optimization; least squares>`.
+For the case where we have both |b0| and |b1|  varying we can construct a grid and tabulate the objective function values at all points on the grid. The least squares objective function is shaped like a bowl for these cases, and a unique minimum will be found as long as there is variation in the :math:`x`-data, because the objective function is :index:`convex <pair: convex optimization; least squares>`.
 
 .. image:: ../figures/least-squares/least-squares-objective-function-annotated.png
 	:width: 750px
@@ -291,7 +291,7 @@ To calculate the least squares model:
 
 *	:math:`b_0 = 3.0`
 *	:math:`b_1 = 0.5`
-*	When :math:`x_i = 5`, then :math:`\hat{y}_i = 3.0 + 0.5 \times 5.5 = 5.75`
+*	When :math:`x_i = 5.5`, then :math:`\hat{y}_i = 3.0 + 0.5 \times 5.5 = 5.75`
 
 
 .. _LS_single_x_sklearn_distillation:
