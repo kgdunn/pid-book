@@ -60,11 +60,12 @@ themselves identically. The consequences are:
         factor; and
 
     *   under effect sparsity (the common assumption that only a few of the many factors actually
-        drive the response), a sufficiently large design has a further useful property. Jones and
-        Nachtsheim show it for six factors or more, where the :math:`2k+1` runs comfortably exceed
-        the ten that a three-factor full quadratic needs: restricted to any three of the factors,
-        the runs already form a design able to fit the full quadratic model in just those three
-        factors. So if only a handful of factors turn out to matter, the same single set of runs
+        drive the response), a sufficiently large design has a further useful property. A three-factor
+        full quadratic has ten parameters, so the design needs at least ten runs, a count the
+        :math:`2k+1` runs already meet from :math:`k = 5`. Meeting the run count is necessary but not
+        sufficient: Jones and Nachtsheim (2011) prove the stronger result that from six factors
+        upward, restricted to *any* three of the factors, the runs form a design able to fit the full
+        quadratic model in just those three factors. So if only a handful of factors turn out to matter, the same single set of runs
         supports a complete response-surface model in them. (A small DSD cannot do this: the
         nine-run, four-factor design used as the running example in
         :ref:`Judging and comparing designs <DOE-judging-and-comparing-designs>` has fewer runs

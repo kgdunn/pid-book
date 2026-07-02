@@ -32,8 +32,8 @@ your mind:
 
 Both questions are answered by a single object built from the design: the information
 matrix :math:`\mathbf{M} = \mathbf{X}^T\mathbf{X}`, together with the optimality criteria
-that summarise it. Both are introduced in the previous section,
-:ref:`Optimal designs and OMARS designs <DOE-optimal-and-omars-designs>`, so here we take
+that summarise it. Both were introduced in the earlier section on
+:ref:`optimal designs <DOE-optimal-and-omars-designs>`, so here we take
 them as given. This subchapter shows how prediction variance is derived from
 :math:`\mathbf{M}`, how to read a fraction-of-design-space plot, and how the separability, bias,
 and power measures play out on one running comparison of two designs. The
@@ -84,7 +84,9 @@ climbs steeply (already :math:`5.2\,\sigma^2` at :math:`x = 1.5`): a quantitativ
 against extrapolation.
 
 This and every figure in this subchapter is reproducible with `process_improve
-<https://github.com/kgdunn/process-improve>`_ (``pip install 'process-improve[expt]'``).
+<https://github.com/kgdunn/process-improve>`_ (``pip install 'process-improve[all]'``, which
+includes the ``expt`` and ``ilp`` extras needed for the Box-Behnken, central composite, and
+OMARS designs used below).
 Each block imports what it needs and reuses variables defined in the blocks before it, so paste
 them in order. The prediction variance of the three-run quadratic design is a closed form:
 
