@@ -77,9 +77,9 @@ Exercises
 
 	Calculating this term manually, or using the ``predict(model, newdata=..., int="p")`` function in R gives the 95% prediction interval:
 
-		*	:math:`x_\text{new} = 430` °F: :math:`\hat{y}_\text{new} = 53.49 \pm 11.97`, or [47.50, 59.47]
-		*   :math:`x_\text{new} = 480` °F: :math:`\hat{y}_\text{new} = 36.92 \pm 11.80`, or [31.02, 42.82]
-		*	:math:`x_\text{new} = 520` °F: :math:`\hat{y}_\text{new} = 23.67 \pm 11.90`, or [17.72, 29.62]
+		*	:math:`x_\text{new} = 430` °F: :math:`\hat{y}_\text{new} = 53.49 \pm 5.99`, or [47.50, 59.47]
+		*   :math:`x_\text{new} = 480` °F: :math:`\hat{y}_\text{new} = 36.92 \pm 5.90`, or [31.02, 42.82]
+		*	:math:`x_\text{new} = 520` °F: :math:`\hat{y}_\text{new} = 23.67 \pm 5.95`, or [17.72, 29.62]
 
 	.. image:: ../figures/least-squares/distillation-prediction-interval.png
 		:align: center
@@ -140,7 +140,7 @@ Exercises
 			:scale: 35
 			:alt: fake width
 
-	-	The predicted vapour pressure at 480 °F is 36.68 kPa :math:`\pm 11.37`, or within the range [31.0 to 42.4] with 95% confidence, very similar to the prediction interval from question 2.
+	-	The predicted vapour pressure at 480 °F is 36.68 kPa :math:`\pm 5.68`, or within the range [31.0 to 42.4] with 95% confidence, very similar to the prediction interval from question 2.
 
 
 	.. literalinclude:: ../figures/least-squares/distillation-column-questions.R
