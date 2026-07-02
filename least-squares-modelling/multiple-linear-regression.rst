@@ -99,7 +99,7 @@ Three important relationships are now noted:
 
 #. :math:`\mathcal{E}\{\mathbf{b}\} = \mathbf{\beta}`, provided the postulated linear model form is correct
 #. :math:`\mathcal{V}\{\mathbf{b}\} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1} \sigma_\epsilon^2`, which we estimate as :math:`\left( \mathbf{X}^T\mathbf{X} \right)^{-1} S_E^2`
-#. An estimate of the standard error is given by: :math:`\sigma_\epsilon \approx S_E = \sqrt{\dfrac{\mathbf{e}^T\mathbf{e}}{n-k}}`, where :math:`k` is the number of parameters estimated in the model and :math:`n` is the number of observations.
+#. An estimate of the standard error is given by: :math:`\sigma_\epsilon \approx S_E = \sqrt{\dfrac{\mathbf{e}^T\mathbf{e}}{n-k}}`, where :math:`k` is the number of parameters estimated in the model and :math:`n` is the number of observations. When the data have been centered, as in this section, count the intercept in :math:`k` as well: the mean used for the centering was also estimated from the data, so :math:`k` is the number of slope coefficients plus one.
 
 These relationships imply that our estimates of the model parameters are unbiased (the first line), and that the variability of our parameters is related to the :math:`\mathbf{X}^T\mathbf{X}` matrix and the model's standard error, :math:`S_E`.
 
@@ -137,7 +137,7 @@ The :math:`\mathbf{X}^T\mathbf{X}` and :math:`\mathbf{X}^T\mathbf{y}` matrices c
 
 Notice what these matrices imply (remembering that the vectors in the matrices have been centered). The :math:`\mathbf{X}^T\mathbf{X}` matrix is a scaled version of the covariance matrix of :math:`\mathbf{X}`. Each diagonal term is the sum of squares of a centered variable, proportional to that variable's variance, and always a positive number. The off-diagonal terms are symmetrical, and represent the strength of the relationship between, in this case, :math:`x_1` and :math:`x_2`. The off-diagonal terms for two uncorrelated variables would be a number close to, or equal to zero.
 
-The inverse of the :math:`\mathbf{X}^T\mathbf{X}` matrix is particularly important - it is related to the standard error for the model parameters - as in: :math:`\mathcal{V}\{\mathbf{b}\} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1} S_E^2`.
+The inverse of the :math:`\mathbf{X}^T\mathbf{X}` matrix is particularly important - it is related to the standard error for the model parameters - as in the estimate :math:`\left( \mathbf{X}^T\mathbf{X} \right)^{-1} S_E^2` of :math:`\mathcal{V}\{\mathbf{b}\}`.
 
 .. math::
 
