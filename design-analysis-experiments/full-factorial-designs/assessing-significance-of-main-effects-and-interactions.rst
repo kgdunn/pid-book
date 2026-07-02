@@ -137,10 +137,7 @@ The :index:`half-normal plot <pair: half-normal plot; experiments>` shows the sa
 	                  yaxis_title_text="|effect|", showlegend=False)
 	fig.show()
 
-.. figure:: ../../figures/doe/half-normal-full-fraction.png
-	:align: center
-	:scale: 45
-	:alt: Half-normal plot of the fifteen effects, with A, C, D, AC and AD breaking away from the straight noise line
+Running the block draws the half-normal plot: the ten noise effects sit on a line through the origin, and **A**, **C**, **D**, **AC** and **AD** stand clear of it.
 
 The same result is available directly from ``process_improve``. Note that ``analyze_experiment`` reports effects on the high-to-low scale (twice the model coefficient, the Box, Hunter and Hunter convention), so its ``PSE``, ``ME`` and ``SME`` come out at twice the values above; the significance decision is identical, because both the effects and the cutoff double.
 
