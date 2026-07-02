@@ -1289,8 +1289,8 @@ Exercises
 			\begin{array}{rcccl}
 				-c_t &\leq& z	&\leq & +c_t \\
 				(\overline{x}_B - \overline{x}_A) - c_t \sqrt{s_P^2 \left(\frac{1}{n_B} + \frac{1}{n_A}\right)}	&\leq& \mu_B - \mu_A	&\leq &  (\overline{x}_B - \overline{x}_A) + c_t \sqrt{s_P^2 \left(\frac{1}{n_B} + \frac{1}{n_A}\right)}\\
-				1.02 - 2.3 \sqrt{0.709 \left(\frac{1}{5} + \frac{1}{5}\right)} 	&\leq& \mu_B - \mu_A	&\leq& 1.02 + 2.3 \sqrt{0.709 \left(\frac{1}{5} + \frac{1}{5}\right)} \\
-				-0.21	&\leq& \mu_B - \mu_A	&\leq&   2.2
+				1.02 - 2.306 \sqrt{0.706 \left(\frac{1}{5} + \frac{1}{5}\right)} 	&\leq& \mu_B - \mu_A	&\leq& 1.02 + 2.306 \sqrt{0.706 \left(\frac{1}{5} + \frac{1}{5}\right)} \\
+				-0.205	&\leq& \mu_B - \mu_A	&\leq&   2.245
 			\end{array}
 
 	Fit a least squares model to the data using an integer variable, :math:`x_A = 0` for additive A, and :math:`x_A = 1` for additive B. The model should include an intercept term also: :math:`y = b_0 + b_A x_A`. *Hint*: use R to build the model, and search the R tutorial with the term *categorical variable* or *integer variable* for assistance.
