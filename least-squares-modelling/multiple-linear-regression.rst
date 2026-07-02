@@ -30,9 +30,7 @@ First some motivating examples:
 
 ..	- Ian Nichols example
 ..	- Case study/Example: https://www.amstat.org/publications/jse/v16n3/datasets.kuiper.html
-..	- Show that R2 increases when adding a new variable to the equation (also see p105 of Fox)
-	- Consider summarizing p223-225 of Fox here regarding t- and F-tests
-	- Add Q5.11 from assignment 3 here to show how adding terms increases R2
+..	- Consider summarizing p223-225 of Fox here regarding t- and F-tests
 
 Multiple linear regression: notation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

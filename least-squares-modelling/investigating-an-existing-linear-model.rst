@@ -261,10 +261,56 @@ Another test for autocorrelation is the :index:`Durbin-Watson test <pair: Durbin
 	     col="darkgreen", cex=1.5, adj = c(0, NA))
 
 
-.. Box and Newbold describe a case where the lack of independence lead to serious mis-interpretation:  J Royal Statist. Soc. Series A, v134, p229-240, 1971
-.. Also see: /Users/kevindunn/Statistics course/Course notes/Correlation, covariance and least squares/images/autocorrelated-data-problem.R
-..            where I try to reproduce this problem.
+Two autocorrelated series can appear strongly related
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+The consequences of ignoring the independence assumption can be severe. A well-known case is the
+paper by Coen, Gomme and Kendall (*Lagged relationships in economic forecasting*, Journal of the
+Royal Statistical Society A, **132**, 133-163, 1969), which reported least squares models that
+appeared to forecast the Financial Times share index from lagged economic series such as car
+production. Box and Newbold (*Some comments on a paper of Coen, Gomme and Kendall*, same journal,
+**134**, 229-240, 1971) showed that the apparently significant relationships were an artifact of
+the assumed error structure: each series was strongly autocorrelated, and once that autocorrelation
+was modelled, the evidence for a relationship disappeared.
+
+The effect is straightforward to reproduce. Consider two *independent* random walks: each value is
+the previous value plus fresh random noise, so each series is strongly autocorrelated, like many
+slow-moving process measurements. Regressing one on the other produces what looks like a strong
+model:
+
+.. code-block:: python
+
+	import numpy as np
+	import statsmodels.api as sm
+
+	rng = np.random.default_rng(7)
+	n_steps = 100
+	u = np.cumsum(rng.normal(size=n_steps))
+	w = np.cumsum(rng.normal(size=n_steps))
+
+	# Regressing one walk on the other: R2 = 0.585 and
+	# a slope p-value around 1e-20, yet the two series
+	# are independent by construction. The Durbin-Watson
+	# statistic of 0.10 (far below 2) warns that the
+	# residuals are strongly autocorrelated.
+	walks = sm.OLS(w, sm.add_constant(u)).fit()
+	print(walks.rsquared, walks.pvalues[1])
+	print(sm.stats.durbin_watson(walks.resid))
+
+	# The differenced series recover the fresh noise
+	# added at each step, so the independence assumption
+	# holds for them. The apparent relationship is gone:
+	# R2 = 0.0003 and a slope p-value of 0.87, with a
+	# Durbin-Watson statistic near 2.
+	diffs = sm.OLS(np.diff(w),
+	               sm.add_constant(np.diff(u))).fit()
+	print(diffs.rsquared, diffs.pvalues[1])
+	print(sm.stats.durbin_watson(diffs.resid))
+
+The p-value from the first regression is not interpretable: its derivation assumed independent
+errors, and the Durbin-Watson statistic shows that assumption fails here. Differencing the series
+is one way to restore independence for a random-walk-like signal; the subsampling approach
+:ref:`described in this section <LS-autocorrelation-test>` is another.
 
 .. _LS-model-linearity:
 
