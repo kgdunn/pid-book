@@ -323,7 +323,7 @@ interactions across the columns:
 .. figure:: ../figures/doe/alias-matrix-heatmaps-four-designs.png
     :align: center
     :width: 750px
-    :alt: heatmaps-four-designs.py
+    :alt: Absolute alias-matrix heatmaps for the four candidate designs
 
     Absolute alias matrix :math:`|\mathbf{A}|` for the four designs (rows: the eleven fitted terms;
     columns: the ten omitted two-factor interactions). The Box-Behnken and composite designs hold
@@ -369,7 +369,7 @@ values:
 .. figure:: ../figures/doe/correlation-colormap-four-designs.png
     :align: center
     :width: 750px
-    :alt: heatmaps-four-designs.py
+    :alt: Absolute correlation colour maps among model-effect columns for the four designs
 
     Absolute correlation among the twenty model-effect columns, in three blocks (the main effects,
     the quadratics, and the two-factor interactions the model omits), separated by lines. The
