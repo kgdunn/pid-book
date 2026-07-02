@@ -15,7 +15,7 @@ Background
 	:width: 900px
 	:scale: 70
 	:align: center
-	:alt: fake width
+	:alt: Three least squares models showing a discrepant point, an influential point, and a high-leverage point
 
 A discrepancy is a data point that is unusual *in the context of the least squares model*, as shown in the first figure here. On its own, from the perspective of either |x| or |y| alone, the square point is not unusual. But it is unusual in the context of the least squares model. When that square point is removed, the updated least squares line (dashed line) is obtained. This square point clearly has little influence on the model, even though it is discrepant.
 
@@ -47,7 +47,7 @@ The average hat value can be calculated theoretically. While it is common to plo
 		:width: 900px
 		:scale: 70
 		:align: center
-		:alt: fake width
+		:alt: Hat values for the outlier example models, with the last point showing high leverage
 
 Discrepancy
 ~~~~~~~~~~~~~~
@@ -66,7 +66,7 @@ Where :math:`e_i` is the residual for the :math:`i^\text{th}` point, as usual, b
 		:width: 900px
 		:scale: 65
 		:align: center
-		:alt: fake width
+		:alt: Studentized residuals for the three outlier example models
 
 This figure illustrates how the square point in model A and B is highly discrepant, while in model C it does not have a high discrepancy.
 
@@ -95,6 +95,63 @@ The values of :math:`D_i` are conveniently calculated in R using the ``cooks.dis
 		:width: 900px
 		:scale: 65
 		:align: center
-		:alt: fake width
+		:alt: Cook's distance values for the three outlier example models
+
+.. _LS-outlier-diagnostics-python:
+
+Computing these diagnostics in Python
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The leverage and influence values are computed by standard libraries; you do not need to program
+the formulas yourself. The example below uses the ``OLS`` class from the `process_improve
+<https://github.com/kgdunn/process_improve>`_ package (the Python library accompanying this book)
+on the :ref:`11-point example <LS-class-example>` used throughout this chapter. The fitted model
+object provides the hat values in ``model.leverage_`` and the Cook's D values in
+``model.influence_``; printing the model shows a summary in the same layout as R's
+``summary(lm(...))``.
+
+.. code-block:: python
+
+	import numpy as np
+	import plotly.graph_objects as go
+	from plotly.subplots import make_subplots
+	from process_improve.regression.methods import OLS
+
+	x = np.array([10, 8, 13, 9, 11, 14,
+	              6, 4, 12, 7, 5], dtype=float)
+	y = np.array([8.04, 6.95, 7.58, 8.81, 8.33, 9.96,
+	              7.24, 4.26, 10.84, 4.82, 5.68])
+
+	model = OLS().fit(x.reshape(-1, 1), y)
+	print(model)  # summary in the style of R's lm()
+
+	n = len(x)
+	k = 2  # parameters in the model: intercept and slope
+	leverage = np.asarray(model.leverage_)
+	cooks_d = np.asarray(model.influence_)
+
+	fig = make_subplots(
+	    rows=1, cols=2,
+	    subplot_titles=("Leverage (hat values)", "Cook's D"),
+	)
+	fig.add_bar(x=np.arange(1, n + 1), y=leverage,
+	            row=1, col=1, showlegend=False)
+	fig.add_hline(y=2 * k / n, line_dash="dash", row=1, col=1)
+	fig.add_hline(y=3 * k / n, line_dash="dot", row=1, col=1)
+	fig.add_bar(x=np.arange(1, n + 1), y=cooks_d,
+	            row=1, col=2, showlegend=False)
+	fig.add_hline(y=4 / (n - k), line_dash="dash", row=1, col=2)
+	fig.update_xaxes(title_text="Observation number")
+	fig.show()
+
+For these 11 observations the average hat value is :math:`\overline{h} = k/n = 2/11 = 0.18`. The
+observation at :math:`x = 14` has the largest leverage, :math:`h_i = 0.32`, since it lies furthest
+from :math:`\overline{\mathrm{x}} = 9`; but its Cook's D is near zero, because it is not
+discrepant, so it has little influence on the model. The observation at :math:`x = 13`
+(:math:`y = 7.58`) has the largest Cook's D, at 0.49: it combines moderate leverage
+(:math:`h_i = 0.24`) with the largest studentized residual. The dashed line at :math:`4/(n-k)` on
+the Cook's D panel is a rule of thumb for which observations to investigate further; as with the
+hat-value cut-offs at 2 and 3 times :math:`\overline{h}`, judge the values in the plot rather than
+applying the rule mechanically.
 
 .. TODO THRESHOLD FOR COOK'S D. BUBBLE PLOT.

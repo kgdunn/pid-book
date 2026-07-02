@@ -89,7 +89,7 @@ The simple example shown here builds a model that predicts the price of a used v
 	:align: left
 	:width: 900px
 	:scale: 70
-	:alt: fake width
+	:alt: Used vehicle price data and a residual q-q plot showing a group of outliers
 
 The group of outliers were due to 10 observations of a certain class of vehicle (Cadillac convertibles) that distorted the model. We removed these observations, which now limits our model to be useful only for other vehicle types, but we gain a smaller standard error and a tighter confidence interval. These residuals are still very non-normal though.
 
@@ -110,7 +110,7 @@ In the next fictitious example the |y|-variable is non-linearly related to the |
 	:align: center
 	:width: 900px
 	:scale: 70
-	:alt: fake width
+	:alt: Residual q-q plots before and after a square root transformation of y
 
 More discussion about transformations of the data is given in the section on :ref:`model linearity <LS-model-linearity>`.
 
@@ -135,7 +135,7 @@ This problem reveals itself by showing a fan shape across the plot; an example i
 	:scale: 70
 	:align: center
 	:width: 900px
-	:alt: fake width
+	:alt: Fan-shaped residuals indicating non-constant error variance
 
 To counteract this problem one can use :index:`weighted least squares <pair: weighted least squares; WLS>`, with smaller weights on the high-variance observations. Weighted least squares minimizes :math:`f(\mathrm{b}) = \sum_i^n{w_ie_i^2}`, with a different weight :math:`w_i` for each error term; choosing each weight inversely proportional to the error variance of that observation, :math:`w_i \propto 1/\sigma_i^2`, gives every observation the same influence on the fit. More on this topic can be found in the book by Draper and Smith (p 224 to 229, 3rd edition).
 
@@ -162,7 +162,7 @@ If you suspect that there may be lack of independence, use plots of the residual
 	:width: 900px
 	:align: center
 	:scale: 70
-	:alt: fake width
+	:alt: Residuals plotted in time order showing unmodelled dynamics
 
 One way around the autocorrelation is to subsample - use only every :math:`k^\text{th}` sample, where :math:`k` is a certain number of gaps between the points. How do we know how many gaps to leave?  Use the `autocorrelation function <https://en.wikipedia.org/wiki/Autocorrelation>`_ to determine how many samples. You can use the ``acf(...)`` function in R, which will show how many significant lags there are between observations. Calculating the autocorrelation accurately requires a large data set, which is a requirement anyway if you need to subsample your data to obtain independence.
 
@@ -172,7 +172,7 @@ Here are some examples of the autocorrelation plot: in the first case you would 
 	:width: 900px
 	:align: center
 	:scale: 70
-	:alt: fake width
+	:alt: Three examples of autocorrelation function plots with different lag structures
 
 Another test for autocorrelation is the :index:`Durbin-Watson test <pair: Durbin-Watson test; autocorrelation>`. For more on this test see the book by Draper and Smith (Chapter 7, 3rd edition); in R you can use the ``durbinWatsonTest(model)`` function in ``library(car)``. Try generating autocorrelation of varying strength (positive, e.g. ``phi_long = 0.80`` and negative, e.g. ``phi_long = -0.75``) in the code below. Inspect the plots which are generated as a result, especially the time order plot: get a feeling for what a strong and weak positive/negative correlation looks like in the time order.
 
@@ -301,7 +301,7 @@ Before launching into various :index:`transformations` or non-linear least squar
 		:align: right
 		:width: 900px
 		:scale: 50
-		:alt: fake width
+		:alt: A nonlinear system with an approximately linear subregion highlighted
 
 How can we detect when the linear model is not sufficient anymore?  While a q-q plot might hint at problems, better plots are the same two plots for detecting :ref:`non-constant error variance <LS-non-constant-error-variance>`:
 
@@ -314,7 +314,7 @@ Here we show both plots for the example just prior (where we used a linear model
 		:align: left
 		:width: 900px
 		:scale: 67
-		:alt: fake width
+		:alt: Residual plots that reveal nonlinearity remaining in the linear model
 
 Transformations are considered successful once the residuals appear to have no more structure in them. Also bear in mind that structure in the residuals might indicate the model is missing an additional explanatory variable (see the section on :ref:`multiple linear regression <LS_multiple_X_MLR>`).
 

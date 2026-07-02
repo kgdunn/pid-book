@@ -56,7 +56,7 @@ Given these numbers, we can simplify the ideal gas law to: :math:`p=\beta_1 T`, 
 .. image:: ../figures/least-squares/table-of-cylinder-data.png
 	:width: 900px
 	:scale: 67
-	:alt: fake width
+	:alt: Table of cylinder temperature, pressure and humidity data with means and variances
 
 .. _LS_eqn_definition-covariance:
 
@@ -244,7 +244,7 @@ Note that correlation is the same whether we measure temperature in Celsius or K
 	:width: 900px
 	:align: center
 	:scale: 65
-	:alt: fake width
+	:alt: Example scatter plots with their correlation values
 
 
 .. _LS_correlation_matrix_in_python:

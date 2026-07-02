@@ -87,7 +87,7 @@ Exercises
 		:align: center
 		:width: 900px
 		:scale: 40
-		:alt: fake width
+		:alt: Distillation data with the least squares fit and prediction intervals
 
 	.. literalinclude:: ../figures/least-squares/distillation-column-questions.R
 		:language: s
@@ -132,7 +132,7 @@ Exercises
 			:align: left
 			:width: 900px
 			:scale: 65
-			:alt: fake width
+			:alt: Q-q plots of the residuals for the raw and inverse temperature models
 
 	-	The slope coefficient of 75571 has units of ``kPa.°F``, indicating that each one unit *decrease* in temperature results in an *increase* in vapour pressure. Since division is not additive, the change in vapour pressure when decreasing 10 degrees from 430 °F is a different decrease to that when temperature is 530 °F. The interpretation of transformed variables in linear models is often a lot harder. The easiest interpretation is to show a plot of 1/T against vapour pressure.
 
@@ -140,7 +140,7 @@ Exercises
 			:align: right
 			:width: 900px
 			:scale: 35
-			:alt: fake width
+			:alt: Vapour pressure plotted against the inverse of temperature
 
 	-	The predicted vapour pressure at 480 °F is 36.68 kPa :math:`\pm 11.37`, or within the range [31.0 to 42.4] with 95% confidence, very similar to the prediction interval from question 2.
 

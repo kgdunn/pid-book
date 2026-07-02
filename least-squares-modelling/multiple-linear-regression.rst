@@ -172,7 +172,7 @@ Let's take a look at the case where :math:`y = b_1x_1 + b_2x_2`. We can plot thi
 	:width: 900px
 	:align: left
 	:scale: 40
-	:alt: fake width
+	:alt: Regression plane fitted through points plotted in three dimensions
 
 The points are used to fit the plane by minimizing the sum of square distances shown by vertical lines from each point to the plane. The interpretation of the slope coefficients for :math:`b_1` and :math:`b_2` is **not the same** as for the case with just a single |x| variable.
 
@@ -260,6 +260,48 @@ structure.
 	)
 
 
+.. _LS_R2_never_decreases:
+
+:math:`R^2` never decreases as terms are added
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The discussion of :math:`R^2` in the :ref:`model analysis section <LS-ANOVA-table>` cautioned that
+:math:`R^2` can be increased simply by adding terms to the model. Here is that effect on the
+distillation data. On the building data, :math:`R^2` cannot decrease when a term is added: the
+optimization is free to set the new coefficient to zero and keep the previous fit, so the fit can
+only stay the same or improve. Even a column of pure random noise, used as a third "predictor",
+nudges :math:`R^2` up slightly.
+
+.. code-block:: python
+
+	import numpy as np
+	from sklearn.linear_model import LinearRegression
+
+	# `build`, `y_build`, `X_build_MLR` and `full_model`
+	# are from the code sections earlier in this chapter.
+	X_one = build[["InvTemp3"]].values
+	r2_one = LinearRegression().fit(X_one, y_build).score(X_one, y_build)
+	r2_two = full_model.score(X_build_MLR, y_build)
+
+	# Append a column of pure random noise as a third
+	# "predictor" and refit:
+	rng = np.random.default_rng(13)
+	X_noise = np.hstack([X_build_MLR,
+	                     rng.normal(size=(len(build), 1))])
+	noise_model = LinearRegression().fit(X_noise, y_build)
+	r2_noise = noise_model.score(X_noise, y_build)
+
+	# R-squared: 0.78070, then 0.93831, then 0.93832
+	print(f"{r2_one:.5f}  {r2_two:.5f}  {r2_noise:.5f}")
+
+The second predictor, ``InvPressure1``, raises :math:`R^2` from 0.781 to 0.938 and also improves
+the testing-data error: it carries real information. The noise column raises :math:`R^2` too, from
+0.93831 to 0.93832, and carries no information at all. This is why :math:`R^2` on the building
+data cannot tell you whether a new term earns its place in the model. Two better checks were
+introduced earlier: the adjusted :math:`R^2`, which penalizes the :math:`k` terms used, and the
+prediction error on :ref:`testing data <LS_test_set_predictions_with_sklearn>`, which a noise
+column will generally make *worse*.
+
 Integer (dummy, indicator) variables in the model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -282,7 +324,7 @@ Now that we have introduced multiple linear regression to expand our models, we 
 		:width: 900px
 		:align: left
 		:scale: 40
-		:alt: fake width
+		:alt: Axial and radial impeller flow patterns in a mixing tank
 
 	Axial and radial blades; figure from `Wikipedia <https://en.wikipedia.org/wiki/Impeller>`_
 
@@ -299,7 +341,7 @@ where :math:`d_i = 0` if an axial impeller was used, or :math:`d_i = 1` if a rad
 	:width: 900px
 	:align: right
 	:scale: 60
-	:alt: fake width
+	:alt: Two parallel regression lines shifted vertically by the indicator variable coefficient
 
 The :math:`\gamma` parameter, estimated by :math:`g`, is the difference in intercept when using a different impeller type. Note that the lines are parallel.
 
@@ -326,7 +368,7 @@ Integer variables are also called dummy variables or indicator variables. Really
 	:width: 900px
 	:align: left
 	:scale: 50
-	:alt: fake width
+	:alt: Regression plane for a model with one continuous and one integer variable
 
 We have to introduce additional terms into the model if we have integer variables with more than 2 levels. In general, if there are :math:`p`-levels, then we must include :math:`p-1` terms. For example, if we wish to test the effect of :math:`y` = yield achieved from the raw material supplier in Spain, India, or Vietnam, we could code:
 

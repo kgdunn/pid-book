@@ -47,7 +47,7 @@ Using the accompanying figure, we see that geometrically, at any fixed value of 
 	:width: 900px
 	:align: center
 	:scale: 45
-	:alt: fake width
+	:alt: Geometric breakdown of the distance from y to the mean of y into a model component and a residual component
 
 The total sum of squares (TSS) is the total variance in the vector of :math:`y`-data. This broken down into two components: the sum of squares due to regression, :math:`\sum \left(\hat{y}_i - \overline{y}\right)^2`, called RegSS, and the sum of squares of the residuals (RSS), :math:`\sum e_i^2 = e^T e`.
 
@@ -276,7 +276,7 @@ Furthermore, our derivation for the confidence intervals of |b0| and |b1| requir
 		:width: 900px
 		:align: center
 		:scale: 60
-		:alt: fake width
+		:alt: Illustration of constant error variance and normally distributed errors around the regression line
 
 	Illustration of the constant error variance assumption and the normally distributed error assumption.
 
@@ -592,7 +592,7 @@ We might expect the error is related to the average size of the residuals. After
 	:width: 900px
 	:align: center
 	:scale: 65
-	:alt: fake width
+	:alt: Histogram of residuals centered at zero and roughly normally distributed
 
 A typical histogram of the residuals looks as shown here: it is always centered around zero, and appears to be normally distributed. So we could expect to write our prediction error as :math:`\hat{y}_\text{new} = \left(b_0 + b_1 x_\text{new}\right) \pm c \cdot S_E`, where :math:`c` is the number of standard deviations around the average residual, for example we could have set :math:`c=2`, approximating the 95% confidence limit.
 
