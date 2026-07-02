@@ -3,7 +3,7 @@
 Assessing significance of main effects and interactions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When there are no :index:`replicate points <pair: replicates; experiments>`, then the number of factors to estimate from a full factorial is :math:`2^k` from the :math:`2^k` observations. There are no degrees of freedom left to calculate the standard error or the confidence intervals for the main effects and interaction terms.
+When there are no :index:`replicate points <pair: replicates; experiments>`, then the number of parameters to estimate from a full factorial is :math:`2^k` from the :math:`2^k` observations. There are no degrees of freedom left to calculate the standard error or the confidence intervals for the main effects and interaction terms.
 
 The standard error can be estimated if complete replicates are available. However, a complete replicate is onerous, because a complete replicate implies the entire experiment is repeated: system setup, running the experiment and measuring the result. Taking two samples from one actual experiment and measuring :math:`y` twice is not a true replicate. That is only an estimate of the measurement error and analytical error.
 
@@ -27,13 +27,48 @@ Pareto plot
 
 A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to estimate. Once these parameters have been calculated, for example, by using a :ref:`least squares model <DOE-analysis-by-least-squares>`, then plot as shown the absolute value of the model coefficients in sorted order, from largest magnitude to smallest, ignoring the intercept term. Significant coefficients are established by visual judgement -- establishing a visual cutoff by contrasting the small coefficients to the larger ones.
 
+The example below is from a :math:`2^4` full factorial (four factors, sixteen runs) where the results for :math:`y` in standard order were :math:`y = \left[45,71,48,65,68,60,80,65,43,100,45,104,75,86,70,96 \right]`. The code fits the sixteen-parameter model by least squares and plots the sorted magnitudes of the fifteen effects.
+
+.. code-block:: python
+
+	import itertools
+	import numpy as np
+	import plotly.graph_objects as go
+
+	# Full 2^4 factorial in standard (Yates) order: factor A alternates fastest.
+	levels = [-1, 1]
+	design = np.array(list(itertools.product(levels, levels, levels, levels)))[:, ::-1]
+	y = np.array([45, 71, 48, 65, 68, 60, 80, 65,
+	              43, 100, 45, 104, 75, 86, 70, 96])
+
+	# Build every main effect and interaction column, then fit by least squares.
+	names = ["A", "B", "C", "D"]
+	factor = {name: design[:, i] for i, name in enumerate(names)}
+	terms = {}
+	for order in range(1, 5):
+	    for combo in itertools.combinations(names, order):
+	        column = np.ones(16)
+	        for f in combo:
+	            column = column * factor[f]
+	        terms["".join(combo)] = column
+
+	X = np.column_stack([np.ones(16)] + list(terms.values()))
+	b = np.linalg.solve(X.T @ X, X.T @ y)   # X is orthogonal, so this is exact
+	effects = dict(zip(terms.keys(), b[1:]))  # drop the intercept
+
+	# Pareto plot: absolute effects, largest bar at the top.
+	ordered = sorted(effects, key=lambda name: abs(effects[name]))
+	fig = go.Figure(go.Bar(x=[abs(effects[name]) for name in ordered],
+	                       y=ordered, orientation="h"))
+	fig.update_layout(xaxis_title_text="|effect|", yaxis_title_text="Term",
+	                  showlegend=False)
+	fig.show()
+
 .. image:: ../../figures/doe/pareto-plot-full-fraction.png
 	:align: left
 	:scale: 30
 	:width: 900px
-	:alt: fake width
-
-The example shown in the bar graph was from a full factorial experiment where the results for :math:`y` in standard order were :math:`y = \left[45,71,48,65,68,60,80,65,43,100,45,104,75,86,70,96 \right]`.
+	:alt: Pareto plot of effect magnitudes from a full factorial
 
 We would interpret that factors **A**, **C** and **D**, as well as the interactions of **AC** and **AD**, have a significant and causal effect on the response variable, :math:`y`. The main effect of **B** on the response :math:`y` is small, at least over the range that **B** was used in the experiment. Factor **B** can be omitted from future experimentation in this region, though it might be necessary to include it again if the system is operated at a very different point.
 
@@ -59,7 +94,7 @@ Standard error: from replicate runs or from an external dataset
 ..
 .. The standard error can be calculated in a similar manner if more than one duplicate run is performed. So rather run a :math:`2^4` factorial for 4 factors than a :math:`2^3`factorial twice; or as we will see later - one can screen five or more factors with :math:`2^4` runs.
 
-If there are more experiments than parameters to be estimated, then we have extra degrees of freedom. Having degrees of freedom implies we can calculate the standard error, :math:`S_E`. Once :math:`S_E` has been found, we can also calculate the standard error for each model coefficient, and then confidence intervals can be constructed for each main effect and interaction. And because the model matrix is orthogonal, the confidence interval for each effect is independent of the other. This is because the general confidence interval is :math:`\mathcal{V}\left(\mathbf{b}\right) = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}S_E^2`, and the off-diagonal elements in :math:`\mathbf{X}^T\mathbf{X}` are zero.
+If there are more experiments than parameters to be estimated, then we have extra degrees of freedom. Having degrees of freedom implies we can calculate the standard error, :math:`S_E`. Once :math:`S_E` has been found, we can also calculate the standard error for each model coefficient, and then confidence intervals can be constructed for each main effect and interaction. And because the model matrix is orthogonal, the confidence interval for each effect is independent of the other. This is because the variance-covariance matrix of the estimates is :math:`\mathcal{V}\left(\mathbf{b}\right) = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}S_E^2`, and the off-diagonal elements in :math:`\mathbf{X}^T\mathbf{X}` are zero, so the estimates are uncorrelated. The confidence interval for each coefficient is then :math:`b_i \pm c_t \sqrt{\mathcal{V}(b_i)}`.
 
 For an experiment with :math:`n` runs, and where we have coded our :math:`\mathbf{X}` matrix to contain :math:`-1` and :math:`+1` elements, and when the :math:`\mathbf{X}` matrix is orthogonal, the standard error for coefficient :math:`b_i` is :math:`S_E(b_i) = \sqrt{\mathcal{V}\left(b_i\right)} = \sqrt{\dfrac{S_E^2}{\sum{x_i^2}}}`. Some examples:
 
@@ -167,7 +202,7 @@ After having established which effects are significant, we can exclude the nonsi
 
 .. AU: I modified the last sentence of the following paragraph because it seemed redundant. Please confirm.
 
-Continuing the above example, where a :math:`2^4` factorial was run, the response values in standard order were :math:`y = [71, 61, 90, 82, 68, 61, 87, 80, 61, 50, 89, 83, 59, 51, 85, 78]`. The significant effects were from **A**, **B**, **D** and **BD**. Now, omitting the nonsignificant effects, there are only five parameters to estimate, including the intercept, so the standard error is :math:`S_E^2 = \dfrac{39}{16-5} = 3.54`, with 11 degrees of freedom. The :math:`S_E(b_i)` value for all coefficients, except the intercept, is :math:`\sqrt{\dfrac{S_E^2}{16}} = 0.471`, and the critical :math:`t`-value at the 95% level is ``qt(0.975, df=11)`` = 2.2. So the confidence intervals can be calculated to confirm that these are indeed significant effects.
+As an example, consider a :math:`2^4` factorial (16 runs) where the response values in standard order were :math:`y = [71, 61, 90, 82, 68, 61, 87, 80, 61, 50, 89, 83, 59, 51, 85, 78]`. Assessing the 15 effects with a Pareto plot, or against the standard error, identifies **A**, **B**, **D** and **BD** as the significant ones. Now, omitting the nonsignificant effects, there are only five parameters to estimate, including the intercept, so the standard error is :math:`S_E^2 = \dfrac{39}{16-5} = 3.54`, with 11 degrees of freedom. The :math:`S_E(b_i)` value for all coefficients, except the intercept, is :math:`\sqrt{\dfrac{S_E^2}{16}} = 0.471`, and the critical :math:`t`-value at the 95% level is ``qt(0.975, df=11)`` = 2.2. So the confidence intervals can be calculated to confirm that these are indeed significant effects.
 
 There is some circular reasoning here: postulate that one or more effects are zero and increase the degrees of freedom by removing those parameters in order to confirm the remaining effects are significant. Some general advice is to first exclude effects that are definitely small, and then retain medium-size effects in the model until you can confirm they are not significant.
 
@@ -180,14 +215,14 @@ Variance of estimates from the COST approach versus the factorial approach
 	:align: center
 	:scale: 50
 	:width: 900px
-	:alt: fake width
+	:alt: Comparison of effect-estimate variance for the COST and factorial approaches
 
 Finally, we end this section on factorials by illustrating their efficiency. Contrast the two cases: COST and the full factorial approach. For this analysis we define the main effect simply as the difference between the high and low values (normally we divide through by 2, but the results still hold). Define the variance of the measured :math:`y` value as :math:`\sigma_y^2`.
 
 	.. tabularcolumns:: |l|l|
 
 +--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
-| COST approach                                                            | Fractional factorial approach                                                                                  |
+| COST approach                                                            | Factorial approach                                                                                             |
 +==========================================================================+================================================================================================================+
 | The main effect of :math:`T` is :math:`b_T = y_2 - y_1`.                 | The main effect is :math:`b_T = 0.5(y_2 - y_1) + 0.5(y_4 - y_3)`.                                              |
 +--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
@@ -196,6 +231,6 @@ Finally, we end this section on factorials by illustrating their efficiency. Con
 | So :math:`\mathcal{V}(b_T) = 2\sigma_y^2`.                               | And :math:`\mathcal{V}(b_T) = \sigma_y^2`.                                                                     |
 +--------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+
 
-Not only does the factorial experiment estimate the effects with much greater precision (lower variance), but the COST approach cannot estimate the effect of interactions, which is incredibly important, especially as systems approach optima that are on ridges (see the contour plots earlier in this section for an example).
+The factorial uses all four runs to estimate :math:`b_T`, whereas the COST comparison uses only two, so part of the variance reduction is simply the extra runs. The point is that those same four runs *also* estimate :math:`b_S` and the interaction :math:`b_{TS}` at no additional cost, whereas the COST approach cannot estimate the effect of interactions at all. Interactions are important, especially as systems approach optima that lie on ridges (see the contour plots earlier in this section for an example).
 
 Factorial designs make each experimental observation work twice.

@@ -103,7 +103,7 @@ Let's return to the table in the :ref:`previous section <DOE-half-fractions>` an
 
 After running these additional 4 experiments shown (in random order of course) we have a complete set of 8 runs. Analyzing the data together we can calculate the main effects and two-factor interactions without aliasing because we are back to the usual full factorial of :math:`2^3` runs. Confirm it for yourself visually in the plot alongside.
 
-So we see that we can always complete our half-fraction by creating a complementary fraction. This complimentary fraction is found by flipping the sign on the generating factor. For example, changing the sign from **C = AB** to **-C = AB**. In the illustration this is equivalent to running the 4 experiments at the closed circles.
+So we see that we can always complete our half-fraction by creating a complementary fraction. This complementary fraction is found by flipping the sign on the generating factor. For example, changing the sign from **C = AB** to **C = -AB**. In the illustration this is equivalent to running the 4 experiments at the closed circles.
 
 .. _DOE-Generators-for-blocking:
 

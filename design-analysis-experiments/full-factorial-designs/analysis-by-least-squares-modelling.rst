@@ -102,7 +102,7 @@ Some things to note are (1) the :index:`orthogonality` of :math:`\mathbf{X}^T\ma
 	The 61.5 term in the least squares model is the expected conversion at the baseline conditions. Notice from the least squares equations how it is just the average of the four experimental values, even though we did not actually perform an experiment at the center.
 
 Let's return to the :ref:`system with high interaction <DOE-two-level-factorials-interaction-effects>` where the four outcome values in standard order were
-77, 79, 81 and 89. Looking back, the baseline operation was :math:`T` = 395 K and :math:`S = \frac{1.25 - 0.5}{2}` = 0.875 g/L; you should prove to yourself that the least squares model is
+77, 79, 81 and 89. Looking back, the baseline operation was :math:`T` = 395 K and :math:`S = \frac{1.25 + 0.5}{2}` = 0.875 g/L; you should prove to yourself that the least squares model is
 
 	.. math::
 
@@ -114,7 +114,7 @@ The interaction term can now be readily interpreted: it is the additional increa
 		:align: right
 		:scale: 40
 		:width: 900px
-		:alt: fake width
+		:alt: Nonlinear response surface with the fitted least-squares plane below it
 
 Finally, out of interest, the nonlinear surface that was used to generate the experimental data for the interacting system is coloured in the illustration. In practice we never know what this surface looks like, but we estimate it with the least squares plane, which appears below the nonlinear surface as black and white grids. The corners of the box are outer levels at which we ran the factorial experiments.
 
