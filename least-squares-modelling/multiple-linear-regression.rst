@@ -77,7 +77,7 @@ where:
 
 	- :math:`\mathbf{y}`: :math:`n \times 1`
 	- :math:`\mathbf{X}`: :math:`n \times k`
-	- :math:`\mathbf{b}`: :math:`n \times 1`
+	- :math:`\mathbf{b}`: :math:`k \times 1`
 	- :math:`\mathbf{e}`: :math:`n \times 1`
 
 Estimating the model parameters via optimization
@@ -109,7 +109,7 @@ Going back to the single variable case we showed in the section where we derived
 
 		\mathcal{V}\{b_1\} = \dfrac{S_E^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}
 
-Notice that our matrix definition, :math:`\mathcal{V}\{\mathbf{b}\} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1} S_E^2`, gives exactly the same result, remembering the |x| variables have already been centered in the matrix form. Also recall that the variability of these estimated parameters can be reduced by (a) taking more samples, thereby increasing the denominator size, and (b) by including observations further away from the center of the model.
+Notice that the estimated matrix form, :math:`\left( \mathbf{X}^T\mathbf{X} \right)^{-1} S_E^2`, gives exactly the same result, remembering the |x| variables have already been centered in the matrix form. Also recall that the variability of these estimated parameters can be reduced by (a) taking more samples, thereby increasing the denominator size, and (b) by including observations further away from the center of the model.
 
 .. rubric:: Example
 
