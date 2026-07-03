@@ -90,6 +90,16 @@ a single function call, reusing the ``boards`` data frame loaded above:
 	fig.update_layout(xaxis_title_text="Thickness [mils]")
 	fig.show()
 
+.. image:: ../figures/visualization/raincloud-for-two-by-six-100-boards.png
+	:align: center
+	:scale: 55
+	:width: 900px
+	:alt: Raincloud plot of the board thickness at the six positions; each group shows a density curve, a box plot, and the jittered raw observations.
+
+The rainclouds confirm what the box plot showed, and add to it: the rain under position 1 shows the
+raw observations bunched around 1680 mils with stray points on both sides, and no second cluster
+hiding inside the box.
+
 
 **Example**
 
