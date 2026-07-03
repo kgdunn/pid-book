@@ -33,7 +33,7 @@ The base operating point is 346 K with a feed substrate concentration of 1.5 g/L
 	:align: center
 	:scale: 70
 	:width: 900px
-	:alt: fake width
+	:alt: Contour plot illustrating the one-factor-at-a-time search path
 
 .. FUTURE: use a curved surface like figure (c) on page 445 of BHH2
 

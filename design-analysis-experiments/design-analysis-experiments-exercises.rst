@@ -121,14 +121,14 @@ Exercises
 							 1 & -1 & +1 & -1 \\
 							 1 & +1 & +1 & +1
 			\end{bmatrix}
-			\begin{bmatrix} b_0 \\ b_\mathbf{A} \\ b_\mathbf{A} \\ b_\mathbf{AB} \end{bmatrix} + \begin{bmatrix}  e_1 \\ e_2 \\ e_3 \\ e_4 \end{bmatrix} \\
+			\begin{bmatrix} b_0 \\ b_\mathbf{A} \\ b_\mathbf{B} \\ b_\mathbf{AB} \end{bmatrix} + \begin{bmatrix}  e_1 \\ e_2 \\ e_3 \\ e_4 \end{bmatrix} \\
 			\begin{bmatrix}  3500 \\ 3610 \\ 3120 \\ 2505 \end{bmatrix} &=
 			\begin{bmatrix}  1 & -1 & -1 & +1 \\
 			                 1 & +1 & -1 & -1 \\
 							 1 & -1 & +1 & -1 \\
 							 1 & +1 & +1 & +1
 			\end{bmatrix}
-			\begin{bmatrix} b_0 \\ b_\mathbf{A} \\ b_\mathbf{A} \\ b_\mathbf{AB} \end{bmatrix} + \begin{bmatrix}  e_1 \\ e_2 \\ e_3 \\ e_4 \end{bmatrix}
+			\begin{bmatrix} b_0 \\ b_\mathbf{A} \\ b_\mathbf{B} \\ b_\mathbf{AB} \end{bmatrix} + \begin{bmatrix}  e_1 \\ e_2 \\ e_3 \\ e_4 \end{bmatrix}
 
 		And solving the regression coefficients (note the orthogonality in the :math:`\mathbf{X}^T\mathbf{X}` matrix):
 
@@ -149,7 +149,7 @@ Exercises
 							 0 & 0 & 0 & \tfrac{1}{4}
 			\end{bmatrix}
 			\begin{bmatrix}  12735 \\ -505 \\ -1485 \\ -725 \end{bmatrix} \\
-			\begin{bmatrix} b_0 \\ b_\mathbf{A} \\ b_\mathbf{A} \\ b_\mathbf{AB} \end{bmatrix} &= \begin{bmatrix}  3184 \\ -126  \\ -371 \\ -181 \end{bmatrix}
+			\begin{bmatrix} b_0 \\ b_\mathbf{A} \\ b_\mathbf{B} \\ b_\mathbf{AB} \end{bmatrix} &= \begin{bmatrix}  3184 \\ -126  \\ -371 \\ -181 \end{bmatrix}
 
 
 		The final model is :math:`y = 3184 - 126 x_\mathrm{A} - 371 x_\mathrm{B} - 181 x_\mathrm{AB}`.
@@ -313,7 +313,7 @@ Exercises
 		-	:math:`\widehat{b}_\mathbf{A} = -0.75 \rightarrow` **A + BCD** (previous estimate for **A**  was -0.625)
 		-	:math:`\widehat{b}_\mathbf{B} = 9.25 \rightarrow` **B + ACD** (previous estimate for **B**  was 9.9)
 		-	:math:`\widehat{b}_\mathbf{C} = 2.75 \rightarrow` **C + ABD** (previous estimate for **C**  was 4.0)
-		-	:math:`\widehat{b}_\mathbf{D} = -2.75 \rightarrow` **D + ABC** (previous estimate for **A**  was -3.9)
+		-	:math:`\widehat{b}_\mathbf{D} = -2.75 \rightarrow` **D + ABC** (previous estimate for **D**  was -3.9)
 		-	:math:`\widehat{b}_\mathbf{AB} = -5.75 \rightarrow` **AB + CD** (previous estimate for **AB**  was insignificant, while **CD** was -5.25)
 		-	:math:`\widehat{b}_\mathbf{AC} = 0.75 \rightarrow` **AC + BD** (previous estimates for both **AC** and **BD**  were insignificant)
 		-	:math:`\widehat{b}_\mathbf{AD} = 7.25 \rightarrow` **AD + BC** (previous estimate for **AD**  was insignificant, while **BC** was 6.4)
@@ -814,7 +814,7 @@ Exercises
 		In real-world units these points correspond to:
 
 		*	:math:`A_\text{actual} = 1.5 \times 10 \text{°C} + 150 \text{°C}` = 165 °C.
-		*	:math:`B_\text{actual} = 1.5 \times 0.5 \text{°C} + 7.5 \text{°C}` = 8.25 pH units.
+		*	:math:`B_\text{actual} = 1.5 \times 0.5 + 7.5` = 8.25 pH units.
 
 .. admonition:: Question
 
@@ -1186,7 +1186,7 @@ Exercises
 		*	Fix temperature at 40°C, implying that :math:`T^\text{(next)} = 40\text{°C}` and :math:`x_\text{T}^\text{(next)} = \frac{40-33}{3} = 2.33`.
 		*	Factor **G** must be run at the highest level possible, i.e. **G = Gp**
 		*	Factor **A** must be run at a lower level, specifically :math:`\Delta A = -0.25 \times 2.33 = -0.583`, or a deviation of -2.9 rpm from the baseline. Since we have to use integer values, that implies :math:`A^\text{(next)} = 12` rpm and :math:`x_\text{A}^\text{(next)} = \frac{12-15}{5} = -0.6`.
-		*	Factor **C** must be run at a higher level, specifically :math:`\Delta C = 3.5/4 \times 2.33 = 2.04`, or a deviation of +306 in actual units from the baseline. Since we have to round to the closest 50, that implies :math:`C^\text{(next)} = 1550` rpm and :math:`x_\text{C}^\text{(next)} = \frac{1550-1250}{150} = +2`.
+		*	Factor **C** must be run at a higher level, specifically :math:`\Delta C = 3.5/4 \times 2.33 = 2.04`, or a deviation of +306 in actual units from the baseline. Since we have to round to the closest 50, that implies :math:`C^\text{(next)} = 1550` concentration units and :math:`x_\text{C}^\text{(next)} = \frac{1550-1250}{150} = +2`.
 
 	#.	The predicted yield can be found by substituting the coded values into the model equation, choosing to either use or ignore the small interactions:
 
@@ -1196,7 +1196,7 @@ Exercises
 
 			\begin{array}{rcl}
 				y &=& 24 + 3 (+1) - 1.0 (-0.6) + 4.0 (2.33) - 0.2 (+1)(-0.6) - 0.79 (+1)(2.33) - 0.25(-0.6)(2.33) + 3.5 (+2) \\
-				y &=& {\bf 42.3}
+				y &=& {\bf 42.5}
 			\end{array}
 
 		Without interactions:

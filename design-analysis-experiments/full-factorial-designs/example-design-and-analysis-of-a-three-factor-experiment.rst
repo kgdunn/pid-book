@@ -121,6 +121,8 @@ The data are from a plastics molding factory that must treat its waste before di
 
 		y = 11.25 + 6.25x_C + 0.75x_T -7.25x_S + 0.25 x_C x_T -6.75 x_C x_S -0.25 x_T x_S - 0.25 x_C x_T x_S
 
+	Notice that each least-squares coefficient is exactly half the corresponding by-hand effect above: the :math:`C` effect of :math:`12.5` appears as :math:`b_C = 6.25`, and the :math:`CS` effect of :math:`-13.5` appears as :math:`b_{CS} = -6.75`. The reason is that the coefficient measures the change over *half* the range of the coded factor, from :math:`0` to :math:`+1`, whereas the effect measures the change over the *full* range, from :math:`-1` to :math:`+1`. This convention is discussed in the note below.
+
 Learning notes:
 
 	*	The chemical compound could be coded either as (chemical P = :math:`-1`, chemical Q = :math:`+1`) or (chemical P = :math:`+1`, chemical Q = :math:`-1`). The interpretation of the :math:`x_C` coefficient is the same, regardless of the coding.
@@ -131,7 +133,7 @@ Learning notes:
 
 In this text we quantify the effect as the change in response over *half the range* of the factor. For example, if the center point is 400 K, the lower level is 375 K and the upper level is 425 K, then an effect of ``"-5"`` represents a reduction in :math:`y` of 5 units for every increase of 25 K in :math:`x`.
 
-We use this representation because it corresponds with the results calculated from least-squares software. Putting the matrix of :math:`-1` and :math:`+1` entries into the software as :math:`\mathbf{X}`, along with the corresponding vector of responses, :math:`y`, you can calculate these effects as :math:`\mathbf{b} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}\mathbf{y}`.
+We use this representation because it corresponds with the results calculated from least-squares software. Putting the matrix of :math:`-1` and :math:`+1` entries into the software as :math:`\mathbf{X}`, along with the corresponding vector of responses, :math:`y`, you can calculate these effects as :math:`\mathbf{b} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y}`.
 
 Other textbooks, specifically Box, Hunter and Hunter, will report effects that are double ours. This is because they consider the effect to be the change from the lower level to the upper level (double the distance). The advantage of their representation is that binary factors (catalyst A or B; agitator on or off) can be readily interpreted, whereas in our notation, the effect is a little harder to describe (simply double it!).
 

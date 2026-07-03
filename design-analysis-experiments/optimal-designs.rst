@@ -58,7 +58,7 @@ situations:
 
     *   **Some factors are hard to change.** Resetting an oven temperature between every run
         is slow or expensive, so you would like a design that changes it as seldom as
-        possible. (This leads to :ref:`split-plot <DOE-RSM>` structures.)
+        possible. (This leads to *split-plot* structures, a topic beyond the scope of this chapter.)
 
     *   **You already have a fixed list of candidate runs**, or you have already run several
         experiments and want to add a few more to sharpen the estimates.
@@ -230,11 +230,13 @@ variances live in the reciprocals :math:`1/\lambda`.
         single worst-case direction can degrade the average (A) and joint (D) measures noticeably.
         Mnemonic: E for the Eigenvalue of the worst-Estimated direction.
 
-    *   **G-** and **V-optimality** are about the variance of the *predictions* rather than the
-        coefficients directly. G-optimality minimizes the largest prediction variance anywhere in
-        the region; V-optimality (also called *I-* or *IV-optimality*) minimizes the *average*
-        prediction variance over the region. Both are built on the prediction variance, which we
-        develop in :ref:`Judging and comparing designs <DOE-judging-and-comparing-designs>`.
+    *   **G-**, **I-**, and **V-optimality** are about the variance of the *predictions* rather than
+        the coefficients directly. G-optimality minimizes the largest prediction variance anywhere in
+        the region. I-optimality (also called *IV-optimality*) minimizes the *average* prediction
+        variance over the whole region. V-optimality is the closely related criterion that averages
+        the prediction variance over a chosen finite set of points instead of over the whole region.
+        All three are built on the prediction variance, which we develop in
+        :ref:`Judging and comparing designs <DOE-judging-and-comparing-designs>`.
 
 D multiplies the eigenvalues, A sums their reciprocals, E looks at the extreme one: the same
 matrix, aggregated differently. That is why a design can score well on one criterion and poorly on
@@ -411,6 +413,11 @@ constraint boundary :math:`x_1 + x_2 = 1`. In other words it pushes the runs to 
 forbidden corner. The full quadratic model remains estimable throughout. No catalogue design could
 have produced this; the optimal design simply read off the constraint and the model and did the
 sensible thing.
+
+A D-optimal design is not unique: several different run allocations can share the same maximum
+:math:`\det(\mathbf{M})`. The table above is one such optimum; your own solver, or a different random
+start for the coordinate-exchange search, may return a different allocation of the ten runs that is
+equally D-optimal.
 
 .. figure:: ../figures/doe/constrained-d-optimal-region.png
     :align: center
