@@ -264,11 +264,10 @@ structure.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The discussion of :math:`R^2` in the :ref:`model analysis section <LS-ANOVA-table>` cautioned that
-:math:`R^2` can be increased simply by adding terms to the model. Here is that effect on the
-distillation data. On the building data, :math:`R^2` cannot decrease when a term is added: the
-optimization is free to set the new coefficient to zero and keep the previous fit, so the fit can
-only stay the same or improve. Even a column of pure random noise, used as a third "predictor",
-nudges :math:`R^2` up slightly.
+:math:`R^2` can be increased simply by adding terms to the model. On the building data,
+:math:`R^2` cannot decrease when a term is added: the optimization is free to set the new
+coefficient to zero and keep the previous fit, so the fit can only stay the same or improve. On
+the distillation data the second predictor is a useful one:
 
 .. code-block:: python
 
@@ -281,24 +280,59 @@ nudges :math:`R^2` up slightly.
 	r2_one = LinearRegression().fit(X_one, y_build).score(X_one, y_build)
 	r2_two = full_model.score(X_build_MLR, y_build)
 
-	# Append a column of pure random noise as a third
-	# "predictor" and refit:
-	rng = np.random.default_rng(13)
-	X_noise = np.hstack([X_build_MLR,
-	                     rng.normal(size=(len(build), 1))])
-	noise_model = LinearRegression().fit(X_noise, y_build)
-	r2_noise = noise_model.score(X_noise, y_build)
+	# R-squared: 0.781, then 0.938
+	print(f"{r2_one:.3f}  {r2_two:.3f}")
 
-	# R-squared: 0.78070, then 0.93831, then 0.93832
-	print(f"{r2_one:.5f}  {r2_two:.5f}  {r2_noise:.5f}")
+Adding ``InvPressure1`` raises :math:`R^2` from 0.781 to 0.938 and also improves the testing-data
+error: that predictor carries real information. A *useless* term also raises :math:`R^2`, but on
+these 150 building rows a single column of random noise moves :math:`R^2` only in the fifth
+decimal (0.93831 to 0.93832): with many observations, one junk column can only absorb a tiny
+share of the variance. The fewer the observations relative to the number of parameters, the
+larger the share a useless term can absorb. The 14 runs of the `bioreactor yields
+<https://openmv.net/info/bioreactor-yields>`_ data set (used again in the
+:ref:`exercises <LS-exercises>`) make the effect plainly visible:
 
-The second predictor, ``InvPressure1``, raises :math:`R^2` from 0.781 to 0.938 and also improves
-the testing-data error: it carries real information. The noise column raises :math:`R^2` too, from
-0.93831 to 0.93832, and carries no information at all. This is why :math:`R^2` on the building
-data cannot tell you whether a new term earns its place in the model. Two better checks were
-introduced earlier: the adjusted :math:`R^2`, which penalizes the :math:`k` terms used, and the
-prediction error on :ref:`testing data <LS_test_set_predictions_with_sklearn>`, which a noise
-column will generally make *worse*.
+.. code-block:: python
+
+	bio = pd.read_csv(
+	    "https://openmv.net/file/bioreactor-yields.csv"
+	)
+	# Code the Yes/No baffles column as 1/0:
+	bio["baffles"] = (bio["baffles"] == "Yes").astype(int)
+	y_bio = bio["yield"].values
+	n_bio = len(bio)  # only 14 runs
+	X_real = bio[["temperature", "speed", "baffles"]].values
+
+	rng = np.random.default_rng(39)
+	noise = rng.normal(size=(n_bio, 10))
+
+	# Fit the model with 0, 1, 2 and 3 columns of pure
+	# random noise appended as extra "predictors":
+	for extra in range(0, 4):
+	    X_bio = np.hstack([X_real, noise[:, :extra]])
+	    model = LinearRegression().fit(X_bio, y_bio)
+	    r2 = model.score(X_bio, y_bio)
+	    k = X_bio.shape[1] + 1  # parameters, incl. intercept
+	    r2_adj = 1 - (1 - r2) * (n_bio - 1) / (n_bio - k)
+	    print(f"{extra} noise columns: R2 = {r2:.3f}, "
+	          f"adjusted R2 = {r2_adj:.3f}")
+
+	# 0 noise columns: R2 = 0.866, adjusted R2 = 0.826
+	# 1 noise columns: R2 = 0.875, adjusted R2 = 0.819
+	# 2 noise columns: R2 = 0.885, adjusted R2 = 0.813
+	# 3 noise columns: R2 = 0.894, adjusted R2 = 0.802
+
+Each noise column raises :math:`R^2` by roughly 0.01, from 0.866 with the three real predictors to
+0.894 with three junk columns added, even though the junk columns carry no information about the
+yield. Kept up, this reaches :math:`R^2 = 1.0` exactly when the parameter count reaches the number
+of runs: with all 10 noise columns, 3 real predictors and the intercept, 14 parameters fit the 14
+runs perfectly. The adjusted :math:`R^2`, which divides each sum of squares by its degrees of
+freedom, moves in the opposite direction, falling from 0.826 to 0.802: the penalty for each extra
+term outweighs its accidental gain in fit. This is why :math:`R^2` on the building data cannot
+tell you whether a new term earns its place in the model. Two better checks were introduced
+earlier: the adjusted :math:`R^2`, and the prediction error on
+:ref:`testing data <LS_test_set_predictions_with_sklearn>`, which a noise column will generally
+make *worse*.
 
 Integer (dummy, indicator) variables in the model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
