@@ -47,7 +47,7 @@ We develop **the least squares method** to estimate these parameters; these esti
 	:width: 600px
 	:align: center
 	:scale: 65
-	:alt: fake width
+	:alt: A least squares line with an observed value, its fitted value and the residual labelled
 
 Presuming we have calculated estimates |b0| and |b1| we can use the model with a new x-observation, :math:`x_i`, and predict its corresponding :math:`\hat{y}_i`. The error value, :math:`e_i`, is generally non-zero, indicating our prediction estimate of :math:`\hat{y}_i` is not exact. All this new nomenclature is illustrated in the figure.
 
@@ -91,7 +91,7 @@ Returning to our example of the gas cylinder. In this case we know that :math:`\
 	:align: left
 	:scale: 40
 	:width: 900px
-	:alt: fake width
+	:alt: Least squares objective function values from a grid search over the slope coefficient
 
 We find our best estimate for :math:`b_1` roughly at 5.88, the minimum of our grid search, which is very close to the theoretically expected value of 5.86 kPa/K.
 
@@ -181,7 +181,7 @@ We will refer back to the following example several times. Calculate the least s
 	:align: center
 	:width: 900px
 	:scale: 40
-	:alt: fake width
+	:alt: Scatter plot of the 11-point example data
 
 ..
 	.. image:: ../figures/least-squares/regression-exercise.png
