@@ -89,7 +89,7 @@ The simple example shown here builds a model that predicts the price of a used v
 	:align: left
 	:width: 900px
 	:scale: 70
-	:alt: fake width
+	:alt: Used vehicle price data and a residual q-q plot showing a group of outliers
 
 The group of outliers were due to 10 observations of a certain class of vehicle (Cadillac convertibles) that distorted the model. We removed these observations, which now limits our model to be useful only for other vehicle types, but we gain a smaller standard error and a tighter confidence interval. These residuals are still very non-normal though.
 
@@ -110,7 +110,7 @@ In the next fictitious example the |y|-variable is non-linearly related to the |
 	:align: center
 	:width: 900px
 	:scale: 70
-	:alt: fake width
+	:alt: Residual q-q plots before and after a square root transformation of y
 
 More discussion about transformations of the data is given in the section on :ref:`model linearity <LS-model-linearity>`.
 
@@ -135,7 +135,7 @@ This problem reveals itself by showing a fan shape across the plot; an example i
 	:scale: 70
 	:align: center
 	:width: 900px
-	:alt: fake width
+	:alt: Fan-shaped residuals indicating non-constant error variance
 
 To counteract this problem one can use :index:`weighted least squares <pair: weighted least squares; WLS>`, with smaller weights on the high-variance observations. Weighted least squares minimizes :math:`f(\mathrm{b}) = \sum_i^n{w_ie_i^2}`, with a different weight :math:`w_i` for each error term; choosing each weight inversely proportional to the error variance of that observation, :math:`w_i \propto 1/\sigma_i^2`, gives every observation the same influence on the fit. More on this topic can be found in the book by Draper and Smith (p 224 to 229, 3rd edition).
 
@@ -162,7 +162,7 @@ If you suspect that there may be lack of independence, use plots of the residual
 	:width: 900px
 	:align: center
 	:scale: 70
-	:alt: fake width
+	:alt: Residuals plotted in time order showing unmodelled dynamics
 
 One way around the autocorrelation is to subsample - use only every :math:`k^\text{th}` sample, where :math:`k` is a certain number of gaps between the points. How do we know how many gaps to leave?  Use the `autocorrelation function <https://en.wikipedia.org/wiki/Autocorrelation>`_ to determine how many samples. You can use the ``acf(...)`` function in R, which will show how many significant lags there are between observations. Calculating the autocorrelation accurately requires a large data set, which is a requirement anyway if you need to subsample your data to obtain independence.
 
@@ -172,7 +172,7 @@ Here are some examples of the autocorrelation plot: in the first case you would 
 	:width: 900px
 	:align: center
 	:scale: 70
-	:alt: fake width
+	:alt: Three examples of autocorrelation function plots with different lag structures
 
 Another test for autocorrelation is the :index:`Durbin-Watson test <pair: Durbin-Watson test; autocorrelation>`. For more on this test see the book by Draper and Smith (Chapter 7, 3rd edition); in R you can use the ``durbinWatsonTest(model)`` function in ``library(car)``. Try generating autocorrelation of varying strength (positive, e.g. ``phi_long = 0.80`` and negative, e.g. ``phi_long = -0.75``) in the code below. Inspect the plots which are generated as a result, especially the time order plot: get a feeling for what a strong and weak positive/negative correlation looks like in the time order.
 
@@ -261,10 +261,56 @@ Another test for autocorrelation is the :index:`Durbin-Watson test <pair: Durbin
 	     col="darkgreen", cex=1.5, adj = c(0, NA))
 
 
-.. Box and Newbold describe a case where the lack of independence lead to serious mis-interpretation:  J Royal Statist. Soc. Series A, v134, p229-240, 1971
-.. Also see: /Users/kevindunn/Statistics course/Course notes/Correlation, covariance and least squares/images/autocorrelated-data-problem.R
-..            where I try to reproduce this problem.
+Two autocorrelated series can appear strongly related
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+The consequences of ignoring the independence assumption can be severe. A well-known case is the
+paper by Coen, Gomme and Kendall (*Lagged relationships in economic forecasting*, Journal of the
+Royal Statistical Society A, **132**, 133-163, 1969), which reported least squares models that
+appeared to forecast the Financial Times share index from lagged economic series such as car
+production. Box and Newbold (*Some comments on a paper of Coen, Gomme and Kendall*, same journal,
+**134**, 229-240, 1971) showed that the apparently significant relationships were an artifact of
+the assumed error structure: each series was strongly autocorrelated, and once that autocorrelation
+was modelled, the evidence for a relationship disappeared.
+
+The effect is straightforward to reproduce. Consider two *independent* random walks: each value is
+the previous value plus fresh random noise, so each series is strongly autocorrelated, like many
+slow-moving process measurements. Regressing one on the other produces what looks like a strong
+model:
+
+.. code-block:: python
+
+	import numpy as np
+	import statsmodels.api as sm
+
+	rng = np.random.default_rng(7)
+	n_steps = 100
+	u = np.cumsum(rng.normal(size=n_steps))
+	w = np.cumsum(rng.normal(size=n_steps))
+
+	# Regressing one walk on the other: R2 = 0.585 and
+	# a slope p-value around 1e-20, yet the two series
+	# are independent by construction. The Durbin-Watson
+	# statistic of 0.10 (far below 2) warns that the
+	# residuals are strongly autocorrelated.
+	walks = sm.OLS(w, sm.add_constant(u)).fit()
+	print(walks.rsquared, walks.pvalues[1])
+	print(sm.stats.durbin_watson(walks.resid))
+
+	# The differenced series recover the fresh noise
+	# added at each step, so the independence assumption
+	# holds for them. The apparent relationship is gone:
+	# R2 = 0.0003 and a slope p-value of 0.87, with a
+	# Durbin-Watson statistic near 2.
+	diffs = sm.OLS(np.diff(w),
+	               sm.add_constant(np.diff(u))).fit()
+	print(diffs.rsquared, diffs.pvalues[1])
+	print(sm.stats.durbin_watson(diffs.resid))
+
+The p-value from the first regression is not interpretable: its derivation assumed independent
+errors, and the Durbin-Watson statistic shows that assumption fails here. Differencing the series
+is one way to restore independence for a random-walk-like signal; the subsampling approach
+:ref:`described in this section <LS-autocorrelation-test>` is another.
 
 .. _LS-model-linearity:
 
@@ -301,7 +347,7 @@ Before launching into various :index:`transformations` or non-linear least squar
 		:align: right
 		:width: 900px
 		:scale: 50
-		:alt: fake width
+		:alt: A nonlinear system with an approximately linear subregion highlighted
 
 How can we detect when the linear model is not sufficient anymore?  While a q-q plot might hint at problems, better plots are the same two plots for detecting :ref:`non-constant error variance <LS-non-constant-error-variance>`:
 
@@ -314,7 +360,7 @@ Here we show both plots for the example just prior (where we used a linear model
 		:align: left
 		:width: 900px
 		:scale: 67
-		:alt: fake width
+		:alt: Residual plots that reveal nonlinearity remaining in the linear model
 
 Transformations are considered successful once the residuals appear to have no more structure in them. Also bear in mind that structure in the residuals might indicate the model is missing an additional explanatory variable (see the section on :ref:`multiple linear regression <LS_multiple_X_MLR>`).
 

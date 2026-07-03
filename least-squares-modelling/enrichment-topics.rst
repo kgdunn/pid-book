@@ -34,7 +34,7 @@ The plot on the left is the raw data, while on the right is the raw data with th
 	:width: 900px
 	:align: center
 	:scale: 70
-	:alt: fake width
+	:alt: Prestige against income: the raw data, and the data with a LOESS smoother superimposed
 
 For bivariate cases, the nonparametric model is often called a :index:`scatterplot smoother <pair: scatterplot smoother; nonparametric modelling>`. There are several methods to calculate the model; one way is by :index:`locally weighted scatterplot smoother <pair: LOESS; nonparametric modelling>` (LOESS), described as follows. Inside a fixed subregion along the :math:`x`-axis (called the window):
 
@@ -126,6 +126,31 @@ For example:
 
 In this example the robust fit shifts the coefficients noticeably: the intercept moves from 196 to 179, and the slope from :math:`-0.331` to :math:`-0.298` (about 10%), while the residual standard error drops from 2.99 to 2.79. The "Test for Bias" at the bottom of the robust output compares the two fits, and its small p-values indicate the ordinary least squares estimates are influenced by the outlying observations, visible in the ``Max`` residual of over 14 units in both fits. Which model to use depends on the purpose: the robust fit describes the bulk of the data, while the ordinary fit is pulled towards the unusual observations.
 
+The same comparison can be run in Python. The `process_improve
+<https://github.com/kgdunn/process_improve>`_ package (the Python library accompanying this book)
+implements a robust fit built on Siegel's *repeated median* slope: for each point, take the median
+of the pairwise slopes to every other point, then take the median of those medians. Up to half the
+observations can be unusual before this slope estimate breaks down.
+
+.. code-block:: python
+
+	import pandas as pd
+	from process_improve.regression.methods import robust_regression
+
+	distill = pd.read_csv(
+	    "https://openmv.net/file/distillation-tower.csv"
+	)
+	out = robust_regression(
+	    distill["TempC2"].values,
+	    distill["VapourPressure"].values,
+	)
+
+	# Slope -0.290 and intercept 175.6: close to the
+	# lmRob values above (-0.298 and 179.5), and shifted
+	# away from the ordinary least squares fit in the
+	# same direction.
+	print(out["intercept"], out["coefficients"])
+
 .. - Least angle least squares (regression)
 .. see the Efron paper mentioned above
 .. also note the rlm() function in MASS
@@ -157,7 +182,7 @@ We could naively assume that we just code our |y| variable as 0 or 1 (pass/fail)
 	:scale: 40
 	:width: 900px
 	:align: right
-	:alt: fake width
+	:alt: The logistic function, an S-shaped curve bounded between 0 and 1
 
 A logistic model however accounts for the nature of the y-variable: rather than predicting |y| directly, it models the *probability* of success as a function of the |x| variables, passed through a function, called a logistic function, which is bounded between 0 and 1. In fact you are already familiar with a function of this shape: the cumulative probability of the normal distribution looks similar.
 
@@ -220,7 +245,7 @@ The thick line represents the slope coefficient (:math:`-0.0059`) using all the 
 		:align: center
 		:width: 900px
 		:scale: 65
-		:alt: fake width
+		:alt: Radiation survival data with fitted slopes, and a histogram of 1000 bootstrapped slope coefficients
 
 Bootstrapping gives us an indication of that sensitivity, as shown in the other plot. The original data set had 14 observations. What bootstrapping does is to randomly select 14 rows from the original data, allowing for duplicate selection. These selected rows are used to build a least squares model, and the slope coefficient is recorded. Then another 14 random rows are selected and this process is repeated ``R`` times (in this case ``R=1000``). On some of these occasions the outlier points will be included, and other times they will be excluded.
 
