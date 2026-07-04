@@ -56,10 +56,14 @@ The example below is from a :math:`2^4` full factorial (four factors, sixteen ru
 	b = np.linalg.solve(X.T @ X, X.T @ y)   # X is orthogonal, so this is exact
 	effects = dict(zip(terms.keys(), b[1:]))  # drop the intercept
 
-	# Pareto plot: absolute effects, largest bar at the top.
+	# Pareto plot: absolute effects, largest bar at the top. Colour each bar by the
+	# sign of its effect, using the colourblind-safe Okabe-Ito pair: orange for a
+	# positive effect, blue for a negative one.
 	ordered = sorted(effects, key=lambda name: abs(effects[name]))
+	orange, blue = "#E69F00", "#0072B2"
+	colours = [orange if effects[name] > 0 else blue for name in ordered]
 	fig = go.Figure(go.Bar(x=[abs(effects[name]) for name in ordered],
-	                       y=ordered, orientation="h"))
+	                       y=ordered, orientation="h", marker_color=colours))
 	fig.update_layout(xaxis_title_text="|effect|", yaxis_title_text="Term",
 	                  showlegend=False)
 	fig.show()
@@ -69,6 +73,8 @@ The example below is from a :math:`2^4` full factorial (four factors, sixteen ru
 	:scale: 30
 	:width: 900px
 	:alt: Pareto plot of effect magnitudes from a full factorial
+
+Each bar is coloured by the *sign* of its effect: orange for a positive coefficient and blue for a negative one (the colourblind-safe Okabe-Ito pair), so the bar length shows the magnitude while its colour shows the direction. The two dashed and dotted vertical lines in the figure are the Lenth margins of error introduced in the :ref:`next section <DOE-lenth-method>`; they, not the colour, mark where significance begins.
 
 We would interpret that factors **A**, **C** and **D**, as well as the interactions of **AC** and **AD**, have a significant and causal effect on the response variable, :math:`y`. The main effect of **B** on the response :math:`y` is small, at least over the range that **B** was used in the experiment. Factor **B** can be omitted from future experimentation in this region, though it might be necessary to include it again if the system is operated at a very different point.
 

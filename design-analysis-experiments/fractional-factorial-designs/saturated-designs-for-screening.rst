@@ -170,6 +170,8 @@ The Pareto plot ranks the effects; to place an objective cutoff on this zero-deg
 	for name, c in zip(names, coeffs):
 	    print(name, round(c, 2), abs(c) > ME)
 
+In the Pareto plot, each bar is coloured by the sign of its effect (orange for a positive coefficient, blue for a negative one), and the dashed vertical line is the Lenth margin of error. Here both of the largest effects, **A** and **C**, are negative, so they appear in blue but still extend past the margin-of-error line.
+
 The pseudo standard error is :math:`\text{PSE} = 0.60`, giving a margin of error of :math:`\text{ME} = 2.26`. Two effects clear it: **A** (:math:`|c| = 2.3`) and **C** (:math:`|c| = 2.8`). The next largest, **G** (:math:`|c| = 1.7`), falls just below the margin, so on this evidence it is a candidate rather than a confirmed effect: a follow-up experiment would be needed to settle it. Recall too that each estimate is confounded: for the main effect **E**, for example, :math:`\widehat{\beta}_{\mathbf{E}} \rightarrow` **E + AC + BG + DF**, so even a clearly significant reading could arise from the main effect or from any of its aliases.
 
 The factors **B**, **D** and **F** are small and can be set aside in this region. Future experiments should focus on **A** and **C**, on confirming **G**, and on resolving the aliasing among their interactions. We show how to reuse these existing 8 experiments, adding a few new ones, in the next section on design foldover and by understanding projectivity.
