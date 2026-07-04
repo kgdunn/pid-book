@@ -579,10 +579,10 @@ two-factor interactions out, and if any of them is not in fact zero, leaving it 
 its effect onto the coefficients we do estimate. How much, and onto which ones, is read
 from the alias matrix.
 
-Split the model terms into the ones we keep and the ones we drop. Let :math:`\mathbf{X}_1`
-hold the eleven fitted columns (the intercept, the five linear terms, and the five pure
-quadratics) and :math:`\mathbf{X}_2` hold the ten two-factor interaction columns
-:math:`x_i x_j` left out. If the true response contains those interactions with
+Split the model terms into the ones we keep and the ones we drop. For this four-factor running
+example, let :math:`\mathbf{X}_1` hold the nine fitted columns (the intercept, the four linear
+terms, and the four pure quadratics) and :math:`\mathbf{X}_2` hold the six two-factor interaction
+columns :math:`x_i x_j` left out. If the true response contains those interactions with
 coefficients :math:`\boldsymbol{\beta}_2`, the least-squares estimates of the fitted
 coefficients are biased by a fixed, design-dependent amount:
 
@@ -651,8 +651,10 @@ means the response shifts by :math:`2\sigma` across a factor's :math:`-1` to :ma
 signal-to-noise ratio of 2. That is the default several design packages (for example Stat-Ease
 Design-Expert) use for power calculations, so the entries here are directly comparable to them; a
 larger assumed effect would raise every entry in the power rows.
-Read that way, the thirteen-run OMARS design has a :math:`0.46` chance of flagging a true one-sigma
-main effect as significant, but only :math:`0.25` for a quadratic of the same size. The gap is
+Read that way, the thirteen-run OMARS design has roughly a :math:`0.46` chance of flagging a true
+one-sigma main effect as significant (its main effects are not all estimated with equal precision,
+so the exact figure varies from factor to factor, and the table reports the weakest), and about
+:math:`0.25` for a quadratic of the same size. The gap is
 expected:
 quadratic effects are estimated with larger variance (we saw this in the worked example, where
 :math:`\text{Var}(b_2)` was the largest of the three), so they are intrinsically harder to detect. A
