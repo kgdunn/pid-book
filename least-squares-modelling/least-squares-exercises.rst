@@ -65,7 +65,7 @@ Exercises
 
 		where :math:`c_t` is the critical t-value, for example at the 95% confidence level.
 
-	Use the `distillation column data set <https://openmv.net/info/distillation-tower>`_ and with |y| as ``VapourPressure`` (units are kPa) and |x| as ``TempC2`` (units of degrees Farenheit) fit a linear model. Calculate the prediction interval for vapour pressure at these 3 temperatures: 430, 480, 520 °F.
+	Use the `distillation column data set <https://openmv.net/info/distillation-tower>`_ and with |y| as ``VapourPressure`` (units are kPa) and |x| as ``TempC2`` (units of degrees Fahrenheit) fit a linear model. Calculate the prediction interval for vapour pressure at these 3 temperatures: 430, 480, 520 °F.
 
 .. admonition:: Solution
 
@@ -77,9 +77,9 @@ Exercises
 
 	Calculating this term manually, or using the ``predict(model, newdata=..., int="p")`` function in R gives the 95% prediction interval:
 
-		*	:math:`x_\text{new} = 430` °F: :math:`\hat{y}_\text{new} = 53.49 \pm 11.97`, or [47.50, 59.47]
-		*   :math:`x_\text{new} = 480` °F: :math:`\hat{y}_\text{new} = 36.92 \pm 11.80`, or [31.02, 42.82]
-		*	:math:`x_\text{new} = 520` °F: :math:`\hat{y}_\text{new} = 23.67 \pm 11.90`, or [17.72, 29.62]
+		*	:math:`x_\text{new} = 430` °F: :math:`\hat{y}_\text{new} = 53.49 \pm 5.99`, or [47.50, 59.47]
+		*   :math:`x_\text{new} = 480` °F: :math:`\hat{y}_\text{new} = 36.92 \pm 5.90`, or [31.02, 42.82]
+		*	:math:`x_\text{new} = 520` °F: :math:`\hat{y}_\text{new} = 23.67 \pm 5.95`, or [17.72, 29.62]
 
 	.. image:: ../figures/least-squares/distillation-prediction-interval.png
 		:align: center
@@ -140,7 +140,7 @@ Exercises
 			:scale: 35
 			:alt: fake width
 
-	-	The predicted vapour pressure at 480 °F is 36.68 kPa :math:`\pm 11.37`, or within the range [31.0 to 42.4] with 95% confidence, very similar to the prediction interval from question 2.
+	-	The predicted vapour pressure at 480 °F is 36.68 kPa :math:`\pm 5.68`, or within the range [31.0 to 42.4] with 95% confidence, very similar to the prediction interval from question 2.
 
 
 	.. literalinclude:: ../figures/least-squares/distillation-column-questions.R
@@ -160,7 +160,7 @@ Exercises
 
 .. admonition:: Solution
 
-	-	The testing data starts at index 160. The code at the end of this question shows how RMSEP was calculated as 4.18 kPa, as compared to the standard error from the model building data (observations 1 to 159) of 2.679 kPa. This indicates the predictions on totally new data have greater error that those observations used to build the model - an expected result.
+	-	The testing data starts at index 160. The code at the end of this question shows how RMSEP was calculated as 4.18 kPa, as compared to the standard error from the model building data (observations 1 to 159) of 2.679 kPa. This indicates the predictions on totally new data have greater error than those observations used to build the model - an expected result.
 
 	-	The influence plot from the model building data is given below.
 
@@ -214,7 +214,7 @@ Exercises
 	.. tabularcolumns:: |C|p{5em}|C|C|C|
 
 	.. csv-table::
-	   :header: Temp = :math:`T` [°C], Duration = :math:`d` [minutes], Speed = :math:`s` [RPM], Baffles = :math:`b` [Yes/No], Yield = :math:`y` [g]
+	   :header: Temp = :math:`T` [°C], Duration = :math:`d` [minutes], Speed = :math:`s` [RPM], Baffles = :math:`b` [Yes/No], Yield = :math:`y` [%]
 	   :widths: 30, 30, 30, 30, 30
 
 			82,      260,  4300,       No,      51
@@ -248,9 +248,9 @@ Exercises
 
 	-	The confidence intervals for each variable is significant at the 95% level. The duration variable must be omitted from the model, because it has no variation. While it might affect the yield, there is no variability in this data set to assess that.
 
-		* :math:`0.00034 \leq b_\text{speed} \leq 0.017`: a 100rpm increase in impeller speed serves to increase yield by 0.87g on average, keeping all other variables constant
-		* :math:`-15.9 \leq b_\text{baffles} \leq -2.30`: the use of baffles decreases yield, on average, by 9.1g, keeping all other variables constant
-		* :math:`-0.74 \leq b_\text{temp} \leq -0.21`: each one degree increase in temperature lowers yield by 0.47g on average, keeping all other variables constant
+		* :math:`0.00034 \leq b_\text{speed} \leq 0.017`: a 100 rpm increase in impeller speed serves to increase yield by 0.87 percentage points on average, keeping all other variables constant
+		* :math:`-15.9 \leq b_\text{baffles} \leq -2.30`: the use of baffles decreases yield, on average, by 9.1 percentage points, keeping all other variables constant
+		* :math:`-0.74 \leq b_\text{temp} \leq -0.21`: each one degree increase in temperature lowers yield by 0.47 percentage points on average, keeping all other variables constant
 		* We cannot say anything about the effect of batch duration
 
 		The plots are not shown here, they can be drawn with ``plot(bio)`` to obtain a scatterplot matrix of plots.
@@ -483,7 +483,7 @@ Exercises
 		F-statistic:  1069 on 1 and 251 DF,  p-value: < 2.2e-16
 
 
-	#.	This predictive model allows us to achieve better control of the vapour pressure, because we can predict it from temperature (measured in real-time), rather than wait several hours for the laboratory vapour pressure value. The slope coefficient is -0.331, and since no units were given, I can't expect any in your solution; however one should report the units, which is this case would be units of pressure divided by units temperature (e.g. psi/K). What this means, in terms of feedback control of the vapour pressure is that we must decrease the temperature to raise the vapour pressure. This is important when tuning the feedback control loop in 2 ways: (a) firstly, the the sign of the gain in the feedback controller (i.e. negative gain) must be the same as the process gain to achieve a stable feedback loop, (b) the magnitude of the slope provides an estimate of how sensitive the vapour pressure is to temperature. For example: do we have to add a large amount of energy into the distillation column to achieve a smallish reduction in vapour pressure?  The answer depends heavily on the units, which I omitted to provide.
+	#.	This predictive model allows us to achieve better control of the vapour pressure, because we can predict it from temperature (measured in real-time), rather than wait several hours for the laboratory vapour pressure value. The slope coefficient is -0.331, and since no units were given, I can't expect any in your solution; however one should report the units, which is this case would be units of pressure divided by units temperature (e.g. psi/K). What this means, in terms of feedback control of the vapour pressure is that we must decrease the temperature to raise the vapour pressure. This is important when tuning the feedback control loop in 2 ways: (a) firstly, the sign of the gain in the feedback controller (i.e. negative gain) must be the same as the process gain to achieve a stable feedback loop, (b) the magnitude of the slope provides an estimate of how sensitive the vapour pressure is to temperature. For example: do we have to add a large amount of energy into the distillation column to achieve a smallish reduction in vapour pressure?  The answer depends heavily on the units, which I omitted to provide.
 
 	#.	These are reported in the above software output: (a) the residual IQR is 2.00 - (-2.38) = 4.38 units of vapour pressure, while (b) the median residual is close to zero, as expected.
 
@@ -636,7 +636,7 @@ Exercises
 	#.
 		*	From the R model output: :math:`R^2 = 0.2347`
 		*	From earlier, the squared correlation is :math:`(-0.484)^2 = 0.2347`, the same value.
-		*	Correlation can be interpreted as the square root of the :math:`R^2` value when regressing :math:`y` on :math:`x` (i.e. fitting a linear model to :math:`y` using :math:`x` as the input).
+		*	Correlation can be interpreted as the square root of the :math:`R^2` value when regressing :math:`y` on :math:`x` (i.e. fitting a linear model to :math:`y` using :math:`x` as the input), with the sign taken from the slope: here :math:`r = -\sqrt{0.2347} = -0.484`.
 		*	Most novices would be misled and consider an :math:`R^2` value of 0.23 quite low. But notice that there is a repeatable and consistent negative linear relationship between :math:`x` and :math:`y` in this data.
 
 
@@ -754,11 +754,11 @@ Exercises
 		=================== ========================================= =================== ============== ========================================
 		Type of variance    Distance                                  Degrees of freedom  SSQ            Mean square
 		=================== ========================================= =================== ============== ========================================
-		Regression          :math:`\hat{y}_i - \overline{\mathrm{y}}` :math:`k-2`         709.9          354.9
+		Regression          :math:`\hat{y}_i - \overline{\mathrm{y}}` :math:`k-1 = 1`     709.9          709.9
 		------------------- ----------------------------------------- ------------------- -------------- ----------------------------------------
-		Error               :math:`y_i - \hat{y}_i`                   :math:`n-k`         2314.9         7.87
+		Error               :math:`y_i - \hat{y}_i`                   :math:`n-k = 294`   2314.9         7.87
 		------------------- ----------------------------------------- ------------------- -------------- ----------------------------------------
-		Total               :math:`y_i - \overline{\mathrm{y}}`       :math:`n`           3024.8         10.2
+		Total               :math:`y_i - \overline{\mathrm{y}}`       :math:`n-1 = 295`   3024.8         10.3
 		=================== ========================================= =================== ============== ========================================
 
 		The residual standard error, or just standard error, :math:`S_E = \sqrt{\frac{2314.9}{296-2}} = 2.8` %CO\ :sub:`2`, which agrees with the value from R.
@@ -781,11 +781,11 @@ Exercises
 		=================== ========================================= =================== ============== ========================================
 		Type of variance    Distance                                  Degrees of freedom  SSQ            Mean square
 		=================== ========================================= =================== ============== ========================================
-		Regression          :math:`\hat{y}_i - \overline{\mathrm{y}}` :math:`k-2`         32877          16438
+		Regression          :math:`\hat{y}_i - \overline{\mathrm{y}}` :math:`k-1 = 1`     32877          32877
 		------------------- ----------------------------------------- ------------------- -------------- ----------------------------------------
-		Error               :math:`y_i - \hat{y}_i`                   :math:`n-k`         122.7          15.3
+		Error               :math:`y_i - \hat{y}_i`                   :math:`n-k = 8`     122.7          15.3
 		------------------- ----------------------------------------- ------------------- -------------- ----------------------------------------
-		Total               :math:`y_i - \overline{\mathrm{y}}`       :math:`n`           33000          3300
+		Total               :math:`y_i - \overline{\mathrm{y}}`       :math:`n-1 = 9`     33000          3667
 		=================== ========================================= =================== ============== ========================================
 
 		The residual standard error, or just standard error, :math:`S_E = \sqrt{\frac{122.7}{10-2}} = 3.9` K, which agrees with the value from R.
@@ -847,9 +847,9 @@ Exercises
 
 		*	:math:`-8.9 \leq b_A \leq  9.4`
 		*	:math:`1.4 \leq b_S \leq  6.5`
-		*	:math:`1.9 \leq b_A \leq  37`
+		*	:math:`1.9 \leq b_L \leq  37`
 
-		The :math:`R^2` value is 0.65 in the MLR, compared to the value of 0.30 in the single variable regression. The :math:`R^2` value will always decrease when adding a new variable to the model, even if that variable has little value to the regression model (yet another caution related to :math:`R^2`).
+		The :math:`R^2` value is 0.65 in the MLR, compared to the value of 0.30 in the single variable regression. The :math:`R^2` value, computed on the building data, never decreases when adding a new variable to the model, even if that variable has little value to the regression model (yet another caution related to :math:`R^2`).
 
 		The MLR standard error is 10.13 on 26 degrees of freedom, a decrease of about 3 units from the individual regression in part 1; a small decrease given the :math:`y`-variable's range of about 50 units.
 
@@ -1019,14 +1019,14 @@ Exercises
 
 		where :math:`x_T` is the temperature value in °C, :math:`x_S` is the speed in RPM and :math:`x_B` is a coded variable, 0=no baffles and 1=with baffles.
 
-		*	*Temperature effect*: :math:`-0.74 < \beta_T < -0.21`, with :math:`b_T = -0.47` indicates that increasing the temperature by 1 °C will decrease the yield on average by 0.47 units, holding the speed and baffle effects constant. The confidence interval does not span zero, indicating this coefficient is significant. An ad-hoc way I sometimes use to gather the effect of a variables is to ask what is the effect over the entire range of temperature, :math:`\sim 40 \text{°C}`:
+		*	*Temperature effect*: :math:`-0.74 < \beta_T < -0.21`, with :math:`b_T = -0.47` indicates that increasing the temperature by 1 °C will decrease the yield on average by 0.47 units, holding the speed and baffle effects constant. The confidence interval does not span zero, indicating this coefficient is significant. An ad-hoc way I sometimes use to gauge the effect of a variable is to ask what is the effect over the entire range of temperature, :math:`\sim 40 \text{°C}`:
 
 			*	:math:`\Delta y = -0.74 \times 40 = -29.6` % decrease in yield
 			*	:math:`\Delta y = -0.21 \times 40 = -8.4` % decrease in yield
 
 			A tighter confidence interval will have these two values even closer, but given the range of the y's in the data cover about 35% units, this temperature effect is important, and will have a noticeable effect at either end of the confidence interval.
 
-		*	*Speed effect*: :math:`0.34 < \beta_S <  17.0822` with :math:`b_S = 8.7` per 1000 RPM: indicates that increase the RPM by 1000 units will increase the yield by about 8.7 units, holding the other factors constant. While the confidence interval does not span zero, it is quite wide.
+		*	*Speed effect*: :math:`0.34 < \beta_S <  17.1` with :math:`b_S = 8.7`, all expressed per 1000 RPM: increasing the impeller speed by 1000 RPM will increase the yield by about 8.7 percentage points, holding the other factors constant. While the confidence interval does not span zero, it is quite wide.
 
 		*	*Baffles effect*: :math:`-15.9 < \beta_B < -2.29` with :math:`b_B = -9.1` indicates the presence of baffles decreases yield on average by 9.1 units, holding the temperature and speed effects constant. The confidence interval does not span zero, indicating this coefficient is significant. It is an important effect to consider when wanting to change yield.
 
@@ -1074,7 +1074,7 @@ Exercises
 
 		which agrees with the estimates that R calculated (even though R fits an intercept term, while we do not estimate an intercept).
 
-	#.	The predicted yield yield for an experiment run without baffles, at 4000 rpm impeller speed, run at a reactor temperature of 90 °C would be 45%:
+	#.	The predicted yield for an experiment run without baffles, at 4000 rpm impeller speed, run at a reactor temperature of 90 °C would be 45%:
 
 		.. math::
 
@@ -1238,7 +1238,7 @@ Exercises
 			:width: 900px
 			:align: left
 
-		The updated model shows shows only point 8 as an influential observation, due to its moderate leverage and large residual. However, this point does not warrant removal, since it is just above the cut-off value of :math:`4/(n-k) = 4/(50-2) = 0.083` for Cook's distance.
+		The updated model shows only point 8 as an influential observation, due to its moderate leverage and large residual. However, this point does not warrant removal: its Cook's distance is only marginally above the rule-of-thumb cut-off value of :math:`4/(n-k) = 4/(50-2) = 0.083`, and a point just past a rule of thumb is not, on its own, a reason to discard it.
 
 		The other large hat values don't have large Studentized residuals, so they are not influential on the model.
 
@@ -1289,8 +1289,8 @@ Exercises
 			\begin{array}{rcccl}
 				-c_t &\leq& z	&\leq & +c_t \\
 				(\overline{x}_B - \overline{x}_A) - c_t \sqrt{s_P^2 \left(\frac{1}{n_B} + \frac{1}{n_A}\right)}	&\leq& \mu_B - \mu_A	&\leq &  (\overline{x}_B - \overline{x}_A) + c_t \sqrt{s_P^2 \left(\frac{1}{n_B} + \frac{1}{n_A}\right)}\\
-				1.02 - 2.3 \sqrt{0.709 \left(\frac{1}{5} + \frac{1}{5}\right)} 	&\leq& \mu_B - \mu_A	&\leq& 1.02 + 2.3 \sqrt{0.709 \left(\frac{1}{5} + \frac{1}{5}\right)} \\
-				-0.21	&\leq& \mu_B - \mu_A	&\leq&   2.2
+				1.02 - 2.306 \sqrt{0.706 \left(\frac{1}{5} + \frac{1}{5}\right)} 	&\leq& \mu_B - \mu_A	&\leq& 1.02 + 2.306 \sqrt{0.706 \left(\frac{1}{5} + \frac{1}{5}\right)} \\
+				-0.205	&\leq& \mu_B - \mu_A	&\leq&   2.245
 			\end{array}
 
 	Fit a least squares model to the data using an integer variable, :math:`x_A = 0` for additive A, and :math:`x_A = 1` for additive B. The model should include an intercept term also: :math:`y = b_0 + b_A x_A`. *Hint*: use R to build the model, and search the R tutorial with the term *categorical variable* or *integer variable* for assistance.
@@ -1370,7 +1370,7 @@ Exercises
 
 		and represents the variance of the predicted :math:`\hat{y}_i` at the given value of :math:`x_i = 5.8`.
 
-		The confidence interval, or prediction interval for this :math:`\hat{y}_i` is :math:`\pm c_t \sqrt{V\{\hat{y}_i\}} = \pm 2.14 \sqrt{27.99} = \pm 11.3`,  a bit larger than the rough estimate above.
+		The prediction interval for this :math:`\hat{y}_i` is :math:`\pm c_t \sqrt{V\{\hat{y}_i\}} = \pm 2.14 \sqrt{27.99} = \pm 11.3`,  a bit larger than the rough estimate above.
 
 .. admonition:: Question
 
@@ -1392,9 +1392,9 @@ Exercises
 		---------------------------------------------------------
 		                                    Sum of           Mean
 		Source                   DF        Squares         Square
-		Model                     2         9532.7        4766.35
+		Model                     1         9532.7         9532.7
 		Error                    84         9963.7          118.6
-		Total                    86        19496.4
+		Total                    85        19496.4
 		Root MSE              XXXXX
 		R-Square              XXXXX
 
@@ -1432,12 +1432,12 @@ Exercises
 		.. math::
 
 			b_1   & \pm c_t S_E(b_1)\\
-			-3.75 & \pm 1.98\displaystyle \frac{S_E^2}{\sum_{j}{\left(x_j - \overline{x}\right)^2}} \\
-			-3.75 & \pm 1.98\frac{10.9}{697}\\
-			-3.75 & \pm 0.031
+			-3.75 & \pm 1.99\displaystyle \sqrt{\frac{S_E^2}{\sum_{j}{\left(x_j - \overline{x}\right)^2}}} \\
+			-3.75 & \pm 1.99\sqrt{\frac{118.6}{5715}}\\
+			-3.75 & \pm 0.29
 
-		where :math:`\displaystyle \frac{\left(x_j - \overline{x}\right)^2}{n-1} = 8.2`, so one can solve for :math:`\displaystyle \left(x_j - \overline{x}\right)^2` (though any reasonable value/attempt to get this value should be acceptable) and :math:`c_t = 1.98`, using :math:`n-k` degrees of freedom at 95% confidence.
+		where the raw temperature data had a sample *standard deviation* of 8.2 K, so :math:`\displaystyle \sum_j \left(x_j - \overline{x}\right)^2 = 8.2^2 \times (n-1) = 8.2^2 \times 85 = 5715\,\text{K}^2` (though any reasonable value/attempt to get this value should be acceptable) and :math:`c_t = 1.99`, using :math:`n-k = 84` degrees of freedom at 95% confidence.
 
-		*Interpretation*: this interval is extremely narrow, i.e. our slope estimate is precise. We can be sure that any change made to the temperature in our system will have the desired effect on viscosity in the feedback control system.
+		*Interpretation*: this interval is narrow relative to the slope estimate of :math:`-3.75`, i.e. our slope estimate is precise. We can be sure that any change made to the temperature in our system will have the desired effect on viscosity in the feedback control system.
 
 	#.	The standard error, :math:`S_E = 10.9` Pa.s is interpreted as the amount of spread in the residuals. In addition, if we assume the residuals to be normally distributed (easily confirmed with a q-q plot) and independent. If that is true, then :math:`S_E` is the one-sigma standard deviation for the residuals and we can say 95% of the residuals are expected within a range of :math:`\pm 2 S_E`.

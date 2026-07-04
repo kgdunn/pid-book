@@ -39,11 +39,23 @@ Three common pitfalls to avoid:
 
 #.	*Avoid using* :index:`pie charts <pair: pie chart; visualization>` *when tables will do.*
 
-	Pie charts are tempting when we want to graphically break down a quantity into components. I have used them erroneously myself (here is an example on a website that I helped with: https://www.macc.mcmaster.ca/gradstudies.php). We won't go into details here, but I strongly suggest you read the convincing evidence of :index:`Stephen Few <single: Few, Stephen>` in: `"Save the pies for dessert" <https://www.perceptualedge.com/articles/08-21-07.pdf>`_. The key problem is that the human eye cannot adequately decode angles; however, we have no problem with linear data.
+	Pie charts are tempting when we want to graphically break down a quantity into components. I
+	have used them erroneously myself (here is an example on a website that I helped with:
+	https://www.macc.mcmaster.ca/gradstudies.php). We won't go into details here, but I strongly
+	suggest you read the convincing evidence of :index:`Stephen Few <single: Few, Stephen>` in:
+	`"Save the pies for dessert" <https://www.perceptualedge.com/articles/08-21-07.pdf>`_. The key
+	problem is that the human eye decodes angles far less accurately than it judges positions and
+	lengths. The graphical-perception experiments of Cleveland and McGill (1984), listed in the
+	:ref:`references <visualization_references>`, measured this ranking directly: judgements based
+	on position along a common scale were the most accurate, followed by length, with angle and
+	area well behind.
 
-#.	*Avoid arbitrary ordering along the first column; usually, alphabetically or in time order is better.*
+#.	*Avoid arbitrary ordering along the first column; order the rows by a criterion of interest.*
 
-	Listing the car types alphabetically is trivial: instead, list them by some other third criterion of interest, perhaps minimum down payment required, typical lease duration, or total amount of interest paid on the loan. That way you get some extra context to the table for free.
+	Listing the car types alphabetically is trivial, and time order is only meaningful when the
+	rows are events. Instead, list the rows by another criterion of interest: perhaps minimum down
+	payment required, typical lease duration, or total amount of interest paid on the loan. That
+	way you get some extra context from the table for free.
 
 #.	*Avoid using excessive grid lines.*
 

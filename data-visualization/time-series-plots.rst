@@ -7,7 +7,7 @@ Time-series plots
 
 We start off by considering a plot most often seen in engineering applications: the :index:`time-series plot <pair: time-series plots; visualization>`. The time-series plot is a univariate plot: it shows only one variable. It is a 2-dimensional plot in which one axis, the time-axis, shows graduations at an appropriate scale (seconds, minutes, weeks, quarters, years), while the other axis shows the numeric values. Usually, the time-axis is displayed horizontally, but this is not a requirement: some interesting analysis can be done with time running vertically.
 
-Many statistical packages call this a :index:`line plot <pair: line plot; visualization>`, as it can be used generally to display any sort of sequence, whether it is along time or some other ordering. The time-series plot is an excellent way to visualize long sequences of data. It tells a visual story along the sequence axis, and the human brain is incredible at absorbing this high density of data, locating patterns in the data such as sinusoids, spikes, and outliers, and separating any noise from signal.
+Many statistical packages call this a :index:`line plot <pair: line plot; visualization>`, as it can be used generally to display any sort of sequence, whether it is along time or some other ordering. The time-series plot is an excellent way to visualize long sequences of data. It tells a visual story along the sequence axis, and the human brain is remarkably good at absorbing this high density of data, locating patterns in the data such as sinusoids, spikes, and outliers, and separating any noise from signal.
 
 Here are some tips for effective time-series plots:
 
@@ -29,26 +29,37 @@ Here are some tips for effective time-series plots:
 	.. literalinclude:: /data-visualization/gists/time-series-plot.py
 		:language: python
 
-.. AU: The last sentence in the following paragraph seemed a little convoluted. Please verify edits.
-
--	When plotting more than one trajectory (a vector of values) against time, it is helpful if the lines do not cross or jumble too much. This allows you to clearly see the relationship with other variables. The use of a second *y*-axis on the right-hand side is helpful when plotting two trajectories, but when plotting three or more trajectories that are in the same numeric range, it is better to use several :index:`parallel axes <pair: parallel axes; visualization>`.
+-	When plotting more than one trajectory (a vector of values) against time, it is helpful if the
+	lines do not cross or jumble too much. This allows you to clearly see the relationship with
+	other variables. A second *y*-axis on the right-hand side is sometimes used when plotting two
+	trajectories that have different units or ranges. Interpret such plots with care: the two
+	vertical scales are chosen independently of each other, so the point where the lines cross, and
+	how strongly the lines appear to move together, depends on the scaling and is not a property of
+	the data. When plotting three or more trajectories that are in the same numeric range, it is
+	better to use several :index:`parallel axes <pair: parallel axes; visualization>`.
 
 	.. _visualization-cluttered-trajectories:
 
 	.. image:: ../figures/visualization/three_correlated_variables_-_badly_displayed_in_Numbers.png
 
-.. AU: The term "here" is ambiguous. In the following paragraph, is "here" referring to the figures above and below?
+	The previous figure shows this jumbled result, drawn with the default settings of a spreadsheet
+	package (Apple iWork's *Numbers*, 2009). Differently coloured lines and/or markers may work in
+	selected instances, but with three trajectories the lines already clutter each other.
 
-	As shown in the previous figure, even using differently coloured lines and/or markers may work in selected instances, but this still leads to a clutter of lines and markers. The following chart shows this principle, created with the default settings from Apple iWork's *Numbers* (2009).
-
-	Using different markers, improving the axis labelling, tightening up the axis ranges, and thinning out the ink improves the chart slightly. This took about 3 minutes extra in the software, because I had not used the software before and had to find the settings.
+	Using different markers, improving the axis labelling, tightening up the axis ranges, and
+	thinning out the ink improves the chart slightly, as shown next. This took about 3 minutes extra
+	in the software, because I had not used the software before and had to find the settings.
 
 	.. figure:: ../figures/visualization/three_correlated_variables_-_slightly_better.png
 
-	This final example with parallel axes is greatly improved, but took about 10 minutes to assemble and would likely take a similar amount of time to format in MATLAB, Excel, Python or other packages. The results are clearer to interpret: variables "Type A" and "Type B" move up and down together, while variable "Type C" moves in the opposite direction. Note how the *y*-axis for "Type C" is rescaled to start from its minimum value, rather than a value of zero. You should always use "tight" limits on the *y*-axis.
+	The version below, with parallel axes, is greatly improved. It took about 10 minutes to
+	assemble, and would likely take a similar amount of time to format in MATLAB, Excel, Python or
+	other packages. The results are clearer to interpret: variables "Type A" and "Type B" move up
+	and down together, while variable "Type C" moves in the opposite direction. Note how the
+	*y*-axis for "Type C" is rescaled to start from its minimum value, rather than a value of zero.
+	Use tight limits on the *y*-axis, so that the vertical space is used to show the data.
 
-
-.. image:: ../figures/visualization/three_correlated_variables_-_better.png
+	.. image:: ../figures/visualization/three_correlated_variables_-_better.png
 
 -	Using the same data as in the previous tip, a much improved visualization technique is to use sparklines to represent the sequence of data.
 
@@ -59,7 +70,14 @@ Here are some tips for effective time-series plots:
 			:scale: 50
 			:align: center
 
-	Sparklines are small graphics that carry a high :index:`density of information <pair: data density; visualization>`. The human eye is easily capable of absorbing about 100 dots or points per linear centimeter and around 10000 points per square centimeter. These :index:`sparklines <pair: sparklines; visualization>` convey the same amount of information as the previous plots and are easy to consume on hand-held devices such as cellphones and tablet computing devices that are common in chemical plants and other engineering facilities. Read more about them from `this hyperlink <https://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR>`_.
+	Sparklines are small graphics that carry a high :index:`density of information
+	<pair: data density; visualization>`. Tufte, who introduced them, estimates that the human eye
+	can comfortably resolve around 100 points per linear centimeter, and around 10000 points per
+	square centimeter. These :index:`sparklines <pair: sparklines; visualization>` show the same
+	data as the previous plots in a fraction of the space, and are easy to consume on hand-held
+	devices such as cellphones and tablet computing devices that are common in chemical plants and
+	other engineering facilities. Read more about them in `Tufte's essay on sparklines
+	<https://www.edwardtufte.com/notebook/sparkline-theory-and-practice-edward-tufte/>`_.
 
 
 -	When plotting money values over time (e.g. sales of your product over the past 10 years), adjust for :index:`inflation effects <single: inflation; adjusting for>` by dividing by the consumer price index or an appropriate factor. Distortions due to the time value of money can be very misleading, as this `example of retail sales shows <https://people.duke.edu/~rnau/411infla.htm>`_. For Canadians, here is a `Canadian inflation calculator <https://www.bankofcanada.ca/rates/related/inflation-calculator>`_ from the Bank of Canada that can help you. For most countries you can almost certainly find something similar from the country's national bank or a government office.
