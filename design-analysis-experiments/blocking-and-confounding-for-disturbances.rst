@@ -80,19 +80,21 @@ If the raw material has a significant effect on the response variable, then we w
 
 But the small loss due to this confusion of effects, is the gain that we can still estimate the main effects and two-factor interactions without bias, provided the effect of the disturbance is constant. Let's see how we get this result by denoting :math:`\widetilde{y}_i` as a :math:`y` response from the first batch of materials and let :math:`\mathring{y}_i` denote a response from the second batch.
 
-Using the least squares equations you can show for yourself that (some are intentionally left blank for you to complete):
+Each estimate is the corresponding column of :math:`\pm 1` signs applied to the responses. Writing :math:`\widetilde{y}` for a batch 1 response and :math:`\mathring{y}` for a batch 2 response, the seven contrasts are:
 
 	.. math::
 
 		\hat{\beta}_A    &= -\widetilde{y}_1 + \mathring{y}_2 - \mathring{y}_3 + \widetilde{y}_4 - \mathring{y}_5 + \widetilde{y}_6 - \widetilde{y}_7 + \mathring{y}_8 \\
-		\hat{\beta}_B    &= \\
-		\hat{\beta}_C    &= \\
+		\hat{\beta}_B    &= -\widetilde{y}_1 - \mathring{y}_2 + \mathring{y}_3 + \widetilde{y}_4 - \mathring{y}_5 - \widetilde{y}_6 + \widetilde{y}_7 + \mathring{y}_8 \\
+		\hat{\beta}_C    &= -\widetilde{y}_1 - \mathring{y}_2 - \mathring{y}_3 - \widetilde{y}_4 + \mathring{y}_5 + \widetilde{y}_6 + \widetilde{y}_7 + \mathring{y}_8 \\
 		\hat{\beta}_{AB} &= +\widetilde{y}_1 - \mathring{y}_2 - \mathring{y}_3 + \widetilde{y}_4 + \mathring{y}_5 - \widetilde{y}_6 - \widetilde{y}_7 + \mathring{y}_8\\
-		\hat{\beta}_{AC} &= \\
-		\hat{\beta}_{BC} &= \\
-		\hat{\beta}_{ABC} &= \\
+		\hat{\beta}_{AC} &= +\widetilde{y}_1 - \mathring{y}_2 + \mathring{y}_3 - \widetilde{y}_4 - \mathring{y}_5 + \widetilde{y}_6 - \widetilde{y}_7 + \mathring{y}_8 \\
+		\hat{\beta}_{BC} &= +\widetilde{y}_1 + \mathring{y}_2 - \mathring{y}_3 - \widetilde{y}_4 - \mathring{y}_5 - \widetilde{y}_6 + \widetilde{y}_7 + \mathring{y}_8 \\
+		\hat{\beta}_{ABC} &= -\widetilde{y}_1 + \mathring{y}_2 + \mathring{y}_3 - \widetilde{y}_4 + \mathring{y}_5 - \widetilde{y}_6 - \widetilde{y}_7 + \mathring{y}_8 \\
 
-Imagine now the :math:`y` response was increased by :math:`g` units for the batch 1 experiments, and increased by :math:`h` units for batch 2 experiments. You can prove to yourself that these biases will cancel out for all main effects and all two-factor interactions. The three factor interaction of :math:`\hat{\beta}_{ABC}` will however be heavily confounded.
+Now imagine the :math:`y` response was raised by :math:`g` units for every batch 1 experiment and by :math:`h` units for every batch 2 experiment. The bias this adds to a contrast is :math:`g` times the sum of that contrast's signs on the batch 1 runs, plus :math:`h` times the sum of its signs on the batch 2 runs. Take :math:`\hat{\beta}_A`: its batch 1 runs are 1, 4, 6, 7 with signs :math:`-, +, +, -` which sum to zero, and its batch 2 runs are 2, 3, 5, 8 with signs :math:`+, -, -, +` which also sum to zero, so the bias is :math:`0 \cdot g + 0 \cdot h = 0`. The same holds for every main effect and every two-factor interaction: each is orthogonal to the :math:`ABC` column that defines the blocks, so its signs balance within each batch and the biases :math:`g` and :math:`h` cancel exactly.
+
+The :math:`ABC` contrast is the exception. By construction batch 1 is the four runs with :math:`ABC = -1` and batch 2 the four with :math:`ABC = +1`, so :math:`\hat{\beta}_{ABC}` has all :math:`-1` signs on batch 1 and all :math:`+1` on batch 2. Its bias is :math:`(-4)g + (+4)h = 4(h - g)`: the whole batch-to-batch difference lands on :math:`\hat{\beta}_{ABC}`, which is why the block is confounded with the three-factor interaction and nowhere else. This is exactly the outcome we wanted: the disturbance is quarantined in the one effect we expected to be negligible, leaving all the main effects and two-factor interactions clean.
 
 Another way to view this problem is that the first batch of materials and the second batch of materials can be represented by a new variable, called :math:`D` with value of :math:`D_{-} =` batch 1 and :math:`D_{+} =` batch 2. We will show next that we must consider this new factor to be generated from the other three: **D = ABC**.
 
