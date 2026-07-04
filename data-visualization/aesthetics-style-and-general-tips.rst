@@ -12,8 +12,9 @@ Data frames (axes)
 
 Frames are the basic containers that surround the data and give context to our numbers. Here are some tips:
 
-#.	Use round numbers.
-#.	Generally, tighten the axes as much as possible, except ...
+#.	Use round numbers for the axis limits and tick marks.
+#.	Generally, tighten the axes as much as possible. Two exceptions: bar plots, where the value
+	axis must include zero, and comparison plots, described next.
 #.	When showing comparison plots, all axes must have the same minima and maxima.
 
 .. TODO: give an example of a bad visualization here that has unequal axes for comparison
@@ -23,7 +24,18 @@ Colour
 
 :index:`Colour <pair: colour; visualization>` is very effective in all graphical charts. However, you must bear in mind that your readers might be :index:`colour-blind <single: colour-blindness>`, or the document might be read from a :index:`grayscale <single: grayscale>` printout, or viewed on an electronic device where colours are shown differently than you might intend.
 
-Note also that a standard colour progression does *not* exist. We often see dark blues and purples representing low numbers and reds the higher numbers, with greens, yellows and orange in-between. There are several such `colour schemes <https://en.wikipedia.org/wiki/Color_scheme>`_ - there isn't a universal standard. The only safest colour progression is the grayscale axis, ranging from black to white at each extreme: this satisfies both colour-blind readers and users of your grayscale printed output.
+Note also that a single standard colour progression does *not* exist. We often see dark blues and
+purples representing low numbers and reds the higher numbers, with greens, yellows and orange
+in-between. There are several such `colour schemes
+<https://en.wikipedia.org/wiki/Color_scheme>`_ - there isn't a universal standard. Most plotting
+software now defaults to a colour scale designed to be *perceptually uniform*: equal steps in the
+data appear as equal steps in colour, the scale converts sensibly to grayscale, and it remains
+readable for colour-blind readers. Examples are the ColorBrewer schemes of Harrower and Brewer
+(2003), listed in the :ref:`references <visualization_references>`, and the viridis and cividis
+colour maps that ship with matplotlib, Plotly and R. Avoid the older rainbow (or "jet") colour
+scale: its perceived brightness rises and falls along the scale, which creates bands and false
+boundaries that are not in the data. A grayscale axis, ranging from black to white, remains a safe
+progression for printed output.
 
 See the :ref:`section on scatter plots <reference_to_use_of_colour>` for an example of the effective use of colour.
 
@@ -32,7 +44,12 @@ General summary: revealing complex data graphically
 
 There is no generic advice that applies in every instance. These tips are useful, though, in most cases:
 
--	If the question you want answered is causality, then show causality (the most effective way is with bivariate scatter plots). If trying to answer a question with alternatives, show comparisons (with :index:`tiles of plots <pair: small multiples; visualization>` or a simple table).
+-	If the question you want answered is about the relationship between two variables, show that
+	relationship (the most effective way is with bivariate scatter plots), keeping in mind that a
+	scatter plot shows association: establishing causality requires a
+	:ref:`designed experiment <SECTION-design-analysis-experiments>`. If trying to answer a
+	question with alternatives, show comparisons (with :index:`tiles of plots
+	<pair: small multiples; visualization>` or a simple table).
 
 -	Words and graphics belong together. Add labels to plots for outliers, and explain interesting points. Add equations and even small summary tables on top of your plots. Remember that a graph should be like a paragraph of text, not necessarily just a graphical display of numbers that you discuss later on.
 
@@ -44,4 +61,7 @@ There is no generic advice that applies in every instance. These tips are useful
 
 -	Maximize the :index:`data-ink ratio <pair: data-ink ratio; visualization>` = (ink for data) / (total ink for graphics). Maximizing this ratio, within reason, means you should (a) eliminate nondata ink and (b) erase redundant data-ink.
 
--	Maximize :index:`data density <pair: data density; visualization>`. Humans can `interpret data displays <https://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR>`_ of around 100 data points per centimeter (250 data points per linear inch) and around 10000 per square centimeter (60000 data points per square inch).
+-	Maximize :index:`data density <pair: data density; visualization>`. Tufte `estimates
+	<https://www.edwardtufte.com/notebook/sparkline-theory-and-practice-edward-tufte/>`_ that
+	people can interpret data displays of around 100 data points per centimeter (250 data points
+	per linear inch) and around 10000 per square centimeter (60000 data points per square inch).
