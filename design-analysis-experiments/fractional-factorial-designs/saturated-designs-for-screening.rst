@@ -3,11 +3,9 @@
 Saturated designs for screening
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. TODO: you don't really described at all what a saturated design is
+A :index:`saturated design <pair: saturated design; experiments>` is one in which the number of runs equals the number of parameters being estimated, so there are **no degrees of freedom left over**. The model fits the data exactly, every residual is zero, and no classical standard error can be computed. A saturated design can be likened to a well trained doctor asking you a few, but very specific, questions to identify a disease or problem. On the other hand, if you just sit there and tell the doctor all your symptoms, you may or may not get an accurate diagnosis. Designed experiments, like visiting this doctor, shorten the time required to identify the major effects in a system, and to do so as accurately as possible, within a limited budget.
 
-A :index:`saturated design <pair: saturated design; experiments>` can be likened to a well trained doctor asking you a few, but very specific, questions to identify a disease or problem. On the other hand, if you sit there just tell the doctor all your symptoms, you may or may not get an accurate diagnosis. Designed experiments, like visiting this doctor, shortens the time required to identify the major effects in a system, and to do so as accurately as possible, within limited budget.
-
-Saturated designs are most suited for screening, and should always be run when you are investigating a new system with many factors. These designs are usually of resolution III and allow you to determine the main effects with a low number of experiments.
+Saturated designs are most suited for screening, and are a natural choice when you are investigating a new system with many factors. These designs are usually of resolution III and estimate all the main effects with a low number of experiments. A :math:`2^{7-4}_{\text{III}}` factorial, for instance, spends its 8 runs on an intercept and 7 main effects, so it is saturated.
 
 For example, a :math:`2^{7-4}_{\text{III}}` factorial, introduced in the section on :ref:`highly fractionated designs <DOE-highly-fractionated-designs>`, will screen 7 factors in 8 experiments. Once you have run the 8 experiments you can quickly tell which subset of the 7 factors are actually important, and spend the rest of your budget on clearly understanding these effects and their interactions. Bear in mind that there is a risk of confounding, as previously described in that section.
 
@@ -157,9 +155,26 @@ How do you assess which main effects are important?  There are eight data points
 	:alt:	../../figures/doe/pareto-plot.R
 
 
-Significant effects would be **A**, **C** and **G**. The next largest effect, **E**, though fairly small, could be due to the main effect **E** or due to the **AC** interaction, because recall the confounding pattern, up to the 2 factor-interactions, for main effect was :math:`\widehat{\beta}_{\mathbf{E}} \rightarrow` **E + AC + BG + DF**.
+The Pareto plot ranks the effects; to place an objective cutoff on this zero-degrees-of-freedom design we apply :ref:`Lenth's method <DOE-lenth-method>` to the seven coefficients:
 
-The factor **B** is definitely not important to the response variable in this system and can be excluded in future experiments, as could **F** and **D** likely. Future experiments should focus on the **A**, **C** and **G** factors and their interactions. We show how to use these existing 8 experiments in the above table, but add a few new ones in the next section on design foldover and by understanding projectivity.
+.. code-block:: python
+
+	from scipy import stats
+
+	coeffs = b[1:]                       # the seven effect coefficients, A ... G
+	abs_c = np.abs(coeffs)
+	s0 = 1.5 * np.median(abs_c)
+	pse = 1.5 * np.median(abs_c[abs_c < 2.5 * s0])
+	ME = stats.t.ppf(0.975, len(coeffs) / 3) * pse
+	print(f"PSE = {pse:.2f}, ME = {ME:.2f}")     # PSE = 0.60, ME = 2.26
+	for name, c in zip(names, coeffs):
+	    print(name, round(c, 2), abs(c) > ME)
+
+In the Pareto plot, each bar is coloured by the sign of its effect (orange for a positive coefficient, blue for a negative one), and the dashed vertical line is the Lenth margin of error. Here both of the largest effects, **A** and **C**, are negative, so they appear in blue but still extend past the margin-of-error line.
+
+The pseudo standard error is :math:`\text{PSE} = 0.60`, giving a margin of error of :math:`\text{ME} = 2.26`. Two effects clear it: **A** (:math:`|c| = 2.3`) and **C** (:math:`|c| = 2.8`). The next largest, **G** (:math:`|c| = 1.7`), falls just below the margin, so on this evidence it is a candidate rather than a confirmed effect: a follow-up experiment would be needed to settle it. Recall too that each estimate is confounded: for the main effect **E**, for example, :math:`\widehat{\beta}_{\mathbf{E}} \rightarrow` **E + AC + BG + DF**, so even a clearly significant reading could arise from the main effect or from any of its aliases.
+
+The factors **B**, **D** and **F** are small and can be set aside in this region. Future experiments should focus on **A** and **C**, on confirming **G**, and on resolving the aliasing among their interactions. We show how to reuse these existing 8 experiments, adding a few new ones, in the next section on design foldover and by understanding projectivity.
 
 A side note on screening designs is a mention of :index:`Plackett and Burman designs <pair: Plackett-Burman designs; experiments>`. These designs can sometimes be of greater use than a highly fractionated design. A fractional factorial must have :math:`2^{k-p}` runs, for integers :math:`k` and :math:`p`: i.e. either :math:`4, 8, 16, 32, 64, 128, \ldots` runs. Plackett-Burman designs are screening designs that can be run in any multiple of 4, i.e. :math:`12, 16, 20, 24, \ldots` runs. The non-geometric cases (12, 20, 24, 28, ...), which are not powers of 2, are the ones that a fractional factorial cannot provide. The Box, Hunter, and Hunter book has more information in Chapter 7, but another interesting paper on these topic is by Box and :index:`Bisgaard <single: Bisgaard, Søren>`: "What can you find out from 12 experimental runs?", which shows how to screen for 11 factors in 12 experiments.
 
