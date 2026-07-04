@@ -1,3 +1,5 @@
+.. _DOE-foldover-designs:
+
 Design foldover
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
