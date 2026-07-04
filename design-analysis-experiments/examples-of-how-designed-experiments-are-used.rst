@@ -41,6 +41,7 @@ References and readings
 -	William Hill and William Hunter, "`A Review of Response Surface Methodology: A Literature Survey <https://doi.org/10.1080/00401706.1966.10490404>`_", *Technometrics*, **8**, 571-590, 1966.
 -	Owen L. Davies, `The Design and Analysis of Industrial Experiments <https://www.amazon.com/The-design-analysis-industrial-experiments/dp/B0007J7BME>`_, Chapter 11, revised 2nd edition, Hafner, 1967.
 -	Torbjörn Lundstedt, Elisabeth Seifert, Lisbeth Abramo, Bernt Thelin, Åsa Nyström, Jarle Pettersen and Rolf Bergman, `Experimental design and optimization <https://doi.org/10.1016/S0169-7439(98)00065-3>`_, *Chemometrics and Intelligent Laboratory Systems*, **42**, 3-40, 1998.
+-	Peter Goos and Bradley Jones, *Optimal Design of Experiments: A Case Study Approach*, Wiley, 2011. ISBN 978-0-470-74461-1.
 -	Bradley Jones and Christopher J. Nachtsheim, "`A Class of Three-Level Designs for Definitive Screening in the Presence of Second-Order Effects <https://doi.org/10.1080/00224065.2011.11917841>`_", *Journal of Quality Technology*, **43**, 1-15, 2011.
 -	José Núñez Ares and Peter Goos, "`Enumeration and Multicriteria Selection of Orthogonal Minimally Aliased Response Surface Designs <https://doi.org/10.1080/00401706.2018.1549103>`_", *Technometrics*, **62**, 21-36, 2020.
 -	Peter Goos, "`OMARS Designs for Factor Screening and Response Surface Experimentation in One Step: A Review <https://doi.org/10.1002/wics.70018>`_", *WIREs Computational Statistics*, **17**, e70018, 2025.
