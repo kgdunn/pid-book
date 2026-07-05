@@ -828,7 +828,7 @@ variable to the margins of the plot:
 Residuals, standard error and :math:`R^2` for the model
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Once a scikit-learn ``LinearRegression`` object has been fitted, the residuals on the building
+Once the ``OLS`` model object has been fitted, the residuals on the building
 data are obtained by subtracting the predictions from the observed values. Two simple summaries
 of the residuals are useful: their average absolute size, and their standard deviation. Both are
 "smaller is better", and the standard deviation is the model's standard error :math:`S_E`.
@@ -853,6 +853,10 @@ We continue with the model fitted in the
 	# Standard deviation of the residuals
 	# (equivalent to S_E, up to the n-k correction):
 	std_error = errors_build.std()
+
+	# The standard error with the n-k degrees of
+	# freedom is also available directly:
+	mymodel.se_
 
 	print(
 	    f"Average absolute error = "

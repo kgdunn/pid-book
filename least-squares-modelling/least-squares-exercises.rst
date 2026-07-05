@@ -876,7 +876,7 @@ Exercises
 
 		import pandas as pd
 		from pandas.plotting import scatter_matrix
-		from sklearn.linear_model import LinearRegression
+		from process_improve.regression import OLS
 
 		cheese = pd.read_csv(
 		    "https://openmv.net/file/cheddar-cheese.csv"
@@ -900,19 +900,19 @@ Exercises
 		# acetic acid concentration.
 		X = cheese[["Acetic"]].values
 		y = cheese["Taste"].values
-		single = LinearRegression().fit(X, y)
+		single = OLS().fit(X, y)
 		print(
 		    f"Intercept = {single.intercept_:.3f}, "
-		    f"slope = {single.coef_[0]:.3f}"
+		    f"slope = {single.coefficients_[0]:.3f}"
 		)
 
 		# Multiple linear regression with all three
 		# x-variables:
 		X_mlr = cheese[["Acetic", "H2S", "Lactic"]].values
-		mlr = LinearRegression().fit(X_mlr, y)
+		mlr = OLS().fit(X_mlr, y)
 		print(
 		    f"Intercept = {mlr.intercept_:.3f}, "
-		    f"coefficients = {mlr.coef_}"
+		    f"coefficients = {mlr.coefficients_}"
 		)
 		print(f"R^2 = {mlr.score(X_mlr, y):.3f}")
 

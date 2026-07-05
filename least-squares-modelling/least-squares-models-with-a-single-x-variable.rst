@@ -296,12 +296,15 @@ To calculate the least squares model:
 
 .. _LS_single_x_sklearn_distillation:
 
-A larger example with scikit-learn: predicting vapour pressure
+A larger example: predicting vapour pressure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For larger data sets, the ``LinearRegression`` class from scikit-learn provides a convenient API
-that fits naturally with Pandas data frames. We will use it again on the `distillation tower
-<https://openmv.net/info/distillation-tower>`_ data set introduced in the
+For larger data sets, the ``OLS`` class from the `process_improve
+<https://github.com/kgdunn/process_improve>`_ package (the Python library accompanying this book)
+provides a convenient API that fits naturally with Pandas data frames. It follows the scikit-learn
+estimator convention of ``fit``, ``predict`` and ``score``, so everything shown here carries over
+unchanged to scikit-learn's own ``LinearRegression`` class. We will use it again on the
+`distillation tower <https://openmv.net/info/distillation-tower>`_ data set introduced in the
 :ref:`prior section <LS_correlation_matrix_in_python>`.
 
 Good statistical practice is to split the data: build the model on one part, then test it on
@@ -326,11 +329,11 @@ accessor in Pandas selects rows by position, so we use it to split the 253 obser
 Now fit a single-variable least squares model that uses ``InvTemp3`` (the inverse of a temperature
 measurement on tray 3) to predict ``VapourPressure``. The double-bracket idiom
 ``build[["InvTemp3"]]`` returns a column matrix (a 2-D :math:`n \times 1` array), which is the
-shape scikit-learn expects for the predictor matrix :math:`\mathbf{X}`:
+shape these estimators expect for the predictor matrix :math:`\mathbf{X}`:
 
 .. code-block:: python
 
-	from sklearn.linear_model import LinearRegression
+	from process_improve.regression import OLS
 
 	# X must be a 2-D array (n_rows by n_cols).
 	# build[["InvTemp3"]] returns a column matrix;
@@ -338,15 +341,20 @@ shape scikit-learn expects for the predictor matrix :math:`\mathbf{X}`:
 	X = build[["InvTemp3"]].values
 	y = build["VapourPressure"].values
 
-	mymodel = LinearRegression()
+	mymodel = OLS()
 	mymodel.fit(X, y)
 
-	# .intercept_ is a scalar; .coef_ is an array,
-	# so we index it with [0] to print the slope.
+	# .intercept_ is a scalar; .coefficients_ is an
+	# array, so we index it with [0] for the slope.
 	print(
 	    f"Intercept = {mymodel.intercept_:.5g}, "
-	    f"slope = {mymodel.coef_[0]:.5g}"
+	    f"slope = {mymodel.coefficients_[0]:.5g}"
 	)
+
+	# Printing the model shows a summary in the same
+	# layout as R's summary(lm(...)), interpreted in
+	# the section on software output:
+	print(mymodel)
 
 We will return to this model in the :ref:`next section <standard-error-section>` to inspect its
 residuals, its standard error, and its :math:`R^2` value, and again in the section on

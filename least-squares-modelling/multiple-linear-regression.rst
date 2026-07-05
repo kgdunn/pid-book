@@ -185,19 +185,19 @@ In the prior example, we could say: the effect of substrate concentration on yie
 
 .. _LS_MLR_with_sklearn:
 
-Fitting an MLR model with scikit-learn
+Fitting an MLR model in Python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In the :ref:`single-x section <LS_single_x_sklearn_distillation>` we built a model on the
 distillation tower data using only ``InvTemp3`` as a predictor of ``VapourPressure``. We now
 extend that model by adding a second predictor, ``InvPressure1`` (the inverse of a pressure
-measurement). The scikit-learn API requires almost no change: we simply pass a list of column
+measurement). The ``OLS`` class requires almost no change: we simply pass a list of column
 names instead of a single one.
 
 .. code-block:: python
 
 	import pandas as pd
-	from sklearn.linear_model import LinearRegression
+	from process_improve.regression import OLS
 
 	distill = pd.read_csv(
 	    "https://openmv.net/file/distillation-tower.csv"
@@ -213,7 +213,7 @@ names instead of a single one.
 	X_build_MLR = build[predictors].values
 	y_build = build["VapourPressure"].values
 
-	full_model = LinearRegression()
+	full_model = OLS()
 	full_model.fit(X=X_build_MLR, y=y_build)
 
 	# Residuals on the building data:
@@ -272,12 +272,11 @@ the distillation data the second predictor is a useful one:
 .. code-block:: python
 
 	import numpy as np
-	from sklearn.linear_model import LinearRegression
 
 	# `build`, `y_build`, `X_build_MLR` and `full_model`
 	# are from the code sections earlier in this chapter.
 	X_one = build[["InvTemp3"]].values
-	r2_one = LinearRegression().fit(X_one, y_build).score(X_one, y_build)
+	r2_one = OLS().fit(X_one, y_build).score(X_one, y_build)
 	r2_two = full_model.score(X_build_MLR, y_build)
 
 	# R-squared: 0.781, then 0.938
@@ -310,7 +309,7 @@ larger the share a useless term can absorb. The 14 runs of the `bioreactor yield
 	# random noise appended as extra "predictors":
 	for extra in range(0, 4):
 	    X_bio = np.hstack([X_real, noise[:, :extra]])
-	    model = LinearRegression().fit(X_bio, y_bio)
+	    model = OLS().fit(X_bio, y_bio)
 	    r2 = model.score(X_bio, y_bio)
 	    k = X_bio.shape[1] + 1  # parameters, incl. intercept
 	    r2_adj = 1 - (1 - r2) * (n_bio - 1) / (n_bio - k)

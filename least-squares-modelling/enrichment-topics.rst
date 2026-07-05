@@ -135,7 +135,7 @@ observations can be unusual before this slope estimate breaks down.
 .. code-block:: python
 
 	import pandas as pd
-	from process_improve.regression.methods import robust_regression
+	from process_improve.regression import robust_regression
 
 	distill = pd.read_csv(
 	    "https://openmv.net/file/distillation-tower.csv"

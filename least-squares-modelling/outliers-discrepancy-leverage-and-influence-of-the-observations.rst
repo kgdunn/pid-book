@@ -103,9 +103,9 @@ Computing these diagnostics in Python
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The leverage and influence values are computed by standard libraries; you do not need to program
-the formulas yourself. The example below uses the ``OLS`` class from the `process_improve
-<https://github.com/kgdunn/process_improve>`_ package (the Python library accompanying this book)
-on the :ref:`11-point example <LS-class-example>` used throughout this chapter. The fitted model
+the formulas yourself. The example below uses the same ``OLS`` class introduced in the
+:ref:`single-x section <LS_single_x_sklearn_distillation>`, on the
+:ref:`11-point example <LS-class-example>` used throughout this chapter. The fitted model
 object provides the hat values in ``model.leverage_`` and the Cook's D values in
 ``model.influence_``; printing the model shows a summary in the same layout as R's
 ``summary(lm(...))``.
@@ -115,7 +115,7 @@ object provides the hat values in ``model.leverage_`` and the Cook's D values in
 	import numpy as np
 	import plotly.graph_objects as go
 	from plotly.subplots import make_subplots
-	from process_improve.regression.methods import OLS
+	from process_improve.regression import OLS
 
 	x = np.array([10, 8, 13, 9, 11, 14,
 	              6, 4, 12, 7, 5], dtype=float)
