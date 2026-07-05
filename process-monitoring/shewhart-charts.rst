@@ -44,6 +44,8 @@ Assuming we know :math:`\sigma_{\overline{X}}`, which we usually do not in pract
 
 The reason for :math:`c_n = \pm 3` is that the total area between that lower and upper bound spans 99.73% of the area (in R: ``pnorm(+3) - pnorm(-3)`` gives 0.9973). So it is highly unlikely, a chance of 1 in 370, that a data point, :math:`\overline{x}`, calculated from a subgroup of :math:`n` raw :math:`x`-values, will lie outside these bounds.
 
+The algebra above is written as an interval that brackets :math:`\mu`, but in operation the centre line is held fixed (at the target, or at |xdb| once it is estimated) and these same limits are used to bracket each newly plotted :math:`\overline{x}`. The two views give the identical LCL and UCL because the interval is symmetric about the centre.
+
 The following illustration should help connect the concepts: the raw data's distribution happens to have a mean of 6 and standard deviation of 2, while it is clear the distribution of the subgroups of 5 samples (thicker line) is much narrower.
 
 .. image:: ../figures/monitoring/explain-shewhart.png
@@ -56,7 +58,7 @@ The following illustration should help connect the concepts: the raw data's dist
 Using estimated parameters instead
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The derivation in equation :eq:`shewhart-theoretical` requires knowing the population variance, :math:`\sigma`, and assuming that our target for :math:`x` is :math:`\mu`. The latter assumption is reasonable, but we will estimate a value for :math:`\sigma` instead, using the data.
+The derivation in equation :eq:`shewhart-theoretical` requires knowing the population standard deviation, :math:`\sigma`, and assuming that our target for :math:`x` is :math:`\mu`. The latter assumption is reasonable, but we will estimate a value for :math:`\sigma` instead, using the data.
 
 .. index:: ! phase 1 (monitoring charts)
 
@@ -253,7 +255,7 @@ You make a **type I error** when your sample is typical of normal operation, yet
 
 *Synonyms* for a **type I error**: false alarm, false positive (used mainly for testing of diseases), producer's risk (used for acceptance sampling, because here as the producer you will be rejecting an acceptable sample), false rejection rate, or alpha.
 
-You make a **type II error** when your sample really is abnormal, but falls within the the UCL and LCL limits and is therefore not detected. This error rate is denoted by :math:`\beta`, and it is a function of the degree of abnormality, which we derive next.
+You make a **type II error** when your sample really is abnormal, but falls within the UCL and LCL limits and is therefore not detected. This error rate is denoted by :math:`\beta`, and it is a function of the degree of abnormality, which we derive next.
 
 *Synonyms* for a **type II error**: false negative (used mainly for testing of diseases), consumer's risk (used for acceptance sampling, because your consumer will be receiving available product which is defective), false acceptance rate, or beta.
 
@@ -365,6 +367,6 @@ Mistakes to avoid
 
 #.	Imagine you are monitoring an aspect of the final product's quality, e.g. viscosity, and you have a product specification that requires that viscosity to be within, say 40 to 60 cP. It is a mistake to place those **specification limits** on the monitoring chart as a guide when to take action. It is also a mistake to use the required specification limits instead of the LCL and UCL. The monitoring chart is to detect abnormal variation in the process and gives a signal on when to take action, not to inspect for quality specifications. You can certainly have another chart for that, but the process monitoring chart's limits are intended to monitor process stability, and these Shewhart stability limits are calculated differently. Ideally the specification limits lie beyond the LCL and UCL action limits.
 
-#.	Shewhart chart limits were calculated with the assumption of **independent subgroups** (e.g. subgroup :math:`i` has no effect on subgroup :math:`i+1`). For a process with mild autocorrelation, the act of creating subgroups, with :math:`n` samples in each group, removes most, if not all, of the relationship between subgroups. However processes with heavy autocorrelation (slow moving processes sampled at a high rate, for example), will have LCL and UCL calculated from equation :eq:`shewhart-limits` that will raise false alarms too frequently. In these cases you can widen the limits, or remove the autocorrelation from the signal. More on this in the later section on :ref:`exponentially weighted moving average (EWMA) charts <monitoring_EWMA>`.
+#.	Shewhart chart limits were calculated with the assumption of **independent subgroups** (e.g. subgroup :math:`i` has no effect on subgroup :math:`i+1`). For a process with mild autocorrelation, averaging :math:`n` samples into each subgroup reduces, though does not remove, the relationship between successive subgroup means. However processes with heavy autocorrelation (slow moving processes sampled at a high rate, for example), will have LCL and UCL calculated from equation :eq:`shewhart-limits` that will raise false alarms too frequently. In these cases you can widen the limits, or remove the autocorrelation from the signal. More on this in the later section on :ref:`exponentially weighted moving average (EWMA) charts <monitoring_EWMA>`.
 
 #.	Using Shewhart charts on two or more **highly correlated quality variables**, usually on your final product measurement, can increase your type II (consumer's risk) dramatically. We will come back to this very important topic in the section on :ref:`latent variable models <LVM_monitoring>`, where we will counterintuitively prove that even having individual charts each within their respective limits can result where it is outside the joint limits.
