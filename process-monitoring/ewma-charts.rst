@@ -88,7 +88,9 @@ The upper and lower control limits for the EWMA plot are plotted in the same way
 		 \text{LCL} = \overline{\overline{x}} - K \cdot \sigma_{\text{Shewhart}}\sqrt{\frac{\displaystyle \lambda}{\displaystyle 2-\lambda}} &&  &&  \text{UCL} = \overline{\overline{x}} + K \cdot \sigma_{\text{Shewhart}} \sqrt{\frac{\displaystyle \lambda}{\displaystyle 2-\lambda}}
 	\end{array}
 
-where :math:`\sigma_{\text{Shewhart}}` represents the standard deviation as calculated for the Shewhart chart. :math:`K` is usually a value of 3, similar to the 3 standard deviations used in a Shewhart chart, but can of course be set to any level that balances the type I (false alarms) and type II errors (not detecting a deviation which is present already).
+where :math:`\sigma_{\text{Shewhart}}` represents the standard deviation as calculated for the Shewhart chart; for individual observations (subgroup size 1, as in the example above) this is simply the process standard deviation :math:`\sigma`. :math:`K` is usually a value of 3, similar to the 3 standard deviations used in a Shewhart chart, but can of course be set to any level that balances the type I (false alarms) and type II errors (not detecting a deviation which is present already).
+
+The limits in equation :eq:`ewma-limits` are the steady-state limits. For the first few points the exact standard deviation of :math:`\hat{x}_t` is smaller, by the factor :math:`\sqrt{1-(1-\lambda)^{2t}}`, so many software packages draw limits that start narrower and widen to the steady-state value within a handful of samples.
 
 An interesting implementation can be to show both the Shewhart and EWMA plot on the same chart, with both sets of limits. The EWMA value plotted is actually the one-step ahead prediction of the next :math:`x`-value, which can be informative for slow-moving processes.
 

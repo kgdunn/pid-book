@@ -17,7 +17,7 @@ The defining characteristics of a Shewhart chart are: a target, upper and lower 
 Derivation using theoretical parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Define the variable of interest as :math:`x`, and assume that we have samples of :math:`x` available in sequence order. No assumption is made regarding the distribution of :math:`x`. The average of :math:`n` of these :math:`x`-values is defined as :math:`\overline{x}`, which from the :ref:`Central limit theorem <central_limit_theorem>` we know will be more normally distributed with unknown population mean :math:`\mu` and unknown population variance :math:`\sigma^2/n`, where :math:`\mu` and :math:`\sigma` refer to the distribution that samples of :math:`x` came from. The figure here shows the case for :math:`n=5`.
+Define the variable of interest as :math:`x`, and assume that we have samples of :math:`x` available in sequence order. No assumption is made regarding the distribution of :math:`x`. The average of :math:`n` of these :math:`x`-values is defined as :math:`\overline{x}`, which from the :ref:`Central limit theorem <central_limit_theorem>` we know will be more normally distributed with unknown population mean :math:`\mu` and unknown population variance :math:`\sigma^2/n`, where :math:`\mu` and :math:`\sigma` refer to the distribution that samples of :math:`x` came from. The figure here shows the case for :math:`n=5`. This normal approximation for :math:`\overline{x}` improves as :math:`n` grows; for small subgroups drawn from a strongly skewed distribution it is weaker, and the nominal false-alarm rate derived below should then be read as approximate.
 
 .. image:: ../figures/monitoring/explain-Shewhart-data-source.png
 	:align: left
@@ -312,15 +312,19 @@ The table highlights that :math:`\beta` is a function of the amount by which the
 
 .. _monitoring_shewart_chart_slugishness:
 
-The key point you should note from the table is that a Shewhart chart is *not good* (it is slow) at detecting a change in the location (level) of a variable. This is surprising given the intention of the plot is to monitor the variable's location. Even a moderate shift of :math:`0.75\sigma` units :math:`(\Delta=0.75)` will only be detected around 6.7% of the time (:math:`100-93.3\%`) when :math:`n=4`. We will discuss :ref:`CUSUM charts <monitoring_CUSUM_charts>` and the Western Electric rules, next, as a way to overcome this issue.
+The key point you should note from the table is that a Shewhart chart is *not good* (it is slow) at detecting a change in the location (level) of a variable. This is surprising given the intention of the plot is to monitor the variable's location. Even a moderate shift of :math:`0.75\sigma` units :math:`(\Delta=0.75)` will only be detected around 6.7% of the time (:math:`100-93.3\%`) when :math:`n=4`. That 6.7% is the chance of detecting the shift on any *single* subgroup; because each new subgroup is another independent opportunity, the shift is caught after about 15 subgroups on average. The chart is slow, not blind, as the :ref:`average run length <monitoring_arl>` below makes precise. We will discuss :ref:`CUSUM charts <monitoring_CUSUM_charts>` and the Western Electric rules, next, as a way to speed up detection.
 
 It is straightforward to see how the type I, :math:`\alpha`, error rate can be adjusted - simply move the LCL and UCL up and down, as required, to achieve your desired error rates. There is nothing wrong in arbitrarily shifting these limits - :ref:`more on this later <monitoring_adjust_limits>` in the section on adjusting limits.
 
 However what happens to the type II error rate as the LCL and UCL bounds are shifted away from the target?  Imagine the case where you want to have :math:`\alpha \rightarrow 0`. As you make the UCL higher and higher, the value for :math:`\alpha` drops, but the value for :math:`\beta` will also increase, since the control limits have become wider!  **You cannot simultaneously have low type I and type II error**, or as said more colloquially, "there is no free lunch".
 
+.. _monitoring_arl:
+
 .. rubric:: 2. Using the average run length (ARL)
 
-The :index:`average run length` (ARL) is defined as the average number of sequential samples we expect before seeing an out-of-bounds, or out-of-control signal. This is given by the inverse of :math:`\alpha`, as ARL = :math:`\frac{1}{\alpha}`. Recall for the theoretical distribution we had :math:`\alpha = 0.0027`, so the ARL = 370. Thus we expect a run of 370 samples before we get an out-of-control signal.
+The :index:`average run length` (ARL) is defined as the average number of sequential samples we expect before seeing an out-of-bounds, or out-of-control signal. When the process is on target, this is given by the inverse of :math:`\alpha`, as :math:`\text{ARL}_0 = \frac{1}{\alpha}`. Recall for the theoretical distribution we had :math:`\alpha = 0.0027`, so :math:`\text{ARL}_0 = 370`. Thus we expect a run of 370 samples between false alarms; this is the *in-control* ARL, written :math:`\text{ARL}_0`.
+
+The complementary quantity is the *out-of-control* ARL, :math:`\text{ARL}_1 = \frac{1}{1-\beta}`, the average number of subgroups needed to detect a shift that is genuinely present. For the :math:`0.75\sigma` shift discussed above (:math:`n=4`, :math:`\beta = 0.9332`), :math:`\text{ARL}_1 = 1/(1-0.9332) \approx 15` subgroups; for a :math:`1\sigma` shift it is :math:`1/(1-0.8413) \approx 6`. So the single-subgroup :math:`\beta` overstates how blind the chart is: each new subgroup is another chance to detect, and detection compounds over successive samples. A good chart has a large :math:`\text{ARL}_0` (rare false alarms) and a small :math:`\text{ARL}_1` (fast detection); the two are traded off against each other.
 
 
 Extensions to the basic Shewhart chart to help monitor stability of the location
@@ -329,13 +333,13 @@ Extensions to the basic Shewhart chart to help monitor stability of the location
 .. index::
 	single: center line
 
-The :index:`Western Electric rules`: we saw above how sluggish the Shewhart chart is in detecting a small shift in the process mean, from :math:`\mu` to :math:`\mu + \Delta\sigma`. The **Western Electric rules** are an attempt to more rapidly detect a process shift, by raising an alarm when these *improbable* events occur:
+The :index:`Western Electric rules`: we saw above how sluggish the Shewhart chart is in detecting a small shift in the process mean, from :math:`\mu` to :math:`\mu + \Delta\sigma`. The **Western Electric rules** are an attempt to more rapidly detect a process shift, by raising an alarm when these *improbable* events occur. The basic chart already implements the primary rule, a single point beyond :math:`3\sigma`; the three supplementary run rules are added on top of it:
 
 #. Two out of 3 points lie beyond :math:`2\sigma` on the same side of the centre line
 #. Four out of 5 points lie beyond :math:`1\sigma` on the same side of the centre line
 #. Eight successive points lie on the same side of the center line
 
-However, an alternative chart, the CUSUM chart is more effective at detecting a shift in the mean. Notice also that the theoretical ARL, :math:`1/\alpha`, is reduced by using these rules in addition to the LCL and UCL bounds.
+However, an alternative chart, the CUSUM chart is more effective at detecting a shift in the mean. Notice also that each extra rule is another way to signal, so the rules raise sensitivity but shorten the in-control ARL: the four rules together give :math:`\text{ARL}_0 \approx 92` rather than 370, meaning more frequent false alarms. Adding still more rules continues this trade-off.
 
 **Adding robustness**: the phase I derivation of a monitoring chart is iterative. If you find a point that violates the LCL and UCL limits, then the approach is to remove that point, and recompute the LCL and UCL values. That is because the LCL and UCL limits would have been biased up or down by these unusual points :math:`\overline{x}_k` points.
 
