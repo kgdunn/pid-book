@@ -47,9 +47,9 @@ We develop **the least squares method** to estimate these parameters; these esti
 	:width: 600px
 	:align: center
 	:scale: 65
-	:alt: fake width
+	:alt: A least squares line with an observed value, its fitted value and the residual labelled
 
-Presuming we have calculated estimates |b0| and |b1| we can use the model with a new x-observation, :math:`x_i`, and predict its corresponding :math:`\hat{y}_i`. The error value, :math:`e_i`, is generally non-zero indicating out prediction estimate of :math:`\hat{y}_i` is not exact. All this new nomenclature is illustrated in the figure.
+Presuming we have calculated estimates |b0| and |b1| we can use the model with a new x-observation, :math:`x_i`, and predict its corresponding :math:`\hat{y}_i`. The error value, :math:`e_i`, is generally non-zero, indicating our prediction estimate of :math:`\hat{y}_i` is not exact. All this new nomenclature is illustrated in the figure.
 
 Minimizing errors as an objective
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -63,10 +63,10 @@ Here are some valid approaches, usually called objective functions for making th
  	#.	:math:`\sum_{i=1}^{n}{(e_i)^2}`, which leads to the least squares model
 	#.	:math:`\sum_{i=1}^{n}{(e_i)^4}`
 	#.	sum of perpendicular distances to the line :math:`y = b_0 + b_1 x`
-	#.	:math:`\sum_{i=1}^{n}{\|e_i\|}` is known as the least absolute deviations model, or the :math:`l`-1 norm problem
-	#.	*least median of squared error* model, which a robust form of least squares that is far less sensitive to outliers.
+	#.	:math:`\sum_{i=1}^{n}{|e_i|}`, known as the least absolute deviations model, or the :math:`l`-1 norm problem
+	#.	*least median of squared error* model, which is a robust form of least squares that is far less sensitive to outliers.
 
-The traditional least squares model, the first objective function listed, has the lowest possible variance for |b0| and |b1| when certain additional :ref:`assumptions are met <LS-assumptions>`. The low variance of these parameter estimates is very desirable, for both model interpretation and using the model. The other objective functions are good alternatives and may useful in many situations, particular the last alternative.
+The traditional least squares model, the first objective function listed, has the lowest variance for |b0| and |b1| among all estimators that are linear in the :math:`y`-values and unbiased, provided certain additional :ref:`assumptions are met <LS-assumptions>` (this result is known as the Gauss-Markov theorem). The low variance of these parameter estimates is very desirable, for both model interpretation and using the model. The other objective functions are good alternatives and may be useful in many situations, particularly the last alternative.
 
 Other reasons for so much focus on the least squares alternative is because it is computationally tractable by hand and very fast on computers, and it is easy to prove various mathematical properties. The other forms take much longer to calculate, almost always have to be done on a computer, may have multiple solutions, the solutions can change dramatically given small deviations in the data (unstable, high variance solutions), and the mathematical proofs are difficult. Also the interpretation of the least squares objective function is suitable in many situations: it penalizes deviations quadratically; i.e. large deviations much more than the smaller deviations.
 
@@ -91,11 +91,11 @@ Returning to our example of the gas cylinder. In this case we know that :math:`\
 	:align: left
 	:scale: 40
 	:width: 900px
-	:alt: fake width
+	:alt: Least squares objective function values from a grid search over the slope coefficient
 
 We find our best estimate for :math:`b_1` roughly at 5.88, the minimum of our grid search, which is very close to the theoretically expected value of 5.86 kPa/K.
 
-For the case where we have both |b0| and |b1|  varying we can construct a grid and tabulate the objective function values at all points on the grid. The least squares objective function will always be shaped like a bowl for these cases, and a unique minimum  always be found, because the objective function is :index:`convex <pair: convex optimization; least squares>`.
+For the case where we have both |b0| and |b1|  varying we can construct a grid and tabulate the objective function values at all points on the grid. The least squares objective function is shaped like a bowl for these cases, and a unique minimum will be found as long as there is variation in the :math:`x`-data, because the objective function is :index:`convex <pair: convex optimization; least squares>`.
 
 .. image:: ../figures/least-squares/least-squares-objective-function-annotated.png
 	:width: 750px
@@ -181,7 +181,7 @@ We will refer back to the following example several times. Calculate the least s
 	:align: center
 	:width: 900px
 	:scale: 40
-	:alt: fake width
+	:alt: Scatter plot of the 11-point example data
 
 ..
 	.. image:: ../figures/least-squares/regression-exercise.png
@@ -291,17 +291,20 @@ To calculate the least squares model:
 
 *	:math:`b_0 = 3.0`
 *	:math:`b_1 = 0.5`
-*	When :math:`x_i = 5`, then :math:`\hat{y}_i = 3.0 + 0.5 \times 5.5 = 5.75`
+*	When :math:`x_i = 5.5`, then :math:`\hat{y}_i = 3.0 + 0.5 \times 5.5 = 5.75`
 
 
 .. _LS_single_x_sklearn_distillation:
 
-A larger example with scikit-learn: predicting vapour pressure
+A larger example: predicting vapour pressure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For larger data sets, the ``LinearRegression`` class from scikit-learn provides a convenient API
-that fits naturally with Pandas data frames. We will use it again on the `distillation tower
-<https://openmv.net/info/distillation-tower>`_ data set introduced in the
+For larger data sets, the ``OLS`` class from the `process_improve
+<https://github.com/kgdunn/process_improve>`_ package (the Python library accompanying this book)
+provides a convenient API that fits naturally with Pandas data frames. It follows the scikit-learn
+estimator convention of ``fit``, ``predict`` and ``score``, so everything shown here carries over
+unchanged to scikit-learn's own ``LinearRegression`` class. We will use it again on the
+`distillation tower <https://openmv.net/info/distillation-tower>`_ data set introduced in the
 :ref:`prior section <LS_correlation_matrix_in_python>`.
 
 Good statistical practice is to split the data: build the model on one part, then test it on
@@ -326,11 +329,11 @@ accessor in Pandas selects rows by position, so we use it to split the 253 obser
 Now fit a single-variable least squares model that uses ``InvTemp3`` (the inverse of a temperature
 measurement on tray 3) to predict ``VapourPressure``. The double-bracket idiom
 ``build[["InvTemp3"]]`` returns a column matrix (a 2-D :math:`n \times 1` array), which is the
-shape scikit-learn expects for the predictor matrix :math:`\mathbf{X}`:
+shape these estimators expect for the predictor matrix :math:`\mathbf{X}`:
 
 .. code-block:: python
 
-	from sklearn.linear_model import LinearRegression
+	from process_improve.regression import OLS
 
 	# X must be a 2-D array (n_rows by n_cols).
 	# build[["InvTemp3"]] returns a column matrix;
@@ -338,15 +341,20 @@ shape scikit-learn expects for the predictor matrix :math:`\mathbf{X}`:
 	X = build[["InvTemp3"]].values
 	y = build["VapourPressure"].values
 
-	mymodel = LinearRegression()
+	mymodel = OLS()
 	mymodel.fit(X, y)
 
-	# .intercept_ is a scalar; .coef_ is an array,
-	# so we index it with [0] to print the slope.
+	# .intercept_ is a scalar; .coefficients_ is an
+	# array, so we index it with [0] for the slope.
 	print(
 	    f"Intercept = {mymodel.intercept_:.5g}, "
-	    f"slope = {mymodel.coef_[0]:.5g}"
+	    f"slope = {mymodel.coefficients_[0]:.5g}"
 	)
+
+	# Printing the model shows a summary in the same
+	# layout as R's summary(lm(...)), interpreted in
+	# the section on software output:
+	print(mymodel)
 
 We will return to this model in the :ref:`next section <standard-error-section>` to inspect its
 residuals, its standard error, and its :math:`R^2` value, and again in the section on

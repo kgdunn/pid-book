@@ -158,7 +158,7 @@ The six-step workflow on these data:
 		    ax.set_title(f"When particle size = {psize}")
 
 	Once the patterns are clear, you can fit a least squares model using
-	:ref:`scikit-learn <LS_single_x_sklearn_distillation>` or
+	:ref:`process_improve <LS_single_x_sklearn_distillation>` or
 	:ref:`statsmodels <LS-class-example>` and continue with the residual diagnostics outlined in
 	the steps above.
 

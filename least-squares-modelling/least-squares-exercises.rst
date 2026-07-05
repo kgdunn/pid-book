@@ -1,3 +1,5 @@
+.. _LS-exercises:
+
 Exercises
 =========
 
@@ -85,7 +87,7 @@ Exercises
 		:align: center
 		:width: 900px
 		:scale: 40
-		:alt: fake width
+		:alt: Distillation data with the least squares fit and prediction intervals
 
 	.. literalinclude:: ../figures/least-squares/distillation-column-questions.R
 		:language: s
@@ -130,7 +132,7 @@ Exercises
 			:align: left
 			:width: 900px
 			:scale: 65
-			:alt: fake width
+			:alt: Q-q plots of the residuals for the raw and inverse temperature models
 
 	-	The slope coefficient of 75571 has units of ``kPa.°F``, indicating that each one unit *decrease* in temperature results in an *increase* in vapour pressure. Since division is not additive, the change in vapour pressure when decreasing 10 degrees from 430 °F is a different decrease to that when temperature is 530 °F. The interpretation of transformed variables in linear models is often a lot harder. The easiest interpretation is to show a plot of 1/T against vapour pressure.
 
@@ -138,7 +140,7 @@ Exercises
 			:align: right
 			:width: 900px
 			:scale: 35
-			:alt: fake width
+			:alt: Vapour pressure plotted against the inverse of temperature
 
 	-	The predicted vapour pressure at 480 °F is 36.68 kPa :math:`\pm 5.68`, or within the range [31.0 to 42.4] with 95% confidence, very similar to the prediction interval from question 2.
 
@@ -874,7 +876,7 @@ Exercises
 
 		import pandas as pd
 		from pandas.plotting import scatter_matrix
-		from sklearn.linear_model import LinearRegression
+		from process_improve.regression import OLS
 
 		cheese = pd.read_csv(
 		    "https://openmv.net/file/cheddar-cheese.csv"
@@ -898,19 +900,19 @@ Exercises
 		# acetic acid concentration.
 		X = cheese[["Acetic"]].values
 		y = cheese["Taste"].values
-		single = LinearRegression().fit(X, y)
+		single = OLS().fit(X, y)
 		print(
 		    f"Intercept = {single.intercept_:.3f}, "
-		    f"slope = {single.coef_[0]:.3f}"
+		    f"slope = {single.coefficients_[0]:.3f}"
 		)
 
 		# Multiple linear regression with all three
 		# x-variables:
 		X_mlr = cheese[["Acetic", "H2S", "Lactic"]].values
-		mlr = LinearRegression().fit(X_mlr, y)
+		mlr = OLS().fit(X_mlr, y)
 		print(
 		    f"Intercept = {mlr.intercept_:.3f}, "
-		    f"coefficients = {mlr.coef_}"
+		    f"coefficients = {mlr.coefficients_}"
 		)
 		print(f"R^2 = {mlr.score(X_mlr, y):.3f}")
 

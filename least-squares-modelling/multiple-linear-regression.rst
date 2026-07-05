@@ -30,9 +30,7 @@ First some motivating examples:
 
 ..	- Ian Nichols example
 ..	- Case study/Example: https://www.amstat.org/publications/jse/v16n3/datasets.kuiper.html
-..	- Show that R2 increases when adding a new variable to the equation (also see p105 of Fox)
-	- Consider summarizing p223-225 of Fox here regarding t- and F-tests
-	- Add Q5.11 from assignment 3 here to show how adding terms increases R2
+..	- Consider summarizing p223-225 of Fox here regarding t- and F-tests
 
 Multiple linear regression: notation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -77,7 +75,7 @@ where:
 
 	- :math:`\mathbf{y}`: :math:`n \times 1`
 	- :math:`\mathbf{X}`: :math:`n \times k`
-	- :math:`\mathbf{b}`: :math:`n \times 1`
+	- :math:`\mathbf{b}`: :math:`k \times 1`
 	- :math:`\mathbf{e}`: :math:`n \times 1`
 
 Estimating the model parameters via optimization
@@ -90,16 +88,16 @@ As with the simple least squares model, :math:`y = b_0 + b_1 x`, we aim to minim
 		\begin{array}{rl}
 		    f(\mathbf{b}) &= \mathbf{e}^T\mathbf{e} \\
 		                  &= \left(\mathbf{y} - \mathbf{X} \mathbf{b} \right)^T \left( \mathbf{y} - \mathbf{X} \mathbf{b} \right) \\
-		                  &= \mathbf{y}^T\mathbf{y} - 2 \mathbf{y}^T\mathbf{X}\mathbf{b} + \mathbf{b}\mathbf{X}^T\mathbf{X}\mathbf{b}
+		                  &= \mathbf{y}^T\mathbf{y} - 2 \mathbf{y}^T\mathbf{X}\mathbf{b} + \mathbf{b}^T\mathbf{X}^T\mathbf{X}\mathbf{b}
 		\end{array}
 
 Taking partial derivatives with respect to the entries in :math:`\mathbf{b}` and setting the result equal to a vector of zeros, you can prove to yourself that :math:`\mathbf{b} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1}\mathbf{X}^T\mathbf{y}`. You might find the `Matrix Cookbook <https://www.google.ca/search?q=The+Matrix+Cookbook/>`_ useful in solving these equations and optimization problems.
 
 Three important relationships are now noted:
 
-#. :math:`\mathcal{E}\{\mathbf{b}\} = \mathbf{\beta}`
-#. :math:`\mathcal{V}\{\mathbf{b}\} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1} S_E^2`
-#. An estimate of the standard error is given by: :math:`\sigma_e \approx S_E = \sqrt{\dfrac{\mathbf{e}^T\mathbf{e}}{n-k}}`, where :math:`k` is the number of parameters estimated in the model and :math:`n` is the number of observations.
+#. :math:`\mathcal{E}\{\mathbf{b}\} = \mathbf{\beta}`, provided the postulated linear model form is correct
+#. :math:`\mathcal{V}\{\mathbf{b}\} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1} \sigma_\epsilon^2`, which we estimate as :math:`\left( \mathbf{X}^T\mathbf{X} \right)^{-1} S_E^2`
+#. An estimate of the standard error is given by: :math:`\sigma_\epsilon \approx S_E = \sqrt{\dfrac{\mathbf{e}^T\mathbf{e}}{n-k}}`, where :math:`k` is the number of parameters estimated in the model and :math:`n` is the number of observations. When the data have been centered, as in this section, count the intercept in :math:`k` as well: the mean used for the centering was also estimated from the data, so :math:`k` is the number of slope coefficients plus one.
 
 These relationships imply that our estimates of the model parameters are unbiased (the first line), and that the variability of our parameters is related to the :math:`\mathbf{X}^T\mathbf{X}` matrix and the model's standard error, :math:`S_E`.
 
@@ -109,7 +107,7 @@ Going back to the single variable case we showed in the section where we derived
 
 		\mathcal{V}\{b_1\} = \dfrac{S_E^2}{\sum_j{\left( x_j - \overline{\mathrm{x}} \right)^2}}
 
-Notice that our matrix definition, :math:`\mathcal{V}\{\mathbf{b}\} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1} S_E^2`, gives exactly the same result, remembering the |x| variables have already been centered in the matrix form. Also recall that the variability of these estimated parameters can be reduced by (a) taking more samples, thereby increasing the denominator size, and (b) by including observations further away from the center of the model.
+Notice that the estimated matrix form, :math:`\left( \mathbf{X}^T\mathbf{X} \right)^{-1} S_E^2`, gives exactly the same result, remembering the |x| variables have already been centered in the matrix form. Also recall that the variability of these estimated parameters can be reduced by (a) taking more samples, thereby increasing the denominator size, and (b) by including observations further away from the center of the model.
 
 .. rubric:: Example
 
@@ -135,9 +133,9 @@ The :math:`\mathbf{X}^T\mathbf{X}` and :math:`\mathbf{X}^T\mathbf{y}` matrices c
 		\mathbf{X}^T\mathbf{y} = \begin{bmatrix} 36.5 \\ -36.0 \end{bmatrix}
 	\end{array}
 
-Notice what these matrices imply (remembering that the vectors in the matrices have been centered). The :math:`\mathbf{X}^T\mathbf{X}` matrix is a scaled version of the covariance matrix of :math:`\mathbf{X}`. The diagonal terms show how strongly the variable is correlated with itself, which is the variance, and always a positive number. The off-diagonal terms are symmetrical, and represent the strength of the relationship between, in this case, :math:`x_1` and :math:`x_2`. The off-diagonal terms for two uncorrelated variables would be a number close to, or equal to zero.
+Notice what these matrices imply (remembering that the vectors in the matrices have been centered). The :math:`\mathbf{X}^T\mathbf{X}` matrix is a scaled version of the covariance matrix of :math:`\mathbf{X}`. Each diagonal term is the sum of squares of a centered variable, proportional to that variable's variance, and always a positive number. The off-diagonal terms are symmetrical, and represent the strength of the relationship between, in this case, :math:`x_1` and :math:`x_2`. The off-diagonal terms for two uncorrelated variables would be a number close to, or equal to zero.
 
-The inverse of the :math:`\mathbf{X}^T\mathbf{X}` matrix is particularly important - it is related to the standard error for the model parameters - as in: :math:`\mathcal{V}\{\mathbf{b}\} = \left( \mathbf{X}^T\mathbf{X} \right)^{-1} S_E^2`.
+The inverse of the :math:`\mathbf{X}^T\mathbf{X}` matrix is particularly important - it is related to the standard error for the model parameters - as in the estimate :math:`\left( \mathbf{X}^T\mathbf{X} \right)^{-1} S_E^2` of :math:`\mathcal{V}\{\mathbf{b}\}`.
 
 .. math::
 
@@ -154,7 +152,7 @@ For the two variable case, :math:`y = b_1x_1 + b_2x_2`, the general relationship
 	\mathcal{V}\left(b_1\right) &= \dfrac{1}{1-r^2_{12}} \times \dfrac{S_E^2}{\sum{x_1^2}} \\
 	\mathcal{V}\left(b_2\right) &= \dfrac{1}{1-r^2_{12}} \times \dfrac{S_E^2}{\sum{x_2^2}}
 
-where :math:`r^2_{12}` represents the correlation between variable :math:`x_1` and :math:`x_2`. What happens as the correlation between the two variables increases?
+where :math:`r_{12}` is the correlation between variable :math:`x_1` and :math:`x_2`, so :math:`r^2_{12}` is its square. What happens as the correlation between the two variables increases?
 
 .. We won't go into details here, but these lead to oval-shaped confidence intervals. Show picture and illustrate the marginal vs elliptical CI; see BHH,v2, page 370
 
@@ -172,7 +170,7 @@ Let's take a look at the case where :math:`y = b_1x_1 + b_2x_2`. We can plot thi
 	:width: 900px
 	:align: left
 	:scale: 40
-	:alt: fake width
+	:alt: Regression plane fitted through points plotted in three dimensions
 
 The points are used to fit the plane by minimizing the sum of square distances shown by vertical lines from each point to the plane. The interpretation of the slope coefficients for :math:`b_1` and :math:`b_2` is **not the same** as for the case with just a single |x| variable.
 
@@ -187,19 +185,19 @@ In the prior example, we could say: the effect of substrate concentration on yie
 
 .. _LS_MLR_with_sklearn:
 
-Fitting an MLR model with scikit-learn
+Fitting an MLR model in Python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In the :ref:`single-x section <LS_single_x_sklearn_distillation>` we built a model on the
 distillation tower data using only ``InvTemp3`` as a predictor of ``VapourPressure``. We now
 extend that model by adding a second predictor, ``InvPressure1`` (the inverse of a pressure
-measurement). The scikit-learn API requires almost no change: we simply pass a list of column
+measurement). The ``OLS`` class requires almost no change: we simply pass a list of column
 names instead of a single one.
 
 .. code-block:: python
 
 	import pandas as pd
-	from sklearn.linear_model import LinearRegression
+	from process_improve.regression import OLS
 
 	distill = pd.read_csv(
 	    "https://openmv.net/file/distillation-tower.csv"
@@ -215,7 +213,7 @@ names instead of a single one.
 	X_build_MLR = build[predictors].values
 	y_build = build["VapourPressure"].values
 
-	full_model = LinearRegression()
+	full_model = OLS()
 	full_model.fit(X=X_build_MLR, y=y_build)
 
 	# Residuals on the building data:
@@ -260,6 +258,81 @@ structure.
 	)
 
 
+.. _LS_R2_never_decreases:
+
+:math:`R^2` never decreases as terms are added
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The discussion of :math:`R^2` in the :ref:`model analysis section <LS-ANOVA-table>` cautioned that
+:math:`R^2` can be increased simply by adding terms to the model. On the building data,
+:math:`R^2` cannot decrease when a term is added: the optimization is free to set the new
+coefficient to zero and keep the previous fit, so the fit can only stay the same or improve. On
+the distillation data the second predictor is a useful one:
+
+.. code-block:: python
+
+	import numpy as np
+
+	# `build`, `y_build`, `X_build_MLR` and `full_model`
+	# are from the code sections earlier in this chapter.
+	X_one = build[["InvTemp3"]].values
+	r2_one = OLS().fit(X_one, y_build).score(X_one, y_build)
+	r2_two = full_model.score(X_build_MLR, y_build)
+
+	# R-squared: 0.781, then 0.938
+	print(f"{r2_one:.3f}  {r2_two:.3f}")
+
+Adding ``InvPressure1`` raises :math:`R^2` from 0.781 to 0.938 and also improves the testing-data
+error: that predictor carries real information. A *useless* term also raises :math:`R^2`, but on
+these 150 building rows a single column of random noise moves :math:`R^2` only in the fifth
+decimal (0.93831 to 0.93832): with many observations, one junk column can only absorb a tiny
+share of the variance. The fewer the observations relative to the number of parameters, the
+larger the share a useless term can absorb. The 14 runs of the `bioreactor yields
+<https://openmv.net/info/bioreactor-yields>`_ data set (used again in the
+:ref:`exercises <LS-exercises>`) make the effect plainly visible:
+
+.. code-block:: python
+
+	bio = pd.read_csv(
+	    "https://openmv.net/file/bioreactor-yields.csv"
+	)
+	# Code the Yes/No baffles column as 1/0:
+	bio["baffles"] = (bio["baffles"] == "Yes").astype(int)
+	y_bio = bio["yield"].values
+	n_bio = len(bio)  # only 14 runs
+	X_real = bio[["temperature", "speed", "baffles"]].values
+
+	rng = np.random.default_rng(39)
+	noise = rng.normal(size=(n_bio, 10))
+
+	# Fit the model with 0, 1, 2 and 3 columns of pure
+	# random noise appended as extra "predictors":
+	for extra in range(0, 4):
+	    X_bio = np.hstack([X_real, noise[:, :extra]])
+	    model = OLS().fit(X_bio, y_bio)
+	    r2 = model.score(X_bio, y_bio)
+	    k = X_bio.shape[1] + 1  # parameters, incl. intercept
+	    r2_adj = 1 - (1 - r2) * (n_bio - 1) / (n_bio - k)
+	    print(f"{extra} noise columns: R2 = {r2:.3f}, "
+	          f"adjusted R2 = {r2_adj:.3f}")
+
+	# 0 noise columns: R2 = 0.866, adjusted R2 = 0.826
+	# 1 noise columns: R2 = 0.875, adjusted R2 = 0.819
+	# 2 noise columns: R2 = 0.885, adjusted R2 = 0.813
+	# 3 noise columns: R2 = 0.894, adjusted R2 = 0.802
+
+Each noise column raises :math:`R^2` by roughly 0.01, from 0.866 with the three real predictors to
+0.894 with three junk columns added, even though the junk columns carry no information about the
+yield. Kept up, this reaches :math:`R^2 = 1.0` exactly when the parameter count reaches the number
+of runs: with all 10 noise columns, 3 real predictors and the intercept, 14 parameters fit the 14
+runs perfectly. The adjusted :math:`R^2`, which divides each sum of squares by its degrees of
+freedom, moves in the opposite direction, falling from 0.826 to 0.802: the penalty for each extra
+term outweighs its accidental gain in fit. This is why :math:`R^2` on the building data cannot
+tell you whether a new term earns its place in the model. Two better checks were introduced
+earlier: the adjusted :math:`R^2`, and the prediction error on
+:ref:`testing data <LS_test_set_predictions_with_sklearn>`, which a noise column will generally
+make *worse*.
+
 .. _LS-dummy-variables:
 
 Integer (dummy, indicator) variables in the model
@@ -284,7 +357,7 @@ Now that we have introduced multiple linear regression to expand our models, we 
 		:width: 900px
 		:align: left
 		:scale: 40
-		:alt: fake width
+		:alt: Axial and radial impeller flow patterns in a mixing tank
 
 	Axial and radial blades; figure from `Wikipedia <https://en.wikipedia.org/wiki/Impeller>`_
 
@@ -301,7 +374,7 @@ where :math:`d_i = 0` if an axial impeller was used, or :math:`d_i = 1` if a rad
 	:width: 900px
 	:align: right
 	:scale: 60
-	:alt: fake width
+	:alt: Two parallel regression lines shifted vertically by the indicator variable coefficient
 
 The :math:`\gamma` parameter, estimated by :math:`g`, is the difference in intercept when using a different impeller type. Note that the lines are parallel.
 
@@ -328,7 +401,7 @@ Integer variables are also called dummy variables or indicator variables. Really
 	:width: 900px
 	:align: left
 	:scale: 50
-	:alt: fake width
+	:alt: Regression plane for a model with one continuous and one integer variable
 
 We have to introduce additional terms into the model if we have integer variables with more than 2 levels. In general, if there are :math:`p`-levels, then we must include :math:`p-1` terms. For example, if we wish to test the effect of :math:`y` = yield achieved from the raw material supplier in Spain, India, or Vietnam, we could code:
 
