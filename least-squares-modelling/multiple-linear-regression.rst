@@ -260,6 +260,8 @@ structure.
 	)
 
 
+.. _LS-dummy-variables:
+
 Integer (dummy, indicator) variables in the model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
