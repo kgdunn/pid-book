@@ -520,15 +520,82 @@ These are three ways of writing the same model, and neither the D-optimal nor th
 design depends on which one is used. The :math:`-1 / +1` coding used throughout this chapter for
 a two-level factor is exactly effects coding for the case :math:`L = 2`.
 
-The reason to include a categorical factor is often *robustness*. Suppose the categorical factor
-is a supplier whose material we cannot control, and we want the process to behave the same
-whatever that supplier delivers. A model with only a main effect for supplier says the suppliers
-differ by a constant shift, which no choice of the continuous settings can remove. To make the
-response robust we include *interactions between the supplier and the continuous factors*, which
-let each supplier have its own slopes. We then look for settings of the continuous factors where
-the predicted response is flat across the suppliers: at those settings the process gives nearly
-the same result whichever supplier is used. Modelling the interaction is what makes such settings
-findable; a small supplier main effect on its own does not.
+To see that the coding does not change the chosen design, take a factor at four levels and, for
+clarity, a design with one run at each level, fitting only the four level means. Dropping the
+intercept makes the model matrix the four level indicators, :math:`\mathbf{X} = \mathbf{I}_4`, so
+:math:`\mathbf{M} = \mathbf{X}^T\mathbf{X} = \mathbf{I}_4` and :math:`\det(\mathbf{M}) = 1`.
+Reference coding, with level 4 as the baseline, uses the columns
+:math:`[\,1,\ s_1,\ s_2,\ s_3\,]`:
+
+.. math::
+
+    \mathbf{X}_{\text{ref}} = \begin{bmatrix} 1 & 1 & 0 & 0 \\ 1 & 0 & 1 & 0 \\
+    1 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 \end{bmatrix},
+    \qquad
+    \mathbf{M}_{\text{ref}} = \mathbf{X}_{\text{ref}}^T\mathbf{X}_{\text{ref}}
+    = \begin{bmatrix} 4 & 1 & 1 & 1 \\ 1 & 1 & 0 & 0 \\ 1 & 0 & 1 & 0 \\
+    1 & 0 & 0 & 1 \end{bmatrix}, \quad \det = 1.
+
+Effects coding, constraining the level effects to sum to zero so that level 4 is coded :math:`-1`
+on every column, uses :math:`[\,1,\ e_1,\ e_2,\ e_3\,]`:
+
+.. math::
+
+    \mathbf{X}_{\text{eff}} = \begin{bmatrix} 1 & 1 & 0 & 0 \\ 1 & 0 & 1 & 0 \\
+    1 & 0 & 0 & 1 \\ 1 & -1 & -1 & -1 \end{bmatrix},
+    \qquad
+    \mathbf{M}_{\text{eff}} = \begin{bmatrix} 4 & 0 & 0 & 0 \\ 0 & 2 & 1 & 1 \\
+    0 & 1 & 2 & 1 \\ 0 & 1 & 1 & 2 \end{bmatrix}, \quad \det = 16.
+
+The three determinants, :math:`1`, :math:`1`, and :math:`16`, are not equal, yet all three codings
+fit the same four means. Any two of them are related by an invertible change of variables: writing
+the effects-coded matrix in terms of the reference-coded one gives
+:math:`\mathbf{X}_{\text{eff}} = \mathbf{X}_{\text{ref}}\,\mathbf{T}`, with
+
+.. math::
+
+    \mathbf{T} = \begin{bmatrix} 1 & -1 & -1 & -1 \\ 0 & 2 & 1 & 1 \\ 0 & 1 & 2 & 1 \\
+    0 & 1 & 1 & 2 \end{bmatrix},
+    \qquad \det(\mathbf{T}) = 4.
+
+Then :math:`\mathbf{M}_{\text{eff}} = \mathbf{T}^T\mathbf{M}_{\text{ref}}\,\mathbf{T}`, so its
+determinant follows without recomputing it:
+
+.. math::
+
+    \det(\mathbf{M}_{\text{eff}}) = \det(\mathbf{T})^2\,\det(\mathbf{M}_{\text{ref}})
+                                  = 4^2 \times 1 = 16,
+
+which matches the direct calculation. The factor :math:`\det(\mathbf{T})^2` depends only on the
+coding :math:`\mathbf{T}`, not on the runs, so it cancels from any comparison of two designs: the
+design that maximizes :math:`\det(\mathbf{M})` under one coding maximizes it under all of them, and
+relative D-efficiencies (which are ratios of two determinants) come out identical. Only the absolute
+value of the criterion moves with the coding. The same holds for the full model with the continuous
+factors and their interactions, since the two codings are still related by a fixed invertible
+:math:`\mathbf{T}`. And the fitted prediction :math:`\widehat{y}(\mathbf{x})` does not depend on the
+coding at all, so the I-optimality comparison is unaffected too.
+
+The reason to include a categorical factor is often *robustness*. Suppose the categorical factor is
+a supplier whose material we cannot control, and we want the process to behave the same whatever
+that supplier delivers. A model with only a main effect for supplier says the suppliers differ by a
+fixed offset, the same at every setting of the continuous factors, so no choice of those settings can
+bring the suppliers together. Including *interactions between the supplier and the continuous
+factors* removes that limitation: each supplier then has its own slopes, so the gap between suppliers
+changes as the continuous factors move.
+
+What we search for afterwards is not a coefficient but an operating point. Write
+:math:`\widehat{y}_s(\mathbf{x})` for the predicted response of supplier :math:`s` at the continuous
+settings :math:`\mathbf{x}`, and look for the :math:`\mathbf{x}` that makes those predictions agree
+across suppliers, that is, that drives the spread
+:math:`\max_s \widehat{y}_s(\mathbf{x}) - \min_s \widehat{y}_s(\mathbf{x})` down to nearly zero. At
+such a setting the process returns nearly the same result whichever supplier is used, so it is robust
+to the supplier. The interaction terms are what make such a setting exist: were they all zero, the
+supplier curves would stay parallel and the spread would be the same everywhere. A large
+supplier-by-factor interaction is therefore what makes robustness reachable, not a term to be driven
+to zero. Once a robust setting is found, a factor whose effect does not depend on supplier can move
+the shared prediction onto the target value without reopening the gap. Locating that setting is
+possible only because the interactions were estimated, which is the reason for including them in the
+model.
 
 A model with quadratic terms and these interactions is a
 :ref:`response surface model <DOE-RSM>` estimated over a region that is part continuous and part
