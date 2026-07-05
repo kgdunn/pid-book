@@ -116,9 +116,9 @@ Interpreting the confidence interval
 
 		As intuitively expected, as the value of :math:`n` increases, the confidence interval decreases in width.
 
--	Returning to the case above, where at the 95% level we found the confidence interval was :math:`[17.1; 22.9]` for the bale's viscosity. What if we were to analyze the bale thoroughly, and found the population viscosity to be 23.2. What is the probability of that occurring?
+-	Returning to the case above, where at the 95% level we found the confidence interval was :math:`[17.1; 22.9]` for the cube's viscosity. Suppose we could analyze the entire cube and found the true viscosity to be 23.2, which lies just outside our interval. Is that surprising?
 
-		Less than 5% of the time.
+		Not particularly. An interval constructed this way fails to bracket the true mean about 5% of the time, so a true value landing outside a single 95% interval is the kind of infrequent outcome we expect roughly 1 time in 20. This is also a reminder that the interval is a statement about the range of plausible values for :math:`\mu`, not a probability attached to any single value.
 
 Confidence interval for the mean from a normal distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
