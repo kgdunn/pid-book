@@ -17,7 +17,7 @@ The defining characteristics of a Shewhart chart are: a target, upper and lower 
 Derivation using theoretical parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Define the variable of interest as :math:`x`, and assume that we have samples of :math:`x` available in sequence order. No assumption is made regarding the distribution of :math:`x`. The average of :math:`n` of these :math:`x`-values is defined as :math:`\overline{x}`, which from the :ref:`Central limit theorem <central_limit_theorem>` we know will be more normally distributed with unknown population mean :math:`\mu` and unknown population variance :math:`\sigma^2/n`, where :math:`\mu` and :math:`\sigma` refer to the distribution that samples of :math:`x` came from. The figure here shows the case for :math:`n=5`.
+Define the variable of interest as :math:`x`, and assume that we have samples of :math:`x` available in sequence order. No assumption is made regarding the distribution of :math:`x`. The average of :math:`n` of these :math:`x`-values is defined as :math:`\overline{x}`, which from the :ref:`Central limit theorem <central_limit_theorem>` we know will be more normally distributed with unknown population mean :math:`\mu` and unknown population variance :math:`\sigma^2/n`, where :math:`\mu` and :math:`\sigma` refer to the distribution that samples of :math:`x` came from. The figure here shows the case for :math:`n=5`. This normal approximation for :math:`\overline{x}` improves as :math:`n` grows; for small subgroups drawn from a strongly skewed distribution it is weaker, and the nominal false-alarm rate derived below should then be read as approximate.
 
 .. image:: ../figures/monitoring/explain-Shewhart-data-source.png
 	:align: left
@@ -44,7 +44,29 @@ Assuming we know :math:`\sigma_{\overline{X}}`, which we usually do not in pract
 
 The reason for :math:`c_n = \pm 3` is that the total area between that lower and upper bound spans 99.73% of the area (in R: ``pnorm(+3) - pnorm(-3)`` gives 0.9973). So it is highly unlikely, a chance of 1 in 370, that a data point, :math:`\overline{x}`, calculated from a subgroup of :math:`n` raw :math:`x`-values, will lie outside these bounds.
 
+The algebra above is written as an interval that brackets :math:`\mu`, but in operation the centre line is held fixed (at the target, or at |xdb| once it is estimated) and these same limits are used to bracket each newly plotted :math:`\overline{x}`. The two views give the identical LCL and UCL because the interval is symmetric about the centre.
+
 The following illustration should help connect the concepts: the raw data's distribution happens to have a mean of 6 and standard deviation of 2, while it is clear the distribution of the subgroups of 5 samples (thicker line) is much narrower.
+
+.. code-block:: python
+
+	import numpy as np
+	import plotly.graph_objects as go
+	from scipy.stats import norm
+
+	# The raw data distribution, and the distribution of
+	# subgroup averages (n = 5), which is narrower by sqrt(n).
+	raw_mean, raw_sd, n = 6, 2, 5
+	sub_sd = raw_sd / np.sqrt(n)
+	x = np.linspace(raw_mean - 4 * raw_sd, raw_mean + 4 * raw_sd, 500)
+
+	fig = go.Figure()
+	fig.add_trace(go.Scatter(x=x, y=norm.pdf(x, raw_mean, raw_sd),
+	                         name="raw data, x"))
+	fig.add_trace(go.Scatter(x=x, y=norm.pdf(x, raw_mean, sub_sd),
+	                         name="subgroup average (n=5)"))
+	fig.update_layout(xaxis_title="x", yaxis_title="Probability density")
+	fig.show()
 
 .. image:: ../figures/monitoring/explain-shewhart.png
 	:alt:	../figures/monitoring/explain-shewhart.R
@@ -56,7 +78,7 @@ The following illustration should help connect the concepts: the raw data's dist
 Using estimated parameters instead
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The derivation in equation :eq:`shewhart-theoretical` requires knowing the population variance, :math:`\sigma`, and assuming that our target for :math:`x` is :math:`\mu`. The latter assumption is reasonable, but we will estimate a value for :math:`\sigma` instead, using the data.
+The derivation in equation :eq:`shewhart-theoretical` requires knowing the population standard deviation, :math:`\sigma`, and assuming that our target for :math:`x` is :math:`\mu`. The latter assumption is reasonable, but we will estimate a value for :math:`\sigma` instead, using the data.
 
 .. index:: ! phase 1 (monitoring charts)
 
@@ -222,7 +244,33 @@ In source code:
 	       '; ', round(UCL,0), ']')
 
 
-.. TODO: in the future, describe more clearly the difference between phase 1 and phase 2. Students were asking a lot of questions around this.
+Phase 1 versus phase 2 in this example
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The rubber-bale calculation above is entirely **phase 1**: we used a batch of historical subgroups to *estimate* where the chart's limits should sit. The steps were:
+
+#.	collect :math:`K=20` subgroups believed to be from stable operation;
+#.	compute the grand mean |xdb| and the average subgroup standard deviation :math:`\overline{S}`, giving a first set of limits, [225.6, 252.0];
+#.	notice the subgroup with :math:`\overline{x}=253` lies above the UCL, exclude it, and recompute, arriving at the final limits, [224, 252].
+
+Nothing has been monitored yet. Phase 1 answers only the question "where should the limits sit?".
+
+**Phase 2** begins once those limits are frozen. Each new subgroup average, as its bale is tested, is plotted against the fixed centre line and the fixed [224, 252] limits; no limit is recomputed. A point outside the limits raises a signal. Suppose the next six bales give subgroup averages of 242, 236, 248, 254, 240, and 233. Only the fourth, :math:`\overline{x}=254`, lies above the UCL of 252, so the chart signals on that bale and the operator investigates.
+
+.. code-block:: python
+
+	# Phase 1 produced these frozen limits:
+	LCL, UCL = 224.0, 252.0
+
+	# Phase 2: plot each new subgroup average against
+	# the frozen limits and flag any that fall outside.
+	new_xbar = np.array([242, 236, 248, 254, 240, 233])
+	signals = (new_xbar > UCL) | (new_xbar < LCL)
+	for k, (value, flag) in enumerate(zip(new_xbar, signals), start=1):
+	    state = "SIGNAL" if flag else "in control"
+	    print(f"Bale {k}: xbar={value} -> {state}")
+
+The limits are calculated *once*, in phase 1, and then held fixed throughout phase 2. Re-estimating them from the phase 2 data as it arrives would let a slow drift quietly widen the limits and hide the very problem you are trying to detect.
 
 .. _monitoring_judging_performance:
 
@@ -253,7 +301,7 @@ You make a **type I error** when your sample is typical of normal operation, yet
 
 *Synonyms* for a **type I error**: false alarm, false positive (used mainly for testing of diseases), producer's risk (used for acceptance sampling, because here as the producer you will be rejecting an acceptable sample), false rejection rate, or alpha.
 
-You make a **type II error** when your sample really is abnormal, but falls within the the UCL and LCL limits and is therefore not detected. This error rate is denoted by :math:`\beta`, and it is a function of the degree of abnormality, which we derive next.
+You make a **type II error** when your sample really is abnormal, but falls within the UCL and LCL limits and is therefore not detected. This error rate is denoted by :math:`\beta`, and it is a function of the degree of abnormality, which we derive next.
 
 *Synonyms* for a **type II error**: false negative (used mainly for testing of diseases), consumer's risk (used for acceptance sampling, because your consumer will be receiving available product which is defective), false acceptance rate, or beta.
 
@@ -263,6 +311,30 @@ To quantify the probability :math:`\beta`, recall that a Shewhart chart is for m
 
 	\alpha &= Pr\left(\overline{x}\,\,\text{is in control, but lies outside the limits}\right) = \text{type I error rate}\\
 	\beta &= Pr\left(\overline{x}\,\,\text{is not in control, but lies inside the limits}\right) = \text{type II error rate}
+
+.. code-block:: python
+
+	# Type II error: the probability a shifted subgroup mean still
+	# lands inside the limits. Working in units of the raw sigma,
+	# with n = 4 and a shift of delta = 1 sigma.
+	n, delta = 4, 1.0
+	se = 1 / np.sqrt(n)              # standard error of xbar, in sigma units
+	LCL, UCL = -3 * se, 3 * se       # limits around the in-control mean of 0
+	beta = norm.cdf(UCL, delta, se) - norm.cdf(LCL, delta, se)
+	print(f"beta = {beta:.4f} for a {delta} sigma shift, n = {n}")
+
+	x = np.linspace(-4 * se, delta + 4 * se, 600)
+	fig = go.Figure()
+	fig.add_trace(go.Scatter(x=x, y=norm.pdf(x, 0, se), name="in control"))
+	fig.add_trace(go.Scatter(x=x, y=norm.pdf(x, delta, se), name="shifted"))
+	# Shade the beta region: the shifted curve between the limits.
+	mask = (x >= LCL) & (x <= UCL)
+	fig.add_trace(go.Scatter(x=x[mask], y=norm.pdf(x[mask], delta, se),
+	                         fill="tozeroy", mode="none",
+	                         fillcolor="rgba(0,0,200,0.3)", name="beta"))
+	for limit in (LCL, UCL):
+	    fig.add_vline(x=limit, line_dash="dash")
+	fig.show()
 
 .. figure:: ../figures/monitoring/show-shift-beta-error.png
 	:width: 800px
@@ -310,15 +382,19 @@ The table highlights that :math:`\beta` is a function of the amount by which the
 
 .. _monitoring_shewart_chart_slugishness:
 
-The key point you should note from the table is that a Shewhart chart is *not good* (it is slow) at detecting a change in the location (level) of a variable. This is surprising given the intention of the plot is to monitor the variable's location. Even a moderate shift of :math:`0.75\sigma` units :math:`(\Delta=0.75)` will only be detected around 6.7% of the time (:math:`100-93.3\%`) when :math:`n=4`. We will discuss :ref:`CUSUM charts <monitoring_CUSUM_charts>` and the Western Electric rules, next, as a way to overcome this issue.
+The key point you should note from the table is that a Shewhart chart is *not good* (it is slow) at detecting a change in the location (level) of a variable. This is surprising given the intention of the plot is to monitor the variable's location. Even a moderate shift of :math:`0.75\sigma` units :math:`(\Delta=0.75)` will only be detected around 6.7% of the time (:math:`100-93.3\%`) when :math:`n=4`. That 6.7% is the chance of detecting the shift on any *single* subgroup; because each new subgroup is another independent opportunity, the shift is caught after about 15 subgroups on average. The chart is slow, not blind, as the :ref:`average run length <monitoring_arl>` below makes precise. We will discuss :ref:`CUSUM charts <monitoring_CUSUM_charts>` and the Western Electric rules, next, as a way to speed up detection.
 
 It is straightforward to see how the type I, :math:`\alpha`, error rate can be adjusted - simply move the LCL and UCL up and down, as required, to achieve your desired error rates. There is nothing wrong in arbitrarily shifting these limits - :ref:`more on this later <monitoring_adjust_limits>` in the section on adjusting limits.
 
 However what happens to the type II error rate as the LCL and UCL bounds are shifted away from the target?  Imagine the case where you want to have :math:`\alpha \rightarrow 0`. As you make the UCL higher and higher, the value for :math:`\alpha` drops, but the value for :math:`\beta` will also increase, since the control limits have become wider!  **You cannot simultaneously have low type I and type II error**, or as said more colloquially, "there is no free lunch".
 
+.. _monitoring_arl:
+
 .. rubric:: 2. Using the average run length (ARL)
 
-The :index:`average run length` (ARL) is defined as the average number of sequential samples we expect before seeing an out-of-bounds, or out-of-control signal. This is given by the inverse of :math:`\alpha`, as ARL = :math:`\frac{1}{\alpha}`. Recall for the theoretical distribution we had :math:`\alpha = 0.0027`, so the ARL = 370. Thus we expect a run of 370 samples before we get an out-of-control signal.
+The :index:`average run length` (ARL) is defined as the average number of sequential samples we expect before seeing an out-of-bounds, or out-of-control signal. When the process is on target, this is given by the inverse of :math:`\alpha`, as :math:`\text{ARL}_0 = \frac{1}{\alpha}`. Recall for the theoretical distribution we had :math:`\alpha = 0.0027`, so :math:`\text{ARL}_0 = 370`. Thus we expect a run of 370 samples between false alarms; this is the *in-control* ARL, written :math:`\text{ARL}_0`.
+
+The complementary quantity is the *out-of-control* ARL, :math:`\text{ARL}_1 = \frac{1}{1-\beta}`, the average number of subgroups needed to detect a shift that is genuinely present. For the :math:`0.75\sigma` shift discussed above (:math:`n=4`, :math:`\beta = 0.9332`), :math:`\text{ARL}_1 = 1/(1-0.9332) \approx 15` subgroups; for a :math:`1\sigma` shift it is :math:`1/(1-0.8413) \approx 6`. So the single-subgroup :math:`\beta` overstates how blind the chart is: each new subgroup is another chance to detect, and detection compounds over successive samples. A good chart has a large :math:`\text{ARL}_0` (rare false alarms) and a small :math:`\text{ARL}_1` (fast detection); the two are traded off against each other.
 
 
 Extensions to the basic Shewhart chart to help monitor stability of the location
@@ -327,13 +403,13 @@ Extensions to the basic Shewhart chart to help monitor stability of the location
 .. index::
 	single: center line
 
-The :index:`Western Electric rules`: we saw above how sluggish the Shewhart chart is in detecting a small shift in the process mean, from :math:`\mu` to :math:`\mu + \Delta\sigma`. The **Western Electric rules** are an attempt to more rapidly detect a process shift, by raising an alarm when these *improbable* events occur:
+The :index:`Western Electric rules`: we saw above how sluggish the Shewhart chart is in detecting a small shift in the process mean, from :math:`\mu` to :math:`\mu + \Delta\sigma`. The **Western Electric rules** are an attempt to more rapidly detect a process shift, by raising an alarm when these *improbable* events occur. The basic chart already implements the primary rule, a single point beyond :math:`3\sigma`; the three supplementary run rules are added on top of it:
 
 #. Two out of 3 points lie beyond :math:`2\sigma` on the same side of the centre line
 #. Four out of 5 points lie beyond :math:`1\sigma` on the same side of the centre line
 #. Eight successive points lie on the same side of the center line
 
-However, an alternative chart, the CUSUM chart is more effective at detecting a shift in the mean. Notice also that the theoretical ARL, :math:`1/\alpha`, is reduced by using these rules in addition to the LCL and UCL bounds.
+However, an alternative chart, the CUSUM chart is more effective at detecting a shift in the mean. Notice also that each extra rule is another way to signal, so the rules raise sensitivity but shorten the in-control ARL: the four rules together give :math:`\text{ARL}_0 \approx 92` rather than 370, meaning more frequent false alarms. Adding still more rules continues this trade-off.
 
 **Adding robustness**: the phase I derivation of a monitoring chart is iterative. If you find a point that violates the LCL and UCL limits, then the approach is to remove that point, and recompute the LCL and UCL values. That is because the LCL and UCL limits would have been biased up or down by these unusual points :math:`\overline{x}_k` points.
 
@@ -365,6 +441,6 @@ Mistakes to avoid
 
 #.	Imagine you are monitoring an aspect of the final product's quality, e.g. viscosity, and you have a product specification that requires that viscosity to be within, say 40 to 60 cP. It is a mistake to place those **specification limits** on the monitoring chart as a guide when to take action. It is also a mistake to use the required specification limits instead of the LCL and UCL. The monitoring chart is to detect abnormal variation in the process and gives a signal on when to take action, not to inspect for quality specifications. You can certainly have another chart for that, but the process monitoring chart's limits are intended to monitor process stability, and these Shewhart stability limits are calculated differently. Ideally the specification limits lie beyond the LCL and UCL action limits.
 
-#.	Shewhart chart limits were calculated with the assumption of **independent subgroups** (e.g. subgroup :math:`i` has no effect on subgroup :math:`i+1`). For a process with mild autocorrelation, the act of creating subgroups, with :math:`n` samples in each group, removes most, if not all, of the relationship between subgroups. However processes with heavy autocorrelation (slow moving processes sampled at a high rate, for example), will have LCL and UCL calculated from equation :eq:`shewhart-limits` that will raise false alarms too frequently. In these cases you can widen the limits, or remove the autocorrelation from the signal. More on this in the later section on :ref:`exponentially weighted moving average (EWMA) charts <monitoring_EWMA>`.
+#.	Shewhart chart limits were calculated with the assumption of **independent subgroups** (e.g. subgroup :math:`i` has no effect on subgroup :math:`i+1`). For a process with mild autocorrelation, averaging :math:`n` samples into each subgroup reduces, though does not remove, the relationship between successive subgroup means. However processes with heavy autocorrelation (slow moving processes sampled at a high rate, for example), will have LCL and UCL calculated from equation :eq:`shewhart-limits` that will raise false alarms too frequently. In these cases you can widen the limits, or remove the autocorrelation from the signal. More on this in the later section on :ref:`exponentially weighted moving average (EWMA) charts <monitoring_EWMA>`.
 
 #.	Using Shewhart charts on two or more **highly correlated quality variables**, usually on your final product measurement, can increase your type II (consumer's risk) dramatically. We will come back to this very important topic in the section on :ref:`latent variable models <LVM_monitoring>`, where we will counterintuitively prove that even having individual charts each within their respective limits can result where it is outside the joint limits.

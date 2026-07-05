@@ -29,7 +29,7 @@ We review a couple of concepts that you should have seen in a prior statistical 
 
 **Distribution**
 
-	Distributions are used to summarize, in a compact way, a much larger collection of a much larger collection of data points. Histograms, just discussed above, are one way of visualizing a distribution. We can also express distributions by a few numerical parameters. See below.
+	Distributions are used to summarize, in a compact way, a much larger collection of data points. Histograms, just discussed above, are one way of visualizing a distribution. We can also express distributions by a few numerical parameters. See below.
 
 **Probability**
 
@@ -186,7 +186,7 @@ We review a couple of concepts that you should have seen in a prior statistical 
 		print('These two should agree mostly')
 
 		# Run it several times to verify that the
-		# two are similar, when they are not
+		# two are similar, when there are no
 		# outliers
 
 		# Now add a huge outlier:

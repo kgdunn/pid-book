@@ -103,7 +103,7 @@ Let's return to the table in the :ref:`previous section <DOE-half-fractions>` an
 
 After running these additional 4 experiments shown (in random order of course) we have a complete set of 8 runs. Analyzing the data together we can calculate the main effects and two-factor interactions without aliasing because we are back to the usual full factorial of :math:`2^3` runs. Confirm it for yourself visually in the plot alongside.
 
-So we see that we can always complete our half-fraction by creating a complementary fraction. This complimentary fraction is found by flipping the sign on the generating factor. For example, changing the sign from **C = AB** to **-C = AB**. In the illustration this is equivalent to running the 4 experiments at the closed circles.
+So we see that we can always complete our half-fraction by creating a complementary fraction. This complementary fraction is found by flipping the sign on the generating factor. For example, changing the sign from **C = AB** to **C = -AB**. In the illustration this is equivalent to running the 4 experiments at the closed circles.
 
 .. _DOE-Generators-for-blocking:
 
@@ -128,84 +128,32 @@ Here are the block generators you can use when splitting a :math:`2^k` factorial
 | 5         | :math:`2^{5-1}` | **I=ABCDE**                   | **I=-ABCDE**                  |
 +-----------+-----------------+-------------------------------+-------------------------------+
 
-.. My notes on this section are not clear:  how to clearly illustrate that A will be aliased with DE?  And how is it obvious that this aliasing with DE (the block effect contrast) is problematic?  Perhaps use an example where the blocks are biased and factor A was never really significant.
 
-	What if the block effect has more than two levels?  For example, for a :math:`2^3` factorial, there is only enough material for 2 experiments. So :math:`g=4` groups of experiments will be run. How do we assign these groups to minimize confounding?  Find the smallest full factorial that can accommodate these :math:`g` groups, in this case a :math:`2^2` factorial. Write out this factorial and assign the groups accordingly:
+Blocking into more than two groups
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	.. tabularcolumns:: |c||c|c|c|
+What if the disturbance has more than two levels? Suppose we must run a :math:`2^3` factorial, but there is only enough material for two experiments from each lot, so the eight runs are split across four lots. We have :math:`g = 4` groups, and we want to arrange them so that the differences between lots do the least damage.
 
-	+-------------------+-------------+-------------+
-	| Lot of material   | D           | E           |
-	+===================+=============+=============+
-	|  1                | |-|         | |-|         |
-	+-------------------+-------------+-------------+
-	|  2                | |+|         | |-|         |
-	+-------------------+-------------+-------------+
-	|  3                | |-|         | |+|         |
-	+-------------------+-------------+-------------+
-	|  4                | |+|         | |+|         |
-	+-------------------+-------------+-------------+
+Find the smallest full factorial that can index the :math:`g` groups: here a :math:`2^2` factorial, with two new indicator variables **D** and **E** labelling the four lots.
 
-	It is as if we are introducing two new variables into our :math:`2^3` factorial: in addition to the factors **A**, **B** and **C**, we also have factors **D** and **E** corresponding to the different groups of materials. For example, when we use lot 3, then :math:`D = -1` and :math:`E = +1`.
+.. tabularcolumns:: |c||c|c|
 
-	How do we assign **D** and **E** so that the confounding is minimized?  We might be tempted to use **D = ABC** and then assign **E** to **BC**, an interaction that we are not concerned
-	about. The generators are then **I = ABCD** and **I = BCE** respectively. The *defining relationship* is found from all possible products of all generators. In this case there are just two generators, so the defining relationship, which is the product of all generators is: **I = ABCD = BCE = ADE**.
++-------------------+-------------+-------------+
+| Lot of material   | D           | E           |
++===================+=============+=============+
+|  1                | |-|         | |-|         |
++-------------------+-------------+-------------+
+|  2                | |+|         | |-|         |
++-------------------+-------------+-------------+
+|  3                | |-|         | |+|         |
++-------------------+-------------+-------------+
+|  4                | |+|         | |+|         |
++-------------------+-------------+-------------+
 
-	Now let's calculate the aliasing structure:
+It is as if we have added two new variables to the :math:`2^3` factorial: alongside the real factors **A**, **B** and **C**, the block indicators **D** and **E** record which lot was used (for lot 3, :math:`D = -1` and :math:`E = +1`). Three contrasts carry the differences among the four lots: **D**, **E**, and their product **DE**. The goal is to keep those three block contrasts away from the effects we care about, and especially away from the main effects.
 
-		-	A: aliased with A + BCD + ABCE + DE
-		-	Fix this: **B x ADE = ABDE**
-		-	Fix this: **C x ADE = ACDE**
-		-	Fix this: **AB x ADE = BDE**
-		-	Fix this: **AC x ADE = CDE**
-		-	Fix this: **BC x ADE = ABCDE**
-		-	Fix this: **ABC x ADE = BCDE**
+A tempting but poor choice is **D = ABC** and **E = BC**. The generators are then **I = ABCD** and **I = BCE**, and the defining relationship is the product of all the generators, **I = ABCD = BCE = ADE** (the product **ABCD** :math:`\times` **BCE** repeats **B** and **C**, and any letter times itself is the identity, which leaves **ADE**). The three block contrasts are therefore **D = ABC**, **E = BC**, and **DE = A**. That last one is the trouble: **DE = A** means the difference between the lots is confounded with the main effect of **A**. If the lots happen to differ, that difference is indistinguishable from a real **A** effect, and a main effect is what we least want to lose.
 
-	This indicates the main effect of **A** is aliased with the two-factor interaction **DE**. Why is this problematic?
+A better choice is **D = AB** and **E = AC** (any two distinct two-factor interactions will do). The generators are **I = ABD** and **I = ACE**, giving the defining relationship **I = ABD = ACE = BCDE** (the product **ABD** :math:`\times` **ACE** repeats **A**, which cancels to the identity, leaving **BCDE**). Now the three block contrasts are **D = AB**, **E = AC**, and **DE = BC**, all two-factor interactions. No main effect is confounded with a block; the price of blocking falls entirely on the three two-factor interactions **AB**, **AC** and **BC**, which is usually acceptable.
 
-	The other effects are confounded with three-factor interactions
-
-	A better choice of generators is **D = AB** and **E = AC** (or use the other two-factor interaction). Now calculate:
-
-		-	The defining relationship =
-
-			.. I = ABD = ACE = ABD x ACE = BCDE
-
-		-	Aliasing for:
-
-			* **A**
-			* **B**
-			* **C**
-			* **AB**
-			* **AC**
-			* **BC**
-			* **ABC**
-
-	Rather than determine the best aliasing structure by trial-and-error, refer to a table, such as Table 5A.1 (page 221) in the second edition of Box, Hunter and Hunter to read which generators should be assigned to which blocks to minimize confounding. For this example, you would use the row in the table with :math:`k=3`, block size = 2 (two experiments per block). Another example is given in this same reference, page 219, that describes how a 64 run experiments is broken down into 8 blocks of 8 runs.
-
-.. Don't try this example: it's still too early.
-	For example, for a :math:`2^3` factorial, the block size is 3 experiments when there is only enough material for 3 experiments. So two experiments will be run with one lot of material, then 3 runs with another lot, and then the final 3 runs.
-
-	Start by rounding down to the closest power of 2, which is :math:`p = 2^1 = 2` in this case. Create a full factorial with :math:`2^p` runs. Assign the blocks according to the different runs in this factorial:
-
-	.. tabularcolumns:: |c||c|c|c|
-	                          D              E
-	+-------------------+-------------+-------------+
-	| Batch of material | :math:`B_1` | :math:`B_2` |
-	+===================+=============+=============+
-	|  1                | |-|         | |-|         |
-	+-------------------+-------------+-------------+
-	|  2                | |+|         | |-|         |
-	+-------------------+-------------+-------------+
-	|  3                | |-|         | |+|         |
-	+-------------------+-------------+-------------+
-	|  4 (ignored)      | |+|         | |+|         |
-	+-------------------+-------------+-------------+
-
-	B_1: I=ABCD;
-	B_2: I=BCE
-
-	overall generator: ABCD.BCE = ADE
-	A: DE
-	B: ABDE
-	C: ACDE
+Rather than search for the best assignment by trial and error, you can read it from a table, such as Table 5A.1 (page 221) in the second edition of Box, Hunter and Hunter, which lists the generators to use for each combination of factor count and block size. For this example you would use the row with :math:`k = 3` and a block size of 2. The same reference (page 219) works a larger case: a 64-run experiment split into 8 blocks of 8 runs.

@@ -28,7 +28,7 @@ So this is our half-factorial designed experiment in 3 factors, but it only requ
 	:align: center
 	:scale: 35
 	:width: 900px
-	:alt: fake width
+	:alt: Cube showing the four runs of a half-fraction in three factors
 
 What have we lost by running only half of the full factorial? Let's write out the full design and matrix of all interactions, then construct the :math:`\mathbf{X}` matrix for the least squares model.
 

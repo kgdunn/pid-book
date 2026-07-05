@@ -22,7 +22,7 @@ It is a common theme in any modelling work that the most informative plots are t
 Testing the model on unseen data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The residual statistics on the building data give one view of the model. A more honest assessment
+The residual statistics on the building data give one view of the model. A more demanding assessment
 is the residuals on data that the model has **never seen**. Continuing the distillation example
 from the :ref:`prior chapter <LS_residuals_and_R2_with_sklearn>`, where we held out the rows from
 index 150 onward as the testing partition, we can call ``.predict(...)`` again, but on the test
@@ -64,7 +64,7 @@ is the topic of the :ref:`section on multiple linear regression <LS_multiple_X_M
 The assumption of normally distributed errors
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We look for normally distributed errors because if they are non-normal, then the standard error, :math:`S_E` and the other variances that depend on :math:`S_E`, such as :math:`\mathcal{V}(b_1)`, could be inflated, and their interpretation could be in doubt. This might, for example, lead us to infer that a slope coefficient is not important when it actually is.
+We look for normally distributed errors because the confidence intervals derived earlier rely on the :math:`t`-distribution, which assumes the errors are normal. Non-normal errors, most often a few large residuals in the tails, inflate the standard error :math:`S_E` and the other variances that depend on :math:`S_E`, such as :math:`\mathcal{V}(b_1)`, and put their interpretation in doubt. This might, for example, lead us to infer that a slope coefficient is not important when it actually is.
 
 This is one of the easiest assumptions to verify: use a :index:`q-q plot <pair: q-q plot; residuals>` (see the :ref:`univariate review <univariate_check_for_normality_qqplot>`) to assess the distribution of the residuals. Do *not* plot the residuals in sequence or some other order to verify normality - it is extremely difficult to see that. A q-q plot highlights very clearly when tails from the residuals are too heavy. A histogram may also be used, but for real data sets, the choice of bin width can dramatically distort the interpretation - rather use a q-q plot. Some code for R:
 
@@ -89,7 +89,7 @@ The simple example shown here builds a model that predicts the price of a used v
 	:align: left
 	:width: 900px
 	:scale: 70
-	:alt: fake width
+	:alt: Used vehicle price data and a residual q-q plot showing a group of outliers
 
 The group of outliers were due to 10 observations of a certain class of vehicle (Cadillac convertibles) that distorted the model. We removed these observations, which now limits our model to be useful only for other vehicle types, but we gain a smaller standard error and a tighter confidence interval. These residuals are still very non-normal though.
 
@@ -104,13 +104,13 @@ The slope coefficient (*interpretation*: each extra mile on the odometer reduces
 
 Removing the Cadillac cars from our model indicates that there is more than just mileage that affect their resale value. In fact, the lack of normality, and structure in the residuals leads us to ask which other explanatory variables can be included in the model.
 
-In the next fictitious example the |y|-variable is non-linearly related to the |x|-variable. This non-linearity in the |y| shows up as non-normality in the residuals if only a linear model is used. The residuals become more linearly distributed when using a square root transformation of the |y| before building the linear model.
+In the next fictitious example the |y|-variable is non-linearly related to the |x|-variable. This non-linearity in the |y| shows up as non-normality in the residuals if only a linear model is used. The residuals become more normally distributed when using a square root transformation of the |y| before building the linear model.
 
 .. image:: ../figures/least-squares/non-normal-errors-transformation-required.png
 	:align: center
 	:width: 900px
 	:scale: 70
-	:alt: fake width
+	:alt: Residual q-q plots before and after a square root transformation of y
 
 More discussion about transformations of the data is given in the section on :ref:`model linearity <LS-model-linearity>`.
 
@@ -121,7 +121,7 @@ Non-constant error variance
 
 It is common in many situations that the variability in |y| increases or decreases as |y| is increased (e.g. certain properties are more consistently measured at low levels than at high levels). Similarly, variability in |y| increases or decreases as |x| is increased (e.g. as temperature, |x|, increases the variability of a particular |y| increases).
 
-Violating the assumption of :index:`non-constant error variance` increases the :index:`standard error`, :math:`S_E`, undermining the estimates of the confidence intervals, and other analyses that depend on the standard error. Fortunately, it is only problematic if the non-constant variance is extreme, so we can tolerate minor violations of this assumption.
+Violating the assumption of constant error variance (i.e. having :index:`non-constant error variance`) increases the :index:`standard error`, :math:`S_E`, undermining the estimates of the confidence intervals, and other analyses that depend on the standard error. Fortunately, it is only problematic if the non-constant variance is extreme, so we can tolerate minor violations of this assumption.
 
 To detect this problem you should plot:
 
@@ -135,9 +135,9 @@ This problem reveals itself by showing a fan shape across the plot; an example i
 	:scale: 70
 	:align: center
 	:width: 900px
-	:alt: fake width
+	:alt: Fan-shaped residuals indicating non-constant error variance
 
-To counteract this problem one can use :index:`weighted least squares <pair: weighted least squares; WLS>`, with smaller weights on the high-variance observations, i.e. apply a weight inversely proportional to the variance. Weighted least squares minimizes: :math:`f(\mathrm{b}) = \sum_i^n{(w_ie_i)^2}`, with different weights, :math:`w_i` for each error term. More on this topic can be found in the book by Draper and Smith (p 224 to 229, 3rd edition).
+To counteract this problem one can use :index:`weighted least squares <pair: weighted least squares; WLS>`, with smaller weights on the high-variance observations. Weighted least squares minimizes :math:`f(\mathrm{b}) = \sum_i^n{w_ie_i^2}`, with a different weight :math:`w_i` for each error term; choosing each weight inversely proportional to the error variance of that observation, :math:`w_i \propto 1/\sigma_i^2`, gives every observation the same influence on the fit. More on this topic can be found in the book by Draper and Smith (p 224 to 229, 3rd edition).
 
 .. _LS-autocorrelation-test:
 
@@ -150,7 +150,7 @@ Lack of independence in the data
 
 .. youtube:: https://www.youtube.com/watch?v=7fd8Qu1i3Dk&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=26
 
-The assumption of :index:`independence <single: independence in least squares>` in the data requires that values in the |y| variable are independent. Given that we have assumed the |x| variable to be fixed, this implies that the errors, :math:`e_i` are independent. The reason for independence is required for the central limit theorem, which was used to derive the various standard errors.
+The assumption of :index:`independence <single: independence in least squares>` in the data requires that values in the |y| variable are independent. Given that we have assumed the |x| variable to be fixed, this implies that the errors, :math:`e_i` are independent. Independence was required in the derivation of the standard errors: it is what allowed the variance of a sum to be written as the sum of the variances, with no covariance terms.
 
 Data are not independent when they are correlated with each other. This is common on slow moving processes: for example, measurements taken from a large reactor are unlikely to change much from one minute to the next.
 
@@ -162,7 +162,7 @@ If you suspect that there may be lack of independence, use plots of the residual
 	:width: 900px
 	:align: center
 	:scale: 70
-	:alt: fake width
+	:alt: Residuals plotted in time order showing unmodelled dynamics
 
 One way around the autocorrelation is to subsample - use only every :math:`k^\text{th}` sample, where :math:`k` is a certain number of gaps between the points. How do we know how many gaps to leave?  Use the `autocorrelation function <https://en.wikipedia.org/wiki/Autocorrelation>`_ to determine how many samples. You can use the ``acf(...)`` function in R, which will show how many significant lags there are between observations. Calculating the autocorrelation accurately requires a large data set, which is a requirement anyway if you need to subsample your data to obtain independence.
 
@@ -172,7 +172,7 @@ Here are some examples of the autocorrelation plot: in the first case you would 
 	:width: 900px
 	:align: center
 	:scale: 70
-	:alt: fake width
+	:alt: Three examples of autocorrelation function plots with different lag structures
 
 Another test for autocorrelation is the :index:`Durbin-Watson test <pair: Durbin-Watson test; autocorrelation>`. For more on this test see the book by Draper and Smith (Chapter 7, 3rd edition); in R you can use the ``durbinWatsonTest(model)`` function in ``library(car)``. Try generating autocorrelation of varying strength (positive, e.g. ``phi_long = 0.80`` and negative, e.g. ``phi_long = -0.75``) in the code below. Inspect the plots which are generated as a result, especially the time order plot: get a feeling for what a strong and weak positive/negative correlation looks like in the time order.
 
@@ -261,10 +261,56 @@ Another test for autocorrelation is the :index:`Durbin-Watson test <pair: Durbin
 	     col="darkgreen", cex=1.5, adj = c(0, NA))
 
 
-.. Box and Newbold describe a case where the lack of independence lead to serious mis-interpretation:  J Royal Statist. Soc. Series A, v134, p229-240, 1971
-.. Also see: /Users/kevindunn/Statistics course/Course notes/Correlation, covariance and least squares/images/autocorrelated-data-problem.R
-..            where I try to reproduce this problem.
+Two autocorrelated series can appear strongly related
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+The consequences of ignoring the independence assumption can be severe. A well-known case is the
+paper by Coen, Gomme and Kendall (*Lagged relationships in economic forecasting*, Journal of the
+Royal Statistical Society A, **132**, 133-163, 1969), which reported least squares models that
+appeared to forecast the Financial Times share index from lagged economic series such as car
+production. Box and Newbold (*Some comments on a paper of Coen, Gomme and Kendall*, same journal,
+**134**, 229-240, 1971) showed that the apparently significant relationships were an artifact of
+the assumed error structure: each series was strongly autocorrelated, and once that autocorrelation
+was modelled, the evidence for a relationship disappeared.
+
+The effect is straightforward to reproduce. Consider two *independent* random walks: each value is
+the previous value plus fresh random noise, so each series is strongly autocorrelated, like many
+slow-moving process measurements. Regressing one on the other produces what looks like a strong
+model:
+
+.. code-block:: python
+
+	import numpy as np
+	import statsmodels.api as sm
+
+	rng = np.random.default_rng(7)
+	n_steps = 100
+	u = np.cumsum(rng.normal(size=n_steps))
+	w = np.cumsum(rng.normal(size=n_steps))
+
+	# Regressing one walk on the other: R2 = 0.585 and
+	# a slope p-value around 1e-20, yet the two series
+	# are independent by construction. The Durbin-Watson
+	# statistic of 0.10 (far below 2) warns that the
+	# residuals are strongly autocorrelated.
+	walks = sm.OLS(w, sm.add_constant(u)).fit()
+	print(walks.rsquared, walks.pvalues[1])
+	print(sm.stats.durbin_watson(walks.resid))
+
+	# The differenced series recover the fresh noise
+	# added at each step, so the independence assumption
+	# holds for them. The apparent relationship is gone:
+	# R2 = 0.0003 and a slope p-value of 0.87, with a
+	# Durbin-Watson statistic near 2.
+	diffs = sm.OLS(np.diff(w),
+	               sm.add_constant(np.diff(u))).fit()
+	print(diffs.rsquared, diffs.pvalues[1])
+	print(sm.stats.durbin_watson(diffs.resid))
+
+The p-value from the first regression is not interpretable: its derivation assumed independent
+errors, and the Durbin-Watson statistic shows that assumption fails here. Differencing the series
+is one way to restore independence for a random-walk-like signal; the subsampling approach
+:ref:`described in this section <LS-autocorrelation-test>` is another.
 
 .. _LS-model-linearity:
 
@@ -285,7 +331,7 @@ We saw earlier a case where a square-root transformation of the |y| variable mad
 
 In other instances we may know from first-principles theory, or some other means, what the expected non-linear relationship is between an |x| and |y| variable.
 
-	*	In a distillation column the temperature, :math:`T` is inversely proportional to the logarithm of the vapour pressure, :math:`P`. So fit a linear model, :math:`y = b_0 + b_1x` where :math:`x \leftarrow 1/T` and where :math:`y \leftarrow P`. The slope coefficient will have a different interpretation and a different set of units as compared to the case when predicting vapour pressure directly from temperature.
+	*	In a distillation column the logarithm of the vapour pressure, :math:`P`, is linearly related to the reciprocal of temperature, :math:`1/T` (the Clausius-Clapeyron relationship). So fit a linear model, :math:`y = b_0 + b_1x` where :math:`x \leftarrow 1/T` and where :math:`y \leftarrow \log(P)`. The slope coefficient will have a different interpretation and a different set of units as compared to the case when predicting vapour pressure directly from temperature.
 
 	*	If :math:`y = p \times q^x`, then we can take logs and estimate this equivalent linear model: :math:`\log(y) = \log(p) + x \log(q)`, which is of the form :math:`y = b_0 + b_1 x`. So the slope coefficient will be an estimate of :math:`\log(q)`.
 
@@ -301,7 +347,7 @@ Before launching into various :index:`transformations` or non-linear least squar
 		:align: right
 		:width: 900px
 		:scale: 50
-		:alt: fake width
+		:alt: A nonlinear system with an approximately linear subregion highlighted
 
 How can we detect when the linear model is not sufficient anymore?  While a q-q plot might hint at problems, better plots are the same two plots for detecting :ref:`non-constant error variance <LS-non-constant-error-variance>`:
 
@@ -314,7 +360,7 @@ Here we show both plots for the example just prior (where we used a linear model
 		:align: left
 		:width: 900px
 		:scale: 67
-		:alt: fake width
+		:alt: Residual plots that reveal nonlinearity remaining in the linear model
 
 Transformations are considered successful once the residuals appear to have no more structure in them. Also bear in mind that structure in the residuals might indicate the model is missing an additional explanatory variable (see the section on :ref:`multiple linear regression <LS_multiple_X_MLR>`).
 

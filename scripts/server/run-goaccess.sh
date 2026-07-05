@@ -35,13 +35,34 @@ set -euo pipefail
 
 LOG_GLOBS_DEFAULT=(
     # Try common Caddy / Apache / Nginx default per-host log locations.
-    # If your server is elsewhere, set LOG_GLOBS in the cron file.
+    # If your server is elsewhere, set LOG_GLOBS in the cron file or the
+    # `logs =` line of sparklines.conf (read below).
     "/var/log/caddy/learnche.org.access.log*"
     "/var/www/logs/learnche.org/access.log*"
     "/var/log/apache2/learnche.org-access.log*"
     "/var/log/nginx/learnche.org.access.log*"
     "/var/log/learnche-archive/access.log*"
 )
+
+# Single source of truth for the log path. Precedence:
+#   1. LOG_GLOBS in the environment (highest; set by cron for one-offs).
+#   2. The `logs =` line in sparklines.conf, so this script and
+#      build-sparklines.py read the *same* paths and cannot drift apart.
+#      (Drift is exactly what silently froze the dashboard once: the
+#      builder config pointed at the live Apache log while this script's
+#      cron override still pointed at the not-yet-existent Caddy path.)
+#   3. The built-in default list above.
+SPARKLINES_CONF="${SPARKLINES_CONF:-/etc/pid-book/sparklines.conf}"
+if [[ -z "${LOG_GLOBS:-}" && -f "${SPARKLINES_CONF}" ]] && command -v python3 >/dev/null 2>&1; then
+    conf_logs="$(python3 - "${SPARKLINES_CONF}" <<'PY'
+import configparser, sys
+cfg = configparser.ConfigParser()
+cfg.read(sys.argv[1])
+print(cfg.get("paths", "logs", fallback="").strip())
+PY
+)"
+    [[ -n "${conf_logs}" ]] && LOG_GLOBS="${conf_logs}"
+fi
 
 LOG_GLOBS=("${LOG_GLOBS:-${LOG_GLOBS_DEFAULT[*]}}")
 GOACCESS_CONF="${GOACCESS_CONF:-/etc/pid-book/goaccessrc}"

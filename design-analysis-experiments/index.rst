@@ -16,6 +16,11 @@ Design and Analysis of Experiments
    fractional-factorial-designs/index
    blocking-and-confounding-for-disturbances
    response-surface-methods
+   optimal-designs
+   definitive-screening-designs
+   omars-designs
+   judging-and-comparing-designs
+   comparing-design-families
    general-approach-for-experimentation
    extended-topics-related-to-designed-experiments
    design-analysis-experiments-exercises

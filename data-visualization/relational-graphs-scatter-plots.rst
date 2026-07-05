@@ -8,11 +8,24 @@ Relational graphs: scatter plots
 
 This is a plot many people are comfortable using. It helps you understand the relationship between two variables - a :index:`bivariate plot <pair: bivariate plot; visualization>` - as opposed to the previous charts that are univariate. A :index:`scatter plot <pair: scatter plot; visualization>` is a collection of points shown inside a box formed by two axes at 90 degrees to each other. The marker's position is located at the intersection of the values shown on the horizontal (*x*) axis and vertical (*y*) axis.
 
-The unspoken intention of a scatter plot is usually to ask the reader to draw a causal relationship between the two variables. However, not all scatter plots actually show causal phenomena, as the figure below tries to convince you:
+The unspoken intention of a scatter plot is usually to ask the reader to draw a causal relationship
+between the two variables. However, not all scatter plots actually show causal phenomena, as the
+figure below tries to convince you:
 
 .. image:: ../figures/visualization/scatterplot-figures.png
 
-This source code generates similar, but not identical, figures to those shows here in the text.
+The left-hand plot shows measurements from a distillation column: the temperature on a tray and the
+vapour pressure of the product move together because of a real physical mechanism. The right-hand
+plot shows (simulated) data of the number of white hairs on a person's scalp against their bone
+mineral density. The negative correlation is just as clear, yet neither variable causes the other:
+both change with a third variable that is not on the plot, the person's age. Such a hidden third
+variable is called a :index:`lurking variable <pair: lurking variable; scatter plot>`. A scatter
+plot shows the association between two variables; it cannot, on its own, tell you whether that
+association is causal. Establishing causality requires deliberately changing one variable and
+observing the response, which is the subject of the chapter on
+:ref:`designed experiments <SECTION-design-analysis-experiments>`.
+
+This source code generates similar, but not identical, figures to those shown here in the text.
 
 .. literalinclude:: /data-visualization/gists/scatter-plot-example.py
 	:language: python
@@ -31,7 +44,7 @@ Strive for graphical excellence by doing the following:
 
 There is an unfounded fear that others won't understand your 2D scatter plot. :index:`Tufte <single: Tufte, Edward>` `(2001) <https://literature.learnche.org/item/53/the-visual-display-of-quantitative-information>`_ (*Visual Display of Quantitative Information*, p 83) shows that there are no scatter plots in a sample (1974 to 1980) of U.S., German and British dailies, despite studies showing that 12-year-olds can interpret such plots: Japanese newspapers frequently use them.
 
-You will see this in industrial settings as well. The next time you go into an industrial control room (or look carefull at some screens in online videos), try finding any scatter plots. The audience is not to blame: it is the producers of these charts who assume the audience is incapable of interpreting them.
+You will see this in industrial settings as well. The next time you go into an industrial control room (or look carefully at some screens in online videos), try finding any scatter plots. The audience is not to blame: it is the producers of these charts who assume the audience is incapable of interpreting them.
 
 .. note::
 
@@ -43,7 +56,7 @@ Further improvements can be made to your scatter plots. For example, extend the 
 	.. image:: ../figures/visualization/scatterplot-figures-with-regression-lines.png
 		:scale: 75
 
-You can add box plots and histograms to the side of the axes to aide interpretation:
+You can add box plots and histograms to the side of the axes to aid interpretation:
 
 	.. image:: ../figures/visualization/scatterplot-with-histograms-updated.png
 		:scale: 42
@@ -62,14 +75,14 @@ Add a third variable to the plot by adjusting the :index:`marker size <single: m
 		:alt: fake width
 
 
-    This example, from :index:`GapMinder <single: GapMinder>` (`https://gapminder.org <https://yint.org/gapminder-example>`_) , shows data until 2007 for:
+    This example, from :index:`GapMinder <single: GapMinder>` (`https://gapminder.org <https://yint.org/gapminder-example>`_), shows data until 2007 for:
 
 		1. income per person (*x*-axis);
 		2. against fertility (*y*-axis);
 		3. the size of each data point is proportional to the country's population;
-		4. the marker colour shows life expectancy at birth (years).
-		5. The GapMinder website allows you to "play" the graph over time, effectively adding a fifth dimension to the 2D plot.
+		4. the marker colour shows life expectancy at birth (years);
+		5. and the GapMinder website allows you to "play" the graph over time, effectively adding a fifth dimension to the 2D plot.
 
-		So 5 dimensions in a 2D surface. A 6th dimension cab be added if using technology such as VR glasses, to create a 3rd dimension, to display another variable from the data set.
+		So 5 dimensions are shown on a 2D surface. A 6th dimension could be added with a technology such as a virtual-reality display, using the third spatial dimension to show another variable from the data set.
 
-		Use the hyperlink above to see how richer countries move towards lower fertility and higher income over time.
+		Use the hyperlink above to see how countries move towards higher income and lower fertility over time.

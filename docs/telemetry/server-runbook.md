@@ -97,6 +97,7 @@ cp scripts/server/bots.txt.example           /etc/pid-book/bots.txt
 ln -s /opt/pid-book/scripts/server/run-goaccess.sh           /usr/local/bin/run-goaccess.sh
 ln -s /opt/pid-book/scripts/server/build-sparklines.py       /usr/local/bin/build-sparklines.py
 ln -s /opt/pid-book/scripts/server/caddy-json-to-combined.py /usr/local/bin/caddy-json-to-combined.py
+ln -s /opt/pid-book/scripts/server/check-stats-fresh.sh      /usr/local/bin/check-stats-fresh.sh
 chmod +x /opt/pid-book/scripts/server/*.sh
 chmod +x /opt/pid-book/scripts/server/*.py
 ```
@@ -257,6 +258,29 @@ vhosts may go weeks or months between rotations (their files just
 grow until they cross 10 MB) — not a problem for sparklines, just a
 quirk to know.
 
+Two consequences of this size-based behaviour are worth spelling out,
+because "how many days do I keep?" is the question that usually prompts
+a `rotate` change:
+
+* **`rotate N` counts files, not days.** With size-based rotation,
+  `rotate 1825` keeps the last 1825 rotated files. For the busy
+  `access.log` that crosses 10 MB about once a day, that is roughly
+  1825 days; for a quieter log it spans much longer. To guarantee at
+  least N days of `access.log` history, any `rotate` value comfortably
+  above N suffices (the live server uses `rotate 1825`, so 40+ days is
+  met for any realistic traffic level). Newly raised counts fill in one
+  file at a time: a recent bump shows only as many days as have elapsed
+  since the bump, plus whatever older files survived the previous
+  setting.
+* **Day-granularity survives multi-day files.** When a low-traffic day
+  does not push the log past 10 MB, one rotated file can span two or
+  more calendar days. That does not blur the sparklines:
+  `build-sparklines.py` buckets every hit by its own timestamp,
+  independent of file boundaries, so per-day counts are still exact.
+  This is why there is no need to force `daily` rotation (which would
+  drop `size 10M` and rotate every apache and vhost log, producing many
+  near-empty files) just to get clean daily numbers.
+
 **`_stats/` directory.** Apache serves it automatically since
 `DocumentRoot` covers it; you only need to create the directory and
 make sure `www-data` can write to it:
@@ -274,8 +298,19 @@ No `<Location>` or `Alias` block needed.
 ```sh
 cat >/etc/cron.d/pid-book-stats <<'EOF'
 # Nightly readership pipeline for learnche.org/pid.
-# Order matters: GoAccess first (longer-running), sparklines second.
-17 4 * * *  root  /usr/local/bin/run-goaccess.sh && /usr/local/bin/build-sparklines.py >> /var/log/pid-book-stats.log 2>&1
+#
+# The two builders are decoupled with ';' (not '&&') on purpose: the
+# GoAccess HTML report and the sparklines JSON are independent outputs,
+# so a GoAccess failure must NOT stop build-sparklines.py from refreshing
+# the dashboard. (An '&&' here once let a GoAccess "no log files matched"
+# error silently freeze sparklines.json for ~10 days.)
+#
+# check-stats-fresh.sh runs last. Its stdout (the OK line) goes to the
+# log; its stderr (MISSING / STALE) is deliberately NOT redirected, so a
+# cron MAILTO mails the alert. Set MAILTO at the top of the file to
+# receive it.
+MAILTO=kgdunn@gmail.com
+17 4 * * *  root  { /usr/local/bin/run-goaccess.sh; /usr/local/bin/build-sparklines.py; } >> /var/log/pid-book-stats.log 2>&1; /usr/local/bin/check-stats-fresh.sh >> /var/log/pid-book-stats.log
 EOF
 chmod 644 /etc/cron.d/pid-book-stats
 ```
@@ -284,11 +319,24 @@ chmod 644 /etc/cron.d/pid-book-stats
 fall during low-traffic hours (Hetzner is in Germany, so this is the
 European pre-dawn).
 
+**Log path is configured once.** Both `build-sparklines.py` and
+`run-goaccess.sh` read the `logs =` line from
+`/etc/pid-book/sparklines.conf`; `run-goaccess.sh` falls back to it when
+`LOG_GLOBS` is unset in the environment. Do **not** hard-code a
+`LOG_GLOBS=` override in the cron line for a permanent path change: edit
+`sparklines.conf` instead, so the two halves cannot drift apart. The
+pre-migration Apache server logs the learnche.org vhost to
+`/var/www/logs/learnche.org/access.log*`; the post-migration Caddy box
+will use `/var/log/caddy/learnche.org.access.log*`. The shipped
+`sparklines.conf.example` lists both, so the same config works across the
+move.
+
 To run once immediately and verify:
 
 ```sh
 /usr/local/bin/run-goaccess.sh
 /usr/local/bin/build-sparklines.py --verbose
+/usr/local/bin/check-stats-fresh.sh        # expect: OK ... is 0h old
 ls -lh /var/www/learnche.org/_stats/
 curl -sf https://learnche.org/_stats/sparklines.json | python3 -m json.tool | head
 ```
@@ -445,6 +493,37 @@ modified producer.
 
 ## Manual operations
 
+### Dashboard frozen on an old date
+
+The `/pid/stats` page and the sidebar sparklines anchor their display
+window to the newest date in `sparklines.json`, so a dead pipeline does
+not show an error: it freezes on the last good day. If the dashboard is
+stuck:
+
+```sh
+ls -l /var/www/learnche.org/_stats/sparklines.json   # mtime stuck days back?
+/usr/local/bin/check-stats-fresh.sh                  # STALE / MISSING => pipeline dead
+tail -50 /var/log/pid-book-stats.log                 # what did the last run say?
+/usr/local/bin/run-goaccess.sh; echo "exit=$?"       # "no log files matched" => path drift
+```
+
+The usual cause is a **log-path drift**: the configured glob points at a
+path with no files (e.g. the Caddy path on a box still running Apache),
+so `run-goaccess.sh` exits non-zero and `build-sparklines.py` never
+refreshes the file. Confirm where the vhost actually logs and fix the
+single source of truth:
+
+```sh
+grep -rn -E 'ServerName|CustomLog' /etc/apache2/sites-enabled/   # Apache
+grep -rn 'output file' /etc/caddy/Caddyfile                      # Caddy
+# Then set the real path once, in /etc/pid-book/sparklines.conf:
+#   logs = /var/www/logs/learnche.org/access.log*
+```
+
+Both builders read that `logs =` line, so there is nothing else to
+change. Re-run the two builders and the dashboard repopulates within the
+hour (modulo the 1-hour browser cache).
+
 ### Smoke-test the JSON
 
 ```sh
@@ -506,6 +585,7 @@ E.g. reprocess a historical range:
 | Sparkline render | reader's browser | every page load with mount |
 | `run-goaccess.sh` | webserver | nightly, 04:17 UTC |
 | `build-sparklines.py` | webserver | nightly, 04:17 UTC, after GoAccess |
+| `check-stats-fresh.sh` | webserver | nightly, after the builders |
 | Log rotation | webserver | per logrotate config |
 
 Three different trust zones (CI, browser, server) collaborate; the

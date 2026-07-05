@@ -20,7 +20,7 @@ The condition of finite variance is true for almost all systems of practical int
 	:alt:	../figures/univariate/CLT-derivation.svg
 	:align: center
 
-The critical requirement for the central limit theorem to be true is that the samples used to compute that average are independent of each together. The average produced from such samples will be more nearly normal though. Note: we **do not** require the original data to be normally distributed. This is a common misconception though.
+The critical requirement for the central limit theorem to be true is that the samples used to compute that average are independent of each other. The average produced from such samples will be more nearly normal though. Note: we **do not** require the original data to be normally distributed. This is a common misconception though.
 
 Imagine a case where we are throwing dice. The distributions, shown below, are obtained when we throw a die :math:`M` times and we plot the distribution of the *average* of these :math:`M` throws.
 
@@ -232,7 +232,7 @@ Some useful points:
 
 	-	The normal distribution only requires two parameters to describe it: :math:`\mu` and :math:`\sigma`
 
-	-	The area from :math:`x= -\sigma` to :math:`x = \sigma` is about 70% (68.3% exactly) of the distribution. So we have a probability of about 15% of seeing an :math:`x` value greater than :math:`x = \sigma`, and also 15% of :math:`x < -\sigma`
+	-	The area from :math:`x= -\sigma` to :math:`x = \sigma` is about 70% (68.3% exactly) of the distribution. So we have a probability of about 16% of seeing an :math:`x` value greater than :math:`x = \sigma`, and also 16% of :math:`x < -\sigma`
 
 	-	The :index:`tail <single: tail, in a histogram>` area outside :math:`\pm 2\sigma` is about 5% (2.275 outside each tail)
 

@@ -89,9 +89,30 @@ Clearly the promising direction to maximize profit is to operate at higher tempe
 .. math::
 
 	\hat{y} &= b_0 + b_T x_T + b_S x_S + b_{TS} x_T x_S \\
-	\hat{y} &= 389.8 + 55 x_T + 134 x_S - 3.50 x_T x_S
+	\hat{y} &= 385.5 + 55 x_T + 134 x_S - 3.50 x_T x_S
 
 where :math:`x_T = \dfrac{x_{T,\text{actual}} - \text{center}_T}{\Delta_T / 2} = \dfrac{x_{T,\text{actual}} - 325}{5}` and similarly,  :math:`x_S = \dfrac{x_{S,\text{actual}} - 0.75}{0.25}`.
+
+The model is fitted from the four corner runs (the centre run is held back to check for curvature later), and the coded design is orthogonal, so the coefficients are read straight off the corner responses:
+
+.. code-block:: python
+
+	import numpy as np
+
+	# Coded corner design (standard order) and the measured profit.
+	xT = np.array([-1, +1, -1, +1])
+	xS = np.array([-1, -1, +1, +1])
+	profit = np.array([193, 310, 468, 571])
+
+	X = np.column_stack([np.ones(4), xT, xS, xT * xS])
+	b = np.linalg.solve(X.T @ X, X.T @ profit)
+	print(b)                       # -> [385.5, 55.0, 134.0, -3.5]
+
+	# Path of steepest ascent: move 1 coded unit in T, the ratio bS/bT in S,
+	# then unscale to real-world units using the half-ranges (5 K, 0.25 g/L).
+	dxS_coded = b[2] / b[1]         # 134 / 55
+	dS_actual = dxS_coded * 1 * 0.5 / 2
+	print(round(dS_actual, 2))     # -> 0.61 g/L per +5 K step in temperature
 
 The model shows that we can expect an increase of $55/day of profit for a unit increase in :math:`x_T` (coded units). In real-world units that would require increasing temperature by :math:`\Delta x_{T,\text{actual}} = (1) \times \Delta_T /2` = 5K to achieve that goal. That scaling factor comes from the coding we used:
 
@@ -136,7 +157,7 @@ So we will choose to increase :math:`\Delta x_T = 1` coded unit, which means:
 	                    \Delta x_{S,\text{actual}} &= \frac{134}{55} \times 1 \times 0.5 / 2  = \bf{0.61}\,\,\text{g/L}\\
 
 *	:math:`T_5 = T_\text{baseline} + \Delta x_{T,\text{actual}} = 325 + 5 = 330` K
-*	:math:`S_5 = S_\text{baseline} + \Delta x_{S,\text{actual}} = 0.75 + 0.6 = 1.36` g/L
+*	:math:`S_5 = S_\text{baseline} + \Delta x_{S,\text{actual}} = 0.75 + 0.61 = 1.36` g/L
 
 So when we run the next experiment at these conditions. The daily profit is :math:`y_5 =` $ 669, improving quite substantially from the  baseline case.
 
@@ -168,7 +189,7 @@ The profit at this point is :math:`y_7 =` $ 463. We have gone too far as profit 
 | 11        | 339 K      | 2.17 g/L  | |+|        | |+|          |  642       |
 +-----------+------------+-----------+------------+--------------+------------+
 
-This time we have deciding to slightly smaller ranges in the factorial :math:`\text{range}_T = 8 = (339 - 331)` K and :math:`\text{range}_S = 0.4 = (2.17 - 1.77)` g/L so that we can move more slowly along the surface.
+This time we have decided to use slightly smaller ranges in the factorial, :math:`\text{range}_T = 8 = (339 - 331)` K and :math:`\text{range}_S = 0.4 = (2.17 - 1.77)` g/L, so that we can move more slowly along the surface.
 
 .. figure:: ../figures/doe/RSM-base-case-combined.png
 	:align: center
@@ -179,7 +200,7 @@ A least squares model from the 4 factorial points (experiments 8, 9, 10, 11, run
 
 .. math::
 		\hat{y} &= b_0 + b_T x_T + b_S x_S + b_{TS} x_T x_S \\
-		\hat{y} &= 673.8 + 13.25 x_T - 39.25 x_S - 2.25 x_T x_S
+		\hat{y} &= 670.25 + 13.25 x_T - 39.25 x_S - 2.25 x_T x_S
 
 As before we take a step in the direction of steepest ascent of :math:`b_T` units along the :math:`x_T` direction and :math:`b_S` units along the :math:`x_S` direction. Again we choose :math:`\Delta x_T = 1` unit, though we must emphasize that we could used a smaller or larger amount, if desired.
 
@@ -203,13 +224,13 @@ One must realize that as one approaches an optimum we will find:
 
 	-	The response variable decreases, sometimes very rapidly, because we have overshot the optimum.
 
-	-	The presence of curvature can also be inferred when interaction terms are similar or larger in magnitude than the main effect terms.
+	-	The two-factor interaction terms become similar to, or larger than, the main effect terms. This signals that the planar (first-order) model no longer describes the surface well: a large interaction warps the plane into a twisted surface. It is a warning that the first-order approximation is breaking down, though it is distinct from the pure quadratic curvature detected by the centre-point check below.
 
-An optimum therefore exhibits curvature, so a model that only has linear terms in it will not be suitable to use to find the direction of steepest ascent along the *true response surface*. We must add terms that account for this curvature.
+An optimum exhibits curvature, so a model that only has linear terms in it will not be suitable to use to find the direction of steepest ascent along the *true response surface*. We must add terms that account for this curvature.
 
 **Checking for curvature**
 
-The factorial's center point can be predicted from :math:`(x_T, x_S) = (0, 0)`, and is just the intercept term. In the last factorial, the predicted center point was  :math:`\hat{y}_\text{cp}` = $670; yet the actual center point from run 6 showed a profit of $ 688. This is a difference of $18, which is substantial when compared to the main effects' coefficients, particularly of temperature.
+The model above was fitted from the four corner runs only, so the centre run is held back as an independent check for curvature. The linear model predicts the centre from :math:`(x_T, x_S) = (0, 0)`, which is just the intercept term. In the last factorial, the predicted centre point was :math:`\hat{y}_\text{cp}` = $670.25; yet the actual centre point from run 6 showed a profit of $688. This is a difference of about $18, which is substantial when compared to the main effects' coefficients, particularly of temperature.
 
 So when the measured center point value is quite different from the predicted center point in the linear model, then that is a good indication there is :index:`curvature <pair: curvature; response surface>` in the response surface. The way to accommodate for that is to add quadratic terms to the estimate model.
 
@@ -251,7 +272,7 @@ Notice how the linear terms estimated previously are the same! The quadratic eff
 
 The final step in the response surface methodology is to plot this model's contour plot and predict where to run the next few experiments. As the solid contour lines in the illustration show, we should run our next experiments roughly at :math:`T` = 343K and :math:`S` = 1.60 g/L where the expected profit is around $736. We get those two values by eye-balling the solid contour lines, drawn from the above non-linear model. You could find this point analytically as well.
 
-This is not exactly where the true process optimum is, but it is pretty close to it (the temperature of :math:`T` = 343K is just a little lower that where the true optimum is.
+This is not exactly where the true process optimum is, but it is close to it (the temperature of :math:`T` = 343 K is just a little lower than where the true optimum is).
 
 This example has demonstrated how powerful response surface methods are. A minimal number of experiments has quickly converged onto the true, unknown process optimum. We achieved this by building successive least squares models that approximate the underlying surface. Those least squares models are built using the tools of fractional and full factorials and basic optimization theory, to climb the hill of steepest ascent.
 
@@ -260,6 +281,130 @@ This example has demonstrated how powerful response surface methods are. A minim
 .. youtube:: https://www.youtube.com/watch?v=AcEPqVr4JJQ&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=57
 
 .. youtube:: https://www.youtube.com/watch?v=s_sutHvaBZE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=58
+
+
+.. _DOE-box-behnken-designs:
+
+Box-Behnken designs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A :index:`Box-Behnken design <pair: Box-Behnken designs; experiments>` (BBD) is a three-level
+(:math:`-1, 0, +1`) response surface design that supports the same full second-order
+(quadratic) model as the central composite design above. Box and Behnken (1960) constructed
+them by combining two-level factorials with balanced incomplete block designs. Each non-centre
+run sits at the midpoint of an edge of the experimental cube: two factors are set to their
+extremes (a :math:`2 \times 2` factorial in that pair) while all the remaining factors are held
+at the centre. Centre points are then replicated, to estimate the pure error and to stabilise
+the prediction near the middle of the region.
+
+**The defining feature.** A BBD places no runs at the cube vertices: there is no run with every
+factor simultaneously at its high or low setting. All the design points lie on a sphere of
+radius :math:`\sqrt{2}` in coded units (the edge midpoints), plus the centre. This single
+property is what separates a BBD from a central composite design (CCD), and it drives every
+practical consequence. Because the extreme corner combinations are never required, a BBD is
+attractive when the corners of the region are infeasible, unsafe, or physically meaningless:
+high temperature with high pressure and high concentration all at once, for example. It also
+keeps each factor at three operationally convenient settings, which simplifies the execution.
+
+A BBD has these properties:
+
+    *   it fits the full quadratic model: intercept, linear, two-factor interaction, and pure
+        quadratic terms;
+    *   it requires at least three factors, and does not exist for two;
+    *   it is rotatable for :math:`k = 4` (and :math:`k = 7`), and nearly rotatable for the other
+        factor counts, including :math:`k = 3`, giving roughly uniform prediction variance at a
+        fixed distance from the centre;
+    *   it is spherical rather than cuboidal: the prediction quality is good in the interior, and
+        degrades towards the corners, where there is no design support.
+
+The run count, and how it compares with a rotatable CCD, is what usually decides the matter in
+practice.
+
+.. list-table:: Run counts for a Box-Behnken design.
+    :header-rows: 1
+    :widths: 22 20 32 18
+
+    *   - Factors :math:`k`
+        - Edge points
+        - Centre points (typical)
+        - Total runs
+    *   - 3
+        - 12
+        - 3
+        - 15
+    *   - 4
+        - 24
+        - 3
+        - 27
+    *   - 5
+        - 40
+        - 6
+        - 46
+    *   - 6
+        - 48
+        - 6
+        - 54
+    *   - 7
+        - 56
+        - 6
+        - 62
+
+.. list-table:: Box-Behnken compared with central composite designs.
+    :header-rows: 1
+    :widths: 26 18 40
+
+    *   - Aspect
+        - Box-Behnken
+        - Central composite
+    *   - Factor levels
+        - 3
+        - 5 (rotatable) or 3 (face-centred)
+    *   - Corner runs
+        - none
+        - yes (the factorial portion)
+    *   - Region shape
+        - spherical
+        - spherical or cuboidal
+    *   - Runs at :math:`k = 3`
+        - 15
+        - about 20
+    *   - Sequential build
+        - no
+        - yes: augment a factorial with axial and centre points
+    *   - Prediction at corners
+        - weak
+        - strong
+
+For three and four factors a BBD is usually more economical than a rotatable CCD. The trade-off
+is that a BBD cannot be assembled sequentially from a screening factorial, and it should not be
+used when the corner conditions are themselves of interest, since the model is effectively
+extrapolating there.
+
+**Where they are used.** Box-Behnken designs are an optimisation-stage tool, reached once
+screening has reduced the factor set to roughly three to five important continuous factors. They
+are common in analytical method development and analytical quality by design (HPLC and other
+separations), in pharmaceutical formulation and quality by design, in fermentation and
+bioprocess optimisation, in extraction, and in food and beverage science. In each case the
+appeal is the same: a compact second-order design that never asks for the dangerous or
+impossible corner of the operating space.
+
+There are three situations where a BBD is the wrong choice:
+
+    *   with only two factors, or when the corner conditions must be explored: use a CCD, or a
+        face-centred CCD;
+    *   when a sequential path from screening to response surface modelling is planned: a CCD
+        augments a factorial directly, whereas a BBD does not;
+    *   with categorical factors, or hard constraints on the region: prefer an
+        :ref:`optimal (D- or I-) design <DOE-optimal-designs>`.
+
+**Readings**
+
+* Box, G.E.P. and Behnken, D.W.: "Some New Three Level Designs for the Study of Quantitative
+  Variables", *Technometrics*, **2**, 455--475, 1960.
+  `doi:10.1080/00401706.1960.10489912 <https://doi.org/10.1080/00401706.1960.10489912>`__
+* Myers, Montgomery and Anderson-Cook, *Response Surface Methodology*, the chapter on
+  second-order designs; and Montgomery, *Design and Analysis of Experiments*, the response
+  surface chapter.
 
 
 The general approach for response surface modelling
@@ -271,7 +416,7 @@ The general approach for response surface modelling
 
 		\hat{y} = b_0 + b_Ax_A + b_B x_B + b_C x_C  \ldots + b_{AB}x_Ax_B + b_{AC} x_A x_C + \ldots
 
-#.	The main effects are usually significantly larger than the two-factor interactions, so these higher interaction terms can be safely ignored. Any main effects that are not significant may be dropped for future iterations.
+#.	Far from the optimum the main effects are usually larger than the two-factor interactions. When that holds, the interaction terms are small enough to leave out of the direction calculation in the next step. Check it rather than assume it: if an interaction is comparable to or larger than the main effects, the simple gradient step below does not apply (see the note after this list). Any main effects that are not significant may be dropped for future iterations.
 
 #.	Use the model to estimate the path of steepest ascent (or descent if minimizing :math:`y`):
 
@@ -280,6 +425,8 @@ The general approach for response surface modelling
 		\dfrac{\partial \hat{y}}{\partial x_1} = b_1  \qquad\qquad \dfrac{\partial \hat{y}}{\partial x_2} = b_2 \qquad \ldots
 
 	The path of steepest ascent is climbed. Move any one of the main effects, e.g. :math:`b_A` by a certain amount, :math:`\Delta x_A`. Then move the other effects: :math:`\Delta x_i = \frac{b_i}{b_A} \Delta x_A`. For example, :math:`\Delta x_C` is moved by :math:`\frac{b_C}{b_A} \Delta x_A`.
+
+	This simple ratio is the gradient of the *first-order* (planar) part of the model, so it points along the steepest ascent only while the interaction terms are negligible. If the two-factor interactions are similar to, or larger than, the main effects, the fitted surface is a twisted plane rather than a flat one, and the direction of steepest ascent turns as you move. In that case, do not follow the linear gradient blindly: draw the contour plot of the fitted model and read the next point off the surface, or move to a second-order design (:ref:`central composite design <DOE_central_composite_designs>`) that can describe the curvature.
 
 	If any of the :math:`\Delta x_i` values are too large to safely implement, then take a smaller proportional step in all factors. Recall that these are coded units, so unscale them to obtain the move amount in real-world units.
 

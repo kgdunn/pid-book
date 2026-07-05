@@ -29,8 +29,13 @@ You can use the material in this chapter when you must learn more about your sys
 
 .. rubric:: What we will cover
 
+We start with plots that show a single variable: time-series plots, bar plots and box plots. We
+then move to the scatter plot, which relates two (or more) variables, and to tables, which remain
+an effective display for small amounts of comparative data. The chapter ends with general advice
+on style, colour, and revealing complex data graphically.
+
 .. figure:: /figures/visualization/visualization-subject-mapping.png
-	:alt:	../figures/visualization/visualization-subject-mapping.xmind
+	:alt:	Mind map of the chapter's topics; time-series plots, bar plots, box plots, scatter plots, tables, and the use of colour.
 	:align: center
 	:scale: 60
 
@@ -54,5 +59,7 @@ References and readings
 #. Stephen Few, *Show Me the Numbers* and *Now You See It: Simple Visualization Techniques for Quantitative Analysis*; both from Analytics Press.
 #. William Cleveland, *Visualizing Data*, 1st edition, Hobart Press, 1993.
 #. William Cleveland, *The Elements of Graphing Data*, 2nd edition, Hobart Press, 1994.
+#. William Cleveland and Robert McGill, `Graphical Perception: Theory, Experimentation, and Application to the Development of Graphical Methods <https://doi.org/10.1080/01621459.1984.10478080>`_, *Journal of the American Statistical Association*, **79** (387), 531-554, 1984.
+#. Mark Harrower and Cynthia Brewer, `ColorBrewer.org: An Online Tool for Selecting Colour Schemes for Maps <https://doi.org/10.1179/000870403235002042>`_, *The Cartographic Journal*, **40** (1), 27-37, 2003.
 #. Su, `It's Easy to Produce Chartjunk Using Microsoft Excel 2007 but Hard to Make Good Graphs <https://dx.doi.org/10.1016/j.csda.2008.03.007>`_, *Computational Statistics and Data Analysis*, **52** (10), 4594-4601, 2008.
 #. Paul Geladi, Marena Manley and Torbjörn Lestander, `Scatter plotting in multivariate data analysis <https://literature.learnche.org/item/86/scatter-plotting-in-multivariate-data-analysis>`_, *Journal of Chemometrics*, **17**, 503-511, 2003.

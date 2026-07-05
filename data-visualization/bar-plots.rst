@@ -74,7 +74,8 @@ Here is some advice for bar plots:
 
 -	You can place the labels inside the bars.
 
--	You should start the noncategory axis at zero: the bar's area shows the magnitude. Starting bars at a nonzero value distorts the meaning.
+-	Start the value axis at zero: the reader judges each category by the length of its bar, so bars
+	that start at a nonzero value distort the comparison.
 
 ..
   Exception to starting at zero: todo Few, p 189 (ranges)

@@ -3,7 +3,7 @@
 Experiments with a single variable at two levels
 ======================================================
 
-This is the simplest type of experiment. It involves an outcome variable, :math:`y`, and one input variable, :math:`x`. The :math:`x`-variable could be a continuous numeric one, such as temperature, or discrete on, such as yes/no, on/off, A/B. This type of experiment could be used to answer questions such as the following:
+This is the simplest type of experiment. It involves an outcome variable, :math:`y`, and one input variable, :math:`x`. The :math:`x`-variable could be a continuous numeric one, such as temperature, or discrete, such as yes/no, on/off, A/B. This type of experiment could be used to answer questions such as the following:
 
 	*	Has the reaction yield increased when using catalyst A or B?
 
@@ -11,7 +11,7 @@ This is the simplest type of experiment. It involves an outcome variable, :math:
 
 	*	Does the plastic's stretchability improve when extruded at various temperatures (a low or high temperature)?
 
-We can perform several runs (experiments) at level A, and some runs at level B. These runs are randomized (i.e. do not perform all the A runs, and then the B runs). We strive to hold all other disturbance variables constant so we pick up only the A-to-B effect. Disturbances are any variables that might affect :math:`y` but, for whatever reason, we don't wish to quantify. If we cannot control the disturbance, then at least we can use :ref:`pairing <univariate_paired_tests>` and :ref:`blocking <DOE_blocking_section>`. Pairing is when there is one factor in our experiment; blocking is when we have more than one factor.
+We can perform several runs (experiments) at level A, and some runs at level B. These runs are randomized (i.e. do not perform all the A runs, and then the B runs). We strive to hold all other disturbance variables constant so we pick up only the A-to-B effect. Disturbances are any variables that might affect :math:`y` but, for whatever reason, we don't wish to quantify. If we cannot control the disturbance, then at least we can use :ref:`pairing <univariate_paired_tests>` and :ref:`blocking <DOE_blocking_section>`. Pairing is blocking with blocks of size two: the two runs of a pair are made under the same level of the disturbance, so its effect cancels in their difference. Blocking generalizes this to larger groups, and it is used even when there is only a single factor of interest.
 
 Recap of group-to-group differences
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -28,7 +28,106 @@ We have already seen in the :ref:`univariate statistics section <univariate-grou
 		(\overline{x}_B - \overline{x}_A) - c_t \times \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)} &\leq& \mu_B - \mu_A &\leq & (\overline{x}_B - \overline{x}_A) + c_t  \times \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}
 	\end{array}
 
+.. note:: We keep the symbol :math:`z` here to match the univariate section, but because the pooled variance :math:`s_P^2` is *estimated* from the data (rather than known), this statistic is strictly :math:`t`-distributed, not standard normal. That is why the critical value :math:`c_t` and the degrees of freedom :math:`n_A + n_B - 2` come from the :math:`t`-distribution.
+
 We consider the effect of changing from condition A to condition B to be a *statistically* significant effect when this confidence interval does not span zero. However, the width of this interval and how symmetrically it spans zero can cause us to come to a different, *practical* conclusion. In other words, we override the narrow statistical conclusion based on the richer information we can infer from the width of the confidence interval and the variance of the process.
+
+.. _DOE-two-level-allocation:
+
+How many runs at each level?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The recap above pooled the two groups into a single variance, :math:`s_P^2`, which already assumes the spread at level A equals the spread at level B. Before running the experiment, there is a planning question hiding inside that assumption: if the budget allows a fixed total of :math:`N` runs, how many should be measured at level A and how many at level B?
+
+Write :math:`n_A` for the number of runs at level A and :math:`n_B = N - n_A` for the number at level B. Keeping the two variances separate, the estimated difference :math:`\overline{x}_B - \overline{x}_A` has variance
+
+.. math::
+
+	\text{var}\left(\overline{x}_B - \overline{x}_A\right) = \frac{\sigma_A^2}{n_A} + \frac{\sigma_B^2}{n_B}
+
+where :math:`\sigma_A^2` and :math:`\sigma_B^2` are the variances of a single run at each level. A precise experiment makes this variance small, so the way we split the budget is itself a design choice. The function below computes the variance for every whole-run split of a budget, together with the *efficiency*: the smallest variance in the table divided by the variance of a given split, written as a percentage. The efficiency says how precise a split is relative to the best split of the same budget.
+
+.. code-block:: python
+
+	import pandas as pd
+
+	def allocation_table(var_A, var_B, cost_A, cost_B, budget):
+	    """Variance and efficiency of every whole-run split of a fixed budget."""
+	    rows = []
+	    n_A = 1
+	    while cost_A * n_A < budget:
+	        remainder = budget - cost_A * n_A
+	        if remainder % cost_B == 0:
+	            n_B = remainder // cost_B
+	            variance = var_A / n_A + var_B / n_B
+	            rows.append((n_A, n_B, variance))
+	        n_A += 1
+	    table = pd.DataFrame(rows, columns=["n_A", "n_B", "variance"])
+	    table["efficiency"] = 100 * table["variance"].min() / table["variance"]
+	    return table
+
+	# Equal variances, equal costs, twelve runs (balanced split is best):
+	print(allocation_table(1, 1, 1, 1, 12))
+
+	# Level B nine times as variable as level A, equal costs, twelve runs:
+	print(allocation_table(1, 9, 1, 1, 12))
+
+	# Equal variances, but a run at level A costs twice as much, budget of 24:
+	print(allocation_table(1, 1, 2, 1, 24))
+
+When the two levels have the same variance, :math:`\sigma_A^2 = \sigma_B^2 = \sigma^2`, and a run at either level costs the same, the variance is smallest when the runs are divided evenly. The first call above, with :math:`\sigma^2 = 1` and :math:`N = 12`, gives:
+
+.. tabularcolumns:: |c|c|c|c|
+
+=========  =========  ==========  ============
+Runs at A  Runs at B  Variance    Efficiency
+=========  =========  ==========  ============
+1          11         1.091       30.6%
+2          10         0.600       55.6%
+3          9          0.444       75.0%
+4          8          0.375       88.9%
+5          7          0.343       97.2%
+6          6          0.333       100.0%
+7          5          0.343       97.2%
+8          4          0.375       88.9%
+9          3          0.444       75.0%
+10         2          0.600       55.6%
+11         1          1.091       30.6%
+=========  =========  ==========  ============
+
+The balanced 6-and-6 split is best, matching the even division that most people would reach for. The penalty for a modest imbalance is small: a 5-and-7 split is still 97.2% efficient. The value of :math:`\sigma^2` does not change any of this. Doubling it doubles every variance in the table and leaves the efficiencies, and so the best split, unchanged.
+
+If the two levels do not have the same variance, the even split is no longer best. Suppose level B is nine times as variable as level A, so :math:`\sigma_A^2 = 1` and :math:`\sigma_B^2 = 9`. The second call above, over the same :math:`N = 12` runs, gives:
+
+.. tabularcolumns:: |c|c|c|c|
+
+=========  =========  ==========  ============
+Runs at A  Runs at B  Variance    Efficiency
+=========  =========  ==========  ============
+1          11         1.818       73.3%
+2          10         1.400       95.2%
+3          9          1.333       100.0%
+4          8          1.375       97.0%
+5          7          1.486       89.7%
+6          6          1.667       80.0%
+7          5          1.943       68.6%
+8          4          2.375       56.1%
+9          3          3.111       42.9%
+10         2          4.600       29.0%
+11         1          9.091       14.7%
+=========  =========  ==========  ============
+
+Now the best split is 3 runs at level A and 9 at level B, and the balanced split has fallen to 80.0% efficiency. The extra runs at level B offset its larger variance, keeping the term :math:`\sigma_B^2 / n_B` from dominating the sum. With equal costs the variance is smallest when the runs are shared in proportion to the standard deviations, :math:`n_A : n_B = \sigma_A : \sigma_B`, which places 3 and 9 runs here.
+
+Cost can move the split away from even in the same way. Suppose the two levels have the same variance, but a run at level A costs twice as much as a run at level B, and the budget is fixed at a total cost of 24, so that :math:`2 n_A + n_B = 24`. The third call above finds that the variance is smallest with 7 runs at level A and 10 at level B: an unbalanced design whose total run count is not even. Combining both effects, the variance is smallest when
+
+.. math::
+
+	n_A : n_B = \frac{\sigma_A}{\sqrt{c_A}} : \frac{\sigma_B}{\sqrt{c_B}}
+
+where :math:`c_A` and :math:`c_B` are the cost of a single run at each level. The general principle is to place more runs where the variance is larger and where the runs are cheaper. The even split is best only in the particular case of equal variances, equal costs, and an even number of runs. This allocation question, and the case study that motivates it, is treated in the opening chapter of :ref:`Goos and Jones <DOE_references>`.
+
+In practice the two variances are seldom known before the experiment, whereas the two costs usually are. The balanced split stayed at least 80% efficient across every case above, so it is a reasonable default when nothing is known about the variances. When a cost difference is known, the split that accounts for it can be chosen deliberately.
 
 Using linear least squares models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -106,7 +205,7 @@ Had we used a formal test of differences where we pooled the variances, we would
 	:align: center
 	:scale: 60
 	:width: 900px
-	:alt: fake width
+	:alt: Histogram of the average A-minus-B difference over all randomization permutations
 
 The figure shows the differences in the averages of A and B for the 24,310 realizations. The vertical line represents the difference in the average for the one particular set of numbers we measured in the experiment.
 

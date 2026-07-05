@@ -25,7 +25,7 @@
 Process monitoring in context
 ==============================
 
-In the first section we learned about :ref:`visualizing data <SECTION-data-visualization>`, then we moved on to reviewing :ref:`univariate statistics <SECTION-univariate-review>`. This section now combines both topics, showing how to create a system that monitors a single, univariate, value from any process. These monitoring systems are easily implemented online, and generate great value for companies that use them in day-to-day production. This is one of their greatest advantages: almost no training is required to interpret the visualization and secondly the human eye can quickly pick up any patters or trends in the plots; both expected and unexpected patterns.
+In the first section we learned about :ref:`visualizing data <SECTION-data-visualization>`, then we moved on to reviewing :ref:`univariate statistics <SECTION-univariate-review>`. This section now combines both topics, showing how to create a system that monitors a single, univariate, value from any process. These monitoring systems are easily implemented online, and generate great value for companies that use them in day-to-day production. This is one of their greatest advantages: almost no training is required to interpret the visualization and secondly the human eye can quickly pick up any patterns or trends in the plots; both expected and unexpected patterns.
 
 Monitoring charts are a graphical tool, enabling anyone to rapidly detect a problem by visual analysis. The next logical step after detection of a problem is to diagnose it, but we will cover diagnosis in the section on :ref:`latent variable models <SECTION_latent_variable_modelling>`.
 

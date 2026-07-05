@@ -11,6 +11,79 @@ comma, parentheses, or two separate sentences instead. En-dashes (`–`) in
 numeric ranges such as the `2010–2026` year range are correct and should
 stay.
 
+## Writing style: the author's voice
+
+When writing or editing prose for this book, match the author's voice.
+These rules are distilled from repeated corrections; follow them so the
+same edits do not have to be made again.
+
+**Tone**
+
+- Compare, do not advocate. When weighing designs, methods, or options,
+  lay out the trade-offs neutrally and let the reader (or the purpose of
+  the study) decide. Do not argue that one option is better or worse,
+  crown a winner, or tell the reader what they "should" do.
+- No dramatic or loaded framing. Avoid words like "trap", "flatters",
+  "lying", "the whole story". Say plainly what happens.
+- Do not moralize. Never label a quantity, reading, or comparison as
+  "honest" (it implies the alternatives are dishonest). Cut editorial or
+  sarcastic asides such as "as they should" or "a number nobody asked
+  for".
+- Do not overstate. Avoid "always", "never", "obviously", "the whole
+  story" unless the claim is literally true; prefer measured wording.
+- No cute or colourful adjectives standing in for precision (e.g.
+  "thrifty"). Use plain, exact language.
+- Avoid idioms and colloquialisms; prefer plain, literal phrasing. For
+  example "shore it up" (use "strengthen it") or "top them all" (use "is
+  best in every column").
+- Prefer concrete, reader-directed phrasing over an abstract
+  nominalisation. For example "the dilemma resolves based on your
+  intentions", not "resolves by purpose".
+
+**Technical rigour**
+
+- Define before you use. Introduce a term or metric in plain words
+  before leaning on it; never name-drop a concept (an optimality
+  criterion, for instance) that has not been set up. If you add a metric,
+  explain what it measures and why it belongs here.
+- Use terms correctly. Do not stretch a name to cover something it does
+  not mean (e.g. T-optimality is model discrimination, not total
+  information). Verify the definition; if unsure, flag it rather than
+  bluff.
+- Re-explain at the point of use. Briefly restate what a term means
+  where it appears again, rather than relying on the reader to scroll
+  back to an earlier definition. Likewise, name the object at each
+  mention (the "nine-run DSD", the "thirteen-run OMARS design"), not a
+  bare "the nine-run design", so the reader need not scroll back to
+  recall which is which.
+- Prefer the exact technical term to a loose paraphrase. For example
+  "estimate the coefficients jointly", not "estimate them as a set"; and
+  "the running fraction (percentiles)", not "the running fraction of
+  sampled locations".
+- State the scenario first. Make the assumptions explicit before drawing
+  a conclusion (for example: the model is already fixed, and we are
+  comparing where the runs are placed).
+
+**Formatting**
+
+- Numbers: keep a consistent number of significant figures (do not
+  blanket-round to a fixed number of decimals); attach units ("46 runs",
+  not "46"); no space before "%".
+- Tables: capitalise the first-column labels, and order the columns
+  meaningfully, keeping any related figure in the same order.
+- Keep paragraphs short; split a long one at its natural seam.
+- Cross-reference with an explicit ``:ref:`` link, not a positional word.
+  The HTML edition splits sections onto separate pages, so "the example
+  above" may sit on a different page; link to the labelled target rather
+  than writing "above" or "earlier".
+- Do not refer to a table or figure before it appears in the text. If a
+  forward reference is unavoidable, point to it explicitly as "below".
+
+**Process**
+
+- When a wording or style fix may recur elsewhere in the file, ask before
+  changing the other occurrences rather than assuming.
+
 ## Bump the version and citation date whenever you plan a PR
 
 This repository ships release metadata in three places that reusers and

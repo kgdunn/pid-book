@@ -56,7 +56,7 @@ Given these numbers, we can simplify the ideal gas law to: :math:`p=\beta_1 T`, 
 .. image:: ../figures/least-squares/table-of-cylinder-data.png
 	:width: 900px
 	:scale: 67
-	:alt: fake width
+	:alt: Table of cylinder temperature, pressure and humidity data with means and variances
 
 .. _LS_eqn_definition-covariance:
 
@@ -165,7 +165,7 @@ In your own time calculate a rough numeric value and give the units of covarianc
 
 One last point is that the covariance of a variable with itself is the variance: :math:`\text{Cov}\left\{x, x\right\} = \mathcal{V}(x) = \mathcal{E}\left\{ (x - \overline{x}) (x - \overline{x})\right\}`, a definition :ref:`we saw earlier <univariate-variance>`.
 
-Using the ``cov(temp, pres)`` function in R gives ``7533.333``, while we calculated 6780. The difference comes from :math:`6780 \times \dfrac{N}{N-1}= 7533.33`, indicating that R divides by :math:`N-1` rather than :math:`N`. This is because the variance function in R for a vector ``x`` is internally called as ``cov(x, x)``. Since R returns the unbiased variance, it divides through by :math:`N-1`. This inconsistency does not really matter for large values of :math:`N`, but emphasizes that one should always read the documentation for the software being used.
+Using the ``cov(temp, pres)`` function in R gives ``7533.333``, while we calculated 6780. The difference comes from :math:`6780 \times \dfrac{N}{N-1}= 7533.33`, indicating that R divides by :math:`N-1` rather than :math:`N`. This is because the variance function in R for a vector ``x`` is internally called as ``cov(x, x)``. Since R returns the unbiased estimate of the variance, it divides through by :math:`N-1` (the same correction :ref:`seen earlier <univariate-variance>` for the sample variance). The difference between the two conventions shrinks as :math:`N` grows, but it emphasizes that one should always read the documentation for the software being used.
 
 Note that deviation variables are not affected by a *shift* in the raw data of :math:`x` or :math:`y`. For example, measuring temperature in Celsius or Kelvin has no effect on the covariance number; but measuring it in Celsius vs Fahrenheit does change the covariance value.
 
@@ -186,7 +186,7 @@ The variance and covariance values are units dependent. For example, you get a v
 
 		\text{Correlation}\,\,=\,\,r(x, y) = \dfrac{\mathcal{E}\left\{ (x - \overline{x}) (y - \overline{y})\right\}}{\sqrt{\mathcal{V}\left\{x\right\}\mathcal{V}\left\{y\right\}}} = \dfrac{\text{Cov}\left\{x, y\right\}}{\sqrt{\mathcal{V}\left\{x\right\}\mathcal{V}\left\{y\right\}}}
 
-It takes the covariance value and divides through by the units of :math:`x` and of :math:`y` to obtain a dimensionless result. The values of :math:`r(x,y)` range from :math:`-1` to :math:`+1`. Also note that :math:`r(x,y) = r(y,x)`.
+It takes the covariance value and divides through by the product of the standard deviations of :math:`x` and :math:`y`, which carry the units of :math:`x` and :math:`y`, to obtain a dimensionless result. The values of :math:`r(x,y)` range from :math:`-1` to :math:`+1`. Also note that :math:`r(x,y) = r(y,x)`.
 
 So returning back to our example of the gas cylinder, the correlation between temperature and pressure, and temperature and humidity can be calculated now as:
 
@@ -244,7 +244,7 @@ Note that correlation is the same whether we measure temperature in Celsius or K
 	:width: 900px
 	:align: center
 	:scale: 65
-	:alt: fake width
+	:alt: Example scatter plots with their correlation values
 
 
 .. _LS_correlation_matrix_in_python:
@@ -369,11 +369,12 @@ The scatter plot shows no visible pattern, and the correlation matrix confirms i
 		about 0.2% of the variation in ``Grade``. This is one reason :math:`R^2` on its own is a
 		poor way to judge a regression model.
 
-Compare this against the cheddar-cheese exercise (:math:`r` around 0.5 to 0.8 between flavour and
-the chemical predictors), and against the cylinder-pressure example above where :math:`r = 0.997`.
-Looking at the *scatter plots* alongside the *correlation values* for these three regimes ---
-near-zero, moderate, near-one --- is the fastest way to develop a calibrated visual sense of what
-a correlation coefficient really means.
+Compare this against the cheddar-cheese exercise in the :ref:`exercises section <LS-exercises>`
+(:math:`r` around 0.5 to 0.8 between flavour and the chemical predictors), and against the
+:ref:`cylinder-pressure example <LS_covariance>` where :math:`r = 0.997`. Looking at the *scatter
+plots* alongside the *correlation values* for these three regimes (near-zero, moderate, near-one)
+is the fastest way to develop a calibrated visual sense of what a correlation coefficient really
+means.
 
 
 .. TODO See article by Brillinger: John Tukey and the correlation coefficient (included as a PDF in the repo)
@@ -415,4 +416,4 @@ Be sure that you can derive (and interpret!) these relationships, which are deri
 								&= \mathcal{E}\{ (x-\overline{x})^2 + 2(x-\overline{x})(y-\overline{y}) + (y-\overline{y})^2 \}\\
 								&= \mathcal{E}\{ (x-\overline{x})^2 \} + 2\mathcal{E}\{(x-\overline{x})(y-\overline{y})\} + \mathcal{E}\{(y-\overline{y})^2 \} \\
 								&= \mathcal{V}\{ x \}             + 2\text{Cov}\{x,y\} + \mathcal{V}\{ y \}\\
-			\mathcal{V}\{x+y\}	&= \mathcal{V}\{x\} + \mathcal{V}\{y\}, \qquad\text{only if $x$ and $y$ are independent}
+			\mathcal{V}\{x+y\}	&= \mathcal{V}\{x\} + \mathcal{V}\{y\}, \qquad\text{only if $x$ and $y$ are uncorrelated, i.e. } \text{Cov}\{x,y\} = 0

@@ -33,7 +33,7 @@ Formally, the Poisson distribution can be written as :math:`\displaystyle \frac{
 
 		0, 0.25% chance
 		1, 1.5%
-		3, 8.9
+		3, 8.9%
 		6, 16%
 		10, 4.1%
 		15, 0.1%
