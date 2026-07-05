@@ -502,8 +502,9 @@ such as a supplier chosen from three sources or a catalyst from four. This needs
 both in how the factor enters the model and in what we can then ask of the design.
 
 A categorical factor with :math:`L` levels is written with *indicator* (dummy) columns, one per
-level: :math:`s_1` is :math:`1` for runs at level 1 and :math:`0` otherwise, :math:`s_2` is
-:math:`1` for level 2, and so on. All :math:`L` dummies cannot sit in the model alongside the
+level, the same construction used for :ref:`integer variables in a regression model
+<LS-dummy-variables>`: :math:`s_1` is :math:`1` for runs at level 1 and :math:`0` otherwise,
+:math:`s_2` is :math:`1` for level 2, and so on. All :math:`L` dummies cannot sit in the model alongside the
 intercept, however: they sum to one in every row (:math:`s_1 + s_2 + \cdots + s_L = 1`), which
 is the intercept column, so the columns are linearly dependent and
 :math:`\mathbf{M} = \mathbf{X}^T\mathbf{X}` is singular and cannot be inverted. The usual
