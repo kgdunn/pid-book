@@ -42,21 +42,22 @@ Here is an example that shows these properties.
 	import numpy as np
 	import plotly.graph_objects as go
 
-	# A synthetic example: 40 samples that drift out of
-	# control over the final few points.
-	rng = np.random.default_rng(7)
-	target, sd = 50, 4
-	series = rng.normal(target, sd, 40)
-	series[32:] += np.arange(8) * 2.0     # a slow drift near the end
+	# A tank temperature, tag TC241, plotted in time sequence order:
+	# in control for the first 150 samples, after which a slow upward
+	# drift begins and eventually crosses the upper control limit.
+	rng = np.random.default_rng(0)
+	target, sd = 10.0, 1.5
+	tc241 = rng.normal(target, sd, 200)
+	tc241[150:] += 0.09 * np.arange(50)
 	UCL, LCL = target + 3 * sd, target - 3 * sd
 
 	fig = go.Figure()
-	fig.add_trace(go.Scatter(y=series, mode="lines+markers"))
+	fig.add_trace(go.Scatter(y=tc241, mode="lines"))
 	fig.add_hline(y=target, line_dash="dot", annotation_text="Target")
 	fig.add_hline(y=UCL, line_color="red", annotation_text="UCL")
 	fig.add_hline(y=LCL, line_color="red", annotation_text="LCL")
-	fig.update_layout(xaxis_title="Sample number",
-	                  yaxis_title="Monitored value")
+	fig.update_layout(xaxis_title="Time sequence order",
+	                  yaxis_title="Tank temperature, TC241 [degC]")
 	fig.show()
 
 .. image:: ../figures/monitoring/demo-of-monitoring-chart.png

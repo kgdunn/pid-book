@@ -45,6 +45,45 @@ To start the EWMA sequence we define the value for :math:`\hat{x}_0 = T` and :ma
 
 The last line in the equation group above shows that a 1-step-ahead prediction for :math:`x` at time :math:`t+1` is a weighted sum of two components: the current measured value, :math:`x_t`, and secondly the predicted value, :math:`\hat{x}_t`, with the weights summing up to 1. This gives a way to experimentally find a suitable :math:`\lambda` value from historical data: adjust it up and down until the differences between :math:`\hat{x}_{t+1}` and the actual measured values of :math:`x_{t+1}` are small.
 
+The code here shows one way of calculating the EWMA values for a vector of data. Once you have defined the function, use it as ``ewma(x, lam=..., target=...)``. It is reused below, both to generate the comparison figure and in the worked example at the end of this section.
+
+.. code-block:: python
+
+	import numpy as np
+
+	def ewma(x, lam, target=None):
+	    if target is None:
+	        target = x[0]
+	    y = np.zeros(len(x))
+	    previous = target
+	    for k in range(len(x)):
+	        y[k] = lam * x[k] + (1 - lam) * previous
+	        previous = y[k]
+	    return y
+
+	# Try using this function now. It reproduces the
+	# worked-example table at the end of this section:
+	x = np.array([200, 210, 190, 190, 190, 190])
+	ewma(x, lam=0.3, target=200)
+
+.. code-block:: r
+
+	ewma <- function(x, lambda, target=x[1]){
+	    N <- length(x)
+	    y <- numeric(N)
+	    previous <- target
+	    for (k in 1:N){
+	        y[k] = lambda*x[k] + (1 - lambda)*previous
+	        previous = y[k]
+	    }
+	return(y)
+	}
+
+	# Try using this function now. It reproduces the
+	# worked-example table at the end of this section:
+	x <- c(200, 210, 190, 190, 190, 190)
+	ewma(x, lambda = 0.3, target = 200)
+
 The next plot shows visually what happens as the weight of :math:`\lambda` is changed. In this example a shift of :math:`\Delta = 1\sigma = 3` units occurs abruptly at :math:`t=150`. This is of course not known in practice, but the purpose here is to illustrate the effects of choosing :math:`\lambda`. Prior to that change the process mean is :math:`\mu=20` and the raw data has :math:`\sigma = 3`.
 
 The first chart is the raw data and also a Shewhart chart with subgroup size of 1; the control limits are at :math:`\pm 3` times the standard deviation, so at 11.0 and 29.0 units. This control chart barely picks up the shift, as was explained in a :ref:`prior section <monitoring_shewart_chart_slugishness>`.
@@ -61,6 +100,33 @@ To see why :math:`\hat{x}_{t}` represents historical data, you can recursively s
 which emphasizes that the prediction is a just a weighted sum of the raw measurements, with weights declining in time.
 
 The final chart of the sequence of 5 charts is a CUSUM chart, which is :ref:`the ideal chart <monitoring_CUSUM_charts>` for picking up such an abrupt shift in the level.
+
+.. code-block:: python
+
+	# Reuse the seeded series (base, mu, sigma, shift_at) from the
+	# CUSUM section, now with a larger shift of 1 sigma = 3 units.
+	data_shift = base.copy()
+	data_shift[shift_at:] += 1.0 * sigma
+
+	titles = ("Raw data (also a Shewhart chart, subgroup size 1)",
+	          "EWMA with lambda = 0.8", "EWMA with lambda = 0.4",
+	          "EWMA with lambda = 0.1", "CUSUM")
+	fig = make_subplots(rows=5, cols=1, subplot_titles=titles)
+	fig.add_trace(go.Scatter(y=data_shift, mode="lines"), row=1, col=1)
+	fig.add_hline(y=mu - 3 * sigma, line_color="red", row=1, col=1)
+	fig.add_hline(y=mu + 3 * sigma, line_color="red", row=1, col=1)
+	for row, lam in ((2, 0.8), (3, 0.4), (4, 0.1)):
+	    half_width = 3 * sigma * np.sqrt(lam / (2 - lam))
+	    fig.add_trace(go.Scatter(y=ewma(data_shift, lam, target=mu),
+	                             mode="lines"), row=row, col=1)
+	    fig.add_hline(y=mu - half_width, line_color="red", row=row, col=1)
+	    fig.add_hline(y=mu + half_width, line_color="red", row=row, col=1)
+	fig.add_trace(go.Scatter(y=np.cumsum(data_shift - mu), mode="lines"),
+	              row=5, col=1)
+	for row in range(1, 6):
+	    fig.add_vline(x=shift_at, line_dash="dash", row=row, col=1)
+	fig.update_layout(height=1200, showlegend=False)
+	fig.show()
 
 .. figure:: ../figures/monitoring/explain-EWMA.png
 	:width: 750px
@@ -111,54 +177,14 @@ The upper and lower control limits for the EWMA plot are plotted in the same way
 	:label: ewma-limits
 
 	\begin{array}{rcccl}
-		 \text{LCL} = \overline{\overline{x}} - K \cdot \sigma_{\text{Shewhart}}\sqrt{\frac{\displaystyle \lambda}{\displaystyle 2-\lambda}} &&  &&  \text{UCL} = \overline{\overline{x}} + K \cdot \sigma_{\text{Shewhart}} \sqrt{\frac{\displaystyle \lambda}{\displaystyle 2-\lambda}}
+		 \text{LCL} = \overline{\overline{x}} - L \cdot \sigma_{\text{Shewhart}}\sqrt{\frac{\displaystyle \lambda}{\displaystyle 2-\lambda}} &&  &&  \text{UCL} = \overline{\overline{x}} + L \cdot \sigma_{\text{Shewhart}} \sqrt{\frac{\displaystyle \lambda}{\displaystyle 2-\lambda}}
 	\end{array}
 
-where :math:`\sigma_{\text{Shewhart}}` represents the standard deviation as calculated for the Shewhart chart; for individual observations (subgroup size 1, as in the example above) this is simply the process standard deviation :math:`\sigma`. :math:`K` is usually a value of 3, similar to the 3 standard deviations used in a Shewhart chart, but can of course be set to any level that balances the type I (false alarms) and type II errors (not detecting a deviation which is present already).
+where :math:`\sigma_{\text{Shewhart}}` represents the standard deviation as calculated for the Shewhart chart; for individual observations (subgroup size 1, as in the example above) this is simply the process standard deviation :math:`\sigma`. The multiplier :math:`L` is usually a value of 3, similar to the 3 standard deviations used in a Shewhart chart, but can of course be set to any level that balances the type I (false alarms) and type II errors (not detecting a deviation which is present already). We write :math:`L` rather than :math:`K` to avoid a clash with the CUSUM reference value :math:`K` of the :ref:`previous section <monitoring_CUSUM_charts>`.
 
 The limits in equation :eq:`ewma-limits` are the steady-state limits. For the first few points the exact standard deviation of :math:`\hat{x}_t` is smaller, by the factor :math:`\sqrt{1-(1-\lambda)^{2t}}`, so many software packages draw limits that start narrower and widen to the steady-state value within a handful of samples.
 
 An interesting implementation can be to show both the Shewhart and EWMA plot on the same chart, with both sets of limits. The EWMA value plotted is actually the one-step ahead prediction of the next :math:`x`-value, which can be informative for slow-moving processes.
-
-The code here shows one way of calculating the EWMA values for a vector of data. Once you have defined the function, use it as ``ewma(x, lam=..., target=...)``.
-
-.. code-block:: python
-
-	import numpy as np
-
-	def ewma(x, lam, target=None):
-	    if target is None:
-	        target = x[0]
-	    y = np.zeros(len(x))
-	    previous = target
-	    for k in range(len(x)):
-	        y[k] = lam * x[k] + (1 - lam) * previous
-	        previous = y[k]
-	    return y
-
-	# Try using this function now. It reproduces the
-	# worked-example table below:
-	x = np.array([200, 210, 190, 190, 190, 190])
-	ewma(x, lam=0.3, target=200)
-
-.. code-block:: r
-
-	ewma <- function(x, lambda, target=x[1]){
-	    N <- length(x)
-	    y <- numeric(N)
-	    previous <- target
-	    for (k in 1:N){
-	        y[k] = lambda*x[k] + (1 - lambda)*previous
-	        previous = y[k]
-	    }
-	return(y)
-	}
-
-	# Try using this function now. It reproduces the
-	# worked-example table below:
-	x <- c(200, 210, 190, 190, 190, 190)
-	ewma(x, lambda = 0.3, target = 200)
-
 
 .. EWMA can detect both changes in level and changes in variance
 .. TODO: After introducing concept, show why Shewhart fails with heavy autocorr. Have to increase Shewhart N, or widen the limits.
