@@ -224,7 +224,33 @@ In source code:
 	       '; ', round(UCL,0), ']')
 
 
-.. TODO: in the future, describe more clearly the difference between phase 1 and phase 2. Students were asking a lot of questions around this.
+Phase 1 versus phase 2 in this example
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The rubber-bale calculation above is entirely **phase 1**: we used a batch of historical subgroups to *estimate* where the chart's limits should sit. The steps were:
+
+#.	collect :math:`K=20` subgroups believed to be from stable operation;
+#.	compute the grand mean |xdb| and the average subgroup standard deviation :math:`\overline{S}`, giving a first set of limits, [225.6, 252.0];
+#.	notice the subgroup with :math:`\overline{x}=253` lies above the UCL, exclude it, and recompute, arriving at the final limits, [224, 252].
+
+Nothing has been monitored yet. Phase 1 answers only the question "where should the limits sit?".
+
+**Phase 2** begins once those limits are frozen. Each new subgroup average, as its bale is tested, is plotted against the fixed centre line and the fixed [224, 252] limits; no limit is recomputed. A point outside the limits raises a signal. Suppose the next six bales give subgroup averages of 242, 236, 248, 254, 240, and 233. Only the fourth, :math:`\overline{x}=254`, lies above the UCL of 252, so the chart signals on that bale and the operator investigates.
+
+.. code-block:: python
+
+	# Phase 1 produced these frozen limits:
+	LCL, UCL = 224.0, 252.0
+
+	# Phase 2: plot each new subgroup average against
+	# the frozen limits and flag any that fall outside.
+	new_xbar = np.array([242, 236, 248, 254, 240, 233])
+	signals = (new_xbar > UCL) | (new_xbar < LCL)
+	for k, (value, flag) in enumerate(zip(new_xbar, signals), start=1):
+	    state = "SIGNAL" if flag else "in control"
+	    print(f"Bale {k}: xbar={value} -> {state}")
+
+The limits are calculated *once*, in phase 1, and then held fixed throughout phase 2. Re-estimating them from the phase 2 data as it arrives would let a slow drift quietly widen the limits and hide the very problem you are trying to detect.
 
 .. _monitoring_judging_performance:
 
