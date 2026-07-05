@@ -46,9 +46,11 @@ Compare this to the previous case where our :math:`n` samples are independent, a
 
 	\frac{\overline{x} - \mu}{\sigma/\sqrt{n}} \sim \mathcal{N} \left(0, 1\right)
 
-So the more practical and useful case where :math:`z  = \frac{\overline{x} - \mu}{s/\sqrt{n}} \sim t_{n-1}` can now be used to construct an interval for :math:`\mu`. We say that :math:`z` follows the :math:`t`-distribution with :math:`n-1` degrees of freedom, where the degrees of freedom refer to those from calculating the *estimated* standard deviation, :math:`s`.
+So the more practical and useful case where :math:`\dfrac{\overline{x} - \mu}{s/\sqrt{n}} \sim t_{n-1}` can now be used to construct an interval for :math:`\mu`. This standardized quantity follows the :math:`t`-distribution with :math:`n-1` degrees of freedom, where the degrees of freedom come from calculating the *estimated* standard deviation, :math:`s`.
 
-Note that the new variable :math:`z` only requires we know the population mean (:math:`\mu`), not the population standard deviation; rather we use our estimate of the standard deviation :math:`s/\sqrt{n}` in place of the population standard deviation.
+It helps to be explicit about the notation, because two different distributions are now in play. When the population standard deviation :math:`\sigma` is known, the standardized quantity :math:`\dfrac{\overline{x} - \mu}{\sigma/\sqrt{n}}` follows the standard normal distribution, and we called it a :math:`z`-deviate. When :math:`\sigma` is replaced by its estimate :math:`s`, the standardized quantity :math:`\dfrac{\overline{x} - \mu}{s/\sqrt{n}}` follows the :math:`t`-distribution instead; some texts write it as a :math:`t`-value. This book keeps calling any such standardized quantity a :math:`z`-deviate, but which distribution applies depends on whether the standard deviation is known (the normal) or estimated (the :math:`t`-distribution).
+
+Note that this standardized quantity only requires we know the population mean (:math:`\mu`), not the population standard deviation; we use our estimate :math:`s/\sqrt{n}` of the standard error in place of the population value.
 
 We will come back to :eq:`distribution-for-sample-average` in a minute; let's first look at how we can calculate values from the :math:`t`-distribution in computer software.
 
@@ -223,15 +225,11 @@ If we repeat this process with a different set of 9 samples we will get a differ
 
 #.	The average of these nine values is :math:`\overline{x} = 20` units.
 
-#.	Using the Central limit theorem, what is the distribution from which :math:`\overline{x}` comes?
+#.	Using the Central limit theorem, from what distribution does :math:`\overline{x}` come, and what are its parameters?
 
-		:math:`\overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n \right)`
+		:math:`\overline{x} \sim \mathcal{N}\left(\mu, \sigma^2/n \right)`, requiring only that the samples are independent estimates of the population viscosity.
 
-		This also requires the assumption that the samples are independent estimates of the population viscosity. We **don't** have to assume the :math:`x_i` are normally distributed.
-
-#.	What is the distribution of the sample average?  What are the parameters of that distribution?
-
-		The sample average is normally distributed as :math:`\mathcal{N}\left(\mu, \sigma^2/n \right)`
+		The Central limit theorem gives us this normality of :math:`\overline{x}` even when the individual :math:`x_i` are not normally distributed. To use the :math:`t`-distribution in the steps that follow, however, we will additionally require the :math:`x_i` themselves to be normally distributed; that requirement is checked with a q-q plot in the step below.
 
 #.	Assume, for some hypothetical reason, that we know the population viscosity standard deviation is :math:`\sigma=3.5` units. Calculate a lower and upper bound for :math:`\mu`:
 
@@ -250,9 +248,9 @@ If we repeat this process with a different set of 9 samples we will get a differ
 
 		:math:`s = 3.81`
 
-#.	Now construct the :math:`z`-value for the sample average and from what distribution does this :math:`z` come from?
+#.	Now construct the standardized quantity for the sample average, and from what distribution does it come?
 
-		It comes the :math:`t`-distribution with :math:`n-1 = 8` degrees of freedom, and is given by :math:`z = \displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}}`
+		It comes from the :math:`t`-distribution with :math:`n-1 = 8` degrees of freedom, and is given by :math:`\displaystyle \frac{\overline{x} - \mu}{s/\sqrt{n}}`
 
 #.	Construct an interval, symbolically, that will contain the population mean of the viscosity. Also calculate the lower and upper bounds of the interval assuming the internal to span 95\% of the area of this distribution.
 
@@ -283,7 +281,7 @@ If we repeat this process with a different set of 9 samples we will get a differ
 		# Step 1:
 		x_avg = viscosity.mean()
 
-		# Step 5: Verify the data are normal
+		# Step 4: Verify the data are normal
 		osm, osr = probplot(viscosity, dist="norm",
 		                    fit=False)
 		fig = pd.DataFrame(
@@ -293,13 +291,13 @@ If we repeat this process with a different set of 9 samples we will get a differ
 		               y="viscosity")
 		fig.show()
 
-		# Step 6:
+		# Step 5:
 		x_sd = viscosity.std(ddof=1)
 
-		# Step 7: t-distribution
+		# Step 6: t-distribution
 		dof = n - 1
 
-		# Step 8:
+		# Step 7:
 		conf_level = 0.95
 
 		# Can be calculated at either
@@ -327,17 +325,17 @@ If we repeat this process with a different set of 9 samples we will get a differ
 		# Step 1:
 		x.avg <- mean(viscosity)
 
-		# Step 5: Verify the data are normal
+		# Step 4: Verify the data are normal
 		library(car)
 		qqPlot(viscosity)
 
-		# Step 6:
+		# Step 5:
 		x.sd <- sd(viscosity)
 
-		# Step 7: t-distribution
+		# Step 6: t-distribution
 		dof <- n - 1
 
-		# Step 8:
+		# Step 7:
 		conf.level <- 0.95
 
 		# Can be calculated at either
