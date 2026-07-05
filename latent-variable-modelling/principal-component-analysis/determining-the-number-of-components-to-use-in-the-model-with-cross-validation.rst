@@ -14,9 +14,7 @@ Determining the number of components to use in the model with cross-validation
 
 ..	- scree plot
 ..	- size of eigenvalue: :math:`\sum_a^{a=K}{\lambda_a} = K`
-..	- cross-validation: page 49 of pencil notes
-
-.. Review the ICS-L newsgroup postings around September 2009.
+..	- cross-validation
 
 .. Check Q2 values: in ProMV they keep increasing, never decreasing.
 
@@ -87,10 +85,8 @@ However, cross-validation's objective is useful for predictive models, such as P
 .. *	Batch data?
 .. *	Does it work well for DOE data (the usual shortcoming for Q2 calculations)
 .. *	Use a robust correlation estimate to guard against outliers in score correlations
-.. 	*	https://www.eric.ed.gov/ERICWebPortal/search/detailmini.jsp?_nfpb=true&_&ERICExtSearch_SearchValue_0=ED201658&ERICExtSearch_SearchType_0=no&accno=ED201658
 .. 	*	https://www.jstor.org/stable/2349088
 .. 	*	``covRob`` function in ``robust`` package in R
-.. 	*	https://www.unt.edu/benchmarks/archives/2001/december01/rss.htm
 ..
 .. *	Risk metric more interpretably for automated model fitting (quite common nowadays)
 .. *	Helpful to see the risk metric on a per-component basis, even if it is not used to determine the number of components.

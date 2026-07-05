@@ -16,43 +16,6 @@ Consider the measurements from a gas cylinder; temperature (K) and pressure (kPa
 
 Given these numbers, we can simplify the ideal gas law to: :math:`p=\beta_1 T`, where :math:`\beta_1 = \dfrac{nR}{V} > 0`. These data are collected from sampling the system:
 
-.. wikitable
-
-	{| class="wikitable center"
-	|-
-	!
-	! :math:`T` = Cylinder temperature (K)
-	! :math:`p` = Cylinder pressure (kPa)
-	! :math:`h` = Room humidity (%)
-	|-
-	|||273|| 1600|| 42
-	|-
-	|||285|| 1670|| 48
-	|-
-	|||297|| 1730|| 45
-	|-
-	|||309|| 1830|| 49
-	|-
-	|||321|| 1880|| 41
-	|-
-	|||333|| 1920|| 46
-	|-
-	|||345|| 2000|| 48
-	|-
-	|||357|| 2100|| 48
-	|-
-	|||369|| 2170|| 45
-	|-
-	|||381|| 2200|| 49
-	|-
-	| || ||
-	|-
-	|'''Mean''' || 327 || 1910 || 46.1
-	|-
-	|'''Variance''' || 1320 || 43267 || 8.1
-	|}
-
-
 .. image:: ../figures/least-squares/table-of-cylinder-data.png
 	:width: 900px
 	:scale: 67

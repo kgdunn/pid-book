@@ -12,17 +12,6 @@
 	* Importance of variation in your training PLS model (Kresta soft sensors paper as reference)
 	* Example of distillation column adding calculated variable and improving PLS model
 
-	Data sets
-	===========
-
-	See June's email on 22 Feb 2010
-	* GRINDER.DIF,
-	* Pulp digester.xls
-	* THICKNES.DIF
-	See Honglu's email on 1 March 2010: faulty reactor data set
-	Look at the MediBIC data: how does it compare to your made-up pastry data?
-	Board thickness
-
 
 .. FUTURE
 
@@ -37,7 +26,7 @@
 
 	Introduce a discussion about how much variance is captured in each latent variable early on (e.g. in the food texture example). The students are assuming LV1 explains variable 1.
 
-	When explaining t1p2 + t2p2+ ... : use a time-series example, like the room temperature example with the blip in the oscillations.  See the course email to Richard on 22 April 2010.
+	When explaining t1p2 + t2p2+ ... : use a time-series example, like the room temperature example with the blip in the oscillations.
 
 	Optimizing process: moving in score space while staying below SPE. Give it as an optimization formulation; example from Jaeckle.
 
@@ -62,7 +51,7 @@
 	Add "spectral-data-illustrate-residuals.svg" into the notes.\
 	Add "any other new illustrations not here, but in slides", e.g. geometric-interpretation-of-PCA-Hotellings-T2.png
 
-	Draw a picture of the geometric interpretation of SPE, showing a 3rd vector off the model plane. See email to David Gerardi on 29 June 2010.
+	Draw a picture of the geometric interpretation of SPE, showing a 3rd vector off the model plane.
 
 	Enhance the support on the other correlated illustration. Show numerically how small changes in highly correlated X's can lead to a rotated plane (and illustrate it: add the slope coefficient to the illustration)
 
@@ -70,7 +59,6 @@
 
 	Mark points, in black, in pastry example which are used in the notes (e.g. 33, 36, 44)
 	.. TODO lagging picture here
-	.. page 30 of pencil notes
 	.. PLOTS OF T2 with limit; plots of an ellipse.
 	Re-export the competitor model
 	SPE section: show contribution plot to SPE
@@ -101,81 +89,6 @@
 	* Google's translation
 	* bridge sensor network (Bridge in France)
 	* aircraft sensor network
-
-.. First class outline
-
-	Modern data sets
-	Value from data: what are we looking for from our data?
-	What is a latent variable
-
-		- averaging process from 4 temperatures
-		- pick up the average trends
-		- spinning cube
-
-	How are latent variables calculated
-
-		- axes
-		- spinning cube
-
-	PCA as a latent variables model
-
-		- specific equations for PCA
-		- X = TP' + E
-		- data = information + error
-
-
-	Interpreting latent variable models
-
-		- loadings plot
-		- score plot
-		- residuals
-		- SPE
-		- T2
-		- VIP (PCA)
-		- hat value for the n-th row: t_row \times (T'T)^{-1} t_row'
-		- clusters and outliers
-
-			- scores outlier
-			- SPE outlier
-			- T2 outlier
-
-	Extracting information from the latent variable model
-
-		- residuals
-		- contribution plot for errors
-		- contribution plot for scores
-		- Hat values
-		- Influence plot
-
-	Fitting a latent variable model in practice
-
-		- Eigenvalue or SVD
-		- NIPALS
-		- Missing data methods
-		- Q2 and R2
-
-	How PCA addresses issues raised earlier
-
-		- missing data
-		- signal to noise increase
-
-	In-class exercises (with R)
-
-		- PCA model on the temperature data
-		- Model on the thickness data (boards): 4 components
-		- Model on the quality data
-		- Foods data set
-
-.. Next class:
-
-	How to calculate the model
-	Number of components?
-	A taste of the 5 areas:
-		- Monitoring
-		- Troubleshooting
-		- etc
-	Calculating the model limits (SPE and T2): use a qq-plot to test if they really are F-distributed.
-
 
 .. Topics for future classes
 
@@ -286,7 +199,6 @@
 	============================
 
 	* Data compression in process historians (databases)
-	see pencil notes in thin black binder's front cover
 
 
 	Hat values: how to calculate; what they mean; plot of hats vs SPE (like influence plot in least squares)

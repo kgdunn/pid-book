@@ -35,30 +35,6 @@
 	Non-linear least squares
 	Generalized linear models
 
-.. Outline
-
-	Correlation
-	Covariance
-	Least squares:
-		- minimizing errors as the objective function
-		- solution to the minimization problem: grid search vs analytically
-		- breakdown (allocation) of variance
-		- R2 derivation
-		- conf. interval for coefficients
-		- conf. interval for predictions
-		- interpretation of results from software packages
-		- assessment of residuals (interpretation)
-			- residuals in sequence
-			- residuals vs y-hat
-			- residuals vs y
-			- residuals vs x
-		- leverage, outliers and influence
-		- matrix approach
-			- introduce notation
-			- resolve the optimization problem
-			- interpretation of coefficients
-			- errors on the coefficients
-
 Least squares modelling in context
 ====================================
 

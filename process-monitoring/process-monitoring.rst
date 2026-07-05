@@ -6,7 +6,6 @@
 	^^^^^
 	-----
 
-.. MIT courseware: https://ocw.mit.edu/OcwWeb/Mechanical-Engineering/2-830JSpring-2008/VideoLectures/index.htm
 
 .. TODO list of plots
     Plot of Shewhart chart
@@ -93,7 +92,7 @@ References and readings
 ..	Bisgaard, S., "`The Quality Detective: A Case Study <https://dx.doi.org/10.1098/rsta.1989.0006>`_", Philosophical Transactions of the Royal Society-A, **327**, p 499-511, 1989.
 .. UMetrics book: review chapter on (M)SPC
 .. MacGregors 1997 paper on MSPC
-.. * Controversy between monitoring charts and hypothesis tests, Woodall, Woodall, W. Controversies and Contradictions in Statistical Process Control, JQT, 32(4), 341-350, 2000 ([http://filebox.vt.edu/users/bwoodall/ Link])
+.. * Controversy between monitoring charts and hypothesis tests: Woodall, W., "Controversies and Contradictions in Statistical Process Control", Journal of Quality Technology, 32(4), 341-350, 2000. https://doi.org/10.1080/00224065.2000.11979963
 .. EWMV paper by MacGregor?
 .. Box, G.E.P., Comparisons, Absolute Values, and How I Got to Go to the Folies Bergeres, Quality Engineering, 14(1), p167-169, 2001.
 .. p 669 of Devore: see also Technometrics, 1989, p173-184, by David M Rocke

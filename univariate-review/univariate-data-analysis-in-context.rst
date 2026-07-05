@@ -42,23 +42,6 @@ What we will cover
   :align: center
   :scale: 92
 
-.. Concepts
-.. ========
-..
-.. Concepts that you must be familiar with by the end of this section:
-..
-.. .. tabularcolumns:: LLL
-..
-.. .. csv-table::
-..    :widths: 10, 10, 10
-..
-.. 	, independence, outliers
-.. 	"frequency histogram", probability, variation
-.. 	"cumulative distribution", median, MAD
-.. 	population, sample, error
-.. 	"Central limit theorem", parameter, statistic
-.. 	"confidence interval", outlier, "paired test"
-
 References and readings
 =======================
 

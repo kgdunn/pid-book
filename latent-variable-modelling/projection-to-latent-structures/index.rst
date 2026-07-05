@@ -37,7 +37,7 @@ But why use the PLS method at all?
    pls-exercises
 
 
-..	* page 52 of pencil notes
+..	Comparison of linear regression and projection to latent structures
 
 	Linear regression:
 		* Assumes no noise in X
@@ -59,35 +59,3 @@ But why use the PLS method at all?
 		*	If T2 and SPE value are below their limits, then we go ahead and make our prediction with confidence from the new X-vector.
 
 	* MLR shortcomings
-
-
-..	From Carlos' paper:
-
-	Projection to Latent Structures (PLS) is a multivariate regression tool that helps to reveal correlation amongst input-variables or
-	predictors (X-space) and also their impact on several responses (Y-space). This is done by separating regularities from noise in
-	the data. PLS handles data with strong collinearity, noise and missing values in both the X- and Y-spaces. This tool reduces the
-	dimension of the system to smaller number of ‘‘latent variables” (referred to as principal components or scores) that can simultaneously
-	explain the signifiant variance in X, and also predict Y. The higher the correlation in the data the fewer the principal components that
-	are computed. The scores are independent of each other and are a linear combination of the original predictors. The
-	weight of each predictor that is used to calculate the scores is directly related to their level of influence on the measured Y-space
-	properties. An important aspect of PLS is the ability to show the interrelationship among all predictors, the relationship among all
-	responses, and simultaneously the predictors’ influence on the measured responses, all of them in a single plot, the w*c plot. All
-	these calculations are usually carried out by first centering the data to have a mean of zero and then scaling to unit variance.
-	This process of mean centering and scaling is done in order to give each variable the same weight and importance prior to the analysis.
-	This is done to counteract the effect of scaling in different measurements units, and to allow each variable to contribute equally to
-	the model. As a regression tool, PLS provides a measure of the goodness of ﬁt, R2. R2 is an indication of how much variance in
-	the data is explained by the model. R2, for any regression tool, including PLS, can always be increased by adding more terms
-	(complexity) to the hypothesized model. A far better metric to gauge model performance is by using the so-called Q2 metric. Q2
-	is an indicator that measures how well the regression model can predict new data. One technique to estimate Q2 is by cross-validation.
-	This method consists of dividing the data into a number of groups. Models are built with a group of data left out – one group
-	at a time. With each model, the corresponding omitted data are predicted and the total prediction error sum of squares calculated.
-	Q2, like R2, varies between 0 and 1, where values closer to 1 indicate better prediction ability. The Q2 value will always be smaller
-	than R2. Finally, Q2 is used to select the number of principal components (model complexity) to avoid over-fitting.
-	PLS models can be converted to a standard linear regression form as given by the following equation:
-
-	:math:`\hat{y} = b_0 + \sum{b_i x_i}`
-
-	where k is a constant, bn is the coefﬁcient corresponding to the predictor xn and y is the predicted y-property. Details of the
-	PLS calculations can be found elsewhere [Wold S, Sjöström M, Eriksson L. PLS-regression: a basic tool of chemometrics.
-	Chemom Intell Lab Syst 2001;58(2):109–30.]. Several software packages are available to create PLS models. The SIMCA-P software by Umetrics
-	was used in this work.

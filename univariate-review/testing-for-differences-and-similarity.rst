@@ -20,45 +20,6 @@ Either we want to confirm things are statistically the same, or confirm they hav
 	:scale: 60
 	:align: center
 
-.. wikicode for table:
-
-	{| class="wikitable center"
-	|-
-	! Experiment number
-	! Feedback system
-	! Yield
-	!
-	! Experiment number
-	! Feedback system
-	! Yield
-	|-
-	| 1 || A ||  92.7 ||  || 11 || B || 83.5
-	|-
-	| 2 || A ||  73.3 ||  || 12 || B || 78.9
-	|-
-	| 3 || A ||  80.5 ||  || 13 || B || 82.7
-	|-
-	| 4 || A ||  81.2 ||  || 14 || B || 93.2
-	|-
-	| 5 || A ||  87.1 ||  || 15 || B || 86.3
-	|-
-	| 6 || A ||  69.2 ||  || 16 || B || 74.7
-	|-
-	| 7 || A ||  81.9 ||  || 17 || B || 81.6
-	|-
-	| 8 || A ||  73.9 ||  || 18 || B || 92.4
-	|-
-	| 9 || A ||  78.6 ||  || 19 || B || 83.6
-	|-
-	| 10 || A || 80.5 ||  || 20 || B || 72.4
-	|-
-	| colspan="7" |
-	|-
-	| colspan="2" |Mean  || 79.89|| || colspan="2" | Mean || 82.93
-	|-
-	| colspan="2" |Standard deviation  || 6.81|| || colspan="2" | Standard deviation || 6.70
-	|}
-
 .. image:: ../figures/univariate/system-comparison-wikitable.png
 	:align: center
 
