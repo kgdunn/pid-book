@@ -71,6 +71,32 @@ In the next figure, we show a comparison of the weights used in different monito
 
 From the above discussion and the weights shown for the 4 different charts, it should be clear now how an EWMA chart is a tradeoff between a Shewhart chart and a CUSUM chart. As :math:`\lambda \rightarrow 1`, the EWMA chart behaves more as a Shewhart chart, giving only weight to the most recent observation. While as :math:`\lambda \rightarrow 0` the EWMA chart starts to have an infinite memory (like a CUSUM chart). There are 12 data points used in the example, so the CUSUM 'weight' is one twelfth or :math:`\approx 0.0833`.
 
+.. code-block:: python
+
+	import numpy as np
+	import plotly.graph_objects as go
+	from plotly.subplots import make_subplots
+
+	# Weight given to each past observation, newest at lag 0,
+	# for the four charts, using 12 data points and lambda = 0.4.
+	n_points, lam = 12, 0.4
+	lags = np.arange(n_points)
+	weights = {
+	    "Shewhart": np.where(lags == 0, 1.0, 0.0),
+	    "Moving average (n=5)": np.where(lags < 5, 1 / 5, 0.0),
+	    f"EWMA (lambda={lam})": lam * (1 - lam) ** lags,
+	    "CUSUM": np.full(n_points, 1 / n_points),  # 1/12 = 0.0833
+	}
+
+	fig = make_subplots(rows=2, cols=2, subplot_titles=list(weights))
+	for i, (name, w) in enumerate(weights.items()):
+	    row, col = divmod(i, 2)
+	    fig.add_trace(go.Bar(x=lags, y=w), row=row + 1, col=col + 1)
+	fig.update_layout(showlegend=False,
+	                  title="Weight given to each past observation "
+	                        "(lag 0 = most recent)")
+	fig.show()
+
 .. image:: ../figures/monitoring/explain-weights-for-process-monitoring.png
 	:alt: ../figures/monitoring/explain-weights-for-process-monitoring.R
 	:width: 900px
@@ -88,7 +114,9 @@ The upper and lower control limits for the EWMA plot are plotted in the same way
 		 \text{LCL} = \overline{\overline{x}} - K \cdot \sigma_{\text{Shewhart}}\sqrt{\frac{\displaystyle \lambda}{\displaystyle 2-\lambda}} &&  &&  \text{UCL} = \overline{\overline{x}} + K \cdot \sigma_{\text{Shewhart}} \sqrt{\frac{\displaystyle \lambda}{\displaystyle 2-\lambda}}
 	\end{array}
 
-where :math:`\sigma_{\text{Shewhart}}` represents the standard deviation as calculated for the Shewhart chart. :math:`K` is usually a value of 3, similar to the 3 standard deviations used in a Shewhart chart, but can of course be set to any level that balances the type I (false alarms) and type II errors (not detecting a deviation which is present already).
+where :math:`\sigma_{\text{Shewhart}}` represents the standard deviation as calculated for the Shewhart chart; for individual observations (subgroup size 1, as in the example above) this is simply the process standard deviation :math:`\sigma`. :math:`K` is usually a value of 3, similar to the 3 standard deviations used in a Shewhart chart, but can of course be set to any level that balances the type I (false alarms) and type II errors (not detecting a deviation which is present already).
+
+The limits in equation :eq:`ewma-limits` are the steady-state limits. For the first few points the exact standard deviation of :math:`\hat{x}_t` is smaller, by the factor :math:`\sqrt{1-(1-\lambda)^{2t}}`, so many software packages draw limits that start narrower and widen to the steady-state value within a handful of samples.
 
 An interesting implementation can be to show both the Shewhart and EWMA plot on the same chart, with both sets of limits. The EWMA value plotted is actually the one-step ahead prediction of the next :math:`x`-value, which can be informative for slow-moving processes.
 

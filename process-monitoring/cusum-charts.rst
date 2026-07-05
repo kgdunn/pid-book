@@ -39,6 +39,14 @@ What is of interest however is a persistent change in slope in the CUSUM chart. 
 
 The process is considered in control as long as all points are within the arms of the V shape.  The mask in the second row of the plot shows "in control" behaviour, while the mask in the fourth row detects the process mean has shifted, and an alarm should be raised.
 
-Once the process has been investigated the CUSUM value, :math:`S_t` is often reset to zero; though other resetting strategies exist. A tabular version of the CUSUM chart also exists which tends to be the version used in software systems.
+Once the process has been investigated the CUSUM value, :math:`S_t` is often reset to zero; though other resetting strategies exist. A tabular version of the CUSUM chart also exists, and it is the form used in most software systems. Rather than a single sum, it keeps two one-sided sums that accumulate only the deviations beyond a small reference value :math:`K`, and it signals when either sum exceeds a decision interval :math:`H`:
 
-The purpose of this section is not to provide formulas for the V-mask or tabular CUSUM charts, only to explain the CUSUM concept to put the next section on EWMA control charts in perspective.
+.. math::
+	:label: CUSUM-tabular
+
+	C_t^{+} &= \max\left(0,\ C_{t-1}^{+} + (x_t - T) - K\right) \\
+	C_t^{-} &= \max\left(0,\ C_{t-1}^{-} - (x_t - T) - K\right)
+
+The :index:`reference value <single: reference value (CUSUM)>` :math:`K` is usually set to half the shift you want to detect: :math:`K = \frac{1}{2}\,\delta\,\sigma` for a shift of :math:`\delta` standard deviations. The :index:`decision interval <single: decision interval (CUSUM)>` :math:`H` is commonly :math:`4\sigma` or :math:`5\sigma`, chosen to give an acceptable in-control average run length. An alarm is raised the first time :math:`C_t^{+} > H` or :math:`C_t^{-} > H`, after which the offending sum is reset to zero. These two parameters, :math:`K` and :math:`H`, play the same role as the angle and lead distance of the V-mask, and are what you will set in software such as Minitab or the R ``qcc`` package.
+
+The purpose of this section is not to provide formulas for the V-mask, only to explain the CUSUM concept to put the next section on EWMA control charts in perspective.
