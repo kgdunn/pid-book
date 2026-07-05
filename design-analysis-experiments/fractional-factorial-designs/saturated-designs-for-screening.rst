@@ -182,4 +182,21 @@ A side note on screening designs is a mention of :index:`Plackett and Burman des
 
 .. youtube:: https://www.youtube.com/watch?v=dbxijjAHeUU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=51
 
+.. _DOE-screening-principles:
+
+Three principles behind screening: sparsity, hierarchy, and heredity
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Screening works because real systems tend to behave in a particular way. Three empirical principles describe that behaviour. Together they explain why a saturated design can find the important factors, and how to build a model from the results. All three are discussed at length in :ref:`Goos and Jones <DOE_references>`.
+
+*Sparsity.* The principle of effect sparsity states that only a few of the many factors studied drive most of the variation in the response. This is the experimental form of the Pareto principle: a small number of causes account for a large part of the effect. The saturated :math:`2^{7-4}_{\text{III}}` design above relied on it. It spent 8 runs on 7 factors and found that only **A**, **C**, and **G** mattered. Sparsity is what lets the :ref:`Pareto plot <DOE-Pareto-plot>` separate the few large effects from the many small ones. As the number of active effects grows towards half the number of runs, that separation becomes harder to make.
+
+*Hierarchy.* The principle of effect hierarchy states that main effects tend to be larger than two-factor interactions, which in turn tend to be larger than three-factor and higher-order interactions. This is why a resolution III design confounds main effects with two-factor interactions rather than confounding main effects with each other: the terms it gives up to save runs are the ones expected to be small. In model building, hierarchy suggests adding the main effects before any interaction or quadratic term.
+
+*Heredity.* The principle of effect heredity concerns which interactions are plausible. Under *strong* heredity, a two-factor interaction :math:`x_i x_j` is included in a model only if both of its parent main effects, :math:`x_i` and :math:`x_j`, are also in the model. Under *weak* heredity, only one of the two parents needs to be present. Heredity is the usual reason for keeping a main effect in a model even when its own coefficient looks small: if its interaction is active, the main effect stays.
+
+A small example shows why. Suppose the true response is :math:`y = 10 + 4 x_A - 2 x_B + 23 x_A x_B`, and a full factorial is run at the :math:`\pm 1` levels. A model that keeps only the intercept and the interaction, dropping both main effects, fits the four corner points with :math:`y = 10 + 23 x_A x_B`. Its coefficients are close to the true ones, and at most corners it predicts well. But at the corner :math:`x_A = +1, x_B = -1`, where the main effects and the interaction push in opposite directions, it predicts :math:`10 + 23(+1)(-1) = -13`, while the true value is :math:`10 + 4(+1) - 2(-1) + 23(+1)(-1) = -7`. Retaining the parent main effects avoids this error. A model built under strong heredity has a further technical advantage: its predictions do not change if the factors are rescaled.
+
+These are tendencies, not laws. An empirical review of 113 published factorial experiments, summarised in :ref:`Goos and Jones <DOE_references>`, found that hierarchy and heredity usually hold, while also noting that violations occur more often than the screening literature suggests. The same review found that most active two-factor interactions are synergistic: they reinforce the direction of their parent main effects. When the goal is to increase the response, exploiting the large main effects tends to carry the interactions along in the same direction. When the goal is to decrease it, the interactions can work against the main effects.
+
 An important mention to readers interested in other, arguable better screening strategies, is to consider :ref:`definitive screening designs <DOE-definitive-screening-designs>`.
