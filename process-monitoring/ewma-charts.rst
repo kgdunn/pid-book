@@ -71,6 +71,32 @@ In the next figure, we show a comparison of the weights used in different monito
 
 From the above discussion and the weights shown for the 4 different charts, it should be clear now how an EWMA chart is a tradeoff between a Shewhart chart and a CUSUM chart. As :math:`\lambda \rightarrow 1`, the EWMA chart behaves more as a Shewhart chart, giving only weight to the most recent observation. While as :math:`\lambda \rightarrow 0` the EWMA chart starts to have an infinite memory (like a CUSUM chart). There are 12 data points used in the example, so the CUSUM 'weight' is one twelfth or :math:`\approx 0.0833`.
 
+.. code-block:: python
+
+	import numpy as np
+	import plotly.graph_objects as go
+	from plotly.subplots import make_subplots
+
+	# Weight given to each past observation, newest at lag 0,
+	# for the four charts, using 12 data points and lambda = 0.4.
+	n_points, lam = 12, 0.4
+	lags = np.arange(n_points)
+	weights = {
+	    "Shewhart": np.where(lags == 0, 1.0, 0.0),
+	    "Moving average (n=5)": np.where(lags < 5, 1 / 5, 0.0),
+	    f"EWMA (lambda={lam})": lam * (1 - lam) ** lags,
+	    "CUSUM": np.full(n_points, 1 / n_points),  # 1/12 = 0.0833
+	}
+
+	fig = make_subplots(rows=2, cols=2, subplot_titles=list(weights))
+	for i, (name, w) in enumerate(weights.items()):
+	    row, col = divmod(i, 2)
+	    fig.add_trace(go.Bar(x=lags, y=w), row=row + 1, col=col + 1)
+	fig.update_layout(showlegend=False,
+	                  title="Weight given to each past observation "
+	                        "(lag 0 = most recent)")
+	fig.show()
+
 .. image:: ../figures/monitoring/explain-weights-for-process-monitoring.png
 	:alt: ../figures/monitoring/explain-weights-for-process-monitoring.R
 	:width: 900px

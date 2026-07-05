@@ -37,6 +37,48 @@ Interpretation of the PCR:
 
 The PCR is often called the :index:`process width`. Let's see why by taking a look at a process with PCR=0.5 and then PCR=2.0. In the first case :math:`\text{USL} - \text{LSL} = 3\sigma`. Since the interpretation of PCR assumes a :index:`centered process`, we can draw a diagram as shown below:
 
+.. code-block:: python
+
+	import numpy as np
+	import plotly.graph_objects as go
+	from scipy.stats import norm
+
+	# Fixed specification limits for this product:
+	LSL, USL = 65, 95
+	process_mean = 80
+
+	def plot_capability(mean, sigma, LSL=LSL, USL=USL):
+	    """Draw a centred normal curve with the out-of-spec tails
+	    shaded, and return the figure together with the PCR and the
+	    fraction of production outside the specification limits."""
+	    x = np.linspace(mean - 4 * sigma, mean + 4 * sigma, 500)
+	    y = norm.pdf(x, mean, sigma)
+	    pcr = (USL - LSL) / (6 * sigma)
+	    out_of_spec = (norm.cdf(LSL, mean, sigma)
+	                   + (1 - norm.cdf(USL, mean, sigma)))
+
+	    fig = go.Figure()
+	    fig.add_trace(go.Scatter(x=x, y=y, mode="lines",
+	                             line_color="black"))
+	    left, right = x <= LSL, x >= USL
+	    fig.add_trace(go.Scatter(x=x[left], y=y[left], fill="tozeroy",
+	                             mode="none",
+	                             fillcolor="rgba(200,0,0,0.4)"))
+	    fig.add_trace(go.Scatter(x=x[right], y=y[right], fill="tozeroy",
+	                             mode="none",
+	                             fillcolor="rgba(200,0,0,0.4)"))
+	    for limit in (LSL, USL):
+	        fig.add_vline(x=limit, line_dash="dash")
+	    fig.update_layout(showlegend=False,
+	                      xaxis_title="Quality attribute",
+	                      title=f"PCR = {pcr:.1f}; "
+	                            f"{100 * out_of_spec:.1f}% out of spec")
+	    return fig, pcr, out_of_spec
+
+	fig, pcr, oos = plot_capability(process_mean, sigma=10)
+	fig.show()
+	print(f"PCR = {pcr:.2f}, out of spec = {100 * oos:.1f}%")
+
 .. image:: ../figures/monitoring/explain-PCR-half.png
 	:align: center
 	:scale: 65
@@ -51,6 +93,14 @@ The diagram is from a process with mean of 80 and where LSL=65 and USL=95. These
 	-	Shaded area probability = ``pnorm(-1.5) + (1-pnorm(1.5))`` = 13.4% of production is out of the specification limits.
 
 Contrast this to the case where PCR = 2.0 for the same system. To achieve that level of process capability, using the *same upper and lower specifications* we have to  reduce the standard deviation by a factor of 4, down to :math:`\sigma = 2.5`.  The figure below illustrates that almost no off-specification product is produced for a centered process at PCR = 2.0. There is a width of :math:`12 \sigma` units from the LSL to the USL, giving the process location (mean) ample room to drift left or right without creating additional off-specification product.
+
+.. code-block:: python
+
+	# Reuse the helper: reduce the variability four-fold
+	# (sigma from 10 down to 2.5) for the same specifications.
+	fig, pcr, oos = plot_capability(process_mean, sigma=2.5)
+	fig.show()
+	print(f"PCR = {pcr:.2f}, out of spec = {100 * oos:.4f}%")
 
 .. image:: ../figures/monitoring/explain-PCR-two.png
 	:align: center

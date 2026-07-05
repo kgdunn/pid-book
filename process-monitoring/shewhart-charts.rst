@@ -48,6 +48,26 @@ The algebra above is written as an interval that brackets :math:`\mu`, but in op
 
 The following illustration should help connect the concepts: the raw data's distribution happens to have a mean of 6 and standard deviation of 2, while it is clear the distribution of the subgroups of 5 samples (thicker line) is much narrower.
 
+.. code-block:: python
+
+	import numpy as np
+	import plotly.graph_objects as go
+	from scipy.stats import norm
+
+	# The raw data distribution, and the distribution of
+	# subgroup averages (n = 5), which is narrower by sqrt(n).
+	raw_mean, raw_sd, n = 6, 2, 5
+	sub_sd = raw_sd / np.sqrt(n)
+	x = np.linspace(raw_mean - 4 * raw_sd, raw_mean + 4 * raw_sd, 500)
+
+	fig = go.Figure()
+	fig.add_trace(go.Scatter(x=x, y=norm.pdf(x, raw_mean, raw_sd),
+	                         name="raw data, x"))
+	fig.add_trace(go.Scatter(x=x, y=norm.pdf(x, raw_mean, sub_sd),
+	                         name="subgroup average (n=5)"))
+	fig.update_layout(xaxis_title="x", yaxis_title="Probability density")
+	fig.show()
+
 .. image:: ../figures/monitoring/explain-shewhart.png
 	:alt:	../figures/monitoring/explain-shewhart.R
 	:scale: 70
@@ -291,6 +311,30 @@ To quantify the probability :math:`\beta`, recall that a Shewhart chart is for m
 
 	\alpha &= Pr\left(\overline{x}\,\,\text{is in control, but lies outside the limits}\right) = \text{type I error rate}\\
 	\beta &= Pr\left(\overline{x}\,\,\text{is not in control, but lies inside the limits}\right) = \text{type II error rate}
+
+.. code-block:: python
+
+	# Type II error: the probability a shifted subgroup mean still
+	# lands inside the limits. Working in units of the raw sigma,
+	# with n = 4 and a shift of delta = 1 sigma.
+	n, delta = 4, 1.0
+	se = 1 / np.sqrt(n)              # standard error of xbar, in sigma units
+	LCL, UCL = -3 * se, 3 * se       # limits around the in-control mean of 0
+	beta = norm.cdf(UCL, delta, se) - norm.cdf(LCL, delta, se)
+	print(f"beta = {beta:.4f} for a {delta} sigma shift, n = {n}")
+
+	x = np.linspace(-4 * se, delta + 4 * se, 600)
+	fig = go.Figure()
+	fig.add_trace(go.Scatter(x=x, y=norm.pdf(x, 0, se), name="in control"))
+	fig.add_trace(go.Scatter(x=x, y=norm.pdf(x, delta, se), name="shifted"))
+	# Shade the beta region: the shifted curve between the limits.
+	mask = (x >= LCL) & (x <= UCL)
+	fig.add_trace(go.Scatter(x=x[mask], y=norm.pdf(x[mask], delta, se),
+	                         fill="tozeroy", mode="none",
+	                         fillcolor="rgba(0,0,200,0.3)", name="beta"))
+	for limit in (LCL, UCL):
+	    fig.add_vline(x=limit, line_dash="dash")
+	fig.show()
 
 .. figure:: ../figures/monitoring/show-shift-beta-error.png
 	:width: 800px
