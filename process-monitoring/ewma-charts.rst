@@ -21,13 +21,13 @@ The MA chart plots values of :math:`\overline{x}_t`, calculated from groups of s
 
 .. math::
 
-	\overline{x}_t = \frac{1}{n}x_{t-1} + \frac{1}{n}x_{t-2} + \ldots + \frac{1}{n}x_{t-n}
+	\overline{x}_t = \frac{1}{n}x_{t} + \frac{1}{n}x_{t-1} + \ldots + \frac{1}{n}x_{t-n+1}
 
 The EWMA chart is similar to the MA chart, but uses different weights; heavier weights for more recent observations, tailing off exponentially to very small weights further back in history. Let's take a look at a derivation.
 
 Define the process target as :math:`T` and define :math:`x_t` as a new data measurement arriving now. We then try to *create an estimate of that incoming value, giving some weight*, :math:`\lambda`, *to the actual measured value, and the rest of the weight*, :math:`1-\lambda`, *to the prior estimate*.
 
-Let us write the estimate of :math:`x_t` as :math:`\hat{x}_t`, with the :math:`\wedge` mark above the :math:`x_t` to indicate that it is a prediction of the actual measured :math:`x_t` value. The prior estimate is therefore written as :math:`\hat{x}_{t-1}`.
+Let us write this estimate as :math:`\hat{x}_t`, with the :math:`\wedge` mark above the :math:`x_t` to indicate that it is the EWMA estimate of the level at time :math:`t`: a smoothed value that blends the latest measurement with the running history. The prior estimate is therefore written as :math:`\hat{x}_{t-1}`. As shown below, this same smoothed value also serves as the one-step-ahead forecast of the next measurement.
 
 So putting into equation form that "an estimate of that incoming value, is given by some weight, :math:`\lambda` and the rest of the weight, :math:`1-\lambda`, to the prior estimate":
 
@@ -47,7 +47,7 @@ The last line in the equation group above shows that a 1-step-ahead prediction f
 
 The next plot shows visually what happens as the weight of :math:`\lambda` is changed. In this example a shift of :math:`\Delta = 1\sigma = 3` units occurs abruptly at :math:`t=150`. This is of course not known in practice, but the purpose here is to illustrate the effects of choosing :math:`\lambda`. Prior to that change the process mean is :math:`\mu=20` and the raw data has :math:`\sigma = 3`.
 
-The first chart is the raw data and also a Shewhart chart with subgroup size of 1; the control limits are at :math:`\pm 3` time the standard deviation, so at 11.0 and 19.0 units. This control chart barely picks up the shift, as was explained in a :ref:`prior section <monitoring_shewart_chart_slugishness>`.
+The first chart is the raw data and also a Shewhart chart with subgroup size of 1; the control limits are at :math:`\pm 3` times the standard deviation, so at 11.0 and 29.0 units. This control chart barely picks up the shift, as was explained in a :ref:`prior section <monitoring_shewart_chart_slugishness>`.
 
 The second, third and fourth charts are EWMA charts with different values of :math:`\lambda`; the line is the value on the left-hand side of equation :eq:`ewma-derivation-2`, in other words it is :math:`\hat{x}_{t+1}`, the EWMA value at time :math:`t`. We see that as :math:`\lambda` decreases, the charts are smoother, since the averaging effect is greater: more and more weight is given to the history, :math:`\hat{x}_{t}`, and less weight to the current data point, :math:`x_t`.  See equation :eq:`ewma-derivation-2` to understand that interpretation. Also note carefully how the control limits become narrower as the :math:`\lambda` decreases, as is explained shortly below.
 
@@ -102,13 +102,14 @@ The code here shows one way of calculating the EWMA values for a vector of data.
 	    if target is None:
 	        target = x[0]
 	    y = np.zeros(len(x))
-	    y[0] = target
-	    for k in range(1, len(x)):
-	        error = x[k - 1] - y[k - 1]
-	        y[k] = y[k - 1] + lam * error
+	    previous = target
+	    for k in range(len(x)):
+	        y[k] = lam * x[k] + (1 - lam) * previous
+	        previous = y[k]
 	    return y
 
-	# Try using this function now:
+	# Try using this function now. It reproduces the
+	# worked-example table below:
 	x = np.array([200, 210, 190, 190, 190, 190])
 	ewma(x, lam=0.3, target=200)
 
@@ -117,15 +118,16 @@ The code here shows one way of calculating the EWMA values for a vector of data.
 	ewma <- function(x, lambda, target=x[1]){
 	    N <- length(x)
 	    y <- numeric(N)
-	    y[1] = target
-	    for (k in 2:N){
-	        error = x[k - 1] - y[k - 1]
-	        y[k] = y[k - 1] + lambda*error
+	    previous <- target
+	    for (k in 1:N){
+	        y[k] = lambda*x[k] + (1 - lambda)*previous
+	        previous = y[k]
 	    }
 	return(y)
 	}
 
-	# Try using this function now:
+	# Try using this function now. It reproduces the
+	# worked-example table below:
 	x <- c(200, 210, 190, 190, 190, 190)
 	ewma(x, lambda = 0.3, target = 200)
 
@@ -133,7 +135,7 @@ The code here shows one way of calculating the EWMA values for a vector of data.
 .. EWMA can detect both changes in level and changes in variance
 .. TODO: After introducing concept, show why Shewhart fails with heavy autocorr. Have to increase Shewhart N, or widen the limits.
 
-Here is a worked example, starting with the assumption the process is at the target value of :math:`T = 200` units, and :math:`\lambda=0.3`. We intentionally show what happens if the new value stays fixed at 190: you see the value plotted gets only a weight of 0.3, while the 0.7 weight is for the prior historical value. Slowly the value plotted catches up, but there is always a lag. The value plotted on the chart is from the last equation in the set of :eq:`ewma-derivation-2`.
+Here is a worked example, starting with the assumption the process is at the target value of :math:`T = 200` units, and :math:`\lambda=0.3`. We intentionally show what happens if the new value stays fixed at 190: you see the value plotted gets only a weight of 0.3, while the 0.7 weight is for the prior historical value. Slowly the value plotted catches up, but there is always a lag. The value plotted on the chart is from the first equation in the set of :eq:`ewma-derivation-2`, namely :math:`\hat{x}_t = \lambda x_t + (1-\lambda)\hat{x}_{t-1}`.
 
 ============= ==================== ==================================================
 Sample number Raw data :math:`x_t` Value plotted on chart: :math:`\hat{x}_t`

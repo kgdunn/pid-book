@@ -11,7 +11,7 @@ Furthermore, there are better ways to spend our experimental budget than running
 
 .. AU: I inserted the two main ways. Please confirm.
 
-There are two main ways we can determine if a main effect or interaction is significant: by using a Pareto plot or the standard error.
+There are three ways to judge whether a main effect or interaction is significant. The first two need no replicate runs: a Pareto plot ranks the effects, and :ref:`Lenth's method <DOE-lenth-method>`, together with the half-normal plot, adds an objective cutoff to that ranking. The third uses the standard error, and becomes available once replicate runs, center points, or an external estimate of the noise supply some degrees of freedom.
 
 .. _DOE-Pareto-plot:
 
@@ -22,7 +22,7 @@ Pareto plot
 	single: Pareto plot of effects
 	see: Pareto plot; Pareto plot of effects
 
-.. Note:: This is a makeshift approach that is only applicable if all the factors are centered and scaled.
+.. Note:: The Pareto plot ranks the effects but leaves the cutoff to the eye; the :ref:`next section <DOE-lenth-method>` adds an objective one. It is only meaningful when the factors are centered and scaled, so that the coefficients are directly comparable.
 
 
 A full factorial with :math:`2^k` experiments has :math:`2^k` parameters to estimate. Once these parameters have been calculated, for example, by using a :ref:`least squares model <DOE-analysis-by-least-squares>`, then plot as shown the absolute value of the model coefficients in sorted order, from largest magnitude to smallest, ignoring the intercept term. Significant coefficients are established by visual judgement -- establishing a visual cutoff by contrasting the small coefficients to the larger ones.
@@ -56,10 +56,14 @@ The example below is from a :math:`2^4` full factorial (four factors, sixteen ru
 	b = np.linalg.solve(X.T @ X, X.T @ y)   # X is orthogonal, so this is exact
 	effects = dict(zip(terms.keys(), b[1:]))  # drop the intercept
 
-	# Pareto plot: absolute effects, largest bar at the top.
+	# Pareto plot: absolute effects, largest bar at the top. Colour each bar by the
+	# sign of its effect, using the colourblind-safe Okabe-Ito pair: orange for a
+	# positive effect, blue for a negative one.
 	ordered = sorted(effects, key=lambda name: abs(effects[name]))
+	orange, blue = "#E69F00", "#0072B2"
+	colours = [orange if effects[name] > 0 else blue for name in ordered]
 	fig = go.Figure(go.Bar(x=[abs(effects[name]) for name in ordered],
-	                       y=ordered, orientation="h"))
+	                       y=ordered, orientation="h", marker_color=colours))
 	fig.update_layout(xaxis_title_text="|effect|", yaxis_title_text="Term",
 	                  showlegend=False)
 	fig.show()
@@ -70,29 +74,111 @@ The example below is from a :math:`2^4` full factorial (four factors, sixteen ru
 	:width: 900px
 	:alt: Pareto plot of effect magnitudes from a full factorial
 
+Each bar is coloured by the *sign* of its effect: orange for a positive coefficient and blue for a negative one (the colourblind-safe Okabe-Ito pair), so the bar length shows the magnitude while its colour shows the direction. The two dashed and dotted vertical lines in the figure are the Lenth margins of error introduced in the :ref:`next section <DOE-lenth-method>`; they, not the colour, mark where significance begins.
+
 We would interpret that factors **A**, **C** and **D**, as well as the interactions of **AC** and **AD**, have a significant and causal effect on the response variable, :math:`y`. The main effect of **B** on the response :math:`y` is small, at least over the range that **B** was used in the experiment. Factor **B** can be omitted from future experimentation in this region, though it might be necessary to include it again if the system is operated at a very different point.
 
 The reason why we can compare the coefficients this way, which is not normally the case with least squares models, is that we have both centered and scaled the factor variables. If the centering is at typical baseline operation, and the range spanned by each factor is that expected over the typical operating range, then we can fairly compare each coefficient in the bar plot. Each bar represents the influence of that term on :math:`y` for a one-unit change in the factor, that is, a change over half its operating range.
 
-Obviously, if the factors are not scaled appropriately, then this method will be error prone.  However, the approximate guidance is accurate, especially when you do not have a computer or if additional information required by the other methods (discussed below) is not available. It is also the only way to estimate the effects for :ref:`highly fractionated and saturated designs <DOE-saturated-screening-designs>`.
+If the factors are not scaled appropriately, then this method will be error prone. The effects themselves are always estimated by least squares; what the Pareto plot adds is a ranking. For :ref:`highly fractionated and saturated designs <DOE-saturated-screening-designs>`, where there are no degrees of freedom for a standard error, the Pareto plot and the Lenth's-method cutoff of the next section are the tools available.
 
+
+.. _DOE-lenth-method:
+
+Lenth's method and the half-normal plot: an objective cutoff
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+	single: Lenth's method
+	pair: half-normal plot; experiments
+	single: pseudo standard error
+
+The Pareto plot ranks the effects but leaves the cutoff to the eye. When the design is unreplicated, so there are no degrees of freedom for a standard error, we can still place an objective cutoff by using the idea of :index:`effect sparsity`: in most systems only a few of the many effects are real, and the rest scatter around zero at the size of the experimental noise. Those many near-zero effects can therefore be used to estimate the noise, and any effect standing well clear of that noise is judged significant.
+
+:index:`Lenth's method <single: Lenth's method>` turns this into a number. Work with the estimated effects, here the model coefficients :math:`c_1, c_2, \ldots, c_m`, excluding the intercept (for a :math:`2^4` factorial :math:`m = 15`). The steps are:
+
+.. math::
+
+	s_0 &= 1.5 \times \text{median}\left(|c_i|\right) \\
+	\text{PSE} &= 1.5 \times \text{median}\left\{ |c_i| \;:\; |c_i| < 2.5\, s_0 \right\} \\
+	\text{ME}  &= t_{0.975,\, d} \times \text{PSE}, \qquad\qquad d = m/3 \\
+	\text{SME} &= t_{1 - 0.025/m,\, d} \times \text{PSE}
+
+The :index:`pseudo standard error` (PSE) is a robust estimate of the standard error of an effect. The first median sets a rough scale, :math:`s_0`; the second median is then taken only over the effects small enough (within :math:`2.5\, s_0`) to be plausibly noise, so that a few large, real effects cannot inflate it. The *margin of error* (ME) is the individual 95% cutoff: an effect whose magnitude exceeds the ME is significant on its own. The *simultaneous margin of error* (SME) applies a Bonferroni correction across all :math:`m` effects, holding the chance that *any* noise effect exceeds it near 5%; it is the stricter cutoff to use when scanning many effects at once. Lenth's rule sets the degrees of freedom for the :math:`t`-value to :math:`d = m/3`.
+
+Applying this to the :math:`2^4` example above, reusing the ``effects`` computed for the Pareto plot:
+
+.. code-block:: python
+
+	import numpy as np
+	from scipy import stats
+
+	coeffs = np.array(list(effects.values()))
+	m = len(coeffs)                                       # 15 effects
+	abs_c = np.abs(coeffs)
+	s0 = 1.5 * np.median(abs_c)
+	pse = 1.5 * np.median(abs_c[abs_c < 2.5 * s0])
+	d = m / 3
+	ME = stats.t.ppf(0.975, d) * pse
+	SME = stats.t.ppf(1 - 0.025 / m, d) * pse
+	print(f"PSE = {pse:.2f}, ME = {ME:.2f}, SME = {SME:.2f}")   # PSE=1.31, ME=3.37, SME=6.89
+
+	print(sorted((k for k in effects if abs(effects[k]) > ME),
+	             key=lambda k: -abs(effects[k])))              # ['A', 'AC', 'AD', 'D', 'C']
+
+The pseudo standard error is :math:`\text{PSE} = 1.31`, so the margin of error is :math:`\text{ME} = 3.37`. Five effects exceed it, **A**, **C**, **D**, **AC** and **AD**, exactly the five the eye picked from the Pareto plot. The simultaneous margin of error is :math:`\text{SME} = 6.89`: **A**, **D**, **AC** and **AD** clear even that stricter bar, while **C** (:math:`|c_C| = 4.9`) sits between the two margins, significant individually but not once we allow for having scanned all fifteen effects.
+
+The :index:`half-normal plot <pair: half-normal plot; experiments>` shows the same judgement graphically, and is the plot JMP, Minitab and Stat-Ease draw for unreplicated designs. Order the effects by absolute value and plot them against the quantiles of the half-normal distribution at the plotting positions :math:`(i - 0.5)/m`. Noise effects fall along a straight line through the origin; the real effects break away to the upper right.
+
+.. code-block:: python
+
+	import plotly.graph_objects as go
+
+	ordered = sorted(effects, key=lambda k: abs(effects[k]))
+	absv = np.array([abs(effects[k]) for k in ordered])
+	quantiles = stats.halfnorm.ppf((np.arange(1, m + 1) - 0.5) / m)
+	fig = go.Figure(go.Scatter(x=quantiles, y=absv, mode="markers+text",
+	                           text=ordered, textposition="top left"))
+	fig.update_layout(xaxis_title_text="Half-normal quantile",
+	                  yaxis_title_text="|effect|", showlegend=False)
+	fig.show()
+
+Running the block draws the half-normal plot: the ten noise effects sit on a line through the origin, and **A**, **C**, **D**, **AC** and **AD** stand clear of it.
+
+The same result is available directly from ``process_improve``. Note that ``analyze_experiment`` reports effects on the high-to-low scale (twice the model coefficient, the Box, Hunter and Hunter convention), so its ``PSE``, ``ME`` and ``SME`` come out at twice the values above; the significance decision is identical, because both the effects and the cutoff double.
+
+.. code-block:: python
+
+	import pandas as pd
+	from process_improve.experiments.analysis import analyze_experiment
+	from process_improve.experiments.visualization.plots.registry import create_plot
+
+	frame = pd.DataFrame(design, columns=names)
+	frame["y"] = y
+	res = analyze_experiment(frame, response_column="y", model="A*B*C*D",
+	                         analysis_type=["effects", "lenth_method"])
+	res["lenth_method"]["ME"]                                      # 6.75  (= 2 x 3.37)
+
+	create_plot("pareto", analysis_results=res).to_plotly()       # Pareto with ME and SME lines
+	create_plot("half_normal", analysis_results=res).to_plotly()  # the half-normal plot
+
+The pseudo-standard-error cutoff is from :index:`Lenth <single: Lenth, Russell>` (1989), "`Quick and Easy Analysis of Unreplicated Factorials <https://doi.org/10.1080/00401706.1989.10488595>`_", *Technometrics*, **31**, 469-473. The half-normal plot of effects is due to :index:`Daniel <single: Daniel, Cuthbert>` (1959), "`Use of Half-Normal Plots in Interpreting Factorial Two-Level Experiments <https://doi.org/10.1080/00401706.1959.10489866>`_", *Technometrics*, **1**, 311-341.
 
 Standard error: from replicate runs or from an external dataset
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. note:: It is often better to spend your experimental budget screening for additional factors rather than replicating experiments.
 
-.. But, if a duplicate run exists at every combination of the factorial, then the standard error can be estimated as follows:
-..
-.. 	-	Let :math:`y_{i,1}` and :math:`y_{i,2}` be the two response values for each of the :math:`i^\text{th}` runs, where :math:`i=1, 2, ..., 2^k`
-.. 	-	The mean response for the :math:`i^\text{th}` run is :math:`\overline{y}_i = 0.5y_{i,1} + 0.5y_{i,2}`
-.. 	-	Denote the difference between them as :math:`d_i = y_{i,2} - y_{i,1}`, or the other way around - it doesn't matter.
-.. 	-	The variance can be estimated with a single degree of freedom as :math:`s_i^2 = \dfrac{(y_{i,1} - \overline{y}_i)^2 + (y_{i,2} - \overline{y}_i)^2}{1}`
-.. 	-	The variance can also be written as :math:`s_i^2 = d_i^2/2`
-.. 	-	Now we can pool the variances for the :math:`2^k` runs to estimate :math:`\hat{\sigma}^2 = S_E^2 = \dfrac{1}{2}\displaystyle\sum_i^{2^k}{d_i^2}`
-.. 	-	This estimated standard error is :math:`t`-distributed with :math:`2^k` degrees of freedom.
-..
-.. The standard error can be calculated in a similar manner if more than one duplicate run is performed. So rather run a :math:`2^4` factorial for 4 factors than a :math:`2^3`factorial twice; or as we will see later - one can screen five or more factors with :math:`2^4` runs.
+If a duplicate run exists at every combination of the factorial, then the standard error can be estimated directly:
+
+	-	Let :math:`y_{i,1}` and :math:`y_{i,2}` be the two response values for each of the :math:`i^\text{th}` runs, where :math:`i=1, 2, \ldots, 2^k`.
+	-	The mean response for the :math:`i^\text{th}` run is :math:`\overline{y}_i = 0.5\,y_{i,1} + 0.5\,y_{i,2}`.
+	-	Denote the difference between them as :math:`d_i = y_{i,2} - y_{i,1}` (the sign does not matter).
+	-	Each pair gives a variance estimate on a single degree of freedom, :math:`s_i^2 = \dfrac{(y_{i,1} - \overline{y}_i)^2 + (y_{i,2} - \overline{y}_i)^2}{1} = \dfrac{d_i^2}{2}`.
+	-	Pooling these :math:`2^k` single-degree-of-freedom estimates means *averaging* them, giving :math:`\widehat{\sigma}^2 = S_E^2 = \dfrac{1}{2^k}\displaystyle\sum_{i=1}^{2^k}{s_i^2} = \dfrac{1}{2^{k+1}}\displaystyle\sum_{i=1}^{2^k}{d_i^2}`, on :math:`2^k` degrees of freedom.
+	-	Each coefficient's ratio :math:`b_i / S_E(b_i)` is then :math:`t`-distributed on those :math:`2^k` degrees of freedom, which is what makes the confidence interval and significance test possible.
+
+The standard error can be found in a similar way if more than one duplicate run is performed. Note that a full replicate is expensive: as discussed in the :ref:`screening designs <DOE-saturated-screening-designs>` section, it is often more productive to spend those extra runs on additional factors than on repeating existing runs.
 
 If there are more experiments than parameters to be estimated, then we have extra degrees of freedom. Having degrees of freedom implies we can calculate the standard error, :math:`S_E`. Once :math:`S_E` has been found, we can also calculate the standard error for each model coefficient, and then confidence intervals can be constructed for each main effect and interaction. And because the model matrix is orthogonal, the confidence interval for each effect is independent of the other. This is because the variance-covariance matrix of the estimates is :math:`\mathcal{V}\left(\mathbf{b}\right) = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}S_E^2`, and the off-diagonal elements in :math:`\mathbf{X}^T\mathbf{X}` are zero, so the estimates are uncorrelated. The confidence interval for each coefficient is then :math:`b_i \pm c_t \sqrt{\mathcal{V}(b_i)}`.
 
@@ -149,51 +235,6 @@ Once we obtain the standard error for our system and calculate the variance of t
 		\text{Catalyst effect}, b_K &= 1.1 \pm 0.707
 
 Even though the confidence interval of the temperature effect would be :math:`11.5 - c_t \times 0.707 \leq \beta_T \leq 11.5 + c_t \times 0.707`, it is clear that at the 95% significance level, the above representation shows the temperature effect is significant, while the catalyst effect is not (:math:`c_t \approx 2`).
-
-.. OMIT: this can be confusing and misleading
-
-	Normal probability plots
-	^^^^^^^^^^^^^^^^^^^^^^^^^
-
-	If the hypothesis that there is no causal effect from the :math:`k` factors on the response is true, then the :math:`2^k-1` parameter estimates, not counting the intercept, should be normally distributed. That is from the central limit theorem, and the fact that estimated coefficients are linear combinations of the response variable.
-
-	An example for a :math:`2^3` factorial would be that the seven coefficients, not including :math:`b_0`, in this linear model would be normally distributed:
-
-	.. math::
-
-		y_i = b_0 + b_A x_A + b_B x_B + b_{C}x_C + b_{AB}x_{AB} + b_{AC}x_{AC} +  b_{BC}x_{BC} +  b_{ABC}x_{ABC}
-
-	A normal probability plot is a nonlinear transformation of the data so that the s-shape of the cumulative normal distribution appears as a straight line. We used this idea in the section on :ref:`univariate statistics <SECTION-univariate-review>` where a q-q plot was constructed to assess normality. Another way to visualize this concept is to draw vertical divisions on the normal distribution curve, to create :math:`2^k-1` sections of equal area. One effect is expected per division.
-
-	.. TODO: illustration of normal distribution division
-
-	.. code-block:: s
-
-		k = 4
-	 	n = 2^k - 1
-		index <- seq(1, n)
-		p <- (index - 0.5) / n
-		theoretical.quantity <- qnorm(p)
-
-		labels = c('A', 'B',    'C',   'D', 'AB',  'AC', 'AD',   'BC', 'BD',   'CD',
-		            'ABC',  'ABD',  'ACD',  'BCD',  'ABCD')
-		b      = c( -4,  12, -1.125, -2.75,  0.5, 0.375,  0.0, -0.625, 2.25, -0.125,
-		           -0.375,   0.25, -0.125, -0.375,  -0.125)
-
-		b.sort = sort(b)
-
-		plot(theoretical.quantity, b.sort)
-		qqline(b.sort)
-
-		# Or more simply: use the qqPlot function:
-		library(car)
-		qqPlot(b, labels=labels)
-
-	.. figure:: ../../figures/doe/normal-probability-signifcant-effects.png
-		:align: center
-		:scale: 50
-
-
 
 Refitting the model after removing nonsignificant effects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

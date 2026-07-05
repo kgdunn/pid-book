@@ -34,9 +34,8 @@ therefore a genuine multi-criteria decision, not a lookup, which is the subject 
 <DOE-judging-and-comparing-designs>`.
 
 The original catalogue was produced by an enumeration based on integer programming that is
-complete for three to five factors at the smaller run sizes (up to 14 runs for three factors, and
-up to 24 runs for four and five factors), and partial for six and seven factors, where the
-seven-factor search was restricted to foldover designs. Many of these designs are foldover
+complete for three to five factors up to 44 runs, and partial for six and seven factors up to 70
+runs, where the seven-factor search was restricted to foldover designs. Many of these designs are foldover
 designs, built as the DSD was by folding over a base matrix whose columns are orthogonal. The
 orthogonality of the main effects, however, comes from the construction itself: all odd design
 moments through order three are set to zero, so the non-foldover designs in the catalogue have

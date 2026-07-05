@@ -26,7 +26,7 @@ Exercises
 	#.	Features shown in the data are:
 
 		-	A noticeable weekly cycle; probably assignments are due the next day!
-		-	A sustained, high level of traffic in the first week February - maybe a midterm test.
+		-	A sustained, high level of traffic in the first week of February - maybe a midterm test.
 		-	Some days have more than 90 visits, indicating that students visit the site more than once per day, or due to external visitors to the site.
 
 
@@ -41,7 +41,7 @@ Exercises
 
 .. admonition:: Question
 
-	Which types of features can can the human eye easily pick out of a time series plot?
+	Which types of features can the human eye easily pick out of a time-series plot?
 
 .. admonition:: Solution
 
@@ -52,7 +52,7 @@ Exercises
 
 	.. Final exam, 2013
 
-	Why is the principle of minimizing "data ink" so important in an effective visualization? Give an scientific or engineering example of why this important.
+	Why is the principle of minimizing "data ink" so important in an effective visualization? Give a scientific or engineering example of why this is important.
 
 .. admonition:: Solution
 
@@ -97,12 +97,12 @@ Exercises
 	- The purpose of the plot is to show the similarities between Japan in the 1990's to the current trends (2000's) in Britain and USA. The data from 2000 onwards for Japan is therefore irrelevant in this case.
 	- The data are time-based: a bar-plot is a poor choice to show time-based trends.
 	- Notice the symmetry above and below the zero line: in colours: "light blue + grey = dark blue", i.e. "General government balance + Net capital inflow = Private financial balance". Given this constraint, only 2 of the 3 variables are required. As I'm not an economics expert, I have no idea which 2 of the 3 would be most relevant.
-	- The data for Japan from the 1990's should be shown on the same plot for USA and Britain for the 2000's, since that was the purpose - to show a comparison between Japan's experience and the USA/Britain experience. One way to do this: plot three lines on a time-series chart: one for each of Japan, Britain and USA for "General government balance". The have a second plot, similar to the first, showing the "Private financial balance".
+	- The data for Japan from the 1990's should be shown on the same plot for USA and Britain for the 2000's, since that was the purpose - to show a comparison between Japan's experience and the USA/Britain experience. One way to do this: plot three lines on a time-series chart: one for each of Japan, Britain and USA for "General government balance". Then have a second plot, similar to the first, showing the "Private financial balance".
 
 	Minor problems are:
 
 	- The colour scheme is poor: four different shades of blue are used (two background shades, and two of the time-based parameters)
-	- The use of stacked bar plots is almost always problematic: the user is never sure if the bars are cumulative or additive, unless they know the subject matter or read the accompanying text.
+	- The use of stacked bar plots is almost always problematic: the reader cannot tell whether the bars show cumulative or incremental amounts, unless they know the subject matter or read the accompanying text.
 
 
 .. admonition:: Question
@@ -125,7 +125,7 @@ Exercises
 
 	Some people have suggested using a scatter plot - I never thought of that, but it works. It shows a straight line relationship between interest rate and the monthly payment. I suppose the advantage of that plot is that you can see (a) the relationship is linear, which it should be, and (b) you can visually *interpolate* the monthly payment given any interest rate between 2 and 5%.
 
-	A key point though: the mortgage amount and the amortization rate must be shown with the plot or table. The cost of the house and the downpayment are actually irrelevant. You are paying interest on the mortgage amount, where :math:`\text{mortgage amount} = \text{cost of the house} + \text{mortgage insurance} - \text{downpayment}`. The table or the plot will change if either of those two variables change. Your monthly payment is higher for shorter amortization periods, and for larger mortgage amounts.
+	A key point though: the mortgage amount and the amortization period must be shown with the plot or table. The cost of the house and the downpayment are actually irrelevant. You are paying interest on the mortgage amount, where :math:`\text{mortgage amount} = \text{cost of the house} + \text{mortgage insurance} - \text{downpayment}`. The table or the plot will change if either of those two variables change. Your monthly payment is higher for shorter amortization periods, and for larger mortgage amounts.
 
 
 .. admonition:: Question
@@ -162,7 +162,7 @@ Exercises
 		scatterplotMatrix(food[,2:6])
 
 
-	From this plot we see histograms of the 5 univariate distributions on the diagonal plots; the off-diagonal plots are the bivariate correlations between each combination of variable. The trend line (solid light green) shows the linear regression between the two variables. The lower diagonal part of the plot is a 90 degree rotation of the upper diagonal part. Some software packages will just draw either the upper or lower part.
+	From this plot we see histograms of the 5 univariate distributions on the diagonal; each off-diagonal plot is a bivariate scatter plot for one combination of two variables. The trend line (solid light green) shows the linear regression between the two variables. The lower-triangular part of the plot is a 90 degree rotation of the upper-triangular part. Some software packages will just draw either the upper or lower part.
 
 	From these plots we quickly gain an insight into the data:
 
@@ -170,7 +170,7 @@ Exercises
 		*	There is a strong negative correlation with oiliness and density: oilier pastries are less dense (to be expected).
 		*	There is a positive correlation with oiliness and crispiness: oilier pastries are more crisp (to be expected).
 		*	There is no relationship between the oiliness and hardness of the pastry.
-		*	There is a negative correlation between density and crispiness (based on the prior relationship with ``Oil``): less dense pastries (e.g. more air in them) and crispier.
+		*	There is a negative correlation between density and crispiness (consistent with the prior relationships with ``Oil``): less dense pastries (e.g. more air in them) are crispier.
 		*	There is a positive correlation between ``Density`` and ``Fracture``. As described in the dataset file, ``Fracture`` is the angle by which the pastry can be bent, before it breaks; more dense pastries have a higher fracture angle.
 		*	Similarly, a very strong negative correlation between ``Crispy`` and ``Fracture``, indicating the expected effect that very crispy pastries have a low fracture angle.
 		*	The pastry's hardness seems to be uncorrelated to all the other 4 variables.
@@ -186,10 +186,11 @@ Exercises
 .. admonition:: Solution
 
 
-	#.	A suitable chart for displaying variability on a per-day basis is the boxplot, one box for each day of the week. This allows you to see *between-day* variation when comparing the boxes side by side, and get an impression of the *variability within* each variable, by examining how the box's horizontal lines are spread out (25th, 50th and 75th percentiles).
-
-
-	#.	A box plot is an effective way to summarize and compare the data for each day of the week.
+	#.	A suitable chart for displaying variability on a per-day basis is the boxplot, one box for
+		each day of the week. This allows you to see *between-day* variation when comparing the
+		boxes side by side, and to get an impression of the variability *within* each day, by
+		examining how each box's horizontal lines are spread out (the 25th, 50th and 75th
+		percentiles).
 
 		.. code-block:: python
 
@@ -216,7 +217,7 @@ Exercises
 
 		    # Re-order the factors in this order
 		    day.names = c("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday","Thursday", "Friday" )
-		    days = factor(web$DayOfWeek, level=day.names)
+		    days = factor(web$DayOfWeek, levels=day.names)
 		    boxplot(web$Visits ~ days)
 
 		.. image:: ../figures/visualization/website-traffic-boxplot.png
@@ -234,7 +235,7 @@ Exercises
 		.. image:: ../figures/visualization/website-traffic-timeseries.jpg
 			:align: center
 
-	The best way to draw the time-series plot is to use proper time-based labelling on the x-axis, but we won't cover that topic here. If you are interested, read up about the ``xts`` package (`see the R tutorial <https://learnche.org/4C3/Software_tutorial>`_) and it's plot command. See how it is used in the code below:
+	The best way to draw the time-series plot is to use proper time-based labelling on the x-axis, but we won't cover that topic here. If you are interested, read up about the ``xts`` package (`see the R tutorial <https://learnche.org/4C3/Software_tutorial>`_) and its plot command; in Python, convert the column to a real date with ``pd.to_datetime`` and plot against that. Both approaches are shown in the code below:
 
 		.. code-block:: python
 
@@ -281,16 +282,16 @@ Exercises
 		:align: center
 
 	#.	What type of plot is shown here?
-	#.	Describe the two phenomenon displayed.
+	#.	Describe the two phenomena displayed.
 	#.	Which plot type asks you to draw a cause and effect relationship between two variables?
 	#.	Use rough values from the given plot to construct an approximate example of the plot you proposed in part 3.
-	#.	What advantage is there to the plot given here, over the type in your answer to part 3.
+	#.	What advantage is there to the plot given here, over the type in your answer to part 3?
 
 .. admonition:: Solution
 
 	#.	A time-series plot.
 
-	#.	The rate of cellphone usage (expected to be proportional to number of mobile phone antennae) has increased in Columbia, especially since 2002. Likely this is this usual case where the price comes down, leading to greater use. Though some other political or economic change may have taken place in 2002 leading to increased phone use.
+	#.	The rate of cellphone usage (expected to be proportional to number of mobile phone antennae) has increased in Colombia, especially since 2002. Likely this is the usual case where the price comes down, leading to greater use. Though some other political or economic change may have taken place in 2002 leading to increased phone use.
 
 		The rate of kidnappings peaked in 2000, at a rate of 8 per 100,000 residents, and has steadily decreased since that peak.
 
@@ -317,9 +318,9 @@ Exercises
 		*	firstly we couldn't possibly perform that experiment of removing cell towers, and
 		*	even if we could, the time scales are too long to control the experimental conditions: something else would change while we were doing the experiment.
 
-	To compensate for that, social science studies compare similar countries - for example the original article from `The Economist's website <https://www.economist.com/node/15127287>`_ shows how the same data from Mexico and Venezuela were compared to Columbia's data. The article also shows how much  of the trend was due to political changes in the country that were happening at the same time: in particular a 3rd factor not shown in the plots was largely responsible for the decrease in kidnappings. Kidnappings would probably have remained at the same level if it were not also for the increase in the number of police officers, who are able to respond to citizen's cellphone calls.
+	To compensate for that, social science studies compare similar countries - for example the original article from `The Economist's website <https://www.economist.com/node/15127287>`_ shows how the same data from Mexico and Venezuela were compared to Colombia's data. The article also shows how much of the trend was due to political changes in the country that were happening at the same time: in particular a 3rd factor not shown in the plots was largely responsible for the decrease in kidnappings. Kidnappings would probably have remained at the same level if it were not also for the increase in the number of police officers, who are able to respond to citizens' cellphone calls.
 
-	Fortunately in engineering situations we deal with much shorter time scales, and are able to better control our experiments. However the case of an uncertain 3rd factor is prevalent and must be guarded for - we'll learn about this is the section on design of experiments.
+	Fortunately in engineering situations we deal with much shorter time scales, and are able to better control our experiments. However the case of an uncertain 3rd factor is prevalent and must be guarded against - we'll learn about this in the section on design of experiments.
 
 
 .. admonition:: Question
@@ -402,7 +403,7 @@ Exercises
 
 		A sequence plot of the data is good enough, though a time-based plot is better.
 
-	#.	*	Oscillations, with a period of roughly 48 to 50 samples (corresponds to 24 hours) shows a daily cycle in the temperature.
+	#.	*	Oscillations, with a period of roughly 48 to 50 samples (corresponding to 24 hours), show a daily cycle in the temperature.
 		*	All 4 temperatures are correlated (move together).
 		*	There is a break in the correlation around samples 50 to 60 on the front temperatures (maybe a door or window was left open?). Notice that the oscillatory trend still continues within the offset region - just shifted lower.
 		*	A spike up in the room's back left temperature, around sample 135.
@@ -466,7 +467,7 @@ Exercises
 			:scale: 45
 			:width: 900px
 
-	#.	The thick center line on each boxplot is the median (50th percentile) of that variable. The top and bottom edges of the box are the 25th and 75th percentile, respectively. If the data are from a symmetric distribution, such as the :math:`t` or normal distribution, then the median should be approximately centered with respect to those 2 percentiles. The fact that it is not, especially for position 1, indicates the data are *skewed* either to the left (median is closer to upper edge) or the the right (median closer to the lower edge).
+	#.	The thick center line on each boxplot is the median (50th percentile) of that variable. The bottom and top edges of the box are at the 25th and 75th percentiles, respectively. If the data are from a symmetric distribution, such as the :math:`t` or normal distribution, then the median should be approximately centered between those 2 percentiles. The fact that it is not, especially for position 1, indicates the data are *skewed*: either to the left (median closer to the upper edge) or to the right (median closer to the lower edge).
 
 
 .. admonition:: Question
@@ -486,15 +487,15 @@ Exercises
 
 	#.	As the original article alludes, there are differences between countries; and given the large number of points on the plot (well over 200) it is safe to assume that there are several points per country, showing the shifts over time. As a result, colour coding, or using different markers to show each country's shift and change over time will provide some additional insight. For example, the line of points stretching from 2200 to 2600 on the x-axis: is that due to one country and in which direction is it moving over time (left or right)?
 
-		Some students rightly pointed out that policy shifts occurred during this period; some countries joined the EU, and that may have lead to a change in the plots. So the picture is by no means complete. However, the picture is almost never complete for any data set.
+		Some students rightly pointed out that policy shifts occurred during this period; some countries joined the EU, and that may have led to a change in the plots. So the picture is by no means complete. However, the picture is almost never complete for any data set.
 
-	#.	This is a tough one to answer. The data are compelling in their lack of scatter. Usually systems with dubious correlations show a high degree of scatter. As before, colour or shaped codes for each country will give a better idea of cause-effect. I suspect this plot shows a strong correlation simply because there are small clusters for each country that are close together, but the negative trend simply comes from a country-to-country difference.
+	#.	This is a tough one to answer. The data are compelling in their lack of scatter. Usually systems with dubious correlations show a high degree of scatter. As before, colour or shape codes for each country will give a better idea of cause and effect. I suspect this plot shows a strong correlation simply because there are small clusters for each country that are close together, but the negative trend simply comes from a country-to-country difference.
 
 		As emphasized before in this course, we can only truly tell causality by doing an experiment. Here there are no major ethical obligations, however it is unlikely that you would be able to convince companies to enforce short vs long working hours so you can observe productivity. The time before the change also takes effect is likely very long.
 
-		So the answer is yes, maybe there is a causal mechanism here that is plausible (we've often heard that people whose work-life balanced is better are more productive), but we cannot test it explicitly.
+		So the answer is yes, maybe there is a causal mechanism here that is plausible (we've often heard that people whose work-life balance is better are more productive), but we cannot test it explicitly.
 
-	#.	Also see the prior answer: require experiments over a broad range of employment types and regions, using shorter and longer working hours, and measure the corresponding earnings.
+	#.	Also see the prior answer: it would require experiments over a broad range of employment types and regions, using shorter and longer working hours, and measuring the corresponding earnings.
 
 .. admonition:: Question
 

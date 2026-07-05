@@ -288,6 +288,8 @@ very design there: in :ref:`Judging and comparing designs <DOE-judging-and-compa
 add two more runs to it and watch every one of these numbers change, which is the starting point for
 learning how to compare designs.
 
+.. _DOE-exchange-algorithms:
+
 How the algorithms search: exchange algorithms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -428,6 +430,180 @@ equally D-optimal.
     :math:`x_1 + x_2 > 1` is infeasible (shaded), so the run at :math:`(+1, +1)` cannot be
     performed. The ten-run D-optimal design uses the eight feasible grid points, with the two
     larger markers run twice.
+
+.. _DOE-augmenting-a-design:
+
+Augmenting an existing design
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Experimentation is sequential: a first experiment answers some questions and raises others. A
+common situation is that a :ref:`screening design <DOE-saturated-screening-designs>` has
+identified the important factors but has left several competing models that fit the data about
+equally well, differing in which two-factor interactions they include. Rather than start over,
+we add a few runs to the design we already have. This is design *augmentation*.
+
+The runs already performed are not discarded, and they should not be ignored when choosing the
+new ones. Write :math:`\mathbf{X}_1` for the model matrix of the original runs and
+:math:`\mathbf{X}_2` for the model matrix of the runs still to be chosen, both expanded for the
+*larger* model we now want to fit (the main effects, plus whichever interactions the competing
+models disagree about). The information in the combined experiment is
+
+.. math::
+
+    \mathbf{M} = \mathbf{X}^T\mathbf{X}
+               = \mathbf{X}_1^T\mathbf{X}_1 + \mathbf{X}_2^T\mathbf{X}_2
+
+so the two experiments add their information. A D-optimal augmentation chooses the new runs
+:math:`\mathbf{X}_2` to maximize :math:`\det\left(\mathbf{X}_1^T\mathbf{X}_1 +
+\mathbf{X}_2^T\mathbf{X}_2\right)`, the determinant of the *total*. It does not maximize
+:math:`\det\left(\mathbf{X}_2^T\mathbf{X}_2\right)` on its own. The distinction matters: the
+original runs already carry a great deal of information about the main effects, so a follow-up
+that ignored :math:`\mathbf{X}_1` would spend runs re-measuring them instead of placing the
+runs where information is still scarce, on the interactions. The
+:ref:`coordinate-exchange algorithm <DOE-exchange-algorithms>` does this by holding the rows of
+:math:`\mathbf{X}_1` fixed and searching only over the new rows :math:`\mathbf{X}_2`. The worked
+example in :ref:`Judging and comparing designs <DOE-judging-and-comparing-designs>` carries this
+out on the smallest possible design: it starts from a single three-level factor and compares two
+ways of spending two extra runs, scoring each by the determinant of the combined information
+matrix.
+
+Two practical points round this out.
+
+*A block for drift between the experiments.* Time passes between the original experiment and the
+follow-up, and the process mean may drift in the interim. Add a two-level
+:ref:`blocking <DOE_blocking_section>` factor coded :math:`+1` for the original runs and
+:math:`-1` for the new runs. Its estimated effect absorbs any shift between the two campaigns,
+keeping that shift from biasing the factor effects of interest. This is the same device used to
+protect a single experiment against a nuisance variable, with the passage of time playing the
+part of the nuisance.
+
+*How many runs to add.* The follow-up needs only as many runs as there are new terms to
+estimate. If the enlarged model adds six interactions and one block effect to a model already
+supported by the original runs, seven new runs suffice. This is where optimal augmentation
+departs from the classical :ref:`foldover <DOE-foldover-designs>`, which reflects the signs of
+the whole design and so doubles the run count. A foldover de-aliases a fixed set of effects (a
+main effect from its two-factor interactions, for instance); optimal augmentation instead
+de-aliases whatever set of effects the competing models actually disagree about, at the smaller
+cost of only the runs that set requires. The choice among the competing models, once the extra
+data are in, is made with a criterion that penalises extra terms: :math:`R^2` always rises as
+terms are added and so is a poor guide, the root mean squared error is in the units of the
+response but tends to favour models with too many terms, while the corrected Akaike information
+criterion (AICc, smaller is better) rewards parsimony. Design augmentation and the choice of
+follow-up runs are developed in :ref:`Goos and Jones <DOE_references>`.
+
+.. _DOE-categorical-factors:
+
+Categorical factors with several levels
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Every factor so far has been continuous or a two-level category coded :math:`-1` and
+:math:`+1`. Optimal designs also accommodate a categorical factor with more than two levels,
+such as a supplier chosen from three sources or a catalyst from four. This needs some care,
+both in how the factor enters the model and in what we can then ask of the design.
+
+A categorical factor with :math:`L` levels is written with *indicator* (dummy) columns, one per
+level, the same construction used for :ref:`integer variables in a regression model
+<LS-dummy-variables>`: :math:`s_1` is :math:`1` for runs at level 1 and :math:`0` otherwise,
+:math:`s_2` is :math:`1` for level 2, and so on. All :math:`L` dummies cannot sit in the model alongside the
+intercept, however: they sum to one in every row (:math:`s_1 + s_2 + \cdots + s_L = 1`), which
+is the intercept column, so the columns are linearly dependent and
+:math:`\mathbf{M} = \mathbf{X}^T\mathbf{X}` is singular and cannot be inverted. The usual
+remedies each drop one redundant piece:
+
+    *   drop the intercept, so each :math:`\delta_i` is the intercept for its own level;
+
+    *   drop one dummy, making its level a reference against which the others are measured; or
+
+    *   constrain the level effects to sum to zero (*effects coding*), so each
+        :math:`\delta_i` is the departure of level :math:`i` from the average.
+
+These are three ways of writing the same model, and neither the D-optimal nor the I-optimal
+design depends on which one is used. The :math:`-1 / +1` coding used throughout this chapter for
+a two-level factor is exactly effects coding for the case :math:`L = 2`.
+
+To see that the coding does not change the chosen design, take a factor at four levels and, for
+clarity, a design with one run at each level, fitting only the four level means. Dropping the
+intercept makes the model matrix the four level indicators, :math:`\mathbf{X} = \mathbf{I}_4`, so
+:math:`\mathbf{M} = \mathbf{X}^T\mathbf{X} = \mathbf{I}_4` and :math:`\det(\mathbf{M}) = 1`.
+Reference coding, with level 4 as the baseline, uses the columns
+:math:`[\,1,\ s_1,\ s_2,\ s_3\,]`:
+
+.. math::
+
+    \mathbf{X}_{\text{ref}} = \begin{bmatrix} 1 & 1 & 0 & 0 \\ 1 & 0 & 1 & 0 \\
+    1 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 \end{bmatrix},
+    \qquad
+    \mathbf{M}_{\text{ref}} = \mathbf{X}_{\text{ref}}^T\mathbf{X}_{\text{ref}}
+    = \begin{bmatrix} 4 & 1 & 1 & 1 \\ 1 & 1 & 0 & 0 \\ 1 & 0 & 1 & 0 \\
+    1 & 0 & 0 & 1 \end{bmatrix}, \quad \det = 1.
+
+Effects coding, constraining the level effects to sum to zero so that level 4 is coded :math:`-1`
+on every column, uses :math:`[\,1,\ e_1,\ e_2,\ e_3\,]`:
+
+.. math::
+
+    \mathbf{X}_{\text{eff}} = \begin{bmatrix} 1 & 1 & 0 & 0 \\ 1 & 0 & 1 & 0 \\
+    1 & 0 & 0 & 1 \\ 1 & -1 & -1 & -1 \end{bmatrix},
+    \qquad
+    \mathbf{M}_{\text{eff}} = \begin{bmatrix} 4 & 0 & 0 & 0 \\ 0 & 2 & 1 & 1 \\
+    0 & 1 & 2 & 1 \\ 0 & 1 & 1 & 2 \end{bmatrix}, \quad \det = 16.
+
+The three determinants, :math:`1`, :math:`1`, and :math:`16`, are not equal, yet all three codings
+fit the same four means. Any two of them are related by an invertible change of variables: writing
+the effects-coded matrix in terms of the reference-coded one gives
+:math:`\mathbf{X}_{\text{eff}} = \mathbf{X}_{\text{ref}}\,\mathbf{T}`, with
+
+.. math::
+
+    \mathbf{T} = \begin{bmatrix} 1 & -1 & -1 & -1 \\ 0 & 2 & 1 & 1 \\ 0 & 1 & 2 & 1 \\
+    0 & 1 & 1 & 2 \end{bmatrix},
+    \qquad \det(\mathbf{T}) = 4.
+
+Then :math:`\mathbf{M}_{\text{eff}} = \mathbf{T}^T\mathbf{M}_{\text{ref}}\,\mathbf{T}`, so its
+determinant follows without recomputing it:
+
+.. math::
+
+    \det(\mathbf{M}_{\text{eff}}) = \det(\mathbf{T})^2\,\det(\mathbf{M}_{\text{ref}})
+                                  = 4^2 \times 1 = 16,
+
+which matches the direct calculation. The factor :math:`\det(\mathbf{T})^2` depends only on the
+coding :math:`\mathbf{T}`, not on the runs, so it cancels from any comparison of two designs: the
+design that maximizes :math:`\det(\mathbf{M})` under one coding maximizes it under all of them, and
+relative D-efficiencies (which are ratios of two determinants) come out identical. Only the absolute
+value of the criterion moves with the coding. The same holds for the full model with the continuous
+factors and their interactions, since the two codings are still related by a fixed invertible
+:math:`\mathbf{T}`. And the fitted prediction :math:`\widehat{y}(\mathbf{x})` does not depend on the
+coding at all, so the I-optimality comparison is unaffected too.
+
+The reason to include a categorical factor is often *robustness*. Suppose the categorical factor is
+a supplier whose material we cannot control, and we want the process to behave the same whatever
+that supplier delivers. A model with only a main effect for supplier says the suppliers differ by a
+fixed offset, the same at every setting of the continuous factors, so no choice of those settings can
+bring the suppliers together. Including *interactions between the supplier and the continuous
+factors* removes that limitation: each supplier then has its own slopes, so the gap between suppliers
+changes as the continuous factors move.
+
+What we search for afterwards is not a coefficient but an operating point. Write
+:math:`\widehat{y}_s(\mathbf{x})` for the predicted response of supplier :math:`s` at the continuous
+settings :math:`\mathbf{x}`, and look for the :math:`\mathbf{x}` that makes those predictions agree
+across suppliers, that is, that drives the spread
+:math:`\max_s \widehat{y}_s(\mathbf{x}) - \min_s \widehat{y}_s(\mathbf{x})` down to nearly zero. At
+such a setting the process returns nearly the same result whichever supplier is used, so it is robust
+to the supplier. The interaction terms are what make such a setting exist: were they all zero, the
+supplier curves would stay parallel and the spread would be the same everywhere. A large
+supplier-by-factor interaction is therefore what makes robustness reachable, not a term to be driven
+to zero. Once a robust setting is found, a factor whose effect does not depend on supplier can move
+the shared prediction onto the target value without reopening the gap. Locating that setting is
+possible only because the interactions were estimated, which is the reason for including them in the
+model.
+
+A model with quadratic terms and these interactions is a
+:ref:`response surface model <DOE-RSM>` estimated over a region that is part continuous and part
+categorical. Because the aim there is prediction across that region, the average prediction
+variance matters most, so I-optimality suits it better than D-optimality, whose focus on
+estimating coefficients precisely is better matched to screening. This handling of categorical
+factors, and the robustness strategy, are treated in :ref:`Goos and Jones <DOE_references>`.
 
 The optimal-design recipe is fully general, but it asks you to specify a model and run a search for
 each new problem. The :ref:`next section <DOE-definitive-screening-designs>` turns to a structured

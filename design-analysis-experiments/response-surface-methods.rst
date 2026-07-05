@@ -416,7 +416,7 @@ The general approach for response surface modelling
 
 		\hat{y} = b_0 + b_Ax_A + b_B x_B + b_C x_C  \ldots + b_{AB}x_Ax_B + b_{AC} x_A x_C + \ldots
 
-#.	The main effects are usually significantly larger than the two-factor interactions, so these higher interaction terms can be safely ignored. Any main effects that are not significant may be dropped for future iterations.
+#.	Far from the optimum the main effects are usually larger than the two-factor interactions. When that holds, the interaction terms are small enough to leave out of the direction calculation in the next step. Check it rather than assume it: if an interaction is comparable to or larger than the main effects, the simple gradient step below does not apply (see the note after this list). Any main effects that are not significant may be dropped for future iterations.
 
 #.	Use the model to estimate the path of steepest ascent (or descent if minimizing :math:`y`):
 
@@ -425,6 +425,8 @@ The general approach for response surface modelling
 		\dfrac{\partial \hat{y}}{\partial x_1} = b_1  \qquad\qquad \dfrac{\partial \hat{y}}{\partial x_2} = b_2 \qquad \ldots
 
 	The path of steepest ascent is climbed. Move any one of the main effects, e.g. :math:`b_A` by a certain amount, :math:`\Delta x_A`. Then move the other effects: :math:`\Delta x_i = \frac{b_i}{b_A} \Delta x_A`. For example, :math:`\Delta x_C` is moved by :math:`\frac{b_C}{b_A} \Delta x_A`.
+
+	This simple ratio is the gradient of the *first-order* (planar) part of the model, so it points along the steepest ascent only while the interaction terms are negligible. If the two-factor interactions are similar to, or larger than, the main effects, the fitted surface is a twisted plane rather than a flat one, and the direction of steepest ascent turns as you move. In that case, do not follow the linear gradient blindly: draw the contour plot of the fitted model and read the next point off the surface, or move to a second-order design (:ref:`central composite design <DOE_central_composite_designs>`) that can describe the curvature.
 
 	If any of the :math:`\Delta x_i` values are too large to safely implement, then take a smaller proportional step in all factors. Recall that these are coded units, so unscale them to obtain the move amount in real-world units.
 

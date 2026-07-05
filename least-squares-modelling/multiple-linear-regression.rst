@@ -333,6 +333,8 @@ earlier: the adjusted :math:`R^2`, and the prediction error on
 :ref:`testing data <LS_test_set_predictions_with_sklearn>`, which a noise column will generally
 make *worse*.
 
+.. _LS-dummy-variables:
+
 Integer (dummy, indicator) variables in the model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
