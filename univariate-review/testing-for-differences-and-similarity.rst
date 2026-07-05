@@ -522,7 +522,7 @@ Summary and comparison of methods
 
 Let's compare the 3 estimates. Recall our aim is to convince ourself/someone that system B will have better long-term performance than the current system A.
 
-If we play devil's advocate, our :index:`null hypothesis` is that system B has no effect. Then it is up to us to prove, convincingly, that the change from A to B has a systematic, permanent effect. That is what the calculated probabilities represent :, the probability of us being wrong.
+If we play devil's advocate, our :index:`null hypothesis` is that system B has no effect. Then it is up to us to prove, convincingly, that the change from A to B has a systematic, permanent effect. That is what the calculated probabilities represent, the probability of us being wrong.
 
 	#.	Using only reference data: 11% (about 1 in 10)
 
