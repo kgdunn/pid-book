@@ -12,6 +12,54 @@ We can construct similar :math:`R^2` values for the |Y|-space using the :math:`\
 
 These :math:`R^2` values help us understand which components best explain different sources of variation. Bar plots of the :math:`R^2` values for each column in |X| and |Y|, after a certain number of |A| components are one of the best ways to visualize this information.
 
+.. _LVM-PLS-number-of-components:
+
+How many components?
+^^^^^^^^^^^^^^^^^^^^^^
+
+For PLS the number of components is chosen by how well the model predicts the |Y|-space on data it has
+not yet seen, rather than by how much variance it explains in |X|. The tool is the same
+cross-validation described for :ref:`PCA <LVM_number_of_components>`, but the residuals that matter are
+those of |Y|. Leaving out one group of rows at a time, we predict the held-out |Y| values and gather
+their prediction error into :math:`Q^2_Y`, the cross-validated :math:`R^2` of the |Y|-space. As with
+PCA, :math:`Q^2_Y` is smaller than :math:`R^2_Y`, and it stops rising, then falls, once a component no
+longer improves prediction.
+
+The ``process_improve`` package computes this with ``PLS.select_n_components``. It re-derives the
+centring and scaling inside each cross-validation fold, so the held-out rows do not enter the model
+that predicts them, and it applies the one-standard-error rule described for
+:ref:`PCA <LVM_number_of_components>`: keep the fewest components whose cross-validated error is within
+one standard error of the best.
+
+.. code-block:: python
+
+	import pandas as pd
+	from process_improve.multivariate import PLS
+
+	# Cheddar-cheese data: predict the sensory Taste (Y) from three
+	# chemical measurements (X). The same data set is used in the PLS
+	# exercises at the end of this section.
+	cheese = pd.read_csv("https://openmv.net/file/cheddar-cheese.csv")
+	Y = cheese[["Taste"]]
+	X = cheese[["Acetic", "H2S", "Lactic"]]
+
+	# Raw X and Y may be passed: the scaling is fit inside every fold.
+	result = PLS.select_n_components(X, Y, random_state=0)
+	print(result.n_components)                     # 1
+	print(result.rmsecv["total"].round(2))         # A=1: 10.88, A=2: 11.02, A=3: 11.08
+	print(result.r2y_validated["total"].round(3))  # A=1: 0.537, A=2: 0.525, A=3: 0.519
+
+For this small data set cross-validation retains a single component. The cross-validated
+:math:`Q^2_Y` is highest at :math:`A = 1` (0.54) and edges down as further components are added, so the
+second and third components do not improve the prediction of Taste. Here the one-standard-error rule
+and the plain minimum of the error curve agree; on data sets where the error curve is flat near its
+minimum the one-standard-error rule returns the more parsimonious model.
+
+Cross-validation on |Y| stops adding components once the prediction of |Y| stops improving. When the
+|X|-space itself must also be well described, for example to monitor the squared prediction error of a
+process, one or two components beyond the cross-validated number are sometimes retained so that |X| is
+modelled as well.
+
 
 .. Common questions about PLS models
 .. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

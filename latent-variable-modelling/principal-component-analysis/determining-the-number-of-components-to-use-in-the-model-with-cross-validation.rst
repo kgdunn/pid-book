@@ -69,6 +69,50 @@ The number of components to use should be judged by the relevance of each compon
 
 However, cross-validation's objective is useful for predictive models, such as PLS, so we avoid over-fitting components. Models where we intend to learn from, or optimize, or monitor a process may well benefit from fewer or more components than suggested by cross-validation.
 
+**A caution: do not reconstruct a left-out row from its own values.** Wold's procedure above projects
+each held-out row onto the loadings, :math:`\mathbf{T}_{(g)} = \mathbf{X}_{(g)} \mathbf{P}`, and then
+reconstructs that same row from those scores. The scores used to predict the row are therefore
+calculated from the very values we are trying to predict. As more components are added the loadings
+span more of the measurement space, so the cross-validated reconstruction error tends to keep
+shrinking even when the extra component is not real. As the number of components, |A|, approaches the
+number of variables, :math:`K`, the held-out row is reproduced almost perfectly and :math:`Q^2_A`
+becomes too optimistic. The effect is strongest when there are few variables, which is exactly the
+situation in the small example above.
+
+This weakness of the row-wise scheme is the central point of the Bro *et al.* (2008) review cited
+earlier. They recommend instead leaving out individual *elements* of :math:`\mathbf{X}`, one scattered
+group of cells at a time, and predicting each missing element from a model that never used it. This
+element-wise scheme keeps the prediction genuinely independent of the value being predicted. It is the
+approach recommended in that review and implemented in several chemometrics packages. The
+interpretation of the resulting :math:`Q^2_A` curve is unchanged; only the way each held-out value is
+predicted differs.
+
+**Choosing the number of components robustly.** A single split of the rows into :math:`G` groups can
+move the recommended number of components up or down by one or two, simply because of which rows
+happened to land together. Three habits make the choice more reliable:
+
+*	*Repeat the split.* Re-run the cross-validation several times with different random groupings and
+	look at the spread of :math:`Q^2_A`, rather than trusting a single division of the data. A
+	component that is real survives the reshuffling; one that is marginal does not.
+
+*	*Avoid leaving out only one row at a time.* Leave-one-out cross-validation (:math:`G = N`) is
+	tempting, but its :math:`N` models are nearly identical, so its :math:`Q^2` estimate is unstable
+	and cannot be repeated. Groups of :math:`G = 7` to :math:`10`, repeated a few times, are a better
+	default.
+
+*	*Prefer the simpler model when the difference is small.* Instead of taking the absolute best
+	:math:`Q^2_A`, keep the *fewest* components whose cross-validated error is within one standard
+	error of the best value seen across the repeats. This "one standard error" rule guards against
+	adding a component that wins by a margin smaller than the noise in the estimate itself.
+
+A complementary approach avoids splitting the data at all. A *randomization* (permutation) test asks
+whether the structure captured by a candidate component is stronger than what the same data produce
+after their rows have been randomly shuffled. If a component is no better than the shuffled reference,
+it is not retained. See Van der Voet (1994), *Chemometrics and Intelligent Laboratory Systems*,
+**25**, 313-323, and Wiklund *et al.* (2007), *Journal of Chemometrics*, **21**,
+`DOI: 10.1002/cem.1086 <https://doi.org/10.1002/cem.1086>`_, for the test applied to latent variable
+models.
+
 
 .. Determining the number of components by randomization
 ..
