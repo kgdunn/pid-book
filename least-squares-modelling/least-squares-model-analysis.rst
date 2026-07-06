@@ -89,41 +89,6 @@ Software packages report this number, together with the two degrees of freedom u
 it, and a p-value; we will point it out in the software output
 :ref:`later in this section <LS-software-output>`.
 
-..	Original table in wiki form
-
-		{| class="wikitable"
-		|-
-		! Type of variance
-		! Distance
-		! Degrees of freedom
-		! SSQ
-		! Mean square
-		|-
-		| Regression
-		| :math:`\hat{y}_i - \overline{\mathrm{y}}`
-		| :math:`k` (k=2 in the examples so far)
-		| RegSS
-		| :math:`RegSS/k`
-		|-
-		| Error
-		| :math:`y_i - \hat{y}_i`
-		| :math:`n-k`
-		| RSS
-		| :math:`RSS/(n-k)`
-		|-
-		|
-		|
-		|
-		|
-		|-
-		| Total
-		| :math:`y_i - \overline{\mathrm{y}}`
-		| :math:`n`
-		| TSS
-		| :math:`TSS/n`
-		|}
-
-
 .. _standard-error-section:
 
 Interpreting the standard error

@@ -188,41 +188,6 @@ We will refer back to the following example several times. Calculate the least s
 		:align: center
 		:scale: 40
 
-..	Raw data
-	{| class="wikitable" style="text-align: center; margin-left:auto; margin-right:auto;"  border="1"
-	|-
-	! :math:`x_1\,`
-	! :math:`y_1\,`
-	|-
-	| 10.0 ||  8.04
-	|-
-	|  8.0 ||  6.95
-	|-
-	| 13.0 ||  7.58
-	|-
-	|  9.0 ||  8.81
-	|-
-	| 11.0 ||  8.33
-	|-
-	| 14.0 ||  9.96
-	|-
-	|  6.0 ||  7.24
-	|-
-	|  4.0 ||  4.26
-	|-
-	| 12.0 || 10.84
-	|-
-	|  7.0 ||  4.82
-	|-
-	|  5.0 ||  5.68
-	|-
-	| colspan="2" align="left"|
-	* :math:`\overline{x}_1= 9.0`
-	* :math:`\overline{y}_1= 7.5`
-	* :math:`\sum_i{\left(x_i - \overline{\mathrm{x}}_1\right)\left(y_i - \overline{\mathrm{y}}_1\right) }= 55.0`
-	* :math:`\sum_i{\left( x_i - \overline{\mathrm{x}}_1\right)^2} = 110`
-	|}
-
 To calculate the least squares model:
 
 .. code-block:: python

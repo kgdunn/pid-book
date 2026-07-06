@@ -171,7 +171,7 @@
 
 	I've noticed with the questions students are asking that they haven't understood what blocking is for, and how to generate expt with it.
 	Maybe include several examples in the text to justify why blocking is required and the thought process behind it.
-	Blocking: 4 batches in a 8 run experiment: use the example of /Users/kevindunn/Statistics course/Administrative/2010-handin/DOE project/Howard and Booker - 4C3 mini project.doc
+	Blocking: 4 batches in a 8 run experiment
 	DONE: Remove using a normal probability plot for significance of effects. I don't recall why I wanted to do this though: confusing interpretation, or perhaps q-q plots can misleading values?
 
 	Add some notes about factors that are uncontrollable, but still interesting: e.g. outside air humidity;  add it to your :math:`\mathbf{X}` matrix and even though not orthogonal, can still be understood in the model.
@@ -219,69 +219,6 @@
 	* Projectivity: use a better example than the 2^{6-2}_{IV} example: 3 factors remaining, vs 3 in is confusing.
 	* RSM: if it is a 2-factor factorial and the 2fi is high, then use a plot of the surface to decide on the next point, rather than just a plan \gamma step.
 
-
-.. Outline of third class
-
-	* Full factorial experiments
-	* Drop out terms that are not significant; extra DOF to estimate error
-	* Known, but uncontrollable disturbance: blocking parameter: confound on the highest interaction possible
-
-		-	2^3 example: we do least damage when confound with ABC interaction
-
-	* Next step: reduce the number of experiments. Question: which runs do we drop up so we cause least damage to the experiment?
-
-		- half fractions
-
-			- introduce a new terminology to deal with them: generators and defining relationship
-			- why? so we can determine aliasing (confounding pattern)
-			- why? we can see what we are loosing by running these half fractions
-
-			- running the other half fraction.
-
-			Side-issue:
-
-				* using generators to deal with blocking; B_1 = ABC for a 3-factor experiment:
-				* find the other half fraction: B_1 = -ABC
-
-		- fractionated experiments
-
-			-	use generators and def.rel. system to determine aliasing
-			-	why? decide which factors to assign to A, B, C, etc
-			-	worked example: complete
-			-	projectivity
-
-		- Special case: saturated experiments (III)
-
-	* RSM
-
-		- surfaces are smooth (p438 BHH2)
-		- models are approximations (p440 BHH2)
-		- direction of ascent:
-
-			- show a single curve: optimum by moving \gamma steps along x_1 (\gamma is our step size)
-			- two variables: by example
-
-		- as we approach optimum: we have to use higher order factorials to estimate 2nd order effects and curvature
-
-		- models that take second order effects into account: 3^k, CCD
-
-			- CCD: why and when: second order effects (b_AA, b_BB, b_CC terms)
-			- add axial points (\pm \alpha, 0, 0), etc
-			- use L/S to fit model
-
-		- show algorithm
-
-		- constraints? p 447 BHH2
-
-	* EVOP
-
-		- outline of it
-
-	* Guidance
-
-		- Umetrics book and Esbensen book: Start with screening design (resolution III) for a new system, or if you are unfamiliar with it
-		- Foldover idea to sequentially investigate and expand your design
-		- Half-fractions used when you don't have time to run full set of experiments (projectivity)
 
 .. TODO:
 

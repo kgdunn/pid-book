@@ -141,7 +141,6 @@ We frequently violate this assumption of independence in engineering application
 
 .. See Hodges and Lehmann (1970): there is a whole Chapter devoted to it.
 
-.. See: https://www.rsscse.org.uk/ts/gtb/contents.html: article on Teaching Independence; see PDF file in Readings directory.
 
 
 Formal definition for the normal distribution

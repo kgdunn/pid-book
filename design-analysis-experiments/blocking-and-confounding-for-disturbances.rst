@@ -20,7 +20,7 @@ Blocking is slightly different: blocking is a special way of running the experim
 Finally, a disturbance can be characterized as a **controlled disturbance**, in which case it isn't a disturbance anymore, as it is held constant for all experiments, and its effect cancels out. But it might be important to investigate  the controlled disturbance, especially if the system is operated later on when this disturbance is at a different level.
 
 
-.. Add discussion from MOOC about disturbances and covariates here. INclude the mind map from this discussion https://mail.google.com/mail/u/0/#sent/147a62c3237dc5fb
+.. Add discussion from MOOC about disturbances and covariates here, including the mind map from that discussion.
 
 
 
