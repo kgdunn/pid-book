@@ -14,7 +14,7 @@ See :ref:`privacy` for what is and isn't collected.
 
 .. note::
 
-   The in-book figures show the most recent **30 days** while the
+   The in-book figures show the most recent **60 days** while the
    pipeline is still bedding in. Two server-side fixes only took
    effect recently, so wider windows are not yet representative:
 
@@ -45,7 +45,7 @@ Summary
      the data file is reachable.</em></p>
    </div>
 
-Daily reads (last 30 days)
+Daily reads (last 60 days)
 --------------------------
 
 Total reads per day across the whole book. Each daily bucket
@@ -56,10 +56,10 @@ count once.
 
    <div id="pid-stats-daily" style="width:100%; height:280px; display:none"></div>
 
-Most-read pages (last 30 days)
+Most-read pages (last 60 days)
 ------------------------------
 
-The 20 pages with the most reads over the 30-day window. Page names
+The 20 pages with the most reads over the 60-day window. Page names
 are the Sphinx page identifiers (e.g. ``data-visualization/box-plots``);
 click through to read them.
 
@@ -67,10 +67,10 @@ click through to read them.
 
    <div id="pid-stats-top" style="display:none"></div>
 
-Least-read pages (last 30 days)
+Least-read pages (last 60 days)
 -------------------------------
 
-The 10 pages with the *fewest* reads over the 30-day window, lowest
+The 10 pages with the *fewest* reads over the 60-day window, lowest
 first. Useful for spotting sections that may need clearer links,
 better discoverability, or a refresh.
 
