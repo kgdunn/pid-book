@@ -57,7 +57,7 @@
   //   - stats.rst                            ("(last N days)" x3 + body)
   // and the backend (365) stays the same.
   // -------------------------------------------------------------------
-  var DISPLAY_DAYS = 30;
+  var DISPLAY_DAYS = 60;
   var DISPLAY_LABEL = DISPLAY_DAYS + " days";
 
   // Find the most recent date present anywhere in the JSON. Used as
