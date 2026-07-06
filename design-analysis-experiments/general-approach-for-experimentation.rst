@@ -13,6 +13,8 @@ We complete this section with some guidance for experimentation in general. The 
 	#.	The best time to run an experiment is after the experiment. You will discover things from the previous experiment that you wish you had considered the first time around.
 	#.	For the above reason, do not spend more than 20% to 25% of your time and budget on your first group of experiments. Keep some time aside to add more experiments and learn more about the system.
 
+Three principles underpin the design of any experiment: randomization, replication, and blocking. :ref:`Randomization <DOE-randomization>` runs the experiments in random order, so that unmeasured disturbances show up as noise rather than biasing a particular factor. Replication repeats one or more factor-level combinations, which gives a *model-independent* estimate of the noise (the :ref:`pure error <DOE-lack-of-fit>`), separate from the residuals of any fitted model. :ref:`Blocking <DOE_blocking_section>` groups the runs so that a known nuisance source of variation, such as a change of raw-material batch or a passage of time, is absorbed by a block effect instead of contaminating the factor effects.
+
 The **first phase** is usually *screening*. Screening designs are used when developing new products and tremendous uncertainty exists; or sometimes when a system is operating so poorly that one receives the go-ahead to manipulate the operating conditions wide enough to potentially upset the process, but learn from it.
 
 	-	The ranges for each factor may also be uncertain; this is a perfect opportunity to identify suitable ranges for each factor.

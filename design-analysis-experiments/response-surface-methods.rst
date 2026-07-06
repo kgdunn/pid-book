@@ -283,6 +283,57 @@ This example has demonstrated how powerful response surface methods are. A minim
 .. youtube:: https://www.youtube.com/watch?v=s_sutHvaBZE&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=58
 
 
+.. _DOE-lack-of-fit:
+
+Checking the fit: pure error and the lack-of-fit test
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Once a quadratic model is fitted, a natural question is whether it actually describes the surface,
+or whether it is still missing a term. Comparing a predicted centre point against its measured
+value, as done above, is an informal version of this check. With *replicated* runs it can be made
+into a formal test.
+
+The idea is to split the model's residual sum of squares into two parts. Replicated runs, meaning
+two or more runs at exactly the same factor-level combination, differ only by noise, so the spread
+among their responses estimates the *pure error*: the run-to-run variability of the system,
+without reference to any model. Writing :math:`Y_{ij}` for the :math:`j`-th response at the
+:math:`i`-th replicated combination, :math:`\bar{Y}_i` for its average, :math:`m` for the number
+of replicated combinations, and :math:`n_i` for the number of replicates there, the pure-error
+sum of squares is
+
+.. math::
+
+	\text{SS}_\text{PE} = \sum_{i=1}^{m} \sum_{j=1}^{n_i} \left(Y_{ij} - \bar{Y}_i\right)^2 .
+
+Whatever is left of the residual sum of squares :math:`\text{SS}_\text{E}` is the *lack-of-fit*
+sum of squares,
+
+.. math::
+
+	\text{SS}_\text{LOF} = \text{SS}_\text{E} - \text{SS}_\text{PE},
+
+which measures the part of the residual that the model failed to explain but that is not just
+noise. The degrees of freedom split the same way: with :math:`n` runs and :math:`p` parameters the
+residual carries :math:`n - p`, the pure error carries
+:math:`\text{df}_\text{PE} = \sum_i (n_i - 1)`, and the lack of fit carries the remainder,
+:math:`\text{df}_\text{LOF} = n - p - \text{df}_\text{PE}`.
+
+If the model is adequate, the lack-of-fit and pure-error mean squares both estimate the same noise
+variance, so their ratio
+
+.. math::
+
+	F = \frac{\text{SS}_\text{LOF} / \text{df}_\text{LOF}}{\text{SS}_\text{PE} / \text{df}_\text{PE}}
+
+follows an :math:`F`-distribution with :math:`\text{df}_\text{LOF}` and :math:`\text{df}_\text{PE}`
+degrees of freedom. A large :math:`F`, with a small :math:`p`-value, is evidence that the model is
+missing a term (often a higher-order effect). For example, a 15-run experiment fitting an
+8-parameter model, with two combinations each run twice, has
+:math:`\text{df}_\text{PE} = (2-1) + (2-1) = 2` and :math:`\text{df}_\text{LOF} = 15 - 8 - 2 = 5`.
+An :math:`F`-ratio near 3 there carries a :math:`p`-value of about 0.27, which gives no reason to
+doubt the model. The test needs both replicated points (to get :math:`\text{SS}_\text{PE}`) and
+more distinct design points than parameters (to leave some :math:`\text{df}_\text{LOF}`).
+
 .. _DOE-box-behnken-designs:
 
 Box-Behnken designs
