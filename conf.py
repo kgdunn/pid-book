@@ -23,6 +23,7 @@ extensions = [
     "sphinx_copybutton",
     "sphinxcontrib.jquery",
     "my-extensions.youtube",
+    "my-extensions.pdf_exclude",
 ]
 
 # Avoid Subresource Integrity errors for the bundled jQuery.
