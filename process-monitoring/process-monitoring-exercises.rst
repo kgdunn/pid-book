@@ -183,19 +183,19 @@ Exercises
 			:width: 750px
 			:align: center
 
-	#.	The initial Shewhart parameters found were:
+	#.	Each board carries six thickness measurements across its width; we use the median of those six values as the single thickness for that board. The initial Shewhart parameters found were:
 
-		-	UCL = 1701
-		-	Target = 1676
-		-	LCL	= 1652
+		-	UCL = 1699
+		-	Target = 1677
+		-	LCL	= 1655
 
 		When plotting these limits on the phase 1 data, there was only one subgroup that was found outside the limits (the first subgroup). This subgroup is removed and the limits recalculated. (For this case there was only one, very moderate, subgroup outside the limits - the new limits are basically the same). The new limits
 
-		-	UCL = 1700
+		-	UCL = 1698
 		-	Target = 1676
-		- 	LCL = 1651
+		- 	LCL = 1654
 
-		A Shewhart chart of all the phase 1 data (including outliers, to highlight them) is shown here. The limits were the final limits, after iteratively removing the first unusual subgroup	. The code contains all the calculation steps.
+		A Shewhart chart of all the phase 1 data (including outliers, to highlight them) is shown here. The limits were the final limits, after iteratively removing the first unusual subgroup. The code contains all the calculation steps.
 
 		.. image:: ../figures/monitoring/boards-monitoring-Shewhart-phase1.png
 			:width: 750px
@@ -207,11 +207,11 @@ Exercises
 			:width: 750px
 			:align: center
 
-		Assuming the subgroups in phase 2 are all in control, the :math:`\alpha` value is sum of the points outside the limits, divided by the total number of subgroups in phase 2 = 9/214 = 4.2%. This is much greater than the theoretically expected :math:`\alpha` of 0.27%.
+		Assuming the subgroups in phase 2 are all in control, the :math:`\alpha` value is sum of the points outside the limits, divided by the total number of subgroups in phase 2 = 6/214 = 2.8%. This is much greater than the theoretically expected :math:`\alpha` of 0.27%.
 
 		Notice though there is a group of points all on one side of the target line. According to the Western Electric rules, a group of more than 8 points on one side of the target line is highly improbable and an alarm should be raised. This indicates that these phase 2 testing data are likely not from in-control operation.
 
-	#.	The ARL = :math:`1/\alpha = 1/0.042` = 23.8; i.e. 1 subgroup in every 24 will lie outside the control limits, even if that subgroup is from in-control operation. That number looks about right from the above phase 2 chart, although, most of the outliers seem to occur in the last half of the chart (see answer to part 4). The data set comes from about 5 hours and 15 minutes (315 minutes) of operation; during this time there were 286 subgroups that would have been shown on a real Shewhart chart. With an ARL of 24 subgroups, there would be about 12 (286/24) false alarms over these 315 minutes. In other words a false alarm about once every 26 minutes. This is much too high for practical use. Either the limits must be made wider, or this data really is not from in-control operation.
+	#.	The ARL = :math:`1/\alpha = 1/0.028` = 35.7; i.e. 1 subgroup in every 36 will lie outside the control limits, even if that subgroup is from in-control operation. That number looks about right from the above phase 2 chart, although, most of the outliers seem to occur in the last half of the chart (see answer to part 4). The time stamps in the raw data show that boards 1 to 2000 span about 5 hours and 24 minutes (324 minutes) of operation; during this time there were 285 subgroups that would have been shown on a real Shewhart chart. With an ARL of 36 subgroups, there would be about 8 (285/36) false alarms over these 324 minutes. In other words a false alarm about once every 41 minutes. This is still too high for practical use. Either the limits must be made wider, or this data really is not from in-control operation.
 
 
 	#.	To calculate the consumer's risk (:math:`\beta`) we require a period of data where we know the blades have shifted, so that the board thickness has been increased or decreased to a new level (mean operating point). Using that out of control, or unstable data, we calculate Shewhart subgroups as usual, and count the number of data points falling within the current LCL and UCL. A count of those in control subgroups divided by the total number of these out of control subgroups would be an estimate of :math:`\beta`.
@@ -230,9 +230,65 @@ Exercises
 			:scale: 80
 
 
-	.. literalinclude:: ../figures/monitoring/boards-monitoring-assignment4-2010.R
-	       :language: s
-	       :lines: 1-8, 12,14-15,19-20,22-57,61-65,67-69,73-77,79-101,105-106
+	The calculation steps, in Python:
+
+	.. code-block:: python
+
+		import numpy as np
+		import pandas as pd
+		from scipy.special import gamma
+
+		pd.options.plotting.backend = "plotly"
+
+		file = "https://openmv.net/file/six-point-board-thickness.csv"
+		boards = pd.read_csv(file)
+
+		# One thickness per board: the median of the six positions.
+		positions = ["Pos1", "Pos2", "Pos3", "Pos4", "Pos5", "Pos6"]
+		thickness = boards[positions].median(axis=1).to_numpy()
+
+		N_sub = 7                    # subgroup size (7 boards)
+		phase1_end = 500 // N_sub    # boards 1-500  -> 71 subgroups
+		phase2_end = 2000 // N_sub   # boards 1-2000 -> 285 subgroups
+
+		def an(n):
+		    return (np.sqrt(2) * gamma(n / 2)
+		            / (np.sqrt(n - 1) * gamma((n - 1) / 2)))
+
+		# Subgroup means and standard deviations (7 consecutive boards).
+		g = thickness[: (len(thickness) // N_sub) * N_sub].reshape(-1, N_sub).T
+		xbar, S = g.mean(axis=0), g.std(axis=0, ddof=1)
+
+		def limits(mask):
+		    xdb, sbar = xbar[mask].mean(), S[mask].mean()
+		    half = 3 * sbar / (an(N_sub) * np.sqrt(N_sub))
+		    return xdb - half, xdb, xdb + half
+
+		# Round 1: all phase-1 subgroups.
+		phase1 = np.arange(phase1_end)
+		LCL, target, UCL = limits(phase1)
+		print(f"Round 1: LCL={LCL:.0f}, target={target:.0f}, UCL={UCL:.0f}")
+		# Round 1: LCL=1655, target=1677, UCL=1699
+
+		# Round 2: drop the phase-1 subgroups outside, then recompute.
+		inside = phase1[(xbar[phase1] >= LCL) & (xbar[phase1] <= UCL)]
+		LCL, target, UCL = limits(inside)
+		print(f"Round 2: LCL={LCL:.0f}, target={target:.0f}, UCL={UCL:.0f}")
+		# Round 2: LCL=1654, target=1676, UCL=1698
+
+		# Phase 2: subgroups 72 to 285 (boards ~501 to 2000).
+		x2 = xbar[phase1_end:phase2_end]
+		outside = int((x2 < LCL).sum() + (x2 > UCL).sum())
+		alpha = outside / len(x2)
+		print(f"Phase 2: {outside} of {len(x2)} outside, "
+		      f"alpha={100 * alpha:.1f}%, ARL={1 / alpha:.1f}")
+		# Phase 2: 6 of 214 outside, alpha=2.8%, ARL=35.7
+
+		# Part g: subgroup standard deviation rises over time, a sign the
+		# saw blades are slowly going out of alignment.
+		pd.Series(S[:phase2_end]).plot.line().update_layout(
+		    xaxis_title_text="Subgroup number",
+		    yaxis_title_text="Subgroup standard deviation").show()
 
 .. admonition:: Question
 
