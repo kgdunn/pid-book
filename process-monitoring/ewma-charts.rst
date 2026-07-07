@@ -59,6 +59,16 @@ To see why :math:`\hat{x}_{t}` represents historical data, you can recursively s
 
 which emphasizes that the prediction is a just a weighted sum of the raw measurements, with weights declining in time.
 
+As a small example, take :math:`\lambda=0.5` and :math:`t=7`. The weight on each of the eight measurements :math:`x_0` to :math:`x_7` is :math:`w_i = \lambda(1-\lambda)^{t-i} = 0.5 \times 0.5^{\,7-i}`, so each weight is half the next more recent one:
+
+====  ======  ======  ======  ======  ======  ======  ======  ======
+i     0       1       2       3       4       5       6       7
+====  ======  ======  ======  ======  ======  ======  ======  ======
+w_i   0.0039  0.0078  0.0156  0.0313  0.0625  0.1250  0.2500  0.5000
+====  ======  ======  ======  ======  ======  ======  ======  ======
+
+These eight weights sum to 0.9961; the remaining 0.0039 is the weight :math:`(1-\lambda)^{t+1} = 0.5^{8}` carried by the starting value :math:`\hat{x}_0 = T`, so the weights total 1.
+
 The code here shows one way of calculating the EWMA values for a vector of data. Once you have defined the function, use it as ``ewma(x, lam=..., target=...)``. It is reused below, both to generate the comparison figures and in the worked example at the end of this section.
 
 .. code-block:: python
@@ -145,8 +155,9 @@ The upper and lower control limits for the EWMA plot are plotted in the same way
 .. math::
 	:label: ewma-limits
 
-	\begin{array}{rcccl}
-		 \text{LCL} = \overline{\overline{x}} - L \cdot \sigma_{\text{Shewhart}}\sqrt{\frac{\displaystyle \lambda}{\displaystyle 2-\lambda}} &&  &&  \text{UCL} = \overline{\overline{x}} + L \cdot \sigma_{\text{Shewhart}} \sqrt{\frac{\displaystyle \lambda}{\displaystyle 2-\lambda}}
+	\begin{array}{rcl}
+		 \text{LCL} &=& \overline{\overline{x}} - L \cdot \sigma_{\text{Shewhart}}\sqrt{\dfrac{\lambda}{2-\lambda}} \\ \\
+		 \text{UCL} &=& \overline{\overline{x}} + L \cdot \sigma_{\text{Shewhart}} \sqrt{\dfrac{\lambda}{2-\lambda}}
 	\end{array}
 
 where :math:`\sigma_{\text{Shewhart}}` represents the standard deviation as calculated for the Shewhart chart; for individual observations (subgroup size 1, as in the example below) this is simply the process standard deviation :math:`\sigma`. The multiplier :math:`L` is usually a value of 3, similar to the 3 standard deviations used in a Shewhart chart, but can of course be set to any level that balances the type I (false alarms) and type II errors (not detecting a deviation which is present already). We write :math:`L` rather than :math:`K` to avoid a clash with the CUSUM reference value :math:`K` of the :ref:`previous section <monitoring_CUSUM_charts>`.
