@@ -346,6 +346,47 @@ Exercises
 
 	If you used the Western Electric rules, in addition to the Shewhart chart limits, you would have picked up a consecutive sequence of 8 points on one side of the target around :math:`t=350`.
 
+	The full solution in Python (the original R is in the ``literalinclude`` above):
+
+	.. code-block:: python
+
+		import numpy as np
+		import pandas as pd
+		from scipy.special import gamma
+
+		pd.options.plotting.backend = "plotly"
+
+		file = "https://openmv.net/file/aeration-rate.csv"
+		aeration = pd.read_csv(file)["Aeration"].to_numpy()
+
+		# Part 2: plot the raw data.
+		pd.Series(aeration).plot.line().update_layout(
+		    xaxis_title_text="Time [minutes]",
+		    yaxis_title_text="Aeration rate").show()
+
+		# Parts 3 and 4: CUSUM chart, using the median of the first
+		# 200 points (before the suspected problem) as a robust target.
+		target = np.median(aeration[:200])       # 23.95
+		S = np.cumsum(aeration - target)
+		print(f"mean={aeration.mean():.2f}, median={np.median(aeration):.2f}, "
+		      f"CUSUM target={target:.2f}")
+		pd.Series(S).plot.line(title="CUSUM chart").update_layout(
+		    xaxis_title_text="Time [minutes]",
+		    yaxis_title_text="Cumulative sum, S(t)").show()
+
+		# Part 5: Shewhart chart, phase 1 = first 200 points, subgroup n=5.
+		N_sub = 5
+		p1 = aeration[:200]
+		g = p1[: (len(p1) // N_sub) * N_sub].reshape(-1, N_sub).T
+		an = (np.sqrt(2) * gamma(N_sub / 2)
+		      / (np.sqrt(N_sub - 1) * gamma((N_sub - 1) / 2)))
+		xdb = g.mean(axis=0).mean()
+		sbar = g.std(axis=0, ddof=1).mean()
+		half = 3 * sbar / (an * np.sqrt(N_sub))
+		print(f"Shewhart phase 1: xbar={xdb:.1f}, Sbar={sbar:.2f}, "
+		      f"LCL={xdb - half:.1f}, UCL={xdb + half:.1f}")
+		# xbar=23.9, Sbar=1.28, LCL=22.1, UCL=25.8
+
 .. admonition:: Question
 
 	Do you think a Shewhart chart would be suitable for monitoring the closing price of a stock on the stock market?  Please explain your answer if you agree, or describe an alternative if you disagree.
@@ -488,7 +529,25 @@ Exercises
 		:align: center
 		:width: 600px
 
-	The R code used to generate this figure:
+	The numbers in parts 2 and 3, in Python:
+
+	.. code-block:: python
+
+		import numpy as np
+
+		# Cp relates the specification width to 6 standard deviations.
+		Cp = 1.7
+		USL, LSL = 2.0 + 0.4, 2.0 - 0.4
+		sigma = (USL - LSL) / (Cp * 6)
+		print(f"Process standard deviation = {sigma:.4f} mm")   # 0.0784
+
+		# Shewhart limits for subgroups of size n = 4, at the target.
+		n, target = 4, 2.0
+		LCL = target - 3 * sigma / np.sqrt(n)
+		UCL = target + 3 * sigma / np.sqrt(n)
+		print(f"LCL = {LCL:.2f} mm, UCL = {UCL:.2f} mm")   # 1.88, 2.12
+
+	The R code used to generate the figure:
 
 	.. literalinclude:: ../figures/monitoring/plastic-sheet-control-specification-limits.R
 			:language: s
@@ -567,7 +626,54 @@ Exercises
 
 	The limits identify 2 prolonged periods of unusual operation at sequence point 80 and 140. If we apply the Western Electric rules, we see a third unusual region around sequence step 220. A few other alarms are scattered in the phase 2 data. About 7% of the subgroups lie outside these control limits, so these phase 2 data are definitely not from in-control operation; which we expected from the raw data plot at the start of this question.
 
-	The code for all the calculation steps is provided here:
+	The code for all the calculation steps is provided here in Python, followed by the original R:
+
+	.. code-block:: python
+
+		import numpy as np
+		import pandas as pd
+		from scipy.special import gamma
+
+		pd.options.plotting.backend = "plotly"
+
+		file = "https://openmv.net/file/kappa-number.csv"
+		kappa = pd.read_csv(file)["Kappa"].to_numpy()
+
+		N_sub = 6              # subgroup size; try other sizes too
+		phase1 = kappa[:2000]  # the first 2000 points are phase 1
+
+		def an(n):
+		    return (np.sqrt(2) * gamma(n / 2)
+		            / (np.sqrt(n - 1) * gamma((n - 1) / 2)))
+
+		def shewhart_limits(x):
+		    """Subgroup ``x`` into columns of N_sub and return the subgroup
+		    means together with the (LCL, target, UCL) Shewhart limits."""
+		    g = x[: (len(x) // N_sub) * N_sub].reshape(-1, N_sub).T
+		    xbar, S = g.mean(axis=0), g.std(axis=0, ddof=1)
+		    xdb, sbar = xbar.mean(), S.mean()
+		    half = 3 * sbar / (an(N_sub) * np.sqrt(N_sub))
+		    return xbar, xdb - half, xdb, xdb + half
+
+		# Round 1: all phase-1 subgroups.
+		xbar, LCL, target, UCL = shewhart_limits(phase1)
+		print(f"Round 1: LCL={LCL:.2f}, target={target:.2f}, UCL={UCL:.2f}")
+		# Round 1: LCL=18.26, target=21.73, UCL=25.21
+
+		# Round 2: drop the subgroups that fell outside, then recompute.
+		keep = (xbar >= LCL) & (xbar <= UCL)
+		kept = phase1[: len(xbar) * N_sub].reshape(-1, N_sub)[keep].ravel()
+		_, LCL, target, UCL = shewhart_limits(kept)
+		print(f"Round 2: LCL={LCL:.2f}, target={target:.2f}, UCL={UCL:.2f}")
+		# Round 2: LCL=18.24, target=21.71, UCL=25.19
+
+		# Phase 2: everything after the first 2000 points.
+		phase2 = kappa[2000:]
+		g2 = phase2[: (len(phase2) // N_sub) * N_sub].reshape(-1, N_sub).T
+		x2 = g2.mean(axis=0)
+		frac = ((x2 < LCL) | (x2 > UCL)).mean()
+		print(f"Phase 2 fraction outside limits = {100 * frac:.1f}%")
+		# Phase 2 fraction outside limits = 7.1%
 
 	.. literalinclude:: ../figures/monitoring/Kappa-number-monitoring.R
 	       :language: s
