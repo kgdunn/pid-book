@@ -240,7 +240,7 @@ Exercises
 
 .. admonition:: Solution
 
-	The new Cpk value is 1.5. The number of defects per million items at Cpk = 2.0 is 0.00098 (essentially no defects), while at Cpk = 1.5 it is 3.4 defects per million items. You only have to consider one-side of the distribution, since Cpk is by definition for an uncentered process, and deals with the side closest to the specification limits.
+	The new Cpk value is 1.5. The number of defects per million items at Cpk = 2.0 is 0.00099 (essentially no defects), while at Cpk = 1.5 it is 3.4 defects per million items. You only have to consider one-side of the distribution, since Cpk is by definition for an uncentered process, and deals with the side closest to the specification limits.
 
 	.. code-block:: python
 
@@ -431,7 +431,7 @@ Exercises
 	.. math::
 		\text{PCR}_\text{k} = \min \left( \frac{\text{Upper specification limit} - \overline{\overline{x}}}{3\sigma};  \frac{\overline{\overline{x}} - \text{Lower specification limit}}{3\sigma} \right)
 
-	The two adjustable parameters are :math:`\overline{\overline{x}}`, the process target (operating point) and :math:`\sigma`, the process variance. The current process standard deviation is:
+	The two adjustable parameters are :math:`\overline{\overline{x}}`, the process target (operating point) and :math:`\sigma`, the process standard deviation. The current process standard deviation is:
 
 	.. math::
 		1.30 &= \frac{64.0 - 56.0}{3\sigma} \\
@@ -547,13 +547,13 @@ Exercises
 
 	I used subgroups of size 6 for the figures in this answer, however, the code below is very general, and you can regenerate the plots if you chose a different subgroup size. Just change one of the lines near the top.
 
-	The upper and lower control limits are calculated, and with a subgroup size of :math:`n=6`, there are 333 subgroups and the limits are: UCL = 18.26, target = 21.73, and UCL = 25.21. This is illustrated on the phase 1 data here:
+	The upper and lower control limits are calculated, and with a subgroup size of :math:`n=6`, there are 333 subgroups and the limits are: LCL = 18.26, target = 21.73, and UCL = 25.21. This is illustrated on the phase 1 data here:
 
 	.. image:: ../figures/monitoring/Kappa-phaseI-first-round.png
 		:align: center
 		:width: 750px
 
-	Next we remove the subgroups which lie outside the limits. Please try using the R code to see how to do it automatically. The new limits, after removing the subgroups beyond the limits from the first round are: LCL = 18.24, target = 21.71 and UCL = 25.18. They barely changed. But the updated plot with subgroups removed is now shown below. There is no need to perform another round of pruning. Only if you used a subgroup size of 4 would you need to do a third round. You could also have just shifted the limits to a different level, for example, to :math:`\pm 4` standard deviations. We can do this if we have enough process knowledge to understand the implication of it, in terms of profit.
+	Next we remove the subgroups which lie outside the limits. Please try using the code to see how to do it automatically. The new limits, after removing the subgroups beyond the limits from the first round are: LCL = 18.24, target = 21.71 and UCL = 25.19. They barely changed. But the updated plot with subgroups removed is now shown below. There is no need to perform another round of pruning. Only if you used a subgroup size of 4 would you need to do a third round. You could also have just shifted the limits to a different level, for example, to :math:`\pm 4` standard deviations. We can do this if we have enough process knowledge to understand the implication of it, in terms of profit.
 
 	.. image:: ../figures/monitoring/Kappa-phaseI-second-round.png
 		:align: center
