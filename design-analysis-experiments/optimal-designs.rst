@@ -491,6 +491,36 @@ response but tends to favour models with too many terms, while the corrected Aka
 criterion (AICc, smaller is better) rewards parsimony. Design augmentation and the choice of
 follow-up runs are developed in :ref:`Goos and Jones <DOE_references>`.
 
+.. _DOE-optimal-blocking:
+
+Blocking when an orthogonal block is impossible
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The block-for-drift term added just above was orthogonal to the factor effects by construction, and
+classical :ref:`blocking <DOE_blocking_section>`, which confounds a high-order interaction with the
+block, also keeps the block orthogonal to the effects of interest. Orthogonal blocking is the ideal,
+but it is not always attainable.
+
+Consider a six-factor half-fraction (a 32-run :math:`2^{6-1}` design) that has to be run in eight
+blocks of four, one block per day, because the measuring apparatus is recalibrated daily. The goal
+is to estimate all six main effects and all fifteen two-factor interactions: with the eight block
+effects that is only :math:`6 + 15 + 8 = 29` parameters, which 32 runs can support. Yet every
+orthogonal arrangement of the eight blocks forces three of the two-factor interactions to be
+confounded with block contrasts, so those three cannot be estimated at all. Doubling the run count
+does not rescue the situation: more runs bring more blocks, and so more block parameters to absorb.
+
+The optimal-design recipe handles it. Instead of insisting on orthogonal blocks, a D-optimal design
+chooses the run-to-block assignment that makes the blocks *nearly* orthogonal to the factor effects,
+so that all 29 effects become estimable. The price is a small correlation between the block contrasts
+and a few of the factor effects, which shows up as a
+:ref:`variance inflation factor <DOE-variance-inflation-factors>` slightly above one for those
+effects. Reading the VIFs tells you exactly how much precision the non-orthogonal blocking costs; for
+an optimally blocked design that cost is usually minor, and in exchange every effect of interest can
+be estimated. If the blocks can be treated as
+:ref:`random rather than fixed <DOE-fixed-and-random-blocks>`, fewer runs are needed still, because
+the blocks then cost a single variance parameter rather than one per block. Optimal blocking is
+developed in :ref:`Goos and Jones <DOE_references>`.
+
 .. _DOE-categorical-factors:
 
 Categorical factors with several levels

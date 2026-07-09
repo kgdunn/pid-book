@@ -100,5 +100,107 @@ Another way to view this problem is that the first batch of materials and the se
 
 We will also address the case when there are more than two blocks in the next section on the :ref:`use of generators <DOE-generators>`. For example, what should we do if we have to run a :math:`2^3` factorial but with only enough material for 2 experiments at a time?
 
+.. _DOE-fixed-and-random-blocks:
+
+Fixed and random block effects
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+So far the block has been a single :math:`\pm 1` column (the :math:`ABC` contrast, or the factor
+:math:`D`), and we estimated its effect like any other. Whether to treat that block effect as
+*fixed* or *random* is a modelling choice, and it depends on where the blocks came from.
+
+Treat the blocks as **fixed** when they are specific, non-repeatable conditions and you care only
+about the runs you actually performed: this particular reactor versus that one, or these two
+particular batches of material. Each block then carries its own effect, so :math:`b` blocks cost
+:math:`b - 1` parameters to estimate. Ordinary least squares handles this, and it is what the
+confounding approach above does. The limitation is that a fixed-block model says nothing about a
+*future* block: it describes only the blocks in hand.
+
+Treat the blocks as **random** when they are a sample from a larger population you want to
+generalize over. A blocking factor is usually not under your control and not reproducible: you can
+include several days, operators, or supplier lots in the study, but you cannot recreate a given day
+or lot to run more experiments on it later. When the interest is in future days or lots, model the
+block-to-block variation as random. The block effect :math:`\gamma_i` is then a draw from a
+distribution with variance :math:`\sigma_\gamma^2`, and quantifying the differences between blocks
+costs just that *one* variance parameter, no matter how many blocks there are.
+
+Writing the response of the :math:`j`-th run in block :math:`i`,
+
+.. math::
+
+	Y_{ij} = \mathbf{f}'(\mathbf{x}_{ij})\,\boldsymbol{\beta} + \gamma_i + \varepsilon_{ij},
+
+gives a :index:`mixed model <pair: mixed model; experiments>`: the factor effects
+:math:`\boldsymbol{\beta}` are *fixed*, while the block effects
+:math:`\gamma_i \sim N(0, \sigma_\gamma^2)` and the residuals
+:math:`\varepsilon_{ij} \sim N(0, \sigma_\varepsilon^2)` are *random*. Two runs in the same block
+share the same :math:`\gamma_i`, so they are correlated. That within-block (intraclass) correlation
+is
+
+.. math::
+
+	\rho = \frac{\sigma_\gamma^2}{\sigma_\gamma^2 + \sigma_\varepsilon^2},
+
+the fraction of the total variance that the block-to-block differences account for. The two
+variance components are the two scatters in the figure below: :math:`\sigma_\gamma` is the spread of
+the block means about the grand mean, and :math:`\sigma_\varepsilon` is the scatter of the runs
+about their own block mean.
+
+.. code-block:: python
+
+	import plotly.graph_objects as go
+
+	# Five blocks (e.g. days); each block's four runs scatter about that block's mean.
+	blocks = [1, 2, 3, 4, 5]
+	responses = {
+	    1: [46.4, 47.9, 46.8, 47.7], 2: [51.6, 53.1, 52.0, 52.9],
+	    3: [47.9, 49.3, 48.1, 49.1], 4: [52.9, 54.4, 53.1, 54.0],
+	    5: [48.5, 49.9, 48.6, 49.8],
+	}
+	fig = go.Figure()
+	for b in blocks:
+	    ys = responses[b]
+	    fig.add_trace(go.Scatter(x=[b] * len(ys), y=ys, mode="markers", showlegend=False))
+	    mean = sum(ys) / len(ys)
+	    fig.add_trace(go.Scatter(x=[b - 0.2, b + 0.2], y=[mean, mean], mode="lines",
+	                             showlegend=False))          # the block mean
+	grand = sum(v for ys in responses.values() for v in ys) / 20
+	fig.add_hline(y=grand, line_dash="dash")                 # the grand mean
+	fig.update_layout(xaxis_title_text="Block (e.g. day)", yaxis_title_text="Response")
+	fig.show()
+
+.. figure:: ../figures/doe/blocking-variance-components.png
+	:align: center
+	:width: 620px
+	:alt: blocking-variance-components.py
+
+	The two variance components of a blocked experiment. Each block (day) has a mean offset from
+	the grand mean; the spread of those offsets is :math:`\sigma_\gamma`, the random block effect.
+	Within a block, the runs scatter about the block mean by :math:`\sigma_\varepsilon`, the
+	residual. The larger :math:`\sigma_\gamma` is relative to :math:`\sigma_\varepsilon`, the more
+	alike two runs from the same block are.
+
+The two ways of modelling the block differ in what they cost and what they deliver. Fixed blocks
+make no assumption about a population of blocks, but they spend :math:`b - 1` parameters and cannot
+predict beyond the blocks that were run. Random blocks spend a single variance parameter and support
+statements about future blocks, at the cost of assuming the blocks are exchangeable draws. Because
+random blocks are so much cheaper in parameters, a fixed-block design needs more runs to fit the
+same factor model: when each block holds only two runs, the smallest fixed-block design needs
+roughly twice as many runs as the smallest random-block design.
+
+Because the responses within a block are correlated, ordinary least squares is no longer the most
+precise estimator (it stays unbiased, but discards the correlation). The mixed model is fitted by
+*generalized least squares* (GLS), which weights the correlated responses through their
+covariance, with the variance components :math:`\sigma_\gamma^2` and :math:`\sigma_\varepsilon^2`
+estimated by *restricted maximum likelihood* (REML), a method that returns unbiased variance
+estimates. Statistical software does this for you; the derivation is given in
+:ref:`Goos and Jones <DOE_references>`.
+
+Whichever way the block is modelled, making the grouping explicit pulls the block-to-block variation
+out of the residual. That lowers the error variance, :math:`\sigma_\varepsilon^2`, which raises the
+:ref:`power <DOE-statistical-power>` of the significance tests for the factor effects. So blocking a
+known source of variation does two things at once: it keeps the disturbance from biasing the factor
+effects, and it sharpens the tests of those effects.
+
 
 .. TODO: point out how blocking can be visualized as projectivity: in a 2 factor system (A and B) you have enough material only for 2 runs at a time. So you block on the AB interaction. But you can visualize that as a 3-factor factorial now, but run as a half-fraction, i.e. a 2^3_{III} design (show the cube with open and closed circles). This design has projectivity of 2 = 3-1, meaning a full 2^2 factorial is embedded in the design. If factor C (the blocking variable) has no effect on y, then you recover your full 2^2 factorial. That's why we typically block on the highest interaction possible.
