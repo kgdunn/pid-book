@@ -1,15 +1,18 @@
-.. _DOE-mixed-level-profile-case-study:
+.. _APPS_mixed_level_profile_case_study:
 
-Case study: a mixed-level split-plot design with a profile response
-===================================================================
+A mixed-level split-plot design with a profile response
+=======================================================
 
-The earlier sections built up the pieces of an optimal design one at a time: the
-:ref:`information matrix <DOE-optimal-designs>`, the :ref:`coordinate-exchange search
+This case study draws the :ref:`design-and-analysis-of-experiments
+<SECTION-design-analysis-experiments>` and :ref:`latent-variable-modelling
+<SECTION_latent_variable_modelling>` chapters together on one problem, and carries it through to
+the analysis of the data. The design side uses the pieces built up in the optimal-design section:
+the :ref:`information matrix <DOE-optimal-designs>`, the :ref:`coordinate-exchange search
 <DOE-exchange-algorithms>`, a :ref:`categorical factor with several levels
-<DOE-categorical-factors>`, and hard-to-change factors that force a split-plot run order. This
-case study puts them together on one problem, and carries it through to the analysis of the
-data. It also shows a response that is not a single number but a *curve*, which is handled with
-a latent-variable model rather than ordinary least squares.
+<DOE-categorical-factors>`, and hard-to-change factors that force a split-plot run order. The
+analysis side uses a projection-to-latent-structures model, because the response is not a single
+number but a *curve*: ten correlated measurements that move together, which a latent-variable model
+handles directly where a separate regression per measurement would not.
 
 The worked example runs end to end with the ``process_improve`` library. The coordinate-exchange
 optimiser is provided by ``pyoptex``, installed separately (``pip install pyoptex``); the rest is
@@ -167,12 +170,13 @@ best-predicted point to the worst.
         return d, m
 
     fig = go.Figure()
-    for criterion, dash in [("i_optimal", "solid"), ("d_optimal", "dash")]:
-        for budget in (60, 48):
+    for criterion, colour in [("i_optimal", "#1f5fa8"), ("d_optimal", "#c0392b")]:
+        for budget, dash, width in [(60, "solid", 4), (48, "dash", 2)]:
             _, m = score(criterion, budget)
             q = m["fds"]["quantiles"]
             fig.add_scatter(x=[float(k) for k in q], y=list(q.values()), mode="lines+markers",
-                            line_dash=dash, name=f"{criterion}, n={budget}")
+                            line=dict(color=colour, dash=dash, width=width),
+                            name=f"{criterion}, n={budget}")
     fig.update_layout(xaxis_title="Fraction of design space",
                       yaxis_title="Scaled prediction variance")
     fig.show()
