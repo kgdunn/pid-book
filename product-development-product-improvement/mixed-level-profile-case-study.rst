@@ -589,7 +589,10 @@ The two sets of coefficients differ by at most 0.03 across the 24 terms. The con
 (about 0.40, it raises the peak for every compound) and the pH main effect (about :math:`-0.21`, the
 average pH slope) match the regression closely; the three-component PLS pulls a few of the smaller
 interaction terms toward zero, the shrinkage that comes from describing the response with fewer
-directions than the model has terms. With all five components the two fits are nearly identical.
+directions than the model has terms. Every difference is small next to the least-squares standard
+errors: the PLS coefficient lies within one standard error of the regression estimate for all but two
+of the 24 terms (the largest gap is 1.4 standard errors), so on this data the two fits are
+indistinguishable term by term. With all five components they are nearly identical.
 
 How large that difference is depends on the coding. Under sum coding the compound contrast columns
 are close to uncorrelated, so the low-rank PLS fit barely disturbs them. Reference coding (each
@@ -777,11 +780,12 @@ range.
     :alt: colour-coefficient-comparison.py
 
     Coefficients for the peak colour intensity from ordinary least squares and from PLS with three
-    components, fitted to the same interaction model under sum coding. The two are close; the
-    three-component PLS shrinks a few of the smaller interaction terms toward zero. Terms are sorted
-    by the least-squares coefficient; the ``cmp`` prefix marks a compound's departure from the average
-    under sum coding. Reference coding, measuring each compound against A, would widen the gap between
-    the two fits.
+    components, fitted to the same interaction model under sum coding. The bands are :math:`\pm` one
+    standard error on the least-squares estimate; the PLS point falls inside the band for all but two
+    terms, so the shrinkage is small next to the estimation uncertainty. Terms are sorted by the
+    least-squares coefficient; the ``cmp`` prefix marks a compound's departure from the average under
+    sum coding. Reference coding, measuring each compound against A, would widen the gap between the
+    two fits.
 
 Which compound matches the reference
 ------------------------------------
