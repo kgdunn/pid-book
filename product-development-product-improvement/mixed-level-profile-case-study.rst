@@ -297,34 +297,92 @@ ignore that the points move together. A projection-to-latent-structures (PLS) mo
 ten at once against the factors, using a few latent components that capture the shared movement.
 
 The factor block ``X`` has to be fully numeric, so the six-level compound is expanded into indicator
-columns. Printing a few rows shows the coding:
+columns, one per level: each run takes a single 1 in the column for its compound and 0 in the others.
+
+.. code-block:: python
+
+    pd.get_dummies(pd.Series(compounds, name="compound")).astype(int)
+
+.. list-table:: Indicator coding of the six compound levels
+    :widths: 20 10 10 10 10 10 10
+    :header-rows: 1
+    :stub-columns: 1
+
+    *   - Compound
+        - A
+        - B
+        - C
+        - D
+        - E
+        - F
+    *   - A
+        - 1
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+    *   - B
+        - 0
+        - 1
+        - 0
+        - 0
+        - 0
+        - 0
+    *   - C
+        - 0
+        - 0
+        - 1
+        - 0
+        - 0
+        - 0
+    *   - D
+        - 0
+        - 0
+        - 0
+        - 1
+        - 0
+        - 0
+    *   - E
+        - 0
+        - 0
+        - 0
+        - 0
+        - 1
+        - 0
+    *   - F
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 1
+
+All six indicators cannot enter the model alongside the intercept: they sum to one in every row, so
+one is redundant and :math:`\mathbf{X}^T\mathbf{X}` is singular (the :ref:`categorical-factor section
+<DOE-categorical-factors>` sets this out). One column is dropped, and taking A as the reference leaves
+the five columns B to F. A run of compound A is then all zeros across those five, carried by the
+intercept alone. This is how the compound enters both the PLS and the least-squares models: as five
+indicators, with A as the baseline.
+
+The coefficient on each remaining indicator, B to F, is that compound's difference from A: the change
+in colour from switching the chemical to that compound while every continuous factor, the
+concentration included, is held at the same value. Compound A has no coefficient of its own; it is
+the baseline the other five are measured against.
 
 .. code-block:: python
 
     dummies = pd.get_dummies(design.design["compound"], prefix="cmp").astype(float)
     X = pd.concat([design.design[list(cont)].astype(float), dummies.drop(columns=["cmp_A"])], axis=1)
-    print(X.head(4))
 
-The four continuous factors keep their coded :math:`-1` to :math:`+1` values. The compound becomes
-five indicator columns, one per level with the reference level A dropped (the
-:ref:`indicator coding <LVM-using-indicator-variables>` written out): a run using compound B has a
-one in ``cmp_B`` and zeros elsewhere, and a run using the reference A has zeros in all five columns.
-
-.. code-block:: text
-
-       concentration  co_solvent   pH  temperature  cmp_B  cmp_C  cmp_D  cmp_E  cmp_F
-    1           -1.0        -1.0 -1.0          1.0    1.0    0.0    0.0    0.0    0.0
-    2           -1.0        -1.0  0.0          1.0    0.0    0.0    1.0    0.0    0.0
-    3            1.0        -1.0 -1.0          1.0    0.0    1.0    0.0    0.0    0.0
-    4            0.0        -1.0  0.0          1.0    0.0    0.0    0.0    1.0    0.0
-
-This is a main-effects model: each compound shifts the colour by a fixed amount through its
-indicator, and the continuous factors act the same way for every compound. The response columns are
-on different scales (the early points carry far less variance than the plateau), so the blocks are
-standardized before fitting. ``PLS(scale=True)`` does this internally, mean-centering and scaling
-both the factor block and the response block to unit variance, and returns predictions on the
-original absorbance scale, so raw ``X`` and raw ``curves`` can be passed straight in. Fitting it,
-and reading the scores and the :math:`\mathbf{W}^*`/:math:`\mathbf{C}` loadings:
+The four continuous factors keep their coded :math:`-1` to :math:`+1` values, and the compound
+contributes the five indicators B to F. This is a main-effects model: each compound shifts the colour
+by a fixed amount through its indicator, and the continuous factors act the same way for every
+compound. The response columns are on different scales (the early points carry far less variance than
+the plateau), so the blocks are standardized before fitting. ``PLS(scale=True)`` does this internally,
+mean-centering and scaling both the factor block and the response block to unit variance, and returns
+predictions on the original absorbance scale, so raw ``X`` and raw ``curves`` can be passed straight
+in. Fitting it, and reading the scores and the :math:`\mathbf{W}^*`/:math:`\mathbf{C}` loadings:
 
 .. code-block:: python
 
@@ -391,9 +449,10 @@ Testing the compound-by-factor interactions
 The first three questions are about interactions: does the co-solvent, the pH, or the temperature
 move the colour differently for different compounds? Reducing each curve to its peak absorbance gives
 a single response for an analysis-of-variance model with explicit compound-by-factor interaction
-terms. The compound is written with sum-to-zero (effects) coding through ``C(compound, Sum)``, so
-each compound effect is a departure from the average; the formula validator accepts the patsy
-contrast helper directly.
+terms. The compound keeps the same reference coding as above, ``C(compound, Treatment)`` with A as
+the baseline, so each compound term is a difference from A; the formula validator accepts the patsy
+contrast helper directly. The interaction F-tests are the same whichever coding is used, since the
+codings span the same model space.
 
 .. code-block:: python
 
@@ -403,8 +462,8 @@ contrast helper directly.
     adf["compound"] = adf["compound"].astype(str)
     adf["peak"] = curves.max(axis=1).to_numpy()
 
-    formula = ("peak ~ C(compound, Sum)*co_solvent + C(compound, Sum)*pH "
-               "+ C(compound, Sum)*temperature + concentration")
+    formula = ("peak ~ C(compound, Treatment)*co_solvent + C(compound, Treatment)*pH "
+               "+ C(compound, Treatment)*temperature + concentration")
     res = analyze_experiment(adf, response_column="peak", model=formula,
                              analysis_type=["anova"], coding="coded")
     print(res["model_summary"]["r_squared"])          # 0.989
@@ -431,16 +490,16 @@ the intercept, since ``PLS`` centres the columns) and fitting it against the ful
 
     from patsy import dmatrix
 
-    rhs = ("C(compound, Sum)*co_solvent + C(compound, Sum)*pH "
-           "+ C(compound, Sum)*temperature + concentration")
+    rhs = ("C(compound, Treatment)*co_solvent + C(compound, Treatment)*pH "
+           "+ C(compound, Treatment)*temperature + concentration")
     X_int = dmatrix(rhs, adf, return_type="dataframe").drop(columns=["Intercept"])
     print(X_int.shape)                          # (60, 24): 24 model terms
 
     pls_int = PLS(n_components=5, scale=True).fit(X_int, curves)
     print(pls_int.r2_cumulative_)               # 0.77, 0.85, 0.88, 0.90, 0.91
 
-The expanded model has 24 terms: the five compound contrasts, the three continuous factors that
-interact with the compound, their fifteen interaction columns, and the concentration. The added
+The expanded model has 24 terms: the five compound differences from A, the three continuous factors
+that interact with the compound, their fifteen interaction columns, and the concentration. The added
 interaction terms raise the fit over the main-effects model's cumulative R2Y of 0.83, because the
 compound-specific slopes on co-solvent, pH and temperature (the interactions the analysis of variance
 found significant) are now in the factor block. PLS fits these terms to all ten time points at once,
@@ -519,14 +578,14 @@ the least-squares coefficients term by term:
     fig.add_scatter(x=coef["PLS"], y=coef.index, mode="markers", name="PLS")
     fig.show()
 
-The two sets of coefficients differ by at most 0.03 across the 24 terms. The concentration coefficient
-(about 0.40, it raises the peak for every compound) and the pH main effect (about :math:`-0.21`) match
-the regression closely, while the three-component PLS pulls a few of the smaller interaction terms
-toward zero, the shrinkage that comes from describing the response with fewer directions than the
-model has terms. With all five components the two fits are nearly identical. The reason to use PLS
-here is not a different answer on the peak, but that the same model extends directly to the full
-ten-point curve, and to responses with more columns than the design has runs, where ordinary least
-squares cannot be fitted at all.
+The two sets of coefficients agree in sign and ordering, and differ by at most 0.10. The concentration
+coefficient (about 0.40, it raises the peak for every compound) matches the regression closely, while
+the three-component PLS pulls the compound differences from A toward zero, most visibly for E, D and
+C, the shrinkage that comes from describing the response with fewer directions than the model has
+terms. With all five components the two fits agree within 0.02. The reason to use PLS here is not a
+different answer on the peak, but that the same model extends directly to the full ten-point curve,
+and to responses with more columns than the design has runs, where ordinary least squares cannot be
+fitted at all.
 
 The full coefficient table, in the same order as the plot below (largest least-squares
 coefficient first, smallest last), sets the three-component PLS coefficient beside the
@@ -543,155 +602,158 @@ least-squares one, with the least-squares standard error, t-statistic, and p-val
         - t
         - p-value
     *   - ``concentration``
-        - +0.401
+        - +0.399
         - +0.395
         - 0.010
         - +40.8
         - <0.001
     *   - ``cmpE``
-        - +0.209
-        - +0.215
-        - 0.019
-        - +11.5
+        - +0.253
+        - +0.350
+        - 0.029
+        - +12.2
         - <0.001
     *   - ``cmpD``
-        - +0.151
-        - +0.143
-        - 0.020
-        - +7.3
+        - +0.191
+        - +0.278
+        - 0.030
+        - +9.4
         - <0.001
-    *   - ``cmpA:pH``
-        - +0.128
-        - +0.123
-        - 0.021
-        - +5.8
+    *   - ``cmpC``
+        - +0.112
+        - +0.202
+        - 0.029
+        - +7.1
         - <0.001
     *   - ``cmpD:temperature``
-        - +0.094
-        - +0.112
-        - 0.022
-        - +5.0
-        - <0.001
-    *   - ``cmpA:co_solvent``
-        - +0.097
-        - +0.111
-        - 0.024
-        - +4.6
-        - <0.001
-    *   - ``cmpB:pH``
-        - +0.116
-        - +0.107
-        - 0.021
-        - +5.1
+        - +0.148
+        - +0.150
+        - 0.036
+        - +4.2
         - <0.001
     *   - ``cmpC:temperature``
-        - +0.083
-        - +0.097
-        - 0.021
-        - +4.6
+        - +0.122
+        - +0.134
+        - 0.035
+        - +3.9
         - <0.001
-    *   - ``cmpB:co_solvent``
-        - +0.083
-        - +0.081
-        - 0.021
-        - +3.8
-        - <0.001
-    *   - ``cmpE:pH``
-        - +0.059
-        - +0.069
-        - 0.024
-        - +2.9
-        - 0.007
-    *   - ``cmpC``
-        - +0.064
-        - +0.067
-        - 0.019
-        - +3.6
-        - <0.001
-    *   - ``temperature``
-        - +0.058
-        - +0.057
-        - 0.010
-        - +5.7
-        - <0.001
-    *   - ``cmpE:co_solvent``
-        - +0.027
-        - +0.034
-        - 0.023
-        - +1.5
-        - 0.147
     *   - ``cmpE:temperature``
-        - +0.014
-        - +0.021
-        - 0.024
-        - +0.9
-        - 0.372
-    *   - ``cmpA:temperature``
-        - -0.040
-        - -0.038
-        - 0.024
-        - -1.6
-        - 0.120
-    *   - ``cmpB:temperature``
-        - -0.035
-        - -0.042
-        - 0.023
-        - -1.9
-        - 0.071
-    *   - ``cmpC:co_solvent``
-        - -0.082
-        - -0.066
-        - 0.025
-        - -2.7
-        - 0.011
+        - +0.043
+        - +0.059
+        - 0.037
+        - +1.6
+        - 0.121
     *   - ``cmpB``
-        - -0.072
-        - -0.089
-        - 0.018
-        - -5.0
+        - -0.042
+        - +0.046
+        - 0.028
+        - +1.7
+        - 0.107
+    *   - ``temperature``
+        - +0.024
+        - +0.020
+        - 0.026
+        - +0.7
+        - 0.461
+    *   - ``cmpB:temperature``
+        - -0.018
+        - -0.004
+        - 0.036
+        - -0.1
+        - 0.909
+    *   - ``cmpB:pH``
+        - +0.002
+        - -0.016
+        - 0.032
+        - -0.5
+        - 0.626
+    *   - ``cmpB:co_solvent``
+        - -0.007
+        - -0.030
+        - 0.035
+        - -0.9
+        - 0.399
+    *   - ``co_solvent``
+        - -0.075
+        - -0.046
+        - 0.026
+        - -1.8
+        - 0.089
+    *   - ``cmpE:pH``
+        - -0.029
+        - -0.054
+        - 0.035
+        - -1.5
+        - 0.132
+    *   - ``cmpF``
+        - -0.144
+        - -0.065
+        - 0.029
+        - -2.3
+        - 0.030
+    *   - ``cmpE:co_solvent``
+        - -0.046
+        - -0.077
+        - 0.036
+        - -2.1
+        - 0.042
+    *   - ``pH``
+        - -0.099
+        - -0.086
+        - 0.023
+        - -3.7
         - <0.001
-    *   - ``cmpA``
-        - -0.114
-        - -0.135
-        - 0.018
-        - -7.3
+    *   - ``cmpF:co_solvent``
+        - -0.081
+        - -0.094
+        - 0.036
+        - -2.6
+        - 0.013
+    *   - ``cmpF:pH``
+        - -0.101
+        - -0.110
+        - 0.034
+        - -3.3
+        - 0.003
+    *   - ``cmpF:temperature``
+        - -0.128
+        - -0.113
+        - 0.035
+        - -3.3
+        - 0.003
+    *   - ``cmpC:co_solvent``
+        - -0.148
+        - -0.176
+        - 0.038
+        - -4.7
         - <0.001
     *   - ``cmpC:pH``
-        - -0.134
-        - -0.146
-        - 0.021
-        - -7.0
-        - <0.001
-    *   - ``co_solvent``
-        - -0.152
-        - -0.157
-        - 0.011
-        - -14.9
-        - <0.001
-    *   - ``cmpD:pH``
-        - -0.134
-        - -0.166
-        - 0.023
-        - -7.1
+        - -0.249
+        - -0.269
+        - 0.032
+        - -8.4
         - <0.001
     *   - ``cmpD:co_solvent``
-        - -0.151
-        - -0.177
-        - 0.026
-        - -6.8
+        - -0.272
+        - -0.287
+        - 0.039
+        - -7.4
         - <0.001
-    *   - ``pH``
-        - -0.205
-        - -0.209
-        - 0.010
-        - -21.1
+    *   - ``cmpD:pH``
+        - -0.279
+        - -0.289
+        - 0.035
+        - -8.3
         - <0.001
 
-Most terms are significant at the 0.05 level. The exceptions are four of the temperature and
-co-solvent interactions for individual compounds (``cmpE:co_solvent``, ``cmpE:temperature``,
-``cmpA:temperature``, ``cmpB:temperature``, with p-values from 0.07 to 0.37): the interaction is
-present for the set of compounds, which the analysis of variance tested jointly, but not resolved
-for each compound on its own at this run count.
+Reading the compound terms as differences from A, compound B stands out: its main effect and all
+three of its interactions (``cmpB``, ``cmpB:co_solvent``, ``cmpB:pH``, ``cmpB:temperature``) are not
+significant at 0.05, so B behaves much like A across the whole factor range. The reference compound's
+own co-solvent and temperature slopes (``co_solvent``, ``temperature``) are also not individually
+significant. The clearly resolved terms are the differences for C, D, E and F and their interactions
+with pH and co-solvent, alongside the concentration. The joint compound-by-factor interaction tests
+in the analysis of variance are significant because C, D and F depart from A strongly, even though
+B does not.
 
 .. figure:: ../figures/doe/colour-coefficient-comparison.png
     :align: center
@@ -699,9 +761,10 @@ for each compound on its own at this run count.
     :alt: colour-coefficient-comparison.py
 
     Coefficients for the peak colour intensity from ordinary least squares and from PLS with three
-    components, fitted to the same interaction model. The two are close; the three-component PLS
-    shrinks a few of the smaller interaction terms toward zero. Terms are sorted by the least-squares
-    coefficient; the ``cmp`` prefix marks a compound contrast under sum-to-zero coding.
+    components, fitted to the same interaction model. The three-component PLS shrinks the compound
+    differences from A (``cmpE``, ``cmpD``, ``cmpC``, ``cmpB``, ``cmpF``) toward zero; the continuous
+    and interaction terms match more closely. Terms are sorted by the least-squares coefficient; the
+    ``cmp`` prefix marks a compound's difference from the reference A under reference coding.
 
 Which compound matches the reference
 ------------------------------------
