@@ -294,24 +294,42 @@ Modelling the profile with PLS
 
 A ten-point curve has ten correlated responses, so a separate regression per time point would
 ignore that the points move together. A projection-to-latent-structures (PLS) model regresses all
-ten at once against the factors, using a few latent components that capture the shared movement. The
-factors enter as the four coded continuous columns plus indicator columns for the compound (the
-reference level A dropped, as in the :ref:`indicator-variable discussion
-<LVM-using-indicator-variables>`).
+ten at once against the factors, using a few latent components that capture the shared movement.
 
-The response columns are on different scales (the early points carry far less variance than the
-plateau), so the blocks are standardized before fitting. ``PLS(scale=True)`` does this internally,
-mean-centering and scaling both the factor block and the response block to unit variance, and
-returns predictions on the original absorbance scale, so raw ``X`` and raw ``curves`` can be passed
-straight in.
+The factor block ``X`` has to be fully numeric, so the six-level compound is expanded into indicator
+columns. Printing a few rows shows the coding:
+
+.. code-block:: python
+
+    dummies = pd.get_dummies(design.design["compound"], prefix="cmp").astype(float)
+    X = pd.concat([design.design[list(cont)].astype(float), dummies.drop(columns=["cmp_A"])], axis=1)
+    print(X.head(4))
+
+The four continuous factors keep their coded :math:`-1` to :math:`+1` values. The compound becomes
+five indicator columns, one per level with the reference level A dropped (the
+:ref:`indicator coding <LVM-using-indicator-variables>` written out): a run using compound B has a
+one in ``cmp_B`` and zeros elsewhere, and a run using the reference A has zeros in all five columns.
+
+.. code-block:: text
+
+       concentration  co_solvent   pH  temperature  cmp_B  cmp_C  cmp_D  cmp_E  cmp_F
+    1           -1.0        -1.0 -1.0          1.0    1.0    0.0    0.0    0.0    0.0
+    2           -1.0        -1.0  0.0          1.0    0.0    0.0    1.0    0.0    0.0
+    3            1.0        -1.0 -1.0          1.0    0.0    1.0    0.0    0.0    0.0
+    4            0.0        -1.0  0.0          1.0    0.0    0.0    0.0    1.0    0.0
+
+This is a main-effects model: each compound shifts the colour by a fixed amount through its
+indicator, and the continuous factors act the same way for every compound. The response columns are
+on different scales (the early points carry far less variance than the plateau), so the blocks are
+standardized before fitting. ``PLS(scale=True)`` does this internally, mean-centering and scaling
+both the factor block and the response block to unit variance, and returns predictions on the
+original absorbance scale, so raw ``X`` and raw ``curves`` can be passed straight in. Fitting it,
+and reading the scores and the :math:`\mathbf{W}^*`/:math:`\mathbf{C}` loadings:
 
 .. code-block:: python
 
     from plotly.subplots import make_subplots
     from process_improve.multivariate.methods import PLS
-
-    dummies = pd.get_dummies(design.design["compound"], prefix="cmp").astype(float)
-    X = pd.concat([design.design[list(cont)].astype(float), dummies.drop(columns=["cmp_A"])], axis=1)
 
     pls = PLS(n_components=5, scale=True).fit(X, curves)
     print(pls.r2_cumulative_)          # cumulative R2Y by component: 0.78, 0.81, 0.82, 0.82, 0.83
@@ -392,6 +410,260 @@ across compounds, which was how the response was constructed. As the :ref:`categ
 section <DOE-categorical-factors>` noted, these interaction terms are also what make a robust
 operating point reachable, a setting where the compounds give nearly the same colour, which the
 fifth question would search for.
+
+The same model, fitted by PLS
+-----------------------------
+
+The analysis of variance used the compound-by-factor interaction terms, but the PLS model fitted
+earlier used only the main effects and the compound indicators. The same interaction terms can be
+given to PLS. Building the model matrix from the same formula right-hand side (with patsy, dropping
+the intercept, since ``PLS`` centres the columns) and fitting it against the full ten-point curve:
+
+.. code-block:: python
+
+    from patsy import dmatrix
+
+    rhs = ("C(compound, Sum)*co_solvent + C(compound, Sum)*pH "
+           "+ C(compound, Sum)*temperature + concentration")
+    X_int = dmatrix(rhs, adf, return_type="dataframe").drop(columns=["Intercept"])
+    print(X_int.shape)                          # (60, 24): 24 model terms
+
+    pls_int = PLS(n_components=5, scale=True).fit(X_int, curves)
+    print(pls_int.r2_cumulative_)               # 0.77, 0.85, 0.88, 0.90, 0.91
+
+The expanded model has 24 terms: the five compound contrasts, the three continuous factors that
+interact with the compound, their fifteen interaction columns, and the concentration. Its cumulative
+R2Y reaches 0.91 at five components, against 0.83 for the main-effects model, because the
+compound-specific slopes on co-solvent, pH and temperature (the interactions the analysis of variance
+found significant) are now in the factor block. PLS fits these terms to all ten time points at once,
+returning a predicted development curve, where the analysis of variance fitted the same terms to a
+single summary of each curve, its peak.
+
+Five components were kept, but the number of components is itself a modelling choice, and
+cross-validation is how it is made. Leaving out each run in turn, refitting, and predicting the
+held-out curve gives the cross-validated :math:`Q^2_Y`, the fraction of the response variation the
+model predicts for runs it did not see. ``pls.cross_validate`` returns a per-response
+:math:`Q^2_Y`; averaged over the ten time points at each number of components:
+
+.. code-block:: python
+
+    q2 = []
+    for a in range(1, 6):
+        cv = PLS(n_components=a, scale=True).fit(X_int, curves).cross_validate(X_int, curves, cv="loo")
+        q2.append(float(cv["q_squared"].mean()))
+    print(np.round(q2, 2))                          # 0.52, 0.78, 0.78, 0.77, 0.80
+
+.. list-table:: In-sample :math:`R^2_Y` and leave-one-out :math:`Q^2_Y` by component
+    :widths: 22 26 26
+    :header-rows: 1
+
+    *   - Component
+        - :math:`R^2_Y` (cumulative)
+        - :math:`Q^2_Y` (leave-one-out)
+    *   - 1
+        - 0.77
+        - 0.52
+    *   - 2
+        - 0.85
+        - 0.78
+    *   - 3
+        - 0.88
+        - 0.78
+    *   - 4
+        - 0.90
+        - 0.77
+    *   - 5
+        - 0.91
+        - 0.80
+
+:math:`R^2_Y` rises with every component, as it must: each component can only reduce the residual on
+the data the model is fitted to. :math:`Q^2_Y` behaves differently. It jumps from 0.52 to 0.78 with
+the second component, then holds near 0.78 through the third, fourth, and fifth. The response
+variation that can be predicted for unseen runs is captured by the first two components; the later
+ones raise the in-sample fit without a matching rise in cross-validated prediction, the sign of a
+component that describes noise in this data rather than structure that generalizes. On this evidence
+a two- or three-component model predicts about as well as the five-component one. Five components are
+used through the rest of this section so the score, loadings, and coefficient comparisons are read
+at one component count, and because the coefficient comparison below is made against the full
+least-squares fit; the gap in :math:`Q^2_Y` between two and five components is small.
+
+The two fits can be compared on equal footing. Giving PLS the same single response the regression
+used, the peak, and the same interaction terms, its ``beta_coefficients_`` line up against the
+least-squares coefficients term by term:
+
+.. code-block:: python
+
+    ols = analyze_experiment(adf, response_column="peak", model="peak ~ " + rhs,
+                             analysis_type=["coefficients"])["coefficients"]
+    ols = {c["term"]: c["coefficient"] for c in ols}
+
+    pls_peak = PLS(n_components=5, scale=True).fit(X_int, adf[["peak"]])
+    beta = pls_peak.beta_coefficients_.iloc[:, 0]
+
+    coef = pd.DataFrame({"OLS": [ols[t] for t in X_int.columns], "PLS": beta.to_numpy()},
+                        index=X_int.columns).sort_values("OLS")
+    fig = go.Figure()
+    fig.add_scatter(x=coef["OLS"], y=coef.index, mode="markers", name="least squares")
+    fig.add_scatter(x=coef["PLS"], y=coef.index, mode="markers", name="PLS")
+    fig.show()
+
+The two sets of coefficients differ by at most 0.01 across all 24 terms. The concentration carries
+the largest coefficient (about 0.40, it raises the peak for every compound), the pH main effect the
+largest negative one (about :math:`-0.21`), and the compound-by-factor terms fill in between. PLS
+reproduces the least-squares fit when enough components are kept; with fewer components it pulls the
+coefficients toward zero, trading a small bias for lower variance. The reason to use PLS here is not
+a different answer on the peak, but that the same model extends directly to the full ten-point curve,
+and to responses with more columns than the design has runs, where ordinary least squares cannot be
+fitted at all.
+
+The full least-squares coefficient table, in the same order as the plot below (largest coefficient
+first, smallest last), with the standard error, t-statistic, and p-value for each term:
+
+.. list-table:: Least-squares coefficients for the peak colour intensity, largest to smallest
+    :widths: 30 16 14 12 14
+    :header-rows: 1
+
+    *   - Term
+        - Coefficient
+        - Std. error
+        - t
+        - p-value
+    *   - ``concentration``
+        - +0.395
+        - 0.010
+        - +40.8
+        - <0.001
+    *   - ``cmpE``
+        - +0.215
+        - 0.019
+        - +11.5
+        - <0.001
+    *   - ``cmpD``
+        - +0.143
+        - 0.020
+        - +7.3
+        - <0.001
+    *   - ``cmpA:pH``
+        - +0.123
+        - 0.021
+        - +5.8
+        - <0.001
+    *   - ``cmpD:temperature``
+        - +0.112
+        - 0.022
+        - +5.0
+        - <0.001
+    *   - ``cmpA:co_solvent``
+        - +0.111
+        - 0.024
+        - +4.6
+        - <0.001
+    *   - ``cmpB:pH``
+        - +0.107
+        - 0.021
+        - +5.1
+        - <0.001
+    *   - ``cmpC:temperature``
+        - +0.097
+        - 0.021
+        - +4.6
+        - <0.001
+    *   - ``cmpB:co_solvent``
+        - +0.081
+        - 0.021
+        - +3.8
+        - <0.001
+    *   - ``cmpE:pH``
+        - +0.069
+        - 0.024
+        - +2.9
+        - 0.007
+    *   - ``cmpC``
+        - +0.067
+        - 0.019
+        - +3.6
+        - <0.001
+    *   - ``temperature``
+        - +0.057
+        - 0.010
+        - +5.7
+        - <0.001
+    *   - ``cmpE:co_solvent``
+        - +0.034
+        - 0.023
+        - +1.5
+        - 0.147
+    *   - ``cmpE:temperature``
+        - +0.021
+        - 0.024
+        - +0.9
+        - 0.372
+    *   - ``cmpA:temperature``
+        - -0.038
+        - 0.024
+        - -1.6
+        - 0.120
+    *   - ``cmpB:temperature``
+        - -0.042
+        - 0.023
+        - -1.9
+        - 0.071
+    *   - ``cmpC:co_solvent``
+        - -0.066
+        - 0.025
+        - -2.7
+        - 0.011
+    *   - ``cmpB``
+        - -0.089
+        - 0.018
+        - -5.0
+        - <0.001
+    *   - ``cmpA``
+        - -0.135
+        - 0.018
+        - -7.3
+        - <0.001
+    *   - ``cmpC:pH``
+        - -0.146
+        - 0.021
+        - -7.0
+        - <0.001
+    *   - ``co_solvent``
+        - -0.157
+        - 0.011
+        - -14.9
+        - <0.001
+    *   - ``cmpD:pH``
+        - -0.166
+        - 0.023
+        - -7.1
+        - <0.001
+    *   - ``cmpD:co_solvent``
+        - -0.177
+        - 0.026
+        - -6.8
+        - <0.001
+    *   - ``pH``
+        - -0.209
+        - 0.010
+        - -21.1
+        - <0.001
+
+Most terms are significant at the 0.05 level. The exceptions are four of the temperature and
+co-solvent interactions for individual compounds (``cmpE:co_solvent``, ``cmpE:temperature``,
+``cmpA:temperature``, ``cmpB:temperature``, with p-values from 0.07 to 0.37): the interaction is
+present for the set of compounds, which the analysis of variance tested jointly, but not resolved
+for each compound on its own at this run count.
+
+.. figure:: ../figures/doe/colour-coefficient-comparison.png
+    :align: center
+    :width: 620px
+    :alt: colour-coefficient-comparison.py
+
+    Coefficients for the peak colour intensity from ordinary least squares and from PLS, fitted to
+    the same interaction model. The two nearly coincide, so PLS reproduces the regression when the
+    number of components is sufficient. Terms are sorted by the least-squares coefficient; the
+    ``cmp`` prefix marks a compound contrast under sum-to-zero coding.
 
 Which compound matches the reference
 ------------------------------------
