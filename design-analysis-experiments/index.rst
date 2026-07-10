@@ -21,6 +21,7 @@ Design and Analysis of Experiments
    omars-designs
    judging-and-comparing-designs
    comparing-design-families
+   mixed-level-profile-case-study
    mixture-experiments
    general-approach-for-experimentation
    extended-topics-related-to-designed-experiments
