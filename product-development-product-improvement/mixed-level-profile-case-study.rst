@@ -528,134 +528,160 @@ here is not a different answer on the peak, but that the same model extends dire
 ten-point curve, and to responses with more columns than the design has runs, where ordinary least
 squares cannot be fitted at all.
 
-The full least-squares coefficient table, in the same order as the plot below (largest coefficient
-first, smallest last), with the standard error, t-statistic, and p-value for each term:
+The full coefficient table, in the same order as the plot below (largest least-squares
+coefficient first, smallest last), sets the three-component PLS coefficient beside the
+least-squares one, with the least-squares standard error, t-statistic, and p-value:
 
-.. list-table:: Least-squares coefficients for the peak colour intensity, largest to smallest
-    :widths: 30 16 14 12 14
+.. list-table:: PLS and least-squares coefficients for the peak colour intensity, largest to smallest
+    :widths: 26 12 16 14 10 14
     :header-rows: 1
 
     *   - Term
-        - Coefficient
+        - PLS
+        - Least squares
         - Std. error
         - t
         - p-value
     *   - ``concentration``
+        - +0.401
         - +0.395
         - 0.010
         - +40.8
         - <0.001
     *   - ``cmpE``
+        - +0.209
         - +0.215
         - 0.019
         - +11.5
         - <0.001
     *   - ``cmpD``
+        - +0.151
         - +0.143
         - 0.020
         - +7.3
         - <0.001
     *   - ``cmpA:pH``
+        - +0.128
         - +0.123
         - 0.021
         - +5.8
         - <0.001
     *   - ``cmpD:temperature``
+        - +0.094
         - +0.112
         - 0.022
         - +5.0
         - <0.001
     *   - ``cmpA:co_solvent``
+        - +0.097
         - +0.111
         - 0.024
         - +4.6
         - <0.001
     *   - ``cmpB:pH``
+        - +0.116
         - +0.107
         - 0.021
         - +5.1
         - <0.001
     *   - ``cmpC:temperature``
+        - +0.083
         - +0.097
         - 0.021
         - +4.6
         - <0.001
     *   - ``cmpB:co_solvent``
+        - +0.083
         - +0.081
         - 0.021
         - +3.8
         - <0.001
     *   - ``cmpE:pH``
+        - +0.059
         - +0.069
         - 0.024
         - +2.9
         - 0.007
     *   - ``cmpC``
+        - +0.064
         - +0.067
         - 0.019
         - +3.6
         - <0.001
     *   - ``temperature``
+        - +0.058
         - +0.057
         - 0.010
         - +5.7
         - <0.001
     *   - ``cmpE:co_solvent``
+        - +0.027
         - +0.034
         - 0.023
         - +1.5
         - 0.147
     *   - ``cmpE:temperature``
+        - +0.014
         - +0.021
         - 0.024
         - +0.9
         - 0.372
     *   - ``cmpA:temperature``
+        - -0.040
         - -0.038
         - 0.024
         - -1.6
         - 0.120
     *   - ``cmpB:temperature``
+        - -0.035
         - -0.042
         - 0.023
         - -1.9
         - 0.071
     *   - ``cmpC:co_solvent``
+        - -0.082
         - -0.066
         - 0.025
         - -2.7
         - 0.011
     *   - ``cmpB``
+        - -0.072
         - -0.089
         - 0.018
         - -5.0
         - <0.001
     *   - ``cmpA``
+        - -0.114
         - -0.135
         - 0.018
         - -7.3
         - <0.001
     *   - ``cmpC:pH``
+        - -0.134
         - -0.146
         - 0.021
         - -7.0
         - <0.001
     *   - ``co_solvent``
+        - -0.152
         - -0.157
         - 0.011
         - -14.9
         - <0.001
     *   - ``cmpD:pH``
+        - -0.134
         - -0.166
         - 0.023
         - -7.1
         - <0.001
     *   - ``cmpD:co_solvent``
+        - -0.151
         - -0.177
         - 0.026
         - -6.8
         - <0.001
     *   - ``pH``
+        - -0.205
         - -0.209
         - 0.010
         - -21.1
