@@ -366,6 +366,13 @@ developing colour) opposite F and B, and the late time point ``t9`` falls on the
 compounds that drift upward. A factor and a response point lying in the same direction means that
 factor raises the colour at those times.
 
+Compound A has no indicator column, so it has no point in the loadings plot. It is the reference
+level: each plotted compound weight, B to F, is that compound's departure from A, and a run of
+compound A is described by the continuous-factor weights together with the block centre that
+``scale=True`` removes. Compound A still appears in the score plot, since every run has a score
+whichever compound it used; it is only the compound *weight* for A that is absent, because the
+model measures the other five against it.
+
 .. figure:: ../figures/doe/colour-pls-scores-loadings.png
     :align: center
     :width: 760px
@@ -375,7 +382,8 @@ factor raises the colour at those times.
     weights :math:`\mathbf{W}^*` and the response-point weights :math:`\mathbf{C}` on the same axes.
     Component 1 is an amplitude direction (concentration with all ten time points); component 2
     separates the compounds by late-time development, with ``t9`` on the side of the compounds that
-    keep developing colour.
+    keep developing colour. Compound A, the reference level, has no indicator column and so no point
+    in the loadings panel.
 
 Testing the compound-by-factor interactions
 --------------------------------------------
@@ -432,18 +440,18 @@ the intercept, since ``PLS`` centres the columns) and fitting it against the ful
     print(pls_int.r2_cumulative_)               # 0.77, 0.85, 0.88, 0.90, 0.91
 
 The expanded model has 24 terms: the five compound contrasts, the three continuous factors that
-interact with the compound, their fifteen interaction columns, and the concentration. Its cumulative
-R2Y reaches 0.91 at five components, against 0.83 for the main-effects model, because the
+interact with the compound, their fifteen interaction columns, and the concentration. The added
+interaction terms raise the fit over the main-effects model's cumulative R2Y of 0.83, because the
 compound-specific slopes on co-solvent, pH and temperature (the interactions the analysis of variance
 found significant) are now in the factor block. PLS fits these terms to all ten time points at once,
 returning a predicted development curve, where the analysis of variance fitted the same terms to a
 single summary of each curve, its peak.
 
-Five components were kept, but the number of components is itself a modelling choice, and
-cross-validation is how it is made. Leaving out each run in turn, refitting, and predicting the
-held-out curve gives the cross-validated :math:`Q^2_Y`, the fraction of the response variation the
-model predicts for runs it did not see. ``pls.cross_validate`` returns a per-response
-:math:`Q^2_Y`; averaged over the ten time points at each number of components:
+How many components to keep is a modelling choice, guided by the in-sample R2Y and the
+cross-validated :math:`Q^2_Y`. The :math:`Q^2_Y` is the fraction of the response variation the model
+predicts for runs it did not see: leave out each run in turn, refit, and predict the held-out curve.
+``pls.cross_validate`` returns a per-response :math:`Q^2_Y`; averaged over the ten time points at
+each number of components:
 
 .. code-block:: python
 
@@ -477,19 +485,23 @@ model predicts for runs it did not see. ``pls.cross_validate`` returns a per-res
         - 0.80
 
 :math:`R^2_Y` rises with every component, as it must: each component can only reduce the residual on
-the data the model is fitted to. :math:`Q^2_Y` behaves differently. It jumps from 0.52 to 0.78 with
-the second component, then holds near 0.78 through the third, fourth, and fifth. The response
-variation that can be predicted for unseen runs is captured by the first two components; the later
-ones raise the in-sample fit without a matching rise in cross-validated prediction, the sign of a
-component that describes noise in this data rather than structure that generalizes. On this evidence
-a two- or three-component model predicts about as well as the five-component one. Five components are
-used through the rest of this section so the score, loadings, and coefficient comparisons are read
-at one component count, and because the coefficient comparison below is made against the full
-least-squares fit; the gap in :math:`Q^2_Y` between two and five components is small.
+the data the model is fitted to. The :math:`Q^2_Y` here should be read with caution, because this is
+a designed experiment. A design places its runs to span the whole factor region, with few or no
+repeats, so leaving a run out removes a location the remaining runs do not surround, and predicting
+it is closer to extrapolation than to interpolation. A low :math:`Q^2_Y` then reflects the spread of
+the design as much as any fault in the model. Where a design has replicate runs at some locations,
+cross-validating over those replicates is informative, though still to be read with care; with no
+replicates, as here, a modest :math:`Q^2_Y` is expected.
 
-The two fits can be compared on equal footing. Giving PLS the same single response the regression
-used, the peak, and the same interaction terms, its ``beta_coefficients_`` line up against the
-least-squares coefficients term by term:
+Read with that caution, the table still shows :math:`R^2_Y` rising with every added component while
+:math:`Q^2_Y` changes little beyond the second: the later components raise the in-sample fit without
+improving prediction for held-out runs. Three components are kept for the analysis that follows,
+enough to carry the interactions without adding directions the cross-validation does not support. At
+three components the interaction model's :math:`R^2_Y` is 0.88.
+
+The regression and PLS can be compared on equal footing. Giving PLS the same single response the
+regression used, the peak, and the same interaction terms, its ``beta_coefficients_`` line up against
+the least-squares coefficients term by term:
 
 .. code-block:: python
 
@@ -497,7 +509,7 @@ least-squares coefficients term by term:
                              analysis_type=["coefficients"])["coefficients"]
     ols = {c["term"]: c["coefficient"] for c in ols}
 
-    pls_peak = PLS(n_components=5, scale=True).fit(X_int, adf[["peak"]])
+    pls_peak = PLS(n_components=3, scale=True).fit(X_int, adf[["peak"]])
     beta = pls_peak.beta_coefficients_.iloc[:, 0]
 
     coef = pd.DataFrame({"OLS": [ols[t] for t in X_int.columns], "PLS": beta.to_numpy()},
@@ -507,14 +519,14 @@ least-squares coefficients term by term:
     fig.add_scatter(x=coef["PLS"], y=coef.index, mode="markers", name="PLS")
     fig.show()
 
-The two sets of coefficients differ by at most 0.01 across all 24 terms. The concentration carries
-the largest coefficient (about 0.40, it raises the peak for every compound), the pH main effect the
-largest negative one (about :math:`-0.21`), and the compound-by-factor terms fill in between. PLS
-reproduces the least-squares fit when enough components are kept; with fewer components it pulls the
-coefficients toward zero, trading a small bias for lower variance. The reason to use PLS here is not
-a different answer on the peak, but that the same model extends directly to the full ten-point curve,
-and to responses with more columns than the design has runs, where ordinary least squares cannot be
-fitted at all.
+The two sets of coefficients differ by at most 0.03 across the 24 terms. The concentration coefficient
+(about 0.40, it raises the peak for every compound) and the pH main effect (about :math:`-0.21`) match
+the regression closely, while the three-component PLS pulls a few of the smaller interaction terms
+toward zero, the shrinkage that comes from describing the response with fewer directions than the
+model has terms. With all five components the two fits are nearly identical. The reason to use PLS
+here is not a different answer on the peak, but that the same model extends directly to the full
+ten-point curve, and to responses with more columns than the design has runs, where ordinary least
+squares cannot be fitted at all.
 
 The full least-squares coefficient table, in the same order as the plot below (largest coefficient
 first, smallest last), with the standard error, t-statistic, and p-value for each term:
@@ -660,10 +672,10 @@ for each compound on its own at this run count.
     :width: 620px
     :alt: colour-coefficient-comparison.py
 
-    Coefficients for the peak colour intensity from ordinary least squares and from PLS, fitted to
-    the same interaction model. The two nearly coincide, so PLS reproduces the regression when the
-    number of components is sufficient. Terms are sorted by the least-squares coefficient; the
-    ``cmp`` prefix marks a compound contrast under sum-to-zero coding.
+    Coefficients for the peak colour intensity from ordinary least squares and from PLS with three
+    components, fitted to the same interaction model. The two are close; the three-component PLS
+    shrinks a few of the smaller interaction terms toward zero. Terms are sorted by the least-squares
+    coefficient; the ``cmp`` prefix marks a compound contrast under sum-to-zero coding.
 
 Which compound matches the reference
 ------------------------------------
