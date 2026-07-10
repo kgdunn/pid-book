@@ -307,40 +307,57 @@ straight in.
 
 .. code-block:: python
 
-    from process_improve.multivariate.methods import PCA, PLS, MCUVScaler
-    from sklearn.metrics import r2_score
+    from plotly.subplots import make_subplots
+    from process_improve.multivariate.methods import PLS
 
     dummies = pd.get_dummies(design.design["compound"], prefix="cmp").astype(float)
     X = pd.concat([design.design[list(cont)].astype(float), dummies.drop(columns=["cmp_A"])], axis=1)
 
     pls = PLS(n_components=5, scale=True).fit(X, curves)
-    print(r2_score(curves, pls.predict(X), multioutput="variance_weighted"))   # 0.895
+    print(pls.r2_cumulative_)          # cumulative R2Y by component: 0.78, 0.81, 0.82, 0.82, 0.83
 
-    pca = PCA(n_components=3).fit(MCUVScaler().fit_transform(curves))
-    scores = np.asarray(pca.scores_)
-    fig = go.Figure()
+    scores = np.asarray(pls.scores_)   # X scores, one row per run
+    wstar = pls.direct_weights_        # W*: X-space weights, indexed by factor
+    cw = pls.y_weights_                # C: Y-space weights, indexed by time point
+
+    fig = make_subplots(rows=1, cols=2, subplot_titles=("scores", "W* and C loadings"))
     for c in compounds:
         m = (design.design["compound"] == c).to_numpy()
-        fig.add_scatter(x=scores[m, 0], y=scores[m, 1], mode="markers", name=c)
-    fig.update_layout(xaxis_title="PC1", yaxis_title="PC2")
+        fig.add_scatter(x=scores[m, 0], y=scores[m, 1], mode="markers", name=c, row=1, col=1)
+    fig.add_scatter(x=wstar.iloc[:, 0], y=wstar.iloc[:, 1], mode="markers+text",
+                    text=list(wstar.index), name="factor (W*)", row=1, col=2)
+    fig.add_scatter(x=cw.iloc[:, 0], y=cw.iloc[:, 1], mode="lines+markers+text",
+                    text=list(cw.index), name="time point (C)", row=1, col=2)
     fig.show()
 
-The five-component model explains 90% of the response variance, weighted across the ten points.
-Its per-target root-mean-square error, ``pls.rmse_``, comes back on the original absorbance scale
-(about 0.10 absorbance units at the final component), matching a hand calculation from the
-predictions, so it can be read directly against the measured curves. A principal component analysis
-of the curves themselves shows the response lives on a low-dimensional structure: the first two
-components separate the compounds by development shape, which is the same separation the late-time
-spread showed, now read from the response's own latent axes.
+The model reports its own goodness of fit through ``pls.r2_cumulative_``, the cumulative R2Y as each
+component is added: 0.78 after the first component and 0.83 after five, so one component already
+captures most of the response variation, and the ten time points move together along a single main
+direction. The per-target root-mean-square error, ``pls.rmse_``, comes back on the original
+absorbance scale (about 0.10 absorbance units at the final component), matching a hand calculation
+from the predictions, so it reads directly against the measured curves.
 
-.. figure:: ../figures/doe/colour-pca-scores.png
+The score plot places each run in the latent space. The runs spread across it rather than clustering
+by compound, because the optimal design was chosen to fill the factor region. The relationship
+between the factors and the response is read instead from the loadings plot, which places the factor
+weights :math:`\mathbf{W}^*` and the response-point weights :math:`\mathbf{C}` on the same axes. The
+first component is an amplitude direction: the concentration sits with all ten time points at a high
+component-1 weight, because raising the concentration lifts the whole curve. The second component is
+a late-development direction: the compound indicators spread along it, with E and D (which keep
+developing colour) opposite F and B, and the late time point ``t9`` falls on the same side as the
+compounds that drift upward. A factor and a response point lying in the same direction means that
+factor raises the colour at those times.
+
+.. figure:: ../figures/doe/colour-pls-scores-loadings.png
     :align: center
-    :width: 620px
-    :alt: colour-pca-scores.py
+    :width: 760px
+    :alt: colour-pls-scores-loadings.py
 
-    First two principal components of the standardized colour-development curves, one point per run.
-    The compounds separate by the shape of their development curve, with the reference A and the
-    analog B falling together.
+    Left: the first two PLS scores, one point per run, coloured by chromogen. Right: the factor
+    weights :math:`\mathbf{W}^*` and the response-point weights :math:`\mathbf{C}` on the same axes.
+    Component 1 is an amplitude direction (concentration with all ten time points); component 2
+    separates the compounds by late-time development, with ``t9`` on the side of the compounds that
+    keep developing colour.
 
 Testing the compound-by-factor interactions
 --------------------------------------------
