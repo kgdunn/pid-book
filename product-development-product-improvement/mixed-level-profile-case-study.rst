@@ -1420,6 +1420,43 @@ the reference as that candidate's shape allows, and the closed-loop check confir
 known truth. The ordering it recovers, B then F then C then D then E, is the late-time-drift ordering,
 the shape difference the fourth question was built around.
 
+One variant of the inversion is worth ruling out. The inversions above hold each candidate on the
+goal's projection, matching its three-component score or its predicted curve, so each solution sits
+close to the model plane. Muteki and MacGregor (2007) instead pose the inversion as an optimization
+that minimizes the distance to the target while keeping Hotelling's :math:`T^2` and the SPE below
+their limits, letting the solution float off the plane rather than lie on it. Allowing that here,
+with :math:`T^2` and SPE free to rise to their 95% limits, does not bring any candidate below its
+shape floor:
+
+.. code-block:: python
+
+    from scipy.optimize import minimize
+
+    t2_lim, spe_lim = pls_full.hotellings_t2_limit(), pls_full.spe_limit()
+
+    def t2_spe(compound, coded):                     # 3-component diagnostics of an inverted point
+        d = pls_full.diagnose(encode(compound, *coded))
+        return float(d.hotellings_t2.iloc[0]), float(d.spe.iloc[0])
+
+    def relaxed_inversion(compound):                 # Muteki and MacGregor (2007), their equation 5
+        objective = lambda c: float(np.sum((y_goal - curve_of(compound, c)) ** 2))
+        limits = [{"type": "ineq", "fun": lambda c: t2_lim - t2_spe(compound, c)[0]},
+                  {"type": "ineq", "fun": lambda c: spe_lim - t2_spe(compound, c)[1]}]
+        return minimize(objective, np.zeros(4), method="SLSQP", constraints=limits).x
+
+    for c in ["B", "C", "D", "E", "F"]:
+        settings = relaxed_inversion(c)
+        rmse = np.sqrt(np.mean((true_curve(c, settings) - goal_curve) ** 2))
+        print(c, round(float(rmse), 3))              # 0.016  0.058  0.094  0.100  0.043
+
+Each relaxed solution lands at or above its candidate's shape floor (B at 0.016 and D at 0.094,
+against floors of 0.015 and 0.079), while its SPE rises to the 6.5 limit and its settings leave the
+studied ranges. Pinning the two hard-to-change factors, temperature and co-solvent, at the centre and
+re-optimizing over concentration and pH alone gives the same result. The off-plane freedom the
+continuous factors can reach is amplitude, not shape, so it cannot close a compound's late-time drift:
+the closest attainable curve stays the projection of the target, which is Muteki and MacGregor's
+feasibility condition.
+
 Read together, the answer to which compound matches the reference is not one candidate but a graded
 ranking, and it depends on how the question is posed. The score match returns a binary reachable set
 that changes with the coding and with where the studied box is drawn, a statement about a low-rank
