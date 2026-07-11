@@ -842,6 +842,50 @@ expanded model on the whole profile:
                     marker=dict(color="#c0392b"))
     fig.show()
 
+The model keeps three components, the number chosen from the leave-one-out :math:`Q^2_Y` above:
+enough to carry the interactions without adding directions the cross-validation does not support.
+Taken over the ten time points jointly, its :math:`R^2_Y` is 0.88. A single joint number can hide a
+profile that is fitted well in some places and poorly in others, so it is worth reading the fit one
+time point at a time, which ``r2y_per_variable_`` gives directly (its last column is the cumulative
+:math:`R^2_Y` per response at the three-component model):
+
+.. code-block:: python
+
+    print(pls_full.r2y_per_variable_.iloc[:, -1].round(2))   # R2Y per time point, three components
+
+.. list-table:: :math:`R^2_Y` per time point for the three-component model
+    :widths: 30 20
+    :header-rows: 1
+
+    *   - Time point
+        - :math:`R^2_Y`
+    *   - t0
+        - 0.16
+    *   - t1
+        - 0.95
+    *   - t2
+        - 0.96
+    *   - t3
+        - 0.97
+    *   - t4
+        - 0.97
+    *   - t5
+        - 0.97
+    *   - t6
+        - 0.97
+    *   - t7
+        - 0.96
+    *   - t8
+        - 0.94
+    *   - t9
+        - 0.92
+
+From ``t1`` onward every point is explained to between 0.92 and 0.97; only ``t0`` is low, at 0.16. At
+``t0`` the colour has barely begun to form, so the absorbance is near zero and mostly measurement
+noise, with little systematic variation for any factor to explain. The developed part of the curve,
+which is what the study is about, is fitted well throughout; the joint 0.88 is held down by that one
+near-zero point.
+
 Colour still marks the compound, so the six chromogens are told apart as before. The added encoding
 puts three more factors on the same axes: the marker shape is the pH level (a down triangle for the
 low setting, a circle for the high setting), the marker size is proportional to the concentration (a
@@ -867,8 +911,8 @@ Component 2 carries only eight percent of the response variation, and the loadin
 compound-by-temperature terms at one end of it and the pH and concentration terms at the other, so it
 is a weaker, temperature-leaning direction. One run stands apart low on component 2: its encoding
 reads as compound F at the low pH and high concentration, an unusual corner of the region for that
-compound. A score plot is where such a run shows up, and the three-way encoding names the run's
-settings without a lookup.
+compound. A score plot is where such a run shows up, and the encoding names the run's settings
+without a lookup.
 
 .. figure:: ../figures/doe/colour-pls-interaction-scores-loadings.png
     :align: center
@@ -884,6 +928,18 @@ settings without a lookup.
     like its compound in the score plot, the continuous-factor terms are black, and the time points
     are red. Concentration and all ten time points sit together at high component 1; the
     compound-by-temperature terms separate along component 2.
+
+A related route to a curve response takes a different order of operations. Functional data analysis,
+as offered in JMP Pro's Functional Data Explorer and its functional design of experiments, first
+fits each measured curve with a basis expansion (B-splines by default, with P-splines, a Fourier
+basis, or wavelets as alternatives), then reduces the fitted curves to a few *functional principal
+components*: uncorrelated shape functions whose per-curve scores summarise the profile. Those scores
+are modelled against the design factors, and because the components reconstruct the curve,
+predicting the scores predicts the whole profile. PLS reaches the profile in one step, finding
+latent directions that are at once predictable from the factors and descriptive of the response. The
+functional-data route separates the two steps: describe the curve shape first from the responses
+alone, then relate that description to the factors. Which is more convenient depends on the study;
+both return a model that maps the factors to a predicted curve.
 
 Which compound matches the reference
 ------------------------------------
