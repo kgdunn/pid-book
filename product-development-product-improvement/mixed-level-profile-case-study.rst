@@ -1138,8 +1138,17 @@ projection stays inside both limits under every coding: chromogen A at the centr
 omitted level in any of them, so its :math:`T^2` stays near or below 0.1 and its SPE between about 1
 and 2. The goal check the inversion relies on does not depend on the choice.
 
-What does depend on it is any reading taken from the truncated score, including the model inversion
-in the next section, where the reachable set of candidates changes with the coding.
+The practical risk is a false alarm. A run past the :math:`T^2` or SPE limit is the usual signal to
+set that run aside, and here that signal falls on every run of the omitted level for a reason that
+has nothing to do with the response. Acting on it would set aside compound F, which the validation
+below finds to be one of the closest matches to the reference, so a coding choice would remove a
+leading candidate. The guard is to not read an exclusion off a single coding: before setting a
+compound aside, refit under another coding, or check the raw curve, and keep the exclusion only if
+the flag survives. A designed experiment also places its runs at the edges of the region on purpose,
+so high leverage there is expected and is not by itself a reason to drop a run.
+
+What else depends on the coding is any reading taken from the truncated score, including the model
+inversion in the next section, where the reachable set of candidates changes with the coding.
 
 Which compound matches the reference
 ------------------------------------
@@ -1313,25 +1322,112 @@ time points against four factors, so it returns the least-squares closest curve:
     for c in ["B", "C", "D", "E", "F"]:
         print(c, np.round(curve_match(c), 2))
 
-The curve match places only F inside the studied ranges, and only just: its pH sits at 7.0, the top
-of the window. B, C, D and E each need a factor beyond the ranges to bring their whole predicted curve
-onto the goal (B a co-solvent below 5% v/v and a pH below 4.0; C and D a pH near 8, with D also a
-co-solvent of 45% v/v; E a temperature near :math:`-28` degC). The score match and the curve match
-ask different questions. Matching a three-component score asks a candidate to reach a low-rank summary
-of the goal, which several candidates do with small moves; matching the full curve asks it to
-reproduce the whole profile, which the continuous factors mostly cannot, because they move the
-curve's amplitude while the compounds differ in late-time shape. Shape, not amplitude, is the binding
-constraint, which returns to the shape-distance ranking that opened the fourth question: B is closest
-to the reference in shape, then F, and no factor setting closes a shape gap.
+The curve match keeps F inside the studied box, and places the others outside it: B needs a
+co-solvent below 5% v/v and a pH below 4.0; C and D a pH near 8, with D also a co-solvent of 45% v/v;
+E a temperature near :math:`-28` degC. A setting outside the box is not disqualifying here. The design
+established the factor effects, so stepping a little past the studied region is a testable
+extrapolation, the explore side of a response-surface search, paid for by a larger prediction variance
+the farther out the setting sits. What a setting is worth is a separate question from whether it lies
+inside the box, and it is checked directly below by putting the settings through the known ground
+truth. The score match and the curve match ask different questions. Matching a three-component score
+asks a candidate to reach a low-rank summary of the goal, which several candidates do with small
+moves; matching the full curve asks it to reproduce the whole profile, which the continuous factors
+mostly cannot, because they move the curve's amplitude while the compounds differ in late-time shape.
+Shape, not amplitude, is the binding constraint, which returns to the shape-distance ranking that
+opened the fourth question: B is closest to the reference in shape, then F.
 
-So the answer to which compound matches the reference is not read from the data alone; it depends on
-how the inversion is posed: the coding, the number of components, and whether the match is taken in
-the latent score or in the predicted response. Scoping the codings together, rather than fixing one
-at the outset, separates the conclusions that hold from those that move. The reading that holds is
-that the compounds differ in a curve shape the four continuous factors cannot reproduce, so no
-candidate is brought exactly onto the reference within the ranges, and B is nearest in shape. The
-reading that moves is the score-matching reachable set, a statement about a low-rank projection that
-changes with the coding.
+Checking the inversion against the known ground truth
+-----------------------------------------------------
+
+Because the curves here are generated from a known ground truth, the inverted settings can be checked
+against it directly: take each candidate's settings, in real units and including those outside the
+box, put them back through the ground-truth curve, and measure how far the result sits from the
+reference profile.
+
+.. code-block:: python
+
+    def true_curve(compound, coded):                     # the ground truth defined earlier
+        drift, s_co, s_ph, s_tp = truth[compound]
+        amp = max(1.0 + 0.35 * coded[0] + s_co * coded[1] + s_ph * coded[2] + s_tp * coded[3], 0.05)
+        return amp * np.clip(ref + drift * tail, 0, None)
+
+    goal_curve = true_curve("A", [0, 0, 0, 0])           # the reference profile to reproduce
+    noise = 0.03                                          # measurement-noise standard deviation
+
+    for c in ["B", "C", "D", "E", "F"]:
+        got = true_curve(c, curve_match(c))              # curve_match(c) from the block above
+        rmse = float(np.sqrt(np.mean((got - goal_curve) ** 2)))
+        print(c, round(rmse, 3), round(rmse / noise, 1))
+
+The continuous factors move only the amplitude, so the closest any setting can bring a candidate to
+the reference is set by that candidate's fixed shape, its late-time drift. That floor, the smallest
+root-mean-square deviation from the reference at the best amplitude, orders the candidates by drift:
+
+.. list-table:: How close each candidate can be brought to the reference, limited by its fixed shape
+    :widths: 20 20 22 26
+    :header-rows: 1
+
+    *   - Chromogen
+        - Late-time drift
+        - Best emulation RMSE
+        - In units of the noise (0.03)
+    *   - A (reference)
+        - 0.00
+        - 0
+        - 0
+    *   - B
+        - +0.05
+        - 0.015
+        - 0.5
+    *   - F
+        - −0.10
+        - 0.031
+        - 1.0
+    *   - C
+        - +0.20
+        - 0.055
+        - 1.8
+    *   - D
+        - +0.30
+        - 0.079
+        - 2.6
+    *   - E
+        - +0.35
+        - 0.090
+        - 3.0
+
+Running the curve-match settings through the ground truth reaches those floors for the near
+candidates: B lands at 0.016, F at 0.043, and C at 0.060, all within about two measurement-noise
+standard deviations of the reference (and the in-range cell-means score match reaches them too, at B
+0.018, C 0.056, F 0.031). D and E stay at 2.6 times the noise or worse whatever the factors are set
+to, inside the box or outside it, because their shape gap is too large for amplitude to close.
+
+.. figure:: ../figures/doe/colour-inversion-validation.png
+    :align: center
+    :width: 780px
+    :alt: colour-inversion-validation.py
+
+    Left: the reference curve (chromogen A at the centre point) with the closest emulation each
+    candidate can reach, the best amplitude for its fixed shape. The candidates track the reference
+    early and separate at the tail, by their late-time drift. Right: the emulation error against the
+    measurement-noise scale, each candidate's shape floor (open marker) and what the coding-invariant
+    curve-match inversion reaches when its real-unit settings are put through the ground truth (filled
+    marker), ordered by drift. B and F land within about one noise standard deviation of the reference,
+    C within two; D and E cannot be brought closer than 2.6 times the noise.
+
+So the inversion does its job: for each candidate it finds settings that bring the curve as close to
+the reference as that candidate's shape allows, and the closed-loop check confirms this against the
+known truth. The ordering it recovers, B then F then C then D then E, is the late-time-drift ordering,
+the shape difference the fourth question was built around.
+
+Read together, the answer to which compound matches the reference is not one candidate but a graded
+ranking, and it depends on how the question is posed. The score match returns a binary reachable set
+that changes with the coding and with where the studied box is drawn, a statement about a low-rank
+projection. The curve match, checked against the ground truth, gives the reading that holds: the
+candidates line up by their fixed curve shape, with B and F reproducing the reference to within about
+the measurement noise, C to within roughly twice it, and D and E not reproducible however the factors
+are set. F is not singled out; it sits second behind B, which the shape-distance ranking said at the
+start.
 
 What the design and the library carried
 ---------------------------------------
@@ -1345,11 +1441,11 @@ coordinate-exchange optimiser, ``pyoptex``, which powers the I-optimal and split
 and is installed on its own.
 
 The study answered its questions from a single design: the three interactions are significant
-(objectives 1 to 3); inverting the model onto a reference goal shows that a low-rank score match
-makes B, C and D reachable within the ranges but that the reachable set depends on the categorical
-coding, while a coding-free curve match indicates the compounds differ in a shape the continuous
-factors cannot reproduce, leaving B nearest the reference (objective 4); and the fitted model over the
-continuous factors locates settings for a target colour intensity for the chosen compound (objective
-5). The same design supported a scalar analysis of variance on the peak, a multivariate model of the
+(objectives 1 to 3); inverting the model onto a reference goal, then checking the inverted settings
+against the known ground truth, ranks the candidates by their fixed curve shape, with B and F
+reproducing the reference to within about the measurement noise and C to within roughly twice it,
+while the low-rank score match's binary reachable set was found to depend on the categorical coding
+(objective 4); and the fitted model over the continuous factors locates settings for a target colour
+intensity for the chosen compound (objective 5). The same design supported a scalar analysis of variance on the peak, a multivariate model of the
 full curve, and the inversion of that model back to factor settings, because the design was chosen for
 the model, not for a particular way of reducing the response.
