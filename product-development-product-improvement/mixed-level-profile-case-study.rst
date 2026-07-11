@@ -813,10 +813,10 @@ expanded model on the whole profile:
 
     # Score plot: four encodings on one point. Colour is the compound (as before); marker shape is
     # the pH level (down triangle low, circle high); marker size grows with the concentration; and
-    # the temperature is an open, outline-only marker at the low setting and a filled marker at the
+    # the co-solvent is an open, outline-only marker at the low setting and a filled marker at the
     # high setting (the "-open" symbol suffix draws the outline only).
     base = np.where(adf["pH"] < 0, "triangle-down", "circle")
-    symbol = np.where(adf["temperature"] < 0, np.char.add(base, "-open"), base)
+    symbol = np.where(adf["co_solvent"] < 0, np.char.add(base, "-open"), base)
     size = 8 + 5 * (adf["concentration"] + 1)          # coded concentration in [-1, 1]
 
     fig = make_subplots(rows=1, cols=2, subplot_titles=("scores", "W* and C loadings"))
@@ -889,9 +889,9 @@ near-zero point.
 Colour still marks the compound, so the six chromogens are told apart as before. The added encoding
 puts three more factors on the same axes: the marker shape is the pH level (a down triangle for the
 low setting, a circle for the high setting), the marker size is proportional to the concentration (a
-larger marker is a higher concentration), and the marker fill marks the temperature (an open,
+larger marker is a higher concentration), and the marker fill marks the co-solvent (an open,
 outline-only marker at the low setting, a filled marker at the high). A single run now shows its
-compound together with its pH, concentration, and temperature at a glance, so the score plot can be
+compound together with its pH, concentration, and co-solvent at a glance, so the score plot can be
 read against the factors
 directly rather than by cross-referencing a separate table of run settings. In the loadings panel each
 compound term carries its compound's colour, so a compound and its interaction terms are followed
@@ -921,7 +921,7 @@ without a lookup.
 
     Left: the first two PLS scores of the interaction model on the full curve, one point per run.
     Colour is the chromogen, marker shape is the pH level (down triangle low, circle high), marker
-    size is proportional to the concentration, and the marker fill marks the temperature (open,
+    size is proportional to the concentration, and the marker fill marks the co-solvent (open,
     outline-only low; filled high). High-concentration and low-pH runs sit
     to the right along component 1, the amplitude direction. Right: the W* weights for the 24 model
     terms and the C weights for the ten time points on the same axes. Each compound term is coloured
