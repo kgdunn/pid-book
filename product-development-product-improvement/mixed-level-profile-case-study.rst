@@ -941,36 +941,202 @@ functional-data route separates the two steps: describe the curve shape first fr
 alone, then relate that description to the factors. Which is more convenient depends on the study;
 both return a model that maps the factors to a predicted curve.
 
-Which compound matches the reference
-------------------------------------
+Model diagnostics: SPE and Hotelling's T2
+-----------------------------------------
 
-The fourth question compares curve *shape*, not colour depth, so amplitude is divided out first:
-each compound's mean curve is scaled to unit peak, and the Euclidean distance to the reference
-compound A's scaled curve measures how differently the colour develops over time.
+Before the model is used to answer the fourth question, it is worth checking where its own runs sit
+relative to it. Two distances summarise that. Hotelling's :math:`T^2` measures how far a run lies
+from the centre *within* the model plane, scaled by the score spread; the squared prediction error
+(SPE) measures how far it lies *off* the plane, the part of the ten-point curve the three components
+do not reconstruct. Each has a 95% limit, from ``hotellings_t2_limit`` and ``spe_limit``.
+
+New rows are needed here and in the inversion that follows, so a small helper builds a model-matrix
+row for one setting with the same coding as the fitted matrix:
 
 .. code-block:: python
 
-    shapes = mean_curve.div(mean_curve.max(axis=1), axis=0)
-    distance = ((shapes - shapes.loc["A"]) ** 2).sum(axis=1) ** 0.5
-    print(distance.drop("A").sort_values())
+    from patsy import build_design_matrices
 
-    order_c = distance.drop("A").sort_values()
-    fig = go.Figure(go.Bar(x=order_c.values, y=order_c.index, orientation="h"))
-    fig.update_layout(xaxis_title="shape distance to reference A", yaxis_title="candidate")
+    info = dmatrix(rhs, adf, return_type="dataframe").design_info
+
+    def encode(compound, concentration, co_solvent, pH, temperature):
+        row = pd.DataFrame({"compound": [compound], "concentration": [concentration],
+                            "co_solvent": [co_solvent], "pH": [pH], "temperature": [temperature]})
+        return build_design_matrices([info], row, return_type="dataframe")[0].drop(columns=["Intercept"])
+
+The fourth question asks which candidate develops colour like the reference chromogen A. To make that
+precise, take chromogen A at the centre point, the nominal mid-range value of every continuous factor,
+as the *goal*: the colour-development profile to reproduce. Projecting the goal onto the model gives
+its score and its own SPE and :math:`T^2`, so it can be checked the same way as any run before it is
+used. The projection is ``diagnose``, which returns the scores, SPE, :math:`T^2` and predicted curve
+for new rows (SPE for a model with named columns reads correctly from process-improve 1.52.4 onward):
+
+.. code-block:: python
+
+    goal_x = encode("A", concentration=0, co_solvent=0, pH=0, temperature=0)
+    goal = pls_full.diagnose(goal_x)
+    print(float(goal.spe.iloc[0]), float(goal.hotellings_t2.iloc[0]))   # 1.7, 0.05
+
+    t2 = pls_full.hotellings_t2_.iloc[:, -1]        # per-run T2 at three components
+    spe = pls_full.spe_.iloc[:, -1]                 # per-run SPE at three components
+    print(pls_full.hotellings_t2_limit(), pls_full.spe_limit())         # 8.7, 6.5
+
+    fig = go.Figure()
+    for c in compounds:
+        m = (design.design["compound"] == c).to_numpy()
+        fig.add_scatter(x=t2[m], y=spe[m], mode="markers", name=c)
+    fig.add_scatter(x=[float(goal.hotellings_t2.iloc[0])], y=[float(goal.spe.iloc[0])],
+                    mode="markers", name="goal: A at centre",
+                    marker=dict(symbol="star", size=16, color="black"))
+    fig.add_vline(x=pls_full.hotellings_t2_limit(), line_dash="dash")
+    fig.add_hline(y=pls_full.spe_limit(), line_dash="dash")
+    fig.update_layout(xaxis_title="Hotelling's T2", yaxis_title="SPE")
     fig.show()
 
-Compound B is closest to the reference, at a distance of 0.07, well ahead of the next candidate F at
-0.15, with C, D and E progressively further. The ranking, B then F then C then D then E, is exactly
-the order of the late-time drift that was built into each compound, so the analysis recovers the
-shape ordering from the noisy data.
+The goal's SPE is 1.7 and its :math:`T^2` is 0.05, both well inside the 95% limits of 6.5 and 8.7. It
+sits in the region the design covered, so the model's prediction there can be used as an inversion
+target. Most of the sixty runs also fall inside both limits. Four cross the :math:`T^2` limit and
+five cross the SPE limit; the :math:`T^2` outliers are all compound F, one at :math:`T^2 = 26`
+against the limit of 8.7. Sum coding drops the last level, F, and carries it as the negative sum of
+the other contrasts, so an F run sits at an extreme position in the contrast space and reads as a
+high-leverage point. That is a property of the coding, not a fault in those runs.
 
-.. figure:: ../figures/doe/colour-shape-distance.png
+.. figure:: ../figures/doe/colour-pls-t2-spe.png
     :align: center
-    :width: 700px
-    :alt: colour-shape-distance.py
+    :width: 680px
+    :alt: colour-pls-t2-spe.py
 
-    Shape distance from each candidate's colour-development curve to the reference A, with amplitude
-    divided out. Compound B (highlighted) develops colour most like the reference; E is furthest.
+    Hotelling's :math:`T^2` against SPE for the sixty runs, with the 95% limits as dashed lines. A
+    run in the lower-left rectangle is within both. Several compound-F runs cross the :math:`T^2`
+    limit. The reference goal, chromogen A at the centre point (asterisk), sits well inside both
+    limits, so its predicted profile can be used as an inversion target.
+
+Which compound matches the reference
+------------------------------------
+
+The fourth question is which candidate can be made to develop colour like the reference. With the
+goal profile fixed, that becomes a model-inversion question: for each candidate chromogen, what
+settings of the four continuous factors place its score on the goal? Inversion runs the model
+backwards, from a target score to the factors that reach it. The :ref:`product-development chapter
+<LVM_model_inversion_example>` sets this out for a PCA model, using the loadings to map a target score
+to a recipe; here the same idea is applied to the PLS interaction model, with the compound held fixed
+and the continuous factors as the manipulated variables. The starting point for the method is Jaeckle
+and MacGregor's 1998 paper on product design through multivariate analysis of process data.
+
+The forward map is ``pls_full.transform(X)``: it standardizes the model-matrix row and multiplies by
+the direct weights :math:`\mathbf{W}^*`. Holding the compound fixed makes this map affine in the four
+continuous factors, so matching the three-component goal score is a small linear system, built here
+by reading the score at the centre and along each continuous factor in turn. Four factors against
+three components leaves one free direction, the operating window; the least-squares solution is the
+minimum adjustment from the nominal centre.
+
+.. code-block:: python
+
+    import numpy as np
+
+    t_goal = pls_full.transform(goal_x).to_numpy().ravel()
+
+    def compensate(compound):
+        base = pls_full.transform(encode(compound, 0, 0, 0, 0)).to_numpy().ravel()
+        step = np.column_stack([
+            pls_full.transform(encode(compound, *[float(k == j) for k in range(4)])).to_numpy().ravel() - base
+            for j in range(4)])
+        coded, *_ = np.linalg.lstsq(step, t_goal - base, rcond=None)
+        return coded            # coded [concentration, co_solvent, pH, temperature]
+
+    for c in ["B", "C", "D", "E", "F"]:
+        print(c, np.round(compensate(c), 2))
+
+Converting each coded setting to real units gives the recipe that would make each candidate reproduce
+the reference profile:
+
+.. list-table:: Continuous-factor settings that reproduce the reference goal (chromogen A at centre)
+    :widths: 16 20 18 12 18 24
+    :header-rows: 1
+
+    *   - Chromogen
+        - Concentration (umol/L)
+        - Co-solvent (% v/v)
+        - pH
+        - Temperature (degC)
+        - Within studied ranges?
+    *   - A (reference)
+        - 5.0
+        - 15.0
+        - 5.5
+        - 25.0
+        - nominal centre
+    *   - B
+        - 4.9
+        - 14.8
+        - 5.4
+        - 25.6
+        - yes
+    *   - C
+        - 5.5
+        - 13.5
+        - 6.1
+        - 27.7
+        - yes
+    *   - D
+        - 5.1
+        - 13.6
+        - 6.1
+        - 27.2
+        - yes
+    *   - E
+        - 5.4
+        - 6.9
+        - 7.7
+        - 31.0
+        - no: pH above 7.0
+    *   - F
+        - 8.7
+        - 15.5
+        - 8.2
+        - 28.0
+        - no: concentration and pH above range
+
+The studied ranges are concentration 2 to 8 umol/L, co-solvent 5 to 25% v/v, pH 4.0 to 7.0, and
+temperature 15 to 35 degC. Chromogen B needs almost no change from the nominal centre: it already
+develops colour close to the reference. C and D need a moderate move, a higher pH and temperature,
+but stay inside the ranges. E and F cannot be brought onto the goal within the window: E needs a pH of
+7.7 and F a pH of 8.2 and a concentration of 8.7 umol/L, all beyond the values the experiment
+explored. The ordering, B then C and D then E and F, is the order of the late-time drift built into
+each compound, so the inversion recovers the same ranking the design was built to reveal, now as a
+set of concrete settings rather than a distance.
+
+.. figure:: ../figures/doe/colour-pls-inversion.png
+    :align: center
+    :width: 720px
+    :alt: colour-pls-inversion.py
+
+    The inverted continuous-factor settings that place each candidate on the reference goal, in coded
+    units, one row per factor. The shaded band between the dashed lines at :math:`-1` and :math:`+1`
+    is the studied range. B, C and D are reachable within the ranges; E and F need a pH (and, for F, a
+    concentration) beyond the studied window, marked with a heavy outline.
+
+The compensation figure shows the coded settings directly; a Plotly version, with the studied range
+shaded:
+
+.. code-block:: python
+
+    factors = ["concentration", "co_solvent", "pH", "temperature"]
+    coded = pd.DataFrame({c: compensate(c) for c in ["B", "C", "D", "E", "F"]}, index=factors)
+
+    fig = go.Figure()
+    fig.add_vrect(x0=-1, x1=1, fillcolor="#e8eef5", line_width=0)
+    for c in coded.columns:
+        fig.add_scatter(x=coded[c], y=factors, mode="markers", name=c)
+    fig.update_layout(xaxis_title="coded setting to match the goal (0 = nominal centre)")
+    fig.show()
+
+Inversion is non-unique, and this reports one member of the operating window, the smallest move from
+the nominal centre. A subject-matter expert might spend the free direction differently, for instance
+holding one factor fixed and solving for the rest, as the :ref:`product-development worked example
+<LVM_model_inversion_example>` does with a fixed hardness. The result is the same either way for the
+question asked here: B, C and D can be tuned to the reference colour development, and E and F cannot,
+not without moving outside the ranges the design covered.
 
 What the design and the library carried
 ---------------------------------------
@@ -984,8 +1150,9 @@ coordinate-exchange optimiser, ``pyoptex``, which powers the I-optimal and split
 and is installed on its own.
 
 The study answered its questions from a single design: the three interactions are significant
-(objectives 1 to 3), compound B develops colour most like the reference (objective 4), and the
-fitted model over the continuous factors locates settings for a target colour intensity for the
-chosen compound (objective 5). The same design supported a scalar analysis of variance on the peak
-and a multivariate model of the full curve, because the design was chosen for the model, not for a
-particular way of reducing the response.
+(objectives 1 to 3), inverting the model onto a reference goal shows that B, C and D can be tuned to
+develop colour like the reference while E and F cannot within the studied ranges (objective 4), and
+the fitted model over the continuous factors locates settings for a target colour intensity for the
+chosen compound (objective 5). The same design supported a scalar analysis of variance on the peak, a
+multivariate model of the full curve, and the inversion of that model back to factor settings,
+because the design was chosen for the model, not for a particular way of reducing the response.
