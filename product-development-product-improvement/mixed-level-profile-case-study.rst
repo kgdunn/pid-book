@@ -811,10 +811,10 @@ expanded model on the whole profile:
     palette = ["#1f5fa8", "#c0392b", "#2e8b57", "#8e44ad", "#d68910", "#17a2b8"]
     colour_of = dict(zip(compounds, palette))
 
-    # Score plot: colour is the compound (as before), marker shape is the pH level (circle low,
-    # up triangle high), and marker size is the concentration level (small low, large high).
-    shape = np.where(adf["pH"] < 0, "circle", "triangle-up")
-    size = np.where(adf["concentration"] < 0, 8, 16)
+    # Score plot: colour is the compound (as before), marker shape is the pH level (down triangle
+    # low, circle high), and marker size grows with the concentration.
+    shape = np.where(adf["pH"] < 0, "triangle-down", "circle")
+    size = 8 + 5 * (adf["concentration"] + 1)     # coded concentration in [-1, 1]
 
     fig = make_subplots(rows=1, cols=2, subplot_titles=("scores", "W* and C loadings"))
     for c in compounds:
@@ -840,9 +840,9 @@ expanded model on the whole profile:
     fig.show()
 
 Colour still marks the compound, so the six chromogens are told apart as before. The added encoding
-puts two more factors on the same axes: the marker shape is the pH level (a circle for the low
-setting, an up triangle for the high setting), and the marker size is the concentration level (a
-small marker for the low setting, a large one for the high). A single run now shows its compound, its
+puts two more factors on the same axes: the marker shape is the pH level (a down triangle for the low
+setting, a circle for the high setting), and the marker size is proportional to the concentration (a
+larger marker is a higher concentration). A single run now shows its compound, its
 pH, and its concentration at a glance, so the score plot can be read against the factors directly
 rather than by cross-referencing a separate table of run settings. In the loadings panel each
 compound term carries its compound's colour, so a compound and its interaction terms are followed
@@ -853,7 +853,7 @@ concentration weight sits far out on component 1 with all ten time points, so a 
 score tracks how high its whole curve rises. The large markers (high concentration) fall to the right
 and the small markers to the left: the concentration and the first score correlate at 0.74, and the
 mean first score moves from :math:`-0.96` at the low concentration to :math:`+0.55` at the high. The
-circles (low pH) also lie to the right of the up triangles, because a lower pH raises the
+down triangles (low pH) also lie to the right of the circles, because a lower pH raises the
 colour for this chelate; the mean first score is :math:`+0.58` at low pH against :math:`-0.33` at
 high. Reading shape and size together, the runs high on component 1 are the high-concentration,
 low-pH runs, which is where the deepest colour is expected.
@@ -871,8 +871,8 @@ settings without a lookup.
     :alt: colour-pls-interaction-scores-loadings.py
 
     Left: the first two PLS scores of the interaction model on the full curve, one point per run.
-    Colour is the chromogen, marker shape is the pH level (circle low, up triangle high), and marker
-    size is the concentration level (small low, large high). High-concentration and low-pH runs sit
+    Colour is the chromogen, marker shape is the pH level (down triangle low, circle high), and marker
+    size is proportional to the concentration. High-concentration and low-pH runs sit
     to the right along component 1, the amplitude direction. Right: the W* weights for the 24 model
     terms and the C weights for the ten time points on the same axes. Each compound term is coloured
     like its compound in the score plot, the continuous-factor terms are black, and the time points
