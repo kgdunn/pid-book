@@ -1360,8 +1360,9 @@ reference profile.
         print(c, round(rmse, 3), round(rmse / noise, 1))
 
 The continuous factors move only the amplitude, so the closest any setting can bring a candidate to
-the reference is set by that candidate's fixed shape, its late-time drift. That floor, the smallest
-root-mean-square deviation from the reference at the best amplitude, orders the candidates by drift:
+the reference is set by that candidate's fixed shape, its late-time drift. The best attainable
+match, the smallest root-mean-square deviation from the reference reachable at any amplitude, orders
+the candidates by drift:
 
 .. list-table:: How close each candidate can be brought to the reference, limited by its fixed shape
     :widths: 20 20 22 26
@@ -1396,8 +1397,8 @@ root-mean-square deviation from the reference at the best amplitude, orders the 
         - 0.090
         - 3.0
 
-Running the curve-match settings through the ground truth reaches those floors for the near
-candidates: B lands at 0.016, F at 0.043, and C at 0.060, all within about two measurement-noise
+Running the curve-match settings through the ground truth reaches that best attainable match for the
+near candidates: B lands at 0.016, F at 0.043, and C at 0.060, all within about two measurement-noise
 standard deviations of the reference (and the in-range cell-means score match reaches them too, at B
 0.018, C 0.056, F 0.031). D and E stay at 2.6 times the noise or worse whatever the factors are set
 to, inside the box or outside it, because their shape gap is too large for amplitude to close.
@@ -1410,10 +1411,11 @@ to, inside the box or outside it, because their shape gap is too large for ampli
     Left: the reference curve (chromogen A at the centre point) with the closest emulation each
     candidate can reach, the best amplitude for its fixed shape. The candidates track the reference
     early and separate at the tail, by their late-time drift. Right: the emulation error against the
-    measurement-noise scale, each candidate's shape floor (open marker) and what the coding-invariant
-    curve-match inversion reaches when its real-unit settings are put through the ground truth (filled
-    marker), ordered by drift. B and F land within about one noise standard deviation of the reference,
-    C within two; D and E cannot be brought closer than 2.6 times the noise.
+    measurement-noise scale, each candidate's best attainable match (open marker) and what the
+    coding-invariant curve-match inversion reaches when its real-unit settings are put through the
+    ground truth (filled marker), ordered by drift. B and F land within about one noise standard
+    deviation of the reference, C within two; D and E cannot be brought closer than 2.6 times the
+    noise.
 
 The developed part of the curve makes the accuracy plainer. Dropping the first time point, where
 every curve is near zero, and tightening the vertical axis to the plotted range (so it does not start
@@ -1451,6 +1453,44 @@ So the inversion does its job: for each candidate it finds settings that bring t
 the reference as that candidate's shape allows, and the closed-loop check confirms this against the
 known truth. The ordering it recovers, B then F then C then D then E, is the late-time-drift ordering,
 the shape difference the fourth question was built around.
+
+One variant of the inversion is worth ruling out. The inversions above hold each candidate on the
+goal's projection, matching its three-component score or its predicted curve, so each solution sits
+close to the model plane. Muteki and MacGregor (2007) instead pose the inversion as an optimization
+that minimizes the distance to the target while keeping Hotelling's :math:`T^2` and the SPE below
+their limits, letting the solution float off the plane rather than lie on it. Allowing that here,
+with :math:`T^2` and SPE free to rise to their 95% limits, does not bring any candidate below its
+best attainable match:
+
+.. code-block:: python
+
+    from scipy.optimize import minimize
+
+    t2_lim, spe_lim = pls_full.hotellings_t2_limit(), pls_full.spe_limit()
+
+    def t2_spe(compound, coded):                     # 3-component diagnostics of an inverted point
+        d = pls_full.diagnose(encode(compound, *coded))
+        return float(d.hotellings_t2.iloc[0]), float(d.spe.iloc[0])
+
+    def relaxed_inversion(compound):                 # Muteki and MacGregor (2007), their equation 5
+        objective = lambda c: float(np.sum((y_goal - curve_of(compound, c)) ** 2))
+        limits = [{"type": "ineq", "fun": lambda c: t2_lim - t2_spe(compound, c)[0]},
+                  {"type": "ineq", "fun": lambda c: spe_lim - t2_spe(compound, c)[1]}]
+        return minimize(objective, np.zeros(4), method="SLSQP", constraints=limits).x
+
+    for c in ["B", "C", "D", "E", "F"]:
+        settings = relaxed_inversion(c)
+        rmse = np.sqrt(np.mean((true_curve(c, settings) - goal_curve) ** 2))
+        print(c, round(float(rmse), 3))              # 0.016  0.058  0.094  0.100  0.043
+
+Each relaxed solution lands at or above its candidate's best attainable match (B at 0.016 and D at
+0.094, whose best matches are 0.015 and 0.079), while its SPE rises to the 6.5 limit and its
+settings leave the studied ranges. Pinning the two hard-to-change factors, temperature and co-solvent, at the
+centre and re-optimizing over concentration and pH alone gives the same result. The off-plane
+freedom the continuous factors can reach is amplitude, not shape, so it cannot close a compound's
+late-time drift:
+the closest attainable curve stays the projection of the target, which is Muteki and MacGregor's
+feasibility condition.
 
 Read together, the answer to which compound matches the reference is not one candidate but a graded
 ranking, and it depends on how the question is posed. The score match returns a binary reachable set
