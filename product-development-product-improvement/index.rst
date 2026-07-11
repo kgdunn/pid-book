@@ -17,3 +17,4 @@ Over the years since 2010 when this online book has been available, there has be
    image-analysis
    batch-process-monitoring
    product-development
+   mixed-level-profile-case-study
