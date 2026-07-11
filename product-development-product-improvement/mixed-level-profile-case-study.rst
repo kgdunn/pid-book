@@ -995,11 +995,16 @@ for new rows (SPE for a model with named columns reads correctly from process-im
 
 The goal's SPE is 1.7 and its :math:`T^2` is 0.05, both well inside the 95% limits of 6.5 and 8.7. It
 sits in the region the design covered, so the model's prediction there can be used as an inversion
-target. Most of the sixty runs also fall inside both limits. Four cross the :math:`T^2` limit and
-five cross the SPE limit; the :math:`T^2` outliers are all compound F, one at :math:`T^2 = 26`
-against the limit of 8.7. Sum coding drops the last level, F, and carries it as the negative sum of
-the other contrasts, so an F run sits at an extreme position in the contrast space and reads as a
-high-leverage point. That is a property of the coding, not a fault in those runs.
+target. Most of the sixty runs also fall inside both limits. The exceptions, four beyond the
+:math:`T^2` limit and five beyond the SPE limit, are all compound F, and this follows from the
+sum-coding reference rather than from F's chemistry. Sum coding drops the last level, F, and
+represents it as the negative sum of the other contrasts, the corner of the contrast space farthest
+from the centre, so F runs read as both high leverage (:math:`T^2`, one at 26 against the limit of
+8.7) and less fully reconstructed (SPE). Change which level is dropped and the flags move with it:
+making B the reference sends B's runs past both limits by the same margin, while treatment or
+cell-means coding, where no level sits at that corner, leaves every compound inside. The goal check
+holds because A, the reference chromogen, is not the omitted level, so it projects to a low-leverage,
+well-reconstructed point in this parameterization.
 
 .. figure:: ../figures/doe/colour-pls-t2-spe.png
     :align: center
@@ -1007,9 +1012,10 @@ high-leverage point. That is a property of the coding, not a fault in those runs
     :alt: colour-pls-t2-spe.py
 
     Hotelling's :math:`T^2` against SPE for the sixty runs, with the 95% limits as dashed lines. A
-    run in the lower-left rectangle is within both. Several compound-F runs cross the :math:`T^2`
-    limit. The reference goal, chromogen A at the centre point (asterisk), sits well inside both
-    limits, so its predicted profile can be used as an inversion target.
+    run in the lower-left rectangle is within both. Several compound-F runs cross the limits, an
+    artifact of F being the omitted sum-coding level rather than a fault in those runs. The reference
+    goal, chromogen A at the centre point (asterisk), sits well inside both limits, so its predicted
+    profile can be used as an inversion target.
 
 Which compound matches the reference
 ------------------------------------
