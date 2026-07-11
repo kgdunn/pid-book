@@ -996,15 +996,13 @@ for new rows (SPE for a model with named columns reads correctly from process-im
 The goal's SPE is 1.7 and its :math:`T^2` is 0.05, both well inside the 95% limits of 6.5 and 8.7. It
 sits in the region the design covered, so the model's prediction there can be used as an inversion
 target. Most of the sixty runs also fall inside both limits. The exceptions, four beyond the
-:math:`T^2` limit and five beyond the SPE limit, are all compound F, and this follows from the
-sum-coding reference rather than from F's chemistry. Sum coding drops the last level, F, and
-represents it as the negative sum of the other contrasts, the corner of the contrast space farthest
-from the centre, so F runs read as both high leverage (:math:`T^2`, one at 26 against the limit of
-8.7) and less fully reconstructed (SPE). Change which level is dropped and the flags move with it:
-making B the reference sends B's runs past both limits by the same margin, while treatment or
-cell-means coding, where no level sits at that corner, leaves every compound inside. The goal check
-holds because A, the reference chromogen, is not the omitted level, so it projects to a low-leverage,
-well-reconstructed point in this parameterization.
+:math:`T^2` limit and five beyond the SPE limit, are all compound F. That grouping is a property of
+the sum coding used for the compound factor, not of F's chemistry: the :ref:`next section
+<profile-categorical-coding>` writes the same model three ways and shows the flag move from F to
+another level, or disappear, as the coding changes. The goal check is unaffected, because chromogen
+A, the reference, is never the omitted level, so it projects to a low-leverage, well-reconstructed
+point under every coding tried (its :math:`T^2` stays near or below 0.1 and its SPE between about 1
+and 2).
 
 .. figure:: ../figures/doe/colour-pls-t2-spe.png
     :align: center
@@ -1012,10 +1010,136 @@ well-reconstructed point in this parameterization.
     :alt: colour-pls-t2-spe.py
 
     Hotelling's :math:`T^2` against SPE for the sixty runs, with the 95% limits as dashed lines. A
-    run in the lower-left rectangle is within both. Several compound-F runs cross the limits, an
-    artifact of F being the omitted sum-coding level rather than a fault in those runs. The reference
-    goal, chromogen A at the centre point (asterisk), sits well inside both limits, so its predicted
-    profile can be used as an inversion target.
+    run in the lower-left rectangle is within both. Several compound-F runs cross the limits, a
+    consequence of F being the omitted sum-coding level rather than a fault in those runs. The
+    reference goal, chromogen A at the centre point (asterisk), sits well inside both limits, so its
+    predicted profile can be used as an inversion target.
+
+.. _profile-categorical-coding:
+
+Coding the categorical factor
+-----------------------------
+
+The compound has entered every model so far through sum-to-zero coding, written
+``C(compound, Sum)``. That is one of several ways to turn a categorical factor into numeric columns,
+and the choice has stayed in the background: the interaction F-tests did not depend on it, and the
+least-squares coefficients only divided the compound effect differently between the levels. The
+diagnostics just raised it directly, with every flagged run belonging to the omitted level. This
+section writes the same model three ways to separate what the coding changes from what it does not.
+
+Three codings of a six-level factor are in common use:
+
+- **Sum (effects) coding**, ``C(compound, Sum)``: each column is a compound's departure from the
+  average of all six. One level is omitted and carried as the negative sum of the other five
+  contrasts, so it has no column of its own and its runs sit at the corner of the contrast space
+  farthest from the centre.
+- **Treatment (reference) coding**, ``C(compound, Treatment)``: each column is a compound's
+  difference from a chosen reference level, here A. The reference is the all-zero row.
+- **Cell-means coding**, ``0 + C(compound)``: every compound has its own indicator column, with no
+  intercept and no omitted level.
+
+All three span the same model space: any fit written in one can be rewritten in the others, and a
+full-rank ordinary least squares fit returns the same predictions whichever is used. A small
+illustration, a three-level factor and one continuous factor, makes the point and shows where it
+stops holding:
+
+.. code-block:: python
+
+    rng = np.random.default_rng(0)
+    n = 30
+    g = np.array(["A"] * 11 + ["B"] * 10 + ["C"] * 9); rng.shuffle(g)
+    xcol = rng.normal(size=n)
+    truth = {"A": 0.0, "B": 1.0, "C": -0.5}
+    y = np.array([truth[v] for v in g]) + 0.7 * xcol + 0.1 * rng.normal(size=n)
+    demo = pd.DataFrame({"g": g, "x": xcol}); ydf = pd.DataFrame({"y": y})
+
+    X_sum = dmatrix("C(g, Sum) + x", demo, return_type="dataframe").drop(columns=["Intercept"])
+    X_trt = dmatrix("C(g, Treatment) + x", demo, return_type="dataframe").drop(columns=["Intercept"])
+    for a in (1, 2, 3):                 # three model terms, so three components is full rank
+        p_sum = PLS(n_components=a, scale=True).fit(X_sum, ydf).predictions_
+        p_trt = PLS(n_components=a, scale=True).fit(X_trt, ydf).predictions_
+        print(a, float(np.max(np.abs(np.asarray(p_sum) - np.asarray(p_trt)))))
+    # 1 -> 0.37, 2 -> 0.17, 3 -> 0.00
+
+The full-rank ordinary least squares predictions match to :math:`10^{-15}` across the two codings. A
+PLS kept at one or two components does not: its predictions differ by 0.37 and 0.17 between sum and
+treatment coding, and only at three components, which is full rank for a three-term model, do they
+agree. The reason is in how each method builds its fit. Ordinary least squares projects the response
+onto the column space of the model, and that subspace is the same for every coding, so the fitted
+values are identical. PLS builds its components to maximise the covariance between a score direction
+and the response; the leading directions depend on the actual numbers in the model matrix, which the
+coding sets, so a PLS truncated below full rank keeps a coding-specific summary. Centring and scaling
+a component model shift its fit in the same way, and for the same reason (Bro and Smilde, 2003, on
+centring and scaling in component analysis). At
+full rank the truncation is gone and PLS spans the same space as least squares, so the dependence
+disappears; below full rank it remains.
+
+The interaction model here keeps three of a possible twenty-four components, well below full rank, so
+the coding has an effect. Its cumulative :math:`R^2_Y` at three components is 0.88 under sum coding,
+0.90 under treatment coding, and 0.91 under cell-means coding: the same model space, but a
+rank-three truncation keeps a different part of it in each case.
+
+The clearest place to see the effect is the leverage diagnostic. Refitting the three-component model
+under each coding and reading Hotelling's :math:`T^2` per run:
+
+.. code-block:: python
+
+    rhs_sum = rhs                                       # C(compound, Sum)*... from earlier
+    rhs_trt = rhs.replace("Sum", "Treatment")
+    rhs_cell = ("0 + C(compound)*co_solvent + C(compound)*pH "
+                "+ C(compound)*temperature + concentration")
+
+    def fit_coding(formula, order=("A", "B", "C", "D", "E", "F")):
+        frame = adf.copy()
+        frame["compound"] = pd.Categorical(frame["compound"].astype(str), categories=list(order))
+        X = dmatrix(formula, frame, return_type="dataframe").drop(columns=["Intercept"], errors="ignore")
+        return PLS(n_components=3, scale=True).fit(X, curves)
+
+    panels = [("sum, F omitted", rhs_sum, ("A", "B", "C", "D", "E", "F")),
+              ("sum, A omitted", rhs_sum, ("F", "E", "D", "C", "B", "A")),
+              ("treatment, A reference", rhs_trt, ("A", "B", "C", "D", "E", "F")),
+              ("cell-means", rhs_cell, ("A", "B", "C", "D", "E", "F"))]
+
+    fig = make_subplots(rows=2, cols=2, subplot_titles=[p[0] for p in panels])
+    for k, (title, formula, order) in enumerate(panels):
+        model = fit_coding(formula, order)
+        t2 = model.hotellings_t2_.iloc[:, -1]
+        r, c = divmod(k, 2)
+        for comp in compounds:
+            sel = (adf["compound"] == comp).to_numpy()
+            fig.add_scatter(x=[comp] * int(sel.sum()), y=t2[sel], mode="markers",
+                            marker=dict(color=colour_of[comp]), row=r + 1, col=c + 1, showlegend=False)
+        fig.add_hline(y=model.hotellings_t2_limit(), line_dash="dash", row=r + 1, col=c + 1)
+    fig.show()
+
+Under sum coding with F omitted, the four runs past the 95% :math:`T^2` limit of 8.7 are all compound
+F, and the largest reaches 26. Omit A instead, by reversing the level order, and the flagged runs
+become compound A, at a :math:`T^2` up to 18, while F now sits inside. Under treatment or cell-means
+coding, where no level is written at the far corner of the contrast space, no run crosses the limit.
+The omitted level's runs are pushed out because sum coding places them at the :math:`(-1, \ldots, -1)`
+corner and ``scale=True`` then gives that corner column unit variance, raising its leverage; the
+effect belongs to the parameterization, and it moves with whichever level is omitted. This is why the
+diagnostics flagged F: F is the level sum coding drops, not a run the chemistry sets apart.
+
+.. figure:: ../figures/doe/colour-coding-diagnostics.png
+    :align: center
+    :width: 760px
+    :alt: colour-coding-diagnostics.py
+
+    Hotelling's :math:`T^2` for each run at three components, under four codings of the same
+    interaction model. The dashed line is the 95% limit (8.7). The runs over the limit follow the
+    omitted sum-coding level, F when F is dropped and A when A is dropped; treatment and cell-means
+    coding, which place no level at the far corner of the contrast space, flag none. The leverage is
+    a property of the coding, not of the chemistry.
+
+Two things do not move with the coding. The interaction F-tests and the full-rank least-squares
+coefficients are the same under all three, because they use the whole column space. And the goal
+projection stays inside both limits under every coding: chromogen A at the centre point is not an
+omitted level in any of them, so its :math:`T^2` stays near or below 0.1 and its SPE between about 1
+and 2. The goal check the inversion relies on does not depend on the choice.
+
+What does depend on it is any reading taken from the truncated score, including the model inversion
+in the next section, where the reachable set of candidates changes with the coding.
 
 Which compound matches the reference
 ------------------------------------
@@ -1104,13 +1228,13 @@ the reference profile:
         - no: concentration and pH above range
 
 The studied ranges are concentration 2 to 8 umol/L, co-solvent 5 to 25% v/v, pH 4.0 to 7.0, and
-temperature 15 to 35 degC. Chromogen B needs almost no change from the nominal centre: it already
-develops colour close to the reference. C and D need a moderate move, a higher pH and temperature,
-but stay inside the ranges. E and F cannot be brought onto the goal within the window: E needs a pH of
-7.7 and F a pH of 8.2 and a concentration of 8.7 umol/L, all beyond the values the experiment
-explored. The ordering, B then C and D then E and F, is the order of the late-time drift built into
-each compound, so the inversion recovers the same ranking the design was built to reveal, now as a
-set of concrete settings rather than a distance.
+temperature 15 to 35 degC. Chromogen B needs almost no change from the nominal centre. C and D need a
+moderate move, a higher pH and temperature, but stay inside the ranges. E and F fall outside the
+window: E at a pH of 7.7 and F at a pH of 8.2 and a concentration of 8.7 umol/L, beyond the values the
+experiment explored. This table is the inversion read under sum coding. Because the three-component
+score is coding-dependent, as the :ref:`coding section <profile-categorical-coding>` showed, so is
+the reachable set, and the paragraphs below repeat the inversion under the other codings and under a
+reading that does not depend on the coding at all.
 
 .. figure:: ../figures/doe/colour-pls-inversion.png
     :align: center
@@ -1140,9 +1264,74 @@ shaded:
 Inversion is non-unique, and this reports one member of the operating window, the smallest move from
 the nominal centre. A subject-matter expert might spend the free direction differently, for instance
 holding one factor fixed and solving for the rest, as the :ref:`product-development worked example
-<LVM_model_inversion_example>` does with a fixed hardness. The result is the same either way for the
-question asked here: B, C and D can be tuned to the reference colour development, and E and F cannot,
-not without moving outside the ranges the design covered.
+<LVM_model_inversion_example>` does with a fixed hardness. That freedom is a property of the score
+match under any coding; the reachable set, in contrast, moves with the coding.
+
+Repeating the score match under treatment and cell-means coding gives a different reachable set each
+time. Under sum coding B, C and D are inside the ranges; under treatment coding all five candidates
+are; under cell-means coding B, C, D and F are, while E is not. B, C and D are reachable under every
+coding, and E and F move in and out. The three codings answer the same question about the same data
+and return three different candidate lists.
+
+.. figure:: ../figures/doe/colour-coding-inversion.png
+    :align: center
+    :width: 720px
+    :alt: colour-coding-inversion.py
+
+    Which candidates can be brought onto the reference goal within the studied ranges, under four
+    ways of posing the inversion. The first three match the three-component score, one per coding, and
+    give three different reachable sets. The fourth matches the predicted ten-point curve at full
+    rank, which is the same under any coding, and places only F inside the ranges.
+
+A reading that does not depend on the coding matches the predicted curve rather than the score. The
+predicted ten-point profile is a full-rank quantity, identical under every coding, so requiring a
+candidate's predicted curve to reach the goal's gives one answer. The match is over-determined, ten
+time points against four factors, so it returns the least-squares closest curve:
+
+.. code-block:: python
+
+    from patsy import build_design_matrices
+
+    info_full = dmatrix(rhs, adf, return_type="dataframe")       # keep the intercept: full rank
+    beta = np.linalg.lstsq(info_full.to_numpy(), curves.to_numpy(), rcond=None)[0]
+
+    def curve_of(compound, coded):
+        row = pd.DataFrame({"compound": [compound], "concentration": [coded[0]],
+                            "co_solvent": [coded[1]], "pH": [coded[2]], "temperature": [coded[3]]})
+        x = build_design_matrices([info_full.design_info], row, return_type="dataframe")[0]
+        return x.to_numpy().ravel() @ beta
+
+    y_goal = curve_of("A", [0, 0, 0, 0])
+
+    def curve_match(compound):
+        y0 = curve_of(compound, [0, 0, 0, 0])
+        step = np.column_stack([
+            curve_of(compound, [float(k == j) for k in range(4)]) - y0 for j in range(4)])
+        coded, *_ = np.linalg.lstsq(step, y_goal - y0, rcond=None)
+        return coded            # coded [concentration, co_solvent, pH, temperature]
+
+    for c in ["B", "C", "D", "E", "F"]:
+        print(c, np.round(curve_match(c), 2))
+
+The curve match places only F inside the studied ranges, and only just: its pH sits at 7.0, the top
+of the window. B, C, D and E each need a factor beyond the ranges to bring their whole predicted curve
+onto the goal (B a co-solvent below 5% v/v and a pH below 4.0; C and D a pH near 8, with D also a
+co-solvent of 45% v/v; E a temperature near :math:`-28` degC). The score match and the curve match
+ask different questions. Matching a three-component score asks a candidate to reach a low-rank summary
+of the goal, which several candidates do with small moves; matching the full curve asks it to
+reproduce the whole profile, which the continuous factors mostly cannot, because they move the
+curve's amplitude while the compounds differ in late-time shape. Shape, not amplitude, is the binding
+constraint, which returns to the shape-distance ranking that opened the fourth question: B is closest
+to the reference in shape, then F, and no factor setting closes a shape gap.
+
+So the answer to which compound matches the reference is not read from the data alone; it depends on
+how the inversion is posed: the coding, the number of components, and whether the match is taken in
+the latent score or in the predicted response. Scoping the codings together, rather than fixing one
+at the outset, separates the conclusions that hold from those that move. The reading that holds is
+that the compounds differ in a curve shape the four continuous factors cannot reproduce, so no
+candidate is brought exactly onto the reference within the ranges, and B is nearest in shape. The
+reading that moves is the score-matching reachable set, a statement about a low-rank projection that
+changes with the coding.
 
 What the design and the library carried
 ---------------------------------------
@@ -1156,9 +1345,11 @@ coordinate-exchange optimiser, ``pyoptex``, which powers the I-optimal and split
 and is installed on its own.
 
 The study answered its questions from a single design: the three interactions are significant
-(objectives 1 to 3), inverting the model onto a reference goal shows that B, C and D can be tuned to
-develop colour like the reference while E and F cannot within the studied ranges (objective 4), and
-the fitted model over the continuous factors locates settings for a target colour intensity for the
-chosen compound (objective 5). The same design supported a scalar analysis of variance on the peak, a
-multivariate model of the full curve, and the inversion of that model back to factor settings,
-because the design was chosen for the model, not for a particular way of reducing the response.
+(objectives 1 to 3); inverting the model onto a reference goal shows that a low-rank score match
+makes B, C and D reachable within the ranges but that the reachable set depends on the categorical
+coding, while a coding-free curve match indicates the compounds differ in a shape the continuous
+factors cannot reproduce, leaving B nearest the reference (objective 4); and the fitted model over the
+continuous factors locates settings for a target colour intensity for the chosen compound (objective
+5). The same design supported a scalar analysis of variance on the peak, a multivariate model of the
+full curve, and the inversion of that model back to factor settings, because the design was chosen for
+the model, not for a particular way of reducing the response.
