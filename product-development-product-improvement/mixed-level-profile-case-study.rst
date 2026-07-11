@@ -1415,6 +1415,38 @@ to, inside the box or outside it, because their shape gap is too large for ampli
     marker), ordered by drift. B and F land within about one noise standard deviation of the reference,
     C within two; D and E cannot be brought closer than 2.6 times the noise.
 
+The developed part of the curve makes the accuracy plainer. Dropping the first time point, where
+every curve is near zero, and tightening the vertical axis to the plotted range (so it does not start
+at zero) shows each candidate's best inverted solution against the reference at the scale of the
+differences that remain:
+
+.. code-block:: python
+
+    def best_emulation(compound):                        # best amplitude for the compound's shape
+        shape = np.clip(ref + truth[compound][0] * tail, 0, None)   # truth[c][0] is the drift
+        return float(shape @ goal_curve / (shape @ shape)) * shape
+
+    fig = go.Figure()
+    fig.add_scatter(x=time_points[1:], y=goal_curve[1:], mode="lines+markers",
+                    name="A (reference)", line=dict(width=4, color="black"))
+    for c in ["B", "F", "C", "D", "E"]:                  # ordered by drift, closest first
+        fig.add_scatter(x=time_points[1:], y=best_emulation(c)[1:], mode="lines+markers", name=c)
+    fig.update_layout(xaxis_title="time point (t0 omitted)", yaxis_title="absorbance")
+    fig.show()
+
+At this scale B and F sit on the reference through the developed curve, and C stays within a narrow
+band; D and E separate at the tail, the late-time drift amplitude cannot remove.
+
+.. figure:: ../figures/doe/colour-emulation-detail.png
+    :align: center
+    :width: 680px
+    :alt: colour-emulation-detail.py
+
+    The developed part of the curve (t0 omitted, vertical axis tightened to the plotted range so it
+    excludes zero), showing each candidate's best inverted solution against the reference. B and F
+    track the reference across the whole developed curve; C stays close; D and E lift away at the
+    tail, by their late-time drift. The legend gives each candidate's RMSE to the reference.
+
 So the inversion does its job: for each candidate it finds settings that bring the curve as close to
 the reference as that candidate's shape allows, and the closed-loop check confirms this against the
 known truth. The ordering it recovers, B then F then C then D then E, is the late-time-drift ordering,
