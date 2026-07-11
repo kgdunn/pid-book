@@ -1380,7 +1380,7 @@ root-mean-square deviation from the reference at the best amplitude, orders the 
         - 0.015
         - 0.5
     *   - F
-        - −0.10
+        - -0.10
         - 0.031
         - 1.0
     *   - C
