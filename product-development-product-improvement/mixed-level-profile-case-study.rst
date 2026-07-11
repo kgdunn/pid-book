@@ -150,11 +150,12 @@ Judging the design before running it
 -------------------------------------
 
 Before any colour is measured, the design can be scored on how well it will support the model, using
-``evaluate_design`` on the same quadratic model. The D-efficiency summarises the information
-determinant :math:`|\mathbf{X}^T\mathbf{X}|`, higher being more information per run; the
-I-efficiency summarises the prediction variance averaged over the whole factor region, and the
-fraction-of-design-space (FDS) curve shows how that prediction variance is distributed, from the
-best-predicted point to the worst.
+``evaluate_design`` on the same quadratic model. The :ref:`D-efficiency
+<DOE-judging-and-comparing-designs>` summarises the information determinant
+:math:`|\mathbf{X}^T\mathbf{X}|`, higher being more information per run; the I-efficiency summarises
+the prediction variance averaged over the whole factor region, and the :ref:`fraction-of-design-space
+(FDS) curve <DOE-fds-plot>` shows how that prediction variance is distributed, from the best-predicted
+point to the worst.
 
 .. code-block:: python
 
@@ -181,7 +182,8 @@ best-predicted point to the worst.
                       yaxis_title="Scaled prediction variance")
     fig.show()
 
-Scoring the I-optimal and D-optimal designs at 48 and 60 runs lays out the trade-off. The
+Scoring the :ref:`I-optimal and D-optimal designs <DOE-optimal-designs>` at 48 and 60 runs lays out
+the trade-off. The
 I-optimal criterion minimizes the average prediction variance, and the D-optimal criterion
 maximizes the information determinant, so each design leads on its own criterion: the D-optimal
 design has the higher D-efficiency, and the I-optimal design has the higher I-efficiency and the
@@ -285,9 +287,9 @@ the shape difference the fourth question is about, and it is invisible in the en
     :width: 720px
     :alt: colour-development-curves.py
 
-    Mean colour-development curve for each chromogen. The curves rise together to about the fifth
-    time point, then diverge: the reference A and the analog B level off together, while D and E
-    keep developing colour and F drifts down.
+    Mean colour-development curve for each chromogen (A to C solid, D to F dashed). The curves rise
+    together to about the fifth time point, then diverge: the reference A and the analog B level off
+    together, while D and E keep developing colour and F drifts down.
 
 Modelling the profile with PLS
 ------------------------------
