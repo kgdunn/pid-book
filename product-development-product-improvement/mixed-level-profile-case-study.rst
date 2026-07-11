@@ -789,6 +789,158 @@ range.
     sum coding. Reference coding, measuring each compound against A, would widen the gap between the
     two fits.
 
+Scores and loadings of the interaction model
+--------------------------------------------
+
+The interaction model was fitted to the full ten-point curve once already, to read its
+:math:`R^2_Y` and :math:`Q^2_Y` by component. The coefficient comparison that followed reduced the
+response to the single peak, to line the coefficients up against ordinary least squares, and the
+score and loading plots shown so far were for the main-effects model. Fitting the interaction model
+to the full curve again, at the three components kept above, gives scores and loadings for the
+expanded model on the whole profile:
+
+.. code-block:: python
+
+    pls_full = PLS(n_components=3, scale=True).fit(X_int, curves)
+    print(pls_full.r2_cumulative_)             # 0.77, 0.85, 0.88
+
+    tscore = np.asarray(pls_full.scores_)      # X scores, one row per run
+    wstar = pls_full.direct_weights_           # W*: the 24 model terms
+    cw = pls_full.y_weights_                   # C: the ten time points
+
+    palette = ["#1f5fa8", "#c0392b", "#2e8b57", "#8e44ad", "#d68910", "#17a2b8"]
+    colour_of = dict(zip(compounds, palette))
+
+    # Score plot: four encodings on one point. Colour is the compound (as before); marker shape is
+    # the pH level (down triangle low, circle high); marker size grows with the concentration; and
+    # the co-solvent is an open, outline-only marker at the low setting and a filled marker at the
+    # high setting (the "-open" symbol suffix draws the outline only).
+    base = np.where(adf["pH"] < 0, "triangle-down", "circle")
+    symbol = np.where(adf["co_solvent"] < 0, np.char.add(base, "-open"), base)
+    size = 8 + 5 * (adf["concentration"] + 1)          # coded concentration in [-1, 1]
+
+    fig = make_subplots(rows=1, cols=2, subplot_titles=("scores", "W* and C loadings"))
+    for c in compounds:
+        m = (adf["compound"] == c).to_numpy()
+        fig.add_scatter(x=tscore[m, 0], y=tscore[m, 1], mode="markers", name=c, row=1, col=1,
+                        marker=dict(color=colour_of[c], symbol=symbol[m], size=size[m],
+                                    line=dict(width=1, color=colour_of[c])))
+
+    # Loadings: each compound term (main effect or interaction) takes its compound's colour, the
+    # other factor terms are black, and the ten time points are red.
+    def term_colour(name):
+        for c in compounds:
+            if f"[S.{c}]" in name:
+                return colour_of[c]
+        return "black"
+
+    fig.add_scatter(x=wstar.iloc[:, 0], y=wstar.iloc[:, 1], mode="markers+text",
+                    text=list(wstar.index), name="model term (W*)", row=1, col=2,
+                    marker=dict(color=[term_colour(t) for t in wstar.index]))
+    fig.add_scatter(x=cw.iloc[:, 0], y=cw.iloc[:, 1], mode="markers+text",
+                    text=list(cw.index), name="time point (C)", row=1, col=2,
+                    marker=dict(color="#c0392b"))
+    fig.show()
+
+The model keeps three components, the number chosen from the leave-one-out :math:`Q^2_Y` above:
+enough to carry the interactions without adding directions the cross-validation does not support.
+Taken over the ten time points jointly, its :math:`R^2_Y` is 0.88. A single joint number can hide a
+profile that is fitted well in some places and poorly in others, so it is worth reading the fit one
+time point at a time, which ``r2y_per_variable_`` gives directly (its last column is the cumulative
+:math:`R^2_Y` per response at the three-component model):
+
+.. code-block:: python
+
+    print(pls_full.r2y_per_variable_.iloc[:, -1].round(2))   # R2Y per time point, three components
+
+.. list-table:: :math:`R^2_Y` per time point for the three-component model
+    :widths: 30 20
+    :header-rows: 1
+
+    *   - Time point
+        - :math:`R^2_Y`
+    *   - t0
+        - 0.16
+    *   - t1
+        - 0.95
+    *   - t2
+        - 0.96
+    *   - t3
+        - 0.97
+    *   - t4
+        - 0.97
+    *   - t5
+        - 0.97
+    *   - t6
+        - 0.97
+    *   - t7
+        - 0.96
+    *   - t8
+        - 0.94
+    *   - t9
+        - 0.92
+
+From ``t1`` onward every point is explained to between 0.92 and 0.97; only ``t0`` is low, at 0.16. At
+``t0`` the colour has barely begun to form, so the absorbance is near zero and mostly measurement
+noise, with little systematic variation for any factor to explain. The developed part of the curve,
+which is what the study is about, is fitted well throughout; the joint 0.88 is held down by that one
+near-zero point.
+
+Colour still marks the compound, so the six chromogens are told apart as before. The added encoding
+puts three more factors on the same axes: the marker shape is the pH level (a down triangle for the
+low setting, a circle for the high setting), the marker size is proportional to the concentration (a
+larger marker is a higher concentration), and the marker fill marks the co-solvent (an open,
+outline-only marker at the low setting, a filled marker at the high). A single run now shows its
+compound together with its pH, concentration, and co-solvent at a glance, so the score plot can be
+read against the factors
+directly rather than by cross-referencing a separate table of run settings. In the loadings panel each
+compound term carries its compound's colour, so a compound and its interaction terms are followed
+across the plot; the continuous-factor terms are black and the response points red.
+
+Component 1 is again the amplitude direction, and the encoding shows what drives it. The
+concentration weight sits far out on component 1 with all ten time points, so a run's component-1
+score tracks how high its whole curve rises. The large markers (high concentration) fall to the right
+and the small markers to the left: the concentration and the first score correlate at 0.74, and the
+mean first score moves from :math:`-0.96` at the low concentration to :math:`+0.55` at the high. The
+down triangles (low pH) also lie to the right of the circles, because a lower pH raises the
+colour for this chelate; the mean first score is :math:`+0.58` at low pH against :math:`-0.33` at
+high. Reading shape and size together, the runs high on component 1 are the high-concentration,
+low-pH runs, which is where the deepest colour is expected.
+
+Component 2 carries only eight percent of the response variation, and the loadings place the
+compound-by-temperature terms at one end of it and the pH and concentration terms at the other, so it
+is a weaker, temperature-leaning direction. One run stands apart low on component 2: its encoding
+reads as compound F at the low pH and high concentration, an unusual corner of the region for that
+compound. A score plot is where such a run shows up, and the encoding names the run's settings
+without a lookup.
+
+.. figure:: ../figures/doe/colour-pls-interaction-scores-loadings.png
+    :align: center
+    :width: 780px
+    :alt: colour-pls-interaction-scores-loadings.py
+
+    Left: the first two PLS scores of the interaction model on the full curve, one point per run.
+    Colour is the chromogen, marker shape is the pH level (down triangle low, circle high), marker
+    size is proportional to the concentration, and the marker fill marks the co-solvent (open,
+    outline-only low; filled high). High-concentration and low-pH runs sit
+    to the right along component 1, the amplitude direction. Right: the W* weights for the 24 model
+    terms and the C weights for the ten time points on the same axes. Each compound term is coloured
+    like its compound in the score plot, the continuous-factor terms are black, and the time points
+    are red. Concentration and all ten time points sit together at high component 1; the
+    compound-by-temperature terms separate along component 2.
+
+A related route to a curve response takes a different order of operations. Functional data analysis,
+as offered in JMP Pro's Functional Data Explorer and its functional design of experiments, first
+fits each measured curve with a basis expansion (B-splines by default, with P-splines, a Fourier
+basis, or wavelets as alternatives), then reduces the fitted curves to a few *functional principal
+components*: uncorrelated shape functions whose per-curve scores summarise the profile. Those scores
+are modelled against the design factors, and because the components reconstruct the curve,
+predicting the scores predicts the whole profile. PLS reaches the profile in one step, finding
+latent directions that are at once predictable from the factors and descriptive of the response. The
+functional-data route separates the two steps: describe the curve shape first from the responses
+alone, then relate that description to the factors. Which is more convenient depends on the study;
+both return a model that maps the factors to a predicted curve.
+
 Which compound matches the reference
 ------------------------------------
 
