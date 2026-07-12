@@ -1383,9 +1383,9 @@ Adding a new chromogen
 ----------------------
 
 The six chromogens were fixed when the design was built. Suppose a seventh, G, becomes available
-after the study. Two practical questions follow: how does each coding take a new level in, and how
-many runs does it take to place G in the model. Writing the seven-level factor three ways shows what
-each coding does with it:
+after the study. Two practical questions follow: how does each of the three coding options we have
+seen take a new level in, and how many runs does it take to place G in the model. Writing the
+seven-level factor three ways shows what each coding does with it:
 
 .. code-block:: python
 
@@ -1394,6 +1394,78 @@ each coding does with it:
     for label, formula in [("sum", "C(compound, Sum)"), ("treatment", "C(compound, Treatment)"),
                            ("cell-means", "0 + C(compound)")]:
         print(label, list(dmatrix(formula, seven, return_type="dataframe").columns))
+
+.. list-table:: Does adding compound G force any re-coding of the existing sixty runs?
+    :widths: 12 14 12 14 12 14 12
+    :header-rows: 2
+
+    *   - Compound
+        - Sum (effects)
+        - Sum (effects)
+        - Treatment
+        - Treatment
+        - Cell-means
+        - Cell-means
+    *   -
+        - existing (1-60)
+        - after G
+        - existing (1-60)
+        - after G
+        - existing (1-60)
+        - after G
+    *   - A
+        - own
+        - own
+        - baseline
+        - baseline
+        - own
+        - own
+    *   - B
+        - own
+        - own
+        - own
+        - own
+        - own
+        - own
+    *   - C
+        - own
+        - own
+        - own
+        - own
+        - own
+        - own
+    *   - D
+        - own
+        - own
+        - own
+        - own
+        - own
+        - own
+    *   - E
+        - own
+        - own
+        - own
+        - own
+        - own
+        - own
+    *   - F
+        - omitted
+        - own
+        - own
+        - own
+        - own
+        - own
+    *   - G
+        - -
+        - omitted
+        - -
+        - own
+        - -
+        - own
+
+In the table, "own" is that compound's own contrast (sum, treatment) or indicator (cell-means),
+"baseline" is the treatment reference, and "-" marks a compound not yet in the model. Where a
+compound's entry changes between its two columns, the existing sixty rows must be re-coded.
 
 Each coding now has one more column, but they differ in what happens to the six compounds already in
 the model. Under cell-means a column for G appears, its own indicator, and the A-to-F indicators keep
@@ -1404,9 +1476,9 @@ belongs to F, which the six-level model had omitted. Every existing departure is
 an average that includes G, so all six are redefined. For carrying the fitted results forward,
 treatment and cell-means leave what is already known untouched; sum coding rewrites it.
 
-The number of new runs follows from how many terms G brings. The model gives each compound its own
-mean and its own slopes on co-solvent, pH and temperature, while the concentration slope is shared
-across compounds. So in the interaction model G carries four terms of its own: a mean and three
+The efficient route is to augment the existing design rather than start again. The number of new runs
+follows from how many terms G brings. The model gives each compound its own mean and its own slopes on
+co-solvent, pH and temperature, while the concentration slope is shared across compounds. So in the interaction model G carries four terms of its own: a mean and three
 interaction slopes. Four terms need at least four runs of G, placed so co-solvent, pH and temperature
 are not confounded (a four-run resolution-III fraction in the three factors, with concentration held
 at the centre since its slope is borrowed). Four runs estimate the four terms and leave nothing over
@@ -1416,12 +1488,74 @@ curvature.
 Those runs have to use G. None of the sixty existing runs did, so G's own mean and slopes cannot be
 read from them. What the sixty runs still provide is the shared concentration slope and a pooled
 estimate of the measurement error, and G borrows both: the shared slope carries over, and the pooled
-error tightens the tests on G's four terms from only a handful of runs. So the efficient route is to
-augment the existing design rather than start again. Holding the sixty runs fixed and adding a small
-G block is the ``fixed_runs`` (prior) path of the optimal-design construction: the new runs are
-placed to estimate G's terms with the least added variance, given what the sixty already cover. Under
-cell-means or treatment coding the sixty runs enter the refit unchanged; under sum coding the matrix
-is re-referenced first.
+error tightens the tests on G's four terms from only a handful of runs. Holding the sixty runs fixed
+and adding a small G block is the ``fixed_runs`` (prior) path of the optimal-design construction: the
+new runs are placed to estimate G's terms with the least added variance, given what the sixty already
+cover. Under cell-means or treatment coding the sixty runs enter the refit unchanged; under sum coding
+the matrix is re-referenced first.
+
+To see what the extra runs buy, hold the sixty runs fixed and add a G block of two sizes, the four-run
+minimum and the eight-run full factorial, then score each augmented design against the seven-level
+interaction model:
+
+.. code-block:: python
+
+    import itertools
+
+    base = design.design[["compound"] + list(cont)].astype({"compound": str})
+    res3 = [(-1, -1, 1), (1, -1, -1), (-1, 1, -1), (1, 1, 1)]  # four-run resolution-III fraction
+    full = list(itertools.product([-1, 1], repeat=3))  # eight-run full factorial (2**3)
+
+    def g_block(rows):  # compound G at the centre concentration
+        return pd.DataFrame([{"compound": "G", "concentration": 0.0,
+                              "co_solvent": a, "pH": b, "temperature": c} for a, b, c in rows])
+
+    for label, block in [("+4", g_block(res3)), ("+8", g_block(full))]:
+        aug = pd.concat([base, block], ignore_index=True)
+        m = evaluate_design(aug, model=rhs,
+                            metric=["d_efficiency", "i_efficiency", "g_efficiency", "fds"])
+        q = m["fds"]["quantiles"]
+        print(label, len(aug), round(m["d_efficiency"], 1), round(m["i_efficiency"]),
+              round(m["g_efficiency"], 1), round(q["0.5"], 2), round(q["1"], 2))
+    # +4 64 19.4 152 44.3 0.27 1.02
+    # +8 68 20.1 163 57.6 0.25 0.74
+
+.. list-table:: Design quality as compound G is added, scored against the seven-level interaction model
+    :widths: 30 16 16 16
+    :header-rows: 1
+
+    *   - Criterion
+        - Base (60, A-F)
+        - 60 + 4 G (64)
+        - 60 + 8 G (68)
+    *   - :math:`\uparrow` D-efficiency
+        - n/e
+        - 19.4
+        - 20.1
+    *   - :math:`\uparrow` I-efficiency
+        - n/e
+        - 152
+        - 163
+    *   - :math:`\uparrow` G-efficiency
+        - n/e
+        - 44.3
+        - 57.6
+    *   - :math:`\downarrow` FDS median
+        - n/e
+        - 0.27
+        - 0.25
+    *   - :math:`\downarrow` FDS max
+        - n/e
+        - 1.02
+        - 0.74
+
+The base design cannot be scored here (``n/e``, not estimable): with no G runs, G's four terms have
+all-zero columns and cannot be fitted, which is the reason to augment rather than restart. The
+four-run block makes them estimable but leaves a high worst-case prediction variance (FDS max near
+1.0) and no runs to spare for checking G's fit; the eight-run block improves every criterion and adds
+residual degrees of freedom. These efficiencies use the interaction model, not the quadratic model
+used to score the base design's quality, because the four-run count is a property of the smaller
+interaction model.
 
 One route needs no runs at all. If the chromogens carried measured molecular descriptors, a
 property-to-property model could place G from its structure, the statistical-molecular-design approach
