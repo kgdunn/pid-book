@@ -11,8 +11,8 @@ the :ref:`information matrix <DOE-optimal-designs>`, the :ref:`coordinate-exchan
 <DOE-exchange-algorithms>`, a :ref:`categorical factor with several levels
 <DOE-categorical-factors>`, and hard-to-change factors that force a split-plot run order. The
 analysis side uses a projection-to-latent-structures model, because the response is not a single
-number but a *curve*: ten correlated measurements that move together, which a latent-variable model
-handles directly where a separate regression per measurement would not.
+number but a *curve*: ten correlated measurements that move together. A latent-variable model fits
+them jointly; a separate regression per time point would ignore that they are correlated.
 
 The worked example runs end to end with the ``process_improve`` library. The coordinate-exchange
 optimiser is provided by ``pyoptex``, installed separately (``pip install pyoptex``); the rest is
@@ -153,9 +153,14 @@ Before any colour is measured, the design can be scored on how well it will supp
 ``evaluate_design`` on the same quadratic model. The :ref:`D-efficiency
 <DOE-judging-and-comparing-designs>` summarises the information determinant
 :math:`|\mathbf{X}^T\mathbf{X}|`, higher being more information per run; the I-efficiency summarises
-the prediction variance averaged over the whole factor region, and the :ref:`fraction-of-design-space
-(FDS) curve <DOE-fds-plot>` shows how that prediction variance is distributed, from the best-predicted
-point to the worst.
+the prediction variance averaged over the whole factor region, and the G-efficiency the single
+worst-predicted point in it. The :ref:`fraction-of-design-space (FDS) curve <DOE-fds-plot>` shows how
+that prediction variance is distributed, from the best-predicted point to the worst. Higher is better
+for all three, but they are normalized differently and are read down a column rather than across the
+row: D-efficiency scales as :math:`100\,|\mathbf{X}^T\mathbf{X}|^{1/p}/N`, while I- and G-efficiency
+scale as :math:`100\,p/(N\bar{v})` with :math:`p` model terms, :math:`N` runs, and :math:`\bar{v}`
+the average (or maximum) prediction variance, so the I-efficiency can read above 100 when the average
+variance is small.
 
 .. code-block:: python
 
@@ -231,8 +236,9 @@ lower prediction variance across the region.
 
     Fraction-of-design-space curves. Each curve reads as the fraction of the region (horizontal)
     whose scaled prediction variance is at or below a given level (vertical). The I-optimal design
-    at 60 runs is lowest and flattest; the D-optimal design at 48 runs is highest, with a long tail
-    of poorly-predicted points near the region's edge.
+    at 60 runs is lowest over most of the region; near the worst-case (right) end the D-optimal
+    design at 60 runs edges below it, matching its higher G-efficiency. The D-optimal design at 48
+    runs is highest, with a long tail of poorly-predicted points near the region's edge.
 
 The purpose here is to predict and compare colour across the whole factor region, not to estimate
 a single coefficient as precisely as possible, so the I-optimal criterion matches the goal, and the
@@ -369,9 +375,10 @@ the choice fixes what each compound coefficient means:
   B to F; a run of compound A is all zeros across them, carried by the intercept. Each coefficient
   is then that compound's **difference from A**: the change in colour from switching the chemical to
   that compound while every continuous factor, the concentration included, is held at the same value.
-- *Sum (effects) coding* keeps a contrast for each level but constrains the level effects to sum to
-  zero. Each coefficient is then that compound's **departure from the average compound**, and a
-  continuous factor's main effect is its average slope across the six compounds.
+- *Sum (effects) coding* keeps a contrast for each level but one (five for the six compounds), with
+  the level effects constrained to sum to zero, so the sixth is the negative sum of the other five.
+  Each coefficient is then that compound's **departure from the average compound**, and a continuous
+  factor's main effect is its average slope across the six compounds.
 
 Either way five numbers describe the compound, and the two codings fit the same model: the same
 predictions, the same :math:`R^2`, and the same interaction tests. Only the coefficients, and their
@@ -434,11 +441,8 @@ compounds that drift upward. A factor and a response point lying in the same dir
 factor raises the colour at those times.
 
 Compound A has no indicator column, so it has no point in the loadings plot. It is the reference
-level: each plotted compound weight, B to F, is that compound's difference from A (the main-effects
-model uses reference coding), and a run of compound A is described by the continuous-factor weights
-together with the block centre that ``scale=True`` removes. Compound A still appears in the score plot, since every run has a score
-whichever compound it used; it is only the compound *weight* for A that is absent, because the
-model measures the other five against it.
+level: each plotted compound weight, B to F, is that compound's difference from A. Compound A still
+appears in the score plot, since every run has a score; only its compound *weight* is absent.
 
 .. figure:: ../figures/doe/colour-pls-scores-loadings.png
     :align: center
@@ -587,7 +591,7 @@ the least-squares coefficients term by term:
     fig.add_scatter(x=coef["PLS"], y=coef.index, mode="markers", name="PLS")
     fig.show()
 
-The two sets of coefficients differ by at most 0.03 across the 24 terms. The concentration coefficient
+The two sets of coefficients differ by at most about 0.03 across the 24 terms. The concentration coefficient
 (about 0.40, it raises the peak for every compound) and the pH main effect (about :math:`-0.21`, the
 average pH slope) match the regression closely; the three-component PLS pulls a few of the smaller
 interaction terms toward zero, the shrinkage that comes from describing the response with fewer
@@ -901,9 +905,9 @@ Component 1 is again the amplitude direction, and the encoding shows what drives
 concentration weight sits far out on component 1 with all ten time points, so a run's component-1
 score tracks how high its whole curve rises. The large markers (high concentration) fall to the right
 and the small markers to the left: the concentration and the first score correlate at 0.74, and the
-mean first score moves from :math:`-0.96` at the low concentration to :math:`+0.55` at the high. The
+mean first score moves from :math:`-0.96` at the low concentration to :math:`+0.92` at the high. The
 down triangles (low pH) also lie to the right of the circles, because a lower pH raises the
-colour for this chelate; the mean first score is :math:`+0.58` at low pH against :math:`-0.33` at
+colour for this chelate; the mean first score is :math:`+0.58` at low pH against :math:`-0.53` at
 high. Reading shape and size together, the runs high on component 1 are the high-concentration,
 low-pH runs, which is where the deepest colour is expected.
 
@@ -945,10 +949,12 @@ Model diagnostics: SPE and Hotelling's T2
 -----------------------------------------
 
 Before the model is used to answer the fourth question, it is worth checking where its own runs sit
-relative to it. Two distances summarise that. Hotelling's :math:`T^2` measures how far a run lies
-from the centre *within* the model plane, scaled by the score spread; the squared prediction error
-(SPE) measures how far it lies *off* the plane, the part of the ten-point curve the three components
-do not reconstruct. Each has a 95% limit, from ``hotellings_t2_limit`` and ``spe_limit``.
+relative to it. Two diagnostics summarise that. Hotelling's :math:`T^2` measures how far a run lies
+from the centre *within* the model plane, scaled by the score spread. The squared prediction error
+(SPE) is the summed squared residual *off* the plane, the part of the ten-point curve the three
+components do not reconstruct; ``process_improve`` reports its square root in ``spe_``, so the SPE
+values quoted here are the run's off-plane distance on the absorbance scale. Each has a 95% limit,
+from ``hotellings_t2_limit`` and ``spe_limit``.
 
 New rows are needed here and in the inversion that follows, so a small helper builds a model-matrix
 row for one setting with the same coding as the fitted matrix:
@@ -999,10 +1005,11 @@ target. Most of the sixty runs also fall inside both limits. The exceptions, fou
 :math:`T^2` limit and five beyond the SPE limit, are all compound F. That grouping is a property of
 the sum coding used for the compound factor, not of F's chemistry: the :ref:`next section
 <profile-categorical-coding>` writes the same model three ways and shows the flag move from F to
-another level, or disappear, as the coding changes. The goal check is unaffected, because chromogen
-A, the reference, is never the omitted level, so it projects to a low-leverage, well-reconstructed
-point under every coding tried (its :math:`T^2` stays near or below 0.1 and its SPE between about 1
-and 2).
+another level, or disappear, as the coding changes. The goal check is unaffected: A is folded by none
+of the three codings used for the analysis (sum with F omitted, treatment against A, and cell-means),
+so chromogen A at the centre point projects to a low-leverage, well-reconstructed point under each
+(its :math:`T^2` stays near or below 0.1 and its SPE between about 1 and 2). Folding A on purpose, as
+one panel of the next section does, is what would flag it.
 
 .. figure:: ../figures/doe/colour-pls-t2-spe.png
     :align: center
@@ -1068,11 +1075,11 @@ agree. The reason is in how each method builds its fit. Ordinary least squares p
 onto the column space of the model, and that subspace is the same for every coding, so the fitted
 values are identical. PLS builds its components to maximise the covariance between a score direction
 and the response; the leading directions depend on the actual numbers in the model matrix, which the
-coding sets, so a PLS truncated below full rank keeps a coding-specific summary. Centring and scaling
-a component model shift its fit in the same way, and for the same reason (Bro and Smilde, 2003, on
-centring and scaling in component analysis). At
-full rank the truncation is gone and PLS spans the same space as least squares, so the dependence
-disappears; below full rank it remains.
+coding sets, so a PLS truncated below full rank keeps a coding-specific summary. Scaling the columns
+changes their relative variance, and so changes which covariance directions the early components take
+up; that centring and scaling are consequential choices in a component model, not neutral
+preprocessing, is the subject of Bro and Smilde (2003). At full rank the truncation is gone and PLS
+spans the same space as least squares, so the dependence disappears; below full rank it remains.
 
 The interaction model here keeps three of a possible twenty-four components, well below full rank, so
 the coding has an effect. Its cumulative :math:`R^2_Y` at three components is 0.88 under sum coding,
@@ -1116,10 +1123,11 @@ Under sum coding with F omitted, the four runs past the 95% :math:`T^2` limit of
 F, and the largest reaches 26. Omit A instead, by reversing the level order, and the flagged runs
 become compound A, at a :math:`T^2` up to 18, while F now sits inside. Under treatment or cell-means
 coding, where no level is written at the far corner of the contrast space, no run crosses the limit.
-The omitted level's runs are pushed out because sum coding places them at the :math:`(-1, \ldots, -1)`
-corner and ``scale=True`` then gives that corner column unit variance, raising its leverage; the
-effect belongs to the parameterization, and it moves with whichever level is omitted. This is why the
-diagnostics flagged F: F is the level sum coding drops, not a run the chemistry sets apart.
+The omitted level's runs carry :math:`-1` in every sum contrast, which places them at the
+:math:`(-1, \ldots, -1)` corner of the contrast space; ``scale=True`` puts the contrasts on a common
+scale, so those runs sit farthest from the centre and take the highest leverage. The effect belongs
+to the parameterization and moves with whichever level is omitted. This is why the diagnostics
+flagged F: F is the level sum coding drops, not a run the chemistry sets apart.
 
 .. figure:: ../figures/doe/colour-coding-diagnostics.png
     :align: center
@@ -1134,9 +1142,10 @@ diagnostics flagged F: F is the level sum coding drops, not a run the chemistry 
 
 Two things do not move with the coding. The interaction F-tests and the full-rank least-squares
 coefficients are the same under all three, because they use the whole column space. And the goal
-projection stays inside both limits under every coding: chromogen A at the centre point is not an
-omitted level in any of them, so its :math:`T^2` stays near or below 0.1 and its SPE between about 1
-and 2. The goal check the inversion relies on does not depend on the choice.
+projection stays inside both limits under all three: A is folded by none of them, so chromogen A at
+the centre point keeps its :math:`T^2` near or below 0.1 and its SPE between about 1 and 2. (Fold A
+instead, as the second panel does, and it would be flagged like any omitted level.) The goal check
+the inversion relies on does not depend on the choice among the three.
 
 The practical risk is a false alarm. A run past the :math:`T^2` or SPE limit is the usual signal to
 set that run aside, and here that signal falls on every run of the omitted level for a reason that
@@ -1160,7 +1169,8 @@ backwards, from a target score to the factors that reach it. The :ref:`product-d
 <LVM_model_inversion_example>` sets this out for a PCA model, using the loadings to map a target score
 to a recipe; here the same idea is applied to the PLS interaction model, with the compound held fixed
 and the continuous factors as the manipulated variables. The starting point for the method is Jaeckle
-and MacGregor's 1998 paper on product design through multivariate analysis of process data.
+and MacGregor's 1998 paper on product design through multivariate statistical analysis of process
+data.
 
 The forward map is ``pls_full.transform(X)``: it standardizes the model-matrix row and multiplies by
 the direct weights :math:`\mathbf{W}^*`. Holding the compound fixed makes this map affine in the four
@@ -1324,17 +1334,69 @@ time points against four factors, so it returns the least-squares closest curve:
 
 The curve match keeps F inside the studied box, and places the others outside it: B needs a
 co-solvent below 5% v/v and a pH below 4.0; C and D a pH near 8, with D also a co-solvent of 45% v/v;
-E a temperature near :math:`-28` degC. A setting outside the box is not disqualifying here. The design
-established the factor effects, so stepping a little past the studied region is a testable
-extrapolation, the explore side of a response-surface search, paid for by a larger prediction variance
-the farther out the setting sits. What a setting is worth is a separate question from whether it lies
-inside the box, and it is checked directly below by putting the settings through the known ground
-truth. The score match and the curve match ask different questions. Matching a three-component score
+E a temperature near :math:`-28` degC. A setting a modest step outside the box is not disqualifying:
+the design established the factor effects, so a small extrapolation is a testable next-run hypothesis,
+the explore side of a response-surface search, paid for by a larger prediction variance the farther
+out the setting sits. Several of these settings, though, are far outside the region, D at a co-solvent
+of 45% v/v and E at a temperature near :math:`-28` degC (below the freezing point of an aqueous
+system), and that they land so far out is itself a sign the amplitude-only continuous factors cannot
+reproduce those shapes. What a setting is worth is a separate question from whether it lies inside the
+box, and it is checked directly below by putting the settings through the known ground truth. The
+score match and the curve match ask different questions. Matching a three-component score
 asks a candidate to reach a low-rank summary of the goal, which several candidates do with small
 moves; matching the full curve asks it to reproduce the whole profile, which the continuous factors
 mostly cannot, because they move the curve's amplitude while the compounds differ in late-time shape.
 Shape, not amplitude, is the binding constraint, which returns to the shape-distance ranking that
 opened the fourth question: B is closest to the reference in shape, then F.
+
+Adding a new chromogen
+----------------------
+
+The six chromogens were fixed when the design was built. Suppose a seventh, G, becomes available
+after the study. Two practical questions follow: how does each coding take a new level in, and how
+many runs does it take to place G in the model. Writing the seven-level factor three ways shows what
+each coding does with it:
+
+.. code-block:: python
+
+    seven = pd.DataFrame({"compound": ["A", "B", "C", "D", "E", "F", "G"],
+                          "co_solvent": 0.0, "pH": 0.0, "temperature": 0.0, "concentration": 0.0})
+    for label, formula in [("sum", "C(compound, Sum)"), ("treatment", "C(compound, Treatment)"),
+                           ("cell-means", "0 + C(compound)")]:
+        print(label, list(dmatrix(formula, seven, return_type="dataframe").columns))
+
+Each coding now has one more column, but they differ in what happens to the six compounds already in
+the model. Under cell-means a column for G appears, its own indicator, and the A-to-F indicators keep
+their values. Under treatment coding a column for G appears too, the contrast of G against the
+reference A, and the existing contrasts keep their meaning. Under sum coding no column for G appears
+at all: G becomes the folded level, carried as the negative sum of the others, and the new column
+belongs to F, which the six-level model had folded. Every existing departure is now measured against
+an average that includes G, so all six are redefined. For carrying the fitted results forward,
+treatment and cell-means leave what is already known untouched; sum coding rewrites it.
+
+The number of new runs follows from how many terms G brings. The model gives each compound its own
+mean and its own slopes on co-solvent, pH and temperature, while the concentration slope is shared
+across compounds. So in the interaction model G carries four terms of its own: a mean and three
+interaction slopes. Four terms need at least four runs of G, placed so co-solvent, pH and temperature
+are not confounded (a four-run resolution-III fraction in the three factors, with concentration held
+at the centre since its slope is borrowed). Four runs estimate the four terms and leave nothing over
+to check them; six to eight give a residual degree of freedom or two to test the fit and show any
+curvature.
+
+Those runs have to use G. None of the sixty existing runs did, so G's own mean and slopes cannot be
+read from them. What the sixty runs still provide is the shared concentration slope and a pooled
+estimate of the measurement error, and G borrows both: the shared slope carries over, and the pooled
+error tightens the tests on G's four terms from only a handful of runs. So the efficient route is to
+augment the existing design rather than start again. Holding the sixty runs fixed and adding a small
+G block is the ``fixed_runs`` (prior) path of the optimal-design construction: the new runs are
+placed to estimate G's terms with the least added variance, given what the sixty already cover. Under
+cell-means or treatment coding the sixty runs enter the refit unchanged; under sum coding the matrix
+is re-referenced first.
+
+One route needs no runs at all. If the chromogens carried measured molecular descriptors, a
+property-to-property model could place G from its structure, the statistical-molecular-design
+approach of Muteki and MacGregor. Here the compounds are unordered categories with no descriptors, so
+each one is independent and G is known only once it is run.
 
 Checking the inversion against the known ground truth
 -----------------------------------------------------
@@ -1413,9 +1475,9 @@ to, inside the box or outside it, because their shape gap is too large for ampli
     early and separate at the tail, by their late-time drift. Right: the emulation error against the
     measurement-noise scale, each candidate's best attainable match (open marker) and what the
     coding-invariant curve-match inversion reaches when its real-unit settings are put through the
-    ground truth (filled marker), ordered by drift. B and F land within about one noise standard
-    deviation of the reference, C within two; D and E cannot be brought closer than 2.6 times the
-    noise.
+    ground truth (filled marker), ordered by drift. B lands within about half a noise standard
+    deviation of the reference and F within one and a half, C within two; D and E no closer than 2.6
+    times the noise.
 
 The developed part of the curve makes the accuracy plainer. Dropping the first time point, where
 every curve is near zero, and tightening the vertical axis to the plotted range (so it does not start
@@ -1449,17 +1511,16 @@ band; D and E separate at the tail, the late-time drift amplitude cannot remove.
     track the reference across the whole developed curve; C stays close; D and E lift away at the
     tail, by their late-time drift. The legend gives each candidate's RMSE to the reference.
 
-So the inversion does its job: for each candidate it finds settings that bring the curve as close to
-the reference as that candidate's shape allows, and the closed-loop check confirms this against the
-known truth. The ordering it recovers, B then F then C then D then E, is the late-time-drift ordering,
-the shape difference the fourth question was built around.
+So the inversion does its job: for each candidate it finds the settings that bring the curve as close
+to the reference as that candidate's shape allows, recovering the drift ordering B, F, C, D, E.
 
 One variant of the inversion is worth ruling out. The inversions above hold each candidate on the
 goal's projection, matching its three-component score or its predicted curve, so each solution sits
-close to the model plane. Muteki and MacGregor (2007) instead pose the inversion as an optimization
-that minimizes the distance to the target while keeping Hotelling's :math:`T^2` and the SPE below
-their limits, letting the solution float off the plane rather than lie on it. Allowing that here,
-with :math:`T^2` and SPE free to rise to their 95% limits, does not bring any candidate below its
+close to the model plane. Muteki and MacGregor (2007) pose the inversion as a constrained
+optimization: minimize the distance to the target subject to Hotelling's :math:`T^2` and the SPE
+staying below their limits, so the solution may float off the model plane. Their objective drives the
+latent score to the target; here it drives the predicted curve, under the same :math:`T^2` and SPE
+constraints. With both free to rise to their 95% limits, it does not bring any candidate below its
 best attainable match:
 
 .. code-block:: python
@@ -1472,7 +1533,7 @@ best attainable match:
         d = pls_full.diagnose(encode(compound, *coded))
         return float(d.hotellings_t2.iloc[0]), float(d.spe.iloc[0])
 
-    def relaxed_inversion(compound):                 # Muteki and MacGregor (2007), their equation 5
+    def relaxed_inversion(compound):                 # constrained inversion (Muteki-MacGregor 2007)
         objective = lambda c: float(np.sum((y_goal - curve_of(compound, c)) ** 2))
         limits = [{"type": "ineq", "fun": lambda c: t2_lim - t2_spe(compound, c)[0]},
                   {"type": "ineq", "fun": lambda c: spe_lim - t2_spe(compound, c)[1]}]
@@ -1484,22 +1545,21 @@ best attainable match:
         print(c, round(float(rmse), 3))              # 0.016  0.058  0.094  0.100  0.043
 
 Each relaxed solution lands at or above its candidate's best attainable match (B at 0.016 and D at
-0.094, whose best matches are 0.015 and 0.079), while its SPE rises to the 6.5 limit and its
-settings leave the studied ranges. Pinning the two hard-to-change factors, temperature and co-solvent, at the
-centre and re-optimizing over concentration and pH alone gives the same result. The off-plane
-freedom the continuous factors can reach is amplitude, not shape, so it cannot close a compound's
-late-time drift:
-the closest attainable curve stays the projection of the target, which is Muteki and MacGregor's
-feasibility condition.
+0.094, against best matches of 0.015 and 0.079), while its SPE rises to the 6.5 limit and its
+settings leave the studied ranges. Pinning the two hard-to-change factors, temperature and
+co-solvent, at the centre and re-optimizing over concentration and pH alone gives the same result.
+The off-plane freedom the continuous factors reach is amplitude, not shape, so it cannot close a
+compound's late-time drift: the closest attainable curve stays the projection of the target onto the
+model plane, which is Muteki and MacGregor's feasibility condition.
 
 Read together, the answer to which compound matches the reference is not one candidate but a graded
 ranking, and it depends on how the question is posed. The score match returns a binary reachable set
 that changes with the coding and with where the studied box is drawn, a statement about a low-rank
 projection. The curve match, checked against the ground truth, gives the reading that holds: the
-candidates line up by their fixed curve shape, with B and F reproducing the reference to within about
-the measurement noise, C to within roughly twice it, and D and E not reproducible however the factors
-are set. F is not singled out; it sits second behind B, which the shape-distance ranking said at the
-start.
+candidates line up by their fixed curve shape, with B reproducing the reference to within about half
+the measurement noise and F to within roughly one and a half times it, C to within twice, and D and E
+not reproducible however the factors are set. F is not singled out; it sits second behind B, which the
+shape-distance ranking said at the start.
 
 What the design and the library carried
 ---------------------------------------
@@ -1514,8 +1574,9 @@ and is installed on its own.
 
 The study answered its questions from a single design: the three interactions are significant
 (objectives 1 to 3); inverting the model onto a reference goal, then checking the inverted settings
-against the known ground truth, ranks the candidates by their fixed curve shape, with B and F
-reproducing the reference to within about the measurement noise and C to within roughly twice it,
+against the known ground truth, ranks the candidates by their fixed curve shape, with B and F the
+closest matches (B to within about half the measurement noise, F to within one and a half) and C to
+within twice it,
 while the low-rank score match's binary reachable set was found to depend on the categorical coding
 (objective 4); and the fitted model over the continuous factors locates settings for a target colour
 intensity for the chosen compound (objective 5). The same design supported a scalar analysis of variance on the peak, a multivariate model of the
