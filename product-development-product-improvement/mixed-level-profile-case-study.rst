@@ -8,22 +8,20 @@ This case study draws the :ref:`design-and-analysis-of-experiments
 <SECTION_latent_variable_modelling>` chapters together on one problem and carries it from the first
 design decision to the final answer. A laboratory has a working colour reagent, under review on cost
 and stability, and five candidate replacements. **The question is which candidate develops colour the
-same way as the incumbent, and at what process settings.** Answering it needs both halves of the book:
-a design that can support the model, and a model that fits a curve rather than a single number.
+same way as the incumbent, and at what process settings.** Answering it needs both a design that can
+support the model, and a model that fits a curve rather than a single number.
 
 The design is a sixty-run split-plot over a six-level categorical factor, the compound, and four
 continuous process factors, built with the :ref:`information matrix <DOE-optimal-designs>`, the
 :ref:`coordinate-exchange search <DOE-exchange-algorithms>`, a :ref:`categorical factor with several
 levels <DOE-categorical-factors>`, and hard-to-change factors that force the run order. The response
 is a ten-point colour-development curve, modelled with projection to latent structures so the
-correlated time points are fitted jointly. From there the study tests the compound-by-factor
-interactions, inverts the model, including a constrained inversion that lets the target float off the
-model plane, to read which candidate reaches the incumbent's curve and at what settings, and closes
-on what it would take to bring a seventh compound into the same model.
+correlated time points are fitted jointly. From there the study checks if each continuous factor
+interacts with the chemical compound, inverts the model, including a constrained inversion that lets
+the target float off the model plane, to read which candidate reaches the incumbent's curve and at
+what settings, and closes on what it would take to bring a seventh compound into the same model.
 
-The worked example runs end to end with the ``process_improve`` library. The response here is
-simulated from a known ground truth, so the effects the analysis recovers can be checked against the
-values that were put in; in a real study the same code reads measured data in place of the simulation.
+The worked example runs end to end with the ``process_improve`` library.
 
 The problem
 -----------
@@ -35,7 +33,7 @@ mixing to plateau, so each run yields a ten-point **colour-development curve**. 
 reach the same final absorbance yet differ in how quickly the colour forms and whether it keeps
 drifting at long times, so the whole curve, not its endpoint, is the response.
 
-The incumbent chromogen works but is under review on cost and shelf-stability grounds. Five
+The incumbent chromogen works but is under review on cost and shelf-stability grounds. Five cheaper
 candidate analogs are screened against it. The categorical factor is therefore the compound
 identity, at six levels, a reference plus five single-substituent analogs of one scaffold:
 
@@ -62,7 +60,9 @@ Four continuous process factors act alongside the compound. Two of them, the co-
 and the temperature, are slow to reset between runs (the co-solvent needs re-equilibration, the
 bath needs to settle), so a fully randomized order is impractical and the design is run as a
 split-plot: the two hard-to-change factors are held over a block of runs (a whole plot) while the
-easy-to-change factors are reset within it.
+easy-to-change factors are reset within it. Switching between chromogens is quick, just a different
+reagent, so the compound is an easy-to-change factor and is reset freely within each whole plot
+rather than held across it.
 
 .. list-table:: The four continuous factors
     :widths: 22 20 22 20
@@ -92,8 +92,9 @@ easy-to-change factors are reset within it.
 The study has five questions. The first three ask whether a process factor acts *differently*
 depending on which compound is used, that is, whether there is a compound-by-factor interaction on
 colour intensity, for the co-solvent, the pH, and the temperature in turn. The fourth asks which
-candidate's colour-development *shape* stays closest to the reference. The fifth asks what settings
-deliver a target colour intensity for the chosen compound.
+chemical compound's colour-development *shape* stays closest to the reference. The fifth asks which
+process setting changes compensate for each compound so that they can each deliver a desired target
+colour intensity.
 
 Building the design
 -------------------
@@ -118,10 +119,16 @@ installed separately with ``pip install pyoptex``.
     from process_improve.experiments import Factor, generate_design
 
     compounds = list("ABCDEF")
-    cont = {"concentration": (2.0, 8.0), "co_solvent": (5.0, 25.0),
-            "pH": (4.0, 7.0), "temperature": (15.0, 35.0)}
+    cont = {
+        "concentration": (2.0, 8.0),
+        "co_solvent": (5.0, 25.0),
+        "pH": (4.0, 7.0),
+        "temperature": (15.0, 35.0),
+    }
     factors = [Factor(name="compound", type="categorical", levels=compounds)] + [
-        Factor(name=n, type="continuous", low=lo, high=hi) for n, (lo, hi) in cont.items()]
+        Factor(name=n, type="continuous", low=lo, high=hi)
+        for n, (lo, hi) in cont.items()
+    ]
 
     np.random.seed(42)  # the coordinate exchange draws its restarts from the global RNG
     design = generate_design(factors, design_type="i_optimal", budget=60,
@@ -156,8 +163,8 @@ split-plot is meant to produce.
 Judging the design before running it
 -------------------------------------
 
-Before any colour is measured, the design can be scored on how well it will support the model, using
-``evaluate_design`` on the same quadratic model. The :ref:`D-efficiency
+Before a single experiment is even run, the design can be scored on how well it will support the
+model, using ``evaluate_design`` on the same quadratic model. The :ref:`D-efficiency
 <DOE-judging-and-comparing-designs>` summarises the information determinant
 :math:`|\mathbf{X}^T\mathbf{X}|`, higher being more information per run; the I-efficiency summarises
 the prediction variance averaged over the whole factor region, and the G-efficiency the single
@@ -195,11 +202,10 @@ variance is small.
     fig.show()
 
 Scoring the :ref:`I-optimal and D-optimal designs <DOE-optimal-designs>` at 48 and 60 runs lays out
-the trade-off. The
-I-optimal criterion minimizes the average prediction variance, and the D-optimal criterion
-maximizes the information determinant, so each design leads on its own criterion: the D-optimal
-design has the higher D-efficiency, and the I-optimal design has the higher I-efficiency and the
-lower prediction variance across the region.
+the trade-off. The I-optimal criterion minimizes the average prediction variance, and the D-optimal
+criterion maximizes the joint precision of all coefficients in the model, so each design leads on its
+own criterion: the D-optimal design has the higher D-efficiency, and the I-optimal design has the
+higher I-efficiency and the lower prediction variance across the region.
 
 .. list-table:: Design quality by criterion and run count (quadratic model)
     :widths: 26 14 14 14 16 16
@@ -265,8 +271,8 @@ reference, has no late drift; the analogs drift by varying amounts.
 
     time_points = np.arange(10)
     noise_sd = 0.03  # measurement-noise standard deviation
-    ref = 1.0 - np.exp(-time_points / 2.0);        ref = ref / ref.max()
-    tail = np.clip((time_points - 4) / 5.0, 0, None);  tail = tail / tail.max()
+    ref = 1.0 - np.exp(-time_points / 2.0); ref = ref / ref.max()
+    tail = np.clip((time_points - 4) / 5.0, 0, None); tail = tail / tail.max()
 
     # ground truth: late-time drift, and amplitude slopes for co-solvent, pH, temperature
     truth = {
@@ -506,24 +512,29 @@ the compound-by-pH term is the strongest (:math:`F = 28`, :math:`p = 2 \times 10
 compound-by-temperature (:math:`F = 18`) and compound-by-co-solvent (:math:`F = 15`), each with
 :math:`p < 10^{-7}`.
 
-Each of those interaction terms is not a single coefficient but five. Sum-to-zero coding gives each of
-the six compounds a departure from the average, and the sixth is fixed by the other five, so a
-compound-by-factor interaction carries five free coefficients, one short of the six compounds. The
-F-test is a single joint test of all five at once: it weighs the drop in the residual sum of squares
-when the five interaction coefficients are added against the residual that remains, so a significant F
-says the compounds' slopes on that factor are not all equal, without pointing to which compound
-differs. There is no universal F cutoff: the threshold depends on the numerator degrees of freedom
-(five here), the residual degrees of freedom, and the significance level. All three joint tests clear
-it well. This answers the first three questions: the process factors do act differently across
-compounds, which is how the response was constructed. As the :ref:`categorical-factor section
+.. admonition:: An interaction term is a joint test of five coefficients
+
+    Each of those interaction terms is not a single coefficient but five. Sum-to-zero coding gives
+    each of the six compounds a departure from the average, and the sixth is fixed by the other five,
+    so a compound-by-factor interaction carries five free coefficients, one short of the six
+    compounds. The F-test is a single joint test of all five at once: it weighs the drop in the
+    residual sum of squares when the five interaction coefficients are added against the residual that
+    remains, so a significant F says the compounds' slopes on that factor are not all equal, without
+    pointing to which compound differs. There is no universal F cutoff: the threshold depends on the
+    numerator degrees of freedom (five here), the residual degrees of freedom, and the significance
+    level. All three joint tests clear it well.
+
+These three significant interactions answer the first three questions: the process factors do act
+differently across compounds, which is how the response was constructed. As the
+:ref:`categorical-factor section
 <DOE-categorical-factors>` noted, these interaction terms are also what make a robust operating point
 reachable, a setting where the compounds give nearly the same colour, which the fifth question would
 search for.
 
-The same interaction terms can be handed to PLS with the peak as its single response. Building the
-model matrix from the formula right-hand side (dropping the intercept, since ``PLS`` centres the
-columns) and fitting three components, its ``beta_coefficients_`` line up against the least-squares
-coefficients term by term:
+The same interaction terms can be modelled with a PLS model, using the peak as its single response.
+Building the model matrix from the formula right-hand side (dropping the intercept, since ``PLS``
+centres the columns) and fitting three components, its ``beta_coefficients_`` line up against the
+least-squares coefficients term by term:
 
 .. code-block:: python
 
@@ -1824,21 +1835,20 @@ A single design, several questions
 One run of ``generate_design`` produced a sixty-run split-plot design over a six-level categorical
 factor and four continuous factors, scored for prediction variance with ``evaluate_design``, and the
 ten-point response was modelled with ``PLS`` and reduced to interaction tests with
-``analyze_experiment``, all through the documented public interface with no hand-built indicator
-matrices or manual coding.
+``analyze_experiment``, all through the documented public interface with no manual coding.
 
 The study answered several questions from a single design:
 
-- the three compound-by-factor interactions are significant (objectives 1 to 3);
-- inverting the model onto a reference goal, then checking the recovered settings against the known
-  ground truth, ranked the candidates by their fixed curve shape: compound B matched to within about
-  half the measurement noise and compound F to within one and a half (objective 4);
+- all interactions of the chemical compound with the continuous process variables were significant
+  (objectives 1 to 3);
+- the process for inverting the model to achieve a desired colour curve was shown; since we also had
+  the known ground truth, we could verify the result, with compound B matching to within about half
+  the measurement noise and compound F to within one and a half (objective 4);
 - the choice of categorical coding changed which candidates the low-rank score match declared
-  reachable, so we compared the sum, reference, and cell-means codings and how each is interpreted;
+  reachable, so we compared the sum, reference, and cell-means codings and how each was interpreted;
 - a new compound was introduced as an extra level of the categorical factor, augmenting the original
   sixty runs rather than repeating them.
 
-The same design supported a scalar analysis of variance on the peak, a multivariate model of the full
-curve, and the inversion of that model back to factor settings, because the design was chosen for the
-model, not for a particular way of reducing the response. Choose the design for the model, not for one
-reading of the response, and one set of runs will answer questions you have not yet thought to ask.
+The same design also supported several other analyses, including a comparison between the
+least-squares analysis of variance and PLS. Choose the design for the most flexible model, and you can
+then answer questions you have not yet thought to ask.
