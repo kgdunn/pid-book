@@ -119,10 +119,16 @@ installed separately with ``pip install pyoptex``.
     from process_improve.experiments import Factor, generate_design
 
     compounds = list("ABCDEF")
-    cont = {"concentration": (2.0, 8.0), "co_solvent": (5.0, 25.0),
-            "pH": (4.0, 7.0), "temperature": (15.0, 35.0)}
+    cont = {
+        "concentration": (2.0, 8.0),
+        "co_solvent": (5.0, 25.0),
+        "pH": (4.0, 7.0),
+        "temperature": (15.0, 35.0),
+    }
     factors = [Factor(name="compound", type="categorical", levels=compounds)] + [
-        Factor(name=n, type="continuous", low=lo, high=hi) for n, (lo, hi) in cont.items()]
+        Factor(name=n, type="continuous", low=lo, high=hi)
+        for n, (lo, hi) in cont.items()
+    ]
 
     np.random.seed(42)  # the coordinate exchange draws its restarts from the global RNG
     design = generate_design(factors, design_type="i_optimal", budget=60,
@@ -157,8 +163,8 @@ split-plot is meant to produce.
 Judging the design before running it
 -------------------------------------
 
-Before any colour is measured, the design can be scored on how well it will support the model, using
-``evaluate_design`` on the same quadratic model. The :ref:`D-efficiency
+Before a single experiment is even run, the design can be scored on how well it will support the
+model, using ``evaluate_design`` on the same quadratic model. The :ref:`D-efficiency
 <DOE-judging-and-comparing-designs>` summarises the information determinant
 :math:`|\mathbf{X}^T\mathbf{X}|`, higher being more information per run; the I-efficiency summarises
 the prediction variance averaged over the whole factor region, and the G-efficiency the single
