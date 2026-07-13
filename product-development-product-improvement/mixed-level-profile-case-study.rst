@@ -1510,17 +1510,19 @@ interaction model:
         return pd.DataFrame([{"compound": "G", "concentration": 0.0,
                               "co_solvent": a, "pH": b, "temperature": c} for a, b, c in rows])
 
-    for label, block in [("+4", g_block(res3)), ("+8", g_block(full))]:
+    for label, block in [("base", base.iloc[:0]),  # base has no G: patsy fits the six-level model
+                         ("+4", g_block(res3)), ("+8", g_block(full))]:
         aug = pd.concat([base, block], ignore_index=True)
         m = evaluate_design(aug, model=rhs,
                             metric=["d_efficiency", "i_efficiency", "g_efficiency", "fds"])
         q = m["fds"]["quantiles"]
         print(label, len(aug), round(m["d_efficiency"], 1), round(m["i_efficiency"]),
               round(m["g_efficiency"], 1), round(q["0.5"], 2), round(q["1"], 2))
-    # +4 64 19.4 152 44.3 0.27 1.02
-    # +8 68 20.1 163 57.6 0.25 0.74
+    # base 60 23.6 159 56.3 0.25 0.74
+    # +4   64 19.4 152 44.3 0.27 1.02
+    # +8   68 20.1 163 57.6 0.25 0.74
 
-.. list-table:: Design quality as compound G is added, scored against the seven-level interaction model
+.. list-table:: Design quality before and after adding compound G (interaction model)
     :widths: 30 16 16 16
     :header-rows: 1
 
@@ -1529,32 +1531,42 @@ interaction model:
         - 60 + 4 G (64)
         - 60 + 8 G (68)
     *   - :math:`\uparrow` D-efficiency
-        - n/e
+        - 23.6\*
         - 19.4
         - 20.1
     *   - :math:`\uparrow` I-efficiency
-        - n/e
+        - 159
         - 152
         - 163
     *   - :math:`\uparrow` G-efficiency
-        - n/e
+        - 56.3
         - 44.3
         - 57.6
     *   - :math:`\downarrow` FDS median
-        - n/e
+        - 0.25
         - 0.27
         - 0.25
     *   - :math:`\downarrow` FDS max
-        - n/e
+        - 0.74
         - 1.02
         - 0.74
 
-The base design cannot be scored here (``n/e``, not estimable): with no G runs, G's four terms have
-all-zero columns and cannot be fitted, which is the reason to augment rather than restart. The
-four-run block makes them estimable but leaves a high worst-case prediction variance (FDS max near
-1.0) and no runs to spare for checking G's fit; the eight-run block improves every criterion and adds
-residual degrees of freedom. These efficiencies use the interaction model, not the quadratic model
-used to score the base design's quality, because the four-run count is a property of the smaller
+The base column scores the six-level interaction model (24 terms); with no G runs it cannot estimate
+the seven-level model at all, which is the reason to augment rather than start again. The +4 and +8
+columns score that seven-level model (28 terms), so the base and augmented columns carry a different
+number of parameters and are not directly comparable.
+
+The asterisk on the base D-efficiency marks that gap: the apparent fall from 23.6 to 20.1 is the move
+from 24 to 28 parameters, not a design that got worse. It is worth recalling what the two criteria
+measure. D-optimality maximizes the information determinant :math:`|\mathbf{X}^T\mathbf{X}|`, which
+sharpens the coefficient estimates; I-optimality minimizes the prediction variance averaged over the
+factor region. The aim here is to predict the colour-development curve across that region, not to pin
+down coefficients as precisely as possible, so the I-efficiency is the column to watch.
+
+On the I-efficiency the eight-run block (163) edges the four-run block (152); it also lowers the
+worst-case prediction variance (FDS max 0.74 against 1.02) and buys residual degrees of freedom to
+check G's fit. These numbers use the interaction model throughout, so they are not comparable to the
+quadratic-model scores of the six-level design; the four-run count itself is a property of the smaller
 interaction model.
 
 One route needs no runs at all. If the chromogens carried measured molecular descriptors, a
