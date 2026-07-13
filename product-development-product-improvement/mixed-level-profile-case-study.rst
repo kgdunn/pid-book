@@ -60,7 +60,7 @@ Four continuous process factors act alongside the compound. Two of them, the co-
 and the temperature, are slow to reset between runs (the co-solvent needs re-equilibration, the
 bath needs to settle), so a fully randomized order is impractical and the design is run as a
 split-plot: the two hard-to-change factors are held over a block of runs (a whole plot) while the
-easy-to-change factors are reset within it. Switching between chromogens is quick, just a different
+easy-to-change factors are reset within it. Switching between compounds is quick, just a different
 reagent, so the compound is an easy-to-change factor and is reset freely within each whole plot
 rather than held across it.
 
@@ -848,7 +848,7 @@ noise, with little systematic variation for any factor to explain. The developed
 which is what the study is about, is fitted well throughout; the joint 0.88 is held down by that one
 near-zero point.
 
-Colour still marks the compound, so the six chromogens are told apart as before. The added encoding
+Colour still marks the compound, so the six compounds are told apart as before. The added encoding
 puts three more factors on the same axes: the marker shape is the pH level (a down triangle for the
 low setting, a circle for the high setting), the marker size is proportional to the concentration (a
 larger marker is a higher concentration), and the marker fill marks the co-solvent (an open,
@@ -869,7 +869,7 @@ colour for this chelate; the mean first score is :math:`+0.58` at low pH against
 high. Reading shape and size together, the runs high on component 1 are the high-concentration,
 low-pH runs, which is where the deepest colour is expected.
 
-Component 2 carries only eight percent of the response variation, and the loadings place the
+Component 2 carries only 8% of the response variation, and the loadings place the
 compound-by-temperature terms at one end of it and the pH and concentration terms at the other, so it
 is a weaker, temperature-leaning direction. One run stands apart low on component 2: its encoding
 reads as compound F at the low pH and high concentration, an unusual corner of the region for that
@@ -931,8 +931,8 @@ row for one setting with the same coding as the fitted matrix:
                             "temperature": [temperature]})
         return build_design_matrices([info], row, return_type="dataframe")[0].drop(columns=["Intercept"])
 
-The fourth question asks which candidate develops colour like the reference chromogen A. To make that
-precise, take chromogen A at the centre point, the nominal mid-range value of every continuous factor,
+The fourth question asks which candidate develops colour like the reference compound A. To make that
+precise, take compound A at the centre point, the nominal mid-range value of every continuous factor,
 as the *goal*: the colour-development profile to reproduce. Projecting the goal onto the model gives
 its score and its own SPE and :math:`T^2`, so it can be checked the same way as any run before it is
 used. The projection is ``diagnose``, which returns the scores, SPE, :math:`T^2` and predicted curve
@@ -973,7 +973,7 @@ target. Most of the sixty runs also fall inside both limits. The exceptions, fou
 surprisingly, a property of the sum-based coding used for the compound, not of F particularly. The
 :ref:`next section <profile-categorical-coding>` writes the same model in three different ways and
 shows the outliers move from F to another level, or disappear, as the coding changes. No matter which
-coding is used, we find chromogen A projects to a low-leverage, well-reconstructed point (its
+coding is used, we find compound A projects to a low-leverage, well-reconstructed point (its
 :math:`T^2` stays near or below 0.1 and its SPE between about 1 and 2).
 
 .. figure:: ../figures/doe/colour-pls-t2-spe.png
@@ -1127,7 +1127,7 @@ choice.
 
 Two things do not move with the coding. The interaction F-tests and the full-rank least-squares
 coefficients are the same under all three, because they use the whole column space. And the goal
-projection stays inside both limits under all three: A is omitted by none of them, so chromogen A at
+projection stays inside both limits under all three: A is omitted by none of them, so compound A at
 the centre point keeps its :math:`T^2` near or below 0.1 and its SPE between about 1 and 2. (Omit A
 instead, as the second panel does, and it would be flagged like any omitted level.) The goal check
 the inversion relies on does not depend on the choice among the three.
@@ -1151,14 +1151,13 @@ inversion in the next section, where the reachable set of candidates changes wit
 Which compound matches the reference
 ------------------------------------
 
-We see the six compounds behave differently, yet we want to compensate in the four continuous factors
-to make each compound behave with the same output as compound A. As you might expect, as long as you
-have degrees of freedom, there are multiple ways you can achieve this.
+The six compounds develop colour differently, and the goal is to compensate with the four continuous
+factors so that each one reproduces compound A's output. With degrees of freedom to spare, many
+settings could do this.
 
-Yet, if there is one key theme from this book, it is this: do not do this by trial and error. Let us
-use a systematic approach, which we call model inversion.
-
-Run the models backwards, going from the desired output (or goal) to the input factors needed.
+One theme runs through this book: do not search for them by trial and error. The systematic
+alternative is model inversion, running the model backwards from the desired output (the goal) to the
+input factors that produce it.
 
 The :ref:`product-development chapter <LVM_model_inversion_example>` sets this out for a PCA model,
 using the loadings to map a target score to a recipe; here the same idea is applied to the PLS
@@ -1191,8 +1190,6 @@ one free direction, the operating window; the least-squares solution is the mini
 the nominal centre.
 
 .. code-block:: python
-
-    import numpy as np
 
     t_goal = pls_full.transform(goal_x).to_numpy().ravel()
 
@@ -1355,8 +1352,6 @@ least-squares closest match gives a coding-invariant reading:
 
 .. code-block:: python
 
-    from patsy import build_design_matrices
-
     info_full = dmatrix(rhs, adf, return_type="dataframe")  # keep the intercept: full rank
     beta = np.linalg.lstsq(info_full.to_numpy(), curves.to_numpy(), rcond=None)[0]
 
@@ -1393,7 +1388,7 @@ shape-distance ranking: B is closest to the reference, then F.
 Adding a new chromogen
 ----------------------
 
-The six chromogens were fixed when the design was built. Suppose a seventh, G, becomes available
+The six compounds were fixed when the design was built. Suppose a seventh, G, becomes available
 after the study. Two practical questions follow: how does each of the three coding options we have
 seen take a new level in, and how many runs does it take to place G in the model. Writing the
 seven-level factor three ways shows what each coding does with it:
@@ -1489,8 +1484,9 @@ treatment and cell-means leave what is already known untouched; sum coding rewri
 
 The efficient route is to augment the existing design rather than start again. The number of new runs
 follows from how many terms G brings. The model gives each compound its own mean and its own slopes on
-co-solvent, pH and temperature, while the concentration slope is shared across compounds. So in the interaction model G carries four terms of its own: a mean and three
-interaction slopes. Four terms need at least four runs of G, placed so co-solvent, pH and temperature
+co-solvent, pH and temperature, while the concentration slope is shared across compounds. So in the
+interaction model G carries four terms of its own: a mean and three interaction slopes. Four terms
+need at least four runs of G, placed so co-solvent, pH and temperature
 are not confounded (a four-run resolution-III fraction in the three factors, with concentration held
 at the centre since its slope is borrowed). Four runs estimate the four terms and leave nothing over
 to check them; six to eight give a residual degree of freedom or two to test the fit and show any
@@ -1580,7 +1576,7 @@ check G's fit. These numbers use the interaction model throughout, so they are n
 quadratic-model scores of the six-level design; the four-run count itself is a property of the smaller
 interaction model.
 
-One route needs no runs at all. If the chromogens carried measured molecular descriptors, a
+One route needs no runs at all. If the compounds carried measured molecular descriptors, a
 property-to-property model could place G from its structure, the statistical-molecular-design approach
 of `Muteki and MacGregor
 <https://literature.learnche.org/item/170/sequential-design-of-mixture-experiments-for-the-development-of-new-products>`__.
@@ -1748,13 +1744,12 @@ compound's late-time drift: the closest attainable curve stays the projection of
 model plane, which is Muteki and MacGregor's feasibility condition.
 
 Read together, the answer to which compound matches the reference is not one candidate but a graded
-ranking, and it depends on how the question is posed. The score match returns a binary reachable set
-that changes with the coding and with where the studied box is drawn, a statement about a low-rank
+ranking that depends on how the question is posed. The score match returns a binary reachable set that
+changes with the coding and with where the studied box is drawn, a statement about a low-rank
 projection. The curve match, checked against the ground truth, gives the reading that holds: the
-candidates line up by their fixed curve shape, with B reproducing the reference to within about half
-the measurement noise and F to within roughly one and a half times it, C to just over twice, and D and
-E not reproducible however the factors are set. F is not singled out; it sits second behind B, which
-the shape-distance ranking said at the start.
+candidates line up by their fixed curve shape, B closest and F next, then C, with D and E not
+reproducible however the factors are set. F is not singled out; it sits second behind B, as the
+shape-distance ranking said at the start.
 
 The model that generated the data
 ---------------------------------
