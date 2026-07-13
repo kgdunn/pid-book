@@ -34,8 +34,9 @@ reach the same final absorbance yet differ in how quickly the colour forms and w
 drifting at long times, so the whole curve, not its endpoint, is the response.
 
 The incumbent chromogen works but is under review on cost and shelf-stability grounds. Five
-candidate analogs are screened against it. The categorical factor is therefore the compound
-identity, at six levels, a reference plus five single-substituent analogs of one scaffold:
+candidate analogs, each a possible replacement, are compared against it. The categorical factor is
+therefore the compound identity, at six levels, a reference plus five single-substituent analogs of
+one scaffold:
 
 .. list-table:: The six chromogens (categorical factor ``compound``)
     :widths: 12 60
