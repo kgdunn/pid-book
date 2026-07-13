@@ -1842,5 +1842,3 @@ The same design supported a scalar analysis of variance on the peak, a multivari
 curve, and the inversion of that model back to factor settings, because the design was chosen for the
 model, not for a particular way of reducing the response. Choose the design for the model, not for one
 reading of the response, and one set of runs will answer questions you have not yet thought to ask.
-The coordinate-exchange optimiser, ``pyoptex``, which powers the I-optimal and split-plot
-construction, is currently the one piece installed on its own.
