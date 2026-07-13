@@ -531,10 +531,10 @@ differently across compounds, which is how the response was constructed. As the
 reachable, a setting where the compounds give nearly the same colour, which the fifth question would
 search for.
 
-The same interaction terms can be handed to PLS with the peak as its single response. Building the
-model matrix from the formula right-hand side (dropping the intercept, since ``PLS`` centres the
-columns) and fitting three components, its ``beta_coefficients_`` line up against the least-squares
-coefficients term by term:
+The same interaction terms can be modelled with a PLS model, using the peak as its single response.
+Building the model matrix from the formula right-hand side (dropping the intercept, since ``PLS``
+centres the columns) and fitting three components, its ``beta_coefficients_`` line up against the
+least-squares coefficients term by term:
 
 .. code-block:: python
 
