@@ -8,7 +8,7 @@ This case study draws the :ref:`design-and-analysis-of-experiments
 <SECTION_latent_variable_modelling>` chapters together on one problem and carries it from the first
 design decision to the final answer. A laboratory has a working colour reagent, under review on cost
 and stability, and five candidate replacements. **The question is which candidate develops colour the
-same way as the incumbent, and at what process settings.** Answering it needs both: a design that can
+same way as the incumbent, and at what process settings.** Answering it needs both a design that can
 support the model, and a model that fits a curve rather than a single number.
 
 The design is a sixty-run split-plot over a six-level categorical factor, the compound, and four
@@ -16,10 +16,10 @@ continuous process factors, built with the :ref:`information matrix <DOE-optimal
 :ref:`coordinate-exchange search <DOE-exchange-algorithms>`, a :ref:`categorical factor with several
 levels <DOE-categorical-factors>`, and hard-to-change factors that force the run order. The response
 is a ten-point colour-development curve, modelled with projection to latent structures so the
-correlated time points are fitted jointly. From there the study tests the compound-by-factor
-interactions, inverts the model, including a constrained inversion that lets the target float off the
-model plane, to read which candidate reaches the incumbent's curve and at what settings, and closes
-on what it would take to bring a seventh compound into the same model.
+correlated time points are fitted jointly. From there the study checks if each continuous factor
+interacts with the chemical compound, inverts the model, including a constrained inversion that lets
+the target float off the model plane, to read which candidate reaches the incumbent's curve and at
+what settings, and closes on what it would take to bring a seventh compound into the same model.
 
 The worked example runs end to end with the ``process_improve`` library. The response here is
 simulated from a known ground truth, so the effects the analysis recovers can be checked against the
