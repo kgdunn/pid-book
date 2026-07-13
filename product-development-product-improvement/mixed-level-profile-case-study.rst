@@ -60,7 +60,9 @@ Four continuous process factors act alongside the compound. Two of them, the co-
 and the temperature, are slow to reset between runs (the co-solvent needs re-equilibration, the
 bath needs to settle), so a fully randomized order is impractical and the design is run as a
 split-plot: the two hard-to-change factors are held over a block of runs (a whole plot) while the
-easy-to-change factors are reset within it.
+easy-to-change factors are reset within it. Switching between chromogens is quick, just a different
+reagent, so the compound is an easy-to-change factor and is reset freely within each whole plot
+rather than held across it.
 
 .. list-table:: The four continuous factors
     :widths: 22 20 22 20
@@ -90,8 +92,9 @@ easy-to-change factors are reset within it.
 The study has five questions. The first three ask whether a process factor acts *differently*
 depending on which compound is used, that is, whether there is a compound-by-factor interaction on
 colour intensity, for the co-solvent, the pH, and the temperature in turn. The fourth asks which
-chemical compound's colour-development *shape* stays closest to the reference. The fifth asks what
-settings deliver a target colour intensity for the chosen compound.
+chemical compound's colour-development *shape* stays closest to the reference. The fifth asks which
+process setting changes compensate for each compound so that they can each deliver a desired target
+colour intensity.
 
 Building the design
 -------------------
