@@ -202,11 +202,10 @@ variance is small.
     fig.show()
 
 Scoring the :ref:`I-optimal and D-optimal designs <DOE-optimal-designs>` at 48 and 60 runs lays out
-the trade-off. The
-I-optimal criterion minimizes the average prediction variance, and the D-optimal criterion
-maximizes the information determinant, so each design leads on its own criterion: the D-optimal
-design has the higher D-efficiency, and the I-optimal design has the higher I-efficiency and the
-lower prediction variance across the region.
+the trade-off. The I-optimal criterion minimizes the average prediction variance, and the D-optimal
+criterion maximizes the joint precision of all coefficients in the model, so each design leads on its
+own criterion: the D-optimal design has the higher D-efficiency, and the I-optimal design has the
+higher I-efficiency and the lower prediction variance across the region.
 
 .. list-table:: Design quality by criterion and run count (quadratic model)
     :widths: 26 14 14 14 16 16
