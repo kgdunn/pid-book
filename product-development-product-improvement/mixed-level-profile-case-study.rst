@@ -271,8 +271,8 @@ reference, has no late drift; the analogs drift by varying amounts.
 
     time_points = np.arange(10)
     noise_sd = 0.03  # measurement-noise standard deviation
-    ref = 1.0 - np.exp(-time_points / 2.0);        ref = ref / ref.max()
-    tail = np.clip((time_points - 4) / 5.0, 0, None);  tail = tail / tail.max()
+    ref = 1.0 - np.exp(-time_points / 2.0); ref = ref / ref.max()
+    tail = np.clip((time_points - 4) / 5.0, 0, None); tail = tail / tail.max()
 
     # ground truth: late-time drift, and amplitude slopes for co-solvent, pH, temperature
     truth = {
@@ -512,16 +512,21 @@ the compound-by-pH term is the strongest (:math:`F = 28`, :math:`p = 2 \times 10
 compound-by-temperature (:math:`F = 18`) and compound-by-co-solvent (:math:`F = 15`), each with
 :math:`p < 10^{-7}`.
 
-Each of those interaction terms is not a single coefficient but five. Sum-to-zero coding gives each of
-the six compounds a departure from the average, and the sixth is fixed by the other five, so a
-compound-by-factor interaction carries five free coefficients, one short of the six compounds. The
-F-test is a single joint test of all five at once: it weighs the drop in the residual sum of squares
-when the five interaction coefficients are added against the residual that remains, so a significant F
-says the compounds' slopes on that factor are not all equal, without pointing to which compound
-differs. There is no universal F cutoff: the threshold depends on the numerator degrees of freedom
-(five here), the residual degrees of freedom, and the significance level. All three joint tests clear
-it well. This answers the first three questions: the process factors do act differently across
-compounds, which is how the response was constructed. As the :ref:`categorical-factor section
+.. admonition:: An interaction term is a joint test of five coefficients
+
+    Each of those interaction terms is not a single coefficient but five. Sum-to-zero coding gives
+    each of the six compounds a departure from the average, and the sixth is fixed by the other five,
+    so a compound-by-factor interaction carries five free coefficients, one short of the six
+    compounds. The F-test is a single joint test of all five at once: it weighs the drop in the
+    residual sum of squares when the five interaction coefficients are added against the residual that
+    remains, so a significant F says the compounds' slopes on that factor are not all equal, without
+    pointing to which compound differs. There is no universal F cutoff: the threshold depends on the
+    numerator degrees of freedom (five here), the residual degrees of freedom, and the significance
+    level. All three joint tests clear it well.
+
+These three significant interactions answer the first three questions: the process factors do act
+differently across compounds, which is how the response was constructed. As the
+:ref:`categorical-factor section
 <DOE-categorical-factors>` noted, these interaction terms are also what make a robust operating point
 reachable, a setting where the compounds give nearly the same colour, which the fifth question would
 search for.
