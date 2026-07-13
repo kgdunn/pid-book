@@ -33,10 +33,9 @@ mixing to plateau, so each run yields a ten-point **colour-development curve**. 
 reach the same final absorbance yet differ in how quickly the colour forms and whether it keeps
 drifting at long times, so the whole curve, not its endpoint, is the response.
 
-The incumbent chromogen works but is under review on cost and shelf-stability grounds. Five
-candidate analogs, each a possible replacement, are compared against it. The categorical factor is
-therefore the compound identity, at six levels, a reference plus five single-substituent analogs of
-one scaffold:
+The incumbent chromogen works but is under review on cost and shelf-stability grounds. Five cheaper
+candidate analogs are screened against it. The categorical factor is therefore the compound
+identity, at six levels, a reference plus five single-substituent analogs of one scaffold:
 
 .. list-table:: The six chromogens (categorical factor ``compound``)
     :widths: 12 60
@@ -91,8 +90,8 @@ easy-to-change factors are reset within it.
 The study has five questions. The first three ask whether a process factor acts *differently*
 depending on which compound is used, that is, whether there is a compound-by-factor interaction on
 colour intensity, for the co-solvent, the pH, and the temperature in turn. The fourth asks which
-candidate's colour-development *shape* stays closest to the reference. The fifth asks what settings
-deliver a target colour intensity for the chosen compound.
+chemical compound's colour-development *shape* stays closest to the reference. The fifth asks what
+settings deliver a target colour intensity for the chosen compound.
 
 Building the design
 -------------------
