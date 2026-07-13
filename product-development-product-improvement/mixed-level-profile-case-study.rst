@@ -1824,8 +1824,7 @@ A single design, several questions
 One run of ``generate_design`` produced a sixty-run split-plot design over a six-level categorical
 factor and four continuous factors, scored for prediction variance with ``evaluate_design``, and the
 ten-point response was modelled with ``PLS`` and reduced to interaction tests with
-``analyze_experiment``, all through the documented public interface with no hand-built indicator
-matrices or manual coding.
+``analyze_experiment``, all through the documented public interface with no manual coding.
 
 The study answered several questions from a single design:
 
