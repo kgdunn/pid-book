@@ -1818,24 +1818,29 @@ then co-solvent) as the interaction F-tests. The recovered coefficients are depa
 average compound rather than the raw slopes, so they do not equal the table entries term for term, but
 their signs and relative sizes track it.
 
-What the design and the library carried
----------------------------------------
+A single design, several questions
+----------------------------------
 
 One run of ``generate_design`` produced a sixty-run split-plot design over a six-level categorical
 factor and four continuous factors, scored for prediction variance with ``evaluate_design``, and the
 ten-point response was modelled with ``PLS`` and reduced to interaction tests with
 ``analyze_experiment``, all through the documented public interface with no hand-built indicator
-matrices or manual coding. The one piece that lives outside the standard install is the
-coordinate-exchange optimiser, ``pyoptex``, which powers the I-optimal and split-plot construction
-and is installed on its own.
+matrices or manual coding.
 
-The study answered its questions from a single design: the three interactions are significant
-(objectives 1 to 3); inverting the model onto a reference goal, then checking the inverted settings
-against the known ground truth, ranks the candidates by their fixed curve shape, with B and F the
-closest matches (B to within about half the measurement noise, F to within one and a half) and C to
-just over twice it, while the low-rank score match's reachable set was found to depend on the
-categorical coding (objective 4); and the fitted model over the continuous factors locates settings
-for a target colour intensity for the chosen compound (objective 5). The same design supported a
-scalar analysis of variance on the peak, a multivariate model of the full curve, and the inversion of
-that model back to factor settings, because the design was chosen for the model, not for a particular
-way of reducing the response.
+The study answered several questions from a single design:
+
+- the three compound-by-factor interactions are significant (objectives 1 to 3);
+- inverting the model onto a reference goal, then checking the recovered settings against the known
+  ground truth, ranked the candidates by their fixed curve shape: compound B matched to within about
+  half the measurement noise and compound F to within one and a half (objective 4);
+- the choice of categorical coding changed which candidates the low-rank score match declared
+  reachable, so we compared the sum, reference, and cell-means codings and how each is interpreted;
+- a new compound was introduced as an extra level of the categorical factor, augmenting the original
+  sixty runs rather than repeating them.
+
+The same design supported a scalar analysis of variance on the peak, a multivariate model of the full
+curve, and the inversion of that model back to factor settings, because the design was chosen for the
+model, not for a particular way of reducing the response. Choose the design for the model, not for one
+reading of the response, and one set of runs will answer questions you have not yet thought to ask.
+The coordinate-exchange optimiser, ``pyoptex``, which powers the I-optimal and split-plot
+construction, is currently the one piece installed on its own.
