@@ -1828,7 +1828,8 @@ ten-point response was modelled with ``PLS`` and reduced to interaction tests wi
 
 The study answered several questions from a single design:
 
-- the three compound-by-factor interactions are significant (objectives 1 to 3);
+- all interactions of the chemical compound with the continuous process variables are significant
+  (objectives 1 to 3);
 - inverting the model onto a reference goal, then checking the recovered settings against the known
   ground truth, ranked the candidates by their fixed curve shape: compound B matched to within about
   half the measurement noise and compound F to within one and a half (objective 4);
