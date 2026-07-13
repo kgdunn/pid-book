@@ -8,8 +8,8 @@ This case study draws the :ref:`design-and-analysis-of-experiments
 <SECTION_latent_variable_modelling>` chapters together on one problem and carries it from the first
 design decision to the final answer. A laboratory has a working colour reagent, under review on cost
 and stability, and five candidate replacements. **The question is which candidate develops colour the
-same way as the incumbent, and at what process settings.** Answering it needs both halves of the book:
-a design that can support the model, and a model that fits a curve rather than a single number.
+same way as the incumbent, and at what process settings.** Answering it needs both: a design that can
+support the model, and a model that fits a curve rather than a single number.
 
 The design is a sixty-run split-plot over a six-level categorical factor, the compound, and four
 continuous process factors, built with the :ref:`information matrix <DOE-optimal-designs>`, the
