@@ -1828,17 +1828,16 @@ ten-point response was modelled with ``PLS`` and reduced to interaction tests wi
 
 The study answered several questions from a single design:
 
-- all interactions of the chemical compound with the continuous process variables are significant
+- all interactions of the chemical compound with the continuous process variables were significant
   (objectives 1 to 3);
-- inverting the model onto a reference goal, then checking the recovered settings against the known
-  ground truth, ranked the candidates by their fixed curve shape: compound B matched to within about
-  half the measurement noise and compound F to within one and a half (objective 4);
+- the process for inverting the model to achieve a desired colour curve was shown; since we also had
+  the known ground truth, we could verify the result, with compound B matching to within about half
+  the measurement noise and compound F to within one and a half (objective 4);
 - the choice of categorical coding changed which candidates the low-rank score match declared
-  reachable, so we compared the sum, reference, and cell-means codings and how each is interpreted;
+  reachable, so we compared the sum, reference, and cell-means codings and how each was interpreted;
 - a new compound was introduced as an extra level of the categorical factor, augmenting the original
   sixty runs rather than repeating them.
 
-The same design supported a scalar analysis of variance on the peak, a multivariate model of the full
-curve, and the inversion of that model back to factor settings, because the design was chosen for the
-model, not for a particular way of reducing the response. Choose the design for the model, not for one
-reading of the response, and one set of runs will answer questions you have not yet thought to ask.
+The same design also supported several other analyses, including a comparison between the
+least-squares analysis of variance and PLS. Choose the design for the most flexible model, and you can
+then answer questions you have not yet thought to ask.
