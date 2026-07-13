@@ -662,10 +662,7 @@ are omitted):
 
 The PLS point falls inside the :math:`\pm` one-standard-error band for all but two of the 24 terms
 (the largest gap is 1.4 standard errors), so the low-rank shrinkage is small next to the estimation
-uncertainty. On this single peak response least squares and PLS are interchangeable. Among the terms
-not shown, four compound-specific temperature and co-solvent slopes are not resolved individually at
-this run count (p-values from 0.07 to 0.37), though the joint F-test found the interaction present for
-the set.
+uncertainty. On this single peak response least squares and PLS are interchangeable.
 
 The interaction model on the full curve
 ---------------------------------------
