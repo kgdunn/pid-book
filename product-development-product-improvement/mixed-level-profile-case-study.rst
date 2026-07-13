@@ -21,9 +21,7 @@ interacts with the chemical compound, inverts the model, including a constrained
 the target float off the model plane, to read which candidate reaches the incumbent's curve and at
 what settings, and closes on what it would take to bring a seventh compound into the same model.
 
-The worked example runs end to end with the ``process_improve`` library. The response here is
-simulated from a known ground truth, so the effects the analysis recovers can be checked against the
-values that were put in; in a real study the same code reads measured data in place of the simulation.
+The worked example runs end to end with the ``process_improve`` library.
 
 The problem
 -----------
