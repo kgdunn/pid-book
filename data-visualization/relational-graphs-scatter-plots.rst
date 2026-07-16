@@ -54,7 +54,7 @@ You will see this in industrial settings as well. The next time you go into an i
 Further improvements can be made to your scatter plots. For example, extend the frames only as far as your data, and add a :index:`regression line <pair: regression line; scatter plot>` where appropriate:
 
 	.. image:: ../figures/visualization/scatterplot-figures-with-regression-lines.png
-		:scale: 75
+		:scale: 30
 
 You can add box plots and histograms to the side of the axes to aid interpretation:
 
