@@ -282,7 +282,7 @@ wheels = [
 
 [[package]]
 name = "pid-book"
-version = "0.2.5"
+version = "0.2.7"
 source = { virtual = "." }
 dependencies = [
     { name = "sphinx" },
