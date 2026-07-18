@@ -636,6 +636,395 @@ observation.
 	  others*, not that it is the *cause* of the upset. Diagnosis is for
 	  the process engineer with knowledge of the unit operation.
 
+.. _APPS_adaptive_soft_sensor:
+
+Keeping a model current: an adaptive soft sensor
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The flotation example built one model on a phase-1 stretch and left it fixed.
+That is fine for a short demonstration, but a process moves over months and
+years: catalysts age, exchangers foul, feedstock and ambient conditions
+change. The operating point drifts even while the process stays in
+common-cause operation, and a model that is never updated slowly loses its
+relevance. This section works through that problem on a longer record, using a
+:ref:`soft sensor <APPS_soft_sensors>` (a model that predicts a quality
+variable from routine process tags between infrequent laboratory analyses) and
+a *recursive* model that keeps itself current, one observation at a time.
+
+The `vapour-pressure dataset <https://openmv.net/info/vapor-pressure>`_ is an
+hourly record from a distillation column that stabilises a hydrocarbon product
+stream in a refinery, spanning about 2.5 years. There are 27 process tags, and
+the quantity to predict is the **vapour pressure** of the product, measured in
+the laboratory roughly three times a week. The laboratory value therefore
+appears on only 232 of the 18 743 rows; on the rest it is blank. Twenty of the
+tags are raw measurements (temperatures, flows, a pressure, an analyser and two
+controller outputs); the other seven are engineered from first principles
+(temperature differences, inverse absolute temperatures of the Antoine /
+Clausius-Clapeyron form, an inverse pressure, and a physics-based Antoine
+estimate of the vapour pressure itself).
+
+We build the model on the first half of the laboratory samples and keep the
+rest to test on:
+
+.. code-block:: python
+
+	import numpy as np
+	import pandas as pd
+	import plotly.graph_objects as go
+	from plotly.subplots import make_subplots
+	from process_improve.multivariate import PLS, AdaptivePLS
+
+	vp = pd.read_csv("https://openmv.net/file/vapor-pressure.csv")
+	vp["month"] = vp["hours_elapsed"] / 730.5          # about 730.5 hours per month
+	tags = [c for c in vp.columns
+	        if c not in ("hours_elapsed", "month", "vapour_pressure_kpa", "current_estimator")]
+
+	lab_rows = np.where(vp["vapour_pressure_kpa"].notna().to_numpy())[0]   # rows with a lab value
+	lab = vp.iloc[lab_rows].reset_index(drop=True)                        # the 232 labelled rows
+	y_lab = lab["vapour_pressure_kpa"].to_numpy()
+
+	n_seed = len(lab) // 2                              # build on the first half of the lab samples
+	seed = lab.index < n_seed
+	drift_month = float(np.quantile(lab["month"], 0.60))
+	post = lab["month"].to_numpy() >= drift_month       # "post-drift" test samples
+	pre = ~post
+	print(vp.shape, "| lab samples:", len(lab), "| seed:", int(seed.sum()),
+	      "| drift near month", round(drift_month, 1))
+
+This gives 18 743 hourly rows, 232 laboratory samples, a 116-sample seed set
+(the first half, covering roughly the first 10 months) and a drift that becomes
+established near month 13.
+
+The static soft sensor and its drift
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A three-component PLS model, fitted once on the seed rows, is the static
+baseline. We will run it, and later an adaptive model, through the whole record
+with the same helper. It is convenient to use ``AdaptivePLS`` for both:
+with every forgetting factor set to zero it never changes, so it *is* the static
+model, and its ``update`` method returns the prediction, Hotelling's
+:math:`T^2` and the SPE for each hourly row from one interface:
+
+.. code-block:: python
+
+	def stream(model, learn=None, y_update=None):
+	    """Pass every hourly row through the model, returning per-row diagnostics.
+
+	    learn     : boolean mask of rows the model may update from (others are predicted only)
+	    y_update  : array of lab values (NaN where none) used to update the Y-side
+	    """
+	    Xrow = vp[tags].to_numpy()
+	    pred = np.zeros(len(vp)); t2 = np.zeros(len(vp))
+	    spe = np.zeros(len(vp)); dist = np.zeros(len(vp))
+	    for i in range(len(vp)):
+	        may_learn = True if learn is None else bool(learn[i])
+	        if may_learn:
+	            yv = None if (y_update is None or np.isnan(y_update[i])) else np.array([y_update[i]])
+	            out = model.update(Xrow[i], y_row=yv)
+	            pred[i], t2[i], spe[i], dist[i] = out.prediction[0], out.hotellings_t2, out.spe, out.distance
+	        else:
+	            pred[i] = model.predict(vp[tags].iloc[[i]]).to_numpy().ravel()[0]
+	            dist[i] = dist[i - 1] if i else model.n_components
+	    return pred, t2, spe, dist
+
+	static = AdaptivePLS(n_components=3, forgetting_factor=0, gamma=0, lambda_center=0,
+	                     alpha_scale=0, lambda_center_y=0, alpha_scale_y=0,
+	                     adaptive_spe_limit=False, conf_level=0.99)
+	static.fit(lab.loc[seed, tags], lab.loc[seed, ["vapour_pressure_kpa"]])
+	static_pred, static_t2, static_spe, _ = stream(static)
+
+	def bias_std_rmsep(err, mask):
+	    e = err[mask]
+	    return float(e.mean()), float(e.std()), float(np.sqrt((e ** 2).mean()))
+
+	err_static = static_pred[lab_rows] - y_lab
+	print("static post-drift  bias / std / RMSEP:", bias_std_rmsep(err_static, post))
+	print("static pre-drift   bias / std / RMSEP:", bias_std_rmsep(err_static, pre))
+
+The model tracks the laboratory values closely at first. From about month 13,
+though, its predictions sit systematically **above** the laboratory values: the
+error develops a persistent positive **bias** of :math:`+11.1` kPa (with a
+standard deviation of 5.9 kPa, so a root-mean-square prediction error, RMSEP, of
+12.6 kPa). Before the drift the same model is nearly unbiased (:math:`-0.4` kPa,
+RMSEP 6.8 kPa). The bias is the systematic part of the error and the standard
+deviation is the scatter; they combine as
+:math:`\text{RMSEP}^2 = \text{bias}^2 + \text{variance}`, so after the drift the
+error is almost entirely bias.
+
+.. code-block:: python
+
+	fig = go.Figure()
+	fig.add_trace(go.Scatter(x=lab["month"], y=y_lab, mode="markers",
+	    marker=dict(size=4, color="#555"), name="Lab reference"))
+	fig.add_trace(go.Scatter(x=vp["month"], y=static_pred, mode="lines",
+	    line=dict(color="#d62728", width=1), name="Static PLS prediction"))
+	fig.add_vline(x=drift_month, line_color="black", line_dash="dash",
+	    annotation_text="drift established")
+	fig.update_layout(xaxis_title="Months since start of record",
+	    yaxis_title="Vapour pressure (kPa)", height=380,
+	    margin=dict(l=70, r=20, t=30, b=50))
+	fig.show()
+
+.. figure:: ../figures/monitoring/adaptive-softsensor-motivation.png
+	:alt: Static PLS soft-sensor prediction and laboratory values over the full record; the prediction drifts above the lab values after month 13.
+	:width: 900px
+	:scale: 80
+	:align: center
+
+	The static soft sensor (red) tracks the laboratory vapour pressure (grey)
+	well for the first year, then predicts consistently high once the process
+	drifts to a new operating point after month 13.
+
+Monitoring shows the model ageing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The prediction error is only visible on the days a laboratory sample happens to
+arrive. The monitoring statistics, in contrast, are available every hour, and
+they signal the drift directly. Projecting each hourly row onto the static
+model and reading its Hotelling's :math:`T^2` and SPE against their 99% limits:
+
+.. code-block:: python
+
+	t2_lim = float(static.hotellings_t2_limit(conf_level=0.99))
+	spe_lim = float(static.update(vp[tags].to_numpy()[0]).spe_limit)   # fixed limit from the seed
+	spe_cross = int((static_spe > spe_lim).sum())
+	print(f"99% T2 limit {t2_lim:.2f} | 99% SPE limit {spe_lim:.2f} "
+	      f"| SPE crossings {spe_cross} ({100 * spe_cross / len(vp):.1f}%)")
+
+	fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
+	    subplot_titles=("Hotelling's T² (99% limit)", "SPE (99% limit)"))
+	fig.add_trace(go.Scatter(x=vp["month"], y=static_t2, line=dict(color="#1f77b4", width=0.5)), row=1, col=1)
+	fig.add_hline(y=t2_lim, line_color="black", row=1, col=1)
+	fig.add_trace(go.Scatter(x=vp["month"], y=static_spe, line=dict(color="#d62728", width=0.5)), row=2, col=1)
+	fig.add_hline(y=spe_lim, line_color="black", row=2, col=1)
+	for r in (1, 2):
+	    fig.add_vline(x=drift_month, line_color="black", line_dash="dash", row=r, col=1)
+	fig.update_yaxes(range=[0, 3 * t2_lim], row=1, col=1)
+	fig.update_yaxes(range=[0, 3 * spe_lim], row=2, col=1)
+	fig.update_layout(height=470, showlegend=False, margin=dict(l=70, r=20, t=40, b=40),
+	    xaxis2_title="Months since start of record")
+	fig.show()
+
+.. figure:: ../figures/monitoring/adaptive-softsensor-monitoring.png
+	:alt: Hotelling's T^2 and SPE traces from the static model over the full record, with 99% limits; both cross more often after the drift.
+	:width: 900px
+	:scale: 80
+	:align: center
+
+	Hotelling's :math:`T^2` (top) and SPE (bottom) from the static model over
+	the full record, against their 99% limits. The SPE limit (7.89) is crossed
+	on 1045 rows (5.6%), clustered in the periods where the process has moved
+	off the model plane. These crossings are the signal that the model no
+	longer describes current operation and should be brought up to date.
+
+The SPE, the off-plane residual, crosses its 99% limit on 5.6% of the rows,
+concentrated in the stretches where the process has moved away from the region
+the seed model was built on. That is the operational trigger to act on the drift
+rather than to wait for the next laboratory result.
+
+An adaptive model that tracks the drift
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Rather than refit from scratch, an adaptive model updates recursively.
+``AdaptivePLS`` keeps the running cross-product matrices
+:math:`\mathbf{X}'\mathbf{X}` and :math:`\mathbf{X}'\mathbf{Y}` and updates them
+one observation at a time, so no growing history is stored. Three settings
+control it: a **forgetting factor** (how strongly each new observation is mixed
+in), exponentially-weighted **centring and scaling** vectors that track the
+moving operating point, and an **injection term** ``gamma`` that re-adds a small,
+information-weighted amount of the original cross-product each step, which keeps
+the update well-conditioned. Because the laboratory value arrives only a few
+times a week, the X-side updates every hour while the regression part waits for
+the next laboratory value: passing ``y_row=None`` updates the process model
+without the response.
+
+Two practical points shape how the model is run, both drawn from the way such
+systems are operated. First, the model should *learn* only from valid,
+steady operation: the shutdown and transition rows that push the SPE far past
+its limit are still monitored, but they must not update the model. We reuse the
+static SPE to select them. Second, the laboratory value is itself noisy, so a
+smoothed reference is used to update the Y-side rather than each raw value:
+
+.. code-block:: python
+
+	learn = static_spe < 2.5 * spe_lim            # exclude gross shutdowns/transitions from learning
+	print("rows the model may learn from:", int(learn.sum()), "of", len(vp))
+
+	def ewma_smooth(values, lam=0.35):            # smooth the sparse lab reference
+	    out = values.astype(float).copy()
+	    seen = ~np.isnan(out)
+	    idx = np.where(seen)[0]
+	    for k in range(1, len(idx)):
+	        out[idx[k]] = lam * out[idx[k]] + (1 - lam) * out[idx[k - 1]]
+	    return out
+
+	y_update = ewma_smooth(vp["vapour_pressure_kpa"].to_numpy())
+
+	adaptive = AdaptivePLS(n_components=3, forgetting_factor=0.003, gamma=0.1,
+	                       lambda_center=0.012, alpha_scale=0.012,
+	                       lambda_center_y=0.12, alpha_scale_y=0.05,
+	                       update_when_out_of_control=True, conf_level=0.99)
+	adaptive.fit(lab.loc[seed, tags], lab.loc[seed, ["vapour_pressure_kpa"]])
+	adaptive_pred, _, _, distance = stream(adaptive, learn=learn, y_update=y_update)
+
+	err_adaptive = adaptive_pred[lab_rows] - y_lab
+	print("adaptive post-drift bias / std / RMSEP:", bias_std_rmsep(err_adaptive, post))
+
+	def subgroup_mean(x, window, valid):        # trailing mean over valid hours only
+	    out = x.copy()
+	    for i in range(len(x)):
+	        lo = max(0, i - window + 1)
+	        seg = x[lo : i + 1][valid[lo : i + 1]]
+	        out[i] = seg.mean() if len(seg) else x[i]
+	    return out
+
+	adaptive_24h = subgroup_mean(adaptive_pred, 24, learn)
+	err_24h = adaptive_24h[lab_rows] - y_lab
+	print("adaptive 24h-subgroup post-drift RMSEP:", round(bias_std_rmsep(err_24h, post)[2], 1))
+	print("distance metric ages from", round(distance[0], 2), "to", round(distance[-1], 2))
+
+The adaptive model removes the drift bias: its post-drift error is
+:math:`+1.5` kPa (RMSEP 9.1 kPa) where the static model sat at :math:`+11.1` kPa
+(RMSEP 12.6 kPa). The remaining error is now scatter rather than bias. That
+scatter is set by the hour-to-hour prediction noise and the laboratory
+measurement noise; averaging the prediction over a 24-hour window (a subgroup
+mean, as with the flotation chart) brings the post-drift RMSEP down to 8.6 kPa,
+without changing the bias.
+
+.. code-block:: python
+
+	fig = go.Figure()
+	fig.add_hrect(y0=-3, y1=3, fillcolor="#ccc", opacity=0.4, line_width=0)
+	fig.add_trace(go.Scatter(x=lab["month"], y=err_static, mode="markers",
+	    marker=dict(size=5, color="#d62728"), name="Static PLS"))
+	fig.add_trace(go.Scatter(x=lab["month"], y=err_adaptive, mode="markers",
+	    marker=dict(size=5, color="#1f77b4"), name="Adaptive PLS"))
+	fig.add_hline(y=0, line_color="black", line_width=0.8)
+	fig.add_vline(x=drift_month, line_color="black", line_dash="dash")
+	fig.update_layout(xaxis_title="Months since start of record",
+	    yaxis_title="Prediction error (kPa)", height=380,
+	    margin=dict(l=70, r=20, t=30, b=50))
+	fig.show()
+
+.. figure:: ../figures/monitoring/adaptive-softsensor-payoff.png
+	:alt: Prediction error over time for the static and adaptive models; static errors climb to +11 kPa after the drift while adaptive errors stay near zero.
+	:width: 900px
+	:scale: 80
+	:align: center
+
+	Prediction error (predicted minus laboratory) for the static (red) and
+	adaptive (blue) models. After the drift the static errors sit around
+	:math:`+11` kPa; the adaptive errors stay centred near zero, at the cost of
+	a little more scatter.
+
+The ``distance_`` metric reports how far the current model has
+moved from the one it started with, in units of components: it starts at 3 (the
+model is unchanged) and falls as the model adapts, reaching 2.56 by the end of
+the record. It is a compact way to watch a model age, and its rate of change
+helps tune the forgetting factor: a value that changes too abruptly means the
+model is adapting to transient upsets rather than to genuine drift.
+
+.. code-block:: python
+
+	fig = go.Figure()
+	fig.add_trace(go.Scatter(x=vp["month"], y=distance, line=dict(color="#9467bd", width=0.8)))
+	fig.add_hline(y=3, line_color="grey", line_dash="dot", annotation_text="unchanged (= n_components)")
+	fig.add_vline(x=drift_month, line_color="black", line_dash="dash")
+	fig.update_layout(xaxis_title="Months since start of record",
+	    yaxis_title="Subspace overlap with seed model", yaxis_range=[0, 3.2],
+	    height=340, margin=dict(l=70, r=20, t=30, b=50))
+	fig.show()
+
+.. figure:: ../figures/monitoring/adaptive-softsensor-diagnostics.png
+	:alt: The distance metric declines from 3 to about 2.56 over the record as the adaptive model ages away from its seed.
+	:width: 850px
+	:scale: 80
+	:align: center
+
+	The subspace-overlap distance metric ages from 3.0 (identical to the seed
+	model) to 2.56 as the adaptive model tracks the drift. A smooth decline
+	reflects gradual adaptation; abrupt swings would flag over-fast adaptation.
+
+Features or adaptation: a first-principles view
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Adaptation is one way to cope with drift; better *features* are another. The
+vapour pressure of a hydrocarbon stream is governed by its composition and by
+temperature through the Antoine relationship, in which the logarithm of vapour
+pressure varies with the inverse absolute temperature. Composition, in turn, is
+reflected in temperature *differences* along the column and in flow *ratios*
+such as the reflux ratio. These are quantities a linear model cannot form from
+the raw tags on its own. Adding temperature differences, floored flow ratios and
+an Antoine coupling term to the 27 tags, and choosing the number of components
+by cross-validation on the seed data, lowers the *static* model's post-drift
+bias from :math:`+10.2` to :math:`+6.8` kPa (RMSEP 12.1 to 9.1 kPa): the extra
+physics lets the fixed model extrapolate further into the drifted region.
+
+.. code-block:: python
+
+	from sklearn.model_selection import RepeatedKFold
+
+	temp = [c for c in tags if c.startswith("temp_")]
+	flow = [c for c in tags if c.startswith("flow_")]
+
+	def add_physics(df):
+	    F = df[tags].copy()
+	    t_mean = df[temp].mean(axis=1)
+	    for c in temp:                                    # temperature differences: composition proxies
+	        F[c + "_dev"] = df[c] - t_mean
+	    for i in range(len(flow)):                        # floored flow ratios: reflux-ratio proxies
+	        for j in range(i + 1, len(flow)):
+	            denom = np.clip(np.abs(df[flow[j]]), max(1e-2, np.nanpercentile(np.abs(df[flow[j]]), 10)), None)
+	            r = df[flow[i]].to_numpy() / denom.to_numpy()
+	            F[f"ratio_{i}{j}"] = np.clip(r, *np.nanpercentile(r, [1, 99]))
+	    p_abs = df["pres_01"] + 101.325                   # Antoine coupling: log-pressure x inverse temperature
+	    F["antoine_coupling"] = np.log10(p_abs / 101.325) * df["inv_bot_temp"]
+	    return F
+
+	def cv_rmsep(X, y, A):                                # 5x5 repeated k-fold CV error on the seed
+	    errs = []
+	    for tr, te in RepeatedKFold(n_splits=5, n_repeats=5, random_state=1).split(X):
+	        m = PLS(n_components=A, scale=True).fit(X.iloc[tr], y.iloc[tr])
+	        errs.append(m.predict(X.iloc[te]).to_numpy().ravel() - y.iloc[te, 0].to_numpy())
+	    return float(np.sqrt((np.concatenate(errs) ** 2).mean()))
+
+	seed_vp = lab_rows[seed]                              # vp row indices of the seed lab samples
+	ys = lab.loc[seed, ["vapour_pressure_kpa"]].reset_index(drop=True)
+
+	def evaluate(feature_frame):                          # CV-select components, then score post-drift
+	    Xs = feature_frame.iloc[seed_vp].reset_index(drop=True)
+	    A = min(range(1, 9), key=lambda a: cv_rmsep(Xs, ys, a))
+	    fit = PLS(n_components=A, scale=True).fit(Xs, ys)
+	    err = fit.predict(feature_frame).to_numpy().ravel()[lab_rows] - y_lab
+	    bias, _, rmsep = bias_std_rmsep(err, post)
+	    return A, round(bias, 1), round(rmsep, 1)
+
+	print("baseline (27 tags): components / bias / RMSEP =", evaluate(vp[tags]))
+	print("with physics:       components / bias / RMSEP =", evaluate(add_physics(vp)))
+
+A control experiment confirms this is the physics and not merely added
+flexibility: replacing the engineered features with the same number of random
+columns leaves cross-validation selecting a single component and the post-drift
+error unchanged.
+
+The same features, added to the adaptive model, make almost no difference: its
+post-drift bias is already near zero. First-principles features and recursive
+adaptation are, on this data, two routes to the same correction rather than
+additive gains. If the model can be updated on-line, adaptation reaches further;
+if it cannot, physically-grounded features recover a large part of the same
+robustness. Neither route reduces the scatter: that is set by the measurement
+noise, and is addressed by averaging, not by the model.
+
+A few practical points close the example. The flow ratios must divide by a
+floored denominator: a raw ratio diverges when a flow is near zero during a
+low-rate period, and a single such value distorts the fit. The observation
+selection that keeps shutdowns out of the update is insurance against the model
+being pulled by a bad row, more than a change to the headline error here.
+And the same caution as before applies: the adaptive model follows the process,
+so a genuine step-change in the product, and a slow drift the operator wants to
+accommodate, look alike to it. The monitoring charts, which are built on the
+fixed seed model, are what keep that distinction visible.
+
 Further reading
 ~~~~~~~~~~~~~~~
 
