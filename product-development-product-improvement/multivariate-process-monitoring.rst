@@ -663,6 +663,11 @@ controller outputs); the other seven are engineered from first principles
 Clausius-Clapeyron form, an inverse pressure, and a physics-based Antoine
 estimate of the vapour pressure itself).
 
+The drift studied below is a genuine feature of this record, not something added
+for the illustration. Over the 2.5 years the column moved to new operating
+points, and every prediction, monitoring statistic and bias figure in this
+section is computed directly from the measured tags and laboratory values.
+
 We build the model on the first half of the laboratory samples and keep the
 rest to test on:
 
