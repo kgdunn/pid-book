@@ -939,14 +939,15 @@ the **injection term**, re-adds a small amount of the *original* training kernel
 
 The injection weight :math:`f` scales with how much new information the row
 carries, measured as the ratio of the update's size to the training kernel's size
-(here each size is the matrix's nuclear norm, the sum of its eigenvalues). The
+(here each size is the matrix's trace, the sum of its eigenvalues, which for these
+symmetric kernels is also known as the nuclear norm). The
 tuning constant :math:`\gamma` sets the strength: with :math:`\gamma = 0.1`, a
 row carrying as much information as the training data injects about 10% of the training kernel
 back in. This keeps the kernel from becoming ill-conditioned during long quiet
 stretches, when little new information arrives to excite it, and gently anchors
 the adapting model to the region it was built on. Setting :math:`\gamma = 0`
 recovers the textbook recursive update. After the blend, the kernel is rescaled
-so its nuclear norm equals the training kernel's; this holds the eigenvalue scale
+so its trace equals the training kernel's; this holds the eigenvalue scale
 fixed, so the score scaling that Hotelling's :math:`T^2` depends on does not
 drift for a purely numerical reason. The :math:`\mathbf{X}'\mathbf{Y}` kernel is
 updated the same way when a response is present.
@@ -985,8 +986,10 @@ The settings map onto the constructor arguments as follows:
 
 This particular framework, the injection term and the distance metric, comes from
 the author's earlier work on an industrial adaptive-monitoring system; the
-kernel PLS recomputation follows Dayal and MacGregor (1997) and the subspace
-distance follows Krzanowski (1979).
+kernel PLS recomputation follows `Dayal and MacGregor (1997)
+<https://literature.learnche.org/item/114/recursive-exponentially-weighted-pls-and-its-applications-to-adaptive-control-and-prediction>`_
+and the subspace distance follows `Krzanowski (1979)
+<https://literature.learnche.org/item/122/between-groups-comparison-of-principal-components>`_.
 
 An adaptive model that tracks the drift
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
