@@ -1103,7 +1103,6 @@ without changing the bias.
 .. code-block:: python
 
 	fig = go.Figure()
-	fig.add_hrect(y0=-3, y1=3, fillcolor="#ccc", opacity=0.4, line_width=0)
 	fig.add_trace(go.Scatter(x=lab["month"], y=err_static, mode="markers",
 	    marker=dict(size=6, color=GREEN, symbol="square"), name="Static PLS"))
 	fig.add_trace(go.Scatter(x=lab["month"], y=err_adaptive, mode="markers",
