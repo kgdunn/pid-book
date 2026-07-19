@@ -646,10 +646,19 @@ That is fine for a short demonstration, but a process moves over months and
 years: catalysts age, exchangers foul, feedstock and ambient conditions
 change. The operating point drifts even while the process stays in
 common-cause operation, and a model that is never updated slowly loses its
-relevance. This section works through that problem on a longer record, using a
-:ref:`soft sensor <APPS_soft_sensors>` (a model that predicts a quality
-variable from routine process tags between infrequent laboratory analyses) and
-a *recursive* model that keeps itself current, one observation at a time.
+relevance. Its predictions develop a systematic offset, and its monitoring
+limits, set on data the process has since moved away from, stop matching what
+is now normal.
+
+This section works through that problem on a longer record. It uses a
+:ref:`soft sensor <APPS_soft_sensors>`: a model that predicts a hard-to-measure
+quality variable from routine process tags, filling in the gaps between
+infrequent laboratory analyses. To keep the soft sensor current we use a
+*recursive* (or *adaptive*) model, one that updates itself from each new
+observation instead of being rebuilt from a stored history. The worked example
+below builds a static soft sensor, watches it drift, and then lets an adaptive
+model track the moving process; a short theory subsection in between explains
+what the update actually does.
 
 The `vapour-pressure dataset <https://openmv.net/info/vapor-pressure>`_ is an
 hourly record from a distillation column that stabilises a hydrocarbon product
@@ -679,6 +688,9 @@ rest to test on:
 	from plotly.subplots import make_subplots
 	from process_improve.multivariate import PLS, AdaptivePLS
 
+	A = 3                                              # number of PLS components, used throughout
+	DARK_BLUE, ORANGE, GREY = "#1f3d7a", "#c55a11", "#777777"   # figure colours, reused below
+
 	vp = pd.read_csv("https://openmv.net/file/vapor-pressure.csv")
 	vp["month"] = vp["hours_elapsed"] / 730.5          # about 730.5 hours per month
 	tags = [c for c in vp.columns
@@ -703,9 +715,9 @@ established near month 13.
 The static soft sensor and its drift
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A three-component PLS model, fitted once on the seed rows, is the static
-baseline. We will run it, and later an adaptive model, through the whole record
-with the same helper. It is convenient to use ``AdaptivePLS`` for both:
+A PLS model with :math:`A = 3` components, fitted once on the seed rows, is the
+static baseline. We will run it, and later an adaptive model, through the whole
+record with the same helper. It is convenient to use ``AdaptivePLS`` for both:
 with every forgetting factor set to zero it never changes, so it *is* the static
 model, and its ``update`` method returns the prediction, Hotelling's
 :math:`T^2` and the SPE for each hourly row from one interface:
@@ -725,16 +737,24 @@ model, and its ``update`` method returns the prediction, Hotelling's
 	        may_learn = True if learn is None else bool(learn[i])
 	        if may_learn:
 	            yv = None if (y_update is None or np.isnan(y_update[i])) else np.array([y_update[i]])
-	            out = model.update(Xrow[i], y_row=yv)
+	            out = model.update(Xrow[i], y_row=yv, label=vp["month"].iloc[i])   # month-indexed history
 	            pred[i], t2[i], spe[i], dist[i] = out.prediction[0], out.hotellings_t2, out.spe, out.distance
 	        else:
 	            pred[i] = model.predict(vp[tags].iloc[[i]]).to_numpy().ravel()[0]
 	            dist[i] = dist[i - 1] if i else model.n_components
 	    return pred, t2, spe, dist
 
-	static = AdaptivePLS(n_components=3, forgetting_factor=0, gamma=0, lambda_center=0,
-	                     alpha_scale=0, lambda_center_y=0, alpha_scale_y=0,
-	                     adaptive_spe_limit=False, conf_level=0.99)
+	static = AdaptivePLS(
+	    n_components=A,             # three latent variables, as in the batch model above
+	    forgetting_factor=0,        # mu = 0: the X-space kernel never updates
+	    gamma=0,                    # no injection term (nothing to keep excited when frozen)
+	    lambda_center=0,            # centering vector frozen at the seed mean
+	    alpha_scale=0,              # scaling vector frozen at the seed spread
+	    lambda_center_y=0,          # Y-centering frozen
+	    alpha_scale_y=0,            # Y-scaling frozen
+	    adaptive_spe_limit=False,   # keep the fixed SPE limit from the seed
+	    conf_level=0.99,            # 99% monitoring limits
+	)
 	static.fit(lab.loc[seed, tags], lab.loc[seed, ["vapour_pressure_kpa"]])
 	static_pred, static_t2, static_spe, _ = stream(static)
 
@@ -760,13 +780,13 @@ error is almost entirely bias.
 
 	fig = go.Figure()
 	fig.add_trace(go.Scatter(x=lab["month"], y=y_lab, mode="markers",
-	    marker=dict(size=4, color="#555"), name="Lab reference"))
+	    marker=dict(size=4, color=GREY), name="Lab reference"))
 	fig.add_trace(go.Scatter(x=vp["month"], y=static_pred, mode="lines",
-	    line=dict(color="#d62728", width=1), name="Static PLS prediction"))
+	    line=dict(color=DARK_BLUE, width=1), name="Static PLS prediction"))
 	fig.add_vline(x=drift_month, line_color="black", line_dash="dash",
 	    annotation_text="drift established")
-	fig.update_layout(xaxis_title="Months since start of record",
-	    yaxis_title="Vapour pressure (kPa)", height=380,
+	fig.update_layout(xaxis_title="Time since start of record [months]",
+	    yaxis_title="Vapour pressure [kPa]", height=380,
 	    margin=dict(l=70, r=20, t=30, b=50))
 	fig.show()
 
@@ -776,7 +796,7 @@ error is almost entirely bias.
 	:scale: 80
 	:align: center
 
-	The static soft sensor (red) tracks the laboratory vapour pressure (grey)
+	The static soft sensor (blue) tracks the laboratory vapour pressure (grey)
 	well for the first year, then predicts consistently high once the process
 	drifts to a new operating point after month 13.
 
@@ -798,28 +818,36 @@ model and reading its Hotelling's :math:`T^2` and SPE against their 99% limits:
 
 	fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
 	    subplot_titles=("Hotelling's T² (99% limit)", "SPE (99% limit)"))
-	fig.add_trace(go.Scatter(x=vp["month"], y=static_t2, line=dict(color="#1f77b4", width=0.5)), row=1, col=1)
+	fig.add_trace(go.Scatter(x=vp["month"], y=static_t2, line=dict(color=DARK_BLUE, width=0.5)), row=1, col=1)
 	fig.add_hline(y=t2_lim, line_color="black", row=1, col=1)
-	fig.add_trace(go.Scatter(x=vp["month"], y=static_spe, line=dict(color="#d62728", width=0.5)), row=2, col=1)
+	fig.add_trace(go.Scatter(x=vp["month"], y=static_spe, line=dict(color=DARK_BLUE, width=0.5)), row=2, col=1)
 	fig.add_hline(y=spe_lim, line_color="black", row=2, col=1)
+	# mark the times a laboratory sample was taken, as a row of asterisks in each panel
+	fig.add_trace(go.Scatter(x=lab["month"], y=np.full(len(lab), 30), mode="markers",
+	    marker=dict(symbol="star", size=5, color=ORANGE), name="Lab sample"), row=1, col=1)
+	fig.add_trace(go.Scatter(x=lab["month"], y=np.full(len(lab), 20), mode="markers",
+	    marker=dict(symbol="star", size=5, color=ORANGE), showlegend=False), row=2, col=1)
 	for r in (1, 2):
 	    fig.add_vline(x=drift_month, line_color="black", line_dash="dash", row=r, col=1)
 	fig.update_yaxes(range=[0, 3 * t2_lim], row=1, col=1)
 	fig.update_yaxes(range=[0, 3 * spe_lim], row=2, col=1)
-	fig.update_layout(height=470, showlegend=False, margin=dict(l=70, r=20, t=40, b=40),
-	    xaxis2_title="Months since start of record")
+	fig.update_layout(height=470, margin=dict(l=70, r=20, t=40, b=40),
+	    xaxis2_title="Time since start of record [months]")
 	fig.show()
 
 .. figure:: ../figures/monitoring/adaptive-softsensor-monitoring.png
-	:alt: Hotelling's T^2 and SPE traces from the static model over the full record, with 99% limits; both cross more often after the drift.
+	:alt: Hotelling's T^2 and SPE traces from the static model over the full record, with 99% limits and asterisks marking the laboratory-sample times; both statistics cross more often after the drift.
 	:width: 900px
 	:scale: 80
 	:align: center
 
 	Hotelling's :math:`T^2` (top) and SPE (bottom) from the static model over
-	the full record, against their 99% limits. The SPE limit (7.89) is crossed
-	on 1045 rows (5.6%), clustered in the periods where the process has moved
-	off the model plane. These crossings are the signal that the model no
+	the full record, against their 99% limits. The orange asterisks along the top
+	of each panel mark the times a laboratory sample was taken (at an arbitrary
+	height, 30 and 20, purely to sit above the traces); they show how sparse the
+	reference is next to the hourly monitoring statistics. The SPE limit (7.89) is
+	crossed on 1045 rows (5.6%), clustered in the periods where the process has
+	moved off the model plane. These crossings are the signal that the model no
 	longer describes current operation and should be brought up to date.
 
 The SPE, the off-plane residual, crosses its 99% limit on 5.6% of the rows,
@@ -827,23 +855,112 @@ concentrated in the stretches where the process has moved away from the region
 the seed model was built on. That is the operational trigger to act on the drift
 rather than to wait for the next laboratory result.
 
+How the recursive update works
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There are two ways to keep a model current once monitoring says it has aged. One
+is to **refit** it periodically from a stored window of recent data. The other
+is to update it **recursively**: carry a small amount of *state*, adjust that
+state with each new observation, and then discard the observation. Recursive
+updating needs only bounded memory and produces a model that moves continuously
+with the process, which is what ``AdaptivePLS`` does. The rest of this subsection
+describes the update; the settings it introduces map directly onto the
+constructor arguments used in the next subsection.
+
+The state carried between observations is small. It is a pair of **association
+matrices** (also called kernels): :math:`\mathbf{X}'\mathbf{X}`, the sum of
+cross-products of the process tags, and :math:`\mathbf{X}'\mathbf{Y}`, the
+cross-products of tags with the response. A PLS model's weights and regression
+coefficients can be recomputed from these two matrices alone, without the
+original rows, using a kernel algorithm. Alongside the kernels the model keeps
+the **centring** and **scaling** vectors, :math:`\mathbf{m}` and
+:math:`\mathbf{s}`, that standardise each incoming row.
+
+When observation :math:`i` arrives as a raw row :math:`\mathbf{x}_i^0`, the
+centring and scaling vectors first move a little towards it, by an
+exponentially-weighted moving average (EWMA) with per-variable rates
+:math:`\lambda` (centre) and :math:`\alpha` (spread):
+
+.. math::
+
+   \mathbf{s}_{i+1}^2 = (1-\alpha)\,\mathbf{s}_i^2 + \alpha\,(\mathbf{x}_i^0 - \mathbf{m}_i)^2,
+   \qquad
+   \mathbf{m}_{i+1} = (1-\lambda)\,\mathbf{m}_i + \lambda\,\mathbf{x}_i^0 .
+
+A small rate keeps a variable close to its seed value; a rate of zero freezes it.
+The same observation is then standardised with the *updated* vectors,
+:math:`\mathbf{x}_i = (\mathbf{x}_i^0 - \mathbf{m}_{i+1}) \oslash \mathbf{s}_{i+1}`,
+where :math:`\oslash` is element-by-element division, and this scaled row enters
+the kernel update. (The monitoring statistics reported for row :math:`i` use the
+*pre-update* vectors, so they judge the row against the model as it stood when
+the row arrived.)
+
+The X-space kernel is then blended: a fraction of the old kernel is forgotten and
+the new row's contribution is mixed in, controlled by the **forgetting factor**
+:math:`\mu`. A larger :math:`\mu` adapts faster but is less stable. A third term,
+the **injection term**, re-adds a small amount of the *original* seed kernel
+:math:`(\mathbf{X}'\mathbf{X})_0`:
+
+.. math::
+
+   (\mathbf{X}'\mathbf{X})_{i+1} = (1-\mu)\,(\mathbf{X}'\mathbf{X})_i
+      + \mu\,\mathbf{x}_i \mathbf{x}_i'
+      + f\,(\mathbf{X}'\mathbf{X})_0,
+   \qquad
+   f = \gamma\,\frac{\lVert \mu\,\mathbf{x}_i \mathbf{x}_i' \rVert}{\lVert (\mathbf{X}'\mathbf{X})_0 \rVert}.
+
+The injection weight :math:`f` scales with how much new information the row
+carries, measured as the ratio of the update's size to the seed kernel's size
+(here each size is the matrix's nuclear norm, the sum of its eigenvalues). The
+tuning constant :math:`\gamma` sets the strength: with :math:`\gamma = 0.1`, a
+row carrying as much information as the seed injects about 10% of the seed kernel
+back in. This keeps the kernel from becoming ill-conditioned during long quiet
+stretches, when little new information arrives to excite it, and gently anchors
+the adapting model to the region it was built on. Setting :math:`\gamma = 0`
+recovers the textbook recursive update. After the blend, the kernel is rescaled
+so its nuclear norm equals the seed kernel's; this holds the eigenvalue scale
+fixed, so the score scaling that Hotelling's :math:`T^2` depends on does not
+drift for a purely numerical reason. The :math:`\mathbf{X}'\mathbf{Y}` kernel is
+updated the same way when a response is present.
+
+Because the laboratory value arrives only a few times a week, the X-side kernel
+and the preprocessing update every hour while the :math:`\mathbf{X}'\mathbf{Y}`
+kernel and the regression wait for the next laboratory value: passing
+``y_row=None`` updates the process model without the response.
+
+A single number summarises how far the model has moved. The **distance metric**
+compares the current weight directions :math:`\mathbf{W}_i` with the seed
+directions :math:`\mathbf{W}_0`:
+
+.. math::
+
+   d_i = \operatorname{trace}\!\left( \mathbf{W}_0'\,\mathbf{W}_i\,\mathbf{W}_i'\,\mathbf{W}_0 \right).
+
+It is the sum of squared cosines of the angles between the two sets of
+directions, so it equals :math:`A` (the number of components) when the model is
+unchanged and falls towards :math:`0` as the directions rotate away; it is
+unaffected by sign flips of the weights. What matters in practice is its rate of
+change: a smooth decline reflects gradual adaptation, while abrupt, noisy swings
+indicate the model is chasing short-term upsets and the forgetting factor
+:math:`\mu` should be reduced.
+
+The settings map onto the constructor arguments as follows:
+
+- :math:`\mu` is ``forgetting_factor``; :math:`\gamma` is ``gamma``;
+- :math:`\lambda`, :math:`\alpha` are ``lambda_center``, ``alpha_scale`` for the
+  X-block, and ``lambda_center_y``, ``alpha_scale_y`` for the Y-block;
+- :math:`d_i` is available afterwards as the ``distance_`` attribute.
+
+This particular framework, the injection term and the distance metric, comes from
+the author's earlier work on an industrial adaptive-monitoring system; the
+kernel PLS recomputation follows Dayal and MacGregor (1997) and the subspace
+distance follows Krzanowski (1979).
+
 An adaptive model that tracks the drift
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Rather than refit from scratch, an adaptive model updates recursively.
-``AdaptivePLS`` keeps the running cross-product matrices
-:math:`\mathbf{X}'\mathbf{X}` and :math:`\mathbf{X}'\mathbf{Y}` and updates them
-one observation at a time, so no growing history is stored. Three settings
-control it: a **forgetting factor** (how strongly each new observation is mixed
-in), exponentially-weighted **centring and scaling** vectors that track the
-moving operating point, and an **injection term** ``gamma`` that re-adds a small,
-information-weighted amount of the original cross-product each step, which keeps
-the update well-conditioned. Because the laboratory value arrives only a few
-times a week, the X-side updates every hour while the regression part waits for
-the next laboratory value: passing ``y_row=None`` updates the process model
-without the response.
-
-Two practical points shape how the model is run, both drawn from the way such
+With the mechanism in hand, we can run the adaptive model. Two practical points
+shape how it is used, both drawn from the way such
 systems are operated. First, the model should *learn* only from valid,
 steady operation: the shutdown and transition rows that push the SPE far past
 its limit are still monitored, but they must not update the model. We reuse the
@@ -865,10 +982,17 @@ smoothed reference is used to update the Y-side rather than each raw value:
 
 	y_update = ewma_smooth(vp["vapour_pressure_kpa"].to_numpy())
 
-	adaptive = AdaptivePLS(n_components=3, forgetting_factor=0.01, gamma=0.05,
-	                       lambda_center=0.003, alpha_scale=0.012,
-	                       lambda_center_y=0.12, alpha_scale_y=0.05,
-	                       update_when_out_of_control=True, conf_level=0.99)
+	adaptive = AdaptivePLS(
+	    n_components=A,                    # same three components as the static model
+	    forgetting_factor=0.01,            # mu: how strongly each row is mixed into the kernel
+	    gamma=0.05,                        # injection strength (kept small on this well-excited record)
+	    lambda_center=0.003,               # slow drift of the X-centering vector
+	    alpha_scale=0.012,                 # slow drift of the X-scaling vector
+	    lambda_center_y=0.12,              # faster drift of the Y-centre (the bias correction)
+	    alpha_scale_y=0.05,                # drift of the Y-scale
+	    update_when_out_of_control=True,   # learning is gated by the `learn` mask below, not the limits
+	    conf_level=0.99,
+	)
 	adaptive.fit(lab.loc[seed, tags], lab.loc[seed, ["vapour_pressure_kpa"]])
 	adaptive_pred, _, _, distance = stream(adaptive, learn=learn, y_update=y_update)
 
@@ -901,13 +1025,13 @@ without changing the bias.
 	fig = go.Figure()
 	fig.add_hrect(y0=-3, y1=3, fillcolor="#ccc", opacity=0.4, line_width=0)
 	fig.add_trace(go.Scatter(x=lab["month"], y=err_static, mode="markers",
-	    marker=dict(size=5, color="#d62728"), name="Static PLS"))
+	    marker=dict(size=5, color=ORANGE), name="Static PLS"))
 	fig.add_trace(go.Scatter(x=lab["month"], y=err_adaptive, mode="markers",
-	    marker=dict(size=5, color="#1f77b4"), name="Adaptive PLS"))
+	    marker=dict(size=5, color=DARK_BLUE), name="Adaptive PLS"))
 	fig.add_hline(y=0, line_color="black", line_width=0.8)
 	fig.add_vline(x=drift_month, line_color="black", line_dash="dash")
-	fig.update_layout(xaxis_title="Months since start of record",
-	    yaxis_title="Prediction error (kPa)", height=380,
+	fig.update_layout(xaxis_title="Time since start of record [months]",
+	    yaxis_title="Prediction error [kPa]", height=380,
 	    margin=dict(l=70, r=20, t=30, b=50))
 	fig.show()
 
@@ -917,12 +1041,77 @@ without changing the bias.
 	:scale: 80
 	:align: center
 
-	Prediction error (predicted minus laboratory) for the static (red) and
+	Prediction error (predicted minus laboratory) for the static (orange) and
 	adaptive (blue) models. After the drift the static errors sit around
 	:math:`+11` kPa; the adaptive errors stay centred near zero, at the cost of
 	a little more scatter.
 
-The ``distance_`` metric reports how far the current model has
+What drives the adaptation: preprocessing or kernel
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The adaptive model changes two things as it runs: the **preprocessing** (the
+centring and scaling vectors, which follow the operating point) and the
+**kernel** (the weight directions and regression coefficients, recomputed from
+the association matrices). It is worth asking which of the two actually corrects
+the prediction. ``AdaptivePLS`` can separate them: for each row it splits the
+adaptive prediction's departure from the frozen seed model into a
+*preprocessing channel* (the effect of the moved centring and scaling, holding
+the regression at its seed value) and a *kernel channel* (the further effect of
+the moved directions and coefficients). The two channels add up to the total
+departure. The ``prediction_channels_`` attribute records the split, and
+``center_shift_`` and ``distance_`` report how far each kind of state has moved:
+
+.. code-block:: python
+
+	ch = adaptive.prediction_channels_                 # month-indexed: static / preprocessing / kernel
+	rotation = A - adaptive.distance_                  # components of subspace rotation from the seed
+
+	fig = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.09,
+	    specs=[[{}], [{"secondary_y": True}]],
+	    subplot_titles=("Correction to the prediction, by channel", "State drift from the seed"))
+	fig.add_trace(go.Scatter(x=ch.index, y=ch["preprocessing"], line=dict(color=DARK_BLUE, width=1),
+	    name="Centering + scaling channel"), row=1, col=1)
+	fig.add_trace(go.Scatter(x=ch.index, y=ch["kernel"], line=dict(color=ORANGE, width=1),
+	    name="Kernel channel"), row=1, col=1)
+	fig.add_trace(go.Scatter(x=adaptive.center_shift_.index, y=adaptive.center_shift_,
+	    line=dict(color=DARK_BLUE, width=1.2), name="Centre migration"), row=2, col=1, secondary_y=False)
+	fig.add_trace(go.Scatter(x=rotation.index, y=rotation, line=dict(color=ORANGE, width=1.2),
+	    name="Subspace rotation"), row=2, col=1, secondary_y=True)
+	fig.update_yaxes(title_text="Correction vs static [kPa]", range=[-25, 25], row=1, col=1)
+	fig.update_yaxes(title_text="Centre migration [seed SD]", row=2, col=1, secondary_y=False)
+	fig.update_yaxes(title_text="Subspace rotation [components]", row=2, col=1, secondary_y=True)
+	fig.update_layout(height=520, margin=dict(l=70, r=70, t=40, b=40),
+	    xaxis2_title="Time since start of record [months]")
+	fig.show()
+
+.. figure:: ../figures/monitoring/adaptive-softsensor-decomposition.png
+	:alt: Two panels: the correction to the prediction split into a large centering/scaling channel and a small kernel channel; and the state drift, with the centre migrating several standard deviations while the subspace rotates about one component.
+	:width: 900px
+	:scale: 80
+	:align: center
+
+	Top: the adaptive model's departure from the static prediction, split into the
+	centring/scaling channel (blue) and the kernel channel (orange). The
+	preprocessing channel carries most of the correction (a median of about
+	4.6 kPa in size against 0.9 kPa for the kernel channel). Bottom: the state
+	drift, with the centring vector migrating several standard deviations from the
+	seed (blue, left axis) while the weight directions rotate by only about one of
+	the three components (orange, right axis).
+
+On this record the drift is corrected mainly by the moving centre and scale, not
+by a re-aimed model. That fits the physical picture: the process moved to new
+operating points, so the *level* of the tags shifted while the correlation
+structure among them held, and tracking that level is what a moving centre does.
+The weight directions and coefficients do change (the regression coefficients
+move substantially over the record), but their net effect on the prediction
+stays small. The reading is specific to this dataset, not a general rule; on a
+process whose correlation structure itself changed, the kernel channel would
+carry more.
+
+Watching the model age
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``distance_`` metric introduced above reports how far the current model has
 moved from the one it started with, in units of components: it starts at 3 (the
 model is unchanged) and falls as the model adapts, reaching 1.88 by the end of
 the record. It is a compact way to watch a model age, and its rate of change
@@ -932,11 +1121,11 @@ model is adapting to transient upsets rather than to genuine drift.
 .. code-block:: python
 
 	fig = go.Figure()
-	fig.add_trace(go.Scatter(x=vp["month"], y=distance, line=dict(color="#9467bd", width=0.8)))
-	fig.add_hline(y=3, line_color="grey", line_dash="dot", annotation_text="unchanged (= n_components)")
+	fig.add_trace(go.Scatter(x=vp["month"], y=distance, line=dict(color=DARK_BLUE, width=0.8)))
+	fig.add_hline(y=A, line_color="grey", line_dash="dot", annotation_text="unchanged (= n_components)")
 	fig.add_vline(x=drift_month, line_color="black", line_dash="dash")
-	fig.update_layout(xaxis_title="Months since start of record",
-	    yaxis_title="Subspace overlap with seed model", yaxis_range=[0, 3.2],
+	fig.update_layout(xaxis_title="Time since start of record [months]",
+	    yaxis_title="Subspace overlap [components]", yaxis_range=[1.5, 3.05],
 	    height=340, margin=dict(l=70, r=20, t=30, b=50))
 	fig.show()
 
@@ -949,6 +1138,31 @@ model is adapting to transient upsets rather than to genuine drift.
 	The subspace-overlap distance metric ages from 3.0 (identical to the seed
 	model) to 1.88 as the adaptive model tracks the drift. A smooth decline
 	reflects gradual adaptation; abrupt swings would flag over-fast adaptation.
+
+Choosing the adaptation settings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The settings above were not guessed. A natural way to score an on-line model is
+its **one-step-ahead prediction error**: at each laboratory sample, predict with
+the model as it stands from past data only, then reveal the value and let the
+model learn from it. Accumulated over the record, this is an unbiased estimate of
+how well the deployed sensor predicts the next value, and it penalises both
+under-adaptation (a bias creeps back in) and over-adaptation (the predictions
+grow noisy). To keep the score from being optimistic, the settings are chosen on
+an early stretch of the record and reported on a later stretch the search never
+saw, rather than on the same data used to pick them.
+
+Not every setting is equally worth tuning. On this record the number of
+components :math:`A` and the centring rate ``lambda_center`` matter most: they
+set where the model is stable and how quickly it tracks the moving level, and
+they interact, so they are chosen together rather than one at a time. The
+forgetting factor ``forgetting_factor`` matters moderately. The injection
+strength ``gamma`` has almost no effect on the prediction error here, because the
+record is rich in genuine variation and never sits quiet long enough for the
+kernel to lose conditioning; it is kept small, and its value is judged by the
+kernel's condition number rather than by the error. The distance metric offers a
+second, unsupervised check on the forgetting factor: if its trace is jagged, the
+model is chasing upsets and the factor should be lowered.
 
 Features or adaptation: a first-principles view
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -964,6 +1178,35 @@ an Antoine coupling term to the 27 tags, and choosing the number of components
 by cross-validation on the seed data, lowers the *static* model's post-drift
 bias from :math:`+10.2` to :math:`+6.8` kPa (RMSEP 12.1 to 9.1 kPa): the extra
 physics lets the fixed model extrapolate further into the drifted region.
+
+.. list-table:: Static PLS on the seed data, with and without engineered features. The number of components is chosen by cross-validation (CV) on the seed; the CV error is the seed prediction error; the bias and RMSEP are on the held-out post-drift samples.
+	:header-rows: 1
+	:widths: 38 16 16 15 15
+
+	* - Feature set
+	  - Components (CV)
+	  - CV error [kPa]
+	  - Post-drift bias [kPa]
+	  - Post-drift RMSEP [kPa]
+	* - Raw tags (baseline)
+	  - 6
+	  - 6.9
+	  - :math:`+10.2`
+	  - 12.1
+	* - With first-principles features
+	  - 5
+	  - 6.8
+	  - :math:`+6.8`
+	  - 9.1
+	* - With random features (control)
+	  - 6
+	  - 7.0
+	  - :math:`+11.4`
+	  - 13.7
+
+The first-principles features lower the error both on the seed (CV 6.8 against
+6.9 kPa) and after the drift, so the gain is not just a better fit to the seed
+data. The code that produces the first two rows is:
 
 .. code-block:: python
 
@@ -986,10 +1229,10 @@ physics lets the fixed model extrapolate further into the drifted region.
 	    F["antoine_coupling"] = np.log10(p_abs / 101.325) * df["inv_bot_temp"]
 	    return F
 
-	def cv_rmsep(X, y, A):                                # 5x5 repeated k-fold CV error on the seed
+	def cv_rmsep(X, y, n_comp):                           # 5x5 repeated k-fold CV error on the seed
 	    errs = []
 	    for tr, te in RepeatedKFold(n_splits=5, n_repeats=5, random_state=1).split(X):
-	        m = PLS(n_components=A, scale=True).fit(X.iloc[tr], y.iloc[tr])
+	        m = PLS(n_components=n_comp, scale=True).fit(X.iloc[tr], y.iloc[tr])
 	        errs.append(m.predict(X.iloc[te]).to_numpy().ravel() - y.iloc[te, 0].to_numpy())
 	    return float(np.sqrt((np.concatenate(errs) ** 2).mean()))
 
@@ -998,19 +1241,29 @@ physics lets the fixed model extrapolate further into the drifted region.
 
 	def evaluate(feature_frame):                          # CV-select components, then score post-drift
 	    Xs = feature_frame.iloc[seed_vp].reset_index(drop=True)
-	    A = min(range(1, 9), key=lambda a: cv_rmsep(Xs, ys, a))
-	    fit = PLS(n_components=A, scale=True).fit(Xs, ys)
+	    a_star = min(range(1, 9), key=lambda a: cv_rmsep(Xs, ys, a))
+	    fit = PLS(n_components=a_star, scale=True).fit(Xs, ys)
 	    err = fit.predict(feature_frame).to_numpy().ravel()[lab_rows] - y_lab
 	    bias, _, rmsep = bias_std_rmsep(err, post)
-	    return A, round(bias, 1), round(rmsep, 1)
+	    return a_star, round(cv_rmsep(Xs, ys, a_star), 1), round(bias, 1), round(rmsep, 1)
 
-	print("baseline (27 tags): components / bias / RMSEP =", evaluate(vp[tags]))
-	print("with physics:       components / bias / RMSEP =", evaluate(add_physics(vp)))
+	def add_random(df, rng):                              # control: same count of random columns
+	    n_extra = add_physics(df).shape[1] - len(tags)
+	    F = df[tags].copy()
+	    for k in range(n_extra):
+	        F[f"rand_{k}"] = rng.standard_normal(len(df))
+	    return F
 
-A control experiment confirms this is the physics and not merely added
-flexibility: replacing the engineered features with the same number of random
-columns leaves cross-validation selecting a single component and the post-drift
-error unchanged.
+	print("baseline: components / CV / bias / RMSEP =", evaluate(vp[tags]))
+	print("physics:  components / CV / bias / RMSEP =", evaluate(add_physics(vp)))
+	print("control:  components / CV / bias / RMSEP =",
+	      evaluate(add_random(vp, np.random.default_rng(0))))
+
+The control row confirms this is the physics and not merely added flexibility:
+swapping the engineered features for the same number of random columns gives no
+cross-validation gain (7.0 against 6.9 kPa on the seed) and a slightly larger
+post-drift error, so the improvement follows the physics rather than the extra
+columns.
 
 The same features, added to the adaptive model, make almost no difference: its
 post-drift bias is already near zero. First-principles features and recursive
