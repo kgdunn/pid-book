@@ -865,8 +865,8 @@ smoothed reference is used to update the Y-side rather than each raw value:
 
 	y_update = ewma_smooth(vp["vapour_pressure_kpa"].to_numpy())
 
-	adaptive = AdaptivePLS(n_components=3, forgetting_factor=0.003, gamma=0.1,
-	                       lambda_center=0.012, alpha_scale=0.012,
+	adaptive = AdaptivePLS(n_components=3, forgetting_factor=0.01, gamma=0.05,
+	                       lambda_center=0.003, alpha_scale=0.012,
 	                       lambda_center_y=0.12, alpha_scale_y=0.05,
 	                       update_when_out_of_control=True, conf_level=0.99)
 	adaptive.fit(lab.loc[seed, tags], lab.loc[seed, ["vapour_pressure_kpa"]])
@@ -889,11 +889,11 @@ smoothed reference is used to update the Y-side rather than each raw value:
 	print("distance metric ages from", round(distance[0], 2), "to", round(distance[-1], 2))
 
 The adaptive model removes the drift bias: its post-drift error is
-:math:`+1.5` kPa (RMSEP 9.1 kPa) where the static model sat at :math:`+11.1` kPa
+:math:`+1.3` kPa (RMSEP 8.0 kPa) where the static model sat at :math:`+11.1` kPa
 (RMSEP 12.6 kPa). The remaining error is now scatter rather than bias. That
 scatter is set by the hour-to-hour prediction noise and the laboratory
 measurement noise; averaging the prediction over a 24-hour window (a subgroup
-mean, as with the flotation chart) brings the post-drift RMSEP down to 8.6 kPa,
+mean, as with the flotation chart) brings the post-drift RMSEP down to 7.5 kPa,
 without changing the bias.
 
 .. code-block:: python
@@ -924,7 +924,7 @@ without changing the bias.
 
 The ``distance_`` metric reports how far the current model has
 moved from the one it started with, in units of components: it starts at 3 (the
-model is unchanged) and falls as the model adapts, reaching 2.56 by the end of
+model is unchanged) and falls as the model adapts, reaching 1.88 by the end of
 the record. It is a compact way to watch a model age, and its rate of change
 helps tune the forgetting factor: a value that changes too abruptly means the
 model is adapting to transient upsets rather than to genuine drift.
@@ -941,13 +941,13 @@ model is adapting to transient upsets rather than to genuine drift.
 	fig.show()
 
 .. figure:: ../figures/monitoring/adaptive-softsensor-diagnostics.png
-	:alt: The distance metric declines from 3 to about 2.56 over the record as the adaptive model ages away from its seed.
+	:alt: The distance metric declines from 3 to about 1.88 over the record as the adaptive model ages away from its seed.
 	:width: 850px
 	:scale: 80
 	:align: center
 
 	The subspace-overlap distance metric ages from 3.0 (identical to the seed
-	model) to 2.56 as the adaptive model tracks the drift. A smooth decline
+	model) to 1.88 as the adaptive model tracks the drift. A smooth decline
 	reflects gradual adaptation; abrupt swings would flag over-fast adaptation.
 
 Features or adaptation: a first-principles view
