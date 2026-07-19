@@ -365,6 +365,8 @@ worst-case values; the next section uses it to draw the plot.
 	assert is_omars(dsd4) and is_omars(omars4)
 	model4 = " + ".join(list("ABCD") + [f"I({c}**2)" for c in "ABCD"])
 
+.. _DOE-fds-plot:
+
 The fraction-of-design-space (FDS) plot
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
