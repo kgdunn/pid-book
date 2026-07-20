@@ -14,6 +14,7 @@ Over the years since 2010 when this online book has been available, there has be
    troubleshooting
    multivariate-process-monitoring
    soft-sensors
+   adaptive-soft-sensor
    image-analysis
    batch-process-monitoring
    product-development
