@@ -10,8 +10,9 @@ of step with it. A prediction or monitoring statistic from such a model then
 develops a systematic offset: its limits, set on earlier data, no longer match
 where the process now sits, and normal operation starts to look abnormal.
 
-The flotation example built one model on a phase-1 stretch and left it fixed,
-which is fine for a short demonstration. A process moves over months and years,
+The :ref:`flotation example <APPS_multivariate_monitoring_flotation>` built one
+model on a phase-1 stretch and left it fixed, which is fine for a short
+demonstration. A process moves over months and years,
 though, so here we keep the model current instead.
 
 This section works through that problem on a longer dataset. It uses a
@@ -277,8 +278,14 @@ matrices** (also called kernels): :math:`\mathbf{X}'\mathbf{X}`, the sum of
 cross-products of the process tags, and :math:`\mathbf{X}'\mathbf{Y}`, the
 cross-products of tags with the response. A PLS model's weights and regression
 coefficients can be recomputed from these two matrices alone, without the
-original rows, using a kernel algorithm. Alongside the kernels the model keeps
-the **centring** and **scaling** vectors, :math:`\mathbf{m}` and
+original rows, using a kernel algorithm. The size of these kernels is fixed by
+the number of *variables*, not the number of *observations*:
+:math:`\mathbf{X}'\mathbf{X}` is :math:`K \times K` and
+:math:`\mathbf{X}'\mathbf{Y}` is :math:`K \times M`. However long the process
+runs, none of the :math:`N` rows are ever kept, so the memory footprint stays
+small and constant, which makes the approach extremely memory-efficient for a
+sensor that must run continuously for months or years. Alongside the kernels the
+model keeps the **centring** and **scaling** vectors, :math:`\mathbf{m}` and
 :math:`\mathbf{s}`, that standardise each incoming row.
 
 When observation :math:`i` arrives as a raw row :math:`\mathbf{x}_i^0`, the
