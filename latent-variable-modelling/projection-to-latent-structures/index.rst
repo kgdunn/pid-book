@@ -34,6 +34,7 @@ But why use the PLS method at all?
    variability-explained-with-each-component
    coefficient-plots-in-pls
    analysis-of-designed-experiments-using-pls-models
+   pls-model-inversion-and-the-orthogonal-space
    pls-exercises
 
 
