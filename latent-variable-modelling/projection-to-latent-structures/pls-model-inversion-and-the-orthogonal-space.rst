@@ -56,8 +56,8 @@ predicts.
 
 .. _LVM-PLS-null-space:
 
-The null space: many recipes, one prediction
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The null space: many recipes, one target
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Held-out cheese 2 has a taste of 20.9. We invert the model to find a chemistry that the model predicts
 will give that taste.
