@@ -121,6 +121,17 @@ taste of 20.9.
 	fig.update_layout(xaxis_title="t_1", yaxis_title="t_2")
 	fig.show()
 
+.. figure:: ../../figures/pls/pls-model-inversion-null-space.png
+	:alt: Score plot showing the null space and the O-PLS orthogonal space overlapping
+	:width: 700px
+	:align: center
+
+	The two-component score plot for the cheeses used to build the model. The
+	purple line is the null space: every score on it predicts a taste of 20.9.
+	The green circles are the O-PLS orthogonal space projected into the same plot;
+	they fall exactly on the null space, which is the equivalence this page
+	describes. The black square is the direct-inversion solution.
+
 .. _LVM-PLS-orthogonal-space:
 
 The same space, reached a different way: O-PLS
