@@ -101,7 +101,7 @@ quality. As a check on the held-out cheese, its actual chemistry (Acetic 5.16, H
 predicts a taste of 20.7, close to its measured 20.9, and it lies near the null-space line we just traced.
 
 A score plot shows the picture directly. The calibration cheeses are the points, the black square is the
-direct-inversion solution, and the purple line is the null space: the set of scores that all predict a
+direct-inversion solution, and the orange line is the null space: the set of scores that all predict a
 taste of 20.9.
 
 .. code-block:: python
@@ -115,14 +115,14 @@ taste of 20.9.
 	fig.add_scatter(x=scores.iloc[:, 0], y=scores.iloc[:, 1], mode="markers",
 	                name="calibration cheeses")
 	fig.add_scatter(x=line[:, 0], y=line[:, 1], mode="lines", name="null space",
-	                line={"color": "purple"})
+	                line={"color": "orange"})
 	fig.add_scatter(x=[tau[0]], y=[tau[1]], mode="markers", name="direct inversion",
 	                marker={"color": "black", "symbol": "square", "size": 10})
 	fig.update_layout(xaxis_title="t_1", yaxis_title="t_2")
 	fig.show()
 
-The purple line is the null space: every score on it predicts a taste of 20.9. When we overlay the
-O-PLS orthogonal space (next), it will fall exactly on this line.
+Every score on the orange line predicts a taste of 20.9. When we overlay the O-PLS orthogonal space
+(below), it falls exactly on this line, as the figure at the end of the next section shows.
 
 .. _LVM-PLS-orthogonal-space:
 
@@ -174,6 +174,18 @@ comparing their directions.
 
 The cosine between the two directions is 1.0: the PLS null space and the O-PLS orthogonal space point the
 same way and span the same line.
+
+.. figure:: ../../figures/pls/pls-model-inversion-null-space.png
+	:alt: Score plot showing the null space and the O-PLS orthogonal space overlapping
+	:width: 700px
+	:align: center
+
+	Score plot of the two-component model (cheeses 5 to 30). The orange line is the null space for a
+	target taste of 20.9; the green circles are the O-PLS orthogonal space for that target, projected
+	into the plot, and they fall on the orange line. The black square is the direct-inversion solution.
+	The red dashed and purple dotted lines are the null spaces for two other target tastes, 47.9 and 12.3.
+	All three are parallel: a single-response model has one null-space direction, and only the position
+	shifts with the target.
 
 .. _LVM-PLS-inversion-in-practice:
 
