@@ -205,6 +205,42 @@ minimum-norm point, while O-PLS inversion is a single division once the orthogon
 separated during fitting. The equivalence has been proved for one response; the multiple-response case
 remains open (García-Carrión et al., 2025).
 
+.. _LVM-PLS-inversion-multiple-responses:
+
+More than one response
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The equivalence above is for a single response. Model inversion itself is not limited to one output.
+Consider the `solvents data set <https://openmv.net/info/solvents>`_: 103 solvents described by seven
+physical properties, with two further properties we might want to target, the octanol-water partition
+coefficient (:math:`\log P`) and an aqueous solubility. We invert the model to ask which physical
+properties give a solvent with a chosen :math:`\log P` and solubility.
+
+.. code-block:: python
+
+	solvents = pd.read_csv("https://openmv.net/file/solvents.csv").dropna()
+	x_columns = ["MeltingPoint", "BoilingPoint", "Dielectric", "DipoleMoment",
+	             "RefractiveIndex", "ET30", "Density"]
+	y_columns = ["logP", "Solubility"]
+
+	model = PLS(n_components=3).fit(solvents[x_columns], solvents[y_columns])
+	design = model.invert(pd.Series({"logP": 0.5, "Solubility": 0.0}))
+
+	print(design.null_space_dimension)          # 1
+	print(round(design.hotellings_t2, 2))       # 2.46
+	print(model.predict(design.x_new.to_frame().T).round(2).to_dict("records")[0])
+	# {'logP': 0.5, 'Solubility': -0.0}
+
+Two things change with two responses. First, the target now pins down two score directions instead of
+one, so the null space has dimension :math:`A - \text{rank}(\mathbf{Y})`. Here that is
+:math:`3 - 2 = 1`: a line of solvent designs, all giving the same :math:`\log P` and solubility. With
+only two components the null space would collapse to a single point, because both score directions would
+be fixed by the two targets. Second, the O-PLS route does not carry over. O-PLS separates a single
+predictive component, so its one-division inversion is defined for one response; with two responses we
+solve the inversion directly, as above. The proof that the null space and the orthogonal space coincide
+was given for the single-response case; extending it to several responses is noted as open work by
+García-Carrión et al. (2025).
+
 .. rubric:: References
 
 * C. M. Jaeckle and J. F. MacGregor, "Industrial applications of product design through the inversion of
