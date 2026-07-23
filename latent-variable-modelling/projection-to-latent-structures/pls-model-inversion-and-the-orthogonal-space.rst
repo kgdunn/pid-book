@@ -182,10 +182,11 @@ same way and span the same line.
 
 	Score plot of the two-component model (cheeses 5 to 30). The orange line is the null space for a
 	target taste of 20.9; the green circles are the O-PLS orthogonal space for that target, projected
-	into the plot, and they fall on the orange line. The black square is the direct-inversion solution.
-	The red dashed and purple dotted lines are the null spaces for two other target tastes, 47.9 and 12.3.
-	All three are parallel: a single-response model has one null-space direction, and only the position
-	shifts with the target.
+	into the plot, and they fall on the orange line. The black square is the direct-inversion solution,
+	and the two orange triangles mark a -1 step (pointing down) and a +1 step (pointing up) along the
+	null space; both predict the same taste of 20.9. The red dashed and purple dotted lines are the null
+	spaces for two other target tastes, 47.9 and 12.3. All three are parallel: a single-response model
+	has one null-space direction, and only the position shifts with the target.
 
 .. _LVM-PLS-inversion-in-practice:
 
