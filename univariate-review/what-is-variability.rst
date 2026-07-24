@@ -43,7 +43,7 @@ Fortunately, we have plenty of variability in the recorded data from our process
 	-	Operating staff: introduce variability into a process in feedback manner (i.e. they react to process upsets) or in a feed-forward manner, for example, to preemptively act on the process to counteract a known disturbance. By doing so they introduce variability into a process.
 
 
-All this variability, although a good opportunity to keep many of use employed, comes at a price as described next.
+All this variability, although a good opportunity to keep many of us employed, comes at a price as described next.
 
 The high cost of variability in your final product
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
