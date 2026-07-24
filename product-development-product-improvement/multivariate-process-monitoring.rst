@@ -37,12 +37,12 @@ Any variable can be monitored using control charts, as we saw in the earlier sec
 Consider the case of two variables, called :math:`x_1` and :math:`x_2`, shown on the right, on the two horizontal axes. These could be time-oriented data, or just measurements from various sequential batches of material. The main point is that each variable's :math:`3\sigma` Shewhart control limits indicate that all observations are within control. It may not be apparent, but these two variables are negatively correlated with each other: as :math:`x_1` increases, the :math:`x_2` value decreases.
 
 .. figure:: ../figures/monitoring/two-axis-monitoring-plot.png
-	:alt:	../figures/monitoring/two-axis-monitoring-plot.py
+	:alt: Joint scatter plot of two negatively correlated variables with their T-squared ellipse, beside each variable's own control chart
 	:scale: 70
 	:width: 900px
 	:align: center
 
-Rearranging the axes at 90 degrees to each other, and plotting the joint scatter plot of the two variables in the upper left corner reveals the negative correlation, if you didn't notice it initially. Ignore the ellipse for now. It is clear that sample 10 (green closed dot, if these notes are printed in colour) is very different from the other samples. It is not an outlier from the perspective of :math:`x_1`, nor of :math:`x_2`, but jointly it is an outlier. This particular batch of materials would result in very different process operation and final product quality to the other samples. Yet a producer using separate control charts for :math:`x_1` and :math:`x_2` would not pick up this problem.
+Rearranging the axes at 90 degrees to each other, and plotting the joint scatter plot of the two variables in the upper left corner reveals the negative correlation, if you didn't notice it initially. Ignore the ellipse for now. It is clear that sample 11, marked and labelled in all three panels, is very different from the other samples. It is not an outlier from the perspective of :math:`x_1`, nor of :math:`x_2`, but jointly it is an outlier. This particular batch of materials would result in very different process operation and final product quality to the other samples. Yet a producer using separate control charts for :math:`x_1` and :math:`x_2` would not pick up this problem.
 
 While using univariate control charts is *necessary* to pick up problems, univariate charts are not *sufficient* to pick up all quality problems if the variables are correlated. The key point here is that **quality is a multivariate attribute**. All our measurements on a system must be jointly within in the limits of common operation. Using only univariate control charts will raise the type II error: an alarm should be raised, but we don't pick up the problem with the charts.
 
