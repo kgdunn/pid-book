@@ -15,7 +15,7 @@ Room temperature data
 * Description: Temperature measurements from 4 corners of a room
 
 .. image:: ../../figures/examples/room-temperature/room-temperature-plots.png
-	:alt:	../../figures/examples/room-temperature/room-temperature-plots.R
+	:alt: Four thermometer readings over three days, one panel per corner of the room
 	:scale: 80
 	:width: 750px
 	:align: center
