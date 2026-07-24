@@ -35,12 +35,18 @@ Exercises
 
 .. admonition:: Solution
 
+	.. literalinclude:: /univariate-review/gists/soy-salt-content.py
+	   :language: python
+
+	or the equivalent in R:
+
 	.. literalinclude:: ../figures/univariate/soy-salt-content.R
 	   :language: s
 	   :lines: 1-11,13,15-
 
 	.. image:: ../figures/univariate/soy-salt-content.png
-		:scale: 50
+		:alt:	../figures/univariate/univariate_exercise_figures.py
+		:scale: 58
 
 	Note that the units of spread are the same as the variable being quantified. The IQR is 240 mg salt/15 mL serving. The standard deviation (202 mg salt/15 mL serving), and MAD (193 mg salt/15 mL serving), are 2 other ways to quantify the spread of the data.  Note that the IQR, for normally distributed data, will only be consistent if you divide the result by 1.349. Read the help for the ``IQR`` function in R for more details. Note from the code how the IQR is a *distance* between two points.
 
@@ -69,6 +75,12 @@ Exercises
 	See the code below that generates the plots.  Outliers were identified by visual inspection of these plots. Recall an outlier is an unusual/interesting point, and a function of the surrounding data. You can use a box plot to locate *preliminary* outliers, but recognize that you are leaving the computer to determine what is unusual. Automated outlier detection systems work moderately well, but there is no substitute (yet!) for visual inspection of the data.
 
 	The same few samples appear to be outliers in most of the variables.
+
+	.. literalinclude:: /univariate-review/gists/raw-materials-univariate-checks.py
+	   :language: python
+
+	or the equivalent in R, where ``identify()`` lets you click on the
+	interesting points:
 
 	.. literalinclude:: ../figures/univariate/raw-materials-univariate-checks.R
 	   :lines: 1-27
@@ -123,7 +135,7 @@ Exercises
 
 	Use the section on `Historical data <https://climate.weather.gc.ca/index_e.html>`_ from Environment Canada's website and use the ``Customized Search`` option to obtain data for the ``HAMILTON A`` station from 2000 to 2009. Use the settings as ``Year=2000``, and ``Data interval=Monthly`` and request the data for 2000, then click ``Next year`` to go to 2001 and so on.
 
-		-	For each year from 2000 to 2009, get the total snowfall and the average of the ``Mean temp`` over the whole year (the sums and averages are reported at the bottom of the table).
+		-	For each year from 2000 to 2008, get the total snowfall and the average of the ``Mean temp`` over the whole year (the sums and averages are reported at the bottom of the table).
 		-	Plot these 2 variables against time
 		-	Now retrieve the long-term averages for these data `from a different section of their website <https://climate.weather.gc.ca/climate_normals/index_e.html>`_ (use the same location, ``HAMILTON A``, and check that the data range is 1971 to 2000). Superimpose the long-term average as a horizontal line on your previous plot.
 		-	**Note**: the purpose of this exercise is more for you to become comfortable with web-based data retrieval, which is common in most companies.
@@ -136,22 +148,34 @@ Exercises
 
 	These are the data, and the code to plot the results. The temperature for the last decade trended higher than the average for the prior 3 decades, 1971 to 2000.
 
+	.. literalinclude:: /univariate-review/gists/hamilton-weather-data.py
+		:language: python
+
+	or the equivalent in R:
+
 	.. literalinclude:: ../figures/univariate/hamilton-weather-data.R
 		:language: s
 		:lines: 1-7,9-11,13,15-17
 
 
 	.. image:: ../figures/univariate/snowfall-data.png
-		:scale: 75
+		:alt:	../figures/univariate/univariate_exercise_figures.py
+		:scale: 30
 
 	.. image:: ../figures/univariate/temperature-data.png
-		:scale: 75
+		:alt:	../figures/univariate/univariate_exercise_figures.py
+		:scale: 30
 
 .. admonition:: Question
 
 	Does the number of visits in the `website traffic <https://openmv.net/info/website-traffic>`_ data set follow a normal distribution?  If so, what are the parameters for the distribution?  What is the likelihood that you will have between 10 and 30 visits to the website?
 
 .. admonition:: Solution
+
+	.. literalinclude:: /univariate-review/gists/website-visits-univariate.py
+		:language: python
+
+	or the equivalent in R:
 
 	.. literalinclude:: ../figures/univariate/website-visits-univariate.R
 		:language: s
@@ -336,8 +360,8 @@ Exercises
 	#.	Assume the 300 data points represent an entire population. Plot a ``qqPlot(...)`` using the ``car`` package:
 
 		.. image:: ../figures/univariate/batch-yields-qqplot.png
-			:alt:	../figures/univariate/batch-yields.R
-			:scale: 60
+			:alt:	../figures/univariate/univariate_exercise_figures.py
+			:scale: 48
 			:align: center
 
 		The data appear to follow a normal distribution, based on the visual test of this qq-plot.
@@ -378,6 +402,11 @@ Exercises
 .. admonition:: Solution
 
 	-   The mean and standard deviation can be estimated as shown in the code below. The estimates are: the mean energy usage is **4127 W.hours**, and the standard deviation is **79 W.hours**. This corresponds very closely to the raw data I used to generate this question (mean of actual data = 4125, sd of actual data = 77.2).
+
+	    .. literalinclude:: /univariate-review/gists/bulb-energy-barplot.py
+	       :language: python
+
+	    or the equivalent in R:
 
 	    .. literalinclude:: ../figures/univariate/bulb-energy-assignment3-2010.R
 	       :language: s
@@ -460,6 +489,11 @@ Exercises
 	While all three reactors have confidence intervals that span zero at the 95% level, notice how the interval gives us a feel for the degree of difference. Clearly **reactors TK105 and TK107 are the most similar**, however all 3 are statistically equivalent from a confidence interval point of view. Contrast this to using a hypothesis test, which you may have encountered in other statistical courses. A hypothesis test just tells you  "yes" or "no"; a confidence interval gives a much better engineering feel for the degree of difference.
 
 	A full solution to this question require you report the :math:`z`-values and its corresponding risk.
+
+	.. literalinclude:: /univariate-review/gists/brittleness-comparison.py
+	       :language: python
+
+	or the equivalent in R:
 
 	.. literalinclude:: ../figures/univariate/brittleness-comparison-assignment3-2010.R
 	       :language: s
@@ -570,7 +604,11 @@ Exercises
 
 	The temptation is to jump into the code and calculate the :math:`t`-values and averages differences (:math:`\overline{x}_D = 16.4`, and :math:`\overline{x}_M = 22.6`). But start with a plot of the data, specifically a plot of the differences between the two methods. The immediate problem you see is that average difference of 6.2 between the methods is strongly influenced by a single observation (the second one). In general, the dilution method always produced a smaller result than the manometric method. We expect to see that in our analytical results.
 
+	.. literalinclude:: /univariate-review/gists/BOD-comparison.py
+	    :language: python
+
 	.. image:: ../figures/univariate/BOD-comparison-plot.png
+	    :alt:	../figures/univariate/univariate_comparison_figures.py
 	    :align: center
 	    :scale: 60
 
@@ -591,11 +629,18 @@ Exercises
 
 .. admonition:: Solution
 
+	.. literalinclude:: /univariate-review/gists/normal-vs-t-distribution.py
+	       :language: python
+
+	or the equivalent in R:
+
 	.. literalinclude:: ../figures/univariate/t-distribution-normal-comparison-assignment3-2010.R
 	       :language: s
 
 	.. image:: ../figures/univariate/normal-t-comparison.png
+	    :alt:	../figures/univariate/univariate_comparison_figures.py
 	    :align: center
+	    :scale: 30
 
 	The above source code and figure output shows that the :math:`t`-distribution starts being indistinguishable from the normal distribution after about 35 to 40 degrees of freedom. This means that when we deal with large sample sizes (over 40 or 50 samples), then we can use critical values from the normal distribution rather than the :math:`t`-distribution. Furthermore, it indicates that our estimate of the variance is a pretty good estimate of the population variance for largish sample sizes.
 
@@ -1006,15 +1051,21 @@ Exercises
 
 	#.	The question asked to overlay the probability distributions (not cumulative probability distributions):
 
-		.. image:: ../figures/univariate/overlaid-distributions-normal-and-t.jpg
-			:alt:	../figures/univariate/overlaid-distributions-normal-and-t.R
-			:scale: 50
+		.. image:: ../figures/univariate/overlaid-distributions-normal-and-t.png
+			:alt:	../figures/univariate/univariate_comparison_figures.py
+			:scale: 36
 			:align: center
 
 		where the above figure was generated with the R-code:
 
+		.. literalinclude:: /univariate-review/gists/overlaid-distributions-normal-and-t.py
+			:language: python
+
+		or the equivalent in R:
+
 		.. literalinclude:: ../figures/univariate/overlaid-distributions-normal-and-t.R
 			:language: s
+			:lines: 1-5,7-10
 
 	#.	Repeated use of the above code, but changing :math:`n`, shows that little *practical* difference between the distributions with as few as :math:`n=20` samples. After :math:`n=40` and especially :math:`n=60`, there is almost no *theoretical* difference between them.
 
