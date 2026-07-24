@@ -195,20 +195,45 @@ Fisher's insight was to create one long vector of these outcomes (length of vect
 
 Only one of the 24,310 sequences will correspond to the actual data printed in the above table. Although all the other realizations are possible, they are fictitious. We do this because the null hypothesis is that there is no difference between A and B. Values in the table could have come from either system.
 
-So for each of the 24,310 realizations, we calculate the difference of the averages between A and B, :math:`\overline{y}_A - \overline{y}_B`, and plot a histogram of these differences. This is shown below, together with a vertical line indicating the actual realization in the table. There are 4956 permutations that had a greater difference than the one actually realized; that is, 79.6% of the other combinations had a smaller value.
+So for each of the 24,310 realizations, we calculate the difference of the averages, :math:`\overline{y}_B - \overline{y}_A`, and plot a histogram of these differences. This is shown below, together with a vertical line indicating the actual realization in the table. There are 4956 permutations that had a greater difference than the one actually realized; that is, 79.6% of the other combinations had a smaller value.
 
-Had we used a formal test of differences where we pooled the variances, we would have found a :math:`z`-value of 0.8435, and the probability of obtaining that value, using the :math:`t`-distribution with :math:`n_A + n_B - 2` degrees of freedom, would be 79.3%. See how close they agree?
+Had we used a formal test of differences where we pooled the variances, we would have found a :math:`z`-value of 0.8435, and the probability of obtaining that value, using the :math:`t`-distribution with :math:`n_A + n_B - 2 = 15` degrees of freedom, would be 79.4%. See how close they agree?
 
-.. Future improvement: superimpose the t-distribution on top of the histogram (scaled). E.g. see BHH(v1) page 97
+You can build the reference distribution yourself; enumerating all 24,310 splits takes under a second:
+
+.. code-block:: python
+
+	import itertools
+	import numpy as np
+	import plotly.graph_objects as go
+
+	case_A = np.array([254, 440, 501, 368, 697, 476, 188, 525])
+	case_B = np.array([338, 470, 558, 426, 733, 539, 240, 628, 517])
+	outcomes = np.concatenate((case_A, case_B))
+	n_A, n_total, grand_total = len(case_A), len(outcomes), outcomes.sum()
+
+	differences = []
+	for subset in itertools.combinations(range(n_total), n_A):
+	    sum_A = outcomes[list(subset)].sum()
+	    differences.append((grand_total - sum_A) / (n_total - n_A) - sum_A / n_A)
+
+	observed = case_B.mean() - case_A.mean()
+	print(len(differences), observed, sum(d > observed for d in differences))
+
+	fig = go.Figure(go.Histogram(x=differences, nbinsx=50))
+	fig.add_vline(x=observed, line_color="red")
+	fig.update_layout(xaxis_title="Difference in averages, B minus A",
+	                  yaxis_title="Number of splits")
+	fig.show()
 
 .. figure:: ../figures/doe/single-experiment-randomization.png
 	:align: center
 	:scale: 60
 	:width: 900px
-	:alt: Histogram of the average A-minus-B difference over all randomization permutations
+	:alt: Histogram of the average B-minus-A difference over all randomization permutations
 
-The figure shows the differences in the averages of A and B for the 24,310 realizations. The vertical line represents the difference in the average for the one particular set of numbers we measured in the experiment.
+The figure shows the differences in the averages, :math:`\overline{y}_B - \overline{y}_A`, for the 24,310 realizations. The vertical line represents the difference in the average for the one particular set of numbers we measured in the experiment. The smooth curve is the :math:`t`-distribution with 15 degrees of freedom, scaled to the same number of experiments, so that the two ways of judging the result can be compared directly.
 
 Recall that independence is required to calculate the :math:`z`-value for the average difference and compare it against the :math:`t`-distribution. By randomizing our experiments, we are able to guarantee that the results we obtain from using :math:`t`-distributions are appropriate. Without randomization, these :math:`z`-values and confidence intervals may be misleading.
 
-The reason we prefer using the :math:`t`-distribution approach over randomization is that formulating all random combinations and then calculating all the average differences as shown here is intractable. Even on my relatively snappy computer it would take 3.4 years to calculate all possible combinations for the complete dataset: 20 values from group A and 23 values from group B. (It took 122 seconds to calculate a million of them, so the full set of 960,566,918,220 combinations would take more than 3 years.)
+The reason we prefer using the :math:`t`-distribution approach over randomization is that formulating all random combinations and then calculating all the average differences as shown here quickly becomes impractical. The complete dataset has 20 values from group A and 23 values from group B, which can be split in 960,566,918,220 ways. Enumerating them in Python takes about 3.5 seconds per million combinations on a current machine, so the full set would take around 40 days of computing, against a fraction of a second for the :math:`t`-distribution result.
