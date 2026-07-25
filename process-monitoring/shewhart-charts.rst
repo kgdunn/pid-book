@@ -69,7 +69,7 @@ The following illustration should help connect the concepts: the raw data's dist
 	fig.show()
 
 .. image:: ../figures/monitoring/explain-shewhart.png
-	:alt:	../figures/monitoring/explain-shewhart.R
+	:alt:	../figures/monitoring/shewhart_capability_figures.py
 	:scale: 70
 	:width: 750px
 	:align: right
