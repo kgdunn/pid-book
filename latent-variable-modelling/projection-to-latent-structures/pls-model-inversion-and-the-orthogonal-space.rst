@@ -127,8 +127,10 @@ along it and the predicted taste does not change at all. That free direction is 
 dimension is the number of components minus the rank of the response, here :math:`2 - 1 = 1`, so it is a
 line. Every chemistry on that line gives the same predicted taste.
 
-We can walk along the null space by passing coordinates along its basis. The prediction stays fixed while
-the chemistry changes.
+We can walk along the null space by passing coordinates along its basis. In the code and figure we take a
+step of -1 and +1 along the basis. The predicted taste stays the same along this basis line. Hence the
+name the null space. Only the input variables change, i.e. the chemistry, while the predicted output
+remains fixed.
 
 .. code-block:: python
 
@@ -166,8 +168,20 @@ taste of 20.9.
 	fig.update_layout(xaxis_title="t_1", yaxis_title="t_2")
 	fig.show()
 
-Every score on the orange line predicts a taste of 20.9. When we overlay the O-PLS orthogonal space
-(below), it falls exactly on this line, as the figure at the end of the next section shows.
+.. _LVM-PLS-null-space-figure:
+
+.. figure:: ../../figures/pls/pls-model-inversion-null-space.png
+	:alt: Score plot showing the null space and the O-PLS orthogonal space overlapping
+	:width: 700px
+	:align: center
+
+	Score plot of the two-component model (cheeses 5 to 30). The orange line is the null space for a
+	target taste of 20.9, and the black square is the direct-inversion solution. The two orange triangles
+	are the -1 step (pointing down) and the +1 step (pointing up) from the code above; both predict a
+	taste of 20.9. The red dashed and purple dotted lines are the null spaces for two other target
+	tastes, 47.9 and 12.3. All three are parallel: a single-response model has one null-space direction,
+	and only the position shifts with the target. The green circles are the O-PLS orthogonal space,
+	described in the section that follows.
 
 .. _LVM-PLS-orthogonal-space:
 
@@ -218,20 +232,9 @@ comparing their directions.
 	print(float(cosine))    # 1.0
 
 The cosine between the two directions is 1.0: the PLS null space and the O-PLS orthogonal space point the
-same way and span the same line.
-
-.. figure:: ../../figures/pls/pls-model-inversion-null-space.png
-	:alt: Score plot showing the null space and the O-PLS orthogonal space overlapping
-	:width: 700px
-	:align: center
-
-	Score plot of the two-component model (cheeses 5 to 30). The orange line is the null space for a
-	target taste of 20.9; the green circles are the O-PLS orthogonal space for that target, projected
-	into the plot, and they fall on the orange line. The black square is the direct-inversion solution,
-	and the two orange triangles mark a -1 step (pointing down) and a +1 step (pointing up) along the
-	null space; both predict the same taste of 20.9. The red dashed and purple dotted lines are the null
-	spaces for two other target tastes, 47.9 and 12.3. All three are parallel: a single-response model
-	has one null-space direction, and only the position shifts with the target.
+same way and span the same line. This is what the green circles in the
+:ref:`score plot <LVM-PLS-null-space-figure>` show: they are the orthogonal space projected into the PLS
+score plot, and they lie on the orange null-space line.
 
 .. _LVM-PLS-inversion-in-practice:
 
@@ -279,7 +282,7 @@ different and often more useful question. Rather than "which chemistry gives a t
 raw materials it is a statement of what we are prepared to buy.
 
 Building it needs nothing new. Each acceptable taste has its own null space, and those null spaces are
-parallel, as shown in the score plot in :ref:`the section on O-PLS <LVM-PLS-orthogonal-space>`. Sweeping
+parallel, as the :ref:`score plot <LVM-PLS-null-space-figure>` shows. Sweeping
 the target across the acceptable range sweeps its null space across the score plot, and the swept lines
 fill out a region.
 
