@@ -14,6 +14,16 @@ cheese predicted from three chemical measurements, acetic acid, hydrogen sulfide
 forward question was "what taste does this chemistry give?" The inversion question is "which chemistry
 gives a target taste?"
 
+.. figure:: ../../figures/examples/cheese/cheese-plots-no-random.png
+	:alt: Scatterplot matrix of the cheddar-cheese data: acetic acid, hydrogen sulfide, lactic acid and taste
+	:width: 600px
+	:align: center
+
+	The 30 cheeses in the raw data. The diagonal shows each variable's distribution; the off-diagonal
+	panels are the pairwise scatter plots with a least-squares line. The three chemical measurements
+	rise together, and each rises with Taste. It is these correlations that give the inverted model
+	room to return more than one chemistry for a target taste.
+
 .. _LVM-PLS-inversion-components:
 
 Why inversion needs more than the predictive number of components
@@ -221,6 +231,70 @@ minimum-norm point, while O-PLS inversion is a single division once the orthogon
 separated during fitting. The equivalence has been proved for one response; the multiple-response case
 remains open (García-Carrión et al., 2025).
 
+.. _LVM-PLS-specification-regions:
+
+Turning the inversion around: a specification region
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Everything so far has aimed at a single target taste. In practice a product is rarely specified by one
+number: it is accepted over a range. Once we ask for a range instead of a point, the inversion answers a
+different and often more useful question. Rather than "which chemistry gives a taste of 20.9?", we ask
+"which chemistries give a taste we would accept?" The set of inputs that answer it is called a
+:index:`multivariate specification region <single: multivariate specification region>`, and for incoming
+raw materials it is a statement of what we are prepared to buy.
+
+Building it needs nothing new. Each acceptable taste has its own null space, and those null spaces are
+parallel, as shown in the score plot in :ref:`the section on O-PLS <LVM-PLS-orthogonal-space>`. Sweeping
+the target across the acceptable range sweeps its null space across the score plot, and the swept lines
+fill out a region.
+
+Two boundaries close the region off. The acceptable range of taste bounds it in one direction. In the
+other direction, along each null space, the region would run on without limit, so we bound it by the
+Hotelling's :math:`T^2` limit: solutions beyond it are extrapolations, as
+:ref:`the previous section <LVM-PLS-inversion-in-practice>` described. Paris and co-workers (2021) do
+exactly this, constraining the region by the 95% :math:`T^2` limit so it stays inside the space the data
+support.
+
+Suppose a taste between 20 and 40 is acceptable.
+
+.. code-block:: python
+
+	t2_limit = pls.hotellings_t2_limit(0.95)
+
+	region = []
+	for target in np.linspace(20.0, 40.0, 5):        # the range of taste we accept
+	    for step in np.linspace(-6, 6, 2001):        # walk along that target's null space
+	        candidate = pls.invert(target, null_space_coordinates=[step])
+	        if candidate.hotellings_t2 <= t2_limit:
+	            region.append(candidate.x_new)
+
+	region = pd.DataFrame(region)
+	print(round(t2_limit, 2))                        # 7.36
+	print(region.agg(["min", "max"]).round(2))
+	#      Acetic   H2S  Lactic
+	# min    4.35  4.44    1.25
+	# max    6.99  9.47    1.86
+
+A cheese whose chemistry falls in this region is predicted to have an acceptable taste. Note that these
+minima and maxima are the box that encloses the region, not the region itself: the region is a slanted
+band in the three chemical measurements, and a lot may sit inside every one of the three ranges while
+still lying outside the band. Note also that the enclosing box reaches slightly past the observed range
+of acetic acid in the training cheeses (4.48 to 6.46). The :math:`T^2` limit bounds the joint distance
+from the centre of the model, not each measurement separately, so a corner of the region can sit a little
+outside the range of any one measurement.
+
+When a candidate lot falls outside the region, the natural follow-up is to ask which measurement put it
+there. That is what a :ref:`contribution plot <APPS_multivariate_monitoring_contribution>` answers, by
+breaking the :math:`T^2` value into the part each variable contributes (Miller, Swanson and Heckler,
+1998).
+
+Inversion is not the only route to a specification region. The inputs can also be mapped directly into a
+region without inverting a model, an approach known as direct mapping. Paris and co-workers (2021)
+compare the two on simulated data and find neither is better in every case: model inversion accepted more
+of the genuinely good lots in their study, while direct mapping is simpler to compute and leaves more
+freedom in the shape of the region. Which suits a given problem depends on the relative cost of accepting
+a lot that turns out to be bad and rejecting one that would have been fine.
+
 .. _LVM-PLS-inversion-multiple-responses:
 
 More than one response
@@ -265,6 +339,15 @@ García-Carrión et al. (2025).
 
 * J. Trygg and S. Wold, "Orthogonal projections to latent structures (O-PLS)", *Journal of Chemometrics*,
   16 (2002): 119-128, `doi:10.1002/cem.695 <https://doi.org/10.1002/cem.695>`_.
+
+* A. Paris, C. Duchesne, and É. Poulin, "Establishing multivariate specification regions for incoming raw
+  materials using projection to latent structure models: comparison between direct mapping and model
+  inversion", *Frontiers in Analytical Science*, 1 (2021): 729732,
+  `doi:10.3389/frans.2021.729732 <https://doi.org/10.3389/frans.2021.729732>`_.
+
+* P. Miller, R. E. Swanson, and C. E. Heckler, "`Contribution plots: a missing link in multivariate
+  quality control <https://literature.learnche.org/item/78/contribution-plots-a-missing-link-in-multivariate-quality-control>`_",
+  *Applied Mathematics and Computer Science*, **8** (1998): 775-792.
 
 * S. García-Carrión, F. Sartori, J. Borràs-Ferrís, P. Facco, M. Barolo, and A. Ferrer, "On the equivalence
   between null space and orthogonal space in latent variable regression modeling", *Journal of
