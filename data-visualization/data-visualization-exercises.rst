@@ -153,6 +153,9 @@ Exercises
 		fig = px.scatter_matrix(food, dimensions=food.columns[1:6])
 		fig.show()
 
+	Plotly plots each variable against itself on the diagonal, giving a straight
+	line. The figure above instead follows the R version, which puts the
+	distribution of each variable there.
 
 	.. code-block:: r
 
@@ -160,15 +163,15 @@ Exercises
 		data_file = 'https://openmv.net/file/food-texture.csv'
 		food <- read.csv(data_file)
 
-		# Hide the smoother and bounds
-		scatterplotMatrix(food[,2:6])
+		# Hide the smoother and its confidence bounds
+		scatterplotMatrix(food[,2:6], smoother=FALSE)
 
 
-	From this plot we see histograms of the 5 univariate distributions on the diagonal; each off-diagonal plot is a bivariate scatter plot for one combination of two variables. The trend line (solid light green) shows the linear regression between the two variables. The lower-triangular part of the plot is a 90 degree rotation of the upper-triangular part. Some software packages will just draw either the upper or lower part.
+	From this plot we see the 5 univariate distributions on the diagonal, each drawn as a smooth density curve over a rug: a short vertical tick for every value recorded. Each off-diagonal plot is a bivariate scatter plot for one combination of two variables. The trend line (solid orange) shows the linear regression between the two variables. The lower-triangular part of the plot is a 90 degree rotation of the upper-triangular part. Some software packages will just draw either the upper or lower part.
 
 	From these plots we quickly gain an insight into the data:
 
-		*	Most of the 5 variables have a normal-like distribution, except for ``Crispy``, but notice the small notches on the middle histogram: they are equally spaced, indicating the variable is not continuous; it is `quantized <https://en.wikipedia.org/wiki/Quantization_(signal_processing)>`_. The ``Fracture`` variable also displays this quantization.
+		*	Most of the 5 variables have a normal-like distribution, except for ``Crispy``, but notice the ticks in the rug below the middle curve: they are equally spaced, indicating the variable is not continuous; it is `quantized <https://en.wikipedia.org/wiki/Quantization_(signal_processing)>`_. The ``Fracture`` variable also displays this quantization. The density curve on its own would smooth this over, which is why the rug is drawn as well.
 		*	There is a strong negative correlation with oiliness and density: oilier pastries are less dense (to be expected).
 		*	There is a positive correlation with oiliness and crispiness: oilier pastries are more crisp (to be expected).
 		*	There is no relationship between the oiliness and hardness of the pastry.

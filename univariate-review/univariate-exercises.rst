@@ -1063,9 +1063,8 @@ Exercises
 
 		or the equivalent in R:
 
-		.. literalinclude:: ../figures/univariate/overlaid-distributions-normal-and-t.R
+		.. literalinclude:: /univariate-review/gists/overlaid-distributions-normal-and-t.R
 			:language: s
-			:lines: 1-5,7-10
 
 	#.	Repeated use of the above code, but changing :math:`n`, shows that little *practical* difference between the distributions with as few as :math:`n=20` samples. After :math:`n=40` and especially :math:`n=60`, there is almost no *theoretical* difference between them.
 
