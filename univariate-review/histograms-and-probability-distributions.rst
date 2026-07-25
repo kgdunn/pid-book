@@ -10,7 +10,7 @@ Histograms and probability distributions
 
 The :ref:`previous section <univariate-about-variability>` has hopefully convinced you that variation in a process is inevitable. This section aims to show how we can visualize and quantify any variability in a recorded vector of data.
 
-A histogram is a summary of the variation in a measured variable. It shows the *number* of samples that occur in a *category*: this is called a **frequency distribution**. For example: number of children born, categorized against their birth gender: male or female.
+A histogram is a summary of the variation in a measured variable. It shows the *number* of samples that occur in a *category*: this is called a **frequency distribution**. For example: number of children born, categorized against the sex recorded at birth: male or female.
 
 .. image:: ../figures/univariate/histogram-children-by-gender.png
 	:scale: 35
@@ -79,7 +79,18 @@ Steps to creating a frequency distribution, illustrated with 4 examples, labelle
 
 	#.	Plot the number of observations in category as a bar plot. If you plot the number of observations divided by the total number of observations, :math:`N`, then you are plotting the **relative frequency**.
 
-.. TODO: show the above plots
+The four cases are shown below. Notice how the resolution chosen in step 2 sets what the
+plot can show: A has two bars and can only report a proportion, B has four ordered grades,
+C is quantized to whole percentages so each bar is one distinct yield value, and D is a
+continuous measurement that only becomes a distribution once it is collected into bins.
+
+.. image:: ../figures/univariate/frequency-distribution-four-cases.png
+	:alt:	../figures/univariate/histogram_chapter_figures.py
+	:scale: 20
+	:align: center
+
+.. literalinclude:: ../figures/univariate/frequency-distribution-four-cases.py
+	:language: python
 
 .. index::
 	single: frequency, relative
