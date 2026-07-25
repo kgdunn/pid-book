@@ -74,8 +74,7 @@ The :math:`K=5` terms that contribute to this value are illustrated as a bar plo
 	:width: 750px
 	:align: center
 
-The bar plot is the element-wise product of the observation's autoscaled row with the loading vector,
-so it is two lines once the model is fitted:
+``score_contributions`` computes those :math:`K` terms, one row per observation:
 
 .. code-block:: python
 
@@ -87,28 +86,27 @@ so it is two lines once the model is fitted:
 	food_mcuv = MCUVScaler().fit_transform(food)
 	model_pca = PCA(n_components=2).fit(food_mcuv)
 
-	# Observation 33 is the 33rd row, at position 32 counting from zero.
-	observation = food_mcuv.iloc[32]
-	loading_1 = model_pca.loadings_.iloc[:, 0]
+	# One row per observation, one column per variable: entry [i, k] is the
+	# term x[i, k] * p[k, 1] from the equation above.
+	contributions = model_pca.score_contributions(food_mcuv, component=1)
 
-	# The K terms of the equation above: each variable's autoscaled value
-	# multiplied by that variable's loading on the first component.
-	contributions = observation * loading_1
-	print(contributions.round(3).to_dict())
+	# Observation 33 is the 33rd row, at position 32 counting from zero.
+	obs_33 = contributions.iloc[32]
+	print(obs_33.round(3).to_dict())
 	# {'Oil': -0.489, 'Density': -1.028, 'Crispy': -1.355,
 	#  'Fracture': -1.12, 'Hardness': -0.178}
-	print(f"they sum to {contributions.sum():.3f}, which is t[33, 1]")
+	print(f"they sum to {obs_33.sum():.3f}, which is t[33, 1]")
 	# they sum to -4.171, which is t[33, 1]
 
-	fig = go.Figure(go.Bar(x=contributions.index, y=contributions))
+	fig = go.Figure(go.Bar(x=obs_33.index, y=obs_33))
 	fig.update_layout(yaxis_title_text="Contribution to t1, observation 33")
 	fig.show()
 
-Note that ``model_pca.score_contributions(...)`` computes a different quantity, despite the similar
-name. It takes a movement in score space and projects it back onto the variables, reporting how far
-apart two points are in each variable's direction. The bars in this plot instead break a single score
-into the :math:`K` terms that add up to it, which is why they sum to :math:`t_{33,1}` and the
-back-projected values do not.
+The bars summing to the score is what makes them contributions: each one is the amount of
+:math:`t_{33,1}` that a single variable supplied. Notice also that this is not the loading plot.
+A loading describes the whole data set, while a contribution describes one observation, so a
+variable with a large loading contributes nothing to an observation that sits at that variable's
+average value.
 
 This gives a more accurate indication of exactly how the low :math:`t_i` value was achieved. Previously we had said that pastry 33 was denser than the other pastries, and had a higher fracture angle; now we can see the relative contributions from each variable more clearly.
 
