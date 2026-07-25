@@ -307,6 +307,14 @@ the fitted profit is $732 per day and the fitted purity is 93.5%. Neither respon
 own best there. Profit could reach $740 and purity could reach 95.2%, but not at the same
 setting, and this is the compromise the chosen ramps and importances imply.
 
+One detail about the region being searched. The search runs over the coded cube, from
+:math:`-1` to :math:`+1` on each factor, which is the region the four corner runs span. The
+axial runs of this central composite design sit further out, at 1.41 coded units, so the
+experiment covers a little more ground than the cube. Passing
+``search_bounds=(-1.41, 1.41)`` searches that wider region instead. Here it makes no
+difference, because the optimum is already inside the cube, but it would matter for a
+surface still rising at the cube face.
+
 .. figure:: ../figures/doe/multi-response-composite-desirability.png
     :align: center
     :width: 700px
