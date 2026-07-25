@@ -48,7 +48,7 @@ and fit the model on the remaining twenty-six.
 	import numpy as np
 	import pandas as pd
 	import plotly.graph_objects as go
-	from process_improve.multivariate import PLS, OPLS
+	from process_improve.multivariate import PLS, OPLS, MCUVScaler
 
 	cheese = pd.read_csv("https://openmv.net/file/cheddar-cheese.csv")
 	x_columns = ["Acetic", "H2S", "Lactic"]
@@ -120,6 +120,38 @@ is a reasonable one, compare it with the cheese we held out. For this model the 
 Both rows sit well inside the two limits, so neither is an extrapolation. The predicted chemistry has an
 SPE of exactly zero, because the inversion rebuilds the inputs from their scores: the result lies on the
 model plane by construction, leaving no residual.
+
+The two rows are close, but "close" in the raw units is hard to read: a gap of 0.5 in hydrogen sulfide
+does not mean the same thing as a gap of 0.5 in lactic acid, because the three measurements are on
+different scales. Centring and scaling each column puts them on a common footing, where one unit is one
+standard deviation of that measurement. The *normalized deviation* is then the sum of the squared
+differences between the two rows, in those units.
+
+.. code-block:: python
+
+	scaler = MCUVScaler().fit(X)
+	a = scaler.transform(actual.to_frame().T).iloc[0]           # actual, in std deviations
+	p = scaler.transform(result.x_new.to_frame().T).iloc[0]     # predicted, in std deviations
+
+	print(a.round(2).to_list())                      # [-0.67, -0.46, 0.30]
+	print(p.round(2).to_list())                      # [-0.04, -0.22, -0.15]
+	print(round(float(((a - p) ** 2).sum()), 2))     # 0.66
+
+Writing the three terms out, with acetic acid first, then hydrogen sulfide, then lactic acid:
+
+.. math::
+
+	\begin{aligned}
+	\text{normalized deviation} &= \left(-0.67 - (-0.04)\right)^2 + \left(-0.46 - (-0.22)\right)^2
+	  + \left(0.30 - (-0.15)\right)^2 \\
+	&= (-0.63)^2 + (-0.24)^2 + (0.45)^2 \\
+	&= 0.39 + 0.06 + 0.21 \\
+	&= 0.66
+	\end{aligned}
+
+The square root of 0.66 is 0.81, so the cheese we held out sits about 0.8 standard deviations away from
+the chemistry the inversion proposed, counting all three measurements together. Acetic acid accounts for
+most of that gap.
 
 The null space is the reason ``null_space_dimension`` is not zero. A two-component model has two score
 directions, but a single taste value pins down only one of them. The other direction is free: we can move
