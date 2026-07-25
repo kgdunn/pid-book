@@ -59,8 +59,8 @@ Further improvements can be made to your scatter plots. For example, extend the 
 You can add box plots and histograms to the side of the axes to aid interpretation:
 
 	.. image:: ../figures/visualization/scatterplot-with-histograms-updated.png
-		:scale: 42
-		:align: right
+		:scale: 80
+		:align: center
 		:width: 900px
 		:alt: fake width
 

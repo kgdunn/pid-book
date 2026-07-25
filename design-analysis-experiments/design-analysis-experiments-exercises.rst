@@ -239,9 +239,9 @@ Exercises
 		At these conditions the expected yield is in the region of 93 to 94% (runs 7 and 8 from the standard order).
 
 		.. image:: ../figures/doe/bioreactor-pareto-plot.png
-			:alt:	bioreactor-case.R
+			:alt: Sorted magnitude of every effect in the bioreactor factorial, with B, BC, CD and C standing out
 			:align: center
-			:scale: 60
+			:scale: 63
 
 	#.	The model does not have to be refitted because the columns in matrix :math:`\mathbf{X}` are orthogonal, meaning that the coefficient estimates do not depend on the levels of any other variables.
 
@@ -992,7 +992,7 @@ Exercises
 			:language: s
 
 		.. image:: ../figures/doe/fractional-factorial-question.png
-			:alt:	../figures/doe/fractional-factorial-question.R
+			:alt: Sorted magnitude of the seven main effects, with C much larger than the rest, then E and A
 			:scale: 40
 			:align: right
 			:width: 900px
