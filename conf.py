@@ -24,6 +24,7 @@ extensions = [
     "sphinxcontrib.jquery",
     "my-extensions.youtube",
     "my-extensions.pdf_exclude",
+    "my-extensions.figure_source",
 ]
 
 # Avoid Subresource Integrity errors for the bundled jQuery.
@@ -162,6 +163,16 @@ html_theme_options = {
 html_static_path = ["_static"]
 html_css_files = ["css/theme-extended-kgd.css"]
 
+# Long-press (or Alt-click) a figure to see which script drew it. The
+# mapping is written to _static/figure-sources.json during the HTML build by
+# my-extensions/figure_source.py; the script reads it from this same site.
+html_js_files = [("js/figure-source.js", {"defer": "defer"})]
+
+# Where the figures repository is mounted, relative to this file, and the
+# prefix that turns a script path from the manifest into a link.
+figure_source_root = "figures"
+figure_source_base = "https://github.com/kgdunn/figures/blob/main/"
+
 # Custom sidebar: logo, then Pagefind search, then the book TOC.
 html_sidebars = {
     "**": [
@@ -273,8 +284,9 @@ TELEMETRY_GC_CODE = os.environ.get("PID_BOOK_GC_CODE", "")
 
 if TELEMETRY_ENABLED:
     # html_js_files is consumed only by the HTML builder, so LaTeX/text/epub
-    # builders are unaffected.
-    html_js_files = [("js/telemetry.js", {"defer": "defer"})]
+    # builders are unaffected. Appended, so the figure-source script above
+    # is not displaced.
+    html_js_files = html_js_files + [("js/telemetry.js", {"defer": "defer"})]
 
     # Surfaced to Jinja templates; gates the sparkline mount in
     # `_templates/pid-sidebar-extra.html`.

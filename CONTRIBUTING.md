@@ -153,6 +153,37 @@ Figures live in a separate repository: <https://github.com/kgdunn/figures>.
 If your change adds or modifies figures, please open a parallel PR there and
 link the two PRs.
 
+### Linking a figure to the code that drew it
+
+Long-pressing a figure in the HTML book (or Alt-clicking it) shows which
+script in the figures repository drew it. Nothing needs to be added to a
+figure for this to work: `my-extensions/figure_source.py` scans the figures
+repository at build time, matching each image against the script that names
+it in a line that writes a file, and writes the result to
+`_static/figure-sources.json`.
+
+Two things keep that mapping correct as figures are replaced:
+
+* **A replacement names what it replaces.** When a new generator supersedes
+  an older script, say so in its module docstring, naming the old file.
+  Where two scripts claim the same image, a script that another script names
+  loses, so the replacement wins automatically.
+* **Reads are not claims.** A script that opens an image (the ones that join
+  panels side by side, for instance) is not treated as its author. Only
+  lines that write count.
+
+To pin a figure explicitly, or to record a generator the scan cannot infer,
+add a `:source:` option with the path inside the figures repository:
+
+```rst
+.. figure:: ../figures/monitoring/adaptive-softsensor-motivation.png
+    :source: monitoring/adaptive-softsensor-figures.py
+    :alt: Static soft-sensor prediction and laboratory values over time.
+```
+
+An explicit `:source:` always beats the scan. Keep `:alt:` for what it is
+for: a description of the image for anyone who cannot see it.
+
 ## RST style notes
 
 * Source files are reStructuredText (`.rst`), processed by Sphinx.

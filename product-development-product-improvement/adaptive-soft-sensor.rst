@@ -193,6 +193,7 @@ error is almost entirely bias.
 	fig.show()
 
 .. figure:: ../figures/monitoring/adaptive-softsensor-motivation.png
+	:source: monitoring/adaptive-softsensor-figures.py
 	:alt: Static PLS soft-sensor prediction and laboratory values over the whole dataset; the prediction drifts above the lab values after month 13.
 	:width: 900px
 	:scale: 80
@@ -486,6 +487,7 @@ without changing the bias.
 	fig.show()
 
 .. figure:: ../figures/monitoring/adaptive-softsensor-payoff.png
+	:source: monitoring/adaptive-softsensor-figures.py
 	:alt: Prediction error over time for the static and adaptive models; static errors climb to +11 kPa after the drift while adaptive errors stay near zero.
 	:width: 900px
 	:scale: 80
