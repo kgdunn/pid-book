@@ -89,6 +89,11 @@ Exercises
 		:scale: 40
 		:alt: Distillation data with the least squares fit and prediction intervals
 
+	.. literalinclude:: ../figures/least-squares/distillation-prediction-intervals.py
+		:language: python
+
+	or the equivalent in R:
+
 	.. literalinclude:: ../figures/least-squares/distillation-column-questions.R
 		:language: s
 		:lines: 1-25,30-33
@@ -204,6 +209,11 @@ Exercises
 		:align: center
 		:width: 900px
 		:scale: 100
+
+	.. literalinclude:: ../figures/least-squares/kappa-number-autocorrelation.py
+	       :language: python
+
+	or the equivalent in R:
 
 	.. literalinclude:: ../figures/least-squares/kappa-number-autocorrelation.R
 	       :language: s
@@ -514,6 +524,11 @@ Exercises
 
 	I recommended that you reproduce R's output yourself. The code below calculates these same values.
 
+	.. literalinclude:: ../figures/least-squares/distillation-least-squares.py
+	       :language: python
+
+	or the equivalent in R:
+
 	.. literalinclude:: ../figures/least-squares/distillation-least-squares.R
 	       :language: s
 	       :lines: 1-67,70-82
@@ -612,7 +627,7 @@ Exercises
 	#.	Relationship: the data are negatively correlated.
 
 		.. image:: ../figures/least-squares/CO2-gas-furnace-raw-data.png
-			:alt:	../figures/least-squares/CO2-gas-furnace-question.R
+			:alt:	../figures/least-squares/least_squares_exercise_figures.py
 			:scale: 70
 			:width: 750px
 			:align: center
@@ -688,7 +703,8 @@ Exercises
 		The temperature prediction at 1.00 mV would be 413.9 K.
 
 		.. image:: ../figures/least-squares/voltage-linear-model.png
-			:scale: 60
+			:alt:	../figures/least-squares/voltage_linear_model.py
+			:scale: 38
 			:align: center
 
 		The following Python code was used to fit the model and draw the plot.
@@ -768,7 +784,7 @@ Exercises
 	#.	These residuals were normally distributed, as verified in the q-q plot:
 
 		.. image:: ../figures/least-squares/CO2-gas-furnace-residuals.png
-			:alt:	../figures/least-squares/CO2-gas-furnace-question.R
+			:alt:	../figures/least-squares/least_squares_exercise_figures.py
 			:scale: 35
 			:width: 900px
 			:align: center
@@ -830,7 +846,7 @@ Exercises
 	#.	The visual level of correlation is shown in the first :math:`3 \times 3` plots below, while the relationship of each :math:`x` to :math:`y` is shown in the last row and column:
 
 		.. image:: ../figures/least-squares/cheese-data-correlation.png
-			:alt:	../figures/least-squares/cheddar-cheese.R
+			:alt:	../figures/least-squares/least_squares_exercise_figures.py
 			:width: 900px
 			:scale: 50
 			:align: left
@@ -866,6 +882,11 @@ Exercises
 		This resolution to this problem is simple: look at the raw data and see how correlated each of the :math:`x`-variables are with each other. One of the shortcomings of least squares is that we must invert :math:`\mathbf{X}'\mathbf{X}`. For highly correlated variables this matrix is unstable in that small changes in the data lead to large changes in the inversion. What we need is a method that handles correlation.
 
 		One quick, simple, but suboptimal way to deal with high correlation is to create a new variable, :math:`x_\text{avg} = 0.33 x_A + 0.33 x_S + 0.33 x_L` that blends the 3 separate pieces of information into an average. Averages are always less noisy than the separate variables the make up the average. Then use this average in a single-variable regression. See the code below for an example.
+
+	.. literalinclude:: ../figures/least-squares/cheddar-cheese.py
+		:language: python
+
+	or the equivalent in R:
 
 	.. literalinclude:: ../figures/least-squares/cheddar-cheese.R
 		:language: s
@@ -1052,7 +1073,7 @@ Exercises
 	#.	The residuals from the multiple linear regression model are normally distributed. This can be verified in the q-q plot below:
 
 		.. image:: ../figures/least-squares/bioreactor-residuals-qq-plot.png
-			:alt:	../figures/least-squares/bioreactor-ML-regression.R
+			:alt:	../figures/least-squares/least_squares_exercise_figures.py
 			:scale: 50
 			:width: 550px
 			:align: center
@@ -1130,7 +1151,7 @@ Exercises
 	#.	A scatter plot matrix of the 5 variables is
 
 		.. image:: ../figures/least-squares/ldpe-scatterplot-matrix.png
-			:alt:	../figures/least-squares/LDPE-question.R
+			:alt:	../figures/least-squares/ldpe_question_figures.py
 			:scale: 50
 			:width: 900px
 			:align: right
@@ -1148,8 +1169,8 @@ Exercises
 
 		First start with a plot of the raw data with this regression line superimposed:
 
-		.. image:: ../figures/least-squares/ldpe-z2-SCB-raw-data-identify.jpg
-			:alt:	../figures/least-squares/LDPE-question.R
+		.. image:: ../figures/least-squares/ldpe-z2-SCB-raw-data-identify.png
+			:alt:	../figures/least-squares/ldpe_question_figures.py
 			:scale: 35
 			:width: 900px
 			:align: right
@@ -1157,7 +1178,7 @@ Exercises
 		which helps when we look at the q-q plot of the Studentized residuals to see the positive and the negative residuals:
 
 		.. image:: ../figures/least-squares/ldpe-z2-SCB-resids-qqplot.png
-			:alt:	../figures/least-squares/LDPE-question.R
+			:alt:	../figures/least-squares/ldpe_question_figures.py
 			:scale: 35
 			:width: 900px
 			:align: right
@@ -1170,7 +1191,7 @@ Exercises
 		#.	The residuals in time-order
 
 			.. image:: ../figures/least-squares/ldpe-z2-SCB-raw-resids-in-order.png
-				:alt:	../figures/least-squares/LDPE-question.R
+				:alt:	../figures/least-squares/ldpe_question_figures.py
 				:scale: 32
 				:width: 900px
 				:align: left
@@ -1183,7 +1204,7 @@ Exercises
 			*	*Predictions vs residuals*: definite structure in the residuals. We expect to see no structure, but a definite trend, formed by the 4 points is noticeable, as well as a negative correlation at high predicted ``SCB``.
 
 				.. image:: ../figures/least-squares/ldpe-z2-SCB-predictions-vs-residuals.png
-					:alt:	../figures/least-squares/LDPE-question.R
+					:alt:	../figures/least-squares/ldpe_question_figures.py
 					:scale: 32
 					:width: 900px
 					:align: left
@@ -1193,7 +1214,7 @@ Exercises
 			*	Predicted vs measured :math:`y`: we expect to see a strong trend about a 45° line (shown in blue). The strong departure from this line indicates there is a problem with the model
 
 				.. image:: ../figures/least-squares/ldpe-z2-SCB-predictions-vs-actual.png
-					:alt:	../figures/least-squares/LDPE-question.R
+					:alt:	../figures/least-squares/ldpe_question_figures.py
 					:scale: 32
 					:width: 900px
 					:align: left
@@ -1203,7 +1224,7 @@ Exercises
 	#.	A plot of the hat-values (leverage) from the regression of ``SCB`` on ``z2`` is:
 
 		.. image:: ../figures/least-squares/ldpe-z2-SCB-hat-values.png
-			:alt:	../figures/least-squares/LDPE-question.R
+			:alt:	../figures/least-squares/ldpe_question_figures.py
 			:scale: 32
 			:width: 900px
 			:align: left
@@ -1214,8 +1235,8 @@ Exercises
 
 		The hat values from this updated model are:
 
-		.. image:: ../figures/least-squares/ldpe-z2-SCB-hats-again.jpg
-			:alt:	../figures/least-squares/LDPE-question.R
+		.. image:: ../figures/least-squares/ldpe-z2-SCB-hats-again.png
+			:alt:	../figures/least-squares/ldpe_question_figures.py
 			:scale: 32
 			:width: 900px
 			:align: left
@@ -1226,16 +1247,16 @@ Exercises
 
 	#.	The influence index plots for the model with all 54 points is shown first, followed by the influence index plot of the model with only the first 50 points.
 
-		.. image:: ../figures/least-squares/ldpe-z2-SCB-iip-before.jpg
-			:alt:	../figures/least-squares/LDPE-question.R
+		.. image:: ../figures/least-squares/ldpe-z2-SCB-iip-before.png
+			:alt:	../figures/least-squares/ldpe_question_figures.py
 			:scale: 50
 			:width: 900px
 			:align: left
 
 		The increasing leverage, as the abnormal process operation develops is clearly apparent. This leverage is not "bad" (i.e. influential) initially, because it is "in-line" with the regression slope. But by observation 54, there is significant deviation that observation 54 has high residuals distance, and therefore a combined high influence on the model (high Cook's D).
 
-		.. image:: ../figures/least-squares/ldpe-z2-SCB-iip-after.jpg
-			:alt:	../figures/least-squares/LDPE-question.R
+		.. image:: ../figures/least-squares/ldpe-z2-SCB-iip-after.png
+			:alt:	../figures/least-squares/ldpe_question_figures.py
 			:scale: 50
 			:width: 900px
 			:align: left
