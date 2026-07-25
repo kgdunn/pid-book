@@ -6,8 +6,9 @@ Using a PLS model backwards: model inversion and the null space
 So far we have used a PLS model in the forward direction: given the inputs in |X|, predict the
 outputs in |Y|. Many design problems ask the reverse question. We fix the quality we want and
 solve for the inputs that would achieve it. Finding the inputs that give a chosen output is called
-*model inversion*, and it is the basis of latent-variable product and process design
-(Jaeckle and MacGregor, 2000).
+*model inversion*, and it is the basis of latent-variable product and process design (`Jaeckle and
+MacGregor, 2000
+<https://literature.learnche.org/item/180/industrial-applications-of-product-design-through-the-inversion-of-latent-variable-models>`_).
 
 We will use the same :ref:`cheddar-cheese data <LVM-cheddar-cheese-example>` as before: the taste of a
 cheese predicted from three chemical measurements, acetic acid, hydrogen sulfide, and lactic acid. The
@@ -255,6 +256,12 @@ Hotelling's :math:`T^2` limit: solutions beyond it are extrapolations, as
 exactly this, constraining the region by the 95% :math:`T^2` limit so it stays inside the space the data
 support.
 
+The idea is as old as the method. Jaeckle and MacGregor called the result a *window of process operating
+conditions*: they moved along the null space over a range that kept the conditions within those seen in
+the past, then applied engineering judgement to pick a point in that window, such as the most economical
+or most energy-efficient one. Bounding by :math:`T^2` is a way of making "within the range of past
+operating conditions" a single, testable number.
+
 Suppose a taste between 20 and 40 is acceptable.
 
 .. code-block:: python
@@ -282,11 +289,6 @@ still lying outside the band. Note also that the enclosing box reaches slightly 
 of acetic acid in the training cheeses (4.48 to 6.46). The :math:`T^2` limit bounds the joint distance
 from the centre of the model, not each measurement separately, so a corner of the region can sit a little
 outside the range of any one measurement.
-
-When a candidate lot falls outside the region, the natural follow-up is to ask which measurement put it
-there. That is what a :ref:`contribution plot <APPS_multivariate_monitoring_contribution>` answers, by
-breaking the :math:`T^2` value into the part each variable contributes (Miller, Swanson and Heckler,
-1998).
 
 Inversion is not the only route to a specification region. The inputs can also be mapped directly into a
 region without inverting a model, an approach known as direct mapping. Paris and co-workers (2021)
@@ -333,9 +335,10 @@ García-Carrión et al. (2025).
 
 .. rubric:: References
 
-* C. M. Jaeckle and J. F. MacGregor, "Industrial applications of product design through the inversion of
-  latent variable models", *Chemometrics and Intelligent Laboratory Systems*, 50 (2000): 199-210,
-  `doi:10.1016/S0169-7439(99)00058-1 <https://doi.org/10.1016/S0169-7439(99)00058-1>`_.
+* C. M. Jaeckle and J. F. MacGregor, "`Industrial applications of product design through the inversion of
+  latent variable models
+  <https://literature.learnche.org/item/180/industrial-applications-of-product-design-through-the-inversion-of-latent-variable-models>`_",
+  *Chemometrics and Intelligent Laboratory Systems*, **50** (2000): 199-210.
 
 * J. Trygg and S. Wold, "Orthogonal projections to latent structures (O-PLS)", *Journal of Chemometrics*,
   16 (2002): 119-128, `doi:10.1002/cem.695 <https://doi.org/10.1002/cem.695>`_.
@@ -344,10 +347,6 @@ García-Carrión et al. (2025).
   materials using projection to latent structure models: comparison between direct mapping and model
   inversion", *Frontiers in Analytical Science*, 1 (2021): 729732,
   `doi:10.3389/frans.2021.729732 <https://doi.org/10.3389/frans.2021.729732>`_.
-
-* P. Miller, R. E. Swanson, and C. E. Heckler, "`Contribution plots: a missing link in multivariate
-  quality control <https://literature.learnche.org/item/78/contribution-plots-a-missing-link-in-multivariate-quality-control>`_",
-  *Applied Mathematics and Computer Science*, **8** (1998): 775-792.
 
 * S. García-Carrión, F. Sartori, J. Borràs-Ferrís, P. Facco, M. Barolo, and A. Ferrer, "On the equivalence
   between null space and orthogonal space in latent variable regression modeling", *Journal of
