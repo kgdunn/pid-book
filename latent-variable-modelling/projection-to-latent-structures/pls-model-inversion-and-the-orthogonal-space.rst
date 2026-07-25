@@ -80,12 +80,46 @@ will give that taste.
 	print(result.x_new.round(2).to_dict())
 	# {'Acetic': 5.52, 'H2S': 5.56, 'Lactic': 1.40}
 	print(result.null_space_dimension)        # 1
-	print(round(result.hotellings_t2, 2))     # 0.06
 
-The model returns a chemistry of about (Acetic 5.52, H2S 5.56, Lactic 1.40). The prediction at this point
-is exactly 20.9, by construction. Two other quantities are reported. The ``null_space_dimension`` is 1,
-and the Hotelling's :math:`T^2` of the solution is 0.06, far inside the 99% limit of 12.1, so this design
-sits comfortably among the calibration cheeses rather than being an extrapolation.
+	# Compare the designed chemistry with what cheese 2 actually was.
+	actual = holdout[x_columns].iloc[1]
+	for label, chemistry in [("Actual", actual), ("Predicted", result.x_new)]:
+	    d = pls.diagnose(chemistry.to_frame().T)
+	    print(f"{label}: T2 = {float(d.hotellings_t2.iloc[0]):.2f}, "
+	          f"SPE = {float(d.spe.iloc[0]):.2f}")
+	# Actual: T2 = 0.21, SPE = 0.68
+	# Predicted: T2 = 0.06, SPE = 0.00
+
+The prediction at the designed chemistry is exactly 20.9, by construction. To judge whether that design
+is a reasonable one, compare it with the cheese we held out. For this model the 99% limits are
+:math:`T^2 = 12.14` and :math:`\text{SPE} = 1.60`.
+
+.. list-table:: Cheese 2: its measured chemistry, and the chemistry the inversion returns for a taste of 20.9.
+	:header-rows: 1
+	:widths: 20 16 16 16 16 16
+
+	*	- Row
+		- Acetic
+		- H2S
+		- Lactic
+		- :math:`T^2`
+		- SPE
+	*	- Actual
+		- 5.16
+		- 5.04
+		- 1.53
+		- 0.21
+		- 0.68
+	*	- Predicted
+		- 5.52
+		- 5.56
+		- 1.40
+		- 0.06
+		- 0.00
+
+Both rows sit well inside the two limits, so neither is an extrapolation. The predicted chemistry has an
+SPE of exactly zero, because the inversion rebuilds the inputs from their scores: the result lies on the
+model plane by construction, leaving no residual.
 
 The null space is the reason ``null_space_dimension`` is not zero. A two-component model has two score
 directions, but a single taste value pins down only one of them. The other direction is free: we can move
