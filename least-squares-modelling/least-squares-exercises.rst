@@ -89,7 +89,7 @@ Exercises
 		:scale: 40
 		:alt: Distillation data with the least squares fit and prediction intervals
 
-	.. literalinclude:: /least-squares-modelling/gists/distillation-prediction-intervals.py
+	.. literalinclude:: ../figures/least-squares/distillation-prediction-intervals.py
 		:language: python
 
 	or the equivalent in R:
@@ -210,7 +210,7 @@ Exercises
 		:width: 900px
 		:scale: 100
 
-	.. literalinclude:: /least-squares-modelling/gists/kappa-number-autocorrelation.py
+	.. literalinclude:: ../figures/least-squares/kappa-number-autocorrelation.py
 	       :language: python
 
 	or the equivalent in R:
@@ -524,7 +524,7 @@ Exercises
 
 	I recommended that you reproduce R's output yourself. The code below calculates these same values.
 
-	.. literalinclude:: /least-squares-modelling/gists/distillation-least-squares.py
+	.. literalinclude:: ../figures/least-squares/distillation-least-squares.py
 	       :language: python
 
 	or the equivalent in R:
@@ -883,7 +883,7 @@ Exercises
 
 		One quick, simple, but suboptimal way to deal with high correlation is to create a new variable, :math:`x_\text{avg} = 0.33 x_A + 0.33 x_S + 0.33 x_L` that blends the 3 separate pieces of information into an average. Averages are always less noisy than the separate variables the make up the average. Then use this average in a single-variable regression. See the code below for an example.
 
-	.. literalinclude:: /least-squares-modelling/gists/cheddar-cheese.py
+	.. literalinclude:: ../figures/least-squares/cheddar-cheese.py
 		:language: python
 
 	or the equivalent in R:
