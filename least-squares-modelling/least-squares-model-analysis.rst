@@ -541,6 +541,8 @@ In many cases the confidence interval for the intercept is not of any value beca
 	# above. It is exactly the same!
 
 
+.. _LS-prediction-interval:
+
 Prediction error estimates for the y-variable
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

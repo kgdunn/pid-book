@@ -1204,3 +1204,73 @@ Exercises
 		.. math::
 
 			y = 24 + 3 (+1) - 1.0 (-0.6) + 4.0 (2.33) + 3.5 (+2) = 43.9
+
+.. admonition:: Question
+
+	A coating process has been studied with a central composite design in two factors, both
+	coded to the usual :math:`-1` to :math:`+1` range: :math:`x_1` is the line speed and
+	:math:`x_2` is the drying temperature. Two responses were measured on every run, and the
+	following models were fitted:
+
+	*	:math:`\hat{y}_1` = coating yield [%] = :math:`80 + 6 x_1 + 2 x_2`
+	*	:math:`\hat{y}_2` = unit cost [$/kg] = :math:`50 + 8 x_1 - 3 x_2`
+
+	The yield must be at least 84%, and the unit cost must be no more than $56/kg.
+
+	#.	Where in the region is the yield highest, and where is the cost lowest? Show that no
+		single setting achieves both.
+
+	#.	Two settings are proposed: :math:`R` at :math:`(x_1, x_2) = (+0.5, +1)` and :math:`S`
+		at :math:`(x_1, x_2) = (+1, +1)`. Does each one meet both requirements? What does the
+		:ref:`sweet spot <DOE-sweet-spot>` tell you about which to prefer?
+
+	#.	Using a :ref:`desirability <DOE-desirability>` ramp that runs from 84% to 90% for the
+		yield, and from $56/kg down to $44/kg for the cost, calculate the individual
+		desirabilities and the overall desirability at :math:`R` and at :math:`S`. Which
+		setting does this prefer, and why does it differ from what the yield alone suggests?
+
+	#.	A third setting :math:`P` at :math:`(x_1, x_2) = (+1, 0)` gives a yield of 86% and a
+		cost of $58/kg. Calculate its overall desirability and explain the result.
+
+.. admonition:: Solution
+
+	#.	Both models are planar, so each response is extreme at a corner of the region. The
+		yield rises with both factors, so it is highest at :math:`(+1, +1)`, giving
+		:math:`80 + 6 + 2 = 88\%`. The cost falls as :math:`x_1` decreases and as :math:`x_2`
+		increases, so it is lowest at :math:`(-1, +1)`, giving :math:`50 - 8 - 3 = 39` $/kg.
+		These are different corners: at :math:`(+1, +1)` the cost is
+		:math:`50 + 8 - 3 = 55` $/kg, and at :math:`(-1, +1)` the yield is only
+		:math:`80 - 6 + 2 = 76\%`, which fails the 84% requirement. Line speed helps the yield
+		and hurts the cost, so no setting can be best for both.
+
+	#.	At :math:`R = (+0.5, +1)`: yield :math:`= 80 + 3 + 2 = 85\%` and cost
+		:math:`= 50 + 4 - 3 = 51` $/kg. At :math:`S = (+1, +1)`: yield :math:`= 88\%` and cost
+		:math:`= 55` $/kg. Both settings meet both requirements, so both lie inside the sweet
+		spot. That is all the sweet spot has to say: it marks out the acceptable region but
+		does not rank the settings within it.
+
+	#.	The yield is being maximized, so :math:`d_1 = (y_1 - 84)/(90 - 84)`. The cost is being
+		minimized, so :math:`d_2 = (56 - y_2)/(56 - 44)`. The overall desirability is the
+		geometric mean, :math:`D = \sqrt{d_1 d_2}`, with equal importance on each.
+
+		At :math:`R`: :math:`d_1 = 1/6 = 0.167` and :math:`d_2 = 5/12 = 0.417`, so
+		:math:`D = \sqrt{0.167 \times 0.417} = 0.264`.
+
+		At :math:`S`: :math:`d_1 = 4/6 = 0.667` and :math:`d_2 = 1/12 = 0.083`, so
+		:math:`D = \sqrt{0.667 \times 0.083} = 0.236`.
+
+		Desirability prefers :math:`R`, even though :math:`S` has the higher yield. The cost
+		ramp spans $12/kg while the yield ramp spans 6%, so a given move in cost changes its
+		desirability by less per dollar but the cost at :math:`S` is almost at its limit,
+		leaving :math:`d_2` very small. The geometric mean penalises that imbalance: a setting
+		that is barely acceptable on one response scores poorly overall however well it does
+		on the other. Note that this ranking follows from the ramps chosen; different limits
+		would give a different answer, which is why the ramps have to be stated.
+
+	#.	At :math:`P` the cost of $58/kg is above the $56/kg limit, so :math:`d_2 = 0` and
+		therefore :math:`D = \sqrt{d_1 \times 0} = 0`, whatever the yield does. :math:`P` lies
+		outside the sweet spot, and the overall desirability records that as a zero rather
+		than as a low score. This is the property that makes the geometric mean the usual
+		choice here: an arithmetic mean would have given :math:`P` a score of
+		:math:`(0.333 + 0)/2 = 0.167`, letting a good yield partly excuse a product that
+		cannot be sold at that cost.
