@@ -252,9 +252,10 @@ fill out a region.
 Two boundaries close the region off. The acceptable range of taste bounds it in one direction. In the
 other direction, along each null space, the region would run on without limit, so we bound it by the
 Hotelling's :math:`T^2` limit: solutions beyond it are extrapolations, as
-:ref:`the previous section <LVM-PLS-inversion-in-practice>` described. Paris and co-workers (2021) do
-exactly this, constraining the region by the 95% :math:`T^2` limit so it stays inside the space the data
-support.
+:ref:`the previous section <LVM-PLS-inversion-in-practice>` described. `Paris and co-workers (2021)
+<https://literature.learnche.org/item/181/establishing-multivariate-specification-regions-for-incoming-raw-materials-using-projection-to-latent-structure-models-comparison-between-direct-mapping-and-model-inversion>`_
+do exactly this, constraining the region by the 95% :math:`T^2` limit so it stays inside the space the
+data support.
 
 The idea is as old as the method. Jaeckle and MacGregor called the result a *window of process operating
 conditions*: they moved along the null space over a range that kept the conditions within those seen in
@@ -343,10 +344,11 @@ García-Carrión et al. (2025).
 * J. Trygg and S. Wold, "Orthogonal projections to latent structures (O-PLS)", *Journal of Chemometrics*,
   16 (2002): 119-128, `doi:10.1002/cem.695 <https://doi.org/10.1002/cem.695>`_.
 
-* A. Paris, C. Duchesne, and É. Poulin, "Establishing multivariate specification regions for incoming raw
-  materials using projection to latent structure models: comparison between direct mapping and model
-  inversion", *Frontiers in Analytical Science*, 1 (2021): 729732,
-  `doi:10.3389/frans.2021.729732 <https://doi.org/10.3389/frans.2021.729732>`_.
+* A. Paris, C. Duchesne, and É. Poulin, "`Establishing multivariate specification regions for incoming
+  raw materials using projection to latent structure models: comparison between direct mapping and model
+  inversion
+  <https://literature.learnche.org/item/181/establishing-multivariate-specification-regions-for-incoming-raw-materials-using-projection-to-latent-structure-models-comparison-between-direct-mapping-and-model-inversion>`_",
+  *Frontiers in Analytical Science*, **1** (2021): 729732.
 
 * S. García-Carrión, F. Sartori, J. Borràs-Ferrís, P. Facco, M. Barolo, and A. Ferrer, "On the equivalence
   between null space and orthogonal space in latent variable regression modeling", *Journal of
