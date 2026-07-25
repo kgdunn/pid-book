@@ -419,15 +419,24 @@ comparing their directions.
 
 	ns_input = result.null_space_basis.to_numpy().T @ pls.x_loadings_.to_numpy().T
 	os_input = opls_result.orthogonal_space_basis.to_numpy().T
-	cosine = np.abs(ns_input @ os_input.T) / (
+
+	print((ns_input / np.linalg.norm(ns_input)).round(3))    # [[ 0.948 -0.238  0.211]]
+	print((os_input / np.linalg.norm(os_input)).round(3))    # [[ 0.948 -0.238  0.211]]
+
+	cosine = np.abs(ns_input @ os_input.T).item() / (
 	    np.linalg.norm(ns_input) * np.linalg.norm(os_input)
 	)
-	print(float(cosine))    # 1.0
+	print(round(cosine, 6))    # 1.0
 
-The cosine between the two directions is 1.0: the PLS null space and the O-PLS orthogonal space point the
-same way and span the same line. This is what the green circles in the
-:ref:`score plot <LVM-PLS-null-space-figure>` show: they are the orthogonal space projected into the PLS
-score plot, and they lie on the orange null-space line.
+Written as unit vectors in the chemistry, both come out as
+:math:`(0.948,\ -0.238,\ 0.211)`, the same numbers to three decimals, and the cosine between them is 1.0.
+Two methods, developed for different purposes and computed by different algorithms, describe the same
+line: raise acetic acid, lower hydrogen sulfide, adjust lactic acid slightly, and the predicted taste
+does not move. This is what the green circles in the :ref:`score plot <LVM-PLS-null-space-figure>` show:
+they are the orthogonal space projected into the PLS score plot, and they lie on the orange null-space
+line. The two approaches differ in bookkeeping rather than in what they find. PLS solves for the freedom
+after the fact and hands it back as a null-space basis; O-PLS sets it aside during fitting and hands it
+back as a coordinate axis.
 
 .. _LVM-PLS-inversion-in-practice:
 
@@ -552,7 +561,7 @@ properties give a solvent with a chosen :math:`\log P` and solubility.
 	print(design.null_space_dimension)          # 1
 	print(round(design.hotellings_t2, 2))       # 2.46
 	print(model.predict(design.x_new.to_frame().T).round(2).to_dict("records")[0])
-	# {'logP': 0.5, 'Solubility': -0.0}
+	# {'logP': 0.5, 'Solubility': 0.0}
 
 Two things change with two responses. First, the target now pins down two score directions instead of
 one, so the null space has dimension :math:`A - \text{rank}(\mathbf{Y})`. Here that is
