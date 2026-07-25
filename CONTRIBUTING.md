@@ -159,8 +159,20 @@ Long-pressing a figure in the HTML book (or Alt-clicking it) shows which
 script in the figures repository drew it. Nothing needs to be added to a
 figure for this to work: `my-extensions/figure_source.py` scans the figures
 repository at build time, matching each image against the script that names
-it in a line that writes a file, and writes the result to
-`_static/figure-sources.json`.
+it in a line that writes a file, and puts the answer on the `<img>` itself as
+`data-figure-source`.
+
+That attribute is the mechanism; the JavaScript is only a convenience on top
+of it. With JavaScript off, offline, or reading a `file://` copy, the page is
+unchanged and the link is still in the markup. The build also writes
+`_static/figure-sources.json`, the whole mapping in one file, for tooling;
+the page never reads it.
+
+Setting `figure_source_show_link = True` in `conf.py` adds a real link after
+each figure, off screen until it receives keyboard focus, in the manner of a
+skip link. That is a keyboard route to the source with no JavaScript at all;
+the cost is one more thing for a screen reader to announce per figure, which
+is why it is off by default.
 
 Two things keep that mapping correct as figures are replaced:
 

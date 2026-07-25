@@ -5,7 +5,7 @@ extension carries that link from the source tree into the built HTML,
 without putting it in the ``:alt:`` field, which belongs to screen readers
 and to people whose images failed to load.
 
-Two mechanisms, in order of precedence:
+Where the link comes from, in order of precedence:
 
 1. An explicit ``:source:`` option on an ``image`` or ``figure`` directive::
 
@@ -15,31 +15,43 @@ Two mechanisms, in order of precedence:
 
    The path is relative to the root of the figures repository.
 
-2. A manifest derived from the figures repository itself, used for every
-   image with no ``:source:`` option. Each generator script names the files
-   it writes, so scanning the scripts for quoted image filenames recovers
-   the mapping for the whole tree at once, and keeps recovering it as
-   figures are added. See :func:`build_manifest`.
+2. A scan of the figures repository, used for every image with no
+   ``:source:``. Each generator names the files it writes, so reading the
+   scripts recovers the mapping for the whole tree at once, and keeps
+   recovering it as figures are replaced. See :func:`build_manifest`.
 
-Both end up in ``_static/figure-sources.json``, written at the end of an
-HTML build and keyed by the filename Sphinx gave the image in ``_images``,
-so a browser can look up ``basename(img.src)``. Nothing is emitted for the
-LaTeX, text or epub builders, and nothing about this makes a network
-request: the JSON is a static asset served from the same site.
+Where the link ends up:
 
-The companion ``_static/js/figure-source.js`` reads the file.
+* On the ``<img>`` itself, as ``data-figure-source``. This is the one that
+  matters: it is part of the page, so it needs no script, no network and no
+  second request. With JavaScript disabled, offline, or reading a
+  ``file://`` copy, the link is still there in the markup.
+* In ``_static/figure-sources.json``, an index of every mapping in the
+  build. The page does not read it; it is there for tooling, and for anyone
+  who wants the whole list at once.
+
+Nothing is emitted for the LaTeX, text or epub builders.
+
+``figure_source_show_link = True`` additionally puts a real link after each
+figure, out of the way until it receives keyboard focus. That gives a route
+to the source with no JavaScript at all, at the cost of one more thing for a
+screen reader to announce per figure. It is off by default.
+
+The companion ``_static/js/figure-source.js`` is a convenience on top of the
+attribute, not a dependency of it.
 """
 
 from __future__ import annotations
 
+import html
 import json
 import pathlib
 import re
 
-from sphinx.util import logging
-
+from docutils import nodes
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.directives.images import Figure, Image
+from sphinx.util import logging
 
 logger = logging.getLogger(__name__)
 
@@ -72,9 +84,9 @@ class SourceMixin:
         source = self.options.get("source")
         if source:
             for node in nodes_out:
-                for image in node.findall(condition=lambda n: n.tagname == "image"):
+                for image in node.findall(nodes.image):
                     image["figure_source"] = source
-                if node.tagname == "image":
+                if isinstance(node, nodes.image):
                     node["figure_source"] = source
         return nodes_out
 
@@ -145,7 +157,8 @@ def build_manifest(figures_root: pathlib.Path) -> dict[str, str]:
 
     by_path = {
         image_path: min(scripts, key=lambda s: rank(s, image_path))
-                    .relative_to(figures_root).as_posix()
+        .relative_to(figures_root)
+        .as_posix()
         for image_path, scripts in claims.items()
     }
 
@@ -160,60 +173,118 @@ def build_manifest(figures_root: pathlib.Path) -> dict[str, str]:
     return manifest
 
 
-def _collect_explicit(app, doctree, docname) -> None:
-    """Remember any ``:source:`` option, keyed by the image's source path."""
-    registry = _ensure_registry(app.env)
-    for node in doctree.findall(condition=lambda n: n.tagname == "image"):
-        source = node.get("figure_source")
-        if source:
-            registry[node["uri"]] = source
+def _manifest_for(app) -> dict[str, str]:
+    """The scan result, computed once per build."""
+    cached = getattr(app, "_figure_source_manifest", None)
+    if cached is None:
+        root = (pathlib.Path(app.confdir) / app.config.figure_source_root).resolve()
+        cached = build_manifest(root)
+        app._figure_source_manifest = cached
+    return cached
 
 
-def _ensure_registry(env) -> dict[str, str]:
-    """The per-build registry of explicit ``:source:`` options.
+def _within_figures(app, uri: str) -> str:
+    """The image's path relative to the figures repository root.
 
-    Keyed by the image's path rather than by document, so rebuilding one
-    document rewrites its entries rather than leaving stale ones behind.
+    Sphinx records the path as written in the source, so a document in a
+    subdirectory contributes leading ``../`` segments.
     """
-    if not hasattr(env, "figure_source_explicit"):
-        env.figure_source_explicit = {}
-    return env.figure_source_explicit
+    prefix = app.config.figure_source_root.strip("/") + "/"
+    within = re.sub(r"^(?:\.\./)+", "", uri.lstrip("/"))
+    return within[len(prefix):] if within.startswith(prefix) else within
 
 
-def _write_manifest(app, exception) -> None:
+def _lookup(app, uri: str) -> str | None:
+    manifest = _manifest_for(app)
+    return manifest.get(_within_figures(app, uri)) or manifest.get(
+        pathlib.PurePosixPath(uri).name
+    )
+
+
+def _stamp_sources(app, doctree, docname) -> None:
+    """Give every image its generator, from the option or from the scan."""
+    if app.builder.format != "html":
+        return
+    for node in doctree.findall(nodes.image):
+        source = node.get("figure_source") or _lookup(app, node["uri"])
+        if not source:
+            continue
+        node["figure_source"] = source
+        if app.config.figure_source_show_link:
+            _append_focus_link(node, source, app.config.figure_source_base)
+
+
+def _append_focus_link(image: nodes.image, source: str, base: str) -> None:
+    """A link to the source, out of the way until it is focused.
+
+    Raw HTML, so only the HTML builder sees it.
+    """
+    parent = image.parent
+    if parent is None:
+        return
+    label = html.escape(source)
+    if base:
+        href = html.escape(base + source, quote=True)
+        markup = f'<a class="figure-source-fallback" href="{href}">Figure source: {label}</a>'
+    else:
+        markup = f'<span class="figure-source-fallback">Figure source: {label}</span>'
+    parent.insert(parent.index(image) + 1, nodes.raw("", markup, format="html"))
+
+
+def _install_translator(app) -> None:
+    """Add ``data-figure-source`` to the ``<img>`` tags this build writes."""
+    if app.builder.format != "html":
+        return
+
+    base = app.registry.translators.get(app.builder.name) or getattr(
+        app.builder, "default_translator_class", None
+    )
+    if base is None:
+        return
+
+    class FigureSourceTranslator(base):  # type: ignore[valid-type, misc]
+        def visit_image(self, node):
+            super().visit_image(node)
+            source = node.get("figure_source")
+            # `visit_image` has just appended the <img ...> tag; annotate
+            # that tag and nothing else.
+            if source and self.body and self.body[-1].lstrip().startswith("<img"):
+                attribute = f' data-figure-source="{html.escape(source, quote=True)}"'
+                self.body[-1] = self.body[-1].replace("<img", "<img" + attribute, 1)
+
+    app.set_translator(app.builder.name, FigureSourceTranslator, override=True)
+
+
+def _expose_base(app, pagename, templatename, context, doctree) -> None:
+    """Tell the page what prefix turns a script path into a link."""
+    if app.builder.format != "html":
+        return
+    base = html.escape(app.config.figure_source_base, quote=True).replace("'", "")
+    snippet = f"<script>window.__PID_FIGURE_SOURCE={{base:'{base}'}};</script>"
+    context["metatags"] = context.get("metatags", "") + snippet
+
+
+def _write_index(app, exception) -> None:
+    """Write the whole mapping out, for tooling rather than for the page."""
     if exception is not None or app.builder.format != "html":
         return
 
-    figures_root = (pathlib.Path(app.confdir) / app.config.figure_source_root).resolve()
-    by_name = build_manifest(figures_root)
-    explicit = getattr(app.env, "figure_source_explicit", {})
-
-    # Only ship the images this build actually copied: `builder.images` maps
-    # the path used in the source tree to the filename written into
-    # `_images`, which is what a browser sees in `src`.
-    prefix = app.config.figure_source_root.strip("/") + "/"
     sources = {}
     for source_path, destination in getattr(app.builder, "images", {}).items():
-        given = explicit.get(source_path) or explicit.get("/" + source_path)
-        # Prefer the full path within the figures repository, falling back to
-        # the filename alone for images the mapping only knows by name. The
-        # builder records the path as written in the source, so a document in
-        # a subdirectory contributes leading `../` segments.
-        within = re.sub(r"^(?:\.\./)+", "", source_path.lstrip("/"))
-        within = within[len(prefix):] if within.startswith(prefix) else within
-        derived = by_name.get(within) or by_name.get(pathlib.PurePosixPath(source_path).name)
-        if given or derived:
-            sources[destination] = given or derived
+        found = _lookup(app, source_path)
+        if found:
+            sources[destination] = found
 
-    payload = {"base": app.config.figure_source_base, "sources": dict(sorted(sources.items()))}
+    payload = {
+        "base": app.config.figure_source_base,
+        "sources": dict(sorted(sources.items())),
+    }
     out = pathlib.Path(app.outdir) / "_static" / "figure-sources.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(payload, indent=1, sort_keys=True) + "\n", encoding="utf-8")
 
     total = len(getattr(app.builder, "images", {}))
-    logger.info(
-        f"figure sources: {len(sources)} of {total} images mapped to a generator"
-    )
+    logger.info(f"figure sources: {len(sources)} of {total} images mapped to a generator")
 
 
 def setup(app):
@@ -222,15 +293,19 @@ def setup(app):
 
     # Where the figures repository sits, relative to conf.py.
     app.add_config_value("figure_source_root", "figures", "env")
-    # Prefix for turning a script path into a link. Empty means the panel
-    # shows the path only, with nothing to click.
+    # Prefix that turns a script path into a link. Empty means the path is
+    # shown with nothing to click.
     app.add_config_value(
         "figure_source_base",
         "https://github.com/kgdunn/figures/blob/main/",
         "html",
     )
+    # Add a keyboard-reachable link after each figure, hidden until focused.
+    app.add_config_value("figure_source_show_link", False, "html")
 
-    app.connect("doctree-resolved", _collect_explicit)
-    app.connect("build-finished", _write_manifest)
+    app.connect("builder-inited", _install_translator)
+    app.connect("doctree-resolved", _stamp_sources)
+    app.connect("html-page-context", _expose_base)
+    app.connect("build-finished", _write_index)
 
-    return {"version": "1.0", "parallel_read_safe": True, "parallel_write_safe": True}
+    return {"version": "1.1", "parallel_read_safe": True, "parallel_write_safe": True}

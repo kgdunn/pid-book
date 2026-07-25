@@ -1,57 +1,31 @@
 /*
  * Show which script drew a figure.
  *
- * Long-press a figure (or Alt-click it, for a mouse) and a small panel
- * appears with the path of the generator in the figures repository, and a
- * link to it when one is configured.
+ * Long-press a figure, or Alt-click it, and a small panel names the script
+ * in the figures repository that produced it.
  *
- * The mapping comes from `_static/figure-sources.json`, written during the
- * HTML build by `my-extensions/figure_source.py`. That single request is
- * to this same site: nothing here calls a third party, sets a cookie, or
- * records anything. The file is fetched lazily, on the first long-press of
- * a page, so a reader who never asks pays nothing for it.
+ * This script is an convenience, not the mechanism. The link itself lives in
+ * the markup, as `data-figure-source` on the <img>, written during the
+ * build by `my-extensions/figure_source.py`. So:
+ *
+ *   - with JavaScript off, the page is exactly as it would otherwise be, and
+ *     the link is still in the HTML for anyone who looks;
+ *   - offline, or from a file:// copy, this works the same as online: there
+ *     is no request to make, here or anywhere;
+ *   - nothing is stored, sent or recorded.
+ *
+ * It also stays out of the way. The press has to be still: any movement
+ * cancels it, so scrolling a page of figures never raises a panel. The
+ * native long-press menu is not suppressed, the panel is positioned over the
+ * figure rather than inserted into the text, so nothing reflows, and it
+ * closes on the next scroll, tap, or Escape.
  */
 (function () {
   "use strict";
 
-  var PRESS_MILLISECONDS = 550;
-  var manifest = null;
-  var manifestPromise = null;
+  var PRESS_MILLISECONDS = 600;
+  var MOVE_TOLERANCE_PIXELS = 10;
   var panel = null;
-
-  function staticRoot() {
-    // Sphinx exposes the depth of the current page; DOCUMENTATION_OPTIONS
-    // is defined on every page of this theme.
-    var root = "";
-    if (window.DOCUMENTATION_OPTIONS && window.DOCUMENTATION_OPTIONS.URL_ROOT) {
-      root = window.DOCUMENTATION_OPTIONS.URL_ROOT;
-    }
-    return root + "_static/figure-sources.json";
-  }
-
-  function loadManifest() {
-    if (manifestPromise) {
-      return manifestPromise;
-    }
-    manifestPromise = fetch(staticRoot(), { credentials: "same-origin" })
-      .then(function (response) {
-        return response.ok ? response.json() : null;
-      })
-      .then(function (payload) {
-        manifest = payload || { base: "", sources: {} };
-        return manifest;
-      })
-      .catch(function () {
-        manifest = { base: "", sources: {} };
-        return manifest;
-      });
-    return manifestPromise;
-  }
-
-  function basename(url) {
-    var path = String(url).split("?")[0].split("#")[0];
-    return path.substring(path.lastIndexOf("/") + 1);
-  }
 
   function closePanel() {
     if (panel && panel.parentNode) {
@@ -60,26 +34,33 @@
     panel = null;
   }
 
-  function showPanel(image, script, base) {
+  function sourceFor(image) {
+    return image.getAttribute("data-figure-source");
+  }
+
+  function linkBase() {
+    // Set by the build; absent means show the path with nothing to click.
+    return (window.__PID_FIGURE_SOURCE && window.__PID_FIGURE_SOURCE.base) || "";
+  }
+
+  function showPanel(image, script) {
     closePanel();
+
     panel = document.createElement("div");
     panel.className = "figure-source-panel";
-    panel.setAttribute("role", "dialog");
-    panel.setAttribute("aria-label", "Source code for this figure");
+    panel.setAttribute("role", "note");
 
     var label = document.createElement("span");
     label.className = "figure-source-label";
     label.textContent = "Drawn by";
     panel.appendChild(label);
 
-    var target;
+    var base = linkBase();
+    var target = document.createElement(base ? "a" : "span");
     if (base) {
-      target = document.createElement("a");
       target.href = base + script;
       target.rel = "noopener";
       target.target = "_blank";
-    } else {
-      target = document.createElement("span");
     }
     target.className = "figure-source-path";
     target.textContent = script;
@@ -93,57 +74,77 @@
     dismiss.addEventListener("click", closePanel);
     panel.appendChild(dismiss);
 
+    // Anchored to the figure and taken out of the flow, so revealing it
+    // never moves the text the reader is looking at.
     var host = image.closest("figure") || image.parentNode;
-    host.appendChild(panel);
-  }
-
-  function reveal(image) {
-    loadManifest().then(function (data) {
-      var script =
-        image.getAttribute("data-figure-source") ||
-        (data.sources || {})[basename(image.getAttribute("src"))];
-      if (script) {
-        showPanel(image, script, data.base || "");
-      }
-    });
+    if (host && window.getComputedStyle(host).position === "static") {
+      host.style.position = "relative";
+    }
+    (host || document.body).appendChild(panel);
   }
 
   function attach(image) {
     var timer = null;
-
-    function start() {
-      timer = window.setTimeout(function () {
-        timer = null;
-        reveal(image);
-      }, PRESS_MILLISECONDS);
-    }
+    var origin = null;
 
     function cancel() {
       if (timer !== null) {
         window.clearTimeout(timer);
         timer = null;
       }
+      origin = null;
     }
 
-    image.addEventListener("pointerdown", start);
-    image.addEventListener("pointerup", cancel);
-    image.addEventListener("pointerleave", cancel);
-    image.addEventListener("pointercancel", cancel);
-    // A keyboard and mouse route to the same thing.
+    image.addEventListener("pointerdown", function (event) {
+      if (!sourceFor(image) || event.button !== 0) {
+        return;
+      }
+      origin = { x: event.clientX, y: event.clientY };
+      timer = window.setTimeout(function () {
+        timer = null;
+        showPanel(image, sourceFor(image));
+      }, PRESS_MILLISECONDS);
+    });
+
+    image.addEventListener("pointermove", function (event) {
+      // A press that drifts is a scroll or a drag, not a request.
+      if (!origin) {
+        return;
+      }
+      var moved =
+        Math.abs(event.clientX - origin.x) + Math.abs(event.clientY - origin.y);
+      if (moved > MOVE_TOLERANCE_PIXELS) {
+        cancel();
+      }
+    });
+
+    ["pointerup", "pointerleave", "pointercancel", "contextmenu"].forEach(
+      function (name) {
+        image.addEventListener(name, cancel);
+      }
+    );
+
     image.addEventListener("click", function (event) {
-      if (event.altKey) {
+      if (event.altKey && sourceFor(image)) {
         event.preventDefault();
         cancel();
-        reveal(image);
+        showPanel(image, sourceFor(image));
       }
     });
   }
 
   function init() {
-    var images = document.querySelectorAll("main img, article img, div.body img");
+    var images = document.querySelectorAll("img[data-figure-source]");
     Array.prototype.forEach.call(images, attach);
+
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape") {
+        closePanel();
+      }
+    });
+    window.addEventListener("scroll", closePanel, { passive: true });
+    document.addEventListener("pointerdown", function (event) {
+      if (panel && !panel.contains(event.target)) {
         closePanel();
       }
     });
