@@ -74,6 +74,42 @@ The :math:`K=5` terms that contribute to this value are illustrated as a bar plo
 	:width: 750px
 	:align: center
 
+The bar plot is the element-wise product of the observation's autoscaled row with the loading vector,
+so it is two lines once the model is fitted:
+
+.. code-block:: python
+
+	import pandas as pd
+	import plotly.graph_objects as go
+	from process_improve.multivariate import PCA, MCUVScaler
+
+	food = pd.read_csv("https://openmv.net/file/food-texture.csv", index_col=0)
+	food_mcuv = MCUVScaler().fit_transform(food)
+	model_pca = PCA(n_components=2).fit(food_mcuv)
+
+	# Observation 33 is the 33rd row, at position 32 counting from zero.
+	observation = food_mcuv.iloc[32]
+	loading_1 = model_pca.loadings_.iloc[:, 0]
+
+	# The K terms of the equation above: each variable's autoscaled value
+	# multiplied by that variable's loading on the first component.
+	contributions = observation * loading_1
+	print(contributions.round(3).to_dict())
+	# {'Oil': -0.489, 'Density': -1.028, 'Crispy': -1.355,
+	#  'Fracture': -1.12, 'Hardness': -0.178}
+	print(f"they sum to {contributions.sum():.3f}, which is t[33, 1]")
+	# they sum to -4.171, which is t[33, 1]
+
+	fig = go.Figure(go.Bar(x=contributions.index, y=contributions))
+	fig.update_layout(yaxis_title_text="Contribution to t1, observation 33")
+	fig.show()
+
+Note that ``model_pca.score_contributions(...)`` computes a different quantity, despite the similar
+name. It takes a movement in score space and projects it back onto the variables, reporting how far
+apart two points are in each variable's direction. The bars in this plot instead break a single score
+into the :math:`K` terms that add up to it, which is why they sum to :math:`t_{33,1}` and the
+back-projected values do not.
+
 This gives a more accurate indication of exactly how the low :math:`t_i` value was achieved. Previously we had said that pastry 33 was denser than the other pastries, and had a higher fracture angle; now we can see the relative contributions from each variable more clearly.
 
 In the figure from the FCC process (in the :ref:`preceding subsection on clustering <LVM_slama_thesis_screenshot_>`), the cluster marked C was far from the origin, relative to the other observations. This indicates problematic process behaviour around that time. Normal process operation is expected to be in the center of the score plot. These outlying observations can be investigated as to why they are unusual by constructing contribution bar plots for a few of the points in cluster C.
