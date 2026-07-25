@@ -268,6 +268,20 @@ right angles to a gradient is what keeps a quantity constant, so the null space 
 predicted taste drawn over the score plot. Every parallel line in the score plot is another contour, for
 another target taste, which is why the three lines in the figure do not converge.
 
+.. _LVM-PLS-null-space-geometry-figure:
+
+.. figure:: ../../figures/pls/pls-null-space-geometry.png
+	:alt: The gradient vector q with the null space and further contours drawn perpendicular to it
+	:width: 620px
+	:align: center
+
+	The same score plot, with both axes drawn to the same scale so that angles are true. The teal arrow
+	is the gradient :math:`\mathbf{q}`, the direction in which the predicted taste rises fastest. The
+	orange line is the null space for a taste of 20.9, at right angles to it, and the grey dotted lines
+	are the contours for tastes of 10, 30 and 40. The black square is the direct-inversion solution,
+	which sits where a perpendicular dropped from the origin meets the orange contour, and so is the
+	solution of smallest score norm.
+
 We can confirm both statements from the fitted model.
 
 .. code-block:: python
@@ -285,7 +299,9 @@ the line. That is what makes it the solution of smallest score norm. Here it is
 sits below the training average of 23.7.
 
 Two further points are worth making. First, the perpendicularity is a statement about the score
-coordinates, so it looks like a right angle on the page only when both axes are drawn to the same scale.
+coordinates, so it reads as a right angle on the page only when both axes are drawn to the same scale, as
+they are in the figure above but not in the earlier
+:ref:`score plot <LVM-PLS-null-space-figure>`, where the two scores have different spreads.
 Second, the same reasoning is what the code performs in general. For one response,
 ``null_space_basis`` comes from a singular value decomposition of the :math:`y`-loadings: the first left
 singular vector points along :math:`\mathbf{q}`, and the remaining :math:`A-1` span everything
@@ -311,6 +327,66 @@ two parts. One *predictive* component carries the variation that is related to |
 *Y-orthogonal* components carry systematic variation in |X| that has no bearing on |Y|. Filtering out the
 orthogonal part leaves a model with the same predictions as ordinary PLS, but with the response-relevant
 variation gathered into a single component.
+
+It is worth being concrete about how that split is built, because it explains everything that follows.
+O-PLS keeps the same two-dimensional plane the PLS model already found; what it changes is the pair of
+axes drawn within that plane. The first axis is chosen to point along the variation in the chemistry that
+tracks taste. For these cheeses that direction, the predictive weight, is
+
+.. math::
+
+	\mathbf{w}_\text{p} = (0.474,\ 0.657,\ 0.586)
+	\qquad \text{for (acetic, hydrogen sulfide, lactic)}
+
+All three entries are positive and of similar size, which is the raw-data picture restated: the three
+chemical measurements rise together, and each rises with taste. The second axis takes what is left of the
+plane once that predictive direction has been removed, giving the orthogonal weight
+
+.. math::
+
+	\mathbf{w}_\text{o} = (0.808,\ -0.590,\ 0.008)
+
+Read that as a recipe: raise acetic acid, lower hydrogen sulfide, and leave lactic acid essentially
+untouched. It is the same trade-off the null space described, arrived at without ever inverting anything.
+The defining property is that this second axis carries no taste information at all. Its score is
+uncorrelated with the response, exactly, while the predictive score is strongly correlated with it.
+
+.. code-block:: python
+
+	opls = OPLS(n_orthogonal_components=1).fit(X, Y)
+	y_centred = (Y - Y.mean()).to_numpy().ravel()
+
+	print(round(float(np.corrcoef(opls.orthogonal_scores_.to_numpy().ravel(), y_centred)[0, 1]), 12))
+	print(round(float(np.corrcoef(opls.predictive_scores_.to_numpy().ravel(), y_centred)[0, 1]), 4))
+	# -0.0
+	# 0.8198
+
+That is the whole difference between the two models, and it shows up in the :math:`y`-loadings. The PLS
+model spread the response across both of its components, :math:`\mathbf{q} = (0.546, -0.262)`, so
+predicting taste needed both scores. The O-PLS model puts all of it on the first component and none on
+the second:
+
+.. math::
+
+	\hat{y} = q_\text{p}\, t_\text{p} = 0.571\, t_\text{p}
+
+The orthogonal score does not appear. In the language of the previous section, the gradient of the
+prediction in O-PLS coordinates is :math:`(0.571, 0)`: it points exactly along the predictive axis. The
+contours of predicted taste are therefore perpendicular to that axis, which now means parallel to the
+orthogonal axis. The diagonal line of the PLS score plot becomes a line running along a coordinate axis.
+It is the same set of chemistries either way; only the axes used to describe it have moved.
+
+This is also why inverting an O-PLS model needs no linear algebra. Fixing the taste gives one equation
+with one unknown, since the orthogonal score is absent from it, so the predictive score follows by
+division:
+
+.. math::
+
+	t_\text{p} = \frac{y_\text{des}}{q_\text{p}} = \frac{-0.17}{0.571} = -0.298
+
+and the orthogonal score is left free, to be chosen on any grounds we like. The PLS inversion had to
+solve one equation in two unknowns and then describe the leftover freedom with a null-space basis. O-PLS
+separates that freedom in advance, during fitting, and hands it over as a coordinate axis.
 
 The subspace holding the orthogonal components is called the *orthogonal space*. By construction, moving
 an input along the orthogonal space changes |X| but not the predicted |Y|. That description should sound
