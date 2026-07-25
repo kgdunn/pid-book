@@ -6,7 +6,8 @@ What is variability?
 Life is pretty boring without :index:`variability`, and this book, and almost all the field of statistics would be unnecessary if things did not naturally vary.
 
 .. image:: ../figures/concepts/variation/variation-none.png
-		:scale: 60
+		:alt:	../figures/concepts/variation/variation_figures.py
+		:scale: 36
 		:align: center
 
 Fortunately, we have plenty of variability in the recorded data from our processes and systems:
@@ -16,13 +17,15 @@ Fortunately, we have plenty of variability in the recorded data from our process
 	-	Unknown sources, often called "*error*" (note that the word :index:`error <single: error; statistical>` in statistics does not have the usual negative connotation from English). These errors are all sources of variation which our imperfect knowledge of the process cannot account for.
 
 		.. image:: ../figures/concepts/variation/variation-some.png
-			:scale: 60
+			:alt:	../figures/concepts/variation/variation_figures.py
+			:scale: 36
 			:align: center
 
 	-	Measurement and sampling variability: sensor drift, spikes, noise, recalibration shifts, errors in our sample analysis and laboratory equipment.
 
 		.. image:: ../figures/concepts/variation/variation-more.png
-			:scale: 60
+			:alt:	../figures/concepts/variation/variation_figures.py
+			:scale: 36
 			:align: center
 
 	-	Production disturbances:
@@ -31,7 +34,8 @@ Fortunately, we have plenty of variability in the recorded data from our process
 		- pieces of plant equipment break down, wear out and are replaced.
 
 		.. image:: ../figures/concepts/variation/variation-spikes.png
-			:scale: 60
+			:alt:	../figures/concepts/variation/variation_figures.py
+			:scale: 36
 			:align: center
 
 	-	:index:`Feedback control <single: feedback control>` systems introduce variability in your process, in order to reduce variability in another part of the process. Think of what a :ref:`feedback control system <univariate_feedback_and_variability>` does. See page 222 or page 879 of the freely available `textbook by Dr. Thomas Marlin <http://pc-textbook.mcmaster.ca>`_ for visual illustrations.
@@ -39,7 +43,7 @@ Fortunately, we have plenty of variability in the recorded data from our process
 	-	Operating staff: introduce variability into a process in feedback manner (i.e. they react to process upsets) or in a feed-forward manner, for example, to preemptively act on the process to counteract a known disturbance. By doing so they introduce variability into a process.
 
 
-All this variability, although a good opportunity to keep many of use employed, comes at a price as described next.
+All this variability, although a good opportunity to keep many of us employed, comes at a price as described next.
 
 The high cost of variability in your final product
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

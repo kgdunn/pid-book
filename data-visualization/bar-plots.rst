@@ -6,7 +6,8 @@ Bar plots
 The :index:`bar plot <pair: bar plot; visualization>` is another univariate plot on a two-dimensional axis. The two axes are not called *x*- or *y*-axes. Instead, one axis is called the :index:`category axis <pair: category axis; bar plot>` showing the category name, while the other, the :index:`value axis <pair: value axis; bar plot>`, shows the numeric value of that category, given by the length of the bar.
 
 .. image:: ../figures/visualization/barplot-example-expenses.png
-   :scale: 60
+   :alt:	../figures/visualization/barplot_chapter_figures.py
+   :scale: 27
 
 Here is some advice for bar plots:
 
@@ -15,7 +16,7 @@ Here is some advice for bar plots:
 -	A time-series plot is more appropriate than a bar plot when there is a time-based ordering to the categories, because usually you want to imply some sort of trend with time-ordered data. Therefore do not use a bar plot for time trends, rather use a time-series plot.
 
 	.. figure:: ../figures/visualization/quarterly-profit-barplot-vs-lineplot.png
-		:alt:	../figures/visualization/quarterly-profit-barplot.R
+		:alt:	../figures/visualization/barplot_chapter_figures.py
 		:align: center
 
 	Use this Python code to draw the figures:
@@ -49,14 +50,14 @@ Here is some advice for bar plots:
 -	Rather use a table than a bar plot for a handful of data points.
 
     .. image:: ../figures/visualization/profit-by-region.png
-		:alt:	../figures/visualization/profit-by-region.numbers
+		:alt:	../figures/visualization/barplot_chapter_figures.py
 		:align: center
-		:scale: 100
+		:scale: 23
 
 -	Don't use cross-hatching, textures or unusual shading in the plots. This creates distracting visual vibrations.
 
 	.. image:: ../figures/visualization/hatched-barplot.png
-		:alt:	../figures/visualization/hatched-barplot.R
+		:alt:	../figures/visualization/barplot_chapter_figures.py
 		:align: center
 		:scale: 35
 		:width: 900px
