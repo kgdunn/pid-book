@@ -111,6 +111,55 @@ it is not retained. See Van der Voet (1994), *Chemometrics and Intelligent Labor
 `DOI: 10.1002/cem.1086 <https://doi.org/10.1002/cem.1086>`_, for the test applied to latent variable
 models.
 
+.. _LVM_q2_across_packages:
+
+**The same data, three implementations.** The bar plot above is Simca-P's output. The same LDPE data
+were also run through ProSensus Multivariate, and they can be run through the ``process_improve``
+package that accompanies this book, which provides the element-wise scheme just described. All three
+work on the same 54 rows and 19 variables, and fit the same eleven components. Their :math:`R^2`
+values agree to within :math:`5 \times 10^{-7}` at every component, so whatever separates the
+:math:`Q^2` curves comes from the cross-validation and not from the model underneath it.
+
+.. code-block:: python
+
+	import pandas as pd
+	from process_improve.multivariate.methods import PCA, MCUVScaler
+
+	ldpe = pd.read_csv("https://openmv.net/file/LDPE.csv").iloc[:, 1:]
+	scaled = MCUVScaler().fit_transform(ldpe)
+
+	# cv_scheme="ekf" is the element-wise k-fold scheme: scattered single
+	# cells of X are held out, and each is predicted from a model that
+	# never used it. n_repeats reshuffles the folds, so the spread of Q2
+	# across the repeats can be reported alongside it.
+	chosen = PCA.select_n_components(scaled, max_components=11, cv=7,
+	                                 cv_scheme="ekf", n_repeats=5, random_state=42)
+	print(chosen.q2.round(3).to_list())
+	# [0.255, 0.367, 0.333, 0.3, 0.297, 0.186, 0.029, 0.126, 0.673, 0.844, 0.808]
+
+.. image:: ../../figures/pca/q2-across-packages.png
+	:alt: Cross-validated Q-squared from three implementations on the same LDPE data
+	:scale: 55
+	:width: 800px
+	:align: center
+
+The shaded band on the element-wise curve is one standard error either side, taken across the five
+fold permutations. It is never wider than 0.01, so the shape of that curve is not an artefact of which
+cells happened to be held out together.
+
+The curves separate at once. ProSensus climbs from 0.33 at one component to 1.00 at eleven without
+ever turning over, so on its own it offers no stopping point. Simca-P and the element-wise curve both
+reach their highest value at two components, 0.34 and 0.37, and neither exceeds it again. That is the
+turnover described :ref:`earlier in this section <LVM_number_of_components>`, and it is why two or
+three components is the reading these data support.
+
+Past the eighth component all three curves climb steeply. By the ninth component :math:`R^2` is 99.1%,
+so there is very little left to hold out and predict, and the values in that region describe the
+arithmetic more than they describe the process. The part of a :math:`Q^2` curve worth reading is the
+part before the model has taken up the systematic variation. It is also worth noting that the
+library's own selection rule, applied to this curve, returns ten components: an automatic rule reads
+the late rise at face value, where a person looking at the plot would not.
+
 
 .. Determining the number of components by randomization
 ..
