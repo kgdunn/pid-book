@@ -39,7 +39,7 @@ This time a second response is recorded alongside profit: the purity of the prod
 as a percentage. Purity was always being traded away inside the profit calculation; measuring
 it separately makes that trade explicit. The nine runs, in coded and actual units:
 
-.. tabularcolumns:: |c|c||c|c||c|c|
+.. tabularcolumns:: |c|c|c||c|c||c|c|
 
 +------------+------------+------------+-------------+------------+---------------+------------+
 | Experiment | :math:`x_T`| :math:`x_S`| T (actual)  | S (actual) | Profit [$/day]| Purity [%] |
