@@ -113,12 +113,12 @@ models.
 
 .. _LVM_q2_across_packages:
 
-**The same data, three implementations.** The bar plot above is Simca-P's output. The same LDPE data
-were also run through ProSensus Multivariate, and they can be run through the ``process_improve``
-package that accompanies this book, which provides the element-wise scheme just described. All three
-work on the same 54 rows and 19 variables, and fit the same eleven components. Their :math:`R^2`
-values agree to within :math:`5 \times 10^{-7}` at every component, so whatever separates the
-:math:`Q^2` curves comes from the cross-validation and not from the model underneath it.
+**The same data, both schemes.** The bar plot above is Simca-P's output, from the row-wise scheme. The
+same LDPE data can be run through the ``process_improve`` package that accompanies this book, which
+provides the element-wise scheme just described. Both work on the same 54 rows and 19 variables, and
+fit the same eleven components. Their :math:`R^2` values agree to within :math:`5 \times 10^{-7}` at
+every component, so whatever separates the :math:`Q^2` curves comes from the cross-validation and not
+from the model underneath it.
 
 .. code-block:: python
 
@@ -147,18 +147,32 @@ The shaded band on the element-wise curve is one standard error either side, tak
 fold permutations. It is never wider than 0.01, so the shape of that curve is not an artefact of which
 cells happened to be held out together.
 
-The curves separate at once. ProSensus climbs from 0.33 at one component to 1.00 at eleven without
-ever turning over, so on its own it offers no stopping point. Simca-P and the element-wise curve both
-reach their highest value at two components, 0.34 and 0.37, and neither exceeds it again. That is the
-turnover described :ref:`earlier in this section <LVM_number_of_components>`, and it is why two or
-three components is the reading these data support.
+The two curves track each other over the first eight components. Both reach their highest value at two
+components, 0.34 for Simca-P and 0.37 for the element-wise scheme, and neither exceeds it again. That
+is the turnover described :ref:`earlier in this section <LVM_number_of_components>`, and it is why two
+or three components is the reading these data support. The element-wise scheme, which does not let a
+held-out value contribute to its own prediction, reaches the same conclusion here as the package the
+figure above came from.
 
-Past the eighth component all three curves climb steeply. By the ninth component :math:`R^2` is 99.1%,
-so there is very little left to hold out and predict, and the values in that region describe the
+Past the eighth component both curves climb steeply. By the ninth component :math:`R^2` is 99.1%, so
+there is very little left to hold out and predict, and the values in that region describe the
 arithmetic more than they describe the process. The part of a :math:`Q^2` curve worth reading is the
-part before the model has taken up the systematic variation. It is also worth noting that the
-library's own selection rule, applied to this curve, returns ten components: an automatic rule reads
-the late rise at face value, where a person looking at the plot would not.
+part before the model has taken up the systematic variation.
+
+That last point has a practical consequence for anyone using an automatic rule. Asking for the
+component count with the best :math:`Q^2` returns **ten** on this curve, because the late rise beats
+the peak at two. Two changes each recover the answer a reader would give from the plot:
+
+*	Stop the search before the model runs out of variation to hold out. Capping the search at eight
+	components, or anywhere below it, returns two.
+
+*	Use the incremental criterion rather than the best value. Wold's original rule keeps a component
+	only if it improves the cross-validated error by more than a set margin, so it stops at the first
+	component that fails the test and never sees the late rise. In ``process_improve`` this is
+	``selection_rule="q2_increment"``, and it returns two on this data.
+
+A rule that hunts for the maximum of the whole curve will find whatever the tail happens to do. The
+choice of *where to stop looking* matters as much as the choice of criterion.
 
 
 .. Determining the number of components by randomization
