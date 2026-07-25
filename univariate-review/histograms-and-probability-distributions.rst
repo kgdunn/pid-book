@@ -89,7 +89,7 @@ continuous measurement that only becomes a distribution once it is collected int
 	:scale: 20
 	:align: center
 
-.. literalinclude:: /univariate-review/gists/frequency-distribution-four-cases.py
+.. literalinclude:: ../figures/univariate/frequency-distribution-four-cases.py
 	:language: python
 
 .. index::

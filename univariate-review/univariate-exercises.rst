@@ -35,7 +35,7 @@ Exercises
 
 .. admonition:: Solution
 
-	.. literalinclude:: /univariate-review/gists/soy-salt-content.py
+	.. literalinclude:: ../figures/univariate/soy-salt-content.py
 	   :language: python
 
 	or the equivalent in R:
@@ -76,7 +76,7 @@ Exercises
 
 	The same few samples appear to be outliers in most of the variables.
 
-	.. literalinclude:: /univariate-review/gists/raw-materials-univariate-checks.py
+	.. literalinclude:: ../figures/univariate/raw-materials-univariate-checks.py
 	   :language: python
 
 	or the equivalent in R, where ``identify()`` lets you click on the
@@ -148,7 +148,7 @@ Exercises
 
 	These are the data, and the code to plot the results. The temperature for the last decade trended higher than the average for the prior 3 decades, 1971 to 2000.
 
-	.. literalinclude:: /univariate-review/gists/hamilton-weather-data.py
+	.. literalinclude:: ../figures/univariate/hamilton-weather-data.py
 		:language: python
 
 	or the equivalent in R:
@@ -172,7 +172,7 @@ Exercises
 
 .. admonition:: Solution
 
-	.. literalinclude:: /univariate-review/gists/website-visits-univariate.py
+	.. literalinclude:: ../figures/univariate/website-visits-univariate.py
 		:language: python
 
 	or the equivalent in R:
@@ -403,7 +403,7 @@ Exercises
 
 	-   The mean and standard deviation can be estimated as shown in the code below. The estimates are: the mean energy usage is **4127 W.hours**, and the standard deviation is **79 W.hours**. This corresponds very closely to the raw data I used to generate this question (mean of actual data = 4125, sd of actual data = 77.2).
 
-	    .. literalinclude:: /univariate-review/gists/bulb-energy-barplot.py
+	    .. literalinclude:: ../figures/univariate/bulb-energy-barplot.py
 	       :language: python
 
 	    or the equivalent in R:
@@ -490,7 +490,7 @@ Exercises
 
 	A full solution to this question require you report the :math:`z`-values and its corresponding risk.
 
-	.. literalinclude:: /univariate-review/gists/brittleness-comparison.py
+	.. literalinclude:: ../figures/univariate/brittleness-comparison.py
 	       :language: python
 
 	or the equivalent in R:
@@ -604,7 +604,7 @@ Exercises
 
 	The temptation is to jump into the code and calculate the :math:`t`-values and averages differences (:math:`\overline{x}_D = 16.4`, and :math:`\overline{x}_M = 22.6`). But start with a plot of the data, specifically a plot of the differences between the two methods. The immediate problem you see is that average difference of 6.2 between the methods is strongly influenced by a single observation (the second one). In general, the dilution method always produced a smaller result than the manometric method. We expect to see that in our analytical results.
 
-	.. literalinclude:: /univariate-review/gists/BOD-comparison.py
+	.. literalinclude:: ../figures/univariate/BOD-comparison.py
 	    :language: python
 
 	.. image:: ../figures/univariate/BOD-comparison-plot.png
@@ -629,7 +629,7 @@ Exercises
 
 .. admonition:: Solution
 
-	.. literalinclude:: /univariate-review/gists/normal-vs-t-distribution.py
+	.. literalinclude:: ../figures/univariate/normal-vs-t-distribution.py
 	       :language: python
 
 	or the equivalent in R:
@@ -1058,13 +1058,14 @@ Exercises
 
 		where the above figure was generated with the R-code:
 
-		.. literalinclude:: /univariate-review/gists/overlaid-distributions-normal-and-t.py
+		.. literalinclude:: ../figures/univariate/overlaid-distributions-normal-and-t.py
 			:language: python
 
 		or the equivalent in R:
 
-		.. literalinclude:: /univariate-review/gists/overlaid-distributions-normal-and-t.R
+		.. literalinclude:: ../figures/univariate/overlaid-distributions-normal-and-t.R
 			:language: s
+			:lines: 1-5,7-10
 
 	#.	Repeated use of the above code, but changing :math:`n`, shows that little *practical* difference between the distributions with as few as :math:`n=20` samples. After :math:`n=40` and especially :math:`n=60`, there is almost no *theoretical* difference between them.
 
