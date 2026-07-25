@@ -36,7 +36,7 @@ a new central composite design, with the same half-ranges as before, 4 K in temp
 0.2 g/L in substrate concentration, and axial points 1.41 coded units out.
 
 This time a second response is recorded alongside profit: the purity of the product stream,
-as a percentage. Purity was always being traded away inside the profit calculation; measuring
+as a percentage. Purity was being traded away inside the profit calculation; measuring
 it separately makes that trade explicit. The nine runs, in coded and actual units:
 
 .. tabularcolumns:: |c|c|c||c|c||c|c|
