@@ -215,6 +215,91 @@ taste of 20.9.
 	and only the position shifts with the target. The green circles are the O-PLS orthogonal space,
 	described in the section that follows.
 
+.. _LVM-PLS-null-space-direction:
+
+Where the null-space line comes from
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The line has to run somewhere, and its direction is not arbitrary. It is fixed entirely by the
+:math:`y`-loadings, the two numbers that convert scores into a predicted taste.
+
+Start from how the model predicts. For a two-component model the prediction is a weighted sum of the two
+scores, with the :math:`y`-loadings :math:`q_1` and :math:`q_2` as the weights:
+
+.. math::
+
+	\hat{y} = q_1 t_1 + q_2 t_2
+
+For this model :math:`q_1 = 0.546` and :math:`q_2 = -0.262`, both on the centred and scaled taste scale.
+Asking for a particular taste sets that expression equal to a constant. Cheese 2's taste of 20.9 is
+:math:`(20.9 - 23.69) / 16.4 = -0.17` in scaled units, so the inversion is asking for every pair
+:math:`(t_1, t_2)` that satisfies:
+
+.. math::
+
+	0.546\, t_1 - 0.262\, t_2 = -0.17
+
+That is one linear equation in two unknowns, which is the whole reason a line appears. One equation
+cannot pin down two coordinates: it removes one degree of freedom and leaves the other free. Rearranged
+into the familiar form, the free coordinate traces out
+
+.. math::
+
+	t_2 = -\frac{q_1}{q_2} t_1 + \frac{-0.17}{q_2}
+	    = 2.08\, t_1 + 0.65
+
+so the line climbs 2.08 units of :math:`t_2` for every unit of :math:`t_1`. That is the diagonal in the
+score plot, and it comes from the ratio of the two :math:`y`-loadings alone, :math:`-q_1/q_2`. Their
+absolute sizes do not matter, only their ratio: doubling both would give the same line.
+
+There is a matching geometric statement. Take any two points on the line and subtract their equations.
+The constant cancels, leaving
+
+.. math::
+
+	q_1 \Delta t_1 + q_2 \Delta t_2 = 0
+	\qquad \text{or} \qquad
+	\mathbf{q}^T \Delta \mathbf{t} = 0
+
+Any step along the line is therefore perpendicular to the vector :math:`\mathbf{q} = (q_1, q_2)`. That
+vector has a meaning: since :math:`\hat{y} = \mathbf{q}^T \mathbf{t}`, it is the gradient of the
+prediction, the direction in the score plot along which the predicted taste changes fastest. Moving at
+right angles to a gradient is what keeps a quantity constant, so the null space is a contour line of the
+predicted taste drawn over the score plot. Every parallel line in the score plot is another contour, for
+another target taste, which is why the three lines in the figure do not converge.
+
+We can confirm both statements from the fitted model.
+
+.. code-block:: python
+
+	q = pls.y_loadings_.to_numpy().ravel()
+	print(q.round(3))                      # [ 0.546 -0.262]
+	print(round(-q[0] / q[1], 2))          # 2.08, the slope of the line
+	print(round(float(g @ q), 12))         # 0.0, the direction is perpendicular to q
+
+The direct-inversion solution fits the same picture. It is
+:math:`\boldsymbol{\tau}_\text{DI} = y_\text{des}\, \mathbf{q} / (\mathbf{q}^T\mathbf{q})`, which points
+along :math:`\mathbf{q}` itself, so it is the point where a perpendicular dropped from the origin meets
+the line. That is what makes it the solution of smallest score norm. Here it is
+:math:`(-0.253, 0.121)`, pointing opposite to :math:`\mathbf{q}` because the requested taste of 20.9
+sits below the training average of 23.7.
+
+Two further points are worth making. First, the perpendicularity is a statement about the score
+coordinates, so it looks like a right angle on the page only when both axes are drawn to the same scale.
+Second, the same reasoning is what the code performs in general. For one response,
+``null_space_basis`` comes from a singular value decomposition of the :math:`y`-loadings: the first left
+singular vector points along :math:`\mathbf{q}`, and the remaining :math:`A-1` span everything
+perpendicular to it. With two components that leaves a single perpendicular direction, a line; with three
+components it leaves a plane, and so on.
+
+Finally, it is worth asking what that direction means in the chemistry, rather than in the scores.
+Multiplying the direction by the |X|-loadings maps it back to the three measurements, and a step of
+:math:`+1` moves acetic acid by :math:`+0.57`, hydrogen sulfide by :math:`-0.54`, and lactic acid by only
+:math:`+0.06`, in the original units. Moving along the null space therefore trades acetic acid up against
+hydrogen sulfide down, leaving lactic acid nearly alone. Both of those measurements rise with taste in
+this data set, with correlations of 0.56 and 0.77, so raising one while lowering the other leaves the
+predicted taste where it was. That trade-off is what the diagonal line is recording.
+
 .. _LVM-PLS-orthogonal-space:
 
 The same space, reached a different way: O-PLS
