@@ -78,7 +78,7 @@ predicts will give that taste.
 	result = pls.invert(y_desired=20.9)
 
 	print(result.x_new.round(2).to_dict())
-	# {'Acetic': 5.52, 'H2S': 5.56, 'Lactic': 1.40}
+	# {'Acetic': 5.52, 'H2S': 5.56, 'Lactic': 1.4}
 	print(result.null_space_dimension)        # 1
 
 	# Compare the designed inputs with what cheese 2 actually was.
@@ -139,7 +139,7 @@ the three inputs, and normalized so that every input counts on the same scale.
 	a = scaler.transform(actual.to_frame().T).iloc[0]           # actual, in std deviations
 	p = scaler.transform(result.x_new.to_frame().T).iloc[0]     # predicted, in std deviations
 
-	print(a.round(2).to_list())                      # [-0.67, -0.46, 0.30]
+	print(a.round(2).to_list())                      # [-0.67, -0.46, 0.3]
 	print(p.round(2).to_list())                      # [-0.04, -0.22, -0.15]
 	print(round(float(((a - p) ** 2).sum()), 2))     # 0.66
 
