@@ -182,6 +182,71 @@ the predicted quality. As a check on the held-out cheese, its actual inputs (Ace
 Lactic 1.53) predict a taste of 20.7, close to its measured 20.9, and it lies near the null-space
 line just traced.
 
+Collecting the three points on the line, together with the cheese itself, shows what moving along
+the null space does and does not change.
+
+.. code-block:: python
+
+	designs = {
+	    "Actual": actual,
+	    "Predicted at step -1": pls.invert(20.9, null_space_coordinates=[-1.0]).x_new,
+	    "Predicted at step 0": result.x_new,
+	    "Predicted at step +1": pls.invert(20.9, null_space_coordinates=[+1.0]).x_new,
+	}
+	for label, inputs in designs.items():
+	    d = pls.diagnose(inputs.to_frame().T)
+	    print(f"{label:<22}{inputs.round(2).to_list()}  "
+	          f"T2 = {float(d.hotellings_t2.iloc[0]):.2f}, SPE = {float(d.spe.iloc[0]):.2f}")
+
+.. list-table:: Cheese 2 and three points along its null space, all reaching the same target taste.
+	:header-rows: 1
+	:widths: 24 14 12 12 12 12 12
+
+	*	- Row
+		- Target taste
+		- Acetic
+		- H2S
+		- Lactic
+		- :math:`T^2`
+		- SPE
+	*	- Actual
+		- 20.9
+		- 5.16
+		- 5.04
+		- 1.53
+		- 0.21
+		- 0.68
+	*	- Predicted at step -1
+		- 20.9
+		- 4.95
+		- 6.10
+		- 1.33
+		- 1.63
+		- 0.00
+	*	- Predicted at step 0
+		- 20.9
+		- 5.52
+		- 5.56
+		- 1.40
+		- 0.06
+		- 0.00
+	*	- Predicted at step +1
+		- 20.9
+		- 6.09
+		- 5.02
+		- 1.46
+		- 2.44
+		- 0.00
+
+Read across the three predicted rows and the inputs change substantially: acetic acid runs from 4.95
+to 6.09 while hydrogen sulfide falls from 6.10 to 5.02. Every one of them still reaches a taste of
+20.9, and every one has an SPE of zero, since all three are rebuilt from scores and so lie on the
+model plane. What does change is :math:`T^2`. The step 0 row is the direct-inversion solution, the
+one of smallest score norm, and it has the smallest :math:`T^2` of the three, 0.06. Stepping out to
+either side moves the design away from the centre of the calibration data, to 1.63 and 2.44. The
+freedom along the null space is therefore free in terms of the predicted taste, but not in terms of
+how much support the data give the design.
+
 A score plot shows the picture directly. The calibration cheeses are the points, the black square is the
 direct-inversion solution, and the orange line is the null space: the set of scores that all predict a
 taste of 20.9.
