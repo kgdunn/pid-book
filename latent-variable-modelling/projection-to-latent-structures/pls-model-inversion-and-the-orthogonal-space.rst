@@ -424,16 +424,19 @@ variation gathered into a single component.
 It is worth being concrete about how that split is built, because it explains everything that follows.
 O-PLS keeps the same two-dimensional plane the PLS model already found; what it changes is the pair of
 axes drawn within that plane. The first axis is chosen to point along the variation in the inputs
-that tracks taste. For these cheeses that direction, the predictive weight, is
+that tracks taste. The fitted model reports it as ``opls.predictive_weights_``, one entry per input,
+and for these cheeses that direction is
 
 .. math::
 
 	\mathbf{w}_\text{p} = (0.474,\ 0.657,\ 0.586)
 	\qquad \text{for (acetic, hydrogen sulfide, lactic)}
 
-All three entries are positive and of similar size, which is the raw-data picture restated: the three
-inputs rise together, and each rises with taste. The second axis takes what is left of the
-plane once that predictive direction has been removed, giving the orthogonal weight
+The entries are in the mean-centred, unit-variance units the model works in, so they can be compared
+with each other directly. All three are positive and of similar size, which is the raw-data picture
+restated: the three inputs rise together, and each rises with taste. The second axis takes what is left
+of the plane once that predictive direction has been removed, reported as ``opls.orthogonal_weights_``,
+one column per orthogonal component. Here there is one column, the orthogonal weight
 
 .. math::
 
@@ -447,6 +450,10 @@ uncorrelated with the response, exactly, while the predictive score is strongly 
 .. code-block:: python
 
 	opls = OPLS(n_orthogonal_components=1).fit(X, Y)
+
+	print(opls.predictive_weights_.round(3).to_numpy())           # [0.474 0.657 0.586]
+	print(opls.orthogonal_weights_.round(3).to_numpy().ravel())   # [ 0.808 -0.59   0.008]
+
 	y_centred = (Y - Y.mean()).to_numpy().ravel()
 
 	print(round(float(np.corrcoef(opls.orthogonal_scores_.to_numpy().ravel(), y_centred)[0, 1]), 12))
