@@ -54,7 +54,7 @@ From this we learn that:
 	*	Also, the sum of the eigenvalues must add up to sum of the diagonal entries of :math:`\mathbf{X}'\mathbf{X}`, which represents of the total variance of the :math:`\mathbf{X}` matrix, if all eigenvectors are extracted. So plotting the eigenvalues is equivalent to showing the proportion of variance explained in :math:`\mathbf{X}` by each component. This is not necessarily a good way to judge the number of components to use, but it is a rough guide: use a Pareto plot of the eigenvalues (though in the context of eigenvalue problems, this plot is called a :index:`scree plot`).
 
 		.. image:: ../../figures/pca/eigenvalue-scree-plot.png
-			:alt:	../../figures/pca/eigenvalue-scree-plot.R
+			:alt: Scree plot: variance explained by each of the first ten components
 			:align: center
 			:scale: 70
 			:width: 700px

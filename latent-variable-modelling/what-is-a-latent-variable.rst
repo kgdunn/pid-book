@@ -25,7 +25,7 @@ Room temperature
 Imagine the room you are in has 4 temperature probes that sample and record the local temperature every 30 minutes. Here is an example of what the four measurements might look like over 3 days.
 
 .. image:: ../figures/examples/room-temperature/room-temperature-plots.png
-	:alt:	../figures/examples/room-temperature/room-temperature-plots.py
+	:alt: Four thermometer readings over three days, one panel per corner of the room
 	:scale: 70
 	:width: 900px
 	:align: center

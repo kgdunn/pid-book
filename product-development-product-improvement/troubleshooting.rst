@@ -34,7 +34,7 @@ Here is an example where the yield of a company's product was declining. They su
 The score plot (left) and loadings plot (right) help isolate potential reasons for the reduced yield. Batches with reduced yield have high, positive :math:`t_2` values and low, negative :math:`t_1` values. What factors lead to batches having score values with this combination of :math:`t_1` and :math:`t_2`?  It would take batches with a combination of low values of TGA and TMA, and/or above average size5, size10 and size15 levels, and/or high DSC values to get these sort of score values. These would be the *generally expected* trends, based on an interpretation of the scores and loadings.
 
 .. image:: ../figures/examples/raw-material-outcome/process-troubleshooting.png
-	:alt:	../figures/examples/raw-material-outcome/process-troubleshooting.R
+	:alt: Score plot with the poor-yield lots marked, beside the loadings plot of the six measurements
 	:scale: 70
 	:width: 900px
 	:align: center
@@ -50,7 +50,7 @@ We can investigate *specific* batches and look at the contribution of each varia
 	         t_{8,a=2} &=& 0.39 &+& 0.44 &+& 0.14 &+& 0.57 &+& 0.37 &+& 0.24
 	\end{array}
 
-Batch 8 is at its location in the score plot due to the low values of the 3 size variables (they have strong negative contributions to :math:`t_1`, and strong positive contributions to :math:`t_2`); and also because of its very large DSC value (the 0.57 contribution in :math:`t_2`).
+Batch 8 is at its location in the score plot due to the low values of the 3 size variables (they have strong negative contributions to :math:`t_1`, and strong positive contributions to :math:`t_2`); and also because of its low TGA value (the 0.57 contribution in :math:`t_2`) and its above-average DSC value (the 0.37 contribution).
 
 Batch 22 on the other hand had very low values of TGA and TMA, even though its size values were below average. Let's take a look at the :math:`t_2` value for batch 22 to see where we get this interpretation:
 
