@@ -495,65 +495,98 @@ The same space, reached a different way: O-PLS
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Orthogonal projections to latent structures (O-PLS) was developed in a separate line of work, for a
-different reason: to make a model easier to interpret. O-PLS splits the systematic variation in |X| into
-two parts. One *predictive* component carries the variation that is related to |Y|; the remaining
-*Y-orthogonal* components carry systematic variation in |X| that has no bearing on |Y|.
+different reason: to make a model easier to interpret. What it does is quickest to see by starting
+from the PLS model already fitted here, and taking one step at a time.
 
-It is worth writing that split out, because there is a single |X| matrix here, not two blocks of data
-sitting side by side. O-PLS writes that one matrix as a predictive piece plus an orthogonal piece plus a
-residual, and the three pieces add back up to |X|:
+Start with a single PLS component, which carries two vectors rather than one. The weight
+:math:`\mathbf{w}_1` is the direction we choose to look along, picked so that the score it produces
+lines up with the response. The loading :math:`\mathbf{p}_1` is what we find afterwards: regress the
+inputs back onto that score, and the loading records how strongly each input moved with it. The weight
+is an instruction, the loading is a measurement.
+
+For the first component of the cheese model those two vectors are close, but they are not the same.
+
+.. _LVM-PLS-weight-loading-table:
+
+.. list-table:: The two vectors of the first PLS component, their difference, and what that difference becomes. Entries are in the mean-centred, unit-variance units the model works in.
+	:header-rows: 1
+	:widths: 38 14 14 14 20
+
+	*	- Vector
+		- Acetic
+		- H2S
+		- Lactic
+		- Angle to :math:`\mathbf{w}_1`, in degrees
+	*	- Weight :math:`\mathbf{w}_1`
+		- 0.474
+		- 0.657
+		- 0.586
+		- 0
+	*	- Loading :math:`\mathbf{p}_1`
+		- 0.552
+		- 0.600
+		- 0.587
+		- 5.49
+	*	- Difference :math:`\mathbf{p}_1 - \mathbf{w}_1`
+		- 0.078
+		- -0.057
+		- 0.001
+		- 90
+	*	- That difference, scaled to unit length
+		- 0.808
+		- -0.590
+		- 0.008
+		- 90
+
+Why should they differ at all? The weight was aimed at taste. The score it produces, though, carries
+along whatever else happens to vary in that same pattern across the cheeses, and the loading records
+all of it. The difference between the loading and the weight is therefore the part of the variation
+that travelled with the score without being about taste.
+
+That difference is simpler to write down than it looks. For every PLS component the weight and its own
+loading satisfy :math:`\mathbf{w}_a^T \mathbf{p}_a = 1`, which follows by substituting
+:math:`\mathbf{p}_a = \mathbf{X}^T \mathbf{t}_a / (\mathbf{t}_a^T \mathbf{t}_a)` and
+:math:`\mathbf{t}_a = \mathbf{X} \mathbf{w}_a` and cancelling. Taking away from the loading the part
+of it that lies along the weight therefore leaves a plain subtraction, and what is left is exactly
+perpendicular to the weight:
 
 .. math::
 
-	\begin{aligned}
-	\mathbf{X} &= \underbrace{\mathbf{t}_\text{p} \mathbf{p}_\text{p}^T}_{\text{predictive}}
-	  \,+\, \underbrace{\mathbf{T}_\text{o} \mathbf{P}_\text{o}^T}_{Y\text{-orthogonal}}
-	  \,+\, \underbrace{\mathbf{E}}_{\text{residual}} \\
-	\mathbf{y} &= q_\text{p}\, \mathbf{t}_\text{p} + \mathbf{f}
-	\end{aligned}
+	\left(\mathbf{p}_1 - \mathbf{w}_1\right)^T \mathbf{w}_1
+	  = \mathbf{p}_1^T \mathbf{w}_1 - \mathbf{w}_1^T \mathbf{w}_1 = 1 - 1 = 0
 
-The vector :math:`\mathbf{t}_\text{p}` is the single predictive score, one value per observation, and
-:math:`\mathbf{p}_\text{p}` is its loading, one value per input. :math:`\mathbf{T}_\text{o}` and
-:math:`\mathbf{P}_\text{o}` are the matching orthogonal scores and loadings, carrying one column for
-each orthogonal component asked for, while :math:`\mathbf{E}` and :math:`\mathbf{f}` hold what no
-component explains. For these cheeses, in the scaled units the model works in, the predictive piece
-carries 68.7% of the sum of squares in |X|, the orthogonal piece 18.3%, and the residual 13.0%.
+That perpendicular difference is the orthogonal direction. The orthogonal direction is simply the
+amount by which the first PLS loading misses the first PLS weight. For these cheeses the difference is
+:math:`(0.078, -0.057, 0.001)`, which scaled to unit length is :math:`(0.808, -0.590, 0.008)`. Nothing
+was searched for or optimised to get it: it is a subtraction between two vectors the PLS model had
+already produced.
 
-The equation for |Y|, the second of the two lines given for the decomposition, is where O-PLS parts
-company with PLS. Only :math:`\mathbf{t}_\text{p}` appears in it:
-the orthogonal scores :math:`\mathbf{T}_\text{o}` are absent, so movement in the orthogonal piece
-cannot change the predicted taste, however large that piece is. Filtering out the orthogonal part
-leaves a model with the same predictions as ordinary PLS, but with the response-relevant variation
-gathered into a single component.
+O-PLS is what follows from taking that direction seriously. Instead of leaving the non-taste variation
+mixed into the first component, it removes that direction from |X| first, and computes the predictive
+component afterwards, on what is left.
 
-It is worth being concrete about how that split is built, because it explains everything that follows.
-O-PLS works in the same two-dimensional plane the PLS model already found, and, as we will see below,
-along the same two directions within it. The first of those directions points along the variation in the inputs
-that tracks taste. The fitted model reports it as ``opls.predictive_weights_``, one entry per input,
-and for these cheeses that direction is
+The fitted model reports the two directions as ``opls.predictive_weights_`` and
+``opls.orthogonal_weights_``, the second carrying one column per orthogonal component asked for. Here
+that is one column, and the two directions are
 
 .. math::
 
 	\mathbf{w}_\text{p} = (0.474,\ 0.657,\ 0.586)
-	\qquad \text{for (acetic, hydrogen sulfide, lactic)}
-
-The entries are in the mean-centred, unit-variance units the model works in, so they can be compared
-with each other directly. All three are positive and of similar size, which is the raw-data picture
-restated: the three inputs rise together, and each rises with taste. The second direction takes what is
-left of the plane once that predictive direction has been removed, reported as
-``opls.orthogonal_weights_``, one column per orthogonal component. Here there is one column, the
-orthogonal weight
-
-.. math::
-
+	\qquad
 	\mathbf{w}_\text{o} = (0.808,\ -0.590,\ 0.008)
 
-Read that as a recipe: raise acetic acid, lower hydrogen sulfide, and leave lactic acid essentially
-untouched. It is the same trade-off the null space described, arrived at without ever inverting anything,
-and the same one the :ref:`table of null-space steps <LVM-PLS-null-space-steps-table>` set out in the
-original units.
-The defining property is that this second axis carries no taste information at all. Its score is
-uncorrelated with the response, exactly, while the predictive score is strongly correlated with it.
+for (acetic, hydrogen sulfide, lactic). The predictive weight is the first PLS weight, unchanged, and
+the orthogonal weight is the difference just computed. All three entries of
+:math:`\mathbf{w}_\text{p}` are positive and of similar size, which is the raw-data picture restated:
+the three inputs rise together, and each rises with taste.
+
+Read :math:`\mathbf{w}_\text{o}` as a recipe: raise acetic acid, lower hydrogen sulfide, and leave
+lactic acid essentially untouched. It is the same trade-off the null space described, arrived at
+without ever inverting anything, and the same one the
+:ref:`table of null-space steps <LVM-PLS-null-space-steps-table>` set out in the original units.
+The defining property of this second direction is that it carries no taste information at all. Its
+score is uncorrelated with the response, exactly, while the predictive score is strongly correlated
+with it.
 
 .. code-block:: python
 
@@ -561,6 +594,9 @@ uncorrelated with the response, exactly, while the predictive score is strongly 
 
 	print(opls.predictive_weights_.round(3).to_numpy())           # [0.474 0.657 0.586]
 	print(opls.orthogonal_weights_.round(3).to_numpy().ravel())   # [ 0.808 -0.59   0.008]
+
+	print(opls.predictive_loadings_.round(3).to_numpy())           # [0.472 0.654 0.591]
+	print(opls.orthogonal_loadings_.round(3).to_numpy().ravel())   # [ 1.044 -0.263  0.232]
 
 	print(pls.x_weights_.to_numpy().round(3))    # the PLS weights, side by side
 	# [[ 0.474  0.808]
@@ -592,36 +628,53 @@ correlates with it at exactly zero. The PLS first score correlates with taste at
 predictive score at 0.820: the taste information that PLS left on its second component has been
 gathered onto the first.
 
-.. _LVM-PLS-opls-construction:
-
-That first correlation is exactly zero rather than merely small, and it is worth seeing why, because
-the orthogonality is built by construction rather than arrived at by fitting. O-PLS finds the two
-directions in three steps (Trygg and Wold, 2002).
-
-The predictive weight is read straight off the response,
-:math:`\mathbf{w}_\text{p} = \mathbf{X}^T \mathbf{y}` scaled to unit length. Each entry is the
-covariance between one input and taste. This direction is settled before anything else happens, and
-it is never revised.
-
-The orthogonal weight is then built to be perpendicular to it. Projecting the data onto
-:math:`\mathbf{w}_\text{p}` gives a score :math:`\mathbf{t}`, and regressing |X| back onto that score
-gives a loading :math:`\mathbf{p}`. The loading is not the same vector as the weight: it collects
-everything that varies together with :math:`\mathbf{t}`, including variation that has no bearing on
-taste. That difference is what O-PLS separates out, by subtracting from the loading its component
-along the predictive weight:
+Written out, what O-PLS ends up with is a single |X| matrix split into a predictive piece, an
+orthogonal piece and a residual, the three adding back up to |X|. There is one |X| matrix here, not
+two blocks of data sitting side by side:
 
 .. math::
 
-	\mathbf{w}_\text{o} = \mathbf{p} - \left(\mathbf{w}_\text{p}^T \mathbf{p}\right) \mathbf{w}_\text{p}
+	\begin{aligned}
+	\mathbf{X} &= \underbrace{\mathbf{t}_\text{p} \mathbf{p}_\text{p}^T}_{\text{predictive}}
+	  \,+\, \underbrace{\mathbf{T}_\text{o} \mathbf{P}_\text{o}^T}_{Y\text{-orthogonal}}
+	  \,+\, \underbrace{\mathbf{E}}_{\text{residual}} \\
+	\mathbf{y} &= q_\text{p}\, \mathbf{t}_\text{p} + \mathbf{f}
+	\end{aligned}
 
-Finally the component this new weight defines is removed from |X|, and the previous step repeats for
-as many orthogonal components as were requested. The predictive component is computed last, on what
-is left.
+The vector :math:`\mathbf{t}_\text{p}` is the single predictive score, one value per observation, and
+:math:`\mathbf{p}_\text{p}` is its loading, one value per input. :math:`\mathbf{T}_\text{o}` and
+:math:`\mathbf{P}_\text{o}` are the matching orthogonal scores and loadings, carrying one column for
+each orthogonal component asked for, while :math:`\mathbf{E}` and :math:`\mathbf{f}` hold what no
+component explains. For these cheeses, in the scaled units the model works in, the predictive piece
+carries 68.7% of the sum of squares in |X|, the orthogonal piece 18.3%, and the residual 13.0%.
 
-Nothing there searches for orthogonality. The subtraction removes the predictive part of the loading,
-so :math:`\mathbf{w}_\text{o}` is perpendicular to :math:`\mathbf{w}_\text{p}` as a matter of algebra.
-The zero correlation then follows in one line, because the predictive weight was defined from the
-response in the first place:
+The predictive loading repays a second look, because it closes the loop on where this section started.
+In the PLS model the first weight and its loading sat 5.49 degrees apart, and that gap was the whole
+starting point. In the O-PLS model the corresponding pair,
+:math:`\mathbf{w}_\text{p} = (0.474, 0.657, 0.586)` and
+:math:`\mathbf{p}_\text{p} = (0.472, 0.654, 0.591)`, sit 0.31 degrees apart. Once the orthogonal
+variation has been taken out of |X| there is almost nothing left for the loading to drift towards, so
+the direction we look along and the direction we find have very nearly converged. That is the
+interpretability O-PLS was built to deliver.
+
+The equation for |Y|, the second of the two lines just given, is where O-PLS parts company with PLS.
+Only :math:`\mathbf{t}_\text{p}` appears in it: the orthogonal scores :math:`\mathbf{T}_\text{o}` are
+absent, so movement in the orthogonal piece cannot change the predicted taste, however large that
+piece is. Filtering out the orthogonal part leaves a model with the same predictions as ordinary PLS,
+but with the response-relevant variation gathered into a single component.
+
+.. _LVM-PLS-opls-construction:
+
+That first correlation is exactly zero rather than merely small, and it is worth seeing why, because
+the orthogonality holds by algebra rather than by fitting. One more fact about the construction is
+needed. The predictive weight is read straight off the response,
+:math:`\mathbf{w}_\text{p} = \mathbf{X}^T \mathbf{y}` scaled to unit length, so each entry is the
+covariance between one input and taste (Trygg and Wold, 2002). That direction is settled before
+anything else happens, and it is never revised.
+
+The subtraction that produced :math:`\mathbf{w}_\text{o}` already guarantees it is perpendicular to
+:math:`\mathbf{w}_\text{p}`. The zero correlation then follows in one line, because the predictive
+weight was defined from the response in the first place:
 
 .. math::
 
@@ -634,7 +687,10 @@ observations. The argument survives the removal step as well: what is taken out 
 :math:`\mathbf{t}_\text{o} \mathbf{p}_\text{o}^T`, which changes :math:`\mathbf{X}^T\mathbf{y}` by
 :math:`\mathbf{p}_\text{o}\left(\mathbf{t}_\text{o}^T \mathbf{y}\right)`, and that is zero by the line
 just given. The quantity the predictive weight was built from is therefore untouched, so the same
-reasoning applies at every subsequent orthogonal component.
+reasoning applies at every subsequent orthogonal component. The plain subtraction carries over too:
+the score at each round is formed as :math:`\mathbf{X}\mathbf{w}_\text{p}` on whatever is left of
+|X|, so :math:`\mathbf{w}_\text{p}^T \mathbf{p} = 1` holds every time, and the orthogonal weight is
+always the amount by which that round's loading misses :math:`\mathbf{w}_\text{p}`.
 
 That is the whole difference between the two models, and it shows up in the :math:`y`-loadings. The PLS
 model spread the response across both of its components, :math:`\mathbf{q} = (0.546, -0.262)`, so
