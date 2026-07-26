@@ -124,11 +124,14 @@ Both rows sit well inside the SPE and :math:`T^2` limits, so neither is an extra
 predicted inputs have an SPE of exactly zero, because the inversion rebuilds the inputs from their
 scores: the result lies on the model plane by construction, leaving no residual.
 
+.. _LVM-PLS-input-space-deviation:
+
 The two rows are close, but "close" in the raw units is hard to read: a gap of 0.5 in hydrogen sulfide
 does not mean the same thing as a gap of 0.5 in lactic acid, because the three measurements are on
 different scales. Centring and scaling each column puts them on a common footing, where one unit is one
-standard deviation of that measurement. The *normalized deviation* is then the sum of the squared
-differences between the two rows, in those units.
+standard deviation of that measurement. The *input-space deviation* is then the sum of the squared
+differences between the two rows, in those units. It is a distance between two recipes, measured across
+the three inputs, and normalized so that every input counts on the same scale.
 
 .. code-block:: python
 
@@ -145,7 +148,7 @@ Writing the three terms out, with acetic acid first, then hydrogen sulfide, then
 .. math::
 
 	\begin{aligned}
-	\text{normalized deviation} &= \left(-0.67 - (-0.04)\right)^2 + \left(-0.46 - (-0.22)\right)^2
+	\text{input-space deviation} &= \left(-0.67 - (-0.04)\right)^2 + \left(-0.46 - (-0.22)\right)^2
 	  + \left(0.30 - (-0.15)\right)^2 \\
 	&= (-0.63)^2 + (-0.24)^2 + (0.45)^2 \\
 	&= 0.39 + 0.06 + 0.21 \\
@@ -259,7 +262,7 @@ the three, 0.06. Stepping out to either side moves the design away from the cent
 calibration data, to 1.63 and 2.44. The freedom along the null space is therefore free in terms of
 the predicted taste, but not in terms of how much support the data give the design.
 
-The last column is the normalized deviation of each row from the cheese we are designing toward,
+The last column is the input-space deviation of each row from the cheese we are designing toward,
 computed the same way as before: centre and scale each input, then sum the squared differences. The
 Actual row is 0.00 because it is the target. Reading down the column, the step 0 design is the
 closest of the three at 0.66, the -1 step is a little further at 0.82, and the +1 step is furthest
@@ -551,15 +554,27 @@ Reading the result: how far is the design from the data?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Inversion always returns a set of inputs, whatever taste we ask for, so we need a way to judge
-whether those inputs are reasonable. Hotelling's :math:`T^2` of the solution answers this: it
-measures how far
-the design sits from the centre of the calibration data, in the same units as the
+whether those inputs are reasonable. Hotelling's :math:`T^2` answers this: it measures how far a point
+sits from the centre of the calibration data, in the same units as the
 :ref:`score diagnostics <LVM-Hotellings-T2>` used elsewhere. Let's take a look with all four held-out
-cheeses.
+cheeses, repeating for each of them what we did for cheese 2.
 
-We can repeat for all four held-out cheeses what we did for cheese 2: invert toward its taste, then
-record how far the design sits from the data, how far the cheese itself sits from the data, and the
-normalized deviation between the two.
+Two different :math:`T^2` values appear once we do that, and they are worth keeping apart. Each
+held-out cheese was really made and really measured, so its three measurements can be projected onto
+the model to give scores, and a :math:`T^2` from those scores. Call that the :math:`T^2` of the cheese:
+it says how unusual that cheese is compared with the 26 cheeses the model was calibrated on. Inverting
+toward the same target taste produces a different set of three inputs, the recipe the model proposes,
+which has its own scores and its own :math:`T^2`. Call that the :math:`T^2` of the design: it says how
+far the proposed recipe sits from the centre of the calibration data. The two are computed from
+different points in the input space, so there is no reason for them to agree, and the table below shows
+that they often do not.
+
+A third quantity compares those two points with each other. It is the
+:ref:`input-space deviation <LVM-PLS-input-space-deviation>` defined earlier: centre and scale the
+three measurements, then sum the squared differences between the measured cheese and the proposed
+recipe. Note that it is not a comparison of the two :math:`T^2` values. The two :math:`T^2` values are
+distances in the score space, each measured from the centre of the calibration data; the input-space
+deviation is a distance in the input space, measured between the two recipes themselves.
 
 .. code-block:: python
 
@@ -572,22 +587,22 @@ normalized deviation between the two.
 	    p = scaler.transform(design.x_new.to_frame().T).iloc[0]
 	    rows.append({
 	        "Taste": target,
-	        "T2 design": design.hotellings_t2,
+	        "T2 design": design.hotellings_t2,          # the proposed recipe
 	        "T2 cheese": float(pls.diagnose(measured.to_frame().T).hotellings_t2.iloc[0]),
-	        "Deviation": float(((a - p) ** 2).sum()),
+	        "Input dev": float(((a - p) ** 2).sum()),   # between the two recipes
 	    })
 
 	print(pd.DataFrame(rows).round(2))
 
-.. list-table:: The four held-out cheeses: how far each design and each cheese sits from the calibration data, and the normalized deviation between them. The 99% limit on :math:`T^2` is 12.14.
+.. list-table:: The four held-out cheeses. Each row compares the recipe the inversion proposes for that cheese's taste against the cheese as it was actually measured. The two :math:`T^2` columns are distances from the centre of the calibration data, one for each of those two points; the last column is the distance between the two points. The 99% limit on :math:`T^2` is 12.14.
 	:header-rows: 1
-	:widths: 14 16 22 22 26
+	:widths: 12 14 22 22 30
 
 	*	- Cheese
 		- Taste
 		- :math:`T^2` of the design
-		- :math:`T^2` of the cheese
-		- Normalized deviation
+		- :math:`T^2` of the measured cheese
+		- Input-space deviation
 	*	- 1
 		- 12.3
 		- 1.07
@@ -609,22 +624,23 @@ normalized deviation between the two.
 		- 0.94
 		- 1.57
 
-Reading down the third column, the moderate tastes near the middle of the calibration range give designs
-with small :math:`T^2`, while the more extreme tastes push the design further from the data: asking for a
+Reading down the :math:`T^2` of the design, the moderate tastes near the middle of the calibration range
+give designs with small :math:`T^2`, while the more extreme tastes push the design further from the data:
+asking for a
 taste of 47.9 gives the largest value, 4.82. A large :math:`T^2` does not make a design wrong, but it
 flags that the model is extrapolating and that the predicted taste rests on less support from the data.
 All four are well inside the 99% limit of 12.14.
 
-The last column compares each design with the cheese that actually had that taste. Cheese 2 is the
-closest match, at 0.66, which is the case we worked through. Cheese 1 is the furthest, at 4.50, or
-:math:`\sqrt{4.50} = 2.1` standard deviations. The fourth column explains part of that: cheese 1 has the
-largest :math:`T^2` of the four cheeses, 4.08, so it is an unusual cheese to begin with, sitting well away
-from the centre of the calibration data while the design does not.
+The input-space deviation compares each design with the cheese that actually had that taste. Cheese 2 is
+the closest match, at 0.66, which is the case we worked through. Cheese 1 is the furthest, at 4.50, or
+:math:`\sqrt{4.50} = 2.1` standard deviations. The :math:`T^2` of the measured cheese explains part of
+that: cheese 1 has the largest :math:`T^2` of the four cheeses, 4.08, so it is an unusual cheese to begin
+with, sitting well away from the centre of the calibration data while the design does not.
 
-A large deviation is not a failure of the inversion. The model returns the solution of smallest score
-norm, whereas nature produced whichever inputs it produced, and the null space means both can carry
-the same predicted taste while sitting some distance apart. The deviation measures how far apart the two
-recipes are, not how wrong either of them is.
+A large input-space deviation is not a failure of the inversion. The model returns the solution of
+smallest score norm, whereas nature produced whichever inputs it produced, and the null space means both
+can carry the same predicted taste while sitting some distance apart. The input-space deviation measures
+how far apart the two recipes are, not how wrong either of them is.
 
 For a single response, then, PLS model inversion and O-PLS model inversion lead to the same set of
 designs. They differ in how they reach it: PLS inversion solves an underdetermined system and returns the
