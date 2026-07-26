@@ -11,9 +11,9 @@ MacGregor, 2000
 <https://literature.learnche.org/item/180/industrial-applications-of-product-design-through-the-inversion-of-latent-variable-models>`_).
 
 We will use the same :ref:`cheddar-cheese data <LVM-cheddar-cheese-example>` as before: the taste of a
-cheese predicted from three chemical measurements, acetic acid, hydrogen sulfide, and lactic acid. The
-forward question was "what taste does this chemistry give?" The inversion question is "which chemistry
-gives a target taste?"
+cheese predicted from three inputs, acetic acid, hydrogen sulfide, and lactic acid. The forward
+question was "what taste do these inputs give?" The inversion question is "which inputs give a
+target taste?"
 
 .. figure:: ../../figures/examples/cheese/cheese-plots-no-random.png
 	:alt: Scatterplot matrix of the cheddar-cheese data: acetic acid, hydrogen sulfide, lactic acid and taste
@@ -21,24 +21,24 @@ gives a target taste?"
 	:align: center
 
 	The 30 cheeses in the raw data. The diagonal shows each variable's distribution; the off-diagonal
-	panels are the pairwise scatter plots with a least-squares line. The three chemical measurements
-	rise together, and each rises with Taste. It is these correlations that give the inverted model
-	room to return more than one chemistry for a target taste.
+	panels are the pairwise scatter plots with a least-squares line. The three inputs rise together,
+	and each rises with Taste. It is these correlations that give the inverted model room to return
+	more than one set of inputs for a target taste.
 
 .. _LVM-PLS-inversion-components:
 
 Why inversion needs more than the predictive number of components
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When we chose the number of components for prediction in
-:ref:`the section above <LVM-PLS-number-of-components>`, cross-validation kept a single component: one
-component is enough to predict Taste. Inversion places a second demand on the model. To reconstruct an
-input vector from a target output, the model must describe the |X|-space well enough to map a score
-back to a full set of chemistry values, not only the |Y|-space. A one-component model spans only a line
-in the input space, so it can return just one chemistry for a target taste. Keeping a second component
-lets the model describe the plane on which the calibration cheeses actually lie, and, as we will see, it
-opens up a whole set of equivalent designs. We therefore fit a two-component model here, even though the
-second component did not improve prediction.
+When we chose the number of components for prediction in :ref:`the section above
+<LVM-PLS-number-of-components>`, cross-validation kept a single component: one component is enough
+to predict Taste. Inversion places a second demand on the model. To reconstruct an input vector from
+a target output, the model must describe the |X|-space well enough to map a score back to a full set
+of input values, not only the |Y|-space. A one-component model spans only a line in the input space,
+so it can return just one set of inputs for a target taste. Keeping a second component lets the
+model describe the plane on which the calibration cheeses actually lie, and, as we will see, it
+opens up a whole set of equivalent designs. We therefore fit a two-component model here, even though
+the second component did not improve prediction.
 
 Following the request to design toward cheeses the model has not seen, we hold out the first four cheeses
 and fit the model on the remaining twenty-six.
@@ -70,8 +70,8 @@ predicts.
 The null space: many recipes, one target
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Held-out cheese 2 has a taste of 20.9. We invert the model to find a chemistry that the model predicts
-will give that taste.
+Held-out cheese 2 has a taste of 20.9. We invert the model to find the inputs that the model
+predicts will give that taste.
 
 .. code-block:: python
 
@@ -81,20 +81,20 @@ will give that taste.
 	# {'Acetic': 5.52, 'H2S': 5.56, 'Lactic': 1.40}
 	print(result.null_space_dimension)        # 1
 
-	# Compare the designed chemistry with what cheese 2 actually was.
+	# Compare the designed inputs with what cheese 2 actually was.
 	actual = holdout[x_columns].iloc[1]
-	for label, chemistry in [("Actual", actual), ("Predicted", result.x_new)]:
-	    d = pls.diagnose(chemistry.to_frame().T)
+	for label, inputs in [("Actual", actual), ("Predicted", result.x_new)]:
+	    d = pls.diagnose(inputs.to_frame().T)
 	    print(f"{label}: T2 = {float(d.hotellings_t2.iloc[0]):.2f}, "
 	          f"SPE = {float(d.spe.iloc[0]):.2f}")
 	# Actual: T2 = 0.21, SPE = 0.68
 	# Predicted: T2 = 0.06, SPE = 0.00
 
-The prediction at the designed chemistry is exactly 20.9, by construction. To judge whether that design
+The prediction at the designed inputs is exactly 20.9, by construction. To judge whether that design
 is a reasonable one, compare it with the cheese we held out. For this model the 99% limits are
 :math:`T^2 = 12.14` and :math:`\text{SPE} = 1.60`.
 
-.. list-table:: Cheese 2: its measured chemistry, and the chemistry the inversion returns for a taste of 20.9.
+.. list-table:: Cheese 2: its measured inputs, and the inputs the inversion returns for taste 20.9.
 	:header-rows: 1
 	:widths: 20 16 16 16 16 16
 
@@ -117,9 +117,9 @@ is a reasonable one, compare it with the cheese we held out. For this model the 
 		- 0.06
 		- 0.00
 
-Both rows sit well inside the two limits, so neither is an extrapolation. The predicted chemistry has an
-SPE of exactly zero, because the inversion rebuilds the inputs from their scores: the result lies on the
-model plane by construction, leaving no residual.
+Both rows sit well inside the two limits, so neither is an extrapolation. The predicted inputs have
+an SPE of exactly zero, because the inversion rebuilds the inputs from their scores: the result
+lies on the model plane by construction, leaving no residual.
 
 The two rows are close, but "close" in the raw units is hard to read: a gap of 0.5 in hydrogen sulfide
 does not mean the same thing as a gap of 0.5 in lactic acid, because the three measurements are on
@@ -150,19 +150,18 @@ Writing the three terms out, with acetic acid first, then hydrogen sulfide, then
 	\end{aligned}
 
 The square root of 0.66 is 0.81, so the cheese we held out sits about 0.8 standard deviations away from
-the chemistry the inversion proposed, counting all three measurements together. Acetic acid accounts for
-most of that gap.
+the inputs the inversion proposed, counting all three measurements together. Acetic acid accounts
+for most of that gap.
 
 The null space is the reason ``null_space_dimension`` is not zero. A two-component model has two score
 directions, but a single taste value pins down only one of them. The other direction is free: we can move
 along it and the predicted taste does not change at all. That free direction is the *null space*. Its
 dimension is the number of components minus the rank of the response, here :math:`2 - 1 = 1`, so it is a
-line. Every chemistry on that line gives the same predicted taste.
+line. Every set of inputs on that line gives the same predicted taste.
 
 We can walk along the null space by passing coordinates along its basis. In the code and figure we take a
 step of -1 and +1 along the basis. The predicted taste stays the same along this basis line. Hence the
-name the null space. Only the input variables change, i.e. the chemistry, while the predicted output
-remains fixed.
+name the null space. Only the input variables change, while the predicted output remains fixed.
 
 .. code-block:: python
 
@@ -173,11 +172,12 @@ remains fixed.
 	# [4.95, 6.10, 1.33] -> 20.9
 	# [6.09, 5.02, 1.46] -> 20.9
 
-Both of these chemistries, and the whole line between and beyond them, predict a taste of 20.9. The
-freedom to choose among them is what makes inversion useful in practice: it can be spent on a secondary
-goal such as cost, safety, or keeping within a supplier's specification, without moving the predicted
-quality. As a check on the held-out cheese, its actual chemistry (Acetic 5.16, H2S 5.04, Lactic 1.53)
-predicts a taste of 20.7, close to its measured 20.9, and it lies near the null-space line we just traced.
+Both of these sets of inputs, and the whole line between and beyond them, predict a taste of 20.9.
+The freedom to choose among them is what makes inversion useful in practice: it can be spent on a
+secondary goal such as cost, safety, or keeping within a supplier's specification, without moving
+the predicted quality. As a check on the held-out cheese, its actual inputs (Acetic 5.16, H2S 5.04,
+Lactic 1.53) predict a taste of 20.7, close to its measured 20.9, and it lies near the null-space
+line just traced.
 
 A score plot shows the picture directly. The calibration cheeses are the points, the black square is the
 direct-inversion solution, and the orange line is the null space: the set of scores that all predict a
@@ -308,7 +308,7 @@ singular vector points along :math:`\mathbf{q}`, and the remaining :math:`A-1` s
 perpendicular to it. With two components that leaves a single perpendicular direction, a line; with three
 components it leaves a plane, and so on.
 
-Finally, it is worth asking what that direction means in the chemistry, rather than in the scores.
+Finally, it is worth asking what that direction means for the inputs, rather than in the scores.
 Multiplying the direction by the |X|-loadings maps it back to the three measurements, and a step of
 :math:`+1` moves acetic acid by :math:`+0.57`, hydrogen sulfide by :math:`-0.54`, and lactic acid by only
 :math:`+0.06`, in the original units. Moving along the null space therefore trades acetic acid up against
@@ -330,8 +330,8 @@ variation gathered into a single component.
 
 It is worth being concrete about how that split is built, because it explains everything that follows.
 O-PLS keeps the same two-dimensional plane the PLS model already found; what it changes is the pair of
-axes drawn within that plane. The first axis is chosen to point along the variation in the chemistry that
-tracks taste. For these cheeses that direction, the predictive weight, is
+axes drawn within that plane. The first axis is chosen to point along the variation in the inputs
+that tracks taste. For these cheeses that direction, the predictive weight, is
 
 .. math::
 
@@ -339,7 +339,7 @@ tracks taste. For these cheeses that direction, the predictive weight, is
 	\qquad \text{for (acetic, hydrogen sulfide, lactic)}
 
 All three entries are positive and of similar size, which is the raw-data picture restated: the three
-chemical measurements rise together, and each rises with taste. The second axis takes what is left of the
+inputs rise together, and each rises with taste. The second axis takes what is left of the
 plane once that predictive direction has been removed, giving the orthogonal weight
 
 .. math::
@@ -374,7 +374,7 @@ The orthogonal score does not appear. In the language of the previous section, t
 prediction in O-PLS coordinates is :math:`(0.571, 0)`: it points exactly along the predictive axis. The
 contours of predicted taste are therefore perpendicular to that axis, which now means parallel to the
 orthogonal axis. The diagonal line of the PLS score plot becomes a line running along a coordinate axis.
-It is the same set of chemistries either way; only the axes used to describe it have moved.
+The same combinations of inputs are described either way; only the axes describing them have moved.
 
 This is also why inverting an O-PLS model needs no linear algebra. Fixing the taste gives one equation
 with one unknown, since the orthogonal score is absent from it, so the predictive score follows by
@@ -408,7 +408,7 @@ its inversion is one division rather than the solution of an underdetermined sys
 	print(opls_result.x_new.round(2).to_list())   # [5.46, 5.62, 1.39]
 	print(round(opls_result.y_hat, 2))            # 20.9
 
-The O-PLS design, (Acetic 5.46, H2S 5.62, Lactic 1.39), is a different chemistry from the PLS
+The O-PLS design, (Acetic 5.46, H2S 5.62, Lactic 1.39), is a different set of inputs from the PLS
 direct-inversion design, but it lies on the same null-space line and gives the same predicted taste. The
 two methods return different representative points: PLS reports the point of smallest score norm, while
 O-PLS reports the point whose orthogonal score is zero. The set of solutions, the line itself, is
@@ -428,7 +428,7 @@ comparing their directions.
 	)
 	print(round(cosine, 6))    # 1.0
 
-Written as unit vectors in the chemistry, both come out as
+Written as unit vectors in the inputs, both come out as
 :math:`(0.948,\ -0.238,\ 0.211)`, the same numbers to three decimals, and the cosine between them is 1.0.
 Two methods, developed for different purposes and computed by different algorithms, describe the same
 line: raise acetic acid, lower hydrogen sulfide, adjust lactic acid slightly, and the predicted taste
@@ -443,8 +443,9 @@ back as a coordinate axis.
 Reading the result: how far is the design from the data?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Inversion always returns a chemistry, whatever taste we ask for, so we need a way to judge whether that
-chemistry is a reasonable one. Hotelling's :math:`T^2` of the solution answers this: it measures how far
+Inversion always returns a set of inputs, whatever taste we ask for, so we need a way to judge
+whether those inputs are reasonable. Hotelling's :math:`T^2` of the solution answers this: it
+measures how far
 the design sits from the centre of the calibration data, in the same units as the
 :ref:`score diagnostics <LVM-Hotellings-T2>` used elsewhere. Designing toward each of the four
 held-out cheeses in turn shows the pattern.
@@ -514,7 +515,7 @@ largest :math:`T^2` of the four cheeses, 4.08, so it is an unusual cheese to beg
 from the centre of the calibration data while the design does not.
 
 A large deviation is not a failure of the inversion. The model returns the solution of smallest score
-norm, whereas nature produced whichever chemistry it produced, and the null space means both can carry
+norm, whereas nature produced whichever inputs it produced, and the null space means both can carry
 the same predicted taste while sitting some distance apart. The deviation measures how far apart the two
 recipes are, not how wrong either of them is.
 
@@ -531,8 +532,8 @@ Turning the inversion around: a specification region
 
 Everything so far has aimed at a single target taste. In practice a product is rarely specified by one
 number: it is accepted over a range. Once we ask for a range instead of a point, the inversion answers a
-different and often more useful question. Rather than "which chemistry gives a taste of 20.9?", we ask
-"which chemistries give a taste we would accept?" The set of inputs that answer it is called a
+different and often more useful question. Rather than "which inputs give a taste of 20.9?", we ask
+"which inputs give a taste we would accept?" The set of inputs that answer it is called a
 :index:`multivariate specification region <single: multivariate specification region>`, and for incoming
 raw materials it is a statement of what we are prepared to buy.
 
@@ -575,9 +576,9 @@ Suppose a taste between 20 and 40 is acceptable.
 	# min    4.35  4.44    1.25
 	# max    6.99  9.47    1.86
 
-A cheese whose chemistry falls in this region is predicted to have an acceptable taste. Note that these
+A cheese whose inputs fall in this region is predicted to have an acceptable taste. Note that these
 minima and maxima are the box that encloses the region, not the region itself: the region is a slanted
-band in the three chemical measurements, and a lot may sit inside every one of the three ranges while
+band in the three inputs, and a lot may sit inside every one of the three ranges while
 still lying outside the band. Note also that the enclosing box reaches slightly past the observed range
 of acetic acid in the training cheeses (4.48 to 6.46). The :math:`T^2` limit bounds the joint distance
 from the centre of the model, not each measurement separately, so a corner of the region can sit a little
