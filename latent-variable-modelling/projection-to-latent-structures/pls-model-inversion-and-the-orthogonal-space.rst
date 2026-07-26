@@ -394,9 +394,27 @@ We can confirm both the slope and the perpendicularity from the fitted model.
 The direct-inversion solution fits the same picture. It is
 :math:`\boldsymbol{\tau}_\text{DI} = y_\text{des}\, \mathbf{q} / (\mathbf{q}^T\mathbf{q})`, which points
 along :math:`\mathbf{q}` itself, so it is the point where a perpendicular dropped from the origin meets
-the line. That is what makes it the solution of smallest score norm. Here it is
-:math:`(-0.253, 0.121)`, pointing opposite to :math:`\mathbf{q}` because the requested taste of 20.9
-sits below the training average of 23.7.
+the line. Here it is :math:`(-0.253, 0.121)`, pointing opposite to :math:`\mathbf{q}` because the
+requested taste of 20.9 sits below the training average of 23.7.
+
+That perpendicularity is also what makes it the solution of smallest score norm, once we notice what
+the score norm measures. The norm :math:`\|\boldsymbol{\tau}\|` is the distance from the origin of the
+score plot out to the point, so asking for the smallest norm is asking which design on the null-space
+line sits closest to the origin. Writing a general solution as
+:math:`\boldsymbol{\tau}_\text{DI} + s\,\mathbf{g}`, for a step of size :math:`s` along the unit
+null-space direction :math:`\mathbf{g}`, the two parts are at right angles, so Pythagoras applies:
+
+.. math::
+
+	\left\| \boldsymbol{\tau}_\text{DI} + s\,\mathbf{g} \right\|^2
+	  = \left\| \boldsymbol{\tau}_\text{DI} \right\|^2 + s^2
+
+The step contributes :math:`s^2`, which is positive for every step other than none at all. The norm is
+therefore smallest at :math:`s = 0`, and it grows in either direction. Here
+:math:`\|\boldsymbol{\tau}_\text{DI}\| = 0.281`, while the :math:`-1` and :math:`+1` steps both sit at
+:math:`\sqrt{0.281^2 + 1^2} = 1.039`. The right angle is the reason: had the null space met the
+solution at any other angle, moving one way along it would have carried the design closer to the origin
+than :math:`\boldsymbol{\tau}_\text{DI}`.
 
 Two further points are worth making. First, the perpendicularity is a statement about the score
 coordinates, so it reads as a right angle on the page only when both axes are drawn to the same scale, as
