@@ -346,12 +346,15 @@ The constant cancels, leaving
 	\qquad \text{or} \qquad
 	\mathbf{q}^T \Delta \mathbf{t} = 0
 
-Any step along the line is therefore perpendicular to the vector :math:`\mathbf{q} = (q_1, q_2)`. That
-vector has a meaning: since :math:`\hat{y} = \mathbf{q}^T \mathbf{t}`, it is the gradient of the
-prediction, the direction in the score plot along which the predicted taste changes fastest. Moving at
-right angles to a gradient is what keeps a quantity constant, so the null space is a contour line of the
-predicted taste drawn over the score plot. Every parallel line in the score plot is another contour, for
-another target taste, which is why the three lines in the figure do not converge.
+Any step along the line is therefore perpendicular to the vector :math:`\mathbf{q} = (q_1, q_2)`.
+That vector has a meaning: since :math:`\hat{y} = \mathbf{q}^T \mathbf{t}`, it is the gradient of
+the prediction, the direction in the score plot along which the predicted taste changes fastest.
+Moving at right angles to a gradient is what keeps a quantity constant. It is like walking a path on
+a hill where you stay at exactly the same elevation (the output value) while your latitude and
+longitude change (a different set of inputs). So the null space is that contour line: the predicted
+taste stays the same even though you are at different coordinates in the score plot. Every parallel
+line in the score plot is another contour, for another target taste, which is why the three lines in
+the figure do not converge.
 
 .. _LVM-PLS-null-space-geometry-figure:
 
