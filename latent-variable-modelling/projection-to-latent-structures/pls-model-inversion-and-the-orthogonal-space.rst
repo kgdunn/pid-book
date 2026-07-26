@@ -424,9 +424,33 @@ The same space, reached a different way: O-PLS
 Orthogonal projections to latent structures (O-PLS) was developed in a separate line of work, for a
 different reason: to make a model easier to interpret. O-PLS splits the systematic variation in |X| into
 two parts. One *predictive* component carries the variation that is related to |Y|; the remaining
-*Y-orthogonal* components carry systematic variation in |X| that has no bearing on |Y|. Filtering out the
-orthogonal part leaves a model with the same predictions as ordinary PLS, but with the response-relevant
-variation gathered into a single component.
+*Y-orthogonal* components carry systematic variation in |X| that has no bearing on |Y|.
+
+It is worth writing that split out, because there is a single |X| matrix here, not two blocks of data
+sitting side by side. O-PLS writes that one matrix as a predictive piece plus an orthogonal piece plus a
+residual, and the three pieces add back up to |X|:
+
+.. math::
+
+	\begin{aligned}
+	\mathbf{X} &= \underbrace{\mathbf{t}_\text{p} \mathbf{p}_\text{p}^T}_{\text{predictive}}
+	  \,+\, \underbrace{\mathbf{T}_\text{o} \mathbf{P}_\text{o}^T}_{Y\text{-orthogonal}}
+	  \,+\, \underbrace{\mathbf{E}}_{\text{residual}} \\
+	\mathbf{y} &= q_\text{p}\, \mathbf{t}_\text{p} + \mathbf{f}
+	\end{aligned}
+
+The vector :math:`\mathbf{t}_\text{p}` is the single predictive score, one value per observation, and
+:math:`\mathbf{p}_\text{p}` is its loading, one value per input. :math:`\mathbf{T}_\text{o}` and
+:math:`\mathbf{P}_\text{o}` are the matching orthogonal scores and loadings, carrying one column for
+each orthogonal component asked for, while :math:`\mathbf{E}` and :math:`\mathbf{f}` hold what no
+component explains. For these cheeses, in the scaled units the model works in, the predictive piece
+carries 68.7% of the sum of squares in |X|, the orthogonal piece 18.3%, and the residual 13.0%.
+
+The second line is where O-PLS parts company with PLS. Only :math:`\mathbf{t}_\text{p}` appears in it:
+the orthogonal scores :math:`\mathbf{T}_\text{o}` are absent, so movement in the orthogonal piece
+cannot change the predicted taste, however large that piece is. Filtering out the orthogonal part
+leaves a model with the same predictions as ordinary PLS, but with the response-relevant variation
+gathered into a single component.
 
 It is worth being concrete about how that split is built, because it explains everything that follows.
 O-PLS keeps the same two-dimensional plane the PLS model already found; what it changes is the pair of
