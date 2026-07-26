@@ -31,7 +31,7 @@ The taste of cheddar cheese
 	* ``scatterplotMatrix(cheese[,2:5])``
 
 	.. figure:: ../../figures/examples/cheese/cheese-plots.png
-		:alt:	../../figures/examples/cheese/cheese-plots.R
+		:alt: Scatterplot matrix of acetic acid, H2S, lactic acid and taste for the 30 cheeses
 		:scale: 60%
 		:width: 900px
 		:align: center

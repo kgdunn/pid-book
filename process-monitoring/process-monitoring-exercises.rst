@@ -32,7 +32,7 @@ Exercises
 		:align: right
 		:width: 750px
 		:scale: 60
-		:alt: ../figures/monitoring/batch-yields-monitoring-assignment4-2010.R
+		:alt: ../figures/monitoring/monitoring_exercise_figures.py
 
 	.. raw:: html
 
@@ -358,7 +358,7 @@ Exercises
 	#.	The aeration rate dataset is depicted below:
 
 		.. image:: ../figures/monitoring/aeration-rate-raw-data.png
-			:alt:	images/airflow-monitoring.R
+			:alt:	../figures/monitoring/monitoring_exercise_figures.py
 			:scale: 100
 			:width: 750px
 			:align: center
@@ -373,7 +373,7 @@ Exercises
 	#.	The CUSUM chart, using the median as target value showed a problem starting to occur around :math:`t=300`. So we recalculated the median, using only data from 0 to :math:`t=200`, to avoid biasing the target value. Using this median instead, 23.95, we get the following CUSUM chart:
 
 		.. image:: ../figures/monitoring/aeration-CUSUM.png
-			:alt:	images/airflow-monitoring.R
+			:alt:	../figures/monitoring/monitoring_exercise_figures.py
 			:scale: 100
 			:width: 750px
 			:align: center
@@ -616,7 +616,7 @@ Exercises
 	The following charts show the weight of feed entering your reactor. The variation in product quality leaving the reactor was unacceptably high during this period of time.
 
 	.. image:: ../figures/monitoring/monitoring-chart-cycling.png
-		:alt:	../figures/monitoring/monitoring-chart-cycling.R
+		:alt:	../figures/monitoring/monitoring_exercise_figures.py
 		:scale: 80
 		:width: 750px
 		:align: center

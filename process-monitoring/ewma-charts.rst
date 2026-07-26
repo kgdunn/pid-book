@@ -140,7 +140,7 @@ The next figure compares the weights each chart gives to past observations, for 
 	fig.show()
 
 .. image:: ../figures/monitoring/explain-weights-for-process-monitoring.png
-	:alt: ../figures/monitoring/explain-weights-for-process-monitoring.R
+	:alt: ../figures/monitoring/shewhart_capability_figures.py
 	:width: 900px
 	:align: center
 	:scale: 65

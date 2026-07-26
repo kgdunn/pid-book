@@ -61,7 +61,7 @@ The SPE is just the sum of the squares of these :math:`K` terms, so a residual c
 Looking back at the :ref:`room-temperature example <LVM_room_temperature_example>`: if we fit a model with one component, then the residual distance, shown with the 95% limit, appears as follows:
 
 .. image:: ../../figures/examples/room-temperature/temperatures-SPE-after-one-PC.png
-	:alt:	../../figures/examples/room-temperature/temperature-data.R
+	:alt: Squared prediction error per observation, with the 95% limit, showing a run of high values
 	:scale: 80
 	:width: 750px
 	:align: center
@@ -69,7 +69,7 @@ Looking back at the :ref:`room-temperature example <LVM_room_temperature_example
 Using the `raw data for this example <https://openmv.net/info/room-temperature>`_, shown below, can you explain why we see those unusual points in the SPE plot around time 50 to 60?
 
 .. image:: ../../figures/examples/room-temperature/room-temperature-plots.png
-	:alt:	../../figures/examples/room-temperature/room-temperature-plots.py
+	:alt: Four thermometer readings over three days, one panel per corner of the room
 	:scale: 90
 	:width: 700px
 	:align: center
