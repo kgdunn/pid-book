@@ -416,6 +416,61 @@ therefore smallest at :math:`s = 0`, and it grows in either direction. Here
 solution at any other angle, moving one way along it would have carried the design closer to the origin
 than :math:`\boldsymbol{\tau}_\text{DI}`.
 
+The score norm is not the only way to measure how far a design sits from the centre of the model.
+Hotelling's :math:`T^2` measures the same thing, but it divides each score by that score's standard
+deviation before squaring, so a component with little spread counts for more. It is a weighted sum of
+squares rather than a plain one. Both can be plotted against the step size, which shows what the walk
+along the null space costs.
+
+.. code-block:: python
+
+	sf = pls.scaling_factor_for_scores_.to_numpy()   # one standard deviation per score
+	steps = np.linspace(-2, 2, 401)
+	points = tau + steps[:, None] * g                # every design on the null space
+
+	norm_squared = (points ** 2).sum(axis=1)
+	t2 = ((points / sf) ** 2).sum(axis=1)
+
+	fig = go.Figure()
+	fig.add_scatter(x=steps, y=norm_squared, mode="lines", name="squared score norm",
+	                line={"color": "orange"})
+	fig.add_scatter(x=steps, y=t2, mode="lines", name="Hotelling's T2",
+	                line={"color": "darkblue"})
+	fig.update_layout(xaxis_title="step s along the null space",
+	                  yaxis_title="squared distance from the model centre")
+	fig.show()
+
+	print(sf.round(3))                                        # [1.468 0.657]
+	print(round(-float((tau / sf**2) @ g) / float((g / sf**2) @ g), 3))
+	# -0.103, the step at which T2 is least
+
+.. _LVM-PLS-null-space-distance-figure:
+
+.. figure:: ../../figures/pls/pls-null-space-distance.png
+	:alt: Squared score norm and Hotelling's T2 plotted against the step along the null space
+	:width: 700px
+	:align: center
+
+	Two measures of how far a design sits from the centre of the model, as a step of size :math:`s` is
+	taken along the null space from the direct-inversion solution. The predicted taste is 20.9 at every
+	point on the horizontal axis. The orange curve is the squared score norm, least exactly at
+	:math:`s = 0`. The blue curve is Hotelling's :math:`T^2`, least at :math:`s = -0.103`. The three
+	blue markers are the rows tabulated earlier for steps of :math:`-1`, :math:`0` and :math:`+1`.
+
+Both curves are parabolas in :math:`s`, but they are not the same parabola. The orange one is
+:math:`\|\boldsymbol{\tau}_\text{DI}\|^2 + s^2` from the equation above, so its lowest point is exactly
+the direct-inversion solution. The blue one is tilted, and reaches its lowest point at
+:math:`s = -0.103` instead. The two scores have standard deviations of 1.468 and 0.657, so :math:`t_2`
+counts for more in :math:`T^2` than in the plain norm, and the null-space direction
+:math:`\mathbf{g} = (0.433, 0.902)` is mostly :math:`t_2`.
+
+The distinction is worth keeping straight, because it says what the direct-inversion solution does and
+does not give. It is the smallest-norm design, exactly. It is not quite the design of smallest
+:math:`T^2`: a step of :math:`-0.103` would reach :math:`T^2 = 0.043` rather than 0.064. The gap is
+small here and the direct-inversion solution is still the closest of the three tabulated steps, but the
+two criteria are different questions and a model with more unequal score spreads would separate them
+further.
+
 Two further points are worth making. First, the perpendicularity is a statement about the score
 coordinates, so it reads as a right angle on the page only when both axes are drawn to the same scale, as
 they are in the figure above but not in the earlier
