@@ -69,10 +69,44 @@ As an example from the :ref:`food texture data <LVM_food_texture_example>` from 
 The :math:`K=5` terms that contribute to this value are illustrated as a bar plot, where the sum of the bar heights add up to :math:`-4.2`:
 
 .. image:: ../../figures/examples/food-texture/pca-on-food-texture-score-t1-contribution-for-obs-33.png
-	:alt:	../../figures/examples/food-texture/pca-on-food-texture-data.R
+	:alt: Contribution of each variable to the first score of observation 33, all negative
 	:scale: 55
 	:width: 750px
 	:align: center
+
+``score_contributions`` computes those :math:`K` terms, one row per observation:
+
+.. code-block:: python
+
+	import pandas as pd
+	import plotly.graph_objects as go
+	from process_improve.multivariate import PCA, MCUVScaler
+
+	food = pd.read_csv("https://openmv.net/file/food-texture.csv", index_col=0)
+	food_mcuv = MCUVScaler().fit_transform(food)
+	model_pca = PCA(n_components=2).fit(food_mcuv)
+
+	# One row per observation, one column per variable: entry [i, k] is the
+	# term x[i, k] * p[k, 1] from the equation above.
+	contributions = model_pca.score_contributions(food_mcuv, component=1)
+
+	# Observation 33 is the 33rd row, at position 32 counting from zero.
+	obs_33 = contributions.iloc[32]
+	print(obs_33.round(3).to_dict())
+	# {'Oil': -0.489, 'Density': -1.028, 'Crispy': -1.355,
+	#  'Fracture': -1.12, 'Hardness': -0.178}
+	print(f"they sum to {obs_33.sum():.3f}, which is t[33, 1]")
+	# they sum to -4.171, which is t[33, 1]
+
+	fig = go.Figure(go.Bar(x=obs_33.index, y=obs_33))
+	fig.update_layout(yaxis_title_text="Contribution to t1, observation 33")
+	fig.show()
+
+The bars summing to the score is what makes them contributions: each one is the amount of
+:math:`t_{33,1}` that a single variable supplied. Notice also that this is not the loading plot.
+A loading describes the whole data set, while a contribution describes one observation, so a
+variable with a large loading contributes nothing to an observation that sits at that variable's
+average value.
 
 This gives a more accurate indication of exactly how the low :math:`t_i` value was achieved. Previously we had said that pastry 33 was denser than the other pastries, and had a higher fracture angle; now we can see the relative contributions from each variable more clearly.
 
@@ -139,7 +173,7 @@ This is why they are called loadings: they show how the original variables load,
 Another issue to consider is the case when one has many highly correlated variables. Consider the :ref:`room temperature example <LVM_room_temperature_example>` where the four temperatures are highly correlated with each other. The first component from the PCA model is shown here:
 
 .. figure:: ../../figures/examples/room-temperature/temperatures-first-loading.png
-	:alt:	../../figures/examples/room-temperature/temperature-data.R
+	:alt: First loading vector: the four corners carry almost equal weight
 	:scale: 75
 	:width: 750px
 	:align: center
@@ -156,7 +190,7 @@ It is helpful to visualize any two score vectors, e.g. :math:`\mathbf{t}_1` *vs*
 Any two loadings can also be shown in a scatterplot and interpreted by recalling that each loading direction is orthogonal and independent of the other direction.
 
 .. image:: ../../figures/examples/food-texture/pca-on-food-texture-scores-and-loadings.png
-	:alt:	../../figures/examples/food-texture/pca-on-food-texture-data.R
+	:alt: Score plot and loading plot of the first two components, side by side
 	:scale: 70
 	:width: 900px
 	:align: center

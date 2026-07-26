@@ -168,7 +168,6 @@
 .. Plots to draw
 
 	brushing-illustration: get the colour version to have a white background
-	barplot-for-R2-and-Q2.png: add the R2 and Q2 values on top of each bar
 
 .. To add/fix up
 

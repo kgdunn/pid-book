@@ -17,7 +17,7 @@ Let's take a look at an example to consolidate and extend the ideas introduced s
 A scatter plot matrix of these :math:`K = 5` measurements is shown for the :math:`N=50` observations.
 
 .. image:: ../../figures/examples/food-texture/pca-on-food-texture-scatterplot-matrix.png
-	:alt:	../../figures/examples/food-texture/pca-on-food-texture-data.R
+	:alt: Scatterplot matrix of the five pastry quality attributes
 	:scale: 70
 	:width: 900px
 	:align: center
@@ -30,7 +30,7 @@ We can get by with this visualization of the data because :math:`K` is small in 
 The first step with PCA is to center and scale the data. The box plots show how the raw data are located at different levels and have arbitrary units.
 
 .. image:: ../../figures/examples/food-texture/pca-on-food-texture-centering-and-scaling.png
-	:alt:	../../figures/examples/food-texture/pca-on-food-texture-data.R
+	:alt: Box plots of the raw data, after centering, and after centering and scaling
 	:scale: 60
 	:width: 900px
 	:align: center
@@ -70,14 +70,14 @@ For reference, the mean and standard deviation of each variable is recorded belo
 We will discuss how to determine the number of components to use :ref:`in a future section <LVM_number_of_components>`, and :ref:`how to compute them <LVM_algorithms_for_PCA>`, but for now we accept there are two important components, |p1| and :math:`\mathbf{p}_2`. They are:
 
 .. math::
-	\mathbf{p}_1 = \begin{bmatrix} +0.46 \\  -0.47 \\ +0.53 \\ -0.50 \\ +0.15 \end{bmatrix} \qquad \text{and} \qquad
+	\mathbf{p}_1 = \begin{bmatrix} +0.46 \\  -0.48 \\ +0.53 \\ -0.50 \\ +0.15 \end{bmatrix} \qquad \text{and} \qquad
 	\mathbf{p}_2 = \begin{bmatrix} -0.37 \\  +0.36 \\ +0.20 \\ -0.22 \\ +0.80 \end{bmatrix}\\
 
 
 Where we might visualize that first component by a bar plot:
 
 .. image:: ../../figures/examples/food-texture/pca-on-food-texture-pc1-loadings.png
-	:alt:	../../figures/examples/food-texture/pca-on-food-texture-data.R
+	:alt: First loading vector: oil and crispy positive, density and fracture negative, hardness small
 	:scale: 60
 	:width: 750px
 	:align: center
@@ -90,7 +90,7 @@ This plot shows the first component. All variables, except for hardness have lar
 .. math::
 	:label: LVM_t1_food_texture
 
-	t_{i,1} = 0.46 \,\, x_\text{oil} - 0.47 \,\, x_\text{density} + 0.53 \,\, x_\text{crispy} - 0.50 \,\, x_\text{fracture}  + 0.15 \,\, x_\text{hardness}
+	t_{i,1} = 0.46 \,\, x_\text{oil} - 0.48 \,\, x_\text{density} + 0.53 \,\, x_\text{crispy} - 0.50 \,\, x_\text{fracture}  + 0.15 \,\, x_\text{hardness}
 
 
 Once we have centered and scaled the data, remember that a negative :math:`x`-value is a value below the average, and that a positive :math:`x`-value lies above the average.
@@ -103,7 +103,7 @@ For a pastry product to have a high :math:`t_1` value would require it to have s
 Let's examine the score values calculated. As shown in equation :eq:`LVM_t1_food_texture`, the score value is a linear combination of the data, :math:`\mathbf{x}`, given by the weights in the loadings matrix, |P|. For the first component, :math:`\mathbf{t}_1 = \mathbf{X} \mathbf{p}_1`. The plot here shows the values in vector :math:`\mathbf{t}_1` (an :math:`N \times 1` vector) as a sequence plot
 
 .. image:: ../../figures/examples/food-texture/pca-on-food-texture-pc1-scores.png
-	:alt:	../../figures/examples/food-texture/pca-on-food-texture-data.R
+	:alt: First component scores in sequence order, with samples 33 and 36 marked
 	:scale: 50
 	:width: 750px
 	:align: center
@@ -121,7 +121,7 @@ We note here that this component explains 61% of the original variability in the
 The second loading vector is shown as a bar plot:
 
 .. image:: ../../figures/examples/food-texture/pca-on-food-texture-pc2-loadings.png
-	:alt:	../../figures/examples/food-texture/pca-on-food-texture-data.R
+	:alt: Second loading vector, dominated by hardness
 	:scale: 55
 	:width: 750px
 	:align: center
