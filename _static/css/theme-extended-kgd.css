@@ -255,3 +255,80 @@ button.copybtn:focus,
     border-top: none;
     border-bottom: 1px solid var(--pst-color-border, #e5e5e5);
 }
+
+/* Panel shown when a figure is long-pressed (or Alt-clicked), naming the
+   script that drew it. It is positioned over the figure rather than inserted
+   into the flow, so revealing it never moves the surrounding text.
+   See _static/js/figure-source.js. */
+.figure-source-panel {
+    position: absolute;
+    left: 50%;
+    bottom: 0.4rem;
+    transform: translateX(-50%);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: calc(100% - 1rem);
+    padding: 0.35rem 0.6rem;
+    font-size: 0.82rem;
+    line-height: 1.3;
+    border: 1px solid var(--pst-color-border, #e5e5e5);
+    border-radius: 0.3rem;
+    background: var(--pst-color-on-background, #ffffff);
+    color: var(--pst-color-text-muted, #646464);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.18);
+    overflow-x: auto;
+}
+
+.figure-source-label {
+    flex: none;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.7rem;
+}
+
+.figure-source-path {
+    font-family: var(--pst-font-family-monospace, monospace);
+    white-space: nowrap;
+}
+
+.figure-source-close {
+    flex: none;
+    margin-left: auto;
+    padding: 0 0.3rem;
+    border: none;
+    background: none;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    color: inherit;
+}
+
+/* Optional keyboard route to the same link, for readers without JavaScript;
+   emitted only when figure_source_show_link is on. Off screen until focused,
+   the pattern used for skip links. */
+.figure-source-fallback {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.figure-source-fallback:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0.3rem auto;
+    padding: 0.25rem 0.5rem;
+    clip: auto;
+    display: block;
+    text-align: center;
+    font-size: 0.82rem;
+    font-family: var(--pst-font-family-monospace, monospace);
+}
