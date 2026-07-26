@@ -195,12 +195,14 @@ the null space does and does not change.
 	}
 	for label, inputs in designs.items():
 	    d = pls.diagnose(inputs.to_frame().T)
+	    v = scaler.transform(inputs.to_frame().T).iloc[0]
 	    print(f"{label:<22}{inputs.round(2).to_list()}  "
-	          f"T2 = {float(d.hotellings_t2.iloc[0]):.2f}, SPE = {float(d.spe.iloc[0]):.2f}")
+	          f"T2 = {float(d.hotellings_t2.iloc[0]):.2f}, SPE = {float(d.spe.iloc[0]):.2f}, "
+	          f"deviation = {float(((a - v) ** 2).sum()):.2f}")
 
 .. list-table:: Cheese 2 and three points along its null space, all reaching the same target taste.
 	:header-rows: 1
-	:widths: 24 14 12 12 12 12 12
+	:widths: 22 12 10 10 10 10 10 16
 
 	*	- Row
 		- Target taste
@@ -209,6 +211,7 @@ the null space does and does not change.
 		- Lactic
 		- :math:`T^2`
 		- SPE
+		- Deviation from target
 	*	- Actual
 		- 20.9
 		- 5.16
@@ -216,6 +219,7 @@ the null space does and does not change.
 		- 1.53
 		- 0.21
 		- 0.68
+		- 0.00
 	*	- Predicted at step -1
 		- 20.9
 		- 4.95
@@ -223,6 +227,7 @@ the null space does and does not change.
 		- 1.33
 		- 1.63
 		- 0.00
+		- 0.82
 	*	- Predicted at step 0
 		- 20.9
 		- 5.52
@@ -230,6 +235,7 @@ the null space does and does not change.
 		- 1.40
 		- 0.06
 		- 0.00
+		- 0.66
 	*	- Predicted at step +1
 		- 20.9
 		- 6.09
@@ -237,6 +243,7 @@ the null space does and does not change.
 		- 1.46
 		- 2.44
 		- 0.00
+		- 2.66
 
 Read across the three predicted rows and the inputs change substantially: acetic acid runs from 4.95
 to 6.09 while hydrogen sulfide falls from 6.10 to 5.02. Every one of them still reaches a taste of
@@ -247,9 +254,18 @@ either side moves the design away from the centre of the calibration data, to 1.
 freedom along the null space is therefore free in terms of the predicted taste, but not in terms of
 how much support the data give the design.
 
-A score plot shows the picture directly. The calibration cheeses are the points, the black square is the
-direct-inversion solution, and the orange line is the null space: the set of scores that all predict a
-taste of 20.9.
+The last column is the normalized deviation of each row from the cheese we are designing toward,
+computed the same way as before: centre and scale each input, then sum the squared differences. The
+Actual row is 0.00 because it is the target. Reading down the column, the step 0 design is the
+closest of the three at 0.66, the -1 step is a little further at 0.82, and the +1 step is furthest
+at 2.66. Since every one of those rows reaches the same predicted taste, the column says which of
+the equally valid designs comes nearest to a real cheese, which is a choice the null space leaves
+open. Sliding a little further in the -1 direction would do better still: the closest point on the
+line to this cheese sits near a step of -0.43, at a deviation of 0.46.
+
+A score plot shows the picture directly. The calibration cheeses are the points, the orange square
+is the direct-inversion solution, and the orange line is the null space: the set of scores that all
+predict a taste of 20.9.
 
 .. code-block:: python
 
@@ -264,7 +280,8 @@ taste of 20.9.
 	fig.add_scatter(x=line[:, 0], y=line[:, 1], mode="lines", name="null space",
 	                line={"color": "orange"})
 	fig.add_scatter(x=[tau[0]], y=[tau[1]], mode="markers", name="direct inversion",
-	                marker={"color": "black", "symbol": "square", "size": 10})
+	                marker={"color": "orange", "symbol": "square", "size": 12,
+	                        "line": {"color": "black", "width": 1}})
 	fig.update_layout(xaxis_title="t_1", yaxis_title="t_2")
 	fig.show()
 
@@ -276,8 +293,8 @@ taste of 20.9.
 	:align: center
 
 	Score plot of the two-component model (cheeses 5 to 30). The orange line is the null space for a
-	target taste of 20.9, and the black square is the direct-inversion solution. The two orange triangles
-	are the -1 step (pointing down) and the +1 step (pointing up) from the code above; both predict a
+	target taste of 20.9, and the orange square is the direct-inversion solution. The two triangles are
+	the -1 step (pointing down) and the +1 step (pointing up) from the code above; both predict a
 	taste of 20.9. The red dashed and purple dotted lines are the null spaces for two other target
 	tastes, 47.9 and 12.3. All three are parallel: a single-response model has one null-space direction,
 	and only the position shifts with the target. The green circles are the O-PLS orthogonal space,
@@ -346,7 +363,7 @@ another target taste, which is why the three lines in the figure do not converge
 	The same score plot, with both axes drawn to the same scale so that angles are true. The teal arrow
 	is the gradient :math:`\mathbf{q}`, the direction in which the predicted taste rises fastest. The
 	orange line is the null space for a taste of 20.9, at right angles to it, and the grey dotted lines
-	are the contours for tastes of 10, 30 and 40. The black square is the direct-inversion solution,
+	are the contours for tastes of 10, 30 and 40. The orange square is the direct-inversion solution,
 	which sits where a perpendicular dropped from the origin meets the orange contour, and so is the
 	solution of smallest score norm.
 
