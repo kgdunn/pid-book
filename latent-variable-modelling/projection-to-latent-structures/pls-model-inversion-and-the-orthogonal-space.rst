@@ -494,6 +494,50 @@ uncorrelated with the response, exactly, while the predictive score is strongly 
 	# -0.0
 	# 0.8198
 
+.. _LVM-PLS-opls-construction:
+
+That first correlation is exactly zero rather than merely small, and it is worth seeing why, because
+the orthogonality is built by construction rather than arrived at by fitting. O-PLS finds the two
+directions in three steps (Trygg and Wold, 2002).
+
+The predictive weight is read straight off the response,
+:math:`\mathbf{w}_\text{p} = \mathbf{X}^T \mathbf{y}` scaled to unit length. Each entry is the
+covariance between one input and taste. This direction is settled before anything else happens, and
+it is never revised.
+
+The orthogonal weight is then built to be perpendicular to it. Projecting the data onto
+:math:`\mathbf{w}_\text{p}` gives a score :math:`\mathbf{t}`, and regressing |X| back onto that score
+gives a loading :math:`\mathbf{p}`. The loading is not the same vector as the weight: it collects
+everything that varies together with :math:`\mathbf{t}`, including variation that has no bearing on
+taste. That difference is what O-PLS separates out, by subtracting from the loading its component
+along the predictive weight:
+
+.. math::
+
+	\mathbf{w}_\text{o} = \mathbf{p} - \left(\mathbf{w}_\text{p}^T \mathbf{p}\right) \mathbf{w}_\text{p}
+
+Finally the component this new weight defines is removed from |X|, and the previous step repeats for
+as many orthogonal components as were requested. The predictive component is computed last, on what
+is left.
+
+Nothing there searches for orthogonality. The subtraction removes the predictive part of the loading,
+so :math:`\mathbf{w}_\text{o}` is perpendicular to :math:`\mathbf{w}_\text{p}` as a matter of algebra.
+The zero correlation then follows in one line, because the predictive weight was defined from the
+response in the first place:
+
+.. math::
+
+	\mathbf{t}_\text{o}^T \mathbf{y} = \left(\mathbf{X} \mathbf{w}_\text{o}\right)^T \mathbf{y}
+	  = \mathbf{w}_\text{o}^T \left(\mathbf{X}^T \mathbf{y}\right)
+	  = \left\|\mathbf{X}^T \mathbf{y}\right\| \, \mathbf{w}_\text{o}^T \mathbf{w}_\text{p} = 0
+
+So perpendicular in the space of the inputs means uncorrelated with the response in the space of the
+observations. The argument survives the removal step as well: what is taken out of |X| is
+:math:`\mathbf{t}_\text{o} \mathbf{p}_\text{o}^T`, which changes :math:`\mathbf{X}^T\mathbf{y}` by
+:math:`\mathbf{p}_\text{o}\left(\mathbf{t}_\text{o}^T \mathbf{y}\right)`, and that is zero by the line
+just given. The quantity the predictive weight was built from is therefore untouched, so the same
+reasoning applies at every subsequent orthogonal component.
+
 That is the whole difference between the two models, and it shows up in the :math:`y`-loadings. The PLS
 model spread the response across both of its components, :math:`\mathbf{q} = (0.546, -0.262)`, so
 predicting taste needed both scores. The O-PLS model puts all of it on the first component and none on
