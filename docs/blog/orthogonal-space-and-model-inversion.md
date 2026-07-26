@@ -110,10 +110,10 @@ For the cheese model, that orthogonal piece carries **18.3% of the sum of square
 exactly zero. So nearly a fifth of the systematic variation in these three measurements does nothing
 whatsoever to taste. That is not noise, and it is not a rounding error.
 
-Here is the part that took twenty-five years to write down. **That orthogonal space and the null
-space from the inversion are the same space.** García-Carrión and co-authors proved it, for a single
-response, in the *Journal of Chemometrics* last year. Written as unit vectors in the original three
-measurements, both come out as (0.948, -0.238, 0.211), and the cosine between them is 1.0.
+**That orthogonal space and the null space from the inversion are the same space.** García-Carrión
+and co-authors proved it, for a single response, in the *Journal of Chemometrics* last year. Written
+as unit vectors in the original three measurements, both come out as (0.948, -0.238, 0.211), and the
+cosine between them is 1.0.
 
 Two communities, solving two unrelated problems, with two different algorithms, named the same
 geometry twice. One called it the space to filter away; the other called it the freedom to design
