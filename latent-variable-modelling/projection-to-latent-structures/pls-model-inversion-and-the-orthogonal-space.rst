@@ -292,7 +292,9 @@ predict a taste of 20.9.
 	:width: 700px
 	:align: center
 
-	Score plot of the two-component model (cheeses 5 to 30). The orange line is the null space for a
+	Score plot of the two-component model (cheeses 5 to 30). Each cheese is drawn with an area
+	proportional to its measured taste, the legend marker being the size for a taste of 20. The orange
+	line is the null space for a
 	target taste of 20.9, and the orange square is the direct-inversion solution. The two triangles are
 	the -1 step (pointing down) and the +1 step (pointing up) from the code above; both predict a
 	taste of 20.9. The red dashed and purple dotted lines are the null spaces for two other target
@@ -363,7 +365,8 @@ the figure do not converge.
 	:width: 620px
 	:align: center
 
-	The same score plot, with both axes drawn to the same scale so that angles are true. The maroon
+	The same score plot, with the areas again proportional to taste and both axes drawn to the same
+	scale so that angles are true. The maroon
 	arrow is the gradient :math:`\mathbf{q}`, the direction in which the predicted taste rises fastest.
 	The orange line is the null space for a taste of 20.9, at right angles to it, and the grey dotted
 	lines are the contours for tastes of 10, 30 and 40. The orange square is the direct-inversion
