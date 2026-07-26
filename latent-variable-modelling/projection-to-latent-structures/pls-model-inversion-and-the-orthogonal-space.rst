@@ -363,12 +363,13 @@ the figure do not converge.
 	:width: 620px
 	:align: center
 
-	The same score plot, with both axes drawn to the same scale so that angles are true. The teal arrow
-	is the gradient :math:`\mathbf{q}`, the direction in which the predicted taste rises fastest. The
-	orange line is the null space for a taste of 20.9, at right angles to it, and the grey dotted lines
-	are the contours for tastes of 10, 30 and 40. The orange square is the direct-inversion solution,
-	which sits where a perpendicular dropped from the origin meets the orange contour, and so is the
-	solution of smallest score norm.
+	The same score plot, with both axes drawn to the same scale so that angles are true. The dark green
+	arrow is the gradient :math:`\mathbf{q}`, the direction in which the predicted taste rises fastest.
+	The orange line is the null space for a taste of 20.9, at right angles to it, and the grey dotted
+	lines are the contours for tastes of 10, 30 and 40. The orange square is the direct-inversion
+	solution, which sits where a perpendicular dropped from the origin meets the orange contour, and so
+	is the solution of smallest score norm. The two orange triangles are the -1 and +1 steps, the same
+	points marked in the score plot above, so the two figures can be read against each other.
 
 We can confirm both statements from the fitted model.
 
