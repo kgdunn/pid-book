@@ -371,7 +371,7 @@ the figure do not converge.
 	is the solution of smallest score norm. The two orange triangles are the -1 and +1 steps, the same
 	points marked in the score plot above, so the two figures can be read against each other.
 
-We can confirm both statements from the fitted model.
+We can confirm both the slope and the perpendicularity from the fitted model.
 
 .. code-block:: python
 
