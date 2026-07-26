@@ -519,15 +519,16 @@ each orthogonal component asked for, while :math:`\mathbf{E}` and :math:`\mathbf
 component explains. For these cheeses, in the scaled units the model works in, the predictive piece
 carries 68.7% of the sum of squares in |X|, the orthogonal piece 18.3%, and the residual 13.0%.
 
-The second line is where O-PLS parts company with PLS. Only :math:`\mathbf{t}_\text{p}` appears in it:
+The equation for |Y|, the second of the two lines given for the decomposition, is where O-PLS parts
+company with PLS. Only :math:`\mathbf{t}_\text{p}` appears in it:
 the orthogonal scores :math:`\mathbf{T}_\text{o}` are absent, so movement in the orthogonal piece
 cannot change the predicted taste, however large that piece is. Filtering out the orthogonal part
 leaves a model with the same predictions as ordinary PLS, but with the response-relevant variation
 gathered into a single component.
 
 It is worth being concrete about how that split is built, because it explains everything that follows.
-O-PLS keeps the same two-dimensional plane the PLS model already found; what it changes is the pair of
-axes drawn within that plane. The first axis is chosen to point along the variation in the inputs
+O-PLS works in the same two-dimensional plane the PLS model already found, and, as we will see below,
+along the same two directions within it. The first of those directions points along the variation in the inputs
 that tracks taste. The fitted model reports it as ``opls.predictive_weights_``, one entry per input,
 and for these cheeses that direction is
 
@@ -538,9 +539,10 @@ and for these cheeses that direction is
 
 The entries are in the mean-centred, unit-variance units the model works in, so they can be compared
 with each other directly. All three are positive and of similar size, which is the raw-data picture
-restated: the three inputs rise together, and each rises with taste. The second axis takes what is left
-of the plane once that predictive direction has been removed, reported as ``opls.orthogonal_weights_``,
-one column per orthogonal component. Here there is one column, the orthogonal weight
+restated: the three inputs rise together, and each rises with taste. The second direction takes what is
+left of the plane once that predictive direction has been removed, reported as
+``opls.orthogonal_weights_``, one column per orthogonal component. Here there is one column, the
+orthogonal weight
 
 .. math::
 
@@ -560,12 +562,35 @@ uncorrelated with the response, exactly, while the predictive score is strongly 
 	print(opls.predictive_weights_.round(3).to_numpy())           # [0.474 0.657 0.586]
 	print(opls.orthogonal_weights_.round(3).to_numpy().ravel())   # [ 0.808 -0.59   0.008]
 
+	print(pls.x_weights_.to_numpy().round(3))    # the PLS weights, side by side
+	# [[ 0.474  0.808]
+	#  [ 0.657 -0.59 ]
+	#  [ 0.586  0.008]]
+
 	y_centred = (Y - Y.mean()).to_numpy().ravel()
 
 	print(round(float(np.corrcoef(opls.orthogonal_scores_.to_numpy().ravel(), y_centred)[0, 1]), 12))
 	print(round(float(np.corrcoef(opls.predictive_scores_.to_numpy().ravel(), y_centred)[0, 1]), 4))
 	# -0.0
 	# 0.8198
+
+Those two weight vectors are worth comparing with the PLS model, since the two methods are easy to
+imagine as more different than they are. The two columns of ``pls.x_weights_`` are the two O-PLS
+weights, in the same order: the predictive weight is the first PLS weight, and the orthogonal weight is
+the second. They are not merely similar directions, they are the same numbers. The two models also return the same regression coefficients, agreeing here to
+:math:`1.4 \times 10^{-13}`, so they would predict a new cheese identically.
+
+What differs is the order in which the two directions are peeled off |X|. PLS removes the predictive
+component first and the orthogonal one second. O-PLS reverses that: it removes the orthogonal component
+first, then computes the predictive score on what is left. Because the orthogonal variation has already
+gone by the time the predictive score is formed, that score absorbs all of the taste information.
+
+The consequence is visible in the scores rather than in the weights. The two predictive scores are
+close but not identical, correlating at 0.978. More to the point, the PLS second score still carries a
+little taste information, correlating with taste at :math:`-0.172`, while the O-PLS orthogonal score
+correlates with it at exactly zero. The PLS first score correlates with taste at 0.802, and the O-PLS
+predictive score at 0.820: the taste information that PLS left on its second component has been
+gathered onto the first.
 
 .. _LVM-PLS-opls-construction:
 
