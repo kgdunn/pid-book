@@ -540,9 +540,10 @@ Two methods, developed for different purposes and computed by different algorith
 line: raise acetic acid, lower hydrogen sulfide, adjust lactic acid slightly, and the predicted taste
 does not move. This is what the green circles in the :ref:`score plot <LVM-PLS-null-space-figure>` show:
 they are the orthogonal space projected into the PLS score plot, and they lie on the orange null-space
-line. The two approaches differ in bookkeeping rather than in what they find. PLS solves for the freedom
-after the fact and hands it back as a null-space basis; O-PLS sets it aside during fitting and hands it
-back as a coordinate axis.
+line. The two approaches differ in bookkeeping rather than in what they find. Both describe the same
+freedom: the directions the inputs can move in without changing the predicted taste. PLS solves for that
+freedom after the fact and hands it back as a null-space basis; O-PLS sets the same freedom aside during
+fitting and hands it back as a coordinate axis.
 
 .. _LVM-PLS-inversion-in-practice:
 
