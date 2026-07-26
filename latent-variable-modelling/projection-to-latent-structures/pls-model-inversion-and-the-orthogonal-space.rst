@@ -62,8 +62,10 @@ and fit the model on the remaining twenty-six.
 	print(round(float(pls.r2_cumulative_.iloc[-1]), 3))   # R2 on Taste: 0.672
 
 The two-component model explains about 67% of the variation in Taste. It is a moderate predictor, which
-is fine for what follows: the null space is a property of the model's geometry, not of how accurately it
-predicts.
+is fine for what follows: the null space is a property of the model's geometry rather than of its
+predictive accuracy. That geometry is itself estimated from the same 26 cheeses, though, so it carries
+its own uncertainty. We return to
+:ref:`how well the direction is determined <LVM-PLS-null-space-uncertainty>` once it has been derived.
 
 .. _LVM-PLS-null-space:
 
@@ -92,7 +94,10 @@ predicts will give that taste.
 
 The prediction at the designed inputs is exactly 20.9, by construction. To judge whether that design
 is a reasonable one, compare it with the cheese we held out. For this model the 99% limits are
-:math:`T^2 = 12.14` and :math:`\text{SPE} = 1.60`.
+:math:`T^2 = 12.14` and :math:`\text{SPE} = 1.60`. These are the limits for a *new* observation rather
+than for one of the 26 used to fit the model, which is the right choice here: a proposed design is
+being judged against the model, not summarised by it. The distinction is small at this sample size,
+moving the :math:`T^2` limit from 11.69 to 12.14, and it grows smaller as :math:`N` grows.
 
 .. list-table:: Cheese 2: its measured inputs, and the inputs the inversion returns for taste 20.9.
 	:header-rows: 1
@@ -123,6 +128,13 @@ is a reasonable one, compare it with the cheese we held out. For this model the 
 Both rows sit well inside the SPE and :math:`T^2` limits, so neither is an extrapolation. The
 predicted inputs have an SPE of exactly zero, because the inversion rebuilds the inputs from their
 scores: the result lies on the model plane by construction, leaving no residual.
+
+That zero is a statement about the arithmetic, not a claim about cheese. Every real cheese carries some
+variation the two components do not describe, which is why the measured row has an SPE of 0.68 rather
+than zero. A design returned by inversion is an idealised point on the model plane, and any cheese
+actually made to it will land near the plane rather than on it. The useful reading of a zero SPE is
+therefore that the design is internally consistent with the model, not that it is more attainable than
+the cheeses the model was built from.
 
 .. _LVM-PLS-input-space-deviation:
 
@@ -489,6 +501,74 @@ hydrogen sulfide down, leaving lactic acid nearly alone. Both of those measureme
 this data set, with correlations of 0.56 and 0.77, so raising one while lowering the other leaves the
 predicted taste where it was. That trade-off is what the diagonal line is recording.
 
+.. _LVM-PLS-null-space-uncertainty:
+
+How well is that direction determined?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Every number quoted so far comes from one model fitted to 26 cheeses, and the direction of the null
+space rests on the second :math:`y`-loading, :math:`q_2 = -0.262`. That component was the one
+cross-validation did not keep. It adds 3.0% to :math:`R^2Y`, against 64.3% for the first. It is worth
+asking how much of the geometry survives if the 26 cheeses had come out slightly differently.
+
+Refitting the model on bootstrap resamples of the calibration set answers that directly.
+
+.. code-block:: python
+
+	rng = np.random.default_rng(0)
+	reference = np.array([0.948, -0.238, 0.211])         # the direction reported below
+	reference = reference / np.linalg.norm(reference)
+
+	q2, slopes, angles, designs = [], [], [], []
+	for _ in range(2000):
+	    sample = train.iloc[rng.integers(0, len(train), len(train))]
+	    boot = PLS(n_components=2).fit(sample[x_columns], sample[["Taste"]])
+	    q_b = boot.y_loadings_.to_numpy().ravel()
+	    q2.append(q_b[1])
+	    slopes.append(-q_b[0] / q_b[1])
+
+	    result_b = boot.invert(20.9)
+	    designs.append(result_b.x_new.to_numpy())
+	    d = result_b.null_space_basis.to_numpy().ravel() @ boot.x_loadings_.to_numpy().T
+	    d = d / np.linalg.norm(d)
+	    # A direction and its negative describe the same line, so compare without sign.
+	    angles.append(np.degrees(np.arccos(np.clip(abs(d @ reference), 0, 1))))
+
+	print(np.percentile(q2, [2.5, 97.5]).round(3))        # [-0.56   0.377]
+	print(round(float(np.mean(np.array(q2) > 0)), 3))     # 0.244, the share that change sign
+	print(np.percentile(slopes, [2.5, 97.5]).round(2))    # [-5.09  6.13]
+	print(np.percentile(angles, [50, 90, 95]).round(1))   # [20.6 54.4 68.3]
+	print(round(float(np.mean(np.array(angles) > 45)), 2))  # 0.15
+	print(np.percentile(designs, [2.5, 97.5], axis=0).round(2))
+	# [[5.24 4.97 1.3 ]
+	#  [5.74 6.26 1.49]]
+
+The direction is poorly determined. A 95% bootstrap interval for :math:`q_2` runs from
+:math:`-0.56` to :math:`+0.38`, so it straddles zero, and in 24% of the resamples it changes sign. The
+slope of the null-space line is a ratio with that near-zero quantity in the denominator, so its
+interval, :math:`-5.1` to :math:`+6.1`, is wide enough to be of little use. Read as a line in the
+inputs, the resampled null space sits a median of 21 degrees away from the direction reported here, and
+more than 45 degrees away in 15% of the resamples.
+
+The direct-inversion solution itself holds up much better. Its 95% intervals are 5.24 to 5.74 for
+acetic acid, 4.97 to 6.26 for hydrogen sulfide, and 1.30 to 1.49 for lactic acid, each narrow next to
+the spread of the calibration cheeses. The reason for the difference is worth seeing: the solution
+depends mostly on :math:`q_1`, which is estimated well, while the null-space direction depends on the
+ratio of :math:`q_1` to :math:`q_2`.
+
+So the two statements this section makes are not equally firm. That a set of inputs reaching a target
+taste exists, and roughly where it sits, is supported by these data. Which direction one may then walk
+without changing the prediction is not pinned down by 26 cheeses and a component that
+cross-validation set aside. The null space is exactly what the algebra says it is for a *given* model;
+what the algebra cannot supply is certainty that this model's second component points where the next
+26 cheeses would point it. The figures that follow quote three decimals because that is what the
+arithmetic returns, not because the data support that precision.
+
+None of this makes the geometry wrong or the method unusable. It sets the terms on which to use it: a
+design proposed at the direct-inversion solution rests on firmer ground than one reached by a long walk
+along the null space, and a walk of any length is worth repeating on a refitted model before it is
+acted on.
+
 .. _LVM-PLS-orthogonal-space:
 
 The same space, reached a different way: O-PLS
@@ -647,6 +727,12 @@ The vector :math:`\mathbf{t}_\text{p}` is the single predictive score, one value
 each orthogonal component asked for, while :math:`\mathbf{E}` and :math:`\mathbf{f}` hold what no
 component explains. For these cheeses, in the scaled units the model works in, the predictive piece
 carries 68.7% of the sum of squares in |X|, the orthogonal piece 18.3%, and the residual 13.0%.
+
+Those three percentages describe |X| alone. It would be a misreading to take the first as the share of
+the input variation that is about taste. The predictive component is the one that carries all of the
+taste information, but most of what it explains in |X| is simply the joint spread of three correlated
+measurements, which would be there whether or not taste had ever been recorded. How much of taste the
+model accounts for is a separate number, the :math:`R^2` of 0.672 quoted earlier.
 
 The predictive loading repays a second look, because it closes the loop on where this section started.
 In the PLS model the first weight and its loading sat 5.49 degrees apart, and that gap was the whole
