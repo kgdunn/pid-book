@@ -554,8 +554,8 @@ Inversion always returns a set of inputs, whatever taste we ask for, so we need 
 whether those inputs are reasonable. Hotelling's :math:`T^2` of the solution answers this: it
 measures how far
 the design sits from the centre of the calibration data, in the same units as the
-:ref:`score diagnostics <LVM-Hotellings-T2>` used elsewhere. Designing toward each of the four
-held-out cheeses in turn shows the pattern.
+:ref:`score diagnostics <LVM-Hotellings-T2>` used elsewhere. Let's take a look with all four held-out
+cheeses.
 
 We can repeat for all four held-out cheeses what we did for cheese 2: invert toward its taste, then
 record how far the design sits from the data, how far the cheese itself sits from the data, and the
