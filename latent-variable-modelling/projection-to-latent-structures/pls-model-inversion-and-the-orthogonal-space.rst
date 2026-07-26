@@ -96,30 +96,33 @@ is a reasonable one, compare it with the cheese we held out. For this model the 
 
 .. list-table:: Cheese 2: its measured inputs, and the inputs the inversion returns for taste 20.9.
 	:header-rows: 1
-	:widths: 20 16 16 16 16 16
+	:widths: 16 18 14 14 14 12 12
 
 	*	- Row
+		- Target taste
 		- Acetic
 		- H2S
 		- Lactic
 		- :math:`T^2`
 		- SPE
 	*	- Actual
+		- 20.9
 		- 5.16
 		- 5.04
 		- 1.53
 		- 0.21
 		- 0.68
 	*	- Predicted
+		- 20.9
 		- 5.52
 		- 5.56
 		- 1.40
 		- 0.06
 		- 0.00
 
-Both rows sit well inside the two limits, so neither is an extrapolation. The predicted inputs have
-an SPE of exactly zero, because the inversion rebuilds the inputs from their scores: the result
-lies on the model plane by construction, leaving no residual.
+Both rows sit well inside the SPE and :math:`T^2` limits, so neither is an extrapolation. The
+predicted inputs have an SPE of exactly zero, because the inversion rebuilds the inputs from their
+scores: the result lies on the model plane by construction, leaving no residual.
 
 The two rows are close, but "close" in the raw units is hard to read: a gap of 0.5 in hydrogen sulfide
 does not mean the same thing as a gap of 0.5 in lactic acid, because the three measurements are on
