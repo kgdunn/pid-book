@@ -21,7 +21,7 @@ where the :math:`s_a^2` values are constants, and are the variances of each comp
 *	The |T2| statistic is distributed according to the :math:`F`-distribution and is calculated by the multivariate software package being used. For example, we can calculate the 95% confidence limit for |T2|, below which we expect, under normal conditions, to locate 95% of the observations.
 
 	.. image:: ../../figures/examples/tablet-spectra/spectral-data-T2-lineplot.png
-		:alt:	../../figures/examples/tablet-spectra/spectral-data.R
+		:alt: Hotelling's T-squared per tablet against the 95% and 99% limits
 		:scale: 80
 		:width: 750px
 		:align: center
@@ -36,7 +36,7 @@ where the :math:`s_a^2` values are constants, and are the variances of each comp
 *	The same principle holds for :math:`A>2`, except the ellipse is called a hyper-ellipse (think of a rugby-ball shaped object for :math:`A=3`). The general interpretation is that if a point is within this ellipse, then it is also below the |T2| limit, if |T2| were to be plotted on a line.
 
 .. image:: ../../figures/examples/tablet-spectra/spectral-data-t1-t2-scoreplot.png
-	:alt:	../../figures/examples/tablet-spectra/spectral-data.R
+	:alt: Score plot of the tablet spectra with the 95% and 99% T-squared ellipses
 	:scale: 80
 	:width: 750px
 	:align: center

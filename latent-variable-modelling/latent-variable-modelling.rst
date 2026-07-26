@@ -167,8 +167,6 @@
 
 .. Plots to draw
 
-	barplot-for-R2-and-Q2.png: add the R2 and Q2 values on top of each bar
-
 .. To add/fix up
 
 	* mention: 45 degree line between t_a and u_a

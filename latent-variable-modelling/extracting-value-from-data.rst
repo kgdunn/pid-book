@@ -63,7 +63,7 @@ These data sets meet all the assumptions required to use the so-called "classica
 	This case is common for laboratory instrumentation, particularly spectroscopic devices. In recent years we are routinely collecting large quantities of data. A typical example is with near-infrared probes embedded at-line. These probes record a spectral response at around 1000 to 2000 different wavelengths. The data are represented in |X| using one wavelength per column and each sample appears in a row. The illustration here shows data from :math:`N=460` samples, with data recorded every 2 nm (:math:`K=650`).
 
 	.. image:: ../figures/examples/tablet-spectra/pharma-spectra.png
-		:alt:	../figures/examples/tablet-spectra/pharma-spectra.py
+		:alt: 460 tablet spectra overlaid, absorbance against wavelength
 		:scale: 70
 		:width: 750px
 		:align: center

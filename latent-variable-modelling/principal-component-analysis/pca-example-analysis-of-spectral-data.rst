@@ -11,7 +11,7 @@ PCA example: analysis of spectral data
 A data set, `available on the dataset website <https://openmv.net/info/tablet-spectra>`_, contains data on 460 tablets, measured at 650 different wavelengths.
 
 .. image:: ../../figures/examples/tablet-spectra/pharma-spectra.png
-	:alt:	../../figures/examples/tablet-spectra/pharma-spectra.py
+	:alt: 460 tablet spectra overlaid, absorbance against wavelength
 	:scale: 80
 	:width: 750px
 	:align: center
@@ -69,7 +69,7 @@ The :math:`R^2_a` (``Cumulative Proportion``) values shows the first component e
 Let's visually show what the :math:`R^2` values are for each column. Shown below are these values for the first 3 components. The first component (green, thin line) explains certain regions of the spectra very well, particularly the region around 1100nm. Wavelengths beyond 1800 nm are not well explained at all. The second component is primarily responsible for explaining additional variability in the 700 to 1100nm region. The third component only seems to explain the additional variability from 1700 to 1800nm. Fitting a fourth component is only going to start fitting the noisy regions of the spectrum on the very right. For these data we could use 2 components for most applications, or perhaps 3 if the region between 1700 and 1800nm was also important.
 
 .. image:: ../../figures/examples/tablet-spectra/spectral-data-R2-per-variable.png
-	:alt:	../../figures/examples/tablet-spectra/spectral-data.R
+	:alt: Cumulative R-squared per wavelength after one, two and three components
 	:scale: 75
 	:width: 750px
 	:align: center
@@ -77,7 +77,7 @@ Let's visually show what the :math:`R^2` values are for each column. Shown below
 Finally, we can show the SPE plot for each observation. SPE values for each tablet become smaller and smaller as each successive component is added. Since each new component explains additional variance, the size of SPE must decrease. There don't appear to be any major outliers off the model's plane after the first component.
 
 .. image:: ../../figures/examples/tablet-spectra/spectral-data-SPE-per-tablet.png
-	:alt:	../../figures/examples/tablet-spectra/spectral-data.R
+	:alt: Residual distance per tablet, shrinking as components are added
 	:scale: 80
 	:width: 750px
 	:align: center

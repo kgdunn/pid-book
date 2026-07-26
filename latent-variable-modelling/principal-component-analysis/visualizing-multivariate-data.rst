@@ -14,7 +14,7 @@ Which variables should you use, and how many observations do you require? We add
 Consider the case of 2 variables, :math:`K=2` (left) and :math:`K=3` variables (right) for the room thermometers example :ref:`from earlier <LVM_room_temperature_example>`:
 
 .. image:: ../../figures/examples/room-temperature/temperature-2d-and-3d-plot.png
-	:alt:	../../figures/examples/room-temperature/temperature-data-combine.py
+	:alt: Two thermometers plotted against each other, and three of them as a data swarm
 	:scale: 60
 	:width: 900px
 	:align: center
@@ -27,10 +27,10 @@ Each point in the plot represents one *object*, also called an *observation*. Th
 
 .. _LVM_visualization_scatterplot_matrix:
 
-Another effective way to visualize small multivariate data sets is to use a scatterplot matrix. Below is an example for :math:`K = 5` measurements on :math:`N=50` observations. Scatterplot matrices require :math:`K(K-1)/2` plots and can be enhanced with univariate histograms (on the diagonal plots), and linear regressions and loess smoothers on the off-diagonals to indicate the level of correlation between any two variables.
+Another effective way to visualize small multivariate data sets is to use a scatterplot matrix. Below is an example for :math:`K = 5` measurements on :math:`N=50` observations. Scatterplot matrices require :math:`K(K-1)/2` plots and can be enhanced with a univariate summary on the diagonal plots, and linear regressions and loess smoothers on the off-diagonals to indicate the level of correlation between any two variables. The diagonal here carries a smoothed density curve over a rug: a short tick for every value recorded. The rug is worth having alongside the curve, since it shows where the readings actually fall. Look at the ticks under ``Crispy`` and ``Fracture``: they are evenly spaced, because those two variables are recorded as whole numbers, which a smooth curve on its own would hide.
 
 .. image:: ../../figures/examples/food-texture/pca-on-food-texture-scatterplot-matrix.png
-	:alt:	../../figures/examples/food-texture/pca-on-food-texture-data.R
+	:alt: Scatterplot matrix of the five pastry quality attributes
 	:scale: 70
 	:width: 900px
 	:align: center
