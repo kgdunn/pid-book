@@ -344,8 +344,7 @@ into the familiar form, the free coordinate traces out
 	    = 2.08\, t_1 + 0.65
 
 so the line climbs 2.08 units of :math:`t_2` for every unit of :math:`t_1`. That is the diagonal in the
-score plot, and it comes from the ratio of the two :math:`y`-loadings alone, :math:`-q_1/q_2`. Their
-absolute sizes do not matter, only their ratio: doubling both would give the same line.
+score plot, and it comes from the ratio of the two :math:`y`-loadings alone, :math:`-q_1/q_2`.
 
 There is a matching geometric statement. Take any two points on the line and subtract their equations.
 The constant cancels, leaving
