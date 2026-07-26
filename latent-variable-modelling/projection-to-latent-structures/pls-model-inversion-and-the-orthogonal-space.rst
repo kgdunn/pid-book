@@ -449,21 +449,74 @@ the design sits from the centre of the calibration data, in the same units as th
 :ref:`score diagnostics <LVM-Hotellings-T2>` used elsewhere. Designing toward each of the four
 held-out cheeses in turn shows the pattern.
 
+We can repeat for all four held-out cheeses what we did for cheese 2: invert toward its taste, then
+record how far the design sits from the data, how far the cheese itself sits from the data, and the
+normalized deviation between the two.
+
 .. code-block:: python
 
-	for i in range(4):
+	rows = []
+	for i in range(len(holdout)):
 	    target = float(holdout["Taste"].iloc[i])
-	    t2 = pls.invert(target).hotellings_t2
-	    print(f"taste {target:5.1f} -> T2 {t2:.2f}")
-	# taste  12.3 -> T2 1.07
-	# taste  20.9 -> T2 0.06
-	# taste  39.0 -> T2 1.93
-	# taste  47.9 -> T2 4.82
+	    design = pls.invert(target)
+	    measured = holdout[x_columns].iloc[i]
+	    a = scaler.transform(measured.to_frame().T).iloc[0]
+	    p = scaler.transform(design.x_new.to_frame().T).iloc[0]
+	    rows.append({
+	        "Taste": target,
+	        "T2 design": design.hotellings_t2,
+	        "T2 cheese": float(pls.diagnose(measured.to_frame().T).hotellings_t2.iloc[0]),
+	        "Deviation": float(((a - p) ** 2).sum()),
+	    })
 
-The moderate tastes near the middle of the calibration range give designs with small :math:`T^2`; the
-more extreme tastes push the design further from the data, and :math:`T^2` grows. A large :math:`T^2` does
-not make a design wrong, but it flags that the model is extrapolating and that the predicted taste rests
-on less support from the data.
+	print(pd.DataFrame(rows).round(2))
+
+.. list-table:: The four held-out cheeses: how far each design and each cheese sits from the calibration data, and the normalized deviation between them. The 99% limit on :math:`T^2` is 12.14.
+	:header-rows: 1
+	:widths: 14 16 22 22 26
+
+	*	- Cheese
+		- Taste
+		- :math:`T^2` of the design
+		- :math:`T^2` of the cheese
+		- Normalized deviation
+	*	- 1
+		- 12.3
+		- 1.07
+		- 4.08
+		- 4.50
+	*	- 2
+		- 20.9
+		- 0.06
+		- 0.21
+		- 0.66
+	*	- 3
+		- 39.0
+		- 1.93
+		- 0.02
+		- 2.65
+	*	- 4
+		- 47.9
+		- 4.82
+		- 0.94
+		- 1.57
+
+Reading down the third column, the moderate tastes near the middle of the calibration range give designs
+with small :math:`T^2`, while the more extreme tastes push the design further from the data: asking for a
+taste of 47.9 gives the largest value, 4.82. A large :math:`T^2` does not make a design wrong, but it
+flags that the model is extrapolating and that the predicted taste rests on less support from the data.
+All four are well inside the 99% limit of 12.14.
+
+The last column compares each design with the cheese that actually had that taste. Cheese 2 is the
+closest match, at 0.66, which is the case we worked through. Cheese 1 is the furthest, at 4.50, or
+:math:`\sqrt{4.50} = 2.1` standard deviations. The fourth column explains part of that: cheese 1 has the
+largest :math:`T^2` of the four cheeses, 4.08, so it is an unusual cheese to begin with, sitting well away
+from the centre of the calibration data while the design does not.
+
+A large deviation is not a failure of the inversion. The model returns the solution of smallest score
+norm, whereas nature produced whichever chemistry it produced, and the null space means both can carry
+the same predicted taste while sitting some distance apart. The deviation measures how far apart the two
+recipes are, not how wrong either of them is.
 
 For a single response, then, PLS model inversion and O-PLS model inversion lead to the same set of
 designs. They differ in how they reach it: PLS inversion solves an underdetermined system and returns the
