@@ -363,7 +363,7 @@ the figure do not converge.
 	:width: 620px
 	:align: center
 
-	The same score plot, with both axes drawn to the same scale so that angles are true. The purple
+	The same score plot, with both axes drawn to the same scale so that angles are true. The maroon
 	arrow is the gradient :math:`\mathbf{q}`, the direction in which the predicted taste rises fastest.
 	The orange line is the null space for a taste of 20.9, at right angles to it, and the grey dotted
 	lines are the contours for tastes of 10, 30 and 40. The orange square is the direct-inversion
