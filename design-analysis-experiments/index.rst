@@ -16,6 +16,7 @@ Design and Analysis of Experiments
    fractional-factorial-designs/index
    blocking-and-confounding-for-disturbances
    response-surface-methods
+   multi-response-optimization
    optimal-designs
    definitive-screening-designs
    omars-designs

@@ -1,4 +1,6 @@
 
+.. _DOE-general-approach:
+
 General approach for experimentation
 =====================================
 

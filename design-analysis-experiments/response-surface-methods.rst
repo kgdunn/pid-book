@@ -504,11 +504,11 @@ The general approach for response surface modelling
 
 	Response surface methods consider optimization of a single outcome, or response variable, called :math:`y`. In many instances we are interested in just a single response, but more often we are interested in a multi-objective response, i.e. there are trade-offs. For example we can achieve a higher production rate, but it is at the expense of more energy.
 
-	One way to balance all competing objectives is to rephrase the :math:`y` variable in terms of total costs, or better still, net profit. This makes calculating the :math:`y` value more complex, as we have to know the various costs and their relative weightings to calculate the profit. Now you have a single :math:`y` to work with.
+	One way to balance all competing objectives is to rephrase the :math:`y` variable in terms of total costs, or better still, net profit. This makes calculating the :math:`y` value more complex, as we have to know the various costs and their relative weightings to calculate the profit. Now you have a single :math:`y` to work with. That is the route taken in the bioreactor example throughout this section.
 
 	Another way is to superimpose the response surfaces of two or more :math:`y`-variables. This is tremendously helpful when discussing and evaluating alternate operating points, because plant managers and operators can then visually see the trade-offs.
 
-.. TODO: figure here showing RSM trade-offs: two contours superimposed
+	Both routes, and a third that grades each response and optimizes the combination, are covered in the section on :ref:`multi-response optimization <DOE-multi-response-optimization>`, which continues this same bioreactor example with a second response measured alongside profit.
 
 .. rubric:: Summary
 
