@@ -167,8 +167,6 @@
 
 .. Plots to draw
 
-	brushing-illustration: get the colour version to have a white background
-
 .. To add/fix up
 
 	* mention: 45 degree line between t_a and u_a

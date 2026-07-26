@@ -40,7 +40,7 @@ From this derivation we see these regression coefficients are a function of *all
 In the example below there were :math:`A=6` components, and :math:`K=14` and :math:`M=5`. Investigating all 6 of the  :math:`\mathbf{r:c}` vectors is informative, but the coefficient plot provides an efficient way to understand how the |X| variables are related to this particular |Y| variable across all the components in the model.
 
 .. figure:: ../../figures/pls/coefficient-plot-LDPE-A-is-6.png
-	:alt:	../../figures/pls/coefficient-plot-LDPE.R
+	:alt: Regression coefficients of the fourteen X-variables for conversion, sorted and coloured by sign
 	:scale: 70%
 	:width: 900px
 	:align: center
