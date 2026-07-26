@@ -245,14 +245,15 @@ the null space does and does not change.
 		- 0.00
 		- 2.66
 
-Read across the three predicted rows and the inputs change substantially: acetic acid runs from 4.95
-to 6.09 while hydrogen sulfide falls from 6.10 to 5.02. Every one of them still reaches a taste of
-20.9, and every one has an SPE of zero, since all three are rebuilt from scores and so lie on the
-model plane. What does change is :math:`T^2`. The step 0 row is the direct-inversion solution, the
-one of smallest score norm, and it has the smallest :math:`T^2` of the three, 0.06. Stepping out to
-either side moves the design away from the centre of the calibration data, to 1.63 and 2.44. The
-freedom along the null space is therefore free in terms of the predicted taste, but not in terms of
-how much support the data give the design.
+Read down the three predicted rows and the inputs change substantially in order to keep the taste
+constant. Acetic acid increases from about 5 to 6, while that is compensated by hydrogen sulfide
+falling from about 6 to 5. Every one of the three still reaches a taste of 20.9, and every one has
+an SPE of zero, since all three are rebuilt from scores and so lie on the model plane. What does
+change is :math:`T^2`. The step 0 row is the direct-inversion solution, the one of smallest score
+norm, and it has the smallest :math:`T^2` of the three, 0.06. Stepping out to either side moves the
+design away from the centre of the calibration data, to 1.63 and 2.44. The freedom along the null
+space is therefore free in terms of the predicted taste, but not in terms of how much support the
+data give the design.
 
 The last column is the normalized deviation of each row from the cheese we are designing toward,
 computed the same way as before: centre and scale each input, then sum the squared differences. The
