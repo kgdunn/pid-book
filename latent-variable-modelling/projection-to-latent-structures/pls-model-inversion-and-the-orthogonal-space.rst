@@ -388,6 +388,7 @@ We can confirm both the slope and the perpendicularity from the fitted model.
 	q = pls.y_loadings_.to_numpy().ravel()
 	print(q.round(3))                      # [ 0.546 -0.262]
 	print(round(-q[0] / q[1], 2))          # 2.08, the slope of the line
+	print(g.round(3))                      # [0.433 0.902], the null-space direction
 	print(round(float(g @ q), 12))         # 0.0, the direction is perpendicular to q
 
 The direct-inversion solution fits the same picture. It is
