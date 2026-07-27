@@ -22,8 +22,8 @@ keywords:
   - multivariate data analysis
   - batch data analysis
 license: CC-BY-SA-4.0
-version: "2026.07.26"
-date-released: 2026-07-26
+version: "2026.07.27"
+date-released: 2026-07-27
 repository-code: "https://github.com/kgdunn/pid-book"
 url: "https://learnche.org/pid"
 identifiers:

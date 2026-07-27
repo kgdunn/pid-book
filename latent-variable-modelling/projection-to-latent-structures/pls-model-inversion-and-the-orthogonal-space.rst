@@ -385,14 +385,17 @@ the figure do not converge.
 	:width: 620px
 	:align: center
 
-	The same score plot, with the areas again proportional to taste and both axes drawn to the same
-	scale so that angles are true. The maroon
-	arrow is the gradient :math:`\mathbf{q}`, the direction in which the predicted taste rises fastest.
-	The orange line is the null space for a taste of 20.9, at right angles to it, and the grey dotted
-	lines are the contours for tastes of 10, 30 and 40. The orange square is the direct-inversion
-	solution, which sits where a perpendicular dropped from the origin meets the orange contour, and so
-	is the solution of smallest score norm. The two orange triangles are the -1 and +1 steps, the same
-	points marked in the score plot above, so the two figures can be read against each other.
+	Left: the same score plot, with the areas again proportional to taste and both axes drawn to the
+	same scale so that angles are true. The maroon arrow is the gradient :math:`\mathbf{q}`, the
+	direction in which the predicted taste rises fastest. The orange line is the null space for a taste
+	of 20.9, at right angles to it, and the grey dotted lines are the contours for tastes of 10, 30 and
+	40. The orange square is the direct-inversion solution and the two orange triangles are the -1 and
+	+1 steps, the same points marked in the score plot above, so the two figures can be read against
+	each other.
+
+	Right: the boxed region enlarged, at the scale the next argument needs. The three arrows form a
+	right triangle, from the origin to the direct-inversion solution, from there along the contour to
+	the +1 step, and back to the origin.
 
 We can confirm both the slope and the perpendicularity from the fitted model.
 
@@ -521,7 +524,7 @@ Refitting the model on bootstrap resamples of the calibration set answers that d
 	reference = np.array([0.948, -0.238, 0.211])         # the direction reported below
 	reference = reference / np.linalg.norm(reference)
 
-	q2, slopes, angles, designs = [], [], [], []
+	q2, slopes, angles, designs, boot_lines = [], [], [], [], []
 	for _ in range(2000):
 	    sample = train.iloc[rng.integers(0, len(train), len(train))]
 	    boot = PLS(n_components=2).fit(sample[x_columns], sample[["Taste"]])
@@ -531,6 +534,8 @@ Refitting the model on bootstrap resamples of the calibration set answers that d
 
 	    result_b = boot.invert(20.9)
 	    designs.append(result_b.x_new.to_numpy())
+	    boot_lines.append((result_b.scores.to_numpy(),
+	                       result_b.null_space_basis.to_numpy().ravel()))
 	    d = result_b.null_space_basis.to_numpy().ravel() @ boot.x_loadings_.to_numpy().T
 	    d = d / np.linalg.norm(d)
 	    # A direction and its negative describe the same line, so compare without sign.
@@ -557,6 +562,37 @@ acetic acid, 4.97 to 6.26 for hydrogen sulfide, and 1.30 to 1.49 for lactic acid
 the spread of the calibration cheeses. The reason for the difference is worth seeing: the solution
 depends mostly on :math:`q_1`, which is estimated well, while the null-space direction depends on the
 ratio of :math:`q_1` to :math:`q_2`.
+
+Drawing every one of those refits says the same thing without any percentiles. Each is a line, so
+plotting all 2000 of them faintly enough to overlap turns the spread into a density.
+
+.. code-block:: python
+
+	fig = go.Figure()
+	for tau_b, g_b in boot_lines:                      # one faint line per refit
+	    segment = np.array([tau_b + s * g_b for s in (-9, 9)])
+	    fig.add_scatter(x=segment[:, 0], y=segment[:, 1], mode="lines", showlegend=False,
+	                    line={"color": "rgba(230, 130, 10, 0.03)"})
+	fig.add_scatter(x=scores.iloc[:, 0], y=scores.iloc[:, 1], mode="markers",
+	                name="calibration cheeses")
+	fig.update_layout(xaxis_title="t_1", yaxis_title="t_2")
+	fig.show()
+
+.. _LVM-PLS-null-space-bootstrap-figure:
+
+.. figure:: ../../figures/pls/pls-null-space-bootstrap.png
+	:alt: A fan of bootstrap null-space lines, and a histogram of their angles
+	:width: 700px
+	:align: center
+
+	Left: one faint line for each of 2000 refits, each the null space that refit would have returned.
+	The fan pinches near the direct-inversion solution and spreads from there. Right: the same spread
+	measured as an angle from the direction the full calibration set gives, compared without sign since
+	a direction and its negative describe the same line. The shaded band holds the 15% of refits that
+	land more than 45 degrees away.
+
+That pinch is the point-and-direction asymmetry in one picture. The refits nearly agree on where the
+solution sits, and disagree widely on which way the line runs through it.
 
 So the two statements this section makes are not equally firm. That a set of inputs reaching a target
 taste exists, and roughly where it sits, is supported by these data. Which direction one may then walk
