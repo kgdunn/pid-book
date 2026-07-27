@@ -498,9 +498,10 @@ Finally, it is worth asking what that direction means for the inputs, rather tha
 Multiplying the direction by the |X|-loadings maps it back to the three measurements, and a step of
 :math:`+1` moves acetic acid by :math:`+0.57`, hydrogen sulfide by :math:`-0.54`, and lactic acid by only
 :math:`+0.06`, in the original units. Moving along the null space therefore trades acetic acid up against
-hydrogen sulfide down, leaving lactic acid nearly alone. Both of those measurements rise with taste in
-this data set, with correlations of 0.56 and 0.77, so raising one while lowering the other leaves the
-predicted taste where it was. That trade-off is what the diagonal line is recording.
+hydrogen sulfide down, leaving lactic acid nearly alone. Both of those measurements rise with taste,
+correlating :math:`+0.55` and :math:`+0.76` across the thirty cheeses, as the scatterplot matrix at the
+start of this section reports, so raising one while lowering the other leaves the predicted taste where
+it was. That trade-off is what the diagonal line is recording.
 
 .. _LVM-PLS-null-space-uncertainty:
 
