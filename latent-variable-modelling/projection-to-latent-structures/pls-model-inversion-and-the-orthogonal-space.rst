@@ -96,8 +96,9 @@ The prediction at the designed inputs is exactly 20.9, by construction. To judge
 is a reasonable one, compare it with the cheese we held out. For this model the 99% limits are
 :math:`T^2 = 12.14` and :math:`\text{SPE} = 1.60`. These are the limits for a *new* observation rather
 than for one of the 26 used to fit the model, which is the right choice here: a proposed design is
-being judged against the model, not summarised by it. The distinction is small at this sample size,
-moving the :math:`T^2` limit from 11.69 to 12.14, and it grows smaller as :math:`N` grows.
+being judged against the model, not summarised by it. Limits for the observations that built the model
+are lower, since each of those helped set the centre and spread it is then measured against, and at a
+sample size of 26 that difference is not negligible.
 
 .. list-table:: Cheese 2: its measured inputs, and the inputs the inversion returns for taste 20.9.
 	:header-rows: 1
