@@ -1051,18 +1051,19 @@ Suppose a taste between 20 and 30 is acceptable.
 	t2_limit = pls.hotellings_t2_limit(0.95)
 
 	region = []
-	for target in np.linspace(20.0, 30.0, 41):       # the tastes we accept
-	    for step in np.linspace(-6, 6, 801):         # walk along that target's null space
+	for target in np.linspace(20.0, 30.0, 11):       # the tastes we accept
+	    for step in np.linspace(-2.5, 2.5, 50):      # walk along that target's null space
 	        candidate = pls.invert(target, null_space_coordinates=[step])
 	        if candidate.hotellings_t2 <= t2_limit:
 	            region.append(candidate.x_new)
 
 	region = pd.DataFrame(region)
 	print(round(t2_limit, 2))                        # 7.36
+	print(len(region))                               # 415 of the 550 inversions are kept
 	print(region.agg(["min", "max"]).round(2))
 	#      Acetic   H2S  Lactic
-	# min    4.35  4.44    1.25
-	# max    6.80  8.04    1.68
+	# min    4.38  4.44    1.25
+	# max    6.78  7.99    1.68
 
 A cheese whose inputs fall in this region is predicted to have an acceptable taste. Note that these
 minima and maxima are the box that encloses the region, not the region itself. The region is a slanted
@@ -1077,15 +1078,22 @@ Both the region and the box it is reported as can be drawn.
 .. code-block:: python
 
 	corners = np.array(np.meshgrid(*zip(region.min(), region.max()))).reshape(3, -1).T
-	corner_taste = pls.predict(pd.DataFrame(corners, columns=x_columns)).to_numpy().ravel()
-	print(np.sort(corner_taste).round(1))
-	# [11.7 15.9 19.7 23.9 26.  30.2 34.  38.2]
+	corner_frame = pd.DataFrame(corners, columns=x_columns)
+	corner_taste = pls.predict(corner_frame).to_numpy().ravel()
+	corner_t2 = pls.diagnose(corner_frame).hotellings_t2.to_numpy()
+
+	for taste, t2 in sorted(zip(corner_taste.round(1), corner_t2.round(1))):
+	    print(taste, t2)
+	# 11.9 3.9    15.9 10.7    19.8 3.2    23.8 10.5
+	# 26.0 10.3   30.0 3.4     33.9 10.8   37.9 4.4
 
 	fig = go.Figure()
 	fig.add_scatter3d(x=region["Acetic"], y=region["H2S"], z=region["Lactic"],
 	                  mode="markers", marker={"size": 2, "color": "orange", "opacity": 0.3})
 	fig.add_scatter3d(x=corners[:, 0], y=corners[:, 1], z=corners[:, 2], mode="markers+text",
-	                  text=[f"{t:.0f}" for t in corner_taste], marker={"size": 5, "color": "darkred"})
+	                  text=[f"{t:.0f}" for t in corner_taste],
+	                  marker={"size": 5, "color": np.where(
+	                      (corner_taste >= 20) & (corner_taste <= 30), "steelblue", "darkred")})
 	fig.update_layout(scene={"xaxis_title": "Acetic", "yaxis_title": "H2S",
 	                         "zaxis_title": "Lactic"})
 	fig.show()
@@ -1097,19 +1105,29 @@ Both the region and the box it is reported as can be drawn.
 	:width: 720px
 	:align: center
 
-	Left: sweeping the target taste from 20 to 30 sweeps its null space across the score plot, and the
-	95% :math:`T^2` limit closes the region off along the other direction. Right: the same region in the
-	three inputs, with the box of three ranges drawn around it. The region is flat, because every point
-	on it is rebuilt from two scores, while the box is a solid. Each corner is labelled with the taste
-	it is predicted to have.
+	Left: eleven acceptable tastes, each inverted at fifty points along its own null space, so the
+	swept lines fill out the region. The 95% :math:`T^2` limit closes it off along the other direction.
+	Right: the same region in the three inputs, with the box of three ranges drawn around it. The region
+	is flat, because every point on it is rebuilt from two scores, while the box is a solid.
+
+	Five points are marked in both panels with the same shape and colour, so a location in the score
+	plot can be followed to the recipe it stands for: the four corners of the region, where the outer
+	null spaces meet the :math:`T^2` limit, and its centre, the direct-inversion solution for a taste of
+	25. Each corner of the box carries the taste it is predicted to have, dark red where that taste is
+	outside the window and blue where it is acceptable but the recipe lies beyond the :math:`T^2` limit.
 
 The eight corners make the difference concrete. Every one of them satisfies all three ranges, since
-each coordinate is either the reported minimum or the reported maximum, and not one of them predicts an
-acceptable taste: they run from 11.7 to 38.2, against a window of 20 to 30. Three ranges are the
-smallest box that contains the region, and a box that contains a flat, slanted set is mostly not that
-set. This is why a multivariate specification is stated as a region rather than as a table of limits
-per input: the limits are a summary of the region, and reading them as though they were the
-specification accepts lots the model would reject.
+each coordinate is either the reported minimum or the reported maximum, and not one of them is an
+acceptable lot. They fail in two different ways. Six predict a taste outside the window, running from
+11.9 at one corner to 37.9 at another. The other two predict a taste that would be perfectly
+acceptable, 23.8 and 26.0, but they sit at :math:`T^2` values of 10.5 and 10.3 against a limit of
+7.36. A recipe that far from the centre of the calibration data is an extrapolation, and the model
+carries no evidence about what it would really taste like.
+
+Three ranges are the smallest box that contains the region, and a box that contains a flat, slanted set
+is mostly not that set. This is why a multivariate specification is stated as a region rather than as a
+table of limits per input: the limits are a summary of the region, and reading them as though they were
+the specification accepts lots the model would reject.
 
 Inversion is not the only route to a specification region. The inputs can also be mapped directly into a
 region without inverting a model, an approach known as direct mapping. Paris and co-workers (2021)
