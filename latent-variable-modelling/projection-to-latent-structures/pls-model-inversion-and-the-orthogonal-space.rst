@@ -10,22 +10,18 @@ solve for the inputs that would achieve it. Finding the inputs that give a chose
 MacGregor, 2000
 <https://literature.learnche.org/item/180/industrial-applications-of-product-design-through-the-inversion-of-latent-variable-models>`_).
 
-The answer is more interesting than a single recipe. A PLS model compresses several correlated inputs
-into a few latent directions, and one target value can pin down only one of them. Everything left over
-is free, so inversion returns not *the* recipe but a flat set of them, every one of which the model
-says will hit the target. Where that freedom comes from, what it is worth, and how much of it the data
-support is the subject of this section.
+Inversion returns not a single set of inputs but a whole set of them, every one of which the model says
+will hit the target. That is possible because a model captures systematic variation in the inputs that
+turns out to have no bearing on the response, the part usually filtered out to make a model easier to
+read. For these cheeses it is 18.3% of the variation in the inputs, and moving within it changes the
+recipe while leaving the prediction exactly where it was. Those directions are the null space. Where
+that freedom comes from, what it is worth, and how much of it the data support is the subject of this
+section.
 
-That freedom lives in a part of the model few people look at: the systematic variation the model
-captures and then finds has no bearing on the response. It is usually filtered out to make a model
-easier to read. For these cheeses it is 18.3% of the variation in the inputs, none of which moves the
-taste.
-
-The running example is the same :ref:`cheddar-cheese data <LVM-cheddar-cheese-example>` as before, a
-small and well-worn data set. Thirty cheddar cheeses were each measured for three things, the
-concentrations of acetic acid, hydrogen sulfide and lactic acid, and each was given a taste score by a
-panel. The forward question was "what taste do these three measurements imply?" The inversion question
-is "which three measurements would give me a taste I have chosen?"
+The running example is the same :ref:`cheddar-cheese data <LVM-cheddar-cheese-example>` as before.
+Thirty cheeses were each measured for acetic acid, hydrogen sulfide and lactic acid, and given a taste
+score by a panel. The forward question was "what taste do these three measurements imply?" The
+inversion question is "which three measurements would give me a taste I have chosen?"
 
 .. _LVM-PLS-cheese-scatterplot:
 
