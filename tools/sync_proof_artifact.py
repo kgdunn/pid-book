@@ -17,12 +17,18 @@ Output defaults to ``_build/proof/<basename>.html``.
 from __future__ import annotations
 
 import base64
+import html as htmllib
+import json
 import mimetypes
+import os
 import re
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 
 BUILD = Path(__file__).resolve().parent.parent / "_build" / "html"
+TEX2SVG = Path(__file__).resolve().parent / "tex2svg.mjs"
 
 # Reading styles for the standalone page. Deliberately close to the book's own
 # proportions so that line breaks and paragraph rhythm proofread the same way.
@@ -77,6 +83,10 @@ th:first-child,td:first-child{text-align:left}
 thead th{background:var(--raised);font-weight:600;color:var(--blue)}
 .headerlink{display:none}
 :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+mjx-container{color:var(--ink)}
+mjx-container[display="true"]{display:block;margin:1.3rem 0;text-align:center;
+  overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+mjx-container svg{max-width:none}
 """
 
 # Theme furniture that carries no prose: strip it so the page reads as an article.
@@ -112,6 +122,64 @@ def inline_images(html: str, page: Path) -> tuple[str, int]:
     return html, count
 
 
+#: Sphinx with ``sphinx.ext.mathjax`` leaves the TeX in place for the browser to
+#: render. ``\(...\)`` marks inline math, ``\[...\]`` display math.
+MATH_PATTERN = re.compile(
+    r'<(span|div) class="math[^"]*"[^>]*>\s*\\([(\[])(.*?)\\[)\]]\s*</\1>',
+    re.S,
+)
+
+
+def render_math(body: str) -> tuple[str, int, int]:
+    """Replace every MathJax placeholder with SVG rendered ahead of time.
+
+    Returns the body, how many expressions were rendered, and how many were left
+    as source because they did not parse. If node or the ``mathjax-full`` package
+    is missing, every expression is left alone and the page still builds.
+    """
+    matches = list(MATH_PATTERN.finditer(body))
+    if not matches:
+        return body, 0, 0
+
+    node = shutil.which("node")
+    mathjax_dir = os.environ.get("MATHJAX_DIR", str(TEX2SVG.parent))
+    if node is None or not Path(mathjax_dir, "node_modules", "mathjax-full").is_dir():
+        print(
+            "  note: node or mathjax-full not found, leaving math as TeX source.\n"
+            "        npm install mathjax-full, then set MATHJAX_DIR to its parent.",
+            file=sys.stderr,
+        )
+        return body, 0, len(matches)
+
+    payload = [
+        {"tex": htmllib.unescape(m.group(3)), "display": m.group(2) == "["}
+        for m in matches
+    ]
+    result = subprocess.run(  # noqa: S603
+        [node, str(TEX2SVG)],
+        input=json.dumps(payload),
+        capture_output=True,
+        text=True,
+        check=True,
+        env={**os.environ, "MATHJAX_DIR": mathjax_dir},
+    )
+    svgs = json.loads(result.stdout)
+
+    rendered = failed = 0
+    pieces, cursor = [], 0
+    for match, svg in zip(matches, svgs):
+        pieces.append(body[cursor : match.start()])
+        if svg:
+            pieces.append(svg)
+            rendered += 1
+        else:
+            pieces.append(match.group(0))
+            failed += 1
+        cursor = match.end()
+    pieces.append(body[cursor:])
+    return "".join(pieces), rendered, failed
+
+
 def extract_article(html: str) -> str:
     """Return the ``<article class="bd-article">`` body, without its wrapper tag."""
     start = html.find('<article class="bd-article">')
@@ -132,6 +200,8 @@ def scrub(body: str) -> str:
     """Drop the logo/PDF badge images and the anchor-link pilcrows."""
     body = re.sub(r'<a class="headerlink".*?</a>', "", body, flags=re.S)
     body = re.sub(r"<img[^>]*(textbook-logo|Document-pdf)[^>]*>", "", body)
+    # Sphinx links each figure to the full-size file, which is not carried over.
+    body = re.sub(r'<a[^>]*href="[^"]*_images/[^"]*"[^>]*>(.*?)</a>', r"\1", body, flags=re.S)
     return re.sub(r"<p>\s*</p>", "", body)
 
 
@@ -148,6 +218,7 @@ def main() -> None:
     raw = page.read_text(encoding="utf-8")
     body = scrub(extract_article(raw))
     body, n_images = inline_images(body, page)
+    body, n_math, n_math_failed = render_math(body)
 
     title_match = re.search(r"<title>(.*?)</title>", raw, re.S)
     title = title_match.group(1).split("&#8212;")[0].strip() if title_match else docname
@@ -164,7 +235,11 @@ def main() -> None:
         f"{body}\n</div>\n",
         encoding="utf-8",
     )
-    print(f"wrote {out} ({out.stat().st_size / 1024:.0f} KB, {n_images} images inlined)")
+    note = f", {n_math_failed} left as source" if n_math_failed else ""
+    print(
+        f"wrote {out} ({out.stat().st_size / 1024:.0f} KB, "
+        f"{n_images} images inlined, {n_math} equations rendered{note})"
+    )
 
 
 if __name__ == "__main__":
