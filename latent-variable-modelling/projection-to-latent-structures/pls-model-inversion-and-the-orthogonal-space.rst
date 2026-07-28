@@ -644,10 +644,20 @@ For the first component of the cheese model those two vectors are close, but the
 		- 0.008
 		- 90
 
-Why should they differ at all? The weight was aimed at taste. The score it produces, though, carries
-along whatever else happens to vary in that same pattern across the cheeses, and the loading records
-all of it. The difference between the loading and the weight is therefore the part of the variation
-that travelled with the score without being about taste.
+Why should they differ at all? The weight was aimed at taste. But it was not aimed only at taste, and
+:ref:`the mathematical interpretation of PLS <LVM_PLS_mathematical_interpretation>` says why. Each
+component is chosen to maximise the *covariance* between the |X|-score and the |Y|-score, and
+covariance factors into three parts: the correlation between the two scores, the variation the score
+captures in |X|, and the variation it captures in |Y|. Maximising covariance is therefore not the same
+as maximising correlation. A direction that lines up slightly less well with taste, but which accounts
+for more of the spread among the cheeses, can give the larger covariance, so the weight settles
+somewhere between pointing at taste and pointing where the inputs vary most.
+
+The score that direction produces consequently carries along whatever else happens to vary in that same
+pattern across the cheeses. The loading is a plain regression of the inputs back onto that score, so it
+records all of it, the part related to taste and the part not. The difference between the loading and
+the weight is therefore the part of the variation that travelled with the score without being about
+taste.
 
 That difference is simpler to write down than it looks. For every PLS component the weight and its own
 loading satisfy :math:`\mathbf{w}_a^T \mathbf{p}_a = 1`, which follows by substituting
