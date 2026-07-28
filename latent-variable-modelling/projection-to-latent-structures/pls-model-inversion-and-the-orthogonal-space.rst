@@ -760,11 +760,11 @@ The consequence shows up in the scores, not the weights.
 		- 0.000
 
 Both models explain the same amount of taste; they differ in how many components it takes. PLS reaches
-an :math:`R^2` of 0.672 only with both: the first component gets to 0.642, and the second supplies the
+an :math:`R^2` of 0.672 with two: the first component gets to 0.642, and the second supplies the
 remaining 0.030, which is why it still correlates with taste rather than sitting at zero. The O-PLS
-predictive score reaches the same 0.672 on its own, since :math:`0.820^2 = 0.672`. Nothing has been
-created or lost, the same explained variance is packaged into one component instead of two, and that is
-what leaves the orthogonal score at exactly zero.
+predictive score reaches the same 0.672 on its own in one component, since :math:`0.820^2 = 0.672`.
+Nothing has been created or lost, the same explained variance is packaged into one O-PLS component
+instead of two.
 
 What O-PLS ends up with is a single |X| matrix split three ways, the pieces adding back up to |X|. There
 is one |X| here, not two blocks of data side by side:
