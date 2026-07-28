@@ -779,11 +779,9 @@ is one |X| here, not two blocks of data side by side:
 	\end{aligned}
 
 Here :math:`\mathbf{T}_\text{o}` and :math:`\mathbf{P}_\text{o}` carry one column per orthogonal
-component, and :math:`\mathbf{E}` and :math:`\mathbf{f}` hold what no component explains.
-
-The order O-PLS works in is not visible in that split, and it matters. The orthogonal score is formed
-first, from |X| itself. The predictive score is formed second, from what is left of |X| once the
-orthogonal piece has been removed, which is what allows it to absorb all of the taste information:
+component, and :math:`\mathbf{E}` and :math:`\mathbf{f}` hold what no component explains. What the split
+does not show is the order the pieces are found in. The orthogonal score comes first, from |X| itself,
+then the predictive score from what is left, which is what lets it absorb all of the taste information:
 
 .. math::
 
