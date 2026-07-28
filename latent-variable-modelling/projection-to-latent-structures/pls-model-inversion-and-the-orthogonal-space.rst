@@ -775,11 +775,20 @@ is one |X| here, not two blocks of data side by side:
 	\mathbf{X} &= \underbrace{\mathbf{t}_\text{p} \mathbf{p}_\text{p}^T}_{\text{predictive}}
 	  \,+\, \underbrace{\mathbf{T}_\text{o} \mathbf{P}_\text{o}^T}_{Y\text{-orthogonal}}
 	  \,+\, \underbrace{\mathbf{E}}_{\text{residual}} \\
-	\mathbf{y} &= q_\text{p}\, \mathbf{t}_\text{p} + \mathbf{f}
+	\mathbf{y} &= q_\text{p}\, \mathbf{t}_\text{p} + \mathbf{f} \\[4pt]
+	\mathbf{t}_\text{o} &= \mathbf{X}\,(0.808,\ -0.590,\ 0.008)^T
+	  \qquad\text{and then}\qquad
+	  \mathbf{t}_\text{p} = \left(\mathbf{X} - \mathbf{t}_\text{o}\mathbf{p}_\text{o}^T\right)
+	  (0.474,\ 0.657,\ 0.586)^T \\
+	\hat{\mathbf{y}} &= 0.571\, \mathbf{t}_\text{p}
 	\end{aligned}
 
-Here :math:`\mathbf{T}_\text{o}` and :math:`\mathbf{P}_\text{o}` carry one column per orthogonal
-component, and :math:`\mathbf{E}` and :math:`\mathbf{f}` hold what no component explains. In the scaled
+The last two lines are this cheese model's numbers, with |X| centred and scaled. They also show the
+order O-PLS works in: the orthogonal score is formed first, using
+:math:`\mathbf{w}_\text{o} = (0.808, -0.590, 0.008)`, and only then is the predictive score formed with
+:math:`\mathbf{w}_\text{p} = (0.474, 0.657, 0.586)`, on what is left of |X| once the orthogonal piece
+has been removed. Here :math:`\mathbf{T}_\text{o}` and :math:`\mathbf{P}_\text{o}` carry one column per
+orthogonal component, and :math:`\mathbf{E}` and :math:`\mathbf{f}` hold what no component explains. In the scaled
 units the model works in, the predictive piece carries 68.7% of the sum of squares in |X|, the
 orthogonal piece 18.3%, and the residual 13.0%. Those percentages describe |X| alone. The first is not
 the share of the input variation that is about taste: most of it is the joint spread of three correlated
