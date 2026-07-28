@@ -738,6 +738,9 @@ The consequence shows up in the scores, not the weights.
 
 	print(round(float(np.corrcoef(t_p, scores.iloc[:, 0])[0, 1]), 3))   # 0.978
 
+	print(pls.r2_cumulative_.round(3).to_list())                        # [0.642, 0.672]
+	print(round(float(np.corrcoef(t_p, y_centred)[0, 1]) ** 2, 3))      # 0.672
+
 .. _LVM-PLS-score-correlation-table:
 
 .. list-table:: How each score correlates with taste. The two predictive scores are close, correlating
@@ -756,9 +759,15 @@ The consequence shows up in the scores, not the weights.
 	*	- O-PLS, orthogonal
 		- 0.000
 
-The taste information PLS left on its second component has been gathered onto the first. What O-PLS ends
-up with is a single |X| matrix split three ways, the pieces adding back up to |X|. There is one |X| here,
-not two blocks of data side by side:
+Both models explain the same amount of taste; they differ in how many components it takes. PLS reaches
+an :math:`R^2` of 0.672 only with both: the first component gets to 0.642, and the second supplies the
+remaining 0.030, which is why it still correlates with taste rather than sitting at zero. The O-PLS
+predictive score reaches the same 0.672 on its own, since :math:`0.820^2 = 0.672`. Nothing has been
+created or lost, the same explained variance is packaged into one component instead of two, and that is
+what leaves the orthogonal score at exactly zero.
+
+What O-PLS ends up with is a single |X| matrix split three ways, the pieces adding back up to |X|. There
+is one |X| here, not two blocks of data side by side:
 
 .. math::
 
