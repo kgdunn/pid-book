@@ -10,10 +10,20 @@ solve for the inputs that would achieve it. Finding the inputs that give a chose
 MacGregor, 2000
 <https://literature.learnche.org/item/180/industrial-applications-of-product-design-through-the-inversion-of-latent-variable-models>`_).
 
-We will use the same :ref:`cheddar-cheese data <LVM-cheddar-cheese-example>` as before: the taste of a
-cheese predicted from three inputs, acetic acid, hydrogen sulfide, and lactic acid. The forward
-question was "what taste do these inputs give?" The inversion question is "which inputs give a
-target taste?"
+Inversion returns not a single set of inputs but a whole set of them, every one of which the model says
+will hit the target. That is possible because a model captures systematic variation in the inputs that
+turns out to have no bearing on the response, the part usually filtered out to make a model easier to
+read. For these cheeses it is 18.3% of the variation in the inputs, and moving within it changes the
+recipe while leaving the prediction exactly where it was. Those directions are the null space. Where
+that freedom comes from, what it is worth, and how much of it the data support is the subject of this
+section.
+
+The running example is the same :ref:`cheddar-cheese data <LVM-cheddar-cheese-example>` as before.
+Thirty cheeses were each measured for acetic acid, hydrogen sulfide and lactic acid, and given a taste
+score by a panel. The forward question was "what taste do these three measurements imply?" The
+inversion question is "which three measurements would give me a taste I have chosen?"
+
+.. _LVM-PLS-cheese-scatterplot:
 
 .. figure:: ../../figures/examples/cheese/cheese-plots-no-random.png
 	:alt: Scatterplot matrix of the cheddar-cheese data: acetic acid, hydrogen sulfide, lactic acid and taste
@@ -32,22 +42,61 @@ Why inversion needs more than the predictive number of components
 
 When we chose the number of components for prediction in :ref:`the section above
 <LVM-PLS-number-of-components>`, cross-validation kept a single component: one component is enough
-to predict Taste. Inversion places a second demand on the model. To reconstruct an input vector from
-a target output, the model must describe the |X|-space well enough to map a score back to a full set
-of input values, not only the |Y|-space. A one-component model spans only a line in the input space,
-so it can return just one set of inputs for a target taste. Keeping a second component lets the
-model describe the plane on which the calibration cheeses actually lie, and, as we will see, it
-opens up a whole set of equivalent designs. We therefore fit a two-component model here, even though
-the second component did not improve prediction.
+to predict Taste, and a second does not improve prediction. Inversion places a second and different
+demand on the model, though. To rebuild a complete set of three input values from one target number,
+the model has to describe the |X|-space well enough to map a score back into it, not merely describe
+the |Y|-space. A one-component model spans only a line in the input space, so it can return exactly
+one recipe, and the whole question of equivalent designs never arises.
 
-Following the request to design toward cheeses the model has not seen, we hold out the first four cheeses
-and fit the model on the remaining twenty-six.
+A second component lets the model describe the plane on which the calibration cheeses actually lie,
+and that is what opens up the set of equivalent designs. So a two-component model is fitted here even
+though the second did not earn its place on predictive grounds.
+
+So that the targets stay independent of the model, the first four cheeses are set aside and never shown
+to it. They become the targets: for each one we ask the model to design a cheese with that taste, then
+compare what it proposes against what that cheese actually was. Their tastes span most of the range,
+which matters later, because designing toward an extreme target turns out to cost more than designing
+toward a middling one.
+
+.. _LVM-PLS-holdout-table:
+
+.. list-table:: The four held-out cheeses, used only as targets. The model is fitted on the other 26,
+	whose tastes run from 0.7 to 57.2 with a mean of 23.7.
+	:header-rows: 1
+	:widths: 14 18 18 18 18
+
+	*	- Cheese
+		- Acetic
+		- H2S
+		- Lactic
+		- Taste
+	*	- 1
+		- 4.54
+		- 3.14
+		- 0.86
+		- 12.3
+	*	- 2
+		- 5.16
+		- 5.04
+		- 1.53
+		- 20.9
+	*	- 3
+		- 5.37
+		- 5.44
+		- 1.57
+		- 39.0
+	*	- 4
+		- 5.76
+		- 7.50
+		- 1.81
+		- 47.9
 
 .. code-block:: python
 
 	import numpy as np
 	import pandas as pd
 	import plotly.graph_objects as go
+	from plotly.subplots import make_subplots
 	from process_improve.multivariate import PLS, OPLS, MCUVScaler
 
 	cheese = pd.read_csv("https://openmv.net/file/cheddar-cheese.csv")
@@ -61,9 +110,10 @@ and fit the model on the remaining twenty-six.
 	pls = PLS(n_components=2).fit(X, Y)
 	print(round(float(pls.r2_cumulative_.iloc[-1]), 3))   # R2 on Taste: 0.672
 
-The two-component model explains about 67% of the variation in Taste. It is a moderate predictor, which
-is fine for what follows: the null space is a property of the model's geometry, not of how accurately it
-predicts.
+It explains about 67% of the variation in Taste, which is enough for what follows: the null space is a
+property of the model's geometry rather than of its predictive accuracy. That geometry is itself
+estimated from the same 26 cheeses, though, so it carries one caveat, which we return to
+:ref:`once the geometry is on the table <LVM-PLS-null-space-uncertainty>`.
 
 .. _LVM-PLS-null-space:
 
@@ -90,84 +140,14 @@ predicts will give that taste.
 	# Actual: T2 = 0.21, SPE = 0.68
 	# Predicted: T2 = 0.06, SPE = 0.00
 
-The prediction at the designed inputs is exactly 20.9, by construction. To judge whether that design
-is a reasonable one, compare it with the cheese we held out. For this model the 99% limits are
-:math:`T^2 = 12.14` and :math:`\text{SPE} = 1.60`.
+A recipe comes back, which is unremarkable. The second line is the interesting one. The null space has
+dimension 1, which is the model saying that this is not *the* answer but one point on a line of
+answers. Two score directions, one target: the target fixes one of them and leaves the other free.
+Anything we do along that free direction changes the recipe while leaving the prediction exactly where
+it was. That free direction is the *null space*, and its dimension is the number of components minus
+the rank of the response, here :math:`2 - 1 = 1`.
 
-.. list-table:: Cheese 2: its measured inputs, and the inputs the inversion returns for taste 20.9.
-	:header-rows: 1
-	:widths: 16 18 14 14 14 12 12
-
-	*	- Row
-		- Target taste
-		- Acetic
-		- H2S
-		- Lactic
-		- :math:`T^2`
-		- SPE
-	*	- Actual
-		- 20.9
-		- 5.16
-		- 5.04
-		- 1.53
-		- 0.21
-		- 0.68
-	*	- Predicted
-		- 20.9
-		- 5.52
-		- 5.56
-		- 1.40
-		- 0.06
-		- 0.00
-
-Both rows sit well inside the SPE and :math:`T^2` limits, so neither is an extrapolation. The
-predicted inputs have an SPE of exactly zero, because the inversion rebuilds the inputs from their
-scores: the result lies on the model plane by construction, leaving no residual.
-
-.. _LVM-PLS-input-space-deviation:
-
-The two rows are close, but "close" in the raw units is hard to read: a gap of 0.5 in hydrogen sulfide
-does not mean the same thing as a gap of 0.5 in lactic acid, because the three measurements are on
-different scales. Centring and scaling each column puts them on a common footing, where one unit is one
-standard deviation of that measurement. The *input-space deviation* is then the sum of the squared
-differences between the two rows, in those units. It is a distance between two recipes, measured across
-the three inputs, and normalized so that every input counts on the same scale.
-
-.. code-block:: python
-
-	scaler = MCUVScaler().fit(X)
-	a = scaler.transform(actual.to_frame().T).iloc[0]           # actual, in std deviations
-	p = scaler.transform(result.x_new.to_frame().T).iloc[0]     # predicted, in std deviations
-
-	print(a.round(2).to_list())                      # [-0.67, -0.46, 0.3]
-	print(p.round(2).to_list())                      # [-0.04, -0.22, -0.15]
-	print(round(float(((a - p) ** 2).sum()), 2))     # 0.66
-
-Writing the three terms out, with acetic acid first, then hydrogen sulfide, then lactic acid:
-
-.. math::
-
-	\begin{aligned}
-	\text{input-space deviation} &= \left(-0.67 - (-0.04)\right)^2 + \left(-0.46 - (-0.22)\right)^2
-	  + \left(0.30 - (-0.15)\right)^2 \\
-	&= (-0.63)^2 + (-0.24)^2 + (0.45)^2 \\
-	&= 0.39 + 0.06 + 0.21 \\
-	&= 0.66
-	\end{aligned}
-
-The square root of 0.66 is 0.81, so the cheese we held out sits about 0.8 standard deviations away from
-the inputs the inversion proposed, counting all three measurements together. Acetic acid accounts
-for most of that gap.
-
-The null space is the reason ``null_space_dimension`` is not zero. A two-component model has two score
-directions, but a single taste value pins down only one of them. The other direction is free: we can move
-along it and the predicted taste does not change at all. That free direction is the *null space*. Its
-dimension is the number of components minus the rank of the response, here :math:`2 - 1 = 1`, so it is a
-line. Every set of inputs on that line gives the same predicted taste.
-
-We can walk along the null space by passing coordinates along its basis. In the code and figure we take a
-step of -1 and +1 along the basis. The predicted taste stays the same along this basis line. Hence the
-name the null space. Only the input variables change, while the predicted output remains fixed.
+We can walk along it by passing coordinates along its basis. Stepping one unit either way:
 
 .. code-block:: python
 
@@ -178,17 +158,12 @@ name the null space. Only the input variables change, while the predicted output
 	# [4.95, 6.10, 1.33] -> 20.9
 	# [6.09, 5.02, 1.46] -> 20.9
 
-Both of these sets of inputs, and the whole line between and beyond them, predict a taste of 20.9.
-The freedom to choose among them is what makes inversion useful in practice: it can be spent on a
-secondary goal such as cost, safety, or keeping within a supplier's specification, without moving
-the predicted quality. As a check on the held-out cheese, its actual inputs (Acetic 5.16, H2S 5.04,
-Lactic 1.53) predict a taste of 20.7, close to its measured 20.9, and it lies near the null-space
-line just traced.
-
-Collecting the three points on the line, together with the cheese itself, shows what moving along
-the null space does and does not change.
+Collecting those points, and putting the measured cheese alongside for comparison:
 
 .. code-block:: python
+
+	scaler = MCUVScaler().fit(X)
+	a = scaler.transform(actual.to_frame().T).iloc[0]           # actual, in std deviations
 
 	designs = {
 	    "Actual": actual,
@@ -205,7 +180,7 @@ the null space does and does not change.
 
 .. _LVM-PLS-null-space-steps-table:
 
-.. list-table:: Cheese 2 and three points along its null space, all reaching the same target taste.
+.. list-table:: Cheese 2, and three points along its null space. All four rows predict a taste of 20.9.
 	:header-rows: 1
 	:widths: 22 12 10 10 10 10 10 16
 
@@ -216,8 +191,8 @@ the null space does and does not change.
 		- Lactic
 		- :math:`T^2`
 		- SPE
-		- Deviation from target
-	*	- Actual
+		- Input-space deviation
+	*	- Measured cheese
 		- 20.9
 		- 5.16
 		- 5.04
@@ -225,7 +200,7 @@ the null space does and does not change.
 		- 0.21
 		- 0.68
 		- 0.00
-	*	- Predicted at step -1
+	*	- Design, step -1
 		- 20.9
 		- 4.95
 		- 6.10
@@ -233,7 +208,7 @@ the null space does and does not change.
 		- 1.63
 		- 0.00
 		- 0.82
-	*	- Predicted at step 0
+	*	- Design, step 0
 		- 20.9
 		- 5.52
 		- 5.56
@@ -241,7 +216,7 @@ the null space does and does not change.
 		- 0.06
 		- 0.00
 		- 0.66
-	*	- Predicted at step +1
+	*	- Design, step +1
 		- 20.9
 		- 6.09
 		- 5.02
@@ -250,26 +225,36 @@ the null space does and does not change.
 		- 0.00
 		- 2.66
 
-Read down the three predicted rows and the inputs change substantially in order to keep the taste
-constant. Acetic acid increases from about 5 to 6, while that is compensated by hydrogen sulfide
-falling from 6.10 to 5.02, and lactic acid increases slightly, from 1.33 to 1.46. This same trade-off
-comes back when we reach :ref:`O-PLS <LVM-PLS-orthogonal-space>` below, where it appears directly as
-one of the model's axes. Every one of the three still reaches a taste of 20.9, and every one has an
-SPE of zero, since all three are rebuilt
-from scores and so lie on the model plane. What does change is :math:`T^2`. The step 0 row is the
-direct-inversion solution, the one of smallest score norm, and it has the smallest :math:`T^2` of
-the three, 0.06. Stepping out to either side moves the design away from the centre of the
-calibration data, to 1.63 and 2.44. The freedom along the null space is therefore free in terms of
-the predicted taste, but not in terms of how much support the data give the design.
+Read down the three designs and the inputs move substantially. Acetic acid climbs from about 5 to 6
+while hydrogen sulfide falls from 6.10 to 5.02, with lactic acid rising slightly. These are not small
+adjustments, and yet every one of the three still reaches a taste of 20.9. That is the practical
+content of the null space: if several recipes all hit the target, we are free to choose among them on
+grounds the model never saw, such as cost, supplier availability, or whichever raw material happens to
+be in the yard this week. This same trade-off comes back when we reach
+:ref:`O-PLS <LVM-PLS-orthogonal-space>` below, where it appears directly as one of the model's axes.
 
-The last column is the input-space deviation of each row from the cheese we are designing toward,
-computed the same way as before: centre and scale each input, then sum the squared differences. The
-Actual row is 0.00 because it is the target. Reading down the column, the step 0 design is the
-closest of the three at 0.66, the -1 step is a little further at 0.82, and the +1 step is furthest
-at 2.66. Since every one of those rows reaches the same predicted taste, the column says which of
-the equally valid designs comes nearest to a real cheese, which is a choice the null space leaves
-open. Sliding a little further in the -1 direction would do better still: the closest point on the
-line to this cheese sits near a step of -0.43, at a deviation of 0.46.
+Two columns need reading carefully. The SPE of exactly zero is a property of the arithmetic, not a
+claim about cheese: the inversion rebuilds the inputs from their scores, so the result lies on the
+model plane by construction. Every real cheese carries variation the two components miss, which is why
+the measured row shows 0.68. So a design is an idealised point on the plane. A cheese later made to
+that specification will land near the plane, not exactly on it, and its own SPE is what measures the
+gap.
+
+:math:`T^2` is the column that does change, and it measures how far each design sits from the centre of
+the calibration data. Step 0, the direct-inversion solution, has the smallest at 0.06; stepping either
+way moves the design outward, to 1.63 and 2.44. The freedom along the null space is free in terms of
+predicted taste, but not in terms of how much the data support the design. All rows sit well inside the
+99% limits of :math:`T^2 = 12.14` and :math:`\text{SPE} = 1.60`, which are the limits for a *new*
+observation rather than for one of the 26 that built the model: the right choice when judging a
+proposed design rather than summarising a calibration one.
+
+.. _LVM-PLS-input-space-deviation:
+
+One quantity is worth defining now, because it recurs. Comparing recipes in raw units is hard to read:
+a gap of 0.5 in hydrogen sulfide does not mean what a gap of 0.5 in lactic acid means. Centring and
+scaling each input puts them on a common footing where one unit is one standard deviation, and the sum
+of squared differences in those units is the *input-space deviation*. For cheese 2 against its design
+it is 0.66, so the held-out cheese sits about 0.8 standard deviations from the proposed recipe.
 
 A score plot shows the picture directly. The calibration cheeses are the points, the orange square
 is the direct-inversion solution, and the orange line is the null space: the set of scores that all
@@ -344,8 +329,7 @@ into the familiar form, the free coordinate traces out
 	    = 2.08\, t_1 + 0.65
 
 so the line climbs 2.08 units of :math:`t_2` for every unit of :math:`t_1`. That is the diagonal in the
-score plot, and it comes from the ratio of the two :math:`y`-loadings alone, :math:`-q_1/q_2`. Their
-absolute sizes do not matter, only their ratio: doubling both would give the same line.
+score plot, and it comes from the ratio of the two :math:`y`-loadings alone, :math:`-q_1/q_2`.
 
 There is a matching geometric statement. Take any two points on the line and subtract their equations.
 The constant cancels, leaving
@@ -364,7 +348,7 @@ a hill where you stay at exactly the same elevation (the output value) while you
 longitude change (a different set of inputs). So the null space is that contour line: the predicted
 taste stays the same even though you are at different coordinates in the score plot. Every parallel
 line in the score plot is another contour, for another target taste, which is why the three lines in
-the figure do not converge.
+the :ref:`score plot <LVM-PLS-null-space-figure>` do not converge.
 
 .. _LVM-PLS-null-space-geometry-figure:
 
@@ -373,14 +357,17 @@ the figure do not converge.
 	:width: 620px
 	:align: center
 
-	The same score plot, with the areas again proportional to taste and both axes drawn to the same
-	scale so that angles are true. The maroon
-	arrow is the gradient :math:`\mathbf{q}`, the direction in which the predicted taste rises fastest.
-	The orange line is the null space for a taste of 20.9, at right angles to it, and the grey dotted
-	lines are the contours for tastes of 10, 30 and 40. The orange square is the direct-inversion
-	solution, which sits where a perpendicular dropped from the origin meets the orange contour, and so
-	is the solution of smallest score norm. The two orange triangles are the -1 and +1 steps, the same
-	points marked in the score plot above, so the two figures can be read against each other.
+	Left: the same score plot, with the areas again proportional to taste and both axes drawn to the
+	same scale so that angles are true. The maroon arrow is the gradient :math:`\mathbf{q}`, the
+	direction in which the predicted taste rises fastest. The orange line is the null space for a taste
+	of 20.9, at right angles to it, and the grey dotted lines are the contours for tastes of 10, 30 and
+	40. The orange square is the direct-inversion solution and the two orange triangles are the -1 and
+	+1 steps, the same points marked in the score plot above, so the two figures can be read against
+	each other.
+
+	Right: the boxed region enlarged, at the scale the next argument needs. The three arrows form a
+	right triangle, from the origin to the direct-inversion solution, from there along the contour to
+	the +1 step, and back to the origin.
 
 We can confirm both the slope and the perpendicularity from the fitted model.
 
@@ -389,18 +376,105 @@ We can confirm both the slope and the perpendicularity from the fitted model.
 	q = pls.y_loadings_.to_numpy().ravel()
 	print(q.round(3))                      # [ 0.546 -0.262]
 	print(round(-q[0] / q[1], 2))          # 2.08, the slope of the line
+	print(g.round(3))                      # [0.433 0.902], the null-space direction
 	print(round(float(g @ q), 12))         # 0.0, the direction is perpendicular to q
 
-The direct-inversion solution fits the same picture. It is
-:math:`\boldsymbol{\tau}_\text{DI} = y_\text{des}\, \mathbf{q} / (\mathbf{q}^T\mathbf{q})`, which points
-along :math:`\mathbf{q}` itself, so it is the point where a perpendicular dropped from the origin meets
-the line. That is what makes it the solution of smallest score norm. Here it is
-:math:`(-0.253, 0.121)`, pointing opposite to :math:`\mathbf{q}` because the requested taste of 20.9
-sits below the training average of 23.7.
+The particular solution the inversion returns is the shortest one, and the same picture shows where it
+comes from. Split any candidate :math:`\boldsymbol{\tau}` into a part along :math:`\mathbf{q}` and a
+part perpendicular to it. The perpendicular part contributes nothing to the prediction, since
+:math:`\hat{y} = \mathbf{q}^T \boldsymbol{\tau}` ignores it, but it does add to the length of
+:math:`\boldsymbol{\tau}`. The shortest solution therefore carries no perpendicular part at all, which
+is to say it lies along :math:`\mathbf{q}`. Writing it as
+:math:`\boldsymbol{\tau} = c\, \mathbf{q}` and requiring
+:math:`\mathbf{q}^T \boldsymbol{\tau} = y_\text{des}` gives
+:math:`c\, \mathbf{q}^T \mathbf{q} = y_\text{des}`, so that
+
+.. math::
+
+	\boldsymbol{\tau}_\text{DI} = \frac{y_\text{des}\, \mathbf{q}}{\mathbf{q}^T \mathbf{q}}
+
+Geometrically that is the point where a perpendicular dropped from the origin meets the line. Here
+:math:`\mathbf{q}^T \mathbf{q} = 0.367` and :math:`y_\text{des} = -0.17`, which gives
+:math:`\boldsymbol{\tau}_\text{DI} = (-0.253, 0.121)`. It points opposite to :math:`\mathbf{q}` because
+the requested taste of 20.9 sits below the training average of 23.7.
+
+Calling it the smallest-norm solution takes two further steps that are easy to skip. The norm
+:math:`\|\boldsymbol{\tau}\|` is the distance from the origin of the
+score plot out to the point, so asking for the smallest norm is asking which design on the null-space
+line sits closest to the origin. Writing a general solution as
+:math:`\boldsymbol{\tau}_\text{DI} + s\,\mathbf{g}`, for a step of size :math:`s` along the unit
+null-space direction :math:`\mathbf{g}`, the two parts are at right angles, so Pythagoras applies:
+
+.. math::
+
+	\left\| \boldsymbol{\tau}_\text{DI} + s\,\mathbf{g} \right\|^2
+	  = \left\| \boldsymbol{\tau}_\text{DI} \right\|^2 + s^2
+
+The step contributes :math:`s^2`, which is positive for every step other than none at all. The norm is
+therefore smallest at :math:`s = 0`, and it grows in either direction. Here
+:math:`\|\boldsymbol{\tau}_\text{DI}\| = 0.281`, while the :math:`-1` and :math:`+1` steps both sit at
+:math:`\sqrt{0.281^2 + 1^2} = 1.039`. The right angle is the reason: had the null space met the
+solution at any other angle, moving one way along it would have carried the design closer to the origin
+than :math:`\boldsymbol{\tau}_\text{DI}`.
+
+The score norm is not the only way to measure how far a design sits from the centre of the model.
+Hotelling's :math:`T^2` measures the same thing, but it divides each score by that score's standard
+deviation before squaring, so a component with little spread counts for more. It is a weighted sum of
+squares rather than a plain one. Both can be plotted against the step size, which shows what the walk
+along the null space costs.
+
+.. code-block:: python
+
+	sf = pls.scaling_factor_for_scores_.to_numpy()   # one standard deviation per score
+	steps = np.linspace(-2, 2, 401)
+	points = tau + steps[:, None] * g                # every design on the null space
+
+	norm_squared = (points ** 2).sum(axis=1)
+	t2 = ((points / sf) ** 2).sum(axis=1)
+
+	fig = go.Figure()
+	fig.add_scatter(x=steps, y=norm_squared, mode="lines", name="squared score norm",
+	                line={"color": "orange"})
+	fig.add_scatter(x=steps, y=t2, mode="lines", name="Hotelling's T2",
+	                line={"color": "darkblue"})
+	fig.update_layout(xaxis_title="step s along the null space",
+	                  yaxis_title="squared distance from the model centre")
+	fig.show()
+
+	print(sf.round(3))                                        # [1.468 0.657]
+	print(round(-float((tau / sf**2) @ g) / float((g / sf**2) @ g), 3))
+	# -0.103, the step at which T2 is least
+
+.. _LVM-PLS-null-space-distance-figure:
+
+.. figure:: ../../figures/pls/pls-null-space-distance.png
+	:alt: Squared score norm and Hotelling's T2 plotted against the step along the null space
+	:width: 700px
+	:align: center
+
+	Two measures of how far a design sits from the centre of the model, as a step of size :math:`s` is
+	taken along the null space from the direct-inversion solution. The predicted taste is 20.9 at every
+	point on the horizontal axis. The orange curve is the squared score norm, least exactly at
+	:math:`s = 0`. The blue curve is Hotelling's :math:`T^2`, least at :math:`s = -0.103`. The three
+	blue markers are the rows tabulated earlier for steps of :math:`-1`, :math:`0` and :math:`+1`.
+
+Both curves are parabolas in :math:`s`, but they are not the same parabola. The orange one is
+:math:`\|\boldsymbol{\tau}_\text{DI}\|^2 + s^2`, the Pythagoras result, so its lowest point is exactly
+the direct-inversion solution. The blue one is tilted, and reaches its lowest point at
+:math:`s = -0.103` instead. The two scores have standard deviations of 1.468 and 0.657, so :math:`t_2`
+counts for more in :math:`T^2` than in the plain norm, and the null-space direction
+:math:`\mathbf{g} = (0.433, 0.902)` is mostly :math:`t_2`.
+
+The distinction is worth keeping straight, because it says what the direct-inversion solution does and
+does not give. It is the smallest-norm design, exactly. It is not quite the design of smallest
+:math:`T^2`: a step of :math:`-0.103` would reach :math:`T^2 = 0.043` rather than 0.064. The gap is
+small here and the direct-inversion solution is still the closest of the three tabulated steps, but the
+two criteria are different questions and a model with more unequal score spreads would separate them
+further.
 
 Two further points are worth making. First, the perpendicularity is a statement about the score
 coordinates, so it reads as a right angle on the page only when both axes are drawn to the same scale, as
-they are in the figure above but not in the earlier
+they are in the :ref:`contour figure <LVM-PLS-null-space-geometry-figure>` but not in the
 :ref:`score plot <LVM-PLS-null-space-figure>`, where the two scores have different spreads.
 Second, the same reasoning is what the code performs in general. For one response,
 ``null_space_basis`` comes from a singular value decomposition of the :math:`y`-loadings: the first left
@@ -412,9 +486,113 @@ Finally, it is worth asking what that direction means for the inputs, rather tha
 Multiplying the direction by the |X|-loadings maps it back to the three measurements, and a step of
 :math:`+1` moves acetic acid by :math:`+0.57`, hydrogen sulfide by :math:`-0.54`, and lactic acid by only
 :math:`+0.06`, in the original units. Moving along the null space therefore trades acetic acid up against
-hydrogen sulfide down, leaving lactic acid nearly alone. Both of those measurements rise with taste in
-this data set, with correlations of 0.56 and 0.77, so raising one while lowering the other leaves the
-predicted taste where it was. That trade-off is what the diagonal line is recording.
+hydrogen sulfide down, leaving lactic acid nearly alone. Both of those measurements rise with taste,
+correlating :math:`+0.55` and :math:`+0.76` across the thirty cheeses, as the
+:ref:`scatterplot matrix <LVM-PLS-cheese-scatterplot>` reports, so raising one while lowering the other
+leaves the predicted taste where it was. That trade-off is what the diagonal line is recording.
+
+.. _LVM-PLS-null-space-uncertainty:
+
+How well is that direction determined?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This is the caveat promised earlier. Every number quoted so far comes from one model fitted to 26
+cheeses, and the direction of the null
+space rests on the second :math:`y`-loading, :math:`q_2 = -0.262`. That component was the one
+cross-validation did not keep. It adds 3.0% to :math:`R^2Y`, against 64.3% for the first. It is worth
+asking how much of the geometry survives if the 26 cheeses had come out slightly differently.
+
+Refitting the model on bootstrap resamples of the calibration set answers that directly.
+
+.. code-block:: python
+
+	rng = np.random.default_rng(0)
+	reference = np.array([0.948, -0.238, 0.211])         # the direction reported below
+	reference = reference / np.linalg.norm(reference)
+
+	q2, slopes, angles, designs, boot_lines = [], [], [], [], []
+	for _ in range(2000):
+	    sample = train.iloc[rng.integers(0, len(train), len(train))]
+	    boot = PLS(n_components=2).fit(sample[x_columns], sample[["Taste"]])
+	    q_b = boot.y_loadings_.to_numpy().ravel()
+	    q2.append(q_b[1])
+	    slopes.append(-q_b[0] / q_b[1])
+
+	    result_b = boot.invert(20.9)
+	    designs.append(result_b.x_new.to_numpy())
+	    boot_lines.append((result_b.scores.to_numpy(),
+	                       result_b.null_space_basis.to_numpy().ravel()))
+	    d = result_b.null_space_basis.to_numpy().ravel() @ boot.x_loadings_.to_numpy().T
+	    d = d / np.linalg.norm(d)
+	    # A direction and its negative describe the same line, so compare without sign.
+	    angles.append(np.degrees(np.arccos(np.clip(abs(d @ reference), 0, 1))))
+
+	print(np.percentile(q2, [2.5, 97.5]).round(3))        # [-0.56   0.377]
+	print(round(float(np.mean(np.array(q2) > 0)), 3))     # 0.244, the share that change sign
+	print(np.percentile(slopes, [2.5, 97.5]).round(2))    # [-5.09  6.13]
+	print(np.percentile(angles, [50, 90, 95]).round(1))   # [20.6 54.4 68.3]
+	print(round(float(np.mean(np.array(angles) > 45)), 2))  # 0.15
+	print(np.percentile(designs, [2.5, 97.5], axis=0).round(2))
+	# [[5.24 4.97 1.3 ]
+	#  [5.74 6.26 1.49]]
+
+The direction is poorly determined. A 95% bootstrap interval for :math:`q_2` runs from
+:math:`-0.56` to :math:`+0.38`, so it straddles zero, and in 24% of the resamples it changes sign. The
+slope of the null-space line is a ratio with that near-zero quantity in the denominator, so its
+interval, :math:`-5.1` to :math:`+6.1`, is wide enough to be of little use. Read as a line in the
+inputs, the resampled null space sits a median of 21 degrees away from the direction reported here, and
+more than 45 degrees away in 15% of the resamples.
+
+The direct-inversion solution itself holds up much better. Its 95% intervals are 5.24 to 5.74 for
+acetic acid, 4.97 to 6.26 for hydrogen sulfide, and 1.30 to 1.49 for lactic acid, each narrow next to
+the spread of the calibration cheeses, which run from 4.48 to 6.46 in acetic acid and from 3.00 to
+10.20 in hydrogen sulfide. The reason for the difference is worth seeing: the solution
+depends mostly on :math:`q_1`, which is estimated well, while the null-space direction depends on the
+ratio of :math:`q_1` to :math:`q_2`.
+
+Drawing every one of those refits says the same thing without any percentiles. Each is a line, so
+plotting all 2000 of them faintly enough to overlap turns the spread into a density.
+
+.. code-block:: python
+
+	fig = go.Figure()
+	for tau_b, g_b in boot_lines:                      # one faint line per refit
+	    segment = np.array([tau_b + s * g_b for s in (-9, 9)])
+	    fig.add_scatter(x=segment[:, 0], y=segment[:, 1], mode="lines", showlegend=False,
+	                    line={"color": "rgba(230, 130, 10, 0.03)"})
+	fig.add_scatter(x=scores.iloc[:, 0], y=scores.iloc[:, 1], mode="markers",
+	                name="calibration cheeses")
+	fig.update_layout(xaxis_title="t_1", yaxis_title="t_2")
+	fig.show()
+
+.. _LVM-PLS-null-space-bootstrap-figure:
+
+.. figure:: ../../figures/pls/pls-null-space-bootstrap.png
+	:alt: A fan of bootstrap null-space lines, and a histogram of their angles
+	:width: 700px
+	:align: center
+
+	Left: one faint line for each of 2000 refits, each the null space that refit would have returned.
+	The fan pinches near the direct-inversion solution and spreads from there. Right: the same spread
+	measured as an angle from the direction the full calibration set gives, compared without sign since
+	a direction and its negative describe the same line. The shaded band holds the 15% of refits that
+	land more than 45 degrees away.
+
+That pinch is the point-and-direction asymmetry in one picture. The refits nearly agree on where the
+solution sits, and disagree widely on which way the line runs through it.
+
+So the two statements this section makes are not equally firm. That a set of inputs reaching a target
+taste exists, and roughly where it sits, is supported by these data. Which direction one may then walk
+without changing the prediction is not pinned down by 26 cheeses and a component that
+cross-validation set aside. The null space is exactly what the algebra says it is for a *given* model;
+what the algebra cannot supply is certainty that this model's second component points where the next
+26 cheeses would point it. The numbers in this section are quoted to three decimals because that is
+what the arithmetic returns, not because the data support that precision.
+
+None of this makes the geometry wrong or the method unusable. It sets the terms on which to use it: a
+design proposed at the direct-inversion solution rests on firmer ground than one reached by a long walk
+along the null space, and a walk of any length is worth repeating on a refitted model before it is
+acted on.
 
 .. _LVM-PLS-orthogonal-space:
 
@@ -422,13 +600,173 @@ The same space, reached a different way: O-PLS
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Orthogonal projections to latent structures (O-PLS) was developed in a separate line of work, for a
-different reason: to make a model easier to interpret. O-PLS splits the systematic variation in |X| into
-two parts. One *predictive* component carries the variation that is related to |Y|; the remaining
-*Y-orthogonal* components carry systematic variation in |X| that has no bearing on |Y|.
+different reason: to make a model easier to interpret. What it does is quickest to see by starting
+from the PLS model already fitted here, and taking one step at a time.
 
-It is worth writing that split out, because there is a single |X| matrix here, not two blocks of data
-sitting side by side. O-PLS writes that one matrix as a predictive piece plus an orthogonal piece plus a
-residual, and the three pieces add back up to |X|:
+Start with a single PLS component, which carries two vectors rather than one. The weight
+:math:`\mathbf{w}_1` is the direction we choose to look along, picked so that the score it produces
+lines up with the response. The loading :math:`\mathbf{p}_1` is what we find afterwards: regress the
+inputs back onto that score, and the loading records how strongly each input moved with it. The weight
+is an instruction, the loading is a measurement.
+
+For the first component of the cheese model those two vectors are close, but they are not the same.
+
+.. _LVM-PLS-weight-loading-table:
+
+.. list-table:: The two vectors of the first PLS component, their difference, and what that
+	difference becomes. Entries are in the mean-centred, unit-variance units the model works in.
+	:header-rows: 1
+	:widths: 38 14 14 14 20
+
+	*	- Vector
+		- Acetic
+		- H2S
+		- Lactic
+		- Angle to :math:`\mathbf{w}_1`, in degrees
+	*	- Weight :math:`\mathbf{w}_1`
+		- 0.474
+		- 0.657
+		- 0.586
+		- 0
+	*	- Loading :math:`\mathbf{p}_1`
+		- 0.552
+		- 0.600
+		- 0.587
+		- 5.49
+	*	- Difference :math:`\mathbf{p}_1 - \mathbf{w}_1`
+		- 0.078
+		- -0.057
+		- 0.001
+		- 90
+	*	- That difference, scaled to unit length
+		- 0.808
+		- -0.590
+		- 0.008
+		- 90
+
+Why should they differ at all? The weight was aimed at taste. But it was not aimed only at taste, and
+:ref:`the mathematical interpretation of PLS <LVM_PLS_mathematical_interpretation>` says why. Each
+component is chosen to maximise the *covariance* between the |X|-score and the |Y|-score, and
+covariance factors into three parts: the correlation between the two scores, the variation the score
+captures in |X|, and the variation it captures in |Y|. Maximising covariance is therefore not the same
+as maximising correlation. A direction that lines up slightly less well with taste, but which accounts
+for more of the spread among the cheeses, can give the larger covariance, so the weight settles
+somewhere between pointing at taste and pointing where the inputs vary most.
+
+The score that direction produces consequently carries along whatever else happens to vary in that same
+pattern across the cheeses. The loading is a plain regression of the inputs back onto that score, so it
+records all of it, the part related to taste and the part not. The difference between the loading and
+the weight is therefore the part of the variation that travelled with the score without being about
+taste.
+
+That difference is simpler to write down than it looks. For every PLS component the weight and its own
+loading satisfy :math:`\mathbf{w}_a^T \mathbf{p}_a = 1`:
+
+.. math::
+
+	\mathbf{w}_a^T \mathbf{p}_a
+	  = \mathbf{w}_a^T \left( \frac{\mathbf{X}^T \mathbf{t}_a}{\mathbf{t}_a^T \mathbf{t}_a} \right)
+	  = \frac{\left(\mathbf{X} \mathbf{w}_a\right)^T \mathbf{t}_a}{\mathbf{t}_a^T \mathbf{t}_a}
+	  = \frac{\mathbf{t}_a^T \mathbf{t}_a}{\mathbf{t}_a^T \mathbf{t}_a}
+	  = 1
+
+Taking away from the loading the part
+of it that lies along the weight therefore leaves a plain subtraction, and what is left is exactly
+perpendicular to the weight:
+
+.. math::
+
+	\left(\mathbf{p}_1 - \mathbf{w}_1\right)^T \mathbf{w}_1
+	  = \mathbf{p}_1^T \mathbf{w}_1 - \mathbf{w}_1^T \mathbf{w}_1 = 1 - 1 = 0
+
+That perpendicular difference is the orthogonal direction. The orthogonal direction is simply the
+amount by which the first PLS loading misses the first PLS weight. For these cheeses the difference is
+:math:`(0.078, -0.057, 0.001)`, which scaled to unit length is :math:`(0.808, -0.590, 0.008)`. Nothing
+was searched for or optimised to get it: it is a subtraction between two vectors the PLS model had
+already produced.
+
+O-PLS is what follows from taking that direction seriously. Instead of leaving the non-taste variation
+mixed into the first component, it removes that direction from |X| first, and computes the predictive
+component afterwards, on what is left.
+
+The fitted model reports the two directions as ``opls.predictive_weights_`` and
+``opls.orthogonal_weights_``, the second carrying one column per orthogonal component asked for.
+
+.. code-block:: python
+
+	opls = OPLS(n_orthogonal_components=1).fit(X, Y)
+
+	print(opls.predictive_weights_.round(3).to_numpy())           # [0.474 0.657 0.586]
+	print(opls.orthogonal_weights_.round(3).to_numpy().ravel())   # [ 0.808 -0.59   0.008]
+	print(opls.predictive_loadings_.round(3).to_numpy())          # [0.472 0.654 0.591]
+
+	print(pls.x_weights_.to_numpy().round(3))    # the PLS weights, side by side
+	# [[ 0.474  0.808]
+	#  [ 0.657 -0.59 ]
+	#  [ 0.586  0.008]]
+
+The predictive weight :math:`\mathbf{w}_\text{p} = (0.474, 0.657, 0.586)` has three positive entries of
+similar size, which restates the raw-data picture: the three inputs rise together, and each rises with
+taste. The orthogonal weight :math:`\mathbf{w}_\text{o} = (0.808, -0.590, 0.008)` reads as a recipe:
+raise acetic acid, lower hydrogen sulfide, leave lactic acid alone. That is the same trade-off the
+:ref:`table of null-space steps <LVM-PLS-null-space-steps-table>` set out in the original units, arrived
+at here without inverting anything.
+
+The two methods are less different than they appear. The columns of ``pls.x_weights_`` *are* the two
+O-PLS weights, in the same order and to the same digits, and both models return regression coefficients
+agreeing to :math:`1.4 \times 10^{-13}`, so they predict a new cheese identically. What differs is the
+order the directions are peeled off |X|: PLS removes the predictive component first, O-PLS the
+orthogonal one, computing the predictive score on what is left. That score therefore absorbs all of the
+taste information.
+
+The consequence shows up in the scores, not the weights.
+
+.. code-block:: python
+
+	y_centred = (Y - Y.mean()).to_numpy().ravel()
+	t_p = opls.predictive_scores_.to_numpy().ravel()
+	t_o = opls.orthogonal_scores_.to_numpy().ravel()
+
+	for name, score in [("PLS 1", scores.iloc[:, 0]), ("PLS 2", scores.iloc[:, 1]),
+	                    ("O-PLS predictive", t_p), ("O-PLS orthogonal", t_o)]:
+	    print(name, round(float(np.corrcoef(score, y_centred)[0, 1]), 3))
+	# PLS 1 0.802
+	# PLS 2 -0.172
+	# O-PLS predictive 0.82
+	# O-PLS orthogonal -0.0
+
+	print(round(float(np.corrcoef(t_p, scores.iloc[:, 0])[0, 1]), 3))   # 0.978
+
+	print(pls.r2_cumulative_.round(3).to_list())                        # [0.642, 0.672]
+	print(round(float(np.corrcoef(t_p, y_centred)[0, 1]) ** 2, 3))      # 0.672
+
+.. _LVM-PLS-score-correlation-table:
+
+.. list-table:: How each score correlates with taste. The two predictive scores are close, correlating
+	with each other at 0.978, but only O-PLS drives the second correlation to zero.
+	:header-rows: 1
+	:widths: 40 30
+
+	*	- Score
+		- Correlation with taste
+	*	- PLS, first component
+		- 0.802
+	*	- PLS, second component
+		- -0.172
+	*	- O-PLS, predictive
+		- 0.820
+	*	- O-PLS, orthogonal
+		- 0.000
+
+Both models explain the same amount of taste; they differ in how many components it takes. PLS reaches
+an :math:`R^2` of 0.672 with two: the first component gets to 0.642, and the second supplies the
+remaining 0.030, which is why it still correlates with taste rather than sitting at zero. The O-PLS
+predictive score reaches the same 0.672 on its own in one component, since :math:`0.820^2 = 0.672`.
+Nothing has been created or lost, the same explained variance is packaged into one O-PLS component
+instead of two.
+
+What O-PLS ends up with is a single |X| matrix split three ways, the pieces adding back up to |X|. There
+is one |X| here, not two blocks of data side by side:
 
 .. math::
 
@@ -439,91 +777,52 @@ residual, and the three pieces add back up to |X|:
 	\mathbf{y} &= q_\text{p}\, \mathbf{t}_\text{p} + \mathbf{f}
 	\end{aligned}
 
-The vector :math:`\mathbf{t}_\text{p}` is the single predictive score, one value per observation, and
-:math:`\mathbf{p}_\text{p}` is its loading, one value per input. :math:`\mathbf{T}_\text{o}` and
-:math:`\mathbf{P}_\text{o}` are the matching orthogonal scores and loadings, carrying one column for
-each orthogonal component asked for, while :math:`\mathbf{E}` and :math:`\mathbf{f}` hold what no
-component explains. For these cheeses, in the scaled units the model works in, the predictive piece
-carries 68.7% of the sum of squares in |X|, the orthogonal piece 18.3%, and the residual 13.0%.
-
-The second line is where O-PLS parts company with PLS. Only :math:`\mathbf{t}_\text{p}` appears in it:
-the orthogonal scores :math:`\mathbf{T}_\text{o}` are absent, so movement in the orthogonal piece
-cannot change the predicted taste, however large that piece is. Filtering out the orthogonal part
-leaves a model with the same predictions as ordinary PLS, but with the response-relevant variation
-gathered into a single component.
-
-It is worth being concrete about how that split is built, because it explains everything that follows.
-O-PLS keeps the same two-dimensional plane the PLS model already found; what it changes is the pair of
-axes drawn within that plane. The first axis is chosen to point along the variation in the inputs
-that tracks taste. The fitted model reports it as ``opls.predictive_weights_``, one entry per input,
-and for these cheeses that direction is
+Here :math:`\mathbf{T}_\text{o}` and :math:`\mathbf{P}_\text{o}` carry one column per orthogonal
+component, and :math:`\mathbf{E}` and :math:`\mathbf{f}` hold what no component explains. What the split
+does not show is the order the pieces are found in. The orthogonal score comes first, from |X| itself,
+then the predictive score from what is left, which is what lets it absorb all of the taste information:
 
 .. math::
 
-	\mathbf{w}_\text{p} = (0.474,\ 0.657,\ 0.586)
-	\qquad \text{for (acetic, hydrogen sulfide, lactic)}
+	\begin{aligned}
+	\mathbf{t}_\text{o} &= \mathbf{X}\, \mathbf{w}_\text{o} \\
+	\mathbf{t}_\text{p} &= \left(\mathbf{X} - \mathbf{t}_\text{o} \mathbf{p}_\text{o}^T\right)
+	  \mathbf{w}_\text{p} \\
+	\hat{\mathbf{y}} &= q_\text{p}\, \mathbf{t}_\text{p}
+	\end{aligned}
 
-The entries are in the mean-centred, unit-variance units the model works in, so they can be compared
-with each other directly. All three are positive and of similar size, which is the raw-data picture
-restated: the three inputs rise together, and each rises with taste. The second axis takes what is left
-of the plane once that predictive direction has been removed, reported as ``opls.orthogonal_weights_``,
-one column per orthogonal component. Here there is one column, the orthogonal weight
+Substituting this cheese model's coefficients, with |X| centred and scaled:
 
 .. math::
 
-	\mathbf{w}_\text{o} = (0.808,\ -0.590,\ 0.008)
+	\begin{aligned}
+	\mathbf{t}_\text{o} &= \mathbf{X}\, (0.808,\ -0.590,\ 0.008)^T \\
+	\mathbf{t}_\text{p} &= \left(\mathbf{X} - \mathbf{t}_\text{o} \mathbf{p}_\text{o}^T\right)
+	  (0.474,\ 0.657,\ 0.586)^T \\
+	\hat{\mathbf{y}} &= 0.571\, \mathbf{t}_\text{p}
+	\end{aligned}
 
-Read that as a recipe: raise acetic acid, lower hydrogen sulfide, and leave lactic acid essentially
-untouched. It is the same trade-off the null space described, arrived at without ever inverting anything,
-and the same one the :ref:`table of null-space steps <LVM-PLS-null-space-steps-table>` set out in the
-original units.
-The defining property is that this second axis carries no taste information at all. Its score is
-uncorrelated with the response, exactly, while the predictive score is strongly correlated with it.
+In the scaled units the model works in, the predictive piece carries 68.7% of the sum of squares in
+|X|, the orthogonal piece 18.3%, and the residual 13.0%. Those percentages describe |X| alone. The
+first is not the share of the input variation that is about taste: most of it is the joint spread of
+three correlated measurements, which would be there whether or not taste had been recorded. How much
+of taste the model accounts for is the separate :math:`R^2` of 0.672.
 
-.. code-block:: python
-
-	opls = OPLS(n_orthogonal_components=1).fit(X, Y)
-
-	print(opls.predictive_weights_.round(3).to_numpy())           # [0.474 0.657 0.586]
-	print(opls.orthogonal_weights_.round(3).to_numpy().ravel())   # [ 0.808 -0.59   0.008]
-
-	y_centred = (Y - Y.mean()).to_numpy().ravel()
-
-	print(round(float(np.corrcoef(opls.orthogonal_scores_.to_numpy().ravel(), y_centred)[0, 1]), 12))
-	print(round(float(np.corrcoef(opls.predictive_scores_.to_numpy().ravel(), y_centred)[0, 1]), 4))
-	# -0.0
-	# 0.8198
+The predictive loading closes the loop. In the PLS model the first weight and its loading sat 5.49
+degrees apart, and that gap was the starting point. The O-PLS pair,
+:math:`\mathbf{w}_\text{p} = (0.474, 0.657, 0.586)` and
+:math:`\mathbf{p}_\text{p} = (0.472, 0.654, 0.591)`, sit 0.31 degrees apart: with the orthogonal
+variation already out of |X|, there is almost nothing left for the loading to drift towards. That is the
+interpretability O-PLS was built to deliver.
 
 .. _LVM-PLS-opls-construction:
 
-That first correlation is exactly zero rather than merely small, and it is worth seeing why, because
-the orthogonality is built by construction rather than arrived at by fitting. O-PLS finds the two
-directions in three steps (Trygg and Wold, 2002).
-
-The predictive weight is read straight off the response,
-:math:`\mathbf{w}_\text{p} = \mathbf{X}^T \mathbf{y}` scaled to unit length. Each entry is the
-covariance between one input and taste. This direction is settled before anything else happens, and
-it is never revised.
-
-The orthogonal weight is then built to be perpendicular to it. Projecting the data onto
-:math:`\mathbf{w}_\text{p}` gives a score :math:`\mathbf{t}`, and regressing |X| back onto that score
-gives a loading :math:`\mathbf{p}`. The loading is not the same vector as the weight: it collects
-everything that varies together with :math:`\mathbf{t}`, including variation that has no bearing on
-taste. That difference is what O-PLS separates out, by subtracting from the loading its component
-along the predictive weight:
-
-.. math::
-
-	\mathbf{w}_\text{o} = \mathbf{p} - \left(\mathbf{w}_\text{p}^T \mathbf{p}\right) \mathbf{w}_\text{p}
-
-Finally the component this new weight defines is removed from |X|, and the previous step repeats for
-as many orthogonal components as were requested. The predictive component is computed last, on what
-is left.
-
-Nothing there searches for orthogonality. The subtraction removes the predictive part of the loading,
-so :math:`\mathbf{w}_\text{o}` is perpendicular to :math:`\mathbf{w}_\text{p}` as a matter of algebra.
-The zero correlation then follows in one line, because the predictive weight was defined from the
-response in the first place:
+The zero in the table is exact rather than merely small, and it holds by algebra rather than by fitting.
+The predictive weight is read straight off the response, :math:`\mathbf{w}_\text{p} = \mathbf{X}^T
+\mathbf{y}` scaled to unit length, so each entry is the covariance between one input and taste (Trygg
+and Wold, 2002); that direction is settled first and never revised. The subtraction that produced
+:math:`\mathbf{w}_\text{o}` already makes it perpendicular to :math:`\mathbf{w}_\text{p}`, and the zero
+correlation then follows in one line:
 
 .. math::
 
@@ -531,68 +830,64 @@ response in the first place:
 	  = \mathbf{w}_\text{o}^T \left(\mathbf{X}^T \mathbf{y}\right)
 	  = \left\|\mathbf{X}^T \mathbf{y}\right\| \, \mathbf{w}_\text{o}^T \mathbf{w}_\text{p} = 0
 
-So perpendicular in the space of the inputs means uncorrelated with the response in the space of the
-observations. The argument survives the removal step as well: what is taken out of |X| is
-:math:`\mathbf{t}_\text{o} \mathbf{p}_\text{o}^T`, which changes :math:`\mathbf{X}^T\mathbf{y}` by
-:math:`\mathbf{p}_\text{o}\left(\mathbf{t}_\text{o}^T \mathbf{y}\right)`, and that is zero by the line
-just given. The quantity the predictive weight was built from is therefore untouched, so the same
-reasoning applies at every subsequent orthogonal component.
+Perpendicular in the space of the inputs therefore means uncorrelated with the response in the space of
+the observations. The argument survives the removal step: what is taken out of |X| changes
+:math:`\mathbf{X}^T\mathbf{y}` by :math:`\mathbf{p}_\text{o}(\mathbf{t}_\text{o}^T \mathbf{y})`, which
+the line above makes zero, so the same reasoning applies at every further orthogonal component.
 
-That is the whole difference between the two models, and it shows up in the :math:`y`-loadings. The PLS
-model spread the response across both of its components, :math:`\mathbf{q} = (0.546, -0.262)`, so
-predicting taste needed both scores. The O-PLS model puts all of it on the first component and none on
-the second:
+That difference between the two models is visible in the :math:`y`-loadings. PLS spread the response
+across both components, :math:`\mathbf{q} = (0.546, -0.262)`, so predicting taste needed both scores.
+O-PLS puts all of it on the first and none on the second, :math:`\hat{y} = 0.571\, t_\text{p}`, so the
+gradient of the prediction points exactly along the predictive axis. Plotting the same cheeses in each
+set of coordinates shows what that does to the geometry.
 
-.. math::
+.. code-block:: python
 
-	\hat{y} = q_\text{p}\, t_\text{p} = 0.571\, t_\text{p}
+	opls_result = opls.invert(y_desired=20.9)
 
-The orthogonal score does not appear. In the language of the previous section, the gradient of the
-prediction in O-PLS coordinates is :math:`(0.571, 0)`: it points exactly along the predictive axis. The
-contours of predicted taste are therefore perpendicular to that axis, which now means parallel to the
-orthogonal axis. The diagonal line of the PLS score plot becomes a line running along a coordinate axis.
-The same combinations of inputs are described either way; only the axes describing them have moved.
+	fig = make_subplots(rows=1, cols=2, subplot_titles=(
+	    "PLS: response spread over both components",
+	    "O-PLS: response all on one component"))
+	fig.add_scatter(x=scores.iloc[:, 0], y=scores.iloc[:, 1], mode="markers", row=1, col=1)
+	fig.add_scatter(x=line[:, 0], y=line[:, 1], mode="lines", row=1, col=1,
+	                line={"color": "orange"})
+	fig.add_scatter(x=t_p, y=t_o, mode="markers", row=1, col=2)
+	fig.add_vline(x=opls_result.predictive_score, line={"color": "orange"}, row=1, col=2)
+	fig.update_yaxes(scaleanchor="x", scaleratio=1)     # equal axes, so angles are true
+	fig.show()
 
-This is also why inverting an O-PLS model needs no linear algebra. Fixing the taste gives one equation
-with one unknown, since the orthogonal score is absent from it, so the predictive score follows by
-division:
+.. _LVM-PLS-opls-rotation-figure:
+
+.. figure:: ../../figures/pls/pls-opls-rotation.png
+	:alt: The same set of solutions drawn in PLS score coordinates and in O-PLS score coordinates
+	:width: 700px
+	:align: center
+
+	The same 26 cheeses and the same set of designs reaching a taste of 20.9, drawn in each model's
+	coordinates. Left: PLS spreads the response over both components, the gradient :math:`\mathbf{q}`
+	points diagonally, and the solutions form a diagonal line, so inversion solves one equation in two
+	unknowns. Right: O-PLS puts the whole response on the predictive component, so the gradient points
+	along that axis and the same solutions become a line at a fixed predictive score. Only the axes have
+	moved; the set of designs described is identical.
+
+Fixing the taste in O-PLS coordinates therefore leaves one equation with one unknown, since the
+orthogonal score does not appear in it, and the predictive score follows by division:
 
 .. math::
 
 	t_\text{p} = \frac{y_\text{des}}{q_\text{p}} = \frac{-0.17}{0.571} = -0.298
 
-and the orthogonal score is left free, to be chosen on any grounds we like. The PLS inversion had to
-solve one equation in two unknowns and then describe the leftover freedom with a null-space basis. O-PLS
-separates that freedom in advance, during fitting, and hands it over as a coordinate axis.
-
-The subspace holding the orthogonal components is called the *orthogonal space*. By construction, moving
-an input along the orthogonal space changes |X| but not the predicted |Y|. That description should sound
-familiar: it is the same property that defines the null space of the inverted PLS model. García-Carrión
-and co-authors (2025) proved that, for a single response, the two subspaces are the same linear space.
-The null space that arises when a PLS model is inverted and the orthogonal space that O-PLS isolates while
-fitting are one and the same. The reason is short: both are exactly the set of score directions the model
-maps to no change in the response.
-
-The ``process_improve`` package fits O-PLS with the same total number of components, here one predictive
-and one orthogonal, and inverts it. Because O-PLS has already separated the single predictive direction,
-its inversion is one division rather than the solution of an underdetermined system.
+The orthogonal score is left free, to be chosen on any grounds we like. The subspace holding the
+orthogonal components is called the *orthogonal space*, and by construction, moving along it changes |X|
+but not the predicted |Y|. That is the same property that defines the null space of the inverted PLS
+model. García-Carrión and co-authors (2025) proved that, for a single response, the two subspaces are
+the same linear space: both are exactly the set of score directions the model maps to no change in the
+response.
 
 .. code-block:: python
-
-	opls = OPLS(n_orthogonal_components=1).fit(X, Y)
-	opls_result = opls.invert(y_desired=20.9)
 
 	print(opls_result.x_new.round(2).to_list())   # [5.46, 5.62, 1.39]
 	print(round(opls_result.y_hat, 2))            # 20.9
-
-The O-PLS design, (Acetic 5.46, H2S 5.62, Lactic 1.39), is a different set of inputs from the PLS
-direct-inversion design, but it lies on the same null-space line and gives the same predicted taste. The
-two methods return different representative points: PLS reports the point of smallest score norm, while
-O-PLS reports the point whose orthogonal score is zero. The set of solutions, the line itself, is
-identical. We can confirm the two subspaces coincide by reconstructing each basis into the input space and
-comparing their directions.
-
-.. code-block:: python
 
 	ns_input = result.null_space_basis.to_numpy().T @ pls.x_loadings_.to_numpy().T
 	os_input = opls_result.orthogonal_space_basis.to_numpy().T
@@ -605,16 +900,17 @@ comparing their directions.
 	)
 	print(round(cosine, 6))    # 1.0
 
-Written as unit vectors in the inputs, both come out as
-:math:`(0.948,\ -0.238,\ 0.211)`, the same numbers to three decimals, and the cosine between them is 1.0.
-Two methods, developed for different purposes and computed by different algorithms, describe the same
-line: raise acetic acid, lower hydrogen sulfide, adjust lactic acid slightly, and the predicted taste
-does not move. This is what the green circles in the :ref:`score plot <LVM-PLS-null-space-figure>` show:
-they are the orthogonal space projected into the PLS score plot, and they lie on the orange null-space
-line. The two approaches differ in bookkeeping rather than in what they find. Both describe the same
-freedom: the directions the inputs can move in without changing the predicted taste. PLS solves for that
-freedom after the fact and hands it back as a null-space basis; O-PLS sets the same freedom aside during
-fitting and hands it back as a coordinate axis.
+The O-PLS design, (Acetic 5.46, H2S 5.62, Lactic 1.39), differs from the PLS direct-inversion design,
+but lies on the same line and gives the same predicted taste. The two methods simply report different
+representative points on it: PLS the point of smallest score norm, O-PLS the point whose orthogonal
+score is zero. Written as unit vectors in the inputs both bases come out as
+:math:`(0.948,\ -0.238,\ 0.211)`, with a cosine of 1.0 between them. This is what the green circles in
+the :ref:`score plot <LVM-PLS-null-space-figure>` show: the orthogonal space projected into the PLS
+score plot, lying on the orange null-space line.
+
+What neither method settles is which point on that line to build. Every design on it predicts the same
+taste, and the model has nothing further to say about them. Choosing between them means asking a
+different question: how far each one sits from the cheeses the model was built on.
 
 .. _LVM-PLS-inversion-in-practice:
 
@@ -662,7 +958,10 @@ deviation is a distance in the input space, measured between the two recipes the
 
 	print(pd.DataFrame(rows).round(2))
 
-.. list-table:: The four held-out cheeses. Each row compares the recipe the inversion proposes for that cheese's taste against the cheese as it was actually measured. The two :math:`T^2` columns are distances from the centre of the calibration data, one for each of those two points; the last column is the distance between the two points. The 99% limit on :math:`T^2` is 12.14.
+.. list-table:: The four held-out cheeses. Each row compares the recipe the inversion proposes for
+	that cheese's taste against the cheese as it was actually measured. The two :math:`T^2` columns are
+	distances from the centre of the calibration data, one for each of those two points; the last
+	column is the distance between the two points. The 99% limit on :math:`T^2` is 12.14.
 	:header-rows: 1
 	:widths: 12 14 22 22 30
 
@@ -692,11 +991,11 @@ deviation is a distance in the input space, measured between the two recipes the
 		- 0.94
 		- 1.57
 
-Reading down the :math:`T^2` of the design, the moderate tastes near the middle of the calibration range
-give designs with small :math:`T^2`, while the more extreme tastes push the design further from the data:
-asking for a
-taste of 47.9 gives the largest value, 4.82. A large :math:`T^2` does not make a design wrong, but it
-flags that the model is extrapolating and that the predicted taste rests on less support from the data.
+Reading down the :math:`T^2` of the design, the moderate tastes near the middle of the calibration
+range give designs with small :math:`T^2`, while the more extreme tastes push the design further from
+the data: asking for a taste of 47.9 gives the largest value, 4.82. A large :math:`T^2` does not make
+a design wrong, but it flags that the model is extrapolating and that the predicted taste rests on
+less support from the data.
 All four are well inside the 99% limit of 12.14.
 
 The input-space deviation compares each design with the cheese that actually had that taste. Cheese 2 is
@@ -713,8 +1012,7 @@ how far apart the two recipes are, not how wrong either of them is.
 For a single response, then, PLS model inversion and O-PLS model inversion lead to the same set of
 designs. They differ in how they reach it: PLS inversion solves an underdetermined system and returns the
 minimum-norm point, while O-PLS inversion is a single division once the orthogonal space has been
-separated during fitting. The equivalence has been proved for one response; the multiple-response case
-remains open (García-Carrión et al., 2025).
+separated during fitting.
 
 .. _LVM-PLS-specification-regions:
 
@@ -747,33 +1045,88 @@ the past, then applied engineering judgement to pick a point in that window, suc
 or most energy-efficient one. Bounding by :math:`T^2` is a way of making "within the range of past
 operating conditions" a single, testable number.
 
-Suppose a taste between 20 and 40 is acceptable.
+Suppose a taste between 20 and 30 is acceptable.
 
 .. code-block:: python
 
 	t2_limit = pls.hotellings_t2_limit(0.95)
 
 	region = []
-	for target in np.linspace(20.0, 40.0, 5):        # the range of taste we accept
-	    for step in np.linspace(-6, 6, 2001):        # walk along that target's null space
+	for target in np.linspace(20.0, 30.0, 11):       # the tastes we accept
+	    for step in np.linspace(-2.5, 2.5, 50):      # walk along that target's null space
 	        candidate = pls.invert(target, null_space_coordinates=[step])
 	        if candidate.hotellings_t2 <= t2_limit:
 	            region.append(candidate.x_new)
 
 	region = pd.DataFrame(region)
 	print(round(t2_limit, 2))                        # 7.36
+	print(len(region))                               # 415 of the 550 inversions are kept
 	print(region.agg(["min", "max"]).round(2))
 	#      Acetic   H2S  Lactic
-	# min    4.35  4.44    1.25
-	# max    6.99  9.47    1.86
+	# min    4.38  4.44    1.25
+	# max    6.78  7.99    1.68
 
 A cheese whose inputs fall in this region is predicted to have an acceptable taste. Note that these
-minima and maxima are the box that encloses the region, not the region itself: the region is a slanted
-band in the three inputs, and a lot may sit inside every one of the three ranges while
-still lying outside the band. Note also that the enclosing box reaches slightly past the observed range
-of acetic acid in the training cheeses (4.48 to 6.46). The :math:`T^2` limit bounds the joint distance
-from the centre of the model, not each measurement separately, so a corner of the region can sit a little
-outside the range of any one measurement.
+minima and maxima are the box that encloses the region, not the region itself. The region is a slanted
+band in the three inputs, so a lot may sit inside every one of the three ranges while still lying
+outside the band.
+
+Both the region and the box it is reported as can be drawn.
+
+.. code-block:: python
+
+	corners = np.array(np.meshgrid(*zip(region.min(), region.max()))).reshape(3, -1).T
+	corner_frame = pd.DataFrame(corners, columns=x_columns)
+	corner_taste = pls.predict(corner_frame).to_numpy().ravel()
+	corner_t2 = pls.diagnose(corner_frame).hotellings_t2.to_numpy()
+
+	for taste, t2 in sorted(zip(corner_taste.round(1), corner_t2.round(1))):
+	    print(taste, t2)
+	# 11.9 3.9    15.9 10.7    19.8 3.2    23.8 10.5
+	# 26.0 10.3   30.0 3.4     33.9 10.8   37.9 4.4
+
+	fig = go.Figure()
+	fig.add_scatter3d(x=region["Acetic"], y=region["H2S"], z=region["Lactic"],
+	                  mode="markers", marker={"size": 2, "color": "orange", "opacity": 0.3})
+	fig.add_scatter3d(x=corners[:, 0], y=corners[:, 1], z=corners[:, 2], mode="markers+text",
+	                  text=[f"{t:.0f}" for t in corner_taste],
+	                  marker={"size": 5, "color": np.where(
+	                      (corner_taste >= 20) & (corner_taste <= 30), "steelblue", "darkred")})
+	fig.update_layout(scene={"xaxis_title": "Acetic", "yaxis_title": "H2S",
+	                         "zaxis_title": "Lactic"})
+	fig.show()
+
+.. _LVM-PLS-specification-region-figure:
+
+.. figure:: ../../figures/pls/pls-specification-region.png
+	:alt: The specification region in the score plot, and the same region inside the box of three ranges
+	:width: 720px
+	:align: center
+
+	Left: eleven acceptable tastes, each inverted at fifty points along its own null space, so the
+	swept lines fill out the region. The 95% :math:`T^2` limit closes it off along the other direction.
+	Right: the same region in the three inputs, with the box of three ranges drawn around it. The region
+	is flat, because every point on it is rebuilt from two scores, while the box is a solid.
+
+	Five points are marked in both panels with the same shape and colour, so a location in the score
+	plot can be followed to the recipe it stands for: the four corners of the region, where the outer
+	null spaces meet the :math:`T^2` limit, and its centre, the direct-inversion solution for a taste of
+	25. Colour gives the target taste, and the triangle points down at the low end of that taste's null
+	space and up at the high end. Each corner of the box carries the taste it is predicted to have, dark red where that taste is
+	outside the window and blue where it is acceptable but the recipe lies beyond the :math:`T^2` limit.
+
+The eight corners make the difference concrete. Every one of them satisfies all three ranges, since
+each coordinate is either the reported minimum or the reported maximum, and not one of them is an
+acceptable lot. They fail in two different ways. Six predict a taste outside the window, running from
+11.9 at one corner to 37.9 at another. The other two predict a taste that would be perfectly
+acceptable, 23.8 and 26.0, but they sit at :math:`T^2` values of 10.5 and 10.3 against a limit of
+7.36. A recipe that far from the centre of the calibration data is an extrapolation, and the model
+carries no evidence about what it would really taste like.
+
+Three ranges are the smallest box that contains the region, and a box that contains a flat, slanted set
+is mostly not that set. This is why a multivariate specification is stated as a region rather than as a
+table of limits per input: the limits are a summary of the region, and reading them as though they were
+the specification accepts lots the model would reject.
 
 Inversion is not the only route to a specification region. The inputs can also be mapped directly into a
 region without inverting a model, an approach known as direct mapping. Paris and co-workers (2021)
@@ -834,6 +1187,6 @@ García-Carrión et al. (2025).
   <https://literature.learnche.org/item/181/establishing-multivariate-specification-regions-for-incoming-raw-materials-using-projection-to-latent-structure-models-comparison-between-direct-mapping-and-model-inversion>`_",
   *Frontiers in Analytical Science*, **1** (2021): 729732.
 
-* S. García-Carrión, F. Sartori, J. Borràs-Ferrís, P. Facco, M. Barolo, and A. Ferrer, "On the equivalence
-  between null space and orthogonal space in latent variable regression modeling", *Journal of
-  Chemometrics*, 39 (2025): e70057, `doi:10.1002/cem.70057 <https://doi.org/10.1002/cem.70057>`_.
+* S. García-Carrión, F. Sartori, J. Borràs-Ferrís, P. Facco, M. Barolo, and A. Ferrer, "On the
+  equivalence between null space and orthogonal space in latent variable regression modeling",
+  *Journal of Chemometrics*, 39 (2025): e70057, `doi:10.1002/cem.70057 <https://doi.org/10.1002/cem.70057>`_.
