@@ -10,16 +10,22 @@ solve for the inputs that would achieve it. Finding the inputs that give a chose
 MacGregor, 2000
 <https://literature.learnche.org/item/180/industrial-applications-of-product-design-through-the-inversion-of-latent-variable-models>`_).
 
-The answer turns out not to be a single set of inputs but a whole set of them. The freedom to choose
-among them lives in a part of the model that is often set aside: the systematic variation the model
+The answer is more interesting than a single recipe. A PLS model compresses several correlated inputs
+into a few latent directions, and one target value can pin down only one of them. Everything left over
+is free, so inversion returns not *the* recipe but a flat set of them, every one of which the model
+says will hit the target. Where that freedom comes from, what it is worth, and how much of it the data
+support is the subject of this section.
+
+That freedom lives in a part of the model few people look at: the systematic variation the model
 captures and then finds has no bearing on the response. It is usually filtered out to make a model
 easier to read. For these cheeses it is 18.3% of the variation in the inputs, none of which moves the
 taste.
 
-We will use the same :ref:`cheddar-cheese data <LVM-cheddar-cheese-example>` as before: the taste of a
-cheese predicted from three inputs, acetic acid, hydrogen sulfide, and lactic acid. The forward
-question was "what taste do these inputs give?" The inversion question is "which inputs give a
-target taste?"
+The running example is the same :ref:`cheddar-cheese data <LVM-cheddar-cheese-example>` as before, a
+small and well-worn data set. Thirty cheddar cheeses were each measured for three things, the
+concentrations of acetic acid, hydrogen sulfide and lactic acid, and each was given a taste score by a
+panel. The forward question was "what taste do these three measurements imply?" The inversion question
+is "which three measurements would give me a taste I have chosen?"
 
 .. figure:: ../../figures/examples/cheese/cheese-plots-no-random.png
 	:alt: Scatterplot matrix of the cheddar-cheese data: acetic acid, hydrogen sulfide, lactic acid and taste
@@ -38,16 +44,54 @@ Why inversion needs more than the predictive number of components
 
 When we chose the number of components for prediction in :ref:`the section above
 <LVM-PLS-number-of-components>`, cross-validation kept a single component: one component is enough
-to predict Taste. Inversion places a second demand on the model. To reconstruct an input vector from
-a target output, the model must describe the |X|-space well enough to map a score back to a full set
-of input values, not only the |Y|-space. A one-component model spans only a line in the input space,
-so it can return just one set of inputs for a target taste. Keeping a second component lets the
-model describe the plane on which the calibration cheeses actually lie, and, as we will see, it
-opens up a whole set of equivalent designs. We therefore fit a two-component model here, even though
-the second component did not improve prediction.
+to predict Taste, and a second does not improve prediction. Inversion places a second and different
+demand on the model, though. To rebuild a complete set of three input values from one target number,
+the model has to describe the |X|-space well enough to map a score back into it, not merely describe
+the |Y|-space. A one-component model spans only a line in the input space, so it can return exactly
+one recipe, and the whole question of equivalent designs never arises.
 
-Following the request to design toward cheeses the model has not seen, we hold out the first four cheeses
-and fit the model on the remaining twenty-six.
+A second component lets the model describe the plane on which the calibration cheeses actually lie,
+and that is what opens up the set of equivalent designs. So a two-component model is fitted here even
+though the second did not earn its place on predictive grounds.
+
+So that the targets stay independent of the model, the first four cheeses are set aside and never shown
+to it. They become the targets: for each one we ask the model to design a cheese with that taste, then
+compare what it proposes against what that cheese actually was. Their tastes span most of the range,
+which matters later, because designing toward an extreme target turns out to cost more than designing
+toward a middling one.
+
+.. _LVM-PLS-holdout-table:
+
+.. list-table:: The four held-out cheeses, used only as targets. The model is fitted on the other 26,
+	whose tastes run from 0.7 to 57.2 with a mean of 23.7.
+	:header-rows: 1
+	:widths: 14 18 18 18 18
+
+	*	- Cheese
+		- Acetic
+		- H2S
+		- Lactic
+		- Taste
+	*	- 1
+		- 4.54
+		- 3.14
+		- 0.86
+		- 12.3
+	*	- 2
+		- 5.16
+		- 5.04
+		- 1.53
+		- 20.9
+	*	- 3
+		- 5.37
+		- 5.44
+		- 1.57
+		- 39.0
+	*	- 4
+		- 5.76
+		- 7.50
+		- 1.81
+		- 47.9
 
 .. code-block:: python
 
@@ -67,11 +111,10 @@ and fit the model on the remaining twenty-six.
 	pls = PLS(n_components=2).fit(X, Y)
 	print(round(float(pls.r2_cumulative_.iloc[-1]), 3))   # R2 on Taste: 0.672
 
-The two-component model explains about 67% of the variation in Taste. It is a moderate predictor, which
-is fine for what follows: the null space is a property of the model's geometry rather than of its
-predictive accuracy. That geometry is itself estimated from the same 26 cheeses, though, so it carries
-its own uncertainty. We return to
-:ref:`how well the direction is determined <LVM-PLS-null-space-uncertainty>` once it has been derived.
+It explains about 67% of the variation in Taste, which is enough for what follows: the null space is a
+property of the model's geometry rather than of its predictive accuracy. That geometry is itself
+estimated from the same 26 cheeses, though, so it carries one caveat, which we return to
+:ref:`once the geometry is on the table <LVM-PLS-null-space-uncertainty>`.
 
 .. _LVM-PLS-null-space:
 
@@ -98,95 +141,14 @@ predicts will give that taste.
 	# Actual: T2 = 0.21, SPE = 0.68
 	# Predicted: T2 = 0.06, SPE = 0.00
 
-The prediction at the designed inputs is exactly 20.9, by construction. To judge whether that design
-is a reasonable one, compare it with the cheese we held out. For this model the 99% limits are
-:math:`T^2 = 12.14` and :math:`\text{SPE} = 1.60`. These are the limits for a *new* observation rather
-than for one of the 26 used to fit the model, which is the right choice here: a proposed design is
-being judged against the model, not summarised by it. Limits for the observations that built the model
-are lower, since each of those helped set the centre and spread it is then measured against, and at a
-sample size of 26 that difference is not negligible.
+A recipe comes back, which is unremarkable. The second line is the interesting one. The null space has
+dimension 1, which is the model saying that this is not *the* answer but one point on a line of
+answers. Two score directions, one target: the target fixes one of them and leaves the other free.
+Anything we do along that free direction changes the recipe while leaving the prediction exactly where
+it was. That free direction is the *null space*, and its dimension is the number of components minus
+the rank of the response, here :math:`2 - 1 = 1`.
 
-.. list-table:: Cheese 2: its measured inputs, and the inputs the inversion returns for taste 20.9.
-	:header-rows: 1
-	:widths: 16 18 14 14 14 12 12
-
-	*	- Row
-		- Target taste
-		- Acetic
-		- H2S
-		- Lactic
-		- :math:`T^2`
-		- SPE
-	*	- Actual
-		- 20.9
-		- 5.16
-		- 5.04
-		- 1.53
-		- 0.21
-		- 0.68
-	*	- Predicted
-		- 20.9
-		- 5.52
-		- 5.56
-		- 1.40
-		- 0.06
-		- 0.00
-
-Both rows sit well inside the SPE and :math:`T^2` limits, so neither is an extrapolation. The
-predicted inputs have an SPE of exactly zero, because the inversion rebuilds the inputs from their
-scores: the result lies on the model plane by construction, leaving no residual.
-
-That zero is a statement about the arithmetic, not a claim about cheese. Every real cheese carries some
-variation the two components do not describe, which is why the measured row has an SPE of 0.68 rather
-than zero. A design returned by inversion is an idealised point on the model plane, and any cheese
-actually made to it will land near the plane rather than on it. The useful reading of a zero SPE is
-therefore that the design is internally consistent with the model, not that it is more attainable than
-the cheeses the model was built from.
-
-.. _LVM-PLS-input-space-deviation:
-
-The two rows are close, but "close" in the raw units is hard to read: a gap of 0.5 in hydrogen sulfide
-does not mean the same thing as a gap of 0.5 in lactic acid, because the three measurements are on
-different scales. Centring and scaling each column puts them on a common footing, where one unit is one
-standard deviation of that measurement. The *input-space deviation* is then the sum of the squared
-differences between the two rows, in those units. It is a distance between two recipes, measured across
-the three inputs, and normalized so that every input counts on the same scale.
-
-.. code-block:: python
-
-	scaler = MCUVScaler().fit(X)
-	a = scaler.transform(actual.to_frame().T).iloc[0]           # actual, in std deviations
-	p = scaler.transform(result.x_new.to_frame().T).iloc[0]     # predicted, in std deviations
-
-	print(a.round(2).to_list())                      # [-0.67, -0.46, 0.3]
-	print(p.round(2).to_list())                      # [-0.04, -0.22, -0.15]
-	print(round(float(((a - p) ** 2).sum()), 2))     # 0.66
-
-Writing the three terms out, with acetic acid first, then hydrogen sulfide, then lactic acid:
-
-.. math::
-
-	\begin{aligned}
-	\text{input-space deviation} &= \left(-0.67 - (-0.04)\right)^2 + \left(-0.46 - (-0.22)\right)^2
-	  + \left(0.30 - (-0.15)\right)^2 \\
-	&= (-0.63)^2 + (-0.24)^2 + (0.45)^2 \\
-	&= 0.39 + 0.06 + 0.21 \\
-	&= 0.66
-	\end{aligned}
-
-The square root of 0.66 is 0.81, so the cheese we held out sits about 0.8 standard deviations away from
-the inputs the inversion proposed, counting all three measurements together. Acetic acid accounts
-for most of that gap.
-
-The null space is the reason ``null_space_dimension`` is not zero. A two-component model has two score
-directions, but a single taste value pins down only one of them. The other direction is free: we can move
-along it and the predicted taste does not change at all. That free direction is the *null space*. Its
-dimension is the number of components minus the rank of the response, here :math:`2 - 1 = 1`, so it is a
-line. Every set of inputs on that line gives the same predicted taste.
-
-We can walk along the null space by passing coordinates along its basis. In the code and figure we take a
-step of -1 and +1 along the basis. The predicted taste stays the same along this basis line. Hence the
-name the null space. Only the input variables change, while the predicted output remains fixed.
+We can walk along it by passing coordinates along its basis. Stepping one unit either way:
 
 .. code-block:: python
 
@@ -197,17 +159,12 @@ name the null space. Only the input variables change, while the predicted output
 	# [4.95, 6.10, 1.33] -> 20.9
 	# [6.09, 5.02, 1.46] -> 20.9
 
-Both of these sets of inputs, and the whole line between and beyond them, predict a taste of 20.9.
-The freedom to choose among them is what makes inversion useful in practice: it can be spent on a
-secondary goal such as cost, safety, or keeping within a supplier's specification, without moving
-the predicted quality. As a check on the held-out cheese, its actual inputs (Acetic 5.16, H2S 5.04,
-Lactic 1.53) predict a taste of 20.7, close to its measured 20.9, and it lies near the null-space
-line just traced.
-
-Collecting the three points on the line, together with the cheese itself, shows what moving along
-the null space does and does not change.
+Collecting those points, and putting the measured cheese alongside for comparison:
 
 .. code-block:: python
+
+	scaler = MCUVScaler().fit(X)
+	a = scaler.transform(actual.to_frame().T).iloc[0]           # actual, in std deviations
 
 	designs = {
 	    "Actual": actual,
@@ -224,7 +181,7 @@ the null space does and does not change.
 
 .. _LVM-PLS-null-space-steps-table:
 
-.. list-table:: Cheese 2 and three points along its null space, all reaching the same target taste.
+.. list-table:: Cheese 2, and three points along its null space. All four rows predict a taste of 20.9.
 	:header-rows: 1
 	:widths: 22 12 10 10 10 10 10 16
 
@@ -235,8 +192,8 @@ the null space does and does not change.
 		- Lactic
 		- :math:`T^2`
 		- SPE
-		- Deviation from target
-	*	- Actual
+		- Input-space deviation
+	*	- Measured cheese
 		- 20.9
 		- 5.16
 		- 5.04
@@ -244,7 +201,7 @@ the null space does and does not change.
 		- 0.21
 		- 0.68
 		- 0.00
-	*	- Predicted at step -1
+	*	- Design, step -1
 		- 20.9
 		- 4.95
 		- 6.10
@@ -252,7 +209,7 @@ the null space does and does not change.
 		- 1.63
 		- 0.00
 		- 0.82
-	*	- Predicted at step 0
+	*	- Design, step 0
 		- 20.9
 		- 5.52
 		- 5.56
@@ -260,7 +217,7 @@ the null space does and does not change.
 		- 0.06
 		- 0.00
 		- 0.66
-	*	- Predicted at step +1
+	*	- Design, step +1
 		- 20.9
 		- 6.09
 		- 5.02
@@ -269,26 +226,36 @@ the null space does and does not change.
 		- 0.00
 		- 2.66
 
-Read down the three predicted rows and the inputs change substantially in order to keep the taste
-constant. Acetic acid increases from about 5 to 6, while that is compensated by hydrogen sulfide
-falling from 6.10 to 5.02, and lactic acid increases slightly, from 1.33 to 1.46. This same trade-off
-comes back when we reach :ref:`O-PLS <LVM-PLS-orthogonal-space>` below, where it appears directly as
-one of the model's axes. Every one of the three still reaches a taste of 20.9, and every one has an
-SPE of zero, since all three are rebuilt
-from scores and so lie on the model plane. What does change is :math:`T^2`. The step 0 row is the
-direct-inversion solution, the one of smallest score norm, and it has the smallest :math:`T^2` of
-the three, 0.06. Stepping out to either side moves the design away from the centre of the
-calibration data, to 1.63 and 2.44. The freedom along the null space is therefore free in terms of
-the predicted taste, but not in terms of how much support the data give the design.
+Read down the three designs and the inputs move substantially. Acetic acid climbs from about 5 to 6
+while hydrogen sulfide falls from 6.10 to 5.02, with lactic acid rising slightly. These are not small
+adjustments, and yet every one of the three still reaches a taste of 20.9. That is the practical
+content of the null space: if several recipes all hit the target, we are free to choose among them on
+grounds the model never saw, such as cost, supplier availability, or whichever raw material happens to
+be in the yard this week. This same trade-off comes back when we reach
+:ref:`O-PLS <LVM-PLS-orthogonal-space>` below, where it appears directly as one of the model's axes.
 
-The last column is the input-space deviation of each row from the cheese we are designing toward,
-computed the same way as before: centre and scale each input, then sum the squared differences. The
-Actual row is 0.00 because it is the target. Reading down the column, the step 0 design is the
-closest of the three at 0.66, the -1 step is a little further at 0.82, and the +1 step is furthest
-at 2.66. Since every one of those rows reaches the same predicted taste, the column says which of
-the equally valid designs comes nearest to a real cheese, which is a choice the null space leaves
-open. Sliding a little further in the -1 direction would do better still: the closest point on the
-line to this cheese sits near a step of -0.43, at a deviation of 0.46.
+Two columns need reading carefully. The SPE of exactly zero is a property of the arithmetic, not a
+claim about cheese: the inversion rebuilds the inputs from their scores, so the result lies on the
+model plane by construction. Every real cheese carries variation the two components miss, which is why
+the measured row shows 0.68. So a design is an idealised point on the plane. A cheese later made to
+that specification will land near the plane, not exactly on it, and its own SPE is what measures the
+gap.
+
+:math:`T^2` is the column that does change, and it measures how far each design sits from the centre of
+the calibration data. Step 0, the direct-inversion solution, has the smallest at 0.06; stepping either
+way moves the design outward, to 1.63 and 2.44. The freedom along the null space is free in terms of
+predicted taste, but not in terms of how much the data support the design. All rows sit well inside the
+99% limits of :math:`T^2 = 12.14` and :math:`\text{SPE} = 1.60`, which are the limits for a *new*
+observation rather than for one of the 26 that built the model: the right choice when judging a
+proposed design rather than summarising a calibration one.
+
+.. _LVM-PLS-input-space-deviation:
+
+One quantity is worth defining now, because it recurs. Comparing recipes in raw units is hard to read:
+a gap of 0.5 in hydrogen sulfide does not mean what a gap of 0.5 in lactic acid means. Centring and
+scaling each input puts them on a common footing where one unit is one standard deviation, and the sum
+of squared differences in those units is the *input-space deviation*. For cheese 2 against its design
+it is 0.66, so the held-out cheese sits about 0.8 standard deviations from the proposed recipe.
 
 A score plot shows the picture directly. The calibration cheeses are the points, the orange square
 is the direct-inversion solution, and the orange line is the null space: the set of scores that all
@@ -530,7 +497,8 @@ it was. That trade-off is what the diagonal line is recording.
 How well is that direction determined?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Every number quoted so far comes from one model fitted to 26 cheeses, and the direction of the null
+This is the caveat promised earlier. Every number quoted so far comes from one model fitted to 26
+cheeses, and the direction of the null
 space rests on the second :math:`y`-loading, :math:`q_2 = -0.262`. That component was the one
 cross-validation did not keep. It adds 3.0% to :math:`R^2Y`, against 64.3% for the first. It is worth
 asking how much of the geometry survives if the 26 cheeses had come out slightly differently.
@@ -578,7 +546,8 @@ more than 45 degrees away in 15% of the resamples.
 
 The direct-inversion solution itself holds up much better. Its 95% intervals are 5.24 to 5.74 for
 acetic acid, 4.97 to 6.26 for hydrogen sulfide, and 1.30 to 1.49 for lactic acid, each narrow next to
-the spread of the calibration cheeses. The reason for the difference is worth seeing: the solution
+the spread of the calibration cheeses, which run from 4.48 to 6.46 in acetic acid and from 3.00 to
+10.20 in hydrogen sulfide. The reason for the difference is worth seeing: the solution
 depends mostly on :math:`q_1`, which is estimated well, while the null-space direction depends on the
 ratio of :math:`q_1` to :math:`q_2`.
 
