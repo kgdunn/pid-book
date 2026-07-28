@@ -1113,7 +1113,8 @@ Both the region and the box it is reported as can be drawn.
 	Five points are marked in both panels with the same shape and colour, so a location in the score
 	plot can be followed to the recipe it stands for: the four corners of the region, where the outer
 	null spaces meet the :math:`T^2` limit, and its centre, the direct-inversion solution for a taste of
-	25. Each corner of the box carries the taste it is predicted to have, dark red where that taste is
+	25. Colour gives the target taste, and the triangle points down at the low end of that taste's null
+	space and up at the high end. Each corner of the box carries the taste it is predicted to have, dark red where that taste is
 	outside the window and blue where it is acceptable but the recipe lies beyond the :math:`T^2` limit.
 
 The eight corners make the difference concrete. Every one of them satisfies all three ranges, since
