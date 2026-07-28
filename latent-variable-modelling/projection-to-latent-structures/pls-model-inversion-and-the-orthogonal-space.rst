@@ -1051,8 +1051,8 @@ Suppose a taste between 20 and 30 is acceptable.
 	t2_limit = pls.hotellings_t2_limit(0.95)
 
 	region = []
-	for target in np.linspace(20.0, 30.0, 5):        # the range of taste we accept
-	    for step in np.linspace(-6, 6, 2001):        # walk along that target's null space
+	for target in np.linspace(20.0, 30.0, 41):       # the tastes we accept
+	    for step in np.linspace(-6, 6, 801):         # walk along that target's null space
 	        candidate = pls.invert(target, null_space_coordinates=[step])
 	        if candidate.hotellings_t2 <= t2_limit:
 	            region.append(candidate.x_new)
