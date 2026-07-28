@@ -1044,14 +1044,14 @@ the past, then applied engineering judgement to pick a point in that window, suc
 or most energy-efficient one. Bounding by :math:`T^2` is a way of making "within the range of past
 operating conditions" a single, testable number.
 
-Suppose a taste between 20 and 40 is acceptable.
+Suppose a taste between 20 and 30 is acceptable.
 
 .. code-block:: python
 
 	t2_limit = pls.hotellings_t2_limit(0.95)
 
 	region = []
-	for target in np.linspace(20.0, 40.0, 5):        # the range of taste we accept
+	for target in np.linspace(20.0, 30.0, 5):        # the range of taste we accept
 	    for step in np.linspace(-6, 6, 2001):        # walk along that target's null space
 	        candidate = pls.invert(target, null_space_coordinates=[step])
 	        if candidate.hotellings_t2 <= t2_limit:
@@ -1062,15 +1062,54 @@ Suppose a taste between 20 and 40 is acceptable.
 	print(region.agg(["min", "max"]).round(2))
 	#      Acetic   H2S  Lactic
 	# min    4.35  4.44    1.25
-	# max    6.99  9.47    1.86
+	# max    6.80  8.04    1.68
 
 A cheese whose inputs fall in this region is predicted to have an acceptable taste. Note that these
-minima and maxima are the box that encloses the region, not the region itself: the region is a slanted
-band in the three inputs, and a lot may sit inside every one of the three ranges while
-still lying outside the band. Note also that the enclosing box reaches slightly past the observed range
-of acetic acid in the training cheeses (4.48 to 6.46). The :math:`T^2` limit bounds the joint distance
-from the centre of the model, not each measurement separately, so a corner of the region can sit a little
+minima and maxima are the box that encloses the region, not the region itself. The region is a slanted
+band in the three inputs, so a lot may sit inside every one of the three ranges while still lying
+outside the band. Note also that the enclosing box reaches slightly past the observed range of acetic
+acid in the training cheeses (4.48 to 6.46). The :math:`T^2` limit bounds the joint distance from the
+centre of the model, not each measurement separately, so a corner of the region can sit a little
 outside the range of any one measurement.
+
+Both the region and the box it is reported as can be drawn.
+
+.. code-block:: python
+
+	corners = np.array(np.meshgrid(*zip(region.min(), region.max()))).reshape(3, -1).T
+	corner_taste = pls.predict(pd.DataFrame(corners, columns=x_columns)).to_numpy().ravel()
+	print(np.sort(corner_taste).round(1))
+	# [11.7 15.9 19.7 23.9 26.  30.2 34.  38.2]
+
+	fig = go.Figure()
+	fig.add_scatter3d(x=region["Acetic"], y=region["H2S"], z=region["Lactic"],
+	                  mode="markers", marker={"size": 2, "color": "orange", "opacity": 0.3})
+	fig.add_scatter3d(x=corners[:, 0], y=corners[:, 1], z=corners[:, 2], mode="markers+text",
+	                  text=[f"{t:.0f}" for t in corner_taste], marker={"size": 5, "color": "darkred"})
+	fig.update_layout(scene={"xaxis_title": "Acetic", "yaxis_title": "H2S",
+	                         "zaxis_title": "Lactic"})
+	fig.show()
+
+.. _LVM-PLS-specification-region-figure:
+
+.. figure:: ../../figures/pls/pls-specification-region.png
+	:alt: The specification region in the score plot, and the same region inside the box of three ranges
+	:width: 720px
+	:align: center
+
+	Left: sweeping the target taste from 20 to 30 sweeps its null space across the score plot, and the
+	95% :math:`T^2` limit closes the region off along the other direction. Right: the same region in the
+	three inputs, with the box of three ranges drawn around it. The region is flat, because every point
+	on it is rebuilt from two scores, while the box is a solid. Each corner is labelled with the taste
+	it is predicted to have.
+
+The eight corners make the difference concrete. Every one of them satisfies all three ranges, since
+each coordinate is either the reported minimum or the reported maximum, and not one of them predicts an
+acceptable taste: they run from 11.7 to 38.2, against a window of 20 to 30. Three ranges are the
+smallest box that contains the region, and a box that contains a flat, slanted set is mostly not that
+set. This is why a multivariate specification is stated as a region rather than as a table of limits
+per input: the limits are a summary of the region, and reading them as though they were the
+specification accepts lots the model would reject.
 
 Inversion is not the only route to a specification region. The inputs can also be mapped directly into a
 region without inverting a model, an approach known as direct mapping. Paris and co-workers (2021)
