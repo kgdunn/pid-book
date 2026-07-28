@@ -1068,10 +1068,7 @@ Suppose a taste between 20 and 30 is acceptable.
 A cheese whose inputs fall in this region is predicted to have an acceptable taste. Note that these
 minima and maxima are the box that encloses the region, not the region itself. The region is a slanted
 band in the three inputs, so a lot may sit inside every one of the three ranges while still lying
-outside the band. Note also that the enclosing box reaches slightly past the observed range of acetic
-acid in the training cheeses (4.48 to 6.46). The :math:`T^2` limit bounds the joint distance from the
-centre of the model, not each measurement separately, so a corner of the region can sit a little
-outside the range of any one measurement.
+outside the band.
 
 Both the region and the box it is reported as can be drawn.
 
