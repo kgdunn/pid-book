@@ -10,6 +10,12 @@ solve for the inputs that would achieve it. Finding the inputs that give a chose
 MacGregor, 2000
 <https://literature.learnche.org/item/180/industrial-applications-of-product-design-through-the-inversion-of-latent-variable-models>`_).
 
+The answer turns out not to be a single set of inputs but a whole set of them. The freedom to choose
+among them lives in a part of the model that is often set aside: the systematic variation the model
+captures and then finds has no bearing on the response. It is usually filtered out to make a model
+easier to read. For these cheeses it is 18.3% of the variation in the inputs, none of which moves the
+taste.
+
 We will use the same :ref:`cheddar-cheese data <LVM-cheddar-cheese-example>` as before: the taste of a
 cheese predicted from three inputs, acetic acid, hydrogen sulfide, and lactic acid. The forward
 question was "what taste do these inputs give?" The inversion question is "which inputs give a
@@ -407,14 +413,27 @@ We can confirm both the slope and the perpendicularity from the fitted model.
 	print(g.round(3))                      # [0.433 0.902], the null-space direction
 	print(round(float(g @ q), 12))         # 0.0, the direction is perpendicular to q
 
-The direct-inversion solution fits the same picture. It is
-:math:`\boldsymbol{\tau}_\text{DI} = y_\text{des}\, \mathbf{q} / (\mathbf{q}^T\mathbf{q})`, which points
-along :math:`\mathbf{q}` itself, so it is the point where a perpendicular dropped from the origin meets
-the line. Here it is :math:`(-0.253, 0.121)`, pointing opposite to :math:`\mathbf{q}` because the
-requested taste of 20.9 sits below the training average of 23.7.
+The particular solution the inversion returns is the shortest one, and the same picture shows where it
+comes from. Split any candidate :math:`\boldsymbol{\tau}` into a part along :math:`\mathbf{q}` and a
+part perpendicular to it. The perpendicular part contributes nothing to the prediction, since
+:math:`\hat{y} = \mathbf{q}^T \boldsymbol{\tau}` ignores it, but it does add to the length of
+:math:`\boldsymbol{\tau}`. The shortest solution therefore carries no perpendicular part at all, which
+is to say it lies along :math:`\mathbf{q}`. Writing it as
+:math:`\boldsymbol{\tau} = c\, \mathbf{q}` and requiring
+:math:`\mathbf{q}^T \boldsymbol{\tau} = y_\text{des}` gives
+:math:`c\, \mathbf{q}^T \mathbf{q} = y_\text{des}`, so that
 
-That perpendicularity is also what makes it the solution of smallest score norm, once we notice what
-the score norm measures. The norm :math:`\|\boldsymbol{\tau}\|` is the distance from the origin of the
+.. math::
+
+	\boldsymbol{\tau}_\text{DI} = \frac{y_\text{des}\, \mathbf{q}}{\mathbf{q}^T \mathbf{q}}
+
+Geometrically that is the point where a perpendicular dropped from the origin meets the line. Here
+:math:`\mathbf{q}^T \mathbf{q} = 0.367` and :math:`y_\text{des} = -0.17`, which gives
+:math:`\boldsymbol{\tau}_\text{DI} = (-0.253, 0.121)`. It points opposite to :math:`\mathbf{q}` because
+the requested taste of 20.9 sits below the training average of 23.7.
+
+Calling it the smallest-norm solution takes two further steps that are easy to skip. The norm
+:math:`\|\boldsymbol{\tau}\|` is the distance from the origin of the
 score plot out to the point, so asking for the smallest norm is asking which design on the null-space
 line sits closest to the origin. Writing a general solution as
 :math:`\boldsymbol{\tau}_\text{DI} + s\,\mathbf{g}`, for a step of size :math:`s` along the unit
