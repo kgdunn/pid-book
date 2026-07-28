@@ -907,9 +907,11 @@ representative points on it: PLS the point of smallest score norm, O-PLS the poi
 score is zero. Written as unit vectors in the inputs both bases come out as
 :math:`(0.948,\ -0.238,\ 0.211)`, with a cosine of 1.0 between them. This is what the green circles in
 the :ref:`score plot <LVM-PLS-null-space-figure>` show: the orthogonal space projected into the PLS
-score plot, lying on the orange null-space line. The two approaches differ in bookkeeping rather than in
-what they find. PLS solves for the freedom after the fact and hands it back as a null-space basis;
-O-PLS sets it aside during fitting and hands it back as a coordinate axis.
+score plot, lying on the orange null-space line.
+
+What neither method settles is which point on that line to build. Every design on it predicts the same
+taste, and the model has nothing further to say about them. Choosing between them means asking a
+different question: how far each one sits from the cheeses the model was built on.
 
 .. _LVM-PLS-inversion-in-practice:
 
