@@ -661,9 +661,17 @@ the weight is therefore the part of the variation that travelled with the score 
 taste.
 
 That difference is simpler to write down than it looks. For every PLS component the weight and its own
-loading satisfy :math:`\mathbf{w}_a^T \mathbf{p}_a = 1`, which follows by substituting
-:math:`\mathbf{p}_a = \mathbf{X}^T \mathbf{t}_a / (\mathbf{t}_a^T \mathbf{t}_a)` and
-:math:`\mathbf{t}_a = \mathbf{X} \mathbf{w}_a` and cancelling. Taking away from the loading the part
+loading satisfy :math:`\mathbf{w}_a^T \mathbf{p}_a = 1`:
+
+.. math::
+
+	\mathbf{w}_a^T \mathbf{p}_a
+	  = \mathbf{w}_a^T \left( \frac{\mathbf{X}^T \mathbf{t}_a}{\mathbf{t}_a^T \mathbf{t}_a} \right)
+	  = \frac{\left(\mathbf{X} \mathbf{w}_a\right)^T \mathbf{t}_a}{\mathbf{t}_a^T \mathbf{t}_a}
+	  = \frac{\mathbf{t}_a^T \mathbf{t}_a}{\mathbf{t}_a^T \mathbf{t}_a}
+	  = 1
+
+Taking away from the loading the part
 of it that lies along the weight therefore leaves a plain subtraction, and what is left is exactly
 perpendicular to the weight:
 
