@@ -4,28 +4,32 @@
 
 # The part of the model you filter out
 
-Fit a PLS model and the write-up goes to the component that tracks the response. The rest, the
-systematic variation in the inputs that has nothing to do with the outcome, gets filtered away as a
-nuisance.
+Picture the prediction from your model as a hill standing over the space of inputs. Moving in some
+directions takes you uphill fast; moving in others barely changes your altitude at all. The steepest
+way up has a name in a PLS model: it is the vector of y-loadings.
 
-It is not a nuisance. And it has been discovered twice, by two communities solving two different
-problems.
+Now ask for a specific outcome. You are asking to stand at a specific height on that hill, and the
+set of points at one height is a contour line. Walk along the contour and your position changes while
+your altitude does not. Different inputs, same predicted result.
+
+That contour is the thing this post is about. It is real, it is useful, and in most write-ups it is
+the part that gets filtered out and called a nuisance.
 
 ## Run the model backwards
 
-Thirty cheddar cheeses, each measured for acetic acid, hydrogen sulfide and lactic acid, each given a
-taste score by a panel. The forward question is "what taste do these measurements imply?" The design
-question is the reverse: "which measurements would give me the taste I have chosen?" That is **model
-inversion**, and it goes back to Jaeckle and MacGregor (2000).
+The forward question is the ordinary one: given these measurements, what quality do we predict? The
+design question is the reverse: which measurements would give me the quality I have chosen? That is
+**model inversion**, and it goes back to Jaeckle and MacGregor (2000).
 
-The answer is not one recipe. It is a whole line of them, every one of which the model says will hit
-the target. Product designers call that line the **null space**.
+The answer is not one recipe. Fixing the target puts you on the contour, and every point on it is a
+recipe the model says will hit the target. Product designers call that line the **null space**.
 
-```python
-result = pls.invert(y_desired=20.9)
-result.x_new                 # {'Acetic': 5.52, 'H2S': 5.56, 'Lactic': 1.40}
-result.null_space_dimension  # 1, so this is one point on a line of answers
-```
+The algebra is one line. If a step in the scores leaves the prediction unchanged, then
+
+**q**ᵀ Δ**t** = 0
+
+The free directions are exactly the ones perpendicular to the gradient. Perpendicular to steepest
+ascent means along the contour, which is what the hill already told us.
 
 ## The same line, from the other side
 
@@ -34,14 +38,14 @@ the part that drives the response and the part that does not. That second piece 
 space**.
 
 García-Carrión and co-authors proved this year that, for a single response, the two are the same
-linear space. In the cheese model both come out as the same unit vector in the inputs,
-(0.948, -0.238, 0.211), with a cosine of 1.0 between them. One geometry, named twice.
+linear space. Inverting a PLS model and fitting an O-PLS model give the same direction, to numerical
+precision. One geometry, discovered twice by two communities solving two different problems.
 
 ## Why the leftover is worth having
 
-For these cheeses the orthogonal piece carries **18.3% of the variation in the inputs and contributes
-exactly nothing to the predicted taste**. Not a rounding error, and not noise: systematic variation
-with no effect on the outcome.
+In the cheddar-cheese example from the book, the orthogonal piece carries **18.3% of the variation in
+the inputs and contributes nothing at all to the predicted taste**. Not a rounding error, and not
+noise: systematic variation with no effect on the outcome.
 
 That buys two things.
 
@@ -51,21 +55,21 @@ you what you do not have to control tightly.
 **Alternatives.** Many recipes, one outcome. The freedom is yours to spend on cost, safety,
 availability, or anything else the model never saw.
 
-Widen the target from a point to a range and the line becomes a region: a multivariate specification.
-That is how you judge an incoming lot, transfer a product between sites, or state a design space.
+Widen the target from a point to a range and the contour sweeps out a region: a multivariate
+specification. That is how you judge an incoming lot, transfer a product between sites, or state a
+design space.
 
-One thing to watch. Report that region as one range per input and you have described a box, not the
-region. In the cheese example all eight corners of that box satisfy every one of the three ranges, and
-not one of them is an acceptable lot. Six predict a taste outside the window. The other two predict a
-perfectly good taste from a recipe far outside anything the data support.
+One thing to watch. Report that region as one acceptable range per input and you have described a
+box, not the region. The region is a thin slanted slice through that box. In the cheese example every
+single corner of the box satisfies all three ranges, and not one of them is a lot you would accept.
 
 ## The caveat that keeps it useful
 
-The direction of that line is estimated, and often poorly. Refitting the cheese model on bootstrap
-resamples, the null space sits a median of 21 degrees away from the reported direction, and beyond 45
-degrees in 15% of resamples. The inverted *point* holds up well. The *direction* does not.
+The direction of the contour is estimated, and often poorly. Refit the cheese model on bootstrap
+resamples and the null space typically lands about 20 degrees away from the direction the full data
+set reports. The inverted *point* holds up well. The *direction* does not.
 
-So design at the solution with reasonable confidence, and treat a long walk along the line as
+So design at the solution with reasonable confidence, and treat a long walk along the contour as
 something to re-check on a refitted model before acting on it.
 
 ## Try it
