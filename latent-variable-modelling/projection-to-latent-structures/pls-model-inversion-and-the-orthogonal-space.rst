@@ -103,12 +103,12 @@ toward a middling one.
 	x_columns = ["Acetic", "H2S", "Lactic"]
 
 	train = cheese.iloc[4:]        # cheeses 5 to 30: used to build the model
-	holdout = cheese.iloc[:4]      # cheeses 1 to 4: the targets we design toward
+	holdout = cheese.iloc[:4]      # cheeses 1 to 4: the design targets
 	X = train[x_columns]
 	Y = train[["Taste"]]
 
 	pls = PLS(n_components=2).fit(X, Y)
-	print(round(float(pls.r2_cumulative_.iloc[-1]), 3))   # R2 on Taste: 0.672
+	print(pls.r2_cumulative_.iloc[-1])   # R2 on Taste: 0.672
 
 It explains about 67% of the variation in Taste, which is enough for what follows: the null space is a
 property of the model's geometry rather than of its predictive accuracy. That geometry is itself
@@ -128,24 +128,24 @@ predicts will give that taste.
 	result = pls.invert(y_desired=20.9)
 
 	print(result.x_new.round(2).to_dict())
-	# {'Acetic': 5.52, 'H2S': 5.56, 'Lactic': 1.4}
+	# {'Acetic': 5.52, 'H2S': 5.56, 'Lactic': 1.40}
 	print(result.null_space_dimension)        # 1
 
 	# Compare the designed inputs with what cheese 2 actually was.
 	actual = holdout[x_columns].iloc[1]
 	for label, inputs in [("Actual", actual), ("Predicted", result.x_new)]:
 	    d = pls.diagnose(inputs.to_frame().T)
-	    print(f"{label}: T2 = {float(d.hotellings_t2.iloc[0]):.2f}, "
-	          f"SPE = {float(d.spe.iloc[0]):.2f}")
+	    print(f"{label}: T2 = {d.hotellings_t2.iloc[0]:.2f}, "
+	          f"SPE = {d.spe.iloc[0]:.2f}")
 	# Actual: T2 = 0.21, SPE = 0.68
 	# Predicted: T2 = 0.06, SPE = 0.00
 
-A recipe comes back, which is unremarkable. The second line is the interesting one. The null space has
-dimension 1, which is the model saying that this is not *the* answer but one point on a line of
-answers. Two score directions, one target: the target fixes one of them and leaves the other free.
-Anything we do along that free direction changes the recipe while leaving the prediction exactly where
-it was. That free direction is the *null space*, and its dimension is the number of components minus
-the rank of the response, here :math:`2 - 1 = 1`.
+A recipe comes back, which is unremarkable. It is ``null_space_dimension``, printed on the line after
+it, that is interesting. The null space has dimension 1, which is the model saying that this is not
+*the* answer but one point on a line of answers. Two score directions, one target: the target fixes
+one of them and leaves the other free. Anything we do along that free direction changes the recipe
+while leaving the prediction exactly where it was. That free direction is the *null space*, and its
+dimension is the number of components minus the rank of the response, here :math:`2 - 1 = 1`.
 
 We can walk along it by passing coordinates along its basis. Stepping one unit either way:
 
@@ -153,7 +153,7 @@ We can walk along it by passing coordinates along its basis. Stepping one unit e
 
 	for step in (-1.0, 1.0):
 	    moved = pls.invert(y_desired=20.9, null_space_coordinates=[step])
-	    taste = float(pls.predict(moved.x_new.to_frame().T).iloc[0, 0])
+	    taste = pls.predict(moved.x_new.to_frame().T).iloc[0, 0]
 	    print(moved.x_new.round(2).to_list(), "->", round(taste, 2))
 	# [4.95, 6.10, 1.33] -> 20.9
 	# [6.09, 5.02, 1.46] -> 20.9
@@ -163,20 +163,20 @@ Collecting those points, and putting the measured cheese alongside for compariso
 .. code-block:: python
 
 	scaler = MCUVScaler().fit(X)
-	a = scaler.transform(actual.to_frame().T).iloc[0]           # actual, in std deviations
+	a = scaler.transform(actual.to_frame().T).iloc[0]   # in std deviations
 
 	designs = {
 	    "Actual": actual,
-	    "Predicted at step -1": pls.invert(20.9, null_space_coordinates=[-1.0]).x_new,
+	    "Predicted at step -1": pls.invert(20.9, null_space_coordinates=[-1]).x_new,
 	    "Predicted at step 0": result.x_new,
-	    "Predicted at step +1": pls.invert(20.9, null_space_coordinates=[+1.0]).x_new,
+	    "Predicted at step +1": pls.invert(20.9, null_space_coordinates=[+1]).x_new,
 	}
 	for label, inputs in designs.items():
 	    d = pls.diagnose(inputs.to_frame().T)
 	    v = scaler.transform(inputs.to_frame().T).iloc[0]
 	    print(f"{label:<22}{inputs.round(2).to_list()}  "
-	          f"T2 = {float(d.hotellings_t2.iloc[0]):.2f}, SPE = {float(d.spe.iloc[0]):.2f}, "
-	          f"deviation = {float(((a - v) ** 2).sum()):.2f}")
+	          f"T2 = {d.hotellings_t2.iloc[0]:.2f}, SPE = {d.spe.iloc[0]:.2f}, "
+	          f"deviation = {((a - v) ** 2).sum():.2f}")
 
 .. _LVM-PLS-null-space-steps-table:
 
@@ -229,8 +229,8 @@ Read down the three designs and the inputs move substantially. Acetic acid climb
 while hydrogen sulfide falls from 6.10 to 5.02, with lactic acid rising slightly. These are not small
 adjustments, and yet every one of the three still reaches a taste of 20.9. That is the practical
 content of the null space: if several recipes all hit the target, we are free to choose among them on
-grounds the model never saw, such as cost, supplier availability, or whichever raw material happens to
-be in the yard this week. This same trade-off comes back when we reach
+grounds the model never saw, such as cost, safety, or whichever raw material happens to be
+available. This same trade-off comes back when we reach
 :ref:`O-PLS <LVM-PLS-orthogonal-space>` below, where it appears directly as one of the model's axes.
 
 Two columns need reading carefully. The SPE of exactly zero is a property of the arithmetic, not a
@@ -244,14 +244,12 @@ gap.
 the calibration data. Step 0, the direct-inversion solution, has the smallest at 0.06; stepping either
 way moves the design outward, to 1.63 and 2.44. The freedom along the null space is free in terms of
 predicted taste, but not in terms of how much the data support the design. All rows sit well inside the
-99% limits of :math:`T^2 = 12.14` and :math:`\text{SPE} = 1.60`, which are the limits for a *new*
-observation rather than for one of the 26 that built the model: the right choice when judging a
-proposed design rather than summarising a calibration one.
+99% limits of :math:`T^2` and SPE.
 
 .. _LVM-PLS-input-space-deviation:
 
 One quantity is worth defining now, because it recurs. Comparing recipes in raw units is hard to read:
-a gap of 0.5 in hydrogen sulfide does not mean what a gap of 0.5 in lactic acid means. Centring and
+a gap of 0.5 in hydrogen sulfide is not the same as a gap of 0.5 in lactic acid. Centring and
 scaling each input puts them on a common footing where one unit is one standard deviation, and the sum
 of squared differences in those units is the *input-space deviation*. For cheese 2 against its design
 it is 0.66, so the held-out cheese sits about 0.8 standard deviations from the proposed recipe.
@@ -374,10 +372,10 @@ We can confirm both the slope and the perpendicularity from the fitted model.
 .. code-block:: python
 
 	q = pls.y_loadings_.to_numpy().ravel()
-	print(q.round(3))                      # [ 0.546 -0.262]
-	print(round(-q[0] / q[1], 2))          # 2.08, the slope of the line
-	print(g.round(3))                      # [0.433 0.902], the null-space direction
-	print(round(float(g @ q), 12))         # 0.0, the direction is perpendicular to q
+	print(q)                       # [0.546 -0.262]
+	print(-q[0] / q[1])            # 2.08, the slope of the line
+	print(g)                       # [0.433 0.902], the null-space direction
+	print(round(g @ q, 12))        # 0.0: g is perpendicular to q
 
 The particular solution the inversion returns is the shortest one, and the same picture shows where it
 comes from. Split any candidate :math:`\boldsymbol{\tau}` into a part along :math:`\mathbf{q}` and a
@@ -441,8 +439,8 @@ along the null space costs.
 	                  yaxis_title="squared distance from the model centre")
 	fig.show()
 
-	print(sf.round(3))                                        # [1.468 0.657]
-	print(round(-float((tau / sf**2) @ g) / float((g / sf**2) @ g), 3))
+	print(sf)                                     # [1.468 0.657]
+	print(-(tau / sf**2) @ g / ((g / sf**2) @ g))  # -0.103
 	# -0.103, the step at which T2 is least
 
 .. _LVM-PLS-null-space-distance-figure:
@@ -467,10 +465,7 @@ counts for more in :math:`T^2` than in the plain norm, and the null-space direct
 
 The distinction is worth keeping straight, because it says what the direct-inversion solution does and
 does not give. It is the smallest-norm design, exactly. It is not quite the design of smallest
-:math:`T^2`: a step of :math:`-0.103` would reach :math:`T^2 = 0.043` rather than 0.064. The gap is
-small here and the direct-inversion solution is still the closest of the three tabulated steps, but the
-two criteria are different questions and a model with more unequal score spreads would separate them
-further.
+:math:`T^2`.
 
 Two further points are worth making. First, the perpendicularity is a statement about the score
 coordinates, so it reads as a right angle on the page only when both axes are drawn to the same scale, as
@@ -502,44 +497,59 @@ space rests on the second :math:`y`-loading, :math:`q_2 = -0.262`. That componen
 cross-validation did not keep. It adds 3.0% to :math:`R^2Y`, against 64.3% for the first. It is worth
 asking how much of the geometry survives if the 26 cheeses had come out slightly differently.
 
-Refitting the model on bootstrap resamples of the calibration set answers that directly.
+Refitting the model on bootstrap resamples of the calibration set answers that directly. One step in
+the loop below is worth explaining first. A PLS component carries no inherent sign: negating
+:math:`\mathbf{w}_a`, :math:`\mathbf{p}_a`, :math:`\mathbf{t}_a` and :math:`q_a` together leaves the
+predictions and the geometry exactly as they were, and which of the two versions the algorithm returns
+depends on the sample it was given. Coordinates can only be compared across refits once that
+convention is fixed, by aligning each refit's components with those of the model fitted to all 26
+cheeses.
+
+Quantities that are already free of sign need no such care. The angle below is measured between lines
+in the input space, where a flip of :math:`\mathbf{p}_a` cancels against the flip of the null-space
+coordinate multiplying it, so the alignment leaves those numbers untouched.
 
 .. code-block:: python
 
 	rng = np.random.default_rng(0)
 	reference = np.array([0.948, -0.238, 0.211])         # the direction reported below
 	reference = reference / np.linalg.norm(reference)
+	w_full = pls.x_weights_.to_numpy()                   # the sign convention to match
 
 	q2, slopes, angles, designs, boot_lines = [], [], [], [], []
 	for _ in range(2000):
 	    sample = train.iloc[rng.integers(0, len(train), len(train))]
 	    boot = PLS(n_components=2).fit(sample[x_columns], sample[["Taste"]])
-	    q_b = boot.y_loadings_.to_numpy().ravel()
+	    flip = np.sign((boot.x_weights_.to_numpy() * w_full).sum(axis=0))
+	    q_b = boot.y_loadings_.to_numpy().ravel() * flip
 	    q2.append(q_b[1])
 	    slopes.append(-q_b[0] / q_b[1])
 
 	    result_b = boot.invert(20.9)
 	    designs.append(result_b.x_new.to_numpy())
-	    boot_lines.append((result_b.scores.to_numpy(),
-	                       result_b.null_space_basis.to_numpy().ravel()))
-	    d = result_b.null_space_basis.to_numpy().ravel() @ boot.x_loadings_.to_numpy().T
+	    g_b = result_b.null_space_basis.to_numpy().ravel()
+	    boot_lines.append((result_b.scores.to_numpy() * flip, g_b * flip))
+	    d = g_b @ boot.x_loadings_.to_numpy().T
 	    d = d / np.linalg.norm(d)
 	    # A direction and its negative describe the same line, so compare without sign.
 	    angles.append(np.degrees(np.arccos(np.clip(abs(d @ reference), 0, 1))))
 
-	print(np.percentile(q2, [2.5, 97.5]).round(3))        # [-0.56   0.377]
-	print(round(float(np.mean(np.array(q2) > 0)), 3))     # 0.244, the share that change sign
-	print(np.percentile(slopes, [2.5, 97.5]).round(2))    # [-5.09  6.13]
-	print(np.percentile(angles, [50, 90, 95]).round(1))   # [20.6 54.4 68.3]
-	print(round(float(np.mean(np.array(angles) > 45)), 2))  # 0.15
+	print(np.percentile(q2, [2.5, 97.5]))       # [-0.573 0.112]
+	print(np.mean(np.array(q2) > 0))       # 0.044, the share that change sign
+	print(np.percentile(slopes, [2.5, 97.5]))   # [-3.78 6.41]
+	print(np.percentile(angles, [50, 90, 95]))  # [20.6 54.4 68.3]
+	print(np.mean(np.array(angles) > 45))       # 0.15
 	print(np.percentile(designs, [2.5, 97.5], axis=0).round(2))
 	# [[5.24 4.97 1.3 ]
 	#  [5.74 6.26 1.49]]
 
-The direction is poorly determined. A 95% bootstrap interval for :math:`q_2` runs from
-:math:`-0.56` to :math:`+0.38`, so it straddles zero, and in 24% of the resamples it changes sign. The
-slope of the null-space line is a ratio with that near-zero quantity in the denominator, so its
-interval, :math:`-5.1` to :math:`+6.1`, is wide enough to be of little use. Read as a line in the
+That alignment matters here: the second component comes back reversed in a quarter of the refits, and
+without the correction each of those would be counted as a disagreement it is not.
+
+The direction is poorly determined even so. A 95% bootstrap interval for :math:`q_2` runs from
+:math:`-0.573` to :math:`+0.112`, so it straddles zero, and 4% of the resamples place it on the far
+side. The slope of the null-space line is a ratio with that near-zero quantity in the denominator, so
+its interval, :math:`-3.8` to :math:`+6.4`, is wide enough to be of little use. Read as a line in the
 inputs, the resampled null space sits a median of 21 degrees away from the direction reported here, and
 more than 45 degrees away in 15% of the resamples.
 
@@ -581,18 +591,12 @@ plotting all 2000 of them faintly enough to overlap turns the spread into a dens
 That pinch is the point-and-direction asymmetry in one picture. The refits nearly agree on where the
 solution sits, and disagree widely on which way the line runs through it.
 
-So the two statements this section makes are not equally firm. That a set of inputs reaching a target
-taste exists, and roughly where it sits, is supported by these data. Which direction one may then walk
-without changing the prediction is not pinned down by 26 cheeses and a component that
-cross-validation set aside. The null space is exactly what the algebra says it is for a *given* model;
-what the algebra cannot supply is certainty that this model's second component points where the next
-26 cheeses would point it. The numbers in this section are quoted to three decimals because that is
-what the arithmetic returns, not because the data support that precision.
-
-None of this makes the geometry wrong or the method unusable. It sets the terms on which to use it: a
-design proposed at the direct-inversion solution rests on firmer ground than one reached by a long walk
-along the null space, and a walk of any length is worth repeating on a refitted model before it is
-acted on.
+The geometry itself is not in question: for a given model the null space is exactly what the algebra
+says it is. What these 26 cheeses settle is a different matter, and they settle it unevenly. Where the
+design sits, they support; which way the line runs through it, they do not. That sets the terms on
+which the method is used rather than ruling it out. Design at the direct-inversion solution and the
+ground is firm. Walk a long way along the null space and it is worth refitting the model first, because
+the direction being walked is the part the data pin down least.
 
 .. _LVM-PLS-orthogonal-space:
 
@@ -696,13 +700,13 @@ The fitted model reports the two directions as ``opls.predictive_weights_`` and
 
 	opls = OPLS(n_orthogonal_components=1).fit(X, Y)
 
-	print(opls.predictive_weights_.round(3).to_numpy())           # [0.474 0.657 0.586]
-	print(opls.orthogonal_weights_.round(3).to_numpy().ravel())   # [ 0.808 -0.59   0.008]
-	print(opls.predictive_loadings_.round(3).to_numpy())          # [0.472 0.654 0.591]
+	print(opls.predictive_weights_)     # [0.474  0.657  0.586]
+	print(opls.orthogonal_weights_)     # [0.808 -0.590  0.008]
+	print(opls.predictive_loadings_)    # [0.472  0.654  0.591]
 
-	print(pls.x_weights_.to_numpy().round(3))    # the PLS weights, side by side
+	print(pls.x_weights_)               # the PLS weights, side by side
 	# [[ 0.474  0.808]
-	#  [ 0.657 -0.59 ]
+	#  [ 0.657 -0.590]
 	#  [ 0.586  0.008]]
 
 The predictive weight :math:`\mathbf{w}_\text{p} = (0.474, 0.657, 0.586)` has three positive entries of
@@ -729,16 +733,16 @@ The consequence shows up in the scores, not the weights.
 
 	for name, score in [("PLS 1", scores.iloc[:, 0]), ("PLS 2", scores.iloc[:, 1]),
 	                    ("O-PLS predictive", t_p), ("O-PLS orthogonal", t_o)]:
-	    print(name, round(float(np.corrcoef(score, y_centred)[0, 1]), 3))
+	    print(name, np.corrcoef(score, y_centred)[0, 1])
 	# PLS 1 0.802
 	# PLS 2 -0.172
 	# O-PLS predictive 0.82
 	# O-PLS orthogonal -0.0
 
-	print(round(float(np.corrcoef(t_p, scores.iloc[:, 0])[0, 1]), 3))   # 0.978
+	print(np.corrcoef(t_p, scores.iloc[:, 0])[0, 1])   # 0.978
 
-	print(pls.r2_cumulative_.round(3).to_list())                        # [0.642, 0.672]
-	print(round(float(np.corrcoef(t_p, y_centred)[0, 1]) ** 2, 3))      # 0.672
+	print(pls.r2_cumulative_)                         # [0.642, 0.672]
+	print(np.corrcoef(t_p, y_centred)[0, 1] ** 2)     # 0.672
 
 .. _LVM-PLS-score-correlation-table:
 
@@ -886,14 +890,14 @@ response.
 
 .. code-block:: python
 
-	print(opls_result.x_new.round(2).to_list())   # [5.46, 5.62, 1.39]
-	print(round(opls_result.y_hat, 2))            # 20.9
+	print(opls_result.x_new)   # [5.46, 5.62, 1.39]
+	print(opls_result.y_hat)   # 20.9
 
 	ns_input = result.null_space_basis.to_numpy().T @ pls.x_loadings_.to_numpy().T
 	os_input = opls_result.orthogonal_space_basis.to_numpy().T
 
-	print((ns_input / np.linalg.norm(ns_input)).round(3))    # [[ 0.948 -0.238  0.211]]
-	print((os_input / np.linalg.norm(os_input)).round(3))    # [[ 0.948 -0.238  0.211]]
+	print(ns_input / np.linalg.norm(ns_input))    # [0.948 -0.238 0.211]
+	print(os_input / np.linalg.norm(os_input))    # [0.948 -0.238 0.211]
 
 	cosine = np.abs(ns_input @ os_input.T).item() / (
 	    np.linalg.norm(ns_input) * np.linalg.norm(os_input)
@@ -944,7 +948,7 @@ deviation is a distance in the input space, measured between the two recipes the
 
 	rows = []
 	for i in range(len(holdout)):
-	    target = float(holdout["Taste"].iloc[i])
+	    target = holdout["Taste"].iloc[i]
 	    design = pls.invert(target)
 	    measured = holdout[x_columns].iloc[i]
 	    a = scaler.transform(measured.to_frame().T).iloc[0]
@@ -952,8 +956,8 @@ deviation is a distance in the input space, measured between the two recipes the
 	    rows.append({
 	        "Taste": target,
 	        "T2 design": design.hotellings_t2,          # the proposed recipe
-	        "T2 cheese": float(pls.diagnose(measured.to_frame().T).hotellings_t2.iloc[0]),
-	        "Input dev": float(((a - p) ** 2).sum()),   # between the two recipes
+	        "T2 cheese": pls.diagnose(measured.to_frame().T).hotellings_t2.iloc[0],
+	        "Input dev": ((a - p) ** 2).sum(),   # between the two recipes
 	    })
 
 	print(pd.DataFrame(rows).round(2))
@@ -1060,7 +1064,7 @@ Suppose a taste between 20 and 30 is acceptable.
 
 	region = pd.DataFrame(region)
 	print(round(t2_limit, 2))                        # 7.36
-	print(len(region))                               # 415 of the 550 inversions are kept
+	print(len(region))          # 415 of the 550 inversions are kept
 	print(region.agg(["min", "max"]).round(2))
 	#      Acetic   H2S  Lactic
 	# min    4.38  4.44    1.25
@@ -1112,8 +1116,9 @@ Both the region and the box it is reported as can be drawn.
 	plot can be followed to the recipe it stands for: the four corners of the region, where the outer
 	null spaces meet the :math:`T^2` limit, and its centre, the direct-inversion solution for a taste of
 	25. Colour gives the target taste, and the triangle points down at the low end of that taste's null
-	space and up at the high end. Each corner of the box carries the taste it is predicted to have, dark red where that taste is
-	outside the window and blue where it is acceptable but the recipe lies beyond the :math:`T^2` limit.
+	space and up at the high end. Each corner of the box carries the taste it is predicted to have, dark
+	red where that taste is outside the window and blue where it is acceptable but the recipe lies beyond
+	the :math:`T^2` limit.
 
 The eight corners make the difference concrete. Every one of them satisfies all three ranges, since
 each coordinate is either the reported minimum or the reported maximum, and not one of them is an
@@ -1158,7 +1163,8 @@ properties give a solvent with a chosen :math:`\log P` and solubility.
 
 	print(design.null_space_dimension)          # 1
 	print(round(design.hotellings_t2, 2))       # 2.46
-	print(model.predict(design.x_new.to_frame().T).round(2).to_dict("records")[0])
+	prediction = model.predict(design.x_new.to_frame().T)
+	print(prediction.round(2).to_dict("records")[0])
 	# {'logP': 0.5, 'Solubility': 0.0}
 
 Two things change with two responses. First, the target now pins down two score directions instead of
