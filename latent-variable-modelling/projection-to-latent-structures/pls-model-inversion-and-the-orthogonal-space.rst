@@ -249,7 +249,7 @@ predicted taste, but not in terms of how much the data support the design. All r
 .. _LVM-PLS-input-space-deviation:
 
 One quantity is worth defining now, because it recurs. Comparing recipes in raw units is hard to read:
-a gap of 0.5 in hydrogen sulfide does not mean what a gap of 0.5 in lactic acid means. Centring and
+a gap of 0.5 in hydrogen sulfide is not the same as a gap of 0.5 in lactic acid. Centring and
 scaling each input puts them on a common footing where one unit is one standard deviation, and the sum
 of squared differences in those units is the *input-space deviation*. For cheese 2 against its design
 it is 0.66, so the held-out cheese sits about 0.8 standard deviations from the proposed recipe.
