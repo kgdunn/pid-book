@@ -10,14 +10,14 @@ content of a cheese and it tells you what the tasting panel will say.
 Turn it around and you get the question people actually have. Not "what will this taste like?" but
 "what should I make so that it tastes like this?"
 
-That reversal has a name, **model inversion**, and it goes back to Jaeckle and MacGregor in 2000. What
-surprises people is not that it works. It is what comes back.
+That reversal has a name, **model inversion**, and it goes back to Jaeckle and MacGregor in 2000. It
+works. What surprises people is what comes back.
 
-## The answer is not a recipe. It is a set of them.
+## One target, many recipes
 
-Ask a fitted model for the inputs that give a chosen quality and it does not hand you one recipe. It
-hands you a line of them. Every point on that line is a different set of inputs, and every point
-predicts exactly the target you asked for.
+Ask a fitted model for the inputs that give a chosen quality and it hands you a whole line of recipes.
+Every point on that line is a different set of inputs, and every point predicts exactly the target you
+asked for.
 
 Picture the prediction as a hill standing over the space of your inputs. Some directions take you
 uphill quickly. Asking for a specific outcome is asking to stand at a specific height, and the set of
@@ -27,13 +27,15 @@ altitude does not. Different inputs, same predicted result.
 ![The null space in the score plot](../../figures/pls/pls-model-inversion-null-space.png)
 
 In the cheddar-cheese example from the book, 18.3% of everything that varies in the three inputs moves
-you along that contour and changes the predicted taste not at all. That is not noise, and not a
-rounding error. It is systematic, repeatable variation with no bearing on the outcome.
+you along that contour and doesn't change the predicted taste. That variation is systematic and
+repeatable, well beyond anything measurement noise would account for, and it has no bearing on the
+outcome.
 
 It is worth having, twice over. It tells you what you do not have to control tightly. And it means the
-model has handed you a choice: many recipes reach the target, so you spend the difference on cost, on
-safety, on whichever raw material you can actually get this week. The model never saw those concerns
-and does not need to.
+model has handed you a choice: many recipes reach the target, so you can make additional choices based
+on safety, costs, whichever raw material you can actually get this week, alternatives suited to
+regional preferences and regulations, process robustness, and so on. The model never saw those
+concerns and does not need to.
 
 ## Two fields found it, and gave it two names
 
@@ -54,28 +56,24 @@ Widen the target from a number to a range and the contour sweeps out a region: t
 you would accept. That is what a specification is.
 
 So write that region down the way specifications are usually written, as an acceptable range for each
-input, one line each. Entirely reasonable, and it is easy to show what it costs.
+input.
 
 ![The specification region, and the box of three ranges around it](../../figures/pls/pls-specification-region.png)
 
 The region is a thin slanted slice. A list of ranges describes the box around it. In the cheese
-example, every one of the eight corners of that box sits inside all three ranges, and not one of them
-is a lot you would accept. Six would taste wrong. The other two would taste fine, but nothing
-resembling them has ever been made, so the model carries no evidence about them at all.
+example, every one of the eight corners of that box sits inside all three ranges, however not one of
+them is a lot you would accept. Showing once again that with multivariate systems, the process moves
+within a smaller embedded subspace.
 
-Every corner satisfies the specification as written. Not one of them is acceptable.
+## One realization of many
 
-## The part that is not in the theory
+Equally interesting when inverting is to refit your model many times, in a bootstrap manner. Doing
+this shows where your designs sit, but also where they could possibly have sat.
 
-One caveat does not come out of the algebra, so we went looking for it.
+![Left panel only: the null space from each of 2000 refits of the model](../../figures/pls/pls-null-space-bootstrap.png)
 
-The line is exactly what the algebra says it is, for a given model. But the model came from data, and
-if you refit it on resampled data the line pivots. It typically lands about twenty degrees away from
-the one your model reported. Its starting point barely moves at all.
-
-The two things inversion tells you are therefore not equally firm. Where the design sits, the data
-support. Which way you may walk from it, they largely do not. Design at the solution and the ground is
-firm; take a long walk along the freedom and it is worth refitting the model first.
+So take a walk along your contours, but recognize it is just one realization of many potential
+options.
 
 ## Read the chapter
 
