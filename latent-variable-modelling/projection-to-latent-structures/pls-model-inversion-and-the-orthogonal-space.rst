@@ -591,18 +591,12 @@ plotting all 2000 of them faintly enough to overlap turns the spread into a dens
 That pinch is the point-and-direction asymmetry in one picture. The refits nearly agree on where the
 solution sits, and disagree widely on which way the line runs through it.
 
-So the two statements this section makes are not equally firm. That a set of inputs reaching a target
-taste exists, and roughly where it sits, is supported by these data. Which direction one may then walk
-without changing the prediction is not pinned down by 26 cheeses and a component that
-cross-validation set aside. The null space is exactly what the algebra says it is for a *given* model;
-what the algebra cannot supply is certainty that this model's second component points where the next
-26 cheeses would point it. The numbers in this section are quoted to three decimals because that is
-what the arithmetic returns, not because the data support that precision.
-
-None of this makes the geometry wrong or the method unusable. It sets the terms on which to use it: a
-design proposed at the direct-inversion solution rests on firmer ground than one reached by a long walk
-along the null space, and a walk of any length is worth repeating on a refitted model before it is
-acted on.
+The geometry itself is not in question: for a given model the null space is exactly what the algebra
+says it is. What these 26 cheeses settle is a different matter, and they settle it unevenly. Where the
+design sits, they support; which way the line runs through it, they do not. That sets the terms on
+which the method is used rather than ruling it out. Design at the direct-inversion solution and the
+ground is firm. Walk a long way along the null space and it is worth refitting the model first, because
+the direction being walked is the part the data pin down least.
 
 .. _LVM-PLS-orthogonal-space:
 
