@@ -244,9 +244,7 @@ gap.
 the calibration data. Step 0, the direct-inversion solution, has the smallest at 0.06; stepping either
 way moves the design outward, to 1.63 and 2.44. The freedom along the null space is free in terms of
 predicted taste, but not in terms of how much the data support the design. All rows sit well inside the
-99% limits of :math:`T^2 = 12.14` and :math:`\text{SPE} = 1.60`, which are the limits for a *new*
-observation rather than for one of the 26 that built the model: the right choice when judging a
-proposed design rather than summarising a calibration one.
+99% limits of :math:`T^2` and SPE.
 
 .. _LVM-PLS-input-space-deviation:
 
