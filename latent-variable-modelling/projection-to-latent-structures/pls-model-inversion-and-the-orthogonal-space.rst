@@ -497,44 +497,59 @@ space rests on the second :math:`y`-loading, :math:`q_2 = -0.262`. That componen
 cross-validation did not keep. It adds 3.0% to :math:`R^2Y`, against 64.3% for the first. It is worth
 asking how much of the geometry survives if the 26 cheeses had come out slightly differently.
 
-Refitting the model on bootstrap resamples of the calibration set answers that directly.
+Refitting the model on bootstrap resamples of the calibration set answers that directly. One step in
+the loop below is worth explaining first. A PLS component carries no inherent sign: negating
+:math:`\mathbf{w}_a`, :math:`\mathbf{p}_a`, :math:`\mathbf{t}_a` and :math:`q_a` together leaves the
+predictions and the geometry exactly as they were, and which of the two versions the algorithm returns
+depends on the sample it was given. Coordinates can only be compared across refits once that
+convention is fixed, by aligning each refit's components with those of the model fitted to all 26
+cheeses.
+
+Quantities that are already free of sign need no such care. The angle below is measured between lines
+in the input space, where a flip of :math:`\mathbf{p}_a` cancels against the flip of the null-space
+coordinate multiplying it, so the alignment leaves those numbers untouched.
 
 .. code-block:: python
 
 	rng = np.random.default_rng(0)
 	reference = np.array([0.948, -0.238, 0.211])         # the direction reported below
 	reference = reference / np.linalg.norm(reference)
+	w_full = pls.x_weights_.to_numpy()                   # the sign convention to match
 
 	q2, slopes, angles, designs, boot_lines = [], [], [], [], []
 	for _ in range(2000):
 	    sample = train.iloc[rng.integers(0, len(train), len(train))]
 	    boot = PLS(n_components=2).fit(sample[x_columns], sample[["Taste"]])
-	    q_b = boot.y_loadings_.to_numpy().ravel()
+	    flip = np.sign((boot.x_weights_.to_numpy() * w_full).sum(axis=0))
+	    q_b = boot.y_loadings_.to_numpy().ravel() * flip
 	    q2.append(q_b[1])
 	    slopes.append(-q_b[0] / q_b[1])
 
 	    result_b = boot.invert(20.9)
 	    designs.append(result_b.x_new.to_numpy())
-	    boot_lines.append((result_b.scores.to_numpy(),
-	                       result_b.null_space_basis.to_numpy().ravel()))
-	    d = result_b.null_space_basis.to_numpy().ravel() @ boot.x_loadings_.to_numpy().T
+	    g_b = result_b.null_space_basis.to_numpy().ravel()
+	    boot_lines.append((result_b.scores.to_numpy() * flip, g_b * flip))
+	    d = g_b @ boot.x_loadings_.to_numpy().T
 	    d = d / np.linalg.norm(d)
 	    # A direction and its negative describe the same line, so compare without sign.
 	    angles.append(np.degrees(np.arccos(np.clip(abs(d @ reference), 0, 1))))
 
-	print(np.percentile(q2, [2.5, 97.5]))       # [-0.560 0.377]
-	print(np.mean(np.array(q2) > 0))       # 0.244, the share that change sign
-	print(np.percentile(slopes, [2.5, 97.5]))   # [-5.09 6.13]
+	print(np.percentile(q2, [2.5, 97.5]))       # [-0.573 0.112]
+	print(np.mean(np.array(q2) > 0))       # 0.044, the share that change sign
+	print(np.percentile(slopes, [2.5, 97.5]))   # [-3.78 6.41]
 	print(np.percentile(angles, [50, 90, 95]))  # [20.6 54.4 68.3]
 	print(np.mean(np.array(angles) > 45))       # 0.15
 	print(np.percentile(designs, [2.5, 97.5], axis=0).round(2))
 	# [[5.24 4.97 1.3 ]
 	#  [5.74 6.26 1.49]]
 
-The direction is poorly determined. A 95% bootstrap interval for :math:`q_2` runs from
-:math:`-0.56` to :math:`+0.38`, so it straddles zero, and in 24% of the resamples it changes sign. The
-slope of the null-space line is a ratio with that near-zero quantity in the denominator, so its
-interval, :math:`-5.1` to :math:`+6.1`, is wide enough to be of little use. Read as a line in the
+That alignment matters here: the second component comes back reversed in a quarter of the refits, and
+without the correction each of those would be counted as a disagreement it is not.
+
+The direction is poorly determined even so. A 95% bootstrap interval for :math:`q_2` runs from
+:math:`-0.573` to :math:`+0.112`, so it straddles zero, and 4% of the resamples place it on the far
+side. The slope of the null-space line is a ratio with that near-zero quantity in the denominator, so
+its interval, :math:`-3.8` to :math:`+6.4`, is wide enough to be of little use. Read as a line in the
 inputs, the resampled null space sits a median of 21 degrees away from the direction reported here, and
 more than 45 degrees away in 15% of the resamples.
 
