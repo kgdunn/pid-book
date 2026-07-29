@@ -140,12 +140,12 @@ predicts will give that taste.
 	# Actual: T2 = 0.21, SPE = 0.68
 	# Predicted: T2 = 0.06, SPE = 0.00
 
-A recipe comes back, which is unremarkable. The second line is the interesting one. The null space has
-dimension 1, which is the model saying that this is not *the* answer but one point on a line of
-answers. Two score directions, one target: the target fixes one of them and leaves the other free.
-Anything we do along that free direction changes the recipe while leaving the prediction exactly where
-it was. That free direction is the *null space*, and its dimension is the number of components minus
-the rank of the response, here :math:`2 - 1 = 1`.
+A recipe comes back, which is unremarkable. It is ``null_space_dimension``, printed on the line after
+it, that is interesting. The null space has dimension 1, which is the model saying that this is not
+*the* answer but one point on a line of answers. Two score directions, one target: the target fixes
+one of them and leaves the other free. Anything we do along that free direction changes the recipe
+while leaving the prediction exactly where it was. That free direction is the *null space*, and its
+dimension is the number of components minus the rank of the response, here :math:`2 - 1 = 1`.
 
 We can walk along it by passing coordinates along its basis. Stepping one unit either way:
 
@@ -229,8 +229,8 @@ Read down the three designs and the inputs move substantially. Acetic acid climb
 while hydrogen sulfide falls from 6.10 to 5.02, with lactic acid rising slightly. These are not small
 adjustments, and yet every one of the three still reaches a taste of 20.9. That is the practical
 content of the null space: if several recipes all hit the target, we are free to choose among them on
-grounds the model never saw, such as cost, supplier availability, or whichever raw material happens to
-be in the yard this week. This same trade-off comes back when we reach
+grounds the model never saw, such as cost, safety, or whichever raw material happens to be
+available. This same trade-off comes back when we reach
 :ref:`O-PLS <LVM-PLS-orthogonal-space>` below, where it appears directly as one of the model's axes.
 
 Two columns need reading carefully. The SPE of exactly zero is a property of the arithmetic, not a
