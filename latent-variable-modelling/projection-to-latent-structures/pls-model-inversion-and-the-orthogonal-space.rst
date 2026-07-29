@@ -108,7 +108,7 @@ toward a middling one.
 	Y = train[["Taste"]]
 
 	pls = PLS(n_components=2).fit(X, Y)
-	print(round(float(pls.r2_cumulative_.iloc[-1]), 3))   # R2 on Taste: 0.672
+	print(pls.r2_cumulative_.iloc[-1])   # R2 on Taste: 0.672
 
 It explains about 67% of the variation in Taste, which is enough for what follows: the null space is a
 property of the model's geometry rather than of its predictive accuracy. That geometry is itself
@@ -128,7 +128,7 @@ predicts will give that taste.
 	result = pls.invert(y_desired=20.9)
 
 	print(result.x_new.round(2).to_dict())
-	# {'Acetic': 5.52, 'H2S': 5.56, 'Lactic': 1.4}
+	# {'Acetic': 5.52, 'H2S': 5.56, 'Lactic': 1.40}
 	print(result.null_space_dimension)        # 1
 
 	# Compare the designed inputs with what cheese 2 actually was.
@@ -374,10 +374,10 @@ We can confirm both the slope and the perpendicularity from the fitted model.
 .. code-block:: python
 
 	q = pls.y_loadings_.to_numpy().ravel()
-	print(q.round(3))                      # [ 0.546 -0.262]
-	print(round(-q[0] / q[1], 2))          # 2.08, the slope of the line
-	print(g.round(3))                      # [0.433 0.902], the null-space direction
-	print(round(float(g @ q), 12))         # 0.0, the direction is perpendicular to q
+	print(q)                       # [0.546 -0.262]
+	print(-q[0] / q[1])            # 2.08, the slope of the line
+	print(g)                       # [0.433 0.902], the null-space direction
+	print(round(g @ q, 12))        # 0.0: g is perpendicular to q
 
 The particular solution the inversion returns is the shortest one, and the same picture shows where it
 comes from. Split any candidate :math:`\boldsymbol{\tau}` into a part along :math:`\mathbf{q}` and a
@@ -441,8 +441,8 @@ along the null space costs.
 	                  yaxis_title="squared distance from the model centre")
 	fig.show()
 
-	print(sf.round(3))                                        # [1.468 0.657]
-	print(round(-float((tau / sf**2) @ g) / float((g / sf**2) @ g), 3))
+	print(sf)                                     # [1.468 0.657]
+	print(-(tau / sf**2) @ g / ((g / sf**2) @ g))  # -0.103
 	# -0.103, the step at which T2 is least
 
 .. _LVM-PLS-null-space-distance-figure:
@@ -527,11 +527,11 @@ Refitting the model on bootstrap resamples of the calibration set answers that d
 	    # A direction and its negative describe the same line, so compare without sign.
 	    angles.append(np.degrees(np.arccos(np.clip(abs(d @ reference), 0, 1))))
 
-	print(np.percentile(q2, [2.5, 97.5]).round(3))        # [-0.56   0.377]
-	print(round(float(np.mean(np.array(q2) > 0)), 3))     # 0.244, the share that change sign
-	print(np.percentile(slopes, [2.5, 97.5]).round(2))    # [-5.09  6.13]
-	print(np.percentile(angles, [50, 90, 95]).round(1))   # [20.6 54.4 68.3]
-	print(round(float(np.mean(np.array(angles) > 45)), 2))  # 0.15
+	print(np.percentile(q2, [2.5, 97.5]))       # [-0.560 0.377]
+	print(np.mean(np.array(q2) > 0))       # 0.244, the share that change sign
+	print(np.percentile(slopes, [2.5, 97.5]))   # [-5.09 6.13]
+	print(np.percentile(angles, [50, 90, 95]))  # [20.6 54.4 68.3]
+	print(np.mean(np.array(angles) > 45))       # 0.15
 	print(np.percentile(designs, [2.5, 97.5], axis=0).round(2))
 	# [[5.24 4.97 1.3 ]
 	#  [5.74 6.26 1.49]]
@@ -696,13 +696,13 @@ The fitted model reports the two directions as ``opls.predictive_weights_`` and
 
 	opls = OPLS(n_orthogonal_components=1).fit(X, Y)
 
-	print(opls.predictive_weights_.round(3).to_numpy())           # [0.474 0.657 0.586]
-	print(opls.orthogonal_weights_.round(3).to_numpy().ravel())   # [ 0.808 -0.59   0.008]
-	print(opls.predictive_loadings_.round(3).to_numpy())          # [0.472 0.654 0.591]
+	print(opls.predictive_weights_)     # [0.474  0.657  0.586]
+	print(opls.orthogonal_weights_)     # [0.808 -0.590  0.008]
+	print(opls.predictive_loadings_)    # [0.472  0.654  0.591]
 
-	print(pls.x_weights_.to_numpy().round(3))    # the PLS weights, side by side
+	print(pls.x_weights_)               # the PLS weights, side by side
 	# [[ 0.474  0.808]
-	#  [ 0.657 -0.59 ]
+	#  [ 0.657 -0.590]
 	#  [ 0.586  0.008]]
 
 The predictive weight :math:`\mathbf{w}_\text{p} = (0.474, 0.657, 0.586)` has three positive entries of
@@ -729,16 +729,16 @@ The consequence shows up in the scores, not the weights.
 
 	for name, score in [("PLS 1", scores.iloc[:, 0]), ("PLS 2", scores.iloc[:, 1]),
 	                    ("O-PLS predictive", t_p), ("O-PLS orthogonal", t_o)]:
-	    print(name, round(float(np.corrcoef(score, y_centred)[0, 1]), 3))
+	    print(name, np.corrcoef(score, y_centred)[0, 1])
 	# PLS 1 0.802
 	# PLS 2 -0.172
 	# O-PLS predictive 0.82
 	# O-PLS orthogonal -0.0
 
-	print(round(float(np.corrcoef(t_p, scores.iloc[:, 0])[0, 1]), 3))   # 0.978
+	print(np.corrcoef(t_p, scores.iloc[:, 0])[0, 1])   # 0.978
 
-	print(pls.r2_cumulative_.round(3).to_list())                        # [0.642, 0.672]
-	print(round(float(np.corrcoef(t_p, y_centred)[0, 1]) ** 2, 3))      # 0.672
+	print(pls.r2_cumulative_)                         # [0.642, 0.672]
+	print(np.corrcoef(t_p, y_centred)[0, 1] ** 2)     # 0.672
 
 .. _LVM-PLS-score-correlation-table:
 
@@ -886,14 +886,14 @@ response.
 
 .. code-block:: python
 
-	print(opls_result.x_new.round(2).to_list())   # [5.46, 5.62, 1.39]
-	print(round(opls_result.y_hat, 2))            # 20.9
+	print(opls_result.x_new)   # [5.46, 5.62, 1.39]
+	print(opls_result.y_hat)   # 20.9
 
 	ns_input = result.null_space_basis.to_numpy().T @ pls.x_loadings_.to_numpy().T
 	os_input = opls_result.orthogonal_space_basis.to_numpy().T
 
-	print((ns_input / np.linalg.norm(ns_input)).round(3))    # [[ 0.948 -0.238  0.211]]
-	print((os_input / np.linalg.norm(os_input)).round(3))    # [[ 0.948 -0.238  0.211]]
+	print(ns_input / np.linalg.norm(ns_input))    # [0.948 -0.238 0.211]
+	print(os_input / np.linalg.norm(os_input))    # [0.948 -0.238 0.211]
 
 	cosine = np.abs(ns_input @ os_input.T).item() / (
 	    np.linalg.norm(ns_input) * np.linalg.norm(os_input)
@@ -1060,7 +1060,7 @@ Suppose a taste between 20 and 30 is acceptable.
 
 	region = pd.DataFrame(region)
 	print(round(t2_limit, 2))                        # 7.36
-	print(len(region))                               # 415 of the 550 inversions are kept
+	print(len(region))          # 415 of the 550 inversions are kept
 	print(region.agg(["min", "max"]).round(2))
 	#      Acetic   H2S  Lactic
 	# min    4.38  4.44    1.25
@@ -1112,8 +1112,9 @@ Both the region and the box it is reported as can be drawn.
 	plot can be followed to the recipe it stands for: the four corners of the region, where the outer
 	null spaces meet the :math:`T^2` limit, and its centre, the direct-inversion solution for a taste of
 	25. Colour gives the target taste, and the triangle points down at the low end of that taste's null
-	space and up at the high end. Each corner of the box carries the taste it is predicted to have, dark red where that taste is
-	outside the window and blue where it is acceptable but the recipe lies beyond the :math:`T^2` limit.
+	space and up at the high end. Each corner of the box carries the taste it is predicted to have, dark
+	red where that taste is outside the window and blue where it is acceptable but the recipe lies beyond
+	the :math:`T^2` limit.
 
 The eight corners make the difference concrete. Every one of them satisfies all three ranges, since
 each coordinate is either the reported minimum or the reported maximum, and not one of them is an
@@ -1158,7 +1159,8 @@ properties give a solvent with a chosen :math:`\log P` and solubility.
 
 	print(design.null_space_dimension)          # 1
 	print(round(design.hotellings_t2, 2))       # 2.46
-	print(model.predict(design.x_new.to_frame().T).round(2).to_dict("records")[0])
+	prediction = model.predict(design.x_new.to_frame().T)
+	print(prediction.round(2).to_dict("records")[0])
 	# {'logP': 0.5, 'Solubility': 0.0}
 
 Two things change with two responses. First, the target now pins down two score directions instead of
