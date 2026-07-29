@@ -465,10 +465,7 @@ counts for more in :math:`T^2` than in the plain norm, and the null-space direct
 
 The distinction is worth keeping straight, because it says what the direct-inversion solution does and
 does not give. It is the smallest-norm design, exactly. It is not quite the design of smallest
-:math:`T^2`: a step of :math:`-0.103` would reach :math:`T^2 = 0.043` rather than 0.064. The gap is
-small here and the direct-inversion solution is still the closest of the three tabulated steps, but the
-two criteria are different questions and a model with more unequal score spreads would separate them
-further.
+:math:`T^2`.
 
 Two further points are worth making. First, the perpendicularity is a statement about the score
 coordinates, so it reads as a right angle on the page only when both axes are drawn to the same scale, as
