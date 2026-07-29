@@ -103,7 +103,7 @@ toward a middling one.
 	x_columns = ["Acetic", "H2S", "Lactic"]
 
 	train = cheese.iloc[4:]        # cheeses 5 to 30: used to build the model
-	holdout = cheese.iloc[:4]      # cheeses 1 to 4: the targets we design toward
+	holdout = cheese.iloc[:4]      # cheeses 1 to 4: the design targets
 	X = train[x_columns]
 	Y = train[["Taste"]]
 
@@ -135,8 +135,8 @@ predicts will give that taste.
 	actual = holdout[x_columns].iloc[1]
 	for label, inputs in [("Actual", actual), ("Predicted", result.x_new)]:
 	    d = pls.diagnose(inputs.to_frame().T)
-	    print(f"{label}: T2 = {float(d.hotellings_t2.iloc[0]):.2f}, "
-	          f"SPE = {float(d.spe.iloc[0]):.2f}")
+	    print(f"{label}: T2 = {d.hotellings_t2.iloc[0]:.2f}, "
+	          f"SPE = {d.spe.iloc[0]:.2f}")
 	# Actual: T2 = 0.21, SPE = 0.68
 	# Predicted: T2 = 0.06, SPE = 0.00
 
@@ -153,7 +153,7 @@ We can walk along it by passing coordinates along its basis. Stepping one unit e
 
 	for step in (-1.0, 1.0):
 	    moved = pls.invert(y_desired=20.9, null_space_coordinates=[step])
-	    taste = float(pls.predict(moved.x_new.to_frame().T).iloc[0, 0])
+	    taste = pls.predict(moved.x_new.to_frame().T).iloc[0, 0]
 	    print(moved.x_new.round(2).to_list(), "->", round(taste, 2))
 	# [4.95, 6.10, 1.33] -> 20.9
 	# [6.09, 5.02, 1.46] -> 20.9
@@ -163,20 +163,20 @@ Collecting those points, and putting the measured cheese alongside for compariso
 .. code-block:: python
 
 	scaler = MCUVScaler().fit(X)
-	a = scaler.transform(actual.to_frame().T).iloc[0]           # actual, in std deviations
+	a = scaler.transform(actual.to_frame().T).iloc[0]   # in std deviations
 
 	designs = {
 	    "Actual": actual,
-	    "Predicted at step -1": pls.invert(20.9, null_space_coordinates=[-1.0]).x_new,
+	    "Predicted at step -1": pls.invert(20.9, null_space_coordinates=[-1]).x_new,
 	    "Predicted at step 0": result.x_new,
-	    "Predicted at step +1": pls.invert(20.9, null_space_coordinates=[+1.0]).x_new,
+	    "Predicted at step +1": pls.invert(20.9, null_space_coordinates=[+1]).x_new,
 	}
 	for label, inputs in designs.items():
 	    d = pls.diagnose(inputs.to_frame().T)
 	    v = scaler.transform(inputs.to_frame().T).iloc[0]
 	    print(f"{label:<22}{inputs.round(2).to_list()}  "
-	          f"T2 = {float(d.hotellings_t2.iloc[0]):.2f}, SPE = {float(d.spe.iloc[0]):.2f}, "
-	          f"deviation = {float(((a - v) ** 2).sum()):.2f}")
+	          f"T2 = {d.hotellings_t2.iloc[0]:.2f}, SPE = {d.spe.iloc[0]:.2f}, "
+	          f"deviation = {((a - v) ** 2).sum():.2f}")
 
 .. _LVM-PLS-null-space-steps-table:
 
@@ -944,7 +944,7 @@ deviation is a distance in the input space, measured between the two recipes the
 
 	rows = []
 	for i in range(len(holdout)):
-	    target = float(holdout["Taste"].iloc[i])
+	    target = holdout["Taste"].iloc[i]
 	    design = pls.invert(target)
 	    measured = holdout[x_columns].iloc[i]
 	    a = scaler.transform(measured.to_frame().T).iloc[0]
@@ -952,8 +952,8 @@ deviation is a distance in the input space, measured between the two recipes the
 	    rows.append({
 	        "Taste": target,
 	        "T2 design": design.hotellings_t2,          # the proposed recipe
-	        "T2 cheese": float(pls.diagnose(measured.to_frame().T).hotellings_t2.iloc[0]),
-	        "Input dev": float(((a - p) ** 2).sum()),   # between the two recipes
+	        "T2 cheese": pls.diagnose(measured.to_frame().T).hotellings_t2.iloc[0],
+	        "Input dev": ((a - p) ** 2).sum(),   # between the two recipes
 	    })
 
 	print(pd.DataFrame(rows).round(2))
