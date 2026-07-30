@@ -54,6 +54,13 @@ the_year = str(datetime.datetime.now().year)
 project = "Process Improvement Using Data"
 author = "Kevin Dunn"
 copyright = f"2010-{the_year} {author}"
+
+# Zenodo mints two kinds of DOI: one per release, and this concept DOI, which
+# always resolves to the latest release and therefore never changes. It is the
+# same value as the `identifiers:` entry in CITATION.cff. Surfaced to the page
+# footer by `_templates/components/author.html`.
+concept_doi = "10.5281/zenodo.20284934"
+html_context = {"pid_concept_doi": concept_doi}
 today_fmt = "%d %B %Y"
 
 # Emit warnings for all missing references.
@@ -289,11 +296,14 @@ if TELEMETRY_ENABLED:
     html_js_files = html_js_files + [("js/telemetry.js", {"defer": "defer"})]
 
     # Surfaced to Jinja templates; gates the sparkline mount in
-    # `_templates/pid-sidebar-extra.html`.
-    html_context = {
-        "pid_telemetry": True,
-        "pid_gc_code": TELEMETRY_GC_CODE,
-    }
+    # `_templates/pid-sidebar-extra.html`. Updated rather than reassigned, so
+    # the concept DOI set above survives into production builds.
+    html_context.update(
+        {
+            "pid_telemetry": True,
+            "pid_gc_code": TELEMETRY_GC_CODE,
+        }
+    )
 
     def _inject_telemetry_globals(app, pagename, templatename, context, doctree):
         # Single inline <script> appended to the per-page metatags context.

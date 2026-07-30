@@ -1,0 +1,18 @@
+{# Footer author line.
+
+   Overrides the sphinx-book-theme component of the same name so the Zenodo
+   concept DOI sits beside the author's name on every page. That DOI always
+   resolves to the latest release, so it is the one to quote when citing the
+   book. `pid_concept_doi` is set in `html_context` in conf.py, and matches the
+   `identifiers:` entry in CITATION.cff.
+
+   This file sits at the top level of `_templates/`, not under a `components/`
+   subdirectory: pydata-sphinx-theme appends its own `components/` directory to
+   `templates_path`, so the footer includes this template by bare filename.
+#}
+{% if author %}
+<p class="component-author">
+  {{ translate('By') }} {{ author }}{% if pid_concept_doi %} &middot;
+  <a class="pid-concept-doi" href="https://learnche.org/pid/contents">doi:{{ pid_concept_doi }}</a>{% endif %}
+</p>
+{% endif %}
