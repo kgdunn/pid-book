@@ -19,6 +19,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      # actions/checkout writes refs/tags/<tag> as a lightweight ref pointing
+      # straight at the commit, so the annotated tag object never reaches the
+      # runner and its message is lost. Fetching the ref again, with force,
+      # replaces that placeholder with the real tag object.
+      - name: Restore the annotated tag object
+        run: git fetch --force --no-tags origin "+refs/tags/${GITHUB_REF_NAME}:refs/tags/${GITHUB_REF_NAME}"
+
       - name: Create the GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -26,9 +33,16 @@ jobs:
           set -euo pipefail
           TAG="${GITHUB_REF_NAME}"
           TITLE="Process Improvement using Data: ${TAG#v} edition"
-          # The annotated tag's message is the release notes. Fall back to
-          # auto-generated notes only if the tag carries no message.
-          NOTES="$(git for-each-ref "refs/tags/${TAG}" --format='%(contents)')"
+          # The annotated tag's message is the release notes. Read it only when
+          # the ref really is a tag object: for a lightweight tag %(contents)
+          # returns the tagged commit's message, which is not release notes.
+          # Fall back to auto-generated notes in that case, and when an
+          # annotated tag carries no message.
+          if [ "$(git cat-file -t "refs/tags/${TAG}")" = "tag" ]; then
+            NOTES="$(git for-each-ref "refs/tags/${TAG}" --format='%(contents)')"
+          else
+            NOTES=""
+          fi
           if [ -n "${NOTES//[[:space:]]/}" ]; then
             printf '%s\n' "$NOTES" > release-notes.md
             gh release create "$TAG" --title "$TITLE" --notes-file release-notes.md
