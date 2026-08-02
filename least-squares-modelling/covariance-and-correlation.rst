@@ -210,91 +210,262 @@ Note that correlation is the same whether we measure temperature in Celsius or K
 	:alt: Example scatter plots with their correlation values
 
 
+.. _LS_scatterplot_matrix:
+
+The scatterplot matrix
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each panel in that figure takes one pair of variables. A *scatterplot matrix* puts every pair into
+a single display, so a data set with :math:`K` variables is read in one figure instead of
+:math:`K(K-1)/2` separate ones. The layout used in this book carries:
+
+	-	the scatter plot for each pair below the diagonal;
+
+	-	the correlation coefficient :math:`r(x, y)` for that same pair above the diagonal, sized
+		and coloured by its magnitude;
+
+	-	and each variable on its own along the diagonal, drawn as a smooth density curve over a
+		*rug*: a short tick for every value recorded.
+
+The rug is worth drawing next to the curve, because it shows where the readings actually fall. A
+variable recorded in whole numbers, or one that a controller holds at a handful of set points,
+gives evenly spaced ticks that a smooth curve on its own would cover over.
+
+The function below draws that display. It is used again further on in this section for two process
+data sets, so it is written once here:
+
+.. code-block:: python
+
+	import pandas as pd
+	import plotly.graph_objects as go
+	from plotly.subplots import make_subplots
+
+	BLUE, VERMILLION = "#0072B2", "#D55E00"
+
+
+	def density(x, points=256):
+	    """Gaussian kernel density estimate; bandwidth from the nrd0 rule."""
+	    x = np.asarray(x, float)
+	    iqr = np.subtract(*np.percentile(x, [75, 25]))
+	    spread = min(x.std(ddof=1), iqr / 1.349) if iqr > 0 else x.std(ddof=1)
+	    bandwidth = 0.9 * spread * x.size**-0.2
+	    grid = np.linspace(x.min(), x.max(), points)
+	    return grid, np.exp(-0.5 * ((grid[:, None] - x) / bandwidth) ** 2).sum(axis=1)
+
+
+	def r_text(r):
+	    """Two decimals, unless that rounds an imperfect r up to 1.00."""
+	    text = f"{r:+.2f}"
+	    return f"{r:+.3f}" if text in {"+1.00", "-1.00"} and abs(r) != 1 else text
+
+
+	def scatterplot_matrix(data, marker_size=5, opacity=1.0):
+	    """Scatter plots below the diagonal, r above it, distributions on it."""
+	    names, corr = list(data.columns), data.corr()
+	    n = len(names)
+	    # Fade the rug in proportion to the number of readings, so that a few
+	    # thousand ticks show where values pile up instead of filling in solid.
+	    rug_opacity = float(np.clip(30 / len(data), 0.05, 1.0))
+	    fig = make_subplots(rows=n, cols=n, horizontal_spacing=0.012,
+	                        vertical_spacing=0.012)
+	    for i in range(n):
+	        for j in range(n):
+	            at = dict(row=i + 1, col=j + 1)
+	            if i == j:                                # density over a rug
+	                x = data[names[i]].to_numpy(float)
+	                grid, curve = density(x)
+	                fig.add_scatter(x=grid, y=curve / curve.max(), mode="lines",
+	                                line_color=BLUE, **at)
+	                fig.add_scatter(x=x, y=np.zeros_like(x), mode="markers", **at,
+	                                marker=dict(symbol="line-ns-open", size=7,
+	                                            color=BLUE, opacity=rug_opacity))
+	                fig.add_annotation(text=names[i], showarrow=False, **at,
+	                                   x=grid.mean(), y=1.35)
+	                fig.update_yaxes(range=[-0.08, 1.5], **at)
+	            elif i < j:                               # the r value itself
+	                r = corr.iloc[i, j]
+	                fig.add_annotation(text=r_text(r), showarrow=False, x=0, y=0,
+	                                   **at, font=dict(size=11 + 9 * abs(r),
+	                                   color=BLUE if r > 0 else VERMILLION))
+	            else:                                     # the data themselves
+	                fig.add_scatter(x=data[names[j]], y=data[names[i]],
+	                                mode="markers", **at,
+	                                marker=dict(size=marker_size, color=BLUE,
+	                                            opacity=opacity))
+	            fig.update_xaxes(showticklabels=(i == n - 1 and i != j),
+	                             visible=(i >= j), **at)
+	            fig.update_yaxes(showticklabels=(j == 0 and i != j),
+	                             visible=(i >= j), **at)
+	            if j == 0 and i > 0:
+	                fig.update_yaxes(title_text=names[i], **at)
+	            if i == n - 1 and j < n - 1:
+	                fig.update_xaxes(title_text=names[j], **at)
+	    fig.update_layout(showlegend=False, width=190 * n, height=180 * n,
+	                      margin=dict(l=70, r=20, t=20, b=60))
+	    return fig
+
+
+	cylinder = pd.DataFrame({"Temperature": temp, "Pressure": pres,
+	                         "Humidity": humidity})
+	scatterplot_matrix(cylinder, marker_size=8).show()
+
+.. _LS_cylinder_scatterplot_matrix:
+
+.. figure:: ../figures/least-squares/gas-cylinder-scatterplot-matrix.png
+	:width: 700px
+	:align: center
+	:alt: Scatterplot matrix of the cylinder temperature, pressure and humidity readings
+
+	The ten cylinder readings. The two correlations calculated above appear in the top row:
+	:math:`r(T, p) = 0.997` and :math:`r(T, \text{humidity}) = 0.380`. Temperature and pressure lie
+	almost on a straight line, which is what a correlation near :math:`+1` describes. Neither shows
+	any such alignment against humidity.
+
+
 .. _LS_correlation_matrix_in_python:
 
 Visualizing the correlation matrix
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When working with a real data set that has many variables, looking at correlations one pair at a
-time is tedious. Pandas can compute every pairwise correlation in one call with ``.corr()``, and we
-can visualize the resulting matrix as a *heat map* to spot patterns at a glance.
-
-The example below uses a `flotation cell <https://openmv.net/info/flotation-cell>`_ data set:
+Pandas computes every pairwise correlation in one call with ``.corr()``, returning a square,
+symmetric matrix with ones down the diagonal. The example below uses a `flotation cell
+<https://openmv.net/info/flotation-cell>`_ data set: five process tags, sampled every 30 seconds,
+2922 samples in all. The first column holds the date and time; reading it in as the index leaves
+``.corr()`` with only the five numeric columns to work on.
 
 .. code-block:: python
 
-	import pandas as pd
-
-	flot = pd.read_csv("https://openmv.net/file/flotation-cell.csv")
+	flot = pd.read_csv(
+	    "https://openmv.net/file/flotation-cell.csv", index_col=0
+	)
+	flot.shape                # (2922, 5)
 
 	# A square matrix of correlation values, one
 	# per pair of numeric columns:
-	flot.corr()
+	flot.corr().round(3)
 
-For a wider data set, the numeric matrix becomes hard to read; a heat map encodes the same
-information visually. Here we use a `distillation column
-<https://openmv.net/info/distillation-tower>`_ data set, where the goal is to predict
-``VapourPressure`` from process measurements:
+	scatterplot_matrix(flot, marker_size=3, opacity=0.15).show()
+
+.. _LS_flotation_scatterplot_matrix:
+
+.. figure:: ../figures/least-squares/flotation-cell-scatterplot-matrix.png
+	:width: 800px
+	:align: center
+	:alt: Scatterplot matrix of the five flotation cell variables
+
+	The five flotation cell tags. The strongest correlation in the whole matrix is
+	:math:`r = 0.44`, between the feed rate and the copper sulphate added; the rest are below 0.2.
+	Two of the diagonals show what the rug is for: the air flow rate is recorded to two decimals,
+	so its readings sit on a small number of discrete levels, and the copper sulphate dosage
+	spends part of the record at zero.
+
+The same matrix can be shown as a *heat map*: one coloured cell per pair, on a diverging scale
+running from :math:`-1`, through white at zero, to :math:`+1`. Reading the colour rather than the
+number means a near-zero correlation is pale whatever its sign, and the sign of a large correlation
+is read from the direction of the colour rather than from a minus sign.
 
 .. code-block:: python
 
-	import pandas as pd
-	import seaborn as sns
+	def correlation_heatmap(data, annotate=False, size=600):
+	    """The correlation matrix as a diverging colour map, red high, blue low."""
+	    corr = data.corr()
+	    fig = go.Figure(go.Heatmap(
+	        z=corr, x=corr.columns, y=corr.columns, zmin=-1, zmax=1,
+	        colorscale="RdBu_r", xgap=1, ygap=1,
+	        texttemplate="%{z:+.2f}" if annotate else None,
+	        colorbar=dict(title="r(x, y)", len=0.7),
+	    ))
+	    fig.update_yaxes(autorange="reversed", scaleanchor="x")
+	    fig.update_layout(width=size * 1.25, height=size)
+	    return fig
+
+
+	correlation_heatmap(flot, annotate=True).show()
+
+.. _LS_flotation_heatmap:
+
+.. figure:: ../figures/least-squares/flotation-cell-correlation-heatmap.png
+	:width: 650px
+	:align: center
+	:alt: Correlation heat map of the five flotation cell variables
+
+	The flotation cell correlation matrix as a heat map. With five variables the numbers still fit
+	inside the cells, so this display and the printed matrix carry the same information. The
+	diagonal is :math:`+1` by construction, since :math:`r(x, x) = 1`.
+
+The heat map earns its place as the number of variables grows. The `distillation column
+<https://openmv.net/info/distillation-tower>`_ data set has 27 variables recorded on 253 days,
+where the goal is to predict ``VapourPressure`` from the process measurements. That is 351 distinct
+pairs, more than can be read from a table of numbers.
+
+.. code-block:: python
 
 	distill = pd.read_csv(
-	    "https://openmv.net/file/distillation-tower.csv"
+	    "https://openmv.net/file/distillation-tower.csv", index_col=0
 	)
+	distill.shape             # (253, 27)
 
-	# Print the correlation matrix as numbers:
-	display(distill.corr())
+	correlation_heatmap(distill, size=800).show()
 
-	# A diverging palette is helpful: red for
-	# positive, blue for negative correlations,
-	# white for near-zero.
-	cmap = sns.diverging_palette(220, 10, as_cmap=True)
-	sns.set(rc={"figure.figsize": (15, 15)})
-	sns.heatmap(
-	    distill.corr(),
-	    cmap=cmap,
-	    square=True,
-	    linewidths=0.2,
-	    cbar_kws={"shrink": 0.5},
-	)
+.. _LS_distillation_heatmap:
 
-A complementary view is the *scatter plot matrix*, which shows the actual data behind each
-correlation. The diagonal panels are replaced by a kernel density estimate (kde) of each variable's
-distribution:
+.. figure:: ../figures/least-squares/distillation-tower-correlation-heatmap.png
+	:width: 800px
+	:align: center
+	:alt: Correlation heat map of the 27 distillation column variables
+
+	The 27 distillation column variables. The colour shows structure that the numbers on their own
+	would not: a large block of tray temperatures that move together, the three ``InvTemp``
+	columns opposing that block, and a few variables (``PressureC1``, ``TempC3``, ``Temp4``) that
+	stay pale against everything else, meaning they carry information the rest do not.
+
+A scatterplot matrix of all 27 variables would need 351 panels and would not be readable at any
+printable size. The usual approach is to select a few columns and show those. When the goal is to
+model a particular outcome variable, the row of the correlation matrix belonging to that outcome
+ranks every potential predictor by how strongly it correlates with the outcome.
 
 .. code-block:: python
 
-	from pandas.plotting import scatter_matrix
+	# How each variable correlates with the outcome
+	# variable, VapourPressure, strongest first:
+	outcome = distill.corr()["VapourPressure"].drop("VapourPressure")
+	outcome.reindex(
+	    outcome.abs().sort_values(ascending=False).index
+	).round(3)
+	# InvTemp3        0.927
+	# Temp9          -0.918
+	# InvTemp1        0.912
+	# ...
+	# TempC3         -0.018
+	# InvPressure1   -0.015
+	# PressureC1      0.005
 
-	scatter_matrix(
-	    distill,
-	    alpha=0.2,
-	    figsize=(15, 15),
-	    diagonal="kde",
-	)
+	# Five columns spanning that range, from the strongest
+	# negative correlation with VapourPressure through to
+	# the strongest positive one:
+	subset = ["Temp9", "Temp7", "OC1", "InvTemp3", "VapourPressure"]
+	scatterplot_matrix(distill[subset], marker_size=4, opacity=0.55).show()
 
-	# For large data sets, sub-sample to speed
-	# up the plot, e.g. every second row:
-	scatter_matrix(
-	    distill.iloc[0::2, :],
-	    alpha=0.2,
-	    figsize=(15, 15),
-	    diagonal="kde",
-	)
+.. _LS_distillation_scatterplot_matrix:
 
-When the goal is to model a particular outcome variable (here ``VapourPressure``), the most useful
-slice of the correlation matrix is its last row: it ranks every potential predictor by how strongly
-it correlates with the outcome.
+.. figure:: ../figures/least-squares/distillation-tower-scatterplot-matrix.png
+	:width: 800px
+	:align: center
+	:alt: Scatterplot matrix of five distillation column variables
 
-.. code-block:: python
+	Five of the 27 distillation column variables, ordered from the strongest negative correlation
+	with ``VapourPressure`` through to the strongest positive one. The bottom row shows what each
+	of those correlations corresponds to in the data: a tight band for ``InvTemp3`` at
+	:math:`r = +0.93`, a looser one for ``Temp9`` at :math:`r = -0.92`, and no visible alignment
+	for ``OC1`` at :math:`r = +0.33`.
 
-	# The last row of the correlation matrix shows
-	# how each x-variable correlates with the
-	# outcome variable VapourPressure.
-	distill.corr().iloc[-1, :]
+One pair in that figure is worth a second look. ``InvTemp3`` and ``Temp9`` have
+:math:`r = -0.998`, and their product is 1000 to within a rounding error: ``InvTemp3`` is
+:math:`1000 / \text{Temp9}`, a column derived from another one rather than a separate measurement.
+The reciprocal is not a linear function, but over the narrow range these temperatures cover it is
+close enough to one that the correlation is nearly perfect. Wide process data sets often carry
+engineered columns of this sort, and the cells near :math:`\pm 1` in the heat map are where they
+show up.
 
 
 .. _LS_correlation_near_zero_example:
@@ -302,26 +473,44 @@ it correlates with the outcome.
 What does a near-zero correlation look like?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The cylinder-pressure, distillation-tower and flotation-cell examples above all show *strong*
-correlations. It is just as important to develop intuition for what :math:`r \approx 0` looks like
-in real data. The `unlimited-time-test <https://openmv.net/info/unlimited-time-test>`_ data set is
-a useful counter-example: students were given as much time as they wanted to write an open-book
-exam, and we have two columns: ``Time`` taken to finish, and the ``Grade`` achieved.
+The :ref:`cylinder-pressure <LS_cylinder_scatterplot_matrix>` and :ref:`distillation-tower
+<LS_distillation_scatterplot_matrix>` examples both contain *strong* correlations, and the
+:ref:`flotation-cell example <LS_flotation_scatterplot_matrix>` only weak ones. It is just as
+important to develop intuition for what :math:`r \approx 0` looks like in a data set with two
+variables and nothing else to distract from them. The `unlimited-time-test
+<https://openmv.net/info/unlimited-time-test>`_ data set serves as that counter-example: 80
+students were given as much time as they wanted to write an open-book exam, and there are two
+columns, the ``Time`` taken to finish and the ``Grade`` achieved.
 
 .. code-block:: python
-
-	import pandas as pd
 
 	grades = pd.read_csv(
 	    "https://openmv.net/file/unlimited-time-test.csv"
 	)
-	grades.plot.scatter(x="Time", y="Grade", figsize=(8, 6))
 
-	# Correlation of -0.044 -- essentially zero.
-	grades.corr()
+	# Correlation of -0.044: essentially zero.
+	grades.corr().round(3)
 
-The scatter plot shows no visible pattern, and the correlation matrix confirms it: :math:`r =
--0.044`. Two things are worth noting from this example:
+	fig = go.Figure(go.Scatter(x=grades["Time"], y=grades["Grade"],
+	                           mode="markers"))
+	fig.update_layout(xaxis_title="Time to finish the test [minutes]",
+	                  yaxis_title="Grade achieved [%]",
+	                  width=800, height=600)
+	fig.show()
+
+.. _LS_unlimited_time_scatter:
+
+.. figure:: ../figures/least-squares/unlimited-time-test-scatter.png
+	:width: 700px
+	:align: center
+	:alt: Time taken against grade achieved, showing no relationship
+
+	Time taken against grade achieved for 80 students writing an open-book exam with no time
+	limit. Grades in the 70s and 90s appear at every finishing time, and the slowest finishers are
+	spread over the full range of grades.
+
+The scatter plot shows no visible pattern, and the correlation matrix agrees: :math:`r = -0.044`.
+Two things are worth noting from this example:
 
 	-	The correlation is *symmetric*: :math:`r(\text{Time}, \text{Grade}) = r(\text{Grade},
 		\text{Time}) = -0.044`. There is no notion of an :math:`x`- or :math:`y`-variable yet.
