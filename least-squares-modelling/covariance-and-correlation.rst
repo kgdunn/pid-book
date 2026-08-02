@@ -366,9 +366,15 @@ is read from the direction of the colour rather than from a minus sign.
 
 .. code-block:: python
 
-	def correlation_heatmap(data, annotate=False, size=600):
-	    """The correlation matrix as a diverging colour map, red high, blue low."""
+	def correlation_heatmap(data, annotate=False, size=600, order=None):
+	    """The correlation matrix as a diverging colour map, red high, blue low.
+
+	    `order` optionally lists the column names in the order to show them;
+	    the default keeps the order they appear in the data set.
+	    """
 	    corr = data.corr()
+	    if order is not None:
+	        corr = corr.loc[order, order]
 	    fig = go.Figure(go.Heatmap(
 	        z=corr, x=corr.columns, y=corr.columns, zmin=-1, zmax=1,
 	        colorscale="RdBu_r", xgap=1, ygap=1,
@@ -398,26 +404,81 @@ The heat map earns its place as the number of variables grows. The `distillation
 where the goal is to predict ``VapourPressure`` from the process measurements. That is 351 distinct
 pairs, more than can be read from a table of numbers.
 
+The order of the rows and columns is a free choice, and it changes how much the display shows.
+Left in the order the variables appear in the file, related variables are scattered and the eye has
+to assemble the pattern. Reordering so that correlated variables sit next to each other gathers
+them into blocks along the diagonal. The reordering here comes from *hierarchical clustering*: the
+distance between two variables is taken as :math:`1 - r(x, y)`, which is 0 for a pair that moves
+exactly together and 2 for a pair that moves exactly opposite; variables are then merged into
+successively larger groups (average linkage), and the columns are read off in the order the
+resulting tree places its leaves. This is the "by cluster" ordering that the `D3 Les Miserables
+co-occurrence matrix <https://bost.ocks.org/mike/miserables/>`_ offers alongside ordering by name
+and by frequency.
+
 .. code-block:: python
+
+	from scipy.cluster.hierarchy import leaves_list, linkage
+	from scipy.spatial.distance import squareform
 
 	distill = pd.read_csv(
 	    "https://openmv.net/file/distillation-tower.csv", index_col=0
 	)
 	distill.shape             # (253, 27)
 
-	correlation_heatmap(distill, size=800).show()
+
+	def cluster_order(corr):
+	    """Variable names reordered so that correlated ones sit together."""
+	    distance = 1 - corr.to_numpy()      # 0 when r = +1, 2 when r = -1
+	    np.fill_diagonal(distance, 0.0)
+	    # squareform wants the condensed upper triangle; the matrix is
+	    # symmetric up to floating-point noise, which checks=False allows.
+	    tree = linkage(squareform(distance, checks=False), method="average",
+	                   optimal_ordering=True)
+	    return [corr.columns[i] for i in leaves_list(tree)]
+
+
+	correlation_heatmap(distill, size=800,
+	                    order=cluster_order(distill.corr())).show()
 
 .. _LS_distillation_heatmap:
 
 .. figure:: ../figures/least-squares/distillation-tower-correlation-heatmap.png
 	:width: 800px
 	:align: center
-	:alt: Correlation heat map of the 27 distillation column variables
+	:alt: Clustered correlation heat map of the 27 distillation column variables
 
-	The 27 distillation column variables. The colour shows structure that the numbers on their own
-	would not: a large block of tray temperatures that move together, the three ``InvTemp``
-	columns opposing that block, and a few variables (``PressureC1``, ``TempC3``, ``Temp4``) that
-	stay pale against everything else, meaning they carry information the rest do not.
+	The 27 distillation column variables, with rows and columns reordered by hierarchical
+	clustering. The nine tray temperatures from ``Temp8`` through to ``Temp2`` form the dark red
+	core, correlated at :math:`0.65` and above with each other. ``VapourPressure`` sits with the
+	three ``InvTemp`` columns in a group of its own, correlated at :math:`0.87` and above
+	internally and between :math:`-0.65` and :math:`-0.998` against those nine temperatures: this
+	is the block of dark blue in the upper right. The five flow measurements from ``FlowC1`` to
+	``FlowC4`` are correlated at :math:`0.70` and above among themselves and more loosely with the
+	temperature core, reaching :math:`0.75` at most. ``Temp1``, ``TempC3`` and ``Temp4`` form a
+	small group correlated :math:`0.84` and above with each other but no more than :math:`0.14`
+	with anything else in the data set. ``FlowC2`` joins nothing: its strongest correlation
+	anywhere is :math:`0.41`.
+
+Because the distance is :math:`1 - r`, a pair that moves exactly opposite is treated as the
+furthest apart two variables can be, so a strongly negative pair ends up at opposite ends of the
+ordering rather than side by side. ``InvPressure1`` and ``PressureC1`` at :math:`r = -0.998` are
+the clearest case: they are the first and the twenty-fourth column, and their cell is the dark blue
+square in the top right. Use :math:`1 - |r(x, y)|` as the distance instead when the direction of
+the relationship does not matter and such pairs should be grouped together.
+
+That freedom cuts both ways. The correlation values are fixed by the data, but which of them the
+reader notices is set by the ordering, and the ordering is chosen by whoever draws the figure.
+Ordering by :math:`1 - r` produces the blocks above; ordering by :math:`1 - |r|` produces
+different blocks from the same numbers; ordering by each variable's correlation with
+``VapourPressure`` puts the predictors of interest at one end and says nothing about how they
+relate to each other; and an order chosen to separate variables that belong together can make a
+clear structure look like noise. None of these is wrong, and none can be checked from the picture
+alone, so state which ordering a heat map uses whenever it is not the order the variables appear
+in the data set.
+
+The flotation cell heat map was left in the order the variables appear in the file. With five
+variables there is little for a reordering to reveal, and the labels are easier to find when they
+stay where the data set puts them.
 
 A scatterplot matrix of all 27 variables would need 351 panels and would not be readable at any
 printable size. The usual approach is to select a few columns and show those. When the goal is to
