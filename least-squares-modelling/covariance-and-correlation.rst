@@ -215,7 +215,7 @@ Note that correlation is the same whether we measure temperature in Celsius or K
 The scatterplot matrix
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Each panel in that figure takes one pair of variables. A *scatterplot matrix* puts every pair into
+A scatter plot handles one pair of variables at a time. A *scatterplot matrix* puts every pair into
 a single display, so a data set with :math:`K` variables is read in one figure instead of
 :math:`K(K-1)/2` separate ones. The layout used in this book carries:
 
