@@ -46,10 +46,14 @@
   // Front-end display window.
   //
   // The backend (build-sparklines.py + /etc/pid-book/sparklines.conf)
-  // keeps a 365-day window in /_stats/sparklines.json. The in-book UI
-  // is intentionally narrower: showing 365-day totals on a young
-  // deployment (or one with historical log gaps) makes pages look
-  // unread when they are actually being read every day.
+  // keeps a rolling 365-day window in /_stats/sparklines.json. That is
+  // the ceiling, not the current contents: the access-log history only
+  // starts in May 2026 (see stats.rst), so the file holds however many
+  // days have accumulated since then and grows by one per night.
+  //
+  // The in-book UI is intentionally narrower than the backend window:
+  // showing 365-day totals while the history is still filling in makes
+  // pages look unread when they are actually being read every day.
   //
   // Change DISPLAY_DAYS in lockstep with the labels that mention "N
   // days" in:
@@ -60,16 +64,34 @@
   var DISPLAY_DAYS = 60;
   var DISPLAY_LABEL = DISPLAY_DAYS + " days";
 
-  // Find the most recent date present anywhere in the JSON. Used as
-  // the anchor for the rolling display window. Series are sorted
-  // ascending in the producer, so the last element holds the latest.
+  // The newest day that can possibly be complete, in UTC. The nightly
+  // builder already stops at yesterday (lag_days), but a server still
+  // running the older script publishes a bucket for the running day
+  // holding only a few hours of traffic, which plots as a near-zero
+  // cliff at the right-hand edge. Bounding the window here keeps the
+  // charts correct regardless of which build of the script is deployed.
+  function lastCompleteDate() {
+    var d = new Date();
+    d.setUTCDate(d.getUTCDate() - 1);
+    return d.toISOString().slice(0, 10);
+  }
+
+  // Find the most recent *complete* date present anywhere in the JSON.
+  // Used as the anchor for the rolling display window. Series are sorted
+  // ascending in the producer, so we walk back from the end and take the
+  // first point that is not the running day. Returns "" when the file
+  // holds nothing but a partial day (or nothing at all).
   function globalAnchorDate(data) {
+    var limit = lastCompleteDate();
     var max = "";
     for (var page in data) {
       var s = data[page];
-      if (s && s.length) {
-        var last = s[s.length - 1][0];
-        if (last > max) max = last;
+      if (!s) continue;
+      for (var i = s.length - 1; i >= 0; i--) {
+        var d = s[i][0];
+        if (d > limit) continue;
+        if (d > max) max = d;
+        break;
       }
     }
     return max;
@@ -84,9 +106,14 @@
     return d.toISOString().slice(0, 10);
   }
 
-  function filterToWindow(series, cutoff) {
-    if (!series || !cutoff) return series || [];
-    return series.filter(function (p) { return p[0] >= cutoff; });
+  // Clip a series to [cutoff, anchor] inclusive. The upper bound drops
+  // the running day; an empty cutoff means no complete day was found,
+  // in which case there is nothing safe to plot.
+  function filterToWindow(series, cutoff, anchor) {
+    if (!series || !cutoff) return [];
+    return series.filter(function (p) {
+      return p[0] >= cutoff && p[0] <= anchor;
+    });
   }
 
   // 1. Path normalisation: extensionless URLs, fold trailing slash and /index.
@@ -184,12 +211,12 @@
         return r.json();
       })
       .then(function (data) {
-        // The JSON is the full 365-day window; the UI shows only
-        // the most recent DISPLAY_DAYS days from the global anchor
-        // (so different pages compare against the same date range).
+        // The JSON holds up to 365 days; the UI shows only the most
+        // recent DISPLAY_DAYS complete days from the global anchor (so
+        // different pages compare against the same date range).
         var anchor = globalAnchorDate(data);
         var cutoff = cutoffDateString(anchor, DISPLAY_DAYS);
-        var series = filterToWindow(data && data[pageKey], cutoff);
+        var series = filterToWindow(data && data[pageKey], cutoff, anchor);
         if (!series || !series.length) {
           // No history for this page in the display window (fresh
           // page, content blocker tampering, or genuinely unread for
@@ -310,17 +337,20 @@
         var pages = data && Object.keys(data);
         if (!pages || !pages.length) { showEmpty(); return; }
 
-        // The JSON holds 365 days; the UI shows the most recent
-        // DISPLAY_DAYS days only. Compute the cutoff once and filter
-        // every per-page series through it before aggregating.
+        // The JSON holds up to 365 days; the UI shows the most recent
+        // DISPLAY_DAYS complete days only. Compute the bounds once and
+        // filter every per-page series through them before aggregating,
+        // so the summary cards, the daily chart, and the top-pages
+        // table all describe exactly the same date range.
         var anchor = globalAnchorDate(data);
+        if (!anchor) { showEmpty(); return; }
         var cutoff = cutoffDateString(anchor, DISPLAY_DAYS);
 
         var totalReads = 0;
         var dailyMap = {};
         var pageTotals = [];
         pages.forEach(function (page) {
-          var series = filterToWindow(data[page], cutoff);
+          var series = filterToWindow(data[page], cutoff, anchor);
           var pageTotal = 0;
           series.forEach(function (p) {
             var date = p[0], count = p[1] | 0;

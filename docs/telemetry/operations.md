@@ -133,6 +133,18 @@ curl -sI https://learnche.org/_stats/sparklines.json | grep -i last-modified
 curl -s https://learnche.org/_stats/sparklines.json |
     python3 -c "import json,sys; d=json.load(sys.stdin);
 print('pages:', len(d), '— sample:', d.get('contents', [])[-1:])"
+
+# 6. The newest bucket is yesterday, not today.
+curl -s https://learnche.org/_stats/sparklines.json | python3 -c "
+import json,sys,datetime
+d=json.load(sys.stdin)
+newest=max(p[0] for s in d.values() for p in s)
+print('newest bucket:', newest,
+      '| expected:', datetime.date.today() - datetime.timedelta(days=1))
+"
+# A bucket dated today means lag_days is 0 or the server is running an
+# older build of build-sparklines.py: the count is partial and will
+# plot as a near-zero point at the edge of every chart.
 ```
 
 ### Are the dashboards meaningful?
@@ -334,7 +346,7 @@ section for the canonical talking points.
 
 ### "The sparkline shows nothing on a page that should have data."
 
-Symptoms: sidebar shows the "Page views (365 days)" heading but no
+Symptoms: sidebar shows the "Page views (60 days)" heading but no
 chart underneath, or shows no heading at all when the page does have
 hits.
 
@@ -375,6 +387,64 @@ suspicious goes into `/etc/pid-book/bots.txt`; both pipelines pick
 it up on the next nightly run. Mirror the entry into
 [`scripts/server/bots.txt.example`](../../scripts/server/bots.txt.example)
 in a follow-up PR so a fresh server install starts current.
+
+### "Traffic looks like it is collapsing on the stats page."
+
+Check the right-hand edge of the chart first. Until 2026-08-03 the
+producer published a bucket for the running day, which at cron time
+held only a few hours of traffic, so every chart ended in a near-vertical
+drop to almost zero. That was an artefact of when the job ran, not a
+change in readership.
+
+Both halves now exclude it: `build-sparklines.py` ends its window at
+`lag_days` (default 1) days back, and `telemetry.js` clips to the last
+complete UTC day regardless of what the file contains. If you still see
+the cliff, the server is running an older copy of the script and a
+browser is serving a cached `telemetry.js`; redeploy the script and
+hard-reload.
+
+Once the partial day is excluded, judge the trend on complete days and
+allow for the weekly cycle before concluding anything. Weekends run
+well below weekdays for a textbook, so a Saturday/Sunday pair at the
+end of the window reads as a dip that is not one:
+
+```sh
+# Daily totals across the whole book, most recent 21 complete days.
+curl -sf https://learnche.org/_stats/sparklines.json | python3 -c "
+import json,sys,collections,datetime
+d=json.load(sys.stdin); t=collections.Counter()
+for series in d.values():
+    for day,c in series: t[day]+=c
+for day in sorted(t)[-21:]:
+    name=datetime.date.fromisoformat(day).strftime('%a')
+    print(day, name, str(t[day]).rjust(6))
+"
+```
+
+### "The window is shorter than the 365 days I configured."
+
+Expected, and not a fault. `[windows] days` is a ceiling; the file can
+only hold as much history as the access logs hold. The learnche.org
+archive starts in late May 2026 because the previous `rotate 4`
+logrotate setting purged everything older every four days. See "History
+depth" in [`README.md`](README.md#history-depth-the-window-is-a-ceiling-not-a-promise).
+
+Confirm the archive depth rather than suspecting the aggregator:
+
+```sh
+# Oldest access log still on disk.
+ls -la --time-style=long-iso /var/www/logs/learnche.org/access.log* | head -3
+# Oldest date present in the published JSON.
+curl -sf https://learnche.org/_stats/sparklines.json | python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+print(min(p[0] for s in d.values() for p in s))
+"
+```
+
+If the JSON's oldest date is materially newer than the oldest log on
+disk, that is a real problem; check `days` and the `logs` globs in
+`/etc/pid-book/sparklines.conf`.
 
 ### "GoatCounter shows zero hits since yesterday."
 

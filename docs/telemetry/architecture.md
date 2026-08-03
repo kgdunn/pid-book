@@ -57,8 +57,10 @@ spots.
   readers, machine-to-machine fetches, and old-browser readers.
 * **Output:** static HTML report at
   <https://learnche.org/_stats/>, regenerated nightly.
-* **Privacy posture:** invoked with `--anonymize-ip`; raw logs rotate
-  within 30 days; only aggregated daily roll-ups survive.
+* **Privacy posture:** invoked with `--anonymize-ip`; only aggregated
+  daily roll-ups are published. Raw logs are retained for 5 years
+  (`rotate 1825`, set 2026-05-26); the previous 4-day rotation is what
+  destroyed the pre-May-2026 history.
 * **Limitations:** doesn't measure engagement (no time-on-page, no
   scroll depth), inflated by bots without filtering.
 
@@ -96,15 +98,19 @@ spots.
 * **Limitations:** same ad-block undercounting as Layer B; the
   email-regex guard is heuristic, not bulletproof.
 
-### Layer D — Per-page year-long sparkline
+### Layer D — Per-page sparkline
 
 * **Source:** same access logs as Layer A, processed by
   [`scripts/server/build-sparklines.py`](../../scripts/server/build-sparklines.py)
   into a public JSON file
   `https://learnche.org/_stats/sparklines.json`.
+* **Window:** configured for a rolling 365 days, ending at the last
+  complete day (the running day is excluded; see `lag_days`). The file
+  holds only as much history as the logs do, which currently means late
+  May 2026 onward. See "History depth" in
+  [`README.md`](README.md#history-depth-the-window-is-a-ceiling-not-a-promise).
 * **Strength:** because it derives from server logs, it counts
-  **ad-blocked readers** too — making it the *honest* signal in the
-  sidebar. Each page shows its own trend.
+  **ad-blocked readers** too. Each page shows its own trend.
 * **Output:** ECharts SVG line chart in the sidebar, lazy-loaded only
   when a `#pid-sparkline` mount point exists.
 * **Privacy posture:** the JSON is aggregate-only — daily unique-IP
@@ -193,9 +199,11 @@ We do **not** defend against:
 * **Compromise of the GoatCounter SaaS.** If their data is leaked it
   contains anonymous pageview hits and search queries, no cookies, no
   IPs. Damage is bounded.
-* **Compromise of the production webserver.** Raw logs exist for up
-  to 30 days; an attacker with shell access could see IPs. Mitigated
-  by standard server hardening (out of scope for this doc).
+* **Compromise of the production webserver.** Raw logs are retained
+  for 5 years, so an attacker with shell access could see IPs over
+  that whole span. This is the cost of keeping the readership history
+  after the 4-day rotation destroyed the earlier archive. Mitigated by
+  standard server hardening (out of scope for this doc).
 
 ## Why not just one provider for everything
 
