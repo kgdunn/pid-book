@@ -380,32 +380,40 @@ not comparable, while two :math:`S_E` values, in the units of |y|, are.
 Both effects can be shown together by simulating from a single model,
 :math:`y = 5 + 1.0 x + e`, and changing only two things: the size of the error, and how widely
 |x| was sampled. In the :ref:`four panels below <LS_R2_versus_SE_figure>`, :math:`R^2` runs from
-0.27 to 0.97 while the relationship being estimated never changes.
+0.60 to 0.97 while the relationship being estimated never changes.
 
 .. code-block:: python
 
 	from plotly.subplots import make_subplots
 
-	rng = np.random.default_rng(347)
+	rng = np.random.default_rng(225)
 	n_sim = 40
 
-	# The full range of x, then its middle third:
+	# The full range of x, then its middle half:
 	spreads = {
 	    "x sampled over 0 to 20": (0.0, 20.0),
-	    "x sampled over 6.7 to 13.3": (20 / 3, 40 / 3),
+	    "x sampled over 5 to 15": (5.0, 15.0),
 	}
 
 	fig = make_subplots(
 	    rows=2, cols=2, shared_xaxes=True, shared_yaxes=True,
 	    subplot_titles=list(spreads) + ["", ""],
 	)
-	for row, sigma in enumerate([1.0, 3.0], start=1):
+	for row, target in enumerate([1.0, 2.0], start=1):
 	    for col, (low, high) in enumerate(spreads.values(), start=1):
 	        x_sim = rng.uniform(low, high, n_sim)
-	        y_sim = (5.0 + 1.0 * x_sim
-	                 + rng.normal(0.0, sigma, n_sim))
+	        errors = rng.normal(0.0, 1.0, n_sim)
 
-	        sim = sm.OLS(y_sim, sm.add_constant(x_sim)).fit()
+	        # Rescale the errors so that the realised
+	        # standard error is exactly the target. The
+	        # residuals are linear in the errors, so
+	        # scaling the errors scales S_E to match.
+	        X_sim = sm.add_constant(x_sim)
+	        draw = sm.OLS(5.0 + x_sim + errors, X_sim).fit()
+	        y_sim = (5.0 + 1.0 * x_sim
+	                 + errors * target / np.sqrt(draw.scale))
+
+	        sim = sm.OLS(y_sim, X_sim).fit()
 	        se_sim = np.sqrt(sim.scale)
 	        grid_sim = np.linspace(low, high, 100)
 
@@ -439,12 +447,12 @@ Both effects can be shown together by simulating from a single model,
 	:align: center
 	:alt: Four panels from the same model, showing R-squared and the standard error moving independently
 
-	Four data sets simulated from :math:`y = 5 + 1.0 x + e`. Each row uses the same error
-	standard deviation, so the two panels in a row have the same :math:`S_E`, to within sampling
-	variation, while their :math:`R^2` differs by 0.17 in the top row and by 0.53 in the bottom
-	row. The two shaded panels both report :math:`R^2 = 0.80`, with :math:`S_E = 1.0` kg in one
-	and :math:`S_E = 2.9` kg in the other. The slope, the quantity to report when the purpose is
-	to learn about the system, is recovered in all four panels.
+	Four data sets simulated from :math:`y = 5 + 1.0 x + e`. The errors are scaled so that the
+	realised standard error is exactly 1.0 kg in the top row and exactly 2.0 kg in the bottom
+	row. Holding :math:`S_E` fixed along a row, :math:`R^2` still differs by 0.07 in the top row
+	and by 0.30 in the bottom row. The two shaded panels both report :math:`R^2 = 0.90`, with
+	:math:`S_E = 1.0` kg in one and :math:`S_E = 2.0` kg in the other. The slope, the quantity to
+	report when the purpose is to learn about the system, is recovered in all four panels.
 
 This leaves :math:`R^2` with a clear and narrower reading: it reports how strongly |x| and |y| are
 linearly associated, on the data in hand. That is a useful thing to know, and it is a different
