@@ -223,6 +223,70 @@ and intercepts. Using the :ref:`11-point example <LS-class-example>` from this s
 	# And the same value again, with no model fitted:
 	print(f"{np.corrcoef(x, y)[0, 1] ** 2:.4f}")
 
+Drawing both lines on the same axes, :ref:`in the figure below <LS_R2_symmetry_figure>`, shows
+what the two models are doing differently. Each minimizes a different set of distances: vertical
+distances to the line when predicting |y| from |x|, and horizontal distances when predicting |x|
+from |y|. Both lines pass through :math:`(\overline{x}, \overline{y})`, and both report
+:math:`R^2 = 0.6665`.
+
+.. code-block:: python
+
+	import plotly.graph_objects as go
+
+	b0, b1 = forward.params
+	a0, a1 = reverse.params
+	grid = np.linspace(2.5, 15.5, 200)
+
+	# The distances each model minimizes. The `None`
+	# entries break the trace between the segments.
+	vertical_x, vertical_y = [], []
+	horizontal_x, horizontal_y = [], []
+	for xi, yi in zip(x, y):
+	    vertical_x += [xi, xi, None]
+	    vertical_y += [yi, b0 + b1 * xi, None]
+	    horizontal_x += [xi, a0 + a1 * yi, None]
+	    horizontal_y += [yi, yi, None]
+
+	fig = go.Figure()
+	fig.add_scatter(x=vertical_x, y=vertical_y, mode="lines",
+	                line=dict(color="#0072B2", width=1),
+	                showlegend=False)
+	fig.add_scatter(x=horizontal_x, y=horizontal_y, mode="lines",
+	                line=dict(color="#D55E00", width=1),
+	                showlegend=False)
+	fig.add_scatter(x=grid, y=b0 + b1 * grid, mode="lines",
+	                line=dict(color="#0072B2", width=3),
+	                name=f"Predicting y from x: slope {b1:.3f}")
+
+	# The reverse model, x = a0 + a1 * y, rewritten as a
+	# line in these (x, y) axes:
+	fig.add_scatter(x=grid, y=(-a0 / a1) + (1 / a1) * grid,
+	                mode="lines",
+	                line=dict(color="#D55E00", width=3, dash="dash"),
+	                name=f"Predicting x from y: slope "
+	                     f"{1 / a1:.3f} in these axes")
+	fig.add_scatter(x=x, y=y, mode="markers", name="Data",
+	                marker=dict(color="black", size=9))
+	fig.add_scatter(x=[x.mean()], y=[y.mean()], mode="markers",
+	                name="Mean of the data",
+	                marker=dict(color="#666666", size=14,
+	                            symbol="cross"))
+	fig.update_layout(xaxis_title="x", yaxis_title="y",
+	                  width=900, height=600)
+	fig.show()
+
+.. _LS_R2_symmetry_figure:
+
+.. figure:: ../figures/least-squares/r-squared-symmetry.png
+	:width: 750px
+	:align: center
+	:alt: Two least squares lines on one scatter plot, both reporting the same R-squared
+
+	The 11-point example with both least squares lines drawn. The solid line predicts |y| from
+	|x| and minimizes the vertical distances; the dashed line predicts |x| from |y| and minimizes
+	the horizontal ones. The slopes are 0.500 and 0.750 (the second rewritten in these axes),
+	and both models report :math:`R^2 = 0.6665`.
+
 **The value can be calculated before the model is fitted.** The last line of that code shows it:
 :math:`R^2 = r(x,y)^2`, and the correlation is computed from the raw data columns alone. It does
 not require the slope, the intercept, or the residuals. This is not a coincidence of these
@@ -312,6 +376,75 @@ were sampled. Collect data over a narrow band of |x|, and the TSS shrinks while 
 variance stays where it is, so :math:`R^2` drops even though the underlying relationship, the
 slope, and :math:`S_E` are unchanged. Two :math:`R^2` values from different data sets are therefore
 not comparable, while two :math:`S_E` values, in the units of |y|, are.
+
+Both effects can be shown together by simulating from a single model,
+:math:`y = 5 + 1.0 x + e`, and changing only two things: the size of the error, and how widely
+|x| was sampled. In the :ref:`four panels below <LS_R2_versus_SE_figure>`, :math:`R^2` runs from
+0.27 to 0.97 while the relationship being estimated never changes.
+
+.. code-block:: python
+
+	from plotly.subplots import make_subplots
+
+	rng = np.random.default_rng(347)
+	n_sim = 40
+
+	# The full range of x, then its middle third:
+	spreads = {
+	    "x sampled over 0 to 20": (0.0, 20.0),
+	    "x sampled over 6.7 to 13.3": (20 / 3, 40 / 3),
+	}
+
+	fig = make_subplots(
+	    rows=2, cols=2, shared_xaxes=True, shared_yaxes=True,
+	    subplot_titles=list(spreads) + ["", ""],
+	)
+	for row, sigma in enumerate([1.0, 3.0], start=1):
+	    for col, (low, high) in enumerate(spreads.values(), start=1):
+	        x_sim = rng.uniform(low, high, n_sim)
+	        y_sim = (5.0 + 1.0 * x_sim
+	                 + rng.normal(0.0, sigma, n_sim))
+
+	        sim = sm.OLS(y_sim, sm.add_constant(x_sim)).fit()
+	        se_sim = np.sqrt(sim.scale)
+	        grid_sim = np.linspace(low, high, 100)
+
+	        fig.add_scatter(x=x_sim, y=y_sim, mode="markers",
+	                        marker=dict(color="#0072B2"),
+	                        row=row, col=col, showlegend=False)
+	        fig.add_scatter(
+	            x=grid_sim,
+	            y=sim.predict(sm.add_constant(grid_sim)),
+	            mode="lines", line=dict(color="#D55E00", width=3),
+	            row=row, col=col, showlegend=False,
+	        )
+	        fig.add_annotation(
+	            text=f"R<sup>2</sup> = {sim.rsquared:.2f}<br>"
+	                 f"S<sub>E</sub> = {se_sim:.1f} kg<br>"
+	                 f"slope = {sim.params[1]:.2f} kg/unit",
+	            xref="x domain", yref="y domain",
+	            x=0.04, y=0.96, align="left", showarrow=False,
+	            row=row, col=col,
+	        )
+
+	fig.update_xaxes(title_text="x", row=2)
+	fig.update_yaxes(title_text="y [kg]", col=1)
+	fig.update_layout(width=1000, height=780)
+	fig.show()
+
+.. _LS_R2_versus_SE_figure:
+
+.. figure:: ../figures/least-squares/r-squared-versus-standard-error.png
+	:width: 800px
+	:align: center
+	:alt: Four panels from the same model, showing R-squared and the standard error moving independently
+
+	Four data sets simulated from :math:`y = 5 + 1.0 x + e`. Each row uses the same error
+	standard deviation, so the two panels in a row have the same :math:`S_E`, to within sampling
+	variation, while their :math:`R^2` differs by 0.17 in the top row and by 0.53 in the bottom
+	row. The two shaded panels both report :math:`R^2 = 0.80`, with :math:`S_E = 1.0` kg in one
+	and :math:`S_E = 2.9` kg in the other. The slope, the quantity to report when the purpose is
+	to learn about the system, is recovered in all four panels.
 
 This leaves :math:`R^2` with a clear and narrower reading: it reports how strongly |x| and |y| are
 linearly associated, on the data in hand. That is a useful thing to know, and it is a different
