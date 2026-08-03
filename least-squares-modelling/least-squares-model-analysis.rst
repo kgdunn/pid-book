@@ -94,7 +94,7 @@ it, and a p-value; we will point it out in the software output
 Interpreting the standard error
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The term :math:`S_E^2 = \text{RSS}/(n-k)` is one way of quantifying the model's performance. The value :math:`S_E = \sqrt{\text{RSS}/(n-k)} = \sqrt{(e^Te)/(n-k)}` is called the :index:`standard error`. It is really just the standard deviation of the error term, accounting correctly for the degrees of freedom.
+The term :math:`S_E^2 = \text{RSS}/(n-k)` is one way of quantifying the model's performance. The value :math:`S_E = \sqrt{\text{RSS}/(n-k)} = \sqrt{(e^Te)/(n-k)}` is called the :index:`standard error`. It is really just the standard deviation of the error term, accounting correctly for the degrees of freedom. It carries the units of the |y|-variable, so it can be compared directly against the accuracy that the application requires.
 
 *Example*: Assume we have a model for predicting batch yield in kilograms from |x| = raw material purity, what does a standard error of 3.4 kg imply?
 
@@ -180,26 +180,323 @@ The nomenclature :math:`R^2` comes from the fact that, for a model with a single
 
 and can range in value from :math:`-1` to :math:`+1`. The :math:`R^2` ranges from 0 to +1, and is the square of :math:`r(x,y)`. :math:`R^2` is just a way to tell how far we are between predicting a flat line (no variation) and the extreme of being able to predict the model building data, :math:`y_i`, exactly.
 
-The :math:`R^2` value is likely well known to anyone that has encountered least squares before. This number must be interpreted with caution. It is most widely **abused** as a way to measure "*how good is my model*".
-
-These two common examples illustrate the abuse. You likely have said or heard something like this before:
+The :math:`R^2` value is likely well known to anyone that has encountered least squares before. It
+is most widely used as an answer to the question "*how good is my model*". You have likely said or
+heard something like this before:
 
 	#.	"the :math:`R^2` value is really high, 90%, so this is a good model".
 	#.	"Wow, that's a really low :math:`R^2`, this model can't be right - it's no good".
 
-How **good**, or how suitable a model is *for a particular purpose* is almost never related to the :math:`R^2` value. The goodness of a model is better assessed by:
+The next two subsections take that question apart: first what the :math:`R^2` value is measuring,
+and then which quantity answers the question you actually had in mind.
 
-- your engineering judgment: does the *interpretation* of model parameters make sense?
-- use testing data to verify the model's predictive performance,
-- using cross-validation tools (we will see this topic later on) to see how well the model performs on new, unseen and unused testing data.
+.. _LS_R2_two_properties:
 
-We will see later on that :math:`R^2` can be arbitrarily increased by adding terms to the linear model, as we will see in the section on :ref:`multiple linear regression (MLR) <LS_multiple_X_MLR>`. So sometimes you will see the :index:`adjusted R-squared <single: adjusted R-squared>` used to account for the :math:`k` terms used in the model:
+Two properties of :math:`R^2`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Two properties of :math:`R^2` mark out what it can and cannot report on. Both are for the
+straight-line model with an intercept, :math:`\hat{y}_i = b_0 + b_1 x_i`, fitted by least squares.
+
+**The value is unchanged when the roles of the two variables are swapped.** Both the numerator and
+the denominator of :math:`r(x,y)` are symmetric in the two variables, so regressing |y| on |x| and
+regressing |x| on |y| return the same :math:`R^2`, even though the two models have different slopes
+and intercepts. Using the :ref:`11-point example <LS-class-example>` from this section:
+
+.. code-block:: python
+
+	import numpy as np
+	import statsmodels.api as sm
+
+	x = np.array([10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5])
+	y = np.array([8.04, 6.95, 7.58, 8.81, 8.33, 9.96,
+	              7.24, 4.26, 10.84, 4.82, 5.68])
+
+	# Predict y from x, then x from y:
+	forward = sm.OLS(y, sm.add_constant(x)).fit()
+	reverse = sm.OLS(x, sm.add_constant(y)).fit()
+
+	# Both print 0.6665, though the slopes are
+	# 0.5001 and 1.3328 respectively:
+	print(f"{forward.rsquared:.4f}  {reverse.rsquared:.4f}")
+
+	# And the same value again, with no model fitted:
+	print(f"{np.corrcoef(x, y)[0, 1] ** 2:.4f}")
+
+Drawing both lines on the same axes, :ref:`in the figure below <LS_R2_symmetry_figure>`, shows
+what the two models are doing differently. Each minimizes a different set of distances: vertical
+distances to the line when predicting |y| from |x|, and horizontal distances when predicting |x|
+from |y|. Both lines pass through :math:`(\overline{x}, \overline{y})`, and both report
+:math:`R^2 = 0.6665`.
+
+.. code-block:: python
+
+	import plotly.graph_objects as go
+
+	b0, b1 = forward.params
+	a0, a1 = reverse.params
+	grid = np.linspace(2.5, 15.5, 200)
+
+	# The distances each model minimizes. The `None`
+	# entries break the trace between the segments.
+	vertical_x, vertical_y = [], []
+	horizontal_x, horizontal_y = [], []
+	for xi, yi in zip(x, y):
+	    vertical_x += [xi, xi, None]
+	    vertical_y += [yi, b0 + b1 * xi, None]
+	    horizontal_x += [xi, a0 + a1 * yi, None]
+	    horizontal_y += [yi, yi, None]
+
+	fig = go.Figure()
+	fig.add_scatter(x=vertical_x, y=vertical_y, mode="lines",
+	                line=dict(color="#0072B2", width=1),
+	                showlegend=False)
+	fig.add_scatter(x=horizontal_x, y=horizontal_y, mode="lines",
+	                line=dict(color="#D55E00", width=1),
+	                showlegend=False)
+	fig.add_scatter(x=grid, y=b0 + b1 * grid, mode="lines",
+	                line=dict(color="#0072B2", width=3),
+	                name=f"Predicting y from x: slope {b1:.3f}")
+
+	# The reverse model, x = a0 + a1 * y, rewritten as a
+	# line in these (x, y) axes:
+	fig.add_scatter(x=grid, y=(-a0 / a1) + (1 / a1) * grid,
+	                mode="lines",
+	                line=dict(color="#D55E00", width=3, dash="dash"),
+	                name=f"Predicting x from y: slope "
+	                     f"{1 / a1:.3f} in these axes")
+	fig.add_scatter(x=x, y=y, mode="markers", name="Data",
+	                marker=dict(color="black", size=9))
+	fig.add_scatter(x=[x.mean()], y=[y.mean()], mode="markers",
+	                name="Mean of the data",
+	                marker=dict(color="#666666", size=14,
+	                            symbol="cross"))
+	fig.update_layout(xaxis_title="x", yaxis_title="y",
+	                  width=900, height=600)
+	fig.show()
+
+.. _LS_R2_symmetry_figure:
+
+.. figure:: ../figures/least-squares/r-squared-symmetry.png
+	:width: 750px
+	:align: center
+	:alt: Two least squares lines on one scatter plot, both reporting the same R-squared
+
+	The 11-point example with both least squares lines drawn. The solid line predicts |y| from
+	|x| and minimizes the vertical distances; the dashed line predicts |x| from |y| and minimizes
+	the horizontal ones. The slopes are 0.500 and 0.750 (the second rewritten in these axes),
+	and both models report :math:`R^2 = 0.6665`.
+
+**The value can be calculated before the model is fitted.** The last line of that code shows it:
+:math:`R^2 = r(x,y)^2`, and the correlation is computed from the raw data columns alone. It does
+not require the slope, the intercept, or the residuals. This is not a coincidence of these
+particular numbers; it is what :math:`r(x,y)`, and therefore :math:`R^2`, is defined to measure:
+the strength of the *linear association* between two sequences of numbers.
+
+Two boundaries on that second property are worth stating:
+
+	-	With more than one |x|-variable, :math:`R^2` is the square of the correlation between |y|
+		and :math:`\hat{y}`, so the model does have to be fitted first.
+
+	-	The two expressions :math:`\text{RegSS}/\text{TSS}` and :math:`1 - \text{RSS}/\text{TSS}`
+		agree only for a least squares fit with an intercept, evaluated on the same data used to
+		fit it. Applied to new data the second expression is the one that is reported, and it can
+		fall below zero: that happens when the model's predictions on the new data have larger
+		squared errors than simply using :math:`\overline{y}` of the new data.
+
+A third property, that :math:`R^2` on the building data cannot decrease when a term is added to the
+model, is shown in the :ref:`MLR section <LS_R2_never_decreases>`. It is the reason the
+:index:`adjusted R-squared <single: adjusted R-squared>` is sometimes reported instead, dividing
+each sum of squares by its degrees of freedom:
 
 .. math::
 
 	R^2_\text{adj} = 1 - \dfrac{\text{RSS}/(n-k)}{\text{TSS}/(n-1)}
 
-where :math:`k=2` for the case of estimating a model :math:`y_i = b_0 + b_1 x_i`, as there are 2 parameters.
+where :math:`k=2` for the case of estimating a model :math:`y_i = b_0 + b_1 x_i`, as there are 2
+parameters.
+
+.. _LS_metric_matched_to_purpose:
+
+Matching the metric to the purpose of the model
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There are two common reasons for building a linear model, and each has a metric that reports on it
+directly:
+
+	#.	**To learn about the system**, by interpreting the slope or the intercept. Here the
+		:ref:`confidence interval for that coefficient <LS-CI-for-model-parameters>` is the
+		matching quantity. A reaction rate reported as :math:`k = 0.81 \pm 0.26\,\text{s}^{-1}`
+		and the same rate reported as :math:`k = 0.81 \pm 0.68\,\text{s}^{-1}` support quite
+		different conclusions, and the interval is in units of :math:`\text{s}^{-1}`, which is
+		what the reactor design calculation requires.
+
+	#.	**To predict a new** :math:`y` **value**. Here the matching quantities are the
+		:ref:`standard error <standard-error-section>`, :math:`S_E`, and the
+		:ref:`prediction interval <LS-prediction-interval>`. Both are in the units of |y|: a
+		prediction interval states the range, in kilograms or kPa, in which the next observation
+		is expected to fall, and an :math:`R^2` of 0.78 does not.
+
+The :math:`S_E` calculated on the building data is a within-sample number. The standard deviation
+of the residuals on :ref:`testing data <LS_test_set_predictions_with_sklearn>`, or from
+cross-validation when no testing data can be set aside, is the same quantity computed on
+observations the model has not seen.
+
+A higher :math:`R^2` does correspond to a narrower confidence interval and a smaller standard
+error, and for the single-|x| model the connection is exact. Writing
+:math:`z = b_1 / S_E(b_1)` for the ratio reported in the software output, and :math:`s_y` for the
+standard deviation of the :math:`y`-data:
+
+.. math::
+	:label: R2-relation-to-SE
+
+	z = \dfrac{b_1}{S_E(b_1)} = \sqrt{\dfrac{(n-k)R^2}{1-R^2}} \qquad\qquad
+	S_E = s_y \sqrt{\dfrac{(1-R^2)(n-1)}{n-k}}
+
+where :math:`k = 2` for the straight-line model, so :math:`n-k = 9` in the example below.
+
+Both relationships are *relative*. The first fixes the width of the slope's confidence interval as
+a fraction of the slope itself: at :math:`R^2 = 0.6665` and :math:`n = 11` we get :math:`z = 4.24`,
+and with :math:`c_t = 2.26` the interval half-width is :math:`c_t/z = 53\%` of :math:`b_1`,
+matching the :math:`0.233 \leq \beta_1 \leq 0.767` interval calculated in the
+:ref:`subsection on confidence intervals for the coefficients <LS-CI-for-model-parameters>` below.
+The second fixes :math:`S_E` as a fraction
+of the spread of the |y|-data: the same :math:`R^2` gives a standard error of 0.3 kPa on data with
+:math:`s_y = 0.5` kPa, and 3 kPa on data with :math:`s_y = 5` kPa. That is why no threshold on
+:math:`R^2`, agreed ahead of time, can tell you whether a model is adequate: what counts as an
+acceptable :math:`S_E` is set by the application, not by the variance ratio.
+
+The :ref:`distillation tower model <LS_residuals_and_R2_with_sklearn>` built later in this section
+gives a worked instance: :math:`R^2 = 0.781` with :math:`s_y = 6.25` kPa produces
+:math:`S_E = 2.94` kPa. Whether a spread of roughly :math:`\pm 6` kPa on a predicted vapour
+pressure is usable is a question about the process, and the 0.781 by itself does not answer it.
+
+One further point about the range of the data: :math:`R^2` depends on how widely the |x|-values
+were sampled. Collect data over a narrow band of |x|, and the TSS shrinks while the residual
+variance stays where it is, so :math:`R^2` drops even though the underlying relationship, the
+slope, and :math:`S_E` are unchanged. Two :math:`R^2` values from different data sets are therefore
+not comparable, while two :math:`S_E` values, in the units of |y|, are.
+
+Both effects can be shown together by simulating from a single model,
+:math:`y = 5 + 1.0 x + e`, and changing only two things: the size of the error, and how widely
+|x| was sampled. In the :ref:`four panels below <LS_R2_versus_SE_figure>`, :math:`R^2` runs from
+0.60 to 0.97 while the relationship being estimated never changes.
+
+.. code-block:: python
+
+	from plotly.subplots import make_subplots
+
+	rng = np.random.default_rng(225)
+	n_sim = 40
+
+	# The full range of x, then its middle half:
+	spreads = {
+	    "x sampled over 0 to 20": (0.0, 20.0),
+	    "x sampled over 5 to 15": (5.0, 15.0),
+	}
+
+	fig = make_subplots(
+	    rows=2, cols=2, shared_xaxes=True, shared_yaxes=True,
+	    subplot_titles=list(spreads) + ["", ""],
+	)
+	for row, target in enumerate([1.0, 2.0], start=1):
+	    for col, (low, high) in enumerate(spreads.values(), start=1):
+	        x_sim = rng.uniform(low, high, n_sim)
+	        errors = rng.normal(0.0, 1.0, n_sim)
+
+	        # Rescale the errors so that the realised
+	        # standard error is exactly the target. The
+	        # residuals are linear in the errors, so
+	        # scaling the errors scales S_E to match.
+	        X_sim = sm.add_constant(x_sim)
+	        draw = sm.OLS(5.0 + x_sim + errors, X_sim).fit()
+	        y_sim = (5.0 + 1.0 * x_sim
+	                 + errors * target / np.sqrt(draw.scale))
+
+	        sim = sm.OLS(y_sim, X_sim).fit()
+	        se_sim = np.sqrt(sim.scale)
+	        grid_sim = np.linspace(low, high, 100)
+
+	        fig.add_scatter(x=x_sim, y=y_sim, mode="markers",
+	                        marker=dict(color="#0072B2"),
+	                        row=row, col=col, showlegend=False)
+	        fig.add_scatter(
+	            x=grid_sim,
+	            y=sim.predict(sm.add_constant(grid_sim)),
+	            mode="lines", line=dict(color="#D55E00", width=3),
+	            row=row, col=col, showlegend=False,
+	        )
+	        fig.add_annotation(
+	            text=f"R<sup>2</sup> = {sim.rsquared:.2f}<br>"
+	                 f"S<sub>E</sub> = {se_sim:.1f} kg<br>"
+	                 f"slope = {sim.params[1]:.2f} kg/unit",
+	            xref="x domain", yref="y domain",
+	            x=0.04, y=0.96, align="left", showarrow=False,
+	            row=row, col=col,
+	        )
+
+	fig.update_xaxes(title_text="x", row=2)
+	fig.update_yaxes(title_text="y [kg]", col=1)
+	fig.update_layout(width=1000, height=780)
+	fig.show()
+
+.. _LS_R2_versus_SE_figure:
+
+.. figure:: ../figures/least-squares/r-squared-versus-standard-error.png
+	:width: 800px
+	:align: center
+	:alt: Four panels from the same model, showing R-squared and the standard error moving independently
+
+	Four data sets simulated from :math:`y = 5 + 1.0 x + e`. The errors are scaled so that the
+	realised standard error is exactly 1.0 kg in the top row and exactly 2.0 kg in the bottom
+	row, and the two shaded panels report the same :math:`R^2` of 0.90.
+
+There are three comparisons to make in the figure:
+
+-	**Along a row**, the prediction error is identical in the two panels while :math:`R^2`
+	changes: 0.97 and 0.90 in the top row, 0.90 and 0.60 in the bottom row. The panels differ
+	only in the range of |x| that was sampled, so :math:`R^2` has moved with no change in how
+	accurately either model predicts.
+
+-	**Down a column**, the range of |x| is held the same and the size of the error is what
+	differs: doubling the error takes :math:`R^2` from 0.97 to 0.90 on the left, and from 0.90
+	to 0.60 on the right. This is the comparison in which :math:`R^2` moves for the reason
+	usually attached to it.
+
+-	**Across the two shaded panels**, :math:`R^2` is 0.90 in both, and the prediction error in
+	one is twice that in the other: :math:`S_E` = 1.0 kg against 2.0 kg.
+
+The slope is recovered in all four panels, between 0.97 and 1.00 kg per unit of |x|. The quantity
+to report when the purpose is to learn about the system is unaffected by either change.
+
+Both of the first two comparisons follow from what the ratio contains. :math:`R^2` is the share of
+the variation in |y| that the model accounts for, and the variation in |y| grows as the |x|-values
+are spread further apart. There are then two ways to raise it: reduce the error, or sample |x| over
+a wider range. Only the first changes what the model can predict. Read this way, :math:`R^2`
+reports whether the range of |x| was wide enough for the trend to stand out against the error,
+which is a question about how the data were collected, rather than reporting how large the
+prediction error is.
+
+The standard error is not open to that second reading. It is in kilograms here, and it stays at
+1.0 kg or 2.0 kg whether |x| was sampled over the full range or over the middle half of it, which
+is what makes it comparable between two data sets.
+
+Two consequences follow for practical work. A model built on data from a narrow operating window
+will report a low :math:`R^2` even when the measurements are precise, which is a common situation
+with routine process data. Widening the range covered by an experiment raises :math:`R^2` on its
+own, with no change in the prediction error.
+
+This leaves :math:`R^2` with a clear and narrower reading: it reports how strongly |x| and |y| are
+linearly associated, on the data in hand. That is a useful thing to know, and it is a different
+question from either of the two purposes listed at the start of this subsection. The suitability of
+a model for a particular purpose is better assessed by:
+
+- your engineering judgment: does the *interpretation* of model parameters make sense?
+- the :ref:`confidence intervals for the coefficients <LS-CI-for-model-parameters>`, the
+  :ref:`standard error <standard-error-section>` and the
+  :ref:`prediction interval <LS-prediction-interval>`,
+- testing data, or cross-validation tools (we will see this topic later on), to see how well the
+  model performs on new, unseen and unused observations.
 
 
 Confidence intervals for the model coefficients |b0| and |b1|
@@ -750,7 +1047,11 @@ Visualizing the fit
 Returning to the larger distillation example from the
 :ref:`prior section <LS_single_x_sklearn_distillation>`, the seaborn library has a useful function,
 ``regplot``, that draws the scatter plot of the raw data, overlays the least squares line, and
-shades the confidence interval for the regression line in a single call.
+shades the confidence interval for the regression line in a single call. Note which band this is:
+it is the interval for the *average* predicted |y| at each |x|, and it is narrower than the
+:ref:`prediction interval <LS-prediction-interval>` for a single new observation, which carries the
+extra :math:`S_E^2` term. Software packages differ in which of the two they shade by default, so it
+is worth checking.
 
 .. code-block:: python
 
@@ -822,8 +1123,10 @@ We continue with the model fitted in the
 	std_error = errors_build.std()
 
 	# The standard error with the n-k degrees of
-	# freedom is also available directly:
+	# freedom is also available directly; 2.94 kPa,
+	# against a spread of 6.25 kPa in the y-data:
 	mymodel.se_
+	y_build.std(ddof=1)
 
 	print(
 	    f"Average absolute error = "
@@ -844,10 +1147,13 @@ method:
 
 .. code-block:: python
 
-	# R-squared on the building data:
+	# R-squared on the building data: 0.781
 	mymodel.score(X_build, y_build)
 
-As emphasized earlier in this section, a high :math:`R^2` value is **not** a measure of
-prediction accuracy: it only tells you how strongly :math:`x` and :math:`y` are correlated. The
-prediction quality on **new** data is a more demanding test, and that is what we turn to in the
+As set out in the :ref:`subsection on matching the metric to the purpose
+<LS_metric_matched_to_purpose>`, a high :math:`R^2` value is not a measure of prediction accuracy:
+it reports how strongly :math:`x` and :math:`y` are linearly associated. Here the model returns
+:math:`R^2 = 0.781` on the building data, with :math:`S_E = 2.94` kPa against a spread of
+:math:`s_y = 6.25` kPa in the vapour pressure column. The prediction quality on **new** data is a
+more demanding test, and that is what we turn to in the
 :ref:`next section <LS_test_set_predictions_with_sklearn>`.

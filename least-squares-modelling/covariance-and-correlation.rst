@@ -579,8 +579,9 @@ Two things are worth noting from this example:
 	-	The :math:`R^2` value commonly reported with a least-squares model is just :math:`r^2`. So
 		without fitting any model we already know that a straight line through these data would
 		have :math:`R^2 = (-0.044)^2 \approx 0.002`. Said differently: ``Time`` would explain
-		about 0.2% of the variation in ``Grade``. This is one reason :math:`R^2` on its own is a
-		poor way to judge a regression model.
+		about 0.2% of the variation in ``Grade``. That the :math:`R^2` is available before any
+		model is fitted is one of :ref:`two properties of R-squared <LS_R2_two_properties>`
+		returned to later in this chapter.
 
 Compare this against the cheddar-cheese exercise in the :ref:`exercises section <LS-exercises>`
 (:math:`r` around 0.5 to 0.8 between flavour and the chemical predictors), and against the
