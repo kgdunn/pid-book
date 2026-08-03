@@ -158,7 +158,7 @@ has two telemetry-related blocks:
 ```jinja
 {% if pid_telemetry %}
 <hr/>
-<p style="color:#777; font-size:0.85em; margin:0.3em 0 0.1em">Page views (365 days)</p>
+<p style="color:#777; font-size:0.85em; margin:0.3em 0 0.1em">Page views (60 days)</p>
 <div id="pid-sparkline" style="width:100%; height:38px"
      data-page="{{ pagename }}"></div>
 {% endif %}

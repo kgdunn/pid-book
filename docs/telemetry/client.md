@@ -293,7 +293,7 @@ if (!series || !series.length) {
 
 A page with no historical data (e.g. a freshly added page like
 `privacy` itself) gets **no UI at all** — we hide both the mount
-and the "Page views (365 days)" heading. The alternative (showing a
+and the "Page views (60 days)" heading. The alternative (showing a
 "0 hits" placeholder) would be misleading and visually noisy.
 
 ### Phase 4c.5 — reader count in the heading
@@ -311,7 +311,7 @@ if (totalEl) {
 
 The `<span id="pid-sparkline-total">` ships from
 `_templates/pid-sidebar-extra.html`, floated to the right of the
-"Page views (365 days)" heading. Tabular-numeric CSS keeps the digits
+"Page views (60 days)" heading. Tabular-numeric CSS keeps the digits
 aligned across pages. The `if (totalEl)` guard makes this a no-op
 when an older cached template doesn't have the span — pageview
 tracking and the sparkline still work.

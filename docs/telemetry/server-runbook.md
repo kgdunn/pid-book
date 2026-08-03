@@ -173,7 +173,11 @@ Key points:
   Caddyfile back to `json`.
 * **`roll_size` / `roll_keep` / `roll_keep_for`** — Caddy rotates the
   log itself. The 400-day retention is ≥ the 365-day sparkline window
-  with ~5 weeks of slack. Increase if you want longer history.
+  with ~5 weeks of slack. Note that the current Apache server keeps 5
+  years (`rotate 1825`), so migrating to this Caddy block as written
+  would start discarding history beyond ~13 months. Raise
+  `roll_keep_for` to match before cutting over if you want to keep the
+  longer archive; logs dropped at rotation cannot be recovered.
 * **`/_stats/*` handle** — same-origin under `learnche.org` so the
   sidebar `fetch("/_stats/sparklines.json")` does not need CORS
   headers. The 1-hour cache is the staleness budget for browser
@@ -232,9 +236,13 @@ occasionally — Cloudflare updates the list every few months.
 
 **Log rotation.** Debian's default `/etc/logrotate.d/apache2` ships
 with `rotate 4`, which keeps only **4 days** of history for busy
-vhosts. With a 365-day sparkline window, that's catastrophic — the
-script reads 4 days of recent data and silently shows almost nothing.
-For 5 years of history bump it to **`rotate 1825`**:
+vhosts. With a 365-day sparkline window, the script then reads 4 days of
+recent data and silently shows almost nothing. This is not hypothetical:
+it is what ran on learnche.org until 2026-05-26, and it is why the
+readership archive now starts in late May 2026 with nothing usable from
+Feb 2022 onward. Deleted logs cannot be recovered, so fix this **before**
+you start relying on the window. For 5 years of history bump it to
+**`rotate 1825`**:
 
 ```sh
 sudo sed -i 's/^\s*rotate 4$/    rotate 1825/' /etc/logrotate.d/apache2
@@ -408,7 +416,9 @@ is stdlib-only Python. Algorithm:
    * UAs matching the bot list (`/etc/pid-book/bots.txt` or fallback),
    * paths matching `STATIC_EXTS`,
    * paths outside `/pid/`,
-   * timestamps outside the 365-day window.
+   * timestamps outside the window, which runs 365 days back from the
+     last complete day. The current day is excluded via `lag_days`
+     (default 1) so no partial bucket is ever published.
 4. For each surviving hit, normalise the URL to a Sphinx pagename
    via `normalise_pagename` (rules documented in
    [`sparklines-schema.md`](sparklines-schema.md)).

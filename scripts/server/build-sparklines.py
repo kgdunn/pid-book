@@ -41,8 +41,19 @@ Algorithm
    (Trailing slash means index page.)
 7. Aggregate (pagename, date) → set of unique IPs.
 8. Convert to (pagename, date) → unique-IP count for the configured
-   window (default 365 days).
+   window (default 365 days), ending at the last *complete* day.
 9. Atomically write JSON to the output path.
+
+Complete days only
+------------------
+The window ends ``lag_days`` days before the current UTC date (default
+1, i.e. yesterday). The cron job runs in the small hours, so the bucket
+for the current date holds only a few hours of traffic; including it put
+a near-zero point at the right-hand edge of every chart that renders
+this file, every day. Excluding it means every point plotted covers a
+full 24 hours and is comparable with its neighbours.
+
+Set ``lag_days = 0`` to include the running (partial) day again.
 
 Privacy
 -------
@@ -64,6 +75,7 @@ otherwise the defaults below. The config is a tiny INI file:
 
     [windows]
     days = 365
+    lag_days = 1
 
 The bot list is one user-agent substring per line; lines starting with
 '#' are comments. Any UA containing one of the substrings (case-
@@ -110,6 +122,10 @@ DEFAULT_LOG_GLOBS = [
 DEFAULT_OUTPUT = "/var/www/learnche.org/_stats/sparklines.json"
 DEFAULT_BOT_LIST = "/etc/pid-book/bots.txt"
 DEFAULT_DAYS = 365
+# Days to step back from "now" for the newest bucket written out. 1 means
+# the window ends yesterday, so no partial day is ever published. See
+# "Complete days only" in the module docstring.
+DEFAULT_LAG_DAYS = 1
 
 # Bot UA substrings used when no bot_list file is present. Keep in sync with
 # scripts/server/goaccessrc.example.
@@ -387,6 +403,7 @@ def build(
     output_path: str,
     bot_list: str,
     days: int,
+    lag_days: int = DEFAULT_LAG_DAYS,
 ) -> None:
     bot_substrings = load_bot_substrings(bot_list)
     log_paths = expand_globs(log_globs)
@@ -394,8 +411,17 @@ def build(
         LOG.error("no log files matched: %s", log_globs)
         sys.exit(2)
 
-    today = dt.date.today()
-    cutoff = today - dt.timedelta(days=days - 1)
+    # Anchor the window in UTC: Caddy JSON timestamps are parsed as UTC,
+    # so using the server's local date here would shift the bucket
+    # boundary whenever the server is not on UTC.
+    #
+    # `newest` is the last complete day. Anything after it is the running
+    # day, which is only partially logged at cron time.
+    lag_days = max(0, lag_days)
+    now_utc = dt.datetime.now(dt.timezone.utc).date()
+    newest = now_utc - dt.timedelta(days=lag_days)
+    cutoff = newest - dt.timedelta(days=days - 1)
+    LOG.info("window %s .. %s (%d days, lag %d)", cutoff, newest, days, lag_days)
 
     # (pagename, date) -> set[ip]
     buckets: dict[tuple[str, dt.date], set[str]] = defaultdict(set)
@@ -426,7 +452,7 @@ def build(
                 if pagename is None:
                     continue
                 day = hit.ts.date()
-                if day < cutoff or day > today:
+                if day < cutoff or day > newest:
                     continue
                 buckets[(pagename, day)].add(hit.ip)
                 matched += 1
@@ -482,7 +508,12 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     p.add_argument("--bot-list", default=None,
                    help="Override bot UA substring list path.")
     p.add_argument("--days", type=int, default=None,
-                   help="Override window length (default: 90).")
+                   help=f"Override window length (default: {DEFAULT_DAYS}).")
+    p.add_argument("--lag-days", type=int, default=None,
+                   help="Days to step back from today for the newest bucket "
+                        f"(default: {DEFAULT_LAG_DAYS}, i.e. end at "
+                        "yesterday so no partial day is published). "
+                        "Use 0 to include the running day.")
     p.add_argument("--verbose", action="store_true")
     return p.parse_args(argv)
 
@@ -510,9 +541,15 @@ def main(argv: list[str] | None = None) -> None:
     days = (args.days
             or cfg.getint("windows", "days", fallback=0)
             or DEFAULT_DAYS)
+    # 0 is a meaningful lag (publish the running day), so resolve this
+    # one with explicit None checks rather than the `or` chain above.
+    if args.lag_days is not None:
+        lag_days = args.lag_days
+    else:
+        lag_days = cfg.getint("windows", "lag_days", fallback=DEFAULT_LAG_DAYS)
 
     build(log_globs=log_globs, output_path=output,
-          bot_list=bot_list, days=days)
+          bot_list=bot_list, days=days, lag_days=lag_days)
 
 
 if __name__ == "__main__":

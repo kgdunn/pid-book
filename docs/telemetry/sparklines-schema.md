@@ -110,11 +110,25 @@ Each value is an array of `[date, count]` pairs.
   at least one hit appears exactly once. **Days with zero hits are
   omitted.** The consumer should not assume the array length equals
   the window length.
-* The window is **the most recent 365 days** (configurable via the
-  producer's `[windows] days` setting, but the JS assumes 90 in its
-  layout). If you change the window length on the server, also
-  update the sidebar heading text in
-  `_templates/pid-sidebar-extra.html` (`"Page views (365 days)"`).
+* The window ends at the **last complete day**, not today. The
+  producer steps back `[windows] lag_days` days (default 1) from the
+  current UTC date, because the nightly cron fires while the current
+  day is still being logged and a partial bucket plots as a near-zero
+  point at the right-hand edge of every chart.
+* The window is **the most recent 365 days** counting back from that
+  last complete day, configurable via the producer's `[windows] days`
+  setting. It is a ceiling: the file holds only as much history as the
+  access logs do, which currently means late May 2026 onward. See
+  "History depth" in
+  [`README.md`](README.md#history-depth-the-window-is-a-ceiling-not-a-promise).
+* The **producer** window and the **consumer** window are independent.
+  `_static/js/telemetry.js` filters this file down to `DISPLAY_DAYS`
+  (currently 60) before rendering, and separately clips to the last
+  complete UTC day so a stale server build cannot reintroduce a
+  partial day. If you change `DISPLAY_DAYS`, also update the sidebar
+  heading text in `_templates/pid-sidebar-extra.html`
+  (`"Page views (60 days)"`) and the three `(last 60 days)` headings
+  plus body text in `stats.rst`.
 * If a page got at least one hit in the window, its entry exists.
 * If a page got **zero hits** in the window, it is **not** in the
   JSON. The consumer treats missing keys and empty arrays
@@ -239,6 +253,7 @@ curl -sf https://learnche.org/_stats/sparklines.json |
 ```
 
 If `sparklines.json` ever becomes a bottleneck (e.g. > 1 MB), revisit
-the schema — but for a book with O(100) pages and 365 days of daily
-counts, the file is ~50–200 KB depending on activity, well below any
-problematic threshold.
+the schema, but for a book with O(100) pages and a 365-day window of
+daily counts, the file is ~50–200 KB depending on activity, well below
+any problematic threshold. (At ~75 days of accumulated history it is
+~140 KB, so a full year lands near the upper end of that range.)

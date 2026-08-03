@@ -26,11 +26,22 @@ See :ref:`privacy` for what is and isn't collected.
      days, so almost nothing from Feb 2022 to May 2026 exists on
      disk.
 
-   The backend keeps a full 365-day window in
-   `sparklines.json <https://learnche.org/_stats/sparklines.json>`_;
-   the in-book display is filtered to a shorter window so a young
-   deployment doesn't look unread. The window will gradually widen
-   over the next few weeks.
+   Because of that second point, there is no year of history to show
+   yet. The backend
+   (`sparklines.json <https://learnche.org/_stats/sparklines.json>`_)
+   is configured for a rolling 365-day window, but a window can only
+   hold what the logs hold: the archive starts in late May 2026 and
+   gains one day per night, so it reaches a full year in May 2027.
+   Until then the file contains fewer days than the setting allows,
+   and the in-book display is filtered to a shorter window so a young
+   deployment doesn't look unread. Year-on-year comparisons are not
+   possible until there are two years on disk.
+
+   All the figures count **complete days only**. The nightly
+   aggregator runs in the small hours, so the current day is still
+   being logged when it runs; publishing it would put a partial count
+   at the right-hand edge of every chart. The most recent day shown is
+   therefore yesterday.
 
 Summary
 -------

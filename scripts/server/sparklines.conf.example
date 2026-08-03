@@ -1,11 +1,18 @@
 # Configuration for scripts/server/build-sparklines.py.
 #
-# Default backend window is 365 days (1 year). This controls what
-# /_stats/sparklines.json contains. The in-book UI display window is
-# independent: the JS in _static/js/telemetry.js filters this JSON to
-# a shorter window (look for DISPLAY_DAYS) before rendering. Change
-# this value to widen/narrow the backend; change DISPLAY_DAYS to
-# widen/narrow what readers see.
+# Default backend window is 365 days (1 year). This is a ceiling, not a
+# promise: the window can only ever contain as much history as the logs
+# themselves hold. The learnche.org access logs were rotated away every
+# four days until 2026-05-26, so the archive currently starts in late
+# May 2026 and grows by one day per night. The 365-day window fills in
+# over the course of the following year; until then the file simply
+# holds fewer days than the setting allows.
+#
+# This controls what /_stats/sparklines.json contains. The in-book UI
+# display window is independent: the JS in _static/js/telemetry.js
+# filters this JSON to a shorter window (look for DISPLAY_DAYS) before
+# rendering. Change this value to widen/narrow the backend; change
+# DISPLAY_DAYS to widen/narrow what readers see.
 #
 # Install as /etc/pid-book/sparklines.conf. Any value can also be passed
 # on the command line; CLI flags win.
@@ -39,5 +46,15 @@ output = /var/www/learnche.org/_stats/sparklines.json
 bot_list = /etc/pid-book/bots.txt
 
 [windows]
-# How many days of history each sparkline shows.
+# How many days of history each sparkline shows, counting back from the
+# newest complete day. The file holds fewer days than this while the
+# log archive is still filling in (see the note at the top).
 days = 365
+
+# How many days to step back from the current UTC date for the newest
+# bucket written out. The cron job runs in the small hours, so the
+# bucket for the running day would hold only a few hours of traffic and
+# plot as a near-zero point at the right-hand edge of every chart. The
+# default of 1 ends the window at yesterday, so every published bucket
+# covers a full 24 hours. Set to 0 to publish the running day as well.
+lag_days = 1

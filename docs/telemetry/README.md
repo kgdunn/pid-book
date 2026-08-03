@@ -66,18 +66,64 @@ self-hosting reusers.
 3. **Search-query events** — what readers type into the sidebar
    search box, debounced and PII-stripped, sent to GoatCounter as
    custom events.
-4. **Per-page year-long sparkline + reader count** — derived from the
+4. **Per-page sparkline + reader count**, derived from the
    access logs by `scripts/server/build-sparklines.py` into a public
    `sparklines.json`, rendered with a same-origin ECharts build in
-   the sidebar of every page. The 365-day total reads for the current
-   page are written next to the heading. Because it is log-derived it
-   counts ad-blocked readers — the *honest* signal.
+   the sidebar of every page. The backend is configured for a rolling
+   365-day window, but it holds only as much history as the logs do:
+   the archive starts in late May 2026 (see "History depth" below) and
+   reaches a full year in May 2027. The sidebar shows the most recent
+   60 days and writes that total next to the heading. Because it is
+   log-derived it counts ad-blocked readers too.
 5. **In-book stats page** — [`/pid/stats`](https://learnche.org/pid/stats)
    reads the same `sparklines.json` and shows three site-wide
    widgets: a summary (total reads / pages with traffic / days of
    data), a daily totals chart across the whole book, and a top-20
    most-read pages table. All filled by `telemetry.js` at runtime;
    empty-state hides the widgets cleanly when no data is available.
+
+## History depth: the window is a ceiling, not a promise
+
+`sparklines.json` is configured for a rolling 365-day window, and both
+this document and the code comments used to describe it as "year-long".
+That was never true in practice and is worth stating plainly:
+
+* Debian's stock `/etc/logrotate.d/apache2` ships `rotate 4`, so the
+  learnche.org access logs were **purged every four days** until
+  2026-05-26. Almost nothing between Feb 2022 and May 2026 survives on
+  disk. That history is gone and cannot be reconstructed.
+* Retention was raised to `rotate 1825` (5 years) on 2026-05-26, and
+  real client IPs have been logged since 2026-05-24 (`mod_remoteip` +
+  `CF-Connecting-IP`); before that, deduplication happened on
+  Cloudflare edge IPs and undercounted by roughly 10-50×.
+
+So the usable archive starts in **late May 2026** and grows by one day
+per night. It reaches the full 365-day window in **May 2027**; a
+year-on-year comparison needs two years on disk, so mid-2028.
+
+Practical consequences:
+
+* Do not describe the sparkline as "year-long" in reader-facing copy.
+  The in-book display window (`DISPLAY_DAYS`, currently 60) exists
+  precisely because the backing history is still short.
+* A page whose total looks low may simply predate the archive.
+* When the window looks wrong, check the log archive depth before
+  suspecting the aggregator. `operations.md` has the commands.
+
+## Complete days only
+
+The nightly cron runs in the small hours, so at the moment it fires the
+current day's bucket holds only a few hours of traffic. Publishing it
+put a near-zero point at the right-hand edge of every chart, every day,
+which reads as a collapse in traffic rather than an artefact of when the
+job ran.
+
+`build-sparklines.py` therefore ends its window `lag_days` days back
+(default 1, i.e. yesterday), so every published bucket covers a full 24
+hours. `telemetry.js` independently clips its display window to the last
+complete UTC day, so the charts stay correct even against a server still
+running an older build of the script. Set `lag_days = 0` in
+`sparklines.conf` to publish the running day again.
 
 ## Operating principles
 
@@ -106,8 +152,10 @@ self-hosting reusers.
 ## Threat model in one paragraph
 
 We trust GoatCounter to discard IPs and not set cookies (their public
-docs and code make this checkable). We trust our own webserver to
-rotate access logs within 30 days. We do not protect against a
+docs and code make this checkable). We trust our own webserver to hold
+the raw access logs securely for their retention period (currently 5
+years, raised from 4 days on 2026-05-26 so that the readership history
+survives) and to expose only the aggregates. We do not protect against a
 network adversary correlating the GoatCounter request with the ECharts
 fetch on the same TLS connection (theoretically possible, practically
 irrelevant for an open educational site). We do not run our own
