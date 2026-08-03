@@ -449,10 +449,30 @@ Both effects can be shown together by simulating from a single model,
 
 	Four data sets simulated from :math:`y = 5 + 1.0 x + e`. The errors are scaled so that the
 	realised standard error is exactly 1.0 kg in the top row and exactly 2.0 kg in the bottom
-	row. Holding :math:`S_E` fixed along a row, :math:`R^2` still differs by 0.07 in the top row
-	and by 0.30 in the bottom row. The two shaded panels both report :math:`R^2 = 0.90`, with
-	:math:`S_E = 1.0` kg in one and :math:`S_E = 2.0` kg in the other. The slope, the quantity to
-	report when the purpose is to learn about the system, is recovered in all four panels.
+	row, and the two shaded panels report the same :math:`R^2` of 0.90. The slope, the quantity
+	to report when the purpose is to learn about the system, is recovered in all four panels.
+
+There are three comparisons to make in the figure:
+
+-	**Along a row**, the prediction error is identical in the two panels while :math:`R^2`
+	changes: 0.97 and 0.90 in the top row, 0.90 and 0.60 in the bottom row. The panels differ
+	only in the range of |x| that was sampled, so :math:`R^2` has moved with no change in how
+	accurately either model predicts.
+
+-	**Down a column**, the range of |x| is held the same and the size of the error is what
+	differs: doubling the error takes :math:`R^2` from 0.97 to 0.90 on the left, and from 0.90
+	to 0.60 on the right. This is the comparison in which :math:`R^2` moves for the reason
+	usually attached to it.
+
+-	**Across the two shaded panels**, :math:`R^2` is 0.90 in both, and the prediction error in
+	one is twice that in the other: :math:`S_E` = 1.0 kg against 2.0 kg.
+
+Both of the first two comparisons are possible because of what the ratio contains. :math:`R^2` is
+the share of the variation in |y| that the model accounts for, and the variation in |y| grows as
+the |x|-values are spread further apart. Widening the range of |x| raises :math:`R^2`, and so does
+reducing the error, but only the second changes what the model can predict. A model built on data
+from a narrow operating window will report a low :math:`R^2` even when the measurements are
+precise, which is a common situation with routine process data.
 
 This leaves :math:`R^2` with a clear and narrower reading: it reports how strongly |x| and |y| are
 linearly associated, on the data in hand. That is a useful thing to know, and it is a different
