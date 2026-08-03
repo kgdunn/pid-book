@@ -657,7 +657,7 @@ Exercises
 		*	Most novices would be misled and consider an :math:`R^2` value of 0.23 quite low. But notice that there is a repeatable and consistent negative linear relationship between :math:`x` and :math:`y` in this data.
 
 
-	#.	This shows the interesting result that when regressing :math:`x` on :math:`y` (instead of the usual regression of :math:`y` on :math:`x`), that we get the same :math:`R^2` value. Note however that the *intercept* and *slope* are different between the two regressions.
+	#.	This shows the interesting result that when regressing :math:`x` on :math:`y` (instead of the usual regression of :math:`y` on :math:`x`), that we get the same :math:`R^2` value. Note however that the *intercept* and *slope* are different between the two regressions. This symmetry, and what follows from it, is covered in the :ref:`section on the two properties of R-squared <LS_R2_two_properties>`.
 
 		This also calls into question the interpretation of the :math:`R^2` value in regression. :math:`R^2` is just the square of the correlation coefficient. Recall from class the slide on the `Wikipedia examples of correlation <https://en.wikipedia.org/wiki/File:Correlation_examples.png>`_: there were examples where :math:`r(x,y) = \sqrt{R^2}` was zero, but still a strong *relationship* existing in the data. So we should interpret :math:`R^2` as a measure only of the *linear relationship* between two variables. And bear its quadratic nature in mind  - interpreting the correlation is actually easier, and more "linear", in that a 0.2 improvement in correlation means the same thing when going from :math:`r=0.2` to 0.4, as it does when going from :math:`r=0.7` to 0.9 (not so for :math:`R^2`).
 
