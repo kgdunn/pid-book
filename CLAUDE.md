@@ -201,6 +201,29 @@ Figures live in a separate repo (<https://github.com/kgdunn/figures>) and are
 symlinked in as `figures/`. If a content change references a new or modified
 figure, open a parallel PR there and link the two PRs in the descriptions.
 
+### The two repositories are decoupled, and the deploy order is figures first
+
+`.github/workflows/build-deploy.yml` checks out `kgdunn/figures` at its default
+branch, not at a branch matching the book's. A book PR that references a
+not-yet-merged figure therefore fails the PDF step:
+
+```
+LaTeX Warning: File `{figures-src/least-squares/<name>}.png' not found
+! Package pdftex.def Error: File `figures-src/least-squares/<name>.png' not found
+! Emergency stop.
+```
+
+The HTML build passes in the same run; only `pdflatex` treats a missing image as
+fatal, and the 100-plus "undefined reference" lines that follow are a knock-on of
+the run stopping before `PID.toc` is written, not a second problem.
+
+**This is known and expected. Do not report it, do not diagnose it in the PR
+thread, and do not propose a workflow change to make PR builds resolve a matching
+figures branch.** The working practice is to merge the figures PR first, then the
+book PR. Once the figures PR has merged, re-run the book workflow and it goes
+green. Treat the failure as a scheduling artifact of that order, and carry on
+with the book work in the meantime.
+
 ## Style for RST source
 
 See `CONTRIBUTING.md` for the full RST style notes. Key points:
