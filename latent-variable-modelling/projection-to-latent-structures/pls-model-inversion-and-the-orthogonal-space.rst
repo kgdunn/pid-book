@@ -1133,6 +1133,97 @@ is mostly not that set. This is why a multivariate specification is stated as a 
 table of limits per input: the limits are a summary of the region, and reading them as though they were
 the specification accepts lots the model would reject.
 
+.. _LVM-PLS-region-closed-form:
+
+Describing the region without drawing it
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The 415 designs in the :ref:`specification-region figure <LVM-PLS-specification-region-figure>` were
+found by trying 550 candidates and keeping those that stayed inside the :math:`T^2` limit. That is
+enough to draw a picture with, and it is the natural thing to do with two components. It is worth
+seeing that the same region has a closed form, because the picture stops being available as soon as
+the model has more components than can be plotted.
+
+Start from how any design on the null space is written, the walk set out in
+:ref:`the section on where the null-space line comes from <LVM-PLS-null-space-direction>`:
+:math:`\boldsymbol{\tau} = \boldsymbol{\tau}_\text{DI} + s\,\mathbf{g}`, the direct-inversion solution
+plus a step of size :math:`s`. Hotelling's :math:`T^2` divides each score by that score's standard
+deviation :math:`\sigma_a` before squaring, so putting that expression into it gives
+
+.. math::
+
+	T^2(s) = \sum_{a=1}^{A} \left( \frac{\tau_{\text{DI},a} + s\,g_a}{\sigma_a} \right)^2
+	       = M s^2 + 2 b s + c
+
+Nothing has been assumed. It is the same :math:`T^2`, rewritten in the one coordinate that the null
+space leaves free, and it is a quadratic in :math:`s` because :math:`T^2` squares a quantity that is
+linear in :math:`s`. The three coefficients are sums over the components:
+
+.. math::
+
+	M = \sum_a \frac{g_a^2}{\sigma_a^2}
+	\qquad
+	b = \sum_a \frac{\tau_{\text{DI},a}\, g_a}{\sigma_a^2}
+	\qquad
+	c = \sum_a \frac{\tau_{\text{DI},a}^2}{\sigma_a^2}
+
+A quadratic has a vertex, and two roots for any limit above that vertex. Both have already appeared
+in this chapter, found numerically:
+
+.. code-block:: python
+
+	M = ((g / sf) ** 2).sum()
+	b = ((tau * g) / sf**2).sum()
+	c = ((tau / sf) ** 2).sum()
+
+	s_centre = -b / M                 # the step of least T2
+	t2_centre = c - b**2 / M          # the T2 there
+	half_width = np.sqrt((t2_limit - t2_centre) / M)
+
+	print(M, b, c)                    # 1.971 0.203 0.064
+	print(s_centre, t2_centre)        # -0.103 0.043
+	print(s_centre - half_width, s_centre + half_width)   # -2.03 1.82
+
+The vertex is the least-:math:`T^2` design met in
+:ref:`the comparison of the two distance measures <LVM-PLS-null-space-distance-figure>`, at a step of
+:math:`-0.103`. The two roots are where the walk crosses the 95% limit, at steps of :math:`-2.03` and
+:math:`+1.82`. Everything between them is a design the data support, so for a target taste of 20.9
+that interval *is* the region, obtained by solving one quadratic rather than by testing candidates. A
+specification written over a range of tastes has one such interval for each target in the range, and
+the region is what those intervals cover between them.
+
+One feature of the coefficients is worth reading off. :math:`M` depends only on the null-space
+direction and the score standard deviations, neither of which changes with the target, so every target
+gives a parabola of the same curvature. Only :math:`b` and :math:`c` move, and what they move is the
+vertex. How wide the interval comes out therefore depends only on how far that vertex sits below the
+limit, which is to say on how close that target's null space passes to the centre of the model. Across
+tastes of 20 to 30 the interval stays between 3.81 and 3.86 units of :math:`s` wide, so sweeping the
+target mostly slides it rather than resizing it.
+
+The same algebra covers a model with more components. With :math:`A` components and one response the
+null space has :math:`A - 1` dimensions, so :math:`s` becomes a vector of :math:`A - 1` steps rather
+than a single number, and the quadratic becomes
+
+.. math::
+
+	T^2(\mathbf{s}) = \mathbf{s}^T \mathbf{M} \mathbf{s} + 2 \mathbf{b}^T \mathbf{s} + c
+
+with :math:`\mathbf{M} = \mathbf{G}^T \boldsymbol{\Lambda}^{-1} \mathbf{G}`, where :math:`\mathbf{G}`
+holds the null-space basis vectors as columns and :math:`\boldsymbol{\Lambda}` is the diagonal matrix
+of score variances. :math:`\mathbf{M}` is positive definite, so the set of steps with
+:math:`T^2 \le` limit is the inside of an ellipsoid. Its centre is
+:math:`\mathbf{s}^* = -\mathbf{M}^{-1}\mathbf{b}`, the design of least :math:`T^2`. Its shape comes
+from the eigenvectors of :math:`\mathbf{M}`: along the eigenvector with eigenvalue :math:`\lambda`,
+the region extends :math:`\sqrt{(\text{limit} - T^2_\text{min}) / \lambda}` either side of the centre.
+
+That is the answer to what happens when the region can no longer be drawn. A six-component model with
+one response gives a five-dimensional ellipsoid, reported as a centre and five direction-and-length
+pairs: the recommended design, and how far it may move along each independent direction before it
+leaves the region. The number of dimensions here is set by the number of components, not by the number
+of inputs, so a model of a hundred measurements summarised by six components still has five of them.
+Sampling the region is one way to explore a specification when the constraints on it are non-linear;
+the geometry itself does not require it.
+
 Inversion is not the only route to a specification region. The inputs can also be mapped directly into a
 region without inverting a model, an approach known as direct mapping. Paris and co-workers (2021)
 compare the two on simulated data and find neither is better in every case: model inversion accepted more
