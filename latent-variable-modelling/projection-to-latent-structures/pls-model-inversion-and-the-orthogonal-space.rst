@@ -1167,8 +1167,8 @@ linear in :math:`s`. The three coefficients are sums over the components:
 	\qquad
 	c = \sum_a \frac{\tau_{\text{DI},a}^2}{\sigma_a^2}
 
-A quadratic has a vertex and, for a given limit, two roots. Both have already appeared in this
-chapter, found numerically:
+A quadratic has a vertex, and two roots for any limit above that vertex. Both have already appeared
+in this chapter, found numerically:
 
 .. code-block:: python
 
@@ -1188,12 +1188,17 @@ The vertex is the least-:math:`T^2` design met in
 :ref:`the comparison of the two distance measures <LVM-PLS-null-space-distance-figure>`, at a step of
 :math:`-0.103`. The two roots are where the walk crosses the 95% limit, at steps of :math:`-2.03` and
 :math:`+1.82`. Everything between them is a design the data support, so for a target taste of 20.9
-that interval *is* the region, obtained by solving one quadratic rather than by testing candidates.
+that interval *is* the region, obtained by solving one quadratic rather than by testing candidates. A
+specification written over a range of tastes has one such interval for each target in the range, and
+the region is what those intervals cover between them.
 
-Two features of the coefficients are worth reading off. :math:`M` depends only on the null-space
-direction and the score standard deviations, so it is the same for every target taste: sweeping the
-target slides the interval without changing its width, which is why the swept region in that same figure has parallel
-edges. Only :math:`b` and :math:`c` carry the target.
+One feature of the coefficients is worth reading off. :math:`M` depends only on the null-space
+direction and the score standard deviations, neither of which changes with the target, so every target
+gives a parabola of the same curvature. Only :math:`b` and :math:`c` move, and what they move is the
+vertex. How wide the interval comes out therefore depends only on how far that vertex sits below the
+limit, which is to say on how close that target's null space passes to the centre of the model. Across
+tastes of 20 to 30 the interval stays between 3.81 and 3.86 units of :math:`s` wide, so sweeping the
+target mostly slides it rather than resizing it.
 
 The same algebra covers a model with more components. With :math:`A` components and one response the
 null space has :math:`A - 1` dimensions, so :math:`s` becomes a vector of :math:`A - 1` steps rather
