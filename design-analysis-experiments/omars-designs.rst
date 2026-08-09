@@ -117,6 +117,365 @@ Gaussian process or a spline fit, would call instead for a design optimal for th
 space-filling one. The spectrum here, and the measures that rank it, therefore describe the
 second-order case, and the model itself is one of the choices rather than a fixed backdrop.
 
+.. _DOE-omars-estimability-frontier:
+
+How many runs a second-order model needs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The scenario in this section is that the model is already fixed, and the only question is how
+many runs to buy. Take the full second-order model in :math:`k` factors: an intercept,
+:math:`k` main effects, :math:`k` pure quadratics, and :math:`k(k-1)/2` two-factor interactions,
+so
+
+.. math::
+
+	p = 1 + 2k + \frac{k(k-1)}{2}
+
+parameters in total. The usual arithmetic stops there: count the parameters, and buy at least
+that many runs. For a foldover design that count is necessary but it is not sufficient, and the
+shortfall is large enough to change which design you order.
+
+Recall how a foldover is built, since that is where the answer comes from. A half-design
+:math:`\mathbf{H}` of :math:`h` runs is stacked on its own sign-flipped copy, and a centre run
+is added:
+
+.. math::
+
+	\mathbf{D} = \begin{bmatrix} \mathbf{H} \\ -\mathbf{H} \\ \mathbf{0} \end{bmatrix},
+	\qquad N = 2h + 1
+
+so :math:`N` is always odd. This is the construction behind the
+:ref:`definitive screening design <DOE-definitive-screening-designs>`, where :math:`\mathbf{H}`
+is a conference matrix, and behind most of the OMARS catalogue.
+
+Now split the model terms by what happens to them when every factor changes sign. The :math:`k`
+main effects are *odd*: :math:`x_i` becomes :math:`-x_i`. Every other term is *even*: the
+intercept is constant, and both :math:`x_i^2` and :math:`x_i x_j` are unchanged when the signs of
+:math:`x_i` and :math:`x_j` are flipped together. So there are
+
+.. math::
+
+	1 + k + \frac{k(k-1)}{2} = 1 + \frac{k(k+1)}{2}
+
+even terms, against :math:`k` odd ones. The consequence for the model matrix :math:`\mathbf{X}`
+is immediate: a run in :math:`\mathbf{H}` and its mirror in :math:`-\mathbf{H}` give *identical*
+rows in the even columns. Those columns therefore see only :math:`h + 1` distinct rows, the
+:math:`h` rows of the half plus the centre run, however large :math:`N` becomes. The odd columns
+contribute at most :math:`k` further directions. Hence, for every foldover design,
+
+.. math::
+	:label: eq-omars-rank-bound
+
+	\text{rank}(\mathbf{X}) \le k + \min\left(h + 1, \; 1 + \frac{k(k+1)}{2}\right)
+
+with equality when the half-design is in general position. It is an upper bound rather than an
+identity: a half-design with repeated or linearly dependent rows falls short of it.
+
+Equation :eq:`eq-omars-rank-bound` says the full second-order model becomes estimable only once
+:math:`h + 1 \ge 1 + k(k+1)/2`, which is :math:`h \ge k(k+1)/2`, and therefore only once
+
+.. math::
+	:label: eq-omars-frontier
+
+	N \; \ge \; k^2 + k + 1
+
+We will call :math:`N = k^2 + k + 1` the **estimability frontier**: the smallest foldover design
+in which all :math:`p` coefficients of the full second-order model can be estimated jointly.
+
+.. list-table:: The estimability frontier, against the parameter count it has to clear.
+	:header-rows: 1
+	:widths: 26 18 18 20 18
+
+	*   - Factors, :math:`k`
+	    - Parameters, :math:`p`
+	    - Frontier, :math:`k^2+k+1`
+	    - Shortfall, :math:`k(k-1)/2`
+	    - Error df at the frontier
+	*   - 3
+	    - 10
+	    - 13
+	    - 3
+	    - 3
+	*   - 4
+	    - 15
+	    - 21
+	    - 6
+	    - 6
+	*   - 5
+	    - 21
+	    - 31
+	    - 10
+	    - 10
+	*   - 6
+	    - 28
+	    - 43
+	    - 15
+	    - 15
+	*   - 7
+	    - 36
+	    - 57
+	    - 21
+	    - 21
+
+The last two columns hold the same number, and that is not a coincidence. Subtracting the
+parameter count from the frontier gives
+
+.. math::
+
+	\left(k^2 + k + 1\right) - \left(1 + 2k + \frac{k(k-1)}{2}\right) = \frac{k(k-1)}{2}
+
+which is exactly the number of two-factor interactions. There are two things to read from that.
+The first is that having more runs than parameters does not establish that a model can be
+fitted: at four factors, a nineteen-run foldover has four spare runs against a fifteen-parameter
+model, and still cannot estimate it. The second is that at the frontier the degrees of freedom
+left over for error also come to :math:`k(k-1)/2`, since the frontier *is* the parameter count
+plus that amount. The smallest design that can fit the full second-order model therefore arrives
+with enough spare runs to test it, which is not true of designs sized by parameter count alone.
+
+The four-factor case is worth running, because the arithmetic and the rank can be checked
+directly. Build the coded design at nineteen runs and again at twenty-one, form the full
+second-order model matrix, and take its rank:
+
+.. code-block:: python
+
+	import itertools
+	import numpy as np
+	from process_improve.experiments import Factor, generate_omars
+
+	def second_order_matrix(levels):
+	    """Model matrix of the full second-order model: intercept, main effects,
+	    pure quadratics, then every two-factor interaction."""
+	    n_runs, k = levels.shape
+	    columns = [np.ones(n_runs)]
+	    columns += [levels[:, i] for i in range(k)]
+	    columns += [levels[:, i] ** 2 for i in range(k)]
+	    columns += [levels[:, i] * levels[:, j] for i, j in itertools.combinations(range(k), 2)]
+	    return np.column_stack(columns)
+
+	factors = [Factor(name=c, low=-1, high=1) for c in "ABCD"]
+	for n_runs in (19, 21):
+	    design = generate_omars(factors, n_runs=n_runs, model="main_quadratic", random_seed=42)
+	    X = second_order_matrix(design.design[design.factor_names].to_numpy(float))
+	    print(n_runs, X.shape, np.linalg.matrix_rank(X))
+
+	# 19 (19, 15) 14
+	# 21 (21, 15) 15
+
+Nineteen runs give a model matrix with fifteen columns and rank fourteen, one short, so the
+model cannot be fitted at all. Twenty-one runs, the frontier for four factors, give rank fifteen.
+Note that the designs here were asked for with ``model="main_quadratic"``: sizing for the full
+second-order model below its frontier is refused by ``generate_omars``, with a message naming the
+frontier.
+
+.. code-block:: python
+
+	import plotly.graph_objects as go
+
+	k = np.arange(3, 8)
+	series = [
+	    ("Estimability frontier, k² + k + 1", k**2 + k + 1, "#D55E00"),
+	    ("Parameters in the full second-order model", 1 + 2 * k + k * (k - 1) // 2, "#0072B2"),
+	    ("Definitive screening design, 2k + 1 runs", 2 * k + 1, "#E69F00"),
+	]
+	fig = go.Figure()
+	for name, values, colour in series:
+	    fig.add_trace(go.Scatter(x=k, y=values, name=name, mode="lines+markers",
+	                             line=dict(color=colour, width=3), marker=dict(size=10)))
+	# Shade the band between the parameter count and the frontier: k(k-1)/2 runs deep.
+	fig.add_trace(go.Scatter(x=np.r_[k, k[::-1]],
+	                         y=np.r_[k**2 + k + 1, (1 + 2 * k + k * (k - 1) // 2)[::-1]],
+	                         fill="toself", fillcolor="rgba(213, 94, 0, 0.13)",
+	                         line=dict(width=0), showlegend=False, hoverinfo="skip"))
+	fig.add_trace(go.Scatter(x=[4], y=[19], mode="markers", showlegend=False,
+	                         marker=dict(symbol="x", size=14, color="#666666"),
+	                         text=["19 runs, 15 parameters, model matrix rank 14"]))
+	fig.update_layout(xaxis_title="Number of factors, k", yaxis_title="Number of runs, N",
+	                  xaxis=dict(tickvals=k), legend=dict(x=0.02, y=0.98))
+	fig.show()
+
+.. figure:: ../figures/doe/omars-estimability-frontier.png
+	:align: center
+	:width: 700px
+	:alt: omars-estimability-frontier.py
+
+	The estimability frontier :math:`N = k^2 + k + 1` for a foldover design, against the
+	parameter count of the full second-order model and the size of a definitive screening
+	design. The shaded band is where a design has more runs than the model has parameters
+	and still cannot estimate it; the band is :math:`k(k-1)/2` runs deep. The marked point
+	is the four-factor case checked in the code above.
+
+One numerical caution goes with this, for anyone computing their own efficiency measures of the
+kind introduced in :ref:`Judging and comparing designs <DOE-judging-and-comparing-designs>`.
+Those measures are built from the determinant of the information matrix
+:math:`\mathbf{X}^T\mathbf{X}`, and for a rank-deficient design that determinant is exactly zero.
+Computed in floating point, however, a log-determinant routine returns a finite number instead,
+because rounding moves the value off zero. A design that cannot be fitted at all then reports a
+small D-efficiency, which reads as a poor design rather than an impossible one. Test the rank of
+the model matrix, as the code above does, rather than inferring estimability from a determinant
+that came back finite.
+
+If the frontier is beyond the budget, the option is to change the model rather than to accept a
+design that cannot fit it. Main effects and pure quadratics alone need :math:`1 + 2k`
+parameters, which a foldover reaches at :math:`2k + 1` runs, and clears with degrees of freedom
+to spare at :math:`2k + 3`. That is the choice the next section lays out cell by cell.
+
+.. _DOE-omars-trade-off-table:
+
+A trade-off table for OMARS designs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The :ref:`two-level trade-off table <DOE_design_trade_off_BHH_272>` answers a question of the
+form "I can afford sixteen runs and I have seven factors, what do I give up?". Its currency is
+:ref:`resolution <DOE-design-resolution>`: what you surrender as more factors are squeezed into
+fewer runs is the ability to tell main effects apart from interactions.
+
+That currency does not carry over to OMARS designs. An OMARS design has its main effects
+orthogonal to each other *and* to every second-order term, at every size in the family: that is
+the defining property, and it is what the "orthogonal" in the name records. There is no smaller
+OMARS design in which the main effects are dirtier. Resolution is constant across the family, so
+it cannot be what the table reports.
+
+What varies instead is which model the run budget makes estimable, and
+:ref:`the previous section <DOE-omars-estimability-frontier>` is what sets it. Three capability
+classes follow, tagged with four characters so that they line up in a table:
+
+``Full``
+	:math:`N \ge k^2 + k + 1`, the estimability frontier. Main effects, pure quadratics and
+	every two-factor interaction are estimable jointly, so a response surface can be fitted
+	from this one design without a follow-up.
+
+``Quad``
+	:math:`N \ge 2k + 3`. Main effects and the pure quadratics are estimable, with degrees of
+	freedom left over to test them, so curvature can be judged factor by factor. The two-factor
+	interactions are present in the *design*, and they are still orthogonal to the main effects,
+	but they are not in the *model*.
+
+``Satd``
+	:math:`N = 2k + 1`. Saturated: the parameters of the main-effects-plus-quadratics model can
+	be estimated, but nothing is left with which to estimate :math:`\sigma^2`, so there are point
+	estimates and no standard errors, no tests, and no power.
+
+The three tags sort alphabetically in decreasing order of capability, ``Full`` before ``Quad``
+before ``Satd``, which makes the table easy to read down a column. The table itself, and the
+report for a single cell, come from ``process_improve``:
+
+.. code-block:: python
+
+	from process_improve.experiments import omars_trade_off_table, omars_tradeoff
+
+	table = omars_trade_off_table()   # the whole table: printed, and returned as a DataFrame
+	omars_tradeoff(17, 4)             # one cell, reported in words
+
+.. code-block:: text
+
+	runs  k=3        k=4        k=5        k=6        k=7
+	-------------------------------------------------------------
+	9     Quad df=2  Satd df=0
+	13    Full 3     Quad 4     Quad df=2  Satd df=0
+	17    Full 7     Quad 8     Quad 6     Quad 4     Quad df=2
+	21    Full 11    Full 6     Quad 10    Quad 8     Quad 6
+	25    Full 15    Full 10    Quad 14    Quad 12    Quad 10
+	31    Full 21    Full 16    Full 10    Quad 18    Quad 16
+	37    Full 27    Full 22    Full 16    Quad 24    Quad 22
+	43    Full 33    Full 28    Full 22    Full 15    Quad 28
+	57    Full 47    Full 42    Full 36    Full 29    Full 21
+
+Each cell carries the capability class and the number of error degrees of freedom the budget
+leaves over, which is what the model is tested with. To keep the staircase legible, ``df =`` is
+printed once per column, on the first live cell; the returned DataFrame keeps the label
+self-contained, so ``table.loc[21, 4]`` is the string ``'Full df=6'``. Five things are worth
+reading off the table:
+
+	*	**Down a column, capability only improves; across a row, it only worsens.** More runs
+		never buy less, and more factors never cost less, so the boundary between the classes
+		is a staircase.
+
+	*	**The step up to** ``Full`` **in each column is the estimability frontier**
+		:math:`N = k^2 + k + 1` of :ref:`How many runs a second-order model needs
+		<DOE-omars-estimability-frontier>`: 13, 21, 31, 43 and 57 runs for three to seven
+		factors. Every cell from there down the column is ``Full``.
+
+	*	**Blank cells are not designs at all**, rather than poor ones. A foldover has
+		:math:`N = 2h + 1` runs, so an even budget cannot be one, and a budget below
+		:math:`2k + 1` cannot hold the main effects and the quadratics.
+
+	*	**Error degrees of freedom are not comparable across the classes**, because the model
+		differs. At 43 runs, six factors show ``Full df=15`` and seven factors show
+		``Quad df=28``: the seven-factor cell has more spare runs precisely because it is
+		fitting the smaller model.
+
+	*	**The definitive screening design sits in the top live cell of each column.** For an
+		even number of factors a DSD has :math:`2k+1` runs and lands in ``Satd``, which is
+		another way of saying a nine-run, four-factor DSD is exactly saturated for main effects
+		and quadratics. For an odd number of factors the conference-matrix construction needs
+		:math:`2k+3` runs, so the three-, five- and seven-factor DSDs (nine, thirteen and
+		seventeen runs) arrive with two spare degrees of freedom and land in ``Quad df=2``.
+
+.. code-block:: python
+
+	import plotly.graph_objects as go
+	from process_improve.experiments import omars_tradeoff
+	from process_improve.experiments.omars_tradeoff import DEFAULT_FACTORS, DEFAULT_RUNS
+
+	shade = {"full": 3, "quad": 2, "satd": 1, "none": 0}
+	cells = [[omars_tradeoff(n, k, display=False) for k in DEFAULT_FACTORS] for n in DEFAULT_RUNS]
+
+	fig = go.Figure(go.Heatmap(
+	    z=[[shade[c.capability] for c in row] for row in cells],
+	    x=[f"k = {k}" for k in DEFAULT_FACTORS], y=[str(n) for n in DEFAULT_RUNS],
+	    text=[[f"{c.tag}<br>df = {c.error_df}" if c.exists else "" for c in row] for row in cells],
+	    texttemplate="%{text}", showscale=False, xgap=3, ygap=3,
+	    colorscale=[[0.0, "#F4F4F4"], [0.33, "#E69F00"], [0.67, "#56B4E9"], [1.0, "#0072B2"]]))
+	fig.update_layout(xaxis_title="Number of factors", yaxis_title="Number of runs",
+	                  xaxis=dict(side="top"), yaxis=dict(autorange="reversed"))
+	fig.show()
+
+.. figure:: ../figures/doe/omars-capability-staircase.png
+	:align: center
+	:width: 640px
+	:alt: omars-capability-staircase.py
+
+	The OMARS trade-off table, drawn as a capability staircase. Each cell gives the largest
+	model the run budget makes estimable and the error degrees of freedom left to test it.
+	The outlined cells are the estimability frontier :math:`N = k^2 + k + 1`, the first
+	``Full`` cell in each column. Blank cells are budgets that are not a foldover design.
+
+For a single budget the same information is reported in words, including what the neighbouring
+thresholds are, so a cell that is not the one you wanted still tells you what it would take:
+
+.. code-block:: text
+
+	>>> omars_tradeoff(17, 4)
+	OMARS: 17 runs, 4 factors
+	  Quad: main effects and pure quadratics, with error degrees of freedom to test them
+	  Model: main_quadratic (9 parameters), 8 error df
+	  Thresholds for 4 factors: Satd 9, Quad 11, Full 21 runs.
+	  4 more runs would reach Full (all two-factor interactions estimable).
+
+Every number in this table is closed-form, which is why it is worth having separately from the
+designs themselves. Nothing here is searched for: the classes come from
+equation :eq:`eq-omars-frontier` and the degrees of freedom from a subtraction, so the table is
+exact and instant. Building an actual design at one of these sizes is a different matter, because
+the OMARS construction selects the half-design :math:`\mathbf{H}` with an integer program: at
+three factors a single search takes about 0.1 seconds, and at seven factors about 980 seconds.
+That is also why the table
+reports no quality metrics. D-efficiency, the largest correlation among the second-order effects,
+and the projection properties all describe *one particular design* at a given size rather than
+the size itself, so they belong to ``generate_omars`` and to
+:ref:`Judging and comparing designs <DOE-judging-and-comparing-designs>`, not to a cell here.
+
+Asking for the design at the four-factor frontier shows how the two fit together. With no run
+count given, ``generate_omars`` sizes the design at the frontier for the model it is asked for,
+and reports the rank it achieved alongside the degrees of freedom that leaves:
+
+.. code-block:: python
+
+	design = generate_omars([Factor(name=c, low=-1, high=1) for c in "ABCD"], random_seed=42)
+	print(design.n_runs)                                  # 21
+	print(design.metadata["model_rank"])                  # 15, so the model is estimable
+	print(design.metadata["min_runs_for_model"])          # 21, the frontier
+	print(design.metadata["expected_error_df"])           # 6, which is k(k-1)/2
+
 .. _DOE-analysing-economical-designs:
 
 Analysing data from these designs
@@ -124,12 +483,15 @@ Analysing data from these designs
 
 One last point, and it is easy to get wrong. Because these designs are deliberately economical
 and carry structured aliasing, you should *not* simply throw the data at a least squares fit of
-the full second-order model. Two things go wrong if you do. The model often has more terms than
-the design has runs, so it is not estimable at all: the :math:`\mathbf{X}^T\mathbf{X}` matrix is
-singular and cannot be inverted. For four factors, for example, the full quadratic model has
-:math:`1 + 4 + 4 + 6 = 15` terms (an intercept, four main effects, four quadratics, and six
-two-factor interactions), while a definitive screening design has only nine runs and even the
-thirteen-run OMARS design has only thirteen, so neither can fit the full model. And even when it
+the full second-order model. Two things go wrong if you do. The model is often not estimable at
+all, so the :math:`\mathbf{X}^T\mathbf{X}` matrix is singular and cannot be inverted. For four
+factors, for example, the full quadratic model has :math:`1 + 4 + 4 + 6 = 15` terms (an
+intercept, four main effects, four quadratics, and six two-factor interactions), while the
+nine-run definitive screening design has nine runs and the thirteen-run OMARS design has
+thirteen, so neither can fit it. As :ref:`the estimability frontier
+<DOE-omars-estimability-frontier>` shows, the run count is not the binding constraint either: a
+nineteen-run foldover in four factors has four runs to spare against those fifteen terms and
+still cannot estimate them, because twenty-one runs are needed. And even when the model
 can be fitted, a generic stepwise or penalised
 regression treats every column alike and can let the entangled second-order effects leak into,
 and bias, the main-effect estimates, throwing away the very orthogonality the design worked so
@@ -146,9 +508,10 @@ be told apart. The workflow is:
     design matrix  +  measured responses
              |
              v
-    (0)  enough spare error degrees of freedom?
-         ( runs greater than the number of terms being fitted )
-         if not  ->  stop; replicate or add runs first
+    (0)  is the model ESTIMABLE, with error df to spare?
+         ( rank of the model matrix equals the number of terms
+           being fitted, and the run count exceeds it )
+         if not  ->  stop; shrink the model, replicate, or add runs
              |
              v
     (1)  estimate the MAIN EFFECTS
@@ -172,9 +535,12 @@ be told apart. The workflow is:
              v
     final model: the active main, quadratic, and interaction effects
 
-Step 0 is not a formality. A *saturated* design, one with no spare runs, leaves nothing with
-which to estimate the noise :math:`\sigma^2`, and without that estimate there are no standard
-errors, no tests, and no power: the analysis simply cannot start. Step 1 is possible only
+Step 0 is not a formality, and it has two parts. A *saturated* design, one with no spare runs,
+leaves nothing with which to estimate the noise :math:`\sigma^2`, and without that estimate there
+are no standard errors, no tests, and no power: the analysis cannot start. Below the
+:ref:`estimability frontier <DOE-omars-estimability-frontier>` the situation is more basic still,
+since the coefficients themselves have no unique solution, which is why the check is on the rank
+of the model matrix and not on the run count. Step 1 is possible only
 because of the orthogonality property: the main effects are unaliased with every second-order
 term, so their estimates are unbiased no matter which interactions or quadratics are truly
 active, which is what lets us analyse them on their own. Step 4 is where the design's one weakness is managed:
