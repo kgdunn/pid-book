@@ -95,9 +95,9 @@ That immediately suggests how to choose:
     *   **Few factors and a genuine response-surface goal, predicting and optimizing over the
         region**: a central composite or Box-Behnken design, or one of the largest OMARS designs.
 
-Saying which specific design is best, even once the run budget is fixed, requires the
-quantitative tools of the next section: the information matrix, the prediction variance and its
-fraction-of-design-space plot, the correlations among the effects, and the power. Those are
+Saying which specific design is best, even once the run budget is fixed, requires quantitative
+tools: the information matrix, the prediction variance and its fraction-of-design-space plot, the
+correlations among the effects, and the power. Those are
 exactly the measures developed in :ref:`Judging and comparing designs
 <DOE-judging-and-comparing-designs>`, and they turn the choice along this spectrum from a matter
 of taste into a matter of arithmetic.
@@ -117,12 +117,37 @@ Gaussian process or a spline fit, would call instead for a design optimal for th
 space-filling one. The spectrum here, and the measures that rank it, therefore describe the
 second-order case, and the model itself is one of the choices rather than a fixed backdrop.
 
+.. _DOE-omars-trade-off-table:
+
+A trade-off table for OMARS designs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The :ref:`two-level trade-off table <DOE_design_trade_off_BHH_272>` answers a question of the form
+"I have sixteen runs available and seven factors on the list, what do I give up?". Its currency is
+:ref:`resolution <DOE-design-resolution>`: what is given up as more factors are studied in fewer
+runs is the ability to tell main effects apart from interactions. Resolution III, IV and V form a
+single ordered scale, and the table maps a budget onto it.
+
+The natural thing to want is the same table for OMARS designs. It does not carry over, and the
+reason is worth following, because repairing it turns on a question about run counts that has a
+surprising answer.
+
+An OMARS design has its main effects orthogonal to each other *and* to every second-order term, at
+every size in the family: that is the defining property, and it is what the "orthogonal" in the
+name records. There is no smaller OMARS design in which the main effects are dirtier, and no larger
+one in which they are cleaner. Resolution is constant across the family, so it cannot be what the
+table reports.
+
+What varies instead is *which model the run count makes estimable at all*. That question turns out
+to have a different answer from the one the usual parameter count gives, and the rest of this
+section works it out before returning to the table itself.
+
 .. _DOE-omars-estimability-frontier:
 
 How many runs a second-order model needs
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The scenario is that the model is already fixed, and only the run count is open. Take the full
+Take the full
 second-order model in :math:`k` factors: an intercept, :math:`k` main effects, :math:`k` pure
 quadratics, and :math:`k(k-1)/2` two-factor interactions, so
 
@@ -359,7 +384,7 @@ refuses to size for the full second-order model below its frontier.
 .. _DOE-omars-inside-the-band:
 
 Running a design from inside the band
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""""""""""""
 
 Suppose the nineteen-run design is run anyway. At the bench nothing goes wrong: nineteen runs give
 nineteen measurements, and none of the data is wasted. What is missing appears at the analysis
@@ -395,27 +420,16 @@ many runs until I get it in all :math:`k`?".
 If the frontier is beyond the budget, the remaining option is to fit a smaller model rather than
 accept a design that cannot fit the larger one. Main effects and pure quadratics need
 :math:`1 + 2k` parameters, which a foldover reaches at :math:`2k + 1` runs and clears with degrees
-of freedom to spare at :math:`2k + 3`. That is the choice the next section sets out cell by cell.
+of freedom to spare at :math:`2k + 3`. That is the choice the table sets out cell by cell.
 
-.. _DOE-omars-trade-off-table:
 
-A trade-off table for OMARS designs
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. _DOE-omars-reading-the-table:
 
-The :ref:`two-level trade-off table <DOE_design_trade_off_BHH_272>` answers a question of the
-form "I can afford sixteen runs and I have seven factors, what do I give up?". Its currency is
-:ref:`resolution <DOE-design-resolution>`: what you surrender as more factors are squeezed into
-fewer runs is the ability to tell main effects apart from interactions.
+Reading the table
+^^^^^^^^^^^^^^^^^^^^^
 
-That currency does not carry over to OMARS designs. An OMARS design has its main effects
-orthogonal to each other *and* to every second-order term, at every size in the family: that is
-the defining property, and it is what the "orthogonal" in the name records. There is no smaller
-OMARS design in which the main effects are dirtier. Resolution is constant across the family, so
-it cannot be what the table reports.
-
-What varies instead is which model the run budget makes estimable, and
-:ref:`the previous section <DOE-omars-estimability-frontier>` is what sets it. Three capability
-classes follow, tagged with four characters so that they line up in a table:
+With the frontier settled, the cells can say something useful. Three capability classes follow from
+it, tagged with four characters so that they line up in a table:
 
 ``Full``
 	:math:`N \ge k^2 + k + 1`, the estimability frontier. Main effects, pure quadratics and
@@ -469,9 +483,9 @@ leaves over, which is what the model is tested with. Five things are worth readi
 		is a staircase.
 
 	*	**The step up to** ``Full`` **in each column is the estimability frontier**
-		:math:`N = k^2 + k + 1` of :ref:`How many runs a second-order model needs
-		<DOE-omars-estimability-frontier>`: 13, 21, 31, 43 and 57 runs for three to seven
-		factors. Every cell from there down the column is ``Full``.
+		:math:`N = k^2 + k + 1` derived in :ref:`How many runs a second-order model
+		needs <DOE-omars-estimability-frontier>`: 13, 21, 31, 43 and 57 runs for three to
+		seven factors. Every cell from there down the column is ``Full``.
 
 	*	**Blank cells are not designs at all**, rather than poor ones. A foldover has
 		:math:`N = 2h + 1` runs, so an even budget cannot be one, and a budget below
@@ -529,6 +543,36 @@ thresholds are, so a cell that is not the one you wanted still tells you what it
 	  Model: main_quadratic (9 parameters), 8 error df
 	  Thresholds for 4 factors: Satd 9, Quad 11, Full 21 runs.
 	  4 more runs would reach Full (all two-factor interactions estimable).
+
+.. _DOE-omars-worked-examples:
+
+Three worked readings
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The table earns its place before any runs are made, when the design is still a plan on paper.
+Three readings show the kinds of question it settles.
+
+**Six factors in seventeen runs.** This is the size of a published extraction study: six solvent
+and process factors, seventeen runs. The cell is ``Quad df=4``. All six main effects and all six
+quadratics are estimable, with four degrees of freedom left over to test them, so curvature can be
+judged factor by factor. The cell also says what is not on offer: ``Full`` for six factors begins at
+43 runs. The two-factor interactions are in the design, and they are orthogonal to the main effects,
+but they are not in the fitted model, so an interaction that matters has to be found by the staged
+analysis of :ref:`Analysing data from these designs <DOE-analysing-economical-designs>` and then
+confirmed in a follow-up.
+
+**Four factors, with a response surface wanted from one design.** The full second-order model in
+four factors has fifteen parameters, so the parameter count suggests that nineteen runs is
+comfortable. The table gives ``Quad df=10`` at nineteen runs, and puts ``Full`` at twenty-one. Those
+two extra runs are the difference between a model that can be fitted and one that cannot, and the
+cheapest place to discover that is here, rather than after the runs are made.
+
+**Five factors, with a budget that might stretch.** Reading down the :math:`k = 5` column sets out
+the decision. Thirteen runs give ``Quad df=2``, which is estimable and testable, but on two degrees
+of freedom. Seventeen runs give ``Quad df=6``: the same model, with more power behind the tests.
+Thirty-one runs give ``Full df=10``, with every two-factor interaction estimable. Those are three
+different studies rather than three sizes of one, and the middle one is often the right answer,
+since four runs beyond the minimum triple the degrees of freedom without extending the model.
 
 Every number in this table is closed-form: the capability classes come from
 equation :eq:`eq-omars-frontier` and the degrees of freedom from a subtraction, so the table is
