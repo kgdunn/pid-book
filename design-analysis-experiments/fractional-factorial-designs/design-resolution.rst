@@ -69,10 +69,10 @@ catalogue, and the cells agree with :ref:`the printed table <DOE_design_trade_of
 
 .. code-block:: python
 
-	from process_improve.experiments import trade_off_table, tradeoff
+	from process_improve.experiments import get_trade_off_table_entry, trade_off_table
 
-	trade_off_table()             # the whole table, as a pandas DataFrame
-	tradeoff(runs=16, factors=7)  # one cell, with its generators and alias chains
+	trade_off_table()                                       # the whole table
+	get_trade_off_table_entry(n_runs=16, n_factors=7)       # one cell, with its alias chains
 
 Two things follow from having the table as code rather than as an image. The first is that it
 can be widened past the edge of a printed page:
