@@ -752,8 +752,9 @@ value of each measure at each size, gives the six curves below.
 	summarise: the left pair averages, the middle pair takes a worst case of the same two
 	quantities, and the right pair does neither. The top row summarises
 	:math:`\mathbf{X}^T\mathbf{X}` and the bottom row is prediction variance over the region,
-	except for the last panel. Insets on that panel are the correlation maps of three designs
-	from the one-centre-run series, on a common shading scale from zero to one.
+	except for the last panel. Insets on that panel are the correlation maps of four of the
+	plotted designs, three from the one-centre-run series and one from the two-centre-run
+	series, on a common shading scale from zero to one.
 
 The two averages, :math:`A` and :math:`I`, fall smoothly and track each other. Both fall at
 roughly the rate :math:`1/N`: the product :math:`N \times A/p` moves only from 3.57 at nine runs
