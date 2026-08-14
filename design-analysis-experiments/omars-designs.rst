@@ -752,9 +752,10 @@ value of each measure at each size, gives the six curves below.
 	summarise: the left pair averages, the middle pair takes a worst case of the same two
 	quantities, and the right pair does neither. The top row summarises
 	:math:`\mathbf{X}^T\mathbf{X}` and the bottom row is prediction variance over the region,
-	except for the last panel. Insets on that panel are the correlation maps of four of the
-	plotted designs, three from the one-centre-run series and one from the two-centre-run
-	series, on a common shading scale from zero to one.
+	except for the last panel. Insets on that panel are the correlation maps of five of the
+	plotted designs, on a common shading scale from zero to one, each outlined in the colour
+	of the series it belongs to. The three on the left are the smallest design at each
+	centre-run count, so they can be compared against each other directly.
 
 The two averages, :math:`A` and :math:`I`, fall smoothly and track each other. Both fall at
 roughly the rate :math:`1/N`: the product :math:`N \times A/p` moves only from 3.57 at nine runs
@@ -781,9 +782,13 @@ Max :math:`|r|` is the measure that answers the entanglement question directly, 
 that reverses. Four of the eleven steps along the one-centre-run series go backwards, the largest
 from 0.050 at twenty-one runs to 0.179 at twenty-three. It also separates the centre-run series
 widely, unlike the five criteria: at fifteen runs the best value is 0.378 with one centre run
-against 0.071 with three. Its one clean point is twenty-seven runs with one centre run, where the
-value is exactly zero and the design turns out to be the full three-level factorial, all
-twenty-seven combinations of :math:`-1`, :math:`0` and :math:`+1` run once.
+against 0.071 with three. The three insets on the left of that panel show what the centre runs do
+to the map. Those designs share the same four half-rows, so only the centre count separates them,
+and adding centre runs lowers the correlation between a quadratic and an interaction, from 0.707 to
+0.645 to 0.606, while raising the correlation between two quadratics from zero to 0.167 to 0.267.
+Max :math:`|r|` reaches zero at one size only, twenty-seven runs with one centre run, where the
+design turns out to be the full three-level factorial, all twenty-seven combinations of
+:math:`-1`, :math:`0` and :math:`+1` run once.
 
 The six also disagree about which design is best. At twenty-one runs with one centre run there are
 1859 OMARS designs, and the six measures single out four different ones: :math:`A`, :math:`E` and
