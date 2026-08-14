@@ -62,7 +62,7 @@ A spectrum from screening to response surface
 It helps to see the three families on one line rather than as separate boxes. At the economical
 end sits the definitive screening design: the fewest runs, every main effect clean, curvature
 detectable, but the interactions tangled together. In the middle sit the larger OMARS designs:
-more runs buy more estimable second-order effects, lower correlation among them, and more power.
+more runs give more estimable second-order effects, lower correlation among them, and more power.
 At the rich end sit the classical response surface designs, the :ref:`central composite
 <DOE_central_composite_designs>` and :ref:`Box-Behnken <DOE-box-behnken-designs>` designs: enough
 runs to estimate the full
@@ -73,7 +73,7 @@ really one continuous family rather than three separate boxes.
 
 The axis along which they are arranged is the trade-off between three things: how many runs you
 spend, how much of the second-order model you can estimate, and how cleanly (how free of
-aliasing) you can estimate it. Spending more runs moves you to the right, buying estimability and
+aliasing) you can estimate it. Spending more runs moves you to the right, gaining estimability and
 separability.
 
 .. figure:: ../figures/doe/design-spectrum.png
@@ -183,7 +183,8 @@ Here that is three distinct rows against four even columns, and :math:`x_1^2` an
 the same column. Only more distinct rows in :math:`\mathbf{H}` will separate them.
 
 The even terms therefore contribute at most :math:`\min\left(h + 1,\, 1 + k(k+1)/2\right)`
-independent directions and the odd terms at most :math:`k`, so for every foldover design
+distinct pieces of information and the odd terms at most :math:`k`. The *rank* of the model matrix
+counts the terms the data can tell apart, so for every foldover design
 
 .. math::
 	:label: eq-omars-rank-bound
@@ -402,8 +403,9 @@ report come from ``process_improve``:
 	43    Full 33    Full 28    Full 22    Full 15    Quad 28
 	57    Full 47    Full 42    Full 36    Full 29    Full 21
 
-Each cell carries the capability class and the error degrees of freedom left over to test the model
-with. Five points to read off it:
+Each cell carries the capability class and the error degrees of freedom: the spare runs left after
+fitting, from which the run-to-run noise :math:`\sigma^2` is estimated, and on which every test and
+confidence interval rests. Five points to read off the table:
 
 	*	**Down a column capability only improves, and across a row it only worsens**, so the
 		boundary between the classes is a staircase.
@@ -480,10 +482,11 @@ at 43 runs. The two-factor interactions are in the design and orthogonal to the 
 not in the fitted model, so one that matters has to be found by the staged analysis of
 :ref:`Analysing data from these designs <DOE-analysing-economical-designs>`.
 
-**Five factors, with a budget that might stretch.** Thirteen runs give ``Quad df=2``, estimable and
-testable but on two degrees of freedom; seventeen give ``Quad df=6``, the same model with more
-power behind the tests; thirty-one give ``Full df=10``, with every two-factor interaction
-estimable. Those are three different studies rather than three sizes of one.
+**Five factors, with a budget that might stretch.** Thirteen runs give ``Quad df=2``: estimable and
+testable, but with two degrees of freedom a 95% confidence interval extends 4.30 standard errors
+either side of the estimate. Seventeen runs give ``Quad df=6``, the same model with that multiplier
+down to 2.45. Thirty-one runs give ``Full df=10``, with every two-factor interaction estimable.
+Those are three different studies rather than three sizes of one.
 
 Quality metrics are absent from the table. D-efficiency, the largest correlation among the
 second-order effects and the projection properties all describe one particular design at a given
@@ -506,6 +509,9 @@ asked for:
 What a cell in either table reports
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+This section and the next explain why the cells carry what they carry; the table itself can be
+used without them.
+
 A cell of the :ref:`two-level table <DOE_design_trade_off_BHH_272>` says less than it appears to.
 Of the 165 sixteen-run, seven-factor designs worked through in
 :ref:`DOE-trade-off-table-in-code`, 161 have resolution III and four reach resolution IV. The
@@ -517,9 +523,10 @@ The OMARS analogue would be the best quality obtainable at each size. Three obst
 way, each a property of the designs rather than of any particular measure.
 
 **A run count does not pin down the experiment.** An OMARS design of :math:`N` runs splits its
-budget between design points and replicates of the centre point, and the split is free. The same
-twelve design points in three factors, with one, three or five centre runs added, give a largest
-second-order correlation of :math:`0.300`, :math:`0.071` and :math:`0.056`.
+budget between design points and replicates of the centre point, and the split is free. Take the
+largest absolute correlation between any two second-order terms, a quantity computed from the
+design alone: the same twelve design points in three factors, with one, three or five centre runs
+added, give :math:`0.300`, :math:`0.071` and :math:`0.056`.
 
 **A measure divided by the run count need not improve as runs are added.** Across every OMARS
 design of each size in three factors, the least entangled at seventeen runs reaches :math:`0.056`,
@@ -527,10 +534,10 @@ while at nineteen runs the best possible is :math:`0.136`. Reversals occur throu
 and a column that goes backwards cannot be read to choose a budget.
 
 **A measure not divided by the run count mostly restates the run count.** The alphabetic optimality
-criteria avoid the previous problem, since adding a run adds a positive semi-definite term to
-:math:`\mathbf{X}^T\mathbf{X}`, so none of them can worsen. The difficulty is the other way around:
-they fall at close to the rate :math:`1/N`. Both points are set out in
-:ref:`DOE-omars-metric-choice` below, which is where the five criteria are defined.
+criteria avoid the previous problem: an added run adds information and never removes any, so none
+of them can worsen. The difficulty is the other way around: they fall at close to the rate
+:math:`1/N`. Both points are set out in :ref:`DOE-omars-metric-choice` below, which is where the
+five criteria are defined.
 
 Resolution avoids all three because it is not a magnitude. It is a combinatorial statement about
 which effects are confounded with which, and two-level fractions nest, so a larger design contains
@@ -546,11 +553,11 @@ count for the same reason. Quality metrics still separate designs of a given siz
 Six measures down one column
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Fix the factor count at three, one column of the OMARS trade-off table, and read down it, taking at
-each run count the best value any OMARS design of that size attains. The best, rather than the best
-a search found, is available here because a foldover is described entirely by how many times each
-pattern of :math:`-1`, :math:`0` and :math:`+1` appears in its half, and three factors admit only
-thirteen such patterns.
+Fix the factor count at three, one column of the OMARS trade-off table, and read down it. At each
+run count, take the best value any OMARS design of that size attains. Every design of a given size
+can be listed, so each point is the true optimum rather than the best a search happened to find:
+a foldover is described entirely by how many times each pattern of :math:`-1`, :math:`0` and
+:math:`+1` appears in its half, and three factors admit only thirteen such patterns.
 
 Write :math:`\mathbf{M} = \mathbf{X}^T\mathbf{X}` for the model matrix :math:`\mathbf{X}` of the
 main-effects-and-quadratics model, which has :math:`p = 2k + 1` terms, and
@@ -558,17 +565,26 @@ main-effects-and-quadratics model, which has :math:`p = 2k + 1` terms, and
 experimental region. That same model is scored at every run count. Five of the six measures are the
 *alphabetic optimality criteria*, each a single summary of :math:`\mathbf{M}`:
 
-* :math:`A = \mathrm{tr}(\mathbf{M}^{-1})/p`, the variance of an estimated coefficient, averaged
-  over the :math:`p` coefficients.
-* :math:`D = |\mathbf{M}|^{1/p}`, inversely proportional to the volume of the joint confidence
-  region, and the only one of the five that accounts for how the estimates covary.
-* :math:`E = \lambda_{\min}(\mathbf{M})`. The worst-determined combination of coefficients has
-  variance :math:`1/E`, so :math:`E` is the worst case matching the average :math:`A` reports.
-* :math:`I = \mathrm{tr}(\mathbf{M}^{-1}\mathbf{B})`, the prediction variance
-  :math:`\mathbf{f}^T\mathbf{M}^{-1}\mathbf{f}` averaged over the region, with :math:`\mathbf{B}`
-  the region moments.
+* :math:`A/p`, the average coefficient variance. Each fitted coefficient has a variance, the
+  square of the standard error a regression package prints beside it;
+  :math:`A = \mathrm{tr}(\mathbf{M}^{-1})` sums those variances and :math:`A/p` averages them.
+* :math:`D = |\mathbf{M}|^{1/p}`, the joint precision of all :math:`p` coefficients at once. It
+  is inversely proportional to the volume of their joint confidence region, and it is the only
+  one of the five that accounts for how the estimates covary.
+* :math:`E = \lambda_{\min}(\mathbf{M})`, the smallest eigenvalue of :math:`\mathbf{M}`. Some
+  combinations of the coefficients are estimated precisely and others poorly; the worst one has
+  variance :math:`1/E`, so :math:`E` is the worst case matching the average :math:`A/p` reports.
+* :math:`I = \mathrm{tr}(\mathbf{M}^{-1}\mathbf{B})`, the average prediction variance. A
+  prediction at a setting :math:`\mathbf{x}` has variance
+  :math:`\mathbf{f}^T\mathbf{M}^{-1}\mathbf{f}`, the quantity behind the error band around a
+  fitted curve; :math:`I` averages it over the region, with :math:`\mathbf{B}` holding the
+  averages of the model terms there.
 * :math:`G = \max_{\mathbf{x}}\, \mathbf{f}(\mathbf{x})^T \mathbf{M}^{-1}\mathbf{f}(\mathbf{x})`,
-  the same prediction variance at its worst point, so the worst case matching :math:`I`.
+  the same prediction variance at its worst point in the region, so the worst case matching
+  :math:`I`.
+
+These are in units of the run-to-run noise: multiplied by :math:`\sigma^2`, each of :math:`A/p`,
+:math:`I` and :math:`G` is a variance, and its square root is a standard error.
 
 The sixth is not an optimality criterion. Max :math:`|r|` is the largest absolute correlation
 between any two of the six second-order terms, read off the correlation map of the design.
@@ -602,7 +618,7 @@ between any two of the six second-order terms, read off the correlation map of t
 	            "D": np.linalg.det(M) ** (1 / p),
 	            "E": np.linalg.eigvalsh(M).min(),
 	            "I": np.trace(M_inv @ moment_matrix(k)),
-	            "G": np.einsum("ij,jk,ik->i", f, M_inv, f).max(),
+	            "G": ((f @ M_inv) * f).sum(axis=1).max(),
 	            "max |r|": C[~np.eye(len(C), dtype=bool)].max()}
 
 	# The twelve design points behind the centre-run example given earlier, as six half-rows
@@ -631,25 +647,27 @@ value of each measure at each size, gives the six curves below.
 	point is the best value attainable at that run count, found by listing every OMARS design of
 	the size. The panel columns group the measures by how they summarise: the left pair
 	averages, the middle pair takes a worst case of the same two quantities, the right pair does
-	neither. Insets on the last panel are correlation maps of five of the plotted designs, on a
-	common shading scale from zero to one, outlined in the colour of their series. The three on
-	the left are the smallest design at each centre-run count.
+	neither. Insets on the last panel are correlation maps of five of the plotted designs: in
+	each map the rows and columns are the six second-order terms, the three quadratics then the
+	three interactions, with a thin line between the two blocks, and darker squares are higher
+	correlations, on a common scale from zero to one. Each map is outlined in the colour of its
+	series, and the three on the left are the smallest design at each centre-run count.
 
-:math:`A`, :math:`I` and :math:`D` restate the run count. The first two fall at close to the rate
-:math:`1/N`, the product :math:`N \times A/p` moving only from 3.57 at nine runs to 3.15 at
+:math:`A/p`, :math:`I` and :math:`D` restate the run count. The first two fall at close to the
+rate :math:`1/N`, the product :math:`N \times A/p` moving only from 3.57 at nine runs to 3.15 at
 thirty-one, and a straight line in :math:`N` fits :math:`D` from eleven runs upward to within 0.27
 on values from 4.5 to 13.6. All three have their centre-run series almost on top of one another.
 
 :math:`E`, the smallest eigenvalue, carries structure the run count does not. It rises as a
 staircase with flat treads: exactly 2.000 at eleven, thirteen and fifteen runs on the
 three-centre-run series, and exactly 4.000 at twenty-two, twenty-four and twenty-six runs on the
-two-centre-run series. Over a tread the extra runs leave the worst-determined direction in the
-coefficients where it was.
+two-centre-run series. Over a tread, the combination of coefficients the data pin down worst is
+pinned down no better after the extra runs.
 
-:math:`G`, the worst prediction variance, has a floor that needs no design to compute. The
-Kiefer-Wolfowitz equivalence theorem gives :math:`G \ge p/N`, here :math:`7/N`, for any design,
-and the best three-factor designs reach it exactly at nine and twenty-seven runs with one centre
-run, and at eighteen runs with two.
+:math:`G`, the worst prediction variance, has a floor that needs no design to compute. A classical
+result of Kiefer and Wolfowitz says no design of :math:`N` runs, of any kind, can have :math:`G`
+below :math:`p/N`, here :math:`7/N`. The best three-factor designs reach the floor exactly at nine
+and twenty-seven runs with one centre run, and at eighteen runs with two.
 
 Max :math:`|r|` reverses: four of the eleven steps along the one-centre-run series go backwards,
 the largest from 0.050 at twenty-one runs to 0.179 at twenty-three. It also separates the
@@ -667,6 +685,12 @@ max :math:`|r|` reaches 0.050 but has a smallest eigenvalue of 1.20, against 3.4
 :math:`A`, :math:`E` and :math:`I` select, whose own max :math:`|r|` is 0.222. The four-factor
 column behaves the same way. A single number in a cell would therefore have to name which of the
 six it is.
+
+In practice the two tools divide the work. The trade-off table chooses the run count, from
+capability and error degrees of freedom. At that size, candidate designs are compared with the
+measure matched to the aim of the study: the precision of the coefficients (:math:`A`, :math:`E`),
+prediction over the region (:math:`I`, :math:`G`), or keeping the second-order effects
+distinguishable (max :math:`|r|`).
 
 .. _DOE-analysing-economical-designs:
 
@@ -686,8 +710,8 @@ nineteen-run foldover in four factors has four runs to spare against those fifte
 still cannot estimate them, because twenty-one runs are needed. And even when the model
 can be fitted, a generic stepwise or penalised
 regression treats every column alike and can let the entangled second-order effects leak into,
-and bias, the main-effect estimates, throwing away the very orthogonality the design worked so
-hard to provide.
+and bias, the main-effect estimates, throwing away the orthogonality the design was constructed
+to provide.
 
 The remedy is a *design-based* analysis that exploits the structure we built in. It proceeds in
 stages: estimate the main effects first, where the design guarantees they are clean; recover
