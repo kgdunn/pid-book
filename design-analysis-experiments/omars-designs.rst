@@ -107,15 +107,9 @@ stating. It is the lowest-order polynomial that can place a stationary point ins
 maximum, minimum, or saddle, so it is the simplest model able to describe an optimum; it stays
 linear in its coefficients, and it needs only three levels per factor. Higher-degree polynomials
 need more levels and tend to oscillate near the edges of the region, so when a quadratic does not
-fit it is more common to change the model class than to raise the degree. That choice matters here
-because the aliasing and the efficiency measures are properties of the design *together with* the
-model: they are read from the model matrix, so a different model gives a different alias structure
-and different efficiencies. Re-expressing the same quadratic in an orthogonal-polynomial basis (a
-re-parameterisation that leaves the fitted surface unchanged) lowers the correlations among the
-terms; a mechanistic model that is nonlinear in its parameters, or a flexible surrogate such as a
-Gaussian process or a spline fit, would call instead for a design optimal for that model, or a
-space-filling one. The spectrum here, and the measures that rank it, therefore describe the
-second-order case, and the model itself is one of the choices rather than a fixed backdrop.
+fit it is more common to change the model class than to raise the degree. The aliasing and the
+efficiency measures are properties of the design and can be calculated before even acquiring a
+single experimental result.
 
 .. _DOE-omars-trade-off-table:
 
@@ -127,9 +121,10 @@ available and seven factors on the list, what do I give up?". Its currency is :r
 <DOE-design-resolution>`, the ability to tell main effects apart from interactions, and the table
 maps a budget onto the ordered scale of resolution III, IV and V.
 
-The same table for OMARS designs cannot use that currency. An OMARS design has its main effects
-orthogonal to each other *and* to every second-order term at every size in the family, which is
-what the "orthogonal" in the name records, so resolution is constant across the family.
+It is natural to want the same table for OMARS designs, but it is not possible. Working towards it,
+however, leads to a surprising answer. An OMARS design has its main effects orthogonal to each
+other *and* to every second-order term at every size in the family, which is what the "orthogonal"
+in the name records, so resolution is constant and cannot be what the table reports.
 
 What varies instead is *which model the run count makes estimable at all*, and the answer differs
 from the one the parameter count gives.
