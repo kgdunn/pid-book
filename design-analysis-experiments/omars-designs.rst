@@ -596,6 +596,58 @@ and reports the rank it achieved alongside the degrees of freedom that leaves:
 	print(design.metadata["min_runs_for_model"])          # 21, the frontier
 	print(design.metadata["expected_error_df"])           # 6, which is k(k-1)/2
 
+.. _DOE-omars-what-a-cell-reports:
+
+What a cell in either table reports
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It is worth being explicit about what a cell of the :ref:`two-level table
+<DOE_design_trade_off_BHH_272>` has been saying all along, because it is not quite what it appears
+to say. Take the sixteen-run, seven-factor cell worked through in :ref:`DOE-trade-off-table-in-code`.
+Three generators define such a design, chosen from the eleven products of two or more of the four
+base factors, which gives 165 distinct designs. Of those, 161 have resolution III. Four reach
+resolution IV. The numeral in the cell is therefore not a description of a design: it is a
+statement about the *size*, that no sixteen-run design in seven factors does better than resolution
+IV, and that at least one achieves it. The table is the result of a search, presented as a lookup.
+
+Read that way, what an OMARS cell should report becomes clear: the best quality obtainable at that
+size. Three obstacles stand in the way. Each is a property of the designs themselves rather than a
+shortcoming of any particular measure, which is why none of them is repaired by choosing a
+different one.
+
+**A run count does not pin down the experiment.** An OMARS design of :math:`N` runs splits its
+budget between design points and replicates of the centre point, and the split is free. Take twelve
+design runs in three factors and add one, three or five centre runs. The largest absolute
+correlation between any two second-order terms, which is the usual measure of how entangled they
+are, is then :math:`0.300`, :math:`0.071` and :math:`0.056` respectively, for exactly the same
+twelve design points. A cell indexed on the run count alone cannot say which of these it means.
+
+**A measure divided by the run count need not improve as runs are added.** Searching every OMARS
+design of each size in three factors, the least entangled design at seventeen runs reaches
+:math:`0.056`, and at nineteen runs the best possible is :math:`0.136`. More runs, a worse design,
+and not by a small margin. Reversals of this kind occur throughout the range and do not die out as
+the designs grow. A column that can go backwards cannot be read to choose a budget, which is the
+one thing a trade-off table is for.
+
+**A measure not divided by the run count mostly restates the run count.** The alphabetic optimality
+criteria avoid the previous problem, and provably so: adding a run to a design adds a positive
+semi-definite term to :math:`\mathbf{X}^T\mathbf{X}`, which can only grow, so none of
+:math:`A`, :math:`D`, :math:`E`, :math:`I` or :math:`G` can worsen. The difficulty is the other way
+around. The average variance of an estimated coefficient falls roughly as :math:`1/N`, so a column
+of those values tracks the run count that already labels the row.
+
+Resolution escapes all three because it is not a magnitude. It is a combinatorial statement about
+which effects are confounded with which, and two-level fractions nest, so a larger design contains
+a smaller one and extra runs can only break confounding, never create it. Neither of those holds
+for OMARS designs: they do not nest in the same way, and every quality measure is a magnitude.
+
+This is why the cells of the OMARS table report a capability class and the error degrees of
+freedom, and no measure of design quality. Those two are statements about *estimability*, the same
+species of statement as resolution, and they are monotone in the run count for the same reason.
+Quality metrics still matter for choosing among designs of a given size, and
+:ref:`DOE-omnibus-comparison` compares several designs on exactly those grounds. They simply
+cannot be reduced to one number per cell.
+
 .. _DOE-analysing-economical-designs:
 
 Analysing data from these designs
