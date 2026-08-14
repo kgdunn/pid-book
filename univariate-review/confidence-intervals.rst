@@ -185,4 +185,8 @@ If we have the fortunate case where our estimated variance, :math:`s^2`, is equa
 
 This implies the confidence limits are wider for the case when the standard deviation is unknown, leading to more conservative results, reflecting our uncertainty of the standard deviation parameter, :math:`\sigma`.
 
+A complementary way to construct an interval for :math:`\mu`, which attaches a direct probability
+statement to the interval and can incorporate prior plant knowledge, is described in the section
+on :ref:`Bayesian estimates and credible intervals <univariate_bayesian_credible_intervals>`.
+
 .. Plot these in R to verify:  plot(seq(0,1,0.01), qt(seq(0,1,0.01), df=2)); lines(seq(0,1,0.01), qnorm(seq(0,1,0.01)))

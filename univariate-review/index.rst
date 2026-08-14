@@ -17,6 +17,7 @@ Univariate Data Analysis
    t-distribution
    poisson-distribution
    confidence-intervals
+   bayesian-estimates-and-credible-intervals
    testing-for-differences-and-similarity
    paired-tests
    other-types-of-confidence-intervals
