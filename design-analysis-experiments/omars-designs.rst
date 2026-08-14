@@ -122,43 +122,32 @@ second-order case, and the model itself is one of the choices rather than a fixe
 A trade-off table for OMARS designs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The :ref:`two-level trade-off table <DOE_design_trade_off_BHH_272>` answers a question of the form
-"I have sixteen runs available and seven factors on the list, what do I give up?". Its currency is
-:ref:`resolution <DOE-design-resolution>`: what is given up as more factors are studied in fewer
-runs is the ability to tell main effects apart from interactions. Resolution III, IV and V form a
-single ordered scale, and the table maps a budget onto it.
+The :ref:`two-level trade-off table <DOE_design_trade_off_BHH_272>` answers "I have sixteen runs
+available and seven factors on the list, what do I give up?". Its currency is :ref:`resolution
+<DOE-design-resolution>`, the ability to tell main effects apart from interactions, and the table
+maps a budget onto the ordered scale of resolution III, IV and V.
 
-The natural thing to want is the same table for OMARS designs. It does not carry over, and the
-reason is worth following, because repairing it turns on a question about run counts that has a
-surprising answer.
+The same table for OMARS designs cannot use that currency. An OMARS design has its main effects
+orthogonal to each other *and* to every second-order term at every size in the family, which is
+what the "orthogonal" in the name records, so resolution is constant across the family.
 
-An OMARS design has its main effects orthogonal to each other *and* to every second-order term, at
-every size in the family: that is the defining property, and it is what the "orthogonal" in the
-name records. There is no smaller OMARS design in which the main effects are dirtier, and no larger
-one in which they are cleaner. Resolution is constant across the family, so it cannot be what the
-table reports.
-
-What varies instead is *which model the run count makes estimable at all*. That question turns out
-to have a different answer from the one the usual parameter count gives, and the rest of this
-section works it out before returning to the table itself.
+What varies instead is *which model the run count makes estimable at all*, and the answer differs
+from the one the parameter count gives.
 
 .. _DOE-omars-estimability-frontier:
 
 How many runs a second-order model needs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Take the full
-second-order model in :math:`k` factors: an intercept, :math:`k` main effects, :math:`k` pure
-quadratics, and :math:`k(k-1)/2` two-factor interactions, so
+The full second-order model in :math:`k` factors has an intercept, :math:`k` main effects,
+:math:`k` pure quadratics and :math:`k(k-1)/2` two-factor interactions:
 
 .. math::
 
 	p = 1 + 2k + \frac{k(k-1)}{2}
 
-parameters in total. Count the parameters and spend at least that many runs. That rule sizes
-factorial, central composite, Box-Behnken and optimal designs correctly, and it is how designs are
-sized elsewhere in this chapter. Foldover designs are the exception, and this section works out by
-how much.
+Count the parameters and spend at least that many runs. That rule sizes factorial, central
+composite, Box-Behnken and optimal designs correctly. Foldover designs are the exception.
 
 A foldover stacks a half-design :math:`\mathbf{H}` of :math:`h` runs on its own sign-flipped copy,
 then adds a centre run:
@@ -168,49 +157,20 @@ then adds a centre run:
 	\mathbf{D} = \begin{bmatrix} \mathbf{H} \\ -\mathbf{H} \\ \mathbf{0} \end{bmatrix},
 	\qquad N = 2h + 1
 
-so :math:`N` is always odd. A row of :math:`\mathbf{H}` and its sign-flipped copy are called a
+so :math:`N` is always odd. A row of :math:`\mathbf{H}` and its sign-flipped copy are a
 :index:`mirror-image pair <pair: mirror-image pair; experiments>`. This is the construction behind
-the :ref:`definitive screening design <DOE-definitive-screening-designs>`, where
-:math:`\mathbf{H}` is a conference matrix, and behind most of the OMARS catalogue.
+most of the OMARS catalogue, and behind the :ref:`definitive screening design
+<DOE-definitive-screening-designs>`, where :math:`\mathbf{H}` is a conference matrix.
 
-Sort the model terms by what a mirror-image pair does to them. Flip the sign of *every* factor at
-once: a term either changes sign or it does not. Terms that change sign are **odd**; terms that do
-not are **even**. A term of total degree :math:`d` picks up a factor :math:`(-1)^d`, so the split
-is simply the parity of the degree:
+Flipping the sign of *every* factor at once multiplies a term of total degree :math:`d` by
+:math:`(-1)^d`, so terms of odd degree change sign and terms of even degree do not. The :math:`k`
+main effects are the **odd** terms; the intercept, the quadratics :math:`x_i^2` and the
+interactions :math:`x_i x_j` are the **even** ones. Odd and even describe the *term*, not the
+factor. This is the same split as the *odd design moments* named in the :ref:`introduction to OMARS
+designs <DOE-omars-designs>`, and it explains the "through order three" qualifier used there.
 
-.. list-table:: Model terms sorted by parity.
-	:header-rows: 1
-	:widths: 14 44 22 20
-
-	*   - Degree
-	    - Terms
-	    - Under a full sign flip
-	    - Parity
-	*   - 0
-	    - Intercept
-	    - unchanged
-	    - even
-	*   - 1
-	    - Main effects, :math:`x_i`
-	    - changes sign
-	    - odd
-	*   - 2
-	    - Quadratics :math:`x_i^2` and interactions :math:`x_i x_j`
-	    - unchanged
-	    - even
-
-This is the same odd/even split as the *odd design moments* named in the
-:ref:`introduction to OMARS designs <DOE-omars-designs>`, and it explains the "through order
-three" qualifier used there: degree three is odd again.
-
-One point to fix before going on, because the words invite a different reading. Odd and even here
-describe the *term*, not the factor. Both :math:`x_1` and :math:`x_2` are odd; :math:`x_1^2` and
-:math:`x_1 x_2` are both even. Relabelling the factors, or reversing the direction of any of them,
-changes nothing, which is why the constraint below holds for every foldover whatever
-:math:`\mathbf{H}` is.
-
-Now the consequence. A run and its mirror image differ only in sign, so they take *identical*
-values in every even term. Five runs in two factors show the whole effect:
+A run and its mirror image differ only in sign, so they take *identical* values in every even term.
+Five runs in two factors show it:
 
 .. code-block:: text
 
@@ -223,13 +183,11 @@ values in every even term. Five runs in two factors show the whole effect:
 
 Runs 3 and 4 are the mirror images of runs 1 and 2. In the odd columns they change sign, which is
 what lets the design estimate main effects. In the even columns they repeat their partners exactly,
-and add nothing. The even terms therefore see only :math:`h + 1` distinct rows, the :math:`h` rows
-of :math:`\mathbf{H}` plus the centre run, no matter how many runs the foldover contains. Here that
-is three distinct rows against four even columns, and indeed :math:`x_1^2` and :math:`x_2^2` are
-the same column: those two quadratics cannot be told apart. More mirrors will never separate them;
-only more distinct rows in :math:`\mathbf{H}` will.
+so the even terms see only :math:`h + 1` distinct rows, however many runs the foldover contains.
+Here that is three distinct rows against four even columns, and :math:`x_1^2` and :math:`x_2^2` are
+the same column. Only more distinct rows in :math:`\mathbf{H}` will separate them.
 
-Counting both parts, the even terms contribute at most :math:`\min\left(h + 1,\, 1 + k(k+1)/2\right)`
+The even terms therefore contribute at most :math:`\min\left(h + 1,\, 1 + k(k+1)/2\right)`
 independent directions and the odd terms at most :math:`k`, so for every foldover design
 
 .. math::
@@ -237,12 +195,9 @@ independent directions and the odd terms at most :math:`k`, so for every foldove
 
 	\text{rank}(\mathbf{X}) \le k + \min\left(h + 1, \; 1 + \frac{k(k+1)}{2}\right)
 
-This is an upper bound rather than an identity. Reaching it requires the :math:`h + 1` even rows to
-be distinct and linearly independent, and :math:`\mathbf{H}` to have full column rank. A design
-that repeats a run falls short, and so does one whose runs all happen to satisfy a single
-second-degree equation: a two-level design is the standard example, since every run there has
-:math:`x_i^2 = 1`, which is why two levels can never separate the quadratics. The three levels of a
-foldover are what avoid this. Designs in the OMARS catalogue reach the bound.
+Reaching this bound requires the :math:`h + 1` even rows to be distinct and linearly independent,
+and :math:`\mathbf{H}` to have full column rank. A two-level design fails the first condition,
+since every run there has :math:`x_i^2 = 1`. Designs in the OMARS catalogue reach the bound.
 
 Equation :eq:`eq-omars-rank-bound` puts the full second-order model out of reach until
 :math:`h + 1 \ge 1 + k(k+1)/2`, that is :math:`h \ge k(k+1)/2`, and therefore until
@@ -252,9 +207,9 @@ Equation :eq:`eq-omars-rank-bound` puts the full second-order model out of reach
 
 	N \; \ge \; k^2 + k + 1
 
-There is no established name for this threshold, so we will call it the **estimability frontier**:
-the smallest foldover design in which all :math:`p` coefficients of the full second-order model can
-be estimated jointly.
+There is no established name for this threshold, so we will call it the **estimability frontier**,
+the smallest foldover in which all :math:`p` coefficients of the full second-order model can be
+estimated jointly.
 
 .. list-table:: The estimability frontier, against the parameter count it has to clear.
 	:header-rows: 1
@@ -291,27 +246,20 @@ be estimated jointly.
 	    - 21
 	    - 21
 
-The last two columns hold the same number, and that is not a coincidence. Subtracting the parameter
-count from the frontier gives
+The last two columns hold the same number. Subtracting the parameter count from the frontier gives
 
 .. math::
 
 	\left(k^2 + k + 1\right) - \left(1 + 2k + \frac{k(k-1)}{2}\right) = \frac{k(k-1)}{2}
 
-exactly the number of two-factor interactions. Two things follow from it.
-
-The first is the exception to the sizing rule. For a foldover, having more runs than the model has
-parameters does not establish that the model can be fitted. At four factors a
+exactly the number of two-factor interactions. Two things follow. For a foldover, having more runs
+than the model has parameters does not establish that the model can be fitted: at four factors a
 nineteen-run foldover has four spare runs against a fifteen-parameter model and still cannot
-estimate it. Every other design family in this chapter sizes correctly on the parameter count; this
-one needs :math:`k(k-1)/2` runs beyond it.
+estimate it. And at the frontier the error degrees of freedom also come to :math:`k(k-1)/2`, so the
+smallest design that can fit the full second-order model arrives with enough spare runs to test it.
 
-The second is that at the frontier the degrees of freedom left over for error also come to
-:math:`k(k-1)/2`. The smallest design that can fit the full second-order model therefore arrives
-with enough spare runs to test it, which is not true of a design sized on the parameter count.
-
-The four-factor case can be checked directly. Build the coded design at nineteen runs and again at
-twenty-one, form the full second-order model matrix, and take its rank:
+Build the four-factor design at nineteen runs and again at twenty-one, form the full second-order
+model matrix, and take its rank:
 
 .. code-block:: python
 
@@ -340,9 +288,7 @@ twenty-one, form the full second-order model matrix, and take its rank:
 
 Nineteen runs give a model matrix with fifteen columns and rank fourteen, one short, so the model
 cannot be fitted. Twenty-one runs, the frontier for four factors, give rank fifteen. Judge
-estimability from the rank of the model matrix, not from the determinant of the information
-matrix. The designs here were asked for with ``model="main_quadratic"``, because ``generate_omars``
-refuses to size for the full second-order model below its frontier.
+estimability from the rank of the model matrix, not from the determinant of the information matrix.
 
 .. code-block:: python
 
@@ -377,50 +323,38 @@ refuses to size for the full second-order model below its frontier.
 
 	The estimability frontier :math:`N = k^2 + k + 1` for a foldover design, against the
 	parameter count of the full second-order model and the size of a definitive screening
-	design. The shaded band is where a design has more runs than the model has parameters
-	and still cannot estimate it; the band is :math:`k(k-1)/2` runs deep. The marked point
-	is the four-factor case checked in the code above.
+	design. In the shaded band a design has more runs than the model has parameters and still
+	cannot estimate it. The band is :math:`k(k-1)/2` runs deep, and the marked point is the
+	four-factor case checked in the code.
 
 .. _DOE-omars-inside-the-band:
 
 Running a design from inside the band
 """""""""""""""""""""""""""""""""""""""
 
-Suppose the nineteen-run design is run anyway. At the bench nothing goes wrong: nineteen runs give
-nineteen measurements, and none of the data is wasted. What is missing appears at the analysis
-stage, and it is a question of uniqueness rather than of noise.
+Suppose the nineteen-run design is run anyway. At the bench nothing goes wrong, and none of the
+data is wasted. What is missing appears at the analysis stage, and it is a question of uniqueness
+rather than of noise.
 
 Fitting the full second-order model to those nineteen runs leaves one direction in the coefficients
-that the data cannot see, a fixed combination of two of the quadratic terms and three of the
-interactions. Adding any amount of that combination changes the coefficients while leaving all
-nineteen fitted values exactly as they were. The situation is the one where two numbers are known
-to add up to ten and each is asked for separately: every pair that sums to ten agrees with what is
-known, so the information is not wrong, it simply does not single out an answer.
+that the data cannot see, a fixed combination of two quadratics and three interactions. Adding any
+amount of it changes the coefficients while leaving all nineteen fitted values as they were. Two
+numbers known to add up to ten are in the same position: every pair that sums to ten agrees with
+what is known.
 
-Software asked for "the" answer will still return one. Two coefficient sets differing by up to 8.5
-units in individual terms give identical fitted values at all nineteen runs, the same residual sum
-of squares, and the same :math:`R^2`; the residual plots are identical too. Where they differ is in
-prediction away from the runs that were made: at three untried settings the two sets disagreed by
-8.5 units, by 3.2 units, and at the third by nothing at all. Some directions are unaffected and
-some are not, and the usual summaries do not indicate which one is in play.
+Software asked for an answer will still return one. Two coefficient sets differing by up to 8.5
+units give identical fitted values at all nineteen runs, the same residual sum of squares, the same
+:math:`R^2`, and identical residual plots. They differ away from the runs that were made: at three
+untried settings they disagreed by 8.5 units, by 3.2 units, and by nothing at all.
 
-What stays sound is worth stating just as plainly. Predictions at the settings that were actually run
-are unaffected. The main effects remain orthogonal to every second-order term, so they are
-estimated cleanly. And the smaller model of main effects and pure quadratics is comfortably
-supported: nineteen runs fit its nine parameters with ten degrees of freedom left for error. The
-decision is therefore between answering the smaller question well with nineteen runs and spending
-two more to reach twenty-one, not between a good experiment and a ruined one.
+Predictions at the settings that were run are unaffected, as are the main effects, which stay
+orthogonal to every second-order term. The smaller model of main effects and pure quadratics fits
+its nine parameters with ten degrees of freedom left for error. The decision is between answering
+that smaller question with nineteen runs and spending two more to reach twenty-one.
 
-The literature usually states this capability the other way round, as a projection property: a
+The literature states the same arithmetic from the other end, as a projection property: a
 definitive screening design in six or more factors supports a full second-order model in any three
-of its factors, and one of eighteen runs or more in any four. That is the same arithmetic asked
-from the other end, "how many factors can I get a full second-order model in?" rather than "how
-many runs until I get it in all :math:`k`?".
-
-If the frontier is beyond the budget, the remaining option is to fit a smaller model rather than
-accept a design that cannot fit the larger one. Main effects and pure quadratics need
-:math:`1 + 2k` parameters, which a foldover reaches at :math:`2k + 1` runs and clears with degrees
-of freedom to spare at :math:`2k + 3`. That is the choice the table sets out cell by cell.
+of its factors, and one of eighteen runs or more in any four.
 
 
 .. _DOE-omars-reading-the-table:
@@ -428,28 +362,26 @@ of freedom to spare at :math:`2k + 3`. That is the choice the table sets out cel
 Reading the table
 ^^^^^^^^^^^^^^^^^^^^^
 
-With the frontier settled, the cells can say something useful. Three capability classes follow from
-it, tagged with four characters so that they line up in a table:
+Three capability classes follow from the frontier, tagged with four characters so they line up in a
+table:
 
 ``Full``
 	:math:`N \ge k^2 + k + 1`, the estimability frontier. Main effects, pure quadratics and
 	every two-factor interaction are estimable jointly, so a response surface can be fitted
-	from this one design without a follow-up.
+	from this one design.
 
 ``Quad``
-	:math:`N \ge 2k + 3`. Main effects and the pure quadratics are estimable, with degrees of
-	freedom left over to test them, so curvature can be judged factor by factor. The two-factor
-	interactions are present in the *design*, and they are still orthogonal to the main effects,
-	but they are not in the *model*.
+	:math:`N \ge 2k + 3`. Main effects and pure quadratics are estimable, with degrees of freedom
+	left over to test them. The two-factor interactions are in the *design*, still orthogonal to
+	the main effects, but not in the *model*.
 
 ``Satd``
-	:math:`N = 2k + 1`. Saturated: the parameters of the main-effects-plus-quadratics model can
-	be estimated, but nothing is left with which to estimate :math:`\sigma^2`, so there are point
-	estimates and no standard errors, no tests, and no power.
+	:math:`N = 2k + 1`. Saturated: the main-effects-plus-quadratics model can be estimated, but
+	nothing is left with which to estimate :math:`\sigma^2`, so there are point estimates and no
+	standard errors, tests or power.
 
-The three tags sort alphabetically in decreasing order of capability, ``Full`` before ``Quad``
-before ``Satd``, which makes the table easy to read down a column. The table itself, and the
-report for a single cell, come from ``process_improve``:
+The tags sort alphabetically in decreasing order of capability. The table and the single-cell
+report come from ``process_improve``:
 
 .. code-block:: python
 
@@ -475,17 +407,14 @@ report for a single cell, come from ``process_improve``:
 	43    Full 33    Full 28    Full 22    Full 15    Quad 28
 	57    Full 47    Full 42    Full 36    Full 29    Full 21
 
-Each cell carries the capability class and the number of error degrees of freedom the budget
-leaves over, which is what the model is tested with. Five things are worth reading off the table:
+Each cell carries the capability class and the error degrees of freedom left over to test the model
+with. Five points to read off it:
 
-	*	**Down a column, capability only improves; across a row, it only worsens.** More runs
-		never buy less, and more factors never cost less, so the boundary between the classes
-		is a staircase.
+	*	**Down a column capability only improves, and across a row it only worsens**, so the
+		boundary between the classes is a staircase.
 
-	*	**The step up to** ``Full`` **in each column is the estimability frontier**
-		:math:`N = k^2 + k + 1` derived in :ref:`How many runs a second-order model
-		needs <DOE-omars-estimability-frontier>`: 13, 21, 31, 43 and 57 runs for three to
-		seven factors. Every cell from there down the column is ``Full``.
+	*	**The step up to** ``Full`` **in each column is the estimability frontier**: 13, 21,
+		31, 43 and 57 runs for three to seven factors.
 
 	*	**Blank cells are not designs at all**, rather than poor ones. A foldover has
 		:math:`N = 2h + 1` runs, so an even budget cannot be one, and a budget below
@@ -493,15 +422,13 @@ leaves over, which is what the model is tested with. Five things are worth readi
 
 	*	**Error degrees of freedom are not comparable across the classes**, because the model
 		differs. At 43 runs, six factors show ``Full df=15`` and seven factors show
-		``Quad df=28``: the seven-factor cell has more spare runs precisely because it is
-		fitting the smaller model.
+		``Quad df=28``: the seven-factor cell has more spare runs because it fits the smaller
+		model.
 
 	*	**The definitive screening design sits in the top live cell of each column.** For an
-		even number of factors a DSD has :math:`2k+1` runs and lands in ``Satd``, which is
-		another way of saying a nine-run, four-factor DSD is exactly saturated for main effects
-		and quadratics. For an odd number of factors the conference-matrix construction needs
-		:math:`2k+3` runs, so the three-, five- and seven-factor DSDs (nine, thirteen and
-		seventeen runs) arrive with two spare degrees of freedom and land in ``Quad df=2``.
+		even number of factors a DSD has :math:`2k+1` runs and lands in ``Satd``. For an odd
+		number the conference-matrix construction needs :math:`2k+3` runs, so the three-, five-
+		and seven-factor DSDs arrive with two spare degrees of freedom and land in ``Quad df=2``.
 
 .. code-block:: python
 
@@ -532,8 +459,7 @@ leaves over, which is what the model is tested with. Five things are worth readi
 	The outlined cells are the estimability frontier :math:`N = k^2 + k + 1`, the first
 	``Full`` cell in each column. Blank cells are budgets that are not a foldover design.
 
-For a single budget the same information is reported in words, including what the neighbouring
-thresholds are, so a cell that is not the one you wanted still tells you what it would take:
+For a single budget the same information is reported in words, with the neighbouring thresholds:
 
 .. code-block:: text
 
@@ -546,47 +472,31 @@ thresholds are, so a cell that is not the one you wanted still tells you what it
 
 .. _DOE-omars-worked-examples:
 
-Three worked readings
-^^^^^^^^^^^^^^^^^^^^^^^^
+Two worked readings
+^^^^^^^^^^^^^^^^^^^^^^
 
-The table earns its place before any runs are made, when the design is still a plan on paper.
-Three readings show the kinds of question it settles.
+The table is read while the design is still a plan on paper. Two readings show the kinds of
+question it settles.
 
-**Six factors in seventeen runs.** This is the size of a published extraction study: six solvent
-and process factors, seventeen runs. The cell is ``Quad df=4``. All six main effects and all six
-quadratics are estimable, with four degrees of freedom left over to test them, so curvature can be
-judged factor by factor. The cell also says what is not on offer: ``Full`` for six factors begins at
-43 runs. The two-factor interactions are in the design, and they are orthogonal to the main effects,
-but they are not in the fitted model, so an interaction that matters has to be found by the staged
-analysis of :ref:`Analysing data from these designs <DOE-analysing-economical-designs>` and then
-confirmed in a follow-up.
+**Six factors in seventeen runs**, the size of a published extraction study. The cell is
+``Quad df=4``: all six main effects and all six quadratics are estimable, with four degrees of
+freedom to test them, so curvature can be judged factor by factor. ``Full`` for six factors begins
+at 43 runs. The two-factor interactions are in the design and orthogonal to the main effects, but
+not in the fitted model, so one that matters has to be found by the staged analysis of
+:ref:`Analysing data from these designs <DOE-analysing-economical-designs>`.
 
-**Four factors, with a response surface wanted from one design.** The full second-order model in
-four factors has fifteen parameters, so the parameter count suggests that nineteen runs is
-comfortable. The table gives ``Quad df=10`` at nineteen runs, and puts ``Full`` at twenty-one. Those
-two extra runs are the difference between a model that can be fitted and one that cannot, and the
-cheapest place to discover that is here, rather than after the runs are made.
+**Five factors, with a budget that might stretch.** Thirteen runs give ``Quad df=2``, estimable and
+testable but on two degrees of freedom; seventeen give ``Quad df=6``, the same model with more
+power behind the tests; thirty-one give ``Full df=10``, with every two-factor interaction
+estimable. Those are three different studies rather than three sizes of one.
 
-**Five factors, with a budget that might stretch.** Reading down the :math:`k = 5` column sets out
-the decision. Thirteen runs give ``Quad df=2``, which is estimable and testable, but on two degrees
-of freedom. Seventeen runs give ``Quad df=6``: the same model, with more power behind the tests.
-Thirty-one runs give ``Full df=10``, with every two-factor interaction estimable. Those are three
-different studies rather than three sizes of one, and the middle one is often the right answer,
-since four runs beyond the minimum triple the degrees of freedom without extending the model.
-
-Every number in this table is closed-form: the capability classes come from
-equation :eq:`eq-omars-frontier` and the degrees of freedom from a subtraction, so the table is
-exact and instant, while building an actual design at one of these sizes runs an integer program
-that takes about 0.1 seconds at three factors and about 980 seconds at seven.
-
-Quality metrics are absent for a related reason. D-efficiency, the largest correlation among the
+Quality metrics are absent from the table. D-efficiency, the largest correlation among the
 second-order effects and the projection properties all describe one particular design at a given
 size rather than the size itself, so they belong to ``generate_omars`` and to
 :ref:`Judging and comparing designs <DOE-judging-and-comparing-designs>`.
 
-Asking for the design at the four-factor frontier shows how the two fit together. With no run
-count given, ``generate_omars`` sizes the design at the frontier for the model it is asked for,
-and reports the rank it achieved alongside the degrees of freedom that leaves:
+With no run count given, ``generate_omars`` sizes the design at the frontier for the model it is
+asked for:
 
 .. code-block:: python
 
@@ -601,96 +511,72 @@ and reports the rank it achieved alongside the degrees of freedom that leaves:
 What a cell in either table reports
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-It is worth being explicit about what a cell of the :ref:`two-level table
-<DOE_design_trade_off_BHH_272>` has been saying all along, because it is not quite what it appears
-to say. Take the sixteen-run, seven-factor cell worked through in :ref:`DOE-trade-off-table-in-code`.
-Three generators define such a design, chosen from the eleven products of two or more of the four
-base factors, which gives 165 distinct designs. Of those, 161 have resolution III. Four reach
-resolution IV. The numeral in the cell is therefore not a description of a design: it is a
-statement about the *size*, that no sixteen-run design in seven factors does better than resolution
-IV, and that at least one achieves it. The table is the result of a search, presented as a lookup.
+A cell of the :ref:`two-level table <DOE_design_trade_off_BHH_272>` says less than it appears to.
+Of the 165 sixteen-run, seven-factor designs worked through in
+:ref:`DOE-trade-off-table-in-code`, 161 have resolution III and four reach resolution IV. The
+numeral in that cell is not a description of a design. It is a statement about the *size*, that no
+sixteen-run design in seven factors does better than resolution IV and that at least one achieves
+it, so the table is a search presented as a lookup.
 
-Read that way, what an OMARS cell should report becomes clear: the best quality obtainable at that
-size. Three obstacles stand in the way. Each is a property of the designs themselves rather than a
-shortcoming of any particular measure, which is why none of them is repaired by choosing a
-different one.
+The OMARS analogue would be the best quality obtainable at each size. Three obstacles stand in the
+way, each a property of the designs rather than of any particular measure.
 
 **A run count does not pin down the experiment.** An OMARS design of :math:`N` runs splits its
-budget between design points and replicates of the centre point, and the split is free. Take twelve
-design runs in three factors and add one, three or five centre runs. The largest absolute
-correlation between any two second-order terms, which is the usual measure of how entangled they
-are, is then :math:`0.300`, :math:`0.071` and :math:`0.056` respectively, for exactly the same
-twelve design points. A cell indexed on the run count alone cannot say which of these it means.
+budget between design points and replicates of the centre point, and the split is free. The same
+twelve design points in three factors, with one, three or five centre runs added, give a largest
+second-order correlation of :math:`0.300`, :math:`0.071` and :math:`0.056`.
 
-**A measure divided by the run count need not improve as runs are added.** Searching every OMARS
-design of each size in three factors, the least entangled design at seventeen runs reaches
-:math:`0.056`, and at nineteen runs the best possible is :math:`0.136`. More runs, a worse design,
-and not by a small margin. Reversals of this kind occur throughout the range and do not die out as
-the designs grow. A column that can go backwards cannot be read to choose a budget, which is the
-one thing a trade-off table is for.
+**A measure divided by the run count need not improve as runs are added.** Across every OMARS
+design of each size in three factors, the least entangled at seventeen runs reaches :math:`0.056`,
+while at nineteen runs the best possible is :math:`0.136`. Reversals occur throughout the range,
+and a column that goes backwards cannot be read to choose a budget.
 
 **A measure not divided by the run count mostly restates the run count.** The alphabetic optimality
-criteria, defined and plotted in :ref:`DOE-omars-metric-choice` below, avoid the previous problem,
-and provably so: adding a run to a design adds a positive
-semi-definite term to :math:`\mathbf{X}^T\mathbf{X}`, which can only grow, so none of
-:math:`A`, :math:`D`, :math:`E`, :math:`I` or :math:`G` can worsen. The difficulty is the other way
-around. The average variance of an estimated coefficient falls roughly as :math:`1/N`, so a column
-of those values tracks the run count that already labels the row.
+criteria avoid the previous problem, since adding a run adds a positive semi-definite term to
+:math:`\mathbf{X}^T\mathbf{X}`, so none of them can worsen. The difficulty is the other way around:
+they fall at close to the rate :math:`1/N`. Both points are set out in
+:ref:`DOE-omars-metric-choice` below, which is where the five criteria are defined.
 
-Resolution escapes all three because it is not a magnitude. It is a combinatorial statement about
+Resolution avoids all three because it is not a magnitude. It is a combinatorial statement about
 which effects are confounded with which, and two-level fractions nest, so a larger design contains
-a smaller one and extra runs can only break confounding, never create it. Neither of those holds
-for OMARS designs: they do not nest in the same way, and every quality measure is a magnitude.
+a smaller one and extra runs can only break confounding. Neither holds for OMARS designs.
 
-This is why the cells of the OMARS table report a capability class and the error degrees of
-freedom, and no measure of design quality. Those two are statements about *estimability*, the same
-species of statement as resolution, and they are monotone in the run count for the same reason.
-Quality metrics still matter for choosing among designs of a given size, and
-:ref:`DOE-omnibus-comparison` compares several designs on exactly those grounds. They simply
-cannot be reduced to one number per cell.
+The OMARS cells therefore report a capability class and the error degrees of freedom. Both are
+statements about *estimability*, the same species as resolution, and both are monotone in the run
+count for the same reason. Quality metrics still separate designs of a given size, which is what
+:ref:`DOE-omnibus-comparison` does with them.
 
 .. _DOE-omars-metric-choice:
 
-Six ways to score a design, read down one column
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Six measures down one column
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Those three obstacles were found by trying the measures, and the measures are worth seeing, since
-they are the ones a reader is likely to reach for when comparing two designs of the same size.
-
-Fix the factor count at three, which is one column of the OMARS trade-off table, and read down that
-column. At each run count, take the best value that any OMARS design of that size attains. Taking
-the best, rather than the best a search happened to find, is possible at this size: an OMARS design
-is a foldover, so it is described entirely by how many times each pattern of :math:`-1`, :math:`0`
-and :math:`+1` appears in its half, since every second-order term takes the same value on a
-half-row and on that row negated. Three factors admit thirteen such patterns, so every design of a
-given size can be listed and scored. Each point plotted is therefore a frontier value.
+Fix the factor count at three, one column of the OMARS trade-off table, and read down it, taking at
+each run count the best value any OMARS design of that size attains. The best, rather than the best
+a search found, is available here because a foldover is described entirely by how many times each
+pattern of :math:`-1`, :math:`0` and :math:`+1` appears in its half, and three factors admit only
+thirteen such patterns.
 
 Write :math:`\mathbf{M} = \mathbf{X}^T\mathbf{X}` for the model matrix :math:`\mathbf{X}` of the
 main-effects-and-quadratics model, which has :math:`p = 2k + 1` terms, and
 :math:`\mathbf{f}(\mathbf{x})` for the row that model takes at a point :math:`\mathbf{x}` in the
-experimental region. The same model is scored at every run count, so that a value means the same
-thing throughout. Five of the six measures are the *alphabetic optimality criteria*, each a single
-summary of :math:`\mathbf{M}`:
+experimental region. That same model is scored at every run count. Five of the six measures are the
+*alphabetic optimality criteria*, each a single summary of :math:`\mathbf{M}`:
 
 * :math:`A = \mathrm{tr}(\mathbf{M}^{-1})/p`, the variance of an estimated coefficient, averaged
-  over the :math:`p` coefficients. Lower is better.
-* :math:`D = |\mathbf{M}|^{1/p}`, which is inversely proportional to the volume of the joint
-  confidence region of the coefficients. It is the only one of the five that accounts for how the
-  estimates covary rather than treating them one at a time. Higher is better.
-* :math:`E = \lambda_{\min}(\mathbf{M})`, the smallest eigenvalue of :math:`\mathbf{M}`. The
-  worst-determined combination of coefficients has variance :math:`1/E`, so this is the worst case
-  matching the average that :math:`A` reports. Higher is better.
+  over the :math:`p` coefficients.
+* :math:`D = |\mathbf{M}|^{1/p}`, inversely proportional to the volume of the joint confidence
+  region, and the only one of the five that accounts for how the estimates covary.
+* :math:`E = \lambda_{\min}(\mathbf{M})`. The worst-determined combination of coefficients has
+  variance :math:`1/E`, so :math:`E` is the worst case matching the average :math:`A` reports.
 * :math:`I = \mathrm{tr}(\mathbf{M}^{-1}\mathbf{B})`, the prediction variance
-  :math:`\mathbf{f}^T\mathbf{M}^{-1}\mathbf{f}` averaged over the whole experimental region, where
-  :math:`\mathbf{B}` holds the moments of that region. Lower is better.
+  :math:`\mathbf{f}^T\mathbf{M}^{-1}\mathbf{f}` averaged over the region, with :math:`\mathbf{B}`
+  the region moments.
 * :math:`G = \max_{\mathbf{x}}\, \mathbf{f}(\mathbf{x})^T \mathbf{M}^{-1}\mathbf{f}(\mathbf{x})`,
-  that same prediction variance at its worst point in the region, so the worst case matching the
-  average that :math:`I` reports. Lower is better.
+  the same prediction variance at its worst point, so the worst case matching :math:`I`.
 
-The sixth measure is not an optimality criterion. It is max :math:`|r|`, the largest absolute
-correlation between any two of the six second-order terms, meaning the three pure quadratics and
-the three two-factor interactions. It is the direct reading of how entangled those terms are, which
-is the quantity a practitioner notices first when the correlation map of a design is plotted.
+The sixth is not an optimality criterion. Max :math:`|r|` is the largest absolute correlation
+between any two of the six second-order terms, read off the correlation map of the design.
 
 .. code-block:: python
 
@@ -748,59 +634,44 @@ value of each measure at each size, gives the six curves below.
 
 	Six candidate measures read down the three-factor column of the OMARS trade-off table. Each
 	point is the best value attainable at that run count, found by listing every OMARS design of
-	the size, so the curves are frontiers. The columns of panels group the measures by how they
-	summarise: the left pair averages, the middle pair takes a worst case of the same two
-	quantities, and the right pair does neither. The top row summarises
-	:math:`\mathbf{X}^T\mathbf{X}` and the bottom row is prediction variance over the region,
-	except for the last panel. Insets on that panel are the correlation maps of five of the
-	plotted designs, on a common shading scale from zero to one, each outlined in the colour
-	of the series it belongs to. The three on the left are the smallest design at each
-	centre-run count, so they can be compared against each other directly.
+	the size. The panel columns group the measures by how they summarise: the left pair
+	averages, the middle pair takes a worst case of the same two quantities, the right pair does
+	neither. Insets on the last panel are correlation maps of five of the plotted designs, on a
+	common shading scale from zero to one, outlined in the colour of their series. The three on
+	the left are the smallest design at each centre-run count.
 
-The two averages, :math:`A` and :math:`I`, fall smoothly and track each other. Both fall at
-roughly the rate :math:`1/N`: the product :math:`N \times A/p` moves only from 3.57 at nine runs
-to 3.15 at thirty-one. The three centre-run series lie almost on top of one another, so neither
-measure distinguishes designs that differ in how they split the budget. :math:`D` behaves the same
-way and more plainly still: from eleven runs upward a straight line in :math:`N` fits it with a
-largest departure of 0.27 on values that run from 4.5 to 13.6. A column of any of these three would
-largely repeat the run count that already labels the row.
+:math:`A`, :math:`I` and :math:`D` restate the run count. The first two fall at close to the rate
+:math:`1/N`, the product :math:`N \times A/p` moving only from 3.57 at nine runs to 3.15 at
+thirty-one, and a straight line in :math:`N` fits :math:`D` from eleven runs upward to within 0.27
+on values from 4.5 to 13.6. All three have their centre-run series almost on top of one another.
 
-:math:`E`, the smallest eigenvalue, is the one of the five that carries structure the run count
-does not. It rises as a staircase with flat treads: on the three-centre-run series it is exactly
-2.000 at eleven, thirteen and fifteen runs, and on the two-centre-run series exactly 4.000 at
-twenty-two, twenty-four and twenty-six runs. A tread is a statement a trade-off table can use,
-namely that over that span the extra runs leave the worst-determined direction in the coefficients
-exactly as it was.
+:math:`E`, the smallest eigenvalue, carries structure the run count does not. It rises as a
+staircase with flat treads: exactly 2.000 at eleven, thirteen and fifteen runs on the
+three-centre-run series, and exactly 4.000 at twenty-two, twenty-four and twenty-six runs on the
+two-centre-run series. Over a tread the extra runs leave the worst-determined direction in the
+coefficients where it was.
 
-:math:`G`, the worst prediction variance, has a floor that can be computed without any design at
-all. The Kiefer-Wolfowitz equivalence theorem gives :math:`G \ge p/N`, here :math:`7/N`, for any
-design whatever. The best three-factor designs reach that floor exactly at nine and twenty-seven
-runs with one centre run, and at eighteen runs with two, so at those three sizes no OMARS design,
-and no other design either, predicts better at its worst point.
+:math:`G`, the worst prediction variance, has a floor that needs no design to compute. The
+Kiefer-Wolfowitz equivalence theorem gives :math:`G \ge p/N`, here :math:`7/N`, for any design,
+and the best three-factor designs reach it exactly at nine and twenty-seven runs with one centre
+run, and at eighteen runs with two.
 
-Max :math:`|r|` is the measure that answers the entanglement question directly, and it is the one
-that reverses. Four of the eleven steps along the one-centre-run series go backwards, the largest
-from 0.050 at twenty-one runs to 0.179 at twenty-three. It also separates the centre-run series
-widely, unlike the five criteria: at fifteen runs the best value is 0.378 with one centre run
-against 0.071 with three. The three insets on the left of that panel show what the centre runs do
-to the map. Those designs share the same four half-rows, so only the centre count separates them,
-and adding centre runs lowers the correlation between a quadratic and an interaction, from 0.707 to
+Max :math:`|r|` reverses: four of the eleven steps along the one-centre-run series go backwards,
+the largest from 0.050 at twenty-one runs to 0.179 at twenty-three. It also separates the
+centre-run series widely, at fifteen runs giving 0.378 with one centre run against 0.071 with
+three. The three insets on the left show why: those designs share the same four half-rows, and
+adding centre runs lowers the correlation between a quadratic and an interaction, from 0.707 to
 0.645 to 0.606, while raising the correlation between two quadratics from zero to 0.167 to 0.267.
 Max :math:`|r|` reaches zero at one size only, twenty-seven runs with one centre run, where the
-design turns out to be the full three-level factorial, all twenty-seven combinations of
-:math:`-1`, :math:`0` and :math:`+1` run once.
+design is the full three-level factorial.
 
 The six also disagree about which design is best. At twenty-one runs with one centre run there are
-1859 OMARS designs, and the six measures single out four different ones: :math:`A`, :math:`E` and
-:math:`I` agree on one, while :math:`D`, :math:`G` and max :math:`|r|` each choose their own. The
-disagreement is not marginal. The design minimising max :math:`|r|` reaches 0.050, but its smallest
-eigenvalue is 1.20, against 3.42 for the design that :math:`A`, :math:`E` and :math:`I` prefer,
-whose own max :math:`|r|` is 0.222. The four-factor column behaves the same way in every respect
-described here, over the twenty-two sizes checked from nine to twenty-three runs.
-
-So a single number in a cell would have to say which of the six it is, and the reader would need
-to know which one matched their purpose before the table could be read. That is the practical form
-of the conclusion reached in :ref:`DOE-omars-what-a-cell-reports`.
+1859 OMARS designs, and the six single out four different ones: :math:`A`, :math:`E` and :math:`I`
+agree, while :math:`D`, :math:`G` and max :math:`|r|` each choose their own. The design minimising
+max :math:`|r|` reaches 0.050 but has a smallest eigenvalue of 1.20, against 3.42 for the design
+:math:`A`, :math:`E` and :math:`I` select, whose own max :math:`|r|` is 0.222. The four-factor
+column behaves the same way. A single number in a cell would therefore have to name which of the
+six it is.
 
 .. _DOE-analysing-economical-designs:
 
