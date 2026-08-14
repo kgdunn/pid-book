@@ -1403,3 +1403,119 @@ Exercises
 	Your manager has asked you to describe the flow rate characteristics of the overhead stream leaving the top of the `distillation column <https://en.wikipedia.org/wiki/Fractionating_column>`_ at your plant. You are able to download one month of data, `available from this website <https://openmv.net/info/distillate-flow>`_, from 1 March to 31 March, taken at one minute intervals to answer this question.
 
 .. answer: use Ghassan Marjaba's solution (permission given by email in February 2014).
+
+.. admonition:: Question
+
+	A density analyzer checks incoming solvent shipments; its measurement standard deviation is
+	known from calibration records to be :math:`\sigma = 5` kg/m\ :sup:`3`. Months of records for
+	this supplier show shipment densities centred at 776 kg/m\ :sup:`3`, varying with a standard
+	deviation of 4 kg/m\ :sup:`3` from shipment to shipment, which we encode as the prior
+	:math:`\mu \sim \mathcal{N}(776, 4^2)`. A new shipment is measured 5 times:
+	``781, 776, 785, 778, 780`` kg/m\ :sup:`3`.
+
+	#.	Calculate the posterior for this shipment's density mean, and report the 95% credible
+		interval. Use the update equations from the section on :ref:`Bayesian estimates and
+		credible intervals <univariate_bayes_informative_prior>`.
+
+	#.	Repeat the calculation with a prior so wide it expresses no preference, and compare the
+		two intervals.
+
+	#.	The solvent is usable if its density exceeds 775 kg/m\ :sup:`3`. What is the probability
+		of that, given the 5 measurements and the supplier records?
+
+.. admonition:: Solution
+
+	#.	The sample average of the 5 measurements is :math:`\overline{x} = 780.0`. The posterior
+		precision is :math:`1/4^2 + 5/5^2 = 0.0625 + 0.2 = 0.2625`, so
+		:math:`s_{\text{post}} = 1/\sqrt{0.2625} = 1.95`, and the posterior mean is
+		:math:`(776 \times 0.0625 + 780.0 \times 0.2)/0.2625 = 779.0`. The 95% credible interval
+		is :math:`779.0 \pm 1.96 \times 1.95 = [775.2; 782.9]` kg/m\ :sup:`3`.
+
+		.. code-block:: python
+
+			import numpy as np
+			from scipy import stats
+
+			d = np.array([781, 776, 785, 778, 780])
+			sigma, m0, s0 = 5.0, 776.0, 4.0
+			precision = 1 / s0**2 + len(d) / sigma**2
+			m_post = (m0 / s0**2 + len(d) * d.mean() / sigma**2) / precision
+			s_post = 1 / np.sqrt(precision)
+			lo, hi = stats.norm.ppf([0.025, 0.975], loc=m_post, scale=s_post)
+			print(f"[{lo:.1f}; {hi:.1f}]")  # [775.2; 782.9]
+
+	#.	With a weak prior the posterior is centred at the sample average, with standard
+		deviation :math:`\sigma/\sqrt{n} = 5/\sqrt{5} = 2.24`, so the interval is
+		:math:`780.0 \pm 1.96 \times 2.24 = [775.6; 784.4]` kg/m\ :sup:`3`. The informative prior
+		shifts the interval's centre from 780.0 toward the supplier's long-run 776 (to 779.0),
+		and narrows it (7.7 kg/m\ :sup:`3` against 8.8 kg/m\ :sup:`3` wide), since the supplier
+		records contribute information the 5 measurements alone do not have.
+
+	#.	The area of the posterior from part 1 above 775 kg/m\ :sup:`3` is
+		``1 - stats.norm.cdf(775, m_post, s_post)`` :math:`= 0.98`.
+
+.. admonition:: Question
+
+	Two impeller designs are compared in a stirred batch reactor, with :math:`n_A = n_B = 8`
+	batches per design, run in randomized order. The average conversions are
+	:math:`\overline{x}_A = 64.2\%` and :math:`\overline{x}_B = 67.1\%`, and the two sample
+	variances are comparable, pooling to :math:`s_P^2 = 16.0`. Following the section on
+	:ref:`the Bayesian comparison of two systems <univariate_bayesian_two_sample>`, calculate the
+	probability that impeller B's long-run conversion exceeds impeller A's, and give the
+	complementary reading of the same number.
+
+.. admonition:: Solution
+
+	With weak priors and the pooled variance, the posterior for :math:`\mu_B - \mu_A` is a
+	:math:`t`-distribution with :math:`8 - 1 + 8 - 1 = 14` degrees of freedom, centred at
+	:math:`67.1 - 64.2 = 2.9` and scaled by :math:`\sqrt{16.0 \times (1/8 + 1/8)} = 2.0`. The area
+	to the right of zero is :math:`p(\mu_B - \mu_A > 0 \,|\, \text{data}) = 0.92`.
+
+	.. code-block:: python
+
+		from scipy import stats
+
+		print(1 - stats.t.cdf(0, df=14, loc=2.9, scale=2.0))  # 0.92
+
+	The complementary reading of the same curve: if impeller B has no effect, a difference at
+	least as large as the observed 2.9% conversion would arise by chance in 8.5% of such
+	comparisons (about 1 in 12).
+
+.. admonition:: Question
+
+	An inspection of 50 gasket seals from a production lot finds 44 that conform to the
+	specification.
+
+	#.	Starting from a uniform :math:`\text{Beta}(1, 1)` prior, give the posterior for the lot's
+		conforming proportion and its 95% credible interval, following :ref:`the Bayesian
+		credible interval for the proportion <univariate_beta_binomial>`.
+
+	#.	Compare the credible interval with the normal-approximation confidence interval, and
+		comment on the difference in shape.
+
+	#.	The customer asks for evidence that at least 90% of the lot conforms. What probability
+		does the posterior assign to that statement?
+
+.. admonition:: Solution
+
+	#.	Adding the observed counts to the prior's parameters gives
+		:math:`p \,|\, \text{data} \sim \text{Beta}(1 + 44, \; 1 + 6) = \text{Beta}(45, 7)`, with
+		posterior mean :math:`45/52 = 0.865`. The central 95% of its area gives the credible
+		interval :math:`[0.761; 0.943]`.
+
+		.. code-block:: python
+
+			from scipy import stats
+
+			lo, hi = stats.beta.ppf([0.025, 0.975], 45, 7)
+			print(f"[{lo:.3f}; {hi:.3f}]")  # [0.761; 0.943]
+
+	#.	The sample proportion is :math:`\hat{p} = 44/50 = 0.88`, and the normal-approximation
+		interval is :math:`0.88 \pm 1.96\sqrt{0.88 \times 0.12/50} = [0.790; 0.970]`, symmetric
+		about 0.88 by construction. The credible interval is not: :math:`\hat{p} = 0.88` lies
+		above its centre, since the :math:`\text{Beta}(45, 7)` posterior has the longer left
+		tail. The two intervals have similar widths.
+
+	#.	The posterior's area above 0.90 is ``1 - stats.beta.cdf(0.90, 45, 7)``
+		:math:`= 0.25`. The inspection gives weak support for the customer's statement: a larger
+		sample would be needed to make a convincing case either way.
