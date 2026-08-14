@@ -630,7 +630,8 @@ the designs grow. A column that can go backwards cannot be read to choose a budg
 one thing a trade-off table is for.
 
 **A measure not divided by the run count mostly restates the run count.** The alphabetic optimality
-criteria avoid the previous problem, and provably so: adding a run to a design adds a positive
+criteria, defined and plotted in :ref:`DOE-omars-metric-choice` below, avoid the previous problem,
+and provably so: adding a run to a design adds a positive
 semi-definite term to :math:`\mathbf{X}^T\mathbf{X}`, which can only grow, so none of
 :math:`A`, :math:`D`, :math:`E`, :math:`I` or :math:`G` can worsen. The difficulty is the other way
 around. The average variance of an estimated coefficient falls roughly as :math:`1/N`, so a column
@@ -647,6 +648,153 @@ species of statement as resolution, and they are monotone in the run count for t
 Quality metrics still matter for choosing among designs of a given size, and
 :ref:`DOE-omnibus-comparison` compares several designs on exactly those grounds. They simply
 cannot be reduced to one number per cell.
+
+.. _DOE-omars-metric-choice:
+
+Six ways to score a design, read down one column
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Those three obstacles were found by trying the measures, and the measures are worth seeing, since
+they are the ones a reader is likely to reach for when comparing two designs of the same size.
+
+Fix the factor count at three, which is one column of the OMARS trade-off table, and read down that
+column. At each run count, take the best value that any OMARS design of that size attains. Taking
+the best, rather than the best a search happened to find, is possible at this size: an OMARS design
+is a foldover, so it is described entirely by how many times each pattern of :math:`-1`, :math:`0`
+and :math:`+1` appears in its half, since every second-order term takes the same value on a
+half-row and on that row negated. Three factors admit thirteen such patterns, so every design of a
+given size can be listed and scored. Each point plotted is therefore a frontier value.
+
+Write :math:`\mathbf{M} = \mathbf{X}^T\mathbf{X}` for the model matrix :math:`\mathbf{X}` of the
+main-effects-and-quadratics model, which has :math:`p = 2k + 1` terms, and
+:math:`\mathbf{f}(\mathbf{x})` for the row that model takes at a point :math:`\mathbf{x}` in the
+experimental region. The same model is scored at every run count, so that a value means the same
+thing throughout. Five of the six measures are the *alphabetic optimality criteria*, each a single
+summary of :math:`\mathbf{M}`:
+
+* :math:`A = \mathrm{tr}(\mathbf{M}^{-1})/p`, the variance of an estimated coefficient, averaged
+  over the :math:`p` coefficients. Lower is better.
+* :math:`D = |\mathbf{M}|^{1/p}`, which is inversely proportional to the volume of the joint
+  confidence region of the coefficients. It is the only one of the five that accounts for how the
+  estimates covary rather than treating them one at a time. Higher is better.
+* :math:`E = \lambda_{\min}(\mathbf{M})`, the smallest eigenvalue of :math:`\mathbf{M}`. The
+  worst-determined combination of coefficients has variance :math:`1/E`, so this is the worst case
+  matching the average that :math:`A` reports. Higher is better.
+* :math:`I = \mathrm{tr}(\mathbf{M}^{-1}\mathbf{B})`, the prediction variance
+  :math:`\mathbf{f}^T\mathbf{M}^{-1}\mathbf{f}` averaged over the whole experimental region, where
+  :math:`\mathbf{B}` holds the moments of that region. Lower is better.
+* :math:`G = \max_{\mathbf{x}}\, \mathbf{f}(\mathbf{x})^T \mathbf{M}^{-1}\mathbf{f}(\mathbf{x})`,
+  that same prediction variance at its worst point in the region, so the worst case matching the
+  average that :math:`I` reports. Lower is better.
+
+The sixth measure is not an optimality criterion. It is max :math:`|r|`, the largest absolute
+correlation between any two of the six second-order terms, meaning the three pure quadratics and
+the three two-factor interactions. It is the direct reading of how entangled those terms are, which
+is the quantity a practitioner notices first when the correlation map of a design is plotted.
+
+.. code-block:: python
+
+	def moment_matrix(k):
+	    """Moments of the cuboidal region, E[f(x) f(x)'], evaluated exactly."""
+	    B = np.zeros((2 * k + 1, 2 * k + 1))
+	    B[0, 0] = 1.0
+	    for i in range(k):
+	        B[1 + i, 1 + i] = 1 / 3                                   # E[x_i^2]
+	        B[0, 1 + k + i] = B[1 + k + i, 0] = 1 / 3
+	        for j in range(k):
+	            B[1 + k + i, 1 + k + j] = 1 / 5 if i == j else 1 / 9  # E[x_i^4], E[x_i^2 x_j^2]
+	    return B
+
+	def criteria(levels, grid_levels=7):
+	    """The five alphabetic criteria for the main-effects-and-quadratics model, and the
+	    largest absolute correlation between two second-order terms."""
+	    n_runs, k = levels.shape
+	    X = np.column_stack([np.ones(n_runs), levels, levels**2])
+	    M = X.T @ X
+	    p, M_inv = M.shape[1], np.linalg.inv(M)
+	    grid = np.array(list(itertools.product(np.linspace(-1, 1, grid_levels), repeat=k)))
+	    f = np.column_stack([np.ones(len(grid)), grid, grid**2])
+	    second = [levels[:, i] ** 2 for i in range(k)]
+	    second += [levels[:, i] * levels[:, j] for i, j in itertools.combinations(range(k), 2)]
+	    C = np.abs(np.corrcoef(np.column_stack(second), rowvar=False))
+	    return {"A/p": np.trace(M_inv) / p,
+	            "D": np.linalg.det(M) ** (1 / p),
+	            "E": np.linalg.eigvalsh(M).min(),
+	            "I": np.trace(M_inv @ moment_matrix(k)),
+	            "G": np.einsum("ij,jk,ik->i", f, M_inv, f).max(),
+	            "max |r|": C[~np.eye(len(C), dtype=bool)].max()}
+
+	# The twelve design points behind the centre-run example given earlier, as six half-rows
+	# and their negations, scored with one, three and five centre runs added.
+	half = np.array([[0, 1, -1], [0, 1, 1], [1, -1, 0],
+	                 [1, 0, -1], [1, 0, 1], [1, 1, 0]], dtype=float)
+	points = np.vstack([half, -half])
+	for n_centre in (1, 3, 5):
+	    levels = np.vstack([points, np.zeros((n_centre, 3))])
+	    values = criteria(levels)
+	    print(f"N = {len(levels)}   " + "   ".join(f"{n} = {v:.4f}" for n, v in values.items()))
+
+	# N = 13   A/p = 0.3839   D = 5.3836   E = 0.5626   I = 0.5125   G = 1.0000   max |r| = 0.3000
+	# N = 15   A/p = 0.2173   D = 6.2984   E = 1.6346   I = 0.3014   G = 0.6458   max |r| = 0.0714
+	# N = 17   A/p = 0.1839   D = 6.7753   E = 2.6346   I = 0.2592   G = 0.6125   max |r| = 0.0556
+
+Running ``criteria`` on every OMARS design of every size in three factors, and keeping the best
+value of each measure at each size, gives the six curves below.
+
+.. figure:: ../figures/doe/omars-metric-choice.png
+	:align: center
+	:width: 800px
+	:alt: omars-metric-choice.py
+
+	Six candidate measures read down the three-factor column of the OMARS trade-off table. Each
+	point is the best value attainable at that run count, found by listing every OMARS design of
+	the size, so the curves are frontiers. The columns of panels group the measures by how they
+	summarise: the left pair averages, the middle pair takes a worst case of the same two
+	quantities, and the right pair does neither. The top row summarises
+	:math:`\mathbf{X}^T\mathbf{X}` and the bottom row is prediction variance over the region,
+	except for the last panel. Insets on that panel are the correlation maps of three designs
+	from the one-centre-run series, on a common shading scale from zero to one.
+
+The two averages, :math:`A` and :math:`I`, fall smoothly and track each other. Both fall at
+roughly the rate :math:`1/N`: the product :math:`N \times A/p` moves only from 3.57 at nine runs
+to 3.15 at thirty-one. The three centre-run series lie almost on top of one another, so neither
+measure distinguishes designs that differ in how they split the budget. :math:`D` behaves the same
+way and more plainly still: from eleven runs upward a straight line in :math:`N` fits it with a
+largest departure of 0.27 on values that run from 4.5 to 13.6. A column of any of these three would
+largely repeat the run count that already labels the row.
+
+:math:`E`, the smallest eigenvalue, is the one of the five that carries structure the run count
+does not. It rises as a staircase with flat treads: on the three-centre-run series it is exactly
+2.000 at eleven, thirteen and fifteen runs, and on the two-centre-run series exactly 4.000 at
+twenty-two, twenty-four and twenty-six runs. A tread is a statement a trade-off table can use,
+namely that over that span the extra runs leave the worst-determined direction in the coefficients
+exactly as it was.
+
+:math:`G`, the worst prediction variance, has a floor that can be computed without any design at
+all. The Kiefer-Wolfowitz equivalence theorem gives :math:`G \ge p/N`, here :math:`7/N`, for any
+design whatever. The best three-factor designs reach that floor exactly at nine and twenty-seven
+runs with one centre run, and at eighteen runs with two, so at those three sizes no OMARS design,
+and no other design either, predicts better at its worst point.
+
+Max :math:`|r|` is the measure that answers the entanglement question directly, and it is the one
+that reverses. Four of the eleven steps along the one-centre-run series go backwards, the largest
+from 0.050 at twenty-one runs to 0.179 at twenty-three. It also separates the centre-run series
+widely, unlike the five criteria: at fifteen runs the best value is 0.378 with one centre run
+against 0.071 with three. Its one clean point is twenty-seven runs with one centre run, where the
+value is exactly zero and the design turns out to be the full three-level factorial, all
+twenty-seven combinations of :math:`-1`, :math:`0` and :math:`+1` run once.
+
+The six also disagree about which design is best. At twenty-one runs with one centre run there are
+1859 OMARS designs, and the six measures single out four different ones: :math:`A`, :math:`E` and
+:math:`I` agree on one, while :math:`D`, :math:`G` and max :math:`|r|` each choose their own. The
+disagreement is not marginal. The design minimising max :math:`|r|` reaches 0.050, but its smallest
+eigenvalue is 1.20, against 3.42 for the design that :math:`A`, :math:`E` and :math:`I` prefer,
+whose own max :math:`|r|` is 0.222. The four-factor column behaves the same way in every respect
+described here, over the twenty-two sizes checked from nine to twenty-three runs.
+
+So a single number in a cell would have to say which of the six it is, and the reader would need
+to know which one matched their purpose before the table could be read. That is the practical form
+of the conclusion reached in :ref:`DOE-omars-what-a-cell-reports`.
 
 .. _DOE-analysing-economical-designs:
 
