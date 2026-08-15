@@ -343,11 +343,9 @@ Suppose the nineteen-run design is run anyway. At the bench nothing goes wrong, 
 data is wasted. What is missing appears at the analysis stage, and it is a question of uniqueness
 rather than of noise.
 
-Fitting the full second-order model to those nineteen runs leaves one direction in the coefficients
-that the data cannot see, a fixed combination of two quadratics and three interactions. Adding any
-amount of it changes the coefficients while leaving all nineteen fitted values as they were. Two
-numbers known to add up to ten are in the same position: every pair that sums to ten agrees with
-what is known.
+Fitting the full second-order model to those nineteen runs confounds two quadratics with three
+interactions: one fixed combination of those five terms is invisible to the data. Adding any
+amount of it changes the coefficients while leaving all nineteen fitted values as they were.
 
 Software asked for an answer will still return one. Two coefficient sets differing by up to 8.5
 units give identical fitted values at all nineteen runs, the same residual sum of squares, the same
