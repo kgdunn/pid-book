@@ -397,26 +397,33 @@ report come from ``process_improve``:
 	    omars_trade_off_table,
 	)
 
-	omars_trade_off_table()                          # the whole table
+	omars_trade_off_table(anchors=True)              # the whole table
 	get_omars_trade_off_table_entry(17, 4)           # one cell, reported in words
 
 .. code-block:: text
 
-	runs  k=3        k=4        k=5        k=6        k=7
-	-------------------------------------------------------------
-	9     Quad df=2  Satd df=0
-	13    Full 3     Quad 4     Quad df=2  Satd df=0
-	17    Full 7     Quad 8     Quad 6     Quad 4     Quad df=2
-	21    Full 11    Full 6     Quad 10    Quad 8     Quad 6
-	25    Full 15    Full 10    Quad 14    Quad 12    Quad 10
-	31    Full 21    Full 16    Full 10    Quad 18    Quad 16
-	37    Full 27    Full 22    Full 16    Quad 24    Quad 22
-	43    Full 33    Full 28    Full 22    Full 15    Quad 28
-	57    Full 47    Full 42    Full 36    Full 29    Full 21
+	runs  k=3           k=4           k=5           k=6           k=7
+	----------------------------------------------------------------------------
+	DSD   9 Quad df=2   9 Satd df=0   13 Quad df=2  13 Satd df=0  17 Quad df=2
+	9     Quad 2        Satd 0
+	13    Full 3        Quad 4        Quad 2        Satd 0
+	17    Full 7        Quad 8        Quad 6        Quad 4        Quad 2
+	21    Full 11       Full 6        Quad 10       Quad 8        Quad 6
+	25    Full 15       Full 10       Quad 14       Quad 12       Quad 10
+	31    Full 21       Full 16       Full 10       Quad 18       Quad 16
+	37    Full 27       Full 22       Full 16       Quad 24       Quad 22
+	43    Full 33       Full 28       Full 22       Full 15       Quad 28
+	57    Full 47       Full 42       Full 36       Full 29       Full 21
+	BBD   15 Full 5     27 Full 12    46 Full 25    54 Full 26    62 Full 26
 
 Each cell carries the capability class and the error degrees of freedom: the spare runs left after
 fitting, from which the run-to-run noise :math:`\sigma^2` is estimated, and on which every test and
-confidence interval rests. Five points to read off the table:
+confidence interval rests. Six points to read off the table:
+
+	*	**The first and last rows are not budgets.** They are the two standard designs that
+		bracket the family, the definitive screening design and the Box-Behnken design, so
+		each carries its own run count, which changes from column to column. Everything
+		between them is a budget read straight across.
 
 	*	**Down a column capability only improves, and across a row it only worsens**, so the
 		boundary between the classes is a staircase.
@@ -433,28 +440,44 @@ confidence interval rests. Five points to read off the table:
 		``Quad df=28``: the seven-factor cell has more spare runs because it fits the smaller
 		model.
 
-	*	**The definitive screening design sits in the top live cell of each column.** For an
-		even number of factors a DSD has :math:`2k+1` runs and lands in ``Satd``. For an odd
-		number the conference-matrix construction needs :math:`2k+3` runs, so the three-, five-
-		and seven-factor DSDs arrive with two spare degrees of freedom and land in ``Quad df=2``.
+	*	**The two anchor rows show what the standard designs cost.** For an even number of
+		factors a DSD has :math:`2k+1` runs and lands in ``Satd``. For an odd number the
+		conference-matrix construction needs :math:`2k+3` runs, so the three-, five- and
+		seven-factor DSDs arrive with two spare degrees of freedom and land in ``Quad df=2``.
+		Every Box-Behnken design is past the frontier and so ``Full``, but none is the
+		smallest design that is: at five factors it takes 46 runs where 31 reach ``Full``.
 
 .. code-block:: python
 
 	import plotly.graph_objects as go
-	from process_improve.experiments import get_omars_trade_off_table_entry
+	from process_improve.experiments import get_omars_trade_off_table_entry, omars_anchor_entry
 	from process_improve.experiments.omars_trade_off import DEFAULT_FACTORS, DEFAULT_RUNS
 
 	shade = {"full": 3, "quad": 2, "satd": 1, "none": 0}
-	cells = [[get_omars_trade_off_table_entry(n, k, display=False) for k in DEFAULT_FACTORS] for n in DEFAULT_RUNS]
 
+	# The anchor rows come from omars_anchor_entry, not from the budget path: a Box-Behnken
+	# design carries six centre runs from five factors upwards, so its run count is even and
+	# a budget of that size is correctly reported as no design at all.
+	rows = [("DSD", [omars_anchor_entry("dsd", k) for k in DEFAULT_FACTORS])]
+	rows += [(str(n), [get_omars_trade_off_table_entry(n, k, display=False) for k in DEFAULT_FACTORS])
+	         for n in DEFAULT_RUNS]
+	rows += [("BBD", [omars_anchor_entry("bbd", k) for k in DEFAULT_FACTORS])]
+
+	def cell_text(cell, anchor):
+	    if cell is None or not cell.exists:
+	        return ""
+	    runs = f"{cell.n_runs} runs, " if anchor else ""
+	    return f"{cell.tag}<br>{runs}df = {cell.error_df}"
+
+	anchors = {"DSD", "BBD"}
 	fig = go.Figure(go.Heatmap(
-	    z=[[shade[c.capability] for c in row] for row in cells],
-	    x=[f"k = {k}" for k in DEFAULT_FACTORS], y=[str(n) for n in DEFAULT_RUNS],
-	    text=[[f"{c.tag}<br>df = {c.error_df}" if c.exists else "" for c in row] for row in cells],
+	    z=[[shade["none" if c is None else c.capability] for c in row] for _, row in rows],
+	    x=[f"k = {k}" for k in DEFAULT_FACTORS], y=[name for name, _ in rows],
+	    text=[[cell_text(c, name in anchors) for c in row] for name, row in rows],
 	    texttemplate="%{text}", showscale=False, xgap=3, ygap=3,
 	    colorscale=[[0.0, "#F4F4F4"], [0.33, "#E69F00"], [0.67, "#56B4E9"], [1.0, "#0072B2"]]))
 	fig.update_layout(xaxis_title="Number of factors", yaxis_title="Number of runs",
-	                  xaxis=dict(side="top"), yaxis=dict(autorange="reversed"))
+	                  xaxis=dict(side="top"), yaxis=dict(autorange="reversed", type="category"))
 	fig.show()
 
 .. figure:: ../figures/doe/omars-capability-staircase.png
@@ -466,6 +489,9 @@ confidence interval rests. Five points to read off the table:
 	model the run budget makes estimable and the error degrees of freedom left to test it.
 	The outlined cells are the estimability frontier :math:`N = k^2 + k + 1`, the first
 	``Full`` cell in each column. Blank cells are budgets that are not a foldover design.
+	The first and last rows, ruled off from the rest, are not budgets: they are the
+	definitive screening design and the Box-Behnken design, the two standard designs that
+	bracket the family, and each carries its own run count in every column.
 
 For a single budget the same information is reported in words, with the neighbouring thresholds:
 
