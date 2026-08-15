@@ -25,10 +25,9 @@ property described from the other side in :ref:`Judging and comparing designs
 <DOE-judging-and-comparing-designs>`, where the main-effect rows of the alias matrix are exactly
 zero.
 
-Aliasing does remain *among the second-order effects*, and the name makes no claim about it. It is
-measured for each design in the catalogue rather than minimised, and it varies widely from one
-design to the next, which is why choosing between designs of the same size is a separate question
-from choosing the size.
+Aliasing does remain *among the second-order effects*. It is measured for each design in the
+catalogue rather than minimised, and it varies widely from one design to the next, which is why
+choosing the size is a separate question from choosing within that size.
 
 The important shift in thinking is this: OMARS is not a single design but a whole *catalogue*.
 Núñez Ares and Goos enumerated it in 2020 for three to seven factors, using integer programming to
@@ -40,9 +39,9 @@ lower correlation among them and more power, at the cost of more runs. The
 :ref:`definitive screening design <DOE-definitive-screening-designs>` is the smallest member of the
 family; at the other extreme the face-centred central composite and Box-Behnken designs are
 themselves OMARS designs, so the largest members coincide with the standard response surface
-designs. Choosing among them is a multi-criteria decision rather than a lookup, which is the
-subject of the :ref:`spectrum below <DOE-design-spectrum>` and of :ref:`Judging and comparing
-designs <DOE-judging-and-comparing-designs>`.
+designs. There are many criteria that can be used to select between them. It is not a simple
+lookup, and that is the topic of the :ref:`spectrum below <DOE-design-spectrum>` and of
+:ref:`Judging and comparing designs <DOE-judging-and-comparing-designs>`.
 
 Most of the catalogue is foldover designs, built as the DSD was by folding a base matrix over its
 own sign-flipped copy. The clean main effects do not depend on that construction: all odd design
@@ -607,7 +606,7 @@ count for the same reason. Quality metrics still separate designs of a given siz
 
 .. _DOE-omars-metric-choice:
 
-Six measures down one column
+Nine measures down one column
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Fix the factor count at three, one column of the OMARS trade-off table, and read down it. At each
@@ -619,8 +618,9 @@ a foldover is described entirely by how many times each pattern of :math:`-1`, :
 Write :math:`\mathbf{M} = \mathbf{X}^T\mathbf{X}` for the model matrix :math:`\mathbf{X}` of the
 main-effects-and-quadratics model, which has :math:`p = 2k + 1` terms, and
 :math:`\mathbf{f}(\mathbf{x})` for the row that model takes at a point :math:`\mathbf{x}` in the
-experimental region. That same model is scored at every run count. Five of the six measures are the
-*alphabetic optimality criteria*, each a single summary of :math:`\mathbf{M}`:
+experimental region. Six of the nine measures score that same model at every run count, and five
+of those six are the *alphabetic optimality criteria*, each a single summary of
+:math:`\mathbf{M}`:
 
 * :math:`A/p`, the average coefficient variance. Each fitted coefficient has a variance, the
   square of the standard error a regression package prints beside it;
@@ -645,6 +645,31 @@ These are in units of the run-to-run noise: multiplied by :math:`\sigma^2`, each
 
 The sixth is not an optimality criterion. Max :math:`|r|` is the largest absolute correlation
 between any two of the six second-order terms, read off the correlation map of the design.
+
+The remaining three are *power*, the measure a practitioner is most likely to reach for: the
+probability that the test on a single coefficient comes out significant, given that the
+coefficient really is a certain size. Power needs two things from you that the six above do not.
+The first is the effect size worth detecting, written :math:`|\beta|/\sigma`, the coefficient
+measured in units of the run-to-run noise. With coded levels running :math:`-1` to :math:`+1` a
+main-effect coefficient :math:`\beta` moves the response by :math:`2\beta` from the low setting to
+the high one, so :math:`|\beta|/\sigma = 1` means a low-to-high change of twice the noise standard
+deviation. The second is the significance level :math:`\alpha`. Power also differs by type of
+term, so it needs one panel each for a main effect, a two-factor interaction and a pure quadratic.
+
+Those three panels score the *full* second-order model, :math:`p = 1 + 2k + k(k-1)/2` terms, not
+the smaller model the six above use, because the interactions have to be in the model for the
+middle panel to mean anything. The consequence is visible in the figure: the third row starts at
+thirteen runs, the :ref:`estimability frontier <DOE-omars-estimability-frontier>`
+:math:`N = k^2 + k + 1`, while the rows above start at seven or nine.
+
+For a coefficient with variance :math:`\sigma^2 c` the test statistic follows a non-central
+:math:`F` distribution with :math:`1` and :math:`N - p` degrees of freedom and non-centrality
+:math:`\lambda = (|\beta|/\sigma)^2 / c`, where :math:`c` is the matching diagonal entry of
+:math:`\mathbf{M}^{-1}`. Reading one value in full: at nineteen runs with one centre run the best
+attainable :math:`c` for a quadratic is 0.262, so its standard error is
+:math:`\sqrt{0.262}\,\sigma = 0.512\sigma`; the expected :math:`t` statistic for a one-sigma
+curvature is :math:`1/0.512 = 1.95`, against a critical value of 2.26 at nine degrees of freedom,
+so the test falls short more often than not and the power is 0.415.
 
 .. code-block:: python
 
@@ -692,23 +717,55 @@ between any two of the six second-order terms, read off the correlation map of t
 	# N = 15   A/p = 0.2173   D = 6.2984   E = 1.6346   I = 0.3014   G = 0.6458   max |r| = 0.0714
 	# N = 17   A/p = 0.1839   D = 6.7753   E = 2.6346   I = 0.2592   G = 0.6125   max |r| = 0.0556
 
-Running ``criteria`` on every OMARS design of every size in three factors, and keeping the best
-value of each measure at each size, gives the six curves below.
+Power is computed from the same design, against the full second-order model:
+
+.. code-block:: python
+
+	from scipy import stats
+
+	def power(levels, effect_size=1.0, alpha=0.05):
+	    """Power for a main effect, an interaction and a quadratic, full second-order model."""
+	    n_runs, k = levels.shape
+	    pairs = list(itertools.combinations(range(k), 2))
+	    X = np.column_stack([np.ones(n_runs), levels, levels**2]
+	                        + [levels[:, i] * levels[:, j] for i, j in pairs])
+	    df = n_runs - X.shape[1]
+	    c = np.diag(np.linalg.inv(X.T @ X))
+	    blocks = {"main effect": c[1:k + 1],
+	              "interaction": c[2 * k + 1:],
+	              "quadratic": c[k + 1:2 * k + 1]}
+	    critical = stats.f.ppf(1 - alpha, dfn=1, dfd=df)
+	    return {name: 1 - stats.ncf.cdf(critical, dfn=1, dfd=df,
+	                                    nc=effect_size**2 / block.max())
+	            for name, block in blocks.items()}
+
+	# The same twelve points with three centre runs: the Box-Behnken design in three factors.
+	print(power(np.vstack([points, np.zeros((3, 3))])))
+
+	# {'main effect': 0.6228, 'interaction': 0.3682, 'quadratic': 0.345}
+
+Running ``criteria`` and ``power`` on every OMARS design of every size in three factors, and
+keeping the best value of each measure at each size, gives the nine curves below.
 
 .. figure:: ../figures/doe/omars-metric-choice.png
 	:align: center
 	:width: 800px
 	:alt: omars-metric-choice.py
 
-	Six candidate measures read down the three-factor column of the OMARS trade-off table. Each
+	Nine candidate measures read down the three-factor column of the OMARS trade-off table. Each
 	point is the best value attainable at that run count, found by listing every OMARS design of
-	the size. The panel columns group the measures by how they summarise: the left pair
-	averages, the middle pair takes a worst case of the same two quantities, the right pair does
-	neither. Insets on the last panel are correlation maps of five of the plotted designs: in
-	each map the rows and columns are the six second-order terms, the three quadratics then the
-	three interactions, with a thin line between the two blocks, and darker squares are higher
-	correlations, on a common scale from zero to one. Each map is outlined in the colour of its
-	series, and the three on the left are the smallest design at each centre-run count.
+	the size. In the first two rows the panel columns group the measures by how they summarise:
+	the left pair averages, the middle pair takes a worst case of the same two quantities, the
+	right pair does neither. Insets on the last panel of the second row are correlation maps of
+	five of the plotted designs: in each map the rows and columns are the six second-order
+	terms, the three quadratics then the three interactions, with a thin line between the two
+	blocks, and darker squares are higher correlations, on a common scale from zero to one.
+	Each map is outlined in the colour of its series, and the three on the left are the smallest
+	design at each centre-run count. The third row is power, one panel per type of term, and it
+	scores the full second-order model rather than the model the rows above use, which is why it
+	begins at thirteen runs. Two standard designs are marked wherever they are defined: the
+	nine-run definitive screening design as an orange circle and the fifteen-run Box-Behnken
+	design as a green star, in the colours those two carry in the trade-off table.
 
 :math:`A/p`, :math:`I` and :math:`D` restate the run count. The first two fall at close to the
 rate :math:`1/N`, the product :math:`N \times A/p` moving only from 3.57 at nine runs to 3.15 at
@@ -735,7 +792,39 @@ adding centre runs lowers the correlation between a quadratic and an interaction
 Max :math:`|r|` reaches zero at one size only, twenty-seven runs with one centre run, where the
 design is the full three-level factorial.
 
-The six also disagree about which design is best. At twenty-one runs with one centre run there are
+Power is monotone in all three panels, so on that test it belongs with the alphabetic criteria
+rather than with max :math:`|r|`. What it adds is an ordering the other measures do not show. A
+main effect of one sigma reaches 0.8 power at fifteen runs with one centre run, an interaction of
+the same size at nineteen, and a quadratic of the same size reaches only 0.744 at thirty-one runs,
+the largest design plotted. The interaction sits nearer the main effect than the quadratic
+because :math:`x_i x_j` is a :math:`\pm 1` column like a main effect, while :math:`x_j^2` takes
+only the values zero and one and shares most of its variation with the intercept. Read as a
+budgeting rule, the quadratics set the run count.
+
+The centre-run series also swap order between panels. Centre runs are not factorial runs, so they
+cost main-effect and interaction power: at fifteen runs the one-centre-run design gives 0.845 and
+0.679 against 0.789 and 0.623 for three centre runs. For the quadratics the ordering reverses,
+0.257 against 0.345 at the same fifteen runs, and only returns to the usual direction past about
+twenty-five runs. This is the clearest statement in the chapter of what the extra centre runs buy.
+
+The two marked designs make the same point from the other direction. The definitive screening
+design in three factors sits exactly on the frontier in all six panels of the first two rows,
+:math:`A/p = 0.397`, :math:`D = 3.970`, :math:`E = 0.811`, :math:`I = 0.578`, :math:`G = 0.778`
+and max :math:`|r| = 0.707`, so at its size it is not merely a good design but the best on every
+one of those measures at once. It is absent from the power row because nine runs cannot fit a
+ten-term model. Note that it has nine runs rather than :math:`2k + 1 = 7`: the construction folds
+a conference matrix of order :math:`k`, which exists only for an even :math:`k`, so an odd
+:math:`k` uses one of order :math:`k + 1` and drops a column, and the design arrives with two runs
+to spare.
+
+The Box-Behnken design lands on the frontier in five panels, :math:`A/p`, :math:`D`, :math:`I`,
+max :math:`|r|` and quadratic power, and clearly off it in four. Its smallest eigenvalue is 1.63
+against a best of 2.00 at fifteen runs, its worst prediction variance 0.646 against 0.600, its
+main-effect power 0.623 against 0.789 and its interaction power 0.368 against 0.623. Each factor
+is at :math:`\pm 1` in only eight of its twelve edge points, so it puts its runs into curvature,
+and that shows up as five measures at the frontier and four away from it.
+
+The six enumerated measures also disagree about which design is best. At twenty-one runs with one centre run there are
 1859 OMARS designs, and the six single out four different ones: :math:`A`, :math:`E` and :math:`I`
 agree, while :math:`D`, :math:`G` and max :math:`|r|` each choose their own. The design minimising
 max :math:`|r|` reaches 0.050 but has a smallest eigenvalue of 1.20, against 3.42 for the design
@@ -743,11 +832,18 @@ max :math:`|r|` reaches 0.050 but has a smallest eigenvalue of 1.20, against 3.4
 column behaves the same way. A single number in a cell would therefore have to name which of the
 six it is.
 
+Power does not escape that either. It is well behaved down the column, but it needs an effect size
+and a significance level before it returns a number at all, and it needs three numbers rather than
+one, because the three types of term differ by a factor of two or more at the same run count. It
+also changes shape with the model scored: the smallest design that can fit the full second-order
+model is the one that estimates the quadratics worst, which is the opposite of what the same
+panels show once the interactions are dropped from the model.
+
 In practice the two tools divide the work. The trade-off table chooses the run count, from
 capability and error degrees of freedom. At that size, candidate designs are compared with the
 measure matched to the aim of the study: the precision of the coefficients (:math:`A`, :math:`E`),
-prediction over the region (:math:`I`, :math:`G`), or keeping the second-order effects
-distinguishable (max :math:`|r|`).
+prediction over the region (:math:`I`, :math:`G`), keeping the second-order effects
+distinguishable (max :math:`|r|`), or the chance of detecting an effect of a stated size (power).
 
 .. _DOE-analysing-economical-designs:
 
