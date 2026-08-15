@@ -334,30 +334,6 @@ estimability from the rank of the model matrix, not from the determinant of the 
 	cannot estimate it. The band is :math:`k(k-1)/2` runs deep, and the marked point is the
 	four-factor case checked in the code.
 
-.. rubric:: Example with 4 factors and 19 runs, inside the band
-
-Nineteen runs in four factors sits inside the band: four runs more than the fifteen parameters of
-the full second-order model, and two runs short of the twenty-one the frontier asks for. Nothing
-goes wrong at the bench and none of the data is wasted. The shortfall shows up at the analysis
-stage.
-
-At nineteen runs two quadratics are confounded with three interactions, so the full second-order
-model cannot be fitted. A least squares fit still returns an answer without complaint: coefficient
-sets differing by 8.5 units are indistinguishable from these runs, and disagree by as much at
-settings that were never run. What nineteen runs do support is main effects and pure quadratics,
-nine parameters with ten degrees of freedom for error, and the main effects stay clean of every
-second-order term.
-
-Two more runs reach the frontier. At twenty-one all six two-factor interactions join the model,
-fifteen parameters with six degrees of freedom to test them, and a response surface can be fitted
-from the single design.
-
-Both are sound experiments, so the choice is a budget one. Capped at nineteen runs, an interaction
-that matters has to be found by the staged analysis of :ref:`Analysing data from these designs
-<DOE-analysing-economical-designs>` and confirmed in a follow-up. With twenty-one it arrives with
-the first design.
-
-
 .. _DOE-omars-reading-the-table:
 
 Reading the table
@@ -374,12 +350,30 @@ table:
 ``Quad``
 	:math:`N \ge 2k + 3`. Main effects and pure quadratics are estimable, with degrees of freedom
 	left over to test them. The two-factor interactions are in the *design*, still orthogonal to
-	the main effects, but not in the *model*.
+	the main effects, but not in the fitted *model*.
 
 ``Satd``
 	:math:`N = 2k + 1`. Saturated: the main-effects-plus-quadratics model can be estimated, but
 	nothing is left with which to estimate :math:`\sigma^2`, so there are point estimates and no
 	standard errors, tests or power.
+
+Nothing falls between ``Satd`` at :math:`2k + 1` runs and ``Quad`` at :math:`2k + 3`. The run count
+between them is even, and a foldover has :math:`N = 2h + 1` runs, so no design of that size exists.
+
+``Quad`` does not mean the interactions have to stay out of the model, only that they cannot all
+come in. Adding one to the model spends one of the distinct even rows, of which a foldover has
+:math:`h + 1` against the :math:`1 + k` the intercept and quadratics already use, so
+
+.. math::
+	:label: eq-omars-spare-interactions
+
+	\text{interactions that can be added} \; = \; h - k \; = \; \frac{N-1}{2} - k
+
+A seventeen-run design in four factors can therefore carry four of its six interactions, and a
+thirteen-run one only two. Which of them to bring in is the question the staged analysis of
+:ref:`Analysing data from these designs <DOE-analysing-economical-designs>` answers, and the ones
+left out still bias those that come in. Setting :math:`h - k \ge k(k-1)/2` recovers
+:math:`N \ge k^2 + k + 1`, so ``Full`` is exactly the point where every interaction fits at once.
 
 The tags sort alphabetically in decreasing order of capability. The table and the single-cell
 report come from ``process_improve``:
@@ -513,27 +507,6 @@ For a single budget the same information is reported in words, with the neighbou
 	  Thresholds for 4 factors: Satd 9, Quad 11, Full 21 runs.
 	  4 more runs would reach Full (all two-factor interactions estimable).
 
-.. _DOE-omars-worked-examples:
-
-Two worked readings
-^^^^^^^^^^^^^^^^^^^^^^
-
-The table is read while the design is still a plan on paper. Two readings show the kinds of
-question it settles.
-
-**Six factors in seventeen runs**, the size of a published extraction study. The cell is
-``Quad df=4``: all six main effects and all six quadratics are estimable, with four degrees of
-freedom to test them, so curvature can be judged factor by factor. ``Full`` for six factors begins
-at 43 runs. The two-factor interactions are in the design and orthogonal to the main effects, but
-not in the fitted model, so one that matters has to be found by the staged analysis of
-:ref:`Analysing data from these designs <DOE-analysing-economical-designs>`.
-
-**Five factors, with a budget that might stretch.** Thirteen runs give ``Quad df=2``: estimable and
-testable, but with two degrees of freedom a 95% confidence interval extends 4.30 standard errors
-either side of the estimate. Seventeen runs give ``Quad df=6``, the same model with that multiplier
-down to 2.45. Thirty-one runs give ``Full df=10``, with every two-factor interaction estimable.
-Those are three different studies rather than three sizes of one.
-
 Quality metrics are absent from the table. D-efficiency, the largest correlation among the
 second-order effects and the projection properties all describe one particular design at a given
 size rather than the size itself, so they belong to ``generate_omars`` and to
@@ -549,6 +522,50 @@ asked for:
 	print(design.metadata["model_rank"])                  # 15, so the model is estimable
 	print(design.metadata["min_runs_for_model"])          # 21, the frontier
 	print(design.metadata["expected_error_df"])           # 6, which is k(k-1)/2
+
+.. _DOE-omars-worked-examples:
+
+Worked examples
+^^^^^^^^^^^^^^^^^^
+
+The table is read while the design is still a plan on paper. Two readings show the kinds of
+question it settles, and a third example works through a budget that lands short of the frontier.
+
+**Six factors in seventeen runs**, the size of a published extraction study. The cell is
+``Quad df=4``: all six main effects and all six quadratics are estimable, with four degrees of
+freedom to test them, so curvature can be judged factor by factor. ``Full`` for six factors begins
+at 43 runs. The two-factor interactions are in the design and orthogonal to the main effects, but
+not in the fitted model, so one that matters has to be found by the staged analysis of
+:ref:`Analysing data from these designs <DOE-analysing-economical-designs>`.
+
+**Five factors, with a budget that might stretch.** Thirteen runs give ``Quad df=2``: estimable and
+testable, but with two degrees of freedom a 95% confidence interval extends 4.30 standard errors
+either side of the estimate. Seventeen runs give ``Quad df=6``, the same model with that multiplier
+down to 2.45. Thirty-one runs give ``Full df=10``, with every two-factor interaction estimable.
+Those are three different studies rather than three sizes of one.
+
+.. rubric:: Example with 4 factors and 19 runs, inside the band
+
+Nineteen runs in four factors sits inside the band: four runs more than the fifteen parameters of
+the full second-order model, and two runs short of the twenty-one the frontier asks for. Nothing
+goes wrong at the bench and none of the data is wasted. The shortfall shows up at the analysis
+stage.
+
+At nineteen runs two quadratics are confounded with three interactions, so the full second-order
+model cannot be fitted. A least squares fit still returns an answer without complaint: coefficient
+sets differing by 8.5 units are indistinguishable from these runs, and disagree by as much at
+settings that were never run. What nineteen runs do support is main effects and pure quadratics,
+nine parameters with ten degrees of freedom for error, and the main effects stay clean of every
+second-order term.
+
+Two more runs reach the frontier. At twenty-one all six two-factor interactions join the model,
+fifteen parameters with six degrees of freedom to test them, and a response surface can be fitted
+from the single design.
+
+Both are sound experiments, so the choice is a budget one. Capped at nineteen runs, an interaction
+that matters has to be found by the staged analysis of :ref:`Analysing data from these designs
+<DOE-analysing-economical-designs>` and confirmed in a follow-up. With twenty-one it arrives with
+the first design.
 
 .. _DOE-omars-what-a-cell-reports:
 
