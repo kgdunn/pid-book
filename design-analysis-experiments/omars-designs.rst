@@ -31,30 +31,24 @@ design to the next, which is why choosing between designs of the same size is a 
 from choosing the size.
 
 The important shift in thinking is this: OMARS is not a single design but a whole *catalogue*.
-The 2020 enumeration found 7,933 basic designs, which become 55,531 in total once zero to six
-centre runs are added to each. For a given number of factors there are many OMARS designs of
-different run sizes, and they
+Núñez Ares and Goos enumerated it in 2020 for three to seven factors, using integer programming to
+find 7,933 basic designs, which become 55,531 once zero to six centre runs are added to each.
+
+For a given number of factors the catalogue holds many designs of different run sizes, and they
 trade off against one another: a larger design estimates more of the second-order effects, with
 lower correlation among them and more power, at the cost of more runs. The
-:ref:`definitive screening design <DOE-definitive-screening-designs>` turns out to be the
-smallest member of the family; at the other extreme, the classical
-face-centred central composite and Box-Behnken designs are themselves OMARS designs, so the
-largest members coincide with the standard response surface designs. Choosing among them is
-therefore a genuine multi-criteria decision, not a lookup, which is the subject of the
-:ref:`spectrum below <DOE-design-spectrum>` and of :ref:`Judging and comparing designs
-<DOE-judging-and-comparing-designs>`.
+:ref:`definitive screening design <DOE-definitive-screening-designs>` is the smallest member of the
+family; at the other extreme the face-centred central composite and Box-Behnken designs are
+themselves OMARS designs, so the largest members coincide with the standard response surface
+designs. Choosing among them is a multi-criteria decision rather than a lookup, which is the
+subject of the :ref:`spectrum below <DOE-design-spectrum>` and of :ref:`Judging and comparing
+designs <DOE-judging-and-comparing-designs>`.
 
-The original catalogue was produced by an enumeration based on integer programming that is
-complete for three to five factors up to 44 runs, and partial for six and seven factors up to 70
-runs, where the seven-factor search was restricted to foldover designs. Many of these designs are foldover
-designs, built as the DSD was by folding over a base matrix whose columns are orthogonal. The
-orthogonality of the main effects, however, comes from the construction itself: all odd design
-moments through order three are set to zero, so the non-foldover designs in the catalogue have
-equally clean main effects. The family has since been extended to mixed-level designs (three-level
-quantitative factors together with two-level categorical factors) and to orthogonally blocked
-designs. Larger OMARS designs can also be built by folding over and combining orthogonal building
-blocks such as conference, weighing, and Hadamard matrices, the same mechanism that turns a single
-conference matrix into a definitive screening design.
+Most of the catalogue is foldover designs, built as the DSD was by folding a base matrix over its
+own sign-flipped copy. The clean main effects do not depend on that construction: all odd design
+moments through order three are set to zero, so the non-foldover members have equally clean main
+effects. The family has since been extended to mixed-level designs, three-level quantitative
+factors together with two-level categorical ones, and to orthogonally blocked designs.
 
 **Readings**
 
@@ -137,8 +131,8 @@ however, leads to a surprising answer. An OMARS design has its main effects orth
 other *and* to every second-order term at every size in the family, which is what the "orthogonal"
 in the name records, so resolution is constant and cannot be what the table reports.
 
-What varies instead is *which model the run count makes estimable at all*, and the answer differs
-from the one the parameter count gives.
+What varies instead is the model. The run count decides how much of the second-order model can be
+fitted at all, and it is not the count the parameters suggest.
 
 .. _DOE-omars-estimability-frontier:
 
