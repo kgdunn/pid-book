@@ -334,31 +334,28 @@ estimability from the rank of the model matrix, not from the determinant of the 
 	cannot estimate it. The band is :math:`k(k-1)/2` runs deep, and the marked point is the
 	four-factor case checked in the code.
 
-.. _DOE-omars-inside-the-band:
+.. rubric:: Example with 4 factors and 19 runs, inside the band
 
-Running a design from inside the band
-"""""""""""""""""""""""""""""""""""""""
+Nineteen runs in four factors sits inside the band: four runs more than the fifteen parameters of
+the full second-order model, and two runs short of the twenty-one the frontier asks for. Nothing
+goes wrong at the bench and none of the data is wasted. The shortfall shows up at the analysis
+stage.
 
-Suppose the nineteen-run design is run anyway. At the bench nothing goes wrong, and none of the
-data is wasted. What is missing appears at the analysis stage, and it is a question of uniqueness
-rather than of noise.
+At nineteen runs two quadratics are confounded with three interactions, so the full second-order
+model cannot be fitted. A least squares fit still returns an answer without complaint: coefficient
+sets differing by 8.5 units are indistinguishable from these runs, and disagree by as much at
+settings that were never run. What nineteen runs do support is main effects and pure quadratics,
+nine parameters with ten degrees of freedom for error, and the main effects stay clean of every
+second-order term.
 
-Fitting the full second-order model to those nineteen runs confounds two quadratics with three
-interactions: one fixed combination of those five terms is invisible to the data. Adding any
-amount of it changes the coefficients while leaving all nineteen fitted values as they were.
+Two more runs reach the frontier. At twenty-one all six two-factor interactions join the model,
+fifteen parameters with six degrees of freedom to test them, and a response surface can be fitted
+from the single design.
 
-A least squares fit returns one of those answers without complaint: two coefficient sets differing
-by 8.5 units are indistinguishable from the nineteen runs, and disagree by as much at settings that
-were never run.
-
-Predictions at the settings that were run are unaffected, as are the main effects, which stay
-orthogonal to every second-order term. The smaller model of main effects and pure quadratics fits
-its nine parameters with ten degrees of freedom left for error. The decision is between answering
-that smaller question with nineteen runs and spending two more to reach twenty-one.
-
-The literature states the same arithmetic from the other end, as a projection property: a
-definitive screening design in six or more factors supports a full second-order model in any three
-of its factors, and one of eighteen runs or more in any four.
+Both are sound experiments, so the choice is a budget one. Capped at nineteen runs, an interaction
+that matters has to be found by the staged analysis of :ref:`Analysing data from these designs
+<DOE-analysing-economical-designs>` and confirmed in a follow-up. With twenty-one it arrives with
+the first design.
 
 
 .. _DOE-omars-reading-the-table:
