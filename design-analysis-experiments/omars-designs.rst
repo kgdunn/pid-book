@@ -14,10 +14,21 @@ That spectrum is exactly what :index:`OMARS designs <pair: OMARS design; experim
 (Orthogonal Minimally Aliased Response Surface designs, Núñez Ares and Goos, 2020) provide. The
 defining property generalises the property that makes the DSD work: in an OMARS design the main effects are
 orthogonal to one another *and* to every second-order effect, both quadratics and two-factor
-interactions. The only aliasing that remains is *among the second-order effects*, and the
-designs are catalogued so as to keep that aliasing minimal, which is what the name records:
-**o**\ rthogonal (clean main effects), **m**\ inimally **a**\ liased (the residual entanglement,
-held down), **r**\ esponse **s**\ urface (a full second-order model is the target).
+interactions. The name records exactly that: **o**\ rthogonal (main effects clean of each other),
+**m**\ inimally **a**\ liased (main effects clean of the second-order effects), **r**\ esponse
+**s**\ urface (a full second-order model is the target).
+
+*Minimally aliased* is a statement of zero rather than of a small number. Two alias matrices carry
+bias into the main-effect estimates, one from the two-factor interactions and one from the
+quadratics, and both are zero by construction for every design in the catalogue. This is the same
+property described from the other side in :ref:`Judging and comparing designs
+<DOE-judging-and-comparing-designs>`, where the main-effect rows of the alias matrix are exactly
+zero.
+
+Aliasing does remain *among the second-order effects*, and the name makes no claim about it. It is
+measured for each design in the catalogue rather than minimised, and it varies widely from one
+design to the next, which is why choosing between designs of the same size is a separate question
+from choosing the size.
 
 The important shift in thinking is this: OMARS is not a single design but a whole *catalogue*.
 The 2020 enumeration found 7,933 basic designs, which become 55,531 in total once zero to six
