@@ -347,10 +347,9 @@ Fitting the full second-order model to those nineteen runs confounds two quadrat
 interactions: one fixed combination of those five terms is invisible to the data. Adding any
 amount of it changes the coefficients while leaving all nineteen fitted values as they were.
 
-Software asked for an answer will still return one. Two coefficient sets differing by up to 8.5
-units give identical fitted values at all nineteen runs, the same residual sum of squares, the same
-:math:`R^2`, and identical residual plots. They differ away from the runs that were made: at three
-untried settings they disagreed by 8.5 units, by 3.2 units, and by nothing at all.
+A least squares fit returns one of those answers without complaint: two coefficient sets differing
+by 8.5 units are indistinguishable from the nineteen runs, and disagree by as much at settings that
+were never run.
 
 Predictions at the settings that were run are unaffected, as are the main effects, which stay
 orthogonal to every second-order term. The smaller model of main effects and pure quadratics fits
