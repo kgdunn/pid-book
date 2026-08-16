@@ -477,10 +477,8 @@ goes wrong at the bench and none of the data is wasted. The shortfall shows up a
 stage.
 
 At nineteen runs two quadratics are confounded with three interactions, so the full second-order
-model cannot be fitted. A least squares fit still returns an answer without complaint: coefficient
-sets differing by 8.5 units are indistinguishable from these runs, and disagree by as much at
-settings that were never run. What nineteen runs do support is main effects and pure quadratics,
-nine parameters with ten degrees of freedom for error, and the main effects stay clean of every
+model cannot be fitted. What nineteen runs do support is main effects and pure quadratics, nine
+parameters with ten degrees of freedom for error, and the main effects stay clean of every
 second-order term.
 
 Two more runs reach the frontier. At twenty-one all six two-factor interactions join the model,
