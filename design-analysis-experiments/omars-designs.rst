@@ -400,11 +400,24 @@ report come from ``process_improve``:
 	57                                                                        Full 21
 	62                                                                        Full 26 | BBD
 
+.. figure:: ../figures/doe/omars-capability-staircase.png
+	:align: center
+	:width: 640px
+	:alt: omars-capability-staircase.py
+
+	The OMARS trade-off table, drawn as a capability staircase. Each cell gives the largest
+	model the run budget makes estimable and the error degrees of freedom left to test it.
+	The outlined cells are the estimability frontier :math:`N = k^2 + k + 1`, the first
+	``Full`` cell in each column. Two standard designs are marked on the row of their own
+	run count: ``DSD`` for the definitive screening design, the smallest member of the
+	family, and ``BBD``, in green, for the Box-Behnken design. The Box-Behnken cell closes
+	its column, since every row below it would repeat ``Full`` on more runs.
+
 Each cell carries the capability class and the error degrees of freedom: the spare runs left after
 fitting, from which the run-to-run noise :math:`\sigma^2` is estimated, and on which every test and
 confidence interval rests. Six points to read off the table:
 
-	*	**A column runs from its ``DSD`` mark to its ``BBD`` mark**, which is the whole span
+	*	**A column runs from its DSD mark to its BBD mark**, which is the whole span
 		of the family for that factor count: the definitive screening design is the smallest
 		member and the Box-Behnken design is the standard response surface design that closes
 		it. Below the ``BBD`` cell a column is blank, because every further row would say
@@ -432,62 +445,6 @@ confidence interval rests. Six points to read off the table:
 		seven-factor DSDs arrive with two spare degrees of freedom and land in ``Quad df=2``.
 		Every Box-Behnken design is past the frontier and so ``Full``, but none is the
 		smallest design that is: at five factors it takes 46 runs where 31 reach ``Full``.
-
-.. code-block:: python
-
-	import plotly.graph_objects as go
-	from process_improve.experiments import (
-	    box_behnken_runs, definitive_screening_runs, get_omars_trade_off_table_entry, omars_anchor_entry,
-	)
-	from process_improve.experiments.omars_trade_off import DEFAULT_FACTORS, DEFAULT_RUNS
-
-	shade = {"none": 0, "satd": 1, "quad": 2, "full": 3, "bbd": 4}
-	dsd_runs = {k: definitive_screening_runs(k) for k in DEFAULT_FACTORS}
-	bbd_runs = {k: box_behnken_runs(k) for k in DEFAULT_FACTORS}
-
-	# A Box-Behnken run count is not one of the budgets, so the table carries a row for it.
-	runs = sorted(set(DEFAULT_RUNS) | set(bbd_runs.values()))
-
-	def cell(n_runs, k):
-	    """The (shade, label) of one cell, or the blank a closed column leaves behind."""
-	    if n_runs > bbd_runs[k]:
-	        return shade["none"], ""
-	    if n_runs == bbd_runs[k]:
-	        # Not the budget path: a Box-Behnken design carries six centre runs from five
-	        # factors upwards, so its run count is even and no foldover budget matches it.
-	        entry, mark = omars_anchor_entry("bbd", k), "<br>BBD"
-	    else:
-	        entry = get_omars_trade_off_table_entry(n_runs, k, display=False)
-	        mark = "<br>DSD" if n_runs == dsd_runs[k] else ""
-	    if not entry.exists:
-	        return shade["none"], ""
-	    key = "bbd" if mark == "<br>BBD" else entry.capability
-	    return shade[key], f"{entry.tag}<br>df = {entry.error_df}{mark}"
-
-	grid = [[cell(n, k) for k in DEFAULT_FACTORS] for n in runs]
-
-	fig = go.Figure(go.Heatmap(
-	    z=[[z for z, _ in row] for row in grid], text=[[t for _, t in row] for row in grid],
-	    x=[f"k = {k}" for k in DEFAULT_FACTORS], y=[str(n) for n in runs],
-	    texttemplate="%{text}", showscale=False, xgap=3, ygap=3,
-	    colorscale=[[0.0, "#F4F4F4"], [0.25, "#E69F00"], [0.5, "#56B4E9"],
-	                [0.75, "#0072B2"], [1.0, "#009E73"]]))
-	fig.update_layout(xaxis_title="Number of factors", yaxis_title="Number of runs",
-	                  xaxis=dict(side="top"), yaxis=dict(autorange="reversed", type="category"))
-	fig.show()
-
-.. figure:: ../figures/doe/omars-capability-staircase.png
-	:align: center
-	:width: 640px
-	:alt: omars-capability-staircase.py
-
-	The OMARS trade-off table, drawn as a capability staircase. Each cell gives the largest
-	model the run budget makes estimable and the error degrees of freedom left to test it.
-	The outlined cells are the estimability frontier :math:`N = k^2 + k + 1`, the first
-	``Full`` cell in each column. Two standard designs are marked on the row of their own
-	run count: ``DSD`` for the definitive screening design, the smallest member of the
-	family, and ``BBD``, in green, for the Box-Behnken design. The Box-Behnken cell closes
-	its column, since every row below it would repeat ``Full`` on more runs.
 
 For a single budget the same information is reported in words, with the neighbouring thresholds:
 
@@ -740,7 +697,8 @@ Power is computed from the same design, against the full second-order model:
 	            for name, block in blocks.items()}
 
 	# The same twelve points with three centre runs: the Box-Behnken design in three factors.
-	print(power(np.vstack([points, np.zeros((3, 3))])))
+	print({term: round(float(value), 4)
+	       for term, value in power(np.vstack([points, np.zeros((3, 3))])).items()})
 
 	# {'main effect': 0.6228, 'interaction': 0.3682, 'quadratic': 0.345}
 
