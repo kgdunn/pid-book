@@ -431,8 +431,8 @@ confidence interval rests. Six points to read off the table:
 
 	*	**A blank above the** ``BBD`` **mark is not a design at all**, rather than a poor
 		one. A foldover has :math:`N = 2h + 1` runs, so an even budget cannot be one, and a
-		budget below :math:`2k + 1` cannot hold the main effects and the quadratics. A blank
-		below the ``BBD`` mark is the closed column instead.
+		budget below :math:`2k + 1` cannot hold the main effects and the quadratics. Cells
+		below the ``BBD`` are just ``Full`` designs with extra degrees of freedom.
 
 	*	**Error degrees of freedom are not comparable across the classes**, because the model
 		differs. At 43 runs, six factors show ``Full df=15`` and seven factors show
@@ -489,9 +489,9 @@ not in the fitted model, so one that matters has to be found by the staged analy
 :ref:`Analysing data from these designs <DOE-analysing-economical-designs>`.
 
 **Five factors, with a budget that might stretch.** Thirteen runs give ``Quad df=2``: estimable and
-testable, but with two degrees of freedom a 95% confidence interval extends 4.30 standard errors
+testable, but with two degrees of freedom a 95% confidence interval extends 4.303 standard errors
 either side of the estimate. Seventeen runs give ``Quad df=6``, the same model with that multiplier
-down to 2.45. Thirty-one runs give ``Full df=10``, with every two-factor interaction estimable.
+down to 2.447. Thirty-one runs give ``Full df=10``, with every two-factor interaction estimable.
 Those are three different studies rather than three sizes of one.
 
 .. rubric:: Example with 4 factors and 19 runs, inside the band
@@ -539,11 +539,11 @@ way, each a property of the designs rather than of any particular measure.
 budget between design points and replicates of the centre point, and the split is free. Take the
 largest absolute correlation between any two second-order terms, a quantity computed from the
 design alone: the same twelve design points in three factors, with one, three or five centre runs
-added, give :math:`0.300`, :math:`0.071` and :math:`0.056`.
+added, give :math:`0.300`, :math:`0.07143` and :math:`0.05556`.
 
 **A measure divided by the run count need not improve as runs are added.** Across every OMARS
-design of each size in three factors, the least entangled at seventeen runs reaches :math:`0.056`,
-while at nineteen runs the best possible is :math:`0.136`. Reversals occur throughout the range,
+design of each size in three factors, the least entangled at seventeen runs reaches :math:`0.05556`,
+while at nineteen runs the best possible is :math:`0.1364`. Reversals occur throughout the range,
 and a column that goes backwards cannot be read to choose a budget.
 
 **A measure not divided by the run count mostly restates the run count.** The alphabetic optimality
@@ -623,10 +623,10 @@ For a coefficient with variance :math:`\sigma^2 c` the test statistic follows a 
 :math:`F` distribution with :math:`1` and :math:`N - p` degrees of freedom and non-centrality
 :math:`\lambda = (|\beta|/\sigma)^2 / c`, where :math:`c` is the matching diagonal entry of
 :math:`\mathbf{M}^{-1}`. Reading one value in full: at nineteen runs with one centre run the best
-attainable :math:`c` for a quadratic is 0.262, so its standard error is
-:math:`\sqrt{0.262}\,\sigma = 0.512\sigma`; the expected :math:`t` statistic for a one-sigma
-curvature is :math:`1/0.512 = 1.95`, against a critical value of 2.26 at nine degrees of freedom,
-so the test falls short more often than not and the power is 0.415.
+attainable :math:`c` for a quadratic is 0.2619, so its standard error is
+:math:`\sqrt{0.2619}\,\sigma = 0.5118\sigma`; the expected :math:`t` statistic for a one-sigma
+curvature is :math:`1/0.5118 = 1.954`, against a critical value of 2.262 at nine degrees of freedom,
+so the test falls short more often than not and the power is 0.4154.
 
 .. code-block:: python
 
@@ -668,11 +668,11 @@ so the test falls short more often than not and the power is 0.415.
 	for n_centre in (1, 3, 5):
 	    levels = np.vstack([points, np.zeros((n_centre, 3))])
 	    values = criteria(levels)
-	    print(f"N = {len(levels)}   " + "   ".join(f"{n} = {v:.4f}" for n, v in values.items()))
+	    print(f"N = {len(levels)}   " + "   ".join(f"{n} = {v:#.4g}" for n, v in values.items()))
 
-	# N = 13   A/p = 0.3839   D = 5.3836   E = 0.5626   I = 0.5125   G = 1.0000   max |r| = 0.3000
-	# N = 15   A/p = 0.2173   D = 6.2984   E = 1.6346   I = 0.3014   G = 0.6458   max |r| = 0.0714
-	# N = 17   A/p = 0.1839   D = 6.7753   E = 2.6346   I = 0.2592   G = 0.6125   max |r| = 0.0556
+	# N = 13   A/p = 0.3839   D = 5.384   E = 0.5626   I = 0.5125   G = 1.000   max |r| = 0.3000
+	# N = 15   A/p = 0.2173   D = 6.298   E = 1.635   I = 0.3014   G = 0.6458   max |r| = 0.07143
+	# N = 17   A/p = 0.1839   D = 6.775   E = 2.635   I = 0.2592   G = 0.6125   max |r| = 0.05556
 
 Power is computed from the same design, against the full second-order model:
 
@@ -697,10 +697,12 @@ Power is computed from the same design, against the full second-order model:
 	            for name, block in blocks.items()}
 
 	# The same twelve points with three centre runs: the Box-Behnken design in three factors.
-	print({term: round(float(value), 4)
-	       for term, value in power(np.vstack([points, np.zeros((3, 3))])).items()})
+	for term, value in power(np.vstack([points, np.zeros((3, 3))])).items():
+	    print(f"{term:>12} {value:#.4g}")
 
-	# {'main effect': 0.6228, 'interaction': 0.3682, 'quadratic': 0.345}
+	#  main effect 0.6228
+	#  interaction 0.3682
+	#    quadratic 0.3450
 
 Running ``criteria`` and ``power`` on every OMARS design of every size in three factors, and
 keeping the best value of each measure at each size, gives the nine curves below.
@@ -726,9 +728,9 @@ keeping the best value of each measure at each size, gives the nine curves below
 	design as a green star, in the colours those two carry in the trade-off table.
 
 :math:`A/p`, :math:`I` and :math:`D` restate the run count. The first two fall at close to the
-rate :math:`1/N`, the product :math:`N \times A/p` moving only from 3.57 at nine runs to 3.15 at
-thirty-one, and a straight line in :math:`N` fits :math:`D` from eleven runs upward to within 0.27
-on values from 4.5 to 13.6. All three have their centre-run series almost on top of one another.
+rate :math:`1/N`, the product :math:`N \times A/p` moving only from 3.571 at nine runs to 3.145 at
+thirty-one, and a straight line in :math:`N` fits :math:`D` from eleven runs upward to within 0.2658
+on values from 4.540 to 13.58. All three have their centre-run series almost on top of one another.
 
 :math:`E`, the smallest eigenvalue, carries structure the run count does not. It rises as a
 staircase with flat treads: exactly 2.000 at eleven, thirteen and fifteen runs on the
@@ -742,33 +744,33 @@ below :math:`p/N`, here :math:`7/N`. The best three-factor designs reach the flo
 and twenty-seven runs with one centre run, and at eighteen runs with two.
 
 Max :math:`|r|` reverses: four of the eleven steps along the one-centre-run series go backwards,
-the largest from 0.050 at twenty-one runs to 0.179 at twenty-three. It also separates the
-centre-run series widely, at fifteen runs giving 0.378 with one centre run against 0.071 with
+the largest from 0.050 at twenty-one runs to 0.1786 at twenty-three. It also separates the
+centre-run series widely, at fifteen runs giving 0.3780 with one centre run against 0.07143 with
 three. The three insets on the left show why: those designs share the same four half-rows, and
-adding centre runs lowers the correlation between a quadratic and an interaction, from 0.707 to
-0.645 to 0.606, while raising the correlation between two quadratics from zero to 0.167 to 0.267.
+adding centre runs lowers the correlation between a quadratic and an interaction, from 0.7071 to
+0.6455 to 0.6055, while raising the correlation between two quadratics from zero to 0.1667 to 0.2667.
 Max :math:`|r|` reaches zero at one size only, twenty-seven runs with one centre run, where the
 design is the full three-level factorial.
 
 Power is monotone in all three panels, so on that test it belongs with the alphabetic criteria
 rather than with max :math:`|r|`. What it adds is an ordering the other measures do not show. A
 main effect of one sigma reaches 0.8 power at fifteen runs with one centre run, an interaction of
-the same size at nineteen, and a quadratic of the same size reaches only 0.744 at thirty-one runs,
+the same size at nineteen, and a quadratic of the same size reaches only 0.7437 at thirty-one runs,
 the largest design plotted. The interaction sits nearer the main effect than the quadratic
 because :math:`x_i x_j` is a :math:`\pm 1` column like a main effect, while :math:`x_j^2` takes
 only the values zero and one and shares most of its variation with the intercept. Read as a
 budgeting rule, the quadratics set the run count.
 
 The centre-run series also swap order between panels. Centre runs are not factorial runs, so they
-cost main-effect and interaction power: at fifteen runs the one-centre-run design gives 0.845 and
-0.679 against 0.789 and 0.623 for three centre runs. For the quadratics the ordering reverses,
-0.257 against 0.345 at the same fifteen runs, and only returns to the usual direction past about
+cost main-effect and interaction power: at fifteen runs the one-centre-run design gives 0.8451 and
+0.6788 against 0.7891 and 0.6228 for three centre runs. For the quadratics the ordering reverses,
+0.2575 against 0.3450 at the same fifteen runs, and only returns to the usual direction past about
 twenty-five runs. This is the clearest statement in the chapter of what the extra centre runs buy.
 
 The two marked designs make the same point from the other direction. The definitive screening
 design in three factors sits exactly on the frontier in all six panels of the first two rows,
-:math:`A/p = 0.397`, :math:`D = 3.970`, :math:`E = 0.811`, :math:`I = 0.578`, :math:`G = 0.778`
-and max :math:`|r| = 0.707`, so at its size it is not merely a good design but the best on every
+:math:`A/p = 0.3968`, :math:`D = 3.970`, :math:`E = 0.8112`, :math:`I = 0.5778`, :math:`G = 0.7778`
+and max :math:`|r| = 0.7071`, so at its size it is not merely a good design but the best on every
 one of those measures at once. It is absent from the power row because nine runs cannot fit a
 ten-term model. Note that it has nine runs rather than :math:`2k + 1 = 7`: the construction folds
 a conference matrix of order :math:`k`, which exists only for an even :math:`k`, so an odd
@@ -776,17 +778,17 @@ a conference matrix of order :math:`k`, which exists only for an even :math:`k`,
 to spare.
 
 The Box-Behnken design lands on the frontier in five panels, :math:`A/p`, :math:`D`, :math:`I`,
-max :math:`|r|` and quadratic power, and clearly off it in four. Its smallest eigenvalue is 1.63
-against a best of 2.00 at fifteen runs, its worst prediction variance 0.646 against 0.600, its
-main-effect power 0.623 against 0.789 and its interaction power 0.368 against 0.623. Each factor
+max :math:`|r|` and quadratic power, and clearly off it in four. Its smallest eigenvalue is 1.635
+against a best of 2.00 at fifteen runs, its worst prediction variance 0.6458 against 0.600, its
+main-effect power 0.6228 against 0.7891 and its interaction power 0.3682 against 0.6228. Each factor
 is at :math:`\pm 1` in only eight of its twelve edge points, so it puts its runs into curvature,
 and that shows up as five measures at the frontier and four away from it.
 
 The six enumerated measures also disagree about which design is best. At twenty-one runs with one centre run there are
 1859 OMARS designs, and the six single out four different ones: :math:`A`, :math:`E` and :math:`I`
 agree, while :math:`D`, :math:`G` and max :math:`|r|` each choose their own. The design minimising
-max :math:`|r|` reaches 0.050 but has a smallest eigenvalue of 1.20, against 3.42 for the design
-:math:`A`, :math:`E` and :math:`I` select, whose own max :math:`|r|` is 0.222. The four-factor
+max :math:`|r|` reaches 0.050 but has a smallest eigenvalue of 1.204, against 3.423 for the design
+:math:`A`, :math:`E` and :math:`I` select, whose own max :math:`|r|` is 0.2222. The four-factor
 column behaves the same way. A single number in a cell would therefore have to name which of the
 six it is.
 
