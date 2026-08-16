@@ -290,32 +290,6 @@ Nineteen runs give a model matrix with fifteen columns and rank fourteen, one sh
 cannot be fitted. Twenty-one runs, the frontier for four factors, give rank fifteen. Judge
 estimability from the rank of the model matrix, not from the determinant of the information matrix.
 
-.. code-block:: python
-
-	import plotly.graph_objects as go
-
-	k = np.arange(3, 8)
-	series = [
-	    ("Estimability frontier, k² + k + 1", k**2 + k + 1, "#D55E00"),
-	    ("Parameters in the full second-order model", 1 + 2 * k + k * (k - 1) // 2, "#0072B2"),
-	    ("Definitive screening design, 2k + 1 runs", 2 * k + 1, "#E69F00"),
-	]
-	fig = go.Figure()
-	for name, values, colour in series:
-	    fig.add_trace(go.Scatter(x=k, y=values, name=name, mode="lines+markers",
-	                             line=dict(color=colour, width=3), marker=dict(size=10)))
-	# Shade the band between the parameter count and the frontier: k(k-1)/2 runs deep.
-	fig.add_trace(go.Scatter(x=np.r_[k, k[::-1]],
-	                         y=np.r_[k**2 + k + 1, (1 + 2 * k + k * (k - 1) // 2)[::-1]],
-	                         fill="toself", fillcolor="rgba(213, 94, 0, 0.13)",
-	                         line=dict(width=0), showlegend=False, hoverinfo="skip"))
-	fig.add_trace(go.Scatter(x=[4], y=[19], mode="markers", showlegend=False,
-	                         marker=dict(symbol="x", size=14, color="#666666"),
-	                         text=["19 runs, 15 parameters, model matrix rank 14"]))
-	fig.update_layout(xaxis_title="Number of factors, k", yaxis_title="Number of runs, N",
-	                  xaxis=dict(tickvals=k), legend=dict(x=0.02, y=0.98))
-	fig.show()
-
 .. figure:: ../figures/doe/omars-estimability-frontier.png
 	:align: center
 	:width: 700px
@@ -434,10 +408,11 @@ confidence interval rests. Six points to read off the table:
 		budget below :math:`2k + 1` cannot hold the main effects and the quadratics. Cells
 		below the ``BBD`` are just ``Full`` designs with extra degrees of freedom.
 
-	*	**Error degrees of freedom are not comparable across the classes**, because the model
-		differs. At 43 runs, six factors show ``Full df=15`` and seven factors show
-		``Quad df=28``: the seven-factor cell has more spare runs because it fits the smaller
-		model.
+	*	**Error degrees of freedom only compare between cells with the same tag**, since the
+		tag is what fixes the model being fitted. At 43 runs, six factors show
+		``Full df=15`` and seven factors show ``Quad df=28``: the seven-factor cell has more
+		spare runs because ``Quad`` fits the smaller model, not because it is the better
+		design.
 
 	*	**The two marks show what the standard designs cost.** For an even number of factors
 		a DSD has :math:`2k+1` runs and lands in ``Satd``. For an odd number the
