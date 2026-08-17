@@ -450,8 +450,8 @@ asked for:
 
 .. _DOE-omars-worked-examples:
 
-Worked examples
-^^^^^^^^^^^^^^^^^^
+Three worked examples
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 The table is read while the design is still a plan on paper. Two readings show the kinds of
 question it settles, and a third example works through a budget that lands short of the frontier.
@@ -469,12 +469,10 @@ either side of the estimate. Seventeen runs give ``Quad df=6``, the same model w
 down to 2.447. Thirty-one runs give ``Full df=10``, with every two-factor interaction estimable.
 Those are three different studies rather than three sizes of one.
 
-.. rubric:: Example with 4 factors and 19 runs, inside the band
-
-Nineteen runs in four factors sits inside the band: four runs more than the fifteen parameters of
-the full second-order model, and two runs short of the twenty-one the frontier asks for. Nothing
-goes wrong at the bench and none of the data is wasted. The shortfall shows up at the analysis
-stage.
+**Four factors in nineteen runs, inside the band.** That is four runs more than the fifteen
+parameters of the full second-order model, and two runs short of the twenty-one the frontier
+asks for. Nothing goes wrong at the bench and none of the data is wasted. The shortfall shows up
+at the analysis stage.
 
 At nineteen runs two quadratics are confounded with three interactions, so the full second-order
 model cannot be fitted. What nineteen runs do support is main effects and pure quadratics, nine
