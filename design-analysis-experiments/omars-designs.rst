@@ -463,10 +463,10 @@ factor by factor, but not all interactions can be cleanly estimated. For that yo
 <DOE-analysing-economical-designs>`.
 
 **Five factors, with a budget that might stretch.** Thirteen runs give ``Quad df=2``: estimable and
-testable, but with two degrees of freedom a 95% confidence interval extends 4.303 standard errors
-either side of the estimate. Seventeen runs give ``Quad df=6``, the same model with that multiplier
-down to 2.447. Thirty-one runs give ``Full df=10``, with every two-factor interaction estimable.
-Those are three different studies rather than three sizes of one.
+testable, but on two degrees of freedom the :math:`t` multiplier for a 95% confidence interval is
+4.303, so the interval reaches that many standard errors either side of the estimate. Seventeen
+runs give ``Quad df=6``, the same model with the multiplier down to 2.447. Thirty-one runs give
+``Full df=10``, with every two-factor interaction estimable.
 
 **Four factors in nineteen runs, inside the band.** That is four runs more than the fifteen
 parameters of the full second-order model, and two runs short of the twenty-one the frontier
