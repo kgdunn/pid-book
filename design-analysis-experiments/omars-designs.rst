@@ -456,12 +456,11 @@ Three worked examples
 The table is read while the design is still a plan on paper. Two readings show the kinds of
 question it settles, and a third example works through a budget that lands short of the frontier.
 
-**Six factors in seventeen runs**, the size of a published extraction study. The cell is
-``Quad df=4``: all six main effects and all six quadratics are estimable, with four degrees of
-freedom to test them, so curvature can be judged factor by factor. ``Full`` for six factors begins
-at 43 runs. The two-factor interactions are in the design and orthogonal to the main effects, but
-not in the fitted model, so one that matters has to be found by the staged analysis of
-:ref:`Analysing data from these designs <DOE-analysing-economical-designs>`.
+**Six factors in seventeen runs.** The cell is ``Quad df=4``: all six main effects and all six
+quadratics are estimable, with four degrees of freedom to test them, so curvature can be judged
+factor by factor, but not all interactions can be cleanly estimated. For that you have to go to
+43 runs. See the section on staged analysis of :ref:`Analysing data from these designs
+<DOE-analysing-economical-designs>`.
 
 **Five factors, with a budget that might stretch.** Thirteen runs give ``Quad df=2``: estimable and
 testable, but with two degrees of freedom a 95% confidence interval extends 4.303 standard errors
