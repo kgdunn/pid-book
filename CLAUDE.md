@@ -260,6 +260,31 @@ The full design, build wiring, runtime behaviour, server pipeline, and
 operations cookbook live in [`docs/telemetry/`](docs/telemetry/). Read
 `docs/telemetry/README.md` first; it links to the rest.
 
+## Review renders (HTML artifacts of a chapter)
+
+When a draft chapter is shown for review as a standalone HTML artifact
+(the Sphinx body repackaged with figures embedded and MathJax inlined),
+the page must never require horizontal scrolling, at any zoom level.
+The author reads at 150% zoom, which shrinks the layout viewport to
+roughly 700 CSS pixels, so a fixed reading-column width that looks fine
+at 100% will push the page sideways.
+
+Rules for these renders:
+
+- Give the reading column `max-width: min(<measure>, 100%)`, never a
+  bare `max-width` in `rem` or `px`.
+- Grid and flex tracks holding the article need `minmax(0, 1fr)` and
+  `min-width: 0`; the default `min-width: auto` lets a wide descendant
+  stretch the track past the viewport.
+- Code blocks wrap (`white-space: pre-wrap; overflow-wrap: break-word`)
+  rather than scrolling horizontally.
+- Prose, links, inline literals and table cells get
+  `overflow-wrap: break-word` (`anywhere` for URLs), so a long DOI link
+  cannot widen the page.
+- Verify, do not assume: load the file in headless Chromium and check
+  that `document.documentElement.scrollWidth` equals `clientWidth` at
+  375, 700, 1024 and 1440 pixels wide before publishing.
+
 ## Chapter rework playbook
 
 A repeatable pattern for sweeping a chapter (or numbered subsection)

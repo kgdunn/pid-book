@@ -233,10 +233,11 @@ Predicting a batch while it runs
 	single: trimmed score regression
 
 The tool for relating the three layers is the batchwise-unfolded latent variable model of Nomikos
-and MacGregor (see the :ref:`references below <APPS_batch_monitoring_further_reading>`): each
-batch becomes *one row* containing its |Z| values followed by every trajectory sample of every
-tag, and that long row is regressed onto the final quality with PLS. Centring each column removes
-the average trajectory, so the model works with each batch's *deviations* from typical behaviour
+and MacGregor, with the pre-batch block joined onto the unfolded trajectories as Kourti, Nomikos
+and MacGregor set out (see the :ref:`references below <APPS_batch_monitoring_further_reading>`):
+each batch becomes *one row* containing its |Z| values followed by every trajectory sample of
+every tag, and that long row is regressed onto the final quality with PLS. Centring each column
+removes the average trajectory, so the model works with each batch's *deviations* from typical behaviour
 at each point in time, and the loadings are free to weight a deviation at hour 10 differently
 from the same deviation at hour 100. This is how a linear model captures a batch's time-varying
 behaviour.
@@ -249,7 +250,7 @@ schedule variation*. A model built only on batches that all ran the same schedul
 but it has no information about what a schedule *change* would do; the data requirement for
 control is history in which the manipulated schedules actually moved, in shapes like the ones the
 controller will later use. Flores-Cerrillo and MacGregor state this requirement plainly in the
-paper this section's control method comes from, and the campaign below follows it: 200 historical
+paper this section's control method is built on, and the campaign below follows it: 200 historical
 batches whose pH and temperature schedules carry deliberate smooth perturbations (drawn at five
 knots and interpolated), of a size a plant's operating history plausibly spans.
 
@@ -288,14 +289,21 @@ model within a class range makes the gain locally right. The three fits above re
 :math:`R^2` values of 0.81, 0.90 and 0.94 on their own classes.
 
 With a fitted model, predicting a *running* batch is a missing data problem. At decision time,
-the unfolded row is partly filled: |Z| and the trajectory samples up to now are known; every
-future column is missing. The model's correlation structure spans the whole batch, so the scores
-(and from them, the predicted final quality) can be estimated from the observed part alone. Of
-the estimators studied for exactly this problem, trimmed score regression is the one recommended
-by the comparison of García-Muñoz, Kourti and MacGregor: take the *trimmed scores* (the score
-formula applied with missing entries simply left out), then correct them with a regression, fitted
-on the training data, from trimmed scores to true scores. The package implements it as
-``PLS.project``, and everything below uses it through higher level functions.
+|Z| and the trajectory samples up to now are known, and the row's two kinds of future column are
+handled differently. The future *measured* trajectories are genuinely unknown, and are estimated.
+The future *setpoint* columns are not unknown: they are set to whichever schedule is being
+considered, which for the question "what happens if nothing is changed?" is the nominal remaining
+schedule. Flores-Cerrillo and MacGregor set the prediction up this way, and the implementation
+here follows them.
+
+The model's correlation structure spans the whole batch, so the scores (and from them, the
+predicted final quality) follow from the filled row. García-Muñoz, Kourti and MacGregor compared
+the available estimators on exactly this problem and found two of them best, giving almost
+identical predictions: conditional mean replacement, and trimmed score regression. This package
+implements the second: take the *trimmed scores* (the score formula applied with missing entries
+simply left out), then correct them with a regression, fitted on the training data, from trimmed
+scores to true scores. It is available as ``PLS.project``, and everything below uses it through
+higher level functions.
 
 The figure shows the resulting picture for one batch from the poorest feed class: the predicted
 final titer at every possible decision point, with its 95% prediction interval, as the batch
@@ -322,48 +330,74 @@ Correcting mid-course
 	pair: batch processes; control
 
 The idea of a mid-course correction predates its latent variable form: Yabuki and MacGregor
-formulated it for semi-batch reactors in 1997. At a small number of *decision points* during the
-batch, predict the final quality from everything measured so far. If the prediction is
-acceptable, do nothing. If it falls short by more than the prediction's own uncertainty, compute
-an adjustment to the remaining manipulated variables and implement it. Two of their design
-choices carry most of the practical value, and both are easy to skip in the enthusiasm of
-building the optimiser:
+formulated it for semi-batch reactors in 1997, predicting the final properties from on-line
+measurements plus a few off-line samples, and correcting only when that prediction fell outside a
+defined no-control region. At a small number of *decision points* during the batch, predict the
+final quality from everything measured so far. If the prediction is acceptable, do nothing. If it
+falls short by more than the prediction's own uncertainty, compute an adjustment to the remaining
+manipulated variables and implement it. Two gates carry most of the practical value, and both are
+easy to omit:
 
-- **A no-correction dead band.** Every prediction carries uncertainty, and a correction computed
-  from noise adds variance instead of removing it. Correct only when the predicted shortfall is
-  large relative to the prediction interval; leave well-predicted batches alone.
-- **A model validity check.** The prediction is only trustworthy for a batch that resembles the
-  data the model was built from. If the batch-so-far has an unusually large SPE (its measurements
-  do not fit the model's correlation structure; see :ref:`interpreting the SPE
+- **A no-correction dead band**, which is Yabuki and MacGregor's no-control region. Every
+  prediction carries uncertainty, and a correction computed from noise adds variance instead of
+  removing it. Correct only when the predicted shortfall is large relative to the prediction
+  interval; leave well-predicted batches alone.
+- **A model validity check**, which arrives with the latent variable form of the method.
+  Flores-Cerrillo and MacGregor compute the SPE of the batch-so-far at each decision point,
+  against limits of the kind Nomikos and MacGregor established, before any correction is
+  computed. The prediction is only trustworthy for a batch that resembles the data the model was
+  built from. If the batch-so-far has an unusually large SPE (its measurements do not fit the
+  model's correlation structure; see :ref:`interpreting the SPE
   <LVM-interpreting-SPE-residuals>`), a correction computed from that model is a guess, and the
   safer action is to not correct.
 
-The correction itself, in the form given by Flores-Cerrillo and MacGregor, is an optimisation
-over the *future manipulated variable columns* of the unfolded row. Every term has a plain
-language reading:
+Flores-Cerrillo and MacGregor compute the correction in the *score* space. Their decision
+variable is :math:`\Delta \mathbf{t}`, an adjustment to the batch's latent variable scores,
+chosen by a quadratic program with three terms: how far the predicted quality lands from its set
+point, a movement suppression term on :math:`\Delta \mathbf{t}`, and a soft penalty on
+Hotelling's :math:`T^2` that keeps the answer within the region past operation covered. The
+remaining setpoint trajectories are then recovered by inverting the PLS model, and that inversion
+is what makes them smooth and consistent with how the plant has operated historically.
+
+The implementation on this page makes a different choice: it optimises the future setpoint
+columns directly, and keeps the schedule plausible with stated constraints rather than through
+model inversion. The two routes trade off differently. Inversion inherits the historical
+correlation structure automatically, but has no way to express an actuator limit; optimising the
+columns states the engineering limits exactly, but has to add the terms that hold the answer
+inside the model's region. Written in the setpoint columns, every term has a plain language
+reading:
 
 - **Hit the target**: the predicted final quality, as a function of the candidate future
-  schedule, should come as close to the target as the model believes possible.
+  schedule, should come as close to the target as the model believes possible. This is
+  Flores-Cerrillo and MacGregor's set-point term.
 - **Move as little as necessary**: deviations from the nominal remaining schedule are penalised,
-  so of the many schedules the model scores equally, the least disruptive is chosen.
+  so of the many schedules the model scores equally, the least disruptive is chosen. This is
+  their movement suppression term.
 - **Stay where the model has data**: the candidate row's Hotelling's :math:`T^2` (:ref:`its
   distance from the centre of the training data within the model plane <LVM-Hotellings-T2>`) and
-  its SPE (its distance off the plane) are penalised and capped. These two limits do different
-  jobs: the :math:`T^2` limit keeps the correction inside the region the history explored, and
-  the SPE limit keeps the candidate row's *combination* of values consistent with how the
-  variables move together.
+  its SPE (its distance off the plane) are penalised, and can be capped. The :math:`T^2` penalty
+  is theirs. The SPE term is added here, because a candidate written directly in the setpoint
+  columns can leave the model plane in a way an adjustment to the scores cannot. The two limits
+  do different jobs: the :math:`T^2` limit keeps the correction inside the region the history
+  explored, and the SPE limit keeps the candidate row's *combination* of values consistent with
+  how the variables move together.
 - **Respect the actuators**: bounds on each setpoint, and rate-of-change limits between
   consecutive samples, including the seam between the last implemented sample and the first
-  corrected one. The corrected schedule is also parameterised by a few knots, so it stays as
-  smooth as the schedules the plant actually runs.
+  corrected one. The corrected schedule is also parameterised by a few knots (a small number of
+  anchor points, with the schedule interpolated between them), so it stays as smooth as the
+  schedules the plant actually runs. These constraints are added here; Flores-Cerrillo and
+  MacGregor obtain smoothness from the model inversion, and bound the score adjustment rather
+  than the setpoints.
 
 Because the score estimate of a partially known row is a *linear* function of the candidate
 future columns (the missing data estimator, for a fixed pattern of known and unknown columns, is
-a fixed matrix), every term above is a quadratic or linear function of the decision variables,
-and the whole problem is a small convex quadratic program: a few dozen unknowns, solved in
-milliseconds, with a guaranteed unique answer. This is the practical appeal of doing control in
-the latent variable framework; no plant model in differential equation form is required, only the
-historical data the plant already has.
+a fixed matrix), every term above is a quadratic or linear function of the decision variables.
+With the two validity terms as penalties, the problem is a small convex quadratic program: a few
+dozen unknowns, solved in milliseconds, with a unique answer. Turning the :math:`T^2` and SPE
+limits into hard caps makes them quadratic constraints, so the problem becomes a quadratically
+constrained one; it is solved here by returning the caps to the objective and raising their
+weights until the caps are respected. Either way, no plant model in differential equation form is
+required, only the historical data the plant already has.
 
 Here is the whole workflow on the batch from the funnel figure. The corrector below carries the
 target (8 g/L, treated as a floor: batches predicted at or above it are never touched), the dead
@@ -442,13 +476,15 @@ No such rule was programmed anywhere: the behaviour emerges from a regression on
 batches whose schedules were deliberately varied.
 
 Executed with the identical disturbance history, the batch finishes at 5.79 g/L instead of
-3.66 g/L, a 58% improvement on this single batch. The model, for what it is worth, predicted
-5.04 g/L for the corrected schedule: a latent variable prediction regresses toward the mean, so
-it *understated* the gain its own correction delivered. This asymmetry between predicted and
-executed is worth pausing on, because in the published mid-course correction literature the
-reported gains are, almost without exception, model predictions; validation by executing the
-correction on the true process is rare. On this page the simulator makes execution cheap, so
-every gain from here on is an executed one.
+3.66 g/L, a 58% improvement on this single batch. The model predicted 5.04 g/L for the
+corrected schedule: a latent variable prediction regresses toward the mean, so it *understated*
+the gain its own correction delivered. The distinction between a predicted and an executed gain
+is worth keeping in view. Simulation studies can execute their corrections, and do:
+Flores-Cerrillo and MacGregor obtained the final qualities in their nylon case study by rerunning
+the non-linear simulation model with the trajectories the controller had computed. On an
+operating plant that step is not available, so results from industrial case studies are reported
+as model predictions. On this page the simulator makes execution cheap, so every gain from here
+on is an executed one.
 
 Does it work on the whole campaign?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -578,9 +614,10 @@ A few points that decide whether this works outside a demonstration:
   A first version of the simulator's historical campaign varied its schedules only by a constant
   offset plus a ramp; a model fitted on it could not identify the effect of a
   second-half-only move, and its corrections failed when executed. Smooth local perturbations
-  (the knot basis used here) fixed exactly that. Flores-Cerrillo and MacGregor's nylon study
-  needed 30 batches with deliberate moves at the decision points; identification-quality data is
-  a modest but real requirement.
+  (the knot basis used here) fixed exactly that. Flores-Cerrillo and MacGregor identified their
+  nylon controller from 45 batches, 30 of which carried deliberate moves at the two decision points,
+  and reported adequate control from as few as 15 batches (10 of them with moves);
+  identification-quality data is a modest but real requirement.
 - **Local models where the gain direction changes.** The per-class models here are the simplest
   form of local modelling; the same role is played in other applications by models per grade, per
   product, or locally weighted models. The symptom that demands them is specific: predictions
@@ -611,11 +648,16 @@ The methods used on this page, in their original sources:
 
 * Yuichi Yabuki and John F. MacGregor, "Product quality control in semibatch reactors using
   midcourse correction policies", *Industrial and Engineering Chemistry Research*, **36**,
-  1268-1275, 1997. `<https://doi.org/10.1021/ie960599o>`_
+  1268-1275, 1997. `<https://doi.org/10.1021/ie960536m>`_ The no-correction dead band used here
+  is their no-control region.
 * Jesus Flores-Cerrillo and John F. MacGregor, "`Control of batch product quality by trajectory
   manipulation using latent variable models
   <https://literature.learnche.org/item/39/control-of-batch-product-quality-by-trajectory-manipulation-using-latent-variable-models>`_",
   *Journal of Process Control*, **14**, 539-553, 2004.
+  `<https://doi.org/10.1016/j.jprocont.2003.09.008>`_ The source of the correction problem, the
+  SPE validity gate and the identification requirement. Their optimisation is over the score
+  adjustment, with the trajectories recovered by model inversion; this page optimises the
+  setpoint columns directly, as described in the text.
 * Francisco Arteaga and Alberto Ferrer, "Dealing with missing data in MSPC: several methods,
   different interpretations, some examples", *Journal of Chemometrics*, **16**, 408-418, 2002.
   `<https://doi.org/10.1002/cem.750>`_
@@ -623,9 +665,8 @@ The methods used on this page, in their original sources:
   batch processes
   <https://literature.learnche.org/item/157/model-predictive-monitoring-for-batch-processes>`_",
   *Industrial and Engineering Chemistry Research*, **43**, 5929-5941, 2004.
-* Masoud Golshan, John F. MacGregor, Mark-John Bruwer and Prashant Mhaskar, "Latent Variable
-  Model Predictive Control (LV-MPC) for trajectory tracking in batch processes", *Journal of
-  Process Control*, **20**, 538-550, 2010. `<https://doi.org/10.1016/j.jprocont.2010.01.007>`_
+  `<https://doi.org/10.1021/ie034020w>`_ The comparison of score estimators for a partially
+  observed batch.
 
 Foundational multiway PCA / PLS for batches:
 
@@ -640,6 +681,9 @@ Foundational multiway PCA / PLS for batches:
 
 Control, optimization and product quality:
 
+* Masoud Golshan, John F. MacGregor, Mark-John Bruwer and Prashant Mhaskar, "Latent Variable
+  Model Predictive Control (LV-MPC) for trajectory tracking in batch processes", *Journal of
+  Process Control*, **20**, 538-550, 2010. `<https://doi.org/10.1016/j.jprocont.2010.01.007>`_
 * Carl Duchesne and John F. MacGregor, "`Multivariate analysis and optimization of process variable trajectories for batch processes <https://literature.learnche.org/item/92/multivariate-analysis-and-optimization-of-process-variable-trajectories-for-batch-processes>`_", *Chemometrics and Intelligent Laboratory Systems*, **51**, 125-137, 2000.
 * Carl Duchesne, Theodora Kourti and John F. MacGregor, "`Multivariate SPC for startups and grade transitions <https://literature.learnche.org/item/91/multivariate-spc-for-startups-and-grade-transitions>`_", *AIChE Journal*, **48**, 2890-2901, 2002.
 * Jesus Flores-Cerrillo and John F. MacGregor, "`Multivariate monitoring of batch processes using batch-to-batch information <https://literature.learnche.org/item/163/multivariate-monitoring-of-batch-processes-using-batch-to-batch-information>`_", *AIChE Journal*, **50**, 1219-1228, 2004.
