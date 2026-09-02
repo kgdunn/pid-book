@@ -851,6 +851,10 @@ takes any coded two- or three-level design with its measured responses and carri
 stages above, returning the clean main effects, the pooled error, the overall test for second-order
 activity, and the heredity-constrained selection among the second-order effects.
 
+The whole sequence, from choosing the run count to scoring the recommended recipe against a
+known optimum, is carried out on a simulated fed-batch bioreactor in :ref:`A worked OMARS study
+<DOE-omars-worked-study>`.
+
 **Readings**
 
 * Jones, B. and Nachtsheim, C.J.: "Effective Design-Based Model Selection for Definitive
