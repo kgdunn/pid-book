@@ -114,6 +114,19 @@ and the replicate spread is not constant across the region, being about three ti
 a 29 °C hold than at 31 °C. On the log scale that spread is near enough constant for a single
 error estimate to serve.
 
+.. figure:: ../figures/doe/omars-worked-study-recipe.png
+	:source: doe/omars-worked-study-recipe.py
+	:alt: Two panels. Left, the temperature setpoint through a ten-day batch for the current recipe and the four corners of the study region. Right, titer against day for twenty replicate batches at the current recipe, over the batch with no disturbance.
+	:width: 760px
+	:align: center
+
+	The current recipe, and what one run of it gives. Left: the temperature setpoint through
+	the ten-day batch, with the four corners of the hold-temperature by shift-day range in
+	grey; pH is held at 7.1 throughout. Right: titer against day for the twenty replicate
+	batches, each with its own disturbance draw, over the same batch with no disturbance.
+	The batches part after the ramp, and their spread at harvest is the 0.2308 g/L standard
+	deviation the study measures its effects against.
+
 Choosing the run count
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -124,6 +137,19 @@ are the sort of pair that plausibly interact, so the study needs ``Full``: every
 interaction in the model. That leaves the choice between 21 runs, the frontier, and 27. The
 section :ref:`What fewer runs would have bought <DOE-omars-study-fewer-runs>` measures that
 choice; the study takes 27 runs and adds three centre runs, for thirty batches in two cassettes.
+
+.. figure:: ../figures/doe/omars-trade-off-column-k4.png
+	:source: doe/omars-trade-off-column-k4.py
+	:alt: The four-factor column of the OMARS trade-off table drawn as a row of cells from 9 to 31 runs: Satd at 9, Quad from 11 to 19, Full from 21, the Box-Behnken design at 27, and blank cells beyond it.
+	:width: 760px
+	:align: center
+
+	The four-factor column of the OMARS trade-off table, at every odd run count from the
+	nine-run definitive screening design to 31 runs. Each cell names the largest model that
+	run count makes estimable and the error degrees of freedom left to test it. The outlined
+	cell at 21 runs is the estimability frontier, the first at which every two-factor
+	interaction can be estimated. The Box-Behnken design at 27 runs closes the column, since
+	every larger run count repeats ``Full`` with more degrees of freedom.
 
 Building the campaign
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -213,6 +239,18 @@ is otherwise random.
 Cassette 1 holds sixteen batches and cassette 2 fourteen. Both fit a 24-vessel system with
 room to spare.
 
+.. figure:: ../figures/doe/omars-worked-study-plan.png
+	:source: doe/omars-worked-study-plan.py
+	:alt: A grid of thirty columns and four rows, one column per batch in run order and one row per factor, each cell coloured by the factor's level. A heavy line separates the sixteen batches of cassette 1 from the fourteen of cassette 2, and runs 6, 12, 22 and 26 are outlined as the centre runs.
+	:width: 760px
+	:align: center
+
+	The thirty batches in run order, one column each, with the level of every factor as its
+	fill. The heavy line is the change of cassette, and with it the change of feed-medium
+	lot. The outlined columns, runs 6, 12, 22 and 26, are the centre runs, two in each
+	cassette and spread through its order. The pair split keeps each mirror pair in one
+	cassette, which the grid does not show.
+
 Running it
 ~~~~~~~~~~~~
 
@@ -244,6 +282,17 @@ The titer ranges from 4.290 to 9.116 g/L across the thirty batches, against 7.47
 current recipe: the region is wide enough that some settings are clearly worse and some
 clearly better than what the team runs today. The four centre points, at runs 6, 12, 22 and
 26, average 7.536 g/L in the first cassette and 6.716 g/L in the second.
+
+.. figure:: ../figures/doe/omars-worked-study-titer.png
+	:source: doe/omars-worked-study-titer.py
+	:alt: Titer at harvest for the thirty batches in run order, cassette 1 in blue and cassette 2 in orange, with the centre runs drawn as stars and each cassette's centre-run mean as a dashed line.
+	:width: 760px
+	:align: center
+
+	Titer at harvest for the thirty batches in run order. The design runs scatter with their
+	settings. The centre runs, drawn as stars, are the only batches at identical settings in
+	both cassettes, and their means differ by 0.820 g/L. The grey line is the mean of the
+	twenty replicate batches at the current recipe, 7.477 g/L.
 
 The cassette effect
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -311,6 +360,19 @@ linear term is nearly zero. pH and shift day are inactive and are pooled into th
 which rises from fifteen to eighteen degrees of freedom. The gate on the second-order terms
 then opens decisively, *p* = 0.000666, and the search selects two of the ten: the
 hold-temperature quadratic and the interaction between hold temperature and shift day.
+
+.. figure:: ../figures/doe/omars-worked-study-effects.png
+	:source: doe/omars-worked-study-effects.py
+	:alt: Fifteen coefficients of the full second-order model on log titer, drawn as points with 95% intervals, grouped as main effects, quadratics and two-factor interactions. Three are filled: feed rate, the hold-temperature quadratic and the hold-temperature by shift-day interaction.
+	:width: 700px
+	:align: center
+
+	The full second-order model fitted in one step to the thirty adjusted log titers:
+	fifteen coefficients with their 95% intervals on fifteen residual degrees of freedom.
+	The three filled terms are the ones whose intervals exclude zero, and they are the three
+	the staged analysis selects. The hold-temperature main effect is small because the
+	region straddles its optimum; the curvature that locates the optimum is in the quadratic
+	term.
 
 The heredity option matters here, and in the direction that is easy to get wrong.
 
@@ -414,6 +476,19 @@ optimum shifts on day 2.62, earlier than today's 2.75, and the study sent it lat
 shift-day quadratic that would have caught this is the smallest of the real effects, and this
 campaign did not find it. Repeated over two hundred disturbance draws, the 27-run design
 finds it in 29% of them.
+
+.. figure:: ../figures/doe/omars-worked-study-surface.png
+	:source: doe/omars-worked-study-surface.py
+	:alt: Two contour maps of titer over hold temperature and shift day at pH 7.1 and a feed rate of 0.070 litres per day. Left, the four-term fitted model. Right, the true response with no disturbance. Both mark the current recipe, the recommended recipe and the true best.
+	:width: 760px
+	:align: center
+
+	Titer over hold temperature and shift day, with pH at 7.1 and the feed rate at
+	0.070 L/day. Left: the four-term model the staged analysis selected, back-transformed
+	from log titer. Right: the simulator with every disturbance switched off. The circle is
+	the current recipe, the square the recipe the study recommends, and the star the true
+	best in the region. The fitted model has no shift-day curvature, so its ridge runs off
+	the top of the region; the true response has an interior optimum at day 2.62.
 
 The four centre points supply a pure-error estimate and a test of whether the four-term
 model is adequate.
