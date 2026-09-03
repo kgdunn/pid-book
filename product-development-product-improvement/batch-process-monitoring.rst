@@ -28,7 +28,8 @@ a batch *while it is still running*, and finally adjusting the remainder of the 
 prediction falls short. The last step is called a **mid-course correction**. Everything is
 demonstrated with runnable code, and every claimed improvement is *executed*: the adjusted batch
 is actually run (on a simulator whose disturbances repeat exactly), not just predicted to improve.
-The distinction matters more than it may seem, and we return to it.
+The gap between a predicted and an executed gain is measured in
+:ref:`the campaign comparison <APPS_batch_monitoring_campaign>`.
 
 The golden batch
 ~~~~~~~~~~~~~~~~~~
@@ -45,14 +46,19 @@ same way, as a band around the golden batch's trajectories.
 The difficulty is what replaying can and cannot hold constant. A setpoint schedule fixes what the
 *controllers aim for*; it does not fix the raw material lot, the seed culture, the fouling state
 of the equipment, or the dozens of small disturbances that arrive while the batch runs. The golden
-batch's outcome was produced jointly by its schedule *and* by the conditions it happened to enjoy.
-Replaying reproduces only the schedule.
+batch's outcome was produced jointly by its schedule *and* by the conditions present during that
+run. Replaying reproduces only the schedule.
 
 How closely does a plant actually repeat its recipe? The book's software package,
 `process_improve <https://github.com/kgdunn/process-improve>`_, bundles the trajectory data of 57
 batches from an industrial nylon polymerization autoclave, a dataset used throughout the batch
-monitoring literature. All the code on this page runs top to bottom as one script; this first
-block loads that dataset and measures the spread of each recorded variable across the batches:
+monitoring literature. Real batches do not all run for the same length of time, so before their
+trajectories can be compared sample by sample they are *aligned*: each batch is resampled onto a
+common time base (here, batch 1's), so that sample *i* means the same point in the recipe for
+every batch. :ref:`Alignment <APPS_batch_monitoring_requirements>` is revisited when the
+modelling starts. All the code on this page runs top to bottom as one script; this first block
+loads that dataset, aligns it, and measures the spread of each recorded variable across the
+batches:
 
 .. code-block:: python
 
@@ -62,11 +68,7 @@ block loads that dataset and measures the spread of each recorded variable acros
 	from plotly.subplots import make_subplots
 
 	from process_improve.batch import BatchPLS, load_nylon, resample_to_reference
-	from process_improve.batch.control import (
-	    MidCourseCorrector,
-	    evaluate_control_policies,
-	    midcourse_correction,
-	)
+	from process_improve.batch.control import MidCourseCorrector, evaluate_control_policies
 	from process_improve.simulation import (
 	    BioreactorSimulator,
 	    sample_initial_conditions,
@@ -80,9 +82,9 @@ block loads that dataset and measures the spread of each recorded variable acros
 	for tag in ("Tag06", "Tag10"):
 	    matrix = np.array([b[tag].to_numpy() for b in aligned.values()])
 	    spread = 100 * np.mean(matrix.std(axis=0, ddof=1)) / np.mean(np.abs(matrix.mean(axis=0)))
-	    print(f"{tag}: average relative spread across the 57 batches = {spread:.1f}%")
+	    print(f"{tag}: average relative spread across the 57 batches = {spread:.2f}%")
 
-	fig = make_subplots(rows=1, cols=2, subplot_titles=("Tag06: 0.5% spread", "Tag10: 7.4% spread"))
+	fig = make_subplots(rows=1, cols=2, subplot_titles=("Tag06: 0.54% spread", "Tag10: 7.38% spread"))
 	for col, tag in ((1, "Tag06"), (2, "Tag10")):
 	    for batch in aligned.values():
 	        fig.add_trace(go.Scatter(y=batch[tag], mode="lines", opacity=0.25,
@@ -93,29 +95,28 @@ block loads that dataset and measures the spread of each recorded variable acros
 
 .. figure:: ../figures/batch/golden-batch-nylon-spread.png
 	:source: batch/golden-batch-figures.py
-	:alt: All 57 nylon batches overlaid for two recorded variables; Tag06 repeats within 0.5% while Tag10 spreads 7.4%.
+	:alt: All 57 nylon batches overlaid for two recorded variables; Tag06 repeats within 0.54% while Tag10 spreads 7.38%.
 	:width: 900px
 	:scale: 80
 	:align: center
 
 The two variables answer the question. ``Tag06``, one of the tightly regulated variables, repeats
-to an average relative spread of 0.5% across all 57 batches: the recipe really is being replayed,
-and the control layer really is delivering it. ``Tag10`` spreads 7.4%, fourteen times wider, in
-the same 57 batches under the same recipe. The variables the controllers hold, hold; the variables
-that *respond* to the batch's chemistry and biology spread. The recipe repeats. The batch does
-not.
+to an average relative spread of 0.54% across all 57 batches: the recipe really is being replayed,
+and the control layer really is delivering it. ``Tag10`` spreads 7.38%, about fourteen times
+wider, in the same 57 batches under the same recipe. The variables the controllers regulate stay
+constant; the variables that *respond* to the batch's chemistry and biology spread. The recipe
+repeats, but the batch outcome does not.
 
 Why replaying does not repeat the outcome
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The nylon data show the spread but cannot say what caused it, and no historical dataset can: for
 any recorded batch we observe one outcome under one set of disturbances, never the same batch
-again under different handling. To take the argument further we use a simulator, and this is a
-deliberate choice rather than a retreat from real data. A simulator can run the *same batch
-twice*: identical raw material properties and identical disturbance history, once with one
+again under different handling. We use a simulator from here on because it can run the *same
+batch twice*: identical raw material properties and identical disturbance history, once with one
 schedule and once with another. Differences in the outcome are then attributable to the schedule
-alone. That counterfactual is exactly what a claimed improvement needs, and it is the one thing
-plant data cannot provide.
+alone. That counterfactual is what a claimed improvement needs, and plant data cannot provide
+it.
 
 The simulator here (``process_improve.simulation.BioreactorSimulator``) is a ten-day
 fed-batch bioreactor producing a protein, sampled twice a day. The recipe is a pH schedule and a
@@ -162,17 +163,19 @@ Every batch requested the identical schedule, and the recorded temperatures conf
 layer delivered it to within a fraction of a degree. The final titers still range from 6.29 to
 9.19 g/L, a 9.6% coefficient of variation, around a disturbance-free reference of 8.01 g/L (the
 titer this schedule produces when every disturbance channel is switched off). This is the nylon
-picture again, but now with the cause available for dissection.
+picture again, but now the causes can be separated and measured.
 
 Because the simulator's channels can be switched off individually, the titer variance of a replay
-campaign can be split into its sources. The decomposition below runs four campaigns (all channels;
-each channel alone; all channels with one held out) and reports each source's share, with the
-interaction of the sources through the nonlinear process reported explicitly rather than forced
-into the other buckets:
+campaign can be split into its sources. The decomposition below runs four campaigns of the same
+size and schedule (one with all channels active, then one for each channel on its own) and reports
+each source's share, with the interaction of the sources through the nonlinear process reported
+explicitly rather than forced into the other buckets:
 
 .. code-block:: python
 
 	print(variance_decomposition(simulator, n_batches=200, random_state=0).round(3))
+
+.. _APPS_batch_monitoring_variance:
 
 .. figure:: ../figures/batch/golden-batch-variance-decomposition.png
 	:source: batch/golden-batch-figures.py
@@ -222,8 +225,8 @@ combinations, labelled A, B and C). The classes do not form separated clusters; 
 overlapping ranges along the first score direction, which orders the batches from favourable to
 unfavourable incoming material. Assigning a fresh batch to the nearest class centroid in the
 standardised |Z| variables recovers its label about 80% of the time, and when it misses, it
-assigns the neighbouring range. We will use these class ranges shortly, as local modelling
-regions along that axis.
+assigns the neighbouring range. These class ranges become the local modelling regions used to
+fit the prediction models in the next section.
 
 Predicting a batch while it runs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -242,17 +245,24 @@ at each point in time, and the loadings are free to weight a deviation at hour 1
 from the same deviation at hour 100. This is how a linear model captures a batch's time-varying
 behaviour.
 
-Two practical requirements come with this structure. The batches must be *aligned* (the same
-number of samples per batch, with corresponding samples meaning the same process phase); the
-simulator's batches are aligned by construction, and the package provides resampling and dynamic
-time warping for plant data that is not. And the training campaign must contain *deliberate
-schedule variation*. A model built only on batches that all ran the same schedule can predict,
-but it has no information about what a schedule *change* would do; the data requirement for
-control is history in which the manipulated schedules actually moved, in shapes like the ones the
-controller will later use. Flores-Cerrillo and MacGregor state this requirement plainly in the
-paper this section's control method is built on, and the campaign below follows it: 200 historical
-batches whose pH and temperature schedules carry deliberate smooth perturbations (drawn at five
-knots and interpolated), of a size a plant's operating history plausibly spans.
+.. _APPS_batch_monitoring_requirements:
+
+Two practical requirements come with this structure. The first is that the batches must be
+*aligned*: the same number of samples per batch, with corresponding samples meaning the same
+process phase. The simulator's batches are aligned by construction, and the package provides
+resampling (used on the nylon data at the start of this section) and dynamic time warping for
+plant data that is not.
+
+The second is that the training campaign must contain *deliberate schedule variation*. A model
+built only on batches that all ran the same schedule can predict, but it has no information about
+what a schedule *change* would do; the data requirement for control is history in which the
+manipulated schedules actually moved, in shapes like the ones the controller will later use.
+Flores-Cerrillo and MacGregor state this requirement plainly in the paper this section's control
+method is built on, and the campaign below follows it: 200 historical batches whose pH and
+temperature schedules carry deliberate smooth perturbations, of a size a plant's operating history
+plausibly spans. The perturbations are drawn at five *knots*, a small number of anchor points in
+time, and interpolated smoothly between them, so each batch's schedule is a gentle wander rather
+than a step change.
 
 .. code-block:: python
 
@@ -260,6 +270,10 @@ knots and interpolated), of a size a plant's operating history plausibly spans.
 	train_seed = int(rng.integers(2**31))
 	test_seed = int(rng.integers(2**31))
 	batch_seeds = rng.integers(2**31, size=40)        # per-batch execution seeds, reused later
+
+	# simulate_campaign draws its per-batch seeds from the master generator in this
+	# order, so batch_seeds[i] reproduces the i-th test batch exactly. That is what
+	# makes the corrected re-run below a same-batch counterfactual.
 
 	train = simulator.simulate_campaign(200, policy="historical", mv_variation=2.5,
 	                                    random_state=train_seed)
@@ -277,21 +291,24 @@ knots and interpolated), of a size a plant's operating history plausibly spans.
 	    )
 	    print(f"class {group}: {len(ids)} batches, R2 = {models[group].r2_cumulative_.iloc[-1]:.2f}")
 
-One model per feed class, rather than one global model, and the choice needs its reason stated
-because it was learned the expensive way. A single global model fitted on all 200 batches
-predicts final titer acceptably. Used for *control*, however, it failed when executed: its
-corrections moved some batches in a direction that lowered their realised titer. The cause is an
-interaction the variance decomposition already hinted at: the effect of a schedule change depends
-on the feed class. Holding the reactor warm in mid-batch rescues a slow-growing batch from a poor
+One model per feed class, rather than one global model. The reason deserves stating, because the
+global alternative was tried first and failed. A single global model fitted on all 200 batches
+predicts final titer acceptably. Used for *control*, however, its corrections moved some batches
+in a direction that lowered their realised titer.
+
+The cause is an interaction that :ref:`the variance decomposition
+<APPS_batch_monitoring_variance>` already indicated: the effect of a schedule change depends on
+the feed class. Holding the reactor warm in mid-batch rescues a slow-growing batch from a poor
 feed lot, and wastes productive time for a fast-growing one. A single linear model has one gain
 direction to offer every batch, so it averages the two cases and misdirects both. Fitting the
 model within a class range makes the gain locally right. The three fits above reach
 :math:`R^2` values of 0.81, 0.90 and 0.94 on their own classes.
 
-With a fitted model, predicting a *running* batch is a missing data problem. At decision time,
-|Z| and the trajectory samples up to now are known, and the row's two kinds of future column are
-handled differently. The future *measured* trajectories are genuinely unknown, and are estimated.
-The future *setpoint* columns are not unknown: they are set to whichever schedule is being
+With a fitted model, predicting a *running* batch is a missing data problem. Call the moment at
+which the prediction is made, and at which an adjustment could be applied, a **decision point**.
+At a decision point, |Z| and the trajectory samples up to that moment are known, and the row's
+two kinds of future column are handled differently. The future *measured* trajectories are
+genuinely unknown, and are estimated. The future *setpoint* columns are not unknown: they are set to whichever schedule is being
 considered, which for the question "what happens if nothing is changed?" is the nominal remaining
 schedule. Flores-Cerrillo and MacGregor set the prediction up this way, and the implementation
 here follows them.
@@ -305,9 +322,16 @@ simply left out), then correct them with a regression, fitted on the training da
 scores to true scores. It is available as ``PLS.project``, and everything below uses it through
 higher level functions.
 
-The figure shows the resulting picture for one batch from the poorest feed class: the predicted
-final titer at every possible decision point, with its 95% prediction interval, as the batch
-runs.
+The figure below shows the resulting picture for one batch from the poorest feed class: the
+predicted final titer at every possible decision point, with its 95% prediction interval, as the
+batch runs. The interval comes from the spread of the model's own prediction errors on the
+training batches, widened for how far the batch sits from the centre of the training data, so it
+is narrow where the model has seen similar batches and wide where it has not. The target drawn
+across it is 8 g/L, essentially the titer the nominal schedule delivers when no disturbance acts
+(the 8.01 g/L reference measured earlier), treated here as a floor the plant would like every
+batch to clear.
+
+.. _APPS_batch_monitoring_funnel:
 
 .. figure:: ../figures/batch/mcc-monitoring-funnel.png
 	:source: batch/midcourse-correction-figures.py
@@ -316,11 +340,12 @@ runs.
 	:scale: 80
 	:align: center
 
-This batch is headed for roughly 3.3 g/L against a target of 8 g/L, and its own data say so from
-the first day: the poor feed lot is visible in |Z| immediately, and the slow growth it causes
-shows in the gas trajectories soon after. The batch announces its shortfall while most of the
-batch is still ahead. The question this page has been building toward: knowing this on day 4,
-what should the remaining six days of the schedule be?
+This batch is headed for roughly 3.3 g/L against the 8 g/L target, and the shortfall is visible
+in its own data from the first day: the poor feed lot shows in |Z| immediately, and the slow
+growth it causes shows in the gas trajectories soon after. The prediction funnel narrows as the
+batch runs, but it is already pointing well below target while most of the batch is still ahead.
+The question this page has been building toward: knowing this on day 4, what should the remaining
+six days of the schedule be?
 
 Correcting mid-course
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -399,7 +424,8 @@ constrained one; it is solved here by returning the caps to the objective and ra
 weights until the caps are respected. Either way, no plant model in differential equation form is
 required, only the historical data the plant already has.
 
-Here is the whole workflow on the batch from the funnel figure. The corrector below carries the
+Here is the whole workflow on the batch whose predictions are shown in
+:ref:`the monitoring figure <APPS_batch_monitoring_funnel>`. The corrector below carries the
 target (8 g/L, treated as a floor: batches predicted at or above it are never touched), the dead
 band (2.5 prediction-interval half-widths), the validity gate, the limits, the actuator bounds
 (tightened inward by about two control-error standard deviations, so an optimised setpoint does
@@ -435,7 +461,7 @@ not sit on a rail the control loop then clips), and the knot parameterisation:
 	test = simulator.simulate_campaign(40, policy="replay", random_state=test_seed)
 	z_test = test.initial_conditions
 
-	batch_id = 28                                          # the batch in the funnel figure
+	batch_id = 28                                          # the batch shown in the monitoring figure
 	seed = int(batch_seeds[list(z_test.index).index(batch_id)])
 	z_row = z_test.loc[batch_id]
 	base = simulator.simulate_batch(z_row, random_state=seed)
@@ -451,12 +477,16 @@ not sit on a rail the control loop then clips), and the knot parameterisation:
 	print(f"replay {base.titer:.2f} g/L -> corrected {redo.titer:.2f} g/L "
 	      f"(model predicted {float(outcome.y_hat.iloc[0]):.2f})")
 
-	fig = go.Figure()
-	fig.add_trace(go.Scatter(x=corrected.index, y=nominal["temperature"], mode="lines",
-	                         line_shape="hv", name="nominal", line_color="#666666"))
-	fig.add_trace(go.Scatter(x=corrected.index, y=corrected["temperature"], mode="lines",
-	                         line_shape="hv", name="corrected at day 4", line_color="#D55E00"))
-	fig.update_layout(xaxis_title="Time [day]", yaxis_title="Temperature setpoint [°C]")
+	fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
+	                    subplot_titles=("Temperature setpoint", "pH setpoint"))
+	for row, tag in ((1, "temperature"), (2, "pH")):
+	    fig.add_trace(go.Scatter(x=corrected.index, y=nominal[tag], mode="lines",
+	                             line_shape="hv", name="nominal", line_color="#666666",
+	                             showlegend=row == 1), row=row, col=1)
+	    fig.add_trace(go.Scatter(x=corrected.index, y=corrected[tag], mode="lines",
+	                             line_shape="hv", name="corrected at day 4", line_color="#D55E00",
+	                             showlegend=row == 1), row=row, col=1)
+	fig.update_layout(xaxis2_title="Time [day]", yaxis_title="Temperature [°C]", yaxis2_title="pH")
 	fig.show()
 
 .. figure:: ../figures/batch/mcc-correction-at-k.png
@@ -467,12 +497,12 @@ not sit on a rail the control loop then clips), and the knot parameterisation:
 	:align: center
 
 The nominal schedule drops from the warm growth phase to the 29 °C production hold between days
-3.5 and 5. The corrected schedule refuses to complete that drop on time: it holds near 34.7 °C at
+3.5 and 5. The corrected schedule does not complete that drop on time: it holds near 34.7 °C at
 day 4 and descends to the production hold only around day 7.5, with a small transient pH
 adjustment. The physical reading is direct. This batch's poor feed lot made it grow slowly, so at
 day 4 it has not yet built the biomass the production phase needs; cooling it on the nominal
-timetable would freeze it at a low cell density. The correction buys the batch more growing time.
-No such rule was programmed anywhere: the behaviour emerges from a regression on historical
+timetable would arrest growth at a low cell density. The correction gives the batch more growing
+time. No such rule was programmed anywhere: the behaviour emerges from a regression on historical
 batches whose schedules were deliberately varied.
 
 Executed with the identical disturbance history, the batch finishes at 5.79 g/L instead of
@@ -486,13 +516,18 @@ operating plant that step is not available, so results from industrial case stud
 as model predictions. On this page the simulator makes execution cheap, so every gain from here
 on is an executed one.
 
+.. _APPS_batch_monitoring_campaign:
+
 Does it work on the whole campaign?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 One rescued batch is an anecdote. The test that matters runs many fresh batches through the full
 policy (predict at the decision point; gate; correct when warranted; execute) and compares
 against the alternatives on the same batches with the same disturbances. The package wraps that
-comparison, including two reference policies that bracket what is achievable:
+comparison, including two reference policies that bracket what is achievable. The wrapper rebuilds
+the same pipeline assembled by hand above (the same master seed, the same 200 training batches,
+the same per-class models, and correctors with the settings listed above, correcting at day 4), so
+its corrected row is the configured policy measured on the same 40 test batches:
 
 .. code-block:: python
 
@@ -500,40 +535,41 @@ comparison, including two reference policies that bracket what is achievable:
 	print(result.summary.round(3))
 	print(f"{result.n_corrected} corrected, {result.n_harmed} harmed")
 
-============================  =======  ======  ======  ======
-Policy                        Mean     Sd      Min     Max
-============================  =======  ======  ======  ======
-Replay (do nothing)           7.507    1.198   3.655   8.925
-Mid-course correction         7.709    0.781   5.717   8.925
-Oracle from the same day      7.828    0.631   6.108   8.925
-Adapted (feedforward)         7.824    1.013   4.573   9.309
-============================  =======  ======  ======  ======
+============================  ==========  ========  =========  =========
+Policy                        Mean [g/L]  Sd [g/L]  Min [g/L]  Max [g/L]
+============================  ==========  ========  =========  =========
+Replay (do nothing)           7.507       1.198     3.655      8.925
+Mid-course correction         7.709       0.781     5.717      8.925
+Oracle from the same day      7.828       0.631     6.108      8.925
+Adapted (feedforward)         7.824       1.013     4.573      9.309
+============================  ==========  ========  =========  =========
 
-All four rows are executed titers over the same 40 fresh batches, in g/L. Reading them one at a
-time:
+All four rows are executed titers over the same 40 fresh batches. Reading them one at a time:
 
 - **Replay** is the golden batch policy: every batch runs the nominal schedule. Its spread is the
   cost of doing nothing.
 - **Mid-course correction** corrected 4 of the 40 batches, all from the poorest feed class; the
   dead band left 35 alone and the SPE validity gate stopped one. Each corrected batch improved,
   by +1.53 to +2.67 g/L, and no batch was made worse. The campaign mean rises 0.20 g/L, and the
-  standard deviation falls from 1.20 to 0.78 g/L, a 35% reduction. The policy works where the
-  money is: the low tail. The lowest replay batch (3.66 g/L, the single-batch demonstration)
-  rises to 5.79 g/L, and the lowest batch in the whole corrected campaign finishes at 5.72 g/L.
+  standard deviation falls from 1.198 to 0.781 g/L, a 35% reduction. The policy acts on the low
+  tail, where the largest losses are. The lowest replay batch (3.655 g/L, the single-batch
+  demonstration) rises to 5.79 g/L, and the lowest batch in the whole corrected campaign finishes
+  at 5.717 g/L.
 - **Oracle from the same day** answers "how much was achievable at that decision point at all?"
   For each corrected batch, the remaining schedule is optimised against the *simulator itself*
   (the true process), from the same day-4 state, with the same seed. No data-driven method can
   beat this row from the same starting point. The mid-course policy captured 63% of the oracle's
-  mean improvement; the remainder is the price of steering with a regression restricted to the
+  mean improvement; the remainder is what is lost by steering with a regression restricted to the
   region its history explored, rather than with the true process equations.
 - **Adapted (feedforward)** runs *every* batch on the true optimal schedule for its own measured
   |Z|, computed before the batch starts: perfect feedforward adaptation, again a ceiling rather
   than an implementable policy. It raises the mean and the best batches (its maximum, 9.31 g/L,
   is the table's highest), but its *minimum is worse than the corrected policy's*: 4.57 against
   5.72 g/L. A schedule fixed at time zero, however well chosen, cannot answer a disturbance that
-  develops during the batch. The variance decomposition said the outcome variance has a
-  before-batch share and a during-batch share; the adapted row addresses the first, the
-  mid-course row the second, and neither substitutes for the other.
+  develops during the batch. :ref:`The variance decomposition
+  <APPS_batch_monitoring_variance>` showed the outcome variance has a before-batch share and a
+  during-batch share; the adapted row addresses the first, the mid-course row the second, and
+  neither substitutes for the other.
 
 .. figure:: ../figures/batch/mcc-policy-comparison.png
 	:source: batch/midcourse-correction-figures.py
@@ -542,23 +578,26 @@ time:
 	:scale: 80
 	:align: center
 
+.. _APPS_batch_monitoring_window:
+
 Where to put the decision point
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The comparison above used a single decision point at day 4 of 10. That choice matters, and
-sweeping it (re-running the whole executed comparison with the decision point moved) shows a
-window:
+:ref:`The campaign comparison <APPS_batch_monitoring_campaign>` used a single decision point at
+day 4 of 10. That choice matters. Sweeping it re-runs that whole executed comparison at each
+decision day, changing only the ``decision_points`` argument of ``evaluate_control_policies``,
+and shows a window:
 
-============  ===========  =================  =======================
-Decision day  Corrected    Of which harmed    Mean executed gain
-============  ===========  =================  =======================
+============  ===========  =================  ==============================
+Decision day  Corrected    Of which harmed    Mean gain, corrected batches
+============  ===========  =================  ==============================
 2             21           8                  +0.32 g/L
 3             8            3                  +0.82 g/L
 4             4            0                  +2.02 g/L
 5             6            0                  +0.67 g/L
 6             7            7                  -0.05 g/L
 7             7            7                  -0.28 g/L
-============  ===========  =================  =======================
+============  ===========  =================  ==============================
 
 .. figure:: ../figures/batch/mcc-decision-point-window.png
 	:source: batch/midcourse-correction-figures.py
@@ -567,22 +606,26 @@ Decision day  Corrected    Of which harmed    Mean executed gain
 	:scale: 80
 	:align: center
 
-Both ends of the window fail for identifiable reasons. Correcting at day 2, the predictions are
-still uncertain, so the dead band passes 21 batches, including ones that needed nothing, and the
-model misdirects several (8 harmed). Correcting at day 6 or later, the predictions are at their
-best, but the remaining schedule no longer has the leverage to act on them: the growth phase is
-over, and small model errors are all that remains, so every correction does slight damage. On
-this process the window is days 4 to 5: late enough that a struggling batch has revealed itself
-in the gas trajectories, early enough that the growth phase can still be extended. The window's
-location is a property of the process, not of the method; finding it needs either process
-understanding or a sweep like this one.
+Both ends of the window fail for identifiable reasons. At day 2 only two days of trajectory have
+been seen, and the projected final titers scatter widely around where the batches actually land.
+Some batches that would have finished acceptably project far enough below the target to clear the
+dead band, so 21 are corrected rather than the 4 that need it; and the same scatter that triggered
+those corrections also points them in the wrong direction, so 8 finish worse. The dead band is
+still doing its job, it is the quantity being tested against it that is unreliable this early.
+
+At day 6 or later the projections are at their most accurate, but the remaining schedule no longer
+has the leverage to act on them: the growth phase is over, and what is left to act on is mostly
+model error, so every correction does slight damage. On this process the window is days 4 to 5:
+late enough that a struggling batch has revealed itself in the gas trajectories, early enough that
+the growth phase can still be extended. The window's location is a property of the process, not of
+the method; finding it needs either process understanding or a sweep like this one.
 
 How far should the model be trusted?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The :math:`T^2` and SPE penalties and caps are the knobs that keep the optimiser inside the
-region the historical data supports, and they are also the natural place to ask a sharper
-question: how far *should* it be allowed to roam? Relaxing the :math:`T^2` penalty (with the hard
+The :math:`T^2` and SPE penalties and caps are the settings that keep the optimiser inside the
+region the historical data supports, and they raise a sharper question: how far outside that
+region should the optimiser be allowed to move? Relaxing the :math:`T^2` penalty (with the hard
 caps removed) and re-running the executed comparison at each setting measures the answer for this
 process:
 
@@ -593,17 +636,22 @@ process:
 	:scale: 80
 	:align: center
 
-On this process, at this decision point, freeing the optimiser helped monotonically: the poorest
-class's true optimum lies well outside the historical operating envelope (the oracle's schedules
-reach 5 °C above anything in the training campaigns), so every step of extra freedom bought a
-real improvement, and the executed titer sat *above* the model's own prediction at every setting.
-It would be wrong to conclude that the constraints are unnecessary. The same freedom, at the late
-decision points of the previous table, is what turned corrections harmful: there the model's
-apparent leverage was error, and the constraints are what would have contained it. The two
-figures together are the fair statement: the validity limits trade reachable improvement against
-protection from model error, the balance depends on where the process's true optimum sits
-relative to the explored region, and the balance can be *measured*, on batches the model has
-never seen, before the scheme is trusted in production.
+On this process, at this decision point, freeing the optimiser helped monotonically: each step of
+extra freedom produced a real improvement, and the executed titer sat *above* the model's own
+prediction at every setting. The reason is where the poorest class's best schedule sits. It is
+not outside the actuator range, which the training campaigns already span. It is an unusual
+*combination* of setpoints: a warm hold carried well past the day the nominal recipe cools, which
+few training batches did. That is exactly what :math:`T^2` measures, distance from the centre of
+the training data within the model plane, so penalising :math:`T^2` holds the correction back
+from a schedule that is physically available and, for these batches, better.
+
+This does not show that the constraints are unnecessary. The same freedom, at the late decision
+points in :ref:`the decision-day sweep <APPS_batch_monitoring_window>`, is what made corrections
+harmful: there the model's apparent leverage was error, and the constraints are what would have
+contained it. Taken together, the two figures show the trade-off: the validity limits exchange
+reachable improvement for protection from model error, the balance depends on where the process's
+true optimum sits relative to the explored region, and the balance can be *measured*, on batches
+the model has never seen, before the scheme is trusted in production.
 
 Practical notes
 ~~~~~~~~~~~~~~~~~
