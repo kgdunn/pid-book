@@ -285,14 +285,16 @@ clearly better than what the team runs today. The four centre points, at runs 6,
 
 .. figure:: ../figures/doe/omars-worked-study-titer.png
 	:source: doe/omars-worked-study-titer.py
-	:alt: Titer at harvest for the thirty batches in run order, cassette 1 in blue and cassette 2 in orange, with the centre runs drawn as stars and each cassette's centre-run mean as a dashed line.
+	:alt: Titer at harvest against feed rate, one panel per cassette, cassette 1 in blue and cassette 2 in orange, with the mean at each feed level as a short bar and the centre runs drawn as stars.
 	:width: 760px
 	:align: center
 
-	Titer at harvest for the thirty batches in run order. The design runs scatter with their
-	settings. The centre runs, drawn as stars, are the only batches at identical settings in
-	both cassettes, and their means differ by 0.820 g/L. The grey line is the mean of the
-	twenty replicate batches at the current recipe, 7.477 g/L.
+	Titer at harvest against the feed rate, one panel per cassette. The short bars are the
+	mean of the design runs at each feed level; the other three factors vary within each
+	group, which is most of the scatter around the bars. The centre runs, drawn as stars,
+	are the only batches at identical settings in both cassettes, and their means differ by
+	0.820 g/L. The grey line is the mean of the twenty replicate batches at the current
+	recipe, 7.477 g/L.
 
 The cassette effect
 ~~~~~~~~~~~~~~~~~~~~~~
