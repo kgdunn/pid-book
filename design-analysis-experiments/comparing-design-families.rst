@@ -117,10 +117,10 @@ the library scores exactly this model and not the full second-order one:
 	def coded(result):
 	    return np.asarray(result.design[names], float)
 
-	bbd = coded(generate_design(factors, "box_behnken", center_points=6))
+	bbd = coded(generate_design(factors, "box_behnken", n_center_points=6))
 	dsd = coded(generate_design(factors, "dsd"))
 	ccd = coded(generate_design(factors, "ccd", cube="fractional",
-	                            alpha="face_centered", center_points=6))
+	                            alpha="face_centered", n_center_points=6))
 	omars = coded(generate_omars(factors, n_runs=25, model="main_quadratic",
 	                             selection_criterion="a_optimal"))
 	designs = {"Box-Behnken": bbd, "CCD": ccd, "OMARS": omars, "DSD": dsd}

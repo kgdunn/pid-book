@@ -20,6 +20,7 @@ Design and Analysis of Experiments
    optimal-designs
    definitive-screening-designs
    omars-designs
+   omars-worked-study
    judging-and-comparing-designs
    comparing-design-families
    mixture-experiments

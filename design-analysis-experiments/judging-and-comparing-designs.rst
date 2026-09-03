@@ -266,7 +266,7 @@ reason, the base design cannot be compared with either five-run design.
 
 The fair comparison is between the two five-run designs, and here the criteria start to help make a
 decision. Adding the two extreme points maximises :math:`D` (16 versus 12 when adding two replicate
-centre points): spreading runs to the boundary buys more joint information on the coefficient
+centre points): spreading runs to the boundary gives more joint information on the coefficient
 estimates, so it is the choice when the goal is to estimate the coefficients jointly.
 
 Adding the two centre points instead reduces :math:`A` (1.67 versus 2.50) because it lowers the
@@ -321,8 +321,8 @@ A running comparison: a DSD and an OMARS design
 The running example for the rest of the subchapter is a pair of four-factor designs, both fitted on
 the main-effects-plus-quadratic model: a nine-run :ref:`definitive screening design
 <DOE-definitive-screening-designs>` and a thirteen-run *orthogonal minimally aliased response
-surface* (OMARS) design that spends its four extra runs to buy two estimable two-factor
-interactions. OMARS designs are a recent generalization of the definitive screening design: they
+surface* (OMARS) design that uses its four extra runs to make two two-factor interactions
+estimable. OMARS designs are a recent generalization of the definitive screening design: they
 keep the main effects orthogonal to every second-order term while trading a handful of runs for
 interaction estimability, and the definitive screening designs are themselves a special case within
 that family.
@@ -643,7 +643,7 @@ freedom**: the non-central distribution needs an estimate of :math:`\sigma^2`, a
 design with :math:`\nu = 0` supplies none. This is exactly why the definitive screening design's
 power entries in the comparison table below are marked "n/a": with nine runs and nine terms in the
 main-effects-and-quadratic model it has nothing left over to estimate the noise, so no test can be
-run at all. The four extra runs of the thirteen-run OMARS design buy :math:`\nu = 4`, and with
+run at all. The four extra runs of the thirteen-run OMARS design supply :math:`\nu = 4`, and with
 them the ability to test.
 
 Second, power is always quoted *for a stated effect size and* :math:`\alpha`. The table's values
