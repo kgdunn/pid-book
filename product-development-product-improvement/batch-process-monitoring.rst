@@ -14,6 +14,18 @@ Batch process monitoring and improvement
 	discussion. The body content is yet to be written; the open
 	GitHub issue tracks the remaining work.
 
+Three worked case studies accompany this page. Each is built on a dataset that can be
+downloaded and on models that can be reproduced with the code shown on the page:
+
+* :ref:`APPS_batch_case_dupont`: a batch PCA model of the trajectories of an industrial
+  polymerization reactor, used to find and diagnose unusual batches, and to show what the
+  trajectories cannot reveal.
+* :ref:`APPS_batch_case_sbr`: a batch PLS model from the trajectories of a simulated rubber
+  reactor to the final latex quality, with the same known fault injected at two different
+  times.
+* :ref:`APPS_batch_case_fmc`: a multiblock batch PLS model of an industrial batch dryer,
+  combining the initial chemistry, the operating conditions and the trajectories.
+
 References to incorporate
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
