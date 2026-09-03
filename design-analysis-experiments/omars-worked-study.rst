@@ -523,80 +523,20 @@ follow the recipe the fitted model recommends, and read the true titer there.
 
 .. figure:: ../figures/doe/omars-worked-study-tradeoff.png
 	:source: doe/omars-worked-study-tradeoff.py
-	:alt: Titer gained over the current recipe against the number of runs, for OMARS designs of 13 to 31 runs and for the 27-run Box-Behnken and central composite designs, showing the median, the 10th to 90th percentile band and the worst case over two hundred campaigns each.
+	:alt: Two panels sharing a run-count axis. Upper: titer gained over the current recipe for OMARS designs of 13 to 31 runs and for the 27-run Box-Behnken and central composite designs, showing the median, the 10th to 90th percentile band and the worst case over two hundred campaigns each. Lower: the percentage of those campaigns in which the feed-rate main effect, the hold-temperature by shift-day interaction and the hold-temperature quadratic were declared active.
 	:width: 760px
 	:align: center
 
-	What each design size buys, over two hundred simulated campaigns per design. The line
-	is the median gain in titer at the recipe each campaign recommends, the band runs from
-	the 10th to the 90th percentile, and the marks below are the worst campaign of the two
-	hundred. The dashed line is the 2.006 g/L that was available. The Box-Behnken and
-	face-centred central composite designs, both 27 runs, are placed beside the 27-run OMARS.
+	What each design size buys, over two hundred simulated campaigns per design. Upper
+	panel: the line is the median gain in titer at the recipe each campaign recommends, the
+	band runs from the 10th to the 90th percentile, and the marks below are the worst
+	campaign of the two hundred. The dashed line is the 2.006 g/L that was available. Lower
+	panel: the percentage of the same campaigns in which the staged analysis declared each of
+	the three real effects active. The Box-Behnken and face-centred central composite
+	designs, both 27 runs, are placed beside the 27-run OMARS in both panels.
 
-.. list-table::
-	:widths: 20 10 12 12 12 12 12
-	:header-rows: 1
-
-	* - Design
-	  - Runs
-	  - Finds feed rate
-	  - Finds the interaction
-	  - Finds the quadratic
-	  - Median gain, g/L
-	  - Worst case, g/L
-	* - OMARS
-	  - 13
-	  - 0.14
-	  - 0.67
-	  - 0.30
-	  - +0.000
-	  - -1.973
-	* - OMARS
-	  - 17
-	  - 0.94
-	  - 0.35
-	  - 0.21
-	  - +0.717
-	  - -3.246
-	* - OMARS
-	  - 21
-	  - 0.33
-	  - 0.72
-	  - 0.40
-	  - +0.118
-	  - -2.560
-	* - OMARS
-	  - 27
-	  - 1.00
-	  - 0.99
-	  - 0.78
-	  - +1.072
-	  - -0.350
-	* - Box-Behnken
-	  - 27
-	  - 0.99
-	  - 0.41
-	  - 0.77
-	  - +1.199
-	  - -2.810
-	* - Central composite
-	  - 27
-	  - 0.91
-	  - 1.00
-	  - 0.88
-	  - +0.942
-	  - -1.584
-	* - OMARS
-	  - 31
-	  - 0.98
-	  - 0.97
-	  - 0.88
-	  - +1.034
-	  - -1.298
-
-Every row is two hundred campaigns, each drawing fresh disturbances and scored by the true
-titer at the recipe its analysis recommended. The columns headed *finds* give the fraction of
-campaigns in which the staged analysis declared that effect active.
+Every point is two hundred campaigns, each drawing fresh disturbances and scored by the true
+titer at the recipe its analysis recommended.
 
 Below 27 runs the outcome is closer to a lottery than to a smaller version of the same
 study. The 13-run design leaves the median campaign exactly where it started, having found
