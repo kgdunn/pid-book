@@ -110,7 +110,7 @@ The block below runs the whole analysis end-to-end, including the hand-calculati
 	from plotly.subplots import make_subplots
 	from process_improve.multivariate import PCA, MCUVScaler
 
-	food = pd.read_csv("https://openmv.net/file/food-texture.csv")
+	food = pd.read_csv("https://openmv.net/file/food-texture.csv", index_col=0)
 
 	scaler = MCUVScaler().fit(food)
 	model = PCA(n_components=2).fit(scaler.transform(food))
@@ -294,7 +294,7 @@ variant for questions 10 and 11.
 	train = wafer.iloc[:100]
 	scaler_t = MCUVScaler().fit(train)
 	model_t = PCA(n_components=2).fit(scaler_t.transform(train))
-	result = model_t.predict(scaler_t.transform(wafer))
+	result = model_t.diagnose(scaler_t.transform(wafer))
 
 	t2 = result.hotellings_t2.iloc[:, -1]
 	spe = result.spe

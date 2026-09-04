@@ -228,7 +228,6 @@ names instead of a single one.
 	)
 
 	pd.Series(errors_MLR_build).plot(
-	    grid=True,
 	    title="MLR residuals (Actual - Predicted)",
 	)
 

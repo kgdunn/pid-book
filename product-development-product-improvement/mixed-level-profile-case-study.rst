@@ -1022,8 +1022,8 @@ stops holding:
     n = 30
     g = np.array(["A"] * 11 + ["B"] * 10 + ["C"] * 9); rng.shuffle(g)
     xcol = rng.normal(size=n)
-    truth = {"A": 0.0, "B": 1.0, "C": -0.5}
-    y = np.array([truth[v] for v in g]) + 0.7 * xcol + 0.1 * rng.normal(size=n)
+    level_means = {"A": 0.0, "B": 1.0, "C": -0.5}  # not `truth`, which the case study uses later
+    y = np.array([level_means[v] for v in g]) + 0.7 * xcol + 0.1 * rng.normal(size=n)
     demo = pd.DataFrame({"g": g, "x": xcol}); ydf = pd.DataFrame({"y": y})
 
     X_sum = dmatrix("C(g, Sum) + x", demo, return_type="dataframe").drop(columns=["Intercept"])

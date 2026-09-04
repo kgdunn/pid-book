@@ -344,7 +344,7 @@ We build the model on the same :ref:`food texture data <LVM_food_texture_example
 	from plotly.subplots import make_subplots
 	from process_improve.multivariate import PCA, MCUVScaler
 
-	food = pd.read_csv("https://openmv.net/file/food-texture.csv")
+	food = pd.read_csv("https://openmv.net/file/food-texture.csv", index_col=0)
 	scaler = MCUVScaler().fit(food)
 	food_mcuv = scaler.transform(food)
 

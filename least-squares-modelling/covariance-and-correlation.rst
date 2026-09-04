@@ -153,6 +153,8 @@ It takes the covariance value and divides through by the product of the standard
 
 So returning back to our example of the gas cylinder, the correlation between temperature and pressure, and temperature and humidity can be calculated now as:
 
+.. code-check: skip fill-in-the-blank exercise; the reader completes the last call
+
 .. code-block:: python
 
 	import numpy as np

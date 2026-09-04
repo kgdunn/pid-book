@@ -827,16 +827,18 @@ Exercises
 		# autocorrelation disappear.
 
 		# Plot all the data.
-		pd.Series(CO2).plot.scatter().update_layout(
-		    xaxis_title_text="Sequence order",
+		raw = pd.DataFrame({"Sequence order": np.arange(N_raw), "CO2": CO2})
+		raw.plot.scatter(x="Sequence order", y="CO2").update_layout(
 		    yaxis_title_text="CO2: raw data").show()
 
 		# Create the subgroups on ALL the raw data.
-		# Reshape into N_sub rows by N_raw/N_sub
-		# columns; each column is one subgroup.
-		# Calculate the mean and standard deviation
-		# within each subgroup.
-		subgroups = CO2.reshape(N_raw // N_sub, N_sub).T
+		# Drop the last few samples so the count is a
+		# multiple of N_sub, then reshape into N_sub rows
+		# by N_raw/N_sub columns; each column is one
+		# subgroup. Calculate the mean and standard
+		# deviation within each subgroup.
+		N_groups = N_raw // N_sub
+		subgroups = CO2[: N_groups * N_sub].reshape(N_groups, N_sub).T
 		subgroups_S = subgroups.std(axis=0, ddof=1)
 		subgroups_xbar = subgroups.mean(axis=0)
 		ylim = (subgroups_xbar.min() - 3,

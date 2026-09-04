@@ -12,9 +12,14 @@ Execution model
   order, because sections continue each other (a model fitted in one section is
   reused in the next). A chapter therefore has to read top-to-bottom as a single
   linear script, which is also what a reader pasting the code expects.
-* A ``literalinclude`` script runs in its own fresh namespace with the working
-  directory set to a temporary folder, so any file it writes lands outside the
-  repository.
+* A ``literalinclude`` script is part of the chapter too: the text refers to
+  what it defines ("the ``boards`` frame loaded above"), so it runs in the same
+  namespace. Its working directory is a temporary folder, so any file it writes
+  lands outside the repository.
+* Each chapter runs in its own subprocess, so process-wide state one chapter
+  sets (a pandas plotting backend, a random seed, matplotlib rcParams) cannot
+  leak into the next. Within a chapter that state is kept on purpose: it is what
+  a reader who follows the chapter has.
 * Blocks are compiled with the RST path as filename and the true line offset, so
   tracebacks and warnings point at the line in the book source.
 * Plotting is headless: matplotlib uses the Agg backend and ``Figure.show`` is a
@@ -396,11 +401,17 @@ def expected_output_lines(source: str) -> list[str]:
                 break
         while j < len(lines) and lines[j].strip().startswith("#"):
             text = lines[j].strip()[1:].strip()
-            if re.search(r"\d", text):
+            if re.search(r"\d", text) and not _looks_like_prose(text):
                 expected.append(text)
             j += 1
         i = j
     return expected
+
+
+def _looks_like_prose(text: str) -> bool:
+    """A comment with several plain words is an explanation, not an echoed result."""
+    words = re.findall(r"[A-Za-z]{2,}", text)
+    return len(words) >= 5
 
 
 def _normalise(text: str) -> str:
@@ -438,7 +449,7 @@ def run_block(block: Block, namespace: dict, *, strict_output: bool = False) -> 
             return Outcome(block, "failed", f"literalinclude target does not exist: {block.include}")
         source = block.include.read_text(encoding="utf-8")
         filename = _relative(block.include)
-        target_ns: dict = {"__name__": "__main__", "__file__": str(block.include)}
+        target_ns = namespace
         workdir: contextlib.AbstractContextManager = tempfile.TemporaryDirectory()
     else:
         source = "\n" * (block.line - 1) + block.source  # keep the book's line numbers
@@ -545,6 +556,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--list", action="store_true", help="list chapters, files and blocks; do not run")
     parser.add_argument("--strict-output", action="store_true", help="fail when an echoed print result does not match")
     parser.add_argument("-v", "--verbose", action="store_true", help="print one line per block as it runs")
+    parser.add_argument("--in-process", action="store_true", help=argparse.SUPPRESS)  # set by the parent process
     args = parser.parse_args(argv)
 
     units = _select_units(build_units(), args.chapter, args.file, args.alone)
@@ -555,6 +567,11 @@ def main(argv: list[str] | None = None) -> int:
                 flag = f"  [{block.marker} {block.marker_arg}]".rstrip() if block.marker else ""
                 print(f"    {block.kind:14s} {block.label}{flag}")
         return 0
+
+    # Whole chapters run in a child process each, so nothing leaks between them.
+    # A single file (or an explicit --in-process) runs here.
+    if not args.in_process and not args.file:
+        return _run_in_subprocesses(units, args)
 
     configure_environment()
     failed_total = 0
@@ -569,6 +586,26 @@ def main(argv: list[str] | None = None) -> int:
         print(f"{failed_total} block(s) failed.")
         return 1
     print("All blocks passed.")
+    return 0
+
+
+def _run_in_subprocesses(units: list[Unit], args: argparse.Namespace) -> int:
+    import subprocess
+
+    flags = ["--in-process"]
+    if args.strict_output:
+        flags.append("--strict-output")
+    if args.verbose:
+        flags.append("-v")
+    failed = 0
+    for unit in units:
+        result = subprocess.run(  # noqa: S603 (arguments are our own)
+            [sys.executable, __file__, "--chapter", unit.name, *flags], check=False, cwd=ROOT
+        )
+        failed += result.returncode != 0
+    if failed:
+        print(f"{failed} chapter(s) had failing blocks.")
+        return 1
     return 0
 
 

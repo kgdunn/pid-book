@@ -965,17 +965,22 @@ Exercises
 	.. code-block:: python
 
 		import pandas as pd
+		import plotly.express as px
 
 		digester = pd.read_csv(
 		    "https://openmv.net/file/kamyr-digester.csv"
 		)
+		# The first column is a row identifier, not a
+		# measurement; drop it before any arithmetic.
+		digester = digester.drop(columns="Observation")
 
-		# A histogram per numeric column.
-		# Adjust figsize and bins to taste:
-		digester.hist(figsize=(15, 12), bins=30,
-		              color="lightblue")
+		# A histogram per column, one panel each.
+		# Adjust nbins to taste:
+		px.histogram(digester.melt(), x="value", nbins=30,
+		             facet_col="variable", facet_col_wrap=5
+		             ).update_xaxes(matches=None).show()
 
-		# Numeric correlation matrix.
+		# Correlation matrix.
 		# Sort by the column we care about,
 		# from most negative to most positive:
 		correlations = digester.corr()["Y-Kappa"]

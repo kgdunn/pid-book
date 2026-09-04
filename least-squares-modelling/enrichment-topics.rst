@@ -127,7 +127,7 @@ For example:
 In this example the robust fit shifts the coefficients noticeably: the intercept moves from 196 to 179, and the slope from :math:`-0.331` to :math:`-0.298` (about 10%), while the residual standard error drops from 2.99 to 2.79. The "Test for Bias" at the bottom of the robust output compares the two fits, and its small p-values indicate the ordinary least squares estimates are influenced by the outlying observations, visible in the ``Max`` residual of over 14 units in both fits. Which model to use depends on the purpose: the robust fit describes the bulk of the data, while the ordinary fit is pulled towards the unusual observations.
 
 The same comparison can be run in Python. The `process_improve
-<https://github.com/kgdunn/process_improve>`_ package (the Python library accompanying this book)
+<https://github.com/kgdunn/process-improve>`_ package (the Python library accompanying this book)
 implements a robust fit built on Siegel's *repeated median* slope: for each point, take the median
 of the pairwise slopes to every other point, then take the median of those medians. Up to half the
 observations can be unusual before this slope estimate breaks down.

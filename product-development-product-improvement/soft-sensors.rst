@@ -194,8 +194,8 @@ each latent variable is added:
 
 .. code-block:: python
 
-	>>> model.r2_cumulative_.values
-	array([0.350, 0.503])
+	print(model.r2_cumulative_.round(3).to_list())
+	# [0.35, 0.503]
 
 The first component picks up 35% of the Kappa variability, and the second adds another 15%, for a
 cumulative 50%. This is not a high-:math:`R^2_Y` model in absolute terms, but for a soft sensor
@@ -247,7 +247,7 @@ set:
 		sy = MCUVScaler().fit(train[[y_col]])
 		m = PLS(n_components=2).fit(sx.transform(train[x_cols]), sy.transform(train[[y_col]]))
 		y_hat_scaled = pd.DataFrame(
-			np.asarray(m.predict(sx.transform(test[x_cols])).y_hat),
+			np.asarray(m.predict(sx.transform(test[x_cols]))),
 			index=test.index, columns=[y_col])
 		y_hat = sy.inverse_transform(y_hat_scaled).values.ravel()
 		y_obs = test[y_col].values

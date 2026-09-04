@@ -265,7 +265,7 @@ A larger example: predicting vapour pressure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For larger data sets, the ``OLS`` class from the `process_improve
-<https://github.com/kgdunn/process_improve>`_ package (the Python library accompanying this book)
+<https://github.com/kgdunn/process-improve>`_ package (the Python library accompanying this book)
 provides a convenient API that fits naturally with Pandas data frames. It follows the scikit-learn
 estimator convention of ``fit``, ``predict`` and ``score``, so everything shown here carries over
 unchanged to scikit-learn's own ``LinearRegression`` class. We will use it again on the
