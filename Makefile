@@ -15,7 +15,7 @@ PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 ALLRELAXEDOPTS  =  -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(RELAXOPTS) .
 
-.PHONY: help setup clean clean-all html dirhtml singlehtml pickle json htmlhelp epub latex latexpdf text gettext linkcheck serve pre-commit-install pre-commit-run
+.PHONY: help setup clean clean-all html dirhtml singlehtml pickle json htmlhelp epub latex latexpdf text gettext linkcheck serve pre-commit-install pre-commit-run check-code check-code-chapter check-code-file
 
 .DEFAULT_GOAL := latexpdf
 
@@ -35,10 +35,15 @@ help:
 	@echo "  linkcheck           Check all external links"
 	@echo "  pre-commit-install  Install the pre-commit git hook"
 	@echo "  pre-commit-run      Run every pre-commit hook over the tree"
+	@echo "  check-code          Execute every Python case in the book against process-improve"
+	@echo "  check-code-chapter  One chapter, verbose: make check-code-chapter CHAPTER=least-squares-modelling"
+	@echo "  check-code-file     One RST file (after the files before it): make check-code-file FILE=path.rst"
 	@echo "  clean               Remove build artifacts"
 	@echo "  clean-all           Also remove the venv and lockfile"
 	@echo
 	@echo "Set PAPER=a4 or PAPER=letter for the LaTeX targets."
+	@echo "Set CHECK_WITH='process-improve[all] @ git+https://github.com/kgdunn/process-improve@main'"
+	@echo "to run the code checks against the library's main branch instead of the PyPI release."
 
 
 
@@ -64,6 +69,24 @@ setup:		## Bootstrap the toolchain: install uv, create .venv, sync deps from pyp
 		echo "Install it with:  sudo apt-get install texlive-full latexmk"; \
 		echo "  (or on Fedora:  sudo dnf install texlive-scheme-full latexmk)"; \
 	}
+
+# -- Executable book ----------------------------------------------------------
+# Every ``.. code-block:: python`` and every ``.. literalinclude::`` of a .py
+# file is executed against the installed process-improve, chapter by chapter, by
+# tools/check_code_blocks.py. The checker's dependencies are layered onto the
+# project environment with ``uv run --with`` so uv.lock does not change; the
+# default is the PyPI release, which is what readers install.
+CHECK_WITH ?= process-improve[all]
+CHECK_RUN   = uv run --with '$(CHECK_WITH)' --with pytest --with pytest-xdist
+
+check-code:	## Execute every Python case in the book (all chapters in parallel)
+	$(CHECK_RUN) pytest tests -n auto
+
+check-code-chapter:	## One chapter, verbose: make check-code-chapter CHAPTER=least-squares-modelling
+	$(CHECK_RUN) python tools/check_code_blocks.py --chapter $(CHAPTER) -v
+
+check-code-file:	## One RST file, run after the files that precede it in its chapter
+	$(CHECK_RUN) python tools/check_code_blocks.py --file $(FILE) -v
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
