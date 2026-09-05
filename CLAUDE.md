@@ -108,11 +108,15 @@ The contract, which any new or edited code must satisfy:
   the library defines (for instance `SpecificationWarning`), that points at the
   book's own line fails the block. When the library renames something, the book
   moves with it; do not paper over the warning.
-- **Echoed results are checked.** A comment right after a `print(...)` that
-  repeats its output (`# [0.255, 0.367, ...]`) is compared with what the block
-  printed; mismatches are reported, and `--strict-output` makes them failures.
-  Use this idiom for every number the prose then quotes, so a number that stops
-  reproducing is caught rather than silently stale.
+- **Echoed results are checked, and a mismatch fails.** A comment right after a
+  `print(...)` that repeats its output (`# [0.255, 0.367, ...]`) is compared with
+  what the block printed. `make check-code` and CI run with `--strict-output`, so
+  a number that stops reproducing fails the chapter even though the code still
+  runs; the bare CLI reports mismatches without failing, which is easier to work
+  through when several are in flight. Use this idiom for every number the prose
+  then quotes. Print the value in the shape the comment claims: a dict repr drops
+  a trailing zero, and a Series or array repr carries full precision, so
+  `print(f"{value:.2f}")` beats `print(value)` when the prose quotes two decimals.
 - **Markers are the exception, not the rule.** An RST comment on the line before
   the directive (blank lines between are fine):
 

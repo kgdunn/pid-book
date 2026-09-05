@@ -4,6 +4,10 @@ One test per chapter, each in its own subprocess (the checker's unit of isolatio
 so ``pytest -n auto`` executes the chapters in parallel and process-wide state set
 by one chapter cannot leak into another. See ``tools/check_code_blocks.py`` for the
 execution model and the ``.. code-check:`` markers.
+
+``--strict-output`` is on here, so a comment that echoes a ``print`` result and no
+longer matches what the block prints fails the chapter. That is the check that
+catches a number going stale while the code around it still runs.
 """
 
 import subprocess
@@ -20,7 +24,7 @@ UNITS = [u for u in build_units() if u.blocks]
 @pytest.mark.parametrize("unit", UNITS, ids=[u.name for u in UNITS])
 def test_chapter_code_runs(unit):
     result = subprocess.run(
-        [sys.executable, str(CHECKER), "--chapter", unit.name, "--in-process"],
+        [sys.executable, str(CHECKER), "--chapter", unit.name, "--in-process", "--strict-output"],
         capture_output=True,
         text=True,
         check=False,
