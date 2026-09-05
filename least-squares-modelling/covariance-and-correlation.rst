@@ -51,13 +51,16 @@ Use this to calculate the covariance between temperature and pressure by breakin
 			pres_centered = pres - pres.mean()
 			product = temp_centered * pres_centered
 
-			# numpy does element-by-element multiplication.
+			# numpy does element-by-element multiplication. Centring
+			# turned the integers into floats, so the products print
+			# with a trailing decimal point.
 			print(product)
-			# [16740 10080  5400  1440   180
-			#     60  1620  5700 10920 15660]
+			# [16740. 10080.  5400.  1440.   180.
+			#     60.  1620.  5700. 10920. 15660.]
 
 			# Average of `product`:
-			product.mean()    # 6780
+			print(product.mean())
+			# 6780.0
 
 			# np.cov returns the covariance matrix; the
 			# off-diagonal entry [0, 1] is Cov{temp, pres}
