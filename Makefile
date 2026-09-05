@@ -77,7 +77,13 @@ setup:		## Bootstrap the toolchain: install uv, create .venv, sync deps from pyp
 # project environment with ``uv run --with`` so uv.lock does not change; the
 # default is the PyPI release, which is what readers install.
 CHECK_WITH ?= process-improve[all]
-CHECK_RUN   = uv run --with '$(CHECK_WITH)' --with pytest --with pytest-xdist
+# CHECK_ALSO adds one more distribution to the environment. The mixed-level case
+# study needs pyoptex, which cannot share an environment with the [all] extra, so
+# that page is checked separately with CHECK_WITH='process-improve[expt]'
+# CHECK_ALSO=pyoptex, which is exactly what the chapter tells the reader to install.
+CHECK_ALSO ?=
+CHECK_RUN   = uv run --with '$(CHECK_WITH)' $(if $(CHECK_ALSO),--with '$(CHECK_ALSO)',) \
+              --with pytest --with pytest-xdist
 
 check-code:	## Execute every Python case in the book (all chapters in parallel)
 	$(CHECK_RUN) pytest tests -n auto
