@@ -244,9 +244,16 @@ latex density and the conversion, with a positive weight over the whole batch: a
 with a low :math:`t_1` has a below-average latex density and a below-average conversion
 throughout. :math:`\mathbf{w}_2` is dominated by the second half of the batch, with
 positive weights on the cooling-water and jacket temperatures and negative weights on the
-energy released, the latex density and the conversion: a batch with a high :math:`t_2` ran
-warmer, released less energy and converted less in its second half. Those are predictions
-about batches 37 and 34 respectively, and the contribution plots test them.
+energy released, the latex density and the conversion: in a batch with a high :math:`t_2`
+those two temperatures run above their average trajectories over the second half, while the
+energy released and the extent of reaction run below theirs.
+
+Note which temperature is missing from that list. The reactor temperature is the tag this
+component involves least, and its weight over the second half is close to zero, so what
+moves is the cooling and jacket side and not the reactor measurement itself. The component
+says that the two groups move together; it does not say which of them drives the other.
+Those are predictions about batches 37 and 34 respectively, and the contribution plots test
+them.
 
 Batch 37: the fault from the start
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -380,11 +387,15 @@ for the rest of the batch; none of its other four trajectories stays outside the
 20 samples in a row. Batch 34 departs first in the cooling-water temperature, the jacket
 temperature and the energy released, at samples 103 to 105, and in the conversion and the
 latex density at samples 123 and 129. The same impurity, introduced midway, shows up first
-in the heat balance of the reactor and only afterwards in the extent of reaction. That
-order is consistent with a reaction that slowed down: less heat is released, so less
-cooling is needed to hold the reactor temperature and the jacket and cooling-water
-temperatures rise, and the conversion falls behind the other batches over the samples that
-follow.
+in the energy released and the two service temperatures, and only afterwards in the extent
+of reaction.
+
+That order is consistent with a reaction that slowed down: less heat released leaves less
+for the temperature control system to remove, the jacket and cooling-water temperatures
+settle higher, and the conversion falls behind the other batches over the samples that
+follow. The dataset names its tags and no more. It does not say where on the reactor each
+temperature is measured, whether at a service inlet or a return, so that reading fits the
+order of the departures without being established by it.
 
 One fault, two places in the score plot
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
