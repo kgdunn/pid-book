@@ -348,9 +348,15 @@ batch.
 
 	def sustained_departure(z_batch, n_sd=2.0, run=20):
 	    """First sample from which each tag stays more than `n_sd` standard deviations away for `run` samples in a row."""
-	    outside = (np.abs(z_batch) > n_sd).astype(int)
+	    outside = (np.abs(z_batch) > n_sd).astype(int)      # 1 where the tag is outside the band, 0 inside
 	    onset = {}
 	    for j, tag in enumerate(sbr.trajectory_tags):
+	        # Convolving the 0/1 column with `run` ones is a moving sum over every window of `run`
+	        # consecutive samples: entry i is how many of samples i to i+run-1 lie outside the band.
+	        # "valid" keeps only the windows that fit entirely inside the batch, so entry i starts at
+	        # sample i. A window summing to `run` is an unbroken stretch, and argmax finds the first
+	        # True, which is the sample the stretch starts at. Without a True, argmax returns 0, so
+	        # test `any()` first and report None instead.
 	        runs = np.convolve(outside[:, j], np.ones(run, dtype=int), mode="valid") == run
 	        onset[tag] = int(runs.argmax()) if runs.any() else None
 	    return onset
@@ -361,25 +367,29 @@ batch.
 	fig = make_subplots(rows=2, cols=6, subplot_titles=sbr.trajectory_tags, shared_yaxes=True)
 	for row, (batch_id, colour) in enumerate([(37, AQUA), (34, ORANGE)], start=1):
 	    for col in range(6):
-	        fig.add_trace(go.Scatter(y=np.abs(z[batch_id][:, col]), mode="lines", name=f"batch {batch_id}",
+	        # z, not its absolute value: the sign says whether the tag ran above or below the others.
+	        fig.add_trace(go.Scatter(y=z[batch_id][:, col], mode="lines", name=f"batch {batch_id}",
 	                                 line=dict(color=colour, width=1.5), showlegend=(col == 0)), row=row, col=col + 1)
-	        fig.add_hline(y=2, line_dash="dash", line_color=GREY, row=row, col=col + 1)
+	        fig.add_hrect(y0=-2, y1=2, fillcolor=GREY, opacity=0.15, line_width=0, row=row, col=col + 1)
+	        for level in (-2, 2):
+	            fig.add_hline(y=level, line_dash="dash", line_color=GREY, row=row, col=col + 1)
 	fig.update_layout(title="Distance from the other batches [standard deviations of the others]", height=420)
 	fig.show()
 
 .. figure:: ../figures/batch/batch-case-sbr-departure.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Twelve small panels, one per tag for batch 37 in the top row and batch 34 in the bottom row, showing the distance of each trajectory from the other batches in standard deviations with the two-standard-deviation line dashed; batch 37 departs in latex density and conversion within the first 20 samples, batch 34 in the temperatures and the energy released at about sample 100 and in latex density and conversion later.
+	:alt: Twelve small panels, one per tag for batch 37 in the top row and batch 34 in the bottom row, showing the signed distance of each trajectory from the other batches in standard deviations, with the band between plus and minus two standard deviations shaded; batch 37 falls below the band in latex density and conversion within the first 20 samples, and batch 34 rises above it in the two service temperatures and falls below it in the energy released at about sample 100, then in latex density and conversion later.
 	:width: 1100px
 	:scale: 80
 	:align: center
 
-	Distance of batch 37 (top, aqua) and batch 34 (bottom, orange) from the other batches
-	for each of the six tags, in standard deviations of the other batches, with the
-	two-standard-deviation line dashed. Batch 37 departs in latex density and conversion
-	within the first 20 samples; batch 34 departs in the two temperatures and the energy
-	released at about sample 100, and in latex density and conversion some 20 to 25 samples
-	later.
+	Signed distance of batch 37 (top, aqua) and batch 34 (bottom, orange) from the other
+	batches for each of the six tags, in standard deviations of the other batches, with the
+	band between plus and minus two standard deviations shaded. Batch 37 falls below the
+	band in the latex density and the conversion within the first 20 samples. Batch 34 rises
+	above it in the cooling-water and jacket temperatures, and falls below it in the energy
+	released, at about sample 100, then in the latex density and the conversion some 20 to
+	25 samples later.
 
 The two batches leave the band at different times and in a different order. Batch 37
 departs in the conversion at sample 9 and in the latex density at sample 13, and stays away
