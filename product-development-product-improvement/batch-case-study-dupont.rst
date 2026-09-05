@@ -79,17 +79,17 @@ however, rank 55 batches on ten variables at once; that is what the model is for
 	    return fig
 
 	for tag in ("TempC-1", "Press-1", "Flow-1", "TempR-1"):
-	    overlay(batches, tag, {49: ORANGE, 54: BLUE}).show()
+	    overlay(batches, tag, {49: ORANGE, 54: AQUA}).show()
 
 .. figure:: ../figures/batch/batch-case-dupont-raw-trajectories.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: Four tags of the 55 batches overlaid in grey with batch 49 in orange and batch 54 in blue; the cooling-medium temperature of batch 49 falls below the others after sample 60, and the pressure step of batch 54 comes later than in the other batches.
+	:alt: Four tags of the 55 batches overlaid in grey with batch 49 in orange and batch 54 in aqua; the cooling-medium temperature of batch 49 falls below the others after sample 60, and the pressure step of batch 54 comes later than in the other batches.
 	:width: 900px
 	:scale: 80
 	:align: center
 
 	Four of the ten tags for all 55 batches (grey), with batch 49 (orange) and batch 54
-	(blue) drawn on top. The cooling-medium temperature of batch 49 falls away from the
+	(aqua) drawn on top. The cooling-medium temperature of batch 49 falls away from the
 	other batches after sample 60. The pressure step of batch 54 in ``Press-1`` comes later
 	than in the other batches, and its reactor temperature ``TempR-1`` runs slightly below
 	them over the first 20 samples.
