@@ -125,6 +125,8 @@ complete data.
 	for tag in ("D-Temp", "J-Temp", "CTankLvl", "ClockTime"):
 	    overlay(X, tag, {20: ORANGE}).show()
 
+.. _APPS_batch_case_fmc_overlay:
+
 .. figure:: ../figures/batch/batch-case-fmc-raw-trajectories.png
 	:source: batch/batch-case-fmc-figures.py
 	:alt: Four trajectories of the 46 batches in grey with batch 20 in orange; the dryer temperature of batch 20 sits well above the others through the first 170 samples, and its ClockTime rises steeply between samples 200 and 240.
@@ -323,10 +325,10 @@ after scaling; the batch plots read it.
 	above the SPE limit and inside the :math:`T^2` limit, as is batch 41.
 
 Two components describe 34.9% of the batch-to-batch variation in the trajectories. Batch 20
-is the only batch above both limits: its SPE of 77.5 is the largest of the 46 batches,
-against a limit of 67.5, and its :math:`T^2` of 12.1 is well beyond the limit of 6.7. It is
-both unusual along the components and poorly described by them. Batches 51 and 41 are above
-the SPE limit alone, at 73.0 and 72.9, and batch 47 is just below it.
+is the only batch above both limits: it has the largest SPE of the 46 batches and a
+:math:`T^2` well beyond its limit, so it is both unusual along the components and poorly
+described by them. Batches 51 and 41 are above the SPE limit alone, and batch 47 is just
+below it.
 
 .. figure:: ../figures/batch/batch-case-fmc-loadings-p1.png
 	:source: batch/batch-case-fmc-figures.py
@@ -350,8 +352,11 @@ dryer temperature negative in the first phase and positive in the ramp and cooli
 Contribution plots are only defined for batches with complete trajectories. A missing cell
 has no residual and no contribution, and ``process_improve`` returns a row of missing values
 for such a batch. Batch 20 is one of the ten batches with missing samples, so it is examined
-through its raw overlays: it ran hot in the first phase and took longer in the second. Batch
-51 is the complete batch with the largest SPE, and its SPE contributions can be drawn.
+through the :ref:`raw trajectory overlay <APPS_batch_case_fmc_overlay>` at the start of this
+case study: it ran hot in the first phase and took longer in the second. Batch 51 is the
+complete batch with the largest SPE, and its SPE contributions can be drawn. As in the
+:ref:`first case study <APPS_batch_case_dupont>`, the vector has one entry per (tag, time)
+cell, here :math:`K = 10` tags by :math:`J = 325` time samples.
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-51-spe-contributions.png
 	:source: batch/batch-case-fmc-figures.py
@@ -360,10 +365,10 @@ through its raw overlays: it ran hot in the first phase and took longer in the s
 	:scale: 80
 	:align: center
 
-	Share of the SPE of batch 51 carried by each (tag, time) cell (top), summed per tag
-	(middle) and summed per sample (bottom). The dryer temperature set point, the jacket
-	temperature and its set point carry about two thirds of the residual, half of which lies
-	in the first 50 samples of the batch.
+	Top: the share of the SPE of batch 51 carried by each (tag, time) cell. Middle: the same
+	shares summed per tag. Bottom: summed per sample. The dryer temperature set point, the
+	jacket temperature and its set point carry about two thirds of the residual, half of
+	which lies in the first 50 samples of the batch.
 
 The residual of batch 51 belongs to the dryer temperature set point (27%), the jacket
 temperature (24%) and the jacket temperature set point (18%), and half of it lies in the
@@ -406,6 +411,8 @@ initial conditions did (26.2% at best for a single block). Batch 13 is at the lo
 Batches 5 and 7 are near each other in the score plot, at a moderate :math:`t_1` and a
 negative :math:`t_2`, and are drawn in the same overlay.
 
+.. _APPS_batch_case_fmc_overlay_13:
+
 .. figure:: ../figures/batch/batch-case-fmc-raw-batches-13-5-7.png
 	:source: batch/batch-case-fmc-figures.py
 	:alt: Four trajectories of the 46 batches in grey with batches 13 in orange, 5 in aqua and 7 in blue; batch 13 collected less solvent than almost every other batch, drew less agitator power through the first phase and cooled faster at the end of the batch.
@@ -418,7 +425,8 @@ negative :math:`t_2`, and are drawn in the same overlay.
 	drew less agitator power through the first phase and cooled faster at the end of the
 	batch.
 
-The overlay shows what the contributions of batch 13 refer to. Its collector tank level
+The :ref:`overlay of these three batches <APPS_batch_case_fmc_overlay_13>` shows what the
+contributions of batch 13 refer to. Its collector tank level
 levelled off at 52 units, against 77 units for batch 7, 87 units for batch 5 and up to 117
 units for the batches that collected the most; its agitator power ran below the other
 batches through the solvent-collection phase, 118 units on average against 135; and its

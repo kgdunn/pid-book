@@ -70,6 +70,8 @@ dictionary, the quality table and the list of those six tags.
 	for tag in sbr.trajectory_tags:
 	    overlay(trajectories, tag, {34: ORANGE, 37: AQUA}).show()
 
+.. _APPS_batch_case_sbr_overlay:
+
 .. figure:: ../figures/batch/batch-case-sbr-raw-trajectories.png
 	:source: batch/batch-case-sbr-figures.py
 	:alt: The six trajectories of the 53 batches in grey with batch 34 in orange and batch 37 in aqua; the conversion of batch 37 runs below the others from the start, and the cooling-water and jacket temperatures of batch 34 rise above the others after sample 100 while its energy released falls below them.
@@ -170,11 +172,11 @@ the components, puts both questions in one figure. Each axis carries its own 95%
 	(orange) and 37 (aqua) are far to the right and below the SPE limit. The batches the SPE
 	flags, 8, 15 and 16, are different batches, in the upper left.
 
-The two faulty batches sit well to the right of the :math:`T^2` limit of 6.6 and below the
-SPE limit: their SPE values are 23.1 and 18.7 against a limit of 34.6. The batches the SPE
-does flag are different ones, in the upper left: batch 8 at 39.3, batch 16 at 35.3 and batch
-15 just on the limit at 34.6, all three with :math:`T^2` values below 2. Three batches at or
-above a limit set at 95% is within what that limit allows for among 53 batches.
+The two faulty batches sit well to the right of the :math:`T^2` limit and below the SPE
+limit. The batches the SPE does flag are different ones, in the upper left: batches 8 and
+16, and batch 15 just on the limit, all three with ordinary :math:`T^2` values. Three
+batches at or above a limit set at 95% is within what that limit allows for among 53
+batches.
 
 The SPE of a batch model is computed from the residuals of the whole batch, all 1200 cells,
 so a deviation that the model can describe, a shift along its components, leaves little
@@ -272,16 +274,22 @@ Batch 37: the fault from the start
 	:scale: 80
 	:align: center
 
-	Contributions of batch 37 to :math:`t_1` for each (tag, time) cell (top), summed per
-	tag (middle) and summed per sample (bottom). Conversion and latex density carry the
-	contribution, and every part of the batch contributes.
+	Top: the contribution of each (tag, time) cell of batch 37 to :math:`t_1`. Middle: the
+	same contributions summed per tag. Bottom: summed per sample. Conversion and latex
+	density carry the contribution, and every part of the batch contributes.
+
+As in the :ref:`first case study <APPS_batch_case_dupont>`, the contribution vector has one
+entry per (tag, time) cell, here :math:`K = 6` tags by :math:`J = 200` time samples, and
+summing it per tag or per sample says which trajectory and which part of the batch the score
+came from.
 
 Batch 37 sits at the low end of :math:`t_1` because its conversion and its latex density
 were below average: the two tags contribute -33.4 and -25.5 to the score, the other four
 between -1.3 and -5.2. The contribution is spread over the whole batch. Each fifth of the
 batch carries between 15% and 26% of the total, which is what a fault present from the
-first sample looks like. The raw overlay agrees: the conversion of batch 37 is below the
-other batches from the start of the batch to the end. The impurity slowed the reaction from
+first sample looks like. The :ref:`raw trajectory overlay <APPS_batch_case_sbr_overlay>` at
+the start of this case study agrees: the conversion of batch 37 is below the other batches
+from the start of the batch to the end. The impurity slowed the reaction from
 the moment the batch began.
 
 Batch 34: the same fault, from the middle of the batch
@@ -302,10 +310,10 @@ Batch 34: the same fault, from the middle of the batch
 	:scale: 80
 	:align: center
 
-	Contributions of batch 34 to :math:`t_2` for each (tag, time) cell (top), summed per
-	tag (middle) and summed per sample (bottom). The energy released and the two
-	temperatures lead, and the contribution per sample is small until sample 100 and large
-	after it.
+	Top: the contribution of each (tag, time) cell of batch 34 to :math:`t_2`. Middle: the
+	same contributions summed per tag. Bottom: summed per sample. The energy released and
+	the two temperatures lead, and the contribution per sample is small until sample 100 and
+	large after it.
 
 Batch 34 is high on :math:`t_2`, and the contributions come from the energy released
 (14.3), the jacket temperature (12.3) and the cooling-water temperature (12.2), with the

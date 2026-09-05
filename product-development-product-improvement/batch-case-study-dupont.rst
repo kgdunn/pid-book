@@ -81,6 +81,8 @@ however, rank 55 batches on ten variables at once; that is what the model is for
 	for tag in ("TempC-1", "Press-1", "Flow-1", "TempR-1"):
 	    overlay(batches, tag, {49: ORANGE, 54: AQUA}).show()
 
+.. _APPS_batch_case_dupont_overlay:
+
 .. figure:: ../figures/batch/batch-case-dupont-raw-trajectories.png
 	:source: batch/batch-case-dupont-figures.py
 	:alt: Four tags of the 55 batches overlaid in grey with batch 49 in orange and batch 54 in aqua; the cooling-medium temperature of batch 49 falls below the others after sample 60, and the pressure step of batch 54 comes later than in the other batches.
@@ -180,19 +182,15 @@ the two limits divide the plot into quadrants.
 	53, 54 and 55 (aqua) are the other way round. Colour marks which of the two limits the
 	batch exceeds.
 
-Batch 49 is alone in the upper left. It has the largest SPE of all batches, 39.3 against a
-95% limit of 29.1, and a :math:`T^2` of 0.4, one of the smallest in the set: an entirely
-ordinary batch along the two components, and an extreme one away from them. Its problem is
-not a large deviation along the main directions of variation, which is what the scores
-measure, but a break in the correlation structure that the two components describe. Batch
-51 sits in the same quadrant, with an SPE of 32.3 and a :math:`T^2` of 3.5. The other five
-of the last six batches are in the lower right: extreme along the components, with
-residuals that stay below the SPE limit.
+Batch 49 is alone in the upper left: the largest SPE of all batches with one of the
+smallest :math:`T^2` values, an entirely ordinary batch along the two components and an
+extreme one away from them. Its problem is not a large deviation along the main directions
+of variation, which is what the scores measure, but a break in the correlation structure
+that the two components describe. Batch 51 sits in the same quadrant. The other five of the
+last six batches are in the lower right: extreme along the components, with residuals that
+stay below the SPE limit.
 
-Either statistic can also be drawn against the batch number, which shows how it develops
-over a campaign. Drawing them against each other instead uses both axes for properties of
-the batch, and shows directly which of the two limits a batch exceeds. Whichever layout is
-used, both statistics are needed: a plot of one alone would have missed one of these two
+Both statistics are needed: a plot of one alone would have missed one of these two
 groups.
 
 Batch 49: which variables, and when
@@ -202,7 +200,9 @@ The raw data are ambiguous about batch 49. ``Flow-1`` looks suspicious in the ov
 it is a noisy tag in every batch. The SPE :ref:`contributions <LVM_contribution_plots>`
 settle the question. For a batch model the contribution vector has one entry per
 (tag, time) cell, 1000 entries here: the residual of that cell after the two-component
-reconstruction. ``process_improve`` reports the SPE of a batch as the length of its
+reconstruction. Write :math:`i` for the batch, :math:`k` for one of the :math:`K = 10` tags
+and :math:`j` for one of the :math:`J = 100` time samples, so one cell of the unfolded row
+is the pair :math:`(k, j)`. ``process_improve`` reports the SPE of a batch as the length of its
 residual vector, so the squared residuals of the cells add up to the squared SPE, and each
 squared residual, divided by that total, is the share of the SPE carried by the cell.
 Summing the shares per tag ranks the variables, and summing them per time sample locates
@@ -232,10 +232,10 @@ grouped by tag and, with ``by_tag=True``, the sum per tag.
 	:scale: 80
 	:align: center
 
-	Share of the SPE of batch 49 carried by each (tag, time) cell (top), summed per tag
-	(middle) and summed per sample (bottom). The residual is concentrated in a single
-	window, samples 55 to 65, and in the heating- and cooling-medium temperatures, the
-	pressures and ``Flow-2``.
+	Top: the share of the SPE of batch 49 carried by each (tag, time) cell. Middle: the
+	same shares summed per tag. Bottom: summed per sample. The residual is concentrated in a
+	single window, samples 55 to 65, and in the heating- and cooling-medium temperatures,
+	the pressures and ``Flow-2``.
 
 ``Flow-1`` carries 3% of the residual. The residual belongs to the cooling-medium
 temperature (19%), ``Flow-2`` (18%), ``Press-2`` (15%), the heating-medium temperature
@@ -254,8 +254,8 @@ The score outliers: batches 50 to 55
 Batches 50 to 55 are far out along the components, so the tool for them is the score
 contribution: how much every (tag, time) cell contributes to :math:`t_1` or :math:`t_2`.
 A score is the sum over the 1000 cells of the scaled value times the loading,
-:math:`t_1 = \sum_k x_k p_{k,1}`, so a cell contributes strongly when its value is far from
-average in the direction of the loading. The :ref:`loading <LVM_interpreting_loadings>`
+:math:`t_{i,1} = \sum_{k=1}^{K}\sum_{j=1}^{J} x_{i,kj}\, p_{kj,1}`, so a cell contributes
+strongly when its value is far from average in the direction of the loading. The :ref:`loading <LVM_interpreting_loadings>`
 :math:`\mathbf{p}_1` of a batch model has 1000 entries as well, and
 ``time_varying_loading_plot`` draws it as ten curves over the batch, one per tag, which
 shows which parts of the batch the component describes.
@@ -291,10 +291,11 @@ shows which parts of the batch the component describes.
 
 Batch 54 has a high :math:`t_1` because every tag contributes in the same direction,
 between 4.6 and 8.7 per tag, and the contribution per sample is positive from the first
-sample to the last. The whole batch ran away from the average trajectory. The raw overlay
-confirms it: in ``Press-1`` the pressure step of batch 54 and its later descent come later
-than in the other batches, and its reactor temperature runs below them over the first 20
-samples. Batches 50 and 52 also have large positive :math:`t_1` values and can be examined
+sample to the last. The whole batch ran away from the average trajectory. The
+:ref:`raw trajectory overlay <APPS_batch_case_dupont_overlay>` at the start of this case
+study confirms it: in ``Press-1`` the pressure step of batch 54 and its later descent come
+later than in the other batches, and its reactor temperature runs below them over the first
+20 samples. Batches 50 and 52 also have large positive :math:`t_1` values and can be examined
 in the same way. Batch 55, which has the highest :math:`t_2`, stands out through the
 pressures ``Press-3`` and ``Press-2`` and the cooling-medium temperature.
 
@@ -311,10 +312,7 @@ Removing batches changes the model, so the plots are examined again.
 	model_b = BatchPCA(n_components=3).fit(kept_b)
 	print("R2 per component:", model_b.r2_per_component_.round(3).tolist())
 	model_b.score_plot(pc_horiz=2, pc_vert=3, settings={"show_labels": True}).show()
-	t3 = model_b.score_contributions(model_b.unfold_and_scale(kept_b), component=3)
-	unfolded_contribution_plot(t3, batch_id=39, by_tag=True).show()
 	second_group = [37, 39, 43, 44, 45, 46, 47, 48]
-	overlay(batches, "Press-3", {**{batch_id: ORANGE for batch_id in second_group}, 39: BLUE}).show()
 
 .. figure:: ../figures/batch/batch-case-dupont-model-b-scores.png
 	:source: batch/batch-case-dupont-figures.py
@@ -328,29 +326,88 @@ Removing batches changes the model, so the plots are examined again.
 
 The three components of model B explain 33.3%, 13.3% and 8.5% of the variance. With the
 extreme batches gone, a second group separates in the plane of :math:`t_2` and
-:math:`t_3`: batches 37, 39 and 43 to 48. Batch 39 is a representative member of the group.
+:math:`t_3`: batches 37, 39 and 43 to 48.
 
-.. figure:: ../figures/batch/batch-case-dupont-batch-39.png
+Every contribution so far has been for one batch. A group of batches can be treated the
+same way, and here it is the more useful object: the question is what the eight have in
+common, not what any one of them did. The columns are centred, so the model centre is the
+origin, and a group's mean row is its displacement from that centre. Contributions are
+linear in the row, so the mean of the members' contribution vectors is the contribution of
+the group mean, and it adds up to the group's mean score.
+
+.. code-block:: python
+
+	scaled_b = model_b.unfold_and_scale(kept_b)
+	per_component = {a: model_b.score_contributions(scaled_b, component=a) for a in (2, 3)}
+	group = {a: c.loc[second_group].mean(axis=0) for a, c in per_component.items()}   # the cluster against the centre
+	for a in (2, 3):
+	    print(f"group mean t{a} = {model_b.scores_.loc[second_group].iloc[:, a - 1].mean():5.1f}",
+	          f"(the contribution vector sums to {group[a].sum():5.1f});",
+	          f"the other 40 batches: {model_b.scores_.drop(index=second_group).iloc[:, a - 1].mean():5.1f}")
+	    print(f"  per tag: {group[a].groupby(level='tag', sort=False).sum().round(1).to_dict()}")
+	    by_time = group[a].groupby(level="sequence").sum()
+	    print(f"  samples 0 to 25 carry {by_time.loc[:25].sum() / by_time.sum():.0%} of it")
+
+.. code-block:: text
+
+   group mean t2 =  15.0 (the contribution vector sums to  15.0); the other 40 batches:  -3.0
+     per tag: {'Flow-1': 0.2, 'Flow-2': 0.8, 'Press-1': 0.2, 'Press-2': 3.3, 'Press-3': 3.2,
+               'TempC-1': 3.8, 'TempH-1': 1.8, 'TempR-1': 0.2, 'TempR-2': 1.3, 'TempR-3': 0.3}
+     samples 0 to 25 carry 66% of it
+   group mean t3 =  14.8 (the contribution vector sums to  14.8); the other 40 batches:  -3.0
+     per tag: {'Flow-1': 0.6, 'Flow-2': 2.3, 'Press-1': 0.8, 'Press-2': 1.4, 'Press-3': 4.0,
+               'TempC-1': 4.4, 'TempH-1': -0.4, 'TempR-1': 0.5, 'TempR-2': 1.1, 'TempR-3': 0.2}
+     samples 0 to 25 carry 90% of it
+
+.. figure:: ../figures/batch/batch-case-dupont-group-contribution.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: Left, the contributions of batch 39 to t3 summed per tag, led by Press-3, TempC-1 and Flow-2; right, Press-3 for all batches with the eight batches of the group in orange and batch 39 in blue, following a slightly different pressure profile.
+	:alt: Left, the group's contribution to t2 and t3 summed per tag with each of the eight members as a dot, led by TempC-1 and Press-3; right, the same contributions summed per sample, large over the first 25 samples and small afterwards.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
-	Left: contributions of batch 39 to :math:`t_3`, summed per tag; ``Press-3``,
-	``TempC-1`` and ``Flow-2`` lead. Right: ``Press-3`` for all batches, with the group of
-	eight (orange) and batch 39 (blue) drawn on top. The group follows a slightly different
-	pressure profile, a little lower over the first 40 samples and a little higher after
-	sample 60.
+	Left: the contribution of the eight-batch group to :math:`t_2` and :math:`t_3`, summed
+	per tag, with every member drawn as a dot so the spread within the group is visible.
+	Right: the same contributions summed per sample.
 
-The :math:`t_3` contributions of batch 39 point at ``Press-3``, ``TempC-1`` and ``Flow-2``,
-and the raw overlay of ``Press-3`` shows what the model reacted to: the eight batches follow
-a slightly different pressure profile, a little lower than the other batches over the first
-40 samples and a little higher after sample 60. Of the eight, only batches 45 and 46 appear
-in the list of batches with poor or borderline quality; the other six produced acceptable
-product. They were operated differently, not badly. A model of normal operation can either
-contain enough of them to describe that mode of operation or leave them out. The original
-course notes leave them out, and so does the third model.
+The group sits at a mean :math:`t_2` of 15.0 and a mean :math:`t_3` of 14.8, where the other
+40 batches average -3.0 on both and all 48 average zero by construction. ``TempC-1`` and
+``Press-3`` carry most of that displacement on both components, and every one of the eight
+members contributes in the same direction on those two tags. ``TempH-1`` behaves
+differently: across the members it ranges from -3.8 to +2.4 and averages to almost nothing,
+so it is a feature of individual batches rather than of the group. Reading a single member
+as representative would have put it on the list.
+
+The timing is as clear as the tag list. Samples 0 to 25 carry 66% of the :math:`t_2`
+contribution and 90% of the :math:`t_3` contribution, so the group differs from the average
+batch mainly at the start.
+
+.. code-block:: python
+
+	for tag in ("TempC-1", "Press-3", "Press-2"):                    # the three largest contributions
+	    overlay(kept_b, tag, {batch_id: ORANGE for batch_id in second_group}).show()
+
+.. figure:: ../figures/batch/batch-case-dupont-group-raw.png
+	:source: batch/batch-case-dupont-figures.py
+	:alt: Three panels of raw trajectories over samples 0 to 30, the eight group batches in orange above the other 40 in light grey for TempC-1 and Press-3, with more overlap for Press-2.
+	:width: 1000px
+	:scale: 80
+	:align: center
+
+	The raw trajectories of the three tags with the largest contributions, over the window
+	the contributions point at. The eight batches of the group (orange) sit above the other
+	40 batches of model B (light grey) in ``TempC-1`` and ``Press-3`` and rejoin them at
+	about sample 25. Over the whole batch the gap is under 2% of the panel height for two of
+	these three tags, which is why the panels stop at sample 30.
+
+The raw data confirm it. The eight batches run above the other 40 in ``TempC-1`` and
+``Press-3`` for the whole early window and rejoin them at about sample 25; in ``Press-2``
+the separation is smaller and the two sets overlap, which matches its smaller contribution.
+Of the eight, only batches 45 and 46 appear in the list of batches with poor or borderline
+quality; the other six produced acceptable product. They were operated differently, not
+badly. A model of normal operation can either contain enough of them to describe that mode
+of operation or leave them out. The original course notes leave them out, and so does the
+third model.
 
 The reference model, and the batches it cannot see
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
