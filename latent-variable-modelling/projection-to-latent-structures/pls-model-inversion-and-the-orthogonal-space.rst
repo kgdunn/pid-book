@@ -127,8 +127,8 @@ predicts will give that taste.
 
 	result = pls.invert(y_desired=20.9)
 
-	print(result.x_new.round(2).to_dict())
-	# {'Acetic': 5.52, 'H2S': 5.56, 'Lactic': 1.40}
+	print({k: f"{v:.2f}" for k, v in result.x_new.items()})
+	# {'Acetic': '5.52', 'H2S': '5.56', 'Lactic': '1.40'}
 	print(result.null_space_dimension)        # 1
 
 	# Compare the designed inputs with what cheese 2 actually was.
@@ -154,9 +154,9 @@ We can walk along it by passing coordinates along its basis. Stepping one unit e
 	for step in (-1.0, 1.0):
 	    moved = pls.invert(y_desired=20.9, null_space_coordinates=[step])
 	    taste = pls.predict(moved.x_new.to_frame().T).iloc[0, 0]
-	    print(moved.x_new.round(2).to_list(), "->", round(taste, 2))
-	# [4.95, 6.10, 1.33] -> 20.9
-	# [6.09, 5.02, 1.46] -> 20.9
+	    print([f"{v:.2f}" for v in moved.x_new], "->", f"{taste:.1f}")
+	# ['4.95', '6.10', '1.33'] -> 20.9
+	# ['6.09', '5.02', '1.46'] -> 20.9
 
 Collecting those points, and putting the measured cheese alongside for comparison:
 
@@ -704,9 +704,9 @@ The fitted model reports the two directions as ``opls.predictive_weights_`` and
 	print(opls.orthogonal_weights_)     # [0.808 -0.590  0.008]
 	print(opls.predictive_loadings_)    # [0.472  0.654  0.591]
 
-	print(pls.x_weights_)               # the PLS weights, side by side
+	print(pls.x_weights_.round(3).to_numpy())   # the PLS weights, side by side
 	# [[ 0.474  0.808]
-	#  [ 0.657 -0.590]
+	#  [ 0.657 -0.59 ]
 	#  [ 0.586  0.008]]
 
 The predictive weight :math:`\mathbf{w}_\text{p} = (0.474, 0.657, 0.586)` has three positive entries of
@@ -733,7 +733,7 @@ The consequence shows up in the scores, not the weights.
 
 	for name, score in [("PLS 1", scores.iloc[:, 0]), ("PLS 2", scores.iloc[:, 1]),
 	                    ("O-PLS predictive", t_p), ("O-PLS orthogonal", t_o)]:
-	    print(name, np.corrcoef(score, y_centred)[0, 1])
+	    print(name, round(float(np.corrcoef(score, y_centred)[0, 1]), 3))
 	# PLS 1 0.802
 	# PLS 2 -0.172
 	# O-PLS predictive 0.82
