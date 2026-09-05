@@ -601,6 +601,26 @@ def _select_units(units: list[Unit], chapters: list[str], file: str | None, alon
     return units
 
 
+def _preflight() -> None:
+    """Refuse to run in an environment that has no library to check against.
+
+    Running the checker from the book's own virtualenv is the easy mistake: that
+    environment has Sphinx and nothing else, so every block fails on an import and
+    the report looks like the book is broken rather than the environment.
+    """
+    if importlib.util.find_spec("process_improve") is not None:
+        return
+    sys.exit(
+        "process_improve is not importable in this environment, so every block would\n"
+        "fail on its import. Run the checker through make, which resolves the library\n"
+        "the way a reader's pip install does:\n"
+        "    make check-code\n"
+        "    make check-code-chapter CHAPTER=<dir>\n"
+        "    make check-code-file FILE=<path.rst>\n"
+        "See CLAUDE.md, 'Every Python case in the book runs in CI'."
+    )
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--chapter", action="append", default=[], help="chapter directory name (repeatable)")
@@ -624,8 +644,10 @@ def main(argv: list[str] | None = None) -> int:
     # Whole chapters run in a child process each, so nothing leaks between them.
     # A single file (or an explicit --in-process) runs here.
     if not args.in_process and not args.file:
+        _preflight()
         return _run_in_subprocesses(units, args)
 
+    _preflight()
     configure_environment()
     failed_total = 0
     for unit in units:
