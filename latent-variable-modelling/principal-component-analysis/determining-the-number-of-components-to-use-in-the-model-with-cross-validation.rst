@@ -120,6 +120,8 @@ fit the same eleven components. Their :math:`R^2` values agree to within :math:`
 every component, so whatever separates the :math:`Q^2` curves comes from the cross-validation and not
 from the model underneath it.
 
+.. code-check: allow-warnings the block scales before the call on purpose; see the note below it
+
 .. code-block:: python
 
 	import pandas as pd
@@ -132,7 +134,8 @@ from the model underneath it.
 	# Q2, is on the same scale as the R2 values and as the Simca-P curve.
 	# The package accumulates PRESS in the units of the block it is given;
 	# on the raw block the Mw column alone holds 99.5% of the sum of
-	# squares, and its residuals would set the whole curve.
+	# squares, and its residuals would set the whole curve. The note after
+	# this block covers the warning some versions raise here.
 	#
 	# cv_scheme="ekf" is the element-wise k-fold scheme: scattered single
 	# cells of X are held out, and each is predicted from a model that
@@ -144,6 +147,19 @@ from the model underneath it.
 	# [0.255, 0.367, 0.333, 0.3, 0.297, 0.186, 0.029, 0.126, 0.673, 0.844, 0.808]
 	print(chosen.q2_se.round(3).to_list())
 	# [0.015, 0.016, 0.022, 0.029, 0.04, 0.058, 0.067, 0.053, 0.017, 0.021, 0.014]
+
+.. note::
+
+	Some versions of ``process_improve`` raise a ``SpecificationWarning`` on the call above,
+	because the block was scaled before it was passed and the element-wise scheme scales again
+	inside every fold. The warning suggests passing the raw block instead. On these data that
+	changes what the curve measures rather than how it is computed: PRESS is accumulated in the
+	units of the block that was passed, ``Mw`` carries 99.5% of the raw sum of squares, and the
+	raw-block curve rises from :math:`-0.04` to :math:`0.94` without an interior maximum, which
+	is the :math:`Q^2` curve of ``Mw`` alone. The scaled block gives every variable the same
+	weight, which is what the rest of this section, and the Simca-P curve it is compared against,
+	assume. The warning is worth heeding on a block whose columns are already comparable, and on
+	a block like this one it is the scaling that has to come first.
 
 .. image:: ../../figures/pca/q2-across-packages.png
 	:alt: Cross-validated Q-squared from three implementations on the same LDPE data
