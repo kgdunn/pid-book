@@ -108,7 +108,8 @@ the library scores exactly this model and not the full second-order one:
 	import numpy as np
 	import pandas as pd
 	import plotly.graph_objects as go
-	from process_improve.experiments import Factor, evaluate_design, generate_design, generate_omars
+	from process_improve.experiments import (Factor, evaluate_design, generate_design,
+	                                         generate_omars, is_omars)
 
 	names = list("ABCDE")
 	factors = [Factor(name=c, low=-1, high=1) for c in names]
@@ -123,6 +124,7 @@ the library scores exactly this model and not the full second-order one:
 	                            alpha="face_centered", n_center_points=6))
 	omars = coded(generate_omars(factors, n_runs=25, model="main_quadratic",
 	                             selection_criterion="a_optimal"))
+	assert is_omars(omars)   # main effects orthogonal to every second-order term
 	designs = {"Box-Behnken": bbd, "CCD": ccd, "OMARS": omars, "DSD": dsd}
 
 	def power(design):

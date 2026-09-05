@@ -109,7 +109,10 @@ The whole design is one call to ``generate_design`` with ``design_type="i_optima
 
 The worked example uses ``process_improve`` (``pip install 'process-improve[expt]'``); the
 coordinate-exchange optimiser it calls for the I-optimal and split-plot construction is ``pyoptex``,
-installed separately with ``pip install pyoptex``.
+installed separately with ``pip install pyoptex``. Every block on this page builds on the design
+that first call returns, so the whole page needs that separate install.
+
+.. code-check-file: requires pyoptex -- the I-optimal design every later block builds on
 
 .. code-block:: python
 
@@ -189,11 +192,18 @@ variance is small.
                             metric=["d_efficiency", "i_efficiency", "g_efficiency", "fds"])
         return d, m
 
+    print("design, n, D-eff, I-eff, G-eff, FDS median, FDS max")
     fig = go.Figure()
     for criterion, colour in [("i_optimal", "#1f5fa8"), ("d_optimal", "#c0392b")]:
         for budget, dash, width in [(60, "solid", 4), (48, "dash", 2)]:
             _, m = score(criterion, budget)
             q = m["fds"]["quantiles"]
+            print(f"{criterion}, {budget}, {m['d_efficiency']:.1f}, {m['i_efficiency']:.0f}, "
+                  f"{m['g_efficiency']:.1f}, {q['0.5']:.2f}, {q['1']:.2f}")
+            # i_optimal, 60, 15.4, 159, 48.4, 0.40, 1.38
+            # i_optimal, 48, 13.9, 132, 17.6, 0.57, 4.74
+            # d_optimal, 60, 17.9, 106, 66.3, 0.63, 1.01
+            # d_optimal, 48, 16.8, 80, 26.8, 1.01, 3.11
             fig.add_scatter(x=[float(k) for k in q], y=list(q.values()), mode="lines+markers",
                             line=dict(color=colour, dash=dash, width=width),
                             name=f"{criterion}, n={budget}")
@@ -220,27 +230,27 @@ higher I-efficiency and the lower prediction variance across the region.
     *   - I-optimal, n = 60
         - 15.4
         - 159
-        - 51.8
+        - 48.4
         - 0.40
-        - 1.29
+        - 1.38
     *   - I-optimal, n = 48
         - 13.9
         - 132
-        - 19.6
+        - 17.6
         - 0.57
-        - 4.26
+        - 4.74
     *   - D-optimal, n = 60
         - 17.9
         - 106
-        - 63.0
+        - 66.3
         - 0.63
-        - 1.06
+        - 1.01
     *   - D-optimal, n = 48
         - 16.8
         - 80
-        - 27.1
+        - 26.8
         - 1.01
-        - 3.07
+        - 3.11
 
 .. figure:: ../figures/doe/colour-fds-curves.png
     :align: center
@@ -906,10 +916,13 @@ Model diagnostics: SPE and Hotelling's T2
 Before the model is used to answer the fourth question, it is worth checking where its own runs sit
 relative to it. Two diagnostics summarise that. Hotelling's :math:`T^2` measures how far a run lies
 from the centre *within* the model plane, scaled by the score spread. The squared prediction error
-(SPE) is the summed squared residual *off* the plane, the part of the ten-point curve the three
-components do not reconstruct; ``process_improve`` reports its square root in ``spe_``, so the SPE
-values quoted here are the run's off-plane distance on the absorbance scale. Each has a 95% limit,
-from ``hotellings_t2_limit`` and ``spe_limit``.
+(SPE) is computed on the model matrix, not on the curve: it is the summed squared residual between a
+run's row of the standardised model matrix (the 24 columns of ``X_int``, after the centring and
+scaling that ``scale=True`` applies) and the reconstruction of that row from the run's three scores
+and the X-loadings. It measures the part of the row that lies *off* the plane, in the 21 directions
+the three components do not span. ``process_improve`` reports its square root in ``spe_``, so the SPE
+values quoted here are the run's off-plane distance in scaled model-matrix units. Each has a 95%
+limit, from ``hotellings_t2_limit`` and ``spe_limit``.
 
 New rows are needed here and in the inversion that follows, so a small helper builds a model-matrix
 row for one setting with the same coding as the fitted matrix:
@@ -971,7 +984,7 @@ surprisingly, a property of the sum-based coding used for the compound, not of F
 :ref:`next section <profile-categorical-coding>` writes the same model in three different ways and
 shows the outliers move from F to another level, or disappear, as the coding changes. No matter which
 coding is used, we find compound A projects to a low-leverage, well-reconstructed point (its
-:math:`T^2` stays near or below 0.1 and its SPE between about 1 and 2).
+:math:`T^2` stays near or below 0.1 and its SPE between 1.0 and 2.4).
 
 .. figure:: ../figures/doe/colour-pls-t2-spe.png
     :align: center
@@ -1031,8 +1044,10 @@ stops holding:
     for a in (1, 2, 3):  # three model terms, so three components is full rank
         p_sum = PLS(n_components=a, scale=True).fit(X_sum, ydf).predictions_
         p_trt = PLS(n_components=a, scale=True).fit(X_trt, ydf).predictions_
-        print(a, float(np.max(np.abs(np.asarray(p_sum) - np.asarray(p_trt)))))
-    # 1 -> 0.37, 2 -> 0.17, 3 -> 0.00
+        print(f"{a} -> {float(np.max(np.abs(np.asarray(p_sum) - np.asarray(p_trt)))):.2f}")
+    # 1 -> 0.37
+    # 2 -> 0.17
+    # 3 -> 0.00
 
 The full-rank ordinary least squares predictions match to :math:`10^{-15}` across the two codings. A
 PLS kept at one or two components does not: its predictions differ by 0.37 and 0.17 between sum and
@@ -1125,7 +1140,7 @@ choice.
 Two things do not move with the coding. The interaction F-tests and the full-rank least-squares
 coefficients are the same under all three, because they use the whole column space. And the goal
 projection stays inside both limits under all three: A is omitted by none of them, so compound A at
-the centre point keeps its :math:`T^2` near or below 0.1 and its SPE between about 1 and 2. (Omit A
+the centre point keeps its :math:`T^2` near or below 0.1 and its SPE between 1.0 and 2.4. (Omit A
 instead, as the second panel does, and it would be flagged like any omitted level.) The goal check
 the inversion relies on does not depend on the choice among the three.
 
@@ -1733,9 +1748,11 @@ best attainable match:
         print(c, round(float(rmse), 3))  # 0.016  0.061  0.100  0.105  0.048
 
 Each relaxed solution lands at or above its candidate's best attainable match (B at 0.016 and D at
-0.100, against best matches of 0.015 and 0.083), while its SPE rises to the 6.5 limit and its
-settings leave the studied ranges. Pinning the two hard-to-change factors, temperature and
-co-solvent, at the centre and re-optimizing over concentration and pH alone gives the same result.
+0.100, against best matches of 0.015 and 0.083). For compounds C, D, E and F the SPE rises to the 6.5
+limit, and for C, D and E the settings leave the studied ranges; compound B's solution stays inside
+both limits (SPE 2.0 and :math:`T^2` 0.22) and inside the studied ranges. Pinning the two
+hard-to-change factors, temperature and co-solvent, at the centre and re-optimizing over
+concentration and pH alone gives the same result.
 The off-plane freedom the continuous factors reach is amplitude, not shape, so it cannot close a
 compound's late-time drift: the closest attainable curve stays the projection of the target onto the
 model plane, which is Muteki and MacGregor's feasibility condition.

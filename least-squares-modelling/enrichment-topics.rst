@@ -145,8 +145,8 @@ observations can be unusual before this slope estimate breaks down.
 	    distill["VapourPressure"].values,
 	)
 
-	# Slope -0.290 and intercept 175.6: close to the
-	# lmRob values above (-0.298 and 179.5), and shifted
+	# Intercept 175.6 and slope -0.290: close to the
+	# lmRob values above (179.5 and -0.298), and shifted
 	# away from the ordinary least squares fit in the
 	# same direction.
 	print(out["intercept"], out["coefficients"])

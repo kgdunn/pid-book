@@ -108,7 +108,9 @@ the formulas yourself. The example below uses the same ``OLS`` class introduced 
 :ref:`11-point example <LS-class-example>` used throughout this chapter. The fitted model
 object provides the hat values in ``model.leverage_`` and the Cook's D values in
 ``model.influence_``; printing the model shows a summary in the same layout as R's
-``summary(lm(...))``.
+``summary(lm(...))``. In the current version of the library these two attributes are computed only
+for a model with a single predictor and an intercept; for a model with several predictors (or
+without an intercept) each attribute holds a single ``nan`` instead.
 
 .. code-block:: python
 

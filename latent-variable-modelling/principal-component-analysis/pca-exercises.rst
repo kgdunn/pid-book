@@ -94,8 +94,10 @@ Food texture data set
 	You should get :math:`t_1 \approx 3.6`. Describe what a pastry with that profile looks like in terms of its five attributes.
 
 #.	**Repeat for sample 33**, with raw values ``Oil = 15.5``, ``Density = 3125``, ``Crispy = 7``, ``Fracture = 33``, ``Hardness = 92``. You should
-	get :math:`t_1 \approx -4.2`. Contrast this attribute profile against pastry B758. Which contributions to :math:`t_1` (variable-by-variable)
-	are largest in magnitude for each of the two pastries, and what does that tell you about which raw measurements drive the first component?
+	get :math:`t_1 \approx -4.14` by hand; the fitted model reports :math:`-4.17`, and the gap comes from the rounded loadings, means and
+	standard deviations used in the hand calculation. Contrast this attribute profile against pastry B758. Which contributions to :math:`t_1`
+	(variable-by-variable) are largest in magnitude for each of the two pastries, and what does that tell you about which raw measurements
+	drive the first component?
 
 **Reproducing this analysis in Python**
 
@@ -162,7 +164,7 @@ The block below runs the whole analysis end-to-end, including the hand-calculati
 	s33_raw = food.iloc[32].values
 	s33_scaled = (s33_raw - xbar_pub) / sd_pub
 	t1_s33 = float(np.dot(s33_scaled, p1_pub))
-	print(f"Hand-computed t1 for sample 33: {t1_s33:.2f}  (expect approx -4.2)")
+	print(f"Hand-computed t1 for sample 33: {t1_s33:.2f}  (expect approx -4.14)")
 	print(f"Model t1 for sample 33:          {model.scores_.iloc[32, 0]:.2f}")
 
 	# Variable-by-variable contributions for each pastry, for the comparison

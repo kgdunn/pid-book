@@ -79,7 +79,9 @@ combines three views of the same variable: a one-sided density curve (the "cloud
 and the jittered raw observations (the "rain"). Showing the raw points guards against the box
 plot's main weakness: distributions that differ in important ways can still produce the same
 five-number summary. The accompanying ``process_improve`` library draws one raincloud per group with
-a single function call, reusing the ``boards`` data frame loaded above:
+a single function call, reusing the ``boards`` data frame loaded above. The library is installed
+with ``pip install 'process-improve[all]'``, which includes the plotting extra (Plotly) needed for
+the figures in this book:
 
 .. code-block:: python
 

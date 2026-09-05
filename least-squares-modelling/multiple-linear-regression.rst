@@ -282,11 +282,28 @@ the distillation data the second predictor is a useful one:
 	print(f"{r2_one:.3f}  {r2_two:.3f}")
 
 Adding ``InvPressure1`` raises :math:`R^2` from 0.781 to 0.938 and also improves the testing-data
-error: that predictor carries real information. A *useless* term also raises :math:`R^2`, but on
-these 150 building rows a single column of random noise moves :math:`R^2` only in the fifth
-decimal (0.93831 to 0.93832): with many observations, one junk column can only absorb a tiny
-share of the variance. The fewer the observations relative to the number of parameters, the
-larger the share a useless term can absorb. The 14 runs of the `bioreactor yields
+error: that predictor carries real information. A *useless* term also raises :math:`R^2`. To see
+by how much, append one column of random noise to the two real predictors as a third "predictor"
+and refit:
+
+.. code-block:: python
+
+	noise_col = np.random.default_rng(0).normal(
+	    size=(len(X_build_MLR), 1)
+	)
+	X_noise = np.hstack([X_build_MLR, noise_col])
+	r2_noise = OLS().fit(X_noise, y_build).score(X_noise, y_build)
+
+	print(f"{r2_two:.5f}  {r2_noise:.5f}")
+	# 0.93831  0.93847
+
+On these 150 building rows the noise column raises :math:`R^2` from 0.93831 to 0.93847; the size
+of the increase varies with the random seed, and its expected value for a column that carries no
+information is :math:`(1 - R^2)/(n - k) = (1 - 0.93831)/(150 - 3) = 0.00042`, where :math:`n` is
+the number of observations and :math:`k` is the number of parameters (intercept included) already
+in the model. With many observations, one junk column can only absorb a small share of the
+variance. The fewer the observations relative to the number of parameters, the larger the share a
+useless term can absorb. The 14 runs of the `bioreactor yields
 <https://openmv.net/info/bioreactor-yields>`_ data set (used again in the
 :ref:`exercises <LS-exercises>`) make the effect plainly visible:
 

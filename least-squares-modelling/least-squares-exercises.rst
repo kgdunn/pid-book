@@ -863,7 +863,7 @@ Exercises
 
 	#.	A combined linear regression model is :math:`y = -28.9 + 0.31 x_A + 3.92 x_S + 19.7 x_L` where :math:`x_A` is the log of the acetic acid concentration, :math:`x_S` is the log of the hydrogen sulphide concentration and :math:`x_L` is the lactic acid concentration in the cheese. The confidence intervals for each coefficient are:
 
-		*	:math:`-8.9 \leq b_A \leq  9.4`
+		*	:math:`-8.9 \leq b_A \leq  9.5`
 		*	:math:`1.4 \leq b_S \leq  6.5`
 		*	:math:`1.9 \leq b_L \leq  37`
 
@@ -891,7 +891,7 @@ Exercises
 	.. literalinclude:: ../figures/least-squares/cheddar-cheese.R
 		:language: s
 
-	A Pandas / scikit-learn version of the same workflow is given below for reference:
+	A Pandas / ``process_improve`` version of the same workflow is given below for reference:
 
 	.. code-block:: python
 

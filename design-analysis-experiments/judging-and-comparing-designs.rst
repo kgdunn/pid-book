@@ -85,8 +85,12 @@ against extrapolation.
 
 This and every figure in this subchapter is reproducible with `process_improve
 <https://github.com/kgdunn/process-improve>`_ (``pip install 'process-improve[all]'``, which
-includes the ``expt`` and ``ilp`` extras needed for the Box-Behnken, central composite, and
-OMARS designs used below).
+installs every optional extra). Of those extras, ``expt`` (the ``pyDOE3`` package) is needed for
+the Box-Behnken and central composite designs on the :ref:`companion page
+<DOE-omnibus-comparison>`, and ``ilp`` (the ``pulp`` integer-programming solver) for the
+twenty-five-run OMARS design there. The four-factor, thirteen-run OMARS design used on this page
+is small enough for ``generate_omars`` to find by exhaustive enumeration (every feasible design
+of that size is listed and scored), so it needs neither.
 Each block imports what it needs and reuses variables defined in the blocks before it, so paste
 them in order. The prediction variance of the three-run quadratic design is a closed form:
 
@@ -461,9 +465,9 @@ corner (a vertex of the :math:`[-1, 1]` cube), where random interior sampling ra
 ``evaluate_design`` therefore adds the cube vertices to its interior sample by default (its
 ``include_vertices`` argument). Including them lifts the nine-run DSD's :math:`G` from :math:`8.98`
 to :math:`9.00`, a maximum that turns out to sit precisely at a corner, and leaves the thirteen-run
-OMARS value at :math:`12.70` because its worst case lies in the interior. The shift is tiny, so it
-changes no conclusion here, but including the extreme points is the correct procedure, and the
-:ref:`omnibus comparison <DOE-omnibus-comparison>` relies on it.
+OMARS value at :math:`12.50` because its worst case does not sit at a vertex. The shift is tiny,
+so it changes no conclusion here, but including the extreme points is the correct procedure, and
+the :ref:`omnibus comparison <DOE-omnibus-comparison>` relies on it.
 
 Separability is not the same as precision
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -690,7 +694,7 @@ four-factor main-effects-and-quadratic model.
         - 6.19
     *   - :math:`\downarrow\ G`, maximum SPV
         - 9.00
-        - 12.70
+        - 12.50
     *   - :math:`\downarrow` maximum :math:`|r|`
         - 0.707
         - 0.570
