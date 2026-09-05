@@ -230,7 +230,6 @@ grouped by tag and, with ``by_tag=True``, the sum per tag.
 	                  yaxis_title="Share of SPE [%]", height=320)
 	fig.show()
 	print("share per tag [%]:", spe_share.loc[49].groupby(level="tag", sort=False).sum().round(0).to_dict())
-	print("samples with the seven largest shares:", sorted(by_time.nlargest(7).index.tolist()))
 	print(f"share of samples 55 to 65: {by_time.loc[55:65].sum():.0f}%")
 
 .. figure:: ../figures/batch/batch-case-dupont-batch-49-spe-contributions.png
@@ -245,12 +244,11 @@ grouped by tag and, with ``by_tag=True``, the sum per tag.
 	single window, samples 55 to 65, and in the heating- and cooling-medium temperatures,
 	the pressures and ``Flow-2``.
 
-``Flow-1`` carries 3% of the residual. The residual belongs to the cooling-medium
-temperature (19%), ``Flow-2`` (18%), ``Press-2`` (15%), the heating-medium temperature
-(14%) and ``Press-3`` (12%), and it is concentrated in a short window. The seven samples
-with the largest shares are samples 57 to 63, and the eleven samples from 55 to 65 together
-carry 80% of the total. A short disturbance in the heating, cooling and pressure systems
-during that stretch of the batch broke the usual relationship between these tags.
+``Flow-1`` carries 3% of the residual. It belongs instead to the cooling-medium
+temperature, ``Flow-2``, ``Press-2``, the heating-medium temperature and ``Press-3``, in
+that order, and 80% of it falls in the eleven samples from 55 to 65. A short disturbance in
+the heating, cooling and pressure systems over that stretch broke the usual relationship
+between these tags.
 
 The same event has been reported from a different model. Wold and co-workers (2009) monitor
 batch 49 on-line against a three-component model built on batches 1 to 36, and their
