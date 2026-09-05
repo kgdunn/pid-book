@@ -47,6 +47,7 @@ dictionary, the quality table and the list of those six tags.
 	from plotly.subplots import make_subplots
 	from process_improve.batch import (BatchMonitor, BatchPLS, contribution_at_time_plot, load_sbr, online_monitoring_plot,
 	                                   time_varying_loading_plot, unfolded_contribution_plot)
+	from process_improve.univariate import median_absolute_deviation
 
 	sbr = load_sbr()                                # https://openmv.net/file/sbr-batch-reactor.xlsx
 	trajectories = {batch_id: batch[sbr.trajectory_tags] for batch_id, batch in sbr.X.items()}
@@ -340,16 +341,22 @@ in units of their standard deviation at that sample, and records the first sampl
 which a tag stays more than two standard deviations away for 20 samples in a row, a tenth
 of the batch. A single crossing is not informative on its own, because a noisy tag such as
 the reactor temperature crosses the two-standard-deviation line now and then in every
-batch.
+batch. A robust version of the same distance uses the median of the other batches and
+1.4826 times their median absolute deviation (MAD), which the factor makes equal to the
+standard deviation for normally distributed values, smoothed with an EWMA
+(:math:`\lambda = 0.3`, the value of the :ref:`EWMA chart <monitoring_EWMA>` example).
 
 .. code-block:: python
 
 	others = np.stack([batch.to_numpy() for batch_id, batch in trajectories.items() if batch_id not in (34, 37)])
 	z = {batch_id: (trajectories[batch_id].to_numpy() - others.mean(axis=0)) / others.std(axis=0, ddof=1)
 	     for batch_id in (37, 34)}
+	spread = median_absolute_deviation(others, axis=0, scale="normal")             # 1.4826 x MAD
+	z_robust = {batch_id: pd.DataFrame((trajectories[batch_id].to_numpy() - np.median(others, axis=0)) / spread)
+	            .ewm(alpha=0.3, adjust=False).mean().to_numpy() for batch_id in (37, 34)}  # EWMA-smoothed
 
 	def sustained_departure(z_batch, n_sd=2.0, run=20):
-	    """First sample from which each tag stays more than `n_sd` standard deviations away for `run` samples in a row."""
+	    """First sample from which each tag stays more than `n_sd` scale units away for `run` samples in a row."""
 	    outside = (np.abs(z_batch) > n_sd).astype(int)      # 1 where the tag is outside the band, 0 inside
 	    onset = {}
 	    for j, tag in enumerate(sbr.trajectory_tags):
@@ -365,49 +372,39 @@ batch.
 
 	for batch_id in (37, 34):
 	    print(f"batch {batch_id}, first sustained departure:", sustained_departure(z[batch_id]))
+	    print("  robust, smoothed:", sustained_departure(z_robust[batch_id]))
 
 	fig = make_subplots(rows=2, cols=6, subplot_titles=sbr.trajectory_tags, shared_yaxes=True)
 	for row, (batch_id, colour) in enumerate([(37, AQUA), (34, ORANGE)], start=1):
 	    for col in range(6):
-	        # z, not its absolute value: the sign says whether the tag ran above or below the others.
-	        fig.add_trace(go.Scatter(y=z[batch_id][:, col], mode="lines", name=f"batch {batch_id}",
+	        # signed distances, not their absolute value: the sign says whether the tag ran above or below the others
+	        fig.add_trace(go.Scatter(y=z_robust[batch_id][:, col], mode="lines", name=f"batch {batch_id}, robust",
 	                                 line=dict(color=colour, width=1.5), showlegend=(col == 0)), row=row, col=col + 1)
+	        fig.add_trace(go.Scatter(y=z[batch_id][:, col], mode="lines", name=f"batch {batch_id}, mean and sd",
+	                                 line=dict(color=colour, width=1, dash="dash"), showlegend=(col == 0)), row=row, col=col + 1)
 	        fig.add_hrect(y0=-2, y1=2, fillcolor=GREY, opacity=0.15, line_width=0, row=row, col=col + 1)
 	        for level in (-2, 2):
-	            fig.add_hline(y=level, line_dash="dash", line_color=GREY, row=row, col=col + 1)
-	fig.update_layout(title="Distance from the other batches [standard deviations of the others]", height=420)
+	            fig.add_hline(y=level, line_dash="dot", line_color=GREY, row=row, col=col + 1)
+	fig.update_layout(title="Distance from the other batches: robust (solid) and mean-and-sd (dashed)", height=420)
 	fig.show()
 
 .. figure:: ../figures/batch/batch-case-sbr-departure.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Twelve small panels, one per tag for batch 37 in the top row and batch 34 in the bottom row, showing the signed distance of each trajectory from the other batches in standard deviations, with the band between plus and minus two standard deviations shaded; batch 37 falls below the band in latex density and conversion within the first 20 samples, and batch 34 rises above it in the two service temperatures and falls below it in the energy released at about sample 100, then in latex density and conversion later.
+	:alt: Twelve small panels, one per tag for batch 37 in the top row and batch 34 in the bottom row, each with a solid robust distance and a dashed standard-deviation distance from the other batches and the band between plus and minus two shaded; batch 37 falls below the band in latex density and conversion early, and batch 34 rises above it in the two service temperatures and falls below it in the energy released at about sample 100, then in latex density and conversion later.
 	:width: 1100px
 	:scale: 80
 	:align: center
 
 	Signed distance of batch 37 (top, aqua) and batch 34 (bottom, orange) from the other
-	batches for each of the six tags, in standard deviations of the other batches, with the
-	band between plus and minus two standard deviations shaded. Batch 37 falls below the
-	band in the latex density and the conversion within the first 20 samples. Batch 34 rises
-	above it in the cooling-water and jacket temperatures, and falls below it in the energy
-	released, at about sample 100, then in the latex density and the conversion some 20 to
-	25 samples later.
+	batches for each of the six tags. Solid: the robust distance, the median and 1.4826 MAD
+	of the others, EWMA-smoothed. Dashed: the distance from the mean of the others in units of
+	their standard deviation. The band between plus and minus two is shaded.
 
-The two batches leave the band at different times and in a different order. Batch 37
-departs in the conversion at sample 9 and in the latex density at sample 13, and stays away
-for the rest of the batch; none of its other four trajectories stays outside the band for
-20 samples in a row. Batch 34 departs first in the cooling-water temperature, the jacket
-temperature and the energy released, at samples 103 to 105, and in the conversion and the
-latex density at samples 123 and 129. The same impurity, introduced midway, shows up first
-in the energy released and the two service temperatures, and only afterwards in the extent
-of reaction.
-
-That order is consistent with a reaction that slowed down: less heat released leaves less
-for the temperature control system to remove, the jacket and cooling-water temperatures
-settle higher, and the conversion falls behind the other batches over the samples that
-follow. The dataset names its tags and no more. It does not say where on the reactor each
-temperature is measured, whether at a service inlet or a return, so that reading fits the
-order of the departures without being established by it.
+Batch 37 leaves the band in the conversion and the latex density within the first 20
+samples and stays out; batch 34 leaves it midway, first in the two service temperatures
+and the energy released and some 20 samples later in the conversion and the latex density.
+The robust distance moves the onsets by a few samples at most, and runs larger wherever one
+of the other batches is itself unusual at that sample.
 
 One fault, two places in the score plot
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -700,13 +697,26 @@ Among the 51 reference batches, 0.2% of the :math:`T^2` values and 1.2% of the S
 lie above their limits, mostly as isolated crossings: one batch holds a :math:`T^2` alarm
 for three samples, at its start, and 13 hold an SPE alarm for three consecutive samples
 somewhere in the batch, eight for five and three for ten, the longest run being 13 samples.
-The SPE of a single sample is the sum of six squared residuals compared with a limit
-estimated from 51 values at that sample, a noisy statistic against a noisy limit, and the
+The SPE of a single sample is the sum of six squared residuals, a noisy statistic, and the
 run length of an alarm is where the two faults part from the reference batches by a wide
 margin. The cumulative SPE, which takes the residual over every sample observed so far,
 gives the other side of the trade: a three-sample alarm in 3 of the 51 reference batches,
-and batch 34 flagged after 112 samples instead of 105. Nomikos (1995) smooths the per-sample
-limit over a window of neighbouring samples for the same reason.
+and batch 34 flagged after 112 samples instead of 105. Pooling the reference values of the
+neighbouring samples before each limit is fitted (``spe_window`` in ``BatchMonitor``)
+steadies the limit over the first few samples, where a fit to 51 values is at its roughest,
+but leaves these runs where they are. The limit fitted sample by sample changes by less
+than 2% from one sample to the next, so the runs come from the SPE of a batch being
+correlated from one sample to the next, not from a rough limit.
+
+.. code-block:: python
+
+	pooled = BatchMonitor(reference, conf_level=0.99, spe_statistic="instantaneous", spe_window=2).fit(normal)
+	pooled_traced = [pooled.monitor(t) for t in normal.values()]
+	print(f"limit pooled over five samples: {np.mean([r.spe_alarm.mean() for r in pooled_traced]):.2%} of the reference",
+	      f"SPE values above it; {sum(first_sustained(r.spe_alarm) is not None for r in pooled_traced)} of 51 batches",
+	      f"with a three-sample run; batch 34 flagged after {first_sustained(pooled.monitor(trajectories[34]).spe_alarm)} samples")
+	steps = np.abs(np.diff(monitor.spe_limit_over_time_[5:])) / monitor.spe_limit_over_time_[6:]
+	print(f"limit fitted sample by sample: median change from one sample to the next {np.median(steps):.1%}")
 
 The two batches are caught by different statistics, and that is not an accident of the
 data. The fault of batch 37 is a slower reaction from the start, and the direction of its
