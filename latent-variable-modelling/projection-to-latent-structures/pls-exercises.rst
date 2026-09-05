@@ -74,9 +74,10 @@ The taste of cheddar cheese
 		cheese = pd.read_csv(filename)
 		cheese.describe()
 
-		X = MCUVScaler().fit_transform(cheese.iloc[:, 1:5])
-		model_pca = PCA(n_components=4).fit(X)
-		print(model_pca.r2_cumulative_)
+		X = MCUVScaler().fit_transform(cheese.iloc[:, 1:4])
+		model_pca = PCA(n_components=3).fit(X)
+		print(model_pca.r2_cumulative_.round(3).to_list())
+		# [0.748, 0.882, 1.0]
 		loadings_P = model_pca.loadings_
 		scores_T = model_pca.scores_
 
@@ -86,7 +87,7 @@ The taste of cheddar cheese
 		cheese <- read.csv(filename)
 		summary(cheese)
 
-		model.pca <- prcomp(cheese[, 2:5],
+		model.pca <- prcomp(cheese[, 2:4],
 		                    scale=TRUE)
 		summary(model.pca)
 		loadings.P <- model.pca$rotation
@@ -268,7 +269,7 @@ Predicting final quality from on-line process data: LDPE system
 
 * 	:math:`K = 14`
 
-* 	:math:`K = 5`
+* 	:math:`M = 5`
 
 *	`Link to dataset website <https://openmv.net/info/LDPE>`_ and description of the data.
 

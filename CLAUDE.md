@@ -84,6 +84,78 @@ same edits do not have to be made again.
 - When a wording or style fix may recur elsewhere in the file, ask before
   changing the other occurrences rather than assuming.
 
+## Every Python case in the book runs in CI
+
+The book demonstrates its computations with the companion package
+`process-improve`. To keep the two in step, **every** `.. code-block:: python`
+and every `.. literalinclude::` of a `.py` file is executed by
+`tools/check_code_blocks.py`, locally with `make check-code` and in CI by
+`.github/workflows/check-code.yml`. The CI gate runs against the PyPI release
+(what readers install); an advisory job runs against the library's `main`
+branch so a coming rename is visible before it ships.
+
+The contract, which any new or edited code must satisfy:
+
+- **A chapter is one linear script.** Blocks run in toctree order, across all
+  the files of a chapter, sharing one namespace. A block may rely on names
+  defined in earlier blocks of the same chapter (that is encouraged: load data
+  once, fit once) and on nothing else. Imports go in the first block that needs
+  them.
+- **It must run against the released `process-improve[all]`**, on the data set
+  URL the text shows, without user input. Plots are fine (`fig.show()` is a
+  no-op under the checker); files written to disk are not.
+- **No deprecated library names.** A `DeprecationWarning`, or any warning class
+  the library defines (for instance `SpecificationWarning`), that points at the
+  book's own line fails the block. When the library renames something, the book
+  moves with it; do not paper over the warning.
+- **Echoed results are checked, and a mismatch fails.** A comment right after a
+  `print(...)` that repeats its output (`# [0.255, 0.367, ...]`) is compared with
+  what the block printed. `make check-code` and CI run with `--strict-output`, so
+  a number that stops reproducing fails the chapter even though the code still
+  runs; the bare CLI reports mismatches without failing, which is easier to work
+  through when several are in flight. Use this idiom for every number the prose
+  then quotes. Print the value in the shape the comment claims: a dict repr drops
+  a trailing zero, and a Series or array repr carries full precision, so
+  `print(f"{value:.2f}")` beats `print(value)` when the prose quotes two decimals.
+- **Markers are the exception, not the rule.** An RST comment on the line before
+  the directive (blank lines between are fine):
+
+  ```rst
+  .. code-check: skip pseudo-code showing the shape of the loop, not runnable
+  .. code-block:: python
+
+  .. code-check: requires pyoptex
+  .. code-block:: python
+
+  .. code-check: allow-warnings demonstrates the warning the reader will see
+  .. code-block:: python
+  ```
+
+  `skip` is for an illustrative fragment that is not meant to run; give the
+  reason. `requires` skips the block when the named module(s) are not
+  installed (`pyoptex` cannot coexist with `process-improve[all]`); write the
+  module names first and any explanation after a `--`. Never mark a block to
+  hide a failure; fix the code or the prose instead.
+
+  Written `.. code-check-file:` instead, on its own line anywhere in the file,
+  the same three apply to **every** block in that file. That is the right
+  granularity when one block's dependency decides the whole file: the blocks
+  share a namespace, so a file whose first block cannot run has nothing later
+  to run either. `mixed-level-profile-case-study.rst` uses it for `pyoptex`.
+  A per-block marker still wins for the block it sits above.
+- **Before pushing**, run the chapter you touched:
+  `make check-code-chapter CHAPTER=<dir>` (verbose, one line per block), or
+  `make check-code-file FILE=<path.rst>` for one file after the files that
+  precede it. `make check-code` runs everything in parallel. The PR body
+  reports the result. Always go through `make`: it resolves
+  `process-improve[all]` the way a reader's `pip install` does. Running the
+  checker inside a clone of the library instead uses that clone's dev
+  environment, which carries dev-only packages (`pyoptex` among them) and will
+  pass blocks that CI then fails.
+- **When the library changes**, the book PR follows in the same cycle. A
+  breaking rename in `process-improve` that reaches PyPI before the book is
+  updated turns the CI gate red for every book PR.
+
 ## Bump the version and citation date whenever you plan a PR
 
 This repository ships release metadata in three places that reusers and
@@ -330,11 +402,14 @@ For each `.. figure::` directive, insert a small
 
 ### Step 4 — Verify before committing
 
-1. Drop the chapter's code blocks into a `/tmp/check_*.py` script and
-   run it against the actual dataset (use the local CSV under
-   `/home/user/` or `/tmp/` if the sandbox blocks the external URL).
+1. Run the chapter through the checker:
+   `make check-code-chapter CHAPTER=<chapter-dir>`. It executes every
+   code block of the chapter in order against the installed library and
+   fails on tracebacks and on deprecation warnings that point at the book
+   (see "Every Python case in the book runs in CI" above).
 2. Confirm every number quoted in the prose (R², RMSEP, row counts,
-   table values) reproduces exactly.
+   table values) reproduces exactly. Echo each one in a comment after
+   the `print(...)` that produces it, so the checker compares it too.
 3. `make text` MUST succeed with **zero warnings**.
 4. `make html` MUST succeed AND
    `grep -r goatcounter _build/html/contents` MUST return zero hits.
@@ -348,8 +423,8 @@ For each `.. figure::` directive, insert a small
 - Push to the assigned `claude/...` branch.
 - Open a single non-draft PR per chapter against `main`. Body
   covers: what changed, what didn't, headline numbers verified,
-  `make text` / `make html` results. If the underlying analysis is
-  unchanged, say so explicitly.
+  `make check-code-chapter` / `make text` / `make html` results. If the
+  underlying analysis is unchanged, say so explicitly.
 - Subscribe to PR activity via
   `mcp__github__subscribe_pr_activity`. Respond to review comments
   and CI failures as they arrive; push small follow-up commits to

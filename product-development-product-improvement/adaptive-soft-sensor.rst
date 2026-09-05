@@ -214,8 +214,15 @@ model gives both statistics for every hour:
 
 .. code-block:: python
 
-	t2_lim = float(static.hotellings_t2_limit(conf_level=0.99))
-	spe_lim = float(static.update(vp[tags].to_numpy()[0]).spe_limit)   # fixed limit from the training data
+	# The limits are fixed by the training data (every adaptation rate is zero); the
+
+	# update() Bunch carries both, so one probe update reads them.
+
+	probe = static.update(vp[tags].to_numpy()[0])
+
+	t2_lim = float(probe.hotellings_t2_limit)
+
+	spe_lim = float(probe.spe_limit)
 	spe_cross = int((static_spe > spe_lim).sum())
 	print(f"99% T2 limit {t2_lim:.2f} | 99% SPE limit {spe_lim:.2f} "
 	      f"| SPE crossings {spe_cross} ({100 * spe_cross / len(vp):.1f}%)")

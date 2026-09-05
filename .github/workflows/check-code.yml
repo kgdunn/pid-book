@@ -1,0 +1,158 @@
+name: Check book code
+
+# Every Python case in the text is executed against process-improve, chapter by
+# chapter (tools/check_code_blocks.py). The `release` job is the gate: it uses
+# the PyPI release, which is what readers install. The `library-main` job runs
+# the same suite against the library's main branch and is advisory only; when it
+# fails and `release` passes, an unreleased library change is about to break the
+# book, and the fix belongs in a paired pid-book PR before that release ships.
+#
+# The `case-study` job covers the one page the `release` job cannot: the
+# mixed-level profile case study builds its design with pyoptex, whose plotly and
+# numba pins conflict with the [all] extra, so `release` skips it on a
+# `code-check-file: requires pyoptex` marker. This job installs what the chapter
+# tells the reader to install ([expt] plus pyoptex) and runs the page for real.
+# It is a gate rather than advisory: if that pair stops resolving, the install
+# instructions the chapter gives its readers no longer work, which is a book
+# problem worth failing on.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: check-code-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  release:
+    name: Against the PyPI release
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout pid-book
+        uses: actions/checkout@v4
+
+      - name: Checkout figures repo
+        # The book includes some scripts from kgdunn/figures verbatim
+        # (`.. literalinclude:: ../figures/...py`); they are executed too.
+        uses: actions/checkout@v4
+        with:
+          repository: kgdunn/figures
+          path: figures-src
+
+      - name: Symlink figures into the source tree
+        run: ln -s "$PWD/figures-src" figures
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Install Python dependencies
+        run: uv sync --frozen
+
+      - name: Restore the openmv.net data cache
+        # The checker fetches each data set once into .cache/openmv and reads
+        # it from disk afterwards; keep that across runs.
+        uses: actions/cache@v4
+        with:
+          path: .cache/openmv
+          key: openmv-${{ hashFiles('**/*.rst') }}
+          restore-keys: openmv-
+
+      - name: Run every Python case in the book
+        run: make check-code
+
+  library-main:
+    name: Against process-improve main (advisory)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    continue-on-error: true
+    steps:
+      - name: Checkout pid-book
+        uses: actions/checkout@v4
+
+      - name: Checkout figures repo
+        uses: actions/checkout@v4
+        with:
+          repository: kgdunn/figures
+          path: figures-src
+
+      - name: Symlink figures into the source tree
+        run: ln -s "$PWD/figures-src" figures
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Install Python dependencies
+        run: uv sync --frozen
+
+      - name: Restore the openmv.net data cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/openmv
+          key: openmv-${{ hashFiles('**/*.rst') }}
+          restore-keys: openmv-
+
+      - name: Run every Python case in the book against the library's main branch
+        run: make check-code CHECK_WITH='process-improve[all] @ git+https://github.com/kgdunn/process-improve@main'
+
+  case-study:
+    name: Mixed-level case study, with pyoptex
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout pid-book
+        uses: actions/checkout@v4
+
+      - name: Checkout figures repo
+        uses: actions/checkout@v4
+        with:
+          repository: kgdunn/figures
+          path: figures-src
+
+      - name: Symlink figures into the source tree
+        run: ln -s "$PWD/figures-src" figures
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Install Python dependencies
+        run: uv sync --frozen
+
+      - name: Restore the openmv.net data cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/openmv
+          key: openmv-${{ hashFiles('**/*.rst') }}
+          restore-keys: openmv-
+
+      - name: Run the chapter that holds the case study
+        run: |
+          make check-code-chapter \
+            CHAPTER=product-development-product-improvement \
+            CHECK_WITH='process-improve[expt]' \
+            CHECK_ALSO=pyoptex

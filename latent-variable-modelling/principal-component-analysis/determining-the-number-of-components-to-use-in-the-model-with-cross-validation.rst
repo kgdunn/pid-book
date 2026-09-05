@@ -120,6 +120,8 @@ fit the same eleven components. Their :math:`R^2` values agree to within :math:`
 every component, so whatever separates the :math:`Q^2` curves comes from the cross-validation and not
 from the model underneath it.
 
+.. code-check: allow-warnings the block scales before the call on purpose; see the note below it
+
 .. code-block:: python
 
 	import pandas as pd
@@ -128,6 +130,13 @@ from the model underneath it.
 	ldpe = pd.read_csv("https://openmv.net/file/LDPE.csv").iloc[:, 1:]
 	scaled = MCUVScaler().fit_transform(ldpe)
 
+	# The centred, unit-variance block is passed so that PRESS, and with it
+	# Q2, is on the same scale as the R2 values and as the Simca-P curve.
+	# The package accumulates PRESS in the units of the block it is given;
+	# on the raw block the Mw column alone holds 99.5% of the sum of
+	# squares, and its residuals would set the whole curve. The note after
+	# this block covers the warning some versions raise here.
+	#
 	# cv_scheme="ekf" is the element-wise k-fold scheme: scattered single
 	# cells of X are held out, and each is predicted from a model that
 	# never used it. n_repeats reshuffles the folds, so the spread of Q2
@@ -136,6 +145,21 @@ from the model underneath it.
 	                                 cv_scheme="ekf", n_repeats=5, random_state=42)
 	print(chosen.q2.round(3).to_list())
 	# [0.255, 0.367, 0.333, 0.3, 0.297, 0.186, 0.029, 0.126, 0.673, 0.844, 0.808]
+	print(chosen.q2_se.round(3).to_list())
+	# [0.015, 0.016, 0.022, 0.029, 0.04, 0.058, 0.067, 0.053, 0.017, 0.021, 0.014]
+
+.. note::
+
+	Some versions of ``process_improve`` raise a ``SpecificationWarning`` on the call above,
+	because the block was scaled before it was passed and the element-wise scheme scales again
+	inside every fold. The warning suggests passing the raw block instead. On these data that
+	changes what the curve measures rather than how it is computed: PRESS is accumulated in the
+	units of the block that was passed, ``Mw`` carries 99.5% of the raw sum of squares, and the
+	raw-block curve rises from :math:`-0.04` to :math:`0.94` without an interior maximum, which
+	is the :math:`Q^2` curve of ``Mw`` alone. The scaled block gives every variable the same
+	weight, which is what the rest of this section, and the Simca-P curve it is compared against,
+	assume. The warning is worth heeding on a block whose columns are already comparable, and on
+	a block like this one it is the scaling that has to come first.
 
 .. image:: ../../figures/pca/q2-across-packages.png
 	:alt: Cross-validated Q-squared from three implementations on the same LDPE data
@@ -144,8 +168,14 @@ from the model underneath it.
 	:align: center
 
 The shaded band on the element-wise curve is one standard error either side, taken across the five
-fold permutations. It is never wider than 0.01, so the shape of that curve is not an artefact of which
-cells happened to be held out together.
+fold permutations. That standard error, ``q2_se`` in the code block above, runs from 0.014 at eleven
+components to 0.067 at seven components, and is widest in the dip between six and eight components.
+Two features of the curve are large relative to it: the rise of 0.11 from one component to two, and
+the fall of 0.34 from two components to seven. Neither depends on which cells happened to be held
+out together. The gaps between two, three, four and five components (0.367, 0.333, 0.300 and 0.297)
+are each no more than about one to two standard errors, so the curve on its own does not separate
+those component counts from one another; it does place all of them well above the value at seven
+components.
 
 The two curves track each other over the first eight components. Both reach their highest value at two
 components, 0.34 for Simca-P and 0.37 for the element-wise scheme, and neither exceeds it again. That

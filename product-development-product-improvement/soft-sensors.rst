@@ -177,7 +177,9 @@ We build the model with PLS, using the Kappa number as the :math:`y`-variable an
 process tags as the :math:`\mathbf{X}` block. The ``process-improve`` package provides a ``PLS``
 class and an ``MCUVScaler`` for centring and scaling. The data are centred to zero mean and
 scaled to unit standard deviation before fitting: PLS scores and loadings are only interpretable
-in that form.
+in that form. The ``PLS`` class scales both blocks itself by default (``scale=True``); since the
+blocks are already standardised by ``MCUVScaler``, the model is fitted with ``scale=False`` so the
+data are not scaled a second time.
 
 .. code-block:: python
 
@@ -187,15 +189,15 @@ in that form.
 	scaler_x = MCUVScaler().fit(X)
 	scaler_y = MCUVScaler().fit(y)
 
-	model = PLS(n_components=2).fit(scaler_x.transform(X), scaler_y.transform(y))
+	model = PLS(n_components=2, scale=False).fit(scaler_x.transform(X), scaler_y.transform(y))
 
 The cumulative :math:`R^2_Y` measures how much of the Kappa variability the model accounts for as
 each latent variable is added:
 
 .. code-block:: python
 
-	>>> model.r2_cumulative_.values
-	array([0.350, 0.503])
+	print(model.r2_cumulative_.round(3).to_list())
+	# [0.35, 0.503]
 
 The first component picks up 35% of the Kappa variability, and the second adds another 15%, for a
 cumulative 50%. This is not a high-:math:`R^2_Y` model in absolute terms, but for a soft sensor
@@ -245,9 +247,10 @@ set:
 		train, test = df.iloc[:n_train], df.iloc[n_train:]
 		sx = MCUVScaler().fit(train[x_cols])
 		sy = MCUVScaler().fit(train[[y_col]])
-		m = PLS(n_components=2).fit(sx.transform(train[x_cols]), sy.transform(train[[y_col]]))
+		m = PLS(n_components=2, scale=False).fit(sx.transform(train[x_cols]),
+			sy.transform(train[[y_col]]))
 		y_hat_scaled = pd.DataFrame(
-			np.asarray(m.predict(sx.transform(test[x_cols])).y_hat),
+			np.asarray(m.predict(sx.transform(test[x_cols]))),
 			index=test.index, columns=[y_col])
 		y_hat = sy.inverse_transform(y_hat_scaled).values.ravel()
 		y_obs = test[y_col].values

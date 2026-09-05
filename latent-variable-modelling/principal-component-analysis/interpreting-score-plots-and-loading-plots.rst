@@ -62,11 +62,11 @@ As an example from the :ref:`food texture data <LVM_food_texture_example>` from 
 
 .. math::
 
-	t_{33,1} &= 0.46 \,\, x_\text{oil} - 0.47 \,\, x_\text{density} + 0.53 \,\, x_\text{crispy} - 0.50 \,\, x_\text{fracture}  + 0.15 \,\, x_\text{hardness}\\
-	t_{33,1} &= 0.46 \times -1.069 - 0.47 \times +2.148 + 0.53 \times  -2.546 - 0.50 \times 2.221 + 0.15 \times -1.162\\
-	t_{33,1} &= -4.2
+	t_{33,1} &= 0.46 \,\, x_\text{oil} - 0.48 \,\, x_\text{density} + 0.53 \,\, x_\text{crispy} - 0.50 \,\, x_\text{fracture}  + 0.15 \,\, x_\text{hardness}\\
+	t_{33,1} &= 0.46 \times -1.069 - 0.48 \times +2.148 + 0.53 \times  -2.546 - 0.50 \times 2.221 + 0.15 \times -1.162\\
+	t_{33,1} &= -4.16
 
-The :math:`K=5` terms that contribute to this value are illustrated as a bar plot, where the sum of the bar heights add up to :math:`-4.2`:
+The model itself reports :math:`t_{33,1} = -4.17`; the small gap comes from rounding the loadings to two decimals. The :math:`K=5` terms that contribute to this value are illustrated as a bar plot, where the sum of the bar heights add up to :math:`-4.17`:
 
 .. image:: ../../figures/examples/food-texture/pca-on-food-texture-score-t1-contribution-for-obs-33.png
 	:alt: Contribution of each variable to the first score of observation 33, all negative
