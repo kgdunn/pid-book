@@ -64,7 +64,7 @@ however, rank 55 batches on ten variables at once; that is what the model is for
 
 .. code-block:: python
 
-	GREY, ORANGE, BLUE = "#c8c8c8", "#c55a11", "#1f3d7a"       # figure colours, reused below
+	GREY, ORANGE, AQUA, BLUE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a"     # figure colours, reused below
 
 	def overlay(batches, tag, highlight):
 	    """One tag for every batch in grey, with the batches in `highlight` (id -> colour) drawn on top."""
@@ -111,43 +111,89 @@ batches. The aim is not a final model, but a first look at which batches stand o
 	print("R2 per component:", model_a.r2_per_component_.round(3).tolist())
 	print("R2 cumulative:", model_a.r2_cumulative_.round(3).tolist())
 	model_a.score_plot(settings={"show_labels": True}).show()
-	model_a.spe_plot(settings={"show_labels": True}).show()
 	spe = model_a.spe_.iloc[:, -1]                          # SPE of every batch after the second component
+	t2 = model_a.hotellings_t2_.iloc[:, -1]                 # ... and its Hotelling's T2
 	print(f"largest SPE: batch {spe.idxmax()} ({spe.max():.1f} against the 95% limit {model_a.spe_limit(conf_level=0.95):.1f})")
+	print("above the SPE limit:", sorted(spe.index[spe > model_a.spe_limit(conf_level=0.95)]))
+	print("above the T2 limit:", sorted(t2.index[t2 > model_a.hotellings_t2_limit(conf_level=0.95)]))
 
 The two components explain 38.3% and 17.6% of the variance in the unfolded matrix, 55.9%
 together. Two plots are enough to find the batches that differ.
 
 .. figure:: ../figures/batch/batch-case-dupont-model-a-scores.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: Score plot of model A with the 95% confidence ellipse; batches 50 to 55 lie far outside the ellipse and batch 49 sits near the origin among the other batches.
+	:alt: Score plot of model A with the 95% confidence ellipse; batches 50, 52, 53, 54 and 55 lie outside the ellipse, while batches 49 and 51 sit inside it among the other batches.
 	:width: 600px
 	:scale: 80
 	:align: center
 
-	Score plot of model A. Batches 50 to 55 (aqua) lie outside the 95% confidence ellipse,
-	far from the other batches. Batch 49 (orange) sits among the normal batches.
+	Score plot of model A. Batches 50, 52, 53, 54 and 55 (aqua) lie outside the 95%
+	confidence ellipse. Batches 49 and 51 (orange) sit inside it, among the other batches;
+	the next figure shows what separates them.
 
-The :ref:`score plot <LVM_interpreting_scores>` shows batches 50 to 55 far from the rest and
-outside the 95% confidence ellipse. Batches this far out pull the components towards
-themselves, so the model will have to be rebuilt without them once they have been
-examined. The :ref:`SPE plot <LVM-interpreting-SPE-residuals>` flags a different batch, 49,
-which sits in the score plot among the normal batches.
+The :ref:`score plot <LVM_interpreting_scores>` shows the last six batches away from the
+rest, five of them outside the 95% confidence ellipse. Batches this far out pull the
+components towards themselves, so the model will have to be rebuilt without them once they
+have been examined.
 
-.. figure:: ../figures/batch/batch-case-dupont-model-a-spe.png
+The score plot answers one question about a batch: how far it sits *along* the directions
+the model has found. The :ref:`SPE <LVM-interpreting-SPE-residuals>` answers a different
+one: how far it sits *away* from them, in directions the model has not described. Drawing
+the two against each other puts both questions in one figure. The horizontal axis is
+:ref:`Hotelling's T2 <LVM-Hotellings-T2>`, a single number summarising how extreme a batch
+is along the components, and the vertical axis is its SPE. Each has its own 95% limit, and
+the two limits divide the plot into quadrants.
+
+.. code-block:: python
+
+	def influence_plot(model, highlight, labels, conf_level=0.95):
+	    """Hotelling's T2 against SPE, one dot per batch, with both limits drawn."""
+	    t2, spe = model.hotellings_t2_.iloc[:, -1], model.spe_.iloc[:, -1]
+	    others = [batch_id for batch_id in t2.index if batch_id not in highlight]
+	    fig = go.Figure()
+	    fig.add_trace(go.Scatter(x=t2.loc[others], y=spe.loc[others], mode="markers", showlegend=False,
+	                             marker=dict(size=8, color=BLUE), text=others, hovertemplate="batch %{text}"))
+	    for batch_id, colour in highlight.items():
+	        fig.add_trace(go.Scatter(x=[t2.loc[batch_id]], y=[spe.loc[batch_id]], mode="markers",
+	                                 name=f"batch {batch_id}", marker=dict(size=12, color=colour)))
+	    fig.add_vline(x=model.hotellings_t2_limit(conf_level=conf_level), line_dash="dash", line_color=GREY)
+	    fig.add_hline(y=model.spe_limit(conf_level=conf_level), line_dash="dash", line_color=GREY)
+	    for batch_id in labels:
+	        fig.add_annotation(x=t2.loc[batch_id], y=spe.loc[batch_id], text=str(batch_id),
+	                           showarrow=False, xshift=13, yshift=9)
+	    fig.update_layout(xaxis_title="Hotelling's T\u00b2", yaxis_title="SPE", height=420)
+	    return fig
+
+	above_spe, above_t2 = [49, 51], [50, 52, 53, 54, 55]
+	influence_plot(model_a, highlight={**{b: AQUA for b in above_t2}, **{b: ORANGE for b in above_spe}},
+	               labels=above_spe + above_t2).show()
+
+.. figure:: ../figures/batch/batch-case-dupont-model-a-influence.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: SPE of every batch after two components with the 95% limit; batch 49 has the largest value, and batch 51 is also above the limit.
-	:width: 900px
+	:alt: Hotelling's T2 against SPE for the 55 batches, with both 95% limits; batches 49 and 51 are in the upper left with large SPE and small T2, and batches 50, 52, 53, 54 and 55 are in the lower right with large T2 and ordinary SPE.
+	:width: 620px
 	:scale: 80
 	:align: center
 
-	SPE of every batch after two components, with the 95% limit. Batch 49 (orange) has the
-	largest SPE, 39.3 against a limit of 29.1; batch 51 is also above the limit.
+	Hotelling's :math:`T^2` against the SPE for every batch, with both 95% limits. Batches 49
+	and 51 (orange) are above the SPE limit and inside the :math:`T^2` limit; batches 50, 52,
+	53, 54 and 55 (aqua) are the other way round. Colour marks which of the two limits the
+	batch exceeds.
 
-Batch 49 has the largest SPE of all batches, 39.3 against a 95% limit of 29.1. Its problem
-is not a large deviation along the main directions of variation, which is what the scores
-measure, but a break in the correlation structure that the two components describe. The
-scores and the SPE answer different questions, and both plots are needed.
+Batch 49 is alone in the upper left. It has the largest SPE of all batches, 39.3 against a
+95% limit of 29.1, and a :math:`T^2` of 0.4, one of the smallest in the set: an entirely
+ordinary batch along the two components, and an extreme one away from them. Its problem is
+not a large deviation along the main directions of variation, which is what the scores
+measure, but a break in the correlation structure that the two components describe. Batch
+51 sits in the same quadrant, with an SPE of 32.3 and a :math:`T^2` of 3.5. The other five
+of the last six batches are in the lower right: extreme along the components, with
+residuals that stay below the SPE limit.
+
+Either statistic can also be drawn against the batch number, which shows how it develops
+over a campaign. Drawing them against each other instead uses both axes for properties of
+the batch, and shows directly which of the two limits a batch exceeds. Whichever layout is
+used, both statistics are needed: a plot of one alone would have missed one of these two
+groups.
 
 Batch 49: which variables, and when
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -314,9 +360,9 @@ The reference model, and the batches it cannot see
 	kept_c = {batch_id: batch for batch_id, batch in kept_b.items() if batch_id not in second_group}
 	model_c = BatchPCA(n_components=3).fit(kept_c)
 	print("R2 per component:", model_c.r2_per_component_.round(3).tolist())
+	poor_quality = [38, 40, 41, 42]                         # known to have had poor final quality
 	model_c.score_plot(settings={"show_labels": True}).show()
-	model_c.spe_plot(settings={"show_labels": True}).show()
-	poor_quality = [38, 40, 41, 42]
+	influence_plot(model_c, highlight={b: ORANGE for b in poor_quality}, labels=poor_quality).show()
 	table = pd.DataFrame({"T2": model_c.hotellings_t2_.loc[poor_quality].iloc[:, -1],
 	                      "T2 limit": model_c.hotellings_t2_limit(conf_level=0.95),
 	                      "SPE": model_c.spe_.loc[poor_quality].iloc[:, -1],
@@ -325,14 +371,15 @@ The reference model, and the batches it cannot see
 
 .. figure:: ../figures/batch/batch-case-dupont-model-c.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: Scores and SPE of model C on 40 batches; batches 38, 40, 41 and 42 lie inside the confidence ellipse and below the SPE limit.
+	:alt: Scores and the influence plot of model C on 40 batches; batches 38, 40, 41 and 42 lie inside the confidence ellipse and, in the influence plot, among the ordinary batches below both limits.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
-	Scores (left) and SPE (right) of model C, built on 40 batches. Batches 38, 40, 41 and
-	42 (orange), which produced poor product, lie inside the 95% confidence ellipse and
-	below the SPE limit.
+	Scores (left) and Hotelling's :math:`T^2` against the SPE (right) of model C, built on 40
+	batches. Batches 38, 40, 41 and 42 (orange), which produced poor product, lie inside the
+	95% confidence ellipse and, in the influence plot, among the ordinary batches below both
+	limits.
 
 Model C, built on the 40 remaining batches, explains 37.5%, 11.4% and 6.4% of the variance
 with its three components, and its scores are spread more evenly than those of the first

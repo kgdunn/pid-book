@@ -53,7 +53,7 @@ dictionary, the quality table and the list of those six tags.
 
 .. code-block:: python
 
-	GREY, ORANGE, AQUA = "#c8c8c8", "#c55a11", "#1baf7a"       # figure colours, reused below
+	GREY, ORANGE, AQUA, BLUE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a"     # figure colours, reused below
 
 	def overlay(batches, tag, highlight):
 	    """One tag for every batch in grey, with the batches in `highlight` (id -> colour) drawn on top."""
@@ -105,7 +105,6 @@ of components; the usual :ref:`cross-validation <LVM-PLS-number-of-components>` 
 	r2x = np.diff([0.0, *model.r2_per_variable_.mean(axis=0)])     # R2 of the trajectories, per component
 	print("R2X per component:", r2x.round(3), " R2Y per component:", r2y.round(3))
 	model.score_plot(settings={"show_labels": True}).show()
-	model.spe_plot(settings={"show_labels": True}).show()
 	for batch_id in (34, 37):
 	    print(f"batch {batch_id}: T2 = {model.hotellings_t2_.loc[batch_id].iloc[-1]:.1f} (limit {model.hotellings_t2_limit(conf_level=0.95):.1f}),",
 	          f"SPE = {model.spe_.loc[batch_id].iloc[-1]:.1f} (limit {model.spe_limit(conf_level=0.95):.1f})")
@@ -129,23 +128,59 @@ batches and batch 34 the highest :math:`t_2`, and both are far outside the 95% c
 ellipse: their :ref:`Hotelling's T2 <LVM-Hotellings-T2>` values are 28.2 and 19.2 against a
 limit of 6.6.
 
-.. figure:: ../figures/batch/batch-case-sbr-spe.png
+The SPE measures the other thing a model can say about a batch: how far it sits away from
+the components, in directions the model has not described. Drawing it against
+:ref:`Hotelling's T2 <LVM-Hotellings-T2>`, which summarises how extreme the batch is along
+the components, puts both questions in one figure. Each axis carries its own 95% limit.
+
+.. code-block:: python
+
+	def influence_plot(model, highlight, labels, conf_level=0.95):
+	    """Hotelling's T2 against SPE, one dot per batch, with both limits drawn."""
+	    t2, spe = model.hotellings_t2_.iloc[:, -1], model.spe_.iloc[:, -1]
+	    others = [batch_id for batch_id in t2.index if batch_id not in highlight]
+	    fig = go.Figure()
+	    fig.add_trace(go.Scatter(x=t2.loc[others], y=spe.loc[others], mode="markers", showlegend=False,
+	                             marker=dict(size=8, color=BLUE), text=others, hovertemplate="batch %{text}"))
+	    for batch_id, colour in highlight.items():
+	        fig.add_trace(go.Scatter(x=[t2.loc[batch_id]], y=[spe.loc[batch_id]], mode="markers",
+	                                 name=f"batch {batch_id}", marker=dict(size=12, color=colour)))
+	    fig.add_vline(x=model.hotellings_t2_limit(conf_level=conf_level), line_dash="dash", line_color=GREY)
+	    fig.add_hline(y=model.spe_limit(conf_level=conf_level), line_dash="dash", line_color=GREY)
+	    for batch_id in labels:
+	        fig.add_annotation(x=t2.loc[batch_id], y=spe.loc[batch_id], text=str(batch_id),
+	                           showarrow=False, xshift=13, yshift=9)
+	    fig.update_layout(xaxis_title="Hotelling's T\u00b2", yaxis_title="SPE", height=420)
+	    return fig
+
+	spe, t2 = model.spe_.iloc[:, -1], model.hotellings_t2_.iloc[:, -1]
+	above_spe = sorted(spe.index[spe > model.spe_limit(conf_level=0.95)])
+	print("above the SPE limit:", above_spe, "  above the T2 limit:",
+	      sorted(t2.index[t2 > model.hotellings_t2_limit(conf_level=0.95)]))
+	influence_plot(model, highlight={34: ORANGE, 37: AQUA}, labels=[34, 37, *above_spe]).show()
+
+.. figure:: ../figures/batch/batch-case-sbr-influence.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: SPE of every batch after two components with the 95% limit; batches 34 and 37 are below the limit, and batches 8 and 16 are above it.
-	:width: 900px
+	:alt: Hotelling's T2 against SPE for the 53 batches, with both 95% limits; batches 34 and 37 are far to the right beyond the T2 limit and below the SPE limit, while batches 8 and 16 are in the upper left above the SPE limit.
+	:width: 620px
 	:scale: 80
 	:align: center
 
-	SPE of every batch after two components. Batches 34 (orange) and 37 (aqua) are below the
-	95% limit; batches 8 and 16 are above it.
+	Hotelling's :math:`T^2` against the SPE for every batch, with both 95% limits. Batches 34
+	(orange) and 37 (aqua) are far to the right and below the SPE limit. The batches the SPE
+	flags, 8, 15 and 16, are different batches, in the upper left.
 
-The SPE, on the other hand, flags neither of the faulty batches: 23.1 and 18.7 against a
-limit of 34.6. Two other batches, 8 and 16, are above the limit, which is within what a
-limit set at 95% allows for among 53 batches. The SPE of a batch model is computed from the
-residuals of the whole batch, all 1200 cells, so a deviation that the model can describe,
-a shift along its components, leaves little residual behind. The scores and the SPE answer
-different questions. The scores say that a batch moved in a direction the model knows; the
-SPE says that it moved in a direction the model does not know.
+The two faulty batches sit well to the right of the :math:`T^2` limit of 6.6 and below the
+SPE limit: their SPE values are 23.1 and 18.7 against a limit of 34.6. The batches the SPE
+does flag are different ones, in the upper left: batch 8 at 39.3, batch 16 at 35.3 and batch
+15 just on the limit at 34.6, all three with :math:`T^2` values below 2. Three batches at or
+above a limit set at 95% is within what that limit allows for among 53 batches.
+
+The SPE of a batch model is computed from the residuals of the whole batch, all 1200 cells,
+so a deviation that the model can describe, a shift along its components, leaves little
+residual behind. The scores and the SPE answer different questions. The scores say that a
+batch moved in a direction the model knows; the SPE says that it moved in a direction the
+model does not know.
 
 Where the model explains the trajectories
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

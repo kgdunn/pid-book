@@ -279,8 +279,27 @@ after scaling; the batch plots read it.
 	pca_x = PCA(n_components=2).fit(x_scaled)
 	print("batch PCA on X, R2 cumulative:", pca_x.r2_cumulative_.round(3).tolist())
 	pca_x.score_plot(settings={"show_labels": True}).show()
-	pca_x.spe_plot(settings={"show_labels": True}).show()
 	print("largest SPE:", pca_x.spe_.iloc[:, -1].nlargest(4).round(1).to_dict(), "95% limit:", round(float(pca_x.spe_limit(conf_level=0.95)), 1))
+
+	def influence_plot(model, highlight, labels, conf_level=0.95):
+	    """Hotelling's T2 against SPE, one dot per batch, with both limits drawn."""
+	    t2, spe = model.hotellings_t2_.iloc[:, -1], model.spe_.iloc[:, -1]
+	    others = [batch_id for batch_id in t2.index if batch_id not in highlight]
+	    fig = go.Figure()
+	    fig.add_trace(go.Scatter(x=t2.loc[others], y=spe.loc[others], mode="markers", showlegend=False,
+	                             marker=dict(size=8, color=BLUE), text=others, hovertemplate="batch %{text}"))
+	    for batch_id, colour in highlight.items():
+	        fig.add_trace(go.Scatter(x=[t2.loc[batch_id]], y=[spe.loc[batch_id]], mode="markers",
+	                                 name=f"batch {batch_id}", marker=dict(size=12, color=colour)))
+	    fig.add_vline(x=model.hotellings_t2_limit(conf_level=conf_level), line_dash="dash", line_color=GREY)
+	    fig.add_hline(y=model.spe_limit(conf_level=conf_level), line_dash="dash", line_color=GREY)
+	    for batch_id in labels:
+	        fig.add_annotation(x=t2.loc[batch_id], y=spe.loc[batch_id], text=str(batch_id),
+	                           showarrow=False, xshift=13, yshift=9)
+	    fig.update_layout(xaxis_title="Hotelling's T\u00b2", yaxis_title="SPE", height=420)
+	    return fig
+
+	influence_plot(pca_x, highlight={20: ORANGE, 51: AQUA}, labels=[20, 51, 41]).show()
 	time_varying_loading_plot(pca_x, component=1).show()
 	squared = pca_x.spe_contributions(x_scaled) ** 2           # a row of missing values for a batch with missing cells
 	spe_share = squared.div(squared.sum(axis=1), axis=0) * 100
@@ -293,20 +312,21 @@ after scaling; the batch plots read it.
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-pca.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Scores and SPE of the batch PCA on the trajectories; batch 20 is outside the confidence ellipse and has the largest SPE, and batch 51 is inside the ellipse but above the SPE limit, as is batch 41.
+	:alt: Scores and the influence plot of the batch PCA on the trajectories; batch 20 is outside the confidence ellipse and is the only batch above both limits, while batches 51 and 41 are above the SPE limit only.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
-	Scores (left) and SPE (right) of the batch PCA on the trajectories. Batch 20 (orange) is
-	outside the 95% confidence ellipse and has the largest SPE. Batch 51 (aqua), the
-	complete batch with the largest SPE, is inside the ellipse but above the SPE limit, as
-	is batch 41.
+	Scores (left) and Hotelling's :math:`T^2` against the SPE (right) of the batch PCA on the
+	trajectories. Batch 20 (orange) is outside the 95% confidence ellipse and is the only
+	batch above both limits. Batch 51 (aqua), the complete batch with the largest SPE, is
+	above the SPE limit and inside the :math:`T^2` limit, as is batch 41.
 
 Two components describe 34.9% of the batch-to-batch variation in the trajectories. Batch 20
-is outside the 95% confidence ellipse in the score plot and has the largest SPE, 77.5
-against a limit of 67.5. Batches 51 and 41 are above the limit as well, at 73.0 and 72.9,
-and batch 47 is just below it.
+is the only batch above both limits: its SPE of 77.5 is the largest of the 46 batches,
+against a limit of 67.5, and its :math:`T^2` of 12.1 is well beyond the limit of 6.7. It is
+both unusual along the components and poorly described by them. Batches 51 and 41 are above
+the SPE limit alone, at 73.0 and 72.9, and batch 47 is just below it.
 
 .. figure:: ../figures/batch/batch-case-fmc-loadings-p1.png
 	:source: batch/batch-case-fmc-figures.py
