@@ -393,9 +393,11 @@ The group sits at a mean :math:`t_2` of 15.0 and a mean :math:`t_3` of 14.8, whe
 40 batches average -3.0 on both and all 48 average zero by construction. ``TempC-1`` and
 ``Press-3`` carry most of that displacement on both components, and every one of the eight
 members contributes in the same direction on those two tags. ``TempH-1`` behaves
-differently: across the members it ranges from -3.8 to +2.4 and averages to almost nothing,
-so it is a feature of individual batches rather than of the group. Reading a single member
-as representative would have put it on the list.
+differently: its members' contributions take both signs on each component, from -3.8 to +6.3
+on :math:`t_2` and from -3.1 to +2.1 on :math:`t_3`, so the group means of 1.8 and -0.4 are set
+by a few members rather than shared by all eight. It is a feature of particular members rather
+than of the group as a whole, and reading a single member as representative would have put it
+on the list.
 
 The timing is as clear as the tag list. Samples 0 to 25 carry 66% of the :math:`t_2`
 contribution and 90% of the :math:`t_3` contribution, so the group differs from the average

@@ -519,7 +519,8 @@ separate the on-specification from the off-specification batches in the same way
 A second step is an on-line monitoring model, which tracks a running batch against the
 reference model; that step is deferred here until the missing cells in the trajectories
 have been dealt with, either by filling them in or by leaving the incomplete batches out of
-the reference set.
+the reference set. The :ref:`SBR case study <APPS_batch_case_sbr_online>` shows that step on
+a dataset without missing cells, with the prediction of the final quality as the batch runs.
 
 References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~
