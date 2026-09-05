@@ -45,6 +45,11 @@ changes how that one block is handled::
     .. code-check: requires <module ...>    run only when the module(s) import
     .. code-check: allow-warnings <reason>  attributed warnings do not fail it
 
+The same three, written ``.. code-check-file:``, apply to every block in the file.
+That is the right granularity when one block's dependency decides the whole file:
+the blocks share a namespace, so a file whose first block cannot run has nothing
+later to run either. A per-block marker still wins for the block it sits above.
+
 Usage
 -----
 ::
@@ -87,6 +92,9 @@ CACHE_DIR = Path(os.environ.get("PID_BOOK_DATA_CACHE", ROOT / ".cache" / "openmv
 EXCLUDED_DIRS = {"_build", "_static", "_templates", "docs", "figures", ".venv", ".git", "other", "temp", "DELETE"}
 
 MARKER_RE = re.compile(r"^\s*\.\.\s+code-check:\s*(?P<kind>skip|requires|allow-warnings)\b\s*(?P<arg>.*?)\s*$")
+FILE_MARKER_RE = re.compile(
+    r"^\s*\.\.\s+code-check-file:\s*(?P<kind>skip|requires|allow-warnings)\b\s*(?P<arg>.*?)\s*$"
+)
 CODE_BLOCK_RE = re.compile(r"^\s*\.\.\s+code-block::\s*python\s*$")
 LITERALINCLUDE_RE = re.compile(r"^\s*\.\.\s+literalinclude::\s*(?P<target>\S+)\s*$")
 OPTION_RE = re.compile(r"^\s*:(?P<name>[\w-]+):\s*(?P<value>.*?)\s*$")
@@ -162,6 +170,20 @@ def _marker_before(lines: list[str], idx: int) -> tuple[str | None, str]:
     return None, ""
 
 
+def _file_marker(lines: list[str]) -> tuple[str | None, str]:
+    """A ``.. code-check-file:`` directive applies to every block in the file.
+
+    Use it when one block's dependency decides the whole file: the blocks share a
+    namespace, so a file whose first block cannot run has nothing later to run either.
+    A per-block ``.. code-check:`` marker still wins for the block it sits above.
+    """
+    for line in lines:
+        m = FILE_MARKER_RE.match(line)
+        if m:
+            return m["kind"], m["arg"]
+    return None, ""
+
+
 def _resolve_include(rst_path: Path, target: str) -> Path:
     if target.startswith("/"):
         return (ROOT / target.lstrip("/")).resolve()
@@ -172,6 +194,7 @@ def extract_blocks(rst_path: Path) -> list[Block]:
     """Return the Python cases in one RST file, in document order."""
     lines = rst_path.read_text(encoding="utf-8").splitlines()
     n = len(lines)
+    file_marker, file_marker_arg = _file_marker(lines)
     blocks: list[Block] = []
     i = 0
     while i < n:
@@ -183,6 +206,8 @@ def extract_blocks(rst_path: Path) -> list[Block]:
             continue
         directive_indent = _indent_width(line)
         marker, marker_arg = _marker_before(lines, i)
+        if marker is None:
+            marker, marker_arg = file_marker, file_marker_arg
 
         # Directive options (":emphasize-lines: 3", ":lines: 1-10", ...).
         j = i + 1
@@ -430,8 +455,16 @@ def _format_exception(exc: BaseException) -> str:
     return text + "".join(traceback.format_exception_only(type(exc), exc))
 
 
+MODULE_NAME_RE = re.compile(r"^[A-Za-z_]\w*(\.[A-Za-z_]\w*)*$")
+
+
+def _required_modules(spec: str) -> list[str]:
+    """Module names of a ``requires`` argument; anything after ``--`` is the reason."""
+    return spec.split("--", 1)[0].split()
+
+
 def _missing_modules(spec: str) -> list[str]:
-    return [name for name in spec.split() if importlib.util.find_spec(name) is None]
+    return [name for name in _required_modules(spec) if importlib.util.find_spec(name) is None]
 
 
 def run_block(block: Block, namespace: dict, *, strict_output: bool = False) -> Outcome:
@@ -439,6 +472,14 @@ def run_block(block: Block, namespace: dict, *, strict_output: bool = False) -> 
     if block.marker == "skip":
         return Outcome(block, "skipped", f"skip: {block.marker_arg or 'no reason given'}")
     if block.marker == "requires":
+        names = _required_modules(block.marker_arg)
+        malformed = [name for name in names if not MODULE_NAME_RE.match(name)]
+        if not names or malformed:
+            detail = (
+                "malformed `requires` marker: expected module names, optionally followed by "
+                f"`-- <reason>`; got {block.marker_arg!r}"
+            )
+            return Outcome(block, "failed", detail)
         missing = _missing_modules(block.marker_arg)
         if missing:
             return Outcome(block, "skipped", f"requires {' '.join(missing)} (not installed)")
@@ -503,6 +544,7 @@ def format_report(unit: Unit, outcomes: list[Outcome], *, only_failures: bool = 
         f"{unit.name}: {len(outcomes)} blocks, {counts['passed']} passed, "
         f"{counts['skipped']} skipped, {counts['failed']} failed ({total_seconds:.0f}s)"
     ]
+    reported_skips: set[tuple[str, str]] = set()
     for o in outcomes:
         if o.status == "failed":
             lines.append(f"\nFAILED {o.block.label}")
@@ -517,7 +559,18 @@ def format_report(unit: Unit, outcomes: list[Outcome], *, only_failures: bool = 
                 lines.extend("    " + s for s in tail)
         elif not only_failures:
             if o.status == "skipped":
-                lines.append(f"SKIPPED {o.block.label}: {o.detail}")
+                same = (_relative(o.block.path), o.detail)
+                if same not in reported_skips:
+                    reported_skips.add(same)
+                    count = sum(
+                        1
+                        for other in outcomes
+                        if other.status == "skipped"
+                        and (_relative(other.block.path), other.detail) == same
+                    )
+                    suffix = f" ({count} blocks)" if count > 1 else ""
+                    where = _relative(o.block.path) if count > 1 else o.block.label
+                    lines.append(f"SKIPPED {where}{suffix}: {o.detail}")
             if o.output_mismatches:
                 lines.append(f"OUTPUT? {o.block.label}: expected but not printed: {o.output_mismatches}")
             for notice in o.notices:

@@ -129,13 +129,25 @@ The contract, which any new or edited code must satisfy:
 
   `skip` is for an illustrative fragment that is not meant to run; give the
   reason. `requires` skips the block when the named module(s) are not
-  installed (`pyoptex` cannot coexist with `process-improve[all]`). Never mark
-  a block to hide a failure; fix the code or the prose instead.
+  installed (`pyoptex` cannot coexist with `process-improve[all]`); write the
+  module names first and any explanation after a `--`. Never mark a block to
+  hide a failure; fix the code or the prose instead.
+
+  Written `.. code-check-file:` instead, on its own line anywhere in the file,
+  the same three apply to **every** block in that file. That is the right
+  granularity when one block's dependency decides the whole file: the blocks
+  share a namespace, so a file whose first block cannot run has nothing later
+  to run either. `mixed-level-profile-case-study.rst` uses it for `pyoptex`.
+  A per-block marker still wins for the block it sits above.
 - **Before pushing**, run the chapter you touched:
   `make check-code-chapter CHAPTER=<dir>` (verbose, one line per block), or
   `make check-code-file FILE=<path.rst>` for one file after the files that
   precede it. `make check-code` runs everything in parallel. The PR body
-  reports the result.
+  reports the result. Always go through `make`: it resolves
+  `process-improve[all]` the way a reader's `pip install` does. Running the
+  checker inside a clone of the library instead uses that clone's dev
+  environment, which carries dev-only packages (`pyoptex` among them) and will
+  pass blocks that CI then fails.
 - **When the library changes**, the book PR follows in the same cycle. A
   breaking rename in `process-improve` that reaches PyPI before the book is
   updated turns the CI gate red for every book PR.
