@@ -94,8 +94,8 @@ temperature, which is held within a narrow range in every batch.
 The batch PLS model
 ~~~~~~~~~~~~~~~~~~~
 
-``BatchPLS`` unfolds each batch into one row of 6 tags times 200 samples, 1200 columns,
-centres and scales every column, and fits a PLS model from that row to the five quality
+``BatchPLS`` unfolds each batch batchwise, into one row of 6 tags times 200 samples, 1200
+columns, centres and scales every column, and fits a PLS model from that row to the five quality
 attributes, which are also centred and scaled. Two components are used. As in the first
 case study, the aim of the first model is to see what is going on, not to settle the number
 of components; the usual :ref:`cross-validation <LVM-PLS-number-of-components>` can follow.

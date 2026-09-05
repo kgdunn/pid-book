@@ -107,6 +107,14 @@ cell the same weight, so the components describe how the batches deviate from th
 batch. The first model, called model A on this page, uses two components and all 55
 batches. The aim is not a final model, but a first look at which batches stand out.
 
+Batchwise unfolding is one of two ways to lay a three-way batch array out as a table. The
+other is observation-wise unfolding: one row per time sample of every batch and one column
+per tag. Centring that table removes the average of each tag rather than its average
+trajectory, so a model of it describes the shape of the trajectories, and a second,
+batchwise model of its scores is then needed to compare whole batches. The two layouts
+answer different questions, and Wold and co-workers (2009) set both out and compare them,
+including on this dataset. All three of these case studies unfold batchwise.
+
 .. code-block:: python
 
 	model_a = BatchPCA(n_components=2).fit(batches)
@@ -242,11 +250,21 @@ temperature (19%), ``Flow-2`` (18%), ``Press-2`` (15%), the heating-medium tempe
 (14%) and ``Press-3`` (12%), and it is concentrated in a short window. The seven samples
 with the largest shares are samples 57 to 63, and the eleven samples from 55 to 65 together
 carry 80% of the total. A short disturbance in the heating, cooling and pressure systems
-during that stretch of the batch broke the usual relationship between these tags. Nomikos
-and MacGregor report that the final quality of batch 49 was barely acceptable, which is
-consistent with a short event rather than a batch that was wrong throughout. In the raw
-data the cooling-medium temperature of batch 49 does fall away from the other batches after
-sample 60, a change that is easy to pass over until the contributions point at it.
+during that stretch of the batch broke the usual relationship between these tags.
+
+The same event has been reported from a different model. Wold and co-workers (2009) monitor
+batch 49 on-line against a three-component model built on batches 1 to 36, and their
+contribution plot at sample 57 names the heating- and cooling-medium temperatures and the
+pressures ``Press-2`` and ``Press-3`` as running too low from sample 57 until sample 65,
+with ``Press-2`` the largest contributor. Those are four of the five tags and the same
+window that the SPE contributions point at here, reached from a model built a different
+way, on all 55 batches and after they had finished.
+
+Nomikos and MacGregor report that the final quality of batch 49 was barely acceptable,
+which is consistent with a short event rather than a batch that was wrong throughout. In
+the raw data the cooling-medium temperature of batch 49 does fall away from the other
+batches after sample 60, a change that is easy to pass over until the contributions point
+at it.
 
 The score outliers: batches 50 to 55
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -333,7 +351,10 @@ same way, and here it is the more useful object: the question is what the eight 
 common, not what any one of them did. The columns are centred, so the model centre is the
 origin, and a group's mean row is its displacement from that centre. Contributions are
 linear in the row, so the mean of the members' contribution vectors is the contribution of
-the group mean, and it adds up to the group's mean score.
+the group mean, and it adds up to the group's mean score. A contribution is in general the
+weighted difference between a point and a reference point, and either of the two may be the
+average of a group; the reference used here is the model centre, which is the average of
+all 48 batches.
 
 .. code-block:: python
 
@@ -482,6 +503,11 @@ References and readings
 
 * Paul Nomikos, `Statistical process control of batch processes <https://literature.learnche.org/item/154/statistical-process-control-of-batch-processes>`_,
   Ph.D thesis, McMaster University, 1995.
+
+* Svante Wold, Nouna Kettaneh-Wold, John F. MacGregor and Kevin G. Dunn, "`Batch process
+  modeling and MSPC <https://literature.learnche.org/item/155/batch-process-modeling-and-mspc>`_",
+  *Comprehensive Chemometrics*, **2.10**, 163-197, 2009. Sets out the two unfolding layouts,
+  and analyses batch 49 of this dataset on-line.
 
 * The full list of readings on batch data is on the
   :ref:`batch process monitoring <APPS_batch_monitoring>` page.

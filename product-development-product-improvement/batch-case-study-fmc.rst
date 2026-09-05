@@ -13,8 +13,10 @@ An agricultural chemical is dried in an industrial batch dryer. Wet cake, the so
 with the solvent still embedded in it, is charged to the dryer, and the solvent is driven off
 and collected in a side tank. Chemical changes take place in the solid while it dries, so
 the drying step sets part of the product quality, not only its residual solvent. The recipe
-has three phases: the solvent is collected, the temperature is ramped, and the batch is
-cooled down. Operators can adjust some settings of the recipe. This is the case study of
+has three phases, each bounded by a landmark in the trajectories: solvent collection, from
+the start of the batch until the agitator is turned up to high speed; the temperature ramp,
+from there until the dryer temperature reaches its maximum; and cooling, from there to the
+end of the batch. Operators can adjust some settings of the recipe. This is the case study of
 Garcia-Munoz and co-workers (2003), and it is the most complete of the three batch case
 studies, because every kind of information about a batch is present.
 
@@ -69,15 +71,19 @@ and they carry the plant's disposition: batches numbered 1 to 33 were classed as
 build any model. As in the first case study, they are kept aside and compared with what the
 models find.
 
-The trajectories were aligned within each of the three phases before the data were
-archived, to 325 samples per batch. ``ClockTime``, the wall-clock time at each aligned
-sample, is carried along as an eleventh trajectory. After alignment it is no longer a clock
-but a record of how much each batch was stretched or compressed to fit the template, and
-that is information about the batch in its own right: a batch whose temperature ramp took
-longer than usual has a ``ClockTime`` that rises faster over that phase. Alignment of raw,
-unaligned batch data is a topic of its own; the ``batch_dtw`` function in ``process_improve``
-implements dynamic time warping for it, and the unaligned trajectories of this same dryer
-are bundled with the package as ``load_dryer``.
+Batch durations on this dryer vary widely, so the trajectories were aligned within each of
+the three phases before the data were archived, to 325 samples per batch. The first two
+phases were aligned against a maturity variable, a quantity that moves in one direction
+from the start of the phase to its end and can therefore be sampled at equal steps of
+itself in place of time; the third was stretched linearly in time. ``ClockTime``, the
+wall-clock time at each aligned sample, is carried along as an eleventh trajectory. After
+alignment it is no longer a clock but a record of how much each batch was stretched or
+compressed to fit the template, and that is information about the batch in its own right: a
+batch whose temperature ramp took longer than usual has a ``ClockTime`` that rises faster
+over that phase. Alignment of raw, unaligned batch data is a topic of its own; the
+``batch_dtw`` function in ``process_improve`` implements dynamic time warping for it, and
+the unaligned trajectories of this same dryer are bundled with the package as
+``load_dryer``.
 
 Thirteen batches have no chemistry measurements at all. The original study excluded them,
 and ``load_fmc`` returns their identifiers as ``missing_chemistry`` so that the exclusion
@@ -478,7 +484,9 @@ per variable, of how much that variable contributes to explaining the quality bl
 the components, scaled so that a value above one marks a variable of above-average
 importance; the super VIP applies the same idea to a whole block. It ranks the operating
 conditions first (1.10), the trajectories second (1.00) and the chemistry last (0.88), the
-same order the earlier models gave one block at a time.
+same order the earlier models gave one block at a time. That ordering is what the original
+study set out to establish: the plant had been looking to the incoming chemistry for the
+cause of poor product, and the models put the way the batch was operated ahead of it.
 
 The original study builds its monitoring and prediction tools on this model. The
 super-score plot places every batch in one space; the block scores say whether a batch is
@@ -495,10 +503,23 @@ trajectories with blocks of features extracted from them, grouped by what they d
 timing block, a temperature block, an impeller block (power, torque and agitator speed) and
 a pressure block, with the chemistry and the cake weight in a block of their own. A model
 built on feature blocks can be read phase by phase, and its contributions name a feature
-rather than a (tag, time) cell. A second step is an on-line monitoring model, which tracks a
-running batch against the reference model; that step is deferred here until the missing
-cells in the trajectories have been dealt with, either by filling them in or by leaving the
-incomplete batches out of the reference set.
+rather than a (tag, time) cell.
+
+This is the landmark feature approach: pick a handful of quantities that summarise each
+trajectory, such as the slope of the temperature over a phase or the duration of the phase
+itself, and use those as the columns in place of the trajectory. It is the simplest of the
+three approaches to set up, and it rests on the engineer's judgement about which landmarks
+matter, so a feature that is important but not obvious can be left out. It suits a process
+with distinct operational changes, which this dryer has, and less so one whose trajectories
+are smooth, such as the polymerization reactor of the
+:ref:`first case study <APPS_batch_case_dupont>`. Wold and co-workers (2009) build all
+three kinds of model on this dryer, landmark and both unfoldings, and their score plots
+separate the on-specification from the off-specification batches in the same way.
+
+A second step is an on-line monitoring model, which tracks a running batch against the
+reference model; that step is deferred here until the missing cells in the trajectories
+have been dealt with, either by filling them in or by leaving the incomplete batches out of
+the reference set.
 
 References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~
