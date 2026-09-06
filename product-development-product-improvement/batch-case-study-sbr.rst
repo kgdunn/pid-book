@@ -119,14 +119,16 @@ variance in the quality block; the second adds 12.7% and 6.9%.
 
 .. figure:: ../figures/batch/batch-case-sbr-scores.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Scores of the batch PLS model with the 95% confidence ellipse; batch 37 has the lowest t1 of all batches and batch 34 the highest t2, both far outside the ellipse.
+	:alt: Scores of the batch PLS model with the 95% confidence ellipse; batch 37 has the lowest t1 of all batches and batch 34 the highest t2, both far outside the ellipse; batch 4, in purple, sits near the centre.
 	:width: 600px
 	:scale: 80
 	:align: center
 
 	Scores of the batch PLS model. Batch 37 (aqua) has the lowest :math:`t_1` of all
 	batches and batch 34 (orange) the highest :math:`t_2`; both lie far outside the 95%
-	confidence ellipse.
+	confidence ellipse. Batch 4 (purple) is the batch nearest the average quality, used
+	:ref:`below <APPS_batch_case_sbr_online_prediction>` to show the prediction while the
+	batch runs.
 
 The score plot flags both faulty batches. Batch 37 has the lowest :math:`t_1` of all 53
 batches and batch 34 the highest :math:`t_2`, and both are far outside the 95% confidence
@@ -536,7 +538,7 @@ attributes, the prediction error falls from three standard deviations after 10 s
 
 Batch 4, the batch nearest the average quality, shows what the curves summarise: its
 prediction against the number of samples observed, with the prediction from the complete
-batch dashed, the measured value solid, and a band of two prediction errors at that sample
+batch dashed, the measured value solid, and a band of one prediction error at that sample
 (from the RMSEP curve; it is not a prediction interval).
 
 .. code-block:: python
@@ -544,12 +546,12 @@ batch dashed, the measured value solid, and a band of two prediction errors at t
 	near_average = 4
 	trace = model.predict_online_trace(trajectories[near_average])
 	for attribute in ("ParticleSize", "Composition"):
-	    band = 2 * rmsep_k[attribute]
+	    band = rmsep_k[attribute]
 	    fig = go.Figure()
 	    fig.add_trace(go.Scatter(x=trace.time[4:], y=(trace.y_hat[attribute] + band).iloc[4:], line=dict(width=0),
 	                             showlegend=False))
 	    fig.add_trace(go.Scatter(x=trace.time[4:], y=(trace.y_hat[attribute] - band).iloc[4:], fill="tonexty",
-	                             fillcolor="rgba(200, 200, 200, 0.35)", line=dict(width=0), name="two prediction errors"))
+	                             fillcolor="rgba(200, 200, 200, 0.35)", line=dict(width=0), name="one prediction error"))
 	    fig.add_trace(go.Scatter(x=trace.time[4:], y=trace.y_hat[attribute].iloc[4:], name="prediction so far",
 	                             line=dict(color=BLUE)))
 	    fig.add_hline(y=model.predictions_.loc[near_average, attribute], line_dash="dash", line_color=GREY,
@@ -565,14 +567,14 @@ batch dashed, the measured value solid, and a band of two prediction errors at t
 
 .. figure:: ../figures/batch/batch-case-sbr-online-prediction-batch-4.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Two panels of batch 4's evolving prediction against samples observed, with a shaded band of two prediction errors, a dashed line at the final prediction and a solid line at the measured value; the particle-size prediction starts well below the final value and settles on it in the second half of the batch.
+	:alt: Two panels of batch 4's evolving prediction against samples observed, with a shaded band of one prediction error, a dashed line at the final prediction and a solid line at the measured value; the particle-size prediction starts well below the final value and settles on it in the second half of the batch.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
 	The prediction for batch 4 as the batch is observed, for the particle size (left) and
 	the composition (right). Dashed: the prediction from the complete batch. Solid: the
-	measured value. Band: two prediction errors at that sample. For the particle size the two
+	measured value. Band: one prediction error at that sample. For the particle size the two
 	rules are 0.2 units apart and overlap at this scale; for the composition they are 0.0002
 	apart and separate.
 
