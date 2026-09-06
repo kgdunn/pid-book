@@ -73,33 +73,30 @@ the same ladder:
 The data
 ~~~~~~~~
 
-The `batch dryer dataset <https://openmv.net/info/batch-dryer>`_ is a workbook with the four
-blocks over 59 batches, numbered 2 to 71 with gaps. The numbering encodes the plant's
-disposition (good up to 33, abnormal from 34 to 61, high in residual solvent from 62), which
-plays no part in building the models and appears on the score plots as a colour and a marker
-shape per class, for the comparison afterwards.
+The `batch dryer dataset <https://openmv.net/info/batch-dryer>`_ holds the four blocks for
+59 batches, numbered 2 to 71 with gaps. The numbering encodes the plant's disposition (good
+up to 33, abnormal to 61, high in residual solvent beyond), which plays no part in the models
+and appears on the score plots as a colour and marker shape per class.
 
-Batch durations vary widely, so the trajectories were aligned within each phase before
-archiving, to 325 samples per batch: the first two phases against a maturity variable, a
-quantity that moves one way through the phase (the collector tank level, then the dryer
-temperature), and the cooling phase stretched linearly in time. The first phase ends at
-sample 175 and the ramp at sample 249.
+Batch durations vary widely, so the trajectories were aligned within each phase, to 325
+samples per batch: the first two phases against a maturity variable, a quantity that rises
+steadily through the phase (the collector tank level, then the dryer temperature), and the
+cooling phase linearly in time. The first phase ends at sample 175 and the ramp at 249.
 
-``ClockTime``, the wall-clock time at each aligned sample, is the eleventh trajectory. After
-alignment it records how much each batch was stretched or compressed, so a batch whose ramp
-took longer than usual has a ``ClockTime`` that rises faster over that phase. The
-`batch_dtw <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/preprocessing.py>`_ function in ``process_improve`` aligns raw batch data by dynamic time warping, and
-``load_dryer`` bundles this dryer's unaligned trajectories.
+``ClockTime``, the wall-clock time at each aligned sample, is the eleventh trajectory: it
+records how much each batch was stretched or compressed, so a batch whose ramp took longer
+than usual has a ``ClockTime`` that rises faster over that phase. `batch_dtw <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/preprocessing.py>`_
+in ``process_improve`` aligns raw batch data by dynamic time warping; ``load_dryer`` bundles
+this dryer's unaligned trajectories.
 
-Thirteen batches have no chemistry measurements. The original study left them out and
-worked with 44; ``load_fmc`` lists them as ``missing_chemistry``, and 46 batches remain
-here. Missing values remain in a few quality and chemistry cells and in the trajectories of
-ten batches.
+Thirteen batches have no chemistry measurements and are left out, as in the original study;
+``load_fmc`` lists them as ``missing_chemistry``, and 46 remain. A few quality and chemistry
+cells and the trajectories of ten batches still have missing values.
 
-The ``PCA``, ``PLS`` and `MBPLS <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/multivariate/_mbpls.py>`_ estimators of the ``multivariate`` module handle missing
-values through the :ref:`NIPALS algorithm <LVM_PCA_NIPALS_algorithm>`, so this case study
-uses them directly on the trajectories unfolded with ``dict_to_wide``. The ``BatchPCA`` and
-``BatchPLS`` classes of the earlier case studies require complete data.
+The ``PCA``, ``PLS`` and `MBPLS <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/multivariate/_mbpls.py>`_ estimators handle missing values through the
+:ref:`NIPALS algorithm <LVM_PCA_NIPALS_algorithm>`, so this case study uses them directly
+on the trajectories unfolded with ``dict_to_wide``; ``BatchPCA`` and ``BatchPLS`` need
+complete data.
 
 .. code-block:: python
 
