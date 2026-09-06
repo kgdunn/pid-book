@@ -37,9 +37,12 @@ Four blocks of data describe each batch:
 
 * :math:`\mathbf{Z}_\text{chem}`, the chemistry of the wet cake before the batch: eleven
   measurements, ``Z1`` to ``Z11``.
-* :math:`\mathbf{Z}_\text{op}`, the operating conditions of the batch: a level, two
-  temperatures, four recipe timings, a temperature slope and the weight of the cake, nine
-  values in all.
+* :math:`\mathbf{Z}_\text{op}`, nine values the original study calls the operating
+  conditions: the weight of the cake charged, which is known before the batch starts, and
+  eight landmarks read off the batch's own trajectories when they were aligned: the
+  collector tank level and the dryer temperature at the end of the first phase, the peak
+  dryer temperature, the length of each of the three phases and of the high-speed
+  agitation, and the slope of the temperature ramp.
 * :math:`\mathbf{X}`, the ten trajectories over the batch, and an eleventh described below.
 * :math:`\mathbf{Y}`, eight final quality attributes: seven numbered attributes, ``Y1`` to
   ``Y11`` with gaps, and the residual solvent concentration ``SolventConc``. The original
@@ -79,8 +82,10 @@ phases were aligned against a maturity variable, a quantity that moves in one di
 from the start of the phase to its end and can therefore be sampled at equal steps of
 itself in place of time: the collector tank level for the solvent-collection phase and the
 dryer temperature for the ramp, each between its own start and end value in that batch.
-The cooling phase was stretched linearly in time. ``ClockTime``, the
-wall-clock time at each aligned sample, is carried along as an eleventh trajectory. After
+The cooling phase was stretched linearly in time. In the aligned data the first phase ends
+at sample 175, where the agitator steps up to high speed, and the ramp at sample 249, the
+peak of the dryer temperature, so the cooling phase is the last 75 samples. ``ClockTime``,
+the wall-clock time at each aligned sample, is carried along as an eleventh trajectory. After
 alignment it is no longer a clock but a record of how much each batch was stretched or
 compressed to fit the template, and that is information about the batch in its own right: a
 batch whose temperature ramp took longer than usual has a ``ClockTime`` that rises faster
@@ -93,8 +98,8 @@ Thirteen batches have no chemistry measurements at all. The original study exclu
 batches without a chemistry analysis and worked with 44; ``load_fmc`` returns the
 identifiers of the thirteen as ``missing_chemistry`` so that the exclusion can be
 reproduced, and 46 batches remain. They still contain genuine missing values: 19 cells
-in the quality block, one in the chemistry block, and 1220 cells in the trajectories of ten
-batches, where a measurement is absent for a stretch of the batch. The ``PCA``, ``PLS`` and
+in the quality block, one in the chemistry block, and 1340 cells in the eleven trajectories
+of ten batches, where the record has gaps. The ``PCA``, ``PLS`` and
 ``MBPLS`` estimators of the ``multivariate`` module handle missing values through the
 :ref:`NIPALS algorithm <LVM_PCA_NIPALS_algorithm>`, which is why this case study uses them
 directly, after unfolding the trajectories with ``dict_to_wide``, instead of the
@@ -106,6 +111,7 @@ complete data.
 	import numpy as np
 	import pandas as pd
 	import plotly.graph_objects as go
+	from plotly.subplots import make_subplots
 	from process_improve.batch import dict_to_wide, load_fmc, time_varying_loading_plot, unfolded_contribution_plot
 	from process_improve.multivariate import PCA, PLS, MCUVScaler
 	from process_improve.multivariate.methods import MBPLS
@@ -117,10 +123,14 @@ complete data.
 	incomplete = [batch_id for batch_id, batch in X.items() if batch.isna().any().any()]
 	print(len(X), "batches kept; missing cells: Y", int(Y.isna().sum().sum()), "Zchem", int(Zchem.isna().sum().sum()),
 	      "X in batches", incomplete)
+	average = pd.concat(X.values()).groupby(level=0).mean()                  # the average trajectory of every tag
+	agitator = average["Agitator"]
+	print(int((agitator > (agitator.min() + agitator.max()) / 2).idxmax()), int(average["D-Temp"].idxmax()))   # phase ends
+	# 175 249
 
 .. code-block:: python
 
-	GREY, ORANGE, AQUA, BLUE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a"     # figure colours, reused below
+	GREY, ORANGE, AQUA, BLUE, PURPLE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a", "#6f42c1"     # figure colours
 
 	def overlay(batches, tag, highlight):
 	    """One tag for every batch in grey, with the batches in `highlight` (id -> colour) drawn on top."""
@@ -288,25 +298,29 @@ in its chemistry.
 The trajectories alone
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The trajectories are unfolded batchwise with ``dict_to_wide``: one row per batch of 10 tags
-times 325 samples, 3250 columns, the layout the ``BatchPCA`` class uses internally.
-``ClockTime`` could be carried as an eleventh trajectory. On this page it is left out of the
-trajectory block, so that the block holds the ten process measurements
-only; the timing information enters the later multiblock model through the recipe timings
-of :math:`\mathbf{Z}_\text{op}`. Including it is a change of one line. ``MCUVScaler``
-returns flat column labels, so the two-level (tag, sequence) column index is re-attached
-after scaling; the batch plots read it.
+The trajectories are unfolded batchwise with ``dict_to_wide``: one row per batch of 11 tags
+times 325 samples, 3575 columns, the layout the ``BatchPCA`` class uses internally. The
+eleventh tag is ``ClockTime``, so that how fast each batch moved through each phase is part
+of what the models see. ``MCUVScaler`` returns flat column labels, so the two-level (tag,
+sequence) column index is re-attached after scaling; the batch plots read it.
 
 .. code-block:: python
 
-	wide = dict_to_wide({batch_id: batch.drop(columns="ClockTime") for batch_id, batch in X.items()})
+	wide = dict_to_wide(X)                # the ten process tags and ClockTime: 11 x 325 = 3575 columns per batch
 	x_scaled = MCUVScaler().fit_transform(wide)
 	x_scaled.columns = wide.columns       # MCUVScaler returns flat labels; the batch plots need the (tag, sequence) index
-	print("unfolded trajectories:", wide.shape, "with", int(wide.isna().sum().sum()), "missing cells")
+	print(list(wide.shape), int(wide.isna().sum().sum()))       # batches x columns; missing cells
+	# [46, 3575] 1340
 	pca_x = PCA(n_components=2).fit(x_scaled)
-	print("batch PCA on X, R2 cumulative:", pca_x.r2_cumulative_.round(3).tolist())
+	print(pca_x.r2_per_component_.round(3).tolist())            # R2 of the trajectory block, per component
+	# [0.231, 0.146]
 	scores(pca_x, pca_x.r2_per_component_).show()
-	print("largest SPE:", pca_x.spe_.iloc[:, -1].nlargest(4).round(1).to_dict(), "95% limit:", round(float(pca_x.spe_limit(conf_level=0.95)), 1))
+	t2, spe = pca_x.hotellings_t2_.iloc[:, -1], pca_x.spe_.iloc[:, -1]
+	t2_limit, spe_limit = pca_x.hotellings_t2_limit(conf_level=0.95), pca_x.spe_limit(conf_level=0.95)
+	both = sorted(t2.index[(t2 > t2_limit) & (spe > spe_limit)])            # above both limits
+	spe_only = sorted(spe.index[(spe > spe_limit) & (t2 <= t2_limit)])      # above the SPE limit only
+	print(both, spe_only)
+	# [20] [41, 51]
 
 	def influence_plot(model, highlight, labels, conf_level=0.95):
 	    """Hotelling's T2 against SPE, one dot per batch, with both limits drawn."""
@@ -326,51 +340,55 @@ after scaling; the batch plots read it.
 	    fig.update_layout(xaxis_title="Hotelling's T\u00b2", yaxis_title="SPE", height=420)
 	    return fig
 
-	influence_plot(pca_x, highlight={20: ORANGE, 51: AQUA}, labels=[20, 51, 41]).show()
+	influence_plot(pca_x, highlight={20: ORANGE, 41: AQUA}, labels=[20, 41, 51]).show()
 	time_varying_loading_plot(pca_x, component=1).show()
 	squared = pca_x.spe_contributions(x_scaled) ** 2           # a row of missing values for a batch with missing cells
 	spe_share = squared.div(squared.sum(axis=1), axis=0) * 100
 	complete = spe_share.dropna(how="all").index
 	worst = pca_x.spe_.loc[complete].iloc[:, -1].idxmax()
-	print("largest SPE among the complete batches: batch", worst)
+	print(worst)                                               # the complete batch with the largest SPE
+	# 41
 	unfolded_contribution_plot(spe_share, batch_id=worst, by_tag=True).show()
 	by_time = spe_share.loc[worst].groupby(level="sequence").sum()
-	print(f"batch {worst}: share of the SPE in the first 50 samples = {by_time.loc[:49].sum():.0f}%")
+	print(f"{by_time.loc[250:].sum():.0f}")                     # share of the SPE in the cooling phase, samples 250 to 324
+	# 49
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-pca.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Scores and the influence plot of the batch PCA on the trajectories; batch 20 is outside the confidence ellipse and is the only batch above both limits, while batches 51 and 41 are above the SPE limit only.
+	:alt: Scores and the influence plot of the batch PCA on the trajectories; batch 20 is outside the confidence ellipse and is the only batch above both limits, while batches 41 and 51 are above the SPE limit only.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
 	Scores (left) and Hotelling's :math:`T^2` against the SPE (right) of the batch PCA on the
 	trajectories. Batch 20 (orange) is outside the 95% confidence ellipse and is the only
-	batch above both limits. Batch 51 (aqua), the complete batch with the largest SPE, is
-	above the SPE limit and inside the :math:`T^2` limit, as is batch 41.
+	batch above both limits. Batch 41 (aqua), the complete batch with the largest SPE, is
+	above the SPE limit and inside the :math:`T^2` limit, as is batch 51.
 
-Two components describe 34.9% of the batch-to-batch variation in the trajectories. Batch 20
-is the only batch above both limits: it has the largest SPE of the 46 batches and a
-:math:`T^2` well beyond its limit, so it is both unusual along the components and poorly
-described by them. Batches 51 and 41 are above the SPE limit alone, and batch 47 is just
+Two components describe 37.6% of the batch-to-batch variation in the trajectories. Batch 20
+is the only batch above both limits, with a :math:`T^2` twice its limit and an SPE next to
+the largest of the 46 batches, so it is both unusual along the components and poorly
+described by them. Batches 41 and 51 are above the SPE limit alone, and batch 47 is just
 below it.
 
 .. figure:: ../figures/batch/batch-case-fmc-loadings-p1.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: The first loading of the batch PCA over the batch, one panel per tag; the loading is positive and nearly constant for the collector tank level, negative through the first phase for the dryer pressure and the jacket temperature set point, and changes sign within the batch for the dryer temperature.
+	:alt: The first loading of the batch PCA over the batch, one panel per tag; the loading is positive and nearly constant for the collector tank level and, after the first 50 samples, for the clock time, negative through the first phase for the dryer pressure and the jacket temperature set point, and changes sign within the batch for the dryer temperature.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
 	Loading :math:`\mathbf{p}_1` of the batch PCA over the batch, one panel per tag. The
-	loading is positive and nearly constant for the collector tank level, so :math:`t_1`
-	is largely a measure of how much solvent a batch collected. The dryer pressure, the
-	jacket temperature set point and the dryer temperature have loadings of both signs
-	within the batch.
+	loading is positive and nearly constant for the collector tank level, and for the clock
+	time after the first 50 samples, so :math:`t_1` is largely a measure of how much solvent
+	a batch collected and how much clock time it used. The dryer pressure, the jacket
+	temperature set point and the dryer temperature have loadings of both signs within the
+	batch.
 
 The loading of the first component is positive and nearly constant for the collector tank
-level over the whole batch: a batch with a high :math:`t_1` collected more solvent than
-average at every point of the batch. The other tags have loadings that change sign within
+level over the whole batch, and for the clock time once the batch is under way: a batch with
+a high :math:`t_1` collected more solvent than average at every point of the batch and took
+more clock time to reach each point. The other tags have loadings that change sign within
 the batch, with the dryer pressure negative through the solvent-collection phase and the
 dryer temperature negative in the first phase and positive in the ramp and cooling phases.
 
@@ -378,28 +396,27 @@ Contribution plots are only defined for batches with complete trajectories. A mi
 has no residual and no contribution, and ``process_improve`` returns a row of missing values
 for such a batch. Batch 20 is one of the ten batches with missing samples, so it is examined
 through the :ref:`raw trajectory overlay <APPS_batch_case_fmc_overlay>` at the start of this
-case study: it ran hot in the first phase and took longer in the second. Batch 51 is the
+case study: it ran hot in the first phase and took longer in the second. Batch 41 is the
 complete batch with the largest SPE, and its SPE contributions can be drawn. As in the
 :ref:`first case study <APPS_batch_case_dupont>`, the vector has one entry per (tag, time)
-cell, here :math:`K = 10` tags by :math:`J = 325` time samples.
+cell, here :math:`K = 11` tags by :math:`J = 325` time samples.
 
-.. figure:: ../figures/batch/batch-case-fmc-batch-51-spe-contributions.png
+.. figure:: ../figures/batch/batch-case-fmc-batch-41-spe-contributions.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Three panels for batch 51: the share of the SPE carried by each unfolded cell, largest in the dryer temperature set point, the jacket temperature and its set point; the shares summed per tag; and the shares summed per sample, concentrated in the first 50 samples of the batch.
+	:alt: Three panels for batch 41: the share of the SPE carried by each unfolded cell, largest in the differential pressure through the ramp and in the jacket temperature set point through the cooling phase; the shares summed per tag; and the shares summed per sample, half of them in the cooling phase.
 	:width: 800px
 	:scale: 80
 	:align: center
 
-	Top: the share of the SPE of batch 51 carried by each (tag, time) cell. Middle: the same
-	shares summed per tag. Bottom: summed per sample. The dryer temperature set point, the
-	jacket temperature and its set point carry about two thirds of the residual, half of
-	which lies in the first 50 samples of the batch.
+	Top: the share of the SPE of batch 41 carried by each (tag, time) cell. Middle: the same
+	shares summed per tag. Bottom: summed per sample. The differential pressure and the
+	jacket temperature set point carry three quarters of the residual, and half of it lies
+	in the cooling phase.
 
-The residual of batch 51 belongs to the dryer temperature set point (27%), the jacket
-temperature (24%) and the jacket temperature set point (18%), and half of it lies in the
-first 50 samples of the batch. The set points of batch 51 were handled differently from the
-other batches at the start of the solvent-collection phase, and the jacket temperature
-followed them.
+The residual of batch 41 belongs to the differential pressure (39%) and the jacket
+temperature set point (38%), and half of it lies in the cooling phase: the differential
+pressure of batch 41 ran away from the other batches through the temperature ramp, and its
+jacket temperature set point was set differently from theirs through the cooling phase.
 
 Trajectories to quality
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -407,19 +424,24 @@ Trajectories to quality
 .. code-block:: python
 
 	pls_x = PLS(n_components=2, scale=False).fit(x_scaled, y_scaled)
-	print("batch PLS X -> Y, R2Y cumulative:", pls_x.r2_cumulative_.round(3).tolist())
+	print(pls_x.r2_cumulative_.round(3).tolist())               # R2 of the quality block, cumulative
+	# [0.266, 0.41]
 	scores(pls_x, explained_x(pls_x)).show()
 	t1 = pls_x.score_contributions(x_scaled, component=1)
 	unfolded_contribution_plot(t1, batch_id=13).show()
-	print("batch 13, t1 contributions per tag:", t1.loc[13].groupby(level="tag", sort=False).sum().round(1).to_dict())
-	for tag in ("D-Temp", "CTankLvl", "Power", "J-Temp-SP"):
+	print(t1.loc[13].groupby(level="tag", sort=False).sum().nsmallest(4).round(1).to_dict())   # batch 13's four largest
+	# {'ClockTime': -8.1, 'CTankLvl': -8.0, 'D-Temp': -4.7, 'J-Temp-SP': -4.2}
+	for tag in ("D-Temp", "CTankLvl", "ClockTime", "J-Temp-SP"):
 	    overlay(X, tag, {13: ORANGE, 5: AQUA, 7: BLUE}).show()
-	print("collector tank level at the end of the batch:", {batch_id: round(float(X[batch_id]["CTankLvl"].iloc[-1])) for batch_id in (13, 5, 7)})
+	print({batch_id: round(float(X[batch_id]["CTankLvl"].iloc[-1])) for batch_id in (13, 5, 7)})   # collector level at the end
+	# {13: 52, 5: 87, 7: 77}
+	print({batch_id: int(X[batch_id]["ClockTime"].iloc[174]) for batch_id in (13, 5, 7)})         # clock time when phase 1 ends
+	# {13: 29, 5: 113, 7: 62}
 	pls_x.predictions_vs_observed_plot(y_observed=y_scaled, variable="SolventConc").show()
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-pls.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Left, the scores of the batch PLS model from the trajectories to the quality block with batch 13 at the low end of t1 and batches 5 and 7 near each other; right, the contributions of batch 13 to t1 summed per tag, all negative and led by the collector tank level.
+	:alt: Left, the scores of the batch PLS model from the trajectories to the quality block with batch 13 at the low end of t1 and batches 5 and 7 on the other side; right, the contributions of batch 13 to t1 summed per tag, all negative and led by the clock time and the collector tank level.
 	:width: 1000px
 	:scale: 80
 	:align: center
@@ -427,35 +449,36 @@ Trajectories to quality
 	Left: scores of the batch PLS model from the trajectories to the quality block, with
 	batch 13 (orange) and batches 5 and 7 (aqua) marked. Right: the contributions of batch
 	13 to :math:`t_1`, summed per tag; every tag contributes in the same direction and the
-	collector tank level leads.
+	clock time and the collector tank level lead.
 
-The trajectories explain 39.2% of the quality block after two components, more than the
+The trajectories explain 41.0% of the quality block after two components, more than the
 initial conditions did (26.2% at best for a single block). Batch 13 is at the low end of
-:math:`t_1`, and its contributions are all of the same sign, with the collector tank level
-(-9.0), the dryer temperature (-5.3) and the jacket temperature set point (-4.8) leading.
-Batches 5 and 7 are near each other in the score plot, at a moderate :math:`t_1` and a
-negative :math:`t_2`, and are drawn in the same overlay.
+:math:`t_1`, and its contributions are all of the same sign, with the clock time (-8.1) and
+the collector tank level (-8.0) leading, then the dryer temperature (-4.7) and the jacket
+temperature set point (-4.2). Batches 5 and 7 lie on the other side of :math:`t_1`, among
+the batches classed abnormal, although both were classed good; they are drawn in the same
+overlay, and the block scores of the final model come back to them.
 
 .. _APPS_batch_case_fmc_overlay_13:
 
 .. figure:: ../figures/batch/batch-case-fmc-raw-batches-13-5-7.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Four trajectories of the 46 batches in grey with batches 13 in orange, 5 in aqua and 7 in blue; batch 13 collected less solvent than almost every other batch, drew less agitator power through the first phase and cooled faster at the end of the batch.
+	:alt: Four trajectories of the 46 batches in grey with batches 13 in orange, 5 in aqua and 7 in blue; batch 13 collected less solvent than almost every other batch, reached the end of the first phase in less clock time than most, and cooled faster at the end of the batch.
 	:width: 900px
 	:scale: 80
 	:align: center
 
 	Four trajectories of the 46 batches (grey) with batches 13 (orange), 5 (aqua) and 7
 	(blue) drawn on top. Batch 13 collected less solvent than almost every other batch,
-	drew less agitator power through the first phase and cooled faster at the end of the
-	batch.
+	reached the end of the first phase in less clock time than most, and cooled faster at
+	the end of the batch.
 
 The :ref:`overlay of these three batches <APPS_batch_case_fmc_overlay_13>` shows what the
 contributions of batch 13 refer to. Its collector tank level
 levelled off at 52 units, against 77 units for batch 7, 87 units for batch 5 and up to 117
-units for the batches that collected the most; its agitator power ran below the other
-batches through the solvent-collection phase, 118 units on average against 135; and its
-dryer temperature fell faster than any other batch in the cooling phase. Batch 13 was
+units for the batches that collected the most; its first phase took 29 clock samples,
+against 62 for batch 7 and 113 for batch 5; and its dryer temperature fell faster than any
+other batch in the cooling phase. Batch 13 was
 classed as a good batch, so a batch at the end of a component is not necessarily a bad one.
 The component describes a direction of variation in the trajectories that is related to
 quality, and batch 13 is the batch furthest along it. The observed-against-predicted plot
@@ -467,7 +490,7 @@ All three blocks: batch multiblock PLS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The final model joins the two initial-condition blocks and the unfolded trajectory block in
-one multiblock PLS model. The trajectory block enters as 3250 columns; dividing each block
+one multiblock PLS model. The trajectory block enters as 3575 columns; dividing each block
 by the square root of its number of columns keeps it from drowning out the eleven chemistry
 columns and the nine operating columns.
 
@@ -475,9 +498,12 @@ columns and the nine operating columns.
 
 	blocks = {"Zchem": Zchem, "Zop": Zop, "X": wide}
 	mb = MBPLS(n_components=2).fit(blocks, Y)
-	print("batch MBPLS, R2Y cumulative:", mb.r2_y_cumulative_.round(3).tolist())
-	print("R2X per block after two components:", mb.r2_x_per_block_cumulative_.iloc[:, -1].round(3).to_dict())
-	print("super VIP per block:", mb.super_vip_.round(2).to_dict())
+	print(mb.r2_y_cumulative_.round(3).tolist())                # R2 of the quality block, cumulative
+	# [0.37, 0.472]
+	print(mb.r2_x_per_block_cumulative_.iloc[:, -1].round(3).to_dict())   # R2 of each block after two components
+	# {'Zchem': 0.233, 'Zop': 0.304, 'X': 0.259}
+	print(mb.super_vip_.round(2).to_dict())                     # super VIP per block
+	# {'Zchem': 0.86, 'Zop': 1.07, 'X': 1.06}
 	fig, r2y = mb.super_score_plot(), mb.r2_y_per_component_.to_numpy()
 	fig.update_layout(xaxis_title=f"super t1 [R2Y {r2y[0]:.1%}]", yaxis_title=f"super t2 [R2Y {r2y[1]:.1%}]").show()
 	mb.super_weights_bar_plot(component=1).show()
@@ -496,24 +522,157 @@ columns and the nine operating columns.
 	of each block (orange). Right: observed and fitted residual solvent concentration, with
 	batch 13 marked.
 
-The combined model explains 46.8% of the quality block after two components, against 39.2%
+The combined model explains 47.2% of the quality block after two components, against 41.0%
 for the trajectories alone and 36.4% for the two initial-condition blocks together. The
-components describe 24.3% of the chemistry block, 30.8% of the operating-condition block
-and 21.7% of the trajectory block. The Variable Importance in Projection (VIP) is a summary,
+components describe 23.3% of the chemistry block, 30.4% of the operating-condition block
+and 25.9% of the trajectory block. The Variable Importance in Projection (VIP) is a summary,
 per variable, of how much that variable contributes to explaining the quality block across
 the components, scaled so that a value above one marks a variable of above-average
-importance; the super VIP applies the same idea to a whole block. It ranks the operating
-conditions first (1.10), the trajectories second (1.00) and the chemistry last (0.88), the
-same order the earlier models gave one block at a time. That ordering is what the original
+importance; the super VIP applies the same idea to a whole block. It puts the operating
+conditions (1.07) and the trajectories (1.06) level and the chemistry last (0.86), the
+order the earlier models gave one block at a time. That ordering is what the original
 study set out to establish: the plant had been looking to the incoming chemistry for the
 cause of poor product, and the models put the way the batch was operated ahead of it.
 
 The original study builds its monitoring and prediction tools on this model. The
-super-score plot places every batch in one space; the block scores say whether a batch is
-unusual in its chemistry, its operation or its trajectories; the contributions of a batch
-in the trajectory block, drawn with ``unfolded_contribution_plot``, name the tags and the
-phase; and the predicted quality attributes are available as soon as a batch ends, before
-the laboratory results.
+super-score plot places every batch in one space; the contributions of a batch in the
+trajectory block, drawn with ``unfolded_contribution_plot``, name the tags and the phase;
+and the predicted quality attributes are available as soon as a batch ends, before the
+laboratory results. The block scores, which say whether a batch is unusual in its
+chemistry, its operation or its trajectories, are read in the next section.
+
+.. _APPS_batch_case_fmc_block_scores:
+
+The block scores, and four batches whose trajectories look off-specification
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A multiblock model has a score plot for every block, not only the super-score plot. The
+block scores of a batch say where it sits when only its chemistry, only its operating
+conditions or only its trajectories are considered, and the three plots need not agree.
+
+.. code-block:: python
+
+	groups = pd.Series(disposition.astype(str), index=Y.index)            # the plant's classes, from the quality section
+	fig = make_subplots(rows=1, cols=3, subplot_titles=[f"{name} block" for name in blocks])
+	for col, (name, block_scores) in enumerate(mb.block_scores_.items(), start=1):
+	    for label, colour in (("good", BLUE), ("abnormal", PURPLE), ("high solvent", AQUA)):
+	        members = [b for b in block_scores.index if groups[b] == label]
+	        fig.add_trace(go.Scatter(x=block_scores.loc[members].iloc[:, 0], y=block_scores.loc[members].iloc[:, 1],
+	                                 mode="markers", name=f"classed {label}", marker=dict(color=colour), text=members,
+	                                 hovertemplate="batch %{text}", showlegend=col == 1), row=1, col=col)
+	    r2 = np.diff([0.0, *mb.r2_x_per_block_cumulative_.loc[name]])
+	    fig.update_xaxes(title_text=f"block t1 [{r2[0]:.1%}]", row=1, col=col)
+	    fig.update_yaxes(title_text=f"block t2 [{r2[1]:.1%}]", row=1, col=col)
+	fig.update_layout(height=420).show()
+
+	def nearer_group(block_scores):
+	    """Place each batch with the group, good or abnormal, whose average point is nearer in this score plot."""
+	    centres = {name: block_scores.loc[groups == name].mean() for name in ("good", "abnormal")}
+	    return pd.DataFrame({name: ((block_scores - centre) ** 2).sum(axis=1) for name, centre in centres.items()}).idxmin(axis=1)
+
+	placed = pd.DataFrame({name: nearer_group(block_scores) for name, block_scores in mb.block_scores_.items()})
+	with_abnormal = [b for b in placed.index if groups[b] == "good" and placed.loc[b, "X"] == "abnormal"]
+	print(with_abnormal, placed.loc[with_abnormal, ["Zchem", "Zop"]].eq("good").all(axis=1).to_dict())
+	# [2, 3, 5, 6, 7] {2: True, 3: True, 5: False, 6: True, 7: True}
+	anomalous = [2, 3, 6, 7]
+	print(mb.super_scores_.iloc[:, 0].groupby(groups).mean().round(2).to_dict(), mb.super_scores_.loc[anomalous].iloc[:, 0].round(2).to_dict())
+	# {'abnormal': -0.55, 'good': 0.36, 'high solvent': 0.19} {2: 0.31, 3: 0.14, 6: 0.17, 7: 0.18}
+
+.. figure:: ../figures/batch/batch-case-fmc-block-scores.png
+	:source: batch/batch-case-fmc-figures.py
+	:alt: Three score plots side by side, one per block of the batch multiblock PLS, with the batches coloured by the plant's disposition; batches 2, 3, 6 and 7, classed good, sit among the batches classed abnormal in the trajectory block and among the good ones in the chemistry and operating-condition blocks.
+	:width: 1100px
+	:scale: 80
+	:align: center
+
+	Block scores of the batch multiblock PLS: the chemistry block (left), the operating-condition
+	block (middle) and the trajectory block (right), coloured by the plant's disposition.
+	Batches 2, 3, 6 and 7 (orange) were classed good; in the trajectory block they sit among
+	the batches classed abnormal (purple), in the other two blocks among the good ones (blue).
+
+In the trajectory block the batches classed abnormal lie at negative :math:`t_1` and the
+good ones at positive :math:`t_1`, and four batches classed good lie among the abnormal
+ones: 2, 3, 6 and 7. In both initial-condition blocks the same four lie among the good
+batches, and in the quality PCA at the start of this case study they are inside the good
+group. Their trajectories have the features of an off-specification batch, and their product
+was on-specification.
+
+To make that reading reproducible, each batch is placed, block by block, with the group
+whose average point is nearer in that block's score plot. Five batches classed good are
+placed with the abnormal batches by the trajectory block, and four of them with the good
+batches by both initial-condition blocks. The fifth, batch 5, is placed with the abnormal
+batches by the operating-condition block as well and is left aside. On the super score the
+four lie between the two groups, and nothing marks them out; a batch that is unusual in one
+block and ordinary in the others is visible only in the block score plots.
+
+.. code-block:: python
+
+	x_scores = mb.block_scores_["X"]
+	abnormal = x_scores.loc[groups == "abnormal"]
+	neighbours = sorted({int(b) for a in anomalous for b in ((abnormal - x_scores.loc[a]) ** 2).sum(axis=1).nsmallest(2).index})
+	print(neighbours)                                          # the two nearest abnormal batches of each of the four
+	# [42, 43, 44, 47, 50]
+	contributions = mb.score_contributions(blocks, component=1)
+	x_by_tag = contributions["X"].T.groupby(level="tag", sort=False).sum().T
+	print(x_by_tag.loc[anomalous].mean().nsmallest(3).round(2).to_dict())     # the four batches' largest trajectory contributions
+	# {'CTankLvl': -0.07, 'ClockTime': -0.03, 'J-Temp-SP': -0.02}
+	print(x_by_tag.loc[neighbours].mean().nsmallest(3).round(2).to_dict())    # their neighbours'
+	# {'ClockTime': -0.07, 'J-Temp-SP': -0.03, 'CTankLvl': -0.03}
+	move = contributions["Zop"].loc[anomalous].mean() - contributions["Zop"].loc[neighbours].mean()
+	print(move.round(2)[move.abs() >= 0.01].to_dict())         # Zop: from the neighbours' average to the four's average
+	# {'Level1': -0.05, 'Temp1': 0.02, 'Time4': 0.05, 'Time2': 0.06, 'Time3': 0.11, 'TempSlope': 0.06, 'WgtCake': -0.05}
+	fig = go.Figure(go.Bar(x=list(move.index), y=move, marker_color=BLUE))
+	fig.update_layout(title="Operating conditions: from the neighbours' average to the four batches' average",
+	                  yaxis_title="Contribution to the block t1", height=340).show()
+	for tag in ("CTankLvl", "ClockTime", "D-Temp", "D-Temp-SP"):
+	    overlay(X, tag, {**{b: AQUA for b in neighbours}, **{b: ORANGE for b in anomalous}}).show()
+	keys = ["WgtCake", "Level1", "Temp1", "Temp2", "Time2", "Time3", "Time4"]
+	print(Zop.loc[anomalous, keys].mean().round(0).astype(int).to_dict())          # the four batches
+	# {'WgtCake': 7076, 'Level1': 75, 'Temp1': 40, 'Temp2': 86, 'Time2': 24, 'Time3': 50, 'Time4': 25}
+	print(Zop.loc[neighbours, keys].mean().round(0).astype(int).to_dict())         # their neighbours
+	# {'WgtCake': 6787, 'Level1': 66, 'Temp1': 33, 'Temp2': 85, 'Time2': 32, 'Time3': 38, 'Time4': 34}
+	print(round(np.mean([X[b]["D-Temp-SP"].max() for b in anomalous]), 1), round(np.mean([X[b]["D-Temp-SP"].max() for b in neighbours]), 1))
+	# 86.9 87.2
+
+.. figure:: ../figures/batch/batch-case-fmc-anomalous.png
+	:source: batch/batch-case-fmc-figures.py
+	:alt: Left, the contribution from the neighbours' average to the four batches' average in the operating-condition block, positive for the length of the cool-down, the length and slope of the ramp and the high-speed agitation, negative for the collector level and the cake weight; right, four raw trajectories with the four batches in orange and their neighbours in aqua, running together in the collector level and the clock time, with the same peak set point.
+	:width: 1100px
+	:scale: 80
+	:align: center
+
+	Left: the contribution from the average point of the five neighbours to the average point
+	of the four batches, in the operating-condition block. Right: four raw trajectories, with
+	the four batches (orange) and their nearest abnormal neighbours (aqua) over the other
+	batches (grey). The two groups run together in the collector level and the clock time,
+	and their peak temperature set points are the same.
+
+What puts the four with the abnormal batches is what puts their neighbours there: the
+collector tank level, the clock time and the jacket temperature set point carry the
+largest contributions to the trajectory block score in both groups, and the overlays show
+the two groups running together, with a heavy charge, a high collector level and a slow
+first phase.
+
+What separates the four from their neighbours lies in the operating-condition block. The
+contribution from the neighbours' average point to the four's, the same construction as the
+group-to-centre contribution of the :ref:`first case study <APPS_batch_case_dupont>`, is
+carried by the length of the cooling phase (``Time3``), the length and the slope of the
+temperature ramp (``Time2``, ``TempSlope``) and the length of the high-speed agitation
+(``Time4``); the cake weight and the collector level pull the other way. In the recipe's own
+units, the four ramped in 24 clock samples against 32 for their neighbours and cooled for 50
+against 38, and their peak temperature set point was the same, 86.9 against 87.2. The
+difference is not a set point that was moved but how long each phase was run.
+
+Read together: the four batches began like an off-specification batch, with a heavy charge
+and a slow first phase, were run differently through the second and third phases, and
+yielded on-specification product. Whether the later phases were run that way to correct for
+the first, the record does not say; the original study reports only that the peak
+temperature set point was adjusted from batch to batch. Nor does the model say that a
+shorter ramp and a longer cool-down would bring a slow batch on-specification. It describes
+how the batches that were run co-varied, not cause and effect (Nomikos and MacGregor,
+1995), so that reading is a hypothesis for a designed experiment, not a conclusion of the
+model. The original study found four such batches as well, with the same reading of their
+operating conditions.
 
 Where to go next
 ~~~~~~~~~~~~~~~~
@@ -527,7 +686,9 @@ rather than a (tag, time) cell.
 
 This is the landmark feature approach: pick a handful of quantities that summarise each
 trajectory, such as the slope of the temperature over a phase or the duration of the phase
-itself, and use those as the columns in place of the trajectory. It is the simplest of the
+itself, and use those as the columns in place of the trajectory. The operating-condition
+block of this case study is already such a block, since eight of its nine columns are
+landmarks of the trajectories. It is the simplest of the
 three approaches to set up, and it rests on the engineer's judgement about which landmarks
 matter, so a feature that is important but not obvious can be left out. It suits a process
 with distinct operational changes, which this dryer has, and less so one whose trajectories
@@ -560,6 +721,11 @@ References and readings
 * Theodora Kourti, Paul Nomikos and John F. MacGregor, "`Analysis, monitoring and fault
   diagnosis of batch processes using multiblock and multiway PLS <https://literature.learnche.org/item/33/analysis-monitoring-and-fault-diagnosis-of-batch-processes-using-multiblock-and-multiway-pls>`_",
   *Journal of Process Control*, **5**, 277-284, 1995.
+
+* Paul Nomikos and John F. MacGregor, "`Multivariate SPC charts for monitoring batch
+  processes <https://literature.learnche.org/item/34/multivariate-spc-charts-for-monitoring-batch-processes>`_",
+  *Technometrics*, **37**, 41-59, 1995. Its closing discussion sets out why a batch model
+  describes correlation, not cause and effect.
 
 * The full list of readings on batch data is on the
   :ref:`batch process monitoring <APPS_batch_monitoring>` page.
