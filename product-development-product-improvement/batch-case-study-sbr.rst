@@ -281,10 +281,10 @@ came from.
 
 Batch 37 sits at the low end of :math:`t_1` because its conversion and its latex density
 were below average, and the contribution is spread over the whole batch: each fifth of the
-batch carries between 15% and 26% of the total, which is what a fault present from the
-first sample looks like. The :ref:`raw trajectory overlay <APPS_batch_case_sbr_overlay>` at
-the start of this case study agrees. The impurity slowed the reaction from the moment the
-batch began.
+batch carries between 15% and 26% of the total, which is what a fault that is present at
+the start of the batch would look like. The
+:ref:`raw trajectory overlay <APPS_batch_case_sbr_overlay>` at the start of this case
+study agrees. The impurity slowed the reaction from the moment the batch began.
 
 Batch 34: the same fault, from the middle of the batch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
