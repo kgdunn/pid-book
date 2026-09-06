@@ -135,11 +135,14 @@ complete data.
 
 	GREY, ORANGE, AQUA, BLUE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a"                  # figure colours
 	PURPLE, MAGENTA, BAND = "#6f42c1", "#b03a78", "#e9edf4"                                # ... and the shading behind bars
+	DARK_GREY = "#8c8c8c"                                                                  # the phase-separator lines
 	STYLES = {"good": (BLUE, "circle"), "abnormal": (PURPLE, "triangle-up"), "high solvent": (MAGENTA, "square")}
 
 	def overlay(batches, tag, highlight):
-	    """One tag for every batch in grey, with the batches in `highlight` (id -> colour) drawn on top."""
+	    """One tag for every batch in grey, the batches in `highlight` (id -> colour) on top, the phase ends marked."""
 	    fig = go.Figure()
+	    for x in phase_ends:
+	        fig.add_vline(x=x, line_color=DARK_GREY, line_dash="dash", line_width=1)
 	    for batch_id, batch in batches.items():
 	        if batch_id not in highlight:
 	            fig.add_trace(go.Scatter(y=batch[tag], mode="lines", line=dict(color=GREY, width=1), showlegend=False))
@@ -156,7 +159,7 @@ complete data.
 
 .. figure:: ../figures/batch/batch-case-fmc-raw-trajectories.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Four trajectories of the 46 batches in grey with batch 20 in orange; the dryer temperature of batch 20 sits well above the others through the first 170 samples, and its ClockTime rises steeply between samples 200 and 240.
+	:alt: Four trajectories of the 46 batches in grey with batch 20 in orange, with dashed vertical lines at the ends of the first two phases; the dryer temperature of batch 20 sits well above the others through the first 170 samples, and its ClockTime rises steeply between samples 200 and 240.
 	:width: 900px
 	:scale: 80
 	:align: center
@@ -165,7 +168,8 @@ complete data.
 	dryer temperature of batch 20 sat well above the other batches through the whole
 	solvent-collection phase, and its ``ClockTime`` rises steeply between samples 200 and
 	240, where its temperature ramp took longer than usual. The gaps in the orange line are
-	missing samples.
+	missing samples. The dashed lines mark the ends of the first two phases, at samples 175
+	and 249.
 
 The batch chosen for the overlay, batch 20, is one to keep in mind. Its dryer temperature
 averaged 33.8 units over the first 170 samples, the solvent-collection phase, against 23.6
@@ -468,21 +472,27 @@ samples.
 	first, second = phase_ends
 	print(f"{by_time.loc[:first - 1].sum():.0f} {by_time.loc[first:second].sum():.0f} {by_time.loc[second + 1:].sum():.0f}")   # per phase
 	# 58 31 11
+	fig = go.Figure(go.Bar(x=list(by_time.index), y=by_time, marker_color=BLUE))
+	for x in phase_ends:
+	    fig.add_vline(x=x, line_color=ORANGE, line_width=1.5)
+	fig.update_layout(title="Batch 20: share of the SPE per sample", xaxis_title="Sample [aligned time]",
+	                  yaxis_title="Share of SPE [%]", height=320).show()
 	overlay(X, "DryPress", {20: ORANGE}).show()
 	print(round(X[20]["DryPress"].iloc[:first].mean()), round(average["DryPress"].iloc[:first].mean()))   # phase 1: batch 20, average
 	# 85 37
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-20-spe-contributions.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Three panels for batch 20: the share of the SPE carried by each unfolded cell, blank between samples 34 and 109 in every tag but the collector tank level where the record has gaps, and largest in the dryer pressure through the first phase; the shares summed per tag, half of them in the dryer pressure; and the shares summed per sample, most of them in the first phase.
+	:alt: Three panels for batch 20: the share of the SPE carried by each unfolded cell, blank between samples 34 and 109 in every tag but the collector tank level where the record has gaps, and largest in the dryer pressure through the first phase; the shares summed per tag, half of them in the dryer pressure; and the shares summed per sample with orange lines at the phase ends, most of the share in the first phase.
 	:width: 800px
 	:scale: 80
 	:align: center
 
 	Top: the share of the SPE of batch 20 carried by each (tag, time) cell; the blank
 	positions between samples 34 and 109 are the missing cells, which carry no residual.
-	Middle: the same shares summed per tag. Bottom: summed per sample. The dryer pressure
-	carries half of the residual, and most of it lies in the first phase.
+	Middle: the same shares summed per tag. Bottom: summed per sample, with the ends of the
+	first two phases in orange. The dryer pressure carries half of the residual, and most of
+	it lies in the first phase.
 
 The residual of batch 20 belongs to the dryer pressure (49%), and most of it lies in the
 first phase (58% of the total): the dryer pressure of batch 20 sat far above the other
@@ -537,7 +547,7 @@ overlay, and the block scores of the final model come back to them.
 
 .. figure:: ../figures/batch/batch-case-fmc-raw-batches-13-5-7.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Four trajectories of the 46 batches in grey with batches 13 in orange, 5 in aqua and 7 in blue; batch 13 collected less solvent than almost every other batch, reached the end of the first phase in less clock time than most, and cooled faster at the end of the batch.
+	:alt: Four trajectories of the 46 batches in grey with batches 13 in orange, 5 in aqua and 7 in blue, with dashed vertical lines at the ends of the first two phases; batch 13 collected less solvent than almost every other batch, reached the end of the first phase in less clock time than most, and cooled faster at the end of the batch.
 	:width: 900px
 	:scale: 80
 	:align: center
@@ -545,7 +555,7 @@ overlay, and the block scores of the final model come back to them.
 	Four trajectories of the 46 batches (grey) with batches 13 (orange), 5 (aqua) and 7
 	(blue) drawn on top. Batch 13 collected less solvent than almost every other batch,
 	reached the end of the first phase in less clock time than most, and cooled faster at
-	the end of the batch.
+	the end of the batch. The dashed lines mark the ends of the first two phases.
 
 The :ref:`overlay of these three batches <APPS_batch_case_fmc_overlay_13>` shows what the
 contributions of batch 13 refer to. Its collector tank level
@@ -713,8 +723,9 @@ block and ordinary in the others is visible only in the block score plots.
 	Left: the contribution from the average point of the five neighbours to the average point
 	of the four batches, in the operating-condition block. Right: four raw trajectories, with
 	the four batches (orange) and their nearest abnormal neighbours (aqua) over the other
-	batches (grey). The two groups run together in the collector level and the clock time,
-	and their peak temperature set points are the same.
+	batches (grey), with the ends of the first two phases marked. The two groups run together
+	in the collector level and the clock time, and their peak temperature set points are the
+	same.
 
 What puts the four with the abnormal batches is what puts their neighbours there: the
 collector tank level, the clock time and the jacket temperature set point carry the
