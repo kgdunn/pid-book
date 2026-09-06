@@ -66,10 +66,10 @@ The data
 
 The `batch dryer dataset <https://openmv.net/info/batch-dryer>`_ is a workbook with the four
 blocks over 59 batches, one sheet each. The batch identifiers run from 2 to 71 with gaps,
-and they carry the plant's disposition: batches numbered 1 to 33 were classed as good, 34 to
-61 as abnormal, and 62 to 71 as high in residual solvent. The identifiers are not used to
-build any model. As in the first case study, they are kept aside and compared with what the
-models find.
+and the plant's disposition is encoded in the numbering: batches 1 to 33 were classed as
+good, 34 to 61 as abnormal, and 62 to 71 as high in residual solvent. As in the first case
+study, that classification plays no part in building the models; it is compared afterwards
+with what the models find.
 
 Batch durations on this dryer vary widely, so the trajectories were aligned within each of
 the three phases before the data were archived, to 325 samples per batch. The first two
