@@ -753,6 +753,66 @@ how the batches that were run co-varied, not cause and effect (Nomikos and MacGr
 model. The original study found four such batches as well, with the same reading of their
 operating conditions.
 
+The models side by side
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Each rung of the ladder sees a different set of blocks, and what its two components describe
+of each one says what that model captured. Every model on this page is collected in a single
+table below: the chemistry :math:`\mathbf{Z}_\text{chem}`, the operating conditions
+:math:`\mathbf{Z}_\text{op}`, the trajectories :math:`\mathbf{X}` and the quality
+:math:`\mathbf{Y}`, with a dash where the model never saw that block.
+
+.. code-block:: python
+
+	def block_r2(model):
+	    """R2 per component of each X block of a multiblock model, from its cumulative R2 per block."""
+	    return {name: np.diff([0.0, *row]) for name, row in model.r2_x_per_block_cumulative_.iterrows()}
+
+	per_component = {                                             # R2 per component of every block a model saw
+	    "PCA on quality": {"Y": pca_y.r2_per_component_},
+	    "PLS from Zchem": {"Zchem": explained_x(pls_chem), "Y": pls_chem.r2_per_component_},
+	    "PLS from Zop": {"Zop": explained_x(pls_op), "Y": pls_op.r2_per_component_},
+	    "Multiblock PLS on Z": {**block_r2(mb_z), "Y": mb_z.r2_y_per_component_},
+	    "Batch PCA on X": {"X": pca_x.r2_per_component_},
+	    "Batch PLS on X": {"X": explained_x(pls_x), "Y": pls_x.r2_per_component_},
+	    "Batch multiblock PLS": {**block_r2(mb), "Y": mb.r2_y_per_component_},
+	}
+	summary = pd.DataFrame({(block, f"t{a + 1}"): {name: np.asarray(r[block])[a] * 100 if block in r else np.nan
+	                                               for name, r in per_component.items()}
+	                        for block in ("Zchem", "Zop", "X", "Y") for a in (0, 1)})
+	print(summary.round(1).to_string(na_rep="-"))
+	print(summary["Y"].sum(axis=1, min_count=1).round(1).dropna().tolist())   # quality explained, per model
+	# [70.3, 22.2, 26.2, 36.4, 41.0, 47.2]
+
+.. table:: :math:`R^2` of each block, as a percentage, for the two components of every model of the ladder.
+
+   +----------------------+-------------+-------------+-------------+-------------+
+   | Model                | Zchem       | Zop         | X           | Y           |
+   |                      +------+------+------+------+------+------+------+------+
+   |                      | t1   | t2   | t1   | t2   | t1   | t2   | t1   | t2   |
+   +======================+======+======+======+======+======+======+======+======+
+   | PCA on quality       | -    | -    | -    | -    | -    | -    | 50.0 | 20.3 |
+   +----------------------+------+------+------+------+------+------+------+------+
+   | PLS from Zchem       | 28.8 | 23.2 | -    | -    | -    | -    | 16.3 | 5.8  |
+   +----------------------+------+------+------+------+------+------+------+------+
+   | PLS from Zop         | -    | -    | 30.4 | 23.6 | -    | -    | 20.7 | 5.5  |
+   +----------------------+------+------+------+------+------+------+------+------+
+   | Multiblock PLS on Z  | 11.2 | 18.4 | 22.3 | 13.3 | -    | -    | 29.2 | 7.2  |
+   +----------------------+------+------+------+------+------+------+------+------+
+   | Batch PCA on X       | -    | -    | -    | -    | 23.1 | 14.6 | -    | -    |
+   +----------------------+------+------+------+------+------+------+------+------+
+   | Batch PLS on X       | -    | -    | -    | -    | 21.7 | 13.1 | 26.6 | 14.4 |
+   +----------------------+------+------+------+------+------+------+------+------+
+   | Batch multiblock PLS | 6.5  | 16.8 | 19.9 | 10.5 | 12.5 | 13.5 | 37.0 | 10.2 |
+   +----------------------+------+------+------+------+------+------+------+------+
+
+Read down the quality columns and the ladder pays off: each rung adds to the one before it,
+and the trajectories carry more of the quality block than either set of initial conditions.
+Read across a row and the cost appears. The PLS on the chemistry block describes half of
+that block and a fifth of quality; in the batch multiblock PLS the chemistry keeps 6.5% on
+the first component while the quality block gains, because a PLS component is turned towards
+whichever combination predicts :math:`\mathbf{Y}`, not towards describing its own block.
+
 Where to go next
 ~~~~~~~~~~~~~~~~
 
@@ -777,10 +837,10 @@ three kinds of model on this dryer, landmark and both unfoldings, and their scor
 separate the on-specification from the off-specification batches in the same way.
 
 A second step is an on-line monitoring model, which tracks a running batch against the
-reference model; that step is deferred here until the missing cells in the trajectories
-have been dealt with, either by filling them in or by leaving the incomplete batches out of
-the reference set. The :ref:`SBR case study <APPS_batch_case_sbr_online>` shows that step on
-a dataset without missing cells, with the prediction of the final quality as the batch runs.
+reference model and predicts its final quality before the batch ends. Estimating the scores
+of a batch observed so far is the same missing-data projection that fills the gaps in these
+trajectories, so the incomplete batches are no obstacle to it; the
+:ref:`SBR case study <APPS_batch_case_sbr_online>` works that step through.
 
 References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~
