@@ -302,30 +302,36 @@ each block the components describe.
 	    fig.update_xaxes(title_text=f"{prefix}1 [{note}{r2[0]:.1%}]", row=row, col=col)
 	    fig.update_yaxes(title_text=f"{prefix}2 [{note}{r2[1]:.1%}]", row=row, col=col)
 
-	fig = make_subplots(rows=2, cols=2, subplot_titles=["Super scores", "Super weights", "Zchem block scores", "Zop block scores"])
+	fig = make_subplots(rows=2, cols=3, subplot_titles=["Super scores", "Zchem block scores", "Zop block scores",
+	                                                   "Super weights", "Zchem block weights", "Zop block weights"])
 	super_t = mb_z.super_scores_
 	group_scatter(fig, super_t.iloc[:, 0], super_t.iloc[:, 1], {20: ORANGE}, row=1, col=1)
 	block_axes(fig, mb_z.r2_y_per_component_, 1, 1, prefix="super t", note="R2Y ")
 	weights = mb_z.super_weights_                                            # one row per block, one column per component
 	for a, colour in ((1, BLUE), (2, ORANGE)):
-	    fig.add_trace(go.Bar(x=list(weights.index), y=weights.iloc[:, a - 1], name=f"component {a}", marker_color=colour), row=1, col=2)
-	for col, (name, block_t) in enumerate(mb_z.block_scores_.items(), start=1):
-	    group_scatter(fig, block_t.iloc[:, 0], block_t.iloc[:, 1], {20: ORANGE}, row=2, col=col, showlegend=False)
-	    block_axes(fig, np.diff([0.0, *mb_z.r2_x_per_block_cumulative_.loc[name]]), 2, col)
+	    fig.add_trace(go.Bar(x=list(weights.index), y=weights.iloc[:, a - 1], name=f"component {a}", marker_color=colour), row=2, col=1)
+	for col, (name, block_t) in enumerate(mb_z.block_scores_.items(), start=2):
+	    group_scatter(fig, block_t.iloc[:, 0], block_t.iloc[:, 1], {20: ORANGE}, row=1, col=col, showlegend=False)
+	    block_axes(fig, np.diff([0.0, *mb_z.r2_x_per_block_cumulative_.loc[name]]), 1, col)
+	    w = mb_z.block_weights_[name]                                         # one row per variable of the block
+	    fig.add_trace(go.Scatter(x=w.iloc[:, 0], y=w.iloc[:, 1], mode="markers+text", text=list(w.index), textposition="top right",
+	                             marker=dict(color=BLUE, size=9), showlegend=False), row=2, col=col)
+	    block_axes(fig, [np.nan, np.nan], 2, col, prefix="block w")
 	fig.update_layout(height=820).show()
 
 .. figure:: ../figures/batch/batch-case-fmc-mbpls-z.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Four panels: the super scores of the multiblock PLS on the two initial-condition blocks, coded by disposition, with batch 20 at the lower left; the super weights of the two components, larger for the operating-condition block on both; the chemistry block scores, where batch 20 sits inside the cloud of batches; and the operating-condition block scores, where batch 20 sits far outside it.
+	:alt: Six panels in three columns: the super scores of the multiblock PLS on the two initial-condition blocks, coded by disposition, with batch 20 at the lower left, above the super weights of the two components, larger for the operating-condition block on both; the chemistry block scores, where batch 20 sits inside the cloud of batches, above the chemistry block weights; and the operating-condition block scores, where batch 20 sits far outside, above the operating-condition block weights.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
-	Top left: super scores of the multiblock PLS on the two initial-condition blocks, coded
-	by the plant's disposition, with batch 20 (orange) at the lower left. Top right: the
-	super weights of the two components. Bottom: the block scores of the same model; batch
-	20 sits inside the cloud of batches in the chemistry block (left) and far outside it in
-	the operating-condition block (right).
+	Left column: super scores of the multiblock PLS on the two initial-condition blocks,
+	coded by the plant's disposition, with batch 20 (orange) at the lower left, and below
+	them the super weights of the two components. Middle and right columns: the chemistry
+	block and the operating-condition block, each with its block scores above the block
+	weights that define them. Batch 20 sits inside the cloud of batches in the chemistry
+	block and far outside it in the operating-condition block.
 
 Together the two blocks explain 36.4% of the quality block after two components, more than
 either alone, and the components describe 29.6% of the chemistry block and 35.6% of the
