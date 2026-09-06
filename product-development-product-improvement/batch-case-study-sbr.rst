@@ -477,90 +477,72 @@ Predicting quality before the batch ends
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The fitted values of the previous section used the whole batch. A batch that is still
-running has its unfolded row complete up to the current sample and empty after it, and the
-question a plant asks of a batch model is what it can say before the batch ends. The scores
-of a partial row can be estimated from the observed cells alone, treating the rest of the
-row as missing data, and the model's regression from scores to quality then gives a
-prediction (Wold and co-workers, 2009, Eqs. 2 and 5). The estimator used here is trimmed
-score regression, the library's default: the scores of the training batches are regressed
-on the scores estimated from the same partial rows, and that regression corrects the
-estimate for a new batch (Garcia-Munoz, Kourti and MacGregor, 2004).
+running can be asked what its final quality will be:
 
-``predict_online_trace`` estimates the scores at every sample of a batch in one call and
-returns the prediction after each. ``online_rmse`` does that for every batch in a set and
-returns, per attribute, the root-mean-square error of the prediction after :math:`k`
-samples. On the 53 training batches that is the estimation error, RMSEE. The prediction
-error on a batch the model has not seen, RMSEP, comes from refitting the model without each
-batch in turn and tracing the held-out one; the loop below takes about a minute and
-evaluates every fifth sample.
+* its unfolded row is complete up to the current sample and empty after it, and the scores
+  are estimated from the observed cells alone, with the rest of the row treated as missing
+  data (Wold and co-workers, 2009, Eqs. 2 and 5; the estimator is the trimmed score
+  regression of Garcia-Munoz, Kourti and MacGregor, 2004);
+* the model's regression from scores to quality turns those scores into a prediction;
+* the prediction error after :math:`k` samples, RMSEP, comes from refitting the model
+  without each batch in turn and tracing the held-out batch (``online_rmse``; the loop
+  below takes about a minute).
 
 .. code-block:: python
 
-	rmsee_k = model.online_rmse(trajectories, quality)                 # after 1, 2, ..., 200 samples
-	every_fifth = list(range(10, 201, 5))
-	squared = pd.DataFrame(0.0, index=every_fifth, columns=quality.columns)
+	squared = 0
 	for held_out in trajectories:                                      # leave one batch out: about a minute
 	    rest = {b: t for b, t in trajectories.items() if b != held_out}
 	    model_wo = BatchPLS(n_components=2).fit(rest, quality.loc[list(rest)])
-	    squared += model_wo.online_rmse({held_out: trajectories[held_out]}, quality.loc[[held_out]]).loc[every_fifth] ** 2
-	rmsep_k = np.sqrt(squared / len(trajectories))
-	relative_e, relative_p = rmsee_k / quality.std(), rmsep_k / quality.std()
+	    squared = squared + model_wo.online_rmse({held_out: trajectories[held_out]}, quality.loc[[held_out]]) ** 2
+	rmsep_k = np.sqrt(squared / len(trajectories))                     # after 1, 2, ..., 200 samples
+	relative = rmsep_k / quality.std()
 	at = [10, 50, 100, 150, 200]
-	print("particle size, RMSEE / sd after 10, 50, 100, 150, 200 samples:", relative_e["ParticleSize"].loc[at].round(2).tolist())
-	print("particle size, RMSEP / sd:", relative_p["ParticleSize"].loc[at].round(2).tolist())
-	print("branching, RMSEP / sd:", relative_p["Branching"].loc[at].round(2).tolist())
+	print("particle size, RMSEP / sd after 10, 50, 100, 150, 200 samples:", relative["ParticleSize"].loc[at].round(2).tolist())
+	print("branching, RMSEP / sd:", relative["Branching"].loc[at].round(2).tolist())
 
 	PURPLE, MAGENTA = "#6f42c1", "#b03a78"                                 # two more figure colours
 	COLOURS = (BLUE, ORANGE, AQUA, PURPLE, MAGENTA)                        # one per attribute
 	fig = go.Figure()
 	for attribute, colour in zip(quality.columns, COLOURS):
-	    fig.add_trace(go.Scatter(x=relative_e.index[9:], y=relative_e[attribute].iloc[9:], name=f"{attribute}, RMSEE",
+	    fig.add_trace(go.Scatter(x=relative.index[9:], y=relative[attribute].iloc[9:], name=attribute,
 	                             line=dict(color=colour)))
-	    fig.add_trace(go.Scatter(x=every_fifth, y=relative_p[attribute], name=f"{attribute}, RMSEP",
-	                             line=dict(color=colour, dash="dash")))
 	fig.add_hline(y=1.0, line_color=GREY, annotation_text="as good as the average batch")
-	fig.update_layout(xaxis_title="Samples observed", yaxis_title="RMSE / standard deviation of the attribute", height=420)
+	fig.update_layout(xaxis_title="Samples observed", yaxis_title="RMSEP / standard deviation of the attribute", height=420)
 	fig.show()
 
 .. figure:: ../figures/batch/batch-case-sbr-online-rmse.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Ten curves, one solid and one dashed per quality attribute, of the root-mean-square error of the mid-batch prediction divided by the attribute's standard deviation against the number of samples observed; all start above one, the particle-size curves fall below one after about 105 and 120 samples, branching and cross-linking fall to a quarter, polydispersity stays near 0.7.
+	:alt: Five curves, one per quality attribute, of the leave-one-batch-out root-mean-square error of the mid-batch prediction divided by the attribute's standard deviation against the number of samples observed; all start above one, the particle-size curve falls below one after about 120 samples, branching and cross-linking fall furthest, polydispersity changes little after 50 samples.
 	:width: 800px
 	:scale: 80
 	:align: center
 
-	Root-mean-square error of the prediction after :math:`k` samples, divided by the
-	standard deviation of each attribute: RMSEE on the 53 training batches (solid) and
-	leave-one-batch-out RMSEP (dashed, every fifth sample). Branching and cross-linking
+	Root-mean-square error of the leave-one-batch-out prediction after :math:`k` samples,
+	divided by the standard deviation of each attribute. Branching and cross-linking
 	coincide. A curve above 1 is worse than predicting the average batch.
 
-For the first half of the batch the prediction of the particle size is no better than the
-average batch: RMSEE and RMSEP are above the standard deviation of the attribute until about
-105 and 120 samples respectively, and most of the fall comes between 100 and 150 samples,
-where the :math:`R^2` curves earlier on this page also placed the information. Branching and
-cross-linking, the two attributes the model fits best, fall to about a quarter of their
-standard deviation in the last quarter of the batch; polydispersity is predicted about as
-well after 50 samples as at the end. The gap between the solid and dashed curves is the cost
-of predicting a batch the model was not fitted on, and it is about the same size throughout
-the batch.
+The particle size becomes predictable only in the second half of the batch, where the
+:math:`R^2` curves earlier on this page also placed the information. Branching and
+cross-linking are predicted best; polydispersity is predicted about as well after 50
+samples as at the end.
 
-One batch shows what the curves summarise. Batch 4 is the batch nearest the average quality,
-and its prediction is drawn against the number of samples observed, with the prediction the
-model makes once the batch is complete as a dashed line and the measured value as a solid
-one. The band is two estimation errors at that sample, taken from the RMSEE curve; it is
-not a prediction interval.
+Batch 4, the batch nearest the average quality, shows what the curves summarise: its
+prediction against the number of samples observed, with the prediction from the complete
+batch dashed, the measured value solid, and a band of two prediction errors at that sample
+(from the RMSEP curve; it is not a prediction interval).
 
 .. code-block:: python
 
 	near_average = 4
 	trace = model.predict_online_trace(trajectories[near_average])
 	for attribute in ("ParticleSize", "Composition"):
-	    band = 2 * rmsee_k[attribute]
+	    band = 2 * rmsep_k[attribute]
 	    fig = go.Figure()
 	    fig.add_trace(go.Scatter(x=trace.time[4:], y=(trace.y_hat[attribute] + band).iloc[4:], line=dict(width=0),
 	                             showlegend=False))
 	    fig.add_trace(go.Scatter(x=trace.time[4:], y=(trace.y_hat[attribute] - band).iloc[4:], fill="tonexty",
-	                             fillcolor="rgba(200, 200, 200, 0.35)", line=dict(width=0), name="two estimation errors"))
+	                             fillcolor="rgba(200, 200, 200, 0.35)", line=dict(width=0), name="two prediction errors"))
 	    fig.add_trace(go.Scatter(x=trace.time[4:], y=trace.y_hat[attribute].iloc[4:], name="prediction so far",
 	                             line=dict(color=BLUE)))
 	    fig.add_hline(y=model.predictions_.loc[near_average, attribute], line_dash="dash", line_color=GREY,
@@ -576,22 +558,19 @@ not a prediction interval.
 
 .. figure:: ../figures/batch/batch-case-sbr-online-prediction-batch-4.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Two panels of batch 4's evolving prediction against samples observed, with a shaded band of two estimation errors, a dashed line at the final prediction and a solid line at the measured value; the particle-size prediction starts at 1251 after 10 samples and settles within a unit of the final 1257.1 after about 150 samples.
+	:alt: Two panels of batch 4's evolving prediction against samples observed, with a shaded band of two prediction errors, a dashed line at the final prediction and a solid line at the measured value; the particle-size prediction starts well below the final value and settles on it in the second half of the batch.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
 	The prediction for batch 4 as the batch is observed, for the particle size (left) and
 	the composition (right). Dashed: the prediction from the complete batch. Solid: the
-	measured value. Band: two estimation errors at that sample. For the particle size the two
+	measured value. Band: two prediction errors at that sample. For the particle size the two
 	rules are 0.2 units apart and overlap at this scale; for the composition they are 0.0002
 	apart and separate.
 
-After 10 samples the particle size of batch 4 is predicted at 1251, after 50 at 1255, and
-from about 150 samples the prediction stays within a unit of its final value of 1257.1; the
-measured value is 1256.9. The band narrows as the batch is observed because the estimation
-error does, and the prediction walks in from the average batch toward the final value as
-the samples that carry the information arrive.
+The prediction walks in from the average batch toward the final value as the samples that
+carry the information arrive, and the band narrows with it.
 
 .. _APPS_batch_case_sbr_online:
 
