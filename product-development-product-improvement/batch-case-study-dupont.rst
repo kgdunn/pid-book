@@ -111,12 +111,11 @@ batch. The first model, called model A on this page, uses two components and all
 batches. The aim is not a final model, but a first look at which batches stand out.
 
 Batchwise unfolding is one of two ways to lay a three-way batch array out as a table. The
-other is observation-wise unfolding: one row per time sample of every batch and one column
-per tag. Centring that table removes the average of each tag rather than its average
-trajectory, so a model of it describes the shape of the trajectories, and a second,
-batchwise model of its scores is then needed to compare whole batches. The two layouts
-answer different questions, and Wold and co-workers (2009) set both out and compare them,
-including on this dataset. All three of these case studies unfold batchwise.
+other, observation-wise unfolding, has one row per time sample of every batch and one column
+per tag; centring it removes the average of each tag rather than its average trajectory, so
+it describes the shape of the trajectories, and a second model of its scores is needed to
+compare whole batches. Wold and co-workers (2009) compare the two layouts on this dataset.
+All three case studies unfold batchwise.
 
 .. code-block:: python
 
@@ -201,16 +200,11 @@ the two limits divide the plot into quadrants.
 	53, 54 and 55 (aqua) are the other way round. Colour marks which of the two limits the
 	batch exceeds.
 
-Batch 49 is alone in the upper left: the largest SPE of all batches with one of the
-smallest :math:`T^2` values, an entirely ordinary batch along the two components and an
-extreme one away from them. Its problem is not a large deviation along the main directions
-of variation, which is what the scores measure, but a break in the correlation structure
-that the two components describe. Batch 51 sits in the same quadrant. The other five of the
-last six batches are in the lower right: extreme along the components, with residuals that
-stay below the SPE limit.
-
-Both statistics are needed: a plot of one alone would have missed one of these two
-groups.
+Batch 49 is alone in the upper left: ordinary along the two components and extreme away
+from them, a break in the correlation structure the components describe rather than a large
+deviation along them. Batch 51 sits in the same quadrant. The other five of the last six
+batches are in the lower right, extreme along the components with ordinary residuals. A
+plot of one statistic alone would have missed one of the two groups.
 
 Batch 49: which variables, and when
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -255,19 +249,13 @@ grouped by tag and, with ``by_tag=True``, the sum per tag.
 	single window, samples 55 to 65, and in the heating- and cooling-medium temperatures,
 	the pressures and ``Flow-2``.
 
-``Flow-1`` carries 3% of the residual. It belongs instead to the cooling-medium
-temperature, ``Flow-2``, ``Press-2``, the heating-medium temperature and ``Press-3``, in
-that order, and 80% of it falls in the eleven samples from 55 to 65. A short disturbance in
-the heating, cooling and pressure systems over that stretch broke the usual relationship
-between these tags.
-
-The same event has been reported from a different model. Wold and co-workers (2009) monitor
-batch 49 on-line against a three-component model built on batches 1 to 36, and their
-contribution plot at sample 57 names the heating- and cooling-medium temperatures and the
-pressures ``Press-2`` and ``Press-3`` as running too low from sample 57 until sample 65,
-with ``Press-2`` the largest contributor. Those are four of the five tags and the same
-window that the SPE contributions point at here, reached from a model built a different
-way, on all 55 batches and after they had finished.
+``Flow-1`` carries almost none of the residual. It belongs to the cooling-medium
+temperature, ``Flow-2``, ``Press-2``, the heating-medium temperature and ``Press-3``, and
+80% of it falls in the eleven samples from 55 to 65: a short disturbance in the heating,
+cooling and pressure systems that broke the usual relationship between these tags. Wold
+and co-workers (2009) reach the same event from a different model, monitoring batch 49
+on-line against a three-component model of batches 1 to 36: their contribution plot at
+sample 57 names the same temperatures and pressures as running low from sample 57 to 65.
 
 Nomikos and MacGregor report that the final quality of batch 49 was barely acceptable,
 which is consistent with a short event rather than a batch that was wrong throughout. In
@@ -316,13 +304,12 @@ shows which parts of the batch the component describes.
 	Score contributions to :math:`t_1` of batch 54: every tag contributes in the same
 	direction, and the contribution per sample stays positive over the whole batch.
 
-Batch 54 has a high :math:`t_1` because every tag contributes in the same direction,
-between 4.6 and 8.7 per tag, and the contribution per sample is positive from the first
-sample to the last. The whole batch ran away from the average trajectory. The
-:ref:`raw trajectory overlay <APPS_batch_case_dupont_overlay>` at the start of this case
-study confirms it: in ``Press-1`` the pressure step of batch 54 and its later descent come
-later than in the other batches, and its reactor temperature runs below them over the first
-20 samples. Batches 50 and 52 also have large positive :math:`t_1` values and can be examined
+Batch 54 has a high :math:`t_1` because every tag contributes in the same direction over
+the whole batch: the batch ran away from the average trajectory from its first sample to
+its last. The :ref:`raw trajectory overlay <APPS_batch_case_dupont_overlay>` at the start
+of this case study confirms it: the pressure step of batch 54 in ``Press-1`` comes later
+than in the other batches, and its reactor temperature runs below them over the first 20
+samples. Batches 50 and 52 also have large positive :math:`t_1` values and can be examined
 in the same way. Batch 55, which has the highest :math:`t_2`, stands out through the
 pressures ``Press-3`` and ``Press-2`` and the cooling-medium temperature.
 
@@ -366,9 +353,9 @@ With the extreme batches gone, a second group separates in the plane of :math:`t
 
 A contribution is the weighted difference between two points, and either point can be the
 average of a group of batches. The eight batches are compared here as a group against the
-model centre, the average of all 48 (the arrow in the score plot): the columns are centred, so the group's mean row is
-its displacement from the centre, and its contribution vector adds up to the group's mean
-score.
+model centre, the average of all 48 (the arrow in the score plot): the columns are centred,
+so the group's mean row is its displacement from the centre, and its contribution vector
+adds up to the group's mean score.
 
 .. code-block:: python
 
@@ -478,16 +465,15 @@ confidence ellipse and is not pursued here. Batches 38, 40, 41 and 42, which pro
 product and stayed in the training set, sit inside both limits.
 
 Nothing in the ten trajectories distinguishes these four batches from the batches that
-produced good product. This is the lesson the case study is built around, and it is worth
-stating as a requirement. A model can only detect what the measurements contain. If the
-cause of poor quality leaves no trace in the recorded variables, because the important
-trajectory is not being measured or because the cause lies in the raw materials charged
-before the batch started, then no modelling of these ten tags will reveal it. The
-measurements must contain the information needed to classify a batch; in the language of
-control engineering, the condition of the batch must be *observable* through them. The
-remedy is to measure something else, for example the properties of the raw materials, and
-the :ref:`third case study <APPS_batch_case_fmc>` shows how such blocks are added to a
-batch model.
+produced good product, and that is the lesson of the case study. A model can only detect
+what the measurements contain. If the cause of poor quality leaves no trace in the recorded
+variables, because the important trajectory is not measured or because the cause lies in
+the raw materials charged before the batch started, no modelling of these ten tags will
+reveal it. The measurements must contain the information needed to classify a batch; in the
+language of control engineering, the condition of the batch must be *observable* through
+them. The remedy is to measure something else, for example the properties of the raw
+materials, and the :ref:`third case study <APPS_batch_case_fmc>` shows how such blocks are
+added to a batch model.
 
 The :ref:`SBR case study <APPS_batch_case_sbr_online>` runs the same check sample by
 sample: a reference model on the normal batches, and limits computed at every sample, so
