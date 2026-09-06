@@ -428,18 +428,15 @@ below it.
 
 	Loading :math:`\mathbf{p}_1` of the batch PCA over the batch (blue), one panel per tag,
 	with the :math:`R^2` of each (tag, time) cell after two components (orange, right-hand
-	axis) and the ends of the first two phases at samples 175 and 249 (grey). The loading is
-	positive and nearly constant for the collector tank level, and for the clock time after
-	the first 50 samples, so :math:`t_1` is largely a measure of how much solvent a batch
-	collected and how much clock time it used. The dryer pressure, the jacket temperature set
-	point and the dryer temperature have loadings of both signs within the batch.
+	axis) and the ends of the first two phases at samples 175 and 249 (grey). The collector
+	tank level, and the clock time after the first 50 samples, hold one sign over the whole
+	batch; the dryer pressure, the jacket temperature set point and the dryer temperature
+	change sign within it.
 
-The loading of the first component is positive and nearly constant for the collector tank
-level over the whole batch, and for the clock time once the batch is under way: a batch with
-a high :math:`t_1` collected more solvent than average at every point of the batch and took
-more clock time to reach each point. The other tags have loadings that change sign within
-the batch, with the dryer pressure negative through the solvent-collection phase and the
-dryer temperature negative in the first phase and positive in the ramp and cooling phases.
+A batch with a high :math:`t_1` therefore collected more solvent than average at every point
+of the batch and took more clock time to reach each point. Where a loading changes sign, the
+component contrasts the phases against each other: the dryer temperature is negative in the
+solvent-collection phase and positive in the ramp and the cooling phases.
 
 The :math:`R^2` per cell says how much of the batch-to-batch variation in that cell the two
 components describe, and so where the loadings can be read with confidence. The collector
