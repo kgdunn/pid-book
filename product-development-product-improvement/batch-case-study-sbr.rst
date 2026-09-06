@@ -757,6 +757,8 @@ the zero line and a departure reads directly.
 	        forecast = z_form(reference.predict_online(trajectories[batch_id], upto_k=k).forecast)[tag]   # one apart
 	        fig.add_trace(go.Scatter(x=forecast.index[k:], y=forecast.iloc[k:], mode="lines",
 	                                 name=f"forecast from sample {k} onwards", line=dict(color=line_colour, width=width, dash=dash)))
+	        fig.add_trace(go.Scatter(x=[k - 1, k - 1], y=[z_actual.iloc[k - 1], forecast.iloc[k]], mode="lines",   # the jump from
+	                                 line=dict(color=line_colour, width=1.5), showlegend=False))              # the data used
 	    fig.add_trace(go.Scatter(y=z_actual.iloc[:from_samples[0]], mode="lines",
 	                             name=f"batch {batch_id}, observed", line=dict(color=colour, width=3)))
 	    fig.add_hline(y=0, line_color=GREY)
@@ -784,6 +786,9 @@ the zero line and a departure reads directly.
 	onwards (dotted dark blue); what batch 37 did is the faint line. Right: the cooling-water
 	temperature of batch 34 (orange) with the forecasts from sample 60 onwards (dashed
 	orange) and from sample 115 onwards (dotted dark blue); the impurity enters at sample 100.
+	A vertical line joins each forecast to the observed value at the sample it was made from:
+	the forecast uses the batch's own data up to that sample, then continues along the
+	model's components.
 
 It is the same distinction as the two statistics. The model can forecast along its
 components, so it forecasts the slow conversion of batch 37 from sample 30 onwards; the fault
