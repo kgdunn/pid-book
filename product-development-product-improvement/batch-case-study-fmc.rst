@@ -726,34 +726,30 @@ block and ordinary in the others is visible only in the block score plots.
 	in the collector level and the clock time, and their peak temperature set points are the
 	same.
 
-What puts the four with the abnormal batches is what puts their neighbours there: the
-collector tank level, the clock time and the jacket temperature set point carry the largest
-contributions to the trajectory block score in both groups, and the overlays show the two
-groups running together, with a heavy charge, a high collector level and a slow first phase.
+The four and their neighbours share one trajectory signature: the collector tank level, the
+clock time and the jacket temperature set point carry the largest contributions in both
+groups, and the overlays show a heavy charge, a high collector level and a slow first phase.
 
-What separates the four from their neighbours lies in the operating-condition block. The
-contribution from the neighbours' average point to the four's, the group-to-centre
-construction of the :ref:`first case study <APPS_batch_case_dupont>`, is carried by the
-length of the cooling phase (``Time3``), the length and slope of the ramp (``Time2``,
-``TempSlope``) and the length of the high-speed agitation (``Time4``); the cake weight and
-the collector level pull the other way. In the recipe's units, the four ramped in 24 clock
-samples against 32 and cooled for 50 against 38, with the same peak set point (86.9 against
-87.2): not a set point that was moved, but how long each phase was run.
+What separates them lies in the operating-condition block. The contribution from the
+neighbours' average point to the four's, the construction of the
+:ref:`first case study <APPS_batch_case_dupont>`, is carried by the lengths of the cooling
+phase (``Time3``), the ramp (``Time2``, ``TempSlope``) and the high-speed agitation
+(``Time4``); the cake weight and the collector level pull the other way. In the recipe's
+units the four ramped in 24 clock samples against 32 and cooled for 50 against 38, with the
+same peak set point (86.9 against 87.2): not a set point that was moved, but how long each
+phase was run.
 
 Read together:
 
 * The four began like an off-specification batch, with a heavy charge and a slow first
-  phase, were run differently through the second and third phases, and gave
-  on-specification product.
+  phase, were run differently through the later phases, and gave on-specification product.
 * Whether the later phases were run that way to correct for the first, the record does not
-  say; the original study reports only that the peak temperature set point was adjusted
-  from batch to batch.
-* Nor does the model say that a shorter ramp and a longer cool-down would bring a slow batch
-  on-specification. It describes how the batches that were run co-varied, not cause and
-  effect (Nomikos and MacGregor, 1995); that reading is a hypothesis for a designed
-  experiment, not a conclusion of the model.
-* The original study found the same four batches, with the same reading of their operating
-  conditions.
+  say; the original study reports only that the peak set point was adjusted from batch to
+  batch.
+* The model does not say that a shorter ramp and a longer cool-down would rescue a slow
+  batch. It describes how the batches co-varied, not cause and effect (Nomikos and
+  MacGregor, 1995); that reading is a hypothesis for a designed experiment.
+* The original study found the same four batches, with the same reading.
 
 The models side by side
 ~~~~~~~~~~~~~~~~~~~~~~~
