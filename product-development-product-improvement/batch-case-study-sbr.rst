@@ -497,9 +497,11 @@ running can be asked what its final quality will be:
 	    squared = squared + model_wo.online_rmse({held_out: trajectories[held_out]}, quality.loc[[held_out]]) ** 2
 	rmsep_k = np.sqrt(squared / len(trajectories))                     # after 1, 2, ..., 200 samples
 	relative = rmsep_k / quality.std()
-	at = [10, 50, 100, 150, 200]
-	print("particle size, RMSEP / sd after 10, 50, 100, 150, 200 samples:", relative["ParticleSize"].loc[at].round(2).tolist())
-	print("branching, RMSEP / sd:", relative["Branching"].loc[at].round(2).tolist())
+	at = [10, 25, 50, 150, 200]
+	print(relative.loc[at].mean(axis=1).round(2).tolist())              # RMSEP / sd averaged over the five attributes
+	# [2.99, 1.39, 1.06, 0.62, 0.58]
+	print((relative < 1).idxmax().tolist())                              # first sample with RMSEP below the sd, per attribute
+	# [48, 129, 50, 50, 21]
 
 	PURPLE, MAGENTA = "#6f42c1", "#b03a78"                                 # two more figure colours
 	COLOURS = (BLUE, ORANGE, AQUA, PURPLE, MAGENTA)                        # one per attribute
@@ -525,7 +527,12 @@ running can be asked what its final quality will be:
 The particle size becomes predictable only in the second half of the batch, where the
 :math:`R^2` curves earlier on this page also placed the information. Branching and
 cross-linking are predicted best; polydispersity is predicted about as well after 50
-samples as at the end.
+samples as at the end. The value of the curves is in their timing: polydispersity is
+predicted with an error below one standard deviation of the attribute from about 20
+samples on, composition, branching and cross-linking from about 50, and the particle size
+from about 130, each with most of the batch still to run. Averaged over the five
+attributes, the prediction error falls from three standard deviations after 10 samples to
+1.4 after 25, 1.1 after 50 and 0.6 after 150, close to its value when the batch ends.
 
 Batch 4, the batch nearest the average quality, shows what the curves summarise: its
 prediction against the number of samples observed, with the prediction from the complete
