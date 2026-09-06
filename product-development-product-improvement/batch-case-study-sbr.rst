@@ -595,21 +595,50 @@ through it sample by sample, as if they were new batches on a running plant.
 
 Two statistics are tracked. Hotelling's :math:`T^2` of the score estimate says how far the
 batch so far sits *along* the model's components; the SPE of the newest sample says how far
-that sample sits *away* from them. Each is compared at every sample with a limit computed
-from the 51 reference batches at that same sample, because a score estimated from ten
-samples is a much rougher quantity than one estimated from 190: measured against the scores
-of finished batches, batch 4, an entirely normal batch, has a :math:`T^2` of 220 after four
-samples; measured against the reference batches' own estimates after four samples it has
-0.5, well inside the limit. The limits are set at 99%. A batch is compared with
-its limit 200 times, so a 95% limit would be crossed about ten times by a normal batch, and
-even at 99% an isolated crossing happens; an alarm here means three consecutive samples
-above the limit, the same kind of rule the departure analysis used.
+that sample sits *away* from them.
+
+The :math:`T^2` limit is the same at every sample, since it depends only on the number of
+components and of reference batches. What changes with the samples seen is the spread of
+the score estimates: a score estimated from the first few samples is fitted to a few of the
+cells in the unfolded row, and across the reference batches such estimates scatter far more
+widely than the final scores do, as the figure below shows. :math:`T^2` at each sample is
+therefore computed against the covariance of the reference batches' estimates at that same
+sample (Nomikos and MacGregor, 1995), which the monitor stores. The SPE limit is fitted
+sample by sample from the reference batches' SPE at that sample.
 
 .. code-block:: python
 
 	normal = {b: t for b, t in trajectories.items() if b not in (34, 37)}
 	reference = BatchPLS(n_components=2).fit(normal, quality.loc[list(normal)])
 	monitor = BatchMonitor(reference, conf_level=0.99, spe_statistic="instantaneous").fit(normal)
+	spread = np.sqrt(np.diagonal(monitor.score_covariance_over_time_, axis1=1, axis2=2))   # sd of the estimates, per sample
+	spread = spread / reference.scores_.std(ddof=1).to_numpy()                           # relative to the final scores
+	fig = go.Figure()
+	for a, colour in enumerate((BLUE, ORANGE)):
+	    fig.add_trace(go.Scatter(x=np.arange(1, len(spread) + 1), y=spread[:, a], name=f"t{a + 1}", line=dict(color=colour)))
+	fig.add_hline(y=1.0, line_dash="dash", line_color=GREY, annotation_text="spread of the final scores")
+	fig.update_layout(xaxis_title="Samples observed", yaxis_title="Spread relative to the final scores", yaxis_type="log",
+	                  height=380)
+	fig.show()
+
+.. figure:: ../figures/batch/batch-case-sbr-score-spread.png
+	:source: batch/batch-case-sbr-figures.py
+	:alt: Two curves on a logarithmic axis, the standard deviation of the t1 and t2 estimates across the 51 reference batches divided by that of their final scores, against samples observed; both start far above one and fall to one at the end of the batch.
+	:width: 600px
+	:scale: 80
+	:align: center
+
+	The spread of the on-line score estimates across the 51 reference batches, divided by
+	the spread of their final scores, against the number of samples observed (logarithmic
+	axis). :math:`T^2` at each sample is scaled by this spread, which is what lets the limit
+	stay the same throughout the batch.
+
+The limits are set at 99%. A batch is compared with its limit 200 times, once per sample,
+so a 95% limit would be crossed about ten times by a normal batch, and even at 99% an
+isolated crossing is expected. An alarm here means three consecutive samples above the
+limit, the same kind of rule the departure analysis used.
+
+.. code-block:: python
 
 	def first_sustained(alarm, run=3):
 	    """Number of samples observed when the alarm first holds for `run` consecutive samples, or None."""
@@ -621,9 +650,6 @@ above the limit, the same kind of rule the departure analysis used.
 	    result = monitor.monitor(trajectories[batch_id])
 	    print(f"batch {batch_id}: T2 alarm after {first_sustained(result.t2_alarm)} samples;",
 	          f"SPE alarm after {first_sustained(result.spe_alarm)} samples")
-	rough = reference.predict_online_trace(trajectories[4]).hotellings_t2[3]      # scaled by the finished batches' scores
-	print(f"batch 4 after 4 samples: T2 {rough:.0f} against the finished batches,",
-	      f"{monitor.monitor(trajectories[4]).hotellings_t2[3]:.1f} against the reference batches at that sample")
 
 	def longest_run(alarm):
 	    """Longest stretch of consecutive samples above the limit."""
