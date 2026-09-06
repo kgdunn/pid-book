@@ -62,9 +62,13 @@ The questions are those a plant asks, in the order it asks them. What does produ
 look like, and do the batches fall into groups? Do the initial conditions explain the
 quality? What do the trajectories add? Which batches deserve a closer look? The original
 study answers them with a ladder of models, each with two components, and this page follows
-the same ladder: a PCA on the quality block, a PLS model from each initial-condition block,
-a multiblock PLS on both, a batch PCA and a batch PLS on the trajectories, and finally a
-batch multiblock PLS that joins all three blocks.
+the same ladder:
+
+* A PCA on the quality block.
+* A PLS model from each initial-condition block to the quality block.
+* A multiblock PLS on both initial-condition blocks.
+* A batch PCA and a batch PLS on the trajectories.
+* A batch multiblock PLS that joins all three blocks.
 
 The data
 ~~~~~~~~
