@@ -736,43 +736,54 @@ The same score estimate that predicts the quality also predicts the rest of the
 trajectories: the model's reconstruction :math:`\hat{\boldsymbol{\tau}} \mathbf{P}^{T}`,
 read off for the samples not yet seen (Wold and co-workers, 2009, Eq. 4). The forecast is
 an interpolation along the model's components, not an extrapolation of the trend so far.
+It is drawn in the z form of the departure analysis, each tag as a distance from the 51
+normal batches at that sample in their standard deviations, so that the average batch is
+the zero line and a departure reads directly.
 
 .. code-block:: python
 
+	def z_form(frame):
+	    """Each tag as a distance from the 51 normal batches at that sample, in their standard deviations."""
+	    return pd.DataFrame((frame.to_numpy() - others.mean(axis=0)) / others.std(axis=0, ddof=1),
+	                        columns=frame.columns, index=frame.index)
+
 	def forecast_panel(batch_id, tag, from_samples, colour):
-	    """The tag for every normal batch, what the batch did, and the model's forecast of the rest from two points."""
-	    fig = overlay(normal, tag, {})
-	    fig.add_trace(go.Scatter(y=trajectories[batch_id][tag], mode="lines", name=f"batch {batch_id}, what happened",
+	    """Every normal batch, what the batch did, and the model's forecast of the rest from two points, in z form."""
+	    fig = overlay({b: z_form(t) for b, t in normal.items()}, tag, {})
+	    z_actual = z_form(trajectories[batch_id])[tag]
+	    fig.add_trace(go.Scatter(y=z_actual, mode="lines", name=f"batch {batch_id}, what happened",
 	                             line=dict(color=colour, width=1), opacity=0.4))
 	    for k, dash in zip(from_samples, ("dash", "dot")):
-	        forecast = reference.predict_online(trajectories[batch_id], upto_k=k).forecast[tag]
+	        forecast = z_form(reference.predict_online(trajectories[batch_id], upto_k=k).forecast)[tag]
 	        fig.add_trace(go.Scatter(x=forecast.index[k:], y=forecast.iloc[k:], mode="lines",
 	                                 name=f"forecast from {k} samples", line=dict(color=colour, width=2, dash=dash)))
-	    fig.add_trace(go.Scatter(y=trajectories[batch_id][tag].iloc[:from_samples[0]], mode="lines",
+	    fig.add_trace(go.Scatter(y=z_actual.iloc[:from_samples[0]], mode="lines",
 	                             name=f"batch {batch_id}, observed", line=dict(color=colour, width=3)))
-	    fig.update_layout(title=f"Batch {batch_id}: {tag}")
+	    fig.add_hline(y=0, line_color=GREY)
+	    fig.update_layout(title=f"Batch {batch_id}: {tag}", yaxis_title="Distance from the normal batches [sd]")
 	    return fig
 
 	forecast_panel(37, "Conversion", (30, 60), AQUA).show()
 	forecast_panel(34, "CoolingTemp", (60, 115), ORANGE).add_vline(x=100, line_dash="dash", line_color=ORANGE).show()
 	for batch_id, tag, k in ((37, "Conversion", 30), (37, "Conversion", 60), (34, "CoolingTemp", 60), (34, "CoolingTemp", 115)):
-	    forecast = reference.predict_online(trajectories[batch_id], upto_k=k).forecast[tag].iloc[k:]
-	    print(f"batch {batch_id}, {tag}, from {k} samples: forecast mean of the rest {forecast.mean():.4f},",
-	          f"actual {trajectories[batch_id][tag].iloc[k:].mean():.4f}")
+	    forecast = z_form(reference.predict_online(trajectories[batch_id], upto_k=k).forecast)[tag].iloc[k:]
+	    print(f"batch {batch_id}, {tag}, from {k} samples: forecast mean of the rest {forecast.mean():.2f} sd,",
+	          f"actual {z_form(trajectories[batch_id])[tag].iloc[k:].mean():.2f} sd")
 
 .. figure:: ../figures/batch/batch-case-sbr-forecast.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Two panels. Left, the conversion of the 51 normal batches in grey, batch 37's observed conversion in aqua up to 30 samples, and the model's forecasts of the rest from 30 and from 60 samples as dashed aqua lines that run below the other batches, close to what happened. Right, the cooling-water temperature of batch 34 in orange with forecasts from 60 and 115 samples that follow the average batch and miss the rise after sample 100.
+	:alt: Two panels in z form, each tag as a distance from the normal batches in their standard deviations. Left, the conversion of the 51 normal batches in grey around zero, batch 37's observed conversion in aqua up to 30 samples, well below zero, and the model's forecasts of the rest from 30 and from 60 samples as dashed aqua lines that stay below zero, close to what happened. Right, the cooling-water temperature of batch 34 in orange with forecasts from 60 and 115 samples that stay near zero and miss the rise after sample 100.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
-	Forecast of the rest of the batch from the score estimate. Left: the conversion of batch
-	37 (aqua), observed for 30 samples, and the forecasts made after 30 and after 60 samples
-	(dashed and dotted); the 51 normal batches are grey and what batch 37 did is the faint
-	line. Right: the cooling-water temperature of batch 34 (orange) with the forecasts made
-	after 60 and after 115 samples; the impurity enters at sample 100. The right panel starts
-	after the start-up transient of the first 15 samples, which would otherwise set its scale.
+	Forecast of the rest of the batch from the score estimate, in z form: each tag as a
+	distance from the 51 normal batches (grey) at that sample, in their standard deviations,
+	so the zero line is the average batch. Left: the conversion of batch 37 (aqua), observed
+	for 30 samples, and the forecasts made after 30 and after 60 samples (dashed and dotted);
+	what batch 37 did is the faint line. Right: the cooling-water temperature of batch 34
+	(orange) with the forecasts made after 60 and after 115 samples; the impurity enters at
+	sample 100.
 
 It is the same distinction as the two statistics. The model can forecast along its
 components, so it forecasts the slow conversion of batch 37 from 30 samples on; the fault
