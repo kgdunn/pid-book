@@ -98,6 +98,7 @@ complete data.
 
 .. code-block:: python
 
+	import numpy as np
 	import pandas as pd
 	import plotly.graph_objects as go
 	from process_improve.batch import dict_to_wide, load_fmc, time_varying_loading_plot, unfolded_contribution_plot
@@ -164,7 +165,18 @@ involved.
 	y_scaled = MCUVScaler().fit_transform(Y)              # missing cells pass through; PCA switches to NIPALS
 	pca_y = PCA(n_components=2).fit(y_scaled)
 	print("PCA on Y, R2 cumulative:", pca_y.r2_cumulative_.round(3).tolist())
-	pca_y.score_plot(settings={"show_labels": True}).show()
+	def scores(model, r2):
+	    """Score plot with the percent of the variance each component explains (`r2`, per component) on its axis."""
+	    fig = model.score_plot(settings={"show_labels": True})
+	    r2 = np.asarray(r2)
+	    fig.update_layout(xaxis_title=f"t1 [{r2[0]:.1%}]", yaxis_title=f"t2 [{r2[1]:.1%}]")
+	    return fig
+
+	def explained_x(pls_model):
+	    """R2 of X per component of a PLS model, from the cumulative R2 of its columns."""
+	    return np.diff([0.0, *pls_model.r2_per_variable_.mean(axis=0)])
+
+	scores(pca_y, pca_y.r2_per_component_).show()
 	disposition = pd.cut(pca_y.scores_.index, bins=[0, 33, 61, 71], labels=["good", "abnormal", "high solvent"])
 	print(pca_y.scores_.groupby(disposition, observed=True).agg(["mean", "min", "max", "count"]).round(2))
 	contributions = pca_y.score_contributions(y_scaled, component=1)
@@ -211,7 +223,7 @@ and ``scale=False`` tells the ``PLS`` class not to scale them again.
 	pls_op = PLS(n_components=2, scale=False).fit(zop_scaled, y_scaled)
 	print("PLS Zchem -> Y, R2Y cumulative:", pls_chem.r2_cumulative_.round(3).tolist())
 	print("PLS Zop -> Y, R2Y cumulative:", pls_op.r2_cumulative_.round(3).tolist())
-	pls_op.score_plot(settings={"show_labels": True}).show()
+	scores(pls_op, explained_x(pls_op)).show()
 	print("batch 20 on Zop, t1 contributions:", pls_op.score_contributions(zop_scaled, component=1).loc[20].round(2).to_dict())
 
 Each initial-condition block on its own explains about a quarter of the quality block:
@@ -241,7 +253,8 @@ each block the components describe.
 	mb_z = MBPLS(n_components=2).fit(blocks_z, Y)
 	print("MBPLS Z -> Y, R2Y cumulative:", mb_z.r2_y_cumulative_.round(3).tolist())
 	print("R2X per block after two components:", mb_z.r2_x_per_block_cumulative_.iloc[:, -1].round(3).to_dict())
-	mb_z.super_score_plot().show()
+	fig, r2y = mb_z.super_score_plot(), mb_z.r2_y_per_component_.to_numpy()
+	fig.update_layout(xaxis_title=f"super t1 [R2Y {r2y[0]:.1%}]", yaxis_title=f"super t2 [R2Y {r2y[1]:.1%}]").show()
 	mb_z.super_weights_bar_plot(component=1).show()
 	for name, block_contributions in mb_z.score_contributions(blocks_z, component=1).items():
 	    print(f"batch 20, block {name}:", block_contributions.loc[20].round(2).to_dict())
@@ -286,7 +299,7 @@ after scaling; the batch plots read it.
 	print("unfolded trajectories:", wide.shape, "with", int(wide.isna().sum().sum()), "missing cells")
 	pca_x = PCA(n_components=2).fit(x_scaled)
 	print("batch PCA on X, R2 cumulative:", pca_x.r2_cumulative_.round(3).tolist())
-	pca_x.score_plot(settings={"show_labels": True}).show()
+	scores(pca_x, pca_x.r2_per_component_).show()
 	print("largest SPE:", pca_x.spe_.iloc[:, -1].nlargest(4).round(1).to_dict(), "95% limit:", round(float(pca_x.spe_limit(conf_level=0.95)), 1))
 
 	def influence_plot(model, highlight, labels, conf_level=0.95):
@@ -389,7 +402,7 @@ Trajectories to quality
 
 	pls_x = PLS(n_components=2, scale=False).fit(x_scaled, y_scaled)
 	print("batch PLS X -> Y, R2Y cumulative:", pls_x.r2_cumulative_.round(3).tolist())
-	pls_x.score_plot(settings={"show_labels": True}).show()
+	scores(pls_x, explained_x(pls_x)).show()
 	t1 = pls_x.score_contributions(x_scaled, component=1)
 	unfolded_contribution_plot(t1, batch_id=13).show()
 	print("batch 13, t1 contributions per tag:", t1.loc[13].groupby(level="tag", sort=False).sum().round(1).to_dict())
@@ -459,7 +472,8 @@ columns and the nine operating columns.
 	print("batch MBPLS, R2Y cumulative:", mb.r2_y_cumulative_.round(3).tolist())
 	print("R2X per block after two components:", mb.r2_x_per_block_cumulative_.iloc[:, -1].round(3).to_dict())
 	print("super VIP per block:", mb.super_vip_.round(2).to_dict())
-	mb.super_score_plot().show()
+	fig, r2y = mb.super_score_plot(), mb.r2_y_per_component_.to_numpy()
+	fig.update_layout(xaxis_title=f"super t1 [R2Y {r2y[0]:.1%}]", yaxis_title=f"super t2 [R2Y {r2y[1]:.1%}]").show()
 	mb.super_weights_bar_plot(component=1).show()
 	unfolded_contribution_plot(mb.score_contributions(blocks, component=1)["X"], batch_id=13).show()
 	mb.predictions_vs_observed_plot(Y, variable="SolventConc").show()

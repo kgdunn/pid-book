@@ -35,7 +35,9 @@ worked example of Nomikos and MacGregor (1995), supplied by DuPont: 55 batches, 
 aligned to 100 equal time intervals, with the values scaled for confidentiality. From the
 laboratory records, batches 40, 41, 42, 50, 51, 53, 54 and 55 had a final quality well
 outside the acceptable limit, and batches 38, 45, 46, 49 and 52 were above or very close to
-it. That list is not used to build the model. It is kept aside and compared with what the
+it. The list plays no part in building the models: each one is a PCA of the trajectories
+alone, fitted with the poor batches in the training set like any other, and no batch is
+removed or weighted for its quality. The list is compared afterwards with what the
 trajectories reveal on their own.
 
 The data
@@ -64,7 +66,7 @@ however, rank 55 batches on ten variables at once; that is what the model is for
 
 .. code-block:: python
 
-	GREY, ORANGE, AQUA, BLUE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a"     # figure colours, reused below
+	GREY, ORANGE, AQUA, BLUE, PURPLE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a", "#6f42c1"     # figure colours
 
 	def overlay(batches, tag, highlight):
 	    """One tag for every batch in grey, with the batches in `highlight` (id -> colour) drawn on top."""
@@ -117,18 +119,26 @@ including on this dataset. All three of these case studies unfold batchwise.
 
 .. code-block:: python
 
+	def scores(model, pc_horiz=1, pc_vert=2):
+	    """Score plot with the percent of the variance each component explains on its axis."""
+	    fig = model.score_plot(pc_horiz=pc_horiz, pc_vert=pc_vert, settings={"show_labels": True})
+	    r2 = model.r2_per_component_
+	    fig.update_layout(xaxis_title=f"t{pc_horiz} [{r2.iloc[pc_horiz - 1]:.1%}]",
+	                      yaxis_title=f"t{pc_vert} [{r2.iloc[pc_vert - 1]:.1%}]")
+	    return fig
+
 	model_a = BatchPCA(n_components=2).fit(batches)
 	print("R2 per component:", model_a.r2_per_component_.round(3).tolist())
 	print("R2 cumulative:", model_a.r2_cumulative_.round(3).tolist())
-	model_a.score_plot(settings={"show_labels": True}).show()
+	scores(model_a).show()
 	spe = model_a.spe_.iloc[:, -1]                          # SPE of every batch after the second component
 	t2 = model_a.hotellings_t2_.iloc[:, -1]                 # ... and its Hotelling's T2
 	print(f"largest SPE: batch {spe.idxmax()} ({spe.max():.1f} against the 95% limit {model_a.spe_limit(conf_level=0.95):.1f})")
 	print("above the SPE limit:", sorted(spe.index[spe > model_a.spe_limit(conf_level=0.95)]))
 	print("above the T2 limit:", sorted(t2.index[t2 > model_a.hotellings_t2_limit(conf_level=0.95)]))
 
-The two components explain 38.3% and 17.6% of the variance in the unfolded matrix, 55.9%
-together. Two plots are enough to find the batches that differ.
+The two components together explain 55.9% of the variance in the unfolded matrix. Two
+plots are enough to find the batches that differ.
 
 .. figure:: ../figures/batch/batch-case-dupont-model-a-scores.png
 	:source: batch/batch-case-dupont-figures.py
@@ -327,7 +337,7 @@ Removing batches changes the model, so the plots are examined again.
 	kept_b = {batch_id: batch for batch_id, batch in batches.items() if batch_id < 49}
 	model_b = BatchPCA(n_components=3).fit(kept_b)
 	print("R2 per component:", model_b.r2_per_component_.round(3).tolist())
-	model_b.score_plot(pc_horiz=2, pc_vert=3, settings={"show_labels": True}).show()
+	scores(model_b, 2, 3).show()
 	second_group = [37, 39, 43, 44, 45, 46, 47, 48]
 
 .. figure:: ../figures/batch/batch-case-dupont-model-b-scores.png
@@ -340,68 +350,46 @@ Removing batches changes the model, so the plots are examined again.
 	Scores of model B on components 2 and 3. Batches 37, 39 and 43 to 48 (orange) form a
 	group at the top right of the plot, away from the main cloud of batches.
 
-The three components of model B explain 33.3%, 13.3% and 8.5% of the variance. With the
-extreme batches gone, a second group separates in the plane of :math:`t_2` and
+With the extreme batches gone, a second group separates in the plane of :math:`t_2` and
 :math:`t_3`: batches 37, 39 and 43 to 48.
 
-Every contribution so far has been for one batch. A group of batches can be treated the
-same way, and here it is the more useful object: the question is what the eight have in
-common, not what any one of them did. The columns are centred, so the model centre is the
-origin, and a group's mean row is its displacement from that centre. Contributions are
-linear in the row, so the mean of the members' contribution vectors is the contribution of
-the group mean, and it adds up to the group's mean score. A contribution is in general the
-weighted difference between a point and a reference point, and either of the two may be the
-average of a group; the reference used here is the model centre, which is the average of
-all 48 batches.
+A contribution is the weighted difference between two points, and either point can be the
+average of a group of batches. The eight batches are compared here as a group against the
+model centre, the average of all 48: the columns are centred, so the group's mean row is
+its displacement from the centre, and its contribution vector adds up to the group's mean
+score.
 
 .. code-block:: python
 
 	scaled_b = model_b.unfold_and_scale(kept_b)
 	per_component = {a: model_b.score_contributions(scaled_b, component=a) for a in (2, 3)}
-	group = {a: c.loc[second_group].mean(axis=0) for a, c in per_component.items()}   # the cluster against the centre
+	group = {a: c.loc[second_group].mean(axis=0) for a, c in per_component.items()}   # the group against the centre
 	for a in (2, 3):
 	    print(f"group mean t{a} = {model_b.scores_.loc[second_group].iloc[:, a - 1].mean():5.1f}",
 	          f"(the contribution vector sums to {group[a].sum():5.1f});",
 	          f"the other 40 batches: {model_b.scores_.drop(index=second_group).iloc[:, a - 1].mean():5.1f}")
-	    print(f"  per tag: {group[a].groupby(level='tag', sort=False).sum().round(1).to_dict()}")
-	    by_time = group[a].groupby(level="sequence").sum()
-	    print(f"  samples 0 to 25 carry {by_time.loc[:25].sum() / by_time.sum():.0%} of it")
 
 .. code-block:: text
 
    group mean t2 =  15.0 (the contribution vector sums to  15.0); the other 40 batches:  -3.0
-     per tag: {'Flow-1': 0.2, 'Flow-2': 0.8, 'Press-1': 0.2, 'Press-2': 3.3, 'Press-3': 3.2,
-               'TempC-1': 3.8, 'TempH-1': 1.8, 'TempR-1': 0.2, 'TempR-2': 1.3, 'TempR-3': 0.3}
-     samples 0 to 25 carry 66% of it
    group mean t3 =  14.8 (the contribution vector sums to  14.8); the other 40 batches:  -3.0
-     per tag: {'Flow-1': 0.6, 'Flow-2': 2.3, 'Press-1': 0.8, 'Press-2': 1.4, 'Press-3': 4.0,
-               'TempC-1': 4.4, 'TempH-1': -0.4, 'TempR-1': 0.5, 'TempR-2': 1.1, 'TempR-3': 0.2}
-     samples 0 to 25 carry 90% of it
 
 .. figure:: ../figures/batch/batch-case-dupont-group-contribution.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: Left, the group's contribution to t2 and t3 summed per tag with each of the eight members as a dot, led by TempC-1 and Press-3; right, the same contributions summed per sample, large over the first 25 samples and small afterwards.
+	:alt: Left, the group's contribution to t2 and t3 summed per tag with each of the eight members as a dot; right, the same contributions summed per sample.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
-	Left: the contribution of the eight-batch group to :math:`t_2` and :math:`t_3`, summed
-	per tag, with every member drawn as a dot so the spread within the group is visible.
-	Right: the same contributions summed per sample.
+	The contribution of the eight-batch group to :math:`t_2` and :math:`t_3`, summed per tag
+	with each member as a dot (left) and summed per sample (right).
 
-The group sits at a mean :math:`t_2` of 15.0 and a mean :math:`t_3` of 14.8, where the other
-40 batches average -3.0 on both and all 48 average zero by construction. ``TempC-1`` and
-``Press-3`` carry most of that displacement on both components, and every one of the eight
-members contributes in the same direction on those two tags. ``TempH-1`` behaves
-differently: its members' contributions take both signs on each component, from -3.8 to +6.3
-on :math:`t_2` and from -3.1 to +2.1 on :math:`t_3`, so the group means of 1.8 and -0.4 are set
-by a few members rather than shared by all eight. It is a feature of particular members rather
-than of the group as a whole, and reading a single member as representative would have put it
-on the list.
-
-The timing is as clear as the tag list. Samples 0 to 25 carry 66% of the :math:`t_2`
-contribution and 90% of the :math:`t_3` contribution, so the group differs from the average
-batch mainly at the start.
+``TempC-1`` and ``Press-3`` carry most of the displacement on both components, every member
+contributes in the same direction on those two tags, and the contributions are large over
+the first 25 samples and small afterwards. Not every member is consistent with the average:
+``TempH-1`` takes both signs across the eight, so its group mean is set by a few of them.
+The group contribution is a starting point for a diagnosis of the group, to be checked
+member by member.
 
 .. code-block:: python
 
@@ -415,67 +403,76 @@ batch mainly at the start.
 	:scale: 80
 	:align: center
 
-	The raw trajectories of the three tags with the largest contributions, over the window
-	the contributions point at. The eight batches of the group (orange) sit above the other
-	40 batches of model B (light grey) in ``TempC-1`` and ``Press-3`` and rejoin them at
-	about sample 25. Over the whole batch the gap is under 2% of the panel height for two of
-	these three tags, which is why the panels stop at sample 30.
+	The raw trajectories of the three tags with the largest contributions over the first 30
+	samples: the eight batches of the group (orange) and the other 40 batches of model B
+	(light grey).
 
-The raw data confirm it. The eight batches run above the other 40 in ``TempC-1`` and
-``Press-3`` for the whole early window and rejoin them at about sample 25; in ``Press-2``
-the separation is smaller and the two sets overlap, which matches its smaller contribution.
-Of the eight, only batches 45 and 46 appear in the list of batches with poor or borderline
-quality; the other six produced acceptable product. They were operated differently, not
-badly. A model of normal operation can either contain enough of them to describe that mode
-of operation or leave them out. The original course notes leave them out, and so does the
-third model.
+The raw trajectories agree: the eight batches run above the other 40 in ``TempC-1`` and
+``Press-3`` until about sample 25, and overlap them in ``Press-2``. Only batches 45 and 46
+are on the list of poor or borderline quality; the other six produced acceptable product.
+They were operated differently, not badly, and a model of normal operation can either
+include enough of them to describe that mode or leave them out. The original course notes
+leave them out, and so does the third model.
 
-The reference model, and the batches it cannot see
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The final model, used to verify the unusual batches detected above
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Model C is fitted on the 40 batches that remain once batch 49, batches 50 to 55 and the
+eight batches of the second group are removed. Whether it describes normal operation is
+checked by projecting those 15 batches onto it: each is unfolded and scaled with the centre
+and scale of model C, its scores are estimated, and its :math:`T^2` and SPE are compared
+with the 95% limits of the 40 training batches.
 
 .. code-block:: python
 
 	kept_c = {batch_id: batch for batch_id, batch in kept_b.items() if batch_id not in second_group}
 	model_c = BatchPCA(n_components=3).fit(kept_c)
 	print("R2 per component:", model_c.r2_per_component_.round(3).tolist())
-	poor_quality = [38, 40, 41, 42]                         # known to have had poor final quality
-	model_c.score_plot(settings={"show_labels": True}).show()
-	influence_plot(model_c, highlight={b: ORANGE for b in poor_quality}, labels=poor_quality).show()
-	table = pd.DataFrame({"T2": model_c.hotellings_t2_.loc[poor_quality].iloc[:, -1],
-	                      "T2 limit": model_c.hotellings_t2_limit(conf_level=0.95),
-	                      "SPE": model_c.spe_.loc[poor_quality].iloc[:, -1],
-	                      "SPE limit": model_c.spe_limit(conf_level=0.95)})
-	print(table.round(2))
+	scores(model_c).show()
+	left_out = {"batch 49": [49], "batches 50 to 55": list(range(50, 56)), "the second group": second_group}
+	colours = {"batch 49": ORANGE, "batches 50 to 55": AQUA, "the second group": PURPLE}
+	projected = {b: model_c.predict_online(batches[b], upto_k=model_c.n_timesteps_)   # a complete batch: its scores,
+	             for ids in left_out.values() for b in ids}                             # T2 and SPE against model C
+	outside = pd.DataFrame({b: (float(r.hotellings_t2), float(r.spe)) for b, r in projected.items()}, index=["T2", "SPE"]).T
+	fig = influence_plot(model_c, highlight={}, labels=[])
+	for label, ids in left_out.items():
+	    fig.add_trace(go.Scatter(x=outside.loc[ids, "T2"], y=outside.loc[ids, "SPE"], mode="markers", name=label,
+	                             marker=dict(size=10, color=colours[label]), text=ids, hovertemplate="batch %{text}"))
+	fig.update_xaxes(type="log").update_yaxes(type="log")         # the projected batches lie far outside the limits
+	fig.show()
+	t2_limit, spe_limit = model_c.hotellings_t2_limit(conf_level=0.95), model_c.spe_limit(conf_level=0.95)
+	print("left-out batches above the SPE limit:", sorted(outside.index[outside["SPE"] > spe_limit]))
+	print("left-out batches above the T2 limit:", sorted(outside.index[outside["T2"] > t2_limit]))
+	poor_quality = [38, 40, 41, 42]                                # in the training set, known poor final quality
+	print("batches 38, 40, 41 and 42 inside both limits:",
+	      bool((model_c.hotellings_t2_.loc[poor_quality].iloc[:, -1] < t2_limit).all()
+	           and (model_c.spe_.loc[poor_quality].iloc[:, -1] < spe_limit).all()))
+
+.. code-block:: text
+
+   R2 per component: [0.375, 0.114, 0.064]
+   left-out batches above the SPE limit: [37, 39, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55]
+   left-out batches above the T2 limit: [37, 50, 51, 52, 53, 54, 55]
+   batches 38, 40, 41 and 42 inside both limits: True
 
 .. figure:: ../figures/batch/batch-case-dupont-model-c.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: Scores and the influence plot of model C on 40 batches; batches 38, 40, 41 and 42 lie inside the confidence ellipse and, in the influence plot, among the ordinary batches below both limits.
+	:alt: Left, the scores of model C's 40 batches with 38, 40, 41 and 42 marked inside the ellipse; right, Hotelling's T2 against SPE on logarithmic axes, the 40 training batches below both limits and the 15 left-out batches above the SPE limit, seven of them above the T2 limit as well.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
-	Scores (left) and Hotelling's :math:`T^2` against the SPE (right) of model C, built on 40
-	batches. Batches 38, 40, 41 and 42 (orange), which produced poor product, lie inside the
-	95% confidence ellipse and, in the influence plot, among the ordinary batches below both
-	limits.
+	Left: scores of model C, with batches 38, 40, 41 and 42 (orange) marked. Right:
+	Hotelling's :math:`T^2` against the SPE, on logarithmic axes, of the 40 training batches
+	(blue) and of the 15 left-out batches projected onto model C: batch 49 (orange), batches
+	50 to 55 (aqua) and the second group (purple).
 
-Model C, built on the 40 remaining batches, explains 37.5%, 11.4% and 6.4% of the variance
-with its three components, and its scores are spread more evenly than those of the first
-two models. A group of nine batches with :math:`t_1` values above 20 remains (batches 1, 6
-to 10, 12, 28 and 31); they lie inside the 95% confidence ellipse and are not pursued here.
-
-Batches 38, 40, 41 and 42 were among those with poor or borderline final quality, yet all
-four sit inside the :ref:`Hotelling's T2 <LVM-Hotellings-T2>` limit and below the SPE limit
-of model C:
-
-=====  =============  =============  =====  =========
-Batch  :math:`T^2`    T2 limit       SPE    SPE limit
-=====  =============  =============  =====  =========
-38     3.86           9.27           19.52  24.17
-40     0.80           9.27           19.95  24.17
-41     0.28           9.27           18.01  24.17
-42     0.09           9.27           23.59  24.17
-=====  =============  =============  =====  =========
+Every one of the 15 lies above the SPE limit, most of them far above it, and the six score
+outliers and batch 37 lie above the :math:`T^2` limit as well: the model built without them
+flags them. The scores of the 40 training batches are spread more evenly than in the first
+two models; a group of nine batches with larger :math:`t_1` values remains inside the 95%
+confidence ellipse and is not pursued here. Batches 38, 40, 41 and 42, which produced poor
+product and stayed in the training set, sit inside both limits.
 
 Nothing in the ten trajectories distinguishes these four batches from the batches that
 produced good product. This is the lesson the case study is built around, and it is worth
@@ -488,6 +485,10 @@ control engineering, the condition of the batch must be *observable* through the
 remedy is to measure something else, for example the properties of the raw materials, and
 the :ref:`third case study <APPS_batch_case_fmc>` shows how such blocks are added to a
 batch model.
+
+The :ref:`SBR case study <APPS_batch_case_sbr_online>` runs the same check sample by
+sample: a reference model on the normal batches, and limits computed at every sample, so
+that a faulty batch is flagged while it is still running.
 
 References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~
