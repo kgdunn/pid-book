@@ -610,9 +610,7 @@ sample by sample from the reference batches' SPE at that sample.
 	axis). :math:`T^2` at each sample is scaled by this spread, which is what lets the limit
 	stay the same throughout the batch.
 
-The limits are set at 99%. A batch is compared with its limit 200 times, once per sample,
-so a 95% limit would be crossed about ten times by a normal batch, and even at 99% an
-isolated crossing is expected. An alarm here means three consecutive samples above the
+The limits are set at 99%, and an alarm here means three consecutive samples above the
 limit, the same kind of rule the departure analysis used.
 
 .. code-block:: python
@@ -677,15 +675,36 @@ Batch 37 is caught by :math:`T^2` after 23 samples and stays above the limit; it
 inside its limit until 145 samples. Batch 34 is caught by the SPE after 105 samples, five
 after the impurity enters; its :math:`T^2` stays inside its limit until 190 samples.
 
-Among the 51 reference batches, 0.2% of the :math:`T^2` values and 1.2% of the SPE values
-lie above their limits, mostly as isolated crossings, but 13 of the 51 hold an SPE alarm
-for three consecutive samples somewhere in the batch. The SPE of a single sample is the
-sum of six squared residuals, a noisy statistic; the cumulative SPE, over every sample
-observed so far, gives the other side of the trade, with a three-sample alarm in 3 of the
-51 and batch 34 flagged after 112 samples instead of 105. The runs come from the SPE of a
-batch being correlated from one sample to the next, not from a rough limit: pooling the
-reference values of neighbouring samples before each limit is fitted (``spe_window`` in
-``BatchMonitor``) leaves them where they are.
+* The reference set is the definition of normal: the 51 batches are assumed to represent
+  common-cause operation, with nothing wrong in any of them. Any alarm one of them raises
+  is therefore a false alarm, and their alarm rate is the false-alarm rate to expect from
+  normal batches on the plant.
+* A limit set at 99% lets 1% of the values of a normal batch cross it by chance. The
+  reference batches bear this out: 0.2% of their :math:`T^2` values and 1.2% of their SPE
+  values lie above their limits.
+* With 200 samples in a batch, 1% is about two crossings per normal batch, so a single
+  crossing cannot count as an alarm. The rule used here is three consecutive samples above
+  the limit.
+* That rule holds for :math:`T^2`: one of the 51 reference batches raises a three-sample
+  alarm. It does not hold for the SPE: 13 of the 51 do, a false-alarm rate of one normal
+  batch in four.
+* The difference is autocorrelation. The SPE of a single sample is the sum of six squared
+  residuals, and a sample that fits the model poorly is usually followed by another that
+  does, so the SPE of a batch runs above or below its limit in stretches, and a crossing
+  that began by chance tends to last the three samples the rule asks for.
+* The limit itself is not the cause. A smoother limit, fitted to the reference SPE of five
+  neighbouring samples at once (``spe_window=2`` in ``BatchMonitor``), still lets about 1%
+  of the values cross it, as any 99% limit does, and still gives a three-sample alarm in 15
+  of the 51 reference batches: the crossings are as rare as they should be, and they still
+  come in runs.
+* The cumulative SPE, over every sample observed so far, averages the autocorrelation out:
+  3 of the 51 reference batches raise an alarm. The price is a later detection, batch 34
+  after 112 samples instead of 105.
+* An alarm on a new batch can only be trusted once the false-alarm rate of the rule has
+  been measured on the reference batches and made acceptable, by the choice of statistic
+  or of run length. On this data the :math:`T^2` chart is used as it is; the SPE chart
+  needs the cumulative statistic or a longer run, and either way batch 34 is still flagged
+  with most of its second half to run.
 
 .. code-block:: python
 
@@ -694,8 +713,10 @@ reference values of neighbouring samples before each limit is fitted (``spe_wind
 	print(f"limit pooled over five samples: {np.mean([r.spe_alarm.mean() for r in pooled_traced]):.2%} of the reference",
 	      f"SPE values above it; {sum(first_sustained(r.spe_alarm) is not None for r in pooled_traced)} of 51 batches",
 	      f"with a three-sample run; batch 34 flagged after {first_sustained(pooled.monitor(trajectories[34]).spe_alarm)} samples")
-	steps = np.abs(np.diff(monitor.spe_limit_over_time_[5:])) / monitor.spe_limit_over_time_[6:]
-	print(f"limit fitted sample by sample: median change from one sample to the next {np.median(steps):.1%}")
+	cumulative = BatchMonitor(reference, conf_level=0.99).fit(normal)        # the SPE over every sample observed so far
+	print([sum(first_sustained(cumulative.monitor(t).spe_alarm) is not None for t in normal.values()),
+	       first_sustained(cumulative.monitor(trajectories[34]).spe_alarm)])   # reference batches with an alarm; batch 34
+	# [3, 112]
 
 The two batches are caught by different statistics, and that is not an accident of the
 data. The fault of batch 37 is a slower reaction from the start, and the direction of its
