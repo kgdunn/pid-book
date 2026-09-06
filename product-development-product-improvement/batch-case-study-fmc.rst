@@ -315,7 +315,7 @@ each block the components describe.
 	    block_axes(fig, np.diff([0.0, *mb_z.r2_x_per_block_cumulative_.loc[name]]), 1, col)
 	    w = mb_z.block_weights_[name]                                         # one row per variable of the block
 	    fig.add_trace(go.Scatter(x=w.iloc[:, 0], y=w.iloc[:, 1], mode="markers+text", text=list(w.index), textposition="top right",
-	                             marker=dict(color=BLUE, size=9), showlegend=False), row=2, col=col)
+	                             marker=dict(color=BLUE, size=16), showlegend=False), row=2, col=col)
 	    block_axes(fig, [np.nan, np.nan], 2, col, prefix="block w")
 	fig.update_layout(height=820).show()
 
