@@ -411,8 +411,8 @@ The raw trajectories agree: the eight batches run above the other 40 in ``TempC-
 ``Press-3`` until about sample 25, and overlap them in ``Press-2``. Only batches 45 and 46
 are on the list of poor or borderline quality; the other six produced acceptable product.
 They were operated differently, not badly, and a model of normal operation can either
-include enough of them to describe that mode or leave them out. The original course notes
-leave them out, and so does the third model.
+include enough of them to describe that mode or leave them out. The third model leaves
+them out.
 
 The final model, used to verify the unusual batches detected above
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

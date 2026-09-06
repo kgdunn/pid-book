@@ -283,9 +283,9 @@ The trajectories alone
 ~~~~~~~~~~~~~~~~~~~~~~
 
 The trajectories are unfolded batchwise with ``dict_to_wide``: one row per batch of 10 tags
-times 325 samples, 3250 columns, the layout the ``BatchPCA`` class uses internally. The
-original course notes include ``ClockTime`` as an eleventh trajectory. On this page it is
-left out of the trajectory block, so that the block holds the ten process measurements
+times 325 samples, 3250 columns, the layout the ``BatchPCA`` class uses internally.
+``ClockTime`` could be carried as an eleventh trajectory. On this page it is left out of the
+trajectory block, so that the block holds the ten process measurements
 only; the timing information enters the later multiblock model through the recipe timings
 of :math:`\mathbf{Z}_\text{op}`. Including it is a change of one line. ``MCUVScaler``
 returns flat column labels, so the two-level (tag, sequence) column index is re-attached

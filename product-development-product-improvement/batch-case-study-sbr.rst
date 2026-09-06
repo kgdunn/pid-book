@@ -17,10 +17,9 @@ of each batch: composition, particle size, branching, cross-linking and polydisp
 53 batches of this case study were simulated from a first-principles model of the reactor
 (Nomikos, 1995), and that makes it a rare kind of case study: the fault is known. Batches 34
 and 37 both received 30% more organic impurity in the butadiene feed than the other batches,
-from the very start of batch 37 and, in the description given in the original course notes,
-midway through batch 34. Simulated data are useful for exactly this reason. A model can be
-checked against what is known to have happened before it is trusted on plant data, where
-nothing is known for certain.
+from the very start of batch 37 and midway through batch 34. Simulated data are useful for
+exactly this reason. A model can be checked against what is known to have happened before it
+is trusted on plant data, where nothing is known for certain.
 
 The :ref:`first case study <APPS_batch_case_dupont>` used a PCA model of the trajectories
 alone. Here a block of final quality attributes is available, so the model is a
@@ -485,13 +484,7 @@ row as missing data, and the model's regression from scores to quality then give
 prediction (Wold and co-workers, 2009, Eqs. 2 and 5). The estimator used here is trimmed
 score regression, the library's default: the scores of the training batches are regressed
 on the scores estimated from the same partial rows, and that regression corrects the
-estimate for a new batch (Garcia-Munoz, Kourti and MacGregor, 2004). The projection to the
-model plane of the earlier literature is available as ``method="pmp"``; it is poorly
-conditioned in the first samples, when few cells constrain the scores. Two simpler fills
-are also in use, and the course notes this page grew out of list them: run the rest of the
-batch on the average trajectory, or hold the current deviation to the end. Each assumes
-something about the future; the projection uses the model's own record of how the early
-part of a batch relates to the rest.
+estimate for a new batch (Garcia-Munoz, Kourti and MacGregor, 2004).
 
 ``predict_online_trace`` estimates the scores at every sample of a batch in one call and
 returns the prediction after each. ``online_rmse`` does that for every batch in a set and
