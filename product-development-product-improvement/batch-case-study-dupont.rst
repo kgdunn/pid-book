@@ -45,7 +45,7 @@ The data
 
 The `polymerization dataset <https://openmv.net/info/polymerization>`_ is a single table of
 5500 rows, one per aligned sample of every batch, with a batch identifier and a time index.
-The ``load_dupont`` function in the ``process_improve`` package downloads the table and
+The ``load_dupont`` function in the `process_improve <https://github.com/kgdunn/process-improve>`_ package downloads the table and
 returns a dictionary with one data frame per batch, 100 samples by 10 tags.
 
 .. code-block:: python
@@ -102,7 +102,7 @@ however, rank 55 batches on ten variables at once; that is what the model is for
 A first model on all 55 batches
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ``BatchPCA`` class unfolds the batches batchwise, so that each batch becomes one row of
+The `BatchPCA <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/_batch_pca.py>`_ class unfolds the batches batchwise, so that each batch becomes one row of
 10 tags times 100 samples, 1000 columns in all. Every column is then centred and scaled to
 unit variance, the :ref:`preprocessing <LVM_preprocessing>` used for any PCA model.
 Centring removes the average trajectory of each tag, and scaling gives every (tag, time)

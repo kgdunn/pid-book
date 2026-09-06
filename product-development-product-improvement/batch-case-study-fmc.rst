@@ -95,7 +95,7 @@ alignment it is no longer a clock but a record of how much each batch was stretc
 compressed to fit the template, and that is information about the batch in its own right: a
 batch whose temperature ramp took longer than usual has a ``ClockTime`` that rises faster
 over that phase. Alignment of raw, unaligned batch data is a topic of its own; the
-``batch_dtw`` function in ``process_improve`` implements dynamic time warping for it, and
+`batch_dtw <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/preprocessing.py>`_ function in ``process_improve`` implements dynamic time warping for it, and
 the unaligned trajectories of this same dryer are bundled with the package as
 ``load_dryer``.
 
@@ -105,7 +105,7 @@ identifiers of the thirteen as ``missing_chemistry`` so that the exclusion can b
 reproduced, and 46 batches remain. They still contain genuine missing values: 19 cells
 in the quality block, one in the chemistry block, and 1340 cells in the eleven trajectories
 of ten batches, where the record has gaps. The ``PCA``, ``PLS`` and
-``MBPLS`` estimators of the ``multivariate`` module handle missing values through the
+`MBPLS <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/multivariate/_mbpls.py>`_ estimators of the ``multivariate`` module handle missing values through the
 :ref:`NIPALS algorithm <LVM_PCA_NIPALS_algorithm>`, which is why this case study uses them
 directly, after unfolding the trajectories with ``dict_to_wide``, instead of the
 ``BatchPCA`` and ``BatchPLS`` classes of the two earlier case studies, which require

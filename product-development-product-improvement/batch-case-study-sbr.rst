@@ -97,7 +97,7 @@ batch.
 The batch PLS model
 ~~~~~~~~~~~~~~~~~~~
 
-``BatchPLS`` unfolds each batch batchwise, into one row of 6 tags times 200 samples, 1200
+`BatchPLS <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/_batch_pls.py>`_ unfolds each batch batchwise, into one row of 6 tags times 200 samples, 1200
 columns, centres and scales every column, and fits a PLS model from that row to the five quality
 attributes, which are also centred and scaled. Two components are used. As in the first
 case study, the aim of the first model is to see what is going on, not to settle the number
