@@ -81,23 +81,19 @@ study, that classification plays no part in building the models; it is compared 
 with what the models find. The score plots on this page carry it as a colour and a marker
 shape per class, so that the comparison can be read off each plot.
 
-Batch durations on this dryer vary widely, so the trajectories were aligned within each of
-the three phases before the data were archived, to 325 samples per batch. The first two
-phases were aligned against a maturity variable, a quantity that moves in one direction
-from the start of the phase to its end and can therefore be sampled at equal steps of
-itself in place of time: the collector tank level for the solvent-collection phase and the
-dryer temperature for the ramp, each between its own start and end value in that batch.
-The cooling phase was stretched linearly in time. In the aligned data the first phase ends
-at sample 175, where the agitator steps up to high speed, and the ramp at sample 249, the
-peak of the dryer temperature, so the cooling phase is the last 75 samples. ``ClockTime``,
-the wall-clock time at each aligned sample, is carried along as an eleventh trajectory. After
-alignment it is no longer a clock but a record of how much each batch was stretched or
-compressed to fit the template, and that is information about the batch in its own right: a
-batch whose temperature ramp took longer than usual has a ``ClockTime`` that rises faster
-over that phase. Alignment of raw, unaligned batch data is a topic of its own; the
-`batch_dtw <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/preprocessing.py>`_ function in ``process_improve`` implements dynamic time warping for it, and
-the unaligned trajectories of this same dryer are bundled with the package as
-``load_dryer``.
+Batch durations vary widely, so the trajectories were aligned within each phase before
+archiving, to 325 samples per batch. The first two phases were aligned against a maturity
+variable, a quantity that moves one way through the phase and so can be sampled at equal
+steps of itself instead of time: the collector tank level, then the dryer temperature. The
+cooling phase was stretched linearly. In the aligned data the first phase ends at sample 175
+and the ramp at sample 249.
+
+``ClockTime``, the wall-clock time at each aligned sample, is carried along as an eleventh
+trajectory. After alignment it records how much each batch was stretched or compressed to
+fit the template: a batch whose ramp took longer than usual has a ``ClockTime`` that rises
+faster over that phase. Alignment itself is a topic of its own; the
+`batch_dtw <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/preprocessing.py>`_ function in ``process_improve`` implements dynamic time warping, and the unaligned
+trajectories of this dryer are bundled with the package as ``load_dryer``.
 
 Thirteen batches have no chemistry measurements at all. The original study excluded the
 batches without a chemistry analysis and worked with 44; ``load_fmc`` returns the
