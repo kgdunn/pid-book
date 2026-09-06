@@ -15,9 +15,9 @@ temperature and the jacket temperature, the density of the latex, the conversion
 energy released by the reaction. Five quality attributes of the latex are measured at the end
 of each batch: composition, particle size, branching, cross-linking and polydispersity. The
 53 batches of this case study were simulated from a first-principles model of the reactor
-(Nomikos, 1995), so the fault is known: batches 34 and 37 both received 30% more organic
-impurity in the butadiene feed than the other batches, from the very start of batch 37 and
-midway through batch 34. That is the value of simulated data. A model can be checked against
+(Nomikos and MacGregor, 1994; Nomikos, 1995), so the fault is known: batch 37 received 30%
+more organic impurity in the butadiene feed than the normal batches from its very start, and
+batch 34 50% more from midway through. That is the value of simulated data. A model can be checked against
 what is known to have happened before it is trusted on plant data, where nothing is known
 for certain.
 
@@ -33,10 +33,12 @@ The data
 
 The `SBR batch reactor dataset <https://openmv.net/info/sbr-batch-reactor>`_ is a workbook
 with two sheets: the trajectories, 53 batches of 200 samples, and the quality attributes,
-one row per batch. The workbook holds nine trajectories. The two feed flow rates are
-constant in the simulation and the feed temperature barely moves, so the model uses the six
-trajectories the original study modelled. The ``load_sbr`` function returns the batch
-dictionary, the quality table and the list of those six tags.
+one row per batch. The workbook holds nine trajectories. The two feed flow rates and the
+feed temperature carry only the noise the simulation adds to them, under 2% and 0.1% of
+their values, so the model uses the six trajectories of the reactor itself; Nomikos and
+MacGregor (1994) modelled all nine and found the styrene flow and the feed temperature
+largely ignored by their model. The ``load_sbr`` function returns the batch dictionary, the
+quality table and the list of those six tags.
 
 .. code-block:: python
 
@@ -505,7 +507,10 @@ running:
 	coincide. A curve above 1 is worse than predicting the average batch.
 
 The particle size becomes predictable only in the second half of the batch, where the
-:math:`R^2` curves earlier on this page also placed the information. Branching and
+:math:`R^2` curves earlier on this page also placed the information. Nomikos and MacGregor
+(1995) give the reason: the particle size is set largely by the seed particles charged
+before the batch starts, which the trajectories do not record, and it was the attribute
+their model explained least. Branching and
 cross-linking are predicted best; polydispersity is predicted about as well after 50
 samples as at the end. The value of the curves is in their timing: polydispersity is
 predicted with an error below one standard deviation of the attribute from about 20
@@ -581,8 +586,10 @@ the score estimates: a score estimated from the first few samples is fitted to a
 cells in the unfolded row, and across the reference batches such estimates scatter far more
 widely than the final scores do, as the figure below shows. :math:`T^2` at each sample is
 therefore computed against the covariance of the reference batches' estimates at that same
-sample (Nomikos and MacGregor, 1995; Garcia-Munoz, Kourti and MacGregor, 2004, who show
-the same fall in the spread on this reactor's data), which the monitor stores. The SPE
+sample, which the monitor stores. Nomikos and MacGregor (1995) set the limits of their
+individual score charts from that spread at each sample and note that the :math:`T^2`
+chart needs the covariance at each sample as well; Garcia-Munoz, Kourti and MacGregor
+(2004) compute it, and show the same fall in the spread on this reactor's data. The SPE
 limit is fitted sample by sample from the reference batches' SPE at that sample.
 
 .. code-block:: python
@@ -676,14 +683,20 @@ limit, the same kind of rule the departure analysis used.
 Batch 37 is caught by :math:`T^2` after 23 samples and stays above the limit; its SPE stays
 inside its limit until 145 samples. Batch 34 is caught by the SPE after 105 samples, five
 after the impurity enters; its :math:`T^2` stays inside its limit until 190 samples.
+Nomikos and MacGregor flagged the same two batches with models of all nine trajectories:
+the fault present from the start in the scores within the first 15 samples (1994, with a
+score estimator that lets the current deviations persist, which moves the scores sooner),
+and the fault from the middle of the batch in the SPE after 105 samples (1995), the same
+sample as here.
 
 * The reference set is the definition of normal: the 51 batches are assumed to represent
   common-cause operation, with nothing wrong in any of them. Any alarm one of them raises
   is therefore a false alarm, and their alarm rate is the false-alarm rate to expect from
   normal batches on the plant.
 * A limit set at 99% lets 1% of the values of a normal batch cross it by chance. The
-  reference batches bear this out: 0.2% of their :math:`T^2` values and 1.2% of their SPE
-  values lie above their limits.
+  reference batches bear this out, in the count Nomikos and MacGregor (1995) make on
+  theirs: 0.2% of their :math:`T^2` values and 1.2% of their SPE values lie above their
+  limits.
 * With 200 samples in a batch, 1% is about two crossings per normal batch, so a single
   crossing cannot count as an alarm. The rule used here is three consecutive samples above
   the limit, the rule Garcia-Munoz, Kourti and MacGregor (2004) also use.
@@ -695,18 +708,24 @@ after the impurity enters; its :math:`T^2` stays inside its limit until 190 samp
   does, so the SPE of a batch runs above or below its limit in stretches, and a crossing
   that began by chance tends to last the three samples the rule asks for.
 * The limit itself is not the cause. A smoother limit, fitted to the reference SPE of five
-  neighbouring samples at once (``spe_window=2`` in ``BatchMonitor``), still lets about 1%
+  neighbouring samples at once (``spe_window=2`` in ``BatchMonitor``, the window Nomikos
+  and MacGregor, 1995, use), still lets about 1%
   of the values cross it, as any 99% limit does, and still gives a three-sample alarm in 15
   of the 51 reference batches: the crossings are as rare as they should be, and they still
   come in runs.
 * The cumulative SPE, over every sample observed so far, averages the autocorrelation out:
   3 of the 51 reference batches raise an alarm. The price is a later detection, batch 34
   after 112 samples instead of 105.
+* A tighter limit is the other remedy. Nomikos (1996) sets the limit of the residual chart
+  at 99.9% rather than 99%, because the residuals collect every kind of variation the model
+  does not describe and are the more prone to large values. At 99.9% none of the reference
+  batches raises a three-sample alarm, and batch 34 is caught after 106 samples instead of
+  105.
 * An alarm on a new batch can only be trusted once the false-alarm rate of the rule has
-  been measured on the reference batches and made acceptable, by the choice of statistic
-  or of run length. On this data the :math:`T^2` chart is used as it is; the SPE chart
-  needs the cumulative statistic or a longer run, and either way batch 34 is still flagged
-  with most of its second half to run.
+  been measured on the reference batches and made acceptable, by the choice of statistic,
+  of run length or of limit. On this data the :math:`T^2` chart is used as it is; the SPE
+  chart needs a tighter limit, the cumulative statistic or a longer run, and either way
+  batch 34 is still flagged with most of its second half to run.
 
 .. code-block:: python
 
@@ -719,6 +738,10 @@ after the impurity enters; its :math:`T^2` stays inside its limit until 190 samp
 	print([sum(first_sustained(cumulative.monitor(t).spe_alarm) is not None for t in normal.values()),
 	       first_sustained(cumulative.monitor(trajectories[34]).spe_alarm)])   # reference batches with an alarm; batch 34
 	# [3, 112]
+	tight = BatchMonitor(reference, conf_level=0.999, spe_statistic="instantaneous").fit(normal)   # the 99.9% limit
+	print([sum(first_sustained(tight.monitor(t).spe_alarm) is not None for t in normal.values()),
+	       first_sustained(tight.monitor(trajectories[34]).spe_alarm)])       # reference batches with an alarm; batch 34
+	# [0, 106]
 
 The two batches are caught by different statistics, and that is not an accident of the
 data. The fault of batch 37 is a slower reaction from the start, and the direction of its
@@ -797,7 +820,8 @@ the zero line and a departure reads directly.
 It is the same distinction as the two statistics. The model can forecast along its
 components, so it forecasts the slow conversion of batch 37 from sample 30 onwards; the fault
 of batch 34 lies off them, so the forecasts follow the average batch, and the model can flag
-the fault but cannot forecast it.
+the fault but cannot forecast it. Nomikos and MacGregor (1995) stop drawing their prediction
+intervals for this batch once its SPE crosses the limit, for the same reason.
 
 Both faults are found with more than half the batch still to run, and the statistic that
 finds each says which kind it is: a large :math:`T^2` with a small residual is a batch far
@@ -814,6 +838,11 @@ References and readings
   Ph.D thesis, McMaster University, 1995. The source of the simulation and of the two
   faulty batches.
 
+* Paul Nomikos and John F. MacGregor, "`Monitoring batch processes using multiway principal
+  component analysis <https://literature.learnche.org/item/30/monitoring-batch-processes-using-multiway-principal-component-analysis>`_",
+  *AIChE Journal*, **40**, 1361-1375, 1994. Describes the simulation and the two faulty
+  batches, and monitors them with a batch PCA model of all nine trajectories.
+
 * Paul Nomikos and John F. MacGregor, "`Multi-way partial least squares in monitoring batch
   processes <https://literature.learnche.org/item/32/multi-way-partial-least-squares-in-monitoring-batch-processes>`_",
   *Chemometrics and Intelligent Laboratory Systems*, **30**, 97-108, 1995.
@@ -826,6 +855,10 @@ References and readings
   processes <https://literature.learnche.org/item/34/multivariate-spc-charts-for-monitoring-batch-processes>`_",
   *Technometrics*, **37**, 41-59, 1995. The on-line monitoring scheme, with the statistics
   compared with their limits at every sample.
+
+* Paul Nomikos, "`Detection and diagnosis of abnormal batch operations based on multi-way
+  principal component analysis <https://doi.org/10.1016/0019-0578(96)00035-3>`_",
+  *ISA Transactions*, **35**, 259-266, 1996. The 99.9% limit for the residual chart.
 
 * Francisco Arteaga and Alberto Ferrer, "`Dealing with missing data in MSPC: several
   methods, different interpretations, some examples <https://doi.org/10.1002/cem.750>`_",

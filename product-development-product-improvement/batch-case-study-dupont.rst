@@ -253,7 +253,8 @@ grouped by tag and, with ``by_tag=True``, the sum per tag.
 ``Flow-1`` carries almost none of the residual. It belongs to the cooling-medium
 temperature, ``Flow-2``, ``Press-2``, the heating-medium temperature and ``Press-3``, and
 80% of it falls in the eleven samples from 55 to 65: a short disturbance in the heating,
-cooling and pressure systems that broke the usual relationship between these tags. Wold
+cooling and pressure systems that broke the usual relationship between these tags, which
+Nomikos (1996) attributes to a failure in the heating system. Wold
 and co-workers (2009) reach the same event from a different model, monitoring batch 49
 on-line against a three-component model of batches 1 to 36: their contribution plot at
 sample 57 names the same temperatures and pressures as running low from sample 57 to 65.
@@ -463,7 +464,11 @@ outliers and batch 37 lie above the :math:`T^2` limit as well: the model built w
 flags them. The scores of the 40 training batches are spread more evenly than in the first
 two models; a group of nine batches with larger :math:`t_1` values remains inside the 95%
 confidence ellipse and is not pursued here. Batches 38, 40, 41 and 42, which produced poor
-product and stayed in the training set, sit inside both limits.
+product and stayed in the training set, sit inside both limits. Nomikos and MacGregor (1995)
+left these four batches out as well, on the principle that a reference set should hold only
+batches with acceptable operation and acceptable product, and built their monitoring model
+on the remaining 36 batches with three components; they are kept in model C here so that
+this check can be made.
 
 Nothing in the ten trajectories distinguishes these four batches from the batches that
 produced good product, and that is the lesson of the case study. A model can only detect
@@ -491,6 +496,11 @@ References and readings
 * Paul Nomikos and John F. MacGregor, "`Monitoring batch processes using multiway principal
   component analysis <https://literature.learnche.org/item/30/monitoring-batch-processes-using-multiway-principal-component-analysis>`_",
   *AIChE Journal*, **40**, 1361-1375, 1994. The batchwise unfolding used on this page.
+
+* Paul Nomikos, "`Detection and diagnosis of abnormal batch operations based on multi-way
+  principal component analysis <https://doi.org/10.1016/0019-0578(96)00035-3>`_",
+  *ISA Transactions*, **35**, 259-266, 1996. The contribution plots of batch 49 and the
+  cause found for its event.
 
 * Paul Nomikos, `Statistical process control of batch processes <https://literature.learnche.org/item/154/statistical-process-control-of-batch-processes>`_,
   Ph.D thesis, McMaster University, 1995.
