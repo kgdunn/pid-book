@@ -346,8 +346,7 @@ The trajectories alone
 The trajectories are unfolded batchwise with ``dict_to_wide``: one row per batch of 11 tags
 times 325 samples, 3575 columns, the layout the ``BatchPCA`` class uses internally. The
 eleventh tag is ``ClockTime``, so that how fast each batch moved through each phase is part
-of what the models see. ``MCUVScaler`` returns flat column labels, so the two-level (tag,
-sequence) column index is re-attached after scaling; the batch plots read it.
+of what the models see.
 
 .. code-block:: python
 
