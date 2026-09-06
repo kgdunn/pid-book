@@ -753,7 +753,7 @@ the zero line and a departure reads directly.
 	    z_actual = z_form(trajectories[batch_id])[tag]
 	    fig.add_trace(go.Scatter(y=z_actual, mode="lines", name=f"batch {batch_id}, what happened",
 	                             line=dict(color=colour, width=1), opacity=0.4))
-	    for k, dash, line_colour, width in zip(from_samples, ("dash", "dot"), (colour, PURPLE), (2, 3)):   # the later
+	    for k, dash, line_colour, width in zip(from_samples, ("dash", "dot"), (colour, BLUE), (2, 3)):     # the later
 	        forecast = z_form(reference.predict_online(trajectories[batch_id], upto_k=k).forecast)[tag]   # one apart
 	        fig.add_trace(go.Scatter(x=forecast.index[k:], y=forecast.iloc[k:], mode="lines",
 	                                 name=f"forecast from sample {k} onwards", line=dict(color=line_colour, width=width, dash=dash)))
@@ -772,7 +772,7 @@ the zero line and a departure reads directly.
 
 .. figure:: ../figures/batch/batch-case-sbr-forecast.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Two panels in z form, each tag as a distance from the normal batches in their standard deviations. Left, the conversion of the 51 normal batches in grey around zero, batch 37's observed conversion in aqua up to 30 samples, well below zero, and the model's forecasts of the rest from sample 30 onwards (dashed aqua) and from sample 60 onwards (dotted purple) that stay below zero, close to what happened. Right, the cooling-water temperature of batch 34 in orange with forecasts from sample 60 onwards (dashed orange) and from sample 115 onwards (dotted purple) that stay near zero and miss the rise after sample 100.
+	:alt: Two panels in z form, each tag as a distance from the normal batches in their standard deviations. Left, the conversion of the 51 normal batches in grey around zero, batch 37's observed conversion in aqua up to 30 samples, well below zero, and the model's forecasts of the rest from sample 30 onwards (dashed aqua) and from sample 60 onwards (dotted dark blue) that stay below zero, close to what happened. Right, the cooling-water temperature of batch 34 in orange with forecasts from sample 60 onwards (dashed orange) and from sample 115 onwards (dotted dark blue) that stay near zero and miss the rise after sample 100.
 	:width: 1000px
 	:scale: 80
 	:align: center
@@ -781,9 +781,9 @@ the zero line and a departure reads directly.
 	distance from the 51 normal batches (grey) at that sample, in their standard deviations,
 	so the zero line is the average batch. Left: the conversion of batch 37 (aqua), observed
 	for 30 samples, and the forecasts from sample 30 onwards (dashed aqua) and from sample 60
-	onwards (dotted purple); what batch 37 did is the faint line. Right: the cooling-water
+	onwards (dotted dark blue); what batch 37 did is the faint line. Right: the cooling-water
 	temperature of batch 34 (orange) with the forecasts from sample 60 onwards (dashed
-	orange) and from sample 115 onwards (dotted purple); the impurity enters at sample 100.
+	orange) and from sample 115 onwards (dotted dark blue); the impurity enters at sample 100.
 
 It is the same distinction as the two statistics. The model can forecast along its
 components, so it forecasts the slow conversion of batch 37 from sample 30 onwards; the fault
