@@ -454,8 +454,9 @@ prediction less.
 Predicting quality before the batch ends
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The fitted values of the previous section used the whole batch. A batch that is still
-running can be asked what its final quality will be:
+The fitted values of the previous section used the whole batch. It is far more interesting
+if it is possible to predict what its final quality will be while the batch is still
+running:
 
 * its unfolded row is complete up to the current sample and empty after it, and the scores
   are estimated from the observed cells alone, with the rest of the row treated as missing
