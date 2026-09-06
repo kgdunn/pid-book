@@ -51,13 +51,16 @@ Use this to calculate the covariance between temperature and pressure by breakin
 			pres_centered = pres - pres.mean()
 			product = temp_centered * pres_centered
 
-			# numpy does element-by-element multiplication.
+			# numpy does element-by-element multiplication. Centring
+			# turned the integers into floats, so the products print
+			# with a trailing decimal point.
 			print(product)
-			# [16740 10080  5400  1440   180
-			#     60  1620  5700 10920 15660]
+			# [16740. 10080.  5400.  1440.   180.
+			#     60.  1620.  5700. 10920. 15660.]
 
 			# Average of `product`:
-			product.mean()    # 6780
+			print(product.mean())
+			# 6780.0
 
 			# np.cov returns the covariance matrix; the
 			# off-diagonal entry [0, 1] is Cov{temp, pres}
@@ -152,6 +155,8 @@ The variance and covariance values are units dependent. For example, you get a v
 It takes the covariance value and divides through by the product of the standard deviations of :math:`x` and :math:`y`, which carry the units of :math:`x` and :math:`y`, to obtain a dimensionless result. The values of :math:`r(x,y)` range from :math:`-1` to :math:`+1`. Also note that :math:`r(x,y) = r(y,x)`.
 
 So returning back to our example of the gas cylinder, the correlation between temperature and pressure, and temperature and humidity can be calculated now as:
+
+.. code-check: skip fill-in-the-blank exercise; the reader completes the last call
 
 .. code-block:: python
 

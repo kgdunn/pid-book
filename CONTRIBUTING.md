@@ -77,12 +77,35 @@ make setup
 | `make latexpdf` | Build the PDF (5–10 minutes; needs LaTeX). Output: `_build/latex/PID.pdf?2026-05-19` |
 | `make epub` | Build the EPUB into `_build/epub/` |
 | `make linkcheck` | Verify external links |
+| `make check-code` | Execute every Python code block and included `.py` script in the book against `process-improve` (see below) |
 | `make clean` | Remove build artifacts (`_build/`, caches) |
 | `make clean-all` | Also remove `.venv/` and `uv.lock` (forces a re-resolve on next `make setup`) |
 | `make` | Default target is `latexpdf`. Run `make help` for the full list |
 
 Compare your PDF against <https://learnche.org/pid/PID.pdf?2026-05-19> to confirm a
 clean build.
+
+## Checking the code in the book
+
+Every `.. code-block:: python` and every `.. literalinclude::` of a `.py` file
+is executable, and CI (`.github/workflows/check-code.yml`) executes all of them
+against the released `process-improve` package on every pull request. Run the
+same check locally before you push:
+
+```bash
+make check-code                                        # every chapter, in parallel
+make check-code-chapter CHAPTER=least-squares-modelling   # one chapter, one line per block
+make check-code-file FILE=least-squares-modelling/enrichment-topics.rst
+```
+
+The checker (`tools/check_code_blocks.py`) runs each chapter as one script in
+toctree order, so a block may reuse names defined earlier in the same chapter.
+It fails on tracebacks and on deprecation warnings that point at the book's own
+code, and it compares comment lines that echo a `print` result (for example
+`# [0.255, 0.367, ...]`) with what the block printed. The rules, and the
+`.. code-check:` markers for the rare block that must not run, are in
+[`CLAUDE.md`](CLAUDE.md#every-python-case-in-the-book-runs-in-ci). Data sets
+from openmv.net are cached in `.cache/openmv/` after the first download.
 
 ## Repository layout
 

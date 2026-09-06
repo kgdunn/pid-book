@@ -165,9 +165,9 @@ be told apart. The workflow is:
              |
              v
     (4)  SELECT the active second-order effects, limited by how
-         many are jointly estimable and guided by factor heredity
-         ( an interaction is admitted only if its parent main
-           effects are active )
+         many are jointly estimable, and optionally guided by
+         factor heredity ( an interaction is admitted only if its
+           parent main effects are active )
              |
              v
     final model: the active main, quadratic, and interaction effects
@@ -179,12 +179,21 @@ because of the orthogonality property: the main effects are unaliased with every
 term, so their estimates are unbiased no matter which interactions or quadratics are truly
 active, which is what lets us analyse them on their own. Step 4 is where the design's one weakness is managed:
 since the second-order effects are correlated among themselves, only a limited number can be
-estimated together, and factor heredity (preferring the interaction whose parent main effects
-are active) is the principled way to choose among the candidates the data alone cannot fully
-separate. This staged procedure is available in ``process_improve`` as ``analyze_omars()``: it
-takes any coded two- or three-level design with its measured responses and carries out exactly the
-stages above, returning the clean main effects, the pooled error, the overall test for second-order
-activity, and the heredity-constrained selection among the second-order effects.
+estimated together. Factor heredity (admitting an interaction only when its parent main effects
+are active) is one rule for narrowing the candidates the data alone cannot fully separate; the
+alternative is to keep every second-order effect as a candidate and let the F-tests choose.
+
+This staged procedure is available in ``process_improve`` as ``analyze_omars()``: it takes any
+coded two- or three-level design with its measured responses and carries out the stages above,
+returning the clean main effects, the pooled error, the overall test for second-order activity,
+and the selection among the second-order effects. One qualification concerns step 4: heredity is
+an option, not the default. With the default settings (``interaction_heredity="none"`` and
+``quadratic_heredity="none"``) every quadratic and every two-factor interaction is a candidate, and
+a best-subset search adds terms until the remaining second-order variation is no longer
+significant. Passing ``interaction_heredity="strong"`` gives the rule shown in the diagram,
+admitting an interaction only if both of its parent main effects are active; ``"weak"`` requires
+at least one active parent, and ``quadratic_heredity="strong"`` applies the same restriction to
+the quadratic of each factor.
 
 **Readings**
 

@@ -863,7 +863,7 @@ Exercises
 
 	#.	A combined linear regression model is :math:`y = -28.9 + 0.31 x_A + 3.92 x_S + 19.7 x_L` where :math:`x_A` is the log of the acetic acid concentration, :math:`x_S` is the log of the hydrogen sulphide concentration and :math:`x_L` is the lactic acid concentration in the cheese. The confidence intervals for each coefficient are:
 
-		*	:math:`-8.9 \leq b_A \leq  9.4`
+		*	:math:`-8.9 \leq b_A \leq  9.5`
 		*	:math:`1.4 \leq b_S \leq  6.5`
 		*	:math:`1.9 \leq b_L \leq  37`
 
@@ -891,7 +891,7 @@ Exercises
 	.. literalinclude:: ../figures/least-squares/cheddar-cheese.R
 		:language: s
 
-	A Pandas / scikit-learn version of the same workflow is given below for reference:
+	A Pandas / ``process_improve`` version of the same workflow is given below for reference:
 
 	.. code-block:: python
 
@@ -965,17 +965,22 @@ Exercises
 	.. code-block:: python
 
 		import pandas as pd
+		import plotly.express as px
 
 		digester = pd.read_csv(
 		    "https://openmv.net/file/kamyr-digester.csv"
 		)
+		# The first column is a row identifier, not a
+		# measurement; drop it before any arithmetic.
+		digester = digester.drop(columns="Observation")
 
-		# A histogram per numeric column.
-		# Adjust figsize and bins to taste:
-		digester.hist(figsize=(15, 12), bins=30,
-		              color="lightblue")
+		# A histogram per column, one panel each.
+		# Adjust nbins to taste:
+		px.histogram(digester.melt(), x="value", nbins=30,
+		             facet_col="variable", facet_col_wrap=5
+		             ).update_xaxes(matches=None).show()
 
-		# Numeric correlation matrix.
+		# Correlation matrix.
 		# Sort by the column we care about,
 		# from most negative to most positive:
 		correlations = digester.corr()["Y-Kappa"]

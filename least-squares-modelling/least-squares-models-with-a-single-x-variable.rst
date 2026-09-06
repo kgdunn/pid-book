@@ -205,10 +205,11 @@ To calculate the least squares model:
 	X = sm.add_constant(x)
 	mod_ls = sm.OLS(y, X).fit()
 
-	# Coefficients:
-	# const     3.0001
-	# x1        0.5001
-	mod_ls.params
+	# Coefficients: the intercept first, then the
+	# slope. x is a NumPy array, so the entries
+	# are not labelled.
+	print(mod_ls.params)
+	# [3.00009091 0.50009091]
 
 	# You can get more information with
 	print(mod_ls.summary())
@@ -265,10 +266,13 @@ A larger example: predicting vapour pressure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For larger data sets, the ``OLS`` class from the `process_improve
-<https://github.com/kgdunn/process_improve>`_ package (the Python library accompanying this book)
+<https://github.com/kgdunn/process-improve>`_ package (the Python library accompanying this book)
 provides a convenient API that fits naturally with Pandas data frames. It follows the scikit-learn
-estimator convention of ``fit``, ``predict`` and ``score``, so everything shown here carries over
-unchanged to scikit-learn's own ``LinearRegression`` class. We will use it again on the
+estimator convention: the ``fit``, ``predict`` and ``score`` methods and the ``intercept_``
+attribute work the same way in scikit-learn's own ``LinearRegression`` class. Two details are
+specific to ``OLS``: the fitted coefficients are stored in ``coefficients_`` (scikit-learn uses
+``coef_``), and printing the fitted model gives a summary in the layout of R's
+``summary(lm(...))``, which ``LinearRegression`` does not provide. We will use it again on the
 `distillation tower <https://openmv.net/info/distillation-tower>`_ data set introduced in the
 :ref:`prior section <LS_correlation_matrix_in_python>`.
 
@@ -293,16 +297,19 @@ accessor in Pandas selects rows by position, so we use it to split the 253 obser
 
 Now fit a single-variable least squares model that uses ``InvTemp3`` (the inverse of a temperature
 measurement on tray 3) to predict ``VapourPressure``. The double-bracket idiom
-``build[["InvTemp3"]]`` returns a column matrix (a 2-D :math:`n \times 1` array), which is the
-shape these estimators expect for the predictor matrix :math:`\mathbf{X}`:
+``build[["InvTemp3"]]`` returns a column matrix (a 2-D :math:`n \times 1` array). ``OLS.fit``
+also accepts a 1-D array for a single predictor and reshapes it to one column itself, but the
+2-D form is the one scikit-learn requires for the predictor matrix :math:`\mathbf{X}`, and it
+is the form used for the predictor matrix in the rest of this chapter:
 
 .. code-block:: python
 
 	from process_improve.regression import OLS
 
-	# X must be a 2-D array (n_rows by n_cols).
-	# build[["InvTemp3"]] returns a column matrix;
-	# build["InvTemp3"] would return a 1-D array.
+	# X is a 2-D array (n_rows by n_cols), the form
+	# scikit-learn expects. build[["InvTemp3"]] returns
+	# a column matrix; build["InvTemp3"] would return a
+	# 1-D array, which OLS.fit reshapes to one column.
 	X = build[["InvTemp3"]].values
 	y = build["VapourPressure"].values
 

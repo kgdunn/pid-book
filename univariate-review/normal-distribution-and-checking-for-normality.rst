@@ -291,6 +291,8 @@ Consult a statistical table found in most statistical textbooks for the normal d
 
 #.	Assume :math:`x`, the measurement of biological activity for a drug, is normally distributed with mean of 26.2 and standard deviation of 9.2. What is the probability of obtaining an activity reading less than or equal to 30.0?
 
+	.. code-check: skip fill-in-the-blank exercise; the reader supplies sigma
+
 	.. code-block:: python
 
 		# We know that the probability should be 50%
@@ -318,6 +320,8 @@ Consult a statistical table found in most statistical textbooks for the normal d
 
 
 #.	Assume :math:`x` is the yield for a batch process, with mean of 85 g/L and **variance** of 16 :math:`\text{g}^2.\text{L}^{-2}`. What proportion of batch yield values lie between 75 and 95 g/L?
+
+	.. code-check: skip fill-in-the-blank exercise; the reader supplies the limits
 
 	.. code-block:: python
 
