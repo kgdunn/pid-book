@@ -196,15 +196,15 @@ involved.
 	                      row=row, col=col)
 	    return fig
 
-	def scores(model, r2, highlight):
+	def scores(model, r2, highlight, note=""):
 	    """Score plot of a PCA or PLS model coded by disposition, with the percent of the variance each component
-	    explains (`r2`, per component) on its axes and the 95% confidence ellipse."""
+	    explains (`r2`, per component, `note` saying of which block) on its axes and the 95% confidence ellipse."""
 	    t = model.scores_
 	    fig = group_scatter(go.Figure(), t.iloc[:, 0], t.iloc[:, 1], highlight)
 	    ex, ey = model.ellipse_coordinates(score_horiz=1, score_vert=2, conf_level=0.95)
 	    fig.add_trace(go.Scatter(x=ex, y=ey, mode="lines", line=dict(color=GREY, dash="dash"), name="95% confidence ellipse"))
 	    r2 = np.asarray(r2)
-	    fig.update_layout(xaxis_title=f"t1 [{r2[0]:.1%}]", yaxis_title=f"t2 [{r2[1]:.1%}]", height=440)
+	    fig.update_layout(xaxis_title=f"t1 [{note}{r2[0]:.1%}]", yaxis_title=f"t2 [{note}{r2[1]:.1%}]", height=440)
 	    return fig
 
 	def shade_alternate(fig, n, row=None, col=None):
@@ -264,7 +264,7 @@ and ``scale=False`` tells the ``PLS`` class not to scale them again.
 	pls_op = PLS(n_components=2, scale=False).fit(zop_scaled, y_scaled)
 	print("PLS Zchem -> Y, R2Y cumulative:", pls_chem.r2_cumulative_.round(3).tolist())
 	print("PLS Zop -> Y, R2Y cumulative:", pls_op.r2_cumulative_.round(3).tolist())
-	scores(pls_op, explained_x(pls_op), {20: ORANGE}).show()
+	scores(pls_op, explained_x(pls_op), {20: ORANGE}, note="R2X ").show()
 	print("batch 20 on Zop, t1 contributions:", pls_op.score_contributions(zop_scaled, component=1).loc[20].round(2).to_dict())
 
 Each initial-condition block on its own explains about a quarter of the quality block after
@@ -312,7 +312,7 @@ each block the components describe.
 	    fig.add_trace(go.Bar(x=list(weights.index), y=weights.iloc[:, a - 1], name=f"component {a}", marker_color=colour), row=2, col=1)
 	for col, (name, block_t) in enumerate(mb_z.block_scores_.items(), start=2):
 	    group_scatter(fig, block_t.iloc[:, 0], block_t.iloc[:, 1], {20: ORANGE}, row=1, col=col, showlegend=False)
-	    block_axes(fig, np.diff([0.0, *mb_z.r2_x_per_block_cumulative_.loc[name]]), 1, col)
+	    block_axes(fig, np.diff([0.0, *mb_z.r2_x_per_block_cumulative_.loc[name]]), 1, col, note="R2X ")
 	    w = mb_z.block_weights_[name]                                         # one row per variable of the block
 	    fig.add_trace(go.Scatter(x=w.iloc[:, 0], y=w.iloc[:, 1], mode="markers+text", text=list(w.index), textposition="top right",
 	                             marker=dict(color=BLUE, size=16), showlegend=False), row=2, col=col)
@@ -504,7 +504,9 @@ Trajectories to quality
 	pls_x = PLS(n_components=2, scale=False).fit(x_scaled, y_scaled)
 	print(pls_x.r2_cumulative_.round(3).tolist())               # R2 of the quality block, cumulative
 	# [0.266, 0.41]
-	scores(pls_x, explained_x(pls_x), {13: ORANGE, 5: AQUA, 7: AQUA}).show()
+	print(explained_x(pls_x).round(3).tolist())                # R2 of the trajectory block, per component
+	# [0.217, 0.131]
+	scores(pls_x, explained_x(pls_x), {13: ORANGE, 5: AQUA, 7: AQUA}, note="R2X ").show()
 	t1 = pls_x.score_contributions(x_scaled, component=1)
 	unfolded_contribution_plot(t1, batch_id=13).show()
 	print(t1.loc[13].groupby(level="tag", sort=False).sum().nsmallest(4).round(1).to_dict())   # batch 13's four largest
@@ -530,8 +532,10 @@ Trajectories to quality
 	13 to :math:`t_1`, summed per tag; every tag contributes in the same direction and the
 	clock time and the collector tank level lead.
 
-The trajectories explain 41.0% of the quality block after two components, more than the
-initial conditions did (26.2% at best for a single block). Batch 13 is at the low end of
+The axes of the score plot carry the share of the trajectory block that each component
+describes, its :math:`R^2_X`. The model is judged on the quality block, and there the
+trajectories explain 41.0% after two components, more than the initial conditions did
+(26.2% at best for a single block). Batch 13 is at the low end of
 :math:`t_1`, and its contributions are all of the same sign, with the clock time (-8.1) and
 the collector tank level (-8.0) leading, then the dryer temperature (-4.7) and the jacket
 temperature set point (-4.2). Batches 5 and 7 lie on the other side of :math:`t_1`, among
@@ -648,7 +652,7 @@ conditions or only its trajectories are considered, and the three plots need not
 	fig = make_subplots(rows=1, cols=3, subplot_titles=[f"{name} block" for name in blocks])
 	for col, (name, block_t) in enumerate(mb.block_scores_.items(), start=1):
 	    group_scatter(fig, block_t.iloc[:, 0], block_t.iloc[:, 1], dict.fromkeys(anomalous, ORANGE), row=1, col=col, showlegend=col == 1)
-	    block_axes(fig, np.diff([0.0, *mb.r2_x_per_block_cumulative_.loc[name]]), 1, col)
+	    block_axes(fig, np.diff([0.0, *mb.r2_x_per_block_cumulative_.loc[name]]), 1, col, note="R2X ")
 	fig.update_layout(height=420).show()
 
 .. figure:: ../figures/batch/batch-case-fmc-block-scores.png

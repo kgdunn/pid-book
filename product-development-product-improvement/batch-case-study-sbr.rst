@@ -110,7 +110,7 @@ of components; the usual :ref:`cross-validation <LVM-PLS-number-of-components>` 
 	r2x = np.diff([0.0, *model.r2_per_variable_.mean(axis=0)])     # R2 of the trajectories, per component
 	print("R2X per component:", r2x.round(3), " R2Y per component:", r2y.round(3))
 	fig = model.score_plot(settings={"show_labels": True})
-	fig.update_layout(xaxis_title=f"t1 [{r2x[0]:.1%}]", yaxis_title=f"t2 [{r2x[1]:.1%}]").show()
+	fig.update_layout(xaxis_title=f"t1 [R2X {r2x[0]:.1%}]", yaxis_title=f"t2 [R2X {r2x[1]:.1%}]").show()
 	for batch_id in (34, 37):
 	    print(f"batch {batch_id}: T2 = {model.hotellings_t2_.loc[batch_id].iloc[-1]:.1f} (limit {model.hotellings_t2_limit(conf_level=0.95):.1f}),",
 	          f"SPE = {model.spe_.loc[batch_id].iloc[-1]:.1f} (limit {model.spe_limit(conf_level=0.95):.1f})")
