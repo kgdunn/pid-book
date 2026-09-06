@@ -341,10 +341,12 @@ Removing batches changes the model, so the plots are examined again.
 	second_group = [37, 39, 43, 44, 45, 46, 47, 48]
 	group_t2, group_t3 = model_b.scores_.loc[second_group].iloc[:, 1:3].mean()   # the group's average point
 	fig = scores(model_b, 2, 3)
-	fig.add_annotation(x=0, y=0, ax=group_t2, ay=group_t3, axref="x", ayref="y", text="",   # from the average point
-	                   showarrow=True, arrowhead=2, arrowwidth=3, arrowcolor="#4d4d4d")      # to the model centre
+	fig.add_trace(go.Scatter(x=[group_t2], y=[group_t3], mode="markers", showlegend=False,     # a square at the
+	                         marker=dict(symbol="square", size=9, color="#4d4d4d")))             # average point
+	fig.add_annotation(x=0, y=0, ax=group_t2, ay=group_t3, axref="x", ayref="y", text="",       # the arrow from it
+	                   showarrow=True, arrowhead=2, arrowwidth=3, arrowcolor="#4d4d4d")          # to the model centre
 	fig.add_annotation(x=group_t2 / 2, y=group_t3 / 2, text="contribution direction", showarrow=False, yshift=12,
-	                   textangle=-np.degrees(np.arctan2(group_t3, group_t2)))
+	                   textangle=-np.degrees(np.arctan2(group_t3, group_t2)), font=dict(size=10))
 	fig.show()
 
 .. figure:: ../figures/batch/batch-case-dupont-model-b-scores.png
@@ -356,8 +358,8 @@ Removing batches changes the model, so the plots are examined again.
 
 	Scores of model B on components 2 and 3. Batches 37, 39 and 43 to 48 (orange) form a
 	group at the top right of the plot, away from the main cloud of batches. The arrow runs
-	from the group's average point to the model centre: the direction along which the
-	group's contributions below are computed.
+	from the group's average point (square) to the model centre: the direction along which
+	the group's contributions below are computed.
 
 With the extreme batches gone, a second group separates in the plane of :math:`t_2` and
 :math:`t_3`: batches 37, 39 and 43 to 48.
@@ -374,54 +376,46 @@ score.
 	per_component = {a: model_b.score_contributions(scaled_b, component=a) for a in (2, 3)}
 	group = {a: c.loc[second_group].mean(axis=0) for a, c in per_component.items()}   # the group against the centre
 	for a in (2, 3):
+	    early = group[a][group[a].index.get_level_values("sequence") <= 25].sum() / group[a].sum()
 	    print(f"group mean t{a} = {model_b.scores_.loc[second_group].iloc[:, a - 1].mean():5.1f}",
 	          f"(the contribution vector sums to {group[a].sum():5.1f});",
-	          f"the other 40 batches: {model_b.scores_.drop(index=second_group).iloc[:, a - 1].mean():5.1f}")
+	          f"the other 40 batches: {model_b.scores_.drop(index=second_group).iloc[:, a - 1].mean():5.1f};",
+	          f"samples 0 to 25 carry {early:.0%} of it")
+	per_tag = pd.DataFrame({f"t{a}": group[a].groupby(level="tag", sort=False).sum() for a in (2, 3)})
+	go.Figure([go.Bar(x=per_tag.index, y=per_tag[component], name=component) for component in per_tag]).show()
+	for tag in ("TempC-1", "Press-3", "Press-2", "Flow-2"):          # the three largest contributions, and Flow-2
+	    overlay(kept_b, tag, {batch_id: ORANGE for batch_id in second_group}).show()
 
 .. code-block:: text
 
-   group mean t2 =  15.0 (the contribution vector sums to  15.0); the other 40 batches:  -3.0
-   group mean t3 =  14.8 (the contribution vector sums to  14.8); the other 40 batches:  -3.0
+   group mean t2 =  15.0 (the contribution vector sums to  15.0); the other 40 batches:  -3.0; samples 0 to 25 carry 66% of it
+   group mean t3 =  14.8 (the contribution vector sums to  14.8); the other 40 batches:  -3.0; samples 0 to 25 carry 90% of it
 
 .. figure:: ../figures/batch/batch-case-dupont-group-contribution.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: Left, the group's contribution to t2 and t3 summed per tag with each of the eight members as a dot; right, the same contributions summed per sample.
+	:alt: Left, the group's contribution to t2 and t3 summed per tag with each of the eight members as a dot; right, four panels of raw trajectories over samples 0 to 30 for TempC-1, Press-3, Press-2 and Flow-2, the eight group batches in orange and the other 40 in light grey.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
 	The contribution of the eight-batch group to :math:`t_2` and :math:`t_3`, summed per tag
-	with each member as a dot (left) and summed per sample (right).
+	with each member as a dot (left). Dots help show how consistent each batch in the cluster
+	is with the group. Right: the raw trajectories over the first 30 samples of the three tags
+	with the largest contributions, and of ``Flow-2``: the eight batches of the group (orange)
+	and the other 40 batches of model B (light grey).
 
 ``TempC-1`` and ``Press-3`` carry most of the displacement on both components, every member
-contributes in the same direction on those two tags, and the contributions are large over
-the first 25 samples and small afterwards. Not every member is consistent with the average:
-``TempH-1`` takes both signs across the eight, so its group mean is set by a few of them.
-The group contribution is a starting point for a diagnosis of the group, to be checked
-member by member.
-
-.. code-block:: python
-
-	for tag in ("TempC-1", "Press-3", "Press-2"):                    # the three largest contributions
-	    overlay(kept_b, tag, {batch_id: ORANGE for batch_id in second_group}).show()
-
-.. figure:: ../figures/batch/batch-case-dupont-group-raw.png
-	:source: batch/batch-case-dupont-figures.py
-	:alt: Three panels of raw trajectories over samples 0 to 30, the eight group batches in orange above the other 40 in light grey for TempC-1 and Press-3, with more overlap for Press-2.
-	:width: 1000px
-	:scale: 80
-	:align: center
-
-	The raw trajectories of the three tags with the largest contributions over the first 30
-	samples: the eight batches of the group (orange) and the other 40 batches of model B
-	(light grey).
+contributes in the same direction on those two tags, and most of the contribution comes from
+the first 25 samples. Not every member is consistent with the average: ``TempH-1`` takes both
+signs across the eight, so its group mean is set by a few of them. The group contribution is
+a starting point for a diagnosis of the group, to be checked member by member.
 
 The raw trajectories agree: the eight batches run above the other 40 in ``TempC-1`` and
-``Press-3`` until about sample 25, and overlap them in ``Press-2``. Only batches 45 and 46
-are on the list of poor or borderline quality; the other six produced acceptable product.
-They were operated differently, not badly, and a model of normal operation can either
-include enough of them to describe that mode or leave them out. The third model leaves
-them out.
+``Press-3`` until about sample 25, and only slightly above them in ``Press-2`` and
+``Flow-2``, where the two sets overlap by about sample 20. Only batches 45 and 46 are on
+the list of poor or borderline quality; the other six produced acceptable product. They
+were operated differently, not badly, and a model of normal operation can either include
+enough of them to describe that mode or leave them out. The third model leaves them out.
 
 The final model, used to verify the unusual batches detected above
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
