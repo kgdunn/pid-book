@@ -149,7 +149,7 @@ plots are enough to find the batches that differ.
 
 	Score plot of model A. Batches 50, 52, 53, 54 and 55 (aqua) lie outside the 95%
 	confidence ellipse. Batches 49 and 51 (orange) sit inside it, among the other batches;
-	the next figure shows what separates them.
+	the figure below shows what separates them.
 
 The :ref:`score plot <LVM_interpreting_scores>` shows the last six batches away from the
 rest, five of them outside the 95% confidence ellipse. Batches this far out pull the
@@ -476,8 +476,8 @@ materials, and the :ref:`third case study <APPS_batch_case_fmc>` shows how such 
 added to a batch model.
 
 The :ref:`SBR case study <APPS_batch_case_sbr_online>` runs the same check sample by
-sample: a reference model on the normal batches, and limits computed at every sample, so
-that a faulty batch is flagged while it is still running.
+sample: a reference model on the normal batches, and each statistic compared with its
+limit at every sample, so that a faulty batch is flagged while it is still running.
 
 References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~

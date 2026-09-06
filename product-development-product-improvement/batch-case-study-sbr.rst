@@ -132,8 +132,8 @@ The first component explains 65.3% of the variance in the quality block and the 
 The score plot flags both faulty batches: their :ref:`Hotelling's T2 <LVM-Hotellings-T2>`
 values are 28.2 and 19.2 against a 95% limit of 6.6.
 
-The SPE measures the other thing a model can say about a batch: how far it sits away from
-the components, in directions the model has not described. Drawing it against
+The SPE answers the other question a model can be asked about a batch: how far it sits
+away from the components, in directions the model has not described. Drawing it against
 :ref:`Hotelling's T2 <LVM-Hotellings-T2>`, which summarises how extreme the batch is along
 the components, puts both questions in one figure. Each axis carries its own 95% limit.
 
@@ -724,12 +724,13 @@ deviation is one the reference model already describes, because the normal batch
 along it too, less severely: a batch far along a known direction has a large :math:`T^2` and
 a small residual. The fault of batch 34 begins midway through a batch that had been normal,
 in a combination of tags the reference model has no component for, so from that sample on
-the newest samples stop fitting the model, which is what the SPE measures. At the alarm
-sample the reactor temperature carries the largest share of the residual, with the
-cooling-water and jacket temperatures next; four samples later the two service
-temperatures and the energy released carry most of it and the reactor temperature has
-dropped back, a transient in the reactor temperature and a lasting change on the service
-side, in the same order the departure analysis found.
+the newest samples stop fitting the model, which is what the SPE measures.
+
+The residual shares say what changed. At the alarm sample the reactor temperature carries
+the largest share of the residual, with the cooling-water and jacket temperatures next;
+four samples later the two service temperatures and the energy released carry most of it
+and the reactor temperature has dropped back: a transient in the reactor temperature and a
+lasting change on the service side, in the same order the departure analysis found.
 
 The same score estimate that predicts the quality also predicts the rest of the
 trajectories: the model's reconstruction :math:`\hat{\boldsymbol{\tau}} \mathbf{P}^{T}`,
@@ -803,8 +804,8 @@ References and readings
 
 * Paul Nomikos and John F. MacGregor, "`Multivariate SPC charts for monitoring batch
   processes <https://literature.learnche.org/item/34/multivariate-spc-charts-for-monitoring-batch-processes>`_",
-  *Technometrics*, **37**, 41-59, 1995. The on-line monitoring scheme, with limits at every
-  sample.
+  *Technometrics*, **37**, 41-59, 1995. The on-line monitoring scheme, with the statistics
+  compared with their limits at every sample.
 
 * Salvador Garcia-Munoz, Theodora Kourti and John F. MacGregor, "`Model predictive
   monitoring for batch processes <https://doi.org/10.1021/ie034020w>`_", *Industrial and
