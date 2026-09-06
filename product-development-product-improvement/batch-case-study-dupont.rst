@@ -498,7 +498,7 @@ References and readings
   *AIChE Journal*, **40**, 1361-1375, 1994. The batchwise unfolding used on this page.
 
 * Paul Nomikos, "`Detection and diagnosis of abnormal batch operations based on multi-way
-  principal component analysis <https://doi.org/10.1016/0019-0578(96)00035-3>`_",
+  principal component analysis <https://literature.learnche.org/item/64/detection-and-diagnosis-of-abnormal-batch-operations-based-on-multi-way-principal-component-analysis>`_",
   *ISA Transactions*, **35**, 259-266, 1996. The contribution plots of batch 49 and the
   cause found for its event.
 

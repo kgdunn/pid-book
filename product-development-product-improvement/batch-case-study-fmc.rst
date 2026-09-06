@@ -788,7 +788,7 @@ References and readings
 
 * Salvador Garcia-Munoz, Theodora Kourti, John F. MacGregor, Antonio G. Mateos and Gerry
   Murphy, "`Troubleshooting of an industrial batch process using multivariate methods
-  <https://doi.org/10.1021/ie0300023>`_", *Industrial and Engineering Chemistry Research*,
+  <https://literature.learnche.org/item/24/troubleshooting-of-an-industrial-batch-process-using-multivariate-methods>`_", *Industrial and Engineering Chemistry Research*,
   **42**, 3592-3601, 2003. The source of the case study.
 
 * Svante Wold, Nouna Kettaneh-Wold, John F. MacGregor and Kevin G. Dunn, "`Batch process

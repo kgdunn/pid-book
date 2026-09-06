@@ -857,15 +857,15 @@ References and readings
   compared with their limits at every sample.
 
 * Paul Nomikos, "`Detection and diagnosis of abnormal batch operations based on multi-way
-  principal component analysis <https://doi.org/10.1016/0019-0578(96)00035-3>`_",
+  principal component analysis <https://literature.learnche.org/item/64/detection-and-diagnosis-of-abnormal-batch-operations-based-on-multi-way-principal-component-analysis>`_",
   *ISA Transactions*, **35**, 259-266, 1996. The 99.9% limit for the residual chart.
 
 * Francisco Arteaga and Alberto Ferrer, "`Dealing with missing data in MSPC: several
-  methods, different interpretations, some examples <https://doi.org/10.1002/cem.750>`_",
+  methods, different interpretations, some examples <https://literature.learnche.org/item/20/dealing-with-missing-data-in-mspc-several-methods-different-interpretations-some-examples>`_",
   *Journal of Chemometrics*, **16**, 408-418, 2002. Trimmed score regression.
 
 * Salvador Garcia-Munoz, Theodora Kourti and John F. MacGregor, "`Model predictive
-  monitoring for batch processes <https://doi.org/10.1021/ie034020w>`_", *Industrial and
+  monitoring for batch processes <https://literature.learnche.org/item/157/model-predictive-monitoring-for-batch-processes>`_", *Industrial and
   Engineering Chemistry Research*, **43**, 5929-5941, 2004. Compares the estimators of the
   scores of a batch so far, shows that the forecast of the rest of the batch is an adaptive
   time-series forecast, and computes Hotelling's :math:`T^2` against the time-varying
