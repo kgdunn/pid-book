@@ -218,8 +218,9 @@ and :math:`j` for one of the :math:`J = 100` time samples, so one cell of the un
 is the pair :math:`(k, j)`. ``process_improve`` reports the SPE of a batch as the length of its
 residual vector, so the squared residuals of the cells add up to the squared SPE, and each
 squared residual, divided by that total, is the share of the SPE carried by the cell.
-Summing the shares per tag ranks the variables, and summing them per time sample locates
-the event in the batch. ``unfolded_contribution_plot`` draws the full vector of 1000 bars
+Summing the shares per tag ranks the variables, a summary Garcia-Munoz and co-workers
+(2003) introduced, and summing them per time sample locates the event in the batch.
+``unfolded_contribution_plot`` draws the full vector of 1000 bars
 grouped by tag and, with ``by_tag=True``, the sum per tag.
 
 .. code-block:: python

@@ -460,8 +460,9 @@ running:
 
 * its unfolded row is complete up to the current sample and empty after it, and the scores
   are estimated from the observed cells alone, with the rest of the row treated as missing
-  data (Wold and co-workers, 2009, Eqs. 2 and 5; the estimator is the trimmed score
-  regression of Garcia-Munoz, Kourti and MacGregor, 2004);
+  data (Wold and co-workers, 2009, Eqs. 2 and 5); the estimator is trimmed score
+  regression (Arteaga and Ferrer, 2002), the one that Garcia-Munoz, Kourti and MacGregor
+  (2004) found gives stable score estimates from the first samples of a batch;
 * the model's regression from scores to quality turns those scores into a prediction;
 * the prediction error after :math:`k` samples, RMSEP, comes from refitting the model
   without each batch in turn and tracing the held-out batch (``online_rmse``; the loop
@@ -580,8 +581,9 @@ the score estimates: a score estimated from the first few samples is fitted to a
 cells in the unfolded row, and across the reference batches such estimates scatter far more
 widely than the final scores do, as the figure below shows. :math:`T^2` at each sample is
 therefore computed against the covariance of the reference batches' estimates at that same
-sample (Nomikos and MacGregor, 1995), which the monitor stores. The SPE limit is fitted
-sample by sample from the reference batches' SPE at that sample.
+sample (Nomikos and MacGregor, 1995; Garcia-Munoz, Kourti and MacGregor, 2004, who show
+the same fall in the spread on this reactor's data), which the monitor stores. The SPE
+limit is fitted sample by sample from the reference batches' SPE at that sample.
 
 .. code-block:: python
 
@@ -684,7 +686,7 @@ after the impurity enters; its :math:`T^2` stays inside its limit until 190 samp
   values lie above their limits.
 * With 200 samples in a batch, 1% is about two crossings per normal batch, so a single
   crossing cannot count as an alarm. The rule used here is three consecutive samples above
-  the limit.
+  the limit, the rule Garcia-Munoz, Kourti and MacGregor (2004) also use.
 * That rule holds for :math:`T^2`: one of the 51 reference batches raises a three-sample
   alarm. It does not hold for the SPE: 13 of the 51 do, a false-alarm rate of one normal
   batch in four.
@@ -734,8 +736,10 @@ lasting change on the service side, in the same order the departure analysis fou
 
 The same score estimate that predicts the quality also predicts the rest of the
 trajectories: the model's reconstruction :math:`\hat{\boldsymbol{\tau}} \mathbf{P}^{T}`,
-read off for the samples not yet seen (Wold and co-workers, 2009, Eq. 4). The forecast is
-an interpolation along the model's components, not an extrapolation of the trend so far.
+read off for the samples not yet seen (Wold and co-workers, 2009, Eq. 4). Garcia-Munoz,
+Kourti and MacGregor (2004) show that this forecast is an adaptive time-series forecast
+whose coefficients change as the batch evolves, built on the model's knowledge of how the
+variables co-vary over the whole batch; it is not an extrapolation of the trend so far.
 It is drawn in the z form of the departure analysis, each tag as a distance from the 51
 normal batches at that sample in their standard deviations, so that the average batch is
 the zero line and a departure reads directly.
@@ -823,10 +827,16 @@ References and readings
   *Technometrics*, **37**, 41-59, 1995. The on-line monitoring scheme, with the statistics
   compared with their limits at every sample.
 
+* Francisco Arteaga and Alberto Ferrer, "`Dealing with missing data in MSPC: several
+  methods, different interpretations, some examples <https://doi.org/10.1002/cem.750>`_",
+  *Journal of Chemometrics*, **16**, 408-418, 2002. Trimmed score regression.
+
 * Salvador Garcia-Munoz, Theodora Kourti and John F. MacGregor, "`Model predictive
   monitoring for batch processes <https://doi.org/10.1021/ie034020w>`_", *Industrial and
-  Engineering Chemistry Research*, **43**, 5929-5941, 2004. Trimmed score regression for the
-  batch so far.
+  Engineering Chemistry Research*, **43**, 5929-5941, 2004. Compares the estimators of the
+  scores of a batch so far, shows that the forecast of the rest of the batch is an adaptive
+  time-series forecast, and computes Hotelling's :math:`T^2` against the time-varying
+  covariance of the score estimates.
 
 * Svante Wold, Nouna Kettaneh-Wold, John F. MacGregor and Kevin G. Dunn, "`Batch process
   modeling and MSPC <https://literature.learnche.org/item/155/batch-process-modeling-and-mspc>`_",

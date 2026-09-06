@@ -16,9 +16,10 @@ the drying step sets part of the product quality, not only its residual solvent.
 has three phases, each bounded by a landmark in the trajectories: solvent collection, from
 the start of the batch until the agitator is turned up to high speed; the temperature ramp,
 from there until the dryer temperature reaches its maximum; and cooling, from there to the
-end of the batch. Operators can adjust some settings of the recipe. This is the case study of
-Garcia-Munoz and co-workers (2003), and it is the most complete of the three batch case
-studies, because every kind of information about a batch is present.
+end of the batch. The operators adjusted the peak temperature set point from batch to
+batch to correct the quality of the product, a manual feedback on quality. This is the case
+study of Garcia-Munoz and co-workers (2003), and it is the most complete of the three batch
+case studies, because every kind of information about a batch is present.
 
 .. figure:: ../figures/examples/fmc/dryer_flowsheet.png
 	:alt: Flowsheet of the batch dryer: the dryer tank with its agitator and heating medium, the collector tank with its level measurement, a pressure controller between them, and two temperature controllers for the jacket and the dryer; the ten measured trajectories are numbered on the drawing.
@@ -41,7 +42,8 @@ Four blocks of data describe each batch:
   values in all.
 * :math:`\mathbf{X}`, the ten trajectories over the batch, and an eleventh described below.
 * :math:`\mathbf{Y}`, eight final quality attributes: seven numbered attributes, ``Y1`` to
-  ``Y11`` with gaps, and the residual solvent concentration ``SolventConc``.
+  ``Y11`` with gaps, and the residual solvent concentration ``SolventConc``. The original
+  study had eleven; the public workbook carries these eight.
 
 .. figure:: ../figures/examples/fmc/fmc-data-structure.png
 	:alt: The four blocks side by side: two flat blocks with one row per batch for the chemistry and the operating conditions, a three-way block of trajectories with batches, variables and time as its dimensions, and a flat block of final properties.
@@ -75,7 +77,9 @@ Batch durations on this dryer vary widely, so the trajectories were aligned with
 the three phases before the data were archived, to 325 samples per batch. The first two
 phases were aligned against a maturity variable, a quantity that moves in one direction
 from the start of the phase to its end and can therefore be sampled at equal steps of
-itself in place of time; the third was stretched linearly in time. ``ClockTime``, the
+itself in place of time: the collector tank level for the solvent-collection phase and the
+dryer temperature for the ramp, each between its own start and end value in that batch.
+The cooling phase was stretched linearly in time. ``ClockTime``, the
 wall-clock time at each aligned sample, is carried along as an eleventh trajectory. After
 alignment it is no longer a clock but a record of how much each batch was stretched or
 compressed to fit the template, and that is information about the batch in its own right: a
@@ -85,9 +89,10 @@ over that phase. Alignment of raw, unaligned batch data is a topic of its own; t
 the unaligned trajectories of this same dryer are bundled with the package as
 ``load_dryer``.
 
-Thirteen batches have no chemistry measurements at all. The original study excluded them,
-and ``load_fmc`` returns their identifiers as ``missing_chemistry`` so that the exclusion
-can be reproduced. The remaining 46 batches still contain genuine missing values: 19 cells
+Thirteen batches have no chemistry measurements at all. The original study excluded the
+batches without a chemistry analysis and worked with 44; ``load_fmc`` returns the
+identifiers of the thirteen as ``missing_chemistry`` so that the exclusion can be
+reproduced, and 46 batches remain. They still contain genuine missing values: 19 cells
 in the quality block, one in the chemistry block, and 1220 cells in the trajectories of ten
 batches, where a measurement is absent for a stretch of the batch. The ``PCA``, ``PLS`` and
 ``MBPLS`` estimators of the ``multivariate`` module handle missing values through the
@@ -226,8 +231,9 @@ and ``scale=False`` tells the ``PLS`` class not to scale them again.
 	scores(pls_op, explained_x(pls_op)).show()
 	print("batch 20 on Zop, t1 contributions:", pls_op.score_contributions(zop_scaled, component=1).loc[20].round(2).to_dict())
 
-Each initial-condition block on its own explains about a quarter of the quality block:
-22.2% for the chemistry after two components, and 26.2% for the operating conditions. Batch
+Each initial-condition block on its own explains about a quarter of the quality block after
+two components, the operating conditions more than the chemistry: 26.2% against 22.2%, the
+same order the original study found on its 44 batches and eleven quality attributes. Batch
 20 stands out in the score plot of the operating-condition model, and its contributions to
 :math:`t_1` come from the recipe timings ``Time2`` (-1.42) and ``Time4`` (-1.01) and from the
 temperature slope (-1.27). This is the batch whose temperature ramp was seen to take longer
@@ -512,7 +518,7 @@ the laboratory results.
 Where to go next
 ~~~~~~~~~~~~~~~~
 
-The course material this page is based on goes one step further and replaces the raw
+Wold and co-workers (2009) go one step further on this dryer and replace the raw
 trajectories with blocks of features extracted from them, grouped by what they describe: a
 timing block, a temperature block, an impeller block (power, torque and agitator speed) and
 a pressure block, with the chemistry and the cake weight in a block of their own. A model
