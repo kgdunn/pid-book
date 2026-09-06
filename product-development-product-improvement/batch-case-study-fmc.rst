@@ -138,9 +138,9 @@ complete data.
 .. code-block:: python
 
 	GREY, ORANGE, AQUA, BLUE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a"                  # figure colours
-	PURPLE, MAGENTA, BAND = "#6f42c1", "#b03a78", "#e9edf4"                                # ... and the shading behind bars
+	PURPLE, GOLD, BAND = "#6f42c1", "#d4a017", "#e9edf4"                                   # ... and the shading behind bars
 	DARK_GREY = "#8c8c8c"                                                                  # the phase-separator lines
-	STYLES = {"good": (BLUE, "circle"), "abnormal": (PURPLE, "triangle-up"), "high solvent": (MAGENTA, "square")}
+	STYLES = {"good": (BLUE, "circle"), "abnormal": (PURPLE, "triangle-up"), "high solvent": (GOLD, "square")}
 
 	def overlay(batches, tag, highlight):
 	    """One tag for every batch in grey, the batches in `highlight` (id -> colour) on top, the phase ends marked."""
@@ -199,11 +199,13 @@ involved.
 	    for label, (colour, symbol) in STYLES.items():
 	        members = [b for b in x.index if groups[b] == label and b not in highlight]
 	        fig.add_trace(go.Scatter(x=x.loc[members], y=y.loc[members], mode="markers", name=f"classed {label}",
-	                                 marker=dict(color=colour, symbol=symbol, size=16), text=members,
+	                                 marker=dict(color=colour, symbol=symbol, size=14 if symbol == "square" else 16),
+	                                 text=members,
 	                                 hovertemplate="batch %{text}", showlegend=showlegend), row=row, col=col)
 	    for b, colour in highlight.items():
 	        fig.add_trace(go.Scatter(x=[x.loc[b]], y=[y.loc[b]], mode="markers+text", text=[str(b)], textposition="top right",
-	                                 marker=dict(color=colour, symbol=STYLES[groups[b]][1], size=22), showlegend=False),
+	                                 marker=dict(color=colour, symbol=STYLES[groups[b]][1],
+	                                             size=20 if STYLES[groups[b]][1] == "square" else 22), showlegend=False),
 	                      row=row, col=col)
 	    return fig
 
@@ -239,13 +241,13 @@ involved.
 
 .. figure:: ../figures/batch/batch-case-fmc-quality-pca.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Left, the scores of the two-component PCA on the quality block, coded by the plant's disposition with blue circles for good, purple triangles for abnormal and magenta squares for high solvent, the abnormal batches mostly at negative t1 and batches 61 and 14 at opposite ends; right, their contributions to t1 for each quality attribute on alternately shaded positions, mirror images, with no bar for the missing Y2 of batch 61.
+	:alt: Left, the scores of the two-component PCA on the quality block, coded by the plant's disposition with blue circles for good, purple triangles for abnormal and gold squares for high solvent, the abnormal batches mostly at negative t1 and batches 61 and 14 at opposite ends; right, their contributions to t1 for each quality attribute on alternately shaded positions, mirror images, with no bar for the missing Y2 of batch 61.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
 	Left: scores of the two-component PCA on the quality block, coded by the plant's
-	disposition (blue circles good, purple triangles abnormal, magenta squares high solvent);
+	disposition (blue circles good, purple triangles abnormal, gold squares high solvent);
 	batches 61 (orange) and 14 (aqua) are at opposite ends of :math:`t_1`. Right: their
 	contributions to :math:`t_1`, attribute by attribute, are mirror images. ``Y2`` is
 	missing for batch 61 and has no bar.
