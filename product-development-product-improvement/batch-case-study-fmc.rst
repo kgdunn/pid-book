@@ -74,7 +74,8 @@ blocks over 59 batches, one sheet each. The batch identifiers run from 2 to 71 w
 and the plant's disposition is encoded in the numbering: batches 1 to 33 were classed as
 good, 34 to 61 as abnormal, and 62 to 71 as high in residual solvent. As in the first case
 study, that classification plays no part in building the models; it is compared afterwards
-with what the models find.
+with what the models find. The score plots on this page carry it as a colour and a marker
+shape per class, so that the comparison can be read off each plot.
 
 Batch durations on this dryer vary widely, so the trajectories were aligned within each of
 the three phases before the data were archived, to 325 samples per batch. The first two
@@ -112,7 +113,7 @@ complete data.
 	import pandas as pd
 	import plotly.graph_objects as go
 	from plotly.subplots import make_subplots
-	from process_improve.batch import dict_to_wide, load_fmc, time_varying_loading_plot, unfolded_contribution_plot
+	from process_improve.batch import dict_to_wide, load_fmc, unfolded_contribution_plot
 	from process_improve.multivariate import PCA, PLS, MCUVScaler
 	from process_improve.multivariate.methods import MBPLS
 
@@ -120,17 +121,21 @@ complete data.
 	keep = [batch_id for batch_id in fmc.batch_ids if batch_id not in fmc.missing_chemistry]
 	X = {batch_id: fmc.X[batch_id] for batch_id in keep}
 	Y, Zop, Zchem = fmc.Y.loc[keep], fmc.Zop.loc[keep], fmc.Zchem.loc[keep]
+	groups = pd.Series(pd.cut(keep, bins=[0, 33, 61, 71], labels=["good", "abnormal", "high solvent"]).astype(str), index=keep)
 	incomplete = [batch_id for batch_id, batch in X.items() if batch.isna().any().any()]
 	print(len(X), "batches kept; missing cells: Y", int(Y.isna().sum().sum()), "Zchem", int(Zchem.isna().sum().sum()),
 	      "X in batches", incomplete)
 	average = pd.concat(X.values()).groupby(level=0).mean()                  # the average trajectory of every tag
 	agitator = average["Agitator"]
-	print(int((agitator > (agitator.min() + agitator.max()) / 2).idxmax()), int(average["D-Temp"].idxmax()))   # phase ends
+	phase_ends = (int((agitator > (agitator.min() + agitator.max()) / 2).idxmax()), int(average["D-Temp"].idxmax()))
+	print(*phase_ends)                              # the first high-speed sample, and the sample of the peak dryer temperature
 	# 175 249
 
 .. code-block:: python
 
-	GREY, ORANGE, AQUA, BLUE, PURPLE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a", "#6f42c1"     # figure colours
+	GREY, ORANGE, AQUA, BLUE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a"                  # figure colours
+	PURPLE, MAGENTA, BAND = "#6f42c1", "#b03a78", "#e9edf4"                                # ... and the shading behind bars
+	STYLES = {"good": (BLUE, "circle"), "abnormal": (PURPLE, "triangle-up"), "high solvent": (MAGENTA, "square")}
 
 	def overlay(batches, tag, highlight):
 	    """One tag for every batch in grey, with the batches in `highlight` (id -> colour) drawn on top."""
@@ -180,38 +185,62 @@ involved.
 	y_scaled = MCUVScaler().fit_transform(Y)              # missing cells pass through; PCA switches to NIPALS
 	pca_y = PCA(n_components=2).fit(y_scaled)
 	print("PCA on Y, R2 cumulative:", pca_y.r2_cumulative_.round(3).tolist())
-	def scores(model, r2):
-	    """Score plot with the percent of the variance each component explains (`r2`, per component) on its axis."""
-	    fig = model.score_plot(settings={"show_labels": True})
-	    r2 = np.asarray(r2)
-	    fig.update_layout(xaxis_title=f"t1 [{r2[0]:.1%}]", yaxis_title=f"t2 [{r2[1]:.1%}]")
+	def group_scatter(fig, x, y, highlight, row=None, col=None, showlegend=True):
+	    """One trace per class of the plant's disposition (colour and marker shape from STYLES); the batches in
+	    `highlight` (id -> colour) are drawn larger and labelled, in the marker shape of their class."""
+	    for label, (colour, symbol) in STYLES.items():
+	        members = [b for b in x.index if groups[b] == label and b not in highlight]
+	        fig.add_trace(go.Scatter(x=x.loc[members], y=y.loc[members], mode="markers", name=f"classed {label}",
+	                                 marker=dict(color=colour, symbol=symbol, size=8), text=members,
+	                                 hovertemplate="batch %{text}", showlegend=showlegend), row=row, col=col)
+	    for b, colour in highlight.items():
+	        fig.add_trace(go.Scatter(x=[x.loc[b]], y=[y.loc[b]], mode="markers+text", text=[str(b)], textposition="top right",
+	                                 marker=dict(color=colour, symbol=STYLES[groups[b]][1], size=13), showlegend=False),
+	                      row=row, col=col)
 	    return fig
+
+	def scores(model, r2, highlight):
+	    """Score plot of a PCA or PLS model coded by disposition, with the percent of the variance each component
+	    explains (`r2`, per component) on its axes and the 95% confidence ellipse."""
+	    t = model.scores_
+	    fig = group_scatter(go.Figure(), t.iloc[:, 0], t.iloc[:, 1], highlight)
+	    ex, ey = model.ellipse_coordinates(score_horiz=1, score_vert=2, conf_level=0.95)
+	    fig.add_trace(go.Scatter(x=ex, y=ey, mode="lines", line=dict(color=GREY, dash="dash"), name="95% confidence ellipse"))
+	    r2 = np.asarray(r2)
+	    fig.update_layout(xaxis_title=f"t1 [{r2[0]:.1%}]", yaxis_title=f"t2 [{r2[1]:.1%}]", height=440)
+	    return fig
+
+	def shade_alternate(fig, n, row=None, col=None):
+	    """Shade every second position of a bar chart, so that neighbouring groups of bars read apart."""
+	    for k in range(0, n, 2):
+	        fig.add_vrect(x0=k - 0.5, x1=k + 0.5, fillcolor=BAND, line_width=0, layer="below", row=row, col=col)
 
 	def explained_x(pls_model):
 	    """R2 of X per component of a PLS model, from the cumulative R2 of its columns."""
 	    return np.diff([0.0, *pls_model.r2_per_variable_.mean(axis=0)])
 
-	scores(pca_y, pca_y.r2_per_component_).show()
-	disposition = pd.cut(pca_y.scores_.index, bins=[0, 33, 61, 71], labels=["good", "abnormal", "high solvent"])
-	print(pca_y.scores_.groupby(disposition, observed=True).agg(["mean", "min", "max", "count"]).round(2))
+	scores(pca_y, pca_y.r2_per_component_, {61: ORANGE, 14: AQUA}).show()
+	print(pca_y.scores_.groupby(groups).agg(["mean", "min", "max", "count"]).round(2))
 	contributions = pca_y.score_contributions(y_scaled, component=1)
 	fig = go.Figure()
 	for batch_id, colour in ((61, ORANGE), (14, AQUA)):
 	    fig.add_trace(go.Bar(x=list(Y.columns), y=contributions.loc[batch_id], name=f"batch {batch_id}", marker_color=colour))
+	shade_alternate(fig, len(Y.columns))
 	fig.update_layout(title="Contributions to t1 of one batch from each group", yaxis_title="Contribution", height=320)
 	fig.show()
 
 .. figure:: ../figures/batch/batch-case-fmc-quality-pca.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Left, the scores of the two-component PCA on the quality block with batches 61 and 14 at opposite ends of t1; right, their contributions to t1 for each quality attribute, which are mirror images, with no bar for the missing Y2 of batch 61.
+	:alt: Left, the scores of the two-component PCA on the quality block, coded by the plant's disposition with blue circles for good, purple triangles for abnormal and magenta squares for high solvent, the abnormal batches mostly at negative t1 and batches 61 and 14 at opposite ends; right, their contributions to t1 for each quality attribute on alternately shaded positions, mirror images, with no bar for the missing Y2 of batch 61.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
-	Left: scores of the two-component PCA on the quality block; batches 61 (orange) and 14
-	(aqua) are at opposite ends of :math:`t_1`. Right: their contributions to :math:`t_1`,
-	attribute by attribute, are mirror images. ``Y2`` is missing for batch 61 and has no
-	bar.
+	Left: scores of the two-component PCA on the quality block, coded by the plant's
+	disposition (blue circles good, purple triangles abnormal, magenta squares high solvent);
+	batches 61 (orange) and 14 (aqua) are at opposite ends of :math:`t_1`. Right: their
+	contributions to :math:`t_1`, attribute by attribute, are mirror images. ``Y2`` is
+	missing for batch 61 and has no bar.
 
 Two components explain 70.3% of the quality block. The first component separates the
 batches by their disposition: 15 of the 17 batches classed as abnormal have a negative
@@ -238,7 +267,7 @@ and ``scale=False`` tells the ``PLS`` class not to scale them again.
 	pls_op = PLS(n_components=2, scale=False).fit(zop_scaled, y_scaled)
 	print("PLS Zchem -> Y, R2Y cumulative:", pls_chem.r2_cumulative_.round(3).tolist())
 	print("PLS Zop -> Y, R2Y cumulative:", pls_op.r2_cumulative_.round(3).tolist())
-	scores(pls_op, explained_x(pls_op)).show()
+	scores(pls_op, explained_x(pls_op), {20: ORANGE}).show()
 	print("batch 20 on Zop, t1 contributions:", pls_op.score_contributions(zop_scaled, component=1).loc[20].round(2).to_dict())
 
 Each initial-condition block on its own explains about a quarter of the quality block after
@@ -269,31 +298,44 @@ each block the components describe.
 	mb_z = MBPLS(n_components=2).fit(blocks_z, Y)
 	print("MBPLS Z -> Y, R2Y cumulative:", mb_z.r2_y_cumulative_.round(3).tolist())
 	print("R2X per block after two components:", mb_z.r2_x_per_block_cumulative_.iloc[:, -1].round(3).to_dict())
-	fig, r2y = mb_z.super_score_plot(), mb_z.r2_y_per_component_.to_numpy()
-	fig.update_layout(xaxis_title=f"super t1 [R2Y {r2y[0]:.1%}]", yaxis_title=f"super t2 [R2Y {r2y[1]:.1%}]").show()
-	mb_z.super_weights_bar_plot(component=1).show()
-	for name, block_contributions in mb_z.score_contributions(blocks_z, component=1).items():
-	    print(f"batch 20, block {name}:", block_contributions.loc[20].round(2).to_dict())
+
+	def block_axes(fig, r2, row=None, col=None, prefix="block t", note=""):
+	    """Axis titles of one score plot, with the percent of the variance each component explains (`r2`)."""
+	    r2 = np.asarray(r2)
+	    fig.update_xaxes(title_text=f"{prefix}1 [{note}{r2[0]:.1%}]", row=row, col=col)
+	    fig.update_yaxes(title_text=f"{prefix}2 [{note}{r2[1]:.1%}]", row=row, col=col)
+
+	fig = make_subplots(rows=2, cols=2, subplot_titles=["Super scores", "Super weights", "Zchem block scores", "Zop block scores"])
+	super_t = mb_z.super_scores_
+	group_scatter(fig, super_t.iloc[:, 0], super_t.iloc[:, 1], {20: ORANGE}, row=1, col=1)
+	block_axes(fig, mb_z.r2_y_per_component_, 1, 1, prefix="super t", note="R2Y ")
+	weights = mb_z.super_weights_                                            # one row per block, one column per component
+	for a, colour in ((1, BLUE), (2, ORANGE)):
+	    fig.add_trace(go.Bar(x=list(weights.index), y=weights.iloc[:, a - 1], name=f"component {a}", marker_color=colour), row=1, col=2)
+	for col, (name, block_t) in enumerate(mb_z.block_scores_.items(), start=1):
+	    group_scatter(fig, block_t.iloc[:, 0], block_t.iloc[:, 1], {20: ORANGE}, row=2, col=col, showlegend=False)
+	    block_axes(fig, np.diff([0.0, *mb_z.r2_x_per_block_cumulative_.loc[name]]), 2, col)
+	fig.update_layout(height=820).show()
 
 .. figure:: ../figures/batch/batch-case-fmc-mbpls-z.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Left, the super scores of the multiblock PLS on the two initial-condition blocks with batch 20 at the lower left; right, the super weights of the two components, larger for the operating-condition block on both.
+	:alt: Four panels: the super scores of the multiblock PLS on the two initial-condition blocks, coded by disposition, with batch 20 at the lower left; the super weights of the two components, larger for the operating-condition block on both; the chemistry block scores, where batch 20 sits inside the cloud of batches; and the operating-condition block scores, where batch 20 sits far outside it.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
-	Left: super scores of the multiblock PLS on the two initial-condition blocks; batch 20
-	(orange) is at the lower left. Right: the super weights of the two components; the
-	operating-condition block pulls more strongly on both.
+	Top left: super scores of the multiblock PLS on the two initial-condition blocks, coded
+	by the plant's disposition, with batch 20 (orange) at the lower left. Top right: the
+	super weights of the two components. Bottom: the block scores of the same model; batch
+	20 sits inside the cloud of batches in the chemistry block (left) and far outside it in
+	the operating-condition block (right).
 
 Together the two blocks explain 36.4% of the quality block after two components, more than
 either alone, and the components describe 29.6% of the chemistry block and 35.6% of the
 operating-condition block. The super weights give the operating-condition block the larger
-pull on both components. The per-block contributions of batch 20 make the same point for a
-single batch: its contributions from the operating-condition block (-0.38 for ``Time2``,
--0.32 for the temperature slope and -0.25 for ``Time4``) are several times larger than any
-from the chemistry block, whose largest is -0.08. Batch 20 is unusual in its operation, not
-in its chemistry.
+pull on both components. The block scores make the same point for a single batch: batch 20
+sits inside the cloud of batches in the chemistry block and far outside it in the
+operating-condition block. It is unusual in its operation, not in its chemistry.
 
 The trajectories alone
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -314,7 +356,7 @@ sequence) column index is re-attached after scaling; the batch plots read it.
 	pca_x = PCA(n_components=2).fit(x_scaled)
 	print(pca_x.r2_per_component_.round(3).tolist())            # R2 of the trajectory block, per component
 	# [0.231, 0.146]
-	scores(pca_x, pca_x.r2_per_component_).show()
+	scores(pca_x, pca_x.r2_per_component_, {20: ORANGE}).show()
 	t2, spe = pca_x.hotellings_t2_.iloc[:, -1], pca_x.spe_.iloc[:, -1]
 	t2_limit, spe_limit = pca_x.hotellings_t2_limit(conf_level=0.95), pca_x.spe_limit(conf_level=0.95)
 	both = sorted(t2.index[(t2 > t2_limit) & (spe > spe_limit)])            # above both limits
@@ -323,15 +365,9 @@ sequence) column index is re-attached after scaling; the batch plots read it.
 	# [20] [41, 51]
 
 	def influence_plot(model, highlight, labels, conf_level=0.95):
-	    """Hotelling's T2 against SPE, one dot per batch, with both limits drawn."""
+	    """Hotelling's T2 against SPE, one marker per batch coded by disposition, with both limits drawn."""
 	    t2, spe = model.hotellings_t2_.iloc[:, -1], model.spe_.iloc[:, -1]
-	    others = [batch_id for batch_id in t2.index if batch_id not in highlight]
-	    fig = go.Figure()
-	    fig.add_trace(go.Scatter(x=t2.loc[others], y=spe.loc[others], mode="markers", showlegend=False,
-	                             marker=dict(size=8, color=BLUE), text=others, hovertemplate="batch %{text}"))
-	    for batch_id, colour in highlight.items():
-	        fig.add_trace(go.Scatter(x=[t2.loc[batch_id]], y=[spe.loc[batch_id]], mode="markers",
-	                                 name=f"batch {batch_id}", marker=dict(size=12, color=colour)))
+	    fig = group_scatter(go.Figure(), t2, spe, highlight)
 	    fig.add_vline(x=model.hotellings_t2_limit(conf_level=conf_level), line_dash="dash", line_color=GREY)
 	    fig.add_hline(y=model.spe_limit(conf_level=conf_level), line_dash="dash", line_color=GREY)
 	    for batch_id in labels:
@@ -340,30 +376,19 @@ sequence) column index is re-attached after scaling; the batch plots read it.
 	    fig.update_layout(xaxis_title="Hotelling's T\u00b2", yaxis_title="SPE", height=420)
 	    return fig
 
-	influence_plot(pca_x, highlight={20: ORANGE, 41: AQUA}, labels=[20, 41, 51]).show()
-	time_varying_loading_plot(pca_x, component=1).show()
-	squared = pca_x.spe_contributions(x_scaled) ** 2           # a row of missing values for a batch with missing cells
-	spe_share = squared.div(squared.sum(axis=1), axis=0) * 100
-	complete = spe_share.dropna(how="all").index
-	worst = pca_x.spe_.loc[complete].iloc[:, -1].idxmax()
-	print(worst)                                               # the complete batch with the largest SPE
-	# 41
-	unfolded_contribution_plot(spe_share, batch_id=worst, by_tag=True).show()
-	by_time = spe_share.loc[worst].groupby(level="sequence").sum()
-	print(f"{by_time.loc[250:].sum():.0f}")                     # share of the SPE in the cooling phase, samples 250 to 324
-	# 49
+	influence_plot(pca_x, highlight={20: ORANGE}, labels=[41, 51]).show()
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-pca.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Scores and the influence plot of the batch PCA on the trajectories; batch 20 is outside the confidence ellipse and is the only batch above both limits, while batches 41 and 51 are above the SPE limit only.
+	:alt: Scores and the influence plot of the batch PCA on the trajectories, coded by the plant's disposition; batch 20 is outside the confidence ellipse and is the only batch above both limits, while batches 41 and 51 are above the SPE limit only.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
 	Scores (left) and Hotelling's :math:`T^2` against the SPE (right) of the batch PCA on the
-	trajectories. Batch 20 (orange) is outside the 95% confidence ellipse and is the only
-	batch above both limits. Batch 41 (aqua), the complete batch with the largest SPE, is
-	above the SPE limit and inside the :math:`T^2` limit, as is batch 51.
+	trajectories, coded by the plant's disposition. Batch 20 (orange) is outside the 95%
+	confidence ellipse and is the only batch above both limits; batches 41 and 51 are above
+	the SPE limit only.
 
 Two components describe 37.6% of the batch-to-batch variation in the trajectories. Batch 20
 is the only batch above both limits, with a :math:`T^2` twice its limit and an SPE next to
@@ -371,19 +396,41 @@ the largest of the 46 batches, so it is both unusual along the components and po
 described by them. Batches 41 and 51 are above the SPE limit alone, and batch 47 is just
 below it.
 
+.. code-block:: python
+
+	tags = list(wide.columns.get_level_values("tag").unique())
+	p1 = pca_x.loadings_.iloc[:, 0].unstack(level="sequence").reindex(index=tags)             # rows = tags, columns = time
+	r2_cell = pd.Series(pca_x.r2_per_variable_.iloc[:, -1].to_numpy(), index=wide.columns)    # R2 of every cell, two components
+	r2_grid = r2_cell.unstack(level="sequence").reindex(index=tags)
+	r2_tag = r2_cell.groupby(level="tag").mean().round(2)
+	print(r2_tag.nlargest(2).to_dict(), r2_tag.nsmallest(1).to_dict())    # the tags the components describe best and least
+	# {'CTankLvl': 0.71, 'ClockTime': 0.71} {'Agitator': 0.08}
+	fig = make_subplots(rows=3, cols=4, subplot_titles=tags, specs=[[{"secondary_y": True}] * 4] * 3, shared_xaxes=True)
+	for k, tag in enumerate(tags):
+	    row, col = divmod(k, 4)
+	    fig.add_trace(go.Scatter(x=p1.columns, y=p1.loc[tag], mode="lines", line=dict(color=BLUE), name="p1",
+	                             showlegend=k == 0), row=row + 1, col=col + 1)
+	    fig.add_trace(go.Scatter(x=r2_grid.columns, y=r2_grid.loc[tag], mode="lines", line=dict(color=ORANGE, width=1),
+	                             name="R2 per cell", showlegend=k == 0), row=row + 1, col=col + 1, secondary_y=True)
+	    fig.update_yaxes(range=[0, 1], showgrid=False, row=row + 1, col=col + 1, secondary_y=True)
+	    for x in phase_ends:
+	        fig.add_vline(x=x, line_color=GREY, line_width=1, row=row + 1, col=col + 1)
+	fig.update_layout(height=780, title="Loading p1 (blue) and R2 per cell (orange) of the batch PCA over the batch").show()
+
 .. figure:: ../figures/batch/batch-case-fmc-loadings-p1.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: The first loading of the batch PCA over the batch, one panel per tag; the loading is positive and nearly constant for the collector tank level and, after the first 50 samples, for the clock time, negative through the first phase for the dryer pressure and the jacket temperature set point, and changes sign within the batch for the dryer temperature.
+	:alt: The first loading of the batch PCA over the batch, one panel per tag, with the R2 of every cell after two components on a second axis in orange and two faint vertical lines at the ends of the first two phases; the loading is positive and nearly constant for the collector tank level and, after the first 50 samples, for the clock time, negative through the first phase for the dryer pressure and the jacket temperature set point, and changes sign within the batch for the dryer temperature; the R2 is highest for the collector tank level and the clock time and falls in the cooling phase for most tags.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
-	Loading :math:`\mathbf{p}_1` of the batch PCA over the batch, one panel per tag. The
-	loading is positive and nearly constant for the collector tank level, and for the clock
-	time after the first 50 samples, so :math:`t_1` is largely a measure of how much solvent
-	a batch collected and how much clock time it used. The dryer pressure, the jacket
-	temperature set point and the dryer temperature have loadings of both signs within the
-	batch.
+	Loading :math:`\mathbf{p}_1` of the batch PCA over the batch (blue), one panel per tag,
+	with the :math:`R^2` of each (tag, time) cell after two components (orange, right-hand
+	axis) and the ends of the first two phases at samples 175 and 249 (grey). The loading is
+	positive and nearly constant for the collector tank level, and for the clock time after
+	the first 50 samples, so :math:`t_1` is largely a measure of how much solvent a batch
+	collected and how much clock time it used. The dryer pressure, the jacket temperature set
+	point and the dryer temperature have loadings of both signs within the batch.
 
 The loading of the first component is positive and nearly constant for the collector tank
 level over the whole batch, and for the clock time once the batch is under way: a batch with
@@ -392,31 +439,57 @@ more clock time to reach each point. The other tags have loadings that change si
 the batch, with the dryer pressure negative through the solvent-collection phase and the
 dryer temperature negative in the first phase and positive in the ramp and cooling phases.
 
-Contribution plots are only defined for batches with complete trajectories. A missing cell
-has no residual and no contribution, and ``process_improve`` returns a row of missing values
-for such a batch. Batch 20 is one of the ten batches with missing samples, so it is examined
-through the :ref:`raw trajectory overlay <APPS_batch_case_fmc_overlay>` at the start of this
-case study: it ran hot in the first phase and took longer in the second. Batch 41 is the
-complete batch with the largest SPE, and its SPE contributions can be drawn. As in the
-:ref:`first case study <APPS_batch_case_dupont>`, the vector has one entry per (tag, time)
-cell, here :math:`K = 11` tags by :math:`J = 325` time samples.
+The :math:`R^2` per cell says how much of the batch-to-batch variation in that cell the two
+components describe, and so where the loadings can be read with confidence. The collector
+tank level and the clock time are described best, at about 70% of their variance on average,
+and the agitator speed least, at under 10%. For most tags the :math:`R^2` falls in the
+cooling phase, so the model says little about how the batches differ there.
 
-.. figure:: ../figures/batch/batch-case-fmc-batch-41-spe-contributions.png
+A missing cell has no residual and no contribution. Batch 20 is one of the ten batches with
+missing samples, and its scores are estimated from the cells it does have, the same estimate
+the NIPALS fit used, so its contributions are defined at every observed cell and absent only
+at the missing ones. As in the :ref:`first case study <APPS_batch_case_dupont>`, the vector
+has one entry per (tag, time) cell, here :math:`K = 11` tags by :math:`J = 325` time
+samples.
+
+.. code-block:: python
+
+	squared = pca_x.spe_contributions(x_scaled) ** 2      # for a batch with missing cells, from its observed cells
+	spe_share = squared.div(squared.sum(axis=1), axis=0) * 100
+	share_20 = spe_share.loc[20]
+	gaps = share_20[share_20.isna()].index.get_level_values("sequence")
+	print(len(gaps), int(gaps.min()), int(gaps.max()))      # missing cells of batch 20, and the first and last sample with one
+	# 205 34 109
+	unfolded_contribution_plot(spe_share.fillna(0.0), batch_id=20, by_tag=True).show()
+	by_tag = share_20.groupby(level="tag", sort=False).sum()
+	print(f"{by_tag.idxmax()} {by_tag.max():.0f}")           # the tag carrying the largest share of the SPE
+	# DryPress 49
+	by_time = share_20.groupby(level="sequence").sum()
+	first, second = phase_ends
+	print(f"{by_time.loc[:first - 1].sum():.0f} {by_time.loc[first:second].sum():.0f} {by_time.loc[second + 1:].sum():.0f}")   # per phase
+	# 58 31 11
+	overlay(X, "DryPress", {20: ORANGE}).show()
+	print(round(X[20]["DryPress"].iloc[:first].mean()), round(average["DryPress"].iloc[:first].mean()))   # phase 1: batch 20, average
+	# 85 37
+
+.. figure:: ../figures/batch/batch-case-fmc-batch-20-spe-contributions.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Three panels for batch 41: the share of the SPE carried by each unfolded cell, largest in the differential pressure through the ramp and in the jacket temperature set point through the cooling phase; the shares summed per tag; and the shares summed per sample, half of them in the cooling phase.
+	:alt: Three panels for batch 20: the share of the SPE carried by each unfolded cell, blank between samples 34 and 109 in every tag but the collector tank level where the record has gaps, and largest in the dryer pressure through the first phase; the shares summed per tag, half of them in the dryer pressure; and the shares summed per sample, most of them in the first phase.
 	:width: 800px
 	:scale: 80
 	:align: center
 
-	Top: the share of the SPE of batch 41 carried by each (tag, time) cell. Middle: the same
-	shares summed per tag. Bottom: summed per sample. The differential pressure and the
-	jacket temperature set point carry three quarters of the residual, and half of it lies
-	in the cooling phase.
+	Top: the share of the SPE of batch 20 carried by each (tag, time) cell; the blank
+	positions between samples 34 and 109 are the missing cells, which carry no residual.
+	Middle: the same shares summed per tag. Bottom: summed per sample. The dryer pressure
+	carries half of the residual, and most of it lies in the first phase.
 
-The residual of batch 41 belongs to the differential pressure (39%) and the jacket
-temperature set point (38%), and half of it lies in the cooling phase: the differential
-pressure of batch 41 ran away from the other batches through the temperature ramp, and its
-jacket temperature set point was set differently from theirs through the cooling phase.
+The residual of batch 20 belongs to the dryer pressure (49%), and most of it lies in the
+first phase (58% of the total): the dryer pressure of batch 20 sat far above the other
+batches through the solvent-collection phase, at 85 units against 37 for the average batch,
+and through the ramp, where its dryer temperature was also seen to run hot in the
+:ref:`raw trajectory overlay <APPS_batch_case_fmc_overlay>`. The temperatures, the power
+and the torque share the rest in small parts.
 
 Trajectories to quality
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -426,7 +499,7 @@ Trajectories to quality
 	pls_x = PLS(n_components=2, scale=False).fit(x_scaled, y_scaled)
 	print(pls_x.r2_cumulative_.round(3).tolist())               # R2 of the quality block, cumulative
 	# [0.266, 0.41]
-	scores(pls_x, explained_x(pls_x)).show()
+	scores(pls_x, explained_x(pls_x), {13: ORANGE, 5: AQUA, 7: AQUA}).show()
 	t1 = pls_x.score_contributions(x_scaled, component=1)
 	unfolded_contribution_plot(t1, batch_id=13).show()
 	print(t1.loc[13].groupby(level="tag", sort=False).sum().nsmallest(4).round(1).to_dict())   # batch 13's four largest
@@ -446,8 +519,9 @@ Trajectories to quality
 	:scale: 80
 	:align: center
 
-	Left: scores of the batch PLS model from the trajectories to the quality block, with
-	batch 13 (orange) and batches 5 and 7 (aqua) marked. Right: the contributions of batch
+	Left: scores of the batch PLS model from the trajectories to the quality block, coded by
+	the plant's disposition, with batch 13 (orange) and batches 5 and 7 (aqua) marked. Right:
+	the contributions of batch
 	13 to :math:`t_1`, summed per tag; every tag contributes in the same direction and the
 	clock time and the collector tank level lead.
 
@@ -504,8 +578,10 @@ columns and the nine operating columns.
 	# {'Zchem': 0.233, 'Zop': 0.304, 'X': 0.259}
 	print(mb.super_vip_.round(2).to_dict())                     # super VIP per block
 	# {'Zchem': 0.86, 'Zop': 1.07, 'X': 1.06}
-	fig, r2y = mb.super_score_plot(), mb.r2_y_per_component_.to_numpy()
-	fig.update_layout(xaxis_title=f"super t1 [R2Y {r2y[0]:.1%}]", yaxis_title=f"super t2 [R2Y {r2y[1]:.1%}]").show()
+	super_t = mb.super_scores_
+	fig = group_scatter(go.Figure(), super_t.iloc[:, 0], super_t.iloc[:, 1], {13: ORANGE, 5: AQUA, 7: AQUA})
+	block_axes(fig, mb.r2_y_per_component_, prefix="super t", note="R2Y ")
+	fig.update_layout(height=440).show()
 	mb.super_weights_bar_plot(component=1).show()
 	unfolded_contribution_plot(mb.score_contributions(blocks, component=1)["X"], batch_id=13).show()
 	mb.predictions_vs_observed_plot(Y, variable="SolventConc").show()
@@ -517,8 +593,8 @@ columns and the nine operating columns.
 	:scale: 80
 	:align: center
 
-	Left: super scores of the batch multiblock PLS, with batches 13 (orange), 5 and 7 (aqua)
-	marked. Middle: :math:`R^2` of each block after two components (blue) and the super VIP
+	Left: super scores of the batch multiblock PLS, coded by the plant's disposition, with
+	batches 13 (orange), 5 and 7 (aqua) marked. Middle: :math:`R^2` of each block after two components (blue) and the super VIP
 	of each block (orange). Right: observed and fitted residual solvent concentration, with
 	batch 13 marked.
 
@@ -552,19 +628,6 @@ conditions or only its trajectories are considered, and the three plots need not
 
 .. code-block:: python
 
-	groups = pd.Series(disposition.astype(str), index=Y.index)            # the plant's classes, from the quality section
-	fig = make_subplots(rows=1, cols=3, subplot_titles=[f"{name} block" for name in blocks])
-	for col, (name, block_scores) in enumerate(mb.block_scores_.items(), start=1):
-	    for label, colour in (("good", BLUE), ("abnormal", PURPLE), ("high solvent", AQUA)):
-	        members = [b for b in block_scores.index if groups[b] == label]
-	        fig.add_trace(go.Scatter(x=block_scores.loc[members].iloc[:, 0], y=block_scores.loc[members].iloc[:, 1],
-	                                 mode="markers", name=f"classed {label}", marker=dict(color=colour), text=members,
-	                                 hovertemplate="batch %{text}", showlegend=col == 1), row=1, col=col)
-	    r2 = np.diff([0.0, *mb.r2_x_per_block_cumulative_.loc[name]])
-	    fig.update_xaxes(title_text=f"block t1 [{r2[0]:.1%}]", row=1, col=col)
-	    fig.update_yaxes(title_text=f"block t2 [{r2[1]:.1%}]", row=1, col=col)
-	fig.update_layout(height=420).show()
-
 	def nearer_group(block_scores):
 	    """Place each batch with the group, good or abnormal, whose average point is nearer in this score plot."""
 	    centres = {name: block_scores.loc[groups == name].mean() for name in ("good", "abnormal")}
@@ -577,6 +640,11 @@ conditions or only its trajectories are considered, and the three plots need not
 	anomalous = [2, 3, 6, 7]
 	print(mb.super_scores_.iloc[:, 0].groupby(groups).mean().round(2).to_dict(), mb.super_scores_.loc[anomalous].iloc[:, 0].round(2).to_dict())
 	# {'abnormal': -0.55, 'good': 0.36, 'high solvent': 0.19} {2: 0.31, 3: 0.14, 6: 0.17, 7: 0.18}
+	fig = make_subplots(rows=1, cols=3, subplot_titles=[f"{name} block" for name in blocks])
+	for col, (name, block_t) in enumerate(mb.block_scores_.items(), start=1):
+	    group_scatter(fig, block_t.iloc[:, 0], block_t.iloc[:, 1], dict.fromkeys(anomalous, ORANGE), row=1, col=col, showlegend=col == 1)
+	    block_axes(fig, np.diff([0.0, *mb.r2_x_per_block_cumulative_.loc[name]]), 1, col)
+	fig.update_layout(height=420).show()
 
 .. figure:: ../figures/batch/batch-case-fmc-block-scores.png
 	:source: batch/batch-case-fmc-figures.py
@@ -622,6 +690,7 @@ block and ordinary in the others is visible only in the block score plots.
 	print(move.round(2)[move.abs() >= 0.01].to_dict())         # Zop: from the neighbours' average to the four's average
 	# {'Level1': -0.05, 'Temp1': 0.02, 'Time4': 0.05, 'Time2': 0.06, 'Time3': 0.11, 'TempSlope': 0.06, 'WgtCake': -0.05}
 	fig = go.Figure(go.Bar(x=list(move.index), y=move, marker_color=BLUE))
+	shade_alternate(fig, len(move))
 	fig.update_layout(title="Operating conditions: from the neighbours' average to the four batches' average",
 	                  yaxis_title="Contribution to the block t1", height=340).show()
 	for tag in ("CTankLvl", "ClockTime", "D-Temp", "D-Temp-SP"):
