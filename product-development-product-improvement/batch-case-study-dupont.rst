@@ -50,6 +50,7 @@ returns a dictionary with one data frame per batch, 100 samples by 10 tags.
 
 .. code-block:: python
 
+	import numpy as np
 	import pandas as pd
 	import plotly.graph_objects as go
 	from process_improve.batch import BatchPCA, load_dupont, time_varying_loading_plot, unfolded_contribution_plot
@@ -337,25 +338,33 @@ Removing batches changes the model, so the plots are examined again.
 	kept_b = {batch_id: batch for batch_id, batch in batches.items() if batch_id < 49}
 	model_b = BatchPCA(n_components=3).fit(kept_b)
 	print("R2 per component:", model_b.r2_per_component_.round(3).tolist())
-	scores(model_b, 2, 3).show()
 	second_group = [37, 39, 43, 44, 45, 46, 47, 48]
+	group_t2, group_t3 = model_b.scores_.loc[second_group].iloc[:, 1:3].mean()   # the group's average point
+	fig = scores(model_b, 2, 3)
+	fig.add_annotation(x=0, y=0, ax=group_t2, ay=group_t3, axref="x", ayref="y", text="",   # from the average point
+	                   showarrow=True, arrowhead=2, arrowwidth=3, arrowcolor="#4d4d4d")      # to the model centre
+	fig.add_annotation(x=group_t2 / 2, y=group_t3 / 2, text="contribution direction", showarrow=False, yshift=12,
+	                   textangle=-np.degrees(np.arctan2(group_t3, group_t2)))
+	fig.show()
 
 .. figure:: ../figures/batch/batch-case-dupont-model-b-scores.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: Scores of model B on components 2 and 3; batches 37, 39 and 43 to 48 form a group at the top right, away from the main cloud.
+	:alt: Scores of model B on components 2 and 3; batches 37, 39 and 43 to 48 form a group at the top right, away from the main cloud, and a thick arrow labelled contribution direction runs from the group's average point to the model centre.
 	:width: 600px
 	:scale: 80
 	:align: center
 
 	Scores of model B on components 2 and 3. Batches 37, 39 and 43 to 48 (orange) form a
-	group at the top right of the plot, away from the main cloud of batches.
+	group at the top right of the plot, away from the main cloud of batches. The arrow runs
+	from the group's average point to the model centre: the direction along which the
+	group's contributions below are computed.
 
 With the extreme batches gone, a second group separates in the plane of :math:`t_2` and
 :math:`t_3`: batches 37, 39 and 43 to 48.
 
 A contribution is the weighted difference between two points, and either point can be the
 average of a group of batches. The eight batches are compared here as a group against the
-model centre, the average of all 48: the columns are centred, so the group's mean row is
+model centre, the average of all 48 (the arrow in the score plot): the columns are centred, so the group's mean row is
 its displacement from the centre, and its contribution vector adds up to the group's mean
 score.
 
