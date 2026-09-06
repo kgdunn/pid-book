@@ -18,8 +18,10 @@ the start of the batch until the agitator is turned up to high speed; the temper
 from there until the dryer temperature reaches its maximum; and cooling, from there to the
 end of the batch. The operators adjusted the peak temperature set point from batch to
 batch to correct the quality of the product, a manual feedback on quality. This is the case
-study of Garcia-Munoz and co-workers (2003), and it is the most complete of the three batch
-case studies, because every kind of information about a batch is present.
+study of Garcia-Munoz and co-workers (2003), and the most complete of the three: the
+:ref:`first case study <APPS_batch_case_dupont>` had trajectories alone and the
+:ref:`second <APPS_batch_case_sbr>` added the final quality, while here the chemistry of the
+charge and the operating conditions are recorded as well.
 
 .. figure:: ../figures/examples/fmc/dryer_flowsheet.png
 	:alt: Flowsheet of the batch dryer: the dryer tank with its agitator and heating medium, the collector tank with its level measurement, a pressure controller between them, and two temperature controllers for the jacket and the dryer; the ten measured trajectories are numbered on the drawing.
@@ -528,9 +530,8 @@ Trajectories to quality
 
 	Left: scores of the batch PLS model from the trajectories to the quality block, coded by
 	the plant's disposition, with batch 13 (orange) and batches 5 and 7 (aqua) marked. Right:
-	the contributions of batch
-	13 to :math:`t_1`, summed per tag; every tag contributes in the same direction and the
-	clock time and the collector tank level lead.
+	the contributions of batch 13 to :math:`t_1`, summed per tag; every tag contributes in the
+	same direction and the clock time and the collector tank level lead.
 
 The axes of the score plot carry the share of the trajectory block that each component
 describes, its :math:`R^2_X`. The model is judged on the quality block, and there the
@@ -557,12 +558,12 @@ overlay, and the block scores of the final model come back to them.
 	the end of the batch. The dashed lines mark the ends of the first two phases.
 
 The :ref:`overlay of these three batches <APPS_batch_case_fmc_overlay_13>` shows what the
-contributions of batch 13 refer to. Its collector tank level
-levelled off at 52 units, against 77 units for batch 7, 87 units for batch 5 and up to 117
-units for the batches that collected the most; its first phase took 29 clock samples,
-against 62 for batch 7 and 113 for batch 5; and its dryer temperature fell faster than any
-other batch in the cooling phase. Batch 13 was
-classed as a good batch, so a batch at the end of a component is not necessarily a bad one.
+contributions of batch 13 refer to. Its collector tank level levelled off at 52 units,
+against 77 units for batch 7, 87 units for batch 5 and up to 117 units for the batches that
+collected the most; its first phase took 29 clock samples, against 62 for batch 7 and 113
+for batch 5; and its dryer temperature fell faster than any other batch in the cooling
+phase. Batch 13 was classed as a good batch, so a batch at the end of a component is not
+necessarily a bad one.
 The component describes a direction of variation in the trajectories that is related to
 quality, and batch 13 is the batch furthest along it. The observed-against-predicted plot
 of the residual solvent concentration, one of the attributes on which the batches are
@@ -603,9 +604,9 @@ columns and the nine operating columns.
 	:align: center
 
 	Left: super scores of the batch multiblock PLS, coded by the plant's disposition, with
-	batches 13 (orange), 5 and 7 (aqua) marked. Middle: :math:`R^2` of each block after two components (blue) and the super VIP
-	of each block (orange). Right: observed and fitted residual solvent concentration, with
-	batch 13 marked.
+	batches 13 (orange), 5 and 7 (aqua) marked. Middle: :math:`R^2` of each block after two
+	components (blue) and the super VIP of each block (orange). Right: observed and fitted
+	residual solvent concentration, with batch 13 marked.
 
 The combined model explains 47.2% of the quality block after two components, against 41.0%
 for the trajectories alone and 36.4% for the two initial-condition blocks together. The
@@ -662,8 +663,9 @@ conditions or only its trajectories are considered, and the three plots need not
 	:scale: 80
 	:align: center
 
-	Block scores of the batch multiblock PLS: the chemistry block (left), the operating-condition
-	block (middle) and the trajectory block (right), coloured by the plant's disposition.
+	Block scores of the batch multiblock PLS: the chemistry block (left), the
+	operating-condition block (middle) and the trajectory block (right), coded by the plant's
+	disposition.
 	Batches 2, 3, 6 and 7 (orange) were classed good; in the trajectory block they sit among
 	the batches classed abnormal (purple), in the other two blocks among the good ones (blue).
 
@@ -782,7 +784,7 @@ table below: the chemistry :math:`\mathbf{Z}_\text{chem}`, the operating conditi
 	print(summary["Y"].sum(axis=1, min_count=1).round(1).dropna().tolist())   # quality explained, per model
 	# [70.3, 22.2, 26.2, 36.4, 41.0, 47.2]
 
-.. table:: :math:`R^2` of each block, as a percentage, for the two components of every model of the ladder.
+.. table:: :math:`R^2` of each block, as a percentage, per component, for every model of the ladder.
 
    +----------------------+-------------+-------------+-------------+-------------+
    | Model                | Zchem       | Zop         | X           | Y           |

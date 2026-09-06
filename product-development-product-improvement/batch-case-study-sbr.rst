@@ -17,9 +17,9 @@ of each batch: composition, particle size, branching, cross-linking and polydisp
 53 batches of this case study were simulated from a first-principles model of the reactor
 (Nomikos and MacGregor, 1994; Nomikos, 1995), so the fault is known: batch 37 received 30%
 more organic impurity in the butadiene feed than the normal batches from its very start, and
-batch 34 50% more from midway through. That is the value of simulated data. A model can be checked against
-what is known to have happened before it is trusted on plant data, where nothing is known
-for certain.
+batch 34 50% more from midway through. That is the value of simulated data. A model can be
+checked against what is known to have happened before it is trusted on plant data, where
+nothing is known for certain.
 
 The :ref:`first case study <APPS_batch_case_dupont>` used a PCA model of the trajectories
 alone. Here a block of final quality attributes is available, so the model is a
@@ -510,10 +510,12 @@ The particle size becomes predictable only in the second half of the batch, wher
 :math:`R^2` curves earlier on this page also placed the information. Nomikos and MacGregor
 (1995) give the reason: the particle size is set largely by the seed particles charged
 before the batch starts, which the trajectories do not record, and it was the attribute
-their model explained least. Branching and
-cross-linking are predicted best; polydispersity is predicted about as well after 50
-samples as at the end. The value of the curves is in their timing: polydispersity is
-predicted with an error below one standard deviation of the attribute from about 20
+their model explained least. A block of measurements taken before the batch starts is what
+the :ref:`third case study <APPS_batch_case_fmc>` adds.
+
+Branching and cross-linking are predicted best; polydispersity is predicted about as well
+after 50 samples as at the end. The value of the curves is in their timing: polydispersity
+is predicted with an error below one standard deviation of the attribute from about 20
 samples on, composition, branching and cross-linking from about 50, and the particle size
 from about 130, each with most of the batch still to run. Averaged over the five
 attributes, the prediction error falls from three standard deviations after 10 samples to
@@ -829,7 +831,9 @@ along a known direction, a large residual with a small :math:`T^2` is a batch do
 something the reference set never did. What the section rests on is the reference set. It
 was easy to choose here, because the simulation says which batches are faulty; on plant
 data the reference batches are the first thing to get right, and the
-:ref:`first case study <APPS_batch_case_dupont>` shows how much of the work that is.
+:ref:`first case study <APPS_batch_case_dupont>` shows how much of the work that is. The
+:ref:`third case study <APPS_batch_case_fmc>` turns to a process where the trajectories are
+one of four blocks of information about a batch, and asks which block matters most.
 
 References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~

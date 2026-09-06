@@ -272,10 +272,10 @@ Batches 50 to 55 are far out along the components, so the tool for them is the s
 contribution: how much every (tag, time) cell contributes to :math:`t_1` or :math:`t_2`.
 A score is the sum over the 1000 cells of the scaled value times the loading,
 :math:`t_{i,1} = \sum_{k=1}^{K}\sum_{j=1}^{J} x_{i,kj}\, p_{kj,1}`, so a cell contributes
-strongly when its value is far from average in the direction of the loading. The :ref:`loading <LVM_interpreting_loadings>`
-:math:`\mathbf{p}_1` of a batch model has 1000 entries as well, and
-``time_varying_loading_plot`` draws it as ten curves over the batch, one per tag, which
-shows which parts of the batch the component describes.
+strongly when its value is far from average in the direction of the loading. The
+:ref:`loading <LVM_interpreting_loadings>` :math:`\mathbf{p}_1` of a batch model has 1000
+entries as well, and ``time_varying_loading_plot`` draws it as ten curves over the batch, one
+per tag, which shows which parts of the batch the component describes.
 
 .. code-block:: python
 
