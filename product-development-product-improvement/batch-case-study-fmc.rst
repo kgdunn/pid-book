@@ -191,11 +191,11 @@ involved.
 	    for label, (colour, symbol) in STYLES.items():
 	        members = [b for b in x.index if groups[b] == label and b not in highlight]
 	        fig.add_trace(go.Scatter(x=x.loc[members], y=y.loc[members], mode="markers", name=f"classed {label}",
-	                                 marker=dict(color=colour, symbol=symbol, size=8), text=members,
+	                                 marker=dict(color=colour, symbol=symbol, size=16), text=members,
 	                                 hovertemplate="batch %{text}", showlegend=showlegend), row=row, col=col)
 	    for b, colour in highlight.items():
 	        fig.add_trace(go.Scatter(x=[x.loc[b]], y=[y.loc[b]], mode="markers+text", text=[str(b)], textposition="top right",
-	                                 marker=dict(color=colour, symbol=STYLES[groups[b]][1], size=13), showlegend=False),
+	                                 marker=dict(color=colour, symbol=STYLES[groups[b]][1], size=22), showlegend=False),
 	                      row=row, col=col)
 	    return fig
 
@@ -411,7 +411,7 @@ below it.
 	    fig.add_trace(go.Scatter(x=p1.columns, y=p1.loc[tag], mode="lines", line=dict(color=BLUE), name="p1",
 	                             showlegend=k == 0), row=row + 1, col=col + 1)
 	    fig.add_trace(go.Scatter(x=r2_grid.columns, y=r2_grid.loc[tag], mode="lines", line=dict(color=ORANGE, width=1),
-	                             name="R2 per cell", showlegend=k == 0), row=row + 1, col=col + 1, secondary_y=True)
+	                             opacity=0.55, name="R2 per cell", showlegend=k == 0), row=row + 1, col=col + 1, secondary_y=True)
 	    fig.update_yaxes(range=[0, 1], showgrid=False, row=row + 1, col=col + 1, secondary_y=True)
 	    for x in phase_ends:
 	        fig.add_vline(x=x, line_color=GREY, line_width=1, row=row + 1, col=col + 1)
