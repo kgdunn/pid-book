@@ -360,8 +360,10 @@ The code below answers that for batches 34 and 37, in three steps:
   median absolute deviation (MAD), smoothed with an EWMA (:math:`\lambda = 0.3`, the value
   of the :ref:`EWMA chart <monitoring_EWMA>` example).
 
-The run of 20 samples is what makes the answer mean something, because a noisy tag such as
-the reactor temperature crosses the two-standard-deviation line now and then in every batch.
+Twenty samples outlasts what the noise alone produces: with no fault the reactor temperature
+never stays outside the band for more than 9 samples in a row. It is also the shortest run
+tried that leaves the onsets below unchanged, as 25, 30 and 40 do. Other tags do run that far
+in a normal batch, so a sustained departure says where to look, not that there is a fault.
 The factor 1.4826 makes the robust scale equal to the standard deviation for normally
 distributed values, so the two versions are read on the same axis.
 
@@ -392,6 +394,26 @@ distributed values, so the two versions are read on the same axis.
 	for batch_id in (37, 34):
 	    print(f"batch {batch_id}, first sustained departure:", sustained_departure(z[batch_id]))
 	    print("  robust, smoothed:", sustained_departure(z_robust[batch_id]))
+
+	# Why 20: it has to outlast what the noise alone produces, and the answer must not depend on it.
+	def longest_run(flags):
+	    """Length of the longest unbroken stretch of True."""
+	    best = current = 0
+	    for flag in flags:
+	        current = current + 1 if flag else 0
+	        best = max(best, current)
+	    return best
+
+	reactor = list(sbr.trajectory_tags).index("ReactorTemp")
+	quiet = [np.abs((batch.to_numpy() - others.mean(axis=0)) / others.std(axis=0, ddof=1)) > 2
+	         for batch_id, batch in trajectories.items() if batch_id not in (34, 37)]
+	print("reactor temperature, longest run outside the band with no fault:",
+	      max(longest_run(batch[:, reactor]) for batch in quiet))
+	# reactor temperature, longest run outside the band with no fault: 9
+	print("run lengths giving the same onsets:",
+	      [run for run in (15, 20, 25, 30, 40)
+	       if all(sustained_departure(z[b], run=run) == sustained_departure(z[b]) for b in (37, 34))])
+	# run lengths giving the same onsets: [20, 25, 30, 40]
 
 	fig = make_subplots(rows=2, cols=6, subplot_titles=sbr.trajectory_tags, shared_yaxes=True)
 	for row, (batch_id, colour) in enumerate([(37, AQUA), (34, ORANGE)], start=1):
