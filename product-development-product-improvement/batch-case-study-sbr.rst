@@ -113,20 +113,21 @@ of components; the usual :ref:`cross-validation <LVM-PLS-number-of-components>` 
 	t1, t2 = model.scores_.iloc[:, 0], model.scores_.iloc[:, 1]
 	marked = {34: ORANGE, 37: AQUA, 4: PURPLE}
 	others = [batch_id for batch_id in t1.index if batch_id not in marked]
-	# The marker area is the batch's SPE. `sizemode="area"` gives the area, not the diameter, to
-	# the value, so a marker of twice the area stands for twice the residual.
-	area = dict(sizemode="area", sizeref=2 * spe.max() / 26**2, sizemin=3)
+	# The marker area is the batch's squared residual. `sizemode="area"` gives the area, not the
+	# diameter, to the value; squaring spreads a factor of two in SPE over a factor of four in
+	# area, and the sum of squared residuals is what adds up over the cells in any case.
+	area = dict(sizemode="area", sizeref=2 * (spe**2).max() / 26**2, sizemin=3)
 	ex, ey = model.ellipse_coordinates(score_horiz=1, score_vert=2, conf_level=0.95)
 	fig = go.Figure()
 	fig.add_trace(go.Scatter(x=ex, y=ey, mode="lines", name="95% confidence ellipse",
 	                         line=dict(color=GREY, dash="dash")))
 	fig.add_trace(go.Scatter(x=t1.loc[others], y=t2.loc[others], mode="markers", showlegend=False,
 	                         text=others, hovertemplate="batch %{text}",
-	                         marker=dict(size=spe.loc[others], color=BLUE, **area)))
+	                         marker=dict(size=spe.loc[others] ** 2, color=BLUE, **area)))
 	for batch_id, colour in marked.items():
 	    fig.add_trace(go.Scatter(x=[t1.loc[batch_id]], y=[t2.loc[batch_id]], mode="markers",
 	                             name=f"batch {batch_id}",
-	                             marker=dict(size=[spe.loc[batch_id]], color=colour, **area,
+	                             marker=dict(size=[spe.loc[batch_id] ** 2], color=colour, **area,
 	                                         line=dict(color="#404040", width=1.5))))
 	fig.update_layout(xaxis_title=f"t1 [R2X {r2x[0]:.1%}]", yaxis_title=f"t2 [R2X {r2x[1]:.1%}]",
 	                  height=520).show()
@@ -142,16 +143,17 @@ The first component explains 65.3% of the variance in the quality block and the 
 
 .. figure:: ../figures/batch/batch-case-sbr-scores.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Scores of the batch PLS model with the 95% confidence ellipse, each marker sized by the batch's SPE; batch 37 has the lowest t1 of all batches and batch 34 the highest t2, both far outside the ellipse and both drawn small; batch 4, in purple, sits near the centre.
+	:alt: Scores of the batch PLS model with the 95% confidence ellipse, each marker's area set by the batch's squared residual; batch 37 has the lowest t1 of all batches and batch 34 the highest t2, both far outside the ellipse and both drawn small; batch 4, in purple, sits near the centre.
 	:width: 600px
 	:scale: 80
 	:align: center
 
 	Scores of the batch PLS model. Batch 37 (aqua) has the lowest :math:`t_1` of all
 	batches and batch 34 (orange) the highest :math:`t_2`; both lie far outside the 95%
-	confidence ellipse. The area of each marker is that batch's SPE, on the scale of the two
-	grey circles in the legend, so the plot answers both questions asked of a batch: the two
-	faulty ones are extreme along the components and carry small residuals. Batch 4 (purple)
+	confidence ellipse. The area of each marker is that batch's squared residual, on the scale
+	of the three grey circles in the legend, so the plot answers both questions asked of a
+	batch: the two faulty ones are extreme along the components and carry small residuals.
+	Batch 4 (purple)
 	is the batch nearest the average quality, used
 	:ref:`below <APPS_batch_case_sbr_online_prediction>` to show the prediction while the
 	batch runs.
@@ -786,7 +788,11 @@ deviation is one the reference model already describes, because the normal batch
 along it too, less severely: a batch far along a known direction has a large :math:`T^2` and
 a small residual. The fault of batch 34 begins midway through a batch that had been normal,
 in a combination of tags the reference model has no component for, so from that sample on
-the newest samples stop fitting the model, which is what the SPE measures.
+the newest samples stop fitting the model, which is what the SPE measures. Which chart
+speaks first is a property of the fault, not a rule: across the five faults Garcia-Munoz,
+Kourti and MacGregor (2004) simulated, every one showed in the SPE chart before the score
+chart, where here the fault present from the start is seen in the scores first and in the
+residual only much later.
 
 The residual shares say what changed. At the alarm sample the reactor temperature carries
 the largest share of the residual, with the cooling-water and jacket temperatures next;
