@@ -678,6 +678,13 @@ chart needs the covariance at each sample as well; Garcia-Munoz, Kourti and MacG
 (2004) compute it, and show the same fall in the spread on this reactor's data. The SPE
 limit is fitted sample by sample from the reference batches' SPE at that sample.
 
+Normalising by that covariance also fixes what the reference batches average: dividing by
+the spread of the same batches that set it leaves their mean :math:`T^2` at
+:math:`A(N-1)/N` at every sample, 1.96 for two components and 51 batches. The grey line in
+the monitoring figure below is therefore flat by construction, and it is the same property
+that lets one limit serve every sample. The SPE has no such normalisation, so its
+reference mean does vary.
+
 .. code-block:: python
 
 	normal = {b: t for b, t in trajectories.items() if b not in (34, 37)}
@@ -716,6 +723,9 @@ limit, the same kind of rule the departure analysis used.
 	    return int(runs.argmax()) + 1 if runs.any() else None
 
 	print(f"T2 limit at 99%: {monitor.t2_limit_over_time_[0]:.1f}")
+	mean_t2 = np.asarray(monitor.t2_mean_over_time_)            # A(N-1)/N at every sample, whatever the data do
+	print(f"reference mean T2: {mean_t2.min():.2f} to {mean_t2.max():.2f}")
+	# reference mean T2: 1.96 to 1.96
 	for batch_id in (37, 34, 4):
 	    result = monitor.monitor(trajectories[batch_id])
 	    print(f"batch {batch_id}: T2 alarm after {first_sustained(result.t2_alarm)} samples;",
@@ -761,7 +771,8 @@ limit, the same kind of rule the departure analysis used.
 
 	On-line monitoring of the two faulty batches against the reference model of 51 normal
 	batches. Left: Hotelling's :math:`T^2` of batch 37 (aqua) with the 99% limit (dashed) and
-	the reference-batch mean (grey); the first sustained alarm is after 23 samples. Middle:
+	the reference-batch mean (grey, flat by construction); the first sustained alarm is after
+	23 samples. Middle:
 	the SPE of the newest sample of batch 34 (orange) with its per-sample limit; the impurity
 	enters at sample 100 (dashed vertical) and the first sustained alarm is after 105
 	samples. Right: the share of the residual per tag at that alarm sample.
@@ -867,8 +878,15 @@ the zero line and a departure reads directly.
 	                        columns=frame.columns, index=frame.index)
 
 	def forecast_panel(batch_id, tag, from_samples, colour):
-	    """Every normal batch, what the batch did, and the model's forecast of the rest from two points, in z form."""
-	    fig = overlay({b: z_form(t) for b, t in normal.items()}, tag, {})
+	    """The normal batches as a band, what the batch did, and the forecast of the rest from two points."""
+	    # A band, not 51 lines: on a noisy tag the lines fill the panel and the forecasts have to be
+	    # read through them. It covers the middle 90% of the normal batches at each sample.
+	    spread = np.stack([z_form(t)[tag].to_numpy() for t in normal.values()])
+	    lo, hi = np.percentile(spread, 5, axis=0), np.percentile(spread, 95, axis=0)
+	    fig = go.Figure([go.Scatter(x=[*range(len(lo)), *reversed(range(len(hi)))], y=[*lo, *reversed(hi)],
+	                                fill="toself", fillcolor="rgba(200, 200, 200, 0.45)", line_width=0,
+	                                name="normal batches, middle 90%")])
+	    fig.update_layout(title=tag, xaxis_title="Sample [aligned time]", height=320)
 	    z_actual = z_form(trajectories[batch_id])[tag]
 	    fig.add_trace(go.Scatter(y=z_actual, mode="lines", name=f"batch {batch_id}, what happened",
 	                             line=dict(color=colour, width=1), opacity=0.4))
@@ -893,14 +911,14 @@ the zero line and a departure reads directly.
 
 .. figure:: ../figures/batch/batch-case-sbr-forecast.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Two panels in z form, each tag as a distance from the normal batches in their standard deviations. Left, the conversion of the 51 normal batches in grey around zero, batch 37's observed conversion in aqua up to 30 samples, well below zero, and the model's forecasts of the rest from sample 30 onwards (dashed aqua) and from sample 60 onwards (dotted dark blue) that stay below zero, close to what happened. Right, the cooling-water temperature of batch 34 in orange with forecasts from sample 60 onwards (dashed orange) and from sample 115 onwards (dotted dark blue) that stay near zero and miss the rise after sample 100.
+	:alt: Two panels in z form, each tag as a distance from the normal batches in their standard deviations. Left, the conversion of the normal batches as a grey band around zero, batch 37's observed conversion in aqua up to 30 samples, well below zero, and the model's forecasts of the rest from sample 30 onwards (dashed aqua) and from sample 60 onwards (dotted dark blue) that stay below zero, close to what happened. Right, the cooling-water temperature of batch 34 in orange with forecasts from sample 60 onwards (dashed orange) and from sample 115 onwards (dotted dark blue) that stay near zero and miss the rise after sample 100.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
 	Forecast of the rest of the batch from the score estimate, in z form: each tag as a
-	distance from the 51 normal batches (grey) at that sample, in their standard deviations,
-	so the zero line is the average batch. Left: the conversion of batch 37 (aqua), observed
+	distance from the normal batches at that sample, in their standard deviations, so the zero
+	line is the average batch and the grey band holds the middle 90% of them. Left: the conversion of batch 37 (aqua), observed
 	for 30 samples, and the forecasts from sample 30 onwards (dashed aqua) and from sample 60
 	onwards (dotted dark blue); what batch 37 did is the faint line. Right: the cooling-water
 	temperature of batch 34 (orange) with the forecasts from sample 60 onwards (dashed
