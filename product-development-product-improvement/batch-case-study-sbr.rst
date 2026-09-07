@@ -57,7 +57,7 @@ quality table and the list of those six tags.
 
 .. code-block:: python
 
-	GREY, ORANGE, AQUA, BLUE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a"     # figure colours, reused below
+	GREY, ORANGE, AQUA, BLUE, PURPLE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a", "#6f42c1"   # figure colours
 
 	def overlay(batches, tag, highlight):
 	    """One tag for every batch in grey, with the batches in `highlight` (id -> colour) drawn on top."""
@@ -109,8 +109,30 @@ of components; the usual :ref:`cross-validation <LVM-PLS-number-of-components>` 
 	r2y = np.diff([0.0, *model.r2_cumulative_])                     # R2 of the quality block, per component
 	r2x = np.diff([0.0, *model.r2_per_variable_.mean(axis=0)])     # R2 of the trajectories, per component
 	print("R2X per component:", r2x.round(3), " R2Y per component:", r2y.round(3))
-	fig = model.score_plot(settings={"show_labels": True})
-	fig.update_layout(xaxis_title=f"t1 [R2X {r2x[0]:.1%}]", yaxis_title=f"t2 [R2X {r2x[1]:.1%}]").show()
+	spe = model.spe_.iloc[:, -1]
+	t1, t2 = model.scores_.iloc[:, 0], model.scores_.iloc[:, 1]
+	marked = {34: ORANGE, 37: AQUA, 4: PURPLE}
+	others = [batch_id for batch_id in t1.index if batch_id not in marked]
+	# The marker area is the batch's SPE. `sizemode="area"` gives the area, not the diameter, to
+	# the value, so a marker of twice the area stands for twice the residual.
+	area = dict(sizemode="area", sizeref=2 * spe.max() / 26**2, sizemin=3)
+	ex, ey = model.ellipse_coordinates(score_horiz=1, score_vert=2, conf_level=0.95)
+	fig = go.Figure()
+	fig.add_trace(go.Scatter(x=ex, y=ey, mode="lines", name="95% confidence ellipse",
+	                         line=dict(color=GREY, dash="dash")))
+	fig.add_trace(go.Scatter(x=t1.loc[others], y=t2.loc[others], mode="markers", showlegend=False,
+	                         text=others, hovertemplate="batch %{text}",
+	                         marker=dict(size=spe.loc[others], color=BLUE, **area)))
+	for batch_id, colour in marked.items():
+	    fig.add_trace(go.Scatter(x=[t1.loc[batch_id]], y=[t2.loc[batch_id]], mode="markers",
+	                             name=f"batch {batch_id}",
+	                             marker=dict(size=[spe.loc[batch_id]], color=colour, **area,
+	                                         line=dict(color="#404040", width=1.5))))
+	fig.update_layout(xaxis_title=f"t1 [R2X {r2x[0]:.1%}]", yaxis_title=f"t2 [R2X {r2x[1]:.1%}]",
+	                  height=520).show()
+	print(f"SPE rank of batch 37: {int(spe.rank().loc[37])} of {len(spe)};",
+	      f"batch 34: {int(spe.rank().loc[34])}")            # 1 = the smallest residual
+	# SPE rank of batch 37: 1 of 53; batch 34: 12
 	for batch_id in (34, 37):
 	    print(f"batch {batch_id}: T2 = {model.hotellings_t2_.loc[batch_id].iloc[-1]:.1f} (limit {model.hotellings_t2_limit(conf_level=0.95):.1f}),",
 	          f"SPE = {model.spe_.loc[batch_id].iloc[-1]:.1f} (limit {model.spe_limit(conf_level=0.95):.1f})")
@@ -120,19 +142,24 @@ The first component explains 65.3% of the variance in the quality block and the 
 
 .. figure:: ../figures/batch/batch-case-sbr-scores.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Scores of the batch PLS model with the 95% confidence ellipse; batch 37 has the lowest t1 of all batches and batch 34 the highest t2, both far outside the ellipse; batch 4, in purple, sits near the centre.
+	:alt: Scores of the batch PLS model with the 95% confidence ellipse, each marker sized by the batch's SPE; batch 37 has the lowest t1 of all batches and batch 34 the highest t2, both far outside the ellipse and both drawn small; batch 4, in purple, sits near the centre.
 	:width: 600px
 	:scale: 80
 	:align: center
 
 	Scores of the batch PLS model. Batch 37 (aqua) has the lowest :math:`t_1` of all
 	batches and batch 34 (orange) the highest :math:`t_2`; both lie far outside the 95%
-	confidence ellipse. Batch 4 (purple) is the batch nearest the average quality, used
+	confidence ellipse. The area of each marker is that batch's SPE, on the scale of the two
+	grey circles in the legend, so the plot answers both questions asked of a batch: the two
+	faulty ones are extreme along the components and carry small residuals. Batch 4 (purple)
+	is the batch nearest the average quality, used
 	:ref:`below <APPS_batch_case_sbr_online_prediction>` to show the prediction while the
 	batch runs.
 
 The score plot flags both faulty batches: their :ref:`Hotelling's T2 <LVM-Hotellings-T2>`
-values are 28.2 and 19.2 against a 95% limit of 6.6.
+values are 28.2 and 19.2 against a 95% limit of 6.6. Their marker areas say the rest:
+batch 37 has the smallest residual of the 53 batches and batch 34 the twelfth smallest, so
+neither departs from the model in a direction the model does not describe.
 
 The SPE answers the other question a model can be asked about a batch: how far it sits
 away from the components, in directions the model has not described. Drawing it against
@@ -485,7 +512,7 @@ running:
 	print((relative < 1).idxmax().tolist())                              # first sample with RMSEP below the sd, per attribute
 	# [48, 129, 50, 50, 21]
 
-	PURPLE, MAGENTA = "#6f42c1", "#b03a78"                                 # two more figure colours
+	MAGENTA = "#b03a78"                                                    # one more figure colour
 	COLOURS = (BLUE, ORANGE, AQUA, PURPLE, MAGENTA)                        # one per attribute
 	fig = go.Figure()
 	for attribute, colour in zip(quality.columns, COLOURS):
