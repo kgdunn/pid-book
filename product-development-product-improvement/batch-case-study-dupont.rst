@@ -67,7 +67,8 @@ however, rank 55 batches on ten variables at once; that is what the model is for
 
 .. code-block:: python
 
-	GREY, ORANGE, AQUA, BLUE, PURPLE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a", "#6f42c1"     # figure colours
+	GREY, ORANGE, AQUA, BLUE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a"          # figure colours: one
+	PURPLE, MAGENTA = "#6f42c1", "#b03a78"                                        # meaning each, throughout
 
 	def overlay(batches, tag, highlight):
 	    """One tag for every batch in grey, with the batches in `highlight` (id -> colour) drawn on top."""
@@ -428,7 +429,9 @@ with the 95% limits of the 40 training batches.
 	kept_c = {batch_id: batch for batch_id, batch in kept_b.items() if batch_id not in second_group}
 	model_c = BatchPCA(n_components=3).fit(kept_c)
 	print("R2 per component:", model_c.r2_per_component_.round(3).tolist())
-	scores(model_c).show()
+	poor_quality = [38, 40, 41, 42]                                # in the training set, known poor final quality
+	# The four are marked in their own colour and shape: orange means batch 49 in the panel beside this one.
+	scores(model_c, highlight={f'{{"color": "{MAGENTA}", "symbol": "diamond"}}': poor_quality}).show()
 	left_out = {"batch 49": [49], "batches 50 to 55": list(range(50, 56)), "the second group": second_group}
 	styles = {"batch 49": (ORANGE, "circle"), "batches 50 to 55": (AQUA, "circle"),
 	          "the second group": (PURPLE, "triangle-up")}          # the group's colour and shape, as in model B
@@ -446,7 +449,6 @@ with the 95% limits of the 40 training batches.
 	t2_limit, spe_limit = model_c.hotellings_t2_limit(conf_level=0.95), model_c.spe_limit(conf_level=0.95)
 	print("left-out batches above the SPE limit:", sorted(outside.index[outside["SPE"] > spe_limit]))
 	print("left-out batches above the T2 limit:", sorted(outside.index[outside["T2"] > t2_limit]))
-	poor_quality = [38, 40, 41, 42]                                # in the training set, known poor final quality
 	print("batches 38, 40, 41 and 42 inside both limits:",
 	      bool((model_c.hotellings_t2_.loc[poor_quality].iloc[:, -1] < t2_limit).all()
 	           and (model_c.spe_.loc[poor_quality].iloc[:, -1] < spe_limit).all()))
@@ -465,7 +467,7 @@ with the 95% limits of the 40 training batches.
 	:scale: 80
 	:align: center
 
-	Left: scores of model C, with batches 38, 40, 41 and 42 (orange) marked. Right:
+	Left: scores of model C, with batches 38, 40, 41 and 42 (magenta diamonds) marked. Right:
 	Hotelling's :math:`T^2` against the SPE, on logarithmic axes, of the 40 training batches
 	(blue) and of the 15 left-out batches projected onto model C: batch 49 (orange), batches
 	50 to 55 (aqua circles) and the second group (purple triangles).
