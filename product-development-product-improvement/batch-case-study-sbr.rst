@@ -893,7 +893,7 @@ the zero line and a departure reads directly.
 	    for k, dash, line_colour, width in zip(from_samples, ("dash", "dot"), (colour, BLUE), (2, 3)):     # the later
 	        forecast = z_form(reference.predict_online(trajectories[batch_id], upto_k=k).forecast)[tag]   # one apart
 	        fig.add_trace(go.Scatter(x=forecast.index[k:], y=forecast.iloc[k:], mode="lines",
-	                                 name=f"forecast from sample {k} onwards", line=dict(color=line_colour, width=width, dash=dash)))
+	                                 name=f"forecast from sample {k}", line=dict(color=line_colour, width=width, dash=dash)))
 	        fig.add_trace(go.Scatter(x=[k - 1, k - 1], y=[z_actual.iloc[k - 1], forecast.iloc[k]], mode="lines",   # the jump from
 	                                 line=dict(color=line_colour, width=1.5), showlegend=False))              # the data used
 	    fig.add_trace(go.Scatter(y=z_actual.iloc[:from_samples[0]], mode="lines",
