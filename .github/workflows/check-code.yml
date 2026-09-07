@@ -15,6 +15,11 @@ name: Check book code
 # It is a gate rather than advisory: if that pair stops resolving, the install
 # instructions the chapter gives its readers no longer work, which is a book
 # problem worth failing on.
+#
+# The whole chapter runs in that environment, so it needs every extra the
+# chapter's other pages use as well: the batch case studies read their data from
+# openmv.net workbooks, and the Excel reader lives in the [batch] extra. Neither
+# extra pins plotly, so the pair still resolves against pyoptex's plotly 5.
 
 on:
   push:
@@ -154,5 +159,5 @@ jobs:
         run: |
           make check-code-chapter \
             CHAPTER=product-development-product-improvement \
-            CHECK_WITH='process-improve[expt]' \
+            CHECK_WITH='process-improve[expt,batch]' \
             CHECK_ALSO=pyoptex

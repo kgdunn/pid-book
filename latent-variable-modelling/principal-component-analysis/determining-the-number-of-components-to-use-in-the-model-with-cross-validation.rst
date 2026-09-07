@@ -144,9 +144,9 @@ from the model underneath it.
 	chosen = PCA.select_n_components(scaled, max_components=11, cv=7,
 	                                 cv_scheme="ekf", n_repeats=5, random_state=42)
 	print(chosen.q2.round(3).to_list())
-	# [0.255, 0.367, 0.333, 0.3, 0.297, 0.186, 0.029, 0.126, 0.673, 0.844, 0.808]
+	# [0.292, 0.404, 0.374, 0.343, 0.341, 0.24, 0.1, 0.193, 0.696, 0.85, 0.807]
 	print(chosen.q2_se.round(3).to_list())
-	# [0.015, 0.016, 0.022, 0.029, 0.04, 0.058, 0.067, 0.053, 0.017, 0.021, 0.014]
+	# [0.016, 0.017, 0.021, 0.028, 0.039, 0.055, 0.064, 0.049, 0.017, 0.022, 0.016]
 
 .. note::
 
@@ -168,17 +168,17 @@ from the model underneath it.
 	:align: center
 
 The shaded band on the element-wise curve is one standard error either side, taken across the five
-fold permutations. That standard error, ``q2_se`` in the code block above, runs from 0.014 at eleven
-components to 0.067 at seven components, and is widest in the dip between six and eight components.
+fold permutations. That standard error, ``q2_se`` in the code block above, runs from 0.016 at eleven
+components to 0.064 at seven components, and is widest in the dip between six and eight components.
 Two features of the curve are large relative to it: the rise of 0.11 from one component to two, and
-the fall of 0.34 from two components to seven. Neither depends on which cells happened to be held
-out together. The gaps between two, three, four and five components (0.367, 0.333, 0.300 and 0.297)
+the fall of 0.30 from two components to seven. Neither depends on which cells happened to be held
+out together. The gaps between two, three, four and five components (0.404, 0.374, 0.343 and 0.341)
 are each no more than about one to two standard errors, so the curve on its own does not separate
 those component counts from one another; it does place all of them well above the value at seven
 components.
 
 The two curves track each other over the first eight components. Both reach their highest value at two
-components, 0.34 for Simca-P and 0.37 for the element-wise scheme, and neither exceeds it again. That
+components, 0.34 for Simca-P and 0.40 for the element-wise scheme, and neither exceeds it again. That
 is the turnover described :ref:`earlier in this section <LVM_number_of_components>`, and it is why two
 or three components is the reading these data support. The element-wise scheme, which does not let a
 held-out value contribute to its own prediction, reaches the same conclusion here as the package the
