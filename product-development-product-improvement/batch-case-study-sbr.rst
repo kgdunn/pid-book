@@ -446,14 +446,8 @@ batches show what the trajectories knew before the laboratory did.
 
 .. code-block:: python
 
-	for variable in ("Composition", "ParticleSize"):
-	    model.predictions_vs_observed_plot(quality, variable=variable).show()
-	faulty = [34, 37]
-	table = pd.concat({"observed": quality.loc[faulty], "fitted": model.predictions_.loc[faulty],
-	                   "rank of observed": quality.rank().loc[faulty].astype(int)}, names=["value", "batch_id"])
-	print(table.to_string(float_format=lambda value: f"{value:.4g}"))
-	# RMSEE measures the fitted values above. RMSEP is the same error when each batch in turn is
-	# left out of the fit and predicted by a model that never saw it: the loop takes about a minute.
+	# RMSEE measures the fitted values. RMSEP is the same error when each batch in turn is left
+	# out of the fit and predicted by a model that never saw it: the loop takes about a minute.
 	rmsee = np.sqrt(((quality - model.predictions_) ** 2).mean())
 	held_out = {}
 	for batch_id in trajectories:
@@ -467,10 +461,23 @@ batches show what the trajectories knew before the laboratory did.
 	          f"RMSEP {rmsep[variable]:.3g} ({rmsep[variable] / sd[variable]:.2f} sd)")
 	# Composition: RMSEE 0.00106 (0.71 sd), RMSEP 0.00122 (0.81 sd)
 	# ParticleSize: RMSEE 1.87 (0.60 sd), RMSEP 2.42 (0.78 sd)
+	for variable in ("Composition", "ParticleSize"):
+	    fig = model.predictions_vs_observed_plot(quality, variable=variable)
+	    lo, hi = quality[variable].min(), quality[variable].max()
+	    half = 2 * rmsep[variable]
+	    # Two prediction errors either side of y = x, as a shape rather than a trace so that
+	    # `layer="below"` keeps it behind the batches it is there to be read against.
+	    fig.add_shape(type="path", layer="below", line_width=0, fillcolor="rgba(31, 61, 122, 0.10)",
+	                  path=f"M {lo},{lo - half} L {hi},{hi - half} L {hi},{hi + half} L {lo},{lo + half} Z")
+	    fig.show()
+	faulty = [34, 37]
+	table = pd.concat({"observed": quality.loc[faulty], "fitted": model.predictions_.loc[faulty],
+	                   "rank of observed": quality.rank().loc[faulty].astype(int)}, names=["value", "batch_id"])
+	print(table.to_string(float_format=lambda value: f"{value:.4g}"))
 
 .. figure:: ../figures/batch/batch-case-sbr-observed-vs-fitted.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Observed against fitted composition and particle size for the 53 batches with batches 34 and 37 marked; both faulty batches lie at the low end of both attributes, and each panel's legend lists its RMSEE and RMSEP.
+	:alt: Observed against fitted composition and particle size for the 53 batches with batches 34 and 37 marked; both faulty batches lie at the low end of both attributes, a band of two RMSEP is shaded either side of the y = x line, and each panel's legend lists its RMSEE and RMSEP.
 	:width: 900px
 	:scale: 80
 	:align: center
@@ -479,7 +486,8 @@ batches show what the trajectories knew before the laboratory did.
 	with batches 34 (orange) and 37 (aqua) marked. Each panel lists two errors: RMSEE, the
 	scatter of these fitted values about the :math:`y = x` line, and RMSEP, the same scatter
 	when every batch is left out of the fit in turn, each in the attribute's own units and in
-	standard deviations of it.
+	standard deviations of it. The shaded band is two RMSEP either side of the line, so a batch
+	outside it is one the model misses by more than a reader should expect it to.
 
 ==============  ===========  =============  =========  =============  ==============
 Batch           Composition  Particle size  Branching  Cross-linking  Polydispersity
