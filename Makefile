@@ -89,10 +89,10 @@ check-code:	## Execute every Python case in the book (all chapters in parallel)
 	$(CHECK_RUN) pytest tests -n auto
 
 check-code-chapter:	## One chapter, verbose: make check-code-chapter CHAPTER=least-squares-modelling
-	$(CHECK_RUN) python tools/check_code_blocks.py --chapter $(CHAPTER) -v
+	$(CHECK_RUN) python tools/check_code_blocks.py --chapter $(CHAPTER) --strict-output -v
 
 check-code-file:	## One RST file, run after the files that precede it in its chapter
-	$(CHECK_RUN) python tools/check_code_blocks.py --file $(FILE) -v
+	$(CHECK_RUN) python tools/check_code_blocks.py --file $(FILE) --strict-output -v
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
