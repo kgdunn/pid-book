@@ -345,16 +345,22 @@ distinguishes this batch from batch 37: the first two fifths of the batch carry 
 the same three tags carrying the deviation at a single sample, here sample 120.
 
 The raw data can be asked the same question directly, tag by tag: at which sample does each
-trajectory of a faulty batch leave the band of the other batches? The code below expresses
-each trajectory of batches 34 and 37 as a distance from the mean of the other 51 batches,
-in units of their standard deviation at that sample, and records the first sample from
-which a tag stays more than two standard deviations away for 20 samples in a row, a tenth
-of the batch. A single crossing is not informative on its own, because a noisy tag such as
-the reactor temperature crosses the two-standard-deviation line now and then in every
-batch. A robust version of the same distance uses the median of the other batches and
-1.4826 times their median absolute deviation (MAD), which the factor makes equal to the
-standard deviation for normally distributed values, smoothed with an EWMA
-(:math:`\lambda = 0.3`, the value of the :ref:`EWMA chart <monitoring_EWMA>` example).
+trajectory of a faulty batch leave the band of the other batches?
+
+The code below answers that for batches 34 and 37, in three steps:
+
+* Express each trajectory as a distance from the mean of the other 51 batches, in units of
+  their standard deviation at that sample.
+* Record the first sample from which a tag stays more than two standard deviations away for
+  20 samples in a row, a tenth of the batch.
+* Repeat both with a robust distance: the median of the other batches and 1.4826 times their
+  median absolute deviation (MAD), smoothed with an EWMA (:math:`\lambda = 0.3`, the value
+  of the :ref:`EWMA chart <monitoring_EWMA>` example).
+
+The run of 20 samples is what makes the answer mean something, because a noisy tag such as
+the reactor temperature crosses the two-standard-deviation line now and then in every batch.
+The factor 1.4826 makes the robust scale equal to the standard deviation for normally
+distributed values, so the two versions are read on the same axis.
 
 .. code-block:: python
 
