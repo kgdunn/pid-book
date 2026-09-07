@@ -359,10 +359,11 @@ With the extreme batches gone, a second group separates in the plane of :math:`t
 :math:`t_3`: batches 37, 39 and 43 to 48.
 
 A contribution is the weighted difference between two points, and those could be a single
-raw data point, or you can supply the average of a group of batches as a point. The eight
-batches are compared here as a group against the model centre, the average of all 48 (the
-arrow in the score plot): the columns are centred, so the group's mean row is its
-displacement from the centre, and its contribution vector adds up to the group's mean score.
+actual data point, a synthetic point like the model centre, or you can supply the average of
+a group of batches as a synthetic point. The eight batches are compared here as a group
+against the model centre, the average of all 48 (the arrow in the score plot): the columns
+are centred, so the group's mean row is its displacement from the centre, and its
+contribution vector adds up to the group's mean score.
 
 .. code-block:: python
 
