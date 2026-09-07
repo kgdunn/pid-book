@@ -73,7 +73,7 @@ Performance, alignment, and spectroscopy
 * José M. González-Martínez, Alberto J. Ferrer and Johan A. Westerhuis, "`Real-time synchronization of batch trajectories for on-line multivariate statistical process control using Dynamic Time Warping <https://literature.learnche.org/item/158/real-time-synchronization-of-batch-trajectories-for-on-line-multivariate-statistical-process-control-using-dynamic-time-warping>`_", *Chemometrics and Intelligent Laboratory Systems*, **105**, 195-206, 2011.
 
 Missing data and the scores of a batch so far
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A batch that is still running is a row whose later cells are not yet measured, so its scores
 are estimated by the same methods that handle missing data.

@@ -158,15 +158,16 @@ The first component explains 65.3% of the variance in the quality block and the 
 	:ref:`below <APPS_batch_case_sbr_online_prediction>` to show the prediction while the
 	batch runs.
 
-The score plot flags both faulty batches: their :ref:`Hotelling's T2 <LVM-Hotellings-T2>`
-values are 28.2 and 19.2 against a 95% limit of 6.6. Their marker areas say the rest:
-batch 37 has the smallest residual of the 53 batches and batch 34 the twelfth smallest, so
-neither departs from the model in a direction the model does not describe.
+The score plot flags both faulty batches: their :math:`T^2` values
+(:ref:`Hotelling's statistic <LVM-Hotellings-T2>`) are 28.2 and 19.2 against a 95% limit of
+6.6. Their marker areas say the rest: batch 37 has the smallest residual of the 53 batches
+and batch 34 the twelfth smallest, so neither departs from the model in a direction the
+model does not describe.
 
 The SPE answers the other question a model can be asked about a batch: how far it sits
 away from the components, in directions the model has not described. Drawing it against
-:ref:`Hotelling's T2 <LVM-Hotellings-T2>`, which summarises how extreme the batch is along
-the components, puts both questions in one figure. Each axis carries its own 95% limit.
+Hotelling's :math:`T^2`, which summarises how extreme the batch is along the components,
+puts both questions in one figure. Each axis carries its own 95% limit.
 
 .. code-block:: python
 

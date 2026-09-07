@@ -165,9 +165,9 @@ The score plot answers one question about a batch: how far it sits *along* the d
 the model has found. The :ref:`SPE <LVM-interpreting-SPE-residuals>` answers a different
 one: how far it sits *away* from them, in directions the model has not described. Drawing
 the two against each other puts both questions in one figure. The horizontal axis is
-:ref:`Hotelling's T2 <LVM-Hotellings-T2>`, a single number summarising how extreme a batch
-is along the components, and the vertical axis is its SPE. Each has its own 95% limit, and
-the two limits divide the plot into quadrants.
+:math:`T^2` (:ref:`Hotelling's statistic <LVM-Hotellings-T2>`), a single number summarising
+how extreme a batch is along the components, and the vertical axis is its SPE. Each has its
+own 95% limit, and the two limits divide the plot into quadrants.
 
 .. code-block:: python
 
