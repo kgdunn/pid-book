@@ -84,10 +84,10 @@ quality table and the list of those six tags.
 	:align: center
 
 	The six trajectories of all 53 batches (grey) with batch 34 (orange) and batch 37 (aqua)
-	drawn on top. Batch 37 converts more slowly than the others from the start. Batch 34
-	follows the others until about sample 100, after which its cooling-water and jacket
-	temperatures rise above the band of the other batches and its energy released falls
-	below it.
+	drawn on top. Batch 37 converts more slowly than the others from the start. Batch 34,
+	the one whose fault starts midway through, follows the others until about sample 100,
+	after which its cooling-water and jacket temperatures rise above the band of the other
+	batches and its energy released falls below it.
 
 The overlay already shows both faults: batch 37 from the start, in the conversion, and
 batch 34 from about sample 100, in the two service temperatures and the energy released.
