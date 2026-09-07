@@ -115,7 +115,12 @@ other, observation-wise unfolding, has one row per time sample of every batch an
 per tag; centring it removes the average of each tag rather than its average trajectory, so
 it describes the shape of the trajectories, and a second model of its scores is needed to
 compare whole batches. Wold and co-workers (2009) compare the two layouts on this dataset.
-All three case studies unfold batchwise.
+Westerhuis, Kourti and MacGregor (1999) compare them on these trajectories and on the data
+of the :ref:`second case study <APPS_batch_case_sbr>`: to leave the same residual, a model
+of the observation-wise layout needs twice as many components, because its first components
+describe the average trajectories rather than the differences between batches. That layout
+earns its place when the trajectories are varied on purpose, as in a designed experiment,
+rather than repeated. All three case studies unfold batchwise.
 
 .. code-block:: python
 
@@ -509,6 +514,11 @@ References and readings
   modeling and MSPC <https://literature.learnche.org/item/155/batch-process-modeling-and-mspc>`_",
   *Comprehensive Chemometrics*, **2.10**, 163-197, 2009. Sets out the two unfolding layouts,
   and analyses batch 49 of this dataset on-line.
+
+* Johan A. Westerhuis, Theodora Kourti and John F. MacGregor, "`Comparing alternative
+  approaches for multivariate statistical analysis of batch process data <https://literature.learnche.org/item/162/comparing-alternative-approaches-for-multivariate-statistical-analysis-of-batch-process-data>`_",
+  *Journal of Chemometrics*, **13**, 397-413, 1999. Sets out the six ways of unfolding a
+  three-way batch array, and compares them on these data and on the SBR data.
 
 * The full list of readings on batch data is on the
   :ref:`batch process monitoring <APPS_batch_monitoring>` page.

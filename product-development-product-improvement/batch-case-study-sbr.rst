@@ -725,7 +725,9 @@ sample as here.
   105.
 * An alarm on a new batch can only be trusted once the false-alarm rate of the rule has
   been measured on the reference batches and made acceptable, by the choice of statistic,
-  of run length or of limit. On this data the :math:`T^2` chart is used as it is; the SPE
+  of run length or of limit. Ramaker and co-workers (2006) judge a batch chart by that pair
+  of numbers: how often it signals over a whole normal batch, and how long it takes to
+  signal on a faulty one. On this data the :math:`T^2` chart is used as it is; the SPE
   chart needs a tighter limit, the cumulative statistic or a longer run, and either way
   batch 34 is still flagged with most of its second half to run.
 
@@ -863,6 +865,12 @@ References and readings
 * Paul Nomikos, "`Detection and diagnosis of abnormal batch operations based on multi-way
   principal component analysis <https://literature.learnche.org/item/64/detection-and-diagnosis-of-abnormal-batch-operations-based-on-multi-way-principal-component-analysis>`_",
   *ISA Transactions*, **35**, 259-266, 1996. The 99.9% limit for the residual chart.
+
+* Henk-Jan Ramaker, Eric N. M. Van Sprang, Johan A. Westerhuis, Stephen P. Gurden, Age K.
+  Smilde and Frank H. Van Der Meulen, "`Performance assessment and improvement of control
+  charts for statistical batch process monitoring <https://literature.learnche.org/item/164/performance-assessment-and-improvement-of-control-charts-for-statistical-batch-process-monitoring>`_",
+  *Statistica Neerlandica*, **60**, 339-360, 2006. Assesses a batch chart by its overall
+  type I error and by the time it takes to signal.
 
 * Francisco Arteaga and Alberto Ferrer, "`Dealing with missing data in MSPC: several
   methods, different interpretations, some examples <https://literature.learnche.org/item/20/dealing-with-missing-data-in-mspc-several-methods-different-interpretations-some-examples>`_",

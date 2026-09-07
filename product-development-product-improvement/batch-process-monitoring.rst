@@ -59,6 +59,8 @@ Control, optimization and product quality
 
 * Jesus Flores-Cerrillo and John F. MacGregor, "`Multivariate monitoring of batch processes using batch-to-batch information <https://literature.learnche.org/item/163/multivariate-monitoring-of-batch-processes-using-batch-to-batch-information>`_", *AIChE Journal*, **50**, 1219-1228, 2004.
 
+* Salvador García-Muñoz, Theodora Kourti, John F. MacGregor, Antonio G. Mateos and Gerry Murphy, "`Troubleshooting of an industrial batch process using multivariate methods <https://literature.learnche.org/item/24/troubleshooting-of-an-industrial-batch-process-using-multivariate-methods>`_", *Industrial and Engineering Chemistry Research*, **42**, 3592-3601, 2003.
+
 * Salvador García-Muñoz, Theodora Kourti and John F. MacGregor, "`Model predictive monitoring for batch processes <https://literature.learnche.org/item/157/model-predictive-monitoring-for-batch-processes>`_", *Industrial and Engineering Chemistry Research*, **43**, 5929-5941, 2004.
 
 Performance, alignment, and spectroscopy
@@ -69,6 +71,16 @@ Performance, alignment, and spectroscopy
 * Henk-Jan Ramaker, Eric N. M. Van Sprang, Johan A. Westerhuis, Stephen P. Gurden, Age K. Smilde and Frank H. Van Der Meulen, "`Performance assessment and improvement of control charts for statistical batch process monitoring <https://literature.learnche.org/item/164/performance-assessment-and-improvement-of-control-charts-for-statistical-batch-process-monitoring>`_", *Statistica Neerlandica*, **60**, 339-360, 2006.
 
 * José M. González-Martínez, Alberto J. Ferrer and Johan A. Westerhuis, "`Real-time synchronization of batch trajectories for on-line multivariate statistical process control using Dynamic Time Warping <https://literature.learnche.org/item/158/real-time-synchronization-of-batch-trajectories-for-on-line-multivariate-statistical-process-control-using-dynamic-time-warping>`_", *Chemometrics and Intelligent Laboratory Systems*, **105**, 195-206, 2011.
+
+Missing data and the scores of a batch so far
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A batch that is still running is a row whose later cells are not yet measured, so its scores
+are estimated by the same methods that handle missing data.
+
+* Philip R. C. Nelson, Paul A. Taylor and John F. MacGregor, "`Missing data methods in PCA and PLS: score calculations with incomplete observations <https://literature.learnche.org/item/68/missing-data-methods-in-pca-and-pls-score-calculations-with-incomplete-observations>`_", *Chemometrics and Intelligent Laboratory Systems*, **35**, 45-65, 1996.
+
+* Francisco Arteaga and Alberto Ferrer, "`Dealing with missing data in MSPC: several methods, different interpretations, some examples <https://literature.learnche.org/item/20/dealing-with-missing-data-in-mspc-several-methods-different-interpretations-some-examples>`_", *Journal of Chemometrics*, **16**, 408-418, 2002.
 
 Theses (McMaster University)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
