@@ -25,8 +25,8 @@ conveyed the ingredients into the reactor is vaporized and removed. In the secon
 ingredients react to the final polymer under a controlled pressure and temperature ramp, and
 the batch ends when the polymer is pumped out of the vessel. A critical quality property of
 the batch is measured in the laboratory about 12 hours after the batch has ended. Nothing
-measured during a batch can therefore be used to correct that batch, and the disposition of
-a batch is known only after the next few batches have started.
+measured during a batch can therefore be used to correct that batch, and whether a batch
+passed is known only after the next few batches have started.
 
 What the plant does record is the trajectory of ten process measurements over every batch:
 three reactor temperatures, three pressures, two flow rates of material added to the

@@ -76,7 +76,7 @@ The data
 ~~~~~~~~
 
 The `batch dryer dataset <https://openmv.net/info/batch-dryer>`_ holds the four blocks for
-59 batches, numbered 2 to 71 with gaps. The numbering encodes the plant's disposition (good
+59 batches, numbered 2 to 71 with gaps. The numbering encodes the plant's classification (good
 up to 33, abnormal to 61, high in residual solvent beyond), which plays no part in the models
 and appears on the score plots as a colour and marker shape per class.
 
@@ -165,7 +165,8 @@ complete data.
 
 	What the alignment did. Left: the dryer temperature against clock time, as recorded. The
 	batches end anywhere between 93 and 200 time units, so the same clock reading means a
-	different stage of the recipe in each one. Middle: after alignment every batch runs to
+	different stage of the recipe in each one; the shortest, a middling and the longest batch
+	are drawn in colour. Middle: after alignment every batch runs to
 	325 samples and the ramps line up, which is what lets one column of the unfolded matrix
 	hold the same event for every batch. Right: the clock time at each aligned sample is the
 	record of the stretching, and it is kept as a trajectory of the model.
@@ -226,7 +227,7 @@ involved.
 	pca_y = PCA(n_components=2).fit(y_scaled)
 	print("PCA on Y, R2 cumulative:", pca_y.r2_cumulative_.round(3).tolist())
 	def group_scatter(fig, x, y, highlight, row=None, col=None, showlegend=True):
-	    """One trace per class of the plant's disposition (colour and marker shape from STYLES); the batches in
+	    """One trace per class of the plant's classification (colour and marker shape from STYLES); the batches in
 	    `highlight` (id -> colour) are drawn larger and labelled, in the marker shape of their class."""
 	    for label, (colour, symbol) in STYLES.items():
 	        members = [b for b in x.index if groups[b] == label and b not in highlight]
@@ -241,11 +242,15 @@ involved.
 	                      row=row, col=col)
 	    return fig
 
-	def scores(model, r2, highlight, note=""):
-	    """Score plot of a PCA or PLS model coded by disposition, with the percent of the variance each component
-	    explains (`r2`, per component, `note` saying of which block) on its axes and the 95% confidence ellipse."""
+	def scores(model, r2, highlight, note="", labels=()):
+	    """Score plot of a PCA or PLS model coded by classification, with the percent of the variance each
+	    component explains (`r2`, per component, `note` saying of which block) on its axes, the 95% confidence
+	    ellipse, and a name against each batch in `labels`, so the text's batches carry from figure to figure."""
 	    t = model.scores_
 	    fig = group_scatter(go.Figure(), t.iloc[:, 0], t.iloc[:, 1], highlight)
+	    for batch_id in labels:
+	        fig.add_annotation(x=t.loc[batch_id].iloc[0], y=t.loc[batch_id].iloc[1], text=str(batch_id),
+	                           showarrow=False, xshift=12, yshift=8, font=dict(size=11))
 	    ex, ey = model.ellipse_coordinates(score_horiz=1, score_vert=2, conf_level=0.95)
 	    fig.add_trace(go.Scatter(x=ex, y=ey, mode="lines", line=dict(color=GREY, dash="dash"), name="95% confidence ellipse"))
 	    r2 = np.asarray(r2)
@@ -273,19 +278,19 @@ involved.
 
 .. figure:: ../figures/batch/batch-case-fmc-quality-pca.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Left, the scores of the two-component PCA on the quality block, coded by the plant's disposition with blue circles for good, purple triangles for abnormal and gold squares for high solvent, the abnormal batches mostly at negative t1 and batches 61 and 14 at opposite ends; right, their contributions to t1 for each quality attribute on alternately shaded positions, mirror images, with no bar for the missing Y2 of batch 61.
+	:alt: Left, the scores of the two-component PCA on the quality block, coded by the plant's classification with blue circles for good, purple triangles for abnormal and gold squares for high solvent, the abnormal batches mostly at negative t1 and batches 61 and 14 at opposite ends; right, their contributions to t1 for each quality attribute on alternately shaded positions, mirror images, with no bar for the missing Y2 of batch 61.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
 	Left: scores of the two-component PCA on the quality block, coded by the plant's
-	disposition (blue circles good, purple triangles abnormal, gold squares high solvent);
+	classification (blue circles good, purple triangles abnormal, gold squares high solvent);
 	batches 61 (orange) and 14 (aqua) are at opposite ends of :math:`t_1`. Right: their
 	contributions to :math:`t_1`, attribute by attribute, are mirror images. ``Y2`` is
 	missing for batch 61 and has no bar.
 
 Two components explain 70.3% of the quality block. The first component separates the
-batches by their disposition: 15 of the 17 batches classed as abnormal have a negative
+batches by their class: 15 of the 17 batches classed as abnormal have a negative
 :math:`t_1`, and 21 of the 23 batches classed as good have a positive one. The six batches
 classed as high in residual solvent all have positive :math:`t_1` and positive :math:`t_2`
 values. Batches 61 and 14 are one member of each of the first two groups, and their
@@ -309,17 +314,33 @@ and ``scale=False`` tells the ``PLS`` class not to scale them again.
 	pls_op = PLS(n_components=2, scale=False).fit(zop_scaled, y_scaled)
 	print("PLS Zchem -> Y, R2Y cumulative:", pls_chem.r2_cumulative_.round(3).tolist())
 	print("PLS Zop -> Y, R2Y cumulative:", pls_op.r2_cumulative_.round(3).tolist())
-	scores(pls_op, explained_x(pls_op), {20: ORANGE}, note="R2X ").show()
-	print("batch 20 on Zop, t1 contributions:", pls_op.score_contributions(zop_scaled, component=1).loc[20].round(2).to_dict())
+	fig = scores(pls_op, explained_x(pls_op), {20: ORANGE}, note="R2X ", labels=[20, 61, 14])
+	contribution = pls_op.score_contributions(zop_scaled, component=1).loc[20]
+	bars = go.Figure([go.Bar(x=contribution.index, y=contribution, marker_color=BLUE)])
+	shade_alternate(bars, len(contribution))
+	bars.update_layout(title="What puts batch 20 there", yaxis_title="Contribution to t1", height=440)
+	fig.show()
+	bars.show()
 
 Each initial-condition block on its own explains about a quarter of the quality block after
 two components, the operating conditions more than the chemistry: 26.2% against 22.2%, the
 same order the original study found on its 44 batches and eleven quality attributes. Batch
-20 stands out in the score plot of the operating-condition model, and its contributions to
-:math:`t_1` come from the recipe timings ``Time2`` (-1.42) and ``Time4`` (-1.01) and from the
-temperature slope (-1.27). This is the batch whose temperature ramp was seen to take longer
-in the trajectory overlay; the timings in :math:`\mathbf{Z}_\text{op}` record the same
-batch as unusual.
+20 stands out in the score plot of the operating-condition model, and what puts it there are
+the recipe timings and the temperature slope. This is the batch whose temperature ramp was
+seen to take longer in the trajectory overlay; the timings in
+:math:`\mathbf{Z}_\text{op}` record the same batch as unusual.
+
+.. figure:: ../figures/batch/batch-case-fmc-pls-zop.png
+	:source: batch/batch-case-fmc-figures.py
+	:alt: Left, the scores of the PLS from the operating conditions to quality, coded by the plant's classification, with batch 20 as an orange circle at the lower left well outside the confidence ellipse and batches 61 and 14 labelled inside the cloud. Right, batch 20's contribution to the first component, variable by variable: the two recipe timings Time2 and Time4 and the temperature slope are large and negative, the others near zero.
+	:width: 1000px
+	:scale: 80
+	:align: center
+
+	Left: scores of the PLS from the operating conditions to quality, coded by the plant's
+	classification. Batch 20 (orange) lies well outside the confidence ellipse. Right: what
+	puts it there, variable by variable. Two of the recipe timings and the temperature slope
+	carry the batch's first-component score; the two initial temperatures contribute little.
 
 Both blocks together: multiblock PLS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -366,13 +387,13 @@ each block the components describe.
 
 .. figure:: ../figures/batch/batch-case-fmc-mbpls-z.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Six panels in three columns: the super scores of the multiblock PLS on the two initial-condition blocks, coded by disposition, with batch 20 at the lower left, above the super weights of the two components, larger for the operating-condition block on both; the chemistry block scores, where batch 20 sits inside the cloud of batches, above the chemistry block weights; and the operating-condition block scores, where batch 20 sits far outside, above the operating-condition block weights.
+	:alt: Six panels in three columns: the super scores of the multiblock PLS on the two initial-condition blocks, coded by classification, with batch 20 at the lower left, above the super weights of the two components, larger for the operating-condition block on both; the chemistry block scores, where batch 20 sits inside the cloud of batches, above the chemistry block weights; and the operating-condition block scores, where batch 20 sits far outside, above the operating-condition block weights.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
 	Left column: super scores of the multiblock PLS on the two initial-condition blocks,
-	coded by the plant's disposition, with batch 20 (orange) at the lower left, and below
+	coded by the plant's classification, with batch 20 (orange) at the lower left, and below
 	them the super weights of the two components. Middle and right columns: the chemistry
 	block and the operating-condition block, each with its block scores above the block
 	weights that define them. Batch 20 sits inside the cloud of batches in the chemistry
@@ -403,7 +424,7 @@ of what the models see.
 	pca_x = PCA(n_components=2).fit(x_scaled)
 	print(pca_x.r2_per_component_.round(3).tolist())            # R2 of the trajectory block, per component
 	# [0.231, 0.146]
-	scores(pca_x, pca_x.r2_per_component_, {20: ORANGE}).show()
+	scores(pca_x, pca_x.r2_per_component_, {20: ORANGE}, labels=[20, 61, 14]).show()
 	t2, spe = pca_x.hotellings_t2_.iloc[:, -1], pca_x.spe_.iloc[:, -1]
 	t2_limit, spe_limit = pca_x.hotellings_t2_limit(conf_level=0.95), pca_x.spe_limit(conf_level=0.95)
 	both = sorted(t2.index[(t2 > t2_limit) & (spe > spe_limit)])            # above both limits
@@ -412,7 +433,7 @@ of what the models see.
 	# [20] [41, 51]
 
 	def influence_plot(model, highlight, labels, conf_level=0.95):
-	    """Hotelling's T2 against SPE, one marker per batch coded by disposition, with both limits drawn."""
+	    """Hotelling's T2 against SPE, one marker per batch coded by classification, with both limits drawn."""
 	    t2, spe = model.hotellings_t2_.iloc[:, -1], model.spe_.iloc[:, -1]
 	    fig = group_scatter(go.Figure(), t2, spe, highlight)
 	    fig.add_vline(x=model.hotellings_t2_limit(conf_level=conf_level), line_dash="dash", line_color=GREY)
@@ -427,13 +448,13 @@ of what the models see.
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-pca.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Scores and the influence plot of the batch PCA on the trajectories, coded by the plant's disposition; batch 20 is outside the confidence ellipse and is the only batch above both limits, while batches 41 and 51 are above the SPE limit only.
+	:alt: Scores and the influence plot of the batch PCA on the trajectories, coded by the plant's classification; batch 20 is outside the confidence ellipse and is the only batch above both limits, while batches 41 and 51 are above the SPE limit only.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
 	Scores (left) and Hotelling's :math:`T^2` against the SPE (right) of the batch PCA on the
-	trajectories, coded by the plant's disposition. Batch 20 (orange) is outside the 95%
+	trajectories, coded by the plant's classification. Batch 20 (orange) is outside the 95%
 	confidence ellipse and is the only batch above both limits; batches 41 and 51 are above
 	the SPE limit only.
 
@@ -523,16 +544,16 @@ samples.
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-20-spe-contributions.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Three panels for batch 20: the share of the SPE carried by each unfolded cell, blank between samples 34 and 109 in every tag but the collector tank level where the record has gaps, and largest in the dryer pressure through the first phase; the shares summed per tag, half of them in the dryer pressure; and the shares summed per sample with orange lines at the phase ends, most of the share in the first phase.
+	:alt: Three panels for batch 20: the share of the SPE carried by each unfolded cell, blank between samples 34 and 109 in every tag but the collector tank level where the record has gaps, and largest in the dryer pressure through the first phase; the shares summed per tag, half of them in the dryer pressure; and the shares summed per sample with orange lines at the phase ends and the three phases named, most of the share in the solvent-collection phase.
 	:width: 800px
 	:scale: 80
 	:align: center
 
 	Top: the share of the SPE of batch 20 carried by each (tag, time) cell; the blank
 	positions between samples 34 and 109 are the missing cells, which carry no residual.
-	Middle: the same shares summed per tag. Bottom: summed per sample, with the ends of the
-	first two phases in orange. The dryer pressure carries half of the residual, and most of
-	it lies in the first phase.
+	Middle: the same shares summed per tag. Bottom: summed per sample, with the three phases
+	named between the orange phase ends. The dryer pressure carries half of the residual, and
+	most of it lies in the solvent-collection phase.
 
 The residual of batch 20 belongs to the dryer pressure (49%), and most of it lies in the
 first phase (58% of the total): the dryer pressure of batch 20 sat far above the other
@@ -551,7 +572,7 @@ Trajectories to quality
 	# [0.266, 0.41]
 	print(explained_x(pls_x).round(3).tolist())                # R2 of the trajectory block, per component
 	# [0.217, 0.131]
-	scores(pls_x, explained_x(pls_x), {13: ORANGE, 5: AQUA, 7: AQUA}, note="R2X ").show()
+	scores(pls_x, explained_x(pls_x), {13: ORANGE, 5: AQUA, 7: AQUA}, note="R2X ", labels=[13, 5, 7, 61, 14]).show()
 	t1 = pls_x.score_contributions(x_scaled, component=1)
 	unfolded_contribution_plot(t1, batch_id=13).show()
 	print(t1.loc[13].groupby(level="tag", sort=False).sum().nsmallest(4).round(1).to_dict())   # batch 13's four largest
@@ -572,9 +593,9 @@ Trajectories to quality
 	:align: center
 
 	Left: scores of the batch PLS model from the trajectories to the quality block, coded by
-	the plant's disposition, with batch 13 (orange) and batches 5 and 7 (aqua) marked. Right:
-	the contributions of batch 13 to :math:`t_1`, summed per tag; every tag contributes in the
-	same direction and the clock time and the collector tank level lead.
+	the plant's classification, with batch 13 (orange) and batches 5 and 7 (aqua) marked.
+	Right: the contributions of batch 13 to :math:`t_1`, summed per tag; every tag contributes
+	in the same direction and the clock time and the collector tank level lead.
 
 The axes of the score plot carry the share of the trajectory block that each component
 describes, its :math:`R^2_X`. The model is judged on the quality block, and there the
@@ -601,17 +622,14 @@ overlay, and the block scores of the final model come back to them.
 	the end of the batch. The dashed lines mark the ends of the first two phases.
 
 The :ref:`overlay of these three batches <APPS_batch_case_fmc_overlay_13>` shows what the
-contributions of batch 13 refer to. Its collector tank level levelled off at 52 units,
-against 77 units for batch 7, 87 units for batch 5 and up to 117 units for the batches that
-collected the most; its first phase took 29 clock samples, against 62 for batch 7 and 113
-for batch 5; and its dryer temperature fell faster than any other batch in the cooling
-phase. Batch 13 was classed as a good batch, so a batch at the end of a component is not
-necessarily a bad one.
-The component describes a direction of variation in the trajectories that is related to
-quality, and batch 13 is the batch furthest along it. The observed-against-predicted plot
-of the residual solvent concentration, one of the attributes on which the batches are
-dispositioned, shows how far the trajectories go towards predicting it; the same plot is
-drawn again for the final model, in the next section.
+contributions of batch 13 refer to. It collected the least solvent of any batch and reached
+that level in the fewest clock samples, and its dryer temperature fell faster than any other
+batch in the cooling phase. Batch 13 was classed as a good batch, so a batch at the end of a
+component is not necessarily a bad one. The component describes a direction of variation in
+the trajectories that is related to quality, and batch 13 is the batch furthest along it.
+The observed-against-predicted plot of the residual solvent concentration, one of the
+attributes the batches are classed on, shows how far the trajectories go towards predicting
+it; the same plot is drawn again for the final model, in the next section.
 
 All three blocks: batch multiblock PLS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -646,7 +664,7 @@ columns and the nine operating columns.
 	:scale: 80
 	:align: center
 
-	Left: super scores of the batch multiblock PLS, coded by the plant's disposition, with
+	Left: super scores of the batch multiblock PLS, coded by the plant's classification, with
 	batches 13 (orange), 5 and 7 (aqua) marked. Middle: :math:`R^2` of each block after two
 	components (blue) and the super VIP of each block (orange). Right: observed and fitted
 	residual solvent concentration, with batch 13 marked.
@@ -701,14 +719,14 @@ conditions or only its trajectories are considered, and the three plots need not
 
 .. figure:: ../figures/batch/batch-case-fmc-block-scores.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Three score plots side by side, one per block of the batch multiblock PLS, with the batches coloured by the plant's disposition; batches 2, 3, 6 and 7, classed good, sit among the batches classed abnormal in the trajectory block and among the good ones in the chemistry and operating-condition blocks.
+	:alt: Three score plots side by side, one per block of the batch multiblock PLS, with the batches coloured by the plant's classification; batches 2, 3, 6 and 7, classed good, sit among the batches classed abnormal in the trajectory block and among the good ones in the chemistry and operating-condition blocks.
 	:width: 1100px
 	:scale: 80
 	:align: center
 
 	Block scores of the batch multiblock PLS: the chemistry block (left), the
 	operating-condition block (middle) and the trajectory block (right), coded by the plant's
-	disposition.
+	classification.
 	Batches 2, 3, 6 and 7 (orange) were classed good; in the trajectory block they sit among
 	the batches classed abnormal (purple), in the other two blocks among the good ones (blue).
 
