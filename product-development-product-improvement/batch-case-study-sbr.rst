@@ -936,9 +936,9 @@ intervals for this batch once its SPE crosses the limit, for the same reason.
 Both faults are found with more than half the batch still to run, and the statistic that
 finds each says which kind it is: a large :math:`T^2` with a small residual is a batch far
 along a known direction, a large residual with a small :math:`T^2` is a batch doing
-something the reference set never did. What the section rests on is the reference set. It
-was easy to choose here, because the simulation says which batches are faulty; on plant
-data the reference batches are the first thing to get right, and the
+something the reference set never did. Every number in this section comes from the
+reference set. It was easy to choose here, because the simulation says which batches are
+faulty; on plant data the reference batches are the first thing to get right, and the
 :ref:`first case study <APPS_batch_case_dupont>` shows how much of the work that is. The
 :ref:`third case study <APPS_batch_case_fmc>` turns to a process where the trajectories are
 one of four blocks of information about a batch, and asks which block matters most.

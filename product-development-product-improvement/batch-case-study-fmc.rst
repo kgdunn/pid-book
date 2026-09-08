@@ -828,8 +828,8 @@ trajectory, such as the slope of the temperature over a phase or the duration of
 itself, and use those as the columns in place of the trajectory. The operating-condition
 block of this case study is already such a block, since eight of its nine columns are
 landmarks of the trajectories. It is the simplest of the
-three approaches to set up, and it rests on the engineer's judgement about which landmarks
-matter, so a feature that is important but not obvious can be left out. It suits a process
+three approaches to set up, and the engineer chooses which landmarks matter, so a feature
+that is important but not obvious can be left out. It suits a process
 with distinct operational changes, which this dryer has, and less so one whose trajectories
 are smooth, such as the polymerization reactor of the
 :ref:`first case study <APPS_batch_case_dupont>`. Wold and co-workers (2009) build all
