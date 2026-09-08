@@ -26,6 +26,8 @@ downloaded and on models that can be reproduced with the code shown on the page:
 * :ref:`APPS_batch_case_fmc`: a multiblock batch PLS model of an industrial batch dryer,
   combining the initial chemistry, the operating conditions and the trajectories.
 
+.. _APPS_batch_readings:
+
 References to incorporate
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 

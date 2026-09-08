@@ -845,6 +845,9 @@ trajectories, so the incomplete batches are no obstacle to it; the
 References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~
 
+The full list of readings on batch data is on the
+:ref:`batch process monitoring page <APPS_batch_readings>`; this page lists what it draws on.
+
 * Salvador Garcia-Munoz, Theodora Kourti, John F. MacGregor, Antonio G. Mateos and Gerry
   Murphy, "`Troubleshooting of an industrial batch process using multivariate methods
   <https://literature.learnche.org/item/24/troubleshooting-of-an-industrial-batch-process-using-multivariate-methods>`_", *Industrial and Engineering Chemistry Research*,

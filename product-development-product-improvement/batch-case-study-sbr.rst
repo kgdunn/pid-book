@@ -946,6 +946,9 @@ one of four blocks of information about a batch, and asks which block matters mo
 References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~
 
+The full list of readings on batch data is on the
+:ref:`batch process monitoring page <APPS_batch_readings>`; this page lists what it draws on.
+
 * Paul Nomikos, `Statistical process control of batch processes <https://literature.learnche.org/item/154/statistical-process-control-of-batch-processes>`_,
   Ph.D thesis, McMaster University, 1995. The source of the simulation and of the two
   faulty batches.

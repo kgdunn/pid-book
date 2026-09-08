@@ -501,6 +501,9 @@ limit at every sample, so that a faulty batch is flagged while it is still runni
 References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~
 
+The full list of readings on batch data is on the
+:ref:`batch process monitoring page <APPS_batch_readings>`; this page lists what it draws on.
+
 * Paul Nomikos and John F. MacGregor, "`Multivariate SPC charts for monitoring batch
   processes <https://literature.learnche.org/item/34/multivariate-spc-charts-for-monitoring-batch-processes>`_",
   *Technometrics*, **37**, 41-59, 1995. The source of the data and of the list of batches
