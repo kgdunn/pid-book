@@ -10,35 +10,33 @@ Learning from batch trajectories: the DuPont polymerization reactor
 	single: observability; batch data
 
 This is the first of three case studies on batch data. A principal component model of the
-batch trajectories is used to find the batches that differ from the rest, to name the
-variables and the time in the batch at which they differ, and to show what such a model
-cannot detect. The :ref:`second case study <APPS_batch_case_sbr>` adds a block of final
-quality measurements and uses a PLS model; the :ref:`third <APPS_batch_case_fmc>` combines
-several blocks of information about each batch in a multiblock model. All three follow the
-same pattern: plot the raw trajectories, build a model with a small number of components,
-examine the batches the model singles out, and confirm every finding in the raw data.
+trajectories finds the batches that differ from the rest, names the variables and the time
+at which they differ, and shows what such a model cannot detect.
 
-Nylon is made in an industrial batch polymerization reactor in two stages. In the first
-stage, of about one hour, the ingredients are charged, the flows of the heating medium are
-adjusted to control the pressure and the rate of temperature change, and the solvent that
-conveyed the ingredients into the reactor is vaporized and removed. In the second stage the
-ingredients react to the final polymer under a controlled pressure and temperature ramp, and
-the batch ends when the polymer is pumped out of the vessel. A critical quality property of
-the batch is measured in the laboratory about 12 hours after the batch has ended. Nothing
-measured during a batch can therefore be used to correct that batch, and whether a batch
-passed is known only after the next few batches have started.
+The :ref:`second <APPS_batch_case_sbr>` adds final quality and uses PLS; the
+:ref:`third <APPS_batch_case_fmc>` joins several blocks in a multiblock model. All three
+plot the raw trajectories, fit a few components, examine the batches singled out, and
+confirm every finding in the raw data.
 
-What the plant does record is the trajectory of ten process measurements over every batch:
-three reactor temperatures, three pressures, two flow rates of material added to the
-reactor, and the temperatures of the heating and of the cooling medium. The data are the
-worked example of Nomikos and MacGregor (1995), supplied by DuPont: 55 batches, each already
-aligned to 100 equal time intervals, with the values scaled for confidentiality. From the
-laboratory records, batches 40, 41, 42, 50, 51, 53, 54 and 55 had a final quality well
-outside the acceptable limit, and batches 38, 45, 46, 49 and 52 were above or very close to
-it. The list plays no part in building the models: each one is a PCA of the trajectories
-alone, fitted with the poor batches in the training set like any other, and no batch is
-removed or weighted for its quality. The list is compared afterwards with what the
-trajectories reveal on their own.
+Nylon is made in an industrial batch polymerization reactor in two stages: about an hour to
+charge the ingredients and vaporize off the solvent that conveyed them in, then a controlled
+pressure and temperature ramp in which they react to the final polymer.
+
+A critical quality property is measured in the laboratory about 12 hours after the batch
+ends. Nothing measured during a batch can correct that batch, and whether it passed is known
+only once the next few batches have started.
+
+The plant records ten process measurements over every batch: three reactor temperatures,
+three pressures, two flow rates of added material, and the temperatures of the heating and
+of the cooling medium. The data are the worked example of Nomikos and MacGregor (1995),
+supplied by DuPont: 55 batches, each aligned to 100 equal time intervals, values scaled for
+confidentiality.
+
+From the laboratory records, batches 40, 41, 42, 50, 51, 53, 54 and 55 were well outside the
+quality limit, and batches 38, 45, 46, 49 and 52 above or close to it. That list plays no
+part in the models, which are PCAs of the trajectories alone with the poor batches in the
+training set like any other; it is compared afterwards with what the trajectories reveal on
+their own.
 
 The data
 ~~~~~~~~
@@ -103,25 +101,21 @@ however, rank 55 batches on ten variables at once; that is what the model is for
 A first model on all 55 batches
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The `BatchPCA <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/_batch_pca.py>`_ class unfolds the batches batchwise, so that each batch becomes one row of
-10 tags times 100 samples, 1000 columns in all. Every column is then centred and scaled to
-unit variance, the :ref:`preprocessing <LVM_preprocessing>` used for any PCA model.
-Centring removes the average trajectory of each tag, and scaling gives every (tag, time)
-cell the same weight, so the components describe how the batches deviate from the average
-batch. The first model, called model A on this page, uses two components and all 55
-batches. The aim is not a final model, but a first look at which batches stand out.
+The `BatchPCA <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/_batch_pca.py>`_ class unfolds the batches batchwise: each batch becomes one row of 10 tags
+times 100 samples, 1000 columns in all. Every column is then centred and scaled to unit
+variance, the :ref:`preprocessing <LVM_preprocessing>` used for any PCA model. Centring
+removes the average trajectory of each tag and scaling gives every (tag, time) cell the same
+weight, so the components describe how batches deviate from the average batch.
 
-Batchwise unfolding is one of two ways to lay a three-way batch array out as a table. The
-other, observation-wise unfolding, has one row per time sample of every batch and one column
-per tag; centring it removes the average of each tag rather than its average trajectory, so
-it describes the shape of the trajectories, and a second model of its scores is needed to
-compare whole batches. Wold and co-workers (2009) compare the two layouts on this dataset.
-Westerhuis, Kourti and MacGregor (1999) compare them on these trajectories and on the data
-of the :ref:`second case study <APPS_batch_case_sbr>`: to leave the same residual, a model
-of the observation-wise layout needs twice as many components, because its first components
-describe the average trajectories rather than the differences between batches. That layout
-earns its place when the trajectories are varied on purpose, as in a designed experiment,
-rather than repeated. All three case studies unfold batchwise.
+Model A, the first of three on this page, uses two components and all 55 batches. It is not
+a final model, only a first look at which batches stand out.
+
+The alternative layout, observation-wise unfolding, has one row per time sample and one
+column per tag. It describes the shape of the trajectories rather than the differences
+between batches, so it needs a second model of its scores to compare whole batches, and
+twice as many components to leave the same residual (Westerhuis, Kourti and MacGregor,
+1999). It earns its place when the trajectories are varied on purpose, as in a designed
+experiment. All three case studies unfold batchwise.
 
 .. code-block:: python
 
@@ -164,12 +158,11 @@ components towards themselves, so the model will have to be rebuilt without them
 have been examined.
 
 The score plot answers one question about a batch: how far it sits *along* the directions
-the model has found. The :ref:`SPE <LVM-interpreting-SPE-residuals>` answers a different
-one: how far it sits *away* from them, in directions the model has not described. Drawing
-the two against each other puts both questions in one figure. The horizontal axis is
-:math:`T^2` (:ref:`Hotelling's statistic <LVM-Hotellings-T2>`), a single number summarising
-how extreme a batch is along the components, and the vertical axis is its SPE. Each has its
-own 95% limit, and the two limits divide the plot into quadrants.
+the model found. The :ref:`SPE <LVM-interpreting-SPE-residuals>` answers a different one:
+how far it sits *away* from them. Drawing the two against each other puts both in one
+figure, with :math:`T^2` (:ref:`Hotelling's statistic <LVM-Hotellings-T2>`) on the
+horizontal axis, the SPE on the vertical, and each 95% limit dividing the plot into
+quadrants.
 
 .. code-block:: python
 
@@ -207,28 +200,31 @@ own 95% limit, and the two limits divide the plot into quadrants.
 	53, 54 and 55 (aqua) are the other way round. Colour marks which of the two limits the
 	batch exceeds.
 
-Batch 49 is alone in the upper left: ordinary along the two components and extreme away
-from them, a break in the correlation structure the components describe rather than a large
-deviation along them. Batch 51 sits in the same quadrant. The other five of the last six
-batches are in the lower right, extreme along the components with ordinary residuals. A
-plot of one statistic alone would have missed one of the two groups.
+Batch 49 is alone in the upper left, with batch 51 in the same quadrant: ordinary along the
+two components and extreme away from them, a break in the correlation structure rather than
+a large deviation along it. The other five of the last six are in the lower right, extreme
+along the components with ordinary residuals. A plot of one statistic alone would have
+missed one of the two groups.
 
 Batch 49: which variables, and when
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The raw data are ambiguous about batch 49. ``Flow-1`` looks suspicious in the overlay, but
 it is a noisy tag in every batch. The SPE :ref:`contributions <LVM_contribution_plots>`
-settle the question. For a batch model the contribution vector has one entry per
-(tag, time) cell, 1000 entries here: the residual of that cell after the two-component
-reconstruction. Write :math:`i` for the batch, :math:`k` for one of the :math:`K = 10` tags
-and :math:`j` for one of the :math:`J = 100` time samples, so one cell of the unfolded row
-is the pair :math:`(k, j)`. ``process_improve`` reports the SPE of a batch as the length of its
-residual vector, so the squared residuals of the cells add up to the squared SPE, and each
-squared residual, divided by that total, is the share of the SPE carried by the cell.
-Summing the shares per tag ranks the variables, a summary Garcia-Munoz and co-workers
-(2003) introduced, and summing them per time sample locates the event in the batch.
-``unfolded_contribution_plot`` draws the full vector of 1000 bars
-grouped by tag and, with ``by_tag=True``, the sum per tag.
+settle the question.
+
+For a batch model the contribution vector has one entry per (tag, time) cell, 1000 here:
+the residual of that cell after the two-component reconstruction. The SPE is the length of
+that vector, so the squared residuals add up to the squared SPE, and each one divided by
+that total is the share of the SPE carried by the cell. Those shares can then be summed two
+ways:
+
+* per tag, which ranks the variables, a summary Garcia-Munoz and co-workers (2003)
+  introduced;
+* per time sample, which locates the event in the batch.
+
+``unfolded_contribution_plot`` draws the full vector of 1000 bars grouped by tag and, with
+``by_tag=True``, the sum per tag.
 
 .. code-block:: python
 
@@ -257,32 +253,29 @@ grouped by tag and, with ``by_tag=True``, the sum per tag.
 	single window, samples 55 to 65, and in the heating- and cooling-medium temperatures,
 	the pressures and ``Flow-2``.
 
-``Flow-1`` carries almost none of the residual. It belongs to the cooling-medium
-temperature, ``Flow-2``, ``Press-2``, the heating-medium temperature and ``Press-3``, and
-80% of it falls in the eleven samples from 55 to 65: a short disturbance in the heating,
-cooling and pressure systems that broke the usual relationship between these tags, which
-Nomikos (1996) attributes to a failure in the heating system. Wold
-and co-workers (2009) reach the same event from a different model, monitoring batch 49
-on-line against a three-component model of batches 1 to 36: their contribution plot at
-sample 57 names the same temperatures and pressures as running low from sample 57 to 65.
+``Flow-1`` carries almost none of the residual. It belongs to the two medium temperatures,
+``Flow-2``, ``Press-2`` and ``Press-3``, and 80% of it falls in the eleven samples from 55
+to 65: a short disturbance that broke the usual relationship between these tags, which
+Nomikos (1996) attributes to a failure in the heating system. Wold and co-workers (2009)
+reach the same event from a different model.
 
-Nomikos and MacGregor report that the final quality of batch 49 was barely acceptable,
-which is consistent with a short event rather than a batch that was wrong throughout. In
-the raw data the cooling-medium temperature of batch 49 does fall away from the other
-batches after sample 60, a change that is easy to pass over until the contributions point
-at it.
+The final quality of batch 49 was barely acceptable, which fits a short event rather than a
+batch that was wrong throughout. In the raw data its cooling-medium temperature does fall
+away from the others after sample 60, a change easy to pass over until the contributions
+point at it.
 
 The score outliers: batches 50 to 55
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Batches 50 to 55 are far out along the components, so the tool for them is the score
 contribution: how much every (tag, time) cell contributes to :math:`t_1` or :math:`t_2`.
-A score is the sum over the 1000 cells of the scaled value times the loading,
-:math:`t_{i,1} = \sum_{k=1}^{K}\sum_{j=1}^{J} x_{i,kj}\, p_{kj,1}`, so a cell contributes
-strongly when its value is far from average in the direction of the loading. The
-:ref:`loading <LVM_interpreting_loadings>` :math:`\mathbf{p}_1` of a batch model has 1000
-entries as well, and ``time_varying_loading_plot`` draws it as ten curves over the batch, one
-per tag, which shows which parts of the batch the component describes.
+
+A score sums the scaled value times the loading over all 1000 cells,
+:math:`t_{i,1} = \sum_{k=1}^{K}\sum_{j=1}^{J} x_{i,kj}\, p_{kj,1}`, for batch :math:`i`
+over the :math:`K = 10` tags and :math:`J = 100` samples, so a cell contributes strongly
+when it is far from average in the direction of the loading. ``time_varying_loading_plot``
+draws the 1000-entry :ref:`loading <LVM_interpreting_loadings>` :math:`\mathbf{p}_1` as ten
+curves, showing which parts of the batch the component describes.
 
 .. code-block:: python
 
@@ -314,13 +307,10 @@ per tag, which shows which parts of the batch the component describes.
 	direction, and the contribution per sample stays positive over the whole batch.
 
 Batch 54 has a high :math:`t_1` because every tag contributes in the same direction over
-the whole batch: the batch ran away from the average trajectory from its first sample to
-its last. The :ref:`raw trajectory overlay <APPS_batch_case_dupont_overlay>` at the start
-of this case study confirms it: the pressure step of batch 54 in ``Press-1`` comes later
-than in the other batches, and its reactor temperature runs below them over the first 20
-samples. Batches 50 and 52 also have large positive :math:`t_1` values and can be examined
-in the same way. Batch 55, which has the highest :math:`t_2`, stands out through the
-pressures ``Press-3`` and ``Press-2`` and the cooling-medium temperature.
+the whole batch: it ran away from the average trajectory from its first sample to its last.
+The :ref:`raw trajectory overlay <APPS_batch_case_dupont_overlay>` confirms it. Batches 50
+and 52 are examined the same way; batch 55, highest in :math:`t_2`, stands out through
+``Press-3``, ``Press-2`` and the cooling-medium temperature.
 
 Exclude and rebuild: a second group of batches
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -361,12 +351,11 @@ Removing batches changes the model, so the plots are examined again.
 With the extreme batches gone, a second group separates in the plane of :math:`t_2` and
 :math:`t_3`: batches 37, 39 and 43 to 48.
 
-A contribution is the weighted difference between two points, and those could be a single
-actual data point, a synthetic point like the model centre, or you can supply the average of
-a group of batches as a synthetic point. The eight batches are compared here as a group
-against the model centre, the average of all 48 (the arrow in the score plot): the columns
-are centred, so the group's mean row is its displacement from the centre, and its
-contribution vector adds up to the group's mean score.
+A contribution is the weighted difference between two points, either of which may be an
+actual batch or a synthetic one such as the model centre or a group average. The eight are
+compared here against the centre, the average of all 48 (the arrow in the score plot):
+their mean row is the displacement from that centre, and its contribution vector adds up to
+their mean score.
 
 .. code-block:: python
 
@@ -403,17 +392,17 @@ contribution vector adds up to the group's mean score.
 	and the other 40 batches of model B (light grey).
 
 ``TempC-1`` and ``Press-3`` carry most of the displacement on both components, every member
-contributes in the same direction on those two tags, and most of the contribution comes from
-the first 25 samples. Not every member is consistent with the average: ``TempH-1`` takes both
-signs across the eight, so its group mean is set by a few of them. The group contribution is
-a starting point for a diagnosis of the group, to be checked member by member.
+in the same direction, and most of it comes from the first 25 samples. Not every member
+agrees: ``TempH-1`` takes both signs across the eight, so its group mean is set by a few of
+them. A group contribution is a starting point, to be checked member by member.
 
-The raw trajectories agree: the eight batches run above the other 40 in ``TempC-1`` and
-``Press-3`` until about sample 25, and only slightly above them in ``Press-2`` and
-``Flow-2``, where the two sets overlap by about sample 20. Only batches 45 and 46 are on
-the list of poor or borderline quality; the other six produced acceptable product. They
-were operated differently, not badly, and a model of normal operation can either include
-enough of them to describe that mode or leave them out. The third model leaves them out.
+The raw trajectories agree: the eight run above the other 40 in ``TempC-1`` and ``Press-3``
+until about sample 25, and only slightly above in ``Press-2`` and ``Flow-2``.
+
+Only batches 45 and 46 are on the poor or borderline quality list; the other six produced
+acceptable product. They were operated differently, not badly, and a model of normal
+operation can either include enough of them to describe that mode or leave them out. The
+third model leaves them out.
 
 The final model, used to verify the unusual batches detected above
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -472,26 +461,24 @@ with the 95% limits of the 40 training batches.
 	(blue) and of the 15 left-out batches projected onto model C: batch 49 (orange), batches
 	50 to 55 (aqua circles) and the second group (purple triangles).
 
-Every one of the 15 lies above the SPE limit, most of them far above it, and the six score
-outliers and batch 37 lie above the :math:`T^2` limit as well: the model built without them
-flags them. The scores of the 40 training batches are spread more evenly than in the first
-two models; a group of nine batches with larger :math:`t_1` values remains inside the 95%
-confidence ellipse and is not pursued here. Batches 38, 40, 41 and 42, which produced poor
-product and stayed in the training set, sit inside both limits. Nomikos and MacGregor (1995)
-left these four batches out as well, on the principle that a reference set should hold only
-batches with acceptable operation and acceptable product, and built their monitoring model
-on the remaining 36 batches with three components; they are kept in model C here so that
-this check can be made.
+Every one of the 15 lies above the SPE limit, most far above it, and the six score outliers
+and batch 37 lie above the :math:`T^2` limit as well: the model built without them flags
+them. The 40 training batches are spread more evenly than in the first two models.
 
-Nothing in the ten trajectories distinguishes these four batches from the batches that
-produced good product, and that is the lesson of the case study. A model can only detect
-what the measurements contain. If the cause of poor quality leaves no trace in the recorded
-variables, because the important trajectory is not measured or because the cause lies in
-the raw materials charged before the batch started, no modelling of these ten tags will
-reveal it. The measurements must contain the information needed to classify a batch; in the
-language of control engineering, the condition of the batch must be *observable* through
-them. The remedy is to measure something else, for example the properties of the raw
-materials, and the :ref:`third case study <APPS_batch_case_fmc>` shows how such blocks are
+Batches 38, 40, 41 and 42, which produced poor product and stayed in the training set, sit
+inside both limits. Nomikos and MacGregor (1995) left these four out too, on the principle
+that a reference set should hold only batches with acceptable operation *and* acceptable
+product; they are kept in model C here so that this check can be made.
+
+Nothing in the ten trajectories distinguishes those four from the batches that produced good
+product, and that is the lesson of the case study: a model can only detect what the
+measurements contain. If the cause leaves no trace in the recorded variables, because the
+important trajectory is not measured or because it lies in the raw materials charged before
+the batch started, no modelling of these ten tags will reveal it.
+
+In the language of control engineering, the condition of the batch must be *observable*
+through the measurements. The remedy is to measure something else, such as the raw material
+properties, and the :ref:`third case study <APPS_batch_case_fmc>` shows how such blocks are
 added to a batch model.
 
 The :ref:`SBR case study <APPS_batch_case_sbr_online>` runs the same check sample by
