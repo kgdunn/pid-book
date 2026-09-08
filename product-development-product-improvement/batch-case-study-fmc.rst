@@ -242,15 +242,31 @@ involved.
 	                      row=row, col=col)
 	    return fig
 
+	def label_corner(points, here):
+	    """The corner around `here` with the fewest close neighbours: where a label will not sit on a marker.
+
+	    Distances are taken in units of each axis's own range, so the choice matches what the reader sees
+	    rather than the units the scores happen to have."""
+	    span = np.ptp(points, axis=0)
+	    near = (points - here) / np.where(span > 0, span, 1)
+	    near = near[(np.hypot(*near.T) < 0.10) & (np.hypot(*near.T) > 0)]   # close enough to collide with
+	    corners = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
+	    crowd = [np.sum((np.sign(near[:, 0]) == dx) & (np.sign(near[:, 1]) == dy)) for dx, dy in corners]
+	    return corners[int(np.argmin(crowd))]
+
 	def scores(model, r2, highlight, note="", labels=()):
 	    """Score plot of a PCA or PLS model coded by classification, with the percent of the variance each
 	    component explains (`r2`, per component, `note` saying of which block) on its axes, the 95% confidence
 	    ellipse, and a name against each batch in `labels`, so the text's batches carry from figure to figure."""
 	    t = model.scores_
 	    fig = group_scatter(go.Figure(), t.iloc[:, 0], t.iloc[:, 1], highlight)
+	    points, placed = t.iloc[:, :2].to_numpy(dtype=float), []
 	    for batch_id in labels:
-	        fig.add_annotation(x=t.loc[batch_id].iloc[0], y=t.loc[batch_id].iloc[1], text=str(batch_id),
-	                           showarrow=False, xshift=12, yshift=8, font=dict(size=11))
+	        here = t.loc[batch_id].to_numpy(dtype=float)[:2]
+	        dx, dy = label_corner(np.vstack([points, *placed]), here)
+	        fig.add_annotation(x=here[0], y=here[1], text=str(batch_id), showarrow=False,
+	                           xshift=13 * dx, yshift=11 * dy, font=dict(size=11))
+	        placed.append(here + 0.03 * np.ptp(points, axis=0) * np.array([dx, dy]))  # so the next label avoids it
 	    ex, ey = model.ellipse_coordinates(score_horiz=1, score_vert=2, conf_level=0.95)
 	    fig.add_trace(go.Scatter(x=ex, y=ey, mode="lines", line=dict(color=GREY, dash="dash"), name="95% confidence ellipse"))
 	    r2 = np.asarray(r2)
