@@ -24,8 +24,8 @@ The operators adjusted the peak temperature set point from batch to batch to cor
 product quality, a manual feedback loop. This is the case study of Garcia-Munoz and
 co-workers (2003), and the most complete of the three. The
 :ref:`first <APPS_batch_case_dupont>` had trajectories alone and the
-:ref:`second <APPS_batch_case_sbr>` added final quality. Here the chemistry of the charge
-and the operating conditions are recorded as well.
+:ref:`second <APPS_batch_case_sbr>` added final quality, while here the chemistry of the
+charge and the operating conditions are recorded as well.
 
 .. figure:: ../figures/examples/fmc/dryer_flowsheet.png
 	:alt: Flowsheet of the batch dryer: the dryer tank with its agitator and heating medium, the collector tank with its level measurement, a pressure controller between them, and two temperature controllers for the jacket and the dryer; the ten measured trajectories are numbered on the drawing.
@@ -78,14 +78,14 @@ The data
 
 The `batch dryer dataset <https://openmv.net/info/batch-dryer>`_ holds the four blocks for
 59 batches, numbered 2 to 71 with gaps. The numbering encodes the plant's classification,
-good up to 33, abnormal to 61 and high in residual solvent beyond. It plays no part in the
-models and appears on the score plots as a colour and marker shape.
+good up to 33, abnormal to 61 and high in residual solvent beyond, which plays no part in
+the models and appears on the score plots only as a colour and marker shape.
 
 Batch durations vary widely, so the trajectories were aligned within each phase to 325
-samples. The first two phases were aligned against a maturity variable, a quantity that
-rises steadily through the phase, the collector tank level and then the dryer temperature.
-The cooling phase was aligned linearly in time. The first phase ends at sample 175 and the
-ramp at 249.
+samples. The first two phases were aligned against a maturity variable, a quantity that rises
+steadily through the phase, first the collector tank level and then the dryer temperature,
+and the cooling phase linearly in time. The first phase ends at sample 175 and the ramp at
+249.
 
 ``ClockTime``, the wall-clock time at each aligned sample, is the eleventh trajectory. It
 records how much each batch was stretched or compressed, so a batch whose ramp took longer
@@ -472,8 +472,8 @@ see.
 
 Two components describe 37.6% of the batch-to-batch variation in the trajectories. Batch 20
 is the only batch above both limits, with a :math:`T^2` twice its limit and an SPE next to
-the largest of the 46. It is both unusual along the components and poorly described by them.
-Batches 41 and 51 are above the SPE limit alone, and batch 47 just below it.
+the largest of the 46, so it is both unusual along the components and poorly described by
+them. Batches 41 and 51 are above the SPE limit alone, and batch 47 just below it.
 
 .. code-block:: python
 
@@ -523,8 +523,8 @@ phase, so the model says little about how the batches differ there.
 
 A missing cell has no residual and no contribution. Batch 20 is one of the ten batches with
 missing samples, and its scores come from the cells it does have, the same estimate the
-NIPALS fit used. Its contributions are therefore defined at every observed cell and absent
-only at the missing ones. As in the :ref:`first case study <APPS_batch_case_dupont>`, the
+NIPALS fit used, so its contributions are defined at every observed cell and absent only at
+the missing ones. As in the :ref:`first case study <APPS_batch_case_dupont>`, the
 vector has one entry per (tag, time) cell, here :math:`K = 11` tags by :math:`J = 325`
 samples.
 
@@ -644,9 +644,9 @@ All three blocks: batch multiblock PLS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The final model joins the two initial-condition blocks and the unfolded trajectory block in
-one multiblock PLS. The trajectory block enters as 3575 columns. Dividing each block by the
-square root of its number of columns keeps it from drowning out the eleven chemistry columns
-and the nine operating ones.
+one multiblock PLS. The trajectory block enters as 3575 columns, so dividing each block by the square root of
+its number of columns is what keeps it from drowning out the eleven chemistry columns and
+the nine operating ones.
 
 .. code-block:: python
 

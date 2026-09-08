@@ -23,9 +23,9 @@ trusted on plant data.
 
 The :ref:`first case study <APPS_batch_case_dupont>` used a PCA of the trajectories alone.
 Here final quality is available too, so the model is a :ref:`PLS <SECTION_PLS>` from the
-unfolded trajectories to the five attributes. Three questions are asked of it. Does it
-single out the two faulty batches? Does it say what went wrong and when? Could it have said
-so while they were still running?
+unfolded trajectories to the five attributes. Three questions are asked of it: does it
+single out the two faulty batches, does it say what went wrong and when, and could it have
+said so while they were still running?
 
 The data
 ~~~~~~~~
@@ -162,7 +162,7 @@ The score plot flags both faulty batches, whose :math:`T^2` values
 
 The SPE answers the other question about a batch, how far it sits away from the components.
 Drawing it against Hotelling's :math:`T^2`, which summarises how extreme the batch is along
-them, puts both questions in one figure. Each axis carries its own 95% limit.
+them, puts both questions in one figure, each axis carrying its own 95% limit.
 
 .. code-block:: python
 
@@ -443,9 +443,9 @@ One fault, two places in the score plot
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The same fault appears in two places of the score plot because it started at two different
-times. A batch model describes deviations in (tag, time) cells, so the time of an event is
-part of its signature. A slow reaction from the start deviates along :math:`\mathbf{w}_1`,
-one from the middle of the batch along :math:`\mathbf{w}_2`.
+times. A batch model describes deviations in (tag, time) cells, so the time of an event is part of
+its signature: a slow reaction from the start deviates along :math:`\mathbf{w}_1`, one from
+the middle of the batch along :math:`\mathbf{w}_2`.
 
 That makes batch models useful for diagnosis, and is also a caution. A library of known
 faults built in score space needs the onset time as a coordinate, since a fault seen at one
@@ -779,9 +779,8 @@ count as an alarm. The rule used here is three consecutive samples above the lim
 Garcia-Munoz, Kourti and MacGregor (2004).
 
 That rule holds for :math:`T^2`, where one of the 51 reference batches alarms. It fails for
-the SPE, where 13 do, one normal batch in four. The cause is autocorrelation. A sample that
-fits the model poorly is usually followed by another that does, so SPE crossings arrive in
-runs long enough to satisfy the rule. Three responses, each measured on the same 51
+the SPE, where 13 do, one normal batch in four. The cause is autocorrelation: a sample that fits the model poorly is usually followed by
+another that does, so SPE crossings arrive in runs long enough to satisfy the rule. Three responses, each measured on the same 51
 batches:
 
 * a limit smoothed over five neighbouring samples (``spe_window=2``, the window Nomikos and
@@ -910,9 +909,9 @@ but not forecast it. Nomikos and MacGregor (1995) stop drawing their prediction 
 for this batch once its SPE crosses the limit, for the same reason.
 
 Both faults are found with more than half the batch still to run, and the statistic that
-finds each says which kind it is. A large :math:`T^2` with a small residual is a batch far
-along a known direction. A large residual with a small :math:`T^2` is a batch doing
-something the reference set never did.
+finds each says which kind it is. A large :math:`T^2` with a small residual is a batch far along a known direction, while a
+large residual with a small :math:`T^2` is a batch doing something the reference set never
+did.
 
 Every number here comes from the reference set, easy to choose because the simulation says
 which batches are faulty. On plant data those batches are the first thing to get right, and

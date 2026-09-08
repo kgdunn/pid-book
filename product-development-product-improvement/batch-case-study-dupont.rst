@@ -9,17 +9,17 @@ Learning from batch trajectories: the DuPont polymerization reactor
 	pair: contribution plots; batch trajectories
 	single: observability; batch data
 
-First of three case studies on batch data. A principal component model of the trajectories
-finds which batches differ from the rest, names the variables and times at which they
-differ, and shows what it cannot detect.
+This is the first of three case studies on batch data. A principal component model of the
+trajectories finds which batches differ from the rest, names the variables and the times at
+which they differ, and shows what such a model cannot detect.
 
 The :ref:`second <APPS_batch_case_sbr>` adds final quality and uses PLS. The
 :ref:`third <APPS_batch_case_fmc>` joins several blocks in a multiblock model. All three
 plot the raw trajectories, fit a few components, examine the batches singled out, and
 confirm each finding in the raw data.
 
-Nylon is made in two stages in an industrial batch reactor. An hour of charging and solvent
-removal is followed by a controlled pressure and temperature ramp to the final polymer.
+Nylon is made in two stages in an industrial batch reactor: an hour of charging and solvent
+removal, then a controlled pressure and temperature ramp to the final polymer.
 
 The critical quality property is measured in the laboratory about 12 hours after the batch
 ends. Nothing measured during a batch can correct it, and the result arrives only after the
@@ -32,7 +32,7 @@ time intervals and scaled for confidentiality.
 
 From the laboratory records, batches 40, 41, 42, 50, 51, 53, 54 and 55 were well outside the
 quality limit, and batches 38, 45, 46, 49 and 52 above or close to it. The models never use
-that list. Each is a PCA of the trajectories alone, poor batches included, and the list is
+that list: each is a PCA of the trajectories alone, poor batches included, and the list is
 compared afterwards with what the trajectories reveal.
 
 The data
@@ -56,8 +56,8 @@ returns one data frame per batch, 100 samples by 10 tags.
 
 Plotting one tag for every batch, a few of them in colour, is the first check. The
 trajectories overlay well, confirming the alignment, and a few batches are visibly unusual
-in the cooling-medium temperature ``TempC-1`` and in ``Press-1``. The two flow rates are
-noisy in every batch.
+in the cooling-medium temperature ``TempC-1`` and in ``Press-1``, while the two flow rates
+are noisy in every batch.
 
 .. code-block:: python
 
@@ -103,8 +103,8 @@ A first model on all 55 batches
 average trajectory and scaling weights every (tag, time) cell equally, so the components
 describe how batches deviate from the average batch.
 
-Model A, the first of three, uses two components and all 55 batches. It is not a final
-model, only a first look at which batches stand out.
+Model A, the first of three, uses two components and all 55 batches, not as a final model
+but as a first look at which batches stand out.
 
 The alternative, observation-wise unfolding, has one row per time sample and one column per
 tag. It describes the shape of the trajectories rather than the differences between batches,
@@ -194,14 +194,14 @@ one figure, each 95% limit dividing it into quadrants.
 	batch exceeds.
 
 Batches 49 and 51 are in the upper left, ordinary along the two components and extreme away
-from them. That is a break in the correlation structure, not a large deviation along it. The
-other five of the last six are in the lower right, extreme along the components with
-ordinary residuals. One statistic alone would have missed a group.
+from them, which is a break in the correlation structure rather than a large deviation along
+it. The other five of the last six are in the lower right, extreme along the components with
+ordinary residuals, so one statistic alone would have missed a group.
 
 Batch 49: which variables, and when
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The raw data are ambiguous about batch 49. ``Flow-1`` looks suspicious in the overlay, but
+The raw data are ambiguous about batch 49: ``Flow-1`` looks suspicious in the overlay, but
 it is a noisy tag in every batch. The SPE :ref:`contributions <LVM_contribution_plots>`
 settle the question.
 
@@ -298,8 +298,8 @@ curves.
 Batch 54 has a high :math:`t_1` because every tag contributes in the same direction over the
 whole batch. It ran away from the average trajectory from its first sample to its last, as
 the :ref:`raw trajectory overlay <APPS_batch_case_dupont_overlay>` confirms. Batches 50 and
-52 are read the same way. Batch 55, highest in :math:`t_2`, stands out through ``Press-3``,
-``Press-2`` and ``TempC-1``.
+52 are read the same way, and batch 55, highest in :math:`t_2`, stands out through
+``Press-3``, ``Press-2`` and ``TempC-1``.
 
 Exclude and rebuild: a second group of batches
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -449,7 +449,7 @@ estimated, and its :math:`T^2` and SPE compared with the 95% limits of the 40.
 	50 to 55 (aqua circles) and the second group (purple triangles).
 
 All 15 lie above the SPE limit, most far above, and the six score outliers and batch 37
-above the :math:`T^2` limit as well. The model built without them flags them. The 40
+above the :math:`T^2` limit as well, so the model built without them flags them. The 40
 training batches are spread more evenly than in the first two models.
 
 Batches 38, 40, 41 and 42 produced poor product, stayed in the training set, and sit inside
@@ -464,8 +464,8 @@ recorded or because the cause lies in the raw materials, no modelling of these t
 reveal it.
 
 In control engineering the condition of the batch must be *observable* through the
-measurements. The remedy is to measure something else, such as the raw material properties.
-The :ref:`third case study <APPS_batch_case_fmc>` shows how such blocks are added.
+measurements. The remedy is to measure something else, such as the raw material properties,
+and the :ref:`third case study <APPS_batch_case_fmc>` shows how such blocks are added.
 
 The :ref:`SBR case study <APPS_batch_case_sbr_online>` runs the same check sample by sample,
 comparing each statistic with its limit at every sample, so a faulty batch is flagged while
