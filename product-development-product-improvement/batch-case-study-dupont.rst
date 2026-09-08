@@ -60,8 +60,7 @@ returns a dictionary with one data frame per batch, 100 samples by 10 tags.
 Plotting one tag for every batch, with a few batches drawn on top in colour, is the first
 check. The trajectories overlay well, which confirms that the alignment has already been
 done, and a few batches are visibly unusual in the cooling-medium temperature ``TempC-1``
-and in ``Press-1``. The two flow rates are noisy in every batch. A plot per tag cannot,
-however, rank 55 batches on ten variables at once; that is what the model is for.
+and in ``Press-1``. The two flow rates are noisy in every batch.
 
 .. code-block:: python
 
