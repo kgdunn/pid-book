@@ -89,7 +89,7 @@ cooling phase linearly in time. The first phase ends at sample 175 and the ramp 
 records how much each batch was stretched or compressed, so a batch whose ramp took longer
 than usual has a ``ClockTime`` that rises faster over that phase. `batch_dtw <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/preprocessing.py>`_
 in ``process_improve`` aligns raw batch data by dynamic time warping; ``load_dryer`` bundles
-this dryer's unaligned trajectories.
+this dryer's unaligned trajectories, so the same batches can be drawn before and after.
 
 Thirteen batches have no chemistry measurements and are left out, as in the original study;
 ``load_fmc`` lists them as ``missing_chemistry``, and 46 remain. A few quality and chemistry
@@ -106,7 +106,7 @@ complete data.
 	import pandas as pd
 	import plotly.graph_objects as go
 	from plotly.subplots import make_subplots
-	from process_improve.batch import dict_to_wide, load_fmc, unfolded_contribution_plot
+	from process_improve.batch import dict_to_wide, load_dryer, load_fmc, unfolded_contribution_plot
 	from process_improve.multivariate import PCA, PLS, MCUVScaler
 	from process_improve.multivariate.methods import MBPLS
 
@@ -124,11 +124,54 @@ complete data.
 	print(*phase_ends)                              # the first high-speed sample, and the sample of the peak dryer temperature
 	# 175 249
 
-.. code-block:: python
-
 	GREY, ORANGE, AQUA, BLUE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a"                  # figure colours
 	PURPLE, GOLD, BAND = "#6f42c1", "#d4a017", "#e9edf4"                                   # ... and the shading behind bars
 	DARK_GREY = "#8c8c8c"                                                                  # the phase-separator lines
+	PALE_GREY = "#dcdcdc"                                                                  # many batches drawn at once
+
+.. code-block:: python
+
+	raw = load_dryer()                              # the same dryer, before alignment
+	shared = [batch_id for batch_id in raw if batch_id in fmc.X]
+	duration = {batch_id: float(np.nanmax(batch["ClockTime"]) - np.nanmin(batch["ClockTime"]))
+	            for batch_id, batch in raw.items() if batch_id in fmc.X}
+	shortest, longest = min(duration, key=duration.get), max(duration, key=duration.get)
+	print(f"{len(shared)} batches, {min(duration.values()):.0f} to {max(duration.values()):.0f} time units",
+	      f"(batch {shortest} and batch {longest}); every one is aligned to {len(fmc.X[shortest])} samples")
+	# 59 batches, 93 to 200 time units (batch 9 and batch 34); every one is aligned to 325 samples
+
+	panels = [("Before: dryer temperature against clock time", raw, "ClockTime", "DryerTemp"),
+	          ("After: the same batches against aligned sample", fmc.X, None, "D-Temp"),
+	          ("The warp itself: clock time at each aligned sample", fmc.X, None, "ClockTime")]
+	fig = make_subplots(rows=1, cols=3, subplot_titles=[title for title, *_ in panels])
+	for col, (_, source, x_tag, y_tag) in enumerate(panels, start=1):
+	    for batch_id in shared:
+	        batch = source[batch_id]
+	        x = batch[x_tag] if x_tag else np.arange(len(batch))
+	        colour, width = {shortest: (AQUA, 2), longest: (ORANGE, 2)}.get(batch_id, (PALE_GREY, 0.7))
+	        fig.add_trace(go.Scatter(x=x, y=batch[y_tag], mode="lines", showlegend=False,
+	                                 line=dict(color=colour, width=width)), row=1, col=col)
+	    if x_tag is None:
+	        for end in phase_ends:
+	            fig.add_vline(x=end, line_dash="dot", line_color=GREY, row=1, col=col)
+	fig.update_layout(height=340).show()
+
+.. figure:: ../figures/batch/batch-case-fmc-alignment.png
+	:source: batch/batch-case-fmc-figures.py
+	:alt: Three panels. Left, the dryer temperature of 59 batches against clock time: the traces end anywhere between 93 and 200 time units, with the shortest batch in aqua finishing while the longest, in orange, is still heating. Middle, the same batches against aligned sample: every trace now runs to 325 samples and the temperature ramps line up at the phase end. Right, the clock time at each aligned sample: the shortest batch rises almost as a straight line, the longest jumps steeply at the first phase end, and the rest lie between them.
+	:width: 1200px
+	:scale: 80
+	:align: center
+
+	What the alignment did. Left: the dryer temperature against clock time, as recorded. The
+	batches end anywhere between 93 and 200 time units, so the same clock reading means a
+	different stage of the recipe in each one. Middle: after alignment every batch runs to
+	325 samples and the ramps line up, which is what lets one column of the unfolded matrix
+	hold the same event for every batch. Right: the clock time at each aligned sample is the
+	record of the stretching, and it is kept as a trajectory of the model.
+
+.. code-block:: python
+
 	STYLES = {"good": (BLUE, "circle"), "abnormal": (PURPLE, "triangle-up"), "high solvent": (GOLD, "square")}
 
 	def overlay(batches, tag, highlight):

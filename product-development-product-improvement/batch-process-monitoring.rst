@@ -28,8 +28,8 @@ downloaded and on models that can be reproduced with the code shown on the page:
 
 .. _APPS_batch_readings:
 
-References to incorporate
-~~~~~~~~~~~~~~~~~~~~~~~~~
+References
+~~~~~~~~~~
 
 Foundational multiway PCA / PLS for batches
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
