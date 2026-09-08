@@ -332,3 +332,36 @@ button.copybtn:focus,
     font-size: 0.82rem;
     font-family: var(--pst-font-family-monospace, monospace);
 }
+
+/* Estimated reading time, in the article header bar beside the sidebar
+   toggle (see _templates/pid-reading-time.html). Quiet by design: it is a
+   hint about the page, not a control, so it takes the muted text colour and
+   sits at the same height as the buttons around it. On a narrow screen the
+   words drop away and the clock plus "10 min" remains. */
+.pid-reading-time {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding-left: 0.25rem;
+    font-size: 0.85rem;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--pst-color-text-muted, #646464);
+    cursor: default;
+}
+
+.pid-reading-time .fa-clock {
+    font-size: 0.9em;
+    opacity: 0.85;
+}
+
+.pid-reading-time__value {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+}
+
+@media (max-width: 480px) {
+    .pid-reading-time__label {
+        display: none;
+    }
+}
