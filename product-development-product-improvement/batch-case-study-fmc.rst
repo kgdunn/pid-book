@@ -668,7 +668,7 @@ the nine operating ones.
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-mbpls.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Three panels: the super scores of the batch multiblock PLS with batches 13, 5 and 7 marked; the R2 of each block after two components beside the super VIP of each block; and the observed against fitted residual solvent concentration with batches 13, 5 and 7 marked.
+	:alt: Three panels: the super scores of the batch multiblock PLS with batches 13, 5 and 7 marked; the R2 of each block after two components beside the super VIP of each block; and the observed against fitted residual solvent concentration, coded by classification as the score plot is, with batches 13, 5 and 7 marked.
 	:width: 1100px
 	:scale: 80
 	:align: center
@@ -676,8 +676,8 @@ the nine operating ones.
 	Left: super scores of the batch multiblock PLS, coded by the plant's classification, with
 	batches 13 (orange), 5 and 7 (aqua) marked. Middle: :math:`R^2` of each block after two
 	components (blue) and the super VIP of each block (orange). Right: observed and fitted
-	residual solvent concentration, with the same three batches in the same colours, so each
-	can be followed from the score plot to its fit.
+	residual solvent concentration, coded by classification and marked exactly as the left
+	panel, so each batch can be followed from the score plot to its fit.
 
 The combined model explains 47.0% of the quality block after two components, against 41.0%
 for the trajectories alone and 36.4% for the two initial-condition blocks together. The
