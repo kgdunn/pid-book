@@ -1,0 +1,20 @@
+{# Estimated reading time for this page, shown in the article header bar next
+   to the sidebar toggle. The number is computed during the build by
+   my-extensions/reading_time.py; `pid_reading_time` is None on pages too
+   short to be worth an estimate (the chapter index pages), and this file
+   then renders nothing at all. #}
+{%- if pid_reading_time %}
+{%- set words = "{:,}".format(pid_reading_time.words) %}
+{%- set videos = pid_reading_time.videos %}
+{%- if videos == 0 %}{% set aside = "" %}
+{%- elif videos == 1 %}{% set aside = "; the video is not included" %}
+{%- else %}{% set aside = "; the %d videos are not included" % videos %}
+{%- endif %}
+<div class="pid-reading-time d-print-none"
+     title="About {{ pid_reading_time.minutes }} minutes to read this page ({{ words }} words, at a pace for technical reading{{ aside }})">
+  <span class="fa-regular fa-clock" aria-hidden="true"></span>
+  {#- one flex child, so "10 min" and "reading time" read as one phrase -#}
+  <span><span class="pid-reading-time__value">{{ pid_reading_time.minutes }} min</span>
+    <span class="pid-reading-time__label">reading time</span></span>
+</div>
+{%- endif %}
