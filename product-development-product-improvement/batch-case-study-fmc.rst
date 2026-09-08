@@ -665,6 +665,12 @@ the nine operating ones.
 	mb.super_weights_bar_plot(component=1).show()
 	unfolded_contribution_plot(mb.score_contributions(blocks, component=1)["X"], batch_id=13).show()
 	mb.predictions_vs_observed_plot(Y, variable="SolventConc").show()
+	solvent = Y["SolventConc"].dropna()
+	residual = mb.predictions_["SolventConc"].loc[solvent.index] - solvent    # positive: fitted above observed
+	high = solvent.index[groups.loc[solvent.index] == "high solvent"]
+	print(f"{(residual.loc[high] < 0).sum()} of {len(high)} fitted low, by {-residual.loc[high].mean():.2f}"
+	      f" on average, in an attribute spanning {solvent.max() - solvent.min():.2f}")
+	# 7 of 7 fitted low, by 0.58 on average, in an attribute spanning 1.41
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-mbpls.png
 	:source: batch/batch-case-fmc-figures.py
@@ -683,6 +689,11 @@ The combined model explains 47.0% of the quality block after two components, aga
 for the trajectories alone and 36.4% for the two initial-condition blocks together. The
 components describe 23.4% of the chemistry block, 30.4% of the operating-condition block
 and 25.8% of the trajectory block.
+
+Every one of the seven batches classed high in residual solvent is fitted below the line, by
+0.58 on average in an attribute spanning 1.41 across the batches. A model that describes
+under half of the quality block pulls the extremes back towards the middle, so a group
+sitting at the top of the range is fitted below it.
 
 The Variable Importance in Projection (VIP) summarises, per variable, how much it
 contributes to explaining the quality block, scaled so that a value above one marks
