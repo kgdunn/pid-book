@@ -16,28 +16,26 @@ attributes of the latex are measured at the end: composition, particle size, bra
 cross-linking and polydispersity.
 
 The 53 batches were simulated from a first-principles model of the reactor (Nomikos and
-MacGregor, 1994; Nomikos, 1995), so the fault is known: batch 37 received 30% more organic
-impurity in the butadiene feed from its very start, and batch 34 50% more from midway
-through. That is the value of simulated data, since a model can be checked against what is
-known to have happened before it is trusted on plant data.
+MacGregor, 1994; Nomikos, 1995), so the fault is known. Batch 37 received 30% more organic
+impurity in the butadiene feed from its very start, batch 34 50% more from midway through.
+Simulated data lets a model be checked against what is known to have happened, before it is
+trusted on plant data.
 
-The :ref:`first case study <APPS_batch_case_dupont>` used a PCA model of the trajectories
-alone. Here a block of final quality attributes is available, so the model is a
-:ref:`PLS <SECTION_PLS>` model from the unfolded trajectories to the five quality
-attributes. Three questions are asked of it: does the model single out the two faulty
-batches, does it say what went wrong and when, and could it have said so while the batches
-were still running.
+The :ref:`first case study <APPS_batch_case_dupont>` used a PCA of the trajectories alone.
+Here final quality is available too, so the model is a :ref:`PLS <SECTION_PLS>` from the
+unfolded trajectories to the five attributes. Three questions are asked of it. Does it
+single out the two faulty batches? Does it say what went wrong and when? Could it have said
+so while they were still running?
 
 The data
 ~~~~~~~~
 
 The `SBR batch reactor dataset <https://openmv.net/info/sbr-batch-reactor>`_ is a workbook
-with two sheets: the trajectories, 53 batches of 200 samples, and the quality attributes,
+of two sheets, the trajectories of 53 batches over 200 samples and the quality attributes,
 one row per batch. Of its nine trajectories, the two feed flow rates and the feed
 temperature carry only the noise the simulation adds, under 2% and 0.1% of their values, so
-the model uses the six trajectories of the reactor itself. The ``load_sbr`` function
-returns the batch dictionary, the
-quality table and the list of those six tags.
+the model uses the six of the reactor itself. ``load_sbr`` returns the batch dictionary, the
+quality table and those six tag names.
 
 .. code-block:: python
 
@@ -96,11 +94,11 @@ batch.
 The batch PLS model
 ~~~~~~~~~~~~~~~~~~~
 
-`BatchPLS <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/_batch_pls.py>`_ unfolds each batch batchwise, into one row of 6 tags times 200 samples, 1200
-columns, centres and scales every column, and fits a PLS model from that row to the five quality
-attributes, which are also centred and scaled. Two components are used. As in the first
-case study, the aim of the first model is to see what is going on, not to settle the number
-of components; the usual :ref:`cross-validation <LVM-PLS-number-of-components>` can follow.
+`BatchPLS <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/_batch_pls.py>`_ unfolds each batch batchwise into one row of 6 tags by 200 samples, 1200
+columns, centres and scales every column, and fits a PLS from that row to the five quality
+attributes, also centred and scaled. Two components are used. As in the first case study,
+this first model is to see what is going on, not to settle the number of components. The
+usual :ref:`cross-validation <LVM-PLS-number-of-components>` can follow.
 
 .. code-block:: python
 
@@ -157,16 +155,14 @@ The first component explains 65.3% of the variance in the quality block and the 
 	:ref:`below <APPS_batch_case_sbr_online_prediction>` to show the prediction while the
 	batch runs.
 
-The score plot flags both faulty batches: their :math:`T^2` values
+The score plot flags both faulty batches, whose :math:`T^2` values
 (:ref:`Hotelling's statistic <LVM-Hotellings-T2>`) are 28.2 and 19.2 against a 95% limit of
-6.6. Their marker areas say the rest: batch 37 has the smallest residual of the 53 batches
-and batch 34 the twelfth smallest, so neither departs from the model in a direction the
-model does not describe.
+6.6. Their marker areas say the rest. Batch 37 has the smallest residual of the 53 and batch
+34 the twelfth smallest, so neither departs in a direction the model does not describe.
 
-The SPE answers the other question a model can be asked about a batch: how far it sits
-away from the components, in directions the model has not described. Drawing it against
-Hotelling's :math:`T^2`, which summarises how extreme the batch is along the components,
-puts both questions in one figure. Each axis carries its own 95% limit.
+The SPE answers the other question about a batch, how far it sits away from the components.
+Drawing it against Hotelling's :math:`T^2`, which summarises how extreme the batch is along
+them, puts both questions in one figure. Each axis carries its own 95% limit.
 
 .. code-block:: python
 
@@ -205,20 +201,19 @@ puts both questions in one figure. Each axis carries its own 95% limit.
 	(orange) and 37 (aqua) are far to the right and below the SPE limit. The batches the SPE
 	flags, 8, 15 and 16, are different batches, in the upper left.
 
-The SPE flags different batches, 8, 15 and 16, all with ordinary :math:`T^2` values; three
-at or above a 95% limit is within what that limit allows among 53 batches. The SPE is
-computed from the residuals of the whole batch, all 1200 cells, so a shift along the
-model's components leaves little residual behind. The scores say a batch moved in a
-direction the model knows; the SPE says it moved in one the model does not.
+The SPE flags different batches, 8, 15 and 16, all with ordinary :math:`T^2` values. Three
+at or above a 95% limit is within what that limit allows among 53 batches. The SPE uses the
+residuals of the whole batch, all 1200 cells, so a shift along the model's components leaves
+little behind. The scores say a batch moved in a direction the model knows, the SPE that it
+moved in one the model does not.
 
 Where the model explains the trajectories
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Every unfolded column has its own :math:`R^2`, so the fit can be read per tag and per time
-sample. The same applies to the weights :math:`\mathbf{w}_1` and :math:`\mathbf{w}_2` of
-the two components, each a vector of 1200 entries, which ``time_varying_loading_plot``
-draws as six curves over the batch. The weights of a PLS model play the role that the
-loadings play in a PCA model; the section on :ref:`how the PLS model is calculated
+Every unfolded column has its own :math:`R^2`, so the fit reads per tag and per time sample.
+So do the weights :math:`\mathbf{w}_1` and :math:`\mathbf{w}_2`, each a vector of 1200
+entries, which ``time_varying_loading_plot`` draws as six curves over the batch. PLS weights
+play the role PCA loadings do, and :ref:`how the PLS model is calculated
 <LVM_PLS_calculation>` explains the difference.
 
 .. code-block:: python
@@ -249,7 +244,7 @@ loadings play in a PCA model; the section on :ref:`how the PLS model is calculat
 Latex density and conversion are the trajectories the model uses most, with an :math:`R^2`
 averaged over the batch of 0.67 and 0.75, against 0.23 to 0.26 for the two service
 temperatures and the energy released, and 0.08 for the reactor temperature. Every curve is
-low at the start: all batches begin alike, so after centring and scaling the first samples
+low at the start. All batches begin alike, so after centring and scaling the first samples
 hold little but noise.
 
 .. figure:: ../figures/batch/batch-case-sbr-weights.png
@@ -310,12 +305,11 @@ entry per (tag, time) cell, here :math:`K = 6` tags by :math:`J = 200` time samp
 summing it per tag or per sample says which trajectory and which part of the batch the score
 came from.
 
-Batch 37 sits at the low end of :math:`t_1` because its conversion and its latex density
-were below average, and the contribution is spread over the whole batch: each fifth of the
-batch carries between 15% and 26% of the total, which is what a fault that is present at
-the start of the batch would look like. The
-:ref:`raw trajectory overlay <APPS_batch_case_sbr_overlay>` at the start of this case
-study agrees. The impurity slowed the reaction from the moment the batch began.
+Batch 37 sits at the low end of :math:`t_1` because its conversion and latex density were
+below average, and the contribution is spread over the whole batch. Each fifth carries
+between 15% and 26% of the total, which is what a fault present from the start looks like.
+The :ref:`raw trajectory overlay <APPS_batch_case_sbr_overlay>` agrees. The impurity slowed
+the reaction from the moment the batch began.
 
 Batch 34: the same fault, from the middle of the batch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -341,10 +335,10 @@ Batch 34: the same fault, from the middle of the batch
 	large after it.
 
 Batch 34 is high on :math:`t_2` through the energy released and the two service
-temperatures, with the conversion and the latex density behind them. The timing is what
-distinguishes this batch from batch 37: the first two fifths of the batch carry 15% of the
-:math:`t_2` contribution and the last two fifths 68%. ``contribution_at_time_plot`` shows
-the same three tags carrying the deviation at a single sample, here sample 120.
+temperatures, with the conversion and latex density behind them. Timing distinguishes it
+from batch 37. The first two fifths of the batch carry 15% of the :math:`t_2` contribution
+and the last two fifths 68%. ``contribution_at_time_plot`` shows the same three tags
+carrying the deviation at sample 120.
 
 The raw data can be asked the same question directly, tag by tag: at which sample does each
 trajectory of a faulty batch leave the band of the other batches?
@@ -359,12 +353,12 @@ The code below answers that for batches 34 and 37, in three steps:
   median absolute deviation (MAD), smoothed with an EWMA (:math:`\lambda = 0.3`, the value
   of the :ref:`EWMA chart <monitoring_EWMA>` example).
 
-Twenty samples outlasts what noise alone produces: with no fault the reactor temperature
-never stays outside the band for more than 9 samples in a row, and 25, 30 and 40 leave the
-onsets below unchanged. Other tags do run that far in a normal batch, so a sustained
-departure says where to look, not that there is a fault. The factor 1.4826 makes the robust
-scale equal to the standard deviation for normally distributed values, so the two versions
-share an axis.
+Twenty samples outlasts what noise alone produces. With no fault the reactor temperature
+never stays outside the band for more than 9 samples in a row, and runs of 25, 30 and 40
+leave the onsets below unchanged. Other tags do run that far in a normal batch, so a
+sustained departure says where to look, not that there is a fault. The factor 1.4826 makes
+the robust scale equal to the standard deviation for normally distributed values, so the
+two versions share an axis.
 
 .. code-block:: python
 
@@ -440,26 +434,24 @@ share an axis.
 	of the others, EWMA-smoothed. Dashed: the distance from the mean of the others in units of
 	their standard deviation. The band between plus and minus two is shaded.
 
-Batch 37 leaves the band in the conversion and the latex density within the first 20
-samples and stays out; batch 34 leaves it midway, first in the two service temperatures
-and the energy released and some 20 samples later in the conversion and the latex density.
-The robust distance moves the onsets by a few samples at most, and runs larger wherever one
-of the other batches is itself unusual at that sample.
+Batch 37 leaves the band in the conversion and latex density within the first 20 samples and
+stays out. Batch 34 leaves it midway, first in the two service temperatures and the energy
+released, then some 20 samples later in the conversion and latex density. The robust
+distance moves the onsets by a few samples at most.
 
 One fault, two places in the score plot
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The same fault appears in two places of the score plot because it started at two different
 times. A batch model describes deviations in (tag, time) cells, so the time of an event is
-part of its signature: a slow reaction from the start deviates along :math:`\mathbf{w}_1`,
+part of its signature. A slow reaction from the start deviates along :math:`\mathbf{w}_1`,
 one from the middle of the batch along :math:`\mathbf{w}_2`.
 
-That is what makes batch models useful for diagnosis, and it is also a caution. A library
-of known faults built in score space needs the onset time as a coordinate, since a fault
-seen only at one onset appears as a new fault at another. The
-:ref:`on-line section <APPS_batch_case_sbr_online>` below
-returns to the two batches with a model that has never seen either fault, where the two
-places become two statistics.
+That makes batch models useful for diagnosis, and is also a caution. A library of known
+faults built in score space needs the onset time as a coordinate, since a fault seen at one
+onset appears as a new fault at another. The
+:ref:`on-line section <APPS_batch_case_sbr_online>` returns to both batches with a model
+that has seen neither fault, where the two places become two statistics.
 
 Predicted quality
 ~~~~~~~~~~~~~~~~~
@@ -523,17 +515,16 @@ Batch           Composition  Particle size  Branching  Cross-linking  Polydisper
 37, rank        4            2              1          1              1
 ==============  ===========  =============  =========  =============  ==============
 
-The rank is the position of the observed value among the 53 batches, with rank 1 the
-lowest. Both batches produced poor latex, at or near the bottom of the 53 on most
-attributes, and the fitted values place them at the same end, so a quality prediction from
-the trajectories would have flagged both batches before the laboratory results arrived.
+The rank is the position of the observed value among the 53 batches, rank 1 the lowest. Both
+batches produced poor latex, at or near the bottom on most attributes, and the fitted values
+place them at the same end. A quality prediction from the trajectories would have flagged
+both before the laboratory results arrived.
 
-The two batches are not fitted equally well: the composition of batch 37 is fitted below
-its observed value, that of batch 34 closer to the average batch than to its observed
-value. The :math:`t_1` direction, which carries the fault of batch 37, explains 65.3% of the
-quality block; the :math:`t_2` direction, which carries the fault of batch 34, explains
-6.9%. A deviation along a component that explains little of the quality block moves the
-prediction less.
+The two are not fitted equally well. The composition of batch 37 is fitted below its
+observed value, that of batch 34 closer to the average batch than to its own. The
+:math:`t_1` direction, carrying the fault of batch 37, explains 65.3% of the quality block,
+against 6.9% for :math:`t_2`, which carries the fault of batch 34. A deviation along a
+component that explains little of the quality block moves the prediction less.
 
 .. _APPS_batch_case_sbr_online_prediction:
 
@@ -591,22 +582,22 @@ running:
 
 The particle size becomes predictable only in the second half of the batch, where the
 :math:`R^2` curves earlier on this page also placed the information. Nomikos and MacGregor
-(1995) give the reason: the particle size is set largely by the seed particles charged
-before the batch starts, which the trajectories do not record, and it was the attribute
-their model explained least. A block of measurements taken before the batch starts is what
-the :ref:`third case study <APPS_batch_case_fmc>` adds.
+(1995) give the reason. It is set largely by the seed particles charged before the batch
+starts, which the trajectories do not record, and it was the attribute their model explained
+least. The :ref:`third case study <APPS_batch_case_fmc>` adds a block of such
+before-the-batch measurements.
 
 Branching and cross-linking are predicted best, and polydispersity about as well after 50
-samples as at the end. The value of the curves is their timing: the prediction error falls
-below one standard deviation of the attribute at about 20 samples for polydispersity, 50
-for composition, branching and cross-linking, and 130 for the particle size. Averaged over
-the five, the error falls from three standard deviations after 10 samples to
+samples as at the end. The value of the curves is their timing. The prediction error falls
+below one standard deviation of the attribute at about 20 samples for polydispersity, 50 for
+composition, branching and cross-linking, and 130 for the particle size. Averaged over the
+five, it falls from three standard deviations after 10 samples to
 1.4 after 25, 1.1 after 50 and 0.6 after 150, close to its value when the batch ends.
 
-Batch 4, the batch nearest the average quality, shows what the curves summarise: its
-prediction against the number of samples observed, with the prediction from the complete
-batch dashed, the measured value solid, and a band of one prediction error at that sample
-(from the RMSEP curve; it is not a prediction interval).
+Batch 4, nearest the average quality, shows what the curves summarise. Its prediction is
+drawn against the number of samples observed, with the prediction from the complete batch
+dashed and the measured value solid. The band is one prediction error at that sample, taken
+from the RMSEP curve, and is not a prediction interval.
 
 .. code-block:: python
 
@@ -653,21 +644,20 @@ carry the information arrive, and the band narrows with it.
 Would the model have caught it on-line?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The model on this page holds batches 34 and 37, which is right for diagnosing them after
-the fact and wrong for monitoring: a monitoring model must describe normal operation, as
-the :ref:`first case study <APPS_batch_case_dupont>` does when it removes its outliers. The
-reference model here is fitted to the 51 batches without 34 and 37, and the two are then
-run through it sample by sample, as if they were new batches on a running plant.
+The model on this page holds batches 34 and 37, which is right for diagnosing them after the
+fact and wrong for monitoring. A monitoring model must describe normal operation, as the
+:ref:`first case study <APPS_batch_case_dupont>` does when it removes its outliers. The
+reference model here is fitted to the 51 batches without 34 and 37, and the two are run
+through it sample by sample, as if they were new batches on a running plant.
 
 Two statistics are tracked. Hotelling's :math:`T^2` of the score estimate says how far the
 batch so far sits *along* the model's components; the SPE of the newest sample says how far
 that sample sits *away* from them.
 
 The :math:`T^2` limit is the same at every sample, depending only on the number of
-components and of reference batches. What changes is the spread of the score estimates: a
+components and of reference batches. What changes is the spread of the score estimates. A
 score estimated from the first few samples uses only a few cells of the unfolded row, and
-across the reference batches such estimates scatter far more widely than the final scores
-do.
+across the reference batches such estimates scatter far more widely than the final scores.
 
 :math:`T^2` at each sample is therefore computed against the covariance of the reference
 estimates at that same sample, which the monitor stores. Nomikos and MacGregor (1995) set
@@ -675,12 +665,11 @@ their score-chart limits from that spread and note that :math:`T^2` needs the co
 each sample too; Garcia-Munoz, Kourti and MacGregor (2004) compute it. The SPE limit is
 fitted sample by sample the same way.
 
-Normalising by that covariance also fixes what the reference batches average: dividing by
+Normalising by that covariance also fixes what the reference batches average. Dividing by
 the spread of the same batches that set it leaves their mean :math:`T^2` at
 :math:`A(N-1)/N` at every sample, 1.96 for two components and 51 batches. The grey line in
-the monitoring figure below is therefore flat by construction, and it is the same property
-that lets one limit serve every sample. The SPE has no such normalisation, so its
-reference mean does vary.
+the monitoring figure below is flat by construction, and the same property lets one limit
+serve every sample. The SPE has no such normalisation, so its reference mean does vary.
 
 .. code-block:: python
 
@@ -783,14 +772,14 @@ the fault present from the start, in the scores within the first 15 samples (199
 fault from the middle of the batch, in the SPE after 105 samples (1995), the same sample as
 here.
 
-The 51 reference batches are the definition of normal, so any alarm they raise is a false
-alarm and their alarm rate is the rate to expect on the plant. A 99% limit lets 1% of a
-normal batch's values cross by chance, which over 200 samples is about two crossings, so a
-single crossing cannot count as an alarm. The rule used here is three consecutive samples
-above the limit, as in Garcia-Munoz, Kourti and MacGregor (2004).
+The 51 reference batches define normal, so any alarm they raise is a false alarm and their
+alarm rate is the rate to expect on the plant. A 99% limit lets 1% of a normal batch's
+values cross by chance, about two crossings over 200 samples, so a single crossing cannot
+count as an alarm. The rule used here is three consecutive samples above the limit, as in
+Garcia-Munoz, Kourti and MacGregor (2004).
 
 That rule holds for :math:`T^2`, where one of the 51 reference batches alarms. It fails for
-the SPE, where 13 do, one normal batch in four. The cause is autocorrelation: a sample that
+the SPE, where 13 do, one normal batch in four. The cause is autocorrelation. A sample that
 fits the model poorly is usually followed by another that does, so SPE crossings arrive in
 runs long enough to satisfy the rule. Three responses, each measured on the same 51
 batches:
@@ -805,11 +794,11 @@ batches:
   every kind of variation the model does not describe, leaves no reference batch alarming
   and catches batch 34 after 106 samples.
 
-An alarm on a new batch is trustworthy only once that false-alarm rate has been measured
-and made acceptable. Ramaker and co-workers (2006) judge a batch chart on that pair: how
-often it signals over a normal batch, and how long it takes to signal on a faulty one. Here
-the :math:`T^2` chart is used as it stands and the SPE chart needs one of the three; either
-way batch 34 is flagged with most of its second half still to run.
+An alarm on a new batch is trustworthy only once that false-alarm rate has been measured and
+made acceptable. Ramaker and co-workers (2006) judge a batch chart on how often it signals
+over a normal batch and how long it takes to signal on a faulty one. Here the :math:`T^2`
+chart is used as it stands and the SPE chart needs one of the three. Either way batch 34 is
+flagged with most of its second half still to run.
 
 .. code-block:: python
 
@@ -836,22 +825,22 @@ The two batches are caught by different statistics, and that is not an accident 
   tags the reference model has no component for, so from that sample on the newest samples
   stop fitting the model, which is what the SPE measures.
 
-Which chart speaks first is a property of the fault, not a rule. Across the five faults
-Garcia-Munoz, Kourti and MacGregor (2004) simulated, every one showed in the SPE chart
-first, where here the fault present from the start is seen in the scores first and in the
-residual only much later.
+Which chart speaks first is a property of the fault, not a rule. All five faults
+Garcia-Munoz, Kourti and MacGregor (2004) simulated showed in the SPE chart first, where
+here the fault present from the start is seen in the scores first and in the residual only
+much later.
 
 The residual shares say what changed. At the alarm sample the reactor temperature carries
-the largest share of the residual, with the cooling-water and jacket temperatures next;
-four samples later the two service temperatures and the energy released carry most of it
-and the reactor temperature has dropped back: a transient in the reactor temperature and a
-lasting change on the service side, in the same order the departure analysis found.
+the largest share, with the cooling-water and jacket temperatures next. Four samples later
+the two service temperatures and the energy released carry most of it and the reactor
+temperature has dropped back. That is a transient in the reactor temperature and a lasting
+change on the service side, the order the departure analysis found.
 
 The same score estimate that predicts the quality also predicts the rest of the
-trajectories: the model's reconstruction :math:`\hat{\boldsymbol{\tau}} \mathbf{P}^{T}`,
+trajectories, as the model's reconstruction :math:`\hat{\boldsymbol{\tau}} \mathbf{P}^{T}`
 read off for the samples not yet seen (Wold and co-workers, 2009, Eq. 4). Garcia-Munoz,
-Kourti and MacGregor (2004) show it to be an adaptive time-series forecast, built on how
-the variables co-vary over the whole batch rather than on the trend so far.
+Kourti and MacGregor (2004) show it to be an adaptive time-series forecast, built on how the
+variables co-vary over the whole batch rather than on the trend so far.
 
 It is drawn in the z form of the departure analysis, each tag as a distance from the 51
 normal batches at that sample in their standard deviations, so a departure reads directly
@@ -914,23 +903,22 @@ against the zero line.
 	the forecast uses the batch's own data up to that sample, then continues along the
 	model's components.
 
-It is the same distinction as the two statistics. The model can forecast along its
-components, so it forecasts the slow conversion of batch 37 from sample 30 onwards; the fault
-of batch 34 lies off them, so the forecasts follow the average batch, and the model can flag
-the fault but cannot forecast it. Nomikos and MacGregor (1995) stop drawing their prediction
-intervals for this batch once its SPE crosses the limit, for the same reason.
+It is the same distinction as the two statistics. The model forecasts along its components,
+so it forecasts the slow conversion of batch 37 from sample 30 onwards. The fault of batch
+34 lies off them, so its forecasts follow the average batch and the model can flag the fault
+but not forecast it. Nomikos and MacGregor (1995) stop drawing their prediction intervals
+for this batch once its SPE crosses the limit, for the same reason.
 
 Both faults are found with more than half the batch still to run, and the statistic that
-finds each says which kind it is: a large :math:`T^2` with a small residual is a batch far
-along a known direction, a large residual with a small :math:`T^2` a batch doing something
-the reference set never did.
+finds each says which kind it is. A large :math:`T^2` with a small residual is a batch far
+along a known direction. A large residual with a small :math:`T^2` is a batch doing
+something the reference set never did.
 
-Every number here comes from the reference set, which was easy to choose because the
-simulation says which batches are faulty. On plant data those batches are the first thing
-to get right, and the :ref:`first case study <APPS_batch_case_dupont>` shows how much of
-the work that is. The :ref:`third case study <APPS_batch_case_fmc>` turns to a process
-where the trajectories are one of four blocks about a batch, and asks which block matters
-most.
+Every number here comes from the reference set, easy to choose because the simulation says
+which batches are faulty. On plant data those batches are the first thing to get right, and
+the :ref:`first case study <APPS_batch_case_dupont>` shows how much of the work that is. The
+:ref:`third case study <APPS_batch_case_fmc>` turns to a process where the trajectories are
+one of four blocks about a batch, and asks which block matters most.
 
 References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~
