@@ -660,9 +660,9 @@ columns and the nine operating columns.
 	blocks = {"Zchem": Zchem, "Zop": Zop, "X": wide}
 	mb = MBPLS(n_components=2).fit(blocks, Y)
 	print(mb.r2_y_cumulative_.round(3).tolist())                # R2 of the quality block, cumulative
-	# [0.37, 0.472]
+	# [0.369, 0.47]
 	print(mb.r2_x_per_block_cumulative_.iloc[:, -1].round(3).to_dict())   # R2 of each block after two components
-	# {'Zchem': 0.233, 'Zop': 0.304, 'X': 0.259}
+	# {'Zchem': 0.234, 'Zop': 0.304, 'X': 0.258}
 	print(mb.super_vip_.round(2).to_dict())                     # super VIP per block
 	# {'Zchem': 0.86, 'Zop': 1.07, 'X': 1.06}
 	super_t = mb.super_scores_
@@ -685,10 +685,10 @@ columns and the nine operating columns.
 	components (blue) and the super VIP of each block (orange). Right: observed and fitted
 	residual solvent concentration, with batch 13 marked.
 
-The combined model explains 47.2% of the quality block after two components, against 41.0%
+The combined model explains 47.0% of the quality block after two components, against 41.0%
 for the trajectories alone and 36.4% for the two initial-condition blocks together. The
-components describe 23.3% of the chemistry block, 30.4% of the operating-condition block
-and 25.9% of the trajectory block. The Variable Importance in Projection (VIP) is a summary,
+components describe 23.4% of the chemistry block, 30.4% of the operating-condition block
+and 25.8% of the trajectory block. The Variable Importance in Projection (VIP) is a summary,
 per variable, of how much that variable contributes to explaining the quality block across
 the components, scaled so that a value above one marks a variable of above-average
 importance; the super VIP applies the same idea to a whole block. It puts the operating
@@ -859,7 +859,7 @@ table below: the chemistry :math:`\mathbf{Z}_\text{chem}`, the operating conditi
 	                        for block in ("Zchem", "Zop", "X", "Y") for a in (0, 1)})
 	print(summary.round(1).to_string(na_rep="-"))
 	print(summary["Y"].sum(axis=1, min_count=1).round(1).dropna().tolist())   # quality explained, per model
-	# [70.3, 22.2, 26.2, 36.4, 41.0, 47.2]
+	# [70.3, 22.2, 26.2, 36.4, 41.0, 47.0]
 
 .. table:: :math:`R^2` of each block, as a percentage, per component, for every model of the ladder.
 
@@ -874,13 +874,13 @@ table below: the chemistry :math:`\mathbf{Z}_\text{chem}`, the operating conditi
    +----------------------+------+------+------+------+------+------+------+------+
    | PLS from Zop         | -    | -    | 30.4 | 23.6 | -    | -    | 20.7 | 5.5  |
    +----------------------+------+------+------+------+------+------+------+------+
-   | Multiblock PLS on Z  | 11.2 | 18.4 | 22.3 | 13.3 | -    | -    | 29.2 | 7.2  |
+   | Multiblock PLS on Z  | 11.1 | 18.4 | 22.3 | 13.3 | -    | -    | 29.2 | 7.2  |
    +----------------------+------+------+------+------+------+------+------+------+
    | Batch PCA on X       | -    | -    | -    | -    | 23.1 | 14.6 | -    | -    |
    +----------------------+------+------+------+------+------+------+------+------+
    | Batch PLS on X       | -    | -    | -    | -    | 21.7 | 13.1 | 26.6 | 14.4 |
    +----------------------+------+------+------+------+------+------+------+------+
-   | Batch multiblock PLS | 6.5  | 16.8 | 19.9 | 10.5 | 12.5 | 13.5 | 37.0 | 10.2 |
+   | Batch multiblock PLS | 6.5  | 16.9 | 20.0 | 10.5 | 12.4 | 13.4 | 36.9 | 10.2 |
    +----------------------+------+------+------+------+------+------+------+------+
 
 Read down the quality columns and the ladder pays off: each rung adds to the one before it,
