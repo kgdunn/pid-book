@@ -25,6 +25,7 @@ extensions = [
     "my-extensions.youtube",
     "my-extensions.pdf_exclude",
     "my-extensions.figure_source",
+    "my-extensions.reading_time",
 ]
 
 # Avoid Subresource Integrity errors for the bundled jQuery.
@@ -161,6 +162,8 @@ html_theme_options = {
     "show_toc_level": 2,
     # Remove the navbar search button so Pagefind in the sidebar is the only search.
     "navbar_persistent": [],
+    # Article header bar: the sidebar toggle, then the reading-time estimate.
+    "article_header_start": ["toggle-primary-sidebar.html", "pid-reading-time.html"],
     "extra_footer": "",
     # Syntax-highlighting palette for HTML code blocks, per colour mode.
     "pygments_light_style": "github-light",
@@ -179,6 +182,15 @@ html_js_files = [("js/figure-source.js", {"defer": "defer"})]
 # prefix that turns a script path from the manifest into a link.
 figure_source_root = "figures"
 figure_source_base = "https://github.com/kgdunn/figures/blob/main/"
+
+# Reading-time estimate, shown in the article header bar by
+# `_templates/pid-reading-time.html`. 150 words per minute is deliberately
+# below the ~238 wpm at which adults read non-fiction, because this book is
+# read for understanding; the per-element costs in
+# my-extensions/reading_time.py then add to it for equations, figures,
+# tables and code, so a dense page reports a longer time than its word
+# count alone would give.
+reading_time_wpm = 150
 
 # Custom sidebar: logo, then Pagefind search, then the book TOC.
 html_sidebars = {
