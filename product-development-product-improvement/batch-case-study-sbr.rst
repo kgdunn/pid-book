@@ -50,6 +50,7 @@ the model uses the six of the reactor itself, which ``load_sbr`` reads from the 
 	trajectories = {batch_id: batch[sbr.trajectory_tags] for batch_id, batch in sbr.X.items()}
 	quality = sbr.Y
 	print(len(trajectories), "batches;", sbr.trajectory_tags, "; quality block", quality.shape)
+	# 53 batches; ['ReactorTemp', 'CoolingTemp', 'JacketTemp', 'LatexDensity', 'Conversion', 'EnergyReleased'] ; quality block (53, 5)
 
 .. code-block:: python
 
@@ -105,6 +106,7 @@ usual :ref:`cross-validation <LVM-PLS-number-of-components>` can follow.
 	r2y = np.diff([0.0, *model.r2_cumulative_])                     # R2 of the quality block, per component
 	r2x = np.diff([0.0, *model.r2_per_variable_.mean(axis=0)])     # R2 of the trajectories, per component
 	print("R2X per component:", r2x.round(3), " R2Y per component:", r2y.round(3))
+	# R2X per component: [0.245 0.127]  R2Y per component: [0.653 0.069]
 	spe = model.spe_.iloc[:, -1]
 	t1, t2 = model.scores_.iloc[:, 0], model.scores_.iloc[:, 1]
 	marked = {34: ORANGE, 37: AQUA, 4: PURPLE}
@@ -133,6 +135,8 @@ usual :ref:`cross-validation <LVM-PLS-number-of-components>` can follow.
 	for batch_id in (34, 37):
 	    print(f"batch {batch_id}: T2 = {model.hotellings_t2_.loc[batch_id].iloc[-1]:.1f} (limit {model.hotellings_t2_limit(conf_level=0.95):.1f}),",
 	          f"SPE = {model.spe_.loc[batch_id].iloc[-1]:.1f} (limit {model.spe_limit(conf_level=0.95):.1f})")
+	    # batch 34: T2 = 28.2 (limit 6.6), SPE = 23.1 (limit 34.6)
+	    # batch 37: T2 = 19.2 (limit 6.6), SPE = 18.7 (limit 34.6)
 
 The first component explains 65.3% of the variance in the quality block and the second
 6.9%; their shares of the variance in the trajectories are on the axes of the score plot.
@@ -155,8 +159,9 @@ The first component explains 65.3% of the variance in the quality block and the 
 	batch runs.
 
 The score plot flags both faulty batches, whose :math:`T^2` values
-(:ref:`Hotelling's statistic <LVM-Hotellings-T2>`) are 28.2 and 19.2 against a 95% limit of
-6.6. Their marker areas say the rest. Batch 37 has the smallest residual of the 53 and batch
+(:ref:`Hotelling's statistic <LVM-Hotellings-T2>`) are 28.2 for batch 34 and 19.2 for batch 37,
+against a 95% limit of 6.6. Their marker areas say the rest. Batch 37 has the smallest residual
+of the 53 and batch
 34 the twelfth smallest, so neither departs in a direction the model does not describe.
 
 The SPE answers the other question about a batch, how far it sits away from the components.
@@ -187,11 +192,12 @@ them, puts both questions in one figure, each axis carrying its own 95% limit.
 	above_spe = sorted(spe.index[spe > model.spe_limit(conf_level=0.95)])
 	print("above the SPE limit:", above_spe, "  above the T2 limit:",
 	      sorted(t2.index[t2 > model.hotellings_t2_limit(conf_level=0.95)]))
+	# above the SPE limit: [8, 15, 16]   above the T2 limit: [34, 37]
 	influence_plot(model, highlight={34: ORANGE, 37: AQUA}, labels=[34, 37, *above_spe]).show()
 
 .. figure:: ../figures/batch/batch-case-sbr-influence.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Hotelling's T2 against SPE for the 53 batches, with both 95% limits; batches 34 and 37 are far to the right beyond the T2 limit and below the SPE limit, while batches 8 and 16 are in the upper left above the SPE limit.
+	:alt: Hotelling's T2 against SPE for the 53 batches, with both 95% limits; batches 34 and 37 are far to the right beyond the T2 limit and below the SPE limit, while batches 8, 15 and 16 are in the upper left at or above the SPE limit.
 	:width: 620px
 	:scale: 80
 	:align: center
@@ -225,6 +231,7 @@ play the role PCA loadings do, and :ref:`how the PLS model is calculated
 	                  yaxis_title="R2", height=360)
 	fig.show()
 	print("R2 per tag, averaged over time:", r2_grid.mean(axis=1).round(2).to_dict())
+	# R2 per tag, averaged over time: {'Conversion': 0.75, 'CoolingTemp': 0.23, 'EnergyReleased': 0.26, 'JacketTemp': 0.24, 'LatexDensity': 0.67, 'ReactorTemp': 0.08}
 	time_varying_loading_plot(model, component=1).show()
 	time_varying_loading_plot(model, component=2).show()
 
@@ -264,7 +271,8 @@ The weights say what a score means:
 * a low :math:`t_1` is a below-average latex density and conversion throughout the batch;
 * a high :math:`t_2` is cooling-water and jacket temperatures above their average
   trajectories over the second half, with the energy released, the latex density and the
-  conversion below theirs, and the reactor temperature barely moving.
+  conversion below theirs, and the reactor temperature carrying weights that change sign from
+  sample to sample, so the component says nothing consistent about it.
 
 A component says these tags move together, not which of them drives the others. Those are
 predictions about batches 37 and 34 respectively, and the contribution plots test them.
@@ -279,6 +287,7 @@ Batch 37: the fault from the start
 	unfolded_contribution_plot(t1, batch_id=37).show()
 	unfolded_contribution_plot(t1, batch_id=37, by_tag=True).show()
 	print("batch 37, t1 contributions per tag:", t1.loc[37].groupby(level="tag", sort=False).sum().round(1).to_dict())
+	# batch 37, t1 contributions per tag: {'Conversion': -33.4, 'CoolingTemp': -4.2, 'EnergyReleased': -5.2, 'JacketTemp': -4.3, 'LatexDensity': -25.5, 'ReactorTemp': -1.3}
 
 	def share_per_fifth(row):
 	    """Split a contribution vector into five equal time blocks and give each block's share of the total."""
@@ -287,6 +296,7 @@ Batch 37: the fault from the start
 	    return (fifths / fifths.sum()).round(2).tolist()
 
 	print("batch 37: share of the t1 contribution per fifth of the batch:", share_per_fifth(t1.loc[37]))
+	# batch 37: share of the t1 contribution per fifth of the batch: [0.15, 0.18, 0.19, 0.26, 0.22]
 
 .. figure:: ../figures/batch/batch-case-sbr-batch-37-contributions.png
 	:source: batch/batch-case-sbr-figures.py
@@ -319,7 +329,9 @@ Batch 34: the same fault, from the middle of the batch
 	unfolded_contribution_plot(t2, batch_id=34).show()
 	contribution_at_time_plot(t2, k=120, batch_id=34).show()
 	print("batch 34, t2 contributions per tag:", t2.loc[34].groupby(level="tag", sort=False).sum().round(1).to_dict())
+	# batch 34, t2 contributions per tag: {'Conversion': 8.1, 'CoolingTemp': 12.2, 'EnergyReleased': 14.3, 'JacketTemp': 12.3, 'LatexDensity': 7.2, 'ReactorTemp': 4.0}
 	print("batch 34: share of the t2 contribution per fifth of the batch:", share_per_fifth(t2.loc[34]))
+	# batch 34: share of the t2 contribution per fifth of the batch: [0.06, 0.09, 0.17, 0.39, 0.29]
 
 .. figure:: ../figures/batch/batch-case-sbr-batch-34-contributions.png
 	:source: batch/batch-case-sbr-figures.py
@@ -385,7 +397,11 @@ two versions share an axis.
 
 	for batch_id in (37, 34):
 	    print(f"batch {batch_id}, first sustained departure:", sustained_departure(z[batch_id]))
+	    # batch 37, first sustained departure: {'ReactorTemp': None, 'CoolingTemp': None, 'JacketTemp': None, 'LatexDensity': 13, 'Conversion': 9, 'EnergyReleased': None}
+	    # batch 34, first sustained departure: {'ReactorTemp': None, 'CoolingTemp': 103, 'JacketTemp': 104, 'LatexDensity': 129, 'Conversion': 123, 'EnergyReleased': 105}
 	    print("  robust, smoothed:", sustained_departure(z_robust[batch_id]))
+	    #   robust, smoothed: {'ReactorTemp': None, 'CoolingTemp': 0, 'JacketTemp': 0, 'LatexDensity': 15, 'Conversion': 0, 'EnergyReleased': None}
+	    #   robust, smoothed: {'ReactorTemp': None, 'CoolingTemp': 105, 'JacketTemp': 107, 'LatexDensity': 134, 'Conversion': 126, 'EnergyReleased': 107}
 
 	# Why 20: it has to outlast what the noise alone produces, and the answer must not depend on it.
 	def longest_run(flags):
@@ -435,8 +451,11 @@ two versions share an axis.
 
 Batch 37 leaves the band in the conversion and latex density within the first 20 samples and
 stays out. Batch 34 leaves it midway, first in the two service temperatures and the energy
-released, then some 20 samples later in the conversion and latex density. The robust
-distance moves the onsets by a few samples at most.
+released, then some 20 samples later in the conversion and latex density. The robust distance
+moves batch 34's onsets by two to five samples, and for batch 37 it also puts the
+cooling-water and jacket temperatures outside the band from the first sample, where the
+standard-deviation distance keeps them inside throughout. Its scale is about a tenth smaller
+on those two tags, so a departure of the same size counts for more.
 
 One fault, two places in the score plot
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -488,6 +507,12 @@ batches show what the trajectories knew before the laboratory did.
 	table = pd.concat({"observed": quality.loc[faulty], "fitted": model.predictions_.loc[faulty],
 	                   "rank of observed": quality.rank().loc[faulty].astype(int)}, names=["value", "batch_id"])
 	print(table.to_string(float_format=lambda value: f"{value:.4g}"))
+	# observed 34 0.4525 1244 1.234e-05 4.784e-05 3.599
+	# 37 0.4525 1247 1.173e-05 4.549e-05 3.462
+	# fitted 34 0.454 1245 1.228e-05 4.761e-05 3.577
+	# 37 0.45 1250 1.183e-05 4.585e-05 3.491
+	# rank of observed 34 5 1 4 4 17
+	# 37 4 2 1 1 1
 
 .. figure:: ../figures/batch/batch-case-sbr-observed-vs-fitted.png
 	:source: batch/batch-case-sbr-figures.py
@@ -500,8 +525,9 @@ batches show what the trajectories knew before the laboratory did.
 	with batches 34 (orange) and 37 (aqua) marked. Each panel lists two errors: RMSEE, the
 	scatter of these fitted values about the :math:`y = x` line, and RMSEP, the same scatter
 	when every batch is left out of the fit in turn, each in the attribute's own units and in
-	standard deviations of it. The shaded band is two RMSEP either side of the line, so a batch
-	outside it is one the model misses by more than a reader should expect it to.
+	standard deviations of it. The shaded band is two RMSEP either side of the line: the scatter to
+	expect from a batch the model has not seen, and so wider than the scatter of the fitted values
+	drawn here.
 
 ==============  ===========  =============  =========  =============  ==============
 Batch           Composition  Particle size  Branching  Cross-linking  Polydispersity
@@ -618,9 +644,12 @@ from the RMSEP curve, and is not a prediction interval.
 	    fig.show()
 	print("batch 4, particle size: measured", round(quality.loc[4, "ParticleSize"], 1),
 	      "final prediction", round(model.predictions_.loc[4, "ParticleSize"], 1))
+	# batch 4, particle size: measured 1256.9 final prediction 1257.1
 	print("  prediction after 10, 25, 50, 100, 150 samples:", trace.y_hat["ParticleSize"].loc[[10, 25, 50, 100, 150]].round(1).tolist())
+	#   prediction after 10, 25, 50, 100, 150 samples: [1251.0, 1248.1, 1255.3, 1254.9, 1257.4]
 	print("batch 4, composition: measured", round(quality.loc[4, "Composition"], 4),
 	      "final prediction", round(model.predictions_.loc[4, "Composition"], 4))
+	# batch 4, composition: measured 0.4546 final prediction 0.4544
 
 .. figure:: ../figures/batch/batch-case-sbr-online-prediction-batch-4.png
 	:source: batch/batch-case-sbr-figures.py
@@ -635,8 +664,9 @@ from the RMSEP curve, and is not a prediction interval.
 	rules are 0.2 units apart and overlap at this scale; for the composition they are 0.0002
 	apart and separate.
 
-The prediction walks in from the average batch toward the final value as the samples that
-carry the information arrive, and the band narrows with it.
+The prediction starts away from the final value while few samples are in hand, moves as the
+samples that carry the information arrive, and settles in the second half of the batch. The band
+narrows with it.
 
 .. _APPS_batch_case_sbr_online:
 
@@ -698,16 +728,18 @@ serve every sample. The SPE has no such normalisation, so its reference mean doe
 	stay the same throughout the batch.
 
 The limits are set at 99%, and an alarm here means three consecutive samples above the
-limit, the same kind of rule the departure analysis used.
+limit, the same kind of rule the departure analysis used. The sample reported for an alarm
+is the first of the three, so an operator sees it two samples later.
 
 .. code-block:: python
 
 	def first_sustained(alarm, run=3):
-	    """Number of samples observed when the alarm first holds for `run` consecutive samples, or None."""
+	    """First of the `run` consecutive samples above the limit, counting from one, or None."""
 	    runs = np.convolve(alarm.astype(int), np.ones(run, dtype=int), mode="valid") == run
 	    return int(runs.argmax()) + 1 if runs.any() else None
 
 	print(f"T2 limit at 99%: {monitor.t2_limit_over_time_[0]:.1f}")
+	# T2 limit at 99%: 10.5
 	mean_t2 = np.asarray(monitor.t2_mean_over_time_)            # A(N-1)/N at every sample, whatever the data do
 	print(f"reference mean T2: {mean_t2.min():.2f} to {mean_t2.max():.2f}")
 	# reference mean T2: 1.96 to 1.96
@@ -715,6 +747,9 @@ limit, the same kind of rule the departure analysis used.
 	    result = monitor.monitor(trajectories[batch_id])
 	    print(f"batch {batch_id}: T2 alarm after {first_sustained(result.t2_alarm)} samples;",
 	          f"SPE alarm after {first_sustained(result.spe_alarm)} samples")
+	    # batch 37: T2 alarm after 23 samples; SPE alarm after 145 samples
+	    # batch 34: T2 alarm after 190 samples; SPE alarm after 105 samples
+	    # batch 4: T2 alarm after None samples; SPE alarm after None samples
 
 	def longest_run(alarm):
 	    """Longest stretch of consecutive samples above the limit."""
@@ -727,13 +762,19 @@ limit, the same kind of rule the departure analysis used.
 	traced = [monitor.monitor(t) for t in normal.values()]
 	print(f"reference batches: {np.mean([r.t2_alarm.mean() for r in traced]):.2%} of T2 values and",
 	      f"{np.mean([r.spe_alarm.mean() for r in traced]):.2%} of SPE values above their limits")
+	# reference batches: 0.17% of T2 values and 1.24% of SPE values above their limits
 	for run in (3, 5, 10):
 	    print(f"  with an SPE alarm of {run} consecutive samples somewhere:",
 	          sum(first_sustained(r.spe_alarm, run) is not None for r in traced), "of 51;",
 	          "T2:", sum(first_sustained(r.t2_alarm, run) is not None for r in traced), "of 51")
+	    #   with an SPE alarm of 3 consecutive samples somewhere: 13 of 51; T2: 1 of 51
+	    #   with an SPE alarm of 5 consecutive samples somewhere: 8 of 51; T2: 1 of 51
+	    #   with an SPE alarm of 10 consecutive samples somewhere: 3 of 51; T2: 1 of 51
 	print("  longest SPE alarm run in a reference batch:", max(longest_run(r.spe_alarm) for r in traced), "samples")
+	#   longest SPE alarm run in a reference batch: 13 samples
 	print("batch 34: above the SPE limit for", int(monitor.monitor(trajectories[34]).spe_alarm[104:].sum()),
 	      "of its last 96 samples; batch 37: longest T2 alarm run", longest_run(monitor.monitor(trajectories[37]).t2_alarm), "samples")
+	# batch 34: above the SPE limit for 86 of its last 96 samples; batch 37: longest T2 alarm run 178 samples
 	online_monitoring_plot(monitor, trajectories[37], "t2").show()
 	fig = online_monitoring_plot(monitor, trajectories[34], "spe")
 	fig.add_vline(x=100, line_dash="dash", line_color=ORANGE, annotation_text="impurity enters")
@@ -743,6 +784,8 @@ limit, the same kind of rule the departure analysis used.
 	    shares = reference.predict_online(trajectories[34], upto_k=k).residuals.xs(k - 1, level="sequence") ** 2
 	    shares = (shares / shares.sum() * 100).round(0).astype(int)
 	    print(f"batch 34 after {k} samples, share of the residual per tag [%]:", shares.to_dict())
+	    # batch 34 after 105 samples, share of the residual per tag [%]: {'Conversion': 2, 'CoolingTemp': 30, 'EnergyReleased': 11, 'JacketTemp': 16, 'LatexDensity': 1, 'ReactorTemp': 40}
+	    # batch 34 after 109 samples, share of the residual per tag [%]: {'Conversion': 2, 'CoolingTemp': 36, 'EnergyReleased': 19, 'JacketTemp': 29, 'LatexDensity': 1, 'ReactorTemp': 12}
 	fig = go.Figure(go.Bar(x=shares.index, y=shares.values, marker_color=BLUE))
 	fig.update_layout(title=f"Batch 34 after {alarm_k} samples", yaxis_title="Share of the residual [%]", height=320)
 	fig.show()
@@ -768,18 +811,20 @@ impurity enters, while its :math:`T^2` stays inside until 190.
 
 Nomikos and MacGregor flagged the same two batches with models of all nine trajectories:
 the fault present from the start, in the scores within the first 15 samples (1994), and the
-fault from the middle of the batch, in the SPE after 105 samples (1995), the same sample as
-here.
+fault from the middle of the batch, in the SPE after 105 samples, the same sample as here
+(their multi-way PLS paper of 1995).
 
-The 51 reference batches define normal, so any alarm they raise is a false alarm and their
-alarm rate is the rate to expect on the plant. A 99% limit lets 1% of a normal batch's
+The 51 reference batches define normal, so any alarm they raise is a false alarm. Their alarm
+rate is a lower bound on the rate to expect on the plant, since the limits were fitted to these
+same batches. A 99% limit lets 1% of a normal batch's
 values cross by chance, about two crossings over 200 samples, so a single crossing cannot
 count as an alarm. The rule used here is three consecutive samples above the limit, as in
 Garcia-Munoz, Kourti and MacGregor (2004).
 
 That rule holds for :math:`T^2`, where one of the 51 reference batches alarms. It fails for
-the SPE, where 13 do, one normal batch in four. The cause is autocorrelation: a sample that fits the model poorly is usually followed by
-another that does, so SPE crossings arrive in runs long enough to satisfy the rule. Three responses, each measured on the same 51
+the SPE, where 13 do, one normal batch in four. The cause is autocorrelation: a sample that fits
+the model poorly is usually followed by another that does, so SPE crossings arrive in runs long
+enough to satisfy the rule. Three responses, each measured on the same 51
 batches:
 
 * a limit smoothed over five neighbouring samples, the window Nomikos and MacGregor (1995)
@@ -805,6 +850,7 @@ flagged with most of its second half still to run.
 	print(f"limit pooled over five samples: {np.mean([r.spe_alarm.mean() for r in pooled_traced]):.2%} of the reference",
 	      f"SPE values above it; {sum(first_sustained(r.spe_alarm) is not None for r in pooled_traced)} of 51 batches",
 	      f"with a three-sample run; batch 34 flagged after {first_sustained(pooled.monitor(trajectories[34]).spe_alarm)} samples")
+	# limit pooled over five samples: 1.34% of the reference SPE values above it; 15 of 51 batches with a three-sample run; batch 34 flagged after 105 samples
 	cumulative = BatchMonitor(reference, conf_level=0.99).fit(normal)        # the SPE over every sample observed so far
 	print([sum(first_sustained(cumulative.monitor(t).spe_alarm) is not None for t in normal.values()),
 	       first_sustained(cumulative.monitor(trajectories[34]).spe_alarm)])   # reference batches with an alarm; batch 34
@@ -882,6 +928,10 @@ against the zero line.
 	    forecast = z_form(reference.predict_online(trajectories[batch_id], upto_k=k).forecast)[tag].iloc[k:]
 	    print(f"batch {batch_id}, {tag}, from sample {k} onwards: forecast mean {forecast.mean():.2f} sd,",
 	          f"actual {z_form(trajectories[batch_id])[tag].iloc[k:].mean():.2f} sd")
+	# batch 37, Conversion, from sample 30 onwards: forecast mean -3.48 sd, actual -4.81 sd
+	# batch 37, Conversion, from sample 60 onwards: forecast mean -4.75 sd, actual -4.82 sd
+	# batch 34, CoolingTemp, from sample 60 onwards: forecast mean 0.34 sd, actual 2.36 sd
+	# batch 34, CoolingTemp, from sample 115 onwards: forecast mean 0.56 sd, actual 3.30 sd
 
 .. figure:: ../figures/batch/batch-case-sbr-forecast.png
 	:source: batch/batch-case-sbr-figures.py
@@ -907,8 +957,9 @@ so it forecasts the slow conversion of batch 37 from sample 30 onwards. The faul
 but not forecast it. Nomikos and MacGregor (1995) stop drawing their prediction intervals
 for this batch once its SPE crosses the limit, for the same reason.
 
-Both faults are found with more than half the batch still to run, and the statistic that
-finds each says which kind it is. A large :math:`T^2` with a small residual is a batch far along a known direction, while a
+Both faults are found with much of the batch still to run, and the statistic that
+finds each says which kind it is. A large :math:`T^2` with a small residual is a batch far along
+a known direction, while a
 large residual with a small :math:`T^2` is a batch doing something the reference set never
 did.
 
@@ -969,7 +1020,8 @@ The full list of readings on batch data is on the
 
 * Svante Wold, Nouna Kettaneh-Wold, John F. MacGregor and Kevin G. Dunn, "`Batch process
   modeling and MSPC <https://literature.learnche.org/item/155/batch-process-modeling-and-mspc>`_",
-  *Comprehensive Chemometrics*, **2.10**, 163-197, 2009. Mid-batch prediction of quality and
+  *Comprehensive Chemometrics*, **2**, chapter 2.10, 163-197, 2009. Mid-batch prediction of
+  quality and
   of the remaining trajectories.
 
 * The full list of readings on batch data is on the

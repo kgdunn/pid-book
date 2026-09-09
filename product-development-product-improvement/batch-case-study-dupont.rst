@@ -21,7 +21,7 @@ confirm each finding in the raw data.
 Nylon is made in two stages in an industrial batch reactor: an hour of charging and solvent
 removal, then a controlled pressure and temperature ramp to the final polymer.
 
-The critical quality property is measured in the laboratory about 12 hours after the batch
+The critical quality property is measured in the laboratory 12 hours or more after the batch
 ends. Nothing measured during a batch can correct it, and the result arrives only after the
 next few batches have started.
 
@@ -84,14 +84,14 @@ are noisy in every batch.
 
 .. figure:: ../figures/batch/batch-case-dupont-raw-trajectories.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: Four tags of the 55 batches overlaid in grey with batch 49 in orange and batch 54 in aqua; the cooling-medium temperature of batch 49 falls below the others after sample 60, and the pressure step of batch 54 comes later than in the other batches.
+	:alt: Four tags of the 55 batches overlaid in grey with batch 49 in orange and batch 54 in aqua; the cooling-medium temperature of batch 49 drops below the others over samples 56 to 65, and the pressure step of batch 54 comes later than in the other batches.
 	:width: 900px
 	:scale: 80
 	:align: center
 
 	Four of the ten tags for all 55 batches (grey), with batch 49 (orange) and batch 54
-	(aqua) drawn on top. The cooling-medium temperature of batch 49 falls away from the
-	other batches after sample 60. The pressure step of batch 54 in ``Press-1`` comes later
+	(aqua) drawn on top. The cooling-medium temperature of batch 49 drops below the other
+	batches over samples 56 to 65, then rejoins them. The pressure step of batch 54 in ``Press-1`` comes later
 	than in the other batches, and its reactor temperature ``TempR-1`` runs slightly below
 	them over the first 20 samples.
 
@@ -151,8 +151,8 @@ plots are enough to find the batches that differ.
 	:align: center
 
 	Score plot of model A. Batches 50, 52, 53, 54 and 55 (aqua) lie outside the 95%
-	confidence ellipse. Batches 49 and 51 (orange) sit inside it, among the other batches;
-	the figure below shows what separates them.
+	confidence ellipse. Batches 49 and 51 (orange) sit inside it, batch 49 among the other
+	batches and batch 51 to the right of them; the figure below shows what separates them.
 
 The :ref:`score plot <LVM_interpreting_scores>` puts the last six batches away from the
 rest, five outside the 95% confidence ellipse. Batches this far out pull the components
@@ -212,12 +212,11 @@ it is a noisy tag in every batch. The SPE :ref:`contributions <LVM_contribution_
 settle the question.
 
 The contribution vector has one entry per (tag, time) cell, 1000 here, holding that cell's
-residual after the two-component reconstruction. The SPE is the length of that vector, so
-each squared residual divided by the total is the share of the SPE the cell carries. Those
+residual after the two-component reconstruction. The SPE is the length of that vector, so each
+squared residual divided by the total is the share of the squared SPE the cell carries. Those
 shares are summed two ways:
 
-* per tag, which ranks the variables, a summary Garcia-Munoz and co-workers (2003)
-  introduced;
+* per tag, which ranks the variables;
 * per time sample, which locates the event in the batch.
 
 ``unfolded_contribution_plot`` draws the full vector of 1000 bars, grouped by tag or summed
@@ -250,7 +249,7 @@ per tag.
 	Top: the share of the SPE of batch 49 carried by each (tag, time) cell. Middle: the
 	same shares summed per tag. Bottom: summed per sample. The residual is concentrated in a
 	single window, samples 55 to 65, and in the heating- and cooling-medium temperatures,
-	the pressures and ``Flow-2``.
+	``Press-2``, ``Press-3`` and ``Flow-2``.
 
 ``Flow-1`` carries almost none of the residual. It belongs to the two medium temperatures,
 ``Flow-2``, ``Press-2`` and ``Press-3``, and 80% falls in the eleven samples from 55 to 65.
@@ -258,13 +257,14 @@ Nomikos (1996) attributes that short disturbance to a failure in the heating sys
 Wold and co-workers (2009) reach the same event from a different model.
 
 The final quality of batch 49 was barely acceptable, which fits a short event rather than a
-batch wrong throughout. Its cooling-medium temperature does fall away from the others after
-sample 60, a change easy to miss until the contributions point at it.
+batch wrong throughout. Its cooling-medium temperature does drop below the others from
+sample 56 and rejoin them by sample 65, a change easy to miss until the contributions point
+at it.
 
-The score outliers: batches 50 to 55
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The score outliers: batches 50, 52, 53, 54 and 55
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Batches 50 to 55 are far out along the components, so the tool for them is the score
+Batches 50, 52, 53, 54 and 55 are far out along the components, so the tool for them is the score
 contribution: how much every (tag, time) cell contributes to :math:`t_1` or :math:`t_2`.
 
 A score sums the scaled value times the loading over all 1000 cells,
@@ -307,7 +307,7 @@ curves.
 Batch 54 has a high :math:`t_1` because every tag contributes in the same direction over the
 whole batch. It ran away from the average trajectory from its first sample to its last, as
 the :ref:`raw trajectory overlay <APPS_batch_case_dupont_overlay>` confirms. Batches 50 and
-52 are read the same way, and batch 55, highest in :math:`t_2`, stands out through
+52 are read the same way, and batch 55, high in :math:`t_2`, stands out through
 ``Press-3``, ``Press-2`` and ``TempC-1``.
 
 Exclude and rebuild: a second group of batches
@@ -337,18 +337,19 @@ so the plots are examined again.
 
 .. figure:: ../figures/batch/batch-case-dupont-model-b-scores.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: Scores of model B on components 2 and 3; batches 37, 39 and 43 to 48 form a group at the top right, away from the main cloud, and a thick arrow labelled contribution direction runs from the group's average point to the model centre.
+	:alt: Scores of model B on components 2 and 3; batches 37, 39 and 43 to 48 form a group at the top right, away from the main cloud, and a thick arrow labelled contribution direction runs from the model centre out to the group's average point.
 	:width: 600px
 	:scale: 80
 	:align: center
 
 	Scores of model B on components 2 and 3. Batches 37, 39 and 43 to 48 (purple triangles) form a
-	group at the top right of the plot, away from the main cloud of batches. The arrow runs
-	from the group's average point (square) to the model centre: the direction along which
-	the group's contributions below are computed.
+	group at the top right of the plot, away from the main cloud of batches. The arrow runs from
+	the model centre out to the group's average point (square), the direction along which the
+	group's contributions below are computed.
 
 With the extreme batches gone, a second group separates in the plane of :math:`t_2` and
-:math:`t_3`: batches 37, 39 and 43 to 48.
+:math:`t_3`: batches 37, 39 and 43 to 48, the same group Nomikos and MacGregor (1995) single
+out in the same plane of a three-component model of these 48 batches.
 
 A contribution is the weighted difference between two points, each either an actual batch or
 a synthetic one such as the model centre or a group average. Here the eight are compared
@@ -391,8 +392,9 @@ the displacement from it, and its contributions add up to their mean score.
 	with the largest contributions, and of ``Flow-2``: the eight batches of the group (purple)
 	and the other 40 batches of model B (light grey).
 
-``TempC-1`` and ``Press-3`` carry most of the displacement on both components, every member
-in the same direction, most of it from the first 25 samples. Not every member agrees.
+``TempC-1``, ``Press-2`` and ``Press-3`` carry most of the displacement, every member in the
+same direction on ``TempC-1`` and ``Press-3``, most of it from the first 25 samples. Not every
+member agrees.
 ``TempH-1`` takes both signs across the eight, so its group mean rests on a few. A group
 contribution is a starting point, checked member by member.
 
@@ -464,7 +466,7 @@ estimated, and its :math:`T^2` and SPE compared with the 95% limits of the 40.
 	(blue) and of the 15 left-out batches projected onto model C: batch 49 (orange), batches
 	50 to 55 (aqua circles) and the second group (purple triangles).
 
-All 15 lie above the SPE limit, most far above, and the six score outliers and batch 37
+All 15 lie above the SPE limit, most far above, and batches 50 to 55 and batch 37
 above the :math:`T^2` limit as well, so the model built without them flags them. The 40
 training batches are spread more evenly than in the first two models.
 
@@ -512,13 +514,11 @@ The full list of readings on batch data is on the
 
 * Svante Wold, Nouna Kettaneh-Wold, John F. MacGregor and Kevin G. Dunn, "`Batch process
   modeling and MSPC <https://literature.learnche.org/item/155/batch-process-modeling-and-mspc>`_",
-  *Comprehensive Chemometrics*, **2.10**, 163-197, 2009. Sets out the two unfolding layouts,
+  *Comprehensive Chemometrics*, **2**, chapter 2.10, 163-197, 2009. Sets out the two unfolding
+  layouts,
   and analyses batch 49 of this dataset on-line.
 
 * Johan A. Westerhuis, Theodora Kourti and John F. MacGregor, "`Comparing alternative
   approaches for multivariate statistical analysis of batch process data <https://literature.learnche.org/item/162/comparing-alternative-approaches-for-multivariate-statistical-analysis-of-batch-process-data>`_",
   *Journal of Chemometrics*, **13**, 397-413, 1999. Sets out the six ways of unfolding a
   three-way batch array, and compares them on these data and on the SBR data.
-
-* The full list of readings on batch data is on the
-  :ref:`batch process monitoring <APPS_batch_monitoring>` page.

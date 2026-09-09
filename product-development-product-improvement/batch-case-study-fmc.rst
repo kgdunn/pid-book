@@ -65,7 +65,7 @@ Four blocks of data describe each batch:
 The questions are those a plant asks, in the order it asks them. What does product quality
 look like, and do the batches fall into groups? Do the initial conditions explain it? What
 do the trajectories add? Which batches deserve a closer look? The original study answers
-with a ladder of models, each with two components, and this page follows it:
+with a ladder of two-component models, and this page climbs the same ladder one block at a time:
 
 * A PCA on the quality block.
 * A PLS model from each initial-condition block to the quality block.
@@ -93,7 +93,8 @@ than usual has a ``ClockTime`` rising faster over that phase. `batch_dtw <https:
 aligns raw batch data by dynamic time warping, and ``load_dryer`` bundles this dryer's
 unaligned trajectories, so the same batches can be drawn before and after.
 
-Thirteen batches have no chemistry measurements and are left out, as in the original study;
+Thirteen batches have no chemistry measurements and are left out, the same exclusion the
+original study made;
 ``load_fmc`` lists them as ``missing_chemistry``, and 46 remain. A few quality and chemistry
 cells and the trajectories of ten batches still have missing values.
 
@@ -119,6 +120,7 @@ unfolded trajectories. ``BatchPCA`` and ``BatchPLS`` need complete data.
 	incomplete = [batch_id for batch_id, batch in X.items() if batch.isna().any().any()]
 	print(len(X), "batches kept; missing cells: Y", int(Y.isna().sum().sum()), "Zchem", int(Zchem.isna().sum().sum()),
 	      "X in batches", incomplete)
+	# 46 batches kept; missing cells: Y 19 Zchem 1 X in batches [20, 22, 27, 28, 31, 55, 60, 61, 67, 71]
 	average = pd.concat(X.values()).groupby(level=0).mean()                  # the average trajectory of every tag
 	agitator = average["Agitator"]
 	phase_ends = (int((agitator > (agitator.min() + agitator.max()) / 2).idxmax()), int(average["D-Temp"].idxmax()))
@@ -319,8 +321,8 @@ class. Of the 17 abnormal batches 15 have a negative :math:`t_1`, 21 of the 23 g
 positive :math:`t_1`, and the six high in residual solvent are positive on both components.
 
 Batches 61 and 14, one from each of the first two groups, have mirror-image :math:`t_1`
-contributions, with the same attributes (``Y1``, ``Y4``, ``Y6``, ``Y10`` and ``Y11``) low
-in the abnormal group and high in the good one. The first component is a general level of
+contributions, with the same attributes (``Y1``, ``Y4``, ``Y6`` and ``Y10``) low in the
+abnormal group and high in the good one. The first component is a general level of
 quality rather than a trade-off between attributes.
 
 Do the initial conditions explain quality?
@@ -357,9 +359,9 @@ Each initial-condition block alone explains about a quarter of the quality block
 components, the operating conditions more than the chemistry, the same order the original
 study found.
 
-.. table:: Quality explained, as a cumulative percentage, after one and after two components. :math:`R^2_Y` is
-   the fit to the 46 batches; :math:`Q^2_Y` is the same quantity for batches held out of the
-   fit, in seven folds, averaged over ten splits into folds.
+.. table:: Quality explained, as a cumulative percentage, after one and after two components.
+   :math:`R^2_Y` is the fit to the 46 batches; :math:`Q^2_Y` is the same quantity for batches
+   held out of the fit, in seven folds, averaged over ten splits into folds.
 
    +----------------------+--------------------------+-----------------------------+-----------------------------+
    | Model                | Quality explained from   | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
@@ -376,9 +378,9 @@ study found.
 The first row answers a different question from the other two, and the gap between them is
 not a ranking. A PCA describes the quality block using that same block, so its number says
 how strongly the eight attributes co-vary with each other. The two PLS models predict those
-attributes from measurements made before the batch ran, which is the harder task, and every
-later rung of the ladder is measured the same way. The PCA has no held-out batches to
-predict, since there is nothing to predict them from, so its :math:`Q^2_Y` cells are empty.
+attributes from a separate block of process data, which is the harder task, and every later
+rung of the ladder is measured the same way. The PCA has no held-out batches to predict,
+since there is nothing to predict them from, so its :math:`Q^2_Y` cells are empty.
 
 The :math:`Q^2_Y` columns separate the two blocks more sharply than the fit does. Held out
 of the fit, the batches are predicted worse from their chemistry than by the average
@@ -443,7 +445,8 @@ of each block the components describe.
 	    w = mb_z.block_weights_[name]                                         # one row per variable of the block
 	    fig.add_trace(go.Scatter(x=w.iloc[:, 0], y=w.iloc[:, 1], mode="markers+text", text=list(w.index), textposition="top right",
 	                             marker=dict(color=BLUE, size=16), showlegend=False), row=2, col=col)
-	    block_axes(fig, [np.nan, np.nan], 2, col, prefix="block w")
+	    fig.update_xaxes(title_text="block weight w1", row=2, col=col)      # weights carry no percent
+	    fig.update_yaxes(title_text="block weight w2", row=2, col=col)
 	fig.update_layout(height=820).show()
 
 .. figure:: ../figures/batch/batch-case-fmc-mbpls-z.png
@@ -616,8 +619,9 @@ samples.
 
 The residual of batch 20 belongs to the dryer pressure (49%), most of it in the first phase
 (58% of the total). Its dryer pressure sat at 85 units against 37 for the average batch
-through solvent collection and on through the ramp, where its dryer temperature also ran hot
-in the :ref:`raw trajectory overlay <APPS_batch_case_fmc_overlay>`. The temperatures, power
+through solvent collection, where its dryer temperature also ran hot in the
+:ref:`raw trajectory overlay <APPS_batch_case_fmc_overlay>`, and on through the ramp. The
+temperatures, power
 and torque share the rest.
 
 Trajectories to quality
@@ -641,6 +645,11 @@ Trajectories to quality
 	# {13: 52, 5: 87, 7: 77}
 	print({batch_id: int(X[batch_id]["ClockTime"].iloc[174]) for batch_id in (13, 5, 7)})         # clock time when phase 1 ends
 	# {13: 29, 5: 113, 7: 62}
+	level_end = pd.Series({batch_id: float(batch["CTankLvl"].iloc[-1]) for batch_id, batch in X.items()})
+	clock_p1 = pd.Series({batch_id: float(batch["ClockTime"].iloc[174]) for batch_id, batch in X.items()})
+	print("batch 13, counting from the lowest:", int((level_end <= level_end.loc[13]).sum()),
+	      "of 46 on the collector level and", int((clock_p1 <= clock_p1.loc[13]).sum()), "on the clock time")
+	# batch 13, counting from the lowest: 11 of 46 on the collector level and 4 on the clock time
 	pls_x.predictions_vs_observed_plot(y_observed=y_scaled, variable="SolventConc").show()
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-pls.png
@@ -659,8 +668,8 @@ The score plot axes carry the share of the trajectory block each component descr
 :math:`R^2_X`. The model is judged on the quality block, where the trajectories explain
 41.0% after two components, more than the 26.2% of the best single initial-condition block.
 
-.. table:: Quality explained, as a cumulative percentage, with the trajectory block added to the earlier
-   table. The batch PLS has no cross-validated value printed: on 46 batches the held-out
+.. table:: Quality explained, as a cumulative percentage, with the trajectory block added to the
+   earlier table. The batch PLS has no cross-validated value printed: on 46 batches the held-out
    estimate for a block of 3575 columns moves too much from one fold split to another to
    quote as a single number.
 
@@ -693,17 +702,17 @@ the jacket temperature set point (-4.2). Batches 5 and 7 lie on the other side o
 	:align: center
 
 	Four trajectories of the 46 batches (grey) with batches 13 (orange), 5 (aqua) and 7
-	(blue) drawn on top. Batch 13 collected less solvent than almost every other batch,
-	reached the end of the first phase in less clock time than most, and cooled faster at
-	the end of the batch. The dashed lines mark the ends of the first two phases.
+	(blue) drawn on top. Batch 13 collected less solvent than most of the batches and reached
+	the end of the first phase in less clock time than all but three of them. The dashed lines
+	mark the ends of the first two phases.
 
 The :ref:`overlay of these three batches <APPS_batch_case_fmc_overlay_13>` shows what batch
-13's contributions refer to: it collected the least solvent of any batch, reached that level
-in the fewest clock samples, and cooled fastest at the end.
+13's contributions refer to: a collector level below most of the batches, and a first phase
+that ended in less clock time than all but three of them.
 
 Batch 13 was classed good, so a batch at the end of a component is not necessarily a bad
-one. The component describes a direction of variation related to quality, and batch 13 is
-furthest along it. The observed-against-predicted plot of the residual solvent concentration
+one. The component describes a direction of variation related to quality, and batch 13 sits well
+out along it. The observed-against-predicted plot of the residual solvent concentration
 shows how far the trajectories go towards predicting it, and is drawn again for the final
 model in the next section.
 
@@ -711,9 +720,9 @@ All three blocks: batch multiblock PLS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The final model joins the two initial-condition blocks and the unfolded trajectory block in
-one multiblock PLS. The trajectory block enters as 3575 columns, so dividing each block by the square root of
-its number of columns is what keeps it from drowning out the eleven chemistry columns and
-the nine operating ones.
+one multiblock PLS. The trajectory block enters as 3575 columns, so dividing each block by the
+square root of its number of columns is what keeps it from drowning out the eleven chemistry
+columns and the nine operating ones.
 
 .. code-block:: python
 
@@ -737,7 +746,7 @@ the nine operating ones.
 	high = solvent.index[groups.loc[solvent.index] == "high solvent"]
 	print(f"{(residual.loc[high] < 0).sum()} of {len(high)} fitted low, by {-residual.loc[high].mean():.2f}"
 	      f" on average, in an attribute spanning {solvent.max() - solvent.min():.2f}")
-	# 7 of 7 fitted low, by 0.58 on average, in an attribute spanning 1.41
+	# 6 of 6 fitted low, by 0.47 on average, in an attribute spanning 1.26
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-mbpls.png
 	:source: batch/batch-case-fmc-figures.py
@@ -757,8 +766,8 @@ for the trajectories alone and 36.4% for the two initial-condition blocks togeth
 components describe 23.4% of the chemistry block, 30.4% of the operating-condition block
 and 25.8% of the trajectory block.
 
-Every one of the seven batches classed high in residual solvent is fitted below the line, by
-0.58 on average in an attribute spanning 1.41 across the batches. A model that describes
+Every one of the six batches classed high in residual solvent is fitted below the line, by
+0.47 on average in an attribute spanning 1.26 across the batches. A model that describes
 under half of the quality block pulls the extremes back towards the middle, so a group
 sitting at the top of the range is fitted below it.
 
@@ -772,7 +781,7 @@ That ordering is what the original study set out to establish: the plant had bee
 the incoming chemistry for the cause of poor product, and the models put the way the batch
 was operated ahead of it.
 
-The original study builds its monitoring and prediction tools on this model. The super-score
+A model of this kind is what a plant builds its monitoring and prediction tools on. The super-score
 plot places every batch in one space. A batch's contributions in the trajectory block, drawn
 with ``unfolded_contribution_plot``, name the tags and the phase. The predicted quality
 attributes are available as soon as a batch ends, before the laboratory results. The block
@@ -824,9 +833,9 @@ conditions or only its trajectories are considered, and the three plots need not
 	two blocks they reach to the good one (blue).
 
 In the trajectory block the abnormal batches lie at negative :math:`t_1` and the good ones
-at positive, with four classed good among the abnormal, batches 2, 3, 6 and 7. In both
-initial-condition blocks, and in the quality PCA at the start of this case study, those four
-sit with the good batches. Their trajectories have the features of an off-specification
+at positive, with five classed good among the abnormal. Four of those five, batches 2, 3, 6
+and 7, sit with the good batches in both initial-condition blocks and in the quality PCA at
+the start of this case study. Their trajectories have the features of an off-specification
 batch, and their product was on-specification.
 
 That a batch sits among a group is a claim about a picture. To make it reproducible, take
@@ -840,7 +849,8 @@ chemistry, ordinary operating conditions, and trajectories that look abnormal. T
 batch 5, is placed with the abnormal centre in the operating-condition block as well, so it
 is not a case of an ordinary charge with an unusual trajectory, and it is left aside.
 
-On the super score those four lie between the two groups with nothing to mark them out: a
+On the super score of this model those four lie between the two groups with nothing to mark them
+out: a
 batch unusual in one block and ordinary in the others is visible only in the block score
 plots.
 
@@ -890,7 +900,7 @@ plots.
 
 The four and their neighbours share one trajectory signature: the collector tank level, the
 clock time and the jacket temperature set point carry the largest contributions in both
-groups, and the overlays show a heavy charge, a high collector level and a slow first phase.
+groups, and the overlays show a high collector level and a slow first phase.
 
 What separates them lies in the operating-condition block. The contribution from the
 neighbours' average point to the four's, the construction of the
@@ -972,18 +982,19 @@ quality :math:`\mathbf{Y}`, with a dash where the model never saw that block.
 
 Read down the quality columns and the ladder pays off. Each rung adds to the one before it,
 and the trajectories carry more of the quality block than either set of initial conditions.
-Read across a row and the cost appears. The chemistry block, half described by its own PLS,
-keeps 6.5% on the first component of the batch multiblock PLS while the quality block gains,
-because a PLS component turns towards whatever predicts :math:`\mathbf{Y}`, not towards
-describing its own block.
+Read across a row and the cost appears. The chemistry block, half described over the two
+components of its own PLS, keeps under a quarter of itself over the two of the batch
+multiblock PLS while the quality block gains, because a PLS component turns towards whatever
+predicts :math:`\mathbf{Y}`, not towards describing its own block.
 
 Where to go next
 ~~~~~~~~~~~~~~~~
 
 Wold and co-workers (2009) go one step further on this dryer, replacing the raw trajectories
-with blocks of features grouped by what they describe: timing, temperature, impeller (power,
-torque and agitator speed) and pressure, with the chemistry and the cake weight in a block
-of their own. Such a model can be read phase by phase, and its contributions name a feature
+with thirteen landmark features, each read from one phase: the duration of each of the three
+phases, the dryer temperature at the end of the first two, the average collector level,
+differential pressure, dryer pressure, dryer temperature and its set point, and the slopes
+of the power, the torque and the dryer temperature. Their contributions name a feature
 rather than a (tag, time) cell.
 
 This is the landmark feature approach: pick a handful of quantities that summarise each
@@ -991,7 +1002,8 @@ trajectory, such as the slope of the temperature over a phase or its duration, a
 those as the columns. The operating-condition block here is already one, since eight of its
 nine columns are landmarks of the trajectories.
 
-It is the simplest of the three approaches to set up, and the engineer chooses which
+Of the three ways of handling the trajectory array, landmark features, batchwise unfolding
+and observation-wise unfolding, it is the simplest to set up, and the engineer chooses which
 landmarks matter, so a feature that is important but not obvious can be left out. It suits a
 process with distinct operational changes, which this dryer has, and less so one whose
 trajectories are smooth, such as the reactor of the
@@ -1001,8 +1013,9 @@ batches in the same way.
 
 A second step is an on-line monitoring model, which tracks a running batch against the
 reference model and predicts its final quality before the batch ends. Estimating the scores
-of a batch observed so far is the same missing-data projection that fills the gaps in these
-trajectories, so the incomplete batches are no obstacle. The
+of a batch observed so far is a missing-data problem of the same shape as the gaps in these
+trajectories, with the samples not yet seen standing in for the missing cells, so the
+incomplete batches are no obstacle. The
 :ref:`SBR case study <APPS_batch_case_sbr_online>` works that step through.
 
 References and readings
@@ -1018,7 +1031,9 @@ The full list of readings on batch data is on the
 
 * Svante Wold, Nouna Kettaneh-Wold, John F. MacGregor and Kevin G. Dunn, "`Batch process
   modeling and MSPC <https://literature.learnche.org/item/155/batch-process-modeling-and-mspc>`_",
-  *Comprehensive Chemometrics*, **2.10**, 163-197, 2009.
+  *Comprehensive Chemometrics*, **2**, chapter 2.10, 163-197, 2009. Builds feature-block,
+  landmark and
+  unfolded-trajectory models on this same dryer.
 
 * Salvador Garcia-Munoz, `Batch process improvement using latent variable methods <https://literature.learnche.org/item/3/batch-process-improvement-using-latent-variable-methods>`_,
   Ph.D thesis, McMaster University, 2004.
