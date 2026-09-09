@@ -34,8 +34,7 @@ The `SBR batch reactor dataset <https://openmv.net/info/sbr-batch-reactor>`_ is 
 of two sheets, the trajectories of 53 batches over 200 samples and the quality attributes,
 one row per batch. Of its nine trajectories, the two feed flow rates and the feed
 temperature carry only the noise the simulation adds, under 2% and 0.1% of their values, so
-the model uses the six of the reactor itself. ``load_sbr`` returns the batch dictionary, the
-quality table and those six tag names.
+the model uses the six of the reactor itself, which ``load_sbr`` reads from the workbook.
 
 .. code-block:: python
 
@@ -783,8 +782,8 @@ the SPE, where 13 do, one normal batch in four. The cause is autocorrelation: a 
 another that does, so SPE crossings arrive in runs long enough to satisfy the rule. Three responses, each measured on the same 51
 batches:
 
-* a limit smoothed over five neighbouring samples (``spe_window=2``, the window Nomikos and
-  MacGregor, 1995, use) does not help, with 15 batches still alarming: the crossings are
+* a limit smoothed over five neighbouring samples, the window Nomikos and MacGregor (1995)
+  use, does not help, with 15 batches still alarming: the crossings are
   already as rare as a 99% limit intends, and they still come in runs;
 * the cumulative SPE, over every sample observed so far, averages the autocorrelation out,
   leaving 3 batches alarming, at the price of catching batch 34 after 112 samples rather

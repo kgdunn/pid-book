@@ -39,9 +39,9 @@ The data
 ~~~~~~~~
 
 The `polymerization dataset <https://openmv.net/info/polymerization>`_ is one table of 5500
-rows, one per aligned sample, with a batch identifier and a time index. ``load_dupont`` in
-the `process_improve <https://github.com/kgdunn/process-improve>`_ package downloads it and
-returns one data frame per batch, 100 samples by 10 tags.
+rows, one per aligned sample, with a batch identifier and a time index. ``load_dupont``, in
+the `process_improve <https://github.com/kgdunn/process-improve>`_ package, downloads it and
+splits it into one data frame per batch, 100 samples by 10 tags.
 
 .. code-block:: python
 
@@ -214,8 +214,8 @@ shares are summed two ways:
   introduced;
 * per time sample, which locates the event in the batch.
 
-``unfolded_contribution_plot`` draws the full vector of 1000 bars grouped by tag and, with
-``by_tag=True``, the sum per tag.
+``unfolded_contribution_plot`` draws the full vector of 1000 bars, grouped by tag or summed
+per tag.
 
 .. code-block:: python
 

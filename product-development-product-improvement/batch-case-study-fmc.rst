@@ -98,9 +98,8 @@ Thirteen batches have no chemistry measurements and are left out, as in the orig
 cells and the trajectories of ten batches still have missing values.
 
 The ``PCA``, ``PLS`` and `MBPLS <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/multivariate/_mbpls.py>`_ estimators handle missing values through the
-:ref:`NIPALS algorithm <LVM_PCA_NIPALS_algorithm>`, so this case study uses them directly
-on the trajectories unfolded with ``dict_to_wide``; ``BatchPCA`` and ``BatchPLS`` need
-complete data.
+:ref:`NIPALS algorithm <LVM_PCA_NIPALS_algorithm>`, so this case study uses them on the
+unfolded trajectories. ``BatchPCA`` and ``BatchPLS`` need complete data.
 
 .. code-block:: python
 
@@ -319,8 +318,7 @@ Do the initial conditions explain quality?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A PLS model from each initial-condition block to the quality block answers this question
-one block at a time. The blocks are centred and scaled with ``MCUVScaler`` before the fit,
-and ``scale=False`` tells the ``PLS`` class not to scale them again.
+one block at a time.
 
 .. code-block:: python
 
