@@ -326,8 +326,11 @@ one block at a time.
 	zop_scaled = MCUVScaler().fit_transform(Zop)
 	pls_chem = PLS(n_components=2, scale=False).fit(zchem_scaled, y_scaled)
 	pls_op = PLS(n_components=2, scale=False).fit(zop_scaled, y_scaled)
-	print("PLS Zchem -> Y, R2Y cumulative:", pls_chem.r2_cumulative_.round(3).tolist())
-	print("PLS Zop -> Y, R2Y cumulative:", pls_op.r2_cumulative_.round(3).tolist())
+	for name, model in (("PCA on Y", pca_y), ("PLS Zchem", pls_chem), ("PLS Zop", pls_op)):
+	    print(name, (model.r2_cumulative_ * 100).round(1).tolist())   # quality explained, cumulative
+	# PCA on Y [50.0, 70.3]
+	# PLS Zchem [16.3, 22.2]
+	# PLS Zop [20.7, 26.2]
 	fig = scores(pls_op, explained_x(pls_op), {20: ORANGE}, note="R2X ", labels=[20, 61, 14])
 	contribution = pls_op.score_contributions(zop_scaled, component=1).loc[20]
 	bars = go.Figure([go.Bar(x=contribution.index, y=contribution, marker_color=BLUE)])
@@ -337,10 +340,30 @@ one block at a time.
 	bars.show()
 
 Each initial-condition block alone explains about a quarter of the quality block after two
-components, the operating conditions more than the chemistry, 26.2% against 22.2%, the same
-order the original study found. Batch 20 stands out in the operating-condition score plot,
-put there by the recipe timings and the temperature slope. It is the batch whose temperature
-ramp took longer in the trajectory overlay.
+components, the operating conditions more than the chemistry, the same order the original
+study found.
+
+.. table:: Quality explained, as a cumulative percentage, after one and after two components.
+
+   +----------------------+--------------------------+---------------+----------------+
+   | Model                | Quality explained from   | 1 component   | 2 components   |
+   +======================+==========================+===============+================+
+   | PCA on quality       | the quality block itself | 50.0          | 70.3           |
+   +----------------------+--------------------------+---------------+----------------+
+   | PLS from Zchem       | the incoming chemistry   | 16.3          | 22.2           |
+   +----------------------+--------------------------+---------------+----------------+
+   | PLS from Zop         | the operating conditions | 20.7          | 26.2           |
+   +----------------------+--------------------------+---------------+----------------+
+
+The first row answers a different question from the other two, and the gap between them is
+not a ranking. A PCA describes the quality block using that same block, so its number says
+how strongly the eight attributes co-vary with each other. The two PLS models predict those
+attributes from measurements made before the batch ran, which is the harder task, and every
+later rung of the ladder is measured the same way.
+
+Batch 20 stands out in the operating-condition score plot, put there by the recipe timings
+and the temperature slope. It is the batch whose temperature ramp took longer in the
+trajectory overlay.
 
 .. figure:: ../figures/batch/batch-case-fmc-pls-zop.png
 	:source: batch/batch-case-fmc-figures.py
