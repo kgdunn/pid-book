@@ -772,8 +772,10 @@ conditions or only its trajectories are considered, and the three plots need not
 	Block scores of the batch multiblock PLS: the chemistry block (left), the
 	operating-condition block (middle) and the trajectory block (right), coded by the plant's
 	classification.
-	Batches 2, 3, 6 and 7 (orange) were classed good; in the trajectory block they sit among
-	the batches classed abnormal (purple), in the other two blocks among the good ones (blue).
+	Batches 2, 3, 6 and 7 (orange) were classed good. Each batch is joined by a faint line to
+	the average point of the group it is placed with, and a cross marks the two averages. In
+	the trajectory block the four reach across to the abnormal group (purple); in the other
+	two blocks they reach to the good one (blue).
 
 In the trajectory block the abnormal batches lie at negative :math:`t_1` and the good ones
 at positive, with four classed good among the abnormal, batches 2, 3, 6 and 7. In both
@@ -781,11 +783,16 @@ initial-condition blocks, and in the quality PCA at the start of this case study
 sit with the good batches. Their trajectories have the features of an off-specification
 batch, and their product was on-specification.
 
-To make that reading reproducible, each batch is placed, block by block, with the group
-whose average point is nearer in that block's score plot. Five batches classed good go with
-the abnormal batches by the trajectory block, and four of those with the good batches by
-both initial-condition blocks. The fifth, batch 5, goes with the abnormal batches by the
-operating-condition block as well, and is left aside.
+That a batch sits among a group is a claim about a picture. To make it reproducible, take
+the average score point of the good batches and of the abnormal ones in each block, and
+place every batch with whichever of the two centres is nearer. The figure joins each batch
+to the centre it was placed with.
+
+Five batches classed good are placed with the abnormal centre in the trajectory block. Four
+of them are placed with the good centre in both initial-condition blocks: ordinary
+chemistry, ordinary operating conditions, and trajectories that look abnormal. The fifth,
+batch 5, is placed with the abnormal centre in the operating-condition block as well, so it
+is not a case of an ordinary charge with an unusual trajectory, and it is left aside.
 
 On the super score those four lie between the two groups with nothing to mark them out: a
 batch unusual in one block and ordinary in the others is visible only in the block score
