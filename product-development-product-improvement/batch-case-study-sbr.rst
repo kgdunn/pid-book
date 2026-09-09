@@ -454,8 +454,9 @@ stays out. Batch 34 leaves it midway, first in the two service temperatures and 
 released, then some 20 samples later in the conversion and latex density. The robust distance
 moves batch 34's onsets by two to five samples, and for batch 37 it also puts the
 cooling-water and jacket temperatures outside the band from the first sample, where the
-standard-deviation distance keeps them inside throughout. Its scale is about a tenth smaller
-on those two tags, so a departure of the same size counts for more.
+standard-deviation distance keeps them inside throughout. Two things put them there: the robust
+scale is the smaller of the two over the early samples, and the EWMA carries a run of small
+departures across the band where single samples would not reach it.
 
 One fault, two places in the score plot
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -802,7 +803,7 @@ is the first of the three, so an operator sees it two samples later.
 	the reference-batch mean (grey, flat by construction); the first sustained alarm is after
 	23 samples. Middle:
 	the SPE of the newest sample of batch 34 (orange) with its per-sample limit; the impurity
-	enters at sample 100 (dashed vertical) and the first sustained alarm is after 105
+	enters at sample 100 (dotted vertical) and the first sustained alarm is after 105
 	samples. Right: the share of the residual per tag at that alarm sample.
 
 Batch 37 is caught by :math:`T^2` after 23 samples and stays above the limit, while its SPE

@@ -138,7 +138,8 @@ unfolded trajectories. ``BatchPCA`` and ``BatchPLS`` need complete data.
 	shared = [batch_id for batch_id in raw if batch_id in fmc.X]
 	duration = {batch_id: float(np.nanmax(batch["ClockTime"]) - np.nanmin(batch["ClockTime"]))
 	            for batch_id, batch in raw.items() if batch_id in fmc.X}
-	shortest, longest = min(duration, key=duration.get), max(duration, key=duration.get)
+	by_duration = sorted(duration, key=duration.get)
+	shortest, middling, longest = by_duration[0], by_duration[len(by_duration) // 2], by_duration[-1]
 	print(f"{len(shared)} batches, {min(duration.values()):.0f} to {max(duration.values()):.0f} time units",
 	      f"(batch {shortest} and batch {longest}); every one is aligned to {len(fmc.X[shortest])} samples")
 	# 59 batches, 93 to 200 time units (batch 9 and batch 34); every one is aligned to 325 samples
@@ -151,7 +152,8 @@ unfolded trajectories. ``BatchPCA`` and ``BatchPLS`` need complete data.
 	    for batch_id in shared:
 	        batch = source[batch_id]
 	        x = batch[x_tag] if x_tag else np.arange(len(batch))
-	        colour, width = {shortest: (AQUA, 2), longest: (ORANGE, 2)}.get(batch_id, (PALE_GREY, 0.7))
+	        colour, width = {shortest: (AQUA, 2), middling: (PURPLE, 2),
+	                         longest: (ORANGE, 2)}.get(batch_id, (PALE_GREY, 0.7))
 	        fig.add_trace(go.Scatter(x=x, y=batch[y_tag], mode="lines", showlegend=False,
 	                                 line=dict(color=colour, width=width)), row=1, col=col)
 	    if x_tag is None:
@@ -402,7 +404,8 @@ trajectory overlay.
 	Left: scores of the PLS from the operating conditions to quality, coded by the plant's
 	classification. Batch 20 (orange) lies well outside the confidence ellipse. Right: what
 	puts it there, variable by variable. Two of the recipe timings and the temperature slope
-	carry the batch's first-component score; the two initial temperatures contribute little.
+	carry the batch's first-component score; the dryer temperature at the end of the first phase
+	and the peak temperature contribute little.
 
 Both blocks together: multiblock PLS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -507,7 +510,7 @@ see.
 	    fig.update_layout(xaxis_title="Hotelling's T\u00b2", yaxis_title="SPE", height=420)
 	    return fig
 
-	influence_plot(pca_x, highlight={20: ORANGE}, labels=[41, 51]).show()
+	influence_plot(pca_x, highlight={20: ORANGE}, labels=[41, 47, 51]).show()
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-pca.png
 	:source: batch/batch-case-fmc-figures.py
@@ -563,8 +566,8 @@ them. Batches 41 and 51 are above the SPE limit alone, and batch 47 just below i
 
 A batch with a high :math:`t_1` collected more solvent than average at every point and took
 more clock time to reach each one. Where a loading changes sign the component contrasts the
-phases, as the dryer temperature does in going from negative in solvent collection to
-positive in the ramp and cooling phases.
+phases, as the dryer temperature does in going from negative over the first part of the batch
+to positive from about sample 130 onwards.
 
 The :math:`R^2` per cell says how much of that cell's batch-to-batch variation the two
 components describe, and so where the loadings can be read with confidence. The collector
@@ -606,7 +609,7 @@ samples.
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-20-spe-contributions.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Three panels for batch 20: the share of the SPE carried by each unfolded cell, blank between samples 34 and 109 in every tag but the collector tank level where the record has gaps, and largest in the dryer pressure through the first phase; the shares summed per tag, half of them in the dryer pressure; and the shares summed per sample with orange lines at the phase ends and the three phases named, most of the share in the solvent-collection phase.
+	:alt: Three panels for batch 20: the share of the SPE carried by each unfolded cell, blank over samples 95 to 109 in every tag but the collector tank level and over samples 34 to 44 in five of them, where the record has gaps, and largest in the dryer pressure through the first phase; the shares summed per tag, half of them in the dryer pressure; and the shares summed per sample with orange lines at the phase ends and the three phases named, most of the share in the solvent-collection phase.
 	:width: 800px
 	:scale: 80
 	:align: center
@@ -813,6 +816,16 @@ conditions or only its trajectories are considered, and the three plots need not
 	# {'abnormal': -0.55, 'good': 0.36, 'high solvent': 0.19} {2: 0.31, 3: 0.14, 6: 0.17, 7: 0.18}
 	fig = make_subplots(rows=1, cols=3, subplot_titles=[f"{name} block" for name in blocks])
 	for col, (name, block_t) in enumerate(mb.block_scores_.items(), start=1):
+	    for label in ("good", "abnormal"):                       # a spoke from each batch to its group's average
+	        members = [b for b in block_t.index if placed.loc[b, name] == label]
+	        centre = block_t.loc[members].mean()
+	        for b in members:
+	            fig.add_trace(go.Scatter(x=[centre.iloc[0], block_t.iloc[:, 0].loc[b]],
+	                                     y=[centre.iloc[1], block_t.iloc[:, 1].loc[b]], mode="lines",
+	                                     line=dict(color=PALE_GREY, width=1), showlegend=False), row=1, col=col)
+	        fig.add_trace(go.Scatter(x=[centre.iloc[0]], y=[centre.iloc[1]], mode="markers", showlegend=False,
+	                                 marker=dict(color=GREY, symbol="cross", size=13,
+	                                             line=dict(color="white", width=1.5))), row=1, col=col)
 	    group_scatter(fig, block_t.iloc[:, 0], block_t.iloc[:, 1], dict.fromkeys(anomalous, ORANGE), row=1, col=col, showlegend=col == 1)
 	    block_axes(fig, np.diff([0.0, *mb.r2_x_per_block_cumulative_.loc[name]]), 1, col, note="R2X ")
 	fig.update_layout(height=420).show()

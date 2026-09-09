@@ -130,7 +130,8 @@ batchwise.
 	# R2 per component: [0.383, 0.176]
 	print("R2 cumulative:", model_a.r2_cumulative_.round(3).tolist())
 	# R2 cumulative: [0.383, 0.559]
-	scores(model_a).show()
+	scores(model_a, highlight={f'{{"color": "{AQUA}"}}': [50, 52, 53, 54, 55],
+	                           f'{{"color": "{ORANGE}"}}': [49, 51]}).show()
 	spe = model_a.spe_.iloc[:, -1]                          # SPE of every batch after the second component
 	t2 = model_a.hotellings_t2_.iloc[:, -1]                 # ... and its Hotelling's T2
 	print(f"largest SPE: batch {spe.idxmax()} ({spe.max():.1f} against the 95% limit {model_a.spe_limit(conf_level=0.95):.1f})")
@@ -145,7 +146,7 @@ plots are enough to find the batches that differ.
 
 .. figure:: ../figures/batch/batch-case-dupont-model-a-scores.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: Score plot of model A with the 95% confidence ellipse; batches 50, 52, 53, 54 and 55 lie outside the ellipse, while batches 49 and 51 sit inside it among the other batches.
+	:alt: Score plot of model A with the 95% confidence ellipse; batches 50, 52, 53, 54 and 55 lie outside the ellipse, while batches 49 and 51 sit inside it, batch 49 among the other batches and batch 51 to the right of them.
 	:width: 600px
 	:scale: 80
 	:align: center
@@ -296,7 +297,7 @@ curves.
 
 .. figure:: ../figures/batch/batch-case-dupont-batch-54-t1-contributions.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: Three panels for batch 54: contributions to t1 of each unfolded cell, all positive; the sum per tag, between 4.6 and 8.7 for every tag; and the sum per sample, positive over the whole batch.
+	:alt: Three panels for batch 54: contributions to t1 of each unfolded cell, positive almost everywhere with a few small negative ones; the sum per tag, between 4.6 and 8.7 for every tag; and the sum per sample, positive over the whole batch.
 	:width: 800px
 	:scale: 80
 	:align: center
