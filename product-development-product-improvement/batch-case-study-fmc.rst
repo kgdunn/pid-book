@@ -331,6 +331,11 @@ one block at a time.
 	# PCA on Y [50.0, 70.3]
 	# PLS Zchem [16.3, 22.2]
 	# PLS Zop [20.7, 26.2]
+	for name, Z in (("PLS Zchem", Zchem), ("PLS Zop", Zop)):          # the same, on held-out batches
+	    cv = PLS.select_n_components(Z, Y, max_components=2, cv=7, random_state=0)
+	    print(name, (cv.r2y_validated["total"] * 100).round(1).tolist())
+	# PLS Zchem [-5.0, -4.9]
+	# PLS Zop [14.8, 11.1]
 	fig = scores(pls_op, explained_x(pls_op), {20: ORANGE}, note="R2X ", labels=[20, 61, 14])
 	contribution = pls_op.score_contributions(zop_scaled, component=1).loc[20]
 	bars = go.Figure([go.Bar(x=contribution.index, y=contribution, marker_color=BLUE)])
@@ -343,23 +348,34 @@ Each initial-condition block alone explains about a quarter of the quality block
 components, the operating conditions more than the chemistry, the same order the original
 study found.
 
-.. table:: Quality explained, as a cumulative percentage, after one and after two components.
+.. table:: Quality explained, as a cumulative percentage, after one and after two components. :math:`R^2_Y` is
+   the fit to the 46 batches; :math:`Q^2_Y` is the same quantity for batches held out of the
+   fit, seven at a time.
 
-   +----------------------+--------------------------+---------------+----------------+
-   | Model                | Quality explained from   | 1 component   | 2 components   |
-   +======================+==========================+===============+================+
-   | PCA on quality       | the quality block itself | 50.0          | 70.3           |
-   +----------------------+--------------------------+---------------+----------------+
-   | PLS from Zchem       | the incoming chemistry   | 16.3          | 22.2           |
-   +----------------------+--------------------------+---------------+----------------+
-   | PLS from Zop         | the operating conditions | 20.7          | 26.2           |
-   +----------------------+--------------------------+---------------+----------------+
+   +----------------------+--------------------------+-----------------------------+-----------------------------+
+   | Model                | Quality explained from   | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
+   |                      |                          +--------------+--------------+--------------+--------------+
+   |                      |                          | :math:`t_1`  | :math:`t_2`  | :math:`t_1`  | :math:`t_2`  |
+   +======================+==========================+==============+==============+==============+==============+
+   | PCA on quality       | the quality block itself | 50.0         | 70.3         | -            | -            |
+   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
+   | PLS from Zchem       | the incoming chemistry   | 16.3         | 22.2         | -5.0         | -4.9         |
+   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
+   | PLS from Zop         | the operating conditions | 20.7         | 26.2         | 14.8         | 11.1         |
+   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
 
 The first row answers a different question from the other two, and the gap between them is
 not a ranking. A PCA describes the quality block using that same block, so its number says
 how strongly the eight attributes co-vary with each other. The two PLS models predict those
 attributes from measurements made before the batch ran, which is the harder task, and every
-later rung of the ladder is measured the same way.
+later rung of the ladder is measured the same way. The PCA has no held-out batches to
+predict, since there is nothing to predict them from, so its :math:`Q^2_Y` cells are empty.
+
+The :math:`Q^2_Y` columns separate the two blocks more sharply than the fit does. Held out
+of the fit, the batches are predicted worse from their chemistry than by the average
+batch, which is what a negative :math:`Q^2_Y` means, while the operating conditions keep
+about half of their fitted value. A cross-validated number moves with the split into folds,
+so it is read for its sign and its size, not its second decimal.
 
 Batch 20 stands out in the operating-condition score plot, put there by the recipe timings
 and the temperature slope. It is the batch whose temperature ramp took longer in the
@@ -631,6 +647,25 @@ Trajectories to quality
 The score plot axes carry the share of the trajectory block each component describes, its
 :math:`R^2_X`. The model is judged on the quality block, where the trajectories explain
 41.0% after two components, more than the 26.2% of the best single initial-condition block.
+
+.. table:: Quality explained, as a cumulative percentage, with the trajectory block added to the earlier
+   table. The batch PLS has no cross-validated value printed: on 46 batches the held-out
+   estimate for a block of 3575 columns moves too much from one fold split to another to
+   quote as a single number.
+
+   +----------------------+--------------------------+-----------------------------+-----------------------------+
+   | Model                | Quality explained from   | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
+   |                      |                          +--------------+--------------+--------------+--------------+
+   |                      |                          | :math:`t_1`  | :math:`t_2`  | :math:`t_1`  | :math:`t_2`  |
+   +======================+==========================+==============+==============+==============+==============+
+   | PCA on quality       | the quality block itself | 50.0         | 70.3         | -            | -            |
+   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
+   | PLS from Zchem       | the incoming chemistry   | 16.3         | 22.2         | -5.0         | -4.9         |
+   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
+   | PLS from Zop         | the operating conditions | 20.7         | 26.2         | 14.8         | 11.1         |
+   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
+   | Batch PLS on X       | the trajectories         | 26.6         | 41.0         | -            | -            |
+   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
 
 Batch 13 sits at the low end of :math:`t_1` with contributions all of one sign, led by the
 clock time (-8.1) and the collector tank level (-8.0), then the dryer temperature (-4.7) and
