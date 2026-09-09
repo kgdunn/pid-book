@@ -53,6 +53,7 @@ splits it into one data frame per batch, 100 samples by 10 tags.
 	batches = load_dupont()                    # https://openmv.net/file/polymerization.csv
 	first = next(iter(batches.values()))
 	print(len(batches), "batches;", first.shape[0], "samples per batch;", list(first.columns))
+	# 55 batches; 100 samples per batch; ['TempR-1', 'TempR-2', 'TempR-3', 'Press-1', 'Flow-1', 'TempH-1', 'TempC-1', 'Press-2', 'Press-3', 'Flow-2']
 
 Plotting one tag for every batch, a few of them in colour, is the first check. The
 trajectories overlay well, confirming the alignment, and a few batches are visibly unusual
@@ -126,13 +127,18 @@ batchwise.
 
 	model_a = BatchPCA(n_components=2).fit(batches)
 	print("R2 per component:", model_a.r2_per_component_.round(3).tolist())
+	# R2 per component: [0.383, 0.176]
 	print("R2 cumulative:", model_a.r2_cumulative_.round(3).tolist())
+	# R2 cumulative: [0.383, 0.559]
 	scores(model_a).show()
 	spe = model_a.spe_.iloc[:, -1]                          # SPE of every batch after the second component
 	t2 = model_a.hotellings_t2_.iloc[:, -1]                 # ... and its Hotelling's T2
 	print(f"largest SPE: batch {spe.idxmax()} ({spe.max():.1f} against the 95% limit {model_a.spe_limit(conf_level=0.95):.1f})")
+	# largest SPE: batch 49 (39.3 against the 95% limit 29.1)
 	print("above the SPE limit:", sorted(spe.index[spe > model_a.spe_limit(conf_level=0.95)]))
+	# above the SPE limit: [49, 51]
 	print("above the T2 limit:", sorted(t2.index[t2 > model_a.hotellings_t2_limit(conf_level=0.95)]))
+	# above the T2 limit: [50, 52, 53, 54, 55]
 
 The two components together explain 55.9% of the variance in the unfolded matrix. Two
 plots are enough to find the batches that differ.
@@ -230,7 +236,9 @@ per tag.
 	                  yaxis_title="Share of SPE [%]", height=320)
 	fig.show()
 	print("share per tag [%]:", spe_share.loc[49].groupby(level="tag", sort=False).sum().round(0).to_dict())
+	# share per tag [%]: {'Flow-1': 3.0, 'Flow-2': 18.0, 'Press-1': 5.0, 'Press-2': 15.0, 'Press-3': 12.0, 'TempC-1': 19.0, 'TempH-1': 14.0, 'TempR-1': 7.0, 'TempR-2': 3.0, 'TempR-3': 4.0}
 	print(f"share of samples 55 to 65: {by_time.loc[55:65].sum():.0f}%")
+	# share of samples 55 to 65: 80%
 
 .. figure:: ../figures/batch/batch-case-dupont-batch-49-spe-contributions.png
 	:source: batch/batch-case-dupont-figures.py
@@ -273,6 +281,7 @@ curves.
 	unfolded_contribution_plot(t1, batch_id=54).show()
 	unfolded_contribution_plot(t1, batch_id=54, by_tag=True).show()
 	print("batch 54, t1 contributions per tag:", t1.loc[54].groupby(level="tag", sort=False).sum().round(1).to_dict())
+	# batch 54, t1 contributions per tag: {'Flow-1': 5.8, 'Flow-2': 4.6, 'Press-1': 5.9, 'Press-2': 7.4, 'Press-3': 8.1, 'TempC-1': 7.4, 'TempH-1': 5.2, 'TempR-1': 7.5, 'TempR-2': 8.7, 'TempR-3': 6.9}
 
 .. figure:: ../figures/batch/batch-case-dupont-loadings-p1.png
 	:source: batch/batch-case-dupont-figures.py
@@ -313,6 +322,7 @@ so the plots are examined again.
 	kept_b = {batch_id: batch for batch_id, batch in batches.items() if batch_id < 49}
 	model_b = BatchPCA(n_components=3).fit(kept_b)
 	print("R2 per component:", model_b.r2_per_component_.round(3).tolist())
+	# R2 per component: [0.333, 0.133, 0.085]
 	second_group = [37, 39, 43, 44, 45, 46, 47, 48]
 	group_t2, group_t3 = model_b.scores_.loc[second_group].iloc[:, 1:3].mean()   # the group's average point
 	# One colour and one marker for the group wherever it appears: orange already means batch 49.
@@ -356,6 +366,8 @@ the displacement from it, and its contributions add up to their mean score.
 	          f"(the contribution vector sums to {group[a].sum():5.1f});",
 	          f"the other 40 batches: {model_b.scores_.drop(index=second_group).iloc[:, a - 1].mean():5.1f};",
 	          f"samples 0 to 25 carry {early:.0%} of it")
+	# group mean t2 =  15.0 (the contribution vector sums to  15.0); the other 40 batches:  -3.0; samples 0 to 25 carry 66% of it
+	# group mean t3 =  14.8 (the contribution vector sums to  14.8); the other 40 batches:  -3.0; samples 0 to 25 carry 90% of it
 	per_tag = pd.DataFrame({f"t{a}": group[a].groupby(level="tag", sort=False).sum() for a in (2, 3)})
 	go.Figure([go.Bar(x=per_tag.index, y=per_tag[component], name=component) for component in per_tag]).show()
 	for tag in ("TempC-1", "Press-3", "Press-2", "Flow-2"):          # the three largest contributions, and Flow-2
@@ -405,6 +417,7 @@ estimated, and its :math:`T^2` and SPE compared with the 95% limits of the 40.
 	kept_c = {batch_id: batch for batch_id, batch in kept_b.items() if batch_id not in second_group}
 	model_c = BatchPCA(n_components=3).fit(kept_c)
 	print("R2 per component:", model_c.r2_per_component_.round(3).tolist())
+	# R2 per component: [0.375, 0.114, 0.064]
 	poor_quality = [38, 40, 41, 42]                                # in the training set, known poor final quality
 	# The four are marked in their own colour and shape: orange means batch 49 in the panel beside this one.
 	scores(model_c, highlight={f'{{"color": "{MAGENTA}", "symbol": "diamond"}}': poor_quality}).show()
@@ -424,10 +437,13 @@ estimated, and its :math:`T^2` and SPE compared with the 95% limits of the 40.
 	fig.show()
 	t2_limit, spe_limit = model_c.hotellings_t2_limit(conf_level=0.95), model_c.spe_limit(conf_level=0.95)
 	print("left-out batches above the SPE limit:", sorted(outside.index[outside["SPE"] > spe_limit]))
+	# left-out batches above the SPE limit: [37, 39, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55]
 	print("left-out batches above the T2 limit:", sorted(outside.index[outside["T2"] > t2_limit]))
+	# left-out batches above the T2 limit: [37, 50, 51, 52, 53, 54, 55]
 	print("batches 38, 40, 41 and 42 inside both limits:",
 	      bool((model_c.hotellings_t2_.loc[poor_quality].iloc[:, -1] < t2_limit).all()
 	           and (model_c.spe_.loc[poor_quality].iloc[:, -1] < spe_limit).all()))
+	# batches 38, 40, 41 and 42 inside both limits: True
 
 .. code-block:: text
 

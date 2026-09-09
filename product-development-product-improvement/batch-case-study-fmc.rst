@@ -192,6 +192,10 @@ unfolded trajectories. ``BatchPCA`` and ``BatchPLS`` need complete data.
 
 	for tag in ("D-Temp", "J-Temp", "CTankLvl", "ClockTime"):
 	    overlay(X, tag, {20: ORANGE}).show()
+	first_phase = pd.concat([X[batch_id]["D-Temp"].iloc[:phase_ends[0]] for batch_id in keep if batch_id != 20])
+	print(f"dryer temperature over the first phase: batch 20 {X[20]['D-Temp'].iloc[:phase_ends[0]].mean():.1f},"
+	      f" the others {first_phase.mean():.1f}")
+	# dryer temperature over the first phase: batch 20 33.8, the others 23.7
 
 .. _APPS_batch_case_fmc_overlay:
 
@@ -210,9 +214,7 @@ unfolded trajectories. ``BatchPCA`` and ``BatchPLS`` need complete data.
 	and 249.
 
 Batch 20, chosen for the overlay, is one to keep in mind. Its dryer temperature averaged
-33.8 units over the solvent-collection phase against 23.6 for the other batches, and its
-``ClockTime`` shows a temperature ramp that took longer than usual. The gaps in the orange
-line are missing samples.
+33.8 units over the solvent-collection phase against 23.7 for the other batches.
 
 Product quality on its own
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -226,6 +228,7 @@ involved.
 	y_scaled = MCUVScaler().fit_transform(Y)              # missing cells pass through; PCA switches to NIPALS
 	pca_y = PCA(n_components=2).fit(y_scaled)
 	print("PCA on Y, R2 cumulative:", pca_y.r2_cumulative_.round(3).tolist())
+	# PCA on Y, R2 cumulative: [0.5, 0.703]
 	def group_scatter(fig, x, y, highlight, row=None, col=None, showlegend=True):
 	    """One trace per class of the plant's classification (colour and marker shape from STYLES); the batches in
 	    `highlight` (id -> colour) are drawn larger and labelled, in the marker shape of their class."""
@@ -284,6 +287,12 @@ involved.
 
 	scores(pca_y, pca_y.r2_per_component_, {61: ORANGE, 14: AQUA}).show()
 	print(pca_y.scores_.groupby(groups).agg(["mean", "min", "max", "count"]).round(2))
+	t1_y = pca_y.scores_.iloc[:, 0]
+	print(f"negative t1: {int((t1_y[groups == 'abnormal'] < 0).sum())} of {int((groups == 'abnormal').sum())} abnormal;"
+	      f" positive t1: {int((t1_y[groups == 'good'] > 0).sum())} of {int((groups == 'good').sum())} good;"
+	      f" positive on both: {int((pca_y.scores_.loc[groups == 'high solvent'] > 0).all(axis=1).sum())} of"
+	      f" {int((groups == 'high solvent').sum())} high solvent")
+	# negative t1: 15 of 17 abnormal; positive t1: 21 of 23 good; positive on both: 6 of 6 high solvent
 	contributions = pca_y.score_contributions(y_scaled, component=1)
 	fig = go.Figure()
 	for batch_id, colour in ((61, ORANGE), (14, AQUA)):
@@ -350,7 +359,7 @@ study found.
 
 .. table:: Quality explained, as a cumulative percentage, after one and after two components. :math:`R^2_Y` is
    the fit to the 46 batches; :math:`Q^2_Y` is the same quantity for batches held out of the
-   fit, seven at a time.
+   fit, in seven folds, averaged over ten splits into folds.
 
    +----------------------+--------------------------+-----------------------------+-----------------------------+
    | Model                | Quality explained from   | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
@@ -410,7 +419,9 @@ of each block the components describe.
 	blocks_z = {"Zchem": Zchem, "Zop": Zop}
 	mb_z = MBPLS(n_components=2).fit(blocks_z, Y)
 	print("MBPLS Z -> Y, R2Y cumulative:", mb_z.r2_y_cumulative_.round(3).tolist())
+	# MBPLS Z -> Y, R2Y cumulative: [0.292, 0.364]
 	print("R2X per block after two components:", mb_z.r2_x_per_block_cumulative_.iloc[:, -1].round(3).to_dict())
+	# R2X per block after two components: {'Zchem': 0.296, 'Zop': 0.356}
 
 	def block_axes(fig, r2, row=None, col=None, prefix="block t", note=""):
 	    """Axis titles of one score plot, with the percent of the variance each component explains (`r2`)."""
@@ -471,8 +482,8 @@ see.
 	print(list(wide.shape), int(wide.isna().sum().sum()))       # batches x columns; missing cells
 	# [46, 3575] 1340
 	pca_x = PCA(n_components=2).fit(x_scaled)
-	print(pca_x.r2_per_component_.round(3).tolist())            # R2 of the trajectory block, per component
-	# [0.231, 0.146]
+	print(pca_x.r2_cumulative_.round(3).tolist())               # R2 of the trajectory block, cumulative
+	# [0.231, 0.376]
 	scores(pca_x, pca_x.r2_per_component_, {20: ORANGE}, labels=[20, 61, 14]).show()
 	t2, spe = pca_x.hotellings_t2_.iloc[:, -1], pca_x.spe_.iloc[:, -1]
 	t2_limit, spe_limit = pca_x.hotellings_t2_limit(conf_level=0.95), pca_x.spe_limit(conf_level=0.95)
@@ -932,6 +943,10 @@ quality :math:`\mathbf{Y}`, with a dash where the model never saw that block.
 	print(summary.round(1).to_string(na_rep="-"))
 	print(summary["Y"].sum(axis=1, min_count=1).round(1).dropna().tolist())   # quality explained, per model
 	# [70.3, 22.2, 26.2, 36.4, 41.0, 47.0]
+	zchem = summary["Zchem"].round(1)
+	print("Zchem: its own PLS", zchem.loc["PLS from Zchem"].sum().round(1),
+	      "against the batch multiblock PLS", zchem.loc["Batch multiblock PLS"].tolist())
+	# Zchem: its own PLS 52.0 against the batch multiblock PLS [6.5, 16.9]
 
 .. table:: :math:`R^2` of each block, as a percentage, per component, for every model of the ladder.
 
