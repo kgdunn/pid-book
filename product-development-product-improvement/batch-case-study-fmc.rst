@@ -20,12 +20,11 @@ The recipe has three phases, each bounded by a landmark in the trajectories:
 * the temperature ramp, from there until the dryer temperature reaches its maximum;
 * cooling, from there to the end of the batch.
 
-The operators adjusted the peak temperature set point from batch to batch to correct the
-product quality, a manual feedback loop. This is the case study of Garcia-Munoz and
-co-workers (2003), and the most complete of the three. The
-:ref:`first <APPS_batch_case_dupont>` had trajectories alone and the
-:ref:`second <APPS_batch_case_sbr>` added final quality, while here the chemistry of the
-charge and the operating conditions are recorded as well.
+The operators adjusted the peak temperature set point from batch to batch to correct the product
+quality, a manual feedback loop. This is the case study of Garcia-Munoz and co-workers (2003),
+and the most complete of the three. The :ref:`first <APPS_batch_case_dupont>` had trajectories
+alone and the :ref:`second <APPS_batch_case_sbr>` added final quality, while here the chemistry
+of the charge and the operating conditions are recorded as well.
 
 .. figure:: ../figures/examples/fmc/dryer_flowsheet.png
 	:alt: Flowsheet of the batch dryer: the dryer tank with its agitator and heating medium, the collector tank with its level measurement, a pressure controller between them, and two temperature controllers for the jacket and the dryer; the ten measured trajectories are numbered on the drawing.
@@ -94,9 +93,8 @@ aligns raw batch data by dynamic time warping, and ``load_dryer`` bundles this d
 unaligned trajectories, so the same batches can be drawn before and after.
 
 Thirteen batches have no chemistry measurements and are left out, the same exclusion the
-original study made;
-``load_fmc`` lists them as ``missing_chemistry``, and 46 remain. A few quality and chemistry
-cells and the trajectories of ten batches still have missing values.
+original study made; ``load_fmc`` lists them as ``missing_chemistry``, and 46 remain. A few
+quality and chemistry cells and the trajectories of ten batches still have missing values.
 
 The ``PCA``, ``PLS`` and `MBPLS <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/multivariate/_mbpls.py>`_ estimators handle missing values through the
 :ref:`NIPALS algorithm <LVM_PCA_NIPALS_algorithm>`, so this case study uses them on the
@@ -620,12 +618,11 @@ samples.
 	named between the orange phase ends. The dryer pressure carries half of the residual, and
 	most of it lies in the solvent-collection phase.
 
-The residual of batch 20 belongs to the dryer pressure (49%), most of it in the first phase
-(58% of the total). Its dryer pressure sat at 85 units against 37 for the average batch
-through solvent collection, where its dryer temperature also ran hot in the
-:ref:`raw trajectory overlay <APPS_batch_case_fmc_overlay>`, and on through the ramp. The
-temperatures, power
-and torque share the rest.
+The residual of batch 20 belongs to the dryer pressure (49%), most of it in the first phase (58%
+of the total). Its dryer pressure sat at 85 units against 37 for the average batch through
+solvent collection, where its dryer temperature also ran hot in the :ref:`raw trajectory overlay
+<APPS_batch_case_fmc_overlay>`, and on through the ramp. The temperatures, power and torque
+share the rest.
 
 Trajectories to quality
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -699,7 +696,7 @@ the jacket temperature set point (-4.2). Batches 5 and 7 lie on the other side o
 
 .. figure:: ../figures/batch/batch-case-fmc-raw-batches-13-5-7.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Four trajectories of the 46 batches in grey with batches 13 in orange, 5 in aqua and 7 in blue, with dashed vertical lines at the ends of the first two phases; batch 13 collected less solvent than almost every other batch, reached the end of the first phase in less clock time than most, and cooled faster at the end of the batch.
+	:alt: Four trajectories of the 46 batches in grey with batches 13 in orange, 5 in aqua and 7 in blue, with dashed vertical lines at the ends of the first two phases; batch 13 collected less solvent than most of the batches and reached the end of the first phase in less clock time than all but three of them.
 	:width: 900px
 	:scale: 80
 	:align: center
@@ -863,8 +860,7 @@ batch 5, is placed with the abnormal centre in the operating-condition block as 
 is not a case of an ordinary charge with an unusual trajectory, and it is left aside.
 
 On the super score of this model those four lie between the two groups with nothing to mark them
-out: a
-batch unusual in one block and ordinary in the others is visible only in the block score
+out: a batch unusual in one block and ordinary in the others is visible only in the block score
 plots.
 
 .. code-block:: python
@@ -971,7 +967,9 @@ quality :math:`\mathbf{Y}`, with a dash where the model never saw that block.
 	      "against the batch multiblock PLS", zchem.loc["Batch multiblock PLS"].tolist())
 	# Zchem: its own PLS 52.0 against the batch multiblock PLS [6.5, 16.9]
 
-.. table:: :math:`R^2` of each block, as a percentage, per component, for every model of the ladder.
+.. table:: :math:`R^2` of each block, as a percentage, per component, for every model of the
+   ladder. Each cell is rounded on its own, so a row can add up to a tenth away from the
+   cumulative value quoted elsewhere for the same model.
 
    +----------------------+-------------+-------------+-------------+-------------+
    | Model                | Zchem       | Zop         | X           | Y           |
@@ -1015,27 +1013,25 @@ trajectory, such as the slope of the temperature over a phase or its duration, a
 those as the columns. The operating-condition block here is already one, since eight of its
 nine columns are landmarks of the trajectories.
 
-Of the three ways of handling the trajectory array, landmark features, batchwise unfolding
-and observation-wise unfolding, it is the simplest to set up, and the engineer chooses which
+Of the three ways of handling the trajectory array, landmark features, batchwise unfolding and
+observation-wise unfolding, it is the simplest to set up, and the engineer chooses which
 landmarks matter, so a feature that is important but not obvious can be left out. It suits a
 process with distinct operational changes, which this dryer has, and less so one whose
-trajectories are smooth, such as the reactor of the
-:ref:`first case study <APPS_batch_case_dupont>`. Wold and co-workers (2009) build all three
-kinds on this dryer, and their score plots separate the on- from the off-specification
-batches in the same way.
+trajectories are smooth, such as the reactor of the :ref:`first case study
+<APPS_batch_case_dupont>`. Wold and co-workers (2009) build all three kinds on this dryer, and
+their score plots separate the on- from the off-specification batches in the same way.
 
-A second step is an on-line monitoring model, which tracks a running batch against the
-reference model and predicts its final quality before the batch ends. Estimating the scores
-of a batch observed so far is a missing-data problem of the same shape as the gaps in these
-trajectories, with the samples not yet seen standing in for the missing cells, so the
-incomplete batches are no obstacle. The
-:ref:`SBR case study <APPS_batch_case_sbr_online>` works that step through.
+A second step is an on-line monitoring model, which tracks a running batch against the reference
+model and predicts its final quality before the batch ends. Estimating the scores of a batch
+observed so far is a missing-data problem of the same shape as the gaps in these trajectories,
+with the samples not yet seen standing in for the missing cells, so the incomplete batches are
+no obstacle. The :ref:`SBR case study <APPS_batch_case_sbr_online>` works that step through.
 
 References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-The full list of readings on batch data is on the
-:ref:`batch process monitoring page <APPS_batch_readings>`; this page lists what it draws on.
+The full list of readings on batch data is on the :ref:`batch process monitoring page
+<APPS_batch_readings>`; this page lists what it draws on.
 
 * Salvador Garcia-Munoz, Theodora Kourti, John F. MacGregor, Antonio G. Mateos and Gerry
   Murphy, "`Troubleshooting of an industrial batch process using multivariate methods
@@ -1059,6 +1055,3 @@ The full list of readings on batch data is on the
   processes <https://literature.learnche.org/item/34/multivariate-spc-charts-for-monitoring-batch-processes>`_",
   *Technometrics*, **37**, 41-59, 1995. Its closing discussion sets out why a batch model
   describes correlation, not cause and effect.
-
-* The full list of readings on batch data is on the
-  :ref:`batch process monitoring <APPS_batch_monitoring>` page.

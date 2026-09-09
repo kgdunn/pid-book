@@ -158,11 +158,10 @@ The first component explains 65.3% of the variance in the quality block and the 
 	:ref:`below <APPS_batch_case_sbr_online_prediction>` to show the prediction while the
 	batch runs.
 
-The score plot flags both faulty batches, whose :math:`T^2` values
-(:ref:`Hotelling's statistic <LVM-Hotellings-T2>`) are 28.2 for batch 34 and 19.2 for batch 37,
-against a 95% limit of 6.6. Their marker areas say the rest. Batch 37 has the smallest residual
-of the 53 and batch
-34 the twelfth smallest, so neither departs in a direction the model does not describe.
+The score plot flags both faulty batches, whose :math:`T^2` values (:ref:`Hotelling's statistic
+<LVM-Hotellings-T2>`) are 28.2 for batch 34 and 19.2 for batch 37, against a 95% limit of 6.6.
+Their marker areas say the rest. Batch 37 has the smallest residual of the 53 and batch 34 the
+twelfth smallest, so neither departs in a direction the model does not describe.
 
 The SPE answers the other question about a batch, how far it sits away from the components.
 Drawing it against Hotelling's :math:`T^2`, which summarises how extreme the batch is along
@@ -454,9 +453,9 @@ stays out. Batch 34 leaves it midway, first in the two service temperatures and 
 released, then some 20 samples later in the conversion and latex density. The robust distance
 moves batch 34's onsets by two to five samples, and for batch 37 it also puts the
 cooling-water and jacket temperatures outside the band from the first sample, where the
-standard-deviation distance keeps them inside throughout. Two things put them there: the robust
-scale is the smaller of the two over the early samples, and the EWMA carries a run of small
-departures across the band where single samples would not reach it.
+standard-deviation distance never holds them there long enough to count. Two things put them
+outside: the robust scale is the smaller of the two over the early samples, and the EWMA carries
+a run of crossings into one stretch where single samples fall back inside.
 
 One fault, two places in the score plot
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -466,11 +465,11 @@ times. A batch model describes deviations in (tag, time) cells, so the time of a
 its signature: a slow reaction from the start deviates along :math:`\mathbf{w}_1`, one from
 the middle of the batch along :math:`\mathbf{w}_2`.
 
-That makes batch models useful for diagnosis, and is also a caution. A library of known
-faults built in score space needs the onset time as a coordinate, since a fault seen at one
-onset appears as a new fault at another. The
-:ref:`on-line section <APPS_batch_case_sbr_online>` returns to both batches with a model
-that has seen neither fault, where the two places become two statistics.
+That makes batch models useful for diagnosis, and is also a caution. A library of known faults
+built in score space needs the onset time as a coordinate, since a fault seen at one onset
+appears as a new fault at another. The :ref:`on-line section <APPS_batch_case_sbr_online>`
+returns to both batches with a model that has seen neither fault, where the two places become
+two statistics.
 
 Predicted quality
 ~~~~~~~~~~~~~~~~~
@@ -793,7 +792,7 @@ is the first of the three, so an operator sees it two samples later.
 
 .. figure:: ../figures/batch/batch-case-sbr-online-monitoring.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Three panels: Hotelling's T2 of batch 37 against samples observed with the 99% limit dashed, crossing it after 23 samples and staying above; the SPE of the newest sample of batch 34 with its per-sample limit, a dashed vertical at 100 where the impurity enters, and the first sustained alarm after 105 samples; and the share of the residual per tag at that alarm sample, led by the reactor and cooling-water temperatures.
+	:alt: Three panels: Hotelling's T2 of batch 37 against samples observed with the 99% limit dashed, crossing it after 23 samples and staying above; the SPE of the newest sample of batch 34 with its per-sample limit, a dotted vertical at 100 where the impurity enters, and the first sustained alarm after 105 samples; and the share of the residual per tag at that alarm sample, led by the reactor and cooling-water temperatures.
 	:width: 1200px
 	:scale: 80
 	:align: center
@@ -817,10 +816,9 @@ fault from the middle of the batch, in the SPE after 105 samples, the same sampl
 
 The 51 reference batches define normal, so any alarm they raise is a false alarm. Their alarm
 rate is a lower bound on the rate to expect on the plant, since the limits were fitted to these
-same batches. A 99% limit lets 1% of a normal batch's
-values cross by chance, about two crossings over 200 samples, so a single crossing cannot
-count as an alarm. The rule used here is three consecutive samples above the limit, as in
-Garcia-Munoz, Kourti and MacGregor (2004).
+same batches. A 99% limit lets 1% of a normal batch's values cross by chance, about two
+crossings over 200 samples, so a single crossing cannot count as an alarm. The rule used here is
+three consecutive samples above the limit, as in Garcia-Munoz, Kourti and MacGregor (2004).
 
 That rule holds for :math:`T^2`, where one of the 51 reference batches alarms. It fails for
 the SPE, where 13 do, one normal batch in four. The cause is autocorrelation: a sample that fits
@@ -958,11 +956,10 @@ so it forecasts the slow conversion of batch 37 from sample 30 onwards. The faul
 but not forecast it. Nomikos and MacGregor (1995) stop drawing their prediction intervals
 for this batch once its SPE crosses the limit, for the same reason.
 
-Both faults are found with much of the batch still to run, and the statistic that
-finds each says which kind it is. A large :math:`T^2` with a small residual is a batch far along
-a known direction, while a
-large residual with a small :math:`T^2` is a batch doing something the reference set never
-did.
+Both faults are found with much of the batch still to run, and the statistic that finds each
+says which kind it is. A large :math:`T^2` with a small residual is a batch far along a known
+direction, while a large residual with a small :math:`T^2` is a batch doing something the
+reference set never did.
 
 Every number here comes from the reference set, easy to choose because the simulation says
 which batches are faulty. On plant data those batches are the first thing to get right, and
@@ -973,8 +970,8 @@ one of four blocks about a batch, and asks which block matters most.
 References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-The full list of readings on batch data is on the
-:ref:`batch process monitoring page <APPS_batch_readings>`; this page lists what it draws on.
+The full list of readings on batch data is on the :ref:`batch process monitoring page
+<APPS_batch_readings>`; this page lists what it draws on.
 
 * Paul Nomikos, `Statistical process control of batch processes <https://literature.learnche.org/item/154/statistical-process-control-of-batch-processes>`_,
   Ph.D thesis, McMaster University, 1995. The source of the simulation and of the two
@@ -1024,6 +1021,3 @@ The full list of readings on batch data is on the
   *Comprehensive Chemometrics*, **2**, chapter 2.10, 163-197, 2009. Mid-batch prediction of
   quality and
   of the remaining trajectories.
-
-* The full list of readings on batch data is on the
-  :ref:`batch process monitoring <APPS_batch_monitoring>` page.

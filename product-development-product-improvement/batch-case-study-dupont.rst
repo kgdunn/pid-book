@@ -330,8 +330,8 @@ so the plots are examined again.
 	fig = scores(model_b, 2, 3, highlight={f'{{"color": "{PURPLE}", "symbol": "triangle-up"}}': second_group})
 	fig.add_trace(go.Scatter(x=[group_t2], y=[group_t3], mode="markers", showlegend=False,     # a square at the
 	                         marker=dict(symbol="square", size=9, color="#4d4d4d")))             # average point
-	fig.add_annotation(x=0, y=0, ax=group_t2, ay=group_t3, axref="x", ayref="y", text="",       # the arrow from it
-	                   showarrow=True, arrowhead=2, arrowwidth=3, arrowcolor="#4d4d4d")          # to the model centre
+	fig.add_annotation(x=group_t2, y=group_t3, ax=0, ay=0, axref="x", ayref="y", text="",       # the arrow from
+	                   showarrow=True, arrowhead=2, arrowwidth=3, arrowcolor="#4d4d4d")        # the centre out
 	fig.add_annotation(x=group_t2 / 2, y=group_t3 / 2, text="contribution direction", showarrow=False, yshift=12,
 	                   textangle=-np.degrees(np.arctan2(group_t3, group_t2)), font=dict(size=10))
 	fig.show()
@@ -375,11 +375,6 @@ the displacement from it, and its contributions add up to their mean score.
 	for tag in ("TempC-1", "Press-3", "Press-2", "Flow-2"):          # the three largest contributions, and Flow-2
 	    overlay(kept_b, tag, {batch_id: PURPLE for batch_id in second_group}).show()
 
-.. code-block:: text
-
-   group mean t2 =  15.0 (the contribution vector sums to  15.0); the other 40 batches:  -3.0; samples 0 to 25 carry 66% of it
-   group mean t3 =  14.8 (the contribution vector sums to  14.8); the other 40 batches:  -3.0; samples 0 to 25 carry 90% of it
-
 .. figure:: ../figures/batch/batch-case-dupont-group-contribution.png
 	:source: batch/batch-case-dupont-figures.py
 	:alt: Left, the group's contribution to t2 and t3 summed per tag with each of the eight members as a dot; right, four panels of raw trajectories over samples 0 to 30 for TempC-1, Press-3, Press-2 and Flow-2, the eight group batches in purple and the other 40 in light grey.
@@ -395,9 +390,8 @@ the displacement from it, and its contributions add up to their mean score.
 
 ``TempC-1``, ``Press-2`` and ``Press-3`` carry most of the displacement, every member in the
 same direction on ``TempC-1`` and ``Press-3``, most of it from the first 25 samples. Not every
-member agrees.
-``TempH-1`` takes both signs across the eight, so its group mean rests on a few. A group
-contribution is a starting point, checked member by member.
+member agrees. ``TempH-1`` takes both signs across the eight, so its group mean rests on a few.
+A group contribution is a starting point, checked member by member.
 
 The raw trajectories agree: the eight run above the other 40 in ``TempC-1`` and ``Press-3``
 until about sample 25, and only slightly above in ``Press-2`` and ``Flow-2``.
@@ -448,13 +442,6 @@ estimated, and its :math:`T^2` and SPE compared with the 95% limits of the 40.
 	           and (model_c.spe_.loc[poor_quality].iloc[:, -1] < spe_limit).all()))
 	# batches 38, 40, 41 and 42 inside both limits: True
 
-.. code-block:: text
-
-   R2 per component: [0.375, 0.114, 0.064]
-   left-out batches above the SPE limit: [37, 39, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55]
-   left-out batches above the T2 limit: [37, 50, 51, 52, 53, 54, 55]
-   batches 38, 40, 41 and 42 inside both limits: True
-
 .. figure:: ../figures/batch/batch-case-dupont-model-c.png
 	:source: batch/batch-case-dupont-figures.py
 	:alt: Left, the scores of model C's 40 batches with 38, 40, 41 and 42 marked inside the ellipse; right, Hotelling's T2 against SPE on logarithmic axes, the 40 training batches below both limits and the 15 left-out batches above the SPE limit, seven of them above the T2 limit as well.
@@ -493,8 +480,8 @@ it still runs.
 References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-The full list of readings on batch data is on the
-:ref:`batch process monitoring page <APPS_batch_readings>`; this page lists what it draws on.
+The full list of readings on batch data is on the :ref:`batch process monitoring page
+<APPS_batch_readings>`; this page lists what it draws on.
 
 * Paul Nomikos and John F. MacGregor, "`Multivariate SPC charts for monitoring batch
   processes <https://literature.learnche.org/item/34/multivariate-spc-charts-for-monitoring-batch-processes>`_",
