@@ -484,6 +484,24 @@ The block scores make the same point for a single batch. Batch 20 sits inside th
 the chemistry block and far outside it in the operating-condition block. It is unusual in
 its operation, not in its chemistry.
 
+.. table:: Quality explained, as a cumulative percentage, with the two initial-condition
+   blocks used together, added to the earlier table. The multiblock row carries no
+   cross-validated value: the package cross-validates a single-block PLS, not a multiblock one.
+
+   +----------------------+--------------------------+-----------------------------+-----------------------------+
+   | Model                | Quality explained from   | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
+   |                      |                          +--------------+--------------+--------------+--------------+
+   |                      |                          | :math:`t_1`  | :math:`t_2`  | :math:`t_1`  | :math:`t_2`  |
+   +======================+==========================+==============+==============+==============+==============+
+   | PCA on quality       | the quality block itself | 50.0         | 70.3         | -            | -            |
+   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
+   | PLS from Zchem       | the incoming chemistry   | 16.3         | 22.2         | -5.0         | -4.9         |
+   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
+   | PLS from Zop         | the operating conditions | 20.7         | 26.2         | 14.8         | 11.1         |
+   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
+   | Multiblock PLS on Z  | both blocks together     | 29.2         | 36.4         | -            | -            |
+   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
+
 The trajectories alone
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -688,9 +706,9 @@ batches against the nine of the operating conditions. That width lifts a fit on 
 gap does not by itself say that the trajectories predict quality better.
 
 .. table:: Quality explained, as a cumulative percentage, with the trajectory block added to the
-   earlier table. The batch PLS has no cross-validated value printed: on 46 batches the held-out
-   estimate for a block of 3575 columns moves too much from one fold split to another to
-   quote as a single number.
+   earlier table. Neither of the last two rows carries a cross-validated value: the package
+   cross-validates a single-block PLS only, and on 46 batches the held-out estimate for a block of
+   3575 columns moves too much from one fold split to another to quote as a single number.
 
    +----------------------+--------------------------+-----------------------------+-----------------------------+
    | Model                | Quality explained from   | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
@@ -702,6 +720,8 @@ gap does not by itself say that the trajectories predict quality better.
    | PLS from Zchem       | the incoming chemistry   | 16.3         | 22.2         | -5.0         | -4.9         |
    +----------------------+--------------------------+--------------+--------------+--------------+--------------+
    | PLS from Zop         | the operating conditions | 20.7         | 26.2         | 14.8         | 11.1         |
+   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
+   | Multiblock PLS on Z  | both blocks together     | 29.2         | 36.4         | -            | -            |
    +----------------------+--------------------------+--------------+--------------+--------------+--------------+
    | Batch PLS on X       | the trajectories         | 26.6         | 41.0         | -            | -            |
    +----------------------+--------------------------+--------------+--------------+--------------+--------------+
