@@ -596,8 +596,8 @@ them. Batches 41 and 51 are above the SPE limit alone, and batch 47 just below i
 
 A batch with a high :math:`t_1` collected more solvent than average at every point and took
 more clock time to reach each one. Where a loading changes sign the component contrasts the
-phases, as the dryer temperature does in going from negative over the first part of the batch
-to positive from about sample 130 onwards.
+phases, as the dryer temperature (``D-Temp``) does in going from negative over the first part
+of the batch to positive from about sample 130 onwards.
 
 The :math:`R^2` per cell says how much of that cell's batch-to-batch variation the two
 components describe, and so where the loadings can be read with confidence. The collector
