@@ -599,7 +599,7 @@ running:
 
 .. figure:: ../figures/batch/batch-case-sbr-online-rmse.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Five curves, one per quality attribute, of the leave-one-batch-out root-mean-square error of the mid-batch prediction divided by the attribute's standard deviation against the number of samples observed; all start above one, the particle-size curve falls below one after about 120 samples, branching and cross-linking fall furthest, polydispersity changes little after 50 samples.
+	:alt: Five curves, one per quality attribute, of the leave-one-batch-out root-mean-square error of the mid-batch prediction divided by the attribute's standard deviation against the number of samples observed; all start above one, the particle-size curve falls below one after about 130 samples, branching and cross-linking fall furthest, polydispersity changes little after 50 samples.
 	:width: 800px
 	:scale: 80
 	:align: center
@@ -694,9 +694,9 @@ score estimated from the first few samples uses only a few cells of the unfolded
 across the reference batches such estimates scatter far more widely than the final scores.
 
 :math:`T^2` at each sample is therefore computed against the covariance of the reference
-estimates at that same sample, which the monitor stores. Nomikos and MacGregor (1995) set
-their score-chart limits from that spread and note that :math:`T^2` needs the covariance at
-each sample too; Garcia-Munoz, Kourti and MacGregor (2004) compute it. The SPE limit is
+estimates at that same sample, which the monitor stores. Nomikos and MacGregor, in their
+Technometrics paper of 1995, set their score-chart limits from that spread and note that
+:math:`T^2` needs the covariance at each sample too; Garcia-Munoz, Kourti and MacGregor (2004) compute it. The SPE limit is
 fitted sample by sample the same way.
 
 Normalising by that covariance also fixes what the reference batches average. Dividing by
@@ -884,7 +884,9 @@ The residual shares say what changed. At the alarm sample the reactor temperatur
 the largest share, with the cooling-water and jacket temperatures next. Four samples later
 the two service temperatures and the energy released carry most of it and the reactor
 temperature has dropped back. That is a transient in the reactor temperature and a lasting
-change on the service side, the order the departure analysis found.
+change on the service side. The departure analysis records the lasting change, with onsets in
+the two service temperatures just before the alarm sample, and none for the reactor
+temperature, which leaves the band but never stays outside it long enough to count.
 
 The same score estimate that predicts the quality also predicts the rest of the
 trajectories, as the model's reconstruction :math:`\hat{\boldsymbol{\tau}} \mathbf{P}^{T}`

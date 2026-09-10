@@ -45,7 +45,8 @@ Four blocks of data describe each batch:
 * :math:`\mathbf{Z}_\text{op}`, nine values the original study calls the operating
   conditions: the weight of the cake charged, known before the batch starts, and eight
   landmarks read off the batch's own trajectories when they were aligned, among them the
-  peak dryer temperature, the length of each phase and the slope of the temperature ramp.
+  peak dryer temperature, the lengths of the ramp and the cooling phase, and the slope of the
+  temperature ramp.
 * :math:`\mathbf{X}`, the ten trajectories over the batch, and an eleventh described below.
 * :math:`\mathbf{Y}`, eight final quality attributes: seven numbered attributes, ``Y1`` to
   ``Y11`` with gaps, and the residual solvent concentration ``SolventConc``. The original
@@ -923,9 +924,9 @@ neighbours' average point to the four's, the construction of the
 phase (``Time3``), the ramp (``Time2``, ``TempSlope``) and the high-speed agitation
 (``Time4``).
 
-In the recipe's units the four ramped in 24 clock samples against 32 and cooled for 50
-against 38, at the same peak set point (86.9 against 87.2): not a set point that was moved,
-but how long each phase was run.
+In clock time the four ramped in 24 time units against 32 and cooled for 50 against 38, at the
+same peak set point (86.9 against 87.2): not a set point that was moved, but how long each
+phase was run.
 
 Read together:
 
