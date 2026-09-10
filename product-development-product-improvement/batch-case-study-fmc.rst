@@ -348,6 +348,10 @@ one block at a time.
 	    print(name, (cv.r2y_validated["total"] * 100).round(1).tolist())
 	# PLS Zchem [-5.0, -4.9]
 	# PLS Zop [14.8, 11.1]
+	cells = PCA.select_n_components(Y, max_components=2, cv_scheme="ekf", cv=7,
+	                                n_repeats=50, random_state=0)     # held-out cells, not batches
+	print("PCA on Y, cell-wise", (cells.q2 * 100).round(1).tolist())
+	# PCA on Y, cell-wise [33.4, 25.1]
 	fig = scores(pls_op, explained_x(pls_op), {20: ORANGE}, note="R2X ", labels=[20, 61, 14])
 	contribution = pls_op.score_contributions(zop_scaled, component=1).loc[20]
 	bars = go.Figure([go.Bar(x=contribution.index, y=contribution, marker_color=BLUE)])
@@ -360,18 +364,12 @@ Each initial-condition block alone explains about a quarter of the quality block
 components, the operating conditions more than the chemistry, the same order the original
 study found.
 
-.. After process-improve is tagged with the element-wise cross-validation fix (1.83.1 onwards),
-   the PCA row can carry a cell-wise Q2 here, computed as
-   PCA.select_n_components(Y, max_components=2, cv_scheme="ekf", cv=7, random_state=0), with the
-   result echoed in the code block above so the checker compares it. Two things to settle first.
-   The value on the second component is not stable: over ten splits into folds it runs 13.9 to
-   33.4 (mean 26.3), against 30.6 to 38.9 (mean 33.8) on the first, so a single split is an
-   arbitrary draw and an average over splits is the quantity to quote. The number of element-folds
-   matters more than the seed: averaged over ten seeds the value at two components runs 8.8% at
-   cv=2, 26.3% at cv=7 and 35.9% at leave-one-cell-out, so it is a property of the holdout fraction
-   as much as of the data. And a cell-wise value answers a different question from the two PLS
-   rows, which hold whole batches out, so it needs its own column or its own sentence rather than
-   the one below.
+.. The cell-wise value above holds out a seventh of the measured cells at a time and averages over
+   fifty partitions, which is what makes it steady enough to print: at one partition it swings 13.9
+   to 33.4 on the second component across ten seeds, and at fifty the seed-to-seed spread is about
+   a point. It still depends on how much is held out at once, more than on the seed: averaged over
+   ten seeds the second-component value runs 8.8% at cv=2, 25% at cv=7 and 35.9% at
+   leave-one-cell-out. Quote it to the nearest whole percent if that ever matters.
 
 .. table:: Quality explained, as a cumulative percentage, after one and after two components.
    :math:`R^2_Y` is the fit to the 46 batches; :math:`Q^2_Y` is the same quantity for batches
@@ -399,7 +397,9 @@ rebuild it, so the value measures how closely the batch reproduces itself and re
 number of components equals the number of attributes
 (:ref:`choosing the number of components <LVM_number_of_components>`). The cells are left empty for
 that reason. Holding out single cells of the quality block keeps the estimate independent of the
-value it predicts, and answers a different question from the two PLS rows.
+value it predicts, and answers a different question from the two PLS rows: how well one attribute
+is predicted from the other seven of the same batch. Measured that way the quality block
+cross-validates to 33.4% after one component, and the second component does not improve it.
 
 The :math:`Q^2_Y` columns separate the two blocks more sharply than the fit does. Held out
 of the fit, the batches are predicted worse from their chemistry than by the average
