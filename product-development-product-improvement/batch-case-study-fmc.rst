@@ -322,9 +322,9 @@ class. Of the 17 abnormal batches 15 have a negative :math:`t_1`, 21 of the 23 g
 positive :math:`t_1`, and the six high in residual solvent are positive on both components.
 
 Batches 61 and 14, one from each of the first two groups, have mirror-image :math:`t_1`
-contributions, with the same attributes (``Y1``, ``Y4``, ``Y6`` and ``Y10``) low in the
-abnormal group and high in the good one. The first component is a general level of
-quality rather than a trade-off between attributes.
+contributions, with ``Y1`` and ``Y6`` low and ``Y4`` and ``Y10`` high in the abnormal batch,
+and the other way round in the good one. The first component is a contrast between those two
+sets of attributes rather than a general level of quality.
 
 Do the initial conditions explain quality?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -669,7 +669,10 @@ Trajectories to quality
 
 The score plot axes carry the share of the trajectory block each component describes, its
 :math:`R^2_X`. The model is judged on the quality block, where the trajectories explain
-41.0% after two components, more than the 26.2% of the best single initial-condition block.
+41.0% after two components, against 26.2% for the best single initial-condition block. Both are
+fits rather than held-out predictions, and the trajectory block brings 3575 columns to the 46
+batches against the nine of the operating conditions. That width lifts a fit on its own, so the
+gap does not by itself say that the trajectories predict quality better.
 
 .. table:: Quality explained, as a cumulative percentage, with the trajectory block added to the
    earlier table. The batch PLS has no cross-validated value printed: on 46 batches the held-out
@@ -937,7 +940,9 @@ Read together:
 * The model does not say that a shorter ramp and a longer cool-down would rescue a slow
   batch: it describes how the batches co-varied, not cause and effect (Nomikos and
   MacGregor, 1995). That reading is a hypothesis for a designed experiment.
-* The original study found the same four batches, with the same reading.
+* The original study found the same four batches and named the same two operating differences,
+  reading the shorter ramp and the longer cool-down as compensating for the adverse features of
+  their trajectories.
 
 The models side by side
 ~~~~~~~~~~~~~~~~~~~~~~~

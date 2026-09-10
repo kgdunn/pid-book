@@ -32,9 +32,9 @@ The data
 
 The `SBR batch reactor dataset <https://openmv.net/info/sbr-batch-reactor>`_ is a workbook
 of two sheets, the trajectories of 53 batches over 200 samples and the quality attributes,
-one row per batch. Of its nine trajectories, the two feed flow rates and the feed
-temperature carry only the noise the simulation adds, under 2% and 0.1% of their values, so
-the model uses the six of the reactor itself, which ``load_sbr`` reads from the workbook.
+one row per batch. Of its nine trajectories, the two feed flow rates vary by under 2% of their
+value and the feed temperature by under 0.1% of its own, so the model uses the six of the
+reactor itself, which ``load_sbr`` reads from the workbook.
 
 .. code-block:: python
 
@@ -161,7 +161,8 @@ The first component explains 65.3% of the variance in the quality block and the 
 The score plot flags both faulty batches, whose :math:`T^2` values (:ref:`Hotelling's statistic
 <LVM-Hotellings-T2>`) are 28.2 for batch 34 and 19.2 for batch 37, against a 95% limit of 6.6.
 Their marker areas say the rest. Batch 37 has the smallest residual of the 53 and batch 34 the
-twelfth smallest, so neither departs in a direction the model does not describe.
+twelfth smallest. Both batches are in this fit, and each is extreme along a component its own
+deviation helped to define, so the fault lands in the scores and little is left in the residual.
 
 The SPE answers the other question about a batch, how far it sits away from the components.
 Drawing it against Hotelling's :math:`T^2`, which summarises how extreme the batch is along
