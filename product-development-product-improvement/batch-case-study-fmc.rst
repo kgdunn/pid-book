@@ -362,7 +362,7 @@ study found.
 
 .. After process-improve is tagged with the element-wise cross-validation fix (1.83.1 onwards),
    the PCA row can carry a cell-wise Q2 here, computed as
-   PCA.select_n_components(Y, max_components=2, method="ekf", cv=7, random_state=0), with the
+   PCA.select_n_components(Y, max_components=2, cv_scheme="ekf", cv=7, random_state=0), with the
    result echoed in the code block above so the checker compares it. Two things to settle first.
    The value on the second component is not stable: over ten splits into folds it runs 13.9 to
    33.4 (mean 26.3), against 30.6 to 38.9 (mean 33.8) on the first, so a single split is an
@@ -605,12 +605,10 @@ tank level and the clock time are described best, about 70% of their variance on
 and the agitator speed least, under 10%. For most tags the :math:`R^2` falls in the cooling
 phase, so the model says little about how the batches differ there.
 
-A missing cell has no residual and no contribution. Batch 20 is one of the ten batches with
-missing samples, and its scores come from the cells it does have, the same estimate the
-NIPALS fit used, so its contributions are defined at every observed cell and absent only at
-the missing ones. As in the :ref:`first case study <APPS_batch_case_dupont>`, the
-vector has one entry per (tag, time) cell, here :math:`K = 11` tags by :math:`J = 325`
-samples.
+A missing cell has no residual and no contribution, so a batch with missing samples still has
+contributions wherever it was measured. As in the :ref:`first case study
+<APPS_batch_case_dupont>`, the vector has one entry per (tag, time) cell, here :math:`K = 11`
+tags by :math:`J = 325` samples.
 
 .. code-block:: python
 
