@@ -366,9 +366,12 @@ study found.
    result echoed in the code block above so the checker compares it. Two things to settle first.
    The value on the second component is not stable: over ten splits into folds it runs 13.9 to
    33.4 (mean 26.3), against 30.6 to 38.9 (mean 33.8) on the first, so a single split is an
-   arbitrary draw and an average over splits is the quantity to quote. And a cell-wise value
-   answers a different question from the two PLS rows, which hold whole batches out, so it needs
-   its own column or its own sentence rather than the one below.
+   arbitrary draw and an average over splits is the quantity to quote. The number of element-folds
+   matters more than the seed: averaged over ten seeds the value at two components runs 8.8% at
+   cv=2, 26.3% at cv=7 and 35.9% at leave-one-cell-out, so it is a property of the holdout fraction
+   as much as of the data. And a cell-wise value answers a different question from the two PLS
+   rows, which hold whole batches out, so it needs its own column or its own sentence rather than
+   the one below.
 
 .. table:: Quality explained, as a cumulative percentage, after one and after two components.
    :math:`R^2_Y` is the fit to the 46 batches; :math:`Q^2_Y` is the same quantity for batches
@@ -390,10 +393,13 @@ The first row answers a different question from the other two, and the gap betwe
 not a ranking. A PCA describes the quality block using that same block, so its number says
 how strongly the eight attributes co-vary with each other. The two PLS models predict those
 attributes from a separate block of process data, which is the harder task, and every later
-rung of the ladder is measured the same way. The :math:`Q^2_Y` column holds whole batches out,
-and a PCA has no second block to predict a held-out batch from, so its cells are empty. Holding
-out single cells of the quality block instead does give a PCA a cross-validated value, which
-answers a different question.
+rung of the ladder is measured the same way. The :math:`Q^2_Y` column holds whole batches out. A
+PCA can be cross-validated that way too, but the held-out batch supplies the scores that then
+rebuild it, so the value measures how closely the batch reproduces itself and reaches 100% once the
+number of components equals the number of attributes
+(:ref:`choosing the number of components <LVM_number_of_components>`). The cells are left empty for
+that reason. Holding out single cells of the quality block keeps the estimate independent of the
+value it predicts, and answers a different question from the two PLS rows.
 
 The :math:`Q^2_Y` columns separate the two blocks more sharply than the fit does. Held out
 of the fit, the batches are predicted worse from their chemistry than by the average
