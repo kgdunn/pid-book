@@ -360,6 +360,16 @@ Each initial-condition block alone explains about a quarter of the quality block
 components, the operating conditions more than the chemistry, the same order the original
 study found.
 
+.. After process-improve is tagged with the element-wise cross-validation fix (1.83.1 onwards),
+   the PCA row can carry a cell-wise Q2 here, computed as
+   PCA.select_n_components(Y, max_components=2, method="ekf", cv=7, random_state=0), with the
+   result echoed in the code block above so the checker compares it. Two things to settle first.
+   The value on the second component is not stable: over ten splits into folds it runs 13.9 to
+   33.4 (mean 26.3), against 30.6 to 38.9 (mean 33.8) on the first, so a single split is an
+   arbitrary draw and an average over splits is the quantity to quote. And a cell-wise value
+   answers a different question from the two PLS rows, which hold whole batches out, so it needs
+   its own column or its own sentence rather than the one below.
+
 .. table:: Quality explained, as a cumulative percentage, after one and after two components.
    :math:`R^2_Y` is the fit to the 46 batches; :math:`Q^2_Y` is the same quantity for batches
    held out of the fit, in seven folds, averaged over ten splits into folds.
@@ -381,7 +391,9 @@ not a ranking. A PCA describes the quality block using that same block, so its n
 how strongly the eight attributes co-vary with each other. The two PLS models predict those
 attributes from a separate block of process data, which is the harder task, and every later
 rung of the ladder is measured the same way. The :math:`Q^2_Y` column holds whole batches out,
-and a PCA has no second block to predict a held-out batch from, so its cells are empty.
+and a PCA has no second block to predict a held-out batch from, so its cells are empty. Holding
+out single cells of the quality block instead does give a PCA a cross-validated value, which
+answers a different question.
 
 The :math:`Q^2_Y` columns separate the two blocks more sharply than the fit does. Held out
 of the fit, the batches are predicted worse from their chemistry than by the average
