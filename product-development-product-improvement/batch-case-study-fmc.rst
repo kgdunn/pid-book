@@ -380,14 +380,15 @@ The first row answers a different question from the other two, and the gap betwe
 not a ranking. A PCA describes the quality block using that same block, so its number says
 how strongly the eight attributes co-vary with each other. The two PLS models predict those
 attributes from a separate block of process data, which is the harder task, and every later
-rung of the ladder is measured the same way. The PCA has no held-out batches to predict,
-since there is nothing to predict them from, so its :math:`Q^2_Y` cells are empty.
+rung of the ladder is measured the same way. The :math:`Q^2_Y` column holds whole batches out,
+and a PCA has no second block to predict a held-out batch from, so its cells are empty.
 
 The :math:`Q^2_Y` columns separate the two blocks more sharply than the fit does. Held out
 of the fit, the batches are predicted worse from their chemistry than by the average
 batch, which is what a negative :math:`Q^2_Y` means, while the operating conditions keep
-about half of their fitted value. A cross-validated number moves with the split into folds,
-so it is read for its sign and its size, not its second decimal.
+about half of their fitted value. The second component adds to the fit of both blocks and
+nothing to the prediction: held out, the operating conditions lose ground and the chemistry
+stays negative.
 
 Batch 20 stands out in the operating-condition score plot, put there by the recipe timings
 and the temperature slope. It is the batch whose temperature ramp took longer in the
