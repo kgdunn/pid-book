@@ -91,9 +91,9 @@ are noisy in every batch.
 
 	Four of the ten tags for all 55 batches (grey), with batch 49 (orange) and batch 54
 	(aqua) drawn on top. The cooling-medium temperature of batch 49 drops below the other
-	batches over samples 56 to 65, then rejoins them. The pressure step of batch 54 in ``Press-1`` comes later
-	than in the other batches, and its reactor temperature ``TempR-1`` runs slightly below
-	them over the first 20 samples.
+	batches over samples 56 to 65, then rejoins them. The pressure step of batch 54 in
+	``Press-1`` comes later than in the other batches, and its reactor temperature ``TempR-1``
+	runs slightly below them over the first 20 samples.
 
 A first model on all 55 batches
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -308,8 +308,8 @@ curves.
 Batch 54 has a high :math:`t_1` because every tag contributes in the same direction over the
 whole batch. It ran away from the average trajectory from its first sample to its last, as
 the :ref:`raw trajectory overlay <APPS_batch_case_dupont_overlay>` confirms. Batches 50 and
-52 are read the same way, and batch 55, high in :math:`t_2`, stands out through
-``Press-3``, ``Press-2`` and ``TempC-1``.
+52 are read the same way, and batches 53 and 55, the two highest in :math:`t_2`, stand out
+through ``Press-3``, ``Press-2`` and ``TempC-1``.
 
 Exclude and rebuild: a second group of batches
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

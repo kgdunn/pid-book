@@ -234,6 +234,8 @@ play the role PCA loadings do, and :ref:`how the PLS model is calculated
 	time_varying_loading_plot(model, component=1).show()
 	time_varying_loading_plot(model, component=2).show()
 
+.. _APPS_batch_case_sbr_r2:
+
 .. figure:: ../figures/batch/batch-case-sbr-r2-over-time.png
 	:source: batch/batch-case-sbr-figures.py
 	:alt: R2 of every (tag, time) cell after two components, one panel per tag; latex density and conversion rise to about 0.9, the two temperatures and the energy released reach 0.3 to 0.6 only in the second half of the batch, and the reactor temperature stays below 0.3.
@@ -545,7 +547,7 @@ batches produced poor latex, at or near the bottom on most attributes, and the f
 place them at the same end. A quality prediction from the trajectories would have flagged
 both before the laboratory results arrived.
 
-The two are not fitted equally well. The composition of batch 37 is fitted below its
+The two are fitted differently. The composition of batch 37 is fitted below its
 observed value, that of batch 34 closer to the average batch than to its own. The
 :math:`t_1` direction, carrying the fault of batch 37, explains 65.3% of the quality block,
 against 6.9% for :math:`t_2`, which carries the fault of batch 34. A deviation along a
@@ -562,9 +564,10 @@ running:
 
 * the unfolded row is complete up to the current sample and empty after it, so the scores
   are estimated from the observed cells alone, the rest treated as missing data (Wold and
-  co-workers, 2009, Eqs. 2 and 5). The estimator is trimmed score regression (Arteaga and
-  Ferrer, 2002), which Garcia-Munoz, Kourti and MacGregor (2004) found stable from the
-  first samples of a batch;
+  co-workers, 2009, who set out the projection to the model plane and point to the
+  literature for the other estimators). The one used here is trimmed score regression
+  (Arteaga and Ferrer, 2002), which Garcia-Munoz, Kourti and MacGregor (2004) found stable
+  from the first samples of a batch;
 * the model's regression from scores to quality turns those scores into a prediction;
 * the prediction error after :math:`k` samples, RMSEP, comes from refitting without each
   batch in turn and tracing the held-out batch (``online_rmse``, about a minute).
@@ -606,8 +609,10 @@ running:
 	coincide. A curve above 1 is worse than predicting the average batch.
 
 The particle size becomes predictable only in the second half of the batch, where the
-:math:`R^2` curves earlier on this page also placed the information. Nomikos and MacGregor
-(1995) give the reason. It is set largely by the seed particles charged before the batch
+:ref:`fit of every (tag, time) cell <APPS_batch_case_sbr_r2>` also placed the information.
+Nomikos and MacGregor
+(1995), in their multi-way PLS paper, give the reason. It is set largely by the seed particles
+charged before the batch
 starts, which the trajectories do not record, and it was the attribute their model explained
 least. The :ref:`third case study <APPS_batch_case_fmc>` adds a block of such
 before-the-batch measurements.
@@ -786,7 +791,9 @@ is the first of the three, so an operator sees it two samples later.
 	    print(f"batch 34 after {k} samples, share of the residual per tag [%]:", shares.to_dict())
 	    # batch 34 after 105 samples, share of the residual per tag [%]: {'Conversion': 2, 'CoolingTemp': 30, 'EnergyReleased': 11, 'JacketTemp': 16, 'LatexDensity': 1, 'ReactorTemp': 40}
 	    # batch 34 after 109 samples, share of the residual per tag [%]: {'Conversion': 2, 'CoolingTemp': 36, 'EnergyReleased': 19, 'JacketTemp': 29, 'LatexDensity': 1, 'ReactorTemp': 12}
-	fig = go.Figure(go.Bar(x=shares.index, y=shares.values, marker_color=BLUE))
+	at_alarm = reference.predict_online(trajectories[34], upto_k=alarm_k).residuals.xs(alarm_k - 1, level="sequence") ** 2
+	at_alarm = (at_alarm / at_alarm.sum() * 100).round(0).astype(int)
+	fig = go.Figure(go.Bar(x=at_alarm.index, y=at_alarm.values, marker_color=BLUE))
 	fig.update_layout(title=f"Batch 34 after {alarm_k} samples", yaxis_title="Share of the residual [%]", height=320)
 	fig.show()
 
@@ -941,7 +948,8 @@ against the zero line.
 
 	Forecast of the rest of the batch from the score estimate, in z form: each tag as a
 	distance from the normal batches at that sample, in their standard deviations, so the zero
-	line is the average batch and the grey band holds the middle 90% of them. Left: the conversion of batch 37 (aqua), observed
+	line is the average batch and the grey band holds the middle 90% of them. Left: the
+	conversion of batch 37 (aqua), observed
 	for 30 samples, and the forecasts from sample 30 onwards (dashed aqua) and from sample 60
 	onwards (dotted dark blue); what batch 37 did is the faint line. Right: the cooling-water
 	temperature of batch 34 (orange) with the forecasts from sample 60 onwards (dashed

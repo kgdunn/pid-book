@@ -588,6 +588,7 @@ samples.
 	gaps = share_20[share_20.isna()].index.get_level_values("sequence")
 	print(len(gaps), int(gaps.min()), int(gaps.max()))      # missing cells of batch 20, and the first and last sample with one
 	# 205 34 109
+	unfolded_contribution_plot(spe_share.fillna(0.0), batch_id=20).show()
 	unfolded_contribution_plot(spe_share.fillna(0.0), batch_id=20, by_tag=True).show()
 	by_tag = share_20.groupby(level="tag", sort=False).sum()
 	print(f"{by_tag.idxmax()} {by_tag.max():.0f}")           # the tag carrying the largest share of the SPE
@@ -613,7 +614,8 @@ samples.
 	:align: center
 
 	Top: the share of the SPE of batch 20 carried by each (tag, time) cell; the blank
-	positions between samples 34 and 109 are the missing cells, which carry no residual.
+	positions, samples 95 to 109 in every tag but the collector tank level and samples 34 to 44
+	in five of the tags, are the missing cells, which carry no residual.
 	Middle: the same shares summed per tag. Bottom: summed per sample, with the three phases
 	named between the orange phase ends. The dryer pressure carries half of the residual, and
 	most of it lies in the solvent-collection phase.
@@ -621,8 +623,8 @@ samples.
 The residual of batch 20 belongs to the dryer pressure (49%), most of it in the first phase (58%
 of the total). Its dryer pressure sat at 85 units against 37 for the average batch through
 solvent collection, where its dryer temperature also ran hot in the :ref:`raw trajectory overlay
-<APPS_batch_case_fmc_overlay>`, and on through the ramp. The temperatures, power and torque
-share the rest.
+<APPS_batch_case_fmc_overlay>`. The pressure stayed above the other batches through most of
+the ramp as well. The temperatures, power and torque share the rest.
 
 Trajectories to quality
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -636,7 +638,7 @@ Trajectories to quality
 	# [0.217, 0.131]
 	scores(pls_x, explained_x(pls_x), {13: ORANGE, 5: AQUA, 7: AQUA}, note="R2X ", labels=[13, 5, 7, 61, 14]).show()
 	t1 = pls_x.score_contributions(x_scaled, component=1)
-	unfolded_contribution_plot(t1, batch_id=13).show()
+	unfolded_contribution_plot(t1, batch_id=13, by_tag=True).show()
 	print(t1.loc[13].groupby(level="tag", sort=False).sum().nsmallest(4).round(1).to_dict())   # batch 13's four largest
 	# {'ClockTime': -8.1, 'CTankLvl': -8.0, 'D-Temp': -4.7, 'J-Temp-SP': -4.2}
 	for tag in ("D-Temp", "CTankLvl", "ClockTime", "J-Temp-SP"):
@@ -738,7 +740,11 @@ columns and the nine operating ones.
 	fig = group_scatter(go.Figure(), super_t.iloc[:, 0], super_t.iloc[:, 1], {13: ORANGE, 5: AQUA, 7: AQUA})
 	block_axes(fig, mb.r2_y_per_component_, prefix="super t", note="R2Y ")
 	fig.update_layout(height=440).show()
-	mb.super_weights_bar_plot(component=1).show()
+	bars = go.Figure([go.Bar(x=list(blocks), y=mb.r2_x_per_block_cumulative_.iloc[:, -1],
+	                         name="R2X after two components", marker_color=BLUE),
+	                  go.Bar(x=list(blocks), y=mb.super_vip_, name="super VIP", marker_color=ORANGE)])
+	shade_alternate(bars, len(blocks))
+	bars.update_layout(title="Per block: R2X and super VIP", height=440).show()
 	unfolded_contribution_plot(mb.score_contributions(blocks, component=1)["X"], batch_id=13).show()
 	mb.predictions_vs_observed_plot(Y, variable="SolventConc").show()
 	solvent = Y["SolventConc"].dropna()
@@ -775,7 +781,7 @@ The Variable Importance in Projection (VIP) summarises, per variable, how much i
 contributes to explaining the quality block, scaled so that a value above one marks
 above-average importance. The super VIP applies the same idea to a whole block. It puts the
 operating conditions (1.07) and the trajectories (1.06) level and the chemistry last (0.86),
-the order the earlier models gave one block at a time.
+which is where the earlier models left the chemistry, one block at a time.
 
 That ordering is what the original study set out to establish: the plant had been looking to
 the incoming chemistry for the cause of poor product, and the models put the way the batch
