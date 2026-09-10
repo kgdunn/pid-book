@@ -232,6 +232,13 @@ involved.
 	pca_y = PCA(n_components=2).fit(y_scaled)
 	print("PCA on Y, R2 cumulative:", pca_y.r2_cumulative_.round(3).tolist())
 	# PCA on Y, R2 cumulative: [0.5, 0.703]
+	profile = PCA(n_components=4).fit(y_scaled)           # only to carry R2 past the two components used below
+	cells = PCA.select_n_components(Y, max_components=4, cv_scheme="ekf", cv=7,
+	                                n_repeats=50, random_state=0)     # held-out cells, not batches
+	print("R2 to four components:", (profile.r2_cumulative_ * 100).round(1).tolist())
+	# R2 to four components: [50.0, 70.3, 78.8, 86.6]
+	print("cell-wise Q2:", (cells.q2 * 100).round(1).tolist(), "->", int(cells.n_components), "component")
+	# cell-wise Q2: [33.4, 25.1, -44.6, -84.2] -> 1 component
 	def group_scatter(fig, x, y, highlight, row=None, col=None, showlegend=True):
 	    """One trace per class of the plant's classification (colour and marker shape from STYLES); the batches in
 	    `highlight` (id -> colour) are drawn larger and labelled, in the marker shape of their class."""
@@ -326,6 +333,44 @@ contributions, with ``Y1`` and ``Y6`` low and ``Y4`` and ``Y10`` high in the abn
 and the other way round in the good one. The first component is a contrast between those two
 sets of attributes rather than a general level of quality.
 
+How many components does the quality block support?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The fit improves with every component added, so it cannot answer this on its own. What
+settles it is whether a component helps predict a value the model has not seen. Each measured
+cell of the quality block is held out in turn, in seven groups, and predicted from a model
+fitted without it; the average over fifty different groupings is :math:`Q^2`
+(:ref:`choosing the number of components <LVM_number_of_components>`).
+
+.. table:: The quality block, as a cumulative percentage. :math:`R^2` is the fit to the 46
+   batches; :math:`Q^2` predicts each measured cell from a model fitted without it.
+
+   +--------------------------+--------------+--------------+--------------+--------------+
+   | Components               | 1            | 2            | 3            | 4            |
+   +==========================+==============+==============+==============+==============+
+   | Cumulative :math:`R^2`   | 50.0         | 70.3         | 78.8         | 86.6         |
+   +--------------------------+--------------+--------------+--------------+--------------+
+   | Cumulative :math:`Q^2`   | 33.4         | 25.1         | -44.6        | -84.2        |
+   +--------------------------+--------------+--------------+--------------+--------------+
+
+.. The cell-wise values in the table above hold out a seventh of the measured cells at a time and
+   average over fifty groupings, which is what makes them steady enough to print: at one grouping
+   the second-component value swings 13.9 to 33.4 across ten seeds, and at fifty the seed-to-seed
+   spread is about a point. It still depends on how much is held out at once, more than on the
+   seed: averaged over ten seeds the second-component value runs 8.8% at cv=2, 25% at cv=7 and
+   35.9% at leave-one-cell-out. Quote these to the nearest whole percent if that ever matters.
+
+The two columns part company immediately. :math:`Q^2` is highest at one component, lower at
+two, and negative from three, which says that a model with three components predicts a
+held-out cell worse than the block's own average would. The eight attributes share one
+direction of common variation and little more.
+
+The two-component PCA on the quality block is therefore one component past what that block
+supports on its own. It is kept because the second component is what separates the classes in
+the score plot, and because every model in this case study is read at two components, which is
+what makes the rungs of the ladder comparable. Where the aim is a single number for how much
+structure the block holds, one component is what the cross-validation supports.
+
 Do the initial conditions explain quality?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -348,10 +393,6 @@ one block at a time.
 	    print(name, (cv.r2y_validated["total"] * 100).round(1).tolist())
 	# PLS Zchem [-5.0, -4.9]
 	# PLS Zop [14.8, 11.1]
-	cells = PCA.select_n_components(Y, max_components=2, cv_scheme="ekf", cv=7,
-	                                n_repeats=50, random_state=0)     # held-out cells, not batches
-	print("PCA on Y, cell-wise", (cells.q2 * 100).round(1).tolist())
-	# PCA on Y, cell-wise [33.4, 25.1]
 	fig = scores(pls_op, explained_x(pls_op), {20: ORANGE}, note="R2X ", labels=[20, 61, 14])
 	contribution = pls_op.score_contributions(zop_scaled, component=1).loc[20]
 	bars = go.Figure([go.Bar(x=contribution.index, y=contribution, marker_color=BLUE)])
@@ -364,42 +405,38 @@ Each initial-condition block alone explains about a quarter of the quality block
 components, the operating conditions more than the chemistry, the same order the original
 study found.
 
-.. The cell-wise value above holds out a seventh of the measured cells at a time and averages over
-   fifty partitions, which is what makes it steady enough to print: at one partition it swings 13.9
-   to 33.4 on the second component across ten seeds, and at fifty the seed-to-seed spread is about
-   a point. It still depends on how much is held out at once, more than on the seed: averaged over
-   ten seeds the second-component value runs 8.8% at cv=2, 25% at cv=7 and 35.9% at
-   leave-one-cell-out. Quote it to the nearest whole percent if that ever matters.
-
 .. table:: Quality explained, as a cumulative percentage, after one and after two components.
-   :math:`R^2_Y` is the fit to the 46 batches; :math:`Q^2_Y` is the same quantity for batches
-   held out of the fit, in seven folds, averaged over ten splits into folds.
+   :math:`R^2_Y` is the fit to the 46 batches; :math:`Q^2_Y` is the same quantity for data held
+   out of the fit, in seven groups. The held-out column says what a group is: whole batches for
+   the two PLS models, averaged over ten groupings, and single cells for the PCA, averaged over
+   fifty.
 
-   +----------------------+--------------------------+-----------------------------+-----------------------------+
-   | Model                | Quality explained from   | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
-   |                      |                          +--------------+--------------+--------------+--------------+
-   |                      |                          | :math:`t_1`  | :math:`t_2`  | :math:`t_1`  | :math:`t_2`  |
-   +======================+==========================+==============+==============+==============+==============+
-   | PCA on quality       | the quality block itself | 50.0         | 70.3         | -            | -            |
-   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
-   | PLS from Zchem       | the incoming chemistry   | 16.3         | 22.2         | -5.0         | -4.9         |
-   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
-   | PLS from Zop         | the operating conditions | 20.7         | 26.2         | 14.8         | 11.1         |
-   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
+   +----------------------+--------------------------+-----------+-----------------------------+-----------------------------+
+   | Model                | Quality explained from   | Held out  | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
+   |                      |                          |           +--------------+--------------+--------------+--------------+
+   |                      |                          |           | :math:`t_1`  | :math:`t_2`  | :math:`t_1`  | :math:`t_2`  |
+   +======================+==========================+===========+==============+==============+==============+==============+
+   | PCA on quality       | the quality block itself | cells     | 50.0         | 70.3         | 33.4         | 25.1         |
+   +----------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
+   | PLS from Zchem       | the incoming chemistry   | batches   | 16.3         | 22.2         | -5.0         | -4.9         |
+   +----------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
+   | PLS from Zop         | the operating conditions | batches   | 20.7         | 26.2         | 14.8         | 11.1         |
+   +----------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
 
 The first row answers a different question from the other two, and the gap between them is
 not a ranking. A PCA describes the quality block using that same block, so its number says
 how strongly the eight attributes co-vary with each other. The two PLS models predict those
 attributes from a separate block of process data, which is the harder task, and every later
-rung of the ladder is measured the same way. The :math:`Q^2_Y` column holds whole batches out. A
-PCA can be cross-validated that way too, but the held-out batch supplies the scores that then
-rebuild it, so the value measures how closely the batch reproduces itself and reaches 100% once the
-number of components equals the number of attributes
-(:ref:`choosing the number of components <LVM_number_of_components>`). The cells are left empty for
-that reason. Holding out single cells of the quality block keeps the estimate independent of the
-value it predicts, and answers a different question from the two PLS rows: how well one attribute
-is predicted from the other seven of the same batch. Measured that way the quality block
-cross-validates to 33.4% after one component, and the second component does not improve it.
+rung of the ladder is measured the same way.
+
+The held-out column carries as much as the numbers beside it. A PCA can be cross-validated by
+holding out whole batches, but the held-out batch supplies the scores that then rebuild it, so
+the value measures how closely the batch reproduces itself and reaches 100% once the number of
+components equals the number of attributes. Holding out single cells instead keeps the estimate
+independent of the value it predicts, and asks how well one attribute is predicted from the other
+seven of the same batch. The two PLS rows hold out whole batches and are comparable with each
+other and with every later rung; the PCA row is a different measurement that happens to share
+the column.
 
 The :math:`Q^2_Y` columns separate the two blocks more sharply than the fit does. Held out
 of the fit, the batches are predicted worse from their chemistry than by the average
@@ -493,20 +530,21 @@ its operation, not in its chemistry.
 .. table:: Quality explained, as a cumulative percentage, with the two initial-condition
    blocks used together, added to the earlier table. The multiblock row carries no
    cross-validated value: the package cross-validates a single-block PLS, not a multiblock one.
+   The held-out column reads as in that table.
 
-   +----------------------+--------------------------+-----------------------------+-----------------------------+
-   | Model                | Quality explained from   | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
-   |                      |                          +--------------+--------------+--------------+--------------+
-   |                      |                          | :math:`t_1`  | :math:`t_2`  | :math:`t_1`  | :math:`t_2`  |
-   +======================+==========================+==============+==============+==============+==============+
-   | PCA on quality       | the quality block itself | 50.0         | 70.3         | -            | -            |
-   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
-   | PLS from Zchem       | the incoming chemistry   | 16.3         | 22.2         | -5.0         | -4.9         |
-   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
-   | PLS from Zop         | the operating conditions | 20.7         | 26.2         | 14.8         | 11.1         |
-   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
-   | Multiblock PLS on Z  | both blocks together     | 29.2         | 36.4         | -            | -            |
-   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
+   +----------------------+--------------------------+-----------+-----------------------------+-----------------------------+
+   | Model                | Quality explained from   | Held out  | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
+   |                      |                          |           +--------------+--------------+--------------+--------------+
+   |                      |                          |           | :math:`t_1`  | :math:`t_2`  | :math:`t_1`  | :math:`t_2`  |
+   +======================+==========================+===========+==============+==============+==============+==============+
+   | PCA on quality       | the quality block itself | cells     | 50.0         | 70.3         | 33.4         | 25.1         |
+   +----------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
+   | PLS from Zchem       | the incoming chemistry   | batches   | 16.3         | 22.2         | -5.0         | -4.9         |
+   +----------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
+   | PLS from Zop         | the operating conditions | batches   | 20.7         | 26.2         | 14.8         | 11.1         |
+   +----------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
+   | Multiblock PLS on Z  | both blocks together     | -         | 29.2         | 36.4         | -            | -            |
+   +----------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
 
 The trajectories alone
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -712,23 +750,24 @@ gap does not by itself say that the trajectories predict quality better.
 .. table:: Quality explained, as a cumulative percentage, with the trajectory block added to the
    earlier table. Neither of the last two rows carries a cross-validated value: the package
    cross-validates a single-block PLS only, and on 46 batches the held-out estimate for a block of
-   3575 columns moves too much from one fold split to another to quote as a single number.
+   3575 columns moves too much from one grouping to another to quote as a single number. The
+   held-out column reads as in the first table.
 
-   +----------------------+--------------------------+-----------------------------+-----------------------------+
-   | Model                | Quality explained from   | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
-   |                      |                          +--------------+--------------+--------------+--------------+
-   |                      |                          | :math:`t_1`  | :math:`t_2`  | :math:`t_1`  | :math:`t_2`  |
-   +======================+==========================+==============+==============+==============+==============+
-   | PCA on quality       | the quality block itself | 50.0         | 70.3         | -            | -            |
-   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
-   | PLS from Zchem       | the incoming chemistry   | 16.3         | 22.2         | -5.0         | -4.9         |
-   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
-   | PLS from Zop         | the operating conditions | 20.7         | 26.2         | 14.8         | 11.1         |
-   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
-   | Multiblock PLS on Z  | both blocks together     | 29.2         | 36.4         | -            | -            |
-   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
-   | Batch PLS on X       | the trajectories         | 26.6         | 41.0         | -            | -            |
-   +----------------------+--------------------------+--------------+--------------+--------------+--------------+
+   +----------------------+--------------------------+-----------+-----------------------------+-----------------------------+
+   | Model                | Quality explained from   | Held out  | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
+   |                      |                          |           +--------------+--------------+--------------+--------------+
+   |                      |                          |           | :math:`t_1`  | :math:`t_2`  | :math:`t_1`  | :math:`t_2`  |
+   +======================+==========================+===========+==============+==============+==============+==============+
+   | PCA on quality       | the quality block itself | cells     | 50.0         | 70.3         | 33.4         | 25.1         |
+   +----------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
+   | PLS from Zchem       | the incoming chemistry   | batches   | 16.3         | 22.2         | -5.0         | -4.9         |
+   +----------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
+   | PLS from Zop         | the operating conditions | batches   | 20.7         | 26.2         | 14.8         | 11.1         |
+   +----------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
+   | Multiblock PLS on Z  | both blocks together     | -         | 29.2         | 36.4         | -            | -            |
+   +----------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
+   | Batch PLS on X       | the trajectories         | -         | 26.6         | 41.0         | -            | -            |
+   +----------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
 
 Batch 13 sits at the low end of :math:`t_1` with contributions all of one sign, led by the
 clock time (-8.1) and the collector tank level (-8.0), then the dryer temperature (-4.7) and
