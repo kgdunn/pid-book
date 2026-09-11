@@ -65,7 +65,7 @@ Four blocks of data describe each batch:
 The questions are those a plant asks, in the order it asks them. What does product quality
 look like, and do the batches fall into groups? Do the initial conditions explain it? What
 do the trajectories add? Which batches deserve a closer look? The original study answers
-with a ladder of two-component models, and this page climbs the same ladder one block at a time:
+with a sequence of two-component models, and this page follows it, adding one block at a time:
 
 * A PCA on the quality block.
 * A PLS model from each initial-condition block to the quality block.
@@ -368,7 +368,7 @@ direction of common variation and little more.
 The two-component PCA on the quality block is therefore one component past what that block
 supports on its own. It is kept because the second component is what separates the classes in
 the score plot, and because every model in this case study is read at two components, which is
-what makes the rungs of the ladder comparable. Where the aim is a single number for how much
+what makes them comparable with each other. Where the aim is a single number for how much
 structure the block holds, one component is what the cross-validation supports.
 
 Do the initial conditions explain quality?
@@ -427,7 +427,7 @@ The first row answers a different question from the other two, and the gap betwe
 not a ranking. A PCA describes the quality block using that same block, so its number says
 how strongly the eight attributes co-vary with each other. The two PLS models predict those
 attributes from a separate block of process data, which is the harder task, and every later
-rung of the ladder is measured the same way.
+model on this page is measured the same way.
 
 The held-out column carries as much as the numbers beside it. A PCA can be cross-validated by
 holding out whole batches, but the held-out batch supplies the scores that then rebuild it, so
@@ -435,7 +435,7 @@ the value measures how closely the batch reproduces itself and reaches 100% once
 components equals the number of attributes. Holding out single cells instead keeps the estimate
 independent of the value it predicts, and asks how well one attribute is predicted from the other
 seven of the same batch. The two PLS rows hold out whole batches and are comparable with each
-other and with every later rung; the PCA row is a different measurement that happens to share
+other and with every later model; the PCA row is a different measurement that happens to share
 the column.
 
 The :math:`Q^2_Y` columns separate the two blocks more sharply than the fit does. Held out
@@ -1023,8 +1023,8 @@ Read together:
 The models side by side
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Each rung of the ladder sees a different set of blocks, and what its two components describe
-of each says what that model captured. The table below collects every model on this page
+Each model sees a different set of blocks, and what its two components describe of each says
+what that model captured. The table below collects every model on this page
 across the four blocks, the chemistry :math:`\mathbf{Z}_\text{chem}`, the operating
 conditions :math:`\mathbf{Z}_\text{op}`, the trajectories :math:`\mathbf{X}` and the
 quality :math:`\mathbf{Y}`, with a dash where the model never saw that block.
@@ -1055,8 +1055,8 @@ quality :math:`\mathbf{Y}`, with a dash where the model never saw that block.
 	      "against the batch multiblock PLS", zchem.loc["Batch multiblock PLS"].tolist())
 	# Zchem: its own PLS 52.0 against the batch multiblock PLS [6.5, 16.9]
 
-.. table:: :math:`R^2` of each block, as a percentage, per component, for every model of the
-   ladder. Each cell is rounded on its own, so a row can add up to a tenth away from the
+.. table:: :math:`R^2` of each block, as a percentage, per component, for every model on
+   this page. Each cell is rounded on its own, so a row can add up to a tenth away from the
    cumulative value quoted elsewhere for the same model.
 
    +----------------------+-------------+-------------+-------------+-------------+
@@ -1079,8 +1079,9 @@ quality :math:`\mathbf{Y}`, with a dash where the model never saw that block.
    | Batch multiblock PLS | 6.5  | 16.9 | 20.0 | 10.5 | 12.4 | 13.4 | 36.9 | 10.2 |
    +----------------------+------+------+------+------+------+------+------+------+
 
-Read down the quality columns and the ladder pays off. Each rung adds to the one before it,
-and the trajectories carry more of the quality block than either set of initial conditions.
+Read down the quality columns. Leaving aside the PCA, which describes that block rather than
+predicting it, each model explains more of it than the one before, and the trajectories carry
+more of it than either set of initial conditions.
 Read across a row and the cost appears. The chemistry block, half described over the two
 components of its own PLS, keeps under a quarter of itself over the two of the batch
 multiblock PLS while the quality block gains, because a PLS component turns towards whatever
