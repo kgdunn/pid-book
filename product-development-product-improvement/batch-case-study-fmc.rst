@@ -528,8 +528,9 @@ its operation, not in its chemistry.
 
 .. table:: Quality explained, as a cumulative percentage, with the two initial-condition
    blocks used together, added to the earlier table. The multiblock row carries no
-   cross-validated value: the package cross-validates a single-block PLS, not a multiblock one.
-   The held-out column reads as in that table.
+   cross-validated value. Holding out whole batches applies to a multiblock model exactly as it
+   does to the two single-block rows above, and the package does not yet implement it. The
+   held-out column reads as in that table.
 
    +-----------------------------------------+--------------------------+-----------+-----------------------------+-----------------------------+
    | Model                                   | Quality explained from   | Held out  | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
@@ -747,10 +748,11 @@ batches against the nine of the operating conditions. That width lifts a fit on 
 gap does not by itself say that the trajectories predict quality better.
 
 .. table:: Quality explained, as a cumulative percentage, with the trajectory block added to the
-   earlier table. Neither of the last two rows carries a cross-validated value: the package
-   cross-validates a single-block PLS only, and on 46 batches the held-out estimate for a block of
-   3575 columns moves too much from one grouping to another to quote as a single number. The
-   held-out column reads as in the first table.
+   earlier table. Neither of the last two rows carries a cross-validated value, for different
+   reasons. Holding out whole batches applies to a multiblock model as it does to the single-block
+   rows, and the package does not yet implement it. For the batch PLS, on 46 batches the held-out
+   estimate of a block with 3575 columns moves too much from one grouping to another to quote as a
+   single number. The held-out column reads as in the first table.
 
    +-----------------------------------------+--------------------------+-----------+-----------------------------+-----------------------------+
    | Model                                   | Quality explained from   | Held out  | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
