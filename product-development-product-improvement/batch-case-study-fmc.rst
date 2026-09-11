@@ -481,6 +481,9 @@ of each block the components describe.
 	# MBPLS Z -> Y, R2Y cumulative: [0.292, 0.364]
 	print("R2X per block after two components:", mb_z.r2_x_per_block_cumulative_.iloc[:, -1].round(3).to_dict())
 	# R2X per block after two components: {'Zchem': 0.296, 'Zop': 0.356}
+	cv_mb = MBPLS.select_n_components(blocks_z, Y, max_components=2, cv=7, random_state=0)   # held-out batches
+	print("MBPLS Z -> Y, Q2Y cumulative:", (cv_mb.r2y_validated["total"] * 100).round(1).tolist())
+	# MBPLS Z -> Y, Q2Y cumulative: [14.3, 12.7]
 
 	def block_axes(fig, r2, row=None, col=None, prefix="block t", note=""):
 	    """Axis titles of one score plot, with the percent of the variance each component explains (`r2`)."""
@@ -526,11 +529,15 @@ The block scores make the same point for a single batch. Batch 20 sits inside th
 the chemistry block and far outside it in the operating-condition block. It is unusual in
 its operation, not in its chemistry.
 
+The cross-validated value does not follow the fit. The multiblock model predicts 14.3% of the
+quality block after one component and 12.7% after two, against 14.8 and 11.1% for the
+operating conditions alone. Joining the two blocks raises the fit from 26.2 to 36.4% and
+leaves the cross-validated value near that of the operating conditions on their own.
+
 .. table:: Quality explained, as a cumulative percentage, with the two initial-condition
-   blocks used together, added to the earlier table. The multiblock row carries no
-   cross-validated value. Holding out whole batches applies to a multiblock model exactly as it
-   does to the two single-block rows above, and the package does not yet implement it. The
-   held-out column reads as in that table.
+   blocks used together, added to the earlier table. The multiblock row holds out whole batches,
+   as the two single-block rows above do, so the three cross-validated values are read against
+   each other. The held-out column reads as in that table.
 
    +-----------------------------------------+--------------------------+-----------+-----------------------------+-----------------------------+
    | Model                                   | Quality explained from   | Held out  | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
@@ -543,7 +550,7 @@ its operation, not in its chemistry.
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
    | PLS from :math:`\mathbf{Z}_\text{op}`   | the operating conditions | batches   | 20.7         | 26.2         | 14.8         | 11.1         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
-   | Multiblock PLS on :math:`\mathbf{Z}`    | both blocks together     | -         | 29.2         | 36.4         | -            | -            |
+   | Multiblock PLS on :math:`\mathbf{Z}`    | both blocks together     | batches   | 29.2         | 36.4         | 14.3         | 12.7         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
 
 The trajectories alone
@@ -748,11 +755,9 @@ batches against the nine of the operating conditions. That width lifts a fit on 
 gap does not by itself say that the trajectories predict quality better.
 
 .. table:: Quality explained, as a cumulative percentage, with the trajectory block added to the
-   earlier table. Neither of the last two rows carries a cross-validated value, for different
-   reasons. Holding out whole batches applies to a multiblock model as it does to the single-block
-   rows, and the package does not yet implement it. For the batch PLS, on 46 batches the held-out
-   estimate of a block with 3575 columns moves too much from one grouping to another to quote as a
-   single number. The held-out column reads as in the first table.
+   earlier table. The batch PLS row carries no cross-validated value. On 46 batches the held-out
+   estimate of a block with 3575 columns moves too much from one grouping to another to quote as
+   a single number. The held-out column reads as in the first table.
 
    +-----------------------------------------+--------------------------+-----------+-----------------------------+-----------------------------+
    | Model                                   | Quality explained from   | Held out  | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
@@ -765,7 +770,7 @@ gap does not by itself say that the trajectories predict quality better.
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
    | PLS from :math:`\mathbf{Z}_\text{op}`   | the operating conditions | batches   | 20.7         | 26.2         | 14.8         | 11.1         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
-   | Multiblock PLS on :math:`\mathbf{Z}`    | both blocks together     | -         | 29.2         | 36.4         | -            | -            |
+   | Multiblock PLS on :math:`\mathbf{Z}`    | both blocks together     | batches   | 29.2         | 36.4         | 14.3         | 12.7         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
    | Batch PLS on :math:`\mathbf{X}`         | the trajectories         | -         | 26.6         | 41.0         | -            | -            |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
