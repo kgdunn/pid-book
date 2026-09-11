@@ -440,11 +440,9 @@ other and with every later model; the PCA row is a different measurement that ha
 the column.
 
 The :math:`Q^2_Y` columns separate the two blocks more sharply than the fit does. Held out
-of the fit, the batches are predicted worse from their chemistry than by the average
-batch, which is what a negative :math:`Q^2_Y` means, while the operating conditions keep
-about half of their fitted value. The second component adds to the fit of both blocks and
-nothing to the prediction: held out, the operating conditions lose ground and the chemistry
-stays negative.
+of the fit, the chemistry is negative at both components and the operating conditions stay
+positive at both. The second component adds to the fit of each block and nothing to the
+prediction of either.
 
 Batch 20 stands out in the operating-condition score plot, put there by the recipe timings
 and the temperature slope. It is the batch whose temperature ramp took longer in the
