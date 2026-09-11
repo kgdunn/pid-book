@@ -375,7 +375,8 @@ Do the initial conditions explain quality?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A PLS model from each initial-condition block to the quality block answers this question
-one block at a time.
+one block at a time, first from the incoming chemistry ``Zchem`` and then from the
+operating conditions ``Zop``.
 
 .. code-block:: python
 
