@@ -710,11 +710,6 @@ Nomikos and MacGregor (1995) set out how such a block of before-the-batch measur
 the model beside the trajectories, and the :ref:`third case study <APPS_batch_case_fmc>` does
 that with two of them.
 
-Branching and cross-linking are predicted best, reaching 0.37 of a standard deviation by 150
-samples, and polydispersity is predicted about as well after 50 samples as at the end.
-Averaged over the five, the error falls from 0.97 standard deviations after 10 samples to
-0.89 after 25, 0.80 after 50 and 0.62 after 150, close to its value when the batch ends.
-
 Two batches show what the curves summarise, both for the particle size: batch 4, nearest the
 average quality, and batch 34, whose particle size is the lowest of the 53. Each prediction is
 drawn against the number of samples observed, with the prediction from the complete batch
