@@ -17,7 +17,8 @@ cross-linking and polydispersity.
 
 The 53 batches were simulated from a first-principles model of the reactor (Nomikos and
 MacGregor, 1994; Nomikos, 1995), so the fault is known. Batch 37 received 30% more organic
-impurity in the butadiene feed from its very start, batch 34 50% more from midway through.
+impurity in the butadiene feed from its very start, batch 34 received 50% more from midway
+through.
 Simulated data lets a model be checked against what is known to have happened, before it is
 trusted on plant data.
 
