@@ -900,9 +900,9 @@ above-average importance. The super VIP applies the same idea to a whole block. 
 operating conditions (1.07) and the trajectories (1.06) level and the chemistry last (0.86),
 which is where the earlier models left the chemistry, one block at a time.
 
-That ordering is what the original study set out to establish: the plant had been looking to
-the incoming chemistry for the cause of poor product, and the models put the way the batch
-was operated ahead of it.
+That ordering is what the original study concluded: the chemistry of the charge had little
+impact on the quality, and the variation in how the batches were operated was the dominant
+contribution to the poor-quality product.
 
 A model of this kind is what a plant builds its monitoring and prediction tools on. The super-score
 plot places every batch in one space. A batch's contributions in the trajectory block, drawn
@@ -1025,7 +1025,7 @@ plots.
 
 .. figure:: ../figures/batch/batch-case-fmc-anomalous.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Left, the contribution from the neighbours' average to the four batches' average in the operating-condition block, positive for the length of the cool-down, the length and slope of the ramp and a fourth recipe timing, negative for the collector level and the cake weight; right, four raw trajectories with the four batches in orange and their neighbours in aqua, running together in the collector level and the clock time, with the same peak set point.
+	:alt: Left, the contribution from the neighbours' average to the four batches' average in the operating-condition block, with positive bars for the cool-down, the ramp length and slope and a fourth recipe timing, and negative bars for the collector level and the cake weight; right, four raw trajectories with the four batches in orange and their neighbours in aqua, running together in the collector level and the clock time, with the same peak set point.
 	:width: 1100px
 	:scale: 80
 	:align: center
@@ -1047,9 +1047,11 @@ contribution scaled by its super weight, so the bars rank the variables within t
 without being on the block score's scale. The contribution from the
 neighbours' average point to the four's, the construction of the
 :ref:`first case study <APPS_batch_case_dupont>`, moves by 0.05 or more in six of the nine
-variables: up in the length of the cooling phase (``Time3``), the length and slope of the ramp
-(``Time2``, ``TempSlope``) and a fourth recipe timing (``Time4``), and down in the collector
-tank level (``Level1``) and the weight of the cake charged (``WgtCake``).
+variables: the length of the cooling phase (``Time3``), the length and slope of the ramp
+(``Time2``, ``TempSlope``), a fourth recipe timing (``Time4``), the collector tank level
+(``Level1``) and the weight of the cake charged (``WgtCake``). A contribution carries the sign
+of the variable's weight as well as the sign of the move, so the direction of a bar is not the
+direction of the raw value; four of these six run the opposite way.
 
 In clock time the four ramped in 24 time units against 32 and cooled for 50 against 38, at the
 same peak set point (86.9 against 87.2): not a set point that was moved, but how long each
@@ -1066,9 +1068,9 @@ Read together:
 * The model does not say that a shorter ramp and a longer cool-down would rescue a slow
   batch: it describes how the batches co-varied, not cause and effect (Nomikos and
   MacGregor, 1995). That reading is a hypothesis for a designed experiment.
-* The original study found the same four batches and named the same two operating differences,
-  reading the shorter ramp and the longer cool-down as compensating for the adverse features of
-  their trajectories.
+* The original study singled out four batches with this same signature and named the same two
+  operating differences, reading the shorter ramp and the longer cool-down as compensating for
+  the adverse features of their trajectories.
 
 The models side by side
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -1180,7 +1182,7 @@ References and readings
 The full list of readings on batch data is on the :ref:`batch process monitoring page
 <APPS_batch_readings>`; this page lists what it draws on.
 
-* Salvador Garcia-Munoz, Theodora Kourti, John F. MacGregor, Antonio G. Mateos and Gerry
+* Salvador Garcia-Munoz, Theodora Kourti, John F. MacGregor, Arthur G. Mateos and Gerald
   Murphy, "`Troubleshooting of an industrial batch process using multivariate methods
   <https://literature.learnche.org/item/24/troubleshooting-of-an-industrial-batch-process-using-multivariate-methods>`_", *Industrial and Engineering Chemistry Research*,
   **42**, 3592-3601, 2003. The source of the case study.
