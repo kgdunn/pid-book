@@ -1075,20 +1075,14 @@ against the zero line.
 	model's components. Batch 37's two forecasts lie below zero and above what happened; the
 	later one, with more of the batch behind it, lies closer to it.
 
-It is the same distinction as the two statistics. The model forecasts along its components, so
-batch 37's slow conversion is forecast in the right direction, and more closely the later the
-forecast is made. The fault of batch 34 lies off the components, so its forecasts stay on the
-average batch and do not move toward the rise. The model can flag that fault but not forecast
-it.
+It is the same distinction as the two statistics. Batch 37's slow conversion lies along the
+model's components, so it is forecast in the right direction, and more closely the later the
+forecast is made. Batch 34's fault lies off them, so its forecasts stay on the average batch,
+and it can be flagged but not forecast.
 
-Batch 37's forecasts still fall short of what happened. They are built from the estimated
-scores, which are pulled toward the average batch while little has been observed, the same
-shrinkage as in the quality prediction.
-
-That is the trade the estimator makes. Understating a deviation that is real is what buys a
-forecast close to what an ordinary batch does, and the bias fades as the batch fills in and the
-observed cells fix the scores. Nomikos and MacGregor (1995) stop drawing their prediction intervals
-for this batch once its SPE crosses the limit, for the same reason.
+Both of batch 37's forecasts still understate what happened, because they are built from
+estimated scores, and those are pulled toward the average batch while little has been observed,
+the same shrinkage as in the quality prediction.
 
 Both faults are found with much of the batch still to run, and the statistic that finds each
 says which kind it is. A large :math:`T^2` with a small residual is a batch far along a known
