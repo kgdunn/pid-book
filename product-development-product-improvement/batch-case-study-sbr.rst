@@ -392,9 +392,9 @@ batch can stay outside it for 50 samples or more. A sustained departure therefor
 to look, not that there is a fault, and runs of 25, 30 and 40 leave the onsets below
 unchanged. The factor 1.4826 makes the robust scale equal to the standard deviation for
 normally distributed values, so the two versions share an axis. The smoothing does not: an
-EWMA with :math:`\lambda = 0.3` has about 0.42 of the spread of the values it smooths, so the
-band of plus and minus two is a stricter test for the smoothed curve, and part of the
-difference between the two sets of onsets is that.
+EWMA is narrower than the values it smooths, so the same band of plus and minus two is a
+stricter test for the smoothed curve, and part of the difference between the two sets of
+onsets is that.
 
 .. code-block:: python
 
@@ -479,9 +479,7 @@ stays out. Batch 34 leaves it midway, first in the two service temperatures and 
 released, then some 20 samples later in the conversion and latex density. The robust distance
 moves batch 34's onsets by two to five samples, and for batch 37 it also puts the
 cooling-water and jacket temperatures outside the band from the first sample, where the
-standard-deviation distance never holds them there long enough to count. Two things put them
-outside: the robust scale is the smaller of the two over the early samples, and the EWMA carries
-a run of crossings into one stretch where single samples fall back inside.
+standard-deviation distance never holds them there long enough to count.
 
 One fault, two places in the score plot
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
