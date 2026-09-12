@@ -99,9 +99,11 @@ those of the original study, and ``load_dryer`` bundles the same dryer's unalign
 trajectories, so the batches can be drawn before and after. (`batch_dtw <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/preprocessing.py>`_
 aligns raw batch data by dynamic time warping, a different method, and is not used here.)
 
-Thirteen batches have no chemistry measurements and are left out, the same exclusion the
-original study made; ``load_fmc`` lists them as ``missing_chemistry``, and 46 remain. A few
-quality and chemistry cells and the trajectories of ten batches still have missing values.
+Thirteen batches have no chemistry measurements and are left out, the exclusion the original
+study also made; ``load_fmc`` lists them as ``missing_chemistry``, and 46 remain. The study
+worked with 44 batches, so the models on this page are fitted to a slightly larger set than
+the ones it reports. A few quality and chemistry cells and the trajectories of ten batches
+still have missing values.
 
 The ``PCA``, ``PLS`` and `MBPLS <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/multivariate/_mbpls.py>`_ estimators handle missing values through the
 :ref:`NIPALS algorithm <LVM_PCA_NIPALS_algorithm>`, so this case study uses them on the
