@@ -49,6 +49,7 @@ from the workbook.
 	from plotly.subplots import make_subplots
 	from process_improve.batch import (BatchMonitor, BatchPLS, contribution_at_time_plot, load_sbr, online_monitoring_plot,
 	                                   time_varying_loading_plot, unfolded_contribution_plot)
+	from process_improve.multivariate import PLS
 	from process_improve.univariate import median_absolute_deviation
 
 	sbr = load_sbr()                                # https://openmv.net/file/sbr-batch-reactor.xlsx
@@ -114,14 +115,6 @@ buys, against the usual :ref:`cross-validation <LVM-PLS-number-of-components>`.
 	r2x = np.diff([0.0, *model.r2_per_variable_.mean(axis=0)])     # R2 of the trajectories, per component
 	print("R2X per component:", r2x.round(3), " R2Y per component:", r2y.round(3))
 	# R2X per component: [0.245 0.127]  R2Y per component: [0.653 0.069]
-	# Five-fold cross-validation over the batches: what each component predicts, not what it fits.
-	# The unfolded matrix is one row per batch, so a fold holds out whole batches. About 40 seconds.
-	unfolded = pd.DataFrame({b: t.to_numpy().ravel(order="F") for b, t in trajectories.items()}).T
-	validated = PLS.select_n_components(unfolded, quality.loc[unfolded.index], max_components=2,
-	                                    cv=5, random_state=0).r2y_validated["total"]
-	q2y = np.diff([0.0, *validated.to_numpy()])
-	print("Q2Y per component:", q2y.round(3), " cumulative:", round(float(validated.iloc[-1]), 3))
-	# Q2Y per component: [0.221 0.118]  cumulative: 0.339
 	spe = model.spe_.iloc[:, -1]
 	t1, t2 = model.scores_.iloc[:, 0], model.scores_.iloc[:, 1]
 	marked = {34: ORANGE, 37: AQUA, 4: PURPLE}
@@ -142,8 +135,7 @@ buys, against the usual :ref:`cross-validation <LVM-PLS-number-of-components>`.
 	                             name=f"batch {batch_id}",
 	                             marker=dict(size=[spe.loc[batch_id] ** 2], color=colour, **area,
 	                                         line=dict(color="#404040", width=1.5))))
-	fig.update_layout(xaxis_title=f"t1 [R2X {r2x[0]:.1%}, Q2Y {q2y[0]:.1%}]",
-	                  yaxis_title=f"t2 [R2X {r2x[1]:.1%}, Q2Y {q2y[1]:.1%}]",
+	fig.update_layout(xaxis_title=f"t1 [R2X {r2x[0]:.1%}]", yaxis_title=f"t2 [R2X {r2x[1]:.1%}]",
 	                  height=520).show()
 	print(f"SPE rank of batch 37: {int(spe.rank().loc[37])} of {len(spe)};",
 	      f"batch 34: {int(spe.rank().loc[34])}")            # 1 = the smallest residual
@@ -161,11 +153,8 @@ buys, against the usual :ref:`cross-validation <LVM-PLS-number-of-components>`.
 	    # batch 34: T2 = 28.2 (limit 6.6), SPE = 23.1 (limit 34.6)
 	    # batch 37: T2 = 19.2 (limit 6.6), SPE = 18.7 (limit 34.6)
 
-The first component explains 65.3% of the variance in the quality block and the second 6.9%.
-Cross-validation, which holds out whole batches and predicts them, credits the two with less
-than half of that. Both numbers are on the axes of the score plot, beside each component's
-share of the variance in the trajectories: what a component fits and what it predicts are
-different quantities, and the gap between them is what a fit alone cannot show.
+The first component explains 65.3% of the variance in the quality block and the second
+6.9%; their shares of the variance in the trajectories are on the axes of the score plot.
 
 .. figure:: ../figures/batch/batch-case-sbr-scores.png
 	:source: batch/batch-case-sbr-figures.py
@@ -546,8 +535,18 @@ before the laboratory did.
 	# RMSEP / sd, one component:  {'Composition': 0.8, 'ParticleSize': 0.87, 'Branching': 0.28, 'CrossLinking': 0.28, 'Polydispersity': 0.67}
 	print("RMSEP / sd, two components:", (rmsep / sd).round(2).to_dict())
 	# RMSEP / sd, two components: {'Composition': 0.81, 'ParticleSize': 0.78, 'Branching': 0.28, 'CrossLinking': 0.28, 'Polydispersity': 0.73}
+	# The RMSEP says by how far the model misses; the cross-validated R2 says how much of the
+	# attribute it predicts. Five folds over whole batches, which takes about 40 seconds.
+	unfolded = pd.DataFrame({b: t.to_numpy().ravel(order="F") for b, t in trajectories.items()}).T
+	q2 = PLS.select_n_components(unfolded, quality.loc[unfolded.index], max_components=2,
+	                             cv=5, random_state=0).r2y_validated.loc[2]
+	print("Q2 per attribute:", q2[quality.columns].round(3).to_dict())
+	# Q2 per attribute: {'Composition': 0.322, 'ParticleSize': 0.339, 'Branching': 0.914, 'CrossLinking': 0.914, 'Polydispersity': 0.476}
 	for variable in ("Composition", "ParticleSize"):
 	    fig = model.predictions_vs_observed_plot(quality, variable=variable)
+	    fig.add_annotation(xref="paper", yref="paper", x=0.02, y=0.98, showarrow=False, align="left",
+	                       text=f"RMSEP {rmsep[variable]:.3g} ({rmsep[variable] / sd[variable]:.2f} sd)"
+	                            f"<br>Q² {q2[variable]:.3f}")
 	    lo, hi = quality[variable].min(), quality[variable].max()
 	    half = 2 * rmsep[variable]
 	    # Two prediction errors either side of y = x, as a shape rather than a trace so that
@@ -577,7 +576,7 @@ before the laboratory did.
 
 .. figure:: ../figures/batch/batch-case-sbr-observed-vs-fitted.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Observed against fitted composition and particle size for the 53 batches with batches 34 and 37 marked; both faulty batches lie at the low end of both attributes, a band of two RMSEP is shaded either side of the y = x line, and each panel's legend lists its RMSEE and RMSEP.
+	:alt: Observed against fitted composition and particle size for the 53 batches with batches 34 and 37 marked; both faulty batches lie at the low end of both attributes, a band of two RMSEP is shaded either side of the y = x line, and each panel's legend lists its RMSEE, RMSEP and cross-validated R-squared.
 	:width: 900px
 	:scale: 80
 	:align: center
@@ -586,7 +585,9 @@ before the laboratory did.
 	with batches 34 (orange) and 37 (aqua) marked. Each panel lists two errors: RMSEE, the
 	scatter of these fitted values about the :math:`y = x` line, and RMSEP, the same scatter
 	when every batch is left out of the fit in turn, each in the attribute's own units and in
-	standard deviations of it. The shaded band is two RMSEP either side of the line: the scatter to
+	standard deviations of it. Beside them is :math:`Q^2`, the cross-validated :math:`R^2` of
+	that attribute: the errors say by how far the model misses, :math:`Q^2` how much of the
+	attribute it predicts. The shaded band is two RMSEP either side of the line: the scatter to
 	expect from a batch the model has not seen, and so wider than the scatter of the fitted values
 	drawn here.
 
