@@ -46,7 +46,10 @@ Four blocks of data describe each batch:
   conditions: the weight of the cake charged, known before the batch starts, and eight
   landmarks read off the batch's own trajectories when they were aligned, among them the
   peak dryer temperature, the lengths of the ramp and the cooling phase, and the slope of the
-  temperature ramp.
+  temperature ramp. Because those landmarks are read from the trajectories, this block and the
+  trajectory block share information: the phase lengths are what ``ClockTime`` records and the
+  peak temperature is the maximum of the dryer temperature. The multiblock models below split
+  the credit for that shared variation between the two blocks.
 * :math:`\mathbf{X}`, the ten trajectories over the batch, and an eleventh described below.
 * :math:`\mathbf{Y}`, eight final quality attributes: seven numbered attributes, ``Y1`` to
   ``Y11`` with gaps, and the residual solvent concentration ``SolventConc``. The original
@@ -58,18 +61,20 @@ Four blocks of data describe each batch:
 	:scale: 80
 	:align: center
 
-	The four blocks: two blocks with one row per batch describing its initial conditions
+	The four blocks: two blocks with one row per batch describing its incoming chemistry
 	and its operation, the three-way block of trajectories, and the block of final
 	properties.
 
 The questions are those a plant asks, in the order it asks them. What does product quality
-look like, and do the batches fall into groups? Do the initial conditions explain it? What
+look like, and do the batches fall into groups? Do the chemistry and the operating conditions
+explain it? What
 do the trajectories add? Which batches deserve a closer look? The original study answers
 with a sequence of two-component models, and this page follows it, adding one block at a time:
 
 * A PCA on the quality block.
-* A PLS model from each initial-condition block to the quality block.
-* A multiblock PLS on both initial-condition blocks.
+* A PLS model from the chemistry block and from the operating-condition block to the quality
+  block.
+* A multiblock PLS on the two blocks together.
 * A batch PCA and a batch PLS on the trajectories.
 * A batch multiblock PLS that joins all three blocks.
 
@@ -89,9 +94,10 @@ and the cooling phase linearly in time. The first phase ends at sample 175 and t
 
 ``ClockTime``, the wall-clock time at each aligned sample, is the eleventh trajectory. It
 records how much each batch was stretched or compressed, so a batch whose ramp took longer
-than usual has a ``ClockTime`` rising faster over that phase. `batch_dtw <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/preprocessing.py>`_
-aligns raw batch data by dynamic time warping, and ``load_dryer`` bundles this dryer's
-unaligned trajectories, so the same batches can be drawn before and after.
+than usual has a ``ClockTime`` rising faster over that phase. The aligned trajectories are
+those of the original study, and ``load_dryer`` bundles the same dryer's unaligned
+trajectories, so the batches can be drawn before and after. (`batch_dtw <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/preprocessing.py>`_
+aligns raw batch data by dynamic time warping, a different method, and is not used here.)
 
 Thirteen batches have no chemistry measurements and are left out, the same exclusion the
 original study made; ``load_fmc`` lists them as ``missing_chemistry``, and 46 remain. A few
@@ -362,19 +368,20 @@ fitted without it; the average over fifty different groupings is :math:`Q^2`
 
 The two columns part company immediately. :math:`Q^2` is highest at one component, lower at
 two, and negative from three, which says that a model with three components predicts a
-held-out cell worse than the block's own average would. The eight attributes share one
+held-out cell worse than that attribute's own average would. The eight attributes share one
 direction of common variation and little more.
 
 The two-component PCA on the quality block is therefore one component past what that block
-supports on its own. It is kept because the second component is what separates the classes in
-the score plot, and because every model in this case study is read at two components, which is
-what makes them comparable with each other. Where the aim is a single number for how much
-structure the block holds, one component is what the cross-validation supports.
+supports on its own. It is kept because every model in this case study is read at two
+components, which is what makes them comparable with each other, and because a score plot needs
+a second axis, along which the six batches high in residual solvent sit apart from the rest.
+Where the aim is a single number for how much structure the block holds, one component is what
+the cross-validation supports.
 
-Do the initial conditions explain quality?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Do the chemistry and the operating conditions explain quality?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A PLS model from each initial-condition block to the quality block answers this question
+A PLS model from each of the two blocks to the quality block answers this question
 one block at a time, first from the incoming chemistry :math:`\mathbf{Z}_\text{chem}` and
 then from the operating conditions :math:`\mathbf{Z}_\text{op}`.
 
@@ -391,9 +398,13 @@ then from the operating conditions :math:`\mathbf{Z}_\text{op}`.
 	# PLS Zop [20.7, 26.2]
 	for name, Z in (("PLS Zchem", Zchem), ("PLS Zop", Zop)):          # the same, on held-out batches
 	    cv = PLS.select_n_components(Z, Y, max_components=2, cv=7, random_state=0)
-	    print(name, (cv.r2y_validated["total"] * 100).round(1).tolist())
-	# PLS Zchem [-5.0, -4.9]
-	# PLS Zop [14.8, 11.1]
+	    # The "total" column pools the eight attributes on their original scale, where the
+	    # widest-ranging attribute decides the number almost on its own. Averaging the
+	    # per-attribute values gives each the same weight, which is the footing the fitted
+	    # R2Y above is already on, so the two columns of the table can be read against each other.
+	    print(name, (cv.r2y_validated.drop(columns="total").mean(axis=1) * 100).round(1).tolist())
+	# PLS Zchem [2.8, 1.2]
+	# PLS Zop [1.3, -5.3]
 	fig = scores(pls_op, explained_x(pls_op), {20: ORANGE}, note="R2X ", labels=[20, 61, 14])
 	contribution = pls_op.score_contributions(zop_scaled, component=1).loc[20]
 	bars = go.Figure([go.Bar(x=contribution.index, y=contribution, marker_color=BLUE)])
@@ -402,15 +413,16 @@ then from the operating conditions :math:`\mathbf{Z}_\text{op}`.
 	fig.show()
 	bars.show()
 
-Each initial-condition block alone explains about a quarter of the quality block after two
+Each of the two blocks alone explains about a quarter of the quality block after two
 components, the operating conditions more than the chemistry, the same order the original
 study found.
 
 .. table:: Quality explained, as a cumulative percentage, after one and after two components.
-   :math:`R^2_Y` is the fit to the 46 batches; :math:`Q^2_Y` is the same quantity for data held
-   out of the fit, in seven groups. The held-out column says what a group is: whole batches for
-   the two PLS models, averaged over ten groupings, and single cells for the PCA, averaged over
-   fifty.
+   :math:`R^2_Y` is the fit to the 46 batches on the scaled quality block; :math:`Q^2_Y` is the
+   held-out counterpart, averaged over the eight attributes so that each counts equally, as it
+   does in :math:`R^2_Y`. Data is held out in seven groups, and the held-out column says what a
+   group is: whole batches for the two PLS models, averaged over ten groupings, and single cells
+   for the PCA, averaged over fifty.
 
    +-----------------------------------------+--------------------------+-----------+-----------------------------+-----------------------------+
    | Model                                   | Quality explained from   | Held out  | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
@@ -419,9 +431,9 @@ study found.
    +=========================================+==========================+===========+==============+==============+==============+==============+
    | PCA on quality                          | the quality block itself | cells     | 50.0         | 70.3         | 33.4         | 25.1         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
-   | PLS from :math:`\mathbf{Z}_\text{chem}` | the incoming chemistry   | batches   | 16.3         | 22.2         | -5.0         | -4.9         |
+   | PLS from :math:`\mathbf{Z}_\text{chem}` | the incoming chemistry   | batches   | 16.3         | 22.2         | 2.8          | 1.2          |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
-   | PLS from :math:`\mathbf{Z}_\text{op}`   | the operating conditions | batches   | 20.7         | 26.2         | 14.8         | 11.1         |
+   | PLS from :math:`\mathbf{Z}_\text{op}`   | the operating conditions | batches   | 20.7         | 26.2         | 1.3          | -5.3         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
 
 The first row answers a different question from the other two, and the gap between them is
@@ -439,10 +451,9 @@ seven of the same batch. The two PLS rows hold out whole batches and are compara
 other and with every later model; the PCA row is a different measurement that happens to share
 the column.
 
-The :math:`Q^2_Y` columns separate the two blocks more sharply than the fit does. Held out
-of the fit, the chemistry is negative at both components and the operating conditions stay
-positive at both. The second component adds to the fit of each block and nothing to the
-prediction of either.
+The :math:`Q^2_Y` columns are far below the fits. Held out of the fit, neither block predicts
+more than 3% of the quality block, and the second component takes both towards zero or below
+it: it adds to the fit of each block and nothing to the prediction of either.
 
 Batch 20 stands out in the operating-condition score plot, put there by the recipe timings
 and the temperature slope. It is the batch whose temperature ramp took longer in the
@@ -482,8 +493,8 @@ of each block the components describe.
 	print("R2X per block after two components:", mb_z.r2_x_per_block_cumulative_.iloc[:, -1].round(3).to_dict())
 	# R2X per block after two components: {'Zchem': 0.296, 'Zop': 0.356}
 	cv_mb = MBPLS.select_n_components(blocks_z, Y, max_components=2, cv=7, random_state=0)   # held-out batches
-	print("MBPLS Z -> Y, Q2Y cumulative:", (cv_mb.r2y_validated["total"] * 100).round(1).tolist())
-	# MBPLS Z -> Y, Q2Y cumulative: [14.3, 12.7]
+	print("MBPLS Z -> Y, Q2Y cumulative:", (cv_mb.r2y_validated.drop(columns="total").mean(axis=1) * 100).round(1).tolist())
+	# MBPLS Z -> Y, Q2Y cumulative: [8.6, 4.5]
 
 	def block_axes(fig, r2, row=None, col=None, prefix="block t", note=""):
 	    """Axis titles of one score plot, with the percent of the variance each component explains (`r2`)."""
@@ -511,12 +522,12 @@ of each block the components describe.
 
 .. figure:: ../figures/batch/batch-case-fmc-mbpls-z.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Six panels in three columns: the super scores of the multiblock PLS on the two initial-condition blocks, coded by classification, with batch 20 at the lower left, above the super weights of the two components, larger for the operating-condition block on both; the chemistry block scores, where batch 20 sits inside the cloud of batches, above the chemistry block weights; and the operating-condition block scores, where batch 20 sits far outside, above the operating-condition block weights.
+	:alt: Six panels in three columns: the super scores of the multiblock PLS on the chemistry and operating-condition blocks, coded by classification, with batch 20 at the lower left, above the super weights of the two components, larger for the operating-condition block on both; the chemistry block scores, where batch 20 sits inside the cloud of batches, above the chemistry block weights; and the operating-condition block scores, where batch 20 sits far outside, above the operating-condition block weights.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
-	Left column: super scores of the multiblock PLS on the two initial-condition blocks,
+	Left column: super scores of the multiblock PLS on the chemistry and operating-condition blocks,
 	coded by the plant's classification, with batch 20 (orange) at the lower left, and below
 	them the super weights of the two components. Middle and right columns: the chemistry
 	block and the operating-condition block, each with its block scores above the block
@@ -529,15 +540,17 @@ The block scores make the same point for a single batch. Batch 20 sits inside th
 the chemistry block and far outside it in the operating-condition block. It is unusual in
 its operation, not in its chemistry.
 
-The cross-validated value does not follow the fit. The multiblock model predicts 14.3% of the
-quality block after one component and 12.7% after two, against 14.8 and 11.1% for the
-operating conditions alone. Joining the two blocks raises the fit from 26.2 to 36.4% and
-leaves the cross-validated value near that of the operating conditions on their own.
+The cross-validated value does not follow the fit. The multiblock model predicts 8.6% of the
+quality block after one component and 4.5% after two, where neither block on its own reaches
+3%. Joining the two blocks raises the fit from 26.2 to 36.4% and the held-out value from
+under 3% to 8.6%, which is what the two blocks together buy: a prediction that is still weak,
+but no longer indistinguishable from predicting the average batch.
 
-.. table:: Quality explained, as a cumulative percentage, with the two initial-condition
-   blocks used together, added to the earlier table. The multiblock row holds out whole batches,
-   as the two single-block rows above do, so the three cross-validated values are read against
-   each other. The held-out column reads as in that table.
+.. table:: Quality explained, as a cumulative percentage, with the chemistry and
+   operating-condition blocks used together, added to the earlier table. The multiblock row
+   holds out whole batches, as the two single-block rows above do, and all three held-out values
+   weight the eight attributes equally, so the three are read against each other. The held-out
+   column reads as in that table.
 
    +-----------------------------------------+--------------------------+-----------+-----------------------------+-----------------------------+
    | Model                                   | Quality explained from   | Held out  | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
@@ -546,11 +559,11 @@ leaves the cross-validated value near that of the operating conditions on their 
    +=========================================+==========================+===========+==============+==============+==============+==============+
    | PCA on quality                          | the quality block itself | cells     | 50.0         | 70.3         | 33.4         | 25.1         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
-   | PLS from :math:`\mathbf{Z}_\text{chem}` | the incoming chemistry   | batches   | 16.3         | 22.2         | -5.0         | -4.9         |
+   | PLS from :math:`\mathbf{Z}_\text{chem}` | the incoming chemistry   | batches   | 16.3         | 22.2         | 2.8          | 1.2          |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
-   | PLS from :math:`\mathbf{Z}_\text{op}`   | the operating conditions | batches   | 20.7         | 26.2         | 14.8         | 11.1         |
+   | PLS from :math:`\mathbf{Z}_\text{op}`   | the operating conditions | batches   | 20.7         | 26.2         | 1.3          | -5.3         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
-   | Multiblock PLS on :math:`\mathbf{Z}`    | both blocks together     | batches   | 29.2         | 36.4         | 14.3         | 12.7         |
+   | Multiblock PLS on :math:`\mathbf{Z}`    | both blocks together     | batches   | 29.2         | 36.4         | 8.6          | 4.5          |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
 
 The trajectories alone
@@ -578,6 +591,8 @@ see.
 	spe_only = sorted(spe.index[(spe > spe_limit) & (t2 <= t2_limit)])      # above the SPE limit only
 	print(both, spe_only)
 	# [20] [41, 51]
+	print(round(float(t2.loc[20] / t2_limit), 1), int((spe >= spe.loc[20]).sum()), round(float(spe.loc[47] / spe_limit), 2))
+	# 2.0 2 0.99
 
 	def influence_plot(model, highlight, labels, conf_level=0.95):
 	    """Hotelling's T2 against SPE, one marker per batch coded by classification, with both limits drawn."""
@@ -606,9 +621,11 @@ see.
 	the SPE limit only.
 
 Two components describe 37.6% of the batch-to-batch variation in the trajectories. Batch 20
-is the only batch above both limits, with a :math:`T^2` twice its limit and an SPE next to
-the largest of the 46, so it is both unusual along the components and poorly described by
-them. Batches 41 and 51 are above the SPE limit alone, and batch 47 just below it.
+is the only batch above both limits, with a :math:`T^2` twice its limit and the second largest
+SPE of the 46, so it is both unusual along the components and poorly described by them.
+Batches 41 and 51 are above the SPE limit alone, and batch 47 at 0.99 of it. Two batches above
+a 95% limit is what that limit allows among 46, so neither is a finding on its own; batch 20,
+above both limits, is.
 
 .. code-block:: python
 
@@ -653,8 +670,11 @@ of the batch to positive from about sample 130 onwards.
 The :math:`R^2` per cell says how much of that cell's batch-to-batch variation the two
 components describe, and so where the loadings can be read with confidence. The collector
 tank level and the clock time are described best, about 70% of their variance on average,
-and the agitator speed least, under 10%. For most tags the :math:`R^2` falls in the cooling
-phase, so the model says little about how the batches differ there.
+and the agitator speed least, under 10%. The agitator speed is a step at the same sample in
+every batch, so most of its columns carry only noise once each is scaled to unit variance; a
+low :math:`R^2` there says the column is noise, not that the model missed something. For most
+tags the :math:`R^2` falls in the cooling phase, so the model says little about how the
+batches differ there.
 
 A missing cell has no residual and no contribution, so a batch with missing samples still has
 contributions wherever it was measured. As in the :ref:`first case study
@@ -672,7 +692,7 @@ tags by :math:`J = 325` samples.
 	unfolded_contribution_plot(spe_share.fillna(0.0), batch_id=20).show()
 	unfolded_contribution_plot(spe_share.fillna(0.0), batch_id=20, by_tag=True).show()
 	by_tag = share_20.groupby(level="tag", sort=False).sum()
-	print(f"{by_tag.idxmax()} {by_tag.max():.0f}")           # the tag carrying the largest share of the SPE
+	print(f"{by_tag.idxmax()} {by_tag.max():.0f}")           # the tag carrying the largest share of the squared SPE
 	# DryPress 49
 	by_time = share_20.groupby(level="sequence").sum()
 	first, second = phase_ends
@@ -681,31 +701,30 @@ tags by :math:`J = 325` samples.
 	fig = go.Figure(go.Bar(x=list(by_time.index), y=by_time, marker_color=BLUE))
 	for x in phase_ends:
 	    fig.add_vline(x=x, line_color=ORANGE, line_width=1.5)
-	fig.update_layout(title="Batch 20: share of the SPE per sample", xaxis_title="Sample [aligned time]",
-	                  yaxis_title="Share of SPE [%]", height=320).show()
+	fig.update_layout(title="Batch 20: share of the squared SPE per sample", xaxis_title="Sample [aligned time]",
+	                  yaxis_title="Share of the squared SPE [%]", height=320).show()
 	overlay(X, "DryPress", {20: ORANGE}).show()
 	print(round(X[20]["DryPress"].iloc[:first].mean()), round(average["DryPress"].iloc[:first].mean()))   # phase 1: batch 20, average
 	# 85 37
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-20-spe-contributions.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Three panels for batch 20: the share of the SPE carried by each unfolded cell, blank over samples 95 to 109 in every tag but the collector tank level and over samples 34 to 44 in five of them, where the record has gaps, and largest in the dryer pressure through the first phase; the shares summed per tag, half of them in the dryer pressure; and the shares summed per sample with orange lines at the phase ends and the three phases named, most of the share in the solvent-collection phase.
+	:alt: Three panels for batch 20: the share of the squared SPE carried by each unfolded cell, blank over samples 95 to 109 in every tag but the collector tank level and over samples 34 to 44 in five of them, where the record has gaps, and largest in the dryer pressure through the first phase; the shares summed per tag, half of them in the dryer pressure; and the shares summed per sample with orange lines at the phase ends and the three phases named, most of the share in the solvent-collection phase.
 	:width: 800px
 	:scale: 80
 	:align: center
 
-	Top: the share of the SPE of batch 20 carried by each (tag, time) cell; the blank
+	Top: the share of the squared SPE of batch 20 carried by each (tag, time) cell; the blank
 	positions, samples 95 to 109 in every tag but the collector tank level and samples 34 to 44
 	in five of the tags, are the missing cells, which carry no residual.
 	Middle: the same shares summed per tag. Bottom: summed per sample, with the three phases
 	named between the orange phase ends. The dryer pressure carries half of the residual, and
 	most of it lies in the solvent-collection phase.
 
-The residual of batch 20 belongs to the dryer pressure (49%), most of it in the first phase (58%
-of the total). Its dryer pressure sat at 85 units against 37 for the average batch through
-solvent collection, where its dryer temperature also ran hot in the :ref:`raw trajectory overlay
-<APPS_batch_case_fmc_overlay>`. The pressure stayed above the other batches through most of
-the ramp as well. The temperatures, power and torque share the rest.
+The squared residual of batch 20 belongs to the dryer pressure (49%), most of it in the first
+phase (58% of the total). Its dryer pressure sat at 85 units against 37 for the average batch
+through solvent collection, where its dryer temperature also ran hot in the :ref:`raw trajectory
+overlay <APPS_batch_case_fmc_overlay>`. The temperatures, power and torque share the rest.
 
 Trajectories to quality
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -749,15 +768,16 @@ Trajectories to quality
 
 The score plot axes carry the share of the trajectory block each component describes, its
 :math:`R^2_X`. The model is judged on the quality block, where the trajectories explain
-41.0% after two components, against 26.2% for the best single initial-condition block. Both are
+41.0% after two components, against 26.2% for the better of the two other blocks. Both are
 fits rather than held-out predictions, and the trajectory block brings 3575 columns to the 46
 batches against the nine of the operating conditions. That width lifts a fit on its own, so the
 gap does not by itself say that the trajectories predict quality better.
 
 .. table:: Quality explained, as a cumulative percentage, with the trajectory block added to the
    earlier table. The batch PLS row carries no cross-validated value. On 46 batches the held-out
-   estimate of a block with 3575 columns moves too much from one grouping to another to quote as
-   a single number. The held-out column reads as in the first table.
+   estimate of a block with 3575 columns does not settle: ten-repeat averages from different
+   groupings range from 3 to 10% after one component and from -7 to 6% after two. The held-out
+   column reads as in the first table.
 
    +-----------------------------------------+--------------------------+-----------+-----------------------------+-----------------------------+
    | Model                                   | Quality explained from   | Held out  | Cumulative :math:`R^2_Y`    | Cumulative :math:`Q^2_Y`    |
@@ -766,11 +786,11 @@ gap does not by itself say that the trajectories predict quality better.
    +=========================================+==========================+===========+==============+==============+==============+==============+
    | PCA on quality                          | the quality block itself | cells     | 50.0         | 70.3         | 33.4         | 25.1         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
-   | PLS from :math:`\mathbf{Z}_\text{chem}` | the incoming chemistry   | batches   | 16.3         | 22.2         | -5.0         | -4.9         |
+   | PLS from :math:`\mathbf{Z}_\text{chem}` | the incoming chemistry   | batches   | 16.3         | 22.2         | 2.8          | 1.2          |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
-   | PLS from :math:`\mathbf{Z}_\text{op}`   | the operating conditions | batches   | 20.7         | 26.2         | 14.8         | 11.1         |
+   | PLS from :math:`\mathbf{Z}_\text{op}`   | the operating conditions | batches   | 20.7         | 26.2         | 1.3          | -5.3         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
-   | Multiblock PLS on :math:`\mathbf{Z}`    | both blocks together     | batches   | 29.2         | 36.4         | 14.3         | 12.7         |
+   | Multiblock PLS on :math:`\mathbf{Z}`    | both blocks together     | batches   | 29.2         | 36.4         | 8.6          | 4.5          |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
    | Batch PLS on :math:`\mathbf{X}`         | the trajectories         | -         | 26.6         | 41.0         | -            | -            |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
@@ -800,14 +820,14 @@ that ended in less clock time than all but three of them.
 
 Batch 13 was classed good, so a batch at the end of a component is not necessarily a bad
 one. The component describes a direction of variation related to quality, and batch 13 sits well
-out along it. The observed-against-predicted plot of the residual solvent concentration
-shows how far the trajectories go towards predicting it, and is drawn again for the final
-model in the next section.
+out along it. The observed-against-fitted plot of the residual solvent concentration
+shows how closely the model reproduces the training batches; it is a fit, not a prediction, and
+is drawn again for the final model in the next section.
 
 All three blocks: batch multiblock PLS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The final model joins the two initial-condition blocks and the unfolded trajectory block in
+The final model joins the chemistry, operating-condition and unfolded trajectory blocks in
 one multiblock PLS. The trajectory block enters as 3575 columns, so dividing each block by the
 square root of its number of columns is what keeps it from drowning out the eleven chemistry
 columns and the nine operating ones.
@@ -854,7 +874,7 @@ columns and the nine operating ones.
 	panel, so each batch can be followed from the score plot to its fit.
 
 The combined model explains 47.0% of the quality block after two components, against 41.0%
-for the trajectories alone and 36.4% for the two initial-condition blocks together. The
+for the trajectories alone and 36.4% for the chemistry and operating conditions together. The
 components describe 23.4% of the chemistry block, 30.4% of the operating-condition block
 and 25.8% of the trajectory block.
 
@@ -936,7 +956,7 @@ conditions or only its trajectories are considered, and the three plots need not
 
 In the trajectory block the abnormal batches lie at negative :math:`t_1` and the good ones
 at positive, with five classed good among the abnormal. Four of those five, batches 2, 3, 6
-and 7, sit with the good batches in both initial-condition blocks and in the quality PCA at
+and 7, sit with the good batches in both of the other two blocks and in the quality PCA at
 the start of this case study. Their trajectories have the features of an off-specification
 batch, and their product was on-specification.
 
@@ -946,7 +966,7 @@ place every batch with whichever of the two centres is nearer. The figure joins 
 to the centre it was placed with.
 
 Five batches classed good are placed with the abnormal centre in the trajectory block. Four
-of them are placed with the good centre in both initial-condition blocks: ordinary
+of them are placed with the good centre in both of the other two blocks: ordinary
 chemistry, ordinary operating conditions, and trajectories that look abnormal. The fifth,
 batch 5, is placed with the abnormal centre in the operating-condition block as well, so it
 is not a case of an ordinary charge with an unusual trajectory, and it is left aside.
@@ -1086,12 +1106,15 @@ quality :math:`\mathbf{Y}`, with a dash where the model never saw that block.
    +-----------------------------------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+
 
 Read down the quality columns. Leaving aside the PCA, which describes that block rather than
-predicting it, each model explains more of it than the one before, and the trajectories carry
-more of it than either set of initial conditions.
+predicting it, the fit rises with every block added. The trajectory rows carry the width of
+that block, so the column orders the fits, not the predictive value of the blocks; the held-out
+values in the earlier tables are what order that.
 Read across a row and the cost appears. The chemistry block, half described over the two
 components of its own PLS, keeps under a quarter of itself over the two of the batch
-multiblock PLS while the quality block gains, because a PLS component turns towards whatever
-predicts :math:`\mathbf{Y}`, not towards describing its own block.
+multiblock PLS while the quality block gains, because the super score is one direction shared
+by the three blocks, chosen for what predicts :math:`\mathbf{Y}` across all of them; with the
+smallest super weight, the chemistry block is described along a direction the other two blocks
+mostly chose.
 
 Where to go next
 ~~~~~~~~~~~~~~~~

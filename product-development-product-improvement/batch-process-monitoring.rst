@@ -9,10 +9,9 @@ Batch process monitoring and improvement
 
 .. note::
 
-	**Status: planned subsection.** This page collects the catalogued
-	literature that should ground the batch-process-monitoring
-	discussion. The body content is yet to be written; the open
-	GitHub issue tracks the remaining work.
+	**Status: in progress.** The three case studies below are complete. The
+	discussion that ties them to the literature catalogued on this page is yet
+	to be written; the open GitHub issue tracks that work.
 
 Three worked case studies accompany this page. Each is built on a dataset that can be
 downloaded and on models that can be reproduced with the code shown on the page:
@@ -21,10 +20,11 @@ downloaded and on models that can be reproduced with the code shown on the page:
   polymerization reactor, used to find and diagnose unusual batches, and to show what the
   trajectories cannot reveal.
 * :ref:`APPS_batch_case_sbr`: a batch PLS model from the trajectories of a simulated rubber
-  reactor to the final latex quality, with the same known fault injected at two different
-  times.
-* :ref:`APPS_batch_case_fmc`: a multiblock batch PLS model of an industrial batch dryer,
-  combining the initial chemistry, the operating conditions and the trajectories.
+  reactor to the final latex quality, with the same kind of known fault, an impurity in the
+  butadiene feed, injected at two different levels and two different times.
+* :ref:`APPS_batch_case_fmc`: a multiblock batch PLS model of an industrial batch dryer, from
+  the initial chemistry, the operating conditions and the trajectories to the final product
+  quality.
 
 .. _APPS_batch_readings:
 
@@ -48,7 +48,7 @@ Foundational multiway PCA / PLS for batches
 
 * Johan A. Westerhuis, Theodora Kourti and John F. MacGregor, "`Comparing alternative approaches for multivariate statistical analysis of batch process data <https://literature.learnche.org/item/162/comparing-alternative-approaches-for-multivariate-statistical-analysis-of-batch-process-data>`_", *Journal of Chemometrics*, **13**, 397-413, 1999.
 
-* Svante Wold, Nouna Kettaneh-Wold, John F. MacGregor and Kevin G. Dunn, "`Batch process modeling and MSPC <https://literature.learnche.org/item/155/batch-process-modeling-and-mspc>`_", *Comprehensive Chemometrics*, **2.10**, 163-197, 2009.
+* Svante Wold, Nouna Kettaneh-Wold, John F. MacGregor and Kevin G. Dunn, "`Batch process modeling and MSPC <https://literature.learnche.org/item/155/batch-process-modeling-and-mspc>`_", *Comprehensive Chemometrics*, **2**, chapter 2.10, 163-197, 2009.
 
 Control, optimization and product quality
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -77,8 +77,11 @@ Performance, alignment, and spectroscopy
 Missing data and the scores of a batch so far
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A batch that is still running is a row whose later cells are not yet measured, so its scores
-are estimated by the same methods that handle missing data.
+A batch that is still running is a row whose later cells are not yet measured. Nomikos and
+MacGregor (1995, *Technometrics*, listed above) compared three ways to fill those cells, and
+one of them treats them as missing data; the case studies take that route, estimating the
+scores from the observed cells alone. The estimators themselves, single-component projection,
+projection to the model plane and trimmed score regression, are set out in:
 
 * Philip R. C. Nelson, Paul A. Taylor and John F. MacGregor, "`Missing data methods in PCA and PLS: score calculations with incomplete observations <https://literature.learnche.org/item/68/missing-data-methods-in-pca-and-pls-score-calculations-with-incomplete-observations>`_", *Chemometrics and Intelligent Laboratory Systems*, **35**, 45-65, 1996.
 
