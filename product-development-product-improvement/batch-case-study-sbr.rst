@@ -13,7 +13,9 @@ Styrene-butadiene rubber (SBR) is made by emulsion polymerization in a batch rea
 trajectories of the reactor are used here: the reactor, cooling-water and jacket
 temperatures, the latex density, the conversion, and the energy released. Five quality
 attributes of the latex are measured at the end: composition, particle size, branching,
-cross-linking and polydispersity.
+cross-linking and polydispersity. Branching and cross-linking are one measurement reported in
+two units, in a fixed ratio to each other, so anything said of one holds for the other and
+the quality block carries four independent attributes rather than five.
 
 The 53 batches were simulated from a first-principles model of the reactor (Nomikos and
 MacGregor, 1994; Nomikos, 1995), so the fault is known. Batch 37 received 30% more organic
