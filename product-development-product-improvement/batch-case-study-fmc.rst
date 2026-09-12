@@ -840,7 +840,7 @@ Batch 13 was classed good, so a batch at the end of a component is not necessari
 one. The component describes a direction of variation related to quality, and batch 13 sits well
 out along it. The observed-against-fitted plot of the residual solvent concentration
 shows how closely the model reproduces the training batches; it is a fit, not a prediction, and
-is drawn again for the final model in the next section.
+is shown again for the final model in the next section.
 
 All three blocks: batch multiblock PLS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

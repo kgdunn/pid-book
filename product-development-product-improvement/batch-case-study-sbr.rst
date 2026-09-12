@@ -380,7 +380,7 @@ trajectory of a faulty batch leave the band of the other batches?
 
 The code below answers that for batches 34 and 37. Each tag is turned into a :math:`z` value,
 a distance from a centre divided by a spread, computed at every sample from the 51 batches
-that carry no known fault. Two versions are drawn. The classical one centres on the mean of
+that carry no known fault. Two versions are shown. The classical one centres on the mean of
 those 51 at that sample and divides by their standard deviation; the robustified one centres
 on their median and divides by their median absolute deviation, scaled to agree with the
 standard deviation on normally distributed values and then :ref:`EWMA-smoothed
@@ -991,16 +991,11 @@ out, the same deviation is described rather than left over, and the SPE falls ba
 while the :math:`T^2` holds. All five faults García-Muñoz, Kourti and MacGregor (2004)
 simulated also showed in the SPE chart first.
 
-The shares of the squared residual say what stopped fitting. At the alarm sample the reactor
-temperature carries the largest share, with the cooling-water and jacket temperatures next.
-Four samples later the two service temperatures and the energy released carry most of it and
-the reactor temperature has dropped back. The reactor temperature is the tag the model
-explains least, so its residual is large in every batch, and its share falls as the service
-temperatures stop fitting. The shares say which tags stopped fitting the model at the alarm,
-not what happened in the reactor. The departure analysis records the change on the service
-side, with onsets in the two service temperatures at the alarm sample and the one before it,
-and none for the reactor temperature, which leaves the band but never stays outside it long
-enough to count.
+The reactor temperature is the tag the model explains least, so its residual is large in every
+batch and its share is largest at the alarm before falling as the service temperatures stop
+fitting. Those shares say which tags stopped fitting the model, not what happened in the
+reactor: the departure analysis puts the onsets in the two service temperatures, and none in
+the reactor temperature.
 
 The same score estimate that predicts the quality also predicts the rest of the
 trajectories, as the model's reconstruction :math:`\hat{\boldsymbol{\tau}} \mathbf{P}^{T}`
@@ -1008,7 +1003,7 @@ read off for the samples not yet seen (Wold and co-workers, 2009, Eq. 4). Garcí
 Kourti and MacGregor (2004) show it to be an adaptive time-series forecast, built on how the
 variables co-vary over the whole batch rather than on the trend so far.
 
-It is drawn in the z form of the departure analysis, each tag as a distance from the 51
+It is shown in the z form of the departure analysis, each tag as a distance from the 51
 normal batches at that sample in their standard deviations, so a departure reads directly
 against the zero line.
 
