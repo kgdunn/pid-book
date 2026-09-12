@@ -547,21 +547,16 @@ before the laboratory did.
 	                  path=f"M {lo},{lo - half} L {hi},{hi - half} L {hi},{hi + half} L {lo},{lo + half} Z")
 	    fig.show()
 	faulty = [34, 37]
-	table = pd.concat({"observed": quality.loc[faulty], "fitted": model.predictions_.loc[faulty],
-	                   "held out": held_out.loc[faulty],
-	                   "rank of observed": quality.rank().loc[faulty].astype(int),
-	                   "rank of held out": held_out.rank().loc[faulty].astype(int)}, names=["value", "batch_id"])
-	print(table.to_string(float_format=lambda value: f"{value:.4g}"))
-	# observed 34 0.4525 1244 1.234e-05 4.784e-05 3.599
-	# 37 0.4525 1247 1.173e-05 4.549e-05 3.462
-	# fitted 34 0.454 1245 1.228e-05 4.761e-05 3.577
-	# 37 0.45 1250 1.183e-05 4.585e-05 3.491
-	# held out 34 0.4546 1251 1.225e-05 4.749e-05 3.52
-	# 37 0.4487 1253 1.192e-05 4.621e-05 3.514
-	# rank of observed 34 5 1 4 4 17
-	# 37 4 2 1 1 1
-	# rank of held out 34 26 1 2 2 2
-	# 37 1 2 1 1 1
+	# Where the measured value ranks among the 53 batches, and where the prediction from a model
+	# that never saw the batch ranks among the 53 predictions. Rank 1 is the lowest.
+	observed_rank, held_out_rank = quality.rank().astype(int), held_out.rank().astype(int)
+	moves = pd.DataFrame({attribute: [f"{observed_rank.loc[b, attribute]} to {held_out_rank.loc[b, attribute]}"
+	                                  for b in faulty] for attribute in quality.columns},
+	                     index=[f"batch {b}" for b in faulty])
+	print(moves.to_string())
+	#          Composition ParticleSize Branching CrossLinking Polydispersity
+	# batch 34     5 to 26       1 to 1    4 to 2       4 to 2        17 to 2
+	# batch 37      4 to 1       2 to 2    1 to 1       1 to 1         1 to 1
 	shift = (model.scores_.loc[faulty] * model.y_loadings_.loc["Composition"]).round(2)
 	print("shift of the scaled composition per component:", shift.to_dict("index"))
 	# shift of the scaled composition per component: {34: {1: -1.39, 2: 0.99}, 37: {1: -2.89, 2: -0.14}}
@@ -583,11 +578,27 @@ before the laboratory did.
 	expect from a batch the model has not seen, and so wider than the scatter of the fitted values
 	drawn here.
 
-A prediction error of 0.8 standard deviations means the model predicts about a third of the
-variance of these two attributes in a batch it has not seen, against the 72% of the quality
-block the two components explain in the fit. Composition and particle size are the two
-attributes it predicts least well; branching and cross-linking are predicted to 0.28 standard
-deviations and polydispersity to 0.73.
+The two components explain 72% of the quality block when they are fitted to it. What they
+predict in a batch they have not seen is the :math:`Q^2` beside each error, and the two
+numbers carry the same information.
+
+Write the prediction error as a fraction of the attribute's own standard deviation
+:math:`s`, so :math:`f = \text{RMSEP}/s`. Predicting the average of every batch would give
+:math:`f = 1`, and a model is worth having only below that. Squaring gives the share of the
+variance the predictions still miss, :math:`f^2`, and what remains is the share the model
+accounts for:
+
+.. math::
+
+	Q^2 \approx 1 - f^2
+
+Both attributes here miss by about 0.8 standard deviations, so :math:`f^2` is about 0.64 and
+the model predicts about a third of each. The relation is approximate because the two
+quantities divide by slightly different counts, and here because the RMSEP leaves out one
+batch at a time while the :math:`Q^2` uses five folds.
+
+Composition and particle size are the two attributes the model predicts least well: branching
+and cross-linking reach 0.91 and polydispersity 0.48.
 
 The second component earns almost nothing in prediction: leaving each batch out and refitting
 with one component gives the same average error over the five attributes, buying particle size
@@ -595,39 +606,24 @@ with one component gives the same average error over the five attributes, buying
 the fault of batch 34, which a one-component model would push into the residual, and because a
 score plot needs a second axis.
 
-===================  ===========  =============  =========  =============  ==============
-Batch                Composition  Particle size  Branching  Cross-linking  Polydispersity
-===================  ===========  =============  =========  =============  ==============
-34, observed         0.4525       1244           1.234e-5   4.784e-5       3.599
-34, fitted           0.4540       1245           1.228e-5   4.761e-5       3.577
-34, held out         0.4546       1251           1.225e-5   4.749e-5       3.520
-34, rank observed    5            1              4          4              17
-34, rank held out    26           1              2          2              2
-37, observed         0.4525       1247           1.173e-5   4.549e-5       3.462
-37, fitted           0.4500       1250           1.183e-5   4.585e-5       3.491
-37, held out         0.4487       1253           1.192e-5   4.621e-5       3.514
-37, rank observed    4            2              1          1              1
-37, rank held out    1            2              1          1              1
-===================  ===========  =============  =========  =============  ==============
+=======  ===========  =============  =========  =============  ==============
+Batch    Composition  Particle size  Branching  Cross-linking  Polydispersity
+=======  ===========  =============  =========  =============  ==============
+34       5 to 26      1 to 1         4 to 2     4 to 2         17 to 2
+37       4 to 1       2 to 2         1 to 1     1 to 1         1 to 1
+=======  ===========  =============  =========  =============  ==============
 
-"Fitted" is the value the model gives a batch it was fitted to; "held out" is the value a
-model fitted on the other 52 batches gives it. The ranks are positions among the 53 batches,
-rank 1 the lowest: the observed rank places the measured value, the held-out rank places the
-prediction among the other 52 predictions.
+Each cell gives two positions among the 53 batches, rank 1 the lowest: where the measured
+value sits, and where a model fitted on the other 52 batches puts its prediction.
 
-Both batches lie at the low end of the 53 on most attributes, and predicted by a model that
-never saw them they are placed at the same end: batch 37 lowest of all 53 on four attributes,
-batch 34 lowest or second on four. A quality prediction from the trajectories would have
-flagged both before the laboratory results arrived, and would have done so on branching,
-cross-linking, particle size and polydispersity rather than on composition, where batch 34 is
-predicted mid-pack.
-
-The composition is the attribute the two are fitted most differently on. Batch 37's is fitted
-below its observed value; batch 34's lands on the average batch. Batch 34 is extreme on both
-components, and on the composition the two pull in opposite directions: :math:`t_1` moves its
-prediction 1.4 standard deviations down and :math:`t_2` 1.0 up, so the fit lands near the
-average. A component's share of the quality block says how much it explains across all
-batches, not how far it moves one batch.
+* Both batches sit at the low end on most attributes, and a model that never saw them
+  predicts them at the same end. Either would have been flagged from the trajectories alone,
+  before the laboratory results arrived.
+* Composition is the exception. Batch 34 measures fifth lowest and is predicted mid-pack,
+  because its two scores move the composition in opposite directions: :math:`t_1` by 1.4
+  standard deviations down and :math:`t_2` by 1.0 up.
+* A component's share of the quality block says how much it explains across all batches, not
+  how far it moves any one of them.
 
 .. _APPS_batch_case_sbr_online_prediction:
 
