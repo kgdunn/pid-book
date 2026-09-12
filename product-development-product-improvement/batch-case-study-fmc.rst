@@ -1184,8 +1184,8 @@ References and readings
 The full list of readings on batch data is on the :ref:`batch process monitoring page
 <APPS_batch_readings>`; this page lists what it draws on.
 
-* Salvador Garcia-Munoz, Theodora Kourti, John F. MacGregor, Arthur G. Mateos and Gerald
-  Murphy, "`Troubleshooting of an industrial batch process using multivariate methods
+* S. Garcia-Munoz, T. Kourti, J.F. MacGregor, A.G. Mateos and G. Murphy, "`Troubleshooting of
+  an industrial batch process using multivariate methods
   <https://literature.learnche.org/item/24/troubleshooting-of-an-industrial-batch-process-using-multivariate-methods>`_", *Industrial and Engineering Chemistry Research*,
   **42**, 3592-3601, 2003. The source of the case study.
 

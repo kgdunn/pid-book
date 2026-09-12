@@ -61,7 +61,7 @@ Control, optimization and product quality
 
 * Jesus Flores-Cerrillo and John F. MacGregor, "`Multivariate monitoring of batch processes using batch-to-batch information <https://literature.learnche.org/item/163/multivariate-monitoring-of-batch-processes-using-batch-to-batch-information>`_", *AIChE Journal*, **50**, 1219-1228, 2004.
 
-* Salvador García-Muñoz, Theodora Kourti, John F. MacGregor, Arthur G. Mateos and Gerald Murphy, "`Troubleshooting of an industrial batch process using multivariate methods <https://literature.learnche.org/item/24/troubleshooting-of-an-industrial-batch-process-using-multivariate-methods>`_", *Industrial and Engineering Chemistry Research*, **42**, 3592-3601, 2003.
+* S. García-Muñoz, T. Kourti, J.F. MacGregor, A.G. Mateos and G. Murphy, "`Troubleshooting of an industrial batch process using multivariate methods <https://literature.learnche.org/item/24/troubleshooting-of-an-industrial-batch-process-using-multivariate-methods>`_", *Industrial and Engineering Chemistry Research*, **42**, 3592-3601, 2003.
 
 * Salvador García-Muñoz, Theodora Kourti and John F. MacGregor, "`Model predictive monitoring for batch processes <https://literature.learnche.org/item/157/model-predictive-monitoring-for-batch-processes>`_", *Industrial and Engineering Chemistry Research*, **43**, 5929-5941, 2004.
 
