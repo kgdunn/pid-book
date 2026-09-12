@@ -298,7 +298,13 @@ involved.
 	        fig.add_vrect(x0=k - 0.5, x1=k + 0.5, fillcolor=BAND, line_width=0, layer="below", row=row, col=col)
 
 	def explained_x(pls_model):
-	    """R2 of X per component of a PLS model, from the cumulative R2 of its columns."""
+	    """R2 of X per component of a PLS model, averaged over its columns.
+
+	    This is the mean of the per-column cumulative R2, which equals the block's total
+	    R2 only when every column has the same sum of squares to start with. The unfolded
+	    trajectory block has missing cells, so its columns do not, and the batch PLS R2X
+	    is a slightly different statistic from the batch PCA's total-sum-of-squares ratio.
+	    """
 	    return np.diff([0.0, *pls_model.r2_per_variable_.mean(axis=0)])
 
 	scores(pca_y, pca_y.r2_per_component_, {61: ORANGE, 14: AQUA}).show()
@@ -537,8 +543,9 @@ of each block the components describe.
 Together the two blocks explain 36.4% of the quality block after two components, more than
 either alone, and the super weights give the operating conditions the larger pull on both.
 The block scores make the same point for a single batch. Batch 20 sits inside the cloud in
-the chemistry block and far outside it in the operating-condition block. It is unusual in
-its operation, not in its chemistry.
+the chemistry block and far outside it in the operating-condition block. Along the two
+components of each, it is unusual in its operation and not in its chemistry; what those
+components leave in the chemistry block's residual is not examined here.
 
 The cross-validated value does not follow the fit. The multiblock model predicts 8.6% of the
 quality block after one component and 4.5% after two, where neither block on its own reaches
@@ -689,6 +696,10 @@ tags by :math:`J = 325` samples.
 	gaps = share_20[share_20.isna()].index.get_level_values("sequence")
 	print(len(gaps), int(gaps.min()), int(gaps.max()))      # missing cells of batch 20, and the first and last sample with one
 	# 205 34 109
+	missing = X[20].isna()                                  # the two runs of samples, and how many tags each covers
+	print([tag for tag in X[20].columns if not missing[tag].loc[95:109].all()],
+	      int(missing.loc[95:109].all().sum()), int(missing.loc[34:44].all().sum()))
+	# ['CTankLvl'] 10 5
 	unfolded_contribution_plot(spe_share.fillna(0.0), batch_id=20).show()
 	unfolded_contribution_plot(spe_share.fillna(0.0), batch_id=20, by_tag=True).show()
 	by_tag = share_20.groupby(level="tag", sort=False).sum()
@@ -921,6 +932,8 @@ conditions or only its trajectories are considered, and the three plots need not
 	print(with_abnormal, placed.loc[with_abnormal, ["Zchem", "Zop"]].eq("good").all(axis=1).to_dict())
 	# [2, 3, 5, 6, 7] {2: True, 3: True, 5: False, 6: True, 7: True}
 	anomalous = [2, 3, 6, 7]
+	print(nearer_group(pca_y.scores_).loc[anomalous].to_dict())   # where the four sit in the quality PCA
+	# {2: 'good', 3: 'good', 6: 'good', 7: 'good'}
 	print(mb.super_scores_.iloc[:, 0].groupby(groups).mean().round(2).to_dict(), mb.super_scores_.loc[anomalous].iloc[:, 0].round(2).to_dict())
 	# {'abnormal': -0.55, 'good': 0.36, 'high solvent': 0.19} {2: 0.31, 3: 0.14, 6: 0.17, 7: 0.18}
 	fig = make_subplots(rows=1, cols=3, subplot_titles=[f"{name} block" for name in blocks])
@@ -966,8 +979,10 @@ place every batch with whichever of the two centres is nearer. The figure joins 
 to the centre it was placed with.
 
 Five batches classed good are placed with the abnormal centre in the trajectory block. Four
-of them are placed with the good centre in both of the other two blocks: ordinary
-chemistry, ordinary operating conditions, and trajectories that look abnormal. The fifth,
+of them are placed with the good centre in both of the other two blocks: along the two
+components of each, ordinary chemistry and ordinary operating conditions, with trajectories
+that look abnormal. Their residuals in those two blocks, what the two components do not
+describe, are not examined here. The fifth,
 batch 5, is placed with the abnormal centre in the operating-condition block as well, so it
 is not a case of an ordinary charge with an unusual trajectory, and it is left aside.
 
@@ -982,6 +997,9 @@ plots.
 	neighbours = sorted({int(b) for a in anomalous for b in ((abnormal - x_scores.loc[a]) ** 2).sum(axis=1).nsmallest(2).index})
 	print(neighbours)                                          # the two nearest abnormal batches of each of the four
 	# [42, 43, 44, 47, 50]
+	# Each block's contributions to the SUPER score: the block's own contribution times its
+	# super weight. The ranking within a block is the same either way, since the super weight
+	# is one number per block, but the bars are not on the block score's scale.
 	contributions = mb.score_contributions(blocks, component=1)
 	x_by_tag = contributions["X"].T.groupby(level="tag", sort=False).sum().T
 	print(x_by_tag.loc[anomalous].mean().nsmallest(3).round(2).to_dict())     # the four batches' largest trajectory contributions
@@ -994,7 +1012,7 @@ plots.
 	fig = go.Figure(go.Bar(x=list(move.index), y=move, marker_color=BLUE))
 	shade_alternate(fig, len(move))
 	fig.update_layout(title="Operating conditions: from the neighbours' average to the four batches' average",
-	                  yaxis_title="Contribution to the block t1", height=340).show()
+	                  yaxis_title="Contribution to the super score t1", height=340).show()
 	for tag in ("CTankLvl", "ClockTime", "D-Temp", "D-Temp-SP"):
 	    overlay(X, tag, {**{b: AQUA for b in neighbours}, **{b: ORANGE for b in anomalous}}).show()
 	keys = ["WgtCake", "Level1", "Temp1", "Temp2", "Time2", "Time3", "Time4"]
@@ -1007,7 +1025,7 @@ plots.
 
 .. figure:: ../figures/batch/batch-case-fmc-anomalous.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Left, the contribution from the neighbours' average to the four batches' average in the operating-condition block, positive for the length of the cool-down, the length and slope of the ramp and the high-speed agitation, negative for the collector level and the cake weight; right, four raw trajectories with the four batches in orange and their neighbours in aqua, running together in the collector level and the clock time, with the same peak set point.
+	:alt: Left, the contribution from the neighbours' average to the four batches' average in the operating-condition block, positive for the length of the cool-down, the length and slope of the ramp and a fourth recipe timing, negative for the collector level and the cake weight; right, four raw trajectories with the four batches in orange and their neighbours in aqua, running together in the collector level and the clock time, with the same peak set point.
 	:width: 1100px
 	:scale: 80
 	:align: center
@@ -1023,11 +1041,15 @@ The four and their neighbours share one trajectory signature: the collector tank
 clock time and the jacket temperature set point carry the largest contributions in both
 groups, and the overlays show a high collector level and a slow first phase.
 
-What separates them lies in the operating-condition block. The contribution from the
+What separates them lies in the operating-condition block. ``score_contributions`` of a
+multiblock model gives each block's contribution to the *super* score, the block's own
+contribution scaled by its super weight, so the bars rank the variables within the block
+without being on the block score's scale. The contribution from the
 neighbours' average point to the four's, the construction of the
-:ref:`first case study <APPS_batch_case_dupont>`, is carried by the lengths of the cooling
-phase (``Time3``), the ramp (``Time2``, ``TempSlope``) and the high-speed agitation
-(``Time4``).
+:ref:`first case study <APPS_batch_case_dupont>`, moves by 0.05 or more in six of the nine
+variables: up in the length of the cooling phase (``Time3``), the length and slope of the ramp
+(``Time2``, ``TempSlope``) and a fourth recipe timing (``Time4``), and down in the collector
+tank level (``Level1``) and the weight of the cake charged (``WgtCake``).
 
 In clock time the four ramped in 24 time units against 32 and cooled for 50 against 38, at the
 same peak set point (86.9 against 87.2): not a set point that was moved, but how long each
@@ -1035,8 +1057,10 @@ phase was run.
 
 Read together:
 
-* The four began like an off-specification batch, with a heavy charge and a slow first
-  phase, were run differently through the later phases, and gave on-specification product.
+* The four began like an off-specification batch, with a slow first phase, were run
+  differently through the later phases, and gave on-specification product. They were charged
+  heavier than their nearest abnormal neighbours, not lighter, so the charge is one of the
+  things that separates them rather than something they share.
 * Whether the later phases were run that way to correct for the first, the record does not
   say.
 * The model does not say that a shorter ramp and a longer cool-down would rescue a slow
@@ -1083,7 +1107,9 @@ quality :math:`\mathbf{Y}`, with a dash where the model never saw that block.
 
 .. table:: :math:`R^2` of each block, as a percentage, per component, for every model on
    this page. Each cell is rounded on its own, so a row can add up to a tenth away from the
-   cumulative value quoted elsewhere for the same model.
+   cumulative value quoted elsewhere for the same model. The PLS rows' :math:`R^2` of an X
+   block is the average over that block's columns, and the PCA rows' is the block's total
+   sum-of-squares ratio; with missing cells in the trajectory block the two differ slightly.
 
    +-----------------------------------------+---------------------------------+---------------------------------+---------------------------------+---------------------------------+
    | Model                                   | :math:`\mathbf{Z}_\text{chem}`  | :math:`\mathbf{Z}_\text{op}`    | :math:`\mathbf{X}`              | :math:`\mathbf{Y}`              |
@@ -1143,7 +1169,10 @@ A second step is an on-line monitoring model, which tracks a running batch again
 model and predicts its final quality before the batch ends. Estimating the scores of a batch
 observed so far is a missing-data problem of the same shape as the gaps in these trajectories,
 with the samples not yet seen standing in for the missing cells, so the incomplete batches are
-no obstacle. The :ref:`SBR case study <APPS_batch_case_sbr_online>` works that step through.
+no obstacle to the method. The package's batch classes take complete reference batches, as the
+gaps in these ten batches already showed, so those ten would be filled or left out before the
+reference model is fitted. The :ref:`SBR case study <APPS_batch_case_sbr_online>` works that
+step through.
 
 References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -1158,9 +1187,8 @@ The full list of readings on batch data is on the :ref:`batch process monitoring
 
 * Svante Wold, Nouna Kettaneh-Wold, John F. MacGregor and Kevin G. Dunn, "`Batch process
   modeling and MSPC <https://literature.learnche.org/item/155/batch-process-modeling-and-mspc>`_",
-  *Comprehensive Chemometrics*, **2**, chapter 2.10, 163-197, 2009. Builds feature-block,
-  landmark and
-  unfolded-trajectory models on this same dryer.
+  *Comprehensive Chemometrics*, **2**, chapter 2.10, 163-197, 2009. Builds landmark-feature,
+  batchwise-unfolded and observation-wise-unfolded models on this same dryer.
 
 * Salvador Garcia-Munoz, `Batch process improvement using latent variable methods <https://literature.learnche.org/item/3/batch-process-improvement-using-latent-variable-methods>`_,
   Ph.D thesis, McMaster University, 2004.

@@ -22,8 +22,8 @@ Nylon is made in two stages in an industrial batch reactor: an hour of charging 
 removal, then a controlled pressure and temperature ramp to the final polymer.
 
 The critical quality property is measured in the laboratory 12 hours or more after the batch
-ends. Nothing measured during a batch can correct it, and the result arrives only after the
-next few batches have started.
+ends. The laboratory result arrives too late to correct the batch it belongs to, and only
+after the next few batches have started.
 
 The plant records ten trajectories per batch: three reactor temperatures, three pressures,
 two flow rates, and the heating- and cooling-medium temperatures. The data are the worked
@@ -99,20 +99,22 @@ A first model on all 55 batches
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `BatchPCA <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/_batch_pca.py>`_ unfolds batchwise, so each batch becomes one row of 10 tags by 100 samples,
-1000 columns. Every column is centred and scaled to unit variance, the
-:ref:`preprocessing <LVM_preprocessing>` any PCA model uses. Centring removes each tag's
-average trajectory and scaling weights every (tag, time) cell equally, so the components
-describe how batches deviate from the average batch.
+1000 columns. Every column is centred and, where it varies between batches, scaled to unit
+variance, the usual :ref:`preprocessing <LVM_preprocessing>` for a PCA of dissimilar variables.
+Centring removes each tag's average trajectory and scaling gives every varying (tag, time) cell
+the same variance, so the components describe how batches deviate from the average batch. The
+43 cells that hold the same value in every batch, the last samples of the two flow rates after
+the feeds stop, carry no weight.
 
-Model A, the first of three, uses two components and all 55 batches, not as a final model
-but as a first look at which batches stand out.
+Model A, the first of three, uses two components, enough for a first look, and all 55 batches,
+not as a final model but to see which batches stand out.
 
 The alternative, observation-wise unfolding, has one row per time sample and one column per
 tag. It describes the shape of the trajectories rather than the differences between batches,
-so comparing batches needs a second model of its scores, and matching the same residual
-needs twice as many components (Westerhuis, Kourti and MacGregor, 1999). It suits
-trajectories varied on purpose, as in a designed experiment. All three case studies unfold
-batchwise.
+so a second model, of its scores, is needed to compare batches (Wold and co-workers, 2009),
+and it needs many more components to reach the same residual, six against three on these data
+(Westerhuis, Kourti and MacGregor, 1999). It suits trajectories varied on purpose, as in a
+designed experiment. All three case studies unfold batchwise.
 
 .. code-block:: python
 
@@ -142,7 +144,7 @@ batchwise.
 	# above the T2 limit: [50, 52, 53, 54, 55]
 
 The two components together explain 55.9% of the variance in the unfolded matrix. Two
-plots are enough to find the batches that differ.
+plots are enough to find the batches that differ most.
 
 .. figure:: ../figures/batch/batch-case-dupont-model-a-scores.png
 	:source: batch/batch-case-dupont-figures.py
@@ -203,7 +205,9 @@ one figure, each 95% limit dividing it into quadrants.
 Batches 49 and 51 are in the upper left, ordinary along the two components and extreme away
 from them, which is a break in the correlation structure rather than a large deviation along
 it. The other five of the last six are in the lower right, extreme along the components with
-ordinary residuals, so one statistic alone would have missed a group.
+ordinary residuals, so one statistic alone would have missed a group. Two batches above a 95%
+limit among 55 is what chance alone gives, so the SPE of batches 49 and 51 is a reason to look,
+not a verdict.
 
 Batch 49: which variables, and when
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -232,35 +236,44 @@ per tag.
 	unfolded_contribution_plot(spe_share, batch_id=49, by_tag=True).show()
 	by_time = spe_share.loc[49].groupby(level="sequence").sum()
 	fig = go.Figure(go.Bar(x=by_time.index, y=by_time.values, marker_color=BLUE))
-	fig.update_layout(title="Batch 49: share of the SPE per time sample", xaxis_title="Sample [aligned time]",
+	fig.update_layout(title="Batch 49: share of the squared SPE per time sample", xaxis_title="Sample [aligned time]",
 	                  yaxis_title="Share of SPE [%]", height=320)
 	fig.show()
 	print("share per tag [%]:", spe_share.loc[49].groupby(level="tag", sort=False).sum().round(0).to_dict())
 	# share per tag [%]: {'Flow-1': 3.0, 'Flow-2': 18.0, 'Press-1': 5.0, 'Press-2': 15.0, 'Press-3': 12.0, 'TempC-1': 19.0, 'TempH-1': 14.0, 'TempR-1': 7.0, 'TempR-2': 3.0, 'TempR-3': 4.0}
-	print(f"share of samples 55 to 65: {by_time.loc[55:65].sum():.0f}%")
-	# share of samples 55 to 65: 80%
+	print(f"share of samples 56 to 65: {by_time.loc[56:65].sum():.0f}%")
+	# share of samples 56 to 65: 80%
+	by_time_51 = spe_share.loc[51].groupby(level="sequence").sum()      # batch 51, for contrast
+	print(f"batch 51: largest single sample {by_time_51.max():.1f}%, samples 56 to 65 {by_time_51.loc[56:65].sum():.0f}%")
+	# batch 51: largest single sample 2.4%, samples 56 to 65 15%
 
 .. figure:: ../figures/batch/batch-case-dupont-batch-49-spe-contributions.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: Three panels for batch 49: the share of the SPE carried by each of the 1000 unfolded cells, grouped by tag; the shares summed per tag, led by TempC-1, Flow-2 and Press-2; and the shares summed per sample, a single narrow peak between samples 55 and 65.
+	:alt: Three panels for batch 49: the share of the squared SPE carried by each of the 1000 unfolded cells, grouped by tag; the shares summed per tag, led by TempC-1, Flow-2 and Press-2; and the shares summed per sample, a single narrow peak between samples 55 and 65.
 	:width: 800px
 	:scale: 80
 	:align: center
 
-	Top: the share of the SPE of batch 49 carried by each (tag, time) cell. Middle: the
+	Top: the share of the squared SPE of batch 49 carried by each (tag, time) cell. Middle: the
 	same shares summed per tag. Bottom: summed per sample. The residual is concentrated in a
 	single window, samples 55 to 65, and in the heating- and cooling-medium temperatures,
 	``Press-2``, ``Press-3`` and ``Flow-2``.
 
 ``Flow-1`` carries almost none of the residual. It belongs to the two medium temperatures,
-``Flow-2``, ``Press-2`` and ``Press-3``, and 80% falls in the eleven samples from 55 to 65.
+``Flow-2``, ``Press-2`` and ``Press-3``, and 80% falls in the ten samples from 56 to 65.
+
+The ``Flow-2`` share needs a qualifier. Most of it comes from samples 62 to 65, where every
+other batch has already reached zero flow and batch 49 alone has not, so batch 49 sets the
+spread of those four columns by itself and its scaled value there is the same whatever the size
+of the raw deviation. That share says its feed stopped a few samples later than in any other
+batch, not that the deviation was large.
 Nomikos (1996) attributes that short disturbance to a failure in the heating system, and
 Wold and co-workers (2009) reach the same event from a different model.
 
-The final quality of batch 49 was barely acceptable, which fits a short event rather than a
-batch wrong throughout. Its cooling-medium temperature does drop below the others from
-sample 56 and rejoin them by sample 65, a change easy to miss until the contributions point
-at it.
+The final quality of batch 49 was barely acceptable. Its cooling-medium temperature does drop
+below the others from sample 56 and rejoin them by sample 65, a change easy to miss until the
+contributions point at it. Batch 51's residual, by contrast, is spread over the whole batch: no
+sample carries more than 2.4% of it, and samples 56 to 65 carry 15% against batch 49's 80%.
 
 The score outliers: batches 50, 52, 53, 54 and 55
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -315,8 +328,9 @@ Exclude and rebuild: a second group of batches
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A reference model must describe normal operation, so batches 49 to 55 are removed and model
-B is fitted to the remaining 48 with three components. Removing batches changes the model,
-so the plots are examined again.
+B is fitted to the remaining 48 with three components, the count Nomikos and MacGregor (1995)
+used for these batches, and the number that gives the plane in which the second group
+separates. Removing batches changes the model, so the plots are examined again.
 
 .. code-block:: python
 
@@ -350,7 +364,8 @@ so the plots are examined again.
 
 With the extreme batches gone, a second group separates in the plane of :math:`t_2` and
 :math:`t_3`: batches 37, 39 and 43 to 48, the same group Nomikos and MacGregor (1995) single
-out in the same plane of a three-component model of these 48 batches.
+out in the same plane of a three-component model of these 48 batches. The group is inside model
+B's limits; it is removed below as a distinct mode of operation, not as a set of outliers.
 
 A contribution is the weighted difference between two points, each either an actual batch or
 a synthetic one such as the model centre or a group average. Here the eight are compared
@@ -389,16 +404,17 @@ the displacement from it, and its contributions add up to their mean score.
 	and the other 40 batches of model B (light grey).
 
 ``TempC-1``, ``Press-2`` and ``Press-3`` carry most of the displacement, every member in the
-same direction on ``TempC-1`` and ``Press-3``, most of it from the first 25 samples. Not every
+same direction on ``TempC-1`` and ``Press-3``, most of it from samples 0 to 25. Not every
 member agrees. ``TempH-1`` takes both signs across the eight, so its group mean rests on a few.
 A group contribution is a starting point, checked member by member.
 
 The raw trajectories agree: the eight run above the other 40 in ``TempC-1`` and ``Press-3``
-until about sample 25, and only slightly above in ``Press-2`` and ``Flow-2``.
+over samples 0 to 25, and only slightly above in ``Press-2`` and ``Flow-2``.
 
 Only batches 45 and 46 are on the poor or borderline list. The other six produced acceptable
-product. They were operated differently, not badly, and a model of normal operation can
-include enough of them to describe that mode or leave them out. The third model leaves them
+product. The record shows them run higher in ``TempC-1`` and ``Press-3`` over samples 0 to 25;
+whether that was a choice or a disturbance the ten tags cannot say. A model of normal operation
+can include enough of them to describe that mode or leave them out. The third model leaves them
 out.
 
 The final model, used to verify the unusual batches detected above
@@ -415,7 +431,7 @@ estimated, and its :math:`T^2` and SPE compared with the 95% limits of the 40.
 	model_c = BatchPCA(n_components=3).fit(kept_c)
 	print("R2 per component:", model_c.r2_per_component_.round(3).tolist())
 	# R2 per component: [0.375, 0.114, 0.064]
-	poor_quality = [38, 40, 41, 42]                                # in the training set, known poor final quality
+	poor_quality = [38, 40, 41, 42]      # in the training set: three with poor final quality, and 38 close to the limit
 	# The four are marked in their own colour and shape: orange means batch 49 in the panel beside this one.
 	scores(model_c, highlight={f'{{"color": "{MAGENTA}", "symbol": "diamond"}}': poor_quality}).show()
 	left_out = {"batch 49": [49], "batches 50 to 55": list(range(50, 56)), "the second group": second_group}
@@ -441,10 +457,30 @@ estimated, and its :math:`T^2` and SPE compared with the 95% limits of the 40.
 	      bool((model_c.hotellings_t2_.loc[poor_quality].iloc[:, -1] < t2_limit).all()
 	           and (model_c.spe_.loc[poor_quality].iloc[:, -1] < spe_limit).all()))
 	# batches 38, 40, 41 and 42 inside both limits: True
+	# A training batch sits closer to the plane than a batch the model has not seen, so the
+	# limit is tight for a new one. Refitting without each of the 40 in turn and projecting
+	# the batch left out puts both sides of the comparison on the same footing.
+	held_out = {}
+	for batch_id in kept_c:
+	    rest = {b: x for b, x in kept_c.items() if b != batch_id}
+	    model_wo = BatchPCA(n_components=3).fit(rest)
+	    held_out[batch_id] = (float(model_wo.predict_online(batches[batch_id], upto_k=model_wo.n_timesteps_).spe)
+	                          / model_wo.spe_limit(conf_level=0.95))
+	held_out = pd.Series(held_out)
+	print(f"held out: median {held_out.median():.2f}, up to {held_out.max():.2f} times the limit,",
+	      f"{(held_out > 1).mean():.0%} above it")
+	# held out: median 0.94, up to 1.37 times the limit, 38% above it
+	print("the four poor-quality batches held out:", held_out.loc[poor_quality].round(2).tolist())
+	# the four poor-quality batches held out: [0.94, 0.88, 0.78, 1.03]
+	print("left out, SPE over the limit: second group",
+	      (outside.loc[second_group, "SPE"] / spe_limit).round(1).agg(["min", "max"]).tolist(),
+	      "batch 49", round(float(outside.loc[49, "SPE"] / spe_limit), 1),
+	      "batches 50 to 55 over", int((outside.loc[50:55, "SPE"] / spe_limit).min()))
+	# left out, SPE over the limit: second group [2.8, 4.5] batch 49 5.0 batches 50 to 55 over 128
 
 .. figure:: ../figures/batch/batch-case-dupont-model-c.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: Left, the scores of model C's 40 batches with 38, 40, 41 and 42 marked inside the ellipse; right, Hotelling's T2 against SPE on logarithmic axes, the 40 training batches below both limits and the 15 left-out batches above the SPE limit, seven of them above the T2 limit as well.
+	:alt: Left, the scores of model C's 40 batches with 38, 40, 41 and 42 marked inside the ellipse; right, Hotelling's T2 against SPE on logarithmic axes, the 40 training batches inside the T2 limit and all but two inside the SPE limit, and the 15 left-out batches above the SPE limit, seven of them above the T2 limit as well.
 	:width: 1000px
 	:scale: 80
 	:align: center
@@ -454,17 +490,21 @@ estimated, and its :math:`T^2` and SPE compared with the 95% limits of the 40.
 	(blue) and of the 15 left-out batches projected onto model C: batch 49 (orange), batches
 	50 to 55 (aqua circles) and the second group (purple triangles).
 
-All 15 lie above the SPE limit, most far above, and batches 50 to 55 and batch 37
-above the :math:`T^2` limit as well, so the model built without them flags them. The 40
-training batches are spread more evenly than in the first two models.
+A batch the model has not seen sits farther from its plane than a training batch does, so the
+fair comparison is with the 40 normal batches each projected onto a model fitted without it:
+their SPE runs up to 1.4 times the limit, and 38% of them are above it. All 15 left-out batches
+lie above that: the second group at 3 to 5 times the limit, batch 49 at 5, batches 50 to 55
+more than a hundred times, with batches 50 to 55 and batch 37 above the :math:`T^2` limit as
+well. The model built without them flags them.
 
-Batches 38, 40, 41 and 42 produced poor product, stayed in the training set, and sit inside
-both limits. Nomikos and MacGregor (1995) left these four out too, holding that a reference
+Batches 38, 40, 41 and 42 produced poor product and stayed in the training set. Projected the
+same way, each onto a model fitted without it, they sit where the normal batches sit, at 0.8 to
+1.0 times the SPE limit and inside the :math:`T^2` limit. Nomikos and MacGregor (1995) left these four out too, holding that a reference
 set should carry only batches with acceptable operation *and* acceptable product. They are
 kept here so that this check can be made.
 
-Nothing in the ten trajectories separates those four from the batches that produced good
-product. That is the lesson of the case study. A model detects only what the measurements
+This model of the ten trajectories does not separate those four from the batches that produced
+good product. That is the lesson of the case study. A model detects only what the measurements
 contain, so if the cause leaves no trace in them, because the trajectory that matters is not
 recorded or because the cause lies in the raw materials, no modelling of these ten tags will
 reveal it.
