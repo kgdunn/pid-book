@@ -376,12 +376,14 @@ carrying the deviation at sample 120.
 The raw data can be asked the same question directly, tag by tag: at which sample does each
 trajectory of a faulty batch leave the band of the other batches?
 
-The code below answers that for batches 34 and 37. At each sample it expresses the tag as a
-distance from the other batches, in two ways. The classical distance uses their mean and
-standard deviation; the robust one uses their median and median absolute deviation, scaled to
-agree with the standard deviation on normally distributed values and then
-:ref:`EWMA-smoothed <monitoring_EWMA>`. A tag has left the band when it stays more than two
-of those units away for 20 samples in a row, a tenth of the batch.
+The code below answers that for batches 34 and 37. Each tag is turned into a :math:`z` value,
+a distance from a centre divided by a spread, computed at every sample from the 51 batches
+that carry no known fault. Two versions are drawn. The classical one centres on the mean of
+those 51 at that sample and divides by their standard deviation; the robustified one centres
+on their median and divides by their median absolute deviation, scaled to agree with the
+standard deviation on normally distributed values and then :ref:`EWMA-smoothed
+<monitoring_EWMA>`. A tag has left the band when its :math:`z` value stays beyond plus or
+minus two for 20 samples in a row, a tenth of the batch.
 
 Twenty samples is longer than the reactor temperature ever stays outside the band in a normal
 batch, but not longer than the other tags do: the latex density and the conversion of a normal
