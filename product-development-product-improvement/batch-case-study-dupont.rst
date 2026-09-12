@@ -101,9 +101,10 @@ are noisy in every batch.
 A first model on all 55 batches
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`BatchPCA <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/_batch_pca.py>`_ unfolds batchwise, so each batch becomes one row of 10 tags by 100 samples,
-1000 columns. Every column is centred and, where it varies between batches, scaled to unit
-variance, the usual :ref:`preprocessing <LVM_preprocessing>` for a PCA of dissimilar variables.
+`BatchPCA <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/_batch_pca.py>`_
+unfolds batchwise, so each batch becomes one row of 10 tags by 100 samples, 1000 columns.
+Every column is centred and, where it varies between batches, scaled to unit variance, the
+usual :ref:`preprocessing <LVM_preprocessing>` for a PCA of dissimilar variables.
 Centring removes each tag's average trajectory and scaling gives every varying (tag, time) cell
 the same variance, so the components describe how batches deviate from the average batch. The
 43 cells that hold the same value in every batch, the last samples of the two flow rates after
