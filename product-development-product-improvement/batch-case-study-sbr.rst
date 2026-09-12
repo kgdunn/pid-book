@@ -114,6 +114,14 @@ buys, against the usual :ref:`cross-validation <LVM-PLS-number-of-components>`.
 	r2x = np.diff([0.0, *model.r2_per_variable_.mean(axis=0)])     # R2 of the trajectories, per component
 	print("R2X per component:", r2x.round(3), " R2Y per component:", r2y.round(3))
 	# R2X per component: [0.245 0.127]  R2Y per component: [0.653 0.069]
+	# Five-fold cross-validation over the batches: what each component predicts, not what it fits.
+	# The unfolded matrix is one row per batch, so a fold holds out whole batches. About 40 seconds.
+	unfolded = pd.DataFrame({b: t.to_numpy().ravel(order="F") for b, t in trajectories.items()}).T
+	validated = PLS.select_n_components(unfolded, quality.loc[unfolded.index], max_components=2,
+	                                    cv=5, random_state=0).r2y_validated["total"]
+	q2y = np.diff([0.0, *validated.to_numpy()])
+	print("Q2Y per component:", q2y.round(3), " cumulative:", round(float(validated.iloc[-1]), 3))
+	# Q2Y per component: [0.221 0.118]  cumulative: 0.339
 	spe = model.spe_.iloc[:, -1]
 	t1, t2 = model.scores_.iloc[:, 0], model.scores_.iloc[:, 1]
 	marked = {34: ORANGE, 37: AQUA, 4: PURPLE}
@@ -134,7 +142,8 @@ buys, against the usual :ref:`cross-validation <LVM-PLS-number-of-components>`.
 	                             name=f"batch {batch_id}",
 	                             marker=dict(size=[spe.loc[batch_id] ** 2], color=colour, **area,
 	                                         line=dict(color="#404040", width=1.5))))
-	fig.update_layout(xaxis_title=f"t1 [R2X {r2x[0]:.1%}]", yaxis_title=f"t2 [R2X {r2x[1]:.1%}]",
+	fig.update_layout(xaxis_title=f"t1 [R2X {r2x[0]:.1%}, Q2Y {q2y[0]:.1%}]",
+	                  yaxis_title=f"t2 [R2X {r2x[1]:.1%}, Q2Y {q2y[1]:.1%}]",
 	                  height=520).show()
 	print(f"SPE rank of batch 37: {int(spe.rank().loc[37])} of {len(spe)};",
 	      f"batch 34: {int(spe.rank().loc[34])}")            # 1 = the smallest residual
@@ -152,8 +161,11 @@ buys, against the usual :ref:`cross-validation <LVM-PLS-number-of-components>`.
 	    # batch 34: T2 = 28.2 (limit 6.6), SPE = 23.1 (limit 34.6)
 	    # batch 37: T2 = 19.2 (limit 6.6), SPE = 18.7 (limit 34.6)
 
-The first component explains 65.3% of the variance in the quality block and the second
-6.9%; their shares of the variance in the trajectories are on the axes of the score plot.
+The first component explains 65.3% of the variance in the quality block and the second 6.9%.
+Cross-validation, which holds out whole batches and predicts them, credits the two with less
+than half of that. Both numbers are on the axes of the score plot, beside each component's
+share of the variance in the trajectories: what a component fits and what it predicts are
+different quantities, and the gap between them is what a fit alone cannot show.
 
 .. figure:: ../figures/batch/batch-case-sbr-scores.png
 	:source: batch/batch-case-sbr-figures.py
@@ -172,15 +184,16 @@ The first component explains 65.3% of the variance in the quality block and the 
 	:ref:`below <APPS_batch_case_sbr_online_prediction>` to show the prediction while the
 	batch runs.
 
-The score plot flags both faulty batches, whose :math:`T^2` values (:ref:`Hotelling's statistic
-<LVM-Hotellings-T2>`) are 28.2 for batch 34 and 19.2 for batch 37, against a 95% limit of 6.6.
-Their marker areas say the rest. Batch 37 has the smallest residual of the 53 and batch 34 the
-twelfth smallest. Both batches are in this fit, and each is extreme along a component its own
-deviation helped to define, so the fault lands in the scores and little is left in the residual.
+What the plot cannot show is that both faulty batches are inside this fit. Each is extreme
+along a component that its own deviation helped to define, which is why the fault lands in
+the scores and leaves so little in the residual, and why the two largest values of
+:math:`T^2` (:ref:`Hotelling's statistic <LVM-Hotellings-T2>`) belong to two of the smallest
+residuals. The 95% limits inherit the same circularity, since they are computed from the 53
+batches that include the two faults being judged.
 
 The SPE answers the other question about a batch, how far it sits away from the components.
-Drawing it against Hotelling's :math:`T^2`, which summarises how extreme the batch is along
-them, puts both questions in one figure, each axis carrying its own 95% limit.
+Drawing it against :math:`T^2` puts both questions in one figure, each axis carrying its own
+95% limit.
 
 .. code-block:: python
 
@@ -220,12 +233,13 @@ them, puts both questions in one figure, each axis carrying its own 95% limit.
 	(orange) and 37 (aqua) are far to the right and below the SPE limit. The batches the SPE
 	flags, 8, 15 and 16, are different batches, in the upper left.
 
-The SPE flags different batches, 8, 15 and 16, all with ordinary :math:`T^2` values. Three
-at or above a 95% limit is within what that limit allows among 53 batches. The SPE sums the
-residuals of the whole batch, all 1200 cells, after the components have taken their share. A
-shift along the components is taken up by the scores and leaves little in the residual; a
-shift in a few cells is small against the sum over 1200. The scores say a batch moved in a
-direction the model knows, the SPE that it moved in one the model does not.
+A 95% limit is expected to be crossed by about three of 53 batches when nothing is wrong, so
+the three the SPE flags are what the limit allows rather than evidence of a fault. The
+figure cannot show why the two known faults are not among them: the SPE sums the residuals
+of all 1200 cells of a batch after the components have taken their share, so a deviation
+along a component is absorbed by the scores, and a deviation confined to a few cells is
+small against a sum over 1200. The scores say a batch moved in a direction the model knows,
+the SPE that it moved in one the model does not.
 
 Where the model explains the trajectories
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
