@@ -26,9 +26,12 @@ ends. The laboratory result arrives too late to correct the batch it belongs to,
 after the next few batches have started.
 
 The plant records ten trajectories per batch: three reactor temperatures, three pressures,
-two flow rates, and the heating- and cooling-medium temperatures. The data are the worked
-example of Nomikos and MacGregor (1995), supplied by DuPont, of 55 batches aligned to 100
-time intervals and scaled for confidentiality.
+two flow rates, and two temperatures of the heating medium, which the data set's tag names
+split into a heating and a cooling one. The data are the worked example of Nomikos and
+MacGregor (1995), supplied by DuPont, of 55 batches aligned to 100 time intervals by the
+original authors and supplied scaled. How long each batch actually ran is not in the table,
+the time column being identical in every batch, so a batch that ran fast or slow overall
+leaves no trace in these ten tags.
 
 From the laboratory records, batches 40, 41, 42, 50, 51, 53, 54 and 55 were well outside the
 quality limit, and batches 38, 45, 46, 49 and 52 above or close to it. The models never use
@@ -237,7 +240,7 @@ per tag.
 	by_time = spe_share.loc[49].groupby(level="sequence").sum()
 	fig = go.Figure(go.Bar(x=by_time.index, y=by_time.values, marker_color=BLUE))
 	fig.update_layout(title="Batch 49: share of the squared SPE per time sample", xaxis_title="Sample [aligned time]",
-	                  yaxis_title="Share of SPE [%]", height=320)
+	                  yaxis_title="Share of the squared SPE [%]", height=320)
 	fig.show()
 	print("share per tag [%]:", spe_share.loc[49].groupby(level="tag", sort=False).sum().round(0).to_dict())
 	# share per tag [%]: {'Flow-1': 3.0, 'Flow-2': 18.0, 'Press-1': 5.0, 'Press-2': 15.0, 'Press-3': 12.0, 'TempC-1': 19.0, 'TempH-1': 14.0, 'TempR-1': 7.0, 'TempR-2': 3.0, 'TempR-3': 4.0}
@@ -245,7 +248,7 @@ per tag.
 	# share of samples 56 to 65: 80%
 	by_time_51 = spe_share.loc[51].groupby(level="sequence").sum()      # batch 51, for contrast
 	print(f"batch 51: largest single sample {by_time_51.max():.1f}%, samples 56 to 65 {by_time_51.loc[56:65].sum():.0f}%")
-	# batch 51: largest single sample 2.4%, samples 56 to 65 15%
+	# batch 51: largest single sample 2.4%, samples 56 to 65 13%
 
 .. figure:: ../figures/batch/batch-case-dupont-batch-49-spe-contributions.png
 	:source: batch/batch-case-dupont-figures.py
@@ -273,7 +276,7 @@ Wold and co-workers (2009) reach the same event from a different model.
 The final quality of batch 49 was barely acceptable. Its cooling-medium temperature does drop
 below the others from sample 56 and rejoin them by sample 65, a change easy to miss until the
 contributions point at it. Batch 51's residual, by contrast, is spread over the whole batch: no
-sample carries more than 2.4% of it, and samples 56 to 65 carry 15% against batch 49's 80%.
+sample carries more than 2.4% of it, and samples 56 to 65 carry 13% against batch 49's 80%.
 
 The score outliers: batches 50, 52, 53, 54 and 55
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -296,6 +299,11 @@ curves.
 	unfolded_contribution_plot(t1, batch_id=54, by_tag=True).show()
 	print("batch 54, t1 contributions per tag:", t1.loc[54].groupby(level="tag", sort=False).sum().round(1).to_dict())
 	# batch 54, t1 contributions per tag: {'Flow-1': 5.8, 'Flow-2': 4.6, 'Press-1': 5.9, 'Press-2': 7.4, 'Press-3': 8.1, 'TempC-1': 7.4, 'TempH-1': 5.2, 'TempR-1': 7.5, 'TempR-2': 8.7, 'TempR-3': 6.9}
+	t2c = model_a.score_contributions(scaled, component=2)     # the same for the second component
+	for batch_id in (53, 55):                                  # the two highest in t2
+	    print(f"batch {batch_id}, t2 contributions per tag:", t2c.loc[batch_id].groupby(level="tag", sort=False).sum().round(1).to_dict())
+	    # batch 53, t2 contributions per tag: {'Flow-1': 1.5, 'Flow-2': 2.5, 'Press-1': 3.3, 'Press-2': 7.9, 'Press-3': 9.5, 'TempC-1': 7.3, 'TempH-1': 3.2, 'TempR-1': 0.9, 'TempR-2': 2.1, 'TempR-3': -0.1}
+	    # batch 55, t2 contributions per tag: {'Flow-1': 1.4, 'Flow-2': 1.7, 'Press-1': 3.2, 'Press-2': 6.8, 'Press-3': 8.5, 'TempC-1': 6.3, 'TempH-1': 3.8, 'TempR-1': 0.8, 'TempR-2': 2.6, 'TempR-3': 0.6}
 
 .. figure:: ../figures/batch/batch-case-dupont-loadings-p1.png
 	:source: batch/batch-case-dupont-figures.py
@@ -319,10 +327,10 @@ curves.
 	direction, and the contribution per sample stays positive over the whole batch.
 
 Batch 54 has a high :math:`t_1` because every tag contributes in the same direction over the
-whole batch. It ran away from the average trajectory from its first sample to its last, as
-the :ref:`raw trajectory overlay <APPS_batch_case_dupont_overlay>` confirms. Batches 50 and
-52 are read the same way, and batches 53 and 55, the two highest in :math:`t_2`, stand out
-through ``Press-3``, ``Press-2`` and ``TempC-1``.
+whole batch. It deviates from the average batch at every sample, in the direction the loading
+describes, as the :ref:`raw trajectory overlay <APPS_batch_case_dupont_overlay>` confirms.
+Batches 50 and 52 are read the same way, and batches 53 and 55, the two highest in
+:math:`t_2`, stand out through ``Press-3``, ``Press-2`` and ``TempC-1``.
 
 Exclude and rebuild: a second group of batches
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -359,8 +367,8 @@ separates. Removing batches changes the model, so the plots are examined again.
 
 	Scores of model B on components 2 and 3. Batches 37, 39 and 43 to 48 (purple triangles) form a
 	group at the top right of the plot, away from the main cloud of batches. The arrow runs from
-	the model centre out to the group's average point (square), the direction along which the
-	group's contributions below are computed.
+	the model centre, the average of the 48 batches, out to the group's average point (square);
+	that is the direction along which the group's contributions below are computed.
 
 With the extreme batches gone, a second group separates in the plane of :math:`t_2` and
 :math:`t_3`: batches 37, 39 and 43 to 48, the same group Nomikos and MacGregor (1995) single
@@ -369,7 +377,8 @@ B's limits; it is removed below as a distinct mode of operation, not as a set of
 
 A contribution is the weighted difference between two points, each either an actual batch or
 a synthetic one such as the model centre or a group average. Here the eight are compared
-against the centre, the average of all 48 and the arrow in the score plot. Their mean row is
+against the model centre, the average of the 48 batches, drawn as the arrow's origin in the
+score plot. Their mean row is
 the displacement from it, and its contributions add up to their mean score.
 
 .. code-block:: python
@@ -386,9 +395,15 @@ the displacement from it, and its contributions add up to their mean score.
 	# group mean t2 =  15.0 (the contribution vector sums to  15.0); the other 40 batches:  -3.0; samples 0 to 25 carry 66% of it
 	# group mean t3 =  14.8 (the contribution vector sums to  14.8); the other 40 batches:  -3.0; samples 0 to 25 carry 90% of it
 	per_tag = pd.DataFrame({f"t{a}": group[a].groupby(level="tag", sort=False).sum() for a in (2, 3)})
-	go.Figure([go.Bar(x=per_tag.index, y=per_tag[component], name=component) for component in per_tag]).show()
+	fig = go.Figure([go.Bar(x=per_tag.index, y=per_tag[component], name=component) for component in per_tag])
+	for a in (2, 3):                                                 # each member as a dot on its group's bar
+	    member = per_component[a].loc[second_group].T.groupby(level="tag", sort=False).sum().T
+	    for batch_id in second_group:
+	        fig.add_trace(go.Scatter(x=member.columns, y=member.loc[batch_id], mode="markers", showlegend=False,
+	                                 marker=dict(size=6, color="white", line=dict(color=BLUE, width=1))))
+	fig.show()
 	for tag in ("TempC-1", "Press-3", "Press-2", "Flow-2"):          # the three largest contributions, and Flow-2
-	    overlay(kept_b, tag, {batch_id: PURPLE for batch_id in second_group}).show()
+	    overlay(kept_b, tag, {batch_id: PURPLE for batch_id in second_group}).update_xaxes(range=[0, 30]).show()
 
 .. figure:: ../figures/batch/batch-case-dupont-group-contribution.png
 	:source: batch/batch-case-dupont-figures.py
@@ -423,7 +438,10 @@ The final model, used to verify the unusual batches detected above
 Model C is fitted on the 40 batches left once batch 49, batches 50 to 55 and the second
 group are removed. The 15 removed batches are projected onto it to check that it describes
 normal operation. Each is unfolded and scaled with model C's centre and scale, its scores
-estimated, and its :math:`T^2` and SPE compared with the 95% limits of the 40.
+computed, and its :math:`T^2` and SPE compared with the 95% limits of the 40. Those two limits
+assume different things: the :math:`T^2` limit takes the scores of the 40 as normally
+distributed, and the SPE limit is a scaled chi-square matched to the mean and the variance of
+their 40 residuals, so it is itself estimated from 40 numbers.
 
 .. code-block:: python
 
@@ -437,6 +455,8 @@ estimated, and its :math:`T^2` and SPE compared with the 95% limits of the 40.
 	left_out = {"batch 49": [49], "batches 50 to 55": list(range(50, 56)), "the second group": second_group}
 	styles = {"batch 49": (ORANGE, "circle"), "batches 50 to 55": (AQUA, "circle"),
 	          "the second group": (PURPLE, "triangle-up")}          # the group's colour and shape, as in model B
+	# Batch 51 is aqua here, with the group it was removed in; in model A it was orange, one of
+	# the two batches above that model's SPE limit.
 	projected = {b: model_c.predict_online(batches[b], upto_k=model_c.n_timesteps_)   # a complete batch: its scores,
 	             for ids in left_out.values() for b in ids}                             # T2 and SPE against model C
 	outside = pd.DataFrame({b: (float(r.hotellings_t2), float(r.spe)) for b, r in projected.items()}, index=["T2", "SPE"]).T
@@ -499,8 +519,9 @@ well. The model built without them flags them.
 
 Batches 38, 40, 41 and 42 produced poor product and stayed in the training set. Projected the
 same way, each onto a model fitted without it, they sit where the normal batches sit, at 0.8 to
-1.0 times the SPE limit and inside the :math:`T^2` limit. Nomikos and MacGregor (1995) left these four out too, holding that a reference
-set should carry only batches with acceptable operation *and* acceptable product. They are
+1.0 times the SPE limit and inside the :math:`T^2` limit. Nomikos and MacGregor (1995) also
+left these four out of their reference set, holding that a reference set should carry only
+batches with acceptable operation *and* acceptable product. They are
 kept here so that this check can be made.
 
 This model of the ten trajectories does not separate those four from the batches that produced

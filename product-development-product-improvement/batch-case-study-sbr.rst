@@ -136,6 +136,13 @@ buys, against the usual :ref:`cross-validation <LVM-PLS-number-of-components>`.
 	print(f"SPE rank of batch 37: {int(spe.rank().loc[37])} of {len(spe)};",
 	      f"batch 34: {int(spe.rank().loc[34])}")            # 1 = the smallest residual
 	# SPE rank of batch 37: 1 of 53; batch 34: 12
+	print(f"t1 rank of batch 37: {int(t1.rank().loc[37])} of {len(t1)};",
+	      f"t2 rank of batch 34: {int(t2.rank().loc[34])}")   # 1 = the lowest score
+	# t1 rank of batch 37: 1 of 53; t2 rank of batch 34: 53
+	standardised = (quality - quality.mean()) / quality.std(ddof=1)       # the batch nearest the average quality
+	distance = (standardised ** 2).sum(axis=1).pow(0.5) / np.sqrt(quality.shape[1])
+	print("nearest the average quality:", distance.nsmallest(2).round(2).to_dict())
+	# nearest the average quality: {4: 0.16, 27: 0.26}
 	for batch_id in (34, 37):
 	    print(f"batch {batch_id}: T2 = {model.hotellings_t2_.loc[batch_id].iloc[-1]:.1f} (limit {model.hotellings_t2_limit(conf_level=0.95):.1f}),",
 	          f"SPE = {model.spe_.loc[batch_id].iloc[-1]:.1f} (limit {model.spe_limit(conf_level=0.95):.1f})")
