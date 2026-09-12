@@ -376,25 +376,18 @@ carrying the deviation at sample 120.
 The raw data can be asked the same question directly, tag by tag: at which sample does each
 trajectory of a faulty batch leave the band of the other batches?
 
-The code below answers that for batches 34 and 37, in three steps:
-
-* Express each trajectory as a distance from the mean of the 51 normal batches, in units of
-  their standard deviation at that sample.
-* Record the first sample from which a tag stays more than two standard deviations away for
-  20 samples in a row, a tenth of the batch.
-* Repeat both with a robust distance: the median of the other batches and 1.4826 times their
-  median absolute deviation (MAD), smoothed with an EWMA (:math:`\lambda = 0.3`, the value
-  of the :ref:`EWMA chart <monitoring_EWMA>` example).
+The code below answers that for batches 34 and 37. At each sample it expresses the tag as a
+distance from the other batches, in two ways. The classical distance uses their mean and
+standard deviation; the robust one uses their median and median absolute deviation, scaled to
+agree with the standard deviation on normally distributed values and then
+:ref:`EWMA-smoothed <monitoring_EWMA>`. A tag has left the band when it stays more than two
+of those units away for 20 samples in a row, a tenth of the batch.
 
 Twenty samples is longer than the reactor temperature ever stays outside the band in a normal
 batch, but not longer than the other tags do: the latex density and the conversion of a normal
 batch can stay outside it for 50 samples or more. A sustained departure therefore says where
 to look, not that there is a fault, and runs of 25, 30 and 40 leave the onsets below
-unchanged. The factor 1.4826 makes the robust scale equal to the standard deviation for
-normally distributed values, so the two versions share an axis. The smoothing does not: an
-EWMA is narrower than the values it smooths, so the same band of plus and minus two is a
-stricter test for the smoothed curve, and part of the difference between the two sets of
-onsets is that.
+unchanged.
 
 .. code-block:: python
 
