@@ -410,11 +410,12 @@ then from the operating conditions :math:`\mathbf{Z}_\text{op}`.
 	# PLS Zop [20.7, 26.2]
 	for name, Z in (("PLS Zchem", Zchem), ("PLS Zop", Zop)):          # the same, on held-out batches
 	    cv = PLS.select_n_components(Z, Y, max_components=2, cv=7, random_state=0)
-	    # The "total" column pools the eight attributes on their original scale, where the
-	    # widest-ranging attribute decides the number almost on its own. Averaging the
-	    # per-attribute values gives each the same weight, which is the footing the fitted
-	    # R2Y above is already on, so the two columns of the table can be read against each other.
-	    print(name, (cv.r2y_validated.drop(columns="total").mean(axis=1) * 100).round(1).tolist())
+	    # "total" pools the eight attributes on their original scale, where the widest-ranging
+	    # one decides the number almost on its own. "scaled_total" gives each attribute the same
+	    # weight, which is the footing the fitted R2Y above is already on, so the two columns of
+	    # the table can be read against each other. The choice matters here: pooled on the raw
+	    # scale these two rows read 14.8 and -5.0, which reverses which block predicts better.
+	    print(name, (cv.r2y_validated["scaled_total"] * 100).round(1).tolist())
 	# PLS Zchem [2.8, 1.2]
 	# PLS Zop [1.3, -5.3]
 	fig = scores(pls_op, explained_x(pls_op), {20: ORANGE}, note="R2X ", labels=[20, 61, 14])
@@ -505,7 +506,7 @@ of each block the components describe.
 	print("R2X per block after two components:", mb_z.r2_x_per_block_cumulative_.iloc[:, -1].round(3).to_dict())
 	# R2X per block after two components: {'Zchem': 0.296, 'Zop': 0.356}
 	cv_mb = MBPLS.select_n_components(blocks_z, Y, max_components=2, cv=7, random_state=0)   # held-out batches
-	print("MBPLS Z -> Y, Q2Y cumulative:", (cv_mb.r2y_validated.drop(columns="total").mean(axis=1) * 100).round(1).tolist())
+	print("MBPLS Z -> Y, Q2Y cumulative:", (cv_mb.r2y_validated["scaled_total"] * 100).round(1).tolist())
 	# MBPLS Z -> Y, Q2Y cumulative: [8.6, 4.5]
 
 	def block_axes(fig, r2, row=None, col=None, prefix="block t", note=""):
