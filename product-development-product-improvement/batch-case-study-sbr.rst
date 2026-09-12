@@ -712,7 +712,7 @@ that with two of them.
 
 Two batches show what the curves summarise, both for the particle size: batch 4, nearest the
 average quality, and batch 34, whose particle size is the lowest of the 53. Each prediction is
-drawn against the number of samples observed, with the prediction from the complete batch
+shown against the number of samples observed, with the prediction from the complete batch
 dashed and the measured value solid. The band is one prediction error at that sample, taken
 from the RMSEP curve, and is not a prediction interval. These two traces are of batches the
 model was fitted to, unlike the RMSEP curve beside them.
