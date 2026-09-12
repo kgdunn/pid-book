@@ -456,13 +456,15 @@ attributes from a separate block of process data, which is the harder task, and 
 model on this page is measured the same way.
 
 The held-out column carries as much as the numbers beside it. A PCA can be cross-validated by
-holding out whole batches, but the held-out batch supplies the scores that then rebuild it, so
-the value measures how closely the batch reproduces itself and reaches 100% once the number of
-components equals the number of attributes. Holding out single cells instead keeps the estimate
-independent of the value it predicts, and asks how well one attribute is predicted from the other
-seven of the same batch. The two PLS rows hold out whole batches and are comparable with each
-other and with every later model; the PCA row is a different measurement that happens to share
-the column.
+holding out whole batches, but the held-out batch supplies the scores that rebuild it. The value
+then measures how closely a batch reproduces itself, and reaches 100% once the number of components
+equals the number of attributes.
+
+Holding out single cells keeps the estimate independent of the value it predicts, and asks how well
+one attribute is predicted from the other seven of the same batch.
+
+The two PLS rows hold out whole batches, and are comparable with each other and with every later
+model. The PCA row is a different measurement that happens to share the column.
 
 The :math:`Q^2_Y` columns are far below the fits. Held out of the fit, neither block predicts
 more than 3% of the quality block, and the second component takes both towards zero or below
@@ -634,12 +636,13 @@ see.
 	confidence ellipse and is the only batch above both limits; batches 41 and 51 are above
 	the SPE limit only.
 
-Two components describe 37.6% of the batch-to-batch variation in the trajectories. Batch 20
-is the only batch above both limits, with a :math:`T^2` twice its limit and the second largest
-SPE of the 46, so it is both unusual along the components and poorly described by them.
-Batches 41 and 51 are above the SPE limit alone, and batch 47 at 0.99 of it. Two batches above
-a 95% limit is what that limit allows among 46, so neither is a finding on its own; batch 20,
-above both limits, is.
+Two components describe 37.6% of the batch-to-batch variation in the trajectories. Batch 20 is the
+only batch above both limits: its :math:`T^2` is twice its limit and its SPE the second largest of
+the 46, so it is both unusual along the components and poorly described by them.
+
+Batches 41 and 51 are above the SPE limit alone, and batch 47 at 0.99 of it. Two batches above a 95%
+limit is what that limit allows among 46, so neither is a finding on its own. Batch 20, above both
+limits, is.
 
 .. code-block:: python
 
@@ -681,13 +684,16 @@ more clock time to reach each one. Where a loading changes sign the component co
 phases, as the dryer temperature (``D-Temp``) does in going from negative over the first part
 of the batch to positive from about sample 130 onwards.
 
-The :math:`R^2` per cell says how much of that cell's batch-to-batch variation the two
-components describe, and so where the loadings can be read with confidence. The collector
-tank level and the clock time are described best, about 70% of their variance on average,
-and the agitator speed least, under 10%. The agitator speed is a step at the same sample in
-every batch, so most of its columns carry only noise once each is scaled to unit variance; a
-low :math:`R^2` there says the column is noise, not that the model missed something. For most
-tags the :math:`R^2` falls in the cooling phase, so the model says little about how the
+The :math:`R^2` per cell says how much of that cell's batch-to-batch variation the two components
+describe, and so where the loadings can be read with confidence. The collector tank level and the
+clock time are described best, about 70% of their variance on average; the agitator speed least,
+under 10%.
+
+The agitator speed is a step at the same sample in every batch, so most of its columns carry only
+noise once each is scaled to unit variance. A low :math:`R^2` there says the column is noise, not
+that the model missed something.
+
+For most tags the :math:`R^2` falls in the cooling phase, so the model says little about how the
 batches differ there.
 
 A missing cell has no residual and no contribution, so a batch with missing samples still has
@@ -985,12 +991,12 @@ the average score point of the good batches and of the abnormal ones in each blo
 place every batch with whichever of the two centres is nearer. The figure joins each batch
 to the centre it was placed with.
 
-Five batches classed good are placed with the abnormal centre in the trajectory block. Four
-of them are placed with the good centre in both of the other two blocks: along the two
-components of each, ordinary chemistry and ordinary operating conditions, with trajectories
-that look abnormal. Their residuals in those two blocks, what the two components do not
-describe, are not examined here. The fifth,
-batch 5, is placed with the abnormal centre in the operating-condition block as well, so it
+Five batches classed good are placed with the abnormal centre in the trajectory block. Four of them
+are placed with the good centre in both of the other two blocks: ordinary chemistry and ordinary
+operating conditions, with trajectories that look abnormal. What the two components of those blocks
+do not describe, their residuals, is not examined here.
+
+The fifth, batch 5, is placed with the abnormal centre in the operating-condition block as well. It
 is not a case of an ordinary charge with an unusual trajectory, and it is left aside.
 
 On the super score of this model those four lie between the two groups with nothing to mark them
@@ -1048,17 +1054,23 @@ The four and their neighbours share one trajectory signature: the collector tank
 clock time and the jacket temperature set point carry the largest contributions in both
 groups, and the overlays show a high collector level and a slow first phase.
 
-What separates them lies in the operating-condition block. ``score_contributions`` of a
-multiblock model gives each block's contribution to the *super* score, the block's own
-contribution scaled by its super weight, so the bars rank the variables within the block
-without being on the block score's scale. The contribution from the
-neighbours' average point to the four's, the construction of the
+What separates them lies in the operating-condition block. ``score_contributions`` of a multiblock
+model gives each block's contribution to the *super* score: the block's own contribution scaled by
+its super weight. The bars therefore rank the variables within the block, without being on the block
+score's scale.
+
+The contribution from the neighbours' average point to the four's, the construction of the
 :ref:`first case study <APPS_batch_case_dupont>`, moves by 0.05 or more in six of the nine
-variables: the length of the cooling phase (``Time3``), the length and slope of the ramp
-(``Time2``, ``TempSlope``), a fourth recipe timing (``Time4``), the collector tank level
-(``Level1``) and the weight of the cake charged (``WgtCake``). A contribution carries the sign
-of the variable's weight as well as the sign of the move, so the direction of a bar is not the
-direction of the raw value; four of these six run the opposite way.
+variables:
+
+* the length of the cooling phase (``Time3``);
+* the length and slope of the ramp (``Time2``, ``TempSlope``);
+* a fourth recipe timing (``Time4``);
+* the collector tank level (``Level1``);
+* the weight of the cake charged (``WgtCake``).
+
+A contribution carries the sign of the variable's weight as well as the sign of the move, so the
+direction of a bar is not the direction of the raw value. Four of these six run the opposite way.
 
 In clock time the four ramped in 24 time units against 32 and cooled for 50 against 38, at the
 same peak set point (86.9 against 87.2): not a set point that was moved, but how long each
@@ -1141,15 +1153,17 @@ quality :math:`\mathbf{Y}`, with a dash where the model never saw that block.
    +-----------------------------------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+
 
 Read down the quality columns. Leaving aside the PCA, which describes that block rather than
-predicting it, the fit rises with every block added. The trajectory rows carry the width of
-that block, so the column orders the fits, not the predictive value of the blocks; the held-out
-values in the earlier tables are what order that.
-Read across a row and the cost appears. The chemistry block, half described over the two
-components of its own PLS, keeps under a quarter of itself over the two of the batch
-multiblock PLS while the quality block gains, because the super score is one direction shared
-by the three blocks, chosen for what predicts :math:`\mathbf{Y}` across all of them; with the
-smallest super weight, the chemistry block is described along a direction the other two blocks
-mostly chose.
+predicting it, the fit rises with every block added. The trajectory rows carry the width of that
+block, so the column orders the fits, not the predictive value of the blocks; the held-out values in
+the earlier tables order that.
+
+Read across a row and the cost appears. The chemistry block is half described over the two
+components of its own PLS, and keeps under a quarter of itself over the two of the batch multiblock
+PLS, while the quality block gains.
+
+The super score is one direction shared by the three blocks, chosen for what predicts
+:math:`\mathbf{Y}` across all of them. With the smallest super weight, the chemistry block is
+described along a direction the other two blocks mostly chose.
 
 Where to go next
 ~~~~~~~~~~~~~~~~
@@ -1167,21 +1181,22 @@ those as the columns. The operating-condition block here is already one, since e
 nine columns are landmarks of the trajectories.
 
 Of the three ways of handling the trajectory array, landmark features, batchwise unfolding and
-observation-wise unfolding, it is the simplest to set up, and the engineer chooses which
-landmarks matter, so a feature that is important but not obvious can be left out. It suits a
-process with distinct operational changes, which this dryer has, and less so one whose
-trajectories are smooth, such as the reactor of the :ref:`first case study
-<APPS_batch_case_dupont>`. Wold and co-workers (2009) build all three kinds on this dryer, and
-their score plots separate the on- from the off-specification batches in the same way.
+observation-wise unfolding, it is the simplest to set up. The engineer chooses which landmarks
+matter, so a feature that is important but not obvious can be left out.
 
-A second step is an on-line monitoring model, which tracks a running batch against the reference
-model and predicts its final quality before the batch ends. Estimating the scores of a batch
-observed so far is a missing-data problem of the same shape as the gaps in these trajectories,
-with the samples not yet seen standing in for the missing cells, so the incomplete batches are
-no obstacle to the method. The package's batch classes take complete reference batches, as the
-gaps in these ten batches already showed, so those ten would be filled or left out before the
-reference model is fitted. The :ref:`SBR case study <APPS_batch_case_sbr_online>` works that
-step through.
+It suits a process with distinct operational changes, which this dryer has, and less so one whose
+trajectories are smooth, such as the reactor of the :ref:`first case study
+<APPS_batch_case_dupont>`. Wold and co-workers (2009) build all three kinds on this dryer, and their
+score plots separate the on- from the off-specification batches in the same way.
+
+A second step is an on-line monitoring model: it tracks a running batch against the reference model
+and predicts final quality before the batch ends. Estimating the scores of a batch observed so far
+is a missing-data problem of the same shape as the gaps in these trajectories, with the samples not
+yet seen standing in for the missing cells.
+
+The package's batch classes take complete reference batches, as the gaps in these ten batches
+already showed, so those ten would be filled or left out before the reference model is fitted. The
+:ref:`SBR case study <APPS_batch_case_sbr_online>` works that step through.
 
 References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~

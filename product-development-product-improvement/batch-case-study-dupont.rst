@@ -25,13 +25,13 @@ The critical quality property is measured in the laboratory 12 hours or more aft
 ends. The laboratory result arrives too late to correct the batch it belongs to, and only
 after the next few batches have started.
 
-The plant records ten trajectories per batch: three reactor temperatures, three pressures,
-two flow rates, and two temperatures of the heating medium, which the data set's tag names
-split into a heating and a cooling one. The data are the worked example of Nomikos and
-MacGregor (1995), supplied by DuPont, of 55 batches aligned to 100 time intervals by the
-original authors and supplied scaled. How long each batch actually ran is not in the table,
-the time column being identical in every batch, so a batch that ran fast or slow overall
-leaves no trace in these ten tags.
+Ten trajectories are recorded per batch: three reactor temperatures, three pressures, two flow
+rates, and two temperatures of the heating medium, which the tag names split into a heating and a
+cooling one.
+
+These are the worked example of Nomikos and MacGregor (1995), supplied by DuPont: 55 batches,
+aligned to 100 time intervals by the original authors and supplied scaled. The time column is
+identical in every batch, so a batch that ran fast or slow leaves no trace in these ten tags.
 
 From the laboratory records, batches 40, 41, 42, 50, 51, 53, 54 and 55 were well outside the
 quality limit, and batches 38, 45, 46, 49 and 52 above or close to it. The models never use
@@ -102,13 +102,14 @@ A first model on all 55 batches
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `BatchPCA <https://github.com/kgdunn/process-improve/blob/main/src/process_improve/batch/_batch_pca.py>`_
-unfolds batchwise, so each batch becomes one row of 10 tags by 100 samples, 1000 columns.
-Every column is centred and, where it varies between batches, scaled to unit variance, the
-usual :ref:`preprocessing <LVM_preprocessing>` for a PCA of dissimilar variables.
-Centring removes each tag's average trajectory and scaling gives every varying (tag, time) cell
-the same variance, so the components describe how batches deviate from the average batch. The
-43 cells that hold the same value in every batch, the last samples of the two flow rates after
-the feeds stop, carry no weight.
+unfolds batchwise: each batch becomes one row of 10 tags by 100 samples, 1000 columns. Every
+column is centred and, where it varies between batches, scaled to unit variance, the usual
+:ref:`preprocessing <LVM_preprocessing>` for a PCA of dissimilar variables.
+
+Centring removes each tag's average trajectory; scaling gives every varying cell the same variance.
+The components therefore describe how batches deviate from the average batch. The 43 cells holding
+one value in every batch, the last samples of the two flow rates after the feeds stop, carry no
+weight.
 
 Model A, the first of three, uses two components, enough for a first look, and all 55 batches,
 not as a final model but to see which batches stand out.
@@ -206,12 +207,14 @@ one figure, each 95% limit dividing it into quadrants.
 	53, 54 and 55 (aqua) are the other way round. Colour marks which of the two limits the
 	batch exceeds.
 
-Batches 49 and 51 are in the upper left, ordinary along the two components and extreme away
-from them, which is a break in the correlation structure rather than a large deviation along
-it. The other five of the last six are in the lower right, extreme along the components with
-ordinary residuals, so one statistic alone would have missed a group. Two batches above a 95%
-limit among 55 is what chance alone gives, so the SPE of batches 49 and 51 is a reason to look,
-not a verdict.
+Batches 49 and 51 sit in the upper left: ordinary along the two components, extreme away from them.
+That is a break in the correlation structure, not a large deviation along it.
+
+The other five of the last six sit in the lower right, extreme along the components with ordinary
+residuals. One statistic alone would have missed a group.
+
+Two batches above a 95% limit among 55 is what chance gives. The SPE of batches 49 and 51 is a
+reason to look, not a verdict.
 
 Batch 49: which variables, and when
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -266,13 +269,14 @@ per tag.
 ``Flow-1`` carries almost none of the residual. It belongs to the two medium temperatures,
 ``Flow-2``, ``Press-2`` and ``Press-3``, and 80% falls in the ten samples from 56 to 65.
 
-The ``Flow-2`` share needs a qualifier. Most of it comes from samples 62 to 65, where every
-other batch has already reached zero flow and batch 49 alone has not, so batch 49 sets the
-spread of those four columns by itself and its scaled value there is the same whatever the size
-of the raw deviation. That share says its feed stopped a few samples later than in any other
-batch, not that the deviation was large.
-Nomikos (1996) attributes that short disturbance to a failure in the heating system, and
-Wold and co-workers (2009) reach the same event from a different model.
+The ``Flow-2`` share needs a qualifier. Most of it comes from samples 62 to 65, where every other
+batch has already reached zero flow and batch 49 alone has not. Batch 49 therefore sets the spread
+of those four columns by itself, and its scaled value there is the same whatever the raw deviation
+was.
+
+The share says its feed stopped a few samples late, not that the deviation was large. Nomikos (1996)
+attributes the disturbance to a failure in the heating system, and Wold and co-workers (2009) reach
+the same event from a different model.
 
 The final quality of batch 49 was barely acceptable. Its cooling-medium temperature does drop
 below the others from sample 56 and rejoin them by sample 65, a change easy to miss until the
@@ -436,13 +440,13 @@ out.
 The final model, used to verify the unusual batches detected above
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Model C is fitted on the 40 batches left once batch 49, batches 50 to 55 and the second
-group are removed. The 15 removed batches are projected onto it to check that it describes
-normal operation. Each is unfolded and scaled with model C's centre and scale, its scores
-computed, and its :math:`T^2` and SPE compared with the 95% limits of the 40. Those two limits
-assume different things: the :math:`T^2` limit takes the scores of the 40 as normally
-distributed, and the SPE limit is a scaled chi-square matched to the mean and the variance of
-their 40 residuals, so it is itself estimated from 40 numbers.
+Model C is fitted on the 40 batches left once batch 49, batches 50 to 55 and the second group are
+removed. The 15 removed batches are then projected onto it: unfolded and scaled with model C's
+centre and scale, scores computed, :math:`T^2` and SPE compared with the 95% limits of the 40.
+
+The two limits assume different things. The :math:`T^2` limit takes the scores of the 40 as normally
+distributed. The SPE limit is a scaled chi-square matched to the mean and variance of their 40
+residuals, so it is itself estimated from 40 numbers.
 
 .. code-block:: python
 
@@ -511,12 +515,13 @@ their 40 residuals, so it is itself estimated from 40 numbers.
 	(blue) and of the 15 left-out batches projected onto model C: batch 49 (orange), batches
 	50 to 55 (aqua circles) and the second group (purple triangles).
 
-A batch the model has not seen sits farther from its plane than a training batch does, so the
-fair comparison is with the 40 normal batches each projected onto a model fitted without it:
-their SPE runs up to 1.4 times the limit, and 38% of them are above it. All 15 left-out batches
-lie above that: the second group at 3 to 5 times the limit, batch 49 at 5, batches 50 to 55
-more than a hundred times, with batches 50 to 55 and batch 37 above the :math:`T^2` limit as
-well. The model built without them flags them.
+A batch the model has not seen sits farther from its plane than a training batch does. The fair
+comparison is with the 40 normal batches, each projected onto a model fitted without it: their SPE
+runs up to 1.4 times the limit, and 38% of them are above it.
+
+All 15 left-out batches lie above that range. The second group runs at 3 to 5 times the limit, batch
+49 at 5, and batches 50 to 55 more than a hundred times. Batches 50 to 55 and batch 37 are above the
+:math:`T^2` limit as well.
 
 Batches 38, 40, 41 and 42 produced poor product and stayed in the training set. Projected the
 same way, each onto a model fitted without it, they sit where the normal batches sit, at 0.8 to
