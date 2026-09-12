@@ -634,17 +634,26 @@ The fitted values of the previous section used the whole batch. It is far more i
 if it is possible to predict what its final quality will be while the batch is still
 running:
 
-* the unfolded row is complete up to the current sample and empty after it, so the scores
-  are estimated from the observed cells alone, the rest treated as missing data (Wold and
-  co-workers, 2009, who set out the projection to the model plane and point to the
-  literature for the other estimators). The one used here is trimmed score regression
-  (Arteaga and Ferrer, 2002), which García-Muñoz, Kourti and MacGregor (2004) found stable
-  from the first samples of a batch. It regresses the model's scores on the scores the
-  observed cells alone produce, fitted over the training batches, so where those cells have
-  said little in the past it shrinks the estimate toward the average batch;
+* the unfolded row is complete up to the current sample and empty after it, so the scores are
+  estimated from the observed cells alone, the rest treated as missing data (Wold and
+  co-workers, 2009, who set out the projection to the model plane and point to the literature
+  for the other estimators);
 * the model's regression from scores to quality turns those scores into a prediction;
 * the prediction error after :math:`k` samples, RMSEP, comes from refitting without each
   batch in turn and tracing the held-out batch (``online_rmse``, about a minute).
+
+The estimator used here is trimmed score regression (Arteaga and Ferrer, 2002), which
+García-Muñoz, Kourti and MacGregor (2004) found stable from the first samples of a batch.
+Applying the loadings of the measured cells to those cells alone gives a *trimmed score*: the
+score the row would have if every cell still to come sat at its average. It is biased, so the
+same trimming is done to every training batch, where the score from the complete row is known
+as well, and those true scores are regressed on the trimmed ones. Applying that regression to
+the new row is the estimate.
+
+Fitting the regression over history is what keeps it steady early. While few cells have been
+measured they say little about the final scores, the coefficients are small, and the estimate
+stays near the average batch; as more cells arrive the same regression carries it out to
+where the batch is.
 
 .. code-block:: python
 
