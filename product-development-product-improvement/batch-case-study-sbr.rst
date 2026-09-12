@@ -394,8 +394,7 @@ unchanged. The factor 1.4826 makes the robust scale equal to the standard deviat
 normally distributed values, so the two versions share an axis. The smoothing does not: an
 EWMA with :math:`\lambda = 0.3` has about 0.42 of the spread of the values it smooths, so the
 band of plus and minus two is a stricter test for the smoothed curve, and part of the
-difference between the two sets of onsets is that. Samples are counted from one throughout
-this page, here and in the alarm samples later on.
+difference between the two sets of onsets is that.
 
 .. code-block:: python
 
