@@ -1061,14 +1061,19 @@ against the zero line.
 	model's components. Batch 37's two forecasts lie below zero and above what happened; the
 	later one, with more of the batch behind it, lies closer to it.
 
-It is the same distinction as the two statistics. The model forecasts along its components,
-so it has the slow conversion of batch 37 in the right direction from sample 30 onwards, at
--1.8 standard deviations against an actual -4.8, and closer from sample 60, at -3.6. The
-shortfall is the same shrinkage as in the quality prediction: the forecast is built from the
-estimated scores, which are pulled toward the average batch while little has been observed.
-The fault of batch 34 lies off the components, so its forecasts sit on the average batch at
-both points and do not move toward the rise at all, and the model can flag that fault but not
-forecast it. Nomikos and MacGregor (1995) stop drawing their prediction intervals
+It is the same distinction as the two statistics. The model forecasts along its components, so
+batch 37's slow conversion is forecast in the right direction, and more closely the later the
+forecast is made. The fault of batch 34 lies off the components, so its forecasts stay on the
+average batch and do not move toward the rise. The model can flag that fault but not forecast
+it.
+
+Batch 37's forecasts still fall short of what happened. They are built from the estimated
+scores, which are pulled toward the average batch while little has been observed, the same
+shrinkage as in the quality prediction.
+
+That is the trade the estimator makes. Understating a deviation that is real is what buys a
+forecast close to what an ordinary batch does, and the bias fades as the batch fills in and the
+observed cells fix the scores. Nomikos and MacGregor (1995) stop drawing their prediction intervals
 for this batch once its SPE crosses the limit, for the same reason.
 
 Both faults are found with much of the batch still to run, and the statistic that finds each
