@@ -807,15 +807,17 @@ serve every sample. The SPE has no such normalisation, so its reference mean doe
 
 .. figure:: ../figures/batch/batch-case-sbr-score-spread.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Two curves on a logarithmic axis, the standard deviation of the t1 and t2 estimates across the 51 reference batches divided by that of their final scores, against samples observed; both start far above one and fall to one at the end of the batch.
+	:alt: Two curves on a logarithmic axis, the standard deviation of the t1 and t2 estimates across the 51 reference batches divided by that of their final scores, against samples observed; both start near a quarter of the final spread and rise to it by the end of the batch, with reference lines at one and at a half.
 	:width: 600px
 	:scale: 80
 	:align: center
 
 	The spread of the on-line score estimates across the 51 reference batches, divided by
 	the spread of their final scores, against the number of samples observed (logarithmic
-	axis). :math:`T^2` at each sample is scaled by this spread, which is what lets the limit
-	stay the same throughout the batch.
+	axis). The estimator pulls the scores toward the average batch while little has been
+	observed, so early estimates lie closer together than the final scores do, and the spread
+	grows to match them as the batch fills in. :math:`T^2` at each sample is scaled by this
+	spread, which is what lets the limit stay the same throughout the batch.
 
 The limits are set at 99%, and an alarm here means three consecutive samples above the
 limit, the same kind of rule the departure analysis used. The sample reported for an alarm
