@@ -3,6 +3,21 @@
 These instructions apply to any Claude Code session working in this
 repository. Follow them in addition to the normal workflow.
 
+## Replying in chat
+
+These four rules govern what you write back to the user in the session. They are
+separate from the book's prose voice below, which governs what goes into the RST.
+
+- **Lead with the result.** Your first sentence answers "what happened" or
+  "what's the answer".
+- **Cut narration.** Do not restate the request, the plan, or each step you took.
+  Report outcomes, decisions, and anything the user must act on.
+- **Short by default.** Answer simple questions in 1 to 3 sentences of plain
+  prose.
+- **Never trade correctness for brevity.** Error reports, failing output, numbers
+  the user will rely on, and caveats that change a decision keep their full
+  content.
+
 ## Writing style: never use em-dashes
 
 Do not use em-dashes (`—`) in any prose you write or edit: README, RST
