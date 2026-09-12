@@ -3,6 +3,21 @@
 These instructions apply to any Claude Code session working in this
 repository. Follow them in addition to the normal workflow.
 
+## Replying in chat
+
+These four rules govern what you write back to the user in the session. They are
+separate from the book's prose voice below, which governs what goes into the RST.
+
+- **Lead with the result.** Your first sentence answers "what happened" or
+  "what's the answer".
+- **Cut narration.** Do not restate the request, the plan, or each step you took.
+  Report outcomes, decisions, and anything the user must act on.
+- **Short by default.** Answer simple questions in 1 to 3 sentences of plain
+  prose.
+- **Never trade correctness for brevity.** Error reports, failing output, numbers
+  the user will rely on, and caveats that change a decision keep their full
+  content.
+
 ## Writing style: never use em-dashes
 
 Do not use em-dashes (`—`) in any prose you write or edit: README, RST
@@ -79,10 +94,68 @@ same edits do not have to be made again.
 - Do not refer to a table or figure before it appears in the text. If a
   forward reference is unavoidable, point to it explicitly as "below".
 
+**Length and focus**
+
+- Say it once, briefly. A passage that restates what a figure, a caption
+  or a printed result already shows is cut, not trimmed. A first draft of
+  a paragraph is usually two to five times too long; keep the claim, its
+  reason and its consequence, and stop.
+- Do not repeat numbers the reader can read off a plot or a table. Quote a
+  number only when it is not on a figure (an average over several curves,
+  the sample at which a curve crosses a threshold), and print it in the
+  code with the value echoed in a comment, so the checker verifies it.
+- Explain a principle in general terms and keep case-specific numbers for
+  the results. "The early estimates scatter more widely than the final
+  scores" belongs in the explanation; "fourteen times more after four
+  samples" does not.
+- Use bullets for a sequence of steps or a set of parallel facts, and do
+  not dive into detail inside them.
+- Cut method history, alternative methods and "prior experience" asides
+  that the point does not need. The book is self-contained: never refer to
+  course notes or other material the reader does not have.
+- One metric where one will do (the leave-one-batch-out RMSEP, not RMSEE
+  and RMSEP side by side).
+- After describing a result, state its practical value in one or two
+  sentences, with the number that carries it, then stop.
+
+**Paragraph construction**
+
+- One idea per paragraph: claim, reason, consequence. Do not splice a
+  second idea on with a colon or a semicolon.
+- Keep the example fixed inside an argument: not "ten samples" in one
+  sentence and "four samples" in the next for the same point.
+- Reconcile statements a careful reader would set against each other (a
+  list that "is not used to build the model" while its batches sit in the
+  training set): say precisely what is used, and for what.
+- A heading says what the section does for the reader ("The final model,
+  used to verify the unusual batches detected above"), not its topic.
+
+**Figures and captions**
+
+- Every score plot carries the percent of variance explained per component
+  on its axes, in square brackets.
+- Annotate on the figure the thing the text discusses: an arrow for a
+  contribution direction, with a marker at its origin; a batch marked and
+  labelled when a later section uses it. Keep annotation text small.
+- Markers must read on every background they cross (white face and dark
+  edge on top of bars). Labels never sit on other points: move them to the
+  other side of the marker, or onto a short leader line. Legends go where
+  the data are not.
+- Beside a derived statistic, show the raw data (raw trajectories in a 2x2
+  panel beside contribution bars) rather than a second derived panel.
+- Integer axis ticks for integer-like quantities; a band of one error, not
+  two, unless the text says why.
+- A caption says what the reader should see and what it means ("Dots help
+  show how consistent each batch in the cluster is with the group").
+- When the text claims that a quantity behaves in a certain way, show it
+  in a figure.
+
 **Process**
 
 - When a wording or style fix may recur elsewhere in the file, ask before
   changing the other occurrences rather than assuming.
+- For content edits, run `make text` and the code checker; do not run
+  `make html` or rebuild a review rendering unless asked.
 
 ## Every Python case in the book runs in CI
 
@@ -110,10 +183,12 @@ The contract, which any new or edited code must satisfy:
   moves with it; do not paper over the warning.
 - **Echoed results are checked, and a mismatch fails.** A comment right after a
   `print(...)` that repeats its output (`# [0.255, 0.367, ...]`) is compared with
-  what the block printed. `make check-code` and CI run with `--strict-output`, so
-  a number that stops reproducing fails the chapter even though the code still
-  runs; the bare CLI reports mismatches without failing, which is easier to work
-  through when several are in flight. Use this idiom for every number the prose
+  what the block printed. Every `make check-code…` target and CI run with
+  `--strict-output`, so a number that stops reproducing fails the chapter even
+  though the code still runs, and a per-chapter or per-file run is as trustworthy
+  as the full one; invoking `tools/check_code_blocks.py` directly without the flag
+  reports mismatches without failing, which is easier to work through when several
+  are in flight. Use this idiom for every number the prose
   then quotes. Print the value in the shape the comment claims: a dict repr drops
   a trailing zero, and a Series or array repr carries full precision, so
   `print(f"{value:.2f}")` beats `print(value)` when the prose quotes two decimals.
