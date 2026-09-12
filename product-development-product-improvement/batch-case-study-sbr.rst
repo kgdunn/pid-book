@@ -632,7 +632,7 @@ running:
   are estimated from the observed cells alone, the rest treated as missing data (Wold and
   co-workers, 2009, who set out the projection to the model plane and point to the
   literature for the other estimators). The one used here is trimmed score regression
-  (Arteaga and Ferrer, 2002), which Garcia-Munoz, Kourti and MacGregor (2004) found stable
+  (Arteaga and Ferrer, 2002), which García-Muñoz, Kourti and MacGregor (2004) found stable
   from the first samples of a batch. It regresses the model's scores on the scores the
   observed cells alone produce, fitted over the training batches, so where those cells have
   said little in the past it shrinks the estimate toward the average batch;
@@ -779,7 +779,7 @@ scores.
 :math:`T^2` at each sample is therefore computed against the covariance of the reference
 estimates at that same sample, which the monitor stores. Nomikos and MacGregor, in their
 Technometrics paper of 1995, set their score-chart limits from that spread and note that
-:math:`T^2` needs the covariance at each sample too; Garcia-Munoz, Kourti and MacGregor (2004)
+:math:`T^2` needs the covariance at each sample too; García-Muñoz, Kourti and MacGregor (2004)
 compute it. The SPE limit is fitted sample by sample the same way: at each sample it is a
 chi-square approximation matched to the mean and the variance of the 51 reference values
 there.
@@ -911,7 +911,7 @@ The 51 reference batches define normal, so any alarm they raise is a false alarm
 rate is a lower bound on the rate to expect on the plant, since the limits were fitted to these
 same batches. A 99% limit lets 1% of a normal batch's values cross by chance, about two
 crossings over 200 samples, so a single crossing cannot count as an alarm. The rule used here is
-three consecutive samples above the limit, the run length Garcia-Munoz, Kourti and MacGregor
+three consecutive samples above the limit, the run length García-Muñoz, Kourti and MacGregor
 (2004) use, applied here to the 99% limit rather than their 95% one.
 
 That rule holds for :math:`T^2`, where one of the 51 reference batches alarms, and fails for
@@ -974,7 +974,7 @@ seen. Batch 37 crosses the SPE limit from sample 15, before its :math:`T^2` cros
 with fifteen samples in hand the model cannot yet place the batch along its components, so
 the newest samples do not fit and the residual carries the deviation. Once the score has moved
 out, the same deviation is described rather than left over, and the SPE falls back inside
-while the :math:`T^2` holds. All five faults Garcia-Munoz, Kourti and MacGregor (2004)
+while the :math:`T^2` holds. All five faults García-Muñoz, Kourti and MacGregor (2004)
 simulated also showed in the SPE chart first.
 
 The shares of the squared residual say what stopped fitting. At the alarm sample the reactor
@@ -990,7 +990,7 @@ enough to count.
 
 The same score estimate that predicts the quality also predicts the rest of the
 trajectories, as the model's reconstruction :math:`\hat{\boldsymbol{\tau}} \mathbf{P}^{T}`
-read off for the samples not yet seen (Wold and co-workers, 2009, Eq. 4). Garcia-Munoz,
+read off for the samples not yet seen (Wold and co-workers, 2009, Eq. 4). García-Muñoz,
 Kourti and MacGregor (2004) show it to be an adaptive time-series forecast, built on how the
 variables co-vary over the whole batch rather than on the trend so far.
 
@@ -1129,7 +1129,7 @@ The full list of readings on batch data is on the :ref:`batch process monitoring
   methods, different interpretations, some examples <https://literature.learnche.org/item/20/dealing-with-missing-data-in-mspc-several-methods-different-interpretations-some-examples>`_",
   *Journal of Chemometrics*, **16**, 408-418, 2002. Trimmed score regression.
 
-* Salvador Garcia-Munoz, Theodora Kourti and John F. MacGregor, "`Model predictive
+* Salvador García-Muñoz, Theodora Kourti and John F. MacGregor, "`Model predictive
   monitoring for batch processes <https://literature.learnche.org/item/157/model-predictive-monitoring-for-batch-processes>`_", *Industrial and
   Engineering Chemistry Research*, **43**, 5929-5941, 2004. Compares the estimators of the
   scores of a batch so far, shows that the forecast of the rest of the batch is an adaptive

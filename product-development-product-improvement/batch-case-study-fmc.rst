@@ -21,7 +21,7 @@ The recipe has three phases, each bounded by a landmark in the trajectories:
 * cooling, from there to the end of the batch.
 
 The operators adjusted the peak temperature set point from batch to batch to correct the product
-quality, a manual feedback loop. This is the case study of Garcia-Munoz and co-workers (2003),
+quality, a manual feedback loop. This is the case study of García-Muñoz and co-workers (2003),
 and the most complete of the three. The :ref:`first <APPS_batch_case_dupont>` had trajectories
 alone and the :ref:`second <APPS_batch_case_sbr>` added final quality, while here the chemistry
 of the charge and the operating conditions are recorded as well.
@@ -1184,8 +1184,8 @@ References and readings
 The full list of readings on batch data is on the :ref:`batch process monitoring page
 <APPS_batch_readings>`; this page lists what it draws on.
 
-* S. Garcia-Munoz, T. Kourti, J.F. MacGregor, A.G. Mateos and G. Murphy, "`Troubleshooting of
-  an industrial batch process using multivariate methods
+* Salvador García-Muñoz, Theodora Kourti, John F. MacGregor, Arthur G. Mateos and Gerald
+  Murphy, "`Troubleshooting of an industrial batch process using multivariate methods
   <https://literature.learnche.org/item/24/troubleshooting-of-an-industrial-batch-process-using-multivariate-methods>`_", *Industrial and Engineering Chemistry Research*,
   **42**, 3592-3601, 2003. The source of the case study.
 
@@ -1194,7 +1194,7 @@ The full list of readings on batch data is on the :ref:`batch process monitoring
   *Comprehensive Chemometrics*, **2**, chapter 2.10, 163-197, 2009. Builds landmark-feature,
   batchwise-unfolded and observation-wise-unfolded models on this same dryer.
 
-* Salvador Garcia-Munoz, `Batch process improvement using latent variable methods <https://literature.learnche.org/item/3/batch-process-improvement-using-latent-variable-methods>`_,
+* Salvador García-Muñoz, `Batch process improvement using latent variable methods <https://literature.learnche.org/item/3/batch-process-improvement-using-latent-variable-methods>`_,
   Ph.D thesis, McMaster University, 2004.
 
 * Theodora Kourti, Paul Nomikos and John F. MacGregor, "`Analysis, monitoring and fault
