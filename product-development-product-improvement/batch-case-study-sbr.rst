@@ -633,7 +633,9 @@ running:
   co-workers, 2009, who set out the projection to the model plane and point to the
   literature for the other estimators). The one used here is trimmed score regression
   (Arteaga and Ferrer, 2002), which Garcia-Munoz, Kourti and MacGregor (2004) found stable
-  from the first samples of a batch;
+  from the first samples of a batch. It regresses the model's scores on the scores the
+  observed cells alone produce, fitted over the training batches, so where those cells have
+  said little in the past it shrinks the estimate toward the average batch;
 * the model's regression from scores to quality turns those scores into a prediction;
 * the prediction error after :math:`k` samples, RMSEP, comes from refitting without each
   batch in turn and tracing the held-out batch (``online_rmse``, about a minute).
@@ -649,9 +651,13 @@ running:
 	relative = rmsep_k / quality.std()
 	at = [10, 25, 50, 150, 200]
 	print(relative.loc[at].mean(axis=1).round(2).tolist())              # RMSEP / sd averaged over the five attributes
-	# [2.99, 1.39, 1.06, 0.62, 0.58]
-	print((relative < 1).idxmax().tolist())                              # first sample with RMSEP below the sd, per attribute
-	# [48, 129, 50, 50, 21]
+	# [0.97, 0.89, 0.8, 0.62, 0.58]
+	# The sample from which each curve stays below one standard deviation, which is not the
+	# first sample it dips below: a curve that crosses and comes back has not settled.
+	stays = {a: int(relative.index[np.flatnonzero((relative[a] >= 1).to_numpy())[-1] + 1])
+	         if (relative[a] >= 1).any() else 1 for a in relative.columns}
+	print("stays below the standard deviation from sample:", stays)
+	# stays below the standard deviation from sample: {'Composition': 1, 'ParticleSize': 125, 'Branching': 2, 'CrossLinking': 2, 'Polydispersity': 2}
 
 	MAGENTA = "#b03a78"                                                    # one more figure colour
 	COLOURS = (BLUE, ORANGE, AQUA, PURPLE, MAGENTA)                        # one per attribute
@@ -665,7 +671,7 @@ running:
 
 .. figure:: ../figures/batch/batch-case-sbr-online-rmse.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Five curves, one per quality attribute, of the leave-one-batch-out root-mean-square error of the mid-batch prediction divided by the attribute's standard deviation against the number of samples observed; all start above one, the particle-size curve falls below one after about 130 samples, branching and cross-linking fall furthest, polydispersity changes little after 50 samples.
+	:alt: Five curves, one per quality attribute, of the leave-one-batch-out root-mean-square error of the mid-batch prediction divided by the attribute's standard deviation against the number of samples observed; all start just below one, the particle-size curve rises slightly above one over the first half and settles below it after about 125 samples, branching and cross-linking fall furthest, polydispersity changes little after 50 samples.
 	:width: 800px
 	:scale: 80
 	:align: center
@@ -674,71 +680,79 @@ running:
 	divided by the standard deviation of each attribute. Branching and cross-linking
 	coincide. A curve above 1 is worse than predicting the average batch.
 
-The particle size becomes predictable only in the second half of the batch, where the
-:ref:`fit of every (tag, time) cell <APPS_batch_case_sbr_r2>` also placed the information.
-Nomikos and MacGregor
-(1995), in their multi-way PLS paper, give the reason. It is set largely by the seed particles
-charged before the batch
-starts, which the trajectories do not record, and it was the attribute their model explained
-least. Kourti, Nomikos and MacGregor (1995) set out how such a block of before-the-batch
-measurements enters the model beside the trajectories, and the :ref:`third case study
-<APPS_batch_case_fmc>` does that with two of them.
+No curve begins far above 1, because the estimator does not extrapolate from the few cells it
+has: with little observed it falls back on the average batch, whose error is one standard
+deviation by construction. What the curves show is therefore when each attribute becomes
+predictable, not how badly it starts.
 
-Branching and cross-linking are predicted best, and polydispersity about as well after 50
-samples as at the end. The value of the curves is their timing. The prediction error falls
-below one standard deviation of the attribute at about 20 samples for polydispersity, 50 for
-composition, branching and cross-linking, and 130 for the particle size. Averaged over the
-five, it falls from three standard deviations after 10 samples to
-1.4 after 25, 1.1 after 50 and 0.6 after 150, close to its value when the batch ends.
+The particle size is the one attribute that does not settle early. Its error hovers at about
+one standard deviation through the first half of the batch and stays below it only from
+sample 125, where the :ref:`fit of every (tag, time) cell <APPS_batch_case_sbr_r2>` also
+placed the information. Nomikos and MacGregor (1995), in their multi-way PLS paper, give the
+reason. It is set largely by the seed particles charged before the batch starts, which the
+trajectories do not record, and it was the attribute their model explained least. Kourti,
+Nomikos and MacGregor (1995) set out how such a block of before-the-batch measurements enters
+the model beside the trajectories, and the :ref:`third case study <APPS_batch_case_fmc>` does
+that with two of them.
 
-Batch 4, nearest the average quality, shows what the curves summarise. Its prediction is
+Branching and cross-linking are predicted best, reaching 0.37 of a standard deviation by 150
+samples, and polydispersity is predicted about as well after 50 samples as at the end.
+Averaged over the five, the error falls from 0.97 standard deviations after 10 samples to
+0.89 after 25, 0.80 after 50 and 0.62 after 150, close to its value when the batch ends.
+
+Two batches show what the curves summarise, both for the particle size: batch 4, nearest the
+average quality, and batch 34, whose particle size is the lowest of the 53. Each prediction is
 drawn against the number of samples observed, with the prediction from the complete batch
 dashed and the measured value solid. The band is one prediction error at that sample, taken
-from the RMSEP curve, and is not a prediction interval.
+from the RMSEP curve, and is not a prediction interval. These two traces are of batches the
+model was fitted to, unlike the RMSEP curve beside them.
 
 .. code-block:: python
 
-	near_average = 4
-	trace = model.predict_online_trace(trajectories[near_average])
-	for attribute in ("ParticleSize", "Composition"):
-	    band = rmsep_k[attribute]
+	print("average particle size over the 53 batches:", round(quality["ParticleSize"].mean(), 1))
+	# average particle size over the 53 batches: 1257.1
+	band = rmsep_k["ParticleSize"]
+	for batch_id, colour in ((4, BLUE), (34, ORANGE)):
+	    trace = model.predict_online_trace(trajectories[batch_id])
+	    evolving = trace.y_hat["ParticleSize"]
 	    fig = go.Figure()
-	    fig.add_trace(go.Scatter(x=trace.time[4:], y=(trace.y_hat[attribute] + band).iloc[4:], line=dict(width=0),
+	    fig.add_trace(go.Scatter(x=trace.time[4:], y=(evolving + band).iloc[4:], line=dict(width=0),
 	                             showlegend=False))
-	    fig.add_trace(go.Scatter(x=trace.time[4:], y=(trace.y_hat[attribute] - band).iloc[4:], fill="tonexty",
+	    fig.add_trace(go.Scatter(x=trace.time[4:], y=(evolving - band).iloc[4:], fill="tonexty",
 	                             fillcolor="rgba(200, 200, 200, 0.35)", line=dict(width=0), name="one prediction error"))
-	    fig.add_trace(go.Scatter(x=trace.time[4:], y=trace.y_hat[attribute].iloc[4:], name="prediction so far",
-	                             line=dict(color=BLUE)))
-	    fig.add_hline(y=model.predictions_.loc[near_average, attribute], line_dash="dash", line_color=GREY,
+	    fig.add_trace(go.Scatter(x=trace.time[4:], y=evolving.iloc[4:], name="prediction so far",
+	                             line=dict(color=colour)))
+	    fig.add_hline(y=model.predictions_.loc[batch_id, "ParticleSize"], line_dash="dash", line_color=GREY,
 	                  annotation_text="final prediction")
-	    fig.add_hline(y=quality.loc[near_average, attribute], line_color="black", annotation_text="measured")
-	    fig.update_layout(title=f"Batch {near_average}: {attribute}", xaxis_title="Samples observed", height=380)
+	    fig.add_hline(y=quality.loc[batch_id, "ParticleSize"], line_color="black", annotation_text="measured")
+	    fig.update_layout(title=f"Batch {batch_id}: ParticleSize", xaxis_title="Samples observed", height=380)
 	    fig.show()
-	print("batch 4, particle size: measured", round(quality.loc[4, "ParticleSize"], 1),
-	      "final prediction", round(model.predictions_.loc[4, "ParticleSize"], 1))
-	# batch 4, particle size: measured 1256.9 final prediction 1257.1
-	print("  prediction after 10, 25, 50, 100, 150 samples:", trace.y_hat["ParticleSize"].loc[[10, 25, 50, 100, 150]].round(1).tolist())
-	#   prediction after 10, 25, 50, 100, 150 samples: [1251.0, 1248.1, 1255.3, 1254.9, 1257.4]
-	print("batch 4, composition: measured", round(quality.loc[4, "Composition"], 4),
-	      "final prediction", round(model.predictions_.loc[4, "Composition"], 4))
-	# batch 4, composition: measured 0.4546 final prediction 0.4544
+	    print(f"batch {batch_id}: measured {quality.loc[batch_id, 'ParticleSize']:.1f},",
+	          f"final prediction {model.predictions_.loc[batch_id, 'ParticleSize']:.1f},",
+	          f"after 10/50/100/150 samples {evolving.loc[[10, 50, 100, 150]].round(1).tolist()}")
+	    # batch 4: measured 1256.9, final prediction 1257.1, after 10/50/100/150 samples [1256.8, 1256.5, 1256.4, 1257.4]
+	    # batch 34: measured 1243.7, final prediction 1245.3, after 10/50/100/150 samples [1257.2, 1255.3, 1254.9, 1245.3]
 
-.. figure:: ../figures/batch/batch-case-sbr-online-prediction-batch-4.png
+.. figure:: ../figures/batch/batch-case-sbr-online-prediction.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Two panels of batch 4's evolving prediction against samples observed, with a shaded band of one prediction error, a dashed line at the final prediction and a solid line at the measured value; the particle-size prediction starts well below the final value and settles on it in the second half of the batch.
+	:alt: Two panels of the evolving particle-size prediction against samples observed, for batch 4 on the left and batch 34 on the right, each with a shaded band of one prediction error, a dashed line at the final prediction and a solid line at the measured value; both start at about 1257, the average, and batch 34's falls to 1245 between samples 100 and 150 while batch 4's stays where it began.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
-	The prediction for batch 4 as the batch is observed, for the particle size (left) and
-	the composition (right). Dashed: the prediction from the complete batch. Solid: the
-	measured value. Band: one prediction error at that sample. For the particle size the two
-	rules are 0.2 units apart and overlap at this scale; for the composition they are 0.0002
-	apart and separate.
+	The predicted particle size as each batch is observed: batch 4 (left), nearest the average
+	quality, and batch 34 (right), the lowest particle size of the 53. Dotted: the average of
+	the 53 batches. Dashed: the prediction from the complete batch. Solid: the measured value.
+	Band: one prediction error at that sample. Both predictions start on the dotted rule,
+	because that is where the estimator sits until the observed cells say otherwise. On the
+	left the three rules lie within 0.2 units of each other and draw as one.
 
-The prediction starts away from the final value while few samples are in hand, moves as the
-samples that carry the information arrive, and settles in the second half of the batch. The band
-narrows with it.
+Batch 4 is already at the average, so its prediction is close to right from the tenth sample
+and moves little after it. Batch 34 begins at the same place and leaves it between samples 100
+and 150, arriving 12 units lower, which is where the RMSEP curve for the particle size settles
+below one standard deviation. The two panels are the same estimator on the same model: what
+separates them is when the batch's own cells began to say something the average did not. A
+prediction that has not moved off the average is not yet a statement about the batch.
 
 .. _APPS_batch_case_sbr_online:
 
@@ -823,7 +837,7 @@ is the first of the three, so an operator sees it two samples later.
 	    result = monitor.monitor(trajectories[batch_id])
 	    print(f"batch {batch_id}: T2 alarm after {first_sustained(result.t2_alarm)} samples;",
 	          f"SPE alarm after {first_sustained(result.spe_alarm)} samples")
-	    # batch 37: T2 alarm after 23 samples; SPE alarm after 145 samples
+	    # batch 37: T2 alarm after 23 samples; SPE alarm after 15 samples
 	    # batch 34: T2 alarm after 190 samples; SPE alarm after 105 samples
 	    # batch 4: T2 alarm after None samples; SPE alarm after None samples
 
@@ -838,7 +852,7 @@ is the first of the three, so an operator sees it two samples later.
 	traced = [monitor.monitor(t) for t in normal.values()]
 	print(f"reference batches: {np.mean([r.t2_alarm.mean() for r in traced]):.2%} of T2 values and",
 	      f"{np.mean([r.spe_alarm.mean() for r in traced]):.2%} of SPE values above their limits")
-	# reference batches: 0.17% of T2 values and 1.24% of SPE values above their limits
+	# reference batches: 0.17% of T2 values and 1.13% of SPE values above their limits
 	for run in (3, 5, 10):
 	    print(f"  with an SPE alarm of {run} consecutive samples somewhere:",
 	          sum(first_sustained(r.spe_alarm, run) is not None for r in traced), "of 51;",
@@ -847,10 +861,10 @@ is the first of the three, so an operator sees it two samples later.
 	    #   with an SPE alarm of 5 consecutive samples somewhere: 8 of 51; T2: 1 of 51
 	    #   with an SPE alarm of 10 consecutive samples somewhere: 3 of 51; T2: 1 of 51
 	print("  longest SPE alarm run in a reference batch:", max(longest_run(r.spe_alarm) for r in traced), "samples")
-	#   longest SPE alarm run in a reference batch: 13 samples
+	#   longest SPE alarm run in a reference batch: 15 samples
 	print("batch 34: above the SPE limit for", int(monitor.monitor(trajectories[34]).spe_alarm[104:].sum()),
 	      "of its last 96 samples; batch 37: longest T2 alarm run", longest_run(monitor.monitor(trajectories[37]).t2_alarm), "samples")
-	# batch 34: above the SPE limit for 86 of its last 96 samples; batch 37: longest T2 alarm run 178 samples
+	# batch 34: above the SPE limit for 87 of its last 96 samples; batch 37: longest T2 alarm run 178 samples
 	online_monitoring_plot(monitor, trajectories[37], "t2").show()
 	fig = online_monitoring_plot(monitor, trajectories[34], "spe")
 	fig.add_vline(x=100, line_dash="dash", line_color=ORANGE, annotation_text="impurity enters")
@@ -860,8 +874,8 @@ is the first of the three, so an operator sees it two samples later.
 	    shares = reference.predict_online(trajectories[34], upto_k=k).residuals.xs(k - 1, level="sequence") ** 2
 	    shares = (shares / shares.sum() * 100).round(0).astype(int)
 	    print(f"batch 34 after {k} samples, share of the squared residual per tag [%]:", shares.to_dict())
-	    # batch 34 after 105 samples, share of the squared residual per tag [%]: {'Conversion': 2, 'CoolingTemp': 30, 'EnergyReleased': 11, 'JacketTemp': 16, 'LatexDensity': 1, 'ReactorTemp': 40}
-	    # batch 34 after 109 samples, share of the squared residual per tag [%]: {'Conversion': 2, 'CoolingTemp': 36, 'EnergyReleased': 19, 'JacketTemp': 29, 'LatexDensity': 1, 'ReactorTemp': 12}
+	    # batch 34 after 105 samples, share of the squared residual per tag [%]: {'Conversion': 1, 'CoolingTemp': 31, 'EnergyReleased': 11, 'JacketTemp': 17, 'LatexDensity': 0, 'ReactorTemp': 41}
+	    # batch 34 after 109 samples, share of the squared residual per tag [%]: {'Conversion': 2, 'CoolingTemp': 36, 'EnergyReleased': 19, 'JacketTemp': 30, 'LatexDensity': 1, 'ReactorTemp': 12}
 	at_alarm = reference.predict_online(trajectories[34], upto_k=alarm_k).residuals.xs(alarm_k - 1, level="sequence") ** 2
 	at_alarm = (at_alarm / at_alarm.sum() * 100).round(0).astype(int)
 	fig = go.Figure(go.Bar(x=at_alarm.index, y=at_alarm.values, marker_color=BLUE))
@@ -883,10 +897,10 @@ is the first of the three, so an operator sees it two samples later.
 	enters at sample 100 (dotted vertical) and the first sustained alarm is after 105
 	samples. Right: the share of the squared residual per tag at that alarm sample.
 
-Batch 37 is caught by :math:`T^2` after 23 samples and stays above the limit, while its SPE
-raises no sustained alarm until 145, having crossed the limit once early on and fallen back.
-Batch 34 is caught by the SPE after 105 samples, five after the impurity enters, while its
-:math:`T^2` stays inside until 190.
+Batch 37 raises both alarms. Its SPE crosses first, from sample 15, for seven samples; its
+:math:`T^2` crosses at 23 and stays above the limit for the rest of the batch, while the SPE
+falls back inside until 144. Batch 34 is caught by the SPE after 105 samples, five after the
+impurity enters, while its :math:`T^2` stays inside until 190.
 
 Nomikos and MacGregor flagged the same two faults with models of all nine trajectories:
 the fault present from the start, in the scores within the first 15 samples (1994), and the
@@ -909,11 +923,11 @@ is derived for a batch outside the reference set, and their SPE limit at about t
 rate. Three responses, each measured on the same 51 batches:
 
 * a limit fitted to the reference values of five neighbouring samples pooled, the window
-  Nomikos and MacGregor (1995) use, does not help, with 15 batches still alarming: the
+  Nomikos and MacGregor (1995) use, does not help, with the same 13 batches alarming: the
   crossings are already as rare as a 99% limit intends, and they still come in runs;
 * the cumulative SPE, over every cell observed so far, adds each new sample's residual to a
   sum over all the earlier ones, so a run of a few poorly fitting samples barely moves it;
-  3 batches alarm, at the price of catching batch 34 after 112 samples rather than 105, since
+  2 batches alarm, at the price of catching batch 34 after 112 samples rather than 105, since
   the same dilution slows its response to a real change;
 * a 99.9% limit, which Nomikos (1996) uses for the residual chart because residuals collect
   every kind of variation the model does not describe, leaves no reference batch alarming
@@ -934,11 +948,11 @@ flagged with most of its second half still to run.
 	print(f"limit pooled over five samples: {np.mean([r.spe_alarm.mean() for r in pooled_traced]):.2%} of the reference",
 	      f"SPE values above it; {sum(first_sustained(r.spe_alarm) is not None for r in pooled_traced)} of 51 batches",
 	      f"with a three-sample run; batch 34 flagged after {first_sustained(pooled.monitor(trajectories[34]).spe_alarm)} samples")
-	# limit pooled over five samples: 1.34% of the reference SPE values above it; 15 of 51 batches with a three-sample run; batch 34 flagged after 105 samples
+	# limit pooled over five samples: 1.16% of the reference SPE values above it; 13 of 51 batches with a three-sample run; batch 34 flagged after 105 samples
 	cumulative = BatchMonitor(reference, conf_level=0.99).fit(normal)        # the SPE over every sample observed so far
 	print([sum(first_sustained(cumulative.monitor(t).spe_alarm) is not None for t in normal.values()),
 	       first_sustained(cumulative.monitor(trajectories[34]).spe_alarm)])   # reference batches with an alarm; batch 34
-	# [3, 112]
+	# [2, 112]
 	tight = BatchMonitor(reference, conf_level=0.999, spe_statistic="instantaneous").fit(normal)   # the 99.9% limit
 	print([sum(first_sustained(tight.monitor(t).spe_alarm) is not None for t in normal.values()),
 	       first_sustained(tight.monitor(trajectories[34]).spe_alarm)])       # reference batches with an alarm; batch 34
@@ -947,16 +961,21 @@ flagged with most of its second half still to run.
 The two batches are caught by different statistics, and that is not an accident of the data:
 
 * batch 37's fault is a slower reaction from the start, along a direction the reference
-  model already describes because the normal batches vary along it too, less severely. A
-  batch far along a known direction has a large :math:`T^2` and a small residual;
+  model already describes because the normal batches vary along it too, less severely. Once
+  enough of the batch has been seen for the score to move out along that direction, the
+  deviation is carried by the score rather than left over: a large :math:`T^2` and a small
+  residual, which is where batch 37 sits from sample 23 to the end;
 * batch 34's fault begins midway through a batch that had been normal, in a combination of
   tags the reference model has no component for, so from that sample on the newest samples
   stop fitting the model, which is what the SPE measures.
 
-Which chart speaks first is a property of the fault, not a rule. All five faults
-Garcia-Munoz, Kourti and MacGregor (2004) simulated showed in the SPE chart first, where
-here the fault present from the start is seen in the scores first and in the residual only
-much later.
+Which chart speaks first is a property of the fault and of how much of the batch has been
+seen. Batch 37 crosses the SPE limit from sample 15, before its :math:`T^2` crosses at 23:
+with fifteen samples in hand the model cannot yet place the batch along its components, so
+the newest samples do not fit and the residual carries the deviation. Once the score has moved
+out, the same deviation is described rather than left over, and the SPE falls back inside
+while the :math:`T^2` holds. All five faults Garcia-Munoz, Kourti and MacGregor (2004)
+simulated also showed in the SPE chart first.
 
 The shares of the squared residual say what stopped fitting. At the alarm sample the reactor
 temperature carries the largest share, with the cooling-water and jacket temperatures next.
@@ -1017,14 +1036,14 @@ against the zero line.
 	    forecast = z_form(reference.predict_online(trajectories[batch_id], upto_k=k).forecast)[tag].iloc[k:]
 	    print(f"batch {batch_id}, {tag}, from sample {k} onwards: forecast mean {forecast.mean():.2f} sd,",
 	          f"actual {z_form(trajectories[batch_id])[tag].iloc[k:].mean():.2f} sd")
-	# batch 37, Conversion, from sample 30 onwards: forecast mean -3.48 sd, actual -4.81 sd
-	# batch 37, Conversion, from sample 60 onwards: forecast mean -4.75 sd, actual -4.82 sd
-	# batch 34, CoolingTemp, from sample 60 onwards: forecast mean 0.34 sd, actual 2.36 sd
-	# batch 34, CoolingTemp, from sample 115 onwards: forecast mean 0.56 sd, actual 3.30 sd
+	# batch 37, Conversion, from sample 30 onwards: forecast mean -1.81 sd, actual -4.81 sd
+	# batch 37, Conversion, from sample 60 onwards: forecast mean -3.62 sd, actual -4.82 sd
+	# batch 34, CoolingTemp, from sample 60 onwards: forecast mean 0.01 sd, actual 2.36 sd
+	# batch 34, CoolingTemp, from sample 115 onwards: forecast mean 0.36 sd, actual 3.30 sd
 
 .. figure:: ../figures/batch/batch-case-sbr-forecast.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Two panels in z form, each tag as a distance from the normal batches in their standard deviations. Left, the conversion of the normal batches as a grey band around zero, batch 37's observed conversion in aqua up to 30 samples, well below zero, and the model's forecasts of the rest from sample 30 onwards (dashed aqua) and from sample 60 onwards (dotted dark blue) that stay below zero, close to what happened. Right, the cooling-water temperature of batch 34 in orange with forecasts from sample 60 onwards (dashed orange) and from sample 115 onwards (dotted dark blue) that stay near zero and miss the rise after sample 100.
+	:alt: Two panels in z form, each tag as a distance from the normal batches in their standard deviations. Left, the conversion of the normal batches as a grey band around zero, batch 37's observed conversion in aqua up to 30 samples, well below zero, and the model's forecasts of the rest from sample 30 onwards (dashed aqua, near minus two) and from sample 60 onwards (dotted dark blue, near minus three and a half), both below zero and both short of the faint line of what batch 37 did, near minus five. Right, the cooling-water temperature of batch 34 in orange with forecasts from sample 60 onwards (dashed orange) and from sample 115 onwards (dotted dark blue) that stay near zero and miss the rise after sample 100 entirely.
 	:width: 1000px
 	:scale: 80
 	:align: center
@@ -1039,12 +1058,17 @@ against the zero line.
 	orange) and from sample 115 onwards (dotted dark blue); the impurity enters at sample 100.
 	A vertical line joins each forecast to the observed value at the sample it was made from:
 	the forecast uses the batch's own data up to that sample, then continues along the
-	model's components.
+	model's components. Batch 37's two forecasts lie below zero and above what happened; the
+	later one, with more of the batch behind it, lies closer to it.
 
 It is the same distinction as the two statistics. The model forecasts along its components,
-so it forecasts the slow conversion of batch 37 from sample 30 onwards. The fault of batch
-34 lies off them, so its forecasts follow the average batch and the model can flag the fault
-but not forecast it. Nomikos and MacGregor (1995) stop drawing their prediction intervals
+so it has the slow conversion of batch 37 in the right direction from sample 30 onwards, at
+-1.8 standard deviations against an actual -4.8, and closer from sample 60, at -3.6. The
+shortfall is the same shrinkage as in the quality prediction: the forecast is built from the
+estimated scores, which are pulled toward the average batch while little has been observed.
+The fault of batch 34 lies off the components, so its forecasts sit on the average batch at
+both points and do not move toward the rise at all, and the model can flag that fault but not
+forecast it. Nomikos and MacGregor (1995) stop drawing their prediction intervals
 for this batch once its SPE crosses the limit, for the same reason.
 
 Both faults are found with much of the batch still to run, and the statistic that finds each
