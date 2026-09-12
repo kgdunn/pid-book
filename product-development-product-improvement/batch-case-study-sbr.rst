@@ -60,6 +60,10 @@ from the workbook.
 	print(len(trajectories), "batches;", sbr.trajectory_tags, "; quality block", quality.shape)
 	# 53 batches; ['ReactorTemp', 'CoolingTemp', 'JacketTemp', 'LatexDensity', 'Conversion', 'EnergyReleased'] ; quality block (53, 5)
 
+	ratio = quality["CrossLinking"] / quality["Branching"]
+	print(f"CrossLinking / Branching: {ratio.min():.3f} to {ratio.max():.3f}")
+	# CrossLinking / Branching: 3.877 to 3.878
+
 .. code-block:: python
 
 	GREY, ORANGE, AQUA, BLUE, PURPLE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a", "#6f42c1"   # figure colours
@@ -796,11 +800,12 @@ compute it. The SPE limit is fitted sample by sample the same way: at each sampl
 chi-square approximation matched to the mean and the variance of the 51 reference values
 there.
 
-Normalising by that covariance also fixes what the reference batches average. Dividing by
-the spread of the same batches that set it leaves their mean :math:`T^2` at
-:math:`A(N-1)/N` at every sample, 1.96 for two components and 51 batches. The grey line in
-the monitoring figure below is flat by construction, and the same property lets one limit
-serve every sample. The SPE has no such normalisation, so its reference mean does vary.
+The same normalisation pins the reference batches' average. Measuring a set of batches against
+their own covariance forces their mean :math:`T^2` to :math:`A(N-1)/N`, 1.96 here for two
+components and 51 batches, whatever the data: it is a property of the arithmetic, not of the
+process. The grey line in the monitoring figure below is flat for that reason, and it is what
+lets a single limit serve every sample. The SPE is not normalised this way, so its reference
+mean does vary.
 
 .. code-block:: python
 
