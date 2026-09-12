@@ -65,11 +65,15 @@ Four blocks of data describe each batch:
 	and its operation, the three-way block of trajectories, and the block of final
 	properties.
 
-The questions are those a plant asks, in the order it asks them. What does product quality
-look like, and do the batches fall into groups? Do the chemistry and the operating conditions
-explain it? What
-do the trajectories add? Which batches deserve a closer look? The original study answers
-with a sequence of two-component models, and this page follows it, adding one block at a time:
+The questions are those a plant asks, in the order it asks them:
+
+* What does product quality look like, and do the batches fall into groups?
+* Do the chemistry and the operating conditions explain it?
+* What do the trajectories add?
+* Which batches deserve a closer look?
+
+The original study answers with a sequence of two-component models, and this page follows it,
+adding one block at a time:
 
 * A PCA on the quality block.
 * A PLS model from the chemistry block and from the operating-condition block to the quality

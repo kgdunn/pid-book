@@ -24,9 +24,11 @@ trusted on plant data.
 
 The :ref:`first case study <APPS_batch_case_dupont>` used a PCA of the trajectories alone.
 Here final quality is available too, so the model is a :ref:`PLS <SECTION_PLS>` from the
-unfolded trajectories to the five attributes. Three questions are asked of it: does it
-single out the two faulty batches, does it say what went wrong and when, and could it have
-said so while they were still running?
+unfolded trajectories to the five attributes. Three questions are asked of it:
+
+* Does it single out the two faulty batches?
+* Does it say what went wrong, and when?
+* Could it have said so while they were still running?
 
 The data
 ~~~~~~~~
