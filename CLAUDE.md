@@ -115,8 +115,6 @@ same edits do not have to be made again.
   course notes or other material the reader does not have.
 - One metric where one will do (the leave-one-batch-out RMSEP, not RMSEE
   and RMSEP side by side).
-- After describing a result, state its practical value in one or two
-  sentences, with the number that carries it, then stop.
 
 **Section construction**
 
@@ -132,7 +130,8 @@ same edits do not have to be made again.
   run claim, reason, consequence can still sit in the wrong order, and the
   section then reads as a report of what was found rather than as an argument.
 - Say what it means for someone running the process, in a clause or a
-  sentence. A passage that stops at what happened is unfinished.
+  sentence, with the number that carries it, then stop. A passage that ends at
+  what happened is unfinished.
 - Method is a subordinate clause, not a paragraph, unless the method is what
   the section is about. "Placing every batch with whichever of the two class
   centres is nearer, which is what the figure draws" replaced a paragraph.
@@ -254,71 +253,45 @@ The contract, which any new or edited code must satisfy:
   breaking rename in `process-improve` that reaches PyPI before the book is
   updated turns the CI gate red for every book PR.
 
-## Bump the version and citation date whenever you plan a PR
+## Version and citation metadata
 
-This repository ships release metadata in three places that reusers and
-GitHub's "Cite this repository" button depend on:
+The release version is `pyproject.toml` `version` (there is no `version.txt`).
+Separately, `CITATION.cff` carries the citation's own calendar version, which is
+what GitHub's "Cite this repository" button and Zenodo read.
 
-- `CITATION.cff` `version:`, a calendar version written as `YYYY.MM.DD`.
-- `CITATION.cff` `date-released:`, written as `YYYY-MM-DD`.
-- `README.md`, the suggested attribution line, which carries a year range
-  ending in the most recent update (e.g. `2010–2026`).
+**Whenever you plan a PR with substantive changes (content, new sections, build
+changes: anything beyond a typo or link fix), update all three before
+committing:**
 
-**Whenever you are planning a pull request that contains substantive changes
-(content edits, new sections, build changes, anything beyond a pure typo or
-link fix), update all three before committing:**
+1. `CITATION.cff` `version:` to today as `YYYY.MM.DD`.
+2. `CITATION.cff` `date-released:` to today as `YYYY-MM-DD`.
+3. The trailing year of the year range in the README's suggested attribution
+   line (e.g. `2010-2026`), if it is not already current.
 
-1. Set `CITATION.cff` `version:` to today's date as `YYYY.MM.DD`.
-2. Set `CITATION.cff` `date-released:` to today's date (`YYYY-MM-DD`).
-3. Update the trailing year of the year range in the README's suggested
-   attribution line to the current year, if it isn't already.
-
-The `CITATION.cff` `version:` is the citation's own calendar version. It is
-independent of the `pyproject.toml` `version` covered under "Where the
-canonical version lives" below. When a release is cut, this `version:` value
-must equal the release tag with the leading `v` removed (see "Cutting a
-release" below).
-
-If you skip this step, the "Cite this repository" button keeps showing a
-stale version and date, and reusers of the book undercredit the latest
-revision.
+Skip this and the citation button keeps showing a stale revision.
 
 ## Cutting a release (Zenodo DOI archiving)
 
-GitHub Releases of this book are archived by Zenodo, which mints a DOI for
-each one. Releases are deliberate: not every merge to `main` warrants one,
-so they are never created automatically.
+Releases are deliberate: not every merge to `main` warrants one, and they are
+never created automatically. **After a PR with substantive changes merges to
+`main`, ask whether to cut a release.** If the answer is no, do nothing.
 
-**After a pull request with substantive changes merges to `main`, ask the
-user whether to cut a release.** If they decline, do nothing. If they agree,
-the tag has to be pushed by the maintainer: a Claude-on-the-web session
-cannot push tags, because its git proxy accepts only the working branch.
-Claude's job is to prepare everything and hand over the commands:
+The tag has to be pushed by the maintainer, because a Claude-on-the-web session's
+git proxy accepts only the working branch. So prepare and hand over:
 
-1. Make sure `main` is up to date with `origin/main`.
-2. Write the release notes to a file. They become the GitHub Release body,
-   so summarise what changed since the previous release.
-3. Give the maintainer an annotated, calendar-versioned tag command to run,
-   using today's date:
-   `git tag -a vYYYY.MM.DD origin/main -F <notes-file>`
-   followed by `git push origin vYYYY.MM.DD`.
+1. Confirm `main` is up to date with `origin/main`.
+2. Write the release notes to a file; they become the Release body, so summarise
+   what changed since the previous release.
+3. Give the maintainer the commands, dated today:
+   `git tag -a vYYYY.MM.DD origin/main -F <notes-file>` then
+   `git push origin vYYYY.MM.DD`.
 
-Pushing a `vYYYY.MM.DD` tag triggers `.github/workflows/release.yml`, which
-creates the GitHub Release automatically. Zenodo then archives that release
-and issues a DOI. The tag version without the `v` must match the
-`CITATION.cff` `version:` already merged in the PR.
-
-Once Zenodo has minted the concept DOI (the one that always resolves to the
-latest release), add it to `CITATION.cff` in a follow-up PR under an
-`identifiers:` block of `type: doi`, so the citation metadata is complete.
-
-Enabling the Zenodo archive itself is a one-time manual step the repository
-owner performs in their Zenodo account; it cannot be scripted here.
-
-## Where the canonical version lives
-
-The release version is `pyproject.toml` `version`. There is no `version.txt`.
-If you need to bump the version, edit `pyproject.toml`.
+The tag without its `v` must equal the `CITATION.cff` `version:` already merged.
+Pushing it triggers `.github/workflows/release.yml`, which creates the Release;
+Zenodo archives that and mints a DOI. Add the concept DOI (the one that always
+resolves to the latest release) to `CITATION.cff` in a follow-up PR, under an
+`identifiers:` block of `type: doi`. Enabling the Zenodo archive itself is a
+one-time manual step in the owner's Zenodo account.
 
 ## Build verification before claiming a build change works
 
@@ -333,66 +306,45 @@ allowed.
 
 ## URLs and HTML output: no `.html` extension, ever
 
-The book at <https://learnche.org/pid> has always been served with
-extensionless URLs (e.g. `/pid/contents`, not `/pid/contents.html`).
-This is intentional and must not be reverted. Sphinx is configured to
-match:
+The book at <https://learnche.org/pid> has always been served with extensionless
+URLs (`/pid/contents`, not `/pid/contents.html`). Years of citations and external
+links point there, so reverting would break them silently. Sphinx is configured to
+match: `html_file_suffix = ""` (no extension on disk), `html_link_suffix = ""` (nor
+in internal links), and `root_doc = "contents"`, so the entry page is
+`_build/html/contents` and **not** `index.html`. `start_server.py` (`make serve`)
+and the production webserver both serve extensionless files as `text/html`.
 
-- `html_file_suffix = ""` — built files have no extension on disk
-  (`_build/html/contents`, `_build/html/data-visualization/box-plots`,
-  etc.).
-- `html_link_suffix = ""` — internal links in the rendered HTML also
-  omit the extension.
-- `master_doc` / `root_doc = "contents"` — the entry page is
-  `_build/html/contents`, **not** `index.html`.
-- `start_server.py` (used by `make serve`) already serves extensionless
-  files as `text/html`; the production webserver does the same.
+**Do not introduce code or config that assumes an `.html` suffix.** In particular:
 
-**Do not introduce code or config that assumes `.html`-suffixed
-filenames.** This includes:
-
-- Build verification: check `_build/html/contents`, never
-  `_build/html/index.html`.
-- Search/indexers: Pagefind's default glob is `**/*.html` and matches
-  nothing here — that's why the `npx pagefind` line in `make html` is
-  prefixed with `-` (best-effort). Sphinx's own `searchindex.js` is the
-  real search; do not flip the file-suffix settings to make Pagefind
-  happy.
-- Rsync / deploy: don't filter by `*.html`; copy the whole tree.
-- External tooling that walks the site: configure it to treat
-  extensionless files as HTML, not the reverse.
-
-Years of citations and external links point at the extensionless URLs.
-Reverting would break them silently.
+- Build verification checks `_build/html/contents`, never `_build/html/index.html`.
+- Pagefind's default glob is `**/*.html` and matches nothing here, which is why
+  the `npx pagefind` line in `make html` is prefixed with `-` (best-effort).
+  Sphinx's own `searchindex.js` is the real search; do not flip the file-suffix
+  settings to make Pagefind happy.
+- Rsync and deploy copy the whole tree; they never filter by `*.html`.
+- External tooling that walks the site is configured to treat extensionless files
+  as HTML, not the reverse.
 
 ## Figures repository
 
-Figures live in a separate repo (<https://github.com/kgdunn/figures>) and are
-symlinked in as `figures/`. If a content change references a new or modified
-figure, open a parallel PR there and link the two PRs in the descriptions.
+Figures live in <https://github.com/kgdunn/figures> and are symlinked in as
+`figures/`. A content change that references a new or modified figure needs a
+parallel PR there, with the two PRs linked in each other's description.
 
-### The two repositories are decoupled, and the deploy order is figures first
+### The deploy order is figures first
 
-`.github/workflows/build-deploy.yml` checks out `kgdunn/figures` at its default
-branch, not at a branch matching the book's. A book PR that references a
-not-yet-merged figure therefore fails the PDF step:
-
-```
-LaTeX Warning: File `{figures-src/least-squares/<name>}.png' not found
-! Package pdftex.def Error: File `figures-src/least-squares/<name>.png' not found
-! Emergency stop.
-```
-
+`build-deploy.yml` checks out `kgdunn/figures` at its default branch, not at a
+branch matching the book's. A book PR referencing a not-yet-merged figure
+therefore fails the PDF step (`! Package pdftex.def Error: File
+'figures-src/.../<name>.png' not found`, followed by a hundred knock-on
+"undefined reference" lines because the run stops before `PID.toc` is written).
 The HTML build passes in the same run; only `pdflatex` treats a missing image as
-fatal, and the 100-plus "undefined reference" lines that follow are a knock-on of
-the run stopping before `PID.toc` is written, not a second problem.
+fatal.
 
 **This is known and expected. Do not report it, do not diagnose it in the PR
-thread, and do not propose a workflow change to make PR builds resolve a matching
-figures branch.** The working practice is to merge the figures PR first, then the
-book PR. Once the figures PR has merged, re-run the book workflow and it goes
-green. Treat the failure as a scheduling artifact of that order, and carry on
-with the book work in the meantime.
+thread, and do not propose a workflow change to resolve a matching figures
+branch.** Merge the figures PR first, then re-run the book workflow and it goes
+green. Carry on with the book work in the meantime.
 
 ## Style for RST source
 
@@ -408,136 +360,29 @@ See `CONTRIBUTING.md` for the full RST style notes. Key points:
 ## Telemetry
 
 The HTML book ships privacy-first telemetry (cookieless GoatCounter pixel,
-search-query events, server-log-derived sidebar sparklines). It is
-production-only — gated on `PID_BOOK_TELEMETRY=1`, set only for non-PR
-builds in `.github/workflows/build-deploy.yml`.
+search-query events, server-log-derived sidebar sparklines), production-only: gated on
+`PID_BOOK_TELEMETRY=1`, set only for non-PR builds in `build-deploy.yml`.
 
-**Hard rules** when touching anything in this area:
+**Hard rules** when touching this area:
 
-- Local `make html` (no env vars) MUST produce HTML with no `goatcounter`
-  string anywhere — verify with
-  `grep -r goatcounter _build/html/contents` returning zero hits.
-- PR builds MUST NOT enable telemetry. The workflow gates this; do not
-  weaken the gate.
-- Any code that calls home MUST short-circuit on `localhost`,
-  `127.0.0.1`, `*.local`, and `file://` so CC BY-SA self-hosters do not
-  leak data to our dashboard. See `_static/js/telemetry.js` Section 0.
-- The reader-facing `/pid/privacy` page (`privacy.rst`) is the public
-  contract. If you change what is collected, update that page in the
-  **same** PR.
+- Local `make html` (no env vars) MUST produce HTML with no `goatcounter` string
+  anywhere: verify with `grep -r goatcounter _build/html/contents` returning zero
+  hits.
+- PR builds MUST NOT enable telemetry. The workflow gates this; do not weaken it.
+- Any code that calls home MUST short-circuit on `localhost`, `127.0.0.1`,
+  `*.local` and `file://`, so CC BY-SA self-hosters do not leak data to our
+  dashboard. See `_static/js/telemetry.js` Section 0.
+- The reader-facing `/pid/privacy` page (`privacy.rst`) is the public contract. If
+  you change what is collected, update that page in the **same** PR.
 
-The full design, build wiring, runtime behaviour, server pipeline, and
-operations cookbook live in [`docs/telemetry/`](docs/telemetry/). Read
-`docs/telemetry/README.md` first; it links to the rest.
+Design, build wiring, runtime behaviour, server pipeline and operations:
+[`docs/telemetry/`](docs/telemetry/), starting at its `README.md`.
 
 ## Chapter rework playbook
 
-A repeatable pattern for sweeping a chapter (or numbered subsection)
-for technical accuracy and reproducible figures. Work on one chapter
-per PR, on the assigned `claude/<slug>` branch, opened as a single
-non-draft PR against `main`.
-
-### Step 1 — Read the section end-to-end
-
-While reading, note three categories:
-
-1. **Technical claims that depend on field knowledge** — measurement
-   timing, sampling frequency, typical plant numbers, "every shift /
-   once an hour" phrasing, instrument capabilities, method names.
-2. **Figures that appear without code that would reproduce them.** A
-   reader pasting the chapter top-to-bottom should be able to
-   regenerate every plot from scratch.
-3. **Internal inconsistencies and typos noticed in passing** (e.g. a
-   number that disagrees with itself across paragraphs). Fold trivial
-   fixes into the same PR — don't open a separate one.
-
-### Step 2 — Fact-check technical claims against external sources
-
-**Do not just take the chapter at its word, even if it sounds
-authoritative.** The book has been continuously edited since 2010 and
-some claims reflect 1990s-vintage equipment or older field practice.
-For every claim from Step 1, run a couple of targeted external
-searches (`WebSearch` and `WebFetch`) against current literature,
-vendor documentation, and standards. Revise the prose to match what
-the searches actually show. The fix might be:
-
-- a worst-case anecdote softened to a typical range,
-- an outdated method replaced or supplemented by the modern equivalent
-  (e.g. on-line NIR analyser alongside the wet-chemistry titration),
-- a misremembered number corrected,
-- a standard, instrument, or vendor named explicitly so the reader can
-  verify.
-
-Anchor each revised claim to a named standard, instrument, or vendor
-when one exists (e.g. ISO 302 for Kappa titration). The motivation for
-the chapter's technique must still hold up after the rewrite — just
-don't let it rest on a worst case that turns out not to be typical.
-
-### Step 3 — Make every figure reproducible inline
-
-For each `.. figure::` directive, insert a small
-`.. code-block:: python` block **immediately before** it. Rules:
-
-- **Plotly only** in chapter code, matching the rest of the book:
-  `import plotly.graph_objects as go` and
-  `from plotly.subplots import make_subplots`. No matplotlib in
-  learner-facing code blocks.
-- **Reuse variables already defined earlier in the chapter.** The
-  chapter must read top-to-bottom as a single linear script — no
-  redundant data loads, no refitting the same model twice.
-- **Common imports in the first block only** — `numpy`, `pandas`,
-  plotly, the `process_improve` symbols.
-- **Define a helper once when a plot type repeats** (e.g.
-  `plot_obs_pred(...)` reused at two evaluation points).
-- **Static PNGs in `kgdunn/figures` stay generated by a matplotlib
-  script committed alongside them in the same `kgdunn/figures`
-  subdirectory** (e.g. `monitoring/adaptive-softsensor-figures.py`
-  next to the `monitoring/adaptive-softsensor-*.png` it writes).
-  These scripts import `process_improve` for the modelling but live
-  in the figures repo, not in `process-improve`. The chapter shows
-  plotly code; the embedded image is the committed matplotlib PNG.
-  Only touch the script when the underlying analysis itself changes.
-
-### Step 4 — Verify before committing
-
-1. Run the chapter through the checker:
-   `make check-code-chapter CHAPTER=<chapter-dir>`. It executes every
-   code block of the chapter in order against the installed library and
-   fails on tracebacks and on deprecation warnings that point at the book
-   (see "Every Python case in the book runs in CI" above).
-2. Confirm every number quoted in the prose (R², RMSEP, row counts,
-   table values) reproduces exactly. Echo each one in a comment after
-   the `print(...)` that produces it, so the checker compares it too.
-3. `make text` MUST succeed with **zero warnings**.
-4. `make html` MUST succeed AND
-   `grep -r goatcounter _build/html/contents` MUST return zero hits.
-
-### Step 5 — Mechanics
-
-- Bump `CITATION.cff` `date-released:` to today (see the rule at the
-  top of this file).
-- Commit with a descriptive message focused on the *why*. Never
-  mention the model identifier.
-- Push to the assigned `claude/...` branch.
-- Open a single non-draft PR per chapter against `main`. Body
-  covers: what changed, what didn't, headline numbers verified,
-  `make check-code-chapter` / `make text` / `make html` results. If the
-  underlying analysis is unchanged, say so explicitly.
-- Subscribe to PR activity via
-  `mcp__github__subscribe_pr_activity`. Respond to review comments
-  and CI failures as they arrive; push small follow-up commits to
-  the same PR. Unsubscription happens automatically on merge.
-
-### Pitfalls seen so far
-
-- **Figure appeared in §A before the data-loading code in §B.** Move
-  the data load into §A so the first figure's code block can stand
-  alone, and shrink the §B code block to only the modelling steps.
-- **Helper returned only what the prose needed** (e.g. `rmsep`) but
-  the plotting blocks also need the y-vectors. Extend the signature
-  once (`return rmsep, y_obs, y_hat`) and update every call site in
-  the same commit.
-- **Section reorder request mid-PR.** The toctree change in
-  `<chapter>/index.rst` is one line; before pushing, run
-  `grep -rn -E '\b[0-9]+\.[0-9]+\b' --include='*.rst' .` to confirm
-  no prose hard-codes the old numbers.
+Sweeping a chapter for technical accuracy and reproducible figures follows a
+fixed order of operations, written out in
+[`docs/development/chapter-rework.md`](docs/development/chapter-rework.md): read
+the section, fact-check its field claims against current sources, put a code
+block before every figure, verify, then open one non-draft PR per chapter. Read
+it before starting a chapter sweep.
