@@ -107,7 +107,12 @@ def _tally(node, counts: Counter) -> None:
     elif isinstance(node, nodes.math_block):
         counts["display_math"] += 1
     elif isinstance(node, nodes.literal_block):
-        counts["code_lines"] += node.astext().count("\n") + 1
+        # Counted the same way my-extensions/code_collapse.py counts it for the
+        # bar on a collapsed block ("Python, 23 lines"), so the two numbers a
+        # reader can see on one page agree. `count("\n") + 1` does not: it adds
+        # one for a block whose text ends in a newline and nothing for a block
+        # that does not, which is a per-block coin toss.
+        counts["code_lines"] += len(node.astext().rstrip("\n").splitlines()) or 1
     elif isinstance(node, nodes.image):
         counts["images"] += 1
     elif isinstance(node, nodes.table):
