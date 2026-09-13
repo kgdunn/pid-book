@@ -109,7 +109,8 @@ are requested.
     # all-zero row is the centre run.
     levels = dsd.design[dsd.factor_names].to_numpy(dtype=float)
     top = [i for i, r in enumerate(levels) if r.any() and r[r != 0][0] > 0]
-    mirror = [next(j for j, s in enumerate(levels) if np.array_equal(s, -levels[i])) for i in top]
+    mirror = [next(j for j, s in enumerate(levels) if np.array_equal(s, -levels[i]))
+              for i in top]
     centre = [i for i, r in enumerate(levels) if not r.any()]
     matrix = levels[top + mirror + centre]
 

@@ -1092,10 +1092,11 @@ Both the region and the box it is reported as can be drawn.
 	fig = go.Figure()
 	fig.add_scatter3d(x=region["Acetic"], y=region["H2S"], z=region["Lactic"],
 	                  mode="markers", marker={"size": 2, "color": "orange", "opacity": 0.3})
-	fig.add_scatter3d(x=corners[:, 0], y=corners[:, 1], z=corners[:, 2], mode="markers+text",
-	                  text=[f"{t:.0f}" for t in corner_taste],
+	fig.add_scatter3d(x=corners[:, 0], y=corners[:, 1], z=corners[:, 2],
+	                  mode="markers+text", text=[f"{t:.0f}" for t in corner_taste],
 	                  marker={"size": 5, "color": np.where(
-	                      (corner_taste >= 20) & (corner_taste <= 30), "steelblue", "darkred")})
+	                      (corner_taste >= 20) & (corner_taste <= 30),
+	                      "steelblue", "darkred")})
 	fig.update_layout(scene={"xaxis_title": "Acetic", "yaxis_title": "H2S",
 	                         "zaxis_title": "Lactic"})
 	fig.show()

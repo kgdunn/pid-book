@@ -55,19 +55,25 @@ keep the rest to test on:
 	from plotly.subplots import make_subplots
 	from process_improve.multivariate import PLS, AdaptivePLS
 
-	A = 3                                              # number of PLS components, used throughout
-	DARK_BLUE, ORANGE, GREEN, GREY = "#1f3d7a", "#c55a11", "#2e6f3e", "#777777"   # figure colours, reused below
+	# number of PLS components, used throughout
+	A = 3
+	# figure colours, reused below
+	DARK_BLUE, ORANGE, GREEN, GREY = "#1f3d7a", "#c55a11", "#2e6f3e", "#777777"
 
 	vp = pd.read_csv("https://openmv.net/file/vapor-pressure.csv")
 	vp["month"] = vp["hours_elapsed"] / 730.5          # about 730.5 hours per month
 	tags = [c for c in vp.columns
-	        if c not in ("hours_elapsed", "month", "vapour_pressure_kpa", "current_estimator")]
+	        if c not in ("hours_elapsed", "month", "vapour_pressure_kpa",
+	                     "current_estimator")]
 
-	lab_rows = np.where(vp["vapour_pressure_kpa"].notna().to_numpy())[0]   # rows with a lab value
-	lab = vp.iloc[lab_rows].reset_index(drop=True)                        # the 232 labelled rows
+	# rows with a lab value
+	lab_rows = np.where(vp["vapour_pressure_kpa"].notna().to_numpy())[0]
+	# the 232 labelled rows
+	lab = vp.iloc[lab_rows].reset_index(drop=True)
 	y_lab = lab["vapour_pressure_kpa"].to_numpy()
 
-	n_train = len(lab) // 2                              # build on the first half of the lab samples
+	# build on the first half of the lab samples
+	n_train = len(lab) // 2
 	train = lab.index < n_train
 	drift_month = float(np.quantile(lab["month"], 0.60))
 	post = lab["month"].to_numpy() >= drift_month       # "post-drift" test samples
@@ -102,7 +108,8 @@ and the SPE for each hourly row from one interface:
 	def stream(model, learn=None, y_update=None):
 	    """Pass every hourly row through the model, returning per-row diagnostics.
 
-	    learn     : boolean mask of rows the model may update from (others are predicted only)
+	    learn     : boolean mask of rows the model may update from
+	                (others are predicted only)
 	    y_update  : array of lab values (NaN where none) used to update the Y-side
 	    """
 	    Xrow = vp[tags].to_numpy()
@@ -111,9 +118,12 @@ and the SPE for each hourly row from one interface:
 	    for i in range(len(vp)):
 	        may_learn = True if learn is None else bool(learn[i])
 	        if may_learn:
-	            yv = None if (y_update is None or np.isnan(y_update[i])) else np.array([y_update[i]])
-	            out = model.update(Xrow[i], y_row=yv, label=vp["month"].iloc[i])   # month-indexed history
-	            pred[i], t2[i], spe[i], dist[i] = out.prediction[0], out.hotellings_t2, out.spe, out.distance
+	            yv = None if (y_update is None
+	                          or np.isnan(y_update[i])) else np.array([y_update[i]])
+	            # month-indexed history
+	            out = model.update(Xrow[i], y_row=yv, label=vp["month"].iloc[i])
+	            pred[i], t2[i], spe[i], dist[i] = (out.prediction[0], out.hotellings_t2,
+	                                              out.spe, out.distance)
 	        else:
 	            pred[i] = model.predict(vp[tags].iloc[[i]]).to_numpy().ravel()[0]
 	            dist[i] = dist[i - 1] if i else model.n_components
@@ -125,7 +135,8 @@ and the SPE for each hourly row from one interface:
 	static = AdaptivePLS(
 	    n_components=A,             # three latent variables, as in the batch model above
 	    forgetting_factor=0,        # mu = 0: the X-space kernel never updates
-	    gamma=0,                    # no injection term (nothing to keep excited when frozen)
+	    # no injection term (nothing to keep excited when frozen)
+	    gamma=0,
 	    lambda_center=0,            # centering vector frozen at the training mean
 	    alpha_scale=0,              # scaling vector frozen at the training spread
 	    lambda_center_y=0,          # Y-centering frozen
@@ -184,7 +195,8 @@ error is almost entirely bias.
 	    marker=dict(size=4, color=GREY), name="Lab reference"))
 	fig.add_trace(go.Scatter(x=vp["month"], y=static_pred, mode="lines",
 	    line=dict(color=DARK_BLUE, width=1), name="Static PLS prediction"))
-	fig.add_vline(x=drift_month, line_color=ORANGE, line_dash="dash")   # start of the testing data
+	# start of the testing data
+	fig.add_vline(x=drift_month, line_color=ORANGE, line_dash="dash")
 	fig.add_annotation(x=drift_month, y=94, text="Testing data →", showarrow=False,
 	    xanchor="left", xshift=6, font=dict(color=ORANGE, size=12))
 	fig.update_layout(xaxis_title="Time since start [months]",
@@ -229,9 +241,11 @@ model gives both statistics for every hour:
 
 	fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
 	    subplot_titles=("Hotelling's T² (99% limit)", "SPE (99% limit)"))
-	fig.add_trace(go.Scatter(x=vp["month"], y=static_t2, line=dict(color=DARK_BLUE, width=0.5)), row=1, col=1)
+	fig.add_trace(go.Scatter(x=vp["month"], y=static_t2,
+	                         line=dict(color=DARK_BLUE, width=0.5)), row=1, col=1)
 	fig.add_hline(y=t2_lim, line_color="black", row=1, col=1)
-	fig.add_trace(go.Scatter(x=vp["month"], y=static_spe, line=dict(color=DARK_BLUE, width=0.5)), row=2, col=1)
+	fig.add_trace(go.Scatter(x=vp["month"], y=static_spe,
+	                         line=dict(color=DARK_BLUE, width=0.5)), row=2, col=1)
 	fig.add_hline(y=spe_lim, line_color="black", row=2, col=1)
 	# mark the times a laboratory sample was taken, as a row of asterisks in each panel
 	fig.add_trace(go.Scatter(x=lab["month"], y=np.full(len(lab), 30), mode="markers",
@@ -397,7 +411,8 @@ smoothed reference is used to update the Y-side rather than each raw value:
 
 .. code-block:: python
 
-	learn = static_spe < 2.5 * spe_lim            # exclude gross shutdowns/transitions from learning
+	# exclude gross shutdowns/transitions from learning
+	learn = static_spe < 2.5 * spe_lim
 	print("rows the model may learn from:", int(learn.sum()), "of", len(vp))
 
 	def ewma_smooth(values, lam=0.35):            # smooth the sparse lab reference
@@ -412,13 +427,17 @@ smoothed reference is used to update the Y-side rather than each raw value:
 
 	adaptive = AdaptivePLS(
 	    n_components=A,                    # same three components as the static model
-	    forgetting_factor=0.01,            # mu: how strongly each row is mixed into the kernel
-	    gamma=0.05,                        # injection strength (kept small on this well-excited dataset)
+	    # mu: how strongly each row is mixed into the kernel
+	    forgetting_factor=0.01,
+	    # injection strength (kept small on this well-excited dataset)
+	    gamma=0.05,
 	    lambda_center=0.003,               # slow drift of the X-centering vector
 	    alpha_scale=0.012,                 # slow drift of the X-scaling vector
-	    lambda_center_y=0.12,              # faster drift of the Y-centre (the bias correction)
+	    # faster drift of the Y-centre (the bias correction)
+	    lambda_center_y=0.12,
 	    alpha_scale_y=0.05,                # drift of the Y-scale
-	    update_when_out_of_control=True,   # learning is gated by the `learn` mask below, not the limits
+	    # learning is gated by the `learn` mask below, not the limits
+	    update_when_out_of_control=True,
 	    conf_level=0.99,
 	)
 	adaptive.fit(lab.loc[train, tags], lab.loc[train, ["vapour_pressure_kpa"]])
@@ -438,7 +457,8 @@ smoothed reference is used to update the Y-side rather than each raw value:
 
 	adaptive_24h = subgroup_mean(adaptive_pred, 24, learn)
 	err_24h = adaptive_24h[lab_rows] - y_lab
-	print("adaptive 24h-subgroup post-drift RMSEP:", round(bias_std_rmsep(err_24h, post)[2], 1))
+	print("adaptive 24h-subgroup post-drift RMSEP:",
+	      round(bias_std_rmsep(err_24h, post)[2], 1))
 	print("distance metric ages from", round(distance[0], 2), "to", round(distance[-1], 2))
 
 Placing the two models side by side, on the baseline (before the drift) and on
@@ -485,7 +505,8 @@ without changing the bias.
 	fig.add_trace(go.Scatter(x=lab["month"], y=err_adaptive, mode="markers",
 	    marker=dict(size=6, color=DARK_BLUE, symbol="circle"), name="Adaptive PLS"))
 	fig.add_hline(y=0, line_color="black", line_width=0.8)
-	fig.add_vline(x=drift_month, line_color=ORANGE, line_dash="dash")   # start of the testing data
+	# start of the testing data
+	fig.add_vline(x=drift_month, line_color=ORANGE, line_dash="dash")
 	fig.add_annotation(x=drift_month, y=18, text="Testing data →", showarrow=False,
 	    xanchor="left", xshift=6, font=dict(color=ORANGE, size=12))
 	fig.update_layout(xaxis_title="Time since start [months]",
@@ -522,27 +543,36 @@ departure. The ``prediction_channels_`` attribute records the split, and
 
 .. code-block:: python
 
-	ch = adaptive.prediction_channels_                 # month-indexed: static / preprocessing / kernel
-	rotation = A - adaptive.distance_                  # components of subspace rotation from the training model
+	# month-indexed: static / preprocessing / kernel
+	ch = adaptive.prediction_channels_
+	# components of subspace rotation from the training model
+	rotation = A - adaptive.distance_
 
 	fig = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.09,
 	    specs=[[{}], [{"secondary_y": True}]],
-	    subplot_titles=("Correction to the prediction, split into two parts", "State drift from the training model"))
-	fig.add_trace(go.Scatter(x=ch.index, y=ch["preprocessing"], line=dict(color=DARK_BLUE, width=1),
+	    subplot_titles=("Correction to the prediction, split into two parts",
+	                    "State drift from the training model"))
+	fig.add_trace(go.Scatter(x=ch.index, y=ch["preprocessing"],
+	    line=dict(color=DARK_BLUE, width=1),
 	    name="Preprocessing part"), row=1, col=1)
 	fig.add_trace(go.Scatter(x=ch.index, y=ch["kernel"], line=dict(color=ORANGE, width=1),
 	    name="Kernel part"), row=1, col=1)
 	fig.add_trace(go.Scatter(x=adaptive.center_shift_.index, y=adaptive.center_shift_,
-	    line=dict(color=DARK_BLUE, width=1.2), name="Centre migration"), row=2, col=1, secondary_y=False)
-	fig.add_trace(go.Scatter(x=rotation.index, y=rotation, line=dict(color=ORANGE, width=1.2),
+	    line=dict(color=DARK_BLUE, width=1.2), name="Centre migration"),
+	    row=2, col=1, secondary_y=False)
+	fig.add_trace(go.Scatter(x=rotation.index, y=rotation,
+	    line=dict(color=ORANGE, width=1.2),
 	    name="Subspace rotation"), row=2, col=1, secondary_y=True)
 	# testing-data divider on the bottom panel only (the top panel is already busy)
 	fig.add_vline(x=drift_month, line_color=ORANGE, line_dash="dash", row=2, col=1)
 	fig.add_annotation(x=drift_month, y=11.5, text="Testing data →", showarrow=False,
-	    xanchor="left", xshift=6, font=dict(color=ORANGE, size=12), row=2, col=1, secondary_y=False)
+	    xanchor="left", xshift=6, font=dict(color=ORANGE, size=12),
+	    row=2, col=1, secondary_y=False)
 	fig.update_yaxes(title_text="Correction vs static [kPa]", range=[-25, 25], row=1, col=1)
-	fig.update_yaxes(title_text="Centre migration [training SD]", row=2, col=1, secondary_y=False)
-	fig.update_yaxes(title_text="Subspace rotation [components]", row=2, col=1, secondary_y=True)
+	fig.update_yaxes(title_text="Centre migration [training SD]",
+	    row=2, col=1, secondary_y=False)
+	fig.update_yaxes(title_text="Subspace rotation [components]",
+	    row=2, col=1, secondary_y=True)
 	fig.update_layout(height=520, margin=dict(l=70, r=70, t=40, b=40),
 	    xaxis2_title="Time since start [months]")
 	fig.show()
@@ -584,9 +614,12 @@ model is adapting to transient upsets rather than to genuine drift.
 .. code-block:: python
 
 	fig = go.Figure()
-	fig.add_trace(go.Scatter(x=vp["month"], y=distance, line=dict(color=DARK_BLUE, width=0.8)))
-	fig.add_hline(y=A, line_color="grey", line_dash="dot", annotation_text="unchanged (= n_components)")
-	fig.add_vline(x=drift_month, line_color=ORANGE, line_dash="dash")   # start of the testing data
+	fig.add_trace(go.Scatter(x=vp["month"], y=distance,
+	    line=dict(color=DARK_BLUE, width=0.8)))
+	fig.add_hline(y=A, line_color="grey", line_dash="dot",
+	    annotation_text="unchanged (= n_components)")
+	# start of the testing data
+	fig.add_vline(x=drift_month, line_color=ORANGE, line_dash="dash")
 	fig.add_annotation(x=drift_month, y=2.9, text="Testing data →", showarrow=False,
 	    xanchor="left", xshift=6, font=dict(color=ORANGE, size=12))
 	fig.update_layout(xaxis_title="Time since start [months]",
@@ -631,20 +664,25 @@ on a later inner window, with the far testing data untouched.
 
 .. code-block:: python
 
-	n_tune = int(0.40 * len(lab))                        # tuning study: fit on the first 40% of lab samples
-	inner = np.arange(n_tune + 8, int(0.75 * len(lab)))  # score on a later inner window (never the testing data)
+	# tuning study: fit on the first 40% of lab samples
+	n_tune = int(0.40 * len(lab))
+	# score on a later inner window (never the testing data)
+	inner = np.arange(n_tune + 8, int(0.75 * len(lab)))
 
-	def prequential(**changes):                          # leakage-free one-step-ahead RMSEP on `inner`
+	# leakage-free one-step-ahead RMSEP on `inner`
+	def prequential(**changes):
 	    base = dict(n_components=A, forgetting_factor=0.01, gamma=0.05, lambda_center=0.003,
 	                alpha_scale=0.012, lambda_center_y=0.12, alpha_scale_y=0.05)
-	    m = AdaptivePLS(update_when_out_of_control=True, conf_level=0.99, **{**base, **changes})
+	    m = AdaptivePLS(update_when_out_of_control=True, conf_level=0.99,
+	                    **{**base, **changes})
 	    m.fit(lab.iloc[:n_tune][tags], lab.iloc[:n_tune][["vapour_pressure_kpa"]])
 	    pred, _, _, _ = stream(m, learn=learn, y_update=y_update)
 	    return float(np.sqrt(((pred[lab_rows] - y_lab)[inner] ** 2).mean()))
 
 	sweeps = {"n_components": [2, 3, 4, 5], "forgetting_factor": [0.003, 0.01, 0.03, 0.1],
 	          "lambda_center": [0.001, 0.003, 0.01, 0.03], "gamma": [0.0, 0.05, 0.1, 0.2]}
-	chosen = {"n_components": 3, "forgetting_factor": 0.01, "lambda_center": 0.003, "gamma": 0.05}
+	chosen = {"n_components": 3, "forgetting_factor": 0.01,
+	          "lambda_center": 0.003, "gamma": 0.05}
 	fig = make_subplots(rows=1, cols=4, shared_yaxes=True, subplot_titles=list(sweeps))
 	for col, (name, values) in enumerate(sweeps.items(), start=1):
 	    rmseps = [prequential(**{name: v}) for v in values]
@@ -687,19 +725,23 @@ difference plain:
 
 .. code-block:: python
 
-	jagged = AdaptivePLS(n_components=A, forgetting_factor=0.10, gamma=0.05, lambda_center=0.003,
-	                     alpha_scale=0.012, lambda_center_y=0.12, alpha_scale_y=0.05,
-	                     update_when_out_of_control=True, conf_level=0.99)
+	jagged = AdaptivePLS(n_components=A, forgetting_factor=0.10, gamma=0.05,
+	                     lambda_center=0.003, alpha_scale=0.012, lambda_center_y=0.12,
+	                     alpha_scale_y=0.05, update_when_out_of_control=True,
+	                     conf_level=0.99)
 	jagged.fit(lab.loc[train, tags], lab.loc[train, ["vapour_pressure_kpa"]])
 	_, _, _, distance_big = stream(jagged, learn=learn, y_update=y_update)
 
 	fig = go.Figure()
-	fig.add_trace(go.Scatter(x=vp["month"], y=distance_big, line=dict(color=ORANGE, width=0.7),
+	fig.add_trace(go.Scatter(x=vp["month"], y=distance_big,
+	    line=dict(color=ORANGE, width=0.7),
 	    name="forgetting_factor = 0.10 (jagged)"))
-	fig.add_trace(go.Scatter(x=vp["month"], y=distance, line=dict(color=DARK_BLUE, width=0.9),
+	fig.add_trace(go.Scatter(x=vp["month"], y=distance,
+	    line=dict(color=DARK_BLUE, width=0.9),
 	    name="forgetting_factor = 0.01 (chosen)"))
 	fig.update_layout(xaxis_title="Time since start [months]",
-	    yaxis_title="Subspace overlap [components]", height=320, margin=dict(l=70, r=20, t=40, b=50))
+	    yaxis_title="Subspace overlap [components]", height=320,
+	    margin=dict(l=70, r=20, t=40, b=50))
 	fig.show()
 
 .. figure:: ../figures/monitoring/adaptive-softsensor-distance-roughness.png
@@ -771,36 +813,45 @@ rows are produced by:
 	def add_physics(df):
 	    F = df[tags].copy()
 	    t_mean = df[temp].mean(axis=1)
-	    for c in temp:                                    # temperature differences: composition proxies
+	    # temperature differences: composition proxies
+	    for c in temp:
 	        F[c + "_dev"] = df[c] - t_mean
-	    for i in range(len(flow)):                        # bounded flow ratios: reflux-ratio proxies
+	    # bounded flow ratios: reflux-ratio proxies
+	    for i in range(len(flow)):
 	        for j in range(i + 1, len(flow)):
-	            denom = np.clip(np.abs(df[flow[j]]), max(1e-2, np.nanpercentile(np.abs(df[flow[j]]), 10)), None)
+	            denom = np.clip(np.abs(df[flow[j]]),
+	                            max(1e-2, np.nanpercentile(np.abs(df[flow[j]]), 10)), None)
 	            r = df[flow[i]].to_numpy() / denom.to_numpy()
 	            F[f"ratio_{i}{j}"] = np.clip(r, *np.nanpercentile(r, [1, 99]))
-	    p_abs = df["pres_01"] + 101.325                   # Antoine coupling: log-pressure x inverse temperature
+	    # Antoine coupling: log-pressure x inverse temperature
+	    p_abs = df["pres_01"] + 101.325
 	    F["antoine_coupling"] = np.log10(p_abs / 101.325) * df["inv_bot_temp"]
 	    return F
 
-	def add_random(df, rng):                              # control: same count of random columns
+	# control: same count of random columns
+	def add_random(df, rng):
 	    n_extra = add_physics(df).shape[1] - len(tags)
 	    F = df[tags].copy()
 	    for k in range(n_extra):
 	        F[f"rand_{k}"] = rng.standard_normal(len(df))
 	    return F
 
-	train_vp = lab_rows[train]                            # vp row indices of the training lab samples
+	# vp row indices of the training lab samples
+	train_vp = lab_rows[train]
 	ys = lab.loc[train, ["vapour_pressure_kpa"]].reset_index(drop=True)
 
-	def evaluate(feature_frame):                          # fit at A = 3, score on the testing (post-drift) data
-	    fit = PLS(n_components=A, scale=True).fit(feature_frame.iloc[train_vp].reset_index(drop=True), ys)
+	# fit at A = 3, score on the testing (post-drift) data
+	def evaluate(feature_frame):
+	    X_train = feature_frame.iloc[train_vp].reset_index(drop=True)
+	    fit = PLS(n_components=A, scale=True).fit(X_train, ys)
 	    err = fit.predict(feature_frame).to_numpy().ravel()[lab_rows] - y_lab
 	    bias, std, rmsep = bias_std_rmsep(err, post)
 	    return round(rmsep, 1), round(bias, 1), round(std ** 2)
 
 	print("static:  RMSEP / bias / variance =", evaluate(vp[tags]))
 	print("physics: RMSEP / bias / variance =", evaluate(add_physics(vp)))
-	print("control: RMSEP / bias / variance =", evaluate(add_random(vp, np.random.default_rng(0))))
+	print("control: RMSEP / bias / variance =",
+	      evaluate(add_random(vp, np.random.default_rng(0))))
 
 The control row confirms that the gain comes from meaningful physics, not simply
 from adding more variables: swapping the engineered features for the same number

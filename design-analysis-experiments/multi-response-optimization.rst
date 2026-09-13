@@ -169,8 +169,10 @@ intersection.
 	overlay = create_plot(
 	    "overlay",
 	    analysis_results={"optimization": {"responses": [
-	        {"name": "profit", "coefficients": coefficients(fit_profit), "low": 725, "high": 1e4},
-	        {"name": "purity", "coefficients": coefficients(fit_purity), "low": 90, "high": 100},
+	        {"name": "profit", "coefficients": coefficients(fit_profit),
+	         "low": 725, "high": 1e4},
+	        {"name": "purity", "coefficients": coefficients(fit_purity),
+	         "low": 90, "high": 100},
 	    ]}},
 	    factors_to_plot=["T", "S"],
 	)
@@ -204,8 +206,10 @@ profit of at least $735 per day and a purity of at least 94% leaves no region at
 	strict = create_plot(
 	    "overlay",
 	    analysis_results={"optimization": {"responses": [
-	        {"name": "profit", "coefficients": coefficients(fit_profit), "low": 735, "high": 1e4},
-	        {"name": "purity", "coefficients": coefficients(fit_purity), "low": 94, "high": 100},
+	        {"name": "profit", "coefficients": coefficients(fit_profit),
+	         "low": 735, "high": 1e4},
+	        {"name": "purity", "coefficients": coefficients(fit_purity),
+	         "low": 94, "high": 100},
 	    ]}},
 	    factors_to_plot=["T", "S"],
 	)

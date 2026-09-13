@@ -50,16 +50,21 @@ itself, which ``load_sbr`` reads from the workbook.
 	import pandas as pd
 	import plotly.graph_objects as go
 	from plotly.subplots import make_subplots
-	from process_improve.batch import (BatchMonitor, BatchPLS, contribution_at_time_plot, load_sbr, online_monitoring_plot,
-	                                   time_varying_loading_plot, unfolded_contribution_plot)
+	from process_improve.batch import (
+	    BatchMonitor, BatchPLS, contribution_at_time_plot, load_sbr,
+	    online_monitoring_plot, time_varying_loading_plot, unfolded_contribution_plot)
 	from process_improve.multivariate import PLS
 	from process_improve.univariate import median_absolute_deviation
 
-	sbr = load_sbr()                                # https://openmv.net/file/sbr-batch-reactor.xlsx
-	trajectories = {batch_id: batch[sbr.trajectory_tags] for batch_id, batch in sbr.X.items()}
+	# https://openmv.net/file/sbr-batch-reactor.xlsx
+	sbr = load_sbr()
+	trajectories = {batch_id: batch[sbr.trajectory_tags]
+	                for batch_id, batch in sbr.X.items()}
 	quality = sbr.Y
-	print(len(trajectories), "batches;", sbr.trajectory_tags, "; quality block", quality.shape)
-	# 53 batches; ['ReactorTemp', 'CoolingTemp', 'JacketTemp', 'LatexDensity', 'Conversion', 'EnergyReleased'] ; quality block (53, 5)
+	print(len(trajectories), "batches;", sbr.trajectory_tags,
+	      "; quality block", quality.shape)
+	# 53 batches; ['ReactorTemp', 'CoolingTemp', 'JacketTemp', 'LatexDensity',
+	# 'Conversion', 'EnergyReleased'] ; quality block (53, 5)
 
 	ratio = quality["CrossLinking"] / quality["Branching"]
 	print(f"CrossLinking / Branching: {ratio.min():.3f} to {ratio.max():.3f}")
@@ -67,16 +72,20 @@ itself, which ``load_sbr`` reads from the workbook.
 
 .. code-block:: python
 
-	GREY, ORANGE, AQUA, BLUE, PURPLE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a", "#6f42c1"   # figure colours
+	# figure colours
+	GREY, ORANGE, AQUA, BLUE, PURPLE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a", "#6f42c1"
 
 	def overlay(batches, tag, highlight):
-	    """One tag for every batch in grey, with the batches in `highlight` (id -> colour) drawn on top."""
+	    """One tag for every batch in grey, with the batches in `highlight` (id -> colour)
+	    drawn on top."""
 	    fig = go.Figure()
 	    for batch_id, batch in batches.items():
 	        if batch_id not in highlight:
-	            fig.add_trace(go.Scatter(y=batch[tag], mode="lines", line=dict(color=GREY, width=1), showlegend=False))
+	            fig.add_trace(go.Scatter(y=batch[tag], mode="lines",
+	                                     line=dict(color=GREY, width=1), showlegend=False))
 	    for batch_id, colour in highlight.items():
-	        fig.add_trace(go.Scatter(y=batches[batch_id][tag], mode="lines", name=f"batch {batch_id}",
+	        fig.add_trace(go.Scatter(y=batches[batch_id][tag], mode="lines",
+	                                 name=f"batch {batch_id}",
 	                                 line=dict(color=colour, width=3)))
 	    fig.update_layout(title=tag, xaxis_title="Sample [aligned time]", height=320)
 	    return fig
@@ -118,45 +127,54 @@ buys, against the usual :ref:`cross-validation <LVM-PLS-number-of-components>`.
 .. code-block:: python
 
 	model = BatchPLS(n_components=2).fit(trajectories, quality)
-	r2y = np.diff([0.0, *model.r2_cumulative_])                     # R2 of the quality block, per component
-	r2x = np.diff([0.0, *model.r2_per_variable_.mean(axis=0)])     # R2 of the trajectories, per component
+	# R2 of the quality block, per component
+	r2y = np.diff([0.0, *model.r2_cumulative_])
+	# R2 of the trajectories, per component
+	r2x = np.diff([0.0, *model.r2_per_variable_.mean(axis=0)])
 	print("R2X per component:", r2x.round(3), " R2Y per component:", r2y.round(3))
 	# R2X per component: [0.245 0.127]  R2Y per component: [0.653 0.069]
 	spe = model.spe_.iloc[:, -1]
 	t1, t2 = model.scores_.iloc[:, 0], model.scores_.iloc[:, 1]
 	marked = {34: ORANGE, 37: AQUA, 4: PURPLE}
 	others = [batch_id for batch_id in t1.index if batch_id not in marked]
-	# The marker area is the batch's squared residual. `sizemode="area"` gives the area, not the
-	# diameter, to the value; squaring spreads a factor of two in SPE over a factor of four in
-	# area, and the sum of squared residuals is what adds up over the cells in any case.
+	# The marker area is the batch's squared residual. `sizemode="area"` gives the area,
+	# not the diameter, to the value; squaring spreads a factor of two in SPE over a factor
+	# of four in area, and the sum of squared residuals is what adds up over the cells in
+	# any case.
 	area = dict(sizemode="area", sizeref=2 * (spe**2).max() / 26**2, sizemin=3)
 	ex, ey = model.ellipse_coordinates(score_horiz=1, score_vert=2, conf_level=0.95)
 	fig = go.Figure()
 	fig.add_trace(go.Scatter(x=ex, y=ey, mode="lines", name="95% confidence ellipse",
 	                         line=dict(color=GREY, dash="dash")))
-	fig.add_trace(go.Scatter(x=t1.loc[others], y=t2.loc[others], mode="markers", showlegend=False,
-	                         text=others, hovertemplate="batch %{text}",
+	fig.add_trace(go.Scatter(x=t1.loc[others], y=t2.loc[others], mode="markers",
+	                         showlegend=False, text=others, hovertemplate="batch %{text}",
 	                         marker=dict(size=spe.loc[others] ** 2, color=BLUE, **area)))
 	for batch_id, colour in marked.items():
 	    fig.add_trace(go.Scatter(x=[t1.loc[batch_id]], y=[t2.loc[batch_id]], mode="markers",
 	                             name=f"batch {batch_id}",
-	                             marker=dict(size=[spe.loc[batch_id] ** 2], color=colour, **area,
+	                             marker=dict(size=[spe.loc[batch_id] ** 2],
+	                                         color=colour, **area,
 	                                         line=dict(color="#404040", width=1.5))))
-	fig.update_layout(xaxis_title=f"t1 [R2X {r2x[0]:.1%}]", yaxis_title=f"t2 [R2X {r2x[1]:.1%}]",
-	                  height=520).show()
+	fig.update_layout(xaxis_title=f"t1 [R2X {r2x[0]:.1%}]",
+	                  yaxis_title=f"t2 [R2X {r2x[1]:.1%}]", height=520).show()
 	print(f"SPE rank of batch 37: {int(spe.rank().loc[37])} of {len(spe)};",
 	      f"batch 34: {int(spe.rank().loc[34])}")            # 1 = the smallest residual
 	# SPE rank of batch 37: 1 of 53; batch 34: 12
 	print(f"t1 rank of batch 37: {int(t1.rank().loc[37])} of {len(t1)};",
 	      f"t2 rank of batch 34: {int(t2.rank().loc[34])}")   # 1 = the lowest score
 	# t1 rank of batch 37: 1 of 53; t2 rank of batch 34: 53
-	standardised = (quality - quality.mean()) / quality.std(ddof=1)       # the batch nearest the average quality
+	# the batch nearest the average quality
+	standardised = (quality - quality.mean()) / quality.std(ddof=1)
 	distance = (standardised ** 2).sum(axis=1).pow(0.5) / np.sqrt(quality.shape[1])
 	print("nearest the average quality:", distance.nsmallest(2).round(2).to_dict())
 	# nearest the average quality: {4: 0.16, 27: 0.26}
 	for batch_id in (34, 37):
-	    print(f"batch {batch_id}: T2 = {model.hotellings_t2_.loc[batch_id].iloc[-1]:.1f} (limit {model.hotellings_t2_limit(conf_level=0.95):.1f}),",
-	          f"SPE = {model.spe_.loc[batch_id].iloc[-1]:.1f} (limit {model.spe_limit(conf_level=0.95):.1f})")
+	    t2_end = model.hotellings_t2_.loc[batch_id].iloc[-1]
+	    spe_end = model.spe_.loc[batch_id].iloc[-1]
+	    t2_lim = model.hotellings_t2_limit(conf_level=0.95)
+	    spe_lim = model.spe_limit(conf_level=0.95)
+	    print(f"batch {batch_id}: T2 = {t2_end:.1f} (limit {t2_lim:.1f}),",
+	          f"SPE = {spe_end:.1f} (limit {spe_lim:.1f})")
 	    # batch 34: T2 = 28.2 (limit 6.6), SPE = 23.1 (limit 34.6)
 	    # batch 37: T2 = 19.2 (limit 6.6), SPE = 18.7 (limit 34.6)
 
@@ -198,13 +216,17 @@ Drawing it against :math:`T^2` puts both questions in one figure, each axis carr
 	    t2, spe = model.hotellings_t2_.iloc[:, -1], model.spe_.iloc[:, -1]
 	    others = [batch_id for batch_id in t2.index if batch_id not in highlight]
 	    fig = go.Figure()
-	    fig.add_trace(go.Scatter(x=t2.loc[others], y=spe.loc[others], mode="markers", showlegend=False,
-	                             marker=dict(size=8, color=BLUE), text=others, hovertemplate="batch %{text}"))
+	    fig.add_trace(go.Scatter(x=t2.loc[others], y=spe.loc[others], mode="markers",
+	                             showlegend=False, marker=dict(size=8, color=BLUE),
+	                             text=others, hovertemplate="batch %{text}"))
 	    for batch_id, colour in highlight.items():
-	        fig.add_trace(go.Scatter(x=[t2.loc[batch_id]], y=[spe.loc[batch_id]], mode="markers",
-	                                 name=f"batch {batch_id}", marker=dict(size=12, color=colour)))
-	    fig.add_vline(x=model.hotellings_t2_limit(conf_level=conf_level), line_dash="dash", line_color=GREY)
-	    fig.add_hline(y=model.spe_limit(conf_level=conf_level), line_dash="dash", line_color=GREY)
+	        fig.add_trace(go.Scatter(x=[t2.loc[batch_id]], y=[spe.loc[batch_id]],
+	                                 mode="markers", name=f"batch {batch_id}",
+	                                 marker=dict(size=12, color=colour)))
+	    fig.add_vline(x=model.hotellings_t2_limit(conf_level=conf_level),
+	                  line_dash="dash", line_color=GREY)
+	    fig.add_hline(y=model.spe_limit(conf_level=conf_level),
+	                  line_dash="dash", line_color=GREY)
 	    for batch_id in labels:
 	        fig.add_annotation(x=t2.loc[batch_id], y=spe.loc[batch_id], text=str(batch_id),
 	                           showarrow=False, xshift=13, yshift=9)
@@ -216,7 +238,8 @@ Drawing it against :math:`T^2` puts both questions in one figure, each axis carr
 	print("above the SPE limit:", above_spe, "  above the T2 limit:",
 	      sorted(t2.index[t2 > model.hotellings_t2_limit(conf_level=0.95)]))
 	# above the SPE limit: [8, 15, 16]   above the T2 limit: [34, 37]
-	influence_plot(model, highlight={34: ORANGE, 37: AQUA}, labels=[34, 37, *above_spe]).show()
+	influence_plot(model, highlight={34: ORANGE, 37: AQUA},
+	               labels=[34, 37, *above_spe]).show()
 
 .. figure:: ../figures/batch/batch-case-sbr-influence.png
 	:source: batch/batch-case-sbr-figures.py
@@ -252,15 +275,18 @@ the PLS chapter prefers for interpretation, rather than the :math:`\mathbf{w}` d
 
 .. code-block:: python
 
-	r2_grid = model.r2_per_variable_.iloc[:, -1].unstack(level="sequence")   # rows = tags, columns = time
+	# rows = tags, columns = time
+	r2_grid = model.r2_per_variable_.iloc[:, -1].unstack(level="sequence")
 	fig = go.Figure()
 	for tag, row in r2_grid.iterrows():
 	    fig.add_trace(go.Scatter(x=row.index, y=row.values, mode="lines", name=tag))
-	fig.update_layout(title="R2 of each (tag, time) cell after two components", xaxis_title="Sample [aligned time]",
-	                  yaxis_title="R2", height=360)
+	fig.update_layout(title="R2 of each (tag, time) cell after two components",
+	                  xaxis_title="Sample [aligned time]", yaxis_title="R2", height=360)
 	fig.show()
 	print("R2 per tag, averaged over time:", r2_grid.mean(axis=1).round(2).to_dict())
-	# R2 per tag, averaged over time: {'Conversion': 0.75, 'CoolingTemp': 0.23, 'EnergyReleased': 0.26, 'JacketTemp': 0.24, 'LatexDensity': 0.67, 'ReactorTemp': 0.08}
+	# R2 per tag, averaged over time: {'Conversion': 0.75, 'CoolingTemp': 0.23,
+	# 'EnergyReleased': 0.26, 'JacketTemp': 0.24, 'LatexDensity': 0.67,
+	# 'ReactorTemp': 0.08}
 	time_varying_loading_plot(model, component=1).show()
 	time_varying_loading_plot(model, component=2).show()
 
@@ -313,21 +339,28 @@ Batch 37: the fault from the start
 
 .. code-block:: python
 
-	scaled = model.unfold_and_scale(trajectories)              # the 53 x 1200 matrix the model was fitted on
+	# the 53 x 1200 matrix the model was fitted on
+	scaled = model.unfold_and_scale(trajectories)
 	t1 = model.score_contributions(scaled, component=1)
 	unfolded_contribution_plot(t1, batch_id=37).show()
 	unfolded_contribution_plot(t1, batch_id=37, by_tag=True).show()
-	print("batch 37, t1 contributions per tag:", t1.loc[37].groupby(level="tag", sort=False).sum().round(1).to_dict())
-	# batch 37, t1 contributions per tag: {'Conversion': -33.4, 'CoolingTemp': -4.2, 'EnergyReleased': -5.2, 'JacketTemp': -4.3, 'LatexDensity': -25.5, 'ReactorTemp': -1.3}
+	print("batch 37, t1 contributions per tag:",
+	      t1.loc[37].groupby(level="tag", sort=False).sum().round(1).to_dict())
+	# batch 37, t1 contributions per tag: {'Conversion': -33.4, 'CoolingTemp': -4.2,
+	# 'EnergyReleased': -5.2, 'JacketTemp': -4.3, 'LatexDensity': -25.5,
+	# 'ReactorTemp': -1.3}
 
 	def share_per_fifth(row):
-	    """Split a contribution vector into five equal time blocks and give each block's share of the total."""
+	    """Split a contribution vector into five equal time blocks and give each block's
+	    share of the total."""
 	    by_time = row.groupby(level="sequence").sum()
 	    fifths = by_time.groupby(np.arange(len(by_time)) * 5 // len(by_time)).sum()
 	    return (fifths / fifths.sum()).round(2).tolist()
 
-	print("batch 37: share of the t1 contribution per fifth of the batch:", share_per_fifth(t1.loc[37]))
-	# batch 37: share of the t1 contribution per fifth of the batch: [0.15, 0.18, 0.19, 0.26, 0.22]
+	print("batch 37: share of the t1 contribution per fifth of the batch:",
+	      share_per_fifth(t1.loc[37]))
+	# batch 37: share of the t1 contribution per fifth of the batch:
+	# [0.15, 0.18, 0.19, 0.26, 0.22]
 
 .. figure:: ../figures/batch/batch-case-sbr-batch-37-contributions.png
 	:source: batch/batch-case-sbr-figures.py
@@ -359,10 +392,15 @@ Batch 34: the same fault, from the middle of the batch
 	t2 = model.score_contributions(scaled, component=2)
 	unfolded_contribution_plot(t2, batch_id=34).show()
 	contribution_at_time_plot(t2, k=120, batch_id=34).show()
-	print("batch 34, t2 contributions per tag:", t2.loc[34].groupby(level="tag", sort=False).sum().round(1).to_dict())
-	# batch 34, t2 contributions per tag: {'Conversion': 8.1, 'CoolingTemp': 12.2, 'EnergyReleased': 14.3, 'JacketTemp': 12.3, 'LatexDensity': 7.2, 'ReactorTemp': 4.0}
-	print("batch 34: share of the t2 contribution per fifth of the batch:", share_per_fifth(t2.loc[34]))
-	# batch 34: share of the t2 contribution per fifth of the batch: [0.06, 0.09, 0.17, 0.39, 0.29]
+	print("batch 34, t2 contributions per tag:",
+	      t2.loc[34].groupby(level="tag", sort=False).sum().round(1).to_dict())
+	# batch 34, t2 contributions per tag: {'Conversion': 8.1, 'CoolingTemp': 12.2,
+	# 'EnergyReleased': 14.3, 'JacketTemp': 12.3, 'LatexDensity': 7.2,
+	# 'ReactorTemp': 4.0}
+	print("batch 34: share of the t2 contribution per fifth of the batch:",
+	      share_per_fifth(t2.loc[34]))
+	# batch 34: share of the t2 contribution per fifth of the batch:
+	# [0.06, 0.09, 0.17, 0.39, 0.29]
 
 .. figure:: ../figures/batch/batch-case-sbr-batch-34-contributions.png
 	:source: batch/batch-case-sbr-figures.py
@@ -405,38 +443,56 @@ unchanged.
 
 .. code-block:: python
 
-	others = np.stack([batch.to_numpy() for batch_id, batch in trajectories.items() if batch_id not in (34, 37)])
-	z = {batch_id: (trajectories[batch_id].to_numpy() - others.mean(axis=0)) / others.std(axis=0, ddof=1)
+	others = np.stack([batch.to_numpy() for batch_id, batch in trajectories.items()
+	                   if batch_id not in (34, 37)])
+	z = {batch_id: (trajectories[batch_id].to_numpy() - others.mean(axis=0))
+	               / others.std(axis=0, ddof=1)
 	     for batch_id in (37, 34)}
-	spread = median_absolute_deviation(others, axis=0, scale="normal")             # 1.4826 x MAD
-	z_robust = {batch_id: pd.DataFrame((trajectories[batch_id].to_numpy() - np.median(others, axis=0)) / spread)
-	            .ewm(alpha=0.3, adjust=False).mean().to_numpy() for batch_id in (37, 34)}  # EWMA-smoothed
+	# 1.4826 x MAD
+	spread = median_absolute_deviation(others, axis=0, scale="normal")
+	# EWMA-smoothed
+	z_robust = {batch_id: pd.DataFrame((trajectories[batch_id].to_numpy()
+	                                    - np.median(others, axis=0)) / spread)
+	            .ewm(alpha=0.3, adjust=False).mean().to_numpy()
+	            for batch_id in (37, 34)}
 
 	def sustained_departure(z_batch, n_sd=2.0, run=20):
-	    """First sample, counting from one, from which each tag stays more than `n_sd` scale units away for `run` samples."""
-	    outside = (np.abs(z_batch) > n_sd).astype(int)      # 1 where the tag is outside the band, 0 inside
+	    """First sample, counting from one, from which each tag stays more than `n_sd`
+	    scale units away for `run` samples."""
+	    # 1 where the tag is outside the band, 0 inside
+	    outside = (np.abs(z_batch) > n_sd).astype(int)
 	    onset = {}
 	    for j, tag in enumerate(sbr.trajectory_tags):
-	        # Convolving the 0/1 column with `run` ones is a moving sum over every window of `run`
-	        # consecutive samples: entry i is how many of samples i to i+run-1 lie outside the band.
-	        # "valid" keeps only the windows that fit entirely inside the batch, so entry i starts at
-	        # sample i. A window summing to `run` is an unbroken stretch, and argmax finds the first
-	        # True, which is the sample the stretch starts at. The +1 counts samples from one, as
-	        # the rest of the page does. Without a True, argmax returns 0, so test `any()` first
-	        # and report None instead.
+	        # Convolving the 0/1 column with `run` ones is a moving sum over every
+	        # window of `run` consecutive samples: entry i is how many of samples i to
+	        # i+run-1 lie outside the band. "valid" keeps only the windows that fit
+	        # entirely inside the batch, so entry i starts at sample i. A window summing
+	        # to `run` is an unbroken stretch, and argmax finds the first True, which is
+	        # the sample the stretch starts at. The +1 counts samples from one, as the
+	        # rest of the page does. Without a True, argmax returns 0, so test `any()`
+	        # first and report None instead.
 	        runs = np.convolve(outside[:, j], np.ones(run, dtype=int), mode="valid") == run
 	        onset[tag] = int(runs.argmax()) + 1 if runs.any() else None
 	    return onset
 
 	for batch_id in (37, 34):
-	    print(f"batch {batch_id}, first sustained departure:", sustained_departure(z[batch_id]))
-	    # batch 37, first sustained departure: {'ReactorTemp': None, 'CoolingTemp': None, 'JacketTemp': None, 'LatexDensity': 14, 'Conversion': 10, 'EnergyReleased': None}
-	    # batch 34, first sustained departure: {'ReactorTemp': None, 'CoolingTemp': 104, 'JacketTemp': 105, 'LatexDensity': 130, 'Conversion': 124, 'EnergyReleased': 106}
+	    print(f"batch {batch_id}, first sustained departure:",
+	          sustained_departure(z[batch_id]))
+	    # batch 37, first sustained departure: {'ReactorTemp': None, 'CoolingTemp': None,
+	    # 'JacketTemp': None, 'LatexDensity': 14, 'Conversion': 10,
+	    # 'EnergyReleased': None}
+	    # batch 34, first sustained departure: {'ReactorTemp': None, 'CoolingTemp': 104,
+	    # 'JacketTemp': 105, 'LatexDensity': 130, 'Conversion': 124,
+	    # 'EnergyReleased': 106}
 	    print("  robust, smoothed:", sustained_departure(z_robust[batch_id]))
-	    #   robust, smoothed: {'ReactorTemp': None, 'CoolingTemp': 1, 'JacketTemp': 1, 'LatexDensity': 16, 'Conversion': 1, 'EnergyReleased': None}
-	    #   robust, smoothed: {'ReactorTemp': None, 'CoolingTemp': 106, 'JacketTemp': 108, 'LatexDensity': 135, 'Conversion': 127, 'EnergyReleased': 108}
+	    #   robust, smoothed: {'ReactorTemp': None, 'CoolingTemp': 1, 'JacketTemp': 1,
+	    #   'LatexDensity': 16, 'Conversion': 1, 'EnergyReleased': None}
+	    #   robust, smoothed: {'ReactorTemp': None, 'CoolingTemp': 106,
+	    #   'JacketTemp': 108, 'LatexDensity': 135, 'Conversion': 127,
+	    #   'EnergyReleased': 108}
 
-	# Why 20: it has to outlast what the noise alone produces, and the answer must not depend on it.
+	# Why 20: it has to outlast what the noise alone produces, and the answer must not
+	# depend on it.
 	def longest_run(flags):
 	    """Length of the longest unbroken stretch of True."""
 	    best = current = 0
@@ -445,28 +501,43 @@ unchanged.
 	        best = max(best, current)
 	    return best
 
-	quiet = [np.abs((batch.to_numpy() - others.mean(axis=0)) / others.std(axis=0, ddof=1)) > 2
+	quiet = [np.abs((batch.to_numpy() - others.mean(axis=0))
+	                / others.std(axis=0, ddof=1)) > 2
 	         for batch_id, batch in trajectories.items() if batch_id not in (34, 37)]
 	print("longest run outside the band with no fault:",
-	      {tag: max(longest_run(batch[:, j]) for batch in quiet) for j, tag in enumerate(sbr.trajectory_tags)})
-	# longest run outside the band with no fault: {'ReactorTemp': 9, 'CoolingTemp': 36, 'JacketTemp': 37, 'LatexDensity': 51, 'Conversion': 72, 'EnergyReleased': 18}
+	      {tag: max(longest_run(batch[:, j]) for batch in quiet)
+	       for j, tag in enumerate(sbr.trajectory_tags)})
+	# longest run outside the band with no fault: {'ReactorTemp': 9, 'CoolingTemp': 36,
+	# 'JacketTemp': 37, 'LatexDensity': 51, 'Conversion': 72, 'EnergyReleased': 18}
 	print("run lengths giving the same onsets:",
 	      [run for run in (15, 20, 25, 30, 40)
-	       if all(sustained_departure(z[b], run=run) == sustained_departure(z[b]) for b in (37, 34))])
+	       if all(sustained_departure(z[b], run=run) == sustained_departure(z[b])
+	              for b in (37, 34))])
 	# run lengths giving the same onsets: [20, 25, 30, 40]
 
-	fig = make_subplots(rows=2, cols=6, subplot_titles=sbr.trajectory_tags, shared_yaxes=True)
+	fig = make_subplots(rows=2, cols=6, subplot_titles=sbr.trajectory_tags,
+	                    shared_yaxes=True)
 	for row, (batch_id, colour) in enumerate([(37, AQUA), (34, ORANGE)], start=1):
 	    for col in range(6):
-	        # signed distances, not their absolute value: the sign says whether the tag ran above or below the others
-	        fig.add_trace(go.Scatter(y=z_robust[batch_id][:, col], mode="lines", name=f"batch {batch_id}, robust",
-	                                 line=dict(color=colour, width=1.5), showlegend=(col == 0)), row=row, col=col + 1)
-	        fig.add_trace(go.Scatter(y=z[batch_id][:, col], mode="lines", name=f"batch {batch_id}, mean and sd",
-	                                 line=dict(color=colour, width=1, dash="dash"), showlegend=(col == 0)), row=row, col=col + 1)
-	        fig.add_hrect(y0=-2, y1=2, fillcolor=GREY, opacity=0.15, line_width=0, row=row, col=col + 1)
+	        # signed distances, not their absolute value: the sign says whether the tag
+	        # ran above or below the others
+	        fig.add_trace(go.Scatter(y=z_robust[batch_id][:, col], mode="lines",
+	                                 name=f"batch {batch_id}, robust",
+	                                 line=dict(color=colour, width=1.5),
+	                                 showlegend=(col == 0)),
+	                      row=row, col=col + 1)
+	        fig.add_trace(go.Scatter(y=z[batch_id][:, col], mode="lines",
+	                                 name=f"batch {batch_id}, mean and sd",
+	                                 line=dict(color=colour, width=1, dash="dash"),
+	                                 showlegend=(col == 0)),
+	                      row=row, col=col + 1)
+	        fig.add_hrect(y0=-2, y1=2, fillcolor=GREY, opacity=0.15, line_width=0,
+	                      row=row, col=col + 1)
 	        for level in (-2, 2):
-	            fig.add_hline(y=level, line_dash="dot", line_color=GREY, row=row, col=col + 1)
-	fig.update_layout(title="Distance from the other batches: robust (solid) and mean-and-sd (dashed)", height=420)
+	            fig.add_hline(y=level, line_dash="dot", line_color=GREY,
+	                          row=row, col=col + 1)
+	title = "Distance from the other batches: robust (solid) and mean-and-sd (dashed)"
+	fig.update_layout(title=title, height=420)
 	fig.show()
 
 .. figure:: ../figures/batch/batch-case-sbr-departure.png
@@ -515,9 +586,10 @@ before the laboratory did.
 
 .. code-block:: python
 
-	# RMSEE measures the fitted values. RMSEP is the same error when each batch in turn is left
-	# out of the fit and predicted by a model that never saw it: the loop takes about two minutes.
-	# Both component counts are fitted in the same pass, to see what the second one buys.
+	# RMSEE measures the fitted values. RMSEP is the same error when each batch in turn
+	# is left out of the fit and predicted by a model that never saw it: the loop takes
+	# about two minutes. Both component counts are fitted in the same pass, to see what
+	# the second one buys.
 	rmsee = np.sqrt(((quality - model.predictions_) ** 2).mean())
 	held_out, held_out_one = {}, {}
 	for batch_id in trajectories:
@@ -531,39 +603,52 @@ before the laboratory did.
 	rmsep_one = np.sqrt(((pd.DataFrame(held_out_one).T - quality) ** 2).mean())
 	sd = quality.std(ddof=1)
 	for variable in ("Composition", "ParticleSize"):
-	    print(f"{variable}: RMSEE {rmsee[variable]:.3g} ({rmsee[variable] / sd[variable]:.2f} sd),",
+	    fitted = rmsee[variable]
+	    print(f"{variable}: RMSEE {fitted:.3g} ({fitted / sd[variable]:.2f} sd),",
 	          f"RMSEP {rmsep[variable]:.3g} ({rmsep[variable] / sd[variable]:.2f} sd)")
 	# Composition: RMSEE 0.00106 (0.71 sd), RMSEP 0.00122 (0.81 sd)
 	# ParticleSize: RMSEE 1.87 (0.60 sd), RMSEP 2.42 (0.78 sd)
 	print("RMSEP / sd, one component: ", (rmsep_one / sd).round(2).to_dict())
-	# RMSEP / sd, one component:  {'Composition': 0.8, 'ParticleSize': 0.87, 'Branching': 0.28, 'CrossLinking': 0.28, 'Polydispersity': 0.67}
+	# RMSEP / sd, one component:  {'Composition': 0.8, 'ParticleSize': 0.87,
+	# 'Branching': 0.28, 'CrossLinking': 0.28, 'Polydispersity': 0.67}
 	print("RMSEP / sd, two components:", (rmsep / sd).round(2).to_dict())
-	# RMSEP / sd, two components: {'Composition': 0.81, 'ParticleSize': 0.78, 'Branching': 0.28, 'CrossLinking': 0.28, 'Polydispersity': 0.73}
-	# The RMSEP says by how far the model misses; the cross-validated R2 says how much of the
-	# attribute it predicts. Five folds over whole batches, which takes about 40 seconds.
-	unfolded = pd.DataFrame({b: t.to_numpy().ravel(order="F") for b, t in trajectories.items()}).T
+	# RMSEP / sd, two components: {'Composition': 0.81, 'ParticleSize': 0.78,
+	# 'Branching': 0.28, 'CrossLinking': 0.28, 'Polydispersity': 0.73}
+	# The RMSEP says by how far the model misses; the cross-validated R2 says how much
+	# of the attribute it predicts. Five folds over whole batches, which takes about 40
+	# seconds.
+	unfolded = pd.DataFrame({b: t.to_numpy().ravel(order="F")
+	                         for b, t in trajectories.items()}).T
 	q2 = PLS.select_n_components(unfolded, quality.loc[unfolded.index], max_components=2,
 	                             cv=5, random_state=0).r2y_validated.loc[2]
 	print("Q2 per attribute:", q2[quality.columns].round(3).to_dict())
-	# Q2 per attribute: {'Composition': 0.322, 'ParticleSize': 0.339, 'Branching': 0.914, 'CrossLinking': 0.914, 'Polydispersity': 0.476}
+	# Q2 per attribute: {'Composition': 0.322, 'ParticleSize': 0.339, 'Branching': 0.914,
+	# 'CrossLinking': 0.914, 'Polydispersity': 0.476}
 	for variable in ("Composition", "ParticleSize"):
+	    error = rmsep[variable]
 	    fig = model.predictions_vs_observed_plot(quality, variable=variable)
-	    fig.add_annotation(xref="paper", yref="paper", x=0.02, y=0.98, showarrow=False, align="left",
-	                       text=f"RMSEP {rmsep[variable]:.3g} ({rmsep[variable] / sd[variable]:.2f} sd)"
+	    fig.add_annotation(xref="paper", yref="paper", x=0.02, y=0.98,
+	                       showarrow=False, align="left",
+	                       text=f"RMSEP {error:.3g} ({error / sd[variable]:.2f} sd)"
 	                            f"<br>Q² {q2[variable]:.3f}")
 	    lo, hi = quality[variable].min(), quality[variable].max()
 	    half = 2 * rmsep[variable]
 	    # Two prediction errors either side of y = x, as a shape rather than a trace so that
 	    # `layer="below"` keeps it behind the batches it is there to be read against.
-	    fig.add_shape(type="path", layer="below", line_width=0, fillcolor="rgba(31, 61, 122, 0.10)",
-	                  path=f"M {lo},{lo - half} L {hi},{hi - half} L {hi},{hi + half} L {lo},{lo + half} Z")
+	    fig.add_shape(type="path", layer="below", line_width=0,
+	                  fillcolor="rgba(31, 61, 122, 0.10)",
+	                  path=f"M {lo},{lo - half} L {hi},{hi - half}"
+	                       f" L {hi},{hi + half} L {lo},{lo + half} Z")
 	    fig.show()
 	faulty = [34, 37]
-	# Where the measured value ranks among the 53 batches, and where the prediction from a model
-	# that never saw the batch ranks among the 53 predictions. Rank 1 is the lowest.
+	# Where the measured value ranks among the 53 batches, and where the prediction from
+	# a model that never saw the batch ranks among the 53 predictions. Rank 1 is the
+	# lowest.
 	observed_rank, held_out_rank = quality.rank().astype(int), held_out.rank().astype(int)
-	moves = pd.DataFrame({attribute: [f"{observed_rank.loc[b, attribute]} to {held_out_rank.loc[b, attribute]}"
-	                                  for b in faulty] for attribute in quality.columns},
+	moves = pd.DataFrame({attribute: [f"{observed_rank.loc[b, attribute]} to"
+	                                  f" {held_out_rank.loc[b, attribute]}"
+	                                  for b in faulty]
+	                      for attribute in quality.columns},
 	                     index=[f"batch {b}" for b in faulty])
 	print(moves.to_string())
 	#          Composition ParticleSize Branching CrossLinking Polydispersity
@@ -571,7 +656,8 @@ before the laboratory did.
 	# batch 37      4 to 1       2 to 2    1 to 1       1 to 1         1 to 1
 	shift = (model.scores_.loc[faulty] * model.y_loadings_.loc["Composition"]).round(2)
 	print("shift of the scaled composition per component:", shift.to_dict("index"))
-	# shift of the scaled composition per component: {34: {1: -1.39, 2: 0.99}, 37: {1: -2.89, 2: -0.14}}
+	# shift of the scaled composition per component:
+	# {34: {1: -1.39, 2: 0.99}, 37: {1: -2.89, 2: -0.14}}
 
 .. figure:: ../figures/batch/batch-case-sbr-observed-vs-fitted.png
 	:source: batch/batch-case-sbr-figures.py
@@ -691,30 +777,39 @@ where the batch is.
 .. code-block:: python
 
 	squared = 0
-	for held_out in trajectories:                                      # leave one batch out: about a minute
+	# leave one batch out: about a minute
+	for held_out in trajectories:
 	    rest = {b: t for b, t in trajectories.items() if b != held_out}
 	    model_wo = BatchPLS(n_components=2).fit(rest, quality.loc[list(rest)])
-	    squared = squared + model_wo.online_rmse({held_out: trajectories[held_out]}, quality.loc[[held_out]]) ** 2
-	rmsep_k = np.sqrt(squared / len(trajectories))                     # after 1, 2, ..., 200 samples
+	    squared = squared + model_wo.online_rmse({held_out: trajectories[held_out]},
+	                                             quality.loc[[held_out]]) ** 2
+	# after 1, 2, ..., 200 samples
+	rmsep_k = np.sqrt(squared / len(trajectories))
 	relative = rmsep_k / quality.std()
 	at = [10, 25, 50, 150, 200]
-	print(relative.loc[at].mean(axis=1).round(2).tolist())              # RMSEP / sd averaged over the five attributes
+	# RMSEP / sd averaged over the five attributes
+	print(relative.loc[at].mean(axis=1).round(2).tolist())
 	# [0.97, 0.89, 0.8, 0.62, 0.58]
 	# The sample from which each curve stays below one standard deviation, which is not the
 	# first sample it dips below: a curve that crosses and comes back has not settled.
 	stays = {a: int(relative.index[np.flatnonzero((relative[a] >= 1).to_numpy())[-1] + 1])
 	         if (relative[a] >= 1).any() else 1 for a in relative.columns}
 	print("stays below the standard deviation from sample:", stays)
-	# stays below the standard deviation from sample: {'Composition': 1, 'ParticleSize': 125, 'Branching': 2, 'CrossLinking': 2, 'Polydispersity': 2}
+	# stays below the standard deviation from sample: {'Composition': 1,
+	# 'ParticleSize': 125, 'Branching': 2, 'CrossLinking': 2, 'Polydispersity': 2}
 
-	MAGENTA = "#b03a78"                                                    # one more figure colour
-	COLOURS = (BLUE, ORANGE, AQUA, PURPLE, MAGENTA)                        # one per attribute
+	# one more figure colour
+	MAGENTA = "#b03a78"
+	# one per attribute
+	COLOURS = (BLUE, ORANGE, AQUA, PURPLE, MAGENTA)
 	fig = go.Figure()
 	for attribute, colour in zip(quality.columns, COLOURS):
-	    fig.add_trace(go.Scatter(x=relative.index[9:], y=relative[attribute].iloc[9:], name=attribute,
-	                             line=dict(color=colour)))
+	    fig.add_trace(go.Scatter(x=relative.index[9:], y=relative[attribute].iloc[9:],
+	                             name=attribute, line=dict(color=colour)))
 	fig.add_hline(y=1.0, line_color=GREY, annotation_text="as good as the average batch")
-	fig.update_layout(xaxis_title="Samples observed", yaxis_title="RMSEP / standard deviation of the attribute", height=420)
+	fig.update_layout(xaxis_title="Samples observed",
+	                  yaxis_title="RMSEP / standard deviation of the attribute",
+	                  height=420)
 	fig.show()
 
 .. figure:: ../figures/batch/batch-case-sbr-online-rmse.png
@@ -755,29 +850,37 @@ the model was fitted to.
 
 .. code-block:: python
 
-	print("average particle size over the 53 batches:", round(quality["ParticleSize"].mean(), 1))
+	print("average particle size over the 53 batches:",
+	      round(quality["ParticleSize"].mean(), 1))
 	# average particle size over the 53 batches: 1257.1
 	band = rmsep_k["ParticleSize"]
 	for batch_id, colour in ((4, BLUE), (34, ORANGE)):
 	    trace = model.predict_online_trace(trajectories[batch_id])
 	    evolving = trace.y_hat["ParticleSize"]
 	    fig = go.Figure()
-	    fig.add_trace(go.Scatter(x=trace.time[4:], y=(evolving + band).iloc[4:], line=dict(width=0),
-	                             showlegend=False))
-	    fig.add_trace(go.Scatter(x=trace.time[4:], y=(evolving - band).iloc[4:], fill="tonexty",
-	                             fillcolor="rgba(200, 200, 200, 0.35)", line=dict(width=0), name="one prediction error"))
-	    fig.add_trace(go.Scatter(x=trace.time[4:], y=evolving.iloc[4:], name="prediction so far",
-	                             line=dict(color=colour)))
-	    fig.add_hline(y=model.predictions_.loc[batch_id, "ParticleSize"], line_dash="dash", line_color=GREY,
+	    fig.add_trace(go.Scatter(x=trace.time[4:], y=(evolving + band).iloc[4:],
+	                             line=dict(width=0), showlegend=False))
+	    fig.add_trace(go.Scatter(x=trace.time[4:], y=(evolving - band).iloc[4:],
+	                             fill="tonexty", fillcolor="rgba(200, 200, 200, 0.35)",
+	                             line=dict(width=0), name="one prediction error"))
+	    fig.add_trace(go.Scatter(x=trace.time[4:], y=evolving.iloc[4:],
+	                             name="prediction so far", line=dict(color=colour)))
+	    fig.add_hline(y=model.predictions_.loc[batch_id, "ParticleSize"],
+	                  line_dash="dash", line_color=GREY,
 	                  annotation_text="final prediction")
-	    fig.add_hline(y=quality.loc[batch_id, "ParticleSize"], line_color="black", annotation_text="measured")
-	    fig.update_layout(title=f"Batch {batch_id}: ParticleSize", xaxis_title="Samples observed", height=380)
+	    fig.add_hline(y=quality.loc[batch_id, "ParticleSize"], line_color="black",
+	                  annotation_text="measured")
+	    fig.update_layout(title=f"Batch {batch_id}: ParticleSize",
+	                      xaxis_title="Samples observed", height=380)
 	    fig.show()
+	    steps = evolving.loc[[10, 50, 100, 150]].round(1).tolist()
 	    print(f"batch {batch_id}: measured {quality.loc[batch_id, 'ParticleSize']:.1f},",
 	          f"final prediction {model.predictions_.loc[batch_id, 'ParticleSize']:.1f},",
-	          f"after 10/50/100/150 samples {evolving.loc[[10, 50, 100, 150]].round(1).tolist()}")
-	    # batch 4: measured 1256.9, final prediction 1257.1, after 10/50/100/150 samples [1256.8, 1256.5, 1256.4, 1257.4]
-	    # batch 34: measured 1243.7, final prediction 1245.3, after 10/50/100/150 samples [1257.2, 1255.3, 1254.9, 1245.3]
+	          f"after 10/50/100/150 samples {steps}")
+	    # batch 4: measured 1256.9, final prediction 1257.1, after 10/50/100/150 samples
+	    # [1256.8, 1256.5, 1256.4, 1257.4]
+	    # batch 34: measured 1243.7, final prediction 1245.3, after 10/50/100/150 samples
+	    # [1257.2, 1255.3, 1254.9, 1245.3]
 
 .. figure:: ../figures/batch/batch-case-sbr-online-prediction.png
 	:source: batch/batch-case-sbr-figures.py
@@ -843,15 +946,21 @@ mean does vary.
 
 	normal = {b: t for b, t in trajectories.items() if b not in (34, 37)}
 	reference = BatchPLS(n_components=2).fit(normal, quality.loc[list(normal)])
-	monitor = BatchMonitor(reference, conf_level=0.99, spe_statistic="instantaneous").fit(normal)
-	spread = np.sqrt(np.diagonal(monitor.score_covariance_over_time_, axis1=1, axis2=2))   # sd of the estimates, per sample
-	spread = spread / reference.scores_.std(ddof=1).to_numpy()                           # relative to the final scores
+	monitor = BatchMonitor(reference, conf_level=0.99,
+	                       spe_statistic="instantaneous").fit(normal)
+	# sd of the estimates, per sample
+	spread = np.sqrt(np.diagonal(monitor.score_covariance_over_time_, axis1=1, axis2=2))
+	# relative to the final scores
+	spread = spread / reference.scores_.std(ddof=1).to_numpy()
 	fig = go.Figure()
 	for a, colour in enumerate((BLUE, ORANGE)):
-	    fig.add_trace(go.Scatter(x=np.arange(1, len(spread) + 1), y=spread[:, a], name=f"t{a + 1}", line=dict(color=colour)))
-	fig.add_hline(y=1.0, line_dash="dash", line_color=GREY, annotation_text="spread of the final scores")
-	fig.update_layout(xaxis_title="Samples observed", yaxis_title="Spread relative to the final scores", yaxis_type="log",
-	                  height=380)
+	    fig.add_trace(go.Scatter(x=np.arange(1, len(spread) + 1), y=spread[:, a],
+	                             name=f"t{a + 1}", line=dict(color=colour)))
+	fig.add_hline(y=1.0, line_dash="dash", line_color=GREY,
+	              annotation_text="spread of the final scores")
+	fig.update_layout(xaxis_title="Samples observed",
+	                  yaxis_title="Spread relative to the final scores",
+	                  yaxis_type="log", height=380)
 	fig.show()
 
 .. figure:: ../figures/batch/batch-case-sbr-score-spread.png
@@ -875,18 +984,21 @@ is the first of the three, so an operator sees it two samples later.
 .. code-block:: python
 
 	def first_sustained(alarm, run=3):
-	    """First of the `run` consecutive samples above the limit, counting from one, or None."""
+	    """First of the `run` consecutive samples above the limit, counting from one,
+	    or None."""
 	    runs = np.convolve(alarm.astype(int), np.ones(run, dtype=int), mode="valid") == run
 	    return int(runs.argmax()) + 1 if runs.any() else None
 
 	print(f"T2 limit at 99%: {monitor.t2_limit_over_time_[0]:.1f}")
 	# T2 limit at 99%: 10.5
-	mean_t2 = np.asarray(monitor.t2_mean_over_time_)            # A(N-1)/N at every sample, whatever the data do
+	# A(N-1)/N at every sample, whatever the data do
+	mean_t2 = np.asarray(monitor.t2_mean_over_time_)
 	print(f"reference mean T2: {mean_t2.min():.2f} to {mean_t2.max():.2f}")
 	# reference mean T2: 1.96 to 1.96
 	for batch_id in (37, 34, 4):
 	    result = monitor.monitor(trajectories[batch_id])
-	    print(f"batch {batch_id}: T2 alarm after {first_sustained(result.t2_alarm)} samples;",
+	    t2_alarm_at = first_sustained(result.t2_alarm)
+	    print(f"batch {batch_id}: T2 alarm after {t2_alarm_at} samples;",
 	          f"SPE alarm after {first_sustained(result.spe_alarm)} samples")
 	    # batch 37: T2 alarm after 23 samples; SPE alarm after 15 samples
 	    # batch 34: T2 alarm after 190 samples; SPE alarm after 105 samples
@@ -901,36 +1013,52 @@ is the first of the three, so an operator sees it two samples later.
 	    return best
 
 	traced = [monitor.monitor(t) for t in normal.values()]
-	print(f"reference batches: {np.mean([r.t2_alarm.mean() for r in traced]):.2%} of T2 values and",
-	      f"{np.mean([r.spe_alarm.mean() for r in traced]):.2%} of SPE values above their limits")
+	t2_rate = np.mean([r.t2_alarm.mean() for r in traced])
+	spe_rate = np.mean([r.spe_alarm.mean() for r in traced])
+	print(f"reference batches: {t2_rate:.2%} of T2 values and",
+	      f"{spe_rate:.2%} of SPE values above their limits")
 	# reference batches: 0.17% of T2 values and 1.13% of SPE values above their limits
 	for run in (3, 5, 10):
 	    print(f"  with an SPE alarm of {run} consecutive samples somewhere:",
 	          sum(first_sustained(r.spe_alarm, run) is not None for r in traced), "of 51;",
-	          "T2:", sum(first_sustained(r.t2_alarm, run) is not None for r in traced), "of 51")
+	          "T2:", sum(first_sustained(r.t2_alarm, run) is not None for r in traced),
+	          "of 51")
 	    #   with an SPE alarm of 3 consecutive samples somewhere: 13 of 51; T2: 1 of 51
 	    #   with an SPE alarm of 5 consecutive samples somewhere: 8 of 51; T2: 1 of 51
 	    #   with an SPE alarm of 10 consecutive samples somewhere: 3 of 51; T2: 1 of 51
-	print("  longest SPE alarm run in a reference batch:", max(longest_run(r.spe_alarm) for r in traced), "samples")
+	print("  longest SPE alarm run in a reference batch:",
+	      max(longest_run(r.spe_alarm) for r in traced), "samples")
 	#   longest SPE alarm run in a reference batch: 15 samples
-	print("batch 34: above the SPE limit for", int(monitor.monitor(trajectories[34]).spe_alarm[104:].sum()),
-	      "of its last 96 samples; batch 37: longest T2 alarm run", longest_run(monitor.monitor(trajectories[37]).t2_alarm), "samples")
-	# batch 34: above the SPE limit for 87 of its last 96 samples; batch 37: longest T2 alarm run 178 samples
+	print("batch 34: above the SPE limit for",
+	      int(monitor.monitor(trajectories[34]).spe_alarm[104:].sum()),
+	      "of its last 96 samples; batch 37: longest T2 alarm run",
+	      longest_run(monitor.monitor(trajectories[37]).t2_alarm), "samples")
+	# batch 34: above the SPE limit for 87 of its last 96 samples;
+	# batch 37: longest T2 alarm run 178 samples
 	online_monitoring_plot(monitor, trajectories[37], "t2").show()
 	fig = online_monitoring_plot(monitor, trajectories[34], "spe")
-	fig.add_vline(x=100, line_dash="dash", line_color=ORANGE, annotation_text="impurity enters")
+	fig.add_vline(x=100, line_dash="dash", line_color=ORANGE,
+	              annotation_text="impurity enters")
 	fig.show()
 	alarm_k = first_sustained(monitor.monitor(trajectories[34]).spe_alarm)
 	for k in (alarm_k, alarm_k + 4):
-	    shares = reference.predict_online(trajectories[34], upto_k=k).residuals.xs(k - 1, level="sequence") ** 2
+	    residuals = reference.predict_online(trajectories[34], upto_k=k).residuals
+	    shares = residuals.xs(k - 1, level="sequence") ** 2
 	    shares = (shares / shares.sum() * 100).round(0).astype(int)
-	    print(f"batch 34 after {k} samples, share of the squared residual per tag [%]:", shares.to_dict())
-	    # batch 34 after 105 samples, share of the squared residual per tag [%]: {'Conversion': 1, 'CoolingTemp': 31, 'EnergyReleased': 11, 'JacketTemp': 17, 'LatexDensity': 0, 'ReactorTemp': 41}
-	    # batch 34 after 109 samples, share of the squared residual per tag [%]: {'Conversion': 2, 'CoolingTemp': 36, 'EnergyReleased': 19, 'JacketTemp': 30, 'LatexDensity': 1, 'ReactorTemp': 12}
-	at_alarm = reference.predict_online(trajectories[34], upto_k=alarm_k).residuals.xs(alarm_k - 1, level="sequence") ** 2
+	    print(f"batch 34 after {k} samples, share of the squared residual per tag [%]:",
+	          shares.to_dict())
+	    # batch 34 after 105 samples, share of the squared residual per tag [%]:
+	    # {'Conversion': 1, 'CoolingTemp': 31, 'EnergyReleased': 11, 'JacketTemp': 17,
+	    # 'LatexDensity': 0, 'ReactorTemp': 41}
+	    # batch 34 after 109 samples, share of the squared residual per tag [%]:
+	    # {'Conversion': 2, 'CoolingTemp': 36, 'EnergyReleased': 19, 'JacketTemp': 30,
+	    # 'LatexDensity': 1, 'ReactorTemp': 12}
+	alarm_residuals = reference.predict_online(trajectories[34], upto_k=alarm_k).residuals
+	at_alarm = alarm_residuals.xs(alarm_k - 1, level="sequence") ** 2
 	at_alarm = (at_alarm / at_alarm.sum() * 100).round(0).astype(int)
 	fig = go.Figure(go.Bar(x=at_alarm.index, y=at_alarm.values, marker_color=BLUE))
-	fig.update_layout(title=f"Batch 34 after {alarm_k} samples", yaxis_title="Share of the squared residual [%]", height=320)
+	fig.update_layout(title=f"Batch 34 after {alarm_k} samples",
+	                  yaxis_title="Share of the squared residual [%]", height=320)
 	fig.show()
 
 .. figure:: ../figures/batch/batch-case-sbr-online-monitoring.png
@@ -998,19 +1126,30 @@ flagged with most of its second half still to run.
 
 .. code-block:: python
 
-	pooled = BatchMonitor(reference, conf_level=0.99, spe_statistic="instantaneous", spe_window=2).fit(normal)
+	pooled = BatchMonitor(reference, conf_level=0.99, spe_statistic="instantaneous",
+	                      spe_window=2).fit(normal)
 	pooled_traced = [pooled.monitor(t) for t in normal.values()]
-	print(f"limit pooled over five samples: {np.mean([r.spe_alarm.mean() for r in pooled_traced]):.2%} of the reference",
-	      f"SPE values above it; {sum(first_sustained(r.spe_alarm) is not None for r in pooled_traced)} of 51 batches",
-	      f"with a three-sample run; batch 34 flagged after {first_sustained(pooled.monitor(trajectories[34]).spe_alarm)} samples")
-	# limit pooled over five samples: 1.16% of the reference SPE values above it; 13 of 51 batches with a three-sample run; batch 34 flagged after 105 samples
-	cumulative = BatchMonitor(reference, conf_level=0.99).fit(normal)        # the SPE over every sample observed so far
-	print([sum(first_sustained(cumulative.monitor(t).spe_alarm) is not None for t in normal.values()),
-	       first_sustained(cumulative.monitor(trajectories[34]).spe_alarm)])   # reference batches with an alarm; batch 34
+	pooled_rate = np.mean([r.spe_alarm.mean() for r in pooled_traced])
+	pooled_count = sum(first_sustained(r.spe_alarm) is not None for r in pooled_traced)
+	pooled_at = first_sustained(pooled.monitor(trajectories[34]).spe_alarm)
+	print(f"limit pooled over five samples: {pooled_rate:.2%} of the reference",
+	      f"SPE values above it; {pooled_count} of 51 batches",
+	      f"with a three-sample run; batch 34 flagged after {pooled_at} samples")
+	# limit pooled over five samples: 1.16% of the reference SPE values above it;
+	# 13 of 51 batches with a three-sample run; batch 34 flagged after 105 samples
+	# the SPE over every sample observed so far
+	cumulative = BatchMonitor(reference, conf_level=0.99).fit(normal)
+	# reference batches with an alarm; batch 34
+	print([sum(first_sustained(cumulative.monitor(t).spe_alarm) is not None
+	           for t in normal.values()),
+	       first_sustained(cumulative.monitor(trajectories[34]).spe_alarm)])
 	# [2, 112]
-	tight = BatchMonitor(reference, conf_level=0.999, spe_statistic="instantaneous").fit(normal)   # the 99.9% limit
-	print([sum(first_sustained(tight.monitor(t).spe_alarm) is not None for t in normal.values()),
-	       first_sustained(tight.monitor(trajectories[34]).spe_alarm)])       # reference batches with an alarm; batch 34
+	tight = BatchMonitor(reference, conf_level=0.999,
+	                     spe_statistic="instantaneous").fit(normal)   # the 99.9% limit
+	# reference batches with an alarm; batch 34
+	print([sum(first_sustained(tight.monitor(t).spe_alarm) is not None
+	           for t in normal.values()),
+	       first_sustained(tight.monitor(trajectories[34]).spe_alarm)])
 	# [0, 106]
 
 The two batches are caught by different statistics, and that is not an accident of the data:
@@ -1054,40 +1193,60 @@ against the zero line.
 .. code-block:: python
 
 	def z_form(frame):
-	    """Each tag as a distance from the 51 normal batches at that sample, in their standard deviations."""
-	    return pd.DataFrame((frame.to_numpy() - others.mean(axis=0)) / others.std(axis=0, ddof=1),
+	    """Each tag as a distance from the 51 normal batches at that sample, in their
+	    standard deviations."""
+	    return pd.DataFrame((frame.to_numpy() - others.mean(axis=0))
+	                        / others.std(axis=0, ddof=1),
 	                        columns=frame.columns, index=frame.index)
 
 	def forecast_panel(batch_id, tag, from_samples, colour):
-	    """The normal batches as a band, what the batch did, and the forecast of the rest from two points."""
-	    # A band, not 51 lines: on a noisy tag the lines fill the panel and the forecasts have to be
-	    # read through them. It covers the middle 90% of the normal batches at each sample.
+	    """The normal batches as a band, what the batch did, and the forecast of the rest
+	    from two points."""
+	    # A band, not 51 lines: on a noisy tag the lines fill the panel and the forecasts
+	    # have to be read through them. It covers the middle 90% of the normal batches at
+	    # each sample.
 	    spread = np.stack([z_form(t)[tag].to_numpy() for t in normal.values()])
 	    lo, hi = np.percentile(spread, 5, axis=0), np.percentile(spread, 95, axis=0)
-	    fig = go.Figure([go.Scatter(x=[*range(len(lo)), *reversed(range(len(hi)))], y=[*lo, *reversed(hi)],
-	                                fill="toself", fillcolor="rgba(200, 200, 200, 0.45)", line_width=0,
+	    fig = go.Figure([go.Scatter(x=[*range(len(lo)), *reversed(range(len(hi)))],
+	                                y=[*lo, *reversed(hi)], fill="toself",
+	                                fillcolor="rgba(200, 200, 200, 0.45)", line_width=0,
 	                                name="normal batches, middle 90%")])
 	    fig.update_layout(title=tag, xaxis_title="Sample [aligned time]", height=320)
 	    z_actual = z_form(trajectories[batch_id])[tag]
-	    fig.add_trace(go.Scatter(y=z_actual, mode="lines", name=f"batch {batch_id}, what happened",
+	    fig.add_trace(go.Scatter(y=z_actual, mode="lines",
+	                             name=f"batch {batch_id}, what happened",
 	                             line=dict(color=colour, width=1), opacity=0.4))
-	    for k, dash, line_colour, width in zip(from_samples, ("dash", "dot"), (colour, BLUE), (2, 3)):     # the later
-	        forecast = z_form(reference.predict_online(trajectories[batch_id], upto_k=k).forecast)[tag]   # one apart
-	        fig.add_trace(go.Scatter(x=forecast.index[k:], y=forecast.iloc[k:], mode="lines",
-	                                 name=f"forecast from sample {k}", line=dict(color=line_colour, width=width, dash=dash)))
-	        fig.add_trace(go.Scatter(x=[k - 1, k - 1], y=[z_actual.iloc[k - 1], forecast.iloc[k]], mode="lines",   # the jump from
-	                                 line=dict(color=line_colour, width=1.5), showlegend=False))              # the data used
+	    # the later one apart
+	    for k, dash, line_colour, width in zip(from_samples, ("dash", "dot"),
+	                                           (colour, BLUE), (2, 3)):
+	        forecast = z_form(reference.predict_online(trajectories[batch_id],
+	                                                   upto_k=k).forecast)[tag]
+	        fig.add_trace(go.Scatter(x=forecast.index[k:], y=forecast.iloc[k:],
+	                                 mode="lines", name=f"forecast from sample {k}",
+	                                 line=dict(color=line_colour, width=width, dash=dash)))
+	        # the jump from the data used
+	        fig.add_trace(go.Scatter(x=[k - 1, k - 1],
+	                                 y=[z_actual.iloc[k - 1], forecast.iloc[k]],
+	                                 mode="lines",
+	                                 line=dict(color=line_colour, width=1.5),
+	                                 showlegend=False))
 	    fig.add_trace(go.Scatter(y=z_actual.iloc[:from_samples[0]], mode="lines",
-	                             name=f"batch {batch_id}, observed", line=dict(color=colour, width=3)))
+	                             name=f"batch {batch_id}, observed",
+	                             line=dict(color=colour, width=3)))
 	    fig.add_hline(y=0, line_color=GREY)
-	    fig.update_layout(title=f"Batch {batch_id}: {tag}", yaxis_title="Distance from the normal batches [sd]")
+	    fig.update_layout(title=f"Batch {batch_id}: {tag}",
+	                      yaxis_title="Distance from the normal batches [sd]")
 	    return fig
 
 	forecast_panel(37, "Conversion", (30, 60), AQUA).show()
-	forecast_panel(34, "CoolingTemp", (60, 115), ORANGE).add_vline(x=100, line_dash="dash", line_color=ORANGE).show()
-	for batch_id, tag, k in ((37, "Conversion", 30), (37, "Conversion", 60), (34, "CoolingTemp", 60), (34, "CoolingTemp", 115)):
-	    forecast = z_form(reference.predict_online(trajectories[batch_id], upto_k=k).forecast)[tag].iloc[k:]
-	    print(f"batch {batch_id}, {tag}, from sample {k} onwards: forecast mean {forecast.mean():.2f} sd,",
+	panel = forecast_panel(34, "CoolingTemp", (60, 115), ORANGE)
+	panel.add_vline(x=100, line_dash="dash", line_color=ORANGE).show()
+	for batch_id, tag, k in ((37, "Conversion", 30), (37, "Conversion", 60),
+	                         (34, "CoolingTemp", 60), (34, "CoolingTemp", 115)):
+	    forecast = z_form(reference.predict_online(trajectories[batch_id],
+	                                               upto_k=k).forecast)[tag].iloc[k:]
+	    print(f"batch {batch_id}, {tag}, from sample {k} onwards:"
+	          f" forecast mean {forecast.mean():.2f} sd,",
 	          f"actual {z_form(trajectories[batch_id])[tag].iloc[k:].mean():.2f} sd")
 	# batch 37, Conversion, from sample 30 onwards: forecast mean -1.81 sd, actual -4.81 sd
 	# batch 37, Conversion, from sample 60 onwards: forecast mean -3.62 sd, actual -4.82 sd

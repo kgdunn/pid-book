@@ -189,7 +189,8 @@ data are not scaled a second time.
 	scaler_x = MCUVScaler().fit(X)
 	scaler_y = MCUVScaler().fit(y)
 
-	model = PLS(n_components=2, scale=False).fit(scaler_x.transform(X), scaler_y.transform(y))
+	model = PLS(n_components=2, scale=False).fit(scaler_x.transform(X),
+	                                             scaler_y.transform(y))
 
 The cumulative :math:`R^2_Y` measures how much of the Kappa variability the model accounts for as
 each latent variable is added:
@@ -304,10 +305,12 @@ feed it back into :math:`\mathbf{X}` until the next lab value arrives. We add a 
 	df_lag["Kappa_lag1"] = df_lag["Y-Kappa"].shift(1)
 	df_lag = df_lag.dropna(subset=["Kappa_lag1"]).reset_index(drop=True)
 
-	rmsep_lag, y_obs_lag, y_hat_lag = evaluate_split(df_lag, x_cols + ["Kappa_lag1"], "Y-Kappa")
+	rmsep_lag, y_obs_lag, y_hat_lag = evaluate_split(df_lag, x_cols + ["Kappa_lag1"],
+	                                                 "Y-Kappa")
 	print(f"RMSEP (with one-step Kappa lag): {rmsep_lag:.2f} Kappa units")
 
-	plot_obs_pred(y_obs_lag, y_hat_lag, "Soft sensor predictions: process tags + 1-step Kappa lag")
+	plot_obs_pred(y_obs_lag, y_hat_lag,
+	              "Soft sensor predictions: process tags + 1-step Kappa lag")
 
 .. figure:: ../figures/monitoring/Kappa-soft-sensor-obs-pred-lagged.png
 	:alt: Predicted vs observed Kappa with one-step Kappa lag in X.
