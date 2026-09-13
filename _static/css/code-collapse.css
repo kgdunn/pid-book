@@ -5,68 +5,77 @@
    with JavaScript off. This file only styles it.
 
    Colours are the theme's own custom properties (--pst-color-*), so light and
-   dark mode both follow the reader's setting with nothing to maintain here. */
+   dark mode both follow the reader's setting with nothing to maintain here.
+   Never key this off prefers-color-scheme: pydata-sphinx-theme resolves the
+   reader's auto/light/dark choice into html[data-theme], and a reader who
+   overrode the system setting would be ignored by a media query.
+
+   Every var() carries a literal light-mode fallback. The theme's inline head
+   script writes data-theme="" when no default_mode is configured, and this
+   book configures none, so for the first frame of a first visit none of the
+   --pst-color-* properties exist yet. Without a fallback, `border: 1px solid
+   var(--pst-color-border)` is invalid at computed-value time and 388 bars
+   paint with no edge and no fill.
+
+   Every selector is class-scoped. The theme emits about eleven other <details>
+   elements per page for the sidebar navigation, so a bare `details` or
+   `summary` rule would restyle those. */
 
 details.pid-code {
 	margin: 1rem 0;
 }
 
-/* The bar shown in place of a collapsed block. */
+/* The bar shown in place of a collapsed block.
+
+   The native disclosure triangle is deliberately kept: `display: list-item` is
+   what the UA stylesheets give `details > summary:first-of-type`, and removing
+   the marker (with list-style: none, or with any non-list-item display such as
+   flex) is documented to stop several browser and screen-reader pairings
+   announcing the open/closed state at all. So the marker is coloured, not
+   replaced, and the label reads as one phrase after it: "Python, 23 lines". */
 details.pid-code > summary.pid-code__bar {
-	display: flex;
-	align-items: baseline;
-	gap: 0.6rem;
+	display: list-item;
+	list-style-position: inside;
 	cursor: pointer;
 	padding: 0.35rem 0.7rem;
-	border: 1px solid var(--pst-color-border);
+	border: 1px solid var(--pst-color-border, #d1d5da);
 	border-radius: 0.25rem;
-	background: var(--pst-color-surface);
-	color: var(--pst-color-text-muted);
+	background: var(--pst-color-surface, #f3f4f5);
+	color: var(--pst-color-text-muted, #48566b);
 	font-size: 0.85rem;
 	line-height: 1.4;
-	user-select: none;
-	list-style: none; /* Firefox */
 }
 
-/* The default disclosure triangle, removed in the two places browsers put it. */
-details.pid-code > summary.pid-code__bar::-webkit-details-marker {
-	display: none;
-}
 details.pid-code > summary.pid-code__bar::marker {
-	content: "";
-}
-
-/* Our own marker, so the affordance is still obvious. It points right when the
-   block is closed and down when it is open. */
-details.pid-code > summary.pid-code__bar::before {
-	content: "\25B8";
-	display: inline-block;
-	width: 0.8em;
-	color: var(--pst-color-text-muted);
-}
-details.pid-code[open] > summary.pid-code__bar::before {
-	content: "\25BE";
+	color: var(--pst-color-text-muted, #48566b);
 }
 
 details.pid-code > summary.pid-code__bar:hover {
-	border-color: var(--pst-color-link);
-	color: var(--pst-color-link);
+	border-color: var(--pst-color-link, #0a5688);
+	color: var(--pst-color-link, #0a5688);
 }
 
-/* Keyboard users must be able to see where they are. */
+/* Keyboard users must be able to see where they are. Written as :focus plus an
+   exclusion rather than :focus-visible alone, so an engine without
+   :focus-visible shows a ring rather than nothing. */
+details.pid-code > summary.pid-code__bar:focus,
 details.pid-code > summary.pid-code__bar:focus-visible {
-	outline: 2px solid var(--pst-color-link);
+	outline: 2px solid var(--pst-color-link, #0a5688);
 	outline-offset: 2px;
+}
+
+details.pid-code > summary.pid-code__bar:focus:not(:focus-visible) {
+	outline: none;
 }
 
 .pid-code__lang {
 	font-weight: 600;
+	color: var(--pst-color-text-base, #222832);
 }
 
-/* The line count is the secondary half of the bar: it sits to the right and
-   recedes, so the eye lands on the language first. */
+/* The line count is the secondary half of the bar, so it recedes and the eye
+   lands on the language first. */
 .pid-code__n {
-	margin-left: auto;
 	font-variant-numeric: tabular-nums;
 	opacity: 0.8;
 }
@@ -76,42 +85,92 @@ details.pid-code[open] > summary.pid-code__bar {
 	margin-bottom: 0.35rem;
 }
 
-/* The page-level switch, inserted by code-collapse.js at the top of any page
-   that has code. It is absent when JavaScript is off, where the per-block bars
-   still work on their own. */
+/* The page-level switch. The markup is rendered by the build
+   (_templates/pid-code-switch.html), carrying the `hidden` attribute, and
+   _static/js/code-collapse.js removes that attribute only on a page that has
+   code blocks to switch. So a reader with JavaScript off never meets a control
+   that cannot do anything, and the page does not reflow after first paint. */
 .pid-code-switch {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.4rem;
-	margin: 0 0 1.2rem;
 	padding: 0.3rem 0.75rem;
-	border: 1px solid var(--pst-color-border);
+	border: 1px solid var(--pst-color-border, #d1d5da);
 	border-radius: 1rem;
 	background: transparent;
-	color: var(--pst-color-text-muted);
+	color: var(--pst-color-text-muted, #48566b);
 	font-size: 0.8rem;
+	line-height: 1.4;
 	cursor: pointer;
+	white-space: nowrap;
 }
 
 .pid-code-switch:hover {
-	border-color: var(--pst-color-link);
-	color: var(--pst-color-link);
+	border-color: var(--pst-color-link, #0a5688);
+	color: var(--pst-color-link, #0a5688);
 }
 
+.pid-code-switch:focus,
 .pid-code-switch:focus-visible {
-	outline: 2px solid var(--pst-color-link);
+	outline: 2px solid var(--pst-color-link, #0a5688);
 	outline-offset: 2px;
 }
 
-/* Printing, and anyone saving the page as a PDF, gets the code in full: the
-   script opens every block before the dialogue appears, and this removes the
-   bars, which carry no information once the code below them is visible. */
+.pid-code-switch:focus:not(:focus-visible) {
+	outline: none;
+}
+
+/* The switch announces a bulk change of 388 regions that moves no focus, which
+   is what WCAG 2.1 SC 4.1.3 asks to be communicated. The region carries the
+   count, so it adds something the button's own label does not repeat. */
+.pid-visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* Printing, and anyone saving the page as a PDF, gets the code in full.
+
+   This must not depend on JavaScript. Hiding the bars while a closed <details>
+   still hides its own contents is how a reader with scripting off would print
+   the prose with 388 silent gaps, which is worse than printing the code.
+
+   Two mechanisms, because no single one reaches every engine:
+     - ::details-content, which is how current Firefox and Chromium hide the
+       collapsed content (`content-visibility: hidden` in their UA stylesheets,
+       which an author rule overrides). Baseline since September 2025.
+     - the legacy shape, where the non-summary children were hidden with
+       display: none.
+   The beforeprint handler in code-collapse.js stays as the path for engines
+   older than either, and is what actually sets `open`. */
 @media print {
-	details.pid-code > summary.pid-code__bar,
-	.pid-code-switch {
+	/* Scoped to [open]: a block the script did manage to open has its code
+	   visible, so the bar carries no information. A block that is still closed
+	   keeps its bar, so an engine that reaches neither rule below at least
+	   prints a visible marker of what is missing rather than a silent gap. */
+	details.pid-code[open] > summary.pid-code__bar {
 		display: none;
 	}
+
+	details.pid-code::details-content {
+		content-visibility: visible !important;
+	}
+
+	details.pid-code:not([open]) > *:not(summary) {
+		display: block !important;
+	}
+
 	details.pid-code {
 		margin: 0;
+	}
+
+	.pid-code-switch-wrap {
+		display: none;
 	}
 }

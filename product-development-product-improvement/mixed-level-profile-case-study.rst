@@ -198,13 +198,15 @@ variance is small.
         for budget, dash, width in [(60, "solid", 4), (48, "dash", 2)]:
             _, m = score(criterion, budget)
             q = m["fds"]["quantiles"]
-            print(f"{criterion}, {budget}, {m['d_efficiency']:.1f}, {m['i_efficiency']:.0f}, "
-                  f"{m['g_efficiency']:.1f}, {q['0.5']:.2f}, {q['1']:.2f}")
+            print(f"{criterion}, {budget}, {m['d_efficiency']:.1f}, "
+                  f"{m['i_efficiency']:.0f}, {m['g_efficiency']:.1f}, "
+                  f"{q['0.5']:.2f}, {q['1']:.2f}")
             # i_optimal, 60, 15.4, 159, 48.4, 0.40, 1.38
             # i_optimal, 48, 13.9, 132, 17.6, 0.57, 4.74
             # d_optimal, 60, 17.9, 106, 66.3, 0.63, 1.01
             # d_optimal, 48, 16.8, 80, 26.8, 1.01, 3.11
-            fig.add_scatter(x=[float(k) for k in q], y=list(q.values()), mode="lines+markers",
+            fig.add_scatter(x=[float(k) for k in q], y=list(q.values()),
+                            mode="lines+markers",
                             line=dict(color=colour, dash=dash, width=width),
                             name=f"{criterion}, n={budget}")
     fig.update_layout(xaxis_title="Fraction of design space",
@@ -304,7 +306,8 @@ reference, has no late drift; the analogs drift by varying amounts.
     curves = pd.DataFrame(np.vstack(rows), columns=[f"t{t}" for t in time_points],
                           index=design.design.index)
 
-    mean_curve = pd.concat([design.design["compound"], curves], axis=1).groupby("compound").mean()
+    mean_curve = pd.concat([design.design["compound"], curves],
+                           axis=1).groupby("compound").mean()
     fig = go.Figure()
     for c in compounds:
         fig.add_scatter(x=time_points, y=mean_curve.loc[c], mode="lines+markers", name=c)
@@ -420,7 +423,8 @@ we drop A); in the interaction analysis later we will use and show the sum codin
 .. code-block:: python
 
     dummies = pd.get_dummies(design.design["compound"], prefix="cmp").astype(float)
-    X = pd.concat([design.design[list(cont)].astype(float), dummies.drop(columns=["cmp_A"])], axis=1)
+    X = pd.concat([design.design[list(cont)].astype(float),
+                   dummies.drop(columns=["cmp_A"])], axis=1)
 
 The four continuous factors keep their coded :math:`-1` to :math:`+1` values, and the compound
 contributes via the five indicators B to F. This is called a main-effects model: each compound shifts
@@ -447,7 +451,8 @@ can be passed straight in. Fitting it, and reading the scores and the
     fig = make_subplots(rows=1, cols=2, subplot_titles=("scores", "W* and C loadings"))
     for c in compounds:
         m = (design.design["compound"] == c).to_numpy()
-        fig.add_scatter(x=scores[m, 0], y=scores[m, 1], mode="markers", name=c, row=1, col=1)
+        fig.add_scatter(x=scores[m, 0], y=scores[m, 1], mode="markers", name=c,
+                        row=1, col=1)
     fig.add_scatter(x=wstar.iloc[:, 0], y=wstar.iloc[:, 1], mode="markers+text",
                     text=list(wstar.index), name="factor (W*)", row=1, col=2)
     fig.add_scatter(x=cw.iloc[:, 0], y=cw.iloc[:, 1], mode="lines+markers+text",
@@ -705,7 +710,8 @@ each number of components:
 
     q2 = []
     for a in range(1, 6):
-        cv = PLS(n_components=a, scale=True).fit(X_int, curves).cross_validate(X_int, curves, cv="loo")
+        fitted = PLS(n_components=a, scale=True).fit(X_int, curves)
+        cv = fitted.cross_validate(X_int, curves, cv="loo")
         q2.append(float(cv["q_squared"].mean()))
     print(np.round(q2, 2))  # 0.52, 0.78, 0.78, 0.77, 0.80
 
@@ -766,10 +772,11 @@ components gives its scores and loadings for the expanded model:
     palette = ["#1f5fa8", "#c0392b", "#2e8b57", "#8e44ad", "#d68910", "#17a2b8"]
     colour_of = dict(zip(compounds, palette))
 
-    # Score plot: four encodings on one point. Colour is the compound (as before); marker shape is
-    # the pH level (down triangle low, circle high); marker size grows with the concentration; and
-    # the co-solvent is an open, outline-only marker at the low setting and a filled marker at the
-    # high setting (the "-open" symbol suffix draws the outline only).
+    # Score plot: four encodings on one point. Colour is the compound (as before);
+    # marker shape is the pH level (down triangle low, circle high); marker size grows
+    # with the concentration; and the co-solvent is an open, outline-only marker at the
+    # low setting and a filled marker at the high setting (the "-open" symbol suffix
+    # draws the outline only).
     base = np.where(adf["pH"] < 0, "triangle-down", "circle")
     symbol = np.where(adf["co_solvent"] < 0, np.char.add(base, "-open"), base)
     size = 8 + 5 * (adf["concentration"] + 1)  # coded concentration in [-1, 1]
@@ -777,12 +784,13 @@ components gives its scores and loadings for the expanded model:
     fig = make_subplots(rows=1, cols=2, subplot_titles=("scores", "W* and C loadings"))
     for c in compounds:
         m = (adf["compound"] == c).to_numpy()
-        fig.add_scatter(x=tscore[m, 0], y=tscore[m, 1], mode="markers", name=c, row=1, col=1,
+        fig.add_scatter(x=tscore[m, 0], y=tscore[m, 1], mode="markers", name=c,
+                        row=1, col=1,
                         marker=dict(color=colour_of[c], symbol=symbol[m], size=size[m],
                                     line=dict(width=1, color=colour_of[c])))
 
-    # Loadings: each compound term (main effect or interaction) takes its compound's colour, the
-    # other factor terms are black, and the ten time points are red.
+    # Loadings: each compound term (main effect or interaction) takes its compound's
+    # colour, the other factor terms are black, and the ten time points are red.
     def term_colour(name):
         for c in compounds:
             if f"[S.{c}]" in name:
@@ -807,8 +815,10 @@ column, at three components), and the leave-one-out :math:`Q^2_Y` per response c
 
 .. code-block:: python
 
-    r2y = pls_full.r2y_per_variable_.iloc[:, -1]  # cumulative R2Y per time point, three components
-    q2y = pls_full.cross_validate(X_int, curves, cv="loo")["q_squared"]  # leave-one-out Q2Y per point
+    # cumulative R2Y per time point, three components
+    r2y = pls_full.r2y_per_variable_.iloc[:, -1]
+    # leave-one-out Q2Y per point
+    q2y = pls_full.cross_validate(X_int, curves, cv="loo")["q_squared"]
     print(pd.DataFrame({"R2Y": np.round(r2y, 2), "Q2Y": np.round(q2y, 2)}))
 
 .. list-table:: :math:`R^2_Y` and leave-one-out :math:`Q^2_Y` per time point (three-component model)
@@ -939,7 +949,8 @@ row for one setting with the same coding as the fitted matrix:
                             "co_solvent": [co_solvent],
                             "pH": [pH],
                             "temperature": [temperature]})
-        return build_design_matrices([info], row, return_type="dataframe")[0].drop(columns=["Intercept"])
+        design_row = build_design_matrices([info], row, return_type="dataframe")[0]
+        return design_row.drop(columns=["Intercept"])
 
 The fourth question asks which candidate develops colour like the reference compound A. To make that
 precise, take compound A at the centre point, the nominal mid-range value of every continuous factor,
@@ -959,9 +970,9 @@ for new rows:
     spe = pls_full.spe_.iloc[:, -1]  # per-run SPE at three components
     print(pls_full.hotellings_t2_limit(), pls_full.spe_limit())  # 8.7, 6.5
 
-    # Same four-way encoding as the score plot (colour_of, symbol, size defined above), so the same
-    # run is trackable across the two figures: colour = compound, shape = pH, size = concentration,
-    # open/filled = co-solvent.
+    # Same four-way encoding as the score plot (colour_of, symbol, size defined above),
+    # so the same run is trackable across the two figures: colour = compound,
+    # shape = pH, size = concentration, open/filled = co-solvent.
     fig = go.Figure()
     for c in compounds:
         m = (design.design["compound"] == c).to_numpy()
@@ -1035,12 +1046,15 @@ stops holding:
     n = 30
     g = np.array(["A"] * 11 + ["B"] * 10 + ["C"] * 9); rng.shuffle(g)
     xcol = rng.normal(size=n)
-    level_means = {"A": 0.0, "B": 1.0, "C": -0.5}  # not `truth`, which the case study uses later
+    # not `truth`, which the case study uses later
+    level_means = {"A": 0.0, "B": 1.0, "C": -0.5}
     y = np.array([level_means[v] for v in g]) + 0.7 * xcol + 0.1 * rng.normal(size=n)
     demo = pd.DataFrame({"g": g, "x": xcol}); ydf = pd.DataFrame({"y": y})
 
-    X_sum = dmatrix("C(g, Sum) + x", demo, return_type="dataframe").drop(columns=["Intercept"])
-    X_trt = dmatrix("C(g, Treatment) + x", demo, return_type="dataframe").drop(columns=["Intercept"])
+    X_sum = dmatrix("C(g, Sum) + x", demo,
+                    return_type="dataframe").drop(columns=["Intercept"])
+    X_trt = dmatrix("C(g, Treatment) + x", demo,
+                    return_type="dataframe").drop(columns=["Intercept"])
     for a in (1, 2, 3):  # three model terms, so three components is full rank
         p_sum = PLS(n_components=a, scale=True).fit(X_sum, ydf).predictions_
         p_trt = PLS(n_components=a, scale=True).fit(X_trt, ydf).predictions_
@@ -1094,8 +1108,10 @@ under each coding and reading Hotelling's :math:`T^2` per run:
 
     def fit_coding(formula, order=("A", "B", "C", "D", "E", "F")):
         frame = adf.copy()
-        frame["compound"] = pd.Categorical(frame["compound"].astype(str), categories=list(order))
-        X = dmatrix(formula, frame, return_type="dataframe").drop(columns=["Intercept"], errors="ignore")
+        frame["compound"] = pd.Categorical(frame["compound"].astype(str),
+                                           categories=list(order))
+        mat = dmatrix(formula, frame, return_type="dataframe")
+        X = mat.drop(columns=["Intercept"], errors="ignore")
         return PLS(n_components=3, scale=True).fit(X, curves)
 
     panels = [("sum, F omitted", rhs_sum, ("A", "B", "C", "D", "E", "F")),
@@ -1111,7 +1127,8 @@ under each coding and reading Hotelling's :math:`T^2` per run:
         for comp in compounds:
             sel = (adf["compound"] == comp).to_numpy()
             fig.add_scatter(x=[comp] * int(sel.sum()), y=t2[sel], mode="markers",
-                            marker=dict(color=colour_of[comp]), row=r + 1, col=c + 1, showlegend=False)
+                            marker=dict(color=colour_of[comp]), row=r + 1, col=c + 1,
+                            showlegend=False)
         fig.add_hline(y=model.hotellings_t2_limit(), line_dash="dash", row=r + 1, col=c + 1)
     fig.show()
 
@@ -1208,7 +1225,8 @@ the nominal centre.
     def compensate(compound):
         base = pls_full.transform(encode(compound, 0, 0, 0, 0)).to_numpy().ravel()
         step = np.column_stack([
-            pls_full.transform(encode(compound, *[float(k == j) for k in range(4)])).to_numpy().ravel() - base
+            pls_full.transform(encode(compound, *[float(k == j) for k in range(4)]))
+            .to_numpy().ravel() - base
             for j in range(4)])
         coded, *_ = np.linalg.lstsq(step, t_goal - base, rcond=None)
         return coded  # coded [concentration, co_solvent, pH, temperature]
@@ -1318,7 +1336,8 @@ shaded and light separators between the factor rows:
 .. code-block:: python
 
     factors = ["concentration", "co_solvent", "pH", "temperature"]
-    coded = pd.DataFrame({c: compensate(c) for c in ["B", "C", "D", "E", "F"]}, index=factors)
+    coded = pd.DataFrame({c: compensate(c) for c in ["B", "C", "D", "E", "F"]},
+                         index=factors)
 
     fig = go.Figure()
     fig.add_vrect(x0=-1, x1=1, fillcolor="#e8eef5", line_width=0)
@@ -1369,7 +1388,8 @@ least-squares closest match gives a coding-invariant reading:
 
     def curve_of(compound, coded):
         row = pd.DataFrame({"compound": [compound], "concentration": [coded[0]],
-                            "co_solvent": [coded[1]], "pH": [coded[2]], "temperature": [coded[3]]})
+                            "co_solvent": [coded[1]], "pH": [coded[2]],
+                            "temperature": [coded[3]]})
         x = build_design_matrices([info_full.design_info], row, return_type="dataframe")[0]
         return x.to_numpy().ravel() @ beta
 
@@ -1408,8 +1428,10 @@ seven-level factor three ways shows what each coding does with it:
 .. code-block:: python
 
     seven = pd.DataFrame({"compound": ["A", "B", "C", "D", "E", "F", "G"],
-                          "co_solvent": 0.0, "pH": 0.0, "temperature": 0.0, "concentration": 0.0})
-    for label, formula in [("sum", "C(compound, Sum)"), ("treatment", "C(compound, Treatment)"),
+                          "co_solvent": 0.0, "pH": 0.0, "temperature": 0.0,
+                          "concentration": 0.0})
+    for label, formula in [("sum", "C(compound, Sum)"),
+                           ("treatment", "C(compound, Treatment)"),
                            ("cell-means", "0 + C(compound)")]:
         print(label, list(dmatrix(formula, seven, return_type="dataframe").columns))
 
@@ -1522,14 +1544,17 @@ interaction model:
     import itertools
 
     base = design.design[["compound"] + list(cont)].astype({"compound": str})
-    res3 = [(-1, -1, 1), (1, -1, -1), (-1, 1, -1), (1, 1, 1)]  # four-run resolution-III fraction
+    # four-run resolution-III fraction
+    res3 = [(-1, -1, 1), (1, -1, -1), (-1, 1, -1), (1, 1, 1)]
     full = list(itertools.product([-1, 1], repeat=3))  # eight-run full factorial (2**3)
 
     def g_block(rows):  # compound G at the centre concentration
         return pd.DataFrame([{"compound": "G", "concentration": 0.0,
-                              "co_solvent": a, "pH": b, "temperature": c} for a, b, c in rows])
+                              "co_solvent": a, "pH": b, "temperature": c}
+                             for a, b, c in rows])
 
-    for label, block in [("base", base.iloc[:0]),  # base has no G: patsy fits the six-level model
+    # base has no G: patsy fits the six-level model
+    for label, block in [("base", base.iloc[:0]),
                          ("+4", g_block(res3)), ("+8", g_block(full))]:
         aug = pd.concat([base, block], ignore_index=True)
         m = evaluate_design(aug, model=rhs,
@@ -1609,7 +1634,8 @@ reference profile on the developed part (``t1`` onward, since ``t0`` is near-zer
 
     def true_curve(compound, coded):  # the ground truth defined earlier
         drift, s_co, s_ph, s_tp = truth[compound]
-        amp = max(1.0 + 0.35 * coded[0] + s_co * coded[1] + s_ph * coded[2] + s_tp * coded[3], 0.05)
+        amp = max(1.0 + 0.35 * coded[0] + s_co * coded[1] + s_ph * coded[2]
+                  + s_tp * coded[3], 0.05)
         return amp * np.clip(ref + drift * tail, 0, None)
 
     goal_curve = true_curve("A", [0, 0, 0, 0])  # the reference profile to reproduce
@@ -1617,7 +1643,8 @@ reference profile on the developed part (``t1`` onward, since ``t0`` is near-zer
 
     for c in ["B", "C", "D", "E", "F"]:
         got = true_curve(c, curve_match(c))  # curve_match(c) from the block above
-        rmse = float(np.sqrt(np.mean((got[1:] - goal_curve[1:]) ** 2)))  # developed curve, t1 onward
+        # developed curve, t1 onward
+        rmse = float(np.sqrt(np.mean((got[1:] - goal_curve[1:]) ** 2)))
         print(c, round(rmse, 3), round(rmse / noise, 1))
 
 The continuous factors move only the amplitude, so the closest any setting can bring a candidate to
@@ -1686,14 +1713,17 @@ differences that remain:
 .. code-block:: python
 
     def best_emulation(compound):  # best amplitude for the compound's shape
-        shape = np.clip(ref + truth[compound][0] * tail, 0, None)  # truth[c][0] is the drift
-        return float(shape[1:] @ goal_curve[1:] / (shape[1:] @ shape[1:])) * shape  # fit on t1 onward
+        # truth[c][0] is the drift
+        shape = np.clip(ref + truth[compound][0] * tail, 0, None)
+        # fit on t1 onward
+        return float(shape[1:] @ goal_curve[1:] / (shape[1:] @ shape[1:])) * shape
 
     fig = go.Figure()
     fig.add_scatter(x=time_points[1:], y=goal_curve[1:], mode="lines+markers",
                     name="A (reference)", line=dict(width=4, color="black"))
     for c in ["B", "F", "C", "D", "E"]:  # ordered by drift, closest first
-        fig.add_scatter(x=time_points[1:], y=best_emulation(c)[1:], mode="lines+markers", name=c)
+        fig.add_scatter(x=time_points[1:], y=best_emulation(c)[1:],
+                        mode="lines+markers", name=c)
     fig.update_layout(xaxis_title="time point (t0 omitted)", yaxis_title="absorbance")
     fig.show()
 
@@ -1744,7 +1774,8 @@ best attainable match:
 
     for c in ["B", "C", "D", "E", "F"]:
         settings = relaxed_inversion(c)
-        rmse = np.sqrt(np.mean((true_curve(c, settings)[1:] - goal_curve[1:]) ** 2))  # t1 onward
+        # t1 onward
+        rmse = np.sqrt(np.mean((true_curve(c, settings)[1:] - goal_curve[1:]) ** 2))
         print(c, round(float(rmse), 3))  # 0.016  0.061  0.100  0.105  0.048
 
 Each relaxed solution lands at or above its candidate's best attainable match (B at 0.016 and D at

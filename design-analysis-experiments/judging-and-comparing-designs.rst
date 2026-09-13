@@ -347,7 +347,8 @@ worst-case values; the next section uses it to draw the plot.
 	import numpy as np
 	import pandas as pd
 	import plotly.graph_objects as go
-	from process_improve.experiments import Factor, evaluate_design, generate_design, generate_omars, is_omars
+	from process_improve.experiments import (Factor, evaluate_design, generate_design,
+	                                         generate_omars, is_omars)
 
 	def fds(design, model, *, n_samples, seed=1):
 	    """Region prediction-variance summary from ``evaluate_design``: the FDS
@@ -363,9 +364,11 @@ worst-case values; the next section uses it to draw the plot.
 	# precision-optimal (A-optimal) 13-run OMARS member of the same foldover family,
 	# the latter carrying two estimable two-factor interactions. is_omars confirms each.
 	factors4 = [Factor(name=c, low=-1, high=1) for c in "ABCD"]
-	dsd4 = np.asarray(generate_design(factors4, design_type="dsd").design[list("ABCD")], float)
-	omars4 = np.asarray(generate_omars(factors4, n_runs=13, model="main_quadratic",
-	                                   selection_criterion="a_optimal").design[list("ABCD")], float)
+	dsd4 = np.asarray(generate_design(factors4, design_type="dsd").design[list("ABCD")],
+	                  float)
+	omars4 = np.asarray(
+	    generate_omars(factors4, n_runs=13, model="main_quadratic",
+	                   selection_criterion="a_optimal").design[list("ABCD")], float)
 	assert is_omars(dsd4) and is_omars(omars4)
 	model4 = " + ".join(list("ABCD") + [f"I({c}**2)" for c in "ABCD"])
 

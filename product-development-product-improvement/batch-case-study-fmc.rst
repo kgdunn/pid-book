@@ -119,45 +119,59 @@ unfolded trajectories. ``BatchPCA`` and ``BatchPLS`` need complete data.
 	import pandas as pd
 	import plotly.graph_objects as go
 	from plotly.subplots import make_subplots
-	from process_improve.batch import dict_to_wide, load_dryer, load_fmc, unfolded_contribution_plot
+	from process_improve.batch import (dict_to_wide, load_dryer, load_fmc,
+	                                   unfolded_contribution_plot)
 	from process_improve.multivariate import PCA, PLS, MCUVScaler
 	from process_improve.multivariate.methods import MBPLS
 
-	fmc = load_fmc()                                # https://openmv.net/file/batch-dryer.xlsx
+	fmc = load_fmc()  # https://openmv.net/file/batch-dryer.xlsx
 	keep = [batch_id for batch_id in fmc.batch_ids if batch_id not in fmc.missing_chemistry]
 	X = {batch_id: fmc.X[batch_id] for batch_id in keep}
 	Y, Zop, Zchem = fmc.Y.loc[keep], fmc.Zop.loc[keep], fmc.Zchem.loc[keep]
-	groups = pd.Series(pd.cut(keep, bins=[0, 33, 61, 71], labels=["good", "abnormal", "high solvent"]).astype(str), index=keep)
+	groups = pd.Series(pd.cut(keep, bins=[0, 33, 61, 71],
+	                          labels=["good", "abnormal", "high solvent"]).astype(str),
+	                   index=keep)
 	incomplete = [batch_id for batch_id, batch in X.items() if batch.isna().any().any()]
-	print(len(X), "batches kept; missing cells: Y", int(Y.isna().sum().sum()), "Zchem", int(Zchem.isna().sum().sum()),
-	      "X in batches", incomplete)
-	# 46 batches kept; missing cells: Y 19 Zchem 1 X in batches [20, 22, 27, 28, 31, 55, 60, 61, 67, 71]
-	average = pd.concat(X.values()).groupby(level=0).mean()                  # the average trajectory of every tag
+	print(len(X), "batches kept; missing cells: Y", int(Y.isna().sum().sum()),
+	      "Zchem", int(Zchem.isna().sum().sum()), "X in batches", incomplete)
+	# 46 batches kept; missing cells: Y 19 Zchem 1 X in batches
+	# [20, 22, 27, 28, 31, 55, 60, 61, 67, 71]
+	# the average trajectory of every tag
+	average = pd.concat(X.values()).groupby(level=0).mean()
 	agitator = average["Agitator"]
-	phase_ends = (int((agitator > (agitator.min() + agitator.max()) / 2).idxmax()), int(average["D-Temp"].idxmax()))
-	print(*phase_ends)                              # the first high-speed sample, and the sample of the peak dryer temperature
+	phase_ends = (int((agitator > (agitator.min() + agitator.max()) / 2).idxmax()),
+	              int(average["D-Temp"].idxmax()))
+	# the first high-speed sample, and the sample of the peak dryer temperature
+	print(*phase_ends)
 	# 175 249
 
-	GREY, ORANGE, AQUA, BLUE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a"                  # figure colours
-	PURPLE, GOLD, BAND = "#6f42c1", "#d4a017", "#e9edf4"                                   # ... and the shading behind bars
-	DARK_GREY = "#8c8c8c"                                                                  # the phase-separator lines
-	PALE_GREY = "#dcdcdc"                                                                  # many batches drawn at once
+	GREY, ORANGE, AQUA, BLUE = "#c8c8c8", "#c55a11", "#1baf7a", "#1f3d7a"  # figure colours
+	PURPLE, GOLD, BAND = "#6f42c1", "#d4a017", "#e9edf4"  # ... and the shading behind bars
+	DARK_GREY = "#8c8c8c"  # the phase-separator lines
+	PALE_GREY = "#dcdcdc"  # many batches drawn at once
 
 .. code-block:: python
 
 	raw = load_dryer()                              # the same dryer, before alignment
 	shared = [batch_id for batch_id in raw if batch_id in fmc.X]
-	duration = {batch_id: float(np.nanmax(batch["ClockTime"]) - np.nanmin(batch["ClockTime"]))
+	duration = {batch_id: float(np.nanmax(batch["ClockTime"])
+	                            - np.nanmin(batch["ClockTime"]))
 	            for batch_id, batch in raw.items() if batch_id in fmc.X}
 	by_duration = sorted(duration, key=duration.get)
-	shortest, middling, longest = by_duration[0], by_duration[len(by_duration) // 2], by_duration[-1]
-	print(f"{len(shared)} batches, {min(duration.values()):.0f} to {max(duration.values()):.0f} time units",
-	      f"(batch {shortest} and batch {longest}); every one is aligned to {len(fmc.X[shortest])} samples")
-	# 59 batches, 93 to 200 time units (batch 9 and batch 34); every one is aligned to 325 samples
+	shortest, middling, longest = (by_duration[0], by_duration[len(by_duration) // 2],
+	                               by_duration[-1])
+	print(f"{len(shared)} batches, {min(duration.values()):.0f}"
+	      f" to {max(duration.values()):.0f} time units",
+	      f"(batch {shortest} and batch {longest}); every one is aligned to"
+	      f" {len(fmc.X[shortest])} samples")
+	# 59 batches, 93 to 200 time units (batch 9 and batch 34); every one is aligned
+	# to 325 samples
 
-	panels = [("Before: dryer temperature against clock time", raw, "ClockTime", "DryerTemp"),
+	panels = [("Before: dryer temperature against clock time",
+	           raw, "ClockTime", "DryerTemp"),
 	          ("After: the same batches against aligned sample", fmc.X, None, "D-Temp"),
-	          ("The warp itself: clock time at each aligned sample", fmc.X, None, "ClockTime")]
+	          ("The warp itself: clock time at each aligned sample",
+	           fmc.X, None, "ClockTime")]
 	fig = make_subplots(rows=1, cols=3, subplot_titles=[title for title, *_ in panels])
 	for col, (_, source, x_tag, y_tag) in enumerate(panels, start=1):
 	    for batch_id in shared:
@@ -189,26 +203,32 @@ unfolded trajectories. ``BatchPCA`` and ``BatchPLS`` need complete data.
 
 .. code-block:: python
 
-	STYLES = {"good": (BLUE, "circle"), "abnormal": (PURPLE, "triangle-up"), "high solvent": (GOLD, "square")}
+	STYLES = {"good": (BLUE, "circle"), "abnormal": (PURPLE, "triangle-up"),
+	          "high solvent": (GOLD, "square")}
 
 	def overlay(batches, tag, highlight):
-	    """One tag for every batch in grey, the batches in `highlight` (id -> colour) on top, the phase ends marked."""
+	    """One tag for every batch in grey, the batches in `highlight` (id -> colour) on
+	    top, the phase ends marked."""
 	    fig = go.Figure()
 	    for x in phase_ends:
 	        fig.add_vline(x=x, line_color=DARK_GREY, line_dash="dash", line_width=1)
 	    for batch_id, batch in batches.items():
 	        if batch_id not in highlight:
-	            fig.add_trace(go.Scatter(y=batch[tag], mode="lines", line=dict(color=GREY, width=1), showlegend=False))
+	            fig.add_trace(go.Scatter(y=batch[tag], mode="lines", showlegend=False,
+	                                     line=dict(color=GREY, width=1)))
 	    for batch_id, colour in highlight.items():
-	        fig.add_trace(go.Scatter(y=batches[batch_id][tag], mode="lines", name=f"batch {batch_id}",
+	        fig.add_trace(go.Scatter(y=batches[batch_id][tag], mode="lines",
+	                                 name=f"batch {batch_id}",
 	                                 line=dict(color=colour, width=3)))
 	    fig.update_layout(title=tag, xaxis_title="Sample [aligned time]", height=320)
 	    return fig
 
 	for tag in ("D-Temp", "J-Temp", "CTankLvl", "ClockTime"):
 	    overlay(X, tag, {20: ORANGE}).show()
-	first_phase = pd.concat([X[batch_id]["D-Temp"].iloc[:phase_ends[0]] for batch_id in keep if batch_id != 20])
-	print(f"dryer temperature over the first phase: batch 20 {X[20]['D-Temp'].iloc[:phase_ends[0]].mean():.1f},"
+	first_phase = pd.concat([X[batch_id]["D-Temp"].iloc[:phase_ends[0]]
+	                         for batch_id in keep if batch_id != 20])
+	print(f"dryer temperature over the first phase: batch 20"
+	      f" {X[20]['D-Temp'].iloc[:phase_ends[0]].mean():.1f},"
 	      f" the others {first_phase.mean():.1f}")
 	# dryer temperature over the first phase: batch 20 33.8, the others 23.7
 
@@ -240,49 +260,64 @@ involved.
 
 .. code-block:: python
 
-	y_scaled = MCUVScaler().fit_transform(Y)              # missing cells pass through; PCA switches to NIPALS
+	# missing cells pass through; PCA switches to NIPALS
+	y_scaled = MCUVScaler().fit_transform(Y)
 	pca_y = PCA(n_components=2).fit(y_scaled)
 	print("PCA on Y, R2 cumulative:", pca_y.r2_cumulative_.round(3).tolist())
 	# PCA on Y, R2 cumulative: [0.5, 0.703]
-	profile = PCA(n_components=4).fit(y_scaled)           # only to carry R2 past the two components used below
+	# only to carry R2 past the two components used below
+	profile = PCA(n_components=4).fit(y_scaled)
+	# held-out cells, not batches
 	cells = PCA.select_n_components(Y, max_components=4, cv_scheme="ekf", cv=7,
-	                                n_repeats=50, random_state=0)     # held-out cells, not batches
+	                                n_repeats=50, random_state=0)
 	print("R2 to four components:", (profile.r2_cumulative_ * 100).round(1).tolist())
 	# R2 to four components: [50.0, 70.3, 78.8, 86.6]
-	print("cell-wise Q2:", (cells.q2 * 100).round(1).tolist(), "->", int(cells.n_components), "component")
+	print("cell-wise Q2:", (cells.q2 * 100).round(1).tolist(), "->",
+	      int(cells.n_components), "component")
 	# cell-wise Q2: [33.4, 25.1, -44.6, -84.2] -> 1 component
 	def group_scatter(fig, x, y, highlight, row=None, col=None, showlegend=True):
-	    """One trace per class of the plant's classification (colour and marker shape from STYLES); the batches in
-	    `highlight` (id -> colour) are drawn larger and labelled, in the marker shape of their class."""
+	    """One trace per class of the plant's classification (colour and marker shape from
+	    STYLES); the batches in `highlight` (id -> colour) are drawn larger and labelled,
+	    in the marker shape of their class."""
 	    for label, (colour, symbol) in STYLES.items():
 	        members = [b for b in x.index if groups[b] == label and b not in highlight]
-	        fig.add_trace(go.Scatter(x=x.loc[members], y=y.loc[members], mode="markers", name=f"classed {label}",
-	                                 marker=dict(color=colour, symbol=symbol, size=14 if symbol == "square" else 16),
+	        fig.add_trace(go.Scatter(x=x.loc[members], y=y.loc[members], mode="markers",
+	                                 name=f"classed {label}",
+	                                 marker=dict(color=colour, symbol=symbol,
+	                                             size=14 if symbol == "square" else 16),
 	                                 text=members,
-	                                 hovertemplate="batch %{text}", showlegend=showlegend), row=row, col=col)
-	    for b, colour in highlight.items():
-	        fig.add_trace(go.Scatter(x=[x.loc[b]], y=[y.loc[b]], mode="markers+text", text=[str(b)], textposition="top right",
-	                                 marker=dict(color=colour, symbol=STYLES[groups[b]][1],
-	                                             size=20 if STYLES[groups[b]][1] == "square" else 22), showlegend=False),
+	                                 hovertemplate="batch %{text}", showlegend=showlegend),
 	                      row=row, col=col)
+	    for b, colour in highlight.items():
+	        fig.add_trace(
+	            go.Scatter(x=[x.loc[b]], y=[y.loc[b]], mode="markers+text",
+	                       text=[str(b)], textposition="top right",
+	                       marker=dict(color=colour, symbol=STYLES[groups[b]][1],
+	                                   size=20 if STYLES[groups[b]][1] == "square" else 22),
+	                       showlegend=False),
+	            row=row, col=col)
 	    return fig
 
 	def label_corner(points, here):
-	    """The corner around `here` with the fewest close neighbours: where a label will not sit on a marker.
+	    """The corner around `here` with the fewest close neighbours: where a label will
+	    not sit on a marker.
 
-	    Distances are taken in units of each axis's own range, so the choice matches what the reader sees
-	    rather than the units the scores happen to have."""
+	    Distances are taken in units of each axis's own range, so the choice matches
+	    what the reader sees rather than the units the scores happen to have."""
 	    span = np.ptp(points, axis=0)
 	    near = (points - here) / np.where(span > 0, span, 1)
-	    near = near[(np.hypot(*near.T) < 0.10) & (np.hypot(*near.T) > 0)]   # close enough to collide with
+	    # close enough to collide with
+	    near = near[(np.hypot(*near.T) < 0.10) & (np.hypot(*near.T) > 0)]
 	    corners = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
-	    crowd = [np.sum((np.sign(near[:, 0]) == dx) & (np.sign(near[:, 1]) == dy)) for dx, dy in corners]
+	    crowd = [np.sum((np.sign(near[:, 0]) == dx) & (np.sign(near[:, 1]) == dy))
+	             for dx, dy in corners]
 	    return corners[int(np.argmin(crowd))]
 
 	def scores(model, r2, highlight, note="", labels=()):
-	    """Score plot of a PCA or PLS model coded by classification, with the percent of the variance each
-	    component explains (`r2`, per component, `note` saying of which block) on its axes, the 95% confidence
-	    ellipse, and a name against each batch in `labels`, so the text's batches carry from figure to figure."""
+	    """Score plot of a PCA or PLS model coded by classification, with the percent of
+	    the variance each component explains (`r2`, per component, `note` saying of which
+	    block) on its axes, the 95% confidence ellipse, and a name against each batch in
+	    `labels`, so the text's batches carry from figure to figure."""
 	    t = model.scores_
 	    fig = group_scatter(go.Figure(), t.iloc[:, 0], t.iloc[:, 1], highlight)
 	    points, placed = t.iloc[:, :2].to_numpy(dtype=float), []
@@ -291,17 +326,22 @@ involved.
 	        dx, dy = label_corner(np.vstack([points, *placed]), here)
 	        fig.add_annotation(x=here[0], y=here[1], text=str(batch_id), showarrow=False,
 	                           xshift=13 * dx, yshift=11 * dy, font=dict(size=11))
-	        placed.append(here + 0.03 * np.ptp(points, axis=0) * np.array([dx, dy]))  # so the next label avoids it
+	        # so the next label avoids it
+	        placed.append(here + 0.03 * np.ptp(points, axis=0) * np.array([dx, dy]))
 	    ex, ey = model.ellipse_coordinates(score_horiz=1, score_vert=2, conf_level=0.95)
-	    fig.add_trace(go.Scatter(x=ex, y=ey, mode="lines", line=dict(color=GREY, dash="dash"), name="95% confidence ellipse"))
+	    fig.add_trace(go.Scatter(x=ex, y=ey, mode="lines", name="95% confidence ellipse",
+	                             line=dict(color=GREY, dash="dash")))
 	    r2 = np.asarray(r2)
-	    fig.update_layout(xaxis_title=f"t1 [{note}{r2[0]:.1%}]", yaxis_title=f"t2 [{note}{r2[1]:.1%}]", height=440)
+	    fig.update_layout(xaxis_title=f"t1 [{note}{r2[0]:.1%}]",
+	                      yaxis_title=f"t2 [{note}{r2[1]:.1%}]", height=440)
 	    return fig
 
 	def shade_alternate(fig, n, row=None, col=None):
-	    """Shade every second position of a bar chart, so that neighbouring groups of bars read apart."""
+	    """Shade every second position of a bar chart, so that neighbouring groups of bars
+	    read apart."""
 	    for k in range(0, n, 2):
-	        fig.add_vrect(x0=k - 0.5, x1=k + 0.5, fillcolor=BAND, line_width=0, layer="below", row=row, col=col)
+	        fig.add_vrect(x0=k - 0.5, x1=k + 0.5, fillcolor=BAND, line_width=0,
+	                      layer="below", row=row, col=col)
 
 	def explained_x(pls_model):
 	    """R2 of X per component of a PLS model, averaged over its columns.
@@ -316,17 +356,23 @@ involved.
 	scores(pca_y, pca_y.r2_per_component_, {61: ORANGE, 14: AQUA}).show()
 	print(pca_y.scores_.groupby(groups).agg(["mean", "min", "max", "count"]).round(2))
 	t1_y = pca_y.scores_.iloc[:, 0]
-	print(f"negative t1: {int((t1_y[groups == 'abnormal'] < 0).sum())} of {int((groups == 'abnormal').sum())} abnormal;"
-	      f" positive t1: {int((t1_y[groups == 'good'] > 0).sum())} of {int((groups == 'good').sum())} good;"
-	      f" positive on both: {int((pca_y.scores_.loc[groups == 'high solvent'] > 0).all(axis=1).sum())} of"
+	print(f"negative t1: {int((t1_y[groups == 'abnormal'] < 0).sum())}"
+	      f" of {int((groups == 'abnormal').sum())} abnormal;"
+	      f" positive t1: {int((t1_y[groups == 'good'] > 0).sum())}"
+	      f" of {int((groups == 'good').sum())} good;"
+	      f" positive on both:"
+	      f" {int((pca_y.scores_.loc[groups == 'high solvent'] > 0).all(axis=1).sum())} of"
 	      f" {int((groups == 'high solvent').sum())} high solvent")
-	# negative t1: 15 of 17 abnormal; positive t1: 21 of 23 good; positive on both: 6 of 6 high solvent
+	# negative t1: 15 of 17 abnormal; positive t1: 21 of 23 good; positive on both:
+	# 6 of 6 high solvent
 	contributions = pca_y.score_contributions(y_scaled, component=1)
 	fig = go.Figure()
 	for batch_id, colour in ((61, ORANGE), (14, AQUA)):
-	    fig.add_trace(go.Bar(x=list(Y.columns), y=contributions.loc[batch_id], name=f"batch {batch_id}", marker_color=colour))
+	    fig.add_trace(go.Bar(x=list(Y.columns), y=contributions.loc[batch_id],
+	                         name=f"batch {batch_id}", marker_color=colour))
 	shade_alternate(fig, len(Y.columns))
-	fig.update_layout(title="Contributions to t1 of one batch from each group", yaxis_title="Contribution", height=320)
+	fig.update_layout(title="Contributions to t1 of one batch from each group",
+	                  yaxis_title="Contribution", height=320)
 	fig.show()
 
 .. figure:: ../figures/batch/batch-case-fmc-quality-pca.png
@@ -408,25 +454,30 @@ then from the operating conditions :math:`\mathbf{Z}_\text{op}`.
 	pls_chem = PLS(n_components=2, scale=False).fit(zchem_scaled, y_scaled)
 	pls_op = PLS(n_components=2, scale=False).fit(zop_scaled, y_scaled)
 	for name, model in (("PCA on Y", pca_y), ("PLS Zchem", pls_chem), ("PLS Zop", pls_op)):
-	    print(name, (model.r2_cumulative_ * 100).round(1).tolist())   # quality explained, cumulative
+	    # quality explained, cumulative
+	    print(name, (model.r2_cumulative_ * 100).round(1).tolist())
 	# PCA on Y [50.0, 70.3]
 	# PLS Zchem [16.3, 22.2]
 	# PLS Zop [20.7, 26.2]
-	for name, Z in (("PLS Zchem", Zchem), ("PLS Zop", Zop)):          # the same, on held-out batches
+	# the same, on held-out batches
+	for name, Z in (("PLS Zchem", Zchem), ("PLS Zop", Zop)):
 	    cv = PLS.select_n_components(Z, Y, max_components=2, cv=7, random_state=0)
-	    # "total" pools the eight attributes on their original scale, where the widest-ranging
-	    # one decides the number almost on its own. "scaled_total" gives each attribute the same
-	    # weight, which is the footing the fitted R2Y above is already on, so the two columns of
-	    # the table can be read against each other. The choice matters here: pooled on the raw
-	    # scale these two rows read 14.8 and -5.0, which reverses which block predicts better.
+	    # "total" pools the eight attributes on their original scale, where the
+	    # widest-ranging one decides the number almost on its own. "scaled_total" gives
+	    # each attribute the same weight, which is the footing the fitted R2Y above is
+	    # already on, so the two columns of the table can be read against each other. The
+	    # choice matters here: pooled on the raw scale these two rows read 14.8 and -5.0,
+	    # which reverses which block predicts better.
 	    print(name, (cv.r2y_validated["scaled_total"] * 100).round(1).tolist())
 	# PLS Zchem [2.8, 1.2]
 	# PLS Zop [1.3, -5.3]
-	fig = scores(pls_op, explained_x(pls_op), {20: ORANGE}, note="R2X ", labels=[20, 61, 14])
+	fig = scores(pls_op, explained_x(pls_op), {20: ORANGE}, note="R2X ",
+	             labels=[20, 61, 14])
 	contribution = pls_op.score_contributions(zop_scaled, component=1).loc[20]
 	bars = go.Figure([go.Bar(x=contribution.index, y=contribution, marker_color=BLUE)])
 	shade_alternate(bars, len(contribution))
-	bars.update_layout(title="What puts batch 20 there", yaxis_title="Contribution to t1", height=440)
+	bars.update_layout(title="What puts batch 20 there", yaxis_title="Contribution to t1",
+	                   height=440)
 	fig.show()
 	bars.show()
 
@@ -509,33 +560,45 @@ of each block the components describe.
 	mb_z = MBPLS(n_components=2).fit(blocks_z, Y)
 	print("MBPLS Z -> Y, R2Y cumulative:", mb_z.r2_y_cumulative_.round(3).tolist())
 	# MBPLS Z -> Y, R2Y cumulative: [0.292, 0.364]
-	print("R2X per block after two components:", mb_z.r2_x_per_block_cumulative_.iloc[:, -1].round(3).to_dict())
+	print("R2X per block after two components:",
+	      mb_z.r2_x_per_block_cumulative_.iloc[:, -1].round(3).to_dict())
 	# R2X per block after two components: {'Zchem': 0.296, 'Zop': 0.356}
-	cv_mb = MBPLS.select_n_components(blocks_z, Y, max_components=2, cv=7, random_state=0)   # held-out batches
-	print("MBPLS Z -> Y, Q2Y cumulative:", (cv_mb.r2y_validated["scaled_total"] * 100).round(1).tolist())
+	# held-out batches
+	cv_mb = MBPLS.select_n_components(blocks_z, Y, max_components=2, cv=7, random_state=0)
+	print("MBPLS Z -> Y, Q2Y cumulative:",
+	      (cv_mb.r2y_validated["scaled_total"] * 100).round(1).tolist())
 	# MBPLS Z -> Y, Q2Y cumulative: [8.6, 4.5]
 
 	def block_axes(fig, r2, row=None, col=None, prefix="block t", note=""):
-	    """Axis titles of one score plot, with the percent of the variance each component explains (`r2`)."""
+	    """Axis titles of one score plot, with the percent of the variance each component
+	    explains (`r2`)."""
 	    r2 = np.asarray(r2)
 	    fig.update_xaxes(title_text=f"{prefix}1 [{note}{r2[0]:.1%}]", row=row, col=col)
 	    fig.update_yaxes(title_text=f"{prefix}2 [{note}{r2[1]:.1%}]", row=row, col=col)
 
-	fig = make_subplots(rows=2, cols=3, subplot_titles=["Super scores", "Zchem block scores", "Zop block scores",
-	                                                   "Super weights", "Zchem block weights", "Zop block weights"])
+	fig = make_subplots(rows=2, cols=3,
+	                    subplot_titles=["Super scores", "Zchem block scores",
+	                                    "Zop block scores", "Super weights",
+	                                    "Zchem block weights", "Zop block weights"])
 	super_t = mb_z.super_scores_
 	group_scatter(fig, super_t.iloc[:, 0], super_t.iloc[:, 1], {20: ORANGE}, row=1, col=1)
 	block_axes(fig, mb_z.r2_y_per_component_, 1, 1, prefix="super t", note="R2Y ")
-	weights = mb_z.super_weights_                                            # one row per block, one column per component
+	weights = mb_z.super_weights_  # one row per block, one column per component
 	for a, colour in ((1, BLUE), (2, ORANGE)):
-	    fig.add_trace(go.Bar(x=list(weights.index), y=weights.iloc[:, a - 1], name=f"component {a}", marker_color=colour), row=2, col=1)
+	    fig.add_trace(go.Bar(x=list(weights.index), y=weights.iloc[:, a - 1],
+	                         name=f"component {a}", marker_color=colour), row=2, col=1)
 	for col, (name, block_t) in enumerate(mb_z.block_scores_.items(), start=2):
-	    group_scatter(fig, block_t.iloc[:, 0], block_t.iloc[:, 1], {20: ORANGE}, row=1, col=col, showlegend=False)
-	    block_axes(fig, np.diff([0.0, *mb_z.r2_x_per_block_cumulative_.loc[name]]), 1, col, note="R2X ")
-	    w = mb_z.block_weights_[name]                                         # one row per variable of the block
-	    fig.add_trace(go.Scatter(x=w.iloc[:, 0], y=w.iloc[:, 1], mode="markers+text", text=list(w.index), textposition="top right",
-	                             marker=dict(color=BLUE, size=16), showlegend=False), row=2, col=col)
-	    fig.update_xaxes(title_text="block weight w1", row=2, col=col)      # weights carry no percent
+	    group_scatter(fig, block_t.iloc[:, 0], block_t.iloc[:, 1], {20: ORANGE},
+	                  row=1, col=col, showlegend=False)
+	    block_axes(fig, np.diff([0.0, *mb_z.r2_x_per_block_cumulative_.loc[name]]),
+	               1, col, note="R2X ")
+	    w = mb_z.block_weights_[name]  # one row per variable of the block
+	    fig.add_trace(go.Scatter(x=w.iloc[:, 0], y=w.iloc[:, 1], mode="markers+text",
+	                             text=list(w.index), textposition="top right",
+	                             marker=dict(color=BLUE, size=16), showlegend=False),
+	                  row=2, col=col)
+	    # weights carry no percent
+	    fig.update_xaxes(title_text="block weight w1", row=2, col=col)
 	    fig.update_yaxes(title_text="block weight w2", row=2, col=col)
 	fig.update_layout(height=820).show()
 
@@ -596,30 +659,40 @@ see.
 
 .. code-block:: python
 
-	wide = dict_to_wide(X)                # the ten process tags and ClockTime: 11 x 325 = 3575 columns per batch
+	# the ten process tags and ClockTime: 11 x 325 = 3575 columns per batch
+	wide = dict_to_wide(X)
 	x_scaled = MCUVScaler().fit_transform(wide)
-	x_scaled.columns = wide.columns       # MCUVScaler returns flat labels; the batch plots need the (tag, sequence) index
-	print(list(wide.shape), int(wide.isna().sum().sum()))       # batches x columns; missing cells
+	# MCUVScaler returns flat labels; the batch plots need the (tag, sequence) index
+	x_scaled.columns = wide.columns
+	# batches x columns; missing cells
+	print(list(wide.shape), int(wide.isna().sum().sum()))
 	# [46, 3575] 1340
 	pca_x = PCA(n_components=2).fit(x_scaled)
-	print(pca_x.r2_cumulative_.round(3).tolist())               # R2 of the trajectory block, cumulative
+	print(pca_x.r2_cumulative_.round(3).tolist())  # R2 of the trajectory block, cumulative
 	# [0.231, 0.376]
 	scores(pca_x, pca_x.r2_per_component_, {20: ORANGE}, labels=[20, 61, 14]).show()
 	t2, spe = pca_x.hotellings_t2_.iloc[:, -1], pca_x.spe_.iloc[:, -1]
-	t2_limit, spe_limit = pca_x.hotellings_t2_limit(conf_level=0.95), pca_x.spe_limit(conf_level=0.95)
-	both = sorted(t2.index[(t2 > t2_limit) & (spe > spe_limit)])            # above both limits
-	spe_only = sorted(spe.index[(spe > spe_limit) & (t2 <= t2_limit)])      # above the SPE limit only
+	t2_limit, spe_limit = (pca_x.hotellings_t2_limit(conf_level=0.95),
+	                       pca_x.spe_limit(conf_level=0.95))
+	# above both limits
+	both = sorted(t2.index[(t2 > t2_limit) & (spe > spe_limit)])
+	# above the SPE limit only
+	spe_only = sorted(spe.index[(spe > spe_limit) & (t2 <= t2_limit)])
 	print(both, spe_only)
 	# [20] [41, 51]
-	print(round(float(t2.loc[20] / t2_limit), 1), int((spe >= spe.loc[20]).sum()), round(float(spe.loc[47] / spe_limit), 2))
+	print(round(float(t2.loc[20] / t2_limit), 1), int((spe >= spe.loc[20]).sum()),
+	      round(float(spe.loc[47] / spe_limit), 2))
 	# 2.0 2 0.99
 
 	def influence_plot(model, highlight, labels, conf_level=0.95):
-	    """Hotelling's T2 against SPE, one marker per batch coded by classification, with both limits drawn."""
+	    """Hotelling's T2 against SPE, one marker per batch coded by classification, with
+	    both limits drawn."""
 	    t2, spe = model.hotellings_t2_.iloc[:, -1], model.spe_.iloc[:, -1]
 	    fig = group_scatter(go.Figure(), t2, spe, highlight)
-	    fig.add_vline(x=model.hotellings_t2_limit(conf_level=conf_level), line_dash="dash", line_color=GREY)
-	    fig.add_hline(y=model.spe_limit(conf_level=conf_level), line_dash="dash", line_color=GREY)
+	    fig.add_vline(x=model.hotellings_t2_limit(conf_level=conf_level),
+	                  line_dash="dash", line_color=GREY)
+	    fig.add_hline(y=model.spe_limit(conf_level=conf_level),
+	                  line_dash="dash", line_color=GREY)
 	    for batch_id in labels:
 	        fig.add_annotation(x=t2.loc[batch_id], y=spe.loc[batch_id], text=str(batch_id),
 	                           showarrow=False, xshift=13, yshift=9)
@@ -651,23 +724,33 @@ limits, is.
 .. code-block:: python
 
 	tags = list(wide.columns.get_level_values("tag").unique())
-	p1 = pca_x.loadings_.iloc[:, 0].unstack(level="sequence").reindex(index=tags)             # rows = tags, columns = time
-	r2_cell = pd.Series(pca_x.r2_per_variable_.iloc[:, -1].to_numpy(), index=wide.columns)    # R2 of every cell, two components
+	# rows = tags, columns = time
+	p1 = pca_x.loadings_.iloc[:, 0].unstack(level="sequence").reindex(index=tags)
+	# R2 of every cell, two components
+	r2_cell = pd.Series(pca_x.r2_per_variable_.iloc[:, -1].to_numpy(), index=wide.columns)
 	r2_grid = r2_cell.unstack(level="sequence").reindex(index=tags)
 	r2_tag = r2_cell.groupby(level="tag").mean().round(2)
-	print(r2_tag.nlargest(2).to_dict(), r2_tag.nsmallest(1).to_dict())    # the tags the components describe best and least
+	# the tags the components describe best and least
+	print(r2_tag.nlargest(2).to_dict(), r2_tag.nsmallest(1).to_dict())
 	# {'CTankLvl': 0.71, 'ClockTime': 0.71} {'Agitator': 0.08}
-	fig = make_subplots(rows=3, cols=4, subplot_titles=tags, specs=[[{"secondary_y": True}] * 4] * 3, shared_xaxes=True)
+	fig = make_subplots(rows=3, cols=4, subplot_titles=tags,
+	                    specs=[[{"secondary_y": True}] * 4] * 3, shared_xaxes=True)
 	for k, tag in enumerate(tags):
 	    row, col = divmod(k, 4)
-	    fig.add_trace(go.Scatter(x=p1.columns, y=p1.loc[tag], mode="lines", line=dict(color=BLUE), name="p1",
-	                             showlegend=k == 0), row=row + 1, col=col + 1)
-	    fig.add_trace(go.Scatter(x=r2_grid.columns, y=r2_grid.loc[tag], mode="lines", line=dict(color=ORANGE, width=1),
-	                             opacity=0.55, name="R2 per cell", showlegend=k == 0), row=row + 1, col=col + 1, secondary_y=True)
-	    fig.update_yaxes(range=[0, 1], showgrid=False, row=row + 1, col=col + 1, secondary_y=True)
+	    fig.add_trace(go.Scatter(x=p1.columns, y=p1.loc[tag], mode="lines",
+	                             line=dict(color=BLUE), name="p1", showlegend=k == 0),
+	                  row=row + 1, col=col + 1)
+	    fig.add_trace(go.Scatter(x=r2_grid.columns, y=r2_grid.loc[tag], mode="lines",
+	                             line=dict(color=ORANGE, width=1), opacity=0.55,
+	                             name="R2 per cell", showlegend=k == 0),
+	                  row=row + 1, col=col + 1, secondary_y=True)
+	    fig.update_yaxes(range=[0, 1], showgrid=False, row=row + 1, col=col + 1,
+	                     secondary_y=True)
 	    for x in phase_ends:
 	        fig.add_vline(x=x, line_color=GREY, line_width=1, row=row + 1, col=col + 1)
-	fig.update_layout(height=780, title="Loading p1 (blue) and R2 per cell (orange) of the batch PCA over the batch").show()
+	fig.update_layout(height=780,
+	                  title="Loading p1 (blue) and R2 per cell (orange) of the batch PCA"
+	                        " over the batch").show()
 
 .. figure:: ../figures/batch/batch-case-fmc-loadings-p1.png
 	:source: batch/batch-case-fmc-figures.py
@@ -707,32 +790,40 @@ tags by :math:`J = 325` samples.
 
 .. code-block:: python
 
-	squared = pca_x.spe_contributions(x_scaled) ** 2      # for a batch with missing cells, from its observed cells
+	# for a batch with missing cells, from its observed cells
+	squared = pca_x.spe_contributions(x_scaled) ** 2
 	spe_share = squared.div(squared.sum(axis=1), axis=0) * 100
 	share_20 = spe_share.loc[20]
 	gaps = share_20[share_20.isna()].index.get_level_values("sequence")
-	print(len(gaps), int(gaps.min()), int(gaps.max()))      # missing cells of batch 20, and the first and last sample with one
+	# missing cells of batch 20, and the first and last sample with one
+	print(len(gaps), int(gaps.min()), int(gaps.max()))
 	# 205 34 109
-	missing = X[20].isna()                                  # the two runs of samples, and how many tags each covers
+	missing = X[20].isna()  # the two runs of samples, and how many tags each covers
 	print([tag for tag in X[20].columns if not missing[tag].loc[95:109].all()],
 	      int(missing.loc[95:109].all().sum()), int(missing.loc[34:44].all().sum()))
 	# ['CTankLvl'] 10 5
 	unfolded_contribution_plot(spe_share.fillna(0.0), batch_id=20).show()
 	unfolded_contribution_plot(spe_share.fillna(0.0), batch_id=20, by_tag=True).show()
 	by_tag = share_20.groupby(level="tag", sort=False).sum()
-	print(f"{by_tag.idxmax()} {by_tag.max():.0f}")           # the tag carrying the largest share of the squared SPE
+	# the tag carrying the largest share of the squared SPE
+	print(f"{by_tag.idxmax()} {by_tag.max():.0f}")
 	# DryPress 49
 	by_time = share_20.groupby(level="sequence").sum()
 	first, second = phase_ends
-	print(f"{by_time.loc[:first - 1].sum():.0f} {by_time.loc[first:second].sum():.0f} {by_time.loc[second + 1:].sum():.0f}")   # per phase
+	# per phase
+	print(f"{by_time.loc[:first - 1].sum():.0f} {by_time.loc[first:second].sum():.0f}"
+	      f" {by_time.loc[second + 1:].sum():.0f}")
 	# 58 31 11
 	fig = go.Figure(go.Bar(x=list(by_time.index), y=by_time, marker_color=BLUE))
 	for x in phase_ends:
 	    fig.add_vline(x=x, line_color=ORANGE, line_width=1.5)
-	fig.update_layout(title="Batch 20: share of the squared SPE per sample", xaxis_title="Sample [aligned time]",
+	fig.update_layout(title="Batch 20: share of the squared SPE per sample",
+	                  xaxis_title="Sample [aligned time]",
 	                  yaxis_title="Share of the squared SPE [%]", height=320).show()
 	overlay(X, "DryPress", {20: ORANGE}).show()
-	print(round(X[20]["DryPress"].iloc[:first].mean()), round(average["DryPress"].iloc[:first].mean()))   # phase 1: batch 20, average
+	# phase 1: batch 20, average
+	print(round(X[20]["DryPress"].iloc[:first].mean()),
+	      round(average["DryPress"].iloc[:first].mean()))
 	# 85 37
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-20-spe-contributions.png
@@ -760,26 +851,35 @@ Trajectories to quality
 .. code-block:: python
 
 	pls_x = PLS(n_components=2, scale=False).fit(x_scaled, y_scaled)
-	print(pls_x.r2_cumulative_.round(3).tolist())               # R2 of the quality block, cumulative
+	print(pls_x.r2_cumulative_.round(3).tolist())  # R2 of the quality block, cumulative
 	# [0.266, 0.41]
-	print(explained_x(pls_x).round(3).tolist())                # R2 of the trajectory block, per component
+	print(explained_x(pls_x).round(3).tolist())  # R2 of the trajectory block, per component
 	# [0.217, 0.131]
-	scores(pls_x, explained_x(pls_x), {13: ORANGE, 5: AQUA, 7: AQUA}, note="R2X ", labels=[13, 5, 7, 61, 14]).show()
+	scores(pls_x, explained_x(pls_x), {13: ORANGE, 5: AQUA, 7: AQUA}, note="R2X ",
+	       labels=[13, 5, 7, 61, 14]).show()
 	t1 = pls_x.score_contributions(x_scaled, component=1)
 	unfolded_contribution_plot(t1, batch_id=13, by_tag=True).show()
-	print(t1.loc[13].groupby(level="tag", sort=False).sum().nsmallest(4).round(1).to_dict())   # batch 13's four largest
+	# batch 13's four largest
+	print(t1.loc[13].groupby(level="tag", sort=False).sum().nsmallest(4).round(1).to_dict())
 	# {'ClockTime': -8.1, 'CTankLvl': -8.0, 'D-Temp': -4.7, 'J-Temp-SP': -4.2}
 	for tag in ("D-Temp", "CTankLvl", "ClockTime", "J-Temp-SP"):
 	    overlay(X, tag, {13: ORANGE, 5: AQUA, 7: BLUE}).show()
-	print({batch_id: round(float(X[batch_id]["CTankLvl"].iloc[-1])) for batch_id in (13, 5, 7)})   # collector level at the end
+	# collector level at the end
+	print({batch_id: round(float(X[batch_id]["CTankLvl"].iloc[-1]))
+	       for batch_id in (13, 5, 7)})
 	# {13: 52, 5: 87, 7: 77}
-	print({batch_id: int(X[batch_id]["ClockTime"].iloc[174]) for batch_id in (13, 5, 7)})         # clock time when phase 1 ends
+	# clock time when phase 1 ends
+	print({batch_id: int(X[batch_id]["ClockTime"].iloc[174]) for batch_id in (13, 5, 7)})
 	# {13: 29, 5: 113, 7: 62}
-	level_end = pd.Series({batch_id: float(batch["CTankLvl"].iloc[-1]) for batch_id, batch in X.items()})
-	clock_p1 = pd.Series({batch_id: float(batch["ClockTime"].iloc[174]) for batch_id, batch in X.items()})
-	print("batch 13, counting from the lowest:", int((level_end <= level_end.loc[13]).sum()),
-	      "of 46 on the collector level and", int((clock_p1 <= clock_p1.loc[13]).sum()), "on the clock time")
-	# batch 13, counting from the lowest: 11 of 46 on the collector level and 4 on the clock time
+	level_end = pd.Series({batch_id: float(batch["CTankLvl"].iloc[-1])
+	                       for batch_id, batch in X.items()})
+	clock_p1 = pd.Series({batch_id: float(batch["ClockTime"].iloc[174])
+	                      for batch_id, batch in X.items()})
+	print("batch 13, counting from the lowest:",
+	      int((level_end <= level_end.loc[13]).sum()), "of 46 on the collector level and",
+	      int((clock_p1 <= clock_p1.loc[13]).sum()), "on the clock time")
+	# batch 13, counting from the lowest: 11 of 46 on the collector level
+	# and 4 on the clock time
 	pls_x.predictions_vs_observed_plot(y_observed=y_scaled, variable="SolventConc").show()
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-pls.png
@@ -864,27 +964,33 @@ columns and the nine operating ones.
 
 	blocks = {"Zchem": Zchem, "Zop": Zop, "X": wide}
 	mb = MBPLS(n_components=2).fit(blocks, Y)
-	print(mb.r2_y_cumulative_.round(3).tolist())                # R2 of the quality block, cumulative
+	print(mb.r2_y_cumulative_.round(3).tolist())  # R2 of the quality block, cumulative
 	# [0.369, 0.47]
-	print(mb.r2_x_per_block_cumulative_.iloc[:, -1].round(3).to_dict())   # R2 of each block after two components
+	# R2 of each block after two components
+	print(mb.r2_x_per_block_cumulative_.iloc[:, -1].round(3).to_dict())
 	# {'Zchem': 0.234, 'Zop': 0.304, 'X': 0.258}
 	print(mb.super_vip_.round(2).to_dict())                     # super VIP per block
 	# {'Zchem': 0.86, 'Zop': 1.07, 'X': 1.06}
 	super_t = mb.super_scores_
-	fig = group_scatter(go.Figure(), super_t.iloc[:, 0], super_t.iloc[:, 1], {13: ORANGE, 5: AQUA, 7: AQUA})
+	fig = group_scatter(go.Figure(), super_t.iloc[:, 0], super_t.iloc[:, 1],
+	                    {13: ORANGE, 5: AQUA, 7: AQUA})
 	block_axes(fig, mb.r2_y_per_component_, prefix="super t", note="R2Y ")
 	fig.update_layout(height=440).show()
 	bars = go.Figure([go.Bar(x=list(blocks), y=mb.r2_x_per_block_cumulative_.iloc[:, -1],
 	                         name="R2X after two components", marker_color=BLUE),
-	                  go.Bar(x=list(blocks), y=mb.super_vip_, name="super VIP", marker_color=ORANGE)])
+	                  go.Bar(x=list(blocks), y=mb.super_vip_, name="super VIP",
+	                         marker_color=ORANGE)])
 	shade_alternate(bars, len(blocks))
 	bars.update_layout(title="Per block: R2X and super VIP", height=440).show()
-	unfolded_contribution_plot(mb.score_contributions(blocks, component=1)["X"], batch_id=13).show()
+	unfolded_contribution_plot(mb.score_contributions(blocks, component=1)["X"],
+	                           batch_id=13).show()
 	mb.predictions_vs_observed_plot(Y, variable="SolventConc").show()
 	solvent = Y["SolventConc"].dropna()
-	residual = mb.predictions_["SolventConc"].loc[solvent.index] - solvent    # positive: fitted above observed
+	# positive: fitted above observed
+	residual = mb.predictions_["SolventConc"].loc[solvent.index] - solvent
 	high = solvent.index[groups.loc[solvent.index] == "high solvent"]
-	print(f"{(residual.loc[high] < 0).sum()} of {len(high)} fitted low, by {-residual.loc[high].mean():.2f}"
+	print(f"{(residual.loc[high] < 0).sum()} of {len(high)} fitted low,"
+	      f" by {-residual.loc[high].mean():.2f}"
 	      f" on average, in an attribute spanning {solvent.max() - solvent.min():.2f}")
 	# 6 of 6 fitted low, by 0.47 on average, in an attribute spanning 1.26
 
@@ -940,33 +1046,48 @@ conditions or only its trajectories are considered, and the three plots need not
 .. code-block:: python
 
 	def nearer_group(block_scores):
-	    """Place each batch with the group, good or abnormal, whose average point is nearer in this score plot."""
-	    centres = {name: block_scores.loc[groups == name].mean() for name in ("good", "abnormal")}
-	    return pd.DataFrame({name: ((block_scores - centre) ** 2).sum(axis=1) for name, centre in centres.items()}).idxmin(axis=1)
+	    """Place each batch with the group, good or abnormal, whose average point is nearer
+	    in this score plot."""
+	    centres = {name: block_scores.loc[groups == name].mean()
+	               for name in ("good", "abnormal")}
+	    return pd.DataFrame({name: ((block_scores - centre) ** 2).sum(axis=1)
+	                         for name, centre in centres.items()}).idxmin(axis=1)
 
-	placed = pd.DataFrame({name: nearer_group(block_scores) for name, block_scores in mb.block_scores_.items()})
-	with_abnormal = [b for b in placed.index if groups[b] == "good" and placed.loc[b, "X"] == "abnormal"]
-	print(with_abnormal, placed.loc[with_abnormal, ["Zchem", "Zop"]].eq("good").all(axis=1).to_dict())
+	placed = pd.DataFrame({name: nearer_group(block_scores)
+	                       for name, block_scores in mb.block_scores_.items()})
+	with_abnormal = [b for b in placed.index
+	                 if groups[b] == "good" and placed.loc[b, "X"] == "abnormal"]
+	print(with_abnormal,
+	      placed.loc[with_abnormal, ["Zchem", "Zop"]].eq("good").all(axis=1).to_dict())
 	# [2, 3, 5, 6, 7] {2: True, 3: True, 5: False, 6: True, 7: True}
 	anomalous = [2, 3, 6, 7]
-	print(nearer_group(pca_y.scores_).loc[anomalous].to_dict())   # where the four sit in the quality PCA
+	# where the four sit in the quality PCA
+	print(nearer_group(pca_y.scores_).loc[anomalous].to_dict())
 	# {2: 'good', 3: 'good', 6: 'good', 7: 'good'}
-	print(mb.super_scores_.iloc[:, 0].groupby(groups).mean().round(2).to_dict(), mb.super_scores_.loc[anomalous].iloc[:, 0].round(2).to_dict())
-	# {'abnormal': -0.55, 'good': 0.36, 'high solvent': 0.19} {2: 0.31, 3: 0.14, 6: 0.17, 7: 0.18}
+	print(mb.super_scores_.iloc[:, 0].groupby(groups).mean().round(2).to_dict(),
+	      mb.super_scores_.loc[anomalous].iloc[:, 0].round(2).to_dict())
+	# {'abnormal': -0.55, 'good': 0.36, 'high solvent': 0.19}
+	# {2: 0.31, 3: 0.14, 6: 0.17, 7: 0.18}
 	fig = make_subplots(rows=1, cols=3, subplot_titles=[f"{name} block" for name in blocks])
 	for col, (name, block_t) in enumerate(mb.block_scores_.items(), start=1):
-	    for label in ("good", "abnormal"):                       # a spoke from each batch to its group's average
+	    for label in ("good", "abnormal"):  # a spoke from each batch to its group's average
 	        members = [b for b in block_t.index if placed.loc[b, name] == label]
 	        centre = block_t.loc[members].mean()
 	        for b in members:
 	            fig.add_trace(go.Scatter(x=[centre.iloc[0], block_t.iloc[:, 0].loc[b]],
-	                                     y=[centre.iloc[1], block_t.iloc[:, 1].loc[b]], mode="lines",
-	                                     line=dict(color=PALE_GREY, width=1), showlegend=False), row=1, col=col)
-	        fig.add_trace(go.Scatter(x=[centre.iloc[0]], y=[centre.iloc[1]], mode="markers", showlegend=False,
+	                                     y=[centre.iloc[1], block_t.iloc[:, 1].loc[b]],
+	                                     mode="lines", line=dict(color=PALE_GREY, width=1),
+	                                     showlegend=False), row=1, col=col)
+	        fig.add_trace(go.Scatter(x=[centre.iloc[0]], y=[centre.iloc[1]],
+	                                 mode="markers", showlegend=False,
 	                                 marker=dict(color=GREY, symbol="cross", size=13,
-	                                             line=dict(color="white", width=1.5))), row=1, col=col)
-	    group_scatter(fig, block_t.iloc[:, 0], block_t.iloc[:, 1], dict.fromkeys(anomalous, ORANGE), row=1, col=col, showlegend=col == 1)
-	    block_axes(fig, np.diff([0.0, *mb.r2_x_per_block_cumulative_.loc[name]]), 1, col, note="R2X ")
+	                                             line=dict(color="white", width=1.5))),
+	                      row=1, col=col)
+	    group_scatter(fig, block_t.iloc[:, 0], block_t.iloc[:, 1],
+	                  dict.fromkeys(anomalous, ORANGE), row=1, col=col,
+	                  showlegend=col == 1)
+	    block_axes(fig, np.diff([0.0, *mb.r2_x_per_block_cumulative_.loc[name]]),
+	               1, col, note="R2X ")
 	fig.update_layout(height=420).show()
 
 .. figure:: ../figures/batch/batch-case-fmc-block-scores.png
@@ -984,60 +1105,63 @@ conditions or only its trajectories are considered, and the three plots need not
 	the trajectory block the four reach across to the abnormal group (purple); in the other
 	two blocks they reach to the good one (blue).
 
-In the trajectory block the abnormal batches lie at negative :math:`t_1` and the good ones
-at positive, with five classed good among the abnormal. Four of those five, batches 2, 3, 6
-and 7, sit with the good batches in both of the other two blocks and in the quality PCA at
-the start of this case study. Their trajectories have the features of an off-specification
-batch, and their product was on-specification.
+A batch can be unusual in one block and ordinary in the others, and the super score hides
+exactly that. Only the block scores show it.
 
-That a batch sits among a group is a claim about a picture. To make it reproducible, take
-the average score point of the good batches and of the abnormal ones in each block, and
-place every batch with whichever of the two centres is nearer. The figure joins each batch
-to the centre it was placed with.
-
-Five batches classed good are placed with the abnormal centre in the trajectory block. Four of them
-are placed with the good centre in both of the other two blocks: ordinary chemistry and ordinary
-operating conditions, with trajectories that look abnormal. What the two components of those blocks
-do not describe, their residuals, is not examined here.
-
-The fifth, batch 5, is placed with the abnormal centre in the operating-condition block as well. It
-is not a case of an ordinary charge with an unusual trajectory, and it is left aside.
-
-On the super score of this model those four lie between the two groups with nothing to mark them
-out: a batch unusual in one block and ordinary in the others is visible only in the block score
-plots.
+Batches 2, 3, 6 and 7 are the case. Placing every batch with whichever of the two class
+centres is nearer, which is what the figure draws, puts these four with the abnormal batches
+in the trajectory block and with the good batches in the other two. Their product was
+on-specification, so they ran an unusual path and still made good material: either the
+trajectory block carries variation that does not reach the quality, or something outside all
+three blocks compensated. On the super score they sit between the two groups with nothing to
+mark them out.
 
 .. code-block:: python
 
 	x_scores = mb.block_scores_["X"]
 	abnormal = x_scores.loc[groups == "abnormal"]
-	neighbours = sorted({int(b) for a in anomalous for b in ((abnormal - x_scores.loc[a]) ** 2).sum(axis=1).nsmallest(2).index})
-	print(neighbours)                                          # the two nearest abnormal batches of each of the four
+	neighbours = sorted(
+	    {int(b) for a in anomalous
+	     for b in ((abnormal - x_scores.loc[a]) ** 2).sum(axis=1).nsmallest(2).index}
+	)
+	print(neighbours)  # the two nearest abnormal batches of each of the four
 	# [42, 43, 44, 47, 50]
 	# Each block's contributions to the SUPER score: the block's own contribution times its
-	# super weight. The ranking within a block is the same either way, since the super weight
-	# is one number per block, but the bars are not on the block score's scale.
+	# super weight. The ranking within a block is the same either way, since the super
+	# weight is one number per block, but the bars are not on the block score's scale.
 	contributions = mb.score_contributions(blocks, component=1)
 	x_by_tag = contributions["X"].T.groupby(level="tag", sort=False).sum().T
-	print(x_by_tag.loc[anomalous].mean().nsmallest(3).round(2).to_dict())     # the four batches' largest trajectory contributions
+	# the four batches' largest trajectory contributions
+	print(x_by_tag.loc[anomalous].mean().nsmallest(3).round(2).to_dict())
 	# {'CTankLvl': -0.07, 'ClockTime': -0.03, 'J-Temp-SP': -0.02}
-	print(x_by_tag.loc[neighbours].mean().nsmallest(3).round(2).to_dict())    # their neighbours'
+	# their neighbours'
+	print(x_by_tag.loc[neighbours].mean().nsmallest(3).round(2).to_dict())
 	# {'ClockTime': -0.07, 'J-Temp-SP': -0.03, 'CTankLvl': -0.03}
-	move = contributions["Zop"].loc[anomalous].mean() - contributions["Zop"].loc[neighbours].mean()
-	print(move.round(2)[move.abs() >= 0.01].to_dict())         # Zop: from the neighbours' average to the four's average
-	# {'Level1': -0.05, 'Temp1': 0.02, 'Time4': 0.05, 'Time2': 0.06, 'Time3': 0.11, 'TempSlope': 0.06, 'WgtCake': -0.05}
+	move = (contributions["Zop"].loc[anomalous].mean()
+	        - contributions["Zop"].loc[neighbours].mean())
+	# Zop: from the neighbours' average to the four's average
+	print(move.round(2)[move.abs() >= 0.01].to_dict())
+	# {'Level1': -0.05, 'Temp1': 0.02, 'Time4': 0.05, 'Time2': 0.06, 'Time3': 0.11,
+	# 'TempSlope': 0.06, 'WgtCake': -0.05}
 	fig = go.Figure(go.Bar(x=list(move.index), y=move, marker_color=BLUE))
 	shade_alternate(fig, len(move))
-	fig.update_layout(title="Operating conditions: from the neighbours' average to the four batches' average",
+	fig.update_layout(title="Operating conditions: from the neighbours' average"
+	                        " to the four batches' average",
 	                  yaxis_title="Contribution to the super score t1", height=340).show()
 	for tag in ("CTankLvl", "ClockTime", "D-Temp", "D-Temp-SP"):
-	    overlay(X, tag, {**{b: AQUA for b in neighbours}, **{b: ORANGE for b in anomalous}}).show()
+	    overlay(X, tag, {**{b: AQUA for b in neighbours},
+	                     **{b: ORANGE for b in anomalous}}).show()
 	keys = ["WgtCake", "Level1", "Temp1", "Temp2", "Time2", "Time3", "Time4"]
-	print(Zop.loc[anomalous, keys].mean().round(0).astype(int).to_dict())          # the four batches
-	# {'WgtCake': 7076, 'Level1': 75, 'Temp1': 40, 'Temp2': 86, 'Time2': 24, 'Time3': 50, 'Time4': 25}
-	print(Zop.loc[neighbours, keys].mean().round(0).astype(int).to_dict())         # their neighbours
-	# {'WgtCake': 6787, 'Level1': 66, 'Temp1': 33, 'Temp2': 85, 'Time2': 32, 'Time3': 38, 'Time4': 34}
-	print(round(np.mean([X[b]["D-Temp-SP"].max() for b in anomalous]), 1), round(np.mean([X[b]["D-Temp-SP"].max() for b in neighbours]), 1))
+	# the four batches
+	print(Zop.loc[anomalous, keys].mean().round(0).astype(int).to_dict())
+	# {'WgtCake': 7076, 'Level1': 75, 'Temp1': 40, 'Temp2': 86, 'Time2': 24,
+	# 'Time3': 50, 'Time4': 25}
+	# their neighbours
+	print(Zop.loc[neighbours, keys].mean().round(0).astype(int).to_dict())
+	# {'WgtCake': 6787, 'Level1': 66, 'Temp1': 33, 'Temp2': 85, 'Time2': 32,
+	# 'Time3': 38, 'Time4': 34}
+	print(round(np.mean([X[b]["D-Temp-SP"].max() for b in anomalous]), 1),
+	      round(np.mean([X[b]["D-Temp-SP"].max() for b in neighbours]), 1))
 	# 86.9 87.2
 
 .. figure:: ../figures/batch/batch-case-fmc-anomalous.png
@@ -1107,10 +1231,12 @@ quality :math:`\mathbf{Y}`, with a dash where the model never saw that block.
 .. code-block:: python
 
 	def block_r2(model):
-	    """R2 per component of each X block of a multiblock model, from its cumulative R2 per block."""
-	    return {name: np.diff([0.0, *row]) for name, row in model.r2_x_per_block_cumulative_.iterrows()}
+	    """R2 per component of each X block of a multiblock model, from its cumulative R2
+	    per block."""
+	    return {name: np.diff([0.0, *row])
+	            for name, row in model.r2_x_per_block_cumulative_.iterrows()}
 
-	per_component = {                                             # R2 per component of every block a model saw
+	per_component = {  # R2 per component of every block a model saw
 	    "PCA on quality": {"Y": pca_y.r2_per_component_},
 	    "PLS from Zchem": {"Zchem": explained_x(pls_chem), "Y": pls_chem.r2_per_component_},
 	    "PLS from Zop": {"Zop": explained_x(pls_op), "Y": pls_op.r2_per_component_},
@@ -1119,11 +1245,13 @@ quality :math:`\mathbf{Y}`, with a dash where the model never saw that block.
 	    "Batch PLS on X": {"X": explained_x(pls_x), "Y": pls_x.r2_per_component_},
 	    "Batch multiblock PLS": {**block_r2(mb), "Y": mb.r2_y_per_component_},
 	}
-	summary = pd.DataFrame({(block, f"t{a + 1}"): {name: np.asarray(r[block])[a] * 100 if block in r else np.nan
-	                                               for name, r in per_component.items()}
+	summary = pd.DataFrame({(block, f"t{a + 1}"):
+	                        {name: np.asarray(r[block])[a] * 100 if block in r else np.nan
+	                         for name, r in per_component.items()}
 	                        for block in ("Zchem", "Zop", "X", "Y") for a in (0, 1)})
 	print(summary.round(1).to_string(na_rep="-"))
-	print(summary["Y"].sum(axis=1, min_count=1).round(1).dropna().tolist())   # quality explained, per model
+	# quality explained, per model
+	print(summary["Y"].sum(axis=1, min_count=1).round(1).dropna().tolist())
 	# [70.3, 22.2, 26.2, 36.4, 41.0, 47.0]
 	zchem = summary["Zchem"].round(1)
 	print("Zchem: its own PLS", zchem.loc["PLS from Zchem"].sum().round(1),
@@ -1131,10 +1259,8 @@ quality :math:`\mathbf{Y}`, with a dash where the model never saw that block.
 	# Zchem: its own PLS 52.0 against the batch multiblock PLS [6.5, 16.9]
 
 .. table:: :math:`R^2` of each block, as a percentage, per component, for every model on
-   this page. Each cell is rounded on its own, so a row can add up to a tenth away from the
-   cumulative value quoted elsewhere for the same model. The PLS rows' :math:`R^2` of an X
-   block is the average over that block's columns, and the PCA rows' is the block's total
-   sum-of-squares ratio; with missing cells in the trajectory block the two differ slightly.
+   this page. The PLS rows' :math:`R^2` of an X block is the average over that block's
+   columns, and the PCA rows' is the block's total sum-of-squares ratio.
 
    +-----------------------------------------+---------------------------------+---------------------------------+---------------------------------+---------------------------------+
    | Model                                   | :math:`\mathbf{Z}_\text{chem}`  | :math:`\mathbf{Z}_\text{op}`    | :math:`\mathbf{X}`              | :math:`\mathbf{Y}`              |

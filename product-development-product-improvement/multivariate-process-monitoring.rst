@@ -193,7 +193,8 @@ envelope:
 	def acf(x, nlags):
 	    xc = np.asarray(x, dtype=float) - float(np.mean(x))
 	    var = float((xc ** 2).sum())
-	    return np.array([(xc[: len(xc) - k] * xc[k:]).sum() / var for k in range(nlags + 1)])
+	    return np.array([(xc[: len(xc) - k] * xc[k:]).sum() / var
+	                     for k in range(nlags + 1)])
 
 	nlags = 40
 	rho = acf(phase1["Pulp level"].values, nlags)
@@ -242,7 +243,8 @@ upper limits, and apply those limits to the phase-2 subgroups:
 	from math import gamma, sqrt
 
 	def subgroup(x, n_sub):
-	    """Reshape a 1-D time series into (n_groups, n_sub) without the trailing partial subgroup."""
+	    """Reshape a 1-D time series into (n_groups, n_sub) without the
+	    trailing partial subgroup."""
 	    n_groups = len(x) // n_sub
 	    return np.asarray(x[: n_groups * n_sub]).reshape((n_groups, n_sub))
 
@@ -541,7 +543,8 @@ values:
 	first_alarm = int(flagged_t2.index[0])
 	contribs = model.t2_contributions(scaler.transform(p2_sub)).loc[first_alarm]
 	print(contribs.round(2).to_dict())
-	# {'Feed rate': 0.48, 'Upstream pH': 6.44, 'CuSO4 added': 2.22, 'Pulp level': 0.68, 'Air flow rate': -0.49}
+	# {'Feed rate': 0.48, 'Upstream pH': 6.44, 'CuSO4 added': 2.22,
+	# 'Pulp level': 0.68, 'Air flow rate': -0.49}
 	print(round(float(contribs.sum()), 2), round(float(t2.loc[first_alarm]), 2))
 	# 9.32 9.32
 

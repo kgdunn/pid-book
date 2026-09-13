@@ -7,11 +7,16 @@
  * opens on click or on Enter. That is the mechanism; this file only adds what
  * a browser cannot infer:
  *
- *   - a page-level switch that opens or closes every block at once;
+ *   - the page-level switch that opens or closes every block at once, whose
+ *     markup comes from _templates/pid-code-switch.html already in the page
+ *     and is revealed here;
  *   - a memory of which the reader preferred, so someone who wants the code
  *     asks once rather than on every page;
- *   - opening every block before printing, and closing them again after, so a
- *     printed page or a saved PDF carries the code in full;
+ *   - re-anchoring to the URL fragment after a bulk open, because opening the
+ *     blocks above the target moves it down the page;
+ *   - opening every block before printing, and closing them again after. The
+ *     print stylesheet reveals the code on its own in current browsers; this
+ *     is what reaches the older ones;
  *   - the page's reading time, which is quoted without the code and moves to
  *     the with-code figure while every block is open. Both numbers are put in
  *     the markup by my-extensions/reading_time.py.
@@ -22,23 +27,57 @@
 (function () {
   "use strict";
 
-  var KEY = "pid.code.expanded";
+  // Namespaced by site rather than by page, because learnche.org serves more
+  // than /pid from this one origin, and versioned, so a later change in what
+  // the value means cannot misread an old one.
+  var KEY = "pid:code-blocks:v1";
+  var EXPANDED = "expanded";
+  var COLLAPSED = "collapsed";
   var OPEN_LABEL = "Show all code";
   var CLOSE_LABEL = "Hide all code";
 
-  function readPreference() {
+  // Stands in for storage when storage is unavailable, so the switch still
+  // works for the current page even though the choice is not kept.
+  var remembered = null;
+
+  function storage() {
     try {
-      return window.localStorage.getItem(KEY) === "1";
+      // The property access itself throws, not only getItem and setItem, in
+      // Safari with website data blocked and in some embedded contexts.
+      return window.localStorage;
     } catch (e) {
-      return false; // private mode, or storage blocked: the built-in default
+      return null;
     }
   }
 
-  function writePreference(expanded) {
+  /* "expanded", "collapsed", or null when this reader has never chosen.
+     Three states, not a boolean: a boolean cannot tell a first visit from a
+     reader who chose to keep the code closed, so changing the default later
+     would silently flip the second group. */
+  function readPreference() {
+    var store = storage();
+    if (!store) {
+      return remembered;
+    }
+    var value;
     try {
-      window.localStorage.setItem(KEY, expanded ? "1" : "0");
+      value = store.getItem(KEY);
     } catch (e) {
-      /* the switch still works for this page; it just will not be remembered */
+      return remembered;
+    }
+    return value === EXPANDED || value === COLLAPSED ? value : null;
+  }
+
+  function writePreference(value) {
+    remembered = value;
+    var store = storage();
+    if (!store) {
+      return;
+    }
+    try {
+      store.setItem(KEY, value);
+    } catch (e) {
+      /* quota, or a private window: this page still works, it is just not kept */
     }
   }
 
@@ -46,13 +85,62 @@
     return Array.prototype.slice.call(document.querySelectorAll("details.pid-code"));
   }
 
+  // "All open" is the reading of the switch that matches what a reader sees: a
+  // reader who opened two of nine blocks by hand has not asked for the page.
+  function allOpen(items) {
+    return items.every(function (item) {
+      return item.open;
+    });
+  }
+
+  /* Closing a block stops its subtree being rendered, so focus inside it (a
+     copy button, a link) is discarded and a keyboard reader is returned to the
+     top of the document. Move focus to the bar of the block that is closing. */
+  function rescueFocus(items) {
+    var active = document.activeElement;
+    if (!active || active === document.body) {
+      return;
+    }
+    for (var i = 0; i < items.length; i += 1) {
+      if (items[i] !== active && items[i].contains(active)) {
+        var bar = items[i].querySelector("summary.pid-code__bar");
+        if (bar) {
+          bar.focus();
+        }
+        return;
+      }
+    }
+  }
+
   function setAll(items, open) {
+    if (!open) {
+      rescueFocus(items);
+    }
     items.forEach(function (item) {
       item.open = open;
     });
   }
 
-  function updateReadingTime(allOpen) {
+  /* A reader who followed a :ref: link arrives with the browser already
+     scrolled to the fragment. Opening the blocks above the target pushes it
+     thousands of pixels down the page, so put it back in view. */
+  function reanchor() {
+    if (!window.location.hash || window.location.hash.length < 2) {
+      return;
+    }
+    var id;
+    try {
+      id = decodeURIComponent(window.location.hash.slice(1));
+    } catch (e) {
+      return; // a malformed fragment is not worth acting on
+    }
+    var target = document.getElementById(id) || document.getElementsByName(id)[0];
+    if (target) {
+      target.scrollIntoView();
+    }
+  }
+
+  function updateReadingTime(isAllOpen) {
     // The header quotes the page without its code, since the blocks arrive
     // closed. Once they are all open the page really is the longer read.
     var badge = document.querySelector(".pid-reading-time");
@@ -60,35 +148,44 @@
       return;
     }
     var value = badge.querySelector(".pid-reading-time__value");
-    var minutes = badge.getAttribute(allOpen ? "data-minutes-with-code" : "data-minutes");
+    var minutes = badge.getAttribute(isAllOpen ? "data-minutes-with-code" : "data-minutes");
     if (value && minutes) {
       value.textContent = minutes + " min";
     }
   }
 
-  function makeSwitch(items) {
-    var button = document.createElement("button");
-    button.type = "button";
-    button.className = "pid-code-switch";
+  function wireSwitch(items, wrap) {
+    var button = wrap.querySelector(".pid-code-switch");
+    var status = wrap.querySelector(".pid-code-status");
+    if (!button) {
+      return;
+    }
 
+    /* The label changes and nothing else does. Swapping the label and setting
+       aria-pressed are the two correct designs for a toggle and they are
+       mutually exclusive: together they announce the state twice, and
+       contradictorily ("Hide all code, pressed"). */
     function paint() {
-      // "All open" is the honest reading of the switch: a reader who opened
-      // two of nine blocks by hand has not asked for the page.
-      var allOpen = items.every(function (item) {
-        return item.open;
-      });
-      button.textContent = allOpen ? CLOSE_LABEL : OPEN_LABEL;
-      button.setAttribute("aria-pressed", allOpen ? "true" : "false");
-      updateReadingTime(allOpen);
+      var open = allOpen(items);
+      button.textContent = open ? CLOSE_LABEL : OPEN_LABEL;
+      updateReadingTime(open);
     }
 
     button.addEventListener("click", function () {
-      var allOpen = items.every(function (item) {
-        return item.open;
-      });
-      setAll(items, !allOpen);
-      writePreference(!allOpen);
+      var open = !allOpen(items);
+      setAll(items, open);
+      writePreference(open ? EXPANDED : COLLAPSED);
       paint();
+      if (open) {
+        reanchor();
+      }
+      if (status) {
+        // Every block on the page changed with no focus move and nothing said,
+        // which is what SC 4.1.3 asks to be announced. The count is the part
+        // the button's own label does not carry.
+        status.textContent =
+          "All " + items.length + (open ? " code blocks shown." : " code blocks hidden.");
+      }
     });
 
     // A block opened or closed on its own bar changes what the switch should
@@ -98,24 +195,7 @@
     });
 
     paint();
-    return button;
-  }
-
-  function insertSwitch(button) {
-    var article = document.querySelector("article.bd-article") || document.querySelector("article");
-    if (!article) {
-      return;
-    }
-    // Below the page's title, where it is in the same place on every page,
-    // rather than beside the first block, which can be a long way down. The
-    // theme nests the <h1> inside a <section>, so insert next to the heading
-    // itself rather than assuming it is a child of the article.
-    var heading = article.querySelector("h1");
-    if (heading) {
-      heading.insertAdjacentElement("afterend", button);
-    } else {
-      article.insertBefore(button, article.firstChild);
-    }
+    wrap.hidden = false;
   }
 
   function wirePrinting(items) {
@@ -125,7 +205,9 @@
       before = items.map(function (item) {
         return item.open;
       });
-      setAll(items, true);
+      items.forEach(function (item) {
+        item.open = true;
+      });
     }
 
     function restore() {
@@ -159,12 +241,21 @@
   function start() {
     var items = blocks();
     if (!items.length) {
-      return;
+      return; // no code on this page: the switch stays hidden
     }
-    if (readPreference()) {
+
+    // A return visit from a reader who asked for the code. A first visit, and a
+    // reader who asked to keep the code closed, both write nothing and leave
+    // the blocks as the build wrote them.
+    if (readPreference() === EXPANDED) {
       setAll(items, true);
+      reanchor();
     }
-    insertSwitch(makeSwitch(items));
+
+    var wrap = document.querySelector(".pid-code-switch-wrap");
+    if (wrap) {
+      wireSwitch(items, wrap);
+    }
     wirePrinting(items);
   }
 

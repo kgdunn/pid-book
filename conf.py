@@ -165,6 +165,11 @@ html_theme_options = {
     "navbar_persistent": [],
     # Article header bar: the sidebar toggle, then the reading-time estimate.
     "article_header_start": ["toggle-primary-sidebar.html", "pid-reading-time.html"],
+    # End of that bar: the switch that opens or closes every code block on the
+    # page, then the theme's own buttons. Setting this option replaces the
+    # theme default rather than adding to it, so `article-header-buttons.html`
+    # has to be relisted or the repository and colour-mode buttons disappear.
+    "article_header_end": ["pid-code-switch.html", "article-header-buttons.html"],
     "extra_footer": "",
     # Syntax-highlighting palette for HTML code blocks, per colour mode.
     "pygments_light_style": "github-light",
