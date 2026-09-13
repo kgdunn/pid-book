@@ -33,6 +33,16 @@ inside the book itself on the :ref:`stats` page, and as the 60-day reader
 count next to the sparkline in the sidebar of every page. Every figure covers
 complete days only, so the most recent day shown is yesterday.
 
+Kept in your browser
+--------------------
+
+One preference is stored in your browser's ``localStorage``, under the key
+``pid:code-blocks:v1``. It records whether you asked for the code blocks on a
+page to be shown or hidden, so that the choice carries to the next page you
+read. The value is the single word ``expanded`` or ``collapsed``, it is never
+sent anywhere, and clearing your browser's site data removes it. Nothing else
+is stored on your device: no cookies, and no other keys.
+
 Opt out
 -------
 
