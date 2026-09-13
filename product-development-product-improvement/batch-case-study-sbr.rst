@@ -438,8 +438,7 @@ row, a tenth of the batch.
 Twenty samples is longer than the reactor temperature ever stays outside the band in a normal
 batch, but not longer than the other tags do: the latex density and the conversion of a normal
 batch can stay outside it for 50 samples or more. A sustained departure therefore says where
-to look, not that there is a fault, and runs of 25, 30 and 40 leave the onsets below
-unchanged.
+to look, not that there is a fault.
 
 .. code-block:: python
 
@@ -557,7 +556,8 @@ stays out. Batch 34 leaves it midway, first in the two service temperatures and 
 released, then some 20 samples later in the conversion and latex density. The robust distance
 moves batch 34's onsets by two to five samples, and for batch 37 it also puts the
 cooling-water and jacket temperatures outside the band from the first sample, where the
-standard-deviation distance never holds them there long enough to count.
+standard-deviation distance never holds them there long enough to count. This demonstrates the
+added value of robust methods.
 
 One fault, two places in the score plot
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -690,8 +690,9 @@ accounts for:
 
 	Q^2 \approx 1 - f^2
 
-Both attributes here miss by about 0.8 standard deviations, so :math:`f^2` is about 0.64 and
-the model predicts about a third of each.
+Both attributes here miss by about 0.8 standard deviations, so :math:`f^2` is about 0.64:
+that is the share of the variance still missed, leaving :math:`1 - 0.64 = 0.36`, about a third
+of each attribute predicted.
 
 The relation is approximate, and writing both quantities over the same sums of squares shows
 why. Both are built from the prediction error sum of squares, PRESS, against the total sum of
@@ -800,8 +801,8 @@ where the batch is.
 
 	# one more figure colour
 	MAGENTA = "#b03a78"
-	# one per attribute
-	COLOURS = (BLUE, ORANGE, AQUA, PURPLE, MAGENTA)
+	# one per attribute; branching and cross-linking coincide, so they share aqua
+	COLOURS = (BLUE, ORANGE, AQUA, AQUA, MAGENTA)
 	fig = go.Figure()
 	for attribute, colour in zip(quality.columns, COLOURS):
 	    fig.add_trace(go.Scatter(x=relative.index[9:], y=relative[attribute].iloc[9:],
@@ -814,7 +815,7 @@ where the batch is.
 
 .. figure:: ../figures/batch/batch-case-sbr-online-rmse.png
 	:source: batch/batch-case-sbr-figures.py
-	:alt: Five curves, one per quality attribute, of the leave-one-batch-out root-mean-square error of the mid-batch prediction divided by the attribute's standard deviation against the number of samples observed; all start just below one, the particle-size curve rises slightly above one over the first half and settles below it after about 125 samples, branching and cross-linking fall furthest, polydispersity changes little after 50 samples.
+	:alt: Four curves of the leave-one-batch-out root-mean-square error of the mid-batch prediction divided by the attribute's standard deviation against the number of samples observed, one per quality attribute except that branching and cross-linking coincide and share one line; all start just below one, the particle-size curve rises slightly above one over the first half and settles below it after about 125 samples, branching and cross-linking fall furthest, polydispersity changes little after 50 samples.
 	:width: 800px
 	:scale: 80
 	:align: center
@@ -870,8 +871,11 @@ the model was fitted to.
 	                  annotation_text="final prediction")
 	    fig.add_hline(y=quality.loc[batch_id, "ParticleSize"], line_color="black",
 	                  annotation_text="measured")
+	    # The printed figure puts the two panels on one axis; pinning the range here
+	    # keeps this plot comparable with it, and the two batches with each other.
 	    fig.update_layout(title=f"Batch {batch_id}: ParticleSize",
-	                      xaxis_title="Samples observed", height=380)
+	                      xaxis_title="Samples observed", yaxis_range=[1242, 1261],
+	                      height=380)
 	    fig.show()
 	    steps = evolving.loc[[10, 50, 100, 150]].round(1).tolist()
 	    print(f"batch {batch_id}: measured {quality.loc[batch_id, 'ParticleSize']:.1f},",
@@ -881,6 +885,17 @@ the model was fitted to.
 	    # [1256.8, 1256.5, 1256.4, 1257.4]
 	    # batch 34: measured 1243.7, final prediction 1245.3, after 10/50/100/150 samples
 	    # [1257.2, 1255.3, 1254.9, 1245.3]
+
+	print(f"band: widest {band.max():.2f} at sample {band.idxmax()},",
+	      f"narrowest {band.iloc[-1]:.2f} at the end")
+	# band: widest 3.45 at sample 103, narrowest 2.42 at the end
+	average = quality["ParticleSize"].mean()
+	moved = (model.predict_online_trace(trajectories[34]).y_hat["ParticleSize"]
+	         - average).abs()
+	outside = moved > band
+	print("batch 34 first sits further from the average than the band at sample",
+	      int(outside.idxmax()))
+	# batch 34 first sits further from the average than the band at sample 107
 
 .. figure:: ../figures/batch/batch-case-sbr-online-prediction.png
 	:source: batch/batch-case-sbr-figures.py
@@ -892,9 +907,22 @@ the model was fitted to.
 	The predicted particle size as each batch is observed: batch 4 (left), nearest the average
 	quality, and batch 34 (right), the lowest particle size of the 53. Dotted: the average of
 	the 53 batches. Dashed: the prediction from the complete batch. Solid: the measured value.
-	Band: one prediction error at that sample. Both predictions start on the dotted rule,
-	because that is where the estimator sits until the observed cells say otherwise. On the
-	left the three rules lie within 0.2 units of each other and draw as one.
+	Band: one prediction error at that sample, the same band in both panels, centred on each
+	batch's own prediction. Both predictions start on the dotted rule, because that is where
+	the estimator sits at the start of the batch when no data is available. Gradually, as data
+	comes in, the batch prediction changes. On the left the three rules lie within 0.2 units of
+	each other and draw as one.
+
+The band is not a property of either batch. It is the leave-one-batch-out prediction error after
+that many samples, so it says how far a prediction made at that point in the batch has missed over
+all 53, and the same band is drawn in both panels; only its centre differs.
+
+The band is widest in the middle of the batch, at sample 103, and narrowest at the end, 2.42
+units.
+
+While a prediction sits inside the band it says only that the batch looks average. Batch 34's
+leaves the band at sample 107, seven samples after the impurity enters. The SPE chart flagged the
+same batch at 105.
 
 Batch 4 is already at the average, so its prediction is close to right from the tenth sample and
 moves little after it. Batch 34 starts in the same place and leaves it between samples 100 and 150,
@@ -978,8 +1006,7 @@ mean does vary.
 	spread, which is what lets the limit stay the same throughout the batch.
 
 The limits are set at 99%, and an alarm here means three consecutive samples above the
-limit, the same kind of rule the departure analysis used. The sample reported for an alarm
-is the first of the three, so an operator sees it two samples later.
+limit, the same kind of rule the departure analysis used.
 
 .. code-block:: python
 
@@ -1152,27 +1179,20 @@ flagged with most of its second half still to run.
 	       first_sustained(tight.monitor(trajectories[34]).spe_alarm)])
 	# [0, 106]
 
-The two batches are caught by different statistics, and that is not an accident of the data:
+Which statistic catches a fault says what kind of fault it is. How much of the batch has been
+seen says when.
 
-* batch 37's fault is a slower reaction from the start, along a direction the reference
-  model already describes because the normal batches vary along it too, less severely. Once
-  enough of the batch has been seen for the score to move out along that direction, the
-  deviation is carried by the score rather than left over: a large :math:`T^2` and a small
-  residual, which is where batch 37 sits from sample 23 to the end;
-* batch 34's fault begins midway through a batch that had been normal, in a combination of
-  tags the reference model has no component for, so from that sample on the newest samples
-  stop fitting the model, which is what the SPE measures.
+A fault along a direction the reference batches already vary in is carried by the score once
+enough of the batch has been seen: a large :math:`T^2` and a small residual, where batch 37 sits
+from sample 23 to the end. A fault in a combination of tags the model has no component for never
+reaches a score at all, so the newest samples stop fitting, which is what the SPE measures, and
+that is batch 34 from sample 105.
 
-Which chart speaks first is a property of the fault and of how much of the batch has been seen.
-Batch 37 crosses the SPE limit from sample 15, before its :math:`T^2` crosses at 23.
-
-With fifteen samples in hand the model cannot yet place the batch along its components, so the
-newest samples do not fit and the residual carries the deviation. Once the score has moved out, that
-same deviation is described rather than left over: the SPE falls back inside while the :math:`T^2`
-holds.
-
-All five faults García-Muñoz, Kourti and MacGregor (2004) simulated also showed in the SPE chart
-first.
+Early in a batch every fault looks like the second kind. With fifteen samples in hand the model
+cannot yet place batch 37 along its components, so the deviation is left in the residual and the
+SPE crosses first, at sample 15; once the score moves out, the SPE falls back inside and the
+:math:`T^2` holds. All five faults García-Muñoz, Kourti and MacGregor (2004) simulated also
+showed in the SPE chart first.
 
 The reactor temperature is the tag the model explains least, so its residual is large in every
 batch and its share is largest at the alarm before falling as the service temperatures stop
