@@ -434,9 +434,20 @@ def expected_output_lines(source: str) -> list[str]:
 
 
 def _looks_like_prose(text: str) -> bool:
-    """A comment with several plain words is an explanation, not an echoed result."""
-    words = re.findall(r"[A-Za-z]{2,}", text)
-    return len(words) >= 5
+    """A comment with several plain words is an explanation, not an echoed result.
+
+    Two kinds of comment carry many words and are still echoes, so neither counts here.
+    A dict or list repr spends its words on quoted keys (``{'ClockTime': -8.1, ...}``),
+    so only words outside quotes are counted. A printed sentence of results carries
+    several numbers (``Composition: RMSEE 0.00106 (0.71 sd), RMSEP 0.00122 (0.81 sd)``),
+    where an explanation rarely carries more than one or two, so three numbers or more
+    marks a result. Without this, an echoed line was silently dropped and the number it
+    pinned went unchecked.
+    """
+    outside_quotes = re.sub(r"'[^']*'|\"[^\"]*\"", " ", text)
+    words = re.findall(r"[A-Za-z]{2,}", outside_quotes)
+    numbers = re.findall(r"\d+(?:\.\d+)?", text)
+    return len(words) >= 5 and len(numbers) < 3
 
 
 def _normalise(text: str) -> str:

@@ -493,7 +493,7 @@ How well is that direction determined?
 
 This is the caveat promised earlier. Every number quoted so far comes from one model fitted to 26
 cheeses, and the direction of the null
-space rests on the second :math:`y`-loading, :math:`q_2 = -0.262`. That component was the one
+space is set by the second :math:`y`-loading, :math:`q_2 = -0.262`. That component was the one
 cross-validation did not keep. It adds 3.0% to :math:`R^2Y`, against 64.3% for the first. It is worth
 asking how much of the geometry survives if the 26 cheeses had come out slightly differently.
 
@@ -998,8 +998,8 @@ deviation is a distance in the input space, measured between the two recipes the
 Reading down the :math:`T^2` of the design, the moderate tastes near the middle of the calibration
 range give designs with small :math:`T^2`, while the more extreme tastes push the design further from
 the data: asking for a taste of 47.9 gives the largest value, 4.82. A large :math:`T^2` does not make
-a design wrong, but it flags that the model is extrapolating and that the predicted taste rests on
-less support from the data.
+a design wrong, but it flags that the model is extrapolating and that less data stand behind
+the predicted taste.
 All four are well inside the 99% limit of 12.14.
 
 The input-space deviation compares each design with the cheese that actually had that taste. Cheese 2 is
