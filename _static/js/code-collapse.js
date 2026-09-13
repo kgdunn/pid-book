@@ -11,7 +11,10 @@
  *   - a memory of which the reader preferred, so someone who wants the code
  *     asks once rather than on every page;
  *   - opening every block before printing, and closing them again after, so a
- *     printed page or a saved PDF carries the code in full.
+ *     printed page or a saved PDF carries the code in full;
+ *   - the page's reading time, which is quoted without the code and moves to
+ *     the with-code figure while every block is open. Both numbers are put in
+ *     the markup by my-extensions/reading_time.py.
  *
  * Nothing is sent anywhere. The preference is a single key in localStorage,
  * read and written inside try/catch because a private window can refuse both.
@@ -49,6 +52,20 @@
     });
   }
 
+  function updateReadingTime(allOpen) {
+    // The header quotes the page without its code, since the blocks arrive
+    // closed. Once they are all open the page really is the longer read.
+    var badge = document.querySelector(".pid-reading-time");
+    if (!badge) {
+      return;
+    }
+    var value = badge.querySelector(".pid-reading-time__value");
+    var minutes = badge.getAttribute(allOpen ? "data-minutes-with-code" : "data-minutes");
+    if (value && minutes) {
+      value.textContent = minutes + " min";
+    }
+  }
+
   function makeSwitch(items) {
     var button = document.createElement("button");
     button.type = "button";
@@ -62,6 +79,7 @@
       });
       button.textContent = allOpen ? CLOSE_LABEL : OPEN_LABEL;
       button.setAttribute("aria-pressed", allOpen ? "true" : "false");
+      updateReadingTime(allOpen);
     }
 
     button.addEventListener("click", function () {
