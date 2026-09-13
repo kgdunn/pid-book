@@ -605,9 +605,22 @@ accounts for:
 	Q^2 \approx 1 - f^2
 
 Both attributes here miss by about 0.8 standard deviations, so :math:`f^2` is about 0.64 and
-the model predicts about a third of each. The relation is approximate because the two
-quantities divide by slightly different counts, and here because the RMSEP leaves out one
-batch at a time while the :math:`Q^2` uses five folds.
+the model predicts about a third of each.
+
+The relation is approximate, and writing both quantities over the same sums of squares shows
+why. Both are built from the prediction error sum of squares, PRESS, against the total sum of
+squares of the attribute, TSS:
+
+.. math::
+
+	Q^2 = 1 - \frac{\text{PRESS}}{\text{TSS}}
+	\qquad\text{and}\qquad
+	f^2 = \left(\frac{\text{RMSEP}}{s}\right)^2
+	    = \frac{\text{PRESS}}{\text{TSS}} \cdot \frac{N-1}{N}
+
+The two therefore differ by the factor :math:`(N-1)/N`, which is 52/53 here: the RMSEP divides
+by :math:`N` and the standard deviation :math:`s` by :math:`N-1`. A second, larger difference
+is deliberate: the RMSEP leaves out one batch at a time while the :math:`Q^2` uses five folds.
 
 Composition and particle size are the two attributes the model predicts least well: branching
 and cross-linking reach 0.91 and polydispersity 0.48.
