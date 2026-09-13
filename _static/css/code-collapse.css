@@ -1,0 +1,117 @@
+/* Collapsed code blocks.
+
+   The markup comes from my-extensions/code_collapse.py: every code block is a
+   native <details class="pid-code"> that starts closed, so the collapse works
+   with JavaScript off. This file only styles it.
+
+   Colours are the theme's own custom properties (--pst-color-*), so light and
+   dark mode both follow the reader's setting with nothing to maintain here. */
+
+details.pid-code {
+	margin: 1rem 0;
+}
+
+/* The bar shown in place of a collapsed block. */
+details.pid-code > summary.pid-code__bar {
+	display: flex;
+	align-items: baseline;
+	gap: 0.6rem;
+	cursor: pointer;
+	padding: 0.35rem 0.7rem;
+	border: 1px solid var(--pst-color-border);
+	border-radius: 0.25rem;
+	background: var(--pst-color-surface);
+	color: var(--pst-color-text-muted);
+	font-size: 0.85rem;
+	line-height: 1.4;
+	user-select: none;
+	list-style: none; /* Firefox */
+}
+
+/* The default disclosure triangle, removed in the two places browsers put it. */
+details.pid-code > summary.pid-code__bar::-webkit-details-marker {
+	display: none;
+}
+details.pid-code > summary.pid-code__bar::marker {
+	content: "";
+}
+
+/* Our own marker, so the affordance is still obvious. It points right when the
+   block is closed and down when it is open. */
+details.pid-code > summary.pid-code__bar::before {
+	content: "\25B8";
+	display: inline-block;
+	width: 0.8em;
+	color: var(--pst-color-text-muted);
+}
+details.pid-code[open] > summary.pid-code__bar::before {
+	content: "\25BE";
+}
+
+details.pid-code > summary.pid-code__bar:hover {
+	border-color: var(--pst-color-link);
+	color: var(--pst-color-link);
+}
+
+/* Keyboard users must be able to see where they are. */
+details.pid-code > summary.pid-code__bar:focus-visible {
+	outline: 2px solid var(--pst-color-link);
+	outline-offset: 2px;
+}
+
+.pid-code__lang {
+	font-weight: 600;
+}
+
+/* The line count is the secondary half of the bar: it sits to the right and
+   recedes, so the eye lands on the language first. */
+.pid-code__n {
+	margin-left: auto;
+	font-variant-numeric: tabular-nums;
+	opacity: 0.8;
+}
+
+/* An open block needs no gap between its bar and the code itself. */
+details.pid-code[open] > summary.pid-code__bar {
+	margin-bottom: 0.35rem;
+}
+
+/* The page-level switch, inserted by code-collapse.js at the top of any page
+   that has code. It is absent when JavaScript is off, where the per-block bars
+   still work on their own. */
+.pid-code-switch {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	margin: 0 0 1.2rem;
+	padding: 0.3rem 0.75rem;
+	border: 1px solid var(--pst-color-border);
+	border-radius: 1rem;
+	background: transparent;
+	color: var(--pst-color-text-muted);
+	font-size: 0.8rem;
+	cursor: pointer;
+}
+
+.pid-code-switch:hover {
+	border-color: var(--pst-color-link);
+	color: var(--pst-color-link);
+}
+
+.pid-code-switch:focus-visible {
+	outline: 2px solid var(--pst-color-link);
+	outline-offset: 2px;
+}
+
+/* Printing, and anyone saving the page as a PDF, gets the code in full: the
+   script opens every block before the dialogue appears, and this removes the
+   bars, which carry no information once the code below them is visible. */
+@media print {
+	details.pid-code > summary.pid-code__bar,
+	.pid-code-switch {
+		display: none;
+	}
+	details.pid-code {
+		margin: 0;
+	}
+}
