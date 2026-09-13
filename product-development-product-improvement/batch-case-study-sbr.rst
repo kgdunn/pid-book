@@ -1103,53 +1103,17 @@ limit, the same kind of rule the departure analysis used.
 	enters at sample 100 (dotted vertical) and the first sustained alarm is after 105
 	samples. Right: the share of the squared residual per tag at that alarm sample.
 
-Batch 37 raises both alarms. Its SPE crosses first, from sample 15, for seven samples; its
-:math:`T^2` crosses at 23 and stays above the limit for the rest of the batch, while the SPE
-falls back inside until 144. Batch 34 is caught by the SPE after 105 samples, five after the
-impurity enters, while its :math:`T^2` stays inside until 190.
+Batch 37 raises both alarms and batch 34 only the SPE, each with most of the batch still to run.
 
-Nomikos and MacGregor flagged the same two faults with models of all nine trajectories:
-the fault present from the start, in the scores within the first 15 samples (1994), and the
-fault from the middle of the batch, in the SPE after 105 samples, the same sample as here
-(their multi-way PLS paper of 1995).
+The SPE limit does not hold on this reference set: thirteen of the fifty-one normal batches raise
+a sustained alarm on it, against one on :math:`T^2`. Both statistics are autocorrelated, so
+crossings arrive in runs rather than singly.
 
-The 51 reference batches define normal, so any alarm they raise is a false alarm. Their alarm rate
-is a lower bound on what the plant will see, because the limits were fitted to these same batches.
-
-A 99% limit lets 1% of a normal batch's values cross by chance, about two crossings over 200
-samples, so a single crossing cannot count as an alarm. The rule used here is three consecutive
-samples above the limit, the run length García-Muñoz, Kourti and MacGregor (2004) use, applied to
-the 99% limit rather than their 95% one.
-
-That rule holds for :math:`T^2`, where one of the 51 reference batches alarms. It fails for the SPE,
-where 13 do, one normal batch in four.
-
-Both statistics are autocorrelated: a sample that fits the model poorly is usually followed by
-another that does, so crossings arrive in runs. What separates the two charts is how often they
-cross at all. The reference batches cross their own :math:`T^2` limit at a sixth of the nominal
-rate, because that limit is derived for a batch outside the reference set, and their SPE limit at
-about the nominal rate.
-
-Three responses, each measured on the same 51 batches:
-
-* a limit fitted to the reference values of five neighbouring samples pooled, the window
-  Nomikos and MacGregor (1995) use, does not help, with the same 13 batches alarming: the
-  crossings are already as rare as a 99% limit intends, and they still come in runs;
-* the cumulative SPE, over every cell observed so far, adds each new sample's residual to a
-  sum over all the earlier ones, so a run of a few poorly fitting samples barely moves it;
-  2 batches alarm, at the price of catching batch 34 after 112 samples rather than 105, since
-  the same dilution slows its response to a real change;
-* a 99.9% limit, which Nomikos (1996) uses for the residual chart because residuals collect
-  every kind of variation the model does not describe, leaves no reference batch alarming
-  and catches batch 34 after 106 samples. A 99.9% quantile fitted from 51 values lies beyond
-  the largest of them, so no reference batch can be expected to cross it: the count of zero
-  says the limit is wide, not what the false-alarm rate on new batches will be.
-
-An alarm on a new batch is trustworthy only once that false-alarm rate has been measured and
-made acceptable. Ramaker and co-workers (2006) judge a batch chart on how often it signals
-over a normal batch and how long it takes to signal on a faulty one. Here the :math:`T^2`
-chart is used as it stands and the SPE chart needs one of the three. Either way batch 34 is
-flagged with most of its second half still to run.
+Three ways to make the limit harder to trip by chance. Pooling it over five neighbouring samples
+does not help, leaving all thirteen. The cumulative SPE leaves two and a 99.9% limit none, and
+both pay for it in the true alarm: batch 34 is caught after 112 and 106 samples rather than 105.
+That zero is not a false-alarm rate, because a 99.9% quantile fitted from 51 values lies beyond
+the largest of them.
 
 .. code-block:: python
 
@@ -1179,26 +1143,18 @@ flagged with most of its second half still to run.
 	       first_sustained(tight.monitor(trajectories[34]).spe_alarm)])
 	# [0, 106]
 
-Which statistic catches a fault says what kind of fault it is. How much of the batch has been
-seen says when.
+Which statistic catches a fault says what kind of fault it is; how much of the batch has been seen
+says when. A fault along a direction the reference batches already vary in is carried by the
+score, a large :math:`T^2`, which is batch 37 from sample 23. A fault the model has no component
+for leaves the newest samples not fitting, which is the SPE, and that is batch 34 from sample 105.
 
-A fault along a direction the reference batches already vary in is carried by the score once
-enough of the batch has been seen: a large :math:`T^2` and a small residual, where batch 37 sits
-from sample 23 to the end. A fault in a combination of tags the model has no component for never
-reaches a score at all, so the newest samples stop fitting, which is what the SPE measures, and
-that is batch 34 from sample 105.
+Early in a batch every fault looks like the second kind, because the model cannot yet place the
+batch along its components. That is why batch 37's SPE crosses at 15, before its :math:`T^2` at
+23.
 
-Early in a batch every fault looks like the second kind. With fifteen samples in hand the model
-cannot yet place batch 37 along its components, so the deviation is left in the residual and the
-SPE crosses first, at sample 15; once the score moves out, the SPE falls back inside and the
-:math:`T^2` holds. All five faults García-Muñoz, Kourti and MacGregor (2004) simulated also
-showed in the SPE chart first.
-
-The reactor temperature is the tag the model explains least, so its residual is large in every
-batch and its share is largest at the alarm before falling as the service temperatures stop
-fitting. Those shares say which tags stopped fitting the model, not what happened in the
-reactor: the departure analysis puts the onsets in the two service temperatures, and none in
-the reactor temperature.
+The contribution shares name which tags stopped fitting, not what happened in the reactor: the
+departure analysis puts the onsets in the two service temperatures, while the reactor temperature
+is simply the tag the model explains least.
 
 The same score estimate that predicts the quality also predicts the rest of the
 trajectories, as the model's reconstruction :math:`\hat{\boldsymbol{\tau}} \mathbf{P}^{T}`
@@ -1293,19 +1249,9 @@ against the zero line.
 	model's components. Batch 37's two forecasts lie below zero and above what happened; the
 	later one, with more of the batch behind it, lies closer to it.
 
-It is the same distinction as the two statistics. Batch 37's slow conversion lies along the
-model's components, so it is forecast in the right direction, and more closely the later the
-forecast is made. Batch 34's fault lies off them, so its forecasts stay on the average batch,
-and it can be flagged but not forecast.
-
-Both of batch 37's forecasts still understate what happened, because they are built from
-estimated scores, and those are pulled toward the average batch while little has been observed,
-the same shrinkage as in the quality prediction.
-
-Both faults are found with much of the batch still to run, and the statistic that finds each
-says which kind it is. A large :math:`T^2` with a small residual is a batch far along a known
-direction, while a large residual with a small :math:`T^2` is a batch doing something the
-reference set never did.
+A fault along the model's components can be forecast; one off them can only be flagged. Batch
+37's two forecasts run in the right direction, the later one closer, while batch 34's stay on
+the average batch.
 
 Every number here comes from the reference set, easy to choose because the simulation says
 which batches are faulty. On plant data those batches are the first thing to get right, and
