@@ -631,24 +631,31 @@ with one component gives the same average error over the five attributes, buying
 the fault of batch 34, which a one-component model would push into the residual, and because a
 score plot needs a second axis.
 
-=======  ===========  =============  =========  =============  ==============
-Batch    Composition  Particle size  Branching  Cross-linking  Polydispersity
-=======  ===========  =============  =========  =============  ==============
-34       5 to 26      1 to 1         4 to 2     4 to 2         17 to 2
-37       4 to 1       2 to 2         1 to 1     1 to 1         1 to 1
-=======  ===========  =============  =========  =============  ==============
+Both faulty batches were in the model, so their fitted values prove nothing on their own.
+Leaving each one out and refitting is the test: batch 37 is measured lowest of the 53 on
+branching, cross-linking and polydispersity, and a model that never saw it predicts it lowest
+on all three. Either batch would have been flagged from the trajectories alone, before the
+laboratory results arrived.
 
-Each cell gives two positions among the 53 batches, rank 1 the lowest: where the measured
-value sits, and where a model fitted on the other 52 batches puts its prediction.
+Batch 34 is the interesting one, because one attribute does not follow.
 
-* Both batches sit at the low end on most attributes, and a model that never saw them
-  predicts them at the same end. Either would have been flagged from the trajectories alone,
-  before the laboratory results arrived.
-* Composition is the exception. Batch 34 measures fifth lowest and is predicted mid-pack,
-  because its two scores move the composition in opposite directions: :math:`t_1` by 1.4
-  standard deviations down and :math:`t_2` by 1.0 up.
-* A component's share of the quality block says how much it explains across all batches, not
-  how far it moves any one of them.
+==============  ====================  =======================
+Attribute       Measured rank, of 53  Held-out predicted rank
+==============  ====================  =======================
+Composition     5                     26
+Particle size   1                     1
+Polydispersity  17                    2
+==============  ====================  =======================
+
+Where batch 34 sits among the 53, rank 1 the lowest value, measured and as predicted by a
+model fitted on the other 52. Branching and cross-linking are left out: they are one
+measurement in two units, so they repeat the particle-size row exactly.
+
+Composition is the exception, and the reason is in the scores rather than in the fault. Batch
+34's two scores move its composition in opposite directions, :math:`t_1` by 1.4 standard
+deviations down and :math:`t_2` by 1.0 up, so the prediction lands mid-pack while the
+measurement sits near the bottom. A component's share of the quality block says how much it
+explains across all batches, not how far it moves any one of them.
 
 .. _APPS_batch_case_sbr_online_prediction:
 

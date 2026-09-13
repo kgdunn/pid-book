@@ -1105,28 +1105,16 @@ conditions or only its trajectories are considered, and the three plots need not
 	the trajectory block the four reach across to the abnormal group (purple); in the other
 	two blocks they reach to the good one (blue).
 
-In the trajectory block the abnormal batches lie at negative :math:`t_1` and the good ones
-at positive, with five classed good among the abnormal. Four of those five, batches 2, 3, 6
-and 7, sit with the good batches in both of the other two blocks and in the quality PCA at
-the start of this case study. Their trajectories have the features of an off-specification
-batch, and their product was on-specification.
+A batch can be unusual in one block and ordinary in the others, and the super score hides
+exactly that. Only the block scores show it.
 
-That a batch sits among a group is a claim about a picture. To make it reproducible, take
-the average score point of the good batches and of the abnormal ones in each block, and
-place every batch with whichever of the two centres is nearer. The figure joins each batch
-to the centre it was placed with.
-
-Five batches classed good are placed with the abnormal centre in the trajectory block. Four of them
-are placed with the good centre in both of the other two blocks: ordinary chemistry and ordinary
-operating conditions, with trajectories that look abnormal. What the two components of those blocks
-do not describe, their residuals, is not examined here.
-
-The fifth, batch 5, is placed with the abnormal centre in the operating-condition block as well. It
-is not a case of an ordinary charge with an unusual trajectory, and it is left aside.
-
-On the super score of this model those four lie between the two groups with nothing to mark them
-out: a batch unusual in one block and ordinary in the others is visible only in the block score
-plots.
+Batches 2, 3, 6 and 7 are the case. Placing every batch with whichever of the two class
+centres is nearer, which is what the figure draws, puts these four with the abnormal batches
+in the trajectory block and with the good batches in the other two. Their product was
+on-specification, so they ran an unusual path and still made good material: either the
+trajectory block carries variation that does not reach the quality, or something outside all
+three blocks compensated. On the super score they sit between the two groups with nothing to
+mark them out.
 
 .. code-block:: python
 
