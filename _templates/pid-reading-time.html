@@ -2,7 +2,13 @@
    to the sidebar toggle. The number is computed during the build by
    my-extensions/reading_time.py; `pid_reading_time` is None on pages too
    short to be worth an estimate (the chapter index pages), and this file
-   then renders nothing at all. #}
+   then renders nothing at all.
+
+   Two figures are carried. The one shown is the page WITHOUT its code,
+   because code blocks arrive collapsed (my-extensions/code_collapse.py) and
+   a reader who leaves them closed never reads those lines. The second is the
+   page with the code read as well; _static/js/code-collapse.js swaps to it
+   while every block on the page is open, and the tooltip names it either way. #}
 {%- if pid_reading_time %}
 {%- set words = "{:,}".format(pid_reading_time.words) %}
 {%- set videos = pid_reading_time.videos %}
@@ -10,8 +16,15 @@
 {%- elif videos == 1 %}{% set aside = "; the video is not included" %}
 {%- else %}{% set aside = "; the %d videos are not included" % videos %}
 {%- endif %}
+{%- set code_lines = pid_reading_time.code_lines %}
+{%- if code_lines %}
+{%- set code_aside = ", or about %d minutes if you read its %d lines of code as well" % (pid_reading_time.minutes_with_code, code_lines) %}
+{%- else %}{% set code_aside = "" %}
+{%- endif %}
 <div class="pid-reading-time d-print-none"
-     title="About {{ pid_reading_time.minutes }} minutes to read this page ({{ words }} words, at a pace for technical reading{{ aside }})">
+     data-minutes="{{ pid_reading_time.minutes }}"
+     data-minutes-with-code="{{ pid_reading_time.minutes_with_code }}"
+     title="About {{ pid_reading_time.minutes }} minutes to read this page{{ code_aside }} ({{ words }} words, at a pace for technical reading{{ aside }})">
   <span class="fa-regular fa-clock" aria-hidden="true"></span>
   {#- one flex child, so "10 min" and "reading time" read as one phrase -#}
   <span><span class="pid-reading-time__value">{{ pid_reading_time.minutes }} min</span>

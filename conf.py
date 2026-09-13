@@ -26,6 +26,7 @@ extensions = [
     "my-extensions.pdf_exclude",
     "my-extensions.figure_source",
     "my-extensions.reading_time",
+    "my-extensions.code_collapse",
 ]
 
 # Avoid Subresource Integrity errors for the bundled jQuery.
@@ -171,12 +172,15 @@ html_theme_options = {
 }
 
 html_static_path = ["_static"]
-html_css_files = ["css/theme-extended-kgd.css"]
+html_css_files = ["css/theme-extended-kgd.css", "css/code-collapse.css"]
 
 # Long-press (or Alt-click) a figure to see which script drew it. The
 # mapping is written to _static/figure-sources.json during the HTML build by
 # my-extensions/figure_source.py; the script reads it from this same site.
-html_js_files = [("js/figure-source.js", {"defer": "defer"})]
+html_js_files = [
+    ("js/figure-source.js", {"defer": "defer"}),
+    ("js/code-collapse.js", {"defer": "defer"}),
+]
 
 # Where the figures repository is mounted, relative to this file, and the
 # prefix that turns a script path from the manifest into a link.

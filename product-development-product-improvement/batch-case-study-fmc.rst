@@ -360,6 +360,10 @@ cell of the quality block is held out in turn, in seven groups, and predicted fr
 fitted without it; the average over fifty different groupings is :math:`Q^2`
 (:ref:`choosing the number of components <LVM_number_of_components>`).
 
+Packages differ in how they cross-validate a PCA, so a :math:`Q^2` computed elsewhere on this
+same block will not match the one below. :ref:`Two schemes compared on one data set
+<LVM_q2_across_packages>` shows how far apart they can sit.
+
 .. table:: The quality block, as a cumulative percentage. :math:`R^2` is the fit to the 46
    batches; :math:`Q^2` predicts each measured cell from a model fitted without it.
 

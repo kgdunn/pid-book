@@ -17,6 +17,14 @@ Why not the usual "words divided by 250":
   be looked at, and a code block is read a line at a time. Those carry a
   cost in seconds each (``reading_time_costs``), so a dense page comes out
   higher than its word count alone suggests, which is the point.
+* Code is optional, so it is priced separately. Since the HTML book collapses
+  every code block (``code_collapse.py``), a reader who leaves them closed
+  never sees those lines, and charging for them overstates the page: the code
+  is 18% of the book's attributed minutes, and 69% of one page. Two figures are
+  therefore reported. ``minutes`` is the page without its code, which is what
+  the page costs as it arrives. ``minutes_with_code`` adds the code back, for a
+  reader who opens it. The template shows the first and names the second, and
+  swaps to the second while every block on the page is open.
 
 What is counted, per page:
 
@@ -99,7 +107,12 @@ def _tally(node, counts: Counter) -> None:
     elif isinstance(node, nodes.math_block):
         counts["display_math"] += 1
     elif isinstance(node, nodes.literal_block):
-        counts["code_lines"] += node.astext().count("\n") + 1
+        # Counted the same way my-extensions/code_collapse.py counts it for the
+        # bar on a collapsed block ("Python, 23 lines"), so the two numbers a
+        # reader can see on one page agree. `count("\n") + 1` does not: it adds
+        # one for a block whose text ends in a newline and nothing for a block
+        # that does not, which is a per-block coin toss.
+        counts["code_lines"] += len(node.astext().rstrip("\n").splitlines()) or 1
     elif isinstance(node, nodes.image):
         counts["images"] += 1
     elif isinstance(node, nodes.table):
@@ -129,7 +142,9 @@ def estimate(doctree, wpm: int, costs: dict[str, float], min_words: int) -> dict
     Returns
     -------
     dict | None
-        ``{"minutes": int, "words": int, "videos": int}``, or ``None``.
+        ``{"minutes": int, "minutes_with_code": int, "code_lines": int,
+        "words": int, "videos": int}``, or ``None``. ``minutes`` excludes the
+        code, which the reader has to open before it costs them anything.
     """
     counts: Counter = Counter()
     _tally(doctree, counts)
@@ -137,9 +152,12 @@ def estimate(doctree, wpm: int, costs: dict[str, float], min_words: int) -> dict
         return None
 
     seconds = counts["words"] / wpm * 60
-    seconds += sum(cost * counts[key] for key, cost in costs.items())
+    seconds += sum(cost * counts[key] for key, cost in costs.items() if key != "code_lines")
+    code_seconds = costs["code_lines"] * counts["code_lines"]
     return {
         "minutes": max(1, round(seconds / 60)),
+        "minutes_with_code": max(1, round((seconds + code_seconds) / 60)),
+        "code_lines": counts["code_lines"],
         "words": counts["words"],
         "videos": counts["videos"],
     }
