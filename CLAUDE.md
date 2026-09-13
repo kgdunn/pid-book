@@ -118,6 +118,29 @@ same edits do not have to be made again.
 - After describing a result, state its practical value in one or two
   sentences, with the number that carries it, then stop.
 
+**Section construction**
+
+- A section states its claim first, and the claim is the one that survives a
+  change of data. Open with the sentence a reader could carry to their own
+  plant ("A batch can be unusual in one block and ordinary in the others, and
+  the super score hides exactly that"), and only then name the batches, runs
+  or values that show it.
+- Never make the reader assemble the general claim out of particulars and meet
+  it in the last line. If a passage ends on its point, move that line to the
+  top and cut whatever no longer earns its place.
+- The paragraph rule below is not enough on its own: five paragraphs that each
+  run claim, reason, consequence can still sit in the wrong order, and the
+  section then reads as a report of what was found rather than as an argument.
+- Say what it means for someone running the process, in a clause or a
+  sentence. A passage that stops at what happened is unfinished.
+- Method is a subordinate clause, not a paragraph, unless the method is what
+  the section is about. "Placing every batch with whichever of the two class
+  centres is nearer, which is what the figure draws" replaced a paragraph.
+- Delete the housekeeping: the case set aside, the caveat not pursued, the
+  thing "not examined here". If it mattered, it would be examined.
+- Numbers name things, or they support a claim already made. A run of values
+  the reader has to turn into a conclusion is doing the conclusion's work.
+
 **Paragraph construction**
 
 - One idea per paragraph: claim, reason, consequence. Do not splice a
