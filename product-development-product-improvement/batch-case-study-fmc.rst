@@ -72,7 +72,7 @@ Four blocks of data describe each batch:
 	and its operation, the three-way block of trajectories, and the block of final
 	properties.
 
-The questions are those a plant asks, in the order it asks them:
+The questions are those a plant engineer or operator asks, in the order they ask them:
 
 * What does product quality look like, and do the batches fall into groups?
 * Do the chemistry and the operating conditions explain it?
