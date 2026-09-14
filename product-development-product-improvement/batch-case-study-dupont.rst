@@ -94,16 +94,17 @@ are noisy in every batch.
 
 .. figure:: ../figures/batch/batch-case-dupont-raw-trajectories.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: Four tags of the 55 batches overlaid in grey with batch 49 in orange and batch 54 in aqua; the cooling-medium temperature of batch 49 drops below the others over samples 56 to 65, and the pressure step of batch 54 comes later than in the other batches.
+	:alt: Four tags of the 55 batches overlaid in grey with batch 49 in orange and batch 54 in aqua; the cooling-medium temperature of batch 49 turns down before the others and falls more gradually, sitting below them over samples 56 to 65, and the pressure step of batch 54 comes later than in the other batches.
 	:width: 900px
 	:scale: 80
 	:align: center
 
 	Four of the ten tags for all 55 batches (grey), with batch 49 (orange) and batch 54
-	(aqua) drawn on top. The cooling-medium temperature of batch 49 drops below the other
-	batches over samples 56 to 65, then rejoins them. The pressure step of batch 54 in
-	``Press-1`` comes later than in the other batches, and its reactor temperature ``TempR-1``
-	runs slightly below them over the first 20 samples.
+	(aqua) drawn on top. The cooling-medium temperature of batch 49 turns down before the
+	other batches and falls more gradually, so it sits below them over samples 56 to 65
+	before rejoining. The pressure step of batch 54 in ``Press-1`` comes later than in the
+	other batches, and its reactor temperature ``TempR-1`` runs slightly below them over the
+	first 20 samples.
 
 A first model on all 55 batches
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -533,8 +534,8 @@ same direction on ``TempC-1`` and ``Press-3``, most of it from samples 0 to 25. 
 member agrees. ``TempH-1`` takes both signs across the eight, so its group mean rests on a few.
 A group contribution is a starting point, checked member by member.
 
-The raw trajectories agree: the eight run above the other 40 in ``TempC-1`` and ``Press-3``
-over samples 0 to 25, and only slightly above in ``Press-2`` and ``Flow-2``.
+The raw trajectories agree: the eight run above the average of the other 40 in ``TempC-1``
+and ``Press-3`` over samples 0 to 25, and only slightly above in ``Press-2`` and ``Flow-2``.
 
 Only batches 45 and 46 are on the poor or borderline list. The other six produced acceptable
 product. The record shows them run higher in ``TempC-1`` and ``Press-3`` over samples 0 to 25;
