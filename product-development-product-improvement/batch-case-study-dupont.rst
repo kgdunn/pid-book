@@ -645,9 +645,9 @@ residuals, so it is itself estimated from 40 numbers.
 	which is the comparison the next paragraphs make.
 
 The fair comparison is with the 40 model building batches, each projected onto a model fitted
-without it: their SPE runs up to 1.4 times the limit, and 38% of them are above it. All 15
-left-out batches lie above that range, batches 50 to 55 by more than a hundred times, and those
-six and batch 37 are above the :math:`T^2` limit as well.
+without it. All 15 left-out batches sit beyond the range those 40 cover, batches 50 to 55 by
+more than a hundred times the SPE limit, and those six and batch 37 are above the
+:math:`T^2` limit as well.
 
 Batches 38, 40, 41 and 42 produced poor product and stayed in the training set. Projected the
 same way, each onto a model fitted without it, they sit where the normal batches sit, at 0.8 to
