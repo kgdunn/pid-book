@@ -21,8 +21,8 @@ lengths and the record has gaps, so the trajectories are aligned before they can
 
 An agricultural chemical is dried in an industrial batch dryer. Wet cake, the solid product
 with the solvent still in it, is charged, and the solvent is driven off into a side tank.
-Chemical changes take place in the solid while it dries, so the drying step sets part of the
-product quality, not only its residual solvent.
+Chemical changes take place in the solid while it dries, so the drying step partially
+determines the product quality, not only its residual solvent level.
 
 The recipe has three phases, each bounded by a landmark in the trajectories:
 
