@@ -946,8 +946,8 @@ the jacket temperature set point (-4.2). Batches 5 and 7 lie on the other side o
 
 	Four trajectories of the 46 batches (grey) with batches 13 (orange), 5 (aqua) and 7
 	(blue) drawn on top. Batch 13 collected less solvent than most of the batches and reached
-	the end of the first phase in less clock time than all but three of them. The dashed lines
-	mark the ends of the first two phases.
+	the end of the first phase in less clock time than all but three of them. The vertical
+	dashed lines mark the ends of the first two phases.
 
 The :ref:`overlay of these three batches <APPS_batch_case_fmc_overlay_13>` shows what batch
 13's contributions refer to: a collector level below most of the batches, and a first phase
