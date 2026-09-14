@@ -114,19 +114,17 @@ column is centred and, where it varies between batches, scaled to unit variance,
 :ref:`preprocessing <LVM_preprocessing>` for a PCA of dissimilar variables.
 
 Centring removes each tag's average trajectory; scaling gives every varying cell the same variance.
-The components therefore describe how batches deviate from the average batch. The 43 cells holding
-one value in every batch, the last samples of the two flow rates after the feeds stop, carry no
-weight.
+The components therefore describe how batches deviate from the average batch, not the shape of
+the recipe they all follow, which is known before any model is fitted.
 
-Model A, the first of three, uses two components, enough for a first look, and all 55 batches,
-not as a final model but to see which batches stand out.
+Model A, our first of three, uses two components to explore the dataset. It is fitted on all 55
+batches, to see which of them stand out.
 
 The alternative, observation-wise unfolding, has one row per time sample and one column per
-tag. It describes the shape of the trajectories rather than the differences between batches,
-so a second model, of its scores, is needed to compare batches (Wold and co-workers, 2009),
-and it needs many more components to reach the same residual, six against three on these data
-(Westerhuis, Kourti and MacGregor, 1999). It suits trajectories varied on purpose, as in a
-designed experiment. All three case studies unfold batchwise.
+tag, so its components describe the shape of the trajectories rather than the differences
+between batches. Comparing batches then needs a second model of its scores (Wold and
+co-workers, 2009), and six components where three do here (Westerhuis, Kourti and MacGregor,
+1999). It suits trajectories varied on purpose, as in a designed experiment.
 
 .. code-block:: python
 
@@ -175,12 +173,12 @@ plots are enough to find the batches that differ most.
 	confidence ellipse. Batches 49 and 51 (orange) sit inside it, batch 49 among the other
 	batches and batch 51 to the right of them; the figure below shows what separates them.
 
-The :ref:`score plot <LVM_interpreting_scores>` puts the last six batches away from the
+The :ref:`score plot <LVM_interpreting_scores>` shows the last six batches away from the
 rest, five outside the 95% confidence ellipse. Batches this far out pull the components
 towards themselves, so the model is rebuilt without them once they have been examined.
 
 The score plot says how far a batch sits *along* the directions the model found. The
-:ref:`SPE <LVM-interpreting-SPE-residuals>` says how far it sits *away* from them. Drawing
+:ref:`SPE <LVM-interpreting-SPE-residuals>` says how far it sits *off* them. Drawing
 :math:`T^2` (:ref:`Hotelling's statistic <LVM-Hotellings-T2>`) against the SPE puts both in
 one figure, each 95% limit dividing it into quadrants.
 
@@ -245,7 +243,7 @@ settle the question.
 The contribution vector has one entry per (tag, time) cell, 1000 here, holding that cell's
 residual after the two-component reconstruction. The SPE is the length of that vector, so each
 squared residual divided by the total is the share of the squared SPE the cell carries. Those
-shares are summed two ways:
+shares can be folded up, or aggregated, in two ways:
 
 * per tag, which ranks the variables;
 * per time sample, which locates the event in the batch.
@@ -295,6 +293,55 @@ per tag.
 
 ``Flow-1`` carries almost none of the residual. It belongs to the two medium temperatures,
 ``Flow-2``, ``Press-2`` and ``Press-3``, and 80% falls in the ten samples from 56 to 65.
+
+The raw record of those tags shows what happened. The deviation is large between batches but
+small against the full range of a trajectory, so the panels are zoomed to samples 40 to 80.
+Batch 54 is drawn alongside for contrast: it is far out on the score plot, but its residual is
+inside the limit.
+
+.. code-block:: python
+
+	# the four tags carrying the most residual, over the window that holds it
+	for tag in ("TempC-1", "TempH-1", "Press-2", "Flow-2"):
+	    panel = overlay(batches, tag, {49: ORANGE, 54: AQUA})
+	    for sample in (56, 65):
+	        panel.add_vline(x=sample, line_dash="dash", line_color=GREY)
+	    panel.update_xaxes(range=[40, 80]).show()
+
+	def leaves_plateau(series, lo=40, hi=70):
+	    """First sample after the plateau peak at which the tag has fallen 1% of the way down."""
+	    y = series.to_numpy()
+	    peak = int(np.argmax(y[lo:hi])) + lo
+	    fallen = np.flatnonzero(y[peak:] < y[peak] - 0.01 * (y[peak] - y[-1]))
+	    return peak + int(fallen[0])
+
+	for tag in ("TempC-1", "TempH-1", "Press-2"):
+	    rest = [leaves_plateau(batches[b][tag]) for b in batches if b not in (49, 54)]
+	    print(f"{tag}: 49 leaves the plateau at {leaves_plateau(batches[49][tag])},"
+	          f" 54 at {leaves_plateau(batches[54][tag])}, the rest at {int(np.median(rest))}")
+	# TempC-1: 49 leaves the plateau at 56, 54 at 62, the rest at 61
+	# TempH-1: 49 leaves the plateau at 56, 54 at 63, the rest at 61
+	# Press-2: 49 leaves the plateau at 56, 54 at 62, the rest at 60
+	zero = {b: int(np.argmax(batches[b]["Flow-2"].to_numpy() <= 0)) for b in batches}
+	print(f"Flow-2 reaches zero at {zero[49]} in batch 49, at {zero[54]} in batch 54,"
+	      f" at {int(np.median([zero[b] for b in zero if b not in (49, 54)]))} in the others")
+	# Flow-2 reaches zero at 66 in batch 49, at 62 in batch 54, at 62 in the others
+
+.. figure:: ../figures/batch/batch-case-dupont-batch-49-raw.png
+	:source: batch/batch-case-dupont-figures.py
+	:alt: Four tags over samples 40 to 80 for all 55 batches in grey, batch 49 in orange and batch 54 in aqua: the cooling- and heating-medium temperatures, Press-2 and Flow-2. In each the other batches hold a plateau until about sample 61 and then fall steeply, while batch 49 leaves the plateau at sample 56 and falls gradually; batch 54 stays with the others. Dashed rules mark samples 56 and 65.
+	:width: 900px
+	:scale: 80
+	:align: center
+
+	The four tags carrying most of batch 49's residual, over samples 40 to 80: all 55 batches
+	(grey) with batch 49 (orange) and batch 54 (aqua), and dashed rules at the window holding
+	80% of batch 49's squared SPE. The other batches hold their plateau to sample 60 or 61 and
+	then turn down sharply; batch 49 leaves at 56 and descends gradually, and its second feed
+	takes until sample 66 to reach zero where the others stop at 62. The same early, slower
+	transition in two temperatures, a pressure and a feed is one event, not four. Batch 54
+	leaves the plateau with the others and reaches zero flow with them, and departs only after
+	sample 65, outside the window.
 
 The ``Flow-2`` share needs a qualifier. Most of it comes from samples 62 to 65, where every other
 batch has already reached zero flow and batch 49 alone has not. Batch 49 therefore sets the spread

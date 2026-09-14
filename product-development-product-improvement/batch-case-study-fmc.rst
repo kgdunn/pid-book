@@ -9,6 +9,16 @@ Combining initial conditions and trajectories: multiblock batch PLS on a batch d
 	pair: initial conditions; batch data
 	single: missing data; batch data
 
+This is the third of three case studies on batch data, and the most complete. Each batch is
+described by four blocks rather than one, the chemistry of the charge, the operating
+conditions, the trajectories and the final quality, so a multiblock PLS can say which of the
+three input blocks a quality problem came from.
+
+The :ref:`first <APPS_batch_case_dupont>` had trajectories alone and the
+:ref:`second <APPS_batch_case_sbr>` added final quality, and both were supplied already
+aligned to a common length. These are plant data: the batches run for different lengths and
+the record has gaps, so the trajectories are aligned before they can be unfolded.
+
 An agricultural chemical is dried in an industrial batch dryer. Wet cake, the solid product
 with the solvent still in it, is charged, and the solvent is driven off into a side tank.
 Chemical changes take place in the solid while it dries, so the drying step sets part of the
@@ -21,10 +31,7 @@ The recipe has three phases, each bounded by a landmark in the trajectories:
 * cooling, from there to the end of the batch.
 
 The operators adjusted the peak temperature set point from batch to batch to correct the product
-quality, a manual feedback loop. This is the case study of García-Muñoz and co-workers (2003),
-and the most complete of the three. The :ref:`first <APPS_batch_case_dupont>` had trajectories
-alone and the :ref:`second <APPS_batch_case_sbr>` added final quality, while here the chemistry
-of the charge and the operating conditions are recorded as well.
+quality, a manual feedback loop. This is the case study of García-Muñoz and co-workers (2003).
 
 .. figure:: ../figures/examples/fmc/dryer_flowsheet.png
 	:alt: Flowsheet of the batch dryer: the dryer tank with its agitator and heating medium, the collector tank with its level measurement, a pressure controller between them, and two temperature controllers for the jacket and the dryer; the ten measured trajectories are numbered on the drawing.

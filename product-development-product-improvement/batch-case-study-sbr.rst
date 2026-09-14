@@ -9,6 +9,15 @@ Diagnosing a known fault with batch PLS: the SBR reactor
 	pair: contribution plots; batch PLS
 	single: simulated data; batch reactor
 
+This is the second of three case studies on batch data. The batches now have their final
+quality measured, so the model is a PLS from the trajectories to that quality, and it can be
+asked what the quality will be while a batch is still running.
+
+The :ref:`first <APPS_batch_case_dupont>` set up the batchwise unfolding, the scores, the SPE
+and the contribution plots, which are used here without being explained again. It had to work
+out which batches were unusual without knowing; here the fault is known, so each diagnosis can
+be checked against it.
+
 Styrene-butadiene rubber (SBR) is made by emulsion polymerization in a batch reactor. Six
 trajectories of the reactor are used here: the reactor, cooling-water and jacket temperatures, the
 latex density, the conversion, and the energy released.
@@ -24,9 +33,8 @@ through.
 Simulated data lets a model be checked against what is known to have happened, before it is
 trusted on plant data.
 
-The :ref:`first case study <APPS_batch_case_dupont>` used a PCA of the trajectories alone.
-Here final quality is available too, so the model is a :ref:`PLS <SECTION_PLS>` from the
-unfolded trajectories to the five attributes. Three questions are asked of it:
+The model is a :ref:`PLS <SECTION_PLS>` from the unfolded trajectories to the five
+attributes. Three questions are asked of it:
 
 * Does it single out the two faulty batches?
 * Does it say what went wrong, and when?
@@ -946,7 +954,7 @@ through it sample by sample, as if they were new batches on a running plant.
 
 Two statistics are tracked. Hotelling's :math:`T^2` of the score estimate says how far the
 batch so far sits *along* the model's components; the SPE of the newest sample says how far
-that sample sits *away* from them.
+that sample sits *off* them.
 
 The :math:`T^2` limit is the same at every sample, depending only on the number of
 components and of reference batches, and it assumes the score estimates of the reference
