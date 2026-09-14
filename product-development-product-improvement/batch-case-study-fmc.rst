@@ -252,8 +252,8 @@ unfolded trajectories. ``BatchPCA`` and ``BatchPLS`` need complete data.
 	dryer temperature of batch 20 sat well above the other batches through the whole
 	solvent-collection phase, and its ``ClockTime`` rises steeply between samples 200 and
 	240, where its temperature ramp took longer than usual. The gaps in the orange line are
-	missing samples. The dashed lines mark the ends of the first two phases, at samples 175
-	and 249.
+	missing samples. The vertical dashed lines mark the ends of the first two phases, at
+	samples 175 and 249.
 
 Batch 20, chosen for the overlay, is one to keep in mind. Its dryer temperature averaged
 33.8 units over the solvent-collection phase against 23.7 for the other batches.
