@@ -525,8 +525,9 @@ equals the number of attributes.
 Holding out single cells keeps the estimate independent of the value it predicts, and asks how well
 one attribute is predicted from the other seven of the same batch.
 
-The two PLS rows hold out whole batches, and are comparable with each other and with every later
-model. The PCA row is a different measurement that happens to share the column.
+The two PLS rows in the table hold out whole batches, and are comparable with each other and
+with every later model. The PCA row in the table is a different measurement that happens to
+share the column.
 
 The :math:`Q^2_Y` columns are far below the fits. Held out of the fit, neither block predicts
 more than 3% of the quality block, and the second component takes both towards zero or below
