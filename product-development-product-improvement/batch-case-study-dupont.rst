@@ -632,7 +632,7 @@ residuals, so it is itself estimated from 40 numbers.
 
 .. figure:: ../figures/batch/batch-case-dupont-model-c.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: Left, the scores of model C's 40 batches with 38, 40, 41 and 42 marked inside the ellipse; right, Hotelling's T2 against SPE on logarithmic axes, the 40 training batches inside the T2 limit and all but two inside the SPE limit, and the 15 left-out batches above the SPE limit, seven of them above the T2 limit as well.
+	:alt: Left, the scores of model C's 40 batches with 38, 40, 41 and 42 marked inside the ellipse; right, Hotelling's T2 against SPE on logarithmic axes, the 40 training batches inside the T2 limit and all but two inside the SPE limit, with the same four marked again low in that cloud, and the 15 left-out batches above the SPE limit, seven of them above the T2 limit as well.
 	:width: 1000px
 	:scale: 80
 	:align: center
@@ -640,7 +640,9 @@ residuals, so it is itself estimated from 40 numbers.
 	Left: scores of model C, with batches 38, 40, 41 and 42 (magenta diamonds) marked. Right:
 	Hotelling's :math:`T^2` against the SPE, on logarithmic axes, of the 40 training batches
 	(blue) and of the 15 left-out batches projected onto model C: batch 49 (orange), batches
-	50 to 55 (aqua circles) and the second group (purple triangles).
+	50 to 55 (aqua circles) and the second group (purple triangles). The same four diamonds
+	are marked in the right panel, where they sit inside the training cloud on both statistics,
+	which is the comparison the next paragraphs make.
 
 The fair comparison is with the 40 model building batches, each projected onto a model fitted
 without it: their SPE runs up to 1.4 times the limit, and 38% of them are above it. All 15
