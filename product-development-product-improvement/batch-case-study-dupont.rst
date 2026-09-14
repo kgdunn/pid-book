@@ -642,13 +642,10 @@ residuals, so it is itself estimated from 40 numbers.
 	(blue) and of the 15 left-out batches projected onto model C: batch 49 (orange), batches
 	50 to 55 (aqua circles) and the second group (purple triangles).
 
-A batch the model has not seen sits farther from its plane than a training batch does. The fair
-comparison is with the 40 normal batches, each projected onto a model fitted without it: their SPE
-runs up to 1.4 times the limit, and 38% of them are above it.
-
-All 15 left-out batches lie above that range. The second group runs at 3 to 5 times the limit, batch
-49 at 5, and batches 50 to 55 more than a hundred times. Batches 50 to 55 and batch 37 are above the
-:math:`T^2` limit as well.
+The fair comparison is with the 40 model building batches, each projected onto a model fitted
+without it: their SPE runs up to 1.4 times the limit, and 38% of them are above it. All 15
+left-out batches lie above that range, batches 50 to 55 by more than a hundred times, and those
+six and batch 37 are above the :math:`T^2` limit as well.
 
 Batches 38, 40, 41 and 42 produced poor product and stayed in the training set. Projected the
 same way, each onto a model fitted without it, they sit where the normal batches sit, at 0.8 to
