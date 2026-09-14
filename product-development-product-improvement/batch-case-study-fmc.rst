@@ -14,10 +14,10 @@ described by four blocks rather than one, the chemistry of the charge, the opera
 conditions, the trajectories and the final quality, so a multiblock PLS can say which of the
 three input blocks a quality problem came from.
 
-The :ref:`first <APPS_batch_case_dupont>` had trajectories alone and the
-:ref:`second <APPS_batch_case_sbr>` added final quality, and both were supplied already
-aligned to a common length. These are plant data: the batches run for different lengths and
-the record has gaps, so the trajectories are aligned before they can be unfolded.
+The :ref:`first case <APPS_batch_case_dupont>` had trajectories alone and the
+:ref:`second case <APPS_batch_case_sbr>` added final quality. Both cases came supplied with
+data already aligned to a common length. These are plant data: the batches run for different
+lengths and the record has gaps, so the trajectories are aligned before they can be unfolded.
 
 An agricultural chemical is dried in an industrial batch dryer. Wet cake, the solid product
 with the solvent still in it, is charged, and the solvent is driven off into a side tank.
