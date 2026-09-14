@@ -549,7 +549,7 @@ The final model, used to verify the unusual batches detected above
 Model C is fitted on the 40 batches left once batch 49, batches 50 to 55 and the second group are
 removed. The 15 removed batches are then projected onto it: unfolded and pre-processed with model
 C's centring and scaling vectors, scores computed, :math:`T^2` and SPE compared with the 95%
-limits of the 40.
+limits of the 40 model building batches.
 
 The two limits assume different things. The :math:`T^2` limit takes the scores of the 40 as normally
 distributed. The SPE limit is a scaled chi-square matched to the mean and variance of their 40
