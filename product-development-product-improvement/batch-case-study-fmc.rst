@@ -243,17 +243,17 @@ unfolded trajectories. ``BatchPCA`` and ``BatchPLS`` need complete data.
 
 .. figure:: ../figures/batch/batch-case-fmc-raw-trajectories.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Four trajectories of the 46 batches in grey with batch 20 in orange, with dashed vertical lines at the ends of the first two phases; the dryer temperature of batch 20 sits well above the others through the first 170 samples, and its ClockTime rises steeply between samples 200 and 240.
+	:alt: Four trajectories of the 46 batches in grey with batch 20 in orange, with dashed vertical lines at the ends of the first two phases; the dryer pressure of batch 20 runs above the other batches through the first 175 samples, its dryer temperature sits well above them over the same span, and its ClockTime rises steeply between samples 200 and 240.
 	:width: 900px
 	:scale: 80
 	:align: center
 
-	Four trajectories of the 46 batches (grey) with batch 20 (orange) drawn on top. The
-	dryer temperature of batch 20 sat well above the other batches through the whole
-	solvent-collection phase, and its ``ClockTime`` rises steeply between samples 200 and
-	240, where its temperature ramp took longer than usual. The gaps in the orange line are
-	missing samples. The vertical dashed lines mark the ends of the first two phases, at
-	samples 175 and 249.
+	Four trajectories of the 46 batches (grey) with batch 20 (orange) drawn on top. Its dryer
+	pressure ran above the other batches for the whole solvent-collection phase, and its dryer
+	temperature sat well above them over the same phase. Its ``ClockTime`` rises steeply
+	between samples 200 and 240, where its temperature ramp took longer than usual. The gaps
+	in the orange line are missing samples. The vertical dashed lines mark the ends of the
+	first two phases, at samples 175 and 249.
 
 Batch 20, chosen for the overlay, is one to keep in mind. Its dryer temperature averaged
 33.8 units over the solvent-collection phase against 23.7 for the other batches.
