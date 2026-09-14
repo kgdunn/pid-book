@@ -14,15 +14,15 @@ described by four blocks rather than one, the chemistry of the charge, the opera
 conditions, the trajectories and the final quality, so a multiblock PLS can say which of the
 three input blocks a quality problem came from.
 
-The :ref:`first <APPS_batch_case_dupont>` had trajectories alone and the
-:ref:`second <APPS_batch_case_sbr>` added final quality, and both were supplied already
-aligned to a common length. These are plant data: the batches run for different lengths and
-the record has gaps, so the trajectories are aligned before they can be unfolded.
+The :ref:`first case <APPS_batch_case_dupont>` had trajectories alone and the
+:ref:`second case <APPS_batch_case_sbr>` added final quality. Both cases came supplied with
+data already aligned to a common length. These are plant data: the batches run for different
+lengths and the record has gaps, so the trajectories are aligned before they can be unfolded.
 
 An agricultural chemical is dried in an industrial batch dryer. Wet cake, the solid product
 with the solvent still in it, is charged, and the solvent is driven off into a side tank.
-Chemical changes take place in the solid while it dries, so the drying step sets part of the
-product quality, not only its residual solvent.
+Chemical changes take place in the solid while it dries, so the drying step partially
+determines the product quality, not only its residual solvent level.
 
 The recipe has three phases, each bounded by a landmark in the trajectories:
 
@@ -72,7 +72,7 @@ Four blocks of data describe each batch:
 	and its operation, the three-way block of trajectories, and the block of final
 	properties.
 
-The questions are those a plant asks, in the order it asks them:
+The questions are those a plant engineer or operator asks, in the order they ask them:
 
 * What does product quality look like, and do the batches fall into groups?
 * Do the chemistry and the operating conditions explain it?
@@ -243,17 +243,17 @@ unfolded trajectories. ``BatchPCA`` and ``BatchPLS`` need complete data.
 
 .. figure:: ../figures/batch/batch-case-fmc-raw-trajectories.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Four trajectories of the 46 batches in grey with batch 20 in orange, with dashed vertical lines at the ends of the first two phases; the dryer temperature of batch 20 sits well above the others through the first 170 samples, and its ClockTime rises steeply between samples 200 and 240.
+	:alt: Four trajectories of the 46 batches in grey with batch 20 in orange, with dashed vertical lines at the ends of the first two phases; the dryer pressure of batch 20 runs above the other batches through the first 175 samples, its dryer temperature sits well above them over the same span, and its ClockTime rises steeply between samples 200 and 240.
 	:width: 900px
 	:scale: 80
 	:align: center
 
-	Four trajectories of the 46 batches (grey) with batch 20 (orange) drawn on top. The
-	dryer temperature of batch 20 sat well above the other batches through the whole
-	solvent-collection phase, and its ``ClockTime`` rises steeply between samples 200 and
-	240, where its temperature ramp took longer than usual. The gaps in the orange line are
-	missing samples. The dashed lines mark the ends of the first two phases, at samples 175
-	and 249.
+	Four trajectories of the 46 batches (grey) with batch 20 (orange) drawn on top. Its dryer
+	pressure ran above the other batches for the whole solvent-collection phase, and its dryer
+	temperature sat well above them over the same phase. Its ``ClockTime`` rises steeply
+	between samples 200 and 240, where its temperature ramp took longer than usual. The gaps
+	in the orange line are missing samples. The vertical dashed lines mark the ends of the
+	first two phases, at samples 175 and 249.
 
 Batch 20, chosen for the overlay, is one to keep in mind. Its dryer temperature averaged
 33.8 units over the solvent-collection phase against 23.7 for the other batches.
@@ -525,8 +525,9 @@ equals the number of attributes.
 Holding out single cells keeps the estimate independent of the value it predicts, and asks how well
 one attribute is predicted from the other seven of the same batch.
 
-The two PLS rows hold out whole batches, and are comparable with each other and with every later
-model. The PCA row is a different measurement that happens to share the column.
+The two PLS rows in the table hold out whole batches, and are comparable with each other and
+with every later model. The PCA row in the table is a different measurement that happens to
+share the column.
 
 The :math:`Q^2_Y` columns are far below the fits. Held out of the fit, neither block predicts
 more than 3% of the quality block, and the second component takes both towards zero or below
@@ -946,8 +947,8 @@ the jacket temperature set point (-4.2). Batches 5 and 7 lie on the other side o
 
 	Four trajectories of the 46 batches (grey) with batches 13 (orange), 5 (aqua) and 7
 	(blue) drawn on top. Batch 13 collected less solvent than most of the batches and reached
-	the end of the first phase in less clock time than all but three of them. The dashed lines
-	mark the ends of the first two phases.
+	the end of the first phase in less clock time than all but three of them. The vertical
+	dashed lines mark the ends of the first two phases.
 
 The :ref:`overlay of these three batches <APPS_batch_case_fmc_overlay_13>` shows what batch
 13's contributions refer to: a collector level below most of the batches, and a first phase
