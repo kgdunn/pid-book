@@ -720,7 +720,9 @@ centred over all of its rows instead, so the average trajectory stays in and its
 describe the shape of the trajectories, as :ref:`the model A section
 <APPS_batch_case_dupont_model_a>` says. The six components reported there for that layout were
 with the average trajectory kept in. With it removed here, each sample-wise model is given model
-C's three components, so the three layouts are compared with the same number of components.
+C's three components, so the three layouts are compared with the same number of components. A
+shared count is not the only fair choice, because a 30-column lagged row can carry more
+components than a 10-column observation-wise one, so the code below also sweeps it.
 
 To see the three side by side, the code fits a three-component PCA to the observation-wise rows
 and to the lagged rows of the 40 reference batches of model C, and runs batch 49, which is in none
@@ -785,6 +787,17 @@ window as :ref:`the raw panels of batch 49 <APPS_batch_case_dupont_batch49_raw>`
 	print(f"observation-wise T2 at sample 64: "
 	      f"{t2_49[64] / observation.hotellings_t2_limit(conf_level=0.95):.1f} times its limit")
 	# observation-wise T2 at sample 64: 1.7 times its limit
+	for name, lags in lags_of.items():         # the same comparison, at other component counts
+	    last = []
+	    for A in (1, 2, 3, 4, 6, 8):
+	        model = PCA(n_components=A).fit(pd.DataFrame(layouts[name]))
+	        spe = np.asarray(model.diagnose(pd.DataFrame(lagged_rows(table_49, lags))).spe)
+	        flagged = np.flatnonzero(spe / model.spe_limit(conf_level=0.95) > 1) + lags
+	        window = flagged[(flagged >= 40) & (flagged <= 80)]
+	        last.append(int(window.max()))
+	    print(f"{name}, last sample flagged at 1, 2, 3, 4, 6 and 8 components: {last}")
+	# observation-wise, last sample flagged at 1, 2, 3, 4, 6 and 8 components: [64, 63, 63, 63, 63, 62]
+	# lagged, 2 lags, last sample flagged at 1, 2, 3, 4, 6 and 8 components: [65, 65, 65, 65, 65, 65]
 
 	fig = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.08,
 	                    subplot_titles=("TempC-1", "SPE as a multiple of its 95% limit"))
@@ -826,7 +839,9 @@ displacement that remains at that sample lies along the three components, where 
 
 The lagged row holds the two preceding samples as well, so its SPE stays out through sample 65:
 the row at sample 65 still contains sample 63, the last sample the observation-wise row flags, as
-the bracket in the upper panel shows.
+the bracket in the upper panel shows. That ordering is a property of the rows rather than of the
+fitting: over component counts from one to eight the lagged row is the last to clear its limit
+every time.
 
 The batchwise row of the batch so far holds every cell observed, so its SPE stays out to the last
 sample of the batch.
