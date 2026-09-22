@@ -11,7 +11,8 @@ Learning from batch trajectories: the DuPont polymerization reactor
 
 This is the first of three case studies on batch data. A principal component model of the
 trajectories finds which batches differ from the rest, names the variables and the times at
-which they differ, and shows what such a model cannot detect.
+which they differ, and shows what such a model cannot detect. The page closes by laying the
+same array out three ways and running one batch through all three.
 
 The :ref:`second <APPS_batch_case_sbr>` adds final quality and uses PLS. The
 :ref:`third <APPS_batch_case_fmc>` joins several blocks in a multiblock model. All three
@@ -128,8 +129,8 @@ tag, so its components describe the shape of the trajectories rather than the di
 between batches. Comparing batches then needs a second model of its scores (Wold and
 co-workers, 2009), and six components where three do here (Westerhuis, Kourti and MacGregor,
 1999). It suits trajectories varied on purpose, as in a designed experiment. A third layout
-appends each sample's preceding samples to its row. :ref:`A section below
-<APPS_batch_case_dupont_lagged>` runs batch 49 through all three.
+appends each sample's preceding samples to its row. :ref:`The comparison of the three layouts
+<APPS_batch_case_dupont_lagged>`, below, runs batch 49 through all three.
 
 .. code-block:: python
 
@@ -672,57 +673,62 @@ In control engineering the condition of the batch must be *observable* through t
 measurements. The remedy is to measure something else, such as the raw material properties,
 and the :ref:`third case study <APPS_batch_case_fmc>` shows how such blocks are added.
 
-The :ref:`SBR case study <APPS_batch_case_sbr_online>` runs the same check sample by sample,
-comparing each statistic with its limit at every sample, so a faulty batch is flagged while
-it still runs.
-
 .. _APPS_batch_case_dupont_lagged:
 
-The same array laid out by sample: what the observation-wise and lagged layouts see in batch 49
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Three layouts of the same array, compared on batch 49: each keeps an event for as long as its row holds it
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. index::
 	pair: batch processes; lagged unfolding
 	single: batch dynamic PCA
 
-The array of batches by tags by samples can be laid out as a matrix in three ways, and the layout
-fixes what a model can be asked about a running batch. The batchwise row of
-:ref:`model A <APPS_batch_case_dupont_model_a>` is one batch, every tag at every sample. The
-observation-wise row is one sample, its ten tags, so a model of those rows has one loading per
-tag and assumes the same correlation among the tags at every sample, pooled over the batch; a
-running batch has a complete row at every sample. The lagged row is one sample, its ten tags,
-followed by the same tags at the preceding samples, two of them here, so a model of those rows
-also assumes that the tags move from one sample to the next in the same way at every sample.
-Chen and Liu (2002) build batch monitoring on the lagged rows as *batch dynamic* PCA.
+The checks above were made on complete batches. A running batch has only part of its row, and
+which part depends on how the array of batches by tags by samples is laid out as a matrix. A
+model's SPE stays above its limit for as long as its row still holds the event, and the three
+layouts hold it for different lengths of time: one sample in the observation-wise row, that
+sample and its lags in the lagged row, every sample so far in the batchwise row. The layout also
+fixes what the model can be asked of a running batch, and the table below sets the three side by
+side.
 
-Here every (tag, sample) cell is centred and scaled as model C scales it, before the rows are
-formed, so that all three layouts describe departures from the average reference batch. The
+A model of batchwise rows, :ref:`model A <APPS_batch_case_dupont_model_a>` or model C, has one
+loading per (tag, sample) cell and describes how batches deviate from the average batch at each
+sample. A model of observation-wise rows has one loading per tag and assumes the same correlation
+among the tags at every sample, pooled over the batch. A model of lagged rows also assumes that
+the tags move from one sample to the next in the same way at every sample; Chen and Liu (2002)
+build batch monitoring on the lagged rows as *batch dynamic* PCA.
+
+=================  ====================================  ==================  ==============================================
+Layout             One row is                            Rows by columns,    A running batch at sample :math:`k`: its row,
+                                                         model C's 40        and what the model can be asked
+                                                         reference batches
+=================  ====================================  ==================  ==============================================
+Batchwise          One batch: every tag at every sample  40 by 1000          The columns after :math:`k` are missing and
+                                                                             the scores are estimated from those observed.
+                                                                             Is the batch so far unusual, and where is the
+                                                                             rest of it heading?
+Observation-wise   One sample: its ten tags              4000 by 10          Complete at every sample; nothing is
+                                                                             estimated. Is this sample unusual?
+Lagged, two lags   One sample: its ten tags, then the    3920 by 30          Complete from sample 2, the third; nothing is
+                   same tags at the two samples before                       estimated. Is this sample unusual, given the
+                                                                             two before it?
+=================  ====================================  ==================  ==============================================
+
+Every (tag, sample) cell is centred and scaled as model C scales it before the rows are formed,
+so that all three layouts describe departures from the average reference batch. The
 observation-wise layout of Wold and co-workers (2009) is the same arrangement with each tag
 centred over all of its rows instead, so the average trajectory stays in and its components
 describe the shape of the trajectories, as :ref:`the model A section
-<APPS_batch_case_dupont_model_a>` says.
-
-=================  =====================================  ==============  ==========================================
-Layout             One row is                             Rows by         A running batch at sample :math:`k`
-                                                          columns, here
-=================  =====================================  ==============  ==========================================
-Batchwise          One batch: every tag at every sample   40 by 1000      The columns after :math:`k` are missing
-                                                                          and estimated
-Observation-wise   One sample: its ten tags               4000 by 10      Complete at every sample; nothing is
-                                                                          estimated
-Lagged, two lags   One sample: its ten tags, then the     3920 by 30      Complete from sample 2, the third;
-                   same tags at the two samples before                    nothing is estimated
-=================  =====================================  ==============  ==========================================
+<APPS_batch_case_dupont_model_a>` says. The six components reported there for that layout were
+with the average trajectory kept in. With it removed here, each sample-wise model is given model
+C's three components, so the three layouts are compared with the same number of components.
 
 To see the three side by side, the code fits a three-component PCA to the observation-wise rows
-and to the lagged rows of the 40 reference batches of model C, gives model C itself a limit at
-every sample (``BatchMonitor``), and runs batch 49, which is in none of the three reference sets,
-through all three. The six components reported for the observation-wise layout in :ref:`the model
-A section <APPS_batch_case_dupont_model_a>` were with the average trajectory kept in; with it
-removed here, each sample-wise model is given model C's three components, so the layouts are
-compared at the same size. The figure below reports its SPE at every sample as a multiple of each layout's
-95% limit, under the cooling-medium temperature that carried its event, over the same window of
-samples 40 to 80 as :ref:`the raw panels of batch 49 <APPS_batch_case_dupont_batch49_raw>`.
+and to the lagged rows of the 40 reference batches of model C, and runs batch 49, which is in none
+of the three reference sets, through both and through model C. The two sample-wise models have
+one 95% limit each, from their 4000 or 3920 reference rows. The batchwise SPE is the residual over
+the cells observed so far, so ``BatchMonitor`` gives model C a limit at every sample, from the
+reference batches re-projected at that sample. The figure below shows the result over the same
+window as :ref:`the raw panels of batch 49 <APPS_batch_case_dupont_batch49_raw>`.
 
 .. code-block:: python
 
@@ -736,44 +742,49 @@ samples 40 to 80 as :ref:`the raw panels of batch 49 <APPS_batch_case_dupont_bat
 	    return {b: wide.loc[b].unstack(level="tag").to_numpy() for b in wide.index}
 
 	def lagged_rows(table, lags):
-	    """One row per sample: its tags, then the same tags at each of the preceding `lags` samples."""
+	    """One row per sample: its tags, then the same tags at each of the `lags` samples before."""
 	    n = len(table)
 	    return np.concatenate([table[lags - lag:n - lag] for lag in range(lags + 1)], axis=1)
 
+	lags_of = {"observation-wise": 0, "lagged, 2 lags": 2}
 	reference = cells(model_c, kept_c)
-	layouts = {"batchwise": np.stack([t.ravel() for t in reference.values()]),
-	           "observation-wise": np.concatenate(list(reference.values())),
-	           "lagged, 2 lags": np.concatenate([lagged_rows(t, 2) for t in reference.values()])}
+	layouts = {"batchwise": np.stack([t.ravel() for t in reference.values()]),   # model C's own rows
+	           **{name: np.concatenate([lagged_rows(t, lags) for t in reference.values()])
+	              for name, lags in lags_of.items()}}
 	for name, rows in layouts.items():
 	    print(f"{name}: {rows.shape[0]} rows by {rows.shape[1]} columns")
 	# batchwise: 40 rows by 1000 columns
 	# observation-wise: 4000 rows by 10 columns
 	# lagged, 2 lags: 3920 rows by 30 columns
 
-	# Three components on each sample-wise layout, as in model C, and model C itself with a limit at
-	# every sample; batch 49 is in none of the three reference sets
-	sample_models = {name: PCA(n_components=3).fit(pd.DataFrame(layouts[name]))
-	                 for name in ("observation-wise", "lagged, 2 lags")}
+	# Three components on each sample-wise layout, as in model C, and model C itself with a limit
+	# at every sample; batch 49 is in none of the three reference sets
+	sample_models = {name: PCA(n_components=3).fit(pd.DataFrame(layouts[name])) for name in lags_of}
 	monitor_c = BatchMonitor(model_c, conf_level=0.95).fit(kept_c)
 
 	table_49 = cells(model_c, {49: batches[49]})[49]
 	ratio = {}                                   # SPE as a multiple of its 95% limit, per sample
-	for name, model in sample_models.items():
-	    lags = 0 if name == "observation-wise" else 2
+	for name, lags in lags_of.items():
+	    model = sample_models[name]
 	    spe = model.diagnose(pd.DataFrame(lagged_rows(table_49, lags))).spe
 	    ratio[name] = pd.Series(np.asarray(spe) / model.spe_limit(conf_level=0.95),
 	                            index=np.arange(lags, 100))
 	trace = monitor_c.monitor(batches[49])
-	ratio["batchwise, so far"] = pd.Series(trace.spe / trace.spe_limit, index=trace.time - 1)
+	ratio["batchwise, so far"] = pd.Series(trace.spe / trace.spe_limit,
+	                                       index=trace.time - 1)   # the monitor counts from 1, this page from 0
 	for name, r in ratio.items():
-	    flagged = r.loc[40:80]
-	    print(f"{name}: above the limit at samples {flagged.index[flagged > 1].tolist()}")
-	# observation-wise: above the limit at samples [56, 57, 58, 59, 60, 61, 62, 63]
-	# lagged, 2 lags: above the limit at samples [56, 57, 58, 59, 60, 61, 62, 63, 64, 65]
-	# batchwise, so far: above the limit at samples [56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
-	so_far = ratio["batchwise, so far"]
-	print("batchwise, so far: last sample above the limit", int(so_far.index[so_far > 1].max()))
-	# batchwise, so far: last sample above the limit 99
+	    above = r.loc[40:].index[r.loc[40:] > 1]
+	    unbroken = above.max() - above.min() + 1 == len(above)
+	    print(f"{name}: above the limit from sample {above.min()} to {above.max()}"
+	          f"{'' if unbroken else ', with gaps'}")
+	# observation-wise: above the limit from sample 56 to 63
+	# lagged, 2 lags: above the limit from sample 56 to 65
+	# batchwise, so far: above the limit from sample 56 to 99
+	observation = sample_models["observation-wise"]
+	t2_49 = np.asarray(observation.diagnose(pd.DataFrame(table_49)).hotellings_t2)[:, -1]
+	print(f"observation-wise T2 at sample 64: "
+	      f"{t2_49[64] / observation.hotellings_t2_limit(conf_level=0.95):.1f} times its limit")
+	# observation-wise T2 at sample 64: 1.7 times its limit
 
 	fig = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.08,
 	                    subplot_titles=("TempC-1", "SPE as a multiple of its 95% limit"))
@@ -792,33 +803,43 @@ samples 40 to 80 as :ref:`the raw panels of batch 49 <APPS_batch_case_dupont_bat
 
 .. figure:: ../figures/batch/batch-case-dupont-lagged-layout.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: Upper panel: the cooling-medium temperature of batch 49 in orange over the 40 reference batches in grey, samples 40 to 80, with the three samples that form the lagged row at sample 65 bracketed. Lower panel: batch 49's SPE at every sample as a multiple of its 95 percent limit under the observation-wise rows, the lagged rows and the batchwise row of the batch so far; all three rise above the limit at sample 56, the observation-wise SPE returns below it at sample 64, the lagged SPE at sample 66, and the batchwise SPE stays above it to the end.
+	:alt: Upper panel, the cooling-medium temperature of batch 49 in orange over the 40 reference batches in grey, samples 40 to 80, with the three samples that form the lagged row at sample 65 bracketed; lower panel, batch 49's SPE at every sample as a multiple of its 95% limit under the observation-wise rows, the lagged rows and the batchwise row of the batch so far, all three rising above the limit at sample 56, the observation-wise SPE returning below it at sample 64, the lagged SPE at sample 66, and the batchwise SPE staying above it to the end.
 	:width: 900px
 	:scale: 80
 	:align: center
 
 	Batch 49 under the three layouts, over samples 40 to 80. Upper panel: its cooling-medium
-	temperature (orange) over the 40 reference batches (grey), with the three samples that make up
-	the lagged row at sample 65 bracketed. Lower panel: its SPE at every sample as a multiple of
-	each layout's 95% limit. What differs between the layouts is how long each keeps the event
-	in its row.
+	temperature (orange), the tag carrying the largest share of its residual, over the 40 reference
+	batches (grey), with the three samples that make up the lagged row at sample 65 bracketed. Lower
+	panel: its SPE at every sample as a multiple of each layout's 95% limit. What differs between
+	the layouts is how long each keeps the event in its row.
 
 Within the window shown, all three flag batch 49 at sample 56, the sample at which it leaves the
-plateau, and they differ in what they carry forward. The observation-wise row holds only the current sample, so its SPE is
-back inside the limit at sample 64, while its cooling-medium temperature is still below the
-others: what remains of the displacement at that sample lies along the three components, not
-off them. The lagged row holds the two preceding samples as well, so its SPE stays out through
-sample 65: the row at sample 65 still contains sample 63, the last sample the observation-wise row
-flags, as the bracket in the upper panel shows. The batchwise row of the batch so far holds every
-cell observed, so its SPE stays out to the last sample of the batch.
+plateau, and they differ in what they carry forward. Before the event the batchwise curve runs
+nearer its limit than the other two: an SPE summed over the hundreds of cells observed so far
+varies less from batch to batch, relative to its limit, than one summed over ten cells.
 
-For a plant, the lagged layout gives a monitor that, from sample 2 on, estimates nothing and
-forgets an event after as many samples as it has lags; whether that is wanted depends on the
-question being asked. A PCA of lagged rows says nothing about how the batch will end. The
+The observation-wise row holds only the current sample, so its SPE is back inside the limit at
+sample 64, while the cooling-medium temperature of batch 49 is still below the others. The
+displacement that remains at that sample lies along the three components, where Hotelling's
+:math:`T^2` still reads 1.7 times its limit, not off them.
+
+The lagged row holds the two preceding samples as well, so its SPE stays out through sample 65:
+the row at sample 65 still contains sample 63, the last sample the observation-wise row flags, as
+the bracket in the upper panel shows.
+
+The batchwise row of the batch so far holds every cell observed, so its SPE stays out to the last
+sample of the batch.
+
+For someone running the process, the layouts differ in what the monitor needs and what it keeps.
+The observation-wise and lagged rows estimate nothing (from sample 2 on, for the lagged row) and
+keep an event for as many samples after it as they have lags, none and two here. Whether that is
+wanted depends on the question being asked. Neither forecasts how the batch will end. The
 batchwise row has columns for the samples still to come, and the model was fitted on them:
-:ref:`the SBR case study's forecast <APPS_batch_case_sbr_online_prediction>` estimates them as
-missing data from the cells observed so far, and :ref:`the mid-course correction page
-<APPS_batch_mcc>` chooses the future setpoint columns among them.
+:ref:`the SBR case study <APPS_batch_case_sbr_online>` runs that check sample by sample on a
+running batch and :ref:`forecasts the rest of it <APPS_batch_case_sbr_online_prediction>` from
+the cells observed so far, treating the remaining columns as missing data, and :ref:`the
+mid-course correction page <APPS_batch_mcc>` chooses the future setpoint columns among them.
 
 References and readings
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -849,10 +870,10 @@ The full list of readings on batch data is on the :ref:`batch process monitoring
   layouts,
   and analyses batch 49 of this dataset on-line.
 
-* Junghui Chen and Kun-Chih Liu, "On-line batch process monitoring using dynamic PCA and dynamic
-  PLS models", *Chemical Engineering Science*, **57**, 63-75, 2002.
-  `<https://doi.org/10.1016/S0009-2509(01)00366-9>`_ The lagged layout, as batch dynamic PCA and
-  PLS, with on-line monitoring built on it.
+* Junghui Chen and Kun-Chih Liu, "`On-line batch process monitoring using dynamic PCA and
+  dynamic PLS models <https://doi.org/10.1016/S0009-2509(01)00366-9>`_", *Chemical Engineering
+  Science*, **57**, 63-75, 2002. The lagged layout, as batch dynamic PCA and PLS, with on-line
+  monitoring built on it.
 
 * Johan A. Westerhuis, Theodora Kourti and John F. MacGregor, "`Comparing alternative
   approaches for multivariate statistical analysis of batch process data <https://literature.learnche.org/item/162/comparing-alternative-approaches-for-multivariate-statistical-analysis-of-batch-process-data>`_",

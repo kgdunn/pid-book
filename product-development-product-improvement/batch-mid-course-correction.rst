@@ -327,12 +327,12 @@ with the pre-batch block joined onto the unfolded trajectories as :ref:`the thir
 sample of every tag. On this process a row has 11 pre-batch values and 20 samples of each of 5
 tags, 111 columns in all, and that long row is regressed onto the final titer. Centring each
 column removes the average trajectory, so the loadings weight each batch's *deviation* from
-typical behaviour at each point in time. Of the three ways of arranging the three-way array
-(batchwise; observation-wise, with one row per sample; and the lagged form, one row per sample
-with the preceding samples appended, the three compared on batch 49 of :ref:`the DuPont reactor
-<APPS_batch_case_dupont_lagged>`), the batchwise row is the one a running batch fills in from
-left to right, which is what a decision point needs. The upper row of the figure below shows the
-layout; the lower row is explained shortly.
+typical behaviour at each point in time. The batchwise row is the one a running batch fills in
+from left to right, which is what a decision point needs. The other two arrangements of the
+three-way array, one row per sample (observation-wise) and one row per sample with its preceding
+samples appended (lagged), are compared with it on batch 49 of :ref:`the DuPont reactor
+<APPS_batch_case_dupont_lagged>`. The upper row of the figure below shows the layout; the lower
+row is explained shortly.
 
 .. _APPS_batch_mcc_row:
 
