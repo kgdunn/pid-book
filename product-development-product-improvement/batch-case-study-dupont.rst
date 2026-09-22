@@ -106,6 +106,8 @@ are noisy in every batch.
 	other batches, and its reactor temperature ``TempR-1`` runs slightly below them over the
 	first 20 samples.
 
+.. _APPS_batch_case_dupont_model_a:
+
 A first model on all 55 batches
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -329,6 +331,8 @@ inside the limit.
 	print(f"Flow-2 reaches zero at {zero[49]} in batch 49, at {zero[54]} in batch 54,"
 	      f" at {int(np.median([zero[b] for b in zero if b not in (49, 54)]))} in the others")
 	# Flow-2 reaches zero at 66 in batch 49, at 62 in batch 54, at 62 in the others
+
+.. _APPS_batch_case_dupont_batch49_raw:
 
 .. figure:: ../figures/batch/batch-case-dupont-batch-49-raw.png
 	:source: batch/batch-case-dupont-figures.py
@@ -683,17 +687,18 @@ The same array laid out by sample: what the observation-wise and lagged layouts 
 
 The array of batches by tags by samples can be laid out as a matrix in three ways, and the layout
 fixes what a model can be asked about a running batch. The batchwise row of
-:ref:`model A <APPS_batch_case_dupont>` is one batch, every tag at every sample. The
+:ref:`model A <APPS_batch_case_dupont_model_a>` is one batch, every tag at every sample. The
 observation-wise row is one sample, its ten tags, so a model of those rows describes the
 correlation among the tags at an instant, the same at every sample, and a running batch has a
 complete row at every sample. The lagged row is one sample, its ten tags, followed by the same
 tags at the preceding samples, two of them here, so a model of those rows also describes how the
 tags move from one sample to the next, again the same at every sample. Chen and Liu (2002) build
-batch monitoring on the lagged rows as *batch dynamic* PCA. Here every (tag, sample) cell is
-centred and scaled as model C scales it, before the rows are formed, so that all three layouts
-describe departures from the average reference batch; the observation-wise layout of Wold and
-co-workers (2009) keeps the average trajectory in, which is why its components describe the
-shape of the trajectories instead.
+batch monitoring on the lagged rows as *batch dynamic* PCA.
+
+Here every (tag, sample) cell is centred and scaled as model C scales it, before the rows are
+formed, so that all three layouts describe departures from the average reference batch. The
+observation-wise layout of Wold and co-workers (2009) keeps the average trajectory in, which is
+why its components describe the shape of the trajectories instead.
 
 =================  =====================================  ==============  ==========================================
 Layout             One row is                             Rows by         A running batch at sample :math:`k`
@@ -712,7 +717,7 @@ and to the lagged rows of the 40 reference batches of model C, gives model C its
 every sample (``BatchMonitor``), and runs batch 49, which is in none of the three reference sets,
 through all three. The figure below reports its SPE at every sample as a multiple of each layout's
 95% limit, under the cooling-medium temperature that carried its event, over the same window of
-samples 40 to 80 as :ref:`the raw panels above <APPS_batch_case_dupont>`.
+samples 40 to 80 as :ref:`the raw panels of batch 49 <APPS_batch_case_dupont_batch49_raw>`.
 
 .. code-block:: python
 
