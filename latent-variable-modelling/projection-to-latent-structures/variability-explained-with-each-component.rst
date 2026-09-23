@@ -139,14 +139,21 @@ test cheese at a time, which is what the figure draws.
 	fig = make_subplots(rows=1, cols=2, subplot_titles=["Component 1", "Component 2"])
 	for a in (0, 1):
 	    reach = 1.08 * np.abs(correction[:, a]).max()
+	    high = 1.1 * np.abs(error_before[:, a]).max()
 	    ends = np.array([-reach, reach])
+	    # A correction g reduces a cheese's error r when g * (2 r - g) > 0: shade that region.
+	    fig.add_scatter(x=[0, reach, reach, 0, 0, None, 0, -reach, -reach, 0, 0],
+	                    y=[0, reach / 2, high, high, 0, None, 0, -reach / 2, -high, -high, 0],
+	                    mode="lines", fill="toself", fillcolor="rgba(120, 190, 100, 0.25)", line={"width": 0},
+	                    name="where the correction reduces a cheese's error",
+	                    showlegend=(a == 0), row=1, col=a + 1)
 	    for slope, name, style in ((1.0, "correction exactly right", {"color": "black"}),
 	                               (0.5, "break-even", {"color": "orange", "dash": "dot"}),
 	                               (test_slope[a], "slope on the testing data", {"color": "darkblue", "dash": "dash"})):
 	        fig.add_scatter(x=ends, y=slope * ends, mode="lines", name=name, line=style,
 	                        showlegend=(a == 0), row=1, col=a + 1)
 	    fig.add_scatter(x=correction[:, a], y=error_before[:, a], mode="markers",
-	                    name="test cheese", marker={"color": "darkblue"},
+	                    name="test cheese (one row of the testing data)", marker={"color": "darkblue"},
 	                    showlegend=(a == 0), row=1, col=a + 1)
 	    fig.update_xaxes(title_text=f"correction by component {a + 1} (change in predicted taste)",
 	                     row=1, col=a + 1)
@@ -160,12 +167,13 @@ test cheese at a time, which is what the figure draws.
 	:width: 750px
 	:align: center
 
-	Each point is one cheese in the testing data of its fold, predicted by the fold model that did not
-	see it. The horizontal axis is the correction the component makes to its predicted taste, and the
+	Each dot is one cheese, a row of the testing data of its fold, predicted by the fold model that did
+	not see it. The horizontal axis is the correction the component makes to its predicted taste, and the
 	vertical axis the prediction error before that correction. On the solid line the correction removes
-	the error exactly. A component lowers the prediction error only when the points follow a slope above
-	the dotted line at one half. The testing data follow nearly all of the first component's correction,
-	and follow the second component's in direction but at less than half its size.
+	the error exactly. In the shaded region the correction reduces a cheese's error, and the component
+	lowers the prediction error overall when the dashed slope through all the dots lies there, above the
+	dotted line at one half. The first component's slope does. The second component's points the same way
+	but falls below it.
 
 This is why cross-validation keeps one component for this data set: the second component makes the
 predictions for the testing data worse, although it points the right way.
