@@ -69,6 +69,139 @@ Cross-validation on |Y| stops adding components once the prediction of |Y| stops
 process, one or two components beyond the cross-validated number are sometimes retained so that |X| is
 modelled as well.
 
+.. _LVM-PLS-dropped-component:
+
+Why a component that points the right way can still be dropped
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A component lowers the cross-validated prediction error only when, on the held-out rows, its effect is
+more than half as large as the effect the model fitted. A component can therefore point the right way
+on new rows and still be dropped, because the rows it was fitted on made its effect look larger than it
+is.
+
+Adding component :math:`a` changes the prediction of each held-out row :math:`i` by an amount
+:math:`g_i`, computed by the fold model that did not see that row. Call :math:`r_i` the part of the
+row's |Y| value that the first :math:`a-1` components left unexplained, and :math:`s_a` the
+least-squares slope of :math:`r_i` on :math:`g_i` through the origin. The slope is 1 when the held-out
+rows follow the fitted effect exactly, and 0 when they do not follow it at all. The prediction error
+sum of squares, PRESS, then changes by
+
+.. math::
+
+	\text{PRESS}_{a-1} - \text{PRESS}_a = \sum_i r_i^2 - \sum_i \left(r_i - g_i\right)^2
+	= \left(2 s_a - 1\right) \sum_i g_i^2
+
+so the prediction error falls, and :math:`Q^2_Y` rises, only when :math:`s_a` is above one half.
+
+The ``compare_cv_criteria`` function runs one cross-validation and reports :math:`s_a` for every
+component, among other checks. The block below also computes it from the fold models directly, one
+held-out cheese at a time, which is what the figure draws.
+
+.. code-block:: python
+
+	import numpy as np
+	from process_improve.multivariate import compare_cv_criteria
+
+	checks = compare_cv_criteria(X, Y, max_components=2, random_state=0)
+	print(checks.table["slope_ratio"].round(2).tolist())  # [0.93, 0.36]
+
+	# For every held-out cheese: what component a adds to its predicted taste
+	# (g in the text), and the taste the first a - 1 components left unexplained (r).
+	contribution = np.zeros((len(X), 2))
+	unexplained = np.zeros((len(X), 2))
+	fold_weights = []
+	for fit_rows, held_out in checks.cv_splits:
+	    before = np.full(len(held_out), Y.iloc[fit_rows, 0].mean())  # a = 0: the fold mean
+	    for a in (1, 2):
+	        fold_model = PLS(n_components=a).fit(X.iloc[fit_rows], Y.iloc[fit_rows])
+	        after = fold_model.predict(X.iloc[held_out]).to_numpy().ravel()
+	        contribution[held_out, a - 1] = after - before
+	        unexplained[held_out, a - 1] = Y.iloc[held_out, 0].to_numpy() - before
+	        before = after
+	    fold_weights.append(fold_model.x_weights_.to_numpy())
+
+	held_out_slope = (contribution * unexplained).sum(axis=0) / (contribution**2).sum(axis=0)
+	print(held_out_slope.round(2))  # [0.93 0.36]
+
+.. code-block:: python
+
+	import plotly.graph_objects as go
+	from plotly.subplots import make_subplots
+
+	fig = make_subplots(rows=1, cols=2, subplot_titles=["Component 1", "Component 2"])
+	for a in (0, 1):
+	    reach = 1.08 * np.abs(contribution[:, a]).max()
+	    ends = np.array([-reach, reach])
+	    for slope, name, style in ((1.0, "fitted effect", {"color": "black"}),
+	                               (0.5, "break-even", {"color": "orange", "dash": "dot"}),
+	                               (held_out_slope[a], "held-out slope", {"color": "darkblue", "dash": "dash"})):
+	        fig.add_scatter(x=ends, y=slope * ends, mode="lines", name=name, line=style,
+	                        showlegend=(a == 0), row=1, col=a + 1)
+	    fig.add_scatter(x=contribution[:, a], y=unexplained[:, a], mode="markers",
+	                    name="held-out cheese", marker={"color": "darkblue"},
+	                    showlegend=(a == 0), row=1, col=a + 1)
+	    fig.update_xaxes(title_text=f"change in predicted taste from component {a + 1}", row=1, col=a + 1)
+	fig.update_yaxes(title_text="taste still unexplained before the component", row=1, col=1)
+	fig.show()
+
+.. _LVM-PLS-heldout-slope-figure:
+
+.. figure:: ../../figures/pls/pls-heldout-slope-ratio.png
+	:alt: Held-out cheeses: change in predicted taste from each component against the taste still unexplained
+	:width: 750px
+	:align: center
+
+	Each point is one cheese, predicted by the fold model that did not see it. A component lowers the
+	prediction error only when the points follow a slope above the dotted break-even line at one half.
+	The cheeses follow nearly all of the first component's fitted effect. They follow the second
+	component in direction, but at less than half its fitted effect.
+
+This is why cross-validation keeps one component for this data set: the second component makes the
+predictions of new cheeses worse, although it points the right way.
+
+Whether the second component is only noise is a separate question. Its held-out correlation, between
+the component's score and the taste it has left to explain, is positive. With 30 cheeses, though, it
+cannot be told apart from chance: when the tastes are shuffled among the cheeses, which removes any real
+relation, a correlation at least this large turns up in about 6% of the shuffles. Its weights, on the
+other hand, are much the same in every fold model, so its direction in |X| does not depend on which
+cheeses were used to fit it.
+
+.. code-block:: python
+
+	print(checks.table["r_cv"].round(2).tolist())    # [0.76, 0.36]
+	print(checks.table["r_cv_p"].round(2).tolist())  # [0.01, 0.06]
+
+	full_weights = checks.global_model.x_weights_.to_numpy()
+	fig = make_subplots(rows=1, cols=2, shared_yaxes=True,
+	                    subplot_titles=["Weights of component 1", "Weights of component 2"])
+	for a in (0, 1):
+	    fig.add_bar(x=list(X.columns), y=full_weights[:, a], name="all 30 cheeses",
+	                marker_color="lightgrey", showlegend=(a == 0), row=1, col=a + 1)
+	    for k, weights in enumerate(fold_weights):
+	        # The sign of a component is arbitrary: align each fold's to the full model.
+	        aligned = weights[:, a] * np.sign(weights[:, a] @ full_weights[:, a])
+	        fig.add_scatter(x=list(X.columns), y=aligned, mode="markers", name="fold models",
+	                        marker={"color": "white", "line": {"color": "darkblue", "width": 1.5}},
+	                        showlegend=(a == 0 and k == 0), row=1, col=a + 1)
+	fig.show()
+
+.. _LVM-PLS-fold-weights-figure:
+
+.. figure:: ../../figures/pls/pls-fold-weights.png
+	:alt: Weights of components 1 and 2 in the full model and in each of the seven fold models
+	:width: 700px
+	:align: center
+
+	The bars are the weights of the model fitted to all 30 cheeses, and the dots those of the seven fold
+	models. Every fold model gives the second component a positive weight on Acetic and a negative weight
+	on H2S; its small weight on Lactic changes sign from fold to fold.
+
+The second component is a contrast of Acetic against H2S that recurs in every fold model, but it
+carries too little of the taste for 30 cheeses to show that it improves the prediction. A model used
+only to predict taste has no use for it. A model that must also describe the chemistry of the cheeses,
+as :ref:`inverting the model <LVM-PLS-inversion-components>` requires, keeps it, and its direction can
+be relied on even though its effect on taste is not established.
+
 
 .. Common questions about PLS models
 .. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
