@@ -74,17 +74,25 @@ modelled as well.
 Why a component that points the right way can still be dropped
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A component lowers the cross-validated prediction error only when, on the held-out rows, its effect is
-more than half as large as the effect the model fitted. A component can therefore point the right way
-on new rows and still be dropped, because the rows it was fitted on made its effect look larger than it
-is.
+Each component adds a correction to every prediction, and the model sets the size of that correction
+from the rows it was fitted on. On testing data the correction tends to be too large, because part of
+what the model fitted is noise that belongs to those rows only. Cross-validation therefore drops a
+component when, on the testing data, the true change is less than half its correction, even if the
+correction points the right way.
 
-Adding component :math:`a` changes the prediction of each held-out row :math:`i` by an amount
-:math:`g_i`, computed by the fold model that did not see that row. Call :math:`r_i` the part of the
-row's |Y| value that the first :math:`a-1` components left unexplained, and :math:`s_a` the
-least-squares slope of :math:`r_i` on :math:`g_i` through the origin. The slope is 1 when the held-out
-rows follow the fitted effect exactly, and 0 when they do not follow it at all. The prediction error
-sum of squares, PRESS, then changes by
+Half is the break-even point. Suppose a component raises a cheese's predicted taste by 4 units. If the
+cheese's taste is really 4 units above the earlier prediction, the error falls from 4 to 0. If it is 2
+units above, the prediction moves from 2 units too low to 2 units too high, and the error is unchanged.
+If it is only 1.4 units above, the error grows from 1.4 to 2.6, although the correction pointed the
+right way.
+
+In cross-validation each row is left out of one fold model, and a fold's left-out rows are its testing
+data. Call :math:`g_i` the correction that component :math:`a` makes to the prediction of test row
+:math:`i`, computed by the fold model that did not see that row, and :math:`r_i` the prediction error
+before that correction: the actual |Y| value minus the prediction from the first :math:`a-1`
+components. Call :math:`s_a` the least-squares slope of :math:`r_i` on :math:`g_i` through the origin.
+It is 1 when the testing data follow the corrections exactly, and 0 when they do not follow them at
+all. The prediction error sum of squares, PRESS, then changes by
 
 .. math::
 
@@ -95,7 +103,7 @@ so the prediction error falls, and :math:`Q^2_Y` rises, only when :math:`s_a` is
 
 The ``compare_cv_criteria`` function runs one cross-validation and reports :math:`s_a` for every
 component, among other checks. The block below also computes it from the fold models directly, one
-held-out cheese at a time, which is what the figure draws.
+test cheese at a time, which is what the figure draws.
 
 .. code-block:: python
 
@@ -105,23 +113,23 @@ held-out cheese at a time, which is what the figure draws.
 	checks = compare_cv_criteria(X, Y, max_components=2, random_state=0)
 	print(checks.table["slope_ratio"].round(2).tolist())  # [0.93, 0.36]
 
-	# For every held-out cheese: what component a adds to its predicted taste
-	# (g in the text), and the taste the first a - 1 components left unexplained (r).
-	contribution = np.zeros((len(X), 2))
-	unexplained = np.zeros((len(X), 2))
+	# For every test cheese: the correction component a makes to its predicted taste
+	# (g in the text), and its prediction error before that correction (r).
+	correction = np.zeros((len(X), 2))
+	error_before = np.zeros((len(X), 2))
 	fold_weights = []
-	for fit_rows, held_out in checks.cv_splits:
-	    before = np.full(len(held_out), Y.iloc[fit_rows, 0].mean())  # a = 0: the fold mean
+	for fit_rows, test_rows in checks.cv_splits:
+	    before = np.full(len(test_rows), Y.iloc[fit_rows, 0].mean())  # a = 0: the fold mean
 	    for a in (1, 2):
 	        fold_model = PLS(n_components=a).fit(X.iloc[fit_rows], Y.iloc[fit_rows])
-	        after = fold_model.predict(X.iloc[held_out]).to_numpy().ravel()
-	        contribution[held_out, a - 1] = after - before
-	        unexplained[held_out, a - 1] = Y.iloc[held_out, 0].to_numpy() - before
+	        after = fold_model.predict(X.iloc[test_rows]).to_numpy().ravel()
+	        correction[test_rows, a - 1] = after - before
+	        error_before[test_rows, a - 1] = Y.iloc[test_rows, 0].to_numpy() - before
 	        before = after
 	    fold_weights.append(fold_model.x_weights_.to_numpy())
 
-	held_out_slope = (contribution * unexplained).sum(axis=0) / (contribution**2).sum(axis=0)
-	print(held_out_slope.round(2))  # [0.93 0.36]
+	test_slope = (correction * error_before).sum(axis=0) / (correction**2).sum(axis=0)
+	print(test_slope.round(2))  # [0.93 0.36]
 
 .. code-block:: python
 
@@ -130,41 +138,44 @@ held-out cheese at a time, which is what the figure draws.
 
 	fig = make_subplots(rows=1, cols=2, subplot_titles=["Component 1", "Component 2"])
 	for a in (0, 1):
-	    reach = 1.08 * np.abs(contribution[:, a]).max()
+	    reach = 1.08 * np.abs(correction[:, a]).max()
 	    ends = np.array([-reach, reach])
-	    for slope, name, style in ((1.0, "fitted effect", {"color": "black"}),
+	    for slope, name, style in ((1.0, "correction exactly right", {"color": "black"}),
 	                               (0.5, "break-even", {"color": "orange", "dash": "dot"}),
-	                               (held_out_slope[a], "held-out slope", {"color": "darkblue", "dash": "dash"})):
+	                               (test_slope[a], "slope on the testing data", {"color": "darkblue", "dash": "dash"})):
 	        fig.add_scatter(x=ends, y=slope * ends, mode="lines", name=name, line=style,
 	                        showlegend=(a == 0), row=1, col=a + 1)
-	    fig.add_scatter(x=contribution[:, a], y=unexplained[:, a], mode="markers",
-	                    name="held-out cheese", marker={"color": "darkblue"},
+	    fig.add_scatter(x=correction[:, a], y=error_before[:, a], mode="markers",
+	                    name="test cheese", marker={"color": "darkblue"},
 	                    showlegend=(a == 0), row=1, col=a + 1)
-	    fig.update_xaxes(title_text=f"change in predicted taste from component {a + 1}", row=1, col=a + 1)
-	fig.update_yaxes(title_text="taste still unexplained before the component", row=1, col=1)
+	    fig.update_xaxes(title_text=f"correction by component {a + 1} (change in predicted taste)",
+	                     row=1, col=a + 1)
+	fig.update_yaxes(title_text="prediction error before the component (actual - predicted)", row=1, col=1)
 	fig.show()
 
-.. _LVM-PLS-heldout-slope-figure:
+.. _LVM-PLS-testing-slope-figure:
 
 .. figure:: ../../figures/pls/pls-heldout-slope-ratio.png
-	:alt: Held-out cheeses: change in predicted taste from each component against the taste still unexplained
+	:alt: Test cheeses: the correction each component makes, against the prediction error before it
 	:width: 750px
 	:align: center
 
-	Each point is one cheese, predicted by the fold model that did not see it. A component lowers the
-	prediction error only when the points follow a slope above the dotted break-even line at one half.
-	The cheeses follow nearly all of the first component's fitted effect. They follow the second
-	component in direction, but at less than half its fitted effect.
+	Each point is one cheese in the testing data of its fold, predicted by the fold model that did not
+	see it. The horizontal axis is the correction the component makes to its predicted taste, and the
+	vertical axis the prediction error before that correction. On the solid line the correction removes
+	the error exactly. A component lowers the prediction error only when the points follow a slope above
+	the dotted line at one half. The testing data follow nearly all of the first component's correction,
+	and follow the second component's in direction but at less than half its size.
 
 This is why cross-validation keeps one component for this data set: the second component makes the
-predictions of new cheeses worse, although it points the right way.
+predictions for the testing data worse, although it points the right way.
 
-Whether the second component is only noise is a separate question. Its held-out correlation, between
-the component's score and the taste it has left to explain, is positive. With 30 cheeses, though, it
-cannot be told apart from chance: when the tastes are shuffled among the cheeses, which removes any real
-relation, a correlation at least this large turns up in about 6% of the shuffles. Its weights, on the
-other hand, are much the same in every fold model, so its direction in |X| does not depend on which
-cheeses were used to fit it.
+Whether the second component is only noise is a separate question. On the testing data, the
+correlation between the component's score and the prediction error it has left to explain is positive.
+With 30 cheeses, though, it cannot be told apart from chance: when the tastes are shuffled among the
+cheeses, which removes any real relation, a correlation at least this large turns up in about 6% of the
+shuffles. Its weights, on the other hand, are much the same in every fold model, so its direction in
+|X| does not depend on which cheeses were used to fit it.
 
 .. code-block:: python
 
