@@ -20,13 +20,13 @@ How many components?
 For PLS the number of components is chosen by how well the model predicts the |Y|-space on data it has
 not yet seen, rather than by how much variance it explains in |X|. The tool is the same
 cross-validation described for :ref:`PCA <LVM_number_of_components>`, but the residuals that matter are
-those of |Y|. Leaving out one group of rows at a time, we predict the held-out |Y| values and gather
-their prediction error into :math:`Q^2_Y`, the cross-validated :math:`R^2` of the |Y|-space. As with
-PCA, :math:`Q^2_Y` is smaller than :math:`R^2_Y`, and it stops rising, then falls, once a component no
-longer improves prediction.
+those of |Y|. Leaving out one group of rows at a time as testing data, we predict their |Y| values and
+gather their prediction error into :math:`Q^2_Y`, the cross-validated :math:`R^2` of the |Y|-space.
+As with PCA, :math:`Q^2_Y` is smaller than :math:`R^2_Y`, and it stops rising, then falls, once a
+component no longer improves prediction.
 
 The ``process_improve`` package computes this with ``PLS.select_n_components``. It re-derives the
-centring and scaling inside each cross-validation fold, so the held-out rows do not enter the model
+centring and scaling inside each cross-validation fold, so the testing data do not enter the model
 that predicts them, and it applies the one-standard-error rule described for
 :ref:`PCA <LVM_number_of_components>`: keep the fewest components whose cross-validated error is within
 one standard error of the best.
