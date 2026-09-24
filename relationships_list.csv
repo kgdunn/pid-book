@@ -1,0 +1,39 @@
+Relationship,Instances,Example_Source,Example_Target,Keep
+have,8,the design,resolution,yes
+run,5,the factors,their standard levels,yes
+confound,5,the main effects,any 2 - factor interactions in this case,yes
+require,5,how many experiments,a full factorial experiment,yes
+include,3,experiments 5 and 6 from the standard order,baseline experiments,yes
+characterize,2,a disturbance,"* , in which case it is n't a disturbance anymore , as it is held constant for all experiments",yes
+add,2,the experimenter,experiments,yes
+aliase,2,the main effects,three - factor interactions ( 3fi ),yes
+estimate,2,a full factorial,32 effects,yes
+impact,1,"operators , ambient conditions , physical equipment , lab analyses , and time - dependent effects ( catalyst deactivation , fouling ) ",the response,yes
+provide,1,designed experiments,"an efficient mechanism to learn about a system , often in fewer runs than the cost approach",yes
+calculate,1,a least squares model,the average of each replicate,yes
+set,1,the generating term for the fourth factor * * d * *,the highest level of confounding ,yes
+x_a^2,1,"the experimental strategy changes by included axial points into the factorial design , allowing one to calculate the quadratic terms in the model , such as a",the quadratic effect of factor,yes
+interchange,1,these experiments,"columns , in which case factors * * e * * and * * f * * would be different",yes
+understand,1,r : scale : 40 : align : right : width : 900px .. question : : one of the experiment projects investigated by a previous student of this course,"effects related to the preparation of uncooked , breaded chicken strips",yes
+show,1,the presence of curvature at the center point,this model,yes
+grow,1,"there 4 degrees of freedom ( 10 observations , 6 parameters ) .. question : : : fullinclude : no biological drugs","the treatment of certain diseases , such as cancers and arthritis",yes
+choose,1,"the following factors = glucose substrate choice : a binary factor , either * * gm * * at the low level code or * * gp * * at the high level",the usual factorial manner ,yes
+give,1,"a fractional factorial in 8 runs at the above settings , created by aliasing * * c = gat * *",the following model in coded units ,yes
+convert,1,most categorical variables,continuous variables,yes
+build,1,the least squares method,a linear model,yes
+come,1,optimal designs ~~~~~~~~~~~~~~~~~~~~~~~~~,the concept of an * optimal * design,yes
+remove,1,any two - factor interactions involving * * c * *,the other main effects,yes
+discover,1,the experimenter,that factor,yes
+hold,1,this projectivity of factorials,a larger number of factors,yes
+exist,1,a replicated full factorial,the remaining 3 factors,yes
+write,1,the first four factors,the standard factorial way,yes
+call,1,"experiments this last part , * * i = abcd * * ",this design,yes
+find,1,experiments >,the product of all possible generator combinations,yes
+focus,1,future experiments,* factors and their interactions,yes
+omit,1,factor * * b *,future experimentation in this region,yes
+decrease,1,additional runs,the variance of the model parameters,yes
+make,1,factorial designs,each experimental observation work twice,yes
+enhance,1,the effect of warm water,the effect of soap,yes
+replace,1,these factorials,better designs,yes
+take,1,these designs,an existing orthogonal factorial,yes
+place,1,experiments > `,a 2 factor system,yes
