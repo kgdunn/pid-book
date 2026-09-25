@@ -127,10 +127,11 @@ batches, to see which of them stand out.
 The alternative, observation-wise unfolding, has one row per time sample and one column per
 tag, so its components describe the shape of the trajectories rather than the differences
 between batches. Comparing batches then needs a second model of its scores (Wold and
-co-workers, 2009), and six components where three do here (Westerhuis, Kourti and MacGregor,
-1999). It suits trajectories varied on purpose, as in a designed experiment. A third layout
-appends each sample's preceding samples to its row. :ref:`The comparison of the three layouts
-<APPS_batch_case_dupont_lagged>`, below, runs batch 49 through all three.
+co-workers, 2009), and on these data it takes six components to leave the residual that three
+batchwise components leave (Westerhuis, Kourti and MacGregor, 1999). It suits trajectories varied
+on purpose, as in a designed experiment. A third layout appends each sample's preceding samples to
+its row. :ref:`The comparison of the three layouts <APPS_batch_case_dupont_lagged>`, below, runs
+batch 49 through all three.
 
 .. code-block:: python
 
@@ -718,7 +719,7 @@ so that all three layouts describe departures from the average reference batch. 
 observation-wise layout of Wold and co-workers (2009) is the same arrangement with each tag
 centred over all of its rows instead, so the average trajectory stays in and its components
 describe the shape of the trajectories, as :ref:`the model A section
-<APPS_batch_case_dupont_model_a>` says. The six components reported there for that layout were
+<APPS_batch_case_dupont_model_a>` says. The six components cited there for that layout were
 with the average trajectory kept in. With it removed here, each sample-wise model is given model
 C's three components, so the three layouts are compared with the same number of components. A
 shared count is not the only fair choice, because a 30-column lagged row can carry more

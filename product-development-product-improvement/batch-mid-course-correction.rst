@@ -43,8 +43,8 @@ run. Replaying reproduces only the schedule.
 
 How closely does a plant actually repeat its recipe? The book's software package,
 `process_improve <https://github.com/kgdunn/process-improve>`_, bundles the trajectory data of 57
-batches from an industrial nylon polymerization autoclave, a dataset used throughout the batch
-monitoring literature. Real batches do not all run for the same length of time, so before their
+batches from an industrial nylon polymerization autoclave. Real batches do not all run for the
+same length of time, so before their
 trajectories can be compared sample by sample they are *aligned*: each batch is resampled onto a
 common time base (here, batch 1's), so that sample *i* means the same point in the recipe for
 every batch. :ref:`Alignment <APPS_batch_mcc_requirements>` is revisited when the
@@ -112,13 +112,13 @@ change; those are the two questions this page adds.
 Why replaying does not repeat the outcome
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The nylon data show the spread but cannot say what caused it, and no historical dataset can: each
+The nylon data show the spread but cannot separate its causes the way an experiment can: each
 recorded batch was run once, under one set of disturbances, and was never run again with
 different handling. From here on we use a simulator, because it can run the *same batch twice*:
 identical raw material properties and identical disturbance history, once under one schedule and
 once under another. Any difference in the outcome then comes from the schedule alone. A measured
-improvement requires that second run of the same batch, and recorded plant data do not contain
-it.
+improvement on a single batch requires that second run of the same batch, and recorded plant data
+do not contain it.
 
 The simulator here (``process_improve.simulation.BioreactorSimulator``) is a ten-day fed-batch
 bioreactor producing a protein, sampled twice a day. The recipe is a pH schedule and a
@@ -129,8 +129,9 @@ dioxide and volume; the quality |Y| is the final product concentration (titer, i
 disturbance channels can be scaled independently: an 11-variable measured pre-batch block |Z|
 (nutrient lots, seed-culture viability measures, trace metals, moisture), an unmeasured
 disturbance that develops while the batch runs, and control-loop plus measurement noise at
-realistic instrument scales. Its full equations and the measurements behind its calibration are
-documented with the package; for this page it plays the role of the plant.
+realistic instrument scales. Its equations are documented with the package, and its parameters
+are chosen to give a plausible pilot-scale process rather than fitted to a particular plant; for
+this page it plays the role of the plant.
 
 .. _APPS_batch_mcc_replay:
 
@@ -255,10 +256,11 @@ only the running batch reveals, plus noise. On the replay campaign:
 
 Two components of |Z| explain 27% of the titer variance in the fit and 23% in cross-validation,
 consistent with the decomposition's 31% for the initial conditions. Roughly three quarters of the
-outcome variance on this process is not predictable before the batch starts. That remainder is an
-upper bound on what a method acting during the batch can address: it also contains the quality
-assay's own repeatability (measured from duplicate assays, and subtracted) and whatever arrives
-after the last decision point. How much of it the trajectories reveal in time is what the
+outcome variance on this process is not predicted from |Z| before the batch starts. That
+remainder is an upper bound on the share that only a method acting during the batch can address:
+it also contains the quality assay's own repeatability (measured from duplicate assays, and
+subtracted) and whatever arrives after the last decision point. How much of it the trajectories
+reveal in time is what the
 held-out check in :ref:`the prediction section <APPS_batch_mcc_predicting>` measures. All
 of this a plant can compute without a simulator.
 
@@ -377,9 +379,10 @@ supplier or a seed lot; the campaign has 81, 71 and 48 batches of each.
 	test_seed = int(rng.integers(2**31))
 	batch_seeds = rng.integers(2**31, size=40)        # per-batch execution seeds, reused later
 
-	# simulate_campaign draws its per-batch seeds from the master generator in this
-	# order, so batch_seeds[i] reproduces the i-th test batch exactly. That is what
-	# makes the corrected re-run below a same-batch counterfactual.
+	# Each test batch below takes its Z row from the test campaign and its disturbances
+	# from its own entry of batch_seeds. Re-running a batch with the same entry repeats
+	# its disturbances exactly, which makes the corrected re-run a same-batch
+	# counterfactual.
 
 	train = simulator.simulate_campaign(200, policy="historical", mv_variation=2.5,
 	                                    random_state=train_seed)
@@ -441,26 +444,40 @@ class:
 	agreement = np.mean([nearest_class(z_train.loc[i]) == c for i, c in zip(train.batches, labels)])
 	print(f"nearest-centroid assignment agrees with the recorded class {100 * agreement:.1f}% of the time")
 
-The reason for one model per feed class, rather than one global model, deserves stating, because
-the global alternative was tried first and failed. A single global model fitted on all 200
-batches predicts final titer acceptably. Used for *control*, however, its corrections moved some
-batches in a direction that lowered their executed titer. The cause is the interaction that
-:ref:`the variance decomposition <APPS_batch_mcc_variance>` reported: the effect of a
-schedule change depends on the feed class. Holding the reactor warm in mid-batch rescues a
-slow-growing batch from a poor feed lot, and wastes productive time for a fast-growing one. A
-single linear model has one gain direction to offer every batch, so it averages the two cases and
-misdirects both. Fitting the model within a class range makes the gain locally right. The three
-fits above reach :math:`R^2` values of 0.81, 0.90 and 0.94 on their own classes. Four components
-are used throughout, and the held-out check later in this section is the test of that choice; the
-eleven |Z| columns are scaled like the trajectory columns, with no extra block weighting, so they
-carry 11 of the 111 columns' weight.
+One model per feed class, rather than one global model, follows from the interaction that
+:ref:`the variance decomposition <APPS_batch_mcc_variance>` reported: the effect of a schedule
+change depends on the feed class. Executing one change on the |Z| of every training batch shows
+it. Holding the reactor 2 °C warmer from day 4 to day 5.5 helps the poorest class, C, whose
+slow-growing batches need the extra growing time, and on average costs the other two:
+
+.. code-block:: python
+
+	hold = simulator.nominal_trajectory()
+	hold.iloc[8:12, hold.columns.get_loc("temperature")] += 2.0      # 2 °C warmer, days 4 to 5.5
+	effect = {}
+	for g in "ABC":
+	    rows = z_train.loc[labels == g]
+	    effect[g] = float(np.mean([simulator.simulate_batch(z, hold, random_state=n).titer
+	                               - simulator.simulate_batch(z, random_state=n).titer
+	                               for n, (_, z) in enumerate(rows.iterrows())]))
+	print("executed effect of the warm hold, mean by class [g/L]:",
+	      {g: round(v, 2) for g, v in effect.items()})
+	# executed effect of the warm hold, mean by class [g/L]: {'A': -0.48, 'B': -0.29, 'C': 0.68}
+
+A single linear model has one gain direction to offer every batch, so it averages the classes.
+Fitting the model within a class range makes the gain locally right, and :ref:`the campaign
+comparison <APPS_batch_mcc_campaign>` measures what that is worth. The three fits above reach
+:math:`R^2` values of 0.81, 0.90 and 0.94 on their own classes. Four components are used
+throughout, and the held-out check later in this section is the test of that choice; the eleven
+|Z| columns are scaled like the trajectory columns, with no extra block weighting, so they carry
+11 of the 111 columns' weight.
 
 On a plant the groups come from a recorded categorical variable (a raw material supplier, a seed
-lot, a campaign) or, failing that, from a partition along the first score of the |Z| block. The
-test of whether local models are needed at all is the sign of the model's predicted effect of one
-fixed reference move of the remaining schedule, delaying the temperature downshift by a day, say:
-fit the model on each candidate group and compare the predicted effects. If the sign differs
-between groups, a single model averages them and misdirects some.
+lot, a campaign) or, failing that, from a partition along the first score of the |Z| block. A
+plant cannot execute the change on every batch, so its test of whether local models are needed is
+the sign of the model's predicted effect of one fixed reference move of the remaining schedule,
+delaying the temperature downshift by a day, say: fit the model on each candidate group and
+compare the predicted effects. If the sign differs between groups, a single model averages them.
 
 **Three kinds of column at a decision point.** With a fitted model, predicting a *running* batch
 is a missing data problem. Call the moment at which the prediction is made, and at which an
@@ -471,35 +488,36 @@ are *known*. The remaining samples of the three responding tags (dissolved oxyge
 dioxide, volume) are *missing*, and are estimated by the model. The remaining samples of pH and
 temperature, the two manipulated tags, are neither: they are the schedule under consideration.
 For the question "what happens if nothing is changed?" they are set to the planned remaining
-schedule, and for the correction they become the decision variables. Flores-Cerrillo and
-MacGregor set the prediction up this way, and the implementation here follows them. The model's
-pH and temperature columns hold the *recorded* trajectories, so the known samples of the two
-manipulated tags are recorded values while the future samples are setpoints. The two differ by
-the control error, which the regression treats as input noise; that attenuates slightly the gain
-the model attributes to a schedule change, and the substitution is sound only where the control
-loops track their setpoints. Where a loop can saturate (a base pump at its limit), the setpoint
-and the recorded value part company, and the bounds handed to the optimiser must keep it out of
-that region.
+schedule, as Flores-Cerrillo and MacGregor set up their prediction. For the correction they become
+the decision variables, which is where this page departs from them, as :ref:`the correction
+section <APPS_batch_mcc_correcting>` describes. The model's pH and temperature columns hold the
+*recorded* trajectories, so the known samples of the two manipulated tags are recorded values
+while the future samples are setpoints. The two differ by the control error and the measurement
+noise, so the substitution is sound only where the control loops track their setpoints. Where a
+loop can saturate (a base pump at its limit), the setpoint and the recorded value part company,
+and the bounds handed to the optimiser must keep it out of that region.
 
 **Estimating the scores of a partial row.** The scores of the batch so far are estimated by
 trimmed score regression, as in :ref:`the second case study's on-line prediction
-<APPS_batch_case_sbr_online_prediction>`: the model's weights applied to the known columns alone
-give a trimmed score, :math:`\boldsymbol{\tau}`, and a regression fitted on the training batches,
+<APPS_batch_case_sbr_online_prediction>`. Applying the model's direct weights (the matrix that
+turns a complete row into its scores), restricted to the known columns, to those columns alone
+gives a trimmed score, :math:`\boldsymbol{\tau}`. A regression fitted on the training batches,
 from their trimmed scores to their complete-row scores, corrects it,
 :math:`\hat{\mathbf{t}} = \mathbf{B}_k \boldsymbol{\tau}`, where :math:`\mathbf{B}_k` depends only on
 which columns are known at decision point :math:`k`. The regression carries the spread of the
 training batches around the model plane as well as the plane itself, which is what holds the
 estimate near the average training batch while the known columns say little and lets it move out
-as they say more. García-Muñoz, Kourti and MacGregor found it, with conditional mean replacement,
-the best of the estimators on this batch-so-far problem; the package implements it as
-``PLS.project``. Two properties of the estimate carry the rest of this page:
+as they say more. García-Muñoz, Kourti and MacGregor found it and conditional mean replacement
+the best of the estimators they compared for the scores of a batch so far; the package implements
+it as ``PLS.project``. Two properties of the estimate carry the rest of this page:
 
 - For a fixed pattern of known and unknown columns, the score estimate is a *fixed linear
   function* of the known columns, and therefore of the future setpoint columns. That is what
   turns the correction, later, into a small convex program.
-- The regression inverts a small matrix built from the known columns, and its *condition number*
-  (the ratio of its largest to its smallest scaling) says how much the estimate amplifies noise.
-  The package reports it with every projection, and the table below gives it for one class.
+- The regression inverts a small matrix built from the known columns, with one row and one column
+  per component. Its *condition number*, the ratio of that matrix's largest eigenvalue to its
+  smallest, measures how sensitive the inversion is to small errors in its inputs. The package
+  reports it with every projection, and the table below gives it for one class.
 
 **The prediction interval at a decision point.** The predicted titer is
 :math:`\hat{y} = \mathbf{c}^T \hat{\mathbf{t}}`, with :math:`\mathbf{c}` the model's quality
@@ -519,9 +537,14 @@ where :math:`t_{N-A-1}` is the Student's t quantile for the confidence level, :m
 number of components, and :math:`T^2_k` is Hotelling's :math:`T^2` of the estimated scores
 (:ref:`their distance from the centre of the training data within the model plane
 <LVM-Hotellings-T2>`), computed against the covariance of the training batches' score estimates
-under the same pattern: the time-varying covariance Nomikos and MacGregor introduced for batch
-monitoring, which García-Muñoz, Kourti and MacGregor apply to missing-data score estimates. For
-:math:`s_k` and that covariance the future setpoint columns count as known, as they do when the
+under the same pattern. Nomikos and MacGregor noted that more precise limits for a running batch
+need the score covariance at each time, and García-Muñoz, Kourti and MacGregor computed it from
+the reference batches. The interval is that of a least-squares regression of the quality on the
+scores, with the scores treated as known and :math:`1/N + T^2_k/(N-1)` as their leverage. Because
+:math:`s_k` is measured on the batches the model was fitted on, :ref:`the held-out check
+<APPS_batch_mcc_heldout>` below tests the interval on batches the model has not seen.
+
+For :math:`s_k` and that covariance the future setpoint columns count as known, as they do when the
 prediction is made, each training batch supplying its own recorded values there. The SPE that
 later gates the correction is computed differently: on the |Z| values and the first :math:`k`
 samples only, with the whole remaining trajectory missing, and its limit comes from the training
@@ -541,16 +564,17 @@ Decision day  Class A [g/L]   Class B       Class C
 5             0.85 (7)        0.90          0.64
 6             0.84 (5)        0.92          0.66
 8             0.69 (3)        0.78          0.54
-10            0.58 (1)        0.52          0.43
+10            0.58            0.52          0.43
 ============  ==============  ============  ============
 
-The error falls by half or more between the first day and the last for every class, so the
-prediction interval narrows as more of the batch is observed: the funnel shape expected of a
-batch monitoring scheme. The condition number falls with it, from below 200 on the first day to 1
-when every column is known, so no decision point on this process asks the estimator for more
-than it can give. The day-10 entry is the model's error with every column known. An interval
-built from that number would declare the first day's predictions twice as precise as they are;
-the interval built at the decision point does not.
+The error roughly halves between the first day and the last for every class, so the prediction
+interval narrows as more of the batch is observed: the funnel shape expected of a batch monitoring
+scheme. The condition number falls with it. Even at its largest, on the first day, it is small
+enough for the inversion to be numerically stable, so the uncertainty of the estimate is the
+statistical one that :math:`s_k` measures. The day-10 entry is the model's error with every column
+known, where nothing is inverted. An interval built from that number would declare the first
+day's predictions twice as precise as they are; the interval built at the decision point does
+not.
 
 **Watching one batch.** The object that later computes corrections also answers the monitoring
 question. Built with only the model, the nominal schedule and the list of manipulated tags, it can
@@ -611,7 +635,7 @@ growth it causes shows in the gas trajectories soon after. What the first days c
 how sure that reading is, and the interval carries it: ±2.3 g/L at day 0.5, ±1.6 g/L at day 4 and
 ±0.9 g/L at day 9.5. Its upper end sits below the floor at every decision point, by 2.2 g/L at
 day 0.5 and by 2.9 g/L at day 4. The SPE of the batch so far stays under its limit throughout
-(5.1 against a limit of 7.6 at day 4), so the model recognises this batch as one of the family it
+(5.08 against a limit of 7.65 at day 4), so the model recognises this batch as one of the family it
 was built from. Knowing this on day 4, what should the remaining six days of the schedule be?
 
 .. _APPS_batch_mcc_heldout:
@@ -627,7 +651,7 @@ no execution, only recorded batches with known outcomes. Here it uses the 40 fre
 	for position, bid in enumerate(z_test.index):
 	    z_i = z_test.loc[bid]
 	    run = simulator.simulate_batch(z_i, random_state=int(batch_seeds[position]))
-	    for k in (2, 4, 6, 8, 10, 12, 16, 18):
+	    for k in (2, 4, 6, 8, 10, 12, 16, 18, 20):   # day 10 (k = 20): every column known
 	        p = predictors[nearest_class(z_i)].predict(run.tags.iloc[:k].reset_index(drop=True),
 	                                                  initial_conditions=z_i, k=k)
 	        if p.in_control:                       # the SPE gate would have refused the rest
@@ -636,41 +660,48 @@ no execution, only recorded batches with known outcomes. Here it uses the 40 fre
 	checks = pd.DataFrame(checks)
 	checks["error"] = checks["y_hat"] - checks["titer"]
 	checks["covered"] = checks["error"].abs() <= checks["half_width"]
-	summary = checks.groupby("day").agg(rmsep=("error", lambda e: float(np.sqrt(np.mean(e**2)))),
+	summary = checks.groupby("day").agg(batches=("error", "size"),
+	                                     rmsep=("error", lambda e: float(np.sqrt(np.mean(e**2)))),
 	                                     bias=("error", "mean"), coverage=("covered", "mean"))
 	print(summary.round(2))
 	worst = checks.loc[checks["error"].abs().idxmax()]
 	print(f"worst projection: batch {worst['batch']} at day {worst['day']}: finished at {worst['titer']:.2f}, "
 	      f"projected {worst['y_hat']:.0f} ± {worst['half_width']:.0f} g/L")
 
-============  ===============  ============  ===============
-Decision day  RMSEP [g/L]      Bias [g/L]    Coverage (95%)
-============  ===============  ============  ===============
-1             1.70             -1.40         0.92
-2             1.44             -1.12         0.92
-3             1.10             -0.84         0.95
-4             0.80             -0.53         0.95
-5             0.86             -0.57         0.95
-6             0.92             -0.60         0.88
-8             0.90             -0.66         0.88
-9             0.89             -0.68         0.80
-============  ===============  ============  ===============
+============  ===========  ===============  ============  ===============
+Decision day  Batches      RMSEP [g/L]      Bias [g/L]    Coverage (95%)
+============  ===========  ===============  ============  ===============
+1             38           1.70             -1.40         0.92
+2             39           1.44             -1.12         0.92
+3             39           1.10             -0.84         0.95
+4             39           0.80             -0.53         0.95
+5             40           0.86             -0.57         0.95
+6             40           0.92             -0.60         0.88
+8             40           0.90             -0.66         0.88
+9             40           0.89             -0.68         0.80
+10            40           0.94             -0.77         0.72
+============  ===========  ===============  ============  ===============
 
-The prediction becomes usable at day 4, where its root mean square error over the 40 batches is
-0.80 g/L against a batch-to-batch standard deviation of 1.20 g/L, and stays there. Before day 4
-the error is mostly bias. The estimator holds a batch near the average training batch while the
-known columns say little, and the average training batch is a poor one: the training campaign's
-mean titer is 5.99 g/L against 7.57 g/L for the 200-batch replay campaign, because deliberate
-perturbations of a good recipe mostly cost titer. An early prediction of a replay batch is
-therefore pulled low, by 1.4 g/L on average at day 1; the worst projection, printed last, is a
-batch that finished at 8.3 g/L and was projected at day 1 to 4 ± 2 g/L. The interval carries
-most of this: coverage is 92% on days 1 and 2 and at the nominal 95% from day 3 to day 5, which
-is what the no-correction rule (the dead band, defined in :ref:`the correction section
-<APPS_batch_mcc_correcting>`) relies on. Later in the batch the bias remains, at 0.5 to 0.7 g/L,
-while the interval keeps narrowing, and coverage falls to 80% by day 9: the nominal schedule lies
-toward the edge of the region the model was fitted on, and a model extrapolating slightly keeps
-its bias. A plant would see the same effect in this check, and it is one of the reasons the
-decision point should not be placed late.
+The *Batches* column counts the test batches the SPE validity gate admits at each decision point.
+The prediction becomes usable at day 4, where its root mean square error over those 39 batches is
+0.80 g/L against a batch-to-batch standard deviation of 1.20 g/L, and stays near that level.
+Before day 4 the error is mostly bias. The estimator holds a batch near the average training
+batch while the known columns say little, and the average training batch is a poor one: the
+training campaign's mean titer is 5.99 g/L against 7.57 g/L for the 200-batch replay campaign,
+because deliberate perturbations of a good recipe mostly cost titer. An early prediction of a
+replay batch is therefore pulled low, by 1.4 g/L on average at day 1; the worst projection,
+printed last, is a batch that finished at 8.3 g/L and was projected at day 1 to 4 ± 2 g/L. The
+interval carries most of this: coverage is 92% on days 1 and 2 and at the nominal 95% from day 3
+to day 5, which is what the no-correction rule (the dead band, defined in :ref:`the correction
+section <APPS_batch_mcc_correcting>`) relies on.
+
+Later in the batch the bias stays, and it is still there at day 10, when every column is known, so
+it belongs to the model rather than to the partial row. The nominal recipe sits near the top of the
+titer response, which is why perturbing it mostly costs titer, and a linear model fitted on batches
+spread around that top cannot follow the curvature: it predicts batches run on the nominal recipe
+too low. The interval keeps narrowing around that bias, so coverage falls below the nominal 95%
+from day 6 on. A plant would see the same effect in this check, and it is one reason a late
+decision point is less reliable than its narrow interval suggests.
 
 .. _APPS_batch_mcc_correcting:
 
@@ -681,28 +712,30 @@ Correcting mid-course
 	single: mid-course correction
 	pair: batch processes; control
 
-The idea of a mid-course correction predates its latent variable form: Yabuki and MacGregor
-formulated it for semi-batch reactors in 1997, predicting the final properties from on-line
-measurements plus a few off-line samples, and correcting only when that prediction fell outside a
-defined no-control region. Flores-Cerrillo and MacGregor had used latent variable models for it
-with a few discrete moves of the manipulated variables; their 2004 paper, the one this page builds
-on, extended it to adjusting the complete remaining trajectories, with the correction computed in
-the score space of a PLS model. At each decision point the procedure is:
+Yabuki and MacGregor developed mid-course correction policies for product quality in semi-batch
+reactors in 1997. The final properties were predicted during the batch from on-line measurements
+plus a few off-line analyses, with a theoretically based model or an empirical regression model,
+and a correction was made only when that prediction fell outside a defined no-control region.
+Those corrections, and the ones in Flores-Cerrillo and MacGregor's earlier work with latent
+variable models, were a few discrete moves of the manipulated variables, such as a shot of extra
+reactant. Flores-Cerrillo and MacGregor's 2004 paper, the one this page builds on, extended the
+idea to adjusting the complete remaining trajectories, with the correction computed in the score
+space of a PLS model. At each decision point the procedure is:
 
 1. **Predict.** Estimate the final quality from |Z|, the samples so far and the planned remaining
    schedule, with its interval at this decision point, as in :ref:`the prediction section
    <APPS_batch_mcc_predicting>`.
 2. **Check that the model applies.** Compare the SPE of the batch so far with its limit for this
-   decision point. Flores-Cerrillo and MacGregor compute this check before any correction is
-   computed: the prediction is only trustworthy for a batch that resembles the data the model was
-   built from, and if the batch-so-far has an unusually large SPE (its measurements do not fit the
-   model's correlation structure; see :ref:`interpreting the SPE <LVM-interpreting-SPE-residuals>`),
-   a correction computed from that model is a guess, and the safer action is to not correct.
-3. **Apply the dead band.** This is Yabuki and MacGregor's no-control region. Every prediction
-   carries uncertainty, and a correction computed from noise adds variance instead of removing it.
-   Correct only when the predicted shortfall is large relative to the prediction interval. The
-   setting used on this page asks that the *whole* interval fall short of the target: the upper
-   end of the interval must lie below the floor.
+   decision point. Flores-Cerrillo and MacGregor make this check before a correction is computed.
+   If the batch so far has an unusually large SPE (its measurements do not fit the model's
+   correlation structure; see :ref:`interpreting the SPE <LVM-interpreting-SPE-residuals>`), the
+   prediction and any correction computed from the model are unreliable, and they suggest keeping
+   the schedule from the last decision point rather than recomputing it. This page does the same.
+3. **Apply the dead band.** It plays the role of Yabuki and MacGregor's no-control region. Every
+   prediction carries uncertainty, and a correction computed from noise adds variance instead of
+   removing it. Correct only when the predicted shortfall is large relative to the prediction
+   interval. The setting used on this page asks that the *whole* interval fall short of the
+   target: the upper end of the interval must lie below the floor.
 4. **Compute the correction.** Solve for the remaining schedule, as described next.
 5. **Implement it** for the remainder of the batch, and return to step 1 at the next decision
    point, if there is one.
@@ -712,21 +745,23 @@ variable is :math:`\Delta \mathbf{t}`, an adjustment to the batch's latent varia
 chosen by a quadratic program with three terms: how far the predicted quality lands from its set
 point, a movement suppression term on :math:`\Delta \mathbf{t}`, and a soft penalty on
 Hotelling's :math:`T^2` that keeps the answer within the region past operation covered. The
-remaining setpoint trajectories are then recovered by :ref:`inverting the PLS model
-<LVM-PLS-model-inversion>`, and that inversion is what makes them smooth and consistent with how
-the plant has operated historically.
+remaining manipulated-variable trajectories, together with the future measurements, are then
+recovered from the adjusted scores by :ref:`inverting the PLS model <LVM-PLS-model-inversion>`,
+and that inversion is what makes them smooth and consistent with how the plant has operated
+historically.
 
 The implementation on this page makes a different choice: it optimises the future setpoint
 columns directly, and keeps the schedule plausible with stated constraints rather than through
 model inversion. The two routes trade off differently. Inversion inherits the historical
-correlation structure automatically; because the reconstructed trajectory is linear in the
-scores, an actuator limit can be imposed only indirectly, as a constraint on the score adjustment
-(Flores-Cerrillo and MacGregor bound the score adjustment itself; Golshan and co-workers project
-the manipulated-variable constraints into the score space). Optimising the columns states the
-engineering limits directly, but has to add the terms that hold the answer inside the model's
-region. Written in the setpoint columns, with :math:`\mathbf{u}` the future
-setpoint values in the model's scaled units and :math:`\mathbf{u}_\text{nom}` their planned
-values, the correction is
+correlation structure automatically, and because the reconstructed trajectory is linear in the
+scores, an actuator limit becomes a linear constraint on the score adjustment. Optimising the
+columns states the engineering limits directly, but has to add the terms that hold the answer
+inside the model's region. Golshan and co-workers give both forms for latent variable model
+predictive control: one optimises a correction to the scores, with the manipulated-variable
+constraints written in terms of it, and the other optimises the future manipulated variables
+directly. Written in the setpoint columns, with :math:`\mathbf{u}` the future setpoint values in
+the model's scaled units and :math:`\mathbf{u}_\text{nom}` their planned values, the correction
+is
 
 .. math::
 
@@ -739,9 +774,11 @@ values, the correction is
 subject to bounds on each setpoint and on its change between samples, and, when wanted, caps on
 :math:`\text{SPE}(\mathbf{u})` and :math:`T^2(\mathbf{u})`. Because the score estimate of a
 partial row is a fixed linear function of the known columns, the scores of the candidate row are
-:math:`\hat{\mathbf{t}}(\mathbf{u}) = \mathbf{b} + \mathbf{A}\mathbf{u}`, so the predicted
-quality :math:`\hat{y}(\mathbf{u})`, the SPE and the :math:`T^2` are all quadratic or linear in
-:math:`\mathbf{u}`. Each term has a plain language reading:
+:math:`\hat{\mathbf{t}}(\mathbf{u}) = \mathbf{b} + \mathbf{A}\mathbf{u}`. The predicted quality
+:math:`\hat{y}(\mathbf{u})` is therefore linear in :math:`\mathbf{u}`, and so are the candidate
+row's residuals. The SPE is the square root of their sum of squares, so
+:math:`\text{SPE}(\mathbf{u})^2` is quadratic in :math:`\mathbf{u}`, as is :math:`T^2(\mathbf{u})`.
+Each term has a plain language reading:
 
 - **Hit the target** (:math:`w_1`): the predicted final quality, as a function of the candidate
   future schedule, should come as close to the target as the model believes possible. This is
@@ -753,24 +790,27 @@ quality :math:`\hat{y}(\mathbf{u})`, the SPE and the :math:`T^2` are all quadrat
   row's :math:`T^2` (its distance from the centre of the training data within the model plane)
   and its SPE (its distance off the plane) are penalised, and can be capped at the limits
   computed for this decision point. The :math:`T^2` penalty is theirs. The SPE term is added
-  here, because a candidate written directly in the setpoint columns can leave the model plane in
-  a way an adjustment to the scores cannot. The two limits do different jobs: the :math:`T^2`
-  limit keeps the correction inside the region the history explored, and the SPE limit keeps the
-  candidate row's *combination* of values consistent with how the variables move together.
+  here: a trajectory reconstructed from adjusted scores lies on the model plane by construction,
+  and a candidate written directly in the setpoint columns need not. The two limits do different
+  jobs: the :math:`T^2` limit keeps the correction inside the region the history explored, and
+  the SPE limit keeps the candidate row's *combination* of values consistent with how the
+  variables move together.
 - **Respect the actuators**: bounds on each setpoint, and rate-of-change limits between
   consecutive samples, including the seam between the last implemented sample and the first
   corrected one. The corrected schedule is also parameterised by a few knots (a small number of
   anchor points, with the schedule interpolated between them), so it stays as smooth as the
   schedules the plant actually runs. These constraints are added here; Flores-Cerrillo and
-  MacGregor obtain smoothness from the model inversion, and bound the score adjustment rather
-  than the setpoints.
+  MacGregor obtain smoothness from the model inversion and, where they impose hard constraints,
+  place them on the score adjustment rather than on the setpoints.
 
 With the two validity terms as penalties, the problem is a small convex quadratic program: a few
-dozen unknowns, solved in milliseconds, with a unique answer. Turning the :math:`T^2` and SPE
-limits into hard caps makes them quadratic constraints, so the problem becomes a quadratically
-constrained one; it is solved here by returning the caps to the objective and raising their
-weights until the caps are respected. Either way, no plant model in differential equation form is
-required, only the historical data the plant already has.
+dozen unknowns at most (eight here, four knots for each manipulated variable), solved in
+milliseconds, with a unique answer. Turning the :math:`T^2` and SPE limits into hard caps makes
+them quadratic constraints, so the problem becomes a quadratically constrained one; it is solved
+here by returning the caps to the objective and raising their weights until the caps are
+respected, to within 1%. Either way, no plant model in differential equation form is required,
+only historical data with the schedule variation that :ref:`condition 4 <APPS_batch_mcc_when>`
+describes.
 
 Here is the whole procedure on the batch whose predictions are shown in :ref:`the monitoring
 figure <APPS_batch_mcc_funnel>`. The correctors below extend the predictors with the
@@ -809,13 +849,35 @@ rate limits, the caps at this decision point's limits, and the knot parameterisa
 	)
 	print(f"decision: {outcome.reason}; predicted {float(outcome.y_hat_no_change.iloc[0]):.2f} "
 	      f"± {float(outcome.half_width.iloc[0]):.2f} g/L if nothing changes, "
-	      f"{float(outcome.dead_band_margin.iloc[0]):.1f} half-widths below the floor; "
-	      f"SPE so far {outcome.spe_so_far:.2f} against a limit of {outcome.spe_limit_monitor:.2f}")
+	      f"{float(outcome.dead_band_margin.iloc[0]):.1f} half-widths below the floor")
+	# decision: corrected; predicted 3.51 ± 1.59 g/L if nothing changes, 2.8 half-widths below the floor
+	solution = outcome.correction
+	print(f"SPE so far {outcome.spe_so_far:.2f}, limit {outcome.spe_limit_monitor:.2f}; "
+	      f"candidate SPE {solution.spe:.1f}, cap {outcome.spe_limit_candidate:.1f}; "
+	      f"candidate T2 {solution.t2:.1f}, cap {outcome.t2_limit:.1f}")
+	# SPE so far 5.08, limit 7.65; candidate SPE 6.1, cap 9.1; candidate T2 1.0, cap 11.3
+	active = solution.active_constraints
+	n_active = len(active["bounds"]) + len(active["rate"]) + active["spe_cap"] + active["t2_cap"]
+	print(f"active constraints: {n_active}")
+	# active constraints: 0
 	corrected = outcome.schedule.copy()
 	corrected.index = simulator.nominal_trajectory().index
 	redo = simulator.simulate_batch(z_row, corrected, random_state=seed)   # identical disturbances
 	print(f"replay {base.titer:.2f} g/L -> corrected {redo.titer:.2f} g/L "
 	      f"(model predicted {float(outcome.y_hat.iloc[0]):.2f})")
+	# replay 3.66 g/L -> corrected 5.65 g/L (model predicted 4.84)
+	gain_predicted = float(outcome.y_hat.iloc[0] - outcome.y_hat_no_change.iloc[0])
+	print(f"gain: predicted {gain_predicted:.1f} g/L, executed {redo.titer - base.titer:.1f} g/L")
+	# gain: predicted 1.3 g/L, executed 2.0 g/L
+
+	def biomass_at_day_4(z_i, seed_i):
+	    """Biomass is a state the simulator records and a plant does not measure."""
+	    return simulator.simulate_batch(z_i, random_state=int(seed_i)).states["biomass"].asof(4.0)
+
+	day4 = pd.Series({b: biomass_at_day_4(z_test.loc[b], s) for b, s in zip(z_test.index, batch_seeds)})
+	print(f"biomass at day 4 [g/L]: batch {batch_id} {day4[batch_id]:.2f}, "
+	      f"median of the 40 test batches {day4.median():.2f}, lowest batch {day4.idxmin()}")
+	# biomass at day 4 [g/L]: batch 28 1.51, median of the 40 test batches 3.97, lowest batch 28
 
 	fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
 	                    subplot_titles=("Temperature setpoint", "pH setpoint"))
@@ -836,37 +898,36 @@ rate limits, the caps at this decision point's limits, and the knot parameterisa
 	:scale: 80
 	:align: center
 
-The printed decision reads: corrected; predicted 3.51 ± 1.59 g/L if nothing changes, 2.8
-half-widths below the floor; SPE so far 5.08 against a limit of 7.65. Every gate passed. The
-optimiser then found a schedule the model predicts at 4.84 g/L, with the candidate row's SPE at
-6.1 against a cap of 9.1 and its :math:`T^2` at 1.0 against a cap of 11.3: neither cap was
-active, nor any bound or rate limit, so the answer is the unconstrained optimum of the penalised
-program, well inside the region the history covers. The two SPE limits at this decision point are
-different quantities: the gate compared the SPE of the known columns only with the limit for that
-pattern (7.65), whereas the cap applies to the SPE of the complete candidate row, known columns
-plus the estimated and proposed future columns, and comes from the training batches under that
-pattern (9.1).
+The printed lines show every gate passed: the whole interval lies below the floor, and the SPE of
+the batch so far is inside its limit. The optimiser then found a schedule the model predicts at
+4.84 g/L, with the candidate row's SPE and :math:`T^2` inside their caps and no constraint active,
+so the answer is the unconstrained optimum of the penalised program, well inside the region the
+history covers. The two SPE limits at this decision point are different quantities: the gate
+compared the SPE of the known columns only with the limit for that pattern (7.65), whereas the cap
+applies to the SPE of the complete candidate row, known columns plus the estimated and proposed
+future columns, and comes from the training batches under that pattern (9.1).
 
 The nominal schedule drops from the warm growth phase to the 29 °C production hold between days
 3.5 and 4.5. The corrected schedule does not complete that drop on time: it holds at 34.1 °C at
 day 4 and descends by about 1 °C per half-day until day 5.5 and more slowly after that, reaching
 the production hold only around day 7.5, with a small pH excursion (a dip to 7.00 at day 4, back
 through nominal near day 7, a peak of 7.11 at day 7.5). The physical reading is direct. This
-batch's poor feed lot made it grow slowly, so at day 4 it has not yet built the biomass the
-production phase needs; cooling it on the nominal timetable would arrest growth at a low cell
-density. The correction gives the batch more growing time. No such rule was programmed anywhere:
-the behaviour emerges from a regression on historical batches whose schedules were deliberately
-varied.
+batch's poor feed lot made it grow slowly: its biomass at day 4, printed last, is the lowest of the
+40 test batches and well under half their median. Cooling it on the nominal timetable would nearly
+stop its growth at that low density. The correction gives the batch more growing time. No such
+rule was programmed anywhere: the behaviour emerges from a regression on historical batches whose
+schedules were deliberately varied.
 
 Executed with the identical disturbance history, the batch finishes at 5.65 g/L instead of
-3.66 g/L, a 55% improvement on this single batch. The model predicted 4.84 g/L for the corrected
-schedule: a latent variable prediction regresses toward the mean, so it *understated* the gain its
-own correction delivered. The distinction between a predicted and an executed gain is worth
-keeping in view. Simulation studies can execute their corrections, and do: Flores-Cerrillo and
-MacGregor obtained the final qualities in their nylon case study by rerunning the non-linear
-simulation model with the trajectories the controller had computed. On an operating plant that
-step is not available, so results from industrial case studies are reported as model predictions.
-On this page the simulator makes execution cheap, so every gain from here on is an executed one.
+3.66 g/L, a 55% improvement on this single batch. The model predicted a gain of 1.3 g/L and the
+executed gain is 2.0 g/L, so the model *understated* what its own correction delivered.
+
+The difference between a predicted and an executed gain matters on a plant. There a batch runs
+once: its corrected quality is measured, but the quality it would have reached without the
+correction is not, so the gain on a single plant batch rests on the model's no-change prediction.
+A simulation study can run both, as Flores-Cerrillo and MacGregor did by evaluating their nylon
+controller on the mechanistic model that generated their data. On this page the simulator makes
+execution cheap, so every gain from here on is an executed one.
 
 .. _APPS_batch_mcc_campaign:
 
@@ -886,7 +947,19 @@ corrected row is the configured procedure measured on the same 40 test batches:
 
 	result = evaluate_control_policies(simulator, y_target=8.0, random_state=0)   # about 7 minutes
 	print(result.summary.round(3))
-	print(f"{result.n_corrected} corrected, {result.n_harmed} harmed")
+	fixed = result.batches[result.batches["corrected"]]
+	predicted_gain = fixed["y_hat_predicted"] - fixed["y_hat_no_change"]
+	executed_gain = fixed["midcourse"] - fixed["replay"]
+	print(f"{result.n_corrected} corrected, {result.n_harmed} harmed, mean gain {executed_gain.mean():.2f} g/L; "
+	      f"understated gains: {(predicted_gain < executed_gain).sum()} of {len(fixed)}")
+	# 8 corrected, 0 harmed, mean gain 1.40 g/L; understated gains: 8 of 8
+
+	single = evaluate_control_policies(simulator, y_target=8.0, random_state=0, per_class=False,
+	                                   include_adapted=False, oracle="none")    # one global model
+	gain_single = (single.batches["midcourse"] - single.batches["replay"])[single.batches["corrected"]]
+	print(f"one global model: {single.n_corrected} corrected, {single.n_harmed} harmed, "
+	      f"mean gain {gain_single.mean():.2f} g/L")
+	# one global model: 5 corrected, 0 harmed, mean gain 0.51 g/L
 
 ============================  ==========  ========  =========  =========
 Policy                        Mean [g/L]  Sd [g/L]  Min [g/L]  Max [g/L]
@@ -907,24 +980,31 @@ All four rows are executed titers over the same 40 fresh batches. Reading them o
   campaign mean rises 0.28 g/L, and the standard deviation falls from 1.198 to 0.750 g/L, a 37%
   reduction. The policy acts on the low tail, where the largest losses are: the lowest replay
   batch (3.655 g/L, the single-batch demonstration) rises to 5.65 g/L and remains the lowest
-  batch of the corrected campaign. One of the eight shows the dead band at its edge. Its
-  no-change prediction was 6.0 g/L with an interval whose upper end sat 0.4 g/L under the floor,
-  so it was corrected; it actually stood at 7.0 g/L, and the correction still raised it to
-  8.5 g/L. The model predicted 4.8 to 6.7 g/L for the eight corrected schedules; executed, they
-  finished at 5.7 to 8.5 g/L, so the model understated every one of its gains.
+  batch of the corrected campaign. For every one of the eight, the model's predicted gain was
+  smaller than the executed one. Run with one global model in place of the per-class models, the
+  last line printed, the same procedure corrects five batches and harms none, but its mean gain
+  per corrected batch is about a third of the per-class models'.
 - **Oracle from the same day** answers "how much was achievable at that decision point at all?"
   For each corrected batch, the remaining schedule is optimised against the *simulator itself*
   (the true process), from the same day-4 state, with the same seed. Because the objective is the
   true process, this row estimates the ceiling for any mid-course scheme from that starting point
   (it is a local direct search over the same four-knot parameterisation, so it is a lower bound
-  on the true ceiling). The mid-course policy captured 58% of
-  the oracle's mean improvement; the remainder is what is lost by steering with a regression
-  restricted to the region its history explored, rather than with the true process equations.
-- **Adapted (feedforward)** runs *every* batch on the true optimal schedule for its own measured
-  |Z|, computed before the batch starts: perfect feedforward adaptation, again a ceiling rather
-  than an implementable policy. It raises the mean and the best batches (its maximum, 9.31 g/L,
-  is the table's highest), but its *minimum is worse than the corrected policy's*: 4.57 against
-  5.65 g/L. A schedule fixed at time zero, however well chosen, cannot answer a
+  on the true ceiling). The mid-course policy captured 58% of the oracle's mean improvement. The
+  remainder mixes three things the comparison does not separate:
+
+  - model error, from steering with a regression restricted to the region its history explored
+    rather than with the process equations;
+  - foresight: the oracle, run with the batch's own seed, optimises against the disturbances
+    still to come;
+  - the corrector's own limits: its movement penalty, its validity caps, and bounds and rate
+    limits tighter than the oracle's.
+
+- **Adapted (feedforward)** runs *every* batch on the schedule that maximises the disturbance-free
+  titer for its own measured |Z|, optimised against the simulator's equations before the batch
+  starts: feedforward adaptation with a perfect process model, again an estimate of a ceiling
+  rather than an implementable policy. It raises the mean and the best batches (its maximum,
+  9.31 g/L, is the table's highest), but its *minimum is worse than the corrected policy's*:
+  4.57 against 5.65 g/L. A schedule fixed at time zero, however well chosen, cannot answer a
   disturbance that develops during the batch. :ref:`The variance decomposition
   <APPS_batch_mcc_variance>` showed the outcome variance has a before-batch share and a
   during-batch share; the adapted row addresses the first, the mid-course row the second, and
@@ -959,8 +1039,8 @@ gain is close to nothing. With 100 batches the scheme works at about three quart
 it reaches with 200. The fit :math:`R^2` cannot tell these cases apart; the held-out check of
 :ref:`the prediction section <APPS_batch_mcc_heldout>` can, which is why it is the arbiter
 in :ref:`the procedure <APPS_batch_mcc_procedure>`. Flores-Cerrillo and MacGregor's
-15-batch result was obtained with one global model on a process with two manipulated variables;
-the per-class models here divide the history three ways.
+15-batch result was obtained with one global model; the per-class models here divide the history
+three ways.
 
 .. _APPS_batch_mcc_window:
 
@@ -969,23 +1049,24 @@ Where to put the decision point
 
 :ref:`The campaign comparison <APPS_batch_mcc_campaign>` used a single decision point at
 day 4 of 10. That choice matters. Sweeping it re-runs that whole executed comparison at each
-decision day, changing only the ``decision_points`` argument of ``evaluate_control_policies``,
-and shows a window:
+decision day, changing only the ``decision_points`` argument of ``evaluate_control_policies``.
+For the batches corrected at each day, the table gives the mean gain the model predicted, the
+mean gain executed, and the mean gain of the oracle from the same day on the same batches:
 
-============  ===========  =================  ==============================
-Decision day  Corrected    Of which harmed    Mean gain, corrected batches
-============  ===========  =================  ==============================
-2             9            2                  +1.12 g/L
-3             9            1                  +1.42 g/L
-4             8            0                  +1.40 g/L
-5             8            0                  +0.49 g/L
-6             8            7                  -0.04 g/L
-7             8            8                  -0.23 g/L
-============  ===========  =================  ==============================
+============  =========  ======  ===============  ==============  ============
+Decision day  Corrected  Harmed  Predicted [g/L]  Executed [g/L]  Oracle [g/L]
+============  =========  ======  ===============  ==============  ============
+2             9          2       +1.43            +1.12           +1.96
+3             9          1       +1.14            +1.42           +2.19
+4             8          0       +0.68            +1.40           +2.39
+5             8          0       +0.19            +0.49           +2.07
+6             8          7       +0.04            -0.03           +1.86
+7             8          8       +0.09            -0.23           +1.60
+============  =========  ======  ===============  ==============  ============
 
 .. figure:: ../figures/batch/mcc-decision-point-window.png
 	:source: batch/midcourse-correction-figures.py
-	:alt: Mean executed gain of the corrected batches versus the decision day, highest at days three and four and negative from day six.
+	:alt: Mean gain of the corrected batches versus the decision day. The executed gain is highest at days three and four and negative from day six; the model's predicted gain falls toward zero after day four; the oracle's gain stays between 1.6 and 2.4 grams per litre at every decision day.
 	:width: 900px
 	:scale: 80
 	:align: center
@@ -995,21 +1076,26 @@ cannot yet separate the batches that will fall short from those that will not, a
 held-out check <APPS_batch_mcc_heldout>` measured: at day 2 its error is 1.4 g/L, above the
 batch-to-batch spread, with a bias of 1.1 g/L toward the training campaign's poor average batch,
 so the dead band admits nine batches and the correction harms two of them. By day 3 the error has
-fallen to 1.1 g/L and one of nine corrections harms its batch; by day 4 none does. Late in the
-batch the prediction is at its most accurate, but the remaining schedule no longer has the
-leverage to act on it: the growth phase is over, and what is left to act on is mostly model
-error, so nearly every correction does slight damage. On this process the window is days 3 to 5.
-Days 3 and 4 give the same mean gain, about +1.4 g/L, and day 4 harms no batch: late enough that
-a struggling batch has revealed itself in the gas trajectories, early enough that the growth
-phase can still be extended. The window's location is a property of the process, not of the method; finding it
-needs the held-out prediction check, process knowledge of where the leverage lies, and, where a
-simulator exists, a sweep like this one.
+fallen to 1.1 g/L and one of nine corrections harms its batch; by day 4 none does.
 
-A plant without a simulator has a data-only version of the leverage half of this picture. The
-model's predicted effect of one fixed reference move of the remaining schedule, at each candidate
-decision day, is a single number per day. Here the reference move raises the temperature setpoint
-by 2 °C for the next two days, for the batch of :ref:`the correction section
-<APPS_batch_mcc_correcting>`:
+Late in the batch the process still responds to its schedule: the oracle's gain falls only
+slowly, and at day 7 it is still larger than the best executed gain at any decision day. What
+fades is the model's view of that leverage. Its predicted gains fall toward zero after day 4, and
+the corrections computed from them do slight damage to nearly every batch. On this process the
+window is days 3 to 5. Days 3 and 4 give the same mean gain, about +1.4 g/L, and day 4 harms no
+batch: late enough that a struggling batch has revealed itself in the gas trajectories, early
+enough that the model still sees the effect of a schedule change. The window is set by the model
+as much as by the process; finding it needs the held-out prediction check, process knowledge of
+where the leverage lies, and, where a simulator exists, a sweep like this one.
+
+.. _APPS_batch_mcc_leverage:
+
+A plant without a simulator has a data-only version of the leverage half of this picture: the
+model's predicted effect of one fixed reference move of the remaining schedule, a single number
+per candidate decision day. Here the reference move raises the temperature setpoint by 2 °C for
+the next two days, for the batch of :ref:`the correction section <APPS_batch_mcc_correcting>`.
+The code also executes the move on the simulator, which a plant cannot do, to show what the
+data-only measure misses:
 
 .. code-block:: python
 
@@ -1020,18 +1106,31 @@ by 2 °C for the next two days, for the batch of :ref:`the correction section
 	    so_far = base.tags.iloc[:k].reset_index(drop=True)
 	    y_nominal = float(predictor.predict(so_far, initial_conditions=z_row, k=k).y_hat.iloc[0])
 	    y_moved = float(predictor.predict(so_far, initial_conditions=z_row, schedule=moved, k=k).y_hat.iloc[0])
-	    leverage.append({"day": k / 2, "predicted effect [g/L]": round(y_moved - y_nominal, 2)})
+	    rerun = simulator.simulate_batch(z_row, moved.set_axis(simulator.nominal_trajectory().index),
+	                                     random_state=seed)      # the simulator only: not on a plant
+	    leverage.append({"day": k / 2, "predicted [g/L]": round(y_moved - y_nominal, 2),
+	                     "executed [g/L]": round(rerun.titer - base.titer, 2)})
 	print(pd.DataFrame(leverage).to_string(index=False))
+	#  day  predicted [g/L]  executed [g/L]
+	#  1.0            -0.00           -0.55
+	#  2.0             0.27           -0.31
+	#  3.0             0.84            0.45
+	#  4.0             0.72            0.96
+	#  5.0             0.31            0.82
+	#  6.0             0.02            0.71
+	#  7.0            -0.22            0.60
+	#  8.0            -0.27            0.47
+	#  9.0            -0.10            0.19
 
-The model's predicted effect of that move is zero at day 1, rises to +0.84 g/L at day 3, is
-+0.72 g/L at day 4 and +0.31 g/L at day 5, and is zero or negative from day 6 on. Executed on
-the same batch with the same seed, the move actually gives -0.55 g/L at day 1 (warming a batch
-that is already at its growth optimum slows it), +0.45 g/L at day 3, +0.82 g/L at day 5 and
-still +0.60 g/L at day 7. The model locates the front of the window and understates the leverage
-that remains late in the batch; that understatement is the same model error that turns the late
-corrections harmful. The data-only measure therefore says where the model can still be *trusted
-to steer*, which is the quantity the decision point should be placed on, rather than where the
-process could still be moved.
+The predicted effect of the move is largest at day 3 and is zero or negative from day 6 on.
+Executed, the move costs titer at days 1 and 2, because warming a batch that is already at its
+growth optimum slows it, and it still helps at day 9. The model places the front of the window
+about a day early, predicting a gain at day 2 where the move costs titer, and from day 6 on it
+misses the leverage that remains, the same failure that makes the late corrections harmful. The
+data-only measure therefore shows where the model sees leverage, and so where corrections
+computed from it can help. Whether that leverage is real is what the executed sweep tests, and
+what a plant tests with the consistency check in step 6 of :ref:`the procedure
+<APPS_batch_mcc_procedure>`.
 
 .. _APPS_batch_mcc_trust:
 
@@ -1069,12 +1168,12 @@ mean titer of the eight corrected batches rises from 6.76 g/L at the most conser
 to 7.06 g/L with the penalty removed, each step of extra freedom produced a real improvement, and
 the executed titer sat *above* the model's own prediction at every setting (the prediction rises
 from 5.62 to 5.89 g/L over the same range). The reason is where the poorest class's best
-schedule sits. It is not outside
-the actuator range, which the training campaigns already span. It is an unusual *combination* of
-setpoints: a warm hold carried well past the day the nominal recipe cools, which few training
-batches did. That is exactly what :math:`T^2` measures, distance from the centre of the training
-data within the model plane, so penalising :math:`T^2` holds the correction back from a schedule
-that is physically available and, for these batches, better.
+schedule sits. It is not outside the actuator range, which the training campaigns already span.
+It lies far from the centre of the
+training data, along a direction the history explored only a little: a warm hold carried well past
+the day the nominal recipe cools, which few training batches did. Distance from the centre of the
+training data within the model plane is what :math:`T^2` measures, so penalising :math:`T^2` holds
+the correction back from a schedule that is physically available and, for these batches, better.
 
 This does not show that the constraints are unnecessary. The same freedom, at the late decision
 points in :ref:`the decision-day sweep <APPS_batch_mcc_window>`, is what made corrections
@@ -1160,9 +1259,10 @@ trusted.
    outcome of the corrected schedule, and the realised outcome. The first two are the model's
    claim; the third is the plant's answer. Over time the predicted-versus-realised record is the
    plant's own version of :ref:`the exploration figure <APPS_batch_mcc_trust>`, and it
-   is the evidence for loosening the settings, or for not doing so. The no-change prediction is
-   also the closest thing a plant has to the counterfactual: a corrected batch that lands where
-   its no-change prediction said it would have landed is a correction that did nothing. Alarm
+   is the evidence for loosening the settings, or for not doing so. The no-change prediction,
+   shifted by the bias the held-out check measured at that decision point, is also the closest
+   thing a plant has to the counterfactual: a corrected batch that lands where it said the batch
+   would have landed is a correction that did nothing. Alarm
    bands derived from the golden batch on the manipulated tags will trip on a corrected schedule;
    re-base them on the corrected schedule, or replace them with the model's SPE and :math:`T^2`
    monitoring, before the first corrected batch runs.
@@ -1176,15 +1276,16 @@ trusted.
 
 Three limits of the method are worth stating plainly. It cannot recover a batch the validity gate
 excludes. It cannot act on the share of variance that only materialises after the last decision
-point. And it cannot exceed the information in the historical data, which is what the gap to the
-oracle row measures.
+point. And it cannot exceed the information in the historical data, which is one part of the gap
+to the oracle row.
 
 The third limit is the one a hybrid model addresses: a mechanistic model of the balances and
 kinetics, with an empirical latent variable model for what the balances leave out, can
-extrapolate past the region the history explored in a way a regression cannot. This page does
-not build one. The simulator plays the plant and is never part of the controller, and the oracle
-row of :ref:`the campaign comparison <APPS_batch_mcc_campaign>` is the most such a model could
-reach from the same decision point.
+extrapolate past the region the history explored, to the extent that its mechanistic part is
+right. This page does not build one. The simulator plays the plant and is never part of the
+controller. The oracle row of :ref:`the campaign comparison <APPS_batch_mcc_campaign>`
+optimises against the process equations with the disturbances still to come already known, so it
+estimates a ceiling that even a perfect model could not exceed from the same decision point.
 
 The methods on this page are implemented in `process_improve
 <https://github.com/kgdunn/process-improve>`_ (``BatchPLS``, ``PLS.project``,
@@ -1201,15 +1302,15 @@ The methods used on this page, in their original sources:
 
 * Yuichi Yabuki and John F. MacGregor, "Product quality control in semibatch reactors using
   midcourse correction policies", *Industrial and Engineering Chemistry Research*, **36**,
-  1268-1275, 1997. `<https://doi.org/10.1021/ie960536m>`_ The no-correction dead band used here
-  is their no-control region.
+  1268-1275, 1997. `<https://doi.org/10.1021/ie960536m>`_ Mid-course correction policies with a
+  no-control region, the role the dead band plays on this page.
 * Jesus Flores-Cerrillo and John F. MacGregor, "`Control of batch product quality by trajectory
   manipulation using latent variable models
   <https://literature.learnche.org/item/39/control-of-batch-product-quality-by-trajectory-manipulation-using-latent-variable-models>`_",
   *Journal of Process Control*, **14**, 539-553, 2004.
   `<https://doi.org/10.1016/j.jprocont.2003.09.008>`_ The source of the correction problem, the
-  SPE validity gate and the data-requirement study. Their optimisation is over the score
-  adjustment, with the trajectories recovered by model inversion; this page optimises the
+  SPE check before a correction and the data-requirement study. Their optimisation is over the
+  score adjustment, with the trajectories recovered by model inversion; this page optimises the
   setpoint columns directly, as described in the text.
 * Francisco Arteaga and Alberto Ferrer, "Dealing with missing data in MSPC: several methods,
   different interpretations, some examples", *Journal of Chemometrics*, **16**, 408-418, 2002.
@@ -1219,13 +1320,14 @@ The methods used on this page, in their original sources:
   <https://literature.learnche.org/item/157/model-predictive-monitoring-for-batch-processes>`_",
   *Industrial and Engineering Chemistry Research*, **43**, 5929-5941, 2004.
   `<https://doi.org/10.1021/ie034020w>`_ The comparison of score estimators for a partially
-  observed batch, and the per-time score covariance limits of Nomikos and MacGregor applied to
-  re-projected training batches.
-
+  observed batch, and Hotelling's :math:`T^2` of the score estimates computed against the
+  covariance of the reference batches' estimates at each time, as Nomikos and MacGregor suggested.
 * Masoud Golshan, John F. MacGregor, Mark-John Bruwer and Prashant Mhaskar, "Latent Variable
   Model Predictive Control (LV-MPC) for trajectory tracking in batch processes", *Journal of
-  Process Control*, **20**, 538-550, 2010. `<https://doi.org/10.1016/j.jprocont.2010.01.007>`_ Their projection of the manipulated-variable constraints into
-  the score space is the alternative to the setpoint-column formulation used here.
+  Process Control*, **20**, 538-550, 2010. `<https://doi.org/10.1016/j.jprocont.2010.01.007>`_
+  Latent variable model predictive control formulated over a correction to the scores, with the
+  manipulated-variable constraints written in terms of it, and directly over the future
+  manipulated variables, the form closer to the one used here.
 
 The foundational multiway papers, the alignment and spectroscopy references and the theses behind
 them are listed with :ref:`the monitoring page <APPS_batch_readings>`.
