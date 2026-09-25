@@ -20,5 +20,6 @@ Over the years since 2010 when this online book has been available, there has be
    batch-case-study-dupont
    batch-case-study-sbr
    batch-case-study-fmc
+   batch-mid-course-correction
    product-development
    mixed-level-profile-case-study
