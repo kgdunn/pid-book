@@ -55,14 +55,32 @@ def _patch(source=""):
     if _wanted("pandas", source):
         import pandas as pd
         if not getattr(pd.read_csv, "_pid", False):
-            from pyodide.http import open_url
             original = pd.read_csv
             def read_csv(path, *args, **kwargs):
-                if isinstance(path, str) and path in DATASETS:
-                    path = open_url(DATASETS[path])   # same-origin copy; openmv.net has no CORS
+                # Pyodide has no sockets, so pandas cannot open a URL itself: fetch it
+                # through the browser. openmv.net sends CORS headers, so the file comes
+                # from there; the copy the build bundles covers an outage.
+                if isinstance(path, str) and path.startswith(("http://", "https://")):
+                    try:
+                        path = _get(path)
+                    except Exception:
+                        if path not in DATASETS:
+                            raise
+                        path = _get(DATASETS[path])
                 return original(path, *args, **kwargs)
             read_csv._pid = True
             pd.read_csv = read_csv
+
+def _get(url):
+    """Fetch text synchronously (allowed in a worker). Unlike pyodide.http.open_url,
+    a 404 raises instead of handing pandas the error page to parse as data."""
+    from js import XMLHttpRequest
+    request = XMLHttpRequest.new()
+    request.open("GET", url, False)
+    request.send(None)
+    if not 200 <= request.status < 300:
+        raise OSError(f"HTTP {request.status} fetching {url}")
+    return io.StringIO(request.responseText)
 
 def _importable(name):
     import importlib.util

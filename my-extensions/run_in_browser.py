@@ -23,10 +23,11 @@ What is built
   results the checker compares (``# 0.255``), so the page can say whether the
   reader's run reproduced the book.
 * ``_static/run/data/<name>``: a copy of every ``openmv.net`` data file the
-  chapter reads. openmv.net sends no CORS header, so a browser cannot fetch it
-  from another origin. The worker sends ``pd.read_csv("https://openmv.net/...")``
-  to this same-origin copy instead, the same redirect the checker uses for its
-  download cache.
+  chapter reads. Pyodide has no sockets, so the worker sends
+  ``pd.read_csv("https://openmv.net/...")`` through the browser's own fetch;
+  openmv.net answers with CORS headers, so the file comes from there and counts
+  as a download. The same-origin copy is used only when that request fails (an
+  outage, say).
 * A button, as raw HTML, after each runnable literal block. The post-transform
   runs before ``code_collapse`` (priority 880 < 900), so the collapse wraps the
   code alone and the button stays visible while the code is folded away.

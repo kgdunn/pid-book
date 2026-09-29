@@ -52,6 +52,6 @@ def test_manifest_lists_the_chapter_in_reading_order():
         blocks = manifest["blocks"]
         assert blocks, chapter
         assert all(b["doc"].startswith(f"{chapter}/") for b in blocks)
-        # Every openmv.net read has a same-origin copy, since that host sends no CORS header.
+        # Every openmv.net read has a same-origin copy, used if openmv.net is unreachable.
         for url in (u for b in blocks for u in run_in_browser.OPENMV_URL_RE.findall(b["source"])):
             assert manifest["datasets"][url] == f"data/{url.rsplit('/', 1)[1]}"
