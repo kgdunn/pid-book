@@ -43,6 +43,18 @@ read. The value is the single word ``expanded`` or ``collapsed``, it is never
 sent anywhere, and clearing your browser's site data removes it. Nothing else
 is stored on your device: no cookies, and no other keys.
 
+Running the examples in your browser
+------------------------------------
+
+Some pages have a **Run in browser** button under their Python examples. Nothing
+is loaded until you click it. The first click downloads Python and the packages
+the example imports, compiled for the browser by `Pyodide <https://pyodide.org>`_,
+from the public CDN ``cdn.jsdelivr.net``; a plot also loads Plotly from there.
+Your browser then asks that CDN, and ``pypi.org`` for a few packages, for those
+files, so those services see the request as they would for any file they serve.
+The code runs inside your browser tab: no code, data or output is sent anywhere,
+and the downloaded files stay only in your browser's ordinary cache.
+
 Opt out
 -------
 
