@@ -27,7 +27,12 @@ extensions = [
     "my-extensions.figure_source",
     "my-extensions.reading_time",
     "my-extensions.code_collapse",
+    "my-extensions.run_in_browser",
 ]
+
+# Chapters whose Python examples get a "Run in browser" button (Pyodide). The
+# blocks come from tools/check_code_blocks.py; see my-extensions/run_in_browser.py.
+run_in_browser_chapters = ["univariate-review"]
 
 # Avoid Subresource Integrity errors for the bundled jQuery.
 jquery_use_sri = False
