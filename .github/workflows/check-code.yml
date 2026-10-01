@@ -18,8 +18,10 @@ name: Check book code
 #
 # The whole chapter runs in that environment, so it needs every extra the
 # chapter's other pages use as well: the batch case studies read their data from
-# openmv.net workbooks, and the Excel reader lives in the [batch] extra. Neither
-# extra pins plotly, so the pair still resolves against pyoptex's plotly 5.
+# openmv.net workbooks, and the Excel reader lives in the [batch] extra; the
+# mid-course correction page solves its correction with osqp, from the [control]
+# extra. None of these extras pins plotly, so the set still resolves against
+# pyoptex's plotly 5.
 
 on:
   push:
@@ -159,5 +161,5 @@ jobs:
         run: |
           make check-code-chapter \
             CHAPTER=product-development-product-improvement \
-            CHECK_WITH='process-improve[expt,batch]' \
+            CHECK_WITH='process-improve[expt,batch,control]' \
             CHECK_ALSO=pyoptex
