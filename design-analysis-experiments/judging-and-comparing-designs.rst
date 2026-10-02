@@ -87,10 +87,10 @@ This and every figure in this subchapter is reproducible with `process_improve
 <https://github.com/kgdunn/process-improve>`_ (``pip install 'process-improve[all]'``, which
 installs every optional extra). Of those extras, ``expt`` (the ``pyDOE3`` package) is needed for
 the Box-Behnken and central composite designs on the :ref:`companion page
-<DOE-omnibus-comparison>`, and ``ilp`` (the ``pulp`` integer-programming solver) for the
-twenty-five-run OMARS design there. The four-factor, thirteen-run OMARS design used on this page
-is small enough for ``generate_omars`` to find by exhaustive enumeration (every feasible design
-of that size is listed and scored), so it needs neither.
+<DOE-omnibus-comparison>`. The OMARS designs need no extra: ``generate_omars`` solves its
+integer program with the HiGHS solver that ships with SciPy. The four-factor, thirteen-run OMARS
+design used on this page is small enough for ``generate_omars`` to find by exhaustive
+enumeration (every feasible design of that size is listed and scored).
 Each block imports what it needs and reuses variables defined in the blocks before it, so paste
 them in order. The prediction variance of the three-run quadratic design is a closed form:
 
