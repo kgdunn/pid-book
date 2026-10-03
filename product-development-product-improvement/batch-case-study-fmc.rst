@@ -589,6 +589,8 @@ of each block the components describe.
 	                                    "Zop block scores", "Super weights",
 	                                    "Zchem block weights", "Zop block weights"])
 	super_t = mb_z.super_scores_
+	print("batch 20, super scores:", super_t.loc[20].round(2).tolist())
+	# batch 20, super scores: [1.19, 0.86]
 	group_scatter(fig, super_t.iloc[:, 0], super_t.iloc[:, 1], {20: ORANGE}, row=1, col=1)
 	block_axes(fig, mb_z.r2_y_per_component_, 1, 1, prefix="super t", note="R2Y ")
 	weights = mb_z.super_weights_  # one row per block, one column per component
@@ -612,13 +614,13 @@ of each block the components describe.
 
 .. figure:: ../figures/batch/batch-case-fmc-mbpls-z.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Six panels in three columns: the super scores of the multiblock PLS on the chemistry and operating-condition blocks, coded by classification, with batch 20 at the lower left, above the super weights of the two components, larger for the operating-condition block on both; the chemistry block scores, where batch 20 sits inside the cloud of batches, above the chemistry block weights; and the operating-condition block scores, where batch 20 sits far outside, above the operating-condition block weights.
+	:alt: Six panels in three columns: the super scores of the multiblock PLS on the chemistry and operating-condition blocks, coded by classification, with batch 20 at the upper right, above the super weights of the two components, larger for the operating-condition block on both; the chemistry block scores, where batch 20 sits inside the cloud of batches, above the chemistry block weights; and the operating-condition block scores, where batch 20 sits far outside, above the operating-condition block weights.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
 	Left column: super scores of the multiblock PLS on the chemistry and operating-condition blocks,
-	coded by the plant's classification, with batch 20 (orange) at the lower left, and below
+	coded by the plant's classification, with batch 20 (orange) at the upper right, and below
 	them the super weights of the two components. Middle and right columns: the chemistry
 	block and the operating-condition block, each with its block scores above the block
 	weights that define them. Batch 20 sits inside the cloud of batches in the chemistry
@@ -867,8 +869,14 @@ Trajectories to quality
 	       labels=[13, 5, 7, 61, 14]).show()
 	t1 = pls_x.score_contributions(x_scaled, component=1)
 	unfolded_contribution_plot(t1, batch_id=13, by_tag=True).show()
+
+	def largest(values, n, decimals=2):
+	    """The `n` values largest in size, with their sign. The sign of a component is
+	    arbitrary, so ranking by size names the same variables whichever way it points."""
+	    return values[values.abs().nlargest(n).index].round(decimals).to_dict()
+
 	# batch 13's four largest
-	print(t1.loc[13].groupby(level="tag", sort=False).sum().nsmallest(4).round(1).to_dict())
+	print(largest(t1.loc[13].groupby(level="tag", sort=False).sum(), 4, decimals=1))
 	# {'ClockTime': -8.1, 'CTankLvl': -8.0, 'D-Temp': -4.7, 'J-Temp-SP': -4.2}
 	for tag in ("D-Temp", "CTankLvl", "ClockTime", "J-Temp-SP"):
 	    overlay(X, tag, {13: ORANGE, 5: AQUA, 7: BLUE}).show()
@@ -1074,8 +1082,8 @@ conditions or only its trajectories are considered, and the three plots need not
 	# {2: 'good', 3: 'good', 6: 'good', 7: 'good'}
 	print(mb.super_scores_.iloc[:, 0].groupby(groups).mean().round(2).to_dict(),
 	      mb.super_scores_.loc[anomalous].iloc[:, 0].round(2).to_dict())
-	# {'abnormal': -0.55, 'good': 0.36, 'high solvent': 0.19}
-	# {2: 0.31, 3: 0.14, 6: 0.17, 7: 0.18}
+	# {'abnormal': 0.55, 'good': -0.36, 'high solvent': -0.19}
+	# {2: -0.31, 3: -0.14, 6: -0.17, 7: -0.18}
 	fig = make_subplots(rows=1, cols=3, subplot_titles=[f"{name} block" for name in blocks])
 	for col, (name, block_t) in enumerate(mb.block_scores_.items(), start=1):
 	    for label in ("good", "abnormal"):  # a spoke from each batch to its group's average
@@ -1140,17 +1148,17 @@ mark them out.
 	contributions = mb.score_contributions(blocks, component=1)
 	x_by_tag = contributions["X"].T.groupby(level="tag", sort=False).sum().T
 	# the four batches' largest trajectory contributions
-	print(x_by_tag.loc[anomalous].mean().nsmallest(3).round(2).to_dict())
-	# {'CTankLvl': -0.07, 'ClockTime': -0.03, 'J-Temp-SP': -0.02}
+	print(largest(x_by_tag.loc[anomalous].mean(), 3))
+	# {'CTankLvl': 0.07, 'ClockTime': 0.03, 'J-Temp-SP': 0.02}
 	# their neighbours'
-	print(x_by_tag.loc[neighbours].mean().nsmallest(3).round(2).to_dict())
-	# {'ClockTime': -0.07, 'J-Temp-SP': -0.03, 'CTankLvl': -0.03}
+	print(largest(x_by_tag.loc[neighbours].mean(), 3))
+	# {'ClockTime': 0.07, 'J-Temp-SP': 0.03, 'CTankLvl': 0.03}
 	move = (contributions["Zop"].loc[anomalous].mean()
 	        - contributions["Zop"].loc[neighbours].mean())
 	# Zop: from the neighbours' average to the four's average
 	print(move.round(2)[move.abs() >= 0.01].to_dict())
-	# {'Level1': -0.05, 'Temp1': 0.02, 'Time4': 0.05, 'Time2': 0.06, 'Time3': 0.11,
-	# 'TempSlope': 0.06, 'WgtCake': -0.05}
+	# {'Level1': 0.05, 'Temp1': -0.02, 'Time4': -0.05, 'Time2': -0.06, 'Time3': -0.11,
+	# 'TempSlope': -0.06, 'WgtCake': 0.05}
 	fig = go.Figure(go.Bar(x=list(move.index), y=move, marker_color=BLUE))
 	shade_alternate(fig, len(move))
 	fig.update_layout(title="Operating conditions: from the neighbours' average"
@@ -1171,10 +1179,17 @@ mark them out.
 	print(round(np.mean([X[b]["D-Temp-SP"].max() for b in anomalous]), 1),
 	      round(np.mean([X[b]["D-Temp-SP"].max() for b in neighbours]), 1))
 	# 86.9 87.2
+	# the variables whose bar reaches 0.05, and how many of those bars point against the
+	# raw move from the neighbours' average to the four's
+	large = move.index[move.round(2).abs() >= 0.05]
+	raw_move = Zop.loc[anomalous, large].mean() - Zop.loc[neighbours, large].mean()
+	print(len(large), "bars reach 0.05;",
+	      int((np.sign(move[large]) != np.sign(raw_move)).sum()), "run against the raw move")
+	# 6 bars reach 0.05; 2 run against the raw move
 
 .. figure:: ../figures/batch/batch-case-fmc-anomalous.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Left, the contribution from the neighbours' average to the four batches' average in the operating-condition block, with positive bars for the cool-down, the ramp length and slope and a fourth recipe timing, and negative bars for the collector level and the cake weight; right, four raw trajectories with the four batches in orange and their neighbours in aqua, running together in the collector level and the clock time, with the same peak set point.
+	:alt: Left, the contribution from the neighbours' average to the four batches' average in the operating-condition block, with negative bars for the cool-down, the ramp length and slope and a fourth recipe timing, and positive bars for the collector level and the cake weight; right, four raw trajectories with the four batches in orange and their neighbours in aqua, running together in the collector level and the clock time, with the same peak set point.
 	:width: 1100px
 	:scale: 80
 	:align: center
@@ -1206,7 +1221,7 @@ variables:
 * the weight of the cake charged (``WgtCake``).
 
 A contribution carries the sign of the variable's weight as well as the sign of the move, so the
-direction of a bar is not the direction of the raw value. Four of these six run the opposite way.
+direction of a bar is not the direction of the raw value. Two of these six run the opposite way.
 
 In clock time the four ramped in 24 time units against 32 and cooled for 50 against 38, at the
 same peak set point (86.9 against 87.2): not a set point that was moved, but how long each
