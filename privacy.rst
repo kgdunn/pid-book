@@ -33,6 +33,29 @@ inside the book itself on the :ref:`stats` page, and as the 60-day reader
 count next to the sparkline in the sidebar of every page. Every figure covers
 complete days only, so the most recent day shown is yesterday.
 
+Kept in your browser
+--------------------
+
+One preference is stored in your browser's ``localStorage``, under the key
+``pid:code-blocks:v1``. It records whether you asked for the code blocks on a
+page to be shown or hidden, so that the choice carries to the next page you
+read. The value is the single word ``expanded`` or ``collapsed``, it is never
+sent anywhere, and clearing your browser's site data removes it. Nothing else
+is stored on your device: no cookies, and no other keys.
+
+Running the examples in your browser
+------------------------------------
+
+Some pages have a **Run in browser** button under their Python examples. Nothing
+is loaded until you click it. The first click downloads Python and the packages
+the example imports, compiled for the browser by `Pyodide <https://pyodide.org>`_,
+from the public CDN ``cdn.jsdelivr.net``; a plot also loads Plotly from there.
+Your browser then asks that CDN, and ``pypi.org`` for a few packages, for those
+files, and ``openmv.net`` for any data set the example reads, so those services see
+the request as they would for any file they serve.
+The code runs inside your browser tab: no code, data or output is sent anywhere,
+and the downloaded files stay only in your browser's ordinary cache.
+
 Opt out
 -------
 

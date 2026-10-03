@@ -221,7 +221,8 @@ Exercises
 		    web = read.csv('https://openmv.net/file/website-traffic.csv')
 
 		    # Re-order the factors in this order
-		    day.names = c("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday","Thursday", "Friday" )
+		    day.names = c("Saturday", "Sunday", "Monday", "Tuesday",
+		                  "Wednesday","Thursday", "Friday" )
 		    days = factor(web$DayOfWeek, levels=day.names)
 		    boxplot(web$Visits ~ days)
 

@@ -85,8 +85,12 @@ against extrapolation.
 
 This and every figure in this subchapter is reproducible with `process_improve
 <https://github.com/kgdunn/process-improve>`_ (``pip install 'process-improve[all]'``, which
-includes the ``expt`` and ``ilp`` extras needed for the Box-Behnken, central composite, and
-OMARS designs used below).
+installs every optional extra). Of those extras, ``expt`` (the ``pyDOE3`` package) is needed for
+the Box-Behnken and central composite designs on the :ref:`companion page
+<DOE-omnibus-comparison>`, and ``ilp`` (the ``pulp`` integer-programming solver) for the
+twenty-five-run OMARS design there. The four-factor, thirteen-run OMARS design used on this page
+is small enough for ``generate_omars`` to find by exhaustive enumeration (every feasible design
+of that size is listed and scored), so it needs neither.
 Each block imports what it needs and reuses variables defined in the blocks before it, so paste
 them in order. The prediction variance of the three-run quadratic design is a closed form:
 
@@ -343,7 +347,8 @@ worst-case values; the next section uses it to draw the plot.
 	import numpy as np
 	import pandas as pd
 	import plotly.graph_objects as go
-	from process_improve.experiments import Factor, evaluate_design, generate_design, generate_omars, is_omars
+	from process_improve.experiments import (Factor, evaluate_design, generate_design,
+	                                         generate_omars, is_omars)
 
 	def fds(design, model, *, n_samples, seed=1):
 	    """Region prediction-variance summary from ``evaluate_design``: the FDS
@@ -359,9 +364,11 @@ worst-case values; the next section uses it to draw the plot.
 	# precision-optimal (A-optimal) 13-run OMARS member of the same foldover family,
 	# the latter carrying two estimable two-factor interactions. is_omars confirms each.
 	factors4 = [Factor(name=c, low=-1, high=1) for c in "ABCD"]
-	dsd4 = np.asarray(generate_design(factors4, design_type="dsd").design[list("ABCD")], float)
-	omars4 = np.asarray(generate_omars(factors4, n_runs=13, model="main_quadratic",
-	                                   selection_criterion="a_optimal").design[list("ABCD")], float)
+	dsd4 = np.asarray(generate_design(factors4, design_type="dsd").design[list("ABCD")],
+	                  float)
+	omars4 = np.asarray(
+	    generate_omars(factors4, n_runs=13, model="main_quadratic",
+	                   selection_criterion="a_optimal").design[list("ABCD")], float)
 	assert is_omars(dsd4) and is_omars(omars4)
 	model4 = " + ".join(list("ABCD") + [f"I({c}**2)" for c in "ABCD"])
 
@@ -461,9 +468,9 @@ corner (a vertex of the :math:`[-1, 1]` cube), where random interior sampling ra
 ``evaluate_design`` therefore adds the cube vertices to its interior sample by default (its
 ``include_vertices`` argument). Including them lifts the nine-run DSD's :math:`G` from :math:`8.98`
 to :math:`9.00`, a maximum that turns out to sit precisely at a corner, and leaves the thirteen-run
-OMARS value at :math:`12.70` because its worst case lies in the interior. The shift is tiny, so it
-changes no conclusion here, but including the extreme points is the correct procedure, and the
-:ref:`omnibus comparison <DOE-omnibus-comparison>` relies on it.
+OMARS value at :math:`12.50` because its worst case does not sit at a vertex. The shift is tiny,
+so it changes no conclusion here, but including the extreme points is the correct procedure, and
+the :ref:`omnibus comparison <DOE-omnibus-comparison>` relies on it.
 
 Separability is not the same as precision
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -690,7 +697,7 @@ four-factor main-effects-and-quadratic model.
         - 6.19
     *   - :math:`\downarrow\ G`, maximum SPV
         - 9.00
-        - 12.70
+        - 12.50
     *   - :math:`\downarrow` maximum :math:`|r|`
         - 0.707
         - 0.570

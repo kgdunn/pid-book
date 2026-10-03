@@ -108,7 +108,8 @@ the library scores exactly this model and not the full second-order one:
 	import numpy as np
 	import pandas as pd
 	import plotly.graph_objects as go
-	from process_improve.experiments import Factor, evaluate_design, generate_design, generate_omars
+	from process_improve.experiments import (Factor, evaluate_design, generate_design,
+	                                         generate_omars, is_omars)
 
 	names = list("ABCDE")
 	factors = [Factor(name=c, low=-1, high=1) for c in names]
@@ -123,6 +124,7 @@ the library scores exactly this model and not the full second-order one:
 	                            alpha="face_centered", n_center_points=6))
 	omars = coded(generate_omars(factors, n_runs=25, model="main_quadratic",
 	                             selection_criterion="a_optimal"))
+	assert is_omars(omars)   # main effects orthogonal to every second-order term
 	designs = {"Box-Behnken": bbd, "CCD": ccd, "OMARS": omars, "DSD": dsd}
 
 	def power(design):
@@ -309,7 +311,8 @@ interactions across the columns:
 
 	def alias_abs(d):
 	    df = pd.DataFrame(np.asarray(d, float), columns=names)
-	    a = evaluate_design(df, model=model, metric="alias_matrix")["alias_matrix"]["matrix"]
+	    a = evaluate_design(df, model=model,
+	                        metric="alias_matrix")["alias_matrix"]["matrix"]
 	    return np.abs(np.asarray(a, float))
 
 	fig = make_subplots(rows=2, cols=2, subplot_titles=list(designs))
@@ -343,8 +346,9 @@ values:
 	import plotly.graph_objects as go
 	from plotly.subplots import make_subplots
 
-	# Twenty model-effect columns in three blocks: main effects, quadratics, then the omitted
-	# interactions (pairs, from the previous block). Lines at 4.5 and 9.5 separate the blocks.
+	# Twenty model-effect columns in three blocks: main effects, quadratics, then
+	# the omitted interactions (pairs, from the previous block). Lines at 4.5 and
+	# 9.5 separate the blocks.
 	model_terms = list("ABCDE") + ["A^2", "B^2", "C^2", "D^2", "E^2"] + pairs
 
 	def model_term_corr(d):
@@ -420,9 +424,10 @@ on the two scales:
 	import plotly.graph_objects as go
 	from plotly.subplots import make_subplots
 
-	# Reuses the designs dict and the model formula from the power block above; numpy, pandas
-	# and evaluate_design were imported there. The fds helper integrates the prediction
-	# variance over the region and returns the FDS curve (scaled and unscaled).
+	# Reuses the designs dict and the model formula from the power block above;
+	# numpy, pandas and evaluate_design were imported there. The fds helper
+	# integrates the prediction variance over the region and returns the FDS curve
+	# (scaled and unscaled).
 	def fds(design, model, *, n_samples, seed=1):
 	    cols = [chr(ord("A") + i) for i in range(np.shape(design)[1])]
 	    df = pd.DataFrame(np.asarray(design, float), columns=cols)

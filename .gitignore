@@ -25,3 +25,6 @@ least-squares-modelling/Readings/
 univariate-review/Readings/
 process-monitoring/Readings/
 data-visualization/Readings/
+
+# Data sets fetched by tools/check_code_blocks.py
+.cache/

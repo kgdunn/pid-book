@@ -1,0 +1,19 @@
+{# The page-level control for the collapsed code blocks, shown in the article
+   header bar next to the theme switcher.
+
+   Rendered by the build rather than created by JavaScript, which is the rule
+   the rest of this book's front end follows (see my-extensions/figure_source.py):
+   the markup is in the bytes the reader receives, so nothing reflows after the
+   first paint. It carries `hidden` because the control needs a script to do
+   anything; _static/js/code-collapse.js removes that attribute only on a page
+   that has code blocks to switch. A reader with JavaScript off therefore never
+   meets a control that cannot act, and the per-block bars still work.
+
+   The label changes with the state and the button carries no aria-pressed:
+   doing both would announce the state twice, and contradictorily. The status
+   region reports the count, which the label does not, so a bulk change of every
+   block on the page is announced without moving focus (WCAG 2.1 SC 4.1.3). #}
+<div class="pid-code-switch-wrap d-print-none" hidden>
+  <button type="button" class="pid-code-switch">Show all code</button>
+  <p class="pid-code-status pid-visually-hidden" role="status"></p>
+</div>

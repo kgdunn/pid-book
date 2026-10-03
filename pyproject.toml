@@ -31,6 +31,13 @@ Homepage = "https://github.com/kgdunn/pid-book"
 Repository = "https://github.com/kgdunn/pid-book"
 Issues = "https://github.com/kgdunn/pid-book/issues"
 
+# -- pytest: the executable-book check (tests/test_book_code.py) --------------
+# Only tests/ is collected, so the book's own gists and included scripts are
+# never picked up as test modules. Run with `make check-code`.
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
 # -- Ruff: lint + format the repo's small amount of Python --------------------
 # The pre-commit hook scopes Ruff to conf.py, start_server.py and
 # my-extensions/; these settings apply whenever Ruff runs.

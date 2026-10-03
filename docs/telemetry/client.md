@@ -457,7 +457,11 @@ execute until parsing is done, but `defer` doesn't fire its callback
   GoatCounter's `count.js` (~3 KB), plus ECharts (~80 KB) **only on
   pages with a sparkline mount**.
 * **Cookies:** zero.
-* **localStorage / sessionStorage:** zero.
+* **localStorage / sessionStorage:** zero from the telemetry client. One
+  unrelated key exists on the site, `pid:code-blocks:v1`, written by
+  `_static/js/code-collapse.js` to remember whether the reader asked for code
+  blocks to be shown; it is never read by telemetry and never transmitted.
+  See `privacy.rst`.
 * **Network requests in baseline (no sparkline mount):** one to
   `gc.zgo.at/count.js`, one to `<gc>.goatcounter.com/count`. No
   third-party.

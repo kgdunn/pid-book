@@ -17,5 +17,8 @@ Over the years since 2010 when this online book has been available, there has be
    adaptive-soft-sensor
    image-analysis
    batch-process-monitoring
+   batch-case-study-dupont
+   batch-case-study-sbr
+   batch-case-study-fmc
    product-development
    mixed-level-profile-case-study

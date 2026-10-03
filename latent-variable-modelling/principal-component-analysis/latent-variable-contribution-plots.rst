@@ -1,3 +1,5 @@
+.. _LVM_contribution_plots:
+
 Latent variable contribution plots
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

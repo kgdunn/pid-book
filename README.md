@@ -67,7 +67,7 @@ open-source Python package
 [`process-improve`](https://github.com/kgdunn/process-improve). It provides PCA
 and PLS with proper outlier diagnostics and prediction intervals, control
 charts, designed experiments, and batch process monitoring. Install it with
-`pip install process-improve` and run the exercises in any Jupyter notebook.
+`pip install 'process-improve[all]'` and run the exercises in any Jupyter notebook.
 
 ## Who's using this book
 

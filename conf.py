@@ -25,7 +25,14 @@ extensions = [
     "my-extensions.youtube",
     "my-extensions.pdf_exclude",
     "my-extensions.figure_source",
+    "my-extensions.reading_time",
+    "my-extensions.code_collapse",
+    "my-extensions.run_in_browser",
 ]
+
+# Chapters whose Python examples get a "Run in browser" button (Pyodide). The
+# blocks come from tools/check_code_blocks.py; see my-extensions/run_in_browser.py.
+run_in_browser_chapters = ["univariate-review"]
 
 # Avoid Subresource Integrity errors for the bundled jQuery.
 jquery_use_sri = False
@@ -161,6 +168,13 @@ html_theme_options = {
     "show_toc_level": 2,
     # Remove the navbar search button so Pagefind in the sidebar is the only search.
     "navbar_persistent": [],
+    # Article header bar: the sidebar toggle, then the reading-time estimate.
+    "article_header_start": ["toggle-primary-sidebar.html", "pid-reading-time.html"],
+    # End of that bar: the switch that opens or closes every code block on the
+    # page, then the theme's own buttons. Setting this option replaces the
+    # theme default rather than adding to it, so `article-header-buttons.html`
+    # has to be relisted or the repository and colour-mode buttons disappear.
+    "article_header_end": ["pid-code-switch.html", "article-header-buttons.html"],
     "extra_footer": "",
     # Syntax-highlighting palette for HTML code blocks, per colour mode.
     "pygments_light_style": "github-light",
@@ -168,17 +182,29 @@ html_theme_options = {
 }
 
 html_static_path = ["_static"]
-html_css_files = ["css/theme-extended-kgd.css"]
+html_css_files = ["css/theme-extended-kgd.css", "css/code-collapse.css"]
 
 # Long-press (or Alt-click) a figure to see which script drew it. The
 # mapping is written to _static/figure-sources.json during the HTML build by
 # my-extensions/figure_source.py; the script reads it from this same site.
-html_js_files = [("js/figure-source.js", {"defer": "defer"})]
+html_js_files = [
+    ("js/figure-source.js", {"defer": "defer"}),
+    ("js/code-collapse.js", {"defer": "defer"}),
+]
 
 # Where the figures repository is mounted, relative to this file, and the
 # prefix that turns a script path from the manifest into a link.
 figure_source_root = "figures"
 figure_source_base = "https://github.com/kgdunn/figures/blob/main/"
+
+# Reading-time estimate, shown in the article header bar by
+# `_templates/pid-reading-time.html`. 150 words per minute is deliberately
+# below the ~238 wpm at which adults read non-fiction, because this book is
+# read for understanding; the per-element costs in
+# my-extensions/reading_time.py then add to it for equations, figures,
+# tables and code, so a dense page reports a longer time than its word
+# count alone would give.
+reading_time_wpm = 150
 
 # Custom sidebar: logo, then Pagefind search, then the book TOC.
 html_sidebars = {

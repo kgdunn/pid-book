@@ -121,7 +121,7 @@ Applying this to the :math:`2^4` example above, reusing the ``effects`` computed
 	d = m / 3
 	ME = stats.t.ppf(0.975, d) * pse
 	SME = stats.t.ppf(1 - 0.025 / m, d) * pse
-	print(f"PSE = {pse:.2f}, ME = {ME:.2f}, SME = {SME:.2f}")   # PSE=1.31, ME=3.37, SME=6.89
+	print(f"PSE = {pse:.2f}, ME = {ME:.2f}, SME = {SME:.2f}")  # PSE=1.31, ME=3.37, SME=6.89
 
 	print(sorted((k for k in effects if abs(effects[k]) > ME),
 	             key=lambda k: -abs(effects[k])))              # ['A', 'AC', 'AD', 'D', 'C']
@@ -159,7 +159,7 @@ The same result is available directly from ``process_improve``. Note that ``anal
 	                         analysis_type=["effects", "lenth_method"])
 	res["lenth_method"]["ME"]                                      # 6.75  (= 2 x 3.37)
 
-	create_plot("pareto", analysis_results=res).to_plotly()       # Pareto with ME and SME lines
+	create_plot("pareto", analysis_results=res).to_plotly()  # Pareto with ME and SME lines
 	create_plot("half_normal", analysis_results=res).to_plotly()  # the half-normal plot
 
 The pseudo-standard-error cutoff is from :index:`Lenth <single: Lenth, Russell>` (1989), "`Quick and Easy Analysis of Unreplicated Factorials <https://doi.org/10.1080/00401706.1989.10488595>`_", *Technometrics*, **31**, 469-473. The half-normal plot of effects is due to :index:`Daniel <single: Daniel, Cuthbert>` (1959), "`Use of Half-Normal Plots in Interpreting Factorial Two-Level Experiments <https://doi.org/10.1080/00401706.1959.10489866>`_", *Technometrics*, **1**, 311-341.

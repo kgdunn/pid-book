@@ -81,10 +81,15 @@ For these reasons the least squares model cannot be solved by inverting the :mat
 	print(XtX)
 
 	print("Calculate the inverse (it will fail!)")
-	np.linalg.inv(XtX)
+	try:
+	    np.linalg.inv(XtX)
+	except np.linalg.LinAlgError as err:
+	    print(err)
+	# Singular matrix
 
 	# We cannot, since the determinant is 0:
-	np.linalg.det(XtX)
+	print(np.linalg.det(XtX))
+	# 0.0
 
 .. code-block:: r
 

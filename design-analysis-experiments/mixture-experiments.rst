@@ -119,7 +119,8 @@ a common extra run, held back to check the fit.
 	    mode="markers", marker=dict(size=12), name="support points"))
 	fig.add_trace(go.Scatterternary(
 	    a=[p[0] for p in centroid], b=[p[1] for p in centroid], c=[p[2] for p in centroid],
-	    mode="markers", marker=dict(size=12, symbol="circle-open"), name="centroid (check run)"))
+	    mode="markers", marker=dict(size=12, symbol="circle-open"),
+	    name="centroid (check run)"))
 	fig.update_layout(ternary=dict(aaxis_title="x1", baxis_title="x2", caxis_title="x3"))
 	fig.show()
 
@@ -213,13 +214,15 @@ line from the :math:`x_1` vertex through the current point, shown dashed below.
 
 	start = (0.30, 0.30, 0.40)
 	moved = (0.50, 0.214, 0.286)   # x1 raised by 0.20; x2, x3 rescaled, ratio kept at 0.75
-	# The Cox-effect direction: the line from the x1 vertex through the point to the far edge.
+	# The Cox-effect direction: the line from the x1 vertex through the point to the
+	# far edge.
 	share = start[1] / (start[1] + start[2])
 	direction = [(1, 0, 0), (0.0, share, 1 - share)]
 
 	fig = go.Figure()
 	fig.add_trace(go.Scatterternary(
-	    a=[p[0] for p in direction], b=[p[1] for p in direction], c=[p[2] for p in direction],
+	    a=[p[0] for p in direction], b=[p[1] for p in direction],
+	    c=[p[2] for p in direction],
 	    mode="lines", line=dict(dash="dash"), name="Cox direction"))
 	fig.add_trace(go.Scatterternary(
 	    a=[start[0], moved[0]], b=[start[1], moved[1]], c=[start[2], moved[2]],

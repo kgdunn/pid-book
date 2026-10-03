@@ -151,11 +151,11 @@ The six-step workflow on these data:
 	.. code-block:: python
 
 		for psize, subset in blender.groupby("ParticleSize"):
-		    ax = subset.plot.scatter(
+		    subset.plot.scatter(
 		        x="BlendingTime",
 		        y="BlendingEfficiency",
+		        title=f"When particle size = {psize}",
 		    )
-		    ax.set_title(f"When particle size = {psize}")
 
 	Once the patterns are clear, you can fit a least squares model using
 	:ref:`process_improve <LS_single_x_sklearn_distillation>` or

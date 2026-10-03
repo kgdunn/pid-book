@@ -39,7 +39,7 @@ For a critical review of cross-validation procedures applied to component models
 
 The general idea is to divide the matrix |X| into :math:`G` groups of rows. These rows should be selected randomly, but are often selected in order: row 1 goes in group 1, row 2 goes in group 2, and so on. We can collect the rows belonging to the first group into a new matrix called :math:`\mathbf{X}_{(1)}`, and leave behind all the other rows from all other groups, which we will call group :math:`\mathbf{X}_{(-1)}`. So in general, for the :math:`g^\text{th}` group, we can split matrix |X| into :math:`\mathbf{X}_{(g)}` and :math:`\mathbf{X}_{(-g)}`.
 
-Wold's cross-validation procedure asks to build the PCA model on the data in :math:`\mathbf{X}_{(-1)}` using |A| components. Then use data in :math:`\mathbf{X}_{(1)}` as new, testing data. In other words, we preprocess the :math:`\mathbf{X}_{(1)}` rows, calculate their score values, :math:`\mathbf{T}_{(1)} = \mathbf{X}_{(1)} \mathbf{P}`, calculate their predicted values, :math:`\widehat{\mathbf{X}}_{(1)} = \mathbf{T}_{(1)} \mathbf{P'}`, and their residuals, :math:`\mathbf{E}_{(1)} = \mathbf{X}_{(1)} - \widehat{\mathbf{X}}_{(1)}`.  We repeat this process, building the model on :math:`\mathbf{X}_{(-2)}` and testing it with :math:`\mathbf{X}_{(2)}`, to eventually obtain :math:`\mathbf{E}_{(2)}`.
+A row-wise cross-validation procedure asks to build the PCA model on the data in :math:`\mathbf{X}_{(-1)}` using |A| components. Then use data in :math:`\mathbf{X}_{(1)}` as new, testing data. In other words, we preprocess the :math:`\mathbf{X}_{(1)}` rows, calculate their score values, :math:`\mathbf{T}_{(1)} = \mathbf{X}_{(1)} \mathbf{P}`, calculate their predicted values, :math:`\widehat{\mathbf{X}}_{(1)} = \mathbf{T}_{(1)} \mathbf{P'}`, and their residuals, :math:`\mathbf{E}_{(1)} = \mathbf{X}_{(1)} - \widehat{\mathbf{X}}_{(1)}`.  We repeat this process, building the model on :math:`\mathbf{X}_{(-2)}` and testing it with :math:`\mathbf{X}_{(2)}`, to eventually obtain :math:`\mathbf{E}_{(2)}`.
 
 After repeating this on :math:`G` groups, we gather up :math:`\mathbf{E}_{1}, \mathbf{E}_{2}, \ldots, \mathbf{E}_{G}` and assemble a type of residual matrix, :math:`\mathbf{E}_{A,\text{CV}}`, where the |A| represents the number of components used in each of the :math:`G` PCA models. The :math:`\text{CV}` subscript indicates that this is not the usual error matrix, :math:`\mathbf{E}`. From this we can calculate a type of :math:`R^2` value. We don't call this :math:`R^2`, but it follows the same definition for an :math:`R^2` value. We will call it :math:`Q^2_A` instead, where |A| is the number of components used to fit the :math:`G` models.
 
@@ -67,7 +67,7 @@ The number of components to use should be judged by the relevance of each compon
 
 However, cross-validation's objective is useful for predictive models, such as PLS, so we avoid over-fitting components. Models where we intend to learn from, or optimize, or monitor a process may well benefit from fewer or more components than suggested by cross-validation.
 
-**A caution: do not reconstruct a left-out row from its own values.** Wold's procedure above projects
+**A caution: do not reconstruct a left-out row from its own values.** The procedure above projects
 each held-out row onto the loadings, :math:`\mathbf{T}_{(g)} = \mathbf{X}_{(g)} \mathbf{P}`, and then
 reconstructs that same row from those scores. The scores used to predict the row are therefore
 calculated from the very values we are trying to predict. As more components are added the loadings
@@ -78,10 +78,16 @@ becomes too optimistic. The effect is strongest when there are few variables, wh
 situation in the small example above.
 
 This weakness of the row-wise scheme is the central point of the Bro *et al.* (2008) review cited
-earlier. They recommend instead leaving out individual *elements* of :math:`\mathbf{X}`, one scattered
-group of cells at a time, and predicting each missing element from a model that never used it. This
-element-wise scheme keeps the prediction genuinely independent of the value being predicted. It is the
-approach recommended in that review and implemented in several chemometrics packages. The
+earlier: a prediction must not use the value it is predicting.
+
+The remedy is older than the criticism. Wold's own 1978 paper left out individual *elements* of
+:math:`\mathbf{X}`, a scattered group of cells at a time, and estimated each of them as a missing
+value from a model that never used it. Eastment and Krzanowski (1982), *Technometrics*, **24**,
+73-77, made the same property exact by a different route: an element is predicted from a model
+fitted with its row deleted and one fitted with its column deleted, so it enters neither. The
+row-wise procedure above is the later simplification, and it is the one the review argues against.
+
+Either element-wise scheme keeps the prediction independent of the value being predicted. The
 interpretation of the resulting :math:`Q^2_A` curve is unchanged; only the way each held-out value is
 predicted differs.
 
@@ -113,9 +119,11 @@ models.
 
 .. _LVM_q2_across_packages:
 
-**The same data, both schemes.** The bar plot above is Simca-P's output, from the row-wise scheme. The
-same LDPE data can be run through the ``process_improve`` package that accompanies this book, which
-provides the element-wise scheme just described. Both work on the same 54 rows and 19 variables, and
+**The same data, two element-wise predictors.** The bar plot above is Simca-P's output. Simca-P
+cross-validates a PCA by the Eastment and Krzanowski route, holding out rows to estimate the loadings
+and columns to estimate the scores; its row-wise cross-validation is reserved for PLS. The same LDPE
+data can be run through the ``process_improve`` package that accompanies this book, which holds out a
+scattered group of cells and imputes them. Both work on the same 54 rows and 19 variables, and
 fit the same eleven components. Their :math:`R^2` values agree to within :math:`5 \times 10^{-7}` at
 every component, so whatever separates the :math:`Q^2` curves comes from the cross-validation and not
 from the model underneath it.
@@ -123,19 +131,27 @@ from the model underneath it.
 .. code-block:: python
 
 	import pandas as pd
-	from process_improve.multivariate.methods import PCA, MCUVScaler
+	from process_improve.multivariate.methods import PCA
 
 	ldpe = pd.read_csv("https://openmv.net/file/LDPE.csv").iloc[:, 1:]
-	scaled = MCUVScaler().fit_transform(ldpe)
 
+	# The raw block is passed. The element-wise scheme centres and scales
+	# inside every fold, and measures its error in that same space, so the
+	# units a column arrives in do not affect its weight in the curve. That
+	# matters here: Mw carries 99.5% of the raw sum of squares, and a scheme
+	# measuring in the input units would return Mw's own curve. Passing a
+	# mean-centred, unit-variance block gives the same result.
+	#
 	# cv_scheme="ekf" is the element-wise k-fold scheme: scattered single
 	# cells of X are held out, and each is predicted from a model that
 	# never used it. n_repeats reshuffles the folds, so the spread of Q2
 	# across the repeats can be reported alongside it.
-	chosen = PCA.select_n_components(scaled, max_components=11, cv=7,
+	chosen = PCA.select_n_components(ldpe, max_components=11, cv=7,
 	                                 cv_scheme="ekf", n_repeats=5, random_state=42)
 	print(chosen.q2.round(3).to_list())
-	# [0.255, 0.367, 0.333, 0.3, 0.297, 0.186, 0.029, 0.126, 0.673, 0.844, 0.808]
+	# [0.292, 0.404, 0.374, 0.343, 0.341, 0.24, 0.1, 0.193, 0.696, 0.85, 0.807]
+	print(chosen.q2_se.round(3).to_list())
+	# [0.016, 0.017, 0.021, 0.028, 0.039, 0.055, 0.064, 0.049, 0.017, 0.022, 0.016]
 
 .. image:: ../../figures/pca/q2-across-packages.png
 	:alt: Cross-validated Q-squared from three implementations on the same LDPE data
@@ -144,15 +160,21 @@ from the model underneath it.
 	:align: center
 
 The shaded band on the element-wise curve is one standard error either side, taken across the five
-fold permutations. It is never wider than 0.01, so the shape of that curve is not an artefact of which
-cells happened to be held out together.
+fold permutations. That standard error, ``q2_se`` in the code block above, runs from 0.016 at eleven
+components to 0.064 at seven components, and is widest in the dip between six and eight components.
+Two features of the curve are large relative to it: the rise of 0.11 from one component to two, and
+the fall of 0.30 from two components to seven. Neither depends on which cells happened to be held
+out together. The gaps between two, three, four and five components (0.404, 0.374, 0.343 and 0.341)
+are each no more than about one to two standard errors, so the curve on its own does not separate
+those component counts from one another; it does place all of them well above the value at seven
+components.
 
 The two curves track each other over the first eight components. Both reach their highest value at two
-components, 0.34 for Simca-P and 0.37 for the element-wise scheme, and neither exceeds it again. That
-is the turnover described :ref:`earlier in this section <LVM_number_of_components>`, and it is why two
-or three components is the reading these data support. The element-wise scheme, which does not let a
-held-out value contribute to its own prediction, reaches the same conclusion here as the package the
-figure above came from.
+components, 0.34 for Simca-P and 0.40 for the element-wise scheme, and over those eight neither
+exceeds it again. That is the turnover described :ref:`earlier in this section
+<LVM_number_of_components>`, and it is why two or three components is the reading these data
+support. Two element-wise schemes that form their predictions differently therefore read these
+data the same way, which is more reassuring than either curve on its own.
 
 Past the eighth component both curves climb steeply. By the ninth component :math:`R^2` is 99.1%, so
 there is very little left to hold out and predict, and the values in that region describe the

@@ -51,7 +51,16 @@ one standard error of the best.
 
 For this small data set cross-validation retains a single component. The cross-validated
 :math:`Q^2_Y` is highest at :math:`A = 1` (0.54) and edges down as further components are added, so the
-second and third components do not improve the prediction of Taste. Here the one-standard-error rule
+second and third components do not improve the prediction of Taste.
+
+There is one column per target, and two that summarise them. With a single target, as here,
+they agree. With several they need not: ``total`` pools the targets on their original scale,
+so a target with a wide range decides it almost alone, while ``scaled_total`` averages the
+per-target values and gives each the same weight. Which to read follows from the question:
+``scaled_total`` treats the targets as equally important, and is the one to compare against a
+fitted :math:`R^2_Y` computed on scaled data. The
+:ref:`multiblock case study <APPS_batch_case_fmc>` shows a block where the two disagree on
+which set of predictors is better. Here the one-standard-error rule
 and the plain minimum of the error curve agree; on data sets where the error curve is flat near its
 minimum the one-standard-error rule returns the more parsimonious model.
 

@@ -127,8 +127,8 @@ predicts will give that taste.
 
 	result = pls.invert(y_desired=20.9)
 
-	print(result.x_new.round(2).to_dict())
-	# {'Acetic': 5.52, 'H2S': 5.56, 'Lactic': 1.40}
+	print({k: f"{v:.2f}" for k, v in result.x_new.items()})
+	# {'Acetic': '5.52', 'H2S': '5.56', 'Lactic': '1.40'}
 	print(result.null_space_dimension)        # 1
 
 	# Compare the designed inputs with what cheese 2 actually was.
@@ -154,9 +154,9 @@ We can walk along it by passing coordinates along its basis. Stepping one unit e
 	for step in (-1.0, 1.0):
 	    moved = pls.invert(y_desired=20.9, null_space_coordinates=[step])
 	    taste = pls.predict(moved.x_new.to_frame().T).iloc[0, 0]
-	    print(moved.x_new.round(2).to_list(), "->", round(taste, 2))
-	# [4.95, 6.10, 1.33] -> 20.9
-	# [6.09, 5.02, 1.46] -> 20.9
+	    print([f"{v:.2f}" for v in moved.x_new], "->", f"{taste:.1f}")
+	# ['4.95', '6.10', '1.33'] -> 20.9
+	# ['6.09', '5.02', '1.46'] -> 20.9
 
 Collecting those points, and putting the measured cheese alongside for comparison:
 
@@ -493,7 +493,7 @@ How well is that direction determined?
 
 This is the caveat promised earlier. Every number quoted so far comes from one model fitted to 26
 cheeses, and the direction of the null
-space rests on the second :math:`y`-loading, :math:`q_2 = -0.262`. That component was the one
+space is set by the second :math:`y`-loading, :math:`q_2 = -0.262`. That component was the one
 cross-validation did not keep. It adds 3.0% to :math:`R^2Y`, against 64.3% for the first. It is worth
 asking how much of the geometry survives if the 26 cheeses had come out slightly differently.
 
@@ -704,9 +704,9 @@ The fitted model reports the two directions as ``opls.predictive_weights_`` and
 	print(opls.orthogonal_weights_)     # [0.808 -0.590  0.008]
 	print(opls.predictive_loadings_)    # [0.472  0.654  0.591]
 
-	print(pls.x_weights_)               # the PLS weights, side by side
+	print(pls.x_weights_.round(3).to_numpy())   # the PLS weights, side by side
 	# [[ 0.474  0.808]
-	#  [ 0.657 -0.590]
+	#  [ 0.657 -0.59 ]
 	#  [ 0.586  0.008]]
 
 The predictive weight :math:`\mathbf{w}_\text{p} = (0.474, 0.657, 0.586)` has three positive entries of
@@ -733,7 +733,7 @@ The consequence shows up in the scores, not the weights.
 
 	for name, score in [("PLS 1", scores.iloc[:, 0]), ("PLS 2", scores.iloc[:, 1]),
 	                    ("O-PLS predictive", t_p), ("O-PLS orthogonal", t_o)]:
-	    print(name, np.corrcoef(score, y_centred)[0, 1])
+	    print(name, round(float(np.corrcoef(score, y_centred)[0, 1]), 3))
 	# PLS 1 0.802
 	# PLS 2 -0.172
 	# O-PLS predictive 0.82
@@ -998,8 +998,8 @@ deviation is a distance in the input space, measured between the two recipes the
 Reading down the :math:`T^2` of the design, the moderate tastes near the middle of the calibration
 range give designs with small :math:`T^2`, while the more extreme tastes push the design further from
 the data: asking for a taste of 47.9 gives the largest value, 4.82. A large :math:`T^2` does not make
-a design wrong, but it flags that the model is extrapolating and that the predicted taste rests on
-less support from the data.
+a design wrong, but it flags that the model is extrapolating and that less data stand behind
+the predicted taste.
 All four are well inside the 99% limit of 12.14.
 
 The input-space deviation compares each design with the cheese that actually had that taste. Cheese 2 is
@@ -1092,10 +1092,11 @@ Both the region and the box it is reported as can be drawn.
 	fig = go.Figure()
 	fig.add_scatter3d(x=region["Acetic"], y=region["H2S"], z=region["Lactic"],
 	                  mode="markers", marker={"size": 2, "color": "orange", "opacity": 0.3})
-	fig.add_scatter3d(x=corners[:, 0], y=corners[:, 1], z=corners[:, 2], mode="markers+text",
-	                  text=[f"{t:.0f}" for t in corner_taste],
+	fig.add_scatter3d(x=corners[:, 0], y=corners[:, 1], z=corners[:, 2],
+	                  mode="markers+text", text=[f"{t:.0f}" for t in corner_taste],
 	                  marker={"size": 5, "color": np.where(
-	                      (corner_taste >= 20) & (corner_taste <= 30), "steelblue", "darkred")})
+	                      (corner_taste >= 20) & (corner_taste <= 30),
+	                      "steelblue", "darkred")})
 	fig.update_layout(scene={"xaxis_title": "Acetic", "yaxis_title": "H2S",
 	                         "zaxis_title": "Lactic"})
 	fig.show()
