@@ -279,7 +279,7 @@ model matrix, and take its rank:
 
 	factors = [Factor(name=c, low=-1, high=1) for c in "ABCD"]
 	for n_runs in (19, 21):
-	    design = generate_omars(factors, n_runs=n_runs, model="main_quadratic", random_seed=42)
+	    design = generate_omars(factors, n_runs=n_runs, model="main_quadratic", random_state=42)
 	    X = second_order_matrix(design.design[design.factor_names].to_numpy(float))
 	    print(n_runs, X.shape, np.linalg.matrix_rank(X))
 
@@ -442,7 +442,7 @@ asked for:
 
 .. code-block:: python
 
-	design = generate_omars([Factor(name=c, low=-1, high=1) for c in "ABCD"], random_seed=42)
+	design = generate_omars([Factor(name=c, low=-1, high=1) for c in "ABCD"], random_state=42)
 	print(design.n_runs)                                  # 21
 	print(design.metadata["model_rank"])                  # 15, so the model is estimable
 	print(design.metadata["min_runs_for_model"])          # 21, the frontier

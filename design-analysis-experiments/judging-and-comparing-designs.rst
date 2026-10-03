@@ -358,7 +358,7 @@ worst-case values; the next section uses it to draw the plot.
 	    cols = [chr(ord("A") + i) for i in range(np.shape(design)[1])]
 	    df = pd.DataFrame(np.asarray(design, float), columns=cols)
 	    return evaluate_design(df, model=model, metric="fds", n_samples=n_samples,
-	                           random_seed=seed, fds_resolution=200)["fds"]
+	                           random_state=seed, fds_resolution=200)["fds"]
 
 	# Both four-factor designs come from process_improve: the 9-run DSD and the
 	# precision-optimal (A-optimal) 13-run OMARS member of the same foldover family,

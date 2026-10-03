@@ -156,7 +156,7 @@ Building the campaign
 
 .. code-block:: python
 
-	design = generate_omars(factors, n_runs=27, model="main_quadratic", random_seed=42)
+	design = generate_omars(factors, n_runs=27, model="main_quadratic", random_state=42)
 	coded = design.design[names].to_numpy(float)
 	print(design.metadata["model_rank"], design.metadata["expected_error_df"])   # 9, 18
 
