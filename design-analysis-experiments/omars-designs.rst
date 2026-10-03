@@ -111,19 +111,19 @@ stating. It is the lowest-order polynomial that can place a stationary point ins
 maximum, minimum, or saddle, so it is the simplest model able to describe an optimum; it stays
 linear in its coefficients, and it needs only three levels per factor. Higher-degree polynomials
 need more levels and tend to oscillate near the edges of the region, so when a quadratic does not
-fit it is more common to change the model class than to raise the degree. The aliasing and the
-efficiency measures are properties of the design and can be calculated before even acquiring a
-single experimental result.
+fit, it is more common to transform the response or to fit a different type of model than to raise
+the degree. The aliasing and the efficiency measures are properties of the design and can be
+calculated before even acquiring a single experimental result.
 
 .. _DOE-omars-trade-off-table:
 
 A trade-off table for OMARS designs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The :ref:`two-level trade-off table <DOE_design_trade_off_BHH_272>` answers "I have sixteen runs
-available and seven factors on the list, what do I give up?". Its currency is :ref:`resolution
-<DOE-design-resolution>`, the ability to tell main effects apart from interactions, and the table
-maps a budget onto the ordered scale of resolution III, IV and V.
+The familiar :ref:`two-level trade-off table <DOE_design_trade_off_BHH_272>` for fractional
+factorial designs shows what you give up for a given number of factors and runs. Its currency is
+:ref:`resolution <DOE-design-resolution>`, the ability to tell main effects apart from
+interactions, and the table maps a budget onto the ordered scale of resolution III, IV and V.
 
 It is natural to want the same table for OMARS designs, but it is not possible. Working towards it,
 however, leads to a surprising answer. An OMARS design has its main effects orthogonal to each
@@ -453,8 +453,9 @@ asked for:
 Three worked examples
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-The table is read while the design is still a plan on paper. Two readings show the kinds of
-question it settles, and a third example works through a budget that lands short of the frontier.
+The table is read while the design is still a plan on paper. The first two examples show the
+kinds of question it settles, and the third works through a budget that lands short of the
+frontier.
 
 **Six factors in seventeen runs.** The cell is ``Quad df=4``: all six main effects and all six
 quadratics are estimable, with four degrees of freedom to test them, so curvature can be judged
@@ -495,32 +496,23 @@ What a cell in either table reports
 This section and the next explain why the cells carry what they carry; the table itself can be
 used without them.
 
-A cell of the :ref:`two-level table <DOE_design_trade_off_BHH_272>` says less than it appears to.
-Of the 165 sixteen-run, seven-factor designs worked through in
-:ref:`DOE-trade-off-table-in-code`, 161 have resolution III and four reach resolution IV. The
-numeral in that cell is not a description of a design. It is a statement about the *size*, that no
-sixteen-run design in seven factors does better than resolution IV and that at least one achieves
-it, so the table is a search presented as a lookup.
+A cell of the :ref:`two-level table <DOE_design_trade_off_BHH_272>` gives the best resolution
+available at its size, not the resolution of any design of that size. Of the 165 sixteen-run,
+seven-factor designs worked through in :ref:`DOE-trade-off-table-in-code`, four reach the
+resolution IV that the cell shows, and the other 161 have resolution III.
 
 The OMARS analogue would be the best quality obtainable at each size. Three obstacles stand in the
-way, each a property of the designs rather than of any particular measure.
+way, each a property of the designs rather than of any particular measure:
 
-**A run count does not pin down the experiment.** An OMARS design of :math:`N` runs splits its
-budget between design points and replicates of the centre point, and the split is free. Take the
-largest absolute correlation between any two second-order terms, a quantity computed from the
-design alone: the same twelve design points in three factors, with one, three or five centre runs
-added, give :math:`0.300`, :math:`0.07143` and :math:`0.05556`.
-
-**A measure divided by the run count need not improve as runs are added.** Across every OMARS
-design of each size in three factors, the least entangled at seventeen runs reaches :math:`0.05556`,
-while at nineteen runs the best possible is :math:`0.1364`. Reversals occur throughout the range,
-and a column that goes backwards cannot be read to choose a budget.
-
-**A measure not divided by the run count mostly restates the run count.** The alphabetic optimality
-criteria avoid the previous problem: an added run adds information and never removes any, so none
-of them can worsen. The difficulty is the other way around: they fall at close to the rate
-:math:`1/N`. Both points are set out in :ref:`DOE-omars-metric-choice` below, which is where the
-five criteria are defined.
+* **The run count does not fix the design.** An OMARS design of :math:`N` runs splits its budget
+  between design points and replicates of the centre point. The same twelve design points in three
+  factors, with one, three or five centre runs added, give a largest absolute correlation between
+  second-order terms of :math:`0.300`, :math:`0.07143` and :math:`0.05556`.
+* **A measure scaled by the run count can get worse as runs are added.** The best value of that
+  same correlation is :math:`0.05556` at seventeen runs and :math:`0.1364` at nineteen.
+* **A measure not scaled by the run count mostly restates it.** The alphabetic optimality criteria
+  never worsen when a run is added, but they fall at close to the rate :math:`1/N`, as
+  :ref:`DOE-omars-metric-choice` below shows.
 
 Resolution avoids all three because it is not a magnitude. It is a combinatorial statement about
 which effects are confounded with which, and two-level fractions nest, so a larger design contains
