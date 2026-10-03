@@ -133,10 +133,10 @@ that first call returns, so the whole page needs that separate install.
         for n, (lo, hi) in cont.items()
     ]
 
-    np.random.seed(42)  # the coordinate exchange draws its restarts from the global RNG
+    # random_state seeds the coordinate exchange's random restarts
     design = generate_design(factors, design_type="i_optimal", budget=60,
                              hard_to_change=["co_solvent", "temperature"],
-                             model_type="quadratic")
+                             model_type="quadratic", random_state=42)
 
     print(design.n_runs)  # 60
     print(design.design["compound"].value_counts())  # 9 to 11 runs per compound
@@ -167,44 +167,49 @@ Judging the design before running it
 -------------------------------------
 
 Before a single experiment is even run, the design can be scored on how well it will support the
-model, using ``evaluate_design`` on the same quadratic model. The :ref:`D-efficiency
-<DOE-judging-and-comparing-designs>` summarises the information determinant
-:math:`|\mathbf{X}^T\mathbf{X}|`, higher being more information per run; the I-efficiency summarises
-the prediction variance averaged over the whole factor region, and the G-efficiency the single
-worst-predicted point in it. The :ref:`fraction-of-design-space (FDS) curve <DOE-fds-plot>` shows how
-that prediction variance is distributed, from the best-predicted point to the worst. Higher is better
-for all three, but they are normalized differently and are read down a column rather than across the
-row: D-efficiency scales as :math:`100\,|\mathbf{X}^T\mathbf{X}|^{1/p}/N`, while I- and G-efficiency
-scale as :math:`100\,p/(N\bar{v})` with :math:`p` model terms, :math:`N` runs, and :math:`\bar{v}`
-the average (or maximum) prediction variance, so the I-efficiency can read above 100 when the average
-variance is small.
+model, using ``evaluate_design`` on the same quadratic model. The prediction variance at a point in
+the factor region is the variance of the model's predicted response there, in units of the error
+variance :math:`\sigma^2`.
+
+* The **average prediction variance** averages it over the whole factor region; lower is better, and
+  it is the quantity the I-optimal criterion minimizes.
+* The :ref:`fraction-of-design-space (FDS) curve <DOE-fds-plot>` shows how the prediction variance is
+  distributed, from the best-predicted point to the worst, on the same scale.
+* The :ref:`D-efficiency <DOE-judging-and-comparing-designs>` summarises the information determinant
+  :math:`|\mathbf{X}^T\mathbf{X}|`, and the G-efficiency the single worst-predicted point; higher is
+  better for both.
+
+The two efficiencies are normalized per run and differently from each other, so they are read down a
+column rather than across the row: D-efficiency scales as
+:math:`100\,|\mathbf{X}^T\mathbf{X}|^{1/p}/N`, and G-efficiency as :math:`100\,p/(N v_\text{max})`,
+with :math:`p` model terms, :math:`N` runs and :math:`v_\text{max}` the largest prediction variance.
 
 .. code-block:: python
 
     from process_improve.experiments import evaluate_design
 
     def score(criterion, budget):
-        np.random.seed(42)
         d = generate_design(factors, design_type=criterion, budget=budget,
                             hard_to_change=["co_solvent", "temperature"],
-                            model_type="quadratic")
+                            model_type="quadratic", random_state=42)
         m = evaluate_design(d, model="quadratic",
-                            metric=["d_efficiency", "i_efficiency", "g_efficiency", "fds"])
+                            metric=["d_efficiency", "average_prediction_variance",
+                                    "g_efficiency", "fds"])
         return d, m
 
-    print("design, n, D-eff, I-eff, G-eff, FDS median, FDS max")
+    print("design, n, D-eff, average prediction variance, G-eff, FDS median, FDS max")
     fig = go.Figure()
     for criterion, colour in [("i_optimal", "#1f5fa8"), ("d_optimal", "#c0392b")]:
         for budget, dash, width in [(60, "solid", 4), (48, "dash", 2)]:
             _, m = score(criterion, budget)
             q = m["fds"]["quantiles"]
             print(f"{criterion}, {budget}, {m['d_efficiency']:.1f}, "
-                  f"{m['i_efficiency']:.0f}, {m['g_efficiency']:.1f}, "
+                  f"{m['average_prediction_variance']:.3g}, {m['g_efficiency']:.1f}, "
                   f"{q['0.5']:.2f}, {q['1']:.2f}")
-            # i_optimal, 60, 15.4, 159, 48.4, 0.40, 1.38
-            # i_optimal, 48, 13.9, 132, 17.6, 0.57, 4.74
-            # d_optimal, 60, 17.9, 106, 66.3, 0.63, 1.01
-            # d_optimal, 48, 16.8, 80, 26.8, 1.01, 3.11
+            # i_optimal, 60, 15.1, 0.428, 38.5, 0.40, 1.73
+            # i_optimal, 48, 14.3, 0.602, 31.5, 0.56, 2.65
+            # d_optimal, 60, 17.9, 0.599, 63.5, 0.61, 1.05
+            # d_optimal, 48, 16.6, 1.11, 31.1, 1.10, 2.68
             fig.add_scatter(x=[float(k) for k in q], y=list(q.values()),
                             mode="lines+markers",
                             line=dict(color=colour, dash=dash, width=width),
@@ -216,8 +221,8 @@ variance is small.
 Scoring the :ref:`I-optimal and D-optimal designs <DOE-optimal-designs>` at 48 and 60 runs lays out
 the trade-off. The I-optimal criterion minimizes the average prediction variance, and the D-optimal
 criterion maximizes the joint precision of all coefficients in the model, so each design leads on its
-own criterion: the D-optimal design has the higher D-efficiency, and the I-optimal design has the
-higher I-efficiency and the lower prediction variance across the region.
+own criterion: at both run counts the D-optimal design has the higher D-efficiency, and the I-optimal
+design has the lower average prediction variance.
 
 .. list-table:: Design quality by criterion and run count (quadratic model)
     :widths: 26 14 14 14 16 16
@@ -225,34 +230,34 @@ higher I-efficiency and the lower prediction variance across the region.
 
     *   - Design
         - :math:`\uparrow` D-eff
-        - :math:`\uparrow` I-eff
+        - :math:`\downarrow` Average prediction variance
         - :math:`\uparrow` G-eff
         - :math:`\downarrow` FDS median
         - :math:`\downarrow` FDS max
     *   - I-optimal, n = 60
-        - 15.4
-        - 159
-        - 48.4
+        - 15.1
+        - 0.428
+        - 38.5
         - 0.40
-        - 1.38
+        - 1.73
     *   - I-optimal, n = 48
-        - 13.9
-        - 132
-        - 17.6
-        - 0.57
-        - 4.74
+        - 14.3
+        - 0.602
+        - 31.5
+        - 0.56
+        - 2.65
     *   - D-optimal, n = 60
         - 17.9
-        - 106
-        - 66.3
-        - 0.63
-        - 1.01
+        - 0.599
+        - 63.5
+        - 0.61
+        - 1.05
     *   - D-optimal, n = 48
-        - 16.8
-        - 80
-        - 26.8
-        - 1.01
-        - 3.11
+        - 16.6
+        - 1.11
+        - 31.1
+        - 1.10
+        - 2.68
 
 .. figure:: ../figures/doe/colour-fds-curves.png
     :align: center
@@ -268,8 +273,9 @@ higher I-efficiency and the lower prediction variance across the region.
 The purpose here is to predict and compare colour across the whole factor region, not to estimate
 a single coefficient as precisely as possible, so the I-optimal criterion matches the goal, and the
 sixty-run design is carried forward. The forty-eight-run designs cost twelve fewer runs but leave
-only 8 residual degrees of freedom against 20, and their worst-case prediction variance is several
-times higher: the choice between them is the usual one between budget and precision.
+only 8 residual degrees of freedom against 20, and they have a higher average and worst-case
+prediction variance under both criteria: the choice between them is the usual one between budget and
+precision.
 
 The colour-development response
 -------------------------------
@@ -1558,13 +1564,15 @@ interaction model:
                          ("+4", g_block(res3)), ("+8", g_block(full))]:
         aug = pd.concat([base, block], ignore_index=True)
         m = evaluate_design(aug, model=rhs,
-                            metric=["d_efficiency", "i_efficiency", "g_efficiency", "fds"])
+                            metric=["d_efficiency", "average_prediction_variance",
+                                    "g_efficiency", "fds"])
         q = m["fds"]["quantiles"]
-        print(label, len(aug), round(m["d_efficiency"], 1), round(m["i_efficiency"]),
+        print(label, len(aug), round(m["d_efficiency"], 1),
+              f"{m['average_prediction_variance']:.3g}",
               round(m["g_efficiency"], 1), round(q["0.5"], 2), round(q["1"], 2))
-    # base 60 23.6 159 56.3 0.25 0.74
-    # +4   64 19.4 152 44.3 0.27 1.02
-    # +8   68 20.1 163 57.6 0.25 0.74
+    # base 60 23.6 0.263 49.5 0.25 0.84
+    # +4   64 19.4 0.298 44.3 0.27 1.02
+    # +8   68 20.1 0.262 50.7 0.25 0.84
 
 .. list-table:: Design quality before and after adding compound G (interaction model)
     :widths: 30 16 16 16
@@ -1578,22 +1586,22 @@ interaction model:
         - 23.6\*
         - 19.4
         - 20.1
-    *   - :math:`\uparrow` I-efficiency
-        - 159
-        - 152
-        - 163
+    *   - :math:`\downarrow` Average prediction variance
+        - 0.263
+        - 0.298
+        - 0.262
     *   - :math:`\uparrow` G-efficiency
-        - 56.3
+        - 49.5
         - 44.3
-        - 57.6
+        - 50.7
     *   - :math:`\downarrow` FDS median
         - 0.25
         - 0.27
         - 0.25
     *   - :math:`\downarrow` FDS max
-        - 0.74
+        - 0.84
         - 1.02
-        - 0.74
+        - 0.84
 
 The base column scores the six-level interaction model (24 terms); with no G runs it cannot estimate
 the seven-level model at all, which is the reason to augment rather than start again. The +4 and +8
@@ -1605,13 +1613,13 @@ from 24 to 28 parameters, not a design that got worse. It is worth recalling wha
 measure. D-optimality maximizes the information determinant :math:`|\mathbf{X}^T\mathbf{X}|`, which
 sharpens the coefficient estimates; I-optimality minimizes the prediction variance averaged over the
 factor region. The aim here is to predict the colour-development curve across that region, not to pin
-down coefficients as precisely as possible, so the I-efficiency is the column to watch.
+down coefficients as precisely as possible, so the average prediction variance is the row to watch.
 
-On the I-efficiency the eight-run block (163) edges the four-run block (152); it also lowers the
-worst-case prediction variance (FDS max 0.74 against 1.02) and buys residual degrees of freedom to
-check G's fit. These numbers use the interaction model throughout, so they are not comparable to the
-quadratic-model scores of the six-level design; the four-run count itself is a property of the smaller
-interaction model.
+The eight-run block gives a lower average prediction variance than the four-run block (0.262 against
+0.298); it also lowers the worst-case prediction variance (FDS max 0.84 against 1.02) and buys
+residual degrees of freedom to check G's fit. These numbers use the interaction model throughout, so
+they are not comparable to the quadratic-model scores of the six-level design; the four-run count
+itself is a property of the smaller interaction model.
 
 One route needs no runs at all. If the compounds carried measured molecular descriptors, a
 property-to-property model could place G from its structure, the statistical-molecular-design approach
