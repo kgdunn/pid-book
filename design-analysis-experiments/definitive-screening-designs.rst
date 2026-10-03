@@ -100,7 +100,7 @@ are requested.
     from process_improve.experiments import Factor, generate_design
 
     factors = [Factor(name=c, low=-1, high=1) for c in "ABCDEF"]   # six factors
-    dsd = generate_design(factors, design_type="dsd", random_seed=42)
+    dsd = generate_design(factors, design_type="dsd", random_state=42)
     print(dsd.n_runs, dsd.metadata["construction"])               # 13 paley_q=5
 
     # generate_design returns the runs in randomized execution order. Reorder them into
