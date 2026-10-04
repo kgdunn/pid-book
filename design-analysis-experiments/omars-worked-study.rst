@@ -9,7 +9,7 @@ the result. Neither says what the runs are worth. This section runs a study end 
 process whose true behaviour is known, so the answer can be given in the units a team budgets
 in: grams per litre of product, and weeks of bioreactor time.
 
-The process is the fed-batch cell culture met in :ref:`Fractional factorial designs
+The process is a cell-culture bioreactor like the one met in :ref:`Fractional factorial designs
 <DOE-fractional-factorials>`, where a run takes ten days and a full factorial in five factors
 "would take almost a year ... if parallel reactors are not available". Parallel reactors are
 now the normal way such studies are run. A multi-parallel mini-bioreactor system such as the
@@ -150,14 +150,14 @@ region regardless, so its *p*-values are approximate.
 Choosing the run count
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The four-factor column of the :ref:`trade-off table <DOE-omars-trade-off-table>` offers
-``Quad`` from 10 runs and ``Full`` from 21, with the Box-Behnken design at 27. The team has
-no reason to expect the interactions to be absent, and the downshift timing and hold temperature
-are the sort of pair that plausibly interact, so the study needs ``Full``: every two-factor
-interaction in the model. That leaves any size from 21 runs, the frontier, upwards. The upcoming
-section :ref:`What the run count buys <DOE-omars-study-fewer-runs>` compares 21, 27 and 31 runs.
-For now we study 27 runs, the size of the Box-Behnken design, and add three centre runs, for
-thirty batches in two parallel runs.
+The four-factor column of the :ref:`trade-off table <DOE-omars-trade-off-table>` offers ``Quad``
+from 10 runs and ``Full`` from 21, with the Box-Behnken design at 27. The team has no reason to
+expect the interactions to be absent, and the downshift timing and hold temperature are the sort of
+pair that plausibly interact, so the study needs ``Full``: every two-factor interaction in the
+model. That leaves any size from 21 runs, the frontier, upwards. The upcoming section :ref:`What the
+run count buys <DOE-omars-study-fewer-runs>` compares sizes from 13 to 31 runs. For now we study 27
+runs, the size of the Box-Behnken design, and add three centre runs, for thirty batches in two
+parallel runs.
 
 .. figure:: ../figures/doe/omars-trade-off-column-k4.png
 	:source: doe/omars-trade-off-column-k4.py
@@ -376,9 +376,9 @@ This is the practical reason to build a block into a design rather than to hope 
 replicates will reveal one afterwards. Keeping each mirror pair within one block is the scheme
 Jones and Nachtsheim (2016) proposed for definitive screening designs, and it makes the blocks
 orthogonal to the main effects. Núñez Ares and Goos (2023), cited in :ref:`the introduction to
-OMARS designs <DOE-omars-designs>`, do not keep every pair together; their blocks are as close
-to orthogonal to the quadratics and interactions as well, so those effects are estimated more
-precisely.
+OMARS designs <DOE-omars-designs>`, do not keep every pair together: they arrange the blocks to be
+orthogonal to the main effects and as close as possible to orthogonal to the quadratics and
+interactions, so those effects are estimated more precisely.
 
 The staged analysis
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -414,12 +414,13 @@ day and the feed rate.
 
 .. figure:: ../figures/doe/omars-worked-study-effects.png
 	:source: doe/omars-worked-study-effects.py
-	:alt: Fifteen coefficients of the full second-order model on log titer, drawn as points with 95% intervals, grouped as main effects, quadratics and two-factor interactions. Four are filled, the terms the staged analysis selects: feed rate, the hold-temperature quadratic and the interactions of hold temperature with downshift day and feed rate.
+	:alt: Fourteen coefficients of the full second-order model on log titer, drawn as points with 95% intervals, grouped as main effects, quadratics and two-factor interactions. Four are filled, the terms the staged analysis selects: feed rate, the hold-temperature quadratic and the interactions of hold temperature with downshift day and feed rate.
 	:width: 700px
 	:align: center
 
 	The full second-order model fitted in one step to the thirty adjusted log titers:
-	fifteen coefficients with their 95% intervals on fifteen residual degrees of freedom.
+	the fourteen coefficients besides the intercept, with their 95% intervals on fifteen residual
+	degrees of freedom.
 	The filled terms are the four the staged analysis selects, and all four have intervals
 	that exclude zero. A fifth interval also excludes zero, the downshift-day by feed-rate
 	interaction, which the staged analysis does not select; the process does have that
@@ -487,12 +488,13 @@ does not mention, stays at 7.1.
 The model recommends a hold at 30.13 °C, the downshift starting on day 2.0, pH left at 7.1 and the
 feed at 0.070 L/day per litre, and predicts 8.662 g/L there. Two of the three settings it moves are
 at the edge of the region. The feed rate at its top is what the data say, a strong positive main
-effect with no curvature found. The downshift day reaches its lower edge through its interaction
-with hold temperature, with no downshift-day curvature in the model to stop it. A recommendation on
-a boundary is the model saying it does not know the shape of the response in that direction.
+effect with no feed-rate curvature in the selected model. The downshift day reaches its lower edge
+through its interaction with hold temperature, with no downshift-day curvature in the model to stop
+it. A recommendation on a boundary is the model saying it does not know the shape of the response in
+that direction.
 
-The absence of feed-rate curvature is partly a property of the simulator. From about day 4 its
-culture runs short of substrate:
+That the selected model has no feed-rate curvature is partly a property of the simulator. From about
+day 4 its culture runs short of substrate:
 
 .. code-block:: python
 
@@ -500,9 +502,10 @@ culture runs short of substrate:
 	states = sim.simulate_batch(trajectory=recipe(quiet, current["hold_temp"], current["shift_day"],
 	                                              current["pH"]), random_state=0).states
 	substrate = states.loc[4:, "substrate"]
-	print(f"{substrate.min():#.4g} {substrate.max():#.4g}")   # 0.1360 0.2648, in g/L
+	print(f"{states['substrate'].iloc[0]:#.4g} {substrate.min():#.4g} {substrate.max():#.4g}")
+	# 5.000 0.1360 0.2648
 
-That is against 5 g/L at inoculation, so within this range more feed always helps. A process
+That is against 5.000 g/L at inoculation, so within this range more feed raises the titer. A process
 whose glucose is controlled at a setpoint would usually show curvature in the feed rate.
 
 The simulator settles what the data could not. With every disturbance switched off, the true
@@ -549,7 +552,7 @@ titer at any recipe is a single number.
 
 The study captured 1.601 g/L of the 2.006 g/L that was available, 80%. The feed rate and pH are
 right. The downshift day moved in the right direction, earlier than today's 2.75, but past the true
-optimum at 2.62 to the edge of the region, and the hold is 0.61 °C warmer than the best.
+optimum at 2.62 to the edge of the region, and the hold is 0.610 °C warmer than the best.
 
 The remaining shortfall comes from the hold temperature and the downshift day together, not from
 either one. Moving only the downshift day to its best value lowers the titer to 8.653 g/L, and
@@ -705,12 +708,12 @@ titer at the recipe its analysis recommended.
 The two designs below the frontier vary most from one campaign to the next. The 13-run design
 leaves the median campaign exactly where it started, having found nothing it could act on, and
 its worst campaign loses 1.973 g/L. The 17-run design finds the feed rate in 94% of campaigns
-and gains 0.717 g/L at the median, but its worst campaign loses 3.246 g/L, because a design
+and gains 0.7165 g/L at the median, but its worst campaign loses 3.246 g/L, because a design
 that finds the feed rate without the curvature sends the hold temperature to an edge of the
 region.
 
 The 21-run design, at the estimability frontier, can fit the full second-order model, yet its
-median campaign gains only 0.118 g/L. It finds the feed rate and the hold-temperature by
+median campaign gains only 0.1181 g/L. It finds the feed rate and the hold-temperature by
 downshift-day interaction in most campaigns, but the hold-temperature curvature in only 13%.
 Without that curvature the fitted model has its best point in a corner of the region, and the
 corner it picks is barely better than today's recipe. The variance factor of the
@@ -736,12 +739,12 @@ and its worst campaign of two hundred loses 0.3901 g/L against 1.655 g/L. Here t
 change the lower tail more than the median.
 
 The two classical designs at 27 runs sit alongside. The Box-Behnken design has the higher
-median, 1.199 g/L, and the wider spread in both directions: a 90th percentile of 1.677 g/L
+median, 1.199 g/L, and a wider spread at both extremes: a 90th percentile of 1.677 g/L
 and a worst campaign of 2.810 g/L lost. It finds the interaction in 41% of campaigns
 against 100% for the OMARS design, and campaigns that miss the interaction leave the downshift
 day at its current setting, which in this process happens to be nearer the true optimum
 than the edge the interaction sends it to. The face-centred central composite design finds
-the interaction every time and gains 0.942 g/L at the median, close to the 27-run OMARS design in
+the interaction every time and gains 0.9424 g/L at the median, close to the 27-run OMARS design in
 every percentile. On this process and this region the three 27-run designs are comparable at the
 middle of their distributions; they differ in the tails, and a team choosing among them would be
 choosing how much downside to accept.

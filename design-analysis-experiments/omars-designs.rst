@@ -54,6 +54,8 @@ Goos, 2023), and to orthogonally blocked designs (Núñez Ares and Goos, 2023).
 
 **Readings**
 
+* Kiefer, J. and Wolfowitz, J.: "The equivalence of two extremum problems", *Canadian Journal of
+  Mathematics*, **12**, 363--366, 1960.
 * Núñez Ares, J. and Goos, P.: "Enumeration and Multicriteria Selection of Orthogonal Minimally
   Aliased Response Surface Designs", *Technometrics*, **62**, 21--36, 2020.
   `doi:10.1080/00401706.2018.1549103 <https://doi.org/10.1080/00401706.2018.1549103>`__
@@ -92,7 +94,7 @@ separability.
 .. figure:: ../figures/doe/design-spectrum.png
     :align: center
     :width: 750px
-    :alt: design-spectrum.py
+    :alt: A horizontal axis from few runs to many, with definitive screening designs at the left, OMARS designs in the middle and central composite and Box-Behnken designs at the right.
 
     The three design families on a single axis. Moving from left to right spends more runs and
     reduces the aliasing among the second-order effects.
@@ -155,8 +157,9 @@ The full second-order model in :math:`k` factors has an intercept, :math:`k` mai
 
 	p = 1 + 2k + \frac{k(k-1)}{2}
 
-Count the parameters and spend at least that many runs. That rule sizes factorial, central
-composite, Box-Behnken and optimal designs correctly. Foldover designs are the exception.
+Count the parameters and spend at least that many runs. That rule is enough for factorial,
+central composite and optimal designs, and for Box-Behnken designs, whose run counts sit well above
+it. For a foldover close to the parameter count it is not enough.
 
 A foldover stacks a half-design :math:`\mathbf{H}` of :math:`h` runs on its own sign-flipped copy,
 then adds a centre run:
@@ -342,7 +345,7 @@ describe foldover designs, which is how ``generate_omars`` builds them.
 .. figure:: ../figures/doe/omars-estimability-frontier.png
 	:align: center
 	:width: 700px
-	:alt: omars-estimability-frontier.py
+	:alt: Run count against number of factors from three to seven: the estimability frontier, the parameter count of the full second-order model and the definitive screening design size, with the band between the frontier and the parameter count shaded.
 
 	The estimability frontier :math:`N = k^2 + k + 1` for a foldover design, against the
 	parameter count of the full second-order model and the size of a definitive screening
@@ -427,7 +430,7 @@ report come from ``process_improve``:
 .. figure:: ../figures/doe/omars-capability-staircase.png
 	:align: center
 	:width: 640px
-	:alt: omars-capability-staircase.py
+	:alt: The OMARS trade-off table as a grid of coloured cells, run count down the side and three to seven factors across, each cell labelled Full, Quad or Satd with its error degrees of freedom, the frontier cells outlined and the DSD and Box-Behnken cells marked.
 
 	The OMARS trade-off table, drawn as a capability staircase. Each cell gives the largest
 	model the run budget makes estimable and the error degrees of freedom left to test it.
@@ -675,7 +678,7 @@ more often than not and the power is 0.4154.
 	            "G": ((f @ M_inv) * f).sum(axis=1).max(),
 	            "max |r|": C[~np.eye(len(C), dtype=bool)].max()}
 
-	# The twelve design points behind the centre-run example given earlier, as six half-rows
+	# The twelve design points behind the centre-run example in the first obstacle, as six half-rows
 	# and their negations, scored with one, three and five centre runs added.
 	half = np.array([[0, 1, -1], [0, 1, 1], [1, -1, 0],
 	                 [1, 0, -1], [1, 0, 1], [1, 1, 0]], dtype=float)
@@ -725,7 +728,7 @@ keeping the best value of each measure at each size, gives the nine curves below
 .. figure:: ../figures/doe/omars-metric-choice.png
 	:align: center
 	:width: 800px
-	:alt: omars-metric-choice.py
+	:alt: Nine small plots of design measures against run count for three factors: A/p, I, D, E, G and max |r| in the first two rows and power for a main effect, an interaction and a quadratic in the third, with correlation-map insets.
 
 	Nine candidate measures read down the three-factor column of the OMARS trade-off table. Each
 	point is the best value attainable at that run count, found by listing every OMARS design of
@@ -766,9 +769,10 @@ Read together, the plots make these points:
 * **The nine-run definitive screening design is the best design of its size** on all six measures
   of the first two rows. It has nine runs rather than :math:`2k + 1 = 7` because its conference
   matrix needs an even order, so three factors use one of order four and drop a column.
-* **The fifteen-run Box-Behnken design is at the frontier for five measures and away from it for
-  four.** Its runs sit on the edges of the cube rather than the corners, which favours curvature
-  over main effects, interactions and the worst-case measures :math:`E` and :math:`G`.
+* **The fifteen-run Box-Behnken design reaches the best attainable value for five measures and
+  falls short of it for four.** Its runs sit on the edges of the cube rather than the corners,
+  which favours curvature over main effects, interactions and the worst-case measures :math:`E`
+  and :math:`G`.
 * **The measures disagree about which design is best.** At twenty-one runs with one centre run
   there are 1859 OMARS designs, and the six measures of the first two rows pick four different
   ones. A single number in a cell would have to say which measure it is.
