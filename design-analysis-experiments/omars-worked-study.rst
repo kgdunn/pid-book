@@ -119,21 +119,6 @@ measured against. The response is analysed as log titer, because the kinetics ar
 multiplicative: a change that scales titer by a fixed fraction becomes a fixed difference on the
 log scale.
 
-The spread is not the same across the region, and the log scale does not even it out:
-
-.. code-block:: python
-
-	for hold in (29.0, 31.0):
-	    spread = np.array([run_batch(config, **{**current, "hold_temp": hold}, random_state=s)
-	                       for s in range(20)])
-	    print(f"{hold}  {spread.std(ddof=1):#.4g}  {np.log(spread).std(ddof=1):#.4g}")
-	# 29.0  0.7064  0.09512
-	# 31.0  0.1782  0.02730
-
-At a 29 °C hold the replicate standard deviation is about four times that at 31 °C, and on the log
-scale still more than three times. The analysis below pools a single error estimate across the
-region regardless, so its *p*-values are approximate.
-
 .. figure:: ../figures/doe/omars-worked-study-recipe.png
 	:source: doe/omars-worked-study-recipe.py
 	:alt: Two plots side by side. Left, the temperature setpoint through a ten-day batch for the current recipe and all four combinations of the low and high hold temperature and downshift day. Right, for twenty replicate batches at the current recipe, the titer minus that of the same batch with no disturbance, against day.
