@@ -156,9 +156,9 @@ Building the campaign
 
 .. code-block:: python
 
-	design = generate_omars(factors, n_runs=27, model="main_quadratic", random_state=42)
+	design = generate_omars(factors, n_runs=27, model="full_second_order", random_state=42)
 	coded = design.design[names].to_numpy(float)
-	print(design.metadata["model_rank"], design.metadata["expected_error_df"])   # 9, 18
+	print(design.metadata["model_rank"], design.metadata["expected_error_df"])   # 15 12
 
 The 27 runs are thirteen half-rows, their thirteen mirror images, and one centre run. The two
 cassettes run weeks apart, so anything that differs between them, a new lot of feed medium
@@ -206,7 +206,7 @@ thirteen; all are tried.
 	block = np.full(len(coded), -1.0)
 	for p in best_split:
 	    block[list(pairs[p])] = 1.0
-	print(f"{best_r:#.4g}")   # 0.2271, the largest |r| between cassette and any second-order column
+	print(f"{best_r:#.4g}")   # 0.1409, the largest |r| between cassette and any second-order column
 
 Three centre runs are added so that each cassette carries two, placed about a third and two
 thirds of the way through its run order rather than together. The run order within a cassette
@@ -264,7 +264,7 @@ Nothing else changes between the cassettes. Each batch gets its own disturbance 
 	plan["titer"] = [run_batch(lot[int(r.cassette)], r.hold_temp, r.shift_day, r.pH, r.feed_rate, int(s))
 	                 for r, s in zip(plan.itertuples(), seeds)]
 	plan["log_titer"] = np.log(plan["titer"])
-	print(f"{plan['titer'].min():#.4g} {plan['titer'].max():#.4g}")   # 4.290 9.116
+	print(f"{plan['titer'].min():#.4g} {plan['titer'].max():#.4g}")   # 4.018 8.882
 
 	is_cp = np.all(np.isclose(plan[names], list(current.values())), axis=1)
 	print(plan.loc[is_cp, ["cassette", "titer"]])
@@ -278,7 +278,7 @@ Nothing else changes between the cassettes. Each batch gets its own disturbance 
 	22          2  6.538538
 	26          2  6.893483
 
-The titer ranges from 4.290 to 9.116 g/L across the thirty batches, against 7.477 g/L at the
+The titer ranges from 4.018 to 8.882 g/L across the thirty batches, against 7.477 g/L at the
 current recipe: the region is wide enough that some settings are clearly worse and some
 clearly better than what the team runs today. The four centre points, at runs 6, 12, 22 and
 26, average 7.536 g/L in the first cassette and 6.716 g/L in the second.
@@ -314,7 +314,7 @@ cassette indicator are exactly orthogonal, so neither steals from the other.
 	resid = plan["log_titer"] - X @ b
 	df = len(plan) - X.shape[1]
 	se = np.sqrt(resid @ resid / df * np.linalg.inv(X.T @ X)[1, 1])
-	print(f"{b[1]:#.4g} {se:#.4g} {b[1] / se:#.4g} on {df} df")   # -0.1272 0.05092 -2.498 on 24 df
+	print(f"{b[1]:#.4g} {se:#.4g} {b[1] / se:#.4g} on {df} df")   # -0.1557 0.05810 -2.681 on 24 df
 
 	cp = plan[is_cp]
 	t_cp = stats.ttest_ind(cp.loc[cp.cassette == 2, "log_titer"], cp.loc[cp.cassette == 1, "log_titer"])
@@ -322,8 +322,8 @@ cassette indicator are exactly orthogonal, so neither steals from the other.
 
 	plan["log_titer_adj"] = plan["log_titer"] - b[1] * cassette
 
-The second cassette ran 0.1272 log units lower, a titer 11.9% below the first, with a
-standard error of 0.05092: a *t* of 2.498 on 24 degrees of freedom. The four centre points on
+The second cassette ran 0.1557 log units lower, a titer 14.4% below the first, with a
+standard error of 0.05810: a *t* of 2.681 on 24 degrees of freedom. The four centre points on
 their own give almost the same *t*, 2.587, and a *p*-value of 0.12, because they have two
 degrees of freedom to judge it on. The signal is the same size in both; only the design has
 the degrees of freedom to call it. The shift is subtracted from the second cassette's
@@ -337,44 +337,50 @@ argument above is the simplest form of the same idea.
 The staged analysis
 ~~~~~~~~~~~~~~~~~~~~~~
 
-At thirty runs the full second-order model, fifteen terms, can be fitted in one step, and
-it can here: feed rate, the hold-temperature quadratic and the hold-temperature by shift-day
-interaction come out significant, with fifteen degrees of freedom for error. The
-:ref:`staged analysis <DOE-analysing-economical-designs>` reaches the same three terms by a
-route that also works at the sizes where the full model cannot be fitted at all, and it
-pools the inactive terms into the error estimate as it goes.
+At thirty runs the full second-order model, fifteen terms, can be fitted in one step, with
+fifteen degrees of freedom for error. The :ref:`staged analysis
+<DOE-analysing-economical-designs>` takes a route that also works at the sizes where the full
+model cannot be fitted at all, and it pools the inactive terms into the error estimate as it
+goes, which gives it more degrees of freedom to test the second-order terms with.
 
 .. code-block:: python
 
 	result = analyze_omars(plan[names], plan["log_titer_adj"],
 	                       quadratic_heredity="none", interaction_heredity="none")
-	print(result.active_main_effects)               # ['feed_rate']
-	print(f"{result.main_effect_p_values['hold_temp']:#.4g}")   # 0.06814
-	print(result.updated_error_df, f"{result.updated_rmse:#.4g}")   # 18 0.08047
-	print(f"{result.second_order_overall_p_value:#.4g}")          # 0.0006660
+	print(result.active_main_effects)               # ['pH', 'feed_rate']
+	print({n: f"{p:#.4g}" for n, p in result.main_effect_p_values.items()})
+	# {'hold_temp': '0.5054', 'shift_day': '0.6912', 'pH': '0.04018', 'feed_rate': '3.200e-05'}
+	print(result.updated_error_df, f"{result.updated_rmse:#.4g}")   # 17 0.08716
+	print(f"{result.second_order_overall_p_value:#.4g}")          # 0.0004800
 	print(result.active_quadratics, result.active_interactions)
-	# ['hold_temp^2'] ['hold_temp:shift_day']
+	# ['hold_temp^2'] ['hold_temp:shift_day', 'hold_temp:pH', 'hold_temp:feed_rate']
 
-Of the four main effects only the feed rate is active. The hold temperature's linear effect
-has a *p*-value of 0.068: not because the hold temperature does not matter, but because the
-region straddles its optimum, so the response goes up and then down across the range and the
-linear term is nearly zero. pH and shift day are inactive and are pooled into the error,
-which rises from fifteen to eighteen degrees of freedom. The gate on the second-order terms
-then opens decisively, *p* = 0.000666, and the search selects two of the ten: the
-hold-temperature quadratic and the interaction between hold temperature and shift day.
+Two main effects are declared active, the feed rate and pH. The hold temperature's linear
+effect has a *p*-value of 0.5054, not because the hold temperature does not matter, but because
+the region straddles its optimum, so the response goes up and then down across the range and
+the linear term is nearly zero. The shift day is pooled into the error, which rises from
+fifteen to seventeen degrees of freedom.
+
+pH clears the 5% level only narrowly, at 0.04018. With four main effects each tested at 5%,
+one of them comes out significant by chance in nearly one campaign in five, so a team would
+treat this one as a candidate to confirm rather than as a finding.
+
+The gate on the second-order terms then opens, *p* = 0.00048, and the search selects four of
+the ten: the hold-temperature quadratic and the interactions of hold temperature with the shift
+day, pH and the feed rate.
 
 .. figure:: ../figures/doe/omars-worked-study-effects.png
 	:source: doe/omars-worked-study-effects.py
-	:alt: Fifteen coefficients of the full second-order model on log titer, drawn as points with 95% intervals, grouped as main effects, quadratics and two-factor interactions. Three are filled: feed rate, the hold-temperature quadratic and the hold-temperature by shift-day interaction.
+	:alt: Fifteen coefficients of the full second-order model on log titer, drawn as points with 95% intervals, grouped as main effects, quadratics and two-factor interactions. Six are filled, the terms the staged analysis selects: pH, feed rate, the hold-temperature quadratic and the interactions of hold temperature with shift day, pH and feed rate.
 	:width: 700px
 	:align: center
 
 	The full second-order model fitted in one step to the thirty adjusted log titers:
 	fifteen coefficients with their 95% intervals on fifteen residual degrees of freedom.
-	The three filled terms are the ones whose intervals exclude zero, and they are the three
-	the staged analysis selects. The hold-temperature main effect is small because the
-	region straddles its optimum; the curvature that locates the optimum is in the quadratic
-	term.
+	The filled terms are the six the staged analysis selects. Five of them have intervals
+	that exclude zero here; the sixth, the hold-temperature by feed-rate interaction, is
+	admitted by the staged analysis because pooling the inactive terms gives it more
+	degrees of freedom to be tested with.
 
 The heredity option matters here, and in the direction that is easy to get wrong.
 
@@ -382,11 +388,12 @@ The heredity option matters here, and in the direction that is easy to get wrong
 
 	strict = analyze_omars(plan[names], plan["log_titer_adj"],
 	                       quadratic_heredity="strong", interaction_heredity="strong")
-	print(strict.active_quadratics, strict.active_interactions)   # ['feed_rate^2'] []
+	print(strict.active_quadratics, strict.active_interactions)   # ['pH^2', 'feed_rate^2'] ['pH:feed_rate']
 
-Strong heredity admits a second-order term only if its parent main effect is active. At an
-optimum the linear term vanishes by definition, so the rule discards exactly the terms that
-locate it, and offers a quadratic in the one active factor instead. The heredity principle
+Strong heredity admits a second-order term only if its parent main effects are active. Only
+pH and the feed rate qualify, so it offers their quadratics and their interaction, and discards
+the hold-temperature quadratic and the hold-temperature by shift-day interaction. At an optimum
+the linear term vanishes by definition, so the rule discards exactly the terms that locate it. The heredity principle
 in the :ref:`staged workflow <DOE-analysing-economical-designs>` is a guide to which of many
 candidate interactions to prefer, not a filter to apply before looking; when a factor's
 linear effect is small in a region that contains its optimum, the quadratic and the
@@ -395,10 +402,9 @@ interactions of that factor are the ones to look for.
 The recommended recipe, against the truth
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The selected model has four terms: the intercept, the feed rate, the hold-temperature
-quadratic and the interaction. It is refitted, and its maximum found over the region, moving
-only the three factors the model mentions; the pH stays where it is, since the study found no
-reason to move it.
+The selected model has seven terms: the intercept, two main effects, one quadratic and three
+interactions. It is refitted, and its maximum found over the region, moving only the factors
+the model mentions, which here is all four.
 
 .. code-block:: python
 
@@ -430,16 +436,17 @@ reason to move it.
 	decode = lambda x: {n: f.low + (x[i] + 1) / 2 * (f.high - f.low)
 	                    for i, (n, f) in enumerate(zip(names, factors))}
 	print({n: f"{v:#.4g}" for n, v in decode(x_rec).items()})
-	# {'hold_temp': '29.54', 'shift_day': '3.500', 'pH': '7.100', 'feed_rate': '0.07000'}
-	print(f"{np.exp(-opt.fun):#.4g}")   # 8.570 g/L predicted
+	# {'hold_temp': '30.44', 'shift_day': '2.000', 'pH': '7.300', 'feed_rate': '0.07000'}
+	print(f"{np.exp(-opt.fun):#.4g}")   # 8.898 g/L predicted
 
-The model recommends a hold at 29.54 °C, the shift starting on day 3.5, and the feed at
-0.070 L/day, and predicts 8.570 g/L there. Two of those settings are at the edge of the
-region. The feed rate at its top is what the data say, a strong positive main effect with no
-curvature found. The shift day at its top is different: the model carries the shift day only
-through its interaction with hold temperature, and at the recommended hold that interaction
-is positive, so the optimiser pushes it to the boundary. A recommendation on a boundary is
-the model saying it does not know the shape of the response in that direction.
+The model recommends a hold at 30.44 °C, the shift starting on day 2.0, pH 7.3 and the feed
+at 0.070 L/day, and predicts 8.898 g/L there. Three of the four settings are at the edge of
+the region. The feed rate at its top is what the data say, a strong positive main effect with
+no curvature found. pH at its top follows from the pH main effect, which is a straight line in
+the model, so the optimiser takes it as far as the region allows. The shift day reaches its
+lower edge through its interaction with hold temperature, with no shift-day curvature in the
+model to stop it. A recommendation on a boundary is the model saying it does not know the
+shape of the response in that direction.
 
 The simulator settles what the data could not. With every disturbance switched off, the true
 titer at any recipe is a single number.
@@ -451,9 +458,13 @@ titer at any recipe is a single number.
 	best = max((optimize.minimize(lambda x: -truth(x), s, method="Powell", bounds=[(-1, 1)] * 4)
 	            for s in [np.zeros(4), np.array([-1.0, -1, 0, 1]), np.array([-0.5, 0.5, 0, 1])]),
 	           key=lambda r: -r.fun)
-	print(f"{truth(np.zeros(4)):#.4g} {truth(x_rec):#.4g} {-best.fun:#.4g}")   # 7.436 8.376 9.442
+	print(f"{truth(np.zeros(4)):#.4g} {truth(x_rec):#.4g} {-best.fun:#.4g}")   # 7.436 8.303 9.442
 	print({n: f"{v:#.4g}" for n, v in decode(best.x).items()})
 	# {'hold_temp': '29.52', 'shift_day': '2.624', 'pH': '7.100', 'feed_rate': '0.07000'}
+
+	x_ph = x_rec.copy()
+	x_ph[names.index("pH")] = 0.0            # the recommendation, with pH left at 7.1
+	print(f"{truth(x_ph):#.4g}")             # 8.882
 
 .. list-table::
 	:widths: 34 22 22
@@ -466,33 +477,40 @@ titer at any recipe is a single number.
 	  - 7.436
 	  -
 	* - Recommended by the study
-	  - 8.376
-	  - 0.940
+	  - 8.303
+	  - 0.867
+	* - Recommended, with pH left at 7.1
+	  - 8.882
+	  - 1.446
 	* - True best in the region
 	  - 9.442
 	  - 2.006
 
-The study captured 0.940 g/L of the 2.006 g/L that was available, 47%. The hold temperature
-is right to within 0.02 °C and the feed rate is right. The shift day is wrong: the true
-optimum shifts on day 2.62, earlier than today's 2.75, and the study sent it later. The
-shift-day quadratic that would have caught this is the smallest of the real effects, and this
-campaign did not find it. Repeated over two hundred disturbance draws, the 27-run design
-finds it in 29% of them.
+The study captured 0.867 g/L of the 2.006 g/L that was available, 43%. The feed rate is
+right. The shift day moved in the right direction, earlier than today's 2.75, but past the
+true optimum at 2.62 to the edge of the region, and the hold is 0.92 °C warmer than the best.
+
+Most of the shortfall is pH. Its true optimum is 7.1, where the current recipe already holds
+it, and the pH effect the analysis declared does not exist. Moving pH to 7.3 on the strength of
+it costs 0.579 g/L: the same recommendation with pH left at 7.1 gives 8.882 g/L, 72% of what
+was available. A confirmation run at the recommended recipe, with pH at both settings, would
+have caught this before the recipe changed.
 
 .. figure:: ../figures/doe/omars-worked-study-surface.png
 	:source: doe/omars-worked-study-surface.py
-	:alt: Two contour maps of titer over hold temperature and shift day at pH 7.1 and a feed rate of 0.070 litres per day. Left, the four-term fitted model. Right, the true response with no disturbance. Both mark the current recipe, the recommended recipe and the true best.
+	:alt: Two contour maps of titer over hold temperature and shift day at pH 7.1 and a feed rate of 0.070 litres per day. Left, the seven-term fitted model. Right, the true response with no disturbance. Both mark the current recipe, the recommended recipe and the true best.
 	:width: 760px
 	:align: center
 
 	Titer over hold temperature and shift day, with pH at 7.1 and the feed rate at
-	0.070 L/day. Left: the four-term model the staged analysis selected, back-transformed
+	0.070 L/day. Left: the seven-term model the staged analysis selected, back-transformed
 	from log titer. Right: the simulator with every disturbance switched off. The circle is
 	the current recipe, the square the recipe the study recommends, and the star the true
-	best in the region. The fitted model has no shift-day curvature, so its ridge runs off
-	the top of the region; the true response has an interior optimum at day 2.62.
+	best in the region. The recommendation also sets pH to 7.3, which this slice at pH 7.1
+	does not show. The fitted model has no shift-day curvature, so its best shift day sits
+	on the edge of the region; the true response has an interior optimum at day 2.62.
 
-The four centre points supply a pure-error estimate and a test of whether the four-term
+The four centre points supply a pure-error estimate and a test of whether the seven-term
 model is adequate.
 
 .. code-block:: python
@@ -505,9 +523,9 @@ model is adequate.
 	F = ((rs @ rs - pure) / df_lof) / (pure / df_pe)
 	p_lof = 1 - stats.f.cdf(F, df_lof, df_pe)
 	print(f"{np.sqrt(pure / df_pe):#.4g} {F:#.4g} on ({df_lof}, {df_pe}) df, p = {p_lof:#.4g}")
-	# 0.03696 5.349 on (23, 3) df, p = 0.09582
+	# 0.04326 4.958 on (20, 3) df, p = 0.1060
 
-The lack-of-fit *F* is 5.349, with a *p*-value of 0.096: not significant at 5%, on three
+The lack-of-fit *F* is 4.958, with a *p*-value of 0.106: not significant at 5%, on three
 degrees of freedom of pure error. A team that wanted this test to have teeth would run more
 centre points, or accept, as here, that it is a check rather than a verdict.
 
@@ -532,38 +550,58 @@ follow the recipe the fitted model recommends, and read the true titer there.
 	band runs from the 10th to the 90th percentile, and the marks below are the worst
 	campaign of the two hundred. The dashed line is the 2.006 g/L that was available. Lower
 	plot: the percentage of the same campaigns in which the staged analysis declared each of
-	the three real effects active. The Box-Behnken and face-centred central composite
+	three of the real effects active. The Box-Behnken and face-centred central composite
 	designs, both 27 runs, are placed beside the 27-run OMARS in both plots.
 
 Every point is two hundred campaigns, each drawing fresh disturbances and scored by the true
 titer at the recipe its analysis recommended.
 
-Below 27 runs the outcome is closer to a lottery than to a smaller version of the same
-study. The 13-run design leaves the median campaign exactly where it started, having found
-nothing it could act on, and its worst campaign loses 1.973 g/L. The 17-run design finds the
-feed rate in 94% of campaigns and gains 0.717 g/L at the median, but its worst campaign
-loses 3.246 g/L, because a design that finds the feed rate without the curvature sends the
-hold temperature to an edge of the region.
+Below 27 runs the outcome varies far more from one campaign to the next. The 13-run design
+leaves the median campaign exactly where it started, having found nothing it could act on, and
+its worst campaign loses 1.973 g/L. The 17-run design finds the feed rate in 94% of campaigns
+and gains 0.717 g/L at the median, but its worst campaign loses 3.246 g/L, because a design
+that finds the feed rate without the curvature sends the hold temperature to an edge of the
+region.
 
-The 21-run design, the estimability frontier, does worse at the median than the 17-run
-design, and the reason is worth knowing. The search returned a 21-run design that varies the
-feed rate in twelve of its runs, the same twelve as the 17-run design; the four added runs
-hold the feed rate at its centre while moving the hold temperature and shift day. Those
-runs add second-order variation to the residual the main effects are first tested against,
-and no information about the feed rate, so the feed rate is declared active in only a third
-of campaigns. Which design occupies a cell matters, as :ref:`Nine measures down one column
-<DOE-omars-metric-choice>` showed for the three-factor column; here it is the difference
-between finding the largest main effect and missing it.
+The 21-run design, at the estimability frontier, can fit the full second-order model, yet its
+median campaign gains only 0.118 g/L. It finds the feed rate and the hold-temperature by
+shift-day interaction in most campaigns, but the hold-temperature curvature in only 13%.
+Without that curvature the fitted model has its best point in a corner of the region, and the
+corner it picks is barely better than today's recipe. The variance factor of the
+hold-temperature quadratic, the diagonal entry of :math:`(\mathbf{X}^T\mathbf{X})^{-1}` for
+that term, shows why:
 
-At 27 runs every real effect but the shift-day curvature is found in three campaigns out of
-four or better, the median gain is 1.072 g/L, and the worst of two hundred campaigns loses
-0.350 g/L. Four more runs, at 31, raise the 10th percentile from 0.118 to 0.577 g/L and leave
-the median where it was.
+.. code-block:: python
+
+	full = [("m", j) for j in range(4)] + [("q", j) for j in range(4)]
+	full += [("i", pair) for pair in itertools.combinations(range(4), 2)]
+
+	def quadratic_variance(n_runs):
+	    """Variance factor of the hold-temperature quadratic in the full second-order model."""
+	    levels = generate_omars(factors, n_runs=n_runs, model="full_second_order",
+	                            random_state=42).design[names].to_numpy(float)
+	    X = model_matrix(full, levels)
+	    return np.linalg.inv(X.T @ X)[5, 5]   # column 5 is hold_temp^2
+
+	print([f"{quadratic_variance(n):#.4g}" for n in (21, 27, 31)])   # ['0.5367', '0.2239', '0.2839']
+
+The 27-run design estimates that quadratic with less than half the variance of the 21-run
+design, and with twice the degrees of freedom for error. It finds the feed rate, the
+interaction and the hold-temperature curvature in 85% of campaigns or more, gains 1.009 g/L at
+the median, and its worst campaign of two hundred loses 0.635 g/L.
+
+Four more runs do not help here. The 31-run design gains 0.657 g/L at the median and finds the
+hold-temperature curvature in only 44% of campaigns. Its variance factor for that quadratic is a
+little larger than the 27-run design's, while it estimates the shift-day quadratic more
+precisely, and the search, which admits only a few second-order terms, picks the shift-day
+curvature in 49% of campaigns instead. Which design occupies a cell matters, as :ref:`Nine
+measures down one column <DOE-omars-metric-choice>` showed for the three-factor column; here it
+decides which curvature the study finds.
 
 The two classical designs at 27 runs sit alongside. The Box-Behnken design has the higher
 median, 1.199 g/L, and the wider spread in both directions: a 90th percentile of 1.677 g/L
 and a worst campaign of 2.810 g/L lost. It finds the interaction in 41% of campaigns
-against 99% for the OMARS design, and campaigns that miss the interaction leave the shift
+against 98% for the OMARS design, and campaigns that miss the interaction leave the shift
 day at its current setting, which in this process happens to be nearer the true optimum
 than the edge the interaction sends it to. The face-centred central composite design finds
 the interaction every time and gains 0.942 g/L at the median. On this process and this
@@ -580,15 +618,19 @@ production hold has an interior optimum near 29.5 °C because residual growth at
 hold burns feed the product needs, while a colder hold arrests growth before the culture has
 built enough biomass to produce from. The timing of the shift interacts with the hold
 temperature for the same reason: shifting late is right only if the hold is warm enough to
-keep some growth going. And pH is held at the optimum of a cardinal model that is flat within
-0.2 of it, so the study was correct to find nothing there.
+keep some growth going. And pH is held at the optimum of a cardinal model that is symmetric
+about 7.1, so across 6.9 to 7.3 it has no linear effect and no interaction with any other
+factor. It does have curvature, which is why moving pH to 7.3 cost the recommended recipe
+0.579 g/L.
 
 The disturbance channel that gave every batch its own outcome is an autocorrelated
 multiplier on the growth and production rates, with a correlation time comparable to the
 batch length, at 0.7 of the simulator's pilot-scale default. The lot change was a 12%
 reduction in the feed medium's substrate concentration. None of these were visible to the
-analysis; all of them were recovered from thirty batches, except the direction in which to
-move the shift day.
+analysis. From thirty batches it recovered the feed rate, the hold-temperature curvature and
+the interactions of hold temperature with the shift day and the feed rate. It missed the
+shift-day curvature, which is why the shift day went to the edge of the region, and it admitted
+a pH effect and a hold-temperature by pH interaction that the process does not have.
 
 **Readings**
 
