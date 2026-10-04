@@ -312,6 +312,8 @@ The frontier is a property of the foldover construction, not of OMARS designs as
 nineteen-run design below, found by a computer search, is not a foldover: only six of its eighteen
 non-centre runs form mirror-image pairs. Its main effects are still orthogonal to each other and to
 every second-order column, so it is an OMARS design, and it estimates the full second-order model.
+It visits the middle levels of its four factors unequally often, so it is what Goos (2025) calls a
+non-uniform-precision OMARS design: its main effects are estimated with different precision.
 
 .. code-block:: python
 
@@ -797,7 +799,9 @@ A generic stepwise or penalised regression does not bias the main effects, which
 orthogonal to every second-order column, but it ignores the structure that makes the analysis
 simple. It searches all the columns together, so its error estimate absorbs any active
 second-order effect it leaves out, and it chooses among second-order terms that are correlated
-with each other as though they were not.
+with each other as though they were not. In simulations by Hameed, Núñez Ares and Goos (2023), the
+staged analysis below detected active effects more often than stepwise regression, the Dantzig
+selector and hierNet, while keeping false detections under control.
 
 The remedy is a *design-based* analysis that exploits the structure we built in. It proceeds in
 stages: estimate the main effects first, where the design guarantees they are clean; recover
@@ -859,7 +863,8 @@ The staged procedure is that of Jones and Nachtsheim (2017) for definitive scree
 extended to OMARS designs by Hameed, Núñez Ares and Goos (2023). It is available in
 ``process_improve`` as ``analyze_omars()``, which accepts any design in two- or three-level
 quantitative factors, although its stages rely on the main effects being orthogonal to the
-second-order terms, as they are in an OMARS design. It carries out the stages above and returns
+second-order terms, as they are in an OMARS design. It carries out the stages above, testing the
+main effects at 5% and the second-order terms at 20%, the levels Hameed et al. use, and returns
 the main effects, the pooled error, the overall test for second-order activity and the selected
 second-order effects.
 
@@ -873,9 +878,18 @@ second-order variation is no longer significant. The other settings are:
 * ``interaction_heredity="weak"``: at least one parent main effect must be active.
 * ``quadratic_heredity="strong"``: a quadratic is admitted only if its own main effect is active.
 
-When a factor's optimum lies near the centre of its range, its linear effect is small, so strong
-heredity can drop the terms that locate the optimum. :ref:`A worked OMARS study
-<DOE-omars-worked-study>` shows this on a simulated bioreactor.
+Heredity can mislead in either direction. When a factor's optimum lies near the centre of its
+range, its linear effect is small, so strong heredity can drop the terms that locate the optimum;
+:ref:`A worked OMARS study <DOE-omars-worked-study>` shows this on a simulated bioreactor. Without
+heredity, the search can admit an interaction that knowledge of the process rules out, as Goos,
+Núñez Ares, Hameed and Lanzerath (2026) report for a polymerization experiment. Running the
+analysis under each setting and comparing the models shows which conclusions depend on the choice.
+
+Goos et al. (2026) also refit each selected model with the main effect of every factor that
+appears in one of its second-order terms, a convention called model marginality. A different
+route to the same question is all-subset regression by mixed-integer optimisation (Vazquez, Schoen
+and Goos, 2021), which lists many well-fitting models and compares the terms they share in a
+raster plot.
 
 **Readings**
 
@@ -888,3 +902,9 @@ heredity can drop the terms that locate the optimum. :ref:`A worked OMARS study
 * Goos, P.: "OMARS designs for factor screening and response surface experimentation in one
   step: A review", *WIREs Computational Statistics*, **17**, e70018, 2025.
   `doi:10.1002/wics.70018 <https://doi.org/10.1002/wics.70018>`__
+* Goos, P., Núñez Ares, J., Hameed, M.S.I. and Lanzerath, M.: "An application of a mixed-level
+  OMARS design to a polymerization experiment", *Quality Engineering*, 2026.
+  `doi:10.1080/08982112.2026.2698477 <https://doi.org/10.1080/08982112.2026.2698477>`__
+* Vazquez, A.R., Schoen, E.D. and Goos, P.: "A mixed integer optimization approach for model
+  selection in screening experiments", *Journal of Quality Technology*, **53**, 243--266, 2021.
+  `doi:10.1080/00224065.2020.1712275 <https://doi.org/10.1080/00224065.2020.1712275>`__

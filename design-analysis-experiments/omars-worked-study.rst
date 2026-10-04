@@ -426,7 +426,7 @@ day and the feed rate.
 	interaction, as :ref:`the model that generated the data <DOE-omars-study-true-model>`
 	lists.
 
-The heredity option matters here, and in the direction that is easy to get wrong.
+The heredity option changes the result here.
 
 .. code-block:: python
 
@@ -438,10 +438,10 @@ Strong heredity admits a second-order term only if its parent main effects are a
 feed rate qualifies, so it offers the feed-rate quadratic alone, and discards the hold-temperature
 quadratic and both hold-temperature interactions. The hold temperature's
 optimum lies near the centre of its range, so its linear effect is small and the rule discards the
-terms that locate the optimum. The heredity principle in the :ref:`staged workflow
-<DOE-analysing-economical-designs>` is a guide to which of many candidate interactions to prefer,
-not a filter to apply before looking; when a factor's linear effect is small in a region that
-contains its optimum, the quadratic and the interactions of that factor are the ones to look for.
+terms that locate the optimum. Goos et al. (2026) report the opposite case, in which the search
+without heredity admitted an interaction the process engineers judged spurious, so the
+:ref:`staged workflow <DOE-analysing-economical-designs>` can be run under both settings and the
+models compared.
 
 The recommended recipe, against the truth
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -557,6 +557,36 @@ moving only the hold temperature lowers it to 7.149 g/L: an early downshift suit
 the recommendation is a consistent pair on the wrong part of the ridge the interaction draws. The
 model places it there because it has no downshift-day curvature to say where along the ridge the
 peak lies.
+
+Goos et al. (2026) refit a selected model with the main effect of every factor that appears in one
+of its second-order terms, a convention called model marginality. Here that adds the
+hold-temperature and downshift-day main effects to the five terms:
+
+.. code-block:: python
+
+	marginal = [("m", j) for j in moved] + [t for t in terms if t[0] != "m"]
+	b_marginal = np.linalg.lstsq(model_matrix(marginal, C), plan["log_titer_adj"], rcond=None)[0]
+
+	def predicted_marginal(z):
+	    x = np.zeros(4)
+	    x[moved] = z
+	    return -float((model_matrix(marginal, x) @ b_marginal).ravel()[0])
+
+	opt_marginal = min((optimize.minimize(predicted_marginal, s, method="Powell",
+	                                      bounds=[(-1, 1)] * len(moved)) for s in starts),
+	                   key=lambda r: r.fun)
+	x_marginal = np.zeros(4)
+	x_marginal[moved] = opt_marginal.x
+	print({n: f"{v:#.4g}" for n, v in decode(x_marginal).items()})
+	# {'hold_temp': '29.80', 'shift_day': '3.500', 'pH': '7.100', 'feed_rate': '0.07000'}
+	print(f"{truth(x_marginal):#.4g}")   # 8.097
+
+The two models agree on the feed rate and pH, and on the hold temperature to within 0.33 °C. They
+disagree on the downshift day: the marginal model sends it to the late edge, day 3.5, where the
+true titer is 8.097 g/L. Neither model has the downshift-day curvature, so the small downshift-day
+main effect, which the staged analysis did not find significant, decides which edge the
+recommendation takes. The models agree on the settings the data determine and disagree on the one
+setting the study did not resolve.
 
 .. figure:: ../figures/doe/omars-worked-study-surface.png
 	:source: doe/omars-worked-study-surface.py
@@ -751,5 +781,8 @@ of the region, and the downshift-day by feed-rate interaction, which the one-ste
 * Luedeking, R. and Piret, E. L.: "A kinetic study of the lactic acid fermentation",
   *Journal of Biochemical and Microbiological Technology and Engineering*, **1**, 393--412,
   1959.
+* Goos, P., Núñez Ares, J., Hameed, M.S.I. and Lanzerath, M.: "An application of a mixed-level
+  OMARS design to a polymerization experiment", *Quality Engineering*, 2026.
+  `doi:10.1080/08982112.2026.2698477 <https://doi.org/10.1080/08982112.2026.2698477>`__
 * Jones, B. and Nachtsheim, C.J.: "Blocking schemes for definitive screening designs",
   *Technometrics*, **58**, 74--83, 2016.
