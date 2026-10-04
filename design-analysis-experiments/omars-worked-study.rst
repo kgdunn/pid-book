@@ -706,43 +706,41 @@ factor, also narrows the spread: its median campaign gains 1.001 g/L against 0.9
 and its worst campaign of two hundred loses 0.3901 g/L against 1.655 g/L. Here the four extra runs
 change the lower tail more than the median.
 
-The two classical designs at 27 runs sit alongside. The Box-Behnken design has the higher
-median, 1.199 g/L, and a wider spread at both extremes: a 90th percentile of 1.677 g/L
-and a worst campaign of 2.810 g/L lost. It finds the interaction in 41% of campaigns
-against 100% for the OMARS design, and campaigns that miss the interaction leave the downshift
-day at its current setting, which in this process happens to be nearer the true optimum
-than the edge the interaction sends it to. The face-centred central composite design finds
-the interaction every time and gains 0.9424 g/L at the median, close to the 27-run OMARS design in
-every percentile. On this process and this region the three 27-run designs are comparable at the
-middle of their distributions; they differ in the tails, and a team choosing among them would be
-choosing how much downside to accept.
+The two classical 27-run designs, beside the 27-run OMARS design:
+
+* **Box-Behnken:** the highest median, 1.199 g/L, and the widest spread, with a worst campaign
+  of 2.810 g/L lost. It finds the hold-temperature by downshift-day interaction in 41% of
+  campaigns, against 100% for OMARS; missing it leaves the downshift at today's setting, which
+  here happens to lie nearer the true optimum.
+* **Face-centred central composite:** finds the interaction every time, and its distribution is
+  close to the OMARS design's in every percentile.
+* The three are comparable at the median and differ in the tails.
 
 .. _DOE-omars-study-true-model:
 
 The model that generated the data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The simulator's kinetics are given in full in the module documentation of
-``process_improve.simulation.batch``. The parts that shaped this study are three. The production
-hold has an interior optimum near 29.5 °C because residual growth at a warmer hold burns feed the
-product needs, while a colder hold arrests growth before the culture has built enough biomass to
-produce from. That optimum is a property of this simulator; industrial processes more often settle
-between 31 and 33 °C. The timing of the downshift interacts with the hold temperature for the same
-reason: a cold hold arrests growth, so it pays to downshift late and build biomass first, while a
-warm hold keeps some growth going and favours an early downshift. And pH acts through a cardinal
-model that is symmetric about 7.1, so across 6.9 to 7.3 it has no linear effect and no
-linear-by-linear interaction with any other factor. Its curvature does depend on the other factors:
-pH 7.1 is the best of the three settings at the true best recipe and the worst at the current
-recipe.
+The simulator's kinetics are documented in ``process_improve.simulation.batch``. Three features
+shaped this study:
 
-The disturbance channel that gave every batch its own outcome is an autocorrelated multiplier on the
-growth and production rates, with a correlation time comparable to the batch length, at 0.7 of the
-simulator's default. The lot change was represented as a 12% reduction in the feed medium's
-substrate concentration. None of these were visible to the analysis. From thirty batches it
-recovered the feed rate, the hold-temperature curvature and the interactions of hold temperature
-with the downshift day and the feed rate, and it declared no pH effect, which matches the symmetric
-pH response. It missed the downshift-day curvature, which is why the downshift day went to the edge
-of the region, and the downshift-day by feed-rate interaction, which the one-step fit flagged.
+* **Hold temperature:** an optimum near 29.5 °C. A warmer hold spends feed on residual growth; a
+  colder one arrests growth before enough biomass is built. Industrial processes more often
+  settle between 31 and 33 °C.
+* **Downshift day:** interacts with the hold. A cold hold favours a late downshift, a warm hold
+  an early one.
+* **pH:** symmetric about 7.1, so no linear effect and no linear-by-linear interaction; its
+  curvature depends on the other factors.
+
+Each batch's disturbance is an autocorrelated multiplier on growth and production, at 0.7 of the
+simulator's default, and the lot change is a 12% cut in feed substrate. From thirty batches the
+analysis:
+
+* **found** the feed rate, the hold-temperature curvature, and the hold temperature's
+  interactions with the downshift day and the feed rate;
+* **correctly declared** no pH effect;
+* **missed** the downshift-day curvature, which sent the downshift to the edge of the region,
+  and the downshift-day by feed-rate interaction.
 
 **Readings**
 
