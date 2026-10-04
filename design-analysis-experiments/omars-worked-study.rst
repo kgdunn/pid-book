@@ -13,9 +13,10 @@ The process is the fed-batch cell culture met in :ref:`Fractional factorial desi
 <DOE-fractional-factorials>`, where a run takes ten days and a full factorial in five factors
 "would take almost a year ... if parallel reactors are not available". Parallel reactors are
 now the normal way such studies are run. A multi-parallel mini-bioreactor system such as the
-Sartorius Ambr 250 holds 12 or 24 vessels of 100 to 250 mL under individual control, so a
-campaign of thirty batches is two cassettes and about five weeks, turnaround included. That
-is the calendar the run counts below are measured against.
+Sartorius Ambr 250 high throughput holds 12 or 24 single-use vessels of 100 to 250 mL under
+individual control. The batches inoculated and run together on such a system form one *parallel
+run*. On a 24-vessel system, thirty batches need two parallel runs and about five weeks,
+turnaround included. That is the calendar the run counts below are measured against.
 
 The simulator is ``process_improve.simulation.batch``, a ten-day fed-batch bioreactor with
 growth following the cardinal temperature and pH model of Rosso et al. (1995), production
@@ -116,13 +117,13 @@ error estimate to serve.
 
 .. figure:: ../figures/doe/omars-worked-study-recipe.png
 	:source: doe/omars-worked-study-recipe.py
-	:alt: Two plots side by side. Left, the temperature setpoint through a ten-day batch for the current recipe and the four corners of the study region. Right, titer against day for twenty replicate batches at the current recipe, over the batch with no disturbance.
+	:alt: Two plots side by side. Left, the temperature setpoint through a ten-day batch for the current recipe and all four combinations of the low and high hold temperature and shift day. Right, titer against day for twenty replicate batches at the current recipe, over the batch with no disturbance.
 	:width: 760px
 	:align: center
 
 	The current recipe, and what one run of it gives. Left: the temperature setpoint through
-	the ten-day batch, with the four corners of the hold-temperature by shift-day range in
-	grey; pH is held at 7.1 throughout. Right: titer against day for the twenty replicate
+	the ten-day batch, with all four combinations of the low and high hold temperature and
+	shift day in grey; pH is held at 7.1 throughout. Right: titer against day for the twenty replicate
 	batches, each with its own disturbance draw, over the same batch with no disturbance.
 	The batches part after the ramp, and their spread at harvest is the 0.2308 g/L standard
 	deviation the study measures its effects against.
@@ -135,8 +136,9 @@ The four-factor column of the :ref:`trade-off table <DOE-omars-trade-off-table>`
 no reason to expect the interactions to be absent, and the shift timing and hold temperature
 are the sort of pair that plausibly interact, so the study needs ``Full``: every two-factor
 interaction in the model. That leaves the choice between 21 runs, the frontier, and 27. The
-section :ref:`What fewer runs would have bought <DOE-omars-study-fewer-runs>` measures that
-choice; the study takes 27 runs and adds three centre runs, for thirty batches in two cassettes.
+upcoming section :ref:`What fewer runs would have bought <DOE-omars-study-fewer-runs>` measures
+that choice. For now we study 27 runs and add three centre runs, for thirty batches in two
+parallel runs.
 
 .. figure:: ../figures/doe/omars-trade-off-column-k4.png
 	:source: doe/omars-trade-off-column-k4.py
@@ -161,11 +163,11 @@ Building the campaign
 	print(design.metadata["model_rank"], design.metadata["expected_error_df"])   # 15 12
 
 The 27 runs are thirteen half-rows, their thirteen mirror images, and one centre run. The two
-cassettes run weeks apart, so anything that differs between them, a new lot of feed medium
-in this study, shifts every batch in the second cassette by a common amount. That shift must
+parallel runs are weeks apart, so anything that differs between them, a new lot of feed medium
+in this study, shifts every batch in the second parallel run by a common amount. That shift must
 not be confused with a factor effect, and a foldover makes that easy to arrange: keep each
-half-row with its mirror image in the same cassette, and every main effect sums to zero
-within each cassette, whichever way the pairs are divided.
+half-row with its mirror image in the same parallel run, and every main effect sums to zero
+within each parallel run, whichever way the pairs are divided.
 
 .. code-block:: python
 
@@ -180,8 +182,8 @@ within each cassette, whichever way the pairs are divided.
 	    seen.update((i, j))
 	print(len(pairs), int(is_centre.sum()))   # 13 mirror pairs, 1 centre run
 
-The second-order columns do not sum to zero within a cassette, so the split of the thirteen
-pairs into seven and six is chosen to keep the cassette indicator as nearly uncorrelated with
+The second-order columns do not sum to zero within a parallel run, so the split of the thirteen
+pairs into seven and six is chosen to keep the parallel-run indicator as nearly uncorrelated with
 the quadratics and interactions as it can be. There are 1716 ways to choose seven pairs from
 thirteen; all are tried.
 
@@ -206,25 +208,25 @@ thirteen; all are tried.
 	block = np.full(len(coded), -1.0)
 	for p in best_split:
 	    block[list(pairs[p])] = 1.0
-	print(f"{best_r:#.4g}")   # 0.1409, the largest |r| between cassette and any second-order column
+	print(f"{best_r:#.4g}")   # 0.1409, the largest |r| between the run indicator and any second-order column
 
-Three centre runs are added so that each cassette carries two, placed about a third and two
-thirds of the way through its run order rather than together. The run order within a cassette
+Three centre runs are added so that each parallel run carries two, placed about a third and two
+thirds of the way through its run order rather than together. The run order within a parallel run
 is otherwise random.
 
 .. code-block:: python
 
 	rng = np.random.default_rng(7)
 	plan = pd.DataFrame(coded, columns=names)
-	plan["cassette"] = np.where(block > 0, 1, 2)
-	plan.loc[is_centre, "cassette"] = 1
+	plan["parallel_run"] = np.where(block > 0, 1, 2)
+	plan.loc[is_centre, "parallel_run"] = 1
 	extra = pd.DataFrame(np.zeros((3, 4)), columns=names)
-	extra["cassette"] = [1, 2, 2]
+	extra["parallel_run"] = [1, 2, 2]
 	plan = pd.concat([plan, extra], ignore_index=True)
 
 	order = []
 	for c in (1, 2):
-	    idx = plan.index[plan["cassette"] == c].to_numpy()
+	    idx = plan.index[plan["parallel_run"] == c].to_numpy()
 	    centres = idx[np.all(plan.loc[idx, names] == 0, axis=1)]
 	    seq = list(rng.permutation(idx[~np.isin(idx, centres)]))
 	    for k, cpt in enumerate(centres):
@@ -234,82 +236,83 @@ is otherwise random.
 	plan.index = pd.RangeIndex(1, len(plan) + 1, name="run")
 	for n, f in zip(names, factors):
 	    plan[n] = f.low + (plan[n] + 1) / 2 * (f.high - f.low)   # coded to real units
-	print(plan["cassette"].value_counts().sort_index().tolist())   # [16, 14]
+	print(plan["parallel_run"].value_counts().sort_index().tolist())   # [16, 14]
 
-Cassette 1 holds sixteen batches and cassette 2 fourteen. Both fit a 24-vessel system with
-room to spare.
+The first parallel run holds sixteen batches and the second fourteen. Both fit a 24-vessel system
+with room to spare.
 
 .. figure:: ../figures/doe/omars-worked-study-plan.png
 	:source: doe/omars-worked-study-plan.py
-	:alt: A grid of thirty columns and four rows, one column per batch in run order and one row per factor, each cell coloured by the factor's level. A heavy line separates the sixteen batches of cassette 1 from the fourteen of cassette 2, and runs 6, 12, 22 and 26 are outlined as the centre runs.
+	:alt: A grid of thirty columns and four rows, one column per batch in run order and one row per factor, each cell coloured by the factor's level. A heavy line separates the sixteen batches of the first parallel run from the fourteen of the second, and runs 6, 12, 22 and 26 are outlined as the centre runs.
 	:width: 760px
 	:align: center
 
 	The thirty batches in run order, one column each, with the level of every factor as its
-	fill. The heavy line is the change of cassette, and with it the change of feed-medium
-	lot. The outlined columns, runs 6, 12, 22 and 26, are the centre runs, two in each
-	cassette and spread through its order. The pair split keeps each mirror pair in one
-	cassette, which the grid does not show.
+	fill. The heavy line is the change from the first parallel run to the second, and with it
+	the change of feed-medium lot. The outlined columns, runs 6, 12, 22 and 26, are the centre
+	runs, two in each parallel run and spread through its order. The pair split keeps each
+	mirror pair in one parallel run, which the grid does not show.
 
 Running it
 ~~~~~~~~~~~~
 
-The second cassette draws on a new lot of feed medium that assays 12% weaker in substrate.
-Nothing else changes between the cassettes. Each batch gets its own disturbance draw.
+The second parallel run draws on a new lot of feed medium that assays 12% weaker in substrate.
+Nothing else changes between the parallel runs. Each batch gets its own disturbance draw.
 
 .. code-block:: python
 
 	lot = {1: config, 2: dataclasses.replace(config, feed_substrate=0.88 * config.feed_substrate)}
 	seeds = np.random.default_rng(2026).integers(1 << 30, size=len(plan))
-	plan["titer"] = [run_batch(lot[int(r.cassette)], r.hold_temp, r.shift_day, r.pH, r.feed_rate, int(s))
+	plan["titer"] = [run_batch(lot[int(r.parallel_run)], r.hold_temp, r.shift_day, r.pH, r.feed_rate,
+	                           int(s))
 	                 for r, s in zip(plan.itertuples(), seeds)]
 	plan["log_titer"] = np.log(plan["titer"])
 	print(f"{plan['titer'].min():#.4g} {plan['titer'].max():#.4g}")   # 4.018 8.882
 
 	is_cp = np.all(np.isclose(plan[names], list(current.values())), axis=1)
-	print(plan.loc[is_cp, ["cassette", "titer"]])
+	print(plan.loc[is_cp, ["parallel_run", "titer"]])
 
 .. code-block:: text
 
-	     cassette     titer
+	     parallel_run     titer
 	run
-	6           1  7.804948
-	12          1  7.267075
-	22          2  6.538538
-	26          2  6.893483
+	6               1  7.804948
+	12              1  7.267075
+	22              2  6.538538
+	26              2  6.893483
 
 The titer ranges from 4.018 to 8.882 g/L across the thirty batches, against 7.477 g/L at the
 current recipe: the region is wide enough that some settings are clearly worse and some
 clearly better than what the team runs today. The four centre points, at runs 6, 12, 22 and
-26, average 7.536 g/L in the first cassette and 6.716 g/L in the second.
+26, average 7.536 g/L in the first parallel run and 6.716 g/L in the second.
 
 .. figure:: ../figures/doe/omars-worked-study-titer.png
 	:source: doe/omars-worked-study-titer.py
-	:alt: Titer at harvest against feed rate, one plot per cassette, cassette 1 in blue and cassette 2 in orange, with the mean at each feed level as a short bar and the centre runs drawn as stars.
+	:alt: Titer at harvest against feed rate, one plot per parallel run, the first in blue and the second in orange, with the mean at each feed level as a short bar and the centre runs drawn as stars.
 	:width: 760px
 	:align: center
 
-	Titer at harvest against the feed rate, one plot per cassette. The short bars are the
+	Titer at harvest against the feed rate, one plot per parallel run. The short bars are the
 	mean of the design runs at each feed level; the other three factors vary within each
 	group, which is most of the scatter around the bars. The centre runs, drawn as stars,
-	are the only batches at identical settings in both cassettes, and their means differ by
+	are the only batches at identical settings in both parallel runs, and their means differ by
 	0.820 g/L. The grey line is the mean of the twenty replicate batches at the current
 	recipe, 7.477 g/L.
 
-The cassette effect
-~~~~~~~~~~~~~~~~~~~~~~
+The shift between the parallel runs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The centre points suggest the second cassette ran lower, but four points on two degrees of
-freedom cannot say so with any confidence. The design as a whole can. A least-squares fit of
-log titer on a cassette indicator and the four main effects estimates the shift from all
-thirty runs, and because whole mirror pairs were kept together, the main effects and the
-cassette indicator are exactly orthogonal, so neither steals from the other.
+The centre points suggest the second parallel run gave lower titers, but four points on two
+degrees of freedom cannot say so with any confidence. The design as a whole can. A least-squares
+fit of log titer on a parallel-run indicator and the four main effects estimates the shift from
+all thirty runs, and because whole mirror pairs were kept together, the main effects and the
+parallel-run indicator are exactly orthogonal, so neither steals from the other.
 
 .. code-block:: python
 
 	C = np.column_stack([(plan[n] - f.low) / (f.high - f.low) * 2 - 1 for n, f in zip(names, factors)])
-	cassette = np.where(plan["cassette"] == 2, 1.0, 0.0)
-	X = np.column_stack([np.ones(len(plan)), cassette, C])
+	second_run = np.where(plan["parallel_run"] == 2, 1.0, 0.0)
+	X = np.column_stack([np.ones(len(plan)), second_run, C])
 	b = np.linalg.lstsq(X, plan["log_titer"], rcond=None)[0]
 	resid = plan["log_titer"] - X @ b
 	df = len(plan) - X.shape[1]
@@ -317,16 +320,17 @@ cassette indicator are exactly orthogonal, so neither steals from the other.
 	print(f"{b[1]:#.4g} {se:#.4g} {b[1] / se:#.4g} on {df} df")   # -0.1557 0.05810 -2.681 on 24 df
 
 	cp = plan[is_cp]
-	t_cp = stats.ttest_ind(cp.loc[cp.cassette == 2, "log_titer"], cp.loc[cp.cassette == 1, "log_titer"])
+	t_cp = stats.ttest_ind(cp.loc[cp.parallel_run == 2, "log_titer"],
+	                       cp.loc[cp.parallel_run == 1, "log_titer"])
 	print(f"{t_cp.statistic:#.4g} {t_cp.pvalue:#.4g}")   # -2.587 0.1226
 
-	plan["log_titer_adj"] = plan["log_titer"] - b[1] * cassette
+	plan["log_titer_adj"] = plan["log_titer"] - b[1] * second_run
 
-The second cassette ran 0.1557 log units lower, a titer 14.4% below the first, with a
+The second parallel run gave titers 0.1557 log units lower, a titer 14.4% below the first, with a
 standard error of 0.05810: a *t* of 2.681 on 24 degrees of freedom. The four centre points on
 their own give almost the same *t*, 2.587, and a *p*-value of 0.12, because they have two
 degrees of freedom to judge it on. The signal is the same size in both; only the design has
-the degrees of freedom to call it. The shift is subtracted from the second cassette's
+the degrees of freedom to call it. The shift is subtracted from the second parallel run's
 responses, and the rest of the analysis works on the adjusted values.
 
 This is the practical reason to build a block into a design rather than to hope a few
@@ -390,13 +394,13 @@ The heredity option matters here, and in the direction that is easy to get wrong
 	                       quadratic_heredity="strong", interaction_heredity="strong")
 	print(strict.active_quadratics, strict.active_interactions)   # ['pH^2', 'feed_rate^2'] ['pH:feed_rate']
 
-Strong heredity admits a second-order term only if its parent main effects are active. Only
-pH and the feed rate qualify, so it offers their quadratics and their interaction, and discards
-the hold-temperature quadratic and the hold-temperature by shift-day interaction. At an optimum
-the linear term vanishes by definition, so the rule discards exactly the terms that locate it. The heredity principle
-in the :ref:`staged workflow <DOE-analysing-economical-designs>` is a guide to which of many
-candidate interactions to prefer, not a filter to apply before looking; when a factor's
-linear effect is small in a region that contains its optimum, the quadratic and the
+Strong heredity admits a second-order term only if its parent main effects are active. Only pH and
+the feed rate qualify, so it offers their quadratics and their interaction, and discards the
+hold-temperature quadratic and the hold-temperature by shift-day interaction. At an optimum the
+linear term vanishes by definition, so the rule discards exactly the terms that locate it. The
+heredity principle in the :ref:`staged workflow <DOE-analysing-economical-designs>` is a guide to
+which of many candidate interactions to prefer, not a filter to apply before looking; when a
+factor's linear effect is small in a region that contains its optimum, the quadratic and the
 interactions of that factor are the ones to look for.
 
 The recommended recipe, against the truth
