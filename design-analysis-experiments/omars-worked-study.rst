@@ -15,8 +15,10 @@ The process is the fed-batch cell culture met in :ref:`Fractional factorial desi
 now the normal way such studies are run. A multi-parallel mini-bioreactor system such as the
 Sartorius Ambr 250 high throughput holds 12 or 24 single-use vessels of 100 to 250 mL under
 individual control. The batches inoculated and run together on such a system form one *parallel
-run*. On a 24-vessel system, thirty batches need two parallel runs and about five weeks,
-turnaround included. That is the calendar the run counts below are measured against.
+run*. On a 24-vessel system, thirty batches need two parallel runs: about three and a half weeks
+of bioreactor time, or six to seven weeks from thawing the cell bank to the last titer result
+once the seed train and the assays are counted. That is the calendar the run counts below are
+measured against.
 
 The simulator is ``process_improve.simulation.batch``, a ten-day fed-batch bioreactor with
 growth following the cardinal temperature and pH model of Rosso et al. (1995), production
@@ -30,8 +32,12 @@ The process and the question
 
 The current recipe grows the culture at 36.8 °C, starts a temperature downshift on day 2.75
 that takes 1.5 days to reach a production hold at 30 °C, holds pH at 7.1 throughout, and
-feeds at a constant 0.055 L/day per litre of starting volume. Titer, the product
-concentration at harvest, runs 7 to 8 g/L. The team wants to know whether the hold
+feeds at a constant 0.055 L/day per litre of starting volume. The downshift is a programmed
+ramp; many processes step the setpoint instead. The feed runs from inoculation, so over ten
+days it adds 40% to 70% of the starting volume across the range studied; vessels started at
+140 mL finish at no more than 238 mL, within the 250 mL working limit. Titer, the product
+concentration at harvest, runs 7 to 8 g/L, which is typical of an intensified fed-batch process
+seeded at a high cell density. The team wants to know whether the hold
 temperature, the timing of the downshift, the pH and the feed rate should move, and by how much.
 
 Four factors, one response. Their ranges are what a process engineer would choose around a
@@ -130,16 +136,16 @@ region regardless, so its *p*-values are approximate.
 
 .. figure:: ../figures/doe/omars-worked-study-recipe.png
 	:source: doe/omars-worked-study-recipe.py
-	:alt: Two plots side by side. Left, the temperature setpoint through a ten-day batch for the current recipe and all four combinations of the low and high hold temperature and downshift day. Right, titer against day for twenty replicate batches at the current recipe, over the batch with no disturbance.
+	:alt: Two plots side by side. Left, the temperature setpoint through a ten-day batch for the current recipe and all four combinations of the low and high hold temperature and downshift day. Right, for twenty replicate batches at the current recipe, the titer minus that of the same batch with no disturbance, against day.
 	:width: 760px
 	:align: center
 
 	The current recipe, and what one run of it gives. Left: the temperature setpoint through the
 	ten-day batch, with all four combinations of the low and high hold temperature and downshift day in
-	grey; pH is held at 7.1 throughout. Right: titer against day for the twenty replicate batches, each
-	with its own disturbance draw, over the same batch with no disturbance. The batches part after the
-	ramp, and their spread at harvest is the 0.2308 g/L standard deviation the study measures its
-	effects against.
+	grey; pH is held at 7.1 throughout. Right: for each of the twenty replicate batches, each with its
+	own disturbance draw, the titer minus that of the same batch with no disturbance. The departures
+	build through the growth phase and the ramp, and their spread at harvest is the 0.2308 g/L standard
+	deviation the study measures its effects against.
 
 Choosing the run count
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -269,9 +275,11 @@ with room to spare.
 Running it
 ~~~~~~~~~~~~
 
-The second parallel run draws on a new lot of feed medium which, unknown to the team, carries 12%
-less substrate. Nothing else changes between the parallel runs. Each batch gets its own disturbance
-draw.
+The second parallel run draws on a new lot of feed medium. It passed release testing, but it
+supports lower productivity, as trace-element differences between lots can. The simulator
+represents this as 12% less substrate in the feed, which is larger than typical lot-to-lot
+variation, so that the shift is clear. Nothing else changes between the parallel runs. Each batch
+gets its own disturbance draw.
 
 .. code-block:: python
 
@@ -486,6 +494,20 @@ edge through its interaction with hold temperature, with no downshift-day curvat
 stop it. A recommendation on a boundary is the model saying it does not know the shape of the
 response in that direction.
 
+The absence of feed-rate curvature is partly a property of the simulator. From about day 4 its
+culture runs short of substrate:
+
+.. code-block:: python
+
+	sim = BioreactorSimulator(dataclasses.replace(quiet, feed_rate=current["feed_rate"]))
+	states = sim.simulate_batch(trajectory=recipe(quiet, current["hold_temp"], current["shift_day"],
+	                                              current["pH"]), random_state=0).states
+	substrate = states.loc[4:, "substrate"]
+	print(f"{substrate.min():#.4g} {substrate.max():#.4g}")   # 0.1360 0.2648, in g/L
+
+That is against 5 g/L at inoculation, so within this range more feed always helps. A process
+whose glucose is controlled at a setpoint would usually show curvature in the feed rate.
+
 The simulator settles what the data could not. With every disturbance switched off, the true
 titer at any recipe is a single number.
 
@@ -577,7 +599,7 @@ centre points, or accept, as here, that it is a check rather than a verdict.
 What fewer runs would have bought
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Thirty batches in five weeks is a real cost, and the question a team will ask is whether
+Thirty batches in six to seven weeks is a real cost, and the question a team will ask is whether
 seventeen, or thirteen, would have done. The simulator can answer it, because the same study
 can be rerun at every size with fresh disturbance draws, and each rerun scored the same way:
 follow the recipe the fitted model recommends, and read the true titer there.
@@ -656,26 +678,25 @@ The model that generated the data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The simulator's kinetics are given in full in the module documentation of
-``process_improve.simulation.batch``. The parts that shaped this study are three. The
-production hold has an interior optimum near 29.5 °C because residual growth at a warmer
-hold burns feed the product needs, while a colder hold arrests growth before the culture has
-built enough biomass to produce from. The timing of the downshift interacts with the hold
-temperature for the same reason: a cold hold arrests growth, so it pays to downshift late and
-build biomass first, while a warm hold keeps some growth going and favours an early downshift.
-And pH acts through a cardinal model that is symmetric about 7.1, so across 6.9 to 7.3 it has no
-linear effect and no linear-by-linear interaction with any other factor. Its curvature does
-depend on the other factors, and at the recommended recipe it is why moving pH to 7.3 cost
-0.579 g/L.
+``process_improve.simulation.batch``. The parts that shaped this study are three. The production
+hold has an interior optimum near 29.5 °C because residual growth at a warmer hold burns feed the
+product needs, while a colder hold arrests growth before the culture has built enough biomass to
+produce from. That optimum is a property of this simulator; industrial processes more often settle
+between 31 and 33 °C. The timing of the downshift interacts with the hold temperature for the same
+reason: a cold hold arrests growth, so it pays to downshift late and build biomass first, while a
+warm hold keeps some growth going and favours an early downshift. And pH acts through a cardinal
+model that is symmetric about 7.1, so across 6.9 to 7.3 it has no linear effect and no
+linear-by-linear interaction with any other factor. Its curvature does depend on the other factors,
+and at the recommended recipe it is why moving pH to 7.3 cost 0.579 g/L.
 
-The disturbance channel that gave every batch its own outcome is an autocorrelated
-multiplier on the growth and production rates, with a correlation time comparable to the
-batch length, at 0.7 of the simulator's default. The lot change was a 12% reduction in the
-feed medium's substrate concentration. None of these were visible to the analysis. From thirty
-batches it recovered the feed rate, the hold-temperature curvature and the interactions of hold
-temperature with the downshift day and the feed rate. It missed the downshift-day curvature,
-which is why the downshift day went to the edge of the region, and it admitted a linear pH
-effect and a hold-temperature by pH interaction, neither of which the symmetric pH response can
-produce.
+The disturbance channel that gave every batch its own outcome is an autocorrelated multiplier on the
+growth and production rates, with a correlation time comparable to the batch length, at 0.7 of the
+simulator's default. The lot change was represented as a 12% reduction in the feed medium's
+substrate concentration. None of these were visible to the analysis. From thirty batches it
+recovered the feed rate, the hold-temperature curvature and the interactions of hold temperature
+with the downshift day and the feed rate. It missed the downshift-day curvature, which is why the
+downshift day went to the edge of the region, and it admitted a linear pH effect and a
+hold-temperature by pH interaction, neither of which the symmetric pH response can produce.
 
 **Readings**
 
