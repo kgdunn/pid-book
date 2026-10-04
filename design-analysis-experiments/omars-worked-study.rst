@@ -116,7 +116,7 @@ error estimate to serve.
 
 .. figure:: ../figures/doe/omars-worked-study-recipe.png
 	:source: doe/omars-worked-study-recipe.py
-	:alt: Two panels. Left, the temperature setpoint through a ten-day batch for the current recipe and the four corners of the study region. Right, titer against day for twenty replicate batches at the current recipe, over the batch with no disturbance.
+	:alt: Two plots side by side. Left, the temperature setpoint through a ten-day batch for the current recipe and the four corners of the study region. Right, titer against day for twenty replicate batches at the current recipe, over the batch with no disturbance.
 	:width: 760px
 	:align: center
 
@@ -285,11 +285,11 @@ clearly better than what the team runs today. The four centre points, at runs 6,
 
 .. figure:: ../figures/doe/omars-worked-study-titer.png
 	:source: doe/omars-worked-study-titer.py
-	:alt: Titer at harvest against feed rate, one panel per cassette, cassette 1 in blue and cassette 2 in orange, with the mean at each feed level as a short bar and the centre runs drawn as stars.
+	:alt: Titer at harvest against feed rate, one plot per cassette, cassette 1 in blue and cassette 2 in orange, with the mean at each feed level as a short bar and the centre runs drawn as stars.
 	:width: 760px
 	:align: center
 
-	Titer at harvest against the feed rate, one panel per cassette. The short bars are the
+	Titer at harvest against the feed rate, one plot per cassette. The short bars are the
 	mean of the design runs at each feed level; the other three factors vary within each
 	group, which is most of the scatter around the bars. The centre runs, drawn as stars,
 	are the only batches at identical settings in both cassettes, and their means differ by
@@ -523,17 +523,17 @@ follow the recipe the fitted model recommends, and read the true titer there.
 
 .. figure:: ../figures/doe/omars-worked-study-tradeoff.png
 	:source: doe/omars-worked-study-tradeoff.py
-	:alt: Two panels sharing a run-count axis. Upper: titer gained over the current recipe for OMARS designs of 13 to 31 runs and for the 27-run Box-Behnken and central composite designs, showing the median, the 10th to 90th percentile band and the worst case over two hundred campaigns each. Lower: the percentage of those campaigns in which the feed-rate main effect, the hold-temperature by shift-day interaction and the hold-temperature quadratic were declared active.
+	:alt: Two plots, one above the other, sharing a run-count axis. Upper: titer gained over the current recipe for OMARS designs of 13 to 31 runs and for the 27-run Box-Behnken and central composite designs, showing the median, the 10th to 90th percentile band and the worst case over two hundred campaigns each. Lower: the percentage of those campaigns in which the feed-rate main effect, the hold-temperature by shift-day interaction and the hold-temperature quadratic were declared active.
 	:width: 760px
 	:align: center
 
 	What each design size buys, over two hundred simulated campaigns per design. Upper
-	panel: the line is the median gain in titer at the recipe each campaign recommends, the
+	plot: the line is the median gain in titer at the recipe each campaign recommends, the
 	band runs from the 10th to the 90th percentile, and the marks below are the worst
 	campaign of the two hundred. The dashed line is the 2.006 g/L that was available. Lower
-	panel: the percentage of the same campaigns in which the staged analysis declared each of
+	plot: the percentage of the same campaigns in which the staged analysis declared each of
 	the three real effects active. The Box-Behnken and face-centred central composite
-	designs, both 27 runs, are placed beside the 27-run OMARS in both panels.
+	designs, both 27 runs, are placed beside the 27-run OMARS in both plots.
 
 Every point is two hundred campaigns, each drawing fresh disturbances and scored by the true
 titer at the recipe its analysis recommended.

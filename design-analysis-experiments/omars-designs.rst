@@ -528,11 +528,12 @@ count for the same reason. Quality metrics still separate designs of a given siz
 Nine measures down one column
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Fix the factor count at three, one column of the OMARS trade-off table, and read down it. At each
-run count, take the best value any OMARS design of that size attains. Every design of a given size
-can be listed, so each point is the true optimum rather than the best a search happened to find:
-a foldover is described entirely by how many times each pattern of :math:`-1`, :math:`0` and
-:math:`+1` appears in its half, and three factors admit only thirteen such patterns.
+Could a quality measure be the number in each cell instead? To find out, follow the three-factor
+column of the OMARS trade-off table from its smallest run count to its largest. Many OMARS designs
+share each run count and they score differently, so each point plotted is the best score any of
+them reaches, which is the value the cell would have to report. These best scores are exact. In
+three factors there are few enough OMARS designs of each size that every one of them can be
+scored, so the figure cannot have missed a better design.
 
 Write :math:`\mathbf{M} = \mathbf{X}^T\mathbf{X}` for the model matrix :math:`\mathbf{X}` of the
 main-effects-and-quadratics model, which has :math:`p = 2k + 1` terms, and
@@ -573,11 +574,12 @@ measured in units of the run-to-run noise. With coded levels running :math:`-1` 
 main-effect coefficient :math:`\beta` moves the response by :math:`2\beta` from the low setting to
 the high one, so :math:`|\beta|/\sigma = 1` means a low-to-high change of twice the noise standard
 deviation. The second is the significance level :math:`\alpha`. Power also differs by type of
-term, so it needs one panel each for a main effect, a two-factor interaction and a pure quadratic.
+term, so it needs a separate plot for a main effect, a two-factor interaction and a pure
+quadratic.
 
-Those three panels score the *full* second-order model, :math:`p = 1 + 2k + k(k-1)/2` terms, not
+Those three plots score the *full* second-order model, :math:`p = 1 + 2k + k(k-1)/2` terms, not
 the smaller model the six above use, because the interactions have to be in the model for the
-middle panel to mean anything. The consequence is visible in the figure: the third row starts at
+interaction plot to mean anything. The consequence is visible in the figure: the third row starts at
 thirteen runs, the :ref:`estimability frontier <DOE-omars-estimability-frontier>`
 :math:`N = k^2 + k + 1`, while the rows above start at seven or nine.
 
@@ -676,96 +678,57 @@ keeping the best value of each measure at each size, gives the nine curves below
 
 	Nine candidate measures read down the three-factor column of the OMARS trade-off table. Each
 	point is the best value attainable at that run count, found by listing every OMARS design of
-	the size. In the first two rows the panel columns group the measures by how they summarise:
+	the size. In the first two rows the columns of plots group the measures by how they summarise:
 	the left pair averages, the middle pair takes a worst case of the same two quantities, the
-	right pair does neither. Insets on the last panel of the second row are correlation maps of
+	right pair does neither. Insets on the last plot of the second row are correlation maps of
 	five of the plotted designs: in each map the rows and columns are the six second-order
 	terms, the three quadratics then the three interactions, with a thin line between the two
 	blocks, and darker squares are higher correlations, on a common scale from zero to one.
 	Each map is outlined in the colour of its series, and the three on the left are the smallest
-	design at each centre-run count. The third row is power, one panel per type of term, and it
+	design at each centre-run count. The third row is power, one plot per type of term, and it
 	scores the full second-order model rather than the model the rows above use, which is why it
 	begins at thirteen runs. Two standard designs are marked wherever they are defined: the
 	nine-run definitive screening design as an orange circle and the fifteen-run Box-Behnken
 	design as a green star, in the colours those two carry in the trade-off table.
 
-:math:`A/p`, :math:`I` and :math:`D` restate the run count. The first two fall at close to the
-rate :math:`1/N`, the product :math:`N \times A/p` moving only from 3.571 at nine runs to 3.145 at
-thirty-one, and a straight line in :math:`N` fits :math:`D` from eleven runs upward to within 0.2658
-on values from 4.540 to 13.58. All three have their centre-run series almost on top of one another.
+Read together, the plots make these points:
 
-:math:`E`, the smallest eigenvalue, carries structure the run count does not. It rises as a
-staircase with flat treads: exactly 2.000 at eleven, thirteen and fifteen runs on the
-three-centre-run series, and exactly 4.000 at twenty-two, twenty-four and twenty-six runs on the
-two-centre-run series. Over a tread, the combination of coefficients the data pin down worst is
-pinned down no better after the extra runs.
+* :math:`A/p`, :math:`I` **and** :math:`D` **restate the run count.** :math:`A/p` and :math:`I`
+  fall at close to the rate :math:`1/N`, so the product :math:`N \times A/p` is nearly constant
+  down the column. :math:`D` rises almost in a straight line, and the three centre-run series
+  nearly coincide.
+* :math:`E` **rises as a staircase with flat treads.** Along a tread, the extra runs do not improve
+  the combination of coefficients the data estimate worst.
+* :math:`G` **has a floor that no design can beat.** Kiefer and Wolfowitz showed that no design of
+  :math:`N` runs has :math:`G` below :math:`p/N`, and the best three-factor designs touch that floor
+  at a few sizes.
+* **Max** :math:`|r|` **can get worse as runs are added**, and it separates the centre-run series
+  widely. The three insets on the left show why: the same design points with more centre runs have
+  a lower correlation between a quadratic and an interaction, but a higher one between two
+  quadratics. It reaches zero only for the full three-level factorial at twenty-seven runs.
+* **Power rises steadily with the run count**, like the alphabetic criteria, and it ranks the types
+  of term. Main effects need the fewest runs, interactions a few more, and quadratics far more. An
+  interaction column takes the values :math:`\pm 1`, like a main effect, while a quadratic column
+  takes only zero and one and overlaps the intercept. The quadratics therefore set the run count.
+* **Centre runs trade one kind of power for another.** They lower main-effect and interaction power
+  and raise quadratic power, up to about twenty-five runs.
+* **The nine-run definitive screening design is the best design of its size** on all six measures
+  of the first two rows. It has nine runs rather than :math:`2k + 1 = 7` because its conference
+  matrix needs an even order, so three factors use one of order four and drop a column.
+* **The fifteen-run Box-Behnken design is at the frontier for five measures and away from it for
+  four.** Its runs sit on the edges of the cube rather than the corners, which favours curvature
+  over main effects, interactions and the worst-case measures :math:`E` and :math:`G`.
+* **The measures disagree about which design is best.** At twenty-one runs with one centre run
+  there are 1859 OMARS designs, and the six measures of the first two rows pick four different
+  ones. A single number in a cell would have to say which measure it is.
+* **Power is not a single number either.** It needs an effect size and a significance level, gives
+  a separate value for each type of term, and changes with the model being scored.
 
-:math:`G`, the worst prediction variance, has a floor that needs no design to compute. A classical
-result of Kiefer and Wolfowitz says no design of :math:`N` runs, of any kind, can have :math:`G`
-below :math:`p/N`, here :math:`7/N`. The best three-factor designs reach the floor exactly at nine
-and twenty-seven runs with one centre run, and at eighteen runs with two.
-
-Max :math:`|r|` reverses: four of the eleven steps along the one-centre-run series go backwards,
-the largest from 0.050 at twenty-one runs to 0.1786 at twenty-three. It also separates the
-centre-run series widely, at fifteen runs giving 0.3780 with one centre run against 0.07143 with
-three. The three insets on the left show why: those designs share the same four half-rows, and
-adding centre runs lowers the correlation between a quadratic and an interaction, from 0.7071 to
-0.6455 to 0.6055, while raising the correlation between two quadratics from zero to 0.1667 to 0.2667.
-Max :math:`|r|` reaches zero at one size only, twenty-seven runs with one centre run, where the
-design is the full three-level factorial.
-
-Power is monotone in all three panels, so on that test it belongs with the alphabetic criteria
-rather than with max :math:`|r|`. What it adds is an ordering the other measures do not show. A
-main effect of one sigma reaches 0.8 power at fifteen runs with one centre run, an interaction of
-the same size at nineteen, and a quadratic of the same size reaches only 0.7437 at thirty-one runs,
-the largest design plotted. The interaction sits nearer the main effect than the quadratic
-because :math:`x_i x_j` is a :math:`\pm 1` column like a main effect, while :math:`x_j^2` takes
-only the values zero and one and shares most of its variation with the intercept. Read as a
-budgeting rule, the quadratics set the run count.
-
-The centre-run series also swap order between panels. Centre runs are not factorial runs, so they
-cost main-effect and interaction power: at fifteen runs the one-centre-run design gives 0.8451 and
-0.6788 against 0.7891 and 0.6228 for three centre runs. For the quadratics the ordering reverses,
-0.2575 against 0.3450 at the same fifteen runs, and only returns to the usual direction past about
-twenty-five runs. This is the clearest statement in the chapter of what the extra centre runs buy.
-
-The two marked designs make the same point from the other direction. The definitive screening
-design in three factors sits exactly on the frontier in all six panels of the first two rows,
-:math:`A/p = 0.3968`, :math:`D = 3.970`, :math:`E = 0.8112`, :math:`I = 0.5778`, :math:`G = 0.7778`
-and max :math:`|r| = 0.7071`, so at its size it is not merely a good design but the best on every
-one of those measures at once. It is absent from the power row because nine runs cannot fit a
-ten-term model. Note that it has nine runs rather than :math:`2k + 1 = 7`: the construction folds
-a conference matrix of order :math:`k`, which exists only for an even :math:`k`, so an odd
-:math:`k` uses one of order :math:`k + 1` and drops a column, and the design arrives with two runs
-to spare.
-
-The Box-Behnken design lands on the frontier in five panels, :math:`A/p`, :math:`D`, :math:`I`,
-max :math:`|r|` and quadratic power, and clearly off it in four. Its smallest eigenvalue is 1.635
-against a best of 2.00 at fifteen runs, its worst prediction variance 0.6458 against 0.600, its
-main-effect power 0.6228 against 0.7891 and its interaction power 0.3682 against 0.6228. Each factor
-is at :math:`\pm 1` in only eight of its twelve edge points, so it puts its runs into curvature,
-and that shows up as five measures at the frontier and four away from it.
-
-The six enumerated measures also disagree about which design is best. At twenty-one runs with one centre run there are
-1859 OMARS designs, and the six single out four different ones: :math:`A`, :math:`E` and :math:`I`
-agree, while :math:`D`, :math:`G` and max :math:`|r|` each choose their own. The design minimising
-max :math:`|r|` reaches 0.050 but has a smallest eigenvalue of 1.204, against 3.423 for the design
-:math:`A`, :math:`E` and :math:`I` select, whose own max :math:`|r|` is 0.2222. The four-factor
-column behaves the same way. A single number in a cell would therefore have to name which of the
-six it is.
-
-Power does not escape that either. It is well behaved down the column, but it needs an effect size
-and a significance level before it returns a number at all, and it needs three numbers rather than
-one, because the three types of term differ by a factor of two or more at the same run count. It
-also changes shape with the model scored: the smallest design that can fit the full second-order
-model is the one that estimates the quadratics worst, which is the opposite of what the same
-panels show once the interactions are dropped from the model.
-
-In practice the two tools divide the work. The trade-off table chooses the run count, from
-capability and error degrees of freedom. At that size, candidate designs are compared with the
-measure matched to the aim of the study: the precision of the coefficients (:math:`A`, :math:`E`),
-prediction over the region (:math:`I`, :math:`G`), keeping the second-order effects
-distinguishable (max :math:`|r|`), or the chance of detecting an effect of a stated size (power).
+The two tools therefore divide the work. The trade-off table sets the run count from capability
+and error degrees of freedom. At that run count, candidate designs are compared on the measure that
+matches the aim of the study: :math:`A` or :math:`E` for precise coefficients, :math:`I` or
+:math:`G` for prediction over the region, max :math:`|r|` for keeping the second-order effects
+apart, or power for detecting an effect of a stated size.
 
 .. _DOE-analysing-economical-designs:
 
@@ -826,31 +789,42 @@ be told apart. The workflow is:
              v
     final model: the active main, quadratic, and interaction effects
 
-Step 0 is not a formality, and it has two parts. A *saturated* design, one with no spare runs,
-leaves nothing with which to estimate the noise :math:`\sigma^2`, and without that estimate there
-are no standard errors, no tests, and no power: the analysis cannot start. Below the
-:ref:`estimability frontier <DOE-omars-estimability-frontier>` the situation is more basic still,
-since the coefficients themselves have no unique solution, which is why the check is on the rank
-of the model matrix and not on the run count. Step 1 is possible only
-because of the orthogonality property: the main effects are unaliased with every second-order
-term, so their estimates are unbiased no matter which interactions or quadratics are truly
-active, which is what lets us analyse them on their own. Step 4 is where the design's one weakness is managed:
-since the second-order effects are correlated among themselves, only a limited number can be
-estimated together. Factor heredity (admitting an interaction only when its parent main effects
-are active) is one rule for narrowing the candidates the data alone cannot fully separate; the
-alternative is to keep every second-order effect as a candidate and let the F-tests choose.
+Three of the steps need a word of explanation.
 
-This staged procedure is available in ``process_improve`` as ``analyze_omars()``: it takes any
-coded two- or three-level design with its measured responses and carries out the stages above,
-returning the clean main effects, the pooled error, the overall test for second-order activity,
-and the selection among the second-order effects. One qualification concerns step 4: heredity is
-an option, not the default. With the default settings (``interaction_heredity="none"`` and
-``quadratic_heredity="none"``) every quadratic and every two-factor interaction is a candidate, and
-a best-subset search adds terms until the remaining second-order variation is no longer
-significant. Passing ``interaction_heredity="strong"`` gives the rule shown in the diagram,
-admitting an interaction only if both of its parent main effects are active; ``"weak"`` requires
-at least one active parent, and ``quadratic_heredity="strong"`` applies the same restriction to
-the quadratic of each factor.
+**Step 0** checks that the analysis can start at all. A *saturated* design, one with no spare runs,
+leaves nothing with which to estimate the noise :math:`\sigma^2`, so there are no standard errors,
+no tests and no power. Below the :ref:`estimability frontier <DOE-omars-estimability-frontier>`
+the coefficients themselves have no unique solution. That is why the check is on the rank of the
+model matrix and not on the run count.
+
+**Step 1** relies on the orthogonality property. The main effects are unaliased with every
+second-order term, so their estimates are unbiased whichever interactions or quadratics are truly
+active, and they can be analysed on their own.
+
+**Step 4** is where the design's one weakness is managed. The second-order effects are correlated
+among themselves, so only a limited number can be estimated together. Factor heredity, which
+admits an interaction only when its parent main effects are active, is one rule for narrowing the
+candidates. The alternative is to keep every second-order effect as a candidate and let the
+F-tests choose.
+
+The staged procedure is available in ``process_improve`` as ``analyze_omars()``. It takes any
+coded two- or three-level design with its measured responses, carries out the stages above, and
+returns the clean main effects, the pooled error, the overall test for second-order activity and
+the selected second-order effects.
+
+Heredity in step 4 is an option, not the default. With the defaults
+(``interaction_heredity="none"`` and ``quadratic_heredity="none"``) every quadratic and every
+two-factor interaction is a candidate, and a best-subset search adds terms until the remaining
+second-order variation is no longer significant. The other settings are:
+
+* ``interaction_heredity="strong"``, the rule in the diagram: an interaction is admitted only if
+  both of its parent main effects are active.
+* ``interaction_heredity="weak"``: at least one parent main effect must be active.
+* ``quadratic_heredity="strong"``: a quadratic is admitted only if its own main effect is active.
+
+At an optimum the linear effect of a factor is close to zero, so strong heredity can discard the
+very terms that locate the optimum. :ref:`A worked OMARS study <DOE-omars-worked-study>` shows
+such a case.
 
 The whole sequence, from choosing the run count to scoring the recommended recipe against a
 known optimum, is carried out on a simulated fed-batch bioreactor in :ref:`A worked OMARS study
