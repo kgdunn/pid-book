@@ -209,10 +209,10 @@ with :math:`p` model terms, :math:`N` runs and :math:`v_\text{max}` the largest 
             print(f"{criterion}, {budget}, {m['d_efficiency']:.1f}, "
                   f"{m['average_prediction_variance']:.3g}, {m['g_efficiency']:.1f}, "
                   f"{q['0.5']:.2f}, {q['1']:.2f}")
-            # i_optimal, 60, 15.1, 0.428, 38.5, 0.40, 1.73
-            # i_optimal, 48, 14.3, 0.602, 31.5, 0.56, 2.65
-            # d_optimal, 60, 17.9, 0.599, 63.5, 0.61, 1.05
-            # d_optimal, 48, 16.6, 1.11, 31.1, 1.10, 2.68
+            # i_optimal, 60, 23.7, 0.428, 38.5, 0.40, 1.73
+            # i_optimal, 48, 22.3, 0.602, 31.5, 0.56, 2.65
+            # d_optimal, 60, 28.0, 0.599, 63.5, 0.61, 1.05
+            # d_optimal, 48, 25.9, 1.11, 31.1, 1.10, 2.68
             fig.add_scatter(x=[float(k) for k in q], y=list(q.values()),
                             mode="lines+markers",
                             line=dict(color=colour, dash=dash, width=width),
@@ -238,25 +238,25 @@ design has the lower average prediction variance.
         - :math:`\downarrow` FDS median
         - :math:`\downarrow` FDS max
     *   - I-optimal, n = 60
-        - 15.1
+        - 23.7
         - 0.428
         - 38.5
         - 0.40
         - 1.73
     *   - I-optimal, n = 48
-        - 14.3
+        - 22.3
         - 0.602
         - 31.5
         - 0.56
         - 2.65
     *   - D-optimal, n = 60
-        - 17.9
+        - 28.0
         - 0.599
         - 63.5
         - 0.61
         - 1.05
     *   - D-optimal, n = 48
-        - 16.6
+        - 25.9
         - 1.11
         - 31.1
         - 1.10
