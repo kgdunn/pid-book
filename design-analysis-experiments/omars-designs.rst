@@ -278,16 +278,18 @@ model matrix, and take its rank:
 	    return np.column_stack(columns)
 
 	factors = [Factor(name=c, low=-1, high=1) for c in "ABCD"]
-	for n_runs in (19, 21):
-	    design = generate_omars(factors, n_runs=n_runs, model="main_quadratic", random_state=42)
+	for n_runs, model in ((19, "main_quadratic"), (21, "full_second_order")):
+	    design = generate_omars(factors, n_runs=n_runs, model=model, random_state=42)
 	    X = second_order_matrix(design.design[design.factor_names].to_numpy(float))
 	    print(n_runs, X.shape, np.linalg.matrix_rank(X))
 
-	# 19 (19, 15) 14
+	# 19 (19, 15) 13
 	# 21 (21, 15) 15
 
-Nineteen runs give a model matrix with fifteen columns and rank fourteen, one short, so the model
-cannot be fitted. Twenty-one runs, the frontier for four factors, give rank fifteen. Judge
+Nineteen runs give a model matrix with fifteen columns and rank thirteen, so the model cannot be
+fitted. No choice of points rescues it: equation :eq:`eq-omars-rank-bound` caps every nineteen-run
+foldover in four factors at rank fourteen, and ``generate_omars`` refuses to build one for the full
+second-order model. Twenty-one runs, the frontier, built for that model, give rank fifteen. Judge
 estimability from the rank of the model matrix, not from the determinant of the information matrix.
 
 .. figure:: ../figures/doe/omars-estimability-frontier.png
@@ -474,8 +476,8 @@ parameters of the full second-order model, and two runs short of the twenty-one 
 asks for. Nothing goes wrong at the bench and none of the data is wasted. The shortfall shows up
 at the analysis stage.
 
-At nineteen runs two quadratics are confounded with three interactions, so the full second-order
-model cannot be fitted. What nineteen runs do support is main effects and pure quadratics, nine
+At nineteen runs some quadratics are confounded with interactions, so the full second-order model
+cannot be fitted. What nineteen runs do support is main effects and pure quadratics, nine
 parameters with ten degrees of freedom for error, and the main effects stay clean of every
 second-order term.
 
