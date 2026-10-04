@@ -125,12 +125,13 @@ log scale.
 	:width: 760px
 	:align: center
 
-	The current recipe, and what one run of it gives. Left: the temperature setpoint through the
-	ten-day batch, with all four combinations of the low and high hold temperature and downshift day in
-	grey; pH is held at 7.1 throughout. Right: for each of the twenty replicate batches, each with its
-	own disturbance draw, the titer minus that of the same batch with no disturbance. The departures
-	build through the growth phase and the ramp, and their spread at harvest is the 0.2308 g/L standard
-	deviation the study measures its effects against.
+	The current recipe, and what one run of it gives. Left: the temperature setpoint through
+	the ten-day batch, with all four combinations of the low and high hold temperature and
+	downshift day in grey; pH is held at 7.1 throughout. Right: for each of the twenty
+	replicate batches, each with its own disturbance draw, the titer minus that of the same
+	batch with no disturbance. The departures build through the growth phase and the ramp,
+	and their spread at harvest is the 0.2308 g/L standard deviation the study measures its
+	effects against.
 
 Choosing the run count
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -213,7 +214,8 @@ thirteen; all are tried.
 	block = np.full(len(coded), -1.0)
 	for p in best_split:
 	    block[list(pairs[p])] = 1.0
-	print(f"{best_r:#.4g}")   # 0.2829, the largest |r| between the run indicator and any second-order column
+	# the largest |r| between the block indicator and any second-order column
+	print(f"{best_r:#.4g}")   # 0.2829
 
 Three centre runs are added so that each parallel run carries two, placed about a third and two
 thirds of the way through its run order rather than together. The run order within a parallel run
@@ -271,8 +273,8 @@ gets its own disturbance draw.
 
 	lot = {1: config, 2: dataclasses.replace(config, feed_substrate=0.88 * config.feed_substrate)}
 	seeds = np.random.default_rng(2026).integers(1 << 30, size=len(plan))
-	plan["titer"] = [run_batch(lot[int(r.parallel_run)], r.hold_temp, r.shift_day, r.pH, r.feed_rate,
-	                           int(s))
+	plan["titer"] = [run_batch(lot[int(r.parallel_run)], r.hold_temp, r.shift_day, r.pH,
+	                           r.feed_rate, int(s))
 	                 for r, s in zip(plan.itertuples(), seeds)]
 	plan["log_titer"] = np.log(plan["titer"])
 	print(f"{plan['titer'].min():#.4g} {plan['titer'].max():#.4g}")   # 4.056 9.085
@@ -318,7 +320,8 @@ parallel-run indicator are exactly orthogonal, so neither steals from the other.
 
 .. code-block:: python
 
-	C = np.column_stack([(plan[n] - f.low) / (f.high - f.low) * 2 - 1 for n, f in zip(names, factors)])
+	C = np.column_stack([(plan[n] - f.low) / (f.high - f.low) * 2 - 1
+	                     for n, f in zip(names, factors)])
 	second_run = np.where(plan["parallel_run"] == 2, 1.0, 0.0)
 	X = np.column_stack([np.ones(len(plan)), second_run, C])
 	b = np.linalg.lstsq(X, plan["log_titer"], rcond=None)[0]
@@ -442,7 +445,8 @@ does not mention, stays at 7.1.
 
 	terms = [("m", names.index(m)) for m in result.active_main_effects]
 	terms += [("q", names.index(q[:-2])) for q in result.active_quadratics]
-	terms += [("i", tuple(names.index(v) for v in it.split(":"))) for it in result.active_interactions]
+	terms += [("i", tuple(names.index(v) for v in it.split(":")))
+	          for it in result.active_interactions]
 
 	def model_matrix(terms, C):
 	    C = np.atleast_2d(np.asarray(C, float))
@@ -507,7 +511,7 @@ titer at any recipe is a single number.
 	print({n: f"{v:#.4g}" for n, v in decode(best.x).items()})
 	# {'hold_temp': '29.52', 'shift_day': '2.624', 'pH': '7.100', 'feed_rate': '0.07000'}
 
-	for j in (1, 0):                         # the recommendation, with one setting moved to its best
+	for j in (1, 0):            # the recommendation, with one setting moved to its best
 	    x_one = x_rec.copy()
 	    x_one[j] = best.x[j]
 	    print(names[j], f"{truth(x_one):#.4g}")
@@ -644,7 +648,8 @@ process, fitted over a five-level grid of the region:
 	full = [("m", j) for j in range(4)] + [("q", j) for j in range(4)]
 	full += [("i", pair) for pair in itertools.combinations(range(4), 2)]
 	grid = np.array(list(itertools.product(np.linspace(-1, 1, 5), repeat=4)))
-	b_true = np.linalg.lstsq(model_matrix(full, grid), np.log([truth(x) for x in grid]), rcond=None)[0]
+	b_true = np.linalg.lstsq(model_matrix(full, grid), np.log([truth(x) for x in grid]),
+	                         rcond=None)[0]
 	X_full = model_matrix(full, C)
 	b_fit = np.linalg.lstsq(X_full, plan["log_titer_adj"], rcond=None)[0]
 	r = plan["log_titer_adj"] - X_full @ b_fit
@@ -715,7 +720,8 @@ that term, shows why:
 	    X = model_matrix(full, levels)
 	    return np.linalg.inv(X.T @ X)[5, 5]   # column 5 is hold_temp^2
 
-	print([f"{quadratic_variance(n):#.4g}" for n in (21, 27, 31)])   # ['0.5367', '0.4215', '0.2446']
+	print([f"{quadratic_variance(n):#.4g}" for n in (21, 27, 31)])
+	# ['0.5367', '0.4215', '0.2446']
 
 The variance factor falls as runs are added, and the curvature is found far more often than at 21
 runs. The 27-run and 31-run designs both find the feed rate, the interaction and the

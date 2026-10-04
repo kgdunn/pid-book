@@ -10,9 +10,9 @@ interactions. What if you can afford a few more runs and would like to estimate 
 interactions better, or you want a design that sits deliberately between the bare economy of a
 DSD and the full richness of a central composite design?
 
-That spectrum is exactly what :index:`OMARS designs <pair: OMARS design; experiments>`
-(Orthogonal Minimally Aliased Response Surface designs, Núñez Ares and Goos, 2020) provide. The
-defining property generalises the property that makes the DSD work: in an OMARS design the main effects are
+That spectrum is exactly what :index:`OMARS designs <pair: OMARS design; experiments>` (Orthogonal
+Minimally Aliased Response Surface designs, Núñez Ares and Goos, 2020) provide. The defining
+property generalises the property that makes the DSD work: in an OMARS design the main effects are
 orthogonal to one another *and* to every second-order effect, both quadratics and two-factor
 interactions. The name records exactly that: **o**\ rthogonal (main effects clean of each other),
 **m**\ inimally **a**\ liased (main effects clean of the second-order effects), **r**\ esponse
