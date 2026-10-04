@@ -593,6 +593,57 @@ generated the data <DOE-omars-study-true-model>` lists. A team that wanted this 
 sensitive would run more centre points, or accept, as here, that it is a check rather than a
 verdict.
 
+How close the study came to the true process
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The recipe is right where the data were clear and off where they were not. Each setting's
+distance from the true optimum is printed below, with the same distance as a percentage of the
+current recipe's value:
+
+.. code-block:: python
+
+	rec, opt = decode(x_rec), decode(best.x)
+	for n in names:
+	    print(f"{n:9s} {rec[n] - opt[n]:+.3f} {100 * (rec[n] - opt[n]) / current[n]:+.1f}%")
+	gap = truth(x_rec) + best.fun
+	print(f"titer     {gap:+.3f} {100 * gap / truth(np.zeros(4)):+.1f}%")
+	# hold_temp +0.610 +2.0%
+	# shift_day -0.624 -22.7%
+	# pH        +0.000 +0.0%
+	# feed_rate +0.000 +0.0%
+	# titer     -0.406 -5.5%
+
+The feed rate and pH are where the true optimum puts them. The hold is 0.610 °C too warm and the
+downshift 0.624 days too early, so the titer falls 0.406 g/L short of the best, 5.5% of the
+current recipe's 7.436 g/L.
+
+The fitted model is then set against the best second-order approximation of the undisturbed
+process, fitted over a five-level grid of the region:
+
+.. code-block:: python
+
+	full = [("m", j) for j in range(4)] + [("q", j) for j in range(4)]
+	full += [("i", pair) for pair in itertools.combinations(range(4), 2)]
+	grid = np.array(list(itertools.product(np.linspace(-1, 1, 5), repeat=4)))
+	b_true = np.linalg.lstsq(model_matrix(full, grid), np.log([truth(x) for x in grid]), rcond=None)[0]
+	X_full = model_matrix(full, C)
+	b_fit = np.linalg.lstsq(X_full, plan["log_titer_adj"], rcond=None)[0]
+	r = plan["log_titer_adj"] - X_full @ b_fit
+	df_fit = len(r) - X_full.shape[1]
+	se_fit = np.sqrt(r @ r / df_fit * np.diag(np.linalg.inv(X_full.T @ X_full)))
+	real = np.abs(b_true[1:]) > 1e-6
+	flagged = np.abs(b_fit[1:]) > stats.t.ppf(0.975, df_fit) * se_fit[1:]
+	same_sign = np.sign(b_fit[1:]) == np.sign(b_true[1:])
+	print(real.sum(), same_sign[real].sum(), flagged.sum(), (flagged & ~real).sum())   # 10 10 5 0
+	q = 4 + names.index("shift_day")      # the downshift-day quadratic
+	print(f"{b_true[q + 1]:#.4g} {b_fit[q + 1]:#.4g}")   # -0.06627 -0.008206
+
+The one-step fit gives the right sign to all ten terms of that approximation that are not zero,
+and the five it flags at the 5% level are all real: the study declared nothing the process does
+not have. Its misses are effects too small for their standard errors at thirty batches. The one
+that costs titer is the downshift-day curvature, estimated at an eighth of its true size, which
+lets the recommended downshift run to the edge of the region.
+
 .. _DOE-omars-study-fewer-runs:
 
 What the run count buys
@@ -637,9 +688,6 @@ hold-temperature quadratic, the diagonal entry of :math:`(\mathbf{X}^T\mathbf{X}
 that term, shows why:
 
 .. code-block:: python
-
-	full = [("m", j) for j in range(4)] + [("q", j) for j in range(4)]
-	full += [("i", pair) for pair in itertools.combinations(range(4), 2)]
 
 	def quadratic_variance(n_runs):
 	    """Variance factor of the hold-temperature quadratic in the full second-order model."""
