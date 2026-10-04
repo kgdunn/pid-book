@@ -183,10 +183,11 @@ Building the campaign
 
 The 27 runs are thirteen half-rows, their thirteen mirror images, and one centre run. The two
 parallel runs are weeks apart, so anything that differs between them, a new lot of feed medium
-in this study, moves the titer of every batch in the second parallel run. That shift must not be
-confused with a factor effect, and a foldover makes that easy to arrange: keep each
-half-row with its mirror image in the same parallel run, and every main effect sums to zero
-within each parallel run, whichever way the pairs are divided.
+in this study, moves the titer of every batch in the second parallel run. Each parallel run is
+therefore a *block*, a group of runs that share conditions the study does not control, and the
+design is run in two blocks. The shift between them must not be confused with a factor effect,
+and a foldover makes that easy to arrange: keep each half-row with its mirror image in the same
+block, and every main effect sums to zero within each block, whichever way the pairs are divided.
 
 .. code-block:: python
 
@@ -201,9 +202,9 @@ within each parallel run, whichever way the pairs are divided.
 	    seen.update((i, j))
 	print(len(pairs), int(is_centre.sum()))   # 13 mirror pairs, 1 centre run
 
-The second-order columns do not sum to zero within a parallel run, so the split of the thirteen
-pairs into seven and six is chosen to keep the parallel-run indicator as nearly uncorrelated with
-the quadratics and interactions as it can be. There are 1716 ways to choose seven pairs from
+The second-order columns do not sum to zero within a block, so the split of the thirteen pairs into
+seven and six is chosen to keep the block indicator as nearly uncorrelated with the quadratics and
+interactions as it can be. There are 1716 ways to choose seven pairs from
 thirteen; all are tried.
 
 .. code-block:: python
