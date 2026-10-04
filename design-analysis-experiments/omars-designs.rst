@@ -508,7 +508,8 @@ Three worked examples
 
 The table is read while the design is still a plan on paper. The first two examples show the
 kinds of question it settles, and the third works through a budget that lands short of the
-frontier.
+frontier. :ref:`A worked OMARS study <DOE-omars-worked-study>` then runs one design from plan to
+recommended recipe.
 
 **Six factors in seventeen runs.** The cell is ``Quad df=4``: all six main effects and all six
 quadratics are estimable, with four degrees of freedom to test them, so curvature can be judged

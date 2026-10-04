@@ -669,23 +669,80 @@ follow the recipe the fitted model recommends, and read the true titer there.
 	three of the real effects active. The Box-Behnken and face-centred central composite
 	designs, both 27 runs, are placed beside the 27-run OMARS in both plots.
 
-Every point is two hundred campaigns, each drawing fresh disturbances and scored by the true
-titer at the recipe its analysis recommended.
+.. list-table:: Gain in titer over the current recipe at each campaign's recommended recipe, and how
+	often three real effects were declared, over two hundred campaigns per design.
+	:header-rows: 1
+	:widths: 30 12 12 12 11 12 11
 
-The two designs below the frontier vary most from one campaign to the next. The 13-run design
-leaves the median campaign exactly where it started, having found nothing it could act on, and
-its worst campaign loses 1.973 g/L. The 17-run design finds the feed rate in 94% of campaigns
-and gains 0.7165 g/L at the median, but its worst campaign loses 3.246 g/L, because a design
-that finds the feed rate without the curvature sends the hold temperature to an edge of the
-region.
+	* - Design
+	  - Median gain, g/L
+	  - 10th percentile, g/L
+	  - Worst, g/L
+	  - Feed rate, %
+	  - Hold x downshift, %
+	  - Hold curvature, %
+	* - OMARS, 13 runs
+	  - 0
+	  - -0.8496
+	  - -1.973
+	  - 14
+	  - 67
+	  - 30
+	* - OMARS, 17 runs
+	  - 0.7165
+	  - -0.8967
+	  - -3.246
+	  - 94
+	  - 35
+	  - 21
+	* - OMARS, 21 runs
+	  - 0.1181
+	  - -0.02070
+	  - -0.8178
+	  - 83
+	  - 78
+	  - 13
+	* - OMARS, 27 runs
+	  - 0.9494
+	  - 0.1181
+	  - -1.655
+	  - 91
+	  - 100
+	  - 85
+	* - OMARS, 31 runs
+	  - 1.001
+	  - 0.5388
+	  - -0.3901
+	  - 100
+	  - 100
+	  - 85
+	* - Box-Behnken, 27 runs
+	  - 1.199
+	  - 0.1181
+	  - -2.810
+	  - 99
+	  - 41
+	  - 77
+	* - Face-centred central composite, 27 runs
+	  - 0.9424
+	  - 0.1818
+	  - -1.584
+	  - 91
+	  - 100
+	  - 88
 
-The 21-run design, at the estimability frontier, can fit the full second-order model, yet its
-median campaign gains only 0.1181 g/L. It finds the feed rate and the hold-temperature by
-downshift-day interaction in most campaigns, but the hold-temperature curvature in only 13%.
-Without that curvature the fitted model has its best point in a corner of the region, and the
-corner it picks is barely better than today's recipe. The variance factor of the
-hold-temperature quadratic, the diagonal entry of :math:`(\mathbf{X}^T\mathbf{X})^{-1}` for
-that term, shows why:
+* **13 and 17 runs** vary most between campaigns. A design that finds the feed rate without the
+  hold-temperature curvature sends the hold to an edge of the region.
+* **21 runs**, the frontier, fits the full model but finds the hold-temperature curvature in only
+  13% of campaigns; its variance factor for that term is the largest of the three ``Full`` sizes.
+* **27 and 31 runs** find all three effects in 85% of campaigns or more; the four extra runs mainly
+  raise the lower tail.
+* **Box-Behnken** has the highest median but finds the interaction in 41% of campaigns; missing it
+  leaves the downshift at today's setting, which here lies nearer the true optimum.
+* **Face-centred central composite** is close to the 27-run OMARS design throughout.
+
+The variance factor of the hold-temperature quadratic, the diagonal entry of
+:math:`(\mathbf{X}^T\mathbf{X})^{-1}` for that term, at the three ``Full`` sizes:
 
 .. code-block:: python
 
@@ -698,23 +755,6 @@ that term, shows why:
 
 	print([f"{quadratic_variance(n):#.4g}" for n in (21, 27, 31)])
 	# ['0.5367', '0.4215', '0.2446']
-
-The variance factor falls as runs are added, and the curvature is found far more often than at 21
-runs. The 27-run and 31-run designs both find the feed rate, the interaction and the
-hold-temperature curvature in 85% of campaigns or more. The 31-run design, with the smaller variance
-factor, also narrows the spread: its median campaign gains 1.001 g/L against 0.9494 g/L at 27 runs,
-and its worst campaign of two hundred loses 0.3901 g/L against 1.655 g/L. Here the four extra runs
-change the lower tail more than the median.
-
-The two classical 27-run designs, beside the 27-run OMARS design:
-
-* **Box-Behnken:** the highest median, 1.199 g/L, and the widest spread, with a worst campaign
-  of 2.810 g/L lost. It finds the hold-temperature by downshift-day interaction in 41% of
-  campaigns, against 100% for OMARS; missing it leaves the downshift at today's setting, which
-  here happens to lie nearer the true optimum.
-* **Face-centred central composite:** finds the interaction every time, and its distribution is
-  close to the OMARS design's in every percentile.
-* The three are comparable at the median and differ in the tails.
 
 .. _DOE-omars-study-true-model:
 
@@ -741,6 +781,61 @@ analysis:
 * **correctly declared** no pH effect;
 * **missed** the downshift-day curvature, which sent the downshift to the edge of the region,
   and the downshift-day by feed-rate interaction.
+
+.. _DOE-omars-study-theory:
+
+How each result traces back to the OMARS properties
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Each result of this study follows from a property set out in :ref:`OMARS designs
+<DOE-omars-designs>`, and the one costly miss follows from the model rather than the design. Two
+checks make that concrete: the feed-rate estimate in the one-step, staged and marginal fits, and
+the power to detect the true downshift-day curvature, against the error the analysis measures and
+against the replicate noise alone.
+
+.. code-block:: python
+
+	print(f"{b_fit[4]:.4f} {bs[1]:.4f} {b_marginal[3]:.4f}")   # 0.1018 0.1018 0.1018
+	X_full = model_matrix(full, C)
+	r = plan["log_titer_adj"] - X_full @ b_fit
+	df_full = len(r) - X_full.shape[1]
+	c = np.linalg.inv(X_full.T @ X_full)[6, 6]           # the downshift-day quadratic
+	f_crit = stats.f.ppf(0.95, 1, df_full)
+	for sigma in (np.sqrt(r @ r / df_full), np.log(reps).std(ddof=1)):
+	    nc = (b_true[6] / sigma) ** 2 / c                # noncentrality of the F test
+	    print(f"{sigma:#.4g} {1 - stats.ncf.cdf(f_crit, 1, df_full, nc):.3f}")
+	    # 0.1030 0.290
+	    # 0.03070 0.997
+
+.. list-table::
+	:header-rows: 1
+	:widths: 45 55
+
+	* - In this study
+	  - The property, from 5.16
+	* - 27 runs fit all fifteen terms with 12 error degrees of freedom
+	  - A foldover with one centre run fits the full model from :math:`k^2 + k + 1 = 21` runs;
+	    27 runs is the ``Full df=12`` cell (:ref:`estimability frontier
+	    <DOE-omars-estimability-frontier>`)
+	* - Mirror pairs kept in one block leave the block orthogonal to every main effect
+	  - A run and its mirror image differ only in sign (:ref:`mirror-image pairs
+	    <DOE-omars-estimability-frontier>`)
+	* - The feed-rate estimate is the same, 0.1018, in all three fits
+	  - Main effects are orthogonal to every second-order term (:ref:`OMARS designs
+	    <DOE-omars-designs>`)
+	* - Strong heredity drops the hold-temperature terms
+	  - Heredity can drop the terms that locate an optimum (:ref:`analysis
+	    <DOE-analysing-economical-designs>`)
+	* - The 13- and 17-run designs find the hold x downshift interaction less often
+	  - In a ``Quad`` cell only :math:`h - k` interactions, two and four here, can join the model
+	    (:ref:`reading the table <DOE-omars-reading-the-table>`)
+	* - The downshift-day curvature is missed
+	  - Power for a stated effect size (:ref:`nine measures <DOE-omars-metric-choice>`)
+
+The one miss comes from the model, not the design. A second-order model cannot follow the
+simulator exactly, so the error the analysis measures, 0.1030 on the log scale, is more than
+three times the replicate noise, 0.03070. That lowers the power to find the downshift-day
+curvature from 0.997 to 0.290.
 
 **Readings**
 
