@@ -36,7 +36,7 @@ find 7,933 basic designs, which become 55,531 once zero to six centre runs are a
 For a given number of factors the catalogue holds many designs of different run sizes, and they
 trade off against one another: a larger design estimates more of the second-order effects, with
 lower correlation among them and more power, at the cost of more runs. The
-:ref:`definitive screening design <DOE-definitive-screening-designs>` is the smallest member of the
+:ref:`definitive screening design <DOE-definitive-screening-designs>` sits at the small end of the
 family; at the other extreme the face-centred central composite and Box-Behnken designs are
 themselves OMARS designs, so the largest members coincide with the standard response surface
 designs. There are many criteria that can be used to select between them. It is not a simple
@@ -44,10 +44,13 @@ lookup, and that is the topic of the :ref:`spectrum below <DOE-design-spectrum>`
 :ref:`Judging and comparing designs <DOE-judging-and-comparing-designs>`.
 
 Most of the catalogue is foldover designs, built as the DSD was by folding a base matrix over its
-own sign-flipped copy. The clean main effects do not depend on that construction: all odd design
-moments through order three are set to zero, so the non-foldover members have equally clean main
-effects. The family has since been extended to mixed-level designs, three-level quantitative
-factors together with two-level categorical ones, and to orthogonally blocked designs.
+own sign-flipped copy. That construction is sufficient for clean main effects but not necessary:
+the requirement is that all odd design moments through order three are zero, so the non-foldover
+members have equally clean main effects, and they can estimate more two-factor interactions
+jointly than a foldover of the same size (Goos, 2025). Centre runs can be added to any member
+without disturbing these properties. The family has since been extended to mixed-level designs,
+three-level quantitative factors together with two-level categorical ones (Núñez Ares, Schoen and
+Goos, 2023), and to orthogonally blocked designs (Núñez Ares and Goos, 2023).
 
 **Readings**
 
@@ -57,6 +60,12 @@ factors together with two-level categorical ones, and to orthogonally blocked de
 * Goos, P.: "OMARS designs for factor screening and response surface experimentation in one
   step: A review", *WIREs Computational Statistics*, **17**, e70018, 2025.
   `doi:10.1002/wics.70018 <https://doi.org/10.1002/wics.70018>`__
+* Núñez Ares, J., Schoen, E.D. and Goos, P.: "Orthogonal minimally aliased response surface
+  designs for three-level quantitative factors and two-level categorical factors", *Statistica
+  Sinica*, **33**, 107--126, 2023.
+* Núñez Ares, J. and Goos, P.: "Blocking OMARS designs and definitive screening designs",
+  *Journal of Quality Technology*, **55**, 489--509, 2023.
+  `doi:10.1080/00224065.2023.2196035 <https://doi.org/10.1080/00224065.2023.2196035>`__
 
 .. _DOE-design-spectrum:
 
@@ -71,7 +80,7 @@ At the rich end sit the classical response surface designs, the :ref:`central co
 <DOE_central_composite_designs>` and :ref:`Box-Behnken <DOE-box-behnken-designs>` designs: enough
 runs to estimate the full
 second-order model with little or no aliasing, often with the near-rotatable prediction
-behaviour those designs are prized for. In the face-centred case these classical designs are
+behaviour those designs are chosen for. In the face-centred case these classical designs are
 themselves OMARS designs, the strongest and largest members of the family, so the spectrum is
 really one continuous family rather than three separate boxes.
 
@@ -125,10 +134,11 @@ factorial designs shows what you give up for a given number of factors and runs.
 :ref:`resolution <DOE-design-resolution>`, the ability to tell main effects apart from
 interactions, and the table maps a budget onto the ordered scale of resolution III, IV and V.
 
-It is natural to want the same table for OMARS designs, but it is not possible. Working towards it,
-however, leads to a surprising answer. An OMARS design has its main effects orthogonal to each
-other *and* to every second-order term at every size in the family, which is what the "orthogonal"
-in the name records, so resolution is constant and cannot be what the table reports.
+It is natural to want the same table for OMARS designs, but it is not possible, and the reason
+shows what such a table can report instead. An OMARS design has its main effects orthogonal to
+each other *and* to every second-order term at every size in the family, which is what
+"orthogonal" and "minimally aliased" in the name record, so resolution is constant and cannot be
+what the table reports.
 
 What varies instead is the model. The run count decides how much of the second-order model can be
 fitted at all, and it is not the count the parameters suggest.
@@ -156,7 +166,10 @@ then adds a centre run:
 	\mathbf{D} = \begin{bmatrix} \mathbf{H} \\ -\mathbf{H} \\ \mathbf{0} \end{bmatrix},
 	\qquad N = 2h + 1
 
-so :math:`N` is always odd. A row of :math:`\mathbf{H}` and its sign-flipped copy are a
+so :math:`N` is odd. A foldover can carry no centre run or several; the counts below then shift by
+one run, and one centre run is the arrangement that reaches them with the fewest runs, so it is the
+one this section and the trade-off table assume. A row of :math:`\mathbf{H}` and its sign-flipped
+copy are a
 :index:`mirror-image pair <pair: mirror-image pair; experiments>`. This is the construction behind
 most of the OMARS catalogue, and behind the :ref:`definitive screening design
 <DOE-definitive-screening-designs>`, where :math:`\mathbf{H}` is a conference matrix.
@@ -197,7 +210,9 @@ counts the terms the data can tell apart, so for every foldover design
 
 Reaching this bound requires the :math:`h + 1` even rows to be distinct and linearly independent,
 and :math:`\mathbf{H}` to have full column rank. A two-level design fails the first condition,
-since every run there has :math:`x_i^2 = 1`. Designs in the OMARS catalogue reach the bound.
+since every run there has :math:`x_i^2 = 1`. A three-level foldover built for the full
+second-order model reaches the bound; the nineteen-run design in the code below, built for a
+smaller model, falls one short of it.
 
 Equation :eq:`eq-omars-rank-bound` puts the full second-order model out of reach until
 :math:`h + 1 \ge 1 + k(k+1)/2`, that is :math:`h \ge k(k+1)/2`, and therefore until
@@ -287,10 +302,39 @@ model matrix, and take its rank:
 	# 21 (21, 15) 15
 
 Nineteen runs give a model matrix with fifteen columns and rank thirteen, so the model cannot be
-fitted. No choice of points rescues it: equation :eq:`eq-omars-rank-bound` caps every nineteen-run
+fitted. No foldover rescues it: equation :eq:`eq-omars-rank-bound` caps every nineteen-run
 foldover in four factors at rank fourteen, and ``generate_omars`` refuses to build one for the full
 second-order model. Twenty-one runs, the frontier, built for that model, give rank fifteen. Judge
 estimability from the rank of the model matrix, not from the determinant of the information matrix.
+
+The frontier is a property of the foldover construction, not of OMARS designs as such. The
+nineteen-run design below, found by a computer search, is not a foldover: only six of its eighteen
+non-centre runs form mirror-image pairs. Its main effects are still orthogonal to each other and to
+every second-order column, so it is an OMARS design, and it estimates the full second-order model.
+
+.. code-block:: python
+
+	nonfoldover = np.array([
+	    [-1, -1, 0, -1], [-1, -1, 0, 1], [-1, 0, -1, 1], [-1, 0, 1, -1], [-1, 1, -1, -1],
+	    [-1, 1, 1, 1], [0, -1, -1, -1], [0, -1, 0, 0], [0, -1, 1, 1], [0, 0, 0, 0],
+	    [0, 1, -1, 1], [0, 1, 0, 0], [0, 1, 1, -1], [1, -1, -1, 1], [1, -1, 1, -1],
+	    [1, 0, -1, -1], [1, 0, 1, 1], [1, 1, 0, -1], [1, 1, 0, 1]], dtype=float)
+	X19 = second_order_matrix(nonfoldover)
+	G = X19[:, 1:5].T @ X19                       # main effects against every column
+	G[:, 1:5] -= np.diag(np.diag(G[:, 1:5]))      # ignore each main effect against itself
+	print(np.abs(G).max(), np.linalg.matrix_rank(X19))   # 0.0 15
+
+	for M in (X19, X):                            # X is still the 21-run foldover from above
+	    c = np.diag(np.linalg.inv(M.T @ M))
+	    print(len(M), f"{c[5:9].max():#.4g} {c[9:].max():#.4g}")
+	# 19 10.25 2.000
+	# 21 0.6800 0.1533
+
+It pays for the two runs it saves. The largest variance factor, the diagonal entry of
+:math:`(\mathbf{X}^T\mathbf{X})^{-1}` that multiplies :math:`\sigma^2` to give a coefficient's
+variance, is 10.25 for its quadratics and 2.000 for its interactions, against 0.6800 and 0.1533 in
+the twenty-one-run foldover. The frontier, and the trade-off table built on it below, therefore
+describe foldover designs with one centre run, which is how ``generate_omars`` builds them.
 
 .. figure:: ../figures/doe/omars-estimability-frontier.png
 	:align: center
@@ -327,7 +371,8 @@ table:
 	standard errors, tests or power.
 
 Nothing falls between ``Satd`` at :math:`2k + 1` runs and ``Quad`` at :math:`2k + 3`. The run count
-between them is even, and a foldover has :math:`N = 2h + 1` runs, so no design of that size exists.
+between them is even, and the table lists foldovers with one centre run, which have
+:math:`N = 2h + 1` runs.
 
 ``Quad`` does not mean the interactions have to stay out of the model, only that they cannot all
 come in. Adding one to the model spends one of the distinct even rows, of which a foldover has
@@ -385,19 +430,18 @@ report come from ``process_improve``:
 	model the run budget makes estimable and the error degrees of freedom left to test it.
 	The outlined cells are the estimability frontier :math:`N = k^2 + k + 1`, the first
 	``Full`` cell in each column. Two standard designs are marked on the row of their own
-	run count: ``DSD`` for the definitive screening design, the smallest member of the
-	family, and ``BBD``, in green, for the Box-Behnken design. The Box-Behnken cell closes
+	run count: ``DSD`` for the definitive screening design, near the small end of each
+	column, and ``BBD``, in green, for the Box-Behnken design. The Box-Behnken cell closes
 	its column, since every row below it would repeat ``Full`` on more runs.
 
 Each cell carries the capability class and the error degrees of freedom: the spare runs left after
 fitting, from which the run-to-run noise :math:`\sigma^2` is estimated, and on which every test and
 confidence interval rests. Six points to read off the table:
 
-	*	**A column runs from its DSD mark to its BBD mark**, which is the whole span
-		of the family for that factor count: the definitive screening design is the smallest
-		member and the Box-Behnken design is the standard response surface design that closes
-		it. Below the ``BBD`` cell a column is blank, because every further row would say
-		``Full`` again on more runs.
+	*	**A column runs from about its DSD mark to its BBD mark**: the definitive screening
+		design sits at or near the smallest size listed, and the Box-Behnken design is the
+		standard response surface design that closes the column. Below the ``BBD`` cell a
+		column is blank, because every further row would say ``Full`` again on more runs.
 
 	*	**Down a column capability only improves, and across a row it only worsens**, so the
 		boundary between the classes is a staircase.
@@ -405,10 +449,11 @@ confidence interval rests. Six points to read off the table:
 	*	**The step up to** ``Full`` **in each column is the estimability frontier**: 13, 21,
 		31, 43 and 57 runs for three to seven factors.
 
-	*	**A blank above the** ``BBD`` **mark is not a design at all**, rather than a poor
-		one. A foldover has :math:`N = 2h + 1` runs, so an even budget cannot be one, and a
-		budget below :math:`2k + 1` cannot hold the main effects and the quadratics. Cells
-		below the ``BBD`` are just ``Full`` designs with extra degrees of freedom.
+	*	**A blank above the** ``BBD`` **mark is outside the table**, not a poor design. A
+		budget below :math:`2k + 1` cannot hold the main effects and the quadratics, and an
+		even budget is not a foldover with one centre run. OMARS designs of an even size do
+		exist, with no centre run, with two, or without the foldover structure; the table
+		does not cover them.
 
 	*	**Error degrees of freedom only compare between cells with the same tag**, since the
 		tag is what fixes the model being fitted. At 43 runs, six factors show
@@ -521,9 +566,9 @@ which effects are confounded with which, and two-level fractions nest, so a larg
 a smaller one and extra runs can only break confounding. Neither holds for OMARS designs.
 
 The OMARS cells therefore report a capability class and the error degrees of freedom. Both are
-statements about *estimability*, the same species as resolution, and both are monotone in the run
-count for the same reason. Quality metrics still separate designs of a given size, which is what
-:ref:`DOE-omnibus-comparison` does with them.
+statements about *estimability*, the same kind of statement as resolution, and both are monotone
+in the run count for the same reason. Quality metrics still separate designs of a given size,
+which is what :ref:`DOE-omnibus-comparison` does with them.
 
 .. _DOE-omars-metric-choice:
 
@@ -547,9 +592,9 @@ of those six are the *alphabetic optimality criteria*, each a single summary of
 * :math:`A/p`, the average coefficient variance. Each fitted coefficient has a variance, the
   square of the standard error a regression package prints beside it;
   :math:`A = \mathrm{tr}(\mathbf{M}^{-1})` sums those variances and :math:`A/p` averages them.
-* :math:`D = |\mathbf{M}|^{1/p}`, the joint precision of all :math:`p` coefficients at once. It
-  is inversely proportional to the volume of their joint confidence region, and it is the only
-  one of the five that accounts for how the estimates covary.
+* :math:`D = |\mathbf{M}|^{1/p}`, the joint precision of all :math:`p` coefficients at once. The
+  volume of their joint confidence region is proportional to :math:`|\mathbf{M}|^{-1/2}`, so a
+  larger :math:`D` means a smaller region.
 * :math:`E = \lambda_{\min}(\mathbf{M})`, the smallest eigenvalue of :math:`\mathbf{M}`. Some
   combinations of the coefficients are estimated precisely and others poorly; the worst one has
   variance :math:`1/E`, so :math:`E` is the worst case matching the average :math:`A/p` reports.
@@ -590,9 +635,10 @@ For a coefficient with variance :math:`\sigma^2 c` the test statistic follows a 
 :math:`\lambda = (|\beta|/\sigma)^2 / c`, where :math:`c` is the matching diagonal entry of
 :math:`\mathbf{M}^{-1}`. Reading one value in full: at nineteen runs with one centre run the best
 attainable :math:`c` for a quadratic is 0.2619, so its standard error is
-:math:`\sqrt{0.2619}\,\sigma = 0.5118\sigma`; the expected :math:`t` statistic for a one-sigma
-curvature is :math:`1/0.5118 = 1.954`, against a critical value of 2.262 at nine degrees of freedom,
-so the test falls short more often than not and the power is 0.4154.
+:math:`\sqrt{0.2619}\,\sigma = 0.5118\sigma`. A one-sigma curvature therefore sits
+:math:`1/0.5118 = 1.954` standard errors from zero, which is the non-centrality of its :math:`t`
+statistic, against a critical value of 2.262 at nine degrees of freedom, so the test falls short
+more often than not and the power is 0.4154.
 
 .. code-block:: python
 
@@ -737,21 +783,20 @@ apart, or power for detecting an effect of a stated size.
 Analysing data from these designs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-One last point, and it is easy to get wrong. Because these designs are deliberately economical
-and carry structured aliasing, you should *not* simply throw the data at a least squares fit of
-the full second-order model. Two things go wrong if you do. The model is often not estimable at
-all, so the :math:`\mathbf{X}^T\mathbf{X}` matrix is singular and cannot be inverted. For four
-factors, for example, the full quadratic model has :math:`1 + 4 + 4 + 6 = 15` terms (an
-intercept, four main effects, four quadratics, and six two-factor interactions), while the
-nine-run definitive screening design has nine runs and the thirteen-run OMARS design has
-thirteen, so neither can fit it. As :ref:`the estimability frontier
-<DOE-omars-estimability-frontier>` shows, the run count is not the binding constraint either: a
-nineteen-run foldover in four factors has four runs to spare against those fifteen terms and
-still cannot estimate them, because twenty-one runs are needed. And even when the model
-can be fitted, a generic stepwise or penalised
-regression treats every column alike and can let the entangled second-order effects leak into,
-and bias, the main-effect estimates, throwing away the orthogonality the design was constructed
-to provide.
+Data from these economical designs call for an analysis that uses their structure, rather than a
+least-squares fit of the full second-order model or a generic search over all its terms.
+
+The full model is often not estimable, so the :math:`\mathbf{X}^T\mathbf{X}` matrix is singular
+and cannot be inverted. In four factors it has :math:`1 + 4 + 4 + 6 = 15` terms, more than the
+nine-run definitive screening design or a thirteen-run OMARS design provides. More runs than terms
+is not enough either: as :ref:`the estimability frontier <DOE-omars-estimability-frontier>` shows,
+a nineteen-run foldover in four factors still cannot estimate those fifteen terms.
+
+A generic stepwise or penalised regression does not bias the main effects, which the design makes
+orthogonal to every second-order column, but it ignores the structure that makes the analysis
+simple. It searches all the columns together, so its error estimate absorbs any active
+second-order effect it leaves out, and it chooses among second-order terms that are correlated
+with each other as though they were not.
 
 The remedy is a *design-based* analysis that exploits the structure we built in. It proceeds in
 stages: estimate the main effects first, where the design guarantees they are clean; recover
@@ -785,7 +830,7 @@ be told apart. The workflow is:
              v
     (4)  SELECT the active second-order effects, limited by how
          many are jointly estimable, and optionally guided by
-         factor heredity ( an interaction is admitted only if its
+         effect heredity ( an interaction is admitted only if its
            parent main effects are active )
              |
              v
@@ -795,24 +840,27 @@ Three of the steps need a word of explanation.
 
 **Step 0** checks that the analysis can start at all. A *saturated* design, one with no spare runs,
 leaves nothing with which to estimate the noise :math:`\sigma^2`, so there are no standard errors,
-no tests and no power. Below the :ref:`estimability frontier <DOE-omars-estimability-frontier>`
-the coefficients themselves have no unique solution. That is why the check is on the rank of the
-model matrix and not on the run count.
+no tests and no power. In a foldover below the :ref:`estimability frontier
+<DOE-omars-estimability-frontier>` the coefficients themselves have no unique solution. That
+is why the check is on the rank of the model matrix and not on the run count.
 
 **Step 1** relies on the orthogonality property. The main effects are unaliased with every
 second-order term, so their estimates are unbiased whichever interactions or quadratics are truly
 active, and they can be analysed on their own.
 
 **Step 4** is where the design's one weakness is managed. The second-order effects are correlated
-among themselves, so only a limited number can be estimated together. Factor heredity, which
+among themselves, so only a limited number can be estimated together. Effect heredity, which
 admits an interaction only when its parent main effects are active, is one rule for narrowing the
 candidates. The alternative is to keep every second-order effect as a candidate and let the
 F-tests choose.
 
-The staged procedure is available in ``process_improve`` as ``analyze_omars()``. It takes any
-coded two- or three-level design with its measured responses, carries out the stages above, and
-returns the clean main effects, the pooled error, the overall test for second-order activity and
-the selected second-order effects.
+The staged procedure is that of Jones and Nachtsheim (2017) for definitive screening designs, as
+extended to OMARS designs by Hameed, Núñez Ares and Goos (2023). It is available in
+``process_improve`` as ``analyze_omars()``, which accepts any design in two- or three-level
+quantitative factors, although its stages rely on the main effects being orthogonal to the
+second-order terms, as they are in an OMARS design. It carries out the stages above and returns
+the main effects, the pooled error, the overall test for second-order activity and the selected
+second-order effects.
 
 Heredity in step 4 is an option, not the default. With the defaults
 (``interaction_heredity="none"`` and ``quadratic_heredity="none"``) every quadratic and every
@@ -824,13 +872,9 @@ second-order variation is no longer significant. The other settings are:
 * ``interaction_heredity="weak"``: at least one parent main effect must be active.
 * ``quadratic_heredity="strong"``: a quadratic is admitted only if its own main effect is active.
 
-At an optimum the linear effect of a factor is close to zero, so strong heredity can discard the
-very terms that locate the optimum. :ref:`A worked OMARS study <DOE-omars-worked-study>` shows
-such a case.
-
-The whole sequence, from choosing the run count to scoring the recommended recipe against a
-known optimum, is carried out on a simulated fed-batch bioreactor in :ref:`A worked OMARS study
-<DOE-omars-worked-study>`.
+When a factor's optimum lies near the centre of its range, its linear effect is small, so strong
+heredity can drop the terms that locate the optimum. :ref:`A worked OMARS study
+<DOE-omars-worked-study>` shows this on a simulated bioreactor.
 
 **Readings**
 
@@ -840,3 +884,6 @@ known optimum, is carried out on a simulated fed-batch bioreactor in :ref:`A wor
 * Hameed, M.S.I., Núñez Ares, J. and Goos, P.: "Analysis of data from orthogonal minimally
   aliased response surface designs", *Journal of Quality Technology*, **55**, 366--384, 2023.
   `doi:10.1080/00224065.2022.2151530 <https://doi.org/10.1080/00224065.2022.2151530>`__
+* Goos, P.: "OMARS designs for factor screening and response surface experimentation in one
+  step: A review", *WIREs Computational Statistics*, **17**, e70018, 2025.
+  `doi:10.1002/wics.70018 <https://doi.org/10.1002/wics.70018>`__
