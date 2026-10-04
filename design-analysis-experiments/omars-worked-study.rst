@@ -151,13 +151,13 @@ Choosing the run count
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The four-factor column of the :ref:`trade-off table <DOE-omars-trade-off-table>` offers
-``Quad`` from 11 runs and ``Full`` from 21, with the Box-Behnken design at 27. The team has
+``Quad`` from 10 runs and ``Full`` from 21, with the Box-Behnken design at 27. The team has
 no reason to expect the interactions to be absent, and the downshift timing and hold temperature
 are the sort of pair that plausibly interact, so the study needs ``Full``: every two-factor
-interaction in the model. That leaves the choice between 21 runs, the frontier, and 27. The
-upcoming section :ref:`What fewer runs would have bought <DOE-omars-study-fewer-runs>` measures
-that choice. For now we study 27 runs and add three centre runs, for thirty batches in two
-parallel runs.
+interaction in the model. That leaves any size from 21 runs, the frontier, upwards. The upcoming
+section :ref:`What the run count buys <DOE-omars-study-fewer-runs>` compares 21, 27 and 31 runs.
+For now we study 27 runs, the size of the Box-Behnken design, and add three centre runs, for
+thirty batches in two parallel runs.
 
 .. figure:: ../figures/doe/omars-trade-off-column-k4.png
 	:source: doe/omars-trade-off-column-k4.py
@@ -227,7 +227,7 @@ thirteen; all are tried.
 	block = np.full(len(coded), -1.0)
 	for p in best_split:
 	    block[list(pairs[p])] = 1.0
-	print(f"{best_r:#.4g}")   # 0.1409, the largest |r| between the run indicator and any second-order column
+	print(f"{best_r:#.4g}")   # 0.2829, the largest |r| between the run indicator and any second-order column
 
 Three centre runs are added so that each parallel run carries two, placed about a third and two
 thirds of the way through its run order rather than together. The run order within a parallel run
@@ -289,7 +289,7 @@ gets its own disturbance draw.
 	                           int(s))
 	                 for r, s in zip(plan.itertuples(), seeds)]
 	plan["log_titer"] = np.log(plan["titer"])
-	print(f"{plan['titer'].min():#.4g} {plan['titer'].max():#.4g}")   # 4.018 8.882
+	print(f"{plan['titer'].min():#.4g} {plan['titer'].max():#.4g}")   # 4.056 9.085
 
 	is_cp = np.all(np.isclose(plan[names], list(current.values())), axis=1)
 	print(plan.loc[is_cp, ["parallel_run", "titer"]])
@@ -303,7 +303,7 @@ gets its own disturbance draw.
 	22              2  6.538538
 	26              2  6.893483
 
-The titer ranges from 4.018 to 8.882 g/L across the thirty batches, against 7.477 g/L at the
+The titer ranges from 4.056 to 9.085 g/L across the thirty batches, against 7.477 g/L at the
 current recipe: the region is wide enough that some settings are clearly worse and some
 clearly better than what the team runs today. The four centre points, at runs 6, 12, 22 and
 26, average 7.536 g/L in the first parallel run and 6.716 g/L in the second.
@@ -339,7 +339,7 @@ parallel-run indicator are exactly orthogonal, so neither steals from the other.
 	resid = plan["log_titer"] - X @ b
 	df = len(plan) - X.shape[1]
 	se = np.sqrt(resid @ resid / df * np.linalg.inv(X.T @ X)[1, 1])
-	print(f"{b[1]:#.4g} {se:#.4g} {b[1] / se:#.4g} on {df} df")   # -0.1557 0.05810 -2.681 on 24 df
+	print(f"{b[1]:#.4g} {se:#.4g} {b[1] / se:#.4g} on {df} df")   # -0.1470 0.06611 -2.223 on 24 df
 
 	cp = plan[is_cp]
 	t_cp = stats.ttest_ind(cp.loc[cp.parallel_run == 2, "log_titer"],
@@ -348,10 +348,10 @@ parallel-run indicator are exactly orthogonal, so neither steals from the other.
 
 	plan["log_titer_adj"] = plan["log_titer"] - b[1] * second_run
 
-The second parallel run gave titers 0.1557 log units lower, a titer 14.4% below the first, with a
-standard error of 0.05810: a *t* of 2.681 on 24 degrees of freedom. The four centre points on
-their own give almost the same *t*, 2.587, and a *p*-value of 0.12, because they have two
-degrees of freedom to judge it on. The signal is the same size in both; only the design has
+The second parallel run gave titers 0.1470 log units lower, a titer 13.7% below the first, with a
+standard error of 0.06611: a *t* of 2.223 on 24 degrees of freedom. The four centre points on
+their own give a similar *t*, 2.587, and a *p*-value of 0.12, because they have two degrees of
+freedom to judge it on. The signal is the same size in both; only the design has
 the degrees of freedom to call it. The shift is subtracted from the second parallel run's
 responses, and the rest of the analysis works on the adjusted values.
 
@@ -366,11 +366,11 @@ every disturbance switched off, shows what it really was at each of the thirty s
 	                              / run_batch(quiet, *s, random_state=0))
 	                       for s in plan[names].itertuples(index=False)])
 	print(f"{lot_effect.min():#.4g} {lot_effect.max():#.4g} {lot_effect.mean():#.4g}")
-	# -0.1302 -0.009711 -0.09182
+	# -0.1302 -0.007656 -0.09574
 
-The weaker lot lowered log titer by between 0.009711 and 0.1302, depending on the settings. The
-estimate of 0.1557 is about one standard error from the average of 0.09182, and the part of the
-lot effect that varies with the settings stays in the residuals of the analysis.
+The weaker lot lowered log titer by between 0.007656 and 0.1302, depending on the settings. The
+estimate of 0.1470 is within one standard error of the average of 0.09574, and the part of the lot
+effect that varies with the settings stays in the residuals of the analysis.
 
 This is the practical reason to build a block into a design rather than to hope a few
 replicates will reveal one afterwards. Keeping each mirror pair within one block is the scheme
@@ -393,40 +393,38 @@ goes, which gives it more degrees of freedom to test the second-order terms with
 
 	result = analyze_omars(plan[names], plan["log_titer_adj"],
 	                       quadratic_heredity="none", interaction_heredity="none")
-	print(result.active_main_effects)               # ['pH', 'feed_rate']
+	print(result.active_main_effects)               # ['feed_rate']
 	print({n: f"{p:#.4g}" for n, p in result.main_effect_p_values.items()})
-	# {'hold_temp': '0.5054', 'shift_day': '0.6912', 'pH': '0.04018', 'feed_rate': '3.200e-05'}
-	print(result.updated_error_df, f"{result.updated_rmse:#.4g}")   # 17 0.08716
-	print(f"{result.second_order_overall_p_value:#.4g}")          # 0.0004800
+	# {'hold_temp': '0.3976', 'shift_day': '0.3421', 'pH': '0.7741', 'feed_rate': '0.0003220'}
+	print(result.updated_error_df, f"{result.updated_rmse:#.4g}")   # 18 0.09954
+	print(f"{result.second_order_overall_p_value:#.4g}")          # 0.0003900
 	print(result.active_quadratics, result.active_interactions)
-	# ['hold_temp^2'] ['hold_temp:shift_day', 'hold_temp:pH', 'hold_temp:feed_rate']
+	# ['hold_temp^2'] ['hold_temp:shift_day', 'hold_temp:feed_rate']
 
-Two main effects are declared active, the feed rate and pH. The hold temperature's linear effect has
-a *p*-value of 0.5054, not because the hold temperature does not matter, but because the region
-straddles its optimum, so the response goes up and then down across the range and the linear term is
-nearly zero. The two inactive main effects, hold temperature and downshift day, are pooled into the
-error, which rises from fifteen to seventeen degrees of freedom.
+One main effect is declared active, the feed rate. The hold temperature's linear effect has a
+*p*-value of 0.3976, not because the hold temperature does not matter, but because the region
+straddles its optimum, so the response goes up and then down across the range and the linear term
+is small. pH, which has no linear effect in this process, has a *p*-value of 0.7741. The three
+inactive main effects are pooled into the error, which rises from fifteen to eighteen degrees of
+freedom.
 
-pH clears the 5% level only narrowly, at 0.04018. With four main effects each tested at 5%,
-one of them comes out significant by chance in nearly one campaign in five, so a team would
-treat this one as a candidate to confirm rather than as a finding.
-
-The gate on the second-order terms then opens, *p* = 0.00048, and the search selects four of
-the ten: the hold-temperature quadratic and the interactions of hold temperature with the
-downshift day, pH and the feed rate.
+The gate on the second-order terms then opens, *p* = 0.00039, and the search selects three of the
+ten: the hold-temperature quadratic and the interactions of hold temperature with the downshift
+day and the feed rate.
 
 .. figure:: ../figures/doe/omars-worked-study-effects.png
 	:source: doe/omars-worked-study-effects.py
-	:alt: Fifteen coefficients of the full second-order model on log titer, drawn as points with 95% intervals, grouped as main effects, quadratics and two-factor interactions. Six are filled, the terms the staged analysis selects: pH, feed rate, the hold-temperature quadratic and the interactions of hold temperature with downshift day, pH and feed rate.
+	:alt: Fifteen coefficients of the full second-order model on log titer, drawn as points with 95% intervals, grouped as main effects, quadratics and two-factor interactions. Four are filled, the terms the staged analysis selects: feed rate, the hold-temperature quadratic and the interactions of hold temperature with downshift day and feed rate.
 	:width: 700px
 	:align: center
 
 	The full second-order model fitted in one step to the thirty adjusted log titers:
 	fifteen coefficients with their 95% intervals on fifteen residual degrees of freedom.
-	The filled terms are the six the staged analysis selects. Five of them have intervals
-	that exclude zero here; the sixth, the hold-temperature by feed-rate interaction, is
-	admitted by the staged analysis because pooling the inactive terms gives it more
-	degrees of freedom to be tested with.
+	The filled terms are the four the staged analysis selects, and all four have intervals
+	that exclude zero. A fifth interval also excludes zero, the downshift-day by feed-rate
+	interaction, which the staged analysis does not select; the process does have that
+	interaction, as :ref:`the model that generated the data <DOE-omars-study-true-model>`
+	lists.
 
 The heredity option matters here, and in the direction that is easy to get wrong.
 
@@ -434,11 +432,11 @@ The heredity option matters here, and in the direction that is easy to get wrong
 
 	strict = analyze_omars(plan[names], plan["log_titer_adj"],
 	                       quadratic_heredity="strong", interaction_heredity="strong")
-	print(strict.active_quadratics, strict.active_interactions)   # ['pH^2', 'feed_rate^2'] ['pH:feed_rate']
+	print(strict.active_quadratics, strict.active_interactions)   # ['feed_rate^2'] []
 
-Strong heredity admits a second-order term only if its parent main effects are active. Only pH and
-the feed rate qualify, so it offers their quadratics and their interaction, and discards the
-hold-temperature quadratic and all three hold-temperature interactions. The hold temperature's
+Strong heredity admits a second-order term only if its parent main effects are active. Only the
+feed rate qualifies, so it offers the feed-rate quadratic alone, and discards the hold-temperature
+quadratic and both hold-temperature interactions. The hold temperature's
 optimum lies near the centre of its range, so its linear effect is small and the rule discards the
 terms that locate the optimum. The heredity principle in the :ref:`staged workflow
 <DOE-analysing-economical-designs>` is a guide to which of many candidate interactions to prefer,
@@ -448,9 +446,10 @@ contains its optimum, the quadratic and the interactions of that factor are the 
 The recommended recipe, against the truth
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The selected model has seven terms: the intercept, two main effects, one quadratic and three
-interactions. It is refitted, and its maximum found over the region, moving only the factors
-the model mentions, which here is all four.
+The selected model has five terms: the intercept, one main effect, one quadratic and two
+interactions. It is refitted, and its maximum found over the region, moving only the factors the
+model mentions: the hold temperature, the downshift day and the feed rate. pH, which the model
+does not mention, stays at 7.1.
 
 .. code-block:: python
 
@@ -482,17 +481,15 @@ the model mentions, which here is all four.
 	decode = lambda x: {n: f.low + (x[i] + 1) / 2 * (f.high - f.low)
 	                    for i, (n, f) in enumerate(zip(names, factors))}
 	print({n: f"{v:#.4g}" for n, v in decode(x_rec).items()})
-	# {'hold_temp': '30.44', 'shift_day': '2.000', 'pH': '7.300', 'feed_rate': '0.07000'}
-	print(f"{np.exp(-opt.fun):#.4g}")   # 8.898 g/L predicted
+	# {'hold_temp': '30.13', 'shift_day': '2.000', 'pH': '7.100', 'feed_rate': '0.07000'}
+	print(f"{np.exp(-opt.fun):#.4g}")   # 8.662 g/L predicted
 
-The model recommends a hold at 30.44 °C, the downshift starting on day 2.0, pH 7.3 and the feed at
-0.070 L/day per litre, and predicts 8.898 g/L there. Three of the four settings are at the edge of
-the region. The feed rate at its top is what the data say, a strong positive main effect with no
-curvature found. pH at its top follows from the pH main effect, which is a straight line in the
-model, so the optimiser takes it as far as the region allows. The downshift day reaches its lower
-edge through its interaction with hold temperature, with no downshift-day curvature in the model to
-stop it. A recommendation on a boundary is the model saying it does not know the shape of the
-response in that direction.
+The model recommends a hold at 30.13 °C, the downshift starting on day 2.0, pH left at 7.1 and the
+feed at 0.070 L/day per litre, and predicts 8.662 g/L there. Two of the three settings it moves are
+at the edge of the region. The feed rate at its top is what the data say, a strong positive main
+effect with no curvature found. The downshift day reaches its lower edge through its interaction
+with hold temperature, with no downshift-day curvature in the model to stop it. A recommendation on
+a boundary is the model saying it does not know the shape of the response in that direction.
 
 The absence of feed-rate curvature is partly a property of the simulator. From about day 4 its
 culture runs short of substrate:
@@ -517,13 +514,16 @@ titer at any recipe is a single number.
 	best = max((optimize.minimize(lambda x: -truth(x), s, method="Powell", bounds=[(-1, 1)] * 4)
 	            for s in [np.zeros(4), np.array([-1.0, -1, 0, 1]), np.array([-0.5, 0.5, 0, 1])]),
 	           key=lambda r: -r.fun)
-	print(f"{truth(np.zeros(4)):#.4g} {truth(x_rec):#.4g} {-best.fun:#.4g}")   # 7.436 8.303 9.442
+	print(f"{truth(np.zeros(4)):#.4g} {truth(x_rec):#.4g} {-best.fun:#.4g}")   # 7.436 9.037 9.442
 	print({n: f"{v:#.4g}" for n, v in decode(best.x).items()})
 	# {'hold_temp': '29.52', 'shift_day': '2.624', 'pH': '7.100', 'feed_rate': '0.07000'}
 
-	x_ph = x_rec.copy()
-	x_ph[names.index("pH")] = 0.0            # the recommendation, with pH left at 7.1
-	print(f"{truth(x_ph):#.4g}")             # 8.882
+	for j in (1, 0):                         # the recommendation, with one setting moved to its best
+	    x_one = x_rec.copy()
+	    x_one[j] = best.x[j]
+	    print(names[j], f"{truth(x_one):#.4g}")
+	# shift_day 8.653
+	# hold_temp 7.149
 
 	for label, x in (("current", np.zeros(4)), ("best", best.x)):   # pH at 6.9, 7.1 and 7.3
 	    print(label, [f"{truth(np.r_[x[:2], ph, x[3]]):#.4g}" for ph in (-1, 0, 1)])
@@ -541,41 +541,38 @@ titer at any recipe is a single number.
 	  - 7.436
 	  -
 	* - Recommended by the study
-	  - 8.303
-	  - 0.867
-	* - Recommended, with pH left at 7.1
-	  - 8.882
-	  - 1.446
+	  - 9.037
+	  - 1.601
 	* - True best in the region
 	  - 9.442
 	  - 2.006
 
-The study captured 0.867 g/L of the 2.006 g/L that was available, 43%. The feed rate is
-right. The downshift day moved in the right direction, earlier than today's 2.75, but past the
-true optimum at 2.62 to the edge of the region, and the hold is 0.92 °C warmer than the best.
+The study captured 1.601 g/L of the 2.006 g/L that was available, 80%. The feed rate and pH are
+right. The downshift day moved in the right direction, earlier than today's 2.75, but past the true
+optimum at 2.62 to the edge of the region, and the hold is 0.61 °C warmer than the best.
 
-Most of the shortfall is pH. The simulator's pH response is symmetric about 7.1, so the linear pH
-effect the analysis declared does not exist. Its curvature depends on the other factors: at the true
-best recipe pH 7.1 is the optimum, while at the current recipe it is the lowest of the three
-settings. Moving pH to 7.3 on the strength of the linear effect costs 0.579 g/L: the same
-recommendation with pH left at 7.1 gives 8.882 g/L, 72% of what was available. A confirmation run at
-the recommended recipe, with pH at both settings, would have caught this before the recipe changed.
+The remaining shortfall comes from the hold temperature and the downshift day together, not from
+either one. Moving only the downshift day to its best value lowers the titer to 8.653 g/L, and
+moving only the hold temperature lowers it to 7.149 g/L: an early downshift suits a warm hold, so
+the recommendation is a consistent pair on the wrong part of the ridge the interaction draws. The
+model places it there because it has no downshift-day curvature to say where along the ridge the
+peak lies.
 
 .. figure:: ../figures/doe/omars-worked-study-surface.png
 	:source: doe/omars-worked-study-surface.py
-	:alt: Two contour maps of titer over hold temperature and downshift day at pH 7.1 and a feed rate of 0.070 litres per day per litre of starting volume. Left, the seven-term fitted model. Right, the true response with no disturbance. Both mark the current recipe, the recommended recipe and the true best.
+	:alt: Two contour maps of titer over hold temperature and downshift day at pH 7.1 and a feed rate of 0.070 litres per day per litre of starting volume. Left, the five-term fitted model. Right, the true response with no disturbance. Both mark the current recipe, the recommended recipe and the true best.
 	:width: 760px
 	:align: center
 
 	Titer over hold temperature and downshift day, with pH at 7.1 and the feed rate at
-	0.070 L/day per litre. Left: the seven-term model the staged analysis selected, back-transformed
-	from log titer. Right: the simulator with every disturbance switched off. The circle is
-	the current recipe, the square the recipe the study recommends, and the star the true
-	best in the region. The recommendation also sets pH to 7.3, which this slice at pH 7.1
-	does not show. The fitted model has no downshift-day curvature, so its best downshift day sits
-	on the edge of the region; the true response has an interior optimum at day 2.62.
+	0.070 L/day per litre, which is where the recommendation puts both. Left: the five-term model
+	the staged analysis selected, back-transformed from log titer. Right: the simulator with every
+	disturbance switched off. The circle is the current recipe, the square the recipe the study
+	recommends, and the star the true best in the region. The fitted model has no downshift-day
+	curvature, so its best downshift day sits on the edge of the region; the true response has an
+	interior optimum at day 2.62.
 
-The four centre points supply a pure-error estimate and a test of whether the seven-term
+The four centre points supply a pure-error estimate and a test of whether the five-term
 model is adequate.
 
 .. code-block:: python
@@ -588,19 +585,22 @@ model is adequate.
 	F = ((rs @ rs - pure) / df_lof) / (pure / df_pe)
 	p_lof = 1 - stats.f.cdf(F, df_lof, df_pe)
 	print(f"{np.sqrt(pure / df_pe):#.4g} {F:#.4g} on ({df_lof}, {df_pe}) df, p = {p_lof:#.4g}")
-	# 0.04326 4.958 on (20, 3) df, p = 0.1060
+	# 0.04072 6.600 on (22, 3) df, p = 0.07240
 
-The lack-of-fit *F* is 4.958, with a *p*-value of 0.106: not significant at 5%, on three
-degrees of freedom of pure error. A team that wanted this test to have teeth would run more
-centre points, or accept, as here, that it is a check rather than a verdict.
+The lack-of-fit *F* is 6.600, with a *p*-value of 0.0724: not significant at 5%, on three degrees
+of freedom of pure error, although the model does leave out real effects, as :ref:`the model that
+generated the data <DOE-omars-study-true-model>` lists. A team that wanted this test to be more
+sensitive would run more centre points, or accept, as here, that it is a check rather than a
+verdict.
 
 .. _DOE-omars-study-fewer-runs:
 
-What fewer runs would have bought
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+What the run count buys
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Thirty batches in six to seven weeks is a real cost, and the question a team will ask is whether
-seventeen, or thirteen, would have done. The simulator can answer it, because the same study
+seventeen, or thirteen, would have done, and whether a few more runs would have paid for
+themselves. The simulator can answer it, because the same study
 can be rerun at every size with fresh disturbance draws, and each rerun scored the same way:
 follow the recipe the fitted model recommends, and read the true titer there.
 
@@ -621,7 +621,7 @@ follow the recipe the fitted model recommends, and read the true titer there.
 Every point is two hundred campaigns, each drawing fresh disturbances and scored by the true
 titer at the recipe its analysis recommended.
 
-Below 27 runs the outcome varies far more from one campaign to the next. The 13-run design
+The two designs below the frontier vary most from one campaign to the next. The 13-run design
 leaves the median campaign exactly where it started, having found nothing it could act on, and
 its worst campaign loses 1.973 g/L. The 17-run design finds the feed rate in 94% of campaigns
 and gains 0.717 g/L at the median, but its worst campaign loses 3.246 g/L, because a design
@@ -648,31 +648,27 @@ that term, shows why:
 	    X = model_matrix(full, levels)
 	    return np.linalg.inv(X.T @ X)[5, 5]   # column 5 is hold_temp^2
 
-	print([f"{quadratic_variance(n):#.4g}" for n in (21, 27, 31)])   # ['0.5367', '0.2239', '0.2839']
+	print([f"{quadratic_variance(n):#.4g}" for n in (21, 27, 31)])   # ['0.5367', '0.4215', '0.2446']
 
-The 27-run design estimates that quadratic with less than half the variance of the 21-run
-design, and with twice the degrees of freedom for error. It finds the feed rate, the
-interaction and the hold-temperature curvature in 85% of campaigns or more, gains 1.009 g/L at
-the median, and its worst campaign of two hundred loses 0.635 g/L.
-
-Four more runs do not help here. The 31-run design gains 0.657 g/L at the median and finds the
-hold-temperature curvature in only 44% of campaigns. Its variance factor for that quadratic is a
-little larger than the 27-run design's, while it estimates the downshift-day quadratic more
-precisely, and the search, which admits only a few second-order terms, picks the downshift-day
-curvature in 49% of campaigns instead. Which design occupies a cell matters, as :ref:`Nine
-measures down one column <DOE-omars-metric-choice>` showed for the three-factor column; here it
-decides which curvature the study finds.
+The variance factor falls as runs are added, and the curvature is found far more often than at 21
+runs. The 27-run and 31-run designs both find the feed rate, the interaction and the
+hold-temperature curvature in 85% of campaigns or more. The 31-run design, with the smaller variance
+factor, also narrows the spread: its median campaign gains 1.001 g/L against 0.9494 g/L at 27 runs,
+and its worst campaign of two hundred loses 0.3901 g/L against 1.655 g/L. Here the four extra runs
+change the lower tail more than the median.
 
 The two classical designs at 27 runs sit alongside. The Box-Behnken design has the higher
 median, 1.199 g/L, and the wider spread in both directions: a 90th percentile of 1.677 g/L
 and a worst campaign of 2.810 g/L lost. It finds the interaction in 41% of campaigns
-against 98% for the OMARS design, and campaigns that miss the interaction leave the downshift
+against 100% for the OMARS design, and campaigns that miss the interaction leave the downshift
 day at its current setting, which in this process happens to be nearer the true optimum
 than the edge the interaction sends it to. The face-centred central composite design finds
-the interaction every time and gains 0.942 g/L at the median. On this process and this
-region the three 27-run designs are comparable at the middle of their distributions; they
-differ in the tails, and a team choosing among them would be choosing how much downside to
-accept.
+the interaction every time and gains 0.942 g/L at the median, close to the 27-run OMARS design in
+every percentile. On this process and this region the three 27-run designs are comparable at the
+middle of their distributions; they differ in the tails, and a team choosing among them would be
+choosing how much downside to accept.
+
+.. _DOE-omars-study-true-model:
 
 The model that generated the data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -686,17 +682,18 @@ between 31 and 33 °C. The timing of the downshift interacts with the hold tempe
 reason: a cold hold arrests growth, so it pays to downshift late and build biomass first, while a
 warm hold keeps some growth going and favours an early downshift. And pH acts through a cardinal
 model that is symmetric about 7.1, so across 6.9 to 7.3 it has no linear effect and no
-linear-by-linear interaction with any other factor. Its curvature does depend on the other factors,
-and at the recommended recipe it is why moving pH to 7.3 cost 0.579 g/L.
+linear-by-linear interaction with any other factor. Its curvature does depend on the other factors:
+pH 7.1 is the best of the three settings at the true best recipe and the worst at the current
+recipe.
 
 The disturbance channel that gave every batch its own outcome is an autocorrelated multiplier on the
 growth and production rates, with a correlation time comparable to the batch length, at 0.7 of the
 simulator's default. The lot change was represented as a 12% reduction in the feed medium's
 substrate concentration. None of these were visible to the analysis. From thirty batches it
 recovered the feed rate, the hold-temperature curvature and the interactions of hold temperature
-with the downshift day and the feed rate. It missed the downshift-day curvature, which is why the
-downshift day went to the edge of the region, and it admitted a linear pH effect and a
-hold-temperature by pH interaction, neither of which the symmetric pH response can produce.
+with the downshift day and the feed rate, and it declared no pH effect, which matches the symmetric
+pH response. It missed the downshift-day curvature, which is why the downshift day went to the edge
+of the region, and the downshift-day by feed-rate interaction, which the one-step fit flagged.
 
 **Readings**
 

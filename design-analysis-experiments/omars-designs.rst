@@ -166,10 +166,11 @@ then adds a centre run:
 	\mathbf{D} = \begin{bmatrix} \mathbf{H} \\ -\mathbf{H} \\ \mathbf{0} \end{bmatrix},
 	\qquad N = 2h + 1
 
-so :math:`N` is odd. A foldover can carry no centre run or several; the counts below then shift by
-one run, and one centre run is the arrangement that reaches them with the fewest runs, so it is the
-one this section and the trade-off table assume. A row of :math:`\mathbf{H}` and its sign-flipped
-copy are a
+so :math:`N` is odd. A foldover can carry no centre run or several. With none or two, :math:`N` is
+even and the second-order terms see :math:`N/2` distinct rows rather than :math:`(N+1)/2`, so an
+even run count supports the same model as the odd count one run below it, with one more spare run.
+One centre run reaches each threshold below with the fewest runs, so this section assumes it. A row
+of :math:`\mathbf{H}` and its sign-flipped copy are a
 :index:`mirror-image pair <pair: mirror-image pair; experiments>`. This is the construction behind
 most of the OMARS catalogue, and behind the :ref:`definitive screening design
 <DOE-definitive-screening-designs>`, where :math:`\mathbf{H}` is a conference matrix.
@@ -334,7 +335,7 @@ It pays for the two runs it saves. The largest variance factor, the diagonal ent
 :math:`(\mathbf{X}^T\mathbf{X})^{-1}` that multiplies :math:`\sigma^2` to give a coefficient's
 variance, is 10.25 for its quadratics and 2.000 for its interactions, against 0.6800 and 0.1533 in
 the twenty-one-run foldover. The frontier, and the trade-off table built on it below, therefore
-describe foldover designs with one centre run, which is how ``generate_omars`` builds them.
+describe foldover designs, which is how ``generate_omars`` builds them.
 
 .. figure:: ../figures/doe/omars-estimability-frontier.png
 	:align: center
@@ -361,7 +362,7 @@ table:
 	from this one design.
 
 ``Quad``
-	:math:`N \ge 2k + 3`. Main effects and pure quadratics are estimable, with degrees of freedom
+	:math:`N \ge 2k + 2`. Main effects and pure quadratics are estimable, with degrees of freedom
 	left over to test them. The two-factor interactions are in the *design*, still orthogonal to
 	the main effects, but not in the fitted *model*.
 
@@ -370,9 +371,8 @@ table:
 	nothing is left with which to estimate :math:`\sigma^2`, so there are point estimates and no
 	standard errors, tests or power.
 
-Nothing falls between ``Satd`` at :math:`2k + 1` runs and ``Quad`` at :math:`2k + 3`. The run count
-between them is even, and the table lists foldovers with one centre run, which have
-:math:`N = 2h + 1` runs.
+The smallest ``Quad`` design has :math:`2k + 2` runs: the saturated design with a second centre
+run, which adds one error degree of freedom and no new distinct row.
 
 ``Quad`` does not mean the interactions have to stay out of the model, only that they cannot all
 come in. Adding one to the model spends one of the distinct even rows, of which a foldover has
@@ -383,11 +383,12 @@ come in. Adding one to the model spends one of the distinct even rows, of which 
 
 	\text{interactions that can be added} \; = \; h - k \; = \; \frac{N-1}{2} - k
 
-A seventeen-run design in four factors can therefore carry four of its six interactions, and a
-thirteen-run one only two. Which of them to bring in is the question the staged analysis of
-:ref:`Analysing data from these designs <DOE-analysing-economical-designs>` answers, and the ones
-left out still bias those that come in. Setting :math:`h - k \ge k(k-1)/2` recovers
-:math:`N \ge k^2 + k + 1`, so ``Full`` is exactly the point where every interaction fits at once.
+for an odd :math:`N`, and the same for the even count one run above it. A seventeen-run design in
+four factors can therefore carry four of its six interactions, and a thirteen-run one only two.
+Which of them to bring in is the question the staged analysis of :ref:`Analysing data from these
+designs <DOE-analysing-economical-designs>` answers, and the ones left out still bias those that
+come in. Setting :math:`h - k \ge k(k-1)/2` recovers :math:`N \ge k^2 + k + 1`, so ``Full`` is
+exactly the point where every interaction fits at once.
 
 The tags sort alphabetically in decreasing order of capability. The table and the single-cell
 report come from ``process_improve``:
@@ -416,8 +417,8 @@ report come from ``process_improve``:
 	31                                      Full 10          Quad 18          Quad 16
 	37                                      Full 16          Quad 24          Quad 22
 	43                                      Full 22          Full 15          Quad 28
-	46                                      Full 25 | BBD
-	54                                                       Full 26 | BBD
+	46                                      Full 25 | BBD    Full 18          Quad 31
+	54                                                       Full 26 | BBD    Quad 39
 	57                                                                        Full 21
 	62                                                                        Full 26 | BBD
 
@@ -449,11 +450,11 @@ confidence interval rests. Six points to read off the table:
 	*	**The step up to** ``Full`` **in each column is the estimability frontier**: 13, 21,
 		31, 43 and 57 runs for three to seven factors.
 
-	*	**A blank above the** ``BBD`` **mark is outside the table**, not a poor design. A
-		budget below :math:`2k + 1` cannot hold the main effects and the quadratics, and an
-		even budget is not a foldover with one centre run. OMARS designs of an even size do
-		exist, with no centre run, with two, or without the foldover structure; the table
-		does not cover them.
+	*	**A blank above the** ``BBD`` **mark is a budget below** :math:`2k + 1`, which cannot
+		hold the main effects and the quadratics. The default rows are odd, foldovers with one
+		centre run. The 46- and 54-run rows, added for the Box-Behnken designs, show how an
+		even budget reads: the model of the odd budget one run below, with one more error
+		degree of freedom.
 
 	*	**Error degrees of freedom only compare between cells with the same tag**, since the
 		tag is what fixes the model being fitted. At 43 runs, six factors show
@@ -476,7 +477,7 @@ For a single budget the same information is reported in words, with the neighbou
 	OMARS: 17 runs, 4 factors
 	  Quad: main effects and pure quadratics, with error degrees of freedom to test them
 	  Model: main_quadratic (9 parameters), 8 error df
-	  Thresholds for 4 factors: Satd 9, Quad 11, Full 21 runs.
+	  Thresholds for 4 factors: Satd 9, Quad 10, Full 21 runs.
 	  4 more runs would reach Full (all two-factor interactions estimable).
 
 Quality metrics are absent from the table. D-efficiency, the largest correlation among the
