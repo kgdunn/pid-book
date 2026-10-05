@@ -107,11 +107,10 @@ The :ref:`two-level trade-off table <DOE_design_trade_off_BHH_272>` maps a budge
 runs onto :ref:`resolution <DOE-design-resolution>` III, IV or V, the ability to tell main effects
 apart from interactions.
 
-It is natural to want the same table for OMARS designs, but it is not possible, and the reason
-shows what such a table can report instead. An OMARS design has its main effects orthogonal to
-each other *and* to every second-order term at every size, which is what "orthogonal" and
-"minimally aliased" in the name record, so resolution is constant and cannot be what the table
-reports.
+It is natural to want the same table for OMARS designs, but it is not possible. An OMARS design
+has its main effects orthogonal to each other *and* to every second-order term at every size,
+which is what "orthogonal" and "minimally aliased" in the name record, so resolution is constant
+and cannot be what the table reports.
 
 What varies with the run count is the model: how much of the second-order model can be fitted at
 all. That is not the count the parameters suggest.
