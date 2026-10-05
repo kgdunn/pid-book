@@ -477,7 +477,8 @@ This section and the next explain the cell contents; the table can be used witho
 A cell of the :ref:`two-level table <DOE_design_trade_off_BHH_272>` gives the best resolution
 available at its size, not that of every design of that size: of the 165 sixteen-run,
 seven-factor designs in :ref:`DOE-trade-off-table-in-code`, four reach the resolution IV the cell
-shows and 161 have resolution III.
+shows and 161 have resolution III. Of those four, the table prints the minimum-aberration design.
+A cell is therefore one design chosen from several that fit the same budget.
 
 The OMARS analogue would be the best quality obtainable at each size. Three properties of the
 designs, not of any particular measure, stand in the way:
@@ -497,8 +498,12 @@ magnitude, and two-level fractions nest, so extra runs can only break confoundin
 for OMARS designs.
 
 Their cells therefore report a capability class and the error degrees of freedom: statements about
-*estimability*, like resolution, and monotone in the run count. Quality metrics still separate
-designs of one size, as in :ref:`DOE-omnibus-comparison`.
+*estimability*, like resolution, and monotone in the run count.
+
+An OMARS cell stands for many more designs than a two-level one: in three factors at twenty-one
+runs with one centre run there are 1859. The cell says what that budget can estimate; which of the
+designs to run is a separate choice, made with quality metrics as in :ref:`DOE-omnibus-comparison`
+and :ref:`DOE-omars-metric-choice`.
 
 .. _DOE-omars-metric-choice:
 
