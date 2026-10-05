@@ -138,65 +138,48 @@ then adds a centre run:
 	\mathbf{D} = \begin{bmatrix} \mathbf{H} \\ -\mathbf{H} \\ \mathbf{0} \end{bmatrix},
 	\qquad N = 2h + 1
 
-so :math:`N` is odd. A row of :math:`\mathbf{H}` and its sign-flipped copy are a
+A row of :math:`\mathbf{H}` and its sign-flipped copy are a
 :index:`mirror-image pair <pair: mirror-image pair; experiments>`. This construction is behind
 most of the OMARS catalogue and the :ref:`definitive screening design
 <DOE-definitive-screening-designs>`, where :math:`\mathbf{H}` is a conference matrix.
 
-With no centre run or two, :math:`N` is even and the second-order terms see :math:`N/2` distinct
-rows rather than :math:`(N+1)/2`. An even run count therefore supports the same model as the odd
-count one below it, with one more spare run. One centre run reaches each threshold below with the
-fewest runs, so this section assumes it.
-
-Flipping the sign of *every* factor multiplies a term of total degree :math:`d` by
-:math:`(-1)^d`, so the main effects (**odd** terms) change sign and the intercept, quadratics
-:math:`x_i^2` and interactions :math:`x_i x_j` (**even** terms) do not; odd and even describe the
-term, not the factor. This is the split behind the *odd design moments* of the :ref:`introduction
-to OMARS designs <DOE-omars-designs>`, and why that condition stops at order three.
-
-A run and its mirror image differ only in sign, so they take *identical* values in every even term.
-Five runs in two factors show it:
+A mirror-image pair gives *identical* values in every second-order column, since
+:math:`(-x_i)^2 = x_i^2` and :math:`(-x_i)(-x_j) = x_i x_j`. Five runs in two factors show it:
 
 .. code-block:: text
 
-	 run     x1  x2 |   1   x1²  x2²  x1x2     <- the even columns
+	 run     x1  x2 |   1   x1²  x2²  x1x2     <- intercept and second-order columns
 	  H  1   +1  +1 |   1    1    1    +1
 	  H  2   +1  -1 |   1    1    1    -1
 	 -H  3   -1  -1 |   1    1    1    +1      identical to run 1
 	 -H  4   -1  +1 |   1    1    1    -1      identical to run 2
 	  0  5    0   0 |   1    0    0     0
 
-Runs 3 and 4 change sign in the odd columns, which lets the design estimate main effects, but
-repeat runs 1 and 2 exactly in the even columns. The even terms therefore see only :math:`h + 1`
-distinct rows, however many runs the foldover contains. Here that is three rows against four even
-columns, and :math:`x_1^2` and :math:`x_2^2` are the same column; only more distinct rows in
-:math:`\mathbf{H}` separate them.
+Runs 3 and 4 flip sign in the main-effect columns, which is what estimates the main effects, but
+repeat runs 1 and 2 in the other columns. Those columns therefore see only :math:`h + 1` distinct
+rows, however many runs the foldover contains, and :math:`h + 1` rows can separate at most
+:math:`h + 1` terms. Here there are three rows for four columns, and :math:`x_1^2` and
+:math:`x_2^2` are the same column.
 
-So the even terms carry at most :math:`\min\left(h + 1,\, 1 + k(k+1)/2\right)` distinct pieces of
-information and the odd terms at most :math:`k`. The *rank* of the model matrix counts the terms the
-data can tell apart, so for every foldover design
-
-.. math::
-	:label: eq-omars-rank-bound
-
-	\text{rank}(\mathbf{X}) \le k + \min\left(h + 1, \; 1 + \frac{k(k+1)}{2}\right)
-
-The bound is reached when the :math:`h + 1` even rows are linearly independent and
-:math:`\mathbf{H}` has full column rank. A two-level design fails the first condition, since every
-run has :math:`x_i^2 = 1`. A three-level foldover built for the full second-order model reaches the
-bound; the nineteen-run design in the code below, built for a smaller model, falls one short.
-
-Equation :eq:`eq-omars-rank-bound` puts the full second-order model out of reach until
-:math:`h \ge k(k+1)/2`, that is until
+That one count sets the frontier. The intercept, :math:`k` quadratics and :math:`k(k-1)/2`
+interactions are :math:`1 + k(k+1)/2` terms, so the full model needs
+:math:`h + 1 \ge 1 + k(k+1)/2`, that is
 
 .. math::
 	:label: eq-omars-frontier
 
-	N \; \ge \; k^2 + k + 1
+	N = 2h + 1 \; \ge \; k^2 + k + 1
+
+The distinct rows must also be linearly independent. A two-level design never manages it, since
+every non-centre run has :math:`x_i^2 = 1`; a three-level foldover built for the full model does.
 
 We call this threshold, which has no established name, the **estimability frontier**: the smallest
 foldover in which all :math:`p` coefficients of the full second-order model can be estimated
 jointly.
+
+With no centre run or two, :math:`N` is even and there are :math:`N/2` distinct rows, so an even run
+count supports the same model as the odd count one below it, with one more spare run. This section
+assumes one centre run, which reaches each threshold with the fewest runs.
 
 .. list-table:: The estimability frontier, against the parameter count it has to clear.
 	:header-rows: 1
@@ -233,12 +216,7 @@ jointly.
 	    - 21
 	    - 21
 
-The last two columns hold the same number. The frontier exceeds the parameter count by
-
-.. math::
-
-	\left(k^2 + k + 1\right) - \left(1 + 2k + \frac{k(k-1)}{2}\right) = \frac{k(k-1)}{2}
-
+The last two columns hold the same number: the frontier exceeds :math:`p` by :math:`k(k-1)/2`,
 exactly the number of two-factor interactions. So for a foldover, more runs than parameters does
 not make the model estimable; and the smallest design that does, at the frontier, has
 :math:`k(k-1)/2` error degrees of freedom to test it. The four-factor case at nineteen and
@@ -270,9 +248,9 @@ twenty-one runs:
 	# 21 (21, 15) 15
 
 At nineteen runs the rank falls two short of the fifteen columns, so the model cannot be fitted
-despite four spare runs. No foldover rescues it: equation :eq:`eq-omars-rank-bound` caps every
-nineteen-run foldover in four factors at rank fourteen, and ``generate_omars`` refuses to build
-one for the full model. Judge estimability from the rank of the model matrix, not from the
+despite four spare runs. No foldover rescues it: nineteen runs give ten distinct rows against the
+eleven intercept and second-order terms, and ``generate_omars`` refuses to build one for the full
+model. Judge estimability from the rank of the model matrix, not from the
 determinant of the information matrix.
 
 The frontier is a property of the foldover construction, not of OMARS designs as such. The
@@ -340,9 +318,9 @@ The frontier defines three capability classes, each tagged with four characters:
 The smallest ``Quad`` design has :math:`2k + 2` runs: the saturated design with a second centre
 run, which adds one error degree of freedom and no new distinct row.
 
-In a ``Quad`` design the interactions cannot all enter the model, but some can. Each one added
-uses a distinct even row; a foldover has :math:`h + 1` of them and the intercept and quadratics
-use :math:`1 + k`, so
+In a ``Quad`` design the interactions cannot all enter the model, but some can. The same count
+says how many: of the :math:`h + 1` distinct rows the intercept and quadratics use :math:`1 + k`,
+leaving
 
 .. math::
 	:label: eq-omars-spare-interactions
@@ -499,7 +477,8 @@ This section and the next explain the cell contents; the table can be used witho
 A cell of the :ref:`two-level table <DOE_design_trade_off_BHH_272>` gives the best resolution
 available at its size, not that of every design of that size: of the 165 sixteen-run,
 seven-factor designs in :ref:`DOE-trade-off-table-in-code`, four reach the resolution IV the cell
-shows and 161 have resolution III.
+shows and 161 have resolution III. Of those four, the table prints the minimum-aberration design.
+A cell is therefore one design chosen from several that fit the same budget.
 
 The OMARS analogue would be the best quality obtainable at each size. Three properties of the
 designs, not of any particular measure, stand in the way:
@@ -519,8 +498,12 @@ magnitude, and two-level fractions nest, so extra runs can only break confoundin
 for OMARS designs.
 
 Their cells therefore report a capability class and the error degrees of freedom: statements about
-*estimability*, like resolution, and monotone in the run count. Quality metrics still separate
-designs of one size, as in :ref:`DOE-omnibus-comparison`.
+*estimability*, like resolution, and monotone in the run count.
+
+An OMARS cell stands for many more designs than a two-level one: in three factors at twenty-one
+runs with one centre run there are 1859. The cell says what that budget can estimate; which of the
+designs to run is a separate choice, made with quality metrics as in :ref:`DOE-omnibus-comparison`
+and :ref:`DOE-omars-metric-choice`.
 
 .. _DOE-omars-metric-choice:
 
