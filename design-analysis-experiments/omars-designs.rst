@@ -733,6 +733,35 @@ that matches the aim of the study: :math:`A` or :math:`E` for precise coefficien
 :math:`G` for prediction over the region, max :math:`|r|` for keeping the second-order effects
 apart, or power for detecting an effect of a stated size.
 
+.. _DOE-omars-metric-choice-k4:
+
+The same measures with four factors
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+These conclusions do not depend on there being three factors. The four-factor column, drawn the
+same way in the figure below, reads the same: the alphabetic criteria never get worse as runs are
+added, the best attainable max :math:`|r|` still can, and the power row cannot start before the
+:ref:`estimability frontier <DOE-omars-estimability-frontier>` at 21 runs.
+
+Past ten half-rows there are too many four-factor designs of each size to score them all. Those
+points are the best design a search found, a bound on what is attainable rather than the best
+value itself. On the sizes where both are available, the search found the exact best every time.
+
+.. figure:: ../figures/doe/omars-metric-choice-k4.png
+	:align: center
+	:width: 800px
+	:alt: The nine plots of design measures against run count, as in the three-factor figure, for four factors, with filled markers for exact values and open markers for values found by search.
+
+	The nine measures of the three-factor figure, for the four-factor column of the OMARS
+	trade-off table. Filled markers are the best value over every OMARS foldover of that size;
+	open markers, past ten half-rows, are the best design found by search. The nine-run
+	definitive screening design is an orange circle and the 27-run Box-Behnken design a green
+	star.
+
+As at three factors, the Box-Behnken design favours curvature. At 27 runs it matches the best
+max :math:`|r|` and the best quadratic power found at its size, and falls short on the other
+seven measures.
+
 .. _DOE-analysing-economical-designs:
 
 Analysing data from these designs
