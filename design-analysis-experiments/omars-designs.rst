@@ -760,10 +760,6 @@ available, the search found the exact best every time.
 	definitive screening design is an orange circle and the 27-run Box-Behnken design a green
 	star.
 
-As at three factors, the Box-Behnken design favours curvature. At 27 runs it matches the best
-max :math:`|r|` and the best quadratic power found at its size, and falls short on the other
-seven measures.
-
 .. _DOE-analysing-economical-designs:
 
 Analysing data from these designs
