@@ -743,9 +743,11 @@ same way in the figure below, reads the same: the alphabetic criteria never get 
 added, the best attainable max :math:`|r|` still can, and the power row cannot start before the
 :ref:`estimability frontier <DOE-omars-estimability-frontier>` at 21 runs.
 
-Past ten half-rows there are too many four-factor designs of each size to score them all. Those
-points are the best design a search found, a bound on what is attainable rather than the best
-value itself. On the sizes where both are available, the search found the exact best every time.
+Every four-factor design up to 21 runs, a ten-row half-design folded over plus a centre run, was
+scored (up to 22 and 23 runs with two and three centre runs). Beyond that there are too many
+designs of each size to score them all, so those points are the best design a search found, a
+bound on what is attainable rather than the best value itself. On the sizes where both are
+available, the search found the exact best every time.
 
 .. figure:: ../figures/doe/omars-metric-choice-k4.png
 	:align: center
@@ -754,7 +756,7 @@ value itself. On the sizes where both are available, the search found the exact 
 
 	The nine measures of the three-factor figure, for the four-factor column of the OMARS
 	trade-off table. Filled markers are the best value over every OMARS foldover of that size;
-	open markers, past ten half-rows, are the best design found by search. The nine-run
+	open markers, for the larger designs, are the best design found by search. The nine-run
 	definitive screening design is an orange circle and the 27-run Box-Behnken design a green
 	star.
 
