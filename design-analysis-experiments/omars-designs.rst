@@ -475,10 +475,43 @@ What a cell in either table reports
 This section and the next explain the cell contents; the table can be used without them.
 
 A cell of the :ref:`two-level table <DOE_design_trade_off_BHH_272>` gives the best resolution
-available at its size, not that of every design of that size: of the 165 sixteen-run,
-seven-factor designs in :ref:`DOE-trade-off-table-in-code`, four reach the resolution IV the cell
-shows and 161 have resolution III. Of those four, the table prints the minimum-aberration design.
-A cell is therefore one design chosen from several that fit the same budget.
+available at its size, not that of every design of that size. Counting every choice of generators
+gives, for three cells, the number of designs, the best resolution, and how many of the best
+designs have each number of shortest words in their defining relation:
+
+.. code-block:: python
+
+	import functools
+	import operator
+	from collections import Counter
+
+	def regular_fractions(n_base, n_factors):
+	    """Resolution and number of shortest words of every regular two-level fraction."""
+	    columns = [c for r in range(2, n_base + 1)
+	               for c in itertools.combinations(range(n_base), r)]
+	    for generators in itertools.combinations(columns, n_factors - n_base):
+	        words = [frozenset(g) | {n_base + i} for i, g in enumerate(generators)]
+	        lengths = [len(functools.reduce(operator.xor, subset))
+	                   for r in range(1, len(words) + 1)
+	                   for subset in itertools.combinations(words, r)]
+	        yield min(lengths), lengths.count(min(lengths))
+
+	for n_runs, n_factors in ((8, 4), (16, 7), (32, 7)):
+	    found = Counter(regular_fractions(n_runs.bit_length() - 1, n_factors))
+	    best = max(resolution for resolution, _ in found)
+	    at_best = {words: count for (res, words), count in sorted(found.items()) if res == best}
+	    print(n_runs, n_factors, sum(found.values()), best, at_best)
+
+	# 8 4 4 4 {1: 1}
+	# 16 7 165 4 {7: 4}
+	# 32 7 325 4 {1: 40, 2: 25, 3: 30}
+
+With eight runs and four factors there are four designs, and only one, :math:`D = ABC`, reaches
+resolution IV. Of the 165 sixteen-run, seven-factor designs, four reach resolution IV; with seven
+four-letter words each, they are one design with the factors relabelled. At 32 runs and seven
+factors resolution alone does not decide: 95 designs reach resolution IV, and the table prints one
+with *minimum aberration*, the fewest four-letter words (:ref:`DOE-trade-off-table-in-code`). A
+cell is one design chosen from those that fit the same budget.
 
 The OMARS analogue would be the best quality obtainable at each size. Three properties of the
 designs, not of any particular measure, stand in the way:
