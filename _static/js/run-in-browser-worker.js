@@ -112,16 +112,31 @@ def _flush_mpl():
     if plt is not None and getattr(plt.show, "_pid", False) and plt.get_fignums():
         plt.show()
 
+def _display(value):
+    """Show the value of a block's last expression, as a notebook does: the book
+    ends many examples on the answer itself, such as t.ppf(p, df=dof)."""
+    first = value
+    if type(value).__name__ == "ndarray" and value.dtype == object and value.size:
+        first = value.flat[0]  # scatter_matrix returns an array of Axes
+    if value is None or type(first).__module__.partition(".")[0] in ("matplotlib", "seaborn"):
+        return  # a drawing: _flush_mpl shows the figure, and its repr is noise
+    if hasattr(value, "to_plotly_json"):
+        value.show()  # series.plot(...) under the Plotly backend
+    else:
+        print(repr(value))
+
 def run_block(source, filename, datasets):
+    from pyodide.code import eval_code
+
     DATASETS.update(json.loads(datasets))
     FIGURES.clear()
     _patch(source)
     out = io.StringIO()
     error = None
     try:
-        code = compile(source, filename, "exec")
         with contextlib.redirect_stdout(out), contextlib.redirect_stderr(out):
-            exec(code, NAMESPACE)
+            # A trailing ";" hides the value, as in a notebook.
+            _display(eval_code(source, NAMESPACE, return_mode="last_expr", filename=filename))
     except BaseException:
         kind, exc, tb = sys.exc_info()
         frames = [f for f in traceback.extract_tb(tb) if f.filename == filename]
