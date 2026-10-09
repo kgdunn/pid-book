@@ -12,12 +12,24 @@ importScripts(`${PYODIDE_URL}pyodide.js`);
 // Imports that Pyodide does not ship, mapped to what micropip should install.
 // process-improve goes in with deps=False: its wheel pins versions (scikit-learn)
 // newer than the Pyodide distribution, and the ones Pyodide has are enough.
-const MICROPIP = { plotly: ["plotly"], pyDOE3: ["pyDOE3"], openpyxl: ["openpyxl"], tqdm: ["tqdm"] };
+const MICROPIP = {
+  plotly: ["plotly"],
+  pyDOE3: ["pyDOE3"],
+  openpyxl: ["openpyxl"],
+  tqdm: ["tqdm"],
+  seaborn: ["seaborn"],
+};
 const PROCESS_IMPROVE_DEPS = ["numpy", "pandas", "scipy", "scikit-learn", "statsmodels", "patsy", "pydantic", "pyyaml"];
 
-// Modules that import a package inside a function, where find_imports cannot see
-// it, mapped to what Pyodide should load: statsmodels draws plot_acf with matplotlib.
-const LAZY = { "statsmodels.graphics": ["matplotlib"] };
+// Calls that import a package inside a function, where find_imports cannot see
+// it, mapped to what Pyodide should load. statsmodels draws plot_acf with
+// matplotlib, and so does pandas for obj.plot(...), df.hist(), df.boxplot() and
+// pandas.plotting under its default backend. ".plot.hist(" is the Plotly
+// backend's spelling and is left out, so those chapters skip the download.
+const LAZY = [
+  [/statsmodels\.graphics/, ["matplotlib"]],
+  [/\.plot\(|(?<!\.plot)\.hist\(|\.boxplot\(|\bpandas\.plotting\b|\bpd\.plotting\./, ["matplotlib"]],
+];
 
 const SETUP = `
 import base64, contextlib, io, json, sys, traceback
@@ -152,8 +164,8 @@ async function installFor(pyodide, source) {
   // Anything else Pyodide ships (numpy, scipy, pandas, matplotlib, ...).
   const messageCallback = (m) => self.postMessage({ status: m });
   await pyodide.loadPackagesFromImports(source, { messageCallback });
-  for (const [module, packages] of Object.entries(LAZY)) {
-    if (source.includes(module)) await pyodide.loadPackage(packages, { messageCallback });
+  for (const [pattern, packages] of LAZY) {
+    if (pattern.test(source)) await pyodide.loadPackage(packages, { messageCallback });
   }
 }
 
