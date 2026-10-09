@@ -22,11 +22,19 @@
 
   function getWorker(onStatus) {
     if (!worker) {
-      worker = new Worker(new URL("js/run-in-browser-worker.js", STATIC));
+      worker = new Worker(new URL("js/run-in-browser-worker.js", STATIC), { type: "module" });
       worker.onmessage = ({ data }) => {
         if (data.status) return worker.onStatus?.(data.status);
         waiting.get(data.id)(data.result);
         waiting.delete(data.id);
+      };
+      // A worker that cannot start (Python not downloadable, say) answers nothing:
+      // fail every waiting run instead of leaving its button on "Loading Python...".
+      worker.onerror = (event) => {
+        const error = `Could not start Python in this browser: ${event.message || "the download failed"}`;
+        for (const resolve of waiting.values()) resolve({ stdout: "", error, figures: [] });
+        waiting.clear();
+        worker = null;
       };
     }
     worker.onStatus = onStatus;
