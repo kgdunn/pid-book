@@ -127,7 +127,8 @@ async function installFor(pyodide, source) {
       await pyodide.loadPackage(PROCESS_IMPROVE_DEPS);
       extra.push(["tqdm", "pyDOE3", "openpyxl", "plotly"]);
       self.postMessage({ status: "Installing process-improve..." });
-      await pyodide.pyimport("micropip").install("process-improve", { deps: false });
+      // callKwargs: a plain call would pass {deps: false} positionally, as keep_going.
+      await pyodide.pyimport("micropip").install.callKwargs("process-improve", { deps: false });
     } else if (MICROPIP[name]) {
       extra.push(MICROPIP[name]);
     }
