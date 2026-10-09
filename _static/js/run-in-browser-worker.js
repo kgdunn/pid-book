@@ -15,6 +15,10 @@ importScripts(`${PYODIDE_URL}pyodide.js`);
 const MICROPIP = { plotly: ["plotly"], pyDOE3: ["pyDOE3"], openpyxl: ["openpyxl"], tqdm: ["tqdm"] };
 const PROCESS_IMPROVE_DEPS = ["numpy", "pandas", "scipy", "scikit-learn", "statsmodels", "patsy", "pydantic", "pyyaml"];
 
+// Modules that import a package inside a function, where find_imports cannot see
+// it, mapped to what Pyodide should load: statsmodels draws plot_acf with matplotlib.
+const LAZY = { "statsmodels.graphics": ["matplotlib"] };
+
 const SETUP = `
 import base64, contextlib, io, json, sys, traceback
 
@@ -35,11 +39,14 @@ def _patch(source=""):
         if not getattr(bd.BaseFigure.show, "_pid", False):
             from plotly.offline import get_plotlyjs_version
             def show(fig, *args, **kwargs):
+                _flush_mpl()  # a matplotlib figure drawn earlier in the block comes first
                 FIGURES.append({"kind": "plotly", "json": fig.to_json(), "js": get_plotlyjs_version()})
             show._pid = True
             bd.BaseFigure.show = show
             pio.show = show
-    if _wanted("matplotlib", source):
+    # Whenever matplotlib is installed, not only when the block names it: a library
+    # may import it inside a function (statsmodels' plot_acf).
+    if _importable("matplotlib"):
         import matplotlib
         matplotlib.use("Agg", force=True)
         import matplotlib.pyplot as plt
@@ -86,6 +93,13 @@ def _importable(name):
     import importlib.util
     return importlib.util.find_spec(name) is not None
 
+def _flush_mpl():
+    """Show matplotlib figures still open, as a notebook does: plot_acf draws one
+    but never calls plt.show()."""
+    plt = sys.modules.get("matplotlib.pyplot")
+    if plt is not None and getattr(plt.show, "_pid", False) and plt.get_fignums():
+        plt.show()
+
 def run_block(source, filename, datasets):
     DATASETS.update(json.loads(datasets))
     FIGURES.clear()
@@ -100,6 +114,7 @@ def run_block(source, filename, datasets):
         kind, exc, tb = sys.exc_info()
         frames = [f for f in traceback.extract_tb(tb) if f.filename == filename]
         error = "".join(traceback.format_list(frames)) + "".join(traceback.format_exception_only(kind, exc))
+    _flush_mpl()
     return json.dumps({"stdout": out.getvalue(), "error": error, "figures": list(FIGURES)})
 `;
 
@@ -135,7 +150,11 @@ async function installFor(pyodide, source) {
   }
   if (extra.length) await pyodide.pyimport("micropip").install(extra.flat());
   // Anything else Pyodide ships (numpy, scipy, pandas, matplotlib, ...).
-  await pyodide.loadPackagesFromImports(source, { messageCallback: (m) => self.postMessage({ status: m }) });
+  const messageCallback = (m) => self.postMessage({ status: m });
+  await pyodide.loadPackagesFromImports(source, { messageCallback });
+  for (const [module, packages] of Object.entries(LAZY)) {
+    if (source.includes(module)) await pyodide.loadPackage(packages, { messageCallback });
+  }
 }
 
 // Messages are handled one at a time, in order: blocks share a namespace.
