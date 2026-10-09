@@ -32,7 +32,12 @@ extensions = [
 
 # Chapters whose Python examples get a "Run in browser" button (Pyodide). The
 # blocks come from tools/check_code_blocks.py; see my-extensions/run_in_browser.py.
-run_in_browser_chapters = ["data-visualization", "univariate-review", "process-monitoring"]
+run_in_browser_chapters = [
+    "data-visualization",
+    "univariate-review",
+    "process-monitoring",
+    "least-squares-modelling",
+]
 
 # Avoid Subresource Integrity errors for the bundled jQuery.
 jquery_use_sri = False
