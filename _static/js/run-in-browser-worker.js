@@ -120,6 +120,10 @@ def _display(value):
         first = value.flat[0]  # scatter_matrix returns an array of Axes
     if value is None or type(first).__module__.partition(".")[0] in ("matplotlib", "seaborn"):
         return  # a drawing: _flush_mpl shows the figure, and its repr is noise
+    if isinstance(value, dict) and {"data", "layout"} <= value.keys() and _importable("plotly"):
+        _patch("plotly")
+        import plotly.graph_objects as go
+        value = go.Figure(value)  # a figure spec, as process-improve's .to_plotly() returns
     if hasattr(value, "to_plotly_json"):
         value.show()  # series.plot(...) under the Plotly backend
     else:
