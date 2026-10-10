@@ -12,16 +12,22 @@ this extension asks the checker for the blocks rather than finding them again.
 That contract (see ``CLAUDE.md``) says a chapter is one linear script: blocks
 share one namespace and may use names that earlier blocks, on earlier pages of
 the chapter, defined. A reader who lands on a later page and clicks the fifth
-example would otherwise hit a ``NameError``. So the page runs, first and
-quietly, every earlier block of the chapter that has not run yet in this tab,
-and says it did. ``.. code-check: skip`` blocks get no button and are never run.
+example would otherwise hit a ``NameError``. So a click first runs, quietly and
+in reading order, what the example needs and this tab has not run yet, and says
+it did: on the page's first click, the page's *prelude*; then the page's own
+earlier examples. ``block_deps.py`` builds the prelude from the code: the
+earlier examples that give the page's examples the names and global state they
+read, and single statements that stand in for a whole example (an import, a
+constant setting such as the pandas plotting backend). So a click after chapter
+5's OMARS study does not rerun it. ``.. code-check: skip`` blocks get no button
+and are never run.
 
 What is built
 -------------
 * ``_static/run/<chapter>.json``: the chapter's blocks in reading order, with
-  the source of each ``literalinclude``-d script inlined, and the echoed print
+  the source of each ``literalinclude``-d script inlined, the echoed print
   results the checker compares (``# 0.255``), so the page can say whether the
-  reader's run reproduced the book.
+  reader's run reproduced the book, and each page's prelude.
 * ``_static/run/data/<name>``: a copy of every ``openmv.net`` data file the
   chapter reads. Pyodide has no sockets, so the worker sends
   ``pd.read_csv("https://openmv.net/...")`` through the browser's own fetch;
@@ -58,6 +64,8 @@ from typing import TYPE_CHECKING, Any
 from docutils import nodes
 from sphinx.transforms.post_transforms import SphinxPostTransform
 from sphinx.util import logging
+
+from .block_deps import page_preludes
 
 if TYPE_CHECKING:
     from types import ModuleType
@@ -122,10 +130,20 @@ def collect(app: Sphinx) -> None:
                 }
             )
             _DOC_CHAPTER[docname] = unit.name
+        runnable = [i for i, b in enumerate(blocks) if not b["skip"]]
+        preludes = page_preludes(
+            [blocks[i]["source"] for i in runnable], [blocks[i]["doc"] for i in runnable]
+        )
+        # An earlier block, by its index here, or one statement (an import, a setting).
+        pages = {
+            doc: [runnable[step] if isinstance(step, int) else step for step in steps]
+            for doc, steps in preludes.items()
+        }
         urls = sorted({url for b in blocks for url in OPENMV_URL_RE.findall(b["source"])})
         _CHAPTERS[unit.name] = {
             "chapter": unit.name,
             "blocks": blocks,
+            "pages": pages,
             "datasets": {url: f"data/{url.rsplit('/', 1)[1]}" for url in urls},
             "_fetch": checker.fetch_dataset,
         }

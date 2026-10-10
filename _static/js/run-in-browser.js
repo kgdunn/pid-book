@@ -18,29 +18,39 @@
   const waiting = new Map();
   const chapters = new Map(); // chapter -> Promise<manifest>
   const ran = new Map(); // chapter -> Set of block indices already run in this tab
+  const preluded = new Set(); // pages whose prelude has run in this tab
   let busy = false;
 
   function getWorker(onStatus) {
     if (!worker) {
-      worker = new Worker(new URL("js/run-in-browser-worker.js", STATIC));
+      worker = new Worker(new URL("js/run-in-browser-worker.js", STATIC), { type: "module" });
       worker.onmessage = ({ data }) => {
         if (data.status) return worker.onStatus?.(data.status);
         waiting.get(data.id)(data.result);
         waiting.delete(data.id);
+      };
+      // A worker that cannot start (Python not downloadable, say) answers nothing:
+      // fail every waiting run instead of leaving its button on "Loading Python...".
+      worker.onerror = (event) => {
+        const error = `Could not start Python in this browser: ${event.message || "the download failed"}`;
+        for (const resolve of waiting.values()) resolve({ stdout: "", error, figures: [] });
+        waiting.clear();
+        worker = null;
       };
     }
     worker.onStatus = onStatus;
     return worker;
   }
 
-  function execute(manifest, index, onStatus) {
+  /** Run a block of the chapter, or one statement of a plan on behalf of block ``index``. */
+  function execute(manifest, index, onStatus, statement = null) {
     const block = manifest.blocks[index];
     const id = nextId++;
     return new Promise((resolve) => {
       waiting.set(id, resolve);
       getWorker(onStatus).postMessage({
         id,
-        source: block.source,
+        source: statement ?? block.source,
         filename: `${block.doc}.rst`,
         datasets: Object.fromEntries(
           Object.entries(manifest.datasets).map(([url, rel]) => [url, new URL(`run/${rel}`, STATIC).href]),
@@ -124,11 +134,16 @@
 
   /** Say which earlier examples failed, linked to their pages. */
   function failedNote(blocks) {
-    const p = el("p", "pid-run__note pid-run__error", "These earlier examples failed, so names they define may be missing: ");
+    const p = el("p", "pid-run__note pid-run__error", "These earlier steps failed, so names they define may be missing: ");
     blocks.forEach((b, k) => {
+      p.append(k ? "; " : "");
+      if (b.statement) {
+        p.append(el("code", "", b.statement), ` (${b.error.trim().split("\n").pop()})`);
+        return;
+      }
       const a = el("a", "", `${b.doc.split("/").pop()}, line ${b.line}`);
       a.href = new URL(`../${b.doc}`, STATIC).href;
-      p.append(k ? "; " : "", a);
+      p.append(a);
     });
     return p;
   }
@@ -152,15 +167,32 @@
       if (!ran.has(chapter)) ran.set(chapter, new Set());
       const done = ran.get(chapter);
 
-      // Earlier blocks this one may depend on, in reading order.
-      const before = [];
-      for (let i = 0; i < index; i++) if (!m.blocks[i].skip && !done.has(i)) before.push(i);
+      // What this example needs first, in reading order (my-extensions/block_deps.py):
+      // on the page's first click, the page's prelude (earlier examples, or single
+      // statements: an import, a setting), run once so that it never undoes what a
+      // later example set; then the page's own earlier examples. A manifest without
+      // preludes means every earlier example.
+      const doc = m.blocks[index].doc;
+      const earlier = [...Array(index).keys()];
+      const steps = !m.pages
+        ? earlier
+        : [...(preluded.has(doc) ? [] : m.pages[doc]), ...earlier.filter((i) => m.blocks[i].doc === doc)];
+      preluded.add(doc);
+      const plan = steps.filter(
+        (step) => typeof step === "string" || (!m.blocks[step].skip && !done.has(step)),
+      );
+      const before = plan.filter((step) => typeof step === "number");
       const failed = [];
-      for (const [n, i] of before.entries()) {
-        status(`Running earlier example ${n + 1} of ${before.length}...`);
-        const r = await execute(m, i, status);
-        done.add(i);
-        if (r.error) failed.push(m.blocks[i]);
+      for (const step of plan) {
+        if (typeof step === "string") {
+          const r = await execute(m, index, status, step);
+          if (r.error) failed.push({ statement: step, error: r.error });
+          continue;
+        }
+        status(`Running earlier example ${before.indexOf(step) + 1} of ${before.length}...`);
+        const r = await execute(m, step, status);
+        done.add(step);
+        if (r.error) failed.push(m.blocks[step]);
       }
       status("Running...");
       const result = await execute(m, index, status);

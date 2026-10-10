@@ -1,13 +1,16 @@
-// Python for the book's "Run in browser" buttons. Runs in a Web Worker, so the
-// page stays responsive while Pyodide loads and while an example computes.
+// Python for the book's "Run in browser" buttons. Runs in a module Web Worker
+// (Pyodide 314 refuses classic workers), so the page stays responsive while
+// Pyodide loads and while an example computes.
 // See my-extensions/run_in_browser.py for the design.
 //
 // Protocol. The page posts {id, source, filename, datasets}; the worker answers
 // {id, result} with result = {stdout, error, figures: [...]}, or {status} while
 // it is loading packages.
 
-const PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v0.28.3/full/";
-importScripts(`${PYODIDE_URL}pyodide.js`);
+// Pyodide's scipy must be close to the one CI runs: generate_omars solves an integer
+// program with scipy's HiGHS, and 0.28.3's scipy 1.14 returned a different, equally
+// valid design, so chapter 5's worked study no longer matched the book.
+const PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v314.0.7/full/";
 
 // Imports that Pyodide does not ship, mapped to what micropip should install.
 // process-improve goes in with deps=False: its wheel pins versions (scikit-learn)
@@ -151,6 +154,7 @@ def run_block(source, filename, datasets):
 
 async function boot() {
   self.postMessage({ status: "Loading Python..." });
+  const { loadPyodide } = await import(`${PYODIDE_URL}pyodide.mjs`);
   const pyodide = await loadPyodide({ indexURL: PYODIDE_URL });
   await pyodide.loadPackage("micropip");
   pyodide.runPython(SETUP);

@@ -37,6 +37,7 @@ run_in_browser_chapters = [
     "univariate-review",
     "process-monitoring",
     "least-squares-modelling",
+    "design-analysis-experiments",
     "latent-variable-modelling",
 ]
 
