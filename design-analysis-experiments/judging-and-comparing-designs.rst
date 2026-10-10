@@ -90,7 +90,9 @@ the Box-Behnken and central composite designs on the :ref:`companion page
 <DOE-omnibus-comparison>`. The OMARS designs need no extra: ``generate_omars`` solves its
 integer program with the HiGHS solver that ships with SciPy. The four-factor, thirteen-run OMARS
 design used on this page is small enough for ``generate_omars`` to find by exhaustive
-enumeration (every feasible design of that size is listed and scored).
+enumeration (every feasible design of that size is listed and scored). The `designed-experiments
+app <https://kgdunn.github.io/process-improve/app/>`__ draws FDS curves and correlation maps of the standard designs for factors a reader
+enters, in the browser.
 Each block imports what it needs and reuses variables defined in the blocks before it, so paste
 them in order. The prediction variance of the three-run quadratic design is a closed form:
 

@@ -448,6 +448,10 @@ There are three situations where a BBD is the wrong choice:
     *   with categorical factors, or hard constraints on the region: prefer an
         :ref:`optimal (D- or I-) design <DOE-optimal-designs>`.
 
+The `designed-experiments app <https://kgdunn.github.io/process-improve/app/>`__ generates Box-Behnken and central composite designs for
+factors a reader enters, simulates their results from a process with a known model, and analyses
+them, in the browser.
+
 **Readings**
 
 * Box, G.E.P. and Behnken, D.W.: "Some New Three Level Designs for the Study of Quantitative

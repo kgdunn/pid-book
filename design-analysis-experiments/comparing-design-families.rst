@@ -508,6 +508,10 @@ the rows shift. What carries from one study
 to the next is the method, building the information matrix and reading precision, separability,
 bias, and power from it.
 
+The `designed-experiments app <https://kgdunn.github.io/process-improve/app/>`__ builds this kind of comparison in the browser for other
+factors and models: it generates each design the factor count allows and reports the nine measures
+of :ref:`DOE-omars-metric-choice`, with FDS curves and correlation maps.
+
 **Readings**
 
 * Box, Hunter and Hunter, *Statistics for Experimenters*, 2nd edition, for the factorial and
