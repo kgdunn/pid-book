@@ -20,6 +20,15 @@ name: Check book code
 # chapter's other pages use as well: the batch case studies read their data from
 # openmv.net workbooks, and the Excel reader lives in the [batch] extra. Neither
 # extra pins plotly, so the pair still resolves against pyoptex's plotly 5.
+#
+# The `run-in-browser` job guards the "Run in browser" buttons. A page's first
+# click runs only what the page needs (my-extensions/block_deps.py reads that from
+# the code), not the whole chapter before it. The job runs each page that way in
+# a fresh interpreter, as a reader clicking down it would, and fails when any
+# example prints, raises or draws differently than after the whole chapter
+# (tools/check_run_deps.py). It is a gate: an edit that makes an example depend
+# on an earlier one in a way the analysis cannot see would otherwise show readers
+# a wrong result, or a NameError, only in the browser.
 
 on:
   push:
@@ -161,3 +170,43 @@ jobs:
             CHAPTER=product-development-product-improvement \
             CHECK_WITH='process-improve[expt,batch]' \
             CHECK_ALSO=pyoptex
+
+  run-in-browser:
+    name: Run in browser pages, page by page
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout pid-book
+        uses: actions/checkout@v4
+
+      - name: Checkout figures repo
+        uses: actions/checkout@v4
+        with:
+          repository: kgdunn/figures
+          path: figures-src
+
+      - name: Symlink figures into the source tree
+        run: ln -s "$PWD/figures-src" figures
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Install Python dependencies
+        run: uv sync --frozen
+
+      - name: Restore the openmv.net data cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/openmv
+          key: openmv-${{ hashFiles('**/*.rst') }}
+          restore-keys: openmv-
+
+      - name: Run each page as its first click does, and compare with the whole chapter
+        run: make check-run-deps
