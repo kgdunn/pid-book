@@ -230,7 +230,7 @@ def main(argv: list[str] | None = None) -> int:
         print(summary, flush=True)
         failures += bad
     for f in failures:
-        print(f"DIFFERS {f['example']} after its plan {f['plan']}")
+        print(f"DIFFERS {f['example']} after its page prelude {f['page_prelude']}")
     if args.report:
         args.report.write_text(json.dumps(failures, indent=1), encoding="utf-8")
     return 1 if failures else 0
