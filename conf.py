@@ -40,6 +40,12 @@ run_in_browser_chapters = [
     "design-analysis-experiments",
     "latent-variable-modelling",
 ]
+# The Pyodide release the buttons load from the CDN. Bump it deliberately, after
+# `make check-browser` passes against it (the weekly CI run tries the newest release and
+# says whether it is safe): its scipy decides chapter 5's OMARS designs, since
+# generate_omars solves an integer program with scipy's HiGHS, and 0.28.3's scipy 1.14
+# returned a different, equally valid design than the one the book prints.
+run_in_browser_pyodide = "314.0.7"
 
 # Avoid Subresource Integrity errors for the bundled jQuery.
 jquery_use_sri = False

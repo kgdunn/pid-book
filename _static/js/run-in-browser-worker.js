@@ -7,10 +7,11 @@
 // {id, result} with result = {stdout, error, figures: [...]}, or {status} while
 // it is loading packages.
 
-// Pyodide's scipy must be close to the one CI runs: generate_omars solves an integer
-// program with scipy's HiGHS, and 0.28.3's scipy 1.14 returned a different, equally
-// valid design, so chapter 5's worked study no longer matched the book.
-const PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v314.0.7/full/";
+// The Pyodide release comes from conf.py (run_in_browser_pyodide), through the chapter
+// manifest and this script's URL: ?pyodide=314.0.7.
+const VERSION = new URLSearchParams(self.location.search).get("pyodide") ?? "";
+if (!/^\d+\.\d+\.\w+$/.test(VERSION)) throw new Error(`no valid Pyodide version in ${self.location}`);
+const PYODIDE_URL = `https://cdn.jsdelivr.net/pyodide/v${VERSION}/full/`;
 
 // Imports that Pyodide does not ship, mapped to what micropip should install.
 // process-improve goes in with deps=False: its wheel pins versions (scikit-learn)
