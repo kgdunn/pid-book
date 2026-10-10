@@ -50,11 +50,8 @@ CODE_COLOURS = [  # most specific token type first
     (Token.Literal.Number, "#0550AE"),
     (Token.Operator, "#116329"),
 ]
-PLOT_BG, PLOT_DOT, PLOT_LIMIT = (
-    "#E5ECF6",
-    "#636EFA",
-    "#EF553B",
-)  # Plotly's defaults, as the page draws them
+# Plotly's default colours, as the page draws them.
+PLOT_BG, PLOT_DOT, PLOT_LIMIT = "#E5ECF6", "#636EFA", "#EF553B"
 
 SERIF = FontProperties(family=["Caladea", "DejaVu Serif"], weight="bold")
 SANS = FontProperties(family=["Inter", "DejaVu Sans"])
@@ -74,9 +71,8 @@ def fit_food_texture() -> tuple[pd.DataFrame, np.ndarray, pd.Series]:
     """Fit the book's two-component PCA model; return scores, the 95% ellipse and R^2 per component."""
     food = pd.read_csv(FILE, index_col=0)
     model = PCA(n_components=2).fit(MCUVScaler().fit_transform(food))
-    limit = model.score_plot(pc_horiz=1, pc_vert=2).data[
-        1
-    ]  # the trace the page draws as the 95% limit
+    # The page's score plot draws the 95% limit as its second trace.
+    limit = model.score_plot(pc_horiz=1, pc_vert=2).data[1]
     return model.scores_, np.column_stack([limit.x, limit.y]), model.r2_per_component_
 
 
