@@ -71,9 +71,7 @@ charts, designed experiments, and batch process monitoring. Install it with
 
 The [designed-experiments app](https://kgdunn.github.io/process-improve/app/) runs the
 package in your browser, with nothing to install: design an experiment, download the run
-sheet, fill in your results, and upload it for the analysis. Every Python example in this
-book runs in CI against the PyPI release of `process-improve` on each change to the book,
-so the code you read here is the code you can run.
+sheet, fill in your results, and upload it for the analysis.
 
 ## Who's using this book
 
