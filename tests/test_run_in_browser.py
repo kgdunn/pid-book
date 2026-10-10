@@ -8,6 +8,7 @@ tests pin the match and the manifest the page reads.
 
 import ast
 import importlib
+import re
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -27,28 +28,29 @@ def test_key_keeps_relative_indentation():
     assert run_in_browser._key("if a:\n    b()") != run_in_browser._key("if a:\nb()")
 
 
-def configured_chapters():
+def configured(name, default=None):
     tree = ast.parse((ROOT / "conf.py").read_text(encoding="utf-8"))
     for node in tree.body:
-        if (
-            isinstance(node, ast.Assign)
-            and getattr(node.targets[0], "id", "") == "run_in_browser_chapters"
-        ):
+        if isinstance(node, ast.Assign) and getattr(node.targets[0], "id", "") == name:
             return ast.literal_eval(node.value)
-    return []
+    return default
 
 
 def test_manifest_lists_the_chapter_in_reading_order():
-    chapters = configured_chapters()
+    chapters = configured("run_in_browser_chapters", [])
     assert chapters, "conf.py enables at least one chapter"
+    pyodide = configured("run_in_browser_pyodide")
+    # The worker refuses anything else: the version goes into a CDN URL.
+    assert re.fullmatch(r"\d+\.\d+\.\w+", pyodide), pyodide
     app = SimpleNamespace(
         builder=SimpleNamespace(name="html"),
-        config=SimpleNamespace(run_in_browser_chapters=chapters),
+        config=SimpleNamespace(run_in_browser_chapters=chapters, run_in_browser_pyodide=pyodide),
         srcdir=str(ROOT),
     )
     run_in_browser.collect(app)
     for chapter in chapters:
         manifest = run_in_browser._CHAPTERS[chapter]
+        assert manifest["pyodide"] == pyodide
         blocks = manifest["blocks"]
         assert blocks, chapter
         assert all(b["doc"].startswith(f"{chapter}/") for b in blocks)

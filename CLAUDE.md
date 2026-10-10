@@ -246,7 +246,10 @@ The contract, which any new or edited code must satisfy:
   precede it. `make check-code` runs everything in parallel. For a chapter with
   "Run in browser" buttons, also run `make check-run-deps CHAPTER=<dir>`: it
   checks that each page, run as its first click runs it, leaves every example as
-  the whole chapter does, and CI gates on it. The PR body
+  the whole chapter does, and CI gates on it. CI also clicks every button of a
+  chapter the PR touches in headless Chromium (`run-in-browser.yml`); after
+  changing the runner itself, run that locally with `make html` then
+  `make check-browser` (it needs Playwright and its Chromium). The PR body
   reports the result. Always go through `make`: it resolves
   `process-improve[all]` the way a reader's `pip install` does. Running the
   checker inside a clone of the library instead uses that clone's dev

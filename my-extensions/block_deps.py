@@ -6,15 +6,19 @@ pages after chapter 5's OMARS study, most of it for names the example never read
 module works out, from the source alone, a shorter *plan* that leaves the example the
 same names and state the whole prefix would:
 
-* A name is needed if the example reads it before binding it. The latest earlier
-  example that binds it unconditionally (a top-level statement, not inside ``if``,
-  ``for`` or ``try``) provides it and is run, after what it needs in turn; so is every
-  example in between that may change the object in place (``x.attr = ...``,
-  ``x[...] = ...``, ``x.method(...)``, ``f(x)``, or a call to a chapter function whose
-  body does that).
+* A name is needed if the example may read it before binding it. A loop's target is
+  bound for the loop's body, and so is a name the body bound a line earlier; a name
+  bound in every branch of an ``if`` is bound after it. (Chapter 5's FDS plot loops
+  ``for design, label in ...``; reading ``design`` as needed once ran the whole worked
+  study before it.) The latest earlier example that binds a needed name
+  unconditionally (a top-level statement, not inside ``if``, ``for`` or ``try``)
+  provides it and is run, after what it needs in turn; so is every example in between
+  that may change the object in place (``x.attr = ...``, ``x[...] = ...``,
+  ``x.method(...)``, ``f(x)``, or a call to a chapter function whose body does that).
 * A function reads its free names when it runs, so they are needed wherever the
-  function is referenced. Lambdas and functions defined inside ``if``/``for`` are
-  resolved at every point up to the example, which is always safe.
+  function is referenced, as later examples left them, even those its own example
+  bound. Lambdas and functions defined inside ``if``/``for`` are resolved at every point
+  up to the example, which is always safe.
 * A module (a name the chapter binds only by import) is stateless, so only its import
   statement is run, not the example it came from.
 * Global state set through a module (``pd.options.plotting.backend = "plotly"``,
@@ -65,12 +69,15 @@ class _Facts:
     binds: set[str] = field(default_factory=set)
     #: May be changed in place.
     touches: set[str] = field(default_factory=set)
-    #: Read before the example binds them; and every name read, even after binding it.
+    #: Read before the example binds them on every path; and every name read.
     uses: set[str] = field(default_factory=set)
     refs: set[str] = field(default_factory=set)
-    #: Free names of each top-level def or class, and of every other nested scope.
+    #: Free names of each top-level def or class, and of every other nested scope, read
+    #: where it is called; ``own*``: less what the example bound first, for a call in it.
     functions: dict[str, set[str]] = field(default_factory=dict)
+    own: dict[str, set[str]] = field(default_factory=dict)
     late: set[str] = field(default_factory=set)
+    own_late: set[str] = field(default_factory=set)
     #: What each function's body may change, and the names the example calls directly.
     changes: dict[str, set[str]] = field(default_factory=dict)
     calls: set[str] = field(default_factory=set)
@@ -148,6 +155,76 @@ def _outer(node: ast.AST):
             todo.extend(ast.iter_child_nodes(n))
 
 
+def _loads(node: ast.AST) -> set[str]:
+    """Names ``node`` reads when it runs: a nested scope reads later, a comprehension its free names."""
+    names: set[str] = set()
+    for n in _outer(node):
+        if isinstance(n, ast.Name) and isinstance(n.ctx, ast.Load):
+            names.add(n.id)
+        elif isinstance(n, COMPREHENSIONS):
+            names |= _free(n)
+    return names
+
+
+def _bound_by(stmt: ast.stmt) -> set[str]:
+    """Names a simple statement, or a def or class, binds."""
+    if isinstance(stmt, (ast.Import, ast.ImportFrom)):
+        return _imported(stmt)
+    if isinstance(stmt, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+        return {stmt.name}
+    if isinstance(stmt, ast.Assign):
+        return set().union(*(_targets(t) for t in stmt.targets))
+    if isinstance(stmt, ast.AugAssign) or (isinstance(stmt, ast.AnnAssign) and stmt.value):
+        return _targets(stmt.target)
+    return set()
+
+
+def _unbound_reads(body: list[ast.stmt], bound: set[str]) -> set[str]:
+    """Names ``body`` may read before binding them, given the names ``bound`` on entry.
+
+    ``bound`` grows by what every path through ``body`` binds. A loop's target is bound for
+    its body, and so is a name its body bound a line earlier; a name bound in every
+    branch of an ``if`` is bound after it. What may not run (a loop body, a ``try``) binds
+    nothing after it.
+    """
+    reads: set[str] = set()
+    for stmt in body:
+        if isinstance(stmt, (ast.For, ast.AsyncFor)):
+            reads |= _loads(stmt.iter) - bound
+            reads |= _unbound_reads(stmt.body, bound | _targets(stmt.target))
+            reads |= _unbound_reads(stmt.orelse, set(bound))
+        elif isinstance(stmt, ast.While):
+            reads |= _loads(stmt.test) - bound
+            reads |= _unbound_reads(stmt.body, set(bound)) | _unbound_reads(stmt.orelse, set(bound))
+        elif isinstance(stmt, ast.If):
+            then, other = set(bound), set(bound)
+            reads |= _loads(stmt.test) - bound
+            reads |= _unbound_reads(stmt.body, then) | _unbound_reads(stmt.orelse, other)
+            bound |= then & other
+        elif isinstance(stmt, (ast.With, ast.AsyncWith)):
+            for item in stmt.items:
+                reads |= _loads(item.context_expr) - bound
+                if item.optional_vars:
+                    reads |= _loads(item.optional_vars) - bound  # `as obj.attr` reads obj
+                    bound |= _targets(item.optional_vars)
+            reads |= _unbound_reads(stmt.body, bound)
+        elif isinstance(stmt, ast.Try):
+            after = set(bound)
+            reads |= _unbound_reads(stmt.body, after) | _unbound_reads(stmt.orelse, after)
+            for handler in stmt.handlers:
+                reads |= _loads(handler.type) - bound if handler.type else set()
+                reads |= _unbound_reads(handler.body, bound | {handler.name} - {None})
+            reads |= _unbound_reads(stmt.finalbody, set(bound))
+        else:  # a simple statement, a def or a class (decorators and defaults run now), a match
+            reads |= _loads(stmt) - bound
+            if isinstance(stmt, ast.AugAssign):
+                reads |= _targets(stmt.target) - bound  # x += 1 reads x
+            if isinstance(stmt, ast.Delete):
+                bound -= set().union(*(_targets(t) for t in stmt.targets))
+            bound |= _bound_by(stmt)
+    return reads
+
+
 def _changes(node: ast.AST, modules: frozenset[str]) -> set[str]:
     """Names whose objects the code in ``node`` may change in place, or rebinds globally."""
     changed: set[str | None] = set()
@@ -167,27 +244,25 @@ def _changes(node: ast.AST, modules: frozenset[str]) -> set[str]:
 
 def _facts(tree: ast.Module, modules: frozenset[str]) -> _Facts:
     f = _Facts()
+    bound: set[str] = set()  # by every path through the example so far
     for stmt in tree.body:
-        new: set[str] = set()
+        before = set(bound)
+        f.uses |= _unbound_reads([stmt], bound)
+        new = _bound_by(stmt)
         if isinstance(stmt, (ast.Import, ast.ImportFrom)):
-            new = _imported(stmt)
             f.statements |= dict.fromkeys(new, (stmt.lineno, ast.unparse(stmt)))
         elif isinstance(stmt, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
-            new = {stmt.name}
-            f.functions[stmt.name] = _free(stmt) - f.kills
-        elif isinstance(stmt, ast.Assign):
-            new = set().union(*(_targets(t) for t in stmt.targets))
-        elif isinstance(stmt, (ast.AnnAssign, ast.AugAssign)):
-            new = _targets(stmt.target)
+            f.functions[stmt.name] = _free(stmt)
+            f.own[stmt.name] = f.functions[stmt.name] - before
         for node in _outer(stmt):
             if isinstance(node, SCOPES):
                 if node is not stmt:
-                    f.late |= _free(node) - f.kills
+                    f.late |= _free(node)
+                    f.own_late |= _free(node) - before
                 if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                     f.changes[node.name] = _changes(node, modules)
                     f.touches |= f.changes[node.name]  # conservative: at the definition too
             elif isinstance(node, COMPREHENSIONS):
-                f.uses |= _free(node) - f.kills  # runs now
                 f.refs |= {
                     n.id
                     for n in ast.walk(node)
@@ -196,12 +271,8 @@ def _facts(tree: ast.Module, modules: frozenset[str]) -> _Facts:
             elif isinstance(node, ast.Name):
                 if isinstance(node.ctx, ast.Load):
                     f.refs.add(node.id)
-                if isinstance(node.ctx, ast.Load) and node.id not in f.kills:
-                    f.uses.add(node.id)
-                elif not isinstance(node.ctx, ast.Load):
+                else:
                     f.binds.add(node.id)
-                    if isinstance(stmt, ast.AugAssign) and node.id not in f.kills:
-                        f.uses.add(node.id)  # x += 1 reads x
             elif isinstance(node, (ast.Attribute, ast.Subscript)) and not isinstance(
                 node.ctx, ast.Load
             ):
@@ -253,10 +324,8 @@ def _plan(facts: list[_Facts], i: int, modules: frozenset[str]) -> list[Step]:
     state = {n for n in writers if n.startswith(STATE) and n != GLOBAL_RNG}
     blocks: set[int] = set()
     statements: set[tuple[int, int, str]] = set()
-    todo = [(n, i) for n in facts[i].uses | facts[i].late | state]
-    todo += [
-        (n, i) for name, free in facts[i].functions.items() if name in facts[i].refs for n in free
-    ]
+    todo = [(n, i) for n in facts[i].uses | facts[i].own_late | state]
+    todo += [(n, i) for name, free in facts[i].own.items() if name in facts[i].refs for n in free]
     seen: set[tuple[str, int]] = set()
 
     def run(j: int) -> None:
@@ -264,10 +333,7 @@ def _plan(facts: list[_Facts], i: int, modules: frozenset[str]) -> list[Step]:
             blocks.add(j)
             todo.extend((n, j) for n in facts[j].uses | state)
             todo.extend(
-                (n, j)
-                for name, free in facts[j].functions.items()
-                if name in facts[j].refs
-                for n in free
+                (n, j) for name, free in facts[j].own.items() if name in facts[j].refs for n in free
             )
             todo.extend((n, k) for n in facts[j].late for k in range(j + 1, i + 1))
 

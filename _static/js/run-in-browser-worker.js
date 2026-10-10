@@ -7,10 +7,11 @@
 // {id, result} with result = {stdout, error, figures: [...]}, or {status} while
 // it is loading packages.
 
-// Pyodide's scipy must be close to the one CI runs: generate_omars solves an integer
-// program with scipy's HiGHS, and 0.28.3's scipy 1.14 returned a different, equally
-// valid design, so chapter 5's worked study no longer matched the book.
-const PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v314.0.7/full/";
+// The Pyodide release comes from conf.py (run_in_browser_pyodide), through the chapter
+// manifest and this script's URL: ?pyodide=314.0.7.
+const VERSION = new URLSearchParams(self.location.search).get("pyodide") ?? "";
+if (!/^\d+\.\d+\.\w+$/.test(VERSION)) throw new Error(`no valid Pyodide version in ${self.location}`);
+const PYODIDE_URL = `https://cdn.jsdelivr.net/pyodide/v${VERSION}/full/`;
 
 // Imports that Pyodide does not ship, mapped to what micropip should install.
 // process-improve goes in with deps=False: its wheel pins versions (scikit-learn)
@@ -29,9 +30,11 @@ const PROCESS_IMPROVE_DEPS = ["numpy", "pandas", "scipy", "scikit-learn", "stats
 // matplotlib, and so does pandas for obj.plot(...), df.hist(), df.boxplot() and
 // pandas.plotting under its default backend. ".plot.hist(" is the Plotly
 // backend's spelling and is left out, so those chapters skip the download.
+// pandas also draws a KDE (kind="kde", diagonal="kde", .plot.kde()) with scipy.
 const LAZY = [
   [/statsmodels\.graphics/, ["matplotlib"]],
   [/\.plot\(|(?<!\.plot)\.hist\(|\.boxplot\(|\bpandas\.plotting\b|\bpd\.plotting\./, ["matplotlib"]],
+  [/["'](?:kde|density)["']|\.plot\.(?:kde|density)\(/, ["scipy"]],
 ];
 
 const SETUP = `
@@ -202,6 +205,16 @@ self.onmessage = ({ data }) => {
       await installFor(pyodide, data.source);
       const reply = pyodide.globals.get("run_block")(data.source, data.filename, JSON.stringify(data.datasets));
       result = JSON.parse(reply);
+      // A library that imports a package inside a function LAZY does not list yet fails
+      // here. Load the package so "Run again" works, but do not rerun by itself: the
+      // example ran partway, and running it twice could leave state the book never had.
+      const missing = result.error?.match(/ModuleNotFoundError: No module named '(\w+)/)?.[1];
+      if (missing) {
+        await pyodide.loadPackagesFromImports(`import ${missing}`);
+        if (pyodide.runPython(`import importlib.util; importlib.util.find_spec("${missing}") is not None`)) {
+          result.error += `\n${missing} was not loaded yet. It is now: click "Run again".`;
+        }
+      }
     } catch (err) {
       result = { stdout: "", error: String(err.message || err), figures: [] };
     }

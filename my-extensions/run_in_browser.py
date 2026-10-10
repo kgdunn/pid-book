@@ -48,6 +48,10 @@ Configuration
 -------------
 ``run_in_browser_chapters`` (default ``[]``)
     Chapter directory names (as in ``contents.rst``) that get buttons.
+``run_in_browser_pyodide``
+    The Pyodide release to load, such as ``"314.0.7"``. It goes into each chapter's
+    manifest, so a build can try another release without editing a file:
+    ``-D run_in_browser_pyodide=<version>``.
 """
 
 from __future__ import annotations
@@ -142,6 +146,7 @@ def collect(app: Sphinx) -> None:
         urls = sorted({url for b in blocks for url in OPENMV_URL_RE.findall(b["source"])})
         _CHAPTERS[unit.name] = {
             "chapter": unit.name,
+            "pyodide": app.config.run_in_browser_pyodide,
             "blocks": blocks,
             "pages": pages,
             "datasets": {url: f"data/{url.rsplit('/', 1)[1]}" for url in urls},
@@ -219,6 +224,7 @@ def write_manifests(app: Sphinx, exception: Exception | None) -> None:
 
 def setup(app: Sphinx) -> dict[str, Any]:
     app.add_config_value("run_in_browser_chapters", [], "html")
+    app.add_config_value("run_in_browser_pyodide", "", "html")
     app.connect("builder-inited", collect)
     app.connect("html-page-context", add_assets)
     app.connect("build-finished", write_manifests)

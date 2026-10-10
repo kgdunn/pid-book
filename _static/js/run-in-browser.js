@@ -21,9 +21,11 @@
   const preluded = new Set(); // pages whose prelude has run in this tab
   let busy = false;
 
-  function getWorker(onStatus) {
+  function getWorker(onStatus, pyodide) {
     if (!worker) {
-      worker = new Worker(new URL("js/run-in-browser-worker.js", STATIC), { type: "module" });
+      const url = new URL("js/run-in-browser-worker.js", STATIC);
+      url.searchParams.set("pyodide", pyodide);
+      worker = new Worker(url, { type: "module" });
       worker.onmessage = ({ data }) => {
         if (data.status) return worker.onStatus?.(data.status);
         waiting.get(data.id)(data.result);
@@ -48,7 +50,7 @@
     const id = nextId++;
     return new Promise((resolve) => {
       waiting.set(id, resolve);
-      getWorker(onStatus).postMessage({
+      getWorker(onStatus, manifest.pyodide).postMessage({
         id,
         source: statement ?? block.source,
         filename: `${block.doc}.rst`,

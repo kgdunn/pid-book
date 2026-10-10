@@ -47,6 +47,34 @@ def test_a_name_bound_earlier_in_the_same_example_needs_nothing():
     assert plan("x = 1", "x = 2\nprint(x)") == []
 
 
+def test_a_loop_binds_its_target_and_its_body_names_before_reading_them():
+    # Chapter 5's FDS plot loops over its own designs; an earlier `design` is not needed.
+    chapter = [
+        "design = expensive()\ncurve = 0",
+        "dsd4 = 1\nomars4 = 2",
+        "for design in [dsd4, omars4]:\n    curve = f(design)\n    print(curve)",
+    ]
+    assert plan(*chapter) == [1]
+
+
+def test_a_loop_target_read_after_the_loop_is_needed():
+    # The loop may not run, so `design` after it can still be the earlier one.
+    assert plan("design = 1", "for design in []:\n    pass\nprint(design)") == [0]
+
+
+def test_a_name_bound_in_every_branch_of_an_if_is_bound_after_it():
+    assert plan("x = slow()", "if flag:\n    x = 1\nelse:\n    x = 2\nprint(x)") == []
+
+
+def test_a_name_bound_in_a_try_may_still_be_unbound_after_it():
+    chapter = ["x = 1", "try:\n    x = g()\nexcept ValueError:\n    pass\nprint(x)"]
+    assert plan(*chapter) == [0]
+
+
+def test_with_as_binds_its_name_for_the_body():
+    assert plan("f = slow()", "with open('a') as f:\n    print(f.read())") == []
+
+
 def test_a_function_reads_its_globals_where_it_is_called():
     # y was computed while RATE was 1, so the later RATE = 2 is not needed for print(y) ...
     chapter = ["RATE = 1", "def f(t):\n    return RATE * t", "y = f(3)", "RATE = 2"]
@@ -62,6 +90,11 @@ def test_a_function_called_inside_a_comprehension_of_its_own_example_reads_its_g
         "def f(n):\n    return build(n)\nprint([f(n) for n in (1, 2)])",
     ]
     assert plan(*chapter) == ["from lib import build"]
+
+
+def test_a_function_reads_a_global_of_its_own_example_as_later_examples_left_it():
+    chapter = ["RATE = 1\ndef f(t):\n    return RATE * t", "RATE = 2", "print(f(1))"]
+    assert plan(*chapter) == [0, 1]
 
 
 def test_defining_a_function_needs_nothing_it_reads():
