@@ -1,0 +1,136 @@
+name: Run in browser
+
+# Clicks every "Run in browser" button in headless Chromium (tools/check_browser.mjs),
+# where readers run the examples: Pyodide in a Web Worker, with packages from the Pyodide
+# CDN and PyPI. check-code.yml runs the same examples in CPython; this catches what only a
+# browser shows: a package Pyodide does not ship, a worker the browser will not start, a
+# Pyodide scipy that finds a different design than the one the book prints.
+#
+# The `pinned` run is the gate, on the Pyodide release conf.py pins. On a pull request it
+# clicks through the chapters the PR touches, or every chapter when the runner itself
+# changes. Each Monday it clicks through every chapter: process-improve and plotly reach
+# the browser from PyPI, so a release of either can break a button with no change here.
+#
+# The `newest` run is advisory, on the schedule and by hand only. It builds the book
+# against the newest Pyodide release and ends its summary by saying whether bumping
+# `run_in_browser_pyodide` in conf.py is safe. The bump itself is a PR of its own.
+
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '23 5 * * 1'
+  workflow_dispatch:
+    inputs:
+      pyodide:
+        description: Pyodide release for the pinned run, instead of the one in conf.py
+        required: false
+
+concurrency:
+  group: run-in-browser-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  buttons:
+    name: Every button in Chromium, ${{ matrix.pyodide }} Pyodide
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    continue-on-error: ${{ matrix.pyodide == 'newest' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        pyodide: ${{ fromJSON(github.event_name == 'pull_request' && '["pinned"]' || '["pinned", "newest"]') }}
+    steps:
+      - name: Checkout pid-book
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # a PR's merge commit and its base, to see what the PR changes
+
+      - name: Checkout figures repo
+        uses: actions/checkout@v4
+        with:
+          repository: kgdunn/figures
+          path: figures-src
+
+      - name: Symlink figures into the source tree
+        run: ln -s "$PWD/figures-src" figures
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Install Python dependencies
+        run: uv sync --frozen
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Playwright and its Chromium
+        run: |
+          npm install -g playwright@1.56.1
+          playwright install --with-deps chromium
+
+      - name: Choose the Pyodide release
+        id: pyodide
+        env:
+          WANT: ${{ matrix.pyodide }}
+          REQUESTED: ${{ inputs.pyodide }}
+        run: |
+          pinned=$(sed -n 's/^run_in_browser_pyodide = "\(.*\)"$/\1/p' conf.py)
+          if [ "$WANT" = newest ]; then
+            version=$(curl -fsS https://registry.npmjs.org/pyodide/latest | jq -r .version)
+          else
+            version=${REQUESTED:-$pinned}
+          fi
+          echo "pinned=$pinned" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          if [ "$WANT" = newest ] && [ "$version" = "$pinned" ]; then
+            echo "### Run in browser: conf.py already pins the newest Pyodide, $pinned" >> "$GITHUB_STEP_SUMMARY"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: List the files the pull request changes
+        if: github.event_name == 'pull_request'
+        run: git diff --name-only HEAD^1 HEAD | tee changed.txt
+
+      - name: Build the HTML
+        if: steps.pyodide.outputs.skip != 'true'
+        env:
+          VERSION: ${{ steps.pyodide.outputs.version }}
+        run: uv run sphinx-build -b html -d _build/doctrees -j auto -q . _build/html -D "run_in_browser_pyodide=$VERSION"
+
+      - name: Click every button
+        id: click
+        if: steps.pyodide.outputs.skip != 'true'
+        env:
+          SCOPE: ${{ github.event_name == 'pull_request' && '--changed=changed.txt' || '' }}
+        run: node tools/check_browser.mjs $SCOPE --summary "$GITHUB_STEP_SUMMARY" --report browser-report.json
+
+      - name: Say whether the newest Pyodide is safe to pin
+        if: matrix.pyodide == 'newest' && steps.pyodide.outputs.skip != 'true' && !cancelled()
+        env:
+          VERSION: ${{ steps.pyodide.outputs.version }}
+          PINNED: ${{ steps.pyodide.outputs.pinned }}
+          OUTCOME: ${{ steps.click.outcome }}
+        run: |
+          if [ "$OUTCOME" = success ]; then
+            echo "✅ Every button passes on Pyodide $VERSION: bumping run_in_browser_pyodide in conf.py from $PINNED is safe."
+          else
+            echo "❌ Pyodide $VERSION breaks the buttons listed above: keep conf.py at $PINNED."
+          fi >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Keep the report
+        if: always() && steps.pyodide.outputs.skip != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-report-${{ matrix.pyodide }}
+          path: browser-report.json
+          if-no-files-found: ignore

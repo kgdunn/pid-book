@@ -15,7 +15,7 @@ PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 ALLRELAXEDOPTS  =  -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(RELAXOPTS) .
 
-.PHONY: help setup clean clean-all html dirhtml singlehtml pickle json htmlhelp epub latex latexpdf text gettext linkcheck serve pre-commit-install pre-commit-run check-code check-code-chapter check-code-file check-run-deps
+.PHONY: help setup clean clean-all html dirhtml singlehtml pickle json htmlhelp epub latex latexpdf text gettext linkcheck serve pre-commit-install pre-commit-run check-code check-code-chapter check-code-file check-run-deps check-browser
 
 .DEFAULT_GOAL := latexpdf
 
@@ -39,6 +39,7 @@ help:
 	@echo "  check-code-chapter  One chapter, verbose: make check-code-chapter CHAPTER=least-squares-modelling"
 	@echo "  check-code-file     One RST file (after the files before it): make check-code-file FILE=path.rst"
 	@echo "  check-run-deps      Prove the Run in browser plans: CHAPTER=... for one chapter"
+	@echo "  check-browser       Click every Run in browser button in headless Chromium (after make html)"
 	@echo "  clean               Remove build artifacts"
 	@echo "  clean-all           Also remove the venv and lockfile"
 	@echo
@@ -97,6 +98,9 @@ check-code-file:	## One RST file, run after the files that precede it in its cha
 
 check-run-deps:	## Each Run in browser plan leaves its example as the whole chapter does
 	$(CHECK_RUN) python tools/check_run_deps.py $(if $(CHAPTER),--chapter $(CHAPTER),)
+
+check-browser:	## Click every Run in browser button in headless Chromium: needs make html, Playwright
+	node tools/check_browser.mjs $(if $(CHAPTER),--chapter $(CHAPTER),)
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
