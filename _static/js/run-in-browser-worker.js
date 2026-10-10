@@ -12,12 +12,24 @@ importScripts(`${PYODIDE_URL}pyodide.js`);
 // Imports that Pyodide does not ship, mapped to what micropip should install.
 // process-improve goes in with deps=False: its wheel pins versions (scikit-learn)
 // newer than the Pyodide distribution, and the ones Pyodide has are enough.
-const MICROPIP = { plotly: ["plotly"], pyDOE3: ["pyDOE3"], openpyxl: ["openpyxl"], tqdm: ["tqdm"] };
+const MICROPIP = {
+  plotly: ["plotly"],
+  pyDOE3: ["pyDOE3"],
+  openpyxl: ["openpyxl"],
+  tqdm: ["tqdm"],
+  seaborn: ["seaborn"],
+};
 const PROCESS_IMPROVE_DEPS = ["numpy", "pandas", "scipy", "scikit-learn", "statsmodels", "patsy", "pydantic", "pyyaml"];
 
-// Modules that import a package inside a function, where find_imports cannot see
-// it, mapped to what Pyodide should load: statsmodels draws plot_acf with matplotlib.
-const LAZY = { "statsmodels.graphics": ["matplotlib"] };
+// Calls that import a package inside a function, where find_imports cannot see
+// it, mapped to what Pyodide should load. statsmodels draws plot_acf with
+// matplotlib, and so does pandas for obj.plot(...), df.hist(), df.boxplot() and
+// pandas.plotting under its default backend. ".plot.hist(" is the Plotly
+// backend's spelling and is left out, so those chapters skip the download.
+const LAZY = [
+  [/statsmodels\.graphics/, ["matplotlib"]],
+  [/\.plot\(|(?<!\.plot)\.hist\(|\.boxplot\(|\bpandas\.plotting\b|\bpd\.plotting\./, ["matplotlib"]],
+];
 
 const SETUP = `
 import base64, contextlib, io, json, sys, traceback
@@ -100,16 +112,35 @@ def _flush_mpl():
     if plt is not None and getattr(plt.show, "_pid", False) and plt.get_fignums():
         plt.show()
 
+def _display(value):
+    """Show the value of a block's last expression, as a notebook does: the book
+    ends many examples on the answer itself, such as t.ppf(p, df=dof)."""
+    first = value
+    if type(value).__name__ == "ndarray" and value.dtype == object and value.size:
+        first = value.flat[0]  # scatter_matrix returns an array of Axes
+    if value is None or type(first).__module__.partition(".")[0] in ("matplotlib", "seaborn"):
+        return  # a drawing: _flush_mpl shows the figure, and its repr is noise
+    if isinstance(value, dict) and {"data", "layout"} <= value.keys() and _importable("plotly"):
+        _patch("plotly")
+        import plotly.graph_objects as go
+        value = go.Figure(value)  # a figure spec, as process-improve's .to_plotly() returns
+    if hasattr(value, "to_plotly_json"):
+        value.show()  # series.plot(...) under the Plotly backend
+    else:
+        print(repr(value))
+
 def run_block(source, filename, datasets):
+    from pyodide.code import eval_code
+
     DATASETS.update(json.loads(datasets))
     FIGURES.clear()
     _patch(source)
     out = io.StringIO()
     error = None
     try:
-        code = compile(source, filename, "exec")
         with contextlib.redirect_stdout(out), contextlib.redirect_stderr(out):
-            exec(code, NAMESPACE)
+            # A trailing ";" hides the value, as in a notebook.
+            _display(eval_code(source, NAMESPACE, return_mode="last_expr", filename=filename))
     except BaseException:
         kind, exc, tb = sys.exc_info()
         frames = [f for f in traceback.extract_tb(tb) if f.filename == filename]
@@ -152,8 +183,8 @@ async function installFor(pyodide, source) {
   // Anything else Pyodide ships (numpy, scipy, pandas, matplotlib, ...).
   const messageCallback = (m) => self.postMessage({ status: m });
   await pyodide.loadPackagesFromImports(source, { messageCallback });
-  for (const [module, packages] of Object.entries(LAZY)) {
-    if (source.includes(module)) await pyodide.loadPackage(packages, { messageCallback });
+  for (const [pattern, packages] of LAZY) {
+    if (pattern.test(source)) await pyodide.loadPackage(packages, { messageCallback });
   }
 }
 

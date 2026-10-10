@@ -57,7 +57,13 @@
   }
 
   // ------------------------------------------------------------------ output
-  const normalise = (text) => text.replace(/\s+/g, " ").trim();
+  // Whitespace is collapsed, and negative zero reads as zero: WebAssembly can round
+  // a tiny value to -0.0 where the book, computed natively, printed 0.0.
+  const normalise = (text) =>
+    text
+      .replace(/\s+/g, " ")
+      .replace(/(^|[^\w.])-(0(?:\.0+)?)(?![\d.])/g, "$1$2")
+      .trim();
 
   function el(tag, cls, text) {
     const node = document.createElement(tag);
