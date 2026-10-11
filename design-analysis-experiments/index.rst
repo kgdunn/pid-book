@@ -23,6 +23,7 @@ Design and Analysis of Experiments
    omars-worked-study
    judging-and-comparing-designs
    comparing-design-families
+   screen-then-optimise-study
    mixture-experiments
    general-approach-for-experimentation
    extended-topics-related-to-designed-experiments
