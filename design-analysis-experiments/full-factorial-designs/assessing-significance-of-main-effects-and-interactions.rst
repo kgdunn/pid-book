@@ -160,8 +160,8 @@ The same result is available directly from ``process_improve``. Note that ``anal
 	res = analyze_experiment(frame, response_column="y", model="A*B*C*D",
 	                         analysis_type=["effects", "lenth_method"])
 	lenth = res["lenth_method"]
-	print(f"PSE = {lenth['PSE']:.2f}, ME = {lenth['ME']:.2f}, SME = {lenth['SME']:.2f}")
-	# PSE = 2.62, ME = 6.75, SME = 13.70
+	print(f"PSE = {lenth['PSE']:.3f}, ME = {lenth['ME']:.3f}, SME = {lenth['SME']:.3f}")
+	# PSE = 2.625, ME = 6.748, SME = 13.699
 
 	create_plot("pareto", analysis_results=res).to_plotly()  # Pareto with ME and SME lines
 	create_plot("half_normal", analysis_results=res).to_plotly()  # the half-normal plot
