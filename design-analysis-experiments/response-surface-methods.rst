@@ -345,14 +345,16 @@ A :index:`Box-Behnken design <pair: Box-Behnken designs; experiments>` (BBD) is 
 (:math:`-1, 0, +1`) response surface design that supports the same full second-order
 (quadratic) model as the central composite design above. Box and Behnken (1960) constructed
 them by combining two-level factorials with balanced incomplete block designs. Each non-centre
-run sits at the midpoint of an edge of the experimental cube: two factors are set to their
-extremes (a :math:`2 \times 2` factorial in that pair) while all the remaining factors are held
-at the centre. Centre points are then replicated, to estimate the pure error and to stabilise
+run sets a small group of factors to their extremes, a two-level factorial in that group, while
+all the remaining factors are held at the centre. The group is a pair of factors for three to
+five factors, and three factors for six and seven; with three factors the runs are the midpoints
+of the edges of the experimental cube. Centre points are then replicated, to estimate the pure error and to stabilise
 the prediction near the middle of the region.
 
 **The defining feature.** A BBD places no runs at the cube vertices: there is no run with every
 factor simultaneously at its high or low setting. All the design points lie on a sphere of
-radius :math:`\sqrt{2}` in coded units (the edge midpoints), plus the centre. This single
+radius :math:`\sqrt{2}` in coded units (:math:`\sqrt{3}` for six and seven factors), plus the
+centre. This single
 property is what separates a BBD from a central composite design (CCD), and it drives every
 practical consequence. Because the extreme corner combinations are never required, a BBD is
 attractive when the corners of the region are infeasible, unsafe, or physically meaningless:

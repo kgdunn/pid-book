@@ -31,7 +31,7 @@ whose shortest words have three letters, which is why the main effects are alias
 
 .. centered:: **I = ABCG = ABEF = ACDF = ADEG = BCDE = BDFG = CEFG**
 
-with any three of these seven words serving as independent generators. Its shortest word now has four letters, so this is a :math:`2^{7-3}_\text{IV}` design: every main effect is aliased only with three-factor and higher interactions, clear of all two-factor interactions, while the two-factor interactions remain aliased with each other. Folding the whole design has bought a clean read on all seven main effects, at the cost of a second batch of 8 runs.
+with three independent words among these seven, such as **ABCG**, **ABEF** and **ACDF**, serving as generators. Its shortest word now has four letters, so this is a :math:`2^{7-3}_\text{IV}` design: every main effect is aliased only with three-factor and higher interactions, clear of all two-factor interactions, while the two-factor interactions remain aliased with each other. Folding the whole design has bought a clean read on all seven main effects, at the cost of a second batch of 8 runs.
 
 This is a good strategy in general: to run the first fraction of runs to assess the main effects. It serves as a good checkpoint, as well providing intermediate results to colleagues, it can be used to get approval/budget to run the next set of experiments. If we then perform another set of runs we know that we are doing them in a way that captures the most additional information, and with the least confounding. Remember experimentation is not done in a single go; it is sequential. We perform experiments, analyze the results, and design further experiments to reach our goal.
 

@@ -86,7 +86,7 @@ So this section is concerned with the trade-offs as we go from a full factorial 
 
 			Listed below are all the aliases for the main effects, reporting only the two-factor interactions. The bold words indicate the confounding that was intentionally created when we set up the design.
 
-			-	:math:`\widehat{\beta}_0` = ABCDEFG
+			-	:math:`\widehat{\beta}_0 \rightarrow` I + all 15 words of the defining relation, none of them a two-factor interaction
 			-	:math:`\widehat{\beta}_{\mathbf{A}} \rightarrow` A + BD + CE + FG
 			-	:math:`\widehat{\beta}_{\mathbf{B}} \rightarrow` B + AD + CF + EG
 			-	:math:`\widehat{\beta}_{\mathbf{C}} \rightarrow` C + AE + BF + DG
