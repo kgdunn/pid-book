@@ -778,9 +778,10 @@ analysis:
 
 * **found** the feed rate, the hold-temperature curvature, and the hold temperature's
   interactions with the downshift day and the feed rate;
-* **correctly declared** no pH effect;
+* **correctly declared** no pH main effect;
 * **missed** the downshift-day curvature, which sent the downshift to the edge of the region,
-  and the downshift-day by feed-rate interaction.
+  the downshift-day by feed-rate interaction, and three smaller terms: the hold-temperature main
+  effect and the curvature in pH and in the feed rate.
 
 .. _DOE-omars-study-theory:
 

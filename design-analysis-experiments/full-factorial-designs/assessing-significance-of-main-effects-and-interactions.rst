@@ -102,9 +102,9 @@ The Pareto plot ranks the effects but leaves the cutoff to the eye. When the des
 	s_0 &= 1.5 \times \text{median}\left(|c_i|\right) \\
 	\text{PSE} &= 1.5 \times \text{median}\left\{ |c_i| \;:\; |c_i| < 2.5\, s_0 \right\} \\
 	\text{ME}  &= t_{0.975,\, d} \times \text{PSE}, \qquad\qquad d = m/3 \\
-	\text{SME} &= t_{1 - 0.025/m,\, d} \times \text{PSE}
+	\text{SME} &= t_{\gamma,\, d} \times \text{PSE}, \qquad\qquad \gamma = \left(1 + 0.95^{1/m}\right)/2
 
-The :index:`pseudo standard error` (PSE) is a robust estimate of the standard error of an effect. The first median sets a rough scale, :math:`s_0`; the second median is then taken only over the effects small enough (within :math:`2.5\, s_0`) to be plausibly noise, so that a few large, real effects cannot inflate it. The *margin of error* (ME) is the individual 95% cutoff: an effect whose magnitude exceeds the ME is significant on its own. The *simultaneous margin of error* (SME) applies a Bonferroni correction across all :math:`m` effects, holding the chance that *any* noise effect exceeds it near 5%; it is the stricter cutoff to use when scanning many effects at once. Lenth's rule sets the degrees of freedom for the :math:`t`-value to :math:`d = m/3`.
+The :index:`pseudo standard error` (PSE) is a robust estimate of the standard error of an effect. The first median sets a rough scale, :math:`s_0`; the second median is then taken only over the effects small enough (within :math:`2.5\, s_0`) to be plausibly noise, so that a few large, real effects cannot inflate it. The *margin of error* (ME) is the individual 95% cutoff: an effect whose magnitude exceeds the ME is significant on its own. The *simultaneous margin of error* (SME) allows for testing all :math:`m` effects at once. Its :math:`t`-value is taken at :math:`\gamma`, so that each noise effect stays below the SME with probability :math:`0.95^{1/m}`, and all :math:`m` of them together, were they independent, with probability 0.95. It is the stricter cutoff to use when scanning many effects at once. Lenth's rule sets the degrees of freedom for the :math:`t`-value to :math:`d = m/3`.
 
 Applying this to the :math:`2^4` example above, reusing the ``effects`` computed for the Pareto plot:
 
@@ -120,13 +120,15 @@ Applying this to the :math:`2^4` example above, reusing the ``effects`` computed
 	pse = 1.5 * np.median(abs_c[abs_c < 2.5 * s0])
 	d = m / 3
 	ME = stats.t.ppf(0.975, d) * pse
-	SME = stats.t.ppf(1 - 0.025 / m, d) * pse
-	print(f"PSE = {pse:.2f}, ME = {ME:.2f}, SME = {SME:.2f}")  # PSE=1.31, ME=3.37, SME=6.89
+	SME = stats.t.ppf((1 + 0.95 ** (1 / m)) / 2, d) * pse
+	print(f"PSE = {pse:.2f}, ME = {ME:.2f}, SME = {SME:.2f}")
+	# PSE = 1.31, ME = 3.37, SME = 6.85
 
 	print(sorted((k for k in effects if abs(effects[k]) > ME),
-	             key=lambda k: -abs(effects[k])))              # ['A', 'AC', 'AD', 'D', 'C']
+	             key=lambda k: -abs(effects[k])))
+	# ['A', 'AC', 'AD', 'D', 'C']
 
-The pseudo standard error is :math:`\text{PSE} = 1.31`, so the margin of error is :math:`\text{ME} = 3.37`. Five effects exceed it, **A**, **C**, **D**, **AC** and **AD**, exactly the five the eye picked from the Pareto plot. The simultaneous margin of error is :math:`\text{SME} = 6.89`: **A**, **D**, **AC** and **AD** clear even that stricter bar, while **C** (:math:`|c_C| = 4.9`) sits between the two margins, significant individually but not once we allow for having scanned all fifteen effects.
+The pseudo standard error is :math:`\text{PSE} = 1.31`, so the margin of error is :math:`\text{ME} = 3.37`. Five effects exceed it, **A**, **C**, **D**, **AC** and **AD**, exactly the five the eye picked from the Pareto plot. The simultaneous margin of error is :math:`\text{SME} = 6.85`: **A**, **D**, **AC** and **AD** clear even that stricter bar, while **C** (:math:`|c_C| = 4.9`) sits between the two margins, significant individually but not once we allow for having scanned all fifteen effects.
 
 The :index:`half-normal plot <pair: half-normal plot; experiments>` shows the same judgement graphically, and is the plot JMP, Minitab and Stat-Ease draw for unreplicated designs. Order the effects by absolute value and plot them against the quantiles of the half-normal distribution at the plotting positions :math:`(i - 0.5)/m`. Noise effects fall along a straight line through the origin; the real effects break away to the upper right.
 
@@ -157,7 +159,9 @@ The same result is available directly from ``process_improve``. Note that ``anal
 	frame["y"] = y
 	res = analyze_experiment(frame, response_column="y", model="A*B*C*D",
 	                         analysis_type=["effects", "lenth_method"])
-	res["lenth_method"]["ME"]                                      # 6.75  (= 2 x 3.37)
+	lenth = res["lenth_method"]
+	print(f"PSE = {lenth['PSE']:.3f}, ME = {lenth['ME']:.3f}, SME = {lenth['SME']:.3f}")
+	# PSE = 2.625, ME = 6.748, SME = 13.699
 
 	create_plot("pareto", analysis_results=res).to_plotly()  # Pareto with ME and SME lines
 	create_plot("half_normal", analysis_results=res).to_plotly()  # the half-normal plot
@@ -234,7 +238,7 @@ Once we obtain the standard error for our system and calculate the variance of t
 		\text{Temperature effect}, b_T &= 11.5 \pm 0.707\\
 		\text{Catalyst effect}, b_K &= 1.1 \pm 0.707
 
-Even though the confidence interval of the temperature effect would be :math:`11.5 - c_t \times 0.707 \leq \beta_T \leq 11.5 + c_t \times 0.707`, it is clear that at the 95% significance level, the above representation shows the temperature effect is significant, while the catalyst effect is not (:math:`c_t \approx 2`).
+Even though the confidence interval of the temperature effect would be :math:`11.5 - c_t \times 0.707 \leq \beta_T \leq 11.5 + c_t \times 0.707`, it is clear that at the 95% confidence level, the above representation shows the temperature effect is significant, while the catalyst effect is not (:math:`c_t \approx 2`).
 
 Refitting the model after removing nonsignificant effects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -243,7 +247,7 @@ After having established which effects are significant, we can exclude the nonsi
 
 .. AU: I modified the last sentence of the following paragraph because it seemed redundant. Please confirm.
 
-As an example, consider a :math:`2^4` factorial (16 runs) where the response values in standard order were :math:`y = [71, 61, 90, 82, 68, 61, 87, 80, 61, 50, 89, 83, 59, 51, 85, 78]`. Assessing the 15 effects with a Pareto plot, or against the standard error, identifies **A**, **B**, **D** and **BD** as the significant ones. Now, omitting the nonsignificant effects, there are only five parameters to estimate, including the intercept, so the standard error is :math:`S_E^2 = \dfrac{39}{16-5} = 3.54`, with 11 degrees of freedom. The :math:`S_E(b_i)` value for all coefficients, except the intercept, is :math:`\sqrt{\dfrac{S_E^2}{16}} = 0.471`, and the critical :math:`t`-value at the 95% level is ``qt(0.975, df=11)`` = 2.2. So the confidence intervals can be calculated to confirm that these are indeed significant effects.
+As an example, consider a :math:`2^4` factorial (16 runs) where the response values in standard order were :math:`y = [71, 61, 90, 82, 68, 61, 87, 80, 61, 50, 89, 83, 59, 51, 85, 78]`. Assessing the 15 effects with a Pareto plot, or with :ref:`Lenth's method <DOE-lenth-method>`, identifies **A**, **B**, **D** and **BD** as the significant ones. Now, omitting the nonsignificant effects, there are only five parameters to estimate, including the intercept, so the standard error is :math:`S_E^2 = \dfrac{39}{16-5} = 3.55`, with 11 degrees of freedom. The :math:`S_E(b_i)` value for all coefficients, except the intercept, is :math:`\sqrt{\dfrac{S_E^2}{16}} = 0.471`, and the critical :math:`t`-value at the 95% level is ``qt(0.975, df=11)`` = 2.2. So the confidence intervals can be calculated to confirm that these are indeed significant effects. The same yardstick, :math:`2.2 \times 0.471 = 1.04`, is also exceeded by one of the omitted effects, :math:`b_C = -1.125`.
 
 There is some circular reasoning here: postulate that one or more effects are zero and increase the degrees of freedom by removing those parameters in order to confirm the remaining effects are significant. Some general advice is to first exclude effects that are definitely small, and then retain medium-size effects in the model until you can confirm they are not significant.
 

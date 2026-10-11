@@ -145,8 +145,9 @@ Finding the factors that matter, in seventeen runs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A definitive screening design with fake factors tests each main effect against an error estimate
-that no quadratic or interaction effect can bias. The smallest such design for six factors has 13
-runs: a conference matrix of order 6, its mirror image and a centre run. Asking for 17 runs builds
+that no quadratic or interaction effect can bias. The smallest definitive screening design for six factors
+has 13 runs, a conference matrix of order 6, its mirror image and a centre run, and leaves no
+column for a fake factor. Asking for 17 runs builds
 the design from a conference matrix of order 8 instead, and the two columns that no factor is
 assigned to are the *fake factors*. The foldover makes every main-effect column, the fake ones
 included, orthogonal to every quadratic and interaction column, so with no third-order effects
@@ -480,7 +481,8 @@ scored on the true responses.
 	          f"yield {row['yield']:.2f}, impurity {row['impurity']:.3f}, D {row['overall']:.3f}")
 	# found by the study: T 190.1, t 20.4, C 1.90; yield 75.61, impurity 1.682, D 0.668
 	# true optimum: T 187.6, t 20.3, C 2.00; yield 75.54, impurity 1.672, D 0.674
-	print(f"{scored['overall'].iloc[0] / scored['overall'].iloc[1]:.1%}")   # 99.2%
+	print(f"{scored['overall'].iloc[0] / scored['overall'].iloc[1]:.1%}")
+	# 99.2%
 
 Both sets of settings lie on the heat limit, a few degrees apart along it, and the true yields and
 impurities they give differ by far less than the batch-to-batch noise. For someone running the

@@ -195,7 +195,7 @@ For the :math:`S` interaction with :math:`T`,
 	-	Change in conversion due to :math:`S` at low :math:`T`: :math:`81 - 77 = +4`
 	-	The half difference: :math:`[+10 - (+4)]/2 = \bf{3}`
 
-A large, positive interaction term indicates that temperature and substrate concentration will increase conversion by a greater amount when both :math:`T` and :math:`S` are high. Similarly, these two terms will rapidly reduce conversion when they both are low.
+A large, positive interaction term indicates that temperature and substrate concentration will increase conversion by a greater amount when both :math:`T` and :math:`S` are high.
 
 We will get an improved appreciation for interpreting main effects and the interaction effect when we consider the analysis in the form of a linear, least squares model.
 
