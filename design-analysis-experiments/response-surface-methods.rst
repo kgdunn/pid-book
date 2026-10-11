@@ -106,13 +106,15 @@ The model is fitted from the four corner runs (the centre run is held back to ch
 
 	X = np.column_stack([np.ones(4), xT, xS, xT * xS])
 	b = np.linalg.solve(X.T @ X, X.T @ profit)
-	print(b)                       # -> [385.5, 55.0, 134.0, -3.5]
+	print(b.round(2).tolist())
+	# [385.5, 55.0, 134.0, -3.5]
 
 	# Path of steepest ascent: move 1 coded unit in T, the ratio bS/bT in S,
 	# then unscale to real-world units using the half-ranges (5 K, 0.25 g/L).
 	dxS_coded = b[2] / b[1]         # 134 / 55
-	dS_actual = dxS_coded * 1 * 0.5 / 2
-	print(round(dS_actual, 2))     # -> 0.61 g/L per +5 K step in temperature
+	dS_actual = dxS_coded * 1 * 0.5 / 2   # g/L, per +5 K step in temperature
+	print(round(dS_actual, 2))
+	# 0.61
 
 The model shows that we can expect an increase of $55/day of profit for a unit increase in :math:`x_T` (coded units). In real-world units that would require increasing temperature by :math:`\Delta x_{T,\text{actual}} = (1) \times \Delta_T /2` = 5K to achieve that goal. That scaling factor comes from the coding we used:
 
@@ -152,7 +154,7 @@ So we will choose to increase :math:`\Delta x_T = 1` coded unit, which means:
                                         \Delta x_T &= 1 \\
                         \Delta x_{T,\text{actual}} &= 5 \,\text{K} \\
 	                                    \Delta x_S &= \frac{b_S}{b_T} \Delta x_T = \frac{134}{55} \Delta x_T \\
-	\text{but we know that}\qquad\qquad \Delta x_S &= \frac{x_{S,\text{actual}}}{\Delta_S / 2} \\
+	\text{but we know that}\qquad\qquad \Delta x_S &= \frac{\Delta x_{S,\text{actual}}}{\Delta_S / 2} \\
 	                    \Delta x_{S,\text{actual}} &= \frac{134}{55} \times 1 \times \Delta_S / 2\,\, \text{by equating previous 2 lines} \\
 	                    \Delta x_{S,\text{actual}} &= \frac{134}{55} \times 1 \times 0.5 / 2  = \bf{0.61}\,\,\text{g/L}\\
 
@@ -266,9 +268,9 @@ The four response values were :math:`y_{13} = 720`, :math:`y_{14} = 699`, :math:
 						1 &-1.41&   0&  0 &  2 &  0
 		\end{bmatrix}
 		\begin{bmatrix} b_0 \\ b_T \\ b_S \\ b_{TS} \\ b_{TT} \\ b_{SS} \end{bmatrix} + \mathbf{e}\\
-		y &= 688 + 13x_T - 39x_S - 2.4 x_T x_S - 4.2 x_T^2 - 12.2 x_S^2
+		y &= 688 + 13x_T - 39x_S - 2.25 x_T x_S - 4.2 x_T^2 - 12.2 x_S^2
 
-Notice how the linear terms estimated previously are the same! The quadratic effects are clearly significant when compared to the other effects, which was what prevented us from successfully using a linear model to project out to point 12 previously.
+The linear terms are close to those from the factorial alone, and the interaction term is unchanged, because the axial and center runs all have :math:`x_T x_S = 0`. The curvature in substrate concentration, :math:`b_{SS} = -12.2`, is large compared with the other effects, and it is what prevented the linear model from projecting out to point 12. The curvature in temperature, :math:`b_{TT} = -4.2`, is smaller, and its 95% confidence interval just includes zero.
 
 The final step in the response surface methodology is to plot this model's contour plot and predict where to run the next few experiments. As the solid contour lines in the illustration show, we should run our next experiments roughly at :math:`T` = 343K and :math:`S` = 1.60 g/L where the expected profit is around $736. We get those two values by eye-balling the solid contour lines, drawn from the above non-linear model. You could find this point analytically as well.
 
