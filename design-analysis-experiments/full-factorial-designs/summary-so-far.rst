@@ -7,7 +7,7 @@ Summary so far
 	-	These coefficients have the lowest variability possible: :math:`(\mathbf{X}^T\mathbf{X})^{-1}S_E^2`.
 	-	We have uncorrelated estimates of the slope coefficients in the model. That is, we can be sure the value of the coefficient is unrelated to the other values.
 
--	However, we still need to take the usual care in *interpreting* the coefficients. The usual precaution, using the example below, is that the temperature coefficient :math:`b_T` is the effect of a one-degree change, holding all other variables constant. That's not possible if :math:`b_{TS}`, the interaction between :math:`T` and :math:`S`, is significant: we cannot hold the :math:`TS` constant while changing :math:`b_T`.
+-	However, we still need to take the usual care in *interpreting* the coefficients. The usual precaution, using the example below, is that the temperature coefficient :math:`b_T` is the effect of a one-unit change in the coded temperature, :math:`x_T`, holding all other variables constant. That's not possible if :math:`b_{TS}`, the interaction between :math:`T` and :math:`S`, is significant: we cannot hold the :math:`TS` term constant while changing :math:`x_T`.
 
 	.. math::
 
