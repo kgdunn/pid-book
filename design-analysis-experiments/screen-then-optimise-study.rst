@@ -314,7 +314,7 @@ and catalyst loading.
 	                                 marker=dict(symbol=shape, size=11, color=colour),
 	                                 name=f"t = {minutes} min", showlegend=col == 1),
 	                      row=1, col=col)
-	    fig.update_xaxes(title_text="Temperature, °C", row=1, col=col)
+	    fig.update_xaxes(title_text="Temperature, degC", row=1, col=col)
 	fig.update_yaxes(title_text="Catalyst loading, mol%", row=1, col=1)
 	fig.show()
 
@@ -375,9 +375,9 @@ search inside the heat limit.
 	best = optimize_responses(fits, goals, factor_ranges=ranges, region=region)["desirability"]
 	optimum = pd.DataFrame([best["optimal_actual"]])
 	setting, predicted = optimum.iloc[0], best["predicted_responses"]
-	print(f"T {setting['T']:.1f} °C, t {setting['t']:.1f} min, C {setting['C']:.2f} mol%, "
+	print(f"T {setting['T']:.1f} degC, t {setting['t']:.1f} min, C {setting['C']:.2f} mol%, "
 	      f"heat {heat(setting):.2f}")
-	# T 190.1 °C, t 20.4 min, C 1.90 mol%, heat 9.50
+	# T 190.1 degC, t 20.4 min, C 1.90 mol%, heat 9.50
 	print(f"yield {predicted['yield']:.2f}%, impurity {predicted['impurity']:.3f}%, "
 	      f"overall desirability {best['composite_desirability']:.3f}")
 	# yield 75.25%, impurity 1.628%, overall desirability 0.699
@@ -416,7 +416,7 @@ The recommended settings lie on the heat limit, and the figure below shows why.
 	for column in ["yield", "impurity", "overall"]:
 	    fig.add_trace(go.Scatter(x=times["t"], y=along_t[column], name=f"{column} desirability"),
 	                  row=1, col=2)
-	fig.update_xaxes(title_text="Temperature, °C", row=1, col=1)
+	fig.update_xaxes(title_text="Temperature, degC", row=1, col=1)
 	fig.update_yaxes(title_text="Catalyst loading, mol%", row=1, col=1)
 	fig.update_xaxes(title_text="Reaction time, min", row=1, col=2)
 	fig.show()
