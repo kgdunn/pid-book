@@ -683,12 +683,12 @@ four-factor main-effects-and-quadratic model.
     :header-rows: 1
     :widths: 48 26 26
 
-    *   - metric (arrow shows the preferred direction)
+    *   - Metric (arrow shows the preferred direction)
         - DSD [n=9], 4 factors
         - OMARS [n=13], 4 factors
     *   - :math:`\uparrow` D-efficiency
-        - 42.8 %
-        - 39.0 %
+        - 42.8%
+        - 39.0%
     *   - :math:`\downarrow\ A`, summed coefficient variance
         - 3.67
         - 2.52
@@ -698,28 +698,28 @@ four-factor main-effects-and-quadratic model.
     *   - :math:`\downarrow\ G`, maximum SPV
         - 9.00
         - 12.50
-    *   - :math:`\downarrow` maximum :math:`|r|`
+    *   - :math:`\downarrow` Maximum :math:`|r|`
         - 0.707
         - 0.570
-    *   - :math:`\downarrow` mean :math:`|r|`
+    *   - :math:`\downarrow` Mean :math:`|r|`
         - 0.322
         - 0.307
-    *   - :math:`\downarrow` maximum VIF
+    *   - :math:`\downarrow` Maximum VIF
         - 1.00
         - 1.18
-    *   - :math:`\downarrow` mean VIF
+    *   - :math:`\downarrow` Mean VIF
         - 1.00
         - 1.08
-    *   - :math:`\uparrow` residual degrees of freedom
+    *   - :math:`\uparrow` Residual degrees of freedom
         - 0
         - 4
-    *   - :math:`\uparrow` power, main effect at :math:`\delta = \sigma`
+    *   - :math:`\uparrow` Power, main effect at :math:`\delta = \sigma`
         - n/a
         - 0.46
-    *   - :math:`\uparrow` power, quadratic at :math:`\delta = \sigma`
+    *   - :math:`\uparrow` Power, quadratic at :math:`\delta = \sigma`
         - n/a
         - 0.25
-    *   - :math:`\uparrow` two-factor interactions estimable
+    *   - :math:`\uparrow` Two-factor interactions estimable
         - 0
         - 2
 

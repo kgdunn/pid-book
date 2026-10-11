@@ -707,7 +707,8 @@ Read together, the plots make these points:
 * **Max** :math:`|r|` **can get worse as runs are added**, and it separates the centre-run series
   widely. The three insets on the left show why: the same design points with more centre runs have
   a lower correlation between a quadratic and an interaction, but a higher one between two
-  quadratics. It reaches zero only for the full three-level factorial at twenty-seven runs.
+  quadratics. Among the designs in the figure, it reaches zero only for the full three-level
+  factorial at twenty-seven runs; the same twelve points with four centre runs reach it at sixteen.
 * **Power rises steadily with the run count**, like the alphabetic criteria, and it ranks the types
   of term. Main effects need the fewest runs, interactions a few more, and quadratics far more. An
   interaction column takes the values :math:`\pm 1`, like a main effect, while a quadratic column
