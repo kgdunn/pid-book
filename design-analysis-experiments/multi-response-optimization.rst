@@ -33,7 +33,7 @@ Continuing the bioreactor example
 The :ref:`response surface section <DOE-RSM>` finished by identifying :math:`T` = 343 K and
 :math:`S` = 1.60 g/L as the place to run the next experiments. We take that as the centre of
 a new central composite design, with the same half-ranges as before, 4 K in temperature and
-0.2 g/L in substrate concentration, and axial points 1.41 coded units out.
+0.2 g/L in substrate concentration, and axial points :math:`\sqrt{2} = 1.41` coded units out.
 
 This time a second response is recorded alongside profit: the purity of the product stream,
 as a percentage. Purity was being traded away inside the profit calculation; measuring
@@ -79,7 +79,7 @@ variables defined in the blocks before it, so paste them in order.
 	from process_improve.experiments import optimize_responses
 	from process_improve.experiments.visualization.plots.registry import create_plot
 
-	alpha = 1.41
+	alpha = 2 ** 0.5   # the rotatable axial distance, 1.41 coded units
 	design = pd.DataFrame({
 	    "T": [-1, +1, -1, +1, 0, 0, +alpha, 0, -alpha],
 	    "S": [-1, -1, +1, +1, 0, -alpha, 0, +alpha, 0],
@@ -92,17 +92,22 @@ variables defined in the blocks before it, so paste them in order.
 	fit_profit = smf.ols("profit" + formula, data=design).fit()
 	fit_purity = smf.ols("purity" + formula, data=design).fit()
 
-	print(fit_profit.rsquared, fit_purity.rsquared)   # -> 0.9915  0.9988
+	print(f"R2: profit {fit_profit.rsquared:.4f}, purity {fit_purity.rsquared:.4f}")
+	# R2: profit 0.9922, purity 0.9989
+	print(fit_profit.params.round(3).tolist())
+	# [738.0, 4.496, -1.759, -2.25, -2.625, -10.875]
+	print(fit_purity.params.round(3).tolist())
+	# [89.8, -4.081, 2.475, -0.025, -0.05, -1.125]
 
 Each response gets its own model, and there is no requirement that the two models contain the
 same terms. Fitting them on the coded factors keeps the coefficients comparable within a
 model, for the reasons given in the section on
-:ref:`generators and coded levels <DOE-generators>`:
+:ref:`least squares analysis of a factorial <DOE-analysis-by-least-squares>`:
 
 .. math::
 
-	\widehat{\text{profit}} &= 738.0 + 4.50 x_T - 1.76 x_S - 2.25 x_T x_S - 2.61 x_T^2 - 10.91 x_S^2 \\
-	\widehat{\text{purity}} &= 89.8 - 4.09 x_T + 2.48 x_S - 0.03 x_T x_S - 0.05 x_T^2 - 1.13 x_S^2
+	\widehat{\text{profit}} &= 738.0 + 4.50 x_T - 1.76 x_S - 2.25 x_T x_S - 2.63 x_T^2 - 10.88 x_S^2 \\
+	\widehat{\text{purity}} &= 89.8 - 4.08 x_T + 2.48 x_S - 0.03 x_T x_S - 0.05 x_T^2 - 1.13 x_S^2
 
 The signs on :math:`x_T` are opposite. Profit rises with temperature; purity falls with it,
 because the product degrades thermally. That is what makes this a trade-off rather than a
@@ -139,10 +144,30 @@ matter of reading two plots and finding they agree.
     runs marked. Profit is highest towards the middle and right of the temperature range;
     purity is highest at the left. The two surfaces disagree about where to operate.
 
-Optimizing either response on its own makes the conflict concrete. Within the region studied,
-profit is highest at :math:`T` = 346.8 K and :math:`S` = 1.56 g/L, reaching $740 per day. At
-that setting the fitted purity is 85.4%. Purity is highest at :math:`T` = 339.0 K and
-:math:`S` = 1.80 g/L, reaching 95.2%, where the fitted profit is $720 per day.
+Optimizing either response on its own makes the conflict concrete.
+
+.. code-block:: python
+
+	from scipy import optimize
+
+	def highest(fit):
+	    """Return the coded setting inside the cube where a fitted response is highest."""
+	    def negative(z):
+	        return -fit.predict(pd.DataFrame({"T": [z[0]], "S": [z[1]]})).iloc[0]
+	    found = optimize.minimize(negative, x0=[0.0, 0.0], bounds=[(-1, 1), (-1, 1)])
+	    return pd.DataFrame({"T": [found.x[0]], "S": [found.x[1]]})
+
+	for fit, other in ((fit_profit, fit_purity), (fit_purity, fit_profit)):
+	    top = highest(fit)
+	    print(f"T {343.0 + 4.0 * top['T'][0]:.1f} K, S {1.60 + 0.2 * top['S'][0]:.2f} g/L: "
+	          f"{fit.predict(top)[0]:.1f}, and the other response {other.predict(top)[0]:.1f}")
+	# T 346.7 K, S 1.56 g/L: 740.3, and the other response 85.5
+	# T 339.0 K, S 1.80 g/L: 95.2, and the other response 720.5
+
+Within the region studied, profit is highest at :math:`T` = 346.7 K and :math:`S` = 1.56 g/L,
+reaching $740 per day. At that setting the fitted purity is 85.5%. Purity is highest at
+:math:`T` = 339.0 K and :math:`S` = 1.80 g/L, reaching 95.2%, where the fitted profit is $720
+per day.
 
 So each response, optimized alone, lands on a setting the other one would reject. Neither
 single-response answer is usable.
@@ -177,8 +202,10 @@ intersection.
 	    factors_to_plot=["T", "S"],
 	)
 	spec = overlay.to_spec()
-	print(spec.metadata["sweet_spot_fraction"])   # -> 0.391
-	print(spec.metadata["sweet_spot_empty"])      # -> False
+	print(f"{spec.metadata['sweet_spot_fraction']:.0%} of the region")
+	# 39% of the region
+	print(spec.metadata["sweet_spot_empty"])
+	# False
 
 	overlay.to_plotly()
 
@@ -213,7 +240,8 @@ profit of at least $735 per day and a purity of at least 94% leaves no region at
 	    ]}},
 	    factors_to_plot=["T", "S"],
 	)
-	print(strict.to_spec().metadata["sweet_spot_empty"])   # -> True
+	print(strict.to_spec().metadata["sweet_spot_empty"])
+	# True
 
 An empty sweet spot is an answer, not a failure of the method. It says that within the region
 studied the requirements cannot be met together, and the next step is a decision rather than
@@ -259,8 +287,8 @@ carry a different weight on each side.
     1 at or above 96%. Middle: a target goal at 93%. Right: the effect of the weight on a
     maximize goal, at :math:`w` = 0.3, 1 and 3.
 
-For this example the ramps run from each specification limit to the best value the region can
-deliver: profit from $725 to $740 per day, purity from 90% to 96%. Setting :math:`L` at the
+For this example the ramps run from each specification limit to a round value near the best the
+region can deliver: profit from $725 to $740 per day, purity from 90% to 96%. Setting :math:`L` at the
 specification limit means a setting that misses the specification scores zero, which ties the
 desirability to the sweet-spot boundary already drawn.
 
@@ -301,10 +329,15 @@ elsewhere. An arithmetic mean would allow exactly that compensation.
 	    fitted_results=[fit_profit, fit_purity],
 	)["desirability"]
 
-	print(best["optimal_actual"])            # -> T 339.8 K, S 1.64 g/L
-	print(best["predicted_responses"])       # -> profit 732.2, purity 93.5
-	print(best["individual_desirability"])   # -> profit 0.48, purity 0.59
-	print(best["composite_desirability"])    # -> 0.531
+	setting, fitted = best["optimal_actual"], best["predicted_responses"]
+	grades = best["individual_desirability"]
+	print(f"T {setting['T']:.1f} K, S {setting['S']:.2f} g/L")
+	# T 339.8 K, S 1.64 g/L
+	print(f"profit {fitted['profit']:.1f}, purity {fitted['purity']:.1f}")
+	# profit 732.3, purity 93.5
+	print(f"d: profit {grades['profit']:.2f}, purity {grades['purity']:.2f}; "
+	      f"D = {best['composite_desirability']:.3f}")
+	# d: profit 0.48, purity 0.58; D = 0.532
 
 The overall desirability is highest at :math:`T` = 339.8 K and :math:`S` = 1.64 g/L, where
 the fitted profit is $732 per day and the fitted purity is 93.5%. Neither response is at its
@@ -315,7 +348,7 @@ One detail about the region being searched. The search runs over the coded cube,
 :math:`-1` to :math:`+1` on each factor, which is the region the four corner runs span. The
 axial runs of this central composite design sit further out, at 1.41 coded units, so the
 experiment covers a little more ground than the cube. Passing
-``search_bounds=(-1.41, 1.41)`` searches that wider region instead. Here it makes no
+``search_bounds=(-alpha, alpha)`` searches that wider region instead. Here it makes no
 difference, because the optimum is already inside the cube, but it would matter for a
 surface still rising at the cube face.
 
@@ -339,10 +372,11 @@ on them. Counting profit three times as heavily as purity, and then the reverse:
 	        models, goals=goals, method="desirability", factor_ranges=ranges,
 	        response_importance=importance,
 	    )["desirability"]
-	    print(importance, out["optimal_actual"], out["predicted_responses"])
-
-	# [3, 1] -> T 341.1 K, S 1.63 g/L: profit 735, purity 92.0
-	# [1, 3] -> T 339.0 K, S 1.66 g/L: profit 730, purity 94.5
+	    setting, fitted = out["optimal_actual"], out["predicted_responses"]
+	    print(f"{importance}: T {setting['T']:.1f} K, S {setting['S']:.2f} g/L; "
+	          f"profit {fitted['profit']:.0f}, purity {fitted['purity']:.1f}")
+	# [3, 1]: T 341.1 K, S 1.63 g/L; profit 735, purity 92.0
+	# [1, 3]: T 339.0 K, S 1.66 g/L; profit 730, purity 94.5
 
 Both answers stay inside the sweet spot, and both move in the direction the importance would
 suggest: favouring profit raises the temperature and gives up purity, and favouring purity
@@ -367,9 +401,8 @@ quantity, since it covers a future single run rather than the long-run mean.
 	    print(name, round(interval["predicted"], 1),
 	          [round(v, 1) for v in interval["confidence_interval"]],
 	          [round(v, 1) for v in interval["prediction_interval"]])
-
-	# profit 732.2  CI [729.0, 735.5]  PI [726.9, 737.6]
-	# purity  93.5  CI [ 92.9,  94.2]  PI [ 92.4,  94.6]
+	# profit 732.3 [729.2, 735.3] [727.1, 737.4]
+	# purity 93.5 [92.9, 94.1] [92.5, 94.5]
 
 Both prediction intervals stay on the acceptable side of their specifications, so the optimum
 is not merely predicted to pass but is expected to pass on a single future run. The profit

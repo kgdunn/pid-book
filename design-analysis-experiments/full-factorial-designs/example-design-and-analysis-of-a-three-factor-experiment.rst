@@ -131,12 +131,12 @@ Learning notes:
 
 .. rubric:: A note about magnitude of effects
 
-In this text we quantify the effect as the change in response over *half the range* of the factor. For example, if the center point is 400 K, the lower level is 375 K and the upper level is 425 K, then an effect of ``"-5"`` represents a reduction in :math:`y` of 5 units for every increase of 25 K in :math:`x`.
+The least squares coefficients in this text quantify an effect as the change in response over *half the range* of the factor. For example, if the center point is 400 K, the lower level is 375 K and the upper level is 425 K, then a coefficient of ``"-5"`` represents a reduction in :math:`y` of 5 units for every increase of 25 K in :math:`x`. The effects calculated by hand earlier in this section are twice the coefficients: the change from the lower level to the upper level.
 
-We use this representation because it corresponds with the results calculated from least-squares software. Putting the matrix of :math:`-1` and :math:`+1` entries into the software as :math:`\mathbf{X}`, along with the corresponding vector of responses, :math:`y`, you can calculate these effects as :math:`\mathbf{b} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y}`.
+We use this representation because it corresponds with the results calculated from least-squares software. Putting the matrix of :math:`-1` and :math:`+1` entries into the software as :math:`\mathbf{X}`, along with the corresponding vector of responses, :math:`y`, you can calculate these coefficients as :math:`\mathbf{b} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y}`.
 
-Other textbooks, specifically Box, Hunter and Hunter, will report effects that are double ours. This is because they consider the effect to be the change from the lower level to the upper level (double the distance). The advantage of their representation is that binary factors (catalyst A or B; agitator on or off) can be readily interpreted, whereas in our notation, the effect is a little harder to describe (simply double it!).
+Box, Hunter and Hunter, like the hand calculations in this section, report effects that are double the coefficients. This is because they consider the effect to be the change from the lower level to the upper level (double the distance). The advantage of their representation is that binary factors (catalyst A or B; agitator on or off) can be readily interpreted, whereas a coefficient is a little harder to describe (simply double it!).
 
 The advantage of our methodology, though, is that the results calculated by hand would be the same as those from any computer software with respect to the magnitude of the coefficients and the standard errors, particularly in the case of duplicate runs and experiments with center points.
 
-Remember: our effects are half those reported in Box, Hunter and Hunter, and in some other textbooks; our standard error would also be half of theirs. The conclusions drawn will always be the same, as long as one is consistent.
+Remember: the coefficients are half the effects reported in Box, Hunter and Hunter, and in some other textbooks; their standard errors are also half. The conclusions drawn will always be the same, as long as one is consistent.

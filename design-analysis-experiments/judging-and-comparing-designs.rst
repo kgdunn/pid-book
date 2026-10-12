@@ -85,14 +85,12 @@ against extrapolation.
 
 This and every figure in this subchapter is reproducible with `process_improve
 <https://github.com/kgdunn/process-improve>`_ (``pip install 'process-improve[all]'``, which
-installs every optional extra). Of those extras, ``expt`` (the ``pyDOE3`` package) is needed for
-the Box-Behnken and central composite designs on the :ref:`companion page
-<DOE-omnibus-comparison>`. The OMARS designs need no extra: ``generate_omars`` solves its
-integer program with the HiGHS solver that ships with SciPy. The four-factor, thirteen-run OMARS
-design used on this page is small enough for ``generate_omars`` to find by exhaustive
-enumeration (every feasible design of that size is listed and scored). The `designed-experiments
-app <https://kgdunn.github.io/process-improve/app/>`__ draws FDS curves and correlation maps of the standard designs for factors a reader
-enters, in the browser.
+installs every optional extra). The designs on this page and on the :ref:`companion page
+<DOE-omnibus-comparison>` need none of those extras: ``process_improve`` builds the Box-Behnken
+and central composite designs itself, and ``generate_omars`` solves its integer program with the
+HiGHS solver that ships with SciPy. The four-factor, thirteen-run OMARS design used on this page
+is small enough for ``generate_omars`` to find by exhaustive enumeration (every feasible design
+of that size is listed and scored).
 Each block imports what it needs and reuses variables defined in the blocks before it, so paste
 them in order. The prediction variance of the three-run quadratic design is a closed form:
 
@@ -474,6 +472,9 @@ OMARS value at :math:`12.50` because its worst case does not sit at a vertex. Th
 so it changes no conclusion here, but including the extreme points is the correct procedure, and
 the :ref:`omnibus comparison <DOE-omnibus-comparison>` relies on it.
 
+The `designed-experiments app <https://factori.al/>`__ draws FDS plots in the browser, for factors
+a reader enters and every design the app can generate for them.
+
 Separability is not the same as precision
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -685,12 +686,12 @@ four-factor main-effects-and-quadratic model.
     :header-rows: 1
     :widths: 48 26 26
 
-    *   - metric (arrow shows the preferred direction)
+    *   - Metric (arrow shows the preferred direction)
         - DSD [n=9], 4 factors
         - OMARS [n=13], 4 factors
     *   - :math:`\uparrow` D-efficiency
-        - 42.8 %
-        - 39.0 %
+        - 42.8%
+        - 39.0%
     *   - :math:`\downarrow\ A`, summed coefficient variance
         - 3.67
         - 2.52
@@ -700,28 +701,28 @@ four-factor main-effects-and-quadratic model.
     *   - :math:`\downarrow\ G`, maximum SPV
         - 9.00
         - 12.50
-    *   - :math:`\downarrow` maximum :math:`|r|`
+    *   - :math:`\downarrow` Maximum :math:`|r|`
         - 0.707
         - 0.570
-    *   - :math:`\downarrow` mean :math:`|r|`
+    *   - :math:`\downarrow` Mean :math:`|r|`
         - 0.322
         - 0.307
-    *   - :math:`\downarrow` maximum VIF
+    *   - :math:`\downarrow` Maximum VIF
         - 1.00
         - 1.18
-    *   - :math:`\downarrow` mean VIF
+    *   - :math:`\downarrow` Mean VIF
         - 1.00
         - 1.08
-    *   - :math:`\uparrow` residual degrees of freedom
+    *   - :math:`\uparrow` Residual degrees of freedom
         - 0
         - 4
-    *   - :math:`\uparrow` power, main effect at :math:`\delta = \sigma`
+    *   - :math:`\uparrow` Power, main effect at :math:`\delta = \sigma`
         - n/a
         - 0.46
-    *   - :math:`\uparrow` power, quadratic at :math:`\delta = \sigma`
+    *   - :math:`\uparrow` Power, quadratic at :math:`\delta = \sigma`
         - n/a
         - 0.25
-    *   - :math:`\uparrow` two-factor interactions estimable
+    *   - :math:`\uparrow` Two-factor interactions estimable
         - 0
         - 2
 

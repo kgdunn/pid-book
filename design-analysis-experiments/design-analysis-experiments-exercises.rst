@@ -42,7 +42,7 @@ Exercises
 
 .. admonition:: Solution
 
-	#.	This is a :math:`2^2` factorial system with a replicate at each point. We might not have :ref:`covered replicates <DOE-replicate_points>` in class by the time you had to do this assignment. So you should average the replicate points and then calculate the main effects and other terms for this system. You will get the same result if you analyze it as two separate factorials and then average the results - it's just more work that way though.
+	#.	This is a :math:`2^2` factorial system with a replicate at each point. Average the :ref:`replicate points <DOE-replicate_points>` and then calculate the main effects and other terms for this system. You will get the same result if you analyze it as two separate factorials and then average the results - it's just more work that way though.
 
 	#.	The experiment results in standard form with 4 corner points:
 
@@ -62,7 +62,7 @@ Exercises
 
 		-	The main effect for free shipping (**A**) is = :math:`\tfrac{1}{2}(3610 - 3500 + 2505 - 3120) = \dfrac{-505}{2} = -252.50`
 
-			This indicates that sales decrease by $252.50, on average, when going from free shipping over $30 to $50. One might expect, within reason, that higher sales are made when the free shipping value is higher (people add purchases so they reach the free shipping limit). That is shown by the very small effect of $50 when no profile is required. However when a profile is required, we see the opposite: a drop in sales!
+			This indicates that sales decrease by $252.50, on average, when going from free shipping over $30 to $50. One might expect, within reason, that higher sales are made when the free shipping value is higher (people add purchases so they reach the free shipping limit). That is shown by the small increase in sales, $110, from raising the threshold to $50 when no profile is required. However when a profile is required, we see the opposite: a drop in sales!
 
 		-	The main effect of creating a profile  :math:`\mathbf{B} = \tfrac{1}{2}(3120 - 3500 + 2505 - 3610) = \dfrac{-1485}{2} = -742.50`
 
@@ -92,7 +92,7 @@ Exercises
 
 		This interaction term is larger than one of the main effects, so I would judge this to be important. Also, it is roughly 10% of the :math:`y_i =` daily sales values, so it is definitely important.
 
-		In part 1 we showed the main effect of requiring a profile is to decrease sales. The strong negative interaction term here indicates that sales are even further reduced when free shipping is over $50, rather than $30. Maybe it's because customers "give up" making their purchase when free shipping is at a higher amount *and*  they need to create a profile - perhaps they figure this isn't worth it. If they get free shipping over $30, the penalty of creating a profile is not as great anymore. This last effect might be considered counterintuitive - but I'm not an expert on why people buy stuff.
+		In part 2 we showed the main effect of requiring a profile is to decrease sales. The strong negative interaction term here indicates that sales are even further reduced when free shipping is over $50, rather than $30. Maybe it's because customers "give up" making their purchase when free shipping is at a higher amount *and*  they need to create a profile - perhaps they figure this isn't worth it. If they get free shipping over $30, the penalty of creating a profile is not as great anymore. This last effect might be considered counterintuitive - but I'm not an expert on why people buy stuff.
 
 		In general, an interaction term indicates that the usual main effects are increased or decreased more or less than they would have been when acting on their own.
 
@@ -214,7 +214,7 @@ Exercises
 		-	Compare your parameters from this half-fraction (8 runs) to those from the full factorial (16 runs). Was much lost by running the half fraction?
 		-	What was the resolution of the half-fraction?
 		-	What is the projectivity of this half-fraction? And what does this mean in light of the fact that factor **A** was shown to be unimportant?
-		-	Factor **C** was found to be an important variable from the half-fraction; it had a significant coefficient in the linear model, but it was aliased with **ABD**. Obviously in this problem, the foldover set of experiments to run would be the *other half-fraction*. But we showed a way to de-alias a main effect. Use that method to show that the other 8 experiments to de-alias factor **C** would just be the other 8 experiment not included in your first half-fraction.
+		-	Suppose you need an estimate of factor **C** that is not aliased with **ABD**. Obviously in this problem, the foldover set of experiments to run would be the *other half-fraction*. Use the :ref:`foldover method for de-aliasing a single main effect <DOE-foldover-designs>` to show that the other 8 experiments to de-alias factor **C** would just be the other 8 experiments not included in your first half-fraction.
 
 .. admonition:: Solution
 
@@ -222,8 +222,8 @@ Exercises
 
 		.. math::
 
-			\hat{y} &= 66 - 0.6 x_A + 9 x_B + 4 x_C - 3.9 x_D - 0.5 x_Ax_B - 0.5 x_Ax_C + 0.9 x_Ax_D + 6.4 x_Bx_C + 1.3 x_Bx_D - 5.3 x_Cx_D\\
-			        &+ 1.1 x_Ax_Bx_C - 1.2 x_Ax_Bx_D + 0.3 x_Ax_Cx_D - 0.1x_Bx_Cx_D + 0.1 x_Ax_Bx_Cx_D
+			\hat{y} &= 66.125 - 0.625 x_A + 9 x_B + 4 x_C - 3.875 x_D - 0.5 x_Ax_B - 0.5 x_Ax_C + 0.875 x_Ax_D + 6.375 x_Bx_C + 1.25 x_Bx_D - 5.25 x_Cx_D\\
+			        &+ 1.125 x_Ax_Bx_C - 1.25 x_Ax_Bx_D + 0.25 x_Ax_Cx_D - 0.125 x_Bx_Cx_D + 0.125 x_Ax_Bx_Cx_D
 
 	#.	The Pareto plot shows the important main effects are **B**, **C**, **D** and these two-factor interactions: **BC** and **CD**.
 
@@ -234,12 +234,12 @@ Exercises
 			*	**C**: use a higher feed concentration 60 g/L
 			*	**D**: use the lower dissolved oxygen set point of 4 mg/L
 			*	**BC**: in this case the **BC** interaction works in our favour (high :math:`\times` high)
-			*	**CD**: the **CD** interaction also works in our favour, since -5.3 :math:`\times` (+1) :math:`\times` (-1) leads to an increased yield.
+			*	**CD**: the **CD** interaction also works in our favour, since -5.25 :math:`\times` (+1) :math:`\times` (-1) leads to an increased yield.
 
 		At these conditions the expected yield is in the region of 93 to 94% (runs 7 and 8 from the standard order).
 
 		.. image:: ../figures/doe/bioreactor-pareto-plot.png
-			:alt: Sorted magnitude of every effect in the bioreactor factorial, with B, BC, CD and C standing out
+			:alt: Sorted magnitude of every effect in the bioreactor factorial, with B, BC, CD, C and D standing out
 			:align: center
 			:scale: 63
 
@@ -251,7 +251,7 @@ Exercises
 
 		-	The standard error is :math:`S_E = 3.1`, which is pretty tight, considering the ranges of y-values in the data set
 		-	The critical :math:`t`-value for the 95% confidence level = 2.23
-		-	The standard error for the parameters in the model is given by :math:`\left(\mathbf{X}^T\mathbf{X}\right)^{-1}S_E^2`. We can use this form because apart from the intercept column, each column is centered around zero. So :math:`S_E(b_i) = \sqrt{\dfrac{3.1^2}{16}}` = 0.78.
+		-	The variances of the parameters in the model are the diagonal of :math:`\left(\mathbf{X}^T\mathbf{X}\right)^{-1}S_E^2`, and :math:`\mathbf{X}^T\mathbf{X} = 16\mathbf{I}` because the columns are orthogonal. So :math:`S_E(b_i) = \sqrt{\dfrac{3.1^2}{16}}` = 0.78.
 		-	The confidence intervals for each of the significant effects are:
 
 			.. math::
@@ -264,7 +264,7 @@ Exercises
 					-7.0 \leq &\beta_{CD} &\leq -3.5
 				\end{array}
 
-	#.	A half-fraction of a :math:`2^4` factorial has 8 experiments. We can generate the levels for 3 of the factors, **A**, **B** and **C** from a full factorial in these 8 runs. The generating term for the fourth factor **D** is best set to the highest level of confounding, the **ABC** term.
+	#.	A half-fraction of a :math:`2^4` factorial has 8 experiments. We can generate the levels for 3 of the factors, **A**, **B** and **C** from a full factorial in these 8 runs. The generating term for the fourth factor **D** is best set to the highest-order interaction, the **ABC** term.
 
 		Using that concept, we would ask the graduate student to run these 8 experiments in *random order*:
 
@@ -305,22 +305,28 @@ Exercises
 			*	:math:`\widehat{\beta}_\mathbf{BD} \rightarrow` **BD + AC**
 			*	:math:`\widehat{\beta}_\mathbf{CD} \rightarrow` **CD + AB**
 
-	#.	Selecting the rows from the full factorial design which correspond to the 8 runs from the half factorial we get :math:`y = [60, 63, 70, 61, 44, 61, 94, 77]` corresponding to the table order in question 5.
+	#.	Selecting the rows from the full factorial design which correspond to the 8 runs from the half factorial we get :math:`y = [60, 63, 70, 61, 44, 61, 94, 77]` corresponding to the table order in part 4.
 
-		Then forming the :math:`\mathbf{X}` matrix from the table in question 5 we solve for the parameters as follows:
+		Then forming the :math:`\mathbf{X}` matrix from the table in part 4 we solve for the parameters as follows:
 
 		-	:math:`\widehat{b}_0 = 66.25 \rightarrow` **I + ABCD**
 		-	:math:`\widehat{b}_\mathbf{A} = -0.75 \rightarrow` **A + BCD** (previous estimate for **A**  was -0.625)
-		-	:math:`\widehat{b}_\mathbf{B} = 9.25 \rightarrow` **B + ACD** (previous estimate for **B**  was 9.9)
+		-	:math:`\widehat{b}_\mathbf{B} = 9.25 \rightarrow` **B + ACD** (previous estimate for **B**  was 9.0)
 		-	:math:`\widehat{b}_\mathbf{C} = 2.75 \rightarrow` **C + ABD** (previous estimate for **C**  was 4.0)
-		-	:math:`\widehat{b}_\mathbf{D} = -2.75 \rightarrow` **D + ABC** (previous estimate for **D**  was -3.9)
+		-	:math:`\widehat{b}_\mathbf{D} = -2.75 \rightarrow` **D + ABC** (previous estimate for **D**  was -3.875)
 		-	:math:`\widehat{b}_\mathbf{AB} = -5.75 \rightarrow` **AB + CD** (previous estimate for **AB**  was insignificant, while **CD** was -5.25)
 		-	:math:`\widehat{b}_\mathbf{AC} = 0.75 \rightarrow` **AC + BD** (previous estimates for both **AC** and **BD**  were insignificant)
-		-	:math:`\widehat{b}_\mathbf{AD} = 7.25 \rightarrow` **AD + BC** (previous estimate for **AD**  was insignificant, while **BC** was 6.4)
+		-	:math:`\widehat{b}_\mathbf{AD} = 7.25 \rightarrow` **AD + BC** (previous estimate for **AD**  was insignificant, while **BC** was 6.375)
 
-		You can verify for yourself that each coefficient from the half fraction is just the sum of the effects estimated from the full factorial. For example, :math:`\widehat{b}_\mathbf{AD} = 7.25 \rightarrow` **AD + BC** = 0.875 + 6.375 = 7.25.
+		You can verify for yourself that each coefficient from the half fraction is just the sum of the coefficients of its aliased terms in the full factorial. For example, :math:`\widehat{b}_\mathbf{AD} = 7.25 \rightarrow` **AD + BC** = 0.875 + 6.375 = 7.25.
 
-		So these estimates from the half-fraction are comparable to the estimates from the full fraction.
+		So these estimates from the half-fraction are comparable to the estimates from the full factorial.
+
+		The defining relationship **I = ABCD** has a single word, of length 4, so the half-fraction has resolution IV: main effects are aliased with three-factor interactions, and two-factor interactions with each other.
+
+		Its projectivity is :math:`R - 1 = 3`: dropping any one factor leaves a full :math:`2^3` factorial in the other three. Since factor **A** was shown to be unimportant, the 8 runs are a full factorial in **B**, **C** and **D**, and the **AB + CD** and **AD + BC** estimates can be read as **CD** and **BC**: -5.75 and 7.25, close to the full factorial's -5.25 and 6.375.
+
+		To de-alias **C**, re-run the 8 experiments with only the signs of column **C** flipped, leaving column **D** as it was. Every new run then has :math:`D = -ABC`, so the new runs are exactly the 8 experiments of the other half-fraction, :math:`I = -ABCD`. Analysed together, the 16 runs are the full factorial, in which **C** is aliased with nothing.
 
 	**R code for this question**
 
@@ -364,7 +370,7 @@ Exercises
 
 .. admonition:: Question
 
-	The following diagram shows data from a central composite design. The factors were run at their standard levels, and there were 4 runs at the center point.
+	The following diagram shows data from a central composite design. The factorial runs were at the usual :math:`\pm 1` levels, the axial runs at :math:`\pm\sqrt{2} = \pm 1.41` coded units (a rotatable design), and there were 4 runs at the center point.
 
 	#.	Calculate the parameters for a suitable quadratic model in these factors. Show your matrices for :math:`\mathbf{X}` and :math:`\mathbf{y}`.
 	#.	Draw a response surface plot of **A** *vs* **B** over a suitably wide range beyond the experimental region.
@@ -382,7 +388,7 @@ Exercises
 		:width: 900px
 		:alt:	../figures/doe/central-composite-question.svg
 
-	You might feel more comfortable setting up the problem in MATLAB. You can use the `contour plot <https://www.mathworks.com/help/matlab/ref/contour.html>`_ functions in MATLAB to visualize the results.
+	You can check your model with the `designed-experiments app <https://kgdunn.github.io/process-improve/app/>`__: generate a central composite design in two factors, with rotatable axial points and 4 center points, type each result against its run, and analyse it with the quadratic model.
 
 	If you are using R, you can use the ``rbind(...)`` or ``cbind(...)`` functions to build up your :math:`\mathbf{X}` matrix row-by-row or column-by-column. The equivalent of meshgrid in R is the ``expand.grid(...)`` function. See the `R code on the course website <https://learnche.org/4C3/Design_and_analysis_of_experiments_(2014)>`_ that shows how to generate surface plots in R.
 
@@ -419,15 +425,15 @@ Exercises
 
 .. admonition:: Solution
 
-	*	The D-optimal objective function is to maximize the determinant of the design matrix, i.e. :math:`\text{det}\left(\mathbf{X}^T\mathbf{X}\right)`.
+	*	The D-optimal objective function is to maximize the determinant of the information matrix, :math:`\text{det}\left(\mathbf{X}^T\mathbf{X}\right)`.
 
-		Since this is a full factorial in 3 factors, with all runs perfectly at the :math:`-1` and :math:`+1` levels, then the determinant is the product of the diagonal entries and is :math:`8^8 = 16777216`. In MATLAB, this would be ``det(eye(8) * 8)``.
+		Since this is a full factorial in 3 factors, with all runs perfectly at the :math:`-1` and :math:`+1` levels, then the determinant is the product of the diagonal entries and is :math:`8^8 = 16777216`. In Python, this is ``numpy.linalg.det(8 * numpy.eye(8))``.
 
-	*	Assuming the columns in :math:`\mathbf{X}` are in the order of [intercept, **A**, **B**, **C**, **AB**, **AC**, **BC**, **ABC**], then row 2 in matrix :math:`\mathbf{X}` would be :math:`[1, 0.5, -1.35, -1, -0.675, -0.5, 1.35, 0.675]` and row 3 would be :math:`[1, -0.5, 0.867, -1, -0.4333, 0.5, -0.867, 0.4333]`
+	*	Assuming the columns in :math:`\mathbf{X}` are in the order of [intercept, **A**, **B**, **C**, **AB**, **AC**, **BC**, **ABC**], then row 2 in matrix :math:`\mathbf{X}` would be :math:`[1, 0.5, -1.356, -1, -0.678, -0.5, 1.356, 0.678]` and row 3 would be :math:`[1, -0.5, 0.867, -1, -0.433, 0.5, -0.867, 0.433]`
 
-		The determinant with these two rows replaced in now :math:`6.402 \times 10^6`.
+		The determinant with these two rows replaced is now :math:`6.430 \times 10^6`.
 
-	*	The ratio is :math:`\frac{6.402 \times 10^6}{16777216} = 0.38`, a fairly large reduction in the objective.
+	*	The ratio is :math:`\frac{6.430 \times 10^6}{16777216} = 0.38`, a fairly large reduction in the objective.
 
 .. admonition:: Question
 
@@ -445,13 +451,13 @@ Exercises
 
 		There are 6 factors to examine. As stated, we would like our treatment method to work on *any* contaminated soil sample, however we have testing soil only from 2 sites. This is a blocking variable, since we might expect differences due to the site where the soil came from, but we want it to have the least possible effect on our results.
 
-		An alternative way to view this problem is to assume that soil is an extra factor in the experiment, but when choosing the generators, we will associate it with the highest level of confounding possible. This latter interpretation makes it easier to use the table in the notes.
+		An alternative way to view this problem is to assume that soil is an extra factor in the experiment, but when choosing the generators, we will associate it with the highest level of confounding possible. This latter interpretation makes it easier to use the trade-off table.
 
-		Using the :ref:`table in the notes <DOE_design_trade_off_BHH_272>`, and looking down the column with 7 factors, we are constrained to the cell with 8 experiments, since the next cell down has 16 experiments, which is too many. So a :math:`2^{7-4}_\text{III}` design would be most appropriate.
+		Using the :ref:`trade-off table <DOE_design_trade_off_BHH_272>`, and looking down the column with 7 factors, we are constrained to the cell with 8 experiments, since the next cell down has 16 experiments, which is too many. So a :math:`2^{7-4}_\text{III}` design would be most appropriate.
 
-		We would write out our usual :math:`2^3` full factorial, then assign **D=AB**, **E=AC**, **F=BC** and **G=ABC**. We will let that last factor be the heap of soil factor, as it has the highest level of confounding.
+		We would write out our usual :math:`2^3` full factorial, then assign **D=AB**, **E=AC**, **F=BC** and **G=ABC**. We will let that last factor, the column built from the three-factor interaction **ABC**, be the heap of soil factor.
 
-		We can run a 9th experiment. In this case, I would put all variables at the center point (if they are continuous), and use a 50/50 blend of the two soil samples. Also, I would run this experiment first, to iron out any experimental protocol issues that I will didn't think of; rather discover them on this first run, which can be discarded in the analysis later on.
+		We can run a 9th experiment. In this case, I would put all variables at the center point (if they are continuous), and use a 50/50 blend of the two soil samples. Also, I would run this experiment first, to iron out any experimental protocol issues that I did not think of; rather discover them on this first run, which can be discarded in the analysis later on.
 
 		Alternatively, if I'm confident with my experimental procedure, I can choose to do experiment 9 last, if at all, as a replicate of any interesting previous experiment that gives an unexpected (good or bad) result.
 
@@ -481,7 +487,7 @@ Exercises
 		| 9         | 0          | 0         |  0         |  0         |  0         |  0         |  50/50     |
 		+-----------+------------+-----------+------------+------------+------------+------------+------------+
 
-	#.	The design has resolution = :math:`R = 3`, from the table in the notes. The projectivity is :math:`R-1 = 2`.
+	#.	The design has resolution :math:`R = 3`, from the trade-off table. The projectivity is :math:`R-1 = 2`.
 
 
 .. admonition:: Question
@@ -529,13 +535,13 @@ Exercises
 
 	#.	Experiments 5 and 6 from the standard order might have been included as baseline experiments, since they appear at the center point for factors **A** and **B**.
 
-		These two runs give 2 degrees of freedom as well, which helps with estimating confidence intervals on the least squares parameters.
+		These two runs give 2 degrees of freedom as well, one of them from the repeat, which estimates the pure error. This helps with estimating confidence intervals on the least squares parameters.
 
 		Also, since one of them was performed first, it could have been used to establish the experimental workflow. In other words, the experiment was used to see how to run the experiment the first time. If things go horribly wrong, then this data point can just be discarded. If we had started with a corner of the factorial, we would have had to repeat that experiment if it failed, or if it succeeded, had a duplicate experiment at the one corner but not the others.
 
 		Finally, it could also have been used to assess the effect of the operators, since runs 5 and 6 are identical, though in this case runs 5 and 6 are on different days, so it could be the day-to-day being measured here.
 
-	#.	Yes. If we consider the day effect to be a new factor, **C**, then we could runs 1 to 4 as a half fraction in 3 factors. The least disruptive generator would be **C = AB**. Using this we can see that runs 1 and 4 should be run on one day, and runs 2 and 3 on the next day: this is what was done. The center points can be run on either day, and in this case one was run on each day.
+	#.	Yes. If we consider the day effect to be a new factor, **C**, then we could treat runs 1 to 4 as a half fraction in 3 factors. The least disruptive generator would be **C = AB**. Using this we can see that runs 1 and 4 should be run on one day, and runs 2 and 3 on the next day: this is what was done. The center points can be run on either day, and in this case one was run on each day.
 
 		Using this generator confounds the interaction effect, **AB** with the day-to-day (and operator-to-operator) effect. We can never clear up that confounding with this set of experiments.
 
@@ -545,7 +551,7 @@ Exercises
 
 			y = b_0 + b_A x_A + b_B x_B + b_{AB}x_{AB} + e
 
-		The matrices and vectors to solves this least squares model are:
+		The matrices and vectors to solve this least squares model are:
 
 		.. math::
 
@@ -583,7 +589,7 @@ Exercises
 							\begin{bmatrix} 1395 \\  448 \\ 270 \\ 90 \end{bmatrix} \\
 			\mathbf{b}  & = \left(\mathbf{X'X}\right)^{-1}\mathbf{X'y} = \begin{bmatrix} 232.5 \\ 112 \\ 67.5 \\  22.5 \end{bmatrix}
 
-	#.	The above least squares solution shows the two main effects are large: 112 and 67.5 for a one unit change (coded units). Relative to these two, the interaction term of :math:`b_{AB} = 22.5` is small. This implies the day-to-day effect (which is confounded with the operator effect) is small.
+	#.	The above least squares solution shows the two main effects are large: their coefficients are 112 and 67.5 per coded unit. Relative to these two, the interaction term of :math:`b_{AB} = 22.5` is small. This implies the day-to-day effect (which is confounded with the operator effect) is small.
 
 	#.	A new run in **A** and **B** would be at *lower* values of **A** and **B**, since we want to reduce the side product. We will make a move from the baseline point by reducing factor **A** by 1 unit, and then ratio that with the necessary change in **B** to go down the direction of steepest descent:
 
@@ -592,7 +598,7 @@ Exercises
 		                                        \Delta x_A &= -1 \\
 		                        \Delta x_{A,\text{actual}} &= -10 \,\text{K} \\
 			                                    \Delta x_B &= \frac{b_B}{b_A} \Delta x_A = \frac{67.5}{112} \Delta x_A \\
-			\text{but we know that}\qquad\qquad \Delta x_B &= \frac{x_{B,\text{actual}}}{\Delta_B / 2} \\
+			\text{but we know that}\qquad\qquad \Delta x_B &= \frac{\Delta x_{B,\text{actual}}}{\Delta_B / 2} \\
 			                    \Delta x_{B,\text{actual}} &= \frac{b_B}{b_A} \Delta x_A \times \Delta_B / 2 \,\,\text{by equating previous 2 lines}  \\
 			                    \Delta x_{B,\text{actual}} &= \frac{67.5}{112} \times (-1) \times 2 \text{kg} / 2\\
 			                    \Delta x_{B,\text{actual}} &= \bf{-0.60}\,\,\text{kg}\\
@@ -602,13 +608,15 @@ Exercises
 		*	**A** = ``430  - 10`` = 420 K
 		*	**B** = :math:`11 - 0.60` = 10.4 kg
 
+		The second run continues one more step along the same direction: **A** = 410 K and **B** = :math:`10.4 - 0.60` = 9.8 kg.
+
 	#.	An optimum is present in a factorial experiment if you notice that:
 
 		*	interaction terms start to become large,
 		*	the center point in the factorial has higher/lower values than any of the corner points (remember that with an optimum you are the peak or the valley)
 		*	curvature terms, i.e. quadratic terms, in the model are larger than the main effect.
 
-		The experimental strategy changes by included axial points into the factorial design, allowing one to calculate the quadratic terms in the model, such as a :math:`b_{AA} x_A^2` term for the quadratic effect of factor **A**.
+		The experimental strategy changes by including axial points into the factorial design, allowing one to calculate the quadratic terms in the model, such as a :math:`b_{AA} x_A^2` term for the quadratic effect of factor **A**.
 
 .. admonition:: Question
 
@@ -732,7 +740,7 @@ Exercises
 		*	**A effect**: There are 4 estimates of :math:`A = \displaystyle \frac{(73-72) + (87-66) + (73-70) + (87-67)}{4} = \frac{45}{4} = \bf{11.25}`
 		*	**B effect**: There are 4 estimates of :math:`B = \displaystyle \frac{(66-72) + (87-73) + (67-70) + (87-73)}{4} = \frac{19}{4} = \bf{4.75}`
 		*	**C effect**: Again 4 estimates of :math:`C = \displaystyle \frac{(70-72) + (73-73) + (67-66) + (87-87)}{4} = \frac{-1}{4} = \bf{-0.25}`
-		*	**AB interaction**: There are 2 estimates of :math:`AB`. Recall that interactions are calculated as the half difference going from high to low. Consider the change in :math:`A` when
+		*	**AB interaction**: There are 2 estimates of :math:`AB`. Recall that an interaction is half the difference between the effect of one factor at the high level of the other and its effect at the low level. Consider the change in :math:`A` when
 
 			-	:math:`B_\text{high}` (at :math:`C` high) = 87 - 67 = 20
 			-	:math:`B_\text{low}` (at :math:`C` high) = 73-70 = 3
@@ -766,9 +774,9 @@ Exercises
 			-	Or, you can calculate this by considering the :math:`BC` effect at the two levels of :math:`A`.
 			-	All 3 approaches give the same result.
 
-	#.	These results show that temperature, **A**, has by far the greatest effect on the conversion: an increase in conversion of 11.25 % for every 10 °C increase in temperature. The agitation rate, **C**, has a negligible effect and the effect of pH, **B**, is between the two: an expected 4.75% increase for every 0.5 units of increased pH.
+	#.	These results show that temperature, **A**, has by far the greatest effect on the conversion: an increase in conversion of 11.25% when the temperature rises by 20 °C, from 140 °C to 160 °C. The agitation rate, **C**, has a negligible effect and the effect of pH, **B**, is between the two: an expected 4.75% increase when the pH rises by 1.0 unit, from 7.0 to 8.0.
 
-		There are no interactions between agitation rate (the **BC** and **AC** interactions are both small), so we can safely drop the agitation, factor **C**, from future consideration in this system.
+		There are no interactions involving agitation rate (the **BC** and **AC** interactions are both small), so we can safely drop the agitation, factor **C**, from future consideration in this system.
 
 		There is however an interaction between temperature and pH, the **AB** interaction. This shows that conversion is further increased when both these factors are operated at their high levels.
 
@@ -795,19 +803,44 @@ Exercises
 
 		.. math::
 
-				y = 74.4 + 5.625 x_A + 2.375 x_B -0.125 x_C + 4.625 x_A x_B + 0.125 x_A x_C + 0.375 x_B x_C - 0.375 x_A x_B x_C
+				y = 74.375 + 5.625 x_A + 2.375 x_B -0.125 x_C + 4.625 x_A x_B + 0.125 x_A x_C + 0.375 x_B x_C - 0.375 x_A x_B x_C
 
 		that agrees with the hand-calculations (where the effects are double those from the least squares model).
 
 	#.	The experiments can be run at any level of agitation, so it makes sense to use the current midpoint of 50 rpm. We are then left with selecting **A** and **B**.
 
-		Since we want to increase conversion, we would want to go in any direction that has higher levels of **A** and **B**. I would tentatively select **A** = 1.5 and **B** as 1.5 in coded units. I used the following MATLAB code and figure to help my decision (we will see how to select the new point more formally in the section on :ref:`response surface methods<DOE-RSM>`).
+		Since we want to increase conversion, we would want to go in any direction that has higher levels of **A** and **B**. I would tentatively select **A** = 1.5 and **B** as 1.5 in coded units. I used the following code and figure to help my decision (we will see how to select the new point more formally in the section on :ref:`response surface methods<DOE-RSM>`).
 
-		.. literalinclude:: ../figures/doe/chemical_reaction_contours.m
-			:language: matlab
+		.. code-block:: python
+
+			import numpy as np
+			import plotly.graph_objects as go
+
+			# The 2^3 design in standard order, with every interaction, and the conversions.
+			xA = np.array([-1, +1, -1, +1, -1, +1, -1, +1])
+			xB = np.array([-1, -1, +1, +1, -1, -1, +1, +1])
+			xC = np.array([-1, -1, -1, -1, +1, +1, +1, +1])
+			X = np.column_stack([np.ones(8), xA, xB, xC, xA * xB, xA * xC, xB * xC, xA * xB * xC])
+			conversion = np.array([72, 73, 66, 87, 70, 73, 67, 87])
+			b = np.linalg.solve(X.T @ X, X.T @ conversion)
+
+			# Agitation is held at its midpoint, x_C = 0, which leaves b_0, b_A, b_B and b_AB.
+			grid = np.linspace(-2, 2, 81)
+			gA, gB = np.meshgrid(grid, grid)
+			predicted = b[0] + b[1] * gA + b[2] * gB + b[4] * gA * gB
+			fig = go.Figure(go.Contour(x=grid, y=grid, z=predicted, contours=dict(showlabels=True)))
+			fig.add_scatter(x=[-1, 1, -1, 1], y=[-1, -1, 1, 1], mode="markers", name="factorial runs")
+			fig.add_scatter(x=[1.5], y=[1.5], mode="markers", marker_symbol="star", marker_size=14,
+			                name="next run")
+			fig.update_layout(xaxis_title_text="A [temperature, coded]",
+			                  yaxis_title_text="B [pH, coded]")
+			fig.show()
+
+			print(f"{b[0] + 1.5 * b[1] + 1.5 * b[2] + 1.5 * 1.5 * b[4]:.1f}")
+			# 96.8
 
 		.. image:: ../figures/doe/chemical-reaction-contours.png
-			:alt:	../figures/doe/chemical_reaction_contours.m
+			:alt:	Predicted conversion contours in A and B, with the four factorial runs and the next run at A = B = 1.5
 			:scale: 60
 			:align: center
 
@@ -815,6 +848,8 @@ Exercises
 
 		*	:math:`A_\text{actual} = 1.5 \times 10 \text{°C} + 150 \text{°C}` = 165 °C.
 		*	:math:`B_\text{actual} = 1.5 \times 0.5 + 7.5` = 8.25 pH units.
+
+		The model predicts a conversion of 96.8% there. The point lies outside the cube of the experiments, so this prediction is an extrapolation, which the next run tests.
 
 .. admonition:: Question
 
@@ -829,7 +864,7 @@ Exercises
 
 		Or to run the experiments efficiently in a short time, we choose to do them in parallel in two different reactors. Here we must block against the reactor effect.
 
-	#.	For a :math:`2^3` system we have factors **A**, **B** and **C**. To avoid the main effect being confounded with any 2 factor interactions we must assign the blocks to the highest interaction, i.e. the **ABC** interaction.
+	#.	For a :math:`2^3` system we have factors **A**, **B** and **C**. To keep the main effects and the two-factor interactions clear of the difference between the blocks, we assign the blocks to the highest-order interaction, the **ABC** interaction.
 
 		Writing out the design in standard order:
 
@@ -853,11 +888,11 @@ Exercises
 		| 8         | |+|        | |+|       |  |+|       |  |+|       |
 		+-----------+------------+-----------+------------+------------+
 
-		This table indicates we should do all experiments in column **ABC** with a |-| in one block, and the experiments with a |+| should be done in the second block. The main effects will not be confounded with any 2-factor interactions in this case.
+		This table indicates we should do all experiments in column **ABC** with a |-| in one block, and the experiments with a |+| should be done in the second block. In this case no main effect or two-factor interaction is confounded with the block difference; only the **ABC** interaction is.
 
 		Another way you can interpret blocking is as follows. Consider the block to be a new factor in your experiment, call it factor **D**, where **D** at the low level corresponds to experiments in the first block, and **D** at the high level would be experiments in the second block.
 
-		But we can only run 8 experiments, so we now use the table in the course notes (derived from page 272 in Box, Hunter and Hunter, 2nd edition), and see the layout that will cause least disruption is to assign **D = ABC**. This gives the same experimental layout above.
+		But we can only run 8 experiments, so we use the :ref:`trade-off table <DOE_design_trade_off_BHH_272>`, and see the layout that will cause least disruption is to assign **D = ABC**. This gives the same experimental layout as the table in this solution.
 
 .. admonition:: Question
 
@@ -905,7 +940,7 @@ Exercises
 
 	#.	What type of fractional factorial is this (i.e. is it a half fraction, quarter fraction ...)?
 
-	#.	Identify all the generators used to create this design. A table, such as on page 272 in Box, Hunter and Hunter, 2nd edition will help.
+	#.	Identify all the generators used to create this design. The :ref:`trade-off table <DOE_design_trade_off_BHH_272>` will help.
 
 	#.	Write out the complete defining relationship.
 
@@ -917,7 +952,7 @@ Exercises
 
 	#.	What are these effects aliased with (use your defining relationship to find this).
 
-	#.	Why is in necessary to know the confounding pattern for a fractional factorial design.
+	#.	Why is it necessary to know the confounding pattern for a fractional factorial design.
 
 .. admonition:: Solution
 
@@ -925,7 +960,7 @@ Exercises
 
 	#.	This is a one-sixteenth fraction, 8/128 = 1/16.
 
-	#.	Since the are 7 factors in 8 runs, the :ref:`DOE tradeoff table <DOE_design_trade_off_BHH_272>` indicates the possible generators are **D = AB**, **E = AC**, **F = BC** and **G = ABC**. However, that doesn't mean the experiments were generated with exactly those factors. For example, these experiments could have interchanged the **A** and **B** columns, in which case factors **E** and **F** would be different.
+	#.	Since there are 7 factors in 8 runs, the :ref:`DOE tradeoff table <DOE_design_trade_off_BHH_272>` indicates the possible generators are **D = AB**, **E = AC**, **F = BC** and **G = ABC**. However, that doesn't mean the experiments were generated with exactly those factors. For example, these experiments could have interchanged the **A** and **B** columns, in which case factors **E** and **F** would be different.
 
 		However, when checking the columns in our table against these generators we see that the experiments were derived from exactly these same generators. It is customary to record the generators in the form **I = ...**, so our generators are:
 
@@ -934,21 +969,21 @@ Exercises
 		*	**I = BCF**
 		*	**I = ABCG**.
 
-	#.	The defining relationship is the product of all possible generator combinations. Since there are 4 generators, there are :math:`2^4` words in the defining relationship. A similar example in the course notes shows that the defining relationship is:
+	#.	The defining relationship is the product of all possible generator combinations. Since there are 4 generators, there are :math:`2^4` words in the defining relationship. As in the :ref:`example of a highly fractionated design <DOE-highly-fractionated-designs>`, the defining relationship is:
 
 		**I = ABD = ACE = BCF = ABCG = BCDE = ACDF = CDG = ABEF = BEG = AFG = DEF = ADEG = CEFG = BDFG = ABCDEFG**
 
-	#.	It is a resolution III design, by noting the shortest word in the defining relationship is of length 3 (and verified in the table above).
+	#.	It is a resolution III design, by noting the shortest word in the defining relationship is of length 3 (and verified in the :ref:`trade-off table <DOE_design_trade_off_BHH_272>`).
 
 	#.	The least squares model would be found by setting |-| = :math:`-1` and |+| = :math:`+1` in the table above as the :math:`\mathbf{X}` matrix, and adding an additional column of 1's to account for the intercept. This gives a total of 8 columns in the matrix. The :math:`\mathbf{X}^T\mathbf{X}` will be diagonal, with 8's on the diagonal. The :math:`\mathbf{y}` vector is just the table of results above.
 
-		From this we calculate :math:`\mathbf{b} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1} \mathbf{X}^T\mathbf{y}` (MATLAB and R code is given at the end).
+		From this we calculate :math:`\mathbf{b} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1} \mathbf{X}^T\mathbf{y}` (R code is given at the end).
 
 		.. math::
 
 			y = 20.35 - 0.65 x_A - 0.25 x_B + 5.05 x_C - 0.45 x_D - 1.45 x_E - 0.15 x_F + 0.15x_G
 
-	#.	From this we judge effect **C**, **E** and to a smaller extent, effect **A**, to be significant.
+	#.	Judged with :ref:`Lenth's method <DOE-lenth-method>`, only effect **C** is significant: the pseudo standard error of the seven coefficients is 0.525, so the margin of error is ME = 1.98, which **C** (5.05) clears and **E** (-1.45) does not. Effects **E** and, to a smaller extent, **A** are the next largest, and an engineer may keep them as candidates for the next experiments.
 
 	#.	However, these main effects are aliased with:
 
@@ -962,7 +997,7 @@ Exercises
 				*	**CACDF = ADF**
 				*	**CCDG = DG**
 				*	**CABEF = ABCEF**
-				*	**CBEG = CBEG**
+				*	**CBEG = BCEG**
 				*	**CAFG = ACFG**
 				*	**CDEF = CDEF**
 				*	**CADEG = ACDEG**
@@ -982,11 +1017,11 @@ Exercises
 				*	**CE**
 				*	**FG**
 
-	#.	It is necessary to know the confounding pattern because it helps to interpret the coefficients. For example, we see that factor **C** is aliased with the **AE** interaction, and we also see that factors **A** and **E** are important. We cannot be sure though if that large coefficient for **C** is due purely to **C**, or if it is also due to the **AE** interaction.
+	#.	It is necessary to know the confounding pattern because it helps to interpret the coefficients. For example, we see that factor **C** is aliased with the **AE** interaction, and factors **A** and **E** are the next largest effects. We cannot be sure though if that large coefficient for **C** is due purely to **C**, or if it is also due to the **AE** interaction.
 
 		The only way we can uncouple that coefficient is by performing additional, *foldover* experiments.
 
-	The R code for this question are given below, and also code to draw the Pareto plot to determine the most important coefficients.
+	The R code for this question is given below, and also code to draw the Pareto plot to determine the most important coefficients.
 
 		.. literalinclude:: ../figures/doe/fractional-factorial-question.R
 			:language: s
@@ -1053,13 +1088,13 @@ Exercises
 
 .. admonition:: Solution
 
-	#.	(22-15)/2 increase in cooking time results in a 2.5 taste level increase.
+	#.	A 3.5 minute increase in cooking time, half the range from 15 to 22 minutes, raises the taste by 2.5 units on average.
 
-	#.	22 minutes, middle over rack, with preheating.
+	#.	22 minutes, middle oven rack, with complete preheating.
 
-	#.	Yes: the **D+** and **P+** levels both have positive coefficients, while the **R-** level has a negative coefficient. The **DR** interaction has a negative coefficient. This actually reinforced (improves) the taste, because **D** = |+| and **R** = |-|, so the the **DR** term *adds* the taste value. This term also makes physical sense: if **D** = |+| and **R** = |+|, then the taste deteriorates, likely to the food being overcooked. Similarly, if **D** = |-| and **R** = |-|, then the chicken is undercooked.
+	#.	Yes: the **D** and **P** coefficients are positive, so their high levels raise the taste, and the **R** coefficient is negative, so its low level, the middle rack, raises the taste. The **DR** interaction has a negative coefficient. This reinforces (improves) the taste, because with **D** = |+| and **R** = |-| the product :math:`x_\text{D} x_\text{R} = -1`, so the **DR** term *adds* to the taste. This term also makes physical sense: if **D** = |+| and **R** = |+|, then the taste deteriorates, likely due to the food being overcooked. Similarly, if **D** = |-| and **R** = |-|, then the chicken is undercooked.
 
-	#.	The table, in standard order has :math:`y=3,9,3,7` and the model is :math:`y = 5.5 + 2.5 x_D - 0.5 x_R - 0.5 x_P`. The **D** and **R** coefficients are the same, only the **P** coefficient = **P**:math:`_\text{original}` + **DR**:math:`_\text{original}` :math:`= +0.25 - 0.75 = -0.5`, due to the aliasing, which is expected.
+	#.	With **P = DR**, the four runs are experiments 5, 2, 3 and 8 of the full factorial. In standard order of **D** and **R** they have :math:`y = 3, 9, 3, 7`, and the model is :math:`y = 5.5 + 2.5 x_D - 0.5 x_R - 0.5 x_P`. The defining relationship **I = DRP** aliases each coefficient with another term of the full model. The **D** and **R** coefficients are unchanged, because their aliases, **RP** and **DP**, are zero. The **P** coefficient is **P**:math:`_\text{original}` + **DR**:math:`_\text{original}` :math:`= +0.25 - 0.75 = -0.5`, and the intercept is :math:`b_{0,\text{original}}` + **DRP**:math:`_\text{original}` :math:`= 5.75 - 0.25 = 5.5`.
 
 .. Raw data: see 2011 DOE project "Heydari-Cook-chicken.pdf"
 
@@ -1131,21 +1166,38 @@ Exercises
 
 		*	There might be one or more days that elapsed between the runs, so this assesses the robustness of the model over time
 
-		*	To test for curvature: if the average of the centerpoints, 87, is very different from the model's intercept, :math:`b_0 = 0.25(119+93+154+89) = 114`, as it is in this case, then there is evidence of curvature.
+		*	To test for curvature: if the average of the centerpoints, 86.5, is very different from the model's intercept, :math:`b_0 = 0.25(119+93+154+89) = 113.75`, as it is in this case, then there is evidence of curvature.
 
-	#.	It's clear that there is evidence of curvature, also, it it is feasible the employee was wanting to optimize the response variable. In that case, she would likely use response surface techniques of climbing the path of steepest ascent.
+	#.	It's clear that there is evidence of curvature, also, it is feasible the employee was wanting to optimize the response variable. In that case, she would likely use response surface techniques of climbing the path of steepest ascent.
 
-		In this model, the presence of curvature at the center point has already been shown. Also a quick calculation from the 4 corner points shows a significant 2 factor interaction.
+		In this model, the presence of curvature at the center point has already been shown. Also a quick calculation from the 4 corner points shows a large two-factor interaction, :math:`b_{MH} = (119 - 93 - 154 + 89)/4 = -9.75`, compared with the main effects' coefficients :math:`b_M = -22.75` and :math:`b_H = 7.75`.
 
-		Using response surface methods in with only the linear terms will be misleading in this case. That's why the employee decided to add the extra experiments; they are the axial experiments to support quadratic terms.
+		Using response surface methods with only the linear terms will be misleading in this case. That's why the employee decided to add the extra experiments; they are the axial experiments to support quadratic terms.
 
 	#.	Central composite design, with the full factorial experiment, in two factors.
 
 	#.	:math:`y = b_0 + b_M x_M + b_H x_H + b_{MH}x_M x_H + b_{MM} x_M^2 + b_{HH}x_H^2`
 
-	#.	X has 10 rows and 6 columns to support the 6 terms in the above model. The last for points have :math:`\pm \sqrt(2)` and :math:`2` terms in those rows.
+	#.	In coded units :math:`x_M = (M - 6)/2` and :math:`x_H = (H - 13)/3`, so the four axial runs are at :math:`\pm 1.4` coded units. With the columns ordered as the terms of the model above, and the runs in the order of the table:
 
-	#.	There 4 degrees of freedom (10 observations, 6 parameters)
+		.. math::
+
+			\mathbf{X} = \begin{bmatrix}
+			1 & -1 & -1 & +1 & 1 & 1 \\
+			1 & +1 & -1 & -1 & 1 & 1 \\
+			1 & -1 & +1 & -1 & 1 & 1 \\
+			1 & +1 & +1 & +1 & 1 & 1 \\
+			1 & 0 & 0 & 0 & 0 & 0 \\
+			1 & 0 & 0 & 0 & 0 & 0 \\
+			1 & -1.4 & 0 & 0 & 1.96 & 0 \\
+			1 & +1.4 & 0 & 0 & 1.96 & 0 \\
+			1 & 0 & +1.4 & 0 & 0 & 1.96 \\
+			1 & 0 & -1.4 & 0 & 0 & 1.96
+			\end{bmatrix} \qquad
+			\mathbf{b} = \begin{bmatrix} b_0 \\ b_M \\ b_H \\ b_{MH} \\ b_{MM} \\ b_{HH} \end{bmatrix} \qquad
+			\mathbf{y} = \begin{bmatrix} 119 \\ 93 \\ 154 \\ 89 \\ 85 \\ 88 \\ 125 \\ 111 \\ 136 \\ 98 \end{bmatrix}
+
+	#.	There are 4 degrees of freedom (10 observations, 6 parameters), one of them pure error, from the two center runs.
 
 .. admonition:: Question
 
@@ -1176,9 +1228,9 @@ Exercises
 
 .. admonition:: Solution
 
-	#.	Baseline conditions are at **G** = **Gm** or **Gp** (either would work), **A** at 15 rpm, **T** at 30°C, and **C** at 1250 concentration units.
+	#.	Baseline conditions are at **G** = **Gm** or **Gp** (either would work), **A** at 15 rpm, **T** at 33 °C, and **C** at 1250 concentration units.
 
-	#.	It is a four factor experiment, with 8 runs; from the table, for the given aliasing, it is a resolution IV design.
+	#.	It is a four factor experiment, with 8 runs. Its defining relationship, **I = GATC**, has a single word of length 4, so it is a resolution IV design.
 
 	#.	We assume that we can ignore all 2fi and 3fi - i.e. that they are small. Specifically, this implies that the 3.5 coefficient is for **C** and not for the product of :math:`x_\text{G} x_\text{A} x_\text{T}`
 
@@ -1198,6 +1250,8 @@ Exercises
 				y &=& 24 + 3 (+1) - 1.0 (-0.6) + 4.0 (2.33) - 0.2 (+1)(-0.6) - 0.79 (+1)(2.33) - 0.25(-0.6)(2.33) + 3.5 (+2) \\
 				y &=& {\bf 42.5}
 			\end{array}
+
+		In this resolution IV design each two-factor interaction is aliased with another: **GA** with **TC**, **GT** with **AC**, and **AT** with **GC**. The prediction with interactions is therefore not unique: attributing the three coefficients to **TC**, **AC** and **GC** instead gives 43.4.
 
 		Without interactions:
 
@@ -1254,15 +1308,13 @@ Exercises
 		geometric mean, :math:`D = \sqrt{d_1 d_2}`, with equal importance on each.
 
 		At :math:`R`: :math:`d_1 = 1/6 = 0.167` and :math:`d_2 = 5/12 = 0.417`, so
-		:math:`D = \sqrt{0.167 \times 0.417} = 0.264`.
+		:math:`D = \sqrt{(1/6)(5/12)} = 0.264`.
 
 		At :math:`S`: :math:`d_1 = 4/6 = 0.667` and :math:`d_2 = 1/12 = 0.083`, so
-		:math:`D = \sqrt{0.667 \times 0.083} = 0.236`.
+		:math:`D = \sqrt{(4/6)(1/12)} = 0.236`.
 
-		Desirability prefers :math:`R`, even though :math:`S` has the higher yield. The cost
-		ramp spans $12/kg while the yield ramp spans 6%, so a given move in cost changes its
-		desirability by less per dollar but the cost at :math:`S` is almost at its limit,
-		leaving :math:`d_2` very small. The geometric mean penalises that imbalance: a setting
+		Desirability prefers :math:`R`, even though :math:`S` has the higher yield. The cost at
+		:math:`S`, $55/kg, is only $1/kg inside its limit, which leaves :math:`d_2` very small. The geometric mean penalises that imbalance: a setting
 		that is barely acceptable on one response scores poorly overall however well it does
 		on the other. Note that this ranking follows from the ramps chosen; different limits
 		would give a different answer, which is why the ramps have to be stated.

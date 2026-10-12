@@ -138,8 +138,8 @@ the :ref:`next sections <DOE-omars-designs>`:
         response from a straight one.
 
     *   Every factor is exercised at all three levels, and exactly one factor sits at :math:`0`
-        in each non-centre run (the grey staircase, which is the conference matrix's zero
-        diagonal). Thirteen runs cover six factors at three levels each: the economy that makes
+        in each non-centre run (the grey cells: the conference matrix has exactly one zero in each
+        row and each column). Thirteen runs cover six factors at three levels each: the economy that makes
         a DSD attractive as a first experiment.
 
 .. figure:: ../figures/doe/dsd-run-matrix.png
