@@ -437,9 +437,9 @@ The recommended recipe, against the truth
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The selected model has five terms: the intercept, one main effect, one quadratic and two
-interactions. It is refitted, and its maximum found over the region, moving only the factors the
-model mentions: the hold temperature, the downshift day and the feed rate. pH, which the model
-does not mention, stays at 7.1.
+interactions. It is refitted, and its maximum found over the region by refining the best point of
+a grid, moving only the factors the model mentions: the hold temperature, the downshift day and
+the feed rate. pH, which the model does not mention, stays at 7.1.
 
 .. code-block:: python
 
@@ -464,19 +464,23 @@ does not mention, stays at 7.1.
 	    x[moved] = z
 	    return -float((model_matrix(terms, x) @ bs).ravel()[0])
 
-	starts = [np.zeros(len(moved)), -np.ones(len(moved)), np.ones(len(moved))]
-	opt = min((optimize.minimize(predicted, s, method="Powell", bounds=[(-1, 1)] * len(moved))
-	           for s in starts), key=lambda r: r.fun)
+	def search(f, n):
+	    """Minimise f over the region: the best of 11 levels per factor, refined within bounds."""
+	    start = min(itertools.product(np.linspace(-1, 1, 11), repeat=n), key=f)
+	    return optimize.minimize(f, start, method="L-BFGS-B", bounds=[(-1, 1)] * n)
+
+	opt = search(predicted, len(moved))
 	x_rec = np.zeros(4)
 	x_rec[moved] = opt.x
 	decode = lambda x: {n: f.low + (x[i] + 1) / 2 * (f.high - f.low)
 	                    for i, (n, f) in enumerate(zip(names, factors))}
 	print({n: f"{v:#.4g}" for n, v in decode(x_rec).items()})
-	# {'hold_temp': '30.13', 'shift_day': '2.000', 'pH': '7.100', 'feed_rate': '0.07000'}
-	print(f"{np.exp(-opt.fun):#.4g}")   # 8.662 g/L predicted
+	# {'hold_temp': '30.64', 'shift_day': '2.000', 'pH': '7.100', 'feed_rate': '0.07000'}
+	print(f"{np.exp(-opt.fun):#.4g}")   # predicted titer, g/L
+	# 8.872
 
-The model recommends a hold at 30.13 °C, the downshift starting on day 2.0, pH left at 7.1 and the
-feed at 0.070 L/day per litre, and predicts 8.662 g/L there. Two of the three settings it moves are
+The model recommends a hold at 30.64 °C, the downshift starting on day 2.0, pH left at 7.1 and the
+feed at 0.070 L/day per litre, and predicts 8.872 g/L there. Two of the three settings it moves are
 at the edge of the region. The feed rate at its top is what the data say, a strong positive main
 effect with no feed-rate curvature in the selected model. The downshift day reaches its lower edge
 through its interaction with hold temperature, with no downshift-day curvature in the model to stop
@@ -507,7 +511,8 @@ titer at any recipe is a single number.
 	best = max((optimize.minimize(lambda x: -truth(x), s, method="Powell", bounds=[(-1, 1)] * 4)
 	            for s in [np.zeros(4), np.array([-1.0, -1, 0, 1]), np.array([-0.5, 0.5, 0, 1])]),
 	           key=lambda r: -r.fun)
-	print(f"{truth(np.zeros(4)):#.4g} {truth(x_rec):#.4g} {-best.fun:#.4g}")   # 7.436 9.037 9.442
+	print(f"{truth(np.zeros(4)):#.4g} {truth(x_rec):#.4g} {-best.fun:#.4g}")
+	# 7.436 8.605 9.442
 	print({n: f"{v:#.4g}" for n, v in decode(best.x).items()})
 	# {'hold_temp': '29.52', 'shift_day': '2.624', 'pH': '7.100', 'feed_rate': '0.07000'}
 
@@ -515,8 +520,15 @@ titer at any recipe is a single number.
 	    x_one = x_rec.copy()
 	    x_one[j] = best.x[j]
 	    print(names[j], f"{truth(x_one):#.4g}")
-	# shift_day 8.653
+	# shift_day 8.007
 	# hold_temp 7.149
+
+	# the best hold for the recommended downshift day, and today's recipe with the feed raised
+	crest = optimize.minimize_scalar(lambda h: -truth(np.r_[h, x_rec[1:]]), bounds=(-1, 1))
+	print(f"{decode(np.r_[crest.x, x_rec[1:]])['hold_temp']:#.4g} {-crest.fun:#.4g}")
+	# 30.22 9.157
+	print(f"{truth(np.r_[0, 0, 0, x_rec[3]]):#.4g}")
+	# 8.635
 
 	for label, x in (("current", np.zeros(4)), ("best", best.x)):   # pH at 6.9, 7.1 and 7.3
 	    print(label, [f"{truth(np.r_[x[:2], ph, x[3]]):#.4g}" for ph in (-1, 0, 1)])
@@ -534,22 +546,28 @@ titer at any recipe is a single number.
 	  - 7.436
 	  -
 	* - Recommended by the study
-	  - 9.037
-	  - 1.601
+	  - 8.605
+	  - 1.169
 	* - True best in the region
 	  - 9.442
 	  - 2.006
 
-The study captured 1.601 g/L of the 2.006 g/L that was available, 80%. The feed rate and pH are
+The study captured 1.169 g/L of the 2.006 g/L that was available, 58%. The feed rate and pH are
 right. The downshift day moved in the right direction, earlier than today's 2.75, but past the true
-optimum at 2.62 to the edge of the region, and the hold is 0.610 °C warmer than the best.
+optimum at 2.62 to the edge of the region, and the hold is about 1.1 °C warmer than the best.
+Raising the feed rate alone, from today's recipe, gives 8.635 g/L, so the moves in hold temperature
+and downshift day add nothing to the gain.
 
-The remaining shortfall comes from the hold temperature and the downshift day together, not from
-either one. Moving only the downshift day to its best value lowers the titer to 8.653 g/L, and
-moving only the hold temperature lowers it to 7.149 g/L: an early downshift suits a warm hold, so
-the recommendation is a consistent pair on the wrong part of the ridge the interaction draws. The
-model places it there because it has no downshift-day curvature to say where along the ridge the
-peak lies.
+The shortfall comes from the hold temperature and the downshift day together, not from either one.
+Moving only the downshift day to its best value lowers the titer to 8.007 g/L, and moving only the
+hold temperature lowers it to 7.149 g/L: an early downshift suits a warm hold, so the recommendation
+sits at the early end of the ridge the interaction draws. The model places it there because it has
+no downshift-day curvature to say where along the ridge the peak lies.
+
+The recommended hold is also warmer than the crest of that ridge. With the downshift on day 2.0,
+the true titer peaks at a hold of 30.22 °C, at 9.157 g/L, and falls away more steeply below that
+hold than above it, as the contour maps below show. A quadratic is symmetric about its peak, so
+fitted to that lopsided shape it places the peak on the side where the response falls slowly.
 
 Goos et al. (2026) refit a selected model with the main effect of every factor that appears in one
 of its second-order terms, a convention called model marginality. Here that adds the
@@ -565,21 +583,20 @@ hold-temperature and downshift-day main effects to the five terms:
 	    x[moved] = z
 	    return -float((model_matrix(marginal, x) @ b_marginal).ravel()[0])
 
-	opt_marginal = min((optimize.minimize(predicted_marginal, s, method="Powell",
-	                                      bounds=[(-1, 1)] * len(moved)) for s in starts),
-	                   key=lambda r: r.fun)
+	opt_marginal = search(predicted_marginal, len(moved))
 	x_marginal = np.zeros(4)
 	x_marginal[moved] = opt_marginal.x
 	print({n: f"{v:#.4g}" for n, v in decode(x_marginal).items()})
 	# {'hold_temp': '29.80', 'shift_day': '3.500', 'pH': '7.100', 'feed_rate': '0.07000'}
-	print(f"{truth(x_marginal):#.4g}")   # 8.097
+	print(f"{truth(x_marginal):#.4g}")
+	# 8.097
 
-The two models agree on the feed rate and pH, and on the hold temperature to within 0.33 °C. They
-disagree on the downshift day: the marginal model sends it to the late edge, day 3.5, where the
-true titer is 8.097 g/L. Neither model has the downshift-day curvature, so the small downshift-day
-main effect, which the staged analysis did not find significant, decides which edge the
-recommendation takes. The models agree on the settings the data determine and disagree on the one
-setting the study did not resolve.
+The two models agree on the feed rate and pH. They disagree on the downshift day, and with it the
+hold: the marginal model sends the downshift to the late edge, day 3.5, with the cooler hold a late
+downshift suits, 29.80 °C, and the true titer there is 8.097 g/L. Neither model has the
+downshift-day curvature, so the small downshift-day main effect, which the staged analysis did not
+find significant, decides which edge the recommendation takes. The models agree on the settings the
+data determine and disagree on the one setting the study did not resolve.
 
 .. figure:: ../figures/doe/omars-worked-study-surface.png
 	:source: doe/omars-worked-study-surface.py
@@ -593,7 +610,8 @@ setting the study did not resolve.
 	disturbance switched off. The circle is the current recipe, the square the recipe the study
 	recommends, and the star the true best in the region. The fitted model has no downshift-day
 	curvature, so its best downshift day sits on the edge of the region; the true response has an
-	interior optimum at day 2.62.
+	interior optimum at day 2.62. Along the bottom edge, day 2.0, the true titer rises steeply to
+	its crest near 30.2 °C and falls slowly beyond it, and the square sits on the slow side.
 
 The four centre points supply a pure-error estimate and a test of whether the five-term
 model is adequate.
@@ -627,7 +645,7 @@ fit set against the best second-order approximation of the undisturbed process:
 	rec, opt, gap = decode(x_rec), decode(best.x), truth(x_rec) + best.fun
 	print({n: f"{100 * (rec[n] - opt[n]) / current[n]:+.1f}%" for n in names},
 	      f"titer {100 * gap / truth(np.zeros(4)):+.1f}%")
-	# {'hold_temp': '+2.0%', 'shift_day': '-22.7%', 'pH': '+0.0%', 'feed_rate': '+0.0%'} titer -5.5%
+	# {'hold_temp': '+3.7%', 'shift_day': '-22.7%', 'pH': '+0.0%', 'feed_rate': '+0.0%'} titer -11.3%
 
 	full = [("m", j) for j in range(4)] + [("q", j) for j in range(4)]
 	full += [("i", pair) for pair in itertools.combinations(range(4), 2)]
@@ -639,10 +657,22 @@ fit set against the best second-order approximation of the undisturbed process:
 	print(real.sum(), (np.sign(b_fit[1:]) == np.sign(b_true[1:]))[real].sum())   # 10 10
 	print(f"{b_true[6]:#.4g} {b_fit[6]:#.4g}")   # -0.06627 -0.008206, downshift-day quadratic
 
-Feed rate and pH are exact; the titer ends 5.5% short of the best. All ten real terms get the right
-sign, and the five whose intervals exclude zero in the effects figure are all real, so the study
-declared nothing the process does not have. The costly miss is the downshift-day curvature,
-estimated at an eighth of its size, which sends the downshift to the edge of the region.
+	opt_true = search(lambda z: -float((model_matrix(full, z) @ b_true)[0]), 4)
+	share = lambda x: (truth(x) - truth(np.zeros(4))) / (-best.fun - truth(np.zeros(4)))
+	print(f"{share(x_rec):.0%} {share(opt_true.x):.0%}")   # of the gain available
+	# 58% 52%
+
+Feed rate and pH are exact; the titer ends 11.3% short of the best. All ten real terms get the
+right sign, and the five whose intervals exclude zero in the effects figure are all real, so the
+study declared nothing the process does not have. The miss that moves the recipe is the
+downshift-day curvature, estimated at an eighth of its size, which sends the downshift to the edge
+of the region.
+
+Estimating that curvature correctly would not have closed the gap. The best second-order
+approximation has every term at its true size, yet the recipe at its maximum captures 52% of the
+gain available, less than the study's 58%. Within this region the true peak is too narrow and
+lopsided for a quadratic to place, so the form of the model, more than the data, limits the
+recommendation.
 
 .. _DOE-omars-study-fewer-runs:
 
@@ -682,63 +712,67 @@ follow the recipe the fitted model recommends, and read the true titer there.
 	  - Hold x downshift, %
 	  - Hold curvature, %
 	* - OMARS, 13 runs
-	  - 0
-	  - -0.8496
-	  - -1.973
+	  - -0.02071
+	  - -0.8497
+	  - -1.201
 	  - 14
 	  - 67
 	  - 30
 	* - OMARS, 17 runs
-	  - 0.7165
-	  - -0.8967
+	  - 0.8323
+	  - -0.8834
 	  - -3.246
 	  - 94
 	  - 35
-	  - 21
+	  - 20
 	* - OMARS, 21 runs
-	  - 0.1181
-	  - -0.02070
-	  - -0.8178
+	  - 0.8573
+	  - 0
+	  - -1.093
 	  - 83
 	  - 78
 	  - 13
 	* - OMARS, 27 runs
-	  - 0.9494
-	  - 0.1181
-	  - -1.655
+	  - 0.9244
+	  - -0.02071
+	  - -1.118
 	  - 91
 	  - 100
 	  - 85
 	* - OMARS, 31 runs
-	  - 1.001
-	  - 0.5388
+	  - 0.9236
+	  - 0.5546
 	  - -0.3901
 	  - 100
 	  - 100
 	  - 85
 	* - Box-Behnken, 27 runs
 	  - 1.199
-	  - 0.1181
-	  - -2.810
+	  - -0.2215
+	  - -3.246
 	  - 99
 	  - 41
 	  - 77
 	* - Face-centred central composite, 27 runs
-	  - 0.9424
-	  - 0.1818
-	  - -1.584
+	  - 0.9403
+	  - -0.03423
+	  - -1.149
 	  - 91
 	  - 100
 	  - 88
 
-* **13 and 17 runs** vary most between campaigns. A design that finds the feed rate without the
-  hold-temperature curvature sends the hold to an edge of the region.
+* **13 and 17 runs** vary most between the OMARS campaigns. At 13 runs the feed rate is seldom
+  found, so the median campaign gains nothing. At 17 runs it is found, but a design that finds the
+  feed rate without the hold-temperature curvature sends the hold to an edge of the region.
 * **21 runs**, the frontier, fits the full model but finds the hold-temperature curvature in only
   13% of campaigns; its variance factor for that term is the largest of the three ``Full`` sizes.
-* **27 and 31 runs** find all three effects in 85% of campaigns or more; the four extra runs mainly
-  raise the lower tail.
+  Without the curvature, the interaction pairs a cold hold with a late downshift, which gains
+  nearly as much as the median campaign at 27 runs.
+* **27 and 31 runs** find all three effects in 85% of campaigns or more; the four extra runs raise
+  the lower tail but not the median, which the form of the model limits.
 * **Box-Behnken** has the highest median but finds the interaction in 41% of campaigns; missing it
-  leaves the downshift at today's setting, which here lies nearer the true optimum.
+  leaves the hold and the downshift at today's settings, so the median campaign raises only the
+  feed rate, which here does better than moving them.
 * **Face-centred central composite** is close to the 27-run OMARS design throughout.
 
 The variance factor of the hold-temperature quadratic, the diagonal entry of
@@ -789,7 +823,7 @@ How each result traces back to the OMARS properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Each result of this study follows from a property set out in :ref:`OMARS designs
-<DOE-omars-designs>`, and the one costly miss follows from the model rather than the design. Two
+<DOE-omars-designs>`, and the one miss follows from the model rather than the design. Two
 checks make that concrete: the feed-rate estimate in the one-step, staged and marginal fits, and
 the power to detect the true downshift-day curvature, against the error the analysis measures and
 against the replicate noise alone.
