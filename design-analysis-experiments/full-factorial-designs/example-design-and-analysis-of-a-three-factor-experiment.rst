@@ -39,6 +39,8 @@ The data are from a plastics molding factory that must treat its waste before di
 	| 8         | 8     | Choice Q      | 100             | 400             | 4               |
 	+-----------+-------+---------------+-----------------+-----------------+-----------------+
 
+	You can check your answers with :factorial:`pollutant`, the designed-experiments app, which opens these eight runs with their results.
+
 #.	Draw a geometric figure that illustrates the data from this experiment.
 
 #.	Calculate the main effect for each factor by hand.

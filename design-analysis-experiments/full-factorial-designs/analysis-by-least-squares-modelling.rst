@@ -23,6 +23,8 @@ Let's review the :ref:`original system (the one with little interaction) <DOE-tw
 	| 4         | |+|  (354 K)  | |+| (1.75 g/L)  |  53          |
 	+-----------+---------------+-----------------+--------------+
 
+:factorial:`conversion`, the designed-experiments app, opens these four runs with their results, and fits this least squares model to them.
+
 It is standard practice to represent the data from designed experiments in a centered and scaled form: :math:`\dfrac{\text{variable} - \text{center point}}{\text{range}/2}`. This gives the following values:
 
 	*	:math:`T_{-} = \dfrac{338 - 346}{(354-338)/2} = \dfrac{-8}{8} = -1`

@@ -57,6 +57,8 @@ The range over which they will be varied is given in the table. This range was i
 
 	Experiments were performed in random order; in this case, we happened to run experiment 4 first and experiment 3 last.
 
+	:factorial:`conversion`, the designed-experiments app, opens these four runs with their results, in the order they were run.
+
 #.	For simple systems you can visualize the design and results :ref:`as shown in the following figure <DOE-fig-Cube-plot>`. This is known as a :index:`cube plot`.
 
 	.. _DOE-fig-Cube-plot:
@@ -153,6 +155,8 @@ Let's use a :ref:`different system here to illustrate <DOE-fig-interaction-examp
 	+-----------+---------------+-----------------+--------------+
 	| 4         | |+|  (400 K)  | |+| (1.25 g/L)  |  89          |
 	+-----------+---------------+-----------------+--------------+
+
+:factorial:`conversion-interaction`, the designed-experiments app, opens these four runs with their results.
 
 The main effect of temperature for this system is
 

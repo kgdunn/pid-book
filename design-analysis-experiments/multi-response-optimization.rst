@@ -63,6 +63,8 @@ it separately makes that trade explicit. The nine runs, in coded and actual unit
 | 9          | -1.41      | 0          | 337.3 K     | 1.60 g/L   | 726           | 95.4       |
 +------------+------------+------------+-------------+------------+---------------+------------+
 
+Factorial, the designed-experiments app, opens these nine runs with their :factorial:`profit <multi-response-profit>` or their :factorial:`purity <multi-response-purity>` results, one response at a time.
+
 Every figure in this section is reproducible with
 `process_improve <https://github.com/kgdunn/process-improve>`_
 (``pip install 'process-improve[all]'``). Each block imports what it needs and reuses

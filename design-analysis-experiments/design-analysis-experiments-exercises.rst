@@ -12,6 +12,8 @@ Exercises
 		*	High traffic websites offer a unique opportunity to perform testing and optimization. This is because each visitor to the site is independent of the others (randomized), and these tests can be run in parallel. Read more in this `brief writeup <https://youtube.googleblog.com/2009/08/look-inside-1024-recipe-multivariate.html>`_ on how Google uses testing tools to optimize YouTube, one of their web properties. Unfortunately they use the term "multivariate" incorrectly - a better term is "multi-variable"; nevertheless, the number of factors and combinations to be tested is large. It's well known that fractional factorial methods are used to analyze these data.
 		*	See three chemical engineering examples of factorial designs in Box, Hunter, and Hunter: Chapter 11 (1st edition), or page 173 to 183 in the second edition.
 
+.. _DOE-exercise-web-sales:
+
 .. admonition:: Question
 
 	Your family runs a small business selling low dollar value products over the web. They want to improve sales. There is a known effect from the day of the week, so to avoid that effect they run the following designed experiment every Tuesday for the past eight weeks. The first factor of interest is whether to provide free shipping over $30 or over $50. The second factor is whether or not the purchaser must first create a profile (user name, password, address, etc) before completing the transaction. The purchaser can still complete their transaction without creating a profile.
@@ -32,6 +34,8 @@ Exercises
 				09 February 2010,	$30,  No, $ 3562
 				16 February 2010,	$30, Yes, $ 2965
 				23 February 2010,	$50, Yes, $ 2571
+
+		You can check your analysis with :factorial:`web-sales`, the designed-experiments app, which opens these eight days with their sales.
 
 		#.	Calculate the average response from replicate experiments to calculate the 4 corner points.
 		#.	Calculate and interpret the main effects in the design.
@@ -168,6 +172,8 @@ Exercises
 
 	#.	George Box, The R. A. Fisher Memorial Lecture, 1988, "`Quality Improvement - An Expanding Domain for the Application of Scientific Method <https://dx.doi.org/10.1098/rsta.1989.0017>`_", *Philosophical Transactions of the Royal Society - A*, **327**: pages 617-630, 1989.
 
+.. _DOE-exercise-bioreactor:
+
 .. admonition:: Question
 
 	.. note::	This is a tutorial-type question: all the sub-questions build on each other. All questions deal with a hypothetical bioreactor system, and we are investigating four factors:
@@ -178,6 +184,8 @@ Exercises
 		*	**D** = dissolved oxygen set-point (4mg/L or 6 mg/L)
 
 	The 16 experiments from a full factorial, :math:`2^4`, were randomly run, and the yields from the bioreactor, :math:`y`, are reported here in standard order:  y = [60, 59, 63, 61, 69, 61, 94, 93, 56, 63, 70, 65, 44, 45, 78, 77].
+
+	You can check your analysis with :factorial:`bioreactor`, the designed-experiments app, which opens these 16 runs with their yields.
 
 	#.	Calculate the 15 main effects and interactions and the intercept, using computer software.
 
@@ -289,6 +297,8 @@ Exercises
 		+-----------+---------------+-----------------+--------------------+-----------------+
 		| 8         | Medium        | 700g            | 60 g/L             | 6 mg/L          |
 		+-----------+---------------+-----------------+--------------------+-----------------+
+
+		:factorial:`bioreactor-half-fraction`, the designed-experiments app, opens these eight runs with their yields.
 
 	#.	-	Generator = **D = ABC**
 		-	Defining relationship =  **I = ABCD**
@@ -490,6 +500,8 @@ Exercises
 	#.	The design has resolution :math:`R = 3`, from the trade-off table. The projectivity is :math:`R-1 = 2`.
 
 
+.. _DOE-exercise-side-product:
+
 .. admonition:: Question
 
 	A factorial experiment was run to investigate the settings that minimize the production of an unwanted side product. The two factors being investigated are called **A** and **B**  for simplicity, but are:
@@ -516,6 +528,8 @@ Exercises
 	+-----------+------------+--------------+------------+------------+---------------------+
 	| 6         | 6          | 2            |  430 K     | 11 kg      | 215 g               |
 	+-----------+------------+--------------+------------+------------+---------------------+
+
+	You can check your analysis with :factorial:`side-product`, the designed-experiments app, which opens these six runs with their results, each on its day.
 
 	#.	What might have been the reason(s) for including experiments 5 and 6?
 
@@ -692,6 +706,8 @@ Exercises
 
 	In all these questions we can conclusively state there is cause and effect, since we see repeated changes in the factors (holding the other variables and disturbances constant) and the corresponding effects in the 3 :math:`y`-variables.
 
+.. _DOE-exercise-chemical-reaction:
+
 .. admonition:: Question
 
 	Using a :math:`2^3` factorial design in 3 variables (**A** = temperature, **B** = pH and **C** = agitation rate), the conversion, :math:`y`, from a chemical reaction was recorded.
@@ -719,6 +735,8 @@ Exercises
 	*	**A** = :math:`\displaystyle \frac{\text{temperature} - 150\text{°C}}{10\text{°C}}`
 	*	**B** = :math:`\displaystyle \frac{\text{pH} - 7.5}{0.5}`
 	*	**C** = :math:`\displaystyle \frac{\text{agitation rate} - 50 \text{rpm}}{5 \text{rpm}}`
+
+	You can check your analysis with :factorial:`chemical-reaction`, the designed-experiments app, which opens these eight runs with their results.
 
 	#.	Show a cube plot for the recorded data.
 	#.	Estimate the main effects and interactions by hand.
@@ -894,6 +912,8 @@ Exercises
 
 		But we can only run 8 experiments, so we use the :ref:`trade-off table <DOE_design_trade_off_BHH_272>`, and see the layout that will cause least disruption is to assign **D = ABC**. This gives the same experimental layout as the table in this solution.
 
+.. _DOE-exercise-injection-molding:
+
 .. admonition:: Question
 
 	Factors related to the shrinkage of plastic film, produced in an injection molding device, are being investigated. The following factors have been identified by the engineer responsible:
@@ -925,6 +945,8 @@ Exercises
 	+-----------+-----+-----+-----+-----+-----+-----+-----+------------+
 	| 8         | |+| | |+| | |+| | |+| | |+| | |+| | |+| |  22.6      |
 	+-----------+-----+-----+-----+-----+-----+-----+-----+------------+
+
+	You can check your analysis with :factorial:`injection-molding`, the designed-experiments app, which opens these eight runs with their results.
 
 	You can obtain a copy of this data set if you install the ``BsMD`` package in R. Then use the following commands:
 
@@ -1032,6 +1054,8 @@ Exercises
 			:align: right
 			:width: 900px
 
+.. _DOE-exercise-breaded-chicken:
+
 .. admonition:: Question
 
 	One of the experiment projects investigated by a previous student of this course was understanding effects related to the preparation of uncooked, breaded chicken strips.
@@ -1068,6 +1092,8 @@ Exercises
 		|   8            |  |+|   |  |+|  |   |+|  | 7     |
 		+----------------+--------+-------+--------+-------+
 
+	You can check your analysis with :factorial:`breaded-chicken`, the designed-experiments app, which opens these eight runs with their results.
+
 	A full factorial model, using the usual coding, was calculated from these 8 experiments:
 
 	.. math::
@@ -1096,7 +1122,11 @@ Exercises
 
 	#.	With **P = DR**, the four runs are experiments 5, 2, 3 and 8 of the full factorial. In standard order of **D** and **R** they have :math:`y = 3, 9, 3, 7`, and the model is :math:`y = 5.5 + 2.5 x_D - 0.5 x_R - 0.5 x_P`. The defining relationship **I = DRP** aliases each coefficient with another term of the full model. The **D** and **R** coefficients are unchanged, because their aliases, **RP** and **DP**, are zero. The **P** coefficient is **P**:math:`_\text{original}` + **DR**:math:`_\text{original}` :math:`= +0.25 - 0.75 = -0.5`, and the intercept is :math:`b_{0,\text{original}}` + **DRP**:math:`_\text{original}` :math:`= 5.75 - 0.25 = 5.5`.
 
+		:factorial:`breaded-chicken-half-fraction`, the designed-experiments app, opens these four runs with their results.
+
 .. Raw data: see 2011 DOE project "Heydari-Cook-chicken.pdf"
+
+.. _DOE-exercise-microgel:
 
 .. admonition:: Question
 
@@ -1131,6 +1161,8 @@ Exercises
 		+-----------+-------+----------------------------+----------------------------+------------+
 		| 10        | 8     |  6                         |  8.8                       | 98         |
 		+-----------+-------+----------------------------+----------------------------+------------+
+
+		You can check your analysis with :factorial:`microgel`, the designed-experiments app, which opens these ten runs with their results.
 
 	#.	What was likely the reason the experimenter added experiments 5 and 6?
 

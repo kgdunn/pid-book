@@ -249,6 +249,8 @@ After having established which effects are significant, we can exclude the nonsi
 
 As an example, consider a :math:`2^4` factorial (16 runs) where the response values in standard order were :math:`y = [71, 61, 90, 82, 68, 61, 87, 80, 61, 50, 89, 83, 59, 51, 85, 78]`. Assessing the 15 effects with a Pareto plot, or with :ref:`Lenth's method <DOE-lenth-method>`, identifies **A**, **B**, **D** and **BD** as the significant ones. Now, omitting the nonsignificant effects, there are only five parameters to estimate, including the intercept, so the standard error is :math:`S_E^2 = \dfrac{39}{16-5} = 3.55`, with 11 degrees of freedom. The :math:`S_E(b_i)` value for all coefficients, except the intercept, is :math:`\sqrt{\dfrac{S_E^2}{16}} = 0.471`, and the critical :math:`t`-value at the 95% level is ``qt(0.975, df=11)`` = 2.2. So the confidence intervals can be calculated to confirm that these are indeed significant effects. The same yardstick, :math:`2.2 \times 0.471 = 1.04`, is also exceeded by one of the omitted effects, :math:`b_C = -1.125`.
 
+:factorial:`significance`, the designed-experiments app, opens these 16 runs with their results, fitted with only **A**, **B**, **D** and **BD**.
+
 There is some circular reasoning here: postulate that one or more effects are zero and increase the degrees of freedom by removing those parameters in order to confirm the remaining effects are significant. Some general advice is to first exclude effects that are definitely small, and then retain medium-size effects in the model until you can confirm they are not significant.
 
 .. _DOE-COST-vs-factorial-efficiency:
