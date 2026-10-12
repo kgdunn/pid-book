@@ -30,6 +30,7 @@ extensions = [
     "my-extensions.code_collapse",
     "my-extensions.run_in_browser",
     "my-extensions.social_meta",
+    "my-extensions.factorial_link",
 ]
 
 # Chapters whose Python examples get a "Run in browser" button (Pyodide). The
