@@ -674,6 +674,9 @@ Power is computed from the same design, against the full second-order model:
 	#  interaction 0.3682
 	#    quadratic 0.3450
 
+`Factorial <https://factori.al/>`__, the designed-experiments app, computes the same nine measures
+in the browser, for factors a reader enters and every design the app can generate for them.
+
 Running ``criteria`` and ``power`` on every OMARS design of every size in three factors, and
 keeping the best value of each measure at each size, gives the nine curves below.
 
