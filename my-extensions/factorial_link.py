@@ -1,6 +1,6 @@
 """``:factorial:`name``` links to one of the book's examples in Factorial, the designed-experiments app.
 
-``:factorial:`pollutant``` renders as a link named "Factorial" to https://factori.al/#book=pollutant,
+``:factorial:`pollutant``` renders as a link named "Factorial" to https://factori.al/?book=pollutant,
 which opens the pollutant experiment with the book's factors, units, runs and results filled in,
 and analysed. ``:factorial:`the purity results <multi-response-purity>``` names the link otherwise.
 
@@ -23,8 +23,12 @@ NAME = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
 
 
 def example_url(name: str) -> str:
-    """Return the address that opens the book's example ``name`` in Factorial."""
-    return f"{APP}#book={name}"
+    """Return the address that opens the book's example ``name`` in Factorial.
+
+    The name goes in the query, not a fragment: on a page without sections the theme's
+    scroll-spy reads every link's fragment as a CSS selector, and ``#book=name`` is not one.
+    """
+    return f"{APP}?book={name}"
 
 
 class FactorialRole(ReferenceRole):

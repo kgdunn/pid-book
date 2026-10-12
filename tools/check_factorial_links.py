@@ -1,6 +1,6 @@
 """Check every Factorial link the book prints: the app opens each name, and links back to its page.
 
-``:factorial:`name``` (my-extensions/factorial_link.py) links to https://factori.al/#book=<name>.
+``:factorial:`name``` (my-extensions/factorial_link.py) links to https://factori.al/?book=<name>.
 The app publishes its examples in ``book/index.json``: each name, its title, and the page of the
 book it links back to ("Read it in the book"). This script reads every ``.rst`` file and fails
 when a name the book uses is not published, or when the page the app links back to does not use

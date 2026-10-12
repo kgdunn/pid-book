@@ -1,6 +1,6 @@
 """Links to the book's examples in Factorial (my-extensions/factorial_link.py, tools/check_factorial_links.py).
 
-``:factorial:`name``` must render as a link to https://factori.al/#book=<name> in the HTML and,
+``:factorial:`name``` must render as a link to https://factori.al/?book=<name> in the HTML and,
 through ``latex_show_urls``, as a footnote with that address in the PDF. The checker must find
 every name the book uses, and say when the app does not publish it or links back elsewhere.
 """
@@ -48,15 +48,15 @@ def built(tmp_path_factory) -> dict[str, str]:
 
 def test_the_link_opens_the_example_by_name(built):
     html = built["html"]
-    assert 'href="https://factori.al/#book=pollutant">Factorial</a>' in html
-    assert 'href="https://factori.al/#book=multi-response-purity">their purity</a>' in html
+    assert 'href="https://factori.al/?book=pollutant">Factorial</a>' in html
+    assert 'href="https://factori.al/?book=multi-response-purity">their purity</a>' in html
     assert "factorial-link" in html
 
 
 def test_the_pdf_prints_the_address_as_a_footnote(built):
     tex = built["latex"]
-    assert r"\sphinxhref{https://factori.al/\#book=pollutant}{Factorial}" in tex
-    assert r"\sphinxnolinkurl{https://factori.al/\#book=pollutant}" in tex, (
+    assert r"\sphinxhref{https://factori.al/?book=pollutant}{Factorial}" in tex
+    assert r"\sphinxnolinkurl{https://factori.al/?book=pollutant}" in tex, (
         "the footnote a reader can type"
     )
 
@@ -74,7 +74,15 @@ def test_the_role_s_names_are_the_app_s():
     assert factorial_link.NAME.fullmatch("breaded-chicken-half-fraction")
     for name in ("Pollutant", "a--b", "-a", "a_b", "a/b"):
         assert not factorial_link.NAME.fullmatch(name), name
-    assert factorial_link.example_url("pollutant") == "https://factori.al/#book=pollutant"
+    assert factorial_link.example_url("pollutant") == "https://factori.al/?book=pollutant"
+
+
+def test_the_link_has_no_fragment_for_the_theme_to_read():
+    """On a page without sections the theme's scroll-spy reads every link's fragment as a CSS selector.
+
+    ``#book=web-sales`` is no selector, and the exercises page threw; the name rides in the query.
+    """
+    assert "#" not in factorial_link.example_url("web-sales")
 
 
 # --------------------------------------------------------------------------- the checker
