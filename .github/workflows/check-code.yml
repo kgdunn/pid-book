@@ -29,6 +29,13 @@ name: Check book code
 # (tools/check_run_deps.py). It is a gate: an edit that makes an example depend
 # on an earlier one in a way the analysis cannot see would otherwise show readers
 # a wrong result, or a NameError, only in the browser.
+#
+# The `factorial-links` job checks the links the book prints to its examples in
+# Factorial, the designed-experiments app (`:factorial:` in the text): each name
+# must be one https://factori.al/book/index.json publishes, and the app must link
+# back to a page that uses it (tools/check_factorial_links.py). The app is
+# deployed from process-improve's main branch, so a new example is published
+# there before the book links to it.
 
 on:
   push:
@@ -126,6 +133,25 @@ jobs:
 
       - name: Run every Python case in the book against the library's main branch
         run: make check-code CHECK_WITH='process-improve[all] @ git+https://github.com/kgdunn/process-improve@main'
+
+  factorial-links:
+    name: Links to the book's examples in Factorial
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout pid-book
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Install Python dependencies
+        run: uv sync --frozen
+
+      - name: Check every name against the published app
+        run: make check-factorial-links
 
   case-study:
     name: Mixed-level case study, with pyoptex
