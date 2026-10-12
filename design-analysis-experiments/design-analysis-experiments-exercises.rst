@@ -388,7 +388,7 @@ Exercises
 		:width: 900px
 		:alt:	../figures/doe/central-composite-question.svg
 
-	You can check your model with the `designed-experiments app <https://factori.al/>`__: generate a central composite design in two factors, with rotatable axial points and 4 center points, type each result against its run, and analyse it with the quadratic model.
+	You can check your model with `Factorial <https://factori.al/>`__, the designed-experiments app: generate a central composite design in two factors, with rotatable axial points and 4 center points, type each result against its run, and analyse it with the quadratic model.
 
 	If you are using R, you can use the ``rbind(...)`` or ``cbind(...)`` functions to build up your :math:`\mathbf{X}` matrix row-by-row or column-by-column. The equivalent of meshgrid in R is the ``expand.grid(...)`` function. See the `R code on the course website <https://learnche.org/4C3/Design_and_analysis_of_experiments_(2014)>`_ that shows how to generate surface plots in R.
 

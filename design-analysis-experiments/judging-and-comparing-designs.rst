@@ -472,8 +472,8 @@ OMARS value at :math:`12.50` because its worst case does not sit at a vertex. Th
 so it changes no conclusion here, but including the extreme points is the correct procedure, and
 the :ref:`omnibus comparison <DOE-omnibus-comparison>` relies on it.
 
-The `designed-experiments app <https://factori.al/>`__ draws FDS plots in the browser, for factors
-a reader enters and every design the app can generate for them.
+`Factorial <https://factori.al/>`__, the designed-experiments app, draws FDS plots in the browser,
+for factors a reader enters and every design the app can generate for them.
 
 Separability is not the same as precision
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

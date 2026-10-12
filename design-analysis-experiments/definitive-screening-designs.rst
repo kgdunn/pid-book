@@ -91,9 +91,9 @@ It helps to see a DSD as a concrete table of runs. The ``process_improve`` packa
 from a list of factors: ask for the ``"dsd"`` design type and you get back the coded run matrix.
 Here we take six continuous factors, :math:`A` through :math:`F`. Six factors give
 :math:`2k + 1 = 13` runs; the centre run is part of the construction, so no extra centre points
-are requested. The `designed-experiments app <https://factori.al/>`__ generates a DSD for factors a
-reader enters, simulates its results from a process with a known model, and analyses them, in the
-browser.
+are requested. `Factorial <https://factori.al/>`__, the designed-experiments app, generates a DSD
+for factors a reader enters, simulates its results from a process with a known model, and analyses
+them, in the browser.
 
 .. code-block:: python
 

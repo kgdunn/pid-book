@@ -92,9 +92,9 @@ outlier diagnostics and prediction intervals, control charts, designed experimen
 process monitoring. Install it with `pip install 'process-improve[all]'` to run the examples and
 exercises in any Jupyter notebook.
 
-The [designed-experiments app](https://factori.al/) runs the package in your browser, with
-nothing to install: design an experiment, download the run sheet, fill in your results, and
-upload it for the analysis.
+[Factorial](https://factori.al/), the designed-experiments app, runs the package in your
+browser, with nothing to install: design an experiment, download the run sheet, fill in your
+results, and upload it for the analysis.
 
 ## Who's using this book
 
