@@ -84,6 +84,8 @@ The results from the full factorial are in the table here:
 | 4         | 330 K      | 1.0 g/L   | |+|        | |+|       |  571       |
 +-----------+------------+-----------+------------+-----------+------------+
 
+:factorial:`rsm-first-factorial`, the designed-experiments app, opens these four runs with their results; the baseline run is held back from the model, as it is here.
+
 Clearly the promising direction to maximize profit is to operate at higher temperatures and higher substrate concentrations. But how much much higher and in what ratio should we increase :math:`T` and :math:`S`?  These answers are found by building a linear model of the system from the factorial data:
 
 .. math::
@@ -191,6 +193,8 @@ The profit at this point is :math:`y_7 =` $ 463. We have gone too far as profit 
 | 11        | 339 K      | 2.17 g/L  | |+|        | |+|          |  642       |
 +-----------+------------+-----------+------------+--------------+------------+
 
+:factorial:`rsm-second-factorial`, the designed-experiments app, opens the four factorial runs with their results.
+
 This time we have decided to use slightly smaller ranges in the factorial, :math:`\text{range}_T = 8 = (339 - 331)` K and :math:`\text{range}_S = 0.4 = (2.17 - 1.77)` g/L, so that we can move more slowly along the surface.
 
 .. figure:: ../figures/doe/RSM-base-case-combined.png
@@ -269,6 +273,8 @@ The four response values were :math:`y_{13} = 720`, :math:`y_{14} = 699`, :math:
 		\end{bmatrix}
 		\begin{bmatrix} b_0 \\ b_T \\ b_S \\ b_{TS} \\ b_{TT} \\ b_{SS} \end{bmatrix} + \mathbf{e}\\
 		y &= 688 + 13x_T - 39x_S - 2.25 x_T x_S - 4.2 x_T^2 - 12.2 x_S^2
+
+:factorial:`rsm-central-composite`, the designed-experiments app, opens these nine runs with their results, and fits this model to them.
 
 The linear terms are close to those from the factorial alone, and the interaction term is unchanged, because the axial and center runs all have :math:`x_T x_S = 0`. The curvature in substrate concentration, :math:`b_{SS} = -12.2`, is large compared with the other effects, and it is what prevented the linear model from projecting out to point 12. The curvature in temperature, :math:`b_{TT} = -4.2`, is smaller, and its 95% confidence interval just includes zero.
 

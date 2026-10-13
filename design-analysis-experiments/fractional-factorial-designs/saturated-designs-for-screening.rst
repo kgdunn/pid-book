@@ -34,6 +34,7 @@ Let's see how by continuing the previous example, repeated again below with the 
 	| 8         | |+|        | |+|       |  |+|       |  |+|       |  |+|       |  |+|       |  |+|       |  63.7      |
 	+-----------+------------+-----------+------------+------------+------------+------------+------------+------------+
 
+:factorial:`saturated-screening`, the designed-experiments app, opens these eight runs with their results.
 
 Use a least squares model to estimate the coefficients in the model:
 

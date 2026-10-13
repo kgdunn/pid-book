@@ -15,7 +15,7 @@ PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 ALLRELAXEDOPTS  =  -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(RELAXOPTS) .
 
-.PHONY: help setup clean clean-all html dirhtml singlehtml pickle json htmlhelp epub latex latexpdf text gettext linkcheck serve pre-commit-install pre-commit-run check-code check-code-chapter check-code-file check-run-deps check-browser
+.PHONY: help setup clean clean-all html dirhtml singlehtml pickle json htmlhelp epub latex latexpdf text gettext linkcheck serve pre-commit-install pre-commit-run check-code check-code-chapter check-code-file check-run-deps check-browser check-factorial-links
 
 .DEFAULT_GOAL := latexpdf
 
@@ -101,6 +101,9 @@ check-run-deps:	## Each Run in browser plan leaves its example as the whole chap
 
 check-browser:	## Click every Run in browser button in headless Chromium: needs make html, Playwright
 	node tools/check_browser.mjs $(if $(CHAPTER),--chapter $(CHAPTER),)
+
+check-factorial-links:	## Each :factorial: link names an example factori.al publishes, linking back to its page
+	uv run python tools/check_factorial_links.py $(if $(INDEX),--index $(INDEX),)
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
