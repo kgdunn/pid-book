@@ -9,6 +9,10 @@ each is checked against the numbers the book prints. ``tools/check_factorial_lin
 every name the book uses against the published app, and that the app links back to the page
 that uses it. In the PDF the address appears as a footnote, as every external link's does
 (``latex_show_urls``), and it is short enough to type.
+
+In the HTML every link to Factorial, the role's and any written out, opens in one tab of its own:
+the first click opens it and later ones reuse it, so a reader working down a chapter keeps one tab
+of the app beside the book rather than one per example.
 """
 
 import re
@@ -17,6 +21,10 @@ from docutils import nodes
 from sphinx.util.docutils import ReferenceRole
 
 APP = "https://factori.al/"
+
+#: The tab every link to Factorial opens in. No ``rel="noopener"``: the browser finds the tab again
+#: through the book page that opened it, which is what lets the next click reuse it.
+TAB = "factorial"
 
 #: A name the app can open: lowercase words and numbers joined by hyphens, as its page checks.
 NAME = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
@@ -49,6 +57,14 @@ class FactorialRole(ReferenceRole):
         ], []
 
 
+def one_tab(app, doctree, docname):
+    """Send every link to Factorial on the page to its one tab, the role's and any written out."""
+    for node in doctree.findall(nodes.reference):
+        if node.get("refuri", "").startswith(APP):
+            node["target"] = TAB
+
+
 def setup(app):
     app.add_role("factorial", FactorialRole())
+    app.connect("doctree-resolved", one_tab)
     return {"version": "1.0", "parallel_read_safe": True, "parallel_write_safe": True}

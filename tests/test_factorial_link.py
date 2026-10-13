@@ -6,6 +6,7 @@ every name the book uses, and say when the app does not publish it or links back
 """
 
 import importlib
+import re
 import sys
 from pathlib import Path
 
@@ -24,6 +25,7 @@ Pollutant
 .. _DOE-exercise-pollutant:
 
 The runs open in :factorial:`pollutant`, or with :factorial:`their purity <multi-response-purity>`.
+`Factorial <https://factori.al/>`__, the designed-experiments app, builds a design from scratch.
 """
 
 
@@ -48,9 +50,23 @@ def built(tmp_path_factory) -> dict[str, str]:
 
 def test_the_link_opens_the_example_by_name(built):
     html = built["html"]
-    assert 'href="https://factori.al/?book=pollutant">Factorial</a>' in html
-    assert 'href="https://factori.al/?book=multi-response-purity">their purity</a>' in html
+    assert 'href="https://factori.al/?book=pollutant" target="factorial">Factorial</a>' in html
+    assert (
+        'href="https://factori.al/?book=multi-response-purity" target="factorial">their purity</a>'
+        in html
+    )
     assert "factorial-link" in html
+
+
+def test_every_link_to_factorial_opens_in_its_one_tab(built):
+    """The first click opens the tab, the next reuses it: one tab of the app beside the book."""
+    html = built["html"]
+    links = re.findall(r'<a [^>]*href="https://factori\.al/[^"]*"[^>]*>', html)
+    assert len(links) == 3, "the role's two and the one written out"
+    assert all('target="factorial"' in link for link in links), links
+    assert not any("noopener" in link for link in links), (
+        "the opener is what lets the next click find the tab"
+    )
 
 
 def test_the_pdf_prints_the_address_as_a_footnote(built):
