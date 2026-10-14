@@ -246,7 +246,7 @@ So when the measured center point value is quite different from the predicted ce
 
 We will not go into too much detail about :index:`central composite designs`, other than to show what they look like for the case of 2 and 3 variables. These designs take an existing orthogonal factorial and augment it with axial points. This is great, because we can start off with an ordinary factorial and always come back later to add the terms to account for nonlinearity.
 
-The :index:`axial points <pair: axial points; experiments>` are placed :math:`4^{0.25} = 1.4` coded units away from the center for a 2 factor system, and :math:`8^{0.25} = 1.7` units away for a :math:`k=3` factor system. Rules for higher numbers of factors, and the reasoning behind the 1.4 and 1.7 unit step size can be found, for example in the textbook by Box, Hunter and Hunter.
+The :index:`axial points <pair: axial points; experiments>` are placed :math:`4^{0.25} = \sqrt{2} \approx 1.4` coded units away from the center for a 2 factor system, and :math:`8^{0.25} = 1.7` units away for a :math:`k=3` factor system. Rules for higher numbers of factors, and the reasoning behind the 1.4 and 1.7 unit step size can be found, for example in the textbook by Box, Hunter and Hunter.
 
 .. image:: ../figures/doe/central-composite-design.png
 	:align: left
@@ -266,10 +266,10 @@ The four response values were :math:`y_{13} = 720`, :math:`y_{14} = 699`, :math:
 						1 & -1 & +1 & -1 & +1 & +1\\
 						1 & +1 & +1 & +1 & +1 & +1\\
 						1 &  0 &  0 &  0 &  0 &  0\\
-						1 &  0 &-1.41&  0 &  0 &  2\\
-						1 & 1.41&   0&  0 &  2 &  0\\
-						1 & 0  & 1.41&  0 &  0 &  2\\
-						1 &-1.41&   0&  0 &  2 &  0
+						1 &  0 &-\sqrt{2}&  0 &  0 &  2\\
+						1 & \sqrt{2}&   0&  0 &  2 &  0\\
+						1 & 0  & \sqrt{2}&  0 &  0 &  2\\
+						1 &-\sqrt{2}&   0&  0 &  2 &  0
 		\end{bmatrix}
 		\begin{bmatrix} b_0 \\ b_T \\ b_S \\ b_{TS} \\ b_{TT} \\ b_{SS} \end{bmatrix} + \mathbf{e}\\
 		y &= 688 + 13x_T - 39x_S - 2.25 x_T x_S - 4.2 x_T^2 - 12.2 x_S^2

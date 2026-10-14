@@ -109,7 +109,7 @@ model, for the reasons given in the section on
 .. math::
 
 	\widehat{\text{profit}} &= 738.0 + 4.50 x_T - 1.76 x_S - 2.25 x_T x_S - 2.63 x_T^2 - 10.88 x_S^2 \\
-	\widehat{\text{purity}} &= 89.8 - 4.08 x_T + 2.48 x_S - 0.03 x_T x_S - 0.05 x_T^2 - 1.13 x_S^2
+	\widehat{\text{purity}} &= 89.8 - 4.08 x_T + 2.47 x_S - 0.03 x_T x_S - 0.05 x_T^2 - 1.13 x_S^2
 
 The signs on :math:`x_T` are opposite. Profit rises with temperature; purity falls with it,
 because the product degrades thermally. That is what makes this a trade-off rather than a
