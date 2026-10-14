@@ -1098,7 +1098,7 @@ Exercises
 
 	.. math::
 
-		y = 5.75 + 2.5 x_\text{D} - 0.5 x_\text{R} + 0.25 x_\text{P} -0.75 x_\text{D} x_\text{R} -0.0 x_\text{D} x_\text{P} -0.0 x_\text{R} x_\text{P} -0.25 x_\text{D} x_\text{R} x_\text{P}
+		y = 5.75 + 2.5 x_\text{D} - 0.5 x_\text{R} + 0.25 x_\text{P} -0.75 x_\text{D} x_\text{R} + 0 x_\text{D} x_\text{P} + 0 x_\text{R} x_\text{P} -0.25 x_\text{D} x_\text{R} x_\text{P}
 
 	#.	What is the physical interpretation of the :math:`+2.5 x_\text{D}` term in the model?
 
