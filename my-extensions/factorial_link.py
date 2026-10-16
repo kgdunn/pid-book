@@ -10,7 +10,13 @@ every name the book uses against the published app, and that the app links back 
 that uses it. In the PDF the address appears as a footnote, as every external link's does
 (``latex_show_urls``), and it is short enough to type.
 
-In the HTML every link to Factorial, the role's and any written out, opens in one tab of its own:
+``:catalog:`id``` links to a design in Factorial's design catalog, which lists the designs of
+published sources and those process-improve makes, and opens each in Factorial: ``:catalog:`the
+definitive screening design <lib-dsd-k6>``` renders as a link to
+https://factori.al/catalog/?d=lib-dsd-k6, and ``:catalog:`lib-dsd-k6``` as one named "design
+catalog". The ids are the catalog's, ``catalog/index.json`` in the published app.
+
+In the HTML every link to Factorial, the roles' and any written out, opens in one tab of its own:
 the first click opens it and later ones reuse it, so a reader working down a chapter keeps one tab
 of the app beside the book rather than one per example.
 """
@@ -29,6 +35,12 @@ TAB = "factorial"
 #: A name the app can open: lowercase words and numbers joined by hyphens, as its page checks.
 NAME = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
 
+#: The design catalog: the designs of published sources and the library's, each opening in Factorial.
+CATALOG = f"{APP}catalog/"
+
+#: A design the catalog can open: its id, as the catalog's page checks one in its address.
+DESIGN = re.compile(r"[a-z0-9][a-z0-9-]{0,120}")
+
 
 def example_url(name: str) -> str:
     """Return the address that opens the book's example ``name`` in Factorial.
@@ -37,6 +49,15 @@ def example_url(name: str) -> str:
     scroll-spy reads every link's fragment as a CSS selector, and ``#book=name`` is not one.
     """
     return f"{APP}?book={name}"
+
+
+def design_url(design: str) -> str:
+    """Return the address that opens the design ``design`` in the design catalog.
+
+    The id goes in the query, as an example's name does (see :func:`example_url`); the catalog's
+    page reads it there and moves it to the fragment itself.
+    """
+    return f"{CATALOG}?d={design}"
 
 
 class FactorialRole(ReferenceRole):
@@ -57,6 +78,27 @@ class FactorialRole(ReferenceRole):
         ], []
 
 
+class CatalogRole(ReferenceRole):
+    """Link to a design in the design catalog; the link reads "design catalog" unless the role names it."""
+
+    def run(self) -> tuple[list[nodes.Node], list[nodes.system_message]]:
+        design = self.target
+        if not DESIGN.fullmatch(design):
+            message = self.inliner.reporter.error(
+                f"{design!r} is not the id of a design the catalog lists", line=self.lineno
+            )
+            return [self.inliner.problematic(self.rawtext, self.rawtext, message)], [message]
+        text = self.title if self.has_explicit_title else "design catalog"
+        return [
+            nodes.reference(
+                self.rawtext,
+                text,
+                refuri=design_url(design),
+                classes=["factorial-link", "catalog-link"],
+            )
+        ], []
+
+
 def one_tab(app, doctree, docname):
     """Send every link to Factorial on the page to its one tab, the role's and any written out."""
     for node in doctree.findall(nodes.reference):
@@ -66,5 +108,6 @@ def one_tab(app, doctree, docname):
 
 def setup(app):
     app.add_role("factorial", FactorialRole())
+    app.add_role("catalog", CatalogRole())
     app.connect("doctree-resolved", one_tab)
     return {"version": "1.0", "parallel_read_safe": True, "parallel_write_safe": True}

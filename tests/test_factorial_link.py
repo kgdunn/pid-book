@@ -101,6 +101,68 @@ def test_the_link_has_no_fragment_for_the_theme_to_read():
     assert "#" not in factorial_link.example_url("web-sales")
 
 
+# --------------------------------------------------------------------------- the design catalog
+CATALOG_PAGE = """\
+Designs
+=======
+
+Compare it with :catalog:`the definitive screening design <lib-dsd-k6>`, or browse the
+:catalog:`bhh-pilot-plant-2-3`.
+"""
+
+
+@pytest.fixture(scope="module")
+def catalog_built(tmp_path_factory) -> dict[str, str]:
+    """Build a one-page book with the catalog role, as HTML and LaTeX, and return each page's text."""
+    src = tmp_path_factory.mktemp("catalog-src")
+    (src / "conf.py").write_text(
+        f"import sys\nsys.path.insert(0, {str(ROOT)!r})\n"
+        "extensions = ['my-extensions.factorial_link']\n"
+        "latex_show_urls = 'footnote'\n"
+        "latex_documents = [('index', 'book.tex', 'Book', 'Author', 'manual')]\n"
+    )
+    (src / "index.rst").write_text(CATALOG_PAGE)
+    out = tmp_path_factory.mktemp("catalog-out")
+    found = {}
+    for builder, name in (("html", "index.html"), ("latex", "book.tex")):
+        assert build_main(["-b", builder, "-W", "-q", str(src), str(out / builder)]) == 0, builder
+        found[builder] = (out / builder / name).read_text(encoding="utf-8")
+    return found
+
+
+def test_the_catalog_link_opens_the_design_by_its_id(catalog_built):
+    html = catalog_built["html"]
+    assert (
+        'href="https://factori.al/catalog/?d=lib-dsd-k6" target="factorial">'
+        "the definitive screening design</a>" in html
+    )
+    assert (
+        'href="https://factori.al/catalog/?d=bhh-pilot-plant-2-3" target="factorial">design catalog</a>'
+        in html
+    )
+    assert "catalog-link" in html
+
+
+def test_the_pdf_prints_the_catalog_address_as_a_footnote(catalog_built):
+    assert r"\sphinxnolinkurl{https://factori.al/catalog/?d=lib-dsd-k6}" in catalog_built["latex"]
+
+
+def test_an_id_the_catalog_could_not_open_fails_the_build(tmp_path):
+    (tmp_path / "conf.py").write_text(
+        f"import sys\nsys.path.insert(0, {str(ROOT)!r})\nextensions = ['my-extensions.factorial_link']\n"
+    )
+    (tmp_path / "index.rst").write_text("Page\n====\n\nSee :catalog:`Lib DSD`.\n")
+    assert build_main(["-b", "html", "-W", "-q", str(tmp_path), str(tmp_path / "out")]) != 0
+
+
+def test_the_catalog_link_has_no_fragment_for_the_theme_to_read():
+    """The catalog keeps what it shows in the fragment, but reads a design named in the query, for the theme's sake."""
+    assert factorial_link.design_url("lib-dsd-k6") == "https://factori.al/catalog/?d=lib-dsd-k6"
+    assert "#" not in factorial_link.design_url("lib-dsd-k6")
+    for design in ("Lib", "a b", "a/b", "-a", "a" * 122):
+        assert not factorial_link.DESIGN.fullmatch(design), design
+
+
 # --------------------------------------------------------------------------- the checker
 BOOK = {
     "design-analysis-experiments/exercises": PAGE,
