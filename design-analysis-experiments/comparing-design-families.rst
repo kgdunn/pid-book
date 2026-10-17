@@ -195,14 +195,14 @@ Quality metrics for the four designs
         - 0.71
     *   - :math:`\downarrow` Maximum prediction variance, :math:`\sigma^2` units
         - 0.84
-        - 0.77
-        - 0.51
-        - 1.05
+        - 0.80
+        - 0.53
+        - 1.07
     *   - :math:`\downarrow` Maximum scaled prediction variance :math:`G`
         - 38.8
-        - 24.6
-        - 12.7
-        - 13.6
+        - 25.5
+        - 13.2
+        - 13.9
     *   - :math:`\downarrow` Summed coefficient variance :math:`A`
         - 1.05
         - 2.39
@@ -268,12 +268,32 @@ summed coefficient variance :math:`A`, and the power on curvature, all favour th
 design, which is
 the reading that matches what the experiments can actually deliver.
 
-The two maximum-variance rows report the worst case under each scaling, and they disagree most for
+The two maximum-variance rows are maxima over the whole cube, searched for as in the
+:ref:`running comparison <DOE-worst-case-search>`: for three of these designs the maximum sits inside
+a face of the cube, where neither the sample nor the vertices land.
+
+.. code-block:: python
+
+	def largest_variance(design):
+	    """The largest prediction variance over the cube, searched for from 120,000 sampled points."""
+	    df = pd.DataFrame(np.asarray(design), columns=names)
+	    return evaluate_design(df, model=model, metric="g_efficiency", n_samples=120_000,
+	                           random_state=1, max_search="optimize")["max_prediction_variance"]
+
+	for label, d in designs.items():
+	    largest = largest_variance(d)
+	    print(f"{label}: {largest:.2f}, G = {len(d) * largest:.1f}")
+	# Box-Behnken: 0.84, G = 38.8
+	# CCD: 0.80, G = 25.5
+	# OMARS: 0.53, G = 13.2
+	# DSD: 1.07, G = 13.9
+
+The two rows report the worst case under each scaling, and they disagree most for
 the designs at the extremes of run count. In real :math:`\sigma^2` units the thirteen-run DSD has
-the highest maximum (:math:`1.05`), the worst single-point prediction at the bench, while the OMARS
-design has the lowest (:math:`0.51`). The scaled maximum :math:`G`, which divides the worst-case
-variance through by the run count, moves the DSD from worst to nearly best: it sits at :math:`13.6`,
-just above the OMARS design's :math:`12.7`, while the forty-six-run Box-Behnken, with a moderate
+the highest maximum (:math:`1.07`), the worst single-point prediction at the bench, while the OMARS
+design has the lowest (:math:`0.53`). The scaled maximum :math:`G`, which divides the worst-case
+variance through by the run count, moves the DSD from worst to nearly best: it sits at :math:`13.9`,
+just above the OMARS design's :math:`13.2`, while the forty-six-run Box-Behnken, with a moderate
 unscaled maximum of :math:`0.84`, has the highest :math:`G` at :math:`38.8`. The reversal for the
 DSD and the Box-Behnken is the same per-run normalisation seen in the two D rows; dividing by the
 run count rewards the design that spends fewer experiments. Read the unscaled maximum for the
@@ -440,8 +460,8 @@ on the two scales:
 	                    subplot_titles=("Scaled (per run)", "Unscaled (sigma^2 units)"))
 	for label, d in designs.items():
 	    result = fds(d, model, n_samples=120_000)
-	    # result["average_prediction_variance"] and ["max_prediction_variance"] are
-	    # the average and maximum prediction-variance rows in the table above.
+	    # result["average_prediction_variance"] is the table's average prediction-variance
+	    # row; the curve ends at the largest value the sample found.
 	    curve = result["curve"]
 	    fig.add_trace(go.Scatter(x=curve["fraction"],
 	                             y=curve["scaled_prediction_variance"], name=label),
@@ -463,12 +483,12 @@ on the two scales:
     the highest and the larger Box-Behnken design's is the lowest over most of the region.
 
 Within either panel the rule from before still holds: a low and flat curve is what you want, and the
-right tail (anchored at the cube vertices, where the maximum prediction variance usually lives) shows
-the worst case. The two panels differ only in how they put the designs on a common footing. The left
-panel is scaled, normalized by the number of runs, so it compares the designs per experiment; on
-that footing the thirteen-run DSD curve sits among the rest rather than far above them, and the
-lowest right-tail value, the scaled maximum :math:`G` reported in the table, belongs to the OMARS
-design at :math:`12.7`, with the DSD just behind at :math:`13.6`. The right panel is
+right tail shows the worst case the sample found. The two panels differ only in how they put the
+designs on a common footing. The left panel is scaled, normalized by the number of runs, so it
+compares the designs per experiment; on that footing the thirteen-run DSD curve sits among the rest
+rather than far above them, and the lowest right tail belongs to the OMARS design. The table's
+:math:`G`, the maximum over the whole cube, puts it at :math:`13.2`, with the DSD just behind at
+:math:`13.9`. The right panel is
 unscaled, in real
 :math:`\sigma^2` units, so it compares the variance actually obtained at the bench; there the DSD
 curve is the highest and the forty-six-run Box-Behnken the lowest over most of the region. The two views answer different

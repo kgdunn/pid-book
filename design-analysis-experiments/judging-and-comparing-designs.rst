@@ -354,7 +354,7 @@ worst-case values; the next section uses it to draw the plot.
 	    """Region prediction-variance summary from ``evaluate_design``: the FDS
 	    curve (fraction of the design space vs prediction variance, scaled and
 	    unscaled) together with the average and worst-case values. The 2**k cube
-	    vertices, where the worst case usually sits, are included by default."""
+	    vertices, where the worst case often sits, are included by default."""
 	    cols = [chr(ord("A") + i) for i in range(np.shape(design)[1])]
 	    df = pd.DataFrame(np.asarray(design, float), columns=cols)
 	    return evaluate_design(df, model=model, metric="fds", n_samples=n_samples,
@@ -393,8 +393,9 @@ So we sample the region. Scatter a large number of locations, tens of thousands 
 below uses 80,000), uniformly at random across the coded factor region: for :math:`k` factors that
 means drawing each coordinate independently and uniformly on :math:`[-1, +1]`, so the points fill
 the cube evenly. One point is easy to miss: uniform random sampling almost never lands exactly on a
-corner of the cube, yet the prediction variance is usually largest at a vertex, where the G-optimal
-worst case sits. Add the :math:`2^k` extreme vertices back to the sampled set explicitly, so the
+corner of the cube, yet the prediction variance is often largest at a vertex (the worst case can
+also sit inside an edge or a face, which :ref:`the search for G <DOE-worst-case-search>` below
+handles). Add the :math:`2^k` extreme vertices back to the sampled set explicitly, so the
 worst-case (right-hand) tail of the curve is represented and the region is covered fairly. At every
 one of those locations we evaluate the SPV formula. We now hold tens of thousands of SPV values, one
 per sampled location, a dense picture of how precisely the fitted model would predict across the
@@ -462,15 +463,39 @@ behaves like mild extrapolation. The reading is concrete: if you care about pred
 average across the space (typical optimization work), prefer the larger design; if you must
 predict reliably even in the worst spot, the flatter nine-run DSD curve is the safer choice.
 
+.. _DOE-worst-case-search:
+
 One detail of method is worth stating, because it is easy to get wrong. The worst-case figure
-:math:`G` is a maximum over the whole design region, and that maximum can sit exactly at an extreme
-corner (a vertex of the :math:`[-1, 1]` cube), where random interior sampling rarely lands.
-``evaluate_design`` therefore adds the cube vertices to its interior sample by default (its
-``include_vertices`` argument). Including them lifts the nine-run DSD's :math:`G` from :math:`8.98`
-to :math:`9.00`, a maximum that turns out to sit precisely at a corner, and leaves the thirteen-run
-OMARS value at :math:`12.50` because its worst case does not sit at a vertex. The shift is tiny,
-so it changes no conclusion here, but including the extreme points is the correct procedure, and
-the :ref:`omnibus comparison <DOE-omnibus-comparison>` relies on it.
+:math:`G` is a maximum over the whole design region, and a uniform sample of the region seldom lands
+on the point where that maximum sits. When it sits at a corner (a vertex of the :math:`[-1, 1]`
+cube), the vertices that ``evaluate_design`` adds to its sample by default (its ``include_vertices``
+argument) cover it: they lift the nine-run DSD's :math:`G` from :math:`8.98` to :math:`9.00`.
+
+The thirteen-run OMARS design's maximum sits elsewhere, at points such as :math:`(1, -1, 0, 0)`:
+two factors at their limits and two at their centre. Neither the sample nor the vertices include
+such a point, so the largest value the sample finds, :math:`12.50`, falls short of the design's
+:math:`G` of :math:`13.00`. With ``max_search="optimize"``, ``evaluate_design`` starts from the
+sample's largest points and steps each factor up or down while the prediction variance rises, which
+finds that maximum:
+
+.. code-block:: python
+
+	def worst_case(design, model):
+	    """G: the run count times the largest prediction variance over the cube, searched for."""
+	    cols = [chr(ord("A") + i) for i in range(np.shape(design)[1])]
+	    df = pd.DataFrame(np.asarray(design, float), columns=cols)
+	    found = evaluate_design(df, model=model, metric="g_efficiency", n_samples=80_000,
+	                            random_state=1, max_search="optimize")
+	    return len(df) * found["max_prediction_variance"]
+
+	print(f"{fds(omars4, model4, n_samples=80_000)['scaled_max_prediction_variance']:.2f}")   # 12.50
+	print(f"{worst_case(dsd4, model4):.2f} {worst_case(omars4, model4):.2f}")   # 9.00 13.00
+
+The :ref:`comparison table <DOE-design-comparison-table>` reports the searched :math:`G`, while the
+:ref:`FDS plot <DOE-fds-plot>`, drawn from the sample, ends at the sample's largest value. The
+difference changes no conclusion here: the OMARS design's worst case is the higher of the two
+either way. The :ref:`omnibus comparison <DOE-omnibus-comparison>` searches for its maxima in the
+same way.
 
 `Factorial <https://factori.al/>`__, the designed-experiments app, draws FDS plots in the browser,
 for factors a reader enters and every design the app can generate for them.
@@ -700,7 +725,7 @@ four-factor main-effects-and-quadratic model.
         - 6.19
     *   - :math:`\downarrow\ G`, maximum SPV
         - 9.00
-        - 12.50
+        - 13.00
     *   - :math:`\downarrow` Maximum :math:`|r|`
         - 0.707
         - 0.570
