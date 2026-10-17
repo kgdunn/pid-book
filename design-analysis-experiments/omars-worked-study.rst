@@ -712,26 +712,26 @@ follow the recipe the fitted model recommends, and read the true titer there.
 	  - Hold x downshift, %
 	  - Hold curvature, %
 	* - OMARS, 13 runs
+	  - 0
 	  - -0.02071
-	  - -0.8497
-	  - -1.201
-	  - 14
-	  - 67
-	  - 30
-	* - OMARS, 17 runs
-	  - 0.8323
-	  - -0.8834
 	  - -3.246
-	  - 94
-	  - 35
+	  - 28
+	  - 41
+	  - 2
+	* - OMARS, 17 runs
+	  - 0.8321
+	  - -0.8849
+	  - -3.246
+	  - 98
+	  - 41
 	  - 20
 	* - OMARS, 21 runs
 	  - 0.8573
 	  - 0
 	  - -1.093
-	  - 83
-	  - 78
-	  - 13
+	  - 89
+	  - 81
+	  - 50
 	* - OMARS, 27 runs
 	  - 0.9244
 	  - -0.02071
@@ -761,11 +761,13 @@ follow the recipe the fitted model recommends, and read the true titer there.
 	  - 100
 	  - 88
 
-* **13 and 17 runs** vary most between the OMARS campaigns. At 13 runs the feed rate is seldom
-  found, so the median campaign gains nothing. At 17 runs it is found, but a design that finds the
-  feed rate without the hold-temperature curvature sends the hold to an edge of the region.
+* **13 and 17 runs** lose the most in their worst campaign. At 13 runs the feed rate is seldom
+  found, so the median campaign gains nothing, and a campaign that finds only interactions follows
+  them to an edge of the region. At 17 runs the feed rate is found, but a design that finds it
+  without the hold-temperature curvature sends the hold to an edge of the region.
 * **21 runs**, the frontier, fits the full model but finds the hold-temperature curvature in only
-  13% of campaigns; its variance factor for that term is the largest of the three ``Full`` sizes.
+  half of the campaigns; its variance factor for that term is the largest of the three ``Full``
+  sizes.
   Without the curvature, the interaction pairs a cold hold with a late downshift, which gains
   nearly as much as the median campaign at 27 runs.
 * **27 and 31 runs** find all three effects in 85% of campaigns or more; the four extra runs raise
@@ -788,7 +790,7 @@ The variance factor of the hold-temperature quadratic, the diagonal entry of
 	    return np.linalg.inv(X.T @ X)[5, 5]   # column 5 is hold_temp^2
 
 	print([f"{quadratic_variance(n):#.4g}" for n in (21, 27, 31)])
-	# ['0.5367', '0.4215', '0.2446']
+	# ['0.6800', '0.4215', '0.2446']
 
 .. _DOE-omars-study-true-model:
 
