@@ -473,10 +473,11 @@ then from the operating conditions :math:`\mathbf{Z}_\text{op}`.
 	    # widest-ranging one decides the number almost on its own. "scaled_total" gives
 	    # each attribute the same weight, which is the footing the fitted R2Y above is
 	    # already on, so the two columns of the table can be read against each other. The
-	    # choice matters here: pooled on the raw scale these two rows read 14.8 and -5.0,
-	    # which reverses which block predicts better.
+	    # choice matters here: pooled on the raw scale the chemistry reads -7.6 and -7.7
+	    # and the operating conditions 14.8 and 11.1, which after two components
+	    # reverses which block predicts better.
 	    print(name, (cv.r2y_validated["scaled_total"] * 100).round(1).tolist())
-	# PLS Zchem [2.8, 1.2]
+	# PLS Zchem [0.4, -1.3]
 	# PLS Zop [1.3, -5.3]
 	fig = scores(pls_op, explained_x(pls_op), {20: ORANGE}, note="R2X ",
 	             labels=[20, 61, 14])
@@ -506,7 +507,7 @@ study found.
    +=========================================+==========================+===========+==============+==============+==============+==============+
    | PCA on quality                          | the quality block itself | cells     | 50.0         | 70.3         | 33.4         | 25.1         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
-   | PLS from :math:`\mathbf{Z}_\text{chem}` | the incoming chemistry   | batches   | 16.3         | 22.2         | 2.8          | 1.2          |
+   | PLS from :math:`\mathbf{Z}_\text{chem}` | the incoming chemistry   | batches   | 16.3         | 22.2         | 0.4          | -1.3         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
    | PLS from :math:`\mathbf{Z}_\text{op}`   | the operating conditions | batches   | 20.7         | 26.2         | 1.3          | -5.3         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
@@ -530,8 +531,8 @@ with every later model. The PCA row in the table is a different measurement that
 share the column.
 
 The :math:`Q^2_Y` columns are far below the fits. Held out of the fit, neither block predicts
-more than 3% of the quality block, and the second component takes both towards zero or below
-it: it adds to the fit of each block and nothing to the prediction of either.
+more than 2% of the quality block, and the second component takes both below zero: it adds to
+the fit of each block and nothing to the prediction of either.
 
 Batch 20 stands out in the operating-condition score plot, put there by the recipe timings
 and the temperature slope. It is the batch whose temperature ramp took longer in the
@@ -635,8 +636,8 @@ components leave in the chemistry block's residual is not examined here.
 
 The cross-validated value does not follow the fit. The multiblock model predicts 8.6% of the
 quality block after one component and 4.5% after two, where neither block on its own reaches
-3%. Joining the two blocks raises the fit from 26.2 to 36.4% and the held-out value from
-under 3% to 8.6%, which is what the two blocks together buy: a prediction that is still weak,
+2%. Joining the two blocks raises the fit from 26.2 to 36.4% and the held-out value from
+under 2% to 8.6%, which is what the two blocks together buy: a prediction that is still weak,
 but no longer indistinguishable from predicting the average batch.
 
 .. table:: Quality explained, as a cumulative percentage, with the chemistry and
@@ -652,7 +653,7 @@ but no longer indistinguishable from predicting the average batch.
    +=========================================+==========================+===========+==============+==============+==============+==============+
    | PCA on quality                          | the quality block itself | cells     | 50.0         | 70.3         | 33.4         | 25.1         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
-   | PLS from :math:`\mathbf{Z}_\text{chem}` | the incoming chemistry   | batches   | 16.3         | 22.2         | 2.8          | 1.2          |
+   | PLS from :math:`\mathbf{Z}_\text{chem}` | the incoming chemistry   | batches   | 16.3         | 22.2         | 0.4          | -1.3         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
    | PLS from :math:`\mathbf{Z}_\text{op}`   | the operating conditions | batches   | 20.7         | 26.2         | 1.3          | -5.3         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
@@ -930,7 +931,7 @@ gap does not by itself say that the trajectories predict quality better.
    +=========================================+==========================+===========+==============+==============+==============+==============+
    | PCA on quality                          | the quality block itself | cells     | 50.0         | 70.3         | 33.4         | 25.1         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
-   | PLS from :math:`\mathbf{Z}_\text{chem}` | the incoming chemistry   | batches   | 16.3         | 22.2         | 2.8          | 1.2          |
+   | PLS from :math:`\mathbf{Z}_\text{chem}` | the incoming chemistry   | batches   | 16.3         | 22.2         | 0.4          | -1.3         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
    | PLS from :math:`\mathbf{Z}_\text{op}`   | the operating conditions | batches   | 20.7         | 26.2         | 1.3          | -5.3         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
