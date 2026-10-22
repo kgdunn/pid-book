@@ -80,9 +80,9 @@ Thanks also to instructors at other universities who have used these notes and s
 		*	*Using selected portions*: "Portions of this work are the copyright of Kevin Dunn."
 		*	*Or if used in its entirety*: "This work is the copyright of Kevin Dunn."
 
-	OMARS® is a registered trademark of its owner. The book uses the name only for the class of
-	designs defined by Núñez Ares and Goos (2020), and is not affiliated with, or endorsed by,
-	Minitab or Effex.
+	OMARS® is a registered trademark of KU Leuven Research & Development. The book uses the name
+	only for the class of designs defined by Núñez Ares and Goos (2020), and is not affiliated with,
+	or endorsed by, KU Leuven, Minitab or Effex.
 
 	You don't have to, but it would be nice if you tell us you are using this book. That way we can let you know of any errors.
 
