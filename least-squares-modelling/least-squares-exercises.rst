@@ -77,11 +77,37 @@ Exercises
 
 		\mathcal{V}\left(\hat{y}_\text{new,i}\right) = S_E^2 \left(1 + \dfrac{1}{n} + \dfrac{\left(x_\text{new}-\overline{x}\right)^2}{ \sum_j{(x_j - \overline{x})^2}} \right)
 
-	Calculating this term manually, or using the ``predict(model, newdata=..., int="p")`` function in R gives the 95% prediction interval:
+	Calculating this term manually, with the ``prediction_interval`` method of the ``OLS`` class in Python, or with the ``predict(model, newdata=..., int="p")`` function in R gives the 95% prediction interval:
 
 		*	:math:`x_\text{new} = 430` °F: :math:`\hat{y}_\text{new} = 53.49 \pm 5.99`, or [47.50, 59.47]
 		*   :math:`x_\text{new} = 480` °F: :math:`\hat{y}_\text{new} = 36.92 \pm 5.90`, or [31.02, 42.82]
 		*	:math:`x_\text{new} = 520` °F: :math:`\hat{y}_\text{new} = 23.67 \pm 5.95`, or [17.72, 29.62]
+
+	.. code-block:: python
+
+		import pandas as pd
+		from process_improve.regression import OLS
+
+		tower = pd.read_csv(
+		    "https://openmv.net/file/distillation-tower.csv"
+		)
+		model = OLS().fit(tower[["TempC2"]],
+		                  tower["VapourPressure"])
+		x = tower["TempC2"]
+		print(f"S_E = {model.se_:.3f}, n = {model.n_samples_}, "
+		      f"Sxx = {((x - x.mean())**2).sum():.1f}, "
+		      f"x_bar = {x.mean():.2f}")
+		# S_E = 2.989, n = 253, Sxx = 86999.6, x_bar = 480.82
+
+		new_T = [430, 480, 520]
+		interval = model.prediction_interval(new_T)
+		for T, fit, low, high in zip(new_T, interval.predicted,
+		                             interval.lower, interval.upper):
+		    print(f"{T} F: {fit:.2f} +/- {high - fit:.2f}, "
+		          f"or [{low:.2f}, {high:.2f}]")
+		# 430 F: 53.49 +/- 5.99, or [47.50, 59.47]
+		# 480 F: 36.92 +/- 5.90, or [31.02, 42.82]
+		# 520 F: 23.67 +/- 5.95, or [17.72, 29.62]
 
 	.. image:: ../figures/least-squares/distillation-prediction-interval.png
 		:align: center
@@ -154,6 +180,26 @@ Exercises
 		:language: s
 		:lines: 36-39,43-45,48-56,60-63
 
+	The same model in Python; ``print(model_inv)`` gives the same summary as R:
+
+	.. code-block:: python
+
+		# `tower` is from the prediction interval solution.
+		tower["InvTempC2"] = 1 / tower["TempC2"]
+		model_inv = OLS().fit(tower[["InvTempC2"]],
+		                      tower["VapourPressure"])
+		print(model_inv)
+		# (Intercept)  -120.76045     4.60399  -26.22953   7.224e-74 ***
+		# InvTempC2    75571.30630  2208.63145  34.21635   1.671e-96 ***
+
+		interval = model_inv.prediction_interval(1 / 480)
+		fit = interval.predicted[0]
+		low, high = interval.lower[0], interval.upper[0]
+		print(f"S_E = {model_inv.se_:.2f}; at 480 F: "
+		      f"{fit:.2f} +/- {high - fit:.2f}, "
+		      f"or [{low:.1f}, {high:.1f}]")
+		# S_E = 2.88; at 480 F: 36.68 +/- 5.68, or [31.0, 42.4]
+
 
 .. admonition:: Question
 
@@ -185,6 +231,48 @@ Exercises
 	.. literalinclude:: ../figures/least-squares/distillation-column-questions.R
 		:language: s
 		:lines: 1-3,8,66-89,93-94,96-108
+
+	The same steps in Python, with the rows numbered from 1 as in R:
+
+	.. code-block:: python
+
+		import numpy as np
+
+		rows = tower.set_axis(range(1, len(tower) + 1))
+		build = rows.loc[:159]  # 2000 and 2001
+		test = rows.loc[160:]   # 2002 onwards
+		before = OLS().fit(build[["TempC2"]],
+		                   build["VapourPressure"])
+
+		# Leverage (the x-axis of R's influence plot) and
+		# Cook's D (its circle size), largest Cook's D first:
+		influence = pd.DataFrame(
+		    {"leverage": before.leverage_,
+		     "cooks_D": before.influence_},
+		    index=build.index,
+		)
+		print(influence.nlargest(6, "cooks_D").round(3))
+		#      leverage  cooks_D
+		# 38      0.061    0.633
+		# 84      0.044    0.119
+		# 53      0.038    0.057
+		# 39      0.022    0.049
+		# 25      0.025    0.040
+		# 101     0.041    0.037
+
+		kept = build.drop(index=[38, 53, 84, 101])
+		after = OLS().fit(kept[["TempC2"]],
+		                  kept["VapourPressure"])
+		for fitted in (before, after):
+		    errors = (test["VapourPressure"]
+		              - fitted.predict(test[["TempC2"]]))
+		    rmsep = np.sqrt(np.mean(errors**2))
+		    low, high = fitted.conf_intervals_[0]
+		    print(f"slope {fitted.coefficients_[0]:.3f} "
+		          f"[{low:.3f}, {high:.3f}], "
+		          f"S_E {fitted.se_:.3f}, RMSEP {rmsep:.2f}")
+		# slope -0.368 [-0.395, -0.342], S_E 2.679, RMSEP 4.18
+		# slope -0.358 [-0.385, -0.332], S_E 2.455, RMSEP 3.92
 
 .. admonition:: Question
 
