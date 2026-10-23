@@ -226,21 +226,6 @@ The usual approach for assessing if the difference between :math:`\overline{x}_B
 
 		The only question remains is what is a suitable value for :math:`\sigma`?  As we have seen before, when we have a large enough reference set, then we can use the value of :math:`\sigma` from the historical data, called an *external estimate*. Or we can use an *internal estimate* of spread; both approaches are discussed below.
 
-
-..	ON USING CONFIDENCE INTERVAL  #. A confidence limit for :math:`z` can be formed, and if this limit includes zero, then we have some evidence that there may not be long term improvement, i.e. we have some evidence that :math:`\mu_B - \mu_A` may be zero.
-
-				.. math::
-					:nowrap:
-						\begin{alignat*}{4}
-							(\overline{x}_B - \overline{x}_A) - c_n \sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}  &\qquad<\qquad& \mu_B - \mu_A &\qquad<\qquad& (\overline{x}_B - \overline{x}_A) + c_n \sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}
-						\end{alignat*}
-
-
-		 		The value for :math:`c_n` is determined by confidence level, and is taken from the normal distribution (e.g. :math:`c_n` = ``qnorm(0.975)`` for a 95% confidence limit).
-
-		HOWEVER, DO NOT INTRODUCE it with this example, because this example is actually a one-sided t-test, where as the CI is usually 2-sided. To introduce a 1-sided CI in addition to the other topics is a mess.
-
-
 Now we know the approach required, using the above 6 steps, to determine if there was a significant difference. And we know the assumptions that are required: normally distributed and independent samples. But how can we be sure our data are independent?  This is the most critical aspect, so let's look at a few cases and discuss, then we will return to our example and calculate the :math:`z`-values with both an *external* and *internal* estimate of spread.
 
 Discuss whether these experiments would lead to :index:`independent data <single: independence>` or not, and how we might improve the situation.
@@ -288,33 +273,9 @@ So to recap the progress so far, we are aiming to test if there is a *significan
 
 But, because we do not always have a large and relevant body of data available, we can calculate the difference between A and B and test if this difference could have occurred by chance alone. For that we use equation :eq:`zvalue-for-difference`, but we need an estimate of the spread, :math:`\sigma`.
 
-.. Then, because we do not always have a large, relevant body of data available, we can calculate the difference between A and B and test if this difference lies in a confidence interval that includes zero. We highlighted several assumptions required to generate this confidence interval, noting that these assumptions are quite demanding.
-
-	.. math::
-		:nowrap:
-		\begin{alignat*}{4}
-			(\overline{x}_B - \overline{x}_A) - c_n \sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}  &\qquad<\qquad& \mu_B - \mu_A &\qquad<\qquad& (\overline{x}_B - \overline{x}_A) + c_n \sqrt{\sigma^2 \left(\displaystyle \frac{1}{n_A} + \frac{1}{n_B}\right)}
-		\end{alignat*}
-
-	.. todo:: this is a one-sided :math:`t`-test: why is the CI symmetric?
-
-.. AS BEFORE, DO NOT use confidence limits here. Perhaps if you rework the example to be one where we test for no-difference, then a CI would work nicely.
-
 **External estimate of spread**
 
-The question we turn to now is what value to use for :math:`\sigma`  in equation :eq:`zvalue-for-difference`. We got to that equation by assuming we have no historical, external data. But what if we did have some external data?  We could at least estimate :math:`\sigma` from that.  For example, the 300 historical batch yields has :math:`\sigma = 6.61`:
-
-
-.. At the 95% confidence level: IGNORE THIS SECTION FOR NOW
-
-	.. math::
-		:nowrap:
-		\begin{alignat*}{3}
-			(82.93-79.89) - 1.96 \sqrt{6.61^2 \left(\displaystyle \frac{1}{10} + \frac{1}{10}\right)}  &\qquad<\qquad \mu_B - \mu_A &\qquad<\qquad& (82.93-79.89) + 1.96 \sqrt{6.61^2 \left(\displaystyle \frac{1}{10} + \frac{1}{10}\right)} \\
-			-2.75  &\qquad<\qquad \mu_B - \mu_A &\qquad<\qquad& 8.83
-		\end{alignat*}
-
-.. AGAIN, avoid using CI's here
+The question we turn to now is what value to use for :math:`\sigma`  in equation :eq:`zvalue-for-difference`. We got to that equation by assuming we have no historical, external data. But what if we did have some external data?  We could at least estimate :math:`\sigma` from that.  For example, the 300 historical batch yields has :math:`\sigma = 6.61`.
 
 Check the probability of obtaining the :math:`z`-value in :eq:`zvalue-for-difference` by using the hypothesis that the value :math:`\mu_B - \mu_A = 0`. In other words we are making a statement, or a test of significance. Then we calculate this :math:`z`-value and its associated *cumulative probability*:
 
