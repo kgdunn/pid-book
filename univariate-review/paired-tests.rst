@@ -18,7 +18,12 @@ A :index:`paired test` is a test that is run twice on the same object or batch o
 
 	-	We are testing a new coating to repel moisture. The coating is applied to randomly selected sheets in a pattern [A|B] or [B|A] (the pattern choice is made randomly). We measure the repellent property value and record the difference.
 
-.. Is this really a paired test? A new polymer is tested for surgical gloves. Physicians are randomly assigned a glove with the new polymer on one hand and the current polymer on the other hand. There is no visual difference.
+	-	A new polymer for surgical gloves is tested against the current polymer. Each physician wears
+		one glove of each polymer, the two gloves look identical, and the hand that gets the new
+		polymer is chosen at random, so that hand dominance is not mistaken for a polymer effect. A
+		property of each glove, such as its tensile strength after the operation, is measured and the
+		difference recorded. A physician's preference for one glove is a single yes/no answer, not
+		two values to subtract, and is not analysed with a paired test.
 
 In each case we have a table of :math:`n` samples recording the **difference values**. The question now is whether the difference is significant, or is it essentially zero?
 
