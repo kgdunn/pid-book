@@ -1287,11 +1287,11 @@ the nominal centre.
 
     for c in ["B", "C", "D", "E", "F"]:
         print(c, np.round(compensate(c), 2))
-        # B [-0.08  0.09 -0.21  0.15]
-        # C [-1.07 -0.42 -0.76  0.91]
-        # D [-0.38  0.4  -0.49  0.49]
-        # E [-1.29 -1.58 -1.32  1.48]
-        # F [-1.31 -2.8  -2.26  2.04]
+        # B [-0.   -0.47  0.47 -0.1 ]
+        # C [ 0.45 -0.62  1.13 -0.2 ]
+        # D [ 1.49  1.44  0.84 -0.28]
+        # E [ 0.61 -0.76  3.06 -0.15]
+        # F [ 0.27 -2.06  1.47 -0.6 ]
 
 Converting each coded setting to real units gives the recipe that would make each candidate reproduce
 the reference profile as closely as possible. Because the response here is simulated, each recipe can
@@ -1334,50 +1334,51 @@ the low and high level of each factor:
         - 0
         - 0
     *   - B
-        - 4.8
-        - 15.9
-        - 5.2
-        - 26.5
+        - 5.0
+        - 10.3
+        - 6.2
+        - 24.0
         - 0.015
-        - 0.019
+        - 0.017
     *   - C
-        - 1.8
-        - 10.8
-        - 4.4
-        - 34.1
+        - 6.4
+        - 8.8
+        - 7.2
+        - 23.0
         - 0.058
-        - 0.124
+        - 0.063
     *   - D
-        - 3.8
-        - 19.0
-        - 4.8
-        - 29.9
+        - 9.5
+        - 29.4
+        - 6.8
+        - 22.2
         - 0.083
-        - 0.134
+        - 0.083
     *   - E
-        - 1.1
-        - -0.8
-        - 3.5
-        - 39.8
+        - 6.8
+        - 7.4
+        - 10.1
+        - 23.5
         - 0.095
-        - 0.099
+        - 0.205
     *   - F
-        - 1.1
-        - -13.0
-        - 2.1
-        - 45.4
+        - 5.8
+        - -5.6
+        - 7.7
+        - 19.0
         - 0.033
-        - 0.177
+        - 0.086
 
-Chromogen B needs almost no change, and D needs a moderate move (a lower concentration and pH, more
-co-solvent and a higher temperature) that stays inside the ranges. Chromogen C needs a concentration
-just below the studied low level, and compounds E and F need all four factors outside the window
-where we experimented. This table is the inversion read under sum coding. Because the three-component
+Chromogen B stays inside the ranges, with less co-solvent and a higher pH than the centre. Chromogen
+C needs a pH just above the studied high level, D a higher concentration and more co-solvent than
+the study used, and E a pH of 10.1, far above the window. F needs a pH above the high level and a
+co-solvent fraction below zero, which cannot be made up. This table is the inversion read under sum
+coding. Because the three-component
 score is coding-dependent, as the :ref:`coding section <profile-categorical-coding>` showed, so is the
 reachable set, and the paragraphs below repeat the inversion under the other codings and under a
 reading that does not depend on the coding at all. The validated column shows the score-match recipe
-reaching its low-rank target but not the best attainable match (C at 0.124 against 0.058, F at 0.177
-against 0.033); the coding-invariant curve match below closes most of that gap.
+reaching its low-rank target but not always the best attainable match (E at 0.205 against 0.095, F
+at 0.086 against 0.033); the coding-invariant curve match below closes most of that gap.
 
 .. figure:: ../figures/doe/colour-pls-inversion.png
     :align: center
@@ -1386,9 +1387,10 @@ against 0.033); the coding-invariant curve match below closes most of that gap.
 
     The inverted continuous-factor settings that place each candidate on the reference goal, in coded
     units, one row per factor, with light dashed separators between the rows. The shaded band between
-    the dashed lines at :math:`-1` and :math:`+1` is the studied range. B and D are reachable within
-    the ranges; C needs a concentration just below the studied window, and E and F need all four
-    factors beyond it. A setting outside the window is marked with a heavy outline.
+    the dashed lines at :math:`-1` and :math:`+1` is the studied range. Only B is reachable within the
+    ranges; C needs a pH just above the studied window, D a higher concentration and co-solvent, E a
+    pH far above the window, and F a lower co-solvent and a higher pH. A setting outside the window is
+    marked with a heavy outline.
 
 The compensation figure shows the coded settings directly; a Plotly version, with the studied range
 shaded and light separators between the factor rows:
@@ -1416,10 +1418,10 @@ constraints <profile-constrained-inversion>`. That freedom is a property of the 
 coding; the reachable set, in contrast, moves with the coding.
 
 Repeating the score match under treatment and cell-means coding gives a different recipe each time,
-and the reachable set moves with it. Under sum and cell-means coding B and D are inside the ranges;
-under treatment coding B, D and E are. B and D are reachable under every coding, C and F under none,
-and E moves in and out. The three codings answer the same question about the same data and return
-three different recipes.
+and the reachable set moves with it. Under sum coding only B is inside the ranges; under treatment
+coding B and C are, and under cell-means coding only F is. No candidate is reachable under every
+coding, D and E are reachable under none, and B, C and F move in and out. The three codings answer the
+same question about the same data and return three different recipes.
 
 .. figure:: ../figures/doe/colour-coding-inversion.png
     :align: center
@@ -1430,9 +1432,9 @@ three different recipes.
     studied ranges or, where it does not, which factors leave the window and by how much (in real
     units, with the crossed bound in brackets). The first three columns match the three-component
     score, one per coding, and give three different recipes; the fourth matches the predicted ten-point
-    curve at full rank, the same under any coding, and keeps only B within the ranges. A modest step
-    outside the coded box is the extrapolation a designed experiment supports, so a crossed bound is a
-    flag, not a disqualification.
+    curve at full rank, the same under any coding, and places every candidate outside the ranges, B
+    by the smallest step. A modest step outside the coded box is the extrapolation a designed
+    experiment supports, so a crossed bound is a flag, not a disqualification.
 
 A reading that does not depend on the coding matches the model's **predicted** ten-point curve rather
 than the score, built from the measured runs, so no ground truth is needed here (the ground truth
@@ -1464,19 +1466,19 @@ least-squares closest match gives a coding-invariant reading:
 
     for c in ["B", "C", "D", "E", "F"]:
         print(c, np.round(curve_match(c), 2))
-        # B [-0.16 -0.12 -0.26 -0.22]
-        # C [ 2.64  0.09  3.17 -0.64]
-        # D [ 3.85  2.75  1.88 -1.05]
-        # E [ 0.39  3.03 -3.6  -4.41]
-        # F [ 1.13 -0.1   2.11 -0.63]
+        # B [-0.27 -1.22  0.51  1.06]
+        # C [ 2.45  2.4   0.64 -2.18]
+        # D [ 3.69  1.61  2.37 -1.74]
+        # E [-0.66  3.04 -2.23  3.41]
+        # F [ 1.11 -1.18  1.45  2.41]
 
-The curve match keeps B inside the studied box and places the other four outside it; the grid above
-gives each factor and the bound it crosses. A modest step outside is not disqualifying: it is the
-extrapolation a designed experiment is built to support, paid for by a larger prediction variance. F
-needs a pH of 8.7 (coded 2.11) and a concentration just above the high level. Other settings land
-farther out, D at a co-solvent of 42.5% v/v (coded 2.75) and E at a temperature of :math:`-19` degC
-(coded :math:`-4.41`, below freezing for an aqueous system), which itself signals that the
-amplitude-only factors cannot reproduce those shapes.
+The curve match places every candidate outside the studied box; the grid above gives each factor and
+the bound it crosses. A modest step outside is not disqualifying: it is the extrapolation a designed
+experiment is built to support, paid for by a larger prediction variance. B steps out the least, to a
+co-solvent of 2.8% v/v and a temperature of 35.6 degC (coded :math:`-1.22` and 1.06). F needs all
+four factors outside, the temperature farthest, at 49 degC (coded 2.41). Other settings land farther
+out, D at a concentration of 16.1 umol/L (coded 3.69) and E at a temperature of 59 degC (coded 3.41),
+which itself signals that the amplitude-only factors cannot reproduce those shapes.
 Whether a setting is worth using is separate from whether it sits in the box, and is checked below
 against the ground truth. The score match and curve match ask different things: the three-component
 score is a low-rank summary several candidates reach with small moves, while the full curve asks for
