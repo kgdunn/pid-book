@@ -894,6 +894,144 @@ Exercises
 
 .. admonition:: Question
 
+	Each of 26 runs was made at one set of conditions: a temperature, a pH, a mixing time and a
+	mixer type. Two measurement methods were applied to the same runs: a gentle shake
+	(``Y1GentleShake``) and a mechanical shake (``Y2MechanicalShake``). The code below loads the
+	data.
+
+	#.	Is a paired analysis appropriate for comparing the two methods? Explain why.
+	#.	Calculate the 95% confidence interval for the mean difference between the two methods, and
+		compare it with the 95% confidence interval from an unpaired analysis. Does pairing narrow
+		the interval here?
+	#.	Calculate the mean difference separately for each mixer. What does the single mean
+		difference from part 2 summarise?
+
+	.. code-block:: python
+
+		import io
+
+		import pandas as pd
+
+		shake = pd.read_csv(io.StringIO("""\
+		Order,Run,Temperature,pH,MixTime,Mixer,Y1GentleShake,Y2MechanicalShake
+		7,1,20.30,9.04,20.00,Propeller,6.92,2.95
+		9,2,20.30,4.96,3.00,Polytron,3.57,2.83
+		5,3,20.30,9.04,3.00,Polytron,5.56,2.87
+		25,4,20.40,9.04,3.00,Propeller,6.35,2.84
+		12,5,20.30,4.96,20.00,Polytron,3.91,2.86
+		20,6,29.70,7.02,11.50,Polytron,2.97,2.81
+		26,7,20.60,4.96,3.00,Polytron,3.42,2.85
+		18,8,29.30,8.02,7.25,Propeller,5.23,2.82
+		8,9,38.70,4.96,20.00,Propeller,5.31,2.83
+		1,10,40.10,9.04,3.00,Polytron,3,2.92
+		2,11,39.90,7.00,3.00,Propeller,3.18,2.83
+		21,12,30.10,7.02,11.50,Polytron,2.98,2.82
+		14,13,39.80,9.04,11.50,Propeller,3.37,2.91
+		10,14,38.70,4.96,11.50,Polytron,3.36,2.87
+		22,15,29.70,7.02,11.50,Propeller,4.51,2.88
+		24,16,20.40,4.96,20.00,Polytron,3.61,2.89
+		3,17,20.20,4.96,11.50,Propeller,9.57,3.07
+		11,18,39.80,7.00,20.00,Polytron,2.94,2.86
+		13,19,25.10,7.02,11.50,Polytron,2.98,2.84
+		16,20,29.70,9.04,11.50,Polytron,3.02,2.92
+		4,21,20.70,9.04,20.00,Polytron,3.21,2.82
+		6,22,29.70,4.96,3.00,Propeller,5.16,2.94
+		15,23,29.70,7.02,20.00,Propeller,5.53,2.88
+		17,24,34.70,6.06,11.50,Propeller,5.4,2.78
+		23,25,29.70,7.02,11.50,Propeller,4.53,2.89
+		19,26,29.70,7.02,3.00,Polytron,3,2.85
+		"""))
+
+.. admonition:: Solution
+
+	#.	Yes. Both values in a row come from the same run, so the run-to-run variation that the two
+		measurements share cancels in the difference :math:`w_i = y_{1,i} - y_{2,i}` (the
+		gentle-shake value minus the mechanical-shake value of run :math:`i`). The paired analysis
+		works with these 26 differences. An unpaired analysis treats the two columns as
+		independent groups, which two measurements of the same 26 runs are not.
+
+	#.	The gentle shake reads higher than the mechanical shake: the 95% confidence interval for
+		the mean difference, :math:`0.83 \leq \mu_w \leq 2.09`, lies entirely above zero, and the
+		difference is positive in all 26 runs. The interval is from the :ref:`paired test <univariate_paired_tests>`, with
+		:math:`c_t` from the :math:`t`-distribution with :math:`n - 1 = 25` degrees of freedom.
+
+		.. code-block:: python
+
+			import numpy as np
+			from scipy import stats
+
+			y1 = shake["Y1GentleShake"]
+			y2 = shake["Y2MechanicalShake"]
+			w = y1 - y2
+			n = len(w)
+			w_avg = w.mean()
+			s_w = w.std(ddof=1)
+			c_t = stats.t.ppf(0.975, df=n - 1)
+			half_width = c_t * s_w / np.sqrt(n)
+			print(f"w_avg = {w_avg:.2f}; s_w = {s_w:.2f}; "
+			      f"c_t = {c_t:.2f}")
+			# w_avg = 1.46; s_w = 1.57; c_t = 2.06
+			print(f"Paired: {w_avg - half_width:.2f} to "
+			      f"{w_avg + half_width:.2f}")
+			# Paired: 0.83 to 2.09
+			print(f"Positive differences: {(w > 0).sum()} of {n}")
+			# Positive differences: 26 of 26
+
+		Pairing does not narrow the interval here. An unpaired analysis, with a pooled variance and
+		:math:`2n - 2 = 50` degrees of freedom, gives the same interval to two decimals. Pairing
+		cancels only the variation that the two measurements share, and the mechanical shake has
+		very little variation to share. Its standard deviation is 0.0585, against 1.60 for the
+		gentle shake, so the differences (:math:`s_w = 1.57`) vary almost as much as the
+		gentle-shake values do.
+
+		.. code-block:: python
+
+			s_1 = y1.std(ddof=1)
+			s_2 = y2.std(ddof=1)
+			print(f"Standard deviations: Y1 = {s_1:.2f}; "
+			      f"Y2 = {s_2:.4f}; ratio = {s_1 / s_2:.0f}")
+			# Standard deviations: Y1 = 1.60; Y2 = 0.0585; ratio = 27
+			dof = 2 * n - 2
+			var_pooled = ((n - 1) * y1.var(ddof=1)
+			              + (n - 1) * y2.var(ddof=1)) / dof
+			half_width = (stats.t.ppf(0.975, df=dof)
+			              * np.sqrt(var_pooled * (1 / n + 1 / n)))
+			diff = y1.mean() - y2.mean()
+			print(f"Unpaired: {diff - half_width:.2f} to "
+			      f"{diff + half_width:.2f}")
+			# Unpaired: 0.83 to 2.09
+
+		The two intervals agree, but the unpaired one rests on an assumption these data do not
+		meet. Pooling the variances assumes the two methods have :ref:`comparable spread
+		<univariate_pooled_variance>`, and the gentle shake's standard deviation is 27 times that
+		of the mechanical shake. The paired interval uses only the differences, so it does not
+		need that assumption.
+
+	#.	The difference between the two methods is not constant: it is larger in the propeller runs
+		than in the Polytron runs, and the 95% confidence intervals for the two mixers do not
+		overlap.
+
+		.. code-block:: python
+
+			for mixer, w_mixer in w.groupby(shake["Mixer"]):
+			    k = len(w_mixer)
+			    avg = w_mixer.mean()
+			    half = (stats.t.ppf(0.975, df=k - 1)
+			            * w_mixer.std(ddof=1) / np.sqrt(k))
+			    print(f"{mixer}: {k} runs; w_avg = {avg:.2f}; "
+			          f"{avg - half:.2f} to {avg + half:.2f}")
+			# Polytron: 14 runs; w_avg = 0.54; 0.14 to 0.94
+			# Propeller: 12 runs; w_avg = 2.54; 1.49 to 3.58
+
+		The paired interval treats the 26 differences as one sample with a single mean,
+		:math:`\mu_w`. Here that mean differs between the two mixers, so the interval
+		:math:`0.83 \leq \mu_w \leq 2.09` from part 2 describes the average over the 14 Polytron
+		and 12 propeller runs in this data set, and neither mixer on its own. Subtracting one
+		constant therefore does not convert a gentle-shake result into a mechanical-shake result:
+		the average offset is 0.54 for a Polytron run and 2.54 for a propeller run.
+
+.. admonition:: Question
+
 	You are convinced that a different impeller (mixing blade) shape for your tank will lead to faster, i.e. shorter, mixing times. The choices are either an axial blade or a radial blade, as shown in this figure `from Wikipedia <https://en.wikipedia.org/wiki/Impeller>`_.
 
 	..	figure:: ../figures/univariate/Mixing_-_flusso_assiale_e_radiale.jpg
