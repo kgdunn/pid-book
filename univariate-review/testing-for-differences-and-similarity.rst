@@ -356,6 +356,7 @@ The probability of seeing a :math:`z`-value from :math:`-\infty` up to 1.03 is 8
 	p = norm.cdf(z, loc=0, scale=1)  # 0.8481164
 	print(f"Probability by chance: "
 	      f"{round((1 - p) * 100, 1)}%")
+	# Probability by chance: 15.2%
 
 .. code-block:: r
 
@@ -439,6 +440,7 @@ The probability of obtaining a :math:`z`-value greater than this can be calculat
 
 	print(f"Probability by chance: "
 	      f"{round((1 - p) * 100, 1)}%")
+	# Probability by chance: 16.4%
 
 .. code-block:: r
 
