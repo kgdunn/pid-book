@@ -105,12 +105,14 @@ meaningless (an indicator equals its own square). The library builds the right m
 when the factor is declared categorical: the continuous factors get their quadratic terms, the
 compound enters as a main effect plus its interactions, and no square is attempted on the compound.
 The whole design is one call to ``generate_design`` with ``design_type="i_optimal"``, a run
-``budget``, the ``hard_to_change`` factors, and ``model_type="quadratic"``.
+``budget``, the ``hard_to_change`` factors, ``model_type="quadratic"`` and ``backend="pyoptex"``.
 
-The worked example uses ``process_improve`` (``pip install 'process-improve[expt]'``); the
-coordinate-exchange optimiser it calls for the I-optimal and split-plot construction is ``pyoptex``,
-installed separately with ``pip install pyoptex``. Every block on this page builds on the design
-that first call returns, so the whole page needs that separate install.
+The worked example uses ``process_improve`` (``pip install 'process-improve[expt]'``);
+``backend="pyoptex"`` asks it for the coordinate-exchange optimiser in ``pyoptex``, installed
+separately with ``pip install pyoptex``. Without that argument, ``process_improve`` builds the
+split-plot design with its own coordinate exchange, which returns a different design from the same
+seed. Every block on this page builds on the design that first call returns, so the whole page
+needs that separate install.
 
 .. code-check-file: requires pyoptex -- the I-optimal design every later block builds on
 
@@ -136,7 +138,8 @@ that first call returns, so the whole page needs that separate install.
     # random_state seeds the coordinate exchange's random restarts
     design = generate_design(factors, design_type="i_optimal", budget=60,
                              hard_to_change=["co_solvent", "temperature"],
-                             model_type="quadratic", random_state=42)
+                             model_type="quadratic", backend="pyoptex",
+                             random_state=42)
 
     print(design.n_runs)  # 60
     print(design.design["compound"].value_counts())  # 9 to 11 runs per compound
@@ -194,7 +197,8 @@ with :math:`p` model terms, :math:`N` runs and :math:`v_\text{max}` the largest 
     def score(criterion, budget):
         d = generate_design(factors, design_type=criterion, budget=budget,
                             hard_to_change=["co_solvent", "temperature"],
-                            model_type="quadratic", random_state=42)
+                            model_type="quadratic", backend="pyoptex",
+                            random_state=42)
         m = evaluate_design(d, model="quadratic",
                             metric=["d_efficiency", "average_prediction_variance",
                                     "g_efficiency", "fds"])
