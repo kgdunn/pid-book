@@ -1633,9 +1633,9 @@ interaction model:
         print(label, len(aug), round(m["d_efficiency"], 1),
               f"{m['average_prediction_variance']:.3g}",
               round(m["g_efficiency"], 1), round(q["0.5"], 2), round(q["1"], 2))
-    # base 60 23.6 0.263 49.5 0.25 0.84
-    # +4   64 19.4 0.298 44.3 0.27 1.02
-    # +8   68 20.1 0.262 50.7 0.25 0.84
+    # base 60 23.9 0.258 56.3 0.25 0.74
+    # +4   64 19.6 0.294 44.3 0.27 1.02
+    # +8   68 20.3 0.258 57.6 0.25 0.74
 
 .. list-table:: Design quality before and after adding compound G (interaction model)
     :widths: 30 16 16 16
@@ -1646,40 +1646,40 @@ interaction model:
         - 60 + 4 G (64)
         - 60 + 8 G (68)
     *   - :math:`\uparrow` D-efficiency
-        - 23.6\*
-        - 19.4
-        - 20.1
+        - 23.9\*
+        - 19.6
+        - 20.3
     *   - :math:`\downarrow` Average prediction variance
-        - 0.263
-        - 0.298
-        - 0.262
+        - 0.258
+        - 0.294
+        - 0.258
     *   - :math:`\uparrow` G-efficiency
-        - 49.5
+        - 56.3
         - 44.3
-        - 50.7
+        - 57.6
     *   - :math:`\downarrow` FDS median
         - 0.25
         - 0.27
         - 0.25
     *   - :math:`\downarrow` FDS max
-        - 0.84
+        - 0.74
         - 1.02
-        - 0.84
+        - 0.74
 
 The base column scores the six-level interaction model (24 terms); with no G runs it cannot estimate
 the seven-level model at all, which is the reason to augment rather than start again. The +4 and +8
 columns score that seven-level model (28 terms), so the base and augmented columns carry a different
 number of parameters and are not directly comparable.
 
-The asterisk on the base D-efficiency marks that gap: the apparent fall from 23.6 to 20.1 is the move
+The asterisk on the base D-efficiency marks that gap: the apparent fall from 23.9 to 20.3 is the move
 from 24 to 28 parameters, not a design that got worse. It is worth recalling what the two criteria
 measure. D-optimality maximizes the information determinant :math:`|\mathbf{X}^T\mathbf{X}|`, which
 sharpens the coefficient estimates; I-optimality minimizes the prediction variance averaged over the
 factor region. The aim here is to predict the colour-development curve across that region, not to pin
 down coefficients as precisely as possible, so the average prediction variance is the row to watch.
 
-The eight-run block gives a lower average prediction variance than the four-run block (0.262 against
-0.298); it also lowers the worst-case prediction variance (FDS max 0.84 against 1.02) and buys
+The eight-run block gives a lower average prediction variance than the four-run block (0.258 against
+0.294); it also lowers the worst-case prediction variance (FDS max 0.74 against 1.02) and buys
 residual degrees of freedom to check G's fit. These numbers use the interaction model throughout, so
 they are not comparable to the quadratic-model scores of the six-level design; the four-run count
 itself is a property of the smaller interaction model.
@@ -1717,11 +1717,11 @@ reference profile on the developed part (``t1`` onward, since ``t0`` is near-zer
         # developed curve, t1 onward
         rmse = float(np.sqrt(np.mean((got[1:] - goal_curve[1:]) ** 2)))
         print(c, round(rmse, 3), round(rmse / noise, 1))
-        # B 0.016 0.5
-        # C 0.063 2.1
-        # D 0.11 3.7
-        # E 0.105 3.5
-        # F 0.044 1.5
+        # B 0.017 0.6
+        # C 0.061 2.0
+        # D 0.101 3.4
+        # E 0.103 3.4
+        # F 0.046 1.5
 
 The continuous factors move only the amplitude, so the closest any setting can bring a candidate to
 the reference is set by that candidate's fixed shape, its late-time drift. The best attainable
@@ -1762,7 +1762,7 @@ the candidates by drift:
         - 3.2
 
 Running the curve-match settings through the ground truth reaches close to that best attainable match
-for the near candidates: B lands at 0.016, F at 0.044, and C at 0.063, within roughly half, one and a
+for the near candidates: B lands at 0.017, F at 0.046, and C at 0.061, within roughly half, one and a
 half, and two times the measurement noise. D and E stay at 2.8 times the noise or worse whatever the
 factors are set to, inside the box or outside it, because their shape gap is too large for amplitude to
 close.
@@ -1778,7 +1778,7 @@ close.
     measurement-noise scale, each candidate's best attainable match (open marker) and what the
     coding-invariant curve-match inversion reaches when its real-unit settings are put through the
     ground truth (filled marker), ordered by drift. B lands within about half a noise standard
-    deviation of the reference and F within one and a half, C just over two; D and E no closer than
+    deviation of the reference and F within one and a half, C about two; D and E no closer than
     2.8 times the noise.
 
 The developed part of the curve makes the accuracy plainer. Dropping the first time point, where
@@ -1853,14 +1853,14 @@ best attainable match:
         # t1 onward
         rmse = np.sqrt(np.mean((true_curve(c, settings)[1:] - goal_curve[1:]) ** 2))
         print(c, round(float(rmse), 3))
-        # B 0.016
-        # C 0.061
-        # D 0.097
-        # E 0.099
+        # B 0.015
+        # C 0.06
+        # D 0.088
+        # E 0.098
         # F 0.041
 
-Each relaxed solution lands at or above its candidate's best attainable match (B at 0.016 and D at
-0.097, against best matches of 0.015 and 0.083). For compounds C, D, E and F the SPE rises to the 6.6
+Each relaxed solution lands at or above its candidate's best attainable match (B at 0.015 and D at
+0.088, against best matches of 0.015 and 0.083). For compounds C, D, E and F the SPE rises to the 6.2
 limit and the settings leave the studied ranges; compound B's solution stays inside both limits and
 inside the studied ranges. Pinning the two hard-to-change factors, temperature and co-solvent, at the
 centre and re-optimizing over concentration and pH alone also leaves every candidate at or above its
