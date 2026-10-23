@@ -65,7 +65,15 @@ Either we want to confirm things are statistically the same, or confirm they hav
 
 We address the question of whether or not there was a *significant difference* between system A and B. A significant difference means that when system B is compared to a suitable reference, that we can be sure that the long run implementation of B will lead, in general, to a different yield (%). We want to be sure that any change in the 10 runs under system B were not *only due to chance*, because system B will cost us $100,000 to install, and $20,000 in annual software license fees.
 
-	*Note*: those with a traditional statistical background will recognize this section as one-sided :index:`hypothesis tests <single: hypothesis test>`. We will only consider tests for a significant increase or decrease, i.e. :index:`one-sided tests <single: hypothesis test; one-sided>`, in this section. Rather than casting the calculation as a formal hypothesis test with a fixed cut-off, we report the probability that the observed difference could have arisen by chance; the underlying calculation is the same. That probability lets you weigh the risk against the cost of the change, instead of returning a clear-cut yes/no answer.
+	*Note*: those with a traditional statistical background will recognize the yield example as a
+	:index:`one-sided <single: hypothesis test; one-sided>`
+	:index:`hypothesis test <single: hypothesis test>`, because it asks only whether system B gives
+	a significant increase. Rather than casting the calculation as a formal hypothesis test with a
+	fixed cut-off, we report the probability that the observed difference could have arisen by
+	chance; the underlying calculation is the same. That probability lets you weigh the risk against
+	the cost of the change, instead of returning a clear-cut yes/no answer. The two-sided question,
+	whether B gives the same result as A, is answered with a confidence interval
+	:ref:`at the end of this section <univariate-difference-confidence-interval>`.
 
 There are two main ways to test for a significant increase or significant decrease.
 
@@ -369,8 +377,6 @@ Now using this value of :math:`s_P` instead of :math:`\sigma` in :eq:`zvalue-for
 	  &= \frac{3.04 - 0}{\sqrt{45.63 \times 2/10}} \\
 	z  &= {\bf 1.01}
 
-..	TODO: add the equation for the confidence interval here
-
 The probability of obtaining a :math:`z`-value greater than this can be calculated as 16.4% using the :math:`t`-distribution with 18 degrees of freedom (use ``1-pt(1.01, df=18)`` in R). We use a :math:`t`-distribution because an estimate of the variance is used, :math:`s_p^2`, not a population variance, :math:`\sigma^2`.
 
 .. code-block:: python
@@ -459,3 +465,63 @@ The reference data method shows that the trial with 10 experiments using system 
 When constructing the reference set, we have to be sure the reference data are appropriate. Were the reference data acquired under conditions that were similar to the time in which data from system B were acquired?  In this example, they were, but in practice, careful inspection of plant records must be made to verify this.
 
 The other two methods mainly use the experimental data, and provide essentially the same answer *in this case study*, though that is not always the case. The main point here is that our experimental data are usually not independent. However, by careful planning, and expense, we can meet the requirement of independence by randomizing the order in which we acquire the data. Randomization is the insurance (cost) we pay so that we do not have to rely on a large body of prior reference data. But in some cases it is not possible to randomize, so blocking is required. More on blocking in the :ref:`design of experiments section <DOE_blocking_section>`.
+
+.. _univariate-difference-confidence-interval:
+
+Testing for no difference with a confidence interval
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+	single: confidence interval; for a difference between two means
+
+A question such as "does a cheaper material B work as well as material A?" is two-sided: a change
+in either direction matters, and a two-sided
+:ref:`confidence interval <univariate_confidence_intervals>` for :math:`\mu_B - \mu_A` answers it.
+If the interval spans zero, the data show no evidence of a difference at that confidence level. The
+width of the interval shows how large a difference, in either direction, the data cannot rule out.
+
+The interval bounds the :math:`z`-value of :eq:`zvalue-for-difference` between the critical values
+:math:`-c_t` and :math:`+c_t`, with the :ref:`pooled variance <univariate_eqn_pooled_variance>`,
+:math:`s_P^2`, in place of :math:`\sigma^2`, and then rearranges for :math:`\mu_B - \mu_A`:
+
+.. math::
+
+	\begin{array}{rcccl}
+		-c_t &\leq& z &\leq& +c_t\\
+		(\overline{x}_B - \overline{x}_A) - c_t \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}
+		&\leq& \mu_B - \mu_A &\leq&
+		(\overline{x}_B - \overline{x}_A) + c_t \sqrt{s_P^2 \left(\frac{1}{n_A} + \frac{1}{n_B}\right)}
+	\end{array}
+
+The critical value :math:`c_t` comes from the :math:`t`-distribution with :math:`n_A + n_B - 2`
+degrees of freedom. Because that distribution is symmetric, and the excluded area is split equally
+between its two tails (2.5% in each for a 95% interval), the interval is symmetric about
+:math:`\overline{x}_B - \overline{x}_A`: it treats a decrease and an increase alike. With an
+external :math:`\sigma` in place of :math:`s_P`, the critical value :math:`c_n` comes from the
+normal distribution instead.
+
+Suppose the question for the yield example were whether system B changes the yield in either
+direction. With the pooled variance and the 18 degrees of freedom of the internal estimate, the 20
+runs give the 95% interval :math:`-3.31 \leq \mu_B - \mu_A \leq 9.39`:
+
+.. code-block:: python
+
+	# Two-sided: 2.5% of the area in each tail
+	c_t = t.ppf(1 - 0.05 / 2, df=dof)
+	LB = (xB_avg - xA_avg) - c_t * np.sqrt(den)
+	UB = (xB_avg - xA_avg) + c_t * np.sqrt(den)
+	print(f"95% interval: {LB:.2f} to {UB:.2f}")
+	# 95% interval: -3.31 to 9.39
+
+.. code-block:: r
+
+	# Two-sided: 2.5% of the area in each tail
+	c.t <- qt(1 - 0.05/2, df = dof)
+	LB <- (xB.avg - xA.avg) - c.t * sqrt(den)
+	UB <- (xB.avg - xA.avg) + c.t * sqrt(den)
+	paste0('95% interval: ', round(LB, 2),
+	       ' to ', round(UB, 2))
+
+The interval spans zero, so the 20 runs show no evidence, at the 95% level, that system B changes
+the yield. The interval is also wide: these runs cannot rule out a long-term change in yield
+anywhere from a loss of 3.31 to a gain of 9.39 percentage points.
