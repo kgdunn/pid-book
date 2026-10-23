@@ -6,11 +6,11 @@ Analysis of designed experiments using PLS models
 .. index::
 	pair: designed experiments; projection to latent structures (PLS)
 
-.. NOTE: you already have some of these ideas in the section "LVM-preprocessing": combine them; cross reference them?
-
 Data from a designed experiment, particularly factorial experiments, will have independent columns in |X|. These data tables are adequately analyzed using :ref:`multiple linear regression <LS_multiple_X_MLR>` (MLR) least squares models.
 
 These factorial and fractional factorial data are also well suited to analysis with PLS. Since factorial models support interaction terms, these additional interactions should be added to the |X| matrix. For example, a full factorial design with variables **A**, **B** and **C** will also support the **AB**, **AC**, **BC** and **ABC** interactions. These four columns should be added to the |X| matrix so that the loadings for these variables are also estimated. If a :ref:`central composite design <DOE_central_composite_designs>`, or some other design that supports quadratic terms has been performed, then these columns should also be added to |X|, e.g.: :math:`\mathbf{\text{A}}^2`, :math:`\mathbf{\text{B}}^2` and :math:`\mathbf{\text{C}}^2`.
+The :ref:`section on preprocessing <LVM_preprocessing>` describes these and other columns that can be
+added to |X|, such as transformed variables and quantities calculated from first-principles knowledge.
 
 
 The PLS loadings plots from analyzing these DOE data are interpreted in the usual manner; and the coefficient plot is informative if :math:`A>2`.
@@ -93,11 +93,3 @@ components that improve the fit is the rank of :math:`\mathbf{X}'\mathbf{Y}`, at
 responses whose effects are proportional to each other share one component.
 
 Lastly, models built from DOE data allow a much stronger interpretation of the loading vectors, :math:`\mathbf{R:C}`. This time we can infer cause-and-effect behaviour; normally in PLS models the best we can say is that the variables in |X| and |Y| are correlated. Experimental studies that are run in a factorial manner will break happenstance correlation structures; so if any correlation that is present, then this truly is causal in nature.
-
-
-.. Analysis with additional first-principles knowledge
-.. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-..
-.. We rarely only have data from a process; as engineers we also have additional, first-principles knowledge about the system being investigated. We can always embed this information in the data.
-..
-.. An example that was mentioned in the :ref:`section of data preprocessing <LVM_preprocessing>` was that of a distillation column. The inverse temperature is known to more correlated to the vapour pressure, known from first-principles modelling. Using the temperature variable by itself will lead to an adequate model, but the transformed variable can lead to a better model. We sometimes leave both variables in the model: the temperature and the calculated inverted temperature.
