@@ -451,7 +451,7 @@ can be passed straight in. Fitting it, and reading the scores and the
 
     pls = PLS(n_components=5, scale=True).fit(X, curves)
     print(", ".join(f"{v:.2f}" for v in pls.r2_cumulative_))  # cumulative R2Y by component
-    # 0.78, 0.80, 0.81, 0.81, 0.81
+    # 0.77, 0.80, 0.81, 0.81, 0.81
 
     scores = np.asarray(pls.scores_)  # X scores, one row per run
     wstar = pls.direct_weights_  # W*: X-space weights, indexed by factor
@@ -469,7 +469,7 @@ can be passed straight in. Fitting it, and reading the scores and the
     fig.show()
 
 The model reports its own goodness of fit through ``pls.r2_cumulative_``, the cumulative
-:math:`R^2_Y` as each component is added: 0.78 after the first component and 0.81 after five, so one
+:math:`R^2_Y` as each component is added: 0.77 after the first component and 0.81 after five, so one
 component already
 captures most of the response variation, and the ten time points move together along a single main
 direction.
@@ -530,18 +530,18 @@ agree.
     res = analyze_experiment(adf, response_column="peak", model="peak ~ " + rhs,
                              analysis_type=["anova"], coding="coded")
     print(f'{res["model_summary"]["r_squared"]:.3f}')
-    # 0.988
+    # 0.987
     anova = pd.DataFrame(res["anova_table"])
     print(anova)
     for _, row in anova[anova["source"].str.contains(":")].iterrows():
         print(f"{row['source']}: F = {row['F']:.0f}, p = {row['p_value']:.0e}")
-    # C(compound, Sum):co_solvent: F = 14, p = 2e-07
-    # C(compound, Sum):pH: F = 31, p = 7e-12
-    # C(compound, Sum):temperature: F = 16, p = 2e-08
+    # C(compound, Sum):co_solvent: F = 15, p = 7e-08
+    # C(compound, Sum):pH: F = 28, p = 2e-11
+    # C(compound, Sum):temperature: F = 15, p = 7e-08
 
 The model explains 99% of the variation in peak colour. All three interaction terms are significant:
-the compound-by-pH term is the strongest (:math:`F = 31`, :math:`p = 7 \times 10^{-12}`), then
-compound-by-temperature (:math:`F = 16`) and compound-by-co-solvent (:math:`F = 14`), each with
+the compound-by-pH term is the strongest (:math:`F = 28`, :math:`p = 2 \times 10^{-11}`), then
+compound-by-co-solvent and compound-by-temperature (both :math:`F = 15`), each with
 :math:`p < 10^{-6}`.
 
 .. admonition:: An interaction term is a joint test of five coefficients
@@ -589,7 +589,7 @@ least-squares coefficients term by term:
     gap = (coef["PLS"] - coef["OLS"]).abs()
     print(f"largest gap {gap.max():.3f}, within one SE: {int((gap <= coef['SE']).sum())} of "
           f"{len(gap)}, largest {(gap / coef['SE']).max():.1f} SE")
-    # largest gap 0.042, within one SE: 14 of 24, largest 1.9 SE
+    # largest gap 0.049, within one SE: 12 of 24, largest 2.4 SE
     fig = go.Figure()
     fig.add_scatter(x=coef["OLS"], y=coef.index, mode="markers", name="least squares")
     fig.add_scatter(x=coef["PLS"], y=coef.index, mode="markers", name="PLS")
@@ -598,7 +598,7 @@ least-squares coefficients term by term:
 The expanded model matrix ``X_int`` has 24 terms: the five compound contrasts, the three continuous
 factors that interact with the compound, their fifteen interaction columns, and the concentration.
 Three components is well short of that full rank, yet on the single peak response the PLS and
-least-squares coefficients differ by at most about 0.04 across the 24 terms. The concentration
+least-squares coefficients differ by at most about 0.05 across the 24 terms. The concentration
 coefficient (about 0.40, it raises the peak for every compound) and the pH main effect (about
 :math:`-0.20`, the average pH slope) match closely; the three-component PLS pulls several of the
 compound terms toward zero, the shrinkage from describing the response with fewer directions than
@@ -619,34 +619,34 @@ are omitted):
         - t
         - p-value
     *   - ``concentration``
-        - +0.399
-        - +0.397
-        - 0.010
-        - +39.3
+        - +0.408
+        - +0.396
+        - 0.011
+        - +37.5
         - <0.001
     *   - ``cmpE``
-        - +0.167
+        - +0.155
         - +0.204
         - 0.020
         - +10.2
         - <0.001
-    *   - ``cmpA:pH``
-        - +0.122
-        - +0.150
-        - 0.024
-        - +6.4
-        - <0.001
     *   - ``cmpD``
-        - +0.124
-        - +0.149
-        - 0.019
-        - +8.0
+        - +0.127
+        - +0.155
+        - 0.020
+        - +7.8
         - <0.001
     *   - ``cmpD:temperature``
-        - +0.101
-        - +0.116
-        - 0.022
-        - +5.3
+        - +0.107
+        - +0.130
+        - 0.023
+        - +5.8
+        - <0.001
+    *   - ``cmpA:pH``
+        - +0.111
+        - +0.129
+        - 0.024
+        - +5.4
         - <0.001
     *   - (14 terms omitted)
         -
@@ -654,35 +654,35 @@ are omitted):
         -
         -
         -
-    *   - ``cmpD:co_solvent``
-        - -0.102
-        - -0.134
-        - 0.023
-        - -5.9
-        - <0.001
     *   - ``cmpC:pH``
-        - -0.114
-        - -0.150
-        - 0.023
-        - -6.4
+        - -0.127
+        - -0.145
+        - 0.024
+        - -6.0
         - <0.001
     *   - ``co_solvent``
-        - -0.170
-        - -0.164
+        - -0.152
+        - -0.154
         - 0.011
-        - -15.3
+        - -14.5
+        - <0.001
+    *   - ``cmpD:co_solvent``
+        - -0.125
+        - -0.156
+        - 0.022
+        - -6.9
         - <0.001
     *   - ``cmpD:pH``
-        - -0.145
-        - -0.187
+        - -0.152
+        - -0.181
         - 0.022
-        - -8.4
+        - -8.0
         - <0.001
     *   - ``pH``
         - -0.211
-        - -0.199
-        - 0.010
-        - -19.1
+        - -0.200
+        - 0.011
+        - -18.6
         - <0.001
 
 .. figure:: ../figures/doe/colour-coefficient-comparison.png
@@ -692,14 +692,14 @@ are omitted):
 
     Coefficients for the peak colour intensity from ordinary least squares and from PLS with three
     components, fitted to the same interaction model under sum coding. The bands are :math:`\pm` one
-    standard error on the least-squares estimate; the PLS point falls inside the band for 14 of the
-    24 terms and within two standard errors for all of them. Terms are sorted by the
+    standard error on the least-squares estimate; the PLS point falls inside the band for 12 of the
+    24 terms and within two standard errors for 23 of them. Terms are sorted by the
     least-squares coefficient; the ``cmp`` prefix marks a compound's departure from the average under
     sum coding. Reference coding, measuring each compound against A, would widen the gap between the
     two fits.
 
-The PLS point falls inside the :math:`\pm` one-standard-error band for 14 of the 24 terms, and the
-largest gap is 1.9 standard errors, so the low-rank shrinkage is of the same order as the estimation
+The PLS point falls inside the :math:`\pm` one-standard-error band for 12 of the 24 terms, and the
+largest gap is 2.4 standard errors, so the low-rank shrinkage is of the same order as the estimation
 uncertainty. On this single peak response the two fits agree on the sign of every term, and the
 three-component PLS reports most compound terms somewhat closer to zero.
 
@@ -1939,10 +1939,10 @@ leaned on. The drift column orders the compounds B, F, C, D, E by distance from 
 same order the shape-distance ranking and the ground-truth inversion check produced, and A's zero
 drift is why it serves as the reference. The concentration slope is shared and positive, matching the
 single amplitude direction the first PLS component picked out. Across the six compounds the
-per-compound slopes spread most on pH and least on co-solvent, the same order (pH, then temperature,
-then co-solvent) as the interaction F-tests. The recovered coefficients are departures from the
-average compound rather than the raw slopes, so they do not equal the table entries term for term, but
-their signs and relative sizes track it.
+per-compound slopes spread most on pH, which also has the largest interaction F-test; the spreads on
+temperature and co-solvent are closer to each other, and their two F-tests tie at 15. The recovered
+coefficients are departures from the average compound rather than the raw slopes, so they do not
+equal the table entries term for term, but their signs and relative sizes track it.
 
 A single design, several questions
 ----------------------------------
