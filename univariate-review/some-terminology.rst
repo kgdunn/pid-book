@@ -11,9 +11,6 @@ We review a couple of concepts that you should have seen in a prior statistical 
 
 	A large collection of observations that *might* occur; a set of *potential* measurements. Some texts consider an infinite collection of observations, but a large number of observations is good enough.
 
-.. We will use capital :math:`N` in this section to denote the :index:`population` size. WE USUALLY USE "N" as the sample size
-.. We will use lowercase :math:`n` in this section to denote the :index:`sample` size.
-
 **Sample**
 
 	A collection of observations that have *actually* occurred; a set of *existing* measurements that we have recorded in some way, usually electronically.
@@ -63,11 +60,11 @@ We review a couple of concepts that you should have seen in a prior statistical 
 		:nowrap:
 
 			\begin{alignat*}{2}
-				\text{population mean:} &\qquad&  \mathcal{E}\left\{x \right\} = \mu &= \frac{1}{N}\sum{x} \\
+				\text{population mean:} &\qquad&  \mathcal{E}\left\{x \right\} = \mu &= \frac{1}{N_\text{pop}}\sum{x} \\
 				\text{sample mean:}     &\qquad&                       \overline{x}  &= \frac{1}{n}\sum_{i=1}^{n}{x_i}
 			\end{alignat*}
 
-	where :math:`N` represents the size of the entire population, and :math:`n` is the number of samples measured from the population.
+	where :math:`N_\text{pop}` is the number of values in the entire population, and :math:`n` is the number of samples measured from the population. The subscript keeps the population size apart from :math:`N`, which elsewhere in the book counts the observations in a data set.
 
 	.. literalinclude:: /univariate-review/gists/create-normally-distributed-values.py
 		:language: python
@@ -89,7 +86,7 @@ We review a couple of concepts that you should have seen in a prior statistical 
 		:nowrap:
 
 	   	\begin{alignat*}{2}
-	      	\text{Population variance}: &\qquad& \mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} = \sigma^2 &= \frac{1}{N}\sum{(x-\mu)^2} \\
+	      	\text{Population variance}: &\qquad& \mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} = \sigma^2 &= \frac{1}{N_\text{pop}}\sum{(x-\mu)^2} \\
 			\text{Sample variance}:     &\qquad&                                                                             s^2  &= \frac{1}{n-1}\sum_{i=1}^{n}{(x_i - \overline{x})^2}
 		\end{alignat*}
 

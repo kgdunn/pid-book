@@ -6,7 +6,7 @@ Exercises
 
 .. admonition:: Question
 
-	Recall that :math:`\mu = \mathcal{E}(x) = \dfrac{1}{N}\sum{x}` and :math:`\mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} = \sigma^2 = \dfrac{1}{N}\sum{(x-\mu)^2}`.
+	Recall that :math:`\mu = \mathcal{E}(x) = \dfrac{1}{N_\text{pop}}\sum{x}` and :math:`\mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} = \sigma^2 = \dfrac{1}{N_\text{pop}}\sum{(x-\mu)^2}`.
 
 	#. What is the expected value thrown of a fair 6-sided die? (Note: plural of die is dice)
 	#. What is the expected variance of a fair 6-sided die?
@@ -15,8 +15,8 @@ Exercises
 
 	Often the mean and standard deviation of a uniform distribution are not actual values from the distribution, however the definitions for them hold:
 
-	#. :math:`\mu = \mathcal{E}(x) = \dfrac{1}{N}\sum{x} = \dfrac{1}{6}(1+2+3+4+5+6) = \mathbf{3.5}`
-	#. :math:`\mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} =  \dfrac{1}{N}\sum{(1-3.5)^2 + (2-3.5)^2 + (3-3.5)^2 + (4-3.5)^2 + (5-3.5)^2 + (6-3.5)^2} = 17.5/6 = \mathbf{2.92}`
+	#. :math:`\mu = \mathcal{E}(x) = \dfrac{1}{N_\text{pop}}\sum{x} = \dfrac{1}{6}(1+2+3+4+5+6) = \mathbf{3.5}`
+	#. :math:`\mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} =  \dfrac{1}{N_\text{pop}}\sum{(1-3.5)^2 + (2-3.5)^2 + (3-3.5)^2 + (4-3.5)^2 + (5-3.5)^2 + (6-3.5)^2} = 17.5/6 = \mathbf{2.92}`
 
 	If you're feeling adventurous, you can simulate random dice rolls and verify your answers::
 
@@ -971,7 +971,7 @@ Exercises
 
 .. admonition:: Question
 
-	Recall that :math:`\mu = \mathcal{E}(x) = \frac{1}{N}\sum{x}` and :math:`\mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} = \sigma^2 = \frac{1}{N}\sum{(x-\mu)^2}`.
+	Recall that :math:`\mu = \mathcal{E}(x) = \frac{1}{N_\text{pop}}\sum{x}` and :math:`\mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} = \sigma^2 = \frac{1}{N_\text{pop}}\sum{(x-\mu)^2}`.
 
 		#.	What is the expected value thrown of a fair, 12-sided dice?
 		#.	What is the expected variance of a fair, 12-sided dice?
@@ -992,7 +992,7 @@ Exercises
 	#. Continuing the notation from the above question we can derive the expected variance as,
 
 		.. math::
-			\mathcal{V}(X) = \frac{1}{N}\sum_i^{12}{(x_i - \mu)^2} = \frac{1}{12} \cdot \left[ (1 - 6.5)^2 + (2 - 6.5)^2 + \ldots + (12 - 6.5)^2 \right] \approx \bf{11.9167}
+			\mathcal{V}(X) = \frac{1}{N_\text{pop}}\sum_i^{12}{(x_i - \mu)^2} = \frac{1}{12} \cdot \left[ (1 - 6.5)^2 + (2 - 6.5)^2 + \ldots + (12 - 6.5)^2 \right] \approx \bf{11.9167}
 
 	#.	Simulating 10,000 throws corresponds to 10,000 independent and mutually exclusive random events, each with an outcome between 1 and 12. The sample mean and variance from my sample was calculated using this code in R:
 
