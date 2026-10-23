@@ -26,7 +26,8 @@ Execution model
   no-op for both matplotlib and plotly.
 * Data sets read from ``openmv.net`` are fetched once into a cache directory
   (``.cache/openmv`` by default, override with ``PID_BOOK_DATA_CACHE``) and read
-  from disk afterwards.
+  from disk afterwards. That covers both ``pd.read_csv`` on an openmv.net URL and
+  process-improve's own loaders (``load_sbr``, ``load_fmc``, ``load_dupont``).
 * A ``DeprecationWarning``, or any warning class defined by ``process_improve``
   (for example ``SpecificationWarning``), that points at the book's own code
   fails the block. Warnings raised deep inside third-party code are not
@@ -369,6 +370,44 @@ def _install_dataset_cache() -> None:
     pd.read_csv = read_csv
 
 
+def _install_library_cache() -> None:
+    """Serve process-improve's own openmv.net downloads (``load_sbr``, ``load_fmc``, ...) from the cache.
+
+    The library's loaders fetch through ``process_improve._remote_data.fetch_remote_bytes``
+    and never reach the wrapped ``pd.read_csv``. The CSV and Excel readers look that
+    name up in their module at call time, so replacing the module attribute covers
+    every loader. ``_remote_data`` is private: if the library renames it, fail loudly
+    rather than silently download on every run again.
+    """
+    try:
+        import process_improve  # noqa: F401
+    except ImportError:
+        return
+    try:
+        from process_improve import _remote_data
+    except ImportError as exc:
+        raise RuntimeError(
+            "process_improve._remote_data is gone, so the checker can no longer serve the "
+            "library's sample-data downloads from .cache/openmv: update _install_library_cache."
+        ) from exc
+    original = getattr(_remote_data, "fetch_remote_bytes", None)
+    if original is None:
+        raise RuntimeError(
+            "process_improve._remote_data.fetch_remote_bytes is gone: update _install_library_cache."
+        )
+    if getattr(original, "_pid_book_cached", False):
+        return
+
+    def fetch_remote_bytes(url, timeout=None):  # type: ignore[no-untyped-def]
+        if isinstance(url, str) and OPENMV_RE.match(url):
+            return fetch_dataset(url).read_bytes()
+        return original(url, timeout=timeout)
+
+    fetch_remote_bytes._pid_book_cached = True  # type: ignore[attr-defined]
+    fetch_remote_bytes.__doc__ = original.__doc__
+    _remote_data.fetch_remote_bytes = fetch_remote_bytes
+
+
 def configure_environment() -> None:
     """Make plotting headless and route openmv.net reads through the cache. Idempotent."""
     os.environ.setdefault("MPLBACKEND", "Agg")
@@ -386,6 +425,7 @@ def configure_environment() -> None:
         basedatatypes.BaseFigure.show = lambda self, *args, **kwargs: None
         pio.show = lambda *args, **kwargs: None
     _install_dataset_cache()
+    _install_library_cache()
 
 
 # --------------------------------------------------------------------------- warnings
