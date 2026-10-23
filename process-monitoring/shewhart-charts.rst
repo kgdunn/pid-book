@@ -305,7 +305,7 @@ You make a **type II error** when your sample really is abnormal, but falls with
 
 *Synonyms* for a **type II error**: false negative (used mainly for testing of diseases), consumer's risk (used for acceptance sampling, because your consumer will be receiving available product which is defective), false acceptance rate, or beta.
 
-To quantify the probability :math:`\beta`, recall that a Shewhart chart is for monitoring location, so we make an assumption that the new, abnormal sample comes from a distribution which has shifted its location from :math:`\mu` to :math:`\mu + \Delta\sigma` (e.g. :math:`\Delta` can be positive or negative). Now, what is the probability this new sample, which come from the shifted distribution, will fall within the existing LCL and UCL? This figure shows the probability is :math:`\beta = (1 - \text{the shaded area})`.
+To quantify the probability :math:`\beta`, recall that a Shewhart chart is for monitoring location, so we make an assumption that the new, abnormal sample comes from a distribution which has shifted its location from :math:`\mu` to :math:`\mu + \Delta\sigma` (e.g. :math:`\Delta` can be positive or negative). Now, what is the probability this new sample, which come from the shifted distribution, will fall within the existing LCL and UCL? The figure below shades that probability, :math:`\beta`: the part of the shifted distribution that still lies between the LCL and the UCL.
 
 .. math::
 
