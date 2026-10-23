@@ -1005,17 +1005,17 @@ for new rows:
     goal_x = encode("A", concentration=0, co_solvent=0, pH=0, temperature=0)
     goal = pls_full.diagnose(goal_x)
     print(f"SPE {float(goal.spe.iloc[0]):.1f}, T2 {float(goal.hotellings_t2.iloc[0]):.2f}")
-    # SPE 1.6, T2 0.09
+    # SPE 1.6, T2 0.06
 
     t2 = pls_full.hotellings_t2_.iloc[:, -1]  # per-run T2 at three components
     spe = pls_full.spe_.iloc[:, -1]  # per-run SPE at three components
     t2_limit, spe_limit = pls_full.hotellings_t2_limit(), pls_full.spe_limit()
     print(f"limits: T2 {t2_limit:.1f}, SPE {spe_limit:.1f}")
-    # limits: T2 8.7, SPE 6.6
+    # limits: T2 8.7, SPE 6.2
     flagged = design.design["compound"][((t2 > t2_limit) | (spe > spe_limit)).to_numpy()]
     print(int((t2 > t2_limit).sum()), int((spe > spe_limit).sum()), sorted(set(flagged)),
           f"{t2.max():.1f}")  # runs over T2, over SPE, their compounds, largest T2
-    # 5 5 ['F'] 22.0
+    # 6 3 ['F'] 20.2
 
     # Same four-way encoding as the score plot (colour_of, symbol, size defined above),
     # so the same run is trackable across the two figures: colour = compound,
@@ -1034,16 +1034,16 @@ for new rows:
     fig.update_layout(xaxis_title="Hotelling's T2", yaxis_title="SPE")
     fig.show()
 
-The goal's SPE is 1.6 and its :math:`T^2` is 0.09, both well inside the 95% limits of 6.6 and 8.7. It
+The goal's SPE is 1.6 and its :math:`T^2` is 0.06, both well inside the 95% limits of 6.2 and 8.7. It
 sits in the region the design covered, so the model's prediction there can be used as an inversion
-target. Most of the sixty runs also fall inside both limits. The exceptions, five beyond the
-:math:`T^2` limit (the largest at 22) and five beyond the SPE limit, are all compound F. Those
+target. Most of the sixty runs also fall inside both limits. The exceptions, six beyond the
+:math:`T^2` limit (the largest at 20) and three beyond the SPE limit, are all compound F. Those
 outliers are, somewhat surprisingly, mostly a property of the sum-based coding used for the compound,
 not of F particularly. The :ref:`next section <profile-categorical-coding>` writes the same model in
-three different ways and shows the outliers move from F to another level, or shrink to two runs just
-past the limit, as the coding changes. No matter which coding is used, we find compound A projects to
-a low-leverage, well-reconstructed point (its :math:`T^2` stays near or below 0.1 and its SPE between
-1.0 and 2.4).
+three different ways and shows the outliers move from F to another level, or leave no run past the
+:math:`T^2` limit, as the coding changes. No matter which coding is used, we find compound A projects
+to a low-leverage, well-reconstructed point (its :math:`T^2` stays below 0.6 and its SPE between 1.0
+and 2.3).
 
 .. figure:: ../figures/doe/colour-pls-t2-spe.png
     :align: center
@@ -1140,7 +1140,7 @@ the truncation is gone and PLS spans the same space as least squares, so the dep
 below full rank it remains.
 
 The interaction model here keeps three of a possible twenty-four components, well below full rank, so
-the coding has an effect. Its cumulative :math:`R^2_Y` at three components is 0.87 under sum coding
+the coding has an effect. Its cumulative :math:`R^2_Y` at three components is 0.88 under sum coding
 and 0.90 under both treatment and cell-means coding (printed by the block below): the same model
 space, but a rank-three truncation keeps a different part of it in each case.
 
@@ -1180,22 +1180,22 @@ under each coding and reading Hotelling's :math:`T^2` per run:
         fig.add_hline(y=model.hotellings_t2_limit(), line_dash="dash", row=r + 1, col=c + 1)
         print(f"{title}: R2Y {model.r2_cumulative_.iloc[-1]:.2f}, "
               f"{int((t2 > model.hotellings_t2_limit()).sum())} over, max {t2.max():.1f}")
-        # sum, F omitted: R2Y 0.87, 5 over, max 22.0
-        # sum, A omitted: R2Y 0.87, 3 over, max 22.0
-        # treatment, A reference: R2Y 0.90, 2 over, max 11.0
-        # cell-means: R2Y 0.90, 2 over, max 10.7
+        # sum, F omitted: R2Y 0.88, 6 over, max 20.2
+        # sum, A omitted: R2Y 0.88, 6 over, max 17.8
+        # treatment, A reference: R2Y 0.90, 0 over, max 8.6
+        # cell-means: R2Y 0.90, 0 over, max 8.5
     fig.show()
 
-Under sum coding with F omitted, the five runs past the 95% :math:`T^2` limit of 8.7 are all compound
-F, and the largest reaches 22. Omit A instead, by reversing the level order, and the flagged runs
-become compound A, at a :math:`T^2` up to 22, while F now sits inside. Under treatment or cell-means
-coding, where no level is written at the far corner of the contrast space, two compound-F runs remain
-past the limit, at a :math:`T^2` of at most 11. The omitted level's runs carry :math:`-1` in every sum
-contrast, which places them at the :math:`(-1, \ldots, -1)` corner of the contrast space;
-``scale=True`` puts the contrasts on a common scale, so those runs sit farthest from the centre and
-take the highest leverage. That part of the effect belongs to the parameterization and moves with
-whichever level is omitted. This is why the diagnostics flagged F so strongly: not because of its
-chemical features, but mostly because of the coding choice.
+Under sum coding with F omitted, the six runs past the 95% :math:`T^2` limit of 8.7 are all compound
+F, and the largest reaches 20. Omit A instead, by reversing the level order, and the six flagged runs
+become compound A, at a :math:`T^2` up to 18, while F now sits inside. Under treatment or cell-means
+coding, where no level is written at the far corner of the contrast space, no run passes the limit:
+the largest :math:`T^2` is 8.6. The omitted level's runs carry :math:`-1` in every sum contrast,
+which places them at the :math:`(-1, \ldots, -1)` corner of the contrast space; ``scale=True`` puts
+the contrasts on a common scale, so those runs sit farthest from the centre and take the highest
+leverage. That effect belongs to the parameterization and moves with whichever level is omitted. This
+is why the diagnostics flagged F so strongly: not because of its chemical features, but because of
+the coding choice.
 
 .. figure:: ../figures/doe/colour-coding-diagnostics.png
     :align: center
@@ -1205,14 +1205,13 @@ chemical features, but mostly because of the coding choice.
     Hotelling's :math:`T^2` for each run at three components, under four codings of the same
     interaction model. The dashed line is the 95% limit (8.7). The runs over the limit follow the
     omitted sum-coding level, F when F is dropped and A when A is dropped; treatment and cell-means
-    coding, which place no level at the far corner of the contrast space, flag only two F runs, just
-    past the limit. The high leverage of the omitted level is a property of the coding, not of the
-    chemistry.
+    coding, which place no level at the far corner of the contrast space, flag no run. The high
+    leverage of the omitted level is a property of the coding, not of the chemistry.
 
 Two things do not move with the coding. The interaction F-tests and the full-rank least-squares
 coefficients are the same under all three, because they use the whole column space. And the goal
 projection stays inside both limits under all three: A is omitted by none of them, so compound A at
-the centre point keeps its :math:`T^2` near or below 0.1 and its SPE between 1.0 and 2.4. (Omit A
+the centre point keeps its :math:`T^2` below 0.6 and its SPE between 1.0 and 2.3. (Omit A
 instead, as the second panel does, and A's own runs become the flagged ones.) The goal check the
 inversion relies on does not depend on the choice among the three.
 
