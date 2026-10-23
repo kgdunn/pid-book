@@ -418,10 +418,12 @@ ramps or importances, only a choice of which response leads.
 
 With profit as the principal response and purity held at 90% or more, the answer is
 :math:`T` = 342.9 K and :math:`S` = 1.61 g/L, with a fitted profit of $738 per day. The fitted
-purity sits exactly on its limit. This is typical of the approach: when the responses conflict,
-the principal response is pushed until a constraint stops it, so the chosen setting has no margin
-on that constraint. The desirability optimum, by comparison, gave up $5.5 per day of profit for a
-fitted purity of 93.5%, 3.5 points above the 90% limit.
+purity sits exactly on its limit, because the best profit setting breaks that limit (its fitted
+purity is 85.5%), so the optimizer raises profit until the purity constraint stops it. The chosen
+setting therefore has no margin: about half of single runs there would be expected to fall below
+90%. Stating the limit with a margin, for example by requiring the lower prediction bound for
+purity to be at least 90%, keeps the setting inside it. The desirability optimum, by comparison,
+gave up $5.5 per day of profit for a fitted purity of 93.5%, 3.5 points above the 90% limit.
 
 .. _DOE-uncertainty-at-the-optimum:
 
@@ -473,8 +475,8 @@ Four ways of handling several responses have now appeared in this chapter.
 | Desirability           | A ramp for each response, and an      | A single setting, and a surface that  |
 |                        | importance for each                   | ranks every point in the region       |
 +------------------------+---------------------------------------+---------------------------------------+
-| Principal response     | A choice of which response leads, and | A single setting, usually on the      |
-| with constraints       | a limit for each of the others        | boundary of one constraint            |
+| Principal response     | A choice of which response leads, and | A single setting, which can sit       |
+| with constraints       | a limit for each of the others        | exactly on a limit, with no margin    |
 +------------------------+---------------------------------------+---------------------------------------+
 
 The four differ in where the judgement is placed rather than in how much of it is required.
@@ -491,7 +493,8 @@ matches the question being asked. When a single recommendation is needed and the
 priorities can be stated, desirability provides one, at the cost of making those priorities
 explicit and, as shown above, of an answer that moves when they change. When one response
 clearly matters most and the others only need to stay within limits, optimizing the principal
-response under those limits matches that ranking, with the setting usually at the edge of one limit.
+response under those limits matches that ranking, though the setting can sit exactly on one of the
+limits.
 
 Nothing prevents using more than one. Drawing the sweet spot before running the optimizer
 costs one plot and shows whether a compromise exists at all, which is worth knowing before
