@@ -109,8 +109,8 @@ The whole design is one call to ``generate_design`` with ``design_type="i_optima
 
 The worked example uses ``process_improve`` (``pip install process-improve``). Its coordinate
 exchange builds the split-plot design directly: it sets the hard-to-change factors once per whole
-plot, and chooses the runs allowing for the runs of one whole plot sharing an error, taken to have
-half the variance of the run-to-run error.
+plot, and chooses the runs for a model in which the runs of one whole plot share an error, with half
+the variance of the run-to-run error.
 
 .. code-block:: python
 
@@ -913,8 +913,8 @@ concentration weight sits far out on component 1 with the time points from ``t1`
 component-1 score tracks how high its whole curve rises. The large markers (high concentration) fall
 to the right and the small markers to the left, and the concentration and the first score correlate
 at 0.72. The down triangles (low pH) also lie to the right of the circles on average, because a lower
-pH raises the colour for this chelate. Reading shape and size together, the runs high on component 1 are the
-high-concentration, low-pH runs, which is where the deepest colour is expected.
+pH raises the colour for this chelate. Reading shape and size together, the runs high on component 1
+are the high-concentration, low-pH runs, which is where the deepest colour is expected.
 
 Component 2 carries 8% of the response variation. The loadings place the concentration, with the
 time points, at its negative end, and the pH, the co-solvent and all five compound-by-temperature
@@ -1373,12 +1373,12 @@ Chromogen B stays inside the ranges, with less co-solvent and a higher pH than t
 C needs a pH just above the studied high level, D a higher concentration and more co-solvent than
 the study used, and E a pH of 10.1, far above the window. F needs a pH above the high level and a
 co-solvent fraction below zero, which cannot be made up. This table is the inversion read under sum
-coding. Because the three-component
-score is coding-dependent, as the :ref:`coding section <profile-categorical-coding>` showed, so is the
-reachable set, and the paragraphs below repeat the inversion under the other codings and under a
-reading that does not depend on the coding at all. The validated column shows the score-match recipe
-reaching its low-rank target but not always the best attainable match (E at 0.205 against 0.095, F
-at 0.086 against 0.033); the coding-invariant curve match below closes most of that gap.
+coding. Because the three-component score is coding-dependent, as the :ref:`coding section
+<profile-categorical-coding>` showed, so is the reachable set, and the paragraphs below repeat the
+inversion under the other codings and under a reading that does not depend on the coding at all. The
+validated column shows the score-match recipe reaching its low-rank target but not always the best
+attainable match (E at 0.205 against 0.095, F at 0.086 against 0.033); the coding-invariant curve
+match below closes most of that gap.
 
 .. figure:: ../figures/doe/colour-pls-inversion.png
     :align: center
