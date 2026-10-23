@@ -20,10 +20,11 @@ to be traded, such as a purity that a customer contract fixes at 90%. In those c
 responses are carried separately, each with its own model, and the settings are chosen with
 all of them in view at once.
 
-This section covers two ways of doing that. The first is to find the region of factor space
+This section covers three ways of doing that. The first is to find the region of factor space
 where every response meets its specification, which is commonly called the *sweet spot*. The
 second is to convert each response to a score between 0 and 1 and combine those scores into
-a single quantity that can be optimized, which is the *desirability* approach. They answer
+a single quantity that can be optimized, which is the *desirability* approach. The third
+optimizes one principal response with the others held within their limits. They answer
 different questions, and the last part of this section compares them against the
 fold-into-one-number approach the response surface section used.
 
@@ -387,6 +388,41 @@ much the choice of importances matters here. Note that the value of :math:`D` ca
 compared across different importance settings, since the exponents that define it have
 changed.
 
+.. _DOE-principal-response:
+
+One principal response, the others as constraints
+------------------------------------------------------
+
+.. index::
+	pair: principal response; multi-response optimization
+
+A third route optimizes one response, the principal one, and treats each of the others as a
+constraint that must stay within its limit. On the overlaid contour plot of the
+:ref:`sweet spot <DOE-sweet-spot>` this is the setting inside the purity boundary with the highest
+profit contour. Unlike the sweet spot it returns one setting, and unlike desirability it needs no
+ramps or importances, only a choice of which response leads.
+
+.. code-block:: python
+
+	def at(z):
+	    return pd.DataFrame({"T": [z[0]], "S": [z[1]]})
+
+	found = optimize.minimize(
+	    lambda z: -fit_profit.predict(at(z)).iloc[0], x0=[0.0, 0.0], bounds=[(-1, 1), (-1, 1)],
+	    constraints=[{"type": "ineq", "fun": lambda z: fit_purity.predict(at(z)).iloc[0] - 90}],
+	)
+	led = at(found.x)
+	print(f"T {343.0 + 4.0 * found.x[0]:.1f} K, S {1.60 + 0.2 * found.x[1]:.2f} g/L: "
+	      f"profit {fit_profit.predict(led)[0]:.1f}, purity {fit_purity.predict(led)[0]:.1f}")
+	# T 342.9 K, S 1.61 g/L: profit 737.8, purity 90.0
+
+With profit as the principal response and purity held at 90% or more, the answer is
+:math:`T` = 342.9 K and :math:`S` = 1.61 g/L, with a fitted profit of $738 per day. The fitted
+purity sits exactly on its limit. This is typical of the approach: when the responses conflict,
+the principal response is pushed until a constraint stops it, so the chosen setting has no margin
+on that constraint. The desirability optimum, by comparison, gave up about $6 per day of profit
+for a purity of 93.5%, three points inside the specification.
+
 .. _DOE-uncertainty-at-the-optimum:
 
 How well is the optimum known?
@@ -417,10 +453,10 @@ As with any response surface result, the optimum is a prediction and the
 :ref:`next step is to run it <DOE-general-approach>`. A confirmation run at the chosen
 settings, compared against these intervals, is what turns the prediction into a result.
 
-Comparing the three approaches
+Comparing the four approaches
 ------------------------------------------------------
 
-Three ways of handling several responses have now appeared in this chapter.
+Four ways of handling several responses have now appeared in this chapter.
 
 .. tabularcolumns:: |p{0.22\textwidth}|p{0.36\textwidth}|p{0.36\textwidth}|
 
@@ -437,19 +473,25 @@ Three ways of handling several responses have now appeared in this chapter.
 | Desirability           | A ramp for each response, and an      | A single setting, and a surface that  |
 |                        | importance for each                   | ranks every point in the region       |
 +------------------------+---------------------------------------+---------------------------------------+
+| Principal response     | A choice of which response leads, and | A single setting, usually on the      |
+| with constraints       | a limit for each of the others        | boundary of one constraint            |
++------------------------+---------------------------------------+---------------------------------------+
 
-The three differ in where the judgement is placed rather than in how much of it is required.
+The four differ in where the judgement is placed rather than in how much of it is required.
 Combining into one response puts the judgement in the cost model, before any data are seen.
 The sweet spot puts it in the specification limits, and then stops, leaving the final choice
 within the region to the operator. Desirability puts it in the ramps and importances, and
-carries it through to a single recommended setting.
+carries it through to a single recommended setting. A principal response with constraints
+puts it in the choice of which response leads.
 
 Which fits depends on what is available and on what is wanted. When the costs are genuinely
 known, combining into one response uses that knowledge and keeps the analysis simple. When
 the requirements are contractual limits rather than values to be traded, the sweet spot
 matches the question being asked. When a single recommendation is needed and the relative
 priorities can be stated, desirability provides one, at the cost of making those priorities
-explicit and, as shown above, of an answer that moves when they change.
+explicit and, as shown above, of an answer that moves when they change. When one response
+clearly matters most and the others only need to stay within limits, optimizing the principal
+response under those limits matches that ranking, with the setting usually at the edge of one limit.
 
 Nothing prevents using more than one. Drawing the sweet spot before running the optimizer
 costs one plot and shows whether a compromise exists at all, which is worth knowing before
@@ -472,8 +514,8 @@ interpreting any single recommended setting.
 .. rubric:: Summary
 
 #.	Several responses can be handled by folding them into one number, by finding the region
-	where all of them meet specification, or by grading each one and optimizing the combined
-	grade. Each moves the judgement to a different place; none removes it.
+	where all of them meet specification, by grading each one and optimizing the combined
+	grade, or by optimizing one principal response with the others as constraints. Each moves the judgement to a different place; none removes it.
 
 #.	The sweet spot is the set of settings meeting every specification at once. It ranks
 	nothing inside it, and it can be empty, which is a useful finding rather than a failure.
