@@ -33,7 +33,11 @@ concurrency:
 jobs:
   buttons:
     name: Every button in Chromium, ${{ matrix.pyodide }} Pyodide
-    runs-on: ubuntu-latest
+    # Pinned, not ubuntu-latest: Playwright 1.56.1 refuses to install Chromium on
+    # ubuntu 26.04 ("Playwright does not support chromium on ubuntu26.04-x64"), which
+    # ubuntu-latest resolved to from 2026-10-23 here. Move this forward together with
+    # the Playwright pin below.
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     continue-on-error: ${{ matrix.pyodide == 'newest' }}
     strategy:
