@@ -105,16 +105,12 @@ meaningless (an indicator equals its own square). The library builds the right m
 when the factor is declared categorical: the continuous factors get their quadratic terms, the
 compound enters as a main effect plus its interactions, and no square is attempted on the compound.
 The whole design is one call to ``generate_design`` with ``design_type="i_optimal"``, a run
-``budget``, the ``hard_to_change`` factors, ``model_type="quadratic"`` and ``backend="pyoptex"``.
+``budget``, the ``hard_to_change`` factors and ``model_type="quadratic"``.
 
-The worked example uses ``process_improve`` (``pip install process-improve``);
-``backend="pyoptex"`` asks it for the coordinate-exchange optimiser in ``pyoptex``, installed
-separately with ``pip install pyoptex``. Without that argument, ``process_improve`` builds the
-split-plot design with its own coordinate exchange, which returns a different design from the same
-seed. Every block on this page builds on the design that first call returns, so the whole page
-needs that separate install.
-
-.. code-check-file: requires pyoptex -- the I-optimal design every later block builds on
+The worked example uses ``process_improve`` (``pip install process-improve``). Its coordinate
+exchange builds the split-plot design directly: it sets the hard-to-change factors once per whole
+plot, and chooses the runs allowing for the runs of one whole plot sharing an error, taken to have
+half the variance of the run-to-run error.
 
 .. code-block:: python
 
@@ -138,16 +134,15 @@ needs that separate install.
     # random_state seeds the coordinate exchange's random restarts
     design = generate_design(factors, design_type="i_optimal", budget=60,
                              hard_to_change=["co_solvent", "temperature"],
-                             model_type="quadratic", backend="pyoptex",
-                             random_state=42)
+                             model_type="quadratic", random_state=42)
 
     print(design.n_runs)  # 60
-    print(design.design["compound"].value_counts())  # 9 to 11 runs per compound
+    print(design.design["compound"].value_counts())  # 10 runs per compound
 
     order = design.design.sort_values("RunOrder").reset_index(drop=True)
     changes = {n: int((order[n].diff().iloc[1:] != 0).sum()) for n in cont}
     print(changes)  # level changes across the sixty runs
-    # {'concentration': 45, 'co_solvent': 11, 'pH': 50, 'temperature': 14}
+    # {'concentration': 44, 'co_solvent': 16, 'pH': 42, 'temperature': 14}
     x = np.arange(len(order))
     fig = go.Figure()
     for name in ["co_solvent", "temperature", "concentration", "pH"]:
@@ -155,7 +150,7 @@ needs that separate install.
     fig.update_layout(xaxis_title="run order", yaxis_title="coded level")
     fig.show()
 
-The sixty runs spread evenly across the six compounds, nine to eleven per compound, and the
+The sixty runs spread evenly across the six compounds, ten per compound, and the
 continuous factors fill the coded range. The run order shows the split-plot structure directly. The
 hard-to-change factors hold their level over blocks of consecutive runs, the whole plots, exactly the
 grouping a split-plot is meant to produce.
@@ -166,8 +161,8 @@ grouping a split-plot is meant to produce.
     :alt: colour-split-plot-run-order.py
 
     The split-plot run order. The two hard-to-change factors (top) hold their level over blocks of
-    runs, changing 11 and 14 times across the sixty runs; the two easy-to-change factors (bottom)
-    are reset almost every run, changing 45 and 50 times.
+    runs, changing 16 and 14 times across the sixty runs; the two easy-to-change factors (bottom)
+    are reset at most runs, changing 44 and 42 times.
 
 Judging the design before running it
 -------------------------------------
@@ -197,8 +192,7 @@ with :math:`p` model terms, :math:`N` runs and :math:`v_\text{max}` the largest 
     def score(criterion, budget):
         d = generate_design(factors, design_type=criterion, budget=budget,
                             hard_to_change=["co_solvent", "temperature"],
-                            model_type="quadratic", backend="pyoptex",
-                            random_state=42)
+                            model_type="quadratic", random_state=42)
         m = evaluate_design(d, model="quadratic",
                             metric=["d_efficiency", "average_prediction_variance",
                                     "g_efficiency", "fds"])
@@ -213,10 +207,10 @@ with :math:`p` model terms, :math:`N` runs and :math:`v_\text{max}` the largest 
             print(f"{criterion}, {budget}, {m['d_efficiency']:.1f}, "
                   f"{m['average_prediction_variance']:.3g}, {m['g_efficiency']:.1f}, "
                   f"{q['0.5']:.2f}, {q['1']:.2f}")
-            # i_optimal, 60, 23.7, 0.428, 38.5, 0.40, 1.73
-            # i_optimal, 48, 22.3, 0.602, 31.5, 0.56, 2.65
-            # d_optimal, 60, 28.0, 0.599, 63.5, 0.61, 1.05
-            # d_optimal, 48, 25.9, 1.11, 31.1, 1.10, 2.68
+            # i_optimal, 60, 24.1, 0.41, 40.5, 0.39, 1.65
+            # i_optimal, 48, 22.1, 0.621, 23.6, 0.57, 3.52
+            # d_optimal, 60, 27.7, 0.555, 66.5, 0.55, 1.00
+            # d_optimal, 48, 26.2, 1.09, 27.1, 1.06, 3.08
             fig.add_scatter(x=[float(k) for k in q], y=list(q.values()),
                             mode="lines+markers",
                             line=dict(color=colour, dash=dash, width=width),
@@ -242,29 +236,29 @@ design has the lower average prediction variance.
         - :math:`\downarrow` FDS median
         - :math:`\downarrow` FDS max
     *   - I-optimal, n = 60
-        - 23.7
-        - 0.428
-        - 38.5
-        - 0.40
-        - 1.73
+        - 24.1
+        - 0.410
+        - 40.5
+        - 0.39
+        - 1.65
     *   - I-optimal, n = 48
-        - 22.3
-        - 0.602
-        - 31.5
-        - 0.56
-        - 2.65
+        - 22.1
+        - 0.621
+        - 23.6
+        - 0.57
+        - 3.52
     *   - D-optimal, n = 60
-        - 28.0
-        - 0.599
-        - 63.5
-        - 0.61
-        - 1.05
+        - 27.7
+        - 0.555
+        - 66.5
+        - 0.55
+        - 1.00
     *   - D-optimal, n = 48
-        - 25.9
-        - 1.11
-        - 31.1
-        - 1.10
-        - 2.68
+        - 26.2
+        - 1.09
+        - 27.1
+        - 1.06
+        - 3.08
 
 .. figure:: ../figures/doe/colour-fds-curves.png
     :align: center
