@@ -21,7 +21,7 @@ There are some other advantages of using and interpreting a PLS model built from
 
 	*	If *additional data* (not the main factors) are captured during the experiments, particularly measurable disturbances, then these additional columns can, and should, be included in |X|. These extra data are called covariates in other software packages. These additional columns will remove some of the orthogonality in |X|, but this is why a PLS model would be more suitable.
 
-	*	If multiple |Y| measurements were recored as the response, and particularly if these |Y| variables are correlated, then a PLS model would be better suited than building |K| separate MLR models. A good example is where the response variable from the experiment is a complete spectrum of measurements, such as from a NIR probe.
+	*	If multiple |Y| measurements were recorded as the response, and particularly if these |Y| variables are correlated, then a PLS model would be better suited than building |M| separate MLR models. A good example is where the response variable from the experiment is a complete spectrum of measurements, such as from a NIR probe.
 
 One other point to note when analyzing DOE data with PLS is that the |Q2| values from cross-validation are often very small. This makes intuitive sense: if the factorial levels are suitably spaced, then each experiment is at a point in the process that provides new information. It is unlikely that cross-validation, when leaving out one or more experiments, is able to accurately predict each corner in the factorial.
 
