@@ -10,7 +10,7 @@ Exercises
 
 .. admonition:: Solution
 
-	This question is likely to generate a wide range of answers. No surprise, since there are strong feelings on this point in the `quality control literature <http://filebox.vt.edu/users/bwoodall/2000%20JQT%20Controversies%20and%20Contradictions.pdf>`_ as well. The confusion stems from the fact that if you are in phase 1, then no, a monitoring chart is not a confidence interval, but in phase 2, then you can argue that confidence intervals have many similarities to monitoring charts.
+	This question is likely to generate a wide range of answers. No surprise, since there are strong feelings on this point in the `quality control literature <https://doi.org/10.1080/00224065.2000.11980013>`_ as well. The confusion stems from the fact that if you are in phase 1, then no, a monitoring chart is not a confidence interval, but in phase 2, then you can argue that confidence intervals have many similarities to monitoring charts.
 
 	But, in general, I feel the above statement is incorrect. Even in phase 2 a monitoring chart is not really like an on-line confidence interval. Mainly because a monitoring chart is intended to check for *system stability*, and to alarm quickly if the system moves away from the assumed distribution (usually a normal distribution). The monitoring limits are calculated to provide the required alarm level (the ARL). A confidence interval, on the other hand, defines the limits within which we expect to find the true population mean with a certain degree of confidence when we use a given sample of data.
 

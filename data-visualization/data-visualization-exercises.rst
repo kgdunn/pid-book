@@ -109,7 +109,7 @@ Exercises
 
 .. admonition:: Question
 
-	This figure is a screenshot from a `Toronto Star article <http://www.yourhome.ca/homes/realestate/article/742160--mortgage-rate-roulette>`_ about mortgage payments as a function of the interest rate. Redraw the same information in a more suitable form.
+	This figure is a screenshot from a Toronto Star article, *Mortgage rate roulette*, about mortgage payments as a function of the interest rate. Redraw the same information in a more suitable form.
 
 	.. image:: ../figures/visualization/Toronto-Star-Mortgage-Rates.png
 		:align: center
