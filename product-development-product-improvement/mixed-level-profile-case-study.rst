@@ -107,7 +107,7 @@ compound enters as a main effect plus its interactions, and no square is attempt
 The whole design is one call to ``generate_design`` with ``design_type="i_optimal"``, a run
 ``budget``, the ``hard_to_change`` factors, ``model_type="quadratic"`` and ``backend="pyoptex"``.
 
-The worked example uses ``process_improve`` (``pip install 'process-improve[expt]'``);
+The worked example uses ``process_improve`` (``pip install process-improve``);
 ``backend="pyoptex"`` asks it for the coordinate-exchange optimiser in ``pyoptex``, installed
 separately with ``pip install pyoptex``. Without that argument, ``process_improve`` builds the
 split-plot design with its own coordinate exchange, which returns a different design from the same

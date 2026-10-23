@@ -18,7 +18,6 @@ const PYODIDE_URL = `https://cdn.jsdelivr.net/pyodide/v${VERSION}/full/`;
 // newer than the Pyodide distribution, and the ones Pyodide has are enough.
 const MICROPIP = {
   plotly: ["plotly"],
-  pyDOE3: ["pyDOE3"],
   openpyxl: ["openpyxl"],
   tqdm: ["tqdm"],
   seaborn: ["seaborn"],
@@ -178,7 +177,7 @@ async function installFor(pyodide, source) {
     installed.add(name);
     if (name === "process_improve") {
       await pyodide.loadPackage(PROCESS_IMPROVE_DEPS);
-      extra.push(["tqdm", "pyDOE3", "openpyxl", "plotly"]);
+      extra.push(["tqdm", "openpyxl", "plotly"]);
       self.postMessage({ status: "Installing process-improve..." });
       // callKwargs: a plain call would pass {deps: false} positionally, as keep_going.
       await pyodide.pyimport("micropip").install.callKwargs("process-improve", { deps: false });
