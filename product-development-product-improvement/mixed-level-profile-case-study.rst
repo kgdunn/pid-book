@@ -107,7 +107,7 @@ compound enters as a main effect plus its interactions, and no square is attempt
 The whole design is one call to ``generate_design`` with ``design_type="i_optimal"``, a run
 ``budget``, the ``hard_to_change`` factors, and ``model_type="quadratic"``.
 
-The worked example uses ``process_improve`` (``pip install 'process-improve[expt]'``); the
+The worked example uses ``process_improve`` (``pip install process-improve``); the
 coordinate-exchange optimiser it calls for the I-optimal and split-plot construction is ``pyoptex``,
 installed separately with ``pip install pyoptex``. Every block on this page builds on the design
 that first call returns, so the whole page needs that separate install.

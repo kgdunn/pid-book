@@ -81,7 +81,7 @@ setup:		## Bootstrap the toolchain: install uv, create .venv, sync deps from pyp
 CHECK_WITH ?= process-improve[all]
 # CHECK_ALSO adds one more distribution to the environment. The mixed-level case
 # study needs pyoptex, which cannot share an environment with the [all] extra, so
-# that page is checked separately with CHECK_WITH='process-improve[expt]'
+# that page is checked separately with CHECK_WITH=process-improve
 # CHECK_ALSO=pyoptex, which is exactly what the chapter tells the reader to install.
 CHECK_ALSO ?=
 CHECK_RUN   = uv run --with '$(CHECK_WITH)' $(if $(CHECK_ALSO),--with '$(CHECK_ALSO)',) \
