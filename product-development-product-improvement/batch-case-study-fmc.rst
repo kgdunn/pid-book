@@ -985,7 +985,7 @@ columns and the nine operating ones.
 	# [0.369, 0.47]
 	# R2 of each block after two components
 	print(mb.r2_x_per_block_cumulative_.iloc[:, -1].round(3).to_dict())
-	# {'Zchem': 0.234, 'Zop': 0.304, 'X': 0.258}
+	# {'Zchem': 0.234, 'Zop': 0.304, 'X': 0.259}
 	print(mb.super_vip_.round(2).to_dict())                     # super VIP per block
 	# {'Zchem': 0.86, 'Zop': 1.07, 'X': 1.06}
 	super_t = mb.super_scores_
@@ -1027,7 +1027,7 @@ columns and the nine operating ones.
 The combined model explains 47.0% of the quality block after two components, against 41.0%
 for the trajectories alone and 36.4% for the chemistry and operating conditions together. The
 components describe 23.4% of the chemistry block, 30.4% of the operating-condition block
-and 25.8% of the trajectory block.
+and 25.9% of the trajectory block.
 
 Every one of the six batches classed high in residual solvent is fitted below the line, by
 0.47 on average in an attribute spanning 1.26 across the batches. A model that describes
