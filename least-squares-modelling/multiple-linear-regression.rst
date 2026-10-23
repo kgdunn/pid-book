@@ -216,9 +216,9 @@ names instead of a single one.
 	full_model = OLS()
 	full_model.fit(X=X_build_MLR, y=y_build)
 
-	# Residuals on the building data:
-	predict_MLR_build = full_model.predict(X_build_MLR)
-	errors_MLR_build = y_build - predict_MLR_build
+	# Residuals (actual - predicted) on the building
+	# data are stored in the fitted model:
+	errors_MLR_build = full_model.residuals_
 	avg_absolute_error_MLR_build = (
 	    pd.Series(errors_MLR_build).abs().mean()
 	)
@@ -327,11 +327,8 @@ useless term can absorb. The 14 runs of the `bioreactor yields
 	    X_bio = np.hstack([X_real, noise[:, :extra]])
 	    model = OLS().fit(X_bio, y_bio)
 	    r2 = model.score(X_bio, y_bio)
-	    k = X_bio.shape[1] + 1  # parameters, incl. intercept
-	    r2_adj = 1 - (1 - r2) * (n_bio - 1) / (n_bio - k)
 	    print(f"{extra} noise columns: R2 = {r2:.3f}, "
-	          f"adjusted R2 = {r2_adj:.3f}")
-
+	          f"adjusted R2 = {model.adj_r2_:.3f}")
 	# 0 noise columns: R2 = 0.866, adjusted R2 = 0.826
 	# 1 noise columns: R2 = 0.875, adjusted R2 = 0.819
 	# 2 noise columns: R2 = 0.885, adjusted R2 = 0.813
