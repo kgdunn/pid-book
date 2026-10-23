@@ -25,7 +25,9 @@ a worked example on the same mineral flotation cell mentioned in
 :ref:`an earlier chapter <SECTION-process-monitoring>`, where we build a
 Shewhart chart on a single variable, then a
 multivariate-statistical-process-control (MSPC) chart on all five
-variables, and compare what each one detects.
+variables, and compare what each one detects. The
+:ref:`closing section <APPS_multivariate_monitoring_literature>` then places the example among
+published case studies on larger processes.
 
 .. _LVM_monitoring:
 
