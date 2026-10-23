@@ -163,6 +163,8 @@ So we will choose to increase :math:`\Delta x_T = 1` coded unit, which means:
 *	:math:`T_5 = T_\text{baseline} + \Delta x_{T,\text{actual}} = 325 + 5 = 330` K
 *	:math:`S_5 = S_\text{baseline} + \Delta x_{S,\text{actual}} = 0.75 + 0.61 = 1.36` g/L
 
+So when we run the next experiment at these conditions. The daily profit is :math:`y_5 =` $ 669, improving quite substantially from the  baseline case.
+
 .. _DOE-RSM-coding-and-path:
 
 The path of steepest ascent is steepest only in the coded units chosen, and different factor
@@ -179,8 +181,6 @@ so doubling the substrate half-range, with the temperature half-range unchanged,
 path four times steeper in substrate concentration. Neither path is wrong: each is the direction of
 fastest increase for one way of measuring distance in the factor space. The ranges therefore carry
 the experimenter's judgement of what a comparable change in each factor is.
-
-So when we run the next experiment at these conditions. The daily profit is :math:`y_5 =` $ 669, improving quite substantially from the  baseline case.
 
 We decide to make another move, in the same direction of steepest ascent, i.e. along the vector that points in the :math:`\frac{134}{55}` direction. We  move the temperature up 5K, although we could have used a larger or smaller step size if we wanted:
 
@@ -379,12 +379,13 @@ curvature along that direction:
 	      f"profit {top['predicted_response']:.0f}; inside the design: {top['inside_design_space']}")
 	# T 343.1 K, S 1.61 g/L, profit 736; inside the design: False
 
-The profit surface is a maximum, at the setting read off the contours by eye. The eigenvector of
-the larger eigenvalue, :math:`-12.3`, points almost along substrate concentration, and that of the
-smaller one, :math:`-4.0`, almost along temperature: profit falls about three times faster when
-substrate moves away from its best value than when temperature does, so the best temperature is
-the less precisely located of the two. The stationary point also lies outside the region the
-design covers, so it is an extrapolation, and a confirmation run there is what tests it.
+The profit surface is a maximum, at the setting read off the contours by eye. The eigenvector of the
+eigenvalue larger in size, :math:`-12.3`, points almost along substrate concentration, and that of
+the smaller one, :math:`-4.0`, almost along temperature. For the same move in coded units, profit
+therefore falls about three times faster when substrate moves away from its best value than when
+temperature does, so the best temperature is the less precisely located of the two. The stationary
+point also lies outside the region the design covers, so it is an extrapolation, and a confirmation
+run there is what tests it.
 
 A ridge takes one of two forms. On a *stationary ridge* the response is level along the ridge, so
 a line (or, with more factors, a plane) of settings gives almost the same best response, and the
@@ -398,10 +399,10 @@ is a stationary ridge. ``optimize_responses`` returns this form as ``b_canonical
 ``flat_tolerance`` argument sets how small an eigenvalue must be, relative to the largest, to be
 read as zero.
 
-A ridge can also point to a better variable. A ridge that is straight in coded units often curves
-in real units, for example along a line of constant product of two factors, such as temperature
-and time. The process may then respond to that product, a compound variable, rather than to the
-two factors separately, and a model in the compound variable needs one factor fewer.
+A ridge can also point to a better variable. If the settings along a ridge keep the product of two
+factors, such as temperature and time, roughly constant, the process may respond to that product, a
+compound variable, rather than to the two factors separately. A model in the compound variable
+then needs one factor fewer.
 
 .. _DOE-RSM-orthogonal-blocking:
 
@@ -505,9 +506,9 @@ more distinct design points than parameters (to leave some :math:`\text{df}_\tex
 The lack-of-fit test pools every direction into one number, so it does not say along which axis a
 quadratic fails. A composite design can say this, because it measures each factor's slope twice:
 from the factor's two axial runs, and from the factorial runs. Under a second-order model the two
-slopes agree, so their difference, the *third-order contrast*, estimates the third-order terms
-along that axis. A contrast several standard errors from zero locates the axis where the quadratic
-fails.
+slopes agree, so their difference, the *third-order contrast*, estimates a combination of the
+third-order terms that involve that factor. A contrast several standard errors from zero locates the
+axis where the quadratic fails.
 
 .. code-block:: python
 

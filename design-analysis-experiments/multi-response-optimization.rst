@@ -420,8 +420,8 @@ With profit as the principal response and purity held at 90% or more, the answer
 :math:`T` = 342.9 K and :math:`S` = 1.61 g/L, with a fitted profit of $738 per day. The fitted
 purity sits exactly on its limit. This is typical of the approach: when the responses conflict,
 the principal response is pushed until a constraint stops it, so the chosen setting has no margin
-on that constraint. The desirability optimum, by comparison, gave up about $6 per day of profit
-for a purity of 93.5%, three points inside the specification.
+on that constraint. The desirability optimum, by comparison, gave up $5.5 per day of profit for a
+fitted purity of 93.5%, 3.5 points above the 90% limit.
 
 .. _DOE-uncertainty-at-the-optimum:
 
@@ -515,7 +515,8 @@ interpreting any single recommended setting.
 
 #.	Several responses can be handled by folding them into one number, by finding the region
 	where all of them meet specification, by grading each one and optimizing the combined
-	grade, or by optimizing one principal response with the others as constraints. Each moves the judgement to a different place; none removes it.
+	grade, or by optimizing one principal response with the others as constraints. Each moves
+	the judgement to a different place; none removes it.
 
 #.	The sweet spot is the set of settings meeting every specification at once. It ranks
 	nothing inside it, and it can be empty, which is a useful finding rather than a failure.
