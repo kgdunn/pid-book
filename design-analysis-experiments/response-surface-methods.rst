@@ -589,6 +589,28 @@ takes up in the :ref:`two-block analysis <DOE-RSM-orthogonal-blocking>` carries 
 Checking the axes needs a standard deviation that does not come from the fitted model, such as one
 from replicated centre runs.
 
+**When the quadratic does not fit: transforming the response or a factor**
+
+A surface that a quadratic describes poorly in :math:`y` may be described well after a
+transformation of the response or of a factor. The *Box-Cox transformation* uses the powers
+:math:`y^\lambda` of the :ref:`section on model linearity <LS-model-linearity>`, written as
+:math:`(y^\lambda - 1)/\lambda` so that :math:`\lambda = 0` gives :math:`\ln y`, and chooses
+:math:`\lambda` by maximum likelihood for the model being fitted. When the factors act
+multiplicatively, :math:`y = f_1(x_1)\, f_2(x_2)`, the interaction in :math:`y` disappears in
+:math:`\ln y = \ln f_1(x_1) + \ln f_2(x_2)`, so the model needs fewer terms.
+
+The *Box-Tidwell method* transforms a factor instead: it estimates the power :math:`\alpha` for
+which the response is closest to a straight line in :math:`x^\alpha`, with :math:`x` in its own
+positive units, not coded ones. In ``process_improve``,
+``analyze_experiment(..., transform="box_cox")`` fits the model to the transformed response and
+reports :math:`\lambda` as ``box_cox_lambda`` in its ``model_summary``, and
+``process_improve.regression.box_tidwell`` estimates the power of a factor.
+
+Both transformations are monotonic: each keeps or reverses the order of the values it transforms.
+A maximum inside the region therefore remains a maximum after either one, and the model still
+needs curvature terms to locate it. What they can remove is curvature or interaction that comes
+from the scale on which the response or the factor is measured.
+
 .. _DOE-box-behnken-designs:
 
 Box-Behnken designs
