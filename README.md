@@ -9,6 +9,7 @@ Written by Kevin G. Dunn, and taught and refined in university and industry cour
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20284934.svg)](https://doi.org/10.5281/zenodo.20284934)
 [![Read online](https://img.shields.io/badge/read-learnche.org%2Fpid-blue.svg)](https://learnche.org/pid)
 [![Download PDF](https://img.shields.io/badge/download-PDF-red.svg)](https://learnche.org/pid/PID.pdf)
+[![Open Textbook Library](https://img.shields.io/badge/listed-Open%20Textbook%20Library-green.svg)](https://open.umn.edu/opentextbooks/textbooks/process-improvement-using-data)
 [![Build status](https://img.shields.io/github/actions/workflow/status/kgdunn/pid-book/build-deploy.yml?branch=main&label=build)](https://github.com/kgdunn/pid-book/actions/workflows/build-deploy.yml)
 [![Last commit](https://img.shields.io/github/last-commit/kgdunn/pid-book.svg)](https://github.com/kgdunn/pid-book/commits)
 [![Issues](https://img.shields.io/github/issues/kgdunn/pid-book.svg)](https://github.com/kgdunn/pid-book/issues)
