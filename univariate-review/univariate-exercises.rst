@@ -1335,13 +1335,13 @@ Exercises
 			\begin{array}{rcccl}
 				-c_t &\leq& z	&\leq & +c_t \\
 				\overline{w} - c_t \sqrt{\frac{s^2}{n}}      &\leq& \mu_w       &\leq &  \overline{w} + c_t \sqrt{\frac{s^2}{n}}\\
-				1 - 2.78 \sqrt{\frac{0.815}{4}}              &\leq& \mu_w       &\leq &  1 + 2.78 \sqrt{\frac{0.815}{4}}\\
+				1 - 2.78 \sqrt{\frac{0.815}{5}}              &\leq& \mu_w       &\leq &  1 + 2.78 \sqrt{\frac{0.815}{5}}\\
 				-0.12                                        &\leq& \mu_w       &\leq &  2.12
 			\end{array}
 
 		The interpretation is that the true difference in slump, :math:`\mu_w`, when accounting for variation from the cement raw material, is again not statistically significant, at the 95% confidence level.
 
-		Practically though, there is a bit of a risk, due to the imbalance (asymmetry) in the confidence interval. It would be reluctant to hinge my company's profitability on this result, especially with the fact that there are only 4 experiments.  So my personal conclusion would be to still "send the polymer engineers back to the lab".
+		Practically though, there is a bit of a risk, due to the imbalance (asymmetry) in the confidence interval. It would be reluctant to hinge my company's profitability on this result, especially with the fact that there are only 5 pairs.  So my personal conclusion would be to still "send the polymer engineers back to the lab".
 
 .. admonition:: Question
 
