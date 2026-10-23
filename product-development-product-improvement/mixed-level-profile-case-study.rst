@@ -716,9 +716,9 @@ a single number:
 
     pls_int = PLS(n_components=5, scale=True).fit(X_int, curves)
     print(", ".join(f"{v:.2f}" for v in pls_int.r2_cumulative_))
-    # 0.69, 0.85, 0.87, 0.88, 0.90
+    # 0.78, 0.86, 0.88, 0.90, 0.90
 
-Fitted to the full curve, the interaction model's cumulative :math:`R^2_Y` rises from 0.69 at one
+Fitted to the full curve, the interaction model's cumulative :math:`R^2_Y` rises from 0.78 at one
 component to 0.90 at five, above the main-effects model's 0.81, because the compound-specific slopes on
 co-solvent, pH and temperature, the interactions the analysis of variance found significant, are now in
 the factor block. PLS fits these terms to all ten time points at once, returning a predicted
@@ -739,7 +739,7 @@ each number of components:
         cv = fitted.cross_validate(X_int, curves, cv="loo")
         q2.append(float(cv["q_squared"].mean()))
     print(np.round(q2, 2))
-    # [0.45 0.77 0.78 0.77 0.79]
+    # [0.56 0.77 0.8  0.76 0.77]
 
 .. list-table:: In-sample :math:`R^2_Y` and leave-one-out :math:`Q^2_Y` by component
     :widths: 22 26 26
@@ -749,20 +749,20 @@ each number of components:
         - :math:`R^2_Y` (cumulative)
         - :math:`Q^2_Y` (leave-one-out)
     *   - 1
-        - 0.69
-        - 0.45
+        - 0.78
+        - 0.56
     *   - 2
-        - 0.85
+        - 0.86
         - 0.77
     *   - 3
-        - 0.87
-        - 0.78
-    *   - 4
         - 0.88
-        - 0.77
+        - 0.80
+    *   - 4
+        - 0.90
+        - 0.76
     *   - 5
         - 0.90
-        - 0.79
+        - 0.77
 
 :math:`R^2_Y` rises with every component, as it must: each component can only reduce the residual on
 the data the model is fitted to. The :math:`Q^2_Y` here should be read with caution, because this is
@@ -773,11 +773,11 @@ the design as much as any fault in the model. Where a design has replicate runs 
 cross-validating over those replicates is informative, though still to be read with care; with no
 replicates, as here, a modest :math:`Q^2_Y` is expected.
 
-Read with that caution, the table still shows :math:`R^2_Y` rising with every added component while
-:math:`Q^2_Y` changes little beyond the second: the later components raise the in-sample fit without
+Read with that caution, the table still shows :math:`R^2_Y` rising to 0.90 while :math:`Q^2_Y`
+changes little beyond the second component: the later components raise the in-sample fit without
 improving prediction for held-out runs. Three components are kept for the analysis that follows,
 enough to carry the interactions without adding directions the cross-validation does not support. At
-three components the interaction model's :math:`R^2_Y` is 0.87.
+three components the interaction model's :math:`R^2_Y` is 0.88.
 
 Scores and loadings of the interaction model
 --------------------------------------------
@@ -790,11 +790,11 @@ components gives its scores and loadings for the expanded model:
 
     pls_full = PLS(n_components=3, scale=True).fit(X_int, curves)
     print(", ".join(f"{v:.2f}" for v in pls_full.r2_cumulative_))
-    # 0.69, 0.85, 0.87
+    # 0.78, 0.86, 0.88
 
     tscore = np.asarray(pls_full.scores_)  # X scores, one row per run
     print(f"{np.corrcoef(adf['concentration'], tscore[:, 0])[0, 1]:.2f}")  # concentration vs t1
-    # 0.68
+    # 0.72
     wstar = pls_full.direct_weights_  # W*: the 24 model terms
     cw = pls_full.y_weights_  # C: the ten time points
 
@@ -836,7 +836,7 @@ components gives its scores and loadings for the expanded model:
 
 The model keeps three components, the number chosen from the leave-one-out :math:`Q^2_Y` above:
 enough to carry the interactions without adding directions the cross-validation does not support.
-Taken over the ten time points jointly, its :math:`R^2_Y` is 0.87. A single joint number can hide a
+Taken over the ten time points jointly, its :math:`R^2_Y` is 0.88. A single joint number can hide a
 profile that is fitted well in some places and poorly in others, so it is worth reading the fit one
 time point at a time. ``r2y_per_variable_`` gives the in-sample :math:`R^2_Y` per response (its last
 column, at three components), and the leave-one-out :math:`Q^2_Y` per response comes from
@@ -849,9 +849,9 @@ column, at three components), and the leave-one-out :math:`Q^2_Y` per response c
     # leave-one-out Q2Y per point
     q2y = pls_full.cross_validate(X_int, curves, cv="loo")["q_squared"]
     print(pd.DataFrame({"R2Y": np.round(r2y, 2), "Q2Y": np.round(q2y, 2)}))
-    # t0  0.17 -0.16
-    # t1  0.95  0.89
-    # t9  0.91  0.84
+    # t0  0.11 -0.11
+    # t1  0.97  0.90
+    # t9  0.94  0.86
 
 .. list-table:: :math:`R^2_Y` and leave-one-out :math:`Q^2_Y` per time point (three-component model)
     :widths: 26 18 22
@@ -861,40 +861,40 @@ column, at three components), and the leave-one-out :math:`Q^2_Y` per response c
         - :math:`R^2_Y`
         - :math:`Q^2_Y`
     *   - t0
-        - 0.17
-        - -0.16
+        - 0.11
+        - -0.11
     *   - t1
-        - 0.95
-        - 0.89
+        - 0.97
+        - 0.90
     *   - t2
-        - 0.95
+        - 0.97
         - 0.89
     *   - t3
-        - 0.97
-        - 0.92
+        - 0.98
+        - 0.91
     *   - t4
-        - 0.96
+        - 0.98
         - 0.91
     *   - t5
-        - 0.97
-        - 0.91
+        - 0.99
+        - 0.92
     *   - t6
-        - 0.96
-        - 0.90
-    *   - t7
-        - 0.94
-        - 0.88
-    *   - t8
-        - 0.94
-        - 0.87
-    *   - t9
+        - 0.98
         - 0.91
-        - 0.84
+    *   - t7
+        - 0.97
+        - 0.90
+    *   - t8
+        - 0.95
+        - 0.88
+    *   - t9
+        - 0.94
+        - 0.86
 
-From ``t1`` onward every point is explained to between 0.91 and 0.97; only ``t0`` is low, at 0.17. At
+From ``t1`` onward every point is explained to between 0.94 and 0.99; only ``t0`` is low, at 0.11. At
 ``t0`` the colour has barely begun to form, so the absorbance is near zero and mostly measurement
 noise, with little systematic variation for any factor to explain. The developed part of the curve,
-which is what the study is about, is fitted well throughout; the joint 0.87 is held down by that one
+which is what the study is about, is fitted well throughout; the joint 0.88 is held down by that one
 near-zero point.
 
 Colour still marks the compound, so the six compounds are told apart as before. The added encoding
@@ -909,21 +909,26 @@ compound term carries its compound's colour, so a compound and its interaction t
 across the plot; the continuous-factor terms are black and the response points red.
 
 Component 1 is again the amplitude direction, and the encoding shows what drives it. The
-concentration weight sits far out on component 1 with all ten time points, so a run's component-1
-score tracks how high its whole curve rises. The large markers (high concentration) fall to the right
-and the small markers to the left, and the concentration and the first score correlate at 0.68. The
-down triangles (low pH) also lie to the right of the circles on average, because a lower pH raises
-the colour for this chelate. Reading shape and size together, the runs high on component 1 are the
+concentration weight sits far out on component 1 with the time points from ``t1`` onward, so a run's
+component-1 score tracks how high its whole curve rises. The large markers (high concentration) fall
+to the right and the small markers to the left, and the concentration and the first score correlate
+at 0.72. The down triangles (low pH) also lie to the right of the circles on average, because a lower
+pH raises the colour for this chelate. Reading shape and size together, the runs high on component 1 are the
 high-concentration, low-pH runs, which is where the deepest colour is expected.
 
-Component 2 carries 16% of the response variation. The loadings place the concentration, with the
-time points, at its negative end, and the pH, the co-solvent and most of the compound-by-temperature
-and compound-by-pH terms at its positive end, so it carries the compound-specific slopes alongside a
-second share of the amplitude. Two compound-F runs stand apart at the lower left, both at the high
-pH: a large open circle (high concentration, low co-solvent) and, farther left, a small filled circle
-(low concentration, high co-solvent), the run with the largest Hotelling's :math:`T^2` that the
-:ref:`diagnostics section <profile-model-diagnostics>` discusses. A score plot is where such runs show
-up, and the encoding names their settings without a lookup.
+Component 2 carries 8% of the response variation. The loadings place the concentration, with the
+time points, at its negative end, and the pH, the co-solvent and all five compound-by-temperature
+terms at its positive end, so it carries the compound-specific slopes alongside a second share of the
+amplitude.
+
+Four compound-F runs stand apart at the lower left. Their markers differ in shape, size and fill;
+what they share is the high temperature, which the encoding does not show. Under sum coding an F run
+carries :math:`-1` in every compound contrast, so at the high temperature it takes :math:`-1` in all
+five compound-by-temperature columns and lands at the negative end of component 2, a property of the
+coding that the :ref:`coding section <profile-categorical-coding>` returns to. The run with the
+largest Hotelling's :math:`T^2`, which the :ref:`diagnostics section <profile-model-diagnostics>`
+discusses, is also compound F but sits inside the cloud here: most of its leverage lies on the third
+component, which this plot does not show.
 
 .. figure:: ../figures/doe/colour-pls-interaction-scores-loadings.png
     :align: center
