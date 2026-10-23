@@ -31,7 +31,7 @@ Another example: you work in a company that produces tablets. The machine create
 
 		:math:`850000 \times (1-0.97) = 25500` tablets per batch will be defective
 
-	-	You take a random sample of :math:`n` tablets from a large population of :math:`N` tablets. What is the chance that **all** :math:`n` tablets are acceptable if :math:`p` is the Bernoulli population parameter of finding acceptable tablets:
+	-	You take a random sample of :math:`n` tablets from a large population of tablets. What is the chance that **all** :math:`n` tablets are acceptable if :math:`p` is the Bernoulli population parameter of finding acceptable tablets:
 
 		===================== ================== =================
 		Sample size           :math:`p` = 95%    :math:`p` = 97%

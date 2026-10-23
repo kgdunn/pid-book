@@ -6,7 +6,7 @@ Exercises
 
 .. admonition:: Question
 
-	Recall that :math:`\mu = \mathcal{E}(x) = \dfrac{1}{N}\sum{x}` and :math:`\mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} = \sigma^2 = \dfrac{1}{N}\sum{(x-\mu)^2}`.
+	Recall that :math:`\mu = \mathcal{E}(x) = \dfrac{1}{N_\text{pop}}\sum{x}` and :math:`\mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} = \sigma^2 = \dfrac{1}{N_\text{pop}}\sum{(x-\mu)^2}`.
 
 	#. What is the expected value thrown of a fair 6-sided die? (Note: plural of die is dice)
 	#. What is the expected variance of a fair 6-sided die?
@@ -15,8 +15,8 @@ Exercises
 
 	Often the mean and standard deviation of a uniform distribution are not actual values from the distribution, however the definitions for them hold:
 
-	#. :math:`\mu = \mathcal{E}(x) = \dfrac{1}{N}\sum{x} = \dfrac{1}{6}(1+2+3+4+5+6) = \mathbf{3.5}`
-	#. :math:`\mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} =  \dfrac{1}{N}\sum{(1-3.5)^2 + (2-3.5)^2 + (3-3.5)^2 + (4-3.5)^2 + (5-3.5)^2 + (6-3.5)^2} = 17.5/6 = \mathbf{2.92}`
+	#. :math:`\mu = \mathcal{E}(x) = \dfrac{1}{N_\text{pop}}\sum{x} = \dfrac{1}{6}(1+2+3+4+5+6) = \mathbf{3.5}`
+	#. :math:`\mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} =  \dfrac{1}{N_\text{pop}}\sum{(1-3.5)^2 + (2-3.5)^2 + (3-3.5)^2 + (4-3.5)^2 + (5-3.5)^2 + (6-3.5)^2} = 17.5/6 = \mathbf{2.92}`
 
 	If you're feeling adventurous, you can simulate random dice rolls and verify your answers::
 
