@@ -952,8 +952,8 @@ Exercises
 
 	#.	The gentle shake reads higher than the mechanical shake: the 95% confidence interval for
 		the mean difference, :math:`0.83 \leq \mu_w \leq 2.09`, lies entirely above zero, and the
-		difference is positive in all 26 runs. The interval is from the :ref:`paired test <univariate_paired_tests>`, with
-		:math:`c_t` from the :math:`t`-distribution with :math:`n - 1 = 25` degrees of freedom.
+		difference is positive in all 26 runs. The interval is from the
+		:ref:`paired test <univariate_paired_tests>`, with :math:`c_t` from the :math:`t`-distribution with :math:`n - 1 = 25` degrees of freedom.
 
 		.. code-block:: python
 
