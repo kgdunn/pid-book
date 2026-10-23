@@ -332,8 +332,8 @@ factorial-minus-centre difference estimated before the axial runs were made.
 	# [688.0, 12.99, -39.07, -2.25, -4.19, -12.19]
 
 	quad_sum = rsm_fit.params["I(T ** 2)"] + rsm_fit.params["I(S ** 2)"]
-	print(f"{rsm_ccd['profit'][:4].mean() - 688:.2f}, {quad_sum:.2f}")
-	# -17.75, -16.38
+	print(f"{rsm_ccd['profit'][:4].mean() - 688:.2f}, {quad_sum:.3f}")
+	# -17.75, -16.375
 
 The final step in the response surface methodology is to plot this model's contour plot and predict where to run the next few experiments. As the solid contour lines in the illustration show, we should run our next experiments roughly at :math:`T` = 343K and :math:`S` = 1.60 g/L where the expected profit is around $736. We get those two values by eye-balling the solid contour lines, drawn from the above non-linear model. :ref:`Canonical analysis <DOE-RSM-canonical-analysis>`, described below, finds it analytically.
 
@@ -439,8 +439,8 @@ runs in each block it is exactly :math:`\sqrt{2}`, which is also the rotatable d
 
 	rsm_ccd["axial_block"] = [0, 0, 0, 0, 0, 1, 1, 1, 1]   # 1 for the runs made later
 	rsm_blocked = smf.ols("profit ~ T + S + T:S + I(T**2) + I(S**2) + axial_block", data=rsm_ccd).fit()
-	print(rsm_blocked.params.round(2).tolist())
-	# [688.0, 12.99, -39.07, -2.25, -4.88, -12.88, 2.75]
+	print(rsm_blocked.params.round(3).tolist())
+	# [688.0, 12.989, -39.07, -2.25, -4.875, -12.875, 2.75]
 
 	rsm_quartic = smf.ols("profit ~ T + S + T:S + I(T**2) + I(S**2) + I(T**2 * S**2)", data=rsm_ccd).fit()
 	print(f"residual sum of squares: {rsm_blocked.ssr:.3f} with the block term, "
@@ -449,7 +449,7 @@ runs in each block it is exactly :math:`\sqrt{2}`, which is also the rotatable d
 
 The block effect is estimated as $2.75 per day higher for the axial runs. Because the design is not
 orthogonally blocked, adding the block term also moves both quadratic coefficients, from
-:math:`-4.19` to :math:`-4.88` and from :math:`-12.19` to :math:`-12.88`. At the orthogonal
+:math:`-4.19` to :math:`-4.875` and from :math:`-12.19` to :math:`-12.875`. At the orthogonal
 distance the block term would leave them unchanged.
 
 These nine runs cannot tell a block effect apart from lack of fit. With no centre run in the axial
@@ -539,17 +539,17 @@ run-to-run noise that does not depend on the fitted model.
 	# S: 0.36 +/- 1.63
 
 	contrast_ss = sum((c["contrast"] / c["std_error"]) ** 2 for c in checks.values()) * rsm_sigma**2
-	print(f"{contrast_ss:.2f} and {rsm_fit.ssr - rsm_blocked.ssr:.2f} of {rsm_fit.ssr:.2f}")
-	# 0.80 and 15.13 of 15.93
+	print(f"{contrast_ss:.3f} and {rsm_fit.ssr - rsm_blocked.ssr:.3f} of {rsm_fit.ssr:.3f}")
+	# 0.803 and 15.125 of 15.928
 
 The bioreactor design has no replicated runs, so the code takes the standard deviation from the
 residual of the quadratic fit, and with that choice the check cannot flag an axis. Both contrasts
-are part of that residual, so on its 3 degrees of freedom neither could exceed
-:math:`\sqrt{3} \approx 1.7` standard errors, whatever the data. What the numbers do show is where
-the residual lies. Of its 15.93 sum of squares, the two contrasts carry 0.80, and the direction the
-block term takes up in the :ref:`two-block analysis <DOE-RSM-orthogonal-blocking>` carries the other
-15.13. Checking the axes needs a standard deviation that does not come from the fitted model, such
-as one from replicated centre runs.
+are part of that residual, so on its 3 degrees of freedom neither could exceed :math:`\sqrt{3}
+\approx 1.7` standard errors, whatever the data. What the numbers do show is where the residual
+lies. Of its 15.928 sum of squares, the two contrasts carry 0.803, and the direction the block term
+takes up in the :ref:`two-block analysis <DOE-RSM-orthogonal-blocking>` carries the other 15.125.
+Checking the axes needs a standard deviation that does not come from the fitted model, such as one
+from replicated centre runs.
 
 .. _DOE-box-behnken-designs:
 
