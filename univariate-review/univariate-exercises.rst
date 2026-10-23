@@ -971,7 +971,7 @@ Exercises
 
 .. admonition:: Question
 
-	Recall that :math:`\mu = \mathcal{E}(x) = \frac{1}{N}\sum{x}` and :math:`\mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} = \sigma^2 = \frac{1}{N}\sum{(x-\mu)^2}`.
+	Recall that :math:`\mu = \mathcal{E}(x) = \frac{1}{N_\text{pop}}\sum{x}` and :math:`\mathcal{V}\left\{x\right\} = \mathcal{E}\left\{ (x - \mu )^2\right\} = \sigma^2 = \frac{1}{N_\text{pop}}\sum{(x-\mu)^2}`.
 
 		#.	What is the expected value thrown of a fair, 12-sided dice?
 		#.	What is the expected variance of a fair, 12-sided dice?
@@ -992,7 +992,7 @@ Exercises
 	#. Continuing the notation from the above question we can derive the expected variance as,
 
 		.. math::
-			\mathcal{V}(X) = \frac{1}{N}\sum_i^{12}{(x_i - \mu)^2} = \frac{1}{12} \cdot \left[ (1 - 6.5)^2 + (2 - 6.5)^2 + \ldots + (12 - 6.5)^2 \right] \approx \bf{11.9167}
+			\mathcal{V}(X) = \frac{1}{N_\text{pop}}\sum_i^{12}{(x_i - \mu)^2} = \frac{1}{12} \cdot \left[ (1 - 6.5)^2 + (2 - 6.5)^2 + \ldots + (12 - 6.5)^2 \right] \approx \bf{11.9167}
 
 	#.	Simulating 10,000 throws corresponds to 10,000 independent and mutually exclusive random events, each with an outcome between 1 and 12. The sample mean and variance from my sample was calculated using this code in R:
 
