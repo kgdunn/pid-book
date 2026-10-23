@@ -78,7 +78,10 @@ becomes too optimistic. The effect is strongest when there are few variables, wh
 situation in the small example above.
 
 This weakness of the row-wise scheme is the central point of the Bro *et al.* (2008) review cited
-earlier: a prediction must not use the value it is predicting.
+earlier: a prediction must not use the value it is predicting. For the same reason, the
+``process_improve`` package does not offer the row-wise scheme for PCA: it was deprecated in version
+1.84 and removed in 2.0. Its ``select_n_components`` method uses the element-wise k-fold scheme,
+``cv_scheme="ekf"`` (described below), by default.
 
 The remedy is older than the criticism. Wold's own 1978 paper left out individual *elements* of
 :math:`\mathbf{X}`, a scattered group of cells at a time, and estimated each of them as a missing
