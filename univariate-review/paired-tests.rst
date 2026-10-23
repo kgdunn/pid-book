@@ -3,14 +3,14 @@
 Paired tests
 ============
 
-.. Verify this section against other notes.
-
 .. index::
 	single: two treatments
 
 .. youtube:: https://www.youtube.com/watch?v=OI1RD6gPALw&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=17
 
-A :index:`paired test` is a test that is run twice on the same object or batch of materials. You might see the nomenclature of "two treatments" being used in the literature. For example:
+A :index:`paired test` compares two treatments, A and B, that are both applied to the same object or
+batch of materials, so that every result under A has a partner result under B. You might see the
+nomenclature of "two treatments" being used in the literature. For example:
 
 	-	A drug trial could be run in two parts: each person randomly receives a placebo or the drug, then 3 weeks later they receive the opposite, for another 3 weeks. Tests are run at 3 weeks and 6 weeks and the difference in the test result is recorded.
 
@@ -27,7 +27,20 @@ A :index:`paired test` is a test that is run twice on the same object or batch o
 
 In each case we have a table of :math:`n` samples recording the **difference values**. The question now is whether the difference is significant, or is it essentially zero?
 
-The advantage of the paired test is that any :index:`systematic error` in our measurement system, what ever it might be, is removed as long as that error is consistent. Say for example we are measuring blood pressure, and the automated blood pressure device has a bias of -5 mmHg. This systematic error will cancel out when we subtract the 2 test readings. In the example of the raw materials and additives: any variation in the raw materials and its (unintended) effect on the outcome variable of interest will be cancelled.
+How the data were collected decides which test applies. When every result under A has a partner
+under B from the same object, the two groups are not independent, so the assumption behind the
+:ref:`unpaired test of differences <univariate-group-to-group-differences-no-reference-set>` does
+not hold, and the paired test is used. When A and B are applied to separate objects there is
+nothing to pair, and the unpaired test is used.
+
+The advantage of the paired test is that anything that shifts both results in a pair by the same
+amount cancels when we subtract them, even when that shift differs from one pair to the next. Say
+for example the drug trial measures blood pressure: each person's usual blood pressure, and the
+bias (a :index:`systematic error`) of the device used on that person, are in both readings and
+cancel in the difference. In the example of the raw materials and additives, the lot-to-lot
+variation in the raw materials, and its (unintended) effect on the outcome variable, cancels in
+the same way. An unpaired test leaves this object-to-object variation in the pooled variance,
+where it widens the confidence interval.
 
 The disadvantage of the paired test is that we lose degrees of freedom. Let's see how:
 
@@ -37,7 +50,14 @@ The disadvantage of the paired test is that we lose degrees of freedom. Let's se
 
 	#.	Calculate the mean, :math:`\overline{w}` and the standard deviation, :math:`s_w`, of these :math:`n` difference values.
 
-	#.	What do we need to assume about the population from which :math:`w` comes?  Nothing. We are not interested in the :math:`w` values, we are interested in :math:`\overline{w}`. OK, so what distribution would values of :math:`\overline{w}` come from?  By the central limit theorem, the :math:`\overline{w}` values should be normally distributed as :math:`\overline{w} \sim \mathcal{N}\left(\mu_w, \sigma_w^2/n \right)`, where :math:`\mu_w = \mu_{B-A} = \mu_B - \mu_A`.
+	#.	What do we need to assume about the population from which :math:`w` comes? By the central
+		limit theorem, :math:`\overline{w}` is approximately normally distributed as
+		:math:`\overline{w} \sim \mathcal{N}\left(\mu_w, \sigma_w^2/n \right)`, where
+		:math:`\mu_w = \mu_{B-A} = \mu_B - \mu_A`, and the approximation improves as :math:`n` grows.
+		The :math:`t`-distribution used in step 6 further assumes that the :math:`w` values come from
+		a normal distribution, which a :ref:`q-q plot <univariate_check_for_normality_qqplot>` of the
+		:math:`n` differences can check. The raw values, :math:`x_A` and :math:`x_B`, need not be
+		normally distributed.
 
 	#.	Now calculate the :math:`z`-value, but use the sample standard deviation, instead of the population standard deviation.
 
@@ -46,14 +66,28 @@ The disadvantage of the paired test is that we lose degrees of freedom. Let's se
 
 	#.	Because we have used the sample standard deviation, :math:`s_w`, we have to use to the :math:`t`-distribution with :math:`n-1` degrees of freedom, to calculate the critical values.
 
-	#.	We can calculate a confidence interval, below, and if this interval includes zero, then the change from treatment A to treatment B had no effect.
+	#.	We can calculate a confidence interval, below, and if this interval includes zero, then the
+		difference between treatments A and B is not statistically significant at that level of
+		confidence.
 
 		.. math::
 			\overline{w} - c_t \frac{s_w}{\sqrt{n}} < \mu_w < \overline{w} + c_t \frac{s_w}{\sqrt{n}}
 
 		The value of :math:`c_t` is taken from the :math:`t`-distribution with :math:`n-1` degrees of freedom at the level of confidence required: use the ``qt(...)`` function in R to obtain the values of :math:`c_t`.
 
-The :index:`loss of degrees of freedom <single: degrees of freedom; loss of>` can be seen when we use exactly the same data and treat the problem as one where we have :math:`n_A` and :math:`n_B` samples in groups A and B and want to test for a difference between :math:`\mu_A` and :math:`\mu_B`. You are encouraged to try this out. There are more degrees of freedom, :math:`n_A + n_B - 2` in fact when we use the :math:`t`-distribution with the :ref:`pooled variance shown here <univariate_eqn_pooled_variance>`. Compare this to the paired-test case just described above, where there are only :math:`n-1` degrees of freedom.
+The :index:`loss of degrees of freedom <single: degrees of freedom; loss of>` is the cost of
+pairing. The same :math:`2n` measurements, made instead on :math:`2n` separate objects (two
+independent groups of :math:`n_A = n_B = n`) and analysed with the
+:ref:`pooled variance <univariate_eqn_pooled_variance>`, give :math:`n_A + n_B - 2 = 2n - 2`
+degrees of freedom, against :math:`n-1` for the :math:`n` pairs. The fewer degrees of freedom give
+a larger :math:`c_t`, which widens the paired interval. Against that, :math:`s_w` excludes the
+object-to-object variation that cancels within each pair, whereas the pooled variance includes it.
+
+Pairing therefore gives the narrower interval when the variation from one object to the next
+(people, lots, sheets) is large compared with the random variation within an object, which shows
+up as a strong positive correlation between the A and B results across the pairs. When the objects
+are alike, pairing removes little variation, and the larger :math:`c_t` makes the paired interval
+slightly wider than the unpaired one.
 
 .. This example illustrates:
 .. todo:: example showing loss of DOF (boys shoes example in BHH2). particularly, show the plots (p98 on BHH2- edition 1)
