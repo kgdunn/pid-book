@@ -7,26 +7,138 @@ Multivariate image analysis
 	single: multivariate image analysis (MIA)
 	pair: multivariate image analysis; applications
 	single: image unfolding
+	pair: masking; multivariate image analysis
 
-This section just gives a impression how 3-D and higher dimensional data sets are dealt with. Tools such as PCA and PLS work on two-dimensional matrices. When we receive a 3-dimensional array, such as an image, or a batch data set, then we must unfold that array into a (2D) matrix if we want to use PCA and PLS in the usual manner.
+A digital image is a measurement with several variables at every pixel, and once it is arranged
+as a matrix, the latent variable methods of the :ref:`PCA <SECTION_PCA>` and :ref:`PLS
+<SECTION_PLS>` sections apply to it unchanged. A camera above a conveyor, or looking into a flame,
+then becomes a sensor that reports with every new image on what the product or the process looks
+like: its colour, its coating, its defects.
 
-The following illustration shows how we deal with an image, such as the one taken from a colour camera. Imagine we have :math:`I` rows and :math:`J` columns of pixels, on 3 layers (red, green and blue wavelengths). Each entry in this array is an intensity value, a number between 0 and 255. For example, a pure red pixel is has the following 3 intensity values in layer 1, 2 and 3: (255, 0, 0), because layer 1 contains the intensity of the red wavelengths. A pure blue pixel would be (0, 0, 255), while a pure green pixel would be (0, 255, 0) and a pure white pixel is (255, 255, 255). In other words, each pixel is represented as a triplet of 3 intensity values.
+An image as a matrix of pixels by channels
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+An image from a colour camera has :math:`I` rows and :math:`J` columns of pixels, on :math:`K = 3`
+layers, or *channels*: the intensities of red, green and blue light, each a number from 0 to 255
+for an 8-bit camera. An image with several values per pixel is a *multivariate image*, and
+`Geladi, Bengtsson, Esbensen and Grahn (1992)
+<https://literature.learnche.org/item/133/image-analysis-in-chemistry-i-properties-of-images-greylevel-operations-the-multivariate-image>`_
+set out its properties. A hyperspectral camera records a whole spectrum at every pixel, so that
+:math:`K` is a hundred or more.
+
+PCA and PLS work on a two-dimensional matrix, so the three-way image array is unfolded first.
+Each pixel becomes one row and each channel one column, which gives a matrix of :math:`IJ` rows
+and :math:`K` columns, as the figure below shows. A colour image of 768 by 1024 pixels unfolds to a
+matrix of 786,432 rows and 3 columns.
 
 .. image:: ../figures/image/image-unfolding.jpg
-	:alt:	../figures/image/image-unfolding.jpg
+	:alt:	A three-layer colour image unfolded into a matrix with one row per pixel
 	:scale: 55
 	:width: 750px
 	:align: center
 
-In the unfolded matrix we have :math:`IJ` rows and 3 columns. In other words, each pixel in the image is represented in its own row. A digital image with 768 rows and 1024 columns, would therefore be unfolded into a matrix with 786,432 rows and 3 columns. If we perform PCA on this matrix we can calculate score values and SPE values: one per pixel. Those scores can be refolded back into the original shape of the image. It is useful to visualize those scores and SPE values in this way.
+A :ref:`PCA model <SECTION_PCA>` fitted to this matrix, as proposed by `Geladi, Isaksson,
+Lindqvist, Wold and Esbensen (1989)
+<https://literature.learnche.org/item/126/principal-component-analysis-of-multivariate-images>`_,
+gives every pixel a score on each component and an SPE value. Folding a column of scores back into
+the :math:`I \times J` shape of the image gives a *score image*. The figure below shows a board of
+lumber, the score image of its first component, and the residual of each pixel after that
+component. The knots and the split stand out in the score image, while the residual image picks
+out the grain lines, colour variation that the first component does not describe.
 
 .. image:: ../figures/examples/lumber-images/lumber-example-combine.png
-	:alt:	../figures/examples/lumber-images/lumber-example-combine.py
+	:alt:	A lumber board in colour, its first score image, and its residual image
 	:scale: 70
 	:width: 900px
 	:align: center
 
-You can learn more about using PCA on image data in the manual that accompanies the interactive software that is freely available from https://macc.mcmaster.ca/maccmia.php.
+Unfolding discards where each pixel is. PCA treats the pixels as unrelated observations, and the
+spatial arrangement comes back only when the scores are folded into an image again. A model of the
+unfolded image therefore describes the colour, or spectrum, of each pixel, not the shape or
+texture of the regions that the pixels form.
+
+For a hyperspectral image, the same model compresses hundreds of correlated channels into a few
+scores. This reduces the volume of data, which `Burger and Gowen (2011)
+<https://literature.learnche.org/item/132/data-handling-in-hyperspectral-image-analysis>`_
+identify as a main concern when such images are used in real time.
+
+Classes of pixels, selected in the score space
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Pixels of one material, such as clear wood or a knot, have similar colours and so fall close
+together in the score plot of :math:`t_1` against :math:`t_2`, wherever they are in the image.
+With hundreds of thousands of pixels a scatter plot is a solid block of points, so the score space
+is drawn as a two-dimensional histogram instead: the plane is divided into small bins, and each bin
+is shaded by the number of pixels that fall in it.
+
+A *mask* is a region drawn on this density plot. The pixels whose scores fall inside it form one
+class, and highlighting them in the image shows where that class sits in the scene. This strategy,
+of defining pixel classes in the score space and checking them in the image, is set out by
+`Esbensen and Geladi (1989)
+<https://literature.learnche.org/item/137/strategy-of-multivariate-image-analysis-mia>`_. `Liu,
+Bharati, Dunn and MacGregor (2005)
+<https://literature.learnche.org/item/42/automatic-masking-in-multivariate-image-analysis-using-support-vector-machines>`_
+build masks automatically rather than by hand, by treating mask building as a classification
+problem solved with support vector machines. This also gives masks in more than two score
+dimensions, for hyperspectral images.
+
+The number of pixels inside a mask is one number per image, and it can be charted over a sequence
+of images like any other process variable. `Bharati and MacGregor (1998)
+<https://literature.learnche.org/item/19/multivariate-image-analysis-for-real-time-process-monitoring-and-control>`_
+propose this for real-time monitoring, tracking how often features occur in the score space and
+mapping them back to their locations, and demonstrate it on a sequence of satellite images.
+`Bharati, MacGregor and Tropper (2003)
+<https://literature.learnche.org/item/117/softwood-lumber-grading-through-on-line-multivariate-image-analysis-techniques>`_
+grade softwood lumber on-line this way: a camera above the conveyor images each board, masks
+select the pixels of defects such as knots and splits, and a board whose count of defect pixels is
+outside its limits is downgraded.
+
+Features from images, used to predict quality
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For prediction, each image is reduced to a row of features, and a :ref:`PLS model <SECTION_PLS>`
+relates those rows to a quality that is measured in the laboratory. This is a :ref:`soft sensor
+<APPS_soft_sensors>` with a camera in place of the process tags. One choice of features is the
+score-space histogram itself: the count of pixels in each bin, or in each mask, forms the row for
+that image. A quality that the laboratory measures only occasionally can then be predicted from
+every image the camera takes.
+
+Coated snack foods are one application. `Yu and MacGregor (2003)
+<https://literature.learnche.org/item/119/multivariate-image-analysis-and-regression-for-prediction-of-coating-content-and-distribution-in-the-production-of-snack-foods>`_
+extract features from colour images of the product with PCA and PLS, and predict both the average
+coating content and how the coating is distributed among the pieces. `Yu, MacGregor, Haarsma and
+Bourg (2003)
+<https://literature.learnche.org/item/57/digital-imaging-for-online-monitoring-and-control-of-industrial-snack-food-processes>`_
+report the system on industrial production lines, where the predictions are used to monitor
+product quality, to detect and diagnose operational problems, and to control the coating
+concentration in closed loop.
+
+Flames are another, where the colour of the flame is used to infer the state of the combustion.
+`Yu and MacGregor (2004)
+<https://literature.learnche.org/item/118/monitoring-flames-in-an-industrial-boiler-using-multivariate-image-analysis>`_
+predict the performance of an industrial boiler, the NO\ :sub:`x` and SO\ :sub:`2`
+concentrations in its exhaust gas, and the energy content of a waste fuel fed to it, from images
+of its flame. `Szatvanyi, Duchesne and Bartolacci (2005)
+<https://literature.learnche.org/item/141/multivariate-image-analysis-of-flames-for-product-quality-and-combustion-control-in-rotary-kilns>`_
+predict the temperature of the solids leaving a rotary kiln, over a horizon of up to about the
+kiln's mean residence time, from a single image of its flame.
+
+Colour is not always the property of interest. When the quality lies in the spatial arrangement
+of the pixels, such as the roughness of a surface, the features must carry that arrangement.
+`Bharati, Liu and MacGregor (2004)
+<https://literature.learnche.org/item/116/image-texture-analysis-methods-and-comparisons>`_
+compare methods for this *texture analysis* on images of rolled steel sheets, classified into
+quality grades. In their comparison, a PLS classification model fitted directly to the raw images
+performs poorly, while methods that first restore spatial information, for example a
+two-dimensional Fourier transform of each image, perform well. `Liu and MacGregor (2007)
+<https://literature.learnche.org/item/125/on-the-extraction-of-spectral-and-spatial-information-from-images>`_
+combine PCA with a multiresolution (wavelet) decomposition of the image, so that the information
+across channels and the spatial information within each channel are extracted together.
+
+`Prats-Montalbán, De Juan and Ferrer (2011)
+<https://literature.learnche.org/item/127/multivariate-image-analysis-a-review-with-applications>`_
+review these methods, from greyscale to hyperspectral images, and their use in exploratory
+analysis, process monitoring and regression.
 
 References to incorporate
 ~~~~~~~~~~~~~~~~~~~~~~~~~
