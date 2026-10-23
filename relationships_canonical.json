@@ -1,0 +1,146 @@
+[
+  {
+    "source": "two-way ANOVA",
+    "relationship": "IS_VARIANT_OF",
+    "target": "ANOVA",
+    "context": "two-way ANOVA is a variant of ANOVA",
+    "confidence": 1.0,
+    "file": "structural",
+    "line": 0
+  },
+  {
+    "source": "one-way ANOVA",
+    "relationship": "IS_VARIANT_OF",
+    "target": "ANOVA",
+    "context": "one-way ANOVA is a variant of ANOVA",
+    "confidence": 1.0,
+    "file": "structural",
+    "line": 0
+  },
+  {
+    "source": "two-factor ANOVA",
+    "relationship": "IS_VARIANT_OF",
+    "target": "ANOVA",
+    "context": "two-factor ANOVA is a variant of ANOVA",
+    "confidence": 1.0,
+    "file": "structural",
+    "line": 0
+  },
+  {
+    "source": "two-factor interaction",
+    "relationship": "IS_VARIANT_OF",
+    "target": "interaction",
+    "context": "two-factor interaction is a variant of interaction",
+    "confidence": 1.0,
+    "file": "structural",
+    "line": 0
+  },
+  {
+    "source": "three-factor interaction",
+    "relationship": "IS_VARIANT_OF",
+    "target": "interaction",
+    "context": "three-factor interaction is a variant of interaction",
+    "confidence": 1.0,
+    "file": "structural",
+    "line": 0
+  },
+  {
+    "source": "half-fraction design",
+    "relationship": "IS_VARIANT_OF",
+    "target": "fractional factorial design",
+    "context": "half-fraction design is a variant of fractional factorial design",
+    "confidence": 1.0,
+    "file": "structural",
+    "line": 0
+  },
+  {
+    "source": "screening design",
+    "relationship": "IS_VARIANT_OF",
+    "target": "DOE",
+    "context": "screening design is a variant of DOE",
+    "confidence": 1.0,
+    "file": "structural",
+    "line": 0
+  },
+  {
+    "source": "foldover design",
+    "relationship": "IS_VARIANT_OF",
+    "target": "fractional factorial design",
+    "context": "foldover design is a variant of fractional factorial design",
+    "confidence": 1.0,
+    "file": "structural",
+    "line": 0
+  },
+  {
+    "source": "DOE",
+    "relationship": "ABBREVIATION_OF",
+    "target": "design of experiments",
+    "context": "DOE is an abbreviation of design of experiments",
+    "confidence": 1.0,
+    "file": "structural",
+    "line": 0
+  },
+  {
+    "source": "ANOVA",
+    "relationship": "ABBREVIATION_OF",
+    "target": "analysis of variance",
+    "context": "ANOVA is an abbreviation of analysis of variance",
+    "confidence": 1.0,
+    "file": "structural",
+    "line": 0
+  },
+  {
+    "source": "CCD",
+    "relationship": "ABBREVIATION_OF",
+    "target": "central composite design",
+    "context": "CCD is an abbreviation of central composite design",
+    "confidence": 1.0,
+    "file": "structural",
+    "line": 0
+  },
+  {
+    "source": "RSM",
+    "relationship": "ABBREVIATION_OF",
+    "target": "response surface methodology",
+    "context": "RSM is an abbreviation of response surface methodology",
+    "confidence": 1.0,
+    "file": "structural",
+    "line": 0
+  },
+  {
+    "source": "OFAT",
+    "relationship": "ABBREVIATION_OF",
+    "target": "one-variable-at-a-time",
+    "context": "OFAT is an abbreviation of one-variable-at-a-time",
+    "confidence": 1.0,
+    "file": "structural",
+    "line": 0
+  },
+  {
+    "source": "COST",
+    "relationship": "ABBREVIATION_OF",
+    "target": "change one single variable at a time",
+    "context": "COST is an abbreviation of change one single variable at a time",
+    "confidence": 1.0,
+    "file": "structural",
+    "line": 0
+  },
+  {
+    "source": "2FI",
+    "relationship": "ABBREVIATION_OF",
+    "target": "two-factor interaction",
+    "context": "2FI is an abbreviation of two-factor interaction",
+    "confidence": 1.0,
+    "file": "structural",
+    "line": 0
+  },
+  {
+    "source": "3FI",
+    "relationship": "ABBREVIATION_OF",
+    "target": "three-factor interaction",
+    "context": "3FI is an abbreviation of three-factor interaction",
+    "confidence": 1.0,
+    "file": "structural",
+    "line": 0
+  }
+]
