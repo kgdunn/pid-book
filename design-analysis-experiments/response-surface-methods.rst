@@ -606,9 +606,10 @@ positive units, not coded ones. In ``process_improve``,
 reports :math:`\lambda` as ``box_cox_lambda`` in its ``model_summary``, and
 ``process_improve.regression.box_tidwell`` estimates the power of a factor.
 
-Both transformations are monotonic: each keeps or reverses the order of the values it transforms.
-A maximum inside the region therefore remains a maximum after either one, and the model still
-needs curvature terms to locate it. What they can remove is curvature or interaction that comes
+Both transformations are monotonic. The Box-Cox form keeps the order of the responses for every
+:math:`\lambda`, and a power of a factor keeps or reverses the order of its settings. A maximum
+inside the region therefore remains a maximum after either one, and the model still needs
+curvature terms to locate it. What they can remove is curvature or interaction that comes
 from the scale on which the response or the factor is measured.
 
 .. _DOE-box-behnken-designs:
