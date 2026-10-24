@@ -333,7 +333,7 @@ the shape difference the fourth question is about, and it is invisible in the en
 
     Mean colour-development curve for each chromogen (A to C solid, D to F dashed). The curves rise
     together to about the fourth time point, then diverge: the reference A and the analog B level off
-    together, while C, D and E keep developing colour and F drifts down.
+    close together, while C, D and E keep developing colour and F drifts down.
 
 Modelling the profile with PLS
 ------------------------------
@@ -1778,7 +1778,7 @@ close.
     measurement-noise scale, each candidate's best attainable match (open marker) and what the
     coding-invariant curve-match inversion reaches when its real-unit settings are put through the
     ground truth (filled marker), ordered by drift. B lands within about half a noise standard
-    deviation of the reference and F within one and a half, C about two; D and E no closer than
+    deviation of the reference and F about one and a half, C about two; D and E no closer than
     2.8 times the noise.
 
 The developed part of the curve makes the accuracy plainer. Dropping the first time point, where
@@ -1964,7 +1964,7 @@ The study answered several questions from a single design:
   (objectives 1 to 3);
 - the process for inverting the model to achieve a desired colour curve was shown; since we also had
   the known ground truth, we could verify the result, with compound B matching to within about half
-  the measurement noise and compound F to within one and a half (objective 4);
+  the measurement noise and compound F to about one and a half times it (objective 4);
 - the choice of categorical coding changed which candidates the low-rank score match declared
   reachable, so we compared the sum, reference, and cell-means codings and how each was interpreted;
 - a new compound was introduced as an extra level of the categorical factor, augmenting the original
