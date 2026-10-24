@@ -25,7 +25,9 @@ a worked example on the same mineral flotation cell mentioned in
 :ref:`an earlier chapter <SECTION-process-monitoring>`, where we build a
 Shewhart chart on a single variable, then a
 multivariate-statistical-process-control (MSPC) chart on all five
-variables, and compare what each one detects.
+variables, and compare what each one detects. The
+:ref:`closing section <APPS_multivariate_monitoring_literature>` then places the example among
+published case studies on larger processes.
 
 .. _LVM_monitoring:
 
@@ -698,6 +700,101 @@ observation.
 	  ``Pulp level`` says the variable is *off-pattern relative to the
 	  others*, not that it is the *cause* of the upset. Diagnosis is for
 	  the process engineer with knowledge of the unit operation.
+
+.. _APPS_multivariate_monitoring_literature:
+
+Published case studies, from detecting a fault to a system that stays in use
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A PCA or PLS model of a process in its normal operation turns many correlated tags into two
+monitoring statistics, :math:`T^2` along the model and SPE off it, plus a contribution plot that
+names the tags behind an alarm. For the people running the process, that is two charts to watch
+in place of one per tag, and a bar plot to read when either chart alarms. The flotation cell has
+five tags. The published case studies below apply the same three steps (a :ref:`model of a
+reference period <LVM_monitoring>`, :ref:`both statistics on new data
+<APPS_multivariate_monitoring_phase2>`, :ref:`contributions at an alarm
+<APPS_multivariate_monitoring_contribution>`) to reactors, refineries and dryers with many more
+tags.
+
+`Kresta, MacGregor and Marlin (1991)
+<https://literature.learnche.org/item/9/multivariate-statistical-monitoring-of-process-operating-performance>`_
+set out the scheme as a multivariate counterpart of the Shewhart chart, on simulations of a
+fluidized bed reactor and an extractive distillation column. `MacGregor and Kourti (1995)
+<https://literature.learnche.org/item/16/statistical-process-control-of-multivariate-processes>`_
+and `Kourti and MacGregor (1995)
+<https://literature.learnche.org/item/31/process-analysis-monitoring-and-diagnosis-using-multivariate-projection-methods>`_
+review the methods for process data :math:`\mathbf{X}` together with quality data
+:math:`\mathbf{Y}`, for continuous and batch processes. Both include the monitoring of a continuous
+polymerization process and of an industrial batch process; the first adds a mineral processing
+plant, the second the catalytic cracking section of a refinery. `Kourti and MacGregor (1996)
+<https://literature.learnche.org/item/81/multivariate-spc-methods-for-process-and-product-monitoring>`_
+set the projection charts beside Hotelling's :math:`T^2` on the original variables, which suits a
+small set of variables that are not close to collinear, and illustrate the methods on a simulated
+high-pressure low-density polyethylene (LDPE) reactor.
+
+On a plant with several units, the tags can be grouped into one block per unit, so that a chart
+points to the unit as well as to the tags. `MacGregor and co-workers (1994)
+<https://literature.learnche.org/item/29/process-monitoring-and-diagnosis-by-multiblock-pls-method>`_
+build multiblock PLS charts for each section of a simulated tubular LDPE reactor and for the
+reactor as a whole. The website of the :ref:`LDPE data set <LVM-LDPE-case-study>` used in the PLS
+exercises points to this paper; the last 4 of its 54 rows show an impurity in the ethylene feed
+developing. `Westerhuis, Kourti and MacGregor (1998)
+<https://literature.learnche.org/item/95/analysis-of-multiblock-and-hierarchical-pca-and-pls-models>`_
+show that consensus PCA and multiblock PLS can be calculated from an ordinary PCA or PLS when the
+variables are scaled the same way. `Qin, Valle and Piovoso (2001)
+<https://literature.learnche.org/item/165/on-unifying-multiblock-analysis-with-application-to-decentralized-process-monitoring>`_
+use that equivalence to compute block and variable contributions to SPE and :math:`T^2` from an
+ordinary model, on an industrial polyester film process.
+
+An alarm on :math:`T^2` or SPE is one number computed from every tag, so it says that the
+process has moved but not which tags moved. `Miller, Swanson and Heckler (1998)
+<https://literature.learnche.org/item/78/contribution-plots-a-missing-link-in-multivariate-quality-control>`_
+call this a missing link in multivariate quality control, and propose the contribution plots
+used at the :ref:`flotation alarm <APPS_multivariate_monitoring_contribution>`. `Alvarez,
+Brandolin and Sánchez (2007)
+<https://literature.learnche.org/item/21/on-the-variable-contributions-to-the-d-statistic>`_
+split the D-statistic, computed in the original variables rather than in the scores, into one
+contribution per variable, which avoids choosing a number of components, and explain what a
+negative contribution means. Hotelling's :math:`T^2` is a squared Mahalanobis distance, and `De
+Maesschalck, Jouan-Rimbaud and Massart (2000)
+<https://literature.learnche.org/item/67/the-mahalanobis-distance>`_ set out that distance in the
+original variables and in the space of the principal components.
+
+A contribution plot names the tags that moved with a fault, not which fault it was.
+`Yoon and MacGregor (2001)
+<https://literature.learnche.org/item/90/fault-diagnosis-with-multivariate-statistical-models-part-i-using-steady-state-fault-signatures>`_
+add data from past faults: each known fault is stored as a direction in the model space and in
+the residual space, and a new fault is isolated by the angles between its direction and those in
+the library. `Yoon and MacGregor (2000)
+<https://literature.learnche.org/item/89/statistical-and-causal-model-based-approaches-to-fault-detection-and-isolation>`_
+compare these models from historical data with causal models from first principles or plant
+tests, and find that the two approaches differ mainly in the model and data they are built from,
+with complementary strengths. Both papers use a simulated continuous stirred-tank reactor.
+
+The same models serve troubleshooting from historical data, where nothing is monitored on-line.
+`Skagerberg, MacGregor and Kiparissides (1992)
+<https://literature.learnche.org/item/27/multivariate-data-analysis-applied-to-low-density-polyethylene-reactors>`_
+use PLS on a simulated LDPE process to relate the process variables to each other, to build
+multivariate control charts, and to build :ref:`inferential models <APPS_soft_sensors>`.
+`García-Muñoz and co-workers (2003)
+<https://literature.learnche.org/item/24/troubleshooting-of-an-industrial-batch-process-using-multivariate-methods>`_
+use plant data from an industrial batch dryer to find why its product often missed the quality
+specification; the :ref:`batch dryer case study <APPS_batch_case_fmc>` is built on those data.
+
+Running such a system on a plant raises questions that a simulation does not. `Kourti (2002)
+<https://literature.learnche.org/item/87/process-analysis-and-abnormal-situation-detection-from-theory-to-practice>`_
+reviews on-line systems on large industrial processes, with the pitfalls at each stage from data
+acquisition through modelling to on-line use. `Kourti (2003)
+<https://literature.learnche.org/item/120/abnormal-situation-detection-three-way-data-and-projection-methods-robust-data-archiving-and-modeling-for-industrial-applications>`_
+covers batch operations and the startups and grade changes of continuous plants, where the tags
+are related over time as well as to each other, and how such data should be stored. `Kourti
+(2005)
+<https://literature.learnche.org/item/88/application-of-latent-variable-methods-to-process-control-and-multivariate-statistical-process-control-in-industry>`_
+shows that compressing and reconstructing each tag on its own can create correlations that the
+process does not have. `Miletic and co-workers (2004)
+<https://literature.learnche.org/item/18/an-industrial-perspective-on-implementing-on-line-applications-of-multivariate-statistics>`_
+draw on their own on-line installations to set out the technical and non-technical factors in
+building an application that stays in use.
 
 Further reading
 ~~~~~~~~~~~~~~~
