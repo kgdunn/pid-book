@@ -165,6 +165,23 @@ So we will choose to increase :math:`\Delta x_T = 1` coded unit, which means:
 
 So when we run the next experiment at these conditions. The daily profit is :math:`y_5 =` $ 669, improving quite substantially from the  baseline case.
 
+.. _DOE-RSM-coding-and-path:
+
+The path of steepest ascent is steepest only in the coded units chosen, and different factor
+ranges give a different path. In real units, a planar surface rises by :math:`g_T` per kelvin and
+:math:`g_S` per g/L. A half-range of :math:`h_T` then gives the coded coefficient
+:math:`b_T = g_T h_T`, and similarly :math:`b_S = g_S h_S`. Moving :math:`\Delta x_S / \Delta x_T =
+b_S / b_T` in coded units is a real move of
+
+.. math::
+
+	\frac{\Delta x_{S,\text{actual}}}{\Delta x_{T,\text{actual}}} = \frac{g_S}{g_T} \cdot \frac{h_S^2}{h_T^2}
+
+so doubling the substrate half-range, with the temperature half-range unchanged, would make the
+path four times steeper in substrate concentration. Neither path is wrong: each is the direction of
+fastest increase for one way of measuring distance in the factor space. The ranges therefore carry
+the experimenter's judgement of what a comparable change in each factor is.
+
 We decide to make another move, in the same direction of steepest ascent, i.e. along the vector that points in the :math:`\frac{134}{55}` direction. We  move the temperature up 5K, although we could have used a larger or smaller step size if we wanted:
 
 	*	:math:`T_6 = T_5 + \Delta x_{T,\text{actual}} = 330 + 5 = 335` K
@@ -196,6 +213,13 @@ The profit at this point is :math:`y_7 =` $ 463. We have gone too far as profit 
 :factorial:`rsm-second-factorial`, the designed-experiments app, opens the four factorial runs with their results.
 
 This time we have decided to use slightly smaller ranges in the factorial, :math:`\text{range}_T = 8 = (339 - 331)` K and :math:`\text{range}_S = 0.4 = (2.17 - 1.77)` g/L, so that we can move more slowly along the surface.
+
+The width of the next factorial can go either way, and each choice has a cost. Near an optimum
+the surface flattens, so the effects a factorial of fixed width measures become smaller relative
+to the run-to-run noise. A narrower factorial keeps a planar model accurate over the region it
+covers, but its effects are harder to separate from that noise. A wider factorial measures larger
+effects against the same noise, but the region then contains more curvature, so a first-order
+model fits it less well and a second-order design is needed sooner.
 
 .. figure:: ../figures/doe/RSM-base-case-combined.png
 	:align: center
@@ -240,6 +264,16 @@ The model above was fitted from the four corner runs only, so the centre run is 
 
 So when the measured center point value is quite different from the predicted center point in the linear model, then that is a good indication there is :index:`curvature <pair: curvature; response surface>` in the response surface. The way to accommodate for that is to add quadratic terms to the estimate model.
 
+The comparison is also an estimate. With :math:`n_F` factorial runs and :math:`n_C` centre runs,
+the difference :math:`\bar{y}_F - \bar{y}_C` estimates the sum of the pure quadratic coefficients,
+:math:`b_{TT} + b_{SS}`, because every factorial run has :math:`x_T^2 = x_S^2 = 1` and the centre
+has both at zero. Here it is :math:`670.25 - 688 = -17.75`. If :math:`s` is the standard deviation
+of a single run, the difference has a standard error of :math:`s \sqrt{1/n_F + 1/n_C}`, and their
+ratio is a :math:`t`-statistic. This example has a single centre run and no replicates, so there is
+no estimate of :math:`s` that is free of the model, and the comparison stays informal. With
+replicated centre runs, ``analyze_experiment(..., analysis_type="curvature_test")`` in
+``process_improve`` reports the difference, its standard error and the test.
+
 **Adding higher-order terms using central composite designs**
 
 .. _DOE_central_composite_designs:
@@ -278,9 +312,151 @@ The four response values were :math:`y_{13} = 720`, :math:`y_{14} = 699`, :math:
 
 The linear terms are close to those from the factorial alone, and the interaction term is unchanged, because the axial and center runs all have :math:`x_T x_S = 0`. The curvature in substrate concentration, :math:`b_{SS} = -12.2`, is large compared with the other effects, and it is what prevented the linear model from projecting out to point 12. The curvature in temperature, :math:`b_{TT} = -4.2`, is smaller, and its 95% confidence interval just includes zero.
 
-The final step in the response surface methodology is to plot this model's contour plot and predict where to run the next few experiments. As the solid contour lines in the illustration show, we should run our next experiments roughly at :math:`T` = 343K and :math:`S` = 1.60 g/L where the expected profit is around $736. We get those two values by eye-balling the solid contour lines, drawn from the above non-linear model. You could find this point analytically as well.
+The two pure quadratic coefficients sum to :math:`-16.4`, close to the :math:`-17.75` that the
+factorial-minus-centre difference estimated before the axial runs were made.
+
+.. code-block:: python
+
+	import pandas as pd
+	import statsmodels.formula.api as smf
+
+	a = 2 ** 0.5
+	# Runs 8, 9, 10, 11, 6 and 13 to 16, coded about T = 335 K and S = 1.97 g/L.
+	rsm_ccd = pd.DataFrame({
+	    "T": [-1, +1, -1, +1, 0, 0, +a, 0, -a],
+	    "S": [-1, -1, +1, +1, 0, -a, 0, +a, 0],
+	    "profit": [694, 725, 620, 642, 688, 720, 699, 610, 663],
+	})
+	rsm_fit = smf.ols("profit ~ T + S + T:S + I(T**2) + I(S**2)", data=rsm_ccd).fit()
+	print(rsm_fit.params.round(2).tolist())
+	# [688.0, 12.99, -39.07, -2.25, -4.19, -12.19]
+
+	quad_sum = rsm_fit.params["I(T ** 2)"] + rsm_fit.params["I(S ** 2)"]
+	print(f"{rsm_ccd['profit'][:4].mean() - 688:.2f}, {quad_sum:.3f}")
+	# -17.75, -16.375
+
+The final step in the response surface methodology is to plot this model's contour plot and predict where to run the next few experiments. As the solid contour lines in the illustration show, we should run our next experiments roughly at :math:`T` = 343K and :math:`S` = 1.60 g/L where the expected profit is around $736. We get those two values by eye-balling the solid contour lines, drawn from the above non-linear model. :ref:`Canonical analysis <DOE-RSM-canonical-analysis>`, described below, finds it analytically.
 
 This is not exactly where the true process optimum is, but it is close to it (the temperature of :math:`T` = 343 K is just a little lower than where the true optimum is).
+
+.. _DOE-RSM-canonical-analysis:
+
+**Canonical analysis: the shape of the fitted surface**
+
+.. index::
+	pair: canonical analysis; response surface
+	pair: ridge; response surface
+
+The eigenvalues of a fitted quadratic say whether it has a maximum, a minimum, a saddle, or a ridge,
+and so whether a single best setting exists. Write the quadratic as :math:`\hat{y} = b_0 +
+\mathbf{x}^T\mathbf{b} + \mathbf{x}^T\mathbf{B}\mathbf{x}`, where :math:`\mathbf{b}` holds the
+linear coefficients and the symmetric matrix :math:`\mathbf{B}` holds the pure quadratic
+coefficients on its diagonal and half of each interaction coefficient off it. Setting the gradient
+to zero gives the *stationary point* :math:`\mathbf{x}_s = -\tfrac{1}{2}\mathbf{B}^{-1}\mathbf{b}`.
+Each eigenvector of :math:`\mathbf{B}` is a direction through it, and its eigenvalue
+:math:`\lambda` sets the curvature along that direction: a move of :math:`t` coded units from the
+stationary point along the eigenvector changes :math:`\hat{y}` by :math:`\lambda t^2`.
+
+* all eigenvalues negative: a maximum; all positive: a minimum; mixed signs: a saddle point;
+* one eigenvalue close to zero: there is almost no curvature along that eigenvector, and the
+  surface forms a *ridge* in that direction, either level or sloping.
+
+.. code-block:: python
+
+	from process_improve.experiments import optimize_responses
+
+	rsm_terms = [{"term": t, "coefficient": float(v)} for t, v in rsm_fit.params.items()]
+	rsm_shape = optimize_responses(
+	    [{"response_name": "profit", "coefficients": rsm_terms, "factor_names": ["T", "S"]}],
+	    method="canonical_analysis",
+	)
+	canonical = rsm_shape["canonical_analysis"]
+	print(canonical["classification"], [round(v, 1) for v in canonical["eigenvalues"]])
+	# maximum [-12.3, -4.0]
+
+	top = rsm_shape["stationary_point"]
+	xs = top["stationary_point_coded"]
+	print(f"T {335 + 4 * xs['T']:.1f} K, S {1.97 + 0.2 * xs['S']:.2f} g/L, "
+	      f"profit {top['predicted_response']:.0f}; inside the design: {top['inside_design_space']}")
+	# T 343.1 K, S 1.61 g/L, profit 736; inside the design: False
+
+The profit surface is a maximum, at the setting read off the contours by eye. The eigenvector of the
+eigenvalue larger in size, :math:`-12.3`, points almost along substrate concentration, and that of
+the smaller one, :math:`-4.0`, almost along temperature. For the same move in coded units, profit
+therefore falls about three times faster when substrate moves away from its best value than when
+temperature does, so the best temperature is the less precisely located of the two. The stationary
+point also lies outside the region the design covers, so it is an extrapolation, and a confirmation
+run there is what tests it.
+
+A ridge takes one of two forms. On a *stationary ridge* the response is level along the ridge, so
+a line (or, with more factors, a plane) of settings gives almost the same best response, and the
+choice among them can be made on other grounds, such as cost or ease of control. On a *rising
+ridge* the response keeps increasing slowly along it, the stationary point lies far outside the
+region, and the next experiments follow the ridge. The *B canonical form* separates the two cases.
+It is written about a point near the design rather than about the stationary point. In the form
+``optimize_responses`` returns as ``b_canonical``, that point is the one on the ridge axis (the
+line through the stationary point along the eigenvector whose eigenvalue :math:`\lambda_k` is near
+zero) nearest the centre of the design, and the surface becomes :math:`\hat{y} = y_0 + \theta X_k
++ \sum_i \lambda_i X_i^2`. The :math:`X_i` are distances from that point along the eigenvectors,
+:math:`y_0` is the fitted response there, and :math:`\theta` is the slope along the ridge axis.
+With :math:`\lambda_k` near zero, a :math:`\theta` near zero is a stationary ridge and a clearly
+nonzero :math:`\theta` is a rising ridge. The ``flat_tolerance`` argument sets how small an
+eigenvalue must be, relative to the largest, to be read as zero.
+
+A ridge can also point to a better variable. Along a ridge one factor can be traded for another
+with little change in the response: a longer reaction time at a lower temperature, for example, can
+give about the same conversion. The process then responds to a combination of the two, a compound
+variable, and a model written in that variable needs one factor fewer.
+
+.. _DOE-RSM-orthogonal-blocking:
+
+**Running a composite design in two blocks**
+
+.. index::
+	pair: blocking; central composite design
+
+The axial runs of a composite design are often made days after the factorial, so the two sets of
+runs form two :ref:`blocks <DOE_blocking_section>`, and the axial distance decides whether a shift between
+them biases the quadratic coefficients. The block effect is orthogonal to every term of the
+quadratic model when
+
+.. math::
+
+	\alpha^2 = \frac{F\,(2ks + c_a)}{2s\,(F + c_c)}
+
+for :math:`F` factorial runs and :math:`c_c` centre runs in the factorial block, :math:`k`
+factors whose :math:`2k` axial points are each run :math:`s` times, and :math:`c_a` centre runs in
+the axial block. For the bioreactor, with one centre run (run 6) in the factorial block and none in
+the axial block, that distance is 1.26 coded units, not the :math:`\sqrt{2}` used. With three centre
+runs in each block it is exactly :math:`\sqrt{2}`, which is also the rotatable distance.
+
+.. code-block:: python
+
+	from process_improve.experiments.designs_response_surface import blocking_alpha
+
+	print(f"{blocking_alpha(4, 1, 2, 0):.2f}, {blocking_alpha(4, 3, 2, 3):.2f}")
+	# 1.26, 1.41
+
+	rsm_ccd["axial_block"] = [0, 0, 0, 0, 0, 1, 1, 1, 1]   # 1 for the runs made later
+	rsm_blocked = smf.ols("profit ~ T + S + T:S + I(T**2) + I(S**2) + axial_block", data=rsm_ccd).fit()
+	print(rsm_blocked.params.round(3).tolist())
+	# [688.0, 12.989, -39.07, -2.25, -4.875, -12.875, 2.75]
+
+	rsm_quartic = smf.ols("profit ~ T + S + T:S + I(T**2) + I(S**2) + I(T**2 * S**2)", data=rsm_ccd).fit()
+	print(f"residual sum of squares: {rsm_blocked.ssr:.3f} with the block term, "
+	      f"{rsm_quartic.ssr:.3f} with an x_T^2 x_S^2 term instead")
+	# residual sum of squares: 0.803 with the block term, 0.803 with an x_T^2 x_S^2 term instead
+
+The block effect is estimated as $2.75 per day higher for the axial runs. Because the design is not
+orthogonally blocked, adding the block term also moves both quadratic coefficients, from
+:math:`-4.19` to :math:`-4.875` and from :math:`-12.19` to :math:`-12.875`. At the orthogonal
+distance the block term would leave them unchanged.
+
+These nine runs cannot tell a block effect apart from lack of fit. With no centre run in the axial
+block, the block column lies in the same direction as an :math:`x_T^2 x_S^2` term, so fitting that
+term instead leaves exactly the same residuals. The $2.75 could therefore be a shift between the
+two sets of runs or curvature that the quadratic does not describe. A centre run in the axial block
+separates the two.
 
 This example has demonstrated how powerful response surface methods are. A minimal number of experiments has quickly converged onto the true, unknown process optimum. We achieved this by building successive least squares models that approximate the underlying surface. Those least squares models are built using the tools of fractional and full factorials and basic optimization theory, to climb the hill of steepest ascent.
 
@@ -341,6 +517,39 @@ missing a term (often a higher-order effect). For example, a 15-run experiment f
 An :math:`F`-ratio near 3 there carries a :math:`p`-value of about 0.27, which gives no reason to
 doubt the model. The test needs both replicated points (to get :math:`\text{SS}_\text{PE}`) and
 more distinct design points than parameters (to leave some :math:`\text{df}_\text{LOF}`).
+
+The lack-of-fit test pools every direction into one number, so it does not say along which axis a
+quadratic fails. A composite design can say this, because it measures each factor's slope twice:
+from the factor's two axial runs, and from the factorial runs. Under a second-order model the two
+slopes agree, so their difference, the *third-order contrast*, estimates the cubic term in that
+factor less its terms with another factor squared (for :math:`T` at :math:`\alpha = \sqrt{2}`,
+:math:`b_{TTT} - b_{TSS}`). A contrast several standard errors from zero locates the axis where the
+quadratic fails, provided the standard error comes from replicated runs or another estimate of the
+run-to-run noise that does not depend on the fitted model.
+
+.. code-block:: python
+
+	from process_improve.experiments import third_order_contrasts
+
+	rsm_sigma = float(rsm_fit.mse_resid ** 0.5)   # no replicates here; see the text below
+	checks = third_order_contrasts(rsm_ccd, "profit", ["T", "S"], sigma=rsm_sigma)["contrasts"]
+	for name, c in checks.items():
+	    print(f"{name}: {c['contrast']:.2f} +/- {c['std_error']:.2f}")
+	# T: -0.52 +/- 1.63
+	# S: 0.36 +/- 1.63
+
+	contrast_ss = sum((c["contrast"] / c["std_error"]) ** 2 for c in checks.values()) * rsm_sigma**2
+	print(f"{contrast_ss:.3f} and {rsm_fit.ssr - rsm_blocked.ssr:.3f} of {rsm_fit.ssr:.3f}")
+	# 0.803 and 15.125 of 15.928
+
+The bioreactor design has no replicated runs, so the code takes the standard deviation from the
+residual of the quadratic fit, and with that choice the check cannot flag an axis. Both contrasts
+are part of that residual, so on its 3 degrees of freedom neither could exceed :math:`\sqrt{3}
+\approx 1.7` standard errors, whatever the data. What the numbers do show is where the residual
+lies. Of its 15.928 sum of squares, the two contrasts carry 0.803, and the direction the block term
+takes up in the :ref:`two-block analysis <DOE-RSM-orthogonal-blocking>` carries the other 15.125.
+Checking the axes needs a standard deviation that does not come from the fitted model, such as one
+from replicated centre runs.
 
 .. _DOE-box-behnken-designs:
 
@@ -493,7 +702,7 @@ The general approach for response surface modelling
 
 	This simple ratio is the gradient of the *first-order* (planar) part of the model, so it points along the steepest ascent only while the interaction terms are negligible. If the two-factor interactions are similar to, or larger than, the main effects, the fitted surface is a twisted plane rather than a flat one, and the direction of steepest ascent turns as you move. In that case, do not follow the linear gradient blindly: draw the contour plot of the fitted model and read the next point off the surface, or move to a second-order design (:ref:`central composite design <DOE_central_composite_designs>`) that can describe the curvature.
 
-	If any of the :math:`\Delta x_i` values are too large to safely implement, then take a smaller proportional step in all factors. Recall that these are coded units, so unscale them to obtain the move amount in real-world units.
+	If any of the :math:`\Delta x_i` values are too large to safely implement, then take a smaller proportional step in all factors. Recall that these are coded units, so unscale them to obtain the move amount in real-world units. The direction itself depends on the factor ranges chosen for the coding, as shown for the bioreactor in the :ref:`two-variable example <DOE-RSM-coding-and-path>`.
 
 #.	One can make several sequential steps until the response starts to level off, or if you become certain you have entered a different operating mode of the process.
 
@@ -501,7 +710,7 @@ The general approach for response surface modelling
 
 #.	Repeat steps 1 through 5 until the linear model estimate starts to show evidence of curvature, or that the interaction terms start to dominate the main effects. This indicates that you are reaching an optimum.
 
-	-	Curvature can be assessed by comparing the predicted center point, i.e. the model's intercept = :math:`b_0`, against the actual center point response(s). A large difference in the prediction, when compared to the model's effects, indicates the response surface is curved.
+	-	Curvature can be assessed by comparing the predicted center point, i.e. the model's intercept = :math:`b_0`, against the actual center point response(s). The difference between the factorial average and the centre average estimates the sum of the pure quadratic coefficients; a difference that is large compared with its standard error, :math:`s\sqrt{1/n_F + 1/n_C}`, indicates the response surface is curved.
 
 #.	If there is curvature, add axial points to expand the factorial into a central composite design. Now estimate a quadratic model of the form:
 
