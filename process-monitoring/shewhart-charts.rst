@@ -25,7 +25,7 @@ Define the variable of interest as :math:`x`, and assume that we have samples of
 	:width: 800px
 	:alt: fake width
 
-So by taking :index:`subgroups <single: subgroups (monitoring charts)>` of size :math:`n` values, we now have for each subgroup a newly calculated variable, :math:`\overline{x}` and we will define a shorthand symbol for its standard deviation: :math:`\sigma_{\overline{X}} = \sigma/\sqrt{n}`. Writing a :math:`z`-value for :math:`\overline{x}`, and its associated confidence interval for :math:`\mu` is now easy after studying :ref:`the section on confidence intervals<univariate_confidence_intervals>`:
+So by taking :index:`subgroups <single: subgroups (monitoring charts)>` of size :math:`n` values, we now have for each subgroup a newly calculated variable, :math:`\overline{x}` and we will define a shorthand symbol for its standard deviation: :math:`\sigma_{\overline{X}} = \sigma/\sqrt{n}`. That expression assumes the :math:`n` values within a subgroup are independent of each other; the list of :ref:`mistakes to avoid <monitoring_mistakes_to_avoid>` describes what happens to the limits when they are not. Writing a :math:`z`-value for :math:`\overline{x}`, and its associated confidence interval for :math:`\mu` is now easy after studying :ref:`the section on confidence intervals<univariate_confidence_intervals>`:
 
 .. math::
 
@@ -305,7 +305,7 @@ You make a **type II error** when your sample really is abnormal, but falls with
 
 *Synonyms* for a **type II error**: false negative (used mainly for testing of diseases), consumer's risk (used for acceptance sampling, because your consumer will be receiving available product which is defective), false acceptance rate, or beta.
 
-To quantify the probability :math:`\beta`, recall that a Shewhart chart is for monitoring location, so we make an assumption that the new, abnormal sample comes from a distribution which has shifted its location from :math:`\mu` to :math:`\mu + \Delta\sigma` (e.g. :math:`\Delta` can be positive or negative). Now, what is the probability this new sample, which come from the shifted distribution, will fall within the existing LCL and UCL? This figure shows the probability is :math:`\beta = (1 - \text{the shaded area})`.
+To quantify the probability :math:`\beta`, recall that a Shewhart chart is for monitoring location, so we make an assumption that the new, abnormal sample comes from a distribution which has shifted its location from :math:`\mu` to :math:`\mu + \Delta\sigma` (e.g. :math:`\Delta` can be positive or negative). Now, what is the probability this new sample, which come from the shifted distribution, will fall within the existing LCL and UCL? The figure below shades that probability, :math:`\beta`: the part of the shifted distribution that still lies between the LCL and the UCL.
 
 .. math::
 
@@ -342,14 +342,9 @@ To quantify the probability :math:`\beta`, recall that a Shewhart chart is for m
 	:scale: 70
 	:alt: fake width
 
-.. todo  How did Devore calculate these numbers: see p 667 of his book - it doesn't make sense to me. See my attempt in "show-shift-typeII-error.R"
-
-..	See Montgomery and Runger, Second edition, p 313, for a possible derivation
-.. \beta = pnorm(3-delta*sqrt(n)) - pnorm(-3 - delta*sqrt(n))
-
 .. _monitoring_sluggish_shewhart_chart:
 
-The table highlights that :math:`\beta` is a function of the amount by which the process shifts = :math:`\Delta`, where :math:`\Delta=1` implies the process has shifted up by :math:`1\sigma`. The table was calculated for :math:`n=4` and used critical limits of :math:`\pm 3 \sigma_{\overline{X}}`. You can calculate your own values of :math:`\beta` using this line of R code: ``beta <- pnorm(3 - delta*sqrt(n)) - pnorm(-3 - delta*sqrt(n))``
+The table highlights that :math:`\beta` is a function of the amount by which the process shifts = :math:`\Delta`, where :math:`\Delta=1` implies the process has shifted up by :math:`1\sigma`. The table was calculated for :math:`n=4` and used critical limits of :math:`\pm 3 \sigma_{\overline{X}}`. Each entry is :math:`\beta = \Phi(3 - \Delta\sqrt{n}) - \Phi(-3 - \Delta\sqrt{n})`, the probability that the shifted subgroup mean still lands between the limits, where :math:`\Phi` is the cumulative distribution function of the standard normal. The code below reproduces the table.
 
 ==============================  ====== ====== ====== ====== ====== ======
 :math:`\Delta`                  0.25   0.50   0.75   1.00   1.50   2.00
@@ -362,23 +357,22 @@ The table highlights that :math:`\beta` is a function of the amount by which the
 	import numpy as np
 	from scipy.stats import norm
 
-	delta = 1
 	n = 4
+	delta = np.array([0.25, 0.50, 0.75, 1.00, 1.50, 2.00])
 	beta = (norm.cdf(+3 - delta * np.sqrt(n))
 	        - norm.cdf(-3 - delta * np.sqrt(n)))
 
-	print(f"When delta={delta} and n={n} "
-	      f"then beta = {round(beta, 4)}")
+	print(" ".join(f"{b:.4f}" for b in beta))
+	# 0.9936 0.9772 0.9332 0.8413 0.5000 0.1587
 
 .. code-block:: r
 
-	delta <- 1
 	n <- 4
+	delta <- c(0.25, 0.50, 0.75, 1.00, 1.50, 2.00)
 	beta <- pnorm(+3 - delta*sqrt(n)) -
 	        pnorm(-3 - delta*sqrt(n))
 
-	paste0('When delta=', delta, ' and n=', n,
-	       ' then beta = ', round(beta, 4))
+	sprintf('%.4f', beta)
 
 .. _monitoring_shewart_chart_slugishness:
 
@@ -437,10 +431,10 @@ Mistakes to avoid
 .. index::
 	single: specification limits
 
-.. TODO: check if the assumption of independence within each subgroup is required
-
 #.	Imagine you are monitoring an aspect of the final product's quality, e.g. viscosity, and you have a product specification that requires that viscosity to be within, say 40 to 60 cP. It is a mistake to place those **specification limits** on the monitoring chart as a guide when to take action. It is also a mistake to use the required specification limits instead of the LCL and UCL. The monitoring chart is to detect abnormal variation in the process and gives a signal on when to take action, not to inspect for quality specifications. You can certainly have another chart for that, but the process monitoring chart's limits are intended to monitor process stability, and these Shewhart stability limits are calculated differently. Ideally the specification limits lie beyond the LCL and UCL action limits.
 
 #.	Shewhart chart limits were calculated with the assumption of **independent subgroups** (e.g. subgroup :math:`i` has no effect on subgroup :math:`i+1`). For a process with mild autocorrelation, averaging :math:`n` samples into each subgroup reduces, though does not remove, the relationship between successive subgroup means. However processes with heavy autocorrelation (slow moving processes sampled at a high rate, for example), will have LCL and UCL calculated from equation :eq:`shewhart-limits` that will raise false alarms too frequently. In these cases you can widen the limits, or remove the autocorrelation from the signal. More on this in the later section on :ref:`exponentially weighted moving average (EWMA) charts <monitoring_EWMA>`.
+
+#.	The limits also assume that the :math:`n` values **within each subgroup** are independent, since :math:`\sigma_{\overline{X}} = \sigma/\sqrt{n}` relies on it. Consecutive samples from a process are often positively autocorrelated, which has two effects that act in the same direction: the within-subgroup standard deviations understate :math:`\sigma`, and the subgroup means vary more than :math:`\sigma/\sqrt{n}`. Both make the LCL and UCL too narrow, so the chart raises false alarms on a process that has not changed. The :ref:`flotation cell example <APPS_multivariate_monitoring_univariate>` shows this on plant data, and compares those limits with limits estimated from the spread of the subgroup means.
 
 #.	Using Shewhart charts on two or more **highly correlated quality variables**, usually on your final product measurement, can increase your type II (consumer's risk) dramatically. We will come back to this very important topic in the section on :ref:`latent variable models <LVM_monitoring>`, where we will counterintuitively prove that even having individual charts each within their respective limits can result where it is outside the joint limits.
