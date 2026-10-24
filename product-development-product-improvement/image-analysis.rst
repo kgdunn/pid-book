@@ -118,7 +118,7 @@ Flames are another, where the colour of the flame is used to infer the state of 
 <https://literature.learnche.org/item/118/monitoring-flames-in-an-industrial-boiler-using-multivariate-image-analysis>`_
 predict the performance of an industrial boiler, the NO\ :sub:`x` and SO\ :sub:`2`
 concentrations in its exhaust gas, and the energy content of a waste fuel fed to it, from images
-of its flame. `Szatvanyi, Duchesne and Bartolacci (2005)
+of its flame. `Szatvanyi, Duchesne and Bartolacci (2006)
 <https://literature.learnche.org/item/141/multivariate-image-analysis-of-flames-for-product-quality-and-combustion-control-in-rotary-kilns>`_
 predict the temperature of the solids leaving a rotary kiln, over a horizon of up to about the
 kiln's mean residence time, from a single image of its flame.
