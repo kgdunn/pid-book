@@ -53,4 +53,4 @@ In this example the ``Tin``, ``z2``, ``Tcin2`` and ``Tmax2``, ``Fi2``, ``Fi1``, 
 
 .. YOU NEED AN EXAMPLE HERE. I can find several contradicting examples; eg. Kamyr digester case study, where Y = YKappa; 4 components by cross; not all the variables in PC 3 and 4 match up with the coefficient plot's expectation.
 
-.. Variable importance to projection (VIP): See: https://dx.doi.org/10.1137/0905052 - this paper has no mention of VIP (despite what ProSensus software says)
+.. Variable importance in projection (VIP), if it is added here: cite Wold, Johansson and Cocchi, "PLS: partial least squares projections to latent structures", in H. Kubinyi (ed.), 3D QSAR in Drug Design: Theory, Methods and Applications, ESCOM, Leiden, 1993, pp. 523-550, where VIP was proposed; Chong and Jun (2005), https://doi.org/10.1016/j.chemolab.2004.12.011, compare it with other variable-selection methods. Not https://doi.org/10.1137/0905052 (Wold, Ruhe, Wold and Dunn, 1984), which does not mention VIP. process_improve provides PLS.vip(), so an example can be computed.

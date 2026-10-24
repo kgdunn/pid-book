@@ -1036,9 +1036,10 @@ sitting at the top of the range is fitted below it.
 
 The Variable Importance in Projection (VIP) summarises, per variable, how much it
 contributes to explaining the quality block, scaled so that a value above one marks
-above-average importance. The super VIP applies the same idea to a whole block. It puts the
-operating conditions (1.07) and the trajectories (1.06) level and the chemistry last (0.86),
-which is where the earlier models left the chemistry, one block at a time.
+above-average importance. Wold, Johansson and Cocchi (1993) proposed it. The super VIP
+applies the same idea to a whole block. It puts the operating conditions (1.07) and the
+trajectories (1.06) level and the chemistry last (0.86), which is where the earlier models
+left the chemistry, one block at a time.
 
 That ordering is what the original study concluded: the chemistry of the charge had little
 impact on the quality, and the variation in how the batches were operated was the dominant
@@ -1379,3 +1380,7 @@ The full list of readings on batch data is on the :ref:`batch process monitoring
   processes <https://literature.learnche.org/item/34/multivariate-spc-charts-for-monitoring-batch-processes>`_",
   *Technometrics*, **37**, 41-59, 1995. Its closing discussion sets out why a batch model
   describes correlation, not cause and effect.
+
+* Svante Wold, Erik Johansson and Marina Cocchi, "PLS: partial least squares projections to
+  latent structures", in H. Kubinyi (ed.), *3D QSAR in Drug Design: Theory, Methods and
+  Applications*, ESCOM, Leiden, 1993, 523-550. Where the VIP was proposed.

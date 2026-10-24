@@ -859,10 +859,11 @@ of random columns gives a slightly *larger* testing error, not a smaller one. Th
 improvement follows the physics, not the fact of adding columns.
 
 Those random columns have a second use. Because they carry no real information,
-each genuine tag's Variable Importance in Projection (VIP) can be compared
-against them: any real tag whose VIP sits below the random columns' VIP is
-unlikely to be contributing and is a candidate to drop. On this model eight of
-the 27 tags fall below that line.
+they give a reference level for the Variable Importance in Projection (VIP), which
+summarises how much each tag contributes to predicting the vapour pressure (Wold,
+Johansson and Cocchi, *3D QSAR in Drug Design*, ESCOM, 1993). Any real tag whose
+VIP sits below the random columns' VIP is unlikely to be contributing and is a
+candidate to drop. On this model eight of the 27 tags fall below that line.
 
 .. code-block:: python
 
