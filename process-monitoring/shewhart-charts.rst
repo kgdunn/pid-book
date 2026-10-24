@@ -3,7 +3,11 @@
 Shewhart charts
 ===============
 
-.. For the mean: p174 to p186 of Barnes. KGD: what does "Barnes" refer to?
+.. Source for the derivation of the x-bar chart limits below: the chapter on statistical quality
+	control in Montgomery and Runger, *Applied Statistics and Probability for Engineers*, which this
+	chapter's reading list recommends. An older note cited "p174 to p186 of Barnes", most likely
+	J. W. Barnes, *Statistical Analysis for Engineers and Scientists* (McGraw-Hill, 1994). Those
+	pages could not be checked, so that citation is not used.
 
 .. youtube:: https://www.youtube.com/watch?v=8Ln3emiwQzU&list=PLHUnYbefLmeOPRuT1sukKmRyOVd4WSxJE&index=61
 
