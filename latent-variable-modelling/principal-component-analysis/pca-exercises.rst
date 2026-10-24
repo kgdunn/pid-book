@@ -381,6 +381,147 @@ What we learned:
 
 *	How to build a data set, and bring in new observations as testing data.
 
+Repeated rows in a database extract
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Data extracted from a database to build a model sometimes contain the same row several times, for
+example when a join matches one record more than once.
+
+*	:math:`N = 50` unique rows
+*	:math:`K = 5` + 1 column containing the labels for each batch
+*	Web address: https://openmv.net/info/food-texture
+*	Description: the :ref:`food texture data <LVM_food_texture_example>`, used here as the unique rows of
+	an extract.
+
+#.	Fit a PCA model with 2 components to the 50 unique rows, after mean centring and scaling each column
+	to unit variance. Find the pastry farthest from the model centre, as the one with the largest
+	Hotelling's |T2| value. Is it above the 95% limit?
+
+#.	Mimic an extract that repeats that pastry: append 9 copies of its row, so that it appears 10 times
+	in 59 rows. Refit the model with the same preprocessing and 2 components.
+
+#.	How has the model changed? Compare the two models on:
+
+	*	the angle between their :math:`p_1` vectors, and between their :math:`p_2` vectors;
+	*	the :math:`R^2` of each component;
+	*	the scores of the repeated pastry;
+	*	the Hotelling's |T2| value of the repeated pastry, relative to each model's 95% limit.
+
+#.	Explain why the model changed in this way.
+
+.. admonition:: Solution
+
+	A repeated row counts 10 times in every step that builds the model: the column means and standard
+	deviations used for preprocessing, and the covariance matrix from which the loadings are calculated.
+	The model moves toward the repeated observation, and that observation then looks less unusual than
+	it is.
+
+	.. code-block:: python
+
+		import numpy as np
+		import pandas as pd
+		from process_improve.multivariate import PCA, MCUVScaler
+
+		pastries = pd.read_csv("https://openmv.net/file/food-texture.csv", index_col=0)
+
+		# Q1: model on the 50 unique rows; the pastry with the largest T2
+		scaler_unique = MCUVScaler().fit(pastries)
+		pca_unique = PCA(n_components=2).fit(scaler_unique.transform(pastries))
+		t2_unique = pca_unique.hotellings_t2_.iloc[:, -1]
+		repeated_id = t2_unique.idxmax()
+		print(repeated_id)
+		# B758
+
+		# Q2: the extract repeats that row, so it appears 10 times in 59 rows
+		pastries_repeated = pd.concat([pastries, pastries.loc[[repeated_id] * 9]])
+		print(len(pastries_repeated), pastries_repeated.duplicated().sum())
+		# 59 9
+
+		scaler_repeated = MCUVScaler().fit(pastries_repeated)
+		pca_repeated = PCA(n_components=2).fit(scaler_repeated.transform(pastries_repeated))
+
+		# Q3: angle between matching loading vectors [degrees]. The sign of a component
+		# is arbitrary, so the repeated model's scores are flipped to match where needed.
+		cos_p = np.sum(pca_unique.loadings_.values * pca_repeated.loadings_.values, axis=0)
+		print(np.degrees(np.arccos(np.abs(cos_p))).round(0))
+		# [11. 12.]
+
+		t2_repeated = pca_repeated.hotellings_t2_.iloc[:, -1]
+		comparison = pd.DataFrame(
+		    {
+		        "Unique rows": [
+		            *pca_unique.r2_per_component_,
+		            *pca_unique.scores_.loc[repeated_id],
+		            t2_unique[repeated_id],
+		            pca_unique.hotellings_t2_limit(0.95),
+		        ],
+		        "Repeated 10 times": [
+		            *pca_repeated.r2_per_component_,
+		            *pca_repeated.scores_.loc[repeated_id].iloc[0] * np.sign(cos_p),
+		            t2_repeated[repeated_id].iloc[0],
+		            pca_repeated.hotellings_t2_limit(0.95),
+		        ],
+		    },
+		    index=["R2, component 1", "R2, component 2", "t1, repeated pastry",
+		           "t2, repeated pastry", "T2, repeated pastry", "T2 limit at 95%"],
+		)
+		print(comparison.round(2))
+		#                      Unique rows  Repeated 10 times
+		# R2, component 1             0.61               0.66
+		# R2, component 2             0.26               0.25
+		# t1, repeated pastry         3.61               2.77
+		# t2, repeated pastry        -1.76              -0.72
+		# T2, repeated pastry         6.69               2.74
+		# T2 limit at 95%             6.64               6.54
+
+		# Other pastries with a larger T2 than the repeated one, in the new model
+		print((t2_repeated.drop(repeated_id) > t2_repeated[repeated_id].iloc[0]).sum())
+		# 13
+
+		# Q4: the repeated pastry, preprocessed with the unique rows' means and standard
+		# deviations; then the change in each standard deviation [%]
+		row_unique = scaler_unique.transform(pastries.loc[[repeated_id]]).iloc[0]
+		print(row_unique.round(1).to_dict())
+		# {'Oil': 2.5, 'Density': -2.3, 'Crispy': 1.4, 'Fracture': -1.4, 'Hardness': -0.7}
+		sd_change = (scaler_repeated.scale_ / scaler_unique.scale_ - 1) * 100
+		print(sd_change.round().astype(int).to_dict())
+		# {'Oil': 29, 'Density': 24, 'Crispy': 5, 'Fracture': 6, 'Hardness': -4}
+
+		# After each model's own preprocessing: the repeated pastry's squared distance
+		# from the centre, and the angle between its row and p1 [degrees]
+		row_repeated = scaler_repeated.transform(pastries.loc[[repeated_id]]).iloc[0]
+		print(f"{row_unique @ row_unique:.1f} {row_repeated @ row_repeated:.1f}")
+		# 16.2 8.2
+
+		p1_unique = pca_unique.loadings_.values[:, 0]
+		p1_repeated = pca_repeated.loadings_.values[:, 0]
+		cos_row = [
+		    abs(row_unique @ p1_unique) / np.linalg.norm(row_unique),
+		    abs(row_repeated @ p1_repeated) / np.linalg.norm(row_repeated),
+		]
+		print(np.degrees(np.arccos(cos_row)).round(0))
+		# [26. 15.]
+
+	Pastry B758 has the largest |T2| value of the 50 unique pastries, 6.69, just above the 95% limit
+	of 6.64. With B758 repeated 10 times:
+
+	*	Each column mean moves 9/59 of the way toward B758's value, and the standard deviations of Oil
+		and Density, on which B758 lies more than two standard deviations from the mean, grow by 29%
+		and 24%. After this preprocessing B758 lies closer to the centre: its squared distance from the
+		centre falls from 16.2 to 8.2.
+	*	The loadings rotate, :math:`p_1` by 11° and :math:`p_2` by 12°. The vector :math:`p_1` turns
+		toward B758: the angle between B758's preprocessed row and :math:`p_1` falls from 26° to 15°. The
+		first component explains more of the variation, and the second slightly less.
+	*	B758's scores move toward the origin, and its |T2| value falls to 2.74, inside the 95% limit.
+		Thirteen of the other 49 pastries now have a larger |T2| value than B758.
+
+	The same mechanism applies to a PLS model: its preprocessing and its weights are calculated from the
+	same rows, so the repeated row counts 10 times there too.
+
+	Before building a model from a database extract, check it for exact duplicate rows, for example with
+	``df.duplicated().sum()``, and either remove them with ``df.drop_duplicates()`` or keep them as a
+	deliberate choice to give those observations more weight.
+
 
 .. Principal properties of surfactants
 .. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
