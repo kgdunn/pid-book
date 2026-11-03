@@ -9,8 +9,6 @@ The standard error can be estimated if complete replicates are available. Howeve
 
 Furthermore, there are better ways to spend our experimental budget than running complete replicate experiments -- see the section on :ref:`screening designs <DOE-saturated-screening-designs>` later on. Only later in the overall experimental procedure should we run replicate experiments as a verification step and to assess the statistical significance of effects.
 
-.. AU: I inserted the two main ways. Please confirm.
-
 There are three ways to judge whether a main effect or interaction is significant. The first two need no replicate runs: a Pareto plot ranks the effects, and :ref:`Lenth's method <DOE-lenth-method>`, together with the half-normal plot, adds an objective cutoff to that ranking. The third uses the standard error, and becomes available once replicate runs, center points, or an external estimate of the noise supply some degrees of freedom.
 
 .. _DOE-Pareto-plot:
@@ -244,8 +242,6 @@ Refitting the model after removing nonsignificant effects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 After having established which effects are significant, we can exclude the nonsignificant effects and increase the degrees of freedom. (We do not have to recalculate the model parameters -- why?) The residuals will be nonzero now, so we can then estimate the standard error and apply all the tools from least squares modelling to assess the residuals. Plots of the residuals in experimental order, against fitted values, q-q plots and all the other assessment tools from earlier are used, as usual.
-
-.. AU: I modified the last sentence of the following paragraph because it seemed redundant. Please confirm.
 
 As an example, consider a :math:`2^4` factorial (16 runs) where the response values in standard order were :math:`y = [71, 61, 90, 82, 68, 61, 87, 80, 61, 50, 89, 83, 59, 51, 85, 78]`. Assessing the 15 effects with a Pareto plot, or with :ref:`Lenth's method <DOE-lenth-method>`, identifies **A**, **B**, **D** and **BD** as the significant ones. Now, omitting the nonsignificant effects, there are only five parameters to estimate, including the intercept, so the standard error is :math:`S_E^2 = \dfrac{39}{16-5} = 3.55`, with 11 degrees of freedom. The :math:`S_E(b_i)` value for all coefficients, except the intercept, is :math:`\sqrt{\dfrac{S_E^2}{16}} = 0.471`, and the critical :math:`t`-value at the 95% level is ``qt(0.975, df=11)`` = 2.2. So the confidence intervals can be calculated to confirm that these are indeed significant effects. The same yardstick, :math:`2.2 \times 0.471 = 1.04`, is also exceeded by one of the omitted effects, :math:`b_C = -1.125`.
 

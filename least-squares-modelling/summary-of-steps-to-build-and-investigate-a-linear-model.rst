@@ -19,6 +19,24 @@ Summary of steps to build and investigate a linear model
 		summary(model)
 		confint(model)
 
+	The Python versions of steps 2 to 8 use the distillation data from the
+	:ref:`single-x section <LS_single_x_sklearn_distillation>`: ``InvTemp3`` as |x| and
+	``VapourPressure`` as |y|, on the first 150 rows (``build``).
+
+	.. code-block:: python
+
+		from process_improve.regression import OLS
+
+		x = build["InvTemp3"]
+		y = build["VapourPressure"]
+		model = OLS().fit(build[["InvTemp3"]], y)
+
+		print(model)  # summary(model)
+
+		# confint(model): the intercept, then the slope
+		print(model.conf_interval_intercept_,
+		      model.conf_intervals_)
+
 	- Investigate the model's standard error, how does it compare to the range of the |y| variable?
 	- Calculate confidence intervals for the model parameters and interpret them.
 
@@ -30,12 +48,35 @@ Summary of steps to build and investigate a linear model
 		lines(lowess(x,y))        # show the smoother
 		abline(model, col="red")  # and show the least squares model
 
+	.. code-block:: python
+
+		import plotly.express as px
+
+		fig = px.scatter(build, x="InvTemp3",
+		                 y="VapourPressure",
+		                 trendline="lowess")  # the smoother
+		fig.add_scatter(x=x, y=model.fitted_values_,
+		                mode="lines", name="Least squares model")
+		fig.show()
+
 #.	Plot a normal probability plot, or a q-q plot, of the residuals. Are they normally distributed?  If not, investigate if a transformation of the |y| variable might improve them. But also see the additional plots on checking for non-linearity and consider adding extra explanatory variables.
 
 	.. code-block:: s
 
 		library(car)
 		qqPlot(resid(model))
+
+	.. code-block:: python
+
+		from scipy.stats import probplot
+
+		quantiles, ordered = probplot(model.residuals_,
+		                              fit=False)
+		fig = px.scatter(x=quantiles, y=ordered,
+		                 trendline="ols",
+		                 labels={"x": "Normal quantile",
+		                         "y": "Residual"})
+		fig.show()
 
 
 #.	Plot the residuals against the |x|-values. We expect to see no particular structure. If you see trends in the data, it indicates that a transformation of the |x| variable might be appropriate, or that there are unmodelled phenomena in the |y| variable - we might need an additional |x| variable.
@@ -45,6 +86,14 @@ Summary of steps to build and investigate a linear model
 		plot(x, resid(model))
 		abline(h=0, col="red")
 
+	.. code-block:: python
+
+		fig = px.scatter(x=x, y=model.residuals_,
+		                 labels={"x": "InvTemp3",
+		                         "y": "Residual"})
+		fig.add_hline(y=0, line_color="red")
+		fig.show()
+
 #.	Plot the residuals in time (sequence) order. We expect to see no particular trends in the data. If there are patterns in the plot, assess whether autocorrelation is present in the |y| variable (use the ``acf(y)`` function in R). If so, you might have to sub-sample the data, or resort to proper time-series analysis tools to fit your model.
 
 	.. code-block:: s
@@ -52,6 +101,16 @@ Summary of steps to build and investigate a linear model
 		plot(resid(model))
 		abline(h=0, col="red")
 		lines(lowess(resid(model), f=0.2))   # use a shorter smoothing span
+
+	.. code-block:: python
+
+		fig = px.scatter(y=model.residuals_,
+		                 trendline="lowess",
+		                 trendline_options={"frac": 0.2},
+		                 labels={"x": "Sequence order",
+		                         "y": "Residual"})
+		fig.add_hline(y=0, line_color="red")
+		fig.show()
 
 #.	Plot the residuals against the fitted-values. By definition of the least-squares model, the covariance between the residuals and the fitted values is zero. You can verify that :math:`e^T\hat{y} = \sum_i^n{e_i\hat{y}_i} = 0`. A fan-shape to the residuals indicates the residual variance is not constant over the range of data: you will have to use weighted least squares to counteract that. It is better to use :ref:`studentized residuals <LS-studentized-residuals>`, rather than the actual residuals, since the actual residuals can show non-constant variance even though the errors have constant variance.
 
@@ -63,6 +122,26 @@ Summary of steps to build and investigate a linear model
 		lines(lowess(predict(model), rstudent(model)))
 		abline(h=0, col="red")
 
+	.. code-block:: python
+
+		import statsmodels.api as sm
+		from statsmodels.stats.outliers_influence import (
+		    OLSInfluence,
+		)
+
+		# OLS has no counterpart to rstudent(), so the
+		# studentized residuals come from statsmodels:
+		studentized = OLSInfluence(
+		    sm.OLS(y, sm.add_constant(x)).fit()
+		).resid_studentized_external
+		fig = px.scatter(x=model.fitted_values_,
+		                 y=studentized,
+		                 trendline="lowess",
+		                 labels={"x": "Fitted value",
+		                         "y": "Studentized residual"})
+		fig.add_hline(y=0, line_color="red")
+		fig.show()
+
 #.	Plot the predictions of |y| against the actual values of |y|. We expect the data to fall around a 45 degree line.
 
 	.. code-block:: s
@@ -70,6 +149,18 @@ Summary of steps to build and investigate a linear model
 		plot(y, predict(model))
 		lines(lowess(y, predict(model), f=0.5))     # a smoother
 		abline(a=0, b=1, col="red")                 # a 45 degree line
+
+	.. code-block:: python
+
+		fig = px.scatter(x=y, y=model.fitted_values_,
+		                 trendline="lowess",
+		                 trendline_options={"frac": 0.5},
+		                 labels={"x": "Actual",
+		                         "y": "Predicted"})
+		fig.add_scatter(x=[y.min(), y.max()],
+		                y=[y.min(), y.max()],
+		                mode="lines", name="45 degree line")
+		fig.show()
 
 
 .. _LS_workflow_blender_python:

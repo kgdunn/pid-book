@@ -18,7 +18,12 @@ where the :math:`s_a^2` values are constants, and are the variances of each comp
 *	It is a positive number, greater than or equal to zero.
 *	It is the distance from the center of the (hyper)plane to the projection of the observation onto the (hyper)plane.
 *	An observation that projects onto the model's center (usually the observation where every value is at the mean), has :math:`T^2 = 0`.
-*	The |T2| statistic is distributed according to the :math:`F`-distribution and is calculated by the multivariate software package being used. For example, we can calculate the 95% confidence limit for |T2|, below which we expect, under normal conditions, to locate 95% of the observations.
+*	The limit for |T2| comes from the :math:`F`-distribution. Below the 95% limit we expect, under normal conditions, to find 95% of the observations. For a model built from :math:`N` observations with :math:`A` components, the 95% limit for a new observation, one not used to build the model, is approximately
+
+	.. math::
+		T^2_{A, 0.95} = \dfrac{A(N-1)(N+1)}{N(N-A)} \, F_{0.95}(A, N-A)
+
+	where :math:`F_{0.95}(A, N-A)` is the 95th percentile of the :math:`F`-distribution with :math:`A` and :math:`N-A` degrees of freedom. The approximation treats the :math:`A` scores as multivariate normal, with variances estimated from the :math:`N` observations, and ignores that the loadings are estimated from those same observations. This is the limit the ``hotellings_t2_limit`` method of a fitted ``process_improve`` model returns. The observations used to build the model are often plotted against the slightly smaller :math:`A(N-1)/(N-A) \, F_{0.95}(A, N-A)` instead, as in the figure below. Strictly, those observations follow a scaled beta distribution, whose limit is lower still. The first two limits differ only by the factor :math:`(N+1)/N`. The beta limit lies further below, by more when :math:`A` is large relative to :math:`N`. Tracy, Young and Mason give the new-observation limit and the beta distribution in "Multivariate control charts for individual observations", *Journal of Quality Technology*, **24** (2), 88-95, 1992.
 
 	.. image:: ../../figures/examples/tablet-spectra/spectral-data-T2-lineplot.png
 		:alt: Hotelling's T-squared per tablet against the 95% and 99% limits
@@ -40,9 +45,6 @@ where the :math:`s_a^2` values are constants, and are the variances of each comp
 	:scale: 80
 	:width: 750px
 	:align: center
-
-
-.. Take a look at Anderson, 1958 (An introduction to multivariate statistical analysis). Paper by MacGregor (https://dx.doi.org/10.1002/aic.690400509) cites this as the distribution for T2, with F as 2 and 48 DOF (2=because PC1 and PC2, and 48 = 50-2, where N=50 and A=2).
 
 
 .. The PCA model as a way to extract information from noise

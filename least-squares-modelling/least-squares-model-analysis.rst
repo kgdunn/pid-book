@@ -130,15 +130,14 @@ From this exercise we learn that:
 
 	For those of you that prefer to understand concepts algebraically, you can get the equivalent result by starting with the definition of the variance of :math:`\mathrm{y}`.
 
-	.. todo:: check this still: there is a mistake in the middle line
-
 	.. math::
 
 		\mathcal{V}\{\mathrm{y}\} 	&= \mathcal{E}\{(\mathrm{y}-\overline{\mathrm{y}})^2\} \\
-						 			&= \mathcal{E}\{(b_0 + b_1 \mathrm{x} + e - \overline{\mathrm{y}})^2\} \\
-						 			&= \mathcal{E}\{(b_0 + b_1 \mathrm{x} + e)^2\} \\
-						 			&= \mathcal{E}\{(b_0 + b_1 \mathrm{x} + e)^2\} \\
+						 			&= \mathcal{E}\{(b_0 + b_1 \mathrm{x} - \overline{\mathrm{y}} + e)^2\} \\
+						 			&= \mathcal{E}\{(b_0 + b_1 \mathrm{x} - \overline{\mathrm{y}})^2\} + \mathcal{E}\{e^2\} + 2\,\mathcal{E}\{(b_0 + b_1 \mathrm{x} - \overline{\mathrm{y}})\, e\} \\
 						 			&= \mathcal{V}\{b_0 + b_1 \mathrm{x}\} + \mathcal{V}\{e\} + 2\text{Cov}\{b_0 + b_1 \mathrm{x}, e\}
+
+	The last line uses two facts about a least squares model with an intercept: the residuals average to zero, and the predictions :math:`b_0 + b_1 \mathrm{x}` average to :math:`\overline{\mathrm{y}}`. So each expectation above is a variance or a covariance about its own mean.
 
 	Since the covariance between the predicted |y| value and the residuals is zero (we proved that earlier with :math:`\mathrm{\hat{y}}^T\mathrm{e} = 0`), we have:
 
@@ -862,9 +861,7 @@ A typical histogram of the residuals looks as shown here: it is always centered 
 
 But there is something wrong with that error estimate. It says that our prediction error is constant at any value of :math:`x_i`, even at values far outside the range where we built the model. This is a naive estimate of the prediction error. We have forgotten that coefficients :math:`b_0` and :math:`b_1` have error, and that error must be propagated into :math:`\hat{y}_\text{new}`.
 
-.. CHECK THIS STILL
-
-This estimate is however a reasonable guess for the prediction interval when you only know the model's :math:`S_E` and don't have access to a calculator or computer to calculate the proper prediction interval, shown next.
+This estimate is however a reasonable guess for the prediction interval when you only know the model's :math:`S_E` and don't have access to a calculator or computer to calculate the proper prediction interval, shown next. The proper interval adds two terms to :math:`S_E^2`: one that shrinks as the number of observations grows, and one that grows with the distance of :math:`x_\text{new}` from the average |x|. It also replaces :math:`c` with a critical value from the :math:`t`-distribution with :math:`n-k` degrees of freedom, which is larger than the normal value, by more when :math:`n` is small. Near the center of the data, with many observations, both terms are small, the two critical values are close, and the naive interval is close to the proper one. Away from the center it is too narrow, and increasingly so the further out you predict.
 
 A better attempt to construct prediction intervals for the least squares model
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
