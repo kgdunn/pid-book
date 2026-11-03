@@ -490,8 +490,15 @@ def _looks_like_prose(text: str) -> bool:
     return len(words) >= 5 and len(numbers) < 3
 
 
+# A zero's sign is rounding noise: it flips with the BLAS kernel or a library release while the value
+# stays the same, so "-0.0" and "0.0" (or "-0." and "0.") compare equal. "-0.05" is left alone.
+# NumPy pads "[" with a space where a sign could go, so that padding is dropped too.
+SIGNED_ZERO_RE = re.compile(r"(?<![\w.])-(0(?:\.0*)?)(?![\d.])")
+
+
 def _normalise(text: str) -> str:
-    return re.sub(r"\s+", " ", text).strip()
+    text = re.sub(r"\[\s+", "[", re.sub(r"\s+", " ", text).strip())
+    return SIGNED_ZERO_RE.sub(r"\1", text)
 
 
 def output_mismatches(source: str, stdout: str) -> list[str]:
