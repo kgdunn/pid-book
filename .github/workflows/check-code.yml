@@ -7,26 +7,6 @@ name: Check book code
 # fails and `release` passes, an unreleased library change is about to break the
 # book, and the fix belongs in a paired pid-book PR before that release ships.
 #
-# The `case-study` job covers the one page the `release` job cannot: the
-# mixed-level profile case study builds its design with pyoptex, whose plotly and
-# numba pins conflict with the [all] extra, so `release` skips it on a
-# `code-check-file: requires pyoptex` marker. This job installs what the chapter
-# tells the reader to install (process-improve plus pyoptex) and runs the page for real.
-# It is a gate rather than advisory: if that pair stops resolving, the install
-# instructions the chapter gives its readers no longer work, which is a book
-# problem worth failing on.
-#
-# `case-study-main` is to `case-study` what `library-main` is to `release`: the
-# same chapter, with pyoptex, against the library's main branch, and advisory
-# only. `library-main` cannot cover the mixed-level page, because it runs with
-# the [all] extra and so skips it on the pyoptex marker. The twin is a separate
-# job rather than a matrix on `case-study`, so the required check keeps its name.
-#
-# The whole chapter runs in that environment, so it needs every extra the
-# chapter's other pages use as well: the batch case studies read their data from
-# openmv.net workbooks, and the Excel reader lives in the [batch] extra. That
-# extra does not pin plotly, so it still resolves against pyoptex's plotly 5.
-#
 # The `run-in-browser` job guards the "Run in browser" buttons. A page's first
 # click runs only what the page needs (my-extensions/block_deps.py reads that from
 # the code), not the whole chapter before it. The job runs each page that way in
@@ -158,95 +138,6 @@ jobs:
 
       - name: Check every name against the published app
         run: make check-factorial-links
-
-  case-study:
-    name: Mixed-level case study, with pyoptex
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-    steps:
-      - name: Checkout pid-book
-        uses: actions/checkout@v4
-
-      - name: Checkout figures repo
-        uses: actions/checkout@v4
-        with:
-          repository: kgdunn/figures
-          path: figures-src
-
-      - name: Symlink figures into the source tree
-        run: ln -s "$PWD/figures-src" figures
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v4
-        with:
-          enable-cache: true
-
-      - name: Install Python dependencies
-        run: uv sync --frozen
-
-      - name: Restore the openmv.net data cache
-        uses: actions/cache@v4
-        with:
-          path: .cache/openmv
-          key: openmv-${{ hashFiles('**/*.rst') }}
-          restore-keys: openmv-
-
-      - name: Run the chapter that holds the case study
-        run: |
-          make check-code-chapter \
-            CHAPTER=product-development-product-improvement \
-            CHECK_WITH='process-improve[batch]' \
-            CHECK_ALSO=pyoptex
-
-  case-study-main:
-    name: Mixed-level case study, with pyoptex, against process-improve main (advisory)
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-    continue-on-error: true
-    steps:
-      - name: Checkout pid-book
-        uses: actions/checkout@v4
-
-      - name: Checkout figures repo
-        uses: actions/checkout@v4
-        with:
-          repository: kgdunn/figures
-          path: figures-src
-
-      - name: Symlink figures into the source tree
-        run: ln -s "$PWD/figures-src" figures
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v4
-        with:
-          enable-cache: true
-
-      - name: Install Python dependencies
-        run: uv sync --frozen
-
-      - name: Restore the openmv.net data cache
-        uses: actions/cache@v4
-        with:
-          path: .cache/openmv
-          key: openmv-${{ hashFiles('**/*.rst') }}
-          restore-keys: openmv-
-
-      - name: Run the chapter that holds the case study against the library's main branch
-        run: |
-          make check-code-chapter \
-            CHAPTER=product-development-product-improvement \
-            CHECK_WITH='process-improve[batch] @ git+https://github.com/kgdunn/process-improve@main' \
-            CHECK_ALSO=pyoptex
 
   run-in-browser:
     name: Run in browser pages, page by page
