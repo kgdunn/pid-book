@@ -208,9 +208,9 @@ with :math:`p` model terms, :math:`N` runs and :math:`v_\text{max}` the largest 
                   f"{m['average_prediction_variance']:.3g}, {m['g_efficiency']:.1f}, "
                   f"{q['0.5']:.2f}, {q['1']:.2f}")
             # i_optimal, 60, 24.1, 0.41, 40.5, 0.39, 1.65
-            # i_optimal, 48, 22.1, 0.621, 23.6, 0.57, 3.52
-            # d_optimal, 60, 27.7, 0.555, 66.5, 0.55, 1.00
-            # d_optimal, 48, 26.2, 1.09, 27.1, 1.06, 3.08
+            # i_optimal, 48, 22.2, 0.6, 26.9, 0.55, 3.10
+            # d_optimal, 60, 28.1, 0.585, 66.0, 0.59, 1.01
+            # d_optimal, 48, 26.1, 1.49, 30.5, 1.47, 2.74
             fig.add_scatter(x=[float(k) for k in q], y=list(q.values()),
                             mode="lines+markers",
                             line=dict(color=colour, dash=dash, width=width),
@@ -242,23 +242,23 @@ design has the lower average prediction variance.
         - 0.39
         - 1.65
     *   - I-optimal, n = 48
-        - 22.1
-        - 0.621
-        - 23.6
-        - 0.57
-        - 3.52
-    *   - D-optimal, n = 60
-        - 27.7
-        - 0.555
-        - 66.5
+        - 22.2
+        - 0.600
+        - 26.9
         - 0.55
-        - 1.00
+        - 3.10
+    *   - D-optimal, n = 60
+        - 28.1
+        - 0.585
+        - 66.0
+        - 0.59
+        - 1.01
     *   - D-optimal, n = 48
-        - 26.2
-        - 1.09
-        - 27.1
-        - 1.06
-        - 3.08
+        - 26.1
+        - 1.49
+        - 30.5
+        - 1.47
+        - 2.74
 
 .. figure:: ../figures/doe/colour-fds-curves.png
     :align: center
@@ -269,8 +269,8 @@ design has the lower average prediction variance.
     whose scaled prediction variance is at or below a given level (vertical). The I-optimal design
     at 60 runs is lowest over most of the region; near the worst-case (right) end the D-optimal
     design at 60 runs edges below it, matching its higher G-efficiency. The D-optimal design at 48
-    runs is highest over almost all of the region, and both 48-run designs rise steeply at the
-    worst-predicted points near the region's edge.
+    runs is highest over almost all of the region. Only at the worst-predicted points near the
+    region's edge does the I-optimal design at 48 runs rise steeply past it.
 
 The purpose here is to predict and compare colour across the whole factor region, not to estimate
 a single coefficient as precisely as possible, so the I-optimal criterion matches the goal, and the
