@@ -947,17 +947,103 @@ component, which this plot does not show.
     high component 1; along component 2 the concentration sits opposite the pH, the co-solvent and
     the compound-by-temperature terms.
 
-A related route to a curve response takes a different order of operations. Functional data analysis,
-as offered in JMP Pro's Functional Data Explorer and its functional design of experiments, first
-fits each measured curve with a basis expansion (B-splines by default, with P-splines, a Fourier
-basis, or wavelets as alternatives), then reduces the fitted curves to a few *functional principal
-components*: uncorrelated shape functions whose per-curve scores summarise the profile. Those scores
-are modelled against the design factors, and because the components reconstruct the curve,
-predicting the scores predicts the whole profile. PLS reaches the profile in one step, finding
-latent directions that are at once predictable from the factors and descriptive of the response. The
-functional-data route separates the two steps: describe the curve shape first from the responses
-alone, then relate that description to the factors. Which is more convenient depends on the study;
-both return a model that maps the factors to a predicted curve.
+.. _profile-functional-route:
+
+Modelling the curve one shape at a time
+---------------------------------------
+
+The curves can also be modelled in two steps: describe, from the curves alone, the few shapes in
+which they differ, then model how much of each shape every run carries. Each shape then has an
+analysis of variance of its own, which shows the terms that shape needs, and the shapes together
+rebuild the predicted curve, with a band around it. PLS takes one step instead, finding directions
+that are at once predictable from the factors and descriptive of the curves.
+
+Functional principal component analysis (FPCA) describes the shapes. It smooths each run's ten
+readings with a penalised spline, then finds the shape functions, the *eigenfunctions*, whose
+weighted sum rebuilds every smoothed curve; a run's weight on a shape is its *score*.
+``analyze_functional_experiment`` keeps the shapes that carry 99% of the curves' variance, and any
+later one whose score the factors explain, and fits the model used so far to each score:
+
+.. code-block:: python
+
+    from process_improve.experiments import analyze_functional_experiment
+
+    profile = curves.set_axis(time_points, axis=1)  # each column is the time of a reading
+    settings = adf[["compound", *cont]]
+    fda = analyze_functional_experiment(settings, profile, model=rhs)
+    kept = fda.components.loc[fda.components["kept"], "variance_ratio"]
+    print(", ".join(f"{name} {share:.1%}" for name, share in kept.items()))
+    # FPC 1 97.8%, FPC 2 2.0%
+
+The first shape is the height of the curve. The second is the late drift, which differs by
+chromogen.
+
+A shape's own analysis of variance can show a term the model lacks. In the ground truth the drift
+is a shape of each chromogen multiplied by the curve's height, so the concentration changes the
+drift by a different amount for each chromogen: a compound-by-concentration interaction, which the
+model fitted so far leaves out. Added to the model, the term is significant on the drift score, and
+the curves predicted at the 60 runs' settings come closer to the true ones, by their
+root-mean-square gap in units of the measurement noise:
+
+.. code-block:: python
+
+    wider = rhs + " + C(compound, Sum):concentration"
+    fda_wider = analyze_functional_experiment(settings, profile, model=wider)
+    drift_anova = pd.DataFrame(fda_wider.scores["FPC 2"]["anova_table"]).set_index("source")
+    term = drift_anova.loc["C(compound, Sum):concentration"]
+    print(f"F = {term['F']:.0f}, p = {term['p_value']:.0e}")
+    # F = 33, p = 3e-11
+
+    def true_profile(r):  # the ground truth the curves were simulated from, at one run's settings
+        drift, s_co, s_ph, s_tp = truth[r["compound"]]
+        amp = max(1.0 + 0.35 * r["concentration"] + s_co * r["co_solvent"]
+                  + s_ph * r["pH"] + s_tp * r["temperature"], 0.05)
+        return amp * np.clip(ref + drift * tail, 0, None)
+
+    true_profiles = np.vstack([true_profile(r) for _, r in settings.iterrows()])
+    for name, fitted in [("model so far", fda), ("with the interaction", fda_wider)]:
+        gap = fitted.predict(settings, random_state=1)["curve"].to_numpy() - true_profiles
+        print(f"{name}: {np.sqrt(np.mean(gap ** 2)) / noise_sd:.2f}")
+        # model so far: 0.87
+        # with the interaction: 0.48
+
+The gap matters most where the drift is largest. For chromogen D at high concentration, with the
+other factors centred, the curve predicted without the interaction ends more than twice the
+measurement noise below the true one, and its 95% band at each time point is three times as wide:
+
+.. code-block:: python
+
+    at = pd.DataFrame([{"compound": "D", "concentration": 1.0, "co_solvent": 0.0, "pH": 0.0,
+                        "temperature": 0.0}])
+    true_d = true_profile(at.iloc[0])
+    fig = make_subplots(rows=1, cols=2, subplot_titles=("shapes", "chromogen D, high concentration"))
+    for name, shape in fda.fpca.eigenfunctions_.iloc[:, :2].items():
+        fig.add_scatter(x=time_points, y=shape, mode="lines+markers", name=name, row=1, col=1)
+    fig.add_scatter(x=time_points, y=true_d, mode="lines+markers", name="true curve", row=1, col=2)
+    for name, fitted in [("model so far", fda), ("with the interaction", fda_wider)]:
+        band = fitted.predict(at, random_state=1)
+        curve, high, low = (band[key].iloc[0] for key in ("curve", "pointwise_high", "pointwise_low"))
+        end, half = curve.iloc[-1] - true_d[-1], high.iloc[-1] - curve.iloc[-1]
+        print(f"{name}: ends {end:+.3f}, band +/- {half:.3f}")
+        # model so far: ends -0.068, band +/- 0.063
+        # with the interaction: ends +0.001, band +/- 0.021
+        fig.add_scatter(x=time_points, y=curve, mode="lines", name=name, row=1, col=2)
+        fig.add_scatter(x=time_points, y=high, mode="lines", line=dict(width=0), showlegend=False,
+                        row=1, col=2)
+        fig.add_scatter(x=time_points, y=low, mode="lines", line=dict(width=0), fill="tonexty",
+                        name=f"95% band, {name}", row=1, col=2)
+    fig.show()
+
+.. figure:: ../figures/doe/colour-fpca-shapes-and-bands.png
+    :align: center
+    :width: 780px
+    :alt: colour-fpca-shapes-and-bands.py
+
+    Left: the two shapes the 60 runs' curves differ in, each with its share of the curves' variance
+    in square brackets: the height of the curve and the late drift. Right: chromogen D at high
+    concentration, the other factors centred. Without the compound-by-concentration term the
+    predicted curve (dashed) falls below the true curve from the fifth time point on, and its 95%
+    band at each point (shaded) is wide; with the term, the predicted curve lies on the true one.
 
 .. _profile-model-diagnostics:
 
@@ -1004,7 +1090,8 @@ for new rows:
 
     goal_x = encode("A", concentration=0, co_solvent=0, pH=0, temperature=0)
     goal = pls_full.diagnose(goal_x)
-    print(f"SPE {float(goal.spe.iloc[0]):.1f}, T2 {float(goal.hotellings_t2.iloc[0]):.2f}")
+    goal_t2 = float(goal.cumulative_hotellings_t2.iloc[0, -1])  # T2 of the three-component model
+    print(f"SPE {float(goal.spe.iloc[0]):.1f}, T2 {goal_t2:.2f}")
     # SPE 1.6, T2 0.06
 
     t2 = pls_full.hotellings_t2_.iloc[:, -1]  # per-run T2 at three components
@@ -1026,7 +1113,7 @@ for new rows:
         fig.add_scatter(x=t2[m], y=spe[m], mode="markers", name=c,
                         marker=dict(color=colour_of[c], symbol=symbol[m], size=size[m],
                                     line=dict(width=1, color=colour_of[c])))
-    fig.add_scatter(x=[float(goal.hotellings_t2.iloc[0])], y=[float(goal.spe.iloc[0])],
+    fig.add_scatter(x=[goal_t2], y=[float(goal.spe.iloc[0])],
                     mode="markers", name="goal: A at centre",
                     marker=dict(symbol="star", size=16, color="black"))
     fig.add_vline(x=pls_full.hotellings_t2_limit(), line_dash="dash")
@@ -1840,7 +1927,7 @@ best attainable match:
 
     def t2_spe(compound, coded):  # 3-component diagnostics of an inverted point
         d = pls_full.diagnose(encode(compound, *coded))
-        return float(d.hotellings_t2.iloc[0]), float(d.spe.iloc[0])
+        return float(d.cumulative_hotellings_t2.iloc[0, -1]), float(d.spe.iloc[0])
 
     def relaxed_inversion(compound):  # constrained inversion (Muteki-MacGregor 2007)
         objective = lambda c: float(np.sum((y_goal - curve_of(compound, c)) ** 2))

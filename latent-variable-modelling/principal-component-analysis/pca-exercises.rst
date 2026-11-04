@@ -298,7 +298,7 @@ variant for questions 10 and 11.
 	model_t = PCA(n_components=2).fit(scaler_t.transform(train))
 	result = model_t.diagnose(scaler_t.transform(wafer))
 
-	t2 = result.hotellings_t2.iloc[:, -1]
+	t2 = result.cumulative_hotellings_t2.iloc[:, -1]
 	spe = result.spe
 	t2_limit = float(model_t.hotellings_t2_limit(conf_level=0.95))
 	spe_limit = float(model_t.spe_limit(conf_level=0.95))
