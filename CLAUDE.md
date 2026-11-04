@@ -238,8 +238,10 @@ The contract, which any new or edited code must satisfy:
   the same three apply to **every** block in that file. That is the right
   granularity when one block's dependency decides the whole file: the blocks
   share a namespace, so a file whose first block cannot run has nothing later
-  to run either. `mixed-level-profile-case-study.rst` uses it for `pyoptex`.
-  A per-block marker still wins for the block it sits above.
+  to run either: a file whose first block imports a package that cannot share
+  an environment with `process-improve[all]` takes
+  `.. code-check-file: requires <module>`. A per-block marker still wins for
+  the block it sits above.
 - **Before pushing**, run the chapter you touched:
   `make check-code-chapter CHAPTER=<dir>` (verbose, one line per block), or
   `make check-code-file FILE=<path.rst>` for one file after the files that
