@@ -1004,7 +1004,8 @@ for new rows:
 
     goal_x = encode("A", concentration=0, co_solvent=0, pH=0, temperature=0)
     goal = pls_full.diagnose(goal_x)
-    print(f"SPE {float(goal.spe.iloc[0]):.1f}, T2 {float(goal.hotellings_t2.iloc[0]):.2f}")
+    goal_t2 = float(goal.cumulative_hotellings_t2.iloc[0, -1])  # last column: all components
+    print(f"SPE {float(goal.spe.iloc[0]):.1f}, T2 {goal_t2:.2f}")
     # SPE 1.6, T2 0.06
 
     t2 = pls_full.hotellings_t2_.iloc[:, -1]  # per-run T2 at three components
@@ -1026,7 +1027,7 @@ for new rows:
         fig.add_scatter(x=t2[m], y=spe[m], mode="markers", name=c,
                         marker=dict(color=colour_of[c], symbol=symbol[m], size=size[m],
                                     line=dict(width=1, color=colour_of[c])))
-    fig.add_scatter(x=[float(goal.hotellings_t2.iloc[0])], y=[float(goal.spe.iloc[0])],
+    fig.add_scatter(x=[goal_t2], y=[float(goal.spe.iloc[0])],
                     mode="markers", name="goal: A at centre",
                     marker=dict(symbol="star", size=16, color="black"))
     fig.add_vline(x=pls_full.hotellings_t2_limit(), line_dash="dash")
@@ -1840,7 +1841,7 @@ best attainable match:
 
     def t2_spe(compound, coded):  # 3-component diagnostics of an inverted point
         d = pls_full.diagnose(encode(compound, *coded))
-        return float(d.hotellings_t2.iloc[0]), float(d.spe.iloc[0])
+        return float(d.cumulative_hotellings_t2.iloc[0, -1]), float(d.spe.iloc[0])
 
     def relaxed_inversion(compound):  # constrained inversion (Muteki-MacGregor 2007)
         objective = lambda c: float(np.sum((y_goal - curve_of(compound, c)) ** 2))

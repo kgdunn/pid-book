@@ -466,7 +466,7 @@ read out two diagnostics:
 .. code-block:: python
 
 	result = model.diagnose(scaler.transform(p2_sub))
-	t2 = result.hotellings_t2.iloc[:, -1]
+	t2 = result.cumulative_hotellings_t2.iloc[:, -1]
 	spe = result.spe
 	t2_lim = float(model.hotellings_t2_limit(conf_level=0.95))
 	spe_lim = float(model.spe_limit(conf_level=0.95))
