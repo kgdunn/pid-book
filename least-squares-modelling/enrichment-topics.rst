@@ -143,6 +143,9 @@ observations can be unusual before this slope estimate breaks down.
 	out = robust_regression(
 	    distill["TempC2"].values,
 	    distill["VapourPressure"].values,
+	    # Confidence intervals from refits to resampled data, so they
+	    # resist outliers as the slope does.
+	    intervals="bootstrap",
 	)
 
 	# Intercept 175.6 and slope -0.290: close to the
