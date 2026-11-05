@@ -154,23 +154,28 @@ const elements = [
     data: { id: c.id, label: c.short, olabel: `${c.short}\n${c.size} terms`, d: 2 * c.r } })),
   ...DATA.nodes.map(n => ({ group: "nodes", classes: `term fam-${fam(n)}`, position: { x: n.x, y: n.y },
     data: { id: n.id, label: n.name, rank: n.rank, topic: n.cluster } })),
-  ...DATA.edges.map((e, i) => ({ group: "edges", classes: "link", data: { id: `l${i}`, source: e.source, target: e.target } })),
+  ...DATA.edges.map((e, i) => ({ group: "edges", data: { id: `l${i}`, source: e.source, target: e.target },
+    classes: terms.get(e.source).cluster === terms.get(e.target).cluster ? "link" : "link cross" })),
   ...DATA.cluster_links.map((e, i) => ({ group: "edges", classes: "between", data: { id: `b${i}`, source: e.a, target: e.b, n: e.n } })),
 ];
 const cy = cytoscape({ container: document.getElementById("cy"), elements, layout: { name: "preset" }, autoungrabify: true,
   autounselectify: true, boxSelectionEnabled: false, wheelSensitivity: 0.35, pixelRatio: "auto" });
 
 let selected = null;   // a term id, a topic id, or null for the overview
-let labelLimit = -1;
+const DETAIL_GAP = 26;   // on-screen distance between terms at which they appear
 
-// How many terms per topic carry a label, from the on-screen distance between neighbouring terms.
-function limitFor(gap) { return gap < 26 ? 0 : gap < 42 ? 3 : gap < 70 ? 8 : gap < 96 ? 15 : 99; }
+// An on-screen size: `base` where the terms appear, then growing more slowly than the map as you zoom in.
+function grow(z, base, power, max) {
+  return Math.min(max, Math.max(base, base * Math.pow(z * TERM_GAP / DETAIL_GAP, power)));
+}
+// Label font, term dot and link width on screen; slow enough to keep growing up to the deepest zoom.
+const sizes = z => ({ font: grow(z, 11, 0.25, 19), dot: grow(z, 7, 0.5, 22), line: grow(z, 1, 0.4, 2.6) });
 
 function sheet(z) {
-  const px = v => v / z;                 // a size that stays the same on screen at any zoom
-  const gap = TERM_GAP * z;
-  const overview = gap < 26;
-  const size = Math.min(Math.max(px(6), 9), px(16));
+  const px = v => v / z;                 // screen pixels to drawing units
+  const overview = TERM_GAP * z < DETAIL_GAP;
+  const { font, dot, line } = sizes(z);
+  const size = px(dot);
   const famRules = Object.entries(FAMILIES).map(([k, [, shape]]) =>
     ({ selector: `.fam-${k}`, style: { shape, "background-color": css(`--f-${k}`) } }));
   return [
@@ -180,7 +185,7 @@ function sheet(z) {
       events: "no",   // a drag on a circle must pan the map; a tap inside one is matched in the background handler
 
       label: overview ? "data(olabel)" : "data(label)", "font-family": "IBM Plex Sans Condensed, Arial Narrow, sans-serif", "font-weight": 600,
-      color: overview ? css("--fg") : css("--muted"), "font-size": px(overview ? 13 : 12), "text-wrap": "wrap",
+      color: overview ? css("--fg") : css("--muted"), "font-size": px(overview ? 13 : grow(z, 12, 0.3, 17)), "text-wrap": "wrap",
       "text-max-width": overview ? "data(d)" : px(220), "text-valign": overview ? "center" : "top",
       "text-margin-y": overview ? 0 : px(-4), "text-opacity": overview ? 1 : 0.9,
       "text-background-color": css("--bubble"), "text-background-opacity": overview ? 0.92 : 0,
@@ -191,36 +196,75 @@ function sheet(z) {
       "border-width": 0 } },
     ...famRules,
     { selector: ".term.lab", style: { label: "data(label)", color: css("--fg"), "font-family": "IBM Plex Sans, sans-serif",
-      "font-size": px(12), "text-wrap": "wrap", "text-max-width": px(Math.min(120, Math.max(80, gap * 1.15))),
+      "font-size": px(font), "text-wrap": "wrap", "text-max-width": px(font * LABEL_EMS),
       "text-valign": "bottom", "text-margin-y": px(3), "text-background-color": css("--panel"), "text-background-opacity": 0.8,
       "text-background-padding": px(1.5), "text-background-shape": "roundrectangle" } },
     { selector: ".term.sel", style: { width: size * 1.9, height: size * 1.9, "border-width": px(2.5), "border-color": css("--fg"),
-      "font-weight": 600, "font-size": px(13.5), "z-index": 30 } },
+      "font-weight": 600, "font-size": px(font * 1.12), "z-index": 30 } },
     { selector: ".term.nb", style: { "z-index": 20 } },
-    { selector: ".link", style: { display: overview ? "none" : "element", width: px(1), "line-color": css("--line"),
-      "curve-style": "straight", "z-index": 5, opacity: 0.8 } },
-    { selector: ".link.hl", style: { display: "element", width: px(2), "line-color": css("--accent"), "target-arrow-shape": "triangle",
+    { selector: ".link", style: { display: overview ? "none" : "element", width: px(line), "line-color": css("--muted"),
+      "curve-style": "straight", "z-index": 5, opacity: 0.55 } },
+    { selector: ".link.cross", style: { opacity: 0.25 } },   // links between topics: present, but behind the topic's own
+    { selector: ".link.hl", style: { display: "element", width: px(line * 2), "line-color": css("--accent"), "target-arrow-shape": "triangle",
       "target-arrow-color": css("--accent"), "arrow-scale": 0.9, opacity: 1, "z-index": 15 } },
     { selector: ".between", style: { display: overview ? "element" : "none", "curve-style": "straight", "z-index": 1,
       width: `mapData(n, 1, 14, ${px(1)}, ${px(7)})`, "line-color": css("--muted"), opacity: 0.45 } },
     { selector: ".dim", style: { opacity: 0.18 } },
-    { selector: ".link.dim", style: { opacity: 0.05 } },
+    { selector: ".link.dim", style: { opacity: 0.08 } },
   ];
 }
 
-function refresh() {
-  const z = cy.zoom();
-  const limit = selected && terms.has(selected) ? Math.max(limitFor(TERM_GAP * z), 0) : limitFor(TERM_GAP * z);
-  cy.batch(() => {
-    cy.style(sheet(z));
-    if (limit !== labelLimit) {
-      cy.nodes(".term").forEach(n => n.toggleClass("lab", n.data("rank") < limit || n.hasClass("sel") || n.hasClass("nb")));
-      labelLimit = limit;
+// Labels are placed greedily: the selected term and its neighbours first, then the most connected terms of
+// each topic; a label that would overlap one already placed waits until zooming in makes room for it.
+const LABEL_EMS = 9;   // wrap width of a label, in multiples of its font size
+const widths = new Map();
+const ruler = document.createElement("canvas").getContext("2d");
+function textWidth(text, font) {
+  const key = `${font}|${text}`;
+  if (!widths.has(key)) { ruler.font = `${font}px "IBM Plex Sans", sans-serif`; widths.set(key, ruler.measureText(text).width); }
+  return widths.get(key);
+}
+function placeLabels(z) {
+  const gap = TERM_GAP * z;
+  const show = new Set();
+  if (gap >= DETAIL_GAP) {
+    const { font, dot } = sizes(z), wrap = font * LABEL_EMS;
+    const shown = gap < 40 ? 3 : gap < 60 ? 8 : Infinity;   // per topic, by rank, before space decides
+    const W = cy.width(), H = cy.height();
+    const candidates = [];
+    cy.nodes(".term").forEach(n => {
+      const sel = n.hasClass("sel"), forced = sel || n.hasClass("nb");
+      if (!forced && n.data("rank") >= shown) return;
+      const p = n.renderedPosition();
+      if (p.x < -160 || p.x > W + 160 || p.y < -160 || p.y > H + 160) return;
+      candidates.push({ n, p, sel, forced, order: sel ? -2 : forced ? -1 : n.data("rank") });
+    });
+    candidates.sort((a, b) => a.order - b.order || b.n.degree() - a.n.degree());
+    const boxes = [];
+    for (const c of candidates) {
+      const f = c.sel ? font * 1.12 : font;
+      const w = textWidth(c.n.data("label"), f);
+      const lines = w <= wrap ? 1 : Math.ceil((w / wrap) * 1.15);
+      const half = Math.min(w, wrap) / 2 + 4, top = c.p.y + (c.sel ? dot * 1.9 : dot) / 2 + 1;
+      const box = { x1: c.p.x - half, x2: c.p.x + half, y1: top, y2: top + lines * f * 1.3 + 4 };
+      if (c.forced || !boxes.some(o => box.x1 < o.x2 && o.x1 < box.x2 && box.y1 < o.y2 && o.y1 < box.y2)) {
+        boxes.push(box); show.add(c.n.id());
+      }
     }
+  }
+  cy.nodes(".term").forEach(n => n.toggleClass("lab", show.has(n.id())));
+}
+
+let styledZoom = null;
+function refresh(force = false) {
+  const z = cy.zoom();
+  cy.batch(() => {
+    if (force || z !== styledZoom) { cy.style(sheet(z)); styledZoom = z; }
+    placeLabels(z);
   });
 }
 let queued = false;
-cy.on("zoom", () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; refresh(); }); } });
+cy.on("viewport", () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; refresh(); }); } });
 
 function highlight(id) {
   cy.batch(() => {
@@ -235,12 +279,9 @@ function highlight(id) {
       cy.edges(".link").not(near.edges()).addClass("dim");
     } else if (id && topics.has(id)) {
       cy.getElementById(id).addClass("picked");
-      // Links that leave the open topic only clutter it.
-      cy.edges(".link").filter(e => e.source().data("topic") !== id || e.target().data("topic") !== id).addClass("dim");
     }
-    labelLimit = -1;   // labels depend on the selection too
   });
-  refresh();
+  refresh(true);
 }
 
 function move(id, animate) {
@@ -364,13 +405,13 @@ q.addEventListener("keydown", ev => {
 document.addEventListener("click", ev => { if (!ev.target.closest(".search")) results.hidden = true; });
 
 // ---------- start, theme and size changes
-const restyle = () => { drawLegend(); labelLimit = -1; refresh(); render(); };
+const restyle = () => { drawLegend(); refresh(true); render(); };
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change", restyle);
 new MutationObserver(restyle).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 window.addEventListener("hashchange", () => go(fromHash(), { hash: false }));
 let resizing;
 window.addEventListener("resize", () => { clearTimeout(resizing); resizing = setTimeout(() => { cy.resize(); setLimits(); move(selected, false); }, 150); });
-if (document.fonts) document.fonts.ready.then(() => { labelLimit = -1; refresh(); });
+if (document.fonts) document.fonts.ready.then(() => { widths.clear(); refresh(true); });
 
 drawLegend();
 setLimits();
