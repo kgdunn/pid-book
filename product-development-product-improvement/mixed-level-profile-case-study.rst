@@ -973,7 +973,9 @@ scaling that ``scale=True`` applies) and the reconstruction of that row from the
 and the X-loadings. It measures the part of the row that lies *off* the plane, in the 21 directions
 the three components do not span. ``process_improve`` reports its square root in ``spe_``, so the SPE
 values quoted here are the run's off-plane distance in scaled model-matrix units. Each has a 95%
-limit, from ``hotellings_t2_limit`` and ``spe_limit``.
+limit, from ``hotellings_t2_limit`` and ``spe_limit``. The :math:`T^2` limit is the one for the runs
+the model was fitted to, ``judged_rows="fitted"`` (:ref:`which observations a limit judges
+<LVM-Hotellings-T2-judged-rows>`).
 
 New rows are needed here and in the inversion that follows, so a small helper builds a model-matrix
 row for one setting with the same coding as the fitted matrix:
@@ -1010,9 +1012,11 @@ for new rows:
 
     t2 = pls_full.hotellings_t2_.iloc[:, -1]  # per-run T2 at three components
     spe = pls_full.spe_.iloc[:, -1]  # per-run SPE at three components
-    t2_limit, spe_limit = pls_full.hotellings_t2_limit(), pls_full.spe_limit()
+    # the limit for the runs the model was fitted to
+    t2_limit = pls_full.hotellings_t2_limit(judged_rows="fitted")
+    spe_limit = pls_full.spe_limit()
     print(f"limits: T2 {t2_limit:.1f}, SPE {spe_limit:.1f}")
-    # limits: T2 8.7, SPE 6.2
+    # limits: T2 7.5, SPE 6.2
     flagged = design.design["compound"][((t2 > t2_limit) | (spe > spe_limit)).to_numpy()]
     print(int((t2 > t2_limit).sum()), int((spe > spe_limit).sum()), sorted(set(flagged)),
           f"{t2.max():.1f}")  # runs over T2, over SPE, their compounds, largest T2
@@ -1030,21 +1034,22 @@ for new rows:
     fig.add_scatter(x=[goal_t2], y=[float(goal.spe.iloc[0])],
                     mode="markers", name="goal: A at centre",
                     marker=dict(symbol="star", size=16, color="black"))
-    fig.add_vline(x=pls_full.hotellings_t2_limit(), line_dash="dash")
+    fig.add_vline(x=t2_limit, line_dash="dash")
     fig.add_hline(y=pls_full.spe_limit(), line_dash="dash")
     fig.update_layout(xaxis_title="Hotelling's T2", yaxis_title="SPE")
     fig.show()
 
-The goal's SPE is 1.6 and its :math:`T^2` is 0.06, both well inside the 95% limits of 6.2 and 8.7. It
+The goal's SPE is 1.6 and its :math:`T^2` is 0.06, both well inside the 95% limits of 6.2 and 7.5
+drawn for the runs, and the :math:`T^2` limit for a new row such as the goal is wider still. It
 sits in the region the design covered, so the model's prediction there can be used as an inversion
 target. Most of the sixty runs also fall inside both limits. The exceptions, six beyond the
 :math:`T^2` limit (the largest at 20) and three beyond the SPE limit, are all compound F. Those
 outliers are, somewhat surprisingly, mostly a property of the sum-based coding used for the compound,
 not of F particularly. The :ref:`next section <profile-categorical-coding>` writes the same model in
-three different ways and shows the outliers move from F to another level, or leave no run past the
-:math:`T^2` limit, as the coding changes. No matter which coding is used, we find compound A projects
-to a low-leverage, well-reconstructed point (its :math:`T^2` stays below 0.6 and its SPE between 1.0
-and 2.3).
+three different ways and shows the outliers move from F to another level, or shrink to a few runs
+just past the :math:`T^2` limit, as the coding changes. No matter which coding is used, we find
+compound A projects to a low-leverage, well-reconstructed point (its :math:`T^2` stays below 0.6 and
+its SPE between 1.0 and 2.3).
 
 .. figure:: ../figures/doe/colour-pls-t2-spe.png
     :align: center
@@ -1178,20 +1183,23 @@ under each coding and reading Hotelling's :math:`T^2` per run:
             fig.add_scatter(x=[comp] * int(sel.sum()), y=t2[sel], mode="markers",
                             marker=dict(color=colour_of[comp]), row=r + 1, col=c + 1,
                             showlegend=False)
-        fig.add_hline(y=model.hotellings_t2_limit(), line_dash="dash", row=r + 1, col=c + 1)
+        fig.add_hline(y=model.hotellings_t2_limit(judged_rows="fitted"), line_dash="dash",
+                      row=r + 1, col=c + 1)
         print(f"{title}: R2Y {model.r2_cumulative_.iloc[-1]:.2f}, "
-              f"{int((t2 > model.hotellings_t2_limit()).sum())} over, max {t2.max():.1f}")
+              f"{int((t2 > model.hotellings_t2_limit(judged_rows='fitted')).sum())} over, "
+              f"max {t2.max():.1f}")
         # sum, F omitted: R2Y 0.88, 6 over, max 20.2
         # sum, A omitted: R2Y 0.88, 6 over, max 17.8
-        # treatment, A reference: R2Y 0.90, 0 over, max 8.6
-        # cell-means: R2Y 0.90, 0 over, max 8.5
+        # treatment, A reference: R2Y 0.90, 3 over, max 8.6
+        # cell-means: R2Y 0.90, 2 over, max 8.5
     fig.show()
 
-Under sum coding with F omitted, the six runs past the 95% :math:`T^2` limit of 8.7 are all compound
+Under sum coding with F omitted, the six runs past the 95% :math:`T^2` limit of 7.5 are all compound
 F, and the largest reaches 20. Omit A instead, by reversing the level order, and the six flagged runs
 become compound A, at a :math:`T^2` up to 18, while F now sits inside. Under treatment or cell-means
-coding, where no level is written at the far corner of the contrast space, no run passes the limit:
-the largest :math:`T^2` is 8.6. The omitted level's runs carry :math:`-1` in every sum contrast,
+coding, where no level is written at the far corner of the contrast space, three runs and two runs
+respectively pass the limit, none by much: the largest :math:`T^2` is 8.6. A few runs just past a
+95% limit is what that limit allows among sixty. The omitted level's runs carry :math:`-1` in every sum contrast,
 which places them at the :math:`(-1, \ldots, -1)` corner of the contrast space; ``scale=True`` puts
 the contrasts on a common scale, so those runs sit farthest from the centre and take the highest
 leverage. That effect belongs to the parameterization and moves with whichever level is omitted. This
@@ -1204,9 +1212,10 @@ the coding choice.
     :alt: colour-coding-diagnostics.py
 
     Hotelling's :math:`T^2` for each run at three components, under four codings of the same
-    interaction model. The dashed line is the 95% limit (8.7). The runs over the limit follow the
-    omitted sum-coding level, F when F is dropped and A when A is dropped; treatment and cell-means
-    coding, which place no level at the far corner of the contrast space, flag no run. The high
+    interaction model. The dashed line is the 95% limit for the runs the model was fitted to (7.5).
+    The runs far over the limit follow the omitted sum-coding level, F when F is dropped and A when
+    A is dropped; treatment and cell-means coding, which place no level at the far corner of the
+    contrast space, leave three and two runs just over it. The high
     leverage of the omitted level is a property of the coding, not of the chemistry.
 
 Two things do not move with the coding. The interaction F-tests and the full-rank least-squares
@@ -1837,7 +1846,8 @@ best attainable match:
 
     from scipy.optimize import minimize
 
-    t2_lim, spe_lim = pls_full.hotellings_t2_limit(), pls_full.spe_limit()
+    # an inverted point is a new row, so it is held below the limit for new rows
+    t2_lim, spe_lim = pls_full.hotellings_t2_limit(judged_rows="new"), pls_full.spe_limit()
 
     def t2_spe(compound, coded):  # 3-component diagnostics of an inverted point
         d = pls_full.diagnose(encode(compound, *coded))
