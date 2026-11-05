@@ -64,15 +64,16 @@ file = "{FILE}"
 food = pd.read_csv(file, index_col=0)
 food_mcuv = MCUVScaler().fit_transform(food)
 model = PCA(n_components=2).fit(food_mcuv)
-model.score_plot(pc_horiz=1, pc_vert=2).show()"""
+model.score_plot(judged_rows="fitted").show()"""
 
 
 def fit_food_texture() -> tuple[pd.DataFrame, np.ndarray, pd.Series]:
     """Fit the book's two-component PCA model; return scores, the 95% ellipse and R^2 per component."""
     food = pd.read_csv(FILE, index_col=0)
     model = PCA(n_components=2).fit(MCUVScaler().fit_transform(food))
-    # The page's score plot draws the 95% limit as its second trace.
-    limit = model.score_plot(pc_horiz=1, pc_vert=2).data[1]
+    # The page's score plot draws the 95% limit as its second trace: the limit for the pastries the
+    # model was fitted to, the same call as the last line of CODE.
+    limit = model.score_plot(judged_rows="fitted").data[1]
     return model.scores_, np.column_stack([limit.x, limit.y]), model.r2_per_component_
 
 
