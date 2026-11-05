@@ -102,7 +102,8 @@ Food texture data set
 **Reproducing this analysis in Python**
 
 The block below runs the whole analysis end-to-end, including the hand-calculation verifications for questions 6 and 7. It uses the same
-``process-improve`` package and plotly idiom as the rest of the book.
+``process-improve`` package and plotly idiom as the rest of the book. Its score plot and |T2| plot judge the pastries the model was fitted
+to, so they pass ``judged_rows="fitted"``, the :ref:`limit for those observations <LVM-Hotellings-T2-judged-rows>`.
 
 .. code-block:: python
 
@@ -132,7 +133,7 @@ The block below runs the whole analysis end-to-end, including the hand-calculati
 	fig.show()
 
 	# Q4: scores plot t1 vs t2, and the raw data in sequence order
-	fig = model.score_plot(pc_horiz=1, pc_vert=2)
+	fig = model.score_plot(pc_horiz=1, pc_vert=2, judged_rows="fitted")
 	fig.show()
 
 	sample = np.arange(len(food))
@@ -146,7 +147,7 @@ The block below runs the whole analysis end-to-end, including the hand-calculati
 	fig.show()
 
 	# Q5: Hotelling's T^2 and SPE
-	model.t2_plot().show()
+	model.t2_plot(judged_rows="fitted").show()
 	model.spe_plot().show()
 
 	# Q6: hand calculation of t1 for B758 (row 36, i.e. iloc[35])
@@ -253,7 +254,9 @@ Silicon wafer thickness
 **Reproducing this analysis in Python**
 
 The block below runs the full exercise end-to-end: an initial all-184 model for outlier scouting, then the train-on-100 / test-on-all-184
-variant for questions 10 and 11.
+variant for questions 10 and 11. There the first 100 wafers, the ones the model was fitted to, are judged by the |T2| limit for those
+observations, and the other 84 by the wider limit for new observations (:ref:`which observations a limit judges
+<LVM-Hotellings-T2-judged-rows>`).
 
 .. code-block:: python
 
@@ -269,8 +272,8 @@ variant for questions 10 and 11.
 	model = PCA(n_components=2).fit(scaler.transform(wafer))
 	print("R^2 cumulative (all 184):", model.r2_cumulative_.values)
 
-	model.score_plot(pc_horiz=1, pc_vert=2).show()
-	model.t2_plot().show()
+	model.score_plot(pc_horiz=1, pc_vert=2, judged_rows="fitted").show()
+	model.t2_plot(judged_rows="fitted").show()
 	model.spe_plot().show()
 
 	for a in (1, 2):
@@ -300,14 +303,18 @@ variant for questions 10 and 11.
 
 	t2 = result.cumulative_hotellings_t2.iloc[:, -1]
 	spe = result.spe
-	t2_limit = float(model_t.hotellings_t2_limit(conf_level=0.95))
+	# the wafers the model was fitted to, and the new ones, each against its own limit
+	t2_limit = pd.Series(float(model_t.hotellings_t2_limit(conf_level=0.95, judged_rows="new")),
+		index=t2.index)
+	t2_limit.loc[train.index] = float(model_t.hotellings_t2_limit(conf_level=0.95,
+		judged_rows="fitted"))
 	spe_limit = float(model_t.spe_limit(conf_level=0.95))
 
 	fig = go.Figure()
 	fig.add_trace(go.Scatter(x=t2.index, y=t2.values, mode="lines",
 		name="T^2 (cumulative)"))
-	fig.add_hline(y=t2_limit, line_color="red", line_dash="dash",
-		annotation_text="95% limit")
+	fig.add_trace(go.Scatter(x=t2_limit.index, y=t2_limit.values, mode="lines",
+		line=dict(color="red", dash="dash", shape="hv"), name="95% limit"))
 	fig.add_vline(x=99.5, line_color="grey", line_dash="dot",
 		annotation_text="train / test boundary")
 	fig.update_layout(xaxis_title="Sample (wafer index)",
@@ -453,13 +460,13 @@ example when a join matches one record more than once.
 		            *pca_unique.r2_per_component_,
 		            *pca_unique.scores_.loc[repeated_id],
 		            t2_unique[repeated_id],
-		            pca_unique.hotellings_t2_limit(0.95),
+		            pca_unique.hotellings_t2_limit(0.95, judged_rows="fitted"),
 		        ],
 		        "Repeated 10 times": [
 		            *pca_repeated.r2_per_component_,
 		            *pca_repeated.scores_.loc[repeated_id].iloc[0] * np.sign(cos_p),
 		            t2_repeated[repeated_id].iloc[0],
-		            pca_repeated.hotellings_t2_limit(0.95),
+		            pca_repeated.hotellings_t2_limit(0.95, judged_rows="fitted"),
 		        ],
 		    },
 		    index=["R2, component 1", "R2, component 2", "t1, repeated pastry",
@@ -472,7 +479,7 @@ example when a join matches one record more than once.
 		# t1, repeated pastry         3.61               2.77
 		# t2, repeated pastry        -1.76              -0.72
 		# T2, repeated pastry         6.69               2.74
-		# T2 limit at 95%             6.64               6.54
+		# T2 limit at 95%             5.75               5.79
 
 		# Other pastries with a larger T2 than the repeated one, in the new model
 		print((t2_repeated.drop(repeated_id) > t2_repeated[repeated_id].iloc[0]).sum())
@@ -502,8 +509,8 @@ example when a join matches one record more than once.
 		print(np.degrees(np.arccos(cos_row)).round(0))
 		# [26. 15.]
 
-	Pastry B758 has the largest |T2| value of the 50 unique pastries, 6.69, just above the 95% limit
-	of 6.64. With B758 repeated 10 times:
+	Pastry B758 has the largest |T2| value of the 50 unique pastries, 6.69, above the 95% limit of 5.75
+	for the pastries the model was fitted to. With B758 repeated 10 times:
 
 	*	Each column mean moves 9/59 of the way toward B758's value, and the standard deviations of Oil
 		and Density, on which B758 lies more than two standard deviations from the mean, grow by 29%
