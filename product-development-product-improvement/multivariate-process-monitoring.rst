@@ -401,11 +401,13 @@ Two components are enough to demonstrate the monitoring idea, so we proceed
 with the 2-component model.
 
 The score plot of phase 1 with the 95% Hotelling's :math:`T^2` ellipse shows
-where the in-control operating region lies in score space:
+where the in-control operating region lies in score space. The ellipse is
+drawn for the subgroups the model was fitted to, ``judged_rows="fitted"``
+(:ref:`which observations a limit judges <LVM-Hotellings-T2-judged-rows>`):
 
 .. code-block:: python
 
-	model.score_plot(pc_horiz=1, pc_vert=2).show()
+	model.score_plot(pc_horiz=1, pc_vert=2, judged_rows="fitted").show()
 
 .. figure:: ../figures/monitoring/Flotation-MSPC-score-phase1.png
 	:alt: Phase-1 score plot of the flotation cell with the 95% T^2 ellipse.
@@ -461,14 +463,16 @@ read out two diagnostics:
   by the model). ``process_improve`` reports SPE on the square-root scale,
   as a distance from the plane, and its ``spe_limit`` is on the same scale.
 
-``PCA.diagnose`` returns both, alongside the per-subgroup scores:
+``PCA.diagnose`` returns both, alongside the per-subgroup scores. The
+phase-2 subgroups are new rows to the model, so their :math:`T^2` limit is
+the wider one for new observations, ``judged_rows="new"``:
 
 .. code-block:: python
 
 	result = model.diagnose(scaler.transform(p2_sub))
 	t2 = result.cumulative_hotellings_t2.iloc[:, -1]
 	spe = result.spe
-	t2_lim = float(model.hotellings_t2_limit(conf_level=0.95))
+	t2_lim = float(model.hotellings_t2_limit(conf_level=0.95, judged_rows="new"))
 	spe_lim = float(model.spe_limit(conf_level=0.95))
 	print(f"95% T^2 limit: {t2_lim:.2f}")
 	print(f"95% SPE limit: {spe_lim:.2f}")
