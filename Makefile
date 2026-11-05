@@ -15,7 +15,7 @@ PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 ALLRELAXEDOPTS  =  -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(RELAXOPTS) .
 
-.PHONY: help setup clean clean-all html dirhtml singlehtml pickle json htmlhelp epub latex latexpdf text gettext linkcheck serve pre-commit-install pre-commit-run check-code check-code-chapter check-code-file
+.PHONY: help setup clean clean-all html dirhtml singlehtml pickle json htmlhelp epub latex latexpdf text gettext linkcheck serve pre-commit-install pre-commit-run check-code check-code-chapter check-code-file check-run-deps check-browser check-factorial-links
 
 .DEFAULT_GOAL := latexpdf
 
@@ -38,6 +38,8 @@ help:
 	@echo "  check-code          Execute every Python case in the book against process-improve"
 	@echo "  check-code-chapter  One chapter, verbose: make check-code-chapter CHAPTER=least-squares-modelling"
 	@echo "  check-code-file     One RST file (after the files before it): make check-code-file FILE=path.rst"
+	@echo "  check-run-deps      Prove the Run in browser plans: CHAPTER=... for one chapter"
+	@echo "  check-browser       Click every Run in browser button in headless Chromium (after make html)"
 	@echo "  clean               Remove build artifacts"
 	@echo "  clean-all           Also remove the venv and lockfile"
 	@echo
@@ -77,13 +79,7 @@ setup:		## Bootstrap the toolchain: install uv, create .venv, sync deps from pyp
 # project environment with ``uv run --with`` so uv.lock does not change; the
 # default is the PyPI release, which is what readers install.
 CHECK_WITH ?= process-improve[all]
-# CHECK_ALSO adds one more distribution to the environment. The mixed-level case
-# study needs pyoptex, which cannot share an environment with the [all] extra, so
-# that page is checked separately with CHECK_WITH='process-improve[expt]'
-# CHECK_ALSO=pyoptex, which is exactly what the chapter tells the reader to install.
-CHECK_ALSO ?=
-CHECK_RUN   = uv run --with '$(CHECK_WITH)' $(if $(CHECK_ALSO),--with '$(CHECK_ALSO)',) \
-              --with pytest --with pytest-xdist
+CHECK_RUN   = uv run --with '$(CHECK_WITH)' --with pytest --with pytest-xdist
 
 check-code:	## Execute every Python case in the book (all chapters in parallel)
 	$(CHECK_RUN) pytest tests -n auto
@@ -93,6 +89,15 @@ check-code-chapter:	## One chapter, verbose: make check-code-chapter CHAPTER=lea
 
 check-code-file:	## One RST file, run after the files that precede it in its chapter
 	$(CHECK_RUN) python tools/check_code_blocks.py --file $(FILE) --strict-output -v
+
+check-run-deps:	## Each Run in browser plan leaves its example as the whole chapter does
+	$(CHECK_RUN) python tools/check_run_deps.py $(if $(CHAPTER),--chapter $(CHAPTER),)
+
+check-browser:	## Click every Run in browser button in headless Chromium: needs make html, Playwright
+	node tools/check_browser.mjs $(if $(CHAPTER),--chapter $(CHAPTER),)
+
+check-factorial-links:	## Each :factorial: link names an example factori.al publishes, linking back to its page
+	uv run python tools/check_factorial_links.py $(if $(INDEX),--index $(INDEX),)
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html

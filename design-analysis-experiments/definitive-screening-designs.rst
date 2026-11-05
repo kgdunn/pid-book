@@ -91,7 +91,9 @@ It helps to see a DSD as a concrete table of runs. The ``process_improve`` packa
 from a list of factors: ask for the ``"dsd"`` design type and you get back the coded run matrix.
 Here we take six continuous factors, :math:`A` through :math:`F`. Six factors give
 :math:`2k + 1 = 13` runs; the centre run is part of the construction, so no extra centre points
-are requested.
+are requested. `Factorial <https://factori.al/>`__, the designed-experiments app, generates a DSD
+for factors a reader enters, simulates its results from a process with a known model, and analyses
+them, in the browser.
 
 .. code-block:: python
 
@@ -100,7 +102,7 @@ are requested.
     from process_improve.experiments import Factor, generate_design
 
     factors = [Factor(name=c, low=-1, high=1) for c in "ABCDEF"]   # six factors
-    dsd = generate_design(factors, design_type="dsd", random_seed=42)
+    dsd = generate_design(factors, design_type="dsd", random_state=42)
     print(dsd.n_runs, dsd.metadata["construction"])               # 13 paley_q=5
 
     # generate_design returns the runs in randomized execution order. Reorder them into
@@ -137,8 +139,8 @@ the :ref:`next sections <DOE-omars-designs>`:
         response from a straight one.
 
     *   Every factor is exercised at all three levels, and exactly one factor sits at :math:`0`
-        in each non-centre run (the grey staircase, which is the conference matrix's zero
-        diagonal). Thirteen runs cover six factors at three levels each: the economy that makes
+        in each non-centre run (the grey cells: the conference matrix has exactly one zero in each
+        row and each column). Thirteen runs cover six factors at three levels each: the economy that makes
         a DSD attractive as a first experiment.
 
 .. figure:: ../figures/doe/dsd-run-matrix.png

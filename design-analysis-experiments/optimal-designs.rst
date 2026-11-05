@@ -373,7 +373,7 @@ template into the feasible region without abandoning what makes it a template.
 
 The optimal-design recipe handles it without fuss. We specify the quadratic model, let the computer
 build the candidate set from the feasible grid points (everything with :math:`x_1 + x_2 \le 1`), ask
-for, say, ten runs, and let coordinate-exchange maximize :math:`\det(\mathbf{M})`. The resulting
+for, say, ten runs, and let point exchange maximize :math:`\det(\mathbf{M})` over those points. The resulting
 D-optimal design is:
 
 .. list-table:: A 10-run D-optimal design for the quadratic model on the constrained region.

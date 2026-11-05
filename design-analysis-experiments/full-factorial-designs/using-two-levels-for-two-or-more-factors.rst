@@ -57,6 +57,8 @@ The range over which they will be varied is given in the table. This range was i
 
 	Experiments were performed in random order; in this case, we happened to run experiment 4 first and experiment 3 last.
 
+	:factorial:`conversion`, the designed-experiments app, opens these four runs with their results, in the order they were run.
+
 #.	For simple systems you can visualize the design and results :ref:`as shown in the following figure <DOE-fig-Cube-plot>`. This is known as a :index:`cube plot`.
 
 	.. _DOE-fig-Cube-plot:
@@ -154,6 +156,8 @@ Let's use a :ref:`different system here to illustrate <DOE-fig-interaction-examp
 	| 4         | |+|  (400 K)  | |+| (1.25 g/L)  |  89          |
 	+-----------+---------------+-----------------+--------------+
 
+:factorial:`conversion-interaction`, the designed-experiments app, opens these four runs with their results.
+
 The main effect of temperature for this system is
 
 		-	:math:`\Delta T_{S-} = 79 - 77 = 2\%` per 10 K
@@ -195,7 +199,7 @@ For the :math:`S` interaction with :math:`T`,
 	-	Change in conversion due to :math:`S` at low :math:`T`: :math:`81 - 77 = +4`
 	-	The half difference: :math:`[+10 - (+4)]/2 = \bf{3}`
 
-A large, positive interaction term indicates that temperature and substrate concentration will increase conversion by a greater amount when both :math:`T` and :math:`S` are high. Similarly, these two terms will rapidly reduce conversion when they both are low.
+A large, positive interaction term indicates that temperature and substrate concentration will increase conversion by a greater amount when both :math:`T` and :math:`S` are high.
 
 We will get an improved appreciation for interpreting main effects and the interaction effect when we consider the analysis in the form of a linear, least squares model.
 

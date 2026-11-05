@@ -164,7 +164,7 @@ where :math:`y_i` is the response variable :math:`d_i` is an indicator variable.
 	group_difference(brittle$TK104, brittle$TK107)
 	lm_difference(brittle$TK104, brittle$TK107)
 
-Use this function in the same way you did in :ref:`the carbon dioxide exercise in the univariate section <univariate-CO2-question>`. For example, you will find when comparing TK104 and TK107 that :math:`z = 1.4056` and the confidence interval is :math:`-21.4 \leq \mu_{107} - \mu_{104}\leq 119`. Similarly, when coding :math:`d_i = 0` for reactor TK104 and :math:`d_i = 1` for reactor TK107, we get the least squares confidence interval for parameter :math:`g`: :math:`-21.4 \leq g \leq 119`. This is a little surprising, because the first method creates a pooled variance and calculates a :math:`z`-value and then a confidence interval. The least squares method builds a linear model, and then calculates the confidence interval using the model's standard error.
+Use this function in the same way you did in :ref:`the carbon dioxide exercise in the univariate section <univariate-CO2-question>`. For example, you will find when comparing TK104 and TK107 that :math:`z = 1.4056` and the confidence interval is :math:`-21.4 \leq \mu_{107} - \mu_{104}\leq 119.6`. Similarly, when coding :math:`d_i = 0` for reactor TK104 and :math:`d_i = 1` for reactor TK107, we get the least squares confidence interval for parameter :math:`g`: :math:`-21.4 \leq g \leq 119.6`. This is a little surprising, because the first method creates a pooled variance and calculates a :math:`z`-value and then a confidence interval. The least squares method builds a linear model, and then calculates the confidence interval using the model's standard error.
 
 Both methods give identical results, but by very different routes.
 
@@ -191,11 +191,11 @@ Let's take a look at a more engineering-oriented example. We :ref:`previously co
 **Case B**   338 470 558 426 733 539 240 628 517
 ==========   === === === === === === === === ===
 
-Fisher's insight was to create one long vector of these outcomes (length of vector = :math:`n_A + n_B`) and randomly assign "A" to :math:`n_A` of the values and "B" to :math:`n_B` of the values. One can show that there are :math:`\dfrac{(n_A + n_B)!}{n_A! n_B!}` possible combinations. For example, if :math:`n_A=8` and :math:`n_B = 9`, then the number of unique ways to split these 17 experiments into two groups of 8 (A) and 9 (B) is 24,310 ways. For example, one way is BABB ABBA ABAB BAAB, and you would therefore assign the experimental values accordingly (B = 254, A = 440, B = 501, B = 368, A = 697, etc.).
+Fisher's insight was to create one long vector of these outcomes (length of vector = :math:`n_A + n_B`) and randomly assign "A" to :math:`n_A` of the values and "B" to :math:`n_B` of the values. One can show that there are :math:`\dfrac{(n_A + n_B)!}{n_A! n_B!}` possible combinations. For example, if :math:`n_A=8` and :math:`n_B = 9`, then the number of unique ways to split these 17 experiments into two groups of 8 (A) and 9 (B) is 24,310 ways. For example, one way is BABB ABBA ABAB BAAB A, and you would therefore assign the experimental values accordingly (B = 254, A = 440, B = 501, B = 368, A = 697, etc.).
 
 Only one of the 24,310 sequences will correspond to the actual data printed in the above table. Although all the other realizations are possible, they are fictitious. We do this because the null hypothesis is that there is no difference between A and B. Values in the table could have come from either system.
 
-So for each of the 24,310 realizations, we calculate the difference of the averages, :math:`\overline{y}_B - \overline{y}_A`, and plot a histogram of these differences. This is shown below, together with a vertical line indicating the actual realization in the table. There are 4956 permutations that had a greater difference than the one actually realized; that is, 79.6% of the other combinations had a smaller value.
+So for each of the 24,310 realizations, we calculate the difference of the averages, :math:`\overline{y}_B - \overline{y}_A`, and plot a histogram of these differences. This is shown below, together with a vertical line indicating the actual realization in the table. There are 4956 permutations that had a greater difference than the one actually realized; that is, 79.6% of the combinations had a difference no greater than it.
 
 Had we used a formal test of differences where we pooled the variances, we would have found a :math:`z`-value of 0.8435, and the probability of obtaining that value, using the :math:`t`-distribution with :math:`n_A + n_B - 2 = 15` degrees of freedom, would be 79.4%. See how close they agree?
 
@@ -218,9 +218,24 @@ You can build the reference distribution yourself; enumerating all 24,310 splits
 	    differences.append((grand_total - sum_A) / (n_total - n_A) - sum_A / n_A)
 
 	observed = case_B.mean() - case_A.mean()
-	print(len(differences), observed, sum(d > observed for d in differences))
+	exceed = sum(d > observed for d in differences)
+	print(len(differences), f"{observed:.1f}", exceed, f"{1 - exceed / len(differences):.1%}")
+	# 24310 63.2 4956 79.6%
 
-	fig = go.Figure(go.Histogram(x=differences, nbinsx=50))
+	# The t-distribution with n_A + n_B - 2 = 15 degrees of freedom, on the scale of the
+	# difference (its pooled standard error) and of the histogram's counts.
+	from scipy import stats
+
+	dof = n_total - 2
+	s_pooled = np.sqrt(((n_A - 1) * case_A.var(ddof=1) + (len(case_B) - 1) * case_B.var(ddof=1)) / dof)
+	std_error = s_pooled * np.sqrt(1 / n_A + 1 / len(case_B))
+	width = (max(differences) - min(differences)) / 50
+	curve_x = np.linspace(min(differences), max(differences), 201)
+	curve_y = stats.t.pdf(curve_x / std_error, dof) / std_error * len(differences) * width
+
+	fig = go.Figure(go.Histogram(x=differences, name="splits",
+	                            xbins=dict(start=min(differences), end=max(differences), size=width)))
+	fig.add_scatter(x=curve_x, y=curve_y, mode="lines", name="t-distribution, 15 degrees of freedom")
 	fig.add_vline(x=observed, line_color="red")
 	fig.update_layout(xaxis_title="Difference in averages, B minus A",
 	                  yaxis_title="Number of splits")

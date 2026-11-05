@@ -53,11 +53,12 @@ ignore = ["E501"]  # line length is handled by the formatter, not the linter
 # rstcheck is a checker only — it never rewrites files. It runs with Sphinx
 # support, so the standard Sphinx directives are recognised. The entries below
 # cover what it cannot know on its own: the custom `youtube` directive, the
-# `todo` directive from sphinx.ext.todo, and the math substitutions defined in
-# conf.py's `rst_epilog`.
+# `todo` directive from sphinx.ext.todo, the custom `factorial` role, and the
+# math substitutions defined in conf.py's `rst_epilog`.
 [tool.rstcheck]
 report_level = "WARNING"
 ignore_directives = ["youtube", "todo"]
+ignore_roles = ["factorial"]
 ignore_substitutions = [
     "x", "y", "z", "n", "b0", "b1", "-", "+",
     "t", "T", "X", "Xraw", "P", "p1", "T2", "R",

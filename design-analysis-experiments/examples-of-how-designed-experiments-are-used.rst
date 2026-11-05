@@ -31,6 +31,7 @@ References and readings
 .. index::
 	pair: references and readings; experiments
 
+-	Ronald A. Fisher, *The Design of Experiments*, Oliver and Boyd, Edinburgh, 1935.
 -	**Strongly recommended**: Box, Hunter and Hunter, *Statistics for Experimenters*, 2nd edition. Chapters 5 and 6 with topics from Chapters 11, 12, 13 and 15 are the most heavily used in this chapter. ISBN 978-0-471-71813-0.
 -	George Box and J. Stuart Hunter, "The :math:`2^{k-p}` `Fractional Factorial Designs - Part I <https://doi.org/10.2307/1266725>`_", *Technometrics*, **3**, 311-351, 1961.
 -	George Box and J. Stuart Hunter, "The :math:`2^{k-p}` `Fractional Factorial Designs - Part II <https://doi.org/10.2307/1266553>`_", *Technometrics*, **3**, 449-458, 1961.

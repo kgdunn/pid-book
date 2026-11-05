@@ -96,6 +96,35 @@ Once the process has been investigated the CUSUM value, :math:`S_t` is often res
 	C_t^{+} &= \max\left(0,\ C_{t-1}^{+} + (x_t - T) - K\right) \\
 	C_t^{-} &= \max\left(0,\ C_{t-1}^{-} - (x_t - T) - K\right)
 
-The :index:`reference value <single: reference value (CUSUM)>` :math:`K` is usually set to half the shift you want to detect: :math:`K = \frac{1}{2}\,\delta\,\sigma` for a shift of :math:`\delta` standard deviations. The :index:`decision interval <single: decision interval (CUSUM)>` :math:`H` is commonly :math:`4\sigma` or :math:`5\sigma`, chosen to give an acceptable in-control average run length. An alarm is raised the first time :math:`C_t^{+} > H` or :math:`C_t^{-} > H`, after which the offending sum is reset to zero. These two parameters, :math:`K` and :math:`H`, play the same role as the angle and lead distance of the V-mask, and are what you will set in software such as Minitab or the R ``qcc`` package.
+The :index:`reference value <single: reference value (CUSUM)>` :math:`K` is usually set to half the shift you want to detect: :math:`K = \frac{1}{2}\,\delta\,\sigma` for a shift of :math:`\delta` standard deviations. The :index:`decision interval <single: decision interval (CUSUM)>` :math:`H` is chosen to give an acceptable in-control :ref:`average run length <monitoring_arl>`; with :math:`K = 0.5\sigma`, the setting for a :math:`1\sigma` shift, :math:`H` is commonly :math:`4\sigma` or :math:`5\sigma`. An alarm is raised the first time :math:`C_t^{+} > H` or :math:`C_t^{-} > H`, after which the offending sum is reset to zero. These two parameters, :math:`K` and :math:`H`, play the same role as the angle and lead distance of the V-mask, and are what you will set in software such as Minitab or the R ``qcc`` package.
+
+:math:`K` and :math:`H` have to be chosen together. A smaller :math:`K` subtracts less from each deviation, so the sums wander further while the process is on target and reach a given :math:`H` sooner. The average run length measures the effect: it is the average number of samples until the chart signals, written :math:`\text{ARL}_0` while the process is on target (the interval between false alarms) and :math:`\text{ARL}_1` after a shift (the delay to detect it). The simulation below estimates both for three settings, with deviations in units of :math:`\sigma` and the :math:`0.4\sigma` shift of the V-mask example.
+
+.. code-block:: python
+
+	# Average run length of the tabular CUSUM, by simulation. Deviations x_t - T
+	# are in units of sigma, so K and H are too. Each sequence runs until its
+	# first alarm; the ARL is the average sample number of that alarm.
+	def cusum_arl(K, H, shift=0.0, n_sequences=2000, seed=11):
+	    rng = np.random.default_rng(seed)
+	    upper, lower = np.zeros(n_sequences), np.zeros(n_sequences)
+	    first_alarm = np.zeros(n_sequences)
+	    t = 0
+	    while (first_alarm == 0).any():
+	        t += 1
+	        deviation = rng.normal(shift, 1.0, n_sequences)
+	        upper = np.maximum(0, upper + deviation - K)
+	        lower = np.maximum(0, lower - deviation - K)
+	        first_alarm[(first_alarm == 0) & ((upper > H) | (lower > H))] = t
+	    return first_alarm.mean()
+
+	for K, H in [(0.5, 5), (0.2, 5), (0.2, 10)]:
+	    print(f"K = {K} sigma, H = {H} sigma: "
+	          f"ARL0 = {cusum_arl(K, H):.0f}, ARL1 = {cusum_arl(K, H, shift=0.4):.0f}")
+	# K = 0.5 sigma, H = 5 sigma: ARL0 = 468, ARL1 = 61
+	# K = 0.2 sigma, H = 5 sigma: ARL0 = 52, ARL1 = 19
+	# K = 0.2 sigma, H = 10 sigma: ARL0 = 494, ARL1 = 43
+
+The V-mask example pairs :math:`K = 0.2\sigma` with :math:`H = 5\sigma`. That setting detects the :math:`0.4\sigma` shift soonest of the three, but on a process that is on target it raises a false alarm about every 50 samples, and each one is an investigation for the people running the process. Raising :math:`H` to :math:`10\sigma` makes false alarms about as rare as with :math:`K = 0.5\sigma`, and still detects the :math:`0.4\sigma` shift sooner than that chart does. A CUSUM tuned to a small shift therefore keeps its false alarms rare only with a wider decision interval than the :math:`4\sigma` to :math:`5\sigma` quoted for a :math:`1\sigma` shift.
 
 The purpose of this section is not to provide a full design procedure for the V-mask, only to explain the CUSUM concept to put the next section on EWMA control charts in perspective.

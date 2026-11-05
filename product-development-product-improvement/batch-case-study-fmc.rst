@@ -263,7 +263,8 @@ Product quality on its own
 
 Product quality is a multivariate property. A :ref:`PCA <SECTION_PCA>` on the eight quality
 attributes shows how the batches group in quality space before any process data are
-involved.
+involved. Its score plot, like every one on this page, draws the 95% ellipse for the batches the
+model was fitted to (:ref:`which observations a limit judges <LVM-Hotellings-T2-judged-rows>`).
 
 .. code-block:: python
 
@@ -335,7 +336,8 @@ involved.
 	                           xshift=13 * dx, yshift=11 * dy, font=dict(size=11))
 	        # so the next label avoids it
 	        placed.append(here + 0.03 * np.ptp(points, axis=0) * np.array([dx, dy]))
-	    ex, ey = model.ellipse_coordinates(score_horiz=1, score_vert=2, conf_level=0.95)
+	    ex, ey = model.ellipse_coordinates(score_horiz=1, score_vert=2, conf_level=0.95,
+	                                       judged_rows="fitted")
 	    fig.add_trace(go.Scatter(x=ex, y=ey, mode="lines", name="95% confidence ellipse",
 	                             line=dict(color=GREY, dash="dash")))
 	    r2 = np.asarray(r2)
@@ -473,10 +475,11 @@ then from the operating conditions :math:`\mathbf{Z}_\text{op}`.
 	    # widest-ranging one decides the number almost on its own. "scaled_total" gives
 	    # each attribute the same weight, which is the footing the fitted R2Y above is
 	    # already on, so the two columns of the table can be read against each other. The
-	    # choice matters here: pooled on the raw scale these two rows read 14.8 and -5.0,
-	    # which reverses which block predicts better.
+	    # choice matters here: pooled on the raw scale the chemistry reads -7.6 and -7.7
+	    # and the operating conditions 14.8 and 11.1, which after two components
+	    # reverses which block predicts better.
 	    print(name, (cv.r2y_validated["scaled_total"] * 100).round(1).tolist())
-	# PLS Zchem [2.8, 1.2]
+	# PLS Zchem [0.4, -1.3]
 	# PLS Zop [1.3, -5.3]
 	fig = scores(pls_op, explained_x(pls_op), {20: ORANGE}, note="R2X ",
 	             labels=[20, 61, 14])
@@ -506,7 +509,7 @@ study found.
    +=========================================+==========================+===========+==============+==============+==============+==============+
    | PCA on quality                          | the quality block itself | cells     | 50.0         | 70.3         | 33.4         | 25.1         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
-   | PLS from :math:`\mathbf{Z}_\text{chem}` | the incoming chemistry   | batches   | 16.3         | 22.2         | 2.8          | 1.2          |
+   | PLS from :math:`\mathbf{Z}_\text{chem}` | the incoming chemistry   | batches   | 16.3         | 22.2         | 0.4          | -1.3         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
    | PLS from :math:`\mathbf{Z}_\text{op}`   | the operating conditions | batches   | 20.7         | 26.2         | 1.3          | -5.3         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
@@ -530,8 +533,8 @@ with every later model. The PCA row in the table is a different measurement that
 share the column.
 
 The :math:`Q^2_Y` columns are far below the fits. Held out of the fit, neither block predicts
-more than 3% of the quality block, and the second component takes both towards zero or below
-it: it adds to the fit of each block and nothing to the prediction of either.
+more than 2% of the quality block, and the second component takes both below zero: it adds to
+the fit of each block and nothing to the prediction of either.
 
 Batch 20 stands out in the operating-condition score plot, put there by the recipe timings
 and the temperature slope. It is the batch whose temperature ramp took longer in the
@@ -589,6 +592,8 @@ of each block the components describe.
 	                                    "Zop block scores", "Super weights",
 	                                    "Zchem block weights", "Zop block weights"])
 	super_t = mb_z.super_scores_
+	print("batch 20, super scores:", super_t.loc[20].round(2).tolist())
+	# batch 20, super scores: [1.19, 0.86]
 	group_scatter(fig, super_t.iloc[:, 0], super_t.iloc[:, 1], {20: ORANGE}, row=1, col=1)
 	block_axes(fig, mb_z.r2_y_per_component_, 1, 1, prefix="super t", note="R2Y ")
 	weights = mb_z.super_weights_  # one row per block, one column per component
@@ -612,13 +617,13 @@ of each block the components describe.
 
 .. figure:: ../figures/batch/batch-case-fmc-mbpls-z.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Six panels in three columns: the super scores of the multiblock PLS on the chemistry and operating-condition blocks, coded by classification, with batch 20 at the lower left, above the super weights of the two components, larger for the operating-condition block on both; the chemistry block scores, where batch 20 sits inside the cloud of batches, above the chemistry block weights; and the operating-condition block scores, where batch 20 sits far outside, above the operating-condition block weights.
+	:alt: Six panels in three columns: the super scores of the multiblock PLS on the chemistry and operating-condition blocks, coded by classification, with batch 20 at the upper right, above the super weights of the two components, larger for the operating-condition block on both; the chemistry block scores, where batch 20 sits inside the cloud of batches, above the chemistry block weights; and the operating-condition block scores, where batch 20 sits far outside, above the operating-condition block weights.
 	:width: 1000px
 	:scale: 80
 	:align: center
 
 	Left column: super scores of the multiblock PLS on the chemistry and operating-condition blocks,
-	coded by the plant's classification, with batch 20 (orange) at the lower left, and below
+	coded by the plant's classification, with batch 20 (orange) at the upper right, and below
 	them the super weights of the two components. Middle and right columns: the chemistry
 	block and the operating-condition block, each with its block scores above the block
 	weights that define them. Batch 20 sits inside the cloud of batches in the chemistry
@@ -633,8 +638,8 @@ components leave in the chemistry block's residual is not examined here.
 
 The cross-validated value does not follow the fit. The multiblock model predicts 8.6% of the
 quality block after one component and 4.5% after two, where neither block on its own reaches
-3%. Joining the two blocks raises the fit from 26.2 to 36.4% and the held-out value from
-under 3% to 8.6%, which is what the two blocks together buy: a prediction that is still weak,
+2%. Joining the two blocks raises the fit from 26.2 to 36.4% and the held-out value from
+under 2% to 8.6%, which is what the two blocks together buy: a prediction that is still weak,
 but no longer indistinguishable from predicting the average batch.
 
 .. table:: Quality explained, as a cumulative percentage, with the chemistry and
@@ -650,7 +655,7 @@ but no longer indistinguishable from predicting the average batch.
    +=========================================+==========================+===========+==============+==============+==============+==============+
    | PCA on quality                          | the quality block itself | cells     | 50.0         | 70.3         | 33.4         | 25.1         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
-   | PLS from :math:`\mathbf{Z}_\text{chem}` | the incoming chemistry   | batches   | 16.3         | 22.2         | 2.8          | 1.2          |
+   | PLS from :math:`\mathbf{Z}_\text{chem}` | the incoming chemistry   | batches   | 16.3         | 22.2         | 0.4          | -1.3         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
    | PLS from :math:`\mathbf{Z}_\text{op}`   | the operating conditions | batches   | 20.7         | 26.2         | 1.3          | -5.3         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
@@ -680,24 +685,26 @@ see.
 	# [0.231, 0.376]
 	scores(pca_x, pca_x.r2_per_component_, {20: ORANGE}, labels=[20, 61, 14]).show()
 	t2, spe = pca_x.hotellings_t2_.iloc[:, -1], pca_x.spe_.iloc[:, -1]
-	t2_limit, spe_limit = (pca_x.hotellings_t2_limit(conf_level=0.95),
+	t2_limit, spe_limit = (pca_x.hotellings_t2_limit(conf_level=0.95, judged_rows="fitted"),
 	                       pca_x.spe_limit(conf_level=0.95))
 	# above both limits
 	both = sorted(t2.index[(t2 > t2_limit) & (spe > spe_limit)])
 	# above the SPE limit only
 	spe_only = sorted(spe.index[(spe > spe_limit) & (t2 <= t2_limit)])
-	print(both, spe_only)
-	# [20] [41, 51]
+	# above the T2 limit only
+	t2_only = sorted(t2.index[(t2 > t2_limit) & (spe <= spe_limit)])
+	print(both, spe_only, t2_only)
+	# [20] [41, 51] [10, 60]
 	print(round(float(t2.loc[20] / t2_limit), 1), int((spe >= spe.loc[20]).sum()),
 	      round(float(spe.loc[47] / spe_limit), 2))
-	# 2.0 2 0.99
+	# 2.3 2 0.99
 
 	def influence_plot(model, highlight, labels, conf_level=0.95):
 	    """Hotelling's T2 against SPE, one marker per batch coded by classification, with
 	    both limits drawn."""
 	    t2, spe = model.hotellings_t2_.iloc[:, -1], model.spe_.iloc[:, -1]
 	    fig = group_scatter(go.Figure(), t2, spe, highlight)
-	    fig.add_vline(x=model.hotellings_t2_limit(conf_level=conf_level),
+	    fig.add_vline(x=model.hotellings_t2_limit(conf_level=conf_level, judged_rows="fitted"),
 	                  line_dash="dash", line_color=GREY)
 	    fig.add_hline(y=model.spe_limit(conf_level=conf_level),
 	                  line_dash="dash", line_color=GREY)
@@ -707,11 +714,11 @@ see.
 	    fig.update_layout(xaxis_title="Hotelling's T\u00b2", yaxis_title="SPE", height=420)
 	    return fig
 
-	influence_plot(pca_x, highlight={20: ORANGE}, labels=[41, 47, 51]).show()
+	influence_plot(pca_x, highlight={20: ORANGE}, labels=[10, 41, 47, 51, 60]).show()
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-pca.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Scores and the influence plot of the batch PCA on the trajectories, coded by the plant's classification; batch 20 is outside the confidence ellipse and is the only batch above both limits, while batches 41 and 51 are above the SPE limit only.
+	:alt: Scores and the influence plot of the batch PCA on the trajectories, coded by the plant's classification; batch 20 is outside the confidence ellipse and is the only batch above both limits, while batches 41 and 51 are above the SPE limit only and batches 10 and 60 above the T2 limit only.
 	:width: 1000px
 	:scale: 80
 	:align: center
@@ -719,15 +726,15 @@ see.
 	Scores (left) and Hotelling's :math:`T^2` against the SPE (right) of the batch PCA on the
 	trajectories, coded by the plant's classification. Batch 20 (orange) is outside the 95%
 	confidence ellipse and is the only batch above both limits; batches 41 and 51 are above
-	the SPE limit only.
+	the SPE limit only, and batches 10 and 60 the :math:`T^2` limit only.
 
 Two components describe 37.6% of the batch-to-batch variation in the trajectories. Batch 20 is the
-only batch above both limits: its :math:`T^2` is twice its limit and its SPE the second largest of
+only batch above both limits: its :math:`T^2` is 2.3 times its limit and its SPE the second largest of
 the 46, so it is both unusual along the components and poorly described by them.
 
-Batches 41 and 51 are above the SPE limit alone, and batch 47 at 0.99 of it. Two batches above a 95%
-limit is what that limit allows among 46, so neither is a finding on its own. Batch 20, above both
-limits, is.
+Batches 41 and 51 are above the SPE limit alone, and batch 47 at 0.99 of it. Batches 10 and 60 are
+above the :math:`T^2` limit alone. Two batches above a 95% limit is what that limit allows among 46,
+so none of these is a finding on its own. Batch 20, above both limits, is.
 
 .. code-block:: python
 
@@ -867,8 +874,14 @@ Trajectories to quality
 	       labels=[13, 5, 7, 61, 14]).show()
 	t1 = pls_x.score_contributions(x_scaled, component=1)
 	unfolded_contribution_plot(t1, batch_id=13, by_tag=True).show()
+
+	def largest(values, n, decimals=2):
+	    """The `n` values largest in size, with their sign. The sign of a component is
+	    arbitrary, so ranking by size names the same variables whichever way it points."""
+	    return values[values.abs().nlargest(n).index].round(decimals).to_dict()
+
 	# batch 13's four largest
-	print(t1.loc[13].groupby(level="tag", sort=False).sum().nsmallest(4).round(1).to_dict())
+	print(largest(t1.loc[13].groupby(level="tag", sort=False).sum(), 4, decimals=1))
 	# {'ClockTime': -8.1, 'CTankLvl': -8.0, 'D-Temp': -4.7, 'J-Temp-SP': -4.2}
 	for tag in ("D-Temp", "CTankLvl", "ClockTime", "J-Temp-SP"):
 	    overlay(X, tag, {13: ORANGE, 5: AQUA, 7: BLUE}).show()
@@ -922,7 +935,7 @@ gap does not by itself say that the trajectories predict quality better.
    +=========================================+==========================+===========+==============+==============+==============+==============+
    | PCA on quality                          | the quality block itself | cells     | 50.0         | 70.3         | 33.4         | 25.1         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
-   | PLS from :math:`\mathbf{Z}_\text{chem}` | the incoming chemistry   | batches   | 16.3         | 22.2         | 2.8          | 1.2          |
+   | PLS from :math:`\mathbf{Z}_\text{chem}` | the incoming chemistry   | batches   | 16.3         | 22.2         | 0.4          | -1.3         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
    | PLS from :math:`\mathbf{Z}_\text{op}`   | the operating conditions | batches   | 20.7         | 26.2         | 1.3          | -5.3         |
    +-----------------------------------------+--------------------------+-----------+--------------+--------------+--------------+--------------+
@@ -976,7 +989,7 @@ columns and the nine operating ones.
 	# [0.369, 0.47]
 	# R2 of each block after two components
 	print(mb.r2_x_per_block_cumulative_.iloc[:, -1].round(3).to_dict())
-	# {'Zchem': 0.234, 'Zop': 0.304, 'X': 0.258}
+	# {'Zchem': 0.234, 'Zop': 0.304, 'X': 0.259}
 	print(mb.super_vip_.round(2).to_dict())                     # super VIP per block
 	# {'Zchem': 0.86, 'Zop': 1.07, 'X': 1.06}
 	super_t = mb.super_scores_
@@ -1018,7 +1031,7 @@ columns and the nine operating ones.
 The combined model explains 47.0% of the quality block after two components, against 41.0%
 for the trajectories alone and 36.4% for the chemistry and operating conditions together. The
 components describe 23.4% of the chemistry block, 30.4% of the operating-condition block
-and 25.8% of the trajectory block.
+and 25.9% of the trajectory block.
 
 Every one of the six batches classed high in residual solvent is fitted below the line, by
 0.47 on average in an attribute spanning 1.26 across the batches. A model that describes
@@ -1027,9 +1040,10 @@ sitting at the top of the range is fitted below it.
 
 The Variable Importance in Projection (VIP) summarises, per variable, how much it
 contributes to explaining the quality block, scaled so that a value above one marks
-above-average importance. The super VIP applies the same idea to a whole block. It puts the
-operating conditions (1.07) and the trajectories (1.06) level and the chemistry last (0.86),
-which is where the earlier models left the chemistry, one block at a time.
+above-average importance. Wold, Johansson and Cocchi (1993) proposed it. The super VIP
+applies the same idea to a whole block. It puts the operating conditions (1.07) and the
+trajectories (1.06) level and the chemistry last (0.86), which is where the earlier models
+left the chemistry, one block at a time.
 
 That ordering is what the original study concluded: the chemistry of the charge had little
 impact on the quality, and the variation in how the batches were operated was the dominant
@@ -1074,8 +1088,8 @@ conditions or only its trajectories are considered, and the three plots need not
 	# {2: 'good', 3: 'good', 6: 'good', 7: 'good'}
 	print(mb.super_scores_.iloc[:, 0].groupby(groups).mean().round(2).to_dict(),
 	      mb.super_scores_.loc[anomalous].iloc[:, 0].round(2).to_dict())
-	# {'abnormal': -0.55, 'good': 0.36, 'high solvent': 0.19}
-	# {2: 0.31, 3: 0.14, 6: 0.17, 7: 0.18}
+	# {'abnormal': 0.55, 'good': -0.36, 'high solvent': -0.19}
+	# {2: -0.31, 3: -0.14, 6: -0.17, 7: -0.18}
 	fig = make_subplots(rows=1, cols=3, subplot_titles=[f"{name} block" for name in blocks])
 	for col, (name, block_t) in enumerate(mb.block_scores_.items(), start=1):
 	    for label in ("good", "abnormal"):  # a spoke from each batch to its group's average
@@ -1140,17 +1154,17 @@ mark them out.
 	contributions = mb.score_contributions(blocks, component=1)
 	x_by_tag = contributions["X"].T.groupby(level="tag", sort=False).sum().T
 	# the four batches' largest trajectory contributions
-	print(x_by_tag.loc[anomalous].mean().nsmallest(3).round(2).to_dict())
-	# {'CTankLvl': -0.07, 'ClockTime': -0.03, 'J-Temp-SP': -0.02}
+	print(largest(x_by_tag.loc[anomalous].mean(), 3))
+	# {'CTankLvl': 0.07, 'ClockTime': 0.03, 'J-Temp-SP': 0.02}
 	# their neighbours'
-	print(x_by_tag.loc[neighbours].mean().nsmallest(3).round(2).to_dict())
-	# {'ClockTime': -0.07, 'J-Temp-SP': -0.03, 'CTankLvl': -0.03}
+	print(largest(x_by_tag.loc[neighbours].mean(), 3))
+	# {'ClockTime': 0.07, 'J-Temp-SP': 0.03, 'CTankLvl': 0.03}
 	move = (contributions["Zop"].loc[anomalous].mean()
 	        - contributions["Zop"].loc[neighbours].mean())
 	# Zop: from the neighbours' average to the four's average
 	print(move.round(2)[move.abs() >= 0.01].to_dict())
-	# {'Level1': -0.05, 'Temp1': 0.02, 'Time4': 0.05, 'Time2': 0.06, 'Time3': 0.11,
-	# 'TempSlope': 0.06, 'WgtCake': -0.05}
+	# {'Level1': 0.05, 'Temp1': -0.02, 'Time4': -0.05, 'Time2': -0.06, 'Time3': -0.11,
+	# 'TempSlope': -0.06, 'WgtCake': 0.05}
 	fig = go.Figure(go.Bar(x=list(move.index), y=move, marker_color=BLUE))
 	shade_alternate(fig, len(move))
 	fig.update_layout(title="Operating conditions: from the neighbours' average"
@@ -1171,10 +1185,17 @@ mark them out.
 	print(round(np.mean([X[b]["D-Temp-SP"].max() for b in anomalous]), 1),
 	      round(np.mean([X[b]["D-Temp-SP"].max() for b in neighbours]), 1))
 	# 86.9 87.2
+	# the variables whose bar reaches 0.05, and how many of those bars point against the
+	# raw move from the neighbours' average to the four's
+	large = move.index[move.round(2).abs() >= 0.05]
+	raw_move = Zop.loc[anomalous, large].mean() - Zop.loc[neighbours, large].mean()
+	print(len(large), "bars reach 0.05;",
+	      int((np.sign(move[large]) != np.sign(raw_move)).sum()), "run against the raw move")
+	# 6 bars reach 0.05; 2 run against the raw move
 
 .. figure:: ../figures/batch/batch-case-fmc-anomalous.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Left, the contribution from the neighbours' average to the four batches' average in the operating-condition block, with positive bars for the cool-down, the ramp length and slope and a fourth recipe timing, and negative bars for the collector level and the cake weight; right, four raw trajectories with the four batches in orange and their neighbours in aqua, running together in the collector level and the clock time, with the same peak set point.
+	:alt: Left, the contribution from the neighbours' average to the four batches' average in the operating-condition block, with negative bars for the cool-down, the ramp length and slope and a fourth recipe timing, and positive bars for the collector level and the cake weight; right, four raw trajectories with the four batches in orange and their neighbours in aqua, running together in the collector level and the clock time, with the same peak set point.
 	:width: 1100px
 	:scale: 80
 	:align: center
@@ -1206,7 +1227,7 @@ variables:
 * the weight of the cake charged (``WgtCake``).
 
 A contribution carries the sign of the variable's weight as well as the sign of the move, so the
-direction of a bar is not the direction of the raw value. Four of these six run the opposite way.
+direction of a bar is not the direction of the raw value. Two of these six run the opposite way.
 
 In clock time the four ramped in 24 time units against 32 and cooled for 50 against 38, at the
 same peak set point (86.9 against 87.2): not a set point that was moved, but how long each
@@ -1363,3 +1384,7 @@ The full list of readings on batch data is on the :ref:`batch process monitoring
   processes <https://literature.learnche.org/item/34/multivariate-spc-charts-for-monitoring-batch-processes>`_",
   *Technometrics*, **37**, 41-59, 1995. Its closing discussion sets out why a batch model
   describes correlation, not cause and effect.
+
+* Svante Wold, Erik Johansson and Marina Cocchi, "PLS: partial least squares projections to
+  latent structures", in H. Kubinyi (ed.), *3D QSAR in Drug Design: Theory, Methods and
+  Applications*, ESCOM, Leiden, 1993, 523-550. Where the VIP was proposed.

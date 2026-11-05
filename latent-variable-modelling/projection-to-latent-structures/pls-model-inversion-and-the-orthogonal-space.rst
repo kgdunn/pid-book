@@ -135,7 +135,7 @@ predicts will give that taste.
 	actual = holdout[x_columns].iloc[1]
 	for label, inputs in [("Actual", actual), ("Predicted", result.x_new)]:
 	    d = pls.diagnose(inputs.to_frame().T)
-	    print(f"{label}: T2 = {d.hotellings_t2.iloc[0]:.2f}, "
+	    print(f"{label}: T2 = {d.cumulative_hotellings_t2.iloc[0, -1]:.2f}, "
 	          f"SPE = {d.spe.iloc[0]:.2f}")
 	# Actual: T2 = 0.21, SPE = 0.68
 	# Predicted: T2 = 0.06, SPE = 0.00
@@ -175,7 +175,7 @@ Collecting those points, and putting the measured cheese alongside for compariso
 	    d = pls.diagnose(inputs.to_frame().T)
 	    v = scaler.transform(inputs.to_frame().T).iloc[0]
 	    print(f"{label:<22}{inputs.round(2).to_list()}  "
-	          f"T2 = {d.hotellings_t2.iloc[0]:.2f}, SPE = {d.spe.iloc[0]:.2f}, "
+	          f"T2 = {d.cumulative_hotellings_t2.iloc[0, -1]:.2f}, SPE = {d.spe.iloc[0]:.2f}, "
 	          f"deviation = {((a - v) ** 2).sum():.2f}")
 
 .. _LVM-PLS-null-space-steps-table:
@@ -956,7 +956,7 @@ deviation is a distance in the input space, measured between the two recipes the
 	    rows.append({
 	        "Taste": target,
 	        "T2 design": design.hotellings_t2,          # the proposed recipe
-	        "T2 cheese": pls.diagnose(measured.to_frame().T).hotellings_t2.iloc[0],
+	        "T2 cheese": pls.diagnose(measured.to_frame().T).cumulative_hotellings_t2.iloc[0, -1],
 	        "Input dev": ((a - p) ** 2).sum(),   # between the two recipes
 	    })
 
@@ -1037,8 +1037,10 @@ fill out a region.
 
 Two boundaries close the region off. The acceptable range of taste bounds it in one direction. In the
 other direction, along each null space, the region would run on without limit, so we bound it by the
-Hotelling's :math:`T^2` limit: solutions beyond it are extrapolations, as
-:ref:`the previous section <LVM-PLS-inversion-in-practice>` described. `Paris and co-workers (2021)
+Hotelling's :math:`T^2` limit for a new observation, since a candidate is not one of the cheeses the
+model was fitted to (:ref:`which observations a limit judges <LVM-Hotellings-T2-judged-rows>`).
+Solutions beyond it are extrapolations, as :ref:`the previous section <LVM-PLS-inversion-in-practice>`
+described. `Paris and co-workers (2021)
 <https://literature.learnche.org/item/181/establishing-multivariate-specification-regions-for-incoming-raw-materials-using-projection-to-latent-structure-models-comparison-between-direct-mapping-and-model-inversion>`_
 do exactly this, constraining the region by the 95% :math:`T^2` limit so it stays inside the space the
 data support.
@@ -1053,7 +1055,7 @@ Suppose a taste between 20 and 30 is acceptable.
 
 .. code-block:: python
 
-	t2_limit = pls.hotellings_t2_limit(0.95)
+	t2_limit = pls.hotellings_t2_limit(0.95, judged_rows="new")
 
 	region = []
 	for target in np.linspace(20.0, 30.0, 11):       # the tastes we accept
@@ -1082,7 +1084,7 @@ Both the region and the box it is reported as can be drawn.
 	corners = np.array(np.meshgrid(*zip(region.min(), region.max()))).reshape(3, -1).T
 	corner_frame = pd.DataFrame(corners, columns=x_columns)
 	corner_taste = pls.predict(corner_frame).to_numpy().ravel()
-	corner_t2 = pls.diagnose(corner_frame).hotellings_t2.to_numpy()
+	corner_t2 = pls.diagnose(corner_frame).cumulative_hotellings_t2.iloc[:, -1].to_numpy()
 
 	for taste, t2 in sorted(zip(corner_taste.round(1), corner_t2.round(1))):
 	    print(taste, t2)

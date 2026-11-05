@@ -297,21 +297,23 @@ accessor in Pandas selects rows by position, so we use it to split the 253 obser
 
 Now fit a single-variable least squares model that uses ``InvTemp3`` (the inverse of a temperature
 measurement on tray 3) to predict ``VapourPressure``. The double-bracket idiom
-``build[["InvTemp3"]]`` returns a column matrix (a 2-D :math:`n \times 1` array). ``OLS.fit``
-also accepts a 1-D array for a single predictor and reshapes it to one column itself, but the
-2-D form is the one scikit-learn requires for the predictor matrix :math:`\mathbf{X}`, and it
-is the form used for the predictor matrix in the rest of this chapter:
+``build[["InvTemp3"]]`` returns a one-column data frame (a 2-D :math:`n \times 1` table).
+``OLS.fit`` also accepts a 1-D series for a single predictor and reshapes it to one column
+itself, but the 2-D form is the one scikit-learn requires for the predictor matrix
+:math:`\mathbf{X}`, and it is the form used for the predictor matrix in the rest of this chapter.
+Passing the data frame, rather than its ``.values`` array, lets ``OLS`` keep the column names and
+use them in its printed summary:
 
 .. code-block:: python
 
 	from process_improve.regression import OLS
 
-	# X is a 2-D array (n_rows by n_cols), the form
-	# scikit-learn expects. build[["InvTemp3"]] returns
-	# a column matrix; build["InvTemp3"] would return a
-	# 1-D array, which OLS.fit reshapes to one column.
-	X = build[["InvTemp3"]].values
-	y = build["VapourPressure"].values
+	# X is 2-D (n_rows by n_cols), the form scikit-learn
+	# expects. build[["InvTemp3"]] returns a one-column
+	# data frame; build["InvTemp3"] would return a 1-D
+	# series, which OLS.fit reshapes to one column.
+	X = build[["InvTemp3"]]
+	y = build["VapourPressure"]
 
 	mymodel = OLS()
 	mymodel.fit(X, y)

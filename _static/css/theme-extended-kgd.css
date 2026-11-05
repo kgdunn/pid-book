@@ -365,3 +365,8 @@ button.copybtn:focus,
         display: none;
     }
 }
+
+/* The landing page's banner (contents.rst): space before the table of contents. */
+img.pid-banner {
+	margin: 0.5rem 0 1.75rem;
+}

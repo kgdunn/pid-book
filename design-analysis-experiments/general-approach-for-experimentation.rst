@@ -21,11 +21,11 @@ The **first phase** is usually *screening*. Screening designs are used when deve
 
 	-	The ranges for each factor may also be uncertain; this is a perfect opportunity to identify suitable ranges for each factor.
 
-	-	You also learn how to run the experiment on this system, as the operating protocol isn't always certain ahead of time. It is advisable to choose your first experiment to be the center point, since the first experiment will often "fail" for a variety of reasons (you discover that you need more equipment midway, you realize the protocol isn't sufficient, *etc*). Since the center point is not required to analyze the data, it worth using that first run to learn about your system. If successful though, that center point run can be included in the least squares model.
+	-	You also learn how to run the experiment on this system, as the operating protocol isn't always certain ahead of time. It is advisable to choose your first experiment to be the center point, since the first experiment will often "fail" for a variety of reasons (you discover that you need more equipment midway, you realize the protocol isn't sufficient, *etc*). Since the center point is not required to analyze the data, it is worth using that first run to learn about your system. If successful though, that center point run can be included in the least squares model.
 
 	-	Include as many factors into as few runs as possible. Use a saturated, resolution III design, or a Plackett and Burman design.
 
-	-	Main effects will be extremely confounded, but this is a preliminary investigation to isolate the important effects.
+	-	Main effects will be aliased with two-factor interactions, but this is a preliminary investigation to isolate the important effects.
 
 The **second phase** is to add *sequential experiments* to the previous experiments.
 

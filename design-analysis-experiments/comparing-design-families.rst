@@ -14,7 +14,7 @@ counts differ, and we do not pad them to match: comparing designs at their natur
 whole point. Every design here is confined to the coded range :math:`[-1, 1]` on each factor, so
 the contest is like-for-like on one fixed experimental region. The fuller second-order story, with
 all the two-factor interactions, is where strong OMARS and composite designs really compete; the
-script that backs this section builds that model too, but the comparison below holds to
+comparison below holds to
 main-effects-and-quadratics so it lines up with the rest of the chapter. Holding the
 two-factor interactions out is an assumption: if they are in fact present, they bias the
 eleven estimated coefficients by the :ref:`alias matrix <DOE-alias-bias>`, and the table
@@ -147,15 +147,16 @@ the library scores exactly this model and not the full second-order one:
     :alt: power-comparison-six-designs.py
 
     Power to detect a one-sigma main effect and a one-sigma quadratic effect, for the four
-    response-surface designs on the five-factor model. More runs buy more power, and curvature is
-    the harder target.
+    response-surface designs on the five-factor model. Power broadly rises with the number of runs,
+    and curvature is the harder target.
 
 The thirteen-run DSD is visibly underpowered: a :math:`0.42` chance on a one-sigma main effect and
-only :math:`0.15` on a quadratic of the same size. The run-richer designs all clear :math:`0.96`
-on main effects, and the Box-Behnken design, the largest at forty-six runs, has the strongest
+only :math:`0.15` on a quadratic of the same size. The run-richer designs all reach :math:`0.96`
+or more on main effects, and the Box-Behnken design, the largest at forty-six runs, has the strongest
 chance on curvature at :math:`0.82`, with the twenty-five-run OMARS design next at :math:`0.53`.
-Power rewards the larger designs, which is the practical reading and exactly what an efficiency
-score that normalizes out the number of runs would have hidden.
+Power broadly rewards the larger designs, though not strictly in run order: on curvature the
+twenty-five-run OMARS design is ahead of the thirty-two-run CCD. That is the practical reading,
+and exactly what an efficiency score that normalizes out the number of runs would have hidden.
 
 One caveat in the definitive screening design's favour, since its numbers look stark. A DSD is
 built on an assumption of effect sparsity, not for this saturated eleven-term fit: its design
@@ -194,14 +195,14 @@ Quality metrics for the four designs
         - 0.71
     *   - :math:`\downarrow` Maximum prediction variance, :math:`\sigma^2` units
         - 0.84
-        - 0.77
-        - 0.51
-        - 1.05
+        - 0.80
+        - 0.53
+        - 1.07
     *   - :math:`\downarrow` Maximum scaled prediction variance :math:`G`
         - 38.8
-        - 24.6
-        - 12.7
-        - 13.6
+        - 25.5
+        - 13.2
+        - 13.9
     *   - :math:`\downarrow` Summed coefficient variance :math:`A`
         - 1.05
         - 2.39
@@ -262,16 +263,37 @@ variance carries the same concern, and for the same reason it has been questione
 literature (Anderson-Cook, Borror and Montgomery, 2009, and its published discussion; Goos and
 Núñez Ares, 2025).
 
-The quantities in real units, the **unscaled prediction variance** in :math:`\sigma^2`, the summed
-coefficient variance :math:`A`, and the power, all reward the larger Box-Behnken design, which is
+The quantities in real units, the average **unscaled prediction variance** in :math:`\sigma^2`, the
+summed coefficient variance :math:`A`, and the power on curvature, all favour the larger Box-Behnken
+design, which is
 the reading that matches what the experiments can actually deliver.
 
-The two maximum-variance rows report the worst case under each scaling, and they disagree most for
+The two maximum-variance rows are maxima over the whole cube, searched for as in the
+:ref:`running comparison <DOE-worst-case-search>`: for three of these designs the maximum sits inside
+a face of the cube, where neither the sample nor the vertices land.
+
+.. code-block:: python
+
+	def largest_variance(design):
+	    """The largest prediction variance over the cube, searched for from 120,000 sampled points."""
+	    df = pd.DataFrame(np.asarray(design), columns=names)
+	    return evaluate_design(df, model=model, metric="g_efficiency", n_samples=120_000,
+	                           random_state=1, max_search="optimize")["max_prediction_variance"]
+
+	for label, d in designs.items():
+	    largest = largest_variance(d)
+	    print(f"{label}: {largest:.2f}, G = {len(d) * largest:.1f}")
+	# Box-Behnken: 0.84, G = 38.8
+	# CCD: 0.80, G = 25.5
+	# OMARS: 0.53, G = 13.2
+	# DSD: 1.07, G = 13.9
+
+The two rows report the worst case under each scaling, and they disagree most for
 the designs at the extremes of run count. In real :math:`\sigma^2` units the thirteen-run DSD has
-the highest maximum (:math:`1.05`), the worst single-point prediction at the bench, while the OMARS
-design has the lowest (:math:`0.51`). The scaled maximum :math:`G`, which divides the worst-case
-variance through by the run count, moves the DSD from worst to nearly best: it sits at :math:`13.6`,
-just above the OMARS design's :math:`12.7`, while the forty-six-run Box-Behnken, with a moderate
+the highest maximum (:math:`1.07`), the worst single-point prediction at the bench, while the OMARS
+design has the lowest (:math:`0.53`). The scaled maximum :math:`G`, which divides the worst-case
+variance through by the run count, moves the DSD from worst to nearly best: it sits at :math:`13.9`,
+just above the OMARS design's :math:`13.2`, while the forty-six-run Box-Behnken, with a moderate
 unscaled maximum of :math:`0.84`, has the highest :math:`G` at :math:`38.8`. The reversal for the
 DSD and the Box-Behnken is the same per-run normalisation seen in the two D rows; dividing by the
 run count rewards the design that spends fewer experiments. Read the unscaled maximum for the
@@ -432,14 +454,14 @@ on the two scales:
 	    cols = [chr(ord("A") + i) for i in range(np.shape(design)[1])]
 	    df = pd.DataFrame(np.asarray(design, float), columns=cols)
 	    return evaluate_design(df, model=model, metric="fds", n_samples=n_samples,
-	                           random_seed=seed, fds_resolution=200)["fds"]
+	                           random_state=seed, fds_resolution=200)["fds"]
 
 	fig = make_subplots(rows=1, cols=2,
 	                    subplot_titles=("Scaled (per run)", "Unscaled (sigma^2 units)"))
 	for label, d in designs.items():
 	    result = fds(d, model, n_samples=120_000)
-	    # result["average_prediction_variance"] and ["max_prediction_variance"] are
-	    # the average and maximum prediction-variance rows in the table above.
+	    # result["average_prediction_variance"] is the table's average prediction-variance
+	    # row; the curve ends at the largest value the sample found.
 	    curve = result["curve"]
 	    fig.add_trace(go.Scatter(x=curve["fraction"],
 	                             y=curve["scaled_prediction_variance"], name=label),
@@ -458,18 +480,18 @@ on the two scales:
 
     FDS curves for the four response-surface designs, scaled (left) and unscaled (right). Scaling
     by the run count lowers the small DSD's curve; in real :math:`\sigma^2` units the DSD curve is
-    the highest and the larger Box-Behnken design's is the lowest.
+    the highest and the larger Box-Behnken design's is the lowest over most of the region.
 
 Within either panel the rule from before still holds: a low and flat curve is what you want, and the
-right tail (anchored at the cube vertices, where the maximum prediction variance usually lives) shows
-the worst case. The two panels differ only in how they put the designs on a common footing. The left
-panel is scaled, normalized by the number of runs, so it compares the designs per experiment; on
-that footing the thirteen-run DSD curve sits among the rest rather than far above them, and the
-lowest right-tail value, the scaled maximum :math:`G` reported in the table, belongs to the OMARS
-design at :math:`12.7`, with the DSD just behind at :math:`13.6`. The right panel is
+right tail shows the worst case the sample found. The two panels differ only in how they put the
+designs on a common footing. The left panel is scaled, normalized by the number of runs, so it
+compares the designs per experiment; on that footing the thirteen-run DSD curve sits among the rest
+rather than far above them, and the lowest right tail belongs to the OMARS design. The table's
+:math:`G`, the maximum over the whole cube, puts it at :math:`13.2`, with the DSD just behind at
+:math:`13.9`. The right panel is
 unscaled, in real
 :math:`\sigma^2` units, so it compares the variance actually obtained at the bench; there the DSD
-curve is the highest and the forty-six-run Box-Behnken the lowest. The two views answer different
+curve is the highest and the forty-six-run Box-Behnken the lowest over most of the region. The two views answer different
 questions, and they diverge because adding runs lowers the variance you obtain while leaving the
 per-run figure roughly fixed.
 
@@ -507,6 +529,11 @@ member rather than OMARS designs as a class. Change the member, the model, or th
 the rows shift. What carries from one study
 to the next is the method, building the information matrix and reading precision, separability,
 bias, and power from it.
+
+`Factorial <https://factori.al/>`__, the designed-experiments app, builds this kind of comparison
+in the browser for other factors and models: it generates each design the factor count allows and
+reports the nine measures of :ref:`DOE-omars-metric-choice`, with FDS curves and correlation
+colour maps.
 
 **Readings**
 

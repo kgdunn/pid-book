@@ -1,0 +1,89 @@
+/* "Run in browser" buttons and their output.
+
+   Markup from my-extensions/run_in_browser.py, behaviour in
+   _static/js/run-in-browser.js. Colours are the theme's --pst-color-*
+   properties with a literal light-mode fallback, for the reason given at the
+   top of code-collapse.css. */
+
+.pid-run {
+	margin: -0.5rem 0 1rem;
+}
+
+.pid-run__button {
+	font-size: 0.85rem;
+	line-height: 1.4;
+	padding: 0.25rem 0.7rem;
+	border: 1px solid var(--pst-color-link, #0a5688);
+	border-radius: 0.25rem;
+	background: var(--pst-color-background, #ffffff);
+	color: var(--pst-color-link, #0a5688);
+	cursor: pointer;
+}
+
+.pid-run__button::before {
+	content: "▶ ";
+	font-size: 0.75em;
+}
+
+.pid-run__button:hover:not(:disabled) {
+	background: var(--pst-color-link, #0a5688);
+	color: var(--pst-color-background, #ffffff);
+}
+
+.pid-run__button:disabled {
+	cursor: progress;
+	opacity: 0.8;
+}
+
+.pid-run__button:focus:not(:focus-visible) {
+	outline: none;
+}
+
+.pid-run__out {
+	margin-top: 0.5rem;
+	padding: 0.5rem 0.7rem;
+	border-left: 3px solid var(--pst-color-link, #0a5688);
+	background: var(--pst-color-surface, #f3f4f5);
+	font-size: 0.9rem;
+}
+
+.pid-run__out pre {
+	margin: 0.25rem 0;
+	padding: 0;
+	border: none;
+	background: none;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+}
+
+.pid-run__error {
+	color: var(--pst-color-danger, #b3261e);
+}
+
+.pid-run__note,
+.pid-run__check {
+	margin: 0.25rem 0;
+	color: var(--pst-color-text-muted, #48566b);
+	font-size: 0.85rem;
+}
+
+.pid-run__check {
+	color: var(--pst-color-success, #1e7b3a);
+}
+
+.pid-run__check--differs {
+	color: var(--pst-color-warning, #8a5a00);
+}
+
+.pid-run__figure {
+	display: block;
+	max-width: 100%;
+	margin: 0.5rem 0;
+	background: #ffffff;
+}
+
+@media print {
+	.pid-run {
+		display: none;
+	}
+}

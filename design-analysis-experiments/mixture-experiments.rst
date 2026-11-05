@@ -145,7 +145,7 @@ one, once we work in *pseudocomponents*:
 
 .. math::
 
-	x_i = \frac{a_i - L_i}{1 - \sum_{i=1}^{q} L_i},
+	x_i = \frac{a_i - L_i}{1 - \sum_{j=1}^{q} L_j},
 
 where :math:`L_i` is the lower bound on ingredient :math:`i`. The pseudocomponents lie between
 zero and one and satisfy the mixture constraint. A run at :math:`x_1 = 100\%` does not mean a pure
@@ -173,7 +173,8 @@ ingredients with a response-surface model in the process variables. Following th
 the combined model has no intercept and no process-variable main effects.
 
 The number of parameters grows quickly. For :math:`q` ingredients and :math:`m` process
-variables, a full second-order crossing needs
+variables, crossing the quadratic mixture model with a process model of main effects and
+two-factor interactions needs
 
 .. math::
 

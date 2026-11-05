@@ -150,7 +150,8 @@ buys, against the usual :ref:`cross-validation <LVM-PLS-number-of-components>`.
 	# of four in area, and the sum of squared residuals is what adds up over the cells in
 	# any case.
 	area = dict(sizemode="area", sizeref=2 * (spe**2).max() / 26**2, sizemin=3)
-	ex, ey = model.ellipse_coordinates(score_horiz=1, score_vert=2, conf_level=0.95)
+	ex, ey = model.ellipse_coordinates(score_horiz=1, score_vert=2, conf_level=0.95,
+	                                   judged_rows="fitted")
 	fig = go.Figure()
 	fig.add_trace(go.Scatter(x=ex, y=ey, mode="lines", name="95% confidence ellipse",
 	                         line=dict(color=GREY, dash="dash")))
@@ -179,12 +180,12 @@ buys, against the usual :ref:`cross-validation <LVM-PLS-number-of-components>`.
 	for batch_id in (34, 37):
 	    t2_end = model.hotellings_t2_.loc[batch_id].iloc[-1]
 	    spe_end = model.spe_.loc[batch_id].iloc[-1]
-	    t2_lim = model.hotellings_t2_limit(conf_level=0.95)
+	    t2_lim = model.hotellings_t2_limit(conf_level=0.95, judged_rows="fitted")
 	    spe_lim = model.spe_limit(conf_level=0.95)
 	    print(f"batch {batch_id}: T2 = {t2_end:.1f} (limit {t2_lim:.1f}),",
 	          f"SPE = {spe_end:.1f} (limit {spe_lim:.1f})")
-	    # batch 34: T2 = 28.2 (limit 6.6), SPE = 23.1 (limit 34.6)
-	    # batch 37: T2 = 19.2 (limit 6.6), SPE = 18.7 (limit 34.6)
+	    # batch 34: T2 = 28.2 (limit 5.8), SPE = 23.1 (limit 34.6)
+	    # batch 37: T2 = 19.2 (limit 5.8), SPE = 18.7 (limit 34.6)
 
 The first component explains 65.3% of the variance in the quality block and the second
 6.9%; their shares of the variance in the trajectories are on the axes of the score plot.
@@ -211,7 +212,9 @@ along a component that its own deviation helped to define, which is why the faul
 the scores and leaves so little in the residual, and why the two largest values of
 :math:`T^2` (:ref:`Hotelling's statistic <LVM-Hotellings-T2>`) belong to two of the smallest
 residuals. The 95% limits inherit the same circularity, since they are computed from the 53
-batches that include the two faults being judged.
+batches that include the two faults being judged. The ellipse and the :math:`T^2` limit drawn here
+are therefore the ones for the batches a model was fitted to (:ref:`which observations a limit
+judges <LVM-Hotellings-T2-judged-rows>`).
 
 The SPE answers the other question about a batch, how far it sits away from the components.
 Drawing it against :math:`T^2` puts both questions in one figure, each axis carrying its own
@@ -231,7 +234,7 @@ Drawing it against :math:`T^2` puts both questions in one figure, each axis carr
 	        fig.add_trace(go.Scatter(x=[t2.loc[batch_id]], y=[spe.loc[batch_id]],
 	                                 mode="markers", name=f"batch {batch_id}",
 	                                 marker=dict(size=12, color=colour)))
-	    fig.add_vline(x=model.hotellings_t2_limit(conf_level=conf_level),
+	    fig.add_vline(x=model.hotellings_t2_limit(conf_level=conf_level, judged_rows="fitted"),
 	                  line_dash="dash", line_color=GREY)
 	    fig.add_hline(y=model.spe_limit(conf_level=conf_level),
 	                  line_dash="dash", line_color=GREY)
@@ -244,7 +247,7 @@ Drawing it against :math:`T^2` puts both questions in one figure, each axis carr
 	spe, t2 = model.spe_.iloc[:, -1], model.hotellings_t2_.iloc[:, -1]
 	above_spe = sorted(spe.index[spe > model.spe_limit(conf_level=0.95)])
 	print("above the SPE limit:", above_spe, "  above the T2 limit:",
-	      sorted(t2.index[t2 > model.hotellings_t2_limit(conf_level=0.95)]))
+	      sorted(t2.index[t2 > model.hotellings_t2_limit(conf_level=0.95, judged_rows="fitted")]))
 	# above the SPE limit: [8, 15, 16]   above the T2 limit: [34, 37]
 	influence_plot(model, highlight={34: ORANGE, 37: AQUA},
 	               labels=[34, 37, *above_spe]).show()

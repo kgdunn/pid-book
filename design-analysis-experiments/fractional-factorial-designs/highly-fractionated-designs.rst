@@ -68,7 +68,7 @@ So this section is concerned with the trade-offs as we go from a full factorial 
 
 			-	Intercept:	**I** [1]
 			-	Each generator combined with **I**:	 **I = ABD = ACE = BCF = ABCG** [2,3,4,5]
-			-	Two combinations of generators:	**I = BDCE = ACDF = CDG = ABEF = BEG = AFG** [6 to 11]
+			-	Two combinations of generators:	**I = BCDE = ACDF = CDG = ABEF = BEG = AFG** [6 to 11]
 			-	Three combinations of generators:	**I = DEF = ADEG = CEFG = BDFG** [12 to 15]
 			-	Four combinations of generators: **I = ABCDEFG** [16]
 
@@ -76,7 +76,7 @@ So this section is concerned with the trade-offs as we go from a full factorial 
 
 		#.	The aliasing or confounding pattern for any desired effect can be calculated by multiplying the defining relationship by that effect. Let's take **A** as an example, below, and multiply it by the 16 words in the defining relation:
 
-			**AI = BD = CE = ABCF = BCG = ABDCE = CDF = ACDG = BEF = ABEG = FG = ADEF = DEG = ACEFG = ABDFG = BCDEFG**. So our factor **A** estimate is not just factor **A**, it is also a combined estimate of:
+			**AI = BD = CE = ABCF = BCG = ABCDE = CDF = ACDG = BEF = ABEG = FG = ADEF = DEG = ACEFG = ABDFG = BCDEFG**. So our factor **A** estimate is not just factor **A**, it is also a combined estimate of:
 
 				:math:`\widehat{\beta}_A \rightarrow` A + **BD** + **CE** + ABCF + BCG + ABCDE + CDF + ACDG + BEF + ABEG + **FG** + ADEF + DEG + ACEFG + ABDFG + BCDEFG.
 
@@ -86,7 +86,7 @@ So this section is concerned with the trade-offs as we go from a full factorial 
 
 			Listed below are all the aliases for the main effects, reporting only the two-factor interactions. The bold words indicate the confounding that was intentionally created when we set up the design.
 
-			-	:math:`\widehat{\beta}_0` = ABCDEFG
+			-	:math:`\widehat{\beta}_0 \rightarrow` I + all 15 words of the defining relation, none of them a two-factor interaction
 			-	:math:`\widehat{\beta}_{\mathbf{A}} \rightarrow` A + BD + CE + FG
 			-	:math:`\widehat{\beta}_{\mathbf{B}} \rightarrow` B + AD + CF + EG
 			-	:math:`\widehat{\beta}_{\mathbf{C}} \rightarrow` C + AE + BF + DG

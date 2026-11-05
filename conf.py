@@ -7,6 +7,7 @@ import datetime
 import os
 import subprocess
 import sys
+from pathlib import Path
 
 from pygments.formatters.latex import LatexFormatter
 from sphinx.highlighting import PygmentsBridge
@@ -27,7 +28,27 @@ extensions = [
     "my-extensions.figure_source",
     "my-extensions.reading_time",
     "my-extensions.code_collapse",
+    "my-extensions.run_in_browser",
+    "my-extensions.social_meta",
+    "my-extensions.factorial_link",
 ]
+
+# Chapters whose Python examples get a "Run in browser" button (Pyodide). The
+# blocks come from tools/check_code_blocks.py; see my-extensions/run_in_browser.py.
+run_in_browser_chapters = [
+    "data-visualization",
+    "univariate-review",
+    "process-monitoring",
+    "least-squares-modelling",
+    "design-analysis-experiments",
+    "latent-variable-modelling",
+]
+# The Pyodide release the buttons load from the CDN. Bump it deliberately, after
+# `make check-browser` passes against it (the weekly CI run tries the newest release and
+# says whether it is safe): its scipy decides chapter 5's OMARS designs, since
+# generate_omars solves an integer program with scipy's HiGHS, and 0.28.3's scipy 1.14
+# returned a different, equally valid design than the one the book prints.
+run_in_browser_pyodide = "314.0.7"
 
 # Avoid Subresource Integrity errors for the bundled jQuery.
 jquery_use_sri = False
@@ -226,6 +247,44 @@ html_logo = "preface/textbook-logo-no-text-lowres.jpg"
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
 html_favicon = "_static/media/favicon.ico"
+
+# The book's address. Sphinx uses it for each page's canonical link, and
+# my-extensions/social_meta.py for the absolute addresses that link previews and
+# sitemap.xml need. A copy of the book hosted elsewhere should change it.
+html_baseurl = "https://learnche.org/pid/"
+
+# What a shared link to a page shows (Open Graph tags), the landing page's
+# schema.org record, and sitemap.xml: see my-extensions/social_meta.py. The book's
+# card is drawn by scripts/render_hero.py; a page inside a chapter shows that
+# chapter's card instead, drawn by scripts/render_chapter_images.py from one of the
+# chapter's own examples.
+social_meta_image = "_static/hero.png"
+social_meta_image_alt = (
+    "Process Improvement using Data, a free online textbook by Kevin G. Dunn, beside one of "
+    "its Python examples with the Run in browser button and the plot a click draws."
+)
+social_meta_chapter_images = {
+    card.stem: f"_static/social/{card.name}"
+    for card in sorted(Path(__file__).parent.glob("_static/social/*.png"))
+}
+social_meta_description = (
+    "A free online textbook on using process data: visualization, monitoring, regression, "
+    "designed experiments and latent variable methods, with Python examples that run in your "
+    "browser."
+)
+social_meta_jsonld = {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "Process Improvement using Data",
+    "author": {"@type": "Person", "name": "Kevin G. Dunn"},
+    "url": html_baseurl,
+    "description": social_meta_description,
+    "inLanguage": "en",
+    "isAccessibleForFree": True,
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "datePublished": "2010",
+    "identifier": f"https://doi.org/{concept_doi}",
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
