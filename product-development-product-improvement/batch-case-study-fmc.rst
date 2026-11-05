@@ -263,7 +263,8 @@ Product quality on its own
 
 Product quality is a multivariate property. A :ref:`PCA <SECTION_PCA>` on the eight quality
 attributes shows how the batches group in quality space before any process data are
-involved.
+involved. Its score plot, like every one on this page, draws the 95% ellipse for the batches the
+model was fitted to (:ref:`which observations a limit judges <LVM-Hotellings-T2-judged-rows>`).
 
 .. code-block:: python
 
@@ -335,7 +336,8 @@ involved.
 	                           xshift=13 * dx, yshift=11 * dy, font=dict(size=11))
 	        # so the next label avoids it
 	        placed.append(here + 0.03 * np.ptp(points, axis=0) * np.array([dx, dy]))
-	    ex, ey = model.ellipse_coordinates(score_horiz=1, score_vert=2, conf_level=0.95)
+	    ex, ey = model.ellipse_coordinates(score_horiz=1, score_vert=2, conf_level=0.95,
+	                                       judged_rows="fitted")
 	    fig.add_trace(go.Scatter(x=ex, y=ey, mode="lines", name="95% confidence ellipse",
 	                             line=dict(color=GREY, dash="dash")))
 	    r2 = np.asarray(r2)
@@ -683,24 +685,26 @@ see.
 	# [0.231, 0.376]
 	scores(pca_x, pca_x.r2_per_component_, {20: ORANGE}, labels=[20, 61, 14]).show()
 	t2, spe = pca_x.hotellings_t2_.iloc[:, -1], pca_x.spe_.iloc[:, -1]
-	t2_limit, spe_limit = (pca_x.hotellings_t2_limit(conf_level=0.95),
+	t2_limit, spe_limit = (pca_x.hotellings_t2_limit(conf_level=0.95, judged_rows="fitted"),
 	                       pca_x.spe_limit(conf_level=0.95))
 	# above both limits
 	both = sorted(t2.index[(t2 > t2_limit) & (spe > spe_limit)])
 	# above the SPE limit only
 	spe_only = sorted(spe.index[(spe > spe_limit) & (t2 <= t2_limit)])
-	print(both, spe_only)
-	# [20] [41, 51]
+	# above the T2 limit only
+	t2_only = sorted(t2.index[(t2 > t2_limit) & (spe <= spe_limit)])
+	print(both, spe_only, t2_only)
+	# [20] [41, 51] [10, 60]
 	print(round(float(t2.loc[20] / t2_limit), 1), int((spe >= spe.loc[20]).sum()),
 	      round(float(spe.loc[47] / spe_limit), 2))
-	# 2.0 2 0.99
+	# 2.3 2 0.99
 
 	def influence_plot(model, highlight, labels, conf_level=0.95):
 	    """Hotelling's T2 against SPE, one marker per batch coded by classification, with
 	    both limits drawn."""
 	    t2, spe = model.hotellings_t2_.iloc[:, -1], model.spe_.iloc[:, -1]
 	    fig = group_scatter(go.Figure(), t2, spe, highlight)
-	    fig.add_vline(x=model.hotellings_t2_limit(conf_level=conf_level),
+	    fig.add_vline(x=model.hotellings_t2_limit(conf_level=conf_level, judged_rows="fitted"),
 	                  line_dash="dash", line_color=GREY)
 	    fig.add_hline(y=model.spe_limit(conf_level=conf_level),
 	                  line_dash="dash", line_color=GREY)
@@ -710,11 +714,11 @@ see.
 	    fig.update_layout(xaxis_title="Hotelling's T\u00b2", yaxis_title="SPE", height=420)
 	    return fig
 
-	influence_plot(pca_x, highlight={20: ORANGE}, labels=[41, 47, 51]).show()
+	influence_plot(pca_x, highlight={20: ORANGE}, labels=[10, 41, 47, 51, 60]).show()
 
 .. figure:: ../figures/batch/batch-case-fmc-batch-pca.png
 	:source: batch/batch-case-fmc-figures.py
-	:alt: Scores and the influence plot of the batch PCA on the trajectories, coded by the plant's classification; batch 20 is outside the confidence ellipse and is the only batch above both limits, while batches 41 and 51 are above the SPE limit only.
+	:alt: Scores and the influence plot of the batch PCA on the trajectories, coded by the plant's classification; batch 20 is outside the confidence ellipse and is the only batch above both limits, while batches 41 and 51 are above the SPE limit only and batches 10 and 60 above the T2 limit only.
 	:width: 1000px
 	:scale: 80
 	:align: center
@@ -722,15 +726,15 @@ see.
 	Scores (left) and Hotelling's :math:`T^2` against the SPE (right) of the batch PCA on the
 	trajectories, coded by the plant's classification. Batch 20 (orange) is outside the 95%
 	confidence ellipse and is the only batch above both limits; batches 41 and 51 are above
-	the SPE limit only.
+	the SPE limit only, and batches 10 and 60 the :math:`T^2` limit only.
 
 Two components describe 37.6% of the batch-to-batch variation in the trajectories. Batch 20 is the
-only batch above both limits: its :math:`T^2` is twice its limit and its SPE the second largest of
+only batch above both limits: its :math:`T^2` is 2.3 times its limit and its SPE the second largest of
 the 46, so it is both unusual along the components and poorly described by them.
 
-Batches 41 and 51 are above the SPE limit alone, and batch 47 at 0.99 of it. Two batches above a 95%
-limit is what that limit allows among 46, so neither is a finding on its own. Batch 20, above both
-limits, is.
+Batches 41 and 51 are above the SPE limit alone, and batch 47 at 0.99 of it. Batches 10 and 60 are
+above the :math:`T^2` limit alone. Two batches above a 95% limit is what that limit allows among 46,
+so none of these is a finding on its own. Batch 20, above both limits, is.
 
 .. code-block:: python
 
