@@ -132,7 +132,7 @@ co-workers, 2009), and six components where three do here (Westerhuis, Kourti an
 	def scores(model, pc_horiz=1, pc_vert=2, highlight=None):
 	    """Score plot with the percent of the variance each component explains on its
 	    axis."""
-	    fig = model.score_plot(pc_horiz=pc_horiz, pc_vert=pc_vert,
+	    fig = model.score_plot(pc_horiz=pc_horiz, pc_vert=pc_vert, judged_rows="fitted",
 	                           items_to_highlight=highlight,
 	                           settings={"show_labels": True})
 	    r2 = model.r2_per_component_
@@ -157,7 +157,8 @@ co-workers, 2009), and six components where three do here (Westerhuis, Kourti an
 	      sorted(spe.index[spe > model_a.spe_limit(conf_level=0.95)]))
 	# above the SPE limit: [49, 51]
 	print("above the T2 limit:",
-	      sorted(t2.index[t2 > model_a.hotellings_t2_limit(conf_level=0.95)]))
+	      sorted(t2.index[t2 > model_a.hotellings_t2_limit(conf_level=0.95,
+	                                                         judged_rows="fitted")]))
 	# above the T2 limit: [50, 52, 53, 54, 55]
 
 The two components together explain 55.9% of the variance in the unfolded matrix. Two
@@ -175,8 +176,9 @@ plots are enough to find the batches that differ most.
 	batches and batch 51 to the right of them; the figure below shows what separates them.
 
 The :ref:`score plot <LVM_interpreting_scores>` shows the last six batches away from the
-rest, five outside the 95% confidence ellipse. Batches this far out pull the components
-towards themselves, so the model is rebuilt without them once they have been examined.
+rest, five outside the 95% confidence ellipse, which is drawn for the batches the model was fitted
+to (:ref:`which observations a limit judges <LVM-Hotellings-T2-judged-rows>`). Batches this far
+out pull the components towards themselves, so the model is rebuilt without them once they have been examined.
 
 The score plot says how far a batch sits *along* the directions the model found. The
 :ref:`SPE <LVM-interpreting-SPE-residuals>` says how far it sits *off* them. Drawing
@@ -197,7 +199,7 @@ one figure, each 95% limit dividing it into quadrants.
 	        fig.add_trace(go.Scatter(x=[t2.loc[batch_id]], y=[spe.loc[batch_id]],
 	                                 mode="markers", name=f"batch {batch_id}",
 	                                 marker=dict(size=12, color=colour)))
-	    fig.add_vline(x=model.hotellings_t2_limit(conf_level=conf_level),
+	    fig.add_vline(x=model.hotellings_t2_limit(conf_level=conf_level, judged_rows="fitted"),
 	                  line_dash="dash", line_color=GREY)
 	    fig.add_hline(y=model.spe_limit(conf_level=conf_level),
 	                  line_dash="dash", line_color=GREY)
@@ -437,6 +439,10 @@ separates. Removing batches changes the model, so the plots are examined again.
 	print("R2 per component:", model_b.r2_per_component_.round(3).tolist())
 	# R2 per component: [0.333, 0.133, 0.085]
 	second_group = [37, 39, 43, 44, 45, 46, 47, 48]
+	print("group members above model B's SPE limit:",
+	      int((model_b.spe_.loc[second_group].iloc[:, -1]
+	           > model_b.spe_limit(conf_level=0.95)).sum()))
+	# group members above model B's SPE limit: 0
 	# the group's average point
 	group_t2, group_t3 = model_b.scores_.loc[second_group].iloc[:, 1:3].mean()
 	# One colour and one marker for the group wherever it appears: orange already
@@ -469,8 +475,9 @@ separates. Removing batches changes the model, so the plots are examined again.
 
 With the extreme batches gone, a second group separates in the plane of :math:`t_2` and
 :math:`t_3`: batches 37, 39 and 43 to 48, the same group Nomikos and MacGregor (1995) single
-out in the same plane of a three-component model of these 48 batches. The group is inside model
-B's limits; it is removed below as a distinct mode of operation, not as a set of outliers.
+out in the same plane of a three-component model of these 48 batches. Every member is inside
+model B's SPE limit, though most lie outside its 95% ellipse; the group is removed below as a
+distinct mode of operation, not as a set of outliers.
 
 A contribution is the weighted difference between two points, each either an actual batch or
 a synthetic one such as the model centre or a group average. Here the eight are compared
@@ -549,7 +556,10 @@ The final model, used to verify the unusual batches detected above
 Model C is fitted on the 40 batches left once batch 49, batches 50 to 55 and the second group are
 removed. The 15 removed batches are then projected onto it: unfolded and pre-processed with model
 C's centring and scaling vectors, scores computed, :math:`T^2` and SPE compared with the 95%
-limits of the 40 model building batches.
+limits computed from the 40 model building batches. The 15 are new batches to model C, so their
+:math:`T^2` is judged by the wider limit for new rows, while model C's own 40 are judged by the
+limit for the rows it was fitted to (:ref:`which observations a limit judges
+<LVM-Hotellings-T2-judged-rows>`).
 
 The two limits assume different things. The :math:`T^2` limit takes the scores of the 40 as normally
 distributed. The SPE limit is a scaled chi-square matched to the mean and variance of their 40
@@ -580,7 +590,15 @@ residuals, so it is itself estimated from 40 numbers.
 	             for ids in left_out.values() for b in ids}
 	outside = pd.DataFrame({b: (float(r.hotellings_t2), float(r.spe))
 	                        for b, r in projected.items()}, index=["T2", "SPE"]).T
+	# model C's own batches against the limit for fitted rows, the 15 against the one
+	# for new rows
+	t2_limit_fitted, t2_limit_new, spe_limit = (
+	    model_c.hotellings_t2_limit(conf_level=0.95, judged_rows="fitted"),
+	    model_c.hotellings_t2_limit(conf_level=0.95, judged_rows="new"),
+	    model_c.spe_limit(conf_level=0.95))
 	fig = influence_plot(model_c, highlight={}, labels=[])
+	fig.add_vline(x=t2_limit_new, line_dash="dot", line_color=GREY,
+	              annotation_text="new batches")
 	for label, ids in left_out.items():
 	    colour, symbol = styles[label]
 	    fig.add_trace(go.Scatter(x=outside.loc[ids, "T2"], y=outside.loc[ids, "SPE"],
@@ -590,17 +608,15 @@ residuals, so it is itself estimated from 40 numbers.
 	# the projected batches lie far outside the limits
 	fig.update_xaxes(type="log").update_yaxes(type="log")
 	fig.show()
-	t2_limit, spe_limit = (model_c.hotellings_t2_limit(conf_level=0.95),
-	                       model_c.spe_limit(conf_level=0.95))
 	print("left-out batches above the SPE limit:",
 	      sorted(outside.index[outside["SPE"] > spe_limit]))
 	# left-out batches above the SPE limit: [37, 39, 43, 44, 45, 46, 47, 48, 49, 50,
 	# 51, 52, 53, 54, 55]
 	print("left-out batches above the T2 limit:",
-	      sorted(outside.index[outside["T2"] > t2_limit]))
+	      sorted(outside.index[outside["T2"] > t2_limit_new]))
 	# left-out batches above the T2 limit: [37, 50, 51, 52, 53, 54, 55]
 	print("batches 38, 40, 41 and 42 inside both limits:",
-	      bool((model_c.hotellings_t2_.loc[poor_quality].iloc[:, -1] < t2_limit).all()
+	      bool((model_c.hotellings_t2_.loc[poor_quality].iloc[:, -1] < t2_limit_fitted).all()
 	           and (model_c.spe_.loc[poor_quality].iloc[:, -1] < spe_limit).all()))
 	# batches 38, 40, 41 and 42 inside both limits: True
 	# A training batch sits closer to the plane than a batch the model has not seen, so the
@@ -632,7 +648,7 @@ residuals, so it is itself estimated from 40 numbers.
 
 .. figure:: ../figures/batch/batch-case-dupont-model-c.png
 	:source: batch/batch-case-dupont-figures.py
-	:alt: Left, the scores of model C's 40 batches with 38, 40, 41 and 42 marked inside the ellipse; right, Hotelling's T2 against SPE on logarithmic axes, the 40 training batches inside the T2 limit and all but two inside the SPE limit, with the same four marked again low in that cloud, and the 15 left-out batches above the SPE limit, seven of them above the T2 limit as well.
+	:alt: Left, the scores of model C's 40 batches with 38, 40, 41 and 42 marked inside the ellipse; right, Hotelling's T2 against SPE on logarithmic axes, all but one of the 40 training batches inside their T2 limit and all but two inside the SPE limit, with the same four marked again low in that cloud, and the 15 left-out batches above the SPE limit, seven of them above the T2 limit as well.
 	:width: 1000px
 	:scale: 80
 	:align: center
@@ -642,12 +658,13 @@ residuals, so it is itself estimated from 40 numbers.
 	(blue) and of the 15 left-out batches projected onto model C: batch 49 (orange), batches
 	50 to 55 (aqua circles) and the second group (purple triangles). The same four diamonds
 	are marked in the right panel, where they sit inside the training cloud on both statistics,
-	which is the comparison the next paragraphs make.
+	which is the comparison the next paragraphs make. The dashed :math:`T^2` limit judges model C's
+	own 40 batches, the dotted one, wider, the 15 left out.
 
 The fair comparison is with the 40 model building batches, each projected onto a model fitted
 without it. All 15 left-out batches sit beyond the range those 40 cover, batches 50 to 55 by
 more than a hundred times the SPE limit, and those six and batch 37 are above the
-:math:`T^2` limit as well.
+:math:`T^2` limit for new batches as well.
 
 Batches 38, 40, 41 and 42 produced poor product and stayed in the training set. Projected the
 same way, each onto a model fitted without it, they sit where the normal batches sit, at 0.8 to
