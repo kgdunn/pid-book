@@ -358,14 +358,17 @@ Two components are enough for this small data set:
 
 The first component explains 60.6% of the variability in the five measurements and the second a further 25.9%, for a cumulative :math:`R^2` of 86.5%.
 
-Before trusting the model to *generate* recipes, we should check that it is a faithful summary of the data. We plot the SPE and Hotelling's |T2| value of each pastry, together with their 95% limits:
+Before trusting the model to *generate* recipes, we should check that it is a faithful summary of the data. We plot the SPE and Hotelling's |T2| value of each pastry, together with their 95% limits. The pastries are the observations the model was fitted to, so the |T2| limit is the :ref:`one for those observations <LVM-Hotellings-T2-judged-rows>`, ``judged_rows="fitted"``:
 
 .. code-block:: python
 
 	spe = model.spe_.iloc[:, -1]
 	t2 = model.hotellings_t2_.iloc[:, -1]
 	spe_limit = float(model.spe_limit(conf_level=0.95))
-	t2_limit = float(model.hotellings_t2_limit(conf_level=0.95))
+	t2_limit = float(model.hotellings_t2_limit(conf_level=0.95, judged_rows="fitted"))
+	print(f"limits: SPE {spe_limit:.2f}, T2 {t2_limit:.2f}; pastries above them: "
+	      f"{int((spe > spe_limit).sum())} and {int((t2 > t2_limit).sum())}")
+	# limits: SPE 1.38, T2 5.75; pastries above them: 2 and 2
 
 	fig = go.Figure()
 	fig.add_trace(go.Scatter(y=spe.values, mode="lines+markers", name="SPE"))
@@ -396,7 +399,7 @@ Before trusting the model to *generate* recipes, we should check that it is a fa
 	:width: 600px
 	:align: center
 
-The 95% limits work out to :math:`\text{SPE} = 1.38` and |T2| :math:`= 6.65`. Two pastries sit just above the SPE limit and one just above the |T2| limit — about what a 95% limit implies for 50 observations, and none is a gross outlier. The two-component plane is a sound summary of how this product has been made, so it is a sensible basis for inversion.
+The 95% limits work out to :math:`\text{SPE} = 1.38` and |T2| :math:`= 5.75`. Two pastries sit just above the SPE limit and two just above the |T2| limit, about what a 95% limit implies for 50 observations, and none is a gross outlier. The two-component plane is a sound summary of how this product has been made, so it is a sensible basis for inversion.
 
 The score plot is the model's two-dimensional map of the data, and the loadings give that map its meaning:
 
@@ -404,7 +407,7 @@ The score plot is the model's two-dimensional map of the data, and the loadings 
 
 	scores = model.scores_
 	ci_x, ci_y = model.ellipse_coordinates(score_horiz=1, score_vert=2,
-	                                       conf_level=0.95)
+	                                       conf_level=0.95, judged_rows="fitted")
 
 	fig = make_subplots(rows=1, cols=2, subplot_titles=("Scores", "Loadings"))
 	fig.add_trace(go.Scatter(x=scores.iloc[:, 0], y=scores.iloc[:, 1],

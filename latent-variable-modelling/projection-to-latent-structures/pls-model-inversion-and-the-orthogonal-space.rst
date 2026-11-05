@@ -1037,8 +1037,10 @@ fill out a region.
 
 Two boundaries close the region off. The acceptable range of taste bounds it in one direction. In the
 other direction, along each null space, the region would run on without limit, so we bound it by the
-Hotelling's :math:`T^2` limit: solutions beyond it are extrapolations, as
-:ref:`the previous section <LVM-PLS-inversion-in-practice>` described. `Paris and co-workers (2021)
+Hotelling's :math:`T^2` limit for a new observation, since a candidate is not one of the cheeses the
+model was fitted to (:ref:`which observations a limit judges <LVM-Hotellings-T2-judged-rows>`).
+Solutions beyond it are extrapolations, as :ref:`the previous section <LVM-PLS-inversion-in-practice>`
+described. `Paris and co-workers (2021)
 <https://literature.learnche.org/item/181/establishing-multivariate-specification-regions-for-incoming-raw-materials-using-projection-to-latent-structure-models-comparison-between-direct-mapping-and-model-inversion>`_
 do exactly this, constraining the region by the 95% :math:`T^2` limit so it stays inside the space the
 data support.
@@ -1053,7 +1055,7 @@ Suppose a taste between 20 and 30 is acceptable.
 
 .. code-block:: python
 
-	t2_limit = pls.hotellings_t2_limit(0.95)
+	t2_limit = pls.hotellings_t2_limit(0.95, judged_rows="new")
 
 	region = []
 	for target in np.linspace(20.0, 30.0, 11):       # the tastes we accept
