@@ -1,0 +1,378 @@
+<title>Experimental Design Graph</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one map that opens on the chapter's topics and shows more terms as you zoom; the selected item's card and links follow it. */
+:root {
+  --bg: #f3f5f7; --panel: #ffffff; --fg: #17202a; --muted: #5a6876; --line: #c9d2db; --accent: #1f5fa8; --bubble: #e3e9ef;
+  --f-design: #1f5fa8; --f-method: #0f7b6c; --f-concept: #5b6b7c; --f-guide: #b4541a; --f-context: #7a4fa3;
+  --display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12171d; --panel: #1a2129; --fg: #e4e9ee; --muted: #94a3b1; --line: #384552; --accent: #79aef0; --bubble: #222c36;
+  --f-design: #79aef0; --f-method: #4fc7b4; --f-concept: #a4b2c0; --f-guide: #f0965a; --f-context: #c39ae8; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #12171d; --panel: #1a2129; --fg: #e4e9ee; --muted: #94a3b1; --line: #384552; --accent: #79aef0; --bubble: #222c36;
+  --f-design: #79aef0; --f-method: #4fc7b4; --f-concept: #a4b2c0; --f-guide: #f0965a; --f-context: #c39ae8; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font: 15px/1.5 var(--body); }
+.wrap { max-width: 980px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 40px; display: grid;
+  grid-template-columns: minmax(0, 1fr); gap: 14px; }
+header { display: grid; gap: 4px; }
+h1 { font: 600 1.6rem/1.15 var(--display); margin: 0; text-wrap: balance; }
+.sub { color: var(--muted); margin: 0; font-size: .9rem; }
+.stats { font: 400 .78rem var(--mono); color: var(--muted); letter-spacing: .02em; }
+.search { position: relative; }
+.search input { width: 100%; box-sizing: border-box; font: 400 1rem var(--body); padding: 10px 12px; border: 1px solid var(--line);
+  border-radius: 6px; background: var(--panel); color: var(--fg); }
+.search input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.results { position: absolute; z-index: 5; left: 0; right: 0; top: calc(100% + 4px); background: var(--panel); border: 1px solid var(--line);
+  border-radius: 6px; max-height: 300px; overflow-y: auto; box-shadow: 0 6px 20px rgb(0 0 0 / .14); }
+.results button { display: flex; justify-content: space-between; gap: 12px; width: 100%; text-align: left; padding: 9px 12px; border: 0;
+  background: none; color: var(--fg); font: inherit; cursor: pointer; }
+.results button:hover, .results button:focus-visible { background: var(--bg); outline: none; }
+.results small { font-family: var(--mono); color: var(--muted); white-space: nowrap; }
+.mapbox { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  height: clamp(340px, 62vh, 640px); max-width: 100%; overflow: hidden; }
+#cy { position: absolute; inset: 0; }
+.mapbar { display: flex; gap: 8px; align-items: stretch; margin-top: -6px; }
+.controls { display: flex; gap: 6px; flex: none; }
+.controls button { width: 40px; height: 40px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel); color: var(--fg);
+  font: 500 1.15rem var(--body); cursor: pointer; display: grid; place-items: center; }
+.controls button svg { width: 18px; height: 18px; }
+.strip { flex: 1; display: flex; align-items: center; gap: 10px; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 6px; padding: 6px 8px 6px 10px; font-size: .86rem; min-width: 0; }
+.strip span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
+.strip b { color: var(--fg); font-weight: 600; }
+.strip button { flex: none; font: 500 .82rem var(--body); border: 1px solid var(--line); background: var(--panel); color: var(--accent);
+  border-radius: 6px; padding: 4px 9px; cursor: pointer; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font: 400 .78rem var(--mono); color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend svg { width: 13px; height: 13px; flex: none; }
+.card { background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--fam, var(--line)); border-radius: 6px;
+  padding: 14px 16px; display: grid; gap: 6px; min-width: 0; scroll-margin-top: 12px; }
+.type { font: 500 .72rem var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--fam, var(--muted)); }
+.card h2 { font: 600 1.35rem/1.2 var(--display); margin: 0; text-wrap: balance; }
+.card p { margin: 0; max-width: 65ch; }
+.aka { color: var(--muted); font-size: .88rem; }
+.book { font: 400 .82rem var(--mono); }
+.book a { color: var(--accent); overflow-wrap: anywhere; }
+.links { display: grid; gap: 10px; }
+.rel { display: grid; gap: 6px; }
+.rel h3 { margin: 0; font: 500 .74rem var(--mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font: 400 .88rem var(--body); padding: 5px 10px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--panel); color: var(--fg); cursor: pointer; text-align: left; }
+.chip svg { width: 11px; height: 11px; flex: none; }
+.chip small { color: var(--muted); font-family: var(--mono); }
+.chip:hover { border-color: var(--accent); }
+.chip:focus-visible, .controls button:focus-visible, .strip button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+footer { color: var(--muted); font-size: .8rem; }
+@media (max-width: 480px) { h1 { font-size: 1.4rem; } .mapbox { height: clamp(340px, 58vh, 520px); } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Experimental Design Graph</h1>
+    <p class="sub">The core of the Design and Analysis of Experiments chapter of <em>Process Improvement using Data</em>: its terms, the links between them, and the topics they form.</p>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <div class="search">
+    <label for="q" class="sub">Find a term</label>
+    <input id="q" type="search" autocomplete="off" placeholder="aliasing, CCD, foldover, randomization..." aria-controls="results">
+    <div class="results" id="results" role="listbox" hidden></div>
+  </div>
+
+  <div class="mapbox">
+    <div id="cy" role="img" aria-label="Map of the chapter's topics and terms. The same items are listed as buttons below the map."></div>
+  </div>
+  <div class="mapbar">
+    <div class="strip" id="strip"><span id="striptext"></span><button type="button" id="details">Details</button></div>
+    <div class="controls">
+      <button type="button" id="zin" aria-label="Zoom in">+</button>
+      <button type="button" id="zout" aria-label="Zoom out">&minus;</button>
+      <button type="button" id="home" aria-label="Show all topics">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="legend" id="legend"></div>
+
+  <article class="card" id="card" aria-live="polite"></article>
+  <section class="links" id="links" aria-label="Links from the selected item"></section>
+
+  <footer>Built from the chapter text extracted in pid-book pull request 22. Topics found by Louvain clustering of the links.
+    Every term links to the section of the book that teaches it.</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+<script>
+const DATA = __DATA__;
+const FAMILY = { DesignType: "design", Property: "design", Criterion: "design", Method: "method", Plot: "method", Phase: "method",
+  Concept: "concept", Guideline: "guide", Diagnostic: "guide", Example: "context", Question: "context", Reference: "context" };
+const FAMILIES = {
+  design: ["Designs and their properties", "round-rectangle", "M3 3h14v14H3z"],
+  method: ["Methods, plots, phases", "diamond", "M10 1.5 18.5 10 10 18.5 1.5 10z"],
+  concept: ["Concepts", "ellipse", "M10 2a8 8 0 1 1 0 16a8 8 0 1 1 0-16z"],
+  guide: ["Guidelines and warning signs", "triangle", "M10 2 18.5 17.5H1.5z"],
+  context: ["Examples, questions, sources", "hexagon", "M5.5 2.5h9L19 10l-4.5 7.5h-9L1 10z"],
+};
+const READ = { USES: ["uses", "used by"], IS_A: ["is a kind of", "kinds"], ILLUSTRATES: ["illustrates", "illustrated by"],
+  SHOWS: ["shows", "shown by"], COMPARED_WITH: ["compared with", "compared with"], CAUSES: ["causes", "caused by"],
+  APPLIES_TO: ["applies to", "guided by"], PART_OF: ["part of", "has parts"], CITED_IN: ["source", "source of"],
+  HAS_PROPERTY: ["has property", "property of"], REMEDIED_BY: ["remedied by", "remedies"], REQUIRES: ["requires", "required by"],
+  SUITED_TO: ["suited to", "served by"], ANSWERED_BY: ["answered by", "answers"], PREVENTS: ["prevents", "prevented by"],
+  ESTIMATES: ["estimates", "estimated by"], INDICATES: ["indicates", "indicated by"], PRECEDES: ["comes before", "comes after"],
+  CAN_AUGMENT_TO: ["can be augmented to", "augments"], CANNOT_SHOW: ["cannot show", "not shown by"] };
+const TERM_GAP = 62;   // least distance between two terms in the drawing (layout_kg.py)
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+const terms = new Map(DATA.nodes.map(n => [n.id, n]));
+const topics = new Map(DATA.clusters.map(c => [c.id, c]));
+const fam = n => FAMILY[n.type] || "concept";
+const icon = (f, color) => `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="${FAMILIES[f][2]}" fill="${color}"/></svg>`;
+const esc = s => s.replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+const bookUrl = n => {
+  const page = `https://learnche.org/pid/${n.book_file.replace(/\.rst$/, "")}`;
+  return n.book_label ? `${page}#${n.book_label.toLowerCase().replaceAll("_", "-")}` : page;
+};
+const linksOf = id => DATA.edges.filter(e => e.source === id || e.target === id);
+
+document.getElementById("stats").textContent =
+  `${DATA.nodes.length} terms · ${DATA.edges.length} links · ${DATA.clusters.length} topics`;
+const drawLegend = () => { document.getElementById("legend").innerHTML = Object.entries(FAMILIES)
+  .map(([k, [label]]) => `<span>${icon(k, css(`--f-${k}`))}${label}</span>`).join(""); };
+
+// ---------- the map
+const elements = [
+  ...DATA.clusters.map(c => ({ group: "nodes", classes: "topic", position: { x: c.x, y: c.y },
+    data: { id: c.id, label: c.short, olabel: `${c.short}\n${c.size} terms`, d: 2 * c.r } })),
+  ...DATA.nodes.map(n => ({ group: "nodes", classes: `term fam-${fam(n)}`, position: { x: n.x, y: n.y },
+    data: { id: n.id, label: n.name, rank: n.rank, topic: n.cluster } })),
+  ...DATA.edges.map((e, i) => ({ group: "edges", classes: "link", data: { id: `l${i}`, source: e.source, target: e.target } })),
+  ...DATA.cluster_links.map((e, i) => ({ group: "edges", classes: "between", data: { id: `b${i}`, source: e.a, target: e.b, n: e.n } })),
+];
+const cy = cytoscape({ container: document.getElementById("cy"), elements, layout: { name: "preset" }, autoungrabify: true,
+  autounselectify: true, boxSelectionEnabled: false, wheelSensitivity: 0.35, pixelRatio: "auto" });
+
+let selected = null;   // a term id, a topic id, or null for the overview
+let labelLimit = -1;
+
+// How many terms per topic carry a label, from the on-screen distance between neighbouring terms.
+function limitFor(gap) { return gap < 26 ? 0 : gap < 42 ? 3 : gap < 70 ? 8 : gap < 96 ? 15 : 99; }
+
+function sheet(z) {
+  const px = v => v / z;                 // a size that stays the same on screen at any zoom
+  const gap = TERM_GAP * z;
+  const overview = gap < 26;
+  const size = Math.min(Math.max(px(6), 9), px(16));
+  const famRules = Object.entries(FAMILIES).map(([k, [, shape]]) =>
+    ({ selector: `.fam-${k}`, style: { shape, "background-color": css(`--f-${k}`) } }));
+  return [
+    { selector: "node, edge", style: { "z-index-compare": "manual" } },
+    { selector: ".topic", style: { shape: "ellipse", width: "data(d)", height: "data(d)", "background-color": css("--bubble"),
+      "background-opacity": overview ? 0.9 : 0.55, "border-width": px(1), "border-color": css("--line"), "z-index": 0,
+      events: "no",   // a drag on a circle must pan the map; a tap inside one is matched in the background handler
+
+      label: overview ? "data(olabel)" : "data(label)", "font-family": "IBM Plex Sans Condensed, Arial Narrow, sans-serif", "font-weight": 600,
+      color: overview ? css("--fg") : css("--muted"), "font-size": px(overview ? 13 : 12), "text-wrap": "wrap",
+      "text-max-width": overview ? "data(d)" : px(220), "text-valign": overview ? "center" : "top",
+      "text-margin-y": overview ? 0 : px(-4), "text-opacity": overview ? 1 : 0.9,
+      "text-background-color": css("--bubble"), "text-background-opacity": overview ? 0.92 : 0,
+      "text-background-padding": px(3), "text-background-shape": "roundrectangle" } },
+    { selector: ".topic.picked", style: { "border-width": px(2.5), "border-color": css("--accent") } },
+    // Zoomed out, the topics alone: their terms appear once there is room to tell them apart.
+    { selector: ".term", style: { display: overview ? "none" : "element", width: size, height: size, "z-index": 10, label: "",
+      "border-width": 0 } },
+    ...famRules,
+    { selector: ".term.lab", style: { label: "data(label)", color: css("--fg"), "font-family": "IBM Plex Sans, sans-serif",
+      "font-size": px(12), "text-wrap": "wrap", "text-max-width": px(Math.min(120, Math.max(80, gap * 1.15))),
+      "text-valign": "bottom", "text-margin-y": px(3), "text-background-color": css("--panel"), "text-background-opacity": 0.8,
+      "text-background-padding": px(1.5), "text-background-shape": "roundrectangle" } },
+    { selector: ".term.sel", style: { width: size * 1.9, height: size * 1.9, "border-width": px(2.5), "border-color": css("--fg"),
+      "font-weight": 600, "font-size": px(13.5), "z-index": 30 } },
+    { selector: ".term.nb", style: { "z-index": 20 } },
+    { selector: ".link", style: { display: overview ? "none" : "element", width: px(1), "line-color": css("--line"),
+      "curve-style": "straight", "z-index": 5, opacity: 0.8 } },
+    { selector: ".link.hl", style: { display: "element", width: px(2), "line-color": css("--accent"), "target-arrow-shape": "triangle",
+      "target-arrow-color": css("--accent"), "arrow-scale": 0.9, opacity: 1, "z-index": 15 } },
+    { selector: ".between", style: { display: overview ? "element" : "none", "curve-style": "straight", "z-index": 1,
+      width: `mapData(n, 1, 14, ${px(1)}, ${px(7)})`, "line-color": css("--muted"), opacity: 0.45 } },
+    { selector: ".dim", style: { opacity: 0.18 } },
+    { selector: ".link.dim", style: { opacity: 0.05 } },
+  ];
+}
+
+function refresh() {
+  const z = cy.zoom();
+  const limit = selected && terms.has(selected) ? Math.max(limitFor(TERM_GAP * z), 0) : limitFor(TERM_GAP * z);
+  cy.batch(() => {
+    cy.style(sheet(z));
+    if (limit !== labelLimit) {
+      cy.nodes(".term").forEach(n => n.toggleClass("lab", n.data("rank") < limit || n.hasClass("sel") || n.hasClass("nb")));
+      labelLimit = limit;
+    }
+  });
+}
+let queued = false;
+cy.on("zoom", () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; refresh(); }); } });
+
+function highlight(id) {
+  cy.batch(() => {
+    cy.elements().removeClass("sel nb hl dim picked");
+    if (id && terms.has(id)) {
+      const node = cy.getElementById(id);
+      const near = node.closedNeighborhood();
+      node.addClass("sel");
+      near.nodes(".term").not(node).addClass("nb");
+      near.edges(".link").addClass("hl");
+      cy.nodes(".term").not(near.nodes()).addClass("dim");
+      cy.edges(".link").not(near.edges()).addClass("dim");
+    } else if (id && topics.has(id)) {
+      cy.getElementById(id).addClass("picked");
+      // Links that leave the open topic only clutter it.
+      cy.edges(".link").filter(e => e.source().data("topic") !== id || e.target().data("topic") !== id).addClass("dim");
+    }
+    labelLimit = -1;   // labels depend on the selection too
+  });
+  refresh();
+}
+
+function move(id, animate) {
+  const duration = animate && !reduce ? 450 : 0;
+  if (id && terms.has(id)) {
+    const p = cy.getElementById(id).position();
+    const z = Math.min(cy.maxZoom(), Math.max(cy.zoom(), 72 / TERM_GAP));   // close enough to read its neighbours
+    const pan = { x: cy.width() / 2 - p.x * z, y: cy.height() * 0.45 - p.y * z };
+    cy.stop(); cy.animate({ zoom: z, pan }, { duration });
+  } else if (id && topics.has(id)) {
+    cy.stop(); cy.animate({ fit: { eles: cy.getElementById(id), padding: 12 } }, { duration });
+  } else {
+    cy.stop(); cy.animate({ fit: { eles: cy.nodes(".topic"), padding: 14 } }, { duration });
+  }
+}
+
+function setLimits() {
+  const z0 = cy.zoom();
+  cy.fit(cy.nodes(".topic"), 14);
+  const fitZoom = cy.zoom();
+  cy.minZoom(fitZoom * 0.6);
+  cy.maxZoom(Math.max(fitZoom * 14, 2.4));
+  return { fitZoom, z0 };
+}
+
+// ---------- the card and the chips
+function chipFor(id) {
+  if (topics.has(id)) { const c = topics.get(id);
+    return `<button class="chip" type="button" data-id="${id}">${esc(c.name)} <small>${c.size}</small></button>`; }
+  const n = terms.get(id);
+  return `<button class="chip" type="button" data-id="${id}">${icon(fam(n), css(`--f-${fam(n)}`))}${esc(n.name)}</button>`;
+}
+const group = (title, ids) => ids.length ? `<div class="rel"><h3>${title}</h3><div class="chips">${ids.map(chipFor).join("")}</div></div>` : "";
+
+function render() {
+  const card = document.getElementById("card"), links = document.getElementById("links"), strip = document.getElementById("striptext");
+  if (selected && terms.has(selected)) {
+    const n = terms.get(selected), color = css(`--f-${fam(n)}`);
+    card.style.setProperty("--fam", color);
+    card.innerHTML = `<span class="type">${n.type.replace(/([a-z])([A-Z])/g, "$1 $2")}</span><h2>${esc(n.name)}</h2><p>${esc(n.definition)}</p>
+      ${n.aliases.length ? `<p class="aka">Also called: ${esc(n.aliases.join(", "))}</p>` : ""}
+      <p class="book">In the book: <a href="${bookUrl(n)}" target="_blank" rel="noopener">${esc(n.book_label || n.book_file.split("/").pop())}</a></p>`;
+    const groups = new Map();
+    for (const e of linksOf(selected)) {
+      const [rel, other] = e.source === selected ? [READ[e.type][0], e.target] : [READ[e.type][1], e.source];
+      groups.set(rel, [...(groups.get(rel) || []), other]);
+    }
+    links.innerHTML = group("Topic", [n.cluster]) + [...groups].map(([rel, ids]) => group(rel, ids)).join("");
+    strip.innerHTML = `<b>${esc(n.name)}</b> · ${esc(n.definition)}`;
+  } else if (selected && topics.has(selected)) {
+    const c = topics.get(selected);
+    const members = DATA.nodes.filter(n => n.cluster === c.id).sort((a, b) => a.rank - b.rank).map(n => n.id);
+    const near = DATA.cluster_links.filter(l => l.a === c.id || l.b === c.id).sort((a, b) => b.n - a.n).map(l => (l.a === c.id ? l.b : l.a));
+    card.style.removeProperty("--fam");
+    card.innerHTML = `<span class="type">Topic</span><h2>${esc(c.name)}</h2>
+      <p>${c.size} terms. The most connected are ${members.slice(0, 3).map(id => esc(terms.get(id).name).toLowerCase()).join(", ")}.</p>`;
+    links.innerHTML = group("Terms, most connected first", members) + group("Linked topics, most links first", near);
+    strip.innerHTML = `<b>${esc(c.name)}</b> · zoom in or tap a term`;
+  } else {
+    card.style.removeProperty("--fam");
+    card.innerHTML = `<span class="type">Overview</span><h2>${DATA.clusters.length} topics</h2>
+      <p>The terms fall into groups of closely linked ideas. Tap a topic, or zoom in, to see its terms; the most connected terms are named first.</p>`;
+    links.innerHTML = group("Topics, largest first", DATA.clusters.map(c => c.id));
+    strip.innerHTML = `<b>All topics</b> · pinch or scroll to zoom, tap a topic to open it`;
+  }
+}
+
+function go(id, { animate = true, hash = true } = {}) {
+  if (id && !terms.has(id) && !topics.has(id)) id = null;
+  selected = id;
+  highlight(id);
+  render();
+  move(id, animate);
+  if (hash) { try { history.replaceState(null, "", id ? `#${id.replaceAll("_", "-")}` : location.pathname + location.search); } catch {} }
+}
+const fromHash = () => location.hash.slice(1).replaceAll("-", "_");
+
+cy.on("tap", "node.term", ev => go(ev.target.id()));
+cy.on("tap", ev => {
+  if (ev.target !== cy) return;
+  const { x, y } = ev.position;
+  const hit = DATA.clusters.find(c => Math.hypot(x - c.x, y - c.y) <= c.r);
+  if (hit && hit.id !== selected) go(hit.id);
+});
+document.getElementById("links").addEventListener("click", ev => {
+  const b = ev.target.closest(".chip"); if (b) { go(b.dataset.id); document.querySelector(".mapbox").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" }); }
+});
+const zoomBy = f => { const z = Math.min(cy.maxZoom(), Math.max(cy.minZoom(), cy.zoom() * f));
+  cy.stop(); cy.animate({ zoom: { level: z, renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 } } }, { duration: reduce ? 0 : 250 }); };
+document.getElementById("zin").addEventListener("click", () => zoomBy(1.6));
+document.getElementById("zout").addEventListener("click", () => zoomBy(1 / 1.6));
+document.getElementById("home").addEventListener("click", () => go(null));
+document.getElementById("details").addEventListener("click", () =>
+  document.getElementById("card").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }));
+
+// ---------- search
+const q = document.getElementById("q"), results = document.getElementById("results");
+const norm = s => s.toLowerCase().normalize("NFKD");
+q.addEventListener("input", () => {
+  const t = norm(q.value.trim());
+  if (!t) { results.hidden = true; return; }
+  const hits = DATA.nodes.map(n => {
+    const names = [n.name, ...n.aliases].map(norm);
+    const score = names.some(s => s === t) ? 0 : names.some(s => s.startsWith(t)) ? 1 : names.some(s => s.includes(t)) ? 2
+      : norm(n.definition).includes(t) ? 3 : 9;
+    return { n, score };
+  }).filter(h => h.score < 9).sort((a, b) => a.score - b.score || a.n.name.localeCompare(b.n.name)).slice(0, 12);
+  results.innerHTML = hits.length ? hits.map(({ n }) =>
+    `<button type="button" role="option" data-id="${n.id}"><span>${esc(n.name)}</span><small>${n.type}</small></button>`).join("")
+    : `<button type="button" disabled><span>No term matches "${esc(q.value)}"</span></button>`;
+  results.hidden = false;
+});
+results.addEventListener("click", ev => {
+  const b = ev.target.closest("button[data-id]"); if (!b) return;
+  go(b.dataset.id); q.value = ""; results.hidden = true;
+});
+q.addEventListener("keydown", ev => {
+  if (ev.key === "Enter") { const first = results.querySelector("button[data-id]"); if (first) first.click(); }
+  if (ev.key === "Escape") results.hidden = true;
+});
+document.addEventListener("click", ev => { if (!ev.target.closest(".search")) results.hidden = true; });
+
+// ---------- start, theme and size changes
+const restyle = () => { drawLegend(); labelLimit = -1; refresh(); render(); };
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", restyle);
+new MutationObserver(restyle).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+window.addEventListener("hashchange", () => go(fromHash(), { hash: false }));
+let resizing;
+window.addEventListener("resize", () => { clearTimeout(resizing); resizing = setTimeout(() => { cy.resize(); setLimits(); move(selected, false); }, 150); });
+if (document.fonts) document.fonts.ready.then(() => { labelLimit = -1; refresh(); });
+
+drawLegend();
+setLimits();
+go(fromHash() || null, { animate: false, hash: false });
+</script>
