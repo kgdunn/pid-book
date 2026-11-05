@@ -38,7 +38,7 @@ where the :math:`s_a^2` values are constants, and are the variances of each comp
 	individual observations", *Journal of Quality Technology*, **24** (2), 88-95, 1992. The section on
 	:ref:`why a new observation needs a wider limit <LVM-Hotellings-T2-judged-rows>` explains the
 	difference. The 460 tablets in the figure below were used to build the model, so they are drawn
-	against the second limit.
+	against the beta limit, at 95% and at 99%.
 
 	.. image:: ../../figures/examples/tablet-spectra/spectral-data-T2-lineplot.png
 		:alt: Hotelling's T-squared per tablet against the 95% and 99% limits
