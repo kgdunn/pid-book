@@ -50,8 +50,13 @@ h1 { font: 600 1.6rem/1.15 var(--display); margin: 0; text-wrap: balance; }
 .strip b { color: var(--fg); font-weight: 600; }
 .strip button { flex: none; font: 500 .82rem var(--body); border: 1px solid var(--line); background: var(--panel); color: var(--accent);
   border-radius: 6px; padding: 4px 9px; cursor: pointer; }
-.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font: 400 .78rem var(--mono); color: var(--muted); }
-.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; font: 400 .78rem var(--mono); color: var(--muted); }
+.legend .title { margin-right: 2px; }
+.legend button { display: inline-flex; align-items: center; gap: 6px; font: inherit; color: var(--fg); background: none;
+  border: 1px solid transparent; border-radius: 6px; padding: 5px 7px; cursor: pointer; }
+.legend button:hover { border-color: var(--line); }
+.legend button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.legend button[aria-pressed="false"] { color: var(--muted); opacity: .5; text-decoration: line-through; }
 .legend svg { width: 13px; height: 13px; flex: none; }
 .card { background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--fam, var(--line)); border-radius: 6px;
   padding: 14px 16px; display: grid; gap: 6px; min-width: 0; scroll-margin-top: 12px; }
@@ -107,7 +112,7 @@ footer { color: var(--muted); font-size: .8rem; }
     </div>
   </div>
 
-  <div class="legend" id="legend"></div>
+  <div class="legend" id="legend" role="group" aria-label="Kinds of term shown on the map"></div>
 
   <article class="card" id="card" aria-live="polite"></article>
   <section class="links" id="links" aria-label="Links from the selected item"></section>
@@ -163,15 +168,21 @@ const linksOf = id => DATA.edges.filter(e => e.source === id || e.target === id)
 
 document.getElementById("stats").textContent =
   `${DATA.nodes.length} terms · ${DATA.edges.length} links · ${DATA.clusters.length} topics`;
-const drawLegend = () => { document.getElementById("legend").innerHTML = Object.entries(FAMILIES)
-  .map(([k, [label]]) => `<span>${icon(k, css(`--f-${k}`))}${label}</span>`).join(""); };
+// Kinds of term hidden from the map, remembered in this browser. The selected term always stays visible.
+const hidden = new Set();
+try { for (const k of JSON.parse(localStorage.getItem("edg-hidden") || "[]")) if (k in FAMILIES) hidden.add(k); } catch {}
+const drawLegend = () => {
+  document.getElementById("legend").innerHTML = `<span class="title">Show:</span>` + Object.entries(FAMILIES)
+    .map(([k, [label]]) => `<button type="button" data-fam="${k}" aria-pressed="${!hidden.has(k)}"
+      title="${hidden.has(k) ? "Show" : "Hide"} ${label.toLowerCase()}">${icon(k, css(`--f-${k}`))}${label}</button>`).join("");
+};
 
 // ---------- the map
 const elements = [
   ...DATA.clusters.map(c => ({ group: "nodes", classes: "topic", position: { x: c.x, y: c.y },
     data: { id: c.id, label: c.short, olabel: `${c.short}\n${c.size} terms`, d: 2 * c.r } })),
   ...DATA.nodes.map(n => ({ group: "nodes", classes: `term fam-${fam(n)}`, position: { x: n.x, y: n.y },
-    data: { id: n.id, label: n.name, rank: n.rank, topic: n.cluster } })),
+    data: { id: n.id, label: n.name, rank: n.rank, topic: n.cluster, fam: fam(n) } })),
   ...DATA.edges.map((e, i) => ({ group: "edges", data: { id: `l${i}`, source: e.source, target: e.target },
     classes: terms.get(e.source).cluster === terms.get(e.target).cluster ? "link" : "link cross" })),
   ...DATA.cluster_links.map((e, i) => ({ group: "edges", classes: "between", data: { id: `b${i}`, source: e.a, target: e.b, n: e.n } })),
@@ -231,6 +242,7 @@ function sheet(z) {
       width: `mapData(n, 1, 14, ${px(1)}, ${px(7)})`, "line-color": css("--muted"), opacity: 0.45 } },
     { selector: ".dim", style: { opacity: 0.18 } },
     { selector: ".link.dim", style: { opacity: 0.08 } },
+    { selector: ".term.off", style: { display: "none" } },   // its links go with it
   ];
 }
 
@@ -253,6 +265,7 @@ function placeLabels(z) {
     const W = cy.width(), H = cy.height();
     const candidates = [];
     cy.nodes(".term").forEach(n => {
+      if (n.hasClass("off")) return;
       const sel = n.hasClass("sel"), forced = sel || (labelsOn && n.hasClass("nb"));
       if (!sel && !labelsOn) return;
       if (!forced && n.data("rank") >= shown) return;
@@ -301,6 +314,7 @@ function highlight(id) {
     } else if (id && topics.has(id)) {
       cy.getElementById(id).addClass("picked");
     }
+    applyHidden();
   });
   refresh(true);
 }
@@ -393,6 +407,18 @@ document.getElementById("links").addEventListener("click", ev => {
 });
 const zoomBy = f => { const z = Math.min(cy.maxZoom(), Math.max(cy.minZoom(), cy.zoom() * f));
   cy.stop(); cy.animate({ zoom: { level: z, renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 } } }, { duration: reduce ? 0 : 250 }); };
+function applyHidden() {
+  cy.nodes(".term").forEach(n => n.toggleClass("off", hidden.has(n.data("fam")) && !n.hasClass("sel")));
+}
+document.getElementById("legend").addEventListener("click", ev => {
+  const b = ev.target.closest("button[data-fam]"); if (!b) return;
+  const k = b.dataset.fam;
+  if (hidden.has(k)) hidden.delete(k); else hidden.add(k);
+  try { localStorage.setItem("edg-hidden", JSON.stringify([...hidden])); } catch {}
+  drawLegend();
+  document.querySelector(`#legend button[data-fam="${k}"]`).focus();   // keep the keyboard where it was
+  cy.batch(applyHidden); refresh(true);
+});
 const labelsButton = document.getElementById("labels");
 const showLabelState = () => labelsButton.setAttribute("aria-pressed", String(labelsOn));
 labelsButton.addEventListener("click", () => {
