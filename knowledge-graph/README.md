@@ -59,3 +59,17 @@ Page:
 - The `#section` part of each book link is derived from the label name and not yet checked on
   learnche.org.
 - The topics follow the links, so wrong links also move terms between topics.
+
+## Next steps, in this order
+
+1. Accuracy pass: fix the problems above and add the newer chapter topics.
+2. Consensus topics. Across 30 Louvain seeds the 9 topics agree with the published ones at a
+   median adjusted Rand index of only 0.77 (worst 0.46). Run Louvain about 100 times, count how
+   often each pair of terms shares a topic, and cluster those counts, so the topics no longer
+   depend on the seed.
+3. A second level, only where a topic is large and its split is stable (`check_levels.py`). On
+   the current graph that is three topics: fractional factorials (36 terms, 5 sub-groups,
+   median agreement 0.85), least squares and optimal designs (24, 6, 1.00), and causality
+   (20, 4, 1.00). Full factorials (25 terms) splits differently with each seed (0.34); the
+   smaller topics are read whole. Draw the sub-groups as inner circles between the topic view and
+   the term view.
