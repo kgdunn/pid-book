@@ -80,6 +80,8 @@ async function run(browser, width, height) {
   const how = await p.textContent("#how");
   const n = await p.evaluate(() => DATA.nodes.length);
   check(width, "the explanation is filled from the map's data", how.includes(`${n} terms`) && !/undefined|NaN/.test(how));
+  const told = await p.evaluate(() => [...document.querySelectorAll("#how > p, #how > ul")].map((e) => e.textContent).join(" "));
+  check(width, "the explanation is in words until 'Show the numbers' is opened", !/\d/.test(told), told.match(/\S*\d\S*/g)?.join(" "));
   check(width, "no sideways scroll", (await p.evaluate(() => document.documentElement.scrollWidth)) <= width);
   check(width, "opens on the topics, terms hidden", (await state(p)).terms === 0);
 
@@ -148,7 +150,8 @@ async function run(browser, width, height) {
     name: DATA.nodes.find((n) => n.id === i).name }), term);
   check(width, "a tap opens the term", (await p.textContent("#card h2")) === lit.name, lit.name);
   check(width, "its links light up", lit.hl === lit.degree, `${lit.hl} of ${lit.degree}`);
-  check(width, "its card quotes the book", (await p.textContent("#card blockquote cite")).includes(".rst:"));
+  const card = await p.textContent("#card");
+  check(width, "its card quotes the book, not its source file", (await p.textContent("#card blockquote")).trim().length > 0 && !card.includes(".rst"));
 
   // The term-name switch: off names only the selected term, and is remembered.
   await p.click("#labels"); await p.waitForTimeout(300);
